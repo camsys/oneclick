@@ -1,5 +1,16 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
+# TODO may want to eventually split these out into separate files
+
+# TODO This is perhaps a little kludgy; see my SO question here:
+# http://stackoverflow.com/questions/17328124/better-way-to-do-whitelabelling-with-i18n
+
 en:
-  hello: "Hello world"
+  home: 'Home'
+arc_en:
+  home: 'ARC 1-Click Home'
+  logo: 'arc/arc-logo.png'
+yata_en:
+  home: 'YATA Home'
+  logo: 'yata/Rabbittransit_red_logo.png'
