@@ -15,7 +15,7 @@ module ApplicationHelper
   end
 
   def t(key, options={})
-    branded_key = [Rails.application.config.brand, key].join('.')
+    branded_key = [brand, key].join('.')
 
     begin
       translate(branded_key, options.merge({raise: true}))

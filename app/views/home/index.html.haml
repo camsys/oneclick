@@ -1,4 +1,18 @@
-%h3= t(:home)
-- @users.each do |user|
-  %p
-    User: #{link_to user.name, user}
+.container-fluid
+  .row-fluid
+    .offset3.span6
+      .container-fluid
+        - @actions.each_slice(2) do |actions|
+          .row-fluid
+            .span12
+              %ul.thumbnails
+                - actions.each do |action|
+                  %li.span6
+                    .container-fluid
+                      .row-fluid
+                        %a.span12.thumbnail.actionbutton{alt: action[:label], title: action[:label], href: action[:target]}
+                          .span6
+                            -#= image_tag action[:img], alt: action[:label]
+                            %i.icon-4x{class: action[:icon], style: "margin-top:5px; font-size: 6.0em;", alt: action[:label]}
+                          .span6
+                            %p= action[:label]
