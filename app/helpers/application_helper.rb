@@ -14,4 +14,13 @@ module ApplicationHelper
     html.html_safe
   end
 
+  def t(key, options={})
+    branded_key = [Rails.application.config.brand, key].join('.')
+
+    begin
+      translate(branded_key, options.merge({raise: true}))
+    rescue Exception => e
+      translate(key, options)
+    end
+  end
 end

@@ -9,7 +9,8 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    I18n.locale = [brand, params[:locale] || I18n.default_locale].compact.join('_')
+    I18n.locale = params[:locale] || I18n.default_locale
+    Rails.logger.info "After set_locale, locale is #{I18n.locale}"
   end
 
   def default_url_options(options={})

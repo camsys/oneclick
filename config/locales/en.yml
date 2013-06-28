@@ -3,14 +3,11 @@
 
 # TODO may want to eventually split these out into separate files
 
-# TODO This is perhaps a little kludgy; see my SO question here:
-# http://stackoverflow.com/questions/17328124/better-way-to-do-whitelabelling-with-i18n
-
 en:
-  home: 'Home'
-arc_en:
-  home: 'ARC 1-Click Home'
-  logo: 'arc/arc-logo.png'
-yata_en:
-  home: 'YATA Home'
-  logo: 'yata/Rabbittransit_red_logo.png'
+  home: 'en no-brand Home'
+  arc:
+    home: 'ARC 1-Click Home'
+    logo: 'arc/arc-logo.png'
+  yata:
+    home: 'YATA Home'
+    logo: 'yata/Rabbittransit_red_logo.png'
