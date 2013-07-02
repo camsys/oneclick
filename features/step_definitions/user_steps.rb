@@ -1,7 +1,7 @@
 ### UTILITY METHODS ###
 
 def create_visitor
-  @visitor ||= { :name => "Testy McUserton", :email => "example@example.com",
+  @visitor ||= { :first_name => "Testy", :last_name => "McUserton", :email => "example@example.com",
     :password => "changeme", :password_confirmation => "changeme" }
 end
 
@@ -30,7 +30,8 @@ end
 def sign_up
   delete_user
   visit '/users/sign_up'
-  fill_in "Name", :with => @visitor[:name]
+  fill_in "First name", :with => @visitor[:first_name]
+  fill_in "Last name", :with => @visitor[:last_name]
   fill_in "Email", :with => @visitor[:email]
   fill_in "user_password", :with => @visitor[:password]
   fill_in "user_password_confirmation", :with => @visitor[:password_confirmation]
@@ -123,7 +124,8 @@ end
 
 When /^I edit my account details$/ do
   click_link "Edit account"
-  fill_in "Name", :with => "newname"
+  fill_in "First name", :with => "new first name"
+  fill_in "Last name", :with => "new last name"
   fill_in "user_current_password", :with => @visitor[:password]
   click_button "Update"
 end
@@ -187,5 +189,5 @@ end
 
 Then /^I should see my name$/ do
   create_user
-  page.should have_content @user[:name]
+  page.should have_content @user[:first_name]
 end
