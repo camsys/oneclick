@@ -6,4 +6,8 @@ module CsHelpers
     Rails.application.config.brand
   end
 
+  def anonymous_user
+    User.new
+  end
+
 end

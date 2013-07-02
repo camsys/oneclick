@@ -8,6 +8,13 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :role_ids, :as => :admin
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me
-  
+  attr_accessible :email, :password, :password_confirmation, :remember_me
+
+  # end devise/rolify
+
+  attr_accessible :first_name, :last_name
+
+  has_many :places
+  has_many :trips
+
 end

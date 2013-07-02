@@ -26,7 +26,7 @@ class TripsController < ApplicationController
   def new
     @trip = Trip.new
     # TODO User might be different if we are an agent
-    @trip.owner = current_user
+    @trip.owner = current_user || anonymous_user
 
     respond_to do |format|
       format.html # new.html.erb
