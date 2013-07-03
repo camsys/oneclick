@@ -72,6 +72,8 @@ module Oneclick
     # For heroku; see http://blog.nathanhumbert.com/2012/01/rails-32-on-heroku-tip.html
     config.assets.initialize_on_precompile = false
 
+    config.assets.precompile += %w{arc.css yata.css}
+
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
   end
