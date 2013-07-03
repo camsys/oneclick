@@ -78,3 +78,5 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 h2. License
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+(minor edit to test github integration)
