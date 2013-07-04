@@ -2,3 +2,18 @@
 
 es:
   home: "Inicio"
+  log_in: 'Iniciar'
+  sign_up: 'Alistarse'
+  forgot_your_password: '¿Olvidó su contraseña?'
+  plan_a_trip: 'Planear un Viaje'
+  identify_places: 'Identificar los Lugares'
+  change_my_settings: 'Cambiar mi Configuración'
+  help_and_support: 'Ayuda y Soporte'
+  broward:
+    logotext: '1-Click para el Condado de Broward'
+  simple_form:
+    labels:
+      defaults:
+        email: 'Email'
+        password: 'Contraseña'
+        remember_me: 'Acuérdate de mí'

@@ -15,7 +15,7 @@ gem 'haml-rails'
 gem 'pg'
 gem 'rolify'
 gem 'simple_form'
-gem 'unicorn'
+gem 'thin'
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :rbx]
@@ -30,7 +30,6 @@ group :development do
   gem 'rb-fsevent', :require=>false
   gem 'rb-inotify', :require=>false
   gem 'sextant'
-  gem 'thin'
 end
 group :development, :test do
   gem 'factory_girl_rails'
