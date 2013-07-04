@@ -2,3 +2,11 @@
 
 es:
   home: "Inicio"
+  login: 'Iniciar'
+  sign_up: 'Alistarse'
+  plan_a_trip: 'Planear un Viaje'
+  identify_places: 'Identificar los Lugares'
+  change_my_settings: 'Cambiar mi Configuración'
+  help_and_support: 'Ayuda y Soporte'
+  broward:
+    logotext: '1-Click para el Condado de Broward'

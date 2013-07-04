@@ -5,9 +5,21 @@
 
 en:
   home: 'en no-brand Home'
+  plan_a_trip: 'Plan a Trip'
+  identify_places: 'Identify Places'
+  change_my_settings: 'Change My Settings'
+  help_and_support: 'Help & Support'
+  login: 'Login'
+  sign_up: 'Sign up'
   arc:
     home: 'ARC 1-Click Home'
     logo: 'arc/arc-logo.png'
+    logotext: ''
   yata:
     home: 'YATA Home'
     logo: 'yata/Rabbittransit_red_logo.png'
+    logotext: ''
+  broward:
+    home: '1-Click Broward Home'
+    logo: ''
+    logotext: '1-Click Broward'
