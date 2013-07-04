@@ -8,5 +8,5 @@ class HomeController < ApplicationController
         {label: t(:help_and_support), target: '#', icon: 'icon-question-sign'},
     ]
   end
-  
+
 end
