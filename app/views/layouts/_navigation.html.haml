@@ -1,27 +1,31 @@
-= link_to "", root_path, :class => 'brand'
--#<!-- .btn-navbar is used as the toggle for collapsed navbar content -->
-%a.btn.btn-navbar{data: { toggle: "collapse",  target: ".nav-collapse"}}
-  %span.icon-bar
-  %span.icon-bar
-  %span.icon-bar
--#<!-- Everything you want hidden at 940px or less, place within here -->
-.nav-collapse.collapse
-  %ul.nav.pull-right
-    - if user_signed_in?
-      %li.dropdown
-        %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}
-          = "Welcome, #{current_user.first_name}"
-          %b.caret
-        %ul.dropdown-menu{role: 'menu'}
-          %li
-            = link_to 'Logout', destroy_user_session_path, :method=>'delete'
-          %li
-            = link_to 'Edit account', edit_user_registration_path
-          - if current_user.has_role? :admin
-            %li
-              = link_to 'Admin', users_path
-    - else
-      %li
-        = link_to 'Login', new_user_session_path
-      %li
-        = link_to 'Sign up', new_user_registration_path
+.navbar.navbar-fixed-top
+  %nav.navbar-inner
+    .container
+      = link_to t(:logotext), root_path, :class => 'brand'
+      .pull-right
+        -#<!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        %a.btn.btn-navbar{data: { toggle: "collapse",  target: ".nav-collapse"}}
+          %span.icon-bar
+          %span.icon-bar
+          %span.icon-bar
+        -#<!-- Everything you want hidden at 940px or less, place within here -->
+        .nav-collapse.collapse
+          %ul.nav
+            - if user_signed_in?
+              %li.dropdown
+                %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}
+                  = "Welcome, #{current_user.first_name}"
+                  %b.caret
+                %ul.dropdown-menu{role: 'menu'}
+                  %li
+                    = link_to 'Logout', destroy_user_session_path, :method=>'delete'
+                  %li
+                    = link_to 'Edit account', edit_user_registration_path
+                  - if current_user.has_role? :admin
+                    %li
+                      = link_to 'Admin', users_path
+            - else
+              %li
+                = link_to t(:log_in), new_user_session_path
+              %li
+                = link_to t(:sign_up), new_user_registration_path
