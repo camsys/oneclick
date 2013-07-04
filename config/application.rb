@@ -73,7 +73,7 @@ module Oneclick
     config.assets.initialize_on_precompile = false
 
     # add top-level brand-specific assets here
-    config.assets.precompile += %w{arc.css yata.css}
+    config.assets.precompile += %w{arc.css broward.css yata.css}
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
