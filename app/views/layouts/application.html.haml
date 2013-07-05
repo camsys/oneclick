@@ -10,12 +10,19 @@
         = csrf_meta_tags
         = yield(:head)
   %body{:class => "#{controller_name} #{action_name}"}
-    = render 'layouts/navigation'
-    #main{:role => "main"}
-      .container
-        .row
+    #wrap
+      = render 'layouts/navigation'
+      #main{:role => "main"}
+        .container
           = render 'layouts/messages'
           = yield
-    %footer
+      #footer
+        .container
+          .well
+            .pull-right
+              = link_using_locale('English', 'en')
+              |
+              = link_using_locale('Español', 'es')
+
       / ! end of .container
     / ! end of #main
