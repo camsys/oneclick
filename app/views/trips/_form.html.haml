@@ -6,8 +6,8 @@
         %ul
           - @trip.errors.full_messages.each do |msg|
             %li= msg
-    = f.input :from, :collection => @trip.owner.places
-    = f.input :to, :collection => @trip.owner.places
+    = f.input :from_place_id, :collection => @trip.owner.places
+    = f.input :to_place_id, :collection => @trip.owner.places
     = f.input :trip_date, wrapper: :append, label: 'Date' do
       = content_tag :div, id: 'trip-date' do
         = f.input_field :trip_date, as: :string, label: false
