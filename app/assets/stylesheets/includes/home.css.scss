@@ -2,25 +2,38 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-@import "bootstrap";
-
-.actionbutton {
-  @extend .btn;
-  cursor: pointer;
-  overflow: auto;
-  margin-top: 10px;
-  min-height: 7.0em;
-  p {
-    margin-top: 0px;
-    text-align: center;
+.home.index {
+  .actionbutton {
+    @extend .btn;
+    cursor: pointer;
+    overflow: auto;
+    margin-top: 10px;
+    min-height: 8.0em;
+    img {
+      float: left;
+      margin-right: 5px;
+    }
+    .span6 {
+      height: 8em;
+    }
+    .actionlabel {
+      display: table;
+      p {
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+      }
+    }
   }
-  img {
-    float: left;
-    margin-right: 5px;
-  }
-}
 
-// TODO This should probably be limited to be within actions
-.thumbnails > li {
-  margin-bottom: auto;
+  .thumbnails > li {
+    margin-bottom: auto;
+  }
+
+  .center {
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
 }

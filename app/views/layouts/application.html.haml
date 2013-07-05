@@ -15,11 +15,8 @@
         .container
           = render 'layouts/navigation'
     #main{:role => "main"}
-      .container-fluid
-        .row-fluid
-          .span12
-            = render 'layouts/messages'
-            = yield
+      = render 'layouts/messages'
+      = yield
     %footer
       / ! end of .container
     / ! end of #main
