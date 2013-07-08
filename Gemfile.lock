@@ -92,6 +92,7 @@ GEM
     formatador (0.2.4)
     gherkin (2.12.0)
       multi_json (~> 1.3)
+    growl (1.0.3)
     guard (1.8.1)
       formatador (>= 0.2.4)
       listen (>= 1.0.0)
@@ -256,6 +257,7 @@ DEPENDENCIES
   email_spec
   factory_girl_rails
   figaro
+  growl
   guard-bundler
   guard-cucumber
   guard-rails
