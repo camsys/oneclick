@@ -3,11 +3,10 @@ Feature: Traveler Home Page
   I want to see the actions I can take listed on the homepage
   so I can know what I can do there
 
-    Scenario: Viewing home page actions
-      Given I exist as a user
-      When I look at the home page
-      Then I see "Plan a trip"
-      And I see "Identify Places"
-      And I see "Change My Settings"
-      And I see "Help & Support"
-
+  Scenario: Viewing home page actions
+    Given I exist as a user
+    When I look at the home page
+    Then I see "Plan a Trip"
+    And I see "Identify Places"
+    And I see "Change My Settings"
+    And I see "Help & Support"
