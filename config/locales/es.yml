@@ -9,6 +9,11 @@ es:
   identify_places: 'Identificar los Lugares'
   change_my_settings: 'Cambiar mi Configuración'
   help_and_support: 'Ayuda y Soporte'
+  spanish: 'Español'
+  arc:
+    logotext: ''
+  yata:
+    logotext: ''
   broward:
     logotext: '1-Click para el Condado de Broward'
   simple_form:

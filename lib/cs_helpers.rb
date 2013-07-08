@@ -10,9 +10,4 @@ module CsHelpers
     User.new
   end
 
-  def link_using_locale link_text, locale
-    
-    link_to link_text, "/#{locale}#{request.fullpath}"
-  end
-
 end
