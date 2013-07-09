@@ -4,11 +4,17 @@ class Trip < ActiveRecord::Base
   belongs_to :owner, foreign_key: 'user_id', class_name: User
   belongs_to :from_place, foreign_key: 'from_place_id', class_name: Place
   belongs_to :to_place, foreign_key: 'to_place_id', class_name: Place
+  has_many :itineraries
 
   before_save :write_trip_datetime
 
   def write_trip_datetime
-    self.trip_datetime = DateTime.strptime(self.trip_date + ' ' + self.trip_time, '%m/%d/%Y %H:%M %p')
+    begin
+      self.trip_datetime = DateTime.strptime(self.trip_date + ' ' + self.trip_time, '%m/%d/%Y %H:%M %p')
+    rescue ArgumentError
+      #TODO:  Handle this argument error.
+      logger.debug('handle this?')
+    end
   end
 
 end
