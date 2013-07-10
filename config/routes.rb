@@ -12,8 +12,9 @@ Oneclick::Application.routes.draw do
     resources :trips
 
     match '/' => 'home#index'
+
+    root :to => "home#index"
   end
 
-  root :to => "home#index"
 
 end

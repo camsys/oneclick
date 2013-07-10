@@ -12,17 +12,15 @@ en:
   log_in: 'Log in'
   sign_up: 'Sign up'
   forgot_your_password: 'Forgot your password?'
+  spanish: 'Español'
   arc:
     home: 'ARC 1-Click Home'
-    logo: 'arc/arc-logo.png'
     logotext: ''
   yata:
     home: 'YATA Home'
-    logo: 'yata/Rabbittransit_red_logo.png'
     logotext: ''
   broward:
     home: '1-Click Broward Home'
-    logo: ''
     logotext: '1-Click Broward'
   simple_form:
     labels:

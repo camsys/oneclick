@@ -1,3 +1,7 @@
+html, body {
+  height: 100%;
+}
+
 .center {
   float: none;
   margin-left: auto;
@@ -11,3 +15,31 @@
 .navbar .brand {
   margin-left: auto;
 }
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height plus any margins */
+  //margin: 0 auto -80px;
+  position: relative;
+}
+
+#main {
+  padding-top: 60px;
+  padding-bottom: 80px;
+}
+
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+  height: 80px; // include any margins, etc
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+}
+
+//#main .container {
+//  padding-top: 60px;
+//}
