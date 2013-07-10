@@ -48,8 +48,7 @@ class TripsController < ApplicationController
       if @trip.save
         format.html { redirect_to @trip, notice: 'Trip was successfully created.' }
         format.json { render json: @trip, status: :created, location: @trip }
-        @trip_planner = TripPlanner.new()
-        @trip_planner.create_itineraries_from_trip(@trip)
+        @trip.create_itineraries
       else
         format.html { render action: "new" }
         format.json { render json: @trip.errors, status: :unprocessable_entity }

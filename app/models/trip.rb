@@ -12,9 +12,22 @@ class Trip < ActiveRecord::Base
     begin
       self.trip_datetime = DateTime.strptime(self.trip_date + ' ' + self.trip_time, '%m/%d/%Y %H:%M %p')
     rescue ArgumentError
-      #TODO:  Handle this argument error.
-      logger.debug('handle this?')
+      #TODO: Handle this error
+      self.trip_datetime = DateTime.now
     end
+  end
+
+  def create_itineraries
+    tp = TripPlanner.new
+    result, response = tp.get_fixed_itineraries([self.to_place.lat, self.to_place.lon],[self.from_place.lat, self.from_place.lon], self.trip_datetime)
+    if result
+      tp.convert_itineraries(response).each do |itinerary|
+        self.itineraries << Itinerary.new(itinerary)
+      end
+    else
+      self.itineraries << Itinerary.new('status'=>response['id'], 'message'=>response['msg'])
+    end
+    self.save
   end
 
 end

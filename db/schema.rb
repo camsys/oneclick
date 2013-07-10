@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130708214142) do
+ActiveRecord::Schema.define(:version => 20130710175540) do
 
   create_table "itineraries", :force => true do |t|
     t.integer  "duration"
@@ -22,9 +22,11 @@ ActiveRecord::Schema.define(:version => 20130708214142) do
     t.integer  "wait_time"
     t.float    "walk_distance"
     t.integer  "transfers"
-    t.string   "legs"
+    t.text     "legs"
     t.decimal  "cost",          :precision => 10, :scale => 2
     t.integer  "trip_id"
+    t.integer  "status"
+    t.text     "message"
   end
 
   create_table "places", :force => true do |t|
