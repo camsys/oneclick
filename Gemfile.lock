@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/constantorbit/bootstrap-combobox-rails.git
+  revision: 1197da66006e3326d624c79cb8f6db0da49a8567
+  specs:
+    bootstrap-combobox-rails (0.0.2)
+      railties (~> 3.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -92,6 +99,7 @@ GEM
     formatador (0.2.4)
     gherkin (2.12.0)
       multi_json (~> 1.3)
+    growl (1.0.3)
     guard (1.8.1)
       formatador (>= 0.2.4)
       listen (>= 1.0.0)
@@ -246,6 +254,7 @@ PLATFORMS
 DEPENDENCIES
   better_errors
   binding_of_caller
+  bootstrap-combobox-rails (= 0.0.2)!
   bootstrap-sass
   cancan
   capybara
@@ -256,6 +265,7 @@ DEPENDENCIES
   email_spec
   factory_girl_rails
   figaro
+  growl
   guard-bundler
   guard-cucumber
   guard-rails

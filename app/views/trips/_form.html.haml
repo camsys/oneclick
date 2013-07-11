@@ -6,17 +6,23 @@
         %ul
           - @trip.errors.full_messages.each do |msg|
             %li= msg
-    = f.input :from_place_id, :collection => @trip.owner.places
-    = f.input :to_place_id, :collection => @trip.owner.places
+    - if user_signed_in?
+      -# TODO span4 breaks the combobox
+      -# TODO placeholder does not work with combobox
+      = f.input :from_place_id, :collection => @trip.owner.places, input_html: {class: 'combobox'}, include: :blank, placeholder: 'Select or enter address'
+      = f.input :to_place_id, :collection => @trip.owner.places, input_html: {class: 'combobox'}, include: :blank
+    - else
+      = f.input :from_place, placeholder: 'Enter address'
+      = f.input :to_place, placeholder: 'Enter address'
     = f.input :trip_date, wrapper: :append, label: 'Date' do
       = content_tag :div, id: 'trip-date' do
-        = f.input_field :trip_date, as: :string, label: false
+        = f.input_field :trip_date, as: :string, label: false, size: ""
         = content_tag :span, class: 'add-on' do
           = content_tag :i, '', class: 'icon-calendar'
-    = f.input :arrive_depart, collection: ['Depart at', 'Arrive by'], label: false, include_blank: false
+    = f.input :arrive_depart, collection: ['Depart at', 'Arrive by'], label: false, include_blank: false, input_html: {class: ''}
     = f.input :trip_time, wrapper: :append, label: 'Time' do
       = content_tag :div, id: 'trip-time' do
-        = f.input_field :trip_time, as: :string, label: false
+        = f.input_field :trip_time, as: :string, label: false, size: ""
         = content_tag :span, class: 'add-on' do
           = content_tag :i, '', class: 'icon-time'
 
@@ -35,4 +41,6 @@
     .on("changeTime", function(e) {
       $('#trip_trip_time').val($('#trip-time').data('ui-timepicker-value'));
     });
-
+   $(document).ready(function(){
+      $('.combobox').combobox({force_match: false});
+    });
