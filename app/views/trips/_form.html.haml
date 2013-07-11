@@ -1,11 +1,5 @@
 .well
   = simple_form_for(@trip, :html => {:class => 'form-horizontal' }) do |f|
-    - if @trip.errors.any?
-      #error_explanation
-        %h2= "#{pluralize(@trip.errors.count, "error")} prohibited this trip from being saved:"
-        %ul
-          - @trip.errors.full_messages.each do |msg|
-            %li= msg
     = f.input :from_place_id, :collection => @trip.owner.places
     = f.input :to_place_id, :collection => @trip.owner.places
     = f.input :trip_date, wrapper: :append, label: 'Date' do

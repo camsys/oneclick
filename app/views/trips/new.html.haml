@@ -6,6 +6,13 @@
 %h1
   %i.icon-bus-sign
   Plan a Trip
+  %h4
+    -if @trip.errors.any?
+      %div{:class => "alert alert-error"}
+        %a.close{"data-dismiss" => "alert"} ×
+
+        =content_tag :div do
+          #{pluralize(@trip.errors.count, "error")} prohibited this trip from being saved.
 
 = render 'form'
 

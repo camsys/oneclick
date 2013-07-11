@@ -43,6 +43,7 @@ class TripsController < ApplicationController
   # POST /trips.json
   def create
     @trip = Trip.new(params[:trip])
+    @trip.owner = current_user || anonymous_user
 
     respond_to do |format|
       if @trip.save
