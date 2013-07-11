@@ -14,7 +14,7 @@ class TripPlanner
 
     #TODO:  Move base_url for OpenTripPlanner to a global config file.
     base_url = "http://arc-otp-demo.camsys-apps.com"
-    url_options = "/opentripplannerBROKEN-api-webapp/ws/plan?"
+    url_options = "/opentripplanner-api-webapp/ws/plan?"
     url_options += "arriveBy=" + arriveBy + "&time=" + time
     url_options += "&mode=" + mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s

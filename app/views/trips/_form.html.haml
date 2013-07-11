@@ -1,11 +1,5 @@
 .well
   = simple_form_for(@trip, :html => {:class => 'form-horizontal' }) do |f|
-    - if @trip.errors.any?
-      #error_explanation
-        %h2= "#{pluralize(@trip.errors.count, "error")} prohibited this trip from being saved:"
-        %ul
-          - @trip.errors.full_messages.each do |msg|
-            %li= msg
     - if user_signed_in?
       -# TODO span4 breaks the combobox
       -# TODO placeholder does not work with combobox
