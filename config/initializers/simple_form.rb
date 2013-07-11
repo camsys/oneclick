@@ -139,4 +139,18 @@ SimpleForm.setup do |config|
 
   # Cache SimpleForm inputs discovery
   # config.cache_discovery = !Rails.env.development?
+
+  # dwh added
+  config.wrappers :cs_append do |b|
+    b.use :html5
+    b.use :placeholder
+    b.use :label
+    b.wrapper :append, tag: 'div', class: 'controls' do |input|
+      input.wrapper tag: 'div', class: 'input-append span4' do |append|
+        append.use :input
+      end
+      input.use :hint,  wrap_with: { tag: 'span', class: 'help-block' }
+      input.use :error, wrap_with: { tag: 'span', class: 'help-inline' }
+    end
+  end
 end
