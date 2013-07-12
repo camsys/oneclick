@@ -1,10 +1,3 @@
-GIT
-  remote: https://github.com/constantorbit/bootstrap-combobox-rails.git
-  revision: a08faad835f7a0d96b7e58e5bc0a31ca6526bf2a
-  specs:
-    bootstrap-combobox-rails (0.0.2)
-      railties (~> 3.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -43,6 +36,8 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap-combobox-rails (0.0.2)
+      railties (~> 3.1)
     bootstrap-sass (2.3.2.0)
       sass (~> 3.2)
     builder (3.0.4)
@@ -256,7 +251,7 @@ PLATFORMS
 DEPENDENCIES
   better_errors
   binding_of_caller
-  bootstrap-combobox-rails (= 0.0.2)!
+  bootstrap-combobox-rails (= 0.0.2)
   bootstrap-sass
   cancan
   capybara
