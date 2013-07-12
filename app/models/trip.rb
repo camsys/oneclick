@@ -1,5 +1,6 @@
 class Trip < ActiveRecord::Base
   attr_accessor :trip_date, :trip_time
+  validates :from_place_id, :to_place_id, :presence => {:message => 'This location cannot be blank.'}
   validate :validate_date_and_time
   attr_accessible :name, :owner, :from_place_id, :to_place_id, :trip_datetime, :trip_date, :trip_time, :arrive_depart
   belongs_to :owner, foreign_key: 'user_id', class_name: User
