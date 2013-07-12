@@ -6,7 +6,7 @@
       %meta{:content => content_for?(:description) ? yield(:description) : "Oneclick", :name => "description"}
         = stylesheet_link_tag "application", :media => "all"
         = stylesheet_link_tag brand, :media => "all"
-        = javascript_include_tag "application"
+        = javascript_include_tag "application" # TODO This should go in footer
         = csrf_meta_tags
         = yield(:head)
   %body{:class => "#{controller_name} #{action_name}"}
@@ -19,10 +19,13 @@
       #footer
         .container
           .well
+            - if Rails.env.development?
+              .visible-phone.pull-left Phone&nbsp;
+              .visible-table.pull-left Tablet&nbsp;
+              .visible-desktop.pull-left Desktop
             .pull-right
               = link_using_locale('English', 'en')
               |
               = link_using_locale('Español', 'es')
-
       / ! end of .container
     / ! end of #main
