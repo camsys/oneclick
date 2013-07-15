@@ -10,4 +10,9 @@ FactoryGirl.define do
     lat 34.89415
     lon -84.9463115
   end
+
+  factory :place3, class: Place do
+    nongeocoded_address "100 Cambridge Park Drive, Cambridge, MA"
+  end
+
 end
