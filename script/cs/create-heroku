@@ -1,0 +1,13 @@
+#!/usr/bin/env  rvm 1.9.3 do ruby
+puts ARGV.inspect
+raise "args: brand environment (e.g. arc int)" unless ARGV.size > 1
+brand = ARGV[0]
+env = ARGV[1]
+brandenv = "#{brand}-#{env}"
+puts `heroku create oneclick-#{brandenv} --remote oneclick-#{brandenv}`
+puts `heroku config:set BRAND=#{brand} --app oneclick-#{brandenv}`
+puts `heroku domains:add oneclick-#{brandenv}.camsys-apps.com --app oneclick-#{brandenv}`
+puts `git push oneclick-#{brandenv} develop:master`
+puts `heroku run rake db:migrate --app oneclick-#{brandenv}`
+
+puts "heroku create complete: don't forget to run any other tasks (e.g. seed data)."
