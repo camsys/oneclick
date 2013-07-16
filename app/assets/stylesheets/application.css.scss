@@ -9,6 +9,7 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_tree ./includes
+ *= require bootstrap-combobox
 */
 
 @import "font-awesome";
@@ -16,4 +17,3 @@
 
 @import "base";
 
-@import "bootstrap-combobox.css";
