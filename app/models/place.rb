@@ -5,6 +5,9 @@ class Place < ActiveRecord::Base
 
   def geocode
     result = Geocoder.search(self.nongeocoded_address).as_json
+    if result.length == 0
+      return nil
+    end
     self.lat = result[0]['data']['geometry']['location']['lat']
     self.lon = result[0]['data']['geometry']['location']['lng']
     self.address = result[0]['data']['formatted_address']
