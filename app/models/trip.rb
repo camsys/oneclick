@@ -46,7 +46,7 @@ class Trip < ActiveRecord::Base
 
   def create_itineraries
     tp = TripPlanner.new
-    result, response = tp.get_fixed_itineraries([self.to_place.lat, self.to_place.lon],[self.from_place.lat, self.from_place.lon], self.trip_datetime)
+    result, response = tp.get_fixed_itineraries([self.to_place.lat, self.to_place.lon],[self.from_place.lat, self.from_place.lon], self.trip_datetime.localtime)
     if result
       tp.convert_itineraries(response).each do |itinerary|
         self.itineraries << Itinerary.new(itinerary)

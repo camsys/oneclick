@@ -1,5 +1,46 @@
 %p#notice= notice
 
+.row
+  .span12.center
+    -#.container-fluid
+    - @trip.itineraries.each_slice(3) do |itineraries|
+      .row-fluid
+        .span12
+          %ul.thumbnails
+            - itineraries.each do |itinerary|
+              %li.span4
+                -#.container-fluid
+                .row-fluid
+                  %a.span12.thumbnail.actionbutton{alt: "Transit Trip", title: "Transit Trip", href: '/501.html'}
+                    .row-fluid
+                      %p.text-center{style: "font-weight:bold; font-size: 1.5em;"} Transit
+                    .row-fluid
+                      .span4
+                        -#= image_tag action[:img], alt: action[:label]
+                        %i.center.icon-4x{class: "icon-bus-sign", style: "width: 100%; margin-top:0px; font-size: 6.0em;", alt: "Mode"}
+                      .span8
+                        .row-fluid
+                          .span4
+                            %p= 'Duration'
+                          .span8
+                            %strong= itinerary.duration_to_words
+                        .row-fluid
+                          .span4
+                            %p= 'Depart'
+                          .span8.departure_time
+                            %strong= itinerary.start_time.localtime.strftime('%I:%M %p')
+                        .row-fluid
+                          .span4.arrival_label
+                            %p= 'Arrive'
+                          .span8.arrival_time
+                            %strong= itinerary.end_time.localtime.strftime('%I:%M %p')
+                    .row-fluid
+                      -YAML.load(itinerary.legs).each_slice(6) do |legs|
+                        .row-fluid
+                          - legs.each do |leg|
+                            .span2
+                              %p.text-center{class: itinerary.get_mode_icon(leg['mode']), style:'color:#888888; font-size: 2.5em; margin-bottom:0px; margin-above:0px;'}
+                              %p.text-center{style: 'font-weight:bold; font-size: 1em; color:#888888;'}= leg['route']
 
 = link_to 'Edit', edit_trip_path(@trip)
 \|
