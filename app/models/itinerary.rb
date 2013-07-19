@@ -7,7 +7,7 @@ class Itinerary < ActiveRecord::Base
 
   def get_mode_icon(mode)
     @icon_dictionary = {'WALK' => 'travelcon-walk', 'TRAM' => 'travelcon-subway', 'SUBWAY' => 'travelcon-subway', 'RAIL' => 'travelcon-train', 'BUS' => 'travelcon-bus', 'FERRY' => 'travelcon-boat'}
-    @icon_dictionary.default = 'icon-bus-sign'
+    @icon_dictionary.default = 'travelcon-bus'
     @icon_dictionary[mode]
   end
 
