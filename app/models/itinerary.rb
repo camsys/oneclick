@@ -11,12 +11,12 @@ class Itinerary < ActiveRecord::Base
     @icon_dictionary[mode]
   end
 
-  def duration_to_words
-    if !self.duration
+  def duration_to_words(time_in_seconds)
+    if !time_in_seconds
       return 'n/a'
     end
-    hours = self.duration/3600
-    minutes = (self.duration%3600)/60
+    hours = time_in_seconds/3600
+    minutes = (time_in_seconds%3600)/60
 
     time_string = ''
     if hours > 0

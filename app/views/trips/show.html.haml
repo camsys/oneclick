@@ -17,13 +17,18 @@
                     .row-fluid
                       .span4
                         -#= image_tag action[:img], alt: action[:label]
-                        %i.center.icon-4x{class: "icon-bus-sign", style: "width: 100%; margin-top:0px; font-size: 6.0em;", alt: "Mode"}
+                        %i.center.icon-4x{class: "icon-bus-sign", style: "width: 100%; margin-top:10px; font-size: 6.0em;", alt: "Mode"}
                       .span8
                         .row-fluid
                           .span4
                             %p= 'Duration'
                           .span8
-                            %strong= itinerary.duration_to_words
+                            %strong= itinerary.duration_to_words(itinerary.duration)
+                        .row-fluid
+                          .span4.arrival_label
+                            %p= 'Walking'
+                          .span8.arrival_time
+                            %strong= itinerary.duration_to_words(itinerary.walk_time)
                         .row-fluid
                           .span4
                             %p= 'Depart'
