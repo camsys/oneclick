@@ -3,7 +3,7 @@
 .row
   .span12.center
     -#.container-fluid
-    - @trip.itineraries.each_slice(3) do |itineraries|
+    - @trip.itineraries.where(status: 200).each_slice(3) do |itineraries|
       .row-fluid
         .span12
           %ul.thumbnails

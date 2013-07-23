@@ -1,6 +1,8 @@
 class Trip < ActiveRecord::Base
   attr_accessor :trip_date, :trip_time
-  validates :from_place_id, :to_place_id, :presence => {:message => 'This location cannot be blank.'}
+
+  before_validation :set_places
+  validates :from_place_id, :to_place_id, :presence => {:message => 'Invalid location.'}
   validate :validate_date_and_time
   attr_accessible :name, :owner, :from_place_id, :to_place_id, :trip_datetime, :trip_date, :trip_time, :arrive_depart
   belongs_to :owner, foreign_key: 'user_id', class_name: User
@@ -54,7 +56,33 @@ class Trip < ActiveRecord::Base
     else
       self.itineraries << Itinerary.new('status'=>response['id'], 'message'=>response['msg'])
     end
-    self.save
   end
 
+  def set_places
+    #TODO:  These values need to come from the combobox field
+    to_place_id = 5
+    from_place_id = 5
+    nongeocoded_address = "th dSsdtreet, Atasdflanta, aGfA"
+
+    if to_place_id #Here is where we test that an ID is present.
+      self.to_place_id = to_place_id
+    else
+      to_place = Place.new('nongeocoded_address'=>nongeocoded_address)
+      to_place.name = nongeocoded_address
+      to_place.owner = self.owner
+      to_place.save()
+      self.to_place_id = to_place.id
+    end
+
+    if from_place_id #Here is where we test that an ID is present.
+      self.from_place_id = from_place_id
+    else
+      from_place = Place.new('nongeocoded_address'=>nongeocoded_address)
+      from_place.name = nongeocoded_address
+      from_place.owner = self.owner
+      from_place.save()
+      self.from_place_id = from_place.id
+    end
+
+  end
 end
