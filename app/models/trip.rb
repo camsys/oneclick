@@ -60,9 +60,9 @@ class Trip < ActiveRecord::Base
 
   def set_places
     #TODO:  These values need to come from the combobox field
-    to_place_id = 5
-    from_place_id = 5
-    nongeocoded_address = "th dSsdtreet, Atasdflanta, aGfA"
+    to_place_id = 1
+    from_place_id = 2
+    nongeocoded_address = "100 14th Street, Atlanta, GA"
 
     if to_place_id #Here is where we test that an ID is present.
       self.to_place_id = to_place_id
