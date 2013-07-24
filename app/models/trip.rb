@@ -9,6 +9,11 @@ class Trip < ActiveRecord::Base
   belongs_to :from_place, foreign_key: 'from_place_id', class_name: Place
   belongs_to :to_place, foreign_key: 'to_place_id', class_name: Place
   has_many :itineraries
+  has_many :valid_itineraries, conditions: 'status=200', class_name: 'Itinerary'
+
+  def has_valid_itineraries?
+    not valid_itineraries.empty?
+  end
 
   def validate_date_and_time
     good_date = true
