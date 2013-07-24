@@ -47,9 +47,19 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       if @trip.save
-        format.html { redirect_to @trip, notice: 'Trip was successfully created.' }
-        format.json { render json: @trip, status: :created, location: @trip }
         @trip.create_itineraries
+        if @trip.has_valid_itineraries?
+          flash[:notice] = 'Trip was successfully created.'
+        else
+          message = "Trip created, but no valid trip options could be found:"
+          details = @trip.itineraries.collect do |i|
+            "<li>%s (%s)</li>" % [i.message, i.status]
+          end
+          message = message + '<ol>' + details.join + '</ol>'
+          flash[:error] = message.html_safe
+        end
+        format.html { redirect_to @trip }
+        format.json { render json: @trip, status: :created, location: @trip }
       else
         format.html { render action: "new" }
         format.json { render json: @trip.errors, status: :unprocessable_entity }
