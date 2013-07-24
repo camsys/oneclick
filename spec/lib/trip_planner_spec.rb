@@ -14,7 +14,7 @@ describe TripPlanner do
       itinerary.should_not respond_to(:save)
       itinerary['start_time'].should eq Time.at(1373393976000/1000)
       count += 1
-      itinerary['duration'].should eq count
+      itinerary['duration'].should eq count.to_f/1000
     end
     count.should eq 2
   end
