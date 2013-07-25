@@ -2,7 +2,7 @@ class Trip < ActiveRecord::Base
   attr_accessor :trip_date, :trip_time
 
   before_validation :set_places
-  validates :from_place_id, :to_place_id, :presence => {:message => t(:invalid_location)}
+  validates :from_place_id, :to_place_id, :presence => {:message => I18n.translate(:invalid_location)}
   validate :validate_date_and_time
   attr_accessible :name, :owner, :from_place_id, :to_place_id, :trip_datetime, :trip_date, :trip_time, :arrive_depart
   belongs_to :owner, foreign_key: 'user_id', class_name: User
@@ -21,23 +21,23 @@ class Trip < ActiveRecord::Base
     begin
       @date = Date.strptime(self.trip_date, "%m/%d/%Y ")
     rescue
-      errors.add(:trip_date, t(:date_must_be))
+      errors.add(:trip_date, I18n.translate(:date_must_be))
       good_date = false
     end
 
     if good_date && @date < Date.today
-      errors.add(:trip_date, t(:trips_cannot_be_entered_for_days))
+      errors.add(:trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
       good_date = false
     end
 
     if /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9] [AaPp][Mm]$/.match(self.trip_time) == nil
-      errors.add(:trip_time, t(:time_must_be))
+      errors.add(:trip_time, I18n.translate(:time_must_be))
       good_time = false
     end
 
     if good_date && good_time
       if !write_trip_datetime
-        errors.add(:trip_date, t(:date_must_be))
+        errors.add(:trip_date, I18n.translate(:date_must_be))
       end
     end
   end
