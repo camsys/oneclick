@@ -16,16 +16,17 @@ class Itinerary < ActiveRecord::Base
     end
     time_in_seconds = time_in_seconds.to_i
     hours = time_in_seconds/3600
-    minutes = time_in_seconds - (hours * 3600)
+    minutes = (time_in_seconds - (hours * 3600))/60
 
     time_string = ''
     if hours > 0
       time_string << I18n.translate(:hour, count: hours)  + ' '
-
     end
+
     if minutes > 0 || hours > 0
       time_string << I18n.translate(:minute, count: minutes)
     end
+
     if time_in_seconds < 60
       time_string = I18n.translate(:less_than_one_minute)
     end
