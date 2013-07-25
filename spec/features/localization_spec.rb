@@ -7,7 +7,6 @@ describe HomeController do
     page.should_not have_link("English", href: "/en")
     page.should have_text("English")
     page.should have_link(I18n.t(:spanish), href: "/es")
-    #page.should have_link("Español", href: "/es/")
   end
 
   it "should switch to spanish when selection link is clicked" do

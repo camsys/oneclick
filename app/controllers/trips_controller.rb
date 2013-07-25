@@ -1,14 +1,4 @@
 class TripsController < ApplicationController
-  # GET /trips
-  # GET /trips.json
-  def index
-    @trips = Trip.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @trips }
-    end
-  end
 
   # GET /trips/1
   # GET /trips/1.json
@@ -34,11 +24,6 @@ class TripsController < ApplicationController
     end
   end
 
-  # GET /trips/1/edit
-  def edit
-    @trip = Trip.find(params[:id])
-  end
-
   # POST /trips
   # POST /trips.json
   def create
@@ -47,9 +32,19 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       if @trip.save
-        format.html { redirect_to @trip, notice: 'Trip was successfully created.' }
-        format.json { render json: @trip, status: :created, location: @trip }
         @trip.create_itineraries
+        if @trip.has_valid_itineraries?
+          flash[:notice] = t(:trip_was_successfully_created)
+        else
+          message = t(:trip_created_no_valid_options)
+          details = @trip.itineraries.collect do |i|
+            "<li>%s (%s)</li>" % [i.message, i.status]
+          end
+          message = message + '<ol>' + details.join + '</ol>'
+          flash[:error] = message.html_safe
+        end
+        format.html { redirect_to @trip }
+        format.json { render json: @trip, status: :created, location: @trip }
       else
         format.html { render action: "new" }
         format.json { render json: @trip.errors, status: :unprocessable_entity }
@@ -57,35 +52,4 @@ class TripsController < ApplicationController
     end
   end
 
-  # PUT /trips/1
-  # PUT /trips/1.json
-  def update
-    @trip = Trip.find(params[:id])
-
-    respond_to do |format|
-      if @trip.update_attributes(params[:trip])
-        format.html { redirect_to @trip, notice: 'Trip was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @trip.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /trips/1
-  # DELETE /trips/1.json
-  def destroy
-    @trip = Trip.find(params[:id])
-    @trip.destroy
-
-    respond_to do |format|
-      format.html { redirect_to trips_url }
-      format.json { head :no_content }
-    end
-  end
-
-  def page_subtitle
-    @page_subtitle = '  //  Trip Planner'
-  end
 end

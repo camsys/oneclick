@@ -3,7 +3,7 @@
 FactoryGirl.define do
   factory :trip do
     trip_time "2:59 pm"
-    trip_date "07/23/2013"
+    trip_date (Date.today + 2).strftime('%m/%d/%Y')
     association :from_place, factory: :place1
     association :to_place, factory: :place2
 

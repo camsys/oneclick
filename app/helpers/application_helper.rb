@@ -16,11 +16,14 @@ module ApplicationHelper
 
   def t(key, options={})
     branded_key = [brand, key].join('.')
-    Rails.logger.info "key: #{key} branded_key: #{branded_key}"
     begin
       translate(branded_key, options.merge({raise: true}))
     rescue Exception => e
-      translate(key, options)
+      begin
+        translate(key, options.merge({raise: true}))
+      rescue Exception => e
+        Rails.logger.info "key: #{key} not found: #{e.inspect}"
+      end    
     end
   end
 
@@ -34,8 +37,8 @@ module ApplicationHelper
     parts = '' if parts=='/'
     newpath = "/#{locale}#{parts}"
     if (newpath == request.fullpath) or
-        (newpath == "/#{I18n.locale}#{request.fullpath}") or
-        (newpath == "/#{I18n.locale}")
+      (newpath == "/#{I18n.locale}#{request.fullpath}") or
+      (newpath == "/#{I18n.locale}")
       link_text
     else
       link_to link_text, newpath
