@@ -28,15 +28,39 @@ en:
   from: 'From'
   to: 'To'
   correct_errors_to_create_a_trip: 'Please correct the errors below to create a trip.'
+  transit_trip: 'Transit Trip'
+  mode: 'Mode'
+  duration: 'Duration'
+  walking: 'Walking'
+  depart: 'Depart'
+  arrive: 'Arrive'
+  trip_was_successfully_created: 'Trip was successfully created.'
+  trip_created_no_valid_options: "Trip created, but no valid trip options could be found:"
+  hour: {
+    one: '%{count} hour',
+    other: '%{count} hours',
+  }
+  minute: {
+    one: '%{count} minute',
+    other: '%{count} minutes',
+  }
+  less_than_one_minute: 'less than 1 minute'
+  invalid_address: "Invalid address."
   arc:
     home: 'ARC 1-Click Home'
     logotext: ''
+    site_title: 'ARC 1-Click'
+    site_description: 'ARC 1-Click Application'
   yata:
     home: 'YATA Home'
     logotext: ''
+    site_title: 'YATA 1-Click'
+    site_description: 'YATA 1-Click Application'
   broward:
     home: '1-Click Broward Home'
     logotext: '1-Click Broward'
+    site_title: 'Broward 1-Click'
+    site_description: 'Broward 1-Click Application'
   simple_form:
     labels:
       defaults:

@@ -9,32 +9,32 @@
               %li.span4
                 -#.container-fluid
                 .row-fluid
-                  %a.span12.thumbnail.actionbutton{alt: "Transit Trip", title: "Transit Trip", href: '/501.html'}
+                  %a.span12.thumbnail.actionbutton{alt: t(:transit_trip), title: t(:transit_trip), href: '/501.html'}
                     .row-fluid
                       %p.text-center{style: "font-weight:bold; font-size: 1.5em;"} Transit
                     .row-fluid
                       .span4
                         -#= image_tag action[:img], alt: action[:label]
-                        %i.center.icon-4x{class: "icon-bus-sign", style: "width: 100%; margin-top:10px; font-size: 6.0em;", alt: "Mode"}
+                        %i.center.icon-4x{class: "icon-bus-sign", style: "width: 100%; margin-top:10px; font-size: 6.0em;", alt: t(:mode)}
                       .span8
                         .row-fluid
                           .span4
-                            %p= 'Duration'
+                            %p= t(:duration)
                           .span8
                             %strong= itinerary.duration_to_words(itinerary.duration)
                         .row-fluid
                           .span4.arrival_label
-                            %p= 'Walking'
+                            %p= t(:walking)
                           .span8.arrival_time
                             %strong= itinerary.duration_to_words(itinerary.walk_time)
                         .row-fluid
                           .span4
-                            %p= 'Depart'
+                            %p= t(:depart)
                           .span8.departure_time
                             %strong= itinerary.start_time.localtime.strftime('%I:%M %p')
                         .row-fluid
                           .span4.arrival_label
-                            %p= 'Arrive'
+                            %p= t(:arrive)
                           .span8.arrival_time
                             %strong= itinerary.end_time.localtime.strftime('%I:%M %p')
                     .row-fluid

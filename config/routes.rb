@@ -9,7 +9,7 @@ Oneclick::Application.routes.draw do
     devise_for :users
 
     resources :users
-    resources :trips
+    resources :trips, only: [:new, :create, :show]
 
     match '/' => 'home#index'
 

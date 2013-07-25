@@ -25,12 +25,36 @@ es:
   from: '[es]From[/es]'
   to: '[es]To[/es]'  
   correct_errors_to_create_a_trip: '[es]Please correct the errors below to create a trip.[/es]'
+  transit_trip: '[es]Transit Trip[/es]'
+  mode: '[es]Mode[/es]'
+  duration: '[es]Duration[/es]'
+  walking: '[es]Walking[/es]'
+  depart: '[es]Depart[/es]'
+  arrive: '[es]Arrive[/es]'
+  trip_was_successfully_created: '[es]Trip was successfully created.[/es]'
+  trip_created_no_valid_options: "[es]Trip created, but no valid trip options could be found:[/es]"
+  hour: {
+    one: '%{count} hora',
+    other: '%{count} horas',
+  }
+  minute: {
+    one: '%{count} minuto',
+    other: '%{count} minutos',
+  }
+  less_than_one_minute: '[es]less than 1 minute[/es]'
+  invalid_address: "[es]Invalid address.[/es]"
   arc:
     logotext: ''
+    site_title: '[es]ARC 1-Click[/es]'
+    site_description: '[es]ARC 1-Click Application[/es]'
   yata:
     logotext: ''
+    site_title: '[es]YATA 1-Click[/es]'
+    site_description: '[es]YATA 1-Click Application[/es]'
   broward:
     logotext: '1-Click para el Condado de Broward'
+    site_title: '[es]Broward 1-Click[/es]'
+    site_description: '[es]Broward 1-Click Application[/es]'
   simple_form:
     labels:
       defaults:
