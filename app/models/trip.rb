@@ -2,14 +2,18 @@ class Trip < ActiveRecord::Base
   attr_accessor :trip_date, :trip_time
 
   before_validation :set_places
-  validates :from_place_id, :to_place_id, :presence => {:message => I18n.translate(:invalid_location)}
+  # validates :from_place_id, :to_place_id, :presence => {:message => I18n.translate(:invalid_location)}
   validate :validate_date_and_time
-  attr_accessible :name, :owner, :from_place_id, :to_place_id, :trip_datetime, :trip_date, :trip_time, :arrive_depart
+  attr_accessible :name, :owner, :trip_datetime, :trip_date, :trip_time, :arrive_depart, :from_place_attributes
   belongs_to :owner, foreign_key: 'user_id', class_name: User
-  belongs_to :from_place, foreign_key: 'from_place_id', class_name: Place
-  belongs_to :to_place, foreign_key: 'to_place_id', class_name: Place
+  # has_one :from_place, foreign_key: 'from_place_id', class_name: TripPlace
+  # has_one :to_place, foreign_key: 'to_place_id', class_name: TripPlace
+  has_one :from_place, class_name: TripPlace, foreign_key: :trip_id
+  has_one :to_place, class_name: TripPlace, foreign_key: :trip_id
   has_many :itineraries
   has_many :valid_itineraries, conditions: 'status=200', class_name: 'Itinerary'
+
+  accepts_nested_attributes_for :from_place, :to_place
 
   def has_valid_itineraries?
     not valid_itineraries.empty?
