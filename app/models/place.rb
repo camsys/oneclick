@@ -15,6 +15,10 @@ class Place < ActiveRecord::Base
     self
   end
 
+  def geocode!
+    self.geocode
+  end
+
   def geocoded?
     if !(self.lat && self.lon)
       # TODO Check this, I think it adds new errors every time it gets called.
