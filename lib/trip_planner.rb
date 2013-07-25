@@ -44,12 +44,12 @@ class TripPlanner
 
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
-      trip_itinerary['duration'] = itinerary['duration']/1000
+      trip_itinerary['duration'] = itinerary['duration'].to_f/1000
       trip_itinerary['walk_time'] = itinerary['walkTime']
       trip_itinerary['transit_time'] = itinerary['transitTime']
       trip_itinerary['wait_time'] = itinerary['waitingTime']
-      trip_itinerary['start_time'] = Time.at((itinerary['startTime'])/1000)
-      trip_itinerary['end_time'] = Time.at((itinerary['endTime'])/1000)
+      trip_itinerary['start_time'] = Time.at((itinerary['startTime']).to_f/1000)
+      trip_itinerary['end_time'] = Time.at((itinerary['endTime']).to_f/1000)
       trip_itinerary['transfers'] = itinerary['transfers']
       trip_itinerary['walk_distance'] = itinerary['walkDistance']
       trip_itinerary['legs'] = itinerary['legs']

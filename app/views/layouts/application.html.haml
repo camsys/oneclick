@@ -2,8 +2,8 @@
 %html
   %head
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
-      %title= content_for?(:title) ? yield(:title) : "Oneclick"
-      %meta{:content => content_for?(:description) ? yield(:description) : "Oneclick", :name => "description"}
+      %title= content_for?(:title) ? yield(:title) : t(:site_title)
+      %meta{:content => content_for?(:description) ? yield(:description) : t(:site_description), :name => "description"}
         = stylesheet_link_tag "application", :media => "all"
         = stylesheet_link_tag brand, :media => "all"
         = javascript_include_tag "application" # TODO This should go in footer
@@ -24,8 +24,9 @@
               .visible-table.pull-left Tablet&nbsp;
               .visible-desktop.pull-left Desktop
             .pull-right
+              -# Don't localize next 2 strings
               = link_using_locale('English', 'en')
               |
-              = link_using_locale('Español', 'es')
+              = link_using_locale('En Español', 'es')
       / ! end of .container
     / ! end of #main

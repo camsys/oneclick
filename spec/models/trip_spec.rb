@@ -21,4 +21,13 @@ describe Trip do
     trip.itineraries.first.message.should eq 'This is a test error message.'
     trip.itineraries.count.should eq 1
   end
+
+  it "should respond to has_valid_itineraries correctly" do
+    trip = FactoryGirl.create(:trip)
+    mock_error = {'id'=>400,'msg'=>'This is a test error message.'}
+    trip_planner = double(TripPlanner, get_fixed_itineraries: [false, mock_error])
+    TripPlanner.stub(:new).and_return(trip_planner)
+    trip.create_itineraries
+    trip.should_not have_valid_itineraries
+  end
 end

@@ -1,18 +1,10 @@
--# TODO These should go in header/footer; and also need to be in edit mode
--# Don't need these, they get compiled into application.js
--#= javascript_include_tag 'tadaaapickr.pack.min'
--#= javascript_include_tag 'jquery.timepicker.min'
-
 %h1
   %i.icon-bus-sign
-  Plan a Trip
+  = t(:plan_a_trip)
   %h4
     -if @trip.errors.any?
       %div{:class => "alert alert-error"}
         %a.close{"data-dismiss" => "alert"} ×
-
-        =content_tag :div do
-          Please correct the errors below to create a trip.
-
+        %div= t(:correct_errors_to_create_a_trip)
 = render 'form'
 
