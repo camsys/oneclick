@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130710175540) do
+ActiveRecord::Schema.define(:version => 20130726155019) do
 
   create_table "itineraries", :force => true do |t|
     t.integer  "duration"
@@ -29,20 +29,6 @@ ActiveRecord::Schema.define(:version => 20130710175540) do
     t.text     "message"
   end
 
-  create_table "places", :force => true do |t|
-    t.string   "name"
-    t.string   "address"
-    t.string   "address2"
-    t.string   "city"
-    t.string   "state"
-    t.string   "zip"
-    t.float    "lat"
-    t.float    "lon"
-    t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "roles", :force => true do |t|
     t.string   "name"
     t.integer  "resource_id"
@@ -54,6 +40,22 @@ ActiveRecord::Schema.define(:version => 20130710175540) do
   add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
+  create_table "trip_places", :force => true do |t|
+    t.string   "name"
+    t.string   "address"
+    t.string   "address2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.float    "lat"
+    t.float    "lon"
+    t.integer  "trip_id"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.integer  "sequence"
+    t.string   "nongeocoded_address"
+  end
+
   create_table "trips", :force => true do |t|
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
@@ -63,6 +65,21 @@ ActiveRecord::Schema.define(:version => 20130710175540) do
     t.integer  "to_place_id"
     t.datetime "trip_datetime"
     t.string   "arrive_depart"
+  end
+
+  create_table "user_places", :force => true do |t|
+    t.string   "name"
+    t.string   "address"
+    t.string   "address2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.float    "lat"
+    t.float    "lon"
+    t.integer  "user_id"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.string   "nongeocoded_address"
   end
 
   create_table "users", :force => true do |t|

@@ -16,17 +16,17 @@ describe Itinerary do
       it "creates correct string for an hour and some minutes" do
         I18n.locale = :en
         i = Itinerary.new
-        i.duration_to_words((60*60)+5).should eq '1 hour 5 minutes'
+        i.duration_to_words((60*60)+(5*60)).should eq '1 hour 5 minutes'
       end
       it "creates correct string for plural hours and singular minutes" do
         I18n.locale = :en
         i = Itinerary.new
-        i.duration_to_words((2*60*60)+1).should eq '2 hours 1 minute'
+        i.duration_to_words((2*60*60)+(1*60)).should eq '2 hours 1 minute'
       end
       it "does the correct thing when passed a float" do
         I18n.locale = :en
         i = Itinerary.new
-        i.duration_to_words((60*60)+5.5).should eq '1 hour 5 minutes'
+        i.duration_to_words((60*60)+(5.5*60)).should eq '1 hour 5 minutes'
       end
       it "does the correct thing when passed nil" do
         I18n.locale = :en
@@ -38,12 +38,12 @@ describe Itinerary do
       it "creates correct string for an hour and some minutes" do
         I18n.locale = :es
         i = Itinerary.new
-        i.duration_to_words((60*60)+5).should eq '1 hora 5 minutos'
+        i.duration_to_words((60*60)+(5*60)).should eq '1 hora 5 minutos'
       end
       it "creates correct string for plural hours and singular minutes" do
         I18n.locale = :es
         i = Itinerary.new
-        i.duration_to_words((2*60*60)+1).should eq '2 horas 1 minuto'
+        i.duration_to_words((2*60*60)+(1*60)).should eq '2 horas 1 minuto'
       end
     end
   end

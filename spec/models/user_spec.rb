@@ -101,4 +101,20 @@ describe User do
 
   end
 
+  describe UserPlace do
+    before(:each) do
+      @user = User.create!(@attr)
+    end
+
+    it "should be able to have a UserPlace associated with it" do
+      @user.places.create
+      @user.places.size.should eq 1
+    end
+    it "should be able to have multiple UserPlaces associated with it" do
+      @user.places.create
+      @user.places.create
+      @user.places.size.should eq 2
+    end
+  end
+
 end
