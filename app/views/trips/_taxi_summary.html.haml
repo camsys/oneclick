@@ -1,0 +1,23 @@
+%a.span12.thumbnail.actionbutton{alt: t(:taxi), title: t(:taxi), href: '/501.html'}
+  .row-fluid
+    %p.text-center.mode_title=t(:taxi)
+  .row-fluid
+    .span4
+      -#= image_tag action[:img], alt: action[:label]
+      %i.icon-taxi-sign.mode_icon_formatting
+    .span8
+      .row-fluid
+        .span4
+          %p= t(:duration)
+        .span8
+          %strong= itinerary.duration_to_words(itinerary.duration)
+      .row-fluid
+        .span4.arrival_label
+          %p= t(:walking)
+        .span8.arrival_time
+          %strong None
+      .row-fluid
+        .span4
+          %p= t(:cost)
+        .span8.departure_time
+          %strong= '$' + ("%.2f" % itinerary.cost).to_s

@@ -29,11 +29,15 @@ en:
   to: 'To'
   correct_errors_to_create_a_trip: 'Please correct the errors below to create a trip.'
   transit_trip: 'Transit Trip'
+  taxi: 'Taxi'
+  transit: 'Transit'
+  paratransit: 'Paratransit'
   mode: 'Mode'
   duration: 'Duration'
   walking: 'Walking'
   depart: 'Depart'
   arrive: 'Arrive'
+  cost: 'Cost'
   trip_was_successfully_created: 'Trip was successfully created.'
   trip_created_no_valid_options: "Trip created, but no valid trip options could be found:"
   hour: {

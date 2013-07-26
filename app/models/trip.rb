@@ -52,6 +52,12 @@ class Trip < ActiveRecord::Base
   end
 
   def create_itineraries
+    self.create_fixed_route_itineraries
+    self.create_taxi_itineraries
+    self.create_paratransit_itineraries
+  end
+
+  def create_fixed_route_itineraries
     tp = TripPlanner.new
     result, response = tp.get_fixed_itineraries([self.to_place.lat, self.to_place.lon],[self.from_place.lat, self.from_place.lon], self.trip_datetime.localtime)
     if result
@@ -63,10 +69,26 @@ class Trip < ActiveRecord::Base
     end
   end
 
+  def create_taxi_itineraries
+    tp = TripPlanner.new
+    result, response = tp.get_taxi_itineraries([self.to_place.lat, self.to_place.lon],[self.from_place.lat, self.from_place.lon], self.trip_datetime.localtime)
+    if result
+        itinerary = tp.convert_taxi_itineraries(response)
+        self.itineraries << Itinerary.new(itinerary)
+    else
+      self.itineraries << Itinerary.new('status'=>500, 'message'=>response)
+    end
+  end
+
+  def create_paratransit_itineraries
+    #TODO: This is just a place holder that currently returns demo data only.
+    self.itineraries << Itinerary.new('mode' => 'paratransit', 'status' => 200, 'duration' => 55*60, 'cost' => 4.00)
+  end
+
   def set_places
     #TODO:  These values need to come from the combobox field
-    to_place_id = 1
-    from_place_id = 2
+    to_place_id = 52
+    from_place_id = 53
     nongeocoded_address = "100 14th Street, Atlanta, GA"
 
     if to_place_id #Here is where we test that an ID is present.

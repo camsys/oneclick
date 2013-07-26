@@ -44,6 +44,7 @@ class TripPlanner
 
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
+      trip_itinerary['mode'] = 'transit'
       trip_itinerary['duration'] = itinerary['duration'].to_f/1000
       trip_itinerary['walk_time'] = itinerary['walkTime']
       trip_itinerary['transit_time'] = itinerary['transitTime']
@@ -58,5 +59,41 @@ class TripPlanner
     end
 
   end
+
+  def get_taxi_itineraries(from, to, trip_datetime)
+
+    #TODO: Move the api key or url to a config
+    base_url = 'http://api.taxifarefinder.com/fare?key='
+    api_key = 'SIefr5akieS5'
+    url_options = '&entity_handle=Atlanta'
+    url_options += "&origin=" + to[0].to_s + ',' + to[1].to_s + "&destination=" + from[0].to_s + ',' + from[1].to_s
+    url = base_url + api_key + url_options
+
+    begin
+      resp = Net::HTTP.get_response(URI.parse(url))
+    rescue Exception=>e
+      return false, {'id'=>500, 'msg'=>e.to_s}
+    end
+
+    result = JSON.parse(resp.body)
+    if result['status'] != "OK"
+      return false, result['explanation']
+    else
+      return true, result
+    end
+
+  end
+
+  def convert_taxi_itineraries(itinerary)
+      trip_itinerary = {}
+      trip_itinerary['mode'] = 'taxi'
+      trip_itinerary['duration'] = itinerary['duration'].to_f
+      trip_itinerary['walk_time'] = 0
+      trip_itinerary['walk_distance'] = 0
+      trip_itinerary['cost'] = itinerary['total_fare']
+      trip_itinerary['status'] = 200
+      trip_itinerary
+  end
+
 
 end
