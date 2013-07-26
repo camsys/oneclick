@@ -1,8 +1,10 @@
 class Place < ActiveRecord::Base
   self.abstract_class = true
-  before_validation :geocode
-  validate :geocoded?
-  attr_accessor :nongeocoded_address
+
+  # TODO decide where these happen
+  # before_validation :geocode
+  # validate :geocoded?
+
   attr_accessible :address, :address2, :city, :lat, :lon, :name, :state, :zip, :nongeocoded_address
 
   def geocode

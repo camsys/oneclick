@@ -34,8 +34,23 @@ describe Trip do
   end
 
   it "should support nested attributes for places" do
-    trip = Trip.create!(trip_date: (Date.today + 2).strftime('%m/%d/%Y'), trip_time: '2:59 pm',
-      from_place_attributes: {nongeocoded_address: 'bar'})
+    trip = Trip.create(trip_date: (Date.today + 2).strftime('%m/%d/%Y'), trip_time: '2:59 pm',
+      places_attributes: [{nongeocoded_address: 'bar'}, {nongeocoded_address: 'baz'}]
+      )
+    trip.places[0].nongeocoded_address.should eq 'bar'
+    trip.places[1].nongeocoded_address.should eq 'baz'
+  end
+  it "should from_place and to_place aliases for places for now" do
+    trip = Trip.create(trip_date: (Date.today + 2).strftime('%m/%d/%Y'), trip_time: '2:59 pm',
+      from_place: {nongeocoded_address: 'bar'}, to_place: {nongeocoded_address: 'baz'}
+      )
     trip.from_place.nongeocoded_address.should eq 'bar'
+    trip.to_place.nongeocoded_address.should eq 'baz'
+  end
+  it "should have from_place and to_place aliases even when comes from db" do
+    trip = FactoryGirl.create(:trip_with_places)
+    db_trip = Trip.find(trip.id)
+    db_trip.from_place.nongeocoded_address.should eq 'bar'
+    db_trip.to_place.nongeocoded_address.should eq 'baz'
   end
 end
