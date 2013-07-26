@@ -1,3 +1,5 @@
+%p#notice= notice
+
 .row
   .span12.center
     -#.container-fluid
@@ -11,11 +13,11 @@
                 .row-fluid
                   %a.span12.thumbnail.actionbutton{alt: t(:transit_trip), title: t(:transit_trip), href: '/501.html'}
                     .row-fluid
-                      %p.text-center{style: "font-weight:bold; font-size: 1.5em;"} Transit
+                      %p.text-center.mode_title Transit
                     .row-fluid
                       .span4
                         -#= image_tag action[:img], alt: action[:label]
-                        %i.center.icon-4x{class: "icon-bus-sign", style: "width: 100%; margin-top:10px; font-size: 6.0em;", alt: t(:mode)}
+                        %i.icon-bus-sign.mode_icon_formatting
                       .span8
                         .row-fluid
                           .span4
@@ -42,8 +44,8 @@
                         .row-fluid
                           - legs.each do |leg|
                             .span2
-                              %p.text-center{class: itinerary.get_mode_icon(leg['mode']), style:'color:#888888; font-size: 2.5em; margin-bottom:0px; margin-above:0px;'}
-                              %p.text-center{style: 'font-weight:bold; font-size: 1em; color:#888888;'}= leg['route']
+                              %p.transit_itinerary_icons{class: itinerary.get_mode_icon(leg['mode'])}
+                              %p.transit_itinerary_text.text-center= leg['route']
 
 = link_to new_trip_path do
   %i{class: CsHelpers::ACTION_ICONS[:plan_a_trip]}
