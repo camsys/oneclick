@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
 
   attr_accessible :first_name, :last_name
 
-  has_many :places
+  has_many :places, class_name: UserPlace 
   has_many :trips
 
 end

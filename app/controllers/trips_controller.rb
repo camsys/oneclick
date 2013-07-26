@@ -15,8 +15,8 @@ class TripsController < ApplicationController
   # GET /trips/new.json
   def new
     @trip = Trip.new
-    # TODO User might be different if we are an agent
     @trip.owner = current_user || anonymous_user
+    # TODO User might be different if we are an agent
 
     respond_to do |format|
       format.html # new.html.erb
@@ -27,6 +27,13 @@ class TripsController < ApplicationController
   # POST /trips
   # POST /trips.json
   def create
+    # [:from_place_attributes, :to_place_attributes].each do |a|
+    #   attr = params[:trip][a]
+    #   if attr[:nongeocoded_address] =~ /^[0-9]+$/
+        
+    #   else
+    #   end
+    # end
     @trip = Trip.new(params[:trip])
     @trip.owner = current_user || anonymous_user
 

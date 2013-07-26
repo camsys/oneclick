@@ -2,14 +2,19 @@ class Trip < ActiveRecord::Base
   attr_accessor :trip_date, :trip_time
 
   before_validation :set_places
-  validates :from_place_id, :to_place_id, :presence => {:message => I18n.translate(:invalid_location)}
+  # validates :from_place_id, :to_place_id, :presence => {:message => I18n.translate(:invalid_location)}
   validate :validate_date_and_time
-  attr_accessible :name, :owner, :from_place_id, :to_place_id, :trip_datetime, :trip_date, :trip_time, :arrive_depart
+  attr_accessible :name, :owner, :trip_datetime, :trip_date, :trip_time, :arrive_depart, :places_attributes,
+    :from_place, :to_place
+  attr_accessor :from_place, :to_place
   belongs_to :owner, foreign_key: 'user_id', class_name: User
-  belongs_to :from_place, foreign_key: 'from_place_id', class_name: Place
-  belongs_to :to_place, foreign_key: 'to_place_id', class_name: Place
+  # has_one :from_place, foreign_key: 'from_place_id', class_name: TripPlace
+  # has_one :to_place, foreign_key: 'to_place_id', class_name: TripPlace
+  has_many :places, class_name: TripPlace
   has_many :itineraries
   has_many :valid_itineraries, conditions: 'status=200', class_name: 'Itinerary'
+
+  accepts_nested_attributes_for :places
 
   def has_valid_itineraries?
     not valid_itineraries.empty?
@@ -59,7 +64,7 @@ class Trip < ActiveRecord::Base
 
   def create_fixed_route_itineraries
     tp = TripPlanner.new
-    result, response = tp.get_fixed_itineraries([self.to_place.lat, self.to_place.lon],[self.from_place.lat, self.from_place.lon], self.trip_datetime.localtime)
+    result, response = tp.get_fixed_itineraries([self.places[0].lat, self.places[0].lon],[self.places[1].lat, self.places[1].lon], self.trip_datetime.localtime)
     if result
       tp.convert_itineraries(response).each do |itinerary|
         self.itineraries << Itinerary.new(itinerary)
@@ -110,6 +115,25 @@ class Trip < ActiveRecord::Base
       from_place.save()
       self.from_place_id = from_place.id
     end
-
   end
+
+  def from_place= place
+    @from_place = TripPlace.new(place)
+    # TODO Not sure about the reliability of this. Ditto below.
+    places << @from_place
+  end
+
+  def from_place
+    @from_place ||= places[0]
+  end
+
+  def to_place= place
+    @to_place = TripPlace.new(place)
+    places << @to_place
+  end
+
+  def to_place
+    @to_place ||= places[1]
+  end
+
 end

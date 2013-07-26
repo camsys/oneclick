@@ -3,11 +3,17 @@
     - if user_signed_in?
       -# TODO span4 breaks the combobox
       -# TODO placeholder does not work with combobox
-      = f.input :from_place_id, label: t(:from), :collection => @trip.owner.places, input_html: {class: 'combobox'}, include: :blank, placeholder: t(:select_or_enter_address)
-      = f.input :to_place_id, label: t(:to), :collection => @trip.owner.places, input_html: {class: 'combobox'}, include: :blank, placeholder: t(:select_or_enter_address)
+      = f.simple_fields_for :from_place do |p|
+        = p.input :nongeocoded_address, label: t(:from), :collection => @trip.owner.places,
+          label_method: :name, value_method: :id, input_html: {class: 'combobox'}, include: :blank, placeholder: t(:select_or_enter_address)
+      = f.simple_fields_for :to_place do |p|
+        = p.input :nongeocoded_address, label: t(:to), :collection => @trip.owner.places,
+          label_method: :name, value_method: :id, input_html: {class: 'combobox'}, include: :blank, placeholder: t(:select_or_enter_address)
     - else
-      = f.input :from_place, placeholder: t(:enter_address)
-      = f.input :to_place, placeholder: t(:enter_address)
+      = f.simple_fields_for :from_place do |p|
+        = p.input :nongeocoded_address, label: t(:from), placeholder: t(:enter_address)
+      = f.simple_fields_for :to_place do |p|
+        = p.input :nongeocoded_address, label: t(:to), placeholder: t(:enter_address)
     = f.input :trip_date, wrapper: :append, label: t(:date) do
       = content_tag :div, id: 'trip-date' do
         = f.input_field :trip_date, as: :string, label: false, size: ""

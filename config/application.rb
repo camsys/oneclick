@@ -79,3 +79,6 @@ module Oneclick
     config.assets.version = '1.0'
   end
 end
+
+require 'awesome_print'
+
