@@ -14,6 +14,11 @@ es:
   change_my_settings: 'Cambiar mi Configuración'
   help_and_support: 'Ayuda y Soporte'
   spanish: 'En Español'
+  error_not_implemented: 'Lo sentimos, pero esta funcionalidad aún no se ha implementado.'
+  error_404: "[es]The page you were looking for doesn't exist.[/es]"
+  error_404_mistyped: '[es]You may have mistyped the address or the page may have moved.[/es]'
+  error_422: '[es]The change you wanted was rejected.[/es]'
+  error_422_detail: "[es]Maybe you tried to change something you didn't have access to.[/es]"
   enter_address: '[es]Enter address[/es]'
   select_or_enter_address: '[es]Select or enter address[/es]'
   date: '[es]Date[/es]'
