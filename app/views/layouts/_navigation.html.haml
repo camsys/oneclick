@@ -1,7 +1,11 @@
 .navbar.navbar-fixed-top
   %nav.navbar-inner
     .container
-      = link_to t(:logotext), root_path, :class => 'brand'
+      - if !at_root
+        = link_to t(:logotext), root_path, :class => 'brand'
+      - else
+        .brand
+          =  t(:logotext)
       .pull-right
         -#<!-- .btn-navbar is used as the toggle for collapsed navbar content -->
         %a.btn.btn-navbar{data: { toggle: "collapse",  target: ".nav-collapse"}}

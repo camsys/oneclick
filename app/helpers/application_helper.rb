@@ -45,4 +45,20 @@ module ApplicationHelper
     end
   end
 
+  def link_without_locale link_text
+    parts = link_text.split('/', 3)
+    has_locale = I18n.available_locales.detect do |l|
+      parts[1] == l.to_s
+    end
+    parts.delete_at(1) if has_locale
+    parts = parts.join('/')
+    return '/' if parts.empty?
+    parts 
+  end
+
+  def at_root
+    (request.path == root_path) or
+    (link_without_locale(request.path) == root_path)
+  end
+
 end
