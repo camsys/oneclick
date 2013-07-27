@@ -62,6 +62,7 @@ class Trip < ActiveRecord::Base
     self.create_paratransit_itineraries
   end
 
+  # TODO refactor following 3 methods
   def create_fixed_route_itineraries
     tp = TripPlanner.new
     result, response = tp.get_fixed_itineraries([self.places[0].lat, self.places[0].lon],[self.places[1].lat, self.places[1].lon], self.trip_datetime.localtime)
@@ -87,7 +88,14 @@ class Trip < ActiveRecord::Base
 
   def create_paratransit_itineraries
     #TODO: This is just a place holder that currently returns demo data only.
-    self.itineraries << Itinerary.new('mode' => 'paratransit', 'status' => 200, 'duration' => 55*60, 'cost' => 4.00)
+    tp = TripPlanner.new
+    result, response = tp.get_paratransit_itineraries([self.to_place.lat, self.to_place.lon],[self.from_place.lat, self.from_place.lon], self.trip_datetime.localtime)
+    if result
+        itinerary = tp.convert_paratransit_itineraries(response)
+        self.itineraries << Itinerary.new(itinerary)
+    else
+      self.itineraries << Itinerary.new('status'=>500, 'message'=>response)
+    end
   end
 
   def set_places

@@ -80,5 +80,4 @@ module Oneclick
   end
 end
 
-require 'awesome_print'
 

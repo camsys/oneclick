@@ -1,3 +1,5 @@
+require 'awesome_print'
+
 class TripPlace < Place
   self.table_name = 'trip_places'
 

@@ -95,5 +95,14 @@ class TripPlanner
       trip_itinerary
   end
 
+  # TODO placeholder
+  def get_paratransit_itineraries(from, to, trip_datetime)
+    {'mode' => 'paratransit', 'status' => 200, 'duration' => 55*60, 'cost' => 4.00}
+  end
+
+  # TODO placeholder
+  def convert_paratransit_itineraries(itinerary)
+    {'mode' => 'paratransit', 'status' => 200, 'duration' => 55*60, 'cost' => 4.00}
+  end
 
 end
