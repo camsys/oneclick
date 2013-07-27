@@ -66,3 +66,28 @@ html, body {
 //#main .container {
 //  padding-top: 60px;
 //}
+
+.errors #main {
+  color: #00f;
+  div.dialog {
+    width: 25em;
+    padding: 0 4em;
+    margin: 4em auto 0 auto;
+    border: 1px solid #ccc;
+    border-right-color: #999;
+    border-bottom-color: #999;
+    text-align: center;
+  }
+  h1 {
+    font-size: 100%;
+    color: #00f;
+    line-height: 1.5em; 
+  }
+  .the-icon-container {
+    line-height: 4em;
+    padding-top: 5px;
+  }
+  .the-icon {
+    vertical-align: middle;
+  }
+}
