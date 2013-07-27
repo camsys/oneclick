@@ -19,7 +19,10 @@
         = f.input_field :trip_date, as: :string, label: false, size: ""
         = content_tag :span, class: 'add-on' do
           = content_tag :i, '', class: 'icon-calendar'
-    = f.input :arrive_depart, collection: [t(:depart_at), t(:arrive_by)], label: false, include_blank: false, input_html: {class: ''}
+    = f.input :arrive_depart, collection: [:depart_at, :arrive_by],
+      label_method: lambda {|obj| t(obj)},
+      value_method: lambda {|obj| obj.to_s},
+      label: false, include_blank: false, input_html: {class: ''}
     = f.input :trip_time, wrapper: :append, label: t(:time) do
       = content_tag :div, id: 'trip-time' do
         = f.input_field :trip_time, as: :string, label: false, size: ""
