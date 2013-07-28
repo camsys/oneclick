@@ -30,6 +30,7 @@ es:
   from: '[es]From[/es]'
   to: '[es]To[/es]'  
   correct_errors_to_create_a_trip: '[es]Please correct the errors below to create a trip.[/es]'
+  trip_options: '[es]Trip Options[/es]'
   transit_trip: '[es]Transit Trip[/es]'
   taxi: 'Taxi'
   transit: '[es]Transit[/es]'

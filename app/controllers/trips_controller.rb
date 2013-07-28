@@ -40,9 +40,7 @@ class TripsController < ApplicationController
     respond_to do |format|
       if @trip.save
         @trip.create_itineraries
-        if @trip.has_valid_itineraries?
-          flash[:notice] = t(:trip_was_successfully_created)
-        else
+        unless @trip.has_valid_itineraries?
           message = t(:trip_created_no_valid_options)
           details = @trip.itineraries.collect do |i|
             "<li>%s (%s)</li>" % [i.message, i.status]
