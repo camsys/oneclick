@@ -4,6 +4,7 @@ class Trip < ActiveRecord::Base
   before_validation :set_places
   # validates :from_place_id, :to_place_id, :presence => {:message => I18n.translate(:invalid_location)}
   validate :validate_date_and_time
+  validate :datetime_cannot_be_before_now
   attr_accessible :name, :owner, :trip_datetime, :trip_date, :trip_time, :arrive_depart, :places_attributes,
     :from_place, :to_place
   attr_accessor :from_place, :to_place
@@ -30,11 +31,6 @@ class Trip < ActiveRecord::Base
       good_date = false
     end
 
-    if good_date && @date < Date.today
-      errors.add(:trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
-      good_date = false
-    end
-
     if /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9] [AaPp][Mm]$/.match(self.trip_time) == nil
       errors.add(:trip_time, I18n.translate(:time_must_be))
       good_time = false
@@ -54,6 +50,15 @@ class Trip < ActiveRecord::Base
       return false
     end
     true
+  end
+
+  def datetime_cannot_be_before_now
+    return true if trip_datetime.nil?
+    if trip_datetime < Date.today
+      errors.add(:trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
+    elsif trip_datetime < Time.now
+      errors.add(:trip_time, I18n.translate(:trips_cannot_be_entered_for_days))
+    end
   end
 
   def create_itineraries
