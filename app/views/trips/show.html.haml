@@ -1,8 +1,13 @@
-%p#notice= notice
-
+%h1
+  %i.icon-bus-sign
+  = t(:trip_options)
 .row
-  .span12.center
-    -#.container-fluid
+  .span12
+    %h4= "From: #{@trip.from_place.address}"
+    %h4= "To: #{@trip.to_place.address}"
+.row
+  .span12
+    .container-fluid
     - @trip.valid_itineraries.each_slice(3) do |itineraries|
       .row-fluid
         .span12
