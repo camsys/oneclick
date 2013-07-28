@@ -60,6 +60,7 @@ en:
   date_must_be: "Date must be in MM/DD/YYYY format."
   time_must_be: "Time must be in hh:mm am/pm format."
   trips_cannot_be_entered_for_days: "Trips cannot be entered for days earlier than today."
+  trips_cannot_be_entered_for_times: "Trips cannot be entered for past times."
   arc:
     home: 'ARC 1-Click Home'
     logotext: ''

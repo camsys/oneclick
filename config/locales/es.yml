@@ -57,6 +57,7 @@ es:
   date_must_be: "[es]Date must be in MM/DD/YYYY format.[/es]"
   time_must_be: "[es]Time must be in hh:mm am/pm format.[/es]"
   trips_cannot_be_entered_for_days: "[es]Trips cannot be entered for days earlier than today.[/es]"
+  trips_cannot_be_entered_for_times: "[es]Trips cannot be entered for past times.[/es]"
   arc:
     logotext: ''
     site_title: '[es]ARC 1-Click[/es]'

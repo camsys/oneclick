@@ -57,7 +57,7 @@ class Trip < ActiveRecord::Base
     if trip_datetime < Date.today
       errors.add(:trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
     elsif trip_datetime < Time.now
-      errors.add(:trip_time, I18n.translate(:trips_cannot_be_entered_for_days))
+      errors.add(:trip_time, I18n.translate(:trips_cannot_be_entered_for_times))
     end
   end
 
