@@ -27,15 +27,9 @@ class TripsController < ApplicationController
   # POST /trips
   # POST /trips.json
   def create
-    # [:from_place_attributes, :to_place_attributes].each do |a|
-    #   attr = params[:trip][a]
-    #   if attr[:nongeocoded_address] =~ /^[0-9]+$/
-        
-    #   else
-    #   end
-    # end
+    params[:trip][:owner] = current_user || anonymous_user
     @trip = Trip.new(params[:trip])
-    @trip.owner = current_user || anonymous_user
+    # @trip.owner = current_user || anonymous_user
 
     respond_to do |format|
       if @trip.save
