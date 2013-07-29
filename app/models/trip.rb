@@ -70,7 +70,7 @@ class Trip < ActiveRecord::Base
   # TODO refactor following 3 methods
   def create_fixed_route_itineraries
     tp = TripPlanner.new
-    result, response = tp.get_fixed_itineraries([self.places[0].lat, self.places[0].lon],[self.places[1].lat, self.places[1].lon], self.trip_datetime.localtime)
+    result, response = tp.get_fixed_itineraries([self.places[0].lat, self.places[0].lon],[self.places[1].lat, self.places[1].lon], self.trip_datetime.in_time_zone)
     if result
       tp.convert_itineraries(response).each do |itinerary|
         self.itineraries << Itinerary.new(itinerary)
@@ -82,7 +82,7 @@ class Trip < ActiveRecord::Base
 
   def create_taxi_itineraries
     tp = TripPlanner.new
-    result, response = tp.get_taxi_itineraries([self.to_place.lat, self.to_place.lon],[self.from_place.lat, self.from_place.lon], self.trip_datetime.localtime)
+    result, response = tp.get_taxi_itineraries([self.to_place.lat, self.to_place.lon],[self.from_place.lat, self.from_place.lon], self.trip_datetime.in_time_zone)
     if result
       itinerary = tp.convert_taxi_itineraries(response)
       self.itineraries << Itinerary.new(itinerary)
@@ -94,7 +94,7 @@ class Trip < ActiveRecord::Base
   def create_paratransit_itineraries
     #TODO: This is just a place holder that currently returns demo data only.
     tp = TripPlanner.new
-    result, response = tp.get_paratransit_itineraries([self.to_place.lat, self.to_place.lon],[self.from_place.lat, self.from_place.lon], self.trip_datetime.localtime)
+    result, response = tp.get_paratransit_itineraries([self.to_place.lat, self.to_place.lon],[self.from_place.lat, self.from_place.lon], self.trip_datetime.in_time_zone)
     if result
       itinerary = tp.convert_paratransit_itineraries(response)
       self.itineraries << Itinerary.new(itinerary)
