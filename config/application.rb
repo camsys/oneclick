@@ -41,7 +41,7 @@ module Oneclick
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
+    config.time_zone = 'Eastern Time (US & Canada)'
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
@@ -69,8 +69,18 @@ module Oneclick
 
     # Enable the asset pipeline
     config.assets.enabled = true
+    # For heroku; see http://blog.nathanhumbert.com/2012/01/rails-32-on-heroku-tip.html
+    config.assets.initialize_on_precompile = false
+
+    # add top-level brand-specific assets here
+    config.assets.precompile += %w{arc.css broward.css yata.css}
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    # See http://work.stevegrossi.com/2013/04/06/dynamic-error-pages-with-rails-3-2/
+    config.exceptions_app = self.routes
   end
 end
+
+

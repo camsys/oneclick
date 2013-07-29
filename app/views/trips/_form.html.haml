@@ -1,28 +1,37 @@
 .well
   = simple_form_for(@trip, :html => {:class => 'form-horizontal' }) do |f|
-    - if @trip.errors.any?
-      #error_explanation
-        %h2= "#{pluralize(@trip.errors.count, "error")} prohibited this trip from being saved:"
-        %ul
-          - @trip.errors.full_messages.each do |msg|
-            %li= msg
-    = f.input :from_place_id, :collection => @trip.owner.places
-    = f.input :to_place_id, :collection => @trip.owner.places
-    = f.input :trip_date, wrapper: :append, label: 'Date' do
+    - if user_signed_in?
+      -# TODO span4 breaks the combobox
+      -# TODO placeholder does not work with combobox
+      = f.simple_fields_for :from_place do |p|
+        = p.input :nongeocoded_address, label: t(:from), :collection => @trip.owner.places,
+          label_method: :name, value_method: :id, input_html: {class: 'combobox'}, include: :blank, placeholder: t(:select_or_enter_address)
+      = f.simple_fields_for :to_place do |p|
+        = p.input :nongeocoded_address, label: t(:to), :collection => @trip.owner.places,
+          label_method: :name, value_method: :id, input_html: {class: 'combobox'}, include: :blank, placeholder: t(:select_or_enter_address)
+    - else
+      = f.simple_fields_for :from_place do |p|
+        = p.input :nongeocoded_address, label: t(:from), placeholder: t(:enter_address)
+      = f.simple_fields_for :to_place do |p|
+        = p.input :nongeocoded_address, label: t(:to), placeholder: t(:enter_address)
+    = f.input :trip_date, wrapper: :append, label: t(:date) do
       = content_tag :div, id: 'trip-date' do
-        = f.input_field :trip_date, as: :string, label: false
+        = f.input_field :trip_date, as: :string, label: false, size: ""
         = content_tag :span, class: 'add-on' do
           = content_tag :i, '', class: 'icon-calendar'
-    = f.input :arrive_depart, collection: ['Depart at', 'Arrive by'], label: false, include_blank: false
-    = f.input :trip_time, wrapper: :append, label: 'Time' do
+    = f.input :arrive_depart, collection: [:depart_at, :arrive_by],
+      label_method: lambda {|obj| t(obj)},
+      value_method: lambda {|obj| obj.to_s},
+      label: false, include_blank: false, input_html: {class: ''}
+    = f.input :trip_time, wrapper: :append, label: t(:time) do
       = content_tag :div, id: 'trip-time' do
-        = f.input_field :trip_time, as: :string, label: false
+        = f.input_field :trip_time, as: :string, label: false, size: ""
         = content_tag :span, class: 'add-on' do
           = content_tag :i, '', class: 'icon-time'
 
     .actions
-      = f.button :submit, {class: 'btn btn-primary controls'}
-      = link_to 'Cancel', :back
+      = f.button :submit, t(:plan_it), {class: 'btn btn-primary controls'}
+      = link_to t(:cancel), :back
 :javascript
   $('#trip-date').datepicker()
     .on("dateChange", function(e) {
@@ -35,4 +44,8 @@
     .on("changeTime", function(e) {
       $('#trip_trip_time').val($('#trip-time').data('ui-timepicker-value'));
     });
-
+   $(document).ready(function(){
+      $('.combobox').combobox({
+        force_match: false
+      });
+    });

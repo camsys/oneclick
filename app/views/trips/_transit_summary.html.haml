@@ -1,0 +1,35 @@
+%a.span12.thumbnail.actionbutton{alt: t(:transit), title: t(:transit), href: '/501.html'}
+  .row-fluid
+    %p.text-center.mode_title=t(:transit)
+  .row-fluid
+    .span4
+      -#= image_tag action[:img], alt: action[:label]
+      %i.icon-bus-sign.mode_icon_formatting
+    .span8
+      .row-fluid
+        .span4
+          %p= t(:duration)
+        .span8
+          %strong= itinerary.duration_to_words(itinerary.duration)
+      .row-fluid
+        .span4.arrival_label
+          %p= t(:walking)
+        .span8.arrival_time
+          %strong= itinerary.duration_to_words(itinerary.walk_time)
+      .row-fluid
+        .span4
+          %p= t(:depart)
+        .span8.departure_time
+          %strong= itinerary.start_time.localtime.strftime('%I:%M %p')
+      .row-fluid
+        .span4.arrival_label
+          %p= t(:arrive)
+        .span8.arrival_time
+          %strong= itinerary.end_time.localtime.strftime('%I:%M %p')
+  .row-fluid
+    -YAML.load(itinerary.legs).each_slice(6) do |legs|
+      .row-fluid
+        - legs.each do |leg|
+          .span2
+            %p.transit_itinerary_icons{class: itinerary.get_mode_icon(leg['mode'])}
+            %p.transit_itinerary_text.text-center= leg['route']

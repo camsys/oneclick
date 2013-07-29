@@ -5,17 +5,21 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
+  gem 'bootstrap-combobox', '= 1.2.1'
+  # gem 'bootstrap-combobox', '= 1.2.3', path: '/Users/denishaskin/constantorbit/workspace/bootstrap-combobox'
 end
 gem 'jquery-rails'
 gem 'bootstrap-sass'
 gem 'cancan'
 gem 'devise'
 gem 'figaro'
+gem 'geocoder'
 gem 'haml-rails'
 gem 'pg'
 gem 'rolify'
 gem 'simple_form'
-gem 'unicorn'
+gem 'thin'
+gem 'awesome_print'
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :rbx]
@@ -30,11 +34,12 @@ group :development do
   gem 'rb-fsevent', :require=>false
   gem 'rb-inotify', :require=>false
   gem 'sextant'
-  gem 'thin'
 end
 group :development, :test do
   gem 'factory_girl_rails'
   gem 'rspec-rails'
+  gem 'growl'
+  gem 'capybara'
 end
 group :test do
   gem 'capybara'

@@ -1,11 +1,12 @@
 class HomeController < ApplicationController
+include CsHelpers
 
   def index
     @actions = [
-        {label: 'Plan a Trip', target: new_trip_path, icon: 'icon-bus-sign'},
-        {label: 'Identify Places', target: '#', icon: 'icon-map-marker'},
-        {label: 'Change My Settings', target: '#', icon: 'icon-cog'},
-        {label: 'Help & Support', target: '#', icon: 'icon-question-sign'},
+        {label: t(:plan_a_trip), target: new_trip_path, icon: ACTION_ICONS[:plan_a_trip]},
+        {label: t(:identify_places), target: error_501_path, icon: ACTION_ICONS[:identify_places]},
+        {label: t(:change_my_settings), target: error_501_path, icon: ACTION_ICONS[:change_my_settings]},
+        {label: t(:help_and_support), target: error_501_path, icon: ACTION_ICONS[:help_and_support]},
     ]
   end
 

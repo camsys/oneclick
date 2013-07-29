@@ -1,4 +1,79 @@
 # Spanish
 
 es:
+  version: 'Versión'
   home: "Inicio"
+  log_in: 'Iniciar'
+  sign_up: 'Alistarse'
+  welcome: '[es]Welcome[/es]'
+  forgot_your_password: '¿Olvidó su contraseña?'
+  logout: '[es]Logout[/es]'
+  edit_account: '[es]Edit account[/es]'
+  admin: '[es]Admin[/es]'
+  plan_a_trip: 'Planear un Viaje'
+  identify_places: 'Identificar los Lugares'
+  change_my_settings: 'Cambiar mi Configuración'
+  help_and_support: 'Ayuda y Soporte'
+  spanish: 'En Español'
+  error_not_implemented: 'Lo sentimos, pero esta funcionalidad aún no se ha implementado.'
+  error_404: "[es]The page you were looking for doesn't exist.[/es]"
+  error_404_mistyped: '[es]You may have mistyped the address or the page may have moved.[/es]'
+  error_422: '[es]The change you wanted was rejected.[/es]'
+  error_422_detail: "[es]Maybe you tried to change something you didn't have access to.[/es]"
+  enter_address: '[es]Enter address[/es]'
+  select_or_enter_address: '[es]Select or enter address[/es]'
+  date: '[es]Date[/es]'
+  depart_at: '[es]Depart at[/es]'
+  arrive_by: '[es]Arrive by[/es]'
+  time: '[es]Time[/es]'
+  cancel: '[es]Cancel[/es]'
+  plan_it: '[es]Plan it[/es]'
+  from: '[es]From[/es]'
+  to: '[es]To[/es]'  
+  correct_errors_to_create_a_trip: '[es]Please correct the errors below to create a trip.[/es]'
+  trip_options: '[es]Trip Options[/es]'
+  transit_trip: '[es]Transit Trip[/es]'
+  taxi: 'Taxi'
+  transit: '[es]Transit[/es]'
+  paratransit: '[es]Paratransit[/ex]'
+  mode: '[es]Mode[/es]'
+  duration: '[es]Duration[/es]'
+  walking: '[es]Walking[/es]'
+  depart: '[es]Depart[/es]'
+  arrive: '[es]Arrive[/es]'
+  cost: '[es]Cost[/es]'
+  trip_was_successfully_created: '[es]Trip was successfully created.[/es]'
+  trip_created_no_valid_options: "[es]Trip created, but no valid trip options could be found:[/es]"
+  hour: {
+    one: '%{count} hora',
+    other: '%{count} horas',
+  }
+  minute: {
+    one: '%{count} minuto',
+    other: '%{count} minutos',
+  }
+  less_than_one_minute: '[es]less than 1 minute[/es]'
+  invalid_address: "[es]Invalid address.[/es]"
+  invalid_location: "[es]Invalid location.[/es]"
+  date_must_be: "[es]Date must be in MM/DD/YYYY format.[/es]"
+  time_must_be: "[es]Time must be in hh:mm am/pm format.[/es]"
+  trips_cannot_be_entered_for_days: "[es]Trips cannot be entered for days earlier than today.[/es]"
+  trips_cannot_be_entered_for_times: "[es]Trips cannot be entered for past times.[/es]"
+  arc:
+    logotext: ''
+    site_title: '[es]ARC 1-Click[/es]'
+    site_description: '[es]ARC 1-Click Application[/es]'
+  yata:
+    logotext: ''
+    site_title: '[es]YATA 1-Click[/es]'
+    site_description: '[es]YATA 1-Click Application[/es]'
+  broward:
+    logotext: '1-Click para el Condado de Broward'
+    site_title: '[es]Broward 1-Click[/es]'
+    site_description: '[es]Broward 1-Click Application[/es]'
+  simple_form:
+    labels:
+      defaults:
+        email: 'Email'
+        password: 'Contraseña'
+        remember_me: 'Acuérdate de mí'

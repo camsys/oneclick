@@ -2,21 +2,35 @@
 %html
   %head
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
-      %title= content_for?(:title) ? yield(:title) : "Oneclick"
-      %meta{:content => content_for?(:description) ? yield(:description) : "Oneclick", :name => "description"}
+      %title= content_for?(:title) ? yield(:title) : t(:site_title)
+      %meta{:content => content_for?(:description) ? yield(:description) : t(:site_description), :name => "description"}
         = stylesheet_link_tag "application", :media => "all"
         = stylesheet_link_tag brand, :media => "all"
-        = javascript_include_tag "application"
+        = javascript_include_tag "application" # TODO This should go in footer
         = csrf_meta_tags
         = yield(:head)
   %body{:class => "#{controller_name} #{action_name}"}
-    .navbar.navbar-fixed-top
-      %nav.navbar-inner
+    #wrap
+      = render 'layouts/navigation'
+      #main{:role => "main"}
         .container
-          = render 'layouts/navigation'
-    #main{:role => "main"}
-      = render 'layouts/messages'
-      = yield
-    %footer
+          = render 'layouts/messages'
+          = yield
+      #footer
+        .container
+          .well
+            .pull-left
+              %span= "#{t(:version)} 0.2"
+              - if Rails.env.development?
+                %span
+                  |
+                  %span.visible-phone Phone&nbsp;
+                  %span.visible-table Tablet&nbsp;
+                  %span.visible-desktop Desktop
+            .pull-right
+              -# Don't localize next 2 strings
+              = link_using_locale('English', 'en')
+              |
+              = link_using_locale('En Español', 'es')
       / ! end of .container
     / ! end of #main
