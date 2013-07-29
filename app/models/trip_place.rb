@@ -14,15 +14,18 @@ class TripPlace < Place
     # if not numeric, then geocode it? not sure if I want geocoding happening in
     # AR callbacks
 
+    # Rails.logger.info "do_before_save"
     # log_stuff
-    if nongeocoded_address =~ %r{^[0-9]+$}
-      user_place = UserPlace.find_by_id_and_user_id(nongeocoded_address.to_i, self.trip.owner.id)
-      user_place.attributes.except('id', 'user_id', 'created_at', 'updated_at').each do |attr, value|
-        self.send("#{attr}=", value)
-      end
-    else
-      geocode
-    end
+    # if nongeocoded_address =~ %r{^[0-9]+$}
+    #   user_place = UserPlace.find_by_id_and_user_id(nongeocoded_address.to_i, self.trip.owner.id)
+    #   user_place.attributes.except('id', 'user_id', 'created_at', 'updated_at').each do |attr, value|
+    #     self.send("#{attr}=", value)
+    #   end
+    # else
+    #   geocode
+    # end
+
+    geocode! unless geocoded?
   end
 
   private

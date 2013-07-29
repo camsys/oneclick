@@ -6,7 +6,7 @@ class Trip < ActiveRecord::Base
   validate :validate_date_and_time
   validate :datetime_cannot_be_before_now
   attr_accessible :name, :owner, :trip_datetime, :trip_date, :trip_time, :arrive_depart, :places_attributes,
-    :from_place, :to_place
+  :from_place, :to_place, :owner
   attr_accessor :from_place, :to_place
   belongs_to :owner, foreign_key: 'user_id', class_name: User
   # has_one :from_place, foreign_key: 'from_place_id', class_name: TripPlace
@@ -84,8 +84,8 @@ class Trip < ActiveRecord::Base
     tp = TripPlanner.new
     result, response = tp.get_taxi_itineraries([self.to_place.lat, self.to_place.lon],[self.from_place.lat, self.from_place.lon], self.trip_datetime.localtime)
     if result
-        itinerary = tp.convert_taxi_itineraries(response)
-        self.itineraries << Itinerary.new(itinerary)
+      itinerary = tp.convert_taxi_itineraries(response)
+      self.itineraries << Itinerary.new(itinerary)
     else
       self.itineraries << Itinerary.new('status'=>500, 'message'=>response)
     end
@@ -96,8 +96,8 @@ class Trip < ActiveRecord::Base
     tp = TripPlanner.new
     result, response = tp.get_paratransit_itineraries([self.to_place.lat, self.to_place.lon],[self.from_place.lat, self.from_place.lon], self.trip_datetime.localtime)
     if result
-        itinerary = tp.convert_paratransit_itineraries(response)
-        self.itineraries << Itinerary.new(itinerary)
+      itinerary = tp.convert_paratransit_itineraries(response)
+      self.itineraries << Itinerary.new(itinerary)
     else
       self.itineraries << Itinerary.new('status'=>500, 'message'=>response)
     end
@@ -131,7 +131,7 @@ class Trip < ActiveRecord::Base
   end
 
   def from_place= place
-    @from_place = TripPlace.new(place)
+    @from_place = initialize_place place
     # TODO Not sure about the reliability of this. Ditto below.
     places << @from_place
   end
@@ -141,12 +141,29 @@ class Trip < ActiveRecord::Base
   end
 
   def to_place= place
-    @to_place = TripPlace.new(place)
+    @to_place = initialize_place place
     places << @to_place
   end
 
   def to_place
     @to_place ||= places[1]
+  end
+
+  private
+
+  def initialize_place place
+    Rails.logger.info "initialize_place"
+    if owner.nil?
+      Rails.logger.info "No owner, just using place as is: #{place.inspect}"
+      user_place = place
+    else
+      Rails.logger.info "Have owner, looking up #{place.inspect}"
+      user_place = UserPlace.find_by_name_and_user_id(place[:nongeocoded_address], owner.id) || place
+      Rails.logger.info "After lookup, user_place is #{user_place}"
+    end
+    TripPlace.new(user_place.respond_to?(:attributes) ?
+      user_place.attributes.except('id', 'user_id', 'created_at', 'updated_at') :
+      user_place)
   end
 
 end

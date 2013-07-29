@@ -9,5 +9,13 @@ FactoryGirl.define do
     password_confirmation 'changeme'
     # required if the Devise Confirmable module is used
     # confirmed_at Time.now
+    factory :user_with_places do
+      first_name 'WithPlaces'
+      after(:create) do |u|
+        u.places << FactoryGirl.create(:user_place1)
+        u.places << FactoryGirl.create(:user_place2)
+        u.save
+      end
+    end
   end
 end

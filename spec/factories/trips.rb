@@ -11,5 +11,8 @@ FactoryGirl.define do
         t.save
       end
     end
+    factory :trip_with_owner do
+      association :owner, factory: :user_with_places
+    end
   end
 end

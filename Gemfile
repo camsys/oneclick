@@ -5,7 +5,7 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
-  gem 'bootstrap-combobox', '= 1.2.5'
+  gem 'bootstrap-combobox', '= 1.2.1'
   # gem 'bootstrap-combobox', '= 1.2.3', path: '/Users/denishaskin/constantorbit/workspace/bootstrap-combobox'
 end
 gem 'jquery-rails'

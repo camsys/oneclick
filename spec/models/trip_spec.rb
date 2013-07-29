@@ -83,4 +83,17 @@ describe Trip do
       db_trip.from_place.nongeocoded_address.should eq 'bar'
       db_trip.to_place.nongeocoded_address.should eq 'baz'
     end
+    it "should handle places that come from the user" do
+      trip = FactoryGirl.create(:trip_with_owner)
+      trip.from_place = {nongeocoded_address: trip.owner.places[0].name}
+      trip.to_place = {nongeocoded_address: trip.owner.places[1].name}
+      trip.save!
+      Rails.logger.info trip.ai
+      Rails.logger.info trip.from_place.ai
+      Rails.logger.info trip.to_place.ai
+      trip.from_place.nongeocoded_address.should eq 'bar'
+      db_trip = Trip.find(trip.id)
+      db_trip.from_place.nongeocoded_address.should eq 'bar'
+      db_trip.to_place.nongeocoded_address.should eq 'baz'
+    end
   end
