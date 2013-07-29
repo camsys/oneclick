@@ -4,6 +4,7 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  version: 'Version'
   home: 'en no-brand Home'
   log_in: 'Log in'
   sign_up: 'Sign up'

@@ -19,10 +19,14 @@
       #footer
         .container
           .well
-            - if Rails.env.development?
-              .visible-phone.pull-left Phone&nbsp;
-              .visible-table.pull-left Tablet&nbsp;
-              .visible-desktop.pull-left Desktop
+            .pull-left
+              %span= "#{t(:version)} 0.2"
+              - if Rails.env.development?
+                %span
+                  |
+                  %span.visible-phone Phone&nbsp;
+                  %span.visible-table Tablet&nbsp;
+                  %span.visible-desktop Desktop
             .pull-right
               -# Don't localize next 2 strings
               = link_using_locale('English', 'en')
