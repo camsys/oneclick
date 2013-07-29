@@ -1,7 +1,7 @@
 class Trip < ActiveRecord::Base
   attr_accessor :trip_date, :trip_time
 
-  before_validation :set_places
+  # before_validation :set_places
   # validates :from_place_id, :to_place_id, :presence => {:message => I18n.translate(:invalid_location)}
   validate :validate_date_and_time
   validate :datetime_cannot_be_before_now
