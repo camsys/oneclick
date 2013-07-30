@@ -13,20 +13,21 @@
     #wrap
       = render 'layouts/navigation'
       #main{:role => "main"}
-        .container
+        .container-fluid
           = render 'layouts/messages'
           = yield
-      #footer
-        .container
-          .well
-            - if Rails.env.development?
-              .visible-phone.pull-left Phone&nbsp;
-              .visible-table.pull-left Tablet&nbsp;
-              .visible-desktop.pull-left Desktop
-            .pull-right
-              -# Don't localize next 2 strings
-              = link_using_locale('English', 'en')
-              |
-              = link_using_locale('En Español', 'es')
+      #footer{:style => "background-color:#f5f5f5;border-top:1px solid #CCCCCC;"}
+        .container-fluid
+          .row-fluid
+            .span12
+              - if Rails.env.development?
+                .visible-phone.pull-left Phone&nbsp;
+                .visible-table.pull-left Tablet&nbsp;
+                .visible-desktop.pull-left Desktop
+              .pull-right
+                -# Don't localize next 2 strings
+                = link_using_locale('English', 'en')
+                |
+                = link_using_locale('En Español', 'es')
       / ! end of .container
     / ! end of #main

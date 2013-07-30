@@ -1,23 +1,27 @@
-%h1
-  %i.icon-bus-sign
-  = t(:trip_options)
-.row
+.row-fluid
   .span12
-    %h4= "From: #{@trip.from_place.address}"
-    %h4= "To: #{@trip.to_place.address}"
-.row
+    %h1
+      %i.icon-bus-sign
+      = t(:trip_options)
+.row-fluid
   .span12
-    .container-fluid
-    - @trip.valid_itineraries.each_slice(3) do |itineraries|
-      .row-fluid
-        .span12
-          %ul.thumbnails
-            - itineraries.each do |itinerary|
-              %li.span4
-                -#.container-fluid
-                .row-fluid
-                  = render :partial => itinerary['mode'] + '_summary', :locals => { :itinerary => itinerary}
+    %h4.span2 From:
+    %h4.span10 #{@trip.from_place.address}
+.row-fluid
+  .span12
+    %h4.span2 To:
+    %h4.span10 #{@trip.to_place.address}  
 
-= link_to new_trip_path do
-  %i{class: CsHelpers::ACTION_ICONS[:plan_a_trip]}
-  = t(:plan_a_trip)
+.row-fluid
+  .span12
+    %ul.thumbnails
+      - @trip.valid_itineraries.each_slice(3) do |itineraries|
+        - itineraries.each do |itinerary|
+          %li.span3
+            = render :partial => itinerary['mode'] + '_summary', :locals => { :itinerary => itinerary}
+
+.row-fluid
+  .span12
+    = link_to new_trip_path do
+      %i{class: CsHelpers::ACTION_ICONS[:plan_a_trip]}
+      = t(:plan_a_trip)
