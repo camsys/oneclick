@@ -96,4 +96,63 @@ describe Trip do
       db_trip.from_place.nongeocoded_address.should eq 'bar'
       db_trip.to_place.nongeocoded_address.should eq 'baz'
     end
+
+    describe "date and time validation" do
+      it "should reject a past date" do
+        trip = Trip.new
+        trip.trip_datetime = Date.today - 1
+        trip.datetime_cannot_be_before_now.should be_false
+        trip.errors.size.should eq 1
+        trip.errors.first.should eq [:trip_date, "Trips cannot be entered for days earlier than today."]
+      end
+      it "should reject a time today that is before current time" do
+        trip = Trip.new
+        trip.trip_datetime = Time.current - 60
+        trip.datetime_cannot_be_before_now.should be_false
+        trip.errors.size.should eq 1
+        trip.errors.first.should eq [:trip_time, "Trips cannot be entered for past times."]
+      end
+      it "should accept a time today that is after current time" do
+        trip = Trip.new
+        trip.trip_datetime = Time.current + 60
+        trip.datetime_cannot_be_before_now.should be_true
+        trip.errors.size.should eq 0
+      end
+      it "should accept a time tomorrow that is before the current time of day" do
+        trip = Trip.new
+        trip.trip_datetime = Time.current + (60*60*23)
+        trip.datetime_cannot_be_before_now.should be_true
+        trip.errors.size.should eq 0
+      end
+      it "should reject a past date set via trip_date and _time" do
+        trip = Trip.new
+        trip.trip_date = (Date.today - 1).strftime("%m/%d/%Y")
+        trip.trip_time = "9:06 am"
+        trip.validate_date_and_time
+        trip.datetime_cannot_be_before_now.should be_false
+        trip.errors.size.should eq 1
+        trip.errors.first.should eq [:trip_date, "Trips cannot be entered for days earlier than today."]
+      end
+    end
+
+    describe "write_trip_datetime" do
+      it "handles near future datetime" do
+        trip = Trip.new
+        d = DateTime.current
+        trip.trip_date = d.strftime("%m/%d/%Y")
+        trip.trip_time = (d + 60*60).strftime("%H:%M %p")
+        trip.write_trip_datetime.should be_true
+        trip.trip_datetime.strftime("%m/%d/%Y %H:%M %p %z").should eq d.strftime("%m/%d/%Y %H:%M %p %z")
+      end
+      
+      it "handles extraneous spaces" do
+        trip = Trip.new
+        d = DateTime.current
+        trip.trip_date = d.strftime("%m/%d/%Y  ")
+        trip.trip_time = (d + 60*60).strftime("%H:%M   %p")
+        trip.write_trip_datetime.should be_true
+        trip.trip_datetime.strftime("%m/%d/%Y %H:%M %p %z").should eq d.strftime("%m/%d/%Y %H:%M %p %z")
+      end
+      
+    end
   end

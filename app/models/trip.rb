@@ -25,28 +25,32 @@ class Trip < ActiveRecord::Base
     good_date = true
     good_time = true
     begin
-      @date = Date.strptime(self.trip_date, "%m/%d/%Y ")
+      Date.strptime(self.trip_date, "%m/%d/%Y")
     rescue
-      errors.add(:trip_date, I18n.translate(:date_must_be))
+      errors.add(:trip_date, I18n.translate(:date_wrong_format))
       good_date = false
     end
 
-    if /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9] [AaPp][Mm]$/.match(self.trip_time) == nil
-      errors.add(:trip_time, I18n.translate(:time_must_be))
+    begin
+      Time.strptime(trip_time, "%H:%M %p")
+    rescue Exception
+      errors.add(:trip_time, I18n.translate(:time_wrong_format))
       good_time = false
     end
 
-    if good_date && good_time
-      if !write_trip_datetime
-        errors.add(:trip_date, I18n.translate(:date_must_be))
-      end
+    return false unless good_date && good_time
+
+    if !write_trip_datetime
+      errors.add(:trip_date, I18n.translate(:date_wrong_format))
     end
+    true
   end
 
   def write_trip_datetime
     begin
-      self.trip_datetime = DateTime.strptime(self.trip_date + self.trip_time + DateTime.now.zone, '%m/%d/%Y%H:%M %p%z')
-    rescue Exception
+      self.trip_datetime = DateTime.strptime([trip_date, trip_time, DateTime.current.zone].join(' '),
+        '%m/%d/%Y %H:%M %p %z')
+    rescue Exception => e
       return false
     end
     true
@@ -56,9 +60,12 @@ class Trip < ActiveRecord::Base
     return true if trip_datetime.nil?
     if trip_datetime < Date.today
       errors.add(:trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
-    elsif trip_datetime < Time.now
+      return false
+    elsif trip_datetime < Time.current
       errors.add(:trip_time, I18n.translate(:trips_cannot_be_entered_for_times))
+      return false
     end
+    true
   end
 
   def create_itineraries
