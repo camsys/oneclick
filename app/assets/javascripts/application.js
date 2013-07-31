@@ -51,3 +51,15 @@ function fix_thumbnail_margins() {
         });
     });
 };
+function get_viewport_width() {
+	var x = 0;
+    if (self.innerHeight) {
+		x = self.innerWidth;
+    } else if (document.documentElement && document.documentElement.clientHeight) {
+        x = document.documentElement.clientWidth;
+    } else if (document.body) {
+       	x = document.body.clientWidth;
+    }
+    return x;
+};
+
