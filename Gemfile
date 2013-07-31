@@ -15,7 +15,8 @@ gem 'devise'
 gem 'figaro'
 gem 'geocoder'
 gem 'haml-rails'
-gem 'pg'
+#gem 'pg'
+gem 'mysql2'
 gem 'rolify'
 gem 'simple_form'
 gem 'thin'
@@ -42,6 +43,7 @@ group :development, :test do
   gem 'capybara'
 end
 group :test do
+  gem 'sqlite3'
   gem 'capybara'
   gem 'cucumber-rails', :require=>false
   gem 'database_cleaner'
