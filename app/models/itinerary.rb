@@ -4,7 +4,7 @@ class Itinerary < ActiveRecord::Base
   belongs_to :trip
 
 
-  def get_mode_icon(mode)
+  def self.get_mode_icon(mode)
     @icon_dictionary = {'WALK' => 'travelcon-walk', 'TRAM' => 'travelcon-subway', 'SUBWAY' => 'travelcon-subway', 'RAIL' => 'travelcon-train', 'BUS' => 'travelcon-bus', 'FERRY' => 'travelcon-boat'}
     @icon_dictionary.default = 'travelcon-bus'
     @icon_dictionary[mode]
