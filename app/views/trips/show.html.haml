@@ -20,7 +20,7 @@
         %ul.thumbnails
           - itineraries.each do |itinerary|
             %li.span4
-              = render :partial => 'trip_summary', :locals => { :itinerary => itinerary }
+              = render :partial => 'trip_summary', :locals => { :itinerary => itinerary, :icon => get_trip_summary_icon(itinerary.mode), :title => get_trip_summary_title(itinerary.mode) }
  
 .row-fluid
   .well.well-small.span12

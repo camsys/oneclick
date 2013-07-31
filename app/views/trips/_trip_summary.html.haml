@@ -1,11 +1,11 @@
-%a.span12.thumbnail.actionbutton{alt: t(:transit), title: t(:transit), href: '/501.html'}
+%a.span12.thumbnail.actionbutton{alt: title, title: title, href: '/501.html'}
   .row-fluid
     .span4
-      %i.icon-bus-sign.mode_icon_formatting
+      %i.mode_icon_formatting{:class => icon}
     .span8 
       .row-fluid
         .span12
-          %p.mode_title=t(:transit)
+          %p.mode_title=title
       .row-fluid
         .span4
           %p= t(:duration)

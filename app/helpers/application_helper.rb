@@ -2,6 +2,27 @@ module ApplicationHelper
 
   include CsHelpers
 
+  def get_trip_summary_title(mode)
+    if mode == 'transit'
+      title = t(:transit)
+    elsif mode == 'paratransit'
+      title = t(:paratransit)      
+    elsif mode == 'taxi'
+      title = t(:taxi)      
+    end
+    return title    
+  end
+  def get_trip_summary_icon(mode) 
+    if mode == 'transit'
+      icon_name = 'icon-bus-sign'
+    elsif mode == 'paratransit'
+      icon_name = 'icon-truck-sign'      
+    elsif mode == 'taxi'
+      icon_name = 'icon-taxi-sign'      
+    end
+    return icon_name
+  end
+  
   def display_base_errors resource
     return '' if (resource.errors.empty?) or (resource.errors[:base].empty?)
     messages = resource.errors[:base].map { |msg| content_tag(:p, msg) }.join
