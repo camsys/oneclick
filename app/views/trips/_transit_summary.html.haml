@@ -1,4 +1,4 @@
-%a.span12.thumbnail.actionbutton{alt: t(:transit), title: t(:transit), href: '/501.html'}
+%a.span12.thumbnail.actionbutton{alt: t(:transit), title: t(:transit), "data-toggle" => "modal" , href: "#transitDetails" + itinerary.id.to_s}
   .row-fluid
     %p.text-center.mode_title=t(:transit)
   .row-fluid
@@ -33,3 +33,5 @@
           .span2
             %p.transit_itinerary_icons{class: itinerary.get_mode_icon(leg['mode'])}
             %p.transit_itinerary_text.text-center= leg['route']
+
+=render :partial => 'modal', :locals => {:itinerary => itinerary}
