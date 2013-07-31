@@ -14,13 +14,10 @@
       %h4.span11 #{@trip.to_place.address}  
 
 .row-fluid
-  .span12
-    - @trip.valid_itineraries.each_slice(3) do |itineraries|
-      .row-fluid
-        %ul.thumbnails
-          - itineraries.each do |itinerary|
-            %li.span4
-              = render :partial => 'trip_summary', :locals => { :itinerary => itinerary, :icon => get_trip_summary_icon(itinerary.mode), :title => get_trip_summary_title(itinerary.mode) }
+  %ul.thumbnails
+    - @trip.valid_itineraries.each do |itinerary|
+      %li.trip_summary.thumbnail.box-shadow
+        = render :partial => 'trip_summary', :locals => { :itinerary => itinerary, :icon => get_trip_summary_icon(itinerary.mode), :title => get_trip_summary_title(itinerary.mode) }
  
 .row-fluid
   .well.well-small.span12

@@ -1,11 +1,13 @@
 html, body {
   height: 100%;
 }
-
 .center {
   float: none;
   margin-left: auto;
   margin-right: auto;
+}
+.first-in-row {
+  margin-left: 0 !important;
 }
 
 .dropdown-toggle {
@@ -49,7 +51,7 @@ html, body {
 
 .mode_icon_formatting {
   width: 100%;
-  font-size: 6.0em;
+  font-size: 5em;
 }
 
 .transit_itinerary_icons {
