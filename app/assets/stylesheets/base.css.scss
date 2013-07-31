@@ -1,11 +1,13 @@
 html, body {
   height: 100%;
 }
-
 .center {
   float: none;
   margin-left: auto;
   margin-right: auto;
+}
+.first-in-row {
+  margin-left: 0 !important;
 }
 
 .dropdown-toggle {
@@ -43,11 +45,13 @@ html, body {
 .mode_title {
   font-weight: bold;
   font-size: 1.5em;
+  margin-top: 8px;
+  border-bottom: 1px solid #f5f5f5;
 }
 
 .mode_icon_formatting {
   width: 100%;
-  font-size: 6.0em;
+  font-size: 5em;
 }
 
 .transit_itinerary_icons {
@@ -59,7 +63,7 @@ html, body {
 
 .transit_itinerary_text {
   font-weight: bold;
-  font-size: 1em;
+  font-size: 0.5em;
   text-align: center;
 }
 

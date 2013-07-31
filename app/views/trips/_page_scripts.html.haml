@@ -1,0 +1,16 @@
+%script{:type => "text/javascript"}
+  $(document).ready(function() {
+  fix_thumbnails();
+  });
+  $(window).resize(function() {
+  fix_thumbnails();
+  });
+  function fix_thumbnails() {
+  var window_width = $(window).width();
+  //var window_width = get_viewport_width(); 
+  adjust_thumbnails(window_width);    
+  make_same_height(".trip_summary");
+  fix_thumbnail_margins();
+  };
+
+
