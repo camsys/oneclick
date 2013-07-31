@@ -13,51 +13,34 @@
           %a{:class => "close", "data-dismiss" => "modal"}
             %i.icon-remove
   %div{:class => "modal-body"}
-    .row-fluid
-      .span4
-        %p= t(:duration)
-      .span8
-        %strong= itinerary.duration_to_words(itinerary.duration)
-    .row-fluid
-      .span4.arrival_label
-        %p= t(:walking)
-      .span8.arrival_time
-        %strong= itinerary.duration_to_words(itinerary.walk_time) + ' (' + itinerary.walk_distance.to_s + ' meters)'
-    .row-fluid
-      .span4
-        %p= t(:depart)
-      .span8.departure_time
-        %strong= itinerary.start_time.localtime.strftime('%I:%M %p')
-    .row-fluid
-      .span4.arrival_label
-        %p= t(:arrive)
-      .span8.arrival_time
-        %strong= itinerary.end_time.localtime.strftime('%I:%M %p')
-    %div{:class => "container-fluid"}
-      %div{:class => "accordion", :id => "details" + itinerary.id.to_s}
-        %div{:class => "accordion-group"}
-          %div{:class => "accordion-heading"}
-            %a{:class => "accordion-toggle", "data-toggle" => "collapse", "data-parent" => "#details" + itinerary.id.to_s, :href => "#collapseOne" + itinerary.id.to_s}
-              %h4.text-center Trip Details
-            %div{:class => "accordion-body collapse", :id => "collapseOne" + itinerary.id.to_s}
-              %div{:class => "accordion-inner"}
-                .row-fluid
-                  .row
-                    .span4
-                      %i.icon-play.mode_icon_formatting
-                    .span8
-                      ="START: " + itinerary.trip.from_place.address
-                  -YAML.load(itinerary.legs).each do |leg|
+    /= This is where the partial to the trip summary will go.
+    -if itinerary.mode == 'transit'
+      %div{:class => "container-fluid"}
+        %div{:class => "accordion", :id => "details" + itinerary.id.to_s}
+          %div{:class => "accordion-group"}
+            %div{:class => "accordion-heading"}
+              %a{:class => "accordion-toggle", "data-toggle" => "collapse", "data-parent" => "#details" + itinerary.id.to_s, :href => "#collapseOne" + itinerary.id.to_s}
+                %h4.text-center Trip Details
+              %div{:class => "accordion-body collapse in", :id => "collapseOne" + itinerary.id.to_s}
+                %div{:class => "accordion-inner"}
+                  .row-fluid
                     .row
                       .span4
-                        %p.transit_itinerary_icons{class: itinerary.get_mode_icon(leg['mode'])}
+                        %i.icon-play.mode_icon_formatting
                       .span8
-                        %p= leg['mode'] + ' ' + leg['route'] + " to " + leg['to']['name']
-                  .row
-                    .span4
-                      %i.icon-stop.mode_icon_formatting
-                    .span8
-                      ="ARRIVE: " + itinerary.trip.to_place.address
+                        /=="START:  + itinerary.trip.from_place.address"
+                        Test
+                    -YAML.load(itinerary.legs).each do |leg|
+                      .row
+                        .span4
+                          %i.mode_icon_formatting.hidden-phone{:class => icon}
+                        .span8
+                          %p= leg['mode'] + ' ' + leg['route'] + " to " + leg['to']['name']
+                    .row
+                      .span4
+                        %i.icon-stop.mode_icon_formatting
+                      .span8
+                        ="ARRIVE:  + itinerary.trip.to_place.address"
 
   %div{:class => "modal-footer"}
     .row

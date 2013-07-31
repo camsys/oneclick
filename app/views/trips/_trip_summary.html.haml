@@ -1,4 +1,4 @@
-%a.span12.actionbutton{alt: title, title: title, href: '/501.html'}
+%a.span12.actionbutton{alt: title, title: title, "data-toggle" => "modal", href: "#transitDetails" + itinerary.id.to_s}
   .row-fluid
     .span4
       %i.mode_icon_formatting.hidden-phone{:class => icon}
@@ -21,13 +21,13 @@
           .span4
             %p= t(:depart)
           .span8.departure_time
-            %strong= itinerary.start_time.localtime.strftime('%I:%M %p') 
+            %strong= itinerary.start_time.localtime.strftime('%I:%M %p')
       - unless itinerary.end_time.nil?
         .row-fluid
           .span4.arrival_label
             %p= t(:arrive)
           .span8.arrival_time
-            %strong= itinerary.end_time.localtime.strftime('%I:%M %p') 
+            %strong= itinerary.end_time.localtime.strftime('%I:%M %p')
       - unless itinerary.cost.nil?
         .row-fluid
           .span4
@@ -35,5 +35,4 @@
           .span8.departure_time
             %strong= '$' + ("%.2f" % itinerary.cost).to_s
           
-         
-  /= render :partial => 'legs_summary', :locals => { :legs => YAML.load(itinerary.legs) } unless itinerary.legs.nil?
+=render :partial => 'modal', :locals => {:itinerary => itinerary, :icon => icon, :title => title}
