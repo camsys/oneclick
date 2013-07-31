@@ -16,15 +16,24 @@
           %p= t(:walking)
         .span8.arrival_time
           %strong= itinerary.duration_to_words(itinerary.walk_time)
-      .row-fluid
-        .span4
-          %p= t(:depart)
-        .span8.departure_time
-          %strong= itinerary.start_time.localtime.strftime('%I:%M %p') unless itinerary.start_time.nil?
-      .row-fluid
-        .span4.arrival_label
-          %p= t(:arrive)
-        .span8.arrival_time
-          %strong= itinerary.end_time.localtime.strftime('%I:%M %p') unless itinerary.end_time.nil?
+      - unless itinerary.start_time.nil?
+        .row-fluid
+          .span4
+            %p= t(:depart)
+          .span8.departure_time
+            %strong= itinerary.start_time.localtime.strftime('%I:%M %p') 
+      - unless itinerary.end_time.nil?
+        .row-fluid
+          .span4.arrival_label
+            %p= t(:arrive)
+          .span8.arrival_time
+            %strong= itinerary.end_time.localtime.strftime('%I:%M %p') 
+      - unless itinerary.cost.nil?
+        .row-fluid
+          .span4
+            %p= t(:cost)
+          .span8.departure_time
+            %strong= '$' + ("%.2f" % itinerary.cost).to_s
+          
          
-  = render :partial => 'legs_summary', :locals => { :legs => YAML.load(itinerary.legs) } unless itinerary.legs.nil?
+  /= render :partial => 'legs_summary', :locals => { :legs => YAML.load(itinerary.legs) } unless itinerary.legs.nil?
