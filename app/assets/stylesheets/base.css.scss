@@ -47,38 +47,29 @@ html, body {
   font-size: 1.5em;
 }
 
-.mode_icon_formatting {
-  font-size: 2.0em;
-  text-align: right;
-}
-
-#modal{
-  max-height: 1000px;
-}
-
 .start_icon {
   color: #51e43f;
-  font-size: 1.0em;
-
 }
 
 .end_icon {
   color: #e41011;
 }
 
-
-
-.transit_itinerary_icons {
-  font-size: 2.5em;
-  margin-bottom: 0px;
-  margin-above: 0px;
+.itinerary_icons {
   text-align: center;
+  vertical-align: middle;
+  line-height: normal;
+  font-size: .8em;
 }
 
-.transit_itinerary_text {
-  font-weight: bold;
-  font-size: 1em;
-  text-align: center;
+.itinerary_text {
+  text-align: left;
+  vertical-align: middle;
+}
+
+.accordion{
+  max-height: 600px;
+  overflow-y: auto;
 }
 
 //#main .container {

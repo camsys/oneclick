@@ -1,25 +1,35 @@
 %div{:class => "modal hide fade", :id => "transitDetails" + itinerary.id.to_s}
   %div{:class => "modal-header"}
-    %a{:href => "/501.html"}
-      %i.icon-reply.muted
-    %a{"data-dismiss" => "modal"}
-      %i.icon-remove.muted
-  %div{:class => "modal-body"}
+    .row-fluid
+      .pull-right{:style => "display: inline-block"}
+        .span12.btn-toolbar
+          %button.btn.btn-mini.btn-success
+            %i.icon-reply
+            Return
+          %button.btn.btn-mini.btn-danger
+            %i.icon-remove
+            Remove
+      %div{:class => "modal-body"}
     = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
     %div{:class => "container-fluid"}
       %div{:class => "accordion", :id => "details" + itinerary.id.to_s}
         %div{:class => "accordion-group"}
           %div{:class => "accordion-heading"}
             %a{:class => "accordion-toggle", "data-toggle" => "collapse", "data-parent" => "#details" + itinerary.id.to_s, :href => "#collapseOne" + itinerary.id.to_s}
-              %h4.text-center Trip Details
+              %h4.text-center Details
             %div{:class => "accordion-body collapse in", :id => "collapseOne" + itinerary.id.to_s}
               %div{:class => "accordion-inner"}
                 = render :partial => itinerary['mode']+'_details', :locals => { :itinerary => itinerary }
   %div{:class => "modal-footer"}
-    .row
-      %a{:href => "/501.html"}
-        %i.icon-print
-      %a{:href => "/501.html"}
-        %i.icon-comments
-      %a{:href => "/501.html"}
-        %i.icon-envelope
+    .row-fluid
+      .pull-right{:style => "display: inline-block"}
+        .span12.btn-toolbar
+          %button.btn.btn-info
+            %i.icon-print
+            Print
+          %button.btn.btn-info
+            %i.icon-comments
+            Chat
+          %button.btn.btn-info
+            %i.icon-envelope
+            Email
