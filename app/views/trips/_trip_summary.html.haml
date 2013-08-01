@@ -2,4 +2,14 @@
   = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
 
   .row-fluid
-    %i{class: CsHelpers::ACTION_ICONS[:plan_a_trip]}
+    .pull-right{:style => "display: inline-block"}
+      .span12.btn-toolbar
+        %button.btn.btn-mini.btn-success
+          %i.icon-search
+          View
+        %button.btn.btn-mini.btn-danger
+          %i.icon-remove
+          Remove 
+        %button.btn.btn-mini.btn-info
+          %i.icon-undo
+          Reload
