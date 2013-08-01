@@ -6,12 +6,12 @@
       .span12.btn-toolbar
         %button.btn.btn-mini.btn-success
           %i.icon-search
-          View
+          =t(:view)
         %button.btn.btn-mini.btn-danger
           %i.icon-remove
-          Remove 
+          =t(:remove)
         %button.btn.btn-mini.btn-info
           %i.icon-undo
-          Reload
+          =t(:reload)
 
 = render :partial => 'trip_details_modal', :locals => { :itinerary => itinerary }

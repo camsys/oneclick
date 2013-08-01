@@ -5,10 +5,10 @@
         .span12.btn-toolbar
           %button.btn.btn-mini.btn-success
             %i.icon-reply
-            Return
+            =t(:return)
           %button.btn.btn-mini.btn-danger
             %i.icon-remove
-            Remove
+            =t(:remove)
       %div{:class => "modal-body"}
     = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
     %div{:class => "container-fluid"}
@@ -16,7 +16,7 @@
         %div{:class => "accordion-group"}
           %div{:class => "accordion-heading"}
             %a{:class => "accordion-toggle", "data-toggle" => "collapse", "data-parent" => "#details" + itinerary.id.to_s, :href => "#collapseOne" + itinerary.id.to_s}
-              %h4.text-center Details
+              %h4.text-center=t(:details)
             %div{:class => "accordion-body collapse in", :id => "collapseOne" + itinerary.id.to_s}
               %div{:class => "accordion-inner"}
                 = render :partial => itinerary['mode']+'_details', :locals => { :itinerary => itinerary }
@@ -26,10 +26,10 @@
         .span12.btn-toolbar
           %button.btn.btn-info
             %i.icon-print
-            Print
+            =t(:print)
           %button.btn.btn-info
             %i.icon-comments
-            Chat
+            =t(:chat)
           %button.btn.btn-info
             %i.icon-envelope
-            Email
+            =t(:e_mail)

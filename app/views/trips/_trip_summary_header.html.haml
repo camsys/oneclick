@@ -8,4 +8,4 @@
 .row-fluid
   %h3.span9.offset3{:style => 'line-height: 0;min-height:24px;margin-top:5px;margin-bottom:5px;'}= itinerary.cost.nil? ? '$0' : number_to_currency(itinerary.cost) 
 .row-fluid
-  %h3.span9.offset3{:style => 'line-height: 0;min-height:24px;margin-top:5px;margin-bottom:5px;'}= (itinerary.transfers.nil? ? '0' : itinerary.transfers.to_s) + " transfers"        
+  %h3.span9.offset3{:style => 'line-height: 0;min-height:24px;margin-top:5px;margin-bottom:5px;'}= (itinerary.transfers.nil? ? '0' : itinerary.transfers.to_s) + ' ' + t(:transfers)

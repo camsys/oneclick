@@ -34,6 +34,12 @@ es:
   transit_trip: '[es]Transit Trip[/es]'
   taxi: 'Taxi'
   transit: '[es]Transit[/es]'
+  details: '[es]Details[/es]'
+  transfers: '[es]transfers[/es]'
+  view: '[es]View[/es]'
+  remove: '[es]Remove[/es]'
+  reload: '[es]Reload[/es]'
+  return: '[es]Return[/es]'
   paratransit: '[es]Paratransit[/ex]'
   mode: '[es]Mode[/es]'
   duration: '[es]Duration[/es]'
@@ -41,6 +47,9 @@ es:
   depart: '[es]Depart[/es]'
   arrive: '[es]Arrive[/es]'
   cost: '[es]Cost[/es]'
+  print: '[es]Print[/es]'
+  chat: '[es]Chat[/es]'
+  e_mail: '[es]Email[/es]'
   trip_was_successfully_created: '[es]Trip was successfully created.[/es]'
   trip_created_no_valid_options: "[es]Trip created, but no valid trip options could be found:[/es]"
   hour: {
