@@ -7,5 +7,7 @@
   %h4.span9.offset3= itinerary.duration_to_words(itinerary.duration) + " (est.)"
 .row-fluid
   %h4.span9.offset3= itinerary.cost.nil? ? '$0' : number_to_currency(itinerary.cost) 
-.row-fluid
-  %h4.span9.offset3= itinerary.transfers.to_s + " transfers"        
+-unless itinerary.transfers.nil?
+  .row-fluid
+    %h4.span9.offset3= itinerary.transfers.to_s + " transfers"
+

@@ -1,5 +1,7 @@
-%a.span12.actionbutton{alt: get_trip_summary_title(itinerary.mode), title: get_trip_summary_title(itinerary.mode), href: '/501.html'}
+%a.span12.actionbutton{alt: get_trip_summary_title(itinerary.mode), title: get_trip_summary_title(itinerary.mode), "data-toggle" => "modal" , href: "#transitDetails" + itinerary.id.to_s}
   = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
 
   .row-fluid
     %i{class: CsHelpers::ACTION_ICONS[:plan_a_trip]}
+
+=render :partial => 'modal', :locals => {:itinerary => itinerary}

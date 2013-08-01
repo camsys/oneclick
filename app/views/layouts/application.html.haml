@@ -9,7 +9,6 @@
         = javascript_include_tag "application" # TODO This should go in footer
         = csrf_meta_tags
         = yield(:head)
- 
   %body{:class => "#{controller_name} #{action_name}"}
     #wrap
       = render 'layouts/navigation'

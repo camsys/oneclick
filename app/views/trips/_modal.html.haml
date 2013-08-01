@@ -1,47 +1,20 @@
 %div{:class => "modal hide fade", :id => "transitDetails" + itinerary.id.to_s}
   %div{:class => "modal-header"}
-    .row-fluid
-      .span2
-        %i.icon-bus-sign.mode_icon_formatting
-      .span2
-        %h3 Transit
-      .span6
-      .span2
-        .row
-          %a{:href => "/501.html"}
-            %i.icon-reply
-          %a{:class => "close", "data-dismiss" => "modal"}
-            %i.icon-remove
+    %a{:href => "/501.html"}
+      %i.icon-reply.muted
+    %a{"data-dismiss" => "modal"}
+      %i.icon-remove.muted
   %div{:class => "modal-body"}
-    /= This is where the partial to the trip summary will go.
-    -if itinerary.mode == 'transit'
-      %div{:class => "container-fluid"}
-        %div{:class => "accordion", :id => "details" + itinerary.id.to_s}
-          %div{:class => "accordion-group"}
-            %div{:class => "accordion-heading"}
-              %a{:class => "accordion-toggle", "data-toggle" => "collapse", "data-parent" => "#details" + itinerary.id.to_s, :href => "#collapseOne" + itinerary.id.to_s}
-                %h4.text-center Trip Details
-              %div{:class => "accordion-body collapse in", :id => "collapseOne" + itinerary.id.to_s}
-                %div{:class => "accordion-inner"}
-                  .row-fluid
-                    .row
-                      .span4
-                        %i.icon-play.mode_icon_formatting
-                      .span8
-                        /=="START:  + itinerary.trip.from_place.address"
-                        Test
-                    -YAML.load(itinerary.legs).each do |leg|
-                      .row
-                        .span4
-                          %i.mode_icon_formatting.hidden-phone{:class => icon}
-                        .span8
-                          %p= leg['mode'] + ' ' + leg['route'] + " to " + leg['to']['name']
-                    .row
-                      .span4
-                        %i.icon-stop.mode_icon_formatting
-                      .span8
-                        ="ARRIVE:  + itinerary.trip.to_place.address"
-
+    = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
+    %div{:class => "container-fluid"}
+      %div{:class => "accordion", :id => "details" + itinerary.id.to_s}
+        %div{:class => "accordion-group"}
+          %div{:class => "accordion-heading"}
+            %a{:class => "accordion-toggle", "data-toggle" => "collapse", "data-parent" => "#details" + itinerary.id.to_s, :href => "#collapseOne" + itinerary.id.to_s}
+              %h4.text-center Trip Details
+            %div{:class => "accordion-body collapse in", :id => "collapseOne" + itinerary.id.to_s}
+              %div{:class => "accordion-inner"}
+                = render :partial => itinerary['mode']+'_details', :locals => { :itinerary => itinerary }
   %div{:class => "modal-footer"}
     .row
       %a{:href => "/501.html"}

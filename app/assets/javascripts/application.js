@@ -17,6 +17,21 @@
 //= require bootstrap-combobox
 //= require_tree .
 
+// Finds all the class elements on a page and sets the min-height css variable
+// to the maximum height of all the containers
+function make_same_height(class_name) {
+
+	// remove any existing min-height attributes
+	$(class_name).css("min-height", " ");
+
+	// Set the form parts to equal height
+	var max = -1;
+	$(class_name).each(function() {
+		var h = $(this).height();
+		max = h > max ? h : max;
+	});
+	$(class_name).css({"min-height": max});
+};
 function fix_thumbnail_margins() {
 	
     $('.thumbnails').each(function () {

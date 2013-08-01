@@ -1,44 +1,18 @@
-%div{:class => "modal hide fade", :id => "transitDetails" + itinerary.id.to_s}
-  %div{:class => "modal-header"}
-    %a{:href => "/501.html"}
-      %i.icon-reply.muted
-    %a{"data-dismiss" => "modal"}
-      %i.icon-remove.muted
-  %div{:class => "modal-body"}
-    = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
-    -if itinerary.mode == 'transit'
-      %div{:class => "container-fluid"}
-        %div{:class => "accordion", :id => "details" + itinerary.id.to_s}
-          %div{:class => "accordion-group"}
-            %div{:class => "accordion-heading"}
-              %a{:class => "accordion-toggle", "data-toggle" => "collapse", "data-parent" => "#details" + itinerary.id.to_s, :href => "#collapseOne" + itinerary.id.to_s}
-                %h4.text-center Trip Details
-              %div{:class => "accordion-body collapse in", :id => "collapseOne" + itinerary.id.to_s}
-                %div{:class => "accordion-inner"}
-                  .row-fluid
-                    .row{:style => "height:80px;"}
-                      .span4{:style => 'text-align:center;'}
-                        %i.icon-play.mode_icon_formatting{:class => 'start_icon'}
-                      .span8
-                        ="START: " + itinerary.trip.from_place.address
+.row-fluid
+  .row{:style => "height:80px;"}
+    .span4{:style => 'text-align:center;'}
+      %i.icon-play.mode_icon_formatting{:class => 'start_icon'}
+    .span8
+      ="START: " + itinerary.trip.from_place.address
 
-                    -YAML.load(itinerary.legs).each do |leg|
-                      .row{:style => "height:80px;"}
-                        .span4{:style => 'text-align:center;'}
-                          %i.transit_itinerary_icons.mode_icon_formatting{class: Itinerary.get_mode_icon(leg['mode']), :style=>"font-size:1em;"}
-                        .span8
-                          %p= leg['mode'] + ' ' + leg['route'] + " to " + leg['to']['name']
-                    .row{:style => "height:80px;"}
-                      .span4{:style => 'text-align:center;'}
-                        %i.icon-stop.mode_icon_formatting{:class => 'end_icon'}
-                      .span8
-                        ="ARRIVE: " + itinerary.trip.to_place.address
-
-  %div{:class => "modal-footer"}
-    .row
-      %a{:href => "/501.html"}
-        %i.icon-print
-      %a{:href => "/501.html"}
-        %i.icon-comments
-      %a{:href => "/501.html"}
-        %i.icon-envelope
+  -YAML.load(itinerary.legs).each do |leg|
+    .row{:style => "height:80px;"}
+      .span4{:style => 'text-align:center;'}
+        %i.transit_itinerary_icons.mode_icon_formatting{class: Itinerary.get_mode_icon(leg['mode']), :style=>"font-size:1em;"}
+      .span8
+        %p= leg['mode'] + ' ' + leg['route'] + " to " + leg['to']['name']
+  .row{:style => "height:80px;"}
+    .span4{:style => 'text-align:center;'}
+      %i.icon-stop.mode_icon_formatting{:class => 'end_icon'}
+    .span8
+      ="ARRIVE: " + itinerary.trip.to_place.address
