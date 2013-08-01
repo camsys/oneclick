@@ -3,21 +3,15 @@
     %h1
       %i.icon-bus-sign
       = t(:trip_options)
-.well.well-small
+.well
   .row-fluid
-    .span12
-      %h4.span1.text-right From:
-      %h4.span11 #{@trip.from_place.address}
-  .row-fluid
-    .span12
-      %h4.span1.text-right To:
-      %h4.span11 #{@trip.to_place.address}  
+    %h4.span12 #{@trip.from_place.address} to #{@trip.to_place.address}  
 
 .row-fluid
   %ul.thumbnails
     - @trip.valid_itineraries.each do |itinerary|
-      %li.trip_summary.thumbnail.box-shadow
-        = render :partial => 'trip_summary', :locals => { :itinerary => itinerary, :icon => get_trip_summary_icon(itinerary.mode), :title => get_trip_summary_title(itinerary.mode) }
+      %li.trip_summary.thumbnail
+        = render :partial => 'trip_summary', :locals => { :itinerary => itinerary }
  
 .row-fluid
   .well.well-small.span12
