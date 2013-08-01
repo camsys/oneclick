@@ -6,11 +6,12 @@
   fix_thumbnails();
   });
   function fix_thumbnails() {
+  // remove any height attributes
+  $(".thumbnail").css('height', '');
+  $(".thumbnail").css('overflow', '');
   var window_width = $(window).width();
-  //var window_width = get_viewport_width(); 
   adjust_thumbnails(window_width);
-  make_same_height(".trip_summary");
-  fix_thumbnail_margins();
   };
+  make_same_height('.thumbnail');
 
 

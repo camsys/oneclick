@@ -3,15 +3,9 @@
     %h1
       %i.icon-bus-sign
       = t(:trip_options)
-.well.well-small
+.well
   .row-fluid
-    .span12
-      %h4.span1.text-right From:
-      %h4.span11 #{@trip.from_place.address}
-  .row-fluid
-    .span12
-      %h4.span1.text-right To:
-      %h4.span11 #{@trip.to_place.address}  
+    %h4.span12 #{@trip.from_place.address} to #{@trip.to_place.address}  
 
 .row-fluid
   %ul.thumbnails
