@@ -1,0 +1,18 @@
+.row-fluid
+  .row{:style => "height:80px;"}
+    .span4{:style => 'text-align:center;'}
+      %i.icon-play.mode_icon_formatting{:class => 'start_icon'}
+    .span8
+      ="START: " + itinerary.trip.from_place.address
+
+  -YAML.load(itinerary.legs).each do |leg|
+    .row{:style => "height:80px;"}
+      .span4{:style => 'text-align:center;'}
+        %i.transit_itinerary_icons.mode_icon_formatting{class: Itinerary.get_mode_icon(leg['mode']), :style=>"font-size:1em;"}
+      .span8
+        %p= leg['mode'] + ' ' + leg['route'] + " to " + leg['to']['name']
+  .row{:style => "height:80px;"}
+    .span4{:style => 'text-align:center;'}
+      %i.icon-stop.mode_icon_formatting{:class => 'end_icon'}
+    .span8
+      ="ARRIVE: " + itinerary.trip.to_place.address

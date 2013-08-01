@@ -1,0 +1,6 @@
+.row-fluid
+  -YAML.load(itinerary.message).each do |business|
+    .row{:style => "height:80px;"}
+      =business['name']
+    .row
+      =business['number']
