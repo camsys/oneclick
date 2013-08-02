@@ -64,28 +64,22 @@ function get_viewport_width() {
     return x;
 };
 function adjust_thumbnails(window_width) {
-	var icon_size;
 	var span_size;
 	var counter = 0;
 	if (window_width > 1200) {
-		icon_size = "5em";
 		span_size = "span3";
 		counter = 4;
 	} else if (window_width > 979) {
-		icon_size = "5em";
 		span_size = "span4";
 		counter = 3;
 	} else if (window_width > 767) {
-		icon_size = "4em";
 		span_size = "span6";
 		counter = 2;
 	} else {
-		icon_size = "4em";
 		span_size = "span12";
 		counter = 1;
 	}
 	//alert('Window = ' + window_width + ' setting icon size to ' + icon_size + ' and span size to ' + span_size);
-	$('.mode_icon_formatting').css("font-size", icon_size);
 	$('.trip_summary').removeClass("span12 span6 span4 span3").addClass(span_size);
 	$('.thumbnail').removeClass('first-in-row');
 	// Add the first-in-row class to the first thumbnail in each row

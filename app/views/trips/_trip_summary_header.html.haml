@@ -1,11 +1,11 @@
 .row-fluid
   .span3
-    %i.mode_icon_formatting.muted{:class => get_trip_summary_icon(itinerary.mode)}
+    %i.mode_icon_formatting.trip_summary_icon{:class => get_trip_summary_icon(itinerary.mode)}
   .span9 
-    %h1.muted= get_trip_summary_title(itinerary.mode)
+    %h1.trip_summary_title= get_trip_summary_title(itinerary.mode)
 .row-fluid
-  %h3.span9.offset3{:style => 'line-height: 0;min-height:24px;margin-top:5px;margin-bottom:5px;'}= itinerary.duration_to_words(itinerary.duration) + " (est.)"
+  %h3.span9.offset3.trip_summary_text{:style => 'line-height: 0;min-height:24px;margin-top:5px;margin-bottom:5px;'}= itinerary.duration_to_words(itinerary.duration) + " (est.)"
 .row-fluid
-  %h3.span9.offset3{:style => 'line-height: 0;min-height:24px;margin-top:5px;margin-bottom:5px;'}= itinerary.cost.nil? ? '$0' : number_to_currency(itinerary.cost) 
+  %h3.span9.offset3.trip_summary_text{:style => 'line-height: 0;min-height:24px;margin-top:5px;margin-bottom:5px;'}= itinerary.cost.nil? ? '$0' : number_to_currency(itinerary.cost) 
 .row-fluid
-  %h3.span9.offset3{:style => 'line-height: 0;min-height:24px;margin-top:5px;margin-bottom:5px;'}= (itinerary.transfers.nil? ? '0' : itinerary.transfers.to_s) + ' ' + t(:transfers)
+  %h3.span9.offset3.trip_summary_text{:style => 'line-height: 0;min-height:24px;margin-top:5px;margin-bottom:5px;'}= (itinerary.transfers.nil? ? '0' : itinerary.transfers.to_s) + ' ' + t(:transfers)
