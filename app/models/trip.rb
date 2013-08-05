@@ -13,7 +13,7 @@ class Trip < ActiveRecord::Base
   # has_one :to_place, foreign_key: 'to_place_id', class_name: TripPlace
   has_many :places, class_name: TripPlace
   has_many :itineraries
-  has_many :valid_itineraries, conditions: 'status=200', class_name: 'Itinerary'
+  has_many :valid_itineraries, conditions: 'status=200 AND hidden=false', class_name: 'Itinerary'
 
   accepts_nested_attributes_for :places
 

@@ -8,9 +8,9 @@
     %h4.span12 #{@trip.from_place.address} to #{@trip.to_place.address}  
 
 .row-fluid
-  %ul.thumbnails
+  %ul.thumbnails#itineraries
     - @trip.valid_itineraries.each do |itinerary|
-      %li.trip_summary.thumbnail.box-shadow
+      %li.trip_summary.thumbnail.box-shadow{id: "itinerary#{itinerary.id}"}
         = render :partial => 'trip_summary', :locals => { :itinerary => itinerary, :icon => get_trip_summary_icon(itinerary.mode), :title => get_trip_summary_title(itinerary.mode) }
  
 .row-fluid
@@ -19,4 +19,5 @@
       %i{class: CsHelpers::ACTION_ICONS[:plan_a_trip]}
       = t(:plan_a_trip)
 
-= render "page_scripts"
+= javascript_include_tag "trips"
+
