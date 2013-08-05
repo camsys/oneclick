@@ -9,19 +9,27 @@
     overflow: auto;
     margin-top: 10px;
     min-height: 8.0em;
-    img {
-      float: left;
-      margin-right: 5px;
+
+    i {
+      margin-top: 10px;
+      width: 100%;
+      font-size: 6.0em;
     }
-    .span6 {
-      height: 8em;
-    }
+    
+    @media (min-width: 768px ) {
+      .actionlabel {
+        height: 8em;
+      }
+    }    
     .actionlabel {
       display: table;
       p {
         text-align: center;
         display: table-cell;
         vertical-align: middle;
+        font-weight: bold;
+        font-size: 1.5em;
+        line-height: 20px;
       }
     }
   }

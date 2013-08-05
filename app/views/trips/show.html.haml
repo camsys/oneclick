@@ -10,8 +10,8 @@
 .row-fluid
   %ul.thumbnails
     - @trip.valid_itineraries.each do |itinerary|
-      %li.trip_summary.thumbnail
-        = render :partial => 'trip_summary', :locals => { :itinerary => itinerary }
+      %li.trip_summary.thumbnail.box-shadow
+        = render :partial => 'trip_summary', :locals => { :itinerary => itinerary, :icon => get_trip_summary_icon(itinerary.mode), :title => get_trip_summary_title(itinerary.mode) }
  
 .row-fluid
   .well.well-small.span12

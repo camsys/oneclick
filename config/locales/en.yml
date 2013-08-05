@@ -37,6 +37,12 @@ en:
   transit_trip: 'Transit Trip'
   taxi: 'Taxi'
   transit: 'Transit'
+  details: 'Details'
+  transfers: 'transfers'
+  view: 'View'
+  remove: 'Remove'
+  reload: 'Reload'
+  return: 'Return'
   paratransit: 'Paratransit'
   mode: 'Mode'
   duration: 'Duration'
@@ -44,6 +50,9 @@ en:
   depart: 'Depart'
   arrive: 'Arrive'
   cost: 'Cost'
+  print: 'Print'
+  chat: 'Chat'
+  e_mail: 'Email'
   trip_was_successfully_created: 'Trip was successfully created.'
   trip_created_no_valid_options: "Trip created, but no valid trip options could be found:"
   hour: {

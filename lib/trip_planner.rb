@@ -4,13 +4,12 @@ require 'net/http'
 class TripPlanner
 
 
-  def get_fixed_itineraries(from, to, trip_datetime)
+  def get_fixed_itineraries(from, to, trip_datetime, arriveBy)
 
     #Parameters
     time = trip_datetime.strftime("%I:%M%p")
     date = trip_datetime.strftime("%Y-%m-%d")
     mode = 'TRANSIT,WALK'
-    arriveBy = 'false'
 
     #TODO:  Move base_url for OpenTripPlanner to a global config file.
     base_url = "http://arc-otp-demo.camsys-apps.com"
@@ -63,23 +62,39 @@ class TripPlanner
   def get_taxi_itineraries(from, to, trip_datetime)
 
     #TODO: Move the api key or url to a config
-    base_url = 'http://api.taxifarefinder.com/fare?key='
-    api_key = 'SIefr5akieS5'
-    url_options = '&entity_handle=Atlanta'
-    url_options += "&origin=" + to[0].to_s + ',' + to[1].to_s + "&destination=" + from[0].to_s + ',' + from[1].to_s
-    url = base_url + api_key + url_options
+    base_url = 'http://api.taxifarefinder.com/'
+    api_key = '?key=SIefr5akieS5'
+    entity = '&entity_handle=Atlanta'
 
+    #Get fare
+    task = 'fare'
+    fare_options = "&origin=" + to[0].to_s + ',' + to[1].to_s + "&destination=" + from[0].to_s + ',' + from[1].to_s
+    url = base_url + task + api_key + entity + fare_options
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
 
-    result = JSON.parse(resp.body)
-    if result['status'] != "OK"
-      return false, result['explanation']
+    fare = JSON.parse(resp.body)
+    if fare['status'] != "OK"
+      return false, fare['explanation']
+    end
+
+    #Get providers
+    task = 'businesses'
+    url = base_url + task + api_key + entity
+    begin
+      resp = Net::HTTP.get_response(URI.parse(url))
+    rescue Exception=>e
+      return false, {'id'=>500, 'msg'=>e.to_s}
+    end
+
+    businesses = JSON.parse(resp.body)
+    if businesses['status'] != "OK"
+      return false, businesses['explanation']
     else
-      return true, result
+      return true, [fare, businesses]
     end
 
   end
@@ -87,11 +102,12 @@ class TripPlanner
   def convert_taxi_itineraries(itinerary)
       trip_itinerary = {}
       trip_itinerary['mode'] = 'taxi'
-      trip_itinerary['duration'] = itinerary['duration'].to_f
+      trip_itinerary['duration'] = itinerary[0]['duration'].to_f
       trip_itinerary['walk_time'] = 0
       trip_itinerary['walk_distance'] = 0
-      trip_itinerary['cost'] = itinerary['total_fare']
+      trip_itinerary['cost'] = itinerary[0]['total_fare']
       trip_itinerary['status'] = 200
+      trip_itinerary['message'] = itinerary[1]['businesses']
       trip_itinerary
   end
 

@@ -1,0 +1,35 @@
+%div{:class => "modal hide fade", :id => "transitDetails" + itinerary.id.to_s}
+  %div{:class => "modal-header"}
+    .row-fluid
+      .pull-right{:style => "display: inline-block"}
+        .span12.btn-toolbar
+          %button.btn.btn-mini.btn-success
+            %i.icon-reply
+            =t(:return)
+          %button.btn.btn-mini.btn-danger
+            %i.icon-remove
+            =t(:remove)
+      %div{:class => "modal-body"}
+    = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
+    %div{:class => "container-fluid"}
+      %div{:class => "accordion", :id => "details" + itinerary.id.to_s}
+        %div{:class => "accordion-group"}
+          %div{:class => "accordion-heading"}
+            %a{:class => "accordion-toggle", "data-toggle" => "collapse", "data-parent" => "#details" + itinerary.id.to_s, :href => "#collapseOne" + itinerary.id.to_s}
+              %h4.text-center=t(:details)
+            %div{:class => "accordion-body collapse in", :id => "collapseOne" + itinerary.id.to_s}
+              %div{:class => "accordion-inner"}
+                = render :partial => itinerary['mode']+'_details', :locals => { :itinerary => itinerary }
+  %div{:class => "modal-footer"}
+    .row-fluid
+      .pull-right{:style => "display: inline-block"}
+        .span12.btn-toolbar
+          %button.btn.btn-info
+            %i.icon-print
+            =t(:print)
+          %button.btn.btn-info
+            %i.icon-comments
+            =t(:chat)
+          %button.btn.btn-info
+            %i.icon-envelope
+            =t(:e_mail)
