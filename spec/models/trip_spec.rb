@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Trip do
   before(:each) do
+    I18n.locale = :en
     allow(Geocoder).to(receive(:search)) do |nongeocoded_address|
       [
         {
@@ -64,33 +65,38 @@ describe Trip do
     end
 
     it "should support nested attributes for places" do
-      trip = Trip.create(trip_date: (Date.today + 2).strftime('%m/%d/%Y'), trip_time: '2:59 pm',
-        places_attributes: [{nongeocoded_address: 'bar'}, {nongeocoded_address: 'baz'}]
+      trip = Trip.create!(trip_date: (Date.today + 2).strftime('%m/%d/%Y'), trip_time: '2:59 pm',
+        places_attributes: [{nongeocoded_address: 'bar', sequence: 0}, {nongeocoded_address: 'baz', sequence: 1}]
         )
+      trip.reload
       trip.places[0].nongeocoded_address.should eq 'bar'
       trip.places[1].nongeocoded_address.should eq 'baz'
-    end
-    it "should from_place and to_place aliases for places for now" do
-      trip = Trip.create(trip_date: (Date.today + 2).strftime('%m/%d/%Y'), trip_time: '2:59 pm',
-        from_place: {nongeocoded_address: 'bar'}, to_place: {nongeocoded_address: 'baz'}
-        )
       trip.from_place.nongeocoded_address.should eq 'bar'
       trip.to_place.nongeocoded_address.should eq 'baz'
     end
+    it "should support from_place and to_place aliases for places for now" do
+      trip = Trip.create!(trip_date: (Date.today + 2).strftime('%m/%d/%Y'), trip_time: '2:59 pm',
+        from_place_attributes: {nongeocoded_address: 'bar', sequence: 0}, to_place_attributes: {nongeocoded_address: 'baz', sequence: 1}
+        )
+      trip.reload
+      trip.from_place.nongeocoded_address.should eq 'bar'
+      trip.to_place.nongeocoded_address.should eq 'baz'
+      trip.places[0].nongeocoded_address.should eq 'bar'
+      trip.places[1].nongeocoded_address.should eq 'baz'
+    end
     it "should have from_place and to_place aliases even when comes from db" do
-      trip = FactoryGirl.create(:trip_with_places)
+      trip = FactoryGirl.create(:trip_with_places,
+        from_place_attributes: {sequence: 0, nongeocoded_address: 'bar'}, to_place_attributes: {sequence: 1, nongeocoded_address: 'baz'}
+        )
       db_trip = Trip.find(trip.id)
       db_trip.from_place.nongeocoded_address.should eq 'bar'
       db_trip.to_place.nongeocoded_address.should eq 'baz'
     end
     it "should handle places that come from the user" do
-      trip = FactoryGirl.create(:trip_with_owner)
-      trip.from_place = {nongeocoded_address: trip.owner.places[0].name}
-      trip.to_place = {nongeocoded_address: trip.owner.places[1].name}
+      trip = FactoryGirl.build(:trip_with_owner)
+      trip.from_place = TripPlace.new({sequence: 0, nongeocoded_address: trip.owner.places[0].name})
+      trip.to_place = TripPlace.new({sequence: 1, nongeocoded_address: trip.owner.places[1].name})
       trip.save!
-      Rails.logger.info trip.ai
-      Rails.logger.info trip.from_place.ai
-      Rails.logger.info trip.to_place.ai
       trip.from_place.nongeocoded_address.should eq 'bar'
       db_trip = Trip.find(trip.id)
       db_trip.from_place.nongeocoded_address.should eq 'bar'

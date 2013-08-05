@@ -15,8 +15,10 @@ class TripsController < ApplicationController
   # GET /trips/new.json
   def new
     @trip = Trip.new
-    @trip.owner = current_user || anonymous_user
     # TODO User might be different if we are an agent
+    @trip.owner = current_user || anonymous_user
+    @trip.build_from_place(sequence: 0)
+    @trip.build_to_place(sequence: 1)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -33,6 +35,7 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       if @trip.save
+        @trip.reload
         @trip.create_itineraries
         unless @trip.has_valid_itineraries?
           message = t(:trip_created_no_valid_options)
@@ -45,6 +48,10 @@ class TripsController < ApplicationController
         format.html { redirect_to @trip }
         format.json { render json: @trip, status: :created, location: @trip }
       else
+        Rails.logger.info @trip.ai
+        Rails.logger.info @trip.places.ai
+        Rails.logger.info @trip.from_place.ai
+        Rails.logger.info @trip.to_place.ai
         format.html { render action: "new" }
         format.json { render json: @trip.errors, status: :unprocessable_entity }
       end
