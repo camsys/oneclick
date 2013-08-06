@@ -1,6 +1,6 @@
 class Itinerary < ActiveRecord::Base
 
-  attr_accessible :duration, :cost, :end_time, :legs, :message, :mode, :start_time, :status, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary
+  attr_accessible :duration, :cost, :end_time, :legs, :message, :mode, :start_time, :status, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden
   belongs_to :trip
 
 
@@ -32,7 +32,16 @@ class Itinerary < ActiveRecord::Base
     end
 
     time_string
+  end
 
+  def unhide
+    self.hidden = false
+    self.save()
+  end
+
+  def hide
+    self.hidden = true
+    self.save()
   end
 
 end

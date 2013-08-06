@@ -10,6 +10,9 @@ Oneclick::Application.routes.draw do
 
     resources :users
     resources :trips, only: [:new, :create, :show]
+    resources :itineraries do
+      get 'hide', on: :member
+    end
 
     match '/' => 'home#index'
 
