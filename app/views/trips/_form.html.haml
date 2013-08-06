@@ -1,18 +1,34 @@
 .well
   = simple_form_for(@trip, :html => {:class => 'form-horizontal' }) do |f|
     - if user_signed_in?
-      -# TODO span4 breaks the combobox
-      -# TODO placeholder does not work with combobox
       = f.simple_fields_for :from_place do |p|
-        = p.input :nongeocoded_address, label: t(:from), :collection => @trip.owner.places,
-          label_method: :name, value_method: :id, input_html: {class: 'combobox'}, include: :blank, placeholder: t(:select_or_enter_address)
+        = p.input :sequence, as: :hidden, value: 0        
+        = p.input :address, label: t(:from), wrapper: :append, html: {id: :from_address} do
+          = p.input_field :nongeocoded_address, placeholder: t(:select_or_enter_address)
+          %span.dropdown
+            %a.add-on.btn.dropdown-toggle{data: {toggle: 'dropdown'}, href: '#'}>
+              %span.caret
+            %ul.dropdown-menu{data: {target: 'trip_from_place_attributes_nongeocoded_address'}}
+              - @trip.owner.places.each do |p|
+                %li
+                  %a{data: {value: p.name}, class: 'place-option'}= p.name
       = f.simple_fields_for :to_place do |p|
-        = p.input :nongeocoded_address, label: t(:to), :collection => @trip.owner.places,
-          label_method: :name, value_method: :id, input_html: {class: 'combobox'}, include: :blank, placeholder: t(:select_or_enter_address)
+        = p.input :sequence, as: :hidden, value: 1
+        = p.input :address, label: t(:to), wrapper: :append, html: {id: :to_address} do
+          = p.input_field :nongeocoded_address, placeholder: t(:select_or_enter_address)
+          %span.dropdown
+            %a.add-on.btn.dropdown-toggle{data: {toggle: 'dropdown'}, href: '#'}>
+              %span.caret
+            %ul.dropdown-menu{data: {target: 'trip_to_place_attributes_nongeocoded_address'}}
+              - @trip.owner.places.each do |p|
+                %li
+                  %a{data: {value: p.name}, class: 'place-option'}= p.name
     - else
       = f.simple_fields_for :from_place do |p|
+        = p.input :sequence, as: :hidden, value: 0
         = p.input :nongeocoded_address, label: t(:from), placeholder: t(:enter_address)
       = f.simple_fields_for :to_place do |p|
+        = p.input :sequence, as: :hidden, value: 1
         = p.input :nongeocoded_address, label: t(:to), placeholder: t(:enter_address)
     = f.input :trip_date, wrapper: :append, label: t(:date) do
       = content_tag :div, id: 'trip-date' do
@@ -49,3 +65,10 @@
         force_match: false
       });
     });
+  $('.dropdown-toggle').dropdown();
+  $('.trip_from_place_address a, .trip_to_place_address a').on('click', function(event) {
+  var t = $(event.target)
+    if (t.hasClass('place-option')) {
+      $('#' + t.parents('ul').data('target')).val(t.data('value'))
+    }
+  })

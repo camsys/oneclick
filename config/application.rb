@@ -77,7 +77,7 @@ module Oneclick
     config.assets.precompile += %w{arc.css broward.css yata.css}
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
+    config.assets.version = '1.1'
 
     # See http://work.stevegrossi.com/2013/04/06/dynamic-error-pages-with-rails-3-2/
     config.exceptions_app = self.routes

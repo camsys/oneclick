@@ -15,21 +15,24 @@
     #wrap
       = render 'layouts/navigation'
       #main{:role => "main"}
-        .container-fluid
+        .container
           = render 'layouts/messages'
           = yield
-      #footer{:style => "background-color:#f5f5f5;border-top:1px solid #CCCCCC;"}
-        .container-fluid
-          .row-fluid
-            .span12
+      #footer
+        .container
+          .well
+            .pull-left
+              %span= "#{t(:version)} #{Rails.application.config.version}"
               - if Rails.env.development?
-                .visible-phone.pull-left Phone&nbsp;
-                .visible-table.pull-left Tablet&nbsp;
-                .visible-desktop.pull-left Desktop
-              .pull-right
-                -# Don't localize next 2 strings
-                = link_using_locale('English', 'en')
-                |
-                = link_using_locale('En Español', 'es')
+                %span
+                  |
+                  %span.visible-phone Phone&nbsp;
+                  %span.visible-table Tablet&nbsp;
+                  %span.visible-desktop Desktop
+            .pull-right
+              -# Don't localize next 2 strings
+              = link_using_locale('English', 'en')
+              |
+              = link_using_locale('En Español', 'es')
       / ! end of .container
     / ! end of #main

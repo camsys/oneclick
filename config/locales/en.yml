@@ -75,8 +75,8 @@ en:
   less_than_one_minute: 'less than 1 minute'
   invalid_address: "Invalid address."
   invalid_location: "Invalid location."
-  date_must_be: "Date must be in MM/DD/YYYY format."
-  time_must_be: "Time must be in hh:mm am/pm format."
+  date_wrong_format: "Date must be in MM/DD/YYYY format."
+  time_wrong_format: "Time must be in hh:mm am/pm format."
   trips_cannot_be_entered_for_days: "Trips cannot be entered for days earlier than today."
   trips_cannot_be_entered_for_times: "Trips cannot be entered for past times."
   arc:
