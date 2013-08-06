@@ -5,8 +5,17 @@
       -# TODO placeholder does not work with combobox
       = f.simple_fields_for :from_place do |p|
         = p.input :sequence, as: :hidden, value: 0        
-        = p.input :nongeocoded_address, label: t(:from), :collection => @trip.owner.places,
-          label_method: :name, value_method: :id, input_html: {class: 'combobox'}, include: :blank, placeholder: t(:select_or_enter_address)
+        = p.input :address, label: t(:from), wrapper: :append, html: {id: :from_address} do
+          = p.input_field :nongeocoded_address, placeholder: 'Enter new address or select saved'
+          %span.dropdown
+            %a.add-on.btn.dropdown-toggle{data: {toggle: 'dropdown'}, href: '#'}>
+              %span.caret
+            %ul.dropdown-menu
+              - @trip.owner.places.each do |p|
+                %li
+                  %a{data: {value: p.name}}= p.name
+        / = p.input :nongeocoded_address, label: t(:from), :collection => @trip.owner.places,
+        /   label_method: :name, value_method: :id, input_html: {class: 'combobox'}, include: :blank, placeholder: t(:select_or_enter_address)
       = f.simple_fields_for :to_place do |p|
         = p.input :sequence, as: :hidden, value: 1
         = p.input :nongeocoded_address, label: t(:to), :collection => @trip.owner.places,
@@ -53,3 +62,7 @@
         force_match: false
       });
     });
+  $('.dropdown-toggle').dropdown();
+  $('.trip_from_place_address a').on('click', function(event) {
+    alert(event.target.data())
+  })
