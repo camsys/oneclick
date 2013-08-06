@@ -1,21 +1,23 @@
 class Trip < ActiveRecord::Base
   attr_accessor :trip_date, :trip_time
 
-  # before_validation :set_places
-  # validates :from_place_id, :to_place_id, :presence => {:message => I18n.translate(:invalid_location)}
+  validates_associated :from_place
+  validates_associated :to_place
+  validates_associated :places
   validate :validate_date_and_time
   validate :datetime_cannot_be_before_now
   attr_accessible :name, :owner, :trip_datetime, :trip_date, :trip_time, :arrive_depart, :places_attributes,
-  :from_place, :to_place, :owner
-  attr_accessor :from_place, :to_place
-  belongs_to :owner, foreign_key: 'user_id', class_name: User
-  # has_one :from_place, foreign_key: 'from_place_id', class_name: TripPlace
-  # has_one :to_place, foreign_key: 'to_place_id', class_name: TripPlace
+  :from_place_attributes, :to_place_attributes, :owner
+
   has_many :places, class_name: TripPlace
+  has_one :from_place, class_name: TripPlace, conditions: "sequence=0"
+  has_one :to_place, class_name: TripPlace, conditions: "sequence=1"
+
+  belongs_to :owner, foreign_key: 'user_id', class_name: User
   has_many :itineraries
   has_many :valid_itineraries, conditions: 'status=200 AND hidden=false', class_name: 'Itinerary'
 
-  accepts_nested_attributes_for :places
+  accepts_nested_attributes_for :places, :from_place, :to_place
 
   def has_valid_itineraries?
     not valid_itineraries.empty?
@@ -77,14 +79,14 @@ class Trip < ActiveRecord::Base
   # TODO refactor following 3 methods
   def create_fixed_route_itineraries
     tp = TripPlanner.new
-    arriveBy = arrive_depart.index("arrive_by") ? "true" : "false"
-    result, response = tp.get_fixed_itineraries([self.places[0].lat, self.places[0].lon],[self.places[1].lat, self.places[1].lon], self.trip_datetime.in_time_zone, arriveBy)
+    arrive_by = arrive_depart.index("arrive_by") ? "true" : "false"
+    result, response = tp.get_fixed_itineraries([from_place.lat, from_place.lon],[to_place.lat, to_place.lon], trip_datetime.in_time_zone, arrive_by)
     if result
       tp.convert_itineraries(response).each do |itinerary|
-        self.itineraries << Itinerary.new(itinerary)
+        itineraries << Itinerary.new(itinerary)
       end
     else
-      self.itineraries << Itinerary.new('status'=>response['id'], 'message'=>response['msg'])
+      itineraries << Itinerary.new('status'=>response['id'], 'message'=>response['msg'])
     end
   end
 
@@ -109,69 +111,6 @@ class Trip < ActiveRecord::Base
     else
       self.itineraries << Itinerary.new('status'=>500, 'message'=>response)
     end
-  end
-
-  def set_places
-    #TODO:  These values need to come from the combobox field
-    to_place_id = 52
-    from_place_id = 53
-    nongeocoded_address = "100 14th Street, Atlanta, GA"
-
-    if to_place_id #Here is where we test that an ID is present.
-      self.to_place_id = to_place_id
-    else
-      to_place = Place.new('nongeocoded_address'=>nongeocoded_address)
-      to_place.name = nongeocoded_address
-      to_place.owner = self.owner
-      to_place.save()
-      self.to_place_id = to_place.id
-    end
-
-    if from_place_id #Here is where we test that an ID is present.
-      self.from_place_id = from_place_id
-    else
-      from_place = Place.new('nongeocoded_address'=>nongeocoded_address)
-      from_place.name = nongeocoded_address
-      from_place.owner = self.owner
-      from_place.save()
-      self.from_place_id = from_place.id
-    end
-  end
-
-  def from_place= place
-    @from_place = initialize_place place
-    # TODO Not sure about the reliability of this. Ditto below.
-    places << @from_place
-  end
-
-  def from_place
-    @from_place ||= places[0]
-  end
-
-  def to_place= place
-    @to_place = initialize_place place
-    places << @to_place
-  end
-
-  def to_place
-    @to_place ||= places[1]
-  end
-
-  private
-
-  def initialize_place place
-    Rails.logger.info "initialize_place"
-    if owner.nil?
-      Rails.logger.info "No owner, just using place as is: #{place.inspect}"
-      user_place = place
-    else
-      Rails.logger.info "Have owner, looking up #{place.inspect}"
-      user_place = UserPlace.find_by_name_and_user_id(place[:nongeocoded_address], owner.id) || place
-      Rails.logger.info "After lookup, user_place is #{user_place}"
-    end
-    TripPlace.new(user_place.respond_to?(:attributes) ?
-      user_place.attributes.except('id', 'user_id', 'created_at', 'updated_at') :
-      user_place)
   end
 
 end
