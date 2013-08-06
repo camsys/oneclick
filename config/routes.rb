@@ -9,9 +9,10 @@ Oneclick::Application.routes.draw do
     devise_for :users
 
     resources :users
-    resources :trips, only: [:new, :create, :show]
-    resources :itineraries do
-      get 'hide', on: :member
+    resources :trips, only: [:new, :create, :show] do
+      member do
+        get 'hide'
+      end
     end
 
     match '/' => 'home#index'
