@@ -4,6 +4,15 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  # Agent View strings
+  find_traveler: "Find Traveler"
+  create_traveler: "Create Traveler"
+  agents_agencies: "Agents Agencies"
+  # Agent and Admin string
+  reports: "Reports"
+  admin: 'Admin'
+
+  # Other
   version: 'Version'
   home: 'en no-brand Home'
   log_in: 'Log in'
@@ -12,7 +21,6 @@ en:
   forgot_your_password: 'Forgot your password?'
   logout: 'Logout'
   edit_account: 'Edit account'
-  admin: 'Admin'
   plan_a_trip: 'Plan a Trip'
   identify_places: 'Identify Places'
   change_my_settings: 'Change My Settings'

@@ -1,6 +1,16 @@
 # Spanish
 
 es:
+  # Agent View strings
+  find_traveler: "[es]Find Traveler[/es]"
+  create_traveler: "[es]Create Traveler[/es]"
+  agents_agencies: "[es]Agents Agencies[/es]"
+  # Agent and Admin string
+  reports: "[es]Reports"
+  admin: '[es]Admin[/es]'
+
+  # Other
+  
   version: 'Versión'
   home: "Inicio"
   log_in: 'Iniciar'
@@ -9,7 +19,6 @@ es:
   forgot_your_password: '¿Olvidó su contraseña?'
   logout: '[es]Logout[/es]'
   edit_account: '[es]Edit account[/es]'
-  admin: '[es]Admin[/es]'
   plan_a_trip: 'Planear un Viaje'
   identify_places: 'Identificar los Lugares'
   change_my_settings: 'Cambiar mi Configuración'

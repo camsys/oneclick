@@ -1,5 +1,6 @@
 Oneclick::Application.routes.draw do
 
+
   scope "(:locale)", locale: /en|es/ do
 
     authenticated :user do
@@ -8,7 +9,12 @@ Oneclick::Application.routes.draw do
 
     devise_for :users
 
-    resources :users
+    resources :admins, :only => [:index]
+    
+    resources :users do
+      resources :reports, :only => [:index, :show]      
+    end
+    
     resources :trips, only: [:new, :create, :show] do
       member do
         get 'hide'

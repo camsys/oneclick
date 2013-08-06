@@ -1,0 +1,15 @@
+.row
+  .span6.center
+    - @actions.each_slice(2) do |actions|
+      .row-fluid
+        .span12
+          %ul.thumbnails
+            - actions.each do |action|
+              %li.span6{:style => "min-height: 124px;"}
+                .row-fluid
+                  %a.span12.thumbnail.actionbutton{alt: action[:label], title: action[:label], href: action[:target]}
+                    .row-fluid
+                      .span6
+                        %i.center{class: action[:icon], alt: action[:label]}
+                      .span6.actionlabel
+                        %p.center= action[:label]

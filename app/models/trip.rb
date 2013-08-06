@@ -1,6 +1,9 @@
 class Trip < ActiveRecord::Base
   attr_accessor :trip_date, :trip_time
 
+  # mark this model as requiring roles
+  resourcify
+
   # before_validation :set_places
   # validates :from_place_id, :to_place_id, :presence => {:message => I18n.translate(:invalid_location)}
   validate :validate_date_and_time
@@ -16,7 +19,7 @@ class Trip < ActiveRecord::Base
   has_many :valid_itineraries, conditions: 'status=200 AND hidden=false', class_name: 'Itinerary'
 
   accepts_nested_attributes_for :places
-
+  
   def has_valid_itineraries?
     not valid_itineraries.empty?
   end

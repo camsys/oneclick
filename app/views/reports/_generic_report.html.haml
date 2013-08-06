@@ -1,0 +1,43 @@
+.row-fluid
+  .well.well-small-span12
+    #chart
+
+.row-fluid
+  .span12
+    %table.table-condensed.table-striped.table-hover.table-bordered
+      %thead
+        %th.center Date
+        %th.center Trip Count
+      %tbody
+        - @data.each_value do |row|
+          %tr
+            %td.left= row.key
+            %td.right= row.count
+
+%script{:type => "text/javascript"}
+  google.load('visualization', '1.0', {'packages':['corechart']});
+  google.setOnLoadCallback(draw_chart);
+
+  function draw_chart() {
+  var chart_data = new google.visualization.DataTable();
+  chart_data.addColumn('string', 'Asset Type'); 
+  chart_data.addColumn('number', '($)');
+  - @data.each_value do |row|
+    chart_data.addRow(['#{row.key}', {v: #{row.count}, f: '#{number_to_human(row.count)}'}]);
+ 
+  var chart = null;
+  var chart_options = {
+  is3D : true,
+  height : 300,
+  legend : {position : 'none'},
+  vAxis :  {title : 'Number'}
+  };
+  chart = new google.visualization.ColumnChart(document.getElementById('chart'));
+  chart.draw(chart_data, chart_options);
+  }
+
+  // Handle the resize event and make sure the chart is redrawn for the new size
+  window.onresize = function() {
+  draw_chart();
+  };
+    

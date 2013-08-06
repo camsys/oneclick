@@ -1,0 +1,47 @@
+// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.admins.index {
+  .actionbutton {
+    @extend .btn;
+    cursor: pointer;
+    overflow: auto;
+    margin-top: 10px;
+    min-height: 8.0em;
+
+    i {
+      margin-top: 10px;
+      width: 100%;
+      font-size: 6.0em;
+    }
+    
+    @media (min-width: 768px ) {
+      .actionlabel {
+        height: 8em;
+      }
+    }    
+    .actionlabel {
+      display: table;
+      p {
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+        font-weight: bold;
+        font-size: 1.5em;
+        line-height: 20px;
+      }
+    }
+  }
+
+  .thumbnails > li {
+    margin-bottom: auto;
+  }
+
+  .center {
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+}

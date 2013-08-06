@@ -3,7 +3,9 @@ class TripsController < ApplicationController
   # GET /trips/1
   # GET /trips/1.json
   def show
-    @trip = Trip.find(params[:id])
+    
+    # limit trips to trips owned by the user
+    @trip = current_user.trips.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -14,7 +16,9 @@ class TripsController < ApplicationController
   # called when the user wants to hide an option. Invoked via
   # an ajax call
   def hide
-    itinerary = Itinerary.find(params[:id])
+
+    # limit itineraries to only those related to trps owned by the user
+    itinerary = current_user.itineraries.find(params[:id])
     respond_to do |format|
       if itinerary
         @trip = itinerary.trip
