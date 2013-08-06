@@ -20,7 +20,7 @@
         .container
           .well
             .pull-left
-              %span= "#{t(:version)} 0.2"
+              %span= "#{t(:version)} #{Rails.application.config.version}"
               - if Rails.env.development?
                 %span
                   |
