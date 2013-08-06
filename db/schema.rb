@@ -63,8 +63,6 @@ ActiveRecord::Schema.define(:version => 20130805132854) do
     t.datetime "updated_at",    :null => false
     t.string   "name"
     t.integer  "user_id"
-    t.integer  "from_place_id"
-    t.integer  "to_place_id"
     t.datetime "trip_datetime"
     t.string   "arrive_depart"
   end
