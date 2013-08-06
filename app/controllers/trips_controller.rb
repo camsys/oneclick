@@ -11,6 +11,21 @@ class TripsController < ApplicationController
     end
   end
 
+  # called when the user wants to hide an option. Invoked via
+  # an ajax call
+  def hide
+    itinerary = Itinerary.find(params[:id])
+    respond_to do |format|
+      if itinerary
+        @trip = itinerary.trip
+        itinerary.hide
+        format.js # hide.js.haml
+      else
+        render text: 'Unable to remove itinerary.', status: 500
+      end
+    end
+  end
+
   # GET /trips/new
   # GET /trips/new.json
   def new

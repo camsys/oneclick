@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130801202513) do
+ActiveRecord::Schema.define(:version => 20130805132854) do
 
   create_table "itineraries", :force => true do |t|
     t.integer  "duration"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20130801202513) do
     t.integer  "status"
     t.text     "message"
     t.string   "mode"
+    t.boolean  "hidden",                                       :default => false, :null => false
   end
 
   create_table "roles", :force => true do |t|

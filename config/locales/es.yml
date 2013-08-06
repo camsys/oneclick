@@ -1,6 +1,7 @@
 # Spanish
 
 es:
+  version: 'Versión'
   home: "Inicio"
   log_in: 'Iniciar'
   sign_up: 'Alistarse'

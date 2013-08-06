@@ -79,4 +79,8 @@ h2. License
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
+<<<<<<< HEAD
+(test edit to test notifications)
+=======
 (minor edit to test github integration)
+>>>>>>> release-0.2
