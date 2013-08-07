@@ -18,4 +18,10 @@ class User < ActiveRecord::Base
   has_many :trips
   has_many :itineraries, :through => :trips
 
+  def name
+    elems = []
+    elems << first_name unless first_name.blank?
+    elems << last_name unless last_name.blank?
+    elems.compact.join(' ')
+  end
 end

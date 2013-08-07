@@ -23,6 +23,14 @@ class Trip < ActiveRecord::Base
 
   accepts_nested_attributes_for :places, :from_place, :to_place
 
+  def self.failed
+    ids = []
+    Itinerary.failed_trip_ids.each do |row|
+      ids << row[:trip_id]
+    end
+    where('id in (?)', ids)
+  end
+
   def has_valid_itineraries?
     not valid_itineraries.empty?
   end

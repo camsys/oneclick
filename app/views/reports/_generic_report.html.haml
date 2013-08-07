@@ -2,18 +2,6 @@
   .well.well-small-span12
     #chart
 
-.row-fluid
-  .span12
-    %table.table-condensed.table-striped.table-hover.table-bordered
-      %thead
-        %th.center Date
-        %th.center Trip Count
-      %tbody
-        - @data.each_value do |row|
-          %tr
-            %td.left= row.key
-            %td.right= row.count
-
 %script{:type => "text/javascript"}
   google.load('visualization', '1.0', {'packages':['corechart']});
   google.setOnLoadCallback(draw_chart);
