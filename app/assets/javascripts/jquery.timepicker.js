@@ -1,5 +1,5 @@
 /************************
-jquery-timepicker v1.1.9
+jquery-timepicker v1.1.12
 http://jonthornton.github.com/jquery-timepicker/
 
 requires jQuery 1.7+
@@ -93,7 +93,7 @@ requires jQuery 1.7+
 			var self = $(this);
 			var settings = self.data('timepicker-settings');
 
-			if ('ontouchstart' in document && settings.disableTouchKeyboard) {
+			if (_hideKeyboard(self)) {
 				// block the keyboard on mobile devices
 				self.blur();
 			}
@@ -106,7 +106,7 @@ requires jQuery 1.7+
 			}
 
 			// check if list needs to be rendered
-			if (!list || list.length === 0) {
+			if (!list || list.length === 0 || typeof settings.durationTime === 'function') {
 				_render(self);
 				list = self.data('timepicker-list');
 			}
@@ -258,7 +258,7 @@ requires jQuery 1.7+
 			settings.maxTime = _time2int(settings.maxTime);
 		}
 
-		if (settings.durationTime) {
+		if (settings.durationTime && typeof settings.durationTime !== 'function') {
 			settings.durationTime = _time2int(settings.durationTime);
 		}
 
@@ -304,7 +304,12 @@ requires jQuery 1.7+
 			wrapped_list.addClass('ui-timepicker-with-duration');
 		}
 
-		var durStart = (settings.durationTime !== null) ? settings.durationTime : settings.minTime;
+		var durStart = settings.minTime;
+		if (typeof settings.durationTime === 'function') {
+			durStart = _time2int(settings.durationTime());
+		} else if (settings.durationTime !== null) {
+			durStart = settings.durationTime;
+		}
 		var start = (settings.minTime !== null) ? settings.minTime : 0;
 		var end = (settings.maxTime !== null) ? settings.maxTime : (start + _ONE_DAY - 1);
 
@@ -332,10 +337,12 @@ requires jQuery 1.7+
 			}
 
 			if (drCur < drLen) {
-				if (timeInt >= dr[drCur][0] && timeInt < dr[drCur][1]) {
-					row.addClass('ui-timepicker-disabled');
-				} else if (timeInt >= dr[drCur][1]) {
+				if (timeInt >= dr[drCur][1]) {
 					drCur += 1;
+				}
+
+				if (dr[drCur] && timeInt >= dr[drCur][0] && timeInt < dr[drCur][1]) {
+					row.addClass('ui-timepicker-disabled');
 				}
 			}
 
@@ -364,13 +371,17 @@ requires jQuery 1.7+
 				self.off('focus.timepicker-ie-hack');
 				self.on('focus.timepicker', methods.show);
 			});
-			self[0].focus();
+
+			if (!_hideKeyboard(self)) {
+				self[0].focus();
+			}
 
 			// make sure only the clicked row is selected
 			list.find('li').removeClass('ui-timepicker-selected');
 			$(this).addClass('ui-timepicker-selected');
 
 			if (_selectValue(self)) {
+				self.trigger('hideTimepicker');
 				wrapped_list.hide();
 			}
 		});
@@ -403,6 +414,12 @@ requires jQuery 1.7+
 			$('body').unbind('.ui-timepicker');
 			$(window).unbind('.ui-timepicker');
 		}
+	}
+
+	function _hideKeyboard(self)
+	{
+		var settings = self.data('settings');
+		return ((window.navigator.msPointerEnabled || 'ontouchstart' in document) && settings.disableTouchKeyboard);
 	}
 
 	function _findRow(self, list, value)
@@ -461,6 +478,12 @@ requires jQuery 1.7+
 		}
 
 		var self = $(this);
+		var list = self.data('timepicker-list');
+
+		if (list && list.is(':visible')) {
+			return;
+		}
+
 		var seconds = _time2int(this.value);
 
 		if (seconds === null) {
@@ -531,9 +554,11 @@ requires jQuery 1.7+
 
 		if (!list || !list.is(':visible')) {
 			if (e.keyCode == 40) {
-				self.focus();
+				if (!_hideKeyboard(self)) {
+					self.focus();
+				}
 			} else {
-				return true;
+				return _screenInput(e, self);
 			}
 		}
 
@@ -595,7 +620,7 @@ requires jQuery 1.7+
 
 			case 27: // escape
 				list.find('li').removeClass('ui-timepicker-selected');
-				list.hide();
+				methods.hide();
 				break;
 
 			case 9: //tab
@@ -603,8 +628,13 @@ requires jQuery 1.7+
 				break;
 
 			default:
-				return !self.data('timepicker-settings').disableTextInput;
+				return _screenInput(e, self);
 		}
+	}
+
+	function _screenInput(e, self)
+	{
+		return !self.data('timepicker-settings').disableTextInput || e.ctrlKey || e.altKey || e.metaKey || (e.keyCode != 2 && e.keyCode < 46);
 	}
 
 	/*
@@ -621,6 +651,16 @@ requires jQuery 1.7+
 
 		switch (e.keyCode) {
 
+			case 96: // numpad numerals
+			case 97:
+			case 98:
+			case 99:
+			case 100:
+			case 101:
+			case 102:
+			case 103:
+			case 104:
+			case 105:
 			case 48: // numerals
 			case 49:
 			case 50:
