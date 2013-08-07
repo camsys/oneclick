@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe AdminController do
+describe AdminsController do
 
   describe "GET 'index'" do
     it "returns http success" do
       get 'index'
-      response.should be_success
+      response.status.should eq 302
     end
   end
 
