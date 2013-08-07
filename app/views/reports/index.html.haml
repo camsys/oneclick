@@ -1,0 +1,13 @@
+.row-fluid
+  .span12
+    %h1
+      %i.icon.icon-bar-chart
+      = t(:reports)
+
+.row-fluid
+  %ul.thumbnails
+    - @reports.each do |report|
+      %li.trip_summary.thumbnail.box-shadow
+        = render :partial => 'thumbnail', :locals => { :report => report }
+  
+

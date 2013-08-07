@@ -3,7 +3,9 @@ class TripsController < ApplicationController
   # GET /trips/1
   # GET /trips/1.json
   def show
-    @trip = Trip.find(params[:id])
+    
+    # limit trips to trips owned by the user
+    @trip = current_user.trips.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -14,7 +16,9 @@ class TripsController < ApplicationController
   # called when the user wants to hide an option. Invoked via
   # an ajax call
   def hide
-    itinerary = Itinerary.find(params[:id])
+
+    # limit itineraries to only those related to trps owned by the user
+    itinerary = current_user.itineraries.find(params[:id])
     respond_to do |format|
       if itinerary
         @trip = itinerary.trip
@@ -30,8 +34,10 @@ class TripsController < ApplicationController
   # GET /trips/new.json
   def new
     @trip = Trip.new
-    @trip.owner = current_user || anonymous_user
     # TODO User might be different if we are an agent
+    @trip.owner = current_user || anonymous_user
+    @trip.build_from_place(sequence: 0)
+    @trip.build_to_place(sequence: 1)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -48,6 +54,7 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       if @trip.save
+        @trip.reload
         @trip.create_itineraries
         unless @trip.has_valid_itineraries?
           message = t(:trip_created_no_valid_options)
@@ -60,6 +67,10 @@ class TripsController < ApplicationController
         format.html { redirect_to @trip }
         format.json { render json: @trip, status: :created, location: @trip }
       else
+        Rails.logger.info @trip.ai
+        Rails.logger.info @trip.places.ai
+        Rails.logger.info @trip.from_place.ai
+        Rails.logger.info @trip.to_place.ai
         format.html { render action: "new" }
         format.json { render json: @trip.errors, status: :unprocessable_entity }
       end

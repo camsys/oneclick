@@ -4,6 +4,15 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  # Agent View strings
+  find_traveler: "Find Traveler"
+  create_traveler: "Create Traveler"
+  agents_agencies: "Agents Agencies"
+  # Agent and Admin string
+  reports: "Reports"
+  admin: 'Admin'
+
+  # Other
   version: 'Version'
   home: 'en no-brand Home'
   log_in: 'Log in'
@@ -12,7 +21,6 @@ en:
   forgot_your_password: 'Forgot your password?'
   logout: 'Logout'
   edit_account: 'Edit account'
-  admin: 'Admin'
   plan_a_trip: 'Plan a Trip'
   identify_places: 'Identify Places'
   change_my_settings: 'Change My Settings'
@@ -68,8 +76,8 @@ en:
   less_than_one_minute: 'less than 1 minute'
   invalid_address: "Invalid address."
   invalid_location: "Invalid location."
-  date_must_be: "Date must be in MM/DD/YYYY format."
-  time_must_be: "Time must be in hh:mm am/pm format."
+  date_wrong_format: "Date must be in MM/DD/YYYY format."
+  time_wrong_format: "Time must be in hh:mm am/pm format."
   trips_cannot_be_entered_for_days: "Trips cannot be entered for days earlier than today."
   trips_cannot_be_entered_for_times: "Trips cannot be entered for past times."
   arc:

@@ -16,5 +16,6 @@ class User < ActiveRecord::Base
 
   has_many :places, class_name: UserPlace 
   has_many :trips
+  has_many :itineraries, :through => :trips
 
 end

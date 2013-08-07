@@ -8,6 +8,7 @@ class Place < ActiveRecord::Base
   attr_accessible :address, :address2, :city, :lat, :lon, :name, :state, :zip, :nongeocoded_address
 
   def geocode
+    return if nongeocoded_address.blank?
     result = Geocoder.search(self.nongeocoded_address).as_json
     unless result.length == 0
       self.lat = result[0]['data']['geometry']['location']['lat']

@@ -4,7 +4,11 @@ module CsHelpers
         :plan_a_trip => 'icon-bus-sign',
         :identify_places =>'icon-map-marker',
         :change_my_settings => 'icon-cog',
-        :help_and_support => 'icon-question-sign'
+        :help_and_support => 'icon-question-sign',
+        :find_traveler => 'icon-search',
+        :create_traveler =>'icon-user',
+        :agents_agencies => 'icon-umbrella',
+        :reports => 'icon-bar-chart'
     }
 
   # TODO Unclear whether this will need to be more flexible depending on how clients want to do their domains

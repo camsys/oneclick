@@ -14,6 +14,7 @@ describe ApplicationHelper do
     I18n.locale.should eq(:es)
     helper.request = double(fullpath: "/es/sign_up")
     helper.link_using_locale("English", :en).should eq(%Q{<a href="/en/sign_up">English</a>})
+    I18n.locale = :en
   end
 
   it "should not include a link for the language that is already selected" do
@@ -38,6 +39,7 @@ describe ApplicationHelper do
     helper.request = double(fullpath: "/es/sign_up")
     helper.link_using_locale("English", :en).should eq(%Q{<a href="/en/sign_up">English</a>})
     helper.link_using_locale("Espanol", :es).should eq(%Q{Espanol})
+    I18n.locale = :en
   end
 
 end

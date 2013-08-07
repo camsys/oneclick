@@ -1,6 +1,16 @@
 # Spanish
 
 es:
+  # Agent View strings
+  find_traveler: "[es]Find Traveler[/es]"
+  create_traveler: "[es]Create Traveler[/es]"
+  agents_agencies: "[es]Agents Agencies[/es]"
+  # Agent and Admin string
+  reports: "[es]Reports"
+  admin: '[es]Admin[/es]'
+
+  # Other
+  
   version: 'Versión'
   home: "Inicio"
   log_in: 'Iniciar'
@@ -9,7 +19,6 @@ es:
   forgot_your_password: '¿Olvidó su contraseña?'
   logout: '[es]Logout[/es]'
   edit_account: '[es]Edit account[/es]'
-  admin: '[es]Admin[/es]'
   plan_a_trip: 'Planear un Viaje'
   identify_places: 'Identificar los Lugares'
   change_my_settings: 'Cambiar mi Configuración'
@@ -65,8 +74,8 @@ es:
   less_than_one_minute: '[es]less than 1 minute[/es]'
   invalid_address: "[es]Invalid address.[/es]"
   invalid_location: "[es]Invalid location.[/es]"
-  date_must_be: "[es]Date must be in MM/DD/YYYY format.[/es]"
-  time_must_be: "[es]Time must be in hh:mm am/pm format.[/es]"
+  date_wrong_format: "[es]Date must be in MM/DD/YYYY format.[/es]"
+  time_wrong_format: "[es]Time must be in hh:mm am/pm format.[/es]"
   trips_cannot_be_entered_for_days: "[es]Trips cannot be entered for days earlier than today.[/es]"
   trips_cannot_be_entered_for_times: "[es]Trips cannot be entered for past times.[/es]"
   arc:

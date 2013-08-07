@@ -19,6 +19,13 @@ users = [
   {first_name: 'Eric', last_name: 'Ziering', email: 'eziering@camsys.com'},
   {first_name: 'Galina', last_name: 'Dymkova', email: 'gdymkova@camsys.com'},
   {first_name: 'Aaron', last_name: 'Magil', email: 'amagil@camsys.com'},
+  {first_name: 'Julian', last_name: 'Ray', email: 'jray@camsys.com'},
+  {first_name: 'sys', last_name: 'admin', email: 'email@camsys.com'},
+]
+roles = [
+  {name: 'admin'},
+  {name: 'agent'},
+  {name: 'agent_admin'},  
 ]
 users.each do |user|
   puts "Add/replace user #{user[:email]}"
@@ -39,3 +46,13 @@ users.each do |user|
     end
   end
 end
+# load the roles
+roles.each do |role| 
+  r = Role.new
+  r.name = role.name
+  r.save!
+end
+u = User.find_by_email('email@camsys.com')
+u.user_roles "admin"
+u.save!
+
