@@ -15,11 +15,11 @@
     #wrap
       = render 'layouts/navigation'
       #main{:role => "main"}
-        .container
+        .container-fluid
           = render 'layouts/messages'
           = yield
       #footer
-        .container
+        .container-fluid
           .well
             .pull-left
               %span= "#{t(:version)} #{Rails.application.config.version}"
