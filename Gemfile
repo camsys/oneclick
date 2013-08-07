@@ -20,6 +20,7 @@ gem 'rolify'
 gem 'simple_form'
 gem 'thin'
 gem 'awesome_print'
+gem 'chronic'
 group :development do
   gem 'mysql2'
   gem 'better_errors'

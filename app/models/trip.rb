@@ -1,3 +1,5 @@
+require 'chronic'
+
 class Trip < ActiveRecord::Base
   attr_accessor :trip_date, :trip_time
 
@@ -45,15 +47,22 @@ class Trip < ActiveRecord::Base
     good_date = true
     good_time = true
     begin
-      Date.strptime(self.trip_date, "%m/%d/%Y")
-    rescue
+      # if the parse fails it will return nil and the to_date will throw an exception
+      d = Chronic.parse(@trip_date).to_date
+      d += 1.year if d.past?
+      @trip_date = d.strftime("%m/%d/%Y")
+    rescue Exception => e
+      Rails.logger.warn "parsing date #{@trip_date}"
+      Rails.logger.warn e.ai
       errors.add(:trip_date, I18n.translate(:date_wrong_format))
       good_date = false
     end
 
     begin
-      Time.strptime(trip_time, "%H:%M %p")
-    rescue Exception
+      Time.strptime(@trip_time, "%H:%M %p")
+    rescue Exception => e
+      Rails.logger.warn "parsing time #{@trip_time}"
+      Rails.logger.warn e.ai
       errors.add(:trip_time, I18n.translate(:time_wrong_format))
       good_time = false
     end
@@ -68,9 +77,11 @@ class Trip < ActiveRecord::Base
 
   def write_trip_datetime
     begin
-      self.trip_datetime = DateTime.strptime([trip_date, trip_time, DateTime.current.zone].join(' '),
+      self.trip_datetime = DateTime.strptime([@trip_date, @trip_time, DateTime.current.zone].join(' '),
         '%m/%d/%Y %H:%M %p %z')
     rescue Exception => e
+      Rails.logger.warn "write_trip_datetime #{@trip_date} #{@trip_time}"
+      Rails.logger.warn e.message
       return false
     end
     true
