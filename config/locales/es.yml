@@ -22,6 +22,7 @@ es:
   error_422_detail: "[es]Maybe you tried to change something you didn't have access to.[/es]"
   enter_address: '[es]Enter address[/es]'
   select_or_enter_address: '[es]Select or enter address[/es]'
+  select: '[es]Select[/es]'
   date: '[es]Date[/es]'
   depart_at: '[es]Depart at[/es]'
   arrive_by: '[es]Arrive by[/es]'

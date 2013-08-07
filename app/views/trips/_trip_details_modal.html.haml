@@ -3,10 +3,10 @@
     .row-fluid
       .pull-right{:style => "display: inline-block"}
         .span12.btn-toolbar
-          %button.btn.btn-mini.btn-success
+          %a{class: "button btn btn-mini btn-success", "data-dismiss" => "modal"}
             %i.icon-reply
             =t(:return)
-          %button.btn.btn-mini.btn-danger
+          =link_to hide_trip_path(itinerary), {"data-dismiss" => "modal",  class: "btn btn-mini btn-danger", remote: true} do
             %i.icon-remove
             =t(:remove)
       %div{:class => "modal-body"}

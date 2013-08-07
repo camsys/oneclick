@@ -4,14 +4,14 @@
 .row-fluid
   .pull-right{:style => "display: inline-block"}
     .span12.btn-toolbar
-      =link_to "#", {class: "btn btn-mini btn-success"} do
+      =link_to "#", {class: "btn btn-mini btn-info"} do
+        %i.icon-ticket
+        =t(:select)
+      =link_to "#", {class: "btn btn-mini btn-success", 'data-toggle'=>'modal', href:"#transitDetails" + itinerary.id.to_s} do
         %i.icon-search
         =t(:view)
       =link_to hide_trip_path(itinerary), {class: "btn btn-mini btn-danger", remote: true} do
         %i.icon-remove
         =t(:remove)
-      =link_to "#", {class: "btn btn-mini btn-info"} do
-        %i.icon-undo
-        =t(:reload)
 
 = render :partial => 'trip_details_modal', :locals => { :itinerary => itinerary }
