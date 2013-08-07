@@ -4,8 +4,14 @@ class TripsController < ApplicationController
   # GET /trips/1.json
   def show
     
-    # limit trips to trips owned by the user
-    @trip = current_user.trips.find(params[:id])
+    if user_signed_in?
+      # limit trips to trips owned by the user
+      @trip = current_user.trips.find(params[:id])
+    else
+      # TODO Workaround for now; it has to be a trip not owned by a user (but
+      # this is astill a security hole)
+      @trip = Trip.find_by_id_and_user_id(params[:id], nil)
+    end
 
     respond_to do |format|
       format.html # show.html.erb

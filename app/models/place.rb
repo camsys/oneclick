@@ -9,7 +9,10 @@ class Place < ActiveRecord::Base
 
   def geocode
     return if nongeocoded_address.blank?
-    result = Geocoder.search(self.nongeocoded_address).as_json
+    # result = Geocoder.search(self.nongeocoded_address).as_json
+    result = Geocoder.search(self.nongeocoded_address, sensor: false,
+      components: Rails.application.config.geocoder_components,
+      bounds: Rails.application.config.geocoder_bounds).as_json
     unless result.length == 0
       self.lat = result[0]['data']['geometry']['location']['lat']
       self.lon = result[0]['data']['geometry']['location']['lng']
