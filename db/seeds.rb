@@ -27,6 +27,11 @@ roles = [
   {name: 'agent'},
   {name: 'agent_admin'},  
 ]
+reports = [
+  {name: 'Trips By Day Report', description: 'Displays a chart showing the number of trips generated each day.', view_name: 'generic_report', class_name: 'TripsPerDayReport', active: 1}, 
+  {name: 'Failed Trips Report', description: 'Displays a report describing the trips that failed.', view_name: 'trips_report', class_name: 'InvalidTripsReport', active: 1}, 
+  {name: 'Rejected Report', description: 'Displays a report showing trips that were rejected by a user.', view_name: 'trips_report', class_name: 'RejectedTripsReport', active: 1} 
+]
 users.each do |user|
   puts "Add/replace user #{user[:email]}"
   User.find_by_email(user[:email]).destroy rescue nil
@@ -55,4 +60,10 @@ end
 u = User.find_by_email('email@camsys.com')
 u.user_roles "admin"
 u.save!
+
+# load the reports
+reports.each do |rep|
+  r = Report.new(rep)
+  r.save!
+end
 

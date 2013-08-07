@@ -23,6 +23,20 @@ class Trip < ActiveRecord::Base
 
   accepts_nested_attributes_for :places, :from_place, :to_place
 
+  scope :recent, lambda {|date| where('created_at > ?', date.beginning_of_day) unless date.nil? }
+
+  def self.rejected
+    recent(30.days.ago).joins(:itineraries).where('status=200 AND hidden=true').uniq
+  end
+    
+  def self.failed
+    ids = []
+    Itinerary.failed_trip_ids.each do |row|
+      ids << row[:trip_id]
+    end
+    where('id in (?)', ids)
+  end
+
   def has_valid_itineraries?
     not valid_itineraries.empty?
   end

@@ -2,6 +2,16 @@ module ApplicationHelper
 
   include CsHelpers
 
+  def format_date_time(datetime)
+    return datetime.strftime("%I:%M %p %b %d %Y") unless datetime.nil?
+  end
+  def format_date(date)
+    return date.strftime("%b %d %Y") unless date.nil?
+  end
+  def format_time(time)
+    return time.strftime("%I:%M") unless time.nil?
+  end
+
   def get_trip_summary_title(mode)
     if mode == 'transit'
       title = t(:transit)

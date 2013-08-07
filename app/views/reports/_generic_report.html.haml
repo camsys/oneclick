@@ -1,18 +1,6 @@
 .row-fluid
-  .well.well-small-span12
-    #chart
-
-.row-fluid
   .span12
-    %table.table-condensed.table-striped.table-hover.table-bordered
-      %thead
-        %th.center Date
-        %th.center Trip Count
-      %tbody
-        - @data.each_value do |row|
-          %tr
-            %td.left= row.key
-            %td.right= row.count
+    #chart.well.well-small
 
 %script{:type => "text/javascript"}
   google.load('visualization', '1.0', {'packages':['corechart']});
@@ -21,7 +9,7 @@
   function draw_chart() {
   var chart_data = new google.visualization.DataTable();
   chart_data.addColumn('string', 'Asset Type'); 
-  chart_data.addColumn('number', '($)');
+  chart_data.addColumn('number', 'Count');
   - @data.each_value do |row|
     chart_data.addRow(['#{row.key}', {v: #{row.count}, f: '#{number_to_human(row.count)}'}]);
  
