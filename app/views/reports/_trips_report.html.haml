@@ -12,9 +12,10 @@
         - @data.each do |trip|
           %tr
             %td= trip.id
-            %td= trip.owner.name
+            %td= trip.owner.nil? ? "anonymous" : trip.owner.name
             %td= trip.from_place.nil? ? "no address" : trip.from_place.nongeocoded_address
             %td= trip.to_place.nil? ? "no address" : trip.to_place.nongeocoded_address
             %td= format_date_time(trip.created_at)
 
-  
+
+= render 'datatable_javascript'
