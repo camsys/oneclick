@@ -49,7 +49,8 @@ class Trip < ActiveRecord::Base
     begin
       # if the parse fails it will return nil and the to_date will throw an exception
       d = Chronic.parse(@trip_date).to_date
-      d += 1.year if d.past?
+      # bump to next year if they only spec'd day and month and we parsed it to be in the past
+      d += 1.year if d.past? and @trip_date.split(%r{/}).size < 3
       @trip_date = d.strftime("%m/%d/%Y")
     rescue Exception => e
       Rails.logger.warn "parsing date #{@trip_date}"
