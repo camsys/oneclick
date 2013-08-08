@@ -190,6 +190,16 @@ a:hover#help {
 
 .dropdown-menu a {
   cursor: pointer;
+}
+
+.form-horizontal input + .help-block {
+  margin-top: 1px;
+  font-size: 0.85em;
+  color: #777777;
+}
+
+.registrations .form-horizontal .control-group {
+  margin-bottom: 5px;
 }    
 
 td.right, th.right {

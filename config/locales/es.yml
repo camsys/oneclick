@@ -29,10 +29,15 @@ es:
   last_name: '[es]Last name[/es]'
   email: '[es]Email address[/es]'
   password: '[es]Password[/es]'
+  password_confirmation: '[es]Password confirmation[/es]'
+  current_password: '[es]Current password[/es]'
   forgot_your_password: '¿Olvidó su contraseña?'
   retype_your_password: '[es]Retype your password[/es]'
   logout: '[es]Logout[/es]'
   edit_account: '[es]Edit account[/es]'
+  update_my_profile: '[es]Update my profile[/es]'
+  current_password_hint: "[es]Enter your current password to confirm your changes.[/es]"  
+  leave_password_blank: "[es]Leave blank if you don't want to change your password.[/es]"
   spanish: 'En Español'
   error_not_implemented: 'Lo sentimos, pero esta funcionalidad aún no se ha implementado.'
   error_404: "[es]The page you were looking for doesn't exist.[/es]"
@@ -122,3 +127,5 @@ es:
             password:
               blank: "[es]can't be blank[/es]"
               confirmation: "[es]doesn't match confirmation[/es]"
+            current_password:
+              blank: "[es]can't be blank[/es]"
