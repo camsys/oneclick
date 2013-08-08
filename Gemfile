@@ -22,7 +22,7 @@ gem 'thin'
 gem 'awesome_print'
 gem 'chronic'
 group :development do
-  gem 'mysql2'
+  #gem 'mysql2'
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :rbx]
   gem 'guard-bundler'

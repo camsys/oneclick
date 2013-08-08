@@ -37,6 +37,7 @@ en:
   date: 'Date'
   depart_at: 'Depart at'
   arrive_by: 'Arrive by'
+  arrive_at: 'Arrive at'
   time: 'Time'
   cancel: 'Cancel'
   plan_it: 'Plan it'
@@ -48,7 +49,10 @@ en:
   taxi: 'Taxi'
   transit: 'Transit'
   details: 'Details'
-  transfers: 'transfers'
+  transfer: {
+    one: '%{count} transfer',
+    other: '%{count} transfers',
+  }
   view: 'View'
   remove: 'Remove'
   reload: 'Reload'
@@ -66,14 +70,14 @@ en:
   trip_was_successfully_created: 'Trip was successfully created.'
   trip_created_no_valid_options: "Trip created, but no valid trip options could be found:"
   hour: {
-    one: '%{count} hour',
-    other: '%{count} hours',
+    one: '%{count} h',
+    other: '%{count} h',
   }
   minute: {
-    one: '%{count} minute',
-    other: '%{count} minutes',
+    one: '%{count} min',
+    other: '%{count} mins',
   }
-  less_than_one_minute: 'less than 1 minute'
+  less_than_one_minute: 'Under 1 min'
   invalid_address: "Invalid address."
   invalid_location: "Invalid location."
   date_wrong_format: "Date must be in MM/DD/YYYY format."
