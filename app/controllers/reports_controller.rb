@@ -16,14 +16,18 @@ class ReportsController < ApplicationController
   # from the view
   def show
     
-    # if a report_type parameter was passed use that otherwise use the id
-    @report = params[:report_id].blank? ? Report.find(params[:id]) : Report.find(params[:report_id])
+    @report = Report.find(params[:id])
     
     if @report
       # view params needed for the subnav filters
-      @report_id = @report.id
-      @time_filter_type = params[:time_filter_type]
-      
+      if params[:time_filter_type]
+        @time_filter_type = params[:time_filter_type]
+      else
+         @time_filter_type = session[:time_filter_type]
+         params[:time_filter_type] = session[:time_filter_type]
+      end
+      session[:time_filter_type] = @time_filter_type
+         
       # set up the report view
       @report_view = @report.view_name
       # get the class instance and generate the data

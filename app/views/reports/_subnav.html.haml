@@ -2,20 +2,23 @@
   .span12
     .navbar
       .navbar-inner
-        %ul.nav
-          %li
-            = form_tag user_report_url(@report), :id => 'report_selector_form', :method => "get", :class => 'navbar-form form-inline' do
-              = hidden_field_tag :time_filter_type, @time_filter_type
-              .input-prepend
-                %span.add-on Report
-                = select_tag(:report_id, options_for_select(Report.all.collect{|r| [r.name, r.id]}, :selected => @report_id), :style => 'margin-top:0px', :id => 'report_type')
-        = form_tag user_report_url(@report), :id => 'time_filter_form', :method => "get", :class => 'navbar-form form-inline pull-right' do
-          = hidden_field_tag :report_id, @report_id
-          .input-prepend
-            %span.add-on Filter
-            = select_tag(:time_filter_type, options_for_select(ReportsController::TIME_FILTERS.collect{|r| [r[:value], r[:id]]}, :selected => @time_filter_type), :style => 'margin-top:0px', :id => 'time_filter')
+        .container
+          %ul.nav
+            %li.dropdown
+              %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}              
+                Report
+                %b.caret
+              %ul.dropdown-menu{role: 'menu'}
+                - Report.all.each do |report|
+                  %li
+                    = link_to report.name, user_report_path(current_user, report)
+          = form_tag user_report_url(@report), :id => 'time_filter_form', :method => "get", :class => 'navbar-form form-inline pull-right' do
+            .input-prepend
+              %span.add-on Filter
+              = select_tag(:time_filter_type, options_for_select(ReportsController::TIME_FILTERS.collect{|r| [r[:value], r[:id]]}, :selected => @time_filter_type), :style => 'margin-top:0px', :id => 'time_filter')
 
 :javascript
+  
   // Add a listener on the asset type filter that submits the form when changed
   $('#time_filter').change(function() {
     $('#time_filter_form').submit();
