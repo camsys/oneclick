@@ -33,6 +33,12 @@ html, body {
   padding-bottom: 80px;
 }
 
+@media (max-width: 979px) {
+  #main {
+    padding-top: 0;
+  }  
+}
+
 /* Set the fixed height of the footer here */
 #push,
 #footer {
@@ -103,16 +109,16 @@ html, body {
 
 // trips specific CSS
 .actionbutton:hover {
-   cursor: pointer;
-    border-color: #0088cc;
-    -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-       -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-            box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+ cursor: pointer;
+ border-color: #0088cc;
+ -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+ -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+ box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
 }
 
 // Media queries for the show trips view
 .trip_summary_icon {
-    font-size: 4em;  
+  font-size: 4em;  
 }
 // Large desktop
 @media (min-width: 1200px) {
