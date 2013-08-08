@@ -58,7 +58,7 @@ roles.each do |role|
   r.save!
 end
 u = User.find_by_email('email@camsys.com')
-u.user_roles "admin"
+u.add_role 'admin'
 u.save!
 
 # load the reports
