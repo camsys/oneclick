@@ -8,6 +8,7 @@
           %th.center From
           %th.center To
           %th.center Created On
+          %th.center Actions
       %tbody
         - @data.each do |trip|
           %tr
@@ -16,6 +17,9 @@
             %td= trip.from_place.nil? ? "no address" : trip.from_place.nongeocoded_address
             %td= trip.to_place.nil? ? "no address" : trip.to_place.nongeocoded_address
             %td= format_date_time(trip.created_at)
-
+            %td.center
+              = link_to details_trip_path(trip), {class: "btn btn-mini btn-success text-center"} do
+                %i.icon-search
+                =t(:view)
 
 = render 'datatable_javascript'

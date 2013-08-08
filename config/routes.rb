@@ -7,7 +7,7 @@ Oneclick::Application.routes.draw do
       root :to => 'home#index'
     end
 
-    devise_for :users
+    devise_for :users, controllers: {registrations: "registrations"}
 
     resources :admins, :only => [:index]
     
@@ -18,6 +18,7 @@ Oneclick::Application.routes.draw do
     resources :trips, only: [:new, :create, :show] do
       member do
         get 'hide'
+        get 'details'
       end
     end
 

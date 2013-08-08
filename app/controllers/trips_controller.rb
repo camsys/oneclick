@@ -5,8 +5,35 @@ class TripsController < ApplicationController
   def show
     
     if user_signed_in?
-      # limit trips to trips owned by the user
-      @trip = current_user.trips.find(params[:id])
+      # limit trips to trips owned by the user unless an admin
+      if current_user.has_role? :admin
+        @trip = Trip.find(params[:id])
+      else
+        @trip = current_user.trips.find(params[:id])
+      end
+    else
+      # TODO Workaround for now; it has to be a trip not owned by a user (but
+      # this is astill a security hole)
+      @trip = Trip.find_by_id_and_user_id(params[:id], nil)
+    end
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @trip }
+    end
+  end
+
+  # GET /trips/1
+  # GET /trips/1.json
+  def details
+    
+    if user_signed_in?
+      # limit trips to trips owned by the user unless an admin
+      if current_user.has_role? :admin
+        @trip = Trip.find(params[:id])
+      else
+        @trip = current_user.trips.find(params[:id])
+      end
     else
       # TODO Workaround for now; it has to be a trip not owned by a user (but
       # this is astill a security hole)
@@ -73,6 +100,10 @@ class TripsController < ApplicationController
         format.html { redirect_to @trip }
         format.json { render json: @trip, status: :created, location: @trip }
       else
+        Rails.logger.info @trip.ai
+        Rails.logger.info @trip.places.ai
+        Rails.logger.info @trip.from_place.ai
+        Rails.logger.info @trip.to_place.ai
         format.html { render action: "new" }
         format.json { render json: @trip.errors, status: :unprocessable_entity }
       end

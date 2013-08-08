@@ -1,0 +1,30 @@
+.row-fluid
+  .span12
+    .navbar
+      .navbar-inner
+        .container
+          %ul.nav
+            %li.dropdown
+              %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}              
+                Report
+                %b.caret
+              %ul.dropdown-menu{role: 'menu'}
+                - Report.all.each do |report|
+                  %li
+                    = link_to report.name, user_report_path(current_user, report)
+          = form_tag user_report_url(@report), :id => 'time_filter_form', :method => "get", :class => 'navbar-form form-inline pull-right' do
+            .input-prepend
+              %span.add-on Filter
+              = select_tag(:time_filter_type, options_for_select(ReportsController::TIME_FILTERS.collect{|r| [r[:value], r[:id]]}, :selected => @time_filter_type), :style => 'margin-top:0px', :id => 'time_filter')
+
+:javascript
+  
+  // Add a listener on the asset type filter that submits the form when changed
+  $('#time_filter').change(function() {
+    $('#time_filter_form').submit();
+  });
+  
+  // Add a listener on the report selector that submits the form when changed
+  $('#report_type').change(function() {
+    $('#report_selector_form').submit();
+  });
