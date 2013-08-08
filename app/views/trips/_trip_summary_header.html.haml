@@ -4,7 +4,7 @@
   .span9 
     %h1.trip_summary_title= get_trip_summary_title(itinerary.mode)
 .row-fluid
-  %h3.span9.offset3.trip_summary_text{:style => 'line-height: 0;min-height:24px;margin-top:5px;margin-bottom:5px;'}= itinerary.duration_to_words(itinerary.duration) + " (est.)"
+  %h3.span9.offset3.trip_summary_text{:style => 'line-height: 0;min-height:24px;margin-top:5px;margin-bottom:5px;'}= duration_to_words(itinerary.duration) + " (est.)"
 .row-fluid
   %h3.span9.offset3.trip_summary_text{:style => 'line-height: 0;min-height:24px;margin-top:5px;margin-bottom:5px;'}= itinerary.cost.nil? ? '$0' : number_to_currency(itinerary.cost) 
 .row-fluid

@@ -7,7 +7,9 @@ class TripsPerDayReport < AbstractReport
   def get_data(current_user, params)
     
     a = {}
-    (30.days.ago.to_date..Date.today).each do |day|
+    duration = time_filter_as_duration(params[:time_filter_type])
+    puts duration.inspect
+    duration.each do |day|
       
       row = BasicReportRow.new(day)
       # get the trips that were generated on this day

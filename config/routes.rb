@@ -18,6 +18,7 @@ Oneclick::Application.routes.draw do
     resources :trips, only: [:new, :create, :show] do
       member do
         get 'hide'
+        get 'details'
       end
     end
 

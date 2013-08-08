@@ -1,0 +1,63 @@
+.row-fluid
+  .span12
+    .row-fluid
+      .span4
+        %fieldset
+          %legend Transaction
+          %p.span12
+            %span.span3.text-right Owner:          
+            %span.span9= @trip.owner.nil? ? "anonymous" : link_to(@trip.owner.name, user_path(@trip.owner))      
+          %p.span12
+            %span.span3.text-right Trip Date:          
+            %span.span9= format_date_time(@trip.trip_datetime)          
+          %p.span12
+            %span.span3.text-right Arrive/Depart:          
+            %span.span9= @trip.arrive_depart      
+          %p.span12
+            %span.span3.text-right Created:          
+            %span.span9= format_date_time(@trip.created_at)          
+      .span8
+        %fieldset
+          %legend Places
+          %table.table.table.condensed.table-striped.table-hover.table-bordered
+            %thead
+              %tr
+                %th.center Place
+                %th.center Address
+                %th.center Geocoded
+                %th.center Actions
+            %tbody
+              - @trip.places.each do |place|
+                %tr
+                  %td= place.name
+                  %td.address= place.nongeocoded_address
+                  %td.center= get_boolean(! place.lat.nil?)
+                  %td.center
+    .row-fluid
+      .span12
+        %fieldset
+          %legend Itineraries
+          %table.table.table.condensed.table-striped.table-hover.table-bordered
+            %thead
+              %tr
+                %th.center Mode
+                %th.center Hidden
+                %th.center Start Time
+                %th.center End Time
+                %th.center Walk Time
+                %th.center Transit Time
+                %th.center Wait Time
+                %th.center Walk Dist                
+                %th.center Cost
+            %tbody
+              - @trip.itineraries.each do |itin|
+                %tr
+                  %td= itin.mode
+                  %td= get_boolean(itin.hidden)
+                  %td= format_date_time(itin.start_time)
+                  %td= format_date_time(itin.end_time)
+                  %td= duration_to_words(itin.walk_time)
+                  %td= duration_to_words(itin.transit_time)
+                  %td= duration_to_words(itin.wait_time)
+                  %td= distance_to_words(itin.walk_distance)
+                  %td= number_to_currency(itin.cost)

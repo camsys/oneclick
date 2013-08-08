@@ -17,10 +17,11 @@
   var chart_options = {
   is3D : true,
   height : 300,
+  pointSize: 4,
   legend : {position : 'none'},
   vAxis :  {title : 'Number'}
   };
-  chart = new google.visualization.ColumnChart(document.getElementById('chart'));
+  chart = new google.visualization.AreaChart(document.getElementById('chart'));
   chart.draw(chart_data, chart_options);
   }
 

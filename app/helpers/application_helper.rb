@@ -1,6 +1,56 @@
 module ApplicationHelper
 
+  METERS_TO_MILES = 0.000621371192
+  
   include CsHelpers
+
+  def distance_to_words(dist_in_meters)
+    return 'n/a' unless dist_in_meters
+    
+    # convert the meters to miles
+    miles = dist_in_meters * METERS_TO_MILES
+    if miles < 0.25
+      dist_str = "less than 1 block"
+    elsif miles < 0.5
+      dist_str = "about 2 blocks"      
+    elsif miles < 1
+      dist_str = "about 4 blocks"      
+    else
+      dist_str = "%.2f miles" % [miles]
+    end
+    dist_str
+  end
+  
+  def duration_to_words(time_in_seconds)
+    
+    return 'n/a' unless time_in_seconds
+
+    time_in_seconds = time_in_seconds.to_i
+    hours = time_in_seconds/3600
+    minutes = (time_in_seconds - (hours * 3600))/60
+
+    time_string = ''
+    if hours > 0
+      time_string << I18n.translate(:hour, count: hours)  + ' '
+    end
+
+    if minutes > 0 || hours > 0
+      time_string << I18n.translate(:minute, count: minutes)
+    end
+
+    if time_in_seconds < 60
+      time_string = I18n.translate(:less_than_one_minute)
+    end
+
+    time_string
+  end
+
+  def get_boolean(val)
+    if val
+      return "<i class='icon-ok'></i>".html_safe
+    end
+    #return val.nil? ? 'N' : val == true ? 'Y' : 'N'
+  end
 
   def format_date_time(datetime)
     return datetime.strftime("%I:%M %p %b %d %Y") unless datetime.nil?
