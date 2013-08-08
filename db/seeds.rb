@@ -54,7 +54,7 @@ end
 # load the roles
 roles.each do |role| 
   r = Role.new
-  r.name = role.name
+  r.name = role[:name]
   r.save!
 end
 u = User.find_by_email('email@camsys.com')
