@@ -1,6 +1,15 @@
 # Spanish
 
 es:
+  one_click_trip_planner: '1-Click Viaje Planificador'
+  # Actions
+  plan_a_trip: 'Planear un Viaje'
+  identify_places: 'Identificar los Lugares'
+  change_my_settings: 'Cambiar mi Configuración'
+  help_and_support: 'Ayuda y Soporte'
+  create_an_account: '[es]Create an Account[/es]'
+  travel_profile: '[es]Travel Profile[/es]'
+  previous_trips: '[es]Previous Trips[/es]'
   # Agent View strings
   find_traveler: "[es]Find Traveler[/es]"
   create_traveler: "[es]Create Traveler[/es]"
@@ -24,10 +33,6 @@ es:
   retype_your_password: '[es]Retype your password[/es]'
   logout: '[es]Logout[/es]'
   edit_account: '[es]Edit account[/es]'
-  plan_a_trip: 'Planear un Viaje'
-  identify_places: 'Identificar los Lugares'
-  change_my_settings: 'Cambiar mi Configuración'
-  help_and_support: 'Ayuda y Soporte'
   spanish: 'En Español'
   error_not_implemented: 'Lo sentimos, pero esta funcionalidad aún no se ha implementado.'
   error_404: "[es]The page you were looking for doesn't exist.[/es]"
@@ -96,7 +101,7 @@ es:
     site_title: '[es]YATA 1-Click[/es]'
     site_description: '[es]YATA 1-Click Application[/es]'
   broward:
-    logotext: '1-Click para el Condado de Broward'
+    logotext: ''
     site_title: '[es]Broward 1-Click[/es]'
     site_description: '[es]Broward 1-Click Application[/es]'
   simple_form:
