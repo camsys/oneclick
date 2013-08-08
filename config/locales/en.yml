@@ -31,10 +31,15 @@ en:
   last_name: 'Last name'
   email: 'Email address'
   password: 'Password'
+  password_confirmation: 'Password confirmation'
+  current_password: 'Current password'
   forgot_your_password: 'Forgot your password?'
   retype_your_password: 'Retype your password'
   logout: 'Logout'
   edit_account: 'Edit account'
+  update_my_profile: 'Update my profile'
+  current_password_hint: "Enter your current password to confirm your changes."  
+  leave_password_blank: "Leave blank if you don't want to change your password."
   spanish: 'En Español'
   error_not_implemented: "We're sorry, but this functionality has not yet been implemented."
   error_404: "The page you were looking for doesn't exist."

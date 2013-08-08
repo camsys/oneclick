@@ -11,7 +11,7 @@ class HomeController < ApplicationController
         ]
       else
         @actions += [
-          {label: t(:travel_profile), target: error_501_path, icon: ACTION_ICONS[:travel_profile]},
+          {label: t(:travel_profile), target: edit_user_registration_path, icon: ACTION_ICONS[:travel_profile]},
           {label: t(:previous_trips), target: error_501_path, icon: ACTION_ICONS[:previous_trips]},
         ]
       end
