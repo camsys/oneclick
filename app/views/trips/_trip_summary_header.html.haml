@@ -2,10 +2,23 @@
   .span3
     %i.mode_icon_formatting.trip_summary_icon{:class => get_trip_summary_icon(itinerary.mode)}
   .span9 
-    %h1.trip_summary_title= get_trip_summary_title(itinerary.mode)
-.row-fluid
-  %h3.span9.offset3.trip_summary_text{:style => 'line-height: 0;min-height:24px;margin-top:5px;margin-bottom:5px;'}= duration_to_words(itinerary.duration) + " (est.)"
-.row-fluid
-  %h3.span9.offset3.trip_summary_text{:style => 'line-height: 0;min-height:24px;margin-top:5px;margin-bottom:5px;'}= itinerary.cost.nil? ? '$0' : number_to_currency(itinerary.cost) 
-.row-fluid
-  %h3.span9.offset3.trip_summary_text{:style => 'line-height: 0;min-height:24px;margin-top:5px;margin-bottom:5px;'}= (itinerary.transfers.nil? ? '0' : itinerary.transfers.to_s) + ' ' + t(:transfers)
+    %h2.trip_summary_title= get_trip_summary_title(itinerary.mode)
+-if itinerary.duration
+  .row-fluid
+    %h4.span9.offset3.trip_summary_text= itinerary.duration_to_words(itinerary.duration) + " (est.)"
+-if itinerary.cost
+  .row-fluid
+    %h4.span9.offset3.trip_summary_text= number_to_currency(itinerary.cost)
+-if itinerary.transfers
+  .row-fluid
+    %h4.span9.offset3.trip_summary_text= I18n.translate(:transfer, count: itinerary.transfers)
+-if itinerary.trip.arrive_depart == 'arrive_by' && itinerary.end_time
+  .row-fluid
+    %h4.span9.offset3.trip_summary_text= t(:arrive_at) + ' ' + itinerary.end_time.localtime.strftime('%I:%M %p')
+-if itinerary.trip.arrive_depart == 'depart_at' && itinerary.start_time
+  .row-fluid
+    %h4.span9.offset3.trip_summary_text= t(:depart_at) + ' ' + itinerary.start_time.localtime.strftime('%I:%M %p')
+-if itinerary.walk_time
+  .row-fluid
+    %h4.span9.offset3.trip_summary_text= itinerary.duration_to_words(itinerary.walk_time) + ' walking'
+
