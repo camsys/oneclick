@@ -1,9 +1,12 @@
 module CsHelpers
 
     ACTION_ICONS = {
-        :plan_a_trip => 'icon-bus-sign',
+        :plan_a_trip => 'icon-share-sign',
+        :log_in => 'icon-key',
+        :create_an_account => 'icon-edit',
         :identify_places =>'icon-map-marker',
-        :change_my_settings => 'icon-cog',
+        :travel_profile => 'icon-cogs',
+        :previous_trips => 'icon-share-alt icon-flip-horizontal',
         :help_and_support => 'icon-question-sign',
         :find_traveler => 'icon-search',
         :create_traveler =>'icon-user',

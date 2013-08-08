@@ -160,7 +160,7 @@ Then /^I should see a successful sign up message$/ do
 end
 
 Then /^I should see an invalid email message$/ do
-  page.should have_content "Emailis invalid"
+  page.should have_content "Email addressis invalid"
 end
 
 Then /^I should see a missing password message$/ do
