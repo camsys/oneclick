@@ -53,13 +53,14 @@ module ApplicationHelper
       begin
         translate(key, options.merge({raise: true}))
       rescue Exception => e
-        Rails.logger.info "key: #{key} not found: #{e.inspect}"
+        # Rails.logger.info "key: #{key} not found: #{e.inspect}"
       end    
     end
   end
 
   def link_using_locale link_text, locale
-    parts = request.fullpath.split('/', 3)
+    path = session[:location] || request.fullpath
+    parts = path.split('/', 3)
     current_locale = I18n.available_locales.detect do |l|
       parts[1] == l.to_s
     end
@@ -67,8 +68,8 @@ module ApplicationHelper
     parts = parts.join('/')
     parts = '' if parts=='/'
     newpath = "/#{locale}#{parts}"
-    if (newpath == request.fullpath) or
-      (newpath == "/#{I18n.locale}#{request.fullpath}") or
+    if (newpath == path) or
+      (newpath == "/#{I18n.locale}#{path}") or
       (newpath == "/#{I18n.locale}")
       link_text
     else

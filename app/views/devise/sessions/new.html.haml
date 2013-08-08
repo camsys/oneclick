@@ -1,8 +1,14 @@
-.span8.offset2.well
-  %h2= t(:log_in)
+%h1
+  %i.icon-signin
+  = t(:log_in)
+%h4
+.well
   = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
-    = f.input :email, :autofocus => true
-    = f.input :password
+    = f.input :email, :autofocus => true, required: true
+    = f.input :password, required: true
     = f.input :remember_me, :as => :boolean if devise_mapping.rememberable?
-    = f.button :submit, t(:log_in), :class => 'btn-primary'
-  = render "devise/shared/links"
+    .actions
+      = button_tag type: :submit, class: 'btn btn-primary controls' do
+        %i.icon.icon-signin
+        = t(:log_in)
+      = render "devise/shared/links"

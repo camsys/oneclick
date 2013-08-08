@@ -19,7 +19,7 @@
               %li.dropdown
                 %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}
                   %i.icon.icon-user
-                  = "#{t(:welcome)}, #{current_user.first_name}"
+                  = "#{t(:welcome)}, #{current_user.welcome}"
                   %b.caret
                 %ul.dropdown-menu{role: 'menu'}
                   %li
@@ -39,6 +39,10 @@
                       = t(:logout)
             - else
               %li
-                = link_to t(:log_in), new_user_session_path
+                = link_to new_user_session_path do
+                  %i.icon.icon-signin
+                  = t(:log_in)
               %li
-                = link_to t(:sign_up), new_user_registration_path
+                = link_to new_user_registration_path do
+                  %i.icon.icon-edit
+                  = t(:sign_up)

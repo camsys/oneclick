@@ -73,6 +73,10 @@ class TripsController < ApplicationController
         format.html { redirect_to @trip }
         format.json { render json: @trip, status: :created, location: @trip }
       else
+        Rails.logger.info @trip.ai
+        Rails.logger.info @trip.places.ai
+        Rails.logger.info @trip.from_place.ai
+        Rails.logger.info @trip.to_place.ai
         format.html { render action: "new" }
         format.json { render json: @trip.errors, status: :unprocessable_entity }
       end
