@@ -6,7 +6,7 @@ es:
   create_traveler: "[es]Create Traveler[/es]"
   agents_agencies: "[es]Agents Agencies[/es]"
   # Agent and Admin string
-  reports: "[es]Reports"
+  reports: "[es]Reports[/es]"
   admin: '[es]Admin[/es]'
 
   # Other
@@ -16,7 +16,12 @@ es:
   log_in: 'Iniciar'
   sign_up: 'Alistarse'
   welcome: '[es]Welcome[/es]'
+  first_name: '[es]First name[/es]'
+  last_name: '[es]Last name[/es]'
+  email: '[es]Email address[/es]'
+  password: '[es]Password[/es]'
   forgot_your_password: '¿Olvidó su contraseña?'
+  retype_your_password: '[es]Retype your password[/es]'
   logout: '[es]Logout[/es]'
   edit_account: '[es]Edit account[/es]'
   plan_a_trip: 'Planear un Viaje'
@@ -96,3 +101,15 @@ es:
         email: 'Email'
         password: 'Contraseña'
         remember_me: 'Acuérdate de mí'
+
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: "[es]can't be blank[/es]"
+              invalid: "[es]is invalid[/es]"
+            password:
+              blank: "[es]can't be blank[/es]"
+              confirmation: "[es]doesn't match confirmation[/es]"

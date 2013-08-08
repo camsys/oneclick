@@ -24,4 +24,9 @@ class User < ActiveRecord::Base
     elems << last_name unless last_name.blank?
     elems.compact.join(' ')
   end
+
+  def welcome
+    return first_name unless first_name.blank?
+    email
+  end
 end
