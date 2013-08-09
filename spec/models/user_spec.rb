@@ -117,4 +117,50 @@ describe User do
     end
   end
 
+  describe 'buddies' do
+    before(:each) do
+      @u = FactoryGirl.create(:user)
+      @mock_message = double()
+      @mock_message.should_receive(:deliver)
+      @u.buddies.size.should eq 0
+      @u.buddy_relationships.size.should eq 0
+    end
+
+    it 'should be able to have a buddy requested, and an email should be sent' do
+      UserMailer.should_receive(:buddy_request_email).with("buddy@example.com", @u.email).and_return @mock_message
+      @u.add_buddy 'buddy@example.com'
+      @u.buddies.size.should eq 0
+      @u.buddy_relationships.size.should eq 1
+      @u.buddy_relationships.pending.size.should eq 1
+      @u.buddy_relationships.confirmed.size.should eq 0
+      rel = @u.buddy_relationships.first
+      rel.should be_pending
+      rel.email_address.should eq 'buddy@example.com'
+    end
+    it 'should be able to have a buddy requested, and if buddy exists, pending traveler should appear for the buddy' do
+      UserMailer.should_receive(:buddy_request_email).with("example2@example.com", @u.email).and_return @mock_message
+      @u2 = FactoryGirl.create(:user2)
+      @u2.pending_buddy_requests.size.should eq 0
+      @u2.travelers.size.should eq 0
+
+      @u.add_buddy 'example2@example.com'
+      @u2.reload
+      @u2.pending_buddy_requests.size.should eq 1
+      @u2.travelers.size.should eq 0
+
+      @u2.pending_buddy_requests.first.accept
+      @u2.reload
+      @u2.pending_buddy_requests.size.should eq 0
+      @u2.travelers.size.should eq 1
+
+      @u.reload
+      @u.buddies.size.should eq 1
+      @u.buddies.first.email.should eq @u2.email
+    end
+  end
+  
+  describe 'travelers' do
+    
+  end
+  
 end

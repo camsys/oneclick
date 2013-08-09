@@ -37,6 +37,9 @@ es:
   update_my_profile: '[es]Update my profile[/es]'
   current_password_hint: "[es]Enter your current password to confirm your changes.[/es]"  
   leave_password_blank: "[es]Leave both blank if you don't want to change your password.[/es]"
+  my_information: '[es]My information[/es]'
+  buddies: '[es]Buddies[/es]'
+  travelers: '[es]Travelers[/es]'
 
   spanish: 'En Español'
   error_not_implemented: 'Lo sentimos, pero esta funcionalidad aún no se ha implementado.'

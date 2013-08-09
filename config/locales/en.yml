@@ -40,6 +40,9 @@ en:
   update_my_profile: 'Update my profile'
   current_password_hint: "Enter your current password to confirm your changes."  
   leave_password_blank: "Leave both blank if you don't want to change your password."
+  my_information: 'My information'
+  buddies: 'Buddies'
+  travelers: 'Travelers'
 
   spanish: 'En Español'
   error_not_implemented: "We're sorry, but this functionality has not yet been implemented."

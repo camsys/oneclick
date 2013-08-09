@@ -211,6 +211,24 @@ a:hover#help {
   margin-bottom: 5px;
 }    
 
+// TODO This might want to be more generally available
+.registrations {
+  .tab-content {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+  }
+
+  .nav-tabs {
+    margin-bottom: 0;
+  }
+}
+
+.well > h4 {
+  margin-top: 0;
+}
+
 td.right, th.right {
   text-align: right;
 }
