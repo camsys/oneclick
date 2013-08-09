@@ -80,7 +80,12 @@ class TripsController < ApplicationController
   def hide
 
     # limit itineraries to only those related to trps owned by the user
-    itinerary = current_user.itineraries.find(params[:id])
+    itinerary = Itinerary.find(params[:id])
+    if itinerary.trip.owner != current_user
+      render text: 'Unable to remove itinerary.', status: 500
+      return
+    end
+
     respond_to do |format|
       if itinerary
         @trip = itinerary.trip
