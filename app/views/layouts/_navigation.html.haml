@@ -1,4 +1,4 @@
-.navbar.navbar-fixed-top
+.navbar.navbar-fixed-top#publicnav
   %nav.navbar-inner
     .container-fluid
       - if !at_root
@@ -6,6 +6,7 @@
       - else
         .brand
           =  t(:logotext)
+      %h2= t(:one_click_trip_planner)
       .pull-right
         -#<!-- .btn-navbar is used as the toggle for collapsed navbar content -->
         %a.btn.btn-navbar{data: { toggle: "collapse",  target: ".nav-collapse"}}
@@ -37,12 +38,5 @@
                     = link_to destroy_user_session_path, :method=>'delete' do
                       %i.icon.icon-signout
                       = t(:logout)
-            - else
-              %li
-                = link_to new_user_session_path do
-                  %i.icon.icon-signin
-                  = t(:log_in)
-              %li
-                = link_to new_user_registration_path do
-                  %i.icon.icon-edit
-                  = t(:sign_up)
+            = link_to error_501_path, id: 'help' do
+              %i.icon.icon-question-sign

@@ -6,4 +6,9 @@ class RegistrationsController < Devise::RegistrationsController
     super
   end
   
+  def update
+    session[:location] = edit_user_registration_path
+    super
+  end
+  
 end 

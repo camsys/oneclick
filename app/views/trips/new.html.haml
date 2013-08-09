@@ -1,5 +1,5 @@
 %h1
-  %i.icon-bus-sign
+  %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
   = t(:plan_a_trip)
   %h4
     -if @trip.errors.any?

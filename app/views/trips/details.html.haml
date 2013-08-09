@@ -1,38 +1,48 @@
 .row-fluid
   .span12
+    %h1
+      %i.icon.icon-tags
+      = "Trip: " + @trip.id.to_s
+    
+.row-fluid
+  .span12
     .row-fluid
-      .span4
+      .span5
         %fieldset
           %legend Transaction
           %p.span12
-            %span.span3.text-right Owner:          
-            %span.span9= @trip.owner.nil? ? "anonymous" : link_to(@trip.owner.name, user_path(@trip.owner))      
+            %span.span4.text-right Owner:          
+            %span.span8= @trip.owner.nil? ? "anonymous" : link_to(@trip.owner.name, user_path(@trip.owner))      
           %p.span12
-            %span.span3.text-right Trip Date:          
-            %span.span9= format_date_time(@trip.trip_datetime)          
+            %span.span4.text-right Trip Date:          
+            %span.span8= format_date_time(@trip.trip_datetime)          
           %p.span12
-            %span.span3.text-right Arrive/Depart:          
-            %span.span9= @trip.arrive_depart      
+            %span.span4.text-right Arrive/Depart:          
+            %span.span8= @trip.arrive_depart      
           %p.span12
-            %span.span3.text-right Created:          
-            %span.span9= format_date_time(@trip.created_at)          
-      .span8
+            %span.span4.text-right Created:          
+            %span.span8= format_date_time(@trip.created_at)          
+      .span7
         %fieldset
           %legend Places
           %table.table.table.condensed.table-striped.table-hover.table-bordered
             %thead
               %tr
-                %th.center Place
-                %th.center Address
+                %th.left Place
+                %th.left Address
                 %th.center Geocoded
                 %th.center Actions
             %tbody
               - @trip.places.each do |place|
                 %tr
-                  %td= place.name
-                  %td.address= place.nongeocoded_address
+                  %td.left= place.name
+                  %td.left= place.nongeocoded_address
                   %td.center= get_boolean(! place.lat.nil?)
                   %td.center
+                    = link_to "#", {class: "btn btn-mini btn-success text-center"} do
+                      %i.icon-search
+                      =t(:view)
+
     .row-fluid
       .span12
         %fieldset
@@ -40,24 +50,24 @@
           %table.table.table.condensed.table-striped.table-hover.table-bordered
             %thead
               %tr
-                %th.center Mode
+                %th.left Mode
                 %th.center Hidden
                 %th.center Start Time
                 %th.center End Time
-                %th.center Walk Time
-                %th.center Transit Time
-                %th.center Wait Time
-                %th.center Walk Dist                
+                %th.left Walk Time
+                %th.left Transit Time
+                %th.left Wait Time
+                %th.left Walk Dist                
                 %th.center Cost
             %tbody
               - @trip.itineraries.each do |itin|
                 %tr
-                  %td= itin.mode
-                  %td= get_boolean(itin.hidden)
-                  %td= format_date_time(itin.start_time)
-                  %td= format_date_time(itin.end_time)
-                  %td= duration_to_words(itin.walk_time)
-                  %td= duration_to_words(itin.transit_time)
-                  %td= duration_to_words(itin.wait_time)
-                  %td= distance_to_words(itin.walk_distance)
-                  %td= number_to_currency(itin.cost)
+                  %td.left= itin.mode
+                  %td.center= get_boolean(itin.hidden)
+                  %td.center= format_date_time(itin.start_time)
+                  %td.center= format_date_time(itin.end_time)
+                  %td.left= duration_to_words(itin.walk_time)
+                  %td.left= duration_to_words(itin.transit_time)
+                  %td.left= duration_to_words(itin.wait_time)
+                  %td.left= distance_to_words(itin.walk_distance)
+                  %td.right= number_to_currency(itin.cost)

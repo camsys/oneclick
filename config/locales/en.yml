@@ -4,6 +4,15 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  one_click_trip_planner: '1-Click Trip Planner'
+  # Actions
+  plan_a_trip: 'Plan a Trip'
+  identify_places: 'Identify Places'
+  change_my_settings: 'Change My Settings'
+  help_and_support: 'Help & Support'
+  create_an_account: 'Create an Account'
+  travel_profile: 'Travel Profile'
+  previous_trips: 'Previous Trips'
   # Agent View strings
   find_traveler: "Find Traveler"
   create_traveler: "Create Traveler"
@@ -22,14 +31,15 @@ en:
   last_name: 'Last name'
   email: 'Email address'
   password: 'Password'
+  password_confirmation: 'Password confirmation'
+  current_password: 'Current password'
   forgot_your_password: 'Forgot your password?'
   retype_your_password: 'Retype your password'
   logout: 'Logout'
   edit_account: 'Edit account'
-  plan_a_trip: 'Plan a Trip'
-  identify_places: 'Identify Places'
-  change_my_settings: 'Change My Settings'
-  help_and_support: 'Help & Support'
+  update_my_profile: 'Update my profile'
+  current_password_hint: "Enter your current password to confirm your changes."  
+  leave_password_blank: "Leave blank if you don't want to change your password."
   spanish: 'En Español'
   error_not_implemented: "We're sorry, but this functionality has not yet been implemented."
   error_404: "The page you were looking for doesn't exist."
@@ -101,7 +111,7 @@ en:
     site_description: 'YATA 1-Click Application'
   broward:
     home: '1-Click Broward Home'
-    logotext: '1-Click Broward'
+    logotext: ''
     site_title: 'Broward 1-Click'
     site_description: 'Broward 1-Click Application'
   simple_form:
