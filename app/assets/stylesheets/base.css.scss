@@ -57,14 +57,23 @@ html, body {
 
 .itinerary_icons {
   text-align: center;
-  vertical-align: middle;
   line-height: normal;
   font-size: 3em;
 }
 
 .itinerary_text {
   text-align: left;
-  vertical-align: middle;
+  line-height: 18px;
+  padding: 0px;
+}
+
+.itinerary_text_small{
+  font-size: 12px;
+  line-height: 0px;
+  text-align: left;
+  vertical-align: top;
+  color: #0088cc;
+  padding: 0px;
 }
 
 .modal{

@@ -5,7 +5,7 @@
     %h2.trip_summary_title= get_trip_summary_title(itinerary.mode)
 -if itinerary.duration
   .row-fluid
-    %h4.span9.offset3.trip_summary_text= itinerary.duration_to_words(itinerary.duration) + " (est.)"
+    %h4.span9.offset3.trip_summary_text= duration_to_words(itinerary.duration) + " (est.)"
 -if itinerary.cost
   .row-fluid
     %h4.span9.offset3.trip_summary_text= number_to_currency(itinerary.cost)
@@ -20,5 +20,5 @@
     %h4.span9.offset3.trip_summary_text= t(:depart_at) + ' ' + itinerary.start_time.localtime.strftime('%I:%M %p')
 -if itinerary.walk_time
   .row-fluid
-    %h4.span9.offset3.trip_summary_text= itinerary.duration_to_words(itinerary.walk_time) + ' walking'
+    %h4.span9.offset3.trip_summary_text= duration_to_words(itinerary.walk_time) + ' walking'
 
