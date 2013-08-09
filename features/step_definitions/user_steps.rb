@@ -147,6 +147,12 @@ Then /^I should be signed out$/ do
   page.should_not have_content "Logout"
 end
 
+Then /^I should be at the signed-out home page$/ do
+  page.should have_content "Create an Account"
+  page.should have_content "Log in"
+  page.should_not have_content "Logout"
+end
+
 Then /^I see an unconfirmed account message$/ do
   page.should have_content "You have to confirm your account before continuing."
 end
