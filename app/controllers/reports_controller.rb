@@ -1,10 +1,6 @@
 class ReportsController < ApplicationController
   
-  TIME_FILTERS = [
-    {:id => 0, :value => "Last 30 days", :parse_text_start => "30 days ago", :parse_text_end => "yesterday", :is_day_duration => true},
-    {:id => 1, :value => "Last 7 days", :parse_text_start => "7 days ago", :parse_text_end => "yesterday", :is_day_duration => true},
-    {:id => 2, :value => "Last month", :parse_text_start => "last month", :parse_text_end => "last month", :is_day_duration => false}
-  ]
+  TIME_FILTER_TYPE_SESSION_KEY = 'reports_time_filter_type'
   
   def index
     
@@ -23,10 +19,10 @@ class ReportsController < ApplicationController
       if params[:time_filter_type]
         @time_filter_type = params[:time_filter_type]
       else
-         @time_filter_type = session[:time_filter_type]
-         params[:time_filter_type] = session[:time_filter_type]
+         @time_filter_type = session[TIME_FILTER_TYPE_SESSION_KEY]
+         params[:time_filter_type] = session[TIME_FILTER_TYPE_SESSION_KEY]
       end
-      session[:time_filter_type] = @time_filter_type
+      session[TIME_FILTER_TYPE_SESSION_KEY] = @time_filter_type
          
       # set up the report view
       @report_view = @report.view_name

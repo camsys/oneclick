@@ -25,10 +25,13 @@ class Trip < ActiveRecord::Base
 
   accepts_nested_attributes_for :places, :from_place, :to_place
 
-  scope :recent, lambda {|date| where('created_at > ?', date.beginning_of_day) unless date.nil? }
-
+  #scope :recent, lambda {|date| where('created_at > ?', date.beginning_of_day) unless date.nil? }
+  
+  scope :anonymous, where('user_id is NULL')
+  scope :created_between, lambda {|from_day, to_day| where("created_at > ? AND created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
+ 
   def self.rejected
-    recent(30.days.ago).joins(:itineraries).where('status=200 AND hidden=true').uniq
+    joins(:itineraries).where('status=200 AND hidden=true').uniq
   end
     
   def self.failed

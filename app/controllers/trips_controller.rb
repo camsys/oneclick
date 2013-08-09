@@ -1,5 +1,45 @@
 class TripsController < ApplicationController
 
+  TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
+  
+  def index
+
+    # params needed for the subnav filters
+    if params[:time_filter_type]
+      @time_filter_type = params[:time_filter_type]
+    else
+       @time_filter_type = session[TIME_FILTER_TYPE_SESSION_KEY]
+    end
+    # if it is still not set use the default
+    if @time_filter_type.nil?
+      @time_filter_type = "0"
+    end
+    # store it in the session
+    session[TIME_FILTER_TYPE_SESSION_KEY] = @time_filter_type
+
+    # get the duration for this time filter
+    duration = TimeFilterHelper.time_filter_as_duration(@time_filter_type)
+    
+    if user_signed_in?
+      # limit trips to trips owned by the user unless an admin
+      if current_user.has_role? :admin
+        @trips = Trip.created_between(duration.first, duration.last)
+      else
+        @trips = current_user.trips.created_between(duration.first, duration.last)
+      end
+    else
+      # TODO Workaround for now; it has to be a trip not owned by a user (but
+      # this is astill a security hole)
+      @trips = Trip.anonymous.created_between(duration.first, duration.last)
+    end
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @trips }
+    end
+    
+  end
+
   # GET /trips/1
   # GET /trips/1.json
   def show
