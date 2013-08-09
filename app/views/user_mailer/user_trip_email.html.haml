@@ -1,0 +1,54 @@
+%h3= "Hi " + @user.first_name + ","
+%p Here is the trip information you requested.
+
+%hr
+
+%table
+  %tr
+    %td From
+    %td= @trip.places.first.nongeocoded_address
+  %tr
+    %td To
+    %td= @trip.places.last.nongeocoded_address
+  %tr
+    %td At
+    %td= format_date_time(@trip.trip_datetime) 
+
+%hr
+
+%table
+  %thead
+    %tr
+      %th Mode
+      %th Start Time
+      %th End Time
+      %th Walk Time
+      %th Transit Time
+      %th Wait Time
+      %th Walk Dist                
+      %th Cost
+  %tbody
+    - @trip.valid_itineraries.each do |itin|
+      %tr
+        %td= itin.mode
+        %td= format_date_time(itin.start_time)
+        %td= format_date_time(itin.end_time)
+        %td= duration_to_words(itin.walk_time)
+        %td= duration_to_words(itin.transit_time)
+        %td= duration_to_words(itin.wait_time)
+        %td= distance_to_words(itin.walk_distance)
+        %td= number_to_currency(itin.cost)
+
+
+%p Thank you for using ARC Onclick Software.
+
+%hr
+
+%table
+  %tbody
+    %tr
+      %td This email is automatically sent by the OneClick system. Please do not reply to this email.
+    %tr
+      %td Sent by Cambridge Systematics, 140 Cambridge Park Dr. Cambridge MA 02140 on behalf of ARC OneClick
+ 
+  

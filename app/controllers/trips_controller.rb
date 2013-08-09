@@ -1,6 +1,21 @@
 class TripsController < ApplicationController
+  
+  # set the @trip variable before any actions are invoked
+  before_filter :get_trip, :only => [:email, :show, :details]
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
+  
+  def email
+    if user_signed_in?
+      UserMailer.user_trip_email(current_user, @trip, "Arc OneClick Trip Itinerary").deliver
+    else
+      UserMailer.user_trip_email(current_user, @trip, "Arc OneClick Trip Itinerary").deliver
+    end  
+    respond_to do |format|
+      format.html { redirect_to(@trip, :notice => "An email was sent to #{current_user.email}. Please check your inbox." ) }
+      format.json { render json: @trip }
+    end
+  end
   
   def index
 
@@ -44,19 +59,6 @@ class TripsController < ApplicationController
   # GET /trips/1.json
   def show
     
-    if user_signed_in?
-      # limit trips to trips owned by the user unless an admin
-      if current_user.has_role? :admin
-        @trip = Trip.find(params[:id])
-      else
-        @trip = current_user.trips.find(params[:id])
-      end
-    else
-      # TODO Workaround for now; it has to be a trip not owned by a user (but
-      # this is astill a security hole)
-      @trip = Trip.find_by_id_and_user_id(params[:id], nil)
-    end
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trip }
@@ -67,19 +69,6 @@ class TripsController < ApplicationController
   # GET /trips/1.json
   def details
     
-    if user_signed_in?
-      # limit trips to trips owned by the user unless an admin
-      if current_user.has_role? :admin
-        @trip = Trip.find(params[:id])
-      else
-        @trip = current_user.trips.find(params[:id])
-      end
-    else
-      # TODO Workaround for now; it has to be a trip not owned by a user (but
-      # this is astill a security hole)
-      @trip = Trip.find_by_id_and_user_id(params[:id], nil)
-    end
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trip }
@@ -150,4 +139,20 @@ class TripsController < ApplicationController
     end
   end
 
+protected
+
+  def get_trip
+    if user_signed_in?
+      # limit trips to trips owned by the user unless an admin
+      if current_user.has_role? :admin
+        @trip = Trip.find(params[:id])
+      else
+        @trip = current_user.trips.find(params[:id])
+      end
+    else
+      # TODO Workaround for now; it has to be a trip not owned by a user (but
+      # this is astill a security hole)
+      @trip = Trip.find_by_id_and_user_id(params[:id], nil)
+    end    
+  end
 end
