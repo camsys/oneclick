@@ -47,7 +47,7 @@ function get_viewport_width() {
 function adjust_thumbnails(window_width) {
     var span_size;
     var counter = 0;
-    if (window_width > 1200) {
+    if (window_width > 1400) {
         span_size = "span3";
         counter = 4;
     } else if (window_width > 979) {

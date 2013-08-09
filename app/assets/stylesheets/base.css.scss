@@ -85,7 +85,7 @@ a:hover#help {
 .itinerary_icons {
   text-align: center;
   line-height: normal;
-  font-size: 3em;
+  font-size: 2.25em;
 }
 
 .itinerary_text {
@@ -106,6 +106,21 @@ a:hover#help {
 .modal{
   max-height: 85%;
   overflow-y: auto;
+}
+
+.trip_basic_text{
+  font-size: 24px;
+  color: #0088cc;
+  font-weight: bold;
+  display: inline;
+
+}
+
+.trip_prepositions{
+  font-size: 16px;
+  display: inline;
+  font-weight: bold;
+
 }
 
 //#main .container {
@@ -147,8 +162,8 @@ a:hover#help {
 }
 .trip_summary_text {
   line-height: 0;
-  margin-top:5px;
-  margin-bottom:5px;
+  font-size: 22px;
+  text-indent:10px;
 }
 
 // Media queries for the show trips view
