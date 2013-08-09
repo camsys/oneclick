@@ -18,8 +18,7 @@ es:
   reports: "[es]Reports[/es]"
   admin: '[es]Admin[/es]'
 
-  # Other
-  
+  # Registration, sign in, profile
   version: 'Versión'
   home: "Inicio"
   log_in: 'Iniciar'
@@ -37,13 +36,16 @@ es:
   edit_account: '[es]Edit account[/es]'
   update_my_profile: '[es]Update my profile[/es]'
   current_password_hint: "[es]Enter your current password to confirm your changes.[/es]"  
-  leave_password_blank: "[es]Leave blank if you don't want to change your password.[/es]"
+  leave_password_blank: "[es]Leave both blank if you don't want to change your password.[/es]"
+
   spanish: 'En Español'
   error_not_implemented: 'Lo sentimos, pero esta funcionalidad aún no se ha implementado.'
   error_404: "[es]The page you were looking for doesn't exist.[/es]"
   error_404_mistyped: '[es]You may have mistyped the address or the page may have moved.[/es]'
   error_422: '[es]The change you wanted was rejected.[/es]'
   error_422_detail: "[es]Maybe you tried to change something you didn't have access to.[/es]"
+
+  # Trip planning
   enter_address: '[es]Enter address[/es]'
   select_or_enter_address: '[es]Select or enter address[/es]'
   select: '[es]Select[/es]'
@@ -97,6 +99,8 @@ es:
   time_wrong_format: "[es]Time must be in hh:mm am/pm format.[/es]"
   trips_cannot_be_entered_for_days: "[es]Trips cannot be entered for days earlier than today.[/es]"
   trips_cannot_be_entered_for_times: "[es]Trips cannot be entered for past times.[/es]"
+
+  # Branding
   arc:
     logotext: ''
     site_title: '[es]ARC 1-Click[/es]'
