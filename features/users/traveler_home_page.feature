@@ -3,10 +3,19 @@ Feature: Traveler Home Page
   I want to see the actions I can take listed on the homepage
   so I can know what I can do there
 
-  Scenario: Viewing home page actions
+  Scenario: Viewing home page actions, logged out
     Given I exist as a user
     When I look at the home page
     Then I see "Plan a Trip"
-    And I see "Identify Places"
-    And I see "Change My Settings"
-    And I see "Help & Support"
+    And I see "Log in"
+    And I see "Create an Account"
+
+  Scenario: Viewing home page actions, logged in
+    Given I exist as a user
+      And I am not logged in
+    When I sign in with valid credentials
+    Then I see a successful sign in message
+    When I look at the home page
+    Then I see "Plan a Trip"
+    And I see "Profile"
+    And I see "Previous Trips"

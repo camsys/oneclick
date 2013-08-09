@@ -8,4 +8,4 @@ Feature: Sign out
       When I sign out
       Then I should see a signed out message
       When I return to the site
-      Then I should be signed out
+      Then I should be at the signed-out home page
