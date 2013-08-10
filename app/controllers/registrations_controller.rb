@@ -10,5 +10,10 @@ class RegistrationsController < Devise::RegistrationsController
     session[:location] = edit_user_registration_path
     super
   end
-  
+
+  def edit
+    @buddy_relationship = BuddyRelationship.new
+    super
+  end
+
 end 

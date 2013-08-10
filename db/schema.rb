@@ -17,10 +17,13 @@ ActiveRecord::Schema.define(:version => 20130809180913) do
     t.integer  "buddy_id"
     t.string   "status"
     t.string   "email_address"
+    t.datetime "email_sent"
     t.integer  "traveler_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end
+
+  add_index "buddy_relationships", ["traveler_id", "email_address"], :name => "index_buddy_relationships_on_traveler_id_and_email_address", :unique => true
 
   create_table "itineraries", :force => true do |t|
     t.integer  "duration"

@@ -1,7 +1,9 @@
+- Rails.logger.info "table_id is #{table_id}"
+- table_id ||= '#datatable'
 :javascript
   
   $(document).ready(function() {
-  	$('#datatable').dataTable( {
+  	$('#{table_id}').dataTable( {
   		"bFilter" : false,
   		"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
   		"sPaginationType": "bootstrap",

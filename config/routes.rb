@@ -12,7 +12,18 @@ Oneclick::Application.routes.draw do
     resources :admins, :only => [:index]
     
     resources :users do
-      resources :reports, :only => [:index, :show]      
+      resources :reports, :only => [:index, :show]
+      resources :buddies
+      resources :travelers
+      resources :buddy_relationships
+      resources :traveler_relationships do
+        member do
+          get 'accept'
+          get 'decline'
+          get 'assist'
+          get 'desist'
+        end
+      end
     end
     
     resources :trips, only: [:new, :create, :show, :index] do

@@ -40,6 +40,11 @@ es:
   my_information: '[es]My information[/es]'
   buddies: '[es]Buddies[/es]'
   travelers: '[es]Travelers[/es]'
+  send_buddy_request: '[es]Send buddy request[/es]'
+  buddys_email_address: "[es]Buddy's email address[/es]"
+  accept: '[es]Accept[/es]'
+  decline: '[es]Decline[/es]'
+  assist: '[es]Assist[/es]'
 
   spanish: 'En Español'
   error_not_implemented: 'Lo sentimos, pero esta funcionalidad aún no se ha implementado.'

@@ -229,6 +229,17 @@ a:hover#help {
   margin-top: 0;
 }
 
+// See http://stackoverflow.com/a/13307817/222602
+form.form-inline div.control-group {
+  display: inline-block;
+}
+form.form-inline div.control-group div.controls {
+  display: inline-block; 
+}
+form.form-inline .control-label {
+  margin-right: 5px;
+}
+
 td.right, th.right {
   text-align: right;
 }

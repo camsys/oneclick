@@ -21,4 +21,12 @@ class ApplicationController < ActionController::Base
     session.delete :location
   end
 
+  def start_assisting user
+    session[:assisting] = user.id
+  end
+
+  def stop_assisting
+    session.delete :assisting
+  end
+
 end

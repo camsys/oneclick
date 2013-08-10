@@ -43,7 +43,12 @@ en:
   my_information: 'My information'
   buddies: 'Buddies'
   travelers: 'Travelers'
-
+  send_buddy_request: 'Send buddy request'
+  buddys_email_address: "Buddy's email address"
+  accept: 'Accept'
+  decline: 'Decline'
+  assist: 'Assist'
+  
   spanish: 'En Español'
   error_not_implemented: "We're sorry, but this functionality has not yet been implemented."
   error_404: "The page you were looking for doesn't exist."

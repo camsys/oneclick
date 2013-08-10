@@ -24,4 +24,15 @@ module CsHelpers
     User.new
   end
 
+  def assisting?
+    session.include? :assisting
+  end
+
+  def assisted_user
+    Rails.logger.info session[:assisting].ai
+    Rails.logger.info @assisted_user.ai
+    # TODO This should be a ||=, no?
+    User.find_by_id(session[:assisting])
+  end
+
 end

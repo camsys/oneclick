@@ -42,25 +42,29 @@
             .span6
               = f.input :current_password, label: t(:current_password), :hint => t(:current_password_hint), :required => true
     .tab-pane#tab2
-      .well
-        .row-fluid
-          .span12
-            Buddies
+      .well#buddies
+        = render partial: 'buddies'
     .tab-pane#tab3
-      .well
-        .row-fluid
-          .span12
-            Travelers
+      .well#travelers
+        = render partial: 'travelers'
 :javascript
-  $('#tab1 a').click(function(e) {
+  $('a#tab1').click(function(e) {
     e.preventDefault()
     $(this).tab('show')
   })
-  $('#tab2 a').click(function(e) {
+  $('a#tab2').click(function(e) {
     e.preventDefault()
     $(this).tab('show')
   })
-  $('#tab3 a').click(function(e) {
+  $('a#tab3').click(function(e) {
     e.preventDefault()
     $(this).tab('show')
   })
+  $('#buddies').on('ajax:success', function(e, response) {
+    console.log(response)
+    $('#buddies').html(response)
+  }) 
+  $('#travelers').on('ajax:success', function(e, response) {
+    console.log(response)
+    $('#travelers').html(response)
+  }) 

@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+  :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :role_ids, :as => :admin
@@ -35,10 +35,29 @@ class User < ActiveRecord::Base
   end
 
   def add_buddy email_address
-    buddy_relationships.create(email_address: email_address, status: 'pending')
+    b = BuddyRelationship.new(email_address: email_address, status: 'pending')
+    buddy_relationships << b
+    unless self.save
+      buddy_relationships.delete_if { |b| b.id.nil? }
+    end
+    b
   end
 
   def pending_buddy_requests
     traveler_relationships.pending
+  end
+
+  def pending_buddy? email_address
+    buddy_by_status? email_address, 'pending'
+  end
+
+  def confirmed_buddy? email_address
+    buddy_by_status? email_address, 'confirmed'
+  end
+
+  private
+
+  def buddy_by_status? email_address, status
+    buddy_relationships.find_by_email_address_and_status email_address, status
   end
 end
