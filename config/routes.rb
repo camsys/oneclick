@@ -34,7 +34,7 @@ Oneclick::Application.routes.draw do
       member do
         get 'hide'
         get 'details'
-        get 'email'
+        post 'email'
       end
     end
 

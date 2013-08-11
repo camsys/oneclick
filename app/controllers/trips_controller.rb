@@ -6,13 +6,16 @@ class TripsController < ApplicationController
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
   
   def email
-    if user_signed_in?
-      UserMailer.user_trip_email(current_traveler, @trip, "Arc OneClick Trip Itinerary").deliver
-    else
-      UserMailer.user_trip_email(current_traveler, @trip, "Arc OneClick Trip Itinerary").deliver
-    end  
+    Rails.logger.info "Begin email"
+    email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
+    Rails.logger.info email_addresses.inspect
+    email_addresses << current_user.email if user_signed_in? && params[:email][:send_to_me]
+    email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
+    Rails.logger.info email_addresses.inspect
+    from_email = user_signed_in? ? current_user.email : params[:email][:from]
+    UserMailer.user_trip_email(email_addresses, @trip, "ARC OneClick Trip Itinerary", from_email).deliver
     respond_to do |format|
-      format.html { redirect_to(@trip, :notice => "An email was sent to #{current_traveler.email}. Please check your inbox." ) }
+      format.html { redirect_to(@trip, :notice => "An email was sent to #{email_addresses.join(', ')}." ) }
       format.json { render json: @trip }
     end
   end
@@ -142,6 +145,7 @@ class TripsController < ApplicationController
 protected
 
   def get_trip
+    Rails.logger.info "Begin get trip"
     if user_signed_in?
       # limit trips to trips accessible by the user unless an admin
       if current_user.has_role? :admin
@@ -153,6 +157,7 @@ protected
       # TODO Workaround for now; it has to be a trip not owned by a user (but
       # this is potentially still a security hole)
       @trip = Trip.find_by_id_and_user_id(params[:id], nil)
-    end    
+    end
+    Rails.logger.info "End get trip"
   end
 end
