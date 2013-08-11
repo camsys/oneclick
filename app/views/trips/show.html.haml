@@ -22,9 +22,11 @@
     = link_to new_trip_path do
       %i{class: CsHelpers::ACTION_ICONS[:plan_a_trip]}
       = t(:plan_a_trip)
-    = link_to email_trip_path, {class: "pull-right"} do
+    = link_to '#', {href: '#send_trip_by_email', class: "pull-right", data: {toggle: 'modal'}} do
       %i.icon-envelope
-      Send to me
+      Send by email
+
+    = render partial: 'send_trip_by_email', locals: {trip: @trip}
 
 :javascript
   $(document).ready(function() {
