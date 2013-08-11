@@ -1,7 +1,7 @@
 class TripsController < ApplicationController
   
   # set the @trip variable before any actions are invoked
-  before_filter :get_trip, :only => [:email, :show, :details]
+  before_filter :get_trip, :only => [:email, :show, :details, :unhide_all]
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
   
@@ -98,6 +98,13 @@ class TripsController < ApplicationController
         render text: 'Unable to remove itinerary.', status: 500
       end
     end
+  end
+
+  def unhide_all
+    @trip.hidden_itineraries.each do |i|
+      i.unhide
+    end
+    redirect_to @trip    
   end
 
   # GET /trips/new

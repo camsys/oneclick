@@ -4,6 +4,7 @@ es:
   one_click_trip_planner: '1-Click Viaje Planificador'
   # Actions
   plan_a_trip: 'Planear un Viaje'
+  plan_a_new_trip: '[es]Plan a new trip[/es]'
   identify_places: 'Identificar los Lugares'
   change_my_settings: 'Cambiar mi Configuración'
   help_and_support: 'Ayuda y Soporte'

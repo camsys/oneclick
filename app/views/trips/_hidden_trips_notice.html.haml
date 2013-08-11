@@ -1,0 +1,6 @@
+- unless @trip.hidden_itineraries.empty?
+  |
+  %i.icon-exclamation-sign
+  = "#{pluralize(@trip.hidden_itineraries.size, 'option')} hidden."
+  = link_to unhide_all_trip_path(@trip) do
+    Unhide all

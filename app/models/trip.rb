@@ -22,6 +22,7 @@ class Trip < ActiveRecord::Base
   belongs_to :owner, foreign_key: 'user_id', class_name: User
   has_many :itineraries
   has_many :valid_itineraries, conditions: 'status=200 AND hidden=false', class_name: 'Itinerary'
+  has_many :hidden_itineraries, conditions: 'status=200 AND hidden=true', class_name: 'Itinerary'
 
   accepts_nested_attributes_for :places, :from_place, :to_place
 
