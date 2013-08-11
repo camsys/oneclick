@@ -15,7 +15,11 @@ Oneclick::Application.routes.draw do
       resources :reports, :only => [:index, :show]
       resources :buddies
       resources :travelers
-      resources :buddy_relationships
+      resources :buddy_relationships do
+        member do
+          get 'revoke'
+        end
+      end
       resources :traveler_relationships do
         member do
           get 'accept'

@@ -45,6 +45,7 @@ es:
   accept: '[es]Accept[/es]'
   decline: '[es]Decline[/es]'
   assist: '[es]Assist[/es]'
+  revoke: '[es]Revoke[/es]'
 
   spanish: 'En Español'
   error_not_implemented: 'Lo sentimos, pero esta funcionalidad aún no se ha implementado.'

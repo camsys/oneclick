@@ -48,6 +48,7 @@ en:
   accept: 'Accept'
   decline: 'Decline'
   assist: 'Assist'
+  revoke: 'Revoke'
   
   spanish: 'En Español'
   error_not_implemented: "We're sorry, but this functionality has not yet been implemented."

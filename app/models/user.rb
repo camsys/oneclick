@@ -43,6 +43,10 @@ class User < ActiveRecord::Base
     b
   end
 
+  def remove_buddy buddy_relationship
+    buddy_relationship.destroy
+  end
+
   def pending_buddy_requests
     traveler_relationships.pending
   end

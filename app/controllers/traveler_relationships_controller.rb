@@ -12,7 +12,7 @@ class TravelerRelationshipsController < ApplicationController
   def decline
     # TODO Not filtering to owned by current_user
     @buddy_relationship = BuddyRelationship.find(params[:id])
-    @buddy_relationship.reject
+    @buddy_relationship.decline
     render partial: '/devise/registrations/travelers'
   end
 
