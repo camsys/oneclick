@@ -12,7 +12,7 @@
       %tbody
         - current_user.traveler_relationships.each do |t|
           %tr
-            %td.left= t.email_address
+            %td.left= t.traveler.email
             %td.left= t.status
             %td.center
               - if t.pending?
@@ -28,5 +28,5 @@
                 =t(:decline)
 
 
-= render partial: 'shared/datatable_javascript', locals: { table_id: '#travelersdatatable'}
+= render partial: 'shared/parameterized_datatable_javascript', locals: { table_id: '#travelersdatatable'}
 

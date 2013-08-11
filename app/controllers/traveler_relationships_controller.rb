@@ -18,7 +18,7 @@ class TravelerRelationshipsController < ApplicationController
 
   def assist
     # TODO security
-    assisting(BuddyRelationship.find(params[:id]).buddy)
+    start_assisting(BuddyRelationship.find(params[:id]).traveler)
     redirect_to '/'
   end
 
