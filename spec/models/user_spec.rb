@@ -154,13 +154,13 @@ describe User do
       @u2.travelers.size.should eq 0
 
       @u2.pending_buddy_requests.first.accept
-      # @u2.pending_buddy_requests.size.should eq 0
-      # @u2.travelers.size.should eq 1
+      @u2.pending_buddy_requests.size.should eq 0
+      @u2.travelers.size.should eq 1
 
-      # @u.buddies.size.should eq 1
-      # @u.buddies.first.email.should eq @u2.email
-      # @u.should_not be_pending_buddy(buddy_email)
-      # @u.should be_confirmed_buddy(buddy_email)
+      @u.buddies.size.should eq 1
+      @u.buddies.first.email.should eq @u2.email
+      @u.should_not be_pending_buddy(buddy_email)
+      @u.should be_confirmed_buddy(buddy_email)
     end
   end
   
