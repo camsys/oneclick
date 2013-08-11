@@ -33,8 +33,8 @@ describe "planning a trip", :type => :feature do
     within("#new_trip") do
       fill_in 'trip_from_place_attributes_nongeocoded_address', with: '730 w peachtree st, atlanta, ga'
       fill_in 'trip_to_place_attributes_nongeocoded_address', :with => 'georgia state capitol, atlanta, ga'
-      fill_in 'trip_trip_date', with: Date.today.strftime('%m/%d/%Y')
-      fill_in 'trip_trip_time', with: (Time.current + 60*60).strftime("%H:%M %p")
+      fill_in 'trip_trip_date', with: (DateTime.now + 1).strftime('%m/%d/%Y')
+      fill_in 'trip_trip_time', with: (DateTime.now + 1).strftime("%I:%M %p")
     end
     click_button 'Plan it'
     # TODO Supply more mocking to get this to actually present more reasonable result.
