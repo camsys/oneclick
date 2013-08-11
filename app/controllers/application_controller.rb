@@ -9,6 +9,14 @@ class ApplicationController < ActionController::Base
     redirect_to root_path, :alert => exception.message
   end
 
+  def current_traveler
+    if assisting?
+      assisted_user
+    else
+      current_user
+    end
+  end
+
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
   end
@@ -19,6 +27,14 @@ class ApplicationController < ActionController::Base
 
   def clear_location
     session.delete :location
+  end
+
+  def start_assisting user
+    session[:assisting] = user.id
+  end
+
+  def stop_assisting
+    session.delete :assisting
   end
 
 end

@@ -16,6 +16,7 @@ end
 guard 'rails' do
   watch('Gemfile.lock')
   watch(%r{^(config|lib)/.*})
+  watch('app/models/ability.rb')
 end
 
 
@@ -35,6 +36,9 @@ guard :rspec do
   watch('app/helpers/application_helper/rb')          { "spec/features/localization_spec.rb" }
   watch(%r{^spec/factories/(.+)\.rb$})                { "spec" }
 
+  # special cases
+  watch('app/models/buddy_relationship.rb')           { 'spec/models/user_spec.rb' }
+  
   # Capybara features specs
   watch(%r{^app/views/(.+)/.*\.(erb|haml)$})          { |m| ["spec/features/#{m[1]}_spec.rb", 'spec/features/localization_spec.rb'] }
   # TODO This should be done smarter, not with explicit file mapping.

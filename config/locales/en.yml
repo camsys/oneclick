@@ -21,7 +21,7 @@ en:
   reports: "Reports"
   admin: 'Admin'
 
-  # Other
+  # Registration, sign in, profile
   version: 'Version'
   home: 'en no-brand Home'
   log_in: 'Log in'
@@ -39,13 +39,25 @@ en:
   edit_account: 'Edit account'
   update_my_profile: 'Update my profile'
   current_password_hint: "Enter your current password to confirm your changes."  
-  leave_password_blank: "Leave blank if you don't want to change your password."
+  leave_password_blank: "Leave both blank if you don't want to change your password."
+  my_information: 'My information'
+  buddies: 'Buddies'
+  travelers: 'Travelers'
+  send_buddy_request: 'Send buddy request'
+  buddys_email_address: "Buddy's email address"
+  accept: 'Accept'
+  decline: 'Decline'
+  assist: 'Assist'
+  revoke: 'Revoke'
+  
   spanish: 'En Español'
   error_not_implemented: "We're sorry, but this functionality has not yet been implemented."
   error_404: "The page you were looking for doesn't exist."
   error_404_mistyped: 'You may have mistyped the address or the page may have moved.'
   error_422: 'The change you wanted was rejected.'
   error_422_detail: "Maybe you tried to change something you didn't have access to."
+
+  # Trip planning
   enter_address: 'Enter address'
   select_or_enter_address: 'Select or enter address'
   select: 'Select'
@@ -99,6 +111,8 @@ en:
   time_wrong_format: "Time must be in hh:mm am/pm format."
   trips_cannot_be_entered_for_days: "Trips cannot be entered for days earlier than today."
   trips_cannot_be_entered_for_times: "Trips cannot be entered for past times."
+
+  # Branding
   arc:
     home: 'ARC 1-Click Home'
     logotext: ''

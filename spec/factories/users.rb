@@ -17,5 +17,8 @@ FactoryGirl.define do
         u.save
       end
     end
+    factory :user2 do
+      email 'example2@example.com'
+    end
   end
 end

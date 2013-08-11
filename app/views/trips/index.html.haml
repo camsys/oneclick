@@ -2,7 +2,7 @@
   .span12
     %h1
       %i.icon.icon-tags
-      My Trips
+      = !assisting? ? 'My Trips' : "#{assisted_user.first_name}'s Trips"
     
 = render 'index_subnav'
 

@@ -9,8 +9,9 @@ class Ability
       can [:index], :admin
       
     else
-      # limit crud on trips to users owning the trips and user places
       can [:read, :create, :update, :destroy], [Trip, UserPlace], :user_id => user.id 
+      can :manage, BuddyRelationship, :user_id => user.id
+      can :manage, User, :id => user.id
     end
 
     # Define abilities for the passed in user here. For example:

@@ -24,4 +24,12 @@ module CsHelpers
     User.new
   end
 
+  def assisting?
+    session.include? :assisting
+  end
+
+  def assisted_user
+    @assisted_user ||= User.find_by_id(session[:assisting])
+  end
+
 end
