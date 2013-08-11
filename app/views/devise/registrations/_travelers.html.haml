@@ -28,5 +28,7 @@
                 =t(:decline)
 
 
-= render partial: 'shared/parameterized_datatable_javascript', locals: { table_id: '#travelersdatatable'}
-
+= render partial: 'shared/parameterized_datatable_javascript', locals: { table_id: '#travelersdatatable',
+  object_plural: 'travelers',
+  object_singular: 'traveler',
+  bLengthChange: false}

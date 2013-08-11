@@ -34,4 +34,7 @@
               /   %i.icon-search
               /   =t(:view)
 
-= render partial: 'shared/parameterized_datatable_javascript', locals: { table_id: '#buddiesdatatable'}
+= render partial: 'shared/parameterized_datatable_javascript', locals: { table_id: '#buddiesdatatable',
+  object_plural: 'buddies',
+  object_singular: 'buddy',
+  bLengthChange: false}

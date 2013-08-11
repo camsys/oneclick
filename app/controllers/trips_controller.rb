@@ -7,12 +7,12 @@ class TripsController < ApplicationController
   
   def email
     if user_signed_in?
-      UserMailer.user_trip_email(current_user, @trip, "Arc OneClick Trip Itinerary").deliver
+      UserMailer.user_trip_email(current_traveler, @trip, "Arc OneClick Trip Itinerary").deliver
     else
-      UserMailer.user_trip_email(current_user, @trip, "Arc OneClick Trip Itinerary").deliver
+      UserMailer.user_trip_email(current_traveler, @trip, "Arc OneClick Trip Itinerary").deliver
     end  
     respond_to do |format|
-      format.html { redirect_to(@trip, :notice => "An email was sent to #{current_user.email}. Please check your inbox." ) }
+      format.html { redirect_to(@trip, :notice => "An email was sent to #{current_traveler.email}. Please check your inbox." ) }
       format.json { render json: @trip }
     end
   end
@@ -40,7 +40,7 @@ class TripsController < ApplicationController
       if current_user.has_role? :admin
         @trips = Trip.created_between(duration.first, duration.last)
       else
-        @trips = current_user.trips.created_between(duration.first, duration.last)
+        @trips = current_traveler.trips.created_between(duration.first, duration.last)
       end
     else
       # TODO Workaround for now; it has to be a trip not owned by a user (but
@@ -68,7 +68,7 @@ class TripsController < ApplicationController
   # GET /trips/1
   # GET /trips/1.json
   def details
-    
+    # TODO doesn't this need 
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trip }
@@ -81,7 +81,7 @@ class TripsController < ApplicationController
 
     # limit itineraries to only those related to trps owned by the user
     itinerary = Itinerary.find(params[:id])
-    if itinerary.trip.owner != current_user
+    if itinerary.trip.owner != current_traveler
       render text: 'Unable to remove itinerary.', status: 500
       return
     end
@@ -102,7 +102,7 @@ class TripsController < ApplicationController
   def new
     @trip = Trip.new
     # TODO User might be different if we are an agent
-    @trip.owner = current_user || anonymous_user
+    @trip.owner = current_traveler || anonymous_user
     @trip.build_from_place(sequence: 0)
     @trip.build_to_place(sequence: 1)
 
@@ -115,9 +115,8 @@ class TripsController < ApplicationController
   # POST /trips
   # POST /trips.json
   def create
-    params[:trip][:owner] = current_user || anonymous_user
+    params[:trip][:owner] = current_traveler || anonymous_user
     @trip = Trip.new(params[:trip])
-    # @trip.owner = current_user || anonymous_user
 
     respond_to do |format|
       if @trip.save
@@ -134,10 +133,6 @@ class TripsController < ApplicationController
         format.html { redirect_to @trip }
         format.json { render json: @trip, status: :created, location: @trip }
       else
-        Rails.logger.info @trip.ai
-        Rails.logger.info @trip.places.ai
-        Rails.logger.info @trip.from_place.ai
-        Rails.logger.info @trip.to_place.ai
         format.html { render action: "new" }
         format.json { render json: @trip.errors, status: :unprocessable_entity }
       end
@@ -148,15 +143,15 @@ protected
 
   def get_trip
     if user_signed_in?
-      # limit trips to trips owned by the user unless an admin
+      # limit trips to trips accessible by the user unless an admin
       if current_user.has_role? :admin
         @trip = Trip.find(params[:id])
       else
-        @trip = current_user.trips.find(params[:id])
+        @trip = current_traveler.trips.find(params[:id])
       end
     else
       # TODO Workaround for now; it has to be a trip not owned by a user (but
-      # this is astill a security hole)
+      # this is potentially still a security hole)
       @trip = Trip.find_by_id_and_user_id(params[:id], nil)
     end    
   end

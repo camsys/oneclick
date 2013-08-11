@@ -1,4 +1,7 @@
 - Rails.logger.info "table_id is #{table_id}"
+- # object_singular (not used yet)
+- # object_plural
+- # bLengthChange
 :javascript
   
   $(document).ready(function() {
@@ -6,8 +9,10 @@
   		"bFilter" : false,
   		"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
   		"sPaginationType": "bootstrap",
+      "bLengthChange": #{bLengthChange}
   		"oLanguage": {
-  			"sLengthMenu": "_MENU_ records per page"
+  			"sLengthMenu": "_MENU_ #{object_plural} per page",
+        "sInfo": "Showing _START_ to _END_ of _TOTAL_ #{object_plural}"
   		}
   	} );
   } );
@@ -17,7 +22,7 @@
   	"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
   	"sPaginationType": "bootstrap",
   	"oLanguage": {
-  		"sLengthMenu": "_MENU_ records per page"
+  		"sLengthMenu": "_MENU_ #{object_plural} per page"
   	}
   } );
 

@@ -16,6 +16,7 @@ end
 guard 'rails' do
   watch('Gemfile.lock')
   watch(%r{^(config|lib)/.*})
+  watch('app/models/ability.rb')
 end
 
 
