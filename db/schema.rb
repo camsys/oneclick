@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130809180913) do
+ActiveRecord::Schema.define(:version => 20130812010938) do
 
   create_table "buddy_relationships", :force => true do |t|
     t.integer  "buddy_id"
@@ -41,6 +41,15 @@ ActiveRecord::Schema.define(:version => 20130809180913) do
     t.text     "message"
     t.string   "mode"
     t.boolean  "hidden",                                       :default => false, :null => false
+  end
+
+  create_table "properties", :force => true do |t|
+    t.string   "category"
+    t.string   "name"
+    t.string   "value"
+    t.integer  "sort_order"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "reports", :force => true do |t|
