@@ -15,5 +15,5 @@
             - @trips.each do |trip|
               %tr
                 %td
-                  = link_to trip, user_trip_path(current_user, trip)
+                  = link_to trip, user_trip_planned_trip_path(current_user, trip, trip.planned_trips.last)
             

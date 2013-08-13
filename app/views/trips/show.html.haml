@@ -1,54 +1,73 @@
 .row-fluid
   .span12
     %h1
-      %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-      = t(:trip_options)
-.well
-  .row-fluid
-    .span12
-      .trip_prepositions= 'from '
-      .trip_basic_text= @trip.from_place
-      .trip_prepositions= ' to '
-      .trip_basic_text= @trip.to_place
-      .trip_prepositions= ' on '
-      .trip_basic_text= @trip.planned_trips.first.trip_datetime.in_time_zone.strftime("%B %d, %Y")
-
+      %i.icon.icon-tags
+      = "Trip: " + @trip.id.to_s
+    
 .row-fluid
-  %ul.thumbnails#itineraries
-    = render 'trip_itineraries'
- 
-.row-fluid
-  .well.well-small.span12
-    = link_to new_user_trip_path do
-      %i{class: CsHelpers::ACTION_ICONS[:plan_a_trip]}
-      = t(:plan_a_new_trip)
-    - if @trip.planned_trips.first.hidden_itineraries.count > 0
-      %span#hidden_trips_notice
-        = render partial: 'hidden_trips_notice', locals: {trip: @trip}
-    = link_to '#', {href: '#send_trip_by_email', class: "pull-right", data: {toggle: 'modal'}} do
-      %i.icon-envelope
-      Send by email
+  .span12
+    .row-fluid
+      .span5
+        %fieldset
+          %legend Transaction
+          %p.span12
+            %span.span4.text-right Owner:          
+            %span.span8= @trip.owner.nil? ? "anonymous" : link_to(@trip.owner.name, user_path(@trip.owner))      
+          %p.span12
+            %span.span4.text-right Trip Date:          
+            %span.span8= format_date_time(@trip.trip_datetime)          
+          %p.span12
+            %span.span4.text-right Arrive/Depart:          
+            %span.span8= @trip.arrive_depart      
+          %p.span12
+            %span.span4.text-right Created:          
+            %span.span8= format_date_time(@trip.created_at)          
+      .span7
+        %fieldset
+          %legend Places
+          %table.table.table.condensed.table-striped.table-hover.table-bordered
+            %thead
+              %tr
+                %th.left Place
+                %th.left Address
+                %th.center Geocoded
+                %th.center Actions
+            %tbody
+              - @trip.places.each do |place|
+                %tr
+                  %td.left= place.name
+                  %td.left= place.nongeocoded_address
+                  %td.center= get_boolean(! place.lat.nil?)
+                  %td.center
+                    = link_to "#", {class: "btn btn-mini btn-success text-center"} do
+                      %i.icon-search
+                      =t(:view)
 
-    = render partial: 'send_trip_by_email', locals: {trip: @trip}
-
-:javascript
-  $(document).ready(function() {
-    fix_thumbnails();
-  });
-  
-  $(window).resize(function() {
-    fix_thumbnails();
-  });
-  
-  function fix_thumbnails() {
-    $(".thumbnail").css('height', '');
-    $(".thumbnail").css('overflow', '');
-    var window_width = $(window).width();
-    adjust_thumbnails(window_width);
-    make_same_height('.actionbutton');
-  };
-  
-  
-  $("#itineraries").on("ajax:error", function(xhr,status){
-    alert(status['responseText']);
-  });
+    .row-fluid
+      .span12
+        %fieldset
+          %legend Itineraries
+          %table.table.table.condensed.table-striped.table-hover.table-bordered
+            %thead
+              %tr
+                %th.left Mode
+                %th.center Hidden
+                %th.center Start Time
+                %th.center End Time
+                %th.left Walk Time
+                %th.left Transit Time
+                %th.left Wait Time
+                %th.left Walk Dist                
+                %th.center Cost
+            %tbody
+              - @trip.itineraries.each do |itin|
+                %tr
+                  %td.left= itin.mode
+                  %td.center= get_boolean(itin.hidden)
+                  %td.center= format_date_time(itin.start_time)
+                  %td.center= format_date_time(itin.end_time)
+                  %td.left= duration_to_words(itin.walk_time)
+                  %td.left= duration_to_words(itin.transit_time)
+                  %td.left= duration_to_words(itin.wait_time)
+                  %td.left= distance_to_words(itin.walk_distance)
+                  %td.right= number_to_currency(itin.cost)

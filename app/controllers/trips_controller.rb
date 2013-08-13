@@ -1,7 +1,7 @@
 class TripsController < ApplicationController
   
   # set the @trip variable before any actions are invoked
-  before_filter :get_trip, :only => [:email, :show, :details, :unhide_all]
+  before_filter :get_trip, :only => [:show, :destroy]
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
   
@@ -54,17 +54,6 @@ class TripsController < ApplicationController
 
   end
 
-  # GET /trips/1
-  # GET /trips/1.json
-  def details
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @trip }
-    end
-
-  end
-
   # GET /trips/new
   # GET /trips/new.json
   def new
@@ -107,7 +96,7 @@ class TripsController < ApplicationController
           message = message + '<ol>' + details.join + '</ol>'
           flash[:error] = message.html_safe
         end
-        format.html { redirect_to user_trip_path(current_user, @trip) }
+        format.html { redirect_to user_trip_planned_trip_path(current_user, @trip, @planned_trip) }
         format.json { render json: @planned_trip, status: :created, location: @planned_trip }
       else
         format.html { render action: "new" }

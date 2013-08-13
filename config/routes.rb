@@ -22,19 +22,16 @@ Oneclick::Application.routes.draw do
 
       # users have trips
       resources :trips do
-        member do
-          get 'hide'
-          get 'unhide_all'
-          get 'details'
-          post 'email'
-        end
+
         # trips have planned trips
-        resources :planned_trips do
+        resources :planned_trips, :only => [:show] do
           member do
+            post 'email'
             get 'hide'
-            get 'unhide'
+            get 'unhide_all'
           end
         end
+
       end
       
       resources :buddies

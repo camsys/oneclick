@@ -1,7 +1,7 @@
 class PlannedTripsController < TripAwareController
   
   # set the @planned_trip variable before any actions are invoked
-  before_filter :get_planned_trip, :only => [:email, :show, :details, :unhide_all]
+  before_filter :get_planned_trip
 
   TIME_FILTER_TYPE_SESSION_KEY = 'planned_trips_time_filter_type'
   
@@ -60,18 +60,19 @@ class PlannedTripsController < TripAwareController
   # GET /trips/1
   # GET /trips/1.json
   def details
-    # TODO doesn't this need 
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @planned_trip }
     end
+
   end
 
   # called when the user wants to hide an option. Invoked via
   # an ajax call
   def hide
 
-    itinerary = @planned_trip.itineraries.find(params[:id])
+    itinerary = @planned_trip.itineraries.find(params[:itinerary])
     if itinerary.nil?
       render text: 'Unable to remove itinerary.', status: 500
       return
@@ -85,6 +86,7 @@ class PlannedTripsController < TripAwareController
         else
           render text: 'Unable to remove itinerary.', status: 500
         end
+      end
     end
   end
 
@@ -93,7 +95,7 @@ class PlannedTripsController < TripAwareController
       i.hidden = false
       i.save
     end
-    redirect_to @planned_trip    
+    redirect_to user_trip_planned_trip_path   
   end
 
 protected
@@ -102,10 +104,10 @@ protected
     
     planned_trip = @trip.planned_trips.find(params[:id])
     if planned_trip.nil?
+      
     else
       @planned_trip = planned_trip
-    end 
-
+    end
   end
 
 end

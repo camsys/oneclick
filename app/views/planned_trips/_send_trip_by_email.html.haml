@@ -2,7 +2,7 @@
   %div{:class => "modal-header"}
     .row-fluid
       .span12
-        = simple_form_for :email, url: email_user_trip_path(trip), html: { class: 'form-horizontal',
+        = simple_form_for :email, url: email_user_trip_planned_trip_path(current_user, @trip, @planned_trip), html: { class: 'form-horizontal',
           id: 'send_by_email_form' }, data: {dismiss: 'modal'}  do |f|
           = f.error_notification
           - if user_signed_in?
