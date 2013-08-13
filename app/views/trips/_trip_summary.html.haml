@@ -10,7 +10,7 @@
       =link_to "#", {class: "btn btn-mini btn-success", 'data-toggle'=>'modal', href:"#transitDetails" + itinerary.id.to_s} do
         %i.icon-search
         =t(:view)
-      =link_to hide_trip_path(itinerary), {class: "btn btn-mini btn-danger", remote: true} do
+      =link_to hide_user_trip_path(current_user, itinerary), {class: "btn btn-mini btn-danger", remote: true} do
         %i.icon-remove
         =t(:remove)
 

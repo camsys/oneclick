@@ -2,7 +2,7 @@
   %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
   = t(:plan_a_trip)
   %h4
-    -if @trip.errors.any?
+    -if @trip_proxy.errors.any?
       %div{:class => "alert alert-error"}
         %a.close{"data-dismiss" => "alert"} ×
         %div= t(:correct_errors_to_create_a_trip)

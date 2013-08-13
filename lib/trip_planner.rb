@@ -3,7 +3,6 @@ require 'net/http'
 
 class TripPlanner
 
-
   def get_fixed_itineraries(from, to, trip_datetime, arriveBy)
 
     #Parameters
@@ -19,6 +18,8 @@ class TripPlanner
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
     url = base_url + url_options
 
+    Rails.logger.info URI.parse(url)
+    
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
@@ -43,7 +44,7 @@ class TripPlanner
 
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
-      trip_itinerary['mode'] = 'transit'
+      trip_itinerary['mode'] = Mode.transit
       trip_itinerary['duration'] = itinerary['duration'].to_f/1000
       trip_itinerary['walk_time'] = itinerary['walkTime']
       trip_itinerary['transit_time'] = itinerary['transitTime']
@@ -53,7 +54,7 @@ class TripPlanner
       trip_itinerary['transfers'] = itinerary['transfers']
       trip_itinerary['walk_distance'] = itinerary['walkDistance']
       trip_itinerary['legs'] = itinerary['legs']
-      trip_itinerary['status'] = 200
+      trip_itinerary['server_status'] = 200
       trip_itinerary
     end
 
@@ -101,24 +102,24 @@ class TripPlanner
 
   def convert_taxi_itineraries(itinerary)
       trip_itinerary = {}
-      trip_itinerary['mode'] = 'taxi'
+      trip_itinerary['mode'] = Mode.taxi
       trip_itinerary['duration'] = itinerary[0]['duration'].to_f
       trip_itinerary['walk_time'] = 0
       trip_itinerary['walk_distance'] = 0
       trip_itinerary['cost'] = itinerary[0]['total_fare']
-      trip_itinerary['status'] = 200
-      trip_itinerary['message'] = itinerary[1]['businesses']
+      trip_itinerary['server_status'] = 200
+      trip_itinerary['server_message'] = itinerary[1]['businesses']
       trip_itinerary
   end
 
   # TODO placeholder
   def get_paratransit_itineraries(from, to, trip_datetime)
-    {'mode' => 'paratransit', 'status' => 200, 'duration' => 55*60, 'cost' => 4.00}
+    {'mode' => Mode.paratransit, 'server_status' => 200, 'duration' => 55*60, 'cost' => 4.00}
   end
 
   # TODO placeholder
   def convert_paratransit_itineraries(itinerary)
-    {'mode' => 'paratransit', 'status' => 200, 'duration' => 55*60, 'cost' => 4.00}
+    {'mode' => Mode.paratransit, 'server_status' => 200, 'duration' => 55*60, 'cost' => 4.00}
   end
 
 end

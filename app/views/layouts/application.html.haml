@@ -13,11 +13,11 @@
       = yield(:head)
   %body{:class => "#{controller_name} #{action_name}"}
     #wrap
-      = render 'layouts/navigation'
+      = render 'shared/navigation'
       #main{:role => "main"}
         .container-fluid
-          = render 'layouts/assisting'
-          = render 'layouts/messages'
+          = render 'shared/assisting'
+          = render 'shared/messages'
           = yield
       #footer
         .container-fluid

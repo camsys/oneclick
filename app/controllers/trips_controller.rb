@@ -5,21 +5,6 @@ class TripsController < ApplicationController
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
   
-  def email
-    Rails.logger.info "Begin email"
-    email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
-    Rails.logger.info email_addresses.inspect
-    email_addresses << current_user.email if user_signed_in? && params[:email][:send_to_me]
-    email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
-    Rails.logger.info email_addresses.inspect
-    from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    UserMailer.user_trip_email(email_addresses, @trip, "ARC OneClick Trip Itinerary", from_email).deliver
-    respond_to do |format|
-      format.html { redirect_to(@trip, :notice => "An email was sent to #{email_addresses.join(', ')}." ) }
-      format.json { render json: @trip }
-    end
-  end
-  
   def index
 
     # params needed for the subnav filters
@@ -66,85 +51,68 @@ class TripsController < ApplicationController
       format.html # show.html.erb
       format.json { render json: @trip }
     end
+
   end
 
   # GET /trips/1
   # GET /trips/1.json
   def details
-    # TODO doesn't this need 
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trip }
     end
-  end
 
-  # called when the user wants to hide an option. Invoked via
-  # an ajax call
-  def hide
-
-    # limit itineraries to only those related to trps owned by the user
-    itinerary = Itinerary.find(params[:id])
-    if itinerary.trip.owner != current_traveler
-      render text: 'Unable to remove itinerary.', status: 500
-      return
-    end
-
-    respond_to do |format|
-      if itinerary
-        @trip = itinerary.trip
-        itinerary.hide
-        format.js # hide.js.haml
-      else
-        render text: 'Unable to remove itinerary.', status: 500
-      end
-    end
-  end
-
-  def unhide_all
-    @trip.hidden_itineraries.each do |i|
-      i.unhide
-    end
-    redirect_to @trip    
   end
 
   # GET /trips/new
   # GET /trips/new.json
   def new
-    @trip = Trip.new
+    
+    @trip_proxy = TripProxy.new()
     # TODO User might be different if we are an agent
-    @trip.owner = current_traveler || anonymous_user
-    @trip.build_from_place(sequence: 0)
-    @trip.build_to_place(sequence: 1)
-
+    @trip_proxy.user = current_traveler || anonymous_user
+    @trip_proxy.trip_date = Date.today.tomorrow
+    @trip_proxy.trip_time = Time.now
+    
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @trip }
+      format.json { render json: @trip_proxy }
     end
   end
 
   # POST /trips
   # POST /trips.json
   def create
-    params[:trip][:owner] = current_traveler || anonymous_user
-    @trip = Trip.new(params[:trip])
-
+    
+    @trip_proxy = TripProxy.new(params[:trip_proxy])
+    @trip_proxy.user = current_traveler || anonymous_user
+    
+    if user_signed_in?
+      @trip = create_authenticated_trip(@trip_proxy)
+    else
+      @trip = create_anonymous_trip(@trip_proxy)
+    end
+    
     respond_to do |format|
-      if @trip.save
+      if @trip_proxy.save
+        @trip.save
         @trip.reload
-        @trip.create_itineraries
-        unless @trip.has_valid_itineraries?
+        @planned_trip = @trip.planned_trips.first
+        @planned_trip.create_itineraries
+        if @planned_trip.valid_itineraries.empty?
           message = t(:trip_created_no_valid_options)
-          details = @trip.itineraries.collect do |i|
-            "<li>%s (%s)</li>" % [i.message, i.status]
+          details = @planned_trip.itineraries.collect do |i|
+            "<li>%s (%s)</li>" % [i.server_message, i.server_status]
           end
           message = message + '<ol>' + details.join + '</ol>'
           flash[:error] = message.html_safe
         end
-        format.html { redirect_to @trip }
-        format.json { render json: @trip, status: :created, location: @trip }
+        format.html { redirect_to user_trip_path(current_user, @trip) }
+        format.json { render json: @planned_trip, status: :created, location: @planned_trip }
       else
         format.html { render action: "new" }
-        format.json { render json: @trip.errors, status: :unprocessable_entity }
+        format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -167,4 +135,81 @@ protected
     end
     Rails.logger.info "End get trip"
   end
+
+private
+
+  def create_authenticated_trip(trip_proxy)
+
+    trip = Trip.new()
+    trip.creator = current_user
+    trip.user = current_user
+        
+    # get the places from the proxy
+    from_place = TripPlace.new()
+    from_place.sequence = 0
+    from_address_or_place_name = trip_proxy.from_place[:raw_address]
+    myplace = current_user.places.find_by_name(from_address_or_place_name)
+    if myplace
+      from_place.place = myplace
+    else
+      from_place.raw_address = from_address_or_place_name
+      from_place.geocode
+    end
+    to_place = TripPlace.new()
+    to_place.sequence = 1
+    to_address_or_place_name = trip_proxy.to_place[:raw_address]
+    myplace = current_user.places.find_by_name(to_address_or_place_name)
+    if myplace
+      to_place.place = myplace
+    else
+      to_place.raw_address = to_address_or_place_name
+      to_place.geocode
+    end
+    trip.trip_places << from_place
+    trip.trip_places << to_place
+
+    planned_trip = PlannedTrip.new
+    planned_trip.trip = trip
+    planned_trip.creator = current_user || anonymous_user
+    planned_trip.is_depart = trip_proxy.arrive_depart == 'arrive_by' ? false : true
+    planned_trip.trip_datetime = trip_proxy.trip_datetime
+    planned_trip.trip_status = TripStatus.find(1)    
+    
+    trip.planned_trips << planned_trip
+    
+    return trip
+  end
+
+  def create_anonymous_trip(trip_proxy)
+
+    u = User.find(1)
+    trip = Trip.new()
+    trip.creator = u
+    trip.user = u
+        
+    # get the places from the proxy
+    from_place = TripPlace.new()
+    from_place.sequence = 0
+    from_place.raw_address = trip_proxy.from_place
+
+    to_place = TripPlace.new()
+    to_place.sequence = 1
+    to_place.raw_address = trip_proxy.to_place
+
+    trip.trip_places << from_place
+    trip.trip_places << to_place
+
+    planned_trip = PlannedTrip.new
+    planned_trip.trip = trip
+    planned_trip.creator = trip.creator
+    planned_trip.is_depart = trip_proxy.arrive_depart == 'arrive_by' ? false : true
+    planned_trip.trip_datetime = trip_proxy.trip_datetime
+    planned_trip.trip_status = TripStatus.find(1)    
+    
+    trip.planned_trips << planned_trip
+
+    return trip
+    
+  end
+
 end

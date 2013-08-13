@@ -1,5 +1,5 @@
 %table.center{:cellpadding=>10}
-  -YAML.load(itinerary.message).each do |business|
+  -YAML.load(itinerary.server_message).each do |business|
     %tr
       %td.itinerary_icons
         %h4=business['name'] + ":  "

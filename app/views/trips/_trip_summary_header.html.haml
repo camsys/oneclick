@@ -12,10 +12,10 @@
 -if itinerary.transfers
   .row-fluid
     .span9.offset3.trip_summary_text= I18n.translate(:transfer, count: itinerary.transfers)
--if itinerary.trip.arrive_depart == 'arrive_by' && itinerary.end_time
+-if itinerary.planned_trip.is_depart == false && itinerary.end_time
   .row-fluid
     .span9.offset3.trip_summary_text= t(:arrive_at) + ' ' + itinerary.end_time.in_time_zone.strftime('%I:%M %p')
--if itinerary.trip.arrive_depart == 'depart_at' && itinerary.start_time
+-if itinerary.planned_trip.is_depart == true && itinerary.start_time
   .row-fluid
     .span9.offset3.trip_summary_text= t(:depart_at) + ' ' + itinerary.start_time.in_time_zone.strftime('%I:%M %p')
 -if itinerary.walk_time

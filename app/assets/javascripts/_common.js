@@ -1,3 +1,9 @@
+
+function click_to_nav(url) {
+  document.location.href = url;
+};
+
+
 // Finds all the class elements on a page and sets the min-height css variable
 // to the maximum height of all the containers
 function make_same_height(class_name) {

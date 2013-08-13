@@ -10,9 +10,33 @@ Oneclick::Application.routes.draw do
     devise_for :users, controllers: {registrations: "registrations"}
 
     resources :admins, :only => [:index]
+
+    resources :reports, :only => [:index, :show]
     
+    # everything comes under a user id
     resources :users do
-      resources :reports, :only => [:index, :show]
+      member do
+        get 'profile'
+        post 'update'
+      end
+
+      # users have trips
+      resources :trips do
+        member do
+          get 'hide'
+          get 'unhide_all'
+          get 'details'
+          post 'email'
+        end
+        # trips have planned trips
+        resources :planned_trips do
+          member do
+            get 'hide'
+            get 'unhide'
+          end
+        end
+      end
+      
       resources :buddies
       resources :travelers
       resources :buddy_relationships do
@@ -30,14 +54,6 @@ Oneclick::Application.routes.draw do
       end
     end
     
-    resources :trips, only: [:new, :create, :show, :index] do
-      member do
-        get 'hide'
-        get 'unhide_all'
-        get 'details'
-        post 'email'
-      end
-    end
 
     match '/' => 'home#index'
 

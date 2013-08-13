@@ -6,7 +6,7 @@
           %a{class: "button btn btn-mini btn-success", "data-dismiss" => "modal"}
             %i.icon-reply
             =t(:return)
-          =link_to hide_trip_path(itinerary), {"data-dismiss" => "modal",  class: "btn btn-mini btn-danger", remote: true} do
+          =link_to hide_user_trip_path(itinerary), {"data-dismiss" => "modal",  class: "btn btn-mini btn-danger", remote: true} do
             %i.icon-remove
             =t(:remove)
       %div{:class => "modal-body"}
@@ -19,7 +19,7 @@
               %h4.text-center=t(:details)
             %div{:class => "accordion-body collapse in", :id => "collapseOne" + itinerary.id.to_s}
               %div{:class => "accordion-inner"}
-                = render :partial => itinerary['mode']+'_details', :locals => { :itinerary => itinerary }
+                = render :partial => itinerary.mode.name.downcase + '_details', :locals => { :itinerary => itinerary }
   %div{:class => "modal-footer"}
     .row-fluid
       .pull-right{:style => "display: inline-block"}
@@ -33,3 +33,4 @@
           %button.btn.btn-info
             %i.icon-envelope
             =t(:e_mail)
+            

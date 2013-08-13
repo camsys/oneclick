@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default from: "donotreply@julianjray.com"
+  default from: "donotreply@gmail.com"
   helper :application
   
   def user_trip_email(addresses, trip, subject, from)

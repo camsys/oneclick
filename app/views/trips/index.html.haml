@@ -3,7 +3,17 @@
     %h1
       %i.icon.icon-tags
       = !assisting? ? 'My Trips' : "#{assisted_user.first_name}'s Trips"
-    
-= render 'index_subnav'
 
-= render :partial => 'shared/trips_table', :locals => {:trips => @trips}
+.row-fluid
+  .span8.offset2
+    .row-fluid
+      .span12
+        %h3 Choose a saved trip
+      .span12
+        %div
+          %table.table.table.condensed.table-striped.table-hover
+            - @trips.each do |trip|
+              %tr
+                %td
+                  = link_to trip, user_trip_path(current_user, trip)
+            

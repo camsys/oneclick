@@ -7,11 +7,11 @@
   .row-fluid
     .span12
       .trip_prepositions= 'from '
-      .trip_basic_text= (@trip.from_place.name || @trip.from_place.address)
+      .trip_basic_text= @trip.from_place
       .trip_prepositions= ' to '
-      .trip_basic_text= (@trip.to_place.name || @trip.to_place.address)
+      .trip_basic_text= @trip.to_place
       .trip_prepositions= ' on '
-      .trip_basic_text= @trip.trip_datetime.in_time_zone.strftime("%B %d, %Y")
+      .trip_basic_text= @trip.planned_trips.first.trip_datetime.in_time_zone.strftime("%B %d, %Y")
 
 .row-fluid
   %ul.thumbnails#itineraries
@@ -19,11 +19,12 @@
  
 .row-fluid
   .well.well-small.span12
-    = link_to new_trip_path do
+    = link_to new_user_trip_path do
       %i{class: CsHelpers::ACTION_ICONS[:plan_a_trip]}
       = t(:plan_a_new_trip)
-    %span#hidden_trips_notice
-      = render partial: 'hidden_trips_notice', locals: {trip: @trip}
+    - if @trip.planned_trips.first.hidden_itineraries.count > 0
+      %span#hidden_trips_notice
+        = render partial: 'hidden_trips_notice', locals: {trip: @trip}
     = link_to '#', {href: '#send_trip_by_email', class: "pull-right", data: {toggle: 'modal'}} do
       %i.icon-envelope
       Send by email
