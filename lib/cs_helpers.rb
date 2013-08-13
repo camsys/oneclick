@@ -20,8 +20,12 @@ module CsHelpers
     Rails.application.config.brand
   end
 
+
   def anonymous_user
-    User.new
+    return if user_signed_in?
+    u = User.new(:type => 'anonymous')
+    u.save(:validate => false)
+    sign_in :user, u  
   end
 
   def assisting?

@@ -95,8 +95,7 @@ class TripsController < ApplicationController
     end
     
     respond_to do |format|
-      if @trip_proxy.save
-        @trip.save
+      if @trip.save
         @trip.reload
         @planned_trip = @trip.planned_trips.first
         @planned_trip.create_itineraries

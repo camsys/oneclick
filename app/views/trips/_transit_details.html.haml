@@ -4,7 +4,7 @@
       %i.icon-play.mode_icon_formatting{:class => 'start_icon'}
     %td
       .itinerary_text
-        %p= "START: " + itinerary.trip.from_place.address
+        %p= "START: " + itinerary.planned_trip.trip.from_place.to_s
       .itinerary_text_small
         = itinerary.start_time.in_time_zone.strftime('%I:%M %p')
 
@@ -26,6 +26,6 @@
       %i.icon-stop.mode_icon_formatting{:class => 'end_icon'}
     %td
       .itinerary_text
-        %p= "ARRIVE: " + itinerary.trip.to_place.address
+        %p= "ARRIVE: " + itinerary.planned_trip.trip.to_place.to_s
       .itinerary_text_small
         =itinerary.end_time.in_time_zone.strftime('%I:%M %p')

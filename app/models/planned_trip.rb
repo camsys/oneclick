@@ -20,7 +20,7 @@ class PlannedTrip < ActiveRecord::Base
   def create_fixed_route_itineraries
     tp = TripPlanner.new
     arrive_by = !is_depart
-    from_place = trip.trip_places.last
+    from_place = trip.trip_places.first
     to_place = trip.trip_places.last
     result, response = tp.get_fixed_itineraries([from_place.location.first, from_place.location.last],[to_place.location.first, to_place.location.last], trip_datetime.in_time_zone, arrive_by.to_s)
     if result
@@ -36,7 +36,7 @@ class PlannedTrip < ActiveRecord::Base
     tp = TripPlanner.new
     from_place = trip.trip_places.last
     to_place = trip.trip_places.last
-    result, response = tp.get_taxi_itineraries([to_place.location.first, to_place.location.last],[from_place.location.first, from_place.location.last], trip_datetime.in_time_zone)
+    result, response = tp.get_taxi_itineraries([from_place.location.first, from_place.location.last],[to_place.location.first, to_place.location.last], trip_datetime.in_time_zone)
     if result
       itinerary = tp.convert_taxi_itineraries(response)
       self.itineraries << Itinerary.new(itinerary)
@@ -50,7 +50,7 @@ class PlannedTrip < ActiveRecord::Base
     tp = TripPlanner.new
     from_place = trip.trip_places.last
     to_place = trip.trip_places.last
-    result, response = tp.get_paratransit_itineraries([to_place.location.first, to_place.location.last],[from_place.location.first, from_place.location.last], trip_datetime.in_time_zone)
+    result, response = tp.get_paratransit_itineraries([from_place.location.first, from_place.location.last],[to_place.location.first, to_place.location.last], trip_datetime.in_time_zone)
     if result
       itinerary = tp.convert_paratransit_itineraries(response)
       self.itineraries << Itinerary.new(itinerary)

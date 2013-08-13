@@ -22,6 +22,7 @@ class TripPlanner
     
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
+      Rails.logger.info(resp.inspect)
     rescue Exception=>e
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
