@@ -1,8 +1,12 @@
 .row-fluid
   .span3
     %i.mode_icon_formatting.trip_summary_icon{:class => get_trip_summary_icon(itinerary.mode)}
-  .span9 
+  .span8 
     %h2.trip_summary_title= get_trip_summary_title(itinerary.mode)
+  .span1
+    - if itinerary.hidden
+      %i.icon-2x.icon-thumbs-down
+    
 -if itinerary.duration
   .row-fluid
     .span9.offset3.trip_summary_text= duration_to_words(itinerary.duration) + " (est.)"
