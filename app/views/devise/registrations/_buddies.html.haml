@@ -4,9 +4,9 @@
     %h4 Add a new buddy
 .row-fluid
   .span12
-    = simple_form_for [current_user, @buddy_relationship], remote: true, html: { class: 'form-inline' } do |f|
+    = simple_form_for [current_user], remote: true, html: { class: 'form-inline' } do |f|
       = f.error_notification
-      = f.input :email_address, label: t(:buddys_email_address)
+      = f.input :email, label: t(:buddys_email_address)
       = button_tag type: :submit, class: 'btn btn-primary controls' do
         %i.icon.icon-ok
         = t(:send_buddy_request)
@@ -15,7 +15,7 @@
     %h4 My buddies
 .row-fluid
   .span12
-    - unless current_user.buddy_relationships.empty?
+    - unless current_user.delegates.empty?
       %table.table.table.condensed.table-striped.table-hover.table-bordered#buddiesdatatable
         %thead
           %tr
@@ -24,9 +24,9 @@
             %th.left Sent
             %th.center Actions
         %tbody
-          - current_user.buddy_relationships.each do |buddy|
+          - current_user.delegates.each do |buddy|
             %tr
-              %td.left= buddy.email_address
+              %td.left= buddy.email
               %td.left= buddy.status
               %td.left= distance_of_time_in_words_to_now(buddy.email_sent) + " ago"
               %td.center

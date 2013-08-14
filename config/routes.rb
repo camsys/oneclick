@@ -33,21 +33,6 @@ Oneclick::Application.routes.draw do
         end
       end
       
-      resources :buddies
-      resources :travelers
-      resources :buddy_relationships do
-        member do
-          get 'revoke'
-        end
-      end
-      resources :traveler_relationships do
-        member do
-          get 'accept'
-          get 'decline'
-          get 'assist'
-          get 'desist'
-        end
-      end
     end
     
 

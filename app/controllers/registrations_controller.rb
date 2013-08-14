@@ -12,7 +12,6 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def edit
-    @buddy_relationship = BuddyRelationship.new
     super
   end
 

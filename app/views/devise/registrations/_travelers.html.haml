@@ -3,7 +3,7 @@
     %h4 My travelers
 .row-fluid
   .span12
-    - unless current_user.traveler_relationships.not_declined.empty?
+    - unless current_user.travelers.empty?
       %table.table.table.condensed.table-striped.table-hover.table-bordered#travelersdatatable
         %thead
           %tr
@@ -11,7 +11,7 @@
             %th.left Status
             %th.center Actions
         %tbody
-          - current_user.traveler_relationships.not_declined.each do |t|
+          - current_user.travelers.not_declined.each do |t|
             %tr
               %td.left= t.traveler.email
               %td.left= t.status

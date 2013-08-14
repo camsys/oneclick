@@ -43,10 +43,10 @@
               = f.input :current_password, label: t(:current_password), :hint => t(:current_password_hint), :required => true
     .tab-pane#tab2
       .well#buddies
-        = render partial: 'buddies'
+        //= render partial: 'buddies'
     .tab-pane#tab3
       .well#travelers
-        = render partial: 'travelers'
+        //= render partial: 'travelers'
 :javascript
   $('a#tab1').click(function(e) {
     e.preventDefault()
