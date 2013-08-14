@@ -89,9 +89,8 @@ ActiveRecord::Schema.define(:version => 0) do
     t.string "description"
   end
 
-  create_table "relationship_types", :force => true do |t|
-    t.string "name",        :limit => 64
-    t.string "description"
+  create_table "relationship_statuses", :force => true do |t|
+    t.string "name", :limit => 64
   end
 
   create_table "reports", :force => true do |t|
@@ -154,10 +153,11 @@ ActiveRecord::Schema.define(:version => 0) do
   end
 
   create_table "user_relationships", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "relationship_type_id"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.integer  "user_id",                :null => false
+    t.integer  "delegate_id",            :null => false
+    t.integer  "relationship_status_id", :null => false
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
   end
 
   create_table "user_roles", :force => true do |t|
