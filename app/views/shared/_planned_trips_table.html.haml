@@ -20,7 +20,7 @@
             %td.left= pt.trip.to_place
             %td.center= format_date_time(pt.created_at)
             %td.center
-              = link_to user_planned_trip_path(pt.trip.user, pt), {class: "btn btn-mini btn-success text-center"} do
+              = link_to user_planned_trip_path(pt.trip.user, pt, :show_hidden => 1), {class: "btn btn-mini btn-success text-center"} do
                 %i.icon-share-sign
                 = "Itinerary"
               = link_to details_user_planned_trip_path(pt.trip.user, pt), {class: "btn btn-mini btn-info text-center"} do

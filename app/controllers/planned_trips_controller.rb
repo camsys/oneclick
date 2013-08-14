@@ -50,6 +50,8 @@ class PlannedTripsController < ApplicationController
   # GET /trips/1
   # GET /trips/1.json
   def show
+    # See if there is the show_hidden parameter
+    @show_hidden = params[:show_hidden]
     
     respond_to do |format|
       format.html # show.html.erb

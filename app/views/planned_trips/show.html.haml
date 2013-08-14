@@ -15,8 +15,11 @@
 
 .row-fluid
   %ul.thumbnails#itineraries
-    = render 'trip_itineraries'
- 
+    - if @show_hidden.nil?
+      = render partial: 'trip_itineraries', locals: {itineraries: @planned_trip.valid_itineraries }
+    - else
+      = render partial: 'trip_itineraries', locals: {itineraries: @planned_trip.itineraries }
+     
 .row-fluid
   .well.well-small.span12
     = link_to new_user_trip_path do

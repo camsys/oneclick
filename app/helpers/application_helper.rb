@@ -63,6 +63,8 @@ module ApplicationHelper
   end
 
   def get_trip_summary_title(mode)
+    return if mode.nil?
+    
     if mode.name.downcase == 'transit'
       title = t(:transit)
     elsif mode.name.downcase == 'paratransit'
@@ -73,6 +75,8 @@ module ApplicationHelper
     return title    
   end
   def get_trip_summary_icon(mode) 
+    return if mode.nil?
+
     if mode.name.downcase == 'transit'
       icon_name = 'icon-bus-sign'
     elsif mode.name.downcase == 'paratransit'
