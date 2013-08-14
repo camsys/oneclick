@@ -7,7 +7,7 @@ class Poi < ActiveRecord::Base
   attr_accessible :name, :address1, :address2, :city, :state, :zip, :lat, :lon
 
   # set the default scope
-  default_scope where('active = true').order('poi_type')
+  default_scope order('name')
 
   def to_s
     name

@@ -96,7 +96,7 @@ class TripsController < ApplicationController
           message = message + '<ol>' + details.join + '</ol>'
           flash[:error] = message.html_safe
         end
-        format.html { redirect_to user_trip_planned_trip_path(current_user, @trip, @planned_trip) }
+        format.html { redirect_to user_planned_trip_path(current_user, @planned_trip) }
         format.json { render json: @planned_trip, status: :created, location: @planned_trip }
       else
         format.html { render action: "new" }
@@ -139,6 +139,7 @@ private
     myplace = current_user.places.find_by_name(from_address_or_place_name)
     if myplace
       from_place.place = myplace
+      from_place.poi = myplace.poi unless myplace.poi.nil?
     else
       from_place.raw_address = from_address_or_place_name
       from_place.geocode
@@ -149,6 +150,7 @@ private
     myplace = current_user.places.find_by_name(to_address_or_place_name)
     if myplace
       to_place.place = myplace
+      to_place.poi = myplace.poi unless myplace.poi.nil?
     else
       to_place.raw_address = to_address_or_place_name
       to_place.geocode

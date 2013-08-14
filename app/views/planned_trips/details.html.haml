@@ -34,6 +34,7 @@
                 %th.left Place
                 %th.left Type
                 %th.center Geocoded
+                %th.center Location
                 %th.center Actions
             %tbody
               - @trip.trip_places.each do |place|
@@ -41,6 +42,7 @@
                   %td.left= place
                   %td.left= place.type
                   %td.center= get_boolean(! place.lat.nil?)
+                  %td.center= place.location.inspect
                   %td.center
                     = link_to "#", {class: "btn btn-mini btn-success text-center"} do
                       %i.icon-search
