@@ -9,7 +9,7 @@ class TripsController < ApplicationController
     Rails.logger.info "Begin email"
     email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
     Rails.logger.info email_addresses.inspect
-    email_addresses << current_user.email if user_signed_in? && params[:email][:send_to_me]
+    email_addresses << current_user.email if user_signed_in?
     email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
     Rails.logger.info email_addresses.inspect
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
