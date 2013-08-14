@@ -1,0 +1,27 @@
+.row-fluid
+  .span12
+    %table.table.table.condensed.table-striped.table-hover.table-bordered#datatable
+      %thead
+        %tr
+          %th.left Id
+          %th.left User
+          %th.left Creator
+          %th.left From
+          %th.left To
+          %th.center Created On
+          %th.center Actions
+      %tbody
+        - planned_trips.each do |pt|
+          %tr
+            %td.left= pt.id
+            %td.left= pt.trip.user.nil? ? "anonymous" : pt.trip.user.name
+            %td.left= pt.creator.nil? ? "anonymous" : pt.creator.name            
+            %td.left= pt.trip.from_place
+            %td.left= pt.trip.to_place
+            %td.center= format_date_time(pt.created_at)
+            %td.center
+              = link_to user_trip_planned_trip_path(pt.trip.user, pt), {class: "btn btn-mini btn-success text-center"} do
+                %i.icon-search
+                =t(:view)
+
+= render 'shared/datatable_javascript'

@@ -10,6 +10,19 @@ class PlannedTrip < ActiveRecord::Base
   
   attr_accessible :trip_datetime, :is_depart
  
+  # Scopes
+  scope :created_between, lambda {|from_day, to_day| where("planned_trips.created_at > ? AND planned_trips.created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
+ 
+  # Returns an array of PlannedTrip that have at least one valid itinerary but all
+  # of them have been hidden by the user
+  def self.rejected
+    joins(:itineraries).where('server_status=200 AND hidden=true')
+  end
+  # Returns an array of PlannedTrip where no valid options were generated
+  def self.failed
+    joins(:itineraries).where('server_status <> 200')
+  end
+  
   def create_itineraries
     create_fixed_route_itineraries
     create_taxi_itineraries

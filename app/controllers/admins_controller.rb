@@ -9,7 +9,7 @@ class AdminsController < ApplicationController
         {label: t(:find_traveler), target: error_501_path, icon: ACTION_ICONS[:find_traveler]},
         {label: t(:create_traveler), target: error_501_path, icon: ACTION_ICONS[:create_traveler]},
         {label: t(:agents_agencies), target: error_501_path, icon: ACTION_ICONS[:agents_agencies]},
-        {label: t(:reports), target: user_reports_path(current_user), icon: ACTION_ICONS[:reports]},
+        {label: t(:reports), target: reports_path, icon: ACTION_ICONS[:reports]},
     ]
     
   end

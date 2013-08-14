@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
     elems << prefix unless prefix.blank?
     elems << first_name unless first_name.blank?
     elems << last_name unless last_name.blank?
-    elems << sufffix unless sufffix.blank?
+    elems << suffix unless suffix.blank?
     elems.compact.join(' ')
   end
 
