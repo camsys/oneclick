@@ -1,0 +1,5435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx
+ version="1.0"
+creator="GPSBabel - http://www.gpsbabel.org"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.topografix.com/GPX/1/0"
+xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd">
+<time>2011-12-15T23:04:45Z</time>
+<bounds minlat="30.451565300" minlon="-85.684730000" maxlat="35.085750800" maxlon="-80.842062400"/>
+<wpt lat="35.042680100" lon="-85.684730000">
+  <name>Restaurant:Shoney&apos;s</name>
+  <cmt>Restaurant:Shoney&apos;s</cmt>
+  <desc>Restaurant:Shoney&apos;s</desc>
+</wpt>
+<wpt lat="34.810728200" lon="-85.480023300">
+  <name>Restaurant:Geneva&apos;s</name>
+  <cmt>Restaurant:Geneva&apos;s</cmt>
+  <desc>Restaurant:Geneva&apos;s</desc>
+</wpt>
+<wpt lat="32.644191400" lon="-85.355558700">
+  <name>Restaurant:Sizzlin Steak House</name>
+  <cmt>Restaurant:Sizzlin Steak House</cmt>
+  <desc>Restaurant:Sizzlin Steak House</desc>
+</wpt>
+<wpt lat="32.644542900" lon="-85.354552900">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="34.990543000" lon="-85.353904400">
+  <name>Cafe:Café on the corner</name>
+  <cmt>Cafe:Café on the corner</cmt>
+  <desc>Cafe:Café on the corner</desc>
+</wpt>
+<wpt lat="32.645476300" lon="-85.352924400">
+  <name>Restaurant:Cracker Barrel</name>
+  <cmt>Restaurant:Cracker Barrel</cmt>
+  <desc>Restaurant:Cracker Barrel</desc>
+</wpt>
+<wpt lat="34.973876000" lon="-85.350695500">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="32.644184000" lon="-85.349889800">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="32.644084400" lon="-85.347123200">
+  <name>Fast Food Restaurant:Burger King</name>
+  <cmt>Fast Food Restaurant:Burger King</cmt>
+  <desc>Fast Food Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="35.083680900" lon="-85.318294300">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="35.084280400" lon="-85.317077600">
+  <name>Restaurant:Mojo Burrito</name>
+  <cmt>Restaurant:Mojo Burrito</cmt>
+  <desc>Restaurant:Mojo Burrito</desc>
+</wpt>
+<wpt lat="35.085123200" lon="-85.316101300">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="35.085750800" lon="-85.315258500">
+  <name>Restaurant:Amigos</name>
+  <cmt>Restaurant:Amigos</cmt>
+  <desc>Restaurant:Amigos</desc>
+</wpt>
+<wpt lat="35.067190500" lon="-85.315056300">
+  <name>Restaurant:Sluggo&apos;s</name>
+  <cmt>Restaurant:Sluggo&apos;s</cmt>
+  <desc>Restaurant:Sluggo&apos;s</desc>
+</wpt>
+<wpt lat="35.063368800" lon="-85.314378000">
+  <name>Restaurant:Green Life</name>
+  <cmt>Restaurant:Green Life</cmt>
+  <desc>Restaurant:Green Life</desc>
+</wpt>
+<wpt lat="35.033964200" lon="-85.313013800">
+  <name>Restaurant:New China</name>
+  <cmt>Restaurant:New China</cmt>
+  <desc>Restaurant:New China</desc>
+</wpt>
+<wpt lat="35.055223900" lon="-85.312671400">
+  <name>Restaurant:Cold Stone Creamery</name>
+  <cmt>Restaurant:Cold Stone Creamery</cmt>
+  <desc>Restaurant:Cold Stone Creamery</desc>
+</wpt>
+<wpt lat="35.054829800" lon="-85.312101700">
+  <name>Restaurant:Hennens</name>
+  <cmt>Restaurant:Hennens</cmt>
+  <desc>Restaurant:Hennens</desc>
+</wpt>
+<wpt lat="35.055206300" lon="-85.312101700">
+  <name>Restaurant:Blue PLate</name>
+  <cmt>Restaurant:Blue PLate</cmt>
+  <desc>Restaurant:Blue PLate</desc>
+</wpt>
+<wpt lat="35.054581600" lon="-85.311042000">
+  <name>Restaurant:Ben &amp; Jerry&apos;s</name>
+  <cmt>Restaurant:Ben &amp; Jerry&apos;s</cmt>
+  <desc>Restaurant:Ben &amp; Jerry&apos;s</desc>
+</wpt>
+<wpt lat="35.054250100" lon="-85.311033700">
+  <name>Restaurant:Mellow Mushroom</name>
+  <cmt>Restaurant:Mellow Mushroom</cmt>
+  <desc>Restaurant:Mellow Mushroom</desc>
+</wpt>
+<wpt lat="35.054441400" lon="-85.311033700">
+  <name>Restaurant:Easy Bistro</name>
+  <cmt>Restaurant:Easy Bistro</cmt>
+  <desc>Restaurant:Easy Bistro</desc>
+</wpt>
+<wpt lat="35.037271900" lon="-85.310873500">
+  <name>Restaurant:La Altena</name>
+  <cmt>Restaurant:La Altena</cmt>
+  <desc>Restaurant:La Altena</desc>
+</wpt>
+<wpt lat="35.054069000" lon="-85.310507400">
+  <name>Restaurant:Big River Bar and Grille</name>
+  <cmt>Restaurant:Big River Bar and Grille</cmt>
+  <desc>Restaurant:Big River Bar and Grille</desc>
+</wpt>
+<wpt lat="35.053928000" lon="-85.310486000">
+  <name>Restaurant:Blue Water Grille</name>
+  <cmt>Restaurant:Blue Water Grille</cmt>
+  <desc>Restaurant:Blue Water Grille</desc>
+</wpt>
+<wpt lat="35.051820600" lon="-85.310410300">
+  <name>Cafe:Greyfriars</name>
+  <cmt>Cafe:Greyfriars</cmt>
+  <desc>Cafe:Greyfriars</desc>
+</wpt>
+<wpt lat="35.051926000" lon="-85.310406200">
+  <name>Restaurant:Lupi&apos;s Pizza</name>
+  <cmt>Restaurant:Lupi&apos;s Pizza</cmt>
+  <desc>Restaurant:Lupi&apos;s Pizza</desc>
+</wpt>
+<wpt lat="35.055118800" lon="-85.310062300">
+  <name>Restaurant:TGI Fridays</name>
+  <cmt>Restaurant:TGI Fridays</cmt>
+  <desc>Restaurant:TGI Fridays</desc>
+</wpt>
+<wpt lat="35.054082200" lon="-85.309921500">
+  <name>Restaurant:Thai Smile 3</name>
+  <cmt>Restaurant:Thai Smile 3</cmt>
+  <desc>Restaurant:Thai Smile 3</desc>
+</wpt>
+<wpt lat="35.039599800" lon="-85.309902500">
+  <name>Restaurant:The Southern Star</name>
+  <cmt>Restaurant:The Southern Star</cmt>
+  <desc>Restaurant:The Southern Star</desc>
+</wpt>
+<wpt lat="35.041629000" lon="-85.309827400">
+  <name>Cafe:Strouds</name>
+  <cmt>Cafe:Strouds</cmt>
+  <desc>Cafe:Strouds</desc>
+</wpt>
+<wpt lat="35.051555600" lon="-85.309771400">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="35.040649500" lon="-85.309698700">
+  <name>Restaurant:The Foundry</name>
+  <cmt>Restaurant:The Foundry</cmt>
+  <desc>Restaurant:The Foundry</desc>
+</wpt>
+<wpt lat="35.063874900" lon="-85.309646000">
+  <name>Restaurant:Taco Mamacita</name>
+  <cmt>Restaurant:Taco Mamacita</cmt>
+  <desc>Restaurant:Taco Mamacita</desc>
+</wpt>
+<wpt lat="35.046707400" lon="-85.309610000">
+  <name>Fast Food Restaurant:Quiznos</name>
+  <cmt>Fast Food Restaurant:Quiznos</cmt>
+  <desc>Fast Food Restaurant:Quiznos</desc>
+</wpt>
+<wpt lat="35.045019500" lon="-85.309607500">
+  <name>Fast Food Restaurant:Jimmy johns&apos;s</name>
+  <cmt>Fast Food Restaurant:Jimmy johns&apos;s</cmt>
+  <desc>Fast Food Restaurant:Jimmy johns&apos;s</desc>
+</wpt>
+<wpt lat="35.055031700" lon="-85.309533500">
+  <name>Restaurant:CheeBurger Cheeburger</name>
+  <cmt>Restaurant:CheeBurger Cheeburger</cmt>
+  <desc>Restaurant:CheeBurger Cheeburger</desc>
+</wpt>
+<wpt lat="35.054901400" lon="-85.309528200">
+  <name>Restaurant:Ghengis Grill</name>
+  <cmt>Restaurant:Ghengis Grill</cmt>
+  <desc>Restaurant:Ghengis Grill</desc>
+</wpt>
+<wpt lat="35.046372000" lon="-85.309221100">
+  <name>Restaurant:Market Street Tavern</name>
+  <cmt>Restaurant:Market Street Tavern</cmt>
+  <desc>Restaurant:Market Street Tavern</desc>
+</wpt>
+<wpt lat="35.044373900" lon="-85.309183700">
+  <name>Restaurant:The Pickle Barrel</name>
+  <cmt>Restaurant:The Pickle Barrel</cmt>
+  <desc>Restaurant:The Pickle Barrel</desc>
+</wpt>
+<wpt lat="35.046371100" lon="-85.308955000">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="35.042270200" lon="-85.308609700">
+  <name>Restaurant:The Public House</name>
+  <cmt>Restaurant:The Public House</cmt>
+  <desc>Restaurant:The Public House</desc>
+</wpt>
+<wpt lat="35.039292400" lon="-85.308582900">
+  <name>Restaurant:The Urban Stack</name>
+  <cmt>Restaurant:The Urban Stack</cmt>
+  <desc>Restaurant:The Urban Stack</desc>
+</wpt>
+<wpt lat="35.046385800" lon="-85.308473200">
+  <name>Fast Food Restaurant:Bleacher Bums</name>
+  <cmt>Fast Food Restaurant:Bleacher Bums</cmt>
+  <desc>Fast Food Restaurant:Bleacher Bums</desc>
+</wpt>
+<wpt lat="35.040438500" lon="-85.308218100">
+  <name>Restaurant:Porker&apos;s BBQ</name>
+  <cmt>Restaurant:Porker&apos;s BBQ</cmt>
+  <desc>Restaurant:Porker&apos;s BBQ</desc>
+</wpt>
+<wpt lat="35.040302600" lon="-85.308137600">
+  <name>Restaurant:Mom&apos;s Little Italian Villa</name>
+  <cmt>Restaurant:Mom&apos;s Little Italian Villa</cmt>
+  <desc>Restaurant:Mom&apos;s Little Italian Villa</desc>
+</wpt>
+<wpt lat="35.046091500" lon="-85.307927700">
+  <name>Restaurant:J&apos;s Deli</name>
+  <cmt>Restaurant:J&apos;s Deli</cmt>
+  <desc>Restaurant:J&apos;s Deli</desc>
+</wpt>
+<wpt lat="35.062247100" lon="-85.307800300">
+  <name>Restaurant:River Street Deli</name>
+  <cmt>Restaurant:River Street Deli</cmt>
+  <desc>Restaurant:River Street Deli</desc>
+</wpt>
+<wpt lat="35.055485800" lon="-85.307798600">
+  <name>Restaurant:The Ice Cream Show</name>
+  <cmt>Restaurant:The Ice Cream Show</cmt>
+  <desc>Restaurant:The Ice Cream Show</desc>
+</wpt>
+<wpt lat="35.046474900" lon="-85.307705700">
+  <name>Pub:Midtown Music Hall</name>
+  <cmt>Pub:Midtown Music Hall</cmt>
+  <desc>Pub:Midtown Music Hall</desc>
+</wpt>
+<wpt lat="35.062387500" lon="-85.307663400">
+  <name>Restaurant:Clumpies</name>
+  <cmt>Restaurant:Clumpies</cmt>
+  <desc>Restaurant:Clumpies</desc>
+</wpt>
+<wpt lat="35.036445900" lon="-85.307617200">
+  <name>Restaurant:Blue Orleans</name>
+  <cmt>Restaurant:Blue Orleans</cmt>
+  <desc>Restaurant:Blue Orleans</desc>
+</wpt>
+<wpt lat="35.038348000" lon="-85.307622600">
+  <name>Restaurant:The English Rose</name>
+  <cmt>Restaurant:The English Rose</cmt>
+  <desc>Restaurant:The English Rose</desc>
+</wpt>
+<wpt lat="35.039753300" lon="-85.307579700">
+  <name>Restaurant:St. John&apos;s</name>
+  <cmt>Restaurant:St. John&apos;s</cmt>
+  <desc>Restaurant:St. John&apos;s</desc>
+</wpt>
+<wpt lat="35.062629300" lon="-85.307445100">
+  <name>Restaurant:Terra Nostra Tapas &amp; Wine</name>
+  <cmt>Restaurant:Terra Nostra Tapas &amp; Wine</cmt>
+  <desc>Restaurant:Terra Nostra Tapas &amp; Wine</desc>
+</wpt>
+<wpt lat="35.062612900" lon="-85.307318700">
+  <name>Restaurant:Chattanooga Brewing Company</name>
+  <cmt>Restaurant:Chattanooga Brewing Company</cmt>
+  <desc>Restaurant:Chattanooga Brewing Company</desc>
+</wpt>
+<wpt lat="35.036613100" lon="-85.307021800">
+  <name>Restaurant:The Terminal</name>
+  <cmt>Restaurant:The Terminal</cmt>
+  <desc>Restaurant:The Terminal</desc>
+</wpt>
+<wpt lat="35.046051600" lon="-85.306630600">
+  <name>Pub:The Honest Pint</name>
+  <cmt>Pub:The Honest Pint</cmt>
+  <desc>Pub:The Honest Pint</desc>
+</wpt>
+<wpt lat="35.062421900" lon="-85.306215500">
+  <name>Restaurant:Urban Spoon</name>
+  <cmt>Restaurant:Urban Spoon</cmt>
+  <desc>Restaurant:Urban Spoon</desc>
+</wpt>
+<wpt lat="35.062035000" lon="-85.305873300">
+  <name>Restaurant:Quiznos</name>
+  <cmt>Restaurant:Quiznos</cmt>
+  <desc>Restaurant:Quiznos</desc>
+</wpt>
+<wpt lat="35.061909200" lon="-85.305576300">
+  <name>Restaurant:Stone Cup</name>
+  <cmt>Restaurant:Stone Cup</cmt>
+  <desc>Restaurant:Stone Cup</desc>
+</wpt>
+<wpt lat="35.054554000" lon="-85.305355300">
+  <name>Restaurant:Rembrandts</name>
+  <cmt>Restaurant:Rembrandts</cmt>
+  <desc>Restaurant:Rembrandts</desc>
+</wpt>
+<wpt lat="35.061603100" lon="-85.304185200">
+  <name>Restaurant:4 Winds Mediterranean</name>
+  <cmt>Restaurant:4 Winds Mediterranean</cmt>
+  <desc>Restaurant:4 Winds Mediterranean</desc>
+</wpt>
+<wpt lat="35.053152500" lon="-85.296394400">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="35.069532000" lon="-85.289435800">
+  <name>Pub:Tremont Tavern</name>
+  <cmt>Pub:Tremont Tavern</cmt>
+  <desc>Pub:Tremont Tavern</desc>
+</wpt>
+<wpt lat="35.053549800" lon="-85.288147000">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="35.046695600" lon="-85.286951100">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="35.055299000" lon="-85.283525000">
+  <name>Restaurant:Boathouse Restaurant</name>
+  <cmt>Restaurant:Boathouse Restaurant</cmt>
+  <desc>Restaurant:Boathouse Restaurant</desc>
+</wpt>
+<wpt lat="35.044361400" lon="-85.280719200">
+  <name>Fast Food Restaurant:cental park</name>
+  <cmt>Fast Food Restaurant:cental park</cmt>
+  <desc>Fast Food Restaurant:cental park</desc>
+</wpt>
+<wpt lat="35.039207200" lon="-85.266727200">
+  <name>Fast Food Restaurant:KFC</name>
+  <cmt>Fast Food Restaurant:KFC</cmt>
+  <desc>Fast Food Restaurant:KFC</desc>
+</wpt>
+<wpt lat="35.039589400" lon="-85.266566300">
+  <name>Fast Food Restaurant:ronnie&quot;s grill</name>
+  <cmt>Fast Food Restaurant:ronnie&quot;s grill</cmt>
+  <desc>Fast Food Restaurant:ronnie&quot;s grill</desc>
+</wpt>
+<wpt lat="35.012880800" lon="-85.227427500">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="35.012164600" lon="-85.225539200">
+  <name>Restaurant:Proni&apos;s Pizza &amp; Sub</name>
+  <cmt>Restaurant:Proni&apos;s Pizza &amp; Sub</cmt>
+  <desc>Restaurant:Proni&apos;s Pizza &amp; Sub</desc>
+</wpt>
+<wpt lat="35.011193600" lon="-85.224739900">
+  <name>Restaurant:Wendy&apos;s</name>
+  <cmt>Restaurant:Wendy&apos;s</cmt>
+  <desc>Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="35.010916800" lon="-85.224321500">
+  <name>Restaurant:Papa John&apos;s Pizza</name>
+  <cmt>Restaurant:Papa John&apos;s Pizza</cmt>
+  <desc>Restaurant:Papa John&apos;s Pizza</desc>
+</wpt>
+<wpt lat="35.009748100" lon="-85.221097500">
+  <name>Fast Food Restaurant:Mister Work</name>
+  <cmt>Fast Food Restaurant:Mister Work</cmt>
+  <desc>Fast Food Restaurant:Mister Work</desc>
+</wpt>
+<wpt lat="35.009655800" lon="-85.220652200">
+  <name>Fast Food Restaurant:Arby&apos;s</name>
+  <cmt>Fast Food Restaurant:Arby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="35.010394000" lon="-85.219134100">
+  <name>Restaurant:Subway</name>
+  <cmt>Restaurant:Subway</cmt>
+  <desc>Restaurant:Subway</desc>
+</wpt>
+<wpt lat="35.009671700" lon="-85.218141400">
+  <name>Pub</name>
+  <cmt>Pub</cmt>
+  <desc>Pub</desc>
+</wpt>
+<wpt lat="32.819754800" lon="-85.210632300">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="35.016487600" lon="-85.206206500">
+  <name>Restaurant:Ankar&apos;s Hoagies</name>
+  <cmt>Restaurant:Ankar&apos;s Hoagies</cmt>
+  <desc>Restaurant:Ankar&apos;s Hoagies</desc>
+</wpt>
+<wpt lat="32.847370000" lon="-85.184178800">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="32.846064600" lon="-85.182784100">
+  <name>Fast Food Restaurant:Burger King</name>
+  <cmt>Fast Food Restaurant:Burger King</cmt>
+  <desc>Fast Food Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="32.845049800" lon="-85.182570000">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="32.844689900" lon="-85.182163700">
+  <name>Fast Food Restaurant:Taco Bell</name>
+  <cmt>Fast Food Restaurant:Taco Bell</cmt>
+  <desc>Fast Food Restaurant:Taco Bell</desc>
+</wpt>
+<wpt lat="32.845372700" lon="-85.181878100">
+  <name>Fast Food Restaurant:Krystal Hamburgers</name>
+  <cmt>Fast Food Restaurant:Krystal Hamburgers</cmt>
+  <desc>Fast Food Restaurant:Krystal Hamburgers</desc>
+</wpt>
+<wpt lat="32.844634600" lon="-85.181060000">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="35.034046300" lon="-85.159696300">
+  <name>Restaurant:The Great American Cafe</name>
+  <cmt>Restaurant:The Great American Cafe</cmt>
+  <desc>Restaurant:The Great American Cafe</desc>
+</wpt>
+<wpt lat="35.034643700" lon="-85.157893900">
+  <name>Restaurant:Red Robin Gourmet Burgers</name>
+  <cmt>Restaurant:Red Robin Gourmet Burgers</cmt>
+  <desc>Restaurant:Red Robin Gourmet Burgers</desc>
+</wpt>
+<wpt lat="35.013882500" lon="-85.157733000">
+  <name>Fast Food Restaurant:Little Caesar&apos;s Pizza</name>
+  <cmt>Fast Food Restaurant:Little Caesar&apos;s Pizza</cmt>
+  <desc>Fast Food Restaurant:Little Caesar&apos;s Pizza</desc>
+</wpt>
+<wpt lat="35.028046000" lon="-85.157325300">
+  <name>Fast Food Restaurant:Chili&apos;s</name>
+  <cmt>Fast Food Restaurant:Chili&apos;s</cmt>
+  <desc>Fast Food Restaurant:Chili&apos;s</desc>
+</wpt>
+<wpt lat="35.012469400" lon="-85.157225900">
+  <name>Fast Food Restaurant:Zaxby&apos;s</name>
+  <cmt>Fast Food Restaurant:Zaxby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Zaxby&apos;s</desc>
+</wpt>
+<wpt lat="35.011914000" lon="-85.156324700">
+  <name>Fast Food Restaurant:Wendys</name>
+  <cmt>Fast Food Restaurant:Wendys</cmt>
+  <desc>Fast Food Restaurant:Wendys</desc>
+</wpt>
+<wpt lat="35.025616800" lon="-85.156091500">
+  <name>Fast Food Restaurant:Moe&apos;s Southwest Grill</name>
+  <cmt>Fast Food Restaurant:Moe&apos;s Southwest Grill</cmt>
+  <desc>Fast Food Restaurant:Moe&apos;s Southwest Grill</desc>
+</wpt>
+<wpt lat="35.025985800" lon="-85.155968100">
+  <name>Fast Food Restaurant:Firehouse Subs</name>
+  <cmt>Fast Food Restaurant:Firehouse Subs</cmt>
+  <desc>Fast Food Restaurant:Firehouse Subs</desc>
+</wpt>
+<wpt lat="35.030734300" lon="-85.155898300">
+  <name>Fast Food Restaurant</name>
+  <cmt>Fast Food Restaurant</cmt>
+  <desc>Fast Food Restaurant</desc>
+</wpt>
+<wpt lat="35.034375700" lon="-85.154519700">
+  <name>Restaurant:Jason&apos;s Deli</name>
+  <cmt>Restaurant:Jason&apos;s Deli</cmt>
+  <desc>Restaurant:Jason&apos;s Deli</desc>
+</wpt>
+<wpt lat="35.034274700" lon="-85.154251500">
+  <name>Restaurant:Bonefish Grill</name>
+  <cmt>Restaurant:Bonefish Grill</cmt>
+  <desc>Restaurant:Bonefish Grill</desc>
+</wpt>
+<wpt lat="35.034345000" lon="-85.153811600">
+  <name>Restaurant:Salsarita&apos;s</name>
+  <cmt>Restaurant:Salsarita&apos;s</cmt>
+  <desc>Restaurant:Salsarita&apos;s</desc>
+</wpt>
+<wpt lat="35.005117000" lon="-85.153298000">
+  <name>Fast Food Restaurant:Burger King</name>
+  <cmt>Fast Food Restaurant:Burger King</cmt>
+  <desc>Fast Food Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="35.008900400" lon="-85.152885300">
+  <name>Restaurant:Pizza Hut</name>
+  <cmt>Restaurant:Pizza Hut</cmt>
+  <desc>Restaurant:Pizza Hut</desc>
+</wpt>
+<wpt lat="35.008148700" lon="-85.152357800">
+  <name>Fast Food Restaurant:Casa Roll&apos;s</name>
+  <cmt>Fast Food Restaurant:Casa Roll&apos;s</cmt>
+  <desc>Fast Food Restaurant:Casa Roll&apos;s</desc>
+</wpt>
+<wpt lat="35.008342100" lon="-85.152304200">
+  <name>Restaurant:Lupi&apos;s Pizza Parlor</name>
+  <cmt>Restaurant:Lupi&apos;s Pizza Parlor</cmt>
+  <desc>Restaurant:Lupi&apos;s Pizza Parlor</desc>
+</wpt>
+<wpt lat="35.037920300" lon="-85.149632700">
+  <name>Restaurant:McAlister&apos;s Deli</name>
+  <cmt>Restaurant:McAlister&apos;s Deli</cmt>
+  <desc>Restaurant:McAlister&apos;s Deli</desc>
+</wpt>
+<wpt lat="35.038148700" lon="-85.149439600">
+  <name>Restaurant:Souper Salad!</name>
+  <cmt>Restaurant:Souper Salad!</cmt>
+  <desc>Restaurant:Souper Salad!</desc>
+</wpt>
+<wpt lat="35.060668300" lon="-85.134936300">
+  <name>Restaurant:City Cafe</name>
+  <cmt>Restaurant:City Cafe</cmt>
+  <desc>Restaurant:City Cafe</desc>
+</wpt>
+<wpt lat="34.999494400" lon="-85.134140200">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="35.004195700" lon="-85.123907300">
+  <name>Restaurant:Bones&apos; Smokehouse</name>
+  <cmt>Restaurant:Bones&apos; Smokehouse</cmt>
+  <desc>Restaurant:Bones&apos; Smokehouse</desc>
+</wpt>
+<wpt lat="35.061204700" lon="-85.069928200">
+  <name>Fast Food Restaurant:Domino&apos;s</name>
+  <cmt>Fast Food Restaurant:Domino&apos;s</cmt>
+  <desc>Fast Food Restaurant:Domino&apos;s</desc>
+</wpt>
+<wpt lat="35.059632700" lon="-85.069311300">
+  <name>Fast Food Restaurant:Papa John&apos;s</name>
+  <cmt>Fast Food Restaurant:Papa John&apos;s</cmt>
+  <desc>Fast Food Restaurant:Papa John&apos;s</desc>
+</wpt>
+<wpt lat="35.059513200" lon="-85.069031100">
+  <name>Restaurant:Los Potros</name>
+  <cmt>Restaurant:Los Potros</cmt>
+  <desc>Restaurant:Los Potros</desc>
+</wpt>
+<wpt lat="35.059221200" lon="-85.068275600">
+  <name>Fast Food Restaurant:China Kitchen</name>
+  <cmt>Fast Food Restaurant:China Kitchen</cmt>
+  <desc>Fast Food Restaurant:China Kitchen</desc>
+</wpt>
+<wpt lat="35.059180400" lon="-85.068136500">
+  <name>Cafe:Creamy Bean Factory</name>
+  <cmt>Cafe:Creamy Bean Factory</cmt>
+  <desc>Cafe:Creamy Bean Factory</desc>
+</wpt>
+<wpt lat="35.084096100" lon="-85.066977700">
+  <name>Fast Food Restaurant:Zaxbys</name>
+  <cmt>Fast Food Restaurant:Zaxbys</cmt>
+  <desc>Fast Food Restaurant:Zaxbys</desc>
+</wpt>
+<wpt lat="35.084043400" lon="-85.066537900">
+  <name>Fast Food Restaurant:Captain D&apos;s</name>
+  <cmt>Fast Food Restaurant:Captain D&apos;s</cmt>
+  <desc>Fast Food Restaurant:Captain D&apos;s</desc>
+</wpt>
+<wpt lat="35.060049800" lon="-85.065845800">
+  <name>Restaurant:Rafeals Pizza</name>
+  <cmt>Restaurant:Rafeals Pizza</cmt>
+  <desc>Restaurant:Rafeals Pizza</desc>
+</wpt>
+<wpt lat="35.084122400" lon="-85.064424300">
+  <name>Fast Food Restaurant:Burger King</name>
+  <cmt>Fast Food Restaurant:Burger King</cmt>
+  <desc>Fast Food Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="35.083832700" lon="-85.063383600">
+  <name>Fast Food Restaurant:Arbys</name>
+  <cmt>Fast Food Restaurant:Arbys</cmt>
+  <desc>Fast Food Restaurant:Arbys</desc>
+</wpt>
+<wpt lat="35.084859900" lon="-85.062868600">
+  <name>Fast Food Restaurant:Hardees</name>
+  <cmt>Fast Food Restaurant:Hardees</cmt>
+  <desc>Fast Food Restaurant:Hardees</desc>
+</wpt>
+<wpt lat="35.083744900" lon="-85.062734500">
+  <name>Fast Food Restaurant:Taco Bell</name>
+  <cmt>Fast Food Restaurant:Taco Bell</cmt>
+  <desc>Fast Food Restaurant:Taco Bell</desc>
+</wpt>
+<wpt lat="35.084728200" lon="-85.062401900">
+  <name>Pub:Ooltewah liquor store</name>
+  <cmt>Pub:Ooltewah liquor store</cmt>
+  <desc>Pub:Ooltewah liquor store</desc>
+</wpt>
+<wpt lat="35.084605300" lon="-85.061978100">
+  <name>Fast Food Restaurant:Mcdonalds</name>
+  <cmt>Fast Food Restaurant:Mcdonalds</cmt>
+  <desc>Fast Food Restaurant:Mcdonalds</desc>
+</wpt>
+<wpt lat="35.084012600" lon="-85.060358000">
+  <name>Fast Food Restaurant:Bojangles</name>
+  <cmt>Fast Food Restaurant:Bojangles</cmt>
+  <desc>Fast Food Restaurant:Bojangles</desc>
+</wpt>
+<wpt lat="35.081778200" lon="-85.059387100">
+  <name>Fast Food Restaurant:Sonic</name>
+  <cmt>Fast Food Restaurant:Sonic</cmt>
+  <desc>Fast Food Restaurant:Sonic</desc>
+</wpt>
+<wpt lat="35.084021400" lon="-85.058829200">
+  <name>Fast Food Restaurant:Liitle Caesar&apos;s Pizza</name>
+  <cmt>Fast Food Restaurant:Liitle Caesar&apos;s Pizza</cmt>
+  <desc>Fast Food Restaurant:Liitle Caesar&apos;s Pizza</desc>
+</wpt>
+<wpt lat="35.083354200" lon="-85.058598500">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="33.997456300" lon="-85.052963300">
+  <name>Restaurant:Frankie&apos;s Italian Retaurant</name>
+  <cmt>Restaurant:Frankie&apos;s Italian Retaurant</cmt>
+  <desc>Restaurant:Frankie&apos;s Italian Retaurant</desc>
+</wpt>
+<wpt lat="35.049318300" lon="-85.048479900">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="32.991140000" lon="-85.030212400">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="32.986186600" lon="-85.029098100">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="32.991375400" lon="-85.029066500">
+  <name>Fast Food Restaurant:Arby&apos;s</name>
+  <cmt>Fast Food Restaurant:Arby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="32.998967900" lon="-85.028705600">
+  <name>Restaurant:Cart Barn Grille</name>
+  <cmt>Restaurant:Cart Barn Grille</cmt>
+  <desc>Restaurant:Cart Barn Grille</desc>
+</wpt>
+<wpt lat="34.688433600" lon="-85.000652100">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="34.687419100" lon="-85.000405300">
+  <name>Fast Food Restaurant:Arbys</name>
+  <cmt>Fast Food Restaurant:Arbys</cmt>
+  <desc>Fast Food Restaurant:Arbys</desc>
+</wpt>
+<wpt lat="34.689157000" lon="-84.998624300">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="34.655706800" lon="-84.980401400">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="34.655773000" lon="-84.980251200">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="34.654149100" lon="-84.977740600">
+  <name>Fast Food Restaurant:Dominoes Pizza</name>
+  <cmt>Fast Food Restaurant:Dominoes Pizza</cmt>
+  <desc>Fast Food Restaurant:Dominoes Pizza</desc>
+</wpt>
+<wpt lat="34.654625700" lon="-84.977349000">
+  <name>Restaurant:Bar BQ</name>
+  <cmt>Restaurant:Bar BQ</cmt>
+  <desc>Restaurant:Bar BQ</desc>
+</wpt>
+<wpt lat="33.043154300" lon="-84.976836400">
+  <name>Restaurant:IHOP</name>
+  <cmt>Restaurant:IHOP</cmt>
+  <desc>Restaurant:IHOP</desc>
+</wpt>
+<wpt lat="33.041549600" lon="-84.973753300">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="34.759670900" lon="-84.970639500">
+  <name>Fast Food Restaurant</name>
+  <cmt>Fast Food Restaurant</cmt>
+  <desc>Fast Food Restaurant</desc>
+</wpt>
+<wpt lat="34.514655900" lon="-84.941897200">
+  <name>Fast Food Restaurant:Dominoes Pizza</name>
+  <cmt>Fast Food Restaurant:Dominoes Pizza</cmt>
+  <desc>Fast Food Restaurant:Dominoes Pizza</desc>
+</wpt>
+<wpt lat="33.725628700" lon="-84.940776700">
+  <name>Restaurant:Hardee&apos;s</name>
+  <cmt>Restaurant:Hardee&apos;s</cmt>
+  <desc>Restaurant:Hardee&apos;s</desc>
+</wpt>
+<wpt lat="33.724886300" lon="-84.940630800">
+  <name>Restaurant:Pizza Hut</name>
+  <cmt>Restaurant:Pizza Hut</cmt>
+  <desc>Restaurant:Pizza Hut</desc>
+</wpt>
+<wpt lat="33.724365200" lon="-84.940536400">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.728933800" lon="-84.940467700">
+  <name>Restaurant:Chick-fil-a</name>
+  <cmt>Restaurant:Chick-fil-a</cmt>
+  <desc>Restaurant:Chick-fil-a</desc>
+</wpt>
+<wpt lat="33.719517900" lon="-84.939806800">
+  <name>Restaurant:Captain D&apos;s</name>
+  <cmt>Restaurant:Captain D&apos;s</cmt>
+  <desc>Restaurant:Captain D&apos;s</desc>
+</wpt>
+<wpt lat="33.718918200" lon="-84.939626600">
+  <name>Restaurant:Zaxby&apos;s</name>
+  <cmt>Restaurant:Zaxby&apos;s</cmt>
+  <desc>Restaurant:Zaxby&apos;s</desc>
+</wpt>
+<wpt lat="33.726235500" lon="-84.939060100">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.727791700" lon="-84.939017200">
+  <name>Restaurant:Wendy&apos;s</name>
+  <cmt>Restaurant:Wendy&apos;s</cmt>
+  <desc>Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="33.724600800" lon="-84.938948500">
+  <name>Restaurant:Krystal&apos;s</name>
+  <cmt>Restaurant:Krystal&apos;s</cmt>
+  <desc>Restaurant:Krystal&apos;s</desc>
+</wpt>
+<wpt lat="33.725071900" lon="-84.938931300">
+  <name>Restaurant:Kentucky Fried Chicken/Taco Bell</name>
+  <cmt>Restaurant:Kentucky Fried Chicken/Taco Bell</cmt>
+  <desc>Restaurant:Kentucky Fried Chicken/Taco Bell</desc>
+</wpt>
+<wpt lat="33.725557300" lon="-84.938897000">
+  <name>Restaurant:Arby&apos;s</name>
+  <cmt>Restaurant:Arby&apos;s</cmt>
+  <desc>Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="33.719782000" lon="-84.938184600">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.720210400" lon="-84.937729700">
+  <name>Restaurant:Domino&apos;s Pizza</name>
+  <cmt>Restaurant:Domino&apos;s Pizza</cmt>
+  <desc>Restaurant:Domino&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.718804000" lon="-84.937609600">
+  <name>Restaurant:Burger King</name>
+  <cmt>Restaurant:Burger King</cmt>
+  <desc>Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="33.720346000" lon="-84.937249100">
+  <name>Restaurant:Papa John&apos;s Pizza</name>
+  <cmt>Restaurant:Papa John&apos;s Pizza</cmt>
+  <desc>Restaurant:Papa John&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.715791200" lon="-84.936528100">
+  <name>Restaurant:O&apos;Charlies&apos; Resturant</name>
+  <cmt>Restaurant:O&apos;Charlies&apos; Resturant</cmt>
+  <desc>Restaurant:O&apos;Charlies&apos; Resturant</desc>
+</wpt>
+<wpt lat="34.512126100" lon="-84.923519600">
+  <name>Fast Food Restaurant:Arby&apos;s</name>
+  <cmt>Fast Food Restaurant:Arby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="34.504983200" lon="-84.918271400">
+  <name>Restaurant:Schroder&apos;s Deli</name>
+  <cmt>Restaurant:Schroder&apos;s Deli</cmt>
+  <desc>Restaurant:Schroder&apos;s Deli</desc>
+</wpt>
+<wpt lat="34.512579400" lon="-84.917370100">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.732183900" lon="-84.901085400">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.733207800" lon="-84.900449700">
+  <name>Fast Food Restaurant:McDonalds</name>
+  <cmt>Fast Food Restaurant:McDonalds</cmt>
+  <desc>Fast Food Restaurant:McDonalds</desc>
+</wpt>
+<wpt lat="33.160999400" lon="-84.874409000">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.160748600" lon="-84.873150700">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="33.160200800" lon="-84.871717300">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.161377600" lon="-84.871380800">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="33.327256700" lon="-84.780229700">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.325700500" lon="-84.779694800">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.725943200" lon="-84.778832100">
+  <name>Pub:Coronado Forest</name>
+  <cmt>Pub:Coronado Forest</cmt>
+  <desc>Pub:Coronado Forest</desc>
+</wpt>
+<wpt lat="33.724412000" lon="-84.765119700">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.390846300" lon="-84.761851100">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.397339100" lon="-84.757000000">
+  <name>Restaurant:IHOP</name>
+  <cmt>Restaurant:IHOP</cmt>
+  <desc>Restaurant:IHOP</desc>
+</wpt>
+<wpt lat="33.883238600" lon="-84.755594500">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.396042200" lon="-84.751758100">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.396079300" lon="-84.745934200">
+  <name>Fast Food Restaurant:Arby&apos;s</name>
+  <cmt>Fast Food Restaurant:Arby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="33.396054600" lon="-84.745105800">
+  <name>Restaurant:Applebee&apos;s</name>
+  <cmt>Restaurant:Applebee&apos;s</cmt>
+  <desc>Restaurant:Applebee&apos;s</desc>
+</wpt>
+<wpt lat="33.397405000" lon="-84.744272400">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.528554600" lon="-84.743785700">
+  <name>Restaurant:The Farmhouse at Serenbe</name>
+  <cmt>Restaurant:The Farmhouse at Serenbe</cmt>
+  <desc>Restaurant:The Farmhouse at Serenbe</desc>
+</wpt>
+<wpt lat="33.525223600" lon="-84.737391700">
+  <name>Cafe:Blue Eyed Daisy</name>
+  <cmt>Cafe:Blue Eyed Daisy</cmt>
+  <desc>Cafe:Blue Eyed Daisy</desc>
+</wpt>
+<wpt lat="33.524937400" lon="-84.735924000">
+  <name>Restaurant:The Hil</name>
+  <cmt>Restaurant:The Hil</cmt>
+  <desc>Restaurant:The Hil</desc>
+</wpt>
+<wpt lat="33.446654300" lon="-84.696678400">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.442305500" lon="-84.692179500">
+  <name>Fast Food Restaurant:Hardee&apos;s</name>
+  <cmt>Fast Food Restaurant:Hardee&apos;s</cmt>
+  <desc>Fast Food Restaurant:Hardee&apos;s</desc>
+</wpt>
+<wpt lat="33.501901600" lon="-84.641126000">
+  <name>Restaurant:Frank&apos;s Family Restaurant</name>
+  <cmt>Restaurant:Frank&apos;s Family Restaurant</cmt>
+  <desc>Restaurant:Frank&apos;s Family Restaurant</desc>
+</wpt>
+<wpt lat="33.947613200" lon="-84.629997300">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.991974000" lon="-84.629015000">
+  <name>Cafe:Cuppy&apos;s Coffee</name>
+  <cmt>Cafe:Cuppy&apos;s Coffee</cmt>
+  <desc>Cafe:Cuppy&apos;s Coffee</desc>
+</wpt>
+<wpt lat="33.752460600" lon="-84.628509100">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.782196200" lon="-84.609492900">
+  <name>Fast Food Restaurant:Chick Fil A</name>
+  <cmt>Fast Food Restaurant:Chick Fil A</cmt>
+  <desc>Fast Food Restaurant:Chick Fil A</desc>
+</wpt>
+<wpt lat="33.781910800" lon="-84.609149500">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.780962000" lon="-84.608780500">
+  <name>Restaurant:Shoney&apos;s</name>
+  <cmt>Restaurant:Shoney&apos;s</cmt>
+  <desc>Restaurant:Shoney&apos;s</desc>
+</wpt>
+<wpt lat="33.778486500" lon="-84.607072400">
+  <name>Fast Food Restaurant:Taco Bell</name>
+  <cmt>Fast Food Restaurant:Taco Bell</cmt>
+  <desc>Fast Food Restaurant:Taco Bell</desc>
+</wpt>
+<wpt lat="33.774705300" lon="-84.605621900">
+  <name>Restaurant:Cracker Barrel</name>
+  <cmt>Restaurant:Cracker Barrel</cmt>
+  <desc>Restaurant:Cracker Barrel</desc>
+</wpt>
+<wpt lat="33.397414200" lon="-84.602646100">
+  <name>Restaurant:Johnny&apos;s Pizza</name>
+  <cmt>Restaurant:Johnny&apos;s Pizza</cmt>
+  <desc>Restaurant:Johnny&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.399210800" lon="-84.595703200">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.396196700" lon="-84.592523200">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="33.395327200" lon="-84.590490300">
+  <name>Restaurant:Atlanta Bread Company</name>
+  <cmt>Restaurant:Atlanta Bread Company</cmt>
+  <desc>Restaurant:Atlanta Bread Company</desc>
+</wpt>
+<wpt lat="34.038897500" lon="-84.585484500">
+  <name>Cafe:Jazzmans</name>
+  <cmt>Cafe:Jazzmans</cmt>
+  <desc>Cafe:Jazzmans</desc>
+</wpt>
+<wpt lat="33.400912100" lon="-84.585467800">
+  <name>Restaurant:Partners II Pizza</name>
+  <cmt>Restaurant:Partners II Pizza</cmt>
+  <desc>Restaurant:Partners II Pizza</desc>
+</wpt>
+<wpt lat="34.043826200" lon="-84.583948100">
+  <name>Cafe:Hemingwayz</name>
+  <cmt>Cafe:Hemingwayz</cmt>
+  <desc>Cafe:Hemingwayz</desc>
+</wpt>
+<wpt lat="33.565912600" lon="-84.583729000">
+  <name>Restaurant:Chinese</name>
+  <cmt>Restaurant:Chinese</cmt>
+  <desc>Restaurant:Chinese</desc>
+</wpt>
+<wpt lat="33.856001700" lon="-84.583601000">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.566291600" lon="-84.583462900">
+  <name>Fast Food Restaurant:Dominos</name>
+  <cmt>Fast Food Restaurant:Dominos</cmt>
+  <desc>Fast Food Restaurant:Dominos</desc>
+</wpt>
+<wpt lat="34.038082500" lon="-84.583048700">
+  <name>Fast Food Restaurant</name>
+  <cmt>Fast Food Restaurant</cmt>
+  <desc>Fast Food Restaurant</desc>
+</wpt>
+<wpt lat="34.030120900" lon="-84.582673100">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="34.030284600" lon="-84.582490800">
+  <name>Fast Food Restaurant</name>
+  <cmt>Fast Food Restaurant</cmt>
+  <desc>Fast Food Restaurant</desc>
+</wpt>
+<wpt lat="34.040217800" lon="-84.582104200">
+  <name>Restaurant:The Commons Dining Hall</name>
+  <cmt>Restaurant:The Commons Dining Hall</cmt>
+  <desc>Restaurant:The Commons Dining Hall</desc>
+</wpt>
+<wpt lat="34.040059700" lon="-84.582093900">
+  <name>Fast Food Restaurant</name>
+  <cmt>Fast Food Restaurant</cmt>
+  <desc>Fast Food Restaurant</desc>
+</wpt>
+<wpt lat="33.567178500" lon="-84.582072500">
+  <name>Cafe</name>
+  <cmt>Cafe</cmt>
+  <desc>Cafe</desc>
+</wpt>
+<wpt lat="33.566978200" lon="-84.581840700">
+  <name>Restaurant:Oz Pizza</name>
+  <cmt>Restaurant:Oz Pizza</cmt>
+  <desc>Restaurant:Oz Pizza</desc>
+</wpt>
+<wpt lat="34.039473600" lon="-84.581690800">
+  <name>Cafe:Einsteins</name>
+  <cmt>Cafe:Einsteins</cmt>
+  <desc>Cafe:Einsteins</desc>
+</wpt>
+<wpt lat="34.034092200" lon="-84.580136900">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="34.032093500" lon="-84.579630500">
+  <name>Fast Food Restaurant</name>
+  <cmt>Fast Food Restaurant</cmt>
+  <desc>Fast Food Restaurant</desc>
+</wpt>
+<wpt lat="33.542929300" lon="-84.577589600">
+  <name>Fast Food Restaurant:Wendys</name>
+  <cmt>Fast Food Restaurant:Wendys</cmt>
+  <desc>Fast Food Restaurant:Wendys</desc>
+</wpt>
+<wpt lat="30.906115000" lon="-84.576627500">
+  <name>Pub:Cinda&apos;s</name>
+  <cmt>Pub:Cinda&apos;s</cmt>
+  <desc>Pub:Cinda&apos;s</desc>
+</wpt>
+<wpt lat="33.544324300" lon="-84.576499500">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.543866400" lon="-84.576405100">
+  <name>Fast Food Restaurant:Dunkin Doughnuts</name>
+  <cmt>Fast Food Restaurant:Dunkin Doughnuts</cmt>
+  <desc>Fast Food Restaurant:Dunkin Doughnuts</desc>
+</wpt>
+<wpt lat="33.543008000" lon="-84.576319300">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.543465800" lon="-84.576319300">
+  <name>Fast Food Restaurant:Chick-fil-A</name>
+  <cmt>Fast Food Restaurant:Chick-fil-A</cmt>
+  <desc>Fast Food Restaurant:Chick-fil-A</desc>
+</wpt>
+<wpt lat="33.542178100" lon="-84.576121900">
+  <name>Fast Food Restaurant:Zaxbys</name>
+  <cmt>Fast Food Restaurant:Zaxbys</cmt>
+  <desc>Fast Food Restaurant:Zaxbys</desc>
+</wpt>
+<wpt lat="34.034666200" lon="-84.575401200">
+  <name>Restaurant:Kayson&apos;s Grille</name>
+  <cmt>Restaurant:Kayson&apos;s Grille</cmt>
+  <desc>Restaurant:Kayson&apos;s Grille</desc>
+</wpt>
+<wpt lat="34.035910900" lon="-84.574525800">
+  <name>Restaurant:Zaxby&apos;s</name>
+  <cmt>Restaurant:Zaxby&apos;s</cmt>
+  <desc>Restaurant:Zaxby&apos;s</desc>
+</wpt>
+<wpt lat="34.036235100" lon="-84.571514000">
+  <name>Restaurant:O&apos;Charley&apos;s</name>
+  <cmt>Restaurant:O&apos;Charley&apos;s</cmt>
+  <desc>Restaurant:O&apos;Charley&apos;s</desc>
+</wpt>
+<wpt lat="34.035014700" lon="-84.571401500">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="34.035050200" lon="-84.571238400">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="34.035078700" lon="-84.571101100">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="34.035128500" lon="-84.570946600">
+  <name>Cafe</name>
+  <cmt>Cafe</cmt>
+  <desc>Cafe</desc>
+</wpt>
+<wpt lat="33.572985500" lon="-84.569652800">
+  <name>Restaurant:Jamaican</name>
+  <cmt>Restaurant:Jamaican</cmt>
+  <desc>Restaurant:Jamaican</desc>
+</wpt>
+<wpt lat="34.036759300" lon="-84.569508100">
+  <name>Restaurant:Chick-fil-A</name>
+  <cmt>Restaurant:Chick-fil-A</cmt>
+  <desc>Restaurant:Chick-fil-A</desc>
+</wpt>
+<wpt lat="34.036961300" lon="-84.568966100">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="34.037223000" lon="-84.568856800">
+  <name>Restaurant:Panera Bread</name>
+  <cmt>Restaurant:Panera Bread</cmt>
+  <desc>Restaurant:Panera Bread</desc>
+</wpt>
+<wpt lat="34.037563600" lon="-84.567718100">
+  <name>Restaurant:Five Guys Burgers &amp; Fries</name>
+  <cmt>Restaurant:Five Guys Burgers &amp; Fries</cmt>
+  <desc>Restaurant:Five Guys Burgers &amp; Fries</desc>
+</wpt>
+<wpt lat="30.888823300" lon="-84.565494700">
+  <name>Pub</name>
+  <cmt>Pub</cmt>
+  <desc>Pub</desc>
+</wpt>
+<wpt lat="34.177591100" lon="-84.551230700">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="34.179845500" lon="-84.549578500">
+  <name>Restaurant:Las Palmas</name>
+  <cmt>Restaurant:Las Palmas</cmt>
+  <desc>Restaurant:Las Palmas</desc>
+</wpt>
+<wpt lat="34.173601200" lon="-84.549498000">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="34.179765600" lon="-84.549449800">
+  <name>Restaurant:Amici&apos;s</name>
+  <cmt>Restaurant:Amici&apos;s</cmt>
+  <desc>Restaurant:Amici&apos;s</desc>
+</wpt>
+<wpt lat="34.177759700" lon="-84.549165400">
+  <name>Fast Food Restaurant:KFC/Taco Bell</name>
+  <cmt>Fast Food Restaurant:KFC/Taco Bell</cmt>
+  <desc>Fast Food Restaurant:KFC/Taco Bell</desc>
+</wpt>
+<wpt lat="34.171084700" lon="-84.547711700">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="33.570252900" lon="-84.542944400">
+  <name>Fast Food Restaurant:Sonic Drive In</name>
+  <cmt>Fast Food Restaurant:Sonic Drive In</cmt>
+  <desc>Fast Food Restaurant:Sonic Drive In</desc>
+</wpt>
+<wpt lat="33.569243800" lon="-84.542605300">
+  <name>Restaurant:Shoney&apos;s</name>
+  <cmt>Restaurant:Shoney&apos;s</cmt>
+  <desc>Restaurant:Shoney&apos;s</desc>
+</wpt>
+<wpt lat="33.569764000" lon="-84.541388700">
+  <name>Fast Food Restaurant:Kentucky Fried Chicken</name>
+  <cmt>Fast Food Restaurant:Kentucky Fried Chicken</cmt>
+  <desc>Fast Food Restaurant:Kentucky Fried Chicken</desc>
+</wpt>
+<wpt lat="34.085227600" lon="-84.540691400">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.569378300" lon="-84.540430600">
+  <name>Fast Food Restaurant:Taco Bell</name>
+  <cmt>Fast Food Restaurant:Taco Bell</cmt>
+  <desc>Fast Food Restaurant:Taco Bell</desc>
+</wpt>
+<wpt lat="33.568530600" lon="-84.540231400">
+  <name>Fast Food Restaurant:Krystal</name>
+  <cmt>Fast Food Restaurant:Krystal</cmt>
+  <desc>Fast Food Restaurant:Krystal</desc>
+</wpt>
+<wpt lat="33.568095600" lon="-84.539176400">
+  <name>Fast Food Restaurant:Burger King</name>
+  <cmt>Fast Food Restaurant:Burger King</cmt>
+  <desc>Fast Food Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="33.567956600" lon="-84.538761900">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="33.568840100" lon="-84.538713500">
+  <name>Fast Food Restaurant:Arby&apos;s</name>
+  <cmt>Fast Food Restaurant:Arby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="33.568678700" lon="-84.538126800">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.569373800" lon="-84.537884500">
+  <name>Restaurant:IHOP</name>
+  <cmt>Restaurant:IHOP</cmt>
+  <desc>Restaurant:IHOP</desc>
+</wpt>
+<wpt lat="33.877995300" lon="-84.533011400">
+  <name>Fast Food Restaurant:Chick-fil-a</name>
+  <cmt>Fast Food Restaurant:Chick-fil-a</cmt>
+  <desc>Fast Food Restaurant:Chick-fil-a</desc>
+</wpt>
+<wpt lat="33.566530300" lon="-84.532302600">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.873403400" lon="-84.530972900">
+  <name>Fast Food Restaurant:Dunkin Donuts</name>
+  <cmt>Fast Food Restaurant:Dunkin Donuts</cmt>
+  <desc>Fast Food Restaurant:Dunkin Donuts</desc>
+</wpt>
+<wpt lat="33.876224400" lon="-84.530896600">
+  <name>Restaurant:Ruby Tuesdays</name>
+  <cmt>Restaurant:Ruby Tuesdays</cmt>
+  <desc>Restaurant:Ruby Tuesdays</desc>
+</wpt>
+<wpt lat="33.874347100" lon="-84.529212100">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="33.872662000" lon="-84.529048800">
+  <name>Fast Food Restaurant:Papa John</name>
+  <cmt>Fast Food Restaurant:Papa John</cmt>
+  <desc>Fast Food Restaurant:Papa John</desc>
+</wpt>
+<wpt lat="33.872532800" lon="-84.528898600">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.872819400" lon="-84.528418200">
+  <name>Fast Food Restaurant:Great Wall</name>
+  <cmt>Fast Food Restaurant:Great Wall</cmt>
+  <desc>Fast Food Restaurant:Great Wall</desc>
+</wpt>
+<wpt lat="33.873249200" lon="-84.528289500">
+  <name>Fast Food Restaurant:Little Caesars</name>
+  <cmt>Fast Food Restaurant:Little Caesars</cmt>
+  <desc>Fast Food Restaurant:Little Caesars</desc>
+</wpt>
+<wpt lat="33.870082400" lon="-84.528010500">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.869779500" lon="-84.526369000">
+  <name>Fast Food Restaurant:Captain D&apos;s</name>
+  <cmt>Fast Food Restaurant:Captain D&apos;s</cmt>
+  <desc>Fast Food Restaurant:Captain D&apos;s</desc>
+</wpt>
+<wpt lat="33.951397100" lon="-84.520349900">
+  <name>Fast Food Restaurant:KFC (The Big Chicken)</name>
+  <cmt>Fast Food Restaurant:KFC (The Big Chicken)</cmt>
+  <desc>Fast Food Restaurant:KFC (The Big Chicken)</desc>
+</wpt>
+<wpt lat="33.586034400" lon="-84.516599500">
+  <name>Restaurant:Supreme Fish Delight</name>
+  <cmt>Restaurant:Supreme Fish Delight</cmt>
+  <desc>Restaurant:Supreme Fish Delight</desc>
+</wpt>
+<wpt lat="33.885267800" lon="-84.515577000">
+  <name>Restaurant:Quiznos</name>
+  <cmt>Restaurant:Quiznos</cmt>
+  <desc>Restaurant:Quiznos</desc>
+</wpt>
+<wpt lat="33.585337800" lon="-84.515332900">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.884285300" lon="-84.515109100">
+  <name>Restaurant:Atkins Park</name>
+  <cmt>Restaurant:Atkins Park</cmt>
+  <desc>Restaurant:Atkins Park</desc>
+</wpt>
+<wpt lat="33.884769100" lon="-84.515072800">
+  <name>Restaurant:Shane&apos;s Rib Shack</name>
+  <cmt>Restaurant:Shane&apos;s Rib Shack</cmt>
+  <desc>Restaurant:Shane&apos;s Rib Shack</desc>
+</wpt>
+<wpt lat="33.884218400" lon="-84.514776500">
+  <name>Restaurant:Moes</name>
+  <cmt>Restaurant:Moes</cmt>
+  <desc>Restaurant:Moes</desc>
+</wpt>
+<wpt lat="33.881776400" lon="-84.513951600">
+  <name>Restaurant:Ken&apos;s Corner Grill</name>
+  <cmt>Restaurant:Ken&apos;s Corner Grill</cmt>
+  <desc>Restaurant:Ken&apos;s Corner Grill</desc>
+</wpt>
+<wpt lat="33.882207300" lon="-84.504205100">
+  <name>Cafe</name>
+  <cmt>Cafe</cmt>
+  <desc>Cafe</desc>
+</wpt>
+<wpt lat="34.013956000" lon="-84.495538000">
+  <name>Fast Food Restaurant:Quiznos</name>
+  <cmt>Fast Food Restaurant:Quiznos</cmt>
+  <desc>Fast Food Restaurant:Quiznos</desc>
+</wpt>
+<wpt lat="34.012597700" lon="-84.495312400">
+  <name>Fast Food Restaurant:Chick-Fil-A</name>
+  <cmt>Fast Food Restaurant:Chick-Fil-A</cmt>
+  <desc>Fast Food Restaurant:Chick-Fil-A</desc>
+</wpt>
+<wpt lat="34.012533300" lon="-84.494508000">
+  <name>Restaurant:Pizza Hut</name>
+  <cmt>Restaurant:Pizza Hut</cmt>
+  <desc>Restaurant:Pizza Hut</desc>
+</wpt>
+<wpt lat="34.014263100" lon="-84.494116400">
+  <name>Fast Food Restaurant:Arby&apos;s</name>
+  <cmt>Fast Food Restaurant:Arby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="34.013133600" lon="-84.493526300">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="34.016213000" lon="-84.492333200">
+  <name>Fast Food Restaurant:Burger King</name>
+  <cmt>Fast Food Restaurant:Burger King</cmt>
+  <desc>Fast Food Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="33.967663000" lon="-84.491289000">
+  <name>Restaurant:Los Agaves</name>
+  <cmt>Restaurant:Los Agaves</cmt>
+  <desc>Restaurant:Los Agaves</desc>
+</wpt>
+<wpt lat="34.017386900" lon="-84.491185200">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.969204000" lon="-84.489600000">
+  <name>Fast Food Restaurant:Taco Bell</name>
+  <cmt>Fast Food Restaurant:Taco Bell</cmt>
+  <desc>Fast Food Restaurant:Taco Bell</desc>
+</wpt>
+<wpt lat="33.901355400" lon="-84.487348600">
+  <name>Restaurant:Umezono Japanese Restaurant</name>
+  <cmt>Restaurant:Umezono Japanese Restaurant</cmt>
+  <desc>Restaurant:Umezono Japanese Restaurant</desc>
+</wpt>
+<wpt lat="33.882525700" lon="-84.487159700">
+  <name>Restaurant:China Station</name>
+  <cmt>Restaurant:China Station</cmt>
+  <desc>Restaurant:China Station</desc>
+</wpt>
+<wpt lat="33.882770700" lon="-84.477275700">
+  <name>Fast Food Restaurant:Burger King</name>
+  <cmt>Fast Food Restaurant:Burger King</cmt>
+  <desc>Fast Food Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="33.883835700" lon="-84.476473700">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.887583500" lon="-84.475332100">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="33.888572000" lon="-84.474848000">
+  <name>Fast Food Restaurant:Taco Bell</name>
+  <cmt>Fast Food Restaurant:Taco Bell</cmt>
+  <desc>Fast Food Restaurant:Taco Bell</desc>
+</wpt>
+<wpt lat="33.884670000" lon="-84.473281900">
+  <name>Restaurant:Applebees</name>
+  <cmt>Restaurant:Applebees</cmt>
+  <desc>Restaurant:Applebees</desc>
+</wpt>
+<wpt lat="33.885164400" lon="-84.472533600">
+  <name>Fast Food Restaurant:Wendys</name>
+  <cmt>Fast Food Restaurant:Wendys</cmt>
+  <desc>Fast Food Restaurant:Wendys</desc>
+</wpt>
+<wpt lat="33.885104200" lon="-84.471610900">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.923651000" lon="-84.469514000">
+  <name>Restaurant:Sabor Do Brazil</name>
+  <cmt>Restaurant:Sabor Do Brazil</cmt>
+  <desc>Restaurant:Sabor Do Brazil</desc>
+</wpt>
+<wpt lat="33.880674700" lon="-84.468693200">
+  <name>Restaurant:Jason&apos;s Deli</name>
+  <cmt>Restaurant:Jason&apos;s Deli</cmt>
+  <desc>Restaurant:Jason&apos;s Deli</desc>
+</wpt>
+<wpt lat="33.921697000" lon="-84.468334000">
+  <name>Cafe:Brazilian Bakery</name>
+  <cmt>Cafe:Brazilian Bakery</cmt>
+  <desc>Cafe:Brazilian Bakery</desc>
+</wpt>
+<wpt lat="33.880714400" lon="-84.468325400">
+  <name>Restaurant:Ted&apos;s Montana Grill</name>
+  <cmt>Restaurant:Ted&apos;s Montana Grill</cmt>
+  <desc>Restaurant:Ted&apos;s Montana Grill</desc>
+</wpt>
+<wpt lat="33.904311400" lon="-84.466157600">
+  <name>Restaurant:Hashiguchi</name>
+  <cmt>Restaurant:Hashiguchi</cmt>
+  <desc>Restaurant:Hashiguchi</desc>
+</wpt>
+<wpt lat="33.904294200" lon="-84.465643300">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="33.904678900" lon="-84.465505900">
+  <name>Restaurant:Uncle Vito&apos;s PIzza</name>
+  <cmt>Restaurant:Uncle Vito&apos;s PIzza</cmt>
+  <desc>Restaurant:Uncle Vito&apos;s PIzza</desc>
+</wpt>
+<wpt lat="33.904845700" lon="-84.465433400">
+  <name>Restaurant:Barker&apos;s Red Hots</name>
+  <cmt>Restaurant:Barker&apos;s Red Hots</cmt>
+  <desc>Restaurant:Barker&apos;s Red Hots</desc>
+</wpt>
+<wpt lat="33.905939800" lon="-84.465119700">
+  <name>Restaurant:Mellow Mushroom Pizza and Bar</name>
+  <cmt>Restaurant:Mellow Mushroom Pizza and Bar</cmt>
+  <desc>Restaurant:Mellow Mushroom Pizza and Bar</desc>
+</wpt>
+<wpt lat="33.904921300" lon="-84.464998900">
+  <name>Restaurant:Foodrucker&apos;s</name>
+  <cmt>Restaurant:Foodrucker&apos;s</cmt>
+  <desc>Restaurant:Foodrucker&apos;s</desc>
+</wpt>
+<wpt lat="33.880630000" lon="-84.463172000">
+  <name>Pub:Tilted Kilt</name>
+  <cmt>Pub:Tilted Kilt</cmt>
+  <desc>Pub:Tilted Kilt</desc>
+</wpt>
+<wpt lat="33.904758400" lon="-84.461652300">
+  <name>Restaurant:Rose and Crown Tavern</name>
+  <cmt>Restaurant:Rose and Crown Tavern</cmt>
+  <desc>Restaurant:Rose and Crown Tavern</desc>
+</wpt>
+<wpt lat="34.237764900" lon="-84.460252100">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.872204300" lon="-84.458060500">
+  <name>Restaurant:Thai Diner</name>
+  <cmt>Restaurant:Thai Diner</cmt>
+  <desc>Restaurant:Thai Diner</desc>
+</wpt>
+<wpt lat="33.901904000" lon="-84.454594000">
+  <name>Fast Food Restaurant:Moe&apos;s SouthWest Grill</name>
+  <cmt>Fast Food Restaurant:Moe&apos;s SouthWest Grill</cmt>
+  <desc>Fast Food Restaurant:Moe&apos;s SouthWest Grill</desc>
+</wpt>
+<wpt lat="33.901889800" lon="-84.454508200">
+  <name>Fast Food Restaurant:Dunkin Donuts</name>
+  <cmt>Fast Food Restaurant:Dunkin Donuts</cmt>
+  <desc>Fast Food Restaurant:Dunkin Donuts</desc>
+</wpt>
+<wpt lat="33.900066100" lon="-84.448594400">
+  <name>Restaurant:Harry&apos;s Pizza</name>
+  <cmt>Restaurant:Harry&apos;s Pizza</cmt>
+  <desc>Restaurant:Harry&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.662839800" lon="-84.446623100">
+  <name>Restaurant:Brake Pad</name>
+  <cmt>Restaurant:Brake Pad</cmt>
+  <desc>Restaurant:Brake Pad</desc>
+</wpt>
+<wpt lat="33.663468500" lon="-84.446391400">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="33.640946000" lon="-84.444798000">
+  <name>Cafe:Seattle&apos;s Best Coffee</name>
+  <cmt>Cafe:Seattle&apos;s Best Coffee</cmt>
+  <desc>Cafe:Seattle&apos;s Best Coffee</desc>
+</wpt>
+<wpt lat="33.641368000" lon="-84.444431000">
+  <name>Restaurant:Atlanta Bread</name>
+  <cmt>Restaurant:Atlanta Bread</cmt>
+  <desc>Restaurant:Atlanta Bread</desc>
+</wpt>
+<wpt lat="33.675297700" lon="-84.443361500">
+  <name>Fast Food Restaurant:Waffle House</name>
+  <cmt>Fast Food Restaurant:Waffle House</cmt>
+  <desc>Fast Food Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.674547700" lon="-84.442554700">
+  <name>Fast Food Restaurant:Taco Bell</name>
+  <cmt>Fast Food Restaurant:Taco Bell</cmt>
+  <desc>Fast Food Restaurant:Taco Bell</desc>
+</wpt>
+<wpt lat="33.678883300" lon="-84.441670700">
+  <name>Restaurant:Thumbs Up Diner</name>
+  <cmt>Restaurant:Thumbs Up Diner</cmt>
+  <desc>Restaurant:Thumbs Up Diner</desc>
+</wpt>
+<wpt lat="33.678811900" lon="-84.441387400">
+  <name>Restaurant:Taco Rico</name>
+  <cmt>Restaurant:Taco Rico</cmt>
+  <desc>Restaurant:Taco Rico</desc>
+</wpt>
+<wpt lat="33.678819000" lon="-84.440640700">
+  <name>Restaurant:OZ Pizza</name>
+  <cmt>Restaurant:OZ Pizza</cmt>
+  <desc>Restaurant:OZ Pizza</desc>
+</wpt>
+<wpt lat="33.686796800" lon="-84.439688000">
+  <name>Fast Food Restaurant:Krystals</name>
+  <cmt>Fast Food Restaurant:Krystals</cmt>
+  <desc>Fast Food Restaurant:Krystals</desc>
+</wpt>
+<wpt lat="33.980834300" lon="-84.432750700">
+  <name>Restaurant:Chili&apos;s Grill &amp; Bar</name>
+  <cmt>Restaurant:Chili&apos;s Grill &amp; Bar</cmt>
+  <desc>Restaurant:Chili&apos;s Grill &amp; Bar</desc>
+</wpt>
+<wpt lat="33.737100600" lon="-84.430405400">
+  <name>Restaurant:SPACE</name>
+  <cmt>Restaurant:SPACE</cmt>
+  <desc>Restaurant:SPACE</desc>
+</wpt>
+<wpt lat="33.738585200" lon="-84.430336800">
+  <name>Fast Food Restaurant:Dunkin&apos; Donuts</name>
+  <cmt>Fast Food Restaurant:Dunkin&apos; Donuts</cmt>
+  <desc>Fast Food Restaurant:Dunkin&apos; Donuts</desc>
+</wpt>
+<wpt lat="33.737236000" lon="-84.430308400">
+  <name>Restaurant:Space</name>
+  <cmt>Restaurant:Space</cmt>
+  <desc>Restaurant:Space</desc>
+</wpt>
+<wpt lat="33.658573800" lon="-84.429995400">
+  <name>Restaurant:Malones</name>
+  <cmt>Restaurant:Malones</cmt>
+  <desc>Restaurant:Malones</desc>
+</wpt>
+<wpt lat="33.658654200" lon="-84.429335600">
+  <name>Restaurant:Ruby Tuesday</name>
+  <cmt>Restaurant:Ruby Tuesday</cmt>
+  <desc>Restaurant:Ruby Tuesday</desc>
+</wpt>
+<wpt lat="33.851384900" lon="-84.429285800">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="33.659176600" lon="-84.429045900">
+  <name>Restaurant:Spondivits</name>
+  <cmt>Restaurant:Spondivits</cmt>
+  <desc>Restaurant:Spondivits</desc>
+</wpt>
+<wpt lat="33.659347600" lon="-84.428666400">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.983804100" lon="-84.426032800">
+  <name>Restaurant:Willy&apos;s</name>
+  <cmt>Restaurant:Willy&apos;s</cmt>
+  <desc>Restaurant:Willy&apos;s</desc>
+</wpt>
+<wpt lat="33.793574400" lon="-84.425948600">
+  <name>Restaurant:Bone Garden Cantina</name>
+  <cmt>Restaurant:Bone Garden Cantina</cmt>
+  <desc>Restaurant:Bone Garden Cantina</desc>
+</wpt>
+<wpt lat="33.985311400" lon="-84.425889200">
+  <name>Fast Food Restaurant:TCBY</name>
+  <cmt>Fast Food Restaurant:TCBY</cmt>
+  <desc>Fast Food Restaurant:TCBY</desc>
+</wpt>
+<wpt lat="33.985535800" lon="-84.425016600">
+  <name>Fast Food Restaurant:Arby&apos;s</name>
+  <cmt>Fast Food Restaurant:Arby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="33.811673100" lon="-84.424704200">
+  <name>Restaurant:Big Easy Grille</name>
+  <cmt>Restaurant:Big Easy Grille</cmt>
+  <desc>Restaurant:Big Easy Grille</desc>
+</wpt>
+<wpt lat="33.738685100" lon="-84.423650600">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="33.758151700" lon="-84.422818000">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.659092000" lon="-84.422298000">
+  <name>Restaurant:American Deli</name>
+  <cmt>Restaurant:American Deli</cmt>
+  <desc>Restaurant:American Deli</desc>
+</wpt>
+<wpt lat="34.062423000" lon="-84.420880000">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="33.658913000" lon="-84.418858000">
+  <name>Restaurant:Skinny&apos;s</name>
+  <cmt>Restaurant:Skinny&apos;s</cmt>
+  <desc>Restaurant:Skinny&apos;s</desc>
+</wpt>
+<wpt lat="33.977875800" lon="-84.418223700">
+  <name>Fast Food Restaurant:Chick-Fil-A</name>
+  <cmt>Fast Food Restaurant:Chick-Fil-A</cmt>
+  <desc>Fast Food Restaurant:Chick-Fil-A</desc>
+</wpt>
+<wpt lat="33.658659000" lon="-84.417911000">
+  <name>Restaurant:Pizza Hut</name>
+  <cmt>Restaurant:Pizza Hut</cmt>
+  <desc>Restaurant:Pizza Hut</desc>
+</wpt>
+<wpt lat="33.658877000" lon="-84.417542000">
+  <name>Restaurant:Schlotzsky&apos;s</name>
+  <cmt>Restaurant:Schlotzsky&apos;s</cmt>
+  <desc>Restaurant:Schlotzsky&apos;s</desc>
+</wpt>
+<wpt lat="33.658613000" lon="-84.417504000">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="33.738973900" lon="-84.417430100">
+  <name>Fast Food Restaurant:Quizno&apos;s Sub</name>
+  <cmt>Fast Food Restaurant:Quizno&apos;s Sub</cmt>
+  <desc>Fast Food Restaurant:Quizno&apos;s Sub</desc>
+</wpt>
+<wpt lat="33.658106000" lon="-84.417133000">
+  <name>Restaurant:Pit Boss BBQ</name>
+  <cmt>Restaurant:Pit Boss BBQ</cmt>
+  <desc>Restaurant:Pit Boss BBQ</desc>
+</wpt>
+<wpt lat="33.738966800" lon="-84.417112400">
+  <name>Cafe</name>
+  <cmt>Cafe</cmt>
+  <desc>Cafe</desc>
+</wpt>
+<wpt lat="33.658844000" lon="-84.416859000">
+  <name>Restaurant:Grecian Gyro</name>
+  <cmt>Restaurant:Grecian Gyro</cmt>
+  <desc>Restaurant:Grecian Gyro</desc>
+</wpt>
+<wpt lat="33.658947000" lon="-84.416700000">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.658862000" lon="-84.416534000">
+  <name>Restaurant:Willy&apos;s Mexicana Grill</name>
+  <cmt>Restaurant:Willy&apos;s Mexicana Grill</cmt>
+  <desc>Restaurant:Willy&apos;s Mexicana Grill</desc>
+</wpt>
+<wpt lat="33.658709000" lon="-84.416441000">
+  <name>Restaurant:Johnny&apos;s New York Style Pizza and Subs</name>
+  <cmt>Restaurant:Johnny&apos;s New York Style Pizza and Subs</cmt>
+  <desc>Restaurant:Johnny&apos;s New York Style Pizza and Subs</desc>
+</wpt>
+<wpt lat="33.810292200" lon="-84.416397000">
+  <name>Restaurant:Malaya</name>
+  <cmt>Restaurant:Malaya</cmt>
+  <desc>Restaurant:Malaya</desc>
+</wpt>
+<wpt lat="33.810287700" lon="-84.416088500">
+  <name>Restaurant:Sakura Stix Japanese Steakhouse &amp; Sushi</name>
+  <cmt>Restaurant:Sakura Stix Japanese Steakhouse &amp; Sushi</cmt>
+  <desc>Restaurant:Sakura Stix Japanese Steakhouse &amp; Sushi</desc>
+</wpt>
+<wpt lat="33.810301100" lon="-84.415533300">
+  <name>Restaurant:Billy Jack&apos;s BBQ</name>
+  <cmt>Restaurant:Billy Jack&apos;s BBQ</cmt>
+  <desc>Restaurant:Billy Jack&apos;s BBQ</desc>
+</wpt>
+<wpt lat="33.802434400" lon="-84.415301800">
+  <name>Fast Food Restaurant:KFC</name>
+  <cmt>Fast Food Restaurant:KFC</cmt>
+  <desc>Fast Food Restaurant:KFC</desc>
+</wpt>
+<wpt lat="33.801692200" lon="-84.414934400">
+  <name>Fast Food Restaurant:Arby&apos;s</name>
+  <cmt>Fast Food Restaurant:Arby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="33.802066700" lon="-84.414811000">
+  <name>Fast Food Restaurant:Taco Bell</name>
+  <cmt>Fast Food Restaurant:Taco Bell</cmt>
+  <desc>Fast Food Restaurant:Taco Bell</desc>
+</wpt>
+<wpt lat="33.801146200" lon="-84.414338900">
+  <name>Restaurant:American Deli</name>
+  <cmt>Restaurant:American Deli</cmt>
+  <desc>Restaurant:American Deli</desc>
+</wpt>
+<wpt lat="33.737835700" lon="-84.414303700">
+  <name>Fast Food Restaurant:Pizza Pie</name>
+  <cmt>Fast Food Restaurant:Pizza Pie</cmt>
+  <desc>Fast Food Restaurant:Pizza Pie</desc>
+</wpt>
+<wpt lat="33.738049800" lon="-84.414286500">
+  <name>Fast Food Restaurant:Gutbusters</name>
+  <cmt>Fast Food Restaurant:Gutbusters</cmt>
+  <desc>Fast Food Restaurant:Gutbusters</desc>
+</wpt>
+<wpt lat="33.966213700" lon="-84.414165500">
+  <name>Restaurant:LongHorn Steakhouse</name>
+  <cmt>Restaurant:LongHorn Steakhouse</cmt>
+  <desc>Restaurant:LongHorn Steakhouse</desc>
+</wpt>
+<wpt lat="33.810143500" lon="-84.413958000">
+  <name>Fast Food Restaurant:Jersey Mike&apos;s Subs</name>
+  <cmt>Fast Food Restaurant:Jersey Mike&apos;s Subs</cmt>
+  <desc>Fast Food Restaurant:Jersey Mike&apos;s Subs</desc>
+</wpt>
+<wpt lat="33.803446300" lon="-84.413716600">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="33.803774400" lon="-84.413543100">
+  <name>Fast Food Restaurant:Einstein Bros Bagels</name>
+  <cmt>Fast Food Restaurant:Einstein Bros Bagels</cmt>
+  <desc>Fast Food Restaurant:Einstein Bros Bagels</desc>
+</wpt>
+<wpt lat="33.801228600" lon="-84.413386700">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="33.809198600" lon="-84.413223100">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.807337700" lon="-84.413170800">
+  <name>Restaurant:Willy&apos;s Mexican Grill</name>
+  <cmt>Restaurant:Willy&apos;s Mexican Grill</cmt>
+  <desc>Restaurant:Willy&apos;s Mexican Grill</desc>
+</wpt>
+<wpt lat="33.807689800" lon="-84.413075600">
+  <name>Fast Food Restaurant:Chick-Fil-A</name>
+  <cmt>Fast Food Restaurant:Chick-Fil-A</cmt>
+  <desc>Fast Food Restaurant:Chick-Fil-A</desc>
+</wpt>
+<wpt lat="33.802514700" lon="-84.412751100">
+  <name>Restaurant:Chin Chin</name>
+  <cmt>Restaurant:Chin Chin</cmt>
+  <desc>Restaurant:Chin Chin</desc>
+</wpt>
+<wpt lat="33.802409900" lon="-84.412748400">
+  <name>Restaurant:Mama Niki&apos;s Pizza</name>
+  <cmt>Restaurant:Mama Niki&apos;s Pizza</cmt>
+  <desc>Restaurant:Mama Niki&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.809167400" lon="-84.412606200">
+  <name>Restaurant:Fellini&apos;s Pizza</name>
+  <cmt>Restaurant:Fellini&apos;s Pizza</cmt>
+  <desc>Restaurant:Fellini&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.808654800" lon="-84.412592800">
+  <name>Pub:Mr. C&apos;s Bar and Grill</name>
+  <cmt>Pub:Mr. C&apos;s Bar and Grill</cmt>
+  <desc>Pub:Mr. C&apos;s Bar and Grill</desc>
+</wpt>
+<wpt lat="33.808267000" lon="-84.412507000">
+  <name>Fast Food Restaurant:Domino&apos;s Pizza</name>
+  <cmt>Fast Food Restaurant:Domino&apos;s Pizza</cmt>
+  <desc>Fast Food Restaurant:Domino&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.807299800" lon="-84.412415800">
+  <name>Restaurant:Canton Chopsticks</name>
+  <cmt>Restaurant:Canton Chopsticks</cmt>
+  <desc>Restaurant:Canton Chopsticks</desc>
+</wpt>
+<wpt lat="33.968210000" lon="-84.412269300">
+  <name>Restaurant:Mellow Mushroom</name>
+  <cmt>Restaurant:Mellow Mushroom</cmt>
+  <desc>Restaurant:Mellow Mushroom</desc>
+</wpt>
+<wpt lat="33.964022300" lon="-84.412089600">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.963884300" lon="-84.412065500">
+  <name>Restaurant:Chin Chin</name>
+  <cmt>Restaurant:Chin Chin</cmt>
+  <desc>Restaurant:Chin Chin</desc>
+</wpt>
+<wpt lat="33.738014200" lon="-84.411891700">
+  <name>Restaurant:Merkerson&apos;s Seafood</name>
+  <cmt>Restaurant:Merkerson&apos;s Seafood</cmt>
+  <desc>Restaurant:Merkerson&apos;s Seafood</desc>
+</wpt>
+<wpt lat="33.950057500" lon="-84.411858900">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="33.967152400" lon="-84.411837600">
+  <name>Fast Food Restaurant:Zaxby&apos;s</name>
+  <cmt>Fast Food Restaurant:Zaxby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Zaxby&apos;s</desc>
+</wpt>
+<wpt lat="33.966818600" lon="-84.411362800">
+  <name>Restaurant:Papa John&apos;s Pizza</name>
+  <cmt>Restaurant:Papa John&apos;s Pizza</cmt>
+  <desc>Restaurant:Papa John&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.966088900" lon="-84.411271600">
+  <name>Restaurant:Tijuana Joe&apos;s</name>
+  <cmt>Restaurant:Tijuana Joe&apos;s</cmt>
+  <desc>Restaurant:Tijuana Joe&apos;s</desc>
+</wpt>
+<wpt lat="33.732239600" lon="-84.411230900">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.964269200" lon="-84.411167000">
+  <name>Restaurant:Ted&apos;s Montana Grill</name>
+  <cmt>Restaurant:Ted&apos;s Montana Grill</cmt>
+  <desc>Restaurant:Ted&apos;s Montana Grill</desc>
+</wpt>
+<wpt lat="33.965541600" lon="-84.411161600">
+  <name>Restaurant:Moe&apos;s Southwest Grill</name>
+  <cmt>Restaurant:Moe&apos;s Southwest Grill</cmt>
+  <desc>Restaurant:Moe&apos;s Southwest Grill</desc>
+</wpt>
+<wpt lat="33.731329400" lon="-84.410769800">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.966095600" lon="-84.410764600">
+  <name>Fast Food Restaurant:Taco Bell</name>
+  <cmt>Fast Food Restaurant:Taco Bell</cmt>
+  <desc>Fast Food Restaurant:Taco Bell</desc>
+</wpt>
+<wpt lat="33.966822900" lon="-84.410660000">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.779415700" lon="-84.410260300">
+  <name>Cafe:Octane Coffee Bar &amp; Lounge</name>
+  <cmt>Cafe:Octane Coffee Bar &amp; Lounge</cmt>
+  <desc>Cafe:Octane Coffee Bar &amp; Lounge</desc>
+</wpt>
+<wpt lat="33.721885500" lon="-84.408444600">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="33.742432200" lon="-84.407874900">
+  <name>Restaurant:Kabobee</name>
+  <cmt>Restaurant:Kabobee</cmt>
+  <desc>Restaurant:Kabobee</desc>
+</wpt>
+<wpt lat="33.722538500" lon="-84.407591600">
+  <name>Fast Food Restaurant:Mrs. Winners</name>
+  <cmt>Fast Food Restaurant:Mrs. Winners</cmt>
+  <desc>Fast Food Restaurant:Mrs. Winners</desc>
+</wpt>
+<wpt lat="33.747581400" lon="-84.402795900">
+  <name>Cafe:Twist</name>
+  <cmt>Cafe:Twist</cmt>
+  <desc>Cafe:Twist</desc>
+</wpt>
+<wpt lat="33.736615200" lon="-84.402459000">
+  <name>Restaurant:Rain</name>
+  <cmt>Restaurant:Rain</cmt>
+  <desc>Restaurant:Rain</desc>
+</wpt>
+<wpt lat="33.758453000" lon="-84.397080000">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="33.762353600" lon="-84.395636600">
+  <name>Restaurant:Johnny Rockets</name>
+  <cmt>Restaurant:Johnny Rockets</cmt>
+  <desc>Restaurant:Johnny Rockets</desc>
+</wpt>
+<wpt lat="33.762138800" lon="-84.395426600">
+  <name>Restaurant:Legal Sea Foods</name>
+  <cmt>Restaurant:Legal Sea Foods</cmt>
+  <desc>Restaurant:Legal Sea Foods</desc>
+</wpt>
+<wpt lat="33.758169000" lon="-84.395213000">
+  <name>Pub:Taco Mac</name>
+  <cmt>Pub:Taco Mac</cmt>
+  <desc>Pub:Taco Mac</desc>
+</wpt>
+<wpt lat="33.758243000" lon="-84.395066000">
+  <name>Pub:Dantanna&apos;s</name>
+  <cmt>Pub:Dantanna&apos;s</cmt>
+  <desc>Pub:Dantanna&apos;s</desc>
+</wpt>
+<wpt lat="33.761753500" lon="-84.395066100">
+  <name>Restaurant:Carvel</name>
+  <cmt>Restaurant:Carvel</cmt>
+  <desc>Restaurant:Carvel</desc>
+</wpt>
+<wpt lat="33.761496600" lon="-84.394765700">
+  <name>Restaurant:Peasant Bistro</name>
+  <cmt>Restaurant:Peasant Bistro</cmt>
+  <desc>Restaurant:Peasant Bistro</desc>
+</wpt>
+<wpt lat="33.786323200" lon="-84.394288900">
+  <name>Restaurant:Silver Skillet</name>
+  <cmt>Restaurant:Silver Skillet</cmt>
+  <desc>Restaurant:Silver Skillet</desc>
+</wpt>
+<wpt lat="33.760768800" lon="-84.394259300">
+  <name>Restaurant:Ruth&apos;s Chris</name>
+  <cmt>Restaurant:Ruth&apos;s Chris</cmt>
+  <desc>Restaurant:Ruth&apos;s Chris</desc>
+</wpt>
+<wpt lat="33.763252300" lon="-84.394170900">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.805311800" lon="-84.394169200">
+  <name>Restaurant:Uncle Julio&apos;s</name>
+  <cmt>Restaurant:Uncle Julio&apos;s</cmt>
+  <desc>Restaurant:Uncle Julio&apos;s</desc>
+</wpt>
+<wpt lat="33.760882900" lon="-84.394156300">
+  <name>Restaurant:Park Avenue Deli &amp; Market</name>
+  <cmt>Restaurant:Park Avenue Deli &amp; Market</cmt>
+  <desc>Restaurant:Park Avenue Deli &amp; Market</desc>
+</wpt>
+<wpt lat="33.763109200" lon="-84.394156300">
+  <name>Cafe</name>
+  <cmt>Cafe</cmt>
+  <desc>Cafe</desc>
+</wpt>
+<wpt lat="33.804285200" lon="-84.393655900">
+  <name>Restaurant:R. Thomas</name>
+  <cmt>Restaurant:R. Thomas</cmt>
+  <desc>Restaurant:R. Thomas</desc>
+</wpt>
+<wpt lat="33.759297500" lon="-84.393495600">
+  <name>Cafe:Ringside Cafe</name>
+  <cmt>Cafe:Ringside Cafe</cmt>
+  <desc>Cafe:Ringside Cafe</desc>
+</wpt>
+<wpt lat="33.806008900" lon="-84.393408400">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="33.753828400" lon="-84.392771300">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.757142200" lon="-84.392720100">
+  <name>Fast Food Restaurant:Just Around the Corner</name>
+  <cmt>Fast Food Restaurant:Just Around the Corner</cmt>
+  <desc>Fast Food Restaurant:Just Around the Corner</desc>
+</wpt>
+<wpt lat="33.759631400" lon="-84.392530400">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.759951300" lon="-84.390815500">
+  <name>Restaurant:Seasons American Bar and Grille</name>
+  <cmt>Restaurant:Seasons American Bar and Grille</cmt>
+  <desc>Restaurant:Seasons American Bar and Grille</desc>
+</wpt>
+<wpt lat="33.816539400" lon="-84.390643600">
+  <name>Fast Food Restaurant:Panera Bread</name>
+  <cmt>Fast Food Restaurant:Panera Bread</cmt>
+  <desc>Fast Food Restaurant:Panera Bread</desc>
+</wpt>
+<wpt lat="33.816695400" lon="-84.390579300">
+  <name>Fast Food Restaurant:Willys Mexican</name>
+  <cmt>Fast Food Restaurant:Willys Mexican</cmt>
+  <desc>Fast Food Restaurant:Willys Mexican</desc>
+</wpt>
+<wpt lat="33.758186500" lon="-84.390381600">
+  <name>Restaurant:Parish Market Cajun Kitchen</name>
+  <cmt>Restaurant:Parish Market Cajun Kitchen</cmt>
+  <desc>Restaurant:Parish Market Cajun Kitchen</desc>
+</wpt>
+<wpt lat="33.817203500" lon="-84.390255800">
+  <name>Restaurant:Georgia Grille</name>
+  <cmt>Restaurant:Georgia Grille</cmt>
+  <desc>Restaurant:Georgia Grille</desc>
+</wpt>
+<wpt lat="33.776688800" lon="-84.390076100">
+  <name>Restaurant:Tin Drum Asia Café</name>
+  <cmt>Restaurant:Tin Drum Asia Café</cmt>
+  <desc>Restaurant:Tin Drum Asia Café</desc>
+</wpt>
+<wpt lat="33.777036800" lon="-84.389978300">
+  <name>Restaurant:Marble Slab Creamery</name>
+  <cmt>Restaurant:Marble Slab Creamery</cmt>
+  <desc>Restaurant:Marble Slab Creamery</desc>
+</wpt>
+<wpt lat="33.776700400" lon="-84.389918000">
+  <name>Restaurant:5th Street Ribs n Blues</name>
+  <cmt>Restaurant:5th Street Ribs n Blues</cmt>
+  <desc>Restaurant:5th Street Ribs n Blues</desc>
+</wpt>
+<wpt lat="34.004900700" lon="-84.389870800">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="33.777038400" lon="-84.389837600">
+  <name>Restaurant:Moe&apos;s Southwest Grill</name>
+  <cmt>Restaurant:Moe&apos;s Southwest Grill</cmt>
+  <desc>Restaurant:Moe&apos;s Southwest Grill</desc>
+</wpt>
+<wpt lat="33.755703700" lon="-84.389577500">
+  <name>Fast Food Restaurant:Alibaba&apos;s Turkish Food</name>
+  <cmt>Fast Food Restaurant:Alibaba&apos;s Turkish Food</cmt>
+  <desc>Fast Food Restaurant:Alibaba&apos;s Turkish Food</desc>
+</wpt>
+<wpt lat="33.755782200" lon="-84.389500300">
+  <name>Fast Food Restaurant:Rosa&apos;s Pizza</name>
+  <cmt>Fast Food Restaurant:Rosa&apos;s Pizza</cmt>
+  <desc>Fast Food Restaurant:Rosa&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.776683300" lon="-84.389435800">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.755876700" lon="-84.389407900">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="33.777024100" lon="-84.389256000">
+  <name>Restaurant:Water Haven</name>
+  <cmt>Restaurant:Water Haven</cmt>
+  <desc>Restaurant:Water Haven</desc>
+</wpt>
+<wpt lat="33.756033700" lon="-84.389141800">
+  <name>Fast Food Restaurant:Smoothie King</name>
+  <cmt>Fast Food Restaurant:Smoothie King</cmt>
+  <desc>Fast Food Restaurant:Smoothie King</desc>
+</wpt>
+<wpt lat="33.774876600" lon="-84.389106200">
+  <name>Fast Food Restaurant:Arbys</name>
+  <cmt>Fast Food Restaurant:Arbys</cmt>
+  <desc>Fast Food Restaurant:Arbys</desc>
+</wpt>
+<wpt lat="33.756613200" lon="-84.389091500">
+  <name>Cafe:Landmark Diner</name>
+  <cmt>Cafe:Landmark Diner</cmt>
+  <desc>Cafe:Landmark Diner</desc>
+</wpt>
+<wpt lat="33.755639500" lon="-84.389088300">
+  <name>Fast Food Restaurant:Moe&apos;s Burritos</name>
+  <cmt>Fast Food Restaurant:Moe&apos;s Burritos</cmt>
+  <desc>Fast Food Restaurant:Moe&apos;s Burritos</desc>
+</wpt>
+<wpt lat="33.755710800" lon="-84.388959600">
+  <name>Restaurant:Tin Drum Asian Bistro</name>
+  <cmt>Restaurant:Tin Drum Asian Bistro</cmt>
+  <desc>Restaurant:Tin Drum Asian Bistro</desc>
+</wpt>
+<wpt lat="33.756003400" lon="-84.388805100">
+  <name>Cafe:Saxby&apos;s Coffee</name>
+  <cmt>Cafe:Saxby&apos;s Coffee</cmt>
+  <desc>Cafe:Saxby&apos;s Coffee</desc>
+</wpt>
+<wpt lat="33.771825700" lon="-84.388691600">
+  <name>Restaurant:J.R. Crickets</name>
+  <cmt>Restaurant:J.R. Crickets</cmt>
+  <desc>Restaurant:J.R. Crickets</desc>
+</wpt>
+<wpt lat="33.756588600" lon="-84.388650600">
+  <name>Cafe:Starbuck&apos;s Coffee</name>
+  <cmt>Cafe:Starbuck&apos;s Coffee</cmt>
+  <desc>Cafe:Starbuck&apos;s Coffee</desc>
+</wpt>
+<wpt lat="33.776653100" lon="-84.388445300">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="33.818812400" lon="-84.388359700">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="33.754369300" lon="-84.388255700">
+  <name>Fast Food Restaurant:Sensational Subs</name>
+  <cmt>Fast Food Restaurant:Sensational Subs</cmt>
+  <desc>Fast Food Restaurant:Sensational Subs</desc>
+</wpt>
+<wpt lat="33.776654100" lon="-84.388102300">
+  <name>Restaurant:Ray&apos;s NY Pizza</name>
+  <cmt>Restaurant:Ray&apos;s NY Pizza</cmt>
+  <desc>Restaurant:Ray&apos;s NY Pizza</desc>
+</wpt>
+<wpt lat="33.776654100" lon="-84.387903200">
+  <name>Restaurant:St. Charles Deli</name>
+  <cmt>Restaurant:St. Charles Deli</cmt>
+  <desc>Restaurant:St. Charles Deli</desc>
+</wpt>
+<wpt lat="33.761723300" lon="-84.387812000">
+  <name>Cafe:Corner Bakery Cafe</name>
+  <cmt>Cafe:Corner Bakery Cafe</cmt>
+  <desc>Cafe:Corner Bakery Cafe</desc>
+</wpt>
+<wpt lat="33.760410100" lon="-84.387757100">
+  <name>Restaurant:Ray&apos;s in the City</name>
+  <cmt>Restaurant:Ray&apos;s in the City</cmt>
+  <desc>Restaurant:Ray&apos;s in the City</desc>
+</wpt>
+<wpt lat="33.760187600" lon="-84.387752200">
+  <name>Restaurant:Durango Steakhouse</name>
+  <cmt>Restaurant:Durango Steakhouse</cmt>
+  <desc>Restaurant:Durango Steakhouse</desc>
+</wpt>
+<wpt lat="33.759484600" lon="-84.387386300">
+  <name>Restaurant:Hooters</name>
+  <cmt>Restaurant:Hooters</cmt>
+  <desc>Restaurant:Hooters</desc>
+</wpt>
+<wpt lat="33.759984100" lon="-84.387360500">
+  <name>Restaurant:Hard Rock Cafe Atlanta</name>
+  <cmt>Restaurant:Hard Rock Cafe Atlanta</cmt>
+  <desc>Restaurant:Hard Rock Cafe Atlanta</desc>
+</wpt>
+<wpt lat="33.763252200" lon="-84.386914200">
+  <name>Restaurant:Max Lager&apos;s</name>
+  <cmt>Restaurant:Max Lager&apos;s</cmt>
+  <desc>Restaurant:Max Lager&apos;s</desc>
+</wpt>
+<wpt lat="33.771531100" lon="-84.386419700">
+  <name>Pub:Engine 11</name>
+  <cmt>Pub:Engine 11</cmt>
+  <desc>Pub:Engine 11</desc>
+</wpt>
+<wpt lat="33.778429500" lon="-84.384969200">
+  <name>Fast Food Restaurant:Firehouse Subs</name>
+  <cmt>Fast Food Restaurant:Firehouse Subs</cmt>
+  <desc>Fast Food Restaurant:Firehouse Subs</desc>
+</wpt>
+<wpt lat="33.773761100" lon="-84.384874400">
+  <name>Restaurant:Baraonda</name>
+  <cmt>Restaurant:Baraonda</cmt>
+  <desc>Restaurant:Baraonda</desc>
+</wpt>
+<wpt lat="33.761330000" lon="-84.384821000">
+  <name>Restaurant:Sear</name>
+  <cmt>Restaurant:Sear</cmt>
+  <desc>Restaurant:Sear</desc>
+</wpt>
+<wpt lat="33.778393900" lon="-84.384514300">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="33.779032500" lon="-84.384458200">
+  <name>Restaurant:The Vortex Bar &amp; Grill</name>
+  <cmt>Restaurant:The Vortex Bar &amp; Grill</cmt>
+  <desc>Restaurant:The Vortex Bar &amp; Grill</desc>
+</wpt>
+<wpt lat="33.778349000" lon="-84.384105100">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="33.780526300" lon="-84.383893200">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.755096400" lon="-84.382070600">
+  <name>Fast Food Restaurant:Smoothie King</name>
+  <cmt>Fast Food Restaurant:Smoothie King</cmt>
+  <desc>Fast Food Restaurant:Smoothie King</desc>
+</wpt>
+<wpt lat="33.784136500" lon="-84.382027400">
+  <name>Restaurant:Einstein&apos;s</name>
+  <cmt>Restaurant:Einstein&apos;s</cmt>
+  <desc>Restaurant:Einstein&apos;s</desc>
+</wpt>
+<wpt lat="34.059508000" lon="-84.382015500">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.756483400" lon="-84.381936500">
+  <name>Restaurant:Panther&apos;s Den</name>
+  <cmt>Restaurant:Panther&apos;s Den</cmt>
+  <desc>Restaurant:Panther&apos;s Den</desc>
+</wpt>
+<wpt lat="33.755687800" lon="-84.381784800">
+  <name>Restaurant:restaurant</name>
+  <cmt>Restaurant:restaurant</cmt>
+  <desc>Restaurant:restaurant</desc>
+</wpt>
+<wpt lat="33.835113700" lon="-84.381744100">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.755831300" lon="-84.381587700">
+  <name>Restaurant:Buns and Shakes</name>
+  <cmt>Restaurant:Buns and Shakes</cmt>
+  <desc>Restaurant:Buns and Shakes</desc>
+</wpt>
+<wpt lat="33.837731000" lon="-84.381445900">
+  <name>Restaurant:Cheesecake Factory</name>
+  <cmt>Restaurant:Cheesecake Factory</cmt>
+  <desc>Restaurant:Cheesecake Factory</desc>
+</wpt>
+<wpt lat="33.817961500" lon="-84.381203700">
+  <name>Restaurant:Paul&apos;s Restaurant</name>
+  <cmt>Restaurant:Paul&apos;s Restaurant</cmt>
+  <desc>Restaurant:Paul&apos;s Restaurant</desc>
+</wpt>
+<wpt lat="33.818776700" lon="-84.381187400">
+  <name>Restaurant:Treehouse Restaurant and Pub</name>
+  <cmt>Restaurant:Treehouse Restaurant and Pub</cmt>
+  <desc>Restaurant:Treehouse Restaurant and Pub</desc>
+</wpt>
+<wpt lat="33.906871000" lon="-84.380566300">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.772717100" lon="-84.380409100">
+  <name>Restaurant:Pappi&apos;s</name>
+  <cmt>Restaurant:Pappi&apos;s</cmt>
+  <desc>Restaurant:Pappi&apos;s</desc>
+</wpt>
+<wpt lat="33.781885700" lon="-84.380263500">
+  <name>Restaurant:Flying Biscuit Restaurant</name>
+  <cmt>Restaurant:Flying Biscuit Restaurant</cmt>
+  <desc>Restaurant:Flying Biscuit Restaurant</desc>
+</wpt>
+<wpt lat="33.755842100" lon="-84.380069200">
+  <name>Fast Food Restaurant:Cleveland Style Deli</name>
+  <cmt>Fast Food Restaurant:Cleveland Style Deli</cmt>
+  <desc>Fast Food Restaurant:Cleveland Style Deli</desc>
+</wpt>
+<wpt lat="33.781907100" lon="-84.379980200">
+  <name>Restaurant:Jason&apos;s Deli</name>
+  <cmt>Restaurant:Jason&apos;s Deli</cmt>
+  <desc>Restaurant:Jason&apos;s Deli</desc>
+</wpt>
+<wpt lat="33.772774200" lon="-84.379911100">
+  <name>Restaurant:Mary Mac&apos;s Tea Room</name>
+  <cmt>Restaurant:Mary Mac&apos;s Tea Room</cmt>
+  <desc>Restaurant:Mary Mac&apos;s Tea Room</desc>
+</wpt>
+<wpt lat="33.747528700" lon="-84.379695800">
+  <name>Restaurant:Nick&apos;s Greek Takeout</name>
+  <cmt>Restaurant:Nick&apos;s Greek Takeout</cmt>
+  <desc>Restaurant:Nick&apos;s Greek Takeout</desc>
+</wpt>
+<wpt lat="33.754008600" lon="-84.379584200">
+  <name>Restaurant:Grindhouse Burgers</name>
+  <cmt>Restaurant:Grindhouse Burgers</cmt>
+  <desc>Restaurant:Grindhouse Burgers</desc>
+</wpt>
+<wpt lat="33.755650500" lon="-84.379530400">
+  <name>Restaurant:Wok and Roll</name>
+  <cmt>Restaurant:Wok and Roll</cmt>
+  <desc>Restaurant:Wok and Roll</desc>
+</wpt>
+<wpt lat="33.754552200" lon="-84.379189900">
+  <name>Restaurant:Spanish Harlem</name>
+  <cmt>Restaurant:Spanish Harlem</cmt>
+  <desc>Restaurant:Spanish Harlem</desc>
+</wpt>
+<wpt lat="33.755661700" lon="-84.379090400">
+  <name>Pub:Tap Out Billiards</name>
+  <cmt>Pub:Tap Out Billiards</cmt>
+  <desc>Pub:Tap Out Billiards</desc>
+</wpt>
+<wpt lat="33.747129000" lon="-84.379026300">
+  <name>Restaurant:Daddy D&apos;z BBQ</name>
+  <cmt>Restaurant:Daddy D&apos;z BBQ</cmt>
+  <desc>Restaurant:Daddy D&apos;z BBQ</desc>
+</wpt>
+<wpt lat="33.749718600" lon="-84.378712100">
+  <name>Cafe:Marlee&apos;s Coffee and Tea</name>
+  <cmt>Cafe:Marlee&apos;s Coffee and Tea</cmt>
+  <desc>Cafe:Marlee&apos;s Coffee and Tea</desc>
+</wpt>
+<wpt lat="33.937682200" lon="-84.378565300">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="33.936250900" lon="-84.378342100">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="33.772179800" lon="-84.378096900">
+  <name>Cafe:Krispy Kreme</name>
+  <cmt>Cafe:Krispy Kreme</cmt>
+  <desc>Cafe:Krispy Kreme</desc>
+</wpt>
+<wpt lat="33.755699600" lon="-84.377773400">
+  <name>Restaurant:Thelma&apos;s Kitchen</name>
+  <cmt>Restaurant:Thelma&apos;s Kitchen</cmt>
+  <desc>Restaurant:Thelma&apos;s Kitchen</desc>
+</wpt>
+<wpt lat="33.936628300" lon="-84.377646900">
+  <name>Fast Food Restaurant</name>
+  <cmt>Fast Food Restaurant</cmt>
+  <desc>Fast Food Restaurant</desc>
+</wpt>
+<wpt lat="33.768211700" lon="-84.376999100">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.746720100" lon="-84.376674300">
+  <name>Pub:Young Augustine&apos;s</name>
+  <cmt>Pub:Young Augustine&apos;s</cmt>
+  <desc>Pub:Young Augustine&apos;s</desc>
+</wpt>
+<wpt lat="33.754203700" lon="-84.375951500">
+  <name>Restaurant:Noni&apos;s Italian Deli &amp; Bar</name>
+  <cmt>Restaurant:Noni&apos;s Italian Deli &amp; Bar</cmt>
+  <desc>Restaurant:Noni&apos;s Italian Deli &amp; Bar</desc>
+</wpt>
+<wpt lat="33.840616100" lon="-84.375620900">
+  <name>Restaurant:Loco&apos;s</name>
+  <cmt>Restaurant:Loco&apos;s</cmt>
+  <desc>Restaurant:Loco&apos;s</desc>
+</wpt>
+<wpt lat="33.848112000" lon="-84.374129500">
+  <name>Fast Food Restaurant:Chipoltie&apos;s</name>
+  <cmt>Fast Food Restaurant:Chipoltie&apos;s</cmt>
+  <desc>Fast Food Restaurant:Chipoltie&apos;s</desc>
+</wpt>
+<wpt lat="33.733749900" lon="-84.373789400">
+  <name>Cafe:Grant Park Coffeehouse</name>
+  <cmt>Cafe:Grant Park Coffeehouse</cmt>
+  <desc>Cafe:Grant Park Coffeehouse</desc>
+</wpt>
+<wpt lat="33.843890500" lon="-84.373177100">
+  <name>Restaurant:Gordon Biersch</name>
+  <cmt>Restaurant:Gordon Biersch</cmt>
+  <desc>Restaurant:Gordon Biersch</desc>
+</wpt>
+<wpt lat="33.846185500" lon="-84.373096100">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="33.746600900" lon="-84.372855100">
+  <name>Pub:Six Feet Under</name>
+  <cmt>Pub:Six Feet Under</cmt>
+  <desc>Pub:Six Feet Under</desc>
+</wpt>
+<wpt lat="33.754433600" lon="-84.372679300">
+  <name>Cafe:Cafe 458</name>
+  <cmt>Cafe:Cafe 458</cmt>
+  <desc>Cafe:Cafe 458</desc>
+</wpt>
+<wpt lat="33.754422500" lon="-84.372472800">
+  <name>Restaurant:Cafe Circa</name>
+  <cmt>Restaurant:Cafe Circa</cmt>
+  <desc>Restaurant:Cafe Circa</desc>
+</wpt>
+<wpt lat="33.754422500" lon="-84.372277000">
+  <name>Cafe:Danneman&apos;s</name>
+  <cmt>Cafe:Danneman&apos;s</cmt>
+  <desc>Cafe:Danneman&apos;s</desc>
+</wpt>
+<wpt lat="33.754412500" lon="-84.371897500">
+  <name>Restaurant:Edgewood Pizza</name>
+  <cmt>Restaurant:Edgewood Pizza</cmt>
+  <desc>Restaurant:Edgewood Pizza</desc>
+</wpt>
+<wpt lat="33.754192800" lon="-84.371772800">
+  <name>Restaurant:Over Da Edge</name>
+  <cmt>Restaurant:Over Da Edge</cmt>
+  <desc>Restaurant:Over Da Edge</desc>
+</wpt>
+<wpt lat="33.772702900" lon="-84.371680200">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="33.773180900" lon="-84.370735900">
+  <name>Fast Food Restaurant:Popeye&apos;s</name>
+  <cmt>Fast Food Restaurant:Popeye&apos;s</cmt>
+  <desc>Fast Food Restaurant:Popeye&apos;s</desc>
+</wpt>
+<wpt lat="33.768543700" lon="-84.370348200">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="33.843940700" lon="-84.370149100">
+  <name>Cafe:Caribou Coffee</name>
+  <cmt>Cafe:Caribou Coffee</cmt>
+  <desc>Cafe:Caribou Coffee</desc>
+</wpt>
+<wpt lat="33.810964300" lon="-84.370033800">
+  <name>Restaurant:PieBar (closed)</name>
+  <cmt>Restaurant:PieBar (closed)</cmt>
+  <desc>Restaurant:PieBar (closed)</desc>
+</wpt>
+<wpt lat="33.774302900" lon="-84.369573200">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.746508300" lon="-84.369407600">
+  <name>Restaurant:Doc Chey&apos;s Noodle House</name>
+  <cmt>Restaurant:Doc Chey&apos;s Noodle House</cmt>
+  <desc>Restaurant:Doc Chey&apos;s Noodle House</desc>
+</wpt>
+<wpt lat="33.782204900" lon="-84.369204300">
+  <name>Restaurant:Park Tavern</name>
+  <cmt>Restaurant:Park Tavern</cmt>
+  <desc>Restaurant:Park Tavern</desc>
+</wpt>
+<wpt lat="33.774252900" lon="-84.369178200">
+  <name>Fast Food Restaurant:Zesto&apos;s</name>
+  <cmt>Fast Food Restaurant:Zesto&apos;s</cmt>
+  <desc>Fast Food Restaurant:Zesto&apos;s</desc>
+</wpt>
+<wpt lat="33.822367500" lon="-84.369166100">
+  <name>Restaurant:Firkin &amp; Lindbergh</name>
+  <cmt>Restaurant:Firkin &amp; Lindbergh</cmt>
+  <desc>Restaurant:Firkin &amp; Lindbergh</desc>
+</wpt>
+<wpt lat="33.797604300" lon="-84.368831700">
+  <name>Pub:Morningside</name>
+  <cmt>Pub:Morningside</cmt>
+  <desc>Pub:Morningside</desc>
+</wpt>
+<wpt lat="33.780960900" lon="-84.368737600">
+  <name>Restaurant:Woody&apos;s Famous Philadelphia Cheesesteaks</name>
+  <cmt>Restaurant:Woody&apos;s Famous Philadelphia Cheesesteaks</cmt>
+  <desc>Restaurant:Woody&apos;s Famous Philadelphia Cheesesteaks</desc>
+</wpt>
+<wpt lat="33.780374300" lon="-84.368625400">
+  <name>Restaurant:Nam</name>
+  <cmt>Restaurant:Nam</cmt>
+  <desc>Restaurant:Nam</desc>
+</wpt>
+<wpt lat="33.822450000" lon="-84.368613300">
+  <name>Restaurant:Five Guys Burgers and Fries</name>
+  <cmt>Restaurant:Five Guys Burgers and Fries</cmt>
+  <desc>Restaurant:Five Guys Burgers and Fries</desc>
+</wpt>
+<wpt lat="33.780307400" lon="-84.368512700">
+  <name>Restaurant:Mellow Mushroom</name>
+  <cmt>Restaurant:Mellow Mushroom</cmt>
+  <desc>Restaurant:Mellow Mushroom</desc>
+</wpt>
+<wpt lat="33.822430700" lon="-84.368470300">
+  <name>Restaurant:Bobby G&apos;s</name>
+  <cmt>Restaurant:Bobby G&apos;s</cmt>
+  <desc>Restaurant:Bobby G&apos;s</desc>
+</wpt>
+<wpt lat="33.739128100" lon="-84.368360100">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="33.780262900" lon="-84.368341000">
+  <name>Restaurant:Jersey Mike&apos;s</name>
+  <cmt>Restaurant:Jersey Mike&apos;s</cmt>
+  <desc>Restaurant:Jersey Mike&apos;s</desc>
+</wpt>
+<wpt lat="33.822295700" lon="-84.368333600">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.780236100" lon="-84.368158700">
+  <name>Restaurant:F.R.O.G.S. Cantina</name>
+  <cmt>Restaurant:F.R.O.G.S. Cantina</cmt>
+  <desc>Restaurant:F.R.O.G.S. Cantina</desc>
+</wpt>
+<wpt lat="33.822576300" lon="-84.368015300">
+  <name>Restaurant:Urban Flats</name>
+  <cmt>Restaurant:Urban Flats</cmt>
+  <desc>Restaurant:Urban Flats</desc>
+</wpt>
+<wpt lat="33.780329700" lon="-84.367960200">
+  <name>Restaurant:Rice Box</name>
+  <cmt>Restaurant:Rice Box</cmt>
+  <desc>Restaurant:Rice Box</desc>
+</wpt>
+<wpt lat="33.748067800" lon="-84.367948200">
+  <name>Restaurant:Agave</name>
+  <cmt>Restaurant:Agave</cmt>
+  <desc>Restaurant:Agave</desc>
+</wpt>
+<wpt lat="33.821686300" lon="-84.367937100">
+  <name>Restaurant:Longhorn Steakhouse</name>
+  <cmt>Restaurant:Longhorn Steakhouse</cmt>
+  <desc>Restaurant:Longhorn Steakhouse</desc>
+</wpt>
+<wpt lat="33.821964500" lon="-84.367856400">
+  <name>Restaurant:Chili&apos;s</name>
+  <cmt>Restaurant:Chili&apos;s</cmt>
+  <desc>Restaurant:Chili&apos;s</desc>
+</wpt>
+<wpt lat="33.825398900" lon="-84.367622400">
+  <name>Fast Food Restaurant:Chick-fil-a</name>
+  <cmt>Fast Food Restaurant:Chick-fil-a</cmt>
+  <desc>Fast Food Restaurant:Chick-fil-a</desc>
+</wpt>
+<wpt lat="33.773675000" lon="-84.367200200">
+  <name>Restaurant:Eats</name>
+  <cmt>Restaurant:Eats</cmt>
+  <desc>Restaurant:Eats</desc>
+</wpt>
+<wpt lat="33.779181600" lon="-84.367156800">
+  <name>Restaurant:Apres Diem</name>
+  <cmt>Restaurant:Apres Diem</cmt>
+  <desc>Restaurant:Apres Diem</desc>
+</wpt>
+<wpt lat="33.822933800" lon="-84.366998400">
+  <name>Fast Food Restaurant:Zesto Drive-In</name>
+  <cmt>Fast Food Restaurant:Zesto Drive-In</cmt>
+  <desc>Fast Food Restaurant:Zesto Drive-In</desc>
+</wpt>
+<wpt lat="33.825394400" lon="-84.366925000">
+  <name>Restaurant:US Cafe</name>
+  <cmt>Restaurant:US Cafe</cmt>
+  <desc>Restaurant:US Cafe</desc>
+</wpt>
+<wpt lat="33.825706700" lon="-84.366062400">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.761204000" lon="-84.365960800">
+  <name>Restaurant:Highland Bakery</name>
+  <cmt>Restaurant:Highland Bakery</cmt>
+  <desc>Restaurant:Highland Bakery</desc>
+</wpt>
+<wpt lat="33.825724500" lon="-84.365611800">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="33.761432400" lon="-84.365428600">
+  <name>Restaurant:Across The Street</name>
+  <cmt>Restaurant:Across The Street</cmt>
+  <desc>Restaurant:Across The Street</desc>
+</wpt>
+<wpt lat="33.761168400" lon="-84.365368500">
+  <name>Restaurant:P&apos;cheen International Restaurant</name>
+  <cmt>Restaurant:P&apos;cheen International Restaurant</cmt>
+  <desc>Restaurant:P&apos;cheen International Restaurant</desc>
+</wpt>
+<wpt lat="33.761168400" lon="-84.365179700">
+  <name>Restaurant:Zuma Sushi &amp; Sake Ba</name>
+  <cmt>Restaurant:Zuma Sushi &amp; Sake Ba</cmt>
+  <desc>Restaurant:Zuma Sushi &amp; Sake Ba</desc>
+</wpt>
+<wpt lat="33.761432400" lon="-84.365136800">
+  <name>Restaurant:Jack&apos;s Pizza &amp; Wings</name>
+  <cmt>Restaurant:Jack&apos;s Pizza &amp; Wings</cmt>
+  <desc>Restaurant:Jack&apos;s Pizza &amp; Wings</desc>
+</wpt>
+<wpt lat="33.825694400" lon="-84.364985600">
+  <name>Fast Food Restaurant:Arby&apos;s</name>
+  <cmt>Fast Food Restaurant:Arby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="33.772808600" lon="-84.363894100">
+  <name>Restaurant:Camelli&apos;s</name>
+  <cmt>Restaurant:Camelli&apos;s</cmt>
+  <desc>Restaurant:Camelli&apos;s</desc>
+</wpt>
+<wpt lat="33.772655300" lon="-84.363886800">
+  <name>Pub:Model T Pub</name>
+  <cmt>Pub:Model T Pub</cmt>
+  <desc>Pub:Model T Pub</desc>
+</wpt>
+<wpt lat="33.774082300" lon="-84.362290300">
+  <name>Pub:The Local</name>
+  <cmt>Pub:The Local</cmt>
+  <desc>Pub:The Local</desc>
+</wpt>
+<wpt lat="33.773988900" lon="-84.361483700">
+  <name>Cafe:Java Jive</name>
+  <cmt>Cafe:Java Jive</cmt>
+  <desc>Cafe:Java Jive</desc>
+</wpt>
+<wpt lat="33.768635100" lon="-84.361395100">
+  <name>Restaurant:TWO urban licks</name>
+  <cmt>Restaurant:TWO urban licks</cmt>
+  <desc>Restaurant:TWO urban licks</desc>
+</wpt>
+<wpt lat="33.761832000" lon="-84.360338900">
+  <name>Restaurant:Parish Foods &amp; Goods</name>
+  <cmt>Restaurant:Parish Foods &amp; Goods</cmt>
+  <desc>Restaurant:Parish Foods &amp; Goods</desc>
+</wpt>
+<wpt lat="33.762517700" lon="-84.359139700">
+  <name>Cafe:Inman Perk Coffee</name>
+  <cmt>Cafe:Inman Perk Coffee</cmt>
+  <desc>Cafe:Inman Perk Coffee</desc>
+</wpt>
+<wpt lat="33.773550200" lon="-84.358989900">
+  <name>Fast Food Restaurant:Moe&apos;s</name>
+  <cmt>Fast Food Restaurant:Moe&apos;s</cmt>
+  <desc>Fast Food Restaurant:Moe&apos;s</desc>
+</wpt>
+<wpt lat="34.253921600" lon="-84.358917400">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.845948900" lon="-84.358368600">
+  <name>Restaurant:Houston&apos;s</name>
+  <cmt>Restaurant:Houston&apos;s</cmt>
+  <desc>Restaurant:Houston&apos;s</desc>
+</wpt>
+<wpt lat="33.763016500" lon="-84.358193100">
+  <name>Restaurant:Pure Taqueria</name>
+  <cmt>Restaurant:Pure Taqueria</cmt>
+  <desc>Restaurant:Pure Taqueria</desc>
+</wpt>
+<wpt lat="33.762117400" lon="-84.358161400">
+  <name>Pub:Victory Sandwich Bar</name>
+  <cmt>Pub:Victory Sandwich Bar</cmt>
+  <desc>Pub:Victory Sandwich Bar</desc>
+</wpt>
+<wpt lat="33.762966500" lon="-84.357806800">
+  <name>Restaurant:Fritti</name>
+  <cmt>Restaurant:Fritti</cmt>
+  <desc>Restaurant:Fritti</desc>
+</wpt>
+<wpt lat="33.763999700" lon="-84.357785900">
+  <name>Restaurant:Park&apos;s Edge</name>
+  <cmt>Restaurant:Park&apos;s Edge</cmt>
+  <desc>Restaurant:Park&apos;s Edge</desc>
+</wpt>
+<wpt lat="33.763037900" lon="-84.357652400">
+  <name>Restaurant:Sotto Sotto Restaurant</name>
+  <cmt>Restaurant:Sotto Sotto Restaurant</cmt>
+  <desc>Restaurant:Sotto Sotto Restaurant</desc>
+</wpt>
+<wpt lat="33.773499300" lon="-84.357631400">
+  <name>Restaurant:Fellini&apos;s Pizza</name>
+  <cmt>Restaurant:Fellini&apos;s Pizza</cmt>
+  <desc>Restaurant:Fellini&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.761978000" lon="-84.357579000">
+  <name>Pub:The Albert</name>
+  <cmt>Pub:The Albert</cmt>
+  <desc>Pub:The Albert</desc>
+</wpt>
+<wpt lat="33.773513500" lon="-84.357116400">
+  <name>Restaurant:La Fonda Latin Cuisine</name>
+  <cmt>Restaurant:La Fonda Latin Cuisine</cmt>
+  <desc>Restaurant:La Fonda Latin Cuisine</desc>
+</wpt>
+<wpt lat="33.773527800" lon="-84.356601400">
+  <name>Restaurant:El Azteca Mexican Restaurant</name>
+  <cmt>Restaurant:El Azteca Mexican Restaurant</cmt>
+  <desc>Restaurant:El Azteca Mexican Restaurant</desc>
+</wpt>
+<wpt lat="33.782460200" lon="-84.354880700">
+  <name>Restaurant:La Tavola Italian Trattoria</name>
+  <cmt>Restaurant:La Tavola Italian Trattoria</cmt>
+  <desc>Restaurant:La Tavola Italian Trattoria</desc>
+</wpt>
+<wpt lat="33.781999800" lon="-84.354556300">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.757193700" lon="-84.354099000">
+  <name>Restaurant:Shaun&apos;s Edgewood Social Club</name>
+  <cmt>Restaurant:Shaun&apos;s Edgewood Social Club</cmt>
+  <desc>Restaurant:Shaun&apos;s Edgewood Social Club</desc>
+</wpt>
+<wpt lat="33.756958200" lon="-84.353910100">
+  <name>Restaurant:Son&apos;s Place Restaurant</name>
+  <cmt>Restaurant:Son&apos;s Place Restaurant</cmt>
+  <desc>Restaurant:Son&apos;s Place Restaurant</desc>
+</wpt>
+<wpt lat="33.782116900" lon="-84.353883000">
+  <name>Restaurant:YEAH! Burger</name>
+  <cmt>Restaurant:YEAH! Burger</cmt>
+  <desc>Restaurant:YEAH! Burger</desc>
+</wpt>
+<wpt lat="33.773599100" lon="-84.353648800">
+  <name>Fast Food Restaurant:Majestic Diner</name>
+  <cmt>Fast Food Restaurant:Majestic Diner</cmt>
+  <desc>Fast Food Restaurant:Majestic Diner</desc>
+</wpt>
+<wpt lat="33.766756800" lon="-84.352927800">
+  <name>Pub:N.Highland Pub</name>
+  <cmt>Pub:N.Highland Pub</cmt>
+  <desc>Pub:N.Highland Pub</desc>
+</wpt>
+<wpt lat="33.773435100" lon="-84.352919200">
+  <name>Pub:The Righteous Room</name>
+  <cmt>Pub:The Righteous Room</cmt>
+  <desc>Pub:The Righteous Room</desc>
+</wpt>
+<wpt lat="33.772628800" lon="-84.352721800">
+  <name>Cafe:San Fransico Coffee</name>
+  <cmt>Cafe:San Fransico Coffee</cmt>
+  <desc>Cafe:San Fransico Coffee</desc>
+</wpt>
+<wpt lat="33.928033000" lon="-84.352718400">
+  <name>Restaurant:Sweet Tomato&apos;s</name>
+  <cmt>Restaurant:Sweet Tomato&apos;s</cmt>
+  <desc>Restaurant:Sweet Tomato&apos;s</desc>
+</wpt>
+<wpt lat="33.770754300" lon="-84.352640500">
+  <name>Restaurant:Manuel&apos;s Tavern</name>
+  <cmt>Restaurant:Manuel&apos;s Tavern</cmt>
+  <desc>Restaurant:Manuel&apos;s Tavern</desc>
+</wpt>
+<wpt lat="33.792625000" lon="-84.352348800">
+  <name>Restaurant:Pomodoro</name>
+  <cmt>Restaurant:Pomodoro</cmt>
+  <desc>Restaurant:Pomodoro</desc>
+</wpt>
+<wpt lat="33.770117500" lon="-84.352327100">
+  <name>Cafe:Java Vino</name>
+  <cmt>Cafe:Java Vino</cmt>
+  <desc>Cafe:Java Vino</desc>
+</wpt>
+<wpt lat="33.769985600" lon="-84.352292100">
+  <name>Cafe:Babette&apos;s Cafe</name>
+  <cmt>Cafe:Babette&apos;s Cafe</cmt>
+  <desc>Cafe:Babette&apos;s Cafe</desc>
+</wpt>
+<wpt lat="33.792468000" lon="-84.352125600">
+  <name>Restaurant:Rosebud</name>
+  <cmt>Restaurant:Rosebud</cmt>
+  <desc>Restaurant:Rosebud</desc>
+</wpt>
+<wpt lat="33.793202700" lon="-84.351876700">
+  <name>Restaurant:Doc Chey&apos;s Noodle House</name>
+  <cmt>Restaurant:Doc Chey&apos;s Noodle House</cmt>
+  <desc>Restaurant:Doc Chey&apos;s Noodle House</desc>
+</wpt>
+<wpt lat="33.792674900" lon="-84.351859600">
+  <name>Cafe:Caramba Cafe</name>
+  <cmt>Cafe:Caramba Cafe</cmt>
+  <desc>Cafe:Caramba Cafe</desc>
+</wpt>
+<wpt lat="33.763279600" lon="-84.351527100">
+  <name>Restaurant:Stir it Up</name>
+  <cmt>Restaurant:Stir it Up</cmt>
+  <desc>Restaurant:Stir it Up</desc>
+</wpt>
+<wpt lat="33.763611400" lon="-84.351318700">
+  <name>Restaurant:El Myr</name>
+  <cmt>Restaurant:El Myr</cmt>
+  <desc>Restaurant:El Myr</desc>
+</wpt>
+<wpt lat="33.763796500" lon="-84.351030300">
+  <name>Restaurant:Ali Baba</name>
+  <cmt>Restaurant:Ali Baba</cmt>
+  <desc>Restaurant:Ali Baba</desc>
+</wpt>
+<wpt lat="33.763879000" lon="-84.350975500">
+  <name>Cafe:Java Lords Coffeehouse &amp; Bar</name>
+  <cmt>Cafe:Java Lords Coffeehouse &amp; Bar</cmt>
+  <desc>Cafe:Java Lords Coffeehouse &amp; Bar</desc>
+</wpt>
+<wpt lat="33.764586200" lon="-84.350507800">
+  <name>Restaurant:Sweet Lime</name>
+  <cmt>Restaurant:Sweet Lime</cmt>
+  <desc>Restaurant:Sweet Lime</desc>
+</wpt>
+<wpt lat="33.764892800" lon="-84.350051900">
+  <name>Restaurant:Niramish</name>
+  <cmt>Restaurant:Niramish</cmt>
+  <desc>Restaurant:Niramish</desc>
+</wpt>
+<wpt lat="33.765110200" lon="-84.349797100">
+  <name>Restaurant:Luna Nueva</name>
+  <cmt>Restaurant:Luna Nueva</cmt>
+  <desc>Restaurant:Luna Nueva</desc>
+</wpt>
+<wpt lat="33.762309000" lon="-84.349642200">
+  <name>Pub:The Wrecking Bar Brewpub</name>
+  <cmt>Pub:The Wrecking Bar Brewpub</cmt>
+  <desc>Pub:The Wrecking Bar Brewpub</desc>
+</wpt>
+<wpt lat="33.765248500" lon="-84.349579800">
+  <name>Pub:The Porter</name>
+  <cmt>Pub:The Porter</cmt>
+  <desc>Pub:The Porter</desc>
+</wpt>
+<wpt lat="33.983014800" lon="-84.349556900">
+  <name>Restaurant:Buffalo Wild Wings</name>
+  <cmt>Restaurant:Buffalo Wild Wings</cmt>
+  <desc>Restaurant:Buffalo Wild Wings</desc>
+</wpt>
+<wpt lat="33.768032800" lon="-84.349382800">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="33.767013800" lon="-84.349377400">
+  <name>Cafe:Aurora Coffee</name>
+  <cmt>Cafe:Aurora Coffee</cmt>
+  <desc>Cafe:Aurora Coffee</desc>
+</wpt>
+<wpt lat="33.767243600" lon="-84.349366100">
+  <name>Restaurant:Savage Pizza</name>
+  <cmt>Restaurant:Savage Pizza</cmt>
+  <desc>Restaurant:Savage Pizza</desc>
+</wpt>
+<wpt lat="33.765696000" lon="-84.349358700">
+  <name>Restaurant:Little 5 Points Pizza</name>
+  <cmt>Restaurant:Little 5 Points Pizza</cmt>
+  <desc>Restaurant:Little 5 Points Pizza</desc>
+</wpt>
+<wpt lat="33.765626900" lon="-84.349334500">
+  <name>Cafe:Village Coffeehouse</name>
+  <cmt>Cafe:Village Coffeehouse</cmt>
+  <desc>Cafe:Village Coffeehouse</desc>
+</wpt>
+<wpt lat="33.765542100" lon="-84.349288900">
+  <name>Pub:Corner Tavern</name>
+  <cmt>Pub:Corner Tavern</cmt>
+  <desc>Pub:Corner Tavern</desc>
+</wpt>
+<wpt lat="33.766255400" lon="-84.349211000">
+  <name>Restaurant:The Vortex Bar &amp; Grill</name>
+  <cmt>Restaurant:The Vortex Bar &amp; Grill</cmt>
+  <desc>Restaurant:The Vortex Bar &amp; Grill</desc>
+</wpt>
+<wpt lat="33.742946200" lon="-84.348975900">
+  <name>Fast Food Restaurant:Burger Win</name>
+  <cmt>Fast Food Restaurant:Burger Win</cmt>
+  <desc>Fast Food Restaurant:Burger Win</desc>
+</wpt>
+<wpt lat="33.758607500" lon="-84.348966600">
+  <name>Restaurant:Figo</name>
+  <cmt>Restaurant:Figo</cmt>
+  <desc>Restaurant:Figo</desc>
+</wpt>
+<wpt lat="33.742841400" lon="-84.348942200">
+  <name>Fast Food Restaurant:Checkers Drive-In</name>
+  <cmt>Fast Food Restaurant:Checkers Drive-In</cmt>
+  <desc>Fast Food Restaurant:Checkers Drive-In</desc>
+</wpt>
+<wpt lat="33.764732900" lon="-84.348930300">
+  <name>Fast Food Restaurant:Zesto</name>
+  <cmt>Fast Food Restaurant:Zesto</cmt>
+  <desc>Fast Food Restaurant:Zesto</desc>
+</wpt>
+<wpt lat="33.766527600" lon="-84.348902400">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="33.758830500" lon="-84.348891500">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="33.741804300" lon="-84.348856600">
+  <name>Fast Food Restaurant:Long John Silver&apos;s</name>
+  <cmt>Fast Food Restaurant:Long John Silver&apos;s</cmt>
+  <desc>Fast Food Restaurant:Long John Silver&apos;s</desc>
+</wpt>
+<wpt lat="33.765243200" lon="-84.348843400">
+  <name>Pub:Brewhouse Pub</name>
+  <cmt>Pub:Brewhouse Pub</cmt>
+  <desc>Pub:Brewhouse Pub</desc>
+</wpt>
+<wpt lat="33.764036000" lon="-84.348756000">
+  <name>Pub:Front Page News</name>
+  <cmt>Pub:Front Page News</cmt>
+  <desc>Pub:Front Page News</desc>
+</wpt>
+<wpt lat="33.758317800" lon="-84.348693000">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="33.758598600" lon="-84.348685000">
+  <name>Fast Food Restaurant</name>
+  <cmt>Fast Food Restaurant</cmt>
+  <desc>Fast Food Restaurant</desc>
+</wpt>
+<wpt lat="33.758319900" lon="-84.348510400">
+  <name>Fast Food Restaurant:Shane&apos;s Rib Shack</name>
+  <cmt>Fast Food Restaurant:Shane&apos;s Rib Shack</cmt>
+  <desc>Fast Food Restaurant:Shane&apos;s Rib Shack</desc>
+</wpt>
+<wpt lat="33.743499300" lon="-84.348470300">
+  <name>Fast Food Restaurant:Happy Donuts</name>
+  <cmt>Fast Food Restaurant:Happy Donuts</cmt>
+  <desc>Fast Food Restaurant:Happy Donuts</desc>
+</wpt>
+<wpt lat="33.758670000" lon="-84.348454300">
+  <name>Fast Food Restaurant:Willy&apos;s</name>
+  <cmt>Fast Food Restaurant:Willy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Willy&apos;s</desc>
+</wpt>
+<wpt lat="33.760998100" lon="-84.347424400">
+  <name>Restaurant:Fox Brothers BBQ</name>
+  <cmt>Restaurant:Fox Brothers BBQ</cmt>
+  <desc>Restaurant:Fox Brothers BBQ</desc>
+</wpt>
+<wpt lat="33.758293200" lon="-84.347268800">
+  <name>Fast Food Restaurant:Five Guys</name>
+  <cmt>Fast Food Restaurant:Five Guys</cmt>
+  <desc>Fast Food Restaurant:Five Guys</desc>
+</wpt>
+<wpt lat="33.741328100" lon="-84.346842200">
+  <name>Cafe:Australian Bakery Cafe</name>
+  <cmt>Cafe:Australian Bakery Cafe</cmt>
+  <desc>Cafe:Australian Bakery Cafe</desc>
+</wpt>
+<wpt lat="33.741157400" lon="-84.346679900">
+  <name>Restaurant:EAV Thai &amp; Sushi</name>
+  <cmt>Restaurant:EAV Thai &amp; Sushi</cmt>
+  <desc>Restaurant:EAV Thai &amp; Sushi</desc>
+</wpt>
+<wpt lat="33.741103900" lon="-84.346619500">
+  <name>Restaurant:Blue Frog Cantina</name>
+  <cmt>Restaurant:Blue Frog Cantina</cmt>
+  <desc>Restaurant:Blue Frog Cantina</desc>
+</wpt>
+<wpt lat="33.740955600" lon="-84.346458600">
+  <name>Fast Food Restaurant:Village Ice Cream Shop</name>
+  <cmt>Fast Food Restaurant:Village Ice Cream Shop</cmt>
+  <desc>Fast Food Restaurant:Village Ice Cream Shop</desc>
+</wpt>
+<wpt lat="33.740025100" lon="-84.345559400">
+  <name>Pub:Mary&apos;s</name>
+  <cmt>Pub:Mary&apos;s</cmt>
+  <desc>Pub:Mary&apos;s</desc>
+</wpt>
+<wpt lat="33.739990900" lon="-84.345356200">
+  <name>Restaurant:Chazz Southern Cooking</name>
+  <cmt>Restaurant:Chazz Southern Cooking</cmt>
+  <desc>Restaurant:Chazz Southern Cooking</desc>
+</wpt>
+<wpt lat="33.857183300" lon="-84.345275400">
+  <name>Fast Food Restaurant:Brewster Ice Cream</name>
+  <cmt>Fast Food Restaurant:Brewster Ice Cream</cmt>
+  <desc>Fast Food Restaurant:Brewster Ice Cream</desc>
+</wpt>
+<wpt lat="33.929142100" lon="-84.345220600">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.740036200" lon="-84.345056200">
+  <name>Pub:Flatiron Restaurant &amp; Bar</name>
+  <cmt>Pub:Flatiron Restaurant &amp; Bar</cmt>
+  <desc>Pub:Flatiron Restaurant &amp; Bar</desc>
+</wpt>
+<wpt lat="33.929491500" lon="-84.344698900">
+  <name>Restaurant:Outback Steakhouse</name>
+  <cmt>Restaurant:Outback Steakhouse</cmt>
+  <desc>Restaurant:Outback Steakhouse</desc>
+</wpt>
+<wpt lat="33.740311400" lon="-84.344627100">
+  <name>Restaurant:Holy Taco</name>
+  <cmt>Restaurant:Holy Taco</cmt>
+  <desc>Restaurant:Holy Taco</desc>
+</wpt>
+<wpt lat="33.739448800" lon="-84.344207500">
+  <name>Pub:The Midway</name>
+  <cmt>Pub:The Midway</cmt>
+  <desc>Pub:The Midway</desc>
+</wpt>
+<wpt lat="33.857191700" lon="-84.343639900">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="33.856612500" lon="-84.343497800">
+  <name>Fast Food Restaurant:Jersey Mike&apos;s Subs</name>
+  <cmt>Fast Food Restaurant:Jersey Mike&apos;s Subs</cmt>
+  <desc>Fast Food Restaurant:Jersey Mike&apos;s Subs</desc>
+</wpt>
+<wpt lat="33.859397400" lon="-84.341331300">
+  <name>Restaurant:Terra Terroir Grill and Wine Patio</name>
+  <cmt>Restaurant:Terra Terroir Grill and Wine Patio</cmt>
+  <desc>Restaurant:Terra Terroir Grill and Wine Patio</desc>
+</wpt>
+<wpt lat="33.859733100" lon="-84.340747200">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.860871200" lon="-84.340279100">
+  <name>Fast Food Restaurant:Dunkin Donuts</name>
+  <cmt>Fast Food Restaurant:Dunkin Donuts</cmt>
+  <desc>Fast Food Restaurant:Dunkin Donuts</desc>
+</wpt>
+<wpt lat="33.861035500" lon="-84.339925600">
+  <name>Restaurant:Hudson Grille</name>
+  <cmt>Restaurant:Hudson Grille</cmt>
+  <desc>Restaurant:Hudson Grille</desc>
+</wpt>
+<wpt lat="33.928319300" lon="-84.337559900">
+  <name>Restaurant:California Pizza Kitchen</name>
+  <cmt>Restaurant:California Pizza Kitchen</cmt>
+  <desc>Restaurant:California Pizza Kitchen</desc>
+</wpt>
+<wpt lat="33.947482000" lon="-84.336539300">
+  <name>Restaurant:J. Christopher&apos;s</name>
+  <cmt>Restaurant:J. Christopher&apos;s</cmt>
+  <desc>Restaurant:J. Christopher&apos;s</desc>
+</wpt>
+<wpt lat="33.924884100" lon="-84.335992700">
+  <name>Restaurant:Cafe Intermezzo</name>
+  <cmt>Restaurant:Cafe Intermezzo</cmt>
+  <desc>Restaurant:Cafe Intermezzo</desc>
+</wpt>
+<wpt lat="33.950516800" lon="-84.335949200">
+  <name>Restaurant:Mellow Mushroom</name>
+  <cmt>Restaurant:Mellow Mushroom</cmt>
+  <desc>Restaurant:Mellow Mushroom</desc>
+</wpt>
+<wpt lat="33.924741700" lon="-84.335939100">
+  <name>Restaurant:Eclipse di Luna</name>
+  <cmt>Restaurant:Eclipse di Luna</cmt>
+  <desc>Restaurant:Eclipse di Luna</desc>
+</wpt>
+<wpt lat="33.764969600" lon="-84.333928800">
+  <name>Restaurant:Fellini&apos;s Pizza</name>
+  <cmt>Restaurant:Fellini&apos;s Pizza</cmt>
+  <desc>Restaurant:Fellini&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.764755600" lon="-84.333800100">
+  <name>Restaurant:La Fonda Latina</name>
+  <cmt>Restaurant:La Fonda Latina</cmt>
+  <desc>Restaurant:La Fonda Latina</desc>
+</wpt>
+<wpt lat="33.764755600" lon="-84.333619800">
+  <name>Cafe:Dr. Bombay&apos;s</name>
+  <cmt>Cafe:Dr. Bombay&apos;s</cmt>
+  <desc>Cafe:Dr. Bombay&apos;s</desc>
+</wpt>
+<wpt lat="33.764912600" lon="-84.333207800">
+  <name>Cafe:El Gato Bizco</name>
+  <cmt>Cafe:El Gato Bizco</cmt>
+  <desc>Cafe:El Gato Bizco</desc>
+</wpt>
+<wpt lat="33.764748500" lon="-84.333182100">
+  <name>Cafe:The Flying Biscuit</name>
+  <cmt>Cafe:The Flying Biscuit</cmt>
+  <desc>Cafe:The Flying Biscuit</desc>
+</wpt>
+<wpt lat="33.950490100" lon="-84.333063200">
+  <name>Restaurant:El Azteca</name>
+  <cmt>Restaurant:El Azteca</cmt>
+  <desc>Restaurant:El Azteca</desc>
+</wpt>
+<wpt lat="33.861105100" lon="-84.331924000">
+  <name>Cafe:The Library Coffee House</name>
+  <cmt>Cafe:The Library Coffee House</cmt>
+  <desc>Cafe:The Library Coffee House</desc>
+</wpt>
+<wpt lat="33.860739800" lon="-84.330515600">
+  <name>Restaurant:Haven</name>
+  <cmt>Restaurant:Haven</cmt>
+  <desc>Restaurant:Haven</desc>
+</wpt>
+<wpt lat="33.861078400" lon="-84.329834300">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="33.827495000" lon="-84.329234000">
+  <name>Fast Food Restaurant:Chick-fil-a</name>
+  <cmt>Fast Food Restaurant:Chick-fil-a</cmt>
+  <desc>Fast Food Restaurant:Chick-fil-a</desc>
+</wpt>
+<wpt lat="33.788173700" lon="-84.326645500">
+  <name>Restaurant:Doc Chey&apos;s Noodle House</name>
+  <cmt>Restaurant:Doc Chey&apos;s Noodle House</cmt>
+  <desc>Restaurant:Doc Chey&apos;s Noodle House</desc>
+</wpt>
+<wpt lat="33.788107200" lon="-84.325726000">
+  <name>Cafe:Octane Coffee Bar</name>
+  <cmt>Cafe:Octane Coffee Bar</cmt>
+  <desc>Cafe:Octane Coffee Bar</desc>
+</wpt>
+<wpt lat="33.799709000" lon="-84.324086000">
+  <name>Cafe:Cafe Montage</name>
+  <cmt>Cafe:Cafe Montage</cmt>
+  <desc>Cafe:Cafe Montage</desc>
+</wpt>
+<wpt lat="33.751424400" lon="-84.322968400">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="33.751389800" lon="-84.322442600">
+  <name>Pub</name>
+  <cmt>Pub</cmt>
+  <desc>Pub</desc>
+</wpt>
+<wpt lat="33.751319500" lon="-84.322328700">
+  <name>Cafe</name>
+  <cmt>Cafe</cmt>
+  <desc>Cafe</desc>
+</wpt>
+<wpt lat="33.751414500" lon="-84.321777000">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="34.044630100" lon="-84.320903000">
+  <name>Restaurant:Moksha</name>
+  <cmt>Restaurant:Moksha</cmt>
+  <desc>Restaurant:Moksha</desc>
+</wpt>
+<wpt lat="33.841237000" lon="-84.313829000">
+  <name>Fast Food Restaurant:Waffle House</name>
+  <cmt>Fast Food Restaurant:Waffle House</cmt>
+  <desc>Fast Food Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.888067000" lon="-84.313078200">
+  <name>Fast Food Restaurant:Waffle House</name>
+  <cmt>Fast Food Restaurant:Waffle House</cmt>
+  <desc>Fast Food Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.817756000" lon="-84.312355000">
+  <name>Cafe:Dunkin&apos; Donuts</name>
+  <cmt>Cafe:Dunkin&apos; Donuts</cmt>
+  <desc>Cafe:Dunkin&apos; Donuts</desc>
+</wpt>
+<wpt lat="33.818067000" lon="-84.312243000">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="33.841537000" lon="-84.311825000">
+  <name>Pub:Mykonos Taverna</name>
+  <cmt>Pub:Mykonos Taverna</cmt>
+  <desc>Pub:Mykonos Taverna</desc>
+</wpt>
+<wpt lat="33.739525900" lon="-84.309114200">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="33.790259300" lon="-84.307414300">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.789626100" lon="-84.307083600">
+  <name>Restaurant:Los Loros</name>
+  <cmt>Restaurant:Los Loros</cmt>
+  <desc>Restaurant:Los Loros</desc>
+</wpt>
+<wpt lat="33.760828300" lon="-84.306475200">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.764502700" lon="-84.306340200">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.789954900" lon="-84.305863700">
+  <name>Restaurant:Evans Fine Foods</name>
+  <cmt>Restaurant:Evans Fine Foods</cmt>
+  <desc>Restaurant:Evans Fine Foods</desc>
+</wpt>
+<wpt lat="33.789403300" lon="-84.305423100">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="33.791957000" lon="-84.305302900">
+  <name>Restaurant:Athen&apos;s Pizza</name>
+  <cmt>Restaurant:Athen&apos;s Pizza</cmt>
+  <desc>Restaurant:Athen&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.759397600" lon="-84.303742600">
+  <name>Restaurant:Mescalito&apos;s Cantina</name>
+  <cmt>Restaurant:Mescalito&apos;s Cantina</cmt>
+  <desc>Restaurant:Mescalito&apos;s Cantina</desc>
+</wpt>
+<wpt lat="33.759207100" lon="-84.303513700">
+  <name>Pub:Steinbeck’s</name>
+  <cmt>Pub:Steinbeck’s</cmt>
+  <desc>Pub:Steinbeck’s</desc>
+</wpt>
+<wpt lat="33.759335500" lon="-84.303505100">
+  <name>Restaurant:Mojo Pizza N Pub</name>
+  <cmt>Restaurant:Mojo Pizza N Pub</cmt>
+  <desc>Restaurant:Mojo Pizza N Pub</desc>
+</wpt>
+<wpt lat="33.760470100" lon="-84.303496500">
+  <name>Restaurant:Matador Cantina</name>
+  <cmt>Restaurant:Matador Cantina</cmt>
+  <desc>Restaurant:Matador Cantina</desc>
+</wpt>
+<wpt lat="33.775478800" lon="-84.303359300">
+  <name>Pub:Marlay House</name>
+  <cmt>Pub:Marlay House</cmt>
+  <desc>Pub:Marlay House</desc>
+</wpt>
+<wpt lat="33.759152300" lon="-84.303276100">
+  <name>Cafe:Kavarna</name>
+  <cmt>Cafe:Kavarna</cmt>
+  <desc>Cafe:Kavarna</desc>
+</wpt>
+<wpt lat="33.775890000" lon="-84.303248400">
+  <name>Cafe:Dancing Goats</name>
+  <cmt>Cafe:Dancing Goats</cmt>
+  <desc>Cafe:Dancing Goats</desc>
+</wpt>
+<wpt lat="33.760577200" lon="-84.303127400">
+  <name>Restaurant:Saba</name>
+  <cmt>Restaurant:Saba</cmt>
+  <desc>Restaurant:Saba</desc>
+</wpt>
+<wpt lat="33.759485900" lon="-84.303103500">
+  <name>Pub:Universal Joint</name>
+  <cmt>Pub:Universal Joint</cmt>
+  <desc>Pub:Universal Joint</desc>
+</wpt>
+<wpt lat="33.775387600" lon="-84.302876600">
+  <name>Restaurant:Farm Burger</name>
+  <cmt>Restaurant:Farm Burger</cmt>
+  <desc>Restaurant:Farm Burger</desc>
+</wpt>
+<wpt lat="33.775330300" lon="-84.302695900">
+  <name>Restaurant:Watershed</name>
+  <cmt>Restaurant:Watershed</cmt>
+  <desc>Restaurant:Watershed</desc>
+</wpt>
+<wpt lat="33.772767200" lon="-84.302209000">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.775971800" lon="-84.302155400">
+  <name>Restaurant:Taqueria del Sol</name>
+  <cmt>Restaurant:Taqueria del Sol</cmt>
+  <desc>Restaurant:Taqueria del Sol</desc>
+</wpt>
+<wpt lat="33.772564100" lon="-84.301502200">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.775428600" lon="-84.300988200">
+  <name>Restaurant:Garlic</name>
+  <cmt>Restaurant:Garlic</cmt>
+  <desc>Restaurant:Garlic</desc>
+</wpt>
+<wpt lat="33.775428100" lon="-84.300941200">
+  <name>Cafe:New Orleans Snoball Cafe</name>
+  <cmt>Cafe:New Orleans Snoball Cafe</cmt>
+  <desc>Cafe:New Orleans Snoball Cafe</desc>
+</wpt>
+<wpt lat="33.775356800" lon="-84.300229000">
+  <name>Restaurant:Cafe Lily</name>
+  <cmt>Restaurant:Cafe Lily</cmt>
+  <desc>Restaurant:Cafe Lily</desc>
+</wpt>
+<wpt lat="33.775206900" lon="-84.300220400">
+  <name>Restaurant:Sushi Avenue</name>
+  <cmt>Restaurant:Sushi Avenue</cmt>
+  <desc>Restaurant:Sushi Avenue</desc>
+</wpt>
+<wpt lat="33.774686200" lon="-84.300126000">
+  <name>Restaurant:The Big Tex Cantina</name>
+  <cmt>Restaurant:The Big Tex Cantina</cmt>
+  <desc>Restaurant:The Big Tex Cantina</desc>
+</wpt>
+<wpt lat="33.776071100" lon="-84.299858400">
+  <name>Cafe:Pastries A Go Go</name>
+  <cmt>Cafe:Pastries A Go Go</cmt>
+  <desc>Cafe:Pastries A Go Go</desc>
+</wpt>
+<wpt lat="33.775413900" lon="-84.299748200">
+  <name>Cafe:Sawicki&apos;s</name>
+  <cmt>Cafe:Sawicki&apos;s</cmt>
+  <desc>Cafe:Sawicki&apos;s</desc>
+</wpt>
+<wpt lat="33.776678400" lon="-84.299689900">
+  <name>Restaurant:Amaryn&apos;s Thai Bowl &amp; Sushi</name>
+  <cmt>Restaurant:Amaryn&apos;s Thai Bowl &amp; Sushi</cmt>
+  <desc>Restaurant:Amaryn&apos;s Thai Bowl &amp; Sushi</desc>
+</wpt>
+<wpt lat="33.776678300" lon="-84.299526600">
+  <name>Restaurant:Mellow Mushroom</name>
+  <cmt>Restaurant:Mellow Mushroom</cmt>
+  <desc>Restaurant:Mellow Mushroom</desc>
+</wpt>
+<wpt lat="33.775411500" lon="-84.299477600">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.757320400" lon="-84.298818500">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.775754000" lon="-84.298705100">
+  <name>Restaurant:Ted&apos;s Montana Grill</name>
+  <cmt>Restaurant:Ted&apos;s Montana Grill</cmt>
+  <desc>Restaurant:Ted&apos;s Montana Grill</desc>
+</wpt>
+<wpt lat="33.775413900" lon="-84.298074600">
+  <name>Restaurant:Thumbs Up Diner</name>
+  <cmt>Restaurant:Thumbs Up Diner</cmt>
+  <desc>Restaurant:Thumbs Up Diner</desc>
+</wpt>
+<wpt lat="33.775420900" lon="-84.297688500">
+  <name>Restaurant:Ruby Tuesday</name>
+  <cmt>Restaurant:Ruby Tuesday</cmt>
+  <desc>Restaurant:Ruby Tuesday</desc>
+</wpt>
+<wpt lat="33.775896600" lon="-84.296379100">
+  <name>Cafe:Debbie&apos;s Cafe</name>
+  <cmt>Cafe:Debbie&apos;s Cafe</cmt>
+  <desc>Cafe:Debbie&apos;s Cafe</desc>
+</wpt>
+<wpt lat="33.774851400" lon="-84.296229000">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.774462600" lon="-84.296211400">
+  <name>Pub:Mac McGee&apos;s</name>
+  <cmt>Pub:Mac McGee&apos;s</cmt>
+  <desc>Pub:Mac McGee&apos;s</desc>
+</wpt>
+<wpt lat="33.774462700" lon="-84.296108400">
+  <name>Pub:Square Pub</name>
+  <cmt>Pub:Square Pub</cmt>
+  <desc>Pub:Square Pub</desc>
+</wpt>
+<wpt lat="33.773029400" lon="-84.296076100">
+  <name>Fast Food Restaurant:Chick-fil-A</name>
+  <cmt>Fast Food Restaurant:Chick-fil-A</cmt>
+  <desc>Fast Food Restaurant:Chick-fil-A</desc>
+</wpt>
+<wpt lat="33.774462700" lon="-84.296005300">
+  <name>Restaurant:The Iberian Pig</name>
+  <cmt>Restaurant:The Iberian Pig</cmt>
+  <desc>Restaurant:The Iberian Pig</desc>
+</wpt>
+<wpt lat="33.776481600" lon="-84.295992900">
+  <name>Restaurant:Adryannis</name>
+  <cmt>Restaurant:Adryannis</cmt>
+  <desc>Restaurant:Adryannis</desc>
+</wpt>
+<wpt lat="33.775725500" lon="-84.295881400">
+  <name>Restaurant:Parkers on Ponce</name>
+  <cmt>Restaurant:Parkers on Ponce</cmt>
+  <desc>Restaurant:Parkers on Ponce</desc>
+</wpt>
+<wpt lat="33.774462700" lon="-84.295850800">
+  <name>Restaurant:Siam Thai</name>
+  <cmt>Restaurant:Siam Thai</cmt>
+  <desc>Restaurant:Siam Thai</desc>
+</wpt>
+<wpt lat="33.775071100" lon="-84.295817800">
+  <name>Pub:Zucca</name>
+  <cmt>Pub:Zucca</cmt>
+  <desc>Pub:Zucca</desc>
+</wpt>
+<wpt lat="33.775144600" lon="-84.295813900">
+  <name>Pub:Brick Store Pub</name>
+  <cmt>Pub:Brick Store Pub</cmt>
+  <desc>Pub:Brick Store Pub</desc>
+</wpt>
+<wpt lat="33.775230300" lon="-84.295813900">
+  <name>Restaurant:Sweet Melissa&apos;s</name>
+  <cmt>Restaurant:Sweet Melissa&apos;s</cmt>
+  <desc>Restaurant:Sweet Melissa&apos;s</desc>
+</wpt>
+<wpt lat="33.775444200" lon="-84.295813900">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="33.778094000" lon="-84.295804000">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.774468800" lon="-84.295774000">
+  <name>Restaurant:Sushi Avenue</name>
+  <cmt>Restaurant:Sushi Avenue</cmt>
+  <desc>Restaurant:Sushi Avenue</desc>
+</wpt>
+<wpt lat="33.774466200" lon="-84.295533600">
+  <name>Restaurant:Raging Burrito</name>
+  <cmt>Restaurant:Raging Burrito</cmt>
+  <desc>Restaurant:Raging Burrito</desc>
+</wpt>
+<wpt lat="33.775463700" lon="-84.295482500">
+  <name>Restaurant:Cafe Alsace</name>
+  <cmt>Restaurant:Cafe Alsace</cmt>
+  <desc>Restaurant:Cafe Alsace</desc>
+</wpt>
+<wpt lat="33.774250500" lon="-84.295405800">
+  <name>Beer Garden:Raging Taco</name>
+  <cmt>Beer Garden:Raging Taco</cmt>
+  <desc>Beer Garden:Raging Taco</desc>
+</wpt>
+<wpt lat="33.775463500" lon="-84.295302800">
+  <name>Restaurant:no. 246</name>
+  <cmt>Restaurant:no. 246</cmt>
+  <desc>Restaurant:no. 246</desc>
+</wpt>
+<wpt lat="33.774425500" lon="-84.295160100">
+  <name>Restaurant:Cakes &amp; Ale</name>
+  <cmt>Restaurant:Cakes &amp; Ale</cmt>
+  <desc>Restaurant:Cakes &amp; Ale</desc>
+</wpt>
+<wpt lat="33.775382100" lon="-84.295120300">
+  <name>Restaurant:Leon&apos;s Full Service</name>
+  <cmt>Restaurant:Leon&apos;s Full Service</cmt>
+  <desc>Restaurant:Leon&apos;s Full Service</desc>
+</wpt>
+<wpt lat="33.778203200" lon="-84.295123400">
+  <name>Restaurant:Burnt Fork BBQ</name>
+  <cmt>Restaurant:Burnt Fork BBQ</cmt>
+  <desc>Restaurant:Burnt Fork BBQ</desc>
+</wpt>
+<wpt lat="33.773435300" lon="-84.295103100">
+  <name>Restaurant:Sapori di Napoli</name>
+  <cmt>Restaurant:Sapori di Napoli</cmt>
+  <desc>Restaurant:Sapori di Napoli</desc>
+</wpt>
+<wpt lat="33.774908600" lon="-84.295035800">
+  <name>Cafe:Badda Bing!</name>
+  <cmt>Cafe:Badda Bing!</cmt>
+  <desc>Cafe:Badda Bing!</desc>
+</wpt>
+<wpt lat="33.766433800" lon="-84.294804700">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.775148600" lon="-84.294771200">
+  <name>Cafe:Java Monkey</name>
+  <cmt>Cafe:Java Monkey</cmt>
+  <desc>Cafe:Java Monkey</desc>
+</wpt>
+<wpt lat="33.775362000" lon="-84.294759500">
+  <name>Restaurant:Decatur Diner</name>
+  <cmt>Restaurant:Decatur Diner</cmt>
+  <desc>Restaurant:Decatur Diner</desc>
+</wpt>
+<wpt lat="33.772280000" lon="-84.294616000">
+  <name>Pub:Twain&apos;s</name>
+  <cmt>Pub:Twain&apos;s</cmt>
+  <desc>Pub:Twain&apos;s</desc>
+</wpt>
+<wpt lat="33.775362300" lon="-84.294591100">
+  <name>Restaurant:Noodle</name>
+  <cmt>Restaurant:Noodle</cmt>
+  <desc>Restaurant:Noodle</desc>
+</wpt>
+<wpt lat="33.775437500" lon="-84.294458300">
+  <name>Restaurant:American Deli</name>
+  <cmt>Restaurant:American Deli</cmt>
+  <desc>Restaurant:American Deli</desc>
+</wpt>
+<wpt lat="33.775447100" lon="-84.294224800">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="33.771420400" lon="-84.292949700">
+  <name>Fast Food Restaurant:Dairy Queen</name>
+  <cmt>Fast Food Restaurant:Dairy Queen</cmt>
+  <desc>Fast Food Restaurant:Dairy Queen</desc>
+</wpt>
+<wpt lat="33.775779800" lon="-84.292843900">
+  <name>Cafe:J. Christopher&apos;s</name>
+  <cmt>Cafe:J. Christopher&apos;s</cmt>
+  <desc>Cafe:J. Christopher&apos;s</desc>
+</wpt>
+<wpt lat="33.771596800" lon="-84.292281100">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="33.771925400" lon="-84.292112500">
+  <name>Restaurant:Feast</name>
+  <cmt>Restaurant:Feast</cmt>
+  <desc>Restaurant:Feast</desc>
+</wpt>
+<wpt lat="33.783548700" lon="-84.291311300">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.794025000" lon="-84.290918200">
+  <name>Restaurant:Melton&apos;s App &amp; Tap</name>
+  <cmt>Restaurant:Melton&apos;s App &amp; Tap</cmt>
+  <desc>Restaurant:Melton&apos;s App &amp; Tap</desc>
+</wpt>
+<wpt lat="33.783643000" lon="-84.290661500">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.792850300" lon="-84.290628700">
+  <name>Restaurant:Maddy&apos;s</name>
+  <cmt>Restaurant:Maddy&apos;s</cmt>
+  <desc>Restaurant:Maddy&apos;s</desc>
+</wpt>
+<wpt lat="33.773218500" lon="-84.290014400">
+  <name>Restaurant:Fellini&apos;s Pizza</name>
+  <cmt>Restaurant:Fellini&apos;s Pizza</cmt>
+  <desc>Restaurant:Fellini&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.772883000" lon="-84.289104600">
+  <name>Restaurant:Carpe Diem</name>
+  <cmt>Restaurant:Carpe Diem</cmt>
+  <desc>Restaurant:Carpe Diem</desc>
+</wpt>
+<wpt lat="33.756156100" lon="-84.287566100">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.773157000" lon="-84.285815400">
+  <name>Pub:Corner Pub</name>
+  <cmt>Pub:Corner Pub</cmt>
+  <desc>Pub:Corner Pub</desc>
+</wpt>
+<wpt lat="33.773293000" lon="-84.285598100">
+  <name>Restaurant:Figo Pasta</name>
+  <cmt>Restaurant:Figo Pasta</cmt>
+  <desc>Restaurant:Figo Pasta</desc>
+</wpt>
+<wpt lat="33.773194900" lon="-84.285453300">
+  <name>Cafe:Ducks Cosmic Kitchen</name>
+  <cmt>Cafe:Ducks Cosmic Kitchen</cmt>
+  <desc>Cafe:Ducks Cosmic Kitchen</desc>
+</wpt>
+<wpt lat="34.093237300" lon="-84.279579700">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.775540100" lon="-84.272295400">
+  <name>Pub:James Joyce Irish Pub</name>
+  <cmt>Pub:James Joyce Irish Pub</cmt>
+  <desc>Pub:James Joyce Irish Pub</desc>
+</wpt>
+<wpt lat="33.775800900" lon="-84.271091100">
+  <name>Cafe:Urban Grounds</name>
+  <cmt>Cafe:Urban Grounds</cmt>
+  <desc>Cafe:Urban Grounds</desc>
+</wpt>
+<wpt lat="33.775790500" lon="-84.270882200">
+  <name>Fast Food Restaurant:Skip&apos;s</name>
+  <cmt>Fast Food Restaurant:Skip&apos;s</cmt>
+  <desc>Fast Food Restaurant:Skip&apos;s</desc>
+</wpt>
+<wpt lat="33.984641500" lon="-84.270423900">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.753739400" lon="-84.268757700">
+  <name>Fast Food Restaurant:Sonic</name>
+  <cmt>Fast Food Restaurant:Sonic</cmt>
+  <desc>Fast Food Restaurant:Sonic</desc>
+</wpt>
+<wpt lat="34.021924500" lon="-84.268284700">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="34.021889000" lon="-84.267641000">
+  <name>Restaurant:Brooklyn Bagels</name>
+  <cmt>Restaurant:Brooklyn Bagels</cmt>
+  <desc>Restaurant:Brooklyn Bagels</desc>
+</wpt>
+<wpt lat="33.778277900" lon="-84.266915100">
+  <name>Restaurant:Savage Pizza</name>
+  <cmt>Restaurant:Savage Pizza</cmt>
+  <desc>Restaurant:Savage Pizza</desc>
+</wpt>
+<wpt lat="33.754838800" lon="-84.266890700">
+  <name>Fast Food Restaurant:Taco Bell</name>
+  <cmt>Fast Food Restaurant:Taco Bell</cmt>
+  <desc>Fast Food Restaurant:Taco Bell</desc>
+</wpt>
+<wpt lat="34.067648300" lon="-84.263165300">
+  <name>Restaurant:Popeyes Chicken &amp; Biscuits</name>
+  <cmt>Restaurant:Popeyes Chicken &amp; Biscuits</cmt>
+  <desc>Restaurant:Popeyes Chicken &amp; Biscuits</desc>
+</wpt>
+<wpt lat="34.067307100" lon="-84.262186800">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="34.065458400" lon="-84.254024300">
+  <name>Cafe:Dunkin Donuts</name>
+  <cmt>Cafe:Dunkin Donuts</cmt>
+  <desc>Cafe:Dunkin Donuts</desc>
+</wpt>
+<wpt lat="34.023062700" lon="-84.251590700">
+  <name>Restaurant:Marlowe&apos;s Tavern</name>
+  <cmt>Restaurant:Marlowe&apos;s Tavern</cmt>
+  <desc>Restaurant:Marlowe&apos;s Tavern</desc>
+</wpt>
+<wpt lat="34.026335000" lon="-84.251590700">
+  <name>Restaurant:KoKo&apos;s Sushi</name>
+  <cmt>Restaurant:KoKo&apos;s Sushi</cmt>
+  <desc>Restaurant:KoKo&apos;s Sushi</desc>
+</wpt>
+<wpt lat="34.026904100" lon="-84.251350400">
+  <name>Fast Food Restaurant:Johnny&apos;s Pizza</name>
+  <cmt>Fast Food Restaurant:Johnny&apos;s Pizza</cmt>
+  <desc>Fast Food Restaurant:Johnny&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.828039700" lon="-84.250063100">
+  <name>Fast Food Restaurant:Waffle House</name>
+  <cmt>Fast Food Restaurant:Waffle House</cmt>
+  <desc>Fast Food Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="34.061461100" lon="-84.246377400">
+  <name>Fast Food Restaurant:Arby&apos;s</name>
+  <cmt>Fast Food Restaurant:Arby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="34.060870000" lon="-84.244564300">
+  <name>Restaurant:Simon&apos;s Chinese</name>
+  <cmt>Restaurant:Simon&apos;s Chinese</cmt>
+  <desc>Restaurant:Simon&apos;s Chinese</desc>
+</wpt>
+<wpt lat="34.057180000" lon="-84.235409000">
+  <name>Restaurant:Madras Chettinaad</name>
+  <cmt>Restaurant:Madras Chettinaad</cmt>
+  <desc>Restaurant:Madras Chettinaad</desc>
+</wpt>
+<wpt lat="34.059726200" lon="-84.235280400">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="34.059189700" lon="-84.234842900">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.952849800" lon="-84.233357200">
+  <name>Fast Food Restaurant:Panda Express</name>
+  <cmt>Fast Food Restaurant:Panda Express</cmt>
+  <desc>Fast Food Restaurant:Panda Express</desc>
+</wpt>
+<wpt lat="33.957530800" lon="-84.232177000">
+  <name>Cafe:Starbuck&apos;s</name>
+  <cmt>Cafe:Starbuck&apos;s</cmt>
+  <desc>Cafe:Starbuck&apos;s</desc>
+</wpt>
+<wpt lat="33.957708800" lon="-84.231994600">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="30.540356700" lon="-84.226303500">
+  <name>Restaurant:El Jalisco</name>
+  <cmt>Restaurant:El Jalisco</cmt>
+  <desc>Restaurant:El Jalisco</desc>
+</wpt>
+<wpt lat="30.542556000" lon="-84.225005400">
+  <name>Restaurant:Coosh&apos;s Bayou Rouge</name>
+  <cmt>Restaurant:Coosh&apos;s Bayou Rouge</cmt>
+  <desc>Restaurant:Coosh&apos;s Bayou Rouge</desc>
+</wpt>
+<wpt lat="30.542167800" lon="-84.224898000">
+  <name>Restaurant:Red Elephant</name>
+  <cmt>Restaurant:Red Elephant</cmt>
+  <desc>Restaurant:Red Elephant</desc>
+</wpt>
+<wpt lat="30.562254100" lon="-84.219039600">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="30.562068500" lon="-84.218857200">
+  <name>Fast Food Restaurant:Chik-Fil-A</name>
+  <cmt>Fast Food Restaurant:Chik-Fil-A</cmt>
+  <desc>Fast Food Restaurant:Chik-Fil-A</desc>
+</wpt>
+<wpt lat="34.062050200" lon="-84.214003100">
+  <name>Restaurant:Adobo Taqueria and Tequila Bar</name>
+  <cmt>Restaurant:Adobo Taqueria and Tequila Bar</cmt>
+  <desc>Restaurant:Adobo Taqueria and Tequila Bar</desc>
+</wpt>
+<wpt lat="34.063520500" lon="-84.212243100">
+  <name>Restaurant:Jefferry&apos;s Sport Bar</name>
+  <cmt>Restaurant:Jefferry&apos;s Sport Bar</cmt>
+  <desc>Restaurant:Jefferry&apos;s Sport Bar</desc>
+</wpt>
+<wpt lat="34.063926400" lon="-84.211887100">
+  <name>Fast Food Restaurant:Burger King</name>
+  <cmt>Fast Food Restaurant:Burger King</cmt>
+  <desc>Fast Food Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="34.065593900" lon="-84.210231600">
+  <name>Restaurant:Bonefish Grill</name>
+  <cmt>Restaurant:Bonefish Grill</cmt>
+  <desc>Restaurant:Bonefish Grill</desc>
+</wpt>
+<wpt lat="33.910365400" lon="-84.208895800">
+  <name>Restaurant:Cracker Barrel</name>
+  <cmt>Restaurant:Cracker Barrel</cmt>
+  <desc>Restaurant:Cracker Barrel</desc>
+</wpt>
+<wpt lat="33.910355900" lon="-84.208183100">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.913552000" lon="-84.207833000">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.913128000" lon="-84.207740000">
+  <name>Restaurant:Cracker Barrel</name>
+  <cmt>Restaurant:Cracker Barrel</cmt>
+  <desc>Restaurant:Cracker Barrel</desc>
+</wpt>
+<wpt lat="33.909556200" lon="-84.207276500">
+  <name>Restaurant:Denny&apos;s</name>
+  <cmt>Restaurant:Denny&apos;s</cmt>
+  <desc>Restaurant:Denny&apos;s</desc>
+</wpt>
+<wpt lat="34.093641700" lon="-84.207119600">
+  <name>Fast Food Restaurant:Little Caeser&apos;s Pizza</name>
+  <cmt>Fast Food Restaurant:Little Caeser&apos;s Pizza</cmt>
+  <desc>Fast Food Restaurant:Little Caeser&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.913379600" lon="-84.206934400">
+  <name>Restaurant:Pappadeaux Seafood</name>
+  <cmt>Restaurant:Pappadeaux Seafood</cmt>
+  <desc>Restaurant:Pappadeaux Seafood</desc>
+</wpt>
+<wpt lat="33.852622000" lon="-84.206910600">
+  <name>Restaurant:Main Moon</name>
+  <cmt>Restaurant:Main Moon</cmt>
+  <desc>Restaurant:Main Moon</desc>
+</wpt>
+<wpt lat="33.852493700" lon="-84.206738900">
+  <name>Restaurant:Taqueria Los Hermanos</name>
+  <cmt>Restaurant:Taqueria Los Hermanos</cmt>
+  <desc>Restaurant:Taqueria Los Hermanos</desc>
+</wpt>
+<wpt lat="33.850319800" lon="-84.206054100">
+  <name>Fast Food Restaurant:Moe&apos;s</name>
+  <cmt>Fast Food Restaurant:Moe&apos;s</cmt>
+  <desc>Fast Food Restaurant:Moe&apos;s</desc>
+</wpt>
+<wpt lat="33.905161100" lon="-84.198197800">
+  <name>Restaurant:Vietnamese Food</name>
+  <cmt>Restaurant:Vietnamese Food</cmt>
+  <desc>Restaurant:Vietnamese Food</desc>
+</wpt>
+<wpt lat="33.884549700" lon="-84.194631900">
+  <name>Restaurant:Taj Mahal Restaurant</name>
+  <cmt>Restaurant:Taj Mahal Restaurant</cmt>
+  <desc>Restaurant:Taj Mahal Restaurant</desc>
+</wpt>
+<wpt lat="34.017862800" lon="-84.191321300">
+  <name>Restaurant:Garrisons</name>
+  <cmt>Restaurant:Garrisons</cmt>
+  <desc>Restaurant:Garrisons</desc>
+</wpt>
+<wpt lat="33.867538900" lon="-84.191309000">
+  <name>Restaurant:L&apos; Thai Organic Cuisine &amp; Wine Bar</name>
+  <cmt>Restaurant:L&apos; Thai Organic Cuisine &amp; Wine Bar</cmt>
+  <desc>Restaurant:L&apos; Thai Organic Cuisine &amp; Wine Bar</desc>
+</wpt>
+<wpt lat="33.866941000" lon="-84.187547200">
+  <name>Fast Food Restaurant:Checkers</name>
+  <cmt>Fast Food Restaurant:Checkers</cmt>
+  <desc>Fast Food Restaurant:Checkers</desc>
+</wpt>
+<wpt lat="33.861752500" lon="-84.186749000">
+  <name>Pub:Taco Mac</name>
+  <cmt>Pub:Taco Mac</cmt>
+  <desc>Pub:Taco Mac</desc>
+</wpt>
+<wpt lat="33.931331800" lon="-84.178559100">
+  <name>Fast Food Restaurant:Arby&apos;s</name>
+  <cmt>Fast Food Restaurant:Arby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="33.930980400" lon="-84.178280600">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="34.095315800" lon="-84.174910000">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.925438700" lon="-84.173667600">
+  <name>Fast Food Restaurant:Taco Bell</name>
+  <cmt>Fast Food Restaurant:Taco Bell</cmt>
+  <desc>Fast Food Restaurant:Taco Bell</desc>
+</wpt>
+<wpt lat="33.924947600" lon="-84.173307800">
+  <name>Fast Food Restaurant:Krystal</name>
+  <cmt>Fast Food Restaurant:Krystal</cmt>
+  <desc>Fast Food Restaurant:Krystal</desc>
+</wpt>
+<wpt lat="33.923777600" lon="-84.172222700">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="34.063742500" lon="-84.171782200">
+  <name>Restaurant:Asian Bistro</name>
+  <cmt>Restaurant:Asian Bistro</cmt>
+  <desc>Restaurant:Asian Bistro</desc>
+</wpt>
+<wpt lat="33.922501700" lon="-84.171462600">
+  <name>Fast Food Restaurant:Burger King</name>
+  <cmt>Fast Food Restaurant:Burger King</cmt>
+  <desc>Fast Food Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="33.922029800" lon="-84.170574800">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="34.002187800" lon="-84.170170900">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="34.245950900" lon="-84.170107200">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="34.065959100" lon="-84.170054600">
+  <name>Restaurant:IHOP</name>
+  <cmt>Restaurant:IHOP</cmt>
+  <desc>Restaurant:IHOP</desc>
+</wpt>
+<wpt lat="34.066222200" lon="-84.169822800">
+  <name>Restaurant:Chili&apos;s</name>
+  <cmt>Restaurant:Chili&apos;s</cmt>
+  <desc>Restaurant:Chili&apos;s</desc>
+</wpt>
+<wpt lat="34.066730300" lon="-84.169590500">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="34.067423800" lon="-84.169144800">
+  <name>Fast Food Restaurant:Chipotle</name>
+  <cmt>Fast Food Restaurant:Chipotle</cmt>
+  <desc>Fast Food Restaurant:Chipotle</desc>
+</wpt>
+<wpt lat="33.920989700" lon="-84.168805000">
+  <name>Fast Food Restaurant:Bojangle&apos;s Chicken</name>
+  <cmt>Fast Food Restaurant:Bojangle&apos;s Chicken</cmt>
+  <desc>Fast Food Restaurant:Bojangle&apos;s Chicken</desc>
+</wpt>
+<wpt lat="34.069082200" lon="-84.168426200">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.722555500" lon="-84.167741000">
+  <name>Restaurant:Chou Lees Chinese Restaurant</name>
+  <cmt>Restaurant:Chou Lees Chinese Restaurant</cmt>
+  <desc>Restaurant:Chou Lees Chinese Restaurant</desc>
+</wpt>
+<wpt lat="34.068833400" lon="-84.167310500">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="34.072971200" lon="-84.165465000">
+  <name>Fast Food Restaurant:Arby&apos;s</name>
+  <cmt>Fast Food Restaurant:Arby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="34.073497300" lon="-84.165267600">
+  <name>Fast Food Restaurant:Panda Express</name>
+  <cmt>Fast Food Restaurant:Panda Express</cmt>
+  <desc>Fast Food Restaurant:Panda Express</desc>
+</wpt>
+<wpt lat="33.884685500" lon="-84.165108900">
+  <name>Restaurant:Subway</name>
+  <cmt>Restaurant:Subway</cmt>
+  <desc>Restaurant:Subway</desc>
+</wpt>
+<wpt lat="34.073795900" lon="-84.164932900">
+  <name>Fast Food Restaurant:Taco Bell</name>
+  <cmt>Fast Food Restaurant:Taco Bell</cmt>
+  <desc>Fast Food Restaurant:Taco Bell</desc>
+</wpt>
+<wpt lat="34.067511600" lon="-84.164718700">
+  <name>Restaurant:Zaxby&apos;s</name>
+  <cmt>Restaurant:Zaxby&apos;s</cmt>
+  <desc>Restaurant:Zaxby&apos;s</desc>
+</wpt>
+<wpt lat="33.807747000" lon="-84.164267500">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="34.067262700" lon="-84.164040700">
+  <name>Fast Food Restaurant:Burger King</name>
+  <cmt>Fast Food Restaurant:Burger King</cmt>
+  <desc>Fast Food Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="34.077556700" lon="-84.162246400">
+  <name>Restaurant:Jonny&apos;s New York Pizzaria</name>
+  <cmt>Restaurant:Jonny&apos;s New York Pizzaria</cmt>
+  <desc>Restaurant:Jonny&apos;s New York Pizzaria</desc>
+</wpt>
+<wpt lat="33.882244900" lon="-84.161887800">
+  <name>Cafe:Lilburn Cafe</name>
+  <cmt>Cafe:Lilburn Cafe</cmt>
+  <desc>Cafe:Lilburn Cafe</desc>
+</wpt>
+<wpt lat="33.810577400" lon="-84.161715400">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.800056800" lon="-84.153016400">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.799642100" lon="-84.150833700">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.810728400" lon="-84.145389800">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="33.811714100" lon="-84.145259400">
+  <name>Drinking water source</name>
+  <cmt>Drinking water source</cmt>
+  <desc>Drinking water source</desc>
+</wpt>
+<wpt lat="33.895097700" lon="-84.140990900">
+  <name>Fast Food Restaurant:Chick-fil-A</name>
+  <cmt>Fast Food Restaurant:Chick-fil-A</cmt>
+  <desc>Fast Food Restaurant:Chick-fil-A</desc>
+</wpt>
+<wpt lat="33.858791900" lon="-84.139974100">
+  <name>Fast Food Restaurant:Domino&apos;s Pizza</name>
+  <cmt>Fast Food Restaurant:Domino&apos;s Pizza</cmt>
+  <desc>Fast Food Restaurant:Domino&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.896294600" lon="-84.137703600">
+  <name>Restaurant:Los Hermanos</name>
+  <cmt>Restaurant:Los Hermanos</cmt>
+  <desc>Restaurant:Los Hermanos</desc>
+</wpt>
+<wpt lat="33.956807400" lon="-84.136432100">
+  <name>Restaurant:Haru Ichiban Japanese Restaurant</name>
+  <cmt>Restaurant:Haru Ichiban Japanese Restaurant</cmt>
+  <desc>Restaurant:Haru Ichiban Japanese Restaurant</desc>
+</wpt>
+<wpt lat="33.840241100" lon="-84.132618200">
+  <name>Restaurant:New China</name>
+  <cmt>Restaurant:New China</cmt>
+  <desc>Restaurant:New China</desc>
+</wpt>
+<wpt lat="33.840566400" lon="-84.132586100">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="33.843704900" lon="-84.132506900">
+  <name>Restaurant:Imperial Chinese Gardens</name>
+  <cmt>Restaurant:Imperial Chinese Gardens</cmt>
+  <desc>Restaurant:Imperial Chinese Gardens</desc>
+</wpt>
+<wpt lat="33.956492600" lon="-84.132377100">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="33.955915400" lon="-84.131830400">
+  <name>Fast Food Restaurant:Panda Express</name>
+  <cmt>Fast Food Restaurant:Panda Express</cmt>
+  <desc>Fast Food Restaurant:Panda Express</desc>
+</wpt>
+<wpt lat="33.953604900" lon="-84.131490400">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.842272900" lon="-84.131175200">
+  <name>Restaurant:Gioffi&apos;s Pizzeria</name>
+  <cmt>Restaurant:Gioffi&apos;s Pizzeria</cmt>
+  <desc>Restaurant:Gioffi&apos;s Pizzeria</desc>
+</wpt>
+<wpt lat="33.841662500" lon="-84.131030400">
+  <name>Pub:Will Henry&apos;s Tavern</name>
+  <cmt>Pub:Will Henry&apos;s Tavern</cmt>
+  <desc>Pub:Will Henry&apos;s Tavern</desc>
+</wpt>
+<wpt lat="34.184103100" lon="-84.131002400">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.841457500" lon="-84.130896300">
+  <name>Cafe:Bagels and More</name>
+  <cmt>Cafe:Bagels and More</cmt>
+  <desc>Cafe:Bagels and More</desc>
+</wpt>
+<wpt lat="33.840003800" lon="-84.130764200">
+  <name>Fast Food Restaurant:Little Caesars</name>
+  <cmt>Fast Food Restaurant:Little Caesars</cmt>
+  <desc>Fast Food Restaurant:Little Caesars</desc>
+</wpt>
+<wpt lat="33.841586700" lon="-84.130671000">
+  <name>Restaurant:Colossus</name>
+  <cmt>Restaurant:Colossus</cmt>
+  <desc>Restaurant:Colossus</desc>
+</wpt>
+<wpt lat="34.057491400" lon="-84.130110000">
+  <name>Restaurant:Allesio&apos;s Pizzeria</name>
+  <cmt>Restaurant:Allesio&apos;s Pizzeria</cmt>
+  <desc>Restaurant:Allesio&apos;s Pizzeria</desc>
+</wpt>
+<wpt lat="33.949909100" lon="-84.128930500">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.824048200" lon="-84.125697500">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.823709500" lon="-84.123216500">
+  <name>Restaurant:Caribbean Paradise</name>
+  <cmt>Restaurant:Caribbean Paradise</cmt>
+  <desc>Restaurant:Caribbean Paradise</desc>
+</wpt>
+<wpt lat="33.823354600" lon="-84.122671200">
+  <name>Restaurant:Cici&apos;s Pizza</name>
+  <cmt>Restaurant:Cici&apos;s Pizza</cmt>
+  <desc>Restaurant:Cici&apos;s Pizza</desc>
+</wpt>
+<wpt lat="33.824431400" lon="-84.122444000">
+  <name>Restaurant:Asian Buffet</name>
+  <cmt>Restaurant:Asian Buffet</cmt>
+  <desc>Restaurant:Asian Buffet</desc>
+</wpt>
+<wpt lat="33.824271000" lon="-84.122229400">
+  <name>Restaurant:Madras Sri Ganesh Ram Palace</name>
+  <cmt>Restaurant:Madras Sri Ganesh Ram Palace</cmt>
+  <desc>Restaurant:Madras Sri Ganesh Ram Palace</desc>
+</wpt>
+<wpt lat="33.824566000" lon="-84.120056200">
+  <name>Fast Food Restaurant:Wendys</name>
+  <cmt>Fast Food Restaurant:Wendys</cmt>
+  <desc>Fast Food Restaurant:Wendys</desc>
+</wpt>
+<wpt lat="33.823500900" lon="-84.119455400">
+  <name>Restaurant:Metro Cafe Diner</name>
+  <cmt>Restaurant:Metro Cafe Diner</cmt>
+  <desc>Restaurant:Metro Cafe Diner</desc>
+</wpt>
+<wpt lat="33.823095300" lon="-84.118275200">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.823581100" lon="-84.117652900">
+  <name>Restaurant:El Torero</name>
+  <cmt>Restaurant:El Torero</cmt>
+  <desc>Restaurant:El Torero</desc>
+</wpt>
+<wpt lat="33.699728000" lon="-84.117168000">
+  <name>Fast Food Restaurant:Krystal</name>
+  <cmt>Fast Food Restaurant:Krystal</cmt>
+  <desc>Fast Food Restaurant:Krystal</desc>
+</wpt>
+<wpt lat="33.822002000" lon="-84.116250000">
+  <name>Restaurant:Stone Mountain PIzza Cafe</name>
+  <cmt>Restaurant:Stone Mountain PIzza Cafe</cmt>
+  <desc>Restaurant:Stone Mountain PIzza Cafe</desc>
+</wpt>
+<wpt lat="33.822666000" lon="-84.113203000">
+  <name>Fast Food Restaurant:Kentucky Fried Chicken</name>
+  <cmt>Fast Food Restaurant:Kentucky Fried Chicken</cmt>
+  <desc>Fast Food Restaurant:Kentucky Fried Chicken</desc>
+</wpt>
+<wpt lat="33.823563300" lon="-84.113066300">
+  <name>Fast Food Restaurant:Burger King</name>
+  <cmt>Fast Food Restaurant:Burger King</cmt>
+  <desc>Fast Food Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="33.823746100" lon="-84.112004300">
+  <name>Fast Food Restaurant:Hardees</name>
+  <cmt>Fast Food Restaurant:Hardees</cmt>
+  <desc>Fast Food Restaurant:Hardees</desc>
+</wpt>
+<wpt lat="33.825032600" lon="-84.111651100">
+  <name>Restaurant:Outback Steakhouse</name>
+  <cmt>Restaurant:Outback Steakhouse</cmt>
+  <desc>Restaurant:Outback Steakhouse</desc>
+</wpt>
+<wpt lat="33.823772700" lon="-84.111601800">
+  <name>Fast Food Restaurant:Arby&apos;s</name>
+  <cmt>Fast Food Restaurant:Arby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="33.823991100" lon="-84.110990300">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.823358300" lon="-84.109429200">
+  <name>Restaurant:Applebee&apos;s</name>
+  <cmt>Restaurant:Applebee&apos;s</cmt>
+  <desc>Restaurant:Applebee&apos;s</desc>
+</wpt>
+<wpt lat="33.824281700" lon="-84.109001100">
+  <name>Fast Food Restaurant:Krystal</name>
+  <cmt>Fast Food Restaurant:Krystal</cmt>
+  <desc>Fast Food Restaurant:Krystal</desc>
+</wpt>
+<wpt lat="33.823394900" lon="-84.108093000">
+  <name>Fast Food Restaurant:Boston Market</name>
+  <cmt>Fast Food Restaurant:Boston Market</cmt>
+  <desc>Fast Food Restaurant:Boston Market</desc>
+</wpt>
+<wpt lat="33.823670200" lon="-84.107739500">
+  <name>Fast Food Restaurant:Taco Bell</name>
+  <cmt>Fast Food Restaurant:Taco Bell</cmt>
+  <desc>Fast Food Restaurant:Taco Bell</desc>
+</wpt>
+<wpt lat="33.824000000" lon="-84.105867300">
+  <name>Restaurant:Donnie&apos;s</name>
+  <cmt>Restaurant:Donnie&apos;s</cmt>
+  <desc>Restaurant:Donnie&apos;s</desc>
+</wpt>
+<wpt lat="33.825011600" lon="-84.105454200">
+  <name>Fast Food Restaurant:Chik-fil-A</name>
+  <cmt>Fast Food Restaurant:Chik-fil-A</cmt>
+  <desc>Fast Food Restaurant:Chik-fil-A</desc>
+</wpt>
+<wpt lat="33.824312000" lon="-84.104274000">
+  <name>Restaurant:Frontera</name>
+  <cmt>Restaurant:Frontera</cmt>
+  <desc>Restaurant:Frontera</desc>
+</wpt>
+<wpt lat="33.826664900" lon="-84.097697300">
+  <name>Fast Food Restaurant:Sonic</name>
+  <cmt>Fast Food Restaurant:Sonic</cmt>
+  <desc>Fast Food Restaurant:Sonic</desc>
+</wpt>
+<wpt lat="33.826919000" lon="-84.097300300">
+  <name>Fast Food Restaurant:Panda Express</name>
+  <cmt>Fast Food Restaurant:Panda Express</cmt>
+  <desc>Fast Food Restaurant:Panda Express</desc>
+</wpt>
+<wpt lat="33.827235100" lon="-84.095412100">
+  <name>Fast Food Restaurant:Pizza Hut</name>
+  <cmt>Fast Food Restaurant:Pizza Hut</cmt>
+  <desc>Fast Food Restaurant:Pizza Hut</desc>
+</wpt>
+<wpt lat="34.050788600" lon="-84.091431100">
+  <name>Fast Food Restaurant:Burger King</name>
+  <cmt>Fast Food Restaurant:Burger King</cmt>
+  <desc>Fast Food Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="33.831820600" lon="-84.090385600">
+  <name>Cafe:Starbucks</name>
+  <cmt>Cafe:Starbucks</cmt>
+  <desc>Cafe:Starbucks</desc>
+</wpt>
+<wpt lat="34.052033100" lon="-84.090023500">
+  <name>Fast Food Restaurant:Chick A Fila</name>
+  <cmt>Fast Food Restaurant:Chick A Fila</cmt>
+  <desc>Fast Food Restaurant:Chick A Fila</desc>
+</wpt>
+<wpt lat="33.987790600" lon="-84.088179600">
+  <name>Fast Food Restaurant:Chick-fil-A</name>
+  <cmt>Fast Food Restaurant:Chick-fil-A</cmt>
+  <desc>Fast Food Restaurant:Chick-fil-A</desc>
+</wpt>
+<wpt lat="33.987905800" lon="-84.087051500">
+  <name>Restaurant:Carrabba&apos;s Italian Grille</name>
+  <cmt>Restaurant:Carrabba&apos;s Italian Grille</cmt>
+  <desc>Restaurant:Carrabba&apos;s Italian Grille</desc>
+</wpt>
+<wpt lat="33.984723800" lon="-84.079861200">
+  <name>Restaurant:Carino&apos;s Italian</name>
+  <cmt>Restaurant:Carino&apos;s Italian</cmt>
+  <desc>Restaurant:Carino&apos;s Italian</desc>
+</wpt>
+<wpt lat="33.834271600" lon="-84.078900300">
+  <name>Restaurant:Joe&apos;s Crab Shack</name>
+  <cmt>Restaurant:Joe&apos;s Crab Shack</cmt>
+  <desc>Restaurant:Joe&apos;s Crab Shack</desc>
+</wpt>
+<wpt lat="33.835407900" lon="-84.075526100">
+  <name>Restaurant:IHOP</name>
+  <cmt>Restaurant:IHOP</cmt>
+  <desc>Restaurant:IHOP</desc>
+</wpt>
+<wpt lat="33.837364000" lon="-84.071824700">
+  <name>Fast Food Restaurant:Moe&apos;s</name>
+  <cmt>Fast Food Restaurant:Moe&apos;s</cmt>
+  <desc>Fast Food Restaurant:Moe&apos;s</desc>
+</wpt>
+<wpt lat="33.999958200" lon="-84.070076200">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.837809600" lon="-84.069979300">
+  <name>Restaurant:Chili&apos;s</name>
+  <cmt>Restaurant:Chili&apos;s</cmt>
+  <desc>Restaurant:Chili&apos;s</desc>
+</wpt>
+<wpt lat="33.838549200" lon="-84.069029800">
+  <name>Restaurant:Red Lobster</name>
+  <cmt>Restaurant:Red Lobster</cmt>
+  <desc>Restaurant:Red Lobster</desc>
+</wpt>
+<wpt lat="33.838821000" lon="-84.067822800">
+  <name>Restaurant:Zaxby&apos;s</name>
+  <cmt>Restaurant:Zaxby&apos;s</cmt>
+  <desc>Restaurant:Zaxby&apos;s</desc>
+</wpt>
+<wpt lat="33.840100700" lon="-84.065083000">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.885611600" lon="-84.060498200">
+  <name>Fast Food Restaurant:Burger King</name>
+  <cmt>Fast Food Restaurant:Burger King</cmt>
+  <desc>Fast Food Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="34.043914800" lon="-84.054159000">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="34.031935600" lon="-84.050487700">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="34.028431800" lon="-84.047268100">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="34.027806100" lon="-84.046771300">
+  <name>Fast Food Restaurant:Taco Bell</name>
+  <cmt>Fast Food Restaurant:Taco Bell</cmt>
+  <desc>Fast Food Restaurant:Taco Bell</desc>
+</wpt>
+<wpt lat="34.027220700" lon="-84.046191700">
+  <name>Fast Food Restaurant:Arby&apos;s</name>
+  <cmt>Fast Food Restaurant:Arby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="34.028088600" lon="-84.045607200">
+  <name>Fast Food Restaurant:Burger King</name>
+  <cmt>Fast Food Restaurant:Burger King</cmt>
+  <desc>Fast Food Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="34.027761700" lon="-84.045261400">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="33.969447300" lon="-84.035591400">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="33.874922800" lon="-84.018094600">
+  <name>Restaurant:Uncle Betty&apos;s BBQ</name>
+  <cmt>Restaurant:Uncle Betty&apos;s BBQ</cmt>
+  <desc>Restaurant:Uncle Betty&apos;s BBQ</desc>
+</wpt>
+<wpt lat="33.867085100" lon="-84.016740200">
+  <name>Restaurant:O&apos;Charleys</name>
+  <cmt>Restaurant:O&apos;Charleys</cmt>
+  <desc>Restaurant:O&apos;Charleys</desc>
+</wpt>
+<wpt lat="34.068479100" lon="-83.982051300">
+  <name>Restaurant:Taco Mac</name>
+  <cmt>Restaurant:Taco Mac</cmt>
+  <desc>Restaurant:Taco Mac</desc>
+</wpt>
+<wpt lat="34.534995300" lon="-83.977872800">
+  <name>Restaurant:Dipper Dan</name>
+  <cmt>Restaurant:Dipper Dan</cmt>
+  <desc>Restaurant:Dipper Dan</desc>
+</wpt>
+<wpt lat="34.185218700" lon="-83.925447900">
+  <name>Cafe:Common Grounds</name>
+  <cmt>Cafe:Common Grounds</cmt>
+  <desc>Cafe:Common Grounds</desc>
+</wpt>
+<wpt lat="34.073542200" lon="-83.917140900">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="34.093720100" lon="-83.808648300">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="34.444238700" lon="-83.805396700">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="34.118762900" lon="-83.763432800">
+  <name>Restaurant:Cracker Barrel</name>
+  <cmt>Restaurant:Cracker Barrel</cmt>
+  <desc>Restaurant:Cracker Barrel</desc>
+</wpt>
+<wpt lat="34.120685500" lon="-83.762647700">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="34.119516600" lon="-83.762026200">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.520282500" lon="-83.698889100">
+  <name>Restaurant:Bess&apos;s Place</name>
+  <cmt>Restaurant:Bess&apos;s Place</cmt>
+  <desc>Restaurant:Bess&apos;s Place</desc>
+</wpt>
+<wpt lat="33.516981900" lon="-83.696367800">
+  <name>Restaurant:Lucy&apos;s Wings &amp; Things</name>
+  <cmt>Restaurant:Lucy&apos;s Wings &amp; Things</cmt>
+  <desc>Restaurant:Lucy&apos;s Wings &amp; Things</desc>
+</wpt>
+<wpt lat="32.552118300" lon="-83.693781800">
+  <name>Cafe</name>
+  <cmt>Cafe</cmt>
+  <desc>Cafe</desc>
+</wpt>
+<wpt lat="32.552434800" lon="-83.693781800">
+  <name>Restaurant:Stevie B&apos;s</name>
+  <cmt>Restaurant:Stevie B&apos;s</cmt>
+  <desc>Restaurant:Stevie B&apos;s</desc>
+</wpt>
+<wpt lat="32.552371500" lon="-83.690681200">
+  <name>Restaurant:Mellow Mushroom</name>
+  <cmt>Restaurant:Mellow Mushroom</cmt>
+  <desc>Restaurant:Mellow Mushroom</desc>
+</wpt>
+<wpt lat="32.557444700" lon="-83.662754000">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="32.555193000" lon="-83.662668200">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="32.554876500" lon="-83.661713300">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="34.153282300" lon="-83.651678700">
+  <name>Fast Food Restaurant:burger King</name>
+  <cmt>Fast Food Restaurant:burger King</cmt>
+  <desc>Fast Food Restaurant:burger King</desc>
+</wpt>
+<wpt lat="34.153095800" lon="-83.649629500">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="34.152927100" lon="-83.648553300">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="34.152616400" lon="-83.643725400">
+  <name>Restaurant:El Jinete</name>
+  <cmt>Restaurant:El Jinete</cmt>
+  <desc>Restaurant:El Jinete</desc>
+</wpt>
+<wpt lat="34.151737400" lon="-83.643178200">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="34.152572000" lon="-83.643081600">
+  <name>Restaurant:Arby&apos;s</name>
+  <cmt>Restaurant:Arby&apos;s</cmt>
+  <desc>Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="34.151693000" lon="-83.642770500">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="34.151622000" lon="-83.642162200">
+  <name>Fast Food Restaurant:Zaxby&apos;s</name>
+  <cmt>Fast Food Restaurant:Zaxby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Zaxby&apos;s</desc>
+</wpt>
+<wpt lat="32.837037100" lon="-83.630527300">
+  <name>Fast Food Restaurant:Nu-Way Weiners</name>
+  <cmt>Fast Food Restaurant:Nu-Way Weiners</cmt>
+  <desc>Fast Food Restaurant:Nu-Way Weiners</desc>
+</wpt>
+<wpt lat="34.563635700" lon="-83.542741600">
+  <name>Restaurant:The Grill on Georgia Street</name>
+  <cmt>Restaurant:The Grill on Georgia Street</cmt>
+  <desc>Restaurant:The Grill on Georgia Street</desc>
+</wpt>
+<wpt lat="33.594747000" lon="-83.468621000">
+  <name>Restaurant:Chophouse</name>
+  <cmt>Restaurant:Chophouse</cmt>
+  <desc>Restaurant:Chophouse</desc>
+</wpt>
+<wpt lat="34.258144300" lon="-83.465961900">
+  <name>Fast Food Restaurant:Sonic Drive In</name>
+  <cmt>Fast Food Restaurant:Sonic Drive In</cmt>
+  <desc>Fast Food Restaurant:Sonic Drive In</desc>
+</wpt>
+<wpt lat="34.256522600" lon="-83.465832600">
+  <name>Restaurant:Applebee&apos;s</name>
+  <cmt>Restaurant:Applebee&apos;s</cmt>
+  <desc>Restaurant:Applebee&apos;s</desc>
+</wpt>
+<wpt lat="34.257666000" lon="-83.463710700">
+  <name>Fast Food Restaurant:Chick-fil-A</name>
+  <cmt>Fast Food Restaurant:Chick-fil-A</cmt>
+  <desc>Fast Food Restaurant:Chick-fil-A</desc>
+</wpt>
+<wpt lat="34.256405700" lon="-83.463211200">
+  <name>Fast Food Restaurant:Krystal</name>
+  <cmt>Fast Food Restaurant:Krystal</cmt>
+  <desc>Fast Food Restaurant:Krystal</desc>
+</wpt>
+<wpt lat="34.256664800" lon="-83.462341500">
+  <name>Restaurant:Cracker Barrel</name>
+  <cmt>Restaurant:Cracker Barrel</cmt>
+  <desc>Restaurant:Cracker Barrel</desc>
+</wpt>
+<wpt lat="34.206501800" lon="-83.461739100">
+  <name>Fast Food Restaurant:Hardee&apos;s</name>
+  <cmt>Fast Food Restaurant:Hardee&apos;s</cmt>
+  <desc>Fast Food Restaurant:Hardee&apos;s</desc>
+</wpt>
+<wpt lat="34.252529400" lon="-83.461239300">
+  <name>Restaurant:Longhorn Steakhouse</name>
+  <cmt>Restaurant:Longhorn Steakhouse</cmt>
+  <desc>Restaurant:Longhorn Steakhouse</desc>
+</wpt>
+<wpt lat="34.251879100" lon="-83.461065300">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="34.251141100" lon="-83.460535700">
+  <name>Fast Food Restaurant:Captain D&apos;s</name>
+  <cmt>Fast Food Restaurant:Captain D&apos;s</cmt>
+  <desc>Fast Food Restaurant:Captain D&apos;s</desc>
+</wpt>
+<wpt lat="34.250784700" lon="-83.460142300">
+  <name>Restaurant:Denny&apos;s</name>
+  <cmt>Restaurant:Denny&apos;s</cmt>
+  <desc>Restaurant:Denny&apos;s</desc>
+</wpt>
+<wpt lat="34.247854400" lon="-83.458761500">
+  <name>Restaurant:Sonny&apos;s BBQ</name>
+  <cmt>Restaurant:Sonny&apos;s BBQ</cmt>
+  <desc>Restaurant:Sonny&apos;s BBQ</desc>
+</wpt>
+<wpt lat="33.872462700" lon="-83.440348800">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="33.872836800" lon="-83.438696500">
+  <name>Fast Food Restaurant:Zaxby&apos;s</name>
+  <cmt>Fast Food Restaurant:Zaxby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Zaxby&apos;s</desc>
+</wpt>
+<wpt lat="33.872783400" lon="-83.438278100">
+  <name>Fast Food Restaurant:Dairy Queen</name>
+  <cmt>Fast Food Restaurant:Dairy Queen</cmt>
+  <desc>Fast Food Restaurant:Dairy Queen</desc>
+</wpt>
+<wpt lat="34.877586000" lon="-83.396146600">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="34.877593100" lon="-83.396138000">
+  <name>Restaurant:Wendy&apos;s</name>
+  <cmt>Restaurant:Wendy&apos;s</cmt>
+  <desc>Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="33.958243000" lon="-83.379371000">
+  <name>Restaurant:Farm 255</name>
+  <cmt>Restaurant:Farm 255</cmt>
+  <desc>Restaurant:Farm 255</desc>
+</wpt>
+<wpt lat="33.958425300" lon="-83.369701600">
+  <name>Cafe:Jittery Joe&apos;s</name>
+  <cmt>Cafe:Jittery Joe&apos;s</cmt>
+  <desc>Cafe:Jittery Joe&apos;s</desc>
+</wpt>
+<wpt lat="33.410971000" lon="-83.368166000">
+  <name>Fast Food Restaurant</name>
+  <cmt>Fast Food Restaurant</cmt>
+  <desc>Fast Food Restaurant</desc>
+</wpt>
+<wpt lat="33.958614100" lon="-83.367372800">
+  <name>Restaurant:Weaver D&apos;s</name>
+  <cmt>Restaurant:Weaver D&apos;s</cmt>
+  <desc>Restaurant:Weaver D&apos;s</desc>
+</wpt>
+<wpt lat="33.898547300" lon="-83.365523800">
+  <name>Restaurant:Peppino&apos;s Pizza</name>
+  <cmt>Restaurant:Peppino&apos;s Pizza</cmt>
+  <desc>Restaurant:Peppino&apos;s Pizza</desc>
+</wpt>
+<wpt lat="32.860496900" lon="-83.346453400">
+  <name>Fast Food Restaurant:Gas Station</name>
+  <cmt>Fast Food Restaurant:Gas Station</cmt>
+  <desc>Fast Food Restaurant:Gas Station</desc>
+</wpt>
+<wpt lat="30.817269500" lon="-83.269998400">
+  <name>Restaurant:Gold Plate Restaurant</name>
+  <cmt>Restaurant:Gold Plate Restaurant</cmt>
+  <desc>Restaurant:Gold Plate Restaurant</desc>
+</wpt>
+<wpt lat="34.390453200" lon="-83.227114200">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="34.390122300" lon="-83.226951100">
+  <name>Fast Food Restaurant:Dairy Queen</name>
+  <cmt>Fast Food Restaurant:Dairy Queen</cmt>
+  <desc>Fast Food Restaurant:Dairy Queen</desc>
+</wpt>
+<wpt lat="32.846314300" lon="-83.210351700">
+  <name>Fast Food Restaurant:Chalk Miner&apos;s Diner</name>
+  <cmt>Fast Food Restaurant:Chalk Miner&apos;s Diner</cmt>
+  <desc>Fast Food Restaurant:Chalk Miner&apos;s Diner</desc>
+</wpt>
+<wpt lat="32.846458500" lon="-83.205854100">
+  <name>Fast Food Restaurant:Billy Mathews Grocery</name>
+  <cmt>Fast Food Restaurant:Billy Mathews Grocery</cmt>
+  <desc>Fast Food Restaurant:Billy Mathews Grocery</desc>
+</wpt>
+<wpt lat="34.564844000" lon="-83.193506000">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="34.448093700" lon="-83.127297700">
+  <name>Restaurant:Pizza Hut</name>
+  <cmt>Restaurant:Pizza Hut</cmt>
+  <desc>Restaurant:Pizza Hut</desc>
+</wpt>
+<wpt lat="34.447185700" lon="-83.126735000">
+  <name>Restaurant:Shoney&apos;s</name>
+  <cmt>Restaurant:Shoney&apos;s</cmt>
+  <desc>Restaurant:Shoney&apos;s</desc>
+</wpt>
+<wpt lat="34.447986100" lon="-83.126645300">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="34.448187800" lon="-83.124435100">
+  <name>Fast Food Restaurant:Burger King</name>
+  <cmt>Fast Food Restaurant:Burger King</cmt>
+  <desc>Fast Food Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="34.447717100" lon="-83.123170900">
+  <name>Fast Food Restaurant:Hardee&apos;s</name>
+  <cmt>Fast Food Restaurant:Hardee&apos;s</cmt>
+  <desc>Fast Food Restaurant:Hardee&apos;s</desc>
+</wpt>
+<wpt lat="34.444850800" lon="-83.119813500">
+  <name>Restaurant:La Cabana Mexican Restaurant</name>
+  <cmt>Restaurant:La Cabana Mexican Restaurant</cmt>
+  <desc>Restaurant:La Cabana Mexican Restaurant</desc>
+</wpt>
+<wpt lat="34.446244500" lon="-83.119654800">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="34.445158800" lon="-83.119173900">
+  <name>Fast Food Restaurant:Taco Bell</name>
+  <cmt>Fast Food Restaurant:Taco Bell</cmt>
+  <desc>Fast Food Restaurant:Taco Bell</desc>
+</wpt>
+<wpt lat="34.444646700" lon="-83.118090700">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="34.444465800" lon="-83.117502500">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="34.472186500" lon="-83.059619400">
+  <name>Restaurant:Dad&apos;s Restaurant</name>
+  <cmt>Restaurant:Dad&apos;s Restaurant</cmt>
+  <desc>Restaurant:Dad&apos;s Restaurant</desc>
+</wpt>
+<wpt lat="34.685619400" lon="-82.953042700">
+  <name>Restaurant:Ye Olde Sandwich Shoppe</name>
+  <cmt>Restaurant:Ye Olde Sandwich Shoppe</cmt>
+  <desc>Restaurant:Ye Olde Sandwich Shoppe</desc>
+</wpt>
+<wpt lat="34.823492100" lon="-82.916517400">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="34.528561900" lon="-82.845811100">
+  <name>Restaurant:Cafe</name>
+  <cmt>Restaurant:Cafe</cmt>
+  <desc>Restaurant:Cafe</desc>
+</wpt>
+<wpt lat="34.692011900" lon="-82.845241800">
+  <name>Restaurant:Lou Hu Cheng Asian Bistro</name>
+  <cmt>Restaurant:Lou Hu Cheng Asian Bistro</cmt>
+  <desc>Restaurant:Lou Hu Cheng Asian Bistro</desc>
+</wpt>
+<wpt lat="34.692004900" lon="-82.845147400">
+  <name>Restaurant:Tokyo Japanese Restaurant</name>
+  <cmt>Restaurant:Tokyo Japanese Restaurant</cmt>
+  <desc>Restaurant:Tokyo Japanese Restaurant</desc>
+</wpt>
+<wpt lat="34.525347200" lon="-82.842653800">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="34.692578300" lon="-82.840457400">
+  <name>Fast Food Restaurant:Super Taco</name>
+  <cmt>Fast Food Restaurant:Super Taco</cmt>
+  <desc>Fast Food Restaurant:Super Taco</desc>
+</wpt>
+<wpt lat="34.692555300" lon="-82.840100500">
+  <name>Restaurant:El Cactus</name>
+  <cmt>Restaurant:El Cactus</cmt>
+  <desc>Restaurant:El Cactus</desc>
+</wpt>
+<wpt lat="34.679572600" lon="-82.838506300">
+  <name>Fast Food Restaurant:Harcombe Dining Hall</name>
+  <cmt>Fast Food Restaurant:Harcombe Dining Hall</cmt>
+  <desc>Fast Food Restaurant:Harcombe Dining Hall</desc>
+</wpt>
+<wpt lat="34.679551400" lon="-82.838386100">
+  <name>Fast Food Restaurant:Chili&apos;s Too</name>
+  <cmt>Fast Food Restaurant:Chili&apos;s Too</cmt>
+  <desc>Fast Food Restaurant:Chili&apos;s Too</desc>
+</wpt>
+<wpt lat="34.679410000" lon="-82.838121300">
+  <name>Fast Food Restaurant:The Canteen</name>
+  <cmt>Fast Food Restaurant:The Canteen</cmt>
+  <desc>Fast Food Restaurant:The Canteen</desc>
+</wpt>
+<wpt lat="34.683562100" lon="-82.837835100">
+  <name>Pub:Nick&apos;s Tavern and Deli</name>
+  <cmt>Pub:Nick&apos;s Tavern and Deli</cmt>
+  <desc>Pub:Nick&apos;s Tavern and Deli</desc>
+</wpt>
+<wpt lat="34.683592500" lon="-82.837638100">
+  <name>Cafe:Moe Joe</name>
+  <cmt>Cafe:Moe Joe</cmt>
+  <desc>Cafe:Moe Joe</desc>
+</wpt>
+<wpt lat="34.683634800" lon="-82.837621000">
+  <name>Fast Food Restaurant:Ben and Jerry&apos;s</name>
+  <cmt>Fast Food Restaurant:Ben and Jerry&apos;s</cmt>
+  <desc>Fast Food Restaurant:Ben and Jerry&apos;s</desc>
+</wpt>
+<wpt lat="34.683698300" lon="-82.837586600">
+  <name>Fast Food Restaurant:Firehouse Subs</name>
+  <cmt>Fast Food Restaurant:Firehouse Subs</cmt>
+  <desc>Fast Food Restaurant:Firehouse Subs</desc>
+</wpt>
+<wpt lat="34.682583200" lon="-82.837475100">
+  <name>Pub:Loose Change</name>
+  <cmt>Pub:Loose Change</cmt>
+  <desc>Pub:Loose Change</desc>
+</wpt>
+<wpt lat="34.684135900" lon="-82.837432100">
+  <name>Fast Food Restaurant:Quizno&apos;s</name>
+  <cmt>Fast Food Restaurant:Quizno&apos;s</cmt>
+  <desc>Fast Food Restaurant:Quizno&apos;s</desc>
+</wpt>
+<wpt lat="34.682279700" lon="-82.837397800">
+  <name>Pub:T.D.&apos;s</name>
+  <cmt>Pub:T.D.&apos;s</cmt>
+  <desc>Pub:T.D.&apos;s</desc>
+</wpt>
+<wpt lat="34.683119600" lon="-82.837363500">
+  <name>Pub:356</name>
+  <cmt>Pub:356</cmt>
+  <desc>Pub:356</desc>
+</wpt>
+<wpt lat="34.683310100" lon="-82.837363500">
+  <name>Pub:Tiger Town Tavern</name>
+  <cmt>Pub:Tiger Town Tavern</cmt>
+  <desc>Pub:Tiger Town Tavern</desc>
+</wpt>
+<wpt lat="34.684284100" lon="-82.837354900">
+  <name>Fast Food Restaurant:Moe&apos;s Southwest Grill</name>
+  <cmt>Fast Food Restaurant:Moe&apos;s Southwest Grill</cmt>
+  <desc>Fast Food Restaurant:Moe&apos;s Southwest Grill</desc>
+</wpt>
+<wpt lat="34.682315900" lon="-82.837309300">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="34.683239600" lon="-82.837286200">
+  <name>Pub:Top of the Tavern</name>
+  <cmt>Pub:Top of the Tavern</cmt>
+  <desc>Pub:Top of the Tavern</desc>
+</wpt>
+<wpt lat="34.682823100" lon="-82.837226100">
+  <name>Restaurant:Brioso</name>
+  <cmt>Restaurant:Brioso</cmt>
+  <desc>Restaurant:Brioso</desc>
+</wpt>
+<wpt lat="34.683945400" lon="-82.837140300">
+  <name>Fast Food Restaurant:Ancheaux&apos;s</name>
+  <cmt>Fast Food Restaurant:Ancheaux&apos;s</cmt>
+  <desc>Fast Food Restaurant:Ancheaux&apos;s</desc>
+</wpt>
+<wpt lat="34.684522000" lon="-82.836547600">
+  <name>Restaurant:Peppino&apos;s Pizza</name>
+  <cmt>Restaurant:Peppino&apos;s Pizza</cmt>
+  <desc>Restaurant:Peppino&apos;s Pizza</desc>
+</wpt>
+<wpt lat="34.688137600" lon="-82.836033100">
+  <name>Restaurant:Blue Heron</name>
+  <cmt>Restaurant:Blue Heron</cmt>
+  <desc>Restaurant:Blue Heron</desc>
+</wpt>
+<wpt lat="34.687685900" lon="-82.835981600">
+  <name>Restaurant:Eddie Spaghetti</name>
+  <cmt>Restaurant:Eddie Spaghetti</cmt>
+  <desc>Restaurant:Eddie Spaghetti</desc>
+</wpt>
+<wpt lat="34.687904700" lon="-82.835835700">
+  <name>Cafe:Friends Cafe</name>
+  <cmt>Cafe:Friends Cafe</cmt>
+  <desc>Cafe:Friends Cafe</desc>
+</wpt>
+<wpt lat="34.687982400" lon="-82.835792800">
+  <name>Fast Food Restaurant:Planet Smoothie</name>
+  <cmt>Fast Food Restaurant:Planet Smoothie</cmt>
+  <desc>Fast Food Restaurant:Planet Smoothie</desc>
+</wpt>
+<wpt lat="34.689189200" lon="-82.834144800">
+  <name>Restaurant:Osaka Express</name>
+  <cmt>Restaurant:Osaka Express</cmt>
+  <desc>Restaurant:Osaka Express</desc>
+</wpt>
+<wpt lat="34.689132700" lon="-82.833981700">
+  <name>Restaurant:Siam Royal Thai Cuisine</name>
+  <cmt>Restaurant:Siam Royal Thai Cuisine</cmt>
+  <desc>Restaurant:Siam Royal Thai Cuisine</desc>
+</wpt>
+<wpt lat="34.688729400" lon="-82.825459900">
+  <name>Restaurant:Rockhopper&apos;s Restaurant and Bar</name>
+  <cmt>Restaurant:Rockhopper&apos;s Restaurant and Bar</cmt>
+  <desc>Restaurant:Rockhopper&apos;s Restaurant and Bar</desc>
+</wpt>
+<wpt lat="34.684846000" lon="-82.823604800">
+  <name>Restaurant:China Wok</name>
+  <cmt>Restaurant:China Wok</cmt>
+  <desc>Restaurant:China Wok</desc>
+</wpt>
+<wpt lat="34.685200400" lon="-82.823005300">
+  <name>Restaurant:Monterey&apos;s</name>
+  <cmt>Restaurant:Monterey&apos;s</cmt>
+  <desc>Restaurant:Monterey&apos;s</desc>
+</wpt>
+<wpt lat="34.673727100" lon="-82.812535600">
+  <name>Restaurant:Columbo&apos;s Pizza</name>
+  <cmt>Restaurant:Columbo&apos;s Pizza</cmt>
+  <desc>Restaurant:Columbo&apos;s Pizza</desc>
+</wpt>
+<wpt lat="34.690311400" lon="-82.810705500">
+  <name>Fast Food Restaurant:Domino&apos;s Pizza</name>
+  <cmt>Fast Food Restaurant:Domino&apos;s Pizza</cmt>
+  <desc>Fast Food Restaurant:Domino&apos;s Pizza</desc>
+</wpt>
+<wpt lat="34.690337600" lon="-82.810668600">
+  <name>Restaurant:China Express</name>
+  <cmt>Restaurant:China Express</cmt>
+  <desc>Restaurant:China Express</desc>
+</wpt>
+<wpt lat="34.688961300" lon="-82.809907800">
+  <name>Restaurant:Tony&apos;s Pizza</name>
+  <cmt>Restaurant:Tony&apos;s Pizza</cmt>
+  <desc>Restaurant:Tony&apos;s Pizza</desc>
+</wpt>
+<wpt lat="34.546198300" lon="-82.806166800">
+  <name>Restaurant:Huddle House</name>
+  <cmt>Restaurant:Huddle House</cmt>
+  <desc>Restaurant:Huddle House</desc>
+</wpt>
+<wpt lat="34.665439700" lon="-82.798665400">
+  <name>Restaurant:Mac&apos;s Drive-In</name>
+  <cmt>Restaurant:Mac&apos;s Drive-In</cmt>
+  <desc>Restaurant:Mac&apos;s Drive-In</desc>
+</wpt>
+<wpt lat="34.579547900" lon="-82.713951400">
+  <name>Fast Food Restaurant:McDonald&apos;s</name>
+  <cmt>Fast Food Restaurant:McDonald&apos;s</cmt>
+  <desc>Fast Food Restaurant:McDonald&apos;s</desc>
+</wpt>
+<wpt lat="34.577956500" lon="-82.713099400">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="34.576365000" lon="-82.712374600">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="34.578233900" lon="-82.711999400">
+  <name>Restaurant:Fatz Cafe</name>
+  <cmt>Restaurant:Fatz Cafe</cmt>
+  <desc>Restaurant:Fatz Cafe</desc>
+</wpt>
+<wpt lat="34.576548200" lon="-82.711815000">
+  <name>Restaurant:Subway</name>
+  <cmt>Restaurant:Subway</cmt>
+  <desc>Restaurant:Subway</desc>
+</wpt>
+<wpt lat="34.575742000" lon="-82.711560700">
+  <name>Restaurant:Outback Steakhouse</name>
+  <cmt>Restaurant:Outback Steakhouse</cmt>
+  <desc>Restaurant:Outback Steakhouse</desc>
+</wpt>
+<wpt lat="34.576804700" lon="-82.711026600">
+  <name>Restaurant:Buffalo&apos;s</name>
+  <cmt>Restaurant:Buffalo&apos;s</cmt>
+  <desc>Restaurant:Buffalo&apos;s</desc>
+</wpt>
+<wpt lat="34.575501200" lon="-82.710893100">
+  <name>Restaurant:Hooters</name>
+  <cmt>Restaurant:Hooters</cmt>
+  <desc>Restaurant:Hooters</desc>
+</wpt>
+<wpt lat="34.576265500" lon="-82.710390800">
+  <name>Restaurant:Wild Wing Cafe</name>
+  <cmt>Restaurant:Wild Wing Cafe</cmt>
+  <desc>Restaurant:Wild Wing Cafe</desc>
+</wpt>
+<wpt lat="34.569166200" lon="-82.709163600">
+  <name>Fast Food Restaurant:Hardee&apos;s</name>
+  <cmt>Fast Food Restaurant:Hardee&apos;s</cmt>
+  <desc>Fast Food Restaurant:Hardee&apos;s</desc>
+</wpt>
+<wpt lat="34.570873100" lon="-82.708820300">
+  <name>Fast Food Restaurant:Fuddruckers</name>
+  <cmt>Fast Food Restaurant:Fuddruckers</cmt>
+  <desc>Fast Food Restaurant:Fuddruckers</desc>
+</wpt>
+<wpt lat="34.574742000" lon="-82.708311600">
+  <name>Restaurant:Cracker Barrel</name>
+  <cmt>Restaurant:Cracker Barrel</cmt>
+  <desc>Restaurant:Cracker Barrel</desc>
+</wpt>
+<wpt lat="34.553633500" lon="-82.681757000">
+  <name>Fast Food Restaurant:Chick-fil-A</name>
+  <cmt>Fast Food Restaurant:Chick-fil-A</cmt>
+  <desc>Fast Food Restaurant:Chick-fil-A</desc>
+</wpt>
+<wpt lat="34.552233600" lon="-82.677554100">
+  <name>Restaurant:Golden Corral</name>
+  <cmt>Restaurant:Golden Corral</cmt>
+  <desc>Restaurant:Golden Corral</desc>
+</wpt>
+<wpt lat="34.548925200" lon="-82.674213800">
+  <name>Restaurant:Applebee&apos;s</name>
+  <cmt>Restaurant:Applebee&apos;s</cmt>
+  <desc>Restaurant:Applebee&apos;s</desc>
+</wpt>
+<wpt lat="34.185893300" lon="-82.353359200">
+  <name>Restaurant:Yoder&apos;s Dutch Kitchen</name>
+  <cmt>Restaurant:Yoder&apos;s Dutch Kitchen</cmt>
+  <desc>Restaurant:Yoder&apos;s Dutch Kitchen</desc>
+</wpt>
+<wpt lat="33.480133200" lon="-82.130947900">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="33.485527000" lon="-82.104253000">
+  <name>Restaurant:Indigo Joes</name>
+  <cmt>Restaurant:Indigo Joes</cmt>
+  <desc>Restaurant:Indigo Joes</desc>
+</wpt>
+<wpt lat="33.482446400" lon="-82.095993400">
+  <name>Restaurant:Giuseppe&apos;s Pizza and Italian Specialties</name>
+  <cmt>Restaurant:Giuseppe&apos;s Pizza and Italian Specialties</cmt>
+  <desc>Restaurant:Giuseppe&apos;s Pizza and Italian Specialties</desc>
+</wpt>
+<wpt lat="30.831525000" lon="-82.005936000">
+  <name>Restaurant:Okefenokee Restaurant</name>
+  <cmt>Restaurant:Okefenokee Restaurant</cmt>
+  <desc>Restaurant:Okefenokee Restaurant</desc>
+</wpt>
+<wpt lat="33.475922300" lon="-81.970279100">
+  <name>Restaurant:Rooster&apos;s Beak</name>
+  <cmt>Restaurant:Rooster&apos;s Beak</cmt>
+  <desc>Restaurant:Rooster&apos;s Beak</desc>
+</wpt>
+<wpt lat="33.476216000" lon="-81.970129200">
+  <name>Restaurant:Bee&apos;s Knees</name>
+  <cmt>Restaurant:Bee&apos;s Knees</cmt>
+  <desc>Restaurant:Bee&apos;s Knees</desc>
+</wpt>
+<wpt lat="33.476523800" lon="-81.969974700">
+  <name>Cafe:New Moon Cafe</name>
+  <cmt>Cafe:New Moon Cafe</cmt>
+  <desc>Cafe:New Moon Cafe</desc>
+</wpt>
+<wpt lat="33.476430800" lon="-81.969674300">
+  <name>Restaurant:Blue Sky Kitchen</name>
+  <cmt>Restaurant:Blue Sky Kitchen</cmt>
+  <desc>Restaurant:Blue Sky Kitchen</desc>
+</wpt>
+<wpt lat="33.477479200" lon="-81.966505300">
+  <name>Restaurant:Beamie&apos;s</name>
+  <cmt>Restaurant:Beamie&apos;s</cmt>
+  <desc>Restaurant:Beamie&apos;s</desc>
+</wpt>
+<wpt lat="33.478123500" lon="-81.966204900">
+  <name>Restaurant:Boll Weevil</name>
+  <cmt>Restaurant:Boll Weevil</cmt>
+  <desc>Restaurant:Boll Weevil</desc>
+</wpt>
+<wpt lat="30.451565300" lon="-81.703988400">
+  <name>Fast Food Restaurant:Wendy&apos;s</name>
+  <cmt>Fast Food Restaurant:Wendy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="31.774378200" lon="-81.632542600">
+  <name>Restaurant</name>
+  <cmt>Restaurant</cmt>
+  <desc>Restaurant</desc>
+</wpt>
+<wpt lat="31.231031600" lon="-81.585303700">
+  <name>Restaurant:Oak Grive Iland Golf Course</name>
+  <cmt>Restaurant:Oak Grive Iland Golf Course</cmt>
+  <desc>Restaurant:Oak Grive Iland Golf Course</desc>
+</wpt>
+<wpt lat="31.136194500" lon="-81.569134100">
+  <name>Restaurant:Georgia Pig</name>
+  <cmt>Restaurant:Georgia Pig</cmt>
+  <desc>Restaurant:Georgia Pig</desc>
+</wpt>
+<wpt lat="30.897457300" lon="-81.444817100">
+  <name>Drinking water source:Brickhill Bluff</name>
+  <cmt>Drinking water source:Brickhill Bluff</cmt>
+  <desc>Drinking water source:Brickhill Bluff</desc>
+</wpt>
+<wpt lat="31.368395400" lon="-81.437092700">
+  <name>Restaurant:Skippers&apos; Fish Camp</name>
+  <cmt>Restaurant:Skippers&apos; Fish Camp</cmt>
+  <desc>Restaurant:Skippers&apos; Fish Camp</desc>
+</wpt>
+<wpt lat="31.375089400" lon="-81.434201300">
+  <name>Restaurant:B&amp;J&apos;s Steaks and Seafood</name>
+  <cmt>Restaurant:B&amp;J&apos;s Steaks and Seafood</cmt>
+  <desc>Restaurant:B&amp;J&apos;s Steaks and Seafood</desc>
+</wpt>
+<wpt lat="31.046635200" lon="-81.420738500">
+  <name>Restaurant:Sea Jay&apos;s</name>
+  <cmt>Restaurant:Sea Jay&apos;s</cmt>
+  <desc>Restaurant:Sea Jay&apos;s</desc>
+</wpt>
+<wpt lat="31.048004800" lon="-81.414521100">
+  <name>Restaurant:Dary Queen</name>
+  <cmt>Restaurant:Dary Queen</cmt>
+  <desc>Restaurant:Dary Queen</desc>
+</wpt>
+<wpt lat="31.186870100" lon="-81.377579600">
+  <name>Restaurant:Delaney&apos;s Bistro</name>
+  <cmt>Restaurant:Delaney&apos;s Bistro</cmt>
+  <desc>Restaurant:Delaney&apos;s Bistro</desc>
+</wpt>
+<wpt lat="31.186585600" lon="-81.377547400">
+  <name>Cafe:Cafe Frederica</name>
+  <cmt>Cafe:Cafe Frederica</cmt>
+  <desc>Cafe:Cafe Frederica</desc>
+</wpt>
+<wpt lat="31.186755400" lon="-81.377547400">
+  <name>Restaurant:Sal&apos;s Neighborhood Pizzeria</name>
+  <cmt>Restaurant:Sal&apos;s Neighborhood Pizzeria</cmt>
+  <desc>Restaurant:Sal&apos;s Neighborhood Pizzeria</desc>
+</wpt>
+<wpt lat="31.188903100" lon="-81.376437000">
+  <name>Restaurant:Brogens North</name>
+  <cmt>Restaurant:Brogens North</cmt>
+  <desc>Restaurant:Brogens North</desc>
+</wpt>
+<wpt lat="32.098134200" lon="-81.270689800">
+  <name>Restaurant:Jalapeno&apos;s</name>
+  <cmt>Restaurant:Jalapeno&apos;s</cmt>
+  <desc>Restaurant:Jalapeno&apos;s</desc>
+</wpt>
+<wpt lat="32.133777900" lon="-81.254207300">
+  <name>Pub:Sports Bar</name>
+  <cmt>Pub:Sports Bar</cmt>
+  <desc>Pub:Sports Bar</desc>
+</wpt>
+<wpt lat="32.133636900" lon="-81.253870000">
+  <name>Restaurant:Yummy House</name>
+  <cmt>Restaurant:Yummy House</cmt>
+  <desc>Restaurant:Yummy House</desc>
+</wpt>
+<wpt lat="32.140087600" lon="-81.251990700">
+  <name>Restaurant:Longhorn Steak House</name>
+  <cmt>Restaurant:Longhorn Steak House</cmt>
+  <desc>Restaurant:Longhorn Steak House</desc>
+</wpt>
+<wpt lat="32.146445600" lon="-81.248287700">
+  <name>Restaurant:Cheddar&apos;s</name>
+  <cmt>Restaurant:Cheddar&apos;s</cmt>
+  <desc>Restaurant:Cheddar&apos;s</desc>
+</wpt>
+<wpt lat="32.115377800" lon="-81.245675100">
+  <name>Restaurant:El Porto</name>
+  <cmt>Restaurant:El Porto</cmt>
+  <desc>Restaurant:El Porto</desc>
+</wpt>
+<wpt lat="32.114486800" lon="-81.242676700">
+  <name>Restaurant:Lovezzola&apos;s</name>
+  <cmt>Restaurant:Lovezzola&apos;s</cmt>
+  <desc>Restaurant:Lovezzola&apos;s</desc>
+</wpt>
+<wpt lat="32.114273300" lon="-81.242011500">
+  <name>Restaurant:Wendy&apos;s</name>
+  <cmt>Restaurant:Wendy&apos;s</cmt>
+  <desc>Restaurant:Wendy&apos;s</desc>
+</wpt>
+<wpt lat="32.113042000" lon="-81.241241700">
+  <name>Restaurant:Burger King</name>
+  <cmt>Restaurant:Burger King</cmt>
+  <desc>Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="32.112351300" lon="-81.235496400">
+  <name>Restaurant:Taco Bell</name>
+  <cmt>Restaurant:Taco Bell</cmt>
+  <desc>Restaurant:Taco Bell</desc>
+</wpt>
+<wpt lat="32.139211300" lon="-81.232651200">
+  <name>Fast Food Restaurant:Wendys</name>
+  <cmt>Fast Food Restaurant:Wendys</cmt>
+  <desc>Fast Food Restaurant:Wendys</desc>
+</wpt>
+<wpt lat="32.110427100" lon="-81.232079300">
+  <name>Restaurant:Waffle House</name>
+  <cmt>Restaurant:Waffle House</cmt>
+  <desc>Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="32.073508700" lon="-81.097807300">
+  <name>Restaurant:Crystal Beer Parlor</name>
+  <cmt>Restaurant:Crystal Beer Parlor</cmt>
+  <desc>Restaurant:Crystal Beer Parlor</desc>
+</wpt>
+<wpt lat="32.080904600" lon="-81.095627400">
+  <name>Restaurant:Belford&apos;s Savannah</name>
+  <cmt>Restaurant:Belford&apos;s Savannah</cmt>
+  <desc>Restaurant:Belford&apos;s Savannah</desc>
+</wpt>
+<wpt lat="32.081056000" lon="-81.095587300">
+  <name>Fast Food Restaurant:Vinnie Van Gogog&apos;s</name>
+  <cmt>Fast Food Restaurant:Vinnie Van Gogog&apos;s</cmt>
+  <desc>Fast Food Restaurant:Vinnie Van Gogog&apos;s</desc>
+</wpt>
+<wpt lat="32.080053300" lon="-81.092937000">
+  <name>Restaurant:The Lady &amp; Sons</name>
+  <cmt>Restaurant:The Lady &amp; Sons</cmt>
+  <desc>Restaurant:The Lady &amp; Sons</desc>
+</wpt>
+<wpt lat="32.081076300" lon="-81.092122800">
+  <name>Pub:Moon River Cafe</name>
+  <cmt>Pub:Moon River Cafe</cmt>
+  <desc>Pub:Moon River Cafe</desc>
+</wpt>
+<wpt lat="32.078350100" lon="-81.089350900">
+  <name>Fast Food Restaurant:Leopold&apos;s Ice Cream</name>
+  <cmt>Fast Food Restaurant:Leopold&apos;s Ice Cream</cmt>
+  <desc>Fast Food Restaurant:Leopold&apos;s Ice Cream</desc>
+</wpt>
+<wpt lat="32.073049100" lon="-81.087563000">
+  <name>Restaurant:Brasserie</name>
+  <cmt>Restaurant:Brasserie</cmt>
+  <desc>Restaurant:Brasserie</desc>
+</wpt>
+<wpt lat="32.270601600" lon="-81.080981900">
+  <name>Fast Food Restaurant:Waffle House</name>
+  <cmt>Fast Food Restaurant:Waffle House</cmt>
+  <desc>Fast Food Restaurant:Waffle House</desc>
+</wpt>
+<wpt lat="32.269875800" lon="-81.080767300">
+  <name>Fast Food Restaurant:Chicken Lickin&apos; Hickory House</name>
+  <cmt>Fast Food Restaurant:Chicken Lickin&apos; Hickory House</cmt>
+  <desc>Fast Food Restaurant:Chicken Lickin&apos; Hickory House</desc>
+</wpt>
+<wpt lat="32.277659000" lon="-81.080466900">
+  <name>Fast Food Restaurant:Wendys</name>
+  <cmt>Fast Food Restaurant:Wendys</cmt>
+  <desc>Fast Food Restaurant:Wendys</desc>
+</wpt>
+<wpt lat="32.277132900" lon="-81.080381100">
+  <name>Fast Food Restaurant:Burger King</name>
+  <cmt>Fast Food Restaurant:Burger King</cmt>
+  <desc>Fast Food Restaurant:Burger King</desc>
+</wpt>
+<wpt lat="32.270293100" lon="-81.079286800">
+  <name>Fast Food Restaurant:Blimpie</name>
+  <cmt>Fast Food Restaurant:Blimpie</cmt>
+  <desc>Fast Food Restaurant:Blimpie</desc>
+</wpt>
+<wpt lat="32.000665100" lon="-81.063693000">
+  <name>Restaurant:Pearl&apos;s Salt Water Grill</name>
+  <cmt>Restaurant:Pearl&apos;s Salt Water Grill</cmt>
+  <desc>Restaurant:Pearl&apos;s Salt Water Grill</desc>
+</wpt>
+<wpt lat="32.312662900" lon="-81.062154700">
+  <name>Fast Food Restaurant:TCBY</name>
+  <cmt>Fast Food Restaurant:TCBY</cmt>
+  <desc>Fast Food Restaurant:TCBY</desc>
+</wpt>
+<wpt lat="32.312717300" lon="-81.061983000">
+  <name>Fast Food Restaurant:Dominos Pizza</name>
+  <cmt>Fast Food Restaurant:Dominos Pizza</cmt>
+  <desc>Fast Food Restaurant:Dominos Pizza</desc>
+</wpt>
+<wpt lat="32.312789800" lon="-81.061768400">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="32.311320900" lon="-81.057155000">
+  <name>Fast Food Restaurant:Wendys</name>
+  <cmt>Fast Food Restaurant:Wendys</cmt>
+  <desc>Fast Food Restaurant:Wendys</desc>
+</wpt>
+<wpt lat="32.311284600" lon="-81.056854600">
+  <name>Fast Food Restaurant:Huddle House</name>
+  <cmt>Fast Food Restaurant:Huddle House</cmt>
+  <desc>Fast Food Restaurant:Huddle House</desc>
+</wpt>
+<wpt lat="32.312010000" lon="-81.054236800">
+  <name>Fast Food Restaurant:McDonalds</name>
+  <cmt>Fast Food Restaurant:McDonalds</cmt>
+  <desc>Fast Food Restaurant:McDonalds</desc>
+</wpt>
+<wpt lat="32.036102800" lon="-81.043855300">
+  <name>Restaurant:Despositos</name>
+  <cmt>Restaurant:Despositos</cmt>
+  <desc>Restaurant:Despositos</desc>
+</wpt>
+<wpt lat="32.237363200" lon="-80.868601200">
+  <name>Restaurant:Squat and Gobble</name>
+  <cmt>Restaurant:Squat and Gobble</cmt>
+  <desc>Restaurant:Squat and Gobble</desc>
+</wpt>
+<wpt lat="31.997462200" lon="-80.854369300">
+  <name>Restaurant:A.J.&apos;s Dockside Restaurant</name>
+  <cmt>Restaurant:A.J.&apos;s Dockside Restaurant</cmt>
+  <desc>Restaurant:A.J.&apos;s Dockside Restaurant</desc>
+</wpt>
+<wpt lat="31.992122100" lon="-80.849730900">
+  <name>Fast Food Restaurant:Burton&apos;s by the Beach</name>
+  <cmt>Fast Food Restaurant:Burton&apos;s by the Beach</cmt>
+  <desc>Fast Food Restaurant:Burton&apos;s by the Beach</desc>
+</wpt>
+<wpt lat="31.991741600" lon="-80.849684200">
+  <name>Fast Food Restaurant:Arby&apos;s</name>
+  <cmt>Fast Food Restaurant:Arby&apos;s</cmt>
+  <desc>Fast Food Restaurant:Arby&apos;s</desc>
+</wpt>
+<wpt lat="31.992598000" lon="-80.849341900">
+  <name>Pub:Benny&apos;s Tybee Tavern</name>
+  <cmt>Pub:Benny&apos;s Tybee Tavern</cmt>
+  <desc>Pub:Benny&apos;s Tybee Tavern</desc>
+</wpt>
+<wpt lat="31.992849400" lon="-80.849214900">
+  <name>Restaurant:Sun</name>
+  <cmt>Restaurant:Sun</cmt>
+  <desc>Restaurant:Sun</desc>
+</wpt>
+<wpt lat="31.992398100" lon="-80.849143900">
+  <name>Pub:Rock  House</name>
+  <cmt>Pub:Rock  House</cmt>
+  <desc>Pub:Rock  House</desc>
+</wpt>
+<wpt lat="31.992748600" lon="-80.848992200">
+  <name>Pub:The Sand Bar</name>
+  <cmt>Pub:The Sand Bar</cmt>
+  <desc>Pub:The Sand Bar</desc>
+</wpt>
+<wpt lat="31.992331100" lon="-80.848905900">
+  <name>Cafe:All Points Cafe</name>
+  <cmt>Cafe:All Points Cafe</cmt>
+  <desc>Cafe:All Points Cafe</desc>
+</wpt>
+<wpt lat="31.992343200" lon="-80.848750900">
+  <name>Fast Food Restaurant:Seaside Swizzle Gelato</name>
+  <cmt>Fast Food Restaurant:Seaside Swizzle Gelato</cmt>
+  <desc>Fast Food Restaurant:Seaside Swizzle Gelato</desc>
+</wpt>
+<wpt lat="31.993550900" lon="-80.848690800">
+  <name>Restaurant:The Breakfast Club</name>
+  <cmt>Restaurant:The Breakfast Club</cmt>
+  <desc>Restaurant:The Breakfast Club</desc>
+</wpt>
+<wpt lat="31.992307200" lon="-80.848616800">
+  <name>Fast Food Restaurant:Subway</name>
+  <cmt>Fast Food Restaurant:Subway</cmt>
+  <desc>Fast Food Restaurant:Subway</desc>
+</wpt>
+<wpt lat="31.992118700" lon="-80.848602600">
+  <name>Fast Food Restaurant:Tradewinds Homeade Ice Cream</name>
+  <cmt>Fast Food Restaurant:Tradewinds Homeade Ice Cream</cmt>
+  <desc>Fast Food Restaurant:Tradewinds Homeade Ice Cream</desc>
+</wpt>
+<wpt lat="31.992117200" lon="-80.848519300">
+  <name>Cafe:Wild Rose Cafe</name>
+  <cmt>Cafe:Wild Rose Cafe</cmt>
+  <desc>Cafe:Wild Rose Cafe</desc>
+</wpt>
+<wpt lat="31.994910500" lon="-80.848419300">
+  <name>Fast Food Restaurant:Seaweeds</name>
+  <cmt>Fast Food Restaurant:Seaweeds</cmt>
+  <desc>Fast Food Restaurant:Seaweeds</desc>
+</wpt>
+<wpt lat="31.995585600" lon="-80.848387900">
+  <name>Fast Food Restaurant:Blimpie&apos;s</name>
+  <cmt>Fast Food Restaurant:Blimpie&apos;s</cmt>
+  <desc>Fast Food Restaurant:Blimpie&apos;s</desc>
+</wpt>
+<wpt lat="31.992090500" lon="-80.848370700">
+  <name>Fast Food Restaurant:Light House Pizza</name>
+  <cmt>Fast Food Restaurant:Light House Pizza</cmt>
+  <desc>Fast Food Restaurant:Light House Pizza</desc>
+</wpt>
+<wpt lat="31.995123900" lon="-80.848362000">
+  <name>Fast Food Restaurant:Stingrays</name>
+  <cmt>Fast Food Restaurant:Stingrays</cmt>
+  <desc>Fast Food Restaurant:Stingrays</desc>
+</wpt>
+<wpt lat="31.992046200" lon="-80.848194500">
+  <name>Restaurant:Bernie&apos;s Restaurant</name>
+  <cmt>Restaurant:Bernie&apos;s Restaurant</cmt>
+  <desc>Restaurant:Bernie&apos;s Restaurant</desc>
+</wpt>
+<wpt lat="31.995718000" lon="-80.848155300">
+  <name>Restaurant:Social</name>
+  <cmt>Restaurant:Social</cmt>
+  <desc>Restaurant:Social</desc>
+</wpt>
+<wpt lat="31.992159600" lon="-80.848083600">
+  <name>Pub:Doc&apos;s Bar</name>
+  <cmt>Pub:Doc&apos;s Bar</cmt>
+  <desc>Pub:Doc&apos;s Bar</desc>
+</wpt>
+<wpt lat="31.992094100" lon="-80.847914900">
+  <name>Fast Food Restaurant:Christy&apos;s</name>
+  <cmt>Fast Food Restaurant:Christy&apos;s</cmt>
+  <desc>Fast Food Restaurant:Christy&apos;s</desc>
+</wpt>
+<wpt lat="32.021741200" lon="-80.843785200">
+  <name>Restaurant:North Beach Bar &amp; Grill</name>
+  <cmt>Restaurant:North Beach Bar &amp; Grill</cmt>
+  <desc>Restaurant:North Beach Bar &amp; Grill</desc>
+</wpt>
+<wpt lat="32.012943600" lon="-80.843558000">
+  <name>Fast Food Restaurant:Pizza on Wheels</name>
+  <cmt>Fast Food Restaurant:Pizza on Wheels</cmt>
+  <desc>Fast Food Restaurant:Pizza on Wheels</desc>
+</wpt>
+<wpt lat="32.012996400" lon="-80.843539400">
+  <name>Restaurant:Mexi-Cali Mexican Restaurant</name>
+  <cmt>Restaurant:Mexi-Cali Mexican Restaurant</cmt>
+  <desc>Restaurant:Mexi-Cali Mexican Restaurant</desc>
+</wpt>
+<wpt lat="32.012659400" lon="-80.843049100">
+  <name>Restaurant:Sundaes</name>
+  <cmt>Restaurant:Sundaes</cmt>
+  <desc>Restaurant:Sundaes</desc>
+</wpt>
+<wpt lat="32.013033500" lon="-80.842627500">
+  <name>Fast Food Restaurant:Sugar Shack</name>
+  <cmt>Fast Food Restaurant:Sugar Shack</cmt>
+  <desc>Fast Food Restaurant:Sugar Shack</desc>
+</wpt>
+<wpt lat="32.012591300" lon="-80.842062400">
+  <name>Restaurant:McElwee&apos;s Seafood Restaurant</name>
+  <cmt>Restaurant:McElwee&apos;s Seafood Restaurant</cmt>
+  <desc>Restaurant:McElwee&apos;s Seafood Restaurant</desc>
+</wpt>
+</gpx>
