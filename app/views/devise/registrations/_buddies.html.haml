@@ -15,24 +15,27 @@
     %h4 My buddies
 .row-fluid
   .span12
-    - unless current_user.delegates.empty?
+    - unless current_user.delegate_relationships.empty?
       %table.table.table.condensed.table-striped.table-hover.table-bordered#buddiesdatatable
         %thead
           %tr
+            %th.left Buddy
             %th.left Email address
             %th.left Status
             %th.left Sent
             %th.center Actions
         %tbody
-          - current_user.delegates.each do |buddy|
+          - current_user.delegate_relationships.each do |relationship|
             %tr
-              %td.left= buddy.email
-              %td.left= buddy.status
-              %td.left= distance_of_time_in_words_to_now(buddy.email_sent) + " ago"
+              %td.left= relationship.delegate.name
+              %td.left= relationship.delegate.email
+              %td.left= relationship.relationship_status
+              //%td.left= distance_of_time_in_words_to_now(buddy.email_sent) + " ago"
+              %td.left
               %td.center
-                = link_to revoke_user_buddy_relationship_path(current_user, buddy.id), remote: true, class: "btn btn-mini btn-warning text-center" do
-                  %i.icon-remove
-                  =t(:revoke)
+                //= link_to revoke_user_buddy_relationship_path(current_user, buddy.id), remote: true, class: "btn btn-mini btn-warning text-center" do
+                //  %i.icon-remove
+                //  =t(:revoke)
     - else
       You don't have any buddies. Send a buddy request by entering their email address above.
 
