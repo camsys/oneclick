@@ -33,6 +33,10 @@ class BuddyRelationship < ActiveRecord::Base
     self.update_attribute(:status, 'declined')
   end
 
+  def associate_buddy user
+    self.update_attribute(:buddy, user)  
+  end
+
   private
 
   def check_for_user
