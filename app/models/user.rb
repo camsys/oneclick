@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_many :user_roles
   has_many :roles, :through => :user_roles # one or more user roles
   has_many :relationship_types, :through => :user_relationships # one or more relationship types
+  has_many :planned_trips, :through => :trips
   
   # Validations
   validates :email, :presence => true

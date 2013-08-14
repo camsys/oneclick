@@ -1,6 +1,6 @@
-class PlannedTripsController < TripAwareController
+class PlannedTripsController < ApplicationController
   
-  # set the @planned_trip variable before any actions are invoked
+  # set the @planned_trip and @trip variables before any actions are invoked
   before_filter :get_planned_trip
 
   TIME_FILTER_TYPE_SESSION_KEY = 'planned_trips_time_filter_type'
@@ -15,8 +15,8 @@ class PlannedTripsController < TripAwareController
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
     UserMailer.user_trip_email(email_addresses, @trip, "ARC OneClick Trip Itinerary", from_email).deliver
     respond_to do |format|
-      format.html { redirect_to(@trip, :notice => "An email was sent to #{email_addresses.join(', ')}." ) }
-      format.json { render json: @trip }
+      format.html { redirect_to(@planned_trip, :notice => "An email was sent to #{email_addresses.join(', ')}." ) }
+      format.json { render json: @planned_trip }
     end
   end
   
@@ -38,7 +38,7 @@ class PlannedTripsController < TripAwareController
     # get the duration for this time filter
     duration = TimeFilterHelper.time_filter_as_duration(@time_filter_type)
     
-    @planned_trips = @trips.planned_trips.created_between(duration.first, duration.last)
+    @planned_trips = current_user.planned_trips.created_between(duration.first, duration.last)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -95,18 +95,19 @@ class PlannedTripsController < TripAwareController
       i.hidden = false
       i.save
     end
-    redirect_to user_trip_planned_trip_path   
+    redirect_to user_planned_trip_path(current_user, @planned_trip)   
   end
 
 protected
 
   def get_planned_trip
     
-    planned_trip = @trip.planned_trips.find(params[:id])
+    planned_trip = current_user.planned_trips.find(params[:id])
     if planned_trip.nil?
-      
+      render text: 'Unable to find the record.', status: 500
     else
       @planned_trip = planned_trip
+      @trip = @planned_trip.trip
     end
   end
 

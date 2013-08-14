@@ -15,4 +15,7 @@ class Mode < ActiveRecord::Base
   def self.taxi
     where('id = 3').first
   end
+  def to_s
+    name
+  end
 end

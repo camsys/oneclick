@@ -1,5 +1,10 @@
 class TripPlace < ActiveRecord::Base
 
+  TYPES = [
+    "Point of Interest",
+    "Place",
+    "Street Address"
+  ]
   # Associations
   belongs_to :trip    # everyone trip place must belong to a trip
   belongs_to :place   # optional
@@ -17,6 +22,11 @@ class TripPlace < ActiveRecord::Base
     return [lat, lon]
   end
   
+  def type
+    return TYPES[0] unless poi.nil?
+    return TYPES[1] unless place.nil?
+    return TYPES[2]
+  end
   
   def to_s
     if poi

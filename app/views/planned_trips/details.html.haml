@@ -11,17 +11,20 @@
         %fieldset
           %legend Transaction
           %p.span12
-            %span.span4.text-right Owner:          
-            %span.span8= @trip.owner.nil? ? "anonymous" : link_to(@trip.owner.name, user_path(@trip.owner))      
+            %span.span4.text-right User:          
+            %span.span8= @trip.user.nil? ? "anonymous" : link_to(@trip.user.name, user_path(@trip.user))      
+          %p.span12
+            %span.span4.text-right Creator:          
+            %span.span8= @trip.creator.nil? ? "" : link_to(@trip.creator.name, user_path(@trip.creator))      
           %p.span12
             %span.span4.text-right Trip Date:          
-            %span.span8= format_date_time(@trip.trip_datetime)          
+            %span.span8= format_date_time(@planned_trip.trip_datetime)          
           %p.span12
             %span.span4.text-right Arrive/Depart:          
-            %span.span8= @trip.arrive_depart      
+            %span.span8= @planned_trip.is_depart ? "depart at" : "arrive by"      
           %p.span12
             %span.span4.text-right Created:          
-            %span.span8= format_date_time(@trip.created_at)          
+            %span.span8= format_date_time(@planned_trip.created_at)          
       .span7
         %fieldset
           %legend Places
@@ -29,14 +32,14 @@
             %thead
               %tr
                 %th.left Place
-                %th.left Address
+                %th.left Type
                 %th.center Geocoded
                 %th.center Actions
             %tbody
-              - @trip.places.each do |place|
+              - @trip.trip_places.each do |place|
                 %tr
-                  %td.left= place.name
-                  %td.left= place.nongeocoded_address
+                  %td.left= place
+                  %td.left= place.type
                   %td.center= get_boolean(! place.lat.nil?)
                   %td.center
                     = link_to "#", {class: "btn btn-mini btn-success text-center"} do
@@ -60,7 +63,7 @@
                 %th.left Walk Dist                
                 %th.center Cost
             %tbody
-              - @trip.itineraries.each do |itin|
+              - @planned_trip.itineraries.each do |itin|
                 %tr
                   %td.left= itin.mode
                   %td.center= get_boolean(itin.hidden)
