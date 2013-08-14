@@ -12,14 +12,8 @@
       %div{:class => "modal-body"}
     = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
     %div{:class => "container-fluid"}
-      %div{:class => "accordion", :id => "details" + itinerary.id.to_s}
-        %div{:class => "accordion-group"}
-          %div{:class => "accordion-heading"}
-            %a{:class => "accordion-toggle", "data-toggle" => "collapse", "data-parent" => "#details" + itinerary.id.to_s, :href => "#collapseOne" + itinerary.id.to_s}
-              %h4.text-center=t(:details)
-            %div{:class => "accordion-body collapse in", :id => "collapseOne" + itinerary.id.to_s}
-              %div{:class => "accordion-inner"}
-                = render :partial => itinerary['mode']+'_details', :locals => { :itinerary => itinerary }
+      %h4.text-center{:id => "details-title"}=t(:details)
+      = render :partial => itinerary['mode']+'_details', :locals => { :itinerary => itinerary }
   %div{:class => "modal-footer"}
     .row-fluid
       .pull-right{:style => "display: inline-block"}
