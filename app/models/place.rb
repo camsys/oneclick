@@ -19,13 +19,14 @@ class Place < ActiveRecord::Base
   def geocode
     return if raw_address.blank?
     # result = Geocoder.search(self.nongeocoded_address).as_json
-    result = Geocoder.search(self.raw_address, sensor: false,
-      components: Rails.application.config.geocoder_components,
-      bounds: Rails.application.config.geocoder_bounds).as_json
-    unless result.length == 0
-      self.lat = result[0]['data']['geometry']['location']['lat']
-      self.lon = result[0]['data']['geometry']['location']['lng']
-      #self.address = result[0]['data']['formatted_address']
+    results = Geocoder.search(self.raw_address, sensor: false, components: Rails.application.config.geocoder_components, bounds: Rails.application.config.geocoder_bounds)
+    if addr = results.first
+      self.address1 = addr.street_address
+      self.city     = addr.city
+      self.zip      = addr.postal_code
+      self.state    = addr.state_code
+      self.lat      = addr.coordinates.first
+      self.lon      = addr.coordinates.last
     end
     self
   end
