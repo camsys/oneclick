@@ -1,5 +1,8 @@
 class PlannedTripsController < ApplicationController
   
+  # include the helper method in any controller which needs to know about guest users
+  helper_method :current_or_guest_user
+  
   # set the @planned_trip and @trip variables before any actions are invoked
   before_filter :get_planned_trip
 
@@ -104,7 +107,7 @@ protected
 
   def get_planned_trip
     
-    planned_trip = current_user.planned_trips.find(params[:id])
+    planned_trip = current_or_guest_user.planned_trips.find(params[:id])
     if planned_trip.nil?
       render text: 'Unable to find the record.', status: 500
     else
