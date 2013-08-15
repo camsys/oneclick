@@ -43,6 +43,12 @@ reports = [
   {name: 'Failed Trips Report', description: 'Displays a report describing the trips that failed.', view_name: 'trips_report', class_name: 'InvalidTripsReport', active: 1}, 
   {name: 'Rejected Report', description: 'Displays a report showing trips that were rejected by a user.', view_name: 'trips_report', class_name: 'RejectedTripsReport', active: 1} 
 ]
+relationship_statuses = [
+  {id: 1, name: 'Pending'},
+  {id: 2, name: 'Confirmed'},
+  {id: 3, name: 'Denied'},  
+  {id: 4, name: 'Revoked'},  
+]
 
 # load the modes
 modes.each do |mode|
@@ -53,6 +59,12 @@ end
 # load the trip statuses
 trip_statuses.each do |status|
   t = TripStatus.new(status)
+  t.save!
+end
+
+# load the relationship statuses
+relationship_statuses.each do |status|
+  t = RelationshipStatus.new(status)
   t.save!
 end
 
