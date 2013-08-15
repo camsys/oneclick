@@ -1,134 +1,134 @@
 # Spanish
 
 es:
-  one_click_trip_planner: '1-Click Viaje Planificador'
+  one_click_trip_planner: '<s>1-Click Viaje Planificador</s>'
   # Actions
-  plan_a_trip: 'Planear un Viaje'
-  plan_a_new_trip: '[es]Plan a new trip[/es]'
-  identify_places: 'Identificar los Lugares'
-  change_my_settings: 'Cambiar mi Configuración'
-  help_and_support: 'Ayuda y Soporte'
-  create_an_account: '[es]Create an Account[/es]'
-  travel_profile: '[es]Travel Profile[/es]'
-  previous_trips: '[es]Previous Trips[/es]'
+  plan_a_trip: '<s>Planear un Viaje</s>'
+  plan_a_new_trip: '<s>Plan a new trip</s>'
+  identify_places: '<s>Identificar los Lugares</s>'
+  change_my_settings: '<s>Cambiar mi Configuración</s>'
+  help_and_support: '<s>Ayuda y Soporte</s>'
+  create_an_account: '<s>Create an Account</s>'
+  travel_profile: '<s>Travel Profile</s>'
+  previous_trips: '<s>Previous Trips</s>'
   # Agent View strings
-  find_traveler: "[es]Find Traveler[/es]"
-  create_traveler: "[es]Create Traveler[/es]"
-  agents_agencies: "[es]Agents Agencies[/es]"
+  find_traveler: "<s>Find Traveler</s>"
+  create_traveler: "<s>Create Traveler</s>"
+  agents_agencies: "<s>Agents Agencies</s>"
   # Agent and Admin string
-  reports: "[es]Reports[/es]"
-  admin: '[es]Admin[/es]'
+  reports: "<s>Reports</s>"
+  admin: '<s>Admin</s>'
 
   # Registration, sign in, profile
-  version: 'Versión'
+  version: '<s>Versión</s>'
   home: "Inicio"
-  log_in: 'Iniciar'
-  sign_up: 'Alistarse'
-  welcome: '[es]Welcome[/es]'
-  first_name: '[es]First name[/es]'
-  last_name: '[es]Last name[/es]'
-  email: '[es]Email address[/es]'
-  password: '[es]Password[/es]'
-  password_confirmation: '[es]Password confirmation[/es]'
-  current_password: '[es]Current password[/es]'
-  forgot_your_password: '¿Olvidó su contraseña?'
-  retype_your_password: '[es]Retype your password[/es]'
-  logout: '[es]Logout[/es]'
-  edit_account: '[es]Edit account[/es]'
-  update_my_profile: '[es]Update my profile[/es]'
-  current_password_hint: "[es]Enter your current password to confirm your changes.[/es]"  
-  leave_password_blank: "[es]Leave both blank if you don't want to change your password.[/es]"
-  my_information: '[es]My information[/es]'
-  buddies: '[es]Buddies[/es]'
-  travelers: '[es]Travelers[/es]'
-  send_buddy_request: '[es]Send buddy request[/es]'
-  buddys_email_address: "[es]Buddy's email address[/es]"
-  accept: '[es]Accept[/es]'
-  decline: '[es]Decline[/es]'
-  assist: '[es]Assist[/es]'
-  revoke: '[es]Revoke[/es]'
+  log_in: '<s>Iniciar</s>'
+  sign_up: '<s>Alistarse</s>'
+  welcome: '<s>Welcome</s>'
+  first_name: '<s>First name</s>'
+  last_name: '<s>Last name</s>'
+  email: '<s>Email address</s>'
+  password: '<s>Password</s>'
+  password_confirmation: '<s>Password confirmation</s>'
+  current_password: '<s>Current password</s>'
+  forgot_your_password: '<s>¿Olvidó su contraseña?</s>'
+  retype_your_password: '<s>Retype your password</s>'
+  logout: '<s>Logout</s>'
+  edit_account: '<s>Edit account</s>'
+  update_my_profile: '<s>Update my profile</s>'
+  current_password_hint: "<s>Enter your current password to confirm your changes.</s>"  
+  leave_password_blank: "<s>Leave both blank if you don't want to change your password.</s>"
+  my_information: '<s>My information</s>'
+  buddies: '<s>Buddies</s>'
+  travelers: '<s>Travelers</s>'
+  send_buddy_request: '<s>Send buddy request</s>'
+  buddys_email_address: "<s>Buddy's email address</s>"
+  accept: '<s>Accept</s>'
+  decline: '<s>Decline</s>'
+  assist: '<s>Assist</s>'
+  revoke: '<s>Revoke</s>'
 
-  spanish: 'En Español'
-  error_not_implemented: 'Lo sentimos, pero esta funcionalidad aún no se ha implementado.'
-  error_404: "[es]The page you were looking for doesn't exist.[/es]"
-  error_404_mistyped: '[es]You may have mistyped the address or the page may have moved.[/es]'
-  error_422: '[es]The change you wanted was rejected.[/es]'
-  error_422_detail: "[es]Maybe you tried to change something you didn't have access to.[/es]"
+  spanish: '<s>En Español</s>'
+  error_not_implemented: '<s>Lo sentimos, pero esta funcionalidad aún no se ha implementado.</s>'
+  error_404: "<s>The page you were looking for doesn't exist.</s>"
+  error_404_mistyped: '<s>You may have mistyped the address or the page may have moved.</s>'
+  error_422: '<s>The change you wanted was rejected.</s>'
+  error_422_detail: "<s>Maybe you tried to change something you didn't have access to.</s>"
 
   # Trip planning
-  enter_address: '[es]Enter address[/es]'
-  select_or_enter_address: '[es]Select or enter address[/es]'
-  select: '[es]Select[/es]'
-  date: '[es]Date[/es]'
-  depart_at: '[es]Depart at[/es]'
-  arrive_by: '[es]Arrive by[/es]'
-  arrive_at: '[es]Arrive at[/es]'
-  time: '[es]Time[/es]'
-  cancel: '[es]Cancel[/es]'
-  plan_it: '[es]Plan it[/es]'
-  from: '[es]From[/es]'
-  to: '[es]To[/es]'  
-  correct_errors_to_create_a_trip: '[es]Please correct the errors below to create a trip.[/es]'
-  trip_options: '[es]Trip Options[/es]'
-  transit_trip: '[es]Transit Trip[/es]'
-  taxi: 'Taxi'
-  transit: '[es]Transit[/es]'
-  details: '[es]Details[/es]'
+  enter_address: '<s>Enter address</s>'
+  select_or_enter_address: '<s>Select or enter address</s>'
+  select: '<s>Select</s>'
+  date: '<s>Date</s>'
+  depart_at: '<s>Depart at</s>'
+  arrive_by: '<s>Arrive by</s>'
+  arrive_at: '<s>Arrive at</s>'
+  time: '<s>Time</s>'
+  cancel: '<s>Cancel</s>'
+  plan_it: '<s>Plan it</s>'
+  from: '<s>From</s>'
+  to: '<s>To</s>'  
+  correct_errors_to_create_a_trip: '<s>Please correct the errors below to create a trip.</s>'
+  trip_options: '<s>Trip Options</s>'
+  transit_trip: '<s>Transit Trip</s>'
+  taxi: '<s>Taxi</s>'
+  transit: '<s>Transit</s>'
+  details: '<s>Details</s>'
   transfer: {
-      one: '%{count} [es]transfer[/es]',
-      other: '%{count} [es]transfers[/es]',
+      one: '<s>%{count} <s>transfer</s>',
+      other: '<s>%{count} <s>transfers</s>',
   }
-  view: '[es]View[/es]'
-  remove: '[es]Remove[/es]'
-  reload: '[es]Reload[/es]'
-  return: '[es]Return[/es]'
-  paratransit: '[es]Paratransit[/ex]'
-  mode: '[es]Mode[/es]'
-  duration: '[es]Duration[/es]'
-  walking: '[es]Walking[/es]'
-  depart: '[es]Depart[/es]'
-  arrive: '[es]Arrive[/es]'
-  cost: '[es]Cost[/es]'
-  print: '[es]Print[/es]'
-  chat: '[es]Chat[/es]'
-  e_mail: '[es]Email[/es]'
-  trip_was_successfully_created: '[es]Trip was successfully created.[/es]'
-  trip_created_no_valid_options: "[es]Trip created, but no valid trip options could be found:[/es]"
+  view: '<s>View</s>'
+  remove: '<s>Remove</s>'
+  reload: '<s>Reload</s>'
+  return: '<s>Return</s>'
+  paratransit: '<s>Paratransit</s>'
+  mode: '<s>Mode</s>'
+  duration: '<s>Duration</s>'
+  walking: '<s>Walking</s>'
+  depart: '<s>Depart</s>'
+  arrive: '<s>Arrive</s>'
+  cost: '<s>Cost</s>'
+  print: '<s>Print</s>'
+  chat: '<s>Chat</s>'
+  e_mail: '<s>Email</s>'
+  trip_was_successfully_created: '<s>Trip was successfully created.</s>'
+  trip_created_no_valid_options: "<s>Trip created, but no valid trip options could be found:</s>"
   hour: {
-    one: '%{count} h',
-    other: '%{count} h',
+    one: '<s>%{count} h',
+    other: '<s>%{count} h',
   }
   minute: {
-    one: '%{count} min',
-    other: '%{count} mins',
+    one: '<s>%{count} min',
+    other: '<s>%{count} mins',
   }
-  less_than_one_minute: '[es]Under 1 min[/es]'
-  invalid_address: "[es]Invalid address.[/es]"
-  invalid_location: "[es]Invalid location.[/es]"
-  date_wrong_format: "[es]Date must be in MM/DD/YYYY format.[/es]"
-  time_wrong_format: "[es]Time must be in hh:mm am/pm format.[/es]"
-  trips_cannot_be_entered_for_days: "[es]Trips cannot be entered for days earlier than today.[/es]"
-  trips_cannot_be_entered_for_times: "[es]Trips cannot be entered for past times.[/es]"
+  less_than_one_minute: '<s>Under 1 min</s>'
+  invalid_address: "<s>Invalid address.</s>"
+  invalid_location: "<s>Invalid location.</s>"
+  date_wrong_format: "<s>Date must be in MM/DD/YYYY format.</s>"
+  time_wrong_format: "<s>Time must be in hh:mm am/pm format.</s>"
+  trips_cannot_be_entered_for_days: "<s>Trips cannot be entered for days earlier than today.</s>"
+  trips_cannot_be_entered_for_times: "<s>Trips cannot be entered for past times.</s>"
 
   # Branding
   arc:
     logotext: ''
-    site_title: '[es]ARC 1-Click[/es]'
-    site_description: '[es]ARC 1-Click Application[/es]'
+    site_title: '<s>ARC 1-Click</s>'
+    site_description: '<s>ARC 1-Click Application</s>'
   yata:
     logotext: ''
-    site_title: '[es]YATA 1-Click[/es]'
-    site_description: '[es]YATA 1-Click Application[/es]'
+    site_title: '<s>YATA 1-Click</s>'
+    site_description: '<s>YATA 1-Click Application</s>'
   broward:
     logotext: ''
-    site_title: '[es]Broward 1-Click[/es]'
-    site_description: '[es]Broward 1-Click Application[/es]'
+    site_title: '<s>Broward 1-Click</s>'
+    site_description: '<s>Broward 1-Click Application</s>'
   simple_form:
     labels:
       defaults:
-        email: 'Email'
-        password: 'Contraseña'
-        remember_me: 'Acuérdate de mí'
+        email: '<s>Email</s>'
+        password: '<s>Contraseña</s>'
+        remember_me: '<s>Acuérdate de mí</s>'
 
   activerecord:
     errors:
@@ -136,10 +136,10 @@ es:
         user:
           attributes:
             email:
-              blank: "[es]can't be blank[/es]"
-              invalid: "[es]is invalid[/es]"
+              blank: "<s>can't be blank</s>"
+              invalid: "<s>is invalid</s>"
             password:
-              blank: "[es]can't be blank[/es]"
-              confirmation: "[es]doesn't match confirmation[/es]"
+              blank: "<s>can't be blank</s>"
+              confirmation: "<s>doesn't match confirmation</s>"
             current_password:
-              blank: "[es]can't be blank[/es]"
+              blank: "<s>can't be blank</s>"
