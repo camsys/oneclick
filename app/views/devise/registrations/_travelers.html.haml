@@ -10,6 +10,7 @@
             %th.left Buddy            
             %th.left Email address
             %th.left Status
+            %th.left Last Update
             %th.center Actions
         %tbody
           - current_user.traveler_relationships.each do |relationship|
@@ -17,18 +18,20 @@
               %td.left= relationship.traveler.name
               %td.left= relationship.traveler.email
               %td.left= relationship.relationship_status
+              %td.left= distance_of_time_in_words_to_now(relationship.updated_at) + " ago"
               %td.center
-                //- if t.pending?
-                //  = link_to accept_user_traveler_relationship_path(current_user, t.id), remote: true, class: "btn btn-mini btn-success text-center" do
-                //    %i.icon-ok
-                //    =t(:accept)
-                //- if t.confirmed?
-                //  = link_to assist_user_traveler_relationship_path(current_user, t.id), class: "btn btn-mini btn-primary text-center" do
-                //    %i.icon-compass
-                //    =t(:assist)
-                //= link_to decline_user_traveler_relationship_path(current_user, t.id), remote: true, class: "btn btn-mini btn-warning text-center" do
-                //  %i.icon-remove
-                //  =t(:decline)
+                - if relationship.acceptable
+                  = link_to accept_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-success text-center" do
+                    %i.icon-ok
+                    =t(:accept)
+                - if relationship.declinable
+                  = link_to decline_user_user_relationship_path(current_user, relationship), class: "btn btn-mini btn-primary text-center" do
+                    %i.icon-compass
+                    =t(:decline)
+                - if relationship.revokable
+                  = link_to revoke_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-warning text-center" do
+                    %i.icon-remove
+                    =t(:revoke)
     - else
       You don't have any travelers that have asked you to be their travel buddy.
 

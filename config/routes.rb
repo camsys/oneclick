@@ -20,6 +20,15 @@ Oneclick::Application.routes.draw do
         post 'update'
       end
 
+      # user relationships
+      resources :user_relationships, :only => [:new, :create] do
+        member do
+          get 'accept'
+          get 'decline'
+          get 'revoke'
+        end
+      end
+
       # users have trips
       resources :trips, :only => [:index, :new, :create, :destroy]
 

@@ -111,7 +111,6 @@ class TripsController < ApplicationController
 protected
 
   def get_trip
-    Rails.logger.info "Begin get trip"
     if user_signed_in?
       # limit trips to trips accessible by the user unless an admin
       if current_user.has_role? :admin
@@ -124,7 +123,6 @@ protected
       # this is potentially still a security hole)
       @trip = Trip.find_by_id_and_user_id(params[:id], nil)
     end
-    Rails.logger.info "End get trip"
   end
 
 private

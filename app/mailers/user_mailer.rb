@@ -17,4 +17,12 @@ class UserMailer < ActionMailer::Base
     mail(to: @to_email, subject: "1-Click buddy request from #{@from_email}")
   end
 
+  def traveler_confirmation_email(to_email, from_email)
+    @to_email = to_email
+    @from_email = from_email
+    
+    # TODO localize
+    mail(to: @to_email, subject: "1-Click buddy request from #{@from_email}")
+  end
+
 end
