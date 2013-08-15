@@ -38,5 +38,11 @@
                     = link_to destroy_user_session_path, :method=>'delete' do
                       %i.icon.icon-signout
                       = t(:logout)
+            - else
+              %li.dropdown
+                %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}
+                  %i.icon.icon-user
+                  = "#{t(:welcome)}, Vistor"
+
             = link_to error_501_path, id: 'help' do
               %i.icon.icon-question-sign

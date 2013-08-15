@@ -1,5 +1,8 @@
 class TripsController < ApplicationController
   
+  # include the helper method in any controller which needs to know about guest users
+  helper_method :current_or_guest_user
+  
   # set the @trip variable before any actions are invoked
   before_filter :get_trip, :only => [:show, :destroy]
 
@@ -60,7 +63,7 @@ class TripsController < ApplicationController
     
     @trip_proxy = TripProxy.new()
     # TODO User might be different if we are an agent
-    @trip_proxy.user = current_traveler || anonymous_user
+    @trip_proxy.user = current_or_guest_user
     @trip_proxy.trip_date = Date.today.tomorrow
     @trip_proxy.trip_time = Time.now
     
@@ -75,7 +78,7 @@ class TripsController < ApplicationController
   def create
     
     @trip_proxy = TripProxy.new(params[:trip_proxy])
-    @trip_proxy.user = current_traveler || anonymous_user
+    @trip_proxy.user = current_or_guest_user
     
     if user_signed_in?
       @trip = create_authenticated_trip(@trip_proxy)
@@ -96,7 +99,7 @@ class TripsController < ApplicationController
           message = message + '<ol>' + details.join + '</ol>'
           flash[:error] = message.html_safe
         end
-        format.html { redirect_to user_planned_trip_path(current_user, @planned_trip) }
+        format.html { redirect_to user_planned_trip_path(current_or_guest_user, @planned_trip) }
         format.json { render json: @planned_trip, status: :created, location: @planned_trip }
       else
         format.html { render action: "new" }
@@ -172,10 +175,9 @@ private
 
   def create_anonymous_trip(trip_proxy)
 
-    u = User.find(1)
     trip = Trip.new()
-    trip.creator = u
-    trip.user = u
+    trip.creator = current_or_guest_user
+    trip.user = current_or_guest_user
         
     # get the places from the proxy
     from_place = TripPlace.new()

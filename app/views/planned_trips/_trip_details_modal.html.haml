@@ -6,7 +6,7 @@
           %a{class: "button btn btn-mini btn-success", "data-dismiss" => "modal"}
             %i.icon-reply
             =t(:return)
-          =link_to hide_user_planned_trip_path(current_user, @planned_trip), {"data-dismiss" => "modal",  class: "btn btn-mini btn-danger", remote: true} do
+          =link_to hide_user_planned_trip_path(current_or_guest_user, @planned_trip), {"data-dismiss" => "modal",  class: "btn btn-mini btn-danger", remote: true} do
             %i.icon-remove
             =t(:remove)
       %div{:class => "modal-body"}

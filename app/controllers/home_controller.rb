@@ -1,6 +1,9 @@
 class HomeController < ApplicationController
   include CsHelpers
 
+  # include the helper method in any controller which needs to know about guest users
+  helper_method :current_or_guest_user
+
   def index
     @actions = []
     if user_signed_in?
