@@ -3,14 +3,14 @@ class Poi < ActiveRecord::Base
   # Associations
   belongs_to :poi_type
 
-  after_validation :reverse_geocode
+  #after_validation :reverse_geocode
   
   # Updatable attributes
   attr_accessible :name, :address1, :address2, :city, :state, :zip, :lat, :lon
 
   # set the default scope
-  default_scope order('name')
-
+  default_scope where('pois.lat IS NOT NULL AND pois.lon IS NOT NULL').order('pois.name')
+  
   def to_s
     name
   end

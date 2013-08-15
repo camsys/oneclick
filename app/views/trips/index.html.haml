@@ -2,18 +2,24 @@
   .span12
     %h1
       %i.icon.icon-tags
-      = !assisting? ? 'My Trips' : "#{assisted_user.first_name}'s Trips"
+      = !assisting? ? 'My Trips' : "#{current_user.first_name}'s Trips"
 
-.row-fluid
-  .span8.offset2
-    .row-fluid
-      .span12
-        %h3 Choose a saved trip
-      .span12
-        %div
-          %table.table.table.condensed.table-striped.table-hover
-            - @trips.each do |trip|
-              %tr
-                %td
-                  = link_to trip, user_planned_trip_path(current_user, trip.planned_trips.last)
-            
+- if current_user.trips.count > 0
+  .row-fluid
+    .span8.offset2
+      .row-fluid
+        .span12
+          %h4 Choose a saved trip
+      .row-fluid
+        .span12
+          .thumbnail{style: 'height: 300px; overflow-y: auto;'}
+            %table.table.table.condensed.table-hover
+              - @trips.each do |trip|
+                %tr
+                  %td
+                    = link_to trip, user_planned_trip_path(current_user, trip.planned_trips.last)
+- else
+  .row-fluid
+    .span12
+      %h4 You have no previous trips.
+      = link_to(t(:plan_a_trip), new_user_trip_path(current_user))       
