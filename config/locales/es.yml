@@ -47,6 +47,8 @@ es:
   decline: '[es]Decline[/es]'
   assist: '[es]Assist[/es]'
   revoke: '[es]Revoke[/es]'
+  hide: '[es]Hide[/es]'
+  retract: '[es]Retract[/es]'
 
   spanish: 'En Español'
   error_not_implemented: 'Lo sentimos, pero esta funcionalidad aún no se ha implementado.'

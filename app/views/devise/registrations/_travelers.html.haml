@@ -21,15 +21,15 @@
               %td.left= distance_of_time_in_words_to_now(relationship.updated_at) + " ago"
               %td.center
                 - if relationship.acceptable
-                  = link_to accept_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-success text-center" do
+                  = link_to delegate_accept_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-success text-center" do
                     %i.icon-ok
                     =t(:accept)
                 - if relationship.declinable
-                  = link_to decline_user_user_relationship_path(current_user, relationship), class: "btn btn-mini btn-primary text-center" do
+                  = link_to delegate_decline_user_user_relationship_path(current_user, relationship), class: "btn btn-mini btn-primary text-center" do
                     %i.icon-compass
                     =t(:decline)
                 - if relationship.revokable
-                  = link_to revoke_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-warning text-center" do
+                  = link_to delegate_revoke_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-warning text-center" do
                     %i.icon-remove
                     =t(:revoke)
     - else

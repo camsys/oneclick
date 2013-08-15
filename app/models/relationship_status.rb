@@ -5,6 +5,7 @@ class RelationshipStatus < ActiveRecord::Base
   CONFIRMED = 3
   DENIED = 4
   REVOKED = 5
+  HIDDEN = 6
   
   attr_accessible :id, :name
    
@@ -22,6 +23,9 @@ class RelationshipStatus < ActiveRecord::Base
   end
   def self.revoked
     find(REVOKED)
+  end
+  def self.hidden
+    find(HIDDEN)
   end
   
   def to_s

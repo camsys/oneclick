@@ -23,9 +23,12 @@ Oneclick::Application.routes.draw do
       # user relationships
       resources :user_relationships, :only => [:new, :create] do
         member do
-          get 'accept'
-          get 'decline'
-          get 'revoke'
+          get 'traveler_retract'
+          get 'traveler_revoke'
+          get 'traveler_hide'
+          get 'delegate_accept'
+          get 'delegate_decline'
+          get 'delegate_revoke'
         end
       end
 

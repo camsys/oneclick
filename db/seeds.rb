@@ -49,6 +49,7 @@ relationship_statuses = [
   {id: 3, name: 'Confirmed'},
   {id: 4, name: 'Denied'},  
   {id: 5, name: 'Revoked'},  
+  {id: 6, name: 'Hidden'},  
 ]
 
 # load the modes

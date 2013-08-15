@@ -32,10 +32,18 @@
               %td.left= relationship.relationship_status
               %td.left= distance_of_time_in_words_to_now(relationship.updated_at) + " ago"
               %td.center
+                - if relationship.retractable
+                  = link_to traveler_retract_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-warning text-center" do
+                    %i.icon-remove
+                    =t(:retract)
                 - if relationship.revokable
-                  = link_to revoke_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-warning text-center" do
+                  = link_to traveler_revoke_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-warning text-center" do
                     %i.icon-remove
                     =t(:revoke)
+                - if relationship.hidable
+                  = link_to traveler_hide_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-warning text-center" do
+                    %i.icon-remove
+                    =t(:hide)
     - else
       You don't have any buddies. Send a buddy request by entering their email address above.
 
