@@ -1,5 +1,7 @@
 class UserRelationshipsController < ApplicationController
-
+  
+  before_filter :set_view_variables
+  
   # A traveler creates a new delegate (buddy) request
   def create
     
@@ -26,125 +28,117 @@ class UserRelationshipsController < ApplicationController
       @delegate_relationship = UserRelationship.new
       flash[:warn] = "No registered users with email address #{email}."       
     end
-    @traveler_relationship = UserRelationship.new
-        
+
+    respond_to do |format|
+      format.js
+    end
+       
   end
 
   # A traveler hides a buddy request.
   def traveler_hide
     
-    # get the user_relationship from the delegate_relationships for the logged in user (traveler)    
-    @delegate_relationship = current_user.delegate_relationships.find(params[:id])
-    if @delegate_relationship
-      @delegate_relationship.relationship_status = RelationshipStatus.hidden
-      if @delegate_relationship.save
-        flash[:info] = "Database updated"
-      else
-        flash[:alert] = "Unable to update the database."
-      end       
-    else
-      @delegate_relationship = UserRelationship.new
+    update_delegate_relationship(current_user, params[:id], RelationshipStatus.hidden)
+    respond_to do |format|
+      format.js
     end
-    @traveler_relationship = UserRelationship.new
         
   end
 
   # A traveler is retracting an unconfirmed request.
   def traveler_retract
 
-    # get the user_relationship from the delegate_relationships for the logged in user (traveler)    
-    @delegate_relationship = current_user.delegate_relationships.find(params[:id])
-    if @delegate_relationship
-      @delegate_relationship.relationship_status = RelationshipStatus.hidden
-      if @delegate_relationship.save
-        flash[:info] = "Database updated"
-      else
-        flash[:alert] = "Unable to update the database."
-      end       
-    end      
+    update_delegate_relationship(current_user, params[:id], RelationshipStatus.hidden)
+    respond_to do |format|
+      format.js
+    end
 
   end
 
   # A traveler revokes a confirmed request
   def traveler_revoke
-    
-    # get the user_relationship from the delegate_relationships for the logged in user (traveler)    
-    @delegate_relationship = current_user.delegate_relationships.find(params[:id])
-    if @delegate_relationship
-      @delegate_relationship.relationship_status = RelationshipStatus.revoked
-      if @delegate_relationship.save
-        UserMailer.buddy_revoke_email(@delegate_relationship.delegate.email, @delegate_relationship.traveler.email).deliver
-        flash[:info] = "Buddy confirmation sent!"
-      else
-        flash[:alert] = "Unable to send confirmation."
-      end       
-    else
-      flash[:alert] = "Unable to send confirmation."
-      @delegate_relationship = UserRelationship.new
+
+    update_delegate_relationship(current_user, params[:id], RelationshipStatus.revoked)
+    respond_to do |format|
+      format.js
     end
-    @traveler_relationship = UserRelationship.new
-        
+           
   end
 
   # A delegate (buddy) accepts an request
   def delegate_accept
-
-    # get the user_relationship from the traveler_relationships for the logged in user (delegate)    
-    @traveler_relationship = current_user.traveler_relationships.find(params[:id])
-    if @traveler_relationship
-      @traveler_relationship.relationship_status = RelationshipStatus.confirmed
-      if @traveler_relationship.save
-        UserMailer.traveler_confirmation_email(@traveler_relationship.traveler.email, @traveler_relationship.delegate.email).deliver
-        flash[:info] = "Buddy confirmation sent!"
-      else
-        flash[:alert] = "Unable to send confirmation."
-      end       
-    else
-      flash[:alert] = "Unable to send confirmation."
-      @traveler_relationship = UserRelationship.new
+    
+    update_traveler_relationship(current_user, params[:id], RelationshipStatus.confirmed, 1)
+    respond_to do |format|
+      format.js
     end
-    @delegate_relationship = UserRelationship.new
             
   end
 
   # A delegate declines a request
   def delegate_decline
-    
-    # get the user_relationship from the traveler_relationships for the logged in user (delegate)    
-    @traveler_relationship = current_user.traveler_relationships.find(params[:id])
-    if @traveler_relationship
-      @traveler_relationship.relationship_status = RelationshipStatus.declined
-      if @traveler_relationship.save
-        UserMailer.traveler_decline_email(@traveler_relationship.traveler.email, @traveler_relationship.delegate.email).deliver
-        flash[:info] = "Buddy decline notification sent!"
-      else
-        flash[:alert] = "Unable to send notification."
-      end       
-    else
-      flash[:alert] = "Unable to send confirmation."
-      @traveler_relationship = UserRelationship.new
+
+    update_traveler_relationship(current_user, params[:id], RelationshipStatus.denied, 2)
+    respond_to do |format|
+      format.js
     end
-    @delegate_relationship = UserRelationship.new
+    
   end
   
-
+  # A delegate revokes the ability to perform funcitons on behalf of a traveler
   def delegate_revoke
+
+    update_traveler_relationship(current_user, params[:id], RelationshipStatus.revoked, 3)
+    respond_to do |format|
+      format.js
+    end
     
+  end
+    
+private
+  
+  def set_view_variables
+    @user_relationship = UserRelationship.new
+  end
+  
+  # Updates the status of a delegate relationship by the current user (traveler)
+  def update_delegate_relationship(user, delegate_relationship_id, new_status)
+    # get the user_relationship from the delegate_relationships for the logged in user (traveler)    
+    @delegate_relationship = user.delegate_relationships.find(delegate_relationship_id)
+    if @delegate_relationship
+      @delegate_relationship.relationship_status = new_status
+      if @delegate_relationship.save
+        flash[:info] = "Database updated"
+      else
+        flash[:alert] = "Unable to update the database."
+      end       
+    end
+  end   
+
+  # Updates the status of a traveler relationship by the current user (delegate)
+  def update_traveler_relationship(user, traveler_relationship_id, new_status, email_type)
     # get the user_relationship from the traveler_relationships for the logged in user (delegate)    
-    @traveler_relationship = current_user.traveler_relationships.find(params[:id])
+    @traveler_relationship = user.traveler_relationships.find(traveler_relationship_id)
     if @traveler_relationship
-      @traveler_relationship.relationship_status = RelationshipStatus.revoked
+      @traveler_relationship.relationship_status = new_status
       if @traveler_relationship.save
-        UserMailer.traveler_revoke_email(@traveler_relationship.traveler.email, @traveler_relationship.delegate.email).deliver
-        flash[:info] = "Buddy confirmation sent!"
+        # TODO: All emails should be sent from a worker thread not here!
+        send_update_email(@traveler_relationship.delegate, @traveler_relationship.traveler, email_type)
+        flash[:info] = "Email sent!"
       else
         flash[:alert] = "Unable to send confirmation."
       end       
-    else
-      flash[:alert] = "Unable to send confirmation."
-      @traveler_relationship = UserRelationship.new
     end
-    @delegate_relationship = UserRelationship.new        
-  end
+  end   
     
+  # Sends an update email from the delegate to the traveler
+  def send_update_email(delegate, traveler, email_type)
+    if email_type == 1
+      UserMailer.traveler_confirmation_email(traveler.email, delegate.email).deliver
+    elsif email_type == 2
+      UserMailer.traveler_decline_email(traveler.email, delegate.email).deliver
+    elsif email_type == 3
+      UserMailer.traveler_revoke_email(traveler.email, delegate.email).deliver
+    end
+  end
 end

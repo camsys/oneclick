@@ -1,42 +1,7 @@
 .row-fluid
   .span12
     %h4 My travelers
-.row-fluid
-  .span12
-    - unless current_user.traveler_relationships.empty?
-      %table.table.table.condensed.table-striped.table-hover.table-bordered#travelersdatatable
-        %thead
-          %tr
-            %th.left Buddy            
-            %th.left Email address
-            %th.left Status
-            %th.left Last Update
-            %th.center Actions
-        %tbody
-          - current_user.traveler_relationships.each do |relationship|
-            %tr
-              %td.left= relationship.traveler.name
-              %td.left= relationship.traveler.email
-              %td.left= relationship.relationship_status
-              %td.left= distance_of_time_in_words_to_now(relationship.updated_at) + " ago"
-              %td.center
-                - if relationship.acceptable
-                  = link_to delegate_accept_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-success text-center" do
-                    %i.icon-ok
-                    =t(:accept)
-                - if relationship.declinable
-                  = link_to delegate_decline_user_user_relationship_path(current_user, relationship), class: "btn btn-mini btn-primary text-center" do
-                    %i.icon-compass
-                    =t(:decline)
-                - if relationship.revokable
-                  = link_to delegate_revoke_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-warning text-center" do
-                    %i.icon-remove
-                    =t(:revoke)
-    - else
-      You don't have any travelers that have asked you to be their travel buddy.
 
-
-= render partial: 'shared/parameterized_datatable_javascript', locals: { table_id: '#travelersdatatable',
-  object_plural: 'travelers',
-  object_singular: 'traveler',
-  bLengthChange: false}
+#traveler_table
+  = render 'traveler_table'
+  

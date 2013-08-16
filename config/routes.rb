@@ -43,11 +43,9 @@ Oneclick::Application.routes.draw do
           get 'hide'
           get 'unhide_all'
         end
-      end
-      
+      end      
     end
     
-
     match '/' => 'home#index'
 
     match '/404' => 'errors#error_404', as: 'error_404'

@@ -12,12 +12,7 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def edit
-    @delegate_relationship = UserRelationship.new
-    @delegate_relationship.traveler = current_user
-    @delegate_relationship.relationship_status = RelationshipStatus.find_by_name('pending')    
-    @traveler_relationship = UserRelationship.new
-    @traveler_relationship.delegate = current_user
-    @traveler_relationship.relationship_status = RelationshipStatus.find_by_name('pending')    
+    @user_relationship = UserRelationship.new
     super    
   end
 
