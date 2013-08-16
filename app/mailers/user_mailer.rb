@@ -2,8 +2,8 @@ class UserMailer < ActionMailer::Base
   default from: "donotreply@gmail.com"
   helper :application
   
-  def user_trip_email(addresses, trip, subject, from)
-    @trip = trip
+  def user_trip_email(addresses, planned_trip, subject, from)
+    @planned_trip = planned_trip
     @from = from
     
     mail(to: addresses, subject: subject, from: @from)
