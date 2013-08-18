@@ -7,8 +7,8 @@ class TripPlace < Place
 
   def any_present?
     if %w(nongeocoded_address address).all?{|attr| self[attr].blank?}
-      errors.add :nongeocoded_address, "Address is required"
-      errors.add :address, "Address is required"
+      errors.add :nongeocoded_address, I18n.translate(:address_is_required)
+      errors.add :address, I18n.translate(:address_is_required)
       return false
     end
     true

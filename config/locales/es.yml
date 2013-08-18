@@ -110,6 +110,61 @@ es:
   trips_cannot_be_entered_for_days: "[es]Trips cannot be entered for days earlier than today.[/es]"
   trips_cannot_be_entered_for_times: "[es]Trips cannot be entered for past times.[/es]"
 
+  # new ones
+  buddy_request_sent: "<s70>Buddy request sent!</s>"
+  buddy_removed: "<s69>Buddy removed.</s>"
+  http_404_not_found: "<s49>404 Not Found</s>"
+  http_422_unprocessable_entity: "<s50>422 Unprocessable Entity</s>"
+  http_501_not_implemented: "<s51>501 Not Implemented</s>"
+  arc_oneclick_trip_itinerary: "<s60>ARC OneClick Trip Itinerary</s>"
+  an_email_was_sent_to_email_addresses_join: "<s63>An email was sent to %{addresses}.</s>"
+  unable_to_remove_itinerary: '<s313>Unable to remove itinerary.</s>'
+  not_authorized_as_an_administrator: '<s305>Not authorized as an administrator.</s>'
+  n_a: '<s459>n/a</s>'
+  less_than_1_block: "<s166>less than 1 block</s>"
+  about_2_blocks: "<s104>about 2 blocks</s>"
+  about_4_blocks: "<s105>about 4 blocks</s>"
+  twof_miles: "<s18>%.2f miles</s>"
+  one_click_buddy_request_from_from_email: "<s46>1-Click buddy request from %{from_email}</s>"
+  you_can_t_be_your_own_buddy: "<s98>You can't be your own buddy.</s>"
+  you_ve_already_asked_them_to_be_a_buddy: "<s99>You've already asked them to be a buddy.</s>"
+  address_is_required: "<s62>Address is required</s>"
+  last_30_days: "<s79>Last 30 days</s>"
+  last_7_days: "<s80>Last 7 days</s>"
+  last_month: "<s81>Last month</s>"
+  this_month: "<s89>This month</s>"
+  today: "<s90>Today</s>"
+  yesterday: "<s97>Yesterday</s>"
+  ago: "<s2> ago</s>"
+  didn_t_receive_confirmation_instructions: "<s75>Didn't receive confirmation instructions?</s>"
+  didn_t_receive_unlock_instructions: "<s76>Didn't receive unlock instructions?</s>"
+  sign_in_with_provider_to_s_titleize: "<s88>Sign in with %{provider}</s>"
+  assisting_assisted_user_email: "<s66>Assisting %{assisted_user}</s>"
+  _menu__object_plural_per_page: "<s102>_MENU_ %{object} per page</s>"
+  _menu__records_per_page: "<s103>_MENU_ records per page</s>"
+  showing__start__to__end__of__total__object_plural: "<s87>Showing _START_ to _END_ of _TOTAL_ %{object}</s>"
+  anonymous: "<s112>anonymous</s>"
+  no_address: "<s177>no address</s>"
+  trip_options_hidden: {
+    one: '<s14>%{count} option hidden.</s>',
+    other: '<s14>%{count} options hidden.</s>'
+  }
+  send_to_traveler: '<s310>Send to traveler</s>'
+  from_address: '<s301>From address</s>'
+  email_addresses: '<s297>Email addresses</s>'
+  start: "<s86>START: </s>"
+  on: '<s221> on </s>'
+  to: '<s222> to </s>'
+  walking: '<s223> walking</s>'
+  arrive: "<s61>ARRIVE: </s>"
+  trip: "<s92>Trip: </s>"
+  est: "<s0> (est.)</s>"
+  to: "<s3> to </s>"
+  my_trips: '<s303>My Trips</s>'
+  assisted_user_first_name_s_trips: "<s10>%{name}'s Trips</s>"
+  trip_options_information_from_from: "<s91>Trip options information from #{@from}</s>"
+  
+
   # Branding
   arc:
     logotext: ''

@@ -5,9 +5,9 @@ class BuddyRelationship < ActiveRecord::Base
 
   validates :email_address, presence: true
   validates :email_address, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, on: :create }
-  validates :email_address, uniqueness: {scope: :traveler_id, message: "You've already asked them to be a buddy." }
+  validates :email_address, uniqueness: {scope: :traveler_id, message: I18n.translate(:you_ve_already_asked_them_to_be_a_buddy) }
   validates_each :email_address do |record, attr, value|
-    record.errors.add(attr, "You can't be your own buddy.") if value == record.traveler.email
+    record.errors.add(attr, I18n.translate(:you_can_t_be_your_own_buddy)) if value == record.traveler.email
   end
   attr_accessible :buddy_id, :status, :traveler_id, :email_address, :email_sent
   belongs_to :buddy, class_name: User

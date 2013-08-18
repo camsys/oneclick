@@ -5,25 +5,25 @@ module ApplicationHelper
   include CsHelpers
 
   def distance_to_words(dist_in_meters)
-    return 'n/a' unless dist_in_meters
+    return t(:n_a) unless dist_in_meters
     
     # convert the meters to miles
     miles = dist_in_meters * METERS_TO_MILES
     if miles < 0.25
-      dist_str = "less than 1 block"
+      dist_str = t(:less_than_1_block)
     elsif miles < 0.5
-      dist_str = "about 2 blocks"      
+      dist_str = t(:about_2_blocks)      
     elsif miles < 1
-      dist_str = "about 4 blocks"      
+      dist_str = t(:about_4_blocks)      
     else
-      dist_str = "%.2f miles" % [miles]
+      dist_str = t(:twof_miles) % [miles]
     end
     dist_str
   end
   
   def duration_to_words(time_in_seconds)
     
-    return 'n/a' unless time_in_seconds
+    return t(:n_a) unless time_in_seconds
 
     time_in_seconds = time_in_seconds.to_i
     hours = time_in_seconds/3600

@@ -20,5 +20,5 @@
     .span9.offset3.trip_summary_text= t(:depart_at) + ' ' + itinerary.start_time.in_time_zone.strftime('%I:%M %p')
 -if itinerary.walk_time
   .row-fluid
-    .span9.offset3.trip_summary_text= duration_to_words(itinerary.walk_time) + ' walking'
+    .span9.offset3.trip_summary_text= duration_to_words(itinerary.walk_time) + t(:walking)
 
