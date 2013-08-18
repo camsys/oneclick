@@ -1,12 +1,12 @@
 class TimeFilterHelper
   
   TIME_FILTERS = [
-    {:id => 0, :value => "Last 30 days", :parse_text_start => "29 days ago", :parse_text_end => "today", :is_day_duration => true},
-    {:id => 1, :value => "Last 7 days", :parse_text_start => "6 days ago", :parse_text_end => "today", :is_day_duration => true},
-    {:id => 2, :value => "Today", :parse_text_start => "today", :parse_text_end => "today", :is_day_duration => true},
-    {:id => 3, :value => "Yesterday", :parse_text_start => "yesterday", :parse_text_end => "yesterday", :is_day_duration => true},
-    {:id => 4, :value => "This month", :parse_text_start => "today", :parse_text_end => "today", :is_day_duration => false},    
-    {:id => 5, :value => "Last month", :parse_text_start => "last month", :parse_text_end => "last month", :is_day_duration => false}
+    {:id => 0, :value => t(:last_30_days), :parse_text_start => "29 days ago", :parse_text_end => "today", :is_day_duration => true},
+    {:id => 1, :value => t(:last_7_days), :parse_text_start => "6 days ago", :parse_text_end => "today", :is_day_duration => true},
+    {:id => 2, :value => t(:today), :parse_text_start => "today", :parse_text_end => "today", :is_day_duration => true},
+    {:id => 3, :value => t(:yesterday), :parse_text_start => "yesterday", :parse_text_end => "yesterday", :is_day_duration => true},
+    {:id => 4, :value => t(:this_month), :parse_text_start => "today", :parse_text_end => "today", :is_day_duration => false},    
+    {:id => 5, :value => t(:last_month), :parse_text_start => "last month", :parse_text_end => "last month", :is_day_duration => false}
   ]
   
   def self.time_filter_as_duration(time_filter_id)

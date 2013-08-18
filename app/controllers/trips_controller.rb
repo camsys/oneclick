@@ -13,9 +13,9 @@ class TripsController < ApplicationController
     email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
     Rails.logger.info email_addresses.inspect
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    UserMailer.user_trip_email(email_addresses, @trip, "ARC OneClick Trip Itinerary", from_email).deliver
+    UserMailer.user_trip_email(email_addresses, @trip, t(:arc_oneclick_trip_itinerary), from_email).deliver
     respond_to do |format|
-      format.html { redirect_to(@trip, :notice => "An email was sent to #{email_addresses.join(', ')}." ) }
+      format.html { redirect_to(@trip, :notice => t(:an_email_was_sent_to_email_addresses_join, addresses: email_addresses.join(', ') ) ) }
       format.json { render json: @trip }
     end
   end
@@ -85,7 +85,7 @@ class TripsController < ApplicationController
     # limit itineraries to only those related to trps owned by the user
     itinerary = Itinerary.find(params[:id])
     if itinerary.trip.owner != current_traveler
-      render text: 'Unable to remove itinerary.', status: 500
+      render text: t(:unable_to_remove_itinerary), status: 500
       return
     end
 
@@ -95,7 +95,7 @@ class TripsController < ApplicationController
         itinerary.hide
         format.js # hide.js.haml
       else
-        render text: 'Unable to remove itinerary.', status: 500
+        render text: t(:unable_to_remove_itinerary), status: 500
       end
     end
   end
