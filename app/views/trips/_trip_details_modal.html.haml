@@ -10,7 +10,7 @@
             %i.icon-remove
             =t(:remove)
       %div{:class => "modal-body"}
-    = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
+    = render :partial => trip_detail_header_by_mode(itinerary), :locals => { :itinerary => itinerary }
     %div{:class => "container-fluid"}
       %h4.text-center{:id => "details-title"}=t(:details)
       = render :partial => itinerary['mode']+'_details', :locals => { :itinerary => itinerary }

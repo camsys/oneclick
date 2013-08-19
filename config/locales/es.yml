@@ -18,6 +18,7 @@ es:
   # Agent and Admin string
   reports: "<s13>Reports</s>"
   admin: '<s14>Admin</s>'
+  send_by_email: '<s164>Send by email</s>'
 
   # Registration, sign in, profile
   version: '<s15>Versión</s>'
@@ -110,6 +111,18 @@ es:
   time_wrong_format: "<s92>Time must be in hh:mm am/pm format.</s>"
   trips_cannot_be_entered_for_days: "<s93>Trips cannot be entered for days earlier than today.</s>"
   trips_cannot_be_entered_for_times: "<s94>Trips cannot be entered for past times.</s>"
+  link_to_georgia_commute_options: {
+    one:   '&lt;s160>Visit %{url} to view 1 possible rideshare.&lt;/s>',
+    other: '&lt;s160>Visit %{url} to view %{count} possible rideshares.&lt;/s>',
+    }
+  possible_rideshares: "<s161>%{count} possible rideshares.</s>"
+  view_details: "<s162>View details for more.</s>"
+  # Next 4 are prev 2 broken apart to deal with some UI issues.
+  # They need to stay short.
+  possible_rideshares1: "<s161>%{count} possible</s>"
+  possible_rideshares2: "<s161>rideshares.</s>"
+  view_details1: "<s162>View details</s>"
+  view_details2: "<s162>for more.</s>"
 
   # new ones
   buddy_request_sent: "<s95>Buddy request sent!</s>"
@@ -155,12 +168,10 @@ es:
   email_addresses: '<s133>Email addresses</s>'
   start: "<s134>START: </s>"
   on: '<s135> on </s>'
-  to: '<s136> to </s>'
   walking: '<s137> walking</s>'
   arrive: "<s138>ARRIVE: </s>"
   trip: "<s139>Trip: </s>"
   est: "<s140> (est.)</s>"
-  to: "<s141> to </s>"
   my_trips: '<s142>My Trips</s>'
   assisted_user_first_name_s_trips: "<s143>%{name}'s Trips</s>"
   trip_options_information_from_from: "<s144>Trip options information from #{@from}</s>"

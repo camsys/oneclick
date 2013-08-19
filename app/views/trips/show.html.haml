@@ -26,7 +26,7 @@
       = render partial: 'hidden_trips_notice', locals: {trip: @trip}
     = link_to '#', {href: '#send_trip_by_email', class: "pull-right", data: {toggle: 'modal'}} do
       %i.icon-envelope
-      Send by email
+      =t(:send_by_email)
 
     = render partial: 'send_trip_by_email', locals: {trip: @trip}
 

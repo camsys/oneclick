@@ -21,7 +21,8 @@ en:
   # Agent and Admin string
   reports: "Reports"
   admin: 'Admin'
-
+  send_by_email: 'Send by email'
+  
   # Registration, sign in, profile
   version: 'Version'
   home: 'en no-brand Home'
@@ -113,6 +114,10 @@ en:
   time_wrong_format: "Time must be in hh:mm am/pm format."
   trips_cannot_be_entered_for_days: "Trips cannot be entered for days earlier than today."
   trips_cannot_be_entered_for_times: "Trips cannot be entered for past times."
+  link_to_georgia_commute_options: {
+    one:   'Visit %{url} to view 1 possible rideshare.',
+    other: 'Visit %{url} to view %{count} possible rideshares.',
+    }
 
   # new ones
   buddy_request_sent: "Buddy request sent!"
@@ -158,13 +163,10 @@ en:
   from_address: 'From address'
   email_addresses: 'Email addresses'
   start: "START: "
-  on: ' on '
-  to: ' to '
   walking: ' walking'
   arrive: "ARRIVE: "
   trip: "Trip: "
   est: " (est.)"
-  to: " to "
   my_trips: 'My Trips'
   assisted_user_first_name_s_trips: "%{name}'s Trips"
   trip_options_information_from_from: "Trip options information from %{from}"
