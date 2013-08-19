@@ -64,8 +64,10 @@ class TripsController < ApplicationController
     @trip_proxy = TripProxy.new()
     # TODO User might be different if we are an agent
     @trip_proxy.user = current_or_guest_user
-    @trip_proxy.trip_date = Date.today.tomorrow
-    @trip_proxy.trip_time = Time.now
+    # Set the default travel time/date to tomorrow plus 30 mins from now
+    travel_date = Time.now.tomorrow + 30.minutes
+    @trip_proxy.trip_date = travel_date.strftime("%m/%d/%Y")
+    @trip_proxy.trip_time = travel_date.strftime("%I:%M %P")
     
     respond_to do |format|
       format.html # new.html.erb
