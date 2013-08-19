@@ -119,6 +119,14 @@ en:
     one:   'Visit %{url} to view 1 possible rideshare.',
     other: 'Visit %{url} to view %{count} possible rideshares.',
     }
+  possible_rideshares: "%{count} possible rideshares."
+  view_details: "View details for more."
+  # Next 4 are prev 2 broken apart to deal with some UI issues.
+  # They need to stay short.
+  possible_rideshares1: "%{count} possible"
+  possible_rideshares2: "rideshares."
+  view_details1: "View details"
+  view_details2: "for more."
 
   # new ones
   buddy_request_sent: "Buddy request sent!"
