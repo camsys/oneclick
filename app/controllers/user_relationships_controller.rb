@@ -30,7 +30,7 @@ class UserRelationshipsController < ApplicationController
     end
 
     respond_to do |format|
-      format.js
+      format.js {render "update_buddy_table"}
     end
        
   end
@@ -40,7 +40,7 @@ class UserRelationshipsController < ApplicationController
     
     update_delegate_relationship(current_user, params[:id], RelationshipStatus.hidden)
     respond_to do |format|
-      format.js
+      format.js {render "update_buddy_table"}
     end
         
   end
@@ -50,7 +50,7 @@ class UserRelationshipsController < ApplicationController
 
     update_delegate_relationship(current_user, params[:id], RelationshipStatus.hidden)
     respond_to do |format|
-      format.js
+      format.js {render "update_buddy_table"}
     end
 
   end
@@ -60,7 +60,7 @@ class UserRelationshipsController < ApplicationController
 
     update_delegate_relationship(current_user, params[:id], RelationshipStatus.revoked)
     respond_to do |format|
-      format.js
+      format.js {render "update_buddy_table"}
     end
            
   end
@@ -70,7 +70,7 @@ class UserRelationshipsController < ApplicationController
     
     update_traveler_relationship(current_user, params[:id], RelationshipStatus.confirmed, 1)
     respond_to do |format|
-      format.js
+      format.js {render "update_traveler_table"}
     end
             
   end
@@ -80,7 +80,7 @@ class UserRelationshipsController < ApplicationController
 
     update_traveler_relationship(current_user, params[:id], RelationshipStatus.denied, 2)
     respond_to do |format|
-      format.js
+      format.js {render "update_traveler_table"}
     end
     
   end
@@ -90,7 +90,7 @@ class UserRelationshipsController < ApplicationController
 
     update_traveler_relationship(current_user, params[:id], RelationshipStatus.revoked, 3)
     respond_to do |format|
-      format.js
+      format.js {render "update_traveler_table"}
     end
     
   end
