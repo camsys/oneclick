@@ -13,6 +13,17 @@
 
 ActiveRecord::Schema.define(:version => 0) do
 
+  create_table "coverage_areas", :force => true do |t|
+    t.integer "service_id", :null => false
+    t.boolean "active",     :null => false
+  end
+
+  create_table "fare_structures", :force => true do |t|
+    t.integer "service_id",                                :null => false
+    t.decimal "fare",       :precision => 10, :scale => 2
+    t.string  "note"
+  end
+
   create_table "itineraries", :force => true do |t|
     t.integer  "planned_trip_id"
     t.integer  "mode_id"
@@ -89,6 +100,13 @@ ActiveRecord::Schema.define(:version => 0) do
     t.string "description"
   end
 
+  create_table "providers", :force => true do |t|
+    t.string  "name",        :limit => 64,                   :null => false
+    t.string  "contact",     :limit => 64
+    t.string  "external_id", :limit => 25
+    t.boolean "active",                    :default => true, :null => false
+  end
+
   create_table "relationship_statuses", :force => true do |t|
     t.string "name", :limit => 64
   end
@@ -114,6 +132,71 @@ ActiveRecord::Schema.define(:version => 0) do
   add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
+  create_table "schedules", :force => true do |t|
+    t.integer "service_id",  :null => false
+    t.time    "start_time",  :null => false
+    t.time    "end_time",    :null => false
+    t.integer "day_of_week", :null => false
+    t.boolean "active",      :null => false
+  end
+
+  create_table "service_traveler_accommodations_map", :force => true do |t|
+    t.integer "service_id",                                             :null => false
+    t.integer "accommodation_id",                                       :null => false
+    t.string  "value",                 :limit => 64,                    :null => false
+    t.boolean "requires_verification",               :default => false, :null => false
+    t.boolean "active",                                                 :null => false
+  end
+
+  create_table "service_traveler_characteristics_map", :force => true do |t|
+    t.integer "service_id",                                             :null => false
+    t.integer "characteristic_id",                                      :null => false
+    t.string  "value",                 :limit => 64,                    :null => false
+    t.boolean "requires_verification",               :default => false, :null => false
+    t.boolean "active",                                                 :null => false
+  end
+
+  create_table "service_trip_purpose_map", :force => true do |t|
+    t.integer "service_id",               :null => false
+    t.integer "purpose_id",               :null => false
+    t.string  "value",      :limit => 64, :null => false
+    t.boolean "active",                   :null => false
+  end
+
+  create_table "service_types", :force => true do |t|
+    t.integer "service_id",               :null => false
+    t.string  "name",       :limit => 64, :null => false
+    t.string  "note"
+  end
+
+  create_table "services", :force => true do |t|
+    t.string  "name",                         :limit => 64,                    :null => false
+    t.integer "provider_id",                                                   :null => false
+    t.integer "service_type_id",                                               :null => false
+    t.integer "advanced_notice_minutes",                    :default => 0,     :null => false
+    t.boolean "volunteer_drivers_used",                     :default => false, :null => false
+    t.boolean "accepting_new_clients",                      :default => true,  :null => false
+    t.boolean "wait_list_in_effect",                        :default => false, :null => false
+    t.boolean "requires_prior_authorization",               :default => false, :null => false
+    t.boolean "active",                                     :default => true,  :null => false
+  end
+
+  create_table "traveler_accommodations", :force => true do |t|
+    t.string  "name",                  :limit => 64,                    :null => false
+    t.string  "note"
+    t.string  "datatype",              :limit => 25,                    :null => false
+    t.boolean "requires_verification",               :default => false, :null => false
+    t.boolean "active",                              :default => true,  :null => false
+  end
+
+  create_table "traveler_characteristics", :force => true do |t|
+    t.string  "name",                  :limit => 64
+    t.string  "note",                                                   :null => false
+    t.string  "datatype",              :limit => 25,                    :null => false
+    t.boolean "requires_verification",               :default => false, :null => false
+    t.boolean "active",                              :default => true,  :null => false
+  end
+
   create_table "trip_places", :force => true do |t|
     t.integer  "trip_id",     :null => false
     t.integer  "sequence",    :null => false
@@ -124,6 +207,12 @@ ActiveRecord::Schema.define(:version => 0) do
     t.float    "lon"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "trip_purposes", :force => true do |t|
+    t.string  "name",   :limit => 64,                   :null => false
+    t.string  "note"
+    t.boolean "active",               :default => true, :null => false
   end
 
   create_table "trip_statuses", :force => true do |t|
@@ -165,6 +254,24 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer  "role_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "user_traveler_accommodations_map", :force => true do |t|
+    t.integer  "traveler_id",                                       :null => false
+    t.integer  "accommodation_id",                                  :null => false
+    t.string   "value",            :limit => 64,                    :null => false
+    t.boolean  "verified",                       :default => false, :null => false
+    t.datetime "verified_at"
+    t.integer  "verified_by_id"
+  end
+
+  create_table "user_traveler_characteristics_map", :force => true do |t|
+    t.integer  "traveler_id",                                        :null => false
+    t.integer  "characteristic_id",                                  :null => false
+    t.string   "value",             :limit => 64,                    :null => false
+    t.boolean  "verified",                        :default => false, :null => false
+    t.datetime "verified_at"
+    t.integer  "verified_by_id"
   end
 
   create_table "users", :force => true do |t|

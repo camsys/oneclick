@@ -6,8 +6,8 @@ class PlannedTrip < ActiveRecord::Base
   belongs_to :creator, :class_name => "User", :foreign_key => "creator_id"
   has_many :itineraries
   has_many :valid_itineraries, :conditions => 'server_status=200 AND hidden=false', :class_name => 'Itinerary' 
-  has_many :hidden_itineraries, :conditions => 'server_status=200 AND hidden=true', :class_name => 'Itinerary' 
-  
+  has_many :hidden_itineraries, :conditions => 'server_status=200 AND hidden=true', :class_name => 'Itinerary'
+
   attr_accessible :trip_datetime, :is_depart
  
   # Scopes
