@@ -61,6 +61,8 @@ class TripsController < ApplicationController
   # GET /trips/1.json
   def show
 
+    set_no_cache
+
     # Make sure that we don't throw nil object errors    
     if @trip.nil?
       redirect_to error_404_path
