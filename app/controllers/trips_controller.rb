@@ -27,18 +27,12 @@ class TripsController < ApplicationController
     duration = TimeFilterHelper.time_filter_as_duration(@time_filter_type)
     
     if user_signed_in?
-      # limit trips to trips owned by the user unless an admin
-      if current_user.has_role? :admin
-        @trips = Trip.created_between(duration.first, duration.last)
-      else
-        @trips = current_traveler.trips.created_between(duration.first, duration.last)
-      end
+      @trips = current_traveler.trips.created_between(duration.first, duration.last).order("created_at DESC")
     else
-      # TODO Workaround for now; it has to be a trip not owned by a user (but
-      # this is astill a security hole)
-      @trips = Trip.anonymous.created_between(duration.first, duration.last)
+      redirect_to error_404_path   
+      return 
     end
-
+ 
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trips }
