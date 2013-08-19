@@ -73,7 +73,6 @@ es:
   transit_trip: '<s62>Transit Trip</s>'
   taxi: '<s63>Taxi</s>'
   transit: '<s64>Transit</s>'
-  rideshare: '<s159>Rideshare</s>'
   details: '<s65>Details</s>'
   transfer: {
       one: '<s66>%{count} transfer</s>',
