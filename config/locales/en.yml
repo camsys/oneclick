@@ -79,6 +79,7 @@ en:
   taxi: 'Taxi'
   transit: 'Transit'
   details: 'Details'
+  rideshare: 'Rideshare'
   transfer: {
     one: '%{count} transfer',
     other: '%{count} transfers',
