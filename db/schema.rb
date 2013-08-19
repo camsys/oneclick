@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130812010938) do
+ActiveRecord::Schema.define(:version => 20130819051330) do
 
   create_table "buddy_relationships", :force => true do |t|
     t.integer  "buddy_id"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(:version => 20130812010938) do
     t.text     "message"
     t.string   "mode"
     t.boolean  "hidden",                                       :default => false, :null => false
+    t.integer  "count"
   end
 
   create_table "properties", :force => true do |t|
@@ -83,10 +84,11 @@ ActiveRecord::Schema.define(:version => 20130812010938) do
     t.float    "lat"
     t.float    "lon"
     t.integer  "trip_id"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.integer  "sequence"
     t.string   "nongeocoded_address"
+    t.string   "geocoding_raw",       :limit => 2500
   end
 
   create_table "trips", :force => true do |t|
@@ -108,9 +110,10 @@ ActiveRecord::Schema.define(:version => 20130812010938) do
     t.float    "lat"
     t.float    "lon"
     t.integer  "user_id"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.string   "nongeocoded_address"
+    t.string   "geocoding_raw",       :limit => 2500
   end
 
   create_table "users", :force => true do |t|

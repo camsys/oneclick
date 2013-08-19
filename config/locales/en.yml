@@ -76,6 +76,7 @@ en:
   transit_trip: 'Transit Trip'
   taxi: 'Taxi'
   transit: 'Transit'
+  rideshare: 'Rideshare'
   details: 'Details'
   transfer: {
     one: '%{count} transfer',
