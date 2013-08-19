@@ -1,4 +1,4 @@
-class FareStructures < ActiveRecord::Base
+class FareStructure < ActiveRecord::Base
 
   #associations
   belongs_to :service

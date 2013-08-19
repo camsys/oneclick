@@ -1,4 +1,4 @@
-class CoverageAreas < ActiveRecord::Base
+class CoverageArea < ActiveRecord::Base
 
   #associations
   belongs_to :service
