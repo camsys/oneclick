@@ -33,7 +33,11 @@ Oneclick::Application.routes.draw do
       end
 
       # users have trips
-      resources :trips, :only => [:index, :new, :create, :destroy]
+      resources :trips, :only => [:index, :new, :create, :destroy] do
+        collection do
+          post 'set_traveler'
+        end
+      end
 
       # users have planned trips
       resources :planned_trips, :only => [:show] do

@@ -6,5 +6,10 @@
       %div{:class => "alert alert-error"}
         %a.close{"data-dismiss" => "alert"} ×
         %div= t(:correct_errors_to_create_a_trip)
-= render 'form'
+          
+.well
+  -if current_user                
+    = render 'select_traveler_form' unless current_user.travelers.empty?
+
+  = render 'form'
 

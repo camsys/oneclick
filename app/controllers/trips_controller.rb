@@ -5,8 +5,11 @@ class TripsController < ApplicationController
   
   # set the @trip variable before any actions are invoked
   before_filter :get_trip, :only => [:show, :destroy]
+  # set the @traveler variable before any actions are invoked
+  before_filter :get_traveler, :only => [:new, :create]
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
+  TRAVELER_USER_SESSION_KEY = 'traveler'
   
   def index
 
@@ -40,6 +43,27 @@ class TripsController < ApplicationController
     
   end
 
+  def set_traveler
+    
+    # update the session with the traveler id
+    session[TRAVELER_USER_SESSION_KEY] = params[:trip_proxy][:traveler]
+    # set the @traveler variable
+    get_traveler
+
+    @trip_proxy = TripProxy.new()
+    @trip_proxy.traveler = @traveler
+    # Set the default travel time/date to tomorrow plus 30 mins from now
+    travel_date = Time.now.tomorrow + 30.minutes
+    @trip_proxy.trip_date = travel_date.strftime("%m/%d/%Y")
+    @trip_proxy.trip_time = travel_date.strftime("%I:%M %P")
+
+    respond_to do |format|
+      format.html { render :action => 'new'}
+      format.json { render json: @trip }
+    end
+        
+  end
+  
   # GET /trips/1
   # GET /trips/1.json
   def show
@@ -56,8 +80,7 @@ class TripsController < ApplicationController
   def new
     
     @trip_proxy = TripProxy.new()
-    # TODO User might be different if we are an agent
-    @trip_proxy.user = current_or_guest_user
+    @trip_proxy.traveler = @traveler
     # Set the default travel time/date to tomorrow plus 30 mins from now
     travel_date = Time.now.tomorrow + 30.minutes
     @trip_proxy.trip_date = travel_date.strftime("%m/%d/%Y")
@@ -74,7 +97,7 @@ class TripsController < ApplicationController
   def create
     
     @trip_proxy = TripProxy.new(params[:trip_proxy])
-    @trip_proxy.user = current_or_guest_user
+    @trip_proxy.traveler = @traveler
     
     if user_signed_in?
       @trip = create_authenticated_trip(@trip_proxy)
@@ -95,7 +118,7 @@ class TripsController < ApplicationController
           message = message + '<ol>' + details.join + '</ol>'
           flash[:error] = message.html_safe
         end
-        format.html { redirect_to user_planned_trip_path(current_or_guest_user, @planned_trip) }
+        format.html { redirect_to user_planned_trip_path(@traveler, @planned_trip) }
         format.json { render json: @planned_trip, status: :created, location: @planned_trip }
       else
         format.html { render action: "new" }
@@ -114,10 +137,20 @@ protected
       else
         @trip = current_traveler.trips.find(params[:id])
       end
+    end
+  end
+
+  def get_traveler
+
+    if user_signed_in?
+      if session[TRAVELER_USER_SESSION_KEY].blank?
+        @traveler = current_user
+      else
+        @traveler = current_user.travelers.find(session[TRAVELER_USER_SESSION_KEY])
+      end 
     else
-      # TODO Workaround for now; it has to be a trip not owned by a user (but
-      # this is potentially still a security hole)
-      @trip = Trip.find_by_id_and_user_id(params[:id], nil)
+      # will always be a guest user
+      @traveler = current_or_guest_user
     end
   end
 
@@ -127,13 +160,13 @@ private
 
     trip = Trip.new()
     trip.creator = current_user
-    trip.user = current_user
+    trip.user = @traveler
         
     # get the places from the proxy
     from_place = TripPlace.new()
     from_place.sequence = 0
     from_address_or_place_name = trip_proxy.from_place[:raw_address]
-    myplace = current_user.places.find_by_name(from_address_or_place_name)
+    myplace = @traveler.places.find_by_name(from_address_or_place_name)
     if myplace
       from_place.place = myplace
       from_place.poi = myplace.poi unless myplace.poi.nil?
@@ -144,7 +177,7 @@ private
     to_place = TripPlace.new()
     to_place.sequence = 1
     to_address_or_place_name = trip_proxy.to_place[:raw_address]
-    myplace = current_user.places.find_by_name(to_address_or_place_name)
+    myplace = @traveler.places.find_by_name(to_address_or_place_name)
     if myplace
       to_place.place = myplace
       to_place.poi = myplace.poi unless myplace.poi.nil?
@@ -157,7 +190,7 @@ private
 
     planned_trip = PlannedTrip.new
     planned_trip.trip = trip
-    planned_trip.creator = current_user || anonymous_user
+    planned_trip.creator = current_user
     planned_trip.is_depart = trip_proxy.arrive_depart == 'arrive_by' ? false : true
     planned_trip.trip_datetime = trip_proxy.trip_datetime
     planned_trip.trip_status = TripStatus.find(1)    

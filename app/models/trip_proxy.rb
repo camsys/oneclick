@@ -6,8 +6,8 @@ class TripProxy
   include ActiveModel::Conversion
   extend  ActiveModel::Naming
 
-  attr_accessor :from_place, :to_place, :trip_date, :arrive_depart, :trip_time, :user, :model_name
-
+  attr_accessor :from_place, :to_place, :trip_date, :arrive_depart, :trip_time, :traveler, :model_name
+  
   validates :from_place, :presence => true
   validates :to_place, :presence => true
   validates :trip_date, :presence => true

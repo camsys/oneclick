@@ -1,50 +1,49 @@
-.well
-  = simple_form_for :trip_proxy, :url => user_trips_path, :html => {:class => 'form-horizontal' } do |f|
-    - if user_signed_in?
-      = f.simple_fields_for :from_place do |p|
-        = p.input :address, label: t(:from), wrapper: :append, html: {id: :from_address} do
-          = p.input_field :raw_address, placeholder: t(:select_or_enter_address)
-          %span.dropdown
-            %a.add-on.btn.dropdown-toggle{data: {toggle: 'dropdown'}, href: '#'}>
-              %span.caret
-            %ul.dropdown-menu{data: {target: 'trip_proxy_from_place_raw_address'}}
-              - @trip_proxy.user.places.each do |p|
-                %li
-                  %a{data: {value: p.name}, class: 'place-option'}= p.name
-      = f.simple_fields_for :to_place do |p|
-        = p.input :address, label: t(:to), wrapper: :append, html: {id: :to_address} do
-          = p.input_field :raw_address, placeholder: t(:select_or_enter_address)
-          %span.dropdown
-            %a.add-on.btn.dropdown-toggle{data: {toggle: 'dropdown'}, href: '#'}>
-              %span.caret
-            %ul.dropdown-menu{data: {target: 'trip_proxy_to_place_raw_address'}}
-              - @trip_proxy.user.places.each do |p|
-                %li
-                  %a{data: {value: p.name}, class: 'place-option'}= p.name
-    - else
-      = f.input :from_place, label: t(:from), placeholder: t(:enter_address)
-      = f.input :to_place, label: t(:to), placeholder: t(:enter_address)
-        
-    = f.input :trip_date, wrapper: :append, label: t(:date) do
-      = content_tag :div, id: 'trip-date' do
-        = f.input_field :trip_date, as: :string, label: false, size: ""
-        = content_tag :span, class: 'add-on' do
-          = content_tag :i, '', class: 'icon-calendar'
-          
-    = f.input :arrive_depart, collection: [:depart_at, :arrive_by],
-      label_method: lambda {|obj| t(obj)},
-      value_method: lambda {|obj| obj.to_s},
-      label: false, include_blank: false, input_html: {class: ''}
+= simple_form_for :trip_proxy, :url => user_trips_path, :html => {:class => 'form-horizontal' } do |f|
+  - if user_signed_in?
+    = f.simple_fields_for :from_place do |p|
+      = p.input :address, label: t(:from), wrapper: :append, html: {id: :from_address} do
+        = p.input_field :raw_address, placeholder: t(:select_or_enter_address)
+        %span.dropdown
+          %a.add-on.btn.dropdown-toggle{data: {toggle: 'dropdown'}, href: '#'}>
+            %span.caret
+          %ul.dropdown-menu{data: {target: 'trip_proxy_from_place_raw_address'}}
+            - @trip_proxy.traveler.places.each do |p|
+              %li
+                %a{data: {value: p.name}, class: 'place-option'}= p.name
+    = f.simple_fields_for :to_place do |p|
+      = p.input :address, label: t(:to), wrapper: :append, html: {id: :to_address} do
+        = p.input_field :raw_address, placeholder: t(:select_or_enter_address)
+        %span.dropdown
+          %a.add-on.btn.dropdown-toggle{data: {toggle: 'dropdown'}, href: '#'}>
+            %span.caret
+          %ul.dropdown-menu{data: {target: 'trip_proxy_to_place_raw_address'}}
+            - @trip_proxy.traveler.places.each do |p|
+              %li
+                %a{data: {value: p.name}, class: 'place-option'}= p.name
+  - else
+    = f.input :from_place, label: t(:from), placeholder: t(:enter_address)
+    = f.input :to_place, label: t(:to), placeholder: t(:enter_address)
       
-    = f.input :trip_time, wrapper: :append, label: t(:time) do
-      = content_tag :div, id: 'trip-time' do
-        = f.input_field :trip_time, as: :string, label: false, size: ""
-        = content_tag :span, class: 'add-on' do
-          = content_tag :i, '', class: 'icon-time'
+  = f.input :trip_date, wrapper: :append, label: t(:date) do
+    = content_tag :div, id: 'trip-date' do
+      = f.input_field :trip_date, as: :string, label: false, size: ""
+      = content_tag :span, class: 'add-on' do
+        = content_tag :i, '', class: 'icon-calendar'
+        
+  = f.input :arrive_depart, collection: [:depart_at, :arrive_by],
+    label_method: lambda {|obj| t(obj)},
+    value_method: lambda {|obj| obj.to_s},
+    label: false, include_blank: false, input_html: {class: ''}
+    
+  = f.input :trip_time, wrapper: :append, label: t(:time) do
+    = content_tag :div, id: 'trip-time' do
+      = f.input_field :trip_time, as: :string, label: false, size: ""
+      = content_tag :span, class: 'add-on' do
+        = content_tag :i, '', class: 'icon-time'
 
-    .actions
-      = f.button :submit, t(:plan_it), {class: 'btn btn-primary controls'}
-      = link_to t(:cancel), :back
+  .actions
+    = f.button :submit, t(:plan_it), {class: 'btn btn-primary controls'}
+    = link_to t(:cancel), :back
       
 :javascript
   $('#trip-date').datepicker()
