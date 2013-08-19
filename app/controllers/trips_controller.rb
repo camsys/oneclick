@@ -46,9 +46,8 @@ class TripsController < ApplicationController
         @trips = current_traveler.trips.created_between(duration.first, duration.last).order("created_at DESC")
       end
     else
-      # TODO Workaround for now; it has to be a trip not owned by a user (but
-      # this is astill a security hole)
-      @trips = Trip.anonymous.created_between(duration.first, duration.last).order("created_at DESC")
+      redirect_to error_404_path
+      return
     end
 
     respond_to do |format|
@@ -61,7 +60,13 @@ class TripsController < ApplicationController
   # GET /trips/1
   # GET /trips/1.json
   def show
-    
+
+    # Make sure that we don't throw nil object errors    
+    if @trip.nil?
+      redirect_to error_404_path
+      return
+    end
+      
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trip }
@@ -71,7 +76,13 @@ class TripsController < ApplicationController
   # GET /trips/1
   # GET /trips/1.json
   def details
-    # TODO doesn't this need 
+
+    # Make sure that we don't throw nil object errors    
+    if @trip.nil?
+      redirect_to error_404_path
+      return
+    end
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trip }
@@ -156,7 +167,6 @@ class TripsController < ApplicationController
 protected
 
   def get_trip
-    Rails.logger.info "Begin get trip"
     if user_signed_in?
       # limit trips to trips accessible by the user unless an admin
       if current_user.has_role? :admin
