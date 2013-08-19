@@ -114,59 +114,59 @@ en:
   trips_cannot_be_entered_for_times: "Trips cannot be entered for past times."
 
   # new ones
-  buddy_request_sent: "Buddy request sent!"# <s70>
-  buddy_removed: "Buddy removed."# <s69>
-  http_404_not_found: "404 Not Found"# <s49>
-  http_422_unprocessable_entity: "422 Unprocessable Entity"# <s50>
-  http_501_not_implemented: "501 Not Implemented"# <s51>
-  arc_oneclick_trip_itinerary: "ARC OneClick Trip Itinerary"# <s60>
-  an_email_was_sent_to_email_addresses_join: "An email was sent to %{addresses}."# <s63>
-  unable_to_remove_itinerary: 'Unable to remove itinerary.'# <s313>
-  not_authorized_as_an_administrator: 'Not authorized as an administrator.'# <s305>
-  n_a: 'n/a'# <s459>
-  less_than_1_block: "less than 1 block"# <s166>
-  about_2_blocks: "about 2 blocks"# <s104>
-  about_4_blocks: "about 4 blocks"# <s105>
-  twof_miles: "%.2f miles"# <s18>
-  one_click_buddy_request_from_from_email: "1-Click buddy request from %{from_email}"# <s46>
-  you_can_t_be_your_own_buddy: "You can't be your own buddy."# <s98>
-  you_ve_already_asked_them_to_be_a_buddy: "You've already asked them to be a buddy."# <s99>
-  address_is_required: "Address is required"# <s62>
-  last_30_days: "Last 30 days"# <s79>
-  last_7_days: "Last 7 days"# <s80>
-  last_month: "Last month"# <s81>
-  this_month: "This month"# <s89>
-  today: "Today"# <s90>
-  yesterday: "Yesterday"# <s97>
-  ago: " ago"# <s2>
-  didn_t_receive_confirmation_instructions: "Didn't receive confirmation instructions?"# <s75>
-  didn_t_receive_unlock_instructions: "Didn't receive unlock instructions?"# <s76>
-  sign_in_with_provider_to_s_titleize: "Sign in with %{provider}"# <s88>
-  assisting_assisted_user_email: "Assisting %{assisted_user}"# <s66>
-  _menu__object_plural_per_page: "_MENU_ %{object} per page"# <s102>
-  _menu__records_per_page: "_MENU_ records per page"# <s103>
-  showing__start__to__end__of__total__object_plural: "Showing _START_ to _END_ of _TOTAL_ %{object}"# <s87>
-  anonymous: "anonymous"# <s112>
-  no_address: "no address"# <s177>
-  trip_options_hidden: {# <s14>
+  buddy_request_sent: "Buddy request sent!"
+  buddy_removed: "Buddy removed."
+  http_404_not_found: "404 Not Found"
+  http_422_unprocessable_entity: "422 Unprocessable Entity"
+  http_501_not_implemented: "501 Not Implemented"
+  arc_oneclick_trip_itinerary: "ARC OneClick Trip Itinerary"
+  an_email_was_sent_to_email_addresses_join: "An email was sent to %{addresses}."
+  unable_to_remove_itinerary: 'Unable to remove itinerary.'
+  not_authorized_as_an_administrator: 'Not authorized as an administrator.'
+  n_a: 'n/a'
+  less_than_1_block: "less than 1 block"
+  about_2_blocks: "about 2 blocks"
+  about_4_blocks: "about 4 blocks"
+  twof_miles: "%.2f miles"
+  one_click_buddy_request_from_from_email: "1-Click buddy request from %{from_email}"
+  you_can_t_be_your_own_buddy: "You can't be your own buddy."
+  you_ve_already_asked_them_to_be_a_buddy: "You've already asked them to be a buddy."
+  address_is_required: "Address is required"
+  last_30_days: "Last 30 days"
+  last_7_days: "Last 7 days"
+  last_month: "Last month"
+  this_month: "This month"
+  today: "Today"
+  yesterday: "Yesterday"
+  ago: " ago"
+  didn_t_receive_confirmation_instructions: "Didn't receive confirmation instructions?"
+  didn_t_receive_unlock_instructions: "Didn't receive unlock instructions?"
+  sign_in_with_provider_to_s_titleize: "Sign in with %{provider}"
+  assisting_assisted_user_email: "Assisting %{assisted_user}"
+  _menu__object_plural_per_page: "_MENU_ %{object} per page"
+  _menu__records_per_page: "_MENU_ records per page"
+  showing__start__to__end__of__total__object_plural: "Showing _START_ to _END_ of _TOTAL_ %{object}"
+  anonymous: "anonymous"
+  no_address: "no address"
+  trip_options_hidden: {
     one: '%{count} option hidden.',
     other: '%{count} options hidden.'
   }
 
-  send_to_traveler: 'Send to traveler'# <s310>
-  from_address: 'From address'# <s301>
-  email_addresses: 'Email addresses'# <s297>
-  start: "START: "# <s86>
-  on: ' on '# <s221>
-  to: ' to '# <s222>
-  walking: ' walking'# <s223>
-  arrive: "ARRIVE: "# <s61>
-  trip: "Trip: "# <s92>
-  est: " (est.)"# <s0>
-  to: " to "# <s3>
-  my_trips: 'My Trips'# <s303>
-  assisted_user_first_name_s_trips: "%{name}'s Trips"# <s10>
-  trip_options_information_from_from: "Trip options information from %{from}"# <s91>
+  send_to_traveler: 'Send to traveler'
+  from_address: 'From address'
+  email_addresses: 'Email addresses'
+  start: "START: "
+  on: ' on '
+  to: ' to '
+  walking: ' walking'
+  arrive: "ARRIVE: "
+  trip: "Trip: "
+  est: " (est.)"
+  to: " to "
+  my_trips: 'My Trips'
+  assisted_user_first_name_s_trips: "%{name}'s Trips"
+  trip_options_information_from_from: "Trip options information from %{from}"
 
   
   # Branding
@@ -188,6 +188,9 @@ en:
   simple_form:
     labels:
       defaults:
+        first_name: 'First Name'
+        last_name: 'Last name'
         email: 'Email'
         password: 'Password'
+        retype_your_password: 'Retype your password'
         remember_me: 'Remember me'
