@@ -41,14 +41,13 @@ class TripsController < ApplicationController
     if user_signed_in?
       # limit trips to trips owned by the user unless an admin
       if current_user.has_role? :admin
-        @trips = Trip.created_between(duration.first, duration.last)
+        @trips = Trip.created_between(duration.first, duration.last).order("created_at DESC")
       else
-        @trips = current_traveler.trips.created_between(duration.first, duration.last)
+        @trips = current_traveler.trips.created_between(duration.first, duration.last).order("created_at DESC")
       end
     else
-      # TODO Workaround for now; it has to be a trip not owned by a user (but
-      # this is astill a security hole)
-      @trips = Trip.anonymous.created_between(duration.first, duration.last)
+      redirect_to error_404_path
+      return
     end
 
     respond_to do |format|
@@ -61,7 +60,15 @@ class TripsController < ApplicationController
   # GET /trips/1
   # GET /trips/1.json
   def show
-    
+
+    set_no_cache
+
+    # Make sure that we don't throw nil object errors    
+    if @trip.nil?
+      redirect_to error_404_path
+      return
+    end
+      
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trip }
@@ -71,7 +78,13 @@ class TripsController < ApplicationController
   # GET /trips/1
   # GET /trips/1.json
   def details
-    # TODO doesn't this need 
+
+    # Make sure that we don't throw nil object errors    
+    if @trip.nil?
+      redirect_to error_404_path
+      return
+    end
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trip }
@@ -115,6 +128,10 @@ class TripsController < ApplicationController
     @trip.owner = current_traveler || anonymous_user
     @trip.build_from_place(sequence: 0)
     @trip.build_to_place(sequence: 1)
+    # Default the trip date/time to tomorrow 30 mins from now
+    travel_date = Time.now.tomorrow + 30.minutes
+    @trip.trip_date = travel_date.strftime("%m/%d/%Y")
+    @trip.trip_time = travel_date.strftime("%I:%M %P")    
 
     respond_to do |format|
       format.html # new.html.erb
@@ -152,7 +169,6 @@ class TripsController < ApplicationController
 protected
 
   def get_trip
-    Rails.logger.info "Begin get trip"
     if user_signed_in?
       # limit trips to trips accessible by the user unless an admin
       if current_user.has_role? :admin

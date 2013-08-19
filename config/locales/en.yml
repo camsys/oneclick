@@ -72,13 +72,12 @@ en:
   plan_it: 'Plan it'
   from: 'From'
   to: 'To'
-  on_word: 'On'
+  at_time: 'on'
   correct_errors_to_create_a_trip: 'Please correct the errors below to create a trip.'
   trip_options: 'Trip Options'
   transit_trip: 'Transit Trip'
   taxi: 'Taxi'
   transit: 'Transit'
-  rideshare: 'Rideshare'
   details: 'Details'
   transfer: {
     one: '%{count} transfer',
