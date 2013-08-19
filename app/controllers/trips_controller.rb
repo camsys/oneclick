@@ -41,14 +41,14 @@ class TripsController < ApplicationController
     if user_signed_in?
       # limit trips to trips owned by the user unless an admin
       if current_user.has_role? :admin
-        @trips = Trip.created_between(duration.first, duration.last)
+        @trips = Trip.created_between(duration.first, duration.last).order("created_at DESC")
       else
-        @trips = current_traveler.trips.created_between(duration.first, duration.last)
+        @trips = current_traveler.trips.created_between(duration.first, duration.last).order("created_at DESC")
       end
     else
       # TODO Workaround for now; it has to be a trip not owned by a user (but
       # this is astill a security hole)
-      @trips = Trip.anonymous.created_between(duration.first, duration.last)
+      @trips = Trip.anonymous.created_between(duration.first, duration.last).order("created_at DESC")
     end
 
     respond_to do |format|
