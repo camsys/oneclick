@@ -8,7 +8,7 @@
         %div{style: 'display: inline-block'}
           %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}
             %i.icon.icon-compass{style: 'font-size: 1.5em;'}
-            = "Assisting #{assisted_user.email}"
+            = t(:assisting_assisted_user_email, assisted_user: assisted_user.email)
             %b.caret
           %ul.dropdown-menu{role: 'menu'}
             %li

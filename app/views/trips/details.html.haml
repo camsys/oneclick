@@ -2,7 +2,7 @@
   .span12
     %h1
       %i.icon.icon-tags
-      = "Trip: " + @trip.id.to_s
+      = t(:trip) + @trip.id.to_s
     
 .row-fluid
   .span12
@@ -12,7 +12,7 @@
           %legend Transaction
           %p.span12
             %span.span4.text-right Owner:          
-            %span.span8= @trip.owner.nil? ? "anonymous" : link_to(@trip.owner.name, user_path(@trip.owner))      
+            %span.span8= @trip.owner.nil? ? t(:anonymous) : link_to(@trip.owner.name, user_path(@trip.owner))      
           %p.span12
             %span.span4.text-right Trip Date:          
             %span.span8= format_date_time(@trip.trip_datetime)          

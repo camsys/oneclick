@@ -2,6 +2,8 @@
 - # object_singular (not used yet)
 - # object_plural
 - # bLengthChange
+- # sLengthMenu
+- # sInfo
 :javascript
   
   $(document).ready(function() {
@@ -9,10 +11,10 @@
   		"bFilter" : false,
   		"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
   		"sPaginationType": "bootstrap",
-      "bLengthChange": #{bLengthChange}
+      "bLengthChange": #{bLengthChange},
   		"oLanguage": {
-  			"sLengthMenu": "_MENU_ #{object_plural} per page",
-        "sInfo": "Showing _START_ to _END_ of _TOTAL_ #{object_plural}"
+  			"sLengthMenu": "#{sLengthMenu}",
+        "sInfo": "#{sInfo}"
   		}
   	} );
   } );
@@ -22,7 +24,7 @@
   	"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
   	"sPaginationType": "bootstrap",
   	"oLanguage": {
-  		"sLengthMenu": "_MENU_ #{object_plural} per page"
+  		"sLengthMenu": t(:_menu__object_plural_per_page)
   	}
   } );
 

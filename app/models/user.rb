@@ -22,6 +22,8 @@ class User < ActiveRecord::Base
   has_many :buddies, class_name: User, through: :buddy_relationships, conditions: "buddy_relationships.status='confirmed'"
   has_many :travelers, class_name: User, through: :traveler_relationships, conditions: "buddy_relationships.status='confirmed'"
 
+  after_create :check_for_buddy_requests
+
   def name
     elems = []
     elems << first_name unless first_name.blank?
@@ -64,4 +66,12 @@ class User < ActiveRecord::Base
   def buddy_by_status? email_address, status
     buddy_relationships.find_by_email_address_and_status email_address, status
   end
+
+  def check_for_buddy_requests
+    buddy_requests = BuddyRelationship.find_all_by_email_address(self.email)
+    buddy_requests.each do |buddy_request|
+      buddy_request.associate_buddy(self)
+    end
+  end
+
 end

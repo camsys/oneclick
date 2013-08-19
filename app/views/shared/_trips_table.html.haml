@@ -13,9 +13,9 @@
         - trips.each do |trip|
           %tr
             %td.left= trip.id
-            %td.left= trip.owner.nil? ? "anonymous" : trip.owner.name
-            %td.left= trip.from_place.nil? ? "no address" : trip.from_place.nongeocoded_address
-            %td.left= trip.to_place.nil? ? "no address" : trip.to_place.nongeocoded_address
+            %td.left= trip.owner.nil? ? t(:anonymous) : trip.owner.name
+            %td.left= trip.from_place.nil? ? t(:no_address) : trip.from_place.nongeocoded_address
+            %td.left= trip.to_place.nil? ? t(:no_address) : trip.to_place.nongeocoded_address
             %td.center= format_date_time(trip.created_at)
             %td.center
               = link_to details_trip_path(trip), {class: "btn btn-mini btn-success text-center"} do

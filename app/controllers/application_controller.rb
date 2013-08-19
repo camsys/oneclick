@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include CsHelpers
+  include LocaleHelpers
 
   protect_from_forgery
   before_filter :set_locale
@@ -15,14 +16,6 @@ class ApplicationController < ActionController::Base
     else
       current_user
     end
-  end
-
-  def set_locale
-    I18n.locale = params[:locale] || I18n.default_locale
-  end
-
-  def default_url_options(options={})
-    { :locale => ((I18n.locale == I18n.default_locale) ? nil : I18n.locale) }
   end
 
   def clear_location
