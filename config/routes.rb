@@ -20,6 +20,18 @@ Oneclick::Application.routes.draw do
         post 'update'
       end
 
+      # user relationships
+      resources :user_relationships, :only => [:new, :create] do
+        member do
+          get 'traveler_retract'
+          get 'traveler_revoke'
+          get 'traveler_hide'
+          get 'delegate_accept'
+          get 'delegate_decline'
+          get 'delegate_revoke'
+        end
+      end
+
       # users have trips
       resources :trips, :only => [:index, :new, :create, :destroy]
 
@@ -31,11 +43,9 @@ Oneclick::Application.routes.draw do
           get 'hide'
           get 'unhide_all'
         end
-      end
-      
+      end      
     end
     
-
     match '/' => 'home#index'
 
     match '/404' => 'errors#error_404', as: 'error_404'

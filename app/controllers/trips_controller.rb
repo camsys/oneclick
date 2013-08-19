@@ -27,18 +27,12 @@ class TripsController < ApplicationController
     duration = TimeFilterHelper.time_filter_as_duration(@time_filter_type)
     
     if user_signed_in?
-      # limit trips to trips owned by the user unless an admin
-      if current_user.has_role? :admin
-        @trips = Trip.created_between(duration.first, duration.last)
-      else
-        @trips = current_traveler.trips.created_between(duration.first, duration.last)
-      end
+      @trips = current_traveler.trips.created_between(duration.first, duration.last).order("created_at DESC")
     else
-      # TODO Workaround for now; it has to be a trip not owned by a user (but
-      # this is astill a security hole)
-      @trips = Trip.anonymous.created_between(duration.first, duration.last)
+      redirect_to error_404_path   
+      return 
     end
-
+ 
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trips }
@@ -64,8 +58,10 @@ class TripsController < ApplicationController
     @trip_proxy = TripProxy.new()
     # TODO User might be different if we are an agent
     @trip_proxy.user = current_or_guest_user
-    @trip_proxy.trip_date = Date.today.tomorrow
-    @trip_proxy.trip_time = Time.now
+    # Set the default travel time/date to tomorrow plus 30 mins from now
+    travel_date = Time.now.tomorrow + 30.minutes
+    @trip_proxy.trip_date = travel_date.strftime("%m/%d/%Y")
+    @trip_proxy.trip_time = travel_date.strftime("%I:%M %P")
     
     respond_to do |format|
       format.html # new.html.erb
@@ -111,7 +107,6 @@ class TripsController < ApplicationController
 protected
 
   def get_trip
-    Rails.logger.info "Begin get trip"
     if user_signed_in?
       # limit trips to trips accessible by the user unless an admin
       if current_user.has_role? :admin
@@ -124,7 +119,6 @@ protected
       # this is potentially still a security hole)
       @trip = Trip.find_by_id_and_user_id(params[:id], nil)
     end
-    Rails.logger.info "End get trip"
   end
 
 private

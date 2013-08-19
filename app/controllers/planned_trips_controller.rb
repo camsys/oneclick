@@ -16,9 +16,9 @@ class PlannedTripsController < ApplicationController
     email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
     Rails.logger.info email_addresses.inspect
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    UserMailer.user_trip_email(email_addresses, @trip, "ARC OneClick Trip Itinerary", from_email).deliver
+    UserMailer.user_trip_email(email_addresses, @planned_trip, "ARC OneClick Trip Itinerary", from_email).deliver
     respond_to do |format|
-      format.html { redirect_to(@planned_trip, :notice => "An email was sent to #{email_addresses.join(', ')}." ) }
+      format.html { redirect_to user_planned_trip_url(current_user, @planned_trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
       format.json { render json: @planned_trip }
     end
   end

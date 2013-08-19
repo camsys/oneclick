@@ -12,7 +12,8 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def edit
-    super
+    @user_relationship = UserRelationship.new
+    super    
   end
 
 end 

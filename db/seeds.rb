@@ -44,10 +44,12 @@ reports = [
   {name: 'Rejected Report', description: 'Displays a report showing trips that were rejected by a user.', view_name: 'trips_report', class_name: 'RejectedTripsReport', active: 1} 
 ]
 relationship_statuses = [
-  {id: 1, name: 'Pending'},
-  {id: 2, name: 'Confirmed'},
-  {id: 3, name: 'Denied'},  
-  {id: 4, name: 'Revoked'},  
+  {id: 1, name: 'Requested'},
+  {id: 2, name: 'Pending'},
+  {id: 3, name: 'Confirmed'},
+  {id: 4, name: 'Denied'},  
+  {id: 5, name: 'Revoked'},  
+  {id: 6, name: 'Hidden'},  
 ]
 
 # load the modes
