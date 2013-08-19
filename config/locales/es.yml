@@ -178,12 +178,20 @@ es:
     logotext: ''
     site_title: '<s149>Broward 1-Click</s>'
     site_description: '<s150>Broward 1-Click Application</s>'
-  simple_form:
-    labels:
-      defaults:
-        email: '<s151>Email</s>'
-        password: '<s152>Contraseña</s>'
-        remember_me: '<s153>Acuérdate de mí</s>'
+  # simple_form:
+  #   labels:
+  #     defaults:
+  #       first_name: '<s159>First name'
+  #       last_name: 'Last name'
+  #       email: '<s151>Email</s>'
+  #       password: '<s152>Contraseña</s>'
+  #       remember_me: '<s153>Acuérdate de mí</s>'
+  #       email: 'Email'
+  #       password: 'Password'
+  #       retype_your_password: 'Retype your password'
+  #       remember_me: 'Remember me'
+  #     user:
+  #       first_name: '<s159>First name'
 
   activerecord:
     errors:

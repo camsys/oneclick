@@ -188,6 +188,9 @@ en:
   simple_form:
     labels:
       defaults:
+        first_name: 'First Name'
+        last_name: 'Last name'
         email: 'Email'
         password: 'Password'
+        retype_your_password: 'Retype your password'
         remember_me: 'Remember me'
