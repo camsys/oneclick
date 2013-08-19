@@ -71,6 +71,7 @@ en:
   plan_it: 'Plan it'
   from: 'From'
   to: 'To'
+  at_time: 'on'
   correct_errors_to_create_a_trip: 'Please correct the errors below to create a trip.'
   trip_options: 'Trip Options'
   transit_trip: 'Transit Trip'
