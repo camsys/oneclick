@@ -1,7 +1,6 @@
-%table
+%table.center{:cellpadding=>10}
   %tr
     %td.itinerary_icons
-      %i.icon-play.mode_icon_formatting{:class => 'start_icon'}
-    %td
-      .itinerary_text
-        %p= t(:start) + itinerary.trip.from_place.address
+      .center
+        = t(:link_to_georgia_commute_options, url: link_to('Georgia Commute Options', rideshare_external_link(itinerary),
+        target: '_new'), count: itinerary.count).html_safe  

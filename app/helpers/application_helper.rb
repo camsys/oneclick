@@ -69,9 +69,12 @@ module ApplicationHelper
       title = t(:paratransit)      
     elsif mode == 'taxi'
       title = t(:taxi)      
+    elsif mode == 'rideshare'
+      title = t(:rideshare)
     end
     return title    
   end
+
   def get_trip_summary_icon(mode) 
     if mode == 'transit'
       icon_name = 'icon-bus-sign'
@@ -79,6 +82,8 @@ module ApplicationHelper
       icon_name = 'icon-truck-sign'      
     elsif mode == 'taxi'
       icon_name = 'icon-taxi-sign'      
+    elsif mode == 'rideshare'
+      icon_name = 'icon-group'      
     end
     return icon_name
   end

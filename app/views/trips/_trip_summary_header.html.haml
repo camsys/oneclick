@@ -23,5 +23,11 @@
     .span9.offset3.trip_summary_text= duration_to_words(itinerary.walk_time) + t(:walking)
 -if itinerary.mode=='rideshare' and itinerary.count > 0
   .row-fluid
-    .span9.offset3.trip_summary_text= "Up to #{itinerary.count} possible ride-sharing options. Visit the Georgia Commute Options web site to see details."
+    .span9.offset3.trip_summary_text= t(:possible_rideshares1, count: itinerary.count)
+  .row-fluid
+    .span9.offset3.trip_summary_text= t(:possible_rideshares2)
+  .row-fluid
+    .span9.offset3.trip_summary_text= t(:view_details1)
+  .row-fluid
+    .span9.offset3.trip_summary_text= t(:view_details2)
 

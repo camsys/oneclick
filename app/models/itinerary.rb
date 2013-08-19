@@ -1,6 +1,7 @@
 class Itinerary < ActiveRecord::Base
 
-  attr_accessible :duration, :cost, :end_time, :legs, :message, :mode, :start_time, :status, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden
+  attr_accessible :duration, :cost, :end_time, :legs, :message, :mode, :start_time, :status, :transfers, :transit_time,
+    :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden, :count
   belongs_to :trip
 
   def self.get_mode_icon(mode)
