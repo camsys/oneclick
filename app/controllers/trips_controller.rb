@@ -4,7 +4,7 @@ class TripsController < ApplicationController
   before_filter :get_trip, :only => [:email, :show, :details, :unhide_all]
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
-  
+
   def email
     Rails.logger.info "Begin email"
     email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
@@ -61,7 +61,8 @@ class TripsController < ApplicationController
   # GET /trips/1
   # GET /trips/1.json
   def show
-    
+    set_no_cache
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trip }
