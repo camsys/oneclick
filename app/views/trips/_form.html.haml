@@ -59,9 +59,6 @@
       'timeFormat': 'g:i a',
       'scrollDefaultNow': true
     })
-    .on("changeTime", function(e) {
-      $('#trip_trip_time').val($('#trip-time').data('ui-timepicker-value'));
-    });
     $('#trip-time .add-on').on('click', function() {
       $('#trip_trip_time').timepicker('show');
     });
