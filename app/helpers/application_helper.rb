@@ -5,7 +5,11 @@ module ApplicationHelper
   include CsHelpers
 
   def is_traveler
-    @traveler.id == current_or_guest_user.id ? false : true  
+    if @traveler
+      return @traveler.id == current_or_guest_user.id ? false : true
+    else
+      return false
+    end  
   end
 
   def distance_to_words(dist_in_meters)

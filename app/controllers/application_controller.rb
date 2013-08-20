@@ -9,14 +9,6 @@ class ApplicationController < ActionController::Base
     redirect_to root_path, :alert => exception.message
   end
 
-  def current_traveler
-    if assisting?
-      assisted_user
-    else
-      current_user
-    end
-  end
-
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
   end

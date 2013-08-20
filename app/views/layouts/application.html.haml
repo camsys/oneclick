@@ -6,9 +6,12 @@
       %meta{:content => content_for?(:description) ? yield(:description) : t(:site_description), :name => "description"}
       = stylesheet_link_tag "application", :media => "all"
       = stylesheet_link_tag brand, :media => "all"
+      = stylesheet_link_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.css", :media => "all"
+      
+      = javascript_include_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"
       = javascript_include_tag "application" # TODO This should go in footer
       = javascript_include_tag "https://www.google.com/jsapi"
-      
+          
       = csrf_meta_tags
       = yield(:head)
   %body{:class => "#{controller_name} #{action_name}"}

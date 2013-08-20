@@ -8,12 +8,27 @@ class Place < ActiveRecord::Base
   
   attr_accessible :name, :address1, :address2, :city, :state, :zip, :lat, :lon, :raw_address
   
+  def location
+    return [poi.lat, poi.lon] unless poi.nil?
+    return [lat, lon]
+  end
+  
   def to_s
     if poi
       return poi.to_s
     else
       return name
     end
+  end
+    
+  def address
+    elems = []
+    elems << address1 unless address1.blank?
+    elems << address2 unless address2.blank?
+    elems << city unless city.blank?
+    elems << state unless state.blank?
+    elems << zip unless zip.blank?
+    elems.compact.join(' ')    
   end
   
   def geocode
