@@ -1,4 +1,4 @@
-class Schedules < ActiveRecord::Base
+class Schedule < ActiveRecord::Base
 
   #associations
   belongs_to :service

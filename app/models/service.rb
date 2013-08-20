@@ -1,4 +1,4 @@
-class Services < ActiveRecord::Base
+class Service < ActiveRecord::Base
 
   #associations
   belongs_to :provider

@@ -1,4 +1,4 @@
-class Providers < ActiveRecord::Base
+class Provider < ActiveRecord::Base
 
   #associations
   has_many :services
