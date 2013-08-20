@@ -15,6 +15,7 @@ class Place < ActiveRecord::Base
       components: Rails.application.config.geocoder_components,
       bounds: Rails.application.config.geocoder_bounds).as_json
     unless result.length == 0
+      Rails.logger.info result[0].ai
       self.lat = result[0]['data']['geometry']['location']['lat']
       self.lon = result[0]['data']['geometry']['location']['lng']
       self.address = result[0]['data']['formatted_address']
