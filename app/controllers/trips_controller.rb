@@ -1,15 +1,9 @@
-class TripsController < ApplicationController
-  
-  # include the helper method in any controller which needs to know about guest users
-  helper_method :current_or_guest_user
+class TripsController < TravelerAwareController
   
   # set the @trip variable before any actions are invoked
   before_filter :get_trip, :only => [:show, :destroy]
-  # set the @traveler variable before any actions are invoked
-  before_filter :get_traveler, :only => [:new, :create]
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
-  TRAVELER_USER_SESSION_KEY = 'traveler'
   
   def index
 
@@ -30,7 +24,7 @@ class TripsController < ApplicationController
     duration = TimeFilterHelper.time_filter_as_duration(@time_filter_type)
     
     if user_signed_in?
-      @trips = current_traveler.trips.created_between(duration.first, duration.last).order("created_at DESC")
+      @trips = @traveler.trips.created_between(duration.first, duration.last).order("created_at DESC")
     else
       redirect_to error_404_path   
       return 
@@ -43,10 +37,21 @@ class TripsController < ApplicationController
     
   end
 
+  def unset_traveler
+
+    # set or update the traveler session key with the id of the traveler
+    set_traveler_id(nil)
+    # set the @traveler variable
+    get_traveler
+    
+    redirect_to root_path, :alert => "Assisting has been turned off."
+        
+  end
+
   def set_traveler
     
-    # update the session with the traveler id
-    session[TRAVELER_USER_SESSION_KEY] = params[:trip_proxy][:traveler]
+    # set or update the traveler session key with the id of the traveler
+    set_traveler_id(params[:trip_proxy][:traveler])
     # set the @traveler variable
     get_traveler
 
@@ -135,22 +140,8 @@ protected
       if current_user.has_role? :admin
         @trip = Trip.find(params[:id])
       else
-        @trip = current_traveler.trips.find(params[:id])
+        @trip = @traveler.trips.find(params[:id])
       end
-    end
-  end
-
-  def get_traveler
-
-    if user_signed_in?
-      if session[TRAVELER_USER_SESSION_KEY].blank?
-        @traveler = current_user
-      else
-        @traveler = current_user.travelers.find(session[TRAVELER_USER_SESSION_KEY])
-      end 
-    else
-      # will always be a guest user
-      @traveler = current_or_guest_user
     end
   end
 
@@ -190,7 +181,7 @@ private
 
     planned_trip = PlannedTrip.new
     planned_trip.trip = trip
-    planned_trip.creator = current_user
+    planned_trip.creator = trip.creator
     planned_trip.is_depart = trip_proxy.arrive_depart == 'arrive_by' ? false : true
     planned_trip.trip_datetime = trip_proxy.trip_datetime
     planned_trip.trip_status = TripStatus.find(1)    
