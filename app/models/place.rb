@@ -11,6 +11,7 @@ class Place < ActiveRecord::Base
   def geocode
     return if nongeocoded_address.blank?
     begin
+      Geocoder.configure(:always_raise => :all) # TODO Move this to better place
       result = Geocoder.search(self.nongeocoded_address, sensor: false,
         components: Rails.application.config.geocoder_components,
         bounds: Rails.application.config.geocoder_bounds).as_json
