@@ -2,9 +2,9 @@
   .span12
     %h1
       %i.icon.icon-tags
-      = !assisting? ? 'My Trips' : "#{current_user.first_name}'s Trips"
+      = is_traveler ? "#{@traveler.name}'s Trips" : "My trips"
 
-- if current_user.trips.count > 0
+- if @traveler.trips.count > 0
   .row-fluid
     .span8.offset2
       .row-fluid
@@ -17,9 +17,9 @@
               - @trips.each do |trip|
                 %tr
                   %td
-                    = link_to trip, user_planned_trip_path(current_user, trip.planned_trips.last)
+                    = link_to trip, user_planned_trip_path(@traveler, trip.planned_trips.last)
 - else
   .row-fluid
     .span12
       %h4 You have no previous trips.
-      = link_to(t(:plan_a_trip), new_user_trip_path(current_user))       
+      = link_to(t(:plan_a_trip), new_user_trip_path(@traveler))       

@@ -32,6 +32,9 @@ Oneclick::Application.routes.draw do
         end
       end
 
+      # users have places
+      resources :places
+      
       # users have trips
       resources :trips, :only => [:index, :new, :create, :destroy] do
         collection do

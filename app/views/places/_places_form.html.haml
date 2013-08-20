@@ -1,0 +1,21 @@
+.row-fluid
+  .span12
+    .thumbnail
+      = simple_form_for @place_proxy, :url => user_places_path, :remote => true, :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
+        = f.input :name, :label => "Place name"
+        = f.input :raw_address, :label => "Street address"
+        = submit_tag "Add Place", :class => "btn btn-block btn-primary"
+.row-fluid
+  .thumbnail.span12{style: 'height: 300px; overflow-y: auto;margin-top: 20px;'}
+    %h4 My places
+    %ul.nav.nav-list.places        
+      - @places.each do |place|
+        %li
+          = link_to place, "#", :data => {:place_id => place.id}
+    
+:javascript
+  $('[data-place-id]').click(function(e) {
+    var elem_id = e.target.getAttribute('data-place-id');
+    //alert(elem_id);
+    selectMarkerById(elem_id);
+  });
