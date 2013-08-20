@@ -6,8 +6,8 @@ module ServiceAdapters
     end
 
     def create_rideshare_query from, to, trip_datetime
-      from_geo = Geocoder.transpose(YAML.load(from.geocoding_raw))
-      to_geo = Geocoder.transpose(YAML.load(to.geocoding_raw))
+      from_geo = Geocoder.transpose(YAML.load(from.geocoding_raw)) rescue {}
+      to_geo = Geocoder.transpose(YAML.load(to.geocoding_raw)) rescue {}
       query = {}
       query['date'] = trip_datetime.strftime("%m/%d/%Y %I:%M %p") # TODO format 8/21/2013 8:00 AM
       [
