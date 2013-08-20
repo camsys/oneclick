@@ -23,7 +23,7 @@ var CLOUDMADE_ATTRIB = 'Map data &copy; <a href="http://openstreetmap.org">OpenS
  */
 init = function(mapId, options) {
 	LMmap = L.map(mapId);
-	alert(options.tile_provider);
+	//alert(options.tile_provider);
 	//alert(options.min_zoom);
 	//alert(options.max_zoom);
 	if (options.tile_provider == 'OPENSTREETMAP') {

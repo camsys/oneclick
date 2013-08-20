@@ -27,6 +27,10 @@
                     = link_to edit_user_registration_path do
                       %i.icon.icon-cogs
                       = t(:edit_account) 
+                  %li
+                    = link_to user_places_path do
+                      %i.icon.icon-map-marker
+                      My places 
                   - if current_user.has_role? :admin
                     %li.divider.text-left
                     %li

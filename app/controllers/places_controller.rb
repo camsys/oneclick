@@ -8,6 +8,7 @@ class PlacesController < TravelerAwareController
   
   def index
     @places = @traveler.places  
+    @place_proxy = PlaceProxy.new
     @markers = generate_map_markers(@places)
   end
   
@@ -18,6 +19,17 @@ class PlacesController < TravelerAwareController
       format.json { render json: @places }
     end
     
+  end
+  
+  def create
+    place_proxy = PlaceProxy.new(params[:place_proxy])
+    # attempt to geocode this place
+    alternatives = place_proxy.geocode
+    puts alternatives.inspect
+    respond_to do |format|
+      format.js {render "show_geocoding_results"}
+    end
+      
   end
 protected
 
