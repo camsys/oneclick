@@ -49,22 +49,26 @@
       = f.button :submit, t(:plan_it), {class: 'btn btn-primary controls'}
       = link_to t(:cancel), :back
 :javascript
-  $('#trip-date').datepicker()
-    .on("dateChange", function(e) {
-      $('#trip_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
-    });
-  $('#trip-time').timepicker({
-    'timeFormat': 'g:i a',
-    'scrollDefaultTime': '9:00 am'
-  })
+  $(document).ready(function(){
+    $('#trip-date').datepicker()
+      .on("dateChange", function(e) {
+        $('#trip_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
+      });
+    $('#trip-date').data("calendar").setDate(new Date());
+    $('#trip_trip_time').timepicker({
+      'timeFormat': 'g:i a',
+      'scrollDefaultNow': true
+    })
     .on("changeTime", function(e) {
       $('#trip_trip_time').val($('#trip-time').data('ui-timepicker-value'));
     });
-   $(document).ready(function(){
-      $('.combobox').combobox({
-        force_match: false
-      });
+    $('#trip-time .add-on').on('click', function() {
+      $('#trip_trip_time').timepicker('show');
     });
+    $('.combobox').combobox({
+      force_match: false
+    });
+  });
   $('.dropdown-toggle').dropdown();
   $('.trip_from_place_address a, .trip_to_place_address a').on('click', function(event) {
   var t = $(event.target)

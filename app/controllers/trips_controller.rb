@@ -128,10 +128,10 @@ class TripsController < ApplicationController
     @trip.owner = current_traveler || anonymous_user
     @trip.build_from_place(sequence: 0)
     @trip.build_to_place(sequence: 1)
-    # Default the trip date/time to tomorrow 30 mins from now
-    travel_date = Time.now.tomorrow + 30.minutes
+    # Default the trip date/time to now, for now
+    travel_date = Time.now.in_time_zone.next_interval(30.minutes)
     @trip.trip_date = travel_date.strftime("%m/%d/%Y")
-    @trip.trip_time = travel_date.strftime("%I:%M %P")    
+    @trip.trip_time = travel_date.strftime("%l:%M %P").strip
 
     respond_to do |format|
       format.html # new.html.erb
