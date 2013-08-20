@@ -158,9 +158,9 @@ en:
   didn_t_receive_unlock_instructions: "Didn't receive unlock instructions?"
   sign_in_with_provider_to_s_titleize: "Sign in with %{provider}"
   assisting_assisted_user_email: "Assisting %{assisted_user}"
-  _menu__object_plural_per_page: "_MENU_ %{object} per page"
+  menu__object_plural_per_page: "_MENU_ %{o} per page"
   _menu__records_per_page: "_MENU_ records per page"
-  showing__start__to__end__of__total__object_plural: "Showing _START_ to _END_ of _TOTAL_ %{object}"
+  showing__start__to__end__of__total__object_plural: "Showing _START_ to _END_ of _TOTAL_ %{o}"
   anonymous: "anonymous"
   no_address: "no address"
   trip_options_hidden: {
