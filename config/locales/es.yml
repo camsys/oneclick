@@ -1,210 +1,210 @@
-# Spanish
+﻿# Spanish
 
 es:
-  one_click_trip_planner: '<s1>1-Click Viaje Planificador</s>'
+  one_click_trip_planner: '1-Click Planificador de Viajes'
   # Actions
-  plan_a_trip: '<s2>Planear un Viaje</s>'
-  plan_a_new_trip: '<s3>Plan a new trip</s>'
-  identify_places: '<s4>Identificar los Lugares</s>'
-  change_my_settings: '<s5>Cambiar mi Configuración</s>'
-  help_and_support: '<s6>Ayuda y Soporte</s>'
-  create_an_account: '<s7>Create an Account</s>'
-  travel_profile: '<s8>Travel Profile</s>'
-  previous_trips: '<s9>Previous Trips</s>'
+  plan_a_trip: 'Planear un Viaje'
+  plan_a_new_trip: 'Planear un Viaje Nuevo'
+  identify_places: 'Identificar los Lugares'
+  change_my_settings: 'Cambiar mi Configuración'
+  help_and_support: 'Ayuda y Soporte'
+  create_an_account: 'Crear una Cuenta'
+  travel_profile: 'Perfil del Viaje'
+  previous_trips: 'Viajes Anteriores'
   # Agent View strings
-  find_traveler: "<s10>Find Traveler</s>"
-  create_traveler: "<s11>Create Traveler</s>"
-  agents_agencies: "<s12>Agents Agencies</s>"
+  find_traveler: "Encontrar al Viajero"
+  create_traveler: "Crear un Viajero"
+  agents_agencies: "Agencias Agentes"
   # Agent and Admin string
-  reports: "<s13>Reports</s>"
-  admin: '<s14>Admin</s>'
-  send_by_email: '<s164>Send by email</s>'
+  reports: "Reportes"
+  admin: 'Admin'
+  send_by_email: 'Enviar por correo electrónico'
 
   # Registration, sign in, profile
-  version: '<s15>Versión</s>'
-  home: "<s16>Inicio</s>"
-  log_in: '<s17>Iniciar</s>'
-  sign_up: '<s18>Alistarse</s>'
-  welcome: '<s19>Welcome</s>'
-  first_name: '<s20>First name</s>'
-  last_name: '<s21>Last name</s>'
-  email: '<s22>Email address</s>'
-  password: '<s23>Password</s>'
-  password_confirmation: '<s24>Password confirmation</s>'
-  current_password: '<s25>Current password</s>'
-  forgot_your_password: '<s26>¿Olvidó su contraseña?</s>'
-  retype_your_password: '<s27>Retype your password</s>'
-  logout: '<s28>Logout</s>'
-  edit_account: '<s29>Edit account</s>'
-  update_my_profile: '<s30>Update my profile</s>'
-  current_password_hint: "<s31>Enter your current password to confirm your changes.</s>"  
-  leave_password_blank: "<s32>Leave both blank if you don't want to change your password.</s>"
-  my_information: '<s33>My information</s>'
-  buddies: '<s34>Buddies</s>'
-  travelers: '<s35>Travelers</s>'
-  send_buddy_request: '<s36>Send buddy request</s>'
-  buddys_email_address: "<s37>Buddy's email address</s>"
-  accept: '<s38>Accept</s>'
-  decline: '<s39>Decline</s>'
-  assist: '<s40>Assist</s>'
-  revoke: '<s41>Revoke</s>'
+  version: 'Versión'
+  home: "Inicio"
+  log_in: 'Entrar'
+  sign_up: 'Registrarse'
+  welcome: 'Bienvenido'
+  first_name: 'Nombre'
+  last_name: 'Apellido'
+  email: 'Correo electrónico'
+  password: 'Contraseña'
+  password_confirmation: 'Confirme la contraseña'
+  current_password: 'Contraseña actual'
+  forgot_your_password: '¿Olvidó su contraseña?'
+  retype_your_password: 'Vuelve a escribir tu contraseña '
+  logout: 'Salir'
+  edit_account: 'Editar la cuenta'
+  update_my_profile: 'Actualizar mi perfil'
+  current_password_hint: "Introduce tu contraseña actual para guardar los cambios."  
+  leave_password_blank: "Deja ambas casillas en blanco si no quieres cambiar tu contraseña."
+  my_information: 'Mi información'
+  buddies: 'Amigos'
+  travelers: 'Viajeros'
+  send_buddy_request: 'Enviar solicitud de amigo'
+  buddys_email_address: "Correo electrónico del amigo"
+  accept: 'Aceptar'
+  decline: 'Rechazar'
+  assist: 'Asistir'
+  revoke: 'Revocar'
 
-  spanish: '<s42>En Español</s>'
-  error_not_implemented: '<s43>Lo sentimos, pero esta funcionalidad aún no se ha implementado.</s>'
-  error_404: "<s44>The page you were looking for doesn't exist.</s>"
-  error_404_mistyped: '<s45>You may have mistyped the address or the page may have moved.</s>'
-  error_422: '<s46>The change you wanted was rejected.</s>'
-  error_422_detail: "<s47>Maybe you tried to change something you didn't have access to.</s>"
+  spanish: 'En Español'
+  error_not_implemented: 'Lo sentimos, pero esta funcionalidad aún no se ha implementado.'
+  error_404: "La página que estás buscando no existe."
+  error_404_mistyped: 'Es posible que hayas escrito mal la dirección o la página puede haber cambiado.'
+  error_422: 'El cambio que querías fue rechazado.'
+  error_422_detail: "Tal vez trataste de cambiar algo al que no tienes acceso."
 
   # Trip planning
-  enter_address: '<s48>Enter address</s>'
-  select_or_enter_address: '<s49>Select or enter address</s>'
-  select: '<s50>Select</s>'
-  date: '<s51>Date</s>'
-  depart_at: '<s52>Depart at</s>'
-  arrive_by: '<s53>Arrive by</s>'
-  arrive_at: '<s54>Arrive at</s>'
-  time: '<s55>Time</s>'
-  cancel: '<s56>Cancel</s>'
-  plan_it: '<s57>Plan it</s>'
-  from: '<s58>From</s>'
-  to: '<s59>To</s>'  
-  at_time: '<s59.1>on</s>'  
-  correct_errors_to_create_a_trip: '<s60>Please correct the errors below to create a trip.</s>'
-  trip_options: '<s61>Trip Options</s>'
-  transit_trip: '<s62>Transit Trip</s>'
-  taxi: '<s63>Taxi</s>'
-  transit: '<s64>Transit</s>'
-  rideshare: '<s64a>Rideshare</s>'
-  details: '<s65>Details</s>'
+  enter_address: 'Introduce la dirección'
+  select_or_enter_address: 'Selecciona o introduce la dirección '
+  select: 'Seleccionar'
+  date: 'Fecha'
+  depart_at: 'Salir a las'
+  arrive_by: 'Llegar a las'
+  arrive_at: 'Llegar a'
+  time: 'Hora'
+  cancel: 'Cancelar'
+  plan_it: 'Planear el viaje'
+  from: 'De'
+  to: 'A'  
+  at_time: 'en'  
+  correct_errors_to_create_a_trip: 'Por favor corrige los errores señalados para crear un viaje.'
+  trip_options: 'Opciones de Viaje'
+  transit_trip: 'Transit Trip'
+  taxi: 'Taxi'
+  transit: 'Transporte Público'
+  details: 'Detalles'
+  rideshare: 'Para Compartir el Viaje'
   transfer: {
-      one: '<s66>%{count} transfer</s>',
-      other: '<s67>%{count} transfers</s>',
+      one: '%{count} conección',
+      other: '%{count} conecciones',
   }
-  view: '<s68>View</s>'
-  remove: '<s69>Remove</s>'
-  reload: '<s70>Reload</s>'
-  return: '<s71>Return</s>'
-  paratransit: '<s72>Paratransit</s>'
-  mode: '<s73>Mode</s>'
-  duration: '<s74>Duration</s>'
-  walking: '<s75>Walking</s>'
-  depart: '<s76>Depart</s>'
-  arrive: '<s77>Arrive</s>'
-  cost: '<s78>Cost</s>'
-  print: '<s79>Print</s>'
-  chat: '<s80>Chat</s>'
-  e_mail: '<s81>Email</s>'
-  trip_was_successfully_created: '<s82>Trip was successfully created.</s>'
-  trip_created_no_valid_options: "<s83>Trip created, but no valid trip options could be found:</s>"
+  view: 'Mostrar'
+  remove: 'Eliminar'
+  reload: 'Recargar'
+  return: 'Retornar'
+  paratransit: 'Transporte Público para Discapacitados'
+  mode: 'Medio de Transporte'
+  duration: 'Duración'
+  walking: 'Caminando'
+  depart: 'Salida'
+  arrive: 'Llegada'
+  cost: 'Costo'
+  print: 'Imprimir'
+  chat: 'Charlar en línea'
+  e_mail: ' Correo electrónico'
+  trip_was_successfully_created: 'El viaje fue creado exitosamente.'
+  trip_created_no_valid_options: "El viaje fue creado, pero no se encontraron opciones válidas de viaje:"
   hour: {
-    one: '<s84>%{count} h</s>',
-    other: '<s85>%{count} h</s>',
+    one: '%{count} h',
+    other: '%{count} h',
   }
   minute: {
-    one: '<s86>%{count} min</s>',
-    other: '<s87>%{count} mins</s>',
+    one: '%{count} min',
+    other: '%{count} mins',
   }
-  less_than_one_minute: '<s88>Under 1 min</s>'
-  invalid_address: "<s89>Invalid address.</s>"
-  invalid_location: "<s90>Invalid location.</s>"
-  date_wrong_format: "<s91>Date must be in MM/DD/YYYY format.</s>"
-  time_wrong_format: "<s92>Time must be in hh:mm am/pm format.</s>"
-  trips_cannot_be_entered_for_days: "<s93>Trips cannot be entered for days earlier than today.</s>"
-  trips_cannot_be_entered_for_times: "<s94>Trips cannot be entered for past times.</s>"
+  less_than_one_minute: 'Menos de 1 min'
+  invalid_address: "Dirección incorrecta."
+  invalid_location: "Localización incorrecta."
+  date_wrong_format: "La fecha debe estar en el formato MM/DD/AAAA."
+  time_wrong_format: "La hora debe estar en el formato hh:mm am/pm."
+  trips_cannot_be_entered_for_days: "No se pueden introducir viajes para días anteriores."
+  trips_cannot_be_entered_for_times: " No se pueden introducir viajes para horas pasadas."
   link_to_georgia_commute_options: {
-    one:   '&lt;s160>Visit %{url} to view 1 possible rideshare.&lt;/s>',
-    other: '&lt;s160>Visit %{url} to view %{count} possible rideshares.&lt;/s>',
+    one:   'Visita %{url} para ver 1 opción para compartir el viaje en vehículo.',
+    other: 'Visita %{url} para ver %{count} opciones para compartir el viaje en vehículo.',
     }
-  possible_rideshares: "<s161>%{count} possible rideshares.</s>"
-  view_details: "<s162>View details for more.</s>"
+  possible_rideshares: "%{count} opciones para compartir el viaje en vehículo."
+  view_details: "Mostrar detalles para más."
   # Next 4 are prev 2 broken apart to deal with some UI issues.
   # They need to stay short.
-  possible_rideshares1: "<s161>%{count} possible</s>"
-  possible_rideshares2: "<s161>rideshares.</s>"
-  view_details1: "<s162>View details</s>"
-  view_details2: "<s162>for more.</s>"
+  possible_rideshares1: "%{count} opciones"
+  possible_rideshares2: "para compartir el viaje en vehículo."
+  view_details1: "Mostrar detalles"
+  view_details2: "para más."
 
   # new ones
-  buddy_request_sent: "<s95>Buddy request sent!</s>"
-  buddy_removed: "<s96>Buddy removed.</s>"
-  http_404_not_found: "<s97>404 Not Found</s>"
-  http_422_unprocessable_entity: "<s98>422 Unprocessable Entity</s>"
-  http_501_not_implemented: "<s99>501 Not Implemented</s>"
-  arc_oneclick_trip_itinerary: "<s100>ARC OneClick Trip Itinerary</s>"
-  an_email_was_sent_to_email_addresses_join: "<s101>An email was sent to %{addresses}.</s>"
-  unable_to_remove_itinerary: '<s102>Unable to remove itinerary.</s>'
-  not_authorized_as_an_administrator: '<s103>Not authorized as an administrator.</s>'
-  n_a: '<s104>n/a</s>'
-  less_than_1_block: "<s105>less than 1 block</s>"
-  about_2_blocks: "<s106>about 2 blocks</s>"
-  about_4_blocks: "<s107>about 4 blocks</s>"
-  twof_miles: "<s108>%.2f miles</s>"
-  one_click_buddy_request_from_from_email: "<s109>1-Click buddy request from %{from_email}</s>"
-  you_can_t_be_your_own_buddy: "<s110>You can't be your own buddy.</s>"
-  you_ve_already_asked_them_to_be_a_buddy: "<s111>You've already asked them to be a buddy.</s>"
-  address_is_required: "<s112>Address is required</s>"
-  last_30_days: "<s113>Last 30 days</s>"
-  last_7_days: "<s114>Last 7 days</s>"
-  last_month: "<s115>Last month</s>"
-  this_month: "<s116>This month</s>"
-  today: "<s117>Today</s>"
-  yesterday: "<s118>Yesterday</s>"
-  ago: "<s119> ago</s>"
-  didn_t_receive_confirmation_instructions: "<s120>Didn't receive confirmation instructions?</s>"
-  didn_t_receive_unlock_instructions: "<s121>Didn't receive unlock instructions?</s>"
-  sign_in_with_provider_to_s_titleize: "<s122>Sign in with %{provider}</s>"
-  assisting_assisted_user_email: "<s123>Assisting %{assisted_user}</s>"
-  menu__object_plural_per_page: "<s124>_MENU_ %{o} per page</s>"
-  _menu__records_per_page: "<s125>_MENU_ records per page</s>"
-  showing__start__to__end__of__total__object_plural: "<s126>Showing _START_ to _END_ of _TOTAL_ %{o}</s>"
-  anonymous: "<s127>anonymous</s>"
-  no_address: "<s128>no address</s>"
+  buddy_request_sent: "¡Solicitud de amigo enviada!"
+  buddy_removed: "Amigo eliminado."
+  http_404_not_found: "404 No Fue Encontrado"
+  http_422_unprocessable_entity: "422 Entidad No Procesable"
+  http_501_not_implemented: "501 No Implementado"
+  arc_oneclick_trip_itinerary: "ARC OneClick Itinerario de Viaje"
+  an_email_was_sent_to_email_addresses_join: "Se fue enviado un correo electrónico a %{addresses}."
+  unable_to_remove_itinerary: 'No se puede eliminar el itinerario.'
+  not_authorized_as_an_administrator: 'No está autorizado como un administrador.'
+  n_a: 'n/a'
+  less_than_1_block: "a menos the 1 cuadra"
+  about_2_blocks: "aproximadament 2 cuadras"
+  about_4_blocks: "aproximadamente 4 cuadras"
+  twof_miles: "%.2f millas"
+  one_click_buddy_request_from_from_email: "1-Click solicitud de amigo de %{from_email}"
+  you_can_t_be_your_own_buddy: "No puedes ser tu propio amigo."
+  you_ve_already_asked_them_to_be_a_buddy: "Ya le has solicitado ser amigo."
+  address_is_required: "Se require una dirección"
+  last_30_days: "Últimos 30 días"
+  last_7_days: "Últimos 7 días"
+  last_month: "El mes pasado"
+  this_month: "Este mes"
+  today: "Hoy"
+  yesterday: "Ayer"
+  ago: " hace"
+  didn_t_receive_confirmation_instructions: "¿No recibiste instrucciones de confirmación?"
+  didn_t_receive_unlock_instructions: "¿No recibiste instrucciones de desbloqueo?"
+  sign_in_with_provider_to_s_titleize: "Sign in with %{provider}"
+  assisting_assisted_user_email: "Asistiendo a {assisted_user}"
+  _menu__object_plural_per_page: "_MENU_ %{object} per page"
+  _menu__records_per_page: "_MENU_ records per page"
+  showing__start__to__end__of__total__object_plural: "Showing _START_ to _END_ of _TOTAL_ %{object}"
+  anonymous: "anónimo"
+  no_address: "no hay dirección"
   trip_options_hidden: {
-    one: '<s129>%{count} option hidden.</s>',
-    other: '<s130>%{count} options hidden.</s>'
+    one: '%{count} opción escondida.',
+    other: '%{count} opciones escondidas.'
   }
-  send_to_traveler: '<s131>Send to traveler</s>'
-  from_address: '<s132>From address</s>'
-  email_addresses: '<s133>Email addresses</s>'
-  start: "<s134>START: </s>"
-  on: '<s135> on </s>'
-  walking: '<s137> walking</s>'
-  arrive: "<s138>ARRIVE: </s>"
-  trip: "<s139>Trip: </s>"
-  est: "<s140> (est.)</s>"
-  my_trips: '<s142>My Trips</s>'
-  assisted_user_first_name_s_trips: "<s143>%{name}'s Trips</s>"
-  trip_options_information_from_from: "<s144>Trip options information from #{@from}</s>"
+  send_to_traveler: 'Enviar al viajero'
+  from_address: 'De la dirección'
+  email_addresses: 'Correos electrónicos'
+  start: "START: "
+  on: ' en '
+  walking: ' caminando'
+  arrive: "ARRIVE: "
+  trip: "Viaje: "
+  est: " (est.)"
+  my_trips: 'Mis Viajes'
+  assisted_user_first_name_s_trips: "Viajes de %{name}"
+  trip_options_information_from_from: "Información de opciones de viaje de #{@from}"
   
 
   # Branding
   arc:
     logotext: ''
-    site_title: '<s145>ARC 1-Click</s>'
-    site_description: '<s146>ARC 1-Click Application</s>'
+    site_title: 'ARC 1-Click'
+    site_description: ' Applicación ARC 1-Click'
   yata:
     logotext: ''
-    site_title: '<s147>YATA 1-Click</s>'
-    site_description: '<s148>YATA 1-Click Application</s>'
+    site_title: 'YATA 1-Click'
+    site_description: 'Aplicación YATA 1-Click '
   broward:
     logotext: ''
-    site_title: '<s149>Broward 1-Click</s>'
-    site_description: '<s150>Broward 1-Click Application</s>'
+    site_title: 'Broward 1-Click'
+    site_description: 'Aplicación Broward 1-Click'
   # simple_form:
   #   labels:
   #     defaults:
-  #       first_name: '<s159>First name'
-  #       last_name: 'Last name'
-  #       email: '<s151>Email</s>'
-  #       password: '<s152>Contraseña</s>'
-  #       remember_me: '<s153>Acuérdate de mí</s>'
-  #       email: 'Email'
-  #       password: 'Password'
-  #       retype_your_password: 'Retype your password'
-  #       remember_me: 'Remember me'
+  #       first_name: 'Nombre'
+  #       last_name: 'Apellido'
+  #       email: 'Correo electrónico'
+  #       password: 'Contraseña'
+  #       remember_me: 'Acuérdate de mí'
+  #       email: 'Correo electrónico'
+  #       password: 'Contraseña'
+  #       retype_your_password: Vuelve a escribir tu contraseña'
+  #       remember_me: ' Acuérdate de mí '
   #     user:
-  #       first_name: '<s159>First name'
+  #       first_name: 'Nombre'
 
   activerecord:
     errors:
@@ -212,10 +212,11 @@ es:
         user:
           attributes:
             email:
-              blank: "<s154>can't be blank</s>"
-              invalid: "<s155>is invalid</s>"
+              blank: "no puede estar en blanco"
+              invalid: "no es válido"
             password:
-              blank: "<s156>can't be blank</s>"
-              confirmation: "<s157>doesn't match confirmation</s>"
+              blank: "no puede estar en blanco"
+              confirmation: "no coincide con la confirmación"
             current_password:
-              blank: "<s158>can't be blank</s>"
+              blank: "no puede estar en blanco"
+
