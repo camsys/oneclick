@@ -1,5 +1,5 @@
 - if @alternative_places.count > 0
-  %p= "Found #{@alternative_places.count} matching addresses."
+  %p= "Found #{@alternative_places.count} matching " + "address".pluralize(@alternative_places.count)
   %ul.nav.nav-list.places        
     - @alternative_places.each_with_index do |place, index|
       %li
