@@ -45,6 +45,7 @@ class PlacesController < TravelerAwareController
   
   def create
     place_proxy = PlaceProxy.new(params[:place_proxy])
+    
     # attempt to geocode this place
     @alternative_places = place_proxy.geocode
     respond_to do |format|

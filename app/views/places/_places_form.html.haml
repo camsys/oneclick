@@ -19,7 +19,7 @@
         - @places.each do |place|
           %tr{ :data => { :place_id => place.id } }
             %td= place
-            %td
+            %td{:style => "white-space:nowrap;"}
               = link_to "#", :class => "btn btn-mini btn-warning", :data => {:place_id => place.id} do
                 %i.icon.icon-edit
               = link_to "#", :class => "btn btn-mini btn-danger", :data => {:place_id => place.id} do
@@ -31,4 +31,3 @@
     var elem_id = $(this).data('place-id');
     selectMarkerById(elem_id);
   });
-  
