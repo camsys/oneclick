@@ -33,7 +33,11 @@ Oneclick::Application.routes.draw do
       end
 
       # users have places
-      resources :places
+      resources :places, :only => [:index, :new, :create, :destroy] do
+        collection do
+          get 'add'
+        end
+      end
       
       # users have trips
       resources :trips, :only => [:index, :new, :create, :destroy] do

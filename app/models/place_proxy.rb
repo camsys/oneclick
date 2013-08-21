@@ -33,6 +33,7 @@ class PlaceProxy
     results = Geocoder.search(self.raw_address, sensor: false, components: Rails.application.config.geocoder_components, bounds: Rails.application.config.geocoder_bounds)
     results.each do |alt|
       alternatives << {
+        :name => alt.formatted_address.split(",")[0],
         :formatted_address => alt.formatted_address,
         :street_address => alt.street_address,
         :city => alt.city,

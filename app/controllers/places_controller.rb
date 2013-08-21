@@ -22,6 +22,27 @@ class PlacesController < TravelerAwareController
     
   end
   
+  # Called when a user has selected a place
+  def add
+    
+    # We need to call this as its not called automatically for this method
+    get_traveler
+    
+    place = Place.new
+    place.user = @traveler
+    place.creator = current_user
+    place.name = params[:name]
+    place.raw_address = params[:address]
+    place.lat = params[:lat]
+    place.lon = params[:lon]
+    if place.save
+      flash[:notice] = "#{place.name} has been added to your address book."            
+    else
+      flash[:alert] = "An error occurred adding #{place.name} to your address book."      
+    end
+    redirect_to user_places_path(@traveler)
+  end
+  
   def create
     place_proxy = PlaceProxy.new(params[:place_proxy])
     # attempt to geocode this place

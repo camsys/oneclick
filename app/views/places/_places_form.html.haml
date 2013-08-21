@@ -1,32 +1,34 @@
 .row-fluid
-  .span12
-    .thumbnail
+  .thumbnail.span12{style: 'overflow-y: auto;'}
+    .span12
       = form_for @place_proxy, :url => user_places_path, :remote => true, :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
-        = f.text_field :raw_address, :placeholder => "Enter a place...", :class => "span12", :style => "margin-bottom: 10px;"
-        = submit_tag "Find Place", :class => "btn btn-block btn-primary"
+        = f.text_field :raw_address, :placeholder => "Type an address or name of a place...", :class => "span12", :style => "margin-bottom: 10px;"
+        = button_tag :type => 'submit', :class => "btn btn-block btn-primary" do
+          %i.icon.icon-search
       #select_place
         - render 'address_select'
       
 .row-fluid
   .span12
-    %h4 My places
+    %h6= "Found #{@places.count} " + "place".pluralize(@places.count) + " in your address book"
 
 .row-fluid
   .thumbnail.span12{style: 'height: 300px; overflow-y: auto;'}
-    %ul.nav.nav-list.places        
-      - @places.each do |place|
-        %li
-          = link_to place, "#", :data => {:place_id => place.id}
+    .span12
+      %table.table.table-hover#my_places
+        - @places.each do |place|
+          %tr{ :data => { :place_id => place.id } }
+            %td= place
+            %td
+              = link_to "#", :class => "btn btn-mini btn-warning", :data => {:place_id => place.id} do
+                %i.icon.icon-edit
+              = link_to "#", :class => "btn btn-mini btn-danger", :data => {:place_id => place.id} do
+                %i.icon.icon-remove
+                
     
 :javascript  
-  $('[data-place-id]').click(function(e) {
-    var elem_id = e.target.getAttribute('data-place-id');
-    //alert(elem_id);
+  $('#my_places tr').hover(function() {
+    var elem_id = $(this).data('place-id');
     selectMarkerById(elem_id);
   });
-
-  $('[data-address-candidate]').click(function(e) {
-    var addr = e.target.value;
-    location = e.target.getAttribute('data-location');
-    alert(addr + " at " + location);
-  });
+  
