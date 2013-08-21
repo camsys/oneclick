@@ -1,21 +1,32 @@
 .row-fluid
   .span12
     .thumbnail
-      = simple_form_for @place_proxy, :url => user_places_path, :remote => true, :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
-        = f.input :name, :label => "Place name"
-        = f.input :raw_address, :label => "Street address"
-        = submit_tag "Add Place", :class => "btn btn-block btn-primary"
+      = form_for @place_proxy, :url => user_places_path, :remote => true, :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
+        = f.text_field :raw_address, :placeholder => "Enter a place...", :class => "span12", :style => "margin-bottom: 10px;"
+        = submit_tag "Find Place", :class => "btn btn-block btn-primary"
+      #select_place
+        - render 'address_select'
+      
 .row-fluid
-  .thumbnail.span12{style: 'height: 300px; overflow-y: auto;margin-top: 20px;'}
+  .span12
     %h4 My places
+
+.row-fluid
+  .thumbnail.span12{style: 'height: 300px; overflow-y: auto;'}
     %ul.nav.nav-list.places        
       - @places.each do |place|
         %li
           = link_to place, "#", :data => {:place_id => place.id}
     
-:javascript
+:javascript  
   $('[data-place-id]').click(function(e) {
     var elem_id = e.target.getAttribute('data-place-id');
     //alert(elem_id);
     selectMarkerById(elem_id);
+  });
+
+  $('[data-address-candidate]').click(function(e) {
+    var addr = e.target.value;
+    location = e.target.getAttribute('data-location');
+    alert(addr + " at " + location);
   });

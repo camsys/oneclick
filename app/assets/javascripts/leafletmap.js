@@ -90,6 +90,19 @@ replaceMarkers = function(data, updateMap) {
 	}
 };
 /*
+ * Removes the markers from the map and re-draws them from
+ * the markers array
+ */
+refreshMarkers = function() {
+	for(var i=0;i<LMmarkers.length;i++){
+		LMmap.removeLayer(LMmarkers[i]);
+	}	
+	// Add the markers to the map
+	for (var i=0;i<LMmarkers.length;i++) {
+		LMmap.addLayer(LMmarkers[i]);
+	}
+};
+/*
  * Replaces the circles on the map with a new set
  */
 replaceCircles = function(data, updateMap) {
@@ -143,8 +156,17 @@ addMarkers = function(data) {
         var popupText = obj.description;
         var title = obj.title;
         var open = obj.open;
-        addMarker(id, lat, lng, iconClass, popupText, title, open);
+        marker = createMarker(id, lat, lng, iconClass, popupText, title, open);
+        
+    	// Add this marker to the list of markers
+		LMmarkers.push(marker);
     }
+};
+addMarkerToMap = function(marker) {
+	LMmap.addLayer(marker);	
+};
+removeMarkerFromMap = function(marker) {
+	LMmap.removeLayer(marker);	
 };
 /*
  * 
@@ -178,10 +200,10 @@ findMarkerById = function(id) {
 };
 
 /*
- * Adds a single marker to the list of markers. If the iconClass is set 
+ * Creates a single marker and returns it. If the iconClass is set 
  * then the iconClass must be defined in the page
  */
-addMarker = function(id, lat, lng, iconClass, popupText, title, open) {
+createMarker = function(id, lat, lng, iconClass, popupText, title, open) {
 	var options = {};
 	if (title) {
 		options = {
@@ -203,8 +225,7 @@ addMarker = function(id, lat, lng, iconClass, popupText, title, open) {
 		}
 	}	
 
-	// Add this marker to the list of markers
-	LMmarkers.push(marker);
+	return marker;
 };
 /*
  * 

@@ -28,7 +28,7 @@
                       %i.icon.icon-cogs
                       = t(:edit_account) 
                   %li
-                    = link_to user_places_path(current_user) do
+                    = link_to user_places_path(@traveler) do
                       %i.icon.icon-map-marker
                       My places 
                   - if current_user.has_role? :admin

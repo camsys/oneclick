@@ -1,0 +1,32 @@
+- if @alternative_places.count > 0
+  %p= "Found #{@alternative_places.count} matching addresses."
+  %ul.nav.nav-list.places        
+    - @alternative_places.each_with_index do |place, index|
+      %li
+        = link_to place[:formatted_address], "#", :data => {:address_candidate => index, :latlon => [place[:lat], place[:lon]]}
+
+:javascript
+  clear_candidate_address_markers();
+  
+  $('[data-address-candidate]').each(function() {
+    var addr = $(this).text();
+    var id = $(this).data('address-candidate');
+    var latlon = $(this).data('latlon');
+
+    marker = createMarker(id, latlon[0], latlon[1], 'redIcon', addr, addr, true);
+    address_candidate_markers.push(marker);
+    addMarkerToMap(marker);
+  });
+  
+  $('[data-address-candidate]').click(function(e) {
+    var id = $(this).data('address-candidate');
+    for (var i = 0; i < address_candidate_markers.length; i++) {
+      if (address_candidate_markers[i].id == id) {
+        selectMarker(address_candidate_markers[i]);
+        return false;
+      }
+    }
+    return false;
+  });
+
+
