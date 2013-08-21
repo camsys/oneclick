@@ -35,7 +35,8 @@ Oneclick::Application.routes.draw do
       # users have places
       resources :places, :only => [:index, :new, :create, :destroy] do
         collection do
-          get 'add'
+          get   'add'
+          post  'change'
         end
       end
       

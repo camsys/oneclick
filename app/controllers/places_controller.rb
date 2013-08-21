@@ -3,30 +3,20 @@ class PlacesController < TravelerAwareController
   # include the Leaflet helper into the controller and view
   helper LeafletHelper
   
+  # set the @traveler variable for actions that are not supported by teh super class controller
+  before_filter :get_traveler, :only => [:index, :add, :create, :destroy, :change]
   # set the @place variable before any actions are invoked
   before_filter :get_place, :only => [:show, :destroy, :edit]
   
   def index
-    @places = @traveler.places  
+    @places = @traveler.places.active  
     @place_proxy = PlaceProxy.new
     @alternative_places = []
     @markers = generate_map_markers(@places)
   end
-  
-  def show
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @places }
-    end
     
-  end
-  
   # Called when a user has selected a place
   def add
-    
-    # We need to call this as its not called automatically for this method
-    get_traveler
     
     place = Place.new
     place.user = @traveler
@@ -35,6 +25,7 @@ class PlacesController < TravelerAwareController
     place.raw_address = params[:address]
     place.lat = params[:lat]
     place.lon = params[:lon]
+    place.active = true
     if place.save
       flash[:notice] = "#{place.name} has been added to your address book."            
     else
@@ -43,6 +34,41 @@ class PlacesController < TravelerAwareController
     redirect_to user_places_path(@traveler)
   end
   
+  # handles the user changing a place name from the form
+  def change
+    place = @traveler.places.find(params[:place][:id])
+    if place
+      place.name = params[:place][:name]
+      if place.save
+        flash[:notice] = "#{place.name} has been changed in your address book."            
+      else
+        flash[:alert] = "An error occurred while updating your address book."      
+      end
+      redirect_to user_places_path(@traveler)
+      return
+    else
+      redirect_to error_404_path
+    end
+    
+  end
+  
+  # not really a destroy -- just hides the place by setting active = false
+  def destroy
+    place = @traveler.places.find(params[:id])
+    if place
+      place.active = false
+      if place.save
+        flash[:notice] = "#{place.name} has been removed from your address book."            
+      else
+        flash[:alert] = "An error occurred adding #{place.name} to your address book."      
+      end
+      redirect_to user_places_path(@traveler)
+      return
+    else
+      redirect_to error_404_path
+    end
+    
+  end
   def create
     place_proxy = PlaceProxy.new(params[:place_proxy])
     

@@ -7,6 +7,19 @@
           %i.icon.icon-search
       #select_place
         - render 'address_select'
+
+.row-fluid#name_div
+  .span12
+    %h6= "Enter a new name for this place"
+  .row-fluid
+    .thumbnail.span12
+      = form_for :place, :url => change_user_places_path(@traveler), :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
+        = f.hidden_field :id, :id => "id_field"
+        = f.text_field :name, :class => "span12", :style => "margin-bottom: 10px;", :id => "name_field"
+        = button_tag :type => 'submit', :class => "btn btn-block btn-success" do
+          %i.icon.icon-edit Update
+        = button_tag :type => 'cancel', :class => "btn btn-block btn-warn" do
+          %i.icon.icon-remove Cancel
       
 .row-fluid
   .span12
@@ -20,13 +33,30 @@
           %tr{ :data => { :place_id => place.id } }
             %td= place
             %td{:style => "white-space:nowrap;"}
-              = link_to "#", :class => "btn btn-mini btn-warning", :data => {:place_id => place.id} do
-                %i.icon.icon-edit
-              = link_to "#", :class => "btn btn-mini btn-danger", :data => {:place_id => place.id} do
+              = link_to "#", :class => "btn btn-mini btn-warning" do
+                %i.icon.icon-edit{:data => {:name => place.name, :id => place.id}}
+              = link_to user_place_path(@traveler, place), :class => "btn btn-mini btn-danger", :method => :delete, :confirm => "Are you sure ?" do
                 %i.icon.icon-remove
                 
     
 :javascript  
+  // Hide the name editing div on page load
+  $(document).ready(function(){
+    $('#name_div').hide();
+  });
+  // Prepoulate the editing form and show it if the user clicks an
+  // edit button in the table
+  $('a [data-name]').click(function(e) {
+    var id = $(this).data('id');
+    var name = $(this).data('name');
+    // Set the name and id into the form text area
+    $('#name_field').val(name);
+    $('#id_field').val(id);
+    // Show the editing div
+    $('#name_div').show();
+  });
+  // Install a hover event handler for table rows. When hovering,
+  // the map icon is panned to and the popup shown
   $('#my_places tr').hover(function() {
     var elem_id = $(this).data('place-id');
     selectMarkerById(elem_id);

@@ -8,6 +8,8 @@ class Place < ActiveRecord::Base
   
   attr_accessible :name, :address1, :address2, :city, :state, :zip, :lat, :lon, :raw_address
   
+  scope :active, where("active = true")
+  
   def location
     return [poi.lat, poi.lon] unless poi.nil?
     return [lat, lon]
