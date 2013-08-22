@@ -1,6 +1,9 @@
 .well.well-small
-  .caption
-    %i.icon-home.icon-3x.pull-left
-    %h5= place.name
-  .address
-    = place.address
+  .row-fluid
+    .span3
+      %i.icon.icon-building.icon-3x
+    .span9
+      .caption
+        %h4= place.name
+      %em
+        = place.address.blank? ? place.raw_address : place.address

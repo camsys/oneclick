@@ -4,7 +4,7 @@ class PlacesController < TravelerAwareController
   helper LeafletHelper
   
   # set the @traveler variable for actions that are not supported by teh super class controller
-  before_filter :get_traveler, :only => [:index, :add, :create, :destroy, :change]
+  before_filter :get_traveler, :only => [:index, :add_place, :add_poi, :create, :destroy, :change]
   # set the @place variable before any actions are invoked
   before_filter :get_place, :only => [:show, :destroy, :edit]
   
@@ -14,9 +14,29 @@ class PlacesController < TravelerAwareController
     @alternative_places = []
     @markers = generate_map_markers(@places)
   end
+
+  # called when a user adds a new poi
+  def add_poi
+
+    poi = Poi.find(params[:poi_proxy][:poi_id])
+
+    place = Place.new
+    place.user = @traveler
+    place.creator = current_user
+    place.poi = poi
+    place.name = poi.name
+
+    place.active = true
+    if place.save
+      flash[:notice] = "#{place.name} has been added to your address book."            
+    else
+      flash[:alert] = "An error occurred adding #{place.name} to your address book."      
+    end
+    redirect_to user_places_path(@traveler)
     
+  end    
   # Called when a user has selected a place
-  def add
+  def add_place
     
     place = Place.new
     place.user = @traveler
@@ -70,6 +90,7 @@ class PlacesController < TravelerAwareController
     
   end
   def create
+    
     place_proxy = PlaceProxy.new(params[:place_proxy])
     
     # attempt to geocode this place
@@ -79,6 +100,32 @@ class PlacesController < TravelerAwareController
     end
       
   end
+  
+  def search
+  
+    query = params[:query]
+    poi_type_id = params[:poi_type_id]
+    if poi_type_id.blank?
+      pois = Poi.where("name LIKE ?", "%" + query + "%").limit(50)
+    else
+      pois = Poi.where("poi_type_id = ? AND name LIKE ?", poi_type_id, "%" + query + "%")
+    end
+    matches = []
+    pois.each do |poi|
+      matches << {
+        "name" => poi.name,
+        "id" => poi.id,
+        "lat" => poi.lat,
+        "lon" => poi.lon,
+        "address" => poi.address
+      }
+    end
+    puts matches.inspect
+    respond_to do |format|
+      format.js { render :json => matches.to_json }
+    end
+  end
+  
 protected
 
   def get_place

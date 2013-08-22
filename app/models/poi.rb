@@ -15,6 +15,20 @@ class Poi < ActiveRecord::Base
     name
   end
   
+  def address
+    if address1.blank?
+      reverse_geocode
+      self.save
+    end
+    elems = []
+    elems << address1 unless address1.blank?
+    elems << address2 unless address2.blank?
+    elems << city unless city.blank?
+    elems << state unless state.blank?
+    elems << zip unless zip.blank?
+    elems.compact.join(' ')
+  end
+  
   reverse_geocoded_by :lat, :lon do |obj,results|
     if geo = results.first
       obj.address1 = geo.street_address
@@ -23,4 +37,5 @@ class Poi < ActiveRecord::Base
       obj.state   = geo.state_code
     end
   end
+  
 end

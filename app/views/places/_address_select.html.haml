@@ -6,7 +6,7 @@
         %td
           = place[:formatted_address]
         %td
-          = link_to add_user_places_path(@traveler, :name => place[:name], :address => place[:formatted_address], :lat => place[:lat], :lon => place[:lon]), :class => "btn btn-mini" do
+          = link_to add_place_user_places_path(@traveler, :name => place[:name], :address => place[:formatted_address], :method => "post", :lat => place[:lat], :lon => place[:lon]), :class => "btn btn-mini" do
             %i.icon.icon-plus
   
 :javascript
@@ -17,7 +17,7 @@
     var id = $(this).data('address-candidate');
     var latlon = $(this).data('latlon');
 
-    marker = createMarker(id, latlon[0], latlon[1], 'redIcon', addr, addr, true);
+    marker = createMarker(id, latlon[0], latlon[1], 'blueIcon', addr, addr, true);
     address_candidate_markers.push(marker);
     addMarkerToMap(marker);
   });
