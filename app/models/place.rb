@@ -16,11 +16,7 @@ class Place < ActiveRecord::Base
   end
   
   def to_s
-    if poi
-      return poi.to_s
-    else
-      return name
-    end
+    return name
   end
     
   def address
