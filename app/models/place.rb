@@ -37,32 +37,4 @@ class Place < ActiveRecord::Base
     return addr
   end
  
-  def geocode
-    return if raw_address.blank?
-    # result = Geocoder.search(self.nongeocoded_address).as_json
-    results = Geocoder.search(self.raw_address, sensor: false, components: Rails.application.config.geocoder_components, bounds: Rails.application.config.geocoder_bounds)
-    if addr = results.first
-      self.address1 = addr.street_address
-      self.city     = addr.city
-      self.zip      = addr.postal_code
-      self.state    = addr.state_code
-      self.lat      = addr.coordinates.first
-      self.lon      = addr.coordinates.last
-    end
-    self
-  end
-
-  def geocode!
-    self.geocode
-  end
-
-  def geocoded?
-    if !(self.lat && self.lon)
-      # TODO Check this, I think it adds new errors every time it gets called.
-      errors.add(:raw_address, I18n.translate(:raw_address))
-      return false
-    end
-    true
-  end
-  
 end

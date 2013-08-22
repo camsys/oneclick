@@ -104,30 +104,52 @@ class TripsController < TravelerAwareController
     @trip_proxy = TripProxy.new(params[:trip_proxy])
     @trip_proxy.traveler = @traveler
     
-    if user_signed_in?
-      @trip = create_authenticated_trip(@trip_proxy)
-    else
-      @trip = create_anonymous_trip(@trip_proxy)
-    end
-    
-    respond_to do |format|
-      if @trip.save
-        @trip.reload
-        @planned_trip = @trip.planned_trips.first
-        @planned_trip.create_itineraries
-        if @planned_trip.valid_itineraries.empty?
-          message = t(:trip_created_no_valid_options)
-          details = @planned_trip.itineraries.collect do |i|
-            "<li>%s (%s)</li>" % [i.server_message, i.server_status]
-          end
-          message = message + '<ol>' + details.join + '</ol>'
-          flash[:error] = message.html_safe
-        end
-        format.html { redirect_to user_planned_trip_path(@traveler, @planned_trip) }
-        format.json { render json: @planned_trip, status: :created, location: @planned_trip }
+    # see if we have selected addresses or not. If not we need to geocode and check
+    # to see if multiple addresses are available. The alternate addresses are stored
+    # back in the g
+    complete = true
+    geocoder = OneclickGeocoder.new
+    if @trip_proxy.from_place_selected.blank?
+      geocoder.geocode(@trip_proxy.from_place)
+      @trip_proxy.from_place_results = geocoder.results
+      if @trip_proxy.from_place_results.count == 1
+        @trip_proxy.from_place_selected = @trip_proxy.from_place_results.first[:raw_address]
       else
-        format.html { render action: "new" }
-        format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
+        complete = false
+      end
+    end
+    if @trip_proxy.to_place_selected.blank?
+      geocoder.geocode(@trip_proxy.to_place)
+      @trip_proxy.to_place_results = geocoder.results
+      if @trip_proxy.to_place_results.count == 1
+        @trip_proxy.to_place_selected = @trip_proxy.to_place_results.first[:raw_address]
+      else
+        complete = false
+      end
+    end
+   
+    if complete
+      if user_signed_in?
+        @trip = create_authenticated_trip(@trip_proxy)
+      else
+        @trip = create_anonymous_trip(@trip_proxy)
+      end
+    end
+
+    respond_to do |format|
+      if @trip
+        if @trip.save
+          @trip.reload
+          @planned_trip = @trip.planned_trips.first
+          @planned_trip.create_itineraries
+          format.html { redirect_to user_planned_trip_path(@traveler, @planned_trip) }
+          format.json { render json: @planned_trip, status: :created, location: @planned_trip }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
+        end
+      else
+          format.html { render action: "new" }
       end
     end
   end
@@ -160,7 +182,6 @@ private
     myplace = @traveler.places.find_by_name(from_address_or_place_name)
     if myplace
       from_place.place = myplace
-      from_place.poi = myplace.poi unless myplace.poi.nil?
     else
       from_place.raw_address = from_address_or_place_name
       from_place.geocode
@@ -171,7 +192,6 @@ private
     myplace = @traveler.places.find_by_name(to_address_or_place_name)
     if myplace
       to_place.place = myplace
-      to_place.poi = myplace.poi unless myplace.poi.nil?
     else
       to_place.raw_address = to_address_or_place_name
       to_place.geocode
