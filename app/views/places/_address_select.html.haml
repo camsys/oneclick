@@ -6,9 +6,11 @@
         %td
           = place[:formatted_address]
         %td
-          = link_to add_place_user_places_path(@traveler, :name => place[:name], :address => place[:formatted_address], :lat => place[:lat], :lon => place[:lon]), :method => :post, :class => "btn btn-mini" do
+          = link_to add_place_user_places_path(@traveler, :ref => place[:id], :address => place[:formatted_address]), :method => :post, :class => "btn btn-mini" do
             %i.icon.icon-plus
-  
+- else
+  .alert.alert-info= "Nothing found at that address. Please try again"
+    
 :javascript
   clear_candidate_address_markers();
   

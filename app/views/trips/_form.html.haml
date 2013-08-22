@@ -22,7 +22,12 @@
                 %a{data: {value: p.name}, class: 'place-option'}= p.name
   - else
     = f.input :from_place, label: t(:from), placeholder: t(:enter_address)
+    - if @trip_proxy.from_place_results.count > 1
+      = render :partial => 'alt_address_select', :locals => {:alt_addresses => @trip_proxy.from_place_results}
+    
     = f.input :to_place, label: t(:to), placeholder: t(:enter_address)
+    - if @trip_proxy.to_place_results.count > 1
+      = render :partial => 'alt_address_select', :locals => {:alt_addresses => @trip_proxy.to_place_results}
       
   = f.input :trip_date, wrapper: :append, label: t(:date) do
     = content_tag :div, id: 'trip-date' do

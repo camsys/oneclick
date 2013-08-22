@@ -1,8 +1,4 @@
-class PoiProxy
-
-  include ActiveModel::Validations
-  include ActiveModel::Conversion
-  extend  ActiveModel::Naming
+class PoiProxy < Proxy
 
   attr_accessor :poi_type_id, :poi_id, :name
     
@@ -15,13 +11,4 @@ class PoiProxy
     end
   end
 
-  # Override the save method to prevent exceptions.
-  def save(validate = true)
-    validate ? valid? : true
-  end
-  
-  def persisted?
-    false
-  end
-          
 end
