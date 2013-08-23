@@ -5,5 +5,5 @@ class ServiceTripPurposeMap < ActiveRecord::Base
   belongs_to :trip_purpose
 
 
-  # attr_accessible :title, :body
+  attr_accessible :id, :value_relationship_id
 end

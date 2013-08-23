@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 0) do
+ActiveRecord::Schema.define(:version => 20130822180917) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -140,33 +140,34 @@ ActiveRecord::Schema.define(:version => 0) do
     t.boolean "active",      :null => false
   end
 
-  create_table "service_traveler_accommodations_map", :force => true do |t|
+  create_table "service_traveler_accommodations_maps", :force => true do |t|
     t.integer "service_id",                                             :null => false
     t.integer "accommodation_id",                                       :null => false
     t.string  "value",                 :limit => 64,                    :null => false
     t.boolean "requires_verification",               :default => false, :null => false
-    t.boolean "active",                                                 :null => false
+    t.boolean "active",                              :default => true,  :null => false
   end
 
-  create_table "service_traveler_characteristics_map", :force => true do |t|
+  create_table "service_traveler_characteristics_maps", :force => true do |t|
     t.integer "service_id",                                             :null => false
     t.integer "characteristic_id",                                      :null => false
     t.string  "value",                 :limit => 64,                    :null => false
     t.boolean "requires_verification",               :default => false, :null => false
-    t.boolean "active",                                                 :null => false
+    t.boolean "active",                              :default => true,  :null => false
+    t.integer "value_relationship_id",                :default => 1,     :null => false
   end
 
-  create_table "service_trip_purpose_map", :force => true do |t|
-    t.integer "service_id",               :null => false
-    t.integer "purpose_id",               :null => false
-    t.string  "value",      :limit => 64, :null => false
-    t.boolean "active",                   :null => false
+  create_table "service_trip_purpose_maps", :force => true do |t|
+    t.integer "service_id",                                            :null => false
+    t.integer "purpose_id",                                            :null => false
+    t.string  "value",                 :limit => 64,                   :null => false
+    t.boolean "active",                              :default => true, :null => false
+    t.integer "value_relationship_id"
   end
 
   create_table "service_types", :force => true do |t|
-    t.integer "service_id",               :null => false
-    t.string  "name",       :limit => 64, :null => false
-    t.string  "note"
+    t.string "name", :limit => 64, :null => false
+    t.string "note"
   end
 
   create_table "services", :force => true do |t|
@@ -256,8 +257,8 @@ ActiveRecord::Schema.define(:version => 0) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "user_traveler_accommodations_map", :force => true do |t|
-    t.integer  "traveler_id",                                       :null => false
+  create_table "user_traveler_accommodations_maps", :force => true do |t|
+    t.integer  "user_profile_id",                                   :null => false
     t.integer  "accommodation_id",                                  :null => false
     t.string   "value",            :limit => 64,                    :null => false
     t.boolean  "verified",                       :default => false, :null => false
@@ -265,8 +266,8 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer  "verified_by_id"
   end
 
-  create_table "user_traveler_characteristics_map", :force => true do |t|
-    t.integer  "traveler_id",                                        :null => false
+  create_table "user_traveler_characteristics_maps", :force => true do |t|
+    t.integer  "user_profile_id",                                    :null => false
     t.integer  "characteristic_id",                                  :null => false
     t.string   "value",             :limit => 64,                    :null => false
     t.boolean  "verified",                        :default => false, :null => false
@@ -296,5 +297,11 @@ ActiveRecord::Schema.define(:version => 0) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
+  create_table "value_relationships", :force => true do |t|
+    t.string   "relationship", :limit => 64
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+  end
 
 end
