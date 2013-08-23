@@ -8,13 +8,13 @@
         %label.control-label= t(:from)
         .controls.controls-row
           = f.text_field :from_place, :class => "span12", :placeholder => t(:enter_address)
-          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.from_place_results, :type => "from"}
+          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.from_place_results, :type => "from"} unless @trip_proxy.from_place.blank?
           
       .control-group
         %label.control-label= t(:to)
         .controls.controls-row
           = f.text_field :to_place, :class => "span12", :placeholder => t(:enter_address)
-          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.to_place_results, :type => "to"}
+          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.to_place_results, :type => "to"} unless @trip_proxy.to_place.blank?
 
       .control-group
         %label.control-label Traveling

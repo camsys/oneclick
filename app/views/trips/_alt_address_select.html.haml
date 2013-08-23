@@ -1,9 +1,7 @@
 - if results.count == 0
   %h6= "No matching results found."
-- elsif results.count == 1
-  %h6= "Address has been found."
 - else
-  %h6= "Found #{results.count} matching results."
+  %h6= "Found #{results.count} matching " + "place".pluralize(results.count)
   .candidate-list.thumbnail{:style => "height:100px;overflow:auto;"}
     %ul.unstyled
       - results.each do |addr|

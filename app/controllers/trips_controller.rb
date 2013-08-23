@@ -266,8 +266,6 @@ private
     selected_id = trip_proxy.to_place_selected.to_i
     address = session[TO_PLACES_SESSION_KEY][selected_id]
 
-    puts address.inspect
-
     to_place = TripPlace.new()
     to_place.sequence = 1
     # the address format comes from the oneclick geocoder
