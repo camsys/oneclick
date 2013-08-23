@@ -8,6 +8,7 @@
 var LMmarkers = new Array();
 var LMcircles = new Array();
 var LMmap;
+var LMbounds;
 
 var OPENSTREETMAP_URL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 var OPENSTREETMAP_ATTRIB = 'Map data © OpenStreetMap contributors';
@@ -68,8 +69,12 @@ showMap = function() {
 	for (var i=0;i<LMcircles.length;i++) {
 		LMmap.addLayer(LMcircles[i]);
 	}
-	var mapBounds = calcMapBounds();
-	//alert(mapBounds);
+	var mapBounds;
+	if (LMmarkers.length > 0) {
+		mapBounds = calcMapBounds(LMmarkers);
+	} else {
+		mapBounds = LMbounds;
+	}
 	LMmap.fitBounds(mapBounds);
 };
 /*
@@ -204,6 +209,9 @@ findMarkerById = function(id) {
  * then the iconClass must be defined in the page
  */
 createMarker = function(id, lat, lng, iconClass, popupText, title, open) {
+	
+	//alert(id + "," + lat + "," + lng + "," + popupText + "," + title + "," + open);
+	
 	var options = {};
 	if (title) {
 		options = {
@@ -224,7 +232,6 @@ createMarker = function(id, lat, lng, iconClass, popupText, title, open) {
 			marker.openPopup();
 		}
 	}	
-
 	return marker;
 };
 /*
@@ -252,21 +259,27 @@ selectMarker = function(marker) {
  * Calculate the maximum geographic extent of the marker set
  * Needs at least 2 markers
  */
-calcMapBounds = function() {
-	var minLat = LMmarkers[0].getLatLng().lat;
-	var minLng = LMmarkers[0].getLatLng().lng;
-	var maxLat = LMmarkers[0].getLatLng().lat;
-	var maxLng = LMmarkers[0].getLatLng().lng;
+calcMapBounds = function(marker_array) {
+	var minLat = marker_array[0].getLatLng().lat;
+	var minLng = marker_array[0].getLatLng().lng;
+	var maxLat = marker_array[0].getLatLng().lat;
+	var maxLng = marker_array[0].getLatLng().lng;
 	
-	if (LMmarkers.length > 1) {
-		for(var i=1; i<LMmarkers.length;i++) {
-			minLat = minLat < LMmarkers[i].getLatLng().lat ? minLat : LMmarkers[i].getLatLng().lat;
-			minLng = minLng < LMmarkers[i].getLatLng().lng ? minLng : LMmarkers[i].getLatLng().lng;
-			maxLat = maxLat > LMmarkers[i].getLatLng().lat ? maxLat : LMmarkers[i].getLatLng().lat;
-			maxLng = maxLng > LMmarkers[i].getLatLng().lng ? maxLng : LMmarkers[i].getLatLng().lng;
+	if (marker_array.length > 1) {
+		for(var i=1; i<marker_array.length;i++) {
+			minLat = minLat < marker_array[i].getLatLng().lat ? minLat : marker_array[i].getLatLng().lat;
+			minLng = minLng < marker_array[i].getLatLng().lng ? minLng : marker_array[i].getLatLng().lng;
+			maxLat = maxLat > marker_array[i].getLatLng().lat ? maxLat : marker_array[i].getLatLng().lat;
+			maxLng = maxLng > marker_array[i].getLatLng().lng ? maxLng : marker_array[i].getLatLng().lng;
 		}		
 	}
 	
 	return [[minLat, minLng], [maxLat, maxLng]];
 };
-
+function setMapToBounds(marker_array) {
+	LMbounds = calcMapBounds(marker_array);
+	LMmap.fitBounds(LMbounds);
+};
+function setMapBounds(minLat, minLon, maxLat, maxLon) {
+	LMbounds = [[minLat, minLon], [maxLat, maxLon]];	
+};

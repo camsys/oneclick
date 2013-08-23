@@ -6,6 +6,7 @@ module LeafletHelper
   MAXZOOM = 18
   TILE_PROVIDER = 'CLOUDMADE'
   TILE_STYLE_ID = 997
+  MAP_BOUNDS = Rails.application.config.geocoder_bounds
   
   def LeafletMap(options)
     options_with_indifferent_access = options.with_indifferent_access
@@ -42,6 +43,8 @@ module LeafletHelper
     js << "addMarkers(#{options[:markers]});" unless options[:markers].nil?
     # add any circles
     js << "addCircles(#{options[:circles]});" unless options[:circles].nil?
+    # set the map bounds
+    js << "setMapBounds(#{MAP_BOUNDS[0][0]},#{MAP_BOUNDS[0][1]},#{MAP_BOUNDS[1][0]},#{MAP_BOUNDS[1][1]});"
     js << "showMap();"
     js * ("\n")
   end
