@@ -1,4 +1,15 @@
-@font-face{font-family:'travel-icons';src:url('../assets/travelcons.ttf') format('truetype');font-weight:normal;font-style:normal;}.travelcon-subway:before,.travelcon-walk:before,.travelcon-bus:before,.travelcon-train:before.travelcon-boat:before{font-family:'travel-icons';font-style:normal;font-weight:normal;}
+@font-face{
+    font-family:'travel-icons';
+    src: url('../assets/travelcons.eot');
+    src: url('../assets/travelcons.eot') format('embedded-opentype'),
+         url('../assets/travelcons.woff') format('woff'),
+         url('../assets/travelcons.ttf') format('truetype');
+    font-weight:normal;font-style:normal;}
+.travelcon-subway:before,
+.travelcon-walk:before,
+.travelcon-bus:before,
+.travelcon-train:before,
+.travelcon-boat:before{font-family:'travel-icons';font-style:normal;font-weight:normal;}
 .travelcon-subway:before{content:"r";}
 .travelcon-walk:before{content:":";}
 .travelcon-bus:before{content:"b";}

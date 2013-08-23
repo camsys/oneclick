@@ -8,21 +8,14 @@
     cursor: pointer;
     overflow: auto;
     margin-top: 10px;
-    min-height: 8.0em;
-    img {
-      float: left;
-      margin-right: 5px;
+
+    i {
+      width: 100%;
     }
-    .span6 {
-      height: 8em;
-    }
+    
     .actionlabel {
-      display: table;
-      p {
-        text-align: center;
-        display: table-cell;
-        vertical-align: middle;
-      }
+      display: inline;
+      font-size: 1.5em;
     }
   }
 

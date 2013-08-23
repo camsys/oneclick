@@ -1,0 +1,32 @@
+.row-fluid
+  .span12
+    #chart.well.well-small
+
+%script{:type => "text/javascript"}
+  google.load('visualization', '1.0', {'packages':['corechart']});
+  google.setOnLoadCallback(draw_chart);
+
+  function draw_chart() {
+  var chart_data = new google.visualization.DataTable();
+  chart_data.addColumn('string', 'Asset Type'); 
+  chart_data.addColumn('number', 'Count');
+  - @data.each_value do |row|
+    chart_data.addRow(['#{row.key}', {v: #{row.count}, f: '#{number_to_human(row.count)}'}]);
+ 
+  var chart = null;
+  var chart_options = {
+  is3D : true,
+  height : 300,
+  pointSize: 4,
+  legend : {position : 'none'},
+  vAxis :  {title : 'Number'}
+  };
+  chart = new google.visualization.AreaChart(document.getElementById('chart'));
+  chart.draw(chart_data, chart_options);
+  }
+
+  // Handle the resize event and make sure the chart is redrawn for the new size
+  window.onresize = function() {
+  draw_chart();
+  };
+    

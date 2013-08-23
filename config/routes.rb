@@ -1,15 +1,43 @@
 Oneclick::Application.routes.draw do
 
+
   scope "(:locale)", locale: /en|es/ do
 
     authenticated :user do
       root :to => 'home#index'
     end
 
-    devise_for :users
+    devise_for :users, controllers: {registrations: "registrations"}
 
-    resources :users
-    resources :trips, only: [:new, :create, :show]
+    resources :admins, :only => [:index]
+    
+    resources :users do
+      resources :reports, :only => [:index, :show]
+      resources :buddies
+      resources :travelers
+      resources :buddy_relationships do
+        member do
+          get 'revoke'
+        end
+      end
+      resources :traveler_relationships do
+        member do
+          get 'accept'
+          get 'decline'
+          get 'assist'
+          get 'desist'
+        end
+      end
+    end
+    
+    resources :trips, only: [:new, :create, :show, :index] do
+      member do
+        get 'hide'
+        get 'unhide_all'
+        get 'details'
+        post 'email'
+      end
+    end
 
     match '/' => 'home#index'
 

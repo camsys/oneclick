@@ -147,6 +147,12 @@ Then /^I should be signed out$/ do
   page.should_not have_content "Logout"
 end
 
+Then /^I should be at the signed-out home page$/ do
+  page.should have_content "Create an Account"
+  page.should have_content "Log in"
+  page.should_not have_content "Logout"
+end
+
 Then /^I see an unconfirmed account message$/ do
   page.should have_content "You have to confirm your account before continuing."
 end
@@ -160,7 +166,7 @@ Then /^I should see a successful sign up message$/ do
 end
 
 Then /^I should see an invalid email message$/ do
-  page.should have_content "Emailis invalid"
+  page.should have_content "Email addressis invalid"
 end
 
 Then /^I should see a missing password message$/ do

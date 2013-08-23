@@ -20,7 +20,10 @@ gem 'rolify'
 gem 'simple_form'
 gem 'thin'
 gem 'awesome_print'
+gem 'chronic'
+gem 'mechanize'
 group :development do
+  #gem 'mysql2'
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :rbx]
   gem 'guard-bundler'
@@ -34,6 +37,8 @@ group :development do
   gem 'rb-fsevent', :require=>false
   gem 'rb-inotify', :require=>false
   gem 'sextant'
+  gem 'debugger'
+  gem 'rails-erd'
 end
 group :development, :test do
   gem 'factory_girl_rails'
@@ -42,6 +47,7 @@ group :development, :test do
   gem 'capybara'
 end
 group :test do
+  gem 'sqlite3'
   gem 'capybara'
   gem 'cucumber-rails', :require=>false
   gem 'database_cleaner'

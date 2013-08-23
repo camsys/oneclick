@@ -1,0 +1,16 @@
+.row-fluid
+  .span12
+    .navbar
+      .navbar-inner
+        .container
+          = form_tag trips_url, :id => 'time_filter_form', :method => "get", :class => 'navbar-form form-inline pull-right' do
+            .input-prepend
+              %span.add-on Filter
+              = select_tag(:time_filter_type, options_for_select(TimeFilterHelper::TIME_FILTERS.collect{|r| [r[:value], r[:id]]}, :selected => @time_filter_type), :style => 'margin-top:0px', :id => 'time_filter')
+
+:javascript
+  
+  // Add a listener on the asset type filter that submits the form when changed
+  $('#time_filter').change(function() {
+    $('#time_filter_form').submit();
+  });

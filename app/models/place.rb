@@ -5,14 +5,28 @@ class Place < ActiveRecord::Base
   # before_validation :geocode
   # validate :geocoded?
 
-  attr_accessible :address, :address2, :city, :lat, :lon, :name, :state, :zip, :nongeocoded_address
+  attr_accessible :address, :address2, :city, :lat, :lon, :name, :state, :zip, :nongeocoded_address,
+  :geocoding_raw
 
   def geocode
-    result = Geocoder.search(self.nongeocoded_address).as_json
-    unless result.length == 0
-      self.lat = result[0]['data']['geometry']['location']['lat']
-      self.lon = result[0]['data']['geometry']['location']['lng']
-      self.address = result[0]['data']['formatted_address']
+    return if nongeocoded_address.blank?
+    begin
+      Geocoder.configure(:always_raise => :all) # TODO Move this to better place
+      result = Geocoder.search(self.nongeocoded_address, sensor: false,
+        components: Rails.application.config.geocoder_components,
+        bounds: Rails.application.config.geocoder_bounds).as_json
+      Rails.logger.info "--result from geocoding--"
+      Rails.logger.info result.ai
+      unless result.length == 0
+        Rails.logger.info result[0].ai
+        self.lat = result[0]['data']['geometry']['location']['lat']
+        self.lon = result[0]['data']['geometry']['location']['lng']
+        self.address = result[0]['data']['formatted_address']
+        self.geocoding_raw = result[0].as_json
+      end
+    rescue Exception => e
+      Rails.logger.warn "Error from geocoding"
+      Rails.logger.warn e.ai
     end
     self
   end

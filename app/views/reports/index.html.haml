@@ -1,0 +1,30 @@
+.row-fluid
+  .span12
+    %h1
+      %i.icon.icon-bar-chart
+      = t(:reports)
+
+.row-fluid
+  %ul.thumbnails
+    - @reports.each do |report|
+      %li.trip_summary.thumbnail.box-shadow
+        = render :partial => 'thumbnail', :locals => { :report => report }
+  
+
+:javascript
+  $(document).ready(function() {
+    fix_thumbnails();
+  });
+  
+  $(window).resize(function() {
+    fix_thumbnails();
+  });
+  
+  function fix_thumbnails() {
+    $(".thumbnail").css('height', '');
+    $(".thumbnail").css('overflow', '');
+    var window_width = $(window).width();
+    adjust_thumbnails(window_width);
+  };
+  
+  make_same_height('.thumbnail');

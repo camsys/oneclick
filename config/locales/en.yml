@@ -4,40 +4,90 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  one_click_trip_planner: '1-Click Trip Planner'
+  # Actions
+  plan_a_trip: 'Plan a Trip'
+  plan_a_new_trip: 'Plan a new trip'
+  identify_places: 'Identify Places'
+  change_my_settings: 'Change My Settings'
+  help_and_support: 'Help & Support'
+  create_an_account: 'Create an Account'
+  travel_profile: 'Travel Profile'
+  previous_trips: 'Previous Trips'
+  # Agent View strings
+  find_traveler: "Find Traveler"
+  create_traveler: "Create Traveler"
+  agents_agencies: "Agents Agencies"
+  # Agent and Admin string
+  reports: "Reports"
+  admin: 'Admin'
+  send_by_email: 'Send by email'
+  
+  # Registration, sign in, profile
   version: 'Version'
   home: 'en no-brand Home'
   log_in: 'Log in'
   sign_up: 'Sign up'
   welcome: 'Welcome'  
+  first_name: 'First name'
+  last_name: 'Last name'
+  email: 'Email address'
+  password: 'Password'
+  password_confirmation: 'Password confirmation'
+  current_password: 'Current password'
   forgot_your_password: 'Forgot your password?'
+  retype_your_password: 'Retype your password'
   logout: 'Logout'
   edit_account: 'Edit account'
-  admin: 'Admin'
-  plan_a_trip: 'Plan a Trip'
-  identify_places: 'Identify Places'
-  change_my_settings: 'Change My Settings'
-  help_and_support: 'Help & Support'
+  update_my_profile: 'Update my profile'
+  current_password_hint: "Enter your current password to confirm your changes."  
+  leave_password_blank: "Leave both blank if you don't want to change your password."
+  my_information: 'My information'
+  buddies: 'Buddies'
+  travelers: 'Travelers'
+  send_buddy_request: 'Send buddy request'
+  buddys_email_address: "Buddy's email address"
+  accept: 'Accept'
+  decline: 'Decline'
+  assist: 'Assist'
+  revoke: 'Revoke'
+  
   spanish: 'En Español'
   error_not_implemented: "We're sorry, but this functionality has not yet been implemented."
   error_404: "The page you were looking for doesn't exist."
   error_404_mistyped: 'You may have mistyped the address or the page may have moved.'
   error_422: 'The change you wanted was rejected.'
   error_422_detail: "Maybe you tried to change something you didn't have access to."
+
+  # Trip planning
   enter_address: 'Enter address'
   select_or_enter_address: 'Select or enter address'
+  select: 'Select'
   date: 'Date'
   depart_at: 'Depart at'
   arrive_by: 'Arrive by'
+  arrive_at: 'Arrive at'
   time: 'Time'
   cancel: 'Cancel'
   plan_it: 'Plan it'
   from: 'From'
   to: 'To'
+  at_time: 'on'
   correct_errors_to_create_a_trip: 'Please correct the errors below to create a trip.'
   trip_options: 'Trip Options'
   transit_trip: 'Transit Trip'
   taxi: 'Taxi'
   transit: 'Transit'
+  details: 'Details'
+  rideshare: 'Rideshare'
+  transfer: {
+    one: '%{count} transfer',
+    other: '%{count} transfers',
+  }
+  view: 'View'
+  remove: 'Remove'
+  reload: 'Reload'
+  return: 'Return'
   paratransit: 'Paratransit'
   mode: 'Mode'
   duration: 'Duration'
@@ -45,23 +95,93 @@ en:
   depart: 'Depart'
   arrive: 'Arrive'
   cost: 'Cost'
+  print: 'Print'
+  chat: 'Chat'
+  e_mail: 'Email'
   trip_was_successfully_created: 'Trip was successfully created.'
   trip_created_no_valid_options: "Trip created, but no valid trip options could be found:"
   hour: {
-    one: '%{count} hour',
-    other: '%{count} hours',
+    one: '%{count} h',
+    other: '%{count} h',
   }
   minute: {
-    one: '%{count} minute',
-    other: '%{count} minutes',
+    one: '%{count} min',
+    other: '%{count} mins',
   }
-  less_than_one_minute: 'less than 1 minute'
+  less_than_one_minute: 'Under 1 min'
   invalid_address: "Invalid address."
   invalid_location: "Invalid location."
-  date_must_be: "Date must be in MM/DD/YYYY format."
-  time_must_be: "Time must be in hh:mm am/pm format."
+  date_wrong_format: "Date must be in MM/DD/YYYY format."
+  time_wrong_format: "Time must be in hh:mm am/pm format."
   trips_cannot_be_entered_for_days: "Trips cannot be entered for days earlier than today."
   trips_cannot_be_entered_for_times: "Trips cannot be entered for past times."
+  link_to_georgia_commute_options: {
+    one:   'Visit %{url} to view 1 possible rideshare.',
+    other: 'Visit %{url} to view %{count} possible rideshares.',
+    }
+  possible_rideshares: "%{count} possible rideshares."
+  view_details: "View details for more."
+  # Next 4 are prev 2 broken apart to deal with some UI issues.
+  # They need to stay short.
+  possible_rideshares1: "%{count} possible"
+  possible_rideshares2: "rideshares."
+  view_details1: "View details"
+  view_details2: "for more."
+
+  # new ones
+  buddy_request_sent: "Buddy request sent!"
+  buddy_removed: "Buddy removed."
+  http_404_not_found: "404 Not Found"
+  http_422_unprocessable_entity: "422 Unprocessable Entity"
+  http_501_not_implemented: "501 Not Implemented"
+  arc_oneclick_trip_itinerary: "ARC OneClick Trip Itinerary"
+  an_email_was_sent_to_email_addresses_join: "An email was sent to %{addresses}."
+  unable_to_remove_itinerary: 'Unable to remove itinerary.'
+  not_authorized_as_an_administrator: 'Not authorized as an administrator.'
+  n_a: 'n/a'
+  less_than_1_block: "less than 1 block"
+  about_2_blocks: "about 2 blocks"
+  about_4_blocks: "about 4 blocks"
+  twof_miles: "%.2f miles"
+  one_click_buddy_request_from_from_email: "1-Click buddy request from %{from_email}"
+  you_can_t_be_your_own_buddy: "You can't be your own buddy."
+  you_ve_already_asked_them_to_be_a_buddy: "You've already asked them to be a buddy."
+  address_is_required: "Address is required"
+  last_30_days: "Last 30 days"
+  last_7_days: "Last 7 days"
+  last_month: "Last month"
+  this_month: "This month"
+  today: "Today"
+  yesterday: "Yesterday"
+  ago: " ago"
+  didn_t_receive_confirmation_instructions: "Didn't receive confirmation instructions?"
+  didn_t_receive_unlock_instructions: "Didn't receive unlock instructions?"
+  sign_in_with_provider_to_s_titleize: "Sign in with %{provider}"
+  assisting_assisted_user_email: "Assisting %{assisted_user}"
+  menu__object_plural_per_page: "_MENU_ %{o} per page"
+  _menu__records_per_page: "_MENU_ records per page"
+  showing__start__to__end__of__total__object_plural: "Showing _START_ to _END_ of _TOTAL_ %{o}"
+  anonymous: "anonymous"
+  no_address: "no address"
+  trip_options_hidden: {
+    one: '%{count} option hidden.',
+    other: '%{count} options hidden.'
+  }
+
+  send_to_traveler: 'Send to traveler'
+  from_address: 'From address'
+  email_addresses: 'Email addresses'
+  start: "START: "
+  walking: ' walking'
+  arrive: "ARRIVE: "
+  trip: "Trip: "
+  est: " (est.)"
+  my_trips: 'My Trips'
+  assisted_user_first_name_s_trips: "%{name}'s Trips"
+  trip_options_information_from_from: "Trip options information from %{from}"
+
+  
+  # Branding
   arc:
     home: 'ARC 1-Click Home'
     logotext: ''
@@ -74,12 +194,15 @@ en:
     site_description: 'YATA 1-Click Application'
   broward:
     home: '1-Click Broward Home'
-    logotext: '1-Click Broward'
+    logotext: ''
     site_title: 'Broward 1-Click'
     site_description: 'Broward 1-Click Application'
   simple_form:
     labels:
       defaults:
+        first_name: 'First Name'
+        last_name: 'Last name'
         email: 'Email'
         password: 'Password'
+        retype_your_password: 'Retype your password'
         remember_me: 'Remember me'

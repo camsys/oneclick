@@ -1,19 +1,16 @@
+- links = []
 - if controller_name != 'sessions'
-  = link_to t(:log_in), new_session_path(resource_name)
-  %br/
+  - links << link_to( new_session_path(resource_name)) {content_tag(:i, nil, {class: 'icon icon-signin'}) + ' ' + t(:log_in)}
 - if devise_mapping.registerable? && controller_name != 'registrations'
-  = link_to t(:sign_up), new_registration_path(resource_name)
-  %br/
-- if devise_mapping.recoverable? && controller_name != 'passwords'
-  = link_to t(:forgot_your_password), new_password_path(resource_name)
-  %br/
+  - links << link_to( new_registration_path(resource_name)) {content_tag(:i, nil, {class: 'icon icon-edit'}) + ' ' + t(:sign_up)}
+/ TODO don't support password recovery yet  
+/ - if devise_mapping.recoverable? && controller_name != 'passwords'
+/   - links << link_to(new_password_path(resource_name)) { content_tag(:i, nil, {class: 'icon icon-info-sign'}) + ' ' + t(:forgot_your_password)}
 - if devise_mapping.confirmable? && controller_name != 'confirmations'
-  = link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name)
-  %br/
+  - links << link_to( "Didn't receive confirmation instructions?", new_confirmation_path(resource_name))
 - if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks'
-  = link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name)
-  %br/
+  - links << link_to( "Didn't receive unlock instructions?", new_unlock_path(resource_name))
 - if devise_mapping.omniauthable?
   - resource_class.omniauth_providers.each do |provider|
-    = link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider)
-    %br/
+    - links << link_to(t(:sign_in_with_provider_to_s_titleize, provider: provider.to_s.titleize), omniauth_authorize_path(resource_name, provider))
+= links.map(&:html_safe).join(' | ').html_safe

@@ -1,17 +1,68 @@
-.span8.offset2.well
-  %h2
-    Edit #{resource_name.to_s.humanize}
-  = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => 'form-vertical' }) do |f|
-    = f.error_notification
-    = display_base_errors resource
-    = f.input :first_name, :autofocus => true, :required => true
-    = f.input :last_name, :required => true
-    = f.input :email, :required => true
-    = f.input :password, :autocomplete => "off", :hint => "leave it blank if you don't want to change it", :required => false
-    = f.input :password_confirmation, :required => false
-    = f.input :current_password, :hint => "we need your current password to confirm your changes", :required => true
-    = f.button :submit, 'Update', :class => 'btn-primary'
-  %h3 Cancel my account
-  %p
-    Unhappy? #{link_to "Cancel my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete}.
-  = link_to "Back", :back
+%h1
+  %i{class: "icon #{CsHelpers::ACTION_ICONS[:travel_profile]}"}
+  = t(:travel_profile)
+%h4
+.tabbable
+  %ul.nav.nav-tabs
+    %li.active
+      %a{href: '#tab1', data: {toggle: 'tab'}}
+        = t(:my_information)
+    %li
+      %a{href: '#tab2', data: {toggle: 'tab'}}
+        = t(:buddies)
+    %li
+      %a{href: '#tab3', data: {toggle: 'tab'}}
+        = t(:travelers)
+  .tab-content
+    .tab-pane.active#tab1
+      .well
+        = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => 'form-horizontal' }) do |f|
+          = f.error_notification
+          = display_base_errors resource
+          .row-fluid
+            .span6
+              = f.input :first_name, label: t(:first_name), :autofocus => true, :required => true
+              = f.input :last_name, label: t(:last_name), :required => true
+              = f.input :email, label: t(:email), :required => true
+            .span6
+              = f.input :password, label: t(:password), :autocomplete => "off", :required => false
+              = f.input :password_confirmation, label: t(:password_confirmation), :hint => t(:leave_password_blank), :required => false
+          .row-fluid
+            .span12
+              %hr
+          .row-fluid
+            .span6
+              .actions
+                = button_tag type: :submit, class: 'btn btn-primary controls' do
+                  %i.icon.icon-ok
+                  = t(:update_my_profile)
+                = link_to :back do
+                  %i.icon.icon-reply
+                  = t(:cancel)
+            .span6
+              = f.input :current_password, label: t(:current_password), :hint => t(:current_password_hint), :required => true
+    .tab-pane#tab2
+      .well#buddies
+        = render partial: 'buddies'
+    .tab-pane#tab3
+      .well#travelers
+        = render partial: 'travelers'
+:javascript
+  $('a#tab1').click(function(e) {
+    e.preventDefault()
+    $(this).tab('show')
+  })
+  $('a#tab2').click(function(e) {
+    e.preventDefault()
+    $(this).tab('show')
+  })
+  $('a#tab3').click(function(e) {
+    e.preventDefault()
+    $(this).tab('show')
+  })
+  $('#buddies').on('ajax:success', function(e, response) {
+    $('#buddies').html(response)
+  }) 
+  $('#travelers').on('ajax:success', function(e, response) {
+    $('#travelers').html(response)
+  }) 

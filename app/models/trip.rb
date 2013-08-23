@@ -1,21 +1,47 @@
+require 'chronic'
+
 class Trip < ActiveRecord::Base
   attr_accessor :trip_date, :trip_time
 
-  # before_validation :set_places
-  # validates :from_place_id, :to_place_id, :presence => {:message => I18n.translate(:invalid_location)}
+  # mark this model as requiring roles
+  resourcify
+
+  validates_associated :from_place
+  validates_associated :to_place
+  validates_associated :places
+
   validate :validate_date_and_time
   validate :datetime_cannot_be_before_now
   attr_accessible :name, :owner, :trip_datetime, :trip_date, :trip_time, :arrive_depart, :places_attributes,
-  :from_place, :to_place, :owner
-  attr_accessor :from_place, :to_place
-  belongs_to :owner, foreign_key: 'user_id', class_name: User
-  # has_one :from_place, foreign_key: 'from_place_id', class_name: TripPlace
-  # has_one :to_place, foreign_key: 'to_place_id', class_name: TripPlace
-  has_many :places, class_name: TripPlace
-  has_many :itineraries
-  has_many :valid_itineraries, conditions: 'status=200', class_name: 'Itinerary'
+  :from_place_attributes, :to_place_attributes, :owner
 
-  accepts_nested_attributes_for :places
+  has_many :places, class_name: TripPlace
+  has_one :from_place, class_name: TripPlace, conditions: "sequence=0"
+  has_one :to_place, class_name: TripPlace, conditions: "sequence=1"
+
+  belongs_to :owner, foreign_key: 'user_id', class_name: User
+  has_many :itineraries
+  has_many :valid_itineraries, conditions: 'status=200 AND hidden=false', class_name: 'Itinerary'
+  has_many :hidden_itineraries, conditions: 'status=200 AND hidden=true', class_name: 'Itinerary'
+
+  accepts_nested_attributes_for :places, :from_place, :to_place
+
+  #scope :recent, lambda {|date| where('created_at > ?', date.beginning_of_day) unless date.nil? }
+  
+  scope :anonymous, where('user_id is NULL')
+  scope :created_between, lambda {|from_day, to_day| where("created_at > ? AND created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
+ 
+  def self.rejected
+    joins(:itineraries).where('status=200 AND hidden=true').uniq
+  end
+    
+  def self.failed
+    ids = []
+    Itinerary.failed_trip_ids.each do |row|
+      ids << row[:trip_id]
+    end
+    where('id in (?)', ids)
+  end
 
   def has_valid_itineraries?
     not valid_itineraries.empty?
@@ -25,28 +51,42 @@ class Trip < ActiveRecord::Base
     good_date = true
     good_time = true
     begin
-      @date = Date.strptime(self.trip_date, "%m/%d/%Y ")
-    rescue
-      errors.add(:trip_date, I18n.translate(:date_must_be))
+      # if the parse fails it will return nil and the to_date will throw an exception
+      d = Chronic.parse(@trip_date).to_date
+      # bump to next year if they only spec'd day and month and we parsed it to be in the past
+      d += 1.year if d.past? and @trip_date.split(%r{/}).size < 3
+      @trip_date = d.strftime("%m/%d/%Y")
+    rescue Exception => e
+      Rails.logger.warn "parsing date #{@trip_date}"
+      Rails.logger.warn e.ai
+      errors.add(:trip_date, I18n.translate(:date_wrong_format))
       good_date = false
     end
 
-    if /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9] [AaPp][Mm]$/.match(self.trip_time) == nil
-      errors.add(:trip_time, I18n.translate(:time_must_be))
+    begin
+      Time.strptime(@trip_time, "%H:%M %p")
+    rescue Exception => e
+      Rails.logger.warn "parsing time #{@trip_time}"
+      Rails.logger.warn e.ai
+      errors.add(:trip_time, I18n.translate(:time_wrong_format))
       good_time = false
     end
 
-    if good_date && good_time
-      if !write_trip_datetime
-        errors.add(:trip_date, I18n.translate(:date_must_be))
-      end
+    return false unless good_date && good_time
+
+    if !write_trip_datetime
+      errors.add(:trip_date, I18n.translate(:date_wrong_format))
     end
+    true
   end
 
   def write_trip_datetime
     begin
-      self.trip_datetime = DateTime.strptime(self.trip_date + self.trip_time + DateTime.now.zone, '%m/%d/%Y%H:%M %p%z')
-    rescue Exception
+      self.trip_datetime = DateTime.strptime([@trip_date, @trip_time, DateTime.current.zone].join(' '),
+        '%m/%d/%Y %H:%M %p %z')
+    rescue Exception => e
+      Rails.logger.warn "write_trip_datetime #{@trip_date} #{@trip_time}"
+      Rails.logger.warn e.message
       return false
     end
     true
@@ -56,27 +96,32 @@ class Trip < ActiveRecord::Base
     return true if trip_datetime.nil?
     if trip_datetime < Date.today
       errors.add(:trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
-    elsif trip_datetime < Time.now
+      return false
+    elsif trip_datetime < Time.current
       errors.add(:trip_time, I18n.translate(:trips_cannot_be_entered_for_times))
+      return false
     end
+    true
   end
 
   def create_itineraries
     self.create_fixed_route_itineraries
-    self.create_taxi_itineraries
+    self.create_rideshare_itineraries
     self.create_paratransit_itineraries
+    self.create_taxi_itineraries
   end
 
   # TODO refactor following 3 methods
   def create_fixed_route_itineraries
     tp = TripPlanner.new
-    result, response = tp.get_fixed_itineraries([self.places[0].lat, self.places[0].lon],[self.places[1].lat, self.places[1].lon], self.trip_datetime.in_time_zone)
+    arrive_by = arrive_depart.index("arrive_by") ? "true" : "false"
+    result, response = tp.get_fixed_itineraries([from_place.lat, from_place.lon],[to_place.lat, to_place.lon], trip_datetime.in_time_zone, arrive_by)
     if result
       tp.convert_itineraries(response).each do |itinerary|
-        self.itineraries << Itinerary.new(itinerary)
+        itineraries << Itinerary.new(itinerary)
       end
     else
-      self.itineraries << Itinerary.new('status'=>response['id'], 'message'=>response['msg'])
+      itineraries << Itinerary.new('status'=>response['id'], 'message'=>response['msg'])
     end
   end
 
@@ -103,67 +148,15 @@ class Trip < ActiveRecord::Base
     end
   end
 
-  def set_places
-    #TODO:  These values need to come from the combobox field
-    to_place_id = 52
-    from_place_id = 53
-    nongeocoded_address = "100 14th Street, Atlanta, GA"
-
-    if to_place_id #Here is where we test that an ID is present.
-      self.to_place_id = to_place_id
+  def create_rideshare_itineraries
+    tp = TripPlanner.new
+    result, response = tp.get_rideshare_itineraries(self.from_place, self.to_place, self.trip_datetime.in_time_zone)
+    if result
+      itinerary = tp.convert_rideshare_itineraries(response)
+      self.itineraries << Itinerary.new(itinerary)
     else
-      to_place = Place.new('nongeocoded_address'=>nongeocoded_address)
-      to_place.name = nongeocoded_address
-      to_place.owner = self.owner
-      to_place.save()
-      self.to_place_id = to_place.id
+      self.itineraries << Itinerary.new('status'=>500, 'message'=>response)
     end
-
-    if from_place_id #Here is where we test that an ID is present.
-      self.from_place_id = from_place_id
-    else
-      from_place = Place.new('nongeocoded_address'=>nongeocoded_address)
-      from_place.name = nongeocoded_address
-      from_place.owner = self.owner
-      from_place.save()
-      self.from_place_id = from_place.id
-    end
-  end
-
-  def from_place= place
-    @from_place = initialize_place place
-    # TODO Not sure about the reliability of this. Ditto below.
-    places << @from_place
-  end
-
-  def from_place
-    @from_place ||= places[0]
-  end
-
-  def to_place= place
-    @to_place = initialize_place place
-    places << @to_place
-  end
-
-  def to_place
-    @to_place ||= places[1]
-  end
-
-  private
-
-  def initialize_place place
-    Rails.logger.info "initialize_place"
-    if owner.nil?
-      Rails.logger.info "No owner, just using place as is: #{place.inspect}"
-      user_place = place
-    else
-      Rails.logger.info "Have owner, looking up #{place.inspect}"
-      user_place = UserPlace.find_by_name_and_user_id(place[:nongeocoded_address], owner.id) || place
-      Rails.logger.info "After lookup, user_place is #{user_place}"
-    end
-    TripPlace.new(user_place.respond_to?(:attributes) ?
-      user_place.attributes.except('id', 'user_id', 'created_at', 'updated_at') :
-      user_place)
   end
 
 end

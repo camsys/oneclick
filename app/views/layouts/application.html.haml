@@ -4,23 +4,26 @@
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
       %title= content_for?(:title) ? yield(:title) : t(:site_title)
       %meta{:content => content_for?(:description) ? yield(:description) : t(:site_description), :name => "description"}
-        = stylesheet_link_tag "application", :media => "all"
-        = stylesheet_link_tag brand, :media => "all"
-        = javascript_include_tag "application" # TODO This should go in footer
-        = csrf_meta_tags
-        = yield(:head)
+      = stylesheet_link_tag "application", :media => "all"
+      = stylesheet_link_tag brand, :media => "all"
+      = javascript_include_tag "application" # TODO This should go in footer
+      = javascript_include_tag "https://www.google.com/jsapi"
+      
+      = csrf_meta_tags
+      = yield(:head)
   %body{:class => "#{controller_name} #{action_name}"}
     #wrap
       = render 'layouts/navigation'
       #main{:role => "main"}
-        .container
+        .container-fluid
+          = render 'layouts/assisting'
           = render 'layouts/messages'
           = yield
       #footer
-        .container
+        .container-fluid
           .well
             .pull-left
-              %span= "#{t(:version)} 0.2"
+              %span= "#{t(:version)} #{Rails.application.config.version}"
               - if Rails.env.development?
                 %span
                   |

@@ -11,7 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130710175540) do
+ActiveRecord::Schema.define(:version => 20130812010938) do
+
+  create_table "buddy_relationships", :force => true do |t|
+    t.integer  "buddy_id"
+    t.string   "status"
+    t.string   "email_address"
+    t.datetime "email_sent"
+    t.integer  "traveler_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "buddy_relationships", ["traveler_id", "email_address"], :name => "index_buddy_relationships_on_traveler_id_and_email_address", :unique => true
 
   create_table "itineraries", :force => true do |t|
     t.integer  "duration"
@@ -28,6 +40,26 @@ ActiveRecord::Schema.define(:version => 20130710175540) do
     t.integer  "status"
     t.text     "message"
     t.string   "mode"
+    t.boolean  "hidden",                                       :default => false, :null => false
+  end
+
+  create_table "properties", :force => true do |t|
+    t.string   "category"
+    t.string   "name"
+    t.string   "value"
+    t.integer  "sort_order"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "reports", :force => true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "view_name"
+    t.string   "class_name"
+    t.boolean  "active"
   end
 
   create_table "roles", :force => true do |t|
@@ -62,8 +94,6 @@ ActiveRecord::Schema.define(:version => 20130710175540) do
     t.datetime "updated_at",    :null => false
     t.string   "name"
     t.integer  "user_id"
-    t.integer  "from_place_id"
-    t.integer  "to_place_id"
     t.datetime "trip_datetime"
     t.string   "arrive_depart"
   end

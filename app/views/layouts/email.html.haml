@@ -1,0 +1,13 @@
+!!!
+%html
+  %head
+    %meta{:content => content_for?(:description) ? yield(:description) : t(:site_description), :name => "description"}
+  %body{:class => "#{controller_name} #{action_name}"}
+    .email_header
+      = yield(:header)
+    .email_body
+      = yield
+    .footer
+      %p Copyright(c) mycompany.com
+      %p This email is sent from an email address that is not monitored. Please do not reply to this message.
+             

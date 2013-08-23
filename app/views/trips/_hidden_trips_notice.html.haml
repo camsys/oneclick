@@ -1,0 +1,6 @@
+- unless @trip.hidden_itineraries.empty?
+  |
+  %i.icon-exclamation-sign
+  = t(:trip_options_hidden, count:@trip.hidden_itineraries.size)
+  = link_to unhide_all_trip_path(@trip) do
+    Unhide all
