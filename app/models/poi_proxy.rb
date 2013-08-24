@@ -5,10 +5,4 @@ class PoiProxy < Proxy
   validates :poi_id, :presence => true
   validates :name, :presence => true
   
-  def initialize(attrs = {})
-    attrs.each do |k, v|
-      self.send "#{k}=", v
-    end
-  end
-
 end

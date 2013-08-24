@@ -1,5 +1,8 @@
-= simple_form_for @trip_proxy, :url => set_traveler_user_trips_path, :html => {:class => 'form-horizontal', :id => 'select_traveler_form'}  do |f|
-  = f.input :traveler, :collection => current_user.travelers, :selected => @traveler.nil? ? "0" : @traveler.id, :include_blank => 'myself'
+= form_for :trip_proxy, :url => set_traveler_user_trips_path, :html => {:id => 'select_traveler_form'} do |f|  
+  .control-group
+    %label.control-label Traveler
+    .controls
+      = f.select :traveler, options_from_collection_for_select(current_user.travelers, :id, :name), :selected => @traveler.id, :include_blank => 'myself'
 
 :javascript
   $("#trip_proxy_traveler").change(function() {

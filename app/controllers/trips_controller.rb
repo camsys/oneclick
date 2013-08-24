@@ -110,7 +110,6 @@ class TripsController < TravelerAwareController
     # see if we have selected addresses or not. If not we need to geocode and check
     # to see if multiple addresses are available. The alternate addresses are stored
     # back in the proxy object
-    complete = true
     geocoder = OneclickGeocoder.new
     if @trip_proxy.from_place_selected.blank?
       # make sure there is something to geocode
@@ -123,10 +122,10 @@ class TripsController < TravelerAwareController
           @trip_proxy.from_place_selected = 0
         else
           # the user needs to select one of the alternatives
-          complete = false
+          @trip_proxy.add_error :from_place, "Alternate places found."
         end
       else
-        complete = false
+        @trip_proxy.add_error :from_place, "Can't be blank."
       end
     end
     
@@ -141,14 +140,15 @@ class TripsController < TravelerAwareController
           @trip_proxy.to_place_selected = 0
         else
           # the user needs to select one of the alternatives
-          complete = false
+          @trip_proxy.add_error :to_place, "Alternate places found."
         end
       else
+        @trip_proxy.add_error :to_place, "Can't be blank."
         complete = false
       end
     end
    
-    if complete
+    if @trip_proxy.errors.empty?
       if user_signed_in?
         @trip = create_authenticated_trip(@trip_proxy)
       else
@@ -207,6 +207,47 @@ private
     trip.creator = current_user
     trip.user = @traveler
         
+    # get the from place from the proxy
+    selected_id = trip_proxy.from_place_selected.to_i
+    address = session[FROM_PLACES_SESSION_KEY][selected_id]
+       
+    from_place = TripPlace.new()
+    from_place.sequence = 0
+    # the address format comes from the oneclick geocoder
+    from_place.raw_address = address[:address]
+    from_place.lat = address[:lat]
+    from_place.lon = address[:lon]  
+
+    # get the to place from the proxy
+    selected_id = trip_proxy.to_place_selected.to_i
+    address = session[TO_PLACES_SESSION_KEY][selected_id]
+
+    to_place = TripPlace.new()
+    to_place.sequence = 1
+    # the address format comes from the oneclick geocoder
+    to_place.raw_address = address[:address]
+    to_place.lat = address[:lat]
+    to_place.lon = address[:lon]    
+        
+    # add the places to the trip
+    trip.trip_places << from_place
+    trip.trip_places << to_place
+
+    planned_trip = PlannedTrip.new
+    planned_trip.trip = trip
+    planned_trip.creator = trip.creator
+    planned_trip.is_depart = trip_proxy.arrive_depart == 'arrive_by' ? false : true
+    planned_trip.trip_datetime = trip_proxy.trip_datetime
+    planned_trip.trip_status = TripStatus.find(1)    
+    
+    trip.planned_trips << planned_trip
+
+    return trip
+
+    trip = Trip.new()
+    trip.creator = current_user
+    trip.user = @traveler
+        
     # get the places from the proxy
     from_place = TripPlace.new()
     from_place.sequence = 0
@@ -253,8 +294,6 @@ private
     selected_id = trip_proxy.from_place_selected.to_i
     address = session[FROM_PLACES_SESSION_KEY][selected_id]
    
-    puts address.inspect
-    
     from_place = TripPlace.new()
     from_place.sequence = 0
     # the address format comes from the oneclick geocoder

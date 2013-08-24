@@ -14,6 +14,7 @@ class TripProxy < Proxy
   validate :datetime_cannot_be_before_now
   
   def initialize(attrs = {})
+    super
     @from_place_results = []
     @to_place_results = []
     attrs.each do |k, v|

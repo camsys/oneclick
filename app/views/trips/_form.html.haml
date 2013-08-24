@@ -1,5 +1,8 @@
 .row-fluid
   .thumbnail.span12
+    -if current_user  
+      = render 'select_traveler_form' unless current_user.travelers.empty?
+      
     = form_for :trip_proxy, :url => user_trips_path do |f|
       = f.hidden_field :from_place_selected
       = f.hidden_field :to_place_selected
@@ -17,14 +20,16 @@
           = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.to_place_results, :type => "to"} unless @trip_proxy.to_place.blank?
 
       .control-group
-        %label.control-label Traveling
-        .controls.controls-row
+        %label.control-label Traveling on
+        .controls
           .input-append
             = f.text_field :trip_date, :id => "trip-date"
             %span.add-on
               %i.icon.icon-calendar
         
-            = select_tag :arrive_depart, options_for_select(["departing at", "arriving by"])
+      .control-group
+        .controls.controls-row
+          = select_tag :arrive_depart, options_for_select(["departing at", "arriving by"])
 
           .input-append
             = f.text_field :trip_time, :id => "trip-time"

@@ -12,11 +12,6 @@
           %a.close{"data-dismiss" => "alert"} ×
           %div= t(:correct_errors_to_create_a_trip)
 
--if current_user                
-  .row-fluid          
-    .span12
-      .well
-        = render 'select_traveler_form' unless current_user.travelers.empty?
 
 .row-fluid{:style => "margin-top:20px;"}
   .span5
