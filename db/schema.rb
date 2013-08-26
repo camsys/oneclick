@@ -11,7 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 0) do
+=======
+ActiveRecord::Schema.define(:version => 20130826172148) do
+>>>>>>> 59adc22... Don't try to save a place without a user.
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -50,9 +54,9 @@ ActiveRecord::Schema.define(:version => 0) do
   end
 
   create_table "places", :force => true do |t|
-    t.integer  "user_id",                    :null => false
+    t.integer  "user_id",                                      :null => false
     t.integer  "creator_id"
-    t.string   "name",        :limit => 64,  :null => false
+    t.string   "name",        :limit => 64,                    :null => false
     t.integer  "poi_id"
     t.string   "raw_address"
     t.string   "address1",    :limit => 128
@@ -62,8 +66,9 @@ ActiveRecord::Schema.define(:version => 0) do
     t.string   "zip",         :limit => 10
     t.float    "lat"
     t.float    "lon"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.boolean  "active",                     :default => true
   end
 
   create_table "planned_trips", :force => true do |t|
@@ -153,7 +158,12 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer "characteristic_id",                                      :null => false
     t.string  "value",                 :limit => 64,                    :null => false
     t.boolean "requires_verification",               :default => false, :null => false
+<<<<<<< HEAD
     t.boolean "active",                                                 :null => false
+=======
+    t.boolean "active",                              :default => true,  :null => false
+    t.integer "value_relationship_id",               :default => 1,     :null => false
+>>>>>>> 59adc22... Don't try to save a place without a user.
   end
 
   create_table "service_trip_purpose_map", :force => true do |t|
