@@ -28,6 +28,6 @@ class Proxy
   end
      
   def add_error(field, error)
-    @errors.add(field, error)
+    @errors[field] << error
   end     
 end
