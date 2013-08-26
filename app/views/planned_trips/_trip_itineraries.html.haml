@@ -1,4 +1,4 @@
 - itineraries.each do |itinerary|
-  %li.trip_summary.thumbnail.box-shadow{id: "itinerary#{itinerary.id}"}
+  %li.trip_summary.thumbnail.actionbutton.box-shadow{id: "itinerary#{itinerary.id}"}
     = render :partial => 'trip_summary', :locals => { :itinerary => itinerary, :icon => get_trip_summary_icon(itinerary.mode), :title => get_trip_summary_title(itinerary.mode) }
  
