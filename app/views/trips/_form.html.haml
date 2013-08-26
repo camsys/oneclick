@@ -26,7 +26,7 @@
           - else
             = f.text_field :from_place, :class => "span12", :placeholder => t(:enter_address)
 
-          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.from_place_results, :type => "from"} unless @trip_proxy.from_place.blank?
+          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.from_place_results, :type => "from"} unless @trip_proxy.from_place.blank? || @trip_proxy.from_place_selected_type == "1"
           
       .control-group
         %label.control-label= t(:to)
@@ -45,7 +45,7 @@
           - else
             = f.text_field :to_place, :class => "span12", :placeholder => t(:enter_address)
 
-          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.to_place_results, :type => "to"} unless @trip_proxy.to_place.blank?
+          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.to_place_results, :type => "to"} unless @trip_proxy.to_place.blank? || @trip_proxy.to_place_selected_type == "1"
 
       .control-group
         %label.control-label Traveling on
@@ -120,6 +120,17 @@
   var from_places = eval("#{escape_javascript @trip_proxy.from_place_results.to_json}"); 
   var to_places = eval("#{escape_javascript @trip_proxy.to_place_results.to_json}");
   
+  // Add cahnge listeners on the text fields
+  $("#from_address").bind("keyup input paste", function() {
+    $('#trip_proxy_from_place_selected').val("");
+    $('#trip_proxy_from_place_selected_type').val("");    
+  });
+  // Add cahnge listeners on the text fields
+  $("#to_address").bind("keyup input paste", function() {
+    $('#trip_proxy_to_place_selected').val("");
+    $('#trip_proxy_to_place_selected_type').val("");    
+  });
+    
   // Add listeners to show the selected address when the user clicks on one
   $('.address_select').click(function() {
     var id = $(this).data('id');
