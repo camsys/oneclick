@@ -188,16 +188,16 @@ value_relationship = [
     {id: 7, relationship: 'after'},
 ]
 #day 0 is Sunday
-schedules = {
-    {service_id: 1, start_time: "7:00", end_time: "19:00", day_of_week: 1, active: true},
-    {service_id: 2, start_time: "0:00", end_time: "24:00", day_of_week: 0, active: true},
-    {service_id: 2, start_time: "0:00", end_time: "24:00", day_of_week: 1, active: true},
-    {service_id: 2, start_time: "0:00", end_time: "24:00", day_of_week: 2, active: true},
-    {service_id: 2, start_time: "0:00", end_time: "24:00", day_of_week: 3, active: true},
-    {service_id: 2, start_time: "0:00", end_time: "24:00", day_of_week: 4, active: true},
-    {service_id: 2, start_time: "0:00", end_time: "24:00", day_of_week: 5, active: true},
-    {service_id: 2, start_time: "0:00", end_time: "24:00", day_of_week: 6, active: true},
-}
+schedules = [
+    {service_id: 1, start_time: "7:00", end_time: "19:00", day_of_week: 1},
+    {service_id: 2, start_time: "0:00", end_time: "23:00", day_of_week: 0},
+    {service_id: 2, start_time: "0:00", end_time: "23:00", day_of_week: 1},
+    {service_id: 2, start_time: "0:00", end_time: "23:00", day_of_week: 2},
+    {service_id: 2, start_time: "0:00", end_time: "23:00", day_of_week: 3},
+    {service_id: 2, start_time: "0:00", end_time: "23:00", day_of_week: 4},
+    {service_id: 2, start_time: "0:00", end_time: "23:00", day_of_week: 5},
+    {service_id: 2, start_time: "0:00", end_time: "23:00", day_of_week: 6},
+]
 
 value_relationship.each do |relationship|
   vr = ValueRelationship.create! relationship

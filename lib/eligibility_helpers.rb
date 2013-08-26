@@ -1,6 +1,6 @@
 class EligibilityHelpers
 
-  def get_eligible_services(user_profile)
+  def get_eligible_services_for_traveler(user_profile)
 
     all_services = Service.all
     fully_eligible_services = []
@@ -29,7 +29,7 @@ class EligibilityHelpers
 
   end
 
-  def get_accommodating_services(user_profile)
+  def get_accommodating_services_for_traveler(user_profile)
 
     #user accommodations
     accommodations_maps = user_profile.user_traveler_accommodations_maps.where('value = ? ', 'true')
@@ -51,20 +51,21 @@ class EligibilityHelpers
       if user_accommodations.count == (service_accommodations & user_accommodations).count
         accommodating_services << service
       end
-
     end
 
     accommodating_services
 
   end
 
-  def get_accommodating_and_eligible_services(user_profile)
-    eligible = get_eligible_services(user_profile)
-    accommodating = get_accommodating_services(user_profile)
+  def get_accommodating_and_eligible_services_for_traveler(user_profile)
+    eligible = get_eligible_services_for_traveler(user_profile)
+    accommodating = get_accommodating_services_for_traveler(user_profile)
+
     eligible & accommodating
+
   end
 
-  def get_services_for_trip(trip, services)
+  def get_eligible_services_for_trip(trip, services)
     eligible_by_location = get_location_eligibility(trip, services)
     eligible_by_service_time = get_service_time_eligibility(trip, services)
     eligible_by_advanced_notice = get_advanced_notice_eligibility(trip, services)
@@ -73,19 +74,37 @@ class EligibilityHelpers
 
   end
 
-  def eligible_by_location(trip, services)
+  def eligible_by_location(planned_trip, services)
+    #TODO: Need to filter by location (county, city, state, polygon, etc.)
     services
   end
 
-  def eligible_by_service_time(trip, services)
-    services
+  def eligible_by_service_time(planned_trip, services)
+    wday = planned_trip.trip_datetime.wday
+    eligible_services  = []
+    services.each do |service|
+      schedules = Schedule.where(day_of_week: wday, service_id: service.id)
+      schedules.each do |schedule|
+        if planned_trip.trip_datetime.seconds_since_midnight.between?(schedule.start_time.seconds_since_midnight,schedule.end_time.seconds_since_midnight)
+          eligible_services << service
+          break
+        end
+      end
+    end
+
+    eligible_services
+
   end
 
-  def eligible_by_advanced_notice(trip, services)
-    services
+  def eligible_by_advanced_notice(planned_trip, services)
+    advanced_notice = (planned_trip.trip_datetime - planned_trip.created_at)/60
+    within_notice_period = Service.where('advanced_notice_minutes < ?', advanced_notice)
+
+    services & within_notice_period
+
   end
 
-  def test_condition(value1, operator, value2)
+ def test_condition(value1, operator, value2)
 
     case operator
       when 1 # general equals

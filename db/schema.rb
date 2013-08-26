@@ -133,11 +133,11 @@ ActiveRecord::Schema.define(:version => 20130822180917) do
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
   create_table "schedules", :force => true do |t|
-    t.integer "service_id",  :null => false
-    t.time    "start_time",  :null => false
-    t.time    "end_time",    :null => false
-    t.integer "day_of_week", :null => false
-    t.boolean "active",      :null => false
+    t.integer "service_id",                    :null => false
+    t.time    "start_time",                    :null => false
+    t.time    "end_time",                      :null => false
+    t.integer "day_of_week",                   :null => false
+    t.boolean "active",      :default => true, :null => false
   end
 
   create_table "service_traveler_accommodations_maps", :force => true do |t|
