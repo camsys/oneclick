@@ -1,13 +1,12 @@
 require 'chronic'
 
-class TripProxy
+class TripProxy < Proxy
 
-  include ActiveModel::Validations
-  include ActiveModel::Conversion
-  extend  ActiveModel::Naming
-
-  attr_accessor :from_place, :to_place, :trip_date, :arrive_depart, :trip_time, :user, :model_name
-
+  attr_accessor :from_place, :to_place, :trip_date, :arrive_depart, :trip_time, :model_name, :traveler
+  attr_accessor :from_place_results, :to_place_results
+  attr_accessor :from_place_selected, :to_place_selected
+  attr_accessor :from_place_selected_type, :to_place_selected_type
+  
   validates :from_place, :presence => true
   validates :to_place, :presence => true
   validates :trip_date, :presence => true
@@ -16,20 +15,14 @@ class TripProxy
   validate :datetime_cannot_be_before_now
   
   def initialize(attrs = {})
+    super
+    @from_place_results = []
+    @to_place_results = []
     attrs.each do |k, v|
       self.send "#{k}=", v
     end
   end
 
-  # Override the save method to prevent exceptions.
-  def save(validate = true)
-    validate ? valid? : true
-  end
-  
-  def persisted?
-    false
-  end
-        
   def datetime_cannot_be_before_now
     return true if trip_datetime.nil?
     if trip_datetime < Date.today
@@ -84,5 +77,5 @@ class TripProxy
       return nil
     end
   end
-        
+      
 end

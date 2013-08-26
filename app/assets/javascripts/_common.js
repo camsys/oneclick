@@ -1,4 +1,15 @@
 
+// Used to store markers for address candidates. These need to persist across
+// ajax sessions
+var address_candidate_markers = new Array();
+
+function clear_candidate_address_markers() {
+  for (var i = 0; i < address_candidate_markers.length; i++) {
+    removeMarkerFromMap(address_candidate_markers[i]);
+  }
+  address_candidate_markers = new Array();	
+};
+
 function click_to_nav(url) {
   document.location.href = url;
 };

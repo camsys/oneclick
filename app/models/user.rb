@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   attr_accessible :first_name, :last_name, :prefix, :suffix, :nickname
 
   # Associations
-  has_many :places                  # 0 or more places
+  has_many :places, :conditions => ['active = ?', true] # 0 or more places, only active places are available
   has_many :trips                   # 0 or more trips
   has_one  :user_profile            # 1 user profile
   has_many :user_mode_preferences   # 0 or more user mode preferences

@@ -1,72 +1,145 @@
-.well
-  = simple_form_for :trip_proxy, :url => user_trips_path, :html => {:class => 'form-horizontal' } do |f|
-    - if user_signed_in?
-      = f.simple_fields_for :from_place do |p|
-        = p.input :address, label: t(:from), wrapper: :append, html: {id: :from_address} do
-          = p.input_field :raw_address, placeholder: t(:select_or_enter_address)
-          %span.dropdown
-            %a.add-on.btn.dropdown-toggle{data: {toggle: 'dropdown'}, href: '#'}>
-              %span.caret
-            %ul.dropdown-menu{data: {target: 'trip_proxy_from_place_raw_address'}}
-              - @trip_proxy.user.places.each do |p|
-                %li
-                  %a{data: {value: p.name}, class: 'place-option'}= p.name
-      = f.simple_fields_for :to_place do |p|
-        = p.input :address, label: t(:to), wrapper: :append, html: {id: :to_address} do
-          = p.input_field :raw_address, placeholder: t(:select_or_enter_address)
-          %span.dropdown
-            %a.add-on.btn.dropdown-toggle{data: {toggle: 'dropdown'}, href: '#'}>
-              %span.caret
-            %ul.dropdown-menu{data: {target: 'trip_proxy_to_place_raw_address'}}
-              - @trip_proxy.user.places.each do |p|
-                %li
-                  %a{data: {value: p.name}, class: 'place-option'}= p.name
-    - else
-      = f.input :from_place, label: t(:from), placeholder: t(:enter_address)
-      = f.input :to_place, label: t(:to), placeholder: t(:enter_address)
-        
-    = f.input :trip_date, wrapper: :append, label: t(:date) do
-      = content_tag :div, id: 'trip-date' do
-        = f.input_field :trip_date, as: :string, label: false, size: ""
-        = content_tag :span, class: 'add-on' do
-          = content_tag :i, '', class: 'icon-calendar'
-          
-    = f.input :arrive_depart, collection: [:depart_at, :arrive_by],
-      label_method: lambda {|obj| t(obj)},
-      value_method: lambda {|obj| obj.to_s},
-      label: false, include_blank: false, input_html: {class: ''}
+.row-fluid
+  .thumbnail.span12
+    -if current_user  
+      = render 'select_traveler_form' unless current_user.travelers.empty?
       
-    = f.input :trip_time, wrapper: :append, label: t(:time) do
-      = content_tag :div, id: 'trip-time' do
-        = f.input_field :trip_time, as: :string, label: false, size: ""
-        = content_tag :span, class: 'add-on' do
-          = content_tag :i, '', class: 'icon-time'
+    = form_for :trip_proxy, :url => user_trips_path do |f|
+      = f.hidden_field :from_place_selected
+      = f.hidden_field :to_place_selected
+      = f.hidden_field :from_place_selected_type
+      = f.hidden_field :to_place_selected_type
+      
+      .control-group
+        %label.control-label= t(:from)
+        .controls.controls-row.span12
+          - if user_signed_in?
+            .input-append
+              = f.text_field :from_place, :id => "from_address", :class => "span11", :placeholder => t(:select_or_enter_address)
+              %span.dropdown
+                %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}>
+                  %span.caret
+                %ul.dropdown-menu{:data => {:target => 'from_address'}}
+                  - @traveler.places.each do |p|
+                    %li
+                      %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.lat, p.lon], :type => "from"}}
+                        = p.name          
+          - else
+            = f.text_field :from_place, :class => "span12", :placeholder => t(:enter_address)
 
-    .actions
-      = f.button :submit, t(:plan_it), {class: 'btn btn-primary controls'}
-      = link_to t(:cancel), :back
-      
+          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.from_place_results, :type => "from"} unless @trip_proxy.from_place.blank?
+          
+      .control-group
+        %label.control-label= t(:to)
+        .controls.controls-row.span12
+          - if user_signed_in?
+            .input-append
+              = f.text_field :to_place, :id => "to_address", :class => "span11", :placeholder => t(:select_or_enter_address)
+              %span.dropdown
+                %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href =>'#'}>
+                  %span.caret
+                %ul.dropdown-menu{:data => {:target => 'to_address'}}
+                  - @traveler.places.each do |p|
+                    %li
+                      %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.lat, p.lon], :type => "to"}}
+                        = p.name          
+          - else
+            = f.text_field :to_place, :class => "span12", :placeholder => t(:enter_address)
+
+          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.to_place_results, :type => "to"} unless @trip_proxy.to_place.blank?
+
+      .control-group
+        %label.control-label Traveling on
+        .controls
+          .input-append
+            = f.text_field :trip_date, :id => "trip-date"
+            %span.add-on
+              %i.icon.icon-calendar
+        
+      .control-group
+        .controls.controls-row
+          = select_tag :arrive_depart, options_for_select(["departing at", "arriving by"])
+
+          .input-append
+            = f.text_field :trip_time, :id => "trip-time"
+            %span.add-on
+              %i.icon.icon-time
+                  
+      .actions
+        = button_tag :type => 'submit', :class => "btn btn-block btn-primary" do
+          %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
+          = t(:plan_it)
+        = link_to t(:cancel), :back
+                
 :javascript
-  $('#trip-date').datepicker()
-    .on("dateChange", function(e) {
+  $('#trip-date').datepicker().on("dateChange", function(e) {
       $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
-    });
+  })
+  ;
   $('#trip-time').timepicker({
     'timeFormat': 'g:i a',
     'scrollDefaultTime': '9:00 am'
-  })
-    .on("changeTime", function(e) {
+  }).on("changeTime", function(e) {
       $('#trip_proxy_trip_time').val($('#trip-time').data('ui-timepicker-value'));
     });
-   $(document).ready(function(){
+    
+  $(document).ready(function(){
       $('.combobox').combobox({
         force_match: false
       });
-    });
+    
+    add_place_markers(from_places, 'greenIcon');
+    add_place_markers(to_places, 'blueIcon');
+    setMapToBounds(address_candidate_markers);
+  });
+  
   $('.dropdown-toggle').dropdown();
-  $('.trip_proxy_from_place_address a, .trip_proxy_to_place_address a').on('click', function(event) {
-  var t = $(event.target)
-    if (t.hasClass('place-option')) {
-      $('#' + t.parents('ul').data('target')).val(t.data('value'))
+  
+  $('.place-option').on('click', function(event) {
+    var t = $(event.target);
+    var id = t.data('id');
+    var from_to = t.data('type');
+    if (from_to == 'from') {
+      $('#trip_proxy_from_place_selected').val(id);
+      $('#trip_proxy_from_place_selected_type').val(1);
+    } else {
+      $('#trip_proxy_to_place_selected').val(id);
+      $('#trip_proxy_to_place_selected_type').val(1);
     }
-  })
+    $('#' + t.parents('ul').data('target')).val(t.data('value'));
+  });
+
+  // Cache the alt places
+  var from_places = eval("#{escape_javascript @trip_proxy.from_place_results.to_json}"); 
+  var to_places = eval("#{escape_javascript @trip_proxy.to_place_results.to_json}");
+  
+  // Add listeners to show the selected address.
+  $('.address_select').click(function() {
+    var id = $(this).data('id');
+    var from_to = $(this).data('type');
+    var decorator_class;
+    if (from_to == 'from') {
+      $('#trip_proxy_from_place_selected').val(id);
+      $('#trip_proxy_from_place_selected_type').val(0);
+      decorator_class = 'alert-success';
+    } else {
+      $('#trip_proxy_to_place_selected').val(id);
+      $('#trip_proxy_to_place_selected_type').val(0);
+      decorator_class = 'alert-info';
+    }
+    // remove any decorators for this class
+    $('li').removeClass(decorator_class);
+    $(this).addClass(decorator_class);
+    selectMarker(address_candidate_markers[id]);    
+  });
+    
+  function add_place_markers(markers, iconStyle) {
+    for (var i = 0; i < markers.length; i++) {
+      create_place_marker(markers[i], iconStyle);
+    }
+  };
+  
+  function create_place_marker(addr, iconStyle) {
+    marker = createMarker(addr.id, addr.lat, addr.lon, iconStyle, addr.formatted_address, addr.formatted_address, true);
+    address_candidate_markers.push(marker);
+    addMarkerToMap(marker);    
+  };

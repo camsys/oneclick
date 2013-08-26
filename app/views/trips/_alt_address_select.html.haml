@@ -1,0 +1,9 @@
+- if results.count == 0
+  %h6= "No matching results found."
+- else
+  %h6= "Found #{results.count} matching " + "place".pluralize(results.count)
+  .candidate-list.thumbnail{:style => "height:100px;overflow:auto;"}
+    %ul.unstyled
+      - results.each do |addr|
+        %li.address_select{:data => {:id => addr[:id], :type => type}}
+          = addr[:formatted_address] 
