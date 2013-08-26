@@ -1,6 +1,9 @@
 class UserTravelerCharacteristicsMap < ActiveRecord::Base
+
   #associations
-  belongs_to :traveler, :class_name => 'User'
-  belongs_to :traveler_characteristic
-  # attr_accessible :title, :body
+  belongs_to :user_profile
+  belongs_to :traveler_characteristic, :class_name => "TravelerCharacteristic", :foreign_key => "characteristic_id"
+
+  attr_accessible :user_profile_id, :characteristic_id, :value
+
 end

@@ -36,7 +36,6 @@ group :development do
   gem 'rb-fsevent', :require=>false
   gem 'rb-inotify', :require=>false
   gem 'sextant'
-  gem 'debugger'
   gem 'rails-erd'
 end
 group :development, :test do
