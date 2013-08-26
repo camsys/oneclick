@@ -18,7 +18,24 @@ class Place < ActiveRecord::Base
   def to_s
     return name
   end
-    
+  
+  # convienience method for geocodign places
+  def geocode
+    geocoder = OneclickGeocoder.new
+    geocoder.geocode(raw_address)
+    res = geocoder.results
+    if address = res.first
+      self.name = address[:name]
+      self.address1 = address[:name]
+      self.city = address[:city]
+      self.state = address[:state]
+      self.zip = address[:zip]
+      self.lat = address[:lat]
+      self.lon = address[:lon]
+      self.active = true      
+    end  
+  end
+  
   def address
     if poi
       addr = poi.address

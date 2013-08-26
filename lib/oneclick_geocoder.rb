@@ -50,21 +50,35 @@ class OneclickGeocoder
 protected
   
   def process_results(res)
-    res.each_with_index do |alt, index|
-      @results << {
-        :id => index,
-        :name => alt.formatted_address.split(",")[0],
-        :formatted_address => alt.formatted_address,
-        :street_address => alt.address,
-        :city => alt.city,
-        :state => alt.state_code,
-        :zip => alt.postal_code,
-        :lat => alt.latitude,
-        :lon => alt.longitude
-      }
+    i = 0
+    res.each do |alt|
+      if is_valid(alt.types)
+        @results << {
+          :id => i,
+          :name => alt.formatted_address.split(",")[0],
+          :formatted_address => alt.formatted_address,
+          :street_address => alt.address,
+          :city => alt.city,
+          :state => alt.state_code,
+          :zip => alt.postal_code,
+          :lat => alt.latitude,
+          :lon => alt.longitude
+        }
+        i += 1
+      end
     end    
   end    
 
+  # Filters addresses returned by Google to only those we want to consider
+  def is_valid(addr_types)
+    addr_types.each do |addr_type|
+      if ['street_address', 'route', 'intersection', 'natural_feature', 'airport', 'park', 'point_of_interest'].include?(addr_type)
+        return true
+      end
+    end
+    return false;
+  end
+  
   def reset
     @results = []
     @errors = []

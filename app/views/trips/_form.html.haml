@@ -11,9 +11,9 @@
       
       .control-group
         %label.control-label= t(:from)
-        .controls.controls-row.span12
+        .controls.controls-row
           - if user_signed_in?
-            .input-append
+            .input-append.span12
               = f.text_field :from_place, :id => "from_address", :class => "span11", :placeholder => t(:select_or_enter_address)
               %span.dropdown
                 %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}>
@@ -26,13 +26,13 @@
           - else
             = f.text_field :from_place, :class => "span12", :placeholder => t(:enter_address)
 
-          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.from_place_results, :type => "from"} unless @trip_proxy.from_place.blank?
+          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.from_place_results, :type => "from"} unless @trip_proxy.from_place.blank? || @trip_proxy.from_place_selected_type == "1"
           
       .control-group
         %label.control-label= t(:to)
-        .controls.controls-row.span12
+        .controls.controls-row
           - if user_signed_in?
-            .input-append
+            .input-append.span12
               = f.text_field :to_place, :id => "to_address", :class => "span11", :placeholder => t(:select_or_enter_address)
               %span.dropdown
                 %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href =>'#'}>
@@ -45,7 +45,7 @@
           - else
             = f.text_field :to_place, :class => "span12", :placeholder => t(:enter_address)
 
-          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.to_place_results, :type => "to"} unless @trip_proxy.to_place.blank?
+          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.to_place_results, :type => "to"} unless @trip_proxy.to_place.blank? || @trip_proxy.to_place_selected_type == "1"
 
       .control-group
         %label.control-label Traveling on
@@ -68,7 +68,6 @@
         = button_tag :type => 'submit', :class => "btn btn-block btn-primary" do
           %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
           = t(:plan_it)
-        = link_to t(:cancel), :back
                 
 :javascript
   $('#trip-date').datepicker().on("dateChange", function(e) {
@@ -83,63 +82,99 @@
     });
     
   $(document).ready(function(){
-      $('.combobox').combobox({
-        force_match: false
-      });
+    $('.combobox').combobox({
+      force_match: false
+    });
     
-    add_place_markers(from_places, 'greenIcon');
-    add_place_markers(to_places, 'blueIcon');
-    setMapToBounds(address_candidate_markers);
+    // Add two null makrers to the array
+    address_candidate_markers << null;
+    address_candidate_markers << null;    
   });
   
   $('.dropdown-toggle').dropdown();
   
+  // User has selected a pre-defined place from the dropdown.
   $('.place-option').on('click', function(event) {
     var t = $(event.target);
     var id = t.data('id');
     var from_to = t.data('type');
+    var latlon = eval(t.data('latlon'));
+    var name = t.data('value');
+    var iconStyle = 'greenIcon';
+    var index = 0;
     if (from_to == 'from') {
       $('#trip_proxy_from_place_selected').val(id);
       $('#trip_proxy_from_place_selected_type').val(1);
     } else {
       $('#trip_proxy_to_place_selected').val(id);
       $('#trip_proxy_to_place_selected_type').val(1);
+      iconStyle = 'blueIcon';
+      index = 1;
     }
-    $('#' + t.parents('ul').data('target')).val(t.data('value'));
+    var marker = create_or_update_marker(index, id, latlon[0], latlon[1], name, iconStyle);
+    selectMarker(marker);
+    $('#' + t.parents('ul').data('target')).val(name);
   });
 
   // Cache the alt places
   var from_places = eval("#{escape_javascript @trip_proxy.from_place_results.to_json}"); 
   var to_places = eval("#{escape_javascript @trip_proxy.to_place_results.to_json}");
   
-  // Add listeners to show the selected address.
+  // Add cahnge listeners on the text fields
+  $("#from_address").bind("keyup input paste", function() {
+    $('#trip_proxy_from_place_selected').val("");
+    $('#trip_proxy_from_place_selected_type').val("");    
+  });
+  // Add cahnge listeners on the text fields
+  $("#to_address").bind("keyup input paste", function() {
+    $('#trip_proxy_to_place_selected').val("");
+    $('#trip_proxy_to_place_selected_type').val("");    
+  });
+    
+  // Add listeners to show the selected address when the user clicks on one
   $('.address_select').click(function() {
     var id = $(this).data('id');
     var from_to = $(this).data('type');
-    var decorator_class;
+    var decorator_class = 'alert-success';
+    var index = 0;
+    var iconStyle = 'greenIcon';
+    var marker_array = from_places;
     if (from_to == 'from') {
       $('#trip_proxy_from_place_selected').val(id);
       $('#trip_proxy_from_place_selected_type').val(0);
-      decorator_class = 'alert-success';
     } else {
       $('#trip_proxy_to_place_selected').val(id);
       $('#trip_proxy_to_place_selected_type').val(0);
+      iconStyle = 'blueIcon';
+      marker_array = to_places;
       decorator_class = 'alert-info';
+      index = 1;
     }
     // remove any decorators for this class
     $('li').removeClass(decorator_class);
     $(this).addClass(decorator_class);
-    selectMarker(address_candidate_markers[id]);    
+    // Get the address from the marker array and create a map marker
+    var addr = marker_array[id];
+    var marker = create_or_update_marker(index, addr.id, addr.lat, addr.lon, addr.formatted_address, iconStyle);
+    selectMarker(marker);
   });
-    
-  function add_place_markers(markers, iconStyle) {
-    for (var i = 0; i < markers.length; i++) {
-      create_place_marker(markers[i], iconStyle);
+      
+  function create_or_update_marker(index, id, lat, lon, name, iconStyle) {
+    // Remove the current marker from the map if it already exists
+    if (address_candidate_markers[index]) {
+      removeMarkerFromMap(address_candidate_markers[index]);
     }
+    marker = create_place_marker(id, lat, lon, name, iconStyle);
+    address_candidate_markers[index] = marker;
+    addMarkerToMap(marker);
+    return marker;
   };
   
-  function create_place_marker(addr, iconStyle) {
-    marker = createMarker(addr.id, addr.lat, addr.lon, iconStyle, addr.formatted_address, addr.formatted_address, true);
-    address_candidate_markers.push(marker);
-    addMarkerToMap(marker);    
+  function create_place_marker(id, lat, lon, name, iconStyle) {
+    marker = createMarker(id, lat, lon, iconStyle, name, name, true);
+    return marker;  
+  };
+
+  function create_address_marker(addr, iconStyle) {
+    create_place_marker(addr.id, addr.lat, addr.lon, addr.formatted_address, iconStyle);
   };
