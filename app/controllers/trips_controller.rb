@@ -242,7 +242,7 @@ private
       to_place.lon = address[:lon]  
     else
       selected_to_place = @traveler.places.find(selected_id)
-      to_place.place = selected_from_place
+      to_place.place = selected_to_place
     end
         
     # add the places to the trip
