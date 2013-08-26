@@ -252,7 +252,7 @@ private
     planned_trip = PlannedTrip.new
     planned_trip.trip = trip
     planned_trip.creator = trip.creator
-    planned_trip.is_depart = trip_proxy.arrive_depart == 'arrive_by' ? false : true
+    planned_trip.is_depart = trip_proxy.arrive_depart == 'departing at' ? true : false
     planned_trip.trip_datetime = trip_proxy.trip_datetime
     planned_trip.trip_status = TripStatus.find(1)    
     
@@ -297,7 +297,7 @@ private
     planned_trip = PlannedTrip.new
     planned_trip.trip = trip
     planned_trip.creator = trip.creator
-    planned_trip.is_depart = trip_proxy.arrive_depart == 'arrive_by' ? false : true
+    planned_trip.is_depart = trip_proxy.arrive_depart == 'departing at' ? true : false
     planned_trip.trip_datetime = trip_proxy.trip_datetime
     planned_trip.trip_status = TripStatus.find(1)    
     
