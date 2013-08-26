@@ -127,7 +127,7 @@ class TripsController < TravelerAwareController
         @trip_proxy.add_error :from_place, "Can't be blank."
       end
     end
-    # Do the same for the to palce
+    # Do the same for the to place
     if @trip_proxy.to_place_selected.blank?
       # make sure there is something to geocode
       unless @trip_proxy.to_place.blank?
@@ -168,7 +168,7 @@ class TripsController < TravelerAwareController
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
       else
-          format.html { render action: "new", flash[:alert] => "One or more addresses need to be fxed." }
+          format.html { render action: "new", flash[:alert] => "One or more addresses need to be fixed." }
       end
     end
   end
