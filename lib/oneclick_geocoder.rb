@@ -56,8 +56,8 @@ protected
         @results << {
           :id => i,
           :name => alt.formatted_address.split(",")[0],
-          :formatted_address => alt.formatted_address,
-          :street_address => alt.address,
+          :formatted_address => sanitize_formattted_address(alt.formatted_address),
+          :street_address => sanitize_formattted_address(alt.address),
           :city => alt.city,
           :state => alt.state_code,
           :zip => alt.postal_code,
@@ -69,6 +69,14 @@ protected
     end    
   end    
 
+  def sanitize_formattted_address(addr)
+    if addr.include?(", USA")
+      return addr[0..-6]
+    else
+      return addr
+    end    
+  end
+  
   # Filters addresses returned by Google to only those we want to consider
   def is_valid(addr_types)
     addr_types.each do |addr_type|
