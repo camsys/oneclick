@@ -33,7 +33,6 @@
               %tr
                 %th.left Place
                 %th.left Type
-                %th.center Geocoded
                 %th.center Location
                 %th.center Actions
             %tbody
@@ -41,8 +40,7 @@
                 %tr
                   %td.left= place
                   %td.left= place.type
-                  %td.center= get_boolean(! place.lat.nil?)
-                  %td.center= place.location.inspect
+                  %td.center= sprintf("[%.6f, %.6f]", place.location[0], place.location[1])
                   %td.center
                     = link_to "#", {class: "btn btn-mini btn-success text-center"} do
                       %i.icon-search
