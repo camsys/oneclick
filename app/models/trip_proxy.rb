@@ -5,6 +5,7 @@ class TripProxy < Proxy
   attr_accessor :from_place, :to_place, :trip_date, :arrive_depart, :trip_time, :model_name, :traveler
   attr_accessor :from_place_results, :to_place_results
   attr_accessor :from_place_selected, :to_place_selected
+  attr_accessor :from_place_selected_type, :to_place_selected_type
   
   validates :from_place, :presence => true
   validates :to_place, :presence => true

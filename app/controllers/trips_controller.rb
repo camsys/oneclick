@@ -107,9 +107,8 @@ class TripsController < TravelerAwareController
     @trip_proxy = TripProxy.new(params[:trip_proxy])
     @trip_proxy.traveler = @traveler
     
-    # see if we have selected addresses or not. If not we need to geocode and check
-    # to see if multiple addresses are available. The alternate addresses are stored
-    # back in the proxy object
+    # See if the user has selected an alternate address or a pre-defined palce. If not we need to geocode and check
+    # to see if multiple addresses are available. The alternate addresses are stored back in the proxy object
     geocoder = OneclickGeocoder.new
     if @trip_proxy.from_place_selected.blank?
       # make sure there is something to geocode
@@ -128,7 +127,7 @@ class TripsController < TravelerAwareController
         @trip_proxy.add_error :from_place, "Can't be blank."
       end
     end
-    
+    # Do the same for the to palce
     if @trip_proxy.to_place_selected.blank?
       # make sure there is something to geocode
       unless @trip_proxy.to_place.blank?
@@ -209,25 +208,42 @@ private
         
     # get the from place from the proxy
     selected_id = trip_proxy.from_place_selected.to_i
-    address = session[FROM_PLACES_SESSION_KEY][selected_id]
-       
+    # see if we are selecting a raw-address or a pre-defined type
+    selected_id_type = trip_proxy.from_place_selected_type
+
     from_place = TripPlace.new()
     from_place.sequence = 0
-    # the address format comes from the oneclick geocoder
-    from_place.raw_address = address[:address]
-    from_place.lat = address[:lat]
-    from_place.lon = address[:lon]  
 
+    if selected_id_type == "0"
+      # raw address
+      address = session[FROM_PLACES_SESSION_KEY][selected_id]
+      # the address format comes from the oneclick geocoder
+      from_place.raw_address = address[:address]
+      from_place.lat = address[:lat]
+      from_place.lon = address[:lon]  
+    else
+      selected_from_place = @traveler.places.find(selected_id)
+      from_place.place = selected_from_place
+    end
+    
     # get the to place from the proxy
     selected_id = trip_proxy.to_place_selected.to_i
-    address = session[TO_PLACES_SESSION_KEY][selected_id]
+    selected_id_type = trip_proxy.to_place_selected_type
 
     to_place = TripPlace.new()
     to_place.sequence = 1
-    # the address format comes from the oneclick geocoder
-    to_place.raw_address = address[:address]
-    to_place.lat = address[:lat]
-    to_place.lon = address[:lon]    
+
+    if selected_id_type == "0"
+      # raw address
+      address = session[TO_PLACES_SESSION_KEY][selected_id]
+      # the address format comes from the oneclick geocoder
+      to_place.raw_address = address[:address]
+      to_place.lat = address[:lat]
+      to_place.lon = address[:lon]  
+    else
+      selected_to_place = @traveler.places.find(selected_id)
+      to_place.place = selected_from_place
+    end
         
     # add the places to the trip
     trip.trip_places << from_place
@@ -244,44 +260,6 @@ private
 
     return trip
 
-    trip = Trip.new()
-    trip.creator = current_user
-    trip.user = @traveler
-        
-    # get the places from the proxy
-    from_place = TripPlace.new()
-    from_place.sequence = 0
-    from_address_or_place_name = trip_proxy.from_place[:raw_address]
-    myplace = @traveler.places.find_by_name(from_address_or_place_name)
-    if myplace
-      from_place.place = myplace
-    else
-      from_place.raw_address = from_address_or_place_name
-      from_place.geocode
-    end
-    to_place = TripPlace.new()
-    to_place.sequence = 1
-    to_address_or_place_name = trip_proxy.to_place[:raw_address]
-    myplace = @traveler.places.find_by_name(to_address_or_place_name)
-    if myplace
-      to_place.place = myplace
-    else
-      to_place.raw_address = to_address_or_place_name
-      to_place.geocode
-    end
-    trip.trip_places << from_place
-    trip.trip_places << to_place
-
-    planned_trip = PlannedTrip.new
-    planned_trip.trip = trip
-    planned_trip.creator = trip.creator
-    planned_trip.is_depart = trip_proxy.arrive_depart == 'arrive_by' ? false : true
-    planned_trip.trip_datetime = trip_proxy.trip_datetime
-    planned_trip.trip_status = TripStatus.find(1)    
-    
-    trip.planned_trips << planned_trip
-    
-    return trip
   end
 
   def create_anonymous_trip(trip_proxy)

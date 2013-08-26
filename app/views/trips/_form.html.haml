@@ -6,17 +6,45 @@
     = form_for :trip_proxy, :url => user_trips_path do |f|
       = f.hidden_field :from_place_selected
       = f.hidden_field :to_place_selected
+      = f.hidden_field :from_place_selected_type
+      = f.hidden_field :to_place_selected_type
       
       .control-group
         %label.control-label= t(:from)
-        .controls.controls-row
-          = f.text_field :from_place, :class => "span12", :placeholder => t(:enter_address)
+        .controls.controls-row.span12
+          - if user_signed_in?
+            .input-append
+              = f.text_field :from_place, :id => "from_address", :class => "span11", :placeholder => t(:select_or_enter_address)
+              %span.dropdown
+                %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}>
+                  %span.caret
+                %ul.dropdown-menu{:data => {:target => 'from_address'}}
+                  - @traveler.places.each do |p|
+                    %li
+                      %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.lat, p.lon], :type => "from"}}
+                        = p.name          
+          - else
+            = f.text_field :from_place, :class => "span12", :placeholder => t(:enter_address)
+
           = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.from_place_results, :type => "from"} unless @trip_proxy.from_place.blank?
           
       .control-group
         %label.control-label= t(:to)
-        .controls.controls-row
-          = f.text_field :to_place, :class => "span12", :placeholder => t(:enter_address)
+        .controls.controls-row.span12
+          - if user_signed_in?
+            .input-append
+              = f.text_field :to_place, :id => "to_address", :class => "span11", :placeholder => t(:select_or_enter_address)
+              %span.dropdown
+                %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href =>'#'}>
+                  %span.caret
+                %ul.dropdown-menu{:data => {:target => 'to_address'}}
+                  - @traveler.places.each do |p|
+                    %li
+                      %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.lat, p.lon], :type => "to"}}
+                        = p.name          
+          - else
+            = f.text_field :to_place, :class => "span12", :placeholder => t(:enter_address)
+
           = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.to_place_results, :type => "to"} unless @trip_proxy.to_place.blank?
 
       .control-group
@@ -37,7 +65,9 @@
               %i.icon.icon-time
                   
       .actions
-        = f.submit t(:plan_it), {class: 'btn btn-primary controls'}
+        = button_tag :type => 'submit', :class => "btn btn-block btn-primary" do
+          %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
+          = t(:plan_it)
         = link_to t(:cancel), :back
                 
 :javascript
@@ -64,27 +94,36 @@
   
   $('.dropdown-toggle').dropdown();
   
-  $('.trip_proxy_from_place_address a, .trip_proxy_to_place_address a').on('click', function(event) {
-  var t = $(event.target)
-    if (t.hasClass('place-option')) {
-      $('#' + t.parents('ul').data('target')).val(t.data('value'))
+  $('.place-option').on('click', function(event) {
+    var t = $(event.target);
+    var id = t.data('id');
+    var from_to = t.data('type');
+    if (from_to == 'from') {
+      $('#trip_proxy_from_place_selected').val(id);
+      $('#trip_proxy_from_place_selected_type').val(1);
+    } else {
+      $('#trip_proxy_to_place_selected').val(id);
+      $('#trip_proxy_to_place_selected_type').val(1);
     }
+    $('#' + t.parents('ul').data('target')).val(t.data('value'));
   });
 
   // Cache the alt places
   var from_places = eval("#{escape_javascript @trip_proxy.from_place_results.to_json}"); 
   var to_places = eval("#{escape_javascript @trip_proxy.to_place_results.to_json}");
   
-  // Add listeners to show the selected address
+  // Add listeners to show the selected address.
   $('.address_select').click(function() {
     var id = $(this).data('id');
     var from_to = $(this).data('type');
     var decorator_class;
     if (from_to == 'from') {
       $('#trip_proxy_from_place_selected').val(id);
+      $('#trip_proxy_from_place_selected_type').val(0);
       decorator_class = 'alert-success';
     } else {
       $('#trip_proxy_to_place_selected').val(id);
+      $('#trip_proxy_to_place_selected_type').val(0);
       decorator_class = 'alert-info';
     }
     // remove any decorators for this class
