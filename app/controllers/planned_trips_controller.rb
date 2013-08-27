@@ -103,8 +103,15 @@ class PlannedTripsController < TravelerAwareController
 protected
 
   def get_planned_trip
+
     get_traveler
-    planned_trip = @traveler.planned_trips.find(params[:id])
+
+    if @traveler.has_role? :admin
+      planned_trip = PlannedTrip.find(params[:id])
+    else
+      planned_trip = @traveler.planned_trips.find(params[:id])
+    end
+
     if planned_trip.nil?
       render text: 'Unable to find the record.', status: 500
     else

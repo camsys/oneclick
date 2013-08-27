@@ -14,4 +14,4 @@
         %i.icon-remove
         =t(:remove)
 
-= render :partial => 'trip_details_modal', :locals => { :itinerary => itinerary }
+= render :partial => 'trip_details_modal', :locals => { :itinerary => itinerary } if itinerary.server_status == 200

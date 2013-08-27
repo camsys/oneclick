@@ -40,7 +40,8 @@
                 %tr
                   %td.left= place
                   %td.left= place.type
-                  %td.center= sprintf("[%.6f, %.6f]", place.location[0], place.location[1])
+                  %td.center
+                    = sprintf("[%.6f, %.6f]", place.location[0], place.location[1]) unless place.location[0].nil?
                   %td.center
                     = link_to "#", {class: "btn btn-mini btn-success text-center"} do
                       %i.icon-search
@@ -54,6 +55,8 @@
             %thead
               %tr
                 %th.left Mode
+                - if current_user.has_role? :admin
+                  %th.center Status
                 %th.center Hidden
                 %th.center Start Time
                 %th.center End Time
@@ -62,10 +65,15 @@
                 %th.left Wait Time
                 %th.left Walk Dist                
                 %th.center Cost
+                  
             %tbody
               - @planned_trip.itineraries.each do |itin|
                 %tr
                   %td.left= itin.mode
+                  - if current_user.has_role? :admin
+                    %td.center
+                      = link_to "#", :class => "action_popover", :data => {:content => itin.server_message, :html => true, :trigger => 'hover', :title => 'Server Message'} do
+                        = itin.server_status
                   %td.center= get_boolean(itin.hidden)
                   %td.center= format_date_time(itin.start_time)
                   %td.center= format_date_time(itin.end_time)
@@ -74,3 +82,8 @@
                   %td.left= duration_to_words(itin.wait_time)
                   %td.left= distance_to_words(itin.walk_distance)
                   %td.right= number_to_currency(itin.cost)
+
+:javascript
+  $(function() {
+    $('.action_popover').popover();
+  });
