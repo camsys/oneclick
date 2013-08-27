@@ -3,13 +3,13 @@
     -if current_user  
       = render 'select_traveler_form' unless current_user.travelers.empty?
       
-    = form_for :trip_proxy, :url => user_trips_path do |f|
+    = form_for @trip_proxy, :url => user_trips_path do |f|
       = f.hidden_field :from_place_selected
       = f.hidden_field :to_place_selected
       = f.hidden_field :from_place_selected_type
       = f.hidden_field :to_place_selected_type
       
-      .control-group
+      .control-group{:class => @trip_proxy.errors[:from_place].empty? ? '' : 'error'}
         %label.control-label= t(:from)
         .controls.controls-row
           - if user_signed_in?
@@ -28,7 +28,7 @@
 
           = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.from_place_results, :type => "from"} unless @trip_proxy.from_place.blank? || @trip_proxy.from_place_selected_type == "1"
           
-      .control-group
+      .control-group{:class => @trip_proxy.errors[:to_place].empty? ? '' : 'error'}
         %label.control-label= t(:to)
         .controls.controls-row
           - if user_signed_in?
@@ -47,7 +47,7 @@
 
           = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.to_place_results, :type => "to"} unless @trip_proxy.to_place.blank? || @trip_proxy.to_place_selected_type == "1"
 
-      .control-group
+      .control-group{:class => @trip_proxy.errors[:trip_date].empty? ? '' : 'error'}
         %label.control-label Traveling on
         .controls
           .input-append
@@ -55,7 +55,7 @@
             %span.add-on
               %i.icon.icon-calendar
         
-      .control-group
+      .control-group{:class => @trip_proxy.errors[:trip_time].empty? ? '' : 'error'}
         .controls.controls-row
           = select_tag :arrive_depart, options_for_select(["departing at", "arriving by"])
 

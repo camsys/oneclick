@@ -106,13 +106,14 @@ class TripsController < TravelerAwareController
     
     @trip_proxy = TripProxy.new(params[:trip_proxy])
     @trip_proxy.traveler = @traveler
-    
-    # See if the user has selected an alternate address or a pre-defined palce. If not we need to geocode and check
-    # to see if multiple addresses are available. The alternate addresses are stored back in the proxy object
-    geocoder = OneclickGeocoder.new
-    if @trip_proxy.from_place_selected.blank?
-      # make sure there is something to geocode
-      unless @trip_proxy.from_place.blank?
+  
+    # run the validations on the trip proxy. This checks that from place, to place and the 
+    # time/date options are all set
+    if @trip_proxy.valid?
+      # See if the user has selected an alternate address or a pre-defined place. If not we need to geocode and check
+      # to see if multiple addresses are available. The alternate addresses are stored back in the proxy object
+      geocoder = OneclickGeocoder.new
+      if @trip_proxy.from_place_selected.blank?
         geocoder.geocode(@trip_proxy.from_place)
         # store the results in the session
         session[FROM_PLACES_SESSION_KEY] = encode(geocoder.results)
@@ -121,16 +122,11 @@ class TripsController < TravelerAwareController
           @trip_proxy.from_place_selected = 0
         else
           # the user needs to select one of the alternatives
-          @trip_proxy.add_error :from_place, "Alternate places found."
+          @trip_proxy.errors.add :from_place, "Alternate places found."
         end
-      else
-        @trip_proxy.add_error :from_place, "Can't be blank."
       end
-    end
-    # Do the same for the to place
-    if @trip_proxy.to_place_selected.blank?
-      # make sure there is something to geocode
-      unless @trip_proxy.to_place.blank?
+      # Do the same for the to place
+      if @trip_proxy.to_place_selected.blank?
         geocoder.geocode(@trip_proxy.to_place)
         # store the results in the session
         session[TO_PLACES_SESSION_KEY] = encode(geocoder.results)
@@ -139,14 +135,12 @@ class TripsController < TravelerAwareController
           @trip_proxy.to_place_selected = 0
         else
           # the user needs to select one of the alternatives
-          @trip_proxy.add_error :to_place, "Alternate places found."
+          @trip_proxy.errors.add :to_place, "Alternate places found."
         end
-      else
-        @trip_proxy.add_error :to_place, "Can't be blank."
-        complete = false
       end
+      # end of validation test
     end
-   
+       
     if @trip_proxy.errors.empty?
       if user_signed_in?
         @trip = create_authenticated_trip(@trip_proxy)

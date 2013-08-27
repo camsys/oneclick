@@ -11,7 +11,10 @@ class TripProxy < Proxy
   validates :to_place, :presence => true
   validates :trip_date, :presence => true
   validates :trip_time, :presence => true
-  validate :validate_date_and_time
+  
+  validate :validate_date
+  validate :validate_time
+  
   validate :datetime_cannot_be_before_now
   
   def initialize(attrs = {})
@@ -35,37 +38,20 @@ class TripProxy < Proxy
     true
   end
         
-  def validate_date_and_time
-    good_date = true
-    good_time = true
+  def validate_date
     begin
       # if the parse fails it will return nil and the to_date will throw an exception
       d = Chronic.parse(@trip_date).to_date
-      # bump to next year if they only spec'd day and month and we parsed it to be in the past
-      d += 1.year if d.past? and @trip_date.split(%r{/}).size < 3
-      @trip_date = d.strftime("%m/%d/%Y")
     rescue Exception => e
-      Rails.logger.warn "parsing date #{@trip_date}"
-      Rails.logger.warn e.ai
       errors.add(:trip_date, I18n.translate(:date_wrong_format))
-      good_date = false
     end
-
+  end
+  def validate_time  
     begin
       Time.strptime(@trip_time, "%H:%M %p")
     rescue Exception => e
-      Rails.logger.warn "parsing time #{@trip_time}"
-      Rails.logger.warn e.ai
       errors.add(:trip_time, I18n.translate(:time_wrong_format))
-      good_time = false
     end
-
-    return false unless good_date && good_time
-
-    if trip_datetime
-      errors.add(:trip_date, I18n.translate(:date_wrong_format))
-    end
-    true
   end
         
   def trip_datetime
