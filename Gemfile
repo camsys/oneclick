@@ -40,12 +40,12 @@ group :development do
   gem 'rails-erd'
 end
 group :development, :test do
-  gem 'factory_girl_rails'
-  gem 'rspec-rails'
   gem 'growl'
   gem 'capybara'
 end
 group :test do
+  gem 'factory_girl_rails'
+  gem 'rspec-rails'
   gem 'sqlite3'
   gem 'capybara'
   gem 'cucumber-rails', :require=>false
