@@ -41,6 +41,12 @@ class TripPlanner
 
   end
 
+  #TODO this is a hack. The documentation states that the transfers should be the number
+  # of transfers occuring as an int. WALK returns a transfer count of -1 so we set it to
+  # nil if we see this
+  def fixup_transfers_count(transfers)
+    transfers == -1 ? nil : transfers
+  end
   def convert_itineraries(plan)
 
     plan['itineraries'].collect do |itinerary|
@@ -52,7 +58,7 @@ class TripPlanner
       trip_itinerary['wait_time'] = itinerary['waitingTime']
       trip_itinerary['start_time'] = Time.at((itinerary['startTime']).to_f/1000)
       trip_itinerary['end_time'] = Time.at((itinerary['endTime']).to_f/1000)
-      trip_itinerary['transfers'] = itinerary['transfers']
+      trip_itinerary['transfers'] = fixup_transfers_count(itinerary['transfers'])
       trip_itinerary['walk_distance'] = itinerary['walkDistance']
       trip_itinerary['legs'] = itinerary['legs']
       trip_itinerary['server_status'] = 200
