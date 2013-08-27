@@ -1,0 +1,4 @@
+%i.icon-exclamation-sign
+= "#{pluralize(@planned_trip.hidden_itineraries.size, 'option')} hidden."
+= link_to unhide_all_user_planned_trip_path(@traveler, @planned_trip) do
+  Unhide all

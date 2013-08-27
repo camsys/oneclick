@@ -20,8 +20,11 @@ class TripPlanner
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
     url = base_url + url_options
 
+    Rails.logger.info URI.parse(url)
+    
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
+      Rails.logger.info(resp.inspect)
     rescue Exception=>e
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
@@ -44,7 +47,7 @@ class TripPlanner
 
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
-      trip_itinerary['mode'] = 'transit'
+      trip_itinerary['mode'] = Mode.transit
       trip_itinerary['duration'] = itinerary['duration'].to_f/1000
       trip_itinerary['walk_time'] = itinerary['walkTime']
       trip_itinerary['transit_time'] = itinerary['transitTime']
@@ -54,7 +57,7 @@ class TripPlanner
       trip_itinerary['transfers'] = itinerary['transfers']
       trip_itinerary['walk_distance'] = itinerary['walkDistance']
       trip_itinerary['legs'] = itinerary['legs']
-      trip_itinerary['status'] = 200
+      trip_itinerary['server_status'] = 200
       trip_itinerary
     end
 
@@ -114,12 +117,12 @@ class TripPlanner
 
   # TODO placeholder
   def get_paratransit_itineraries(from, to, trip_datetime)
-    {'mode' => 'paratransit', 'status' => 200, 'duration' => 55*60, 'cost' => 4.00}
+    {'mode' => Mode.paratransit, 'server_status' => 200, 'duration' => 55*60, 'cost' => 4.00}
   end
 
   # TODO placeholder
   def convert_paratransit_itineraries(itinerary)
-    {'mode' => 'paratransit', 'status' => 200, 'duration' => 55*60, 'cost' => 4.00}
+    {'mode' => Mode.paratransit, 'server_status' => 200, 'duration' => 55*60, 'cost' => 4.00}
   end
 
   def get_rideshare_itineraries(from, to, trip_datetime)

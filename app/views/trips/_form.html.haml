@@ -1,75 +1,102 @@
-.well
-  = simple_form_for(@trip, :html => {:class => 'form-horizontal' }) do |f|
-    - if user_signed_in?
-      = f.simple_fields_for :from_place do |p|
-        = p.input :sequence, as: :hidden, value: 0        
-        = p.input :address, label: t(:from), wrapper: :append, html: {id: :from_address} do
-          = p.input_field :nongeocoded_address, placeholder: t(:select_or_enter_address)
-          %span.dropdown
-            %a.add-on.btn.dropdown-toggle{data: {toggle: 'dropdown'}, href: '#'}>
-              %span.caret
-            %ul.dropdown-menu{data: {target: 'trip_from_place_attributes_nongeocoded_address'}}
-              - @trip.owner.places.each do |p|
-                %li
-                  %a{data: {value: p.name}, class: 'place-option'}= p.name
-      = f.simple_fields_for :to_place do |p|
-        = p.input :sequence, as: :hidden, value: 1
-        = p.input :address, label: t(:to), wrapper: :append, html: {id: :to_address} do
-          = p.input_field :nongeocoded_address, placeholder: t(:select_or_enter_address)
-          %span.dropdown
-            %a.add-on.btn.dropdown-toggle{data: {toggle: 'dropdown'}, href: '#'}>
-              %span.caret
-            %ul.dropdown-menu{data: {target: 'trip_to_place_attributes_nongeocoded_address'}}
-              - @trip.owner.places.each do |p|
-                %li
-                  %a{data: {value: p.name}, class: 'place-option'}= p.name
-    - else
-      = f.simple_fields_for :from_place do |p|
-        = p.input :sequence, as: :hidden, value: 0
-        = p.input :nongeocoded_address, label: t(:from), placeholder: t(:enter_address)
-      = f.simple_fields_for :to_place do |p|
-        = p.input :sequence, as: :hidden, value: 1
-        = p.input :nongeocoded_address, label: t(:to), placeholder: t(:enter_address)
-    = f.input :trip_date, wrapper: :append, label: t(:date) do
-      = content_tag :div, id: 'trip-date' do
-        = f.input_field :trip_date, as: :string, label: false, size: ""
-        = content_tag :span, class: 'add-on' do
-          = content_tag :i, '', class: 'icon-calendar'
-    = f.input :arrive_depart, collection: [:depart_at, :arrive_by],
-      label_method: lambda {|obj| t(obj)},
-      value_method: lambda {|obj| obj.to_s},
-      label: false, include_blank: false, input_html: {class: ''}
-    = f.input :trip_time, wrapper: :append, label: t(:time) do
-      = content_tag :div, id: 'trip-time' do
-        = f.input_field :trip_time, as: :string, label: false, size: ""
-        = content_tag :span, class: 'add-on' do
-          = content_tag :i, '', class: 'icon-time'
+.row-fluid
+  .thumbnail.span12
+    = form_for :trip_proxy, :url => user_trips_path do |f|
+      = f.hidden_field :from_place_selected
+      = f.hidden_field :to_place_selected
+      
+      .control-group
+        %label.control-label= t(:from)
+        .controls.controls-row
+          = f.text_field :from_place, :class => "span12", :placeholder => t(:enter_address)
+          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.from_place_results, :type => "from"}
+          
+      .control-group
+        %label.control-label= t(:to)
+        .controls.controls-row
+          = f.text_field :to_place, :class => "span12", :placeholder => t(:enter_address)
+          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.to_place_results, :type => "to"}
 
-    .actions
-      = f.button :submit, t(:plan_it), {class: 'btn btn-primary controls'}
-      = link_to t(:cancel), :back
+      .control-group
+        %label.control-label Traveling
+        .controls.controls-row
+          .input-append
+            = f.text_field :trip_date, :id => "trip-date"
+            %span.add-on
+              %i.icon.icon-calendar
+        
+            = select_tag :arrive_depart, options_for_select(["departing at", "arriving by"])
+
+          .input-append
+            = f.text_field :trip_time, :id => "trip-time"
+            %span.add-on
+              %i.icon.icon-time
+                  
+      .actions
+        = f.submit t(:plan_it), {class: 'btn btn-primary controls'}
+        = link_to t(:cancel), :back
+                
 :javascript
   $(document).ready(function(){
     $('#trip-date').datepicker()
       .on("dateChange", function(e) {
-        $('#trip_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
+        $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
       });
     $('#trip-date').data("calendar").setDate(new Date());
-    $('#trip_trip_time').timepicker({
+    $('#trip_proxy_trip_time').timepicker({
       'timeFormat': 'g:i a',
       'scrollDefaultNow': true
     })
     $('#trip-time .add-on').on('click', function() {
-      $('#trip_trip_time').timepicker('show');
+      $('#trip_proxy_trip_time').timepicker('show');
     });
     $('.combobox').combobox({
       force_match: false
     });
+    
+    add_place_markers(from_places, 'greenIcon');
+    add_place_markers(to_places, 'blueIcon');
+    setMapToBounds(address_candidate_markers);
   });
+  
   $('.dropdown-toggle').dropdown();
-  $('.trip_from_place_address a, .trip_to_place_address a').on('click', function(event) {
+  
+  $('.trip_proxy_from_place_address a, .trip_proxy_to_place_address a').on('click', function(event) {
   var t = $(event.target)
     if (t.hasClass('place-option')) {
       $('#' + t.parents('ul').data('target')).val(t.data('value'))
     }
-  })
+  });
+
+  // Cache the alt places
+  var from_places = eval("#{escape_javascript @trip_proxy.from_place_results.to_json}"); 
+  var to_places = eval("#{escape_javascript @trip_proxy.to_place_results.to_json}");
+  
+  // Add listeners to show the selected address
+  $('.address_select').click(function() {
+    var id = $(this).data('id');
+    var from_to = $(this).data('type');
+    var decorator_class;
+    if (from_to == 'from') {
+      $('#trip_proxy_from_place_selected').val(id);
+      decorator_class = 'alert-success';
+    } else {
+      $('#trip_proxy_to_place_selected').val(id);
+      decorator_class = 'alert-info';
+    }
+    // remove any decorators for this class
+    $('li').removeClass(decorator_class);
+    $(this).addClass(decorator_class);
+    selectMarker(address_candidate_markers[id]);    
+  });
+    
+  function add_place_markers(markers, iconStyle) {
+    for (var i = 0; i < markers.length; i++) {
+      create_place_marker(markers[i], iconStyle);
+    }
+  };
+  
+  function create_place_marker(addr, iconStyle) {
+    marker = createMarker(addr.id, addr.lat, addr.lon, iconStyle, addr.formatted_address, addr.formatted_address, true);
+    address_candidate_markers.push(marker);
+    addMarkerToMap(marker);    
+  };

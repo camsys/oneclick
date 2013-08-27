@@ -1,77 +1,51 @@
 class User < ActiveRecord::Base
+
+  # enable roles for this model
   rolify
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable,
-  # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-  :recoverable, :rememberable, :trackable, :validatable
+  
+  # devise configuration
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :role_ids, :as => :admin
+  # Updatable attributes
   attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :first_name, :last_name, :prefix, :suffix, :nickname
 
-  # end devise/rolify
+  # Associations
+  has_many :places, :conditions => ['active = ?', true] # 0 or more places, only active places are available
+  has_many :trips                   # 0 or more trips
+  has_one  :user_profile            # 1 user profile
+  has_many :user_mode_preferences   # 0 or more user mode preferences
+  has_many :user_roles
+  has_many :roles, :through => :user_roles # one or more user roles
+  has_many :planned_trips, :through => :trips
+  # relationships
+  has_many :delegate_relationships, :class_name => 'UserRelationship', :foreign_key => :user_id
+  has_many :traveler_relationships, :class_name => 'UserRelationship', :foreign_key => :delegate_id
+  has_many :delegates, :class_name => 'User', :through => :delegate_relationships
+  has_many :travelers, :class_name => 'User', :through => :traveler_relationships
 
-  attr_accessible :first_name, :last_name
+  # Validations
+  validates :email, :presence => true
+  validates :first_name, :presence => true
+  validates :last_name, :presence => true
 
-  has_many :places, class_name: UserPlace 
-  has_many :trips
-  has_many :itineraries, :through => :trips
-  has_many :buddy_relationships, foreign_key: :traveler_id
-  has_many :traveler_relationships, class_name: BuddyRelationship, foreign_key: :buddy_id
-  has_many :buddies, class_name: User, through: :buddy_relationships, conditions: "buddy_relationships.status='confirmed'"
-  has_many :travelers, class_name: User, through: :traveler_relationships, conditions: "buddy_relationships.status='confirmed'"
-
-  after_create :check_for_buddy_requests
-
+  def to_s
+    name
+  end
+    
   def name
     elems = []
+    elems << prefix unless prefix.blank?
     elems << first_name unless first_name.blank?
     elems << last_name unless last_name.blank?
+    elems << suffix unless suffix.blank?
     elems.compact.join(' ')
   end
 
   def welcome
+    return nickname unless nickname.blank?
     return first_name unless first_name.blank?
     email
-  end
-
-  def add_buddy email_address
-    b = BuddyRelationship.new(email_address: email_address, status: 'pending')
-    buddy_relationships << b
-    unless self.save
-      buddy_relationships.delete_if { |b| b.id.nil? }
-    end
-    b
-  end
-
-  def remove_buddy buddy_relationship
-    buddy_relationship.destroy
-  end
-
-  def pending_buddy_requests
-    traveler_relationships.pending
-  end
-
-  def pending_buddy? email_address
-    buddy_by_status? email_address, 'pending'
-  end
-
-  def confirmed_buddy? email_address
-    buddy_by_status? email_address, 'confirmed'
-  end
-
-  private
-
-  def buddy_by_status? email_address, status
-    buddy_relationships.find_by_email_address_and_status email_address, status
-  end
-
-  def check_for_buddy_requests
-    buddy_requests = BuddyRelationship.find_all_by_email_address(self.email)
-    buddy_requests.each do |buddy_request|
-      buddy_request.associate_buddy(self)
-    end
   end
 
 end

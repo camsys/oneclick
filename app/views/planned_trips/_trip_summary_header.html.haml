@@ -1,0 +1,36 @@
+.row-fluid
+  .span3
+    %i.mode_icon_formatting.trip_summary_icon{:class => get_trip_summary_icon(itinerary.mode)}
+  .span8 
+    %h2.trip_summary_title= get_trip_summary_title(itinerary.mode)
+  .span1
+    - if itinerary.hidden
+      %i.icon-2x.icon-thumbs-down
+    
+-if itinerary.duration
+  .row-fluid
+    .span9.offset3.trip_summary_text= duration_to_words(itinerary.duration) + " (est.)"
+-if itinerary.cost
+  .row-fluid
+    .span9.offset3.trip_summary_text= number_to_currency(itinerary.cost)
+-if itinerary.transfers
+  .row-fluid
+    .span9.offset3.trip_summary_text= I18n.translate(:transfer, count: itinerary.transfers)
+-if itinerary.planned_trip.is_depart == false && itinerary.end_time
+  .row-fluid
+    .span9.offset3.trip_summary_text= t(:arrive_at) + ' ' + itinerary.end_time.in_time_zone.strftime('%I:%M %p')
+-if itinerary.planned_trip.is_depart == true && itinerary.start_time
+  .row-fluid
+    .span9.offset3.trip_summary_text= t(:depart_at) + ' ' + itinerary.start_time.in_time_zone.strftime('%I:%M %p')
+-if itinerary.walk_time
+  .row-fluid
+    .span9.offset3.trip_summary_text= duration_to_words(itinerary.walk_time) + t(:walking)
+-if itinerary.mode=='rideshare' and itinerary.count > 0
+  .row-fluid
+    .span9.offset3.trip_summary_text= t(:possible_rideshares1, count: itinerary.count)
+  .row-fluid
+    .span9.offset3.trip_summary_text= t(:possible_rideshares2)
+  .row-fluid
+    .span9.offset3.trip_summary_text= t(:view_details1)
+  .row-fluid
+    .span9.offset3.trip_summary_text= t(:view_details2)

@@ -4,6 +4,14 @@ module ApplicationHelper
   
   include CsHelpers
 
+  def is_traveler
+    if @traveler
+      return @traveler.id == current_or_guest_user.id ? false : true
+    else
+      return false
+    end  
+  end
+
   def distance_to_words(dist_in_meters)
     return t(:n_a) unless dist_in_meters
     
@@ -63,11 +71,13 @@ module ApplicationHelper
   end
 
   def get_trip_summary_title(mode)
-    if mode == 'transit'
+    return if mode.nil?
+    
+    if mode.name.downcase == 'transit'
       title = t(:transit)
-    elsif mode == 'paratransit'
+    elsif mode.name.downcase == 'paratransit'
       title = t(:paratransit)      
-    elsif mode == 'taxi'
+    elsif mode.name.downcase == 'taxi'
       title = t(:taxi)      
     elsif mode == 'rideshare'
       title = t(:rideshare)
@@ -76,11 +86,13 @@ module ApplicationHelper
   end
 
   def get_trip_summary_icon(mode) 
-    if mode == 'transit'
+    return if mode.nil?
+
+    if mode.name.downcase == 'transit'
       icon_name = 'icon-bus-sign'
-    elsif mode == 'paratransit'
+    elsif mode.name.downcase == 'paratransit'
       icon_name = 'icon-truck-sign'      
-    elsif mode == 'taxi'
+    elsif mode.name.downcase == 'taxi'
       icon_name = 'icon-taxi-sign'      
     elsif mode == 'rideshare'
       icon_name = 'icon-group'      

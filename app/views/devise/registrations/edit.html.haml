@@ -9,10 +9,10 @@
         = t(:my_information)
     %li
       %a{href: '#tab2', data: {toggle: 'tab'}}
-        = t(:buddies)
+        = t(:buddies) + " (" + current_user.delegates.count.to_s + ")"
     %li
       %a{href: '#tab3', data: {toggle: 'tab'}}
-        = t(:travelers)
+        = t(:travelers) + " (" + current_user.travelers.count.to_s + ")"
   .tab-content
     .tab-pane.active#tab1
       .well

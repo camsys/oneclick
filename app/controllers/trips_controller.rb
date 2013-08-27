@@ -1,7 +1,7 @@
-class TripsController < ApplicationController
+class TripsController < TravelerAwareController
   
   # set the @trip variable before any actions are invoked
-  before_filter :get_trip, :only => [:email, :show, :details, :unhide_all]
+  before_filter :get_trip, :only => [:show, :destroy]
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
   
@@ -19,6 +19,9 @@ class TripsController < ApplicationController
       format.json { render json: @trip }
     end
   end
+
+  FROM_PLACES_SESSION_KEY = 'trips_from_places'
+  TO_PLACES_SESSION_KEY = 'trips_to_places'
   
   def index
 
@@ -39,17 +42,37 @@ class TripsController < ApplicationController
     duration = TimeFilterHelper.time_filter_as_duration(@time_filter_type)
     
     if user_signed_in?
+<<<<<<< HEAD
       # limit trips to trips owned by the user unless an admin
       if current_user.has_role? :admin
         @trips = Trip.created_between(duration.first, duration.last).order("created_at DESC")
       else
         @trips = current_traveler.trips.created_between(duration.first, duration.last).order("created_at DESC")
       end
+||||||| merged common ancestors
+      # limit trips to trips owned by the user unless an admin
+      if current_user.has_role? :admin
+        @trips = Trip.created_between(duration.first, duration.last)
+      else
+        @trips = current_traveler.trips.created_between(duration.first, duration.last)
+      end
+=======
+      @trips = @traveler.trips.created_between(duration.first, duration.last).order("created_at DESC")
+>>>>>>> release-0.4
     else
+<<<<<<< HEAD
       redirect_to error_404_path
       return
+||||||| merged common ancestors
+      # TODO Workaround for now; it has to be a trip not owned by a user (but
+      # this is astill a security hole)
+      @trips = Trip.anonymous.created_between(duration.first, duration.last)
+=======
+      redirect_to error_404_path   
+      return 
+>>>>>>> release-0.4
     end
-
+ 
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trips }
@@ -57,6 +80,7 @@ class TripsController < ApplicationController
     
   end
 
+<<<<<<< HEAD
   # GET /trips/1
   # GET /trips/1.json
   def show
@@ -69,14 +93,48 @@ class TripsController < ApplicationController
       return
     end
       
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @trip }
-    end
-  end
-
+||||||| merged common ancestors
   # GET /trips/1
   # GET /trips/1.json
+  def show
+    
+=======
+  def unset_traveler
+
+    # set or update the traveler session key with the id of the traveler
+    set_traveler_id(nil)
+    # set the @traveler variable
+    get_traveler
+    
+    redirect_to root_path, :alert => "Assisting has been turned off."
+        
+  end
+
+  def set_traveler
+    
+    # set or update the traveler session key with the id of the traveler
+    set_traveler_id(params[:trip_proxy][:traveler])
+    # set the @traveler variable
+    get_traveler
+
+    @trip_proxy = TripProxy.new()
+    @trip_proxy.traveler = @traveler
+    # Set the default travel time/date to tomorrow plus 30 mins from now
+    travel_date = Time.now.tomorrow + 30.minutes
+    @trip_proxy.trip_date = travel_date.strftime("%m/%d/%Y")
+    @trip_proxy.trip_time = travel_date.strftime("%I:%M %P")
+
+>>>>>>> release-0.4
+    respond_to do |format|
+      format.html { render :action => 'new'}
+      format.json { render json: @trip }
+    end
+        
+  end
+  
+  # GET /trips/1
+  # GET /trips/1.json
+<<<<<<< HEAD
   def details
 
     # Make sure that we don't throw nil object errors    
@@ -85,10 +143,18 @@ class TripsController < ApplicationController
       return
     end
 
+||||||| merged common ancestors
+  def details
+    # TODO doesn't this need 
+=======
+  def show
+    
+>>>>>>> release-0.4
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trip }
     end
+<<<<<<< HEAD
   end
 
   # called when the user wants to hide an option. Invoked via
@@ -112,17 +178,39 @@ class TripsController < ApplicationController
       end
     end
   end
+||||||| merged common ancestors
+  end
 
-  def unhide_all
-    @trip.hidden_itineraries.each do |i|
-      i.unhide
+  # called when the user wants to hide an option. Invoked via
+  # an ajax call
+  def hide
+
+    # limit itineraries to only those related to trps owned by the user
+    itinerary = Itinerary.find(params[:id])
+    if itinerary.trip.owner != current_traveler
+      render text: 'Unable to remove itinerary.', status: 500
+      return
     end
-    redirect_to @trip    
+
+    respond_to do |format|
+      if itinerary
+        @trip = itinerary.trip
+        itinerary.hide
+        format.js # hide.js.haml
+      else
+        render text: 'Unable to remove itinerary.', status: 500
+      end
+    end
+  end
+=======
+>>>>>>> release-0.4
+
   end
 
   # GET /trips/new
   # GET /trips/new.json
   def new
+<<<<<<< HEAD
     @trip = Trip.new
     # TODO User might be different if we are an agent
     @trip.owner = current_traveler || anonymous_user
@@ -133,35 +221,100 @@ class TripsController < ApplicationController
     @trip.trip_date = travel_date.strftime("%m/%d/%Y")
     @trip.trip_time = travel_date.strftime("%l:%M %P").strip
 
+||||||| merged common ancestors
+    @trip = Trip.new
+    # TODO User might be different if we are an agent
+    @trip.owner = current_traveler || anonymous_user
+    @trip.build_from_place(sequence: 0)
+    @trip.build_to_place(sequence: 1)
+
+=======
+    
+    @trip_proxy = TripProxy.new()
+    @trip_proxy.traveler = @traveler
+    # Set the default travel time/date to tomorrow plus 30 mins from now
+    travel_date = Time.now.tomorrow + 30.minutes
+    @trip_proxy.trip_date = travel_date.strftime("%m/%d/%Y")
+    @trip_proxy.trip_time = travel_date.strftime("%I:%M %P")
+    @markers = []
+    
+>>>>>>> release-0.4
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @trip }
+      format.json { render json: @trip_proxy }
     end
   end
 
   # POST /trips
   # POST /trips.json
   def create
-    params[:trip][:owner] = current_traveler || anonymous_user
-    @trip = Trip.new(params[:trip])
+    
+    @trip_proxy = TripProxy.new(params[:trip_proxy])
+    @trip_proxy.traveler = @traveler
+    
+    # see if we have selected addresses or not. If not we need to geocode and check
+    # to see if multiple addresses are available. The alternate addresses are stored
+    # back in the proxy object
+    complete = true
+    geocoder = OneclickGeocoder.new
+    if @trip_proxy.from_place_selected.blank?
+      # make sure there is something to geocode
+      unless @trip_proxy.from_place.blank?
+        geocoder.geocode(@trip_proxy.from_place)
+        # store the results in the session
+        session[FROM_PLACES_SESSION_KEY] = encode(geocoder.results)
+        @trip_proxy.from_place_results = geocoder.results
+        if @trip_proxy.from_place_results.count == 1
+          @trip_proxy.from_place_selected = 0
+        else
+          # the user needs to select one of the alternatives
+          complete = false
+        end
+      else
+        complete = false
+      end
+    end
+    
+    if @trip_proxy.to_place_selected.blank?
+      # make sure there is something to geocode
+      unless @trip_proxy.to_place.blank?
+        geocoder.geocode(@trip_proxy.to_place)
+        # store the results in the session
+        session[TO_PLACES_SESSION_KEY] = encode(geocoder.results)
+        @trip_proxy.to_place_results = geocoder.results
+        if @trip_proxy.to_place_results.count == 1
+          @trip_proxy.to_place_selected = 0
+        else
+          # the user needs to select one of the alternatives
+          complete = false
+        end
+      else
+        complete = false
+      end
+    end
+   
+    if complete
+      if user_signed_in?
+        @trip = create_authenticated_trip(@trip_proxy)
+      else
+        @trip = create_anonymous_trip(@trip_proxy)
+      end
+    end
 
     respond_to do |format|
-      if @trip.save
-        @trip.reload
-        @trip.create_itineraries
-        unless @trip.has_valid_itineraries?
-          message = t(:trip_created_no_valid_options)
-          details = @trip.itineraries.collect do |i|
-            "<li>%s (%s)</li>" % [i.message, i.status]
-          end
-          message = message + '<ol>' + details.join + '</ol>'
-          flash[:error] = message.html_safe
+      if @trip
+        if @trip.save
+          @trip.reload
+          @planned_trip = @trip.planned_trips.first
+          @planned_trip.create_itineraries
+          format.html { redirect_to user_planned_trip_path(@traveler, @planned_trip) }
+          format.json { render json: @planned_trip, status: :created, location: @planned_trip }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
-        format.html { redirect_to @trip }
-        format.json { render json: @trip, status: :created, location: @trip }
       else
-        format.html { render action: "new" }
-        format.json { render json: @trip.errors, status: :unprocessable_entity }
+          format.html { render action: "new", flash[:alert] => "One or more addresses need to be fxed." }
       end
     end
   end
@@ -174,13 +327,137 @@ protected
       if current_user.has_role? :admin
         @trip = Trip.find(params[:id])
       else
-        @trip = current_traveler.trips.find(params[:id])
+        @trip = @traveler.trips.find(params[:id])
       end
-    else
-      # TODO Workaround for now; it has to be a trip not owned by a user (but
-      # this is potentially still a security hole)
-      @trip = Trip.find_by_id_and_user_id(params[:id], nil)
     end
-    Rails.logger.info "End get trip"
   end
+
+private
+
+  def encode(addresses)
+    a = []
+    addresses.each do |addr|
+      a << {
+        :address => addr[:street_address],
+        :lat => addr[:lat],
+        :lon => addr[:lon]
+      }
+    end
+    return a
+  end
+  
+  def create_authenticated_trip(trip_proxy)
+
+    trip = Trip.new()
+    trip.creator = current_user
+    trip.user = @traveler
+        
+    # get the places from the proxy
+    from_place = TripPlace.new()
+    from_place.sequence = 0
+    from_address_or_place_name = trip_proxy.from_place[:raw_address]
+    myplace = @traveler.places.find_by_name(from_address_or_place_name)
+    if myplace
+      from_place.place = myplace
+    else
+      from_place.raw_address = from_address_or_place_name
+      from_place.geocode
+    end
+    to_place = TripPlace.new()
+    to_place.sequence = 1
+    to_address_or_place_name = trip_proxy.to_place[:raw_address]
+    myplace = @traveler.places.find_by_name(to_address_or_place_name)
+    if myplace
+      to_place.place = myplace
+    else
+      to_place.raw_address = to_address_or_place_name
+      to_place.geocode
+    end
+    trip.trip_places << from_place
+    trip.trip_places << to_place
+
+    planned_trip = PlannedTrip.new
+    planned_trip.trip = trip
+    planned_trip.creator = trip.creator
+    planned_trip.is_depart = trip_proxy.arrive_depart == 'arrive_by' ? false : true
+    planned_trip.trip_datetime = trip_proxy.trip_datetime
+    planned_trip.trip_status = TripStatus.find(1)    
+    
+    trip.planned_trips << planned_trip
+    
+    return trip
+  end
+
+  def create_anonymous_trip(trip_proxy)
+
+    trip = Trip.new()
+    trip.creator = current_or_guest_user
+    trip.user = current_or_guest_user
+        
+    # get the from place from the proxy
+    selected_id = trip_proxy.from_place_selected.to_i
+    address = session[FROM_PLACES_SESSION_KEY][selected_id]
+   
+    puts address.inspect
+    
+    from_place = TripPlace.new()
+    from_place.sequence = 0
+    # the address format comes from the oneclick geocoder
+    from_place.raw_address = address[:address]
+    from_place.lat = address[:lat]
+    from_place.lon = address[:lon]  
+
+    # get the to place from the proxy
+    selected_id = trip_proxy.to_place_selected.to_i
+    address = session[TO_PLACES_SESSION_KEY][selected_id]
+
+    puts address.inspect
+
+    to_place = TripPlace.new()
+    to_place.sequence = 1
+    # the address format comes from the oneclick geocoder
+    to_place.raw_address = address[:address]
+    to_place.lat = address[:lat]
+    to_place.lon = address[:lon]    
+        
+    # add the places to the trip
+    trip.trip_places << from_place
+    trip.trip_places << to_place
+
+    planned_trip = PlannedTrip.new
+    planned_trip.trip = trip
+    planned_trip.creator = trip.creator
+    planned_trip.is_depart = trip_proxy.arrive_depart == 'arrive_by' ? false : true
+    planned_trip.trip_datetime = trip_proxy.trip_datetime
+    planned_trip.trip_status = TripStatus.find(1)    
+    
+    trip.planned_trips << planned_trip
+
+    return trip
+    
+  end
+  #
+  # generate an array of map markers for use with the leaflet plugin
+  #
+  def generate_map_markers(addresses)
+    objs = []
+    addresses.each do |addr|
+      objs << get_map_marker(addr)
+    end
+    return objs.to_json
+  end
+
+  # create an place map marker
+  def get_map_marker(addr)
+    {
+      "id" => addr.id,
+      "lat" => addr.lat,
+      "lng" => addr.lon,
+      "name" => addr.name,
+      "iconClass" => 'greenIcon',
+      "title" => addr.formatted_address,
+      "description" => render_to_string(:partial => "/trips/address_popup", :locals => { :address => addr })
+    }
+  end
+
 end

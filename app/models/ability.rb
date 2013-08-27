@@ -9,8 +9,8 @@ class Ability
       can [:index], :admin
       
     else
-      can [:read, :create, :update, :destroy], [Trip, UserPlace], :user_id => user.id 
-      can :manage, BuddyRelationship, :user_id => user.id
+      can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
+      #can :manage, BuddyRelationship, :user_id => user.id
       can :manage, User, :id => user.id
     end
 

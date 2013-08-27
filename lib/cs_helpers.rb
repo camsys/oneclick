@@ -20,10 +20,6 @@ module CsHelpers
     Rails.application.config.brand
   end
 
-  def anonymous_user
-    User.new
-  end
-
   def assisting?
     session.include? :assisting
   end

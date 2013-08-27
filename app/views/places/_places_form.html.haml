@@ -1,0 +1,138 @@
+.row-fluid
+  .thumbnail.span12{style: 'overflow-y: auto;'}
+    .tabbable.span12
+      %ul.nav.nav-tabs
+        %li.active
+          = link_to "Address", "#tab1", :data => {:toggle => "tab"} 
+        %li
+          = link_to "Place", "#tab2", :data => {:toggle => "tab"}
+      .tab-content
+        #tab1.tab-pane.active
+          = render 'address_form'    
+        #tab2.tab-pane    
+          = render 'poi_form'    
+
+.row-fluid#name_div
+  .span12
+    %h6= "Enter a new name for this place"
+  .row-fluid
+    .thumbnail.span12
+      = form_for :place, :url => change_user_places_path(@traveler), :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
+        = f.hidden_field :id, :id => "id_field"
+        = f.text_field :name, :class => "span12", :style => "margin-bottom: 10px;", :id => "name_field"
+        = button_tag :type => 'submit', :class => "btn btn-block btn-success" do
+          %i.icon.icon-edit Update
+        = button_tag :type => 'cancel', :class => "btn btn-block btn-warn" do
+          %i.icon.icon-remove Cancel
+      
+.row-fluid
+  .span12
+    %h6= "Found #{@places.count} " + "place".pluralize(@places.count) + " in your address book"
+
+.row-fluid
+  .thumbnail.span12{style: 'height: 300px; overflow-y: auto;'}
+    .span12
+      %table.table.table-hover#my_places
+        - @places.each do |place|
+          %tr{ :data => { :place_id => place.id } }
+            %td
+              %strong= place
+              %br
+              %em= place.address
+            %td{:style => "white-space:nowrap;"}
+              = link_to "#", :class => "btn btn-mini btn-warning" do
+                %i.icon.icon-edit{:data => {:name => place.name, :id => place.id}}
+              = link_to user_place_path(@traveler, place), :class => "btn btn-mini btn-danger", :method => :delete, :confirm => "Are you sure ?" do
+                %i.icon.icon-remove
+                
+    
+:javascript  
+  // Hide the name editing div on page load
+  $(document).ready(function(){
+    $('#name_div').hide();
+  });
+  // Prepoulate the editing form and show it if the user clicks an
+  // edit button in the table
+  $('a [data-name]').click(function(e) {
+    var id = $(this).data('id');
+    var name = $(this).data('name');
+    // Set the name and id into the form text area
+    $('#name_field').val(name);
+    $('#id_field').val(id);
+    // Show the editing div
+    $('#name_div').show();
+  });
+  // Install a hover event handler for table rows. When hovering,
+  // the map icon is panned to and the popup shown
+  $('#my_places tr').click(function() {
+    var elem_id = $(this).data('place-id');
+    selectMarkerById(elem_id);
+  });
+
+  // Store any changes in the poi type selector
+  $('#poi_selector').change(function() {
+    var id = $(this).children(":selected").attr("value");  
+    $('#poi_type_id_field').attr('value', id);
+  });
+  // Enable typeahead for the places forms
+  $('#poi_typeahead').typeahead({
+      items: 20,
+      source: function(query, process) {
+          return $.ajax({
+              url: $('#poi_typeahead').data('link'),
+              type: 'get',
+              data: {
+                query: query,
+                poi_type_id: $('#poi_type_id_field').val()
+              },
+              dataType: 'json',
+              success: function(result) {
+
+                var resultList = result.map(function (item) {
+                    var aItem = { id: item.id, name: item.name, lat: item.lat, lon: item.lon, addr: item.address };
+                    return JSON.stringify(aItem);
+                });
+
+                return process(resultList);
+              }
+          });
+      },
+    matcher: function (obj) {
+        var item = JSON.parse(obj);
+        return ~item.name.toLowerCase().indexOf(this.query.toLowerCase())
+    },
+
+    sorter: function (items) {          
+       var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
+        while (aItem = items.shift()) {
+            var item = JSON.parse(aItem);
+            if (!item.name.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(JSON.stringify(item));
+            else if (~item.name.indexOf(this.query)) caseSensitive.push(JSON.stringify(item));
+            else caseInsensitive.push(JSON.stringify(item));
+        }
+
+        return beginswith.concat(caseSensitive, caseInsensitive)
+
+    },
+
+
+    highlighter: function (obj) {
+        var item = JSON.parse(obj);
+        var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
+        return item.name.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+            return '<strong>' + match + '</strong>'
+        })
+    },
+
+    updater: function (obj) {
+        var item = JSON.parse(obj);
+        clear_candidate_address_markers();
+        marker = createMarker(item.id, item.lat, item.lon, 'purpleIcon', item.name, item.addr, true);
+        address_candidate_markers.push(marker);
+        addMarkerToMap(marker);
+        selectMarker(marker);
+        $('#poi_id_field').attr('value', item.id);
+        return item.name;
+    }  
+  });  
+  

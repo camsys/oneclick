@@ -18,8 +18,8 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def edit
-    @buddy_relationship = BuddyRelationship.new
-    super
+    @user_relationship = UserRelationship.new
+    super    
   end
 
 end 

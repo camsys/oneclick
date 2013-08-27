@@ -10,35 +10,57 @@ Oneclick::Application.routes.draw do
     devise_for :users, controllers: {registrations: "registrations"}
 
     resources :admins, :only => [:index]
-    
-    resources :users do
-      resources :reports, :only => [:index, :show]
-      resources :buddies
-      resources :travelers
-      resources :buddy_relationships do
-        member do
-          get 'revoke'
-        end
-      end
-      resources :traveler_relationships do
-        member do
-          get 'accept'
-          get 'decline'
-          get 'assist'
-          get 'desist'
-        end
-      end
-    end
-    
-    resources :trips, only: [:new, :create, :show, :index] do
-      member do
-        get 'hide'
-        get 'unhide_all'
-        get 'details'
-        post 'email'
-      end
-    end
 
+    resources :reports, :only => [:index, :show]
+    
+    # everything comes under a user id
+    resources :users do
+      member do
+        get   'profile'
+        post  'update'
+      end
+
+      # user relationships
+      resources :user_relationships, :only => [:new, :create] do
+        member do
+          get   'traveler_retract'
+          get   'traveler_revoke'
+          get   'traveler_hide'
+          get   'delegate_accept'
+          get   'delegate_decline'
+          get   'delegate_revoke'
+        end
+      end
+
+      # users have places
+      resources :places, :only => [:index, :new, :create, :destroy] do
+        collection do
+          post  'add_place'
+          post  'add_poi'
+          post  'change'
+          get   'search'
+        end
+      end
+      
+      # users have trips
+      resources :trips, :only => [:index, :new, :create, :destroy] do
+        collection do
+          post  'set_traveler'
+          get   'unset_traveler'
+        end
+      end
+
+      # users have planned trips
+      resources :planned_trips, :only => [:show] do
+        member do
+          get   'details'
+          post  'email'
+          get   'hide'
+          get   'unhide_all'
+        end
+      end      
+    end
+    
     match '/' => 'home#index'
 
     match '/404' => 'errors#error_404', as: 'error_404'

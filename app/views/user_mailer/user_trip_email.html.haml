@@ -5,13 +5,13 @@
 %table
   %tr
     %td From
-    %td= @trip.places.first.nongeocoded_address
+    %td= @planned_trip.trip.from_place.to_s
   %tr
     %td To
-    %td= @trip.places.last.nongeocoded_address
+    %td= @planned_trip.trip.to_place.to_s
   %tr
     %td At
-    %td= format_date_time(@trip.trip_datetime) 
+    %td= format_date_time(@planned_trip.trip_datetime) 
 
 %hr
 
@@ -27,7 +27,7 @@
       %th Walk Dist                
       %th Cost
   %tbody
-    - @trip.valid_itineraries.each do |itin|
+    - @planned_trip.valid_itineraries.each do |itin|
       %tr
         %td= itin.mode
         %td= format_date_time(itin.start_time)
