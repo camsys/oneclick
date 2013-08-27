@@ -53,6 +53,11 @@
                     = link_to new_user_session_path do
                       %i.icon.icon-key
                       = t(:log_in) 
+                  %li.divider.text-edit
+                  %li
+                    = link_to new_user_registration_path do
+                      %i.icon.icon-edit
+                      = t(:create_an_account) 
 
             = link_to error_501_path, id: 'help' do
               %i.icon.icon-question-sign
