@@ -29,6 +29,7 @@ class OneclickGeocoder
     rescue Exception => e
       @errors << e.message
     end
+    @errors.empty?
   end
 
   def geocode(raw_address)
@@ -38,13 +39,13 @@ class OneclickGeocoder
     if raw_address.blank?
       return @results
     end
-    #TODO add error management here
     begin
       res = Geocoder.search(@raw_address, sensor: @sensor, components: @components, bounds: @bounds)
       process_results(res)
     rescue Exception => e
       @errors << e.message
     end
+    @errors.empty?
   end
   
 protected
