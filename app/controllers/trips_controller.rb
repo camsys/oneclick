@@ -120,6 +120,7 @@ class TripsController < TravelerAwareController
         @trip_proxy.from_place_results = geocoder.results
         if @trip_proxy.from_place_results.count == 1
           @trip_proxy.from_place_selected = 0
+          @trip_proxy.from_place_selected_type = 0
         else
           # the user needs to select one of the alternatives
           @trip_proxy.errors.add :from_place, "Alternate places found."
@@ -133,6 +134,7 @@ class TripsController < TravelerAwareController
         @trip_proxy.to_place_results = geocoder.results
         if @trip_proxy.to_place_results.count == 1
           @trip_proxy.to_place_selected = 0
+          @trip_proxy.to_place_selected_type = 0
         else
           # the user needs to select one of the alternatives
           @trip_proxy.errors.add :to_place, "Alternate places found."
