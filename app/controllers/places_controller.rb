@@ -19,19 +19,24 @@ class PlacesController < TravelerAwareController
   # called when a user adds a new poi
   def add_poi
 
-    poi = Poi.find(params[:poi_proxy][:poi_id])
-
-    place = Place.new
-    place.user = @traveler
-    place.creator = current_user
-    place.poi = poi
-    place.name = poi.name
-
-    place.active = true
-    if place.save
-      flash[:notice] = "#{place.name} has been added to your address book."
+    poi_proxy = PoiProxy.new(params[:poi_proxy])
+    if poi_proxy.valid?
+      poi = Poi.find(poi_proxy.poi_id)
+  
+      place = Place.new
+      place.user = @traveler
+      place.creator = current_user
+      place.poi = poi
+      place.name = poi.name
+  
+      place.active = true
+      if place.save
+        flash[:notice] = "#{place.name} has been added to your address book."
+      else
+        flash[:alert] = "An error occurred adding #{place.name} to your address book."
+      end
     else
-      flash[:alert] = "An error occurred adding #{place.name} to your address book."
+      flash[:alert] = "You must select a point of interest."
     end
     redirect_to user_places_path(@traveler)
 
