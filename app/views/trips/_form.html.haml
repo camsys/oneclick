@@ -14,7 +14,7 @@
         .controls.controls-row
           - if user_signed_in?
             .input-append.span12
-              = f.text_field :from_place, :id => "from_address", :class => "span11", :placeholder => t(:select_or_enter_address)
+              = f.text_field :from_place, :id => "from_address", :class => "span11", :placeholder => t(:select_or_enter_address), :autofocus => "autofocus"
               %span.dropdown
                 %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}>
                   %span.caret
@@ -24,7 +24,7 @@
                       %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.lat, p.lon], :type => "from"}}
                         = p.name          
           - else
-            = f.text_field :from_place, :class => "span12", :placeholder => t(:enter_address)
+            = f.text_field :from_place, :class => "span12", :placeholder => t(:enter_address), :autofocus => "autofocus"
 
           = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.from_place_results, :type => "from"} unless @trip_proxy.from_place.blank? || @trip_proxy.from_place_selected_type == "1"
           

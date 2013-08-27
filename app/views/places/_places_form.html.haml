@@ -3,9 +3,9 @@
     .tabbable.span12
       %ul.nav.nav-tabs
         %li.active
-          = link_to "Address", "#tab1", :data => {:toggle => "tab"} 
+          = link_to "Address", "#tab1", :data => {:toggle => "tab", :id => 1} 
         %li
-          = link_to "Place", "#tab2", :data => {:toggle => "tab"}
+          = link_to "Place", "#tab2", :data => {:toggle => "tab", :id => 2}
       .tab-content
         #tab1.tab-pane.active
           = render 'address_form'    
@@ -51,7 +51,7 @@
   $(document).ready(function(){
     $('#name_div').hide();
   });
-  // Prepoulate the editing form and show it if the user clicks an
+  // Prepopulate the editing form and show it if the user clicks an
   // edit button in the table
   $('a [data-name]').click(function(e) {
     var id = $(this).data('id');
@@ -69,6 +69,17 @@
     selectMarkerById(elem_id);
   });
 
+  // install an event handler to set the form focus when the user
+  // switches tabs
+  $('a[data-toggle="tab"]').on('shown', function (e) {
+    var id = $(e.target).data('id');
+    if (id == 1) {
+      $('#place_proxy_raw_address').focus();
+    } else {
+      $('#poi_selector').focus();    
+    }
+  });
+  
   // Store any changes in the poi type selector
   $('#poi_selector').change(function() {
     var id = $(this).children(":selected").attr("value");  
