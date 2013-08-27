@@ -275,6 +275,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  activemodel
   awesome_print
   better_errors
   binding_of_caller
