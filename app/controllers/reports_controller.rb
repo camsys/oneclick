@@ -1,5 +1,8 @@
 class ReportsController < ApplicationController
   
+  # load the cancan authorizations
+  load_and_authorize_resource  
+  
   TIME_FILTER_TYPE_SESSION_KEY = 'reports_time_filter_type'
   
   def index
