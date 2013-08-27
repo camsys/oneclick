@@ -79,7 +79,6 @@ users.each do |user|
   up.save!
   places.each do |place|
     p = Place.new(place)
-    p.geocode
     u.places << p
     begin
       u.save!
