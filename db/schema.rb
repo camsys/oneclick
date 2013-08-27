@@ -101,6 +101,15 @@ ActiveRecord::Schema.define(:version => 20130826172148) do
     t.string "description"
   end
 
+  create_table "properties", :force => true do |t|
+    t.string   "category"
+    t.string   "name"
+    t.string   "value"
+    t.integer  "sort_order"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "providers", :force => true do |t|
     t.string  "name",        :limit => 64,                   :null => false
     t.string  "contact",     :limit => 64
@@ -110,15 +119,6 @@ ActiveRecord::Schema.define(:version => 20130826172148) do
 
   create_table "relationship_statuses", :force => true do |t|
     t.string "name", :limit => 64
-  end
-
-  create_table "properties", :force => true do |t|
-    t.string   "category"
-    t.string   "name"
-    t.string   "value"
-    t.integer  "sort_order"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
   end
 
   create_table "reports", :force => true do |t|

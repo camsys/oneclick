@@ -42,35 +42,15 @@ class TripsController < TravelerAwareController
     duration = TimeFilterHelper.time_filter_as_duration(@time_filter_type)
     
     if user_signed_in?
-<<<<<<< HEAD
       # limit trips to trips owned by the user unless an admin
       if current_user.has_role? :admin
         @trips = Trip.created_between(duration.first, duration.last).order("created_at DESC")
       else
         @trips = current_traveler.trips.created_between(duration.first, duration.last).order("created_at DESC")
       end
-||||||| merged common ancestors
-      # limit trips to trips owned by the user unless an admin
-      if current_user.has_role? :admin
-        @trips = Trip.created_between(duration.first, duration.last)
-      else
-        @trips = current_traveler.trips.created_between(duration.first, duration.last)
-      end
-=======
-      @trips = @traveler.trips.created_between(duration.first, duration.last).order("created_at DESC")
->>>>>>> release-0.4
     else
-<<<<<<< HEAD
-      redirect_to error_404_path
-      return
-||||||| merged common ancestors
-      # TODO Workaround for now; it has to be a trip not owned by a user (but
-      # this is astill a security hole)
-      @trips = Trip.anonymous.created_between(duration.first, duration.last)
-=======
       redirect_to error_404_path   
       return 
->>>>>>> release-0.4
     end
  
     respond_to do |format|
@@ -80,25 +60,6 @@ class TripsController < TravelerAwareController
     
   end
 
-<<<<<<< HEAD
-  # GET /trips/1
-  # GET /trips/1.json
-  def show
-
-    set_no_cache
-
-    # Make sure that we don't throw nil object errors    
-    if @trip.nil?
-      redirect_to error_404_path
-      return
-    end
-      
-||||||| merged common ancestors
-  # GET /trips/1
-  # GET /trips/1.json
-  def show
-    
-=======
   def unset_traveler
 
     # set or update the traveler session key with the id of the traveler
@@ -124,7 +85,6 @@ class TripsController < TravelerAwareController
     @trip_proxy.trip_date = travel_date.strftime("%m/%d/%Y")
     @trip_proxy.trip_time = travel_date.strftime("%I:%M %P")
 
->>>>>>> release-0.4
     respond_to do |format|
       format.html { render :action => 'new'}
       format.json { render json: @trip }
@@ -134,29 +94,17 @@ class TripsController < TravelerAwareController
   
   # GET /trips/1
   # GET /trips/1.json
-<<<<<<< HEAD
-  def details
-
-    # Make sure that we don't throw nil object errors    
-    if @trip.nil?
-      redirect_to error_404_path
-      return
-    end
-
-||||||| merged common ancestors
-  def details
-    # TODO doesn't this need 
-=======
   def show
-    
->>>>>>> release-0.4
+
+    set_no_cache
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trip }
     end
-<<<<<<< HEAD
-  end
 
+  end
+  
   # called when the user wants to hide an option. Invoked via
   # an ajax call
   def hide
@@ -178,57 +126,12 @@ class TripsController < TravelerAwareController
       end
     end
   end
-||||||| merged common ancestors
-  end
-
-  # called when the user wants to hide an option. Invoked via
-  # an ajax call
-  def hide
-
-    # limit itineraries to only those related to trps owned by the user
-    itinerary = Itinerary.find(params[:id])
-    if itinerary.trip.owner != current_traveler
-      render text: 'Unable to remove itinerary.', status: 500
-      return
-    end
-
-    respond_to do |format|
-      if itinerary
-        @trip = itinerary.trip
-        itinerary.hide
-        format.js # hide.js.haml
-      else
-        render text: 'Unable to remove itinerary.', status: 500
-      end
-    end
-  end
-=======
->>>>>>> release-0.4
 
   end
 
   # GET /trips/new
   # GET /trips/new.json
   def new
-<<<<<<< HEAD
-    @trip = Trip.new
-    # TODO User might be different if we are an agent
-    @trip.owner = current_traveler || anonymous_user
-    @trip.build_from_place(sequence: 0)
-    @trip.build_to_place(sequence: 1)
-    # Default the trip date/time to now, for now
-    travel_date = Time.now.in_time_zone.next_interval(30.minutes)
-    @trip.trip_date = travel_date.strftime("%m/%d/%Y")
-    @trip.trip_time = travel_date.strftime("%l:%M %P").strip
-
-||||||| merged common ancestors
-    @trip = Trip.new
-    # TODO User might be different if we are an agent
-    @trip.owner = current_traveler || anonymous_user
-    @trip.build_from_place(sequence: 0)
-    @trip.build_to_place(sequence: 1)
-
-=======
     
     @trip_proxy = TripProxy.new()
     @trip_proxy.traveler = @traveler
@@ -238,7 +141,6 @@ class TripsController < TravelerAwareController
     @trip_proxy.trip_time = travel_date.strftime("%I:%M %P")
     @markers = []
     
->>>>>>> release-0.4
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @trip_proxy }
