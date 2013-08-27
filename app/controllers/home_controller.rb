@@ -5,7 +5,7 @@ class HomeController < TravelerAwareController
     if user_signed_in?
       @actions += [
         {label: t(:plan_a_trip), target: new_user_trip_path(@traveler), icon: ACTION_ICONS[:plan_a_trip]},
-        {label: t(:travel_profile), target: edit_user_registration_path(@traveler), icon: ACTION_ICONS[:travel_profile]},
+        {label: t(:travel_profile), target: edit_user_registration_path, icon: ACTION_ICONS[:travel_profile]},
         {label: t(:previous_trips), target: user_trips_path(@traveler), icon: ACTION_ICONS[:previous_trips]},
       ]
     else
