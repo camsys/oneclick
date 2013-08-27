@@ -1,26 +1,7 @@
 require 'spec_helper'
 
 describe Trip do
-  before(:each) do
-    I18n.locale = :en
-    allow(Geocoder).to(receive(:search)) do |nongeocoded_address|
-      [
-        {
-          'data' => {
-            'geometry' => {
-              'location' => {
-                'lat' => 1.0,
-                'lng' => 2.0
-              }
-              },
-              'formatted_address' => 'returned formatted_address'
-            }
-          }
-        ]
-      end
-    end
-
-    describe "itineraries" do
+     describe "itineraries" do
       it "should be populated with itineraries" do
         trip = FactoryGirl.create(:trip_with_places)
         test_itineraries = [{'legs'=>'example leg'}]

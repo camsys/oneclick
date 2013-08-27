@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130822180917) do
+ActiveRecord::Schema.define(:version => 20130826172148) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -50,9 +50,9 @@ ActiveRecord::Schema.define(:version => 20130822180917) do
   end
 
   create_table "places", :force => true do |t|
-    t.integer  "user_id",                    :null => false
+    t.integer  "user_id",                                      :null => false
     t.integer  "creator_id"
-    t.string   "name",        :limit => 64,  :null => false
+    t.string   "name",        :limit => 64,                    :null => false
     t.integer  "poi_id"
     t.string   "raw_address"
     t.string   "address1",    :limit => 128
@@ -62,8 +62,9 @@ ActiveRecord::Schema.define(:version => 20130822180917) do
     t.string   "zip",         :limit => 10
     t.float    "lat"
     t.float    "lon"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.boolean  "active",                     :default => true
   end
 
   create_table "planned_trips", :force => true do |t|
@@ -154,7 +155,7 @@ ActiveRecord::Schema.define(:version => 20130822180917) do
     t.string  "value",                 :limit => 64,                    :null => false
     t.boolean "requires_verification",               :default => false, :null => false
     t.boolean "active",                              :default => true,  :null => false
-    t.integer "value_relationship_id",                :default => 1,     :null => false
+    t.integer "value_relationship_id",               :default => 1,     :null => false
   end
 
   create_table "service_trip_purpose_maps", :force => true do |t|
