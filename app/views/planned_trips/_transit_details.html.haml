@@ -14,7 +14,7 @@
         %i.transit_itinerary_icons.mode_icon_formatting{class: Itinerary.get_mode_icon(leg['mode'])}
       %td
         .itinerary_text
-          %p= leg['mode'] + ' ' + leg['route'] + t(:to) + leg['to']['name']
+          %p= leg['mode'] + ' ' + leg['route'] + ' ' + t(:to) + ' ' + leg['to']['name']
         -if leg['mode'] == 'WALK'
           .itinerary_text_small
             =duration_to_words((leg['endTime'].to_i - leg['startTime'].to_i)/1000)
