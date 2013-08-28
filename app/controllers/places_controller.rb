@@ -20,6 +20,7 @@ class PlacesController < TravelerAwareController
   def add_poi
 
     poi_proxy = PoiProxy.new(params[:poi_proxy])
+    puts poi_proxy.inspect
     if poi_proxy.valid?
       poi = Poi.find(poi_proxy.poi_id)
   

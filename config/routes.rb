@@ -54,6 +54,8 @@ Oneclick::Application.routes.draw do
       resources :planned_trips, :only => [:show] do
         member do
           get   'details'
+          get   'map'
+          get   'itinerary'
           post  'email'
           get   'hide'
           get   'unhide_all'
