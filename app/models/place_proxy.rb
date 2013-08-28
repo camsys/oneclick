@@ -4,5 +4,12 @@ class PlaceProxy < Proxy
     
   validates :raw_address, :presence => true
   validates :name, :presence => true
+
+  def initialize(attrs = {})
+    super
+    attrs.each do |k, v|
+      self.send "#{k}=", v
+    end
+  end
             
 end
