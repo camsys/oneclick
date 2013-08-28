@@ -163,12 +163,15 @@ class TripsController < TravelerAwareController
         # store the results in the session
         session[FROM_PLACES_SESSION_KEY] = encode(geocoder.results)
         @trip_proxy.from_place_results = geocoder.results
-        if @trip_proxy.from_place_results.count == 1
+        if @trip_proxy.from_place_results.empty?
+          # the user needs to select one of the alternatives
+          @trip_proxy.errors.add :from_place, "No matching places found."
+        elsif @trip_proxy.from_place_results.count == 1
           @trip_proxy.from_place_selected = 0
-          @trip_proxy.from_place_selected_type = 0
+          @trip_proxy.from_place_selected_type = "0"
         else
           # the user needs to select one of the alternatives
-          @trip_proxy.errors.add :from_place, "Alternate places found."
+          @trip_proxy.errors.add :from_place, "Alternate candidate places found."
         end
       end
       # Do the same for the to place
@@ -177,12 +180,15 @@ class TripsController < TravelerAwareController
         # store the results in the session
         session[TO_PLACES_SESSION_KEY] = encode(geocoder.results)
         @trip_proxy.to_place_results = geocoder.results
-        if @trip_proxy.to_place_results.count == 1
+        if @trip_proxy.to_place_results.empty?
+          # the user needs to select one of the alternatives
+          @trip_proxy.errors.add :to_place, "No matching places found."
+        elsif @trip_proxy.to_place_results.count == 1
           @trip_proxy.to_place_selected = 0
-          @trip_proxy.to_place_selected_type = 0
+          @trip_proxy.to_place_selected_type = "0"
         else
           # the user needs to select one of the alternatives
-          @trip_proxy.errors.add :to_place, "Alternate places found."
+          @trip_proxy.errors.add :to_place, "Alternate candidate places found."
         end
       end
       # end of validation test
@@ -243,6 +249,8 @@ class TripsController < TravelerAwareController
   
   def create_authenticated_trip(trip_proxy)
 
+    puts trip_proxy.inspect
+    
     trip = Trip.new()
     trip.creator = current_user
     trip.user = @traveler
