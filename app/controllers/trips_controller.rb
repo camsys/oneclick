@@ -1,9 +1,25 @@
 class TripsController < TravelerAwareController
-  
+
   # set the @trip variable before any actions are invoked
   before_filter :get_trip, :only => [:show, :destroy]
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
+  
+  def email
+    Rails.logger.info "Begin email"
+    email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
+    Rails.logger.info email_addresses.inspect
+    email_addresses << current_user.email if user_signed_in?
+    email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
+    Rails.logger.info email_addresses.inspect
+    from_email = user_signed_in? ? current_user.email : params[:email][:from]
+    UserMailer.user_trip_email(email_addresses, @trip, t(:arc_oneclick_trip_itinerary), from_email).deliver
+    respond_to do |format|
+      format.html { redirect_to(@trip, :notice => t(:an_email_was_sent_to_email_addresses_join, addresses: email_addresses.join(', ') ) ) }
+      format.json { render json: @trip }
+    end
+  end
+
   FROM_PLACES_SESSION_KEY = 'trips_from_places'
   TO_PLACES_SESSION_KEY = 'trips_to_places'
   
@@ -13,8 +29,8 @@ class TripsController < TravelerAwareController
     if params[:time_filter_type]
       @time_filter_type = params[:time_filter_type]
     else
-       @time_filter_type = session[TIME_FILTER_TYPE_SESSION_KEY]
-    end
+     @time_filter_type = session[TIME_FILTER_TYPE_SESSION_KEY]
+   end
     # if it is still not set use the default
     if @time_filter_type.nil?
       @time_filter_type = "0"
@@ -26,12 +42,17 @@ class TripsController < TravelerAwareController
     duration = TimeFilterHelper.time_filter_as_duration(@time_filter_type)
     
     if user_signed_in?
-      @trips = @traveler.trips.created_between(duration.first, duration.last).order("created_at DESC")
+      # limit trips to trips owned by the user unless an admin
+      if current_user.has_role? :admin
+        @trips = Trip.created_between(duration.first, duration.last).order("created_at DESC")
+      else
+        @trips = current_traveler.trips.created_between(duration.first, duration.last).order("created_at DESC")
+      end
     else
       redirect_to error_404_path   
       return 
     end
- 
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trips }
@@ -47,11 +68,11 @@ class TripsController < TravelerAwareController
     get_traveler
     
     redirect_to root_path, :alert => "Assisting has been turned off."
-        
+
   end
 
   def set_traveler
-    
+
     # set or update the traveler session key with the id of the traveler
     set_traveler_id(params[:trip_proxy][:traveler])
     # set the @traveler variable
@@ -68,24 +89,48 @@ class TripsController < TravelerAwareController
       format.html { render :action => 'new'}
       format.json { render json: @trip }
     end
-        
+
   end
   
   # GET /trips/1
   # GET /trips/1.json
   def show
-    
+
+    set_no_cache
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trip }
     end
 
   end
+  
+  # called when the user wants to hide an option. Invoked via
+  # an ajax call
+  def hide
+
+    # limit itineraries to only those related to trps owned by the user
+    itinerary = Itinerary.find(params[:id])
+    if itinerary.trip.owner != current_traveler
+      render text: t(:unable_to_remove_itinerary), status: 500
+      return
+    end
+
+    respond_to do |format|
+      if itinerary
+        @trip = itinerary.trip
+        itinerary.hide
+        format.js # hide.js.haml
+      else
+        render text: t(:unable_to_remove_itinerary), status: 500
+      end
+    end
+  end
 
   # GET /trips/new
   # GET /trips/new.json
   def new
-    
+
     @trip_proxy = TripProxy.new()
     @trip_proxy.traveler = @traveler
     # Set the default travel time/date to tomorrow plus 30 mins from now
@@ -103,7 +148,7 @@ class TripsController < TravelerAwareController
   # POST /trips
   # POST /trips.json
   def create
-    
+
     @trip_proxy = TripProxy.new(params[:trip_proxy])
     @trip_proxy.traveler = @traveler
   
@@ -164,12 +209,12 @@ class TripsController < TravelerAwareController
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
       else
-          format.html { render action: "new", flash[:alert] => "One or more addresses need to be fixed." }
+        format.html { render action: "new", flash[:alert] => "One or more addresses need to be fixed." }
       end
     end
   end
 
-protected
+  protected
 
   def get_trip
     if user_signed_in?
@@ -182,7 +227,7 @@ protected
     end
   end
 
-private
+  private
 
   def encode(addresses)
     a = []
@@ -263,11 +308,11 @@ private
     trip = Trip.new()
     trip.creator = current_or_guest_user
     trip.user = current_or_guest_user
-        
+
     # get the from place from the proxy
     selected_id = trip_proxy.from_place_selected.to_i
     address = session[FROM_PLACES_SESSION_KEY][selected_id]
-   
+
     from_place = TripPlace.new()
     from_place.sequence = 0
     # the address format comes from the oneclick geocoder
@@ -285,7 +330,7 @@ private
     to_place.raw_address = address[:address]
     to_place.lat = address[:lat]
     to_place.lon = address[:lon]    
-        
+
     # add the places to the trip
     trip.trip_places << from_place
     trip.trip_places << to_place

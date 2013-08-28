@@ -61,10 +61,8 @@
     $(this).tab('show')
   })
   $('#buddies').on('ajax:success', function(e, response) {
-    console.log(response)
     $('#buddies').html(response)
   }) 
   $('#travelers').on('ajax:success', function(e, response) {
-    console.log(response)
     $('#travelers').html(response)
   }) 

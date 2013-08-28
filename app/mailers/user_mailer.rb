@@ -13,8 +13,7 @@ class UserMailer < ActionMailer::Base
     @to_email = to_email
     @from_email = from_email
     
-    # TODO localize
-    mail(to: @to_email, subject: "1-Click buddy request from #{@from_email}")
+    mail(to: @to_email, subject: t(:one_click_buddy_request_from_from_email, from_email: from_email))
   end
 
   def buddy_revoke_email(to_email, from_email)
