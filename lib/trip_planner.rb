@@ -111,13 +111,13 @@ class TripPlanner
 
   def convert_taxi_itineraries(itinerary)
     trip_itinerary = {}
-    trip_itinerary['mode'] = 'taxi'
+    trip_itinerary['mode'] = Mode.taxi
     trip_itinerary['duration'] = itinerary[0]['duration'].to_f
     trip_itinerary['walk_time'] = 0
     trip_itinerary['walk_distance'] = 0
     trip_itinerary['cost'] = itinerary[0]['total_fare']
-    trip_itinerary['status'] = 200
-    trip_itinerary['message'] = itinerary[1]['businesses']
+    trip_itinerary['server_status'] = 200
+    trip_itinerary['server_message'] = itinerary[1]['businesses']
     trip_itinerary
   end
 
