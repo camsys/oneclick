@@ -12,7 +12,7 @@
       = f.input :from_place, :wrapper => :append, :class => "inline span12" do
         = f.input_field :from_place, :id => "from_address", :autofocus => true, :autocomplete => "off"
         %span.dropdown
-          %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}>
+          %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}
             %span.caret
           %ul.dropdown-menu{:data => {:target => 'from_address'}}
             - @traveler.places.each do |p|
@@ -28,7 +28,7 @@
       = f.input :to_place, :wrapper => :append, :class => "inline span12" do
         = f.input_field :to_place, :id => "to_address", :autocomplete => "off"
         %span.dropdown
-          %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}>
+          %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}
             %span.caret
           %ul.dropdown-menu{:data => {:target => 'to_address'}}
             - @traveler.places.each do |p|
