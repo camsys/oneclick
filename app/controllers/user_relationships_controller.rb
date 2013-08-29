@@ -4,7 +4,7 @@ class UserRelationshipsController < ApplicationController
   
   # A traveler creates a new delegate (buddy) request
   def create
-    
+        
     email = params[:user_relationship][:email]
     # Lookup the delegate request by email
     delegate = User.find_by_email(email)
@@ -98,6 +98,9 @@ class UserRelationshipsController < ApplicationController
 private
   
   def set_view_variables
+    # these calls are ajaxed so we need to remove any existing flash messages
+    flash[:notice] = nil
+    flash[:alert] = nil
     @user_relationship = UserRelationship.new
   end
   
@@ -108,7 +111,7 @@ private
     if @delegate_relationship
       @delegate_relationship.relationship_status = new_status
       if @delegate_relationship.save
-        flash[:info] = "Database updated"
+        flash[:notice] = "Database updated"
       else
         flash[:alert] = "Unable to update the database."
       end       
@@ -124,7 +127,7 @@ private
       if @traveler_relationship.save
         # TODO: All emails should be sent from a worker thread not here!
         send_update_email(@traveler_relationship.delegate, @traveler_relationship.traveler, email_type)
-        flash[:info] = "Email sent!"
+        flash[:notice] = "Email sent!"
       else
         flash[:alert] = "Unable to send confirmation."
       end       
