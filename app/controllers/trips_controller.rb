@@ -6,22 +6,7 @@ class TripsController < TravelerAwareController
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
   FROM_PLACES_SESSION_KEY = 'trips_from_places'
   TO_PLACES_SESSION_KEY = 'trips_to_places'
-  
-  def email
-    Rails.logger.info "Begin email"
-    email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
-    Rails.logger.info email_addresses.inspect
-    email_addresses << current_user.email if user_signed_in?
-    email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
-    Rails.logger.info email_addresses.inspect
-    from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    UserMailer.user_trip_email(email_addresses, @trip, t(:arc_oneclick_trip_itinerary), from_email).deliver
-    respond_to do |format|
-      format.html { redirect_to(@trip, :notice => t(:an_email_was_sent_to_email_addresses_join, addresses: email_addresses.join(', ') ) ) }
-      format.json { render json: @trip }
-    end
-  end
-  
+    
   def index
 
     # params needed for the subnav filters
