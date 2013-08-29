@@ -1,16 +1,15 @@
 .row-fluid
   .thumbnail.span12{style: 'overflow-y: auto;'}
-    .tabbable.span12
-      %ul.nav.nav-tabs
-        %li.active
-          = link_to "Address", "#tab1", :data => {:toggle => "tab", :id => 1} 
-        %li
-          = link_to "Place", "#tab2", :data => {:toggle => "tab", :id => 2}
-      .tab-content
-        #tab1.tab-pane.active
-          = render 'address_form'    
-        #tab2.tab-pane    
-          = render 'poi_form'    
+    .span12
+      = form_for @place_proxy, :url => user_places_path, :remote => true, :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
+        = f.text_field :raw_address, :placeholder => "Type an address or name of a place...", :id => "poi_typeahead", :class => "span12 ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}, :style => "margin-top:10px;margin-bottom: 10px;", :autocomplete => "off"
+        = f.hidden_field :place_type_id, :id => "place_type_field"
+        = f.hidden_field :place_id, :id => "place_id_field"
+        = button_tag :type => 'submit', :class => "btn btn-block btn-primary" do
+          %i.icon.icon-search
+      #select_place
+        - render 'address_select'
+
 
 .row-fluid#name_div
   .span12
@@ -72,22 +71,7 @@
   $('#cancel_edit_button').click(function(e) {
     $('#name_div').hide();
   });
-  // install an event handler to set the form focus when the user
-  // switches tabs
-  $('a[data-toggle="tab"]').on('shown', function (e) {
-    var id = $(e.target).data('id');
-    if (id == 1) {
-      $('#place_proxy_raw_address').focus();
-    } else {
-      $('#poi_selector').focus();    
-    }
-  });
   
-  // Store any changes in the poi type selector
-  $('#poi_selector').change(function() {
-    var id = $(this).children(":selected").attr("value");  
-    $('#poi_type_id_field').attr('value', id);
-  });
   // Enable typeahead for the places forms
   $('#poi_typeahead').typeahead({
       items: 20,
@@ -96,14 +80,13 @@
               url: $('#poi_typeahead').data('link'),
               type: 'get',
               data: {
-                query: query,
-                poi_type_id: $('#poi_type_id_field').val()
+                query: query
               },
               dataType: 'json',
               success: function(result) {
 
                 var resultList = result.map(function (item) {
-                    var aItem = { id: item.id, name: item.name, lat: item.lat, lon: item.lon, addr: item.address };
+                    var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, lat: item.lat, lon: item.lon, addr: item.address };
                     return JSON.stringify(aItem);
                 });
 
@@ -145,7 +128,8 @@
         address_candidate_markers.push(marker);
         addMarkerToMap(marker);
         selectMarker(marker);
-        $('#poi_id_field').attr('value', item.id);
+        $('#place_type_field').attr('value', item.type);
+        $('#place_id_field').attr('value', item.id);
         return item.name;
     }  
   });  

@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   # Associations
   has_many :places, :conditions => ['active = ?', true] # 0 or more places, only active places are available
   has_many :trips                   # 0 or more trips
+  has_many :trip_places, :through => :trips
   has_one  :user_profile            # 1 user profile
   has_many :user_mode_preferences   # 0 or more user mode preferences
   has_many :user_roles

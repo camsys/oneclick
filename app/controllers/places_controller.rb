@@ -3,6 +3,10 @@ class PlacesController < TravelerAwareController
   # include the Leaflet helper into the controller and view
   helper LeafletHelper
 
+  POI_TYPE = "1"
+  CACHED_ADDRESS_TYPE = "2"
+  RAW_ADDRESS_TYPE = "3"
+  
   CACHED_ADDRESSES_SESSION_KEY = 'places_address_cache'
 
   # set the @traveler variable for actions that are not supported by teh super class controller
@@ -14,33 +18,6 @@ class PlacesController < TravelerAwareController
     @place_proxy = PlaceProxy.new
     @alternative_places = []
     @markers = generate_map_markers(@places)
-  end
-
-  # called when a user adds a new poi
-  def add_poi
-
-    poi_proxy = PoiProxy.new(params[:poi_proxy])
-    puts poi_proxy.inspect
-    if poi_proxy.valid?
-      poi = Poi.find(poi_proxy.poi_id)
-  
-      place = Place.new
-      place.user = @traveler
-      place.creator = current_user
-      place.poi = poi
-      place.name = poi.name
-  
-      place.active = true
-      if place.save
-        flash[:notice] = "#{place.name} has been added to your address book."
-      else
-        flash[:alert] = "An error occurred adding #{place.name} to your address book."
-      end
-    else
-      flash[:alert] = "You must select a point of interest."
-    end
-    redirect_to user_places_path(@traveler)
-
   end
 
   # Called when a user has selected a place
@@ -122,43 +99,98 @@ class PlacesController < TravelerAwareController
 
     place_proxy = PlaceProxy.new(params[:place_proxy])
 
-    # attempt to geocode this place
-    geocoder = OneclickGeocoder.new
-    geocoder.geocode(place_proxy.raw_address)
-    
-    # cache the results in the session
-    if geocoder.has_errors
-      session[CACHED_ADDRESSES_SESSION_KEY] = []
-      @alternative_places = []
+    # See if we got an existing address or POI
+    if place_proxy.place_id && place_proxy.place_type_id
+      # get this row from the database and add it to the table
+      if place_proxy.place_type_id == POI_TYPE
+        poi = Poi.find(place_proxy.place_type_id)
+        if poi
+          @place = Place.new
+          @place.user = @traveler
+          @place.creator = current_user
+          @place.poi = poi
+          @place.name = poi.name      
+          @place.active = true
+        end
+      elsif place_proxy.place_type_id == CACHED_ADDRESS_TYPE
+        trip_place = @traveler.trip_places.find(place_proxy.place_type_id)
+        if trip_place
+          @place = Place.new
+          @place.user = @traveler
+          @place.creator = current_user
+          @place.raw_address = trip_place.raw_address
+          @place.name = trip_place.raw_address 
+          @place.lat = trip_place.lat
+          @place.lon = trip_place.lon
+          @place.active = true
+        end
+      end
+      if @place.save
+        flash[:notice] = "#{place.name} has been added to your address book."
+      else
+        flash[:alert] = "An error occurred while updating your address book."
+      end
     else
-      session[CACHED_ADDRESSES_SESSION_KEY] = geocoder.results
-      @alternative_places = geocoder.results
+      # attempt to geocode this place
+      geocoder = OneclickGeocoder.new
+      geocoder.geocode(place_proxy.raw_address)
+      
+      # cache the results in the session
+      if geocoder.has_errors
+        session[CACHED_ADDRESSES_SESSION_KEY] = []
+        @alternative_places = []
+      else
+        session[CACHED_ADDRESSES_SESSION_KEY] = geocoder.results
+        @alternative_places = geocoder.results
+      end
     end
     respond_to do |format|
       format.js {render "show_geocoding_results"}
     end
-
   end
 
-  # Search for POIs based on a partial POI name
+  # Search for existing addresses or POIs based on a partial POI name
   def search
-
+    
+    get_traveler
+    
     query = params[:query]
-    poi_type_id = params[:poi_type_id]
-    if poi_type_id.blank?
-      pois = Poi.where("name LIKE ?", "%" + query + "%").limit(50)
-    else
-      pois = Poi.where("poi_type_id = ? AND name LIKE ?", poi_type_id, "%" + query + "%")
-    end
+    query_str = query + "%"
+    
+    counter = 0
+    
+    # First search for POIs
+    pois = Poi.where("name LIKE ?", query_str).limit(10)
     matches = []
     pois.each do |poi|
       matches << {
+        "index" => counter,
+        "type" => POI_TYPE,
         "name" => poi.name,
         "id" => poi.id,
         "lat" => poi.lat,
         "lon" => poi.lon,
         "address" => poi.address
       }
+      counter += 1
+    end
+    # now search for existing trip ends. We manually filter these to find unique addresses
+    tps = @traveler.trip_places.where("raw_address LIKE ?", query_str).order("raw_address")
+    old_addr = ""
+    tps.each do |tp|
+      if old_addr != tp.raw_address
+        matches << {
+          "index" => counter,
+          "type" => CACHED_ADDRESS_TYPE,
+          "name" => tp.raw_address,
+          "id" => tp.id,
+          "lat" => tp.lat,
+          "lon" => tp.lon,
+          "address" => tp.raw_address
+        }
+        counter += 1
+        old_addr = tp.raw_address
+      end      
     end
     respond_to do |format|
       format.js { render :json => matches.to_json }
