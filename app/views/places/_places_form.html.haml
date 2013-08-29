@@ -21,9 +21,9 @@
         = f.hidden_field :id, :id => "id_field"
         = f.text_field :name, :class => "span12", :style => "margin-bottom: 10px;", :id => "name_field"
         = button_tag :type => 'submit', :class => "btn btn-block btn-success" do
-          %i.icon.icon-edit Update
-        = button_tag :type => 'cancel', :class => "btn btn-block btn-warn" do
-          %i.icon.icon-remove Cancel
+          %i.icon.icon-edit &nbsp;Update
+        = button_tag :type => 'button', :id => "cancel_edit_button", :class => "btn btn-block btn-warn" do
+          %i.icon.icon-remove &nbsp;Cancel
       
 .row-fluid
   .span12
@@ -68,7 +68,10 @@
     var elem_id = $(this).data('place-id');
     selectMarkerById(elem_id);
   });
-
+  // Event handler to manage the cancel button when the user is in edit mode
+  $('#cancel_edit_button').click(function(e) {
+    $('#name_div').hide();
+  });
   // install an event handler to set the form focus when the user
   // switches tabs
   $('a[data-toggle="tab"]').on('shown', function (e) {
