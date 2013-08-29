@@ -20,13 +20,13 @@ class UserRelationshipsController < ApplicationController
         UserMailer.buddy_request_email(@delegate_relationship.delegate.email, @delegate_relationship.traveler.email).deliver
         @delegate_relationship.relationship_status = RelationshipStatus.pending
         @delegate_relationship.save
-        flash[:info] = "Buddy request sent!"
+        flash[:notice] = "Buddy request sent!"
       else
         flash[:alert] = "Unable to send request."
       end       
     else
       @delegate_relationship = UserRelationship.new
-      flash[:warn] = "No registered users with email address #{email}."       
+      flash[:alert] = "No registered users with email address #{email}."       
     end
 
     respond_to do |format|
