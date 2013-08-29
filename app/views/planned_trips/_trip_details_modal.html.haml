@@ -11,8 +11,18 @@
             =t(:remove)
   .modal-body
     = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
-
-    = render :partial => itinerary.mode.name.downcase + '_details', :locals => { :itinerary => itinerary }
+    .thumbnail
+      %ul.nav.nav-tabs
+        %li.active
+          = link_to "Details", "#details_tab", :data => {:toggle => "tab"}
+        %li
+          = link_to "Map", "#map_tab", :data => {:toggle => "tab"}
+        
+      .tab-content
+        #details_tab.tab-pane.active
+          = render :partial => itinerary.mode.name.downcase + '_details', :locals => { :itinerary => itinerary }
+        #map_tab.tab-pane
+          = render :partial => 'map_details', :locals => { :itinerary => itinerary }
 
   .modal-footer
     .row-fluid
@@ -28,3 +38,4 @@
             %i.icon-envelope
             =t(:e_mail)
                 
+= yield :scripts
