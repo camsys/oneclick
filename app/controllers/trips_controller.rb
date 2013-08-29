@@ -4,6 +4,8 @@ class TripsController < TravelerAwareController
   before_filter :get_trip, :only => [:show, :destroy]
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
+  FROM_PLACES_SESSION_KEY = 'trips_from_places'
+  TO_PLACES_SESSION_KEY = 'trips_to_places'
   
   def email
     Rails.logger.info "Begin email"
@@ -19,9 +21,6 @@ class TripsController < TravelerAwareController
       format.json { render json: @trip }
     end
   end
-
-  FROM_PLACES_SESSION_KEY = 'trips_from_places'
-  TO_PLACES_SESSION_KEY = 'trips_to_places'
   
   def index
 
@@ -137,7 +136,6 @@ class TripsController < TravelerAwareController
     travel_date = Time.now.tomorrow + 30.minutes
     @trip_proxy.trip_date = travel_date.strftime("%m/%d/%Y")
     @trip_proxy.trip_time = travel_date.strftime("%I:%M %P")
-    @markers = []
     
     respond_to do |format|
       format.html # new.html.erb
@@ -355,28 +353,4 @@ class TripsController < TravelerAwareController
     return trip
     
   end
-  #
-  # generate an array of map markers for use with the leaflet plugin
-  #
-  def generate_map_markers(addresses)
-    objs = []
-    addresses.each do |addr|
-      objs << get_map_marker(addr)
-    end
-    return objs.to_json
-  end
-
-  # create an place map marker
-  def get_map_marker(addr)
-    {
-      "id" => addr.id,
-      "lat" => addr.lat,
-      "lng" => addr.lon,
-      "name" => addr.name,
-      "iconClass" => 'greenIcon',
-      "title" => addr.formatted_address,
-      "description" => render_to_string(:partial => "/trips/address_popup", :locals => { :address => addr })
-    }
-  end
-
 end
