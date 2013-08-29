@@ -16,10 +16,10 @@ class Poi < ActiveRecord::Base
   end
   
   def address
-    if address1.blank?
-      reverse_geocode
-      self.save
-    end
+    #if address1.blank?
+    #  reverse_geocode
+    #  self.save
+    #end
     elems = []
     elems << address1 unless address1.blank?
     elems << address2 unless address2.blank?
