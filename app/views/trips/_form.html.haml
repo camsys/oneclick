@@ -2,7 +2,7 @@
   -if current_user  
     = render 'select_traveler_form' unless current_user.travelers.empty?
     
-  = simple_form_for @trip_proxy, :url => user_trips_path do |f|
+  = simple_form_for @trip_proxy, :url => user_trips_path, :html => {:class => "form-horizontal"} do |f| 
     = f.hidden_field :from_place_selected
     = f.hidden_field :to_place_selected
     = f.hidden_field :from_place_selected_type
@@ -54,7 +54,7 @@
         %span.add-on
           %i.icon-time
                 
-    .actions
+    .form-actions
       = button_tag :type => 'submit', :class => "btn btn-primary" do
         %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
         = t(:plan_it)
