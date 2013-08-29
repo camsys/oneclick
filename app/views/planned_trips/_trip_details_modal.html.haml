@@ -1,5 +1,5 @@
-%div{:class => "modal hide fade", :id => "transitDetails" + itinerary.id.to_s}
-  %div{:class => "modal-header"}
+.modal.hide.fade{:id => "transitDetails#{itinerary.id}"
+  .modal-header
     .row-fluid
       .pull-right{:style => "display: inline-block"}
         .span12.btn-toolbar
@@ -9,18 +9,12 @@
           =link_to hide_user_planned_trip_path(@traveler, @planned_trip, :itinerary => itinerary), {"data-dismiss" => "modal",  class: "btn btn-mini btn-danger", remote: true} do
             %i.icon-remove
             =t(:remove)
-      %div{:class => "modal-body"}
+  .modal-body
     = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
-    %div{:class => "container-fluid"}
-      %div{:class => "accordion", :id => "details" + itinerary.id.to_s}
-        %div{:class => "accordion-group"}
-          %div{:class => "accordion-heading"}
-            %a{:class => "accordion-toggle", "data-toggle" => "collapse", "data-parent" => "#details" + itinerary.id.to_s, :href => "#collapseOne" + itinerary.id.to_s}
-              %h4.text-center=t(:details)
-            %div{:class => "accordion-body collapse in", :id => "collapseOne" + itinerary.id.to_s}
-              %div{:class => "accordion-inner"}
-                = render :partial => itinerary.mode.name.downcase + '_details', :locals => { :itinerary => itinerary }
-  %div{:class => "modal-footer"}
+
+    = render :partial => itinerary.mode.name.downcase + '_details', :locals => { :itinerary => itinerary }
+
+  .modal-footer
     .row-fluid
       .pull-right{:style => "display: inline-block"}
         .span12.btn-toolbar
@@ -33,4 +27,4 @@
           %button.btn.btn-info
             %i.icon-envelope
             =t(:e_mail)
-            
+                
