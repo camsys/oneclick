@@ -1,7 +1,7 @@
 .span12
   = form_for :poi_proxy, :url => add_poi_user_places_path(@traveler), :html => {:class => 'form-horizontal', :style => "margin-bottom:10px;"}  do |f|
     = select_tag :poi_type, options_from_collection_for_select(PoiType.all, :id, :name), :prompt => 'Select type...', :class => "span12", :id => "poi_selector", :autofocus => "autofocus"
-    = f.text_field :name, :placeholder => "Type the name of a place...", :id => "poi_typeahead", :class => "span12 ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}, :style => "margin-top:10px;margin-bottom: 10px;"
+    = f.text_field :name, :placeholder => "Type the name of a place...", :id => "poi_typeahead", :class => "span12 ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}, :style => "margin-top:10px;margin-bottom: 10px;", :autocomplete => "off"
     = f.hidden_field :poi_id, :id => "poi_id_field"
     = f.hidden_field :poi_type_id, :id => "poi_type_id_field"
     = button_tag :type => 'submit', :class => "btn btn-block btn-primary" do
