@@ -59,20 +59,6 @@ class PlannedTripsController < TravelerAwareController
     end
   end
 
-  # GET /trips/1
-  # GET /trips/1.json
-  def map
-    
-    if @planned_trip
-      @itinerary = @planned_trip.valid_itineraries.first unless @planned_trip.valid_itineraries.empty?
-    end
-    
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @planned_trip }
-    end
-  end
-
   def itinerary
     @itinerary = @planned_trip.valid_itineraries.find(params[:itin])
     
