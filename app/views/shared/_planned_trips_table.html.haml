@@ -18,8 +18,9 @@
             %td.left= pt.creator.nil? ? "anonymous" : pt.creator.name            
             %td.left= pt.trip.from_place
             %td.left= pt.trip.to_place
-            %td.center= format_date_time(pt.created_at)
-            %td.center
+            %td.center{:style => "white-space:nowrap;"}
+              = format_date_time(pt.created_at)
+            %td.center{:style => "white-space:nowrap;"}
               = link_to user_planned_trip_path(pt.trip.user, pt, :show_hidden => 1), {class: "btn btn-mini btn-success text-center"} do
                 %i.icon-share-sign
                 = "Itinerary"

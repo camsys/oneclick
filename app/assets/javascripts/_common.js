@@ -1,5 +1,8 @@
+// Used to remove any existing banner messages
+function remove_messages() {
+	$('.alert').alert('close');
+};
 
-// Used to store markers for address candidates. These need to persist across
 // ajax sessions
 var address_candidate_markers = new Array();
 

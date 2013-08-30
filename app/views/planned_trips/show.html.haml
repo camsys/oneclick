@@ -6,11 +6,11 @@
 .well
   .row-fluid
     .span12
-      .trip_prepositions= 'from '
+      .trip_prepositions= t(:from)
       .trip_basic_text= @planned_trip.trip.from_place
-      .trip_prepositions= ' to '
+      .trip_prepositions= t(:to)
       .trip_basic_text= @planned_trip.trip.to_place
-      .trip_prepositions= ' on '
+      .trip_prepositions= t(:at_time)
       .trip_basic_text= @planned_trip.trip_datetime.in_time_zone.strftime("%B %d, %Y")
 
 .row-fluid
@@ -30,7 +30,7 @@
         = render partial: 'hidden_trips_notice', locals: {trip: @trip}
     = link_to '#', {href: '#send_trip_by_email', class: "pull-right", data: {toggle: 'modal'}} do
       %i.icon-envelope
-      Send by email
+      =t(:send_by_email)
 
     = render partial: 'send_trip_by_email', locals: {trip: @trip}
 

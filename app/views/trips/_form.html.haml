@@ -1,73 +1,64 @@
-.row-fluid
-  .thumbnail.span12
-    -if current_user  
-      = render 'select_traveler_form' unless current_user.travelers.empty?
-      
-    = form_for @trip_proxy, :url => user_trips_path do |f|
-      = f.hidden_field :from_place_selected
-      = f.hidden_field :to_place_selected
-      = f.hidden_field :from_place_selected_type
-      = f.hidden_field :to_place_selected_type
-      
-      .control-group{:class => @trip_proxy.errors[:from_place].empty? ? '' : 'error'}
-        %label.control-label= t(:from)
-        .controls.controls-row
-          - if user_signed_in?
-            .input-append.span12
-              = f.text_field :from_place, :id => "from_address", :class => "span11", :placeholder => t(:select_or_enter_address), :autofocus => "autofocus"
-              %span.dropdown
-                %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}>
-                  %span.caret
-                %ul.dropdown-menu{:data => {:target => 'from_address'}}
-                  - @traveler.places.each do |p|
-                    %li
-                      %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.lat, p.lon], :type => "from"}}
-                        = p.name          
-          - else
-            = f.text_field :from_place, :class => "span12", :placeholder => t(:enter_address), :autofocus => "autofocus"
+.well
+  -if current_user  
+    = render 'select_traveler_form' unless current_user.travelers.empty?
+    
+  = simple_form_for @trip_proxy, :url => user_trips_path, :html => {:class => "form-horizontal"} do |f| 
+    = f.hidden_field :from_place_selected
+    = f.hidden_field :to_place_selected
+    = f.hidden_field :from_place_selected_type
+    = f.hidden_field :to_place_selected_type
+    
+    - if user_signed_in?
+      = f.input :from_place, :wrapper => :append, :class => "inline span12" do
+        = f.input_field :from_place, :id => "from_address", :autofocus => true, :autocomplete => "off"
+        %span.dropdown
+          %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}
+            %span.caret
+          %ul.dropdown-menu{:data => {:target => 'from_address'}}
+            - @traveler.places.each do |p|
+              %li
+                %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.lat, p.lon], :type => "from"}}
+                  = p.name
+    - else
+      = f.input :from_place, :placeholder => t(:enter_address), :autofocus => true, :input_html => {:id => "from_address"}, :autocomplete => "off"
 
-          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.from_place_results, :type => "from"} unless @trip_proxy.from_place.blank? || @trip_proxy.from_place_selected_type == "1"
-          
-      .control-group{:class => @trip_proxy.errors[:to_place].empty? ? '' : 'error'}
-        %label.control-label= t(:to)
-        .controls.controls-row
-          - if user_signed_in?
-            .input-append.span12
-              = f.text_field :to_place, :id => "to_address", :class => "span11", :placeholder => t(:select_or_enter_address)
-              %span.dropdown
-                %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href =>'#'}>
-                  %span.caret
-                %ul.dropdown-menu{:data => {:target => 'to_address'}}
-                  - @traveler.places.each do |p|
-                    %li
-                      %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.lat, p.lon], :type => "to"}}
-                        = p.name          
-          - else
-            = f.text_field :to_place, :class => "span12", :placeholder => t(:enter_address)
+    = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.from_place_results, :type => "from"} unless @trip_proxy.from_place.blank? || @trip_proxy.from_place_selected_type == "1"
 
-          = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.to_place_results, :type => "to"} unless @trip_proxy.to_place.blank? || @trip_proxy.to_place_selected_type == "1"
-
-      .control-group{:class => @trip_proxy.errors[:trip_date].empty? ? '' : 'error'}
-        %label.control-label Traveling on
-        .controls
-          .input-append
-            = f.text_field :trip_date, :id => "trip-date"
-            %span.add-on
-              %i.icon.icon-calendar
+    - if user_signed_in?
+      = f.input :to_place, :wrapper => :append, :class => "inline span12" do
+        = f.input_field :to_place, :id => "to_address", :autocomplete => "off"
+        %span.dropdown
+          %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}
+            %span.caret
+          %ul.dropdown-menu{:data => {:target => 'to_address'}}
+            - @traveler.places.each do |p|
+              %li
+                %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.lat, p.lon], :type => "to"}}
+                  = p.name          
+    - else
+      = f.input :to_place, :placeholder => t(:enter_address), :input_html => {:id => "to_address"}, :autocomplete => "off"
         
-      .control-group{:class => @trip_proxy.errors[:trip_time].empty? ? '' : 'error'}
-        .controls.controls-row
-          = select_tag :arrive_depart, options_for_select(["departing at", "arriving by"])
+    = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.to_place_results, :type => "to"} unless @trip_proxy.to_place.blank? || @trip_proxy.to_place_selected_type == "1"
 
-          .input-append
-            = f.text_field :trip_time, :id => "trip-time"
-            %span.add-on
-              %i.icon.icon-time
-                  
-      .actions
-        = button_tag :type => 'submit', :class => "btn btn-block btn-primary" do
-          %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-          = t(:plan_it)
+    = f.input :trip_date, :wrapper => :append, :label => t(:date) do
+      #trip-date
+        = f.input_field :trip_date, :as => :string, :label => false, :size => ""
+        %span.add-on
+          %i.icon-calendar
+
+    = f.input :arrive_depart, :collection => ["departing at", "arriving by"], :label => false, :include_blank => false
+
+    = f.input :trip_time, :wrapper => :append, :label => t(:time) do
+      #trip-time
+        = f.input_field :trip_time, :as => :string, :label => false, :size => ""
+        %span.add-on
+          %i.icon-time
+                
+    .form-actions
+      = button_tag :type => 'submit', :class => "btn btn-primary" do
+        %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
+        = t(:plan_it)
+      = link_to t(:cancel), :back
                 
 :javascript
   $('#trip-date').datepicker().on("dateChange", function(e) {
@@ -85,12 +76,6 @@
     $('.combobox').combobox({
       force_match: false
     });
-   
-    $("#trip_proxy_traveler").addClass('span12');
-
-    // Add two null makrers to the array
-    address_candidate_markers << null;
-    address_candidate_markers << null;    
   });
   
   $('.dropdown-toggle').dropdown();
@@ -100,34 +85,23 @@
     var t = $(event.target);
     var id = t.data('id');
     var from_to = t.data('type');
-    var latlon = eval(t.data('latlon'));
     var name = t.data('value');
-    var iconStyle = 'greenIcon';
-    var index = 0;
     if (from_to == 'from') {
       $('#trip_proxy_from_place_selected').val(id);
       $('#trip_proxy_from_place_selected_type').val(1);
     } else {
       $('#trip_proxy_to_place_selected').val(id);
       $('#trip_proxy_to_place_selected_type').val(1);
-      iconStyle = 'blueIcon';
-      index = 1;
     }
-    var marker = create_or_update_marker(index, id, latlon[0], latlon[1], name, iconStyle);
-    selectMarker(marker);
     $('#' + t.parents('ul').data('target')).val(name);
   });
-
-  // Cache the alt places
-  var from_places = eval("#{escape_javascript @trip_proxy.from_place_results.to_json}"); 
-  var to_places = eval("#{escape_javascript @trip_proxy.to_place_results.to_json}");
   
-  // Add cahnge listeners on the text fields
+  // Add change listeners on the text fields
   $("#from_address").bind("keyup input paste", function() {
     $('#trip_proxy_from_place_selected').val("");
     $('#trip_proxy_from_place_selected_type').val("");    
   });
-  // Add cahnge listeners on the text fields
+  // Add change listeners on the text fields
   $("#to_address").bind("keyup input paste", function() {
     $('#trip_proxy_to_place_selected').val("");
     $('#trip_proxy_to_place_selected_type').val("");    
@@ -137,46 +111,15 @@
   $('.address_select').click(function() {
     var id = $(this).data('id');
     var from_to = $(this).data('type');
-    var decorator_class = 'alert-success';
-    var index = 0;
-    var iconStyle = 'greenIcon';
-    var marker_array = from_places;
+    var addr = $(this).text().trim();
     if (from_to == 'from') {
       $('#trip_proxy_from_place_selected').val(id);
       $('#trip_proxy_from_place_selected_type').val(0);
+      $('#from_address').val(addr);      
     } else {
       $('#trip_proxy_to_place_selected').val(id);
       $('#trip_proxy_to_place_selected_type').val(0);
-      iconStyle = 'blueIcon';
-      marker_array = to_places;
-      decorator_class = 'alert-info';
-      index = 1;
+      $('#to_address').val(addr);      
     }
-    // remove any decorators for this class
-    $('li').removeClass(decorator_class);
-    $(this).addClass(decorator_class);
-    // Get the address from the marker array and create a map marker
-    var addr = marker_array[id];
-    var marker = create_or_update_marker(index, addr.id, addr.lat, addr.lon, addr.formatted_address, iconStyle);
-    selectMarker(marker);
   });
       
-  function create_or_update_marker(index, id, lat, lon, name, iconStyle) {
-    // Remove the current marker from the map if it already exists
-    if (address_candidate_markers[index]) {
-      removeMarkerFromMap(address_candidate_markers[index]);
-    }
-    marker = create_place_marker(id, lat, lon, name, iconStyle);
-    address_candidate_markers[index] = marker;
-    addMarkerToMap(marker);
-    return marker;
-  };
-  
-  function create_place_marker(id, lat, lon, name, iconStyle) {
-    marker = createMarker(id, lat, lon, iconStyle, name, name, true);
-    return marker;  
-  };
-
-  function create_address_marker(addr, iconStyle) {
-    create_place_marker(addr.id, addr.lat, addr.lon, addr.formatted_address, iconStyle);
-  };

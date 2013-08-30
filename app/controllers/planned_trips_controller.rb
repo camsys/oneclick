@@ -59,6 +59,15 @@ class PlannedTripsController < TravelerAwareController
     end
   end
 
+  def itinerary
+    @itinerary = @planned_trip.valid_itineraries.find(params[:itin])
+    
+    respond_to do |format|
+      format.js 
+    end
+    
+  end
+  
   # GET /trips/1
   # GET /trips/1.json
   def details

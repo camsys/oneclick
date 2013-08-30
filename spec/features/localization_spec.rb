@@ -18,6 +18,7 @@ describe HomeController do
   end
 
   it "should stick to selected language as I navigate" do
+    pending "todo"
     visit "/"
     click_link I18n.t(:spanish)
     I18n.locale.should be :es

@@ -1,5 +1,11 @@
 # app/controllers/registrations_controller.rb
 class RegistrationsController < Devise::RegistrationsController
+  include LocaleHelpers
+  before_filter :set_locale
+
+  def new
+    super
+  end
 
   helper_method :current_or_guest_user
     

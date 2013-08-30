@@ -2,7 +2,7 @@
   .control-group
     %label.control-label Traveler
     .controls
-      = f.select :traveler, options_from_collection_for_select(current_user.travelers, :id, :name), :selected => @traveler.id, :include_blank => 'myself'
+      = f.select :traveler, options_from_collection_for_select(current_user.travelers, :id, :name, :selected => @traveler.id.to_s), :include_blank => 'myself'
 
 :javascript
   $("#trip_proxy_traveler").change(function() {

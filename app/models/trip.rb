@@ -10,7 +10,6 @@ class Trip < ActiveRecord::Base
   
   # Scopes
   scope :created_between, lambda {|from_day, to_day| where("created_at > ? AND created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
-  
   def to_s
     if trip_places.count > 0
       "From %s to %s" % [trip_places.first, trip_places.last]
@@ -26,5 +25,5 @@ class Trip < ActiveRecord::Base
   def to_place
     trip_places.last
   end
-  
+
 end

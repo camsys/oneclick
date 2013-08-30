@@ -2,7 +2,9 @@
   .span12
     %h1
       %i.icon.icon-tags
-      = is_traveler ? "#{@traveler.name}'s Trips" : "My trips"
+      = is_traveler ? t(:assisted_user_first_name_s_trips, name: @traveler.first_name) : t(:my_trips)
+    
+= render 'index_subnav'
 
 - if @traveler.trips.count > 0
   .row-fluid

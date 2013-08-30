@@ -21,6 +21,7 @@ gem 'simple_form'
 gem 'thin'
 gem 'awesome_print'
 gem 'chronic'
+gem 'mechanize'
 gem 'activemodel'
 group :development do
   #gem 'mysql2'

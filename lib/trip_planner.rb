@@ -1,7 +1,9 @@
 require 'json'
 require 'net/http'
+require 'mechanize'
 
 class TripPlanner
+  include ServiceAdapters::RideshareAdapter
 
   def get_fixed_itineraries(from, to, trip_datetime, arriveBy)
 
@@ -41,6 +43,12 @@ class TripPlanner
 
   end
 
+  #TODO this is a hack. The documentation states that the transfers should be the number
+  # of transfers occuring as an int. WALK returns a transfer count of -1 so we set it to
+  # nil if we see this
+  def fixup_transfers_count(transfers)
+    transfers == -1 ? nil : transfers
+  end
   def convert_itineraries(plan)
 
     plan['itineraries'].collect do |itinerary|
@@ -52,7 +60,7 @@ class TripPlanner
       trip_itinerary['wait_time'] = itinerary['waitingTime']
       trip_itinerary['start_time'] = Time.at((itinerary['startTime']).to_f/1000)
       trip_itinerary['end_time'] = Time.at((itinerary['endTime']).to_f/1000)
-      trip_itinerary['transfers'] = itinerary['transfers']
+      trip_itinerary['transfers'] = fixup_transfers_count(itinerary['transfers'])
       trip_itinerary['walk_distance'] = itinerary['walkDistance']
       trip_itinerary['legs'] = itinerary['legs']
       trip_itinerary['server_status'] = 200
@@ -102,15 +110,15 @@ class TripPlanner
   end
 
   def convert_taxi_itineraries(itinerary)
-      trip_itinerary = {}
-      trip_itinerary['mode'] = Mode.taxi
-      trip_itinerary['duration'] = itinerary[0]['duration'].to_f
-      trip_itinerary['walk_time'] = 0
-      trip_itinerary['walk_distance'] = 0
-      trip_itinerary['cost'] = itinerary[0]['total_fare']
-      trip_itinerary['server_status'] = 200
-      trip_itinerary['server_message'] = itinerary[1]['businesses']
-      trip_itinerary
+    trip_itinerary = {}
+    trip_itinerary['mode'] = Mode.taxi
+    trip_itinerary['duration'] = itinerary[0]['duration'].to_f
+    trip_itinerary['walk_time'] = 0
+    trip_itinerary['walk_distance'] = 0
+    trip_itinerary['cost'] = itinerary[0]['total_fare']
+    trip_itinerary['server_status'] = 200
+    trip_itinerary['server_message'] = itinerary[1]['businesses']
+    trip_itinerary
   end
 
   # TODO placeholder
@@ -121,6 +129,25 @@ class TripPlanner
   # TODO placeholder
   def convert_paratransit_itineraries(itinerary)
     {'mode' => Mode.paratransit, 'server_status' => 200, 'duration' => 55*60, 'cost' => 4.00}
+  end
+
+  def get_rideshare_itineraries(from, to, trip_datetime)
+    query = create_rideshare_query from, to, trip_datetime
+    resp = Mechanize.new.post(service_url, query)
+    doc = Nokogiri::HTML(resp.body)
+    results = doc.css('#results li div.marker.dest')
+    if results.size > 0
+      summary = doc.css('.summary').text
+      Rails.logger.info "Summary: #{summary}"
+      count = %r{(\d+) total result}.match(summary)[1]
+      return true, {'mode' => 'rideshare', 'status' => 200, 'count' => count}
+    else
+      return false, {'mode' => 'rideshare', 'status' => 404, 'count' => results.size}
+    end
+  end
+
+  def convert_rideshare_itineraries(itinerary)
+    itinerary
   end
 
 end

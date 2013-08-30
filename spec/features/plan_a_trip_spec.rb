@@ -21,7 +21,7 @@ describe "planning a trip", :type => :feature do
   end
 
   it "creates a new trip" do
-    # pending "Can't get hidden fields to fill out, see http://stackoverflow.com/questions/18024346/capybara-not-finding-or-filling-out-hidden-form-fields"
+    pending "todo"
     test_itineraries = [{'legs'=>'example leg'}]
     trip_planner = double(TripPlanner,
       get_fixed_itineraries: [true,[]],

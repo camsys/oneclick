@@ -38,7 +38,6 @@ Oneclick::Application.routes.draw do
       resources :places, :only => [:index, :new, :create, :destroy] do
         collection do
           post  'add_place'
-          post  'add_poi'
           post  'change'
           get   'search'
         end
@@ -56,6 +55,7 @@ Oneclick::Application.routes.draw do
       resources :planned_trips, :only => [:show] do
         member do
           get   'details'
+          get   'itinerary'
           post  'email'
           get   'hide'
           get   'unhide_all'

@@ -21,7 +21,8 @@
       #main{:role => "main"}
         .container-fluid
           = render 'shared/assisting'
-          = render 'shared/messages'
+          #messages
+            = render 'shared/messages'
           = yield
       #footer
         .container-fluid

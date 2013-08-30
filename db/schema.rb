@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(:version => 20130826172148) do
     t.boolean  "hidden",                                         :null => false
     t.datetime "created_at",                                     :null => false
     t.datetime "updated_at",                                     :null => false
+    t.integer  "count"
   end
 
   create_table "modes", :force => true do |t|
@@ -50,21 +51,22 @@ ActiveRecord::Schema.define(:version => 20130826172148) do
   end
 
   create_table "places", :force => true do |t|
-    t.integer  "user_id",                                      :null => false
+    t.integer  "user_id",                                         :null => false
     t.integer  "creator_id"
-    t.string   "name",        :limit => 64,                    :null => false
+    t.string   "name",          :limit => 64,                     :null => false
     t.integer  "poi_id"
     t.string   "raw_address"
-    t.string   "address1",    :limit => 128
-    t.string   "address2",    :limit => 128
-    t.string   "city",        :limit => 128
-    t.string   "state",       :limit => 2
-    t.string   "zip",         :limit => 10
+    t.string   "address1",      :limit => 128
+    t.string   "address2",      :limit => 128
+    t.string   "city",          :limit => 128
+    t.string   "state",         :limit => 2
+    t.string   "zip",           :limit => 10
     t.float    "lat"
     t.float    "lon"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
-    t.boolean  "active",                     :default => true
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
+    t.boolean  "active",                        :default => true
+    t.string   "geocoding_raw", :limit => 2500
   end
 
   create_table "planned_trips", :force => true do |t|
