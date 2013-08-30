@@ -52,7 +52,14 @@ class PlacesController < TravelerAwareController
     else
       flash[:alert] = "An error occurred adding #{place.name} to your address book."
     end
-    redirect_to user_places_path(@traveler)
+
+    @alternative_places = []
+    @places = @traveler.places
+    @markers = generate_map_markers(@places)
+    @place_proxy = PlaceProxy.new    
+    respond_to do |format|
+      format.js {render "update_form_and_map"}
+    end
   end
 
   # handles the user changing a place name from the form
@@ -65,12 +72,17 @@ class PlacesController < TravelerAwareController
       else
         flash[:alert] = "An error occurred while updating your address book."
       end
-      redirect_to user_places_path(@traveler)
-    return
     else
-      redirect_to error_404_path
+      flash[:alert] = "An error occurred while updating your address book."
     end
-
+    @alternative_places = []
+    @places = @traveler.places
+    @markers = generate_map_markers(@places)
+    @place_proxy = PlaceProxy.new    
+    respond_to do |format|
+      format.js {render "update_form_and_map"}
+    end
+    
   end
 
   # not really a destroy -- just hides the place by setting active = false
@@ -83,12 +95,14 @@ class PlacesController < TravelerAwareController
       else
         flash[:alert] = "An error occurred adding #{place.name} to your address book."
       end
-      redirect_to user_places_path(@traveler)
-    return
-    else
-      redirect_to error_404_path
     end
-
+    @alternative_places = []
+    @places = @traveler.places
+    @markers = generate_map_markers(@places)
+    @place_proxy = PlaceProxy.new    
+    respond_to do |format|
+      format.js {render "update_form_and_map"}
+    end
   end
 
   # the user has entered an address and we need to validate it
@@ -97,13 +111,13 @@ class PlacesController < TravelerAwareController
   # one
   def create
 
-    place_proxy = PlaceProxy.new(params[:place_proxy])
+    @place_proxy = PlaceProxy.new(params[:place_proxy])
 
     # See if we got an existing address or POI
-    if place_proxy.place_id && place_proxy.place_type_id
+    if ! @place_proxy.place_id.blank? && ! @place_proxy.place_type_id.blank?
       # get this row from the database and add it to the table
-      if place_proxy.place_type_id == POI_TYPE
-        poi = Poi.find(place_proxy.place_type_id)
+      if @place_proxy.place_type_id == POI_TYPE
+        poi = Poi.find(@place_proxy.place_id)
         if poi
           @place = Place.new
           @place.user = @traveler
@@ -112,8 +126,8 @@ class PlacesController < TravelerAwareController
           @place.name = poi.name      
           @place.active = true
         end
-      elsif place_proxy.place_type_id == CACHED_ADDRESS_TYPE
-        trip_place = @traveler.trip_places.find(place_proxy.place_type_id)
+      elsif @place_proxy.place_type_id == CACHED_ADDRESS_TYPE
+        trip_place = @traveler.trip_places.find(@place_proxy.place_id)
         if trip_place
           @place = Place.new
           @place.user = @traveler
@@ -126,14 +140,21 @@ class PlacesController < TravelerAwareController
         end
       end
       if @place.save
-        flash[:notice] = "#{place.name} has been added to your address book."
+        flash[:notice] = "#{@place.name} has been added to your address book."
       else
         flash[:alert] = "An error occurred while updating your address book."
       end
+      @alternative_places = []
+      @places = @traveler.places
+      @markers = generate_map_markers(@places)
+      # if we added to the places list we need to update the places form and the map
+      view = "update_form_and_map"
     else
+      # if we are geocoding just update the alt addresses panel
+      view = "show_geocoding_results"
       # attempt to geocode this place
       geocoder = OneclickGeocoder.new
-      geocoder.geocode(place_proxy.raw_address)
+      geocoder.geocode(@place_proxy.raw_address)
       
       # cache the results in the session
       if geocoder.has_errors
@@ -145,7 +166,7 @@ class PlacesController < TravelerAwareController
       end
     end
     respond_to do |format|
-      format.js {render "show_geocoding_results"}
+      format.js {render view}
     end
   end
 
@@ -197,7 +218,7 @@ class PlacesController < TravelerAwareController
     end
   end
 
-  protected
+protected
 
   def get_place
     if user_signed_in?

@@ -5,8 +5,7 @@
       = is_traveler ? "#{@traveler.name}'s Places" : "My Places"
 
 .row-fluid
-  .span4
-    = render 'places_form'  
-  = LeafletMap({ :mapid => 'lmap', :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "span8 well well-small", :style => "height:500px;" })
-
-= yield :scripts
+  #places_form.span4
+    = render 'places_form'
+  #places_map.span8
+    = render 'places_map'  

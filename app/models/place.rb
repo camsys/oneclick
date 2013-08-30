@@ -9,6 +9,7 @@ class Place < ActiveRecord::Base
   attr_accessible :name, :address1, :address2, :city, :state, :zip, :lat, :lon, :raw_address
   
   scope :active, where("active = true")
+  default_scope order("name")
   
   def location
     return [poi.lat, poi.lon] unless poi.nil?

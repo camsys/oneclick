@@ -16,7 +16,7 @@
     %h6= "Enter a new name for this place"
   .row-fluid
     .thumbnail.span12
-      = form_for :place, :url => change_user_places_path(@traveler), :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
+      = form_for :place, :url => change_user_places_path(@traveler), :remote => true, :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
         = f.hidden_field :id, :id => "id_field"
         = f.text_field :name, :class => "span12", :style => "margin-bottom: 10px;", :id => "name_field"
         = button_tag :type => 'submit', :class => "btn btn-block btn-success" do
@@ -29,7 +29,7 @@
     %h6= "Found #{@places.count} " + "place".pluralize(@places.count) + " in your address book"
 
 .row-fluid
-  .thumbnail.span12{style: 'height: 300px; overflow-y: auto;'}
+  .thumbnail.span12{style: 'height: 375px; overflow-y: auto;'}
     .span12
       %table.table.table-hover#my_places
         - @places.each do |place|
@@ -41,7 +41,7 @@
             %td{:style => "white-space:nowrap;"}
               = link_to "#", :class => "btn btn-mini btn-warning" do
                 %i.icon.icon-edit{:data => {:name => place.name, :id => place.id}}
-              = link_to user_place_path(@traveler, place), :class => "btn btn-mini btn-danger", :method => :delete, :confirm => "Are you sure ?" do
+              = link_to user_place_path(@traveler, place), :class => "btn btn-mini btn-danger", :method => :delete, :remote => true, :confirm => "Are you sure ?" do
                 %i.icon.icon-remove
                 
     
