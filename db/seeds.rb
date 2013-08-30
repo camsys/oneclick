@@ -119,7 +119,7 @@ end
 traveler_characteristics = [
     {id:1, name: 'Veteran', note: 'Is the traveler a veteran?', datatype: 'bool'},
     {id:2, name: 'Disabled', note: 'Is the traveler disabled?', datatype: 'bool'},
-    {id:3, name: 'Medicaid/NEMT Elgigible', note: 'Is the traveler Medicaid/NEMT Eligible?', datatype: 'bool'},
+    {id:3, name: 'Medicaid Eligible', note: 'Is the traveler Medicaid/NEMT Eligible?', datatype: 'bool'},
     {id:4, name: 'Date of Birth', note: '', datatype: 'date'},
     {id:5, name: 'Age', note: '', datatype: 'integer'},
 ]
@@ -163,7 +163,7 @@ service_traveler_characteristics_map = [
 user_traveler_characteristics_map = [
     {user_profile_id: 1, characteristic_id: 1, value: 'true'},
     {user_profile_id: 1, characteristic_id: 2, value: 'true'},
-    {user_profile_id: 2, characteristic_id: 2, value: 'true'},
+    {user_profile_id: 2, characteristic_id: 1, value: 'true'},
     {user_profile_id: 2, characteristic_id: 3, value: 'true'},
     {user_profile_id: 2, characteristic_id: 4, value: '19330511'},
     {user_profile_id: 2, characteristic_id: 5, value: '80'},

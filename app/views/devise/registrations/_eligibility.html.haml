@@ -1,7 +1,27 @@
-.row-fluid
-  .span12
-    %h4 My travelers
+#eligibility_form
+  .row-fluid
+    .span12
+      %h4 Select all attributes that apply to the traveler.
+  .row-fluid
+    .span12
+      = simple_form_for [current_user, @user_characteristics_proxy], remote: true, html: { class: 'form-inline' } do |f|
+        = f.error_notification
+        -TravelerCharacteristic.where(:datatype => 'bool').each do |characteristic|
+          .row-fluid
+          = f.input characteristic.name.to_sym, collection: [[true, 'Yes'], [false, 'No'], ['na', 'No answer']], as: :radio_buttons, label_method: :last, value_method: :first, :item_wrapper_class => "inline"
+        -TravelerCharacteristic.where(:datatype => 'date').each do |characteristic|
+          .row-fluid
+          = f.input characteristic.name.to_sym, as: :text
 
-#traveler_table
-  = render 'traveler_table'
-  
+        .row-fluid
+          .span12
+            %hr
+        .row-fluid
+          .span6
+            .actions
+              = button_tag type: :submit, class: 'btn btn-primary controls' do
+                %i.icon.icon-ok
+                Update my characteristics (localize)
+              = link_to :back do
+                %i.icon.icon-reply
+                = t(:cancel)

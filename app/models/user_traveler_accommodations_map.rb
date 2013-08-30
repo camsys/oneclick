@@ -6,4 +6,7 @@ class UserTravelerAccommodationsMap < ActiveRecord::Base
 
   attr_accessible :user_profile_id, :accommodation_id, :value
 
+  # set the default scope
+  default_scope where('active = true')
+
 end

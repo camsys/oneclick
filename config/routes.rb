@@ -20,6 +20,8 @@ Oneclick::Application.routes.draw do
         post  'update'
       end
 
+      resources :user_characteristics_proxies
+
       # user relationships
       resources :user_relationships, :only => [:new, :create] do
         member do

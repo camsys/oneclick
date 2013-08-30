@@ -18,7 +18,8 @@ class RegistrationsController < Devise::RegistrationsController
 
   def edit
     @user_relationship = UserRelationship.new
-    super    
+    @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
+    super
   end
 
 protected

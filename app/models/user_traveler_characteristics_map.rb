@@ -6,4 +6,5 @@ class UserTravelerCharacteristicsMap < ActiveRecord::Base
 
   attr_accessible :user_profile_id, :characteristic_id, :value
 
+
 end

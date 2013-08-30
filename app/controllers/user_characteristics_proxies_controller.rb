@@ -1,15 +1,13 @@
 class UserCharacteristicsProxiesController < ApplicationController
 
-  def passenger_characteristics_index
+  def update
 
-    @passenger = Passenger.find(params[:passenger_id])
+    @user_characteristics_proxy = UserCharacteristicsProxy.new(User.find(params[:user_id]))
+    @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
 
-    @characteristics_maps = @passenger.user_profile.user_traveler_characteristics_maps
-
+    flash[:notice] = "Traveler characteristics successfully updated."
     respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @characteristics_maps }
-
+      format.js {render "eligibility/update_eligibility_form"}
+    end
   end
-
 end

@@ -6,4 +6,7 @@ class ServiceTravelerCharacteristicsMap < ActiveRecord::Base
 
   attr_accessible :service_id, :characteristic_id, :value, :value_relationship_id
 
+  # set the default scope
+  default_scope where('active = true')
+
 end

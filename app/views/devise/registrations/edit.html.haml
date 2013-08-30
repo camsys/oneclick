@@ -13,6 +13,9 @@
     %li
       %a{href: '#tab3', data: {toggle: 'tab'}}
         = t(:travelers) + " (" + current_user.travelers.count.to_s + ")"
+    %li
+      %a{href: '#tab4', data: {toggle: 'tab'}}
+        = 'eligibility (make local)'
   .tab-content
     .tab-pane.active#tab1
       .well
@@ -47,6 +50,10 @@
     .tab-pane#tab3
       .well#travelers
         = render partial: 'travelers'
+    .tab-pane#tab4
+      .well#eligibility
+        = render partial: 'eligibility'
+
 :javascript
   $('a#tab1').click(function(e) {
     e.preventDefault()
@@ -60,6 +67,11 @@
     e.preventDefault()
     $(this).tab('show')
   })
+  $('a#tab4').click(function(e) {
+      e.preventDefault()
+      $(this).tab('show')
+    })
+
   $('#buddies').on('ajax:success', function(e, response) {
     console.log(response)
     $('#buddies').html(response)
@@ -67,4 +79,9 @@
   $('#travelers').on('ajax:success', function(e, response) {
     console.log(response)
     $('#travelers').html(response)
-  }) 
+  })
+   $('#eligibility').on('ajax:success', function(e, response) {
+      console.log(response)
+      $('#eligibility').html(response)
+    })
+
