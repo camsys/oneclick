@@ -61,14 +61,12 @@ class PlannedTrip < ActiveRecord::Base
   def create_paratransit_itineraries
     #TODO: This is just a place holder that currently returns demo data only.
     tp = TripPlanner.new
-    from_place = trip.trip_places.last
-    to_place = trip.trip_places.last
-    result, response = tp.get_paratransit_itineraries([from_place.location.first, from_place.location.last],[to_place.location.first, to_place.location.last], trip_datetime.in_time_zone)
-    if result
-      itinerary = tp.convert_paratransit_itineraries(response)
+    eh = EligibilityHelpers.new
+    eligible_services = eh.get_eligible_services_for_traveler(creator.user_profile)
+    eligible_services.each do |service|
+
+      itinerary = tp.convert_paratransit_itineraries(service)
       self.itineraries << Itinerary.new(itinerary)
-    else
-      self.itineraries << Itinerary.new('server_status'=>500, 'server_status'=>response)
     end
   end
  

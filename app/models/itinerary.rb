@@ -6,8 +6,9 @@ class Itinerary < ActiveRecord::Base
   # Associations
   belongs_to :planned_trip
   belongs_to :mode
+  belongs_to :service
 
-  attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden
+  attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden
   
   def self.get_mode_icon(mode)
     @icon_dictionary = {'WALK' => 'travelcon-walk', 'TRAM' => 'travelcon-subway', 'SUBWAY' => 'travelcon-subway', 'RAIL' => 'travelcon-train', 'BUS' => 'travelcon-bus', 'FERRY' => 'travelcon-boat'}

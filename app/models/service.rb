@@ -9,6 +9,7 @@ class Service < ActiveRecord::Base
   has_many :service_traveler_accommodations_maps
   has_many :service_traveler_characteristics_maps
   has_many :service_trip_purpose_maps
+  has_many :itineraries
 
   attr_accessible :id, :name, :provider_id, :service_type_id, :advanced_notice_minutes
 end

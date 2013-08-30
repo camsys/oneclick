@@ -6,7 +6,12 @@
   .span1
     - if itinerary.hidden
       %i.icon-2x.icon-thumbs-down
-    
+
+-if itinerary.service
+  .row-fluid
+    .span9.offset3.trip_summary_text= itinerary.service.name
+  .row-flui
+    .span9.offset3.trip_summary_text= itinerary.service.provider.name
 -if itinerary.duration
   .row-fluid
     .span9.offset3.trip_summary_text= duration_to_words(itinerary.duration) + " (est.)"

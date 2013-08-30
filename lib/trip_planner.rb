@@ -121,14 +121,16 @@ class TripPlanner
     trip_itinerary
   end
 
-  # TODO placeholder
-  def get_paratransit_itineraries(from, to, trip_datetime)
-    {'mode' => Mode.paratransit, 'server_status' => 200, 'duration' => 55*60, 'cost' => 4.00}
-  end
+  def convert_paratransit_itineraries(service)
+    trip_itinerary = {}
+    trip_itinerary['mode'] = Mode.paratransit
+    trip_itinerary['service'] = service
+    trip_itinerary['walk_time'] = 0
+    trip_itinerary['walk_distance'] = 0
+    trip_itinerary['server_status'] = 200
 
-  # TODO placeholder
-  def convert_paratransit_itineraries(itinerary)
-    {'mode' => Mode.paratransit, 'server_status' => 200, 'duration' => 55*60, 'cost' => 4.00}
+    trip_itinerary
+
   end
 
   def get_rideshare_itineraries(from, to, trip_datetime)
