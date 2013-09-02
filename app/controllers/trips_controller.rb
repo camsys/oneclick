@@ -178,11 +178,7 @@ class TripsController < TravelerAwareController
     end
        
     if @trip_proxy.errors.empty?
-      if user_signed_in?
-        @trip = create_authenticated_trip(@trip_proxy)
-      else
-        @trip = create_anonymous_trip(@trip_proxy)
-      end
+      @trip = create_trip(@trip_proxy)
     end
 
     respond_to do |format|
@@ -230,96 +226,40 @@ class TripsController < TravelerAwareController
     return a
   end
   
-  def create_authenticated_trip(trip_proxy)
 
-    puts trip_proxy.inspect
-    
-    trip = Trip.new()
-    trip.creator = current_user
-    trip.user = @traveler
-        
-    # get the from place from the proxy
-    selected_id = trip_proxy.from_place_selected.to_i
-    # see if we are selecting a raw-address or a pre-defined type
-    selected_id_type = trip_proxy.from_place_selected_type
-
-    from_place = TripPlace.new()
-    from_place.sequence = 0
-
-    if selected_id_type == "0"
-      # raw address
-      address = session[FROM_PLACES_SESSION_KEY][selected_id]
-      # the address format comes from the oneclick geocoder
-      from_place.raw_address = address[:address]
-      from_place.lat = address[:lat]
-      from_place.lon = address[:lon]  
-    else
-      selected_from_place = @traveler.places.find(selected_id)
-      from_place.place = selected_from_place
-    end
-    
-    # get the to place from the proxy
-    selected_id = trip_proxy.to_place_selected.to_i
-    selected_id_type = trip_proxy.to_place_selected_type
-
-    to_place = TripPlace.new()
-    to_place.sequence = 1
-
-    if selected_id_type == "0"
-      # raw address
-      address = session[TO_PLACES_SESSION_KEY][selected_id]
-      # the address format comes from the oneclick geocoder
-      to_place.raw_address = address[:address]
-      to_place.lat = address[:lat]
-      to_place.lon = address[:lon]  
-    else
-      selected_to_place = @traveler.places.find(selected_id)
-      to_place.place = selected_to_place
-    end
-        
-    # add the places to the trip
-    trip.trip_places << from_place
-    trip.trip_places << to_place
-
-    planned_trip = PlannedTrip.new
-    planned_trip.trip = trip
-    planned_trip.creator = trip.creator
-    planned_trip.is_depart = trip_proxy.arrive_depart == 'departing at' ? true : false
-    planned_trip.trip_datetime = trip_proxy.trip_datetime
-    planned_trip.trip_status = TripStatus.find(1)    
-    
-    trip.planned_trips << planned_trip
-
-    return trip
-
-  end
-
-  def create_anonymous_trip(trip_proxy)
+  def create_trip(trip_proxy)
 
     trip = Trip.new()
     trip.creator = current_or_guest_user
-    trip.user = current_or_guest_user
+    trip.user = @traveler
 
-    # get the from place from the proxy
-    place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected)
-
+    # get the start for this trip
     from_place = TripPlace.new()
     from_place.sequence = 0
-    # the address format comes from the oneclick geocoder
-    from_place.raw_address = address[:address]
-    from_place.lat = address[:lat]
-    from_place.lon = address[:lon]  
+    place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected, true)
+    if place[:poi_id]
+      from_place.poi = Poi.find(place[:poi_id])
+    elsif place[:place_id]
+      from_place.place = @traveler.places.find(place[:place_id])
+    else
+      from_place.raw_address = place[:address]
+      from_place.lat = place[:lat]
+      from_place.lon = place[:lon]  
+    end
 
-    # get the to place from the proxy
-    selected_id = trip_proxy.to_place_selected.to_i
-    address = session[TO_PLACES_SESSION_KEY][selected_id]
-
+    # get the end for this trip
     to_place = TripPlace.new()
     to_place.sequence = 1
-    # the address format comes from the oneclick geocoder
-    to_place.raw_address = address[:address]
-    to_place.lat = address[:lat]
-    to_place.lon = address[:lon]    
+    place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected, false)
+    if place[:poi_id]
+      to_place.poi = Poi.find(place[:poi_id])
+    elsif place[:place_id]
+      to_place.place = @traveler.places.find(place[:place_id])
+    else
+      to_place.raw_address = place[:address]
+      to_place.lat = place[:lat]
+      to_place.lon = place[:lon]  
+    end
 
     # add the places to the trip
     trip.trip_places << from_place
@@ -344,15 +284,15 @@ class TripsController < TravelerAwareController
     if place_type == POI_TYPE
       # the user selected a POI using the type-ahead function
       poi = Poi.find(place_id)
-      return {:name => poi.name, :lat => poi.lat, :lon => poi.lon, :addr => poi.address}
+      return {:poi_id => poi.id, :name => poi.name, :lat => poi.lat, :lon => poi.lon, :address => poi.address}
     elsif place_type == CACHED_ADDRESS_TYPE
       # the user selected an address from the trip-places table using the type-ahead function
       trip_place = @traveler.trip_places.find(place_id)
-      return {:name => trip_place.raw_address, :lat => trip_place.lat, :lon => trip_place.lon, :addr => trip_place.raw_address}
+      return {:name => trip_place.raw_address, :lat => trip_place.lat, :lon => trip_place.lon, :address => trip_place.raw_address}
     elsif place_type == PLACES_TYPE
       # the user selected a place using the places drop-down
       place = @traveler.places.find(place_id)
-      return {:name => place.name, :lat => place.lat, :lon => place.lon, :addr => place.address}
+      return {:place_id => place.id, :name => place.name, :lat => place.lat, :lon => place.lon, :address => place.address}
     elsif place_type == RAW_ADDRESS_TYPE
       # the user entered a raw address and possibly selected an alternate from the list of possible
       # addresses
@@ -361,7 +301,7 @@ class TripsController < TravelerAwareController
       else
         place = session[TO_PLACES_SESSION_KEY][place_id]
       end
-      return {:name => place.address, :lat => place.lat, :lon => place.lon, :addr => place.address}
+      return {:name => place.address, :lat => place.lat, :lon => place.lon, :address => place.address}
     else
       return {}
     end
