@@ -17,8 +17,8 @@ class TripPlace < ActiveRecord::Base
   default_scope order('sequence ASC')
   
   def location
-    return [poi.lat, poi.lon] unless poi.nil?
-    return [place.lat, place.lon] unless place.nil?
+    return poi.location unless poi.nil?
+    return place.location unless place.nil?
     return [lat, lon]
   end
   

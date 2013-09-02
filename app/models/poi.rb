@@ -15,6 +15,10 @@ class Poi < ActiveRecord::Base
     name
   end
   
+  def location
+    return [:lat, :lon]
+  end
+  
   def address
     #if address1.blank?
     #  reverse_geocode
