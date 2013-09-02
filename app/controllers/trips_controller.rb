@@ -138,10 +138,10 @@ class TripsController < TravelerAwareController
     # run the validations on the trip proxy. This checks that from place, to place and the 
     # time/date options are all set
     if @trip_proxy.valid?
-      # See if the user has selected an alternate address or a pre-defined place. If not we need to geocode and check
+      # See if the user has selected an poi or a pre-defined place. If not we need to geocode and check
       # to see if multiple addresses are available. The alternate addresses are stored back in the proxy object
       geocoder = OneclickGeocoder.new
-      if @trip_proxy.from_place_selected.blank?
+      if @trip_proxy.from_place_selected.blank? || @trip_proxy.from_place_selected_type.blank?
         geocoder.geocode(@trip_proxy.from_place)
         # store the results in the session
         session[FROM_PLACES_SESSION_KEY] = encode(geocoder.results)
@@ -151,14 +151,14 @@ class TripsController < TravelerAwareController
           @trip_proxy.errors.add :from_place, "No matching places found."
         elsif @trip_proxy.from_place_results.count == 1
           @trip_proxy.from_place_selected = 0
-          @trip_proxy.from_place_selected_type = "0"
+          @trip_proxy.from_place_selected_type = PlacesController::RAW_ADDRESS_TYPE
         else
           # the user needs to select one of the alternatives
           @trip_proxy.errors.add :from_place, "Alternate candidate places found."
         end
       end
       # Do the same for the to place
-      if @trip_proxy.to_place_selected.blank?
+      if @trip_proxy.to_place_selected.blank? || @trip_proxy.to_place_selected_type.blank?
         geocoder.geocode(@trip_proxy.to_place)
         # store the results in the session
         session[TO_PLACES_SESSION_KEY] = encode(geocoder.results)
@@ -168,7 +168,7 @@ class TripsController < TravelerAwareController
           @trip_proxy.errors.add :to_place, "No matching places found."
         elsif @trip_proxy.to_place_results.count == 1
           @trip_proxy.to_place_selected = 0
-          @trip_proxy.to_place_selected_type = "0"
+          @trip_proxy.to_place_selected_type = PlacesController::RAW_ADDRESS_TYPE
         else
           # the user needs to select one of the alternatives
           @trip_proxy.errors.add :to_place, "Alternate candidate places found."
@@ -301,8 +301,7 @@ class TripsController < TravelerAwareController
     trip.user = current_or_guest_user
 
     # get the from place from the proxy
-    selected_id = trip_proxy.from_place_selected.to_i
-    address = session[FROM_PLACES_SESSION_KEY][selected_id]
+    place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected)
 
     from_place = TripPlace.new()
     from_place.sequence = 0
@@ -336,6 +335,35 @@ class TripsController < TravelerAwareController
     trip.planned_trips << planned_trip
 
     return trip
+  end
+  
+  # Get the selected place for this trip-end based on the type of place
+  # selected and the data for that place
+  def get_preselected_place(place_type, place_id, is_from = false)
     
+    if place_type == POI_TYPE
+      # the user selected a POI using the type-ahead function
+      poi = Poi.find(place_id)
+      return {:name => poi.name, :lat => poi.lat, :lon => poi.lon, :addr => poi.address}
+    elsif place_type == CACHED_ADDRESS_TYPE
+      # the user selected an address from the trip-places table using the type-ahead function
+      trip_place = @traveler.trip_places.find(place_id)
+      return {:name => trip_place.raw_address, :lat => trip_place.lat, :lon => trip_place.lon, :addr => trip_place.raw_address}
+    elsif place_type == PLACES_TYPE
+      # the user selected a place using the places drop-down
+      place = @traveler.places.find(place_id)
+      return {:name => place.name, :lat => place.lat, :lon => place.lon, :addr => place.address}
+    elsif place_type == RAW_ADDRESS_TYPE
+      # the user entered a raw address and possibly selected an alternate from the list of possible
+      # addresses
+      if is_from
+        place = session[FROM_PLACES_SESSION_KEY][place_id]
+      else
+        place = session[TO_PLACES_SESSION_KEY][place_id]
+      end
+      return {:name => place.address, :lat => place.lat, :lon => place.lon, :addr => place.address}
+    else
+      return {}
+    end
   end
 end

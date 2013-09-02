@@ -1,16 +1,13 @@
 .well
-  -if current_user  
-    = render 'select_traveler_form' unless current_user.travelers.empty?
-    
   = simple_form_for @trip_proxy, :url => user_trips_path, :html => {:class => "form-horizontal"} do |f| 
-    = f.hidden_field :from_place_selected
-    = f.hidden_field :to_place_selected
-    = f.hidden_field :from_place_selected_type
-    = f.hidden_field :to_place_selected_type
-    
+    = f.hidden_field :from_place_selected, :id => "from_place_selected"
+    = f.hidden_field :to_place_selected, :id => "to_place_selected"
+    = f.hidden_field :from_place_selected_type, :id => "from_place_selected_type"
+    = f.hidden_field :to_place_selected_type, :id => "to_place_selected_type"
+
     - if user_signed_in?
       = f.input :from_place, :wrapper => :append, :class => "inline span12" do
-        = f.input_field :from_place, :id => "from_address", :autofocus => true, :autocomplete => "off"
+        = f.text_field :from_place, :placeholder => t(:enter_address), :id => "from_address", :autocomplete => "off", :class => "ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}
         %span.dropdown
           %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}
             %span.caret
@@ -20,13 +17,14 @@
                 %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.lat, p.lon], :type => "from"}}
                   = p.name
     - else
-      = f.input :from_place, :placeholder => t(:enter_address), :autofocus => true, :input_html => {:id => "from_address"}, :autocomplete => "off"
+      = f.input :from_place, :class => "inline span12" do
+        = f.text_field :from_place, :placeholder => t(:enter_address), :id => "from_address", :autocomplete => "off", :class => "ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}
 
     = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.from_place_results, :type => "from"} unless @trip_proxy.from_place.blank? || @trip_proxy.from_place_selected_type == "1"
 
     - if user_signed_in?
       = f.input :to_place, :wrapper => :append, :class => "inline span12" do
-        = f.input_field :to_place, :id => "to_address", :autocomplete => "off"
+        = f.text_field :to_place, :placeholder => t(:enter_address), :id => "to_address", :autocomplete => "off", :class => "ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}
         %span.dropdown
           %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}
             %span.caret
@@ -34,10 +32,11 @@
             - @traveler.places.each do |p|
               %li
                 %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.lat, p.lon], :type => "to"}}
-                  = p.name          
-    - else
-      = f.input :to_place, :placeholder => t(:enter_address), :input_html => {:id => "to_address"}, :autocomplete => "off"
-        
+                  = p.name
+    - else    
+      = f.input :to_place, :class => "inline span12" do
+        = f.text_field :to_place, :placeholder => t(:enter_address), :id => "to_address", :class => "ajax-typeahead", :autocomplete => "off", :data => {:link => search_user_places_path, :provide => "typeahead"} 
+
     = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.to_place_results, :type => "to"} unless @trip_proxy.to_place.blank? || @trip_proxy.to_place_selected_type == "1"
 
     = f.input :trip_date, :wrapper => :append, :label => t(:date) do
@@ -87,39 +86,137 @@
     var from_to = t.data('type');
     var name = t.data('value');
     if (from_to == 'from') {
-      $('#trip_proxy_from_place_selected').val(id);
-      $('#trip_proxy_from_place_selected_type').val(1);
+      $('#from_place_selected').val(id);
+      $('#from_place_selected_type').val(3);
     } else {
-      $('#trip_proxy_to_place_selected').val(id);
-      $('#trip_proxy_to_place_selected_type').val(1);
+      $('#to_place_selected').val(id);
+      $('#to_place_selected_type').val(3);
     }
     $('#' + t.parents('ul').data('target')).val(name);
   });
-  
+
   // Add change listeners on the text fields
   $("#from_address").bind("keyup input paste", function() {
-    $('#trip_proxy_from_place_selected').val("");
-    $('#trip_proxy_from_place_selected_type').val("");    
+    $('#from_place_selected').val("");
+    $('#from_place_selected_type').val("");    
   });
   // Add change listeners on the text fields
   $("#to_address").bind("keyup input paste", function() {
-    $('#trip_proxy_to_place_selected').val("");
-    $('#trip_proxy_to_place_selected_type').val("");    
+    $('#to_place_selected').val("");
+    $('#to_place_selected_type').val("");    
   });
-    
-  // Add listeners to show the selected address when the user clicks on one
-  $('.address_select').click(function() {
-    var id = $(this).data('id');
-    var from_to = $(this).data('type');
-    var addr = $(this).text().trim();
-    if (from_to == 'from') {
-      $('#trip_proxy_from_place_selected').val(id);
-      $('#trip_proxy_from_place_selected_type').val(0);
-      $('#from_address').val(addr);      
-    } else {
-      $('#trip_proxy_to_place_selected').val(id);
-      $('#trip_proxy_to_place_selected_type').val(0);
-      $('#to_address').val(addr);      
-    }
-  });
-      
+
+  // Enable typeahead for the places forms
+  $('#from_address').typeahead({
+      items: 20,
+      source: function(query, process) {
+          return $.ajax({
+              url: $('#from_address').data('link'),
+              type: 'get',
+              data: {
+                query: query
+              },
+              dataType: 'json',
+              success: function(result) {
+
+                var resultList = result.map(function (item) {
+                    var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, lat: item.lat, lon: item.lon, addr: item.address };
+                    return JSON.stringify(aItem);
+                });
+
+                return process(resultList);
+              }
+          });
+      },
+    matcher: function (obj) {
+        var item = JSON.parse(obj);
+        return ~item.name.toLowerCase().indexOf(this.query.toLowerCase())
+    },
+
+    sorter: function (items) {          
+       var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
+        while (aItem = items.shift()) {
+            var item = JSON.parse(aItem);
+            if (!item.name.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(JSON.stringify(item));
+            else if (~item.name.indexOf(this.query)) caseSensitive.push(JSON.stringify(item));
+            else caseInsensitive.push(JSON.stringify(item));
+        }
+
+        return beginswith.concat(caseSensitive, caseInsensitive)
+
+    },
+
+
+    highlighter: function (obj) {
+        var item = JSON.parse(obj);
+        var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
+        return item.name.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+            return '<strong>' + match + '</strong>'
+        })
+    },
+
+    updater: function (obj) {
+        var item = JSON.parse(obj);
+        $('#from_place_selected_type').attr('value', item.type);
+        $('#from_place_selected').attr('value', item.id);
+        return item.name;
+    }  
+  });  
+  
+  // Enable typeahead for the places forms
+  $('#to_address').typeahead({
+      items: 20,
+      source: function(query, process) {
+          return $.ajax({
+              url: $('#to_address').data('link'),
+              type: 'get',
+              data: {
+                query: query
+              },
+              dataType: 'json',
+              success: function(result) {
+
+                var resultList = result.map(function (item) {
+                    var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, lat: item.lat, lon: item.lon, addr: item.address };
+                    return JSON.stringify(aItem);
+                });
+
+                return process(resultList);
+              }
+          });
+      },
+    matcher: function (obj) {
+        var item = JSON.parse(obj);
+        return ~item.name.toLowerCase().indexOf(this.query.toLowerCase())
+    },
+
+    sorter: function (items) {          
+       var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
+        while (aItem = items.shift()) {
+            var item = JSON.parse(aItem);
+            if (!item.name.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(JSON.stringify(item));
+            else if (~item.name.indexOf(this.query)) caseSensitive.push(JSON.stringify(item));
+            else caseInsensitive.push(JSON.stringify(item));
+        }
+
+        return beginswith.concat(caseSensitive, caseInsensitive)
+
+    },
+
+
+    highlighter: function (obj) {
+        var item = JSON.parse(obj);
+        var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
+        return item.name.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+            return '<strong>' + match + '</strong>'
+        })
+    },
+
+    updater: function (obj) {
+        var item = JSON.parse(obj);
+        $('#to_place_selected_type').attr('value', item.type);
+        $('#to_place_selected').attr('value', item.id);
+        return item.name;
+    }  
+  });  
+  
