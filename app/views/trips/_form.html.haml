@@ -78,7 +78,7 @@
   });
   
   $('.dropdown-toggle').dropdown();
-  
+
   // User has selected a pre-defined place from the dropdown.
   $('.place-option').on('click', function(event) {
     var t = $(event.target);
@@ -93,6 +93,29 @@
       $('#to_place_selected_type').val(3);
     }
     $('#' + t.parents('ul').data('target')).val(name);
+  });
+
+  // User has selected a an alternate address from the list
+  $('.address_select').bind('click', function(event) {
+    var t = $(event.target);
+    var id = t.data('id');
+    var from_to = t.data('type');
+    var name = t.text().trim();
+    var update_target;
+    var hidden_val;
+    var hidden_type;
+    if (from_to == 'from') {
+      update_target = $('#from_address');
+      hidden_val = $('#from_place_selected');
+      hidden_type = $('#from_place_selected_type');      
+    } else {
+      update_target = $('#to_address');
+      hidden_val = $('#to_place_selected');
+      hidden_type = $('#to_place_selected_type');      
+    }
+    hidden_val.val(id);
+    hidden_type.val(4);
+    update_target.val(name);
   });
 
   // Add change listeners on the text fields

@@ -12,7 +12,7 @@ class Place < ActiveRecord::Base
   default_scope order("name")
   
   def location
-    return [poi.lat, poi.lon] unless poi.nil?
+    return poi.location unless poi.nil?
     return [lat, lon]
   end
   

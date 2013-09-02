@@ -1,6 +1,8 @@
 - unless results.empty?
-  .candidate-list.thumbnail{:style => "height:100px;overflow:auto;"}
-    %ul.unstyled
-      - results.each do |addr|
-        %li.address_select{:data => {:id => addr[:id], :type => type}}
-          = addr[:formatted_address] 
+  .control-group
+    .controls
+      .candidate-list.span6.thumbnail{:style => "height:100px;overflow:auto;"}
+        %ul.unstyled
+          - results.each do |addr|
+            %li.address_select{:data => {:id => addr[:id], :type => type}}
+              = addr[:formatted_address] 

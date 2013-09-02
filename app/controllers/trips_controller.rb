@@ -236,7 +236,7 @@ class TripsController < TravelerAwareController
     # get the start for this trip
     from_place = TripPlace.new()
     from_place.sequence = 0
-    place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected, true)
+    place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected.to_i, true)
     if place[:poi_id]
       from_place.poi = Poi.find(place[:poi_id])
     elsif place[:place_id]
@@ -250,7 +250,7 @@ class TripsController < TravelerAwareController
     # get the end for this trip
     to_place = TripPlace.new()
     to_place.sequence = 1
-    place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected, false)
+    place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected.to_i, false)
     if place[:poi_id]
       to_place.poi = Poi.find(place[:poi_id])
     elsif place[:place_id]
@@ -301,7 +301,7 @@ class TripsController < TravelerAwareController
       else
         place = session[TO_PLACES_SESSION_KEY][place_id]
       end
-      return {:name => place.address, :lat => place.lat, :lon => place.lon, :address => place.address}
+      return {:name => place[:address], :lat => place[:lat], :lon => place[:lon], :address => place[:address]}
     else
       return {}
     end
