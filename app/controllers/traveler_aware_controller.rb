@@ -9,6 +9,11 @@ class TravelerAwareController < ApplicationController
   # Session key for storing the traveler id
   TRAVELER_USER_SESSION_KEY = 'traveler'
   
+  # Constants for type of place user has selected  
+  POI_TYPE = "1"
+  CACHED_ADDRESS_TYPE = "2"
+  PLACES_TYPE = "3"
+  RAW_ADDRESS_TYPE = "4"
   
 protected
 

@@ -2,22 +2,20 @@ class PlacesController < TravelerAwareController
 
   # include the Leaflet helper into the controller and view
   helper LeafletHelper
-
-  POI_TYPE = "1"
-  CACHED_ADDRESS_TYPE = "2"
-  RAW_ADDRESS_TYPE = "3"
   
   CACHED_ADDRESSES_SESSION_KEY = 'places_address_cache'
+  MAX_POIS_FOR_SEARCH = 10
 
   # set the @traveler variable for actions that are not supported by teh super class controller
   before_filter :get_traveler, :only => [:index, :add_place, :add_poi, :create, :destroy, :change]
   # set the @place variable before any actions are invoked
   before_filter :get_place, :only => [:show, :destroy, :edit]
+  
   def index
-    @places = @traveler.places
-    @place_proxy = PlaceProxy.new
-    @alternative_places = []
-    @markers = generate_map_markers(@places)
+    
+    # set the basic form variables
+    set_form_variables
+
   end
 
   # Called when a user has selected a place
@@ -53,10 +51,9 @@ class PlacesController < TravelerAwareController
       flash[:alert] = "An error occurred adding #{place.name} to your address book."
     end
 
-    @alternative_places = []
-    @places = @traveler.places
-    @markers = generate_map_markers(@places)
-    @place_proxy = PlaceProxy.new    
+    # set the basic form variables
+    set_form_variables
+
     respond_to do |format|
       format.js {render "update_form_and_map"}
     end
@@ -75,10 +72,10 @@ class PlacesController < TravelerAwareController
     else
       flash[:alert] = "An error occurred while updating your address book."
     end
-    @alternative_places = []
-    @places = @traveler.places
-    @markers = generate_map_markers(@places)
-    @place_proxy = PlaceProxy.new    
+
+    # set the basic form variables
+    set_form_variables
+
     respond_to do |format|
       format.js {render "update_form_and_map"}
     end
@@ -93,13 +90,13 @@ class PlacesController < TravelerAwareController
       if place.save
         flash[:notice] = "#{place.name} has been removed from your address book."
       else
-        flash[:alert] = "An error occurred adding #{place.name} to your address book."
+        flash[:alert] = "An error occurred while updating your address book."
       end
     end
-    @alternative_places = []
-    @places = @traveler.places
-    @markers = generate_map_markers(@places)
-    @place_proxy = PlaceProxy.new    
+
+    # set the basic form variables
+    set_form_variables
+
     respond_to do |format|
       format.js {render "update_form_and_map"}
     end
@@ -144,9 +141,6 @@ class PlacesController < TravelerAwareController
       else
         flash[:alert] = "An error occurred while updating your address book."
       end
-      @alternative_places = []
-      @places = @traveler.places
-      @markers = generate_map_markers(@places)
       # if we added to the places list we need to update the places form and the map
       view = "update_form_and_map"
     else
@@ -165,6 +159,10 @@ class PlacesController < TravelerAwareController
         @alternative_places = geocoder.results
       end
     end
+
+    # set the basic form variables
+    set_form_variables
+
     respond_to do |format|
       format.js {render view}
     end
@@ -181,7 +179,7 @@ class PlacesController < TravelerAwareController
     counter = 0
     
     # First search for POIs
-    pois = Poi.where("name LIKE ?", query_str).limit(10)
+    pois = Poi.where("name LIKE ?", query_str).limit(MAX_POIS_FOR_SEARCH)
     matches = []
     pois.each do |poi|
       matches << {
@@ -195,6 +193,7 @@ class PlacesController < TravelerAwareController
       }
       counter += 1
     end
+    
     # now search for existing trip ends. We manually filter these to find unique addresses
     tps = @traveler.trip_places.where("raw_address LIKE ?", query_str).order("raw_address")
     old_addr = ""
@@ -219,6 +218,19 @@ class PlacesController < TravelerAwareController
   end
 
 protected
+
+  def set_form_variables
+    
+    @places = @traveler.places
+    if @place_proxy.nil?
+      @place_proxy = PlaceProxy.new 
+    end
+    if @alternative_places.nil?
+      @alternative_places = []
+    end
+    @markers = generate_map_markers(@places)
+    
+  end
 
   def get_place
     if user_signed_in?
