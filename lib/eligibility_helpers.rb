@@ -9,8 +9,11 @@ class EligibilityHelpers
       service_characteristic_maps = service.service_traveler_characteristics_maps
       service_characteristic_maps.each do |service_characteristic_map|
         service_requirement = service_characteristic_map.traveler_characteristic
-        passenger_characteristic = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: service_requirement.id)
+        if service_requirement.name = 'Age'
+          update_age(user_profile)
+        end
 
+        passenger_characteristic = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: service_requirement.id)
         if passenger_characteristic.count == 0 #This passenger characteristic is not listed #TODO: Currently we reject ont his but perhaps we should ask for more info
           is_eligible = false
           break
@@ -28,6 +31,20 @@ class EligibilityHelpers
     fully_eligible_services
 
   end
+
+  def update_age(user_profile, date = Time.now)
+    dob = TravelerCharacteristic.find_by_name('Date of Birth')
+    age = TravelerCharacteristic.find_by_name('Age')
+    passenger_dob = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: dob.id).first.value.to_date
+    passenger_age_characteristic = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: age.id).first
+
+    new_age = date.year - passenger_dob.year
+    new_age -= 1 if date < passenger_dob + new_age.years
+    passenger_age_characteristic.value = new_age
+    passenger_age_characteristic.save()
+
+  end
+
 
   def get_accommodating_services_for_traveler(user_profile)
 
@@ -65,18 +82,36 @@ class EligibilityHelpers
 
   end
 
-  def get_eligible_services_for_trip(trip, services)
-    eligible_by_location = get_location_eligibility(trip, services)
-    eligible_by_service_time = get_service_time_eligibility(trip, services)
-    eligible_by_advanced_notice = get_advanced_notice_eligibility(trip, services)
+  def get_eligible_services_for_trip(planned_trip, services)
+    eligible_by_location = eligible_by_location(planned_trip, services)
+    eligible_by_service_time = eligible_by_service_time(planned_trip, services)
+    eligible_by_advanced_notice = eligible_by_advanced_notice(planned_trip, services)
+    eligible_by_trip_purpose = eligible_by_trip_purpose(planned_trip, services)
 
-    eligible_by_location & eligible_by_service_time & eligible_by_advanced_notice
+    eligible_by_location & eligible_by_service_time & eligible_by_advanced_notice & eligible_by_trip_purpose
 
   end
 
   def eligible_by_location(planned_trip, services)
     #TODO: Need to filter by location (county, city, state, polygon, etc.)
     services
+  end
+
+  def eligible_by_trip_purpose(planned_trip, services)
+    eligible_services = []
+    services.each do |service|
+      maps = service.service_trip_purpose_maps
+      purposes = []
+      maps.each do |map|
+        purposes << map.trip_purpose
+      end
+      if purposes.include? planned_trip.trip.trip_purpose
+        eligible_services << service
+      end
+    end
+
+    eligible_services
+
   end
 
   def eligible_by_service_time(planned_trip, services)
@@ -104,8 +139,7 @@ class EligibilityHelpers
 
   end
 
- def test_condition(value1, operator, value2)
-
+  def test_condition(value1, operator, value2)
     case operator
       when 1 # general equals
         return value1 == value2

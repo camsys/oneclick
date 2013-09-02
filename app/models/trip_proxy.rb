@@ -2,7 +2,7 @@ require 'chronic'
 
 class TripProxy < Proxy
 
-  attr_accessor :from_place, :to_place, :trip_date, :arrive_depart, :trip_time, :model_name, :traveler
+  attr_accessor :from_place, :to_place, :trip_date, :arrive_depart, :trip_time, :model_name, :traveler, :trip_purpose
   attr_accessor :from_place_results, :to_place_results
   attr_accessor :from_place_selected, :to_place_selected
   attr_accessor :from_place_selected_type, :to_place_selected_type
@@ -46,7 +46,8 @@ class TripProxy < Proxy
       errors.add(:trip_date, I18n.translate(:date_wrong_format))
     end
   end
-  def validate_time  
+
+  def validate_time
     begin
       Time.strptime(@trip_time, "%H:%M %p")
     rescue Exception => e

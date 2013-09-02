@@ -1,4 +1,7 @@
 class TripPurpose < ActiveRecord::Base
 
-  # attr_accessible :title, :body
+  has_many :service_trip_purpose_maps
+
+  attr_accessible :id, :name, :note, :active
+
 end

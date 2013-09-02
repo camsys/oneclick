@@ -21,6 +21,7 @@ Oneclick::Application.routes.draw do
       end
 
       resources :user_characteristics_proxies
+      resources :user_accommodations_proxies
 
       # user relationships
       resources :user_relationships, :only => [:new, :create] do

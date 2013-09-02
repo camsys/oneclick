@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130830171539) do
+ActiveRecord::Schema.define(:version => 20130902211410) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -161,7 +161,7 @@ ActiveRecord::Schema.define(:version => 20130830171539) do
 
   create_table "service_trip_purpose_maps", :force => true do |t|
     t.integer "service_id",                                            :null => false
-    t.integer "purpose_id",                                            :null => false
+    t.integer "trip_purpose_id",                                       :null => false
     t.string  "value",                 :limit => 64,                   :null => false
     t.boolean "active",                              :default => true, :null => false
     t.integer "value_relationship_id"
@@ -224,11 +224,12 @@ ActiveRecord::Schema.define(:version => 20130830171539) do
   end
 
   create_table "trips", :force => true do |t|
-    t.string   "name",       :limit => 64
+    t.string   "name",            :limit => 64
     t.integer  "user_id"
     t.integer  "creator_id"
-    t.datetime "created_at",               :null => false
-    t.datetime "updated_at",               :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.integer  "trip_purpose_id"
   end
 
   create_table "user_mode_preferences", :force => true do |t|

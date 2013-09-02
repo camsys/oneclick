@@ -62,8 +62,9 @@ class PlannedTrip < ActiveRecord::Base
     #TODO: This is just a place holder that currently returns demo data only.
     tp = TripPlanner.new
     eh = EligibilityHelpers.new
-    eligible_services = eh.get_eligible_services_for_traveler(creator.user_profile)
-    eligible_services.each do |service|
+    passenger_eligible_services = eh.get_accommodating_and_eligible_services_for_traveler(creator.user_profile)
+    passenger_and_trip_eligible_services = eh.get_eligible_services_for_trip(self, passenger_eligible_services)
+    passenger_and_trip_eligible_services.each do |service|
 
       itinerary = tp.convert_paratransit_itineraries(service)
       self.itineraries << Itinerary.new(itinerary)

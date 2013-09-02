@@ -181,6 +181,8 @@ class TripsController < TravelerAwareController
       @trip = create_trip(@trip_proxy)
     end
 
+    @trip.trip_purpose = TripPurpose.find(@trip_proxy.trip_purpose.to_i)
+
     respond_to do |format|
       if @trip
         if @trip.save

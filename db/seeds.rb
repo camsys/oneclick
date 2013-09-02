@@ -128,6 +128,7 @@ traveler_accommodations = [
     {id:1, name: 'Wheelchair Accessible', note: 'The passenger requires a wheelchair accessible service.', datatype: 'bool'},
     {id:2, name: 'Door-to-door', note: 'The passenger requires door-to-door service.', datatype: 'bool'},
     {id:3, name: 'Curb-to-curb', note: 'The passenger requires curb-to-curb service.', datatype: 'bool'},
+    {id:4, name: 'Service Animal Accommodation', note: 'This service accommodates service animals.', datatype: 'bool'},
 ]
 
 providers = [
@@ -174,6 +175,14 @@ service_traveler_accommodations_map = [
     {service_id: 1, accommodation_id: 1, value: 'true'},
 ]
 
+service_trip_purpose_map = [
+    {service_id: 1, trip_purpose_id: 1, value: 'true'},
+    {service_id: 2, trip_purpose_id: 2, value: 'true'},
+    {service_id: 3, trip_purpose_id: 3, value: 'true'},
+    {service_id: 4, trip_purpose_id: 1, value: 'true'},
+]
+
+
 user_traveler_accommodations_map = [
     {user_profile_id: 2, accommodation_id: 1, value: 'true'},
 ]
@@ -190,13 +199,19 @@ value_relationship = [
 #day 0 is Sunday
 schedules = [
     {service_id: 1, start_time: "7:00", end_time: "19:00", day_of_week: 1},
-    {service_id: 2, start_time: "0:00", end_time: "23:00", day_of_week: 0},
-    {service_id: 2, start_time: "0:00", end_time: "23:00", day_of_week: 1},
-    {service_id: 2, start_time: "0:00", end_time: "23:00", day_of_week: 2},
-    {service_id: 2, start_time: "0:00", end_time: "23:00", day_of_week: 3},
-    {service_id: 2, start_time: "0:00", end_time: "23:00", day_of_week: 4},
-    {service_id: 2, start_time: "0:00", end_time: "23:00", day_of_week: 5},
-    {service_id: 2, start_time: "0:00", end_time: "23:00", day_of_week: 6},
+    {service_id: 4, start_time: "0:00", end_time: "23:00", day_of_week: 0},
+    {service_id: 4, start_time: "0:00", end_time: "23:00", day_of_week: 1},
+    {service_id: 4, start_time: "0:00", end_time: "23:00", day_of_week: 2},
+    {service_id: 4, start_time: "0:00", end_time: "23:00", day_of_week: 3},
+    {service_id: 4, start_time: "0:00", end_time: "23:00", day_of_week: 4},
+    {service_id: 4, start_time: "0:00", end_time: "23:00", day_of_week: 5},
+    {service_id: 4, start_time: "0:00", end_time: "23:00", day_of_week: 6},
+]
+
+trip_purposes = [
+    {id: 1, name: 'General', note: 'General purpose trip.', active: 1},
+    {id: 2, name: 'Shopping', note: 'Personal shopping trip.', active: 1},
+    {id: 3, name: 'Work', note: 'Work-related trip.', active: 1},
 ]
 
 value_relationship.each do |relationship|
@@ -229,6 +244,11 @@ service_types.each do |service_type|
   st.save
 end
 
+trip_purposes.each do |trip_purpose|
+  t = TripPurpose.create! trip_purpose
+  t.save
+end
+
 services.each do |service|
   puts "Add service #{service[:name]}"
   s = Service.create! service
@@ -250,6 +270,11 @@ service_traveler_accommodations_map.each do |mapping|
   stam.save
 end
 
+service_trip_purpose_map.each do |mapping|
+  stpm = ServiceTripPurposeMap.create! mapping
+  stpm.save
+end
+
 user_traveler_accommodations_map.each do |mapping|
   utam = UserTravelerAccommodationsMap.create! mapping
   utam.save
@@ -259,6 +284,7 @@ schedules.each do |schedule|
   s = Schedule.create! schedule
   s.save
 end
+
 
 
 

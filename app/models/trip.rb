@@ -5,6 +5,7 @@ class Trip < ActiveRecord::Base
   # Associations
   belongs_to :user
   belongs_to :creator, :class_name => "User", :foreign_key => "creator_id"
+  belongs_to :trip_purpose
   has_many :trip_places
   has_many :planned_trips
   
