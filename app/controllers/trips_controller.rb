@@ -181,8 +181,6 @@ class TripsController < TravelerAwareController
       @trip = create_trip(@trip_proxy)
     end
 
-    @trip.trip_purpose = TripPurpose.find(@trip_proxy.trip_purpose.to_i)
-
     respond_to do |format|
       if @trip
         if @trip.save
@@ -234,6 +232,7 @@ class TripsController < TravelerAwareController
     trip = Trip.new()
     trip.creator = current_or_guest_user
     trip.user = @traveler
+    trip.trip_purpose = TripPurpose.find(trip_proxy.trip_purpose_id)
 
     # get the start for this trip
     from_place = TripPlace.new()

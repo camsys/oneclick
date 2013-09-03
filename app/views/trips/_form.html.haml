@@ -47,7 +47,7 @@
 
     = f.input :arrive_depart, :collection => ["departing at", "arriving by"], :label => false, :include_blank => false
 
-    = f.input :trip_purpose, :collection => TripPurpose.all
+    = f.input :trip_purpose_id, :collection => TripPurpose.all
 
     = f.input :trip_time, :wrapper => :append, :label => t(:time) do
       #trip-time

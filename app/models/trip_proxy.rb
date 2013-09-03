@@ -2,7 +2,7 @@ require 'chronic'
 
 class TripProxy < Proxy
 
-  attr_accessor :from_place, :to_place, :trip_date, :arrive_depart, :trip_time, :model_name, :traveler, :trip_purpose
+  attr_accessor :from_place, :to_place, :trip_date, :arrive_depart, :trip_time, :model_name, :traveler, :trip_purpose_id
   attr_accessor :from_place_results, :to_place_results
   attr_accessor :from_place_selected, :to_place_selected
   attr_accessor :from_place_selected_type, :to_place_selected_type
@@ -11,6 +11,7 @@ class TripProxy < Proxy
   validates :to_place, :presence => true
   validates :trip_date, :presence => true
   validates :trip_time, :presence => true
+  validates :trip_purpose_id, :presence => true
   
   validate :validate_date
   validate :validate_time
