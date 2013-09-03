@@ -29,6 +29,7 @@ es:
   first_name: 'Nombre'
   last_name: 'Apellido'
   email: 'Correo electrónico'
+  remember_me: 'Acuérdate de mí *5*'  
   password: 'Contraseña'
   password_confirmation: 'Confirme la contraseña'
   current_password: 'Contraseña actual'
