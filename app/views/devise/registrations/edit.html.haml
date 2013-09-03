@@ -72,19 +72,6 @@
       $(this).tab('show')
   });
 
-  $('#buddies').on('ajax:success', function(e, response) {
-    console.log(response)
-    $('#buddies').html(response)
-  }) 
-  $('#travelers').on('ajax:success', function(e, response) {
-    console.log(response)
-    $('#travelers').html(response)
-  })
-   $('#eligibility').on('ajax:success', function(e, response) {
-      console.log(response)
-      $('#eligibility').html(response)
-  })
-
   // install an event handler to set the form focus when the user
   // switches tabs
   $('a[data-toggle="tab"]').on('shown', function (e) {
