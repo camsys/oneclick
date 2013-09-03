@@ -9,7 +9,7 @@
     .row-fluid
       .span4
         %fieldset
-          %legend Transaction
+          %legend Trip Details
           %p.span12
             %span.span4.text-right User:          
             %span.span8= @trip.user.nil? ? t(:anonymous) : link_to(@trip.user.name, user_path(@trip.user))      
