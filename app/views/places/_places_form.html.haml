@@ -38,7 +38,7 @@
               %strong= place
               %br
               %em= place.address
-            %td{:style => "white-space:nowrap;"}
+            %td.nowrap
               = link_to "#", :class => "btn btn-mini btn-warning" do
                 %i.icon.icon-edit{:data => {:name => place.name, :id => place.id}}
               = link_to user_place_path(@traveler, place), :class => "btn btn-mini btn-danger", :method => :delete, :remote => true, :confirm => "Are you sure ?" do

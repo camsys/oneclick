@@ -7,7 +7,7 @@
 .row-fluid
   .span12
     .row-fluid
-      .span5
+      .span4
         %fieldset
           %legend Transaction
           %p.span12
@@ -21,11 +21,14 @@
             %span.span8= format_date_time(@planned_trip.trip_datetime)          
           %p.span12
             %span.span4.text-right Arrive/Depart:          
-            %span.span8= @planned_trip.is_depart ? "depart at" : "arrive by"      
+            %span.span8= @planned_trip.is_depart ? "departing at" : "arriving by"      
+          %p.span12
+            %span.span4.text-right Purpose:          
+            %span.span8= @trip.trip_purpose.name      
           %p.span12
             %span.span4.text-right Created:          
             %span.span8= format_date_time(@planned_trip.created_at)          
-      .span7
+      .span8
         %fieldset
           %legend Places
           %table.table.table.condensed.table-striped.table-hover.table-bordered
@@ -33,6 +36,7 @@
               %tr
                 %th.left Place
                 %th.left Type
+                %th.left Address
                 %th.center Location
                 %th.center Actions
             %tbody
@@ -40,9 +44,10 @@
                 %tr
                   %td.left= place
                   %td.left= place.type
-                  %td.center
+                  %td.left= place.address
+                  %td.center.nowrap
                     = sprintf("[%.6f, %.6f]", place.location[0], place.location[1]) unless place.location[0].nil?
-                  %td.center
+                  %td.center.nowrap
                     = link_to "#", {class: "btn btn-mini btn-success text-center"} do
                       %i.icon-search
                       =t(:view)

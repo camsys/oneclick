@@ -8,7 +8,7 @@ class TripPlace < ActiveRecord::Base
   # Associations
   belongs_to :trip    # everyone trip place must belong to a trip
   belongs_to :place   # optional
-  belongs_to :poi   # optional
+  belongs_to :poi     # optional
   
   # Updatable attributes
   attr_accessible :sequence, :raw_address, :lat, :lon
@@ -26,6 +26,12 @@ class TripPlace < ActiveRecord::Base
     return TYPES[0] unless poi.nil?
     return TYPES[1] unless place.nil?
     return TYPES[2]
+  end
+  
+  def address
+    return poi.address unless poi.nil?
+    return place.address unless place.nil?
+    return raw_address    
   end
   
   def to_s
