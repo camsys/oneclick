@@ -1,64 +1,64 @@
 INSERT INTO poi_types(id, name, active)
-  VALUES(1, 'Place of Worship', 1);
+  VALUES(1, 'Place of Worship', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(2, 'School', 1);
+  VALUES(2, 'School', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(3, 'Grave yard', 1);
+  VALUES(3, 'Grave yard', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(4, 'Townhall', 1);
+  VALUES(4, 'Townhall', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(5, 'Post office', 1);
+  VALUES(5, 'Post office', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(6, 'Library', 1);
+  VALUES(6, 'Library', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(7, 'Aerodrome', 1);
+  VALUES(7, 'Aerodrome', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(8, 'Court house', 1);
+  VALUES(8, 'Court house', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(9, 'Fire station', 1);
+  VALUES(9, 'Fire station', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(10, 'Tram stop', 1);
+  VALUES(10, 'Tram stop', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(11, 'Railway station', 1);
+  VALUES(11, 'Railway station', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(12, 'Bicycle rental', 1);
+  VALUES(12, 'Bicycle rental', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(13, 'Bus Stop', 1);
+  VALUES(13, 'Bus Stop', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(14, 'Bicycle parking', 1);
+  VALUES(14, 'Bicycle parking', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(15, 'Post Box', 1);
+  VALUES(15, 'Post Box', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(16, 'Prison', 1);
+  VALUES(16, 'Prison', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(17, 'Recycling', 1);
+  VALUES(17, 'Recycling', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(18, 'Police station', 1);
+  VALUES(18, 'Police station', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(19, 'Public telephone', 1);
+  VALUES(19, 'Public telephone', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(20, 'Military', 1);
+  VALUES(20, 'Military', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(21, 'University', 1);
+  VALUES(21, 'University', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(22, 'Power Station', 1);
+  VALUES(22, 'Power Station', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(23, 'College', 1);
+  VALUES(23, 'College', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(24, 'Toilets', 1);
+  VALUES(24, 'Toilets', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(25, 'Subway Entrance', 1);
+  VALUES(25, 'Subway Entrance', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(26, 'Bus station', 1);
+  VALUES(26, 'Bus station', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(27, 'Water treatment', 1);
+  VALUES(27, 'Water treatment', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(28, 'Airport terminal', 1);
+  VALUES(28, 'Airport terminal', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(29, 'Ferry stop', 1);
+  VALUES(29, 'Ferry stop', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(30, 'Hospital', 1);
+  VALUES(30, 'Hospital', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(31, 'Pharmacy', 1);
+  VALUES(31, 'Pharmacy', true);
 INSERT INTO poi_types(id, name, active)
-  VALUES(32, 'Veterinary', 1);
+  VALUES(32, 'Veterinary', true);
