@@ -33,10 +33,18 @@ class EligibilityHelpers
   end
 
   def update_age(user_profile, date = Time.now)
+
     dob = TravelerCharacteristic.find_by_name('Date of Birth')
     age = TravelerCharacteristic.find_by_name('Age')
-    passenger_dob = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: dob.id).first.value.to_date
-    passenger_age_characteristic = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: age.id).first
+    passenger_dob = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: dob.id)
+
+    if passenger_dob.count != 0 && passenger_dob.first.value != 'na'
+      passenger_dob = passenger_dob.first.value.to_date
+    else
+      return
+    end
+
+    passenger_age_characteristic = UserTravelerCharacteristicsMap.find_or_initialize_by_user_profile_id_and_characteristic_id(user_profile.id, age.id)
 
     new_age = date.year - passenger_dob.year
     new_age -= 1 if date < passenger_dob + new_age.years
@@ -47,6 +55,10 @@ class EligibilityHelpers
 
 
   def get_accommodating_services_for_traveler(user_profile)
+
+    if user_profile.nil?   #TODO: Fix this to handle anonymous users.
+      return []
+    end
 
     #user accommodations
     accommodations_maps = user_profile.user_traveler_accommodations_maps.where('value = ? ', 'true')
@@ -115,6 +127,7 @@ class EligibilityHelpers
   end
 
   def eligible_by_service_time(planned_trip, services)
+    #TODO: This does not handle services with 24 hour operations well.
     wday = planned_trip.trip_datetime.wday
     eligible_services  = []
     services.each do |service|
