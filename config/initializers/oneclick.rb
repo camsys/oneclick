@@ -1,3 +1,7 @@
+# Check that we got loaded from application.yml
+
+raise "Config not loaded from application.yml" unless ENV['ENV_FROM_APPLICATION_YML']
+
 # use as Rails.application.config.brand
 Oneclick::Application.config.brand = ENV['BRAND'] || 'arc'
 
