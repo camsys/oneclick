@@ -27,7 +27,6 @@ ActiveRecord::Schema.define(:version => 20130902211410) do
   create_table "itineraries", :force => true do |t|
     t.integer  "planned_trip_id"
     t.integer  "mode_id"
-    t.integer  "service_id"
     t.integer  "server_status"
     t.text     "server_message"
     t.integer  "duration"
@@ -43,6 +42,8 @@ ActiveRecord::Schema.define(:version => 20130902211410) do
     t.boolean  "hidden",                                         :null => false
     t.datetime "created_at",                                     :null => false
     t.datetime "updated_at",                                     :null => false
+    t.integer  "count"
+    t.integer  "service_id"
   end
 
   create_table "modes", :force => true do |t|
@@ -51,21 +52,22 @@ ActiveRecord::Schema.define(:version => 20130902211410) do
   end
 
   create_table "places", :force => true do |t|
-    t.integer  "user_id",                                      :null => false
+    t.integer  "user_id",                                         :null => false
     t.integer  "creator_id"
-    t.string   "name",        :limit => 64,                    :null => false
+    t.string   "name",          :limit => 64,                     :null => false
     t.integer  "poi_id"
     t.string   "raw_address"
-    t.string   "address1",    :limit => 128
-    t.string   "address2",    :limit => 128
-    t.string   "city",        :limit => 128
-    t.string   "state",       :limit => 2
-    t.string   "zip",         :limit => 10
+    t.string   "address1",      :limit => 128
+    t.string   "address2",      :limit => 128
+    t.string   "city",          :limit => 128
+    t.string   "state",         :limit => 2
+    t.string   "zip",           :limit => 10
     t.float    "lat"
     t.float    "lon"
-    t.boolean  "active",                     :default => true
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
+    t.boolean  "active",                        :default => true
+    t.string   "geocoding_raw", :limit => 2500
   end
 
   create_table "planned_trips", :force => true do |t|
@@ -226,10 +228,10 @@ ActiveRecord::Schema.define(:version => 20130902211410) do
   create_table "trips", :force => true do |t|
     t.string   "name",            :limit => 64
     t.integer  "user_id"
-    t.integer  "trip_purpose_id"
     t.integer  "creator_id"
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
+    t.integer  "trip_purpose_id"
   end
 
   create_table "user_mode_preferences", :force => true do |t|
