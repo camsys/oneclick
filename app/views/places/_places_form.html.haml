@@ -71,6 +71,12 @@
   $('#cancel_edit_button').click(function(e) {
     $('#name_div').hide();
   });
+
+  // Add a change listener on the text field
+  $("#poi_typeahead").bind("keyup input paste", function() {
+    $('#place_type_field').val("");
+    $('#place_id_field').val("");    
+  });
   
   // Enable typeahead for the places forms
   $('#poi_typeahead').typeahead({

@@ -142,6 +142,7 @@ class PlacesController < TravelerAwareController
         flash[:alert] = "An error occurred while updating your address book."
       end
       # if we added to the places list we need to update the places form and the map
+      @place_proxy = PlaceProxy.new
       view = "update_form_and_map"
     else
       # if we are geocoding just update the alt addresses panel
