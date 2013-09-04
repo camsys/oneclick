@@ -171,6 +171,8 @@ class PlacesController < TravelerAwareController
   # Search for existing addresses or POIs based on a partial POI name
   def search
     
+    Rails.logger.info "SEARCH"
+    
     get_traveler
     
     query = params[:query]
