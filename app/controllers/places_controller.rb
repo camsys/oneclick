@@ -172,7 +172,7 @@ class PlacesController < TravelerAwareController
   def search
     
     Rails.logger.info "SEARCH"
-    
+
     get_traveler
     
     query = params[:query]
@@ -182,6 +182,7 @@ class PlacesController < TravelerAwareController
     
     # First search for POIs
     pois = Poi.where("name LIKE ?", query_str).limit(MAX_POIS_FOR_SEARCH)
+    Rails.logger.info pois.ai
     matches = []
     pois.each do |poi|
       matches << {
