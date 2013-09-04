@@ -181,7 +181,9 @@ class PlacesController < TravelerAwareController
     counter = 0
     
     # First search for POIs
-    pois = Poi.where("name LIKE ?", query_str).limit(MAX_POIS_FOR_SEARCH)
+    # Need this to get correct case-insensitive search for postgresql without breaking mysql
+    rel = Poi.arel_table[:name].matches(query_str)
+    pois = Poi.where(rel).limit(MAX_POIS_FOR_SEARCH)
     Rails.logger.info pois.ai
     matches = []
     pois.each do |poi|
@@ -198,7 +200,8 @@ class PlacesController < TravelerAwareController
     end
     
     # now search for existing trip ends. We manually filter these to find unique addresses
-    tps = @traveler.trip_places.where("raw_address LIKE ?", query_str).order("raw_address")
+    rel = TripPlace.arel_table[:raw_address].matches(query_str)
+    tps = @traveler.trip_places.where(rel).order("raw_address")
     old_addr = ""
     tps.each do |tp|
       if old_addr != tp.raw_address
