@@ -10,7 +10,10 @@ es:
   help_and_support: 'Ayuda y Soporte'
   create_an_account: 'Crear una Cuenta'
   travel_profile: 'Perfil del Viaje'
-  previous_trips: 'Viajes Anteriores'
+  my_trips: 'Mis Viajes'
+  my_places: 'Mis Lugares *10*'
+  places: 'Lugares *11*'
+  
   # Agent View strings
   find_traveler: "Encontrar al Viajero"
   create_traveler: "Crear un Viajero"
@@ -56,6 +59,11 @@ es:
   error_404_mistyped: 'Es posible que hayas escrito mal la dirección o la página puede haber cambiado.'
   error_422: 'El cambio que querías fue rechazado.'
   error_422_detail: "Tal vez trataste de cambiar algo al que no tienes acceso."
+
+  # Trip History and Rating
+  rating: "Clasificacion *7*"
+  actions: "Acciones *8*"
+  filter: "Filtrar *9*"
 
   # Trip planning
   enter_address: 'Introduce la dirección'
@@ -178,7 +186,6 @@ es:
   arrive: "ARRIVE: "
   trip: "Viaje: "
   est: " (est.)"
-  my_trips: 'Mis Viajes'
   assisted_user_first_name_s_trips: "Viajes de %{name}"
   trip_options_information_from_from: "Información de opciones de viaje de #{@from}"
   

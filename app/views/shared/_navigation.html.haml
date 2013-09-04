@@ -30,7 +30,7 @@
                   %li
                     = link_to user_places_path(current_user) do
                       %i.icon.icon-map-marker
-                      My places 
+                      = t(:my_places) 
                   - if current_user.has_role? :admin
                     %li.divider.text-left
                     %li

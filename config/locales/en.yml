@@ -13,7 +13,10 @@ en:
   help_and_support: 'Help & Support'
   create_an_account: 'Create an Account'
   travel_profile: 'Travel Profile'
-  previous_trips: 'Previous Trips'
+  my_trips: 'My Trips'
+  my_places: 'My Places'
+  places: 'Places'
+  
   # Agent View strings
   find_traveler: "Find Traveler"
   create_traveler: "Create Traveler"
@@ -61,6 +64,11 @@ en:
   error_404_mistyped: 'You may have mistyped the address or the page may have moved.'
   error_422: 'The change you wanted was rejected.'
   error_422_detail: "Maybe you tried to change something you didn't have access to."
+  
+  # Trip History and Rating
+  rating: "Rating"
+  actions: "Actions"
+  filter: "Filter"
 
   # Trip planning
   enter_address: 'Enter address'
@@ -183,7 +191,6 @@ en:
   arrive: "ARRIVE: "
   trip: "Trip: "
   est: " (est.)"
-  my_trips: 'My Trips'
   assisted_user_first_name_s_trips: "%{name}'s Trips"
   trip_options_information_from_from: "Trip options information from %{from}"
 
