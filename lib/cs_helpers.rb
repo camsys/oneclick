@@ -28,4 +28,7 @@ module CsHelpers
     @assisted_user ||= User.find_by_id(session[:assisting])
   end
 
+  def format_exception e
+    [e.message, e.backtrace].flatten.join("\n")
+  end
 end
