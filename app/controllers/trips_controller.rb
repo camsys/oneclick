@@ -7,43 +7,6 @@ class TripsController < TravelerAwareController
   FROM_PLACES_SESSION_KEY = 'trips_from_places'
   TO_PLACES_SESSION_KEY = 'trips_to_places'
     
-  def index
-
-    # params needed for the subnav filters
-    if params[:time_filter_type]
-      @time_filter_type = params[:time_filter_type]
-    else
-     @time_filter_type = session[TIME_FILTER_TYPE_SESSION_KEY]
-   end
-    # if it is still not set use the default
-    if @time_filter_type.nil?
-      @time_filter_type = "0"
-    end
-    # store it in the session
-    session[TIME_FILTER_TYPE_SESSION_KEY] = @time_filter_type
-
-    # get the duration for this time filter
-    duration = TimeFilterHelper.time_filter_as_duration(@time_filter_type)
-    
-    if user_signed_in?
-      # limit trips to trips owned by the user unless an admin
-      if current_user.has_role? :admin
-        @trips = Trip.created_between(duration.first, duration.last).order("created_at DESC")
-      else
-        @trips = current_traveler.trips.created_between(duration.first, duration.last).order("created_at DESC")
-      end
-    else
-      redirect_to error_404_path   
-      return 
-    end
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @trips }
-    end
-    
-  end
-
   def unset_traveler
 
     # set or update the traveler session key with the id of the traveler

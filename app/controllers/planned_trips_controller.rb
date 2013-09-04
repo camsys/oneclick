@@ -1,7 +1,7 @@
 class PlannedTripsController < TravelerAwareController
     
   # set the @planned_trip and @trip variables before any actions are invoked
-  before_filter :get_planned_trip
+  before_filter :get_planned_trip, :except => [:index]
 
   TIME_FILTER_TYPE_SESSION_KEY = 'planned_trips_time_filter_type'
   

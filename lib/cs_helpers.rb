@@ -6,7 +6,7 @@ module CsHelpers
         :create_an_account => 'icon-edit',
         :identify_places =>'icon-map-marker',
         :travel_profile => 'icon-cogs',
-        :previous_trips => 'icon-share-alt icon-flip-horizontal',
+        :my_trips => 'icon-share-alt icon-flip-horizontal',
         :help_and_support => 'icon-question-sign',
         :find_traveler => 'icon-search',
         :create_traveler =>'icon-user',

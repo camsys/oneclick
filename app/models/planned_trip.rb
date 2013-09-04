@@ -23,6 +23,12 @@ class PlannedTrip < ActiveRecord::Base
     joins(:itineraries).where('server_status <> 200')
   end
   
+  # returns true if the planned trip is scheduled in advance of
+  # the current or passed in date
+  def in_the_future(now=Time.now)
+    trip_datetime > now
+  end
+  
   def create_itineraries
     create_fixed_route_itineraries
     create_taxi_itineraries

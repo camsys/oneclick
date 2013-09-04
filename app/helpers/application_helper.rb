@@ -61,10 +61,10 @@ module ApplicationHelper
   end
 
   def format_date_time(datetime)
-    return datetime.strftime("%I:%M %p %b %d %Y") unless datetime.nil?
+    return datetime.strftime("%I:%M %p %A, %B %-d %Y") unless datetime.nil?
   end
   def format_date(date)
-    return date.strftime("%b %d %Y") unless date.nil?
+    return date.strftime("%A, %B %-d %Y") unless date.nil?
   end
   def format_time(time)
     return time.strftime("%I:%M") unless time.nil?
