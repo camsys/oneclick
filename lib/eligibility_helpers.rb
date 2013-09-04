@@ -37,13 +37,11 @@ class EligibilityHelpers
     dob = TravelerCharacteristic.find_by_name('Date of Birth')
     age = TravelerCharacteristic.find_by_name('Age')
     passenger_dob = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: dob.id)
-
     if passenger_dob.count != 0 && passenger_dob.first.value != 'na'
       passenger_dob = passenger_dob.first.value.to_date
     else
       return
     end
-
     passenger_age_characteristic = UserTravelerCharacteristicsMap.find_or_initialize_by_user_profile_id_and_characteristic_id(user_profile.id, age.id)
 
     new_age = date.year - passenger_dob.year
@@ -87,6 +85,10 @@ class EligibilityHelpers
   end
 
   def get_accommodating_and_eligible_services_for_traveler(user_profile)
+    if user_profile.nil? #TODO:  Need to update to handle anonymous users.  This currently only works with user logged in.
+      return []
+    end
+
     eligible = get_eligible_services_for_traveler(user_profile)
     accommodating = get_accommodating_services_for_traveler(user_profile)
 

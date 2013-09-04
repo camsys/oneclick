@@ -1,5 +1,8 @@
 class UserMailer < ActionMailer::Base
-  default from: "donotreply@gmail.com"
+  
+  # Default sender account set in application.yml
+  default from: ENV["SYSTEM_SEND_FROM_ADDRESS"]
+  
   helper :application
   
   def user_trip_email(addresses, planned_trip, subject, from)
