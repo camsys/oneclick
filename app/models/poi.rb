@@ -16,7 +16,7 @@ class Poi < ActiveRecord::Base
   end
   
   def location
-    return [:lat, :lon]
+    return [lat, lon]
   end
   
   def address
