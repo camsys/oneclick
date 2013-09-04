@@ -117,107 +117,133 @@ end
 ##### Eligibility Seeds #####
 
 traveler_characteristics = [
-    {id:1, name: 'Veteran', note: 'Is the traveler a veteran?', datatype: 'bool'},
-    {id:2, name: 'Disabled', note: 'Is the traveler disabled?', datatype: 'bool'},
-    {id:3, name: 'Medicaid Eligible', note: 'Is the traveler Medicaid/NEMT Eligible?', datatype: 'bool'},
-    {id:4, name: 'Date of Birth', note: '', datatype: 'date'},
-    {id:5, name: 'Age', note: '', datatype: 'integer'},
+    {id:1, name: 'Disabled', note: 'Is the traveler disabled?', datatype: 'bool'},
+    {id:2, name: 'No Means of Transportation', note: 'The traveler has no alternative means of transportation.', datatype: 'bool'},
+    {id:3, name: 'Medicaid/NEMT Eligible', note: 'Is the traveler Medicaid or NEMT Eligible?', datatype: 'bool'},
+    {id:4, name: 'ADA Paratransit Eligible', note: 'Is the traveler ADA Paratransit eligible?', datatype: 'bool'},
+    {id:5, name: 'Veteran', note: 'Is the traveler a veteran?', datatype: 'bool'},
+    {id:6, name: 'Medicare Eligible', note: 'Is the traveler Medicare Eligible?', datatype: 'bool'},
+    {id:7, name: 'Low income', note: 'Low income traveler.', datatype: 'bool'},
+    {id:8, name: 'Date of Birth', note: '', datatype: 'date'},
+    {id:9, name: 'Age', note: '', datatype: 'integer'},
 ]
 
 traveler_accommodations = [
     {id:1, name: 'Wheelchair Accessible', note: 'The passenger requires a wheelchair accessible service.', datatype: 'bool'},
     {id:2, name: 'Door-to-door', note: 'The passenger requires door-to-door service.', datatype: 'bool'},
     {id:3, name: 'Curb-to-curb', note: 'The passenger requires curb-to-curb service.', datatype: 'bool'},
-    {id:4, name: 'Service Animal Accommodation', note: 'This service accommodates service animals.', datatype: 'bool'},
 ]
 
 providers = [
-    {id: 1, name: 'Cobb Community Transit', contact: 'Contact Name', external_id: "esp#24"},
-    {id: 2, name: 'Metro Atlanta Rapid Transit Authority', contact: 'MARTA Contact Name', external_id: "esp#35"},
-    {id: 3, name: "Dept. of Veterans Affairs", contact: 'Dave Jones', external_id: "esp#64"},
+    {id: 1, name: 'Metro Medical Transportation', contact: 'name here', external_id: "esp#2"},
+    {id: 2, name: 'Clayton County Transportation Services', contact: 'John Clayton', external_id: "esp#9"},
+    {id: 3, name: 'Cobb Transportation Services', contact: 'Susan Cobb', external_id: "esp#13"},
+    {id: 4, name: 'Douglas Trans. Services', contact: 'Doug Douglas', external_id: "esp#22"},
+    {id: 5, name: 'ATL Limo', contact: 'Mr. Limo', external_id: "esp#45"},
+
 ]
 
 service_types = [
     {id: 1, name: 'Paratransit', note: 'This is a general purpose paratransit service.'},
     {id: 2, name: 'Non-Emergency Medical Service', note: 'This is a paratransit service only to be used for medical trips.'},
-    {id: 3, name: 'NEMT Broker', note: 'This service will arrange trips for non-emergency medical reasons, but does not provide trips directly.'},
+    {id: 3, name: 'Livery', note: 'Car service for hire.'},
 ]
 
 services = [
-    {id: 1, name: 'CCT Paratransit', provider_id: 1, service_type_id: 1, advanced_notice_minutes: 24*60},
-    {id: 2, name: 'MARTA Mobility', provider_id: 2, service_type_id: 1, advanced_notice_minutes: 48*60},
-    {id: 3, name: 'VA NEMT Service', provider_id: 3, service_type_id: 2, advanced_notice_minutes: 120},
-    {id: 4, name: 'CCT NEMT Service', provider_id: 1, service_type_id: 2, advanced_notice_minutes: 120},
+    {id: 1, name: 'Metro DRT', provider_id: 1, service_type_id: 1, advanced_notice_minutes: 24*60},
+    {id: 2, name: 'Clayton NEMT', provider_id: 2, service_type_id: 2, advanced_notice_minutes: 14*24*60},
+    {id: 3, name: 'Cobb DRT', provider_id: 3, service_type_id: 1, advanced_notice_minutes: 5*24*60},
+    {id: 4, name: 'Douglas DRT', provider_id: 4, service_type_id: 1, advanced_notice_minutes: 2*24*60},
+    {id: 5, name: 'Atlanta Town Car Service', provider_id: 5, service_type_id: 3, advanced_notice_minutes: 60},
+
 ]
 
 service_traveler_characteristics_map = [
-    {service_id: 1, characteristic_id: 2, value: 'true'},  #CCT Paratransit Traveler must be disabled
-    {service_id: 1, characteristic_id: 5, value: '65', value_relationship_id: 3}, #CCT Paratransit Traveler's age must be >= 65
-    {service_id: 2, characteristic_id: 2, value: 'true'},
-    {service_id: 2, characteristic_id: 5, value: '100', value_relationship_id: 5},
-    {service_id: 3, characteristic_id: 1, value: 'true'},
-    {service_id: 3, characteristic_id: 2, value: 'true'},
-    {service_id: 3, characteristic_id: 3, value: 'true'},
-    {service_id: 4, characteristic_id: 3, value: 'true'},
+    {service_id: 2, characteristic_id: 9, value: '60', value_relationship_id: 4},
+    {service_id: 3, characteristic_id: 9, value: '60', value_relationship_id: 4},
+    {service_id: 4, characteristic_id: 9, value: '60', value_relationship_id: 4},
+    {service_id: 4, characteristic_id: 1, value: 'true'},
 ]
 
 user_traveler_characteristics_map = [
-    {user_profile_id: 1, characteristic_id: 1, value: 'true'},
-    {user_profile_id: 1, characteristic_id: 2, value: 'true'},
     {user_profile_id: 2, characteristic_id: 1, value: 'true'},
     {user_profile_id: 2, characteristic_id: 3, value: 'true'},
-    {user_profile_id: 2, characteristic_id: 4, value: '19330511'},
-    {user_profile_id: 2, characteristic_id: 5, value: '80'},
+    {user_profile_id: 2, characteristic_id: 4, value: '23/11/1922'},
 ]
 
 
 service_traveler_accommodations_map = [
-    {service_id: 1, accommodation_id: 1, value: 'true'},
+    {service_id: 2, accommodation_id: 1, value: 'true'},
+    {service_id: 3, accommodation_id: 1, value: 'true'},
+    {service_id: 3, accommodation_id: 2, value: 'true'},
+    {service_id: 4, accommodation_id: 1, value: 'true'},
 ]
-
-service_trip_purpose_map = [
-    {service_id: 1, trip_purpose_id: 1, value: 'true'},
-    {service_id: 2, trip_purpose_id: 2, value: 'true'},
-    {service_id: 3, trip_purpose_id: 3, value: 'true'},
-    {service_id: 4, trip_purpose_id: 1, value: 'true'},
-]
-
 
 user_traveler_accommodations_map = [
-    {user_profile_id: 2, accommodation_id: 1, value: 'true'},
+    {user_profile_id: 2, accommodation_id: 1, value: 'false'},
 ]
 
-value_relationship = [
-    {id: 1, relationship: 'eq'},
-    {id: 2, relationship: 'gt'},
-    {id: 3, relationship: 'gte'},
-    {id: 4, relationship: 'lt'},
-    {id: 5, relationship: 'lte'},
-    {id: 6, relationship: 'before'},
-    {id: 7, relationship: 'after'},
-]
 #day 0 is Sunday
 schedules = [
-    {service_id: 1, start_time: "7:00", end_time: "19:00", day_of_week: 1},
-    {service_id: 4, start_time: "0:00", end_time: "23:00", day_of_week: 0},
-    {service_id: 4, start_time: "0:00", end_time: "23:00", day_of_week: 1},
-    {service_id: 4, start_time: "0:00", end_time: "23:00", day_of_week: 2},
-    {service_id: 4, start_time: "0:00", end_time: "23:00", day_of_week: 3},
-    {service_id: 4, start_time: "0:00", end_time: "23:00", day_of_week: 4},
-    {service_id: 4, start_time: "0:00", end_time: "23:00", day_of_week: 5},
-    {service_id: 4, start_time: "0:00", end_time: "23:00", day_of_week: 6},
+    {service_id: 1, start_time: "8:30", end_time: "16:30", day_of_week: 1},
+    {service_id: 1, start_time: "8:30", end_time: "16:30", day_of_week: 2},
+    {service_id: 1, start_time: "8:30", end_time: "16:30", day_of_week: 3},
+    {service_id: 1, start_time: "8:30", end_time: "16:30", day_of_week: 4},
+    {service_id: 1, start_time: "8:30", end_time: "16:30", day_of_week: 5},
+    {service_id: 2, start_time: "8:00", end_time: "14:00", day_of_week: 1},
+    {service_id: 2, start_time: "8:00", end_time: "14:00", day_of_week: 2},
+    {service_id: 2, start_time: "8:00", end_time: "14:00", day_of_week: 3},
+    {service_id: 2, start_time: "8:00", end_time: "14:00", day_of_week: 4},
+    {service_id: 2, start_time: "8:00", end_time: "14:00", day_of_week: 5},
+    {service_id: 3, start_time: "8:00", end_time: "16:00", day_of_week: 1},
+    {service_id: 3, start_time: "8:00", end_time: "16:00", day_of_week: 3},
+    {service_id: 3, start_time: "8:00", end_time: "16:00", day_of_week: 5},
+    {service_id: 4, start_time: "00:00", end_time: "23:59", day_of_week: 3},
+    {service_id: 5, start_time: "00:00", end_time: "23:59", day_of_week: 0},
+    {service_id: 5, start_time: "00:00", end_time: "23:59", day_of_week: 1},
+    {service_id: 5, start_time: "00:00", end_time: "23:59", day_of_week: 2},
+    {service_id: 5, start_time: "00:00", end_time: "23:59", day_of_week: 3},
+    {service_id: 5, start_time: "00:00", end_time: "23:59", day_of_week: 4},
+    {service_id: 5, start_time: "00:00", end_time: "23:59", day_of_week: 5},
+    {service_id: 5, start_time: "00:00", end_time: "23:59", day_of_week: 6},
+
 ]
 
 trip_purposes = [
-    {id: 1, name: 'General', note: 'General purpose trip.', active: 1},
-    {id: 2, name: 'Shopping', note: 'Personal shopping trip.', active: 1},
-    {id: 3, name: 'Work', note: 'Work-related trip.', active: 1},
+    {id: 1, name: 'Work', note: 'Work-related trip.', active: 1},
+    {id: 2, name: 'Training/Employment', note: 'Employment or training trip.', active: 1},
+    {id: 3, name: 'Medical', note: 'General medical trip.', active: 1},
+    {id: 4, name: 'Dialysis', note: 'Dialysis appointment.', active: 1},
+    {id: 5, name: 'Cancer Treatment', note: 'Trip to receive cancer treatment.', active: 1},
+    {id: 6, name: 'Personal Errand', note: 'Personal errand/shopping trip.', active: 1},
+    {id: 7, name: 'General Purpose', note: 'General purpose/unspecified purpose.', active: 1}
 ]
 
-value_relationship.each do |relationship|
-  vr = ValueRelationship.create! relationship
-  vr.save
-end
+service_trip_purpose_map = [
+    {service_id: 1, trip_purpose_id: 3, value: 'true'},
+    {service_id: 1, trip_purpose_id: 4, value: 'true'},
+    {service_id: 1, trip_purpose_id: 5, value: 'true'},
+    {service_id: 2, trip_purpose_id: 1, value: 'true'},
+    {service_id: 2, trip_purpose_id: 2, value: 'true'},
+    {service_id: 2, trip_purpose_id: 3, value: 'true'},
+    {service_id: 2, trip_purpose_id: 4, value: 'true'},
+    {service_id: 2, trip_purpose_id: 5, value: 'true'},
+    {service_id: 2, trip_purpose_id: 6, value: 'true'},
+    {service_id: 2, trip_purpose_id: 7, value: 'true'},
+    {service_id: 3, trip_purpose_id: 3, value: 'true'},
+    {service_id: 3, trip_purpose_id: 4, value: 'true'},
+    {service_id: 3, trip_purpose_id: 5, value: 'true'},
+    {service_id: 4, trip_purpose_id: 3, value: 'true'},
+    {service_id: 4, trip_purpose_id: 4, value: 'true'},
+    {service_id: 4, trip_purpose_id: 5, value: 'true'},
+    {service_id: 5, trip_purpose_id: 1, value: 'true'},
+    {service_id: 5, trip_purpose_id: 2, value: 'true'},
+    {service_id: 5, trip_purpose_id: 3, value: 'true'},
+    {service_id: 5, trip_purpose_id: 4, value: 'true'},
+    {service_id: 5, trip_purpose_id: 5, value: 'true'},
+    {service_id: 5, trip_purpose_id: 6, value: 'true'},
+    {service_id: 5, trip_purpose_id: 7, value: 'true'},
+]
 
 traveler_accommodations.each do |traveler_accommodation|
   puts "Add traveler_accommodation #{traveler_accommodation[:name]}"
