@@ -45,10 +45,13 @@ Oneclick::Application.routes.draw do
       end
       
       # users have trips
-      resources :trips, :only => [:new, :create, :destroy] do
+      resources :trips, :only => [:new, :create, :destroy, :edit] do
         collection do
           post  'set_traveler'
           get   'unset_traveler'
+        end
+        member do
+          get   'repeat'          
         end
       end
 

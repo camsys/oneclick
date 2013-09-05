@@ -1,5 +1,6 @@
 .well
   = simple_form_for @trip_proxy, :url => user_trips_path, :html => {:class => "form-horizontal"} do |f| 
+    = f.hidden_field :mode
     = f.hidden_field :from_place_selected, :id => "from_place_selected"
     = f.hidden_field :to_place_selected, :id => "to_place_selected"
     = f.hidden_field :from_place_selected_type, :id => "from_place_selected_type"

@@ -7,6 +7,49 @@ class TripsController < TravelerAwareController
   FROM_PLACES_SESSION_KEY = 'trips_from_places'
   TO_PLACES_SESSION_KEY = 'trips_to_places'
     
+  MODE_NEW = "1"
+  MODE_EDIT = "2"
+  MODE_REPEAT = "3"
+    
+  # User wants to repeat a trip  
+  def repeat
+    # set the @traveler variable
+    get_traveler
+    # set the @trip variable
+    get_trip
+
+    # create a new trip_proxy from the current trip
+    @trip_proxy = create_trip_proxy(@trip)
+    # set the flag so we know what to do when the user submits the form
+    @trip_proxy.mode = MODE_REPEAT
+
+    # Set the default travel time/date to tomorrow plus 30 mins from now
+    travel_date = Time.now.tomorrow + 30.minutes
+    @trip_proxy.trip_date = travel_date.strftime("%m/%d/%Y")
+    @trip_proxy.trip_time = travel_date.strftime("%I:%M %P")
+        
+    respond_to do |format|
+      format.html { render :action => 'edit'}
+    end
+  end
+
+  # User wants to edit a trip in the future  
+  def edit
+    # set the @traveler variable
+    get_traveler
+    # set the @trip variable
+    get_trip
+
+    # create a new trip_proxy from the current trip
+    @trip_proxy = create_trip_proxy(@trip)
+    # set the flag so we know what to do when the user submits the form
+    @trip_proxy.mode = MODE_EDIT
+        
+    respond_to do |format|
+      format.html
+    end
+  end
+  
   def unset_traveler
 
     # set or update the traveler session key with the id of the traveler
@@ -34,7 +77,7 @@ class TripsController < TravelerAwareController
 
     respond_to do |format|
       format.html { render :action => 'new'}
-      format.json { render json: @trip }
+      format.json { render json: @trip_proxy }
     end
 
   end
@@ -80,6 +123,10 @@ class TripsController < TravelerAwareController
 
     @trip_proxy = TripProxy.new()
     @trip_proxy.traveler = @traveler
+
+    # set the flag so we know what to do when the user submits the form
+    @trip_proxy.mode = MODE_NEW
+    
     # Set the default travel time/date to tomorrow plus 30 mins from now
     travel_date = Time.now.tomorrow + 30.minutes
     @trip_proxy.trip_date = travel_date.strftime("%m/%d/%Y")
@@ -164,6 +211,48 @@ class TripsController < TravelerAwareController
 
   protected
 
+  # creates a trip_proxy object from a trip
+  def create_trip_proxy (trip)
+
+    # get the planned trip for this trip
+    planned_trip = trip.planned_trips.first
+    
+    # initailize a trip proxy from this trip
+    trip_proxy = TripProxy.new
+    trip_proxy.traveler = @traveler
+    trip_proxy.trip_purpose_id = trip.trip_purpose.id
+    trip_proxy.arrive_depart = planned_trip.is_depart
+    trip_proxy.trip_date = planned_trip.trip_datetime.strftime("%m/%d/%Y")
+    trip_proxy.trip_time = planned_trip.trip_datetime.strftime("%I:%M %P")
+    
+    # Set the from place
+    trip_proxy.from_place = trip.trip_places.first
+    if trip.trip_places.first.poi
+      trip_proxy.from_place_selected_type = POI_TYPE
+      trip_proxy.from_place_selected = trip.trip_places.first.poi.id
+    elsif trip.trip_places.first.place
+      trip_proxy.from_place_selected_type = PLACES_TYPE
+      trip_proxy.from_place_selected = trip.trip_places.first.place.id
+    else
+      trip_proxy.from_place_selected_type = RAW_ADDRESS_TYPE      
+    end
+
+    # Set the to place
+    trip_proxy.to_place = trip.trip_places.last
+    if trip.trip_places.last.poi
+      trip_proxy.to_place_selected_type = POI_TYPE
+      trip_proxy.to_place_selected = trip.trip_places.last.poi.id
+    elsif trip.trip_places.last.place
+      trip_proxy.to_place_selected_type = PLACES_TYPE
+      trip_proxy.to_place_selected = trip.trip_places.last.place.id
+    else
+      trip_proxy.to_place_selected_type = RAW_ADDRESS_TYPE      
+    end
+    
+    return trip_proxy
+    
+  end
+  
   def get_trip
     if user_signed_in?
       # limit trips to trips accessible by the user unless an admin

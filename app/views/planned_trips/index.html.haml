@@ -17,7 +17,7 @@
         %th= t(:date)
         %th= t(:from)
         %th= t(:to)
-        %th= t(:purpose)
+        %th= t(:trip_purpose)
         %th= t(:rating)
         %th.center= t(:actions)
     %tbody
@@ -32,11 +32,11 @@
             %td.center.nowrap          
               = link_to user_planned_trip_path(@traveler, planned_trip), :class => "btn btn-small" do
                 %i.icon-mail-forward
-              = link_to user_planned_trip_path(@traveler, planned_trip), :class => "btn btn-small" do
+              = link_to edit_user_trip_path(@traveler, planned_trip.trip), :class => "btn btn-small" do
                 %i.icon-edit
-          - else planned_trip.in_the_future
+          - else
             %td.center.nowrap          
-              = link_to user_planned_trip_path(@traveler, planned_trip), :class => "btn btn-small" do
+              = link_to repeat_user_trip_path(@traveler, planned_trip.trip), :class => "btn btn-small" do
                 %i.icon-rotate-right
               = link_to user_planned_trip_path(@traveler, planned_trip), :class => "btn btn-small" do
                 %i.icon-thumbs-up
