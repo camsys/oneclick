@@ -1,5 +1,7 @@
 class TripStatus < ActiveRecord::Base
   
+  STATUS_NEW = 'New'
+
   attr_accessible :id, :name, :active
   
   # set the default scope
