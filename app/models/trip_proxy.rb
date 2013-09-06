@@ -13,7 +13,7 @@ class TripProxy < Proxy
   validates :trip_date, :presence => true
   validates :trip_time, :presence => true
   validates :trip_purpose_id, :presence => true
-  
+
   validate :validate_date
   validate :validate_time
   

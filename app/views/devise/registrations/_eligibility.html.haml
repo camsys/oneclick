@@ -9,12 +9,8 @@
         -TravelerCharacteristic.where(:datatype => 'bool').each do |characteristic|
           .row-fluid
           = f.input characteristic.code.to_sym, collection: [[true, 'Yes'], [false, 'No'], ['na', 'Unsure']], as: :radio_buttons, label: characteristic.note, label_method: :last, value_method: :first, :item_wrapper_class => "inline"
-        -TravelerCharacteristic.where(:datatype => 'date').each do |characteristic|
-          = f.input  characteristic.note.to_sym, :wrapper => :append, :label => t('Date of Birth') do
-            #date_of_birth
-              = f.input_field characteristic.code, :as => :string
-              %span.add-on
-                %i.icon-calendar
+        = f.input "date_of_birth".to_sym
+
         .row-fluid
           .span12
             %hr
@@ -27,11 +23,3 @@
               = link_to :back do
                 %i.icon.icon-reply
                 = t(:cancel)
-:javascript
-  $.fn.datepicker.Calendar.setDefaultLocale("#{I18n.locale}");
-
-  $('#date_of_birth').datepicker({DisplayMode: 'Decade'}).on("dateChange", function(e) {
-      console.log(e);
-      $('#user_characteristics_proxy_date_of_birth').val(Date.format(e.date, "mm/dd/yyyy"));
-  });
-
