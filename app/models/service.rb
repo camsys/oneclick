@@ -3,7 +3,7 @@ class Service < ActiveRecord::Base
   #associations
   belongs_to :provider
   belongs_to :service_type
-  has_many :converage_ares
+  has_many :coverage_areas
   has_many :fare_structures
   has_many :schedules
   has_many :service_traveler_accommodations_maps
