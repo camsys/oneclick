@@ -7,13 +7,13 @@ class UserAccommodationsProxy < Proxy
     super
   end
 
-  def method_missing(name, *args)
-    @name ||= TravelerAccommodation.all.map(&:name)
-    unless @name.include? name.to_s
+  def method_missing(code, *args)
+    @code ||= TravelerAccommodation.all.map(&:code)
+    unless @code.include? code.to_s
       return super
     end
 
-    accommodation = TravelerAccommodation.find_by_name(name)
+    accommodation = TravelerAccommodation.find_by_code(code)
     map = UserTravelerAccommodationsMap.where(accommodation_id: accommodation.id, user_profile_id: user.user_profile.id).first
 
     if map
@@ -26,7 +26,7 @@ class UserAccommodationsProxy < Proxy
   def update_maps(user_accommodations_settings)
     user_accommodations_maps = UserTravelerAccommodationsMap.where(:user_profile_id => user.user_profile.id)
     user_accommodations_settings.each do |setting|
-      accommodation = TravelerAccommodation.where(:name => setting[0]).first
+      accommodation = TravelerAccommodation.where(:code => setting[0]).first
       map = user_accommodations_maps.where(:accommodation_id => accommodation.id, :user_profile_id => user.user_profile.id).first
       if map.nil?
         UserTravelerAccommodationsMap.create(:accommodation_id => accommodation.id, :user_profile_id => user.user_profile.id, value: setting[1])

@@ -117,21 +117,21 @@ end
 ##### Eligibility Seeds #####
 
 traveler_characteristics = [
-    {id:1, name: 'Disabled', note: 'Is the traveler disabled?', datatype: 'bool'},
-    {id:2, name: 'No Means of Transportation', note: 'The traveler has no alternative means of transportation.', datatype: 'bool'},
-    {id:3, name: 'Medicaid/NEMT Eligible', note: 'Is the traveler Medicaid or NEMT Eligible?', datatype: 'bool'},
-    {id:4, name: 'ADA Paratransit Eligible', note: 'Is the traveler ADA Paratransit eligible?', datatype: 'bool'},
-    {id:5, name: 'Veteran', note: 'Is the traveler a veteran?', datatype: 'bool'},
-    {id:6, name: 'Medicare Eligible', note: 'Is the traveler Medicare Eligible?', datatype: 'bool'},
-    {id:7, name: 'Low income', note: 'Low income traveler.', datatype: 'bool'},
-    {id:8, name: 'Date of Birth', note: '', datatype: 'date'},
-    {id:9, name: 'Age', note: '', datatype: 'integer'},
+    {id:1, code: 'disabled', name: 'Disabled', note: 'Is the traveler permanently or temporarily disabled?', datatype: 'bool'},
+    {id:2, code: 'no_trans', name: 'No Means of Transportation', note: 'Does the traveler have access to a vehicle?', datatype: 'bool'},
+    {id:3, code: 'nemt_eligible', name: 'Medicaid/NEMT Eligible', note: 'Is the traveler Medicaid or NEMT Eligible?', datatype: 'bool'},
+    {id:4, code: 'ada_eligible', name: 'ADA Paratransit Eligible', note: 'Is the traveler ADA Paratransit eligible?', datatype: 'bool'},
+    {id:5, code: 'veteran', name: 'Veteran', note: 'Is the traveler a veteran?', datatype: 'bool'},
+    {id:6, code: 'medicare_eligible', name: 'Medicare Eligible', note: 'Is the traveler Medicare eligible?', datatype: 'bool'},
+    {id:7, code: 'low_income', name: 'Low income', note: "Is the traveler classified as low income?", datatype: 'bool'},
+    {id:8, code: 'date_of_birth', name: 'Date of Birth', note: "What is the traveler's date of birth?", datatype: 'date'},
+    {id:9, code: 'age', name: 'Age', note: "What is the traveler's age?", datatype: 'integer'},
 ]
 
 traveler_accommodations = [
-    {id:1, name: 'Wheelchair Accessible', note: 'The passenger requires a wheelchair accessible service.', datatype: 'bool'},
-    {id:2, name: 'Door-to-door', note: 'The passenger requires door-to-door service.', datatype: 'bool'},
-    {id:3, name: 'Curb-to-curb', note: 'The passenger requires curb-to-curb service.', datatype: 'bool'},
+    {id:1, code: 'wheelchair_acceessible', name: 'Wheelchair accessible', note: 'Does the traveler require a wheelchair accessible service?', datatype: 'bool'},
+    {id:2, code: 'door-to-door', name: 'Door-to-door', note: 'Does the traveler require door-to-door service?', datatype: 'bool'},
+    {id:3, code: 'curb-to-curb', name: 'Curb-to-curb', note: 'Does the traveler require curb-to-curb service?', datatype: 'bool'},
 ]
 
 providers = [

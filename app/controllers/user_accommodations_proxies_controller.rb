@@ -7,7 +7,7 @@ class UserAccommodationsProxiesController < ApplicationController
 
     flash[:notice] = "Traveler accommodations successfully updated."
     respond_to do |format|
-      format.js {render "eligibility/update_eligibility_form"}
+      format.js {render "eligibility/update_accommodations_form"}
     end
   end
 end

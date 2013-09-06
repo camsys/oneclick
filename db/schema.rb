@@ -11,7 +11,8 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130902211411) do
+
+ActiveRecord::Schema.define(:version => 20130906154135) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -201,6 +202,7 @@ ActiveRecord::Schema.define(:version => 20130902211411) do
     t.string  "datatype",              :limit => 25,                    :null => false
     t.boolean "requires_verification",               :default => false, :null => false
     t.boolean "active",                              :default => true,  :null => false
+    t.string  "code"
   end
 
   create_table "traveler_characteristics", :force => true do |t|
@@ -209,6 +211,7 @@ ActiveRecord::Schema.define(:version => 20130902211411) do
     t.string  "datatype",              :limit => 25,                    :null => false
     t.boolean "requires_verification",               :default => false, :null => false
     t.boolean "active",                              :default => true,  :null => false
+    t.string  "code"
   end
 
   create_table "trip_places", :force => true do |t|

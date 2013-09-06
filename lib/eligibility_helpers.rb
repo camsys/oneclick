@@ -34,8 +34,8 @@ class EligibilityHelpers
 
   def update_age(user_profile, date = Time.now)
 
-    dob = TravelerCharacteristic.find_by_name('Date of Birth')
-    age = TravelerCharacteristic.find_by_name('Age')
+    dob = TravelerCharacteristic.find_by_code('date_of_birth')
+    age = TravelerCharacteristic.find_by_code('age')
     passenger_dob = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: dob.id)
     if passenger_dob.count != 0 && passenger_dob.first.value != 'na'
       passenger_dob = passenger_dob.first.value.to_date
