@@ -1,3 +1,5 @@
+require 'cs_helpers'
+
 #
 # Centralizes all the geocoding logic we need
 class OneclickGeocoder
@@ -49,7 +51,7 @@ class OneclickGeocoder
     Rails.logger.error format_exception(e)
       @errors << e.message
     end
-    @errors.empty?
+    [@errors.empty?, @errors, @results]
   end
   
 protected
