@@ -30,6 +30,12 @@ class User < ActiveRecord::Base
   validates :first_name, :presence => true
   validates :last_name, :presence => true
 
+  before_create :make_user_profile
+
+  def make_user_profile
+    create_user_profile
+  end
+
   def to_s
     name
   end
