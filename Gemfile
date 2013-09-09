@@ -11,7 +11,7 @@ end
 gem 'jquery-rails'
 gem 'bootstrap-sass'
 gem 'cancan'
-gem 'devise'
+gem 'devise', '~> 3.0.3'
 gem 'figaro'
 gem 'geocoder'
 gem 'haml-rails'

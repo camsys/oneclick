@@ -308,7 +308,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   cucumber-rails
   database_cleaner
-  devise
+  devise (~> 3.0.3)
   email_spec
   factory_girl_rails
   figaro
