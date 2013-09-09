@@ -34,15 +34,9 @@ class UserCharacteristicsProxy < Proxy
       map = user_characteristics_maps.where(:characteristic_id => characteristic.id, :user_profile_id => user.user_profile.id).first
 
       if setting[0] == 'date_of_birth'
-        if map.nil?
+        unless Chronic.parse(setting[1])
           errors.add(:date_of_birth, 'Please enter a valid date.')
           next
-        else
-          unless Chronic.parse(setting[1])
-            errors.add(:date_of_birth, 'Please enter a valid date.')
-            next
-          end
-
         end
       end
 
