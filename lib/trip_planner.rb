@@ -8,7 +8,7 @@ class TripPlanner
   def get_fixed_itineraries(from, to, trip_datetime, arriveBy)
 
     #Parameters
-    time = trip_datetime.strftime("%I:%M%p")
+    time = trip_datetime.strftime("%-I:%M%p")
     date = trip_datetime.strftime("%Y-%m-%d")
     mode = 'TRANSIT,WALK'
 

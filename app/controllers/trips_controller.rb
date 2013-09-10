@@ -26,7 +26,7 @@ class TripsController < TravelerAwareController
     # Set the default travel time/date to tomorrow plus 30 mins from now
     travel_date = Time.now.tomorrow + 30.minutes
     @trip_proxy.trip_date = travel_date.strftime("%m/%d/%Y")
-    @trip_proxy.trip_time = travel_date.strftime("%I:%M %P")
+    @trip_proxy.trip_time = travel_date.strftime("%-I:%M %P")
         
     respond_to do |format|
       format.html { render :action => 'edit'}
@@ -73,7 +73,7 @@ class TripsController < TravelerAwareController
     # Set the default travel time/date to tomorrow plus 30 mins from now
     travel_date = Time.now.tomorrow + 30.minutes
     @trip_proxy.trip_date = travel_date.strftime("%m/%d/%Y")
-    @trip_proxy.trip_time = travel_date.strftime("%I:%M %P")
+    @trip_proxy.trip_time = travel_date.strftime("%-I:%M %P")
 
     respond_to do |format|
       format.html { render :action => 'new'}
@@ -130,7 +130,7 @@ class TripsController < TravelerAwareController
     # Set the default travel time/date to tomorrow plus 30 mins from now
     travel_date = Time.now.tomorrow + 30.minutes
     @trip_proxy.trip_date = travel_date.strftime("%m/%d/%Y")
-    @trip_proxy.trip_time = travel_date.strftime("%I:%M %P")
+    @trip_proxy.trip_time = travel_date.strftime("%-I:%M %P")
     
     respond_to do |format|
       format.html # new.html.erb
@@ -223,7 +223,7 @@ class TripsController < TravelerAwareController
     trip_proxy.trip_purpose_id = trip.trip_purpose.id
     trip_proxy.arrive_depart = planned_trip.is_depart
     trip_proxy.trip_date = planned_trip.trip_datetime.strftime("%m/%d/%Y")
-    trip_proxy.trip_time = planned_trip.trip_datetime.strftime("%I:%M %P")
+    trip_proxy.trip_time = planned_trip.trip_datetime.strftime("%-I:%M %P")
     
     # Set the from place
     trip_proxy.from_place = trip.trip_places.first

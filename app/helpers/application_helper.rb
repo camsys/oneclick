@@ -61,13 +61,13 @@ module ApplicationHelper
   end
 
   def format_date_time(datetime)
-    return datetime.strftime("%I:%M %p %A, %B %-d %Y") unless datetime.nil?
+    return datetime.strftime("%-I:%M %p %A, %B %-d %Y") unless datetime.nil?
   end
   def format_date(date)
     return date.strftime("%A, %B %-d %Y") unless date.nil?
   end
   def format_time(time)
-    return time.strftime("%I:%M") unless time.nil?
+    return time.strftime("%-I:%M") unless time.nil?
   end
 
   def get_trip_summary_title(mode)

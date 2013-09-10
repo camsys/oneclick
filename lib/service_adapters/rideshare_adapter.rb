@@ -9,7 +9,7 @@ module ServiceAdapters
       from_geo = Geocoder.transpose(YAML.load(from.geocoding_raw)) rescue {}
       to_geo = Geocoder.transpose(YAML.load(to.geocoding_raw)) rescue {}
       query = {}
-      query['date'] = trip_datetime.strftime("%m/%d/%Y %I:%M %p") # TODO format 8/21/2013 8:00 AM
+      query['date'] = trip_datetime.strftime("%m/%d/%Y %-I:%M %p") # TODO format 8/21/2013 8:00 AM
       [
         ['dest', to_geo, to],
         ['orig', from_geo, from],
