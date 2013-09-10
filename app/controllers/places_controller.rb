@@ -25,7 +25,7 @@ class PlacesController < TravelerAwareController
     if addresses.nil?
       # we cant get the addresses from the session so they might have posted this address using
       # some other service.
-      flash[:alert] = "An error occurred adding #{params[:address]} to your address book."
+      flash[:alert] = t(:error_updating_addresses)
       redirect_to user_places_path(@traveler)
       return
     end
@@ -46,9 +46,9 @@ class PlacesController < TravelerAwareController
     place.lon = address[:lon]
     place.active = true
     if place.save
-      flash[:notice] = "#{place.name} has been added to your address book."
+      flash[:notice] = t(:place_added, :place_name => place.name)
     else
-      flash[:alert] = "An error occurred adding #{place.name} to your address book."
+      flash[:alert] = t(:error_updating_addresses)
     end
 
     # set the basic form variables
@@ -65,12 +65,12 @@ class PlacesController < TravelerAwareController
     if place
       place.name = params[:place][:name]
       if place.save
-        flash[:notice] = "#{place.name} has been changed in your address book."
+        flash[:notice] = t(:address_book_updated)
       else
-        flash[:alert] = "An error occurred while updating your address book."
+        flash[:alert] = t(:error_updating_addresses)
       end
     else
-      flash[:alert] = "An error occurred while updating your address book."
+      flash[:alert] = t(:error_updating_addresses)
     end
 
     # set the basic form variables
@@ -88,9 +88,9 @@ class PlacesController < TravelerAwareController
     if place
       place.active = false
       if place.save
-        flash[:notice] = "#{place.name} has been removed from your address book."
+        flash[:notice] = t(:address_book_updated)
       else
-        flash[:alert] = "An error occurred while updating your address book."
+        flash[:alert] = t(:error_updating_addresses)
       end
     end
 
@@ -137,9 +137,9 @@ class PlacesController < TravelerAwareController
         end
       end
       if @place.save
-        flash[:notice] = "#{@place.name} has been added to your address book."
+        flash[:notice] = t(:place_added, :place_name => place.name)
       else
-        flash[:alert] = "An error occurred while updating your address book."
+        flash[:alert] = t(:error_updating_addresses)
       end
       # if we added to the places list we need to update the places form and the map
       @place_proxy = PlaceProxy.new

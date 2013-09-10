@@ -144,6 +144,23 @@ en:
   view_details1: "View details"
   view_details2: "for more."
 
+  # My Places form
+  found_x_places: {
+    one:    'Found %{count} place in your address book.',
+    other:  'Found %{count} places in your address book.'
+  }
+  found_x_matches: {
+    one:    'Found %{count} matching place.',
+    other:  'Found %{count} matching places.'
+  }
+  enter_address:    'Enter an address or name of a place...'
+  new_name:         'Enter a new name for this place'
+  nothing_found:    'Nothing found at that address. Please try again.'
+  update:           'Update'
+  place_added:      '%{place_name} has been added to your address book.'
+  error_updating_addresses:   'An error occured while updating your address book.'
+  address_book_updated: 'Your address book has been updated.'
+
   # new ones
   buddy_request_sent: "Buddy request sent!"
   buddy_removed: "Buddy removed."

@@ -2,7 +2,7 @@
   .thumbnail.span12{style: 'overflow-y: auto;'}
     .span12
       = form_for @place_proxy, :url => user_places_path, :remote => true, :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
-        = f.text_field :raw_address, :placeholder => "Type an address or name of a place...", :id => "poi_typeahead", :class => "span12 ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}, :style => "margin-top:10px;margin-bottom: 10px;", :autocomplete => "off"
+        = f.text_field :raw_address, :placeholder => t(:enter_address), :id => "poi_typeahead", :class => "span12 ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}, :style => "margin-top:10px;margin-bottom: 10px;", :autocomplete => "off"
         = f.hidden_field :place_type_id, :id => "place_type_field"
         = f.hidden_field :place_id, :id => "place_id_field"
         = button_tag :type => 'submit', :class => "btn btn-block btn-primary" do
@@ -13,20 +13,20 @@
 
 .row-fluid#name_div
   .span12
-    %h6= "Enter a new name for this place"
+    %h6= t(:new_name)
   .row-fluid
     .thumbnail.span12
       = form_for :place, :url => change_user_places_path(@traveler), :remote => true, :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
         = f.hidden_field :id, :id => "id_field"
         = f.text_field :name, :class => "span12", :style => "margin-bottom: 10px;", :id => "name_field"
         = button_tag :type => 'submit', :class => "btn btn-block btn-success" do
-          %i.icon.icon-edit &nbsp;Update
+          %i.icon.icon-edit= t(:update)
         = button_tag :type => 'button', :id => "cancel_edit_button", :class => "btn btn-block btn-warn" do
-          %i.icon.icon-remove &nbsp;Cancel
+          %i.icon.icon-remove= t(:cancel)
       
 .row-fluid
   .span12
-    %h6= "Found #{@places.count} " + "place".pluralize(@places.count) + " in your address book"
+    %h6= t(:found_x_places, :count => @places.count )
 
 .row-fluid
   .thumbnail.span12{style: 'height: 375px; overflow-y: auto;'}

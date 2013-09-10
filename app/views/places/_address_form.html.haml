@@ -1,7 +1,0 @@
-.span12
-  = form_for @place_proxy, :url => user_places_path, :remote => true, :html => {:class => 'form-horizontal', :style => "margin-bottom:10px;"}  do |f|
-    = f.text_field :raw_address, :placeholder => "Type an address or name of a place...", :class => "span12", :style => "margin-bottom: 10px;", :autofocus => "autofocus"
-    = button_tag :type => 'submit', :class => "btn btn-block btn-primary" do
-      %i.icon.icon-search
-  #select_place
-    - render 'address_select'

@@ -139,6 +139,23 @@ es:
   view_details1: "Mostrar detalles"
   view_details2: "para más."
 
+  # My Places form
+  found_x_places: {
+    one:    'Encontrados %{count} sitios en la libreta de direcciones. *13*',
+    other:  'Encontrados %{count} lugar en su libreta de direcciones. *13*'
+  }  
+  found_x_matches: {
+    one:    'Se encontro %{count} coincudencia de lugar. *18*',
+    other:  'Se encontraron %{count} lugares coincidentes. *18*',
+  }  
+  enter_address:    'Introduzca una direccion o un nombre de un lugar... *14*'
+  new_name:         'Introduzca un nuevo mobre para este luga *15*'
+  nothing_found:    'No he encontrado nada en esa direccion. Por favor, intentelo de nuevo. *17*'  
+  update:           'Actualizar *16*'
+  place_added:      '%{place_name} ha sido agregado a tu libreta de direcciones. *19*'
+  error_updating_addresses:   'Si produjo un error al acutalizar la libreta de direcciones. *20*'
+  address_book_updated: 'Su libreta de direcciones se ha acualizado. *21*'
+
   # new ones
   buddy_request_sent: "¡Solicitud de amigo enviada!"
   buddy_removed: "Amigo eliminado."
