@@ -136,7 +136,8 @@
 
   // Enable typeahead for the places forms
   $('#from_address').typeahead({
-      items: 20,
+      items: gc_max_items_in_list,
+      minLength: gc_min_items_in_typeahead,
       source: function(query, process) {
           return $.ajax({
               url: $('#from_address').data('link'),
@@ -193,7 +194,8 @@
   
   // Enable typeahead for the places forms
   $('#to_address').typeahead({
-      items: 20,
+      items: gc_max_items_in_list,
+      minLength: gc_min_items_in_typeahead,
       source: function(query, process) {
           return $.ajax({
               url: $('#to_address').data('link'),

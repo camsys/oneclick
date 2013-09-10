@@ -80,7 +80,8 @@
   
   // Enable typeahead for the places forms
   $('#poi_typeahead').typeahead({
-      items: 20,
+      items: gc_max_items_in_list,
+      minLength: gc_min_items_in_typeahead,
       source: function(query, process) {
           return $.ajax({
               url: $('#poi_typeahead').data('link'),
