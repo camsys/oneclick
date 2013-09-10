@@ -57,6 +57,7 @@ en:
   revoke: 'Revoke'
   hide: 'Hide'
   retract: 'Retract'
+  visitor: 'Visitor'
   
   spanish: 'En Español'
   error_not_implemented: "We're sorry, but this functionality has not yet been implemented."

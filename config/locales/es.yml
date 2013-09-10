@@ -52,6 +52,7 @@ es:
   decline: 'Rechazar'
   assist: 'Asistir'
   revoke: 'Revocar'
+  visitor: 'Visitante *12*'
 
   spanish: 'En Español'
   error_not_implemented: 'Lo sentimos, pero esta funcionalidad aún no se ha implementado.'
