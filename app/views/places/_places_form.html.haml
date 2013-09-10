@@ -78,28 +78,35 @@
     $('#place_id_field').val("");    
   });
   
+  var timeout;
+  
   // Enable typeahead for the places forms
   $('#poi_typeahead').typeahead({
       items: gc_max_items_in_list,
       minLength: gc_min_items_in_typeahead,
       source: function(query, process) {
-          return $.ajax({
-              url: $('#poi_typeahead').data('link'),
-              type: 'get',
-              data: {
-                query: query
-              },
-              dataType: 'json',
-              success: function(result) {
-
-                var resultList = result.map(function (item) {
-                    var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, lat: item.lat, lon: item.lon, addr: item.address };
-                    return JSON.stringify(aItem);
-                });
-
-                return process(resultList);
-              }
-          });
+          if (timeout) {
+            clearTimeout(timeout);
+          }
+          timeout = setTimeout(function() {
+            return $.ajax({
+                url: $('#poi_typeahead').data('link'),
+                type: 'get',
+                data: {
+                  query: query
+                },
+                dataType: 'json',
+                success: function(result) {
+  
+                  var resultList = result.map(function (item) {
+                      var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, lat: item.lat, lon: item.lon, addr: item.address };
+                      return JSON.stringify(aItem);
+                  });
+  
+                  return process(resultList);
+                }
+            });
+          }, gc_typeahead_delay);
       },
     matcher: function (obj) {
         var item = JSON.parse(obj);

@@ -3,6 +3,7 @@
 //
 var gc_max_items_in_list = 10;
 var gc_min_items_in_typeahead = 4;
+var gc_typeahead_delay = 300;
  
 
 // Used to remove any existing banner messages

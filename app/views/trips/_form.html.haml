@@ -134,28 +134,36 @@
     $('#to_place_selected_type').val("");    
   });
 
+  var from_timeout;
+  var to_timeout;
+  
   // Enable typeahead for the places forms
   $('#from_address').typeahead({
       items: gc_max_items_in_list,
       minLength: gc_min_items_in_typeahead,
       source: function(query, process) {
-          return $.ajax({
-              url: $('#from_address').data('link'),
-              type: 'get',
-              data: {
-                query: query
-              },
-              dataType: 'json',
-              success: function(result) {
-
-                var resultList = result.map(function (item) {
-                    var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, lat: item.lat, lon: item.lon, addr: item.address };
-                    return JSON.stringify(aItem);
-                });
-
-                return process(resultList);
-              }
-          });
+          if (from_timeout) {
+            clearTimeout(from_timeout);
+          }
+          from_timeout = setTimeout(function() {      
+              return $.ajax({
+                  url: $('#from_address').data('link'),
+                  type: 'get',
+                  data: {
+                    query: query
+                  },
+                  dataType: 'json',
+                  success: function(result) {
+    
+                    var resultList = result.map(function (item) {
+                        var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, lat: item.lat, lon: item.lon, addr: item.address };
+                        return JSON.stringify(aItem);
+                    });
+    
+                    return process(resultList);
+                  }
+              });
+          }, gc_typeahead_delay);            
       },
     matcher: function (obj) {
         var item = JSON.parse(obj);
@@ -197,23 +205,28 @@
       items: gc_max_items_in_list,
       minLength: gc_min_items_in_typeahead,
       source: function(query, process) {
-          return $.ajax({
-              url: $('#to_address').data('link'),
-              type: 'get',
-              data: {
-                query: query
-              },
-              dataType: 'json',
-              success: function(result) {
-
-                var resultList = result.map(function (item) {
-                    var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, lat: item.lat, lon: item.lon, addr: item.address };
-                    return JSON.stringify(aItem);
-                });
-
-                return process(resultList);
-              }
-          });
+          if (to_timeout) {
+            clearTimeout(to_timeout);
+          }
+          to_timeout = setTimeout(function() {      
+              return $.ajax({
+                  url: $('#to_address').data('link'),
+                  type: 'get',
+                  data: {
+                    query: query
+                  },
+                  dataType: 'json',
+                  success: function(result) {
+    
+                    var resultList = result.map(function (item) {
+                        var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, lat: item.lat, lon: item.lon, addr: item.address };
+                        return JSON.stringify(aItem);
+                    });
+    
+                    return process(resultList);
+                  }
+              });
+          }, gc_typeahead_delay);            
       },
     matcher: function (obj) {
         var item = JSON.parse(obj);
