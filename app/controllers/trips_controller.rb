@@ -6,6 +6,9 @@ class TripsController < TravelerAwareController
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
   FROM_PLACES_SESSION_KEY = 'trips_from_places'
   TO_PLACES_SESSION_KEY = 'trips_to_places'
+  
+  TRIP_DATE_FORMAT_STRING = "%m/%d/%Y"
+  TRIP_TIME_FORMAT_STRING = "%-I:%M %P"
     
   MODE_NEW = "1"
   MODE_EDIT = "2"
@@ -23,10 +26,11 @@ class TripsController < TravelerAwareController
     # set the flag so we know what to do when the user submits the form
     @trip_proxy.mode = MODE_REPEAT
 
-    # Set the default travel time/date to tomorrow plus 30 mins from now
-    travel_date = Time.now.tomorrow + 30.minutes
-    @trip_proxy.trip_date = travel_date.strftime("%m/%d/%Y")
-    @trip_proxy.trip_time = travel_date.strftime("%-I:%M %P")
+    # Set the travel time/date to the default
+    travel_date = default_trip_time
+    
+    @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
+    @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
         
     respond_to do |format|
       format.html { render :action => 'edit'}
@@ -70,10 +74,12 @@ class TripsController < TravelerAwareController
 
     @trip_proxy = TripProxy.new()
     @trip_proxy.traveler = @traveler
-    # Set the default travel time/date to tomorrow plus 30 mins from now
-    travel_date = Time.now.tomorrow + 30.minutes
-    @trip_proxy.trip_date = travel_date.strftime("%m/%d/%Y")
-    @trip_proxy.trip_time = travel_date.strftime("%-I:%M %P")
+
+    # Set the travel time/date to the default
+    travel_date = default_trip_time
+
+    @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
+    @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
 
     respond_to do |format|
       format.html { render :action => 'new'}
@@ -127,10 +133,11 @@ class TripsController < TravelerAwareController
     # set the flag so we know what to do when the user submits the form
     @trip_proxy.mode = MODE_NEW
     
-    # Set the default travel time/date to tomorrow plus 30 mins from now
-    travel_date = Time.now.tomorrow + 30.minutes
-    @trip_proxy.trip_date = travel_date.strftime("%m/%d/%Y")
-    @trip_proxy.trip_time = travel_date.strftime("%-I:%M %P")
+    # Set the travel time/date to the default
+    travel_date = default_trip_time
+
+    @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
+    @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
     
     respond_to do |format|
       format.html # new.html.erb
@@ -209,8 +216,13 @@ class TripsController < TravelerAwareController
     end
   end
 
-  protected
-
+protected
+  
+  # Set the default travel time/date to 30 mins from now
+  def default_trip_time
+    return Time.now.in_time_zone.next_interval(30.minutes)    
+  end
+  
   # creates a trip_proxy object from a trip
   def create_trip_proxy (trip)
 
@@ -222,8 +234,8 @@ class TripsController < TravelerAwareController
     trip_proxy.traveler = @traveler
     trip_proxy.trip_purpose_id = trip.trip_purpose.id
     trip_proxy.arrive_depart = planned_trip.is_depart
-    trip_proxy.trip_date = planned_trip.trip_datetime.strftime("%m/%d/%Y")
-    trip_proxy.trip_time = planned_trip.trip_datetime.strftime("%-I:%M %P")
+    trip_proxy.trip_date = planned_trip.trip_datetime.strftime(TRIP_DATE_FORMAT_STRING)
+    trip_proxy.trip_time = planned_trip.trip_datetime.strftime(TRIP_TIME_FORMAT_STRING)
     
     # Set the from place
     trip_proxy.from_place = trip.trip_places.first
@@ -264,7 +276,7 @@ class TripsController < TravelerAwareController
     end
   end
 
-  private
+private
 
   def encode(addresses)
     a = []
