@@ -137,7 +137,7 @@ class PlacesController < TravelerAwareController
         end
       end
       if @place.save
-        flash[:notice] = t(:place_added, :place_name => place.name)
+        flash[:notice] = t(:place_added, :place_name => @place.name)
       else
         flash[:alert] = t(:error_updating_addresses)
       end
