@@ -23,20 +23,20 @@ users = [
   {first_name: 'sys', last_name: 'admin', email: 'email@camsys.com'},
 ]
 roles = [
-  {id: 1, name: 'Admin'},
-  {id: 2, name: 'Agent'},
-  {id: 3, name: 'Agent_Admin'},  
+  {name: 'Admin'},
+  {name: 'Agent'},
+  {name: 'Agent_Admin'},
 ]
 trip_statuses = [
-  {id: 1, active: 1, name: 'New'},
-  {id: 2, active: 1, name: 'In Progress'},
-  {id: 3, active: 1, name: 'Completed'},  
-  {id: 4, active: 1, name: 'Errored'},  
+  {active: 1, name: 'New'},
+  {active: 1, name: 'In Progress'},
+  {active: 1, name: 'Completed'},
+  {active: 1, name: 'Errored'},
 ]
 modes = [
-  {id: 1, active: 1, name: 'Transit'},
-  {id: 2, active: 1, name: 'Paratransit'},
-  {id: 3, active: 1, name: 'Taxi'},  
+  {active: 1, name: 'Transit'},
+  {active: 1, name: 'Paratransit'},
+  {active: 1, name: 'Taxi'},
 ]
 reports = [
   {name: 'Trips By Day Report', description: 'Displays a chart showing the number of trips generated each day.', view_name: 'generic_report', class_name: 'TripsPerDayReport', active: 1}, 
@@ -44,12 +44,12 @@ reports = [
   {name: 'Rejected Trips Report', description: 'Displays a report showing trips that were rejected by a user.', view_name: 'trips_report', class_name: 'RejectedTripsReport', active: 1} 
 ]
 relationship_statuses = [
-  {id: 1, name: 'Requested'},
-  {id: 2, name: 'Pending'},
-  {id: 3, name: 'Confirmed'},
-  {id: 4, name: 'Denied'},  
-  {id: 5, name: 'Revoked'},  
-  {id: 6, name: 'Hidden'},  
+  {name: 'Requested'},
+  {name: 'Pending'},
+  {name: 'Confirmed'},
+  {name: 'Denied'},
+  {name: 'Revoked'},
+  {name: 'Hidden'},
 ]
 
 # load the modes
@@ -116,201 +116,134 @@ end
 
 ##### Eligibility Seeds #####
 
-traveler_characteristics = [
-    {id:1, code: 'disabled', name: 'Disabled', note: 'Is the traveler permanently or temporarily disabled?', datatype: 'bool'},
-    {id:2, code: 'no_trans', name: 'No Means of Transportation', note: 'Does the traveler have access to a vehicle?', datatype: 'bool'},
-    {id:3, code: 'nemt_eligible', name: 'Medicaid/NEMT Eligible', note: 'Is the traveler Medicaid or NEMT Eligible?', datatype: 'bool'},
-    {id:4, code: 'ada_eligible', name: 'ADA Paratransit Eligible', note: 'Is the traveler ADA Paratransit eligible?', datatype: 'bool'},
-    {id:5, code: 'veteran', name: 'Veteran', note: 'Is the traveler a veteran?', datatype: 'bool'},
-    {id:6, code: 'medicare_eligible', name: 'Medicare Eligible', note: 'Is the traveler Medicare eligible?', datatype: 'bool'},
-    {id:7, code: 'low_income', name: 'Low income', note: "Is the traveler classified as low income?", datatype: 'bool'},
-    {id:8, code: 'date_of_birth', name: 'Date of Birth', note: "What is the traveler's date of birth?", datatype: 'date'},
-    {id:9, code: 'age', name: 'Age', note: "What is the traveler's age?", datatype: 'integer'},
-]
+#Traveler characteristics
+    disabled = TravelerCharacteristic.create(code: 'disabled', name: 'Disabled', note: 'Is the traveler permanently or temporarily disabled?', datatype: 'bool')
+    no_trans = TravelerCharacteristic.create(code: 'no_trans', name: 'No Means of Transportation', note: 'Does the traveler have access to a vehicle?', datatype: 'bool')
+    nemt_eligible = TravelerCharacteristic.create(code: 'nemt_eligible', name: 'Medicaid/NEMT Eligible', note: 'Is the traveler Medicaid or NEMT Eligible?', datatype: 'bool')
+    ada_eligible = TravelerCharacteristic.create(code: 'ada_eligible', name: 'ADA Paratransit Eligible', note: 'Is the traveler ADA Paratransit eligible?', datatype: 'bool')
+    veteran = TravelerCharacteristic.create(code: 'veteran', name: 'Veteran', note: 'Is the traveler a veteran?', datatype: 'bool')
+    medicare_eligible = TravelerCharacteristic.create(code: 'medicare_eligible', name: 'Medicare Eligible', note: 'Is the traveler Medicare eligible?', datatype: 'bool')
+    low_income = TravelerCharacteristic.create(code: 'low_income', name: 'Low income', note: "Is the traveler classified as low income?", datatype: 'bool')
+    date_of_birth = TravelerCharacteristic.create(code: 'date_of_birth', name: 'Date of Birth', note: "What is the traveler's date of birth?", datatype: 'date')
+    age = TravelerCharacteristic.create(code: 'age', name: 'Age', note: "What is the traveler's age?", datatype: 'integer')
 
-traveler_accommodations = [
-    {id:1, code: 'wheelchair_acceessible', name: 'Wheelchair accessible', note: 'Does the traveler require a wheelchair accessible service?', datatype: 'bool'},
-    {id:2, code: 'door-to-door', name: 'Door-to-door', note: 'Does the traveler require door-to-door service?', datatype: 'bool'},
-    {id:3, code: 'curb-to-curb', name: 'Curb-to-curb', note: 'Does the traveler require curb-to-curb service?', datatype: 'bool'},
-]
+#Traveler accommodations
+    wheelchair_accessible = TravelerAccommodation.create(code: 'wheelchair_acceessible', name: 'Wheelchair accessible', note: 'Does the traveler require a wheelchair accessible service?', datatype: 'bool')
+    door_to_door = TravelerAccommodation.create(code: 'door_to_door', name: 'Door-to-door', note: 'Does the traveler require door-to-door service?', datatype: 'bool')
+    curb_to_curb = TravelerAccommodation.create(code: 'curb_to_curb', name: 'Curb-to-curb', note: 'Does the traveler require curb-to-curb service?', datatype: 'bool')
+
+#Service types
+    paratransit = ServiceType.create(name: 'Paratransit', note: 'This is a general purpose paratransit service.')
+    nemt = ServiceType.create(name: 'Non-Emergency Medical Service', note: 'This is a paratransit service only to be used for medical trips.')
+    livery = ServiceType.create(name: 'Livery', note: 'Car service for hire.')
+
+#trip_purposes
+    work = TripPurpose.create(name: 'Work', note: 'Work-related trip.', active: 1)
+    training = TripPurpose.create(name: 'Training/Employment', note: 'Employment or training trip.', active: 1)
+    medical = TripPurpose.create(name: 'Medical', note: 'General medical trip.', active: 1)
+    dialysis = TripPurpose.create(name: 'Dialysis', note: 'Dialysis appointment.', active: 1)
+    cancer = TripPurpose.create(name: 'Cancer Treatment', note: 'Trip to receive cancer treatment.', active: 1)
+    personal = TripPurpose.create(name: 'Personal Errand', note: 'Personal errand/shopping trip.', active: 1)
+    general = TripPurpose.create(name: 'General Purpose', note: 'General purpose/unspecified purpose.', active: 1)
 
 providers = [
-    {id: 1, name: 'Metro Medical Transportation', contact: 'name here', external_id: "esp#2"},
-    {id: 2, name: 'Clayton County Transportation Services', contact: 'John Clayton', external_id: "esp#9"},
-    {id: 3, name: 'Cobb Transportation Services', contact: 'Susan Cobb', external_id: "esp#13"},
-    {id: 4, name: 'Douglas Trans. Services', contact: 'Doug Douglas', external_id: "esp#22"},
-    {id: 5, name: 'ATL Limo', contact: 'Mr. Limo', external_id: "esp#45"},
-
+    {name: 'Metro Medical Transportation', contact: 'name here', external_id: "esp#2"},
+    {name: 'Clayton County Transportation Services', contact: 'John Clayton', external_id: "esp#9"},
+    {name: 'Cobb Transportation Services', contact: 'Susan Cobb', external_id: "esp#13"},
+    {name: 'Douglas Trans. Services', contact: 'Doug Douglas', external_id: "esp#22"},
+    {name: 'ATL Limo', contact: 'Mr. Limo', external_id: "esp#45"},
 ]
 
-service_types = [
-    {id: 1, name: 'Paratransit', note: 'This is a general purpose paratransit service.'},
-    {id: 2, name: 'Non-Emergency Medical Service', note: 'This is a paratransit service only to be used for medical trips.'},
-    {id: 3, name: 'Livery', note: 'Car service for hire.'},
-]
-
-services = [
-    {id: 1, name: 'Metro DRT', provider_id: 1, service_type_id: 1, advanced_notice_minutes: 24*60},
-    {id: 2, name: 'Clayton NEMT', provider_id: 2, service_type_id: 2, advanced_notice_minutes: 14*24*60},
-    {id: 3, name: 'Cobb DRT', provider_id: 3, service_type_id: 1, advanced_notice_minutes: 5*24*60},
-    {id: 4, name: 'Douglas DRT', provider_id: 4, service_type_id: 1, advanced_notice_minutes: 2*24*60},
-    {id: 5, name: 'Atlanta Town Car Service', provider_id: 5, service_type_id: 3, advanced_notice_minutes: 60},
-
-]
-
-service_traveler_characteristics_map = [
-    {service_id: 2, characteristic_id: 9, value: '60', value_relationship_id: 4},
-    {service_id: 3, characteristic_id: 9, value: '60', value_relationship_id: 4},
-    {service_id: 4, characteristic_id: 9, value: '60', value_relationship_id: 4},
-    {service_id: 4, characteristic_id: 1, value: 'true'},
-]
-
-user_traveler_characteristics_map = [
-    {user_profile_id: 2, characteristic_id: 1, value: 'true'},
-    {user_profile_id: 2, characteristic_id: 3, value: 'true'},
-    {user_profile_id: 2, characteristic_id: 4, value: '23/11/1922'},
-]
-
-
-service_traveler_accommodations_map = [
-    {service_id: 2, accommodation_id: 1, value: 'true'},
-    {service_id: 3, accommodation_id: 1, value: 'true'},
-    {service_id: 3, accommodation_id: 2, value: 'true'},
-    {service_id: 4, accommodation_id: 1, value: 'true'},
-]
-
-user_traveler_accommodations_map = [
-    {user_profile_id: 2, accommodation_id: 1, value: 'false'},
-]
-
-#day 0 is Sunday
-schedules = [
-    {service_id: 1, start_time: "8:30", end_time: "16:30", day_of_week: 1},
-    {service_id: 1, start_time: "8:30", end_time: "16:30", day_of_week: 2},
-    {service_id: 1, start_time: "8:30", end_time: "16:30", day_of_week: 3},
-    {service_id: 1, start_time: "8:30", end_time: "16:30", day_of_week: 4},
-    {service_id: 1, start_time: "8:30", end_time: "16:30", day_of_week: 5},
-    {service_id: 2, start_time: "8:00", end_time: "14:00", day_of_week: 1},
-    {service_id: 2, start_time: "8:00", end_time: "14:00", day_of_week: 2},
-    {service_id: 2, start_time: "8:00", end_time: "14:00", day_of_week: 3},
-    {service_id: 2, start_time: "8:00", end_time: "14:00", day_of_week: 4},
-    {service_id: 2, start_time: "8:00", end_time: "14:00", day_of_week: 5},
-    {service_id: 3, start_time: "8:00", end_time: "16:00", day_of_week: 1},
-    {service_id: 3, start_time: "8:00", end_time: "16:00", day_of_week: 3},
-    {service_id: 3, start_time: "8:00", end_time: "16:00", day_of_week: 5},
-    {service_id: 4, start_time: "00:00", end_time: "23:59", day_of_week: 3},
-    {service_id: 5, start_time: "00:00", end_time: "23:59", day_of_week: 0},
-    {service_id: 5, start_time: "00:00", end_time: "23:59", day_of_week: 1},
-    {service_id: 5, start_time: "00:00", end_time: "23:59", day_of_week: 2},
-    {service_id: 5, start_time: "00:00", end_time: "23:59", day_of_week: 3},
-    {service_id: 5, start_time: "00:00", end_time: "23:59", day_of_week: 4},
-    {service_id: 5, start_time: "00:00", end_time: "23:59", day_of_week: 5},
-    {service_id: 5, start_time: "00:00", end_time: "23:59", day_of_week: 6},
-
-]
-
-trip_purposes = [
-    {id: 1, name: 'Work', note: 'Work-related trip.', active: 1},
-    {id: 2, name: 'Training/Employment', note: 'Employment or training trip.', active: 1},
-    {id: 3, name: 'Medical', note: 'General medical trip.', active: 1},
-    {id: 4, name: 'Dialysis', note: 'Dialysis appointment.', active: 1},
-    {id: 5, name: 'Cancer Treatment', note: 'Trip to receive cancer treatment.', active: 1},
-    {id: 6, name: 'Personal Errand', note: 'Personal errand/shopping trip.', active: 1},
-    {id: 7, name: 'General Purpose', note: 'General purpose/unspecified purpose.', active: 1}
-]
-
-service_trip_purpose_map = [
-    {service_id: 1, trip_purpose_id: 3, value: 'true'},
-    {service_id: 1, trip_purpose_id: 4, value: 'true'},
-    {service_id: 1, trip_purpose_id: 5, value: 'true'},
-    {service_id: 2, trip_purpose_id: 1, value: 'true'},
-    {service_id: 2, trip_purpose_id: 2, value: 'true'},
-    {service_id: 2, trip_purpose_id: 3, value: 'true'},
-    {service_id: 2, trip_purpose_id: 4, value: 'true'},
-    {service_id: 2, trip_purpose_id: 5, value: 'true'},
-    {service_id: 2, trip_purpose_id: 6, value: 'true'},
-    {service_id: 2, trip_purpose_id: 7, value: 'true'},
-    {service_id: 3, trip_purpose_id: 3, value: 'true'},
-    {service_id: 3, trip_purpose_id: 4, value: 'true'},
-    {service_id: 3, trip_purpose_id: 5, value: 'true'},
-    {service_id: 4, trip_purpose_id: 3, value: 'true'},
-    {service_id: 4, trip_purpose_id: 4, value: 'true'},
-    {service_id: 4, trip_purpose_id: 5, value: 'true'},
-    {service_id: 5, trip_purpose_id: 1, value: 'true'},
-    {service_id: 5, trip_purpose_id: 2, value: 'true'},
-    {service_id: 5, trip_purpose_id: 3, value: 'true'},
-    {service_id: 5, trip_purpose_id: 4, value: 'true'},
-    {service_id: 5, trip_purpose_id: 5, value: 'true'},
-    {service_id: 5, trip_purpose_id: 6, value: 'true'},
-    {service_id: 5, trip_purpose_id: 7, value: 'true'},
-]
-
-traveler_accommodations.each do |traveler_accommodation|
-  puts "Add traveler_accommodation #{traveler_accommodation[:name]}"
-  ta = TravelerAccommodation.create! traveler_accommodation
-  ta.save
-end
-
-traveler_characteristics.each do |traveler_characteristic|
-  puts "Add traveler_characteristic #{traveler_characteristic[:name]}"
-  tc = TravelerCharacteristic.create! traveler_characteristic
-  tc.save
-end
-
+#Create providers and services with custom schedules, eligibility, and accommodations
 providers.each do |provider|
   puts "Add/replace provider #{provider[:external_id]}"
+
   Provider.find_by_external_id(provider[:external_id]).destroy rescue nil
   p = Provider.create! provider
   p.save
+
+  case p.external_id
+
+    when "esp#2" #Metro Medical Transportation
+      #Create service
+      service = Service.create(name: 'Metro DRT', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+      #Add Schedules
+      (1..5).each do |n|
+        Schedule.create(service: service, start_time:"8:30", end_time: "16:30", day_of_week: n)
+      end
+      #Trip purpose requirements
+      [medical, dialysis, cancer, work, training, personal, general].each do |n|
+        ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+      end
+
+    when "esp#9" #Clayton County Transportation
+      #Create service
+      service = Service.create(name: 'Clayton NEMT', provider: p, service_type: nemt, advanced_notice_minutes: 14*24*60)
+      #Add Schedules
+      (1..5).each do |n|
+        Schedule.create(service: service, start_time:"8:00", end_time: "14:00", day_of_week: n)
+      end
+      #Trip Purpose Requirements
+      [medical, dialysis, cancer].each do |n|
+        ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+      end
+      #Traveler Characteristics Requirements
+      [veteran].each do |n|
+        ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: n, value: 'true')
+      end
+      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
+
+      #Traveler Accommodations Provided
+      ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: wheelchair_accessible, value: 'true')
+
+    when "esp#13" #Cobb Transportation Services
+      #Create service
+      service = Service.create(name: 'Cobb DRT', provider: p, service_type: paratransit, advanced_notice_minutes: 5*24*60)
+      #Add Schedules
+      [1,3,5].each do |n|
+        Schedule.create(service: service, start_time:"8:00", end_time: "16:00", day_of_week: n)
+      end
+      #Trip Purpose Requirements
+      [medical, dialysis, cancer].each do |n|
+        ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+      end
+      #Traveler Characteristics Requirements
+      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '75', value_relationship_id: 4)
+      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: ada_eligible, value: 'true')
+      #Traveler Accommodations Provided
+      [wheelchair_accessible, door_to_door].each do |n|
+        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+      end
+
+    when "esp#22" #Douglas Trans. Service
+      #Create service
+      service = Service.create(name: 'Douglas DRT', provider: p, service_type: paratransit, advanced_notice_minutes: 2*24*60)
+      #Add Schedules
+      Schedule.create(service: service, start_time:"00:00", end_time: "23:59", day_of_week: 3)
+      #Trip Purpose Requirements
+      [medical, dialysis, cancer, work, training, personal, general].each do |n|
+        ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+      end
+      #Traveler Characteristics Requirements
+      [nemt_eligible, disabled].each do |n|
+        ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: n, value: 'true')
+      end
+      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
+      #Traveler Accommodations Provided
+      ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: wheelchair_accessible, value: 'true')
+
+    when "esp#45" #ATL Limo
+      #Create service
+      service = Service.create(name: 'Atlanta Town Car Service', provider: p, service_type: livery, advanced_notice_minutes: 60)
+      #Add Schedules
+      (0..6).each do |n|
+        Schedule.create(service: service, start_time:"00:00", end_time: "23:59", day_of_week: n)
+      end
+      #Trip purpose requirements
+      [medical, dialysis, cancer, work, training, personal, general].each do |n|
+        ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+      end
+
+  end
+
 end
-
-service_types.each do |service_type|
-  puts "Add service_type #{service_type[:name]}"
-  st = ServiceType.create! service_type
-  st.save
-end
-
-trip_purposes.each do |trip_purpose|
-  t = TripPurpose.create! trip_purpose
-  t.save
-end
-
-services.each do |service|
-  puts "Add service #{service[:name]}"
-  s = Service.create! service
-  s.save
-end
-
-service_traveler_characteristics_map.each do |mapping|
-  stcm = ServiceTravelerCharacteristicsMap.create! mapping
-  stcm.save
-end
-
-user_traveler_characteristics_map.each do |mapping|
-  utcm = UserTravelerCharacteristicsMap.create! mapping
-  utcm.save
-end
-
-service_traveler_accommodations_map.each do |mapping|
-  stam = ServiceTravelerAccommodationsMap.create! mapping
-  stam.save
-end
-
-service_trip_purpose_map.each do |mapping|
-  stpm = ServiceTripPurposeMap.create! mapping
-  stpm.save
-end
-
-user_traveler_accommodations_map.each do |mapping|
-  utam = UserTravelerAccommodationsMap.create! mapping
-  utam.save
-end
-
-schedules.each do |schedule|
-  s = Schedule.create! schedule
-  s.save
-end
-
-
-
-
