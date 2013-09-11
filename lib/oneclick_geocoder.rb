@@ -23,6 +23,7 @@ class OneclickGeocoder
   end 
   
   def reverse_geocode(lat, lon)
+    Rails.logger.info "GEOCODE #{[lat, lon]}"
     # reset the current state
     reset
     @raw_address = [lat, lon]
@@ -30,9 +31,10 @@ class OneclickGeocoder
       res = Geocoder.search(@raw_address)
       process_results(res)
     rescue Exception => e
+      Rails.logger.error format_exception(e)
       @errors << e.message
     end
-    @errors.empty?
+    [@errors.empty?, @errors, @results]
   end
 
   def geocode(raw_address)
@@ -48,7 +50,7 @@ class OneclickGeocoder
       Rails.logger.info res.ai
       process_results(res)
     rescue Exception => e
-    Rails.logger.error format_exception(e)
+      Rails.logger.error format_exception(e)
       @errors << e.message
     end
     [@errors.empty?, @errors, @results]
@@ -76,6 +78,8 @@ protected
     end    
   end    
 
+  # Google puts the country designator into the formatted address. We don't want this so we chomp the
+  # end of the address string if the designator is there
   def sanitize_formattted_address(addr)
     if addr.include?(", USA")
       return addr[0..-6]
