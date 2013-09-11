@@ -48,6 +48,8 @@ class TripsController < TravelerAwareController
     @trip_proxy = create_trip_proxy(@trip)
     # set the flag so we know what to do when the user submits the form
     @trip_proxy.mode = MODE_EDIT
+    # Set the trip proxy Id to the PK of the trip so we can update it
+    @trip_proxy.id = @trip.id
         
     respond_to do |format|
       format.html
@@ -145,54 +147,77 @@ class TripsController < TravelerAwareController
     end
   end
 
+  # updates a trip
+  def update
+
+    # set the @traveler variable
+    get_traveler
+    # set the @trip variable
+    get_trip
+
+    # make sure we can find the trip we are supposed to be updating and that it belongs to us. 
+    if @trip.nil?
+      redirect_to(user_planned_trips_url, :flash => { :alert => 'Record not found!'})
+      return            
+    end
+    
+    # Get the updated trip proxy from the form params
+    @trip_proxy = create_trip_proxy_from_form_params
+    # save the id of the trip we are updating
+    @trip_proxy.id = @trip.id
+    
+    # see if we can continue saving this trip                
+    if @trip_proxy.errors.empty?
+
+      # we need to remove any existing trip places, planned trips and itineraries from the edited trip
+      @trip.trip_places.delete_all
+      @trip.planned_trips.each do |pt|
+        pt.itineraries.delete_all
+      end 
+      @trip.planned_trips.delete_all
+      @trip.save
+      # Start updating the trip from the form-based one
+
+      # create a trip from the trip proxy
+      updated_trip = create_trip(@trip_proxy)
+      # update the associations      
+      @trip.trip_purpose = updated_trip.trip_purpose
+      @trip.creator = @traveler      
+      updated_trip.trip_places.each do |tp|
+        tp.trip = @trip
+        @trip.trip_places << tp
+      end
+      updated_trip.planned_trips.each do |pt|
+        pt.trip = @trip
+        @trip.planned_trips << pt
+      end
+    end
+
+    respond_to do |format|
+      if updated_trip # only created if the form validated and there are no geocoding errors
+        if @trip.save
+          @trip.reload
+          @planned_trip = @trip.planned_trips.first
+          @planned_trip.create_itineraries
+          format.html { redirect_to user_planned_trip_path(@traveler, @planned_trip) }
+          format.json { render json: @planned_trip, status: :created, location: @planned_trip }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
+        end
+      else
+        format.html { render action: "new", flash[:alert] => "One or more addresses need to be fixed." }
+      end
+    end
+    
+  end
+  
   # POST /trips
   # POST /trips.json
   def create
 
-    @trip_proxy = TripProxy.new(params[:trip_proxy])
-    @trip_proxy.traveler = @traveler
-  
-    # run the validations on the trip proxy. This checks that from place, to place and the 
-    # time/date options are all set
-    if @trip_proxy.valid?
-      # See if the user has selected an poi or a pre-defined place. If not we need to geocode and check
-      # to see if multiple addresses are available. The alternate addresses are stored back in the proxy object
-      geocoder = OneclickGeocoder.new
-      if @trip_proxy.from_place_selected.blank? || @trip_proxy.from_place_selected_type.blank?
-        geocoder.geocode(@trip_proxy.from_place)
-        # store the results in the session
-        session[FROM_PLACES_SESSION_KEY] = encode(geocoder.results)
-        @trip_proxy.from_place_results = geocoder.results
-        if @trip_proxy.from_place_results.empty?
-          # the user needs to select one of the alternatives
-          @trip_proxy.errors.add :from_place, "No matching places found."
-        elsif @trip_proxy.from_place_results.count == 1
-          @trip_proxy.from_place_selected = 0
-          @trip_proxy.from_place_selected_type = PlacesController::RAW_ADDRESS_TYPE
-        else
-          # the user needs to select one of the alternatives
-          @trip_proxy.errors.add :from_place, "Alternate candidate places found."
-        end
-      end
-      # Do the same for the to place
-      if @trip_proxy.to_place_selected.blank? || @trip_proxy.to_place_selected_type.blank?
-        geocoder.geocode(@trip_proxy.to_place)
-        # store the results in the session
-        session[TO_PLACES_SESSION_KEY] = encode(geocoder.results)
-        @trip_proxy.to_place_results = geocoder.results
-        if @trip_proxy.to_place_results.empty?
-          # the user needs to select one of the alternatives
-          @trip_proxy.errors.add :to_place, "No matching places found."
-        elsif @trip_proxy.to_place_results.count == 1
-          @trip_proxy.to_place_selected = 0
-          @trip_proxy.to_place_selected_type = PlacesController::RAW_ADDRESS_TYPE
-        else
-          # the user needs to select one of the alternatives
-          @trip_proxy.errors.add :to_place, "Alternate candidate places found."
-        end
-      end
-      # end of validation test
-    end
+    # inflate a trip proxy object from the form params
+    @trip_proxy = create_trip_proxy_from_form_params
        
     if @trip_proxy.errors.empty?
       @trip = create_trip(@trip_proxy)
@@ -223,8 +248,88 @@ protected
     return Time.now.in_time_zone.next_interval(30.minutes)    
   end
   
-  # creates a trip_proxy object from a trip
-  def create_trip_proxy (trip)
+  
+  def get_trip
+    if user_signed_in?
+      # limit trips to trips accessible by the user unless an admin
+      if current_user.has_role? :admin
+        @trip = Trip.find(params[:id])
+      else
+        @trip = @traveler.trips.find(params[:id])
+      end
+    end
+  end
+
+private
+
+  def encode(addresses)
+    a = []
+    addresses.each do |addr|
+      a << {
+        :address => addr[:street_address],
+        :lat => addr[:lat],
+        :lon => addr[:lon]
+      }
+    end
+    return a
+  end
+  
+  # creates a trip_proxy object from form parameters
+  def create_trip_proxy_from_form_params
+
+    trip_proxy = TripProxy.new(params[:trip_proxy])
+    trip_proxy.traveler = @traveler
+  
+    # run the validations on the trip proxy. This checks that from place, to place and the 
+    # time/date options are all set
+    if trip_proxy.valid?
+      # See if the user has selected a poi or a pre-defined place. If not we need to geocode and check
+      # to see if multiple addresses are available. The alternate addresses are stored back in the proxy object
+      geocoder = OneclickGeocoder.new
+      if trip_proxy.from_place_selected.blank? || trip_proxy.from_place_selected_type.blank?
+        geocoder.geocode(trip_proxy.from_place)
+        # store the results in the session
+        session[FROM_PLACES_SESSION_KEY] = encode(geocoder.results)
+        trip_proxy.from_place_results = geocoder.results
+        if trip_proxy.from_place_results.empty?
+          # the user needs to select one of the alternatives
+          trip_proxy.errors.add :from_place, "No matching places found."
+        elsif trip_proxy.from_place_results.count == 1
+          trip_proxy.from_place_selected = 0
+          trip_proxy.from_place_selected_type = PlacesController::RAW_ADDRESS_TYPE
+        else
+          # the user needs to select one of the alternatives
+          trip_proxy.errors.add :from_place, "Alternate candidate places found."
+        end
+      end
+      # Do the same for the to place
+      if trip_proxy.to_place_selected.blank? || trip_proxy.to_place_selected_type.blank?
+        geocoder.geocode(trip_proxy.to_place)
+        # store the results in the session
+        session[TO_PLACES_SESSION_KEY] = encode(geocoder.results)
+        trip_proxy.to_place_results = geocoder.results
+        if trip_proxy.to_place_results.empty?
+          # the user needs to select one of the alternatives
+          trip_proxy.errors.add :to_place, "No matching places found."
+        elsif trip_proxy.to_place_results.count == 1
+          trip_proxy.to_place_selected = 0
+          trip_proxy.to_place_selected_type = PlacesController::RAW_ADDRESS_TYPE
+        else
+          # the user needs to select one of the alternatives
+          trip_proxy.errors.add :to_place, "Alternate candidate places found."
+        end
+      end
+      # end of validation test
+    end
+    
+    return trip_proxy
+        
+  end
+  
+  
+  # creates a trip_proxy object from a trip. Note that this does not set the
+  # trip id into the proxy as only edit functions need this.
+  def create_trip_proxy(trip)
 
     # get the planned trip for this trip
     planned_trip = trip.planned_trips.first
@@ -264,33 +369,8 @@ protected
     return trip_proxy
     
   end
-  
-  def get_trip
-    if user_signed_in?
-      # limit trips to trips accessible by the user unless an admin
-      if current_user.has_role? :admin
-        @trip = Trip.find(params[:id])
-      else
-        @trip = @traveler.trips.find(params[:id])
-      end
-    end
-  end
 
-private
-
-  def encode(addresses)
-    a = []
-    addresses.each do |addr|
-      a << {
-        :address => addr[:street_address],
-        :lat => addr[:lat],
-        :lon => addr[:lon]
-      }
-    end
-    return a
-  end
-  
-
+  # Creates a trip object from a trip proxy
   def create_trip(trip_proxy)
 
     trip = Trip.new()
