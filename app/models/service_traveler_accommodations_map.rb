@@ -7,6 +7,6 @@ class ServiceTravelerAccommodationsMap < ActiveRecord::Base
   attr_accessible :service_id, :accommodation_id, :value
 
   # set the default scope
-  default_scope where('active = true')
+  #default_scope where('active = true')
 
 end

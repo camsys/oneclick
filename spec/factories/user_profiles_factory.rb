@@ -7,6 +7,7 @@ FactoryGirl.define do
   factory :user_profile do
     after(:create) do |up|
       create(:wheelchair_accommodation_requirement, user_profile: up)
+      create(:veteran_characteristic_map, user_profile: up)
     end
   end
 end
