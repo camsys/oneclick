@@ -63,6 +63,11 @@
       = link_to t(:cancel), :back
                 
 :javascript
+  // Configure UI behaviors
+  var typeahead_delay = +"#{Rails.application.config.ui_typeahead_delay}"
+  var typeahead_min_chars = +"#{Rails.application.config.ui_typeahead_min_chars}"
+  var typeahead_list_length = +"#{Rails.application.config.ui_typeahead_list_length}"
+  
   $.fn.datepicker.Calendar.setDefaultLocale("#{I18n.locale}");
   
   $('#trip-date').datepicker().on("dateChange", function(e) {
@@ -139,8 +144,8 @@
   
   // Enable typeahead for the places forms
   $('#from_address').typeahead({
-      items: gc_max_items_in_list,
-      minLength: gc_min_items_in_typeahead,
+      items: typeahead_list_length,
+      minLength: typeahead_min_chars,
       source: function(query, process) {
           if (from_timeout) {
             clearTimeout(from_timeout);
@@ -163,7 +168,7 @@
                     return process(resultList);
                   }
               });
-          }, gc_typeahead_delay);            
+          }, typeahead_delay);            
       },
     matcher: function (obj) {
         var item = JSON.parse(obj);
@@ -202,8 +207,8 @@
   
   // Enable typeahead for the places forms
   $('#to_address').typeahead({
-      items: gc_max_items_in_list,
-      minLength: gc_min_items_in_typeahead,
+      items: typeahead_list_length,
+      minLength: typeahead_min_chars,
       source: function(query, process) {
           if (to_timeout) {
             clearTimeout(to_timeout);
@@ -226,7 +231,7 @@
                     return process(resultList);
                   }
               });
-          }, gc_typeahead_delay);            
+          }, typeahead_delay);            
       },
     matcher: function (obj) {
         var item = JSON.parse(obj);

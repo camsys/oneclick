@@ -16,3 +16,10 @@ when 'yata'
   Oneclick::Application.config.geocoder_components = 'administrative_area:PA|country:US'
   Oneclick::Application.config.geocoder_bounds = [[41.970622, -80.461542], [39.734653, -75.007294]]
 end
+
+# General UI configuration settings
+Oneclick::Application.config.ui_typeahead_delay = 300       # milliseconds delay between keystrokes before a query is sent to the server to retrieve a typeahead list
+Oneclick::Application.config.ui_typeahead_min_chars = 4     # minimum number of characters to initiate a query
+Oneclick::Application.config.ui_typeahead_list_length = 10  # max number of items displayed in the typeahead list  
+Oneclick::Application.config.ui_search_poi_items = 10       # max number of matching POIs to return in a search 
+

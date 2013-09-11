@@ -4,7 +4,7 @@ class PlacesController < TravelerAwareController
   helper LeafletHelper
   
   CACHED_ADDRESSES_SESSION_KEY = 'places_address_cache'
-  MAX_POIS_FOR_SEARCH = 10
+  MAX_POIS_FOR_SEARCH = Rails.application.config.ui_search_poi_items
 
   # set the @traveler variable for actions that are not supported by teh super class controller
   before_filter :get_traveler, :only => [:index, :add_place, :add_poi, :create, :destroy, :change]

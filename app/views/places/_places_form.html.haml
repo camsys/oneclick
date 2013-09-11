@@ -46,6 +46,11 @@
                 
     
 :javascript  
+  // Configure UI behaviors
+  var typeahead_delay = +"#{Rails.application.config.ui_typeahead_delay}"
+  var typeahead_min_chars = +"#{Rails.application.config.ui_typeahead_min_chars}"
+  var typeahead_list_length = +"#{Rails.application.config.ui_typeahead_list_length}"
+  
   // Hide the name editing div on page load
   $(document).ready(function(){
     $('#name_div').hide();
@@ -82,8 +87,8 @@
   
   // Enable typeahead for the places forms
   $('#poi_typeahead').typeahead({
-      items: gc_max_items_in_list,
-      minLength: gc_min_items_in_typeahead,
+      items: typeahead_list_length,
+      minLength: typeahead_min_chars,
       source: function(query, process) {
           if (timeout) {
             clearTimeout(timeout);
@@ -106,7 +111,7 @@
                   return process(resultList);
                 }
             });
-          }, gc_typeahead_delay);
+          }, typeahead_delay);
       },
     matcher: function (obj) {
         var item = JSON.parse(obj);
