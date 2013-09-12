@@ -8,12 +8,70 @@ class TravelerAwareController < ApplicationController
 
   # Session key for storing the traveler id
   TRAVELER_USER_SESSION_KEY = 'traveler'
+
+  # UI Constants  
+  MAX_POIS_FOR_SEARCH = Rails.application.config.ui_search_poi_items
   
   # Constants for type of place user has selected  
   POI_TYPE = "1"
   CACHED_ADDRESS_TYPE = "2"
   PLACES_TYPE = "3"
   RAW_ADDRESS_TYPE = "4"
+  
+  # Search for addresses, existing addresses, or POIs based on text string entered by the user
+  def search
+    
+    Rails.logger.info "SEARCH"
+
+    get_traveler
+    
+    query = params[:query]
+    query_str = query + "%"
+    
+    counter = 0
+    
+    # First search for POIs
+    # Need this to get correct case-insensitive search for postgresql without breaking mysql
+    rel = Poi.arel_table[:name].matches(query_str)
+    pois = Poi.where(rel).limit(MAX_POIS_FOR_SEARCH)
+    Rails.logger.info pois.ai
+    matches = []
+    pois.each do |poi|
+      matches << {
+        "index" => counter,
+        "type" => POI_TYPE,
+        "name" => poi.name,
+        "id" => poi.id,
+        "lat" => poi.lat,
+        "lon" => poi.lon,
+        "address" => poi.address
+      }
+      counter += 1
+    end
+    
+    # now search for existing trip ends. We manually filter these to find unique addresses
+    rel = TripPlace.arel_table[:raw_address].matches(query_str)
+    tps = @traveler.trip_places.where(rel).order("raw_address")
+    old_addr = ""
+    tps.each do |tp|
+      if old_addr != tp.raw_address
+        matches << {
+          "index" => counter,
+          "type" => CACHED_ADDRESS_TYPE,
+          "name" => tp.raw_address,
+          "id" => tp.id,
+          "lat" => tp.lat,
+          "lon" => tp.lon,
+          "address" => tp.raw_address
+        }
+        counter += 1
+        old_addr = tp.raw_address
+      end      
+    end
+    respond_to do |format|
+      format.js { render :json => matches.to_json }
+    end
+  end
   
 protected
 

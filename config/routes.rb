@@ -49,6 +49,7 @@ Oneclick::Application.routes.draw do
         collection do
           post  'set_traveler'
           get   'unset_traveler'
+          get   'search'
         end
         member do
           get   'repeat'          

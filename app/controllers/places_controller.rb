@@ -4,7 +4,6 @@ class PlacesController < TravelerAwareController
   helper LeafletHelper
   
   CACHED_ADDRESSES_SESSION_KEY = 'places_address_cache'
-  MAX_POIS_FOR_SEARCH = Rails.application.config.ui_search_poi_items
 
   # set the @traveler variable for actions that are not supported by teh super class controller
   before_filter :get_traveler, :only => [:index, :add_place, :add_poi, :create, :destroy, :change]
@@ -169,60 +168,6 @@ class PlacesController < TravelerAwareController
     end
   end
 
-  # Search for existing addresses or POIs based on a partial POI name
-  def search
-    
-    Rails.logger.info "SEARCH"
-
-    get_traveler
-    
-    query = params[:query]
-    query_str = query + "%"
-    
-    counter = 0
-    
-    # First search for POIs
-    # Need this to get correct case-insensitive search for postgresql without breaking mysql
-    rel = Poi.arel_table[:name].matches(query_str)
-    pois = Poi.where(rel).limit(MAX_POIS_FOR_SEARCH)
-    Rails.logger.info pois.ai
-    matches = []
-    pois.each do |poi|
-      matches << {
-        "index" => counter,
-        "type" => POI_TYPE,
-        "name" => poi.name,
-        "id" => poi.id,
-        "lat" => poi.lat,
-        "lon" => poi.lon,
-        "address" => poi.address
-      }
-      counter += 1
-    end
-    
-    # now search for existing trip ends. We manually filter these to find unique addresses
-    rel = TripPlace.arel_table[:raw_address].matches(query_str)
-    tps = @traveler.trip_places.where(rel).order("raw_address")
-    old_addr = ""
-    tps.each do |tp|
-      if old_addr != tp.raw_address
-        matches << {
-          "index" => counter,
-          "type" => CACHED_ADDRESS_TYPE,
-          "name" => tp.raw_address,
-          "id" => tp.id,
-          "lat" => tp.lat,
-          "lon" => tp.lon,
-          "address" => tp.raw_address
-        }
-        counter += 1
-        old_addr = tp.raw_address
-      end      
-    end
-    respond_to do |format|
-      format.js { render :json => matches.to_json }
-    end
-  end
 
 protected
 
