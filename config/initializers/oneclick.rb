@@ -22,4 +22,5 @@ Oneclick::Application.config.ui_typeahead_delay = 300       # milliseconds delay
 Oneclick::Application.config.ui_typeahead_min_chars = 4     # minimum number of characters to initiate a query
 Oneclick::Application.config.ui_typeahead_list_length = 10  # max number of items displayed in the typeahead list  
 Oneclick::Application.config.ui_search_poi_items = 10       # max number of matching POIs to return in a search 
+Oneclick::Application.config.address_cache_expire_seconds = 3600 # seconds to keep addresses returned from the geocoder in the cache
 

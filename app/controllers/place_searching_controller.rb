@@ -2,6 +2,7 @@ class PlaceSearchingController < TravelerAwareController
     
   # UI Constants  
   MAX_POIS_FOR_SEARCH = Rails.application.config.ui_search_poi_items
+  ADDRESS_CACHE_EXPIRE_SECONDS = Rails.application.config.address_cache_expire_seconds
   
   # Constants for type of place user has selected  
   POI_TYPE = "1"
@@ -14,35 +15,39 @@ class PlaceSearchingController < TravelerAwareController
     
     Rails.logger.info "SEARCH"
 
+    # Populate the @traveler variable
     get_traveler
     
     query = params[:query]
     query_str = query + "%"
+    Rails.logger.info query_str
+
+    # This array will hold the list of matching places
+    matches = []    
+    # We create a unique index for mapping etc for each place we find
+    counter = 0    
     
-    counter = 0
-    
-    # First search for POIs
-    # Need this to get correct case-insensitive search for postgresql without breaking mysql
-    rel = Poi.arel_table[:name].matches(query_str)
-    pois = Poi.where(rel).limit(MAX_POIS_FOR_SEARCH)
-    Rails.logger.info pois.ai
-    matches = []
-    pois.each do |poi|
+    # First search for matching names in my places
+    rel = Place.arel_table[:name].matches(query_str)
+    places = Place.where(rel)
+    Rails.logger.info places.ai
+    places.each do |place|
       matches << {
         "index" => counter,
-        "type" => POI_TYPE,
-        "name" => poi.name,
-        "id" => poi.id,
-        "lat" => poi.lat,
-        "lon" => poi.lon,
-        "address" => poi.address
+        "type" => PLACES_TYPE,
+        "name" => place.name,
+        "id" => place.id,
+        "lat" => place.location.first,
+        "lon" => place.location.last,
+        "address" => place.address
       }
       counter += 1
     end
     
-    # now search for existing trip ends. We manually filter these to find unique addresses
+    # Second search for matching address in trip_places. We manually filter these to find unique addresses
     rel = TripPlace.arel_table[:raw_address].matches(query_str)
     tps = @traveler.trip_places.where(rel).order("raw_address")
+    Rails.logger.info tps.ai
     old_addr = ""
     tps.each do |tp|
       if old_addr != tp.raw_address
@@ -59,6 +64,24 @@ class PlaceSearchingController < TravelerAwareController
         old_addr = tp.raw_address
       end      
     end
+    
+    # Lastly search for matching names in the POI table
+    rel = Poi.arel_table[:name].matches(query_str)
+    pois = Poi.where(rel).limit(MAX_POIS_FOR_SEARCH)
+    Rails.logger.info pois.ai
+    pois.each do |poi|
+      matches << {
+        "index" => counter,
+        "type" => POI_TYPE,
+        "name" => poi.name,
+        "id" => poi.id,
+        "lat" => poi.lat,
+        "lon" => poi.lon,
+        "address" => poi.address
+      }
+      counter += 1
+    end
+    
     respond_to do |format|
       format.js { render :json => matches.to_json }
     end
@@ -67,7 +90,7 @@ class PlaceSearchingController < TravelerAwareController
 protected
 
   # Cache an array of addresses
-  def cache_addresses(key, addresses, expires_in = 500.seconds)
+  def cache_addresses(key, addresses, expires_in = ADDRESS_CACHE_EXPIRE_SECONDS)
     Rails.cache.write(get_cache_key(@traveler, key), addresses, :expires_in => expires_in)
   end
   # Return an array of cached addresses
