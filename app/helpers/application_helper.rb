@@ -4,11 +4,34 @@ module ApplicationHelper
   
   include CsHelpers
 
+  # Defines an array of filter options for the MyTrips page. The filters combine date range filters
+  # with trip purpose filters. To make sure we can identify which is which, we simply add a constant (100)
+  # to the time filter id. This assumes thata there are no more than 99 trip purposes
+  #
+  # The TimeFilterHelper is localized so strings are properly translated
+  def trip_filters
+    elems = []
+    TimeFilterHelper.time_filters.each do |tf|
+      elems << {
+        :id => 100 + tf[:id],
+        :value => tf[:value]
+      }
+    end
+    TripPurpose.all.each do |tp|
+      elems << {
+        :id => tp.id,
+        :value => tp
+      }      
+    end
+    return elems  
+  end
+  
+  # Returns a set of rating icons as a span
   def get_rating_icons(planned_trip)
     if planned_trip.in_the_future
       return ""
     end
-    rating = rand(1..5)
+    rating = planned_trip.rating
     html = "<span>"
     for i in 1..5
       if i <= rating
@@ -20,6 +43,9 @@ module ApplicationHelper
     html << "<span>"
     return html.html_safe
   end
+  
+  # Returns true if the current user is a traveler, false if the current
+  # user is operating as a delegate 
   def is_traveler
     if @traveler
       return @traveler.id == current_or_guest_user.id ? false : true

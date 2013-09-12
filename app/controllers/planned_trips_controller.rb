@@ -19,26 +19,33 @@ class PlannedTripsController < TravelerAwareController
       format.json { render json: @planned_trip }
     end
   end
-  
+    
   def index
 
-    # params needed for the subnav filters
+    # Filtering logic. See ApplicaitonHelper.trip_filters
     if params[:time_filter_type]
       @time_filter_type = params[:time_filter_type]
     else
-       @time_filter_type = session[TIME_FILTER_TYPE_SESSION_KEY]
+      @time_filter_type = session[TIME_FILTER_TYPE_SESSION_KEY]
     end
     # if it is still not set use the default
     if @time_filter_type.nil?
-      @time_filter_type = "0"
+      # default is to use the first time period filter in the TimeFilterHelper class
+      @time_filter_type = "100"
     end
     # store it in the session
     session[TIME_FILTER_TYPE_SESSION_KEY] = @time_filter_type
 
-    # get the duration for this time filter
-    duration = TimeFilterHelper.time_filter_as_duration(@time_filter_type)
-    
-    @planned_trips = @traveler.planned_trips.scheduled_between(duration.first, duration.last)
+    # If the filter is at least 100 is must be a time filter, otherwise it will be a TripPurpose
+    if @time_filter_type.to_i >= 100
+      actual_filter = @time_filter_type.to_i - 100
+      # get the duration for this time filter
+      duration = TimeFilterHelper.time_filter_as_duration(actual_filter)      
+      @planned_trips = @traveler.planned_trips.scheduled_between(duration.first, duration.last)
+    else
+      # the filter is a trip purpose
+      @planned_trips = @traveler.planned_trips.where('trip_purpose_id = ?', @time_filter_type).order('planned_trips.trip_datetime DESC')
+    end
 
     respond_to do |format|
       format.html # show.html.erb
