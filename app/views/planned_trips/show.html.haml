@@ -11,7 +11,7 @@
       .trip_prepositions= t(:to)
       .trip_basic_text= @planned_trip.trip.to_place
       .trip_prepositions= t(:at_time)
-      .trip_basic_text= @planned_trip.trip_datetime.in_time_zone.strftime("%B %d, %Y")
+      .trip_basic_text= format_date(@planned_trip.trip_datetime.in_time_zone)
     .span2
       - if @planned_trip.in_the_future
         = link_to edit_user_trip_path(@traveler, @planned_trip.trip), :class => "btn btn-small pull-right" do

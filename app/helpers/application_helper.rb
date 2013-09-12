@@ -105,8 +105,19 @@ module ApplicationHelper
   def format_date_time(datetime)
     return datetime.strftime("%-I:%M %p %A, %B %-d %Y") unless datetime.nil?
   end
+  
+  # Standardized date formatter for the app. Use this wherever you need to display a date
+  # in the UI. The formatted displays dates as Day of Week, Month Day eg. Tuesday, June 5
+  # if the date is from a previous year, the year is appended eg Tuesday, June 5 2012 
   def format_date(date)
-    return date.strftime("%A, %B %-d %Y") unless date.nil?
+    if date.nil?
+      return ""
+    end
+    if date.year == Date.today.year
+      return date.strftime("%A, %B %-d") unless date.nil?
+    else
+      return date.strftime("%A, %B %-d %Y") unless date.nil?
+    end
   end
   def format_time(time)
     return time.strftime("%-I:%M") unless time.nil?
