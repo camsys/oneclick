@@ -75,6 +75,21 @@ class TravelerAwareController < ApplicationController
   
 protected
 
+  # Cache an array of addresses
+  def cache_addresses(key, addresses, expires_in = 500.seconds)
+    Rails.cache.write(get_cache_key(@traveler, key), addresses, :expires_in => expires_in)
+  end
+  # Return an array of cached addresses
+  def get_cached_addresses(key)
+    ret = Rails.cache.read(get_cache_key(@traveler, key))
+    return ret.nil? ? [] : ret
+  end
+    
+  # generates a cache key that is unique for a user and key name
+  def get_cache_key(user, key)
+    return "%06d:%s" % [user.id, key]
+  end
+  
   # Update the session variable
   def set_traveler_id(id)
     session[TRAVELER_USER_SESSION_KEY] = id

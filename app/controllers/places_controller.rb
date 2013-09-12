@@ -3,7 +3,7 @@ class PlacesController < TravelerAwareController
   # include the Leaflet helper into the controller and view
   helper LeafletHelper
   
-  CACHED_ADDRESSES_SESSION_KEY = 'places_address_cache'
+  CACHED_ADDRESSES_KEY = 'PLACES_ADDRESS_CACHE'
 
   # set the @traveler variable for actions that are not supported by teh super class controller
   before_filter :get_traveler, :only => [:index, :add_place, :add_poi, :create, :destroy, :change]
@@ -20,7 +20,8 @@ class PlacesController < TravelerAwareController
   # Called when a user has selected a place
   def add_place
 
-    addresses = session[CACHED_ADDRESSES_SESSION_KEY]
+    # Get the array of addresses from the cache
+    addresses = get_cached_addresses(CACHED_ADDRESSES_KEY)
     if addresses.nil?
       # we cant get the addresses from the session so they might have posted this address using
       # some other service.
@@ -152,10 +153,10 @@ class PlacesController < TravelerAwareController
       
       # cache the results in the session
       if geocoder.has_errors
-        session[CACHED_ADDRESSES_SESSION_KEY] = []
+        cache_addresses(CACHED_ADDRESSES_KEY, [])
         @alternative_places = []
       else
-        session[CACHED_ADDRESSES_SESSION_KEY] = geocoder.results
+        cache_addresses(CACHED_ADDRESSES_KEY, geocoder.results)
         @alternative_places = geocoder.results
       end
     end

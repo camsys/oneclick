@@ -4,8 +4,8 @@ class TripsController < TravelerAwareController
   before_filter :get_trip, :only => [:show, :destroy]
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
-  FROM_PLACES_SESSION_KEY = 'trips_from_places'
-  TO_PLACES_SESSION_KEY = 'trips_to_places'
+  CACHED_FROM_ADDRESSES_KEY = 'CACHED_FROM_ADDRESSES_KEY'
+  CACHED_TO_ADDRESSES_KEY = 'CACHED_TO_ADDRESSES_KEY'
   
   TRIP_DATE_FORMAT_STRING = "%m/%d/%Y"
   TRIP_TIME_FORMAT_STRING = "%-I:%M %P"
@@ -261,18 +261,6 @@ protected
   end
 
 private
-
-  def encode(addresses)
-    a = []
-    addresses.each do |addr|
-      a << {
-        :address => addr[:street_address],
-        :lat => addr[:lat],
-        :lon => addr[:lon]
-      }
-    end
-    return a
-  end
   
   # creates a trip_proxy object from form parameters
   def create_trip_proxy_from_form_params
@@ -288,8 +276,8 @@ private
       geocoder = OneclickGeocoder.new
       if trip_proxy.from_place_selected.blank? || trip_proxy.from_place_selected_type.blank?
         geocoder.geocode(trip_proxy.from_place)
-        # store the results in the session
-        session[FROM_PLACES_SESSION_KEY] = encode(geocoder.results)
+        # store the results in the cache
+        cache_addresses(CACHED_FROM_ADDRESSES_KEY, geocoder.results)
         trip_proxy.from_place_results = geocoder.results
         if trip_proxy.from_place_results.empty?
           # the user needs to select one of the alternatives
@@ -305,8 +293,8 @@ private
       # Do the same for the to place
       if trip_proxy.to_place_selected.blank? || trip_proxy.to_place_selected_type.blank?
         geocoder.geocode(trip_proxy.to_place)
-        # store the results in the session
-        session[TO_PLACES_SESSION_KEY] = encode(geocoder.results)
+        # store the results in the cache
+        cache_addresses(CACHED_TO_ADDRESSES_KEY, geocoder.results)
         trip_proxy.to_place_results = geocoder.results
         if trip_proxy.to_place_results.empty?
           # the user needs to select one of the alternatives
@@ -442,11 +430,11 @@ private
       # the user entered a raw address and possibly selected an alternate from the list of possible
       # addresses
       if is_from
-        place = session[FROM_PLACES_SESSION_KEY][place_id]
+        place = get_cached_addresses(CACHED_FROM_ADDRESSES_KEY)[place_id]
       else
-        place = session[TO_PLACES_SESSION_KEY][place_id]
+        place = get_cached_addresses(CACHED_TO_ADDRESSES_KEY)[place_id]
       end
-      return {:name => place[:address], :lat => place[:lat], :lon => place[:lon], :address => place[:address]}
+      return {:name => place[:name], :lat => place[:lat], :lon => place[:lon], :address => place[:formatted_address]}
     else
       return {}
     end
