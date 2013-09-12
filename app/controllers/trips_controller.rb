@@ -1,7 +1,7 @@
 class TripsController < PlaceSearchingController
 
   # set the @trip variable before any actions are invoked
-  before_filter :get_trip, :only => [:show, :destroy]
+  before_filter :get_trip, :only => [:show]
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
   CACHED_FROM_ADDRESSES_KEY = 'CACHED_FROM_ADDRESSES_KEY'
@@ -103,6 +103,32 @@ class TripsController < PlaceSearchingController
 
   end
   
+  # called when the user wants to delete a trip
+  def destroy
+
+    # set the @traveler variable
+    get_traveler
+    # set the @trip variable
+    get_trip
+    
+    if @trip
+      @trip.trip_places.destroy_all
+      @trip.planned_trips.each do |pt|
+        pt.itineraries.destroy_all
+      end
+      @trip.planned_trips.destroy_all
+      @trip.destroy
+      message = "Trip was sucessfully removed."
+    else
+      message = "No trip found."
+    end
+
+    respond_to do |format|
+      format.html { redirect_to(user_planned_trips_path(@traveler), :flash => { :notice => message}) } 
+      format.json { head :no_content }
+    end
+    
+  end
   # called when the user wants to hide an option. Invoked via
   # an ajax call
   def hide

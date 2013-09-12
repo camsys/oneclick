@@ -34,6 +34,8 @@
                 %i.icon-mail-forward
               = link_to edit_user_trip_path(@traveler, planned_trip.trip), :class => "btn btn-small" do
                 %i.icon-edit
+              = link_to user_trip_path(@traveler, planned_trip.trip), :class => "btn btn-small", :method => :delete, :confirm => "Are you sure ?" do
+                %i.icon-remove
           - else
             %td.center.nowrap          
               = link_to repeat_user_trip_path(@traveler, planned_trip.trip), :class => "btn btn-small" do
