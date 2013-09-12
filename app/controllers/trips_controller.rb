@@ -1,4 +1,4 @@
-class TripsController < TravelerAwareController
+class TripsController < PlaceSearchingController
 
   # set the @trip variable before any actions are invoked
   before_filter :get_trip, :only => [:show, :destroy]

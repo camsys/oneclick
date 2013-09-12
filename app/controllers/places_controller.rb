@@ -1,4 +1,4 @@
-class PlacesController < TravelerAwareController
+class PlacesController < PlaceSearchingController
 
   # include the Leaflet helper into the controller and view
   helper LeafletHelper
