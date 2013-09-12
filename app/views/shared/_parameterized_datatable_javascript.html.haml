@@ -4,11 +4,13 @@
 - # bLengthChange
 - # sLengthMenu
 - # sInfo
+- # bSort
 :javascript
   
   $(document).ready(function() {
   	$('#{table_id}').dataTable( {
   		"bFilter" : false,
+  		"bSort" : #{bSort},
   		"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
   		"sPaginationType": "bootstrap",
       "bLengthChange": #{bLengthChange},

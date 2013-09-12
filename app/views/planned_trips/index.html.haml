@@ -14,6 +14,7 @@
   %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable
     %thead
       %tr
+        %th
         %th= t(:date)
         %th= t(:from)
         %th= t(:to)
@@ -22,7 +23,13 @@
         %th.center= t(:actions)
     %tbody
       - @planned_trips.each do |planned_trip|
-        %tr{:class => planned_trip.in_the_future ? "info" : ""}
+        %tr
+          - if planned_trip.in_the_future
+            %td.center.nowrap          
+              %i.icon-asterisk
+          - else
+            %td.center.nowrap          
+
           %td.nowrap= format_date(planned_trip.trip_datetime)
           %td= planned_trip.trip.from_place
           %td= planned_trip.trip.to_place
@@ -54,7 +61,7 @@
   sLengthMenu: t(:menu__object_plural_per_page, o: 'trips'),
   sInfo: t(:showing__start__to__end__of__total__object_plural, o: 'trips'),
   object_singular: 'trip',
-  bLengthChange: false} unless @planned_trips.empty?
+  bLengthChange: false, bSort: true} unless @planned_trips.empty?
 
 :javascript
   

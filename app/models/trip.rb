@@ -7,7 +7,7 @@ class Trip < ActiveRecord::Base
   belongs_to :creator, :class_name => "User", :foreign_key => "creator_id"
   belongs_to :trip_purpose
   has_many :trip_places
-  has_many :planned_trips
+  has_many :planned_trips, :order => "planned_trips.trip_datetime DESC"
   
   # Scopes
   scope :created_between, lambda {|from_day, to_day| where("created_at > ? AND created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
