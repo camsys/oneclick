@@ -12,6 +12,7 @@ class PlannedTrip < ActiveRecord::Base
  
   # Scopes
   scope :created_between, lambda {|from_day, to_day| where("planned_trips.created_at > ? AND planned_trips.created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day).order("planned_trips.trip_datetime DESC") }
+  scope :scheduled_between, lambda {|from_day, to_day| where("planned_trips.trip_datetime > ? AND planned_trips.trip_datetime < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day).order("planned_trips.trip_datetime DESC") }
  
   # Returns an array of PlannedTrip that have at least one valid itinerary but all
   # of them have been hidden by the user

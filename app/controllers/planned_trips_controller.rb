@@ -38,7 +38,7 @@ class PlannedTripsController < TravelerAwareController
     # get the duration for this time filter
     duration = TimeFilterHelper.time_filter_as_duration(@time_filter_type)
     
-    @planned_trips = @traveler.planned_trips.created_between(duration.first, duration.last)
+    @planned_trips = @traveler.planned_trips.scheduled_between(duration.first, duration.last)
 
     respond_to do |format|
       format.html # show.html.erb

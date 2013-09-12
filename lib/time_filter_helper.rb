@@ -1,12 +1,14 @@
 class TimeFilterHelper
   
   @time_filter_array = [
-    {:id => 0, :value => :last_30_days, :parse_text_start => "29 days ago", :parse_text_end => "today", :is_day_duration => true},
-    {:id => 1, :value => :last_7_days, :parse_text_start => "6 days ago", :parse_text_end => "today", :is_day_duration => true},
-    {:id => 2, :value => :today, :parse_text_start => "today", :parse_text_end => "today", :is_day_duration => true},
-    {:id => 3, :value => :yesterday, :parse_text_start => "yesterday", :parse_text_end => "yesterday", :is_day_duration => true},
-    {:id => 4, :value => :this_month, :parse_text_start => "today", :parse_text_end => "today", :is_day_duration => false},    
-    {:id => 5, :value => :last_month, :parse_text_start => "last month", :parse_text_end => "last month", :is_day_duration => false}
+    {:id => 0, :value => :all_trips, :parse_text_start => "1 year ago", :parse_text_end => "1 year from now", :is_day_duration => false},
+    {:id => 1, :value => :trips_coming_up, :parse_text_start => "tomorrow", :parse_text_end => "1 year from now", :is_day_duration => true},
+    {:id => 2, :value => :last_7_days, :parse_text_start => "6 days ago", :parse_text_end => "today", :is_day_duration => true},
+    {:id => 3, :value => :last_30_days, :parse_text_start => "29 days ago", :parse_text_end => "today", :is_day_duration => true}
+    #{:id => 4, :value => :today, :parse_text_start => "today", :parse_text_end => "today", :is_day_duration => true},
+    #{:id => 5, :value => :yesterday, :parse_text_start => "yesterday", :parse_text_end => "yesterday", :is_day_duration => true},
+    #{:id => 6, :value => :this_month, :parse_text_start => "today", :parse_text_end => "today", :is_day_duration => false},    
+    #{:id => 7, :value => :last_month, :parse_text_start => "last month", :parse_text_end => "last month", :is_day_duration => false}
   ]
 
   def self.time_filters

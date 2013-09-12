@@ -175,6 +175,8 @@ es:
   you_can_t_be_your_own_buddy: "No puedes ser tu propio amigo."
   you_ve_already_asked_them_to_be_a_buddy: "Ya le has solicitado ser amigo."
   address_is_required: "Se require una dirección"
+  all_trips: "Todos los viajes *22*"
+  trips_coming_up: "Excursiones viene *23*"  
   last_30_days: "Últimos 30 días"
   last_7_days: "Últimos 7 días"
   last_month: "El mes pasado"

@@ -7,13 +7,15 @@ class TripsController < PlaceSearchingController
   CACHED_FROM_ADDRESSES_KEY = 'CACHED_FROM_ADDRESSES_KEY'
   CACHED_TO_ADDRESSES_KEY = 'CACHED_TO_ADDRESSES_KEY'
   
+  # Format strings for the trip form date and time fields
   TRIP_DATE_FORMAT_STRING = "%m/%d/%Y"
   TRIP_TIME_FORMAT_STRING = "%-I:%M %P"
     
-  MODE_NEW = "1"
-  MODE_EDIT = "2"
-  MODE_REPEAT = "3"
-    
+  # Modes for creating/updating new trips
+  MODE_NEW = "1"        # Its a new trip fromscratch
+  MODE_EDIT = "2"       # Editing an existing trip that is in the future
+  MODE_REPEAT = "3"     # Repeating an existing trip that is in the past
+      
   # User wants to repeat a trip  
   def repeat
     # set the @traveler variable
