@@ -34,7 +34,7 @@
           %td= planned_trip.trip.from_place
           %td= planned_trip.trip.to_place
           %td= planned_trip.trip.trip_purpose
-          %td.nowrap
+          %td.nowrap= get_rating_icons(planned_trip)
           - if planned_trip.in_the_future
             %td.center.nowrap          
               = link_to user_planned_trip_path(@traveler, planned_trip), :class => "btn btn-small" do

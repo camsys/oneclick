@@ -4,6 +4,22 @@ module ApplicationHelper
   
   include CsHelpers
 
+  def get_rating_icons(planned_trip)
+    if planned_trip.in_the_future
+      return ""
+    end
+    rating = rand(1..5)
+    html = "<span>"
+    for i in 1..5
+      if i <= rating
+        html << "<i class='icon icon-star'></i>"
+      else
+        html << "<i class='icon icon-star-empty'></i>"
+      end
+    end
+    html << "<span>"
+    return html.html_safe
+  end
   def is_traveler
     if @traveler
       return @traveler.id == current_or_guest_user.id ? false : true
