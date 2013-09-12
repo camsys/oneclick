@@ -19,9 +19,20 @@ class PlannedTrip < ActiveRecord::Base
   def self.rejected
     joins(:itineraries).where('server_status=200 AND hidden=true')
   end
+  
   # Returns an array of PlannedTrip where no valid options were generated
   def self.failed
     joins(:itineraries).where('server_status <> 200')
+  end
+  
+  # Returns a numeric rating score for the trip
+  def rating
+    if in_the_future
+      return nil
+    else
+      #TODO replace this with actual rating
+      return rand(1..5)
+    end
   end
   
   # returns true if the planned trip is scheduled in advance of
