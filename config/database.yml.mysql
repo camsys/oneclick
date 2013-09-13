@@ -1,0 +1,19 @@
+development:
+  adapter: mysql2
+  encoding: utf8
+  database: oneclick_development
+  username: root
+  password:
+  host: 127.0.0.1
+  pool: 5
+  timeout: 5000
+
+test: &test
+  adapter: mysql2
+  encoding: utf8
+  database: oneclick_test
+  username: root
+  password:
+  host: localhost
+  pool: 5
+  timeout: 5000
