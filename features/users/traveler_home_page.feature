@@ -18,4 +18,4 @@ Feature: Traveler Home Page
     When I look at the home page
     Then I see "Plan a Trip"
     And I see "Profile"
-    And I see "Previous Trips"
+    And I see "My Trips"
