@@ -9,7 +9,7 @@ class EligibilityHelpers
       service_characteristic_maps = service.service_traveler_characteristics_maps
       service_characteristic_maps.each do |service_characteristic_map|
         service_requirement = service_characteristic_map.traveler_characteristic
-        if service_requirement.name = 'Age'
+        if service_requirement.code = 'age'
           update_age(user_profile)
         end
 
@@ -85,6 +85,7 @@ class EligibilityHelpers
   end
 
   def get_accommodating_and_eligible_services_for_traveler(user_profile)
+
     if user_profile.nil? #TODO:  Need to update to handle anonymous users.  This currently only works with user logged in.
       return []
     end
