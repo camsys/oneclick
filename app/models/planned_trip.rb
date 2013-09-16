@@ -77,10 +77,9 @@ class PlannedTrip < ActiveRecord::Base
   end
 
   def create_paratransit_itineraries
-    #TODO: This is just a place holder that currently returns demo data only.
     tp = TripPlanner.new
     eh = EligibilityHelpers.new
-    passenger_eligible_services = eh.get_accommodating_and_eligible_services_for_traveler(creator.user_profile)
+    passenger_eligible_services = eh.get_accommodating_and_eligible_services_for_traveler(creator.user_profile, self)
     passenger_and_trip_eligible_services = eh.get_eligible_services_for_trip(self, passenger_eligible_services)
     passenger_and_trip_eligible_services.each do |service|
 

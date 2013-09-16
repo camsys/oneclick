@@ -1,6 +1,6 @@
 class EligibilityHelpers
 
-  def get_eligible_services_for_traveler(user_profile)
+  def get_eligible_services_for_traveler(user_profile, trip=nil)
 
     all_services = Service.all
     fully_eligible_services = []
@@ -10,7 +10,13 @@ class EligibilityHelpers
       service_characteristic_maps.each do |service_characteristic_map|
         service_requirement = service_characteristic_map.traveler_characteristic
         if service_requirement.code = 'age'
-          update_age(user_profile)
+          if trip
+            age_date = trip.trip_datetime
+          else
+            age_date = Time.now
+          end
+
+          update_age(user_profile, age_date)
         end
 
         passenger_characteristic = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: service_requirement.id)
@@ -84,13 +90,13 @@ class EligibilityHelpers
 
   end
 
-  def get_accommodating_and_eligible_services_for_traveler(user_profile)
+  def get_accommodating_and_eligible_services_for_traveler(user_profile, trip=nil)
 
     if user_profile.nil? #TODO:  Need to update to handle anonymous users.  This currently only works with user logged in.
       return []
     end
 
-    eligible = get_eligible_services_for_traveler(user_profile)
+    eligible = get_eligible_services_for_traveler(user_profile, trip)
     accommodating = get_accommodating_services_for_traveler(user_profile)
 
     eligible & accommodating
