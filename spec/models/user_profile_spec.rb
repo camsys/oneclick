@@ -2,8 +2,6 @@ require 'spec_helper'
 
 describe UserProfile do
 
-  load "#{Rails.root}/db/seeds.rb"
-
   it "has eligible services for traveler and trip" do
     user_profile = FactoryGirl.create(:user_profile)
     eh = EligibilityHelpers.new

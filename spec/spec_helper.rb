@@ -45,7 +45,13 @@ RSpec.configure do |config|
   config.order = "random"
   
   config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.strategy = :truncation, {except: %w{traveler_characteristics traveler_accommodations
+      service_types trip_purposes providers services schedules service_trip_purpose_maps
+      service_traveler_characteristics_maps
+      service_traveler_accommodations_maps
+      user_traveler_accommodations_maps
+      user_traveler_characteristics_maps
+      }}
     DatabaseCleaner.start
   end
 
