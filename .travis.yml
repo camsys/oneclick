@@ -1,4 +1,10 @@
-language: ruby
+before_script:
+  - mv config/database.yml.travis config/database.yml
+  - psql -c 'create database oneclick_test;' -U postgreslanguage: ruby
 rvm:
   - "1.9.3"
-script: bundle exec rspec cucumber
+bundler_args: --without development
+script:
+  - bundle exec /usr/bin/env RAILS_ENV=test rake db:reset
+  - bundle exec /usr/bin/env RAILS_ENV=test rspec
+  - bundle exec /usr/bin/env RAILS_ENV=test cucumber

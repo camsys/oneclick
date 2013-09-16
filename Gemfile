@@ -39,15 +39,11 @@ group :development do
   gem 'rb-inotify', :require=>false
   gem 'sextant'
   gem 'rails-erd'
-end
-group :development, :test do
   gem 'growl'
-  gem 'capybara'
 end
 group :test do
   gem 'factory_girl_rails'
   gem 'rspec-rails'
-  gem 'sqlite3'
   gem 'capybara'
   gem 'cucumber-rails', :require=>false
   gem 'database_cleaner'
