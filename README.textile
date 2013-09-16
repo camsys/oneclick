@@ -73,8 +73,8 @@ If you add functionality to this application, create an alternative implementati
 
 h2. Credits
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+TBD
 
 h2. License
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+TBD
