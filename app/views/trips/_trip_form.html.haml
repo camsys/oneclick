@@ -85,9 +85,14 @@
     $('.combobox').combobox({
       force_match: false
     });
+    // Add a null start and stop marker to the places array
+    place_markers << null;
+    place_markers << null;
   });
+  
   // Other setup
   $('.dropdown-toggle').dropdown();
+  
   // Cache the alt places
   var from_places = eval("#{escape_javascript @trip_proxy.from_place_results.to_json}"); 
   var to_places = eval("#{escape_javascript @trip_proxy.to_place_results.to_json}");  
@@ -115,12 +120,14 @@
     var from_to = t.data('type');
     var name = t.data('value');
     var latlon = eval(t.data('latlon'));
-    var iconStyle = 'greenIcon';
+    var iconStyle = 'startIcon';
     var index = 0;    
     if (from_to == 'from') {
       $('#from_place_selected').val(id);
       $('#from_place_selected_type').val(3);
     } else {
+      iconStyle = 'stopIcon';
+      index = 1;
       $('#to_place_selected').val(id);
       $('#to_place_selected_type').val(3);
     }
@@ -215,8 +222,14 @@
 
     updater: function (obj) {
         var item = JSON.parse(obj);
+        
+        // create marker on the map
+        create_and_show_typeahead_marker(item, 'startIcon');
+                
+        // Update the UI
         $('#from_place_selected_type').attr('value', item.type);
         $('#from_place_selected').attr('value', item.id);
+
         return item.name;
     }  
   });  
@@ -278,20 +291,34 @@
 
     updater: function (obj) {
         var item = JSON.parse(obj);
+        
+        // create marker on the map
+        create_and_show_typeahead_marker(item, 'stopIcon');
+                
+        // Update the UI
         $('#to_place_selected_type').attr('value', item.type);
         $('#to_place_selected').attr('value', item.id);
+        
         return item.name;
     }  
   });  
   
   // Functions
+  function create_and_show_typeahead_marker(item, icon) {
+      // Create a marker for this selection and show it on the map
+      marker = createMarker(item.id, item.lat, item.lon, icon, item.name, item.addr, true);
+      place_markers.push(marker);
+      addMarkerToMap(marker);
+      selectMarker(marker);  
+  };
+  
   function create_or_update_marker(index, id, lat, lon, name, iconStyle) {
     // Remove the current marker from the map if it already exists
-    if (address_candidate_markers[index]) {
-      removeMarkerFromMap(address_candidate_markers[index]);
+    if (place_markers[index]) {
+      removeMarkerFromMap(place_markers[index]);
     }
     marker = create_place_marker(id, lat, lon, name, iconStyle);
-    address_candidate_markers[index] = marker;
+    place_markers[index] = marker;
     addMarkerToMap(marker);
     return marker;
   };

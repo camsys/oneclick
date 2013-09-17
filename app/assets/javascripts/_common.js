@@ -4,13 +4,13 @@ function remove_messages() {
 };
 
 // ajax sessions
-var address_candidate_markers = new Array();
+var place_markers = new Array();
 
-function clear_candidate_address_markers() {
-  for (var i = 0; i < address_candidate_markers.length; i++) {
-    removeMarkerFromMap(address_candidate_markers[i]);
+function clear_place_markers() {
+  for (var i = 0; i < place_markers.length; i++) {
+    removeMarkerFromMap(place_markers[i]);
   }
-  address_candidate_markers = new Array();	
+  place_markers = new Array();	
 };
 
 function click_to_nav(url) {
