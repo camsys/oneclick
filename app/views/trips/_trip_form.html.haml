@@ -224,7 +224,7 @@
         var item = JSON.parse(obj);
         
         // create marker on the map
-        create_and_show_typeahead_marker(item, 'startIcon');
+        create_or_update_typeahead_marker(item, 0, 'startIcon');
                 
         // Update the UI
         $('#from_place_selected_type').attr('value', item.type);
@@ -293,23 +293,20 @@
         var item = JSON.parse(obj);
         
         // create marker on the map
-        create_and_show_typeahead_marker(item, 'stopIcon');
+        create_or_update_typeahead_marker(item, 1, 'stopIcon');
                 
         // Update the UI
         $('#to_place_selected_type').attr('value', item.type);
         $('#to_place_selected').attr('value', item.id);
         
         return item.name;
-    }  
+      }  
   });  
   
   // Functions
-  function create_and_show_typeahead_marker(item, icon) {
-      // Create a marker for this selection and show it on the map
-      marker = createMarker(item.id, item.lat, item.lon, icon, item.name, item.addr, true);
-      place_markers.push(marker);
-      addMarkerToMap(marker);
-      selectMarker(marker);  
+  function create_or_update_typeahead_marker(item, index, iconStyle) {
+    marker = create_or_update_marker(index, item.id, item.lat, item.lon, item.name, iconStyle);
+    selectMarker(marker);
   };
   
   function create_or_update_marker(index, id, lat, lon, name, iconStyle) {
