@@ -88,21 +88,11 @@
     // Add a null start and stop marker to the places array
     place_markers.push(null);
     place_markers.push(null);
-    // Add the from place and to place map icons
-    //add_candidate_markers(from_places, true);
-    //add_candidate_markers(to_places, false);
-    // zoon the map to the marker extent
-    //if (from_places.length > 0 || to_places.length > 0) {
-    //  setMapToBounds(place_markers);
-    //}
   });
   
   // Other setup
   $('.dropdown-toggle').dropdown();
   
-  // Cache the alt places
-  //var from_places = eval("#{escape_javascript @trip_proxy.from_place_results.to_json}"); 
-  //var to_places = eval("#{escape_javascript @trip_proxy.to_place_results.to_json}");  
   
   // Listeners
 

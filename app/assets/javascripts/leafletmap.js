@@ -9,6 +9,7 @@ var LMmarkers = new Array();
 var LMcircles = new Array();
 var LMmap;
 var LMbounds;
+var LMcurrent_popup;
 
 var OPENSTREETMAP_URL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 var OPENSTREETMAP_ATTRIB = 'Map data © OpenStreetMap contributors';
@@ -39,6 +40,11 @@ init = function(mapId, options) {
 		var mapAttrib = CLOUDMADE_ATTRIB;		
 		L.tileLayer(mapUrl, {minZoom: options.min_zoom, maxZoom: options.max_zoom, attribution: mapAttrib, styleId: options.tile_style_id}).addTo(LMmap);
 	}	
+	// install a popup listener
+	LMmap.on('popupopen', function(event){
+		//alert('popup opened');
+		LMcurrent_popup = event.popup;
+	});
 };
 /**
  * Centers the map on a specified marker without changing the zoom level
@@ -301,3 +307,8 @@ function setMapToBounds(marker_array) {
 function setMapBounds(minLat, minLon, maxLat, maxLon) {
 	LMbounds = [[minLat, minLon], [maxLat, maxLon]];	
 };
+function closePopup() {
+	if (LMcurrent_popup) {
+		LMcurrent_popup._source.closePopup();
+	}
+}

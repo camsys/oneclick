@@ -16,7 +16,40 @@
 .row-fluid{:style => "margin-top:20px;"}
   .well.well-small
     .row-fluid
-      #trip_form.span6
+      #trip_form.span12
+        %i.icon.icon-map-marker.icon-2x.pull-right#map-icon
         = render 'trip_form'
       #trip_map.span6
         = render 'trip_map'  
+
+:javascript
+  // variables
+  var map_open = false;
+  // Document Ready
+  $(document).ready(function(){
+    // hide the trip map
+    $('#trip_map').hide();
+  });
+  
+  // event handlers
+  $('#map-icon').click(function(){
+    if (map_open) {
+      // user is closing the map
+      $('#trip_form').removeClass('span6');
+      $('#trip_form').addClass('span12');
+      $('#trip_map').hide();
+      $('#map-icon').removeClass('icon-play');
+      $('#map-icon').addClass('icon-map-marker');
+      map_open = false;
+    } else {
+      // user is opening the map
+      $('#trip_form').removeClass('span12');
+      $('#trip_form').addClass('span6');
+      $('#trip_map').show();
+      $('#map-icon').removeClass('icon-map-marker');
+      $('#map-icon').addClass('icon-play');
+      // make sure no popups are currently being show or they wil get messed up
+      closePopup();
+      map_open = true;
+    }    
+  }); 
