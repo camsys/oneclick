@@ -48,15 +48,16 @@ describe UserProfile do
       end
     end
     Rails.logger.info "---done each characteristics, get services---"
-    services = eh.get_accommodating_and_eligible_services_for_traveler(user_profile)
+    acc_and_eligible_services = eh.get_accommodating_and_eligible_services_for_traveler(user_profile)
     Rails.logger.info "done getting services"
-    Rails.logger.info services
-    services.count.should eq 5
+    Rails.logger.info acc_and_eligible_services.ai
+    Rails.logger.info "count: #{acc_and_eligible_services.ai}"
+    acc_and_eligible_services.count.should eq 5
     planned_trip = FactoryGirl.create(:trip_with_places)
     purpose = TripPurpose.find_by_name('Medical')
     planned_trip.trip.trip_purpose = purpose
-    services = eh.get_eligible_services_for_trip(planned_trip, services)
-    services.count.should eq 5
+    services2 = eh.get_eligible_services_for_trip(planned_trip, acc_and_eligible_services)
+    services2.count.should eq 5
   end
 
   it "It has 5 eligible services for the traveler and x for the trip" do
