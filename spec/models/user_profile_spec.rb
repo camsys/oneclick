@@ -35,10 +35,15 @@ describe UserProfile do
     characteristics = TravelerCharacteristic.all
     p characteristics
     characteristics.each do |c|
+      p c
       if c.code == 'date_of_birth'
-        UserTravelerCharacteristicsMap.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: '05/11/1905')
+        p 'date_of_birth'
+        utcm = UserTravelerCharacteristicsMap.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: '05/11/1905')
+        p utcm
       elsif c.code != 'age'
-        UserTravelerCharacteristicsMap.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: 'true')
+        p 'age'
+        utcm = UserTravelerCharacteristicsMap.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: 'true')
+        p utcm
       end
     end
     services = eh.get_accommodating_and_eligible_services_for_traveler(user_profile)

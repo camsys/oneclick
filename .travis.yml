@@ -12,4 +12,6 @@ script:
 notifications:
   email:
     - oneclickcs_github@googlegroups.com
-  irc: "irc.freenode.net#camsys"
+  irc: "irc.freenode.net#oneclick"
+after_script:
+  - cat "log/test.log"
