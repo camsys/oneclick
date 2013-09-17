@@ -30,7 +30,6 @@ describe OneclickGeocoder do
   it "is usable returning two values" do
     o_geocoder = OneclickGeocoder.new
     status, g_errors, result = o_geocoder.geocode 'a fake address'
-    puts g_errors.ai
     status.should be_true    
     result.should eq [{:id=>0, :name=>"1 Main St", :formatted_address=>"1 Main St, Atlanta, GA",
       :street_address=>"1 Main St, Atlanta, GA", :city=>"Atlanta", :state=>"GA", :zip=>"99999", :lat=>1.0, :lon=>2.0}]
