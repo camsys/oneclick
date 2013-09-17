@@ -34,18 +34,20 @@ describe UserProfile do
     eh = EligibilityHelpers.new
     characteristics = TravelerCharacteristic.all
     p characteristics
+    puts "---each characteristics---"
     characteristics.each do |c|
       p c
       if c.code == 'date_of_birth'
-        p 'date_of_birth'
+        p c.code
         utcm = UserTravelerCharacteristicsMap.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: '05/11/1905')
         p utcm
       elsif c.code != 'age'
-        p 'age'
+        p c.code
         utcm = UserTravelerCharacteristicsMap.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: 'true')
         p utcm
       end
     end
+    puts "---done each characteristics---"
     services = eh.get_accommodating_and_eligible_services_for_traveler(user_profile)
     p services
     services.count.should eq 5
