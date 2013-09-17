@@ -30,26 +30,26 @@ describe UserProfile do
 
   it "is eligible for all five seeded services" do
     user_profile = FactoryGirl.create(:user_profile)
-    p user_profile
+    Rails.logger.info user_profile.ai
     eh = EligibilityHelpers.new
     characteristics = TravelerCharacteristic.all
-    p characteristics
-    puts "---each characteristics---"
+    Rails.logger.info characteristics
+    Rails.logger.info "---each characteristics---"
     characteristics.each do |c|
-      p c
+      Rails.logger.info c
       if c.code == 'date_of_birth'
-        p c.code
+        Rails.logger.info c.code
         utcm = UserTravelerCharacteristicsMap.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: '05/11/1905')
-        p utcm
+        Rails.logger.info utcm
       elsif c.code != 'age'
-        p c.code
+        Rails.logger.info c.code
         utcm = UserTravelerCharacteristicsMap.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: 'true')
-        p utcm
+        Rails.logger.info utcm
       end
     end
-    puts "---done each characteristics---"
+    Rails.logger.info "---done each characteristics---"
     services = eh.get_accommodating_and_eligible_services_for_traveler(user_profile)
-    p services
+    Rails.logger.info services
     services.count.should eq 5
     planned_trip = FactoryGirl.create(:trip_with_places)
     purpose = TripPurpose.find_by_name('Medical')
