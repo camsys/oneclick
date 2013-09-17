@@ -96,9 +96,13 @@ class EligibilityHelpers
       return []
     end
 
+    Rails.logger.info "Get eligible services"
     eligible = get_eligible_services_for_traveler(user_profile, trip)
+    Rails.logger.info "Done get eligible services, get accommodating"
     accommodating = get_accommodating_services_for_traveler(user_profile)
-
+    Rails.logger.info "Done get accommodating"
+    Rails.logger.info eligible.ai
+    Rails.logger.info accommodating.ai
     eligible & accommodating
 
   end

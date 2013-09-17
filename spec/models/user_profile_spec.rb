@@ -36,19 +36,20 @@ describe UserProfile do
     Rails.logger.info characteristics
     Rails.logger.info "---each characteristics---"
     characteristics.each do |c|
-      Rails.logger.info c
+      Rails.logger.info "characteristic: #{c.code}"
       if c.code == 'date_of_birth'
-        Rails.logger.info c.code
+        Rails.logger.info 'before start or create'
         utcm = UserTravelerCharacteristicsMap.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: '05/11/1905')
-        Rails.logger.info utcm
+        Rails.logger.info 'after start or create'
       elsif c.code != 'age'
-        Rails.logger.info c.code
+        Rails.logger.info 'before start or create'
         utcm = UserTravelerCharacteristicsMap.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: 'true')
-        Rails.logger.info utcm
+        Rails.logger.info 'after start or create'
       end
     end
-    Rails.logger.info "---done each characteristics---"
+    Rails.logger.info "---done each characteristics, get services---"
     services = eh.get_accommodating_and_eligible_services_for_traveler(user_profile)
+    Rails.logger.info "done getting services"
     Rails.logger.info services
     services.count.should eq 5
     planned_trip = FactoryGirl.create(:trip_with_places)
