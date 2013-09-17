@@ -195,8 +195,15 @@ addCircles = function(data) {
 
 selectMarkerById = function(id) {
 	marker = findMarkerById(id);
-	//alert(marker);
-	selectMarker(marker);
+	if (marker) {
+	  	selectMarker(marker);		
+	}
+};
+selectMarkerByName = function(name) {
+	marker = findMarkerByName(name);
+	if (marker) {
+	  	selectMarker(marker);		
+	}
 };
 
 findMarkerById = function(id) {
@@ -206,24 +213,32 @@ findMarkerById = function(id) {
 		}
 	}
 };
+findMarkerByName = function(name) {
+	for (var i=0;i<LMmarkers.length;i++) {
+		if (LMmarkers[i].name === name) {
+			return LMmarkers[i];
+		}
+	}
+};
 
 /*
  * Creates a single marker and returns it. If the iconClass is set 
  * then the iconClass must be defined in the page
  */
-createMarker = function(id, lat, lng, iconClass, popupText, title, open) {
+createMarker = function(id, lat, lng, iconClass, popupText, name, open) {
 	
 	//alert(id + "," + lat + "," + lng + "," + popupText + "," + title + "," + open);
 	
 	var options = {};
-	if (title) {
+	if (name) {
 		options = {
-			"title" : title
+			"title" : name
 		};
 	}
 	var latlng = new L.LatLng(lat, lng); 
 	var marker = L.marker(latlng, options);
 	marker.id = id;
+	marker.name = name;
 	if (iconClass) {
 		//alert(iconClass);
 		marker.setIcon(eval(iconClass));	

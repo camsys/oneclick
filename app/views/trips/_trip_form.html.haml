@@ -86,17 +86,23 @@
       force_match: false
     });
     // Add a null start and stop marker to the places array
-    place_markers << null;
-    place_markers << null;
+    place_markers.push(null);
+    place_markers.push(null);
+    // Add the from place and to place map icons
+    //add_candidate_markers(from_places, true);
+    //add_candidate_markers(to_places, false);
+    // zoon the map to the marker extent
+    //if (from_places.length > 0 || to_places.length > 0) {
+    //  setMapToBounds(place_markers);
+    //}
   });
   
   // Other setup
   $('.dropdown-toggle').dropdown();
   
   // Cache the alt places
-  var from_places = eval("#{escape_javascript @trip_proxy.from_place_results.to_json}"); 
-  var to_places = eval("#{escape_javascript @trip_proxy.to_place_results.to_json}");  
-  
+  //var from_places = eval("#{escape_javascript @trip_proxy.from_place_results.to_json}"); 
+  //var to_places = eval("#{escape_javascript @trip_proxy.to_place_results.to_json}");  
   
   // Listeners
 
@@ -138,28 +144,40 @@
     $('#' + t.parents('ul').data('target')).val(name);
   });
 
-  // User has selected a an alternate address from the list
-  $('.address-select').bind('click', function(event) {
-    var t = $(event.target);
+  // User has selected an alternate address from the list
+  $('.address-select').click(function() {
+    var t = $(this);
     var id = t.data('id');
     var from_to = t.data('type');
-    var name = t.text().trim();
-    alert(t);
+    var addr = t.data('addr');
     var update_target;
     var hidden_val;
     var hidden_type;
+    var panel;
     if (from_to == 'from') {
       update_target = $('#from_address');
       hidden_val = $('#from_place_selected');
-      hidden_type = $('#from_place_selected_type');      
+      hidden_type = $('#from_place_selected_type');
+      panel = $('#from-list');      
     } else {
       update_target = $('#to_address');
       hidden_val = $('#to_place_selected');
       hidden_type = $('#to_place_selected_type');      
+      panel = $('#to-list');      
     }
     hidden_val.val(id);
     hidden_type.val(4);
-    update_target.val(name);
+    update_target.val(addr);
+    // Hide the panel
+    panel.hide();
+    
+    return false;
+  });
+  // User has selected an alternate address from the list
+  $('.address-select').hover(function() {
+    var addr = $(this).data('addr');
+    // Pan to the marker
+    selectMarkerByName(addr);
   });
 
   var from_timeout;
@@ -309,22 +327,41 @@
     selectMarker(marker);
   };
   
+  // Add a list of candidate markers to the map
+  function add_candidate_markers(arr, from_places) {
+    var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Z', 'Y', 'Z'];
+    var iconStyle;
+    if (from_places) {
+      iconStyle = 'startCandidate';
+    } else {
+      iconStyle = 'stopCandidate';
+    }
+    for (var i = 0; i < Math.min(arr.length, 26); i++) {
+      var icon = iconStyle + alphabet[i];
+      var marker = create_address_marker(arr[i], icon);
+      place_markers.push(marker);
+      addMarkerToMap(marker);
+    }
+  }
+  
   function create_or_update_marker(index, id, lat, lon, name, iconStyle) {
     // Remove the current marker from the map if it already exists
     if (place_markers[index]) {
       removeMarkerFromMap(place_markers[index]);
     }
-    marker = create_place_marker(id, lat, lon, name, iconStyle);
+    var marker = create_place_marker(id, lat, lon, name, iconStyle);
     place_markers[index] = marker;
     addMarkerToMap(marker);
     return marker;
   };
   
   function create_place_marker(id, lat, lon, name, iconStyle) {
-    marker = createMarker(id, lat, lon, iconStyle, name, name, true);
+    var marker = createMarker(id, lat, lon, iconStyle, name, name, true);
     return marker;  
   };
 
   function create_address_marker(addr, iconStyle) {
-    create_place_marker(addr.id, addr.lat, addr.lon, addr.formatted_address, iconStyle);
+    //alert(addr.formatted_address);
+    var marker = create_place_marker(addr.id, addr.lat, addr.lon, addr.formatted_address, iconStyle);
+    return marker;
   };  

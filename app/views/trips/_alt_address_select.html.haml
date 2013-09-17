@@ -1,10 +1,10 @@
 - unless results.empty?
-  .control-group
+  .control-group{:id => type + "-list"}
     .controls
       .candidate-list.span6.thumbnail{:style => "height:100px;overflow:auto;"}
         %ul.unstyled
           - results.each_with_index do |addr, index|
             %li
-              = link_to get_candidate_list_item(index, addr[:formatted_address]) , "#", :class => "address-select", :data => {:id => addr[:id], :type => type} 
+              = link_to get_candidate_list_item(index, addr[:formatted_address]) , "#", :class => "address-select", :data => {:id => addr[:id], :type => type, :addr => addr[:formatted_address]} 
 
   
