@@ -4,6 +4,19 @@ module ApplicationHelper
   
   include CsHelpers
 
+  ALPHABET = ('A'..'Z').to_a
+  
+  # Returns a formatted string for an alternate address that includes a A,B,C, etc. designator.
+  def get_candidate_list_item(index, addr)
+    html = "<strong class='candidate-label'>("
+    html << ALPHABET[index]
+    html << ")</strong>"
+    html << "<em class='candidate-address'>"
+    html << addr
+    html << "</em>"
+    return html.html_safe
+  end
+  
   # Defines an array of filter options for the MyTrips page. The filters combine date range filters
   # with trip purpose filters. To make sure we can identify which is which, we simply add a constant (100)
   # to the time filter id. This assumes thata there are no more than 99 trip purposes

@@ -27,6 +27,18 @@ class TripProxy < Proxy
     end
   end
 
+  def trip_datetime
+    begin
+      return DateTime.strptime([trip_date, trip_time, DateTime.current.zone].join(' '), '%m/%d/%Y %H:%M %p %z')
+    rescue Exception => e
+      Rails.logger.warn "write_trip_datetime #{trip_date} #{trip_time}"
+      Rails.logger.warn e.message
+      return nil
+    end
+  end
+
+protected
+
   def datetime_cannot_be_before_now
     return true if trip_datetime.nil?
     if trip_datetime < Date.today
@@ -55,15 +67,5 @@ class TripProxy < Proxy
       errors.add(:trip_time, I18n.translate(:time_wrong_format))
     end
   end
-        
-  def trip_datetime
-    begin
-      return DateTime.strptime([trip_date, trip_time, DateTime.current.zone].join(' '), '%m/%d/%Y %H:%M %p %z')
-    rescue Exception => e
-      Rails.logger.warn "write_trip_datetime #{trip_date} #{trip_time}"
-      Rails.logger.warn e.message
-      return nil
-    end
-  end
-      
+              
 end

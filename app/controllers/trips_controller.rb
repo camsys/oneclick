@@ -34,6 +34,9 @@ class TripsController < PlaceSearchingController
     @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
     @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
         
+    # Create makers for the map control
+    @markers = create_markers(@trip_proxy)
+
     respond_to do |format|
       format.html { render :action => 'edit'}
     end
@@ -52,6 +55,9 @@ class TripsController < PlaceSearchingController
     @trip_proxy.mode = MODE_EDIT
     # Set the trip proxy Id to the PK of the trip so we can update it
     @trip_proxy.id = @trip.id
+
+    # Create makers for the map control
+    @markers = create_markers(@trip_proxy)
         
     respond_to do |format|
       format.html
@@ -84,6 +90,9 @@ class TripsController < PlaceSearchingController
 
     @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
     @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
+
+    # Create makers for the map control
+    @markers = create_markers(@trip_proxy)
 
     respond_to do |format|
       format.html { render :action => 'new'}
@@ -168,6 +177,9 @@ class TripsController < PlaceSearchingController
 
     @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
     @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
+
+    # Create makers for the map control
+    @markers = create_markers(@trip_proxy)
     
     respond_to do |format|
       format.html # new.html.erb
@@ -193,6 +205,9 @@ class TripsController < PlaceSearchingController
     @trip_proxy = create_trip_proxy_from_form_params
     # save the id of the trip we are updating
     @trip_proxy.id = @trip.id
+
+    # Create makers for the map control
+    @markers = create_markers(@trip_proxy)
     
     # see if we can continue saving this trip                
     if @trip_proxy.errors.empty?
@@ -251,6 +266,9 @@ class TripsController < PlaceSearchingController
       @trip = create_trip(@trip_proxy)
     end
 
+    # Create makers for the map control
+    @markers = create_markers(@trip_proxy)
+
     respond_to do |format|
       if @trip
         if @trip.save
@@ -286,6 +304,29 @@ protected
         @trip = @traveler.trips.find(params[:id])
       end
     end
+  end
+
+  # Create an array of map markers suitable for the Leaflet plugin
+  def create_markers(trip_proxy)
+    markers = []
+    place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected.to_i, true)
+    markers << get_map_marker(place, 1, 'startIcon')
+    place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected.to_i, false)
+    markers << get_map_marker(place, 2, 'stopIcon')
+    return markers.to_json
+  end
+  
+  # create an place map marker
+  def get_map_marker(place, id, icon)
+    {
+      "id" => id,
+      "lat" => place[:lat],
+      "lng" => place[:lon],
+      "name" => place[:name],
+      "iconClass" => icon,
+      "title" => place[:name],
+      "description" => render_to_string(:partial => "/trips/place_popup", :locals => { :place => place })      
+    }
   end
 
 private
