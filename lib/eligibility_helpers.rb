@@ -109,9 +109,17 @@ class EligibilityHelpers
 
   def get_eligible_services_for_trip(planned_trip, services)
     eligible_by_location = eligible_by_location(planned_trip, services)
+    Rails.logger.info "location"
+    Rails.logger.info eligible_by_location.ai
     eligible_by_service_time = eligible_by_service_time(planned_trip, services)
+    Rails.logger.info "service_time"
+    Rails.logger.info eligible_by_service_time.ai
     eligible_by_advanced_notice = eligible_by_advanced_notice(planned_trip, services)
+    Rails.logger.info "advance notice"
+    Rails.logger.info eligible_by_advanced_notice.ai
     eligible_by_trip_purpose = eligible_by_trip_purpose(planned_trip, services)
+    Rails.logger.info "purpose"
+    Rails.logger.info eligible_by_trip_purpose.ai
 
     eligible_by_location & eligible_by_service_time & eligible_by_advanced_notice & eligible_by_trip_purpose
 
