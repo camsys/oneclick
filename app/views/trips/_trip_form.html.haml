@@ -14,7 +14,7 @@
         %ul.dropdown-menu{:data => {:target => 'from_address'}}
           - @traveler.places.each do |p|
             %li
-              %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.lat, p.lon], :type => "from"}}
+              %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.location.first, p.location.last], :type => "from"}}
                 = p.name
   - else
     = f.input :from_place, :class => "inline span12", :label => t(:from) do
@@ -31,7 +31,7 @@
         %ul.dropdown-menu{:data => {:target => 'to_address'}}
           - @traveler.places.each do |p|
             %li
-              %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.lat, p.lon], :type => "to"}}
+              %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.location.first, p.location.last], :type => "to"}}
                 = p.name
   - else    
     = f.input :to_place, :class => "inline span12", :label => t(:to) do

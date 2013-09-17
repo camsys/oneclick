@@ -20,7 +20,7 @@ class Place < ActiveRecord::Base
     return name
   end
   
-  # convienience method for geocodign places
+  # convienience method for geocoding places
   def geocode
     geocoder = OneclickGeocoder.new
     geocoder.geocode(raw_address)
