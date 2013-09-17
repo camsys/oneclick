@@ -1,6 +1,6 @@
 before_script:
   - mv config/database.yml.travis config/database.yml
-  - psql -c 'create database oneclick_test;' -U postgreslanguage: ruby
+  - psql -c 'create database oneclick_test;'
 rvm:
   - "1.9.3"
 bundler_args: --without development
