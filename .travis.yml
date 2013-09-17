@@ -1,3 +1,5 @@
+env:
+  - ENV_FROM_APPLICATION_YML=true
 before_script:
   - mv config/database.yml.travis config/database.yml
 rvm:
