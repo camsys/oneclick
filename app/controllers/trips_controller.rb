@@ -308,43 +308,14 @@ protected
 
   # Create an array of map markers suitable for the Leaflet plugin
   def create_markers(trip_proxy)
-    
-    alphabet = ('A'..'Z').to_a
-    
     markers = []
     place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected.to_i, true)
-    markers << get_map_marker(place, 0, 'startIcon')
+    markers << get_map_marker(place, 0, 'startIcon', 'start')
     place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected.to_i, false)
-    markers << get_map_marker(place, 1, 'stopIcon')
-    # add any candidate start addresses. These are geocoder result objects
-    index = 2
-    trip_proxy.from_place_results.each_with_index do |p, i|
-      iconStyle = 'startCandidate' + alphabet[i] 
-      markers << get_map_marker(p, index, iconStyle)
-      index += 1      
-    end
-    # add any candidate start addresses
-    trip_proxy.to_place_results.each_with_index do |p, i|
-      iconStyle = 'stopCandidate' + alphabet[i] 
-      markers << get_map_marker(p, index, iconStyle)
-      index += 1            
-    end
+    markers << get_map_marker(place, 1, 'stopIcon', 'stop')
     return markers.to_json
   end
   
-  # create an place map marker
-  def get_map_marker(place, id, icon)
-    {
-      "id" => id,
-      "lat" => place[:lat],
-      "lng" => place[:lon],
-      "name" => place[:name],
-      "iconClass" => icon,
-      "title" => place[:formatted_address],
-      "description" => render_to_string(:partial => "/trips/place_popup", :locals => { :place => place })      
-    }
-  end
-
 private
   
   # creates a trip_proxy object from form parameters

@@ -3,15 +3,6 @@ function remove_messages() {
 	$('.alert').alert('close');
 };
 
-// ajax sessions
-var place_markers = new Array();
-
-function clear_place_markers() {
-  for (var i = 0; i < place_markers.length; i++) {
-    removeMarkerFromMap(place_markers[i]);
-  }
-  place_markers = new Array();	
-};
 
 function click_to_nav(url) {
   document.location.href = url;

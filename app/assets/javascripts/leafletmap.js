@@ -23,7 +23,7 @@ var CLOUDMADE_ATTRIB = 'Map data &copy; <a href="http://openstreetmap.org">OpenS
  * Must be called first. Pass the Id of the div containing the map and any options
  * that should be passed to the map constructor
  */
-init = function(mapId, options) {
+function init(mapId, options) {
 	LMmap = L.map(mapId);
 	//alert(options.tile_provider);
 	//alert(options.min_zoom);
@@ -49,7 +49,7 @@ init = function(mapId, options) {
 /**
  * Centers the map on a specified marker without changing the zoom level
  */
-centerOnMarker = function(markerId) {
+function centerOnMarker(markerId) {
 	var marker = findMarkerById(markerId);
 	if (marker) {
 		var latlng = marker.getLatLng();
@@ -59,14 +59,14 @@ centerOnMarker = function(markerId) {
 /*
  * Pans the map to a gven coordinate without changing the zoom level
  */
-panTo = function(lat, lng) {
+function panTo(lat, lng) {
 	var latlng = new L.LatLng(lat, lng); 
 	LMmap.panTo(latlng);
 };
 /*
  * Called last after the map has been configured.
  */
-showMap = function() {
+function showMap() {
 	// Add the markers to the map
 	for (var i=0;i<LMmarkers.length;i++) {
 		LMmap.addLayer(LMmarkers[i]);
@@ -86,10 +86,10 @@ showMap = function() {
 /*
  * Replaces the markers on the map with a new set
  */
-replaceMarkers = function(data, updateMap) {
+function replaceMarkers(arr, updateMap) {
 	//alert('Replacing Markers');
 	removeMarkers();
-	addMarkers(data);
+	addMarkers(arr);
 	if (updateMap) {
 		//alert('Updating map');
 		showMap();
@@ -104,7 +104,7 @@ replaceMarkers = function(data, updateMap) {
  * Removes the markers from the map and re-draws them from
  * the markers array
  */
-refreshMarkers = function() {
+function refreshMarkers() {
 	for(var i=0;i<LMmarkers.length;i++){
 		LMmap.removeLayer(LMmarkers[i]);
 	}	
@@ -116,10 +116,10 @@ refreshMarkers = function() {
 /*
  * Replaces the circles on the map with a new set
  */
-replaceCircles = function(data, updateMap) {
+function replaceCircles(arr, updateMap) {
 	//alert('Replacing Circles');
 	removeCircles();
-	addCircles(data);
+	addCircles(arr);
 	if (updateMap) {
 		//alert('Updating map');
 		showMap();
@@ -132,7 +132,7 @@ replaceCircles = function(data, updateMap) {
 /*
  * 
  */
-removeMarkers = function() {
+function removeMarkers() {
 	// Loop through the markers and remove them from the map
 	//alert('Removing markers from map');
 	for(var i=0;i<LMmarkers.length;i++){
@@ -144,7 +144,7 @@ removeMarkers = function() {
 /*
  * 
  */
-removeCircles = function() {
+function removeCircles() {
 	// Loop through the markers and remove them from the map
 	for(var i=0;i<LMcircles.length;i++){
 		LMmap.removeLayer(LMcircles[i]);
@@ -155,11 +155,11 @@ removeCircles = function() {
  * Processes an array of json objects containing marker definitions and adds them
  * to the array of markers
  */
-addMarkers = function(data) {
+function addMarkers(arr) {
 	//alert('Adding ' + data.length + ' markers');
 	
-	for(var i=0;i<data.length;i++){
-        var obj = data[i];
+	for(var i=0;i < arr.length;i++){
+        var obj = arr[i];
 		if (obj.lat == null || obj.lng == null) {
 			continue;
 		}
@@ -176,18 +176,49 @@ addMarkers = function(data) {
 		LMmarkers.push(marker);
     }
 };
-addMarkerToMap = function(marker) {
+// Adds a marker to the map and optionally puts it in the cache
+function addMarkerToMap(marker, cache) {
+	if (cache) {
+	  	// Add this marker to the list of markers
+		LMmarkers.push(marker);		
+	}
 	LMmap.addLayer(marker);	
 };
-removeMarkerFromMap = function(marker) {
+// Removes a marker from the map and removes it from the cache
+// if it is stored there
+function removeMarkerFromMap(marker) {
+	markers = new Array();
+	for (var i = 0; i < LMmarkers.length; i++) {
+		if (marker == LMmarkers[i]) {
+			continue;
+		} else {
+			markers.push(LMmarkers[i]);
+		}
+	}
+	LMmarkers = markers;
 	LMmap.removeLayer(marker);	
 };
+// Removes markers with an id matching the input string
+function removeMatchingMarkers(match) {
+	markers = new Array();
+	for (var i = 0; i < LMmarkers.length; i++) {
+		var marker = LMmarkers[i];
+		var id = marker.id;
+		if (id.indexOf(match) !=-1) {
+			LMmap.removeLayer(marker);		
+			continue;
+		} else {
+			markers.push(marker);
+		}
+	}
+	LMmarkers = markers;
+}
 /*
  * 
  */
-addCircles = function(data) {
-	for(var i=0;i<data.length;i++) {
-        var obj = data[i];
+function addCircles(arr) {
+	for(var i=0;i<arr.length;i++) {
+        var obj = arr[i];
         var lat = obj.lat;
         var lng = obj.lng;
         var radius = obj.radius;
@@ -199,27 +230,26 @@ addCircles = function(data) {
 	}
 };
 
-selectMarkerById = function(id) {
+function selectMarkerById(id) {
 	marker = findMarkerById(id);
 	if (marker) {
 	  	selectMarker(marker);		
 	}
 };
-selectMarkerByName = function(name) {
+function selectMarkerByName(name) {
 	marker = findMarkerByName(name);
 	if (marker) {
 	  	selectMarker(marker);		
 	}
 };
-
-findMarkerById = function(id) {
+function findMarkerById(id) {
 	for (var i=0;i<LMmarkers.length;i++) {
 		if (LMmarkers[i].id == id) {
 			return LMmarkers[i];
 		}
 	}
 };
-findMarkerByName = function(name) {
+function findMarkerByName(name) {
 	for (var i=0;i<LMmarkers.length;i++) {
 		if (LMmarkers[i].name === name) {
 			return LMmarkers[i];
@@ -231,7 +261,7 @@ findMarkerByName = function(name) {
  * Creates a single marker and returns it. If the iconClass is set 
  * then the iconClass must be defined in the page
  */
-createMarker = function(id, lat, lng, iconClass, popupText, name, open) {
+function createMarker(id, lat, lng, iconClass, popupText, name, open) {
 	
 	//alert(id + "," + lat + "," + lng + "," + popupText + "," + title + "," + open);
 	
@@ -261,7 +291,7 @@ createMarker = function(id, lat, lng, iconClass, popupText, name, open) {
 /*
  * 
  */
-addCircle = function(lat, lng, radius, options) {
+function addCircle(lat, lng, radius, options) {
 	var latlng = new L.LatLng(lat, lng); 
 	var circle = L.circle(latlng, radius, options);
 
@@ -273,7 +303,7 @@ addCircle = function(lat, lng, radius, options) {
  * Selection function for a marker. This function opens the marker popup,
  * closes any other popups and pans the map so the marker is centered
  */
-selectMarker = function(marker) {
+function selectMarker(marker) {
 	if (marker) {
 		marker.openPopup();
 		LMmap.panTo(marker.getLatLng());	
@@ -283,7 +313,10 @@ selectMarker = function(marker) {
  * Calculate the maximum geographic extent of the marker set
  * Needs at least 2 markers
  */
-calcMapBounds = function(marker_array) {
+function calcMapBounds(marker_array) {
+	if (marker_array == null || marker_array.length < 1 || marker_array[0] == null) {
+		return nil;
+	}
 	var minLat = marker_array[0].getLatLng().lat;
 	var minLng = marker_array[0].getLatLng().lng;
 	var maxLat = marker_array[0].getLatLng().lat;
@@ -301,8 +334,13 @@ calcMapBounds = function(marker_array) {
 	return [[minLat, minLng], [maxLat, maxLng]];
 };
 function setMapToBounds(marker_array) {
-	LMbounds = calcMapBounds(marker_array);
-	LMmap.fitBounds(LMbounds);
+	if (marker_array == null) {
+		marker_array = LMmarkers;
+	}
+	if (marker_array.length > 0) {
+		LMbounds = calcMapBounds(marker_array);
+		LMmap.fitBounds(LMbounds);		
+	}
 };
 function setMapBounds(minLat, minLon, maxLat, maxLon) {
 	LMbounds = [[minLat, minLon], [maxLat, maxLon]];	

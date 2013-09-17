@@ -1,10 +1,71 @@
 - unless results.empty?
-  .control-group{:id => type + "-list"}
+  .control-group
     .controls
       .candidate-list.span6.thumbnail{:style => "height:100px;overflow:auto;"}
         %ul.unstyled
           - results.each_with_index do |addr, index|
             %li
-              = link_to get_candidate_list_item(index, addr[:formatted_address]) , "#", :class => "address-select", :data => {:id => addr[:id], :type => type, :addr => addr[:formatted_address]} 
+              = link_to "#", :class => "address-select", :data => {:id => addr["id"], :latlon => [addr["lat"], addr["lng"]], :type => type, :addr => addr["title"]} do
+                %img{:src => get_candidate_list_item_image(index, @target == "0")}
+                = addr["title"] 
 
+:javascript
+  // Add the candidate locations to the map
+  $('.address-select').each(function() {
+    var t = $(this);
+    var id = t.data('id');
+    var from_to = t.data('type');
+    var addr = t.data('addr');
+    var latlon = eval(t.data('latlon'));
+    add_candidate_marker(id, latlon[0], latlon[1], addr, from_to);     
+  });
+  // zoom the map to all the candidate locations
+  setMapToBounds();
   
+  // User has selected an alternate address from the list
+  $('.address-select').click(function() {
+    var t = $(this);
+    var id = t.data('id');
+    var from_to = t.data('type');
+    var addr = t.data('addr');
+    var latlon = eval(t.data('latlon'));
+    var update_target;
+    var hidden_val;
+    var hidden_type;
+    var panel;
+    var key = 'start';
+    var iconStyle = 'startIcon';
+    if (from_to == 'from') {
+      update_target = $('#from_address');
+      hidden_val = $('#from_place_selected');
+      hidden_type = $('#from_place_selected_type');
+      panel = $('#from_place_candidates');
+    } else {
+      update_target = $('#to_address');
+      hidden_val = $('#to_place_selected');
+      hidden_type = $('#to_place_selected_type');      
+      panel = $('#to_place_candidates');
+      key = 'stop';
+      iconStyle = 'stopIcon';
+    }
+    hidden_val.val(id);
+    hidden_type.val(4);
+    panel.hide();
+    update_target.val(addr);
+    
+    // Remove any candidate markers from the map
+    removeMatchingMarkers(key);
+    // replace the markers with the end point marker
+    marker = create_or_update_marker(key, latlon[0], latlon[1], addr, iconStyle);
+    setMapToBounds();
+    selectMarker(marker);
+    
+    return false;
+  });
+
+  // User has selected an alternate address from the list
+  $('.address-select').hover(function() {
+    var addr = $(this).data('addr');
+    // Pan to the marker
+    selectMarkerByName(addr);
+  });

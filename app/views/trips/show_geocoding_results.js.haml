@@ -1,0 +1,8 @@
+- if @target == "0"
+  removeMatchingMarkers('start_');
+  $('#from_place_candidates').html("#{escape_javascript(render :partial => 'alt_address_select', :locals => {:results => @matches, :type => "from"})}");
+  $('#from_place_candidates').show();
+- else
+  removeMatchingMarkers('stop_');
+  $('#to_place_candidates').html("#{escape_javascript(render :partial => 'alt_address_select', :locals => {:results => @matches, :type => "to"})}");
+  $('#to_place_candidates').show();

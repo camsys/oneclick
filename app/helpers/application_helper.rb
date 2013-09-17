@@ -7,14 +7,12 @@ module ApplicationHelper
   ALPHABET = ('A'..'Z').to_a
   
   # Returns a formatted string for an alternate address that includes a A,B,C, etc. designator.
-  def get_candidate_list_item(index, addr)
-    html = "<strong class='candidate-label'>("
-    html << ALPHABET[index]
-    html << ")</strong>"
-    html << "<em class='candidate-address'>"
-    html << addr
-    html << "</em>"
-    return html.html_safe
+  def get_candidate_list_item_image(index, is_from)
+    if is_from
+      return 'http://maps.google.com/mapfiles/marker_green' + ALPHABET[index] + ".png"
+    else
+      return 'http://maps.google.com/mapfiles/marker' + ALPHABET[index] + ".png"
+    end
   end
   
   # Defines an array of filter options for the MyTrips page. The filters combine date range filters

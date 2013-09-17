@@ -41,6 +41,7 @@ Oneclick::Application.routes.draw do
           post  'add_place'
           post  'change'
           get   'search'
+          post  'geocode'
         end
       end
       
@@ -50,6 +51,7 @@ Oneclick::Application.routes.draw do
           post  'set_traveler'
           get   'unset_traveler'
           get   'search'
+          post  'geocode'
         end
         member do
           get   'repeat'          

@@ -3,12 +3,52 @@ class PlaceSearchingController < TravelerAwareController
   # UI Constants  
   MAX_POIS_FOR_SEARCH = Rails.application.config.ui_search_poi_items
   ADDRESS_CACHE_EXPIRE_SECONDS = Rails.application.config.address_cache_expire_seconds
+
+  ALPHABET = ('A'..'Z').to_a
   
   # Constants for type of place user has selected  
   POI_TYPE = "1"
   CACHED_ADDRESS_TYPE = "2"
   PLACES_TYPE = "3"
   RAW_ADDRESS_TYPE = "4"
+
+  # Search for addresses, existing addresses, or POIs based on text string entered by the user
+  def geocode
+    
+    Rails.logger.info "GEOCODE"
+
+    # Populate the @traveler variable
+    get_traveler
+    
+    @query = params[:query]
+    @target = params[:target]
+    
+    if @target == "0"
+      icon_base = 'startCandidate'
+    else
+      icon_base = 'stopCandidate'
+    end
+    Rails.logger.info @query
+
+    geocoder = OneclickGeocoder.new
+    geocoder.geocode(@query)
+    
+    # This array will hold the list of candidate places
+    matches = []    
+    # We create a unique index for mapping etc for each place we find. Limited to 26 candidates as there are no letters past 'Z'
+    counter = 0    
+    geocoder.results.each do |addr|
+      icon_style = icon_base + ALPHABET[counter] 
+      matches << get_map_marker(addr, counter, icon_style, @target) unless counter > 25
+      counter += 1
+    end
+    
+    @matches = matches
+
+    respond_to do |format|
+      format.js { render "show_geocoding_results" }
+    end
+  end
   
   # Search for addresses, existing addresses, or POIs based on text string entered by the user
   def search
@@ -88,6 +128,19 @@ class PlaceSearchingController < TravelerAwareController
   end
   
 protected
+
+  # create an place map marker
+  def get_map_marker(place, id, icon, data = "")
+    {
+      "id" => id,
+      "lat" => place[:lat],
+      "lng" => place[:lon],
+      "name" => place[:name],
+      "iconClass" => icon,
+      "title" => place[:formatted_address],
+      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => place })
+    }
+  end
 
   # Cache an array of addresses
   def cache_addresses(key, addresses, expires_in = ADDRESS_CACHE_EXPIRE_SECONDS)

@@ -1,3 +1,7 @@
+= form_tag geocode_user_trips_path, :remote => true, :id => "query_form" do
+  = hidden_field_tag :query
+  = hidden_field_tag :target
+  
 = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "form-horizontal"} do |f| 
   = f.hidden_field :mode
   = f.hidden_field :from_place_selected, :id => "from_place_selected"
@@ -20,7 +24,8 @@
     = f.input :from_place, :class => "inline span12", :label => t(:from) do
       = f.text_field :from_place, :placeholder => t(:enter_address), :id => "from_address", :autocomplete => "off", :class => "ajax-typeahead", :data => {:link => search_user_trips_path, :provide => "typeahead"}
 
-  = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.from_place_results, :type => "from"} unless @trip_proxy.from_place.blank? || @trip_proxy.from_place_selected_type == "1"
+  #from_place_candidates
+    = render :partial => 'alt_address_select', :locals => {:results => [], :type => "from"}
 
   - if user_signed_in?
     = f.input :to_place, :wrapper => :append, :class => "inline span12", :label => t(:to) do
@@ -37,7 +42,8 @@
     = f.input :to_place, :class => "inline span12", :label => t(:to) do
       = f.text_field :to_place, :placeholder => t(:enter_address), :id => "to_address", :class => "ajax-typeahead", :autocomplete => "off", :data => {:link => search_user_trips_path, :provide => "typeahead"} 
 
-  = render :partial => 'alt_address_select', :locals => {:results => @trip_proxy.to_place_results, :type => "to"} unless @trip_proxy.to_place.blank? || @trip_proxy.to_place_selected_type == "1"
+  #to_place_candidates
+    = render :partial => 'alt_address_select', :locals => {:results => [], :type => "to"}
 
   = f.input :trip_date, :wrapper => :append, :label => t(:date) do
     #trip-date
@@ -85,9 +91,10 @@
     $('.combobox').combobox({
       force_match: false
     });
-    // Add a null start and stop marker to the places array
-    place_markers.push(null);
-    place_markers.push(null);
+    
+    // Hide what we don't need
+    $('#from_place_candidates').hide();
+    $('#to_place_candidates').hide();
   });
   
   // Other setup
@@ -99,7 +106,7 @@
   // Add change listeners on the text fields
   $("#from_address").bind("keyup input paste", function() {
     $('#from_place_selected').val("");
-    $('#from_place_selected_type').val("");    
+    $('#from_place_selected_type').val("");  
   });
   $("#to_address").bind("keyup input paste", function() {
     $('#to_place_selected').val("");
@@ -109,6 +116,29 @@
 
   // Actions
 
+  // user has lost focus on the from address
+  $('#from_address').blur(function() {
+    if ($('#from_place_selected').val() == "") {
+      // Do an ajax query to geocode the input text
+      var addr = $('#from_address').val();
+      //alert(addr);
+      $('#query').val(addr);
+      $('#target').val(0);
+      $('#query_form').submit();
+    }
+  });
+  // user has lost focus on the to address
+  $('#to_address').blur(function() {
+      if ($('#to_place_selected').val() == "") {
+      // Do an ajax query to geocode the input text
+      var addr = $('#to_address').val();
+      //alert(addr);
+      $('#query').val(addr);
+      $('#target').val(1);
+      $('#query_form').submit();
+    }
+  });
+  
   // User has selected a pre-defined place from the dropdown.
   $('.place-option').on('click', function(event) {
     var t = $(event.target);
@@ -117,58 +147,27 @@
     var name = t.data('value');
     var latlon = eval(t.data('latlon'));
     var iconStyle = 'startIcon';
-    var index = 0;    
+    var key;
     if (from_to == 'from') {
       $('#from_place_selected').val(id);
       $('#from_place_selected_type').val(3);
+      $('#from_place_candidates').hide();
+      key = 'start';
     } else {
       iconStyle = 'stopIcon';
-      index = 1;
       $('#to_place_selected').val(id);
       $('#to_place_selected_type').val(3);
+      $('#to_place_candidates').hide();
+      key = 'stop';
     }
-
-    var marker = create_or_update_marker(index, id, latlon[0], latlon[1], name, iconStyle);
+    removeMatchingMarkers(key);
+    var marker = create_or_update_marker(key, latlon[0], latlon[1], name, iconStyle);
+    setMapToBounds();
     selectMarker(marker);
     
     $('#' + t.parents('ul').data('target')).val(name);
   });
 
-  // User has selected an alternate address from the list
-  $('.address-select').click(function() {
-    var t = $(this);
-    var id = t.data('id');
-    var from_to = t.data('type');
-    var addr = t.data('addr');
-    var update_target;
-    var hidden_val;
-    var hidden_type;
-    var panel;
-    if (from_to == 'from') {
-      update_target = $('#from_address');
-      hidden_val = $('#from_place_selected');
-      hidden_type = $('#from_place_selected_type');
-      panel = $('#from-list');      
-    } else {
-      update_target = $('#to_address');
-      hidden_val = $('#to_place_selected');
-      hidden_type = $('#to_place_selected_type');      
-      panel = $('#to-list');      
-    }
-    hidden_val.val(id);
-    hidden_type.val(4);
-    update_target.val(addr);
-    // Hide the panel
-    panel.hide();
-    
-    return false;
-  });
-  // User has selected an alternate address from the list
-  $('.address-select').hover(function() {
-    var addr = $(this).data('addr');
-    // Pan to the marker
-    selectMarkerByName(addr);
-  });
 
   var from_timeout;
   var to_timeout;
@@ -232,7 +231,8 @@
         var item = JSON.parse(obj);
         
         // create marker on the map
-        create_or_update_typeahead_marker(item, 0, 'startIcon');
+        removeMatchingMarkers('start');
+        create_or_update_typeahead_marker(item, 'start', 'startIcon');
                 
         // Update the UI
         $('#from_place_selected_type').attr('value', item.type);
@@ -301,7 +301,8 @@
         var item = JSON.parse(obj);
         
         // create marker on the map
-        create_or_update_typeahead_marker(item, 1, 'stopIcon');
+        removeMatchingMarkers('stop');
+        create_or_update_typeahead_marker(item, 'stop', 'stopIcon');
                 
         // Update the UI
         $('#to_place_selected_type').attr('value', item.type);
@@ -312,46 +313,37 @@
   });  
   
   // Functions
-  function create_or_update_typeahead_marker(item, index, iconStyle) {
-    marker = create_or_update_marker(index, item.id, item.lat, item.lon, item.name, iconStyle);
+  function create_or_update_typeahead_marker(item, key, iconStyle) {
+    marker = create_or_update_marker(key, item.lat, item.lon, item.name, iconStyle);
+    setMapToBounds();
     selectMarker(marker);
+  };
+    
+  function create_or_update_marker(key, lat, lon, name, iconStyle) {
+    // See if we can find this existing marker
+    marker = findMarkerById(key);
+    if (marker) {
+      removeMarkerFromMap(marker);
+    }
+    var marker = createMarker(key, lat, lon, iconStyle, name, name, true);
+    addMarkerToMap(marker, true);
+    return marker;
   };
   
   // Add a list of candidate markers to the map
-  function add_candidate_markers(arr, from_places) {
-    var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Z', 'Y', 'Z'];
+  var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Z', 'Y', 'Z'];
+  function add_candidate_marker(index, lat, lon, addr, from_to) {
     var iconStyle;
-    if (from_places) {
+    var key_template;
+    if (from_to == 'from') {
       iconStyle = 'startCandidate';
+      key_template = 'start_candidate';
     } else {
       iconStyle = 'stopCandidate';
+      key_template = 'stop_candidate';
     }
-    for (var i = 0; i < Math.min(arr.length, 26); i++) {
-      var icon = iconStyle + alphabet[i];
-      var marker = create_address_marker(arr[i], icon);
-      place_markers.push(marker);
-      addMarkerToMap(marker);
-    }
+    var icon = iconStyle + alphabet[index];
+    var key = key_template + index;
+    var marker = createMarker(key, lat, lon, icon, addr, addr, false);
+    addMarkerToMap(marker, true);
   }
-  
-  function create_or_update_marker(index, id, lat, lon, name, iconStyle) {
-    // Remove the current marker from the map if it already exists
-    if (place_markers[index]) {
-      removeMarkerFromMap(place_markers[index]);
-    }
-    var marker = create_place_marker(id, lat, lon, name, iconStyle);
-    place_markers[index] = marker;
-    addMarkerToMap(marker);
-    return marker;
-  };
-  
-  function create_place_marker(id, lat, lon, name, iconStyle) {
-    var marker = createMarker(id, lat, lon, iconStyle, name, name, true);
-    return marker;  
-  };
-
-  function create_address_marker(addr, iconStyle) {
-    //alert(addr.formatted_address);
-    var marker = create_place_marker(addr.id, addr.lat, addr.lon, addr.formatted_address, iconStyle);
-    return marker;
-  };  
