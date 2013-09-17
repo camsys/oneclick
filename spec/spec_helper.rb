@@ -7,6 +7,8 @@ require 'rspec/autorun'
 require 'capybara/rspec'
 require 'awesome_print'
 require 'factory_girl_rails'
+require 'coveralls'
+Coveralls.wear!
 
 I18n.locale = :en
 
