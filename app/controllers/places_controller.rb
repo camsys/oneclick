@@ -73,6 +73,9 @@ class PlacesController < PlaceSearchingController
     respond_to do |format|
       if @place
         if @place.save
+          # we are done with this input so clear everything out
+          @place_proxy = nil
+          set_form_variables
           format.html { render action: "index", :notice => "Event was successfully created." }
           format.json { render :json => @place, :status => :created, :location => @place }
         else
@@ -93,9 +96,6 @@ protected
     @places = @traveler.places
     if @place_proxy.nil?
       @place_proxy = PlaceProxy.new 
-    end
-    if @alternative_places.nil?
-      @alternative_places = []
     end
     @markers = generate_map_markers(@places)
     

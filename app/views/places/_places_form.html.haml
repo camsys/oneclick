@@ -14,31 +14,23 @@
       .form-actions
         = button_tag :type => 'submit', :class => "btn btn-primary" do
           = "Save"
-      
-    #select_place
-      = render :partial => 'alt_address_select', :locals => {:results => [], :type => "place"}
+
+#select_place
+  = render :partial => 'alt_address_select', :locals => {:results => [], :type => "place"}
       
 .row-fluid
   .span12
     %h6= t(:found_x_places, :count => @places.count )
 
 .row-fluid
-  .thumbnail.span12{style: 'height: 375px; overflow-y: auto;'}
-    .span12
-      %table.table.table-hover#my_places
-        - @places.each_with_index do |place, index|
-          %tr{ :data => { :place_id => "my_place#{index}" } }
-            %td
-              %img{:src => get_candidate_list_item_image(index, "0")}
-            %td
-              %strong= place
-              %br
-              %em= place.address
-            %td.nowrap
-              = link_to "#", :class => "btn btn-mini btn-warning" do
-                %i.icon.icon-edit{:data => {:name => place.name, :id => place.id}}
-              = link_to user_place_path(@traveler, place), :class => "btn btn-mini btn-danger", :method => :delete, :remote => true, :confirm => "Are you sure ?" do
-                %i.icon.icon-remove
+  .places-list.span12.thumbnail{:style => "height:100px;overflow:auto;"}
+    %ul.unstyled
+      - @places.each_with_index do |place, index|
+        %li
+          = link_to "#", :class => "place-select", :data => {:id => "my_place#{index}", :index => index, :latlon => [place.location.first, place.location.last], :type => "place", :addr => place.address} do
+            %img{:src => get_candidate_list_item_image(index, "0")}
+            %strong= place
+            %em= place.address
                 
     
 :javascript  
@@ -55,11 +47,11 @@
   
   });
 
-  // Install a hover event handler for table rows. When hovering,
+  // Install a hover event handler for my places. When hovering,
   // the map icon is panned to and the popup shown
-  $('#my_places tr').hover(function() {
-    var elem_id = $(this).data('place-id');
-    selectMarkerById(elem_id);
+  $('.place-select').hover(function() {
+    var id = $(this).data('id');
+    selectMarkerById(id);
   });
 
   // Add a change listener on the text field

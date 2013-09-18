@@ -1,7 +1,11 @@
 - unless results.empty?
-  .control-group
-    .controls
-      .candidate-list.span6.thumbnail{:style => "height:100px;overflow:auto;"}
+  .row-fluid
+    .span12
+      %h6= t(:found_x_matches, :count => results.count )
+
+  .row-fluid
+    .span12
+      .candidate-list.thumbnail{:style => "height:100px;overflow:auto;"}
         %ul.unstyled
           - results.each_with_index do |addr, index|
             %li
