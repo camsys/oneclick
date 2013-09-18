@@ -30,12 +30,15 @@ class PlaceSearchingController < TravelerAwareController
     
     if @target == "0"
       icon_base = 'startCandidate'
+      key_base = 'start_candidate'
       cache_key = CACHED_FROM_ADDRESSES_KEY
     elsif @target == "1"
       icon_base = 'stopCandidate'
+      key_base = 'stop_candidate'
       cache_key = CACHED_TO_ADDRESSES_KEY
     else
       icon_base = "placeCandidate"
+      key_base = 'place_candidate'
       cache_key = CACHED_PLACES_ADDRESSES_KEY
     end
     Rails.logger.info @query
@@ -50,7 +53,7 @@ class PlaceSearchingController < TravelerAwareController
     # We create a unique index for mapping etc for each place we find. Limited to 26 candidates as there are no letters past 'Z'
     geocoder.results.each_with_index do |addr, index|
       icon_style = icon_base + ALPHABET[index] 
-      key = icon_base + index.to_s
+      key = key_base + index.to_s
       @matches << get_map_marker(addr, key, icon_style) unless index > 25
     end
     

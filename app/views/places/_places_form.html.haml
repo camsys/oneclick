@@ -171,13 +171,13 @@
   };
   // Add a list of candidate markers to the map
   var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Z', 'Y', 'Z'];
-  function add_candidate_marker(index, lat, lon, addr, from_to) {
+  function add_candidate_marker(index, lat, lon, addr, type) {
     var iconStyle;
     var key_template;
-    if (from_to == 'from') {
+    if (type == 'from') {
       iconStyle = 'startCandidate';
       key_template = 'start_candidate';
-    } else if (from_to == 'to') {
+    } else if (type == 'to') {
       iconStyle = 'stopCandidate';
       key_template = 'stop_candidate';
     } else {

@@ -5,8 +5,8 @@
         %ul.unstyled
           - results.each_with_index do |addr, index|
             %li
-              = link_to "#", :class => "address-select", :data => {:id => addr["id"], :latlon => [addr["lat"], addr["lng"]], :type => type, :addr => addr["title"]} do
-                %img{:src => get_candidate_list_item_image(index, @target)}
+              = link_to "#", :class => "address-select", :data => {:id => addr["id"], :index => index, :latlon => [addr["lat"], addr["lng"]], :type => type, :addr => addr["title"]} do
+                %img{:src => get_candidate_list_item_image(index, "2")}
                 = addr["title"] 
 
 :javascript  
@@ -14,10 +14,11 @@
   $('.address-select').each(function() {
     var t = $(this);
     var id = t.data('id');
-    var from_to = t.data('type');
+    var index = t.data('index');
+    var type = t.data('type');
     var addr = t.data('addr');
     var latlon = eval(t.data('latlon'));
-    add_candidate_marker(id, latlon[0], latlon[1], addr, from_to);     
+    add_candidate_marker(index, latlon[0], latlon[1], addr, type);     
   });
   // zoom the map to all the candidate locations
   setMapToBounds();
@@ -40,7 +41,7 @@
     panel.hide();
     update_target.val(addr);
    
-    var key = 'placeCandidate';
+    var key = 'place_candidate';
     var iconStyle = 'yellowIcon';
     
     // Remove any candidate markers from the map
