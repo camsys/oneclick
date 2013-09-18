@@ -7,6 +7,7 @@ class PlaceSearchingController < TravelerAwareController
   # Cache keys
   CACHED_FROM_ADDRESSES_KEY = 'CACHED_FROM_ADDRESSES_KEY'
   CACHED_TO_ADDRESSES_KEY = 'CACHED_TO_ADDRESSES_KEY'
+  CACHED_PLACES_ADDRESSES_KEY = 'CACHED_PLACES_ADDRESSES_KEY'
 
   ALPHABET = ('A'..'Z').to_a
   
@@ -29,31 +30,33 @@ class PlaceSearchingController < TravelerAwareController
     
     if @target == "0"
       icon_base = 'startCandidate'
-    else
+      cache_key = CACHED_FROM_ADDRESSES_KEY
+    elsif @target == "1"
       icon_base = 'stopCandidate'
+      cache_key = CACHED_TO_ADDRESSES_KEY
+    else
+      icon_base = "placeCandidate"
+      cache_key = CACHED_PLACES_ADDRESSES_KEY
     end
     Rails.logger.info @query
 
     geocoder = OneclickGeocoder.new
     geocoder.geocode(@query)
     # cache the results
-    cache_key = @target == "0" ? CACHED_FROM_ADDRESSES_KEY : CACHED_TO_ADDRESSES_KEY
     cache_addresses(cache_key, geocoder.results)
 
     # This array will hold the list of candidate places
-    matches = []    
+    @matches = []    
     # We create a unique index for mapping etc for each place we find. Limited to 26 candidates as there are no letters past 'Z'
-    counter = 0    
-    geocoder.results.each do |addr|
-      icon_style = icon_base + ALPHABET[counter] 
-      matches << get_map_marker(addr, counter, icon_style, @target) unless counter > 25
-      counter += 1
+    geocoder.results.each_with_index do |addr, index|
+      icon_style = icon_base + ALPHABET[index] 
+      key = icon_base + index.to_s
+      @matches << get_map_marker(addr, key, icon_style) unless index > 25
     end
     
-    @matches = matches
-
     respond_to do |format|
       format.js { render "show_geocoding_results" }
+      format.json { render :json => @matches, :status => :created, :location => @matches }
     end
   end
   
@@ -131,13 +134,24 @@ class PlaceSearchingController < TravelerAwareController
     
     respond_to do |format|
       format.js { render :json => matches.to_json }
+      format.json { render :json => matches.to_json }
     end
   end
   
 protected
 
+  def get_indexed_marker_icon(index, type)
+    if type == "0"
+      return 'startCandidate' + ALPHABET[index]
+    elsif type == "1"
+      return 'stopCandidate' + ALPHABET[index]
+    else
+      return 'placeCandidate' + ALPHABET[index]
+    end
+  end
+  
   # create an place map marker
-  def get_map_marker(place, id, icon, data = "")
+  def get_map_marker(place, id, icon)
     {
       "id" => id,
       "lat" => place[:lat],

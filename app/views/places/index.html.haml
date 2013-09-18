@@ -4,8 +4,43 @@
       %i.icon.icon-map-marker
       = is_traveler ? "#{@traveler.name}'s #{t(:places)}" : t(:my_places) 
 
-.row-fluid
-  #places_form.span4
-    = render 'places_form'
-  #places_map.span8
-    = render 'places_map'  
+.row-fluid{:style => "margin-top:20px;"}
+  .well.well-small
+    .row-fluid
+      #places_form.span12
+        %i.icon.icon-map-marker.icon-2x.pull-right#map-icon
+        = render 'places_form'
+      #places_map.span6
+        = render 'places_map'  
+
+:javascript
+  // variables
+  var map_open = false;
+  // Document Ready
+  $(document).ready(function(){
+    // hide the map
+    $('#places_map').hide();
+  });
+  
+  // event handlers
+  $('#map-icon').click(function(){
+    if (map_open) {
+      // user is closing the map
+      $('#places_form').removeClass('span6');
+      $('#places_form').addClass('span12');
+      $('#places_map').hide();
+      $('#map-icon').removeClass('icon-play');
+      $('#map-icon').addClass('icon-map-marker');
+      map_open = false;
+    } else {
+      // user is opening the map
+      $('#places_form').removeClass('span12');
+      $('#places_form').addClass('span6');
+      $('#places_map').show();
+      $('#map-icon').removeClass('icon-map-marker');
+      $('#map-icon').addClass('icon-play');
+      // make sure no popups are currently being show or they wil get messed up
+      closePopup();
+      map_open = true;
+    }    
+  }); 

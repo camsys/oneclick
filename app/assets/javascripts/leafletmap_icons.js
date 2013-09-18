@@ -76,3 +76,24 @@ var stopCandidateR = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfile
 var stopCandidateS = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/markerS.png'});
 var stopCandidateT = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/markerT.png'});
 
+var placeCandidateA = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowA.png'});
+var placeCandidateB = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowB.png'});
+var placeCandidateC = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowC.png'});
+var placeCandidateD = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowD.png'});
+var placeCandidateE = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowE.png'});
+var placeCandidateF = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowF.png'});
+var placeCandidateG = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowG.png'});
+var placeCandidateH = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowH.png'});
+var placeCandidateI = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowI.png'});
+var placeCandidateJ = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowJ.png'});
+var placeCandidateK = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowK.png'});
+var placeCandidateL = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowL.png'});
+var placeCandidateM = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowM.png'});
+var placeCandidateN = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowN.png'});
+var placeCandidateO = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowO.png'});
+var placeCandidateP = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowP.png'});
+var placeCandidateQ = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowQ.png'});
+var placeCandidateR = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowR.png'});
+var placeCandidateS = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowS.png'});
+var placeCandidateT = new baseRouteIcon({iconUrl: 'http://maps.google.com/mapfiles/marker_yellowT.png'});
+

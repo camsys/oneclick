@@ -1,28 +1,22 @@
+= form_tag geocode_user_places_path, :remote => true, :id => "query_form" do
+  = hidden_field_tag :query
+  = hidden_field_tag :target
+
 .row-fluid
-  .thumbnail.span12{style: 'overflow-y: auto;'}
-    .span12
-      = form_for @place_proxy, :url => user_places_path, :remote => true, :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
-        = f.text_field :raw_address, :placeholder => t(:enter_address), :id => "poi_typeahead", :class => "span12 ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}, :style => "margin-top:10px;margin-bottom: 10px;", :autocomplete => "off"
-        = f.hidden_field :place_type_id, :id => "place_type_field"
-        = f.hidden_field :place_id, :id => "place_id_field"
-        = button_tag :type => 'submit', :class => "btn btn-block btn-primary" do
-          %i.icon.icon-search
-      #select_place
-        - render 'address_select'
-
-
-.row-fluid#name_div
   .span12
-    %h6= t(:new_name)
-  .row-fluid
-    .thumbnail.span12
-      = form_for :place, :url => change_user_places_path(@traveler), :remote => true, :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
-        = f.hidden_field :id, :id => "id_field"
-        = f.text_field :name, :class => "span12", :style => "margin-bottom: 10px;", :id => "name_field"
-        = button_tag :type => 'submit', :class => "btn btn-block btn-success" do
-          %i.icon.icon-edit= t(:update)
-        = button_tag :type => 'button', :id => "cancel_edit_button", :class => "btn btn-block btn-warn" do
-          %i.icon.icon-remove= t(:cancel)
+    = simple_form_for @place_proxy, :url => user_places_path, :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
+      = f.input :raw_address, :class => "inline span12", :label => t(:enter_address) do
+        = f.text_field :raw_address, :placeholder => t(:enter_address), :id => "poi_typeahead", :autocomplete => "off", :class => "ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}
+      = f.input :name, :label => "Name", :placeholder => t(:name)
+      = f.hidden_field :place_type_id, :id => "place_type_field"
+      = f.hidden_field :place_id, :id => "place_id_field"
+
+      .form-actions
+        = button_tag :type => 'submit', :class => "btn btn-primary" do
+          = "Save"
+      
+    #select_place
+      = render :partial => 'alt_address_select', :locals => {:results => [], :type => "place"}
       
 .row-fluid
   .span12
@@ -32,8 +26,10 @@
   .thumbnail.span12{style: 'height: 375px; overflow-y: auto;'}
     .span12
       %table.table.table-hover#my_places
-        - @places.each do |place|
+        - @places.each_with_index do |place, index|
           %tr{ :data => { :place_id => place.id } }
+            %td
+              %img{:src => get_candidate_list_item_image(index, "0")}
             %td
               %strong= place
               %br
@@ -53,28 +49,17 @@
   
   // Hide the name editing div on page load
   $(document).ready(function(){
-    $('#name_div').hide();
+  
+    // Hide what we don't need
+    $('#select_place').hide();
+  
   });
-  // Prepopulate the editing form and show it if the user clicks an
-  // edit button in the table
-  $('a [data-name]').click(function(e) {
-    var id = $(this).data('id');
-    var name = $(this).data('name');
-    // Set the name and id into the form text area
-    $('#name_field').val(name);
-    $('#id_field').val(id);
-    // Show the editing div
-    $('#name_div').show();
-  });
+
   // Install a hover event handler for table rows. When hovering,
   // the map icon is panned to and the popup shown
   $('#my_places tr').click(function() {
     var elem_id = $(this).data('place-id');
     selectMarkerById(elem_id);
-  });
-  // Event handler to manage the cancel button when the user is in edit mode
-  $('#cancel_edit_button').click(function(e) {
-    $('#name_div').hide();
   });
 
   // Add a change listener on the text field
@@ -83,6 +68,18 @@
     $('#place_id_field').val("");    
   });
   
+   // user has lost focus on the address input
+  $('#poi_typeahead').blur(function() {
+    if ($('#place_type_field').val() == "") {
+      // Do an ajax query to geocode the input text
+      var addr = $('#poi_typeahead').val();
+      //alert(addr);
+      $('#query').val(addr);
+      $('#target').val(2);
+      $('#query_form').submit();
+    }
+  });
+ 
   var timeout;
   
   // Enable typeahead for the places forms
@@ -142,14 +139,53 @@
 
     updater: function (obj) {
         var item = JSON.parse(obj);
-        clear_candidate_address_markers();
-        marker = createMarker(item.id, item.lat, item.lon, 'purpleIcon', item.name, item.addr, true);
-        address_candidate_markers.push(marker);
-        addMarkerToMap(marker);
-        selectMarker(marker);
+        
+        // create marker on the map
+        removeMatchingMarkers('my_place_candidate');
+        create_or_update_typeahead_marker(item, 'my_place_candidate', 'purpleIcon');
+                
+        // Update the UI
         $('#place_type_field').attr('value', item.type);
         $('#place_id_field').attr('value', item.id);
+        
         return item.name;
     }  
   });  
   
+  // Functions
+  function create_or_update_typeahead_marker(item, key, iconStyle) {
+    marker = create_or_update_marker(key, item.lat, item.lon, item.name, iconStyle);
+    setMapToBounds();
+    selectMarker(marker);
+  };
+    
+  function create_or_update_marker(key, lat, lon, name, iconStyle) {
+    // See if we can find this existing marker
+    marker = findMarkerById(key);
+    if (marker) {
+      removeMarkerFromMap(marker);
+    }
+    var marker = createMarker(key, lat, lon, iconStyle, name, name, true);
+    addMarkerToMap(marker, true);
+    return marker;
+  };
+  // Add a list of candidate markers to the map
+  var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Z', 'Y', 'Z'];
+  function add_candidate_marker(index, lat, lon, addr, from_to) {
+    var iconStyle;
+    var key_template;
+    if (from_to == 'from') {
+      iconStyle = 'startCandidate';
+      key_template = 'start_candidate';
+    } else if (from_to == 'to') {
+      iconStyle = 'stopCandidate';
+      key_template = 'stop_candidate';
+    } else {
+      iconStyle = 'placeCandidate';
+      key_template = 'place_candidate';
+    }
+    var icon = iconStyle + alphabet[index];
+    var key = key_template + index;
+    var marker = createMarker(key, lat, lon, icon, addr, addr, false);
+    addMarkerToMap(marker, true);
+  }

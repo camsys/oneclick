@@ -3,8 +3,6 @@ class PlacesController < PlaceSearchingController
   # include the Leaflet helper into the controller and view
   helper LeafletHelper
   
-  CACHED_ADDRESSES_KEY = 'PLACES_ADDRESS_CACHE'
-
   # set the @traveler variable for actions that are not supported by teh super class controller
   before_filter :get_traveler, :only => [:index, :add_place, :add_poi, :create, :destroy, :change]
   # set the @place variable before any actions are invoked
@@ -15,48 +13,6 @@ class PlacesController < PlaceSearchingController
     # set the basic form variables
     set_form_variables
 
-  end
-
-  # Called when a user has selected a place
-  def add_place
-
-    # Get the array of addresses from the cache
-    addresses = get_cached_addresses(CACHED_ADDRESSES_KEY)
-    if addresses.nil?
-      # we cant get the addresses from the session so they might have posted this address using
-      # some other service.
-      flash[:alert] = t(:error_updating_addresses)
-      redirect_to user_places_path(@traveler)
-      return
-    end
-    # get the index of the cached address they selected
-    id = params[:ref].to_i
-    address = addresses[id]
-    # create the place from this address
-    place = Place.new
-    place.user = @traveler
-    place.creator = current_user
-    place.name = address[:name]
-    place.raw_address = address[:street_address]
-    place.address1 = address[:name]
-    place.city = address[:city]
-    place.state = address[:state]
-    place.zip = address[:zip]
-    place.lat = address[:lat]
-    place.lon = address[:lon]
-    place.active = true
-    if place.save
-      flash[:notice] = t(:place_added, :place_name => place.name)
-    else
-      flash[:alert] = t(:error_updating_addresses)
-    end
-
-    # set the basic form variables
-    set_form_variables
-
-    respond_to do |format|
-      format.js {render "update_form_and_map"}
-    end
   end
 
   # handles the user changing a place name from the form
@@ -102,70 +58,30 @@ class PlacesController < PlaceSearchingController
     end
   end
 
-  # the user has entered an address and we need to validate it
-  # by geocoding it. The results are returned to the view but are
-  # also cached so we don't need to re-geocode if they decide to use
-  # one
   def create
 
+    # inflate a place proxy object from the form params
     @place_proxy = PlaceProxy.new(params[:place_proxy])
-
-    # See if we got an existing address or POI
-    if ! @place_proxy.place_id.blank? && ! @place_proxy.place_type_id.blank?
-      # get this row from the database and add it to the table
-      if @place_proxy.place_type_id == POI_TYPE
-        poi = Poi.find(@place_proxy.place_id)
-        if poi
-          @place = Place.new
-          @place.user = @traveler
-          @place.creator = current_user
-          @place.poi = poi
-          @place.name = poi.name      
-          @place.active = true
-        end
-      elsif @place_proxy.place_type_id == CACHED_ADDRESS_TYPE
-        trip_place = @traveler.trip_places.find(@place_proxy.place_id)
-        if trip_place
-          @place = Place.new
-          @place.user = @traveler
-          @place.creator = current_user
-          @place.raw_address = trip_place.raw_address
-          @place.name = trip_place.raw_address 
-          @place.lat = trip_place.lat
-          @place.lon = trip_place.lon
-          @place.active = true
-        end
-      end
-      if @place.save
-        flash[:notice] = t(:place_added, :place_name => @place.name)
-      else
-        flash[:alert] = t(:error_updating_addresses)
-      end
-      # if we added to the places list we need to update the places form and the map
-      @place_proxy = PlaceProxy.new
-      view = "update_form_and_map"
-    else
-      # if we are geocoding just update the alt addresses panel
-      view = "show_geocoding_results"
-      # attempt to geocode this place
-      geocoder = OneclickGeocoder.new
-      geocoder.geocode(@place_proxy.raw_address)
-      
-      # cache the results in the session
-      if geocoder.has_errors
-        cache_addresses(CACHED_ADDRESSES_KEY, [])
-        @alternative_places = []
-      else
-        cache_addresses(CACHED_ADDRESSES_KEY, geocoder.results)
-        @alternative_places = geocoder.results
-      end
+       
+    if @place_proxy.valid?
+      @place = create_place(@place_proxy)
     end
 
     # set the basic form variables
     set_form_variables
 
     respond_to do |format|
-      format.js {render view}
+      if @place
+        if @place.save
+          format.html { render action: "index", :notice => "Event was successfully created." }
+          format.json { render :json => @place, :status => :created, :location => @place }
+        else
+          format.html { render action: "index" }
+          format.json { render json: @place_proxy.errors, status: :unprocessable_entity }
+        end
+      else
+        format.html { render action: "index", flash[:alert] => "One or more addresses need to be fixed." }
+      end
     end
   end
 
@@ -185,6 +101,50 @@ protected
     
   end
 
+  def create_place(place_proxy)
+
+    if place_proxy.place_type_id == POI_TYPE
+      # get this POI from the database and add it to the table
+      poi = Poi.find(place_proxy.place_id)
+      if poi
+        place = Place.new
+        place.user = @traveler
+        place.creator = current_user
+        place.poi = poi
+        place.name = place_proxy.name      
+        place.active = true
+      end
+    elsif place_proxy.place_type_id == CACHED_ADDRESS_TYPE
+      # get the trip place from the database
+      trip_place = @traveler.trip_places.find(place_proxy.place_id)
+      if trip_place
+        place = Place.new
+        place.user = @traveler
+        place.creator = current_user
+        place.raw_address = trip_place.raw_address
+        place.name = place_proxy.name 
+        place.lat = trip_place.lat
+        place.lon = trip_place.lon
+        place.active = true
+      end
+    elsif place_proxy.place_type_id == RAW_ADDRESS_TYPE
+      # the user entered a raw address and possibly selected an alternate from the list of possible
+      # addresses
+      addr = get_cached_addresses(CACHED_PLACES_ADDRESSES_KEY)[place_proxy.place_id.to_i]
+      if addr
+        place = Place.new
+        place.user = @traveler
+        place.creator = current_user
+        place.raw_address = addr[:formatted_address]
+        place.name = place_proxy.name 
+        place.lat = addr[:lat]
+        place.lon = addr[:lon]
+        place.active = true
+      end    
+    end
+    return place    
+  end
+  
   def get_place
     if user_signed_in?
       # limit places to those owned by the user unless an admin
@@ -200,25 +160,13 @@ protected
   # generate an array of map markers for use with the leaflet plugin
   #
   def generate_map_markers(places)
+
     objs = []
-    places.each do |place|
-      objs << get_map_marker(place)
+    places.each_with_index do |place, index|
+      place_id = 'my_place' + index.to_s
+      objs << get_map_marker(place, place_id, get_indexed_marker_icon(index, "0"))
     end
     return objs.to_json
-  end
-
-  # create an place map marker
-  def get_map_marker(place)
-    location = place.location
-    {
-      "id" => place.id,
-      "lat" => location.first,
-      "lng" => location.last,
-      "name" => place.name,
-      "iconClass" => 'greenIcon',
-      "title" => place.name,
-      "description" => render_to_string(:partial => "/places/place_popup", :locals => { :place => place })
-    }
   end
 
 end

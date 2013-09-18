@@ -7,11 +7,13 @@ module ApplicationHelper
   ALPHABET = ('A'..'Z').to_a
   
   # Returns a formatted string for an alternate address that includes a A,B,C, etc. designator.
-  def get_candidate_list_item_image(index, is_from)
-    if is_from
+  def get_candidate_list_item_image(index, type)
+    if type == "0"
       return 'http://maps.google.com/mapfiles/marker_green' + ALPHABET[index] + ".png"
-    else
+    elsif type == "1"
       return 'http://maps.google.com/mapfiles/marker' + ALPHABET[index] + ".png"
+    else
+      return 'http://maps.google.com/mapfiles/marker_yellow' + ALPHABET[index] + ".png"
     end
   end
   
