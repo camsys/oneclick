@@ -23,15 +23,24 @@
     %h6= t(:found_x_places, :count => @places.count )
 
 .row-fluid
-  .places-list.span12.thumbnail{:style => "height:100px;overflow:auto;"}
-    %ul.unstyled
+  .places-list.span12.thumbnail{:style => "height:200px;overflow:auto;"}
+    %ul.nav.nav-list
       - @places.each_with_index do |place, index|
-        %li
+        %li.place-list-item
           = link_to "#", :class => "place-select", :data => {:id => "my_place#{index}", :index => index, :latlon => [place.location.first, place.location.last], :type => "place", :addr => place.address} do
             %img{:src => get_candidate_list_item_image(index, "0")}
             %strong= place
             %em= place.address
-                
+
+.row-fluid
+  .span12
+    .well.well-small
+      = link_to "#", :class => "btn btn-warning", :id => "delete_button" do
+        %i.icon.icon-remove
+        Delete
+      = link_to "#", :class => "btn btn-primary", :id => "edit_button" do
+        %i.icon.icon-edit
+        Edit
     
 :javascript  
   // Configure UI behaviors
@@ -41,7 +50,10 @@
   
   // Hide the name editing div on page load
   $(document).ready(function(){
-  
+    // Disable the actions
+    $('#delete_button').attr('disabled', 'disabled');
+    $('#edit_button').attr('disabled', 'disabled');
+    
     // Hide what we don't need
     $('#select_place').hide();
   
@@ -52,6 +64,18 @@
   $('.place-select').hover(function() {
     var id = $(this).data('id');
     selectMarkerById(id);
+  });
+
+  // Install a click event handler for my places which enables the edit and delete buttons
+  $('.place-select').click(function() {
+    var id = $(this).data('id');
+    selectMarkerById(id);
+    // Add a highlight
+    $('.place-list-item').removeClass('active');
+    $(this).parent().addClass('active');
+    $('#delete_button').removeAttr('disabled');
+    $('#edit_button').removeAttr('disabled');
+
   });
 
   // Add a change listener on the text field

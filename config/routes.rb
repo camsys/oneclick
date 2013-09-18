@@ -36,9 +36,8 @@ Oneclick::Application.routes.draw do
       end
 
       # users have places
-      resources :places, :only => [:index, :new, :create, :destroy] do
+      resources :places, :only => [:index, :new, :create, :destroy, :edit, :update] do
         collection do
-          post  'change'
           get   'search'
           post  'geocode'
         end

@@ -6,7 +6,7 @@
   .row-fluid
     .span12
       .candidate-list.thumbnail{:style => "height:100px;overflow:auto;"}
-        %ul.unstyled
+        %ul.nav.nav-list
           - results.each_with_index do |addr, index|
             %li
               = link_to "#", :class => "address-select", :data => {:id => addr["id"], :index => index, :latlon => [addr["lat"], addr["lng"]], :type => type, :addr => addr["title"]} do

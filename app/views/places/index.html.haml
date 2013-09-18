@@ -8,7 +8,8 @@
   .well.well-small
     .row-fluid
       #places_form.span12
-        %i.icon.icon-map-marker.icon-2x.pull-right#map-icon
+        = link_to "#" do
+          %i.icon.icon-map-marker.icon-2x.pull-right#map-icon
         = render 'places_form'
       #places_map.span6
         = render 'places_map'  

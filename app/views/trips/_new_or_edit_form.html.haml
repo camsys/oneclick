@@ -17,7 +17,8 @@
   .well.well-small
     .row-fluid
       #trip_form.span12
-        %i.icon.icon-map-marker.icon-2x.pull-right#map-icon
+        = link_to "#" do      
+          %i.icon.icon-map-marker.icon-2x.pull-right#map-icon
         = render 'trip_form'
       #trip_map.span6
         = render 'trip_map'  
