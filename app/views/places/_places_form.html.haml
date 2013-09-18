@@ -27,7 +27,7 @@
     .span12
       %table.table.table-hover#my_places
         - @places.each_with_index do |place, index|
-          %tr{ :data => { :place_id => place.id } }
+          %tr{ :data => { :place_id => "my_place#{index}" } }
             %td
               %img{:src => get_candidate_list_item_image(index, "0")}
             %td
@@ -57,7 +57,7 @@
 
   // Install a hover event handler for table rows. When hovering,
   // the map icon is panned to and the popup shown
-  $('#my_places tr').click(function() {
+  $('#my_places tr').hover(function() {
     var elem_id = $(this).data('place-id');
     selectMarkerById(elem_id);
   });
