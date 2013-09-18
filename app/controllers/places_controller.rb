@@ -5,8 +5,6 @@ class PlacesController < PlaceSearchingController
   
   # set the @traveler variable for actions that are not supported by teh super class controller
   before_filter :get_traveler, :only => [:index, :add_place, :add_poi, :create, :destroy, :change]
-  # set the @place variable before any actions are invoked
-  before_filter :get_place, :only => [:show, :destroy, :edit]
   
   def index
     
@@ -40,7 +38,7 @@ class PlacesController < PlaceSearchingController
 
   # not really a destroy -- just hides the place by setting active = false
   def destroy
-    place = @traveler.places.find(params[:id])
+    place = @traveler.places.find(params[:delete_id])
     if place
       place.active = false
       if place.save
@@ -54,6 +52,8 @@ class PlacesController < PlaceSearchingController
     set_form_variables
 
     respond_to do |format|
+      format.html { redirect_to(user_places_path(@traveler)) } 
+      format.json { head :no_content }
       format.js {render "update_form_and_map"}
     end
   end
@@ -86,6 +86,12 @@ class PlacesController < PlaceSearchingController
         format.html { render action: "index", flash[:alert] => "One or more addresses need to be fixed." }
       end
     end
+  end
+  
+  # updates a place
+  def update
+
+    
   end
 
 
@@ -145,17 +151,6 @@ protected
     return place    
   end
   
-  def get_place
-    if user_signed_in?
-      # limit places to those owned by the user unless an admin
-      if current_user.has_role? :admin
-        @place = Place.find(params[:id])
-      else
-        @place = @traveler.places.find(params[:id])
-      end
-    end
-  end
-
   #
   # generate an array of map markers for use with the leaflet plugin
   #
