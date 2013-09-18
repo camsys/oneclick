@@ -4,6 +4,10 @@ class PlaceSearchingController < TravelerAwareController
   MAX_POIS_FOR_SEARCH = Rails.application.config.ui_search_poi_items
   ADDRESS_CACHE_EXPIRE_SECONDS = Rails.application.config.address_cache_expire_seconds
 
+  # Cache keys
+  CACHED_FROM_ADDRESSES_KEY = 'CACHED_FROM_ADDRESSES_KEY'
+  CACHED_TO_ADDRESSES_KEY = 'CACHED_TO_ADDRESSES_KEY'
+
   ALPHABET = ('A'..'Z').to_a
   
   # Constants for type of place user has selected  
@@ -32,7 +36,10 @@ class PlaceSearchingController < TravelerAwareController
 
     geocoder = OneclickGeocoder.new
     geocoder.geocode(@query)
-    
+    # cache the results
+    cache_key = @target == "0" ? CACHED_FROM_ADDRESSES_KEY : CACHED_TO_ADDRESSES_KEY
+    cache_addresses(cache_key, geocoder.results)
+
     # This array will hold the list of candidate places
     matches = []    
     # We create a unique index for mapping etc for each place we find. Limited to 26 candidates as there are no letters past 'Z'

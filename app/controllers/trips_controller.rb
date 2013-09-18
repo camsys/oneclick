@@ -4,8 +4,6 @@ class TripsController < PlaceSearchingController
   before_filter :get_trip, :only => [:show]
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
-  CACHED_FROM_ADDRESSES_KEY = 'CACHED_FROM_ADDRESSES_KEY'
-  CACHED_TO_ADDRESSES_KEY = 'CACHED_TO_ADDRESSES_KEY'
   
   # Format strings for the trip form date and time fields
   TRIP_DATE_FORMAT_STRING = "%m/%d/%Y"
@@ -262,7 +260,7 @@ class TripsController < PlaceSearchingController
     # inflate a trip proxy object from the form params
     @trip_proxy = create_trip_proxy_from_form_params
        
-    if @trip_proxy.errors.empty?
+    if @trip_proxy.valid?
       @trip = create_trip(@trip_proxy)
     end
 
@@ -324,48 +322,6 @@ private
     trip_proxy = TripProxy.new(params[:trip_proxy])
     trip_proxy.traveler = @traveler
   
-    # run the validations on the trip proxy. This checks that from place, to place and the 
-    # time/date options are all set
-    if trip_proxy.valid?
-      # See if the user has selected a poi or a pre-defined place. If not we need to geocode and check
-      # to see if multiple addresses are available. The alternate addresses are stored back in the proxy object
-      geocoder = OneclickGeocoder.new
-      if trip_proxy.from_place_selected.blank? || trip_proxy.from_place_selected_type.blank?
-        geocoder.geocode(trip_proxy.from_place)
-        # store the results in the cache
-        cache_addresses(CACHED_FROM_ADDRESSES_KEY, geocoder.results)
-        trip_proxy.from_place_results = geocoder.results
-        if trip_proxy.from_place_results.empty?
-          # the user needs to select one of the alternatives
-          trip_proxy.errors.add :from_place, "No matching places found."
-        elsif trip_proxy.from_place_results.count == 1
-          trip_proxy.from_place_selected = 0
-          trip_proxy.from_place_selected_type = PlacesController::RAW_ADDRESS_TYPE
-        else
-          # the user needs to select one of the alternatives
-          trip_proxy.errors.add :from_place, "Alternate candidate places found."
-        end
-      end
-      # Do the same for the to place
-      if trip_proxy.to_place_selected.blank? || trip_proxy.to_place_selected_type.blank?
-        geocoder.geocode(trip_proxy.to_place)
-        # store the results in the cache
-        cache_addresses(CACHED_TO_ADDRESSES_KEY, geocoder.results)
-        trip_proxy.to_place_results = geocoder.results
-        if trip_proxy.to_place_results.empty?
-          # the user needs to select one of the alternatives
-          trip_proxy.errors.add :to_place, "No matching places found."
-        elsif trip_proxy.to_place_results.count == 1
-          trip_proxy.to_place_selected = 0
-          trip_proxy.to_place_selected_type = PlacesController::RAW_ADDRESS_TYPE
-        else
-          # the user needs to select one of the alternatives
-          trip_proxy.errors.add :to_place, "Alternate candidate places found."
-        end
-      end
-      # end of validation test
-    end
-    
     return trip_proxy
         
   end

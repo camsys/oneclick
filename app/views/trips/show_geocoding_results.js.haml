@@ -2,7 +2,9 @@
   removeMatchingMarkers('start_');
   $('#from_place_candidates').html("#{escape_javascript(render :partial => 'alt_address_select', :locals => {:results => @matches, :type => "from"})}");
   $('#from_place_candidates').show();
+  setMapToBounds();
 - else
   removeMatchingMarkers('stop_');
   $('#to_place_candidates').html("#{escape_javascript(render :partial => 'alt_address_select', :locals => {:results => @matches, :type => "to"})}");
   $('#to_place_candidates').show();
+  setMapToBounds();

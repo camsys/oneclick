@@ -204,7 +204,7 @@ function removeMatchingMarkers(match) {
 	for (var i = 0; i < LMmarkers.length; i++) {
 		var marker = LMmarkers[i];
 		var id = marker.id;
-		if (id.indexOf(match) !=-1) {
+		if (id != null && id.indexOf(match) !=-1) {
 			LMmap.removeLayer(marker);		
 			continue;
 		} else {
