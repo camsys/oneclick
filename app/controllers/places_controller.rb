@@ -3,8 +3,8 @@ class PlacesController < PlaceSearchingController
   # include the Leaflet helper into the controller and view
   helper LeafletHelper
   
-  # set the @traveler variable for actions that are not supported by teh super class controller
-  before_filter :get_traveler, :only => [:index, :add_place, :add_poi, :create, :destroy, :change]
+  # set the @traveler variable for actions that are not supported by the super class controller
+  before_filter :get_traveler, :only => [:index, :edit, :create, :destroy, :update]
   
   def index
     
@@ -13,32 +13,22 @@ class PlacesController < PlaceSearchingController
 
   end
 
-  # handles the user changing a place name from the form
-  def change
-    place = @traveler.places.find(params[:place][:id])
-    if place
-      place.name = params[:place][:name]
-      if place.save
-        flash[:notice] = t(:address_book_updated)
-      else
-        flash[:alert] = t(:error_updating_addresses)
-      end
-    else
-      flash[:alert] = t(:error_updating_addresses)
-    end
-
-    # set the basic form variables
-    set_form_variables
-
-    respond_to do |format|
-      format.js {render "update_form_and_map"}
-    end
+  # Edit
+  def edit
+    place = @traveler.places.find(params[:edit_place_id])
+    @place_proxy = create_place_proxy(place)
+    @places = @traveler.places
+    @markers = generate_map_markers(@places)
     
+    respond_to do |format|
+      format.html {render "index"}
+    end
+        
   end
-
   # not really a destroy -- just hides the place by setting active = false
   def destroy
-    place = @traveler.places.find(params[:delete_id])
+    
+    place = @traveler.places.find(params[:delete_place_id])
     if place
       place.active = false
       if place.save
@@ -91,6 +81,34 @@ class PlacesController < PlaceSearchingController
   # updates a place
   def update
 
+    # inflate a place proxy object from the form params
+    @place_proxy = PlaceProxy.new(params[:place_proxy])
+    if @place_proxy.valid?
+      # get the place being updated
+      place = @traveler.places.find(params[:id])
+      if place
+        place.name = @place_proxy.name 
+      end
+      updated_place = true
+    else
+      updated_place = false
+    end
+    
+    respond_to do |format|
+      if updated_place # only created if the form validated and there are no geocoding errors
+        if place.save
+          place.reload
+          @place_proxy = create_place_proxy(place)
+          format.html { redirect_to user_places_path(@traveler) }
+          format.json { render json: place, status: :updated, location: place }
+        else
+          format.html { render action: "edit" }
+          format.json { render json: @place_proxy.errors, status: :unprocessable_entity }
+        end
+      else
+        format.html { render action: "edit", flash[:alert] => "One or more addresses need to be fixed." }
+      end
+    end
     
   end
 
@@ -107,6 +125,22 @@ protected
     
   end
 
+  def create_place_proxy(place)
+    place_proxy = PlaceProxy.new
+    place_proxy.raw_address = place.address
+    place_proxy.name = place.name
+    place_proxy.id = place.id
+    if place.poi
+      place_proxy.place_type_id = POI_TYPE
+      place_proxy.place_id = place.poi.id
+    else
+      place_proxy.place_type_id = RAW_ADDRESS_TYPE
+    end
+    
+    return place_proxy
+    
+  end
+  
   def create_place(place_proxy)
 
     if place_proxy.place_type_id == POI_TYPE
