@@ -121,11 +121,11 @@ class TripsController < PlaceSearchingController
     get_trip
     
     if @trip
-      @trip.trip_places.destroy_all
-      @trip.planned_trips.each do |pt|
-        pt.itineraries.destroy_all
+      @trip.planned_trips.each do |pt| 
+        pt.itineraries.each { |x| x.destroy }
       end
-      @trip.planned_trips.destroy_all
+      @trip.planned_trips.each { |x| x.destroy }
+      @trip.trip_places.each { |x| x.destroy}
       @trip.destroy
       message = "Trip was sucessfully removed."
     else
