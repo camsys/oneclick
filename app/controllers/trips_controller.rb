@@ -308,9 +308,9 @@ protected
   def create_markers(trip_proxy)
     markers = []
     place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected.to_i, true)
-    markers << get_map_marker(place, 'start', 'startIcon')
+    markers << get_addr_marker(place, 'start', 'startIcon')
     place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected.to_i, false)
-    markers << get_map_marker(place, 'stop', 'stopIcon')
+    markers << get_addr_marker(place, 'stop', 'stopIcon')
     return markers.to_json
   end
   

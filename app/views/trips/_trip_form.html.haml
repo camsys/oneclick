@@ -165,7 +165,7 @@
       key = 'stop';
     }
     removeMatchingMarkers(key);
-    var marker = create_or_update_marker(key, latlon[0], latlon[1], name, iconStyle);
+    var marker = create_or_update_marker(key, latlon[0], latlon[1], name, name, iconStyle);
     setMapToBounds();
     selectMarker(marker);
     
@@ -195,7 +195,7 @@
                   success: function(result) {
     
                     var resultList = result.map(function (item) {
-                        var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, lat: item.lat, lon: item.lon, addr: item.address };
+                        var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, desc: item.description, lat: item.lat, lon: item.lon, addr: item.address };
                         return JSON.stringify(aItem);
                     });
     
@@ -265,7 +265,7 @@
                   success: function(result) {
     
                     var resultList = result.map(function (item) {
-                        var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, lat: item.lat, lon: item.lon, addr: item.address };
+                        var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, desc: item.description, lat: item.lat, lon: item.lon, addr: item.address };
                         return JSON.stringify(aItem);
                     });
     
@@ -318,36 +318,39 @@
   
   // Functions
   function create_or_update_typeahead_marker(item, key, iconStyle) {
-    marker = create_or_update_marker(key, item.lat, item.lon, item.name, iconStyle);
+    marker = create_or_update_marker(key, item.lat, item.lon, item.name, item.desc, iconStyle);
     setMapToBounds();
     selectMarker(marker);
   };
     
-  function create_or_update_marker(key, lat, lon, name, iconStyle) {
+  function create_or_update_marker(key, lat, lon, name, desc, iconStyle) {
     // See if we can find this existing marker
     marker = findMarkerById(key);
     if (marker) {
       removeMarkerFromMap(marker);
     }
-    var marker = createMarker(key, lat, lon, iconStyle, name, name, true);
+    var marker = createMarker(key, lat, lon, iconStyle, desc, name, true);
     addMarkerToMap(marker, true);
     return marker;
   };
-  
   // Add a list of candidate markers to the map
   var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Z', 'Y', 'Z'];
-  function add_candidate_marker(index, lat, lon, addr, from_to) {
+  function add_candidate_marker(index, lat, lon, addr, desc, type) {
     var iconStyle;
     var key_template;
-    if (from_to == 'from') {
+    if (type == 'from') {
       iconStyle = 'startCandidate';
       key_template = 'start_candidate';
-    } else {
+    } else if (type == 'to') {
       iconStyle = 'stopCandidate';
       key_template = 'stop_candidate';
+    } else {
+      iconStyle = 'placeCandidate';
+      key_template = 'place_candidate';
     }
     var icon = iconStyle + alphabet[index];
     var key = key_template + index;
-    var marker = createMarker(key, lat, lon, icon, addr, addr, false);
+    var marker = createMarker(key, lat, lon, icon, desc, addr, false);
     addMarkerToMap(marker, true);
   }
+    

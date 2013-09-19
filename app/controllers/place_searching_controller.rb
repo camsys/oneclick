@@ -82,7 +82,7 @@ class PlaceSearchingController < TravelerAwareController
     
     # First search for matching names in my places
     rel = Place.arel_table[:name].matches(query_str)
-    places = Place.where(rel)
+    places = Place.active.where(rel)
     Rails.logger.info places.ai
     places.each do |place|
       matches << {
@@ -92,7 +92,8 @@ class PlaceSearchingController < TravelerAwareController
         "id" => place.id,
         "lat" => place.location.first,
         "lon" => place.location.last,
-        "address" => place.address
+        "address" => place.address,
+        "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => place.name, :address => place.address} })
       }
       counter += 1
     end
@@ -111,7 +112,8 @@ class PlaceSearchingController < TravelerAwareController
           "id" => tp.id,
           "lat" => tp.lat,
           "lon" => tp.lon,
-          "address" => tp.raw_address
+          "address" => tp.raw_address,
+          "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => tp.name, :address => tp.raw_address} })
         }
         counter += 1
         old_addr = tp.raw_address
@@ -130,7 +132,8 @@ class PlaceSearchingController < TravelerAwareController
         "id" => poi.id,
         "lat" => poi.lat,
         "lon" => poi.lon,
-        "address" => poi.address
+        "address" => poi.address,
+        "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => poi.name, :address => poi.address} })
       }
       counter += 1
     end
@@ -167,14 +170,15 @@ protected
   end
   # create a map marker for a geocoded address
   def get_addr_marker(addr, id, icon)
+    address = addr[:formatted_address].nil? ? addr[:address] : addr[:formatted_address]
     {
       "id" => id,
       "lat" => addr[:lat],
       "lng" => addr[:lon],
       "name" => addr[:name],
       "iconClass" => icon,
-      "title" => addr[:formatted_address],
-      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => addr[:name], :address => addr[:formatted_address]} })
+      "title" =>  address,
+      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => addr[:name], :address => address} })
     }
   end
 
