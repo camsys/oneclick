@@ -54,20 +54,17 @@ class PlacesController < PlaceSearchingController
     @place_proxy = PlaceProxy.new(params[:place_proxy])
        
     if @place_proxy.valid?
-      @place = create_place(@place_proxy)
+      place = create_place(@place_proxy)
     end
 
     # set the basic form variables
     set_form_variables
 
     respond_to do |format|
-      if @place
-        if @place.save
-          # we are done with this input so clear everything out
-          @place_proxy = nil
-          set_form_variables
-          format.html { render action: "index", :notice => "Event was successfully created." }
-          format.json { render :json => @place, :status => :created, :location => @place }
+      if place
+        if place.save
+          format.html { redirect_to user_places_path(@traveler), :notice => t(:address_book_updated)  }          
+          format.json { render :json => place, :status => :created, :location => place }
         else
           format.html { render action: "index" }
           format.json { render json: @place_proxy.errors, status: :unprocessable_entity }
@@ -125,11 +122,11 @@ protected
     
   end
 
+  # Creates a place proxy from a place. Assumes that if the place is not a POI it
+  # came from a raw address
   def create_place_proxy(place)
-    place_proxy = PlaceProxy.new
-    place_proxy.raw_address = place.address
-    place_proxy.name = place.name
-    place_proxy.id = place.id
+    
+    place_proxy = PlaceProxy.new({:id => place.id, :name => place.name, :raw_address => place.address})
     if place.poi
       place_proxy.place_type_id = POI_TYPE
       place_proxy.place_id = place.poi.id
@@ -140,7 +137,8 @@ protected
     return place_proxy
     
   end
-  
+
+  # Creates a place from a proxy.   
   def create_place(place_proxy)
 
     if place_proxy.place_type_id == POI_TYPE
