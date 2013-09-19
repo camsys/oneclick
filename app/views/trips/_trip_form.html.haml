@@ -59,7 +59,7 @@
       %span.add-on
         %i.icon-time
 
-  = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose)
+  = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => TripPurpose.find_by_name('General Purpose').id
               
   .form-actions
     = button_tag :type => 'submit', :class => "btn btn-primary" do
