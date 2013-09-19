@@ -54,7 +54,7 @@ class PlaceSearchingController < TravelerAwareController
     geocoder.results.each_with_index do |addr, index|
       icon_style = icon_base + ALPHABET[index] 
       key = key_base + index.to_s
-      @matches << get_map_marker(addr, key, icon_style) unless index > 25
+      @matches << get_addr_marker(addr, key, icon_style) unless index > 25
     end
     
     respond_to do |format|
@@ -153,16 +153,28 @@ protected
     end
   end
   
-  # create an place map marker
+  # create a map marker for a place
   def get_map_marker(place, id, icon)
     {
       "id" => id,
-      "lat" => place[:lat],
-      "lng" => place[:lon],
-      "name" => place[:name],
+      "lat" => place.location.first,
+      "lng" => place.location.last,
+      "name" => place.name,
       "iconClass" => icon,
-      "title" => place[:formatted_address],
-      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => place })
+      "title" => place.address,
+      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => place.name, :address => place.address} })
+    }
+  end
+  # create a map marker for a geocoded address
+  def get_addr_marker(addr, id, icon)
+    {
+      "id" => id,
+      "lat" => addr[:lat],
+      "lng" => addr[:lon],
+      "name" => addr[:name],
+      "iconClass" => icon,
+      "title" => addr[:formatted_address],
+      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => addr[:name], :address => addr[:formatted_address]} })
     }
   end
 

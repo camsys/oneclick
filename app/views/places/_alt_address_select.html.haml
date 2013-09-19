@@ -9,7 +9,7 @@
         %ul.nav.nav-list
           - results.each_with_index do |addr, index|
             %li
-              = link_to "#", :class => "address-select", :data => {:id => addr["id"], :index => index, :latlon => [addr["lat"], addr["lng"]], :type => type, :addr => addr["title"]} do
+              = link_to "#", :class => "address-select", :data => {:id => addr["id"], :index => index, :latlon => [addr["lat"], addr["lng"]], :desc => addr["description"], :type => type, :addr => addr["title"]} do
                 %img{:src => get_candidate_list_item_image(index, "2")}
                 = addr["title"] 
 
@@ -21,29 +21,25 @@
     var index = t.data('index');
     var type = t.data('type');
     var addr = t.data('addr');
+    var desc = t.data('desc');
     var latlon = eval(t.data('latlon'));
-    add_candidate_marker(index, latlon[0], latlon[1], addr, type);     
+    add_candidate_marker(index, latlon[0], latlon[1], addr, desc, type);     
   });
-  // zoom the map to all the candidate locations
-  setMapToBounds();
   
   // User has selected an alternate address from the list
   $('.address-select').click(function() {
     var t = $(this);
     var id = t.data('id');
+    var index = t.data('index');
     var from_to = t.data('type');
     var addr = t.data('addr');
+    var desc = t.data('desc');
     var latlon = eval(t.data('latlon'));
 
-    var update_target = $('#poi_typeahead');
-    var hidden_val = $('#place_id_field');
-    var hidden_type = $('#place_type_field');
-    var panel = $('#select_place');
-
-    hidden_val.val(id);
-    hidden_type.val(4);
-    panel.hide();
-    update_target.val(addr);
+    $('#poi_typeahead').val(addr);
+    $('#place_id_field').val(index);
+    $('#place_type_field').val(4);
+    $('#select_place').hide();
    
     var key = 'place_candidate';
     var iconStyle = 'yellowIcon';
@@ -51,7 +47,7 @@
     // Remove any candidate markers from the map
     removeMatchingMarkers(key);
     // replace the markers with the end point marker
-    marker = create_or_update_marker(key, latlon[0], latlon[1], addr, iconStyle);
+    marker = create_or_update_marker(key, latlon[0], latlon[1], addr, desc, iconStyle);
     setMapToBounds();
     selectMarker(marker);
    

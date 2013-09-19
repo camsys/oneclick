@@ -36,7 +36,7 @@
         %li.place-list-item
           = link_to "#", :class => "place-select", :data => {:id => "my_place#{index}", :index => index, :place_id => place.id, :op => place.can_delete, :latlon => [place.location.first, place.location.last], :name => place.to_s, :type => "place", :addr => place.address} do
             %img{:src => get_candidate_list_item_image(index, "0")}
-            %strong= place
+            %strong= place.name
             %em= place.address
 
 .row-fluid
@@ -216,24 +216,24 @@
   
   // Functions
   function create_or_update_typeahead_marker(item, key, iconStyle) {
-    marker = create_or_update_marker(key, item.lat, item.lon, item.name, iconStyle);
+    marker = create_or_update_marker(key, item.lat, item.lon, item.name, item.name, iconStyle);
     setMapToBounds();
     selectMarker(marker);
   };
     
-  function create_or_update_marker(key, lat, lon, name, iconStyle) {
+  function create_or_update_marker(key, lat, lon, name, desc, iconStyle) {
     // See if we can find this existing marker
     marker = findMarkerById(key);
     if (marker) {
       removeMarkerFromMap(marker);
     }
-    var marker = createMarker(key, lat, lon, iconStyle, name, name, true);
+    var marker = createMarker(key, lat, lon, iconStyle, desc, name, true);
     addMarkerToMap(marker, true);
     return marker;
   };
   // Add a list of candidate markers to the map
   var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Z', 'Y', 'Z'];
-  function add_candidate_marker(index, lat, lon, addr, type) {
+  function add_candidate_marker(index, lat, lon, addr, desc, type) {
     var iconStyle;
     var key_template;
     if (type == 'from') {
@@ -248,6 +248,6 @@
     }
     var icon = iconStyle + alphabet[index];
     var key = key_template + index;
-    var marker = createMarker(key, lat, lon, icon, addr, addr, false);
+    var marker = createMarker(key, lat, lon, icon, desc, addr, false);
     addMarkerToMap(marker, true);
   }
