@@ -72,6 +72,7 @@
   var typeahead_delay = +"#{Rails.application.config.ui_typeahead_delay}"
   var typeahead_min_chars = +"#{Rails.application.config.ui_typeahead_min_chars}"
   var typeahead_list_length = +"#{Rails.application.config.ui_typeahead_list_length}"
+  var geocoder_min_chars = +"#{Rails.application.config.ui_min_geocode_chars}"
   
   $.fn.datepicker.Calendar.setDefaultLocale("#{I18n.locale}");
   
@@ -120,22 +121,25 @@
   $('#from_address').blur(function() {
     if ($('#from_place_selected').val() == "") {
       // Do an ajax query to geocode the input text
-      var addr = $('#from_address').val();
-      //alert(addr);
-      $('#query').val(addr);
-      $('#target').val(0);
-      $('#query_form').submit();
+      var addr = $('#from_address').val().trim();
+      if (addr.length >= geocoder_min_chars) {
+        $('#query').val(addr);
+        $('#target').val(0);
+        $('#query_form').submit();
+      }
     }
   });
+  
   // user has lost focus on the to address
   $('#to_address').blur(function() {
       if ($('#to_place_selected').val() == "") {
       // Do an ajax query to geocode the input text
-      var addr = $('#to_address').val();
-      //alert(addr);
-      $('#query').val(addr);
-      $('#target').val(1);
-      $('#query_form').submit();
+      var addr = $('#to_address').val().trim();
+      if (addr.length >= geocoder_min_chars) {
+        $('#query').val(addr);
+        $('#target').val(1);
+        $('#query_form').submit();
+      }
     }
   });
   
