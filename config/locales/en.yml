@@ -143,6 +143,7 @@ en:
   possible_rideshares2: "rideshares."
   view_details1: "View details"
   view_details2: "for more."
+  confirm_remove_trip: 'Are you sure you want to remove this trip?'
 
   # My Places form
   found_x_places: {
