@@ -155,7 +155,8 @@ es:
   place_added:      '%{place_name} ha sido agregado a tu libreta de direcciones. *19*'
   error_updating_addresses:   'Si produjo un error al acutalizar la libreta de direcciones. *20*'
   address_book_updated: 'Su libreta de direcciones se ha acualizado. *21*'
-
+  confirm_remove_place: 'Esta seguro que desea eliminar %{place_name} de su libreta de direcciones? *22*'
+  
   # new ones
   buddy_request_sent: "¡Solicitud de amigo enviada!"
   buddy_removed: "Amigo eliminado."
