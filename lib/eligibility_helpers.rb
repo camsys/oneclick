@@ -154,9 +154,15 @@ class EligibilityHelpers
     services.each do |service|
       schedules = Schedule.where(day_of_week: wday, service_id: service.id)
       schedules.each do |schedule|
+        puts "%s %s" % [planned_trip.trip_datetime, planned_trip.trip_datetime.seconds_since_midnight]
+        puts [schedule.start_time, schedule.start_time.seconds_since_midnight]
+        puts [schedule.end_time, schedule.end_time.seconds_since_midnight]
         if planned_trip.trip_datetime.seconds_since_midnight.between?(schedule.start_time.seconds_since_midnight,schedule.end_time.seconds_since_midnight)
+          puts "eligible"
           eligible_services << service
           break
+        else
+          puts "not eligible"
         end
       end
     end
