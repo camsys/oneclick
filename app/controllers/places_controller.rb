@@ -95,8 +95,7 @@ class PlacesController < PlaceSearchingController
       if updated_place # only created if the form validated and there are no geocoding errors
         if place.save
           place.reload
-          @place_proxy = create_place_proxy(place)
-          format.html { redirect_to user_places_path(@traveler) }
+          format.html { redirect_to user_places_path(@traveler), :notice => t(:address_book_updated)  }          
           format.json { render json: place, status: :updated, location: place }
         else
           format.html { render action: "edit" }

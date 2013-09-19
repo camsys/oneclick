@@ -34,6 +34,10 @@ class TripPlace < ActiveRecord::Base
     return raw_address    
   end
   
+  def name
+    return to_s
+  end
+  
   def to_s
     return poi.to_s unless poi.nil?
     return place.to_s unless place.nil?
