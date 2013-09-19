@@ -65,7 +65,7 @@ class PlannedTrip < ActiveRecord::Base
 
   def create_taxi_itineraries
     tp = TripPlanner.new
-    from_place = trip.trip_places.last
+    from_place = trip.trip_places.first
     to_place = trip.trip_places.last
     result, response = tp.get_taxi_itineraries([from_place.location.first, from_place.location.last],[to_place.location.first, to_place.location.last], trip_datetime.in_time_zone)
     if result
