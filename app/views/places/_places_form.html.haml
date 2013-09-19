@@ -163,7 +163,7 @@
                 success: function(result) {
   
                   var resultList = result.map(function (item) {
-                      var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, lat: item.lat, lon: item.lon, addr: item.address };
+                      var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, desc: item.description, lat: item.lat, lon: item.lon, addr: item.address };
                       return JSON.stringify(aItem);
                   });
   
@@ -204,7 +204,7 @@
         
         // create marker on the map
         removeMatchingMarkers('my_place_candidate');
-        create_or_update_typeahead_marker(item, 'my_place_candidate', 'purpleIcon');
+        create_or_update_typeahead_marker(item, 'my_place_candidate', 'yellowIcon');
                 
         // Update the UI
         $('#place_type_field').attr('value', item.type);
@@ -216,7 +216,7 @@
   
   // Functions
   function create_or_update_typeahead_marker(item, key, iconStyle) {
-    marker = create_or_update_marker(key, item.lat, item.lon, item.name, item.name, iconStyle);
+    marker = create_or_update_marker(key, item.lat, item.lon, item.name, item.desc, iconStyle);
     setMapToBounds();
     selectMarker(marker);
   };
