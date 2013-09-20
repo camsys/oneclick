@@ -109,17 +109,16 @@ class EligibilityHelpers
 
   def get_eligible_services_for_trip(planned_trip, services)
     eligible_by_location = eligible_by_location(planned_trip, services)
-    Rails.logger.info "location"
-    Rails.logger.info eligible_by_location.ai
     eligible_by_service_time = eligible_by_service_time(planned_trip, services)
-    Rails.logger.info "service_time"
-    Rails.logger.info eligible_by_service_time.ai
     eligible_by_advanced_notice = eligible_by_advanced_notice(planned_trip, services)
-    Rails.logger.info "advance notice"
-    Rails.logger.info eligible_by_advanced_notice.ai
     eligible_by_trip_purpose = eligible_by_trip_purpose(planned_trip, services)
-    Rails.logger.info "purpose"
-    Rails.logger.info eligible_by_trip_purpose.ai
+
+    {
+      location: eligible_by_location, service_time: eligible_by_service_time,
+      advanced_notice: eligible_by_advanced_notice, purpose: eligible_by_trip_purpose
+    }.each do |k, v|
+      puts "#{k} - #{v.map(&:name)}"
+    end
 
     eligible_by_location & eligible_by_service_time & eligible_by_advanced_notice & eligible_by_trip_purpose
 
@@ -154,15 +153,15 @@ class EligibilityHelpers
     services.each do |service|
       schedules = Schedule.where(day_of_week: wday, service_id: service.id)
       schedules.each do |schedule|
-        puts "%s %s" % [planned_trip.trip_datetime, planned_trip.trip_datetime.seconds_since_midnight]
-        puts [schedule.start_time, schedule.start_time.seconds_since_midnight]
-        puts [schedule.end_time, schedule.end_time.seconds_since_midnight]
+        # puts "%-30s %-30s %s" % [Time.zone, planned_trip.trip_datetime, planned_trip.trip_datetime.seconds_since_midnight]
+        # puts "%-30s %-30s %s" % [Time.zone, schedule.start_time, schedule.start_time.seconds_since_midnight]
+        # puts "%-30s %-30s %s" % [Time.zone, schedule.end_time, schedule.end_time.seconds_since_midnight]
         if planned_trip.trip_datetime.seconds_since_midnight.between?(schedule.start_time.seconds_since_midnight,schedule.end_time.seconds_since_midnight)
-          puts "eligible"
+          # puts "eligible"
           eligible_services << service
           break
         else
-          puts "not eligible"
+          # puts "--- NOT ELIGIBLE ---"
         end
       end
     end
