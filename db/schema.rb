@@ -19,14 +19,15 @@ ActiveRecord::Schema.define(:version => 20130906154135) do
   end
 
   create_table "fare_structures", :force => true do |t|
-    t.integer "service_id",                                :null => false
+    t.integer "service_id", :null => false
     t.decimal "fare",       :precision => 10, :scale => 2
-    t.string  "note"
+    t.string  "note",       :limit => 254
   end
 
   create_table "itineraries", :force => true do |t|
     t.integer  "planned_trip_id"
     t.integer  "mode_id"
+    t.integer  "service_id"
     t.integer  "server_status"
     t.text     "server_message"
     t.integer  "duration"
@@ -37,13 +38,12 @@ ActiveRecord::Schema.define(:version => 20130906154135) do
     t.integer  "wait_time"
     t.float    "walk_distance"
     t.integer  "transfers"
+    t.integer  "count"
     t.text     "legs"
     t.decimal  "cost",            :precision => 10, :scale => 2
     t.boolean  "hidden",                                         :null => false
     t.datetime "created_at",                                     :null => false
     t.datetime "updated_at",                                     :null => false
-    t.integer  "count"
-    t.integer  "service_id"
   end
 
   create_table "modes", :force => true do |t|
@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(:version => 20130906154135) do
     t.integer  "creator_id"
     t.string   "name",          :limit => 64,                     :null => false
     t.integer  "poi_id"
-    t.string   "raw_address"
+    t.string   "raw_address",   :limit => 254
     t.string   "address1",      :limit => 128
     t.string   "address2",      :limit => 128
     t.string   "city",          :limit => 128
@@ -64,10 +64,9 @@ ActiveRecord::Schema.define(:version => 20130906154135) do
     t.string   "zip",           :limit => 10
     t.float    "lat"
     t.float    "lon"
+    t.boolean  "active",                        :default => true
     t.datetime "created_at",                                      :null => false
     t.datetime "updated_at",                                      :null => false
-    t.boolean  "active",                        :default => true
-    t.string   "geocoding_raw", :limit => 2500
   end
 
   create_table "planned_trips", :force => true do |t|
@@ -101,12 +100,12 @@ ActiveRecord::Schema.define(:version => 20130906154135) do
 
   create_table "profile_types", :force => true do |t|
     t.string "name",        :limit => 64
-    t.string "description"
+    t.string "description", :limit => 254
   end
 
   create_table "properties", :force => true do |t|
-    t.string   "category"
-    t.string   "name"
+    t.string   "category",    :limit => 64
+    t.string   "name",        :limit => 64 
     t.string   "value"
     t.integer  "sort_order"
     t.datetime "created_at", :null => false
@@ -126,7 +125,7 @@ ActiveRecord::Schema.define(:version => 20130906154135) do
 
   create_table "reports", :force => true do |t|
     t.string   "name",        :limit => 64
-    t.string   "description"
+    t.string  "description", :limit => 254
     t.string   "view_name",   :limit => 64
     t.string   "class_name",  :limit => 64
     t.boolean  "active"
@@ -151,6 +150,8 @@ ActiveRecord::Schema.define(:version => 20130906154135) do
     t.time    "end_time",                      :null => false
     t.integer "day_of_week",                   :null => false
     t.boolean "active",      :default => true, :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
   end
 
   create_table "service_traveler_accommodations_maps", :force => true do |t|
@@ -193,6 +194,8 @@ ActiveRecord::Schema.define(:version => 20130906154135) do
     t.boolean "wait_list_in_effect",                        :default => false, :null => false
     t.boolean "requires_prior_authorization",               :default => false, :null => false
     t.boolean "active",                                     :default => true,  :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
   end
 
   create_table "traveler_accommodations", :force => true do |t|
@@ -239,10 +242,10 @@ ActiveRecord::Schema.define(:version => 20130906154135) do
   create_table "trips", :force => true do |t|
     t.string   "name",            :limit => 64
     t.integer  "user_id"
+    t.integer  "trip_purpose_id"
     t.integer  "creator_id"
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
-    t.integer  "trip_purpose_id"
   end
 
   create_table "user_mode_preferences", :force => true do |t|
