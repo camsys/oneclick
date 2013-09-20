@@ -42,3 +42,12 @@
               = link_using_locale('En Español', 'es')
       / ! end of .container
     / ! end of #main
+
+:javascript
+  // Document Ready
+  $(document).ready(function(){
+    // Set default locale configs and other settings that affect every page
+    bootbox.setDefaults({
+      locale: "#{I18n.locale}"
+    });
+  });
