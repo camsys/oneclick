@@ -157,7 +157,8 @@ en:
     one:    'Found %{count} matching place.',
     other:  'Found %{count} matching places.'
   }
-  enter_address:    'Enter an address or name of a place...'
+  place_name:       'Place name'
+  enter_address_or_place:    'Enter an address or name of a place...'
   new_name:         'Enter a new name for this place'
   nothing_found:    'Nothing found at that address. Please try again.'
   update:           'Update'

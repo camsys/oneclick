@@ -152,7 +152,8 @@ es:
     one:    'Se encontro %{count} coincudencia de lugar. *18*',
     other:  'Se encontraron %{count} lugares coincidentes. *18*',
   }  
-  enter_address:    'Introduzca una direccion o un nombre de un lugar... *14*'
+  place_name:       'Topónimo *27*'
+  enter_address_or_place:    'Introduzca una direccion o un nombre de un lugar... *14*'
   new_name:         'Introduzca un nuevo mobre para este luga *15*'
   nothing_found:    'No he encontrado nada en esa direccion. Por favor, intentelo de nuevo. *17*'  
   update:           'Actualizar *16*'
