@@ -1,6 +1,6 @@
 class UserCharacteristicsProxy < Proxy
 
-  attr_accessor :user
+  attr_accessor :user, :dob_month, :dob_day, :dob_year, :date_of_birth
 
   def initialize(user = nil)
     self.user = user

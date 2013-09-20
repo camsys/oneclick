@@ -9,7 +9,11 @@
         -TravelerCharacteristic.where(:datatype => 'bool').each do |characteristic|
           .row-fluid
           = f.input characteristic.code.to_sym, collection: [[true, 'Yes'], [false, 'No'], ['na', 'Unsure']], as: :radio_buttons, label: characteristic.note, label_method: :last, value_method: :first, :item_wrapper_class => "inline"
-        = f.input "date_of_birth".to_sym
+        .row-fluid
+          Date of Birth
+          = f.input :dob_day
+          = f.input :dob_month
+          = f.input :dob_year
 
         .row-fluid
           .span12
