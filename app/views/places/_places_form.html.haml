@@ -108,7 +108,7 @@
       return false;
     }
     var message = delete_message.replace("%{place_name}", "'" + $('#delete_place_name').val() + "'"); 
-    bootbox.confirm(message, function(result) {
+    window.oneclickConfirmBox(message, function(result) {
       if (result) {
         $('#delete_form').submit();
       }

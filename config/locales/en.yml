@@ -219,6 +219,11 @@ en:
   assisted_user_first_name_s_trips: "%{name}'s Trips"
   trip_options_information_from_from: "Trip options information from %{from}"
 
+  # General Messages
+  yes: "Yes"
+  no:  "No"
+  ok: "Ok"
+  cancel: "Cancel"
   
   # Branding
   arc:
