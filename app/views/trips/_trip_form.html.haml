@@ -2,8 +2,9 @@
   = hidden_field_tag :query
   = hidden_field_tag :target
 
-- if current_user.travelers.count > 0
-  = render "select_traveler_form"
+- if user_signed_in?
+  - unless current_user.travelers.empty?
+    = render "select_traveler_form"
   
 = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "form-horizontal"} do |f| 
   = f.hidden_field :mode
