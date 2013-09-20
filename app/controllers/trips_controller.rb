@@ -127,9 +127,10 @@ class TripsController < PlaceSearchingController
       @trip.planned_trips.each { |x| x.destroy }
       @trip.trip_places.each { |x| x.destroy}
       @trip.destroy
-      message = "Trip was sucessfully removed."
+      message = t(:trip_was_successfully_removed)
     else
-      message = "No trip found."
+      render text: t(:error_404), status: 404
+      return
     end
 
     respond_to do |format|
@@ -145,7 +146,7 @@ class TripsController < PlaceSearchingController
     # limit itineraries to only those related to trps owned by the user
     itinerary = Itinerary.find(params[:id])
     if itinerary.trip.owner != current_traveler
-      render text: t(:unable_to_remove_itinerary), status: 500
+      render text: t(:unable_to_remove_itinerary), status: 404
       return
     end
 
@@ -155,7 +156,7 @@ class TripsController < PlaceSearchingController
         itinerary.hide
         format.js # hide.js.haml
       else
-        render text: t(:unable_to_remove_itinerary), status: 500
+        render text: t(:unable_to_remove_itinerary), status: 404
       end
     end
   end
@@ -195,7 +196,7 @@ class TripsController < PlaceSearchingController
 
     # make sure we can find the trip we are supposed to be updating and that it belongs to us. 
     if @trip.nil?
-      redirect_to(user_planned_trips_url, :flash => { :alert => 'Record not found!'})
+      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
       return            
     end
     
@@ -247,7 +248,7 @@ class TripsController < PlaceSearchingController
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
       else
-        format.html { render action: "new", flash[:alert] => "One or more addresses need to be fixed." }
+        format.html { render action: "new", flash[:alert] => t(:correct_errors_to_create_a_trip) }
       end
     end
     
@@ -280,7 +281,7 @@ class TripsController < PlaceSearchingController
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
       else
-        format.html { render action: "new", flash[:alert] => "One or more addresses need to be fixed." }
+        format.html { render action: "new", flash[:alert] => t(:correct_errors_to_create_a_trip) }
       end
     end
   end
