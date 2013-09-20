@@ -115,6 +115,7 @@ en:
   chat: 'Chat'
   e_mail: 'Email'
   trip_was_successfully_created: 'Trip was successfully created.'
+  trip_was_successfully_removed: 'Trip was successfully removed.'
   trip_created_no_valid_options: "Trip created, but no valid trip options could be found:"
   hour: {
     one: '%{count} h',
@@ -144,6 +145,8 @@ en:
   view_details1: "View details"
   view_details2: "for more."
   confirm_remove_trip: 'Are you sure you want to remove this trip?'
+  no_trips_found: 'You have no trips.'
+  no_matching_trips_found: 'You have no matching trips.'
 
   # My Places form
   found_x_places: {

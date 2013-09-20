@@ -110,6 +110,7 @@ es:
   chat: 'Charlar en línea'
   e_mail: ' Correo electrónico'
   trip_was_successfully_created: 'El viaje fue creado exitosamente.'
+  trip_was_successfully_removed: 'El viaje fue eliminada afortunada. *25*'  
   trip_created_no_valid_options: "El viaje fue creado, pero no se encontraron opciones válidas de viaje:"
   hour: {
     one: '%{count} h',
@@ -139,6 +140,8 @@ es:
   view_details1: "Mostrar detalles"
   view_details2: "para más."
   confirm_remove_trip: '¿Está seguro que desea eliminar este viaje? *23*'
+  no_trips_found: 'No tiene excursiones. *26*'
+  no_matching_trips_found: 'Usted no tiene que emparejan viajes. *27*'
 
   # My Places form
   found_x_places: {
