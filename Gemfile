@@ -27,7 +27,7 @@ group :development do
   #gem 'mysql2'
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :rbx]
-  gem 'guard'
+  gem 'guard', '~> 1.8.3'
   gem 'guard-bundler'
   gem 'guard-cucumber'
   gem 'guard-rails'
