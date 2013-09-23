@@ -15,33 +15,55 @@
         = render 'places_map'  
 
 :javascript
-  // variables
-  var map_open = false;
+  // UI variables
+  var place_map_key = "place_map_key";
+
   // Document Ready
   $(document).ready(function(){
-    // hide the map
-    $('#places_map').hide();    
-  });
-  
-  // event handlers
-  $('#map-icon').click(function(){
-    if (map_open) {
-      // user is closing the map
-      $('#places_form').removeClass('span6');
-      $('#places_form').addClass('span12');
-      $('#places_map').hide();
-      $('#map-icon').removeClass('icon-play');
-      $('#map-icon').addClass('icon-map-marker');
-      map_open = false;
+    // open or close the map on load based on last state
+    var map_open = get_ui_key_value(place_map_key, 0);
+    //alert(place_map_key + ' = ' + map_open);
+    if (map_open == 1) {
+      open_map();
     } else {
-      // user is opening the map
-      $('#places_form').removeClass('span12');
-      $('#places_form').addClass('span6');
-      $('#places_map').show();
-      $('#map-icon').removeClass('icon-map-marker');
-      $('#map-icon').addClass('icon-play');
-      // make sure no popups are currently being show or they wil get messed up
-      closePopup();
-      map_open = true;
-    }    
-  }); 
+      close_map();
+    }
+
+    // install event handlers
+    $('#map-icon').click(function(){
+      var map_open = get_ui_key_value(place_map_key, 0);
+      //alert(place_map_key + ' = ' + map_open);
+      if (map_open == 1) {
+        // user is closing the map
+        close_map();
+      } else {
+        // user is opening the map
+        open_map();
+      }
+    }); 
+    
+  });
+ 
+  function open_map() {
+    //alert('opening map');
+    $('#places_form').removeClass('span12');
+    $('#places_form').addClass('span6');
+    $('#places_map').show();
+    $('#map-icon').removeClass('icon-map-marker');
+    $('#map-icon').addClass('icon-play');
+    // make sure no popups are currently being shown or they will get messed up
+    closePopup();
+    // refresh the map display
+    setMapToBounds();
+    set_ui_key_value(place_map_key, 1);
+  };
+  
+  function close_map() {
+    //alert('closing map');
+    $('#places_form').removeClass('span6');
+    $('#places_form').addClass('span12');
+    $('#places_map').hide();
+    $('#map-icon').removeClass('icon-play');
+    $('#map-icon').addClass('icon-map-marker');
+    set_ui_key_value(place_map_key, 0);
+  };
