@@ -1,4 +1,0 @@
-class ItinerariesController < ApplicationController
-
-
-end

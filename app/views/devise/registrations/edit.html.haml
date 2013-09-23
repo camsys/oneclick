@@ -5,14 +5,20 @@
 .tabbable
   %ul.nav.nav-tabs
     %li.active
-      %a{href: '#tab1', data: {toggle: 'tab'}}
+      %a{href: '#tab1', data: {toggle: 'tab', id: '1'}}
         = t(:my_information)
     %li
-      %a{href: '#tab2', data: {toggle: 'tab'}}
-        = t(:buddies)
+      %a{href: '#tab2', data: {toggle: 'tab', id: '2'}}
+        = t(:buddies) + " (" + current_user.delegates.count.to_s + ")"
     %li
-      %a{href: '#tab3', data: {toggle: 'tab'}}
-        = t(:travelers)
+      %a{href: '#tab3', data: {toggle: 'tab', id: '3'}}
+        = t(:travelers) + " (" + current_user.travelers.count.to_s + ")"
+    %li
+      %a{href: '#tab4', data: {toggle: 'tab'}}
+        = 'Eligibility'
+    %li
+      %a{href: '#tab5', data: {toggle: 'tab'}}
+        = 'Accommodations'
   .tab-content
     .tab-pane.active#tab1
       .well
@@ -47,22 +53,43 @@
     .tab-pane#tab3
       .well#travelers
         = render partial: 'travelers'
+    .tab-pane#tab4
+      .well#eligibility
+        = render partial: 'eligibility'
+    .tab-pane#tab5
+      .well#accommodations
+        = render partial: 'accommodations'
+
 :javascript
   $('a#tab1').click(function(e) {
     e.preventDefault()
     $(this).tab('show')
-  })
+  });
   $('a#tab2').click(function(e) {
     e.preventDefault()
     $(this).tab('show')
-  })
+  });
   $('a#tab3').click(function(e) {
     e.preventDefault()
     $(this).tab('show')
-  })
-  $('#buddies').on('ajax:success', function(e, response) {
-    $('#buddies').html(response)
-  }) 
-  $('#travelers').on('ajax:success', function(e, response) {
-    $('#travelers').html(response)
-  }) 
+  });
+  $('a#tab4').click(function(e) {
+      e.preventDefault()
+      $(this).tab('show')
+  });
+  $('a#tab5').click(function(e) {
+        e.preventDefault()
+        $(this).tab('show')
+    });
+
+  // install an event handler to set the form focus when the user
+  // switches tabs
+  $('a[data-toggle="tab"]').on('shown', function (e) {
+    var id = $(e.target).data('id');
+    if (id == 1) {
+      $('#user_first_name').focus();
+    } else if (id == 2) {
+      $('#user_relationship_email').focus();    
+    }
+  });
+

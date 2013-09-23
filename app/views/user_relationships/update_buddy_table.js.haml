@@ -1,0 +1,8 @@
+// Remove existing messages
+remove_messages();
+// Show any new messages
+$('#messages').html("#{escape_javascript(render 'shared/messages')}");
+// Refresh the buddy table
+$('#buddy_table').html("#{escape_javascript(render 'devise/registrations/buddy_table')}");
+// Update the tab label
+$("a[data-id='2']").text("#{t(:buddies) + ' (' + current_user.delegates.count.to_s + ')'}");

@@ -6,18 +6,23 @@
       %meta{:content => content_for?(:description) ? yield(:description) : t(:site_description), :name => "description"}
       = stylesheet_link_tag "application", :media => "all"
       = stylesheet_link_tag brand, :media => "all"
+      = stylesheet_link_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.css", :media => "all"
+      
+      = javascript_include_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"
+      = javascript_include_tag "http://maps.google.com/maps/api/js?v=3.2&sensor=false"
       = javascript_include_tag "application" # TODO This should go in footer
       = javascript_include_tag "https://www.google.com/jsapi"
-      
+          
       = csrf_meta_tags
       = yield(:head)
   %body{:class => "#{controller_name} #{action_name}"}
     #wrap
-      = render 'layouts/navigation'
+      = render 'shared/navigation'
       #main{:role => "main"}
         .container-fluid
-          = render 'layouts/assisting'
-          = render 'layouts/messages'
+          = render 'shared/assisting'
+          #messages
+            = render 'shared/messages'
           = yield
       #footer
         .container-fluid
@@ -37,3 +42,22 @@
               = link_using_locale('En Español', 'es')
       / ! end of .container
     / ! end of #main
+
+:javascript
+  // Document Ready
+  var localized_yes_str;
+  var localized_no_str;
+  var localized_ok_str;
+  var localized_cancel_str;
+  
+  $(document).ready(function(){
+    // Set default locale configs and other settings that affect every page
+    localized_yes_str = "#{t(:yes)}";
+    localized_no_str = "#{t(:no)}";
+    localized_ok_str = "#{t(:ok)}";
+    localized_cancel_str = "#{t(:cancel)}";
+    
+    bootbox.setDefaults({
+      locale: "#{I18n.locale}"
+    });
+  });

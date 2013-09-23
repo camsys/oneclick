@@ -170,6 +170,10 @@ a:hover#help {
   font-size: 22px;
   text-indent:10px;
 }
+.candidate-label {
+  margin-left: 5px;
+  margin-right: 5px;
+}
 
 // Media queries for the show trips view
 .trip_summary_icon {
@@ -268,4 +272,12 @@ td.center, th.center {
 }
 td.left, th.left {
   text-align: left;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.ignore-width {
+  width: auto;
 }

@@ -1,9 +1,0 @@
-.row-fluid
-  .span12
-    %h1
-      %i.icon.icon-tags
-      = !assisting? ? t(:my_trips) : t(:assisted_user_first_name_s_trips, name: assisted_user.first_name)
-    
-= render 'index_subnav'
-
-= render :partial => 'shared/trips_table', :locals => {:trips => @trips}

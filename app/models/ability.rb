@@ -4,13 +4,11 @@ class Ability
   def initialize(user)
     user ||= User.new # guest user (not logged in)
     if user.has_role? :admin
-      
+      # admin users can do anything      
       can :manage, :all
-      can [:index], :admin
-      
     else
-      can [:read, :create, :update, :destroy], [Trip, UserPlace], :user_id => user.id 
-      can :manage, BuddyRelationship, :user_id => user.id
+      can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
+      #can :manage, BuddyRelationship, :user_id => user.id
       can :manage, User, :id => user.id
     end
 

@@ -7,7 +7,7 @@ class InvalidTripsReport < AbstractReport
   def get_data(current_user, params)
     
     duration = TimeFilterHelper.time_filter_as_duration(params[:time_filter_type])
-    return Trip.failed.created_between(duration.first, duration.last)
+    return PlannedTrip.failed.created_between(duration.first, duration.last)
 
   end
     

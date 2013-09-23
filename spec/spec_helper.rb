@@ -1,11 +1,18 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
+
+require 'coveralls'
+Coveralls.wear_merged!('rails')
+
+# This file is copied to spec/ when you run 'rails generate rspec:install'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'email_spec'
 require 'rspec/autorun'
 require 'capybara/rspec'
 require 'awesome_print'
+require 'factory_girl_rails'
+
+I18n.locale = :en
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -42,12 +49,20 @@ RSpec.configure do |config|
   config.order = "random"
   
   config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
-  end
-  config.before(:each) do
+    DatabaseCleaner.strategy = :truncation, {except: %w{traveler_characteristics traveler_accommodations
+      service_types trip_purposes providers services schedules service_trip_purpose_maps
+      service_traveler_characteristics_maps
+      service_traveler_accommodations_maps
+      user_traveler_accommodations_maps
+      user_traveler_characteristics_maps
+      }}
     DatabaseCleaner.start
   end
-  config.after(:each) do
+
+  config.before(:each) do
+  end
+
+  config.after(:suite) do
     DatabaseCleaner.clean
   end
 end

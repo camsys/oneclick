@@ -1,9 +1,15 @@
 class Itinerary < ActiveRecord::Base
 
-  attr_accessible :duration, :cost, :end_time, :legs, :message, :mode, :start_time, :status, :transfers, :transit_time,
-    :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden, :count
-  belongs_to :trip
+  # Callbacks
+  after_initialize :set_defaults
 
+  # Associations
+  belongs_to :planned_trip
+  belongs_to :mode
+  belongs_to :service
+
+  attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden
+  
   def self.get_mode_icon(mode)
     @icon_dictionary = {'WALK' => 'travelcon-walk', 'TRAM' => 'travelcon-subway', 'SUBWAY' => 'travelcon-subway', 'RAIL' => 'travelcon-train', 'BUS' => 'travelcon-bus', 'FERRY' => 'travelcon-boat'}
     @icon_dictionary.default = 'travelcon-bus'
@@ -23,5 +29,12 @@ class Itinerary < ActiveRecord::Base
     self.hidden = true
     self.save()
   end
+
+protected
+
+  # Set resonable defaults for a new itinerary
+  def set_defaults
+    self.hidden ||= false
+  end    
 
 end

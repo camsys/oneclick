@@ -127,7 +127,7 @@ When /^I edit my account details$/ do
   fill_in "First name", :with => "new first name"
   fill_in "Last name", :with => "new last name"
   fill_in "user_current_password", :with => @visitor[:password]
-  click_button "Update"
+  click_button "Update my profile"
 end
 
 When /^I look at the list of users$/ do

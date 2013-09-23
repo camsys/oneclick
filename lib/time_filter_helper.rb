@@ -1,23 +1,36 @@
 class TimeFilterHelper
   
-  TIME_FILTERS = [
-    {:id => 0, :value => I18n.translate(:last_30_days), :parse_text_start => "29 days ago", :parse_text_end => "today", :is_day_duration => true},
-    {:id => 1, :value => I18n.translate(:last_7_days), :parse_text_start => "6 days ago", :parse_text_end => "today", :is_day_duration => true},
-    {:id => 2, :value => I18n.translate(:today), :parse_text_start => "today", :parse_text_end => "today", :is_day_duration => true},
-    {:id => 3, :value => I18n.translate(:yesterday), :parse_text_start => "yesterday", :parse_text_end => "yesterday", :is_day_duration => true},
-    {:id => 4, :value => I18n.translate(:this_month), :parse_text_start => "today", :parse_text_end => "today", :is_day_duration => false},    
-    {:id => 5, :value => I18n.translate(:last_month), :parse_text_start => "last month", :parse_text_end => "last month", :is_day_duration => false}
+  @time_filter_array = [
+    {:id => 0, :value => :all_trips, :parse_text_start => "1 year ago", :parse_text_end => "1 year from now", :is_day_duration => false},
+    {:id => 1, :value => :trips_coming_up, :parse_text_start => "tomorrow", :parse_text_end => "1 year from now", :is_day_duration => true},
+    {:id => 2, :value => :last_7_days, :parse_text_start => "6 days ago", :parse_text_end => "today", :is_day_duration => true},
+    {:id => 3, :value => :last_30_days, :parse_text_start => "29 days ago", :parse_text_end => "today", :is_day_duration => true}
+    #{:id => 4, :value => :today, :parse_text_start => "today", :parse_text_end => "today", :is_day_duration => true},
+    #{:id => 5, :value => :yesterday, :parse_text_start => "yesterday", :parse_text_end => "yesterday", :is_day_duration => true},
+    #{:id => 6, :value => :this_month, :parse_text_start => "today", :parse_text_end => "today", :is_day_duration => false},    
+    #{:id => 7, :value => :last_month, :parse_text_start => "last month", :parse_text_end => "last month", :is_day_duration => false}
   ]
+
+  def self.time_filters
+    a = []
+    @time_filter_array.each do |f|
+      a << {
+        :id     => f[:id],
+        :value  => I18n.translate(f[:value])        
+      }
+    end
+    return a
+  end
   
   def self.time_filter_as_duration(time_filter_id)
 
     if time_filter_id.nil?
-      filter = TIME_FILTERS.first
+      filter = @time_filter_array.first
     else
-      filter = TIME_FILTERS[time_filter_id.to_i]      
+      filter = @time_filter_array[time_filter_id.to_i]      
     end
     if filter.nil?
-      filter = TIME_FILTERS.first      
+      filter = @time_filter_array.first      
     end    
     if filter[:is_day_duration]
       start_date = Chronic.parse(filter[:parse_text_start]).to_date

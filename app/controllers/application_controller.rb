@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :set_locale
   after_filter :clear_location
-
+   
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_path, :alert => exception.message
   end
@@ -16,6 +16,14 @@ class ApplicationController < ActionController::Base
     else
       current_user
     end
+  end
+
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
+  end
+
+  def default_url_options(options={})
+    { :locale => ((I18n.locale == I18n.default_locale) ? nil : I18n.locale) }
   end
 
   def clear_location
@@ -36,4 +44,66 @@ class ApplicationController < ActionController::Base
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
   end
 
+  ######################################################################
+  #
+  # Manage guest users
+  #
+  ######################################################################
+  
+  # if user is logged in, return current_user, else return guest_user
+  def current_or_guest_user
+    if current_user
+      if session[:guest_user_id]
+        logging_in
+        guest_user.destroy
+        session[:guest_user_id] = nil
+      end
+      current_user
+    else
+      guest_user
+    end
+  end
+  
+  # find guest_user object associated with the current session,
+  # creating one as needed
+  def guest_user
+    # Cache the value the first time it's gotten.
+    @cached_guest_user ||= User.find(session[:guest_user_id] ||= create_guest_user.id)
+
+    rescue ActiveRecord::RecordNotFound # if session[:guest_user_id] invalid
+       session[:guest_user_id] = nil
+       guest_user
+ 
+  end
+  
+private
+
+  # called (once) when the user logs in, insert any code your application needs
+  # to hand off from guest_user to current_user.
+  def logging_in
+    # For example:
+    # guest_comments = guest_user.comments.all
+    # guest_comments.each do |comment|
+      # comment.user_id = current_user.id
+      # comment.save!
+    # end
+  end
+
+  def create_guest_user
+    u = User.new
+    u.first_name = "Visitor"
+    u.last_name = "Guest"
+    u.password = "welcome1"
+    u.email = "guest_#{Time.now.to_i}#{rand(99)}@example.com" 
+    u.save!(:validate => false)
+    session[:guest_user_id] = u.id
+    u
+  end
+
+  ######################################################################
+  #
+  # End of Manage guest users
+  #
+  ######################################################################
+    
 end

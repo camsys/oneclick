@@ -1,0 +1,62 @@
+- unless results.empty?
+  .row-fluid
+    .span12
+      %h6= t(:found_x_matches, :count => results.count )
+
+  .row-fluid
+    .span12
+      .candidate-list.thumbnail{:style => "height:100px;overflow:auto;"}
+        %ul.nav.nav-list
+          - results.each_with_index do |addr, index|
+            %li
+              = link_to "#", :class => "address-select", :data => {:id => addr["id"], :index => index, :latlon => [addr["lat"], addr["lng"]], :desc => addr["description"], :type => type, :addr => addr["title"]} do
+                %img{:src => get_candidate_list_item_image(index, "2")}
+                = addr["title"] 
+
+:javascript  
+  // Add the candidate locations to the map
+  $('.address-select').each(function() {
+    var t = $(this);
+    var id = t.data('id');
+    var index = t.data('index');
+    var type = t.data('type');
+    var addr = t.data('addr');
+    var desc = t.data('desc');
+    var latlon = eval(t.data('latlon'));
+    add_candidate_marker(index, latlon[0], latlon[1], addr, desc, type);     
+  });
+  
+  // User has selected an alternate address from the list
+  $('.address-select').click(function() {
+    var t = $(this);
+    var id = t.data('id');
+    var index = t.data('index');
+    var from_to = t.data('type');
+    var addr = t.data('addr');
+    var desc = t.data('desc');
+    var latlon = eval(t.data('latlon'));
+
+    $('#poi_typeahead').val(addr);
+    $('#place_id_field').val(index);
+    $('#place_type_field').val(4);
+    $('#select_place').hide();
+   
+    var key = 'place_candidate';
+    var iconStyle = 'yellowIcon';
+    
+    // Remove any candidate markers from the map
+    removeMatchingMarkers(key);
+    // replace the markers with the end point marker
+    marker = create_or_update_marker(key, latlon[0], latlon[1], addr, desc, iconStyle);
+    setMapToBounds();
+    selectMarker(marker);
+   
+    return false;
+  });
+
+  // User has selected an alternate address from the list
+  $('.address-select').hover(function() {
+    var addr = $(this).data('addr');
+    // Pan to the marker
+    selectMarkerByName(addr);
+  });

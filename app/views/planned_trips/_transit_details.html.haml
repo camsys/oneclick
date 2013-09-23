@@ -1,0 +1,31 @@
+%table
+  %tr
+    %td.itinerary_icons
+      %i.icon-play.mode_icon_formatting{:class => 'start_icon'}
+    %td
+      .itinerary_text
+        %p= t(:start) + itinerary.planned_trip.trip.from_place.to_s
+      .itinerary_text_small
+        = itinerary.start_time.in_time_zone.strftime('%-I:%M %p')
+
+  -YAML.load(itinerary.legs).each do |leg|
+    %tr
+      %td.itinerary_icons
+        %i.transit_itinerary_icons.mode_icon_formatting{class: Itinerary.get_mode_icon(leg['mode'])}
+      %td
+        .itinerary_text
+          %p= leg['mode'] + ' ' + leg['route'] + ' ' + t(:to) + ' ' + leg['to']['name']
+        -if leg['mode'] == 'WALK'
+          .itinerary_text_small
+            =duration_to_words((leg['endTime'].to_i - leg['startTime'].to_i)/1000)
+        -else
+          .itinerary_text_small
+            = Time.at(leg['startTime'].to_f/1000).in_time_zone.strftime('%-I:%M %p') + ' ' + t(:to) + ' ' + Time.at(leg['endTime'].to_f/1000).in_time_zone.strftime('%-I:%M %p')
+  %tr
+    %td.itinerary_icons
+      %i.icon-stop.mode_icon_formatting{:class => 'end_icon'}
+    %td
+      .itinerary_text
+        %p= t(:arrive) + itinerary.planned_trip.trip.to_place.to_s
+      .itinerary_text_small
+        =itinerary.end_time.in_time_zone.strftime('%-I:%M %p')

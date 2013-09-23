@@ -6,7 +6,7 @@ module CsHelpers
         :create_an_account => 'icon-edit',
         :identify_places =>'icon-map-marker',
         :travel_profile => 'icon-cogs',
-        :previous_trips => 'icon-share-alt icon-flip-horizontal',
+        :my_trips => 'icon-share-alt icon-flip-horizontal',
         :help_and_support => 'icon-question-sign',
         :find_traveler => 'icon-search',
         :create_traveler =>'icon-user',
@@ -20,10 +20,6 @@ module CsHelpers
     Rails.application.config.brand
   end
 
-  def anonymous_user
-    User.new
-  end
-
   def assisting?
     session.include? :assisting
   end
@@ -32,4 +28,7 @@ module CsHelpers
     @assisted_user ||= User.find_by_id(session[:assisting])
   end
 
+  def format_exception e
+    [e.message, e.backtrace].flatten.join("\n")
+  end
 end

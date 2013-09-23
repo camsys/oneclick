@@ -13,7 +13,10 @@ en:
   help_and_support: 'Help & Support'
   create_an_account: 'Create an Account'
   travel_profile: 'Travel Profile'
-  previous_trips: 'Previous Trips'
+  my_trips: 'My Trips'
+  my_places: 'My Places'
+  places: 'Places'
+  
   # Agent View strings
   find_traveler: "Find Traveler"
   create_traveler: "Create Traveler"
@@ -32,6 +35,7 @@ en:
   first_name: 'First name'
   last_name: 'Last name'
   email: 'Email address'
+  remember_me: 'Remember me'
   password: 'Password'
   password_confirmation: 'Password confirmation'
   current_password: 'Current password'
@@ -51,6 +55,9 @@ en:
   decline: 'Decline'
   assist: 'Assist'
   revoke: 'Revoke'
+  hide: 'Hide'
+  retract: 'Retract'
+  visitor: 'Visitor'
   
   spanish: 'En Español'
   error_not_implemented: "We're sorry, but this functionality has not yet been implemented."
@@ -58,6 +65,11 @@ en:
   error_404_mistyped: 'You may have mistyped the address or the page may have moved.'
   error_422: 'The change you wanted was rejected.'
   error_422_detail: "Maybe you tried to change something you didn't have access to."
+  
+  # Trip History and Rating
+  rating: "Rating"
+  actions: "Actions"
+  filter: "Filter"
 
   # Trip planning
   enter_address: 'Enter address'
@@ -73,6 +85,10 @@ en:
   from: 'From'
   to: 'To'
   at_time: 'on'
+  arrive_depart: 'Arrive/Depart'
+  trip_purpose: 'Purpose'
+  departing_at: 'departing at'
+  arriving_by: 'arriving by'  
   correct_errors_to_create_a_trip: 'Please correct the errors below to create a trip.'
   trip_options: 'Trip Options'
   transit_trip: 'Transit Trip'
@@ -99,6 +115,7 @@ en:
   chat: 'Chat'
   e_mail: 'Email'
   trip_was_successfully_created: 'Trip was successfully created.'
+  trip_was_successfully_removed: 'Trip was successfully removed.'
   trip_created_no_valid_options: "Trip created, but no valid trip options could be found:"
   hour: {
     one: '%{count} h',
@@ -127,6 +144,28 @@ en:
   possible_rideshares2: "rideshares."
   view_details1: "View details"
   view_details2: "for more."
+  confirm_remove_trip: 'Are you sure you want to remove this trip?'
+  no_trips_found: 'You have no trips.'
+  no_matching_trips_found: 'You have no matching trips.'
+
+  # My Places form
+  found_x_places: {
+    one:    'Found %{count} place in your address book.',
+    other:  'Found %{count} places in your address book.'
+  }
+  found_x_matches: {
+    one:    'Found %{count} matching place.',
+    other:  'Found %{count} matching places.'
+  }
+  place_name:       'Place name'
+  enter_address_or_place:    'Enter an address or name of a place...'
+  new_name:         'Enter a new name for this place'
+  nothing_found:    'Nothing found at that address. Please try again.'
+  update:           'Update'
+  place_added:      '%{place_name} has been added to your address book.'
+  error_updating_addresses:   'An error occured while updating your address book.'
+  address_book_updated: 'Your address book has been updated.'
+  confirm_remove_place: 'Are you sure you want to remove %{place_name} from your address book?'
 
   # new ones
   buddy_request_sent: "Buddy request sent!"
@@ -147,6 +186,8 @@ en:
   you_can_t_be_your_own_buddy: "You can't be your own buddy."
   you_ve_already_asked_them_to_be_a_buddy: "You've already asked them to be a buddy."
   address_is_required: "Address is required"
+  all_trips: "All trips"
+  trips_coming_up: "Trips coming up"
   last_30_days: "Last 30 days"
   last_7_days: "Last 7 days"
   last_month: "Last month"
@@ -176,10 +217,14 @@ en:
   arrive: "ARRIVE: "
   trip: "Trip: "
   est: " (est.)"
-  my_trips: 'My Trips'
   assisted_user_first_name_s_trips: "%{name}'s Trips"
   trip_options_information_from_from: "Trip options information from %{from}"
 
+  # General Messages
+  yes: "Yes"
+  no:  "No"
+  ok: "Ok"
+  cancel: "Cancel"
   
   # Branding
   arc:

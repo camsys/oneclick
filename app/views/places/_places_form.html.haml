@@ -1,0 +1,254 @@
+= form_tag geocode_user_places_path, :remote => true, :id => "query_form" do
+  = hidden_field_tag :query
+  = hidden_field_tag :target
+
+= form_tag user_place_path(@traveler, 0), :method => :delete, :id => "delete_form" do
+  = hidden_field_tag :delete_place_id
+  = hidden_field_tag :delete_place_name
+
+= form_tag edit_user_place_path(@traveler, 0), :id => "edit_form", :method => :get do
+  = hidden_field_tag :edit_place_id
+
+.row-fluid
+  .span12
+    = simple_form_for @place_proxy, :url => @place_proxy.id.nil? ? user_places_path(@traveler) : user_place_path(@traveler, @place_proxy.id), :method => @place_proxy.id.nil? ? 'post' : 'put', :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
+      = f.input :raw_address, :class => "inline span12", :label => t(:enter_address) do
+        = f.text_field :raw_address, :placeholder => t(:enter_address_or_place), :id => "poi_typeahead", :autocomplete => "off", :class => "ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}
+      = f.input :name, :label => t(:place_name), :placeholder => t(:new_name), :autocomplete => "off"
+      = f.hidden_field :place_type_id, :id => "place_type_field"
+      = f.hidden_field :place_id, :id => "place_id_field"
+
+      .form-actions
+        = button_tag :type => 'submit', :class => "btn btn-primary" do
+          = "Save"
+
+#select_place
+  = render :partial => 'alt_address_select', :locals => {:results => [], :type => "place"}
+      
+.row-fluid
+  .span12
+    %h6= t(:found_x_places, :count => @places.count )
+
+.row-fluid
+  .places-list.span12.thumbnail{:style => "height:200px;overflow:auto;"}
+    %ul.nav.nav-list
+      - @places.each_with_index do |place, index|
+        %li.place-list-item
+          = link_to "#", :class => "place-select", :data => {:id => "my_place#{index}", :index => index, :place_id => place.id, :op => place.can_delete, :latlon => [place.location.first, place.location.last], :name => place.to_s, :type => "place", :addr => place.address} do
+            %img{:src => get_candidate_list_item_image(index, "0")}
+            %strong= place.name
+            %em= place.address
+
+.row-fluid
+  .span12
+    .well.well-small
+      = link_to "#", :class => "btn btn-warning", :id => "delete_button" do
+        %i.icon.icon-remove
+        Delete
+      = link_to "#", :class => "btn btn-primary", :id => "edit_button" do
+        %i.icon.icon-edit
+        Edit
+    
+:javascript  
+  // Configure UI behaviors
+  var typeahead_delay = +"#{Rails.application.config.ui_typeahead_delay}"
+  var typeahead_min_chars = +"#{Rails.application.config.ui_typeahead_min_chars}"
+  var typeahead_list_length = +"#{Rails.application.config.ui_typeahead_list_length}"
+  var geocoder_min_chars = +"#{Rails.application.config.ui_min_geocode_chars}"
+  var delete_message = "#{t(:confirm_remove_place)}"
+  
+  // Hide the name editing div on page load
+  $(document).ready(function(){
+    // Disable the actions
+    $('#delete_button').attr('disabled', 'disabled');
+    $('#edit_button').attr('disabled', 'disabled');
+    
+    // Hide what we don't need
+    $('#select_place').hide();
+  
+  });
+
+  // Install a hover event handler for my places. When hovering,
+  // the map icon is panned to and the popup shown
+  $('.place-select').hover(function() {
+    var id = $(this).data('id');
+    selectMarkerById(id);
+  });
+
+  // Install a click event handler for my places which enables the edit and delete buttons
+  $('.place-select').click(function() {
+    var id = $(this).data('id');
+    selectMarkerById(id);
+    // Remove highlights from all the rows and add a highlight
+    // to the current row
+    $('.place-list-item').removeClass('active');
+    $(this).parent().addClass('active');
+
+    // Update the delete and edit forms if the place can be deleted
+    var place_id = $(this).data('place-id');
+    var place_name = $(this).data('name');
+    var op = $(this).data('op');
+    if (op) {
+      $('#delete_button').removeAttr('disabled');
+      $('#delete_place_id').val(place_id);
+      $('#delete_place_name').val(place_name);
+    } else {
+      $('#delete_button').attr('disabled', 'disabled');
+      $('#delete_place_id').val("");
+      $('#delete_place_name').val("");
+    }
+    $('#edit_button').removeAttr('disabled');    
+    $('#edit_place_id').val(place_id);
+  });
+
+  // Submit the delete form if the user clicks the delete button
+  $('#delete_button').click(function(e) {
+    e.preventDefault();
+    if ($('#delete_button').attr('disabled')) {
+      return false;
+    }
+    var message = delete_message.replace("%{place_name}", "'" + $('#delete_place_name').val() + "'"); 
+    window.oneclickConfirmBox(message, function(result) {
+      if (result) {
+        $('#delete_form').submit();
+      }
+    });
+    return false;
+  });
+
+  // Move to edit mode if the user clicks the delete button
+  $('#edit_button').click(function() {
+    if ($('#edit_place_id').val() != "") {
+      $('#edit_form').submit();
+    }
+    return true;
+  });
+  
+  // Add a change listener on the text field
+  $("#poi_typeahead").bind("keyup input paste", function() {
+    $('#place_type_field').val("");
+    $('#place_id_field').val("");    
+  });
+  
+   // user has lost focus on the address input
+  $('#poi_typeahead').blur(function() {
+    if ($('#place_type_field').val() == "") {
+      // Do an ajax query to geocode the input text
+      var addr = $('#poi_typeahead').val().trim();
+      if (addr.length >= geocoder_min_chars) {
+        $('#query').val(addr);
+        $('#target').val(2);
+        $('#query_form').submit();
+      }
+    }
+  });
+ 
+  var timeout;
+  
+  // Enable typeahead for the places forms
+  $('#poi_typeahead').typeahead({
+      items: typeahead_list_length,
+      minLength: typeahead_min_chars,
+      source: function(query, process) {
+          if (timeout) {
+            clearTimeout(timeout);
+          }
+          timeout = setTimeout(function() {
+            return $.ajax({
+                url: $('#poi_typeahead').data('link'),
+                type: 'get',
+                data: {
+                  query: query
+                },
+                dataType: 'json',
+                success: function(result) {
+  
+                  var resultList = result.map(function (item) {
+                      var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, desc: item.description, lat: item.lat, lon: item.lon, addr: item.address };
+                      return JSON.stringify(aItem);
+                  });
+  
+                  return process(resultList);
+                }
+            });
+          }, typeahead_delay);
+      },
+    matcher: function (obj) {
+        var item = JSON.parse(obj);
+        return ~item.name.toLowerCase().indexOf(this.query.toLowerCase())
+    },
+
+    sorter: function (items) {          
+       var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
+        while (aItem = items.shift()) {
+            var item = JSON.parse(aItem);
+            if (!item.name.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(JSON.stringify(item));
+            else if (~item.name.indexOf(this.query)) caseSensitive.push(JSON.stringify(item));
+            else caseInsensitive.push(JSON.stringify(item));
+        }
+
+        return beginswith.concat(caseSensitive, caseInsensitive)
+
+    },
+
+
+    highlighter: function (obj) {
+        var item = JSON.parse(obj);
+        var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
+        return item.name.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+            return '<strong>' + match + '</strong>'
+        })
+    },
+
+    updater: function (obj) {
+        var item = JSON.parse(obj);
+        
+        // create marker on the map
+        removeMatchingMarkers('my_place_candidate');
+        create_or_update_typeahead_marker(item, 'my_place_candidate', 'yellowIcon');
+                
+        // Update the UI
+        $('#place_type_field').attr('value', item.type);
+        $('#place_id_field').attr('value', item.id);
+        
+        return item.name;
+    }  
+  });  
+  
+  // Functions
+  function create_or_update_typeahead_marker(item, key, iconStyle) {
+    marker = create_or_update_marker(key, item.lat, item.lon, item.name, item.desc, iconStyle);
+    setMapToBounds();
+    selectMarker(marker);
+  };
+    
+  function create_or_update_marker(key, lat, lon, name, desc, iconStyle) {
+    // See if we can find this existing marker
+    marker = findMarkerById(key);
+    if (marker) {
+      removeMarkerFromMap(marker);
+    }
+    var marker = createMarker(key, lat, lon, iconStyle, desc, name, true);
+    addMarkerToMap(marker, true);
+    return marker;
+  };
+  // Add a list of candidate markers to the map
+  var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Z', 'Y', 'Z'];
+  function add_candidate_marker(index, lat, lon, addr, desc, type) {
+    var iconStyle;
+    var key_template;
+    if (type == 'from') {
+      iconStyle = 'startCandidate';
+      key_template = 'start_candidate';
+    } else if (type == 'to') {
+      iconStyle = 'stopCandidate';
+      key_template = 'stop_candidate';
+    } else {
+      iconStyle = 'placeCandidate';
+      key_template = 'place_candidate';
+    }
+    var icon = iconStyle + alphabet[index];
+    var key = key_template + index;
+    var marker = createMarker(key, lat, lon, icon, desc, addr, false);
+    addMarkerToMap(marker, true);
+  }

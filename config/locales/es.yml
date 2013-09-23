@@ -1,4 +1,4 @@
-﻿# Spanish
+# Spanish
 
 es:
   one_click_trip_planner: '1-Click Planificador de Viajes'
@@ -10,7 +10,10 @@ es:
   help_and_support: 'Ayuda y Soporte'
   create_an_account: 'Crear una Cuenta'
   travel_profile: 'Perfil del Viaje'
-  previous_trips: 'Viajes Anteriores'
+  my_trips: 'Mis Viajes'
+  my_places: 'Mis Lugares *10*'
+  places: 'Lugares *11*'
+  
   # Agent View strings
   find_traveler: "Encontrar al Viajero"
   create_traveler: "Crear un Viajero"
@@ -29,6 +32,7 @@ es:
   first_name: 'Nombre'
   last_name: 'Apellido'
   email: 'Correo electrónico'
+  remember_me: 'Acuérdate de mí *5*'  
   password: 'Contraseña'
   password_confirmation: 'Confirme la contraseña'
   current_password: 'Contraseña actual'
@@ -48,6 +52,7 @@ es:
   decline: 'Rechazar'
   assist: 'Asistir'
   revoke: 'Revocar'
+  visitor: 'Visitante *12*'
 
   spanish: 'En Español'
   error_not_implemented: 'Lo sentimos, pero esta funcionalidad aún no se ha implementado.'
@@ -55,6 +60,11 @@ es:
   error_404_mistyped: 'Es posible que hayas escrito mal la dirección o la página puede haber cambiado.'
   error_422: 'El cambio que querías fue rechazado.'
   error_422_detail: "Tal vez trataste de cambiar algo al que no tienes acceso."
+
+  # Trip History and Rating
+  rating: "Clasificacion *7*"
+  actions: "Acciones *8*"
+  filter: "Filtrar *9*"
 
   # Trip planning
   enter_address: 'Introduce la dirección'
@@ -70,6 +80,10 @@ es:
   from: 'De'
   to: 'A'  
   at_time: 'en'  
+  arrive_depart: 'Llegada/Salida *1*'
+  trip_purpose: 'Proposito *2*'
+  departing_at: 'con salida a las *3*'
+  arriving_by: 'que lleguen en *4*'
   correct_errors_to_create_a_trip: 'Por favor corrige los errores señalados para crear un viaje.'
   trip_options: 'Opciones de Viaje'
   transit_trip: 'Transit Trip'
@@ -96,6 +110,7 @@ es:
   chat: 'Charlar en línea'
   e_mail: ' Correo electrónico'
   trip_was_successfully_created: 'El viaje fue creado exitosamente.'
+  trip_was_successfully_removed: 'El viaje fue eliminada afortunada. *25*'  
   trip_created_no_valid_options: "El viaje fue creado, pero no se encontraron opciones válidas de viaje:"
   hour: {
     one: '%{count} h',
@@ -124,7 +139,29 @@ es:
   possible_rideshares2: "para compartir el viaje en vehículo."
   view_details1: "Mostrar detalles"
   view_details2: "para más."
+  confirm_remove_trip: '¿Está seguro que desea eliminar este viaje? *23*'
+  no_trips_found: 'No tiene excursiones. *26*'
+  no_matching_trips_found: 'Usted no tiene que emparejan viajes. *27*'
 
+  # My Places form
+  found_x_places: {
+    one:    'Encontrados %{count} sitios en la libreta de direcciones. *13*',
+    other:  'Encontrados %{count} lugar en su libreta de direcciones. *13*'
+  }  
+  found_x_matches: {
+    one:    'Se encontro %{count} coincudencia de lugar. *18*',
+    other:  'Se encontraron %{count} lugares coincidentes. *18*',
+  }  
+  place_name:       'Topónimo *27*'
+  enter_address_or_place:    'Introduzca una direccion o un nombre de un lugar... *14*'
+  new_name:         'Introduzca un nuevo mobre para este luga *15*'
+  nothing_found:    'No he encontrado nada en esa direccion. Por favor, intentelo de nuevo. *17*'  
+  update:           'Actualizar *16*'
+  place_added:      '%{place_name} ha sido agregado a tu libreta de direcciones. *19*'
+  error_updating_addresses:   'Si produjo un error al acutalizar la libreta de direcciones. *20*'
+  address_book_updated: 'Su libreta de direcciones se ha acualizado. *21*'
+  confirm_remove_place: 'Esta seguro que desea eliminar %{place_name} de su libreta de direcciones? *22*'
+  
   # new ones
   buddy_request_sent: "¡Solicitud de amigo enviada!"
   buddy_removed: "Amigo eliminado."
@@ -144,6 +181,8 @@ es:
   you_can_t_be_your_own_buddy: "No puedes ser tu propio amigo."
   you_ve_already_asked_them_to_be_a_buddy: "Ya le has solicitado ser amigo."
   address_is_required: "Se require una dirección"
+  all_trips: "Todos los viajes *22*"
+  trips_coming_up: "Excursiones viene *23*"  
   last_30_days: "Últimos 30 días"
   last_7_days: "Últimos 7 días"
   last_month: "El mes pasado"
@@ -173,10 +212,14 @@ es:
   arrive: "ARRIVE: "
   trip: "Viaje: "
   est: " (est.)"
-  my_trips: 'Mis Viajes'
   assisted_user_first_name_s_trips: "Viajes de %{name}"
   trip_options_information_from_from: "Información de opciones de viaje de #{@from}"
   
+  # General Messages
+  yes: "Sí"
+  no:  "Not"
+  ok: "Ok"
+  cancel: "Cancelar"
 
   # Branding
   arc:

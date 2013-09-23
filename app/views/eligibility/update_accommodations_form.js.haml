@@ -1,0 +1,6 @@
+remove_messages();
+// Show any new messages
+$('#messages').html("#{escape_javascript(render 'shared/messages')}");
+
+$('#accommodations_form').html("#{escape_javascript(render 'devise/registrations/accommodations')}");
+

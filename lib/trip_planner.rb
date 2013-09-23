@@ -8,7 +8,7 @@ class TripPlanner
   def get_fixed_itineraries(from, to, trip_datetime, arriveBy)
 
     #Parameters
-    time = trip_datetime.strftime("%I:%M%p")
+    time = trip_datetime.strftime("%-I:%M%p")
     date = trip_datetime.strftime("%Y-%m-%d")
     mode = 'TRANSIT,WALK'
 
@@ -20,8 +20,11 @@ class TripPlanner
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
     url = base_url + url_options
 
+    Rails.logger.info URI.parse(url)
+    
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
+      Rails.logger.info(resp.inspect)
     rescue Exception=>e
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
@@ -40,21 +43,27 @@ class TripPlanner
 
   end
 
+  #TODO this is a hack. The documentation states that the transfers should be the number
+  # of transfers occuring as an int. WALK returns a transfer count of -1 so we set it to
+  # nil if we see this
+  def fixup_transfers_count(transfers)
+    transfers == -1 ? nil : transfers
+  end
   def convert_itineraries(plan)
 
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
-      trip_itinerary['mode'] = 'transit'
+      trip_itinerary['mode'] = Mode.transit
       trip_itinerary['duration'] = itinerary['duration'].to_f/1000
       trip_itinerary['walk_time'] = itinerary['walkTime']
       trip_itinerary['transit_time'] = itinerary['transitTime']
       trip_itinerary['wait_time'] = itinerary['waitingTime']
       trip_itinerary['start_time'] = Time.at((itinerary['startTime']).to_f/1000)
       trip_itinerary['end_time'] = Time.at((itinerary['endTime']).to_f/1000)
-      trip_itinerary['transfers'] = itinerary['transfers']
+      trip_itinerary['transfers'] = fixup_transfers_count(itinerary['transfers'])
       trip_itinerary['walk_distance'] = itinerary['walkDistance']
       trip_itinerary['legs'] = itinerary['legs']
-      trip_itinerary['status'] = 200
+      trip_itinerary['server_status'] = 200
       trip_itinerary
     end
 
@@ -102,24 +111,26 @@ class TripPlanner
 
   def convert_taxi_itineraries(itinerary)
     trip_itinerary = {}
-    trip_itinerary['mode'] = 'taxi'
+    trip_itinerary['mode'] = Mode.taxi
     trip_itinerary['duration'] = itinerary[0]['duration'].to_f
     trip_itinerary['walk_time'] = 0
     trip_itinerary['walk_distance'] = 0
     trip_itinerary['cost'] = itinerary[0]['total_fare']
-    trip_itinerary['status'] = 200
-    trip_itinerary['message'] = itinerary[1]['businesses']
+    trip_itinerary['server_status'] = 200
+    trip_itinerary['server_message'] = itinerary[1]['businesses']
     trip_itinerary
   end
 
-  # TODO placeholder
-  def get_paratransit_itineraries(from, to, trip_datetime)
-    {'mode' => 'paratransit', 'status' => 200, 'duration' => 55*60, 'cost' => 4.00}
-  end
+  def convert_paratransit_itineraries(service)
+    trip_itinerary = {}
+    trip_itinerary['mode'] = Mode.paratransit
+    trip_itinerary['service'] = service
+    trip_itinerary['walk_time'] = 0
+    trip_itinerary['walk_distance'] = 0
+    trip_itinerary['server_status'] = 200
 
-  # TODO placeholder
-  def convert_paratransit_itineraries(itinerary)
-    {'mode' => 'paratransit', 'status' => 200, 'duration' => 55*60, 'cost' => 4.00}
+    trip_itinerary
+
   end
 
   def get_rideshare_itineraries(from, to, trip_datetime)

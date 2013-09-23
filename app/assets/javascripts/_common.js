@@ -1,3 +1,33 @@
+// session based variable storage for UI key/value pairs
+
+// get a key value, if the key does not exist the default value is returned  
+function get_ui_key_value(key, default_val) {
+    var value;
+    try {
+        value = window.sessionStorage.getItem(key);
+    } catch(e) {
+        value = default_val;
+    }    
+	//alert('getting value for ' + key + '; val = ' + value);
+    return value;
+};
+// Set a key value. Keys must be unique strings
+function set_ui_key_value(key, value) {
+	//alert('setting value for ' + key + ' to ' + value);
+    window.sessionStorage.setItem(key, value);
+};
+
+// Used to remove any existing banner messages
+function remove_messages() {
+	$('.alert').alert('close');
+};
+
+
+function click_to_nav(url) {
+  document.location.href = url;
+};
+
+
 // Finds all the class elements on a page and sets the min-height css variable
 // to the maximum height of all the containers
 function make_same_height(class_name) {
