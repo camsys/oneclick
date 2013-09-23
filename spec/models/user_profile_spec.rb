@@ -8,8 +8,9 @@ describe UserProfile do
     ].each do |tz|
       describe "in timezone #{tz}" do
         it "has eligible services for traveler and trip" do
-          puts
-          puts example.metadata[:full_description].to_s
+          # Jut leaving this here as an example of how to print out info about the current example
+          # puts
+          # puts example.metadata[:full_description].to_s
           Time.zone = tz
           user_profile = FactoryGirl.create(:user_profile)
           eh = EligibilityHelpers.new
@@ -25,8 +26,6 @@ describe UserProfile do
         end
 
         it "has eligible services for traveler but not trip" do
-          puts
-          puts example.metadata[:full_description].to_s
           Time.zone = tz
           user_profile = FactoryGirl.create(:user_profile)
           eh = EligibilityHelpers.new
@@ -40,8 +39,6 @@ describe UserProfile do
         end
 
         it "is eligible for all five seeded services" do
-          puts
-          puts example.metadata[:full_description].to_s
           Time.zone = tz
           user_profile = FactoryGirl.create(:user_profile)
           eh = EligibilityHelpers.new
@@ -63,8 +60,6 @@ describe UserProfile do
         end
 
         it "has 5 eligible services for the traveler and x for the trip" do
-          puts
-          puts example.metadata[:full_description].to_s
           Time.zone = tz
           user_profile = FactoryGirl.create(:user_profile)
           eh = EligibilityHelpers.new

@@ -113,11 +113,11 @@ class EligibilityHelpers
     eligible_by_advanced_notice = eligible_by_advanced_notice(planned_trip, services)
     eligible_by_trip_purpose = eligible_by_trip_purpose(planned_trip, services)
 
-    {
-      location: eligible_by_location, service_time: eligible_by_service_time,
-      advanced_notice: eligible_by_advanced_notice, purpose: eligible_by_trip_purpose
-    }.each do |k, v|
-      puts "#{k} - #{v.map(&:name)}"
+    if Rails.logger.debug?
+      {location: eligible_by_location, service_time: eligible_by_service_time,
+        advanced_notice: eligible_by_advanced_notice, purpose: eligible_by_trip_purpose}.each do |k, v|
+          Rails.logger.debug  "#{k} - #{v.map(&:name)}"
+        end
     end
 
     eligible_by_location & eligible_by_service_time & eligible_by_advanced_notice & eligible_by_trip_purpose
@@ -194,7 +194,7 @@ class EligibilityHelpers
         return value1.to_f <= value2.to_f
       else
         return false
+      end
     end
-  end
 
-end
+  end

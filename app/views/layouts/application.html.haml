@@ -43,21 +43,20 @@
       / ! end of .container
     / ! end of #main
 
-:javascript
-  // Document Ready
-  var localized_yes_str;
-  var localized_no_str;
-  var localized_ok_str;
-  var localized_cancel_str;
-  
-  $(document).ready(function(){
-    // Set default locale configs and other settings that affect every page
-    localized_yes_str = "#{t(:yes)}";
-    localized_no_str = "#{t(:no)}";
-    localized_ok_str = "#{t(:ok)}";
-    localized_cancel_str = "#{t(:cancel)}";
-    
-    bootbox.setDefaults({
-      locale: "#{I18n.locale}"
-    });
-  });
+    :javascript
+      var localized_yes_str;
+      var localized_no_str;
+      var localized_ok_str;
+      var localized_cancel_str;
+      
+      $(document).ready(function(){
+        // Set default locale configs and other settings that affect every page
+        localized_yes_str = "#{t(:yes)}";
+        localized_no_str = "#{t(:no)}";
+        localized_ok_str = "#{t(:ok)}";
+        localized_cancel_str = "#{t(:cancel)}";
+        
+        bootbox.setDefaults({
+          locale: "#{I18n.locale}"
+        });
+      });
