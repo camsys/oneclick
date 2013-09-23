@@ -23,6 +23,7 @@ gem 'awesome_print'
 gem 'chronic'
 gem 'mechanize'
 gem 'activemodel'
+gem 'newrelic_rpm'
 group :development do
   #gem 'mysql2'
   gem 'better_errors'
