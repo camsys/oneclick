@@ -69,7 +69,9 @@
     = button_tag :type => 'submit', :class => "btn btn-primary" do
       %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
       = t(:plan_it)
-    = link_to t(:cancel), :back
+    = link_to :back, :class => "cancel_link" do
+      %i.icon.icon-reply
+      = t(:cancel)
 
 :javascript
   // Configure UI behaviors
