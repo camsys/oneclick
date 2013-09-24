@@ -2,6 +2,8 @@ env:
 - ENV_FROM_APPLICATION_YML=true
 before_script:
 - mv config/database.yml.travis config/database.yml
+- git config user.email "denis+camsys@constantorbit.com"
+- git config user.name "Denis Haskin"
 rvm:
 - 1.9.3
 bundler_args: --without development
@@ -15,10 +17,8 @@ notifications:
 # after_script:
 # - cat "log/test.log"
 before_deploy:
-- 'bundle exec rake oneclick:version'
-- 'git config user.email "denis+camsys@constantorbit.com"'
-- 'git config user.name "Denis Haskin'
-- 'git commit -am "Bump version"'
+- bundle exec rake oneclick:version
+- git commit -am "Bump version"
 deploy:
   provider: heroku
   api_key:
