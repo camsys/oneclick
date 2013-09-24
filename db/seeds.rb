@@ -86,8 +86,8 @@ users.each do |user|
     rescue Exception => e
       puts e.inspect
       puts u.errors.inspect
-      u.places.each do |p|
-        puts p.errors.inspect
+      u.places.each do |pl|
+        puts pl.errors.inspect
       end
     end
   end
