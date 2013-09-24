@@ -225,6 +225,9 @@ en:
   no:  "No"
   ok: "Ok"
   cancel: "Cancel"
+  edit: "Edit"
+  delete: "Delete"
+  save: "Save"
   
   # Branding
   arc:

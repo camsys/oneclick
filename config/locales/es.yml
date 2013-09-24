@@ -220,6 +220,9 @@ es:
   no:  "Not"
   ok: "Ok"
   cancel: "Cancelar"
+  edit: "Editar *30*"
+  delete: "Borrar *31*"
+  save: "Guardar *32*"
 
   # Branding
   arc:

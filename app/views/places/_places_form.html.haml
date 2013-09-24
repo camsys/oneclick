@@ -20,7 +20,7 @@
 
       .form-actions
         = button_tag :type => 'submit', :class => "btn btn-primary" do
-          = "Save"
+          = t(:save)
 
 #select_place
   = render :partial => 'alt_address_select', :locals => {:results => [], :type => "place"}
@@ -44,10 +44,10 @@
     .well.well-small
       = link_to "#", :class => "btn btn-danger", :id => "delete_button" do
         %i.icon.icon-remove
-        Delete
+        = t(:delete)
       = link_to "#", :class => "btn btn-primary", :id => "edit_button" do
         %i.icon.icon-edit
-        Edit
+        = t(:edit)
     
 :javascript  
   // Configure UI behaviors
