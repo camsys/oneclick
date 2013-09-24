@@ -326,17 +326,15 @@ protected
   
   
   def get_trip
-    if user_signed_in?
-      # limit trips to trips accessible by the user unless an admin
-      if current_user.has_role? :admin
-        @trip = Trip.find(params[:id])
-      else
-        begin
-          @trip = @traveler.trips.find(params[:id])
-        rescue => ex
-          Rails.logger.info ex.message
-          @trip = nil
-        end
+    # limit trips to trips accessible by the user unless an admin
+    if @traveler.has_role? :admin
+      @trip = Trip.find(params[:id])
+    else
+      begin
+        @trip = @traveler.trips.find(params[:id])
+      rescue => ex
+        Rails.logger.info ex.message
+        @trip = nil
       end
     end
   end
