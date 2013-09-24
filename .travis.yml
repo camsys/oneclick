@@ -1,5 +1,8 @@
 env:
 - ENV_FROM_APPLICATION_YML=true
+branches:
+  only:
+    - develop
 before_script:
 - mv config/database.yml.travis config/database.yml
 - git config user.email "denis+camsys@constantorbit.com"
