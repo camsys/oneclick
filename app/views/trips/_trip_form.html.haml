@@ -15,36 +15,36 @@
 
   - if user_signed_in?
     = f.input :from_place, :wrapper => :append, :class => "inline span12", :label => t(:from) do
-      = f.text_field :from_place, :placeholder => t(:enter_address), :id => "from_address", :autocomplete => "off", :class => "ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}
+      = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_address", :autocomplete => "off", :class => "ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}
       %span.dropdown
         %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}
           %span.caret
-        %ul.dropdown-menu{:data => {:target => 'from_address'}}
+        %ul.dropdown-menu{:data => {:target => 'trip_proxy_from_address'}}
           - @traveler.places.each do |p|
             %li
               %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.location.first, p.location.last], :type => "from"}}
                 = p.name
   - else
     = f.input :from_place, :class => "inline span12", :label => t(:from) do
-      = f.text_field :from_place, :placeholder => t(:enter_address), :id => "from_address", :autocomplete => "off", :class => "ajax-typeahead", :data => {:link => search_user_trips_path, :provide => "typeahead"}
+      = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_address", :autocomplete => "off", :class => "ajax-typeahead", :data => {:link => search_user_trips_path, :provide => "typeahead"}
 
   #from_place_candidates
     = render :partial => 'alt_address_select', :locals => {:results => [], :type => "from"}
 
   - if user_signed_in?
     = f.input :to_place, :wrapper => :append, :class => "inline span12", :label => t(:to) do
-      = f.text_field :to_place, :placeholder => t(:enter_address), :id => "to_address", :autocomplete => "off", :class => "ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}
+      = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_address", :autocomplete => "off", :class => "ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}
       %span.dropdown
         %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}
           %span.caret
-        %ul.dropdown-menu{:data => {:target => 'to_address'}}
+        %ul.dropdown-menu{:data => {:target => 'trip_proxy_to_address'}}
           - @traveler.places.each do |p|
             %li
               %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.location.first, p.location.last], :type => "to"}}
                 = p.name
   - else    
     = f.input :to_place, :class => "inline span12", :label => t(:to) do
-      = f.text_field :to_place, :placeholder => t(:enter_address), :id => "to_address", :class => "ajax-typeahead", :autocomplete => "off", :data => {:link => search_user_trips_path, :provide => "typeahead"} 
+      = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_address", :class => "ajax-typeahead", :autocomplete => "off", :data => {:link => search_user_trips_path, :provide => "typeahead"} 
 
   #to_place_candidates
     = render :partial => 'alt_address_select', :locals => {:results => [], :type => "to"}
@@ -109,11 +109,11 @@
   // Listeners
 
   // Add change listeners on the text fields
-  $("#from_address").bind("keyup input paste", function() {
+  $("#trip_proxy_from_address").bind("keyup input paste", function() {
     $('#from_place_selected').val("");
     $('#from_place_selected_type').val("");  
   });
-  $("#to_address").bind("keyup input paste", function() {
+  $("#trip_proxy_to_address").bind("keyup input paste", function() {
     $('#to_place_selected').val("");
     $('#to_place_selected_type').val("");    
   });
@@ -122,10 +122,10 @@
   // Actions
 
   // user has lost focus on the from address
-  $('#from_address').blur(function() {
+  $('#trip_proxy_from_address').blur(function() {
     if ($('#from_place_selected').val() == "") {
       // Do an ajax query to geocode the input text
-      var addr = $('#from_address').val().trim();
+      var addr = $('#trip_proxy_from_address').val().trim();
       if (addr.length >= geocoder_min_chars) {
         $('#query').val(addr);
         $('#target').val(0);
@@ -135,10 +135,10 @@
   });
   
   // user has lost focus on the to address
-  $('#to_address').blur(function() {
+  $('#trip_proxy_to_address').blur(function() {
       if ($('#to_place_selected').val() == "") {
       // Do an ajax query to geocode the input text
-      var addr = $('#to_address').val().trim();
+      var addr = $('#trip_proxy_to_address').val().trim();
       if (addr.length >= geocoder_min_chars) {
         $('#query').val(addr);
         $('#target').val(1);
@@ -181,7 +181,7 @@
   var to_timeout;
   
   // Enable typeahead for the places forms
-  $('#from_address').typeahead({
+  $('#trip_proxy_from_address').typeahead({
       items: typeahead_list_length,
       minLength: typeahead_min_chars,
       source: function(query, process) {
@@ -190,7 +190,7 @@
           }
           from_timeout = setTimeout(function() {      
               return $.ajax({
-                  url: $('#from_address').data('link'),
+                  url: $('#trip_proxy_from_address').data('link'),
                   type: 'get',
                   data: {
                     query: query
@@ -251,7 +251,7 @@
   });  
   
   // Enable typeahead for the places forms
-  $('#to_address').typeahead({
+  $('#trip_proxy_to_address').typeahead({
       items: typeahead_list_length,
       minLength: typeahead_min_chars,
       source: function(query, process) {
@@ -260,7 +260,7 @@
           }
           to_timeout = setTimeout(function() {      
               return $.ajax({
-                  url: $('#to_address').data('link'),
+                  url: $('#trip_proxy_to_address').data('link'),
                   type: 'get',
                   data: {
                     query: query
