@@ -1,16 +1,27 @@
 env:
-  - ENV_FROM_APPLICATION_YML=true
+- ENV_FROM_APPLICATION_YML=true
 before_script:
-  - mv config/database.yml.travis config/database.yml
+- mv config/database.yml.travis config/database.yml
 rvm:
-  - "1.9.3"
+- 1.9.3
 bundler_args: --without development
 script:
-  - bundle exec /usr/bin/env RAILS_ENV=test rake db:drop db:create db:reset
-  - bundle exec /usr/bin/env RAILS_ENV=test rake oneclick:test_with_coveralls
+- bundle exec /usr/bin/env RAILS_ENV=test rake db:drop db:create db:reset
+- bundle exec /usr/bin/env RAILS_ENV=test rake oneclick:test_with_coveralls
 notifications:
   email:
-    - oneclickcs_github@googlegroups.com
-  irc: "irc.freenode.net#oneclick"
-after_script:
-  - cat "log/test.log"
+  - oneclickcs_github@googlegroups.com
+  irc: irc.freenode.net#oneclick
+# after_script:
+# - cat "log/test.log"
+before_deploy:
+- 'bundle exec rake oneclick:version'
+- 'git commit -am "Bump version"'
+deploy:
+  provider: heroku
+  api_key:
+    secure: h4oO5/falwm1cIWu8SlGlJlWZese5B/ZIMaU2+e6kwhE/ekci2t9f/XeudpzHxLsBL5OAQiB9idZL2OCligYU8BexrrevzUcBwD4yg/OKVI/HK2VS/NON+fTWPf72tgFUF8cugZTN77X6ZtvapxICJs5y//1PcAG4VWc+z2feCk=
+  app: oneclick-arc-int
+  on:
+    repo: camsys/oneclick
+    branch: develop

@@ -42,6 +42,7 @@ group :development do
   gem 'sextant'
   gem 'rails-erd'
   gem 'growl'
+  gem 'travis'
 end
 group :test do
   gem 'factory_girl_rails'
