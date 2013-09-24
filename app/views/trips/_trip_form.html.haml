@@ -114,10 +114,12 @@
   $("#trip_proxy_from_address").bind("keyup input paste", function() {
     $('#from_place_selected').val("");
     $('#from_place_selected_type').val("");  
+    removeMatchingMarkers('start');
   });
   $("#trip_proxy_to_address").bind("keyup input paste", function() {
     $('#to_place_selected').val("");
     $('#to_place_selected_type').val("");    
+    removeMatchingMarkers('stop');
   });
   
 
