@@ -212,11 +212,11 @@ class TripsController < PlaceSearchingController
     if @trip_proxy.errors.empty?
 
       # we need to remove any existing trip places, planned trips and itineraries from the edited trip
-      @trip.trip_places.delete_all
-      @trip.planned_trips.each do |pt|
-        pt.itineraries.delete_all
-      end 
-      @trip.planned_trips.delete_all
+      @trip.planned_trips.each do |pt| 
+        pt.itineraries.each { |x| x.destroy }
+      end
+      @trip.planned_trips.each { |x| x.destroy }
+      @trip.trip_places.each { |x| x.destroy}
       @trip.save
       # Start updating the trip from the form-based one
 
