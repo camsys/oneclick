@@ -1,10 +1,12 @@
 - if @target == "0"
   removeMatchingMarkers('start_');
   $('#from_place_candidates').html("#{escape_javascript(render :partial => 'alt_address_select', :locals => {:results => @matches, :type => "from"})}");
+  create_candidate_markers("from");  
   $('#from_place_candidates').show();
 - else
   removeMatchingMarkers('stop_');
   $('#to_place_candidates').html("#{escape_javascript(render :partial => 'alt_address_select', :locals => {:results => @matches, :type => "to"})}");
+  create_candidate_markers("to");  
   $('#to_place_candidates').show();
 
 setMapToBounds();
