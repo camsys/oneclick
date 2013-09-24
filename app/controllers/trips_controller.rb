@@ -40,6 +40,7 @@ class TripsController < PlaceSearchingController
         
     # Create makers for the map control
     @markers = create_markers(@trip_proxy)
+    @places = create_place_markers(@traveler.places)
 
     respond_to do |format|
       format.html { render :action => 'edit'}
@@ -73,6 +74,7 @@ class TripsController < PlaceSearchingController
 
     # Create makers for the map control
     @markers = create_markers(@trip_proxy)
+    @places = create_place_markers(@traveler.places)
         
     respond_to do |format|
       format.html
@@ -108,6 +110,7 @@ class TripsController < PlaceSearchingController
 
     # Create makers for the map control
     @markers = create_markers(@trip_proxy)
+    @places = create_place_markers(@traveler.places)
 
     respond_to do |format|
       format.html { render :action => 'new'}
@@ -210,6 +213,7 @@ class TripsController < PlaceSearchingController
 
     # Create makers for the map control
     @markers = create_markers(@trip_proxy)
+    @places = create_place_markers(@traveler.places)
     
     respond_to do |format|
       format.html # new.html.erb
@@ -243,6 +247,7 @@ class TripsController < PlaceSearchingController
 
     # Create makers for the map control
     @markers = create_markers(@trip_proxy)
+    @places = create_place_markers(@traveler.places)
     
     # see if we can continue saving this trip                
     if @trip_proxy.errors.empty?
@@ -298,6 +303,7 @@ class TripsController < PlaceSearchingController
 
     # Create makers for the map control
     @markers = create_markers(@trip_proxy)
+    @places = create_place_markers(@traveler.places)
 
     respond_to do |format|
       if @trip
@@ -349,6 +355,13 @@ protected
     return markers.to_json
   end
   
+  def create_place_markers(places)
+    markers = []    
+    places.each_with_index do |place, index|
+      markers << get_map_marker(place, place.id, 'startIcon')
+    end
+    return markers
+  end
 private
   
   # creates a trip_proxy object from form parameters

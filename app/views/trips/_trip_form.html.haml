@@ -20,10 +20,10 @@
         %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}
           %span.caret
         %ul.dropdown-menu{:data => {:target => 'trip_proxy_from_place'}}
-          - @traveler.places.each do |p|
+          - @places.each do |p|
             %li
-              %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.location.first, p.location.last], :type => "from"}}
-                = p.name
+              %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "from"}}
+                = p["name"]
   - else
     = f.input :from_place, :class => "inline span12", :label => t(:from) do
       = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "ajax-typeahead", :data => {:link => search_user_trips_path, :provide => "typeahead"}
@@ -38,10 +38,10 @@
         %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}
           %span.caret
         %ul.dropdown-menu{:data => {:target => 'trip_proxy_to_place'}}
-          - @traveler.places.each do |p|
+          - @places.each do |p|
             %li
-              %a.place-option{:data => {:value => p.name, :id => p.id, :latlon => [p.location.first, p.location.last], :type => "to"}}
-                = p.name
+              %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "to"}}
+                = p["name"]
   - else    
     = f.input :to_place, :class => "inline span12", :label => t(:to) do
       = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :class => "ajax-typeahead", :autocomplete => "off", :data => {:link => search_user_trips_path, :provide => "typeahead"} 
@@ -159,6 +159,7 @@
     var id = t.data('id');
     var from_to = t.data('type');
     var name = t.data('value');
+    var desc = t.data('desc');
     var latlon = eval(t.data('latlon'));
     var iconStyle = 'startIcon';
     var key;
@@ -175,7 +176,7 @@
       key = 'stop';
     }
     removeMatchingMarkers(key);
-    var marker = create_or_update_marker(key, latlon[0], latlon[1], name, name, iconStyle);
+    var marker = create_or_update_marker(key, latlon[0], latlon[1], name, desc, iconStyle);
     setMapToBounds();
     selectMarker(marker);
     
