@@ -21,6 +21,12 @@ class TripsController < PlaceSearchingController
     # set the @trip variable
     get_trip
 
+    # make sure we can find the trip we are supposed to be repeating and that it belongs to us. 
+    if @trip.nil? 
+      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
+      return            
+    end
+
     # create a new trip_proxy from the current trip
     @trip_proxy = create_trip_proxy(@trip)
     # set the flag so we know what to do when the user submits the form
@@ -46,6 +52,17 @@ class TripsController < PlaceSearchingController
     get_traveler
     # set the @trip variable
     get_trip
+
+    # make sure we can find the trip we are supposed to be updating and that it belongs to us. 
+    if @trip.nil? 
+      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
+      return            
+    end
+    # make sure that the trip can be modified 
+    unless @trip.can_modify
+      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
+      return            
+    end
 
     # create a new trip_proxy from the current trip
     @trip_proxy = create_trip_proxy(@trip)
@@ -105,6 +122,12 @@ class TripsController < PlaceSearchingController
 
     set_no_cache
 
+    # make sure we can find the trip we are supposed to be showing and that it belongs to us. 
+    if @trip.nil? 
+      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
+      return            
+    end
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trip }
@@ -119,13 +142,21 @@ class TripsController < PlaceSearchingController
     get_traveler
     # set the @trip variable
     get_trip
+
+    # make sure we can find the trip we are supposed to be removing and that it belongs to us. 
+    if @trip.nil?
+      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
+      return            
+    end
+    # make sure that the trip can be modified 
+    unless @trip.can_modify
+      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
+      return            
+    end
     
     if @trip
-      @trip.planned_trips.each do |pt| 
-        pt.itineraries.each { |x| x.destroy }
-      end
-      @trip.planned_trips.each { |x| x.destroy }
-      @trip.trip_places.each { |x| x.destroy}
+      # remove any child objects
+      @trip.clean      
       @trip.destroy
       message = t(:trip_was_successfully_removed)
     else
@@ -199,6 +230,11 @@ class TripsController < PlaceSearchingController
       redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
       return            
     end
+    # make sure that the trip can be modified 
+    unless @trip.can_modify
+      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
+      return            
+    end
     
     # Get the updated trip proxy from the form params
     @trip_proxy = create_trip_proxy_from_form_params
@@ -210,13 +246,8 @@ class TripsController < PlaceSearchingController
     
     # see if we can continue saving this trip                
     if @trip_proxy.errors.empty?
-
-      # we need to remove any existing trip places, planned trips and itineraries from the edited trip
-      @trip.planned_trips.each do |pt| 
-        pt.itineraries.each { |x| x.destroy }
-      end
-      @trip.planned_trips.each { |x| x.destroy }
-      @trip.trip_places.each { |x| x.destroy}
+      # remove any child objects
+      @trip.clean      
       @trip.save
       # Start updating the trip from the form-based one
 
@@ -300,7 +331,12 @@ protected
       if current_user.has_role? :admin
         @trip = Trip.find(params[:id])
       else
-        @trip = @traveler.trips.find(params[:id])
+        begin
+          @trip = @traveler.trips.find(params[:id])
+        rescue => ex
+          Rails.logger.info ex.message
+          @trip = nil
+        end
       end
     end
   end
