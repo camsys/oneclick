@@ -82,7 +82,7 @@ class PlaceSearchingController < TravelerAwareController
     
     # First search for matching names in my places
     rel = Place.arel_table[:name].matches(query_str)
-    places = Place.active.where(rel)
+    places = @traveler.places.active.where(rel)
     Rails.logger.info places.ai
     places.each do |place|
       matches << {
