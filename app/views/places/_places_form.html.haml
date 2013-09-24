@@ -127,7 +127,9 @@
   // Add a change listener on the text field
   $("#poi_typeahead").bind("keyup input paste", function() {
     $('#place_type_field').val("");
-    $('#place_id_field').val("");    
+    $('#place_id_field').val("");   
+    $('#select_place').hide();  
+    removeMatchingMarkers('place');     
   });
   
    // user has lost focus on the address input
