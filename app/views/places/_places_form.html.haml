@@ -40,14 +40,13 @@
             %em= place.address
 
 .row-fluid
-  .span12
-    .well.well-small
-      = link_to "#", :class => "btn btn-danger", :id => "delete_button" do
-        %i.icon.icon-remove
-        = t(:delete)
-      = link_to "#", :class => "btn btn-primary", :id => "edit_button" do
-        %i.icon.icon-edit
-        = t(:edit)
+  .span12{:style => "padding-top:5px"}
+    = link_to "#", :class => "btn btn-danger", :id => "delete_button" do
+      %i.icon.icon-remove
+      = t(:delete)
+    = link_to "#", :class => "btn btn-primary", :id => "edit_button" do
+      %i.icon.icon-edit
+      = t(:edit)
     
 :javascript  
   // Configure UI behaviors
