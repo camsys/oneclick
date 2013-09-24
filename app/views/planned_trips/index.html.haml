@@ -41,7 +41,7 @@
                 %i.icon-mail-forward
               = link_to edit_user_trip_path(@traveler, planned_trip.trip), :class => "btn btn-small" do
                 %i.icon-edit
-              = link_to user_trip_path(@traveler, planned_trip.trip), :class => "btn btn-small delete-button", :method => :delete, :confirm => t(:confirm_remove_trip) do
+              = link_to user_trip_path(@traveler, planned_trip.trip), :class => "btn btn-small btn-danger delete-button", :method => :delete, :confirm => t(:confirm_remove_trip) do
                 %i.icon-remove
           - else
             %td.center.nowrap          
