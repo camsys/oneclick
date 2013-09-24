@@ -113,12 +113,14 @@
   // Add change listeners on the text fields
   $("#trip_proxy_from_address").bind("keyup input paste", function() {
     $('#from_place_selected').val("");
-    $('#from_place_selected_type').val("");  
+    $('#from_place_selected_type').val("");
+    $('#from_place_candidates').hide();  
     removeMatchingMarkers('start');
   });
   $("#trip_proxy_to_address").bind("keyup input paste", function() {
     $('#to_place_selected').val("");
     $('#to_place_selected_type').val("");    
+    $('#to_place_candidates').hide();  
     removeMatchingMarkers('stop');
   });
   
@@ -362,3 +364,18 @@
     addMarkerToMap(marker, true);
   }
     
+  // Add the candidate locations to the map
+  function create_candidate_markers(from_to_type) {
+    $('.address-select').each(function() {
+      var t = $(this);
+      var id = t.data('id');
+      var index = t.data('index');
+      var type = t.data('type');
+      var addr = t.data('addr');
+      var desc = t.data('desc');
+      var latlon = eval(t.data('latlon'));
+      if (type === from_to_type) {
+        add_candidate_marker(index, latlon[0], latlon[1], addr, desc, type);
+      }     
+    });
+  };
