@@ -70,7 +70,7 @@ class Place < ActiveRecord::Base
     geocoder.geocode(raw_address)
     res = geocoder.results
     if address = res.first
-      self.name = address[:name]
+      self.name = address[:name] unless self.name
       self.address1 = address[:name]
       self.city = address[:city]
       self.state = address[:state]
