@@ -28,7 +28,10 @@
         .container-fluid
           .well
             .pull-left
-              %span= "#{t(:version)} #{Rails.application.config.version}"
+              - if Rails.env.integration?
+                %span= "#{t(:version)} Auto-deploy"
+              - else
+                %span= "#{t(:version)} #{Rails.application.config.version}"
               - if Rails.env.development?
                 %span
                   |
