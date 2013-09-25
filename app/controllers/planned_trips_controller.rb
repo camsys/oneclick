@@ -22,7 +22,7 @@ class PlannedTripsController < TravelerAwareController
     
   def index
 
-    # Filtering logic. See ApplicaitonHelper.trip_filters
+    # Filtering logic. See ApplicationHelper.trip_filters
     if params[:time_filter_type]
       @time_filter_type = params[:time_filter_type]
     else

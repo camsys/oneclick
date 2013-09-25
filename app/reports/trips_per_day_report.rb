@@ -8,11 +8,12 @@ class TripsPerDayReport < AbstractReport
     
     a = {}
     duration = TimeFilterHelper.time_filter_as_duration(params[:time_filter_type])
-    duration.each do |day|
+    days = duration.first.to_date..duration.last.to_date
+    days.each do |day|
       
       row = BasicReportRow.new(day)
       # get the trips that were generated on this day
-      trips = PlannedTrip.created_between(day, day)
+      trips = PlannedTrip.created_between(day.beginning_of_day, day.end_of_day)
       trips.each do |trip|
         row.add(trip)
       end     
