@@ -51,7 +51,7 @@ class Place < ActiveRecord::Base
   
   # Returns a hash of attributes that are modifiable
   def get_modifiable_attributes
-    return attributes.except("id", "user_id", "created_at", "updated_at")
+    return attributes.except(*Place.protected_attributes)
   end
   
   # Use this as the main method for getting a place's location
