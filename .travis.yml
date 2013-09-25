@@ -7,10 +7,6 @@ before_script:
 - mv config/database.yml.travis config/database.yml
 - git config user.email "denis+camsys@constantorbit.com"
 - git config user.name "Denis Haskin"
-- git describe
-- bundle exec rake oneclick:version
-- git commit -am "Bump version"
-- git --no-pager log -50 --pretty="%h %<(60,trunc) %s %<(23,trunc) %ae %ar"
 rvm:
 - 1.9.3
 bundler_args: --without development
@@ -23,7 +19,11 @@ notifications:
   irc: irc.freenode.net#oneclick
 # after_script:
 # - cat "log/test.log"
-# before_deploy:
+before_deploy:
+- git describe
+- bundle exec rake oneclick:version
+- git commit -am "Bump version"
+- git --no-pager log -50 --pretty="%h %<(60,trunc) %s %<(23,trunc) %ae %ar"
 deploy:
   provider: heroku
   api_key:
