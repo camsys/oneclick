@@ -21,7 +21,7 @@
       .form-actions
         = button_tag :type => 'submit', :class => "btn btn-primary" do
           %i.icon.icon-ok
-          = t(:save)
+          = @place_proxy.id.nil? ? t(:save) : t(:update)
         = link_to :back, :class => "cancel_link" do
           %i.icon.icon-reply
           = t(:cancel)
