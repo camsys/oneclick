@@ -7,6 +7,7 @@ class TripProxy < Proxy
   attr_accessor :from_place_selected, :to_place_selected
   attr_accessor :from_place_selected_type, :to_place_selected_type
   attr_accessor :mode, :id
+  
   validates :from_place, :presence => true
   validates :to_place, :presence => true
   validates :trip_date, :presence => true
@@ -17,6 +18,8 @@ class TripProxy < Proxy
   validate :validate_time
   
   validate :datetime_cannot_be_before_now
+  validate :validate_from_selection
+  validate :validate_to_selection
   
   def initialize(attrs = {})
     super
@@ -38,7 +41,20 @@ class TripProxy < Proxy
   end
 
 protected
-
+  
+  def validate_from_selection
+    if from_place_selected.blank? || from_place_selected_type.blank?
+      errors.add(:from_place, I18n.translate(:nothing_found))
+      return false      
+    end
+  end
+  def validate_to_selection
+    if to_place_selected.blank? || to_place_selected_type.blank?
+      errors.add(:to_place, I18n.translate(:nothing_found))
+      return false      
+    end
+  end
+  
   def datetime_cannot_be_before_now
     return true if trip_datetime.nil?
     if trip_datetime < Date.today
