@@ -99,7 +99,7 @@ class PlacesController < PlaceSearchingController
       # if the place location can be modified we simply create a copy of the place with the same id
       if place.can_alter_location
         new_place = create_place(@place_proxy)
-        place.attributes = new_place.attributes
+        place.assign_attributes(new_place.get_modifiable_attributes)
       else
         # we can only update the name
         place.name = @place_proxy.name

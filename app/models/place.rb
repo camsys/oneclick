@@ -6,7 +6,9 @@ class Place < ActiveRecord::Base
   belongs_to  :poi       # optional
   has_many    :trip_places # optional
   
+  attr_protected :id, :user_id, :created_at, :updated_at
   attr_accessible :name, :address1, :address2, :city, :state, :zip, :lat, :lon, :raw_address
+  attr_accessible :creator_id, :poi_id, :active
   
   scope :active, where("places.active = true")
   default_scope order("name")
@@ -45,6 +47,11 @@ class Place < ActiveRecord::Base
     end
     # looks like they are all ok
     return true
+  end
+  
+  # Returns a hash of attributes that are modifiable
+  def get_modifiable_attributes
+    return attributes.except("id", "user_id", "created_at", "updated_at")
   end
   
   # Use this as the main method for getting a place's location
