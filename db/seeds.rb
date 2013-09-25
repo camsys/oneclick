@@ -8,10 +8,11 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 # Environment variables (ENV['...']) are set in the file config/application.yml.
 # See http://railsapps.github.io/rails-environment-variables.html
-places = [ {name: 'My house', raw_address: '730 Peachtree St NE, Atlanta, GA 30308'},
-  {name: 'Atlanta VA Medical Center', raw_address: '1670 Clairmont Rd, Decatur, GA'},
-  {name: 'Formación Para el Trabajo', raw_address: '239 West Lake Avenue NW, Atlanta, GA 30314'},
-  {name: 'Atlanta Mission',  raw_address: '239 West Lake Avenue NW, Atlanta, GA 30314'}
+places = [ 
+  {active: 1, name: 'My house', raw_address: '730 Peachtree St NE, Atlanta, GA 30308'},
+  {active: 1, name: 'Atlanta VA Medical Center', raw_address: '1670 Clairmont Rd, Decatur, GA'},
+  {active: 1, name: 'Formación Para el Trabajo', raw_address: '239 West Lake Avenue NW, Atlanta, GA 30314'},
+  {active: 1, name: 'Atlanta Mission',  raw_address: '239 West Lake Avenue NW, Atlanta, GA 30314'}
 ]
 users = [
   {first_name: 'Denis', last_name: 'Haskin', email: 'dhaskin@camsys.com'},
@@ -23,9 +24,9 @@ users = [
   {first_name: 'sys', last_name: 'admin', email: 'email@camsys.com'},
 ]
 roles = [
-  {name: 'Admin'},
-  {name: 'Agent'},
-  {name: 'Agent_Admin'},
+  {name: 'admin'},
+  {name: 'agent'},
+  {name: 'agent_admin'},
 ]
 trip_statuses = [
   {active: 1, name: 'New'},
@@ -79,6 +80,7 @@ users.each do |user|
   up.save!
   places.each do |place|
     p = Place.new(place)
+    p.creator = u
     p.geocode
     u.places << p
     begin
@@ -105,7 +107,7 @@ roles.each do |role|
   r.save!
 end
 u = User.find_by_email('email@camsys.com')
-u.add_role 'Admin'
+u.add_role 'admin'
 u.save!
 
 # load the reports
