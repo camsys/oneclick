@@ -16,15 +16,34 @@ class Place < ActiveRecord::Base
   def can_delete
     # check all the trip plces associated with this place
     trip_places.each do |tp|
-      # check all the planned trips associated with each trip_place trip
-      tp.trip.planned_trips.each do |pt|
-        # if a planned trip is in the future we can't delete it
-        if pt.in_the_future
-          return false
+      if tp.trip
+        # check all the planned trips associated with each trip_place trip
+        tp.trip.planned_trips.each do |pt|
+          # if a planned trip is in the future we can't delete it
+          if pt.in_the_future
+            return false
+          end
         end
       end
     end
     # looks like they are all in the past
+    return true
+  end
+  # Returns true if the user can alter the address or POI reference for this place. false otherwise
+  def can_alter_location
+    # check all the trip places associated with this place
+    trip_places.each do |tp|
+      if tp.trip
+        # check all the planned trips associated with each trip_place trip
+        tp.trip.planned_trips.each do |pt|
+          # if a planned trip has an itinerary we can't mutate it
+          if pt.itineraries.count > 0
+            return false
+          end
+        end
+      end
+    end
+    # looks like they are all ok
     return true
   end
   

@@ -8,7 +8,7 @@ class Proxy
   def initialize(attrs = {})
     @errors = ActiveModel::Errors.new(self)    
   end
-       
+
   def persist
     @persisted = false
   end

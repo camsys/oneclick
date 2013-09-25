@@ -70,7 +70,7 @@ class PlacesController < PlaceSearchingController
           format.json { render json: @place_proxy.errors, status: :unprocessable_entity }
         end
       else
-        format.html { render action: "index", flash[:alert] => "One or more addresses need to be fixed." }
+        format.html { render action: "index", flash[:alert] => t(:nothing_found) }
       end
     end
   end
@@ -78,34 +78,53 @@ class PlacesController < PlaceSearchingController
   # updates a place
   def update
 
-    # inflate a place proxy object from the form params
-    @place_proxy = PlaceProxy.new(params[:place_proxy])
+    # get the place being updated
+    place = @traveler.places.find(params[:id])
+    Rails.logger.debug place.inspect
+    
+    # get a place proxy from the place
+    @place_proxy = create_place_proxy(place)
+    Rails.logger.debug @place_proxy.inspect
+
+    # update the place proxy from the form params. This merges any changes from the form
+    # with the existing place
+    @place_proxy.update(params[:place_proxy])
+    Rails.logger.debug @place_proxy.inspect
+
+    # set the basic form variables
+    set_form_variables
+ 
+    # make sure the place proxy validates
     if @place_proxy.valid?
-      # get the place being updated
-      place = @traveler.places.find(params[:id])
-      if place
-        place.name = @place_proxy.name 
+      # if the place location can be modified we simply create a copy of the place with the same id
+      if place.can_alter_location
+        new_place = create_place(@place_proxy)
+        place.attributes = new_place.attributes
+      else
+        # we can only update the name
+        place.name = @place_proxy.name
       end
-      updated_place = true
+      Rails.logger.debug place.inspect
+      valid = true
     else
-      updated_place = false
+      valid = false    
     end
     
     respond_to do |format|
-      if updated_place # only created if the form validated and there are no geocoding errors
+      if valid
         if place.save
           place.reload
           format.html { redirect_to user_places_path(@traveler), :notice => t(:address_book_updated)  }          
           format.json { render json: place, status: :updated, location: place }
         else
-          format.html { render action: "edit" }
+          format.html { render action: "index" }
           format.json { render json: @place_proxy.errors, status: :unprocessable_entity }
         end
       else
-        format.html { render action: "edit", flash[:alert] => "One or more addresses need to be fixed." }
-      end
+        format.html { render action: "index" }
+        format.json { render json: @place_proxy.errors, status: :unprocessable_entity }
+      end    
     end
-    
   end
 
 
@@ -125,7 +144,7 @@ protected
   # came from a raw address
   def create_place_proxy(place)
     
-    place_proxy = PlaceProxy.new({:id => place.id, :name => place.name, :raw_address => place.address})
+    place_proxy = PlaceProxy.new({:id => place.id, :name => place.name, :raw_address => place.address, :can_alter_location => place.can_alter_location})
     if place.poi
       place_proxy.place_type_id = POI_TYPE
       place_proxy.place_id = place.poi.id
