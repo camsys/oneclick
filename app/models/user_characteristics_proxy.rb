@@ -1,24 +1,12 @@
 class UserCharacteristicsProxy < Proxy
 
-  attr_accessor :user, :dob_month, :dob_day, :dob_year, :date_of_birth
-  validate :validate_dob
+  attr_accessor :user, :date_of_birth
+  validates :date_of_birth, :presence => true
 
   def initialize(user = nil)
     self.user = user
     date_of_birth = Date.today
     super
-  end
-
-  def validate_dob
-    dob = self.dob_day.to_s + '/' + self.dob_month.to_s + '/' + self.dob_year.to_s
-    begin
-      temp_date = Date.parse(dob)
-    rescue
-      errors.add(:dob_year, 'Please enter a valid date.')
-      return false
-    else
-      return true
-    end
   end
 
   def method_missing(code, *args)
@@ -79,14 +67,13 @@ class UserCharacteristicsProxy < Proxy
   end
 
   def update_dob
-    dob = self.dob_day.to_s + '/' + self.dob_month.to_s + '/' + self.dob_year.to_s
     characteristic = TravelerCharacteristic.where(:code => 'date_of_birth').first
     map = UserTravelerCharacteristicsMap.where(characteristic_id: characteristic.id, user_profile_id: user.user_profile.id).first
 
     if map.nil?
-      UserTravelerCharacteristicsMap.create(:characteristic_id => characteristic.id, :user_profile_id => user.user_profile.id, value: dob)
+      UserTravelerCharacteristicsMap.create(:characteristic_id => characteristic.id, :user_profile_id => user.user_profile.id, value: date_of_birth)
     else
-      map.value = dob
+      map.value = date_of_birth
       map.save()
     end
 
