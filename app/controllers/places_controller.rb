@@ -144,7 +144,7 @@ protected
   # came from a raw address
   def create_place_proxy(place)
     
-    place_proxy = PlaceProxy.new({:id => place.id, :name => place.name, :raw_address => place.address, :can_alter_location => place.can_alter_location})
+    place_proxy = PlaceProxy.new({:id => place.id, :name => place.name, :raw_address => place.address, :can_alter_location => place.can_alter_location, :lat => place.location.first, :lon => place.location.last})
     if place.poi
       place_proxy.place_type_id = POI_TYPE
       place_proxy.place_id = place.poi.id
@@ -187,15 +187,19 @@ protected
       # the user entered a raw address and possibly selected an alternate from the list of possible
       # addresses
       addr = get_cached_addresses(CACHED_PLACES_ADDRESSES_KEY)[place_proxy.place_id.to_i]
+      place = Place.new
+      place.user = @traveler
+      place.creator = current_user
+      place.name = place_proxy.name 
+      place.active = true
       if addr
-        place = Place.new
-        place.user = @traveler
-        place.creator = current_user
         place.raw_address = addr[:formatted_address]
-        place.name = place_proxy.name 
         place.lat = addr[:lat]
         place.lon = addr[:lon]
-        place.active = true
+      else
+        place.raw_address = place_proxy.raw_address
+        place.lat = place_proxy.lat
+        place.lon = place_proxy.lon
       end    
     end
     return place    

@@ -1,6 +1,6 @@
 class PlaceProxy < Proxy
 
-  attr_accessor :raw_address, :name, :place_type_id, :place_id, :id, :can_alter_location
+  attr_accessor :raw_address, :name, :place_type_id, :place_id, :id, :can_alter_location, :lat, :lon
     
   validates :raw_address, :presence => true
   validates :name, :presence => true
