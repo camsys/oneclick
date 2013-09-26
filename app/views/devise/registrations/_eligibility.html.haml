@@ -1,15 +1,15 @@
 #eligibility_form
   .row-fluid
     .span12
-      = simple_form_for [current_user, @user_characteristics_proxy], remote: true do |f|
+      = simple_form_for [current_user, @user_characteristics_proxy], :remote => true do |f|
         = f.error_notification
         -TravelerCharacteristic.where(:datatype => 'bool').each do |characteristic|
           = f.input characteristic.code.to_sym, collection: [[true, 'Yes'], [false, 'No'], ['na', 'Unsure']], :required => true, as: :radio_buttons, label: characteristic.note, label_method: :last, value_method: :first, :item_wrapper_class => "inline"
         = f.input :date_of_birth, :as => :date, :start_year => Date.today.year - 12, :end_year => 1900, :required => true, :input_html => {:style => "width:auto;"}
-      .form-actions
-        = button_tag type: :submit, class: 'btn btn-primary controls' do
-          %i.icon.icon-ok
-          = t(:update)
-        = link_to :back, :class => "cancel_link" do
-          %i.icon.icon-reply
-          = t(:cancel)
+        .form-actions
+          = button_tag type: :submit, class: 'btn btn-primary controls' do
+            %i.icon.icon-ok
+            = t(:update)
+          = link_to :back, :class => "cancel_link" do
+            %i.icon.icon-reply
+            = t(:cancel)
