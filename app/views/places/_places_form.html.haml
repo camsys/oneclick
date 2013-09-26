@@ -11,10 +11,10 @@
 
 .row-fluid
   .span12
-    = simple_form_for @place_proxy, :url => @place_proxy.id.nil? ? user_places_path(@traveler) : user_place_path(@traveler, @place_proxy.id), :method => @place_proxy.id.nil? ? 'post' : 'put', :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
+    = simple_form_for @place_proxy, :url => @place_proxy.id.nil? ? user_places_path(@traveler) : user_place_path(@traveler, @place_proxy.id), :method => @place_proxy.id.nil? ? 'post' : 'put', :html => {:style => "margin-top:10px;margin-bottom:10px;"}  do |f|
       = f.input :raw_address, :class => "inline span12", :label => t(:enter_address) do
-        = f.text_field :raw_address, :placeholder => t(:enter_address_or_place), :disabled => ! @place_proxy.can_alter_location, :id => "poi_typeahead", :autocomplete => "off", :class => "ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}
-      = f.input :name, :label => t(:place_name), :placeholder => t(:new_name), :autocomplete => "off"
+        = f.text_field :raw_address, :placeholder => t(:enter_address_or_place), :disabled => ! @place_proxy.can_alter_location, :id => "poi_typeahead", :autocomplete => "off", :class => "ajax-typeahead", :style => "width:300px;", :data => {:link => search_user_places_path, :provide => "typeahead"}
+      = f.input :name, :label => t(:place_name), :placeholder => t(:new_name), :autocomplete => "off", :input_html => {:style => "width:300px;"}
       = f.hidden_field :place_type_id, :id => "place_type_field"
       = f.hidden_field :place_id, :id => "place_id_field"
 
