@@ -1,4 +1,5 @@
 removeMatchingMarkers('place_candidate');
 $('#select_place').html("#{escape_javascript(render :partial => 'alt_address_select', :locals => {:results => @matches, :type => "place"})}");
 $('#select_place').show();
+$('#geocoding_indicator').hide();        
 setMapToBounds();

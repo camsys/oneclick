@@ -24,9 +24,12 @@
             %li
               %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "from"}}
                 = p["name"]
+      = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
+
   - else
     = f.input :from_place, :class => "inline", :label => t(:from) do
       = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "ajax-typeahead", :style => "width:300px;", :data => {:link => search_user_trips_path, :provide => "typeahead"}
+      = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
   #from_place_candidates
     = render :partial => 'alt_address_select', :locals => {:results => [], :type => "from"}
@@ -42,9 +45,12 @@
             %li
               %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "to"}}
                 = p["name"]
+      = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
+
   - else    
     = f.input :to_place, :class => "inline", :label => t(:to) do
       = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :class => "ajax-typeahead", :style => "width:300px;", :autocomplete => "off", :data => {:link => search_user_trips_path, :provide => "typeahead"} 
+      = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
   #to_place_candidates
     = render :partial => 'alt_address_select', :locals => {:results => [], :type => "to"}
@@ -136,6 +142,7 @@
         $('#query').val(addr);
         $('#target').val(0);
         $('#query_form').submit();
+        $('#from_geocoding_indicator').show();
       }
     }
   });
@@ -149,6 +156,7 @@
         $('#query').val(addr);
         $('#target').val(1);
         $('#query_form').submit();
+        $('#to_geocoding_indicator').show();
       }
     }
   });
