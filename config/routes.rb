@@ -19,7 +19,11 @@ Oneclick::Application.routes.draw do
       resources :user_characteristics_proxies
       resources :user_accommodations_proxies
 
-      resources :characteristics, :only => [:new, :create, :edit, :update]
+      resources :characteristics, :only => [:new, :create, :edit, :update] do
+        member do
+          put 'set'
+        end
+      end
 
       # user relationships
       resources :user_relationships, :only => [:new, :create] do
