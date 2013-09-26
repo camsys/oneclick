@@ -70,7 +70,7 @@ es:
   enter_address: 'Introduce la dirección'
   select_or_enter_address: 'Selecciona o introduce la dirección '
   select: 'Seleccionar'
-  date: 'Fecha'
+  trip_date: 'Fecha'
   depart_at: 'Salir a las'
   arrive_by: 'Llegar a las'
   arrive_at: 'Llegar a'
@@ -252,6 +252,62 @@ es:
   #     user:
   #       first_name: 'Nombre'
 
+  
+  date:
+    abbr_day_names:
+    - dom
+    - lun
+    - mar
+    - mié
+    - jue
+    - vie
+    - sáb
+    abbr_month_names:
+    -
+    - ene
+    - feb
+    - mar
+    - abr
+    - may
+    - jun
+    - jul
+    - ago
+    - sep
+    - oct
+    - nov
+    - dic
+    day_names:
+    - domingo
+    - lunes
+    - martes
+    - miércoles
+    - jueves
+    - viernes
+    - sábado
+    formats:
+      default: ! '%d/%m/%Y'
+      long: ! '%d de %B de %Y'
+      short: ! '%d de %b'
+    month_names:
+    -
+    - enero
+    - febrero
+    - marzo
+    - abril
+    - mayo
+    - junio
+    - julio
+    - agosto
+    - septiembre
+    - octubre
+    - noviembre
+    - diciembre
+    order:
+    - :day
+    - :month
+    - :year
+    
+    
   activerecord:
     errors:
       models:

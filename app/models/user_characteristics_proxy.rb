@@ -1,11 +1,11 @@
 class UserCharacteristicsProxy < Proxy
 
-  attr_accessor :user, :dob_month, :dob_day, :dob_year
+  attr_accessor :user, :dob_month, :dob_day, :dob_year, :date_of_birth
   validate :validate_dob
 
   def initialize(user = nil)
     self.user = user
-
+    date_of_birth = Date.today
     super
   end
 

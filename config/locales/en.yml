@@ -75,7 +75,7 @@ en:
   enter_address: 'Enter address'
   select_or_enter_address: 'Select or enter address'
   select: 'Select'
-  date: 'Date'
+  trip_date: 'Date'
   depart_at: 'Depart at'
   arrive_by: 'Arrive by'
   arrive_at: 'Arrive at'
@@ -229,6 +229,60 @@ en:
   delete: "Delete"
   save: "Save"
   
+  date:
+    abbr_day_names:
+    - Sun
+    - Mon
+    - Tue
+    - Wed
+    - Thu
+    - Fri
+    - Sat
+    abbr_month_names:
+    -
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Oct
+    - Nov
+    - Dec
+    day_names:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    formats:
+      default: ! '%Y-%m-%d'
+      long: ! '%B %d, %Y'
+      short: ! '%b %d'
+    month_names:
+    -
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+    order:
+    - :month
+    - :day
+    - :year
+      
   # Branding
   arc:
     home: 'ARC 1-Click Home'
