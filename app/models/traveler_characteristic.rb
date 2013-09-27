@@ -9,6 +9,6 @@ class TravelerCharacteristic < ActiveRecord::Base
   has_many :services, through: :service_traveler_characteristics_maps
 
   # set the default scope
-  default_scope where('active = true')
+  default_scope where('traveler_characteristics.active = true')
   
 end
