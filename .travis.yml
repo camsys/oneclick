@@ -20,9 +20,9 @@ notifications:
 # after_script:
 # - cat "log/test.log"
 before_deploy:
-- git describe
-- bundle exec rake oneclick:version
-- git commit -am "Bump version"
+# - git describe
+# - bundle exec rake oneclick:version
+# - git commit -am "Bump version"
 - git --no-pager log -50 --pretty="%h %<(60,trunc) %s %<(23,trunc) %ae %ar"
 deploy:
   provider: heroku
