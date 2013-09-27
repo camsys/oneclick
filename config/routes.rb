@@ -9,10 +9,6 @@ Oneclick::Application.routes.draw do
 
     devise_for :users, controllers: {registrations: "registrations"}
 
-    resources :admins, :only => [:index]
-
-    resources :reports, :only => [:index, :show]
-    
     # everything comes under a user id
     resources :users do
       member do
@@ -66,6 +62,11 @@ Oneclick::Application.routes.draw do
           get   'unhide_all'
         end
       end      
+    end
+
+    namespace :admin do
+      resources :reports, :only => [:index, :show]    
+      match '/' => '#index'
     end
     
     match '/' => 'home#index'

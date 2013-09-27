@@ -18,7 +18,18 @@ FactoryGirl.define do
       end
     end
     factory :user2 do
+      first_name 'Test2'
+      last_name 'User'
       email 'example2@example.com'
+    end
+    factory :admin do
+    first_name 'Admin'
+    last_name 'User'
+      email 'admin@example.com'
+      after(:create) do |u|
+        u.add_role 'admin'
+        u.save
+      end
     end
   end
 end

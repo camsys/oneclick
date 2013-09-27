@@ -1,4 +1,4 @@
-class ReportsController < ApplicationController
+class Admin::ReportsController < Admin::Controller
   
   # load the cancan authorizations
   load_and_authorize_resource  
@@ -6,7 +6,6 @@ class ReportsController < ApplicationController
   TIME_FILTER_TYPE_SESSION_KEY = 'reports_time_filter_type'
   
   def index
-    
     @reports = Report.all
         
   end

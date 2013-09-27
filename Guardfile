@@ -7,6 +7,7 @@ guard 'bundler' do
   # watch(/^.+\.gemspec/)
 end
 
+# , cli: '--format nested'
 guard :rspec, all_on_start: true do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^spec/.+/.+_spec\.rb$})
