@@ -10,7 +10,7 @@ class TripsController < PlaceSearchingController
   TRIP_TIME_FORMAT_STRING = "%-I:%M %P"
     
   # Modes for creating/updating new trips
-  MODE_NEW = "1"        # Its a new trip fromscratch
+  MODE_NEW = "1"        # Its a new trip from scratch
   MODE_EDIT = "2"       # Editing an existing trip that is in the future
   MODE_REPEAT = "3"     # Repeating an existing trip that is in the past
       
@@ -37,7 +37,9 @@ class TripsController < PlaceSearchingController
     
     @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
     @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
-        
+    
+    Rails.logger.info @trip_proxy.inspect
+    
     # Create makers for the map control
     @markers = create_markers(@trip_proxy)
     @places = create_place_markers(@traveler.places)
@@ -345,12 +347,23 @@ protected
     end
   end
 
-  # Create an array of map markers suitable for the Leaflet plugin
+  # Create an array of map markers suitable for the Leaflet plugin. If the trip proxy is from an existing trip we will
+  # have 
   def create_markers(trip_proxy)
     markers = []
-    place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected.to_i, true)
+    if trip_proxy.from_place_selected
+      place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected.to_i, true)
+    else
+      place = {:name => trip_proxy.from_place, :lat => trip_proxy.from_lat, :lon => trip_proxy.from_lon, :address => trip_proxy.from_raw_address}
+    end
     markers << get_addr_marker(place, 'start', 'startIcon')
-    place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected.to_i, false)
+    
+    if trip_proxy.to_place_selected
+      place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected.to_i, false)
+    else
+      place = {:name => trip_proxy.to_place, :lat => trip_proxy.to_lat, :lon => trip_proxy.to_lon, :address => trip_proxy.to_raw_address}
+    end
+    
     markers << get_addr_marker(place, 'stop', 'stopIcon')
     return markers.to_json
   end
@@ -391,7 +404,10 @@ private
     trip_proxy.trip_time = planned_trip.trip_datetime.strftime(TRIP_TIME_FORMAT_STRING)
     
     # Set the from place
-    trip_proxy.from_place = trip.trip_places.first
+    trip_proxy.from_place = trip.trip_places.first.name
+    trip_proxy.from_raw_address = trip.trip_places.first.address
+    trip_proxy.from_lat = trip.trip_places.first.location.first
+    trip_proxy.from_lon = trip.trip_places.first.location.last
     if trip.trip_places.first.poi
       trip_proxy.from_place_selected_type = POI_TYPE
       trip_proxy.from_place_selected = trip.trip_places.first.poi.id
@@ -401,9 +417,12 @@ private
     else
       trip_proxy.from_place_selected_type = RAW_ADDRESS_TYPE      
     end
-
+    
     # Set the to place
-    trip_proxy.to_place = trip.trip_places.last
+    trip_proxy.to_place = trip.trip_places.last.name
+    trip_proxy.to_raw_address = trip.trip_places.last.address
+    trip_proxy.to_lat = trip.trip_places.last.location.first
+    trip_proxy.to_lon = trip.trip_places.last.location.last
     if trip.trip_places.last.poi
       trip_proxy.to_place_selected_type = POI_TYPE
       trip_proxy.to_place_selected = trip.trip_places.last.poi.id
