@@ -29,9 +29,8 @@
     = link_to new_user_trip_path do
       %i{class: CsHelpers::ACTION_ICONS[:plan_a_trip]}
       = t(:plan_a_new_trip)
-    - if @planned_trip.hidden_itineraries.count > 0
-      %span#hidden_trips_notice
-        = render partial: 'hidden_trips_notice', locals: {trip: @trip}
+    %span#hidden_trips_notice
+      = render partial: 'hidden_trips_notice', locals: {trip: @trip}
     = link_to '#', {href: '#send_trip_by_email', class: "pull-right", data: {toggle: 'modal'}} do
       %i.icon-envelope
       =t(:send_by_email)

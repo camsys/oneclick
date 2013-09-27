@@ -175,27 +175,6 @@ class TripsController < PlaceSearchingController
     end
     
   end
-  # called when the user wants to hide an option. Invoked via
-  # an ajax call
-  def hide
-
-    # limit itineraries to only those related to trps owned by the user
-    itinerary = Itinerary.find(params[:id])
-    if itinerary.trip.owner != current_traveler
-      render text: t(:unable_to_remove_itinerary), status: 404
-      return
-    end
-
-    respond_to do |format|
-      if itinerary
-        @trip = itinerary.trip
-        itinerary.hide
-        format.js # hide.js.haml
-      else
-        render text: t(:unable_to_remove_itinerary), status: 404
-      end
-    end
-  end
 
   # GET /trips/new
   # GET /trips/new.json

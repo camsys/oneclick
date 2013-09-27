@@ -55,7 +55,6 @@ en:
   decline: 'Decline'
   assist: 'Assist'
   revoke: 'Revoke'
-  hide: 'Hide'
   retract: 'Retract'
   visitor: 'Visitor'
   
@@ -147,6 +146,8 @@ en:
   confirm_remove_trip: 'Are you sure you want to remove this trip?'
   no_trips_found: 'You have no trips.'
   no_matching_trips_found: 'You have no matching trips.'
+  hide: 'Hide'
+  unhide_all: 'Unhide all'
 
   # My Places form
   found_x_places: {

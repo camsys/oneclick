@@ -142,6 +142,8 @@ es:
   confirm_remove_trip: '¿Está seguro que desea eliminar este viaje? *23*'
   no_trips_found: 'No tiene excursiones. *26*'
   no_matching_trips_found: 'Usted no tiene que emparejan viajes. *27*'
+  hide: 'Ocultar *31*'
+  unhide_all: 'Volver a mostrar todos *32*'
 
   # My Places form
   found_x_places: {

@@ -92,18 +92,17 @@ class PlannedTripsController < TravelerAwareController
 
     itinerary = @planned_trip.itineraries.find(params[:itinerary])
     if itinerary.nil?
-      render text: 'Unable to remove itinerary.', status: 500
+      render text: t(:unable_to_remove_itinerary), status: 500
       return
     end
 
     itinerary.hidden = true
-    if itinerary.save
-      respond_to do |format|
-        if itinerary
-          format.js # hide.js.haml
-        else
-          render text: 'Unable to remove itinerary.', status: 500
-        end
+    respond_to do |format|
+      if itinerary.save
+        @planned_trip.reload
+        format.js # hide.js.haml
+      else
+        render text: t(:unable_to_remove_itinerary), status: 500
       end
     end
   end
