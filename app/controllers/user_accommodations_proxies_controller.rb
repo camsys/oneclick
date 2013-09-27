@@ -1,8 +1,11 @@
-class UserAccommodationsProxiesController < ApplicationController
+class UserAccommodationsProxiesController < TravelerAwareController
 
-  def update
+  def create
 
-    @user_accommodations_proxy = UserAccommodationsProxy.new(User.find(params[:user_id]))
+    # Set the @traveler variable
+    get_traveler
+
+    @user_accommodations_proxy = UserAccommodationsProxy.new(@traveler)
     @user_accommodations_proxy.update_maps(params[:user_accommodations_proxy])
 
     flash[:notice] = "Traveler accommodations successfully updated."

@@ -57,7 +57,8 @@ en:
   revoke: 'Revoke'
   retract: 'Retract'
   visitor: 'Visitor'
-  
+  invalid_dob: 'Invalid date of birth'
+    
   spanish: 'En Español'
   error_not_implemented: "We're sorry, but this functionality has not yet been implemented."
   error_404: "The page you were looking for doesn't exist."
