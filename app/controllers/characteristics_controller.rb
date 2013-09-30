@@ -3,12 +3,8 @@ class CharacteristicsController < TravelerAwareController
   def update
 
     @user_characteristics_proxy = UserCharacteristicsProxy.new(User.find(params[:user_id]))
-
     @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
-    if @user_characteristics_proxy.validate_dob
-      @user_characteristics_proxy.update_dob
-      flash[:notice] = "Traveler characteristics successfully updated."
-    end
+    flash[:notice] = "Traveler characteristics successfully updated."
 
     respond_to do |format|
       format.js {render "characteristics/update_characteristics_form" }
@@ -21,8 +17,8 @@ class CharacteristicsController < TravelerAwareController
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
 
     #Add dob
-    dob_characteristic = TravelerCharacteristic.find_by_code('date_of_birth')
-    map = UserTravelerCharacteristicsMap.where(characteristic_id: dob_characteristic.id, user_profile_id: @user_characteristics_proxy.user.user_profile.id).first
+    #dob_characteristic = TravelerCharacteristic.find_by_code('date_of_birth')
+    #UserTravelerCharacteristicsMap.where(characteristic_id: dob_characteristic.id, user_profile_id: @user_characteristics_proxy.user.user_profile.id).first
 
     respond_to do |format|
       format.html

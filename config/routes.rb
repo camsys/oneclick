@@ -16,7 +16,6 @@ Oneclick::Application.routes.draw do
         post  'update'
       end
 
-      resources :user_characteristics_proxies
       resources :user_accommodations_proxies
 
       resources :characteristics, :only => [:new, :create, :edit, :update] do

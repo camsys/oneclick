@@ -24,7 +24,6 @@ class RegistrationsController < Devise::RegistrationsController
 
   def edit
     @user_relationship = UserRelationship.new
-    @user_accommodations_proxy = UserAccommodationsProxy.new(@traveler)
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
     @user_accommodations_proxy = UserAccommodationsProxy.new(@traveler)
     super

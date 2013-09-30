@@ -8,6 +8,10 @@ class UserCharacteristicsProxy < UserProfileProxy
     super(user)
   end
 
+  def validate_dob
+    true
+  end
+
   # callback used to derive the value of a user characteristic using a dynamic finder.
   # This method is used to lookup the value of a user characteristics from the database
   # based on the characteristic code which is the name of the attribute being queried on
