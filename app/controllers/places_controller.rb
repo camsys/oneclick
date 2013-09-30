@@ -169,6 +169,10 @@ protected
         place.poi = poi
         place.name = place_proxy.name      
         place.active = true
+        # Check to see if the POI has been reverse geocoded
+        if poi.address.blank?
+          poi.geocode
+        end
       end
     elsif place_proxy.place_type_id == CACHED_ADDRESS_TYPE
       # get the trip place from the database
