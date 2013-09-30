@@ -1,4 +1,4 @@
-%a.span12.actioncontent{alt: get_trip_summary_title(itinerary.mode), title: get_trip_summary_title(itinerary.mode), 'data-toggle'=>'modal', href:"#transitDetails" + itinerary.id.to_s}
+= link_to itinerary_user_planned_trip_path(@traveler, @planned_trip, :itin => itinerary.id), :alt => get_trip_summary_title(itinerary.mode), :remote => 'true', :title => get_trip_summary_title(itinerary.mode) do
   = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
 
 .row-fluid
@@ -13,5 +13,3 @@
       =link_to hide_user_planned_trip_path(@traveler, @planned_trip, :itinerary => itinerary), {class: "btn btn-mini btn-danger", remote: true} do
         %i.icon-remove
         =t(:remove)
-
-= render :partial => 'trip_details_modal', :locals => { :itinerary => itinerary } if itinerary.server_status == 200

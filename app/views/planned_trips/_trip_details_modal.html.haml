@@ -1,44 +1,43 @@
-.modal.hide.fade{:id => "transitDetails#{itinerary.id}"}
-  .modal-header
-    .row-fluid
-      .pull-right{:style => "display: inline-block"}
-        .span12.btn-toolbar
-          %a{class: "button btn btn-mini btn-success", "data-dismiss" => "modal"}
-            %i.icon-reply
-            =t(:return)
-          =link_to hide_user_planned_trip_path(@traveler, @planned_trip, :itinerary => itinerary), {"data-dismiss" => "modal",  class: "btn btn-mini btn-danger", remote: true} do
-            %i.icon-remove
-            =t(:remove)
-  .modal-body
-    = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
-    .thumbnail
-      .tabbable
-        %ul.nav.nav-tabs
-          %li.active
-            = link_to "Details", "#details_tab", :data => {:toggle => "tab"}
-          -# - if itinerary.mode.name.downcase=='transit'
-          -#  %li
-          -#    = link_to "Map", "#map_tab", :data => {:toggle => "tab"}
-        
-        .tab-content
-          #details_tab.tab-pane.active
-            = render :partial => itinerary.mode.name.downcase + '_details', :locals => { :itinerary => itinerary }
-          -# - if itinerary.mode.name.downcase=='transit'
-          -#  #map_tab.tab-pane
-          -#    = render :partial => 'map_details', :locals => { :itinerary => itinerary }
+.modal-header
+  .row-fluid
+    .pull-right{:style => "display: inline-block"}
+      .span12.btn-toolbar
+        %a{class: "button btn btn-mini btn-success", "data-dismiss" => "modal"}
+          %i.icon-reply
+          =t(:return)
+        =link_to hide_user_planned_trip_path(@traveler, @planned_trip, :itinerary => @itinerary), {"data-dismiss" => "modal",  class: "btn btn-mini btn-danger", remote: true} do
+          %i.icon-remove
+          =t(:remove)
+.modal-body
+  = render :partial => 'trip_summary_header', :locals => { :itinerary => @itinerary }
+  .thumbnail
+    .tabbable
+      %ul.nav.nav-tabs
+        %li.active
+          = link_to "Details", "#details_tab", :data => {:toggle => "tab"}
+        -#- if @itinerary.mode.name.downcase=='transit'
+        -#  %li
+        -#    = link_to "Map", "#map_tab", :data => {:toggle => "tab"}
+      
+      .tab-content
+        #details_tab.tab-pane.active
+          = render :partial => @itinerary.mode.name.downcase + '_details', :locals => { :itinerary => @itinerary }
+        -#- if @itinerary.mode.name.downcase=='transit'
+        -#  #map_tab.tab-pane
+        -#  = render :partial => 'map_details', :locals => { :itinerary => @itinerary }
 
-  .modal-footer
-    .row-fluid
-      .pull-right{:style => "display: inline-block"}
-        .span12.btn-toolbar
-          %button.btn.btn-info
-            %i.icon-print
-            =t(:print)
-          %button.btn.btn-info
-            %i.icon-comments
-            =t(:chat)
-          %button.btn.btn-info
-            %i.icon-envelope
-            =t(:e_mail)
+.modal-footer
+  .row-fluid
+    .pull-right{:style => "display: inline-block"}
+      .span12.btn-toolbar
+        %button.btn.btn-info
+          %i.icon-print
+          =t(:print)
+        %button.btn.btn-info
+          %i.icon-comments
+          =t(:chat)
+        %button.btn.btn-info
+          %i.icon-envelope
+          =t(:e_mail)
                 
 = yield :scripts

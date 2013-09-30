@@ -19,10 +19,7 @@
 
 .row-fluid
   %ul.thumbnails#itineraries
-    - if @show_hidden.nil?
-      = render partial: 'trip_itineraries', locals: {itineraries: @planned_trip.valid_itineraries }
-    - else
-      = render partial: 'trip_itineraries', locals: {itineraries: @planned_trip.itineraries }
+    = render :partial => 'trip_itineraries', :locals => {:itineraries => @show_hidden.nil? ? @planned_trip.valid_itineraries : @planned_trip.itineraries }
      
 .row-fluid
   .well.well-small.span12
@@ -36,6 +33,8 @@
       =t(:send_by_email)
 
     = render partial: 'send_trip_by_email', locals: {trip: @trip}
+
+#itinerary_modal.modal.hide.fade
 
 :javascript
   $(document).ready(function() {
