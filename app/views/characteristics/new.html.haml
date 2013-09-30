@@ -4,4 +4,4 @@
 %h4
   .tab-pane#tab5
     .well#accommodations
-      = render partial: 'characteristics/form',  :locals => {path: user_characteristic_path(@traveler, @user_characteristics_proxy.id),remote: true}
+      = render partial: 'characteristics/form',  :locals => {path: user_characteristic_path(@traveler, @user_characteristics_proxy.id),remote: false}

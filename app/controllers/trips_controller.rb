@@ -291,7 +291,7 @@ class TripsController < PlaceSearchingController
         if @trip.save
           @trip.reload
           @planned_trip = @trip.planned_trips.first
-          if false
+          if true
             session[:current_trip_id] = @planned_trip.id
             @path = new_user_characteristic_path(@traveler)
           else

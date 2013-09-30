@@ -1,0 +1,6 @@
+%h1
+  %i{class: "icon #{CsHelpers::ACTION_ICONS[:travel_profile]}"}
+  = t(:travel_profile)
+%h4
+  .well#accommodations
+    = render partial: 'accommodations/form',  :locals => {path: user_accommodation_path(@traveler, @user_accommodations_proxy.id),remote: false}
