@@ -349,4 +349,8 @@ function closePopup() {
 	if (LMcurrent_popup) {
 		LMcurrent_popup._source.closePopup();
 	}
-}
+};
+function invalidateMap() {
+	//L.Util.requestAnimFrame(LMmap.invalidateSize, LMmap,!1, LMmap._container);	
+	LMmap.invalidateSize(false);
+};
