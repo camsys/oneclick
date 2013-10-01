@@ -6,6 +6,8 @@ class OneclickGeocoder
   include CsHelpers
 
   attr_accessor :raw_address, :results, :sensor, :bounds, :components, :errors
+
+  INCLUDED_TYPES = ['street_address', 'route', 'intersection', 'natural_feature', 'airport', 'park', 'point_of_interest']
   
   def initialize(attrs = {})
     # reset the current state
@@ -91,7 +93,7 @@ protected
   # Filters addresses returned by Google to only those we want to consider
   def is_valid(addr_types)
     addr_types.each do |addr_type|
-      if ['street_address', 'route', 'intersection', 'natural_feature', 'airport', 'park', 'point_of_interest'].include?(addr_type)
+      if INCLUDED_TYPES.include?(addr_type)
         return true
       end
     end
