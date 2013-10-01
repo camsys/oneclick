@@ -1,4 +1,21 @@
 - itineraries.each do |itinerary|
-  %li.trip_summary.thumbnail.actionbutton.box-shadow{id: "itinerary#{itinerary.id}"}
-    = render :partial => 'trip_summary', :locals => { :itinerary => itinerary, :icon => get_trip_summary_icon(itinerary.mode), :title => get_trip_summary_title(itinerary.mode) }
+  %li.trip_summary.thumbnail.actionbutton.box-shadow
+    .actioncontent{:style => "position:relative;"}
+      = render :partial => 'trip_summary', :locals => { :itinerary => itinerary, :icon => get_trip_summary_icon(itinerary.mode), :title => get_trip_summary_title(itinerary.mode) }
  
+:javascript
+  $(document).ready(function() {
+    fix_thumbnails();
+  });
+  
+  $(window).resize(function() {
+    fix_thumbnails();
+  });
+  
+  function fix_thumbnails() {
+    $(".thumbnail").css('height', '');
+    $(".thumbnail").css('overflow', '');
+    var window_width = $(window).width();
+    adjust_thumbnails(window_width);
+    make_same_height('.actioncontent', 20);
+  };

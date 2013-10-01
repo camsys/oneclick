@@ -2,7 +2,7 @@
   = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
 
 .row-fluid
-  .pull-right{:style => "display: inline-block"}
+  .pull-right{:style => "display: inline-block; position:absolute; bottom: -15px;right:0px;"}
     .span12.btn-toolbar
       =link_to "#", {class: "btn btn-mini btn-info"} do
         %i.icon-ticket
@@ -13,3 +13,4 @@
       =link_to hide_user_planned_trip_path(@traveler, @planned_trip, :itinerary => itinerary), {class: "btn btn-mini btn-danger", remote: true} do
         %i.icon-remove
         =t(:remove)
+

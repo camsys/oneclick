@@ -35,25 +35,4 @@
     = render partial: 'send_trip_by_email', locals: {trip: @trip}
 
 #itinerary_modal.modal.hide.fade
-
-:javascript
-  $(document).ready(function() {
-    fix_thumbnails();
-  });
   
-  $(window).resize(function() {
-    fix_thumbnails();
-  });
-  
-  function fix_thumbnails() {
-    $(".thumbnail").css('height', '');
-    $(".thumbnail").css('overflow', '');
-    var window_width = $(window).width();
-    adjust_thumbnails(window_width);
-    make_same_height('.actioncontent');
-  };
-  
-  
-  $("#itineraries").on("ajax:error", function(xhr,status){
-    alert(status['responseText']);
-  });

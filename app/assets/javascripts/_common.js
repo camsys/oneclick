@@ -24,13 +24,14 @@ function remove_messages() {
 
 
 function click_to_nav(url) {
+  alert('Deprecated. Please use event handler!');
   document.location.href = url;
 };
 
 
 // Finds all the class elements on a page and sets the min-height css variable
 // to the maximum height of all the containers
-function make_same_height(class_name) {
+function make_same_height(class_name, buffer) {
 
     // remove any existing height attributes
     $(class_name).css('min-height', '');
@@ -41,6 +42,10 @@ function make_same_height(class_name) {
         var h = $(this).height();
         max = h > max ? h : max;
     });
+    if (buffer) {
+    	max += buffer;
+    }
+    //alert("max = " + max);
     $(class_name).css({'min-height': max});
 };
 
