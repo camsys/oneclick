@@ -11,6 +11,32 @@ class TravelerAwareController < ApplicationController
   
 protected
   
+  # create a map marker for a place
+  def get_map_marker(place, id, icon)
+    {
+      "id" => id,
+      "lat" => place.location.first,
+      "lng" => place.location.last,
+      "name" => place.name,
+      "iconClass" => icon,
+      "title" => place.address,
+      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => place.name, :address => place.address} })
+    }
+  end
+  # create a map marker for a geocoded address
+  def get_addr_marker(addr, id, icon)
+    address = addr[:formatted_address].nil? ? addr[:address] : addr[:formatted_address]
+    {
+      "id" => id,
+      "lat" => addr[:lat],
+      "lng" => addr[:lon],
+      "name" => addr[:name],
+      "iconClass" => icon,
+      "title" =>  address,
+      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => addr[:name], :address => address} })
+    }
+  end
+  
   # Update the session variable
   def set_traveler_id(id)
     session[TRAVELER_USER_SESSION_KEY] = id

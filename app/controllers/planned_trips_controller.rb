@@ -1,5 +1,5 @@
 class PlannedTripsController < TravelerAwareController
-    
+        
   # set the @planned_trip and @trip variables before any actions are invoked
   before_filter :get_planned_trip, :except => [:index]
 
@@ -68,6 +68,10 @@ class PlannedTripsController < TravelerAwareController
 
   def itinerary
     @itinerary = @planned_trip.valid_itineraries.find(params[:itin])
+    @markers = create_markers(@itinerary)
+    
+    Rails.logger.ap @itinerary.inspect
+    Rails.logger.ap @markers.inspect
     
     respond_to do |format|
       format.js 
@@ -116,6 +120,18 @@ class PlannedTripsController < TravelerAwareController
   end
 
 protected
+
+  # Create an array of map markers suitable for the Leaflet plugin. 
+  def create_markers(itinerary)
+    planned_trip = itinerary.planned_trip
+    trip = planned_trip.trip
+    markers = []
+    place = {:name => trip.from_place.name, :lat => trip.from_place.location.first, :lon => trip.from_place.location.last, :address => trip.from_place.address}
+    markers << get_addr_marker(place, 'start', 'startIcon')
+    place = {:name => trip.to_place.name, :lat => trip.to_place.location.first, :lon => trip.to_place.location.last, :address => trip.to_place.address}
+    markers << get_addr_marker(place, 'stop', 'stopIcon')
+    return markers.to_json
+  end
 
   def get_planned_trip
 

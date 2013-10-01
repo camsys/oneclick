@@ -15,16 +15,16 @@
       %ul.nav.nav-tabs
         %li.active
           = link_to "Details", "#details_tab", :data => {:toggle => "tab"}
-        -#- if @itinerary.mode.name.downcase=='transit'
-        -#  %li
-        -#    = link_to "Map", "#map_tab", :data => {:toggle => "tab"}
+        - if @itinerary.mode.name.downcase=='transit'
+          %li
+            = link_to "Map", "#map_tab", :id => 'map_tab_link', :data => {:toggle => "tab"}
       
       .tab-content
         #details_tab.tab-pane.active
           = render :partial => @itinerary.mode.name.downcase + '_details', :locals => { :itinerary => @itinerary }
-        -#- if @itinerary.mode.name.downcase=='transit'
-        -#  #map_tab.tab-pane
-        -#  = render :partial => 'map_details', :locals => { :itinerary => @itinerary }
+        - if @itinerary.mode.name.downcase=='transit'
+          #map_tab.tab-pane
+            = render :partial => 'map_details', :locals => { :itinerary => @itinerary }
 
 .modal-footer
   .row-fluid
@@ -40,4 +40,12 @@
           %i.icon-envelope
           =t(:e_mail)
                 
+:javascript
+  $('body').on('shown', '#map_tab_link', function() {
+    $('#lmap').css('height', '300px');
+    //alert("invalidating map");
+    invalidateMap();
+    showMap();
+  });
+
 = yield :scripts
