@@ -7,6 +7,7 @@
  */
 var LMmarkers = new Array();
 var LMcircles = new Array();
+var LMpolylines = new Array();
 var LMmap;
 var LMbounds;
 var LMcurrent_popup;
@@ -75,6 +76,10 @@ function showMap() {
 	for (var i=0;i<LMcircles.length;i++) {
 		LMmap.addLayer(LMcircles[i]);
 	}
+	// Add the polylines to the map
+	for (var i=0;i<LMpolylines.length;i++) {
+		LMmap.addLayer(LMpolylines[i]);
+	}
 	var mapBounds;
 	if (LMmarkers.length > 0) {
 		mapBounds = calcMapBounds(LMmarkers);
@@ -130,6 +135,22 @@ function replaceCircles(arr, updateMap) {
 	}
 };
 /*
+ * Replaces the polylines on the map with a new set
+ */
+function replacePolylines(arr, updateMap) {
+	//alert('Replacing Polylines');
+	removePolylines();
+	addPolylines(arr);
+	if (updateMap) {
+		//alert('Updating map');
+		showMap();
+	} else {
+		for (var i=0;i<LMpolylines.length;i++) {
+		LMmap.addLayer(LMpolylines[i]);
+		}
+	}
+};
+/*
  * 
  */
 function removeMarkers() {
@@ -145,11 +166,21 @@ function removeMarkers() {
  * 
  */
 function removeCircles() {
-	// Loop through the markers and remove them from the map
+	// Loop through the circles and remove them from the map
 	for(var i=0;i<LMcircles.length;i++){
 		LMmap.removeLayer(LMcircles[i]);
 	}		
 	LMcircles = new Array();
+};
+/*
+ * 
+ */
+function removePolylines() {
+	// Loop through the polylines and remove them from the map
+	for(var i=0;i<LMpolylines.length;i++){
+		LMmap.removeLayer(LMpolylines[i]);
+	}		
+	LMpolylines = new Array();
 };
 /*
  * Processes an array of json objects containing marker definitions and adds them
@@ -229,6 +260,21 @@ function addCircles(arr) {
         addCircle(lat, lng, radius, options);		
 	}
 };
+/*
+ * 
+ */
+function addPolylines(arr) {
+	for(var i=0;i<arr.length;i++) {
+        var obj = arr[i];
+        var id = obj.id;
+        var geom = obj.geom;
+        var options = {};
+        if (obj.options) {
+        	options = obj.options;
+        }
+        addPolyline(geom, options);		
+	}
+};
 
 function selectMarkerById(id) {
 	marker = findMarkerById(id);
@@ -288,6 +334,24 @@ function createMarker(id, lat, lng, iconClass, popupText, name, open) {
 	}	
 	return marker;
 };
+/*
+ * Adds a polyline from a json hash. arr is an array of arrays
+ * where each sub array has length 2
+ */
+function addPolyline(arr, options) {
+	
+	var latlngs = new Array();
+	for (var i = 0; i < arr.length; i++) {
+		var pnt = arr[i];
+		var ll = new L.LatLng(pnt[0], pnt[1]);
+		latlngs.push(ll);
+	}
+	var pline = L.polyline(latlngs, options);
+
+	// Add this polyline to the list of polylines
+	LMpolylines.push(pline);
+	
+}
 /*
  * 
  */
@@ -353,4 +417,10 @@ function closePopup() {
 function invalidateMap() {
 	//L.Util.requestAnimFrame(LMmap.invalidateSize, LMmap,!1, LMmap._container);	
 	LMmap.invalidateSize(false);
+};
+function resetMap() {
+	removeMarkers();
+	removeCircles();
+	removePolylines();
+	//LMmap.remove();
 };

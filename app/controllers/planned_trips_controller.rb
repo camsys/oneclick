@@ -68,11 +68,19 @@ class PlannedTripsController < TravelerAwareController
 
   def itinerary
     @itinerary = @planned_trip.valid_itineraries.find(params[:itin])
-    @markers = create_markers(@itinerary)
+    if @itinerary.mode.name.downcase == 'transit'
+      
+      # parse the itinerary into an array of legs
+      legs = ItineraryParser.parse(YAML.load(@itinerary.legs))
+  
+      @markers = create_markers(@itinerary, legs)
+      @polylines = create_polylines(legs)
+    end
     
     Rails.logger.ap @itinerary.inspect
-    Rails.logger.ap @markers.inspect
-    
+    Rails.logger.ap @markers.inspect    
+    Rails.logger.ap @polylines.inspect
+
     respond_to do |format|
       format.js 
     end
@@ -122,17 +130,61 @@ class PlannedTripsController < TravelerAwareController
 protected
 
   # Create an array of map markers suitable for the Leaflet plugin. 
-  def create_markers(itinerary)
+  def create_markers(itinerary, legs)
+      
     planned_trip = itinerary.planned_trip
     trip = planned_trip.trip
+
     markers = []
     place = {:name => trip.from_place.name, :lat => trip.from_place.location.first, :lon => trip.from_place.location.last, :address => trip.from_place.address}
     markers << get_addr_marker(place, 'start', 'startIcon')
     place = {:name => trip.to_place.name, :lat => trip.to_place.location.first, :lon => trip.to_place.location.last, :address => trip.to_place.address}
     markers << get_addr_marker(place, 'stop', 'stopIcon')
+    
+    if legs
+      legs.each do |leg|
+        
+        place = {:name => leg.start_place.name, :lat => leg.start_place.lat, :lon => leg.start_place.lon, :address => leg.start_place.name}
+        markers << get_addr_marker(place, 'start_leg', 'blueIcon')
+
+        place = {:name => leg.end_place.name, :lat => leg.end_place.lat, :lon => leg.end_place.lon, :address => leg.end_place.name}
+        markers << get_addr_marker(place, 'start_leg', 'blueIcon')
+        
+      end
+    end
+    
     return markers.to_json
   end
 
+  def create_polylines(legs)
+      
+    polylines = []
+    legs.each_with_index do |leg, index|
+      polylines << {
+        "id" => index,
+        "geom" => leg.geometry,
+        "options" => get_leg_display_options(leg)
+      }
+    end
+    
+    return polylines.to_json
+  end
+
+  def get_leg_display_options(leg) 
+
+    if leg.type == TripLeg::WALK
+      a = {"color" => 'red', "width" => "5"}
+    elsif leg.type == TripLeg::BUS
+      a = {"color" => 'blue', "width" => "5"}
+    elsif leg.type == TripLeg::SUBWAY
+      a = {"color" => 'green', "width" => "5"}
+    else
+      a = {}
+    end
+    
+    return a
+  end
+  
   def get_planned_trip
 
     get_traveler
