@@ -1,0 +1,16 @@
+- @actions.each do |action|
+  .row-fluid
+    .span12
+      %ul.thumbnails
+        %li.center.span3
+          .row-fluid
+            %a.span12.thumbnail.btn.actionbutton{alt: action[:label], title: action[:label], href: action[:target]}
+              .row-fluid
+                .span3
+                  %i.center{class: action[:icon], alt: action[:label], style: 'font-size: 3em;'}
+                / .span9.actionlabel{style: 'text-align: left;'}
+                /   = action[:label]
+                .span9.actionlabel.Center-Container.is-Table
+                  .Table-Cell
+                    .Center-Block
+                      = action[:label]

@@ -1,4 +1,4 @@
-class Admin::UtilController < Admin::Controller
+class Admin::UtilController < Admin::BaseController
   
   def geocode
     @results = nil

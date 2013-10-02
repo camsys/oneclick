@@ -1,4 +1,4 @@
-class Admin::ReportsController < Admin::Controller
+class Admin::ReportsController < Admin::BaseController
   
   # load the cancan authorizations
   load_and_authorize_resource  

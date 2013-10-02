@@ -79,7 +79,7 @@ Oneclick::Application.routes.draw do
     namespace :admin do
       resources :reports, :only => [:index, :show]
       match '/geocode' => 'util#geocode'
-      match '/' => '#index'
+      match '/' => 'home#index'
     end
     
     match '/' => 'home#index'

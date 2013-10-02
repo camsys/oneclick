@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Admin::Controller do
+describe Admin::HomeController do
 
   describe "GET 'index'" do
     it "redirects if not logged in" do

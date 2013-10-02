@@ -14,9 +14,17 @@
     }
     
     .actionlabel {
-      display: inline;
+      // display: inline;
       font-size: 1.5em;
     }
+  }
+
+  .Center-Container.is-Table {
+   min-height: 2em;
+ }
+
+  .is-Table .Center-Block {
+    width: 90%;
   }
 
   .thumbnails > li {

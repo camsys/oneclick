@@ -15,7 +15,8 @@
           
       = csrf_meta_tags
       = yield(:head)
-  %body{:class => "#{controller_name} #{action_name}"}
+  %body{:class => "#{controller_css_class} #{action_name}"}
+    / application.html.haml
     #wrap
       = render 'shared/navigation'
       #main{:role => "main"}

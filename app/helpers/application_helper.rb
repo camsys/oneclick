@@ -227,4 +227,9 @@ module ApplicationHelper
     (link_without_locale(request.path) == root_path)
   end
 
+  # Allow controller to override what controller css class they want to use
+  def controller_css_class
+    controller_name
+  end
+
 end

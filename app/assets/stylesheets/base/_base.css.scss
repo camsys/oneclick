@@ -294,3 +294,19 @@ td.left, th.left {
   margin-left: 5px;
   margin-top: 7px;
 }
+
+/*
+ * Absolute Centering
+ * Table cell approach
+ * See http://codepen.io/shshaw/full/gEiDt
+ */
+
+.Center-Container.is-Table { display: table; }
+.is-Table .Table-Cell {
+  display: table-cell;
+  vertical-align: middle;
+}
+.is-Table .Center-Block {
+  width: 50%;
+  margin: 0 auto;
+}

@@ -8,13 +8,11 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require_tree ./includes
- *= require bootstrap-combobox
 */
+@import "includes/*";
+@import "bootstrap-combobox";
 @import "font-awesome";
 @import "font-awesome-ext";
 @import "travelcons";
-
-@import "base";
-
-@import "bootstrap_datatable"
+@import "bootstrap_datatable";
+@import "base/*";
