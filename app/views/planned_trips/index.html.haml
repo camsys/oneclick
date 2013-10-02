@@ -7,7 +7,7 @@
     .pull-right
       = form_tag user_planned_trips_url(@traveler), :id => 'time_filter_form', :method => "get", :class => 'navbar-form form-inline pull-right', :style => "margin-top:20px;" do
         .input-prepend
-          %span.add-on= t(:filter)
+          %label.add-on{:for => 'time_filter'}= t(:filter)
           = select_tag(:time_filter_type, options_for_select(trip_filters.collect{|r| [r[:value], r[:id]]}, :selected => @time_filter_type), :style => 'margin-top:0px', :id => 'time_filter')
         
 - if @planned_trips.count > 0
