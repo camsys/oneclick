@@ -81,7 +81,7 @@ en:
   depart_at: 'Depart at'
   arrive_by: 'Arrive by'
   arrive_at: 'Arrive at'
-  time: 'Time'
+  trip_time: 'Time'
   cancel: 'Cancel'
   plan_it: 'Plan it'
   from: 'From'

@@ -78,7 +78,7 @@ es:
   depart_at: 'Salir a las'
   arrive_by: 'Llegar a las'
   arrive_at: 'Llegar a'
-  time: 'Hora'
+  trip_time: 'Hora'
   cancel: 'Cancelar'
   plan_it: 'Planear el viaje'
   from: 'De'
