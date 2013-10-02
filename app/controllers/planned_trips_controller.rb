@@ -77,9 +77,9 @@ class PlannedTripsController < TravelerAwareController
       @polylines = create_polylines(legs)
     end
     
-    Rails.logger.ap @itinerary.inspect
-    Rails.logger.ap @markers.inspect    
-    Rails.logger.ap @polylines.inspect
+    Rails.logger.debug @itinerary.inspect
+    Rails.logger.debug @markers.inspect    
+    Rails.logger.debug @polylines.inspect
 
     respond_to do |format|
       format.js 
