@@ -3,7 +3,6 @@
 # can be updated in a single form.
 class UserCharacteristicsProxy < UserProfileProxy
 
-  
   def initialize(user = nil)
     super(user)
   end
