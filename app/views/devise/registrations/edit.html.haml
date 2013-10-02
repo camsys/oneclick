@@ -55,10 +55,10 @@
         = render partial: 'travelers'
     .tab-pane#tab4
       .well#eligibility
-        = render partial: 'eligibility'
+        = render partial: 'characteristics/form',  :locals => {path: user_characteristic_path(@traveler, @user_characteristics_proxy.id),remote: true}
     .tab-pane#tab5
       .well#accommodations
-        = render partial: 'accommodations'
+        = render partial: 'accommodations/form',  :locals => {path: user_accommodation_path(@traveler, @user_accommodations_proxy.id),remote: true}
 
 :javascript
   $('a#tab1').click(function(e) {

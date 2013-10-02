@@ -34,6 +34,7 @@ GEM
     awesome_print (1.1.0)
     backports (3.3.4)
     bcrypt-ruby (3.1.2)
+    bcrypt-ruby (3.1.2-x86-mingw32)
     better_errors (1.0.1)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -98,6 +99,7 @@ GEM
       ffi (>= 1.3.0)
       mime-types (~> 1.18)
     eventmachine (1.0.3)
+    eventmachine (1.0.3-x86-mingw32)
     execjs (2.0.1)
     factory_girl (4.2.0)
       activesupport (>= 3.0.0)
@@ -109,6 +111,7 @@ GEM
     faraday_middleware (0.9.0)
       faraday (>= 0.7.4, < 0.9)
     ffi (1.9.0)
+    ffi (1.9.0-x86-mingw32)
     figaro (0.7.0)
       bundler (~> 1.0)
       rails (>= 3, < 5)
@@ -122,6 +125,8 @@ GEM
       net-http-persistent (>= 2.7)
       net-http-pipeline
     gherkin (2.12.1)
+      multi_json (~> 1.3)
+    gherkin (2.12.1-x86-mingw32)
       multi_json (~> 1.3)
     growl (1.0.3)
     guard (1.8.3)
@@ -196,15 +201,23 @@ GEM
     newrelic_rpm (3.6.7.152)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
+    nokogiri (1.6.0-x86-mingw32)
+      mini_portile (~> 0.5.0)
     ntlm-http (0.1.1)
     orm_adapter (0.4.0)
     pg (0.17.0)
+    pg (0.17.0-x86-mingw32)
     polyglot (0.3.3)
     polylines (0.1.1)
     pry (0.9.12.2)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
+    pry (0.9.12.2-x86-mingw32)
+      coderay (~> 1.0.5)
+      method_source (~> 0.8)
+      slop (~> 3.4)
+      win32console (~> 1.3)
     pusher-client (0.3.1)
       ruby-hmac (~> 0.4.0)
       websocket (~> 1.0.0)
@@ -326,15 +339,18 @@ GEM
     unf (0.1.2)
       unf_ext
     unf_ext (0.0.6)
+    unf_ext (0.0.6-x86-mingw32)
     warden (1.2.3)
       rack (>= 1.0)
     webrobots (0.1.1)
     websocket (1.0.7)
+    win32console (1.3.2-x86-mingw32)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
 PLATFORMS
   ruby
+  x86-mingw32
 
 DEPENDENCIES
   activemodel

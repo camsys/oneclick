@@ -1,12 +1,10 @@
 #accommodations_form
   .row-fluid
     .span12
-      = simple_form_for [current_user, @user_accommodations_proxy], remote: true do |f|
+      = simple_form_for @user_accommodations_proxy, :url => path, :method => 'put', remote: remote  do |f|
         = f.error_notification
         -TravelerAccommodation.where(:datatype => 'bool').each do |accommodation|
           = f.input accommodation.code.to_sym, collection: [[true, 'Yes'], [false, 'No'], ['na', 'Unsure']], :required => true, as: :radio_buttons, label: accommodation.note, label_method: :last, value_method: :first, :item_wrapper_class => "inline"
-        -TravelerAccommodation.where(:datatype => 'date').each do |accommodation|
-          = f.input accommodation.name.to_sym, as: :text, :required => true, :label => accomodation.note
         .form-actions
           = button_tag type: :submit, class: 'btn btn-primary controls' do
             %i.icon.icon-ok
