@@ -127,11 +127,14 @@ module ApplicationHelper
       return ""
     end
     if date.year == Date.today.year
-      return date.strftime("%A, %B %-d") unless date.nil?
+      return l date.to_date, format: :oneclick_short unless date.nil? 
+      #return date.strftime("%A, %B %-d") unless date.nil?
     else
-      return date.strftime("%A, %B %-d %Y") unless date.nil?
+      return l date.to_date, format: :oneclick_long unless date.nil? 
+      #return date.strftime("%A, %B %-d %Y") unless date.nil?
     end
   end
+  
   def format_time(time)
     return time.strftime("%-I:%M") unless time.nil?
   end
