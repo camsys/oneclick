@@ -116,7 +116,7 @@ module ApplicationHelper
   end
 
   def format_date_time(datetime)
-    return datetime.strftime("%-I:%M %p %A, %B %-d %Y") unless datetime.nil?
+    return l datetime, :format => :long unless datetime.nil? 
   end
   
   # Standardized date formatter for the app. Use this wherever you need to display a date
@@ -127,16 +127,14 @@ module ApplicationHelper
       return ""
     end
     if date.year == Date.today.year
-      return l date.to_date, format: :oneclick_short unless date.nil? 
-      #return date.strftime("%A, %B %-d") unless date.nil?
+      return l date.to_date, :format => :oneclick_short unless date.nil? 
     else
-      return l date.to_date, format: :oneclick_long unless date.nil? 
-      #return date.strftime("%A, %B %-d %Y") unless date.nil?
+      return l date.to_date, :format => :oneclick_long unless date.nil? 
     end
   end
   
   def format_time(time)
-    return time.strftime("%-I:%M") unless time.nil?
+    return l time, :format => :short unless time.nil?
   end
 
   def get_trip_summary_title(mode)

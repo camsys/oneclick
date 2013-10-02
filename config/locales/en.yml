@@ -288,7 +288,14 @@ en:
     - :month
     - :day
     - :year
-      
+  time:
+    am: am
+    formats:
+      default: ! '%a, %d %b %Y %I:%M:%S %p %Z'
+      long: ! '%B %d, %Y %I:%M %p'
+      short: ! '%d %b %I:%M %p'
+    pm: pm
+          
   # Branding
   arc:
     home: 'ARC 1-Click Home'
