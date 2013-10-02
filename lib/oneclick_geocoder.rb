@@ -7,7 +7,16 @@ class OneclickGeocoder
 
   attr_accessor :raw_address, :results, :sensor, :bounds, :components, :errors
 
-  INCLUDED_TYPES = ['street_address', 'route', 'intersection', 'natural_feature', 'airport', 'park', 'point_of_interest']
+  INCLUDED_TYPES = %w{
+    airport 
+    intersection 
+    natural_feature 
+    park 
+    point_of_interest
+    premise
+    route 
+    street_address 
+  }
   
   def initialize(attrs = {})
     # reset the current state
