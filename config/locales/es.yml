@@ -54,6 +54,9 @@ es:
   revoke: 'Revocar'
   visitor: 'Visitante *12*'
   invalid_dob: 'Valido Fecha de nacimiento *33*'
+  to_see_best_options: '[es] To see the best options, tell us about yourself. [/es]'
+  skip_this_step: '[es] Skip this step [/es]'
+
 
   spanish: 'En Español'
   error_not_implemented: 'Lo sentimos, pero esta funcionalidad aún no se ha implementado.'

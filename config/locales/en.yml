@@ -58,6 +58,8 @@ en:
   retract: 'Retract'
   visitor: 'Visitor'
   invalid_dob: 'Invalid date of birth'
+  to_see_best_options: 'To see the best options, tell us about yourself.'
+  skip_this_step: 'Skip this step'
     
   spanish: 'En Español'
   error_not_implemented: "We're sorry, but this functionality has not yet been implemented."

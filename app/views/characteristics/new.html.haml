@@ -1,9 +1,8 @@
 %h2
-  = "To see the best options, tell us about yourself."
+  = t(:to_see_best_options)
   %a.btn.btn-large.btn-warning{alt: 'alt words', title: 'title here', href: skip_user_characteristic_path(@traveler, @user_characteristics_proxy.id)}
-    = "Skip this step"
+    = t(:skip_this_step)
     %i.icon4.icon-arrow-right
-
 %h4
-  .well#accommodations
+  .well
     = render partial: 'characteristics/form',  :locals => {path: user_characteristic_path(@traveler, @user_characteristics_proxy.id),remote: false}

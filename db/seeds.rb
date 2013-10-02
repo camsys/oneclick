@@ -82,7 +82,7 @@ users.each do |user|
     p = Place.new(place)
     p.creator = u
     p.geocode
-    u.places << 75
+    u.places << p
     begin
       u.save!
     rescue Exception => e
