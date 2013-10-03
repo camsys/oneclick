@@ -120,26 +120,7 @@ class TripsController < PlaceSearchingController
     end
 
   end
-  
-  # GET /trips/1
-  # GET /trips/1.json
-  def show
-
-    set_no_cache
-
-    # make sure we can find the trip we are supposed to be showing and that it belongs to us. 
-    if @trip.nil? 
-      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
-      return            
-    end
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @trip }
-    end
-
-  end
-  
+    
   # called when the user wants to delete a trip
   def destroy
 
