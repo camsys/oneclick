@@ -8,21 +8,21 @@
       .itinerary_text_small
         = format_time(itinerary.start_time.in_time_zone)
 
-  -YAML.load(itinerary.legs).each do |leg|
+  -@legs.each do |leg|
     %tr
       %td.itinerary_icons
-        %i.transit_itinerary_icons.mode_icon_formatting{class: Itinerary.get_mode_icon(leg['mode'])}
+        %i.transit_itinerary_icons.mode_icon_formatting{:class => get_mode_icon(leg.mode)}
       %td
-        -if leg['mode'] == 'WALK'
+        -if leg.mode == TripLeg::WALK
           .itinerary_text
-            %p= leg['mode'] + ' ' + leg['route'] + ' ' + t(:to) + ' ' + leg['to']['name']
+            %p= leg.mode + ' ' + t(:to) + ' ' + leg.end_place.name
           .itinerary_text_small
-            =duration_to_words((leg['endTime'].to_i - leg['startTime'].to_i)/1000)
+            =duration_to_words(leg.duration)
         -else
           .itinerary_text
-            %p= leg['agencyId'] + ' ' + leg['mode'] + ' ' + leg['route'] + ' ' + t(:to) + ' ' + leg['to']['name']
+            %p= leg.agency_id + ' ' + leg.mode + ' ' + leg.route + ' ' + t(:to) + ' ' + leg.end_place.name
           .itinerary_text_small
-            = format_time(Time.at(leg['startTime'].to_i / 1000).in_time_zone) + ' ' + t(:to) + ' ' + format_time(Time.at(leg['endTime'].to_i / 1000).in_time_zone)
+            = format_time(leg.start_time) + ' ' + t(:to) + ' ' + format_time(leg.end_time)
   %tr
     %td.itinerary_icons
       %i.icon-stop.mode_icon_formatting{:class => 'end_icon'}

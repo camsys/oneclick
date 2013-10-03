@@ -31,9 +31,9 @@
             %td.center.nowrap          
 
           %td.nowrap= format_date(planned_trip.trip_datetime.in_time_zone)
-          %td= planned_trip.trip.from_place
-          %td= planned_trip.trip.to_place
-          %td= planned_trip.trip.trip_purpose
+          %td= planned_trip.trip.from_place.name
+          %td= planned_trip.trip.to_place.name
+          %td= planned_trip.trip.trip_purpose.name
           -# %td.nowrap= get_rating_icons(planned_trip)
           - if planned_trip.in_the_future
             %td.center.nowrap          
