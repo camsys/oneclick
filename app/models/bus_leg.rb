@@ -14,7 +14,7 @@ class BusLeg < TripLeg
       self.send "#{k}=", v
     end
     
-    self.type = BUS
+    self.mode = BUS
 
   end
   

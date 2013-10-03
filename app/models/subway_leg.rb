@@ -14,7 +14,7 @@ class SubwayLeg < TripLeg
       self.send "#{k}=", v
     end
     
-    self.type = SUBWAY
+    self.mode = SUBWAY
 
   end
   

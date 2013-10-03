@@ -10,14 +10,13 @@ class Itinerary < ActiveRecord::Base
 
   attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden
   
-  def self.get_mode_icon(mode)
-    @icon_dictionary = {'WALK' => 'travelcon-walk', 'TRAM' => 'travelcon-subway', 'SUBWAY' => 'travelcon-subway', 'RAIL' => 'travelcon-train', 'BUS' => 'travelcon-bus', 'FERRY' => 'travelcon-boat'}
-    @icon_dictionary.default = 'travelcon-bus'
-    @icon_dictionary[mode]
-  end
-
   def self.failed_trip_ids
     select('DISTINCT trip_id').where('status <> 200').order('trip_id')
+  end
+  
+  # parses the legs and returns an array of TripLeg
+  def get_legs
+    return ItineraryParser.parse(YAML.load(legs)) unless legs.nil?
   end
   
   def unhide

@@ -68,18 +68,15 @@ class PlannedTripsController < TravelerAwareController
 
   def itinerary
     @itinerary = @planned_trip.valid_itineraries.find(params[:itin])
-    if @itinerary.mode.name.downcase == 'transit'
-      
-      # parse the itinerary into an array of legs
-      legs = ItineraryParser.parse(YAML.load(@itinerary.legs))
-  
-      @markers = create_markers(@itinerary, legs)
-      @polylines = create_polylines(legs)
+    @legs = @itinerary.get_legs
+    if @itinerary.mode.name.downcase == 'transit'      
+      @markers = create_markers(@itinerary, @legs)
+      @polylines = create_polylines(@legs)
     end
     
-    Rails.logger.debug @itinerary.inspect
-    Rails.logger.debug @markers.inspect    
-    Rails.logger.debug @polylines.inspect
+    #Rails.logger.debug @itinerary.inspect
+    #Rails.logger.debug @markers.inspect    
+    #Rails.logger.debug @polylines.inspect
 
     respond_to do |format|
       format.js 
@@ -172,11 +169,11 @@ protected
 
   def get_leg_display_options(leg) 
 
-    if leg.type == TripLeg::WALK
+    if leg.mode == TripLeg::WALK
       a = {"color" => 'red', "width" => "5"}
-    elsif leg.type == TripLeg::BUS
+    elsif leg.mode == TripLeg::BUS
       a = {"color" => 'blue', "width" => "5"}
-    elsif leg.type == TripLeg::SUBWAY
+    elsif leg.mode == TripLeg::SUBWAY
       a = {"color" => 'green', "width" => "5"}
     else
       a = {}

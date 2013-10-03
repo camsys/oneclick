@@ -6,6 +6,21 @@ module ApplicationHelper
 
   ALPHABET = ('A'..'Z').to_a
   
+  ICON_DICTIONARY = {
+      TripLeg::WALK => 'travelcon-walk', 
+      TripLeg::TRAM => 'travelcon-subway', 
+      TripLeg::SUBWAY => 'travelcon-subway', 
+      TripLeg::RAIL => 'travelcon-train', 
+      TripLeg::BUS => 'travelcon-bus', 
+      TripLeg::FERRY => 'travelcon-boat'
+      }
+  
+  # Returns a mode-specific icon
+  def get_mode_icon(mode)
+    ICON_DICTIONARY.default = 'travelcon-bus'
+    ICON_DICTIONARY[mode]
+  end
+ 
   # Returns a formatted string for an alternate address that includes a A,B,C, etc. designator.
   def get_candidate_list_item_image(index, type)
     if type == "0"

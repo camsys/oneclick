@@ -4,12 +4,15 @@
 #
 class TripLeg
   
-  WALK    = 'walk'
-  BUS     = 'bus'
-  SUBWAY = 'subway'
+  WALK    = 'WALK'
+  TRAM    = 'TRAM'
+  SUBWAY  = 'SUBWAY'
+  RAIL    = 'RAIL'
+  BUS     = 'BUS'
+  FERRY   = 'FERRY'
    
   # Type of mode
-  attr_accessor :type
+  attr_accessor :mode
 
   # Start time for the leg. Localized
   attr_accessor :start_time
@@ -35,4 +38,7 @@ class TripLeg
     end
   end
     
+  def duration
+    return end_time - start_time
+  end
 end
