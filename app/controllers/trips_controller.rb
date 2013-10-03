@@ -400,7 +400,8 @@ private
       trip_proxy.from_place_selected_type = PLACES_TYPE
       trip_proxy.from_place_selected = trip.trip_places.first.place.id
     else
-      trip_proxy.from_place_selected_type = RAW_ADDRESS_TYPE      
+      trip_proxy.from_place_selected_type = CACHED_ADDRESS_TYPE      
+      trip_proxy.from_place_selected = trip.trip_places.first.id      
     end
     
     # Set the to place
@@ -415,7 +416,8 @@ private
       trip_proxy.to_place_selected_type = PLACES_TYPE
       trip_proxy.to_place_selected = trip.trip_places.last.place.id
     else
-      trip_proxy.to_place_selected_type = RAW_ADDRESS_TYPE      
+      trip_proxy.to_place_selected_type = CACHED_ADDRESS_TYPE      
+      trip_proxy.to_place_selected = trip.trip_places.first.id      
     end
     
     return trip_proxy
