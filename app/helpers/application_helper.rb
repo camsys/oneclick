@@ -134,7 +134,7 @@ module ApplicationHelper
   end
   
   def format_time(time)
-    return l time, :format => :short unless time.nil?
+    return l time, :format => :oneclick_short unless time.nil?
   end
 
   def get_trip_summary_title(mode)
