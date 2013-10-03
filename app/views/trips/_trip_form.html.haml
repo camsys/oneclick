@@ -17,13 +17,14 @@
     = f.input :from_place, :wrapper => :append, :class => "inline", :label => t(:from) do
       = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "ajax-typeahead input-large", :data => {:link => search_user_places_path, :provide => "typeahead"}
       %span.dropdown
-        %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}
+        %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
           %span.caret
-        %ul.dropdown-menu{:data => {:target => 'trip_proxy_from_place'}}
-          - @places.each do |p|
-            %li
-              %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "from"}}
-                = p["name"]
+        - if @places.count > 0
+          %ul.dropdown-menu{:data => {:target => 'trip_proxy_from_place'}}
+            - @places.each do |p|
+              %li
+                %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "from"}}
+                  = p["name"]
       = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
   - else
@@ -38,13 +39,14 @@
     = f.input :to_place, :wrapper => :append, :class => "inline", :label => t(:to) do
       = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :autocomplete => "off", :class => "ajax-typeahead input-large", :data => {:link => search_user_places_path, :provide => "typeahead"}
       %span.dropdown
-        %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#'}
+        %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
           %span.caret
-        %ul.dropdown-menu{:data => {:target => 'trip_proxy_to_place'}}
-          - @places.each do |p|
-            %li
-              %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "to"}}
-                = p["name"]
+        - if @places.count > 0
+          %ul.dropdown-menu{:data => {:target => 'trip_proxy_to_place'}}
+            - @places.each do |p|
+              %li
+                %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "to"}}
+                  = p["name"]
       = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
   - else    
@@ -81,10 +83,10 @@
 
 :javascript
   // Configure UI behaviors
-  var typeahead_delay = +"#{Rails.application.config.ui_typeahead_delay}"
-  var typeahead_min_chars = +"#{Rails.application.config.ui_typeahead_min_chars}"
-  var typeahead_list_length = +"#{Rails.application.config.ui_typeahead_list_length}"
-  var geocoder_min_chars = +"#{Rails.application.config.ui_min_geocode_chars}"
+  var typeahead_delay = +"#{Rails.application.config.ui_typeahead_delay}";
+  var typeahead_min_chars = +"#{Rails.application.config.ui_typeahead_min_chars}";
+  var typeahead_list_length = +"#{Rails.application.config.ui_typeahead_list_length}";
+  var geocoder_min_chars = +"#{Rails.application.config.ui_min_geocode_chars}";
   
   $.fn.datepicker.Calendar.setDefaultLocale("#{I18n.locale}");
   
