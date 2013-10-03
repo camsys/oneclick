@@ -213,13 +213,17 @@ class TripsController < PlaceSearchingController
     
     # see if we can continue saving this trip                
     if @trip_proxy.errors.empty?
-      # remove any child objects
+
+      # create a trip from the trip proxy. We need to do this first before any
+      # trip places are removed from the database
+      updated_trip = create_trip(@trip_proxy)
+
+      # remove any child objects in the old trip
       @trip.clean      
       @trip.save
+      
       # Start updating the trip from the form-based one
 
-      # create a trip from the trip proxy
-      updated_trip = create_trip(@trip_proxy)
       # update the associations      
       @trip.trip_purpose = updated_trip.trip_purpose
       @trip.creator = @traveler      
@@ -398,7 +402,7 @@ private
       trip_proxy.to_place_selected = trip.trip_places.last.place.id
     else
       trip_proxy.to_place_selected_type = CACHED_ADDRESS_TYPE      
-      trip_proxy.to_place_selected = trip.trip_places.first.id      
+      trip_proxy.to_place_selected = trip.trip_places.last.id      
     end
     
     return trip_proxy
