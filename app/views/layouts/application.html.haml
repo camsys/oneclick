@@ -33,7 +33,7 @@
                 %span= "#{t(:version)} Auto-deploy"
               - else
                 %span= "#{t(:version)} #{Rails.application.config.version}"
-              - if Rails.env.development?
+              - unless Rails.env.production?
                 %span
                   |
                   %span.visible-phone Phone&nbsp;
