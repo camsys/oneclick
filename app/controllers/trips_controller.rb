@@ -352,7 +352,9 @@ private
 
     trip_proxy = TripProxy.new(params[:trip_proxy])
     trip_proxy.traveler = @traveler
-  
+    
+    Rails.logger.info trip_proxy.inspect
+    
     return trip_proxy
         
   end
@@ -452,7 +454,7 @@ private
     planned_trip = PlannedTrip.new
     planned_trip.trip = trip
     planned_trip.creator = trip.creator
-    planned_trip.is_depart = trip_proxy.arrive_depart == 'departing at' ? true : false
+    planned_trip.is_depart = trip_proxy.arrive_depart == t(:departing_at) ? true : false
     planned_trip.trip_datetime = trip_proxy.trip_datetime
     planned_trip.trip_status = TripStatus.find_by_name(TripStatus::STATUS_NEW)    
     
