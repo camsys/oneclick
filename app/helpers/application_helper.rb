@@ -21,6 +21,48 @@ module ApplicationHelper
     ICON_DICTIONARY[mode]
   end
  
+  # Formats a line in the itinerary
+  def format_itinerary_item(&block)
+
+     # Check to see if there is any content in the block    
+    content = capture(&block)
+    if content.nil?      
+      content = "&nbsp;"
+    end
+
+    html = "<tr>"
+    html << "<td style='border-top:none;'>"
+    html << "<h4 class='itinerary-item'>"
+    
+    html << content
+
+    html << "</h4>"
+    html << "</td>"
+    html << "</tr>"
+    
+    return html.html_safe     
+  end
+  # Formats a line in the itinerary
+  def format_itinerary_item_old(&block)
+
+     # Check to see if there is any content in the block    
+    content = capture(&block)
+    if content.nil?      
+      content = "<p>&nbsp;</p>"
+    end
+
+    html = "<div class='row-fluid'>"
+    html << "<div class='span12'>"
+    html << "<h4>"
+    
+    html << content
+
+    html << "</h4>"
+    html << "</div>"
+    html << "</div>"
+    
+    return html.html_safe     
+  end
   # Returns a formatted string for an alternate address that includes a A,B,C, etc. designator.
   def get_candidate_list_item_image(index, type)
     if type == "0"

@@ -1,7 +1,35 @@
 - itineraries.each do |itinerary|
-  %li.trip_summary.thumbnail.actionbutton.box-shadow
-    .actioncontent{:style => "position:relative;"}
-      = render :partial => 'trip_summary', :locals => { :itinerary => itinerary, :icon => get_trip_summary_icon(itinerary.mode), :title => get_trip_summary_title(itinerary.mode) }
+  %li.trip_summary.thumbnail.actionbutton.shadow{:style => 'display:relative;'}
+    = link_to itinerary_user_planned_trip_path(@traveler, @planned_trip, :itin => itinerary.id), :alt => get_trip_summary_title(itinerary.mode), :remote => 'true', :title => get_trip_summary_title(itinerary.mode) do  
+      .dialog-title-bar.corner-top
+        .row-fluid
+          .span12
+            %h3.dialog-title{:STYLE => "margin:0px;vertical-align:top;"}
+              %i.icon.icon-2x{:class => get_trip_summary_icon(itinerary.mode)}
+              = get_trip_summary_title(itinerary.mode)
+              - if itinerary.hidden
+                %i.icon-2x.icon-thumbs-down.pull-right
+              
+      .dialog-content{:style => 'padding-left: 10px; padding-right:10px'}
+        .row-fluid
+          .span12
+            = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary}
+          
+      .dialog-footer.corner-bottom
+        .row-fluid
+          .pull-right
+            .span12.btn-toolbar{:style => 'margin-bottom:0;margin-right:5px;'}
+              =link_to "#", {class: "btn btn-mini btn-info"} do
+                %i.icon-ticket
+                =t(:select)
+              =link_to "#", {class: "btn btn-mini btn-success", 'data-toggle'=>'modal', href:"#transitDetails" + itinerary.id.to_s} do
+                %i.icon-search
+                =t(:view)
+              =link_to hide_user_planned_trip_path(@traveler, @planned_trip, :itinerary => itinerary), {class: "btn btn-mini btn-danger", remote: true} do
+                %i.icon-remove
+                =t(:remove)
+
+      
  
 :javascript
   $(document).ready(function() {
@@ -17,5 +45,5 @@
     $(".thumbnail").css('overflow', '');
     var window_width = $(window).width();
     adjust_thumbnails(window_width);
-    make_same_height('.actioncontent', 20);
+    make_same_height('.dialog-content', 0);
   };
