@@ -1,44 +1,73 @@
 - itineraries.each do |itinerary|
-  %li.trip_summary.thumbnail.actionbutton.shadow{:style => 'display:relative;'}
-    = link_to itinerary_user_planned_trip_path(@traveler, @planned_trip, :itin => itinerary.id), :alt => get_trip_summary_title(itinerary.mode), :remote => 'true', :title => get_trip_summary_title(itinerary.mode) do  
-      .dialog-title-bar.corner-top
-        .row-fluid
-          .span12
-            %h3.dialog-title{:STYLE => "margin:0px;vertical-align:top;"}
-              %i.icon.icon-2x{:class => get_trip_summary_icon(itinerary.mode)}
-              = get_trip_summary_title(itinerary.mode)
-              - if itinerary.hidden
-                %i.icon-2x.icon-thumbs-down.pull-right
-              
-      .dialog-content{:style => 'padding-left: 10px; padding-right:10px'}
-        .row-fluid
-          .span12
-            = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary}
-          
-      .dialog-footer.corner-bottom
-        .row-fluid
-          .pull-right
-            .span12.btn-toolbar{:style => 'margin-bottom:0;margin-right:5px;'}
-              =link_to "#", {class: "btn btn-mini btn-info"} do
-                %i.icon-ticket
-                =t(:select)
-              =link_to "#", {class: "btn btn-mini btn-success", 'data-toggle'=>'modal', href:"#transitDetails" + itinerary.id.to_s} do
-                %i.icon-search
-                =t(:view)
-              =link_to hide_user_planned_trip_path(@traveler, @planned_trip, :itinerary => itinerary), {class: "btn btn-mini btn-danger", remote: true} do
-                %i.icon-remove
-                =t(:remove)
+  %li.trip_summary.thumbnail.actionbutton.shadow{:style => 'display:relative;', :data => {:action => itinerary_user_planned_trip_url(@traveler, @planned_trip, :itin => itinerary.id)}}
+    .dialog-title-bar.corner-top
+      .row-fluid
+        .span12
+          %h3.dialog-title{:STYLE => "margin:0px;vertical-align:top;"}
+            %i.icon.icon-2x{:class => get_trip_summary_icon(itinerary.mode)}
+            = get_trip_summary_title(itinerary.mode)
+            - if itinerary.hidden
+              %i.icon-2x.icon-thumbs-down.pull-right
+            
+    .dialog-content{:style => 'padding-left: 10px; padding-right:10px'}
+      .row-fluid
+        .span12
+          = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary}
+        
+    .dialog-footer.corner-bottom
+      .row-fluid
+        .pull-right
+          .span12.btn-toolbar{:style => 'margin-bottom:0;margin-right:5px;'}
+            =link_to "#", {class: "btn btn-mini btn-info"} do
+              %i.icon-ticket
+              =t(:select)
+            =link_to "#", {class: "btn btn-mini btn-success", 'data-toggle'=>'modal', href:"#transitDetails" + itinerary.id.to_s} do
+              %i.icon-search
+              =t(:view)
+            =link_to hide_user_planned_trip_path(@traveler, @planned_trip, :itinerary => itinerary), {class: "btn btn-mini btn-danger", remote: true} do
+              %i.icon-remove
+              =t(:remove)
 
       
  
 :javascript
   $(document).ready(function() {
+    // Fix the size and layoout of the thumbnails
     fix_thumbnails();
+
+    // Enable the quick links
+    $('[data-action]').click(function() {
+      var url = $(this).data('action');
+      //alert(url);      
+      render_action(url);
+    });
   });
   
   $(window).resize(function() {
     fix_thumbnails();
   });
+  
+  function render_action(url) {
+    $.ajax({
+      type: 'GET',
+      url: url,
+      beforeSend:function(){
+        // this is where we append a loading image
+        //$('#ajax-panel').html('<div class="loading"><img src="/images/loading.gif" alt="Loading..." /></div>');
+      },
+      success:function(data){
+        // successful request; do something with the data
+        //$('#ajax-panel').empty();
+        //$(data).find('item').each(function(i){
+        //  $('#ajax-panel').append('<h4>' + $(this).find('title').text() + '</h4><p>' + $(this).find('link').text() + '</p>');
+        //});
+      },
+      error:function(){
+        // failed request; give feedback to user
+        $('#ajax-panel').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments.</p>');
+      }
+    });  
+  };
   
   function fix_thumbnails() {
     $(".thumbnail").css('height', '');
