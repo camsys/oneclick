@@ -34,7 +34,7 @@ function click_to_nav(url) {
 function make_same_height(class_name, buffer) {
 
     // remove any existing height attributes
-    $(class_name).css('min-height', '');
+    $(class_name).css('height', '');
 
     // Set the form parts to equal height
     var max = -1;
@@ -46,7 +46,7 @@ function make_same_height(class_name, buffer) {
     	max += buffer;
     }
     //alert("max = " + max);
-    $(class_name).css({'min-height': max});
+    $(class_name).css({'height': max});
 };
 
 function fix_thumbnail_margins() {
