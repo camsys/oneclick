@@ -1,15 +1,15 @@
 - itineraries.each do |itinerary|
-  %li.trip_summary.thumbnail.actionbutton.shadow{:style => 'display:relative;', :data => {:action => itinerary_user_planned_trip_url(@traveler, @planned_trip, :itin => itinerary.id)}}
-    .dialog-title-bar.corner-top
+  %li.trip_summary.thumbnail.actionbutton.shadow{:style => 'display:relative;'}
+    .dialog-title-bar.corner-top{:data => {:action => itinerary_user_planned_trip_path(@traveler, @planned_trip, :itin => itinerary.id)}}
       .row-fluid
         .span12
-          %h3.dialog-title{:STYLE => "margin:0px;vertical-align:top;"}
+          %h3.dialog-title{:style => "margin:0px;vertical-align:top;"}
             %i.icon.icon-2x{:class => get_trip_summary_icon(itinerary.mode)}
             = get_trip_summary_title(itinerary.mode)
             - if itinerary.hidden
               %i.icon-2x.icon-thumbs-down.pull-right
             
-    .dialog-content{:style => 'padding-left: 10px; padding-right:10px'}
+    .dialog-content{:style => 'padding-left: 10px; padding-right:10px', :data => {:action => itinerary_user_planned_trip_path(@traveler, @planned_trip, :itin => itinerary.id)}}
       .row-fluid
         .span12
           = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary}
@@ -18,13 +18,13 @@
       .row-fluid
         .pull-right
           .span12.btn-toolbar{:style => 'margin-bottom:0;margin-right:5px;'}
-            =link_to "#", {class: "btn btn-mini btn-info"} do
+            =link_to "#", {:class => "btn btn-mini btn-info"} do
               %i.icon-ticket
               =t(:select)
-            =link_to "#", {class: "btn btn-mini btn-success", 'data-toggle'=>'modal', href:"#transitDetails" + itinerary.id.to_s} do
+            =link_to itinerary_user_planned_trip_path(@traveler, @planned_trip, :itin => itinerary.id), {:class => "btn btn-mini btn-success", :remote => true } do
               %i.icon-search
               =t(:view)
-            =link_to hide_user_planned_trip_path(@traveler, @planned_trip, :itinerary => itinerary), {class: "btn btn-mini btn-danger", remote: true} do
+            =link_to hide_user_planned_trip_path(@traveler, @planned_trip, :itinerary => itinerary), {:class => "btn btn-mini btn-danger", :remote => true} do
               %i.icon-remove
               =t(:remove)
 
