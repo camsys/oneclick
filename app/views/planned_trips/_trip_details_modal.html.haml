@@ -1,13 +1,19 @@
 .modal-header
   .row-fluid
-    .pull-right{:style => "display: inline-block"}
-      .span12.btn-toolbar
-        %a{class: "button btn btn-mini btn-success", "data-dismiss" => "modal"}
-          %i.icon-reply
-          =t(:return)
-        =link_to hide_user_planned_trip_path(@traveler, @planned_trip, :itinerary => @itinerary), {"data-dismiss" => "modal",  class: "btn btn-mini btn-danger", remote: true} do
-          %i.icon-remove
-          =t(:remove)
+    .span12
+      .row-fluid
+        .span6
+          %h3.dialog-title{:STYLE => "margin:0px;vertical-align:top;"}
+            %i.icon.icon-2x{:class => get_trip_summary_icon(@itinerary.mode)}
+            = get_trip_summary_title(@itinerary.mode)
+        .span6
+          .pull-right{:style => "display: inline-block"}
+            %a{class: "button btn btn-mini btn-success", "data-dismiss" => "modal"}
+              %i.icon-reply
+              =t(:return)
+            =link_to hide_user_planned_trip_path(@traveler, @planned_trip, :itinerary => @itinerary), {"data-dismiss" => "modal",  class: "btn btn-mini btn-danger", remote: true} do
+              %i.icon-remove
+              =t(:remove)
 .modal-body
   = render :partial => 'trip_summary_header', :locals => { :itinerary => @itinerary }
   .thumbnail
