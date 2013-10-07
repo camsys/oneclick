@@ -1,8 +1,9 @@
-%h2
-  = t(:to_see_best_options)
-  %a.btn.btn-large.btn-warning{alt: 'alt words', title: 'title here', href: skip_user_accommodation_path(@traveler, @user_accommodations_proxy.id)}
-    = t(:skip_this_step)
-    %i.icon4.icon-arrow-right
-%h4
-  .well
-    = render partial: 'accommodations/form',  :locals => {path: user_accommodation_path(@traveler, @user_accommodations_proxy.id),remote: false}
+.row-fluid
+  .span12
+    %h1
+      %i.icon.icon-paper-clip
+        = t(:to_see_best_options)
+
+.row-fluid{:style => "margin-top:20px;"}
+  .well.well-small
+    = render partial: 'accommodations/form',  :locals => {:path => user_characteristic_path(@traveler, @user_accommodations_proxy.id), :is_edit_mode => false}
