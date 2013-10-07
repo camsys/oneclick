@@ -170,6 +170,7 @@ en:
   error_updating_addresses:   'An error occured while updating your address book.'
   address_book_updated: 'Your address book has been updated.'
   confirm_remove_place: 'Are you sure you want to remove %{place_name} from your address book?'
+  profile_updated: "Your profile was updated."
 
   # new ones
   buddy_request_sent: "Buddy request sent!"
