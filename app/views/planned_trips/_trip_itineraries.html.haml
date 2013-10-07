@@ -39,7 +39,7 @@
     $('[data-action]').click(function() {
       var url = $(this).data('action');
       //alert(url);      
-      render_action(url);
+      render_action(url, 'GET');
     });
   });
   
@@ -47,9 +47,9 @@
     fix_thumbnails();
   });
   
-  function render_action(url) {
+  function render_action(url, method) {
     $.ajax({
-      type: 'GET',
+      type: method,
       url: url,
       beforeSend:function(){
         // this is where we append a loading image
@@ -64,7 +64,8 @@
       },
       error:function(){
         // failed request; give feedback to user
-        $('#ajax-panel').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments.</p>');
+        alert("error trapped");
+        $('#messages').html('<div class="alert alert-block"><h4>Warning!</h4>We are sorry but something went wrong. Please try again.</div>');
       }
     });  
   };
