@@ -13,8 +13,11 @@ class AccommodationsController < TravelerAwareController
       @planned_trip.create_itineraries
       @path = user_planned_trip_path(@traveler, @planned_trip)
       session[:current_trip_id] =  nil
-    else #Only flash if we are not in the 'wizard'
-      flash[:notice] = "Traveler accommodations preferences successfully updated."
+    end
+    
+    # Check to see if it was an ajax request from the user profile page
+    if request.xhr?    
+      flash[:notice] = t(:profile_updated)
     end
 
     respond_to do |format|
