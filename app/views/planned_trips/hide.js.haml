@@ -1,4 +1,3 @@
 $('#itineraries').html("#{escape_javascript(render partial: 'trip_itineraries', locals: {itineraries: @planned_trip.valid_itineraries })}");
 $('#hidden_trips_notice').html("#{escape_javascript(render 'hidden_trips_notice')}");
 fix_thumbnails();
-fix_thumbnail_margins();
