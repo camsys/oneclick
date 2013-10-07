@@ -59,7 +59,8 @@ class PlannedTripsController < TravelerAwareController
   def show
     # See if there is the show_hidden parameter
     @show_hidden = params[:show_hidden]
-    
+    @next_itinerary_id = @show_hidden.nil? ? @planned_trip.valid_itineraries.first.id : @planned_trip.itineraries.first.id 
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @planned_trip }
@@ -99,13 +100,33 @@ class PlannedTripsController < TravelerAwareController
   # an ajax call
   def hide
 
-    itinerary = @planned_trip.itineraries.find(params[:itinerary])
+    itinerary = @planned_trip.valid_itineraries.find(params[:itinerary])
     if itinerary.nil?
       render text: t(:unable_to_remove_itinerary), status: 500
       return
     end
 
     itinerary.hidden = true
+    
+    # find the next unhidden itinerary for this planned trip
+    @next_itinerary_id = nil
+    found = false
+    @planned_trip.valid_itineraries.each do |itin|
+      # if the found falg is set, this is the itinerary we want
+      if found
+        @next_itinerary_id = itin.id
+        break
+      end
+      # if this itin is the one we selected then we mark that we found it. The next
+      # itinerary is the one we want to identify
+      if itin.id == itinerary.id
+        found = true
+      end
+    end
+    if @next_itinerary_id.nil? 
+      @next_itinerary_id = @planned_trip.valid_itineraries.first.id
+    end
+    
     respond_to do |format|
       if itinerary.save
         @planned_trip.reload
