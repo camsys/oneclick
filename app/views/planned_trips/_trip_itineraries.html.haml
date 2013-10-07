@@ -1,5 +1,5 @@
 - itineraries.each do |itinerary|
-  %li.trip_summary.thumbnail.actionbutton.shadow{:style => 'display:relative;'}
+  %li.trip_summary.thumbnail.actionbutton.shadow{:style => 'display:relative;', :id => "ipanel#{itinerary.id}", :tabindex => -1}
     .dialog-title-bar.corner-top{:data => {:action => itinerary_user_planned_trip_path(@traveler, @planned_trip, :itin => itinerary.id)}}
       .row-fluid
         .span12
@@ -31,6 +31,9 @@
       
  
 :javascript
+  // Capture the panel to get focus
+  var focus_panel_id = "ipanel#{@next_itinerary_id}";
+  
   $(document).ready(function() {
     // Fix the size and layoout of the thumbnails
     fix_thumbnails();
@@ -41,11 +44,18 @@
       //alert(url);      
       render_action(url, 'GET');
     });
+    // Set the panel focus
+    set_focus(focus_panel_id);
   });
   
   $(window).resize(function() {
     fix_thumbnails();
   });
+  
+  function set_focus(elem_id) {
+    alert(elem_id);
+    $(elem_id).focus();
+  };
   
   function render_action(url, method) {
     $.ajax({
