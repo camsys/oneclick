@@ -10,9 +10,11 @@ class CharacteristicsController < TravelerAwareController
 
     @path = new_user_accommodation_path(@traveler)
 
-    #if we are in the 'wizard' don't flash a notice
-    unless session[:current_trip_id]
-      flash[:notice] = "Traveler characteristics successfully updated."
+    #if we are in the 'wizard' don't flash a notice. This logic checks to see if
+    # the request was an ajax request or not. The trip-planning form does not
+    # use ajax.
+    if request.xhr?
+      flash[:notice] = t(:profile_updated)
     end
 
     respond_to do |format|
