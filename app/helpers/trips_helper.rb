@@ -10,8 +10,7 @@ module TripsHelper
   end  
 
   def rideshare_external_link itinerary
-    service_url + '?' + create_rideshare_query(itinerary.trip.from_place,
-      itinerary.trip.to_place, itinerary.trip.trip_datetime).to_query
+    service_url + '?' + YAML.load(itinerary.external_info).to_query
   end
 
 end

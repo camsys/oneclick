@@ -8,7 +8,9 @@ class Itinerary < ActiveRecord::Base
   belongs_to :mode
   belongs_to :service
 
-  attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden
+  attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
+    :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
+    :ride_count, :external_info
   
   def self.failed_trip_ids
     select('DISTINCT trip_id').where('status <> 200').order('trip_id')

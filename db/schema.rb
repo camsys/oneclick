@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130906154135) do
+ActiveRecord::Schema.define(:version => 20131010051208) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(:version => 20130906154135) do
   end
 
   create_table "fare_structures", :force => true do |t|
-    t.integer "service_id", :null => false
-    t.decimal "fare",       :precision => 10, :scale => 2
+    t.integer "service_id",                                               :null => false
+    t.decimal "fare",                      :precision => 10, :scale => 2
     t.string  "note",       :limit => 254
   end
 
@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(:version => 20130906154135) do
     t.boolean  "hidden",                                         :null => false
     t.datetime "created_at",                                     :null => false
     t.datetime "updated_at",                                     :null => false
+    t.integer  "ride_count"
+    t.text     "external_info"
   end
 
   create_table "modes", :force => true do |t|
@@ -52,21 +54,21 @@ ActiveRecord::Schema.define(:version => 20130906154135) do
   end
 
   create_table "places", :force => true do |t|
-    t.integer  "user_id",                                         :null => false
+    t.integer  "user_id",                                      :null => false
     t.integer  "creator_id"
-    t.string   "name",          :limit => 64,                     :null => false
+    t.string   "name",        :limit => 64,                    :null => false
     t.integer  "poi_id"
-    t.string   "raw_address",   :limit => 254
-    t.string   "address1",      :limit => 128
-    t.string   "address2",      :limit => 128
-    t.string   "city",          :limit => 128
-    t.string   "state",         :limit => 2
-    t.string   "zip",           :limit => 10
+    t.string   "raw_address", :limit => 254
+    t.string   "address1",    :limit => 128
+    t.string   "address2",    :limit => 128
+    t.string   "city",        :limit => 128
+    t.string   "state",       :limit => 2
+    t.string   "zip",         :limit => 10
     t.float    "lat"
     t.float    "lon"
-    t.boolean  "active",                        :default => true
-    t.datetime "created_at",                                      :null => false
-    t.datetime "updated_at",                                      :null => false
+    t.boolean  "active",                     :default => true
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
   end
 
   create_table "planned_trips", :force => true do |t|
@@ -104,12 +106,12 @@ ActiveRecord::Schema.define(:version => 20130906154135) do
   end
 
   create_table "properties", :force => true do |t|
-    t.string   "category",    :limit => 64
-    t.string   "name",        :limit => 64 
+    t.string   "category",   :limit => 64
+    t.string   "name",       :limit => 64
     t.string   "value"
     t.integer  "sort_order"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
   end
 
   create_table "providers", :force => true do |t|
@@ -125,12 +127,12 @@ ActiveRecord::Schema.define(:version => 20130906154135) do
 
   create_table "reports", :force => true do |t|
     t.string   "name",        :limit => 64
-    t.string  "description", :limit => 254
+    t.string   "description", :limit => 254
     t.string   "view_name",   :limit => 64
     t.string   "class_name",  :limit => 64
     t.boolean  "active"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
   create_table "roles", :force => true do |t|
@@ -145,13 +147,13 @@ ActiveRecord::Schema.define(:version => 20130906154135) do
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
   create_table "schedules", :force => true do |t|
-    t.integer "service_id",                    :null => false
-    t.time    "start_time",                    :null => false
-    t.time    "end_time",                      :null => false
-    t.integer "day_of_week",                   :null => false
-    t.boolean "active",      :default => true, :null => false
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.integer  "service_id",                    :null => false
+    t.time     "start_time",                    :null => false
+    t.time     "end_time",                      :null => false
+    t.integer  "day_of_week",                   :null => false
+    t.boolean  "active",      :default => true, :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   create_table "service_traveler_accommodations_maps", :force => true do |t|
@@ -185,17 +187,17 @@ ActiveRecord::Schema.define(:version => 20130906154135) do
   end
 
   create_table "services", :force => true do |t|
-    t.string  "name",                         :limit => 64,                    :null => false
-    t.integer "provider_id",                                                   :null => false
-    t.integer "service_type_id",                                               :null => false
-    t.integer "advanced_notice_minutes",                    :default => 0,     :null => false
-    t.boolean "volunteer_drivers_used",                     :default => false, :null => false
-    t.boolean "accepting_new_clients",                      :default => true,  :null => false
-    t.boolean "wait_list_in_effect",                        :default => false, :null => false
-    t.boolean "requires_prior_authorization",               :default => false, :null => false
-    t.boolean "active",                                     :default => true,  :null => false
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.string   "name",                         :limit => 64,                    :null => false
+    t.integer  "provider_id",                                                   :null => false
+    t.integer  "service_type_id",                                               :null => false
+    t.integer  "advanced_notice_minutes",                    :default => 0,     :null => false
+    t.boolean  "volunteer_drivers_used",                     :default => false, :null => false
+    t.boolean  "accepting_new_clients",                      :default => true,  :null => false
+    t.boolean  "wait_list_in_effect",                        :default => false, :null => false
+    t.boolean  "requires_prior_authorization",               :default => false, :null => false
+    t.boolean  "active",                                     :default => true,  :null => false
+    t.datetime "created_at",                                                    :null => false
+    t.datetime "updated_at",                                                    :null => false
   end
 
   create_table "traveler_accommodations", :force => true do |t|

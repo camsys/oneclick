@@ -203,7 +203,7 @@ module ApplicationHelper
       title = t(:paratransit)      
     elsif mode.name.downcase == 'taxi'
       title = t(:taxi)      
-    elsif mode == 'rideshare'
+    elsif mode.name.downcase == 'rideshare'
       title = t(:rideshare)
     end
     return title    
@@ -218,7 +218,7 @@ module ApplicationHelper
       icon_name = 'icon-truck-sign'      
     elsif mode.name.downcase == 'taxi'
       icon_name = 'icon-taxi-sign'      
-    elsif mode == 'rideshare'
+    elsif mode.name.downcase == 'rideshare'
       icon_name = 'icon-group'      
     end
     return icon_name

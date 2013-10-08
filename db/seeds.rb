@@ -38,6 +38,7 @@ modes = [
   {active: 1, name: 'Transit'},
   {active: 1, name: 'Paratransit'},
   {active: 1, name: 'Taxi'},
+  {active: 1, name: 'Rideshare'},
 ]
 reports = [
   {name: 'Trips By Day Report', description: 'Displays a chart showing the number of trips generated each day.', view_name: 'generic_report', class_name: 'TripsPerDayReport', active: 1}, 

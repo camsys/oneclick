@@ -9,6 +9,11 @@ FactoryGirl.define do
     #  from_place FactoryGirl.create(:trip_place1)
     #  to_place FactoryGirl.create(:trip_place2)
     #end
+    after(:create) do |trip|
+      trip.trip_places << FactoryGirl.build(:trip_place1, sequence: 0)
+      trip.trip_places << FactoryGirl.build(:trip_place2, sequence: 0)
+      trip.save!
+    end
     factory :trip_with_owner do
       association :owner, factory: :user_with_places
     end

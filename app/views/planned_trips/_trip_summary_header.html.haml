@@ -25,9 +25,9 @@
       -if itinerary.walk_time
         =format_itinerary_item do
           = duration_to_words(itinerary.walk_time) + t(:walking)
-      -if itinerary.mode=='rideshare' and itinerary.count > 0
+      -if itinerary.mode.name.downcase=='rideshare'
         =format_itinerary_item do
-          = t(:possible_rideshares1, count: itinerary.count)
+          = t(:possible_rideshares1, count: itinerary.ride_count)
         =format_itinerary_item do
           = t(:possible_rideshares2)
         =format_itinerary_item do

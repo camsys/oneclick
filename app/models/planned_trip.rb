@@ -45,6 +45,7 @@ class PlannedTrip < ActiveRecord::Base
     create_fixed_route_itineraries
     create_taxi_itineraries
     create_paratransit_itineraries
+    create_rideshare_itineraries
   end
 
   # TODO refactor following 3 methods
@@ -87,5 +88,23 @@ class PlannedTrip < ActiveRecord::Base
       self.itineraries << Itinerary.new(itinerary)
     end
   end
+
+ def create_rideshare_itineraries
+    tp = TripPlanner.new
+    trip.restore_trip_places_georaw
+    Rails.logger.info "create_rideshare_itineraries"
+    Rails.logger.info trip.trip_places.collect {|tp| tp.raw}
+    from_place = trip.trip_places.first
+    Rails.logger.info from_place.raw.ai
+    to_place = trip.trip_places.last
+    Rails.logger.info to_place.raw.ai
+    result, response = tp.get_rideshare_itineraries(from_place, to_place, trip_datetime.in_time_zone)
+    if result
+      itinerary = tp.convert_rideshare_itineraries(response)
+      self.itineraries << Itinerary.new(itinerary)
+    else
+      self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response)
+    end
+  end  
  
 end

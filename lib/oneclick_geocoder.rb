@@ -82,7 +82,8 @@ protected
           :state => alt.state_code,
           :zip => alt.postal_code,
           :lat => alt.latitude,
-          :lon => alt.longitude
+          :lon => alt.longitude,
+          :raw => alt
         }
         i += 1
       end

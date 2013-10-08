@@ -3,18 +3,18 @@ require 'spec_helper'
 describe Trip do
  describe "itineraries" do
   it "should be populated with itineraries" do
-    pending "todo"      
-    trip = FactoryGirl.create(:trip_with_places)
+    planned_trip = FactoryGirl.create(:trip_with_places)
     test_itineraries = [{'legs'=>'example leg'}]
     trip_planner = double(TripPlanner,
       get_fixed_itineraries: [true,[]],
       get_taxi_itineraries: [false,[]],
       get_paratransit_itineraries: [false,[]],
+      get_rideshare_itineraries: [false,[]],
       convert_itineraries: test_itineraries)
     TripPlanner.stub(:new).and_return(trip_planner)
-    trip.create_itineraries
-    trip.itineraries.should_not be_empty
-    trip.itineraries.first.legs.should eq "example leg"
+    planned_trip.create_itineraries
+    planned_trip.itineraries.should_not be_empty
+    planned_trip.itineraries.first.legs.should eq "example leg"
   end
 
   it "should have one itinerary with status=400 and an error message" do

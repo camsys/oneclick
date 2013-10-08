@@ -34,6 +34,7 @@ guard :rspec, all_on_start: true do
   watch(%r{^app/views/(.+)/.*\.(erb|haml)$})          { |m| ["spec/features/#{m[1]}_spec.rb", 'spec/features/localization_spec.rb'] }
   # TODO This should be done smarter, not with explicit file mapping.
   watch(%r{^app/views/trips/.+$})                     { "spec/features/plan_a_trip_spec.rb" }
+  watch(%r{^app.+trip})                               { "spec/features/plan_a_trip_spec.rb" }
 
   # Turnip features and steps
   watch(%r{^spec/acceptance/(.+)\.feature$})

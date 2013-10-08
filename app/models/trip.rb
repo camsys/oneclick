@@ -48,4 +48,12 @@ class Trip < ActiveRecord::Base
     trip_places.last
   end
 
+  def cache_trip_places_georaw
+    trip_places.each {|tp| tp.cache_georaw}
+  end
+
+  def restore_trip_places_georaw
+    trip_places.each {|tp| tp.restore_georaw}
+  end
+
 end

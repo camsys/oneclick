@@ -1,3 +1,5 @@
+require 'pry'
+
 class TripsController < PlaceSearchingController
 
   # set the @trip variable before any actions are invoked
@@ -37,8 +39,6 @@ class TripsController < PlaceSearchingController
     
     @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
     @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
-    
-    Rails.logger.info @trip_proxy.inspect
     
     # Create makers for the map control
     @markers = create_markers(@trip_proxy)
@@ -274,7 +274,9 @@ class TripsController < PlaceSearchingController
     respond_to do |format|
       if @trip
         if @trip.save
+          @trip.cache_trip_places_georaw
           @trip.reload
+          # @trip.restore_trip_places_georaw
           @planned_trip = @trip.planned_trips.first
           if @traveler.user_profile.has_characteristics? and user_signed_in?
             @planned_trip.create_itineraries
@@ -364,6 +366,7 @@ private
   # trip id into the proxy as only edit functions need this.
   def create_trip_proxy(trip)
 
+    puts "Creating trip proxy from #{trip.ai}"
     # get the planned trip for this trip
     planned_trip = trip.planned_trips.first
     
@@ -430,7 +433,8 @@ private
     else
       from_place.raw_address = place[:address]
       from_place.lat = place[:lat]
-      from_place.lon = place[:lon]  
+      from_place.lon = place[:lon]
+      from_place.raw = place[:raw]
     end
 
     # get the end for this trip
@@ -445,6 +449,7 @@ private
       to_place.raw_address = place[:address]
       to_place.lat = place[:lat]
       to_place.lon = place[:lon]  
+      to_place.raw = place[:raw]
     end
 
     # add the places to the trip
@@ -483,11 +488,16 @@ private
       # the user entered a raw address and possibly selected an alternate from the list of possible
       # addresses
       if is_from
+        puts place_id
+        puts get_cached_addresses(CACHED_FROM_ADDRESSES_KEY).ai
         place = get_cached_addresses(CACHED_FROM_ADDRESSES_KEY)[place_id]
       else
         place = get_cached_addresses(CACHED_TO_ADDRESSES_KEY)[place_id]
       end
-      return {:name => place[:name], :lat => place[:lat], :lon => place[:lon], :address => place[:formatted_address]}
+      Rails.logger.info "in get_preselected_place"
+      Rails.logger.info "#{is_from} #{place.ai}"
+      return {:name => place[:name], :lat => place[:lat], :lon => place[:lon], :address => place[:formatted_address],
+        raw: place[:raw]}
     else
       return {}
     end

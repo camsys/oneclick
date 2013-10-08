@@ -134,7 +134,7 @@ class TripPlanner
   end
 
   def get_rideshare_itineraries(from, to, trip_datetime)
-    query = create_rideshare_query from, to, trip_datetime
+    query = create_rideshare_query(from, to, trip_datetime)
     resp = Mechanize.new.post(service_url, query)
     doc = Nokogiri::HTML(resp.body)
     results = doc.css('#results li div.marker.dest')
@@ -142,14 +142,19 @@ class TripPlanner
       summary = doc.css('.summary').text
       Rails.logger.info "Summary: #{summary}"
       count = %r{(\d+) total result}.match(summary)[1]
-      return true, {'mode' => 'rideshare', 'status' => 200, 'count' => count}
+      return true, {'mode' => 'rideshare', 'status' => 200, 'count' => count, 'query' => query}
     else
       return false, {'mode' => 'rideshare', 'status' => 404, 'count' => results.size}
     end
   end
 
   def convert_rideshare_itineraries(itinerary)
-    itinerary
+    {
+      'mode' => Mode.rideshare,
+      'ride_count' => itinerary['count'],
+      'server_status' => itinerary['status'],
+      'external_info' => YAML.dump(itinerary['query'])
+    }
   end
 
 end
