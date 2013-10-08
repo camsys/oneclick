@@ -72,7 +72,11 @@ en:
   rating: "Rating"
   actions: "Actions"
   filter: "Filter"
-
+  edit_trip: "Edit this trip"
+  repeat_trip: "Repeat this trip."
+  remove_trip: "Remove this trip"
+  rate_trip: "Rate this trip"
+  
   # Trip planning
   enter_address: 'Enter address'
   select_or_enter_address: 'Select or enter address'

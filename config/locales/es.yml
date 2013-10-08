@@ -69,6 +69,10 @@ es:
   rating: "Clasificacion *7*"
   actions: "Acciones *8*"
   filter: "Filtrar *9*"
+  edit_trip: "Editar este viaje *40*"
+  repeat_trip: "Repita este viaje *41*."
+  remove_trip: "Eliminar este viaje *42*"
+  rate_trip: "Valorar este viaje *43*"
 
   # Trip planning
   enter_address: 'Introduce la dirección'
