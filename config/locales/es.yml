@@ -73,6 +73,7 @@ es:
   repeat_trip: "Repita este viaje *41*."
   remove_trip: "Eliminar este viaje *42*"
   rate_trip: "Valorar este viaje *43*"
+  plan_trip: "Continuar la planificación de este viaje *44*"
 
   # Trip planning
   enter_address: 'Introduce la dirección'

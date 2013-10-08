@@ -14,7 +14,7 @@
       .trip_basic_text= format_date(@planned_trip.trip_datetime.in_time_zone)
     .span2
       - if @planned_trip.in_the_future
-        = link_to edit_user_trip_path(@traveler, @planned_trip.trip), :class => "btn btn-small pull-right", :alt => t(:edit_trip) do
+        = link_to edit_user_trip_path(@traveler, @planned_trip.trip), :class => "btn btn-small pull-right", :alt => t(:edit_trip), :title => t(:edit_trip) do
           %i.icon-edit
 
 .row-fluid

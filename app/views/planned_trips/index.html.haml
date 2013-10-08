@@ -37,17 +37,17 @@
           -# %td.nowrap= get_rating_icons(planned_trip)
           - if planned_trip.in_the_future
             %td.center.nowrap          
-              = link_to user_planned_trip_path(@traveler, planned_trip), :class => "btn btn-small" do
+              = link_to user_planned_trip_path(@traveler, planned_trip), {:class => "btn btn-small", :alt => t(:plan_trip), :title => t(:plan_trip)} do
                 %i.icon-mail-forward
-              = link_to edit_user_trip_path(@traveler, planned_trip.trip), :class => "btn btn-small" do
+              = link_to edit_user_trip_path(@traveler, planned_trip.trip), {:class => "btn btn-small", :alt => t(:edit_trip), :title => t(:edit_trip)} do
                 %i.icon-edit
-              = link_to user_trip_path(@traveler, planned_trip.trip), :class => "btn btn-small btn-danger delete-button", :method => :delete, :confirm => t(:confirm_remove_trip) do
+              = link_to user_trip_path(@traveler, planned_trip.trip), {:alt => t(:remove_trip), :title => t(:remove_trip), :class => "btn btn-small btn-danger delete-button", :method => :delete, :confirm => t(:confirm_remove_trip)} do
                 %i.icon-remove
           - else
             %td.center.nowrap          
-              = link_to repeat_user_trip_path(@traveler, planned_trip.trip), :class => "btn btn-small" do
+              = link_to repeat_user_trip_path(@traveler, planned_trip.trip), {:alt => t(:repeat_trip), :title => t(:repeat_trip), :class => "btn btn-small"} do
                 %i.icon-rotate-right
-              -# = link_to user_planned_trip_path(@traveler, planned_trip), :class => "btn btn-small" do
+              -# = link_to user_planned_trip_path(@traveler, planned_trip), {:alt => t(:rate_trip), :title => t(:rate_trip), :class => "btn btn-small"} do
                 -# %i.icon-thumbs-up
         
 - else

@@ -76,6 +76,7 @@ en:
   repeat_trip: "Repeat this trip."
   remove_trip: "Remove this trip"
   rate_trip: "Rate this trip"
+  plan_trip: "Continue planning this trip"
   
   # Trip planning
   enter_address: 'Enter address'
