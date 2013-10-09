@@ -16,6 +16,49 @@ function set_ui_key_value(key, value) {
 	//alert('setting value for ' + key + ' to ' + value);
     window.sessionStorage.setItem(key, value);
 };
+// Displays an alert
+function show_alert(message) {
+	$('#messages').html('<div class="alert alert-block"><h4>Warning!</h4>' + message + '</div>');
+}
+// Submittal handler for forms sent using ajax
+function ajax_submit_form_handler(form_id) {
+	var form = $('#' + form_id);
+	form.submit(function() {
+	    $.ajax({
+	        data: $(this).serialize(),
+	        type: $(this).attr('method'),
+	        url: $(this).attr('action'), 
+	        success: function(data) {
+	        	//alert('success');
+	        },
+	        error: function (data) {
+	       		//alert('error');
+            	show_alert("We are sorry but something went wrong. Please try again.");	               
+	        }
+	    });
+	    return false;
+	});	
+};
+function ajax_render_action(url, method) {
+	$.ajax({
+    	type: method,
+      	url: url,
+      	beforeSend:function(){
+        	// this is where we append a loading image
+    		//$('#ajax-panel').html('<div class="loading"><img src="/images/loading.gif" alt="Loading..." /></div>');
+  		},
+  		success:function(data){
+		    // successful request; do something with the data
+		    //$('#ajax-panel').empty();
+		    //$(data).find('item').each(function(i){
+		    //  $('#ajax-panel').append('<h4>' + $(this).find('title').text() + '</h4><p>' + $(this).find('link').text() + '</p>');
+		    //});
+		},
+		error: function (data) {
+      		show_alert("We are sorry but something went wrong. Please try again.");                
+      	}
+   	});  
+};
 
 // Used to remove any existing banner messages
 function remove_messages() {

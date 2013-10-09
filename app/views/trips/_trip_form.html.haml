@@ -87,7 +87,7 @@
   var typeahead_min_chars = +"#{Rails.application.config.ui_typeahead_min_chars}";
   var typeahead_list_length = +"#{Rails.application.config.ui_typeahead_list_length}";
   var geocoder_min_chars = +"#{Rails.application.config.ui_min_geocode_chars}";
-  
+ 
   $.fn.datepicker.Calendar.setDefaultLocale("#{I18n.locale}");
   
   $('#trip-date').datepicker().on("dateChange", function(e) {
@@ -110,6 +110,8 @@
     // Hide what we don't need
     $('#from_place_candidates').hide();
     $('#to_place_candidates').hide();
+    // Install a submit handler on the query form
+    ajax_submit_form_handler('query_form');
   });
   
   // Other setup
@@ -221,6 +223,9 @@
                     });
     
                     return process(resultList);
+                  },
+                  error: function (data) {
+                      show_alert("We are sorry but something went wrong. Please try again.");                
                   }
               });
           }, typeahead_delay);            
@@ -291,6 +296,9 @@
                     });
     
                     return process(resultList);
+                  },
+                  error: function (data) {
+                      show_alert("We are sorry but something went wrong. Please try again.");                
                   }
               });
           }, typeahead_delay);            

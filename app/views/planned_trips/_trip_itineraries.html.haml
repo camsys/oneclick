@@ -42,7 +42,7 @@
     $('[data-action]').click(function() {
       var url = $(this).data('action');
       //alert(url);      
-      render_action(url, 'GET');
+      ajax_render_action(url, 'GET');
     });
     // Set the panel focus
     set_focus(focus_panel_id);
@@ -57,28 +57,6 @@
     $(elem_id).focus();
   };
   
-  function render_action(url, method) {
-    $.ajax({
-      type: method,
-      url: url,
-      beforeSend:function(){
-        // this is where we append a loading image
-        //$('#ajax-panel').html('<div class="loading"><img src="/images/loading.gif" alt="Loading..." /></div>');
-      },
-      success:function(data){
-        // successful request; do something with the data
-        //$('#ajax-panel').empty();
-        //$(data).find('item').each(function(i){
-        //  $('#ajax-panel').append('<h4>' + $(this).find('title').text() + '</h4><p>' + $(this).find('link').text() + '</p>');
-        //});
-      },
-      error:function(){
-        // failed request; give feedback to user
-        alert("error trapped");
-        $('#messages').html('<div class="alert alert-block"><h4>Warning!</h4>We are sorry but something went wrong. Please try again.</div>');
-      }
-    });  
-  };
   
   function fix_thumbnails() {
     $(".thumbnail").css('height', '');
