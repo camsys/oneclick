@@ -69,7 +69,8 @@ class Place < ActiveRecord::Base
     geocoder = OneclickGeocoder.new
     geocoder.geocode(raw_address)
     res = geocoder.results
-    if address = res.first
+    if res.first
+      address = res.first
       self.name = address[:name] unless self.name
       self.address1 = address[:name]
       self.city = address[:city]
