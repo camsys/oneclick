@@ -38,8 +38,9 @@ class Poi < ActiveRecord::Base
     elems.compact.join(' ')
   end
   
-  reverse_geocoded_by :lat, :lon do |obj,results|
-    if geo = results.first
+  reverse_geocoded_by :lat, :lon do |obj, results|
+    if results.first
+      geo = results.first
       obj.address1 = geo.street_address
       obj.city    = geo.city
       obj.zip     = geo.postal_code
