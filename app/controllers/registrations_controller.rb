@@ -46,6 +46,9 @@ class RegistrationsController < Devise::RegistrationsController
   
   def update
     session[:location] = edit_user_registration_path
+    @user_relationship = UserRelationship.new
+    @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
+    @user_accommodations_proxy = UserAccommodationsProxy.new(@traveler)
     super
   end
 
