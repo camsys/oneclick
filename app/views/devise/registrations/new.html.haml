@@ -1,20 +1,12 @@
 %h1
   %i.icon-edit
-  = t(:sign_up)
-%h4
-.well
-  = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
-    = f.error_notification
-    = display_base_errors resource
-    - Rails.logger.info "In view, I18n: #{I18n.locale}"
-    - Rails.logger.info t(:first_name)
-    = f.input :first_name, label: t(:first_name), :autofocus => true
-    = f.input :last_name, label: t(:last_name)
-    = f.input :email, label: t(:email), :required => true
-    = f.input :password, label: t(:password), :required => true
-    = f.input :password_confirmation, :label => t(:retype_your_password), :required => true
-    .actions
-      = button_tag type: :submit, class: 'btn btn-primary controls' do
-        %i.icon.icon-edit
-        = t(:sign_up)
-      = render "devise/shared/links"
+  -if @create_inline
+    = 'Create an account to save your information.'
+  -else
+    = t(:sign_up)
+
+-if @create_inline
+  = render partial: 'devise/registrations/form'
+
+-else
+  = render partial: 'devise/registrations/form'

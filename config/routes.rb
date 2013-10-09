@@ -30,7 +30,6 @@ Oneclick::Application.routes.draw do
         end
       end
 
-
       # user relationships
       resources :user_relationships, :only => [:new, :create] do
         member do

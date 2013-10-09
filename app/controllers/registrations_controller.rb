@@ -4,6 +4,12 @@ class RegistrationsController < Devise::RegistrationsController
   before_filter :set_locale
 
   def new
+    get_traveler
+    if session[:current_trip_id]
+      @create_inline = true
+    else
+      @create_inline = false
+    end
     super
   end
 
@@ -13,6 +19,15 @@ class RegistrationsController < Devise::RegistrationsController
   before_filter :get_traveler, :only => [:update, :edit]
 
   # Overrides the Devise create method for new registrations
+  def after_sign_in_path_for(resource)
+    if session[:current_trip_id]
+      session[:current_trip_id] =  nil
+      "http://www.google.com"
+    else
+      '/'
+    end
+  end
+
   def create
     #puts ">>>>> IN CREATE"
     session[:location] = new_user_registration_path

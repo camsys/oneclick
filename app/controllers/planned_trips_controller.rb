@@ -59,7 +59,11 @@ class PlannedTripsController < TravelerAwareController
   def show
     # See if there is the show_hidden parameter
     @show_hidden = params[:show_hidden]
-    @next_itinerary_id = @show_hidden.nil? ? @planned_trip.valid_itineraries.first.id : @planned_trip.itineraries.first.id 
+    @next_itinerary_id = @show_hidden.nil? ? @planned_trip.valid_itineraries.first.id : @planned_trip.itineraries.first.id
+
+    if session[:current_trip_id]
+      session[:current_trip_id] = nil
+    end
 
     respond_to do |format|
       format.html # show.html.erb

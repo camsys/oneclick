@@ -276,7 +276,7 @@ class TripsController < PlaceSearchingController
         if @trip.save
           @trip.reload
           @planned_trip = @trip.planned_trips.first
-          if @traveler.user_profile.has_characteristics?
+          if @traveler.user_profile.has_characteristics? and user_signed_in?
             @planned_trip.create_itineraries
             @path = user_planned_trip_path(@traveler, @planned_trip)
           else
