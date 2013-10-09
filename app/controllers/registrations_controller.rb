@@ -12,9 +12,36 @@ class RegistrationsController < Devise::RegistrationsController
   # set the @traveler variable before any actions are invoked
   before_filter :get_traveler, :only => [:update, :edit]
 
+  # Overrides the Devise create method for new registrations
   def create
+    #puts ">>>>> IN CREATE"
     session[:location] = new_user_registration_path
-    super
+    
+    build_resource(sign_up_params)
+    #puts "RESOURCE OBJ"
+    #puts resource.inspect
+    #puts "GUEST USER"
+    #puts guest_user.inspect
+    
+    guest_user.first_name = resource.first_name
+    guest_user.last_name = resource.last_name
+    guest_user.email = resource.email
+    guest_user.encrypted_password = resource.encrypted_password
+
+    if guest_user.save
+      if guest_user.active_for_authentication?
+        set_flash_message :notice, :signed_up if is_navigational_format?
+        sign_up(resource_name, guest_user)
+        respond_with guest_user, :location => after_sign_up_path_for(guest_user)
+      else
+        set_flash_message :notice, :"signed_up_but_#{guest_user.inactive_message}" if is_navigational_format?
+        expire_session_data_after_sign_in!
+        respond_with guest_user, :location => after_inactive_sign_up_path_for(guest_user)
+      end
+    else
+      clean_up_passwords guest_user
+      respond_with guest_user
+    end
   end
   
   def update
