@@ -1,12 +1,9 @@
 %h1
   %i.icon-edit
   -if @create_inline
-    = 'Create an account to save your information.'
+    = t(:create_account)
   -else
     = t(:sign_up)
 
--if @create_inline
-  = render partial: 'devise/registrations/form'
+= render partial: 'devise/registrations/form'
 
--else
-  = render partial: 'devise/registrations/form'

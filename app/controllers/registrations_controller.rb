@@ -7,6 +7,7 @@ class RegistrationsController < Devise::RegistrationsController
     get_traveler
     if session[:current_trip_id]
       @create_inline = true
+      @planned_trip = PlannedTrip.find(session[:current_trip_id])
     else
       @create_inline = false
     end
@@ -20,11 +21,14 @@ class RegistrationsController < Devise::RegistrationsController
 
   # Overrides the Devise create method for new registrations
   def after_sign_in_path_for(resource)
+    get_traveler
     if session[:current_trip_id]
+      @planned_trip = PlannedTrip.find(session[:current_trip_id])
       session[:current_trip_id] =  nil
-      "http://www.google.com"
+      @planned_trip.create_itineraries
+      user_planned_trip_path(@traveler, @planned_trip)
     else
-      '/'
+      root_path
     end
   end
 
@@ -43,7 +47,7 @@ class RegistrationsController < Devise::RegistrationsController
     guest_user.email = resource.email
     guest_user.encrypted_password = resource.encrypted_password
 
-    if guest_user.save
+    if resource.valid? and guest_user.save
       if guest_user.active_for_authentication?
         set_flash_message :notice, :signed_up if is_navigational_format?
         sign_up(resource_name, guest_user)
@@ -54,11 +58,11 @@ class RegistrationsController < Devise::RegistrationsController
         respond_with guest_user, :location => after_inactive_sign_up_path_for(guest_user)
       end
     else
-      clean_up_passwords guest_user
-      respond_with guest_user
+      clean_up_passwords resource
+      respond_with resource
     end
   end
-  
+
   def update
     session[:location] = edit_user_registration_path
     @user_relationship = UserRelationship.new

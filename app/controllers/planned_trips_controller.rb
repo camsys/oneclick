@@ -54,6 +54,21 @@ class PlannedTripsController < TravelerAwareController
     
   end
 
+  def skip
+
+    get_traveler
+
+    @planned_trip = PlannedTrip.find(session[:current_trip_id])
+    @planned_trip.create_itineraries
+    @path = user_planned_trip_path(@traveler, @planned_trip)
+    session[:current_trip_id] =  nil
+
+    respond_to do |format|
+      format.html { redirect_to @path }
+    end
+  end
+
+
   # GET /trips/1
   # GET /trips/1.json
   def show

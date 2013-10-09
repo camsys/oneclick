@@ -19,14 +19,12 @@ Oneclick::Application.routes.draw do
       resources :characteristics, :only => [:new, :create, :edit, :update] do
         member do
           put 'set'
-          get 'skip'
         end
       end
 
       resources :accommodations, :only => [:new, :create, :edit, :update] do
         member do
           put 'set'
-          get 'skip'
         end
       end
 
@@ -71,6 +69,7 @@ Oneclick::Application.routes.draw do
           post  'email'
           get   'hide'
           get   'unhide_all'
+          get   'skip'
         end
       end      
     end

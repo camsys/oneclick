@@ -81,20 +81,12 @@ private
   # called (once) when the user logs in, insert any code your application needs
   # to hand off from guest_user to current_user.
   def logging_in
-
-    guest_user.first_name = current_user.first_name
-    guest_user.last_name = current_user.last_name
-    guest_user.email = current_user.email
-    guest_user.password = current_user.password
-    guest_user.save()
-
-    current_user.delete
-
-    current_user = guest_user
-    current_user.save
-
-    sign_in(:user, current_user)
-
+    # For example:
+    # guest_comments = guest_user.comments.all
+    # guest_comments.each do |comment|
+      # comment.user_id = current_user.id
+      # comment.save!
+    # end
   end
 
   def create_guest_user

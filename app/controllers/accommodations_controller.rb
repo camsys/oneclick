@@ -9,10 +9,7 @@ class AccommodationsController < TravelerAwareController
     @user_accommodations_proxy.update_maps(params[:user_accommodations_proxy])
 
     if session[:current_trip_id]
-      #@planned_trip = PlannedTrip.find(session[:current_trip_id])
-      #@planned_trip.create_itineraries
-      #@path = user_planned_trip_path(@traveler, @planned_trip)
-      #session[:current_trip_id] =  nil
+
       @path = new_user_registration_path
     end
     
@@ -32,23 +29,15 @@ class AccommodationsController < TravelerAwareController
 
     @user_accommodations_proxy = UserAccommodationsProxy.new(@traveler)
 
+    if session[:current_trip_id]
+      get_traveler
+      @planned_trip = PlannedTrip.find(session[:current_trip_id])
+    end
+
     respond_to do |format|
       format.html
     end
   end
 
-  def skip
-
-    get_traveler
-
-    @planned_trip = PlannedTrip.find(session[:current_trip_id])
-    @planned_trip.create_itineraries
-    @path = user_planned_trip_path(@traveler, @planned_trip)
-    session[:current_trip_id] =  nil
-
-    respond_to do |format|
-      format.html { redirect_to @path }
-    end
-  end
 
 end
