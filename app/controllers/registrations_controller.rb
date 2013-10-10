@@ -19,7 +19,6 @@ class RegistrationsController < Devise::RegistrationsController
   # set the @traveler variable before any actions are invoked
   before_filter :get_traveler, :only => [:update, :edit]
 
-  # Overrides the Devise create method for new registrations
   def after_sign_in_path_for(resource)
     get_traveler
     if session[:current_trip_id]
@@ -32,6 +31,7 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  # Overrides the Devise create method for new registrations
   def create
     #puts ">>>>> IN CREATE"
     session[:location] = new_user_registration_path
@@ -58,6 +58,7 @@ class RegistrationsController < Devise::RegistrationsController
         respond_with guest_user, :location => after_inactive_sign_up_path_for(guest_user)
       end
     else
+      @create_inline = true
       clean_up_passwords resource
       respond_with resource
     end
