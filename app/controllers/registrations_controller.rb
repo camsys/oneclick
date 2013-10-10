@@ -2,16 +2,17 @@
 class RegistrationsController < Devise::RegistrationsController
   include LocaleHelpers
   before_filter :set_locale
+  # set the @traveler variable before any actions are invoked
+  before_filter :get_traveler, :only => [:update, :edit]
+
+  helper_method :current_or_guest_user
+    
 
   def new
     setup_form
     super
   end
 
-  helper_method :current_or_guest_user
-    
-  # set the @traveler variable before any actions are invoked
-  before_filter :get_traveler, :only => [:update, :edit]
 
   def after_sign_in_path_for(resource)
 
