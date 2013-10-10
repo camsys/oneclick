@@ -9,6 +9,7 @@ class OneclickGeocoder
 
   INCLUDED_TYPES = %w{
     airport 
+    establishment
     intersection 
     natural_feature 
     park 
