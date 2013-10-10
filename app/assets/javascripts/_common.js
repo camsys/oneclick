@@ -18,7 +18,7 @@ function set_ui_key_value(key, value) {
 };
 // Displays an alert
 function show_alert(message) {
-	$('#messages').html('<div class="alert alert-block"><h4>Warning!</h4>' + message + '</div>');
+	$('#messages').html('<div class="alert alert-block fade"><h4>Warning!</h4>' + message + '</div>');
 }
 // Submittal handler for forms sent using ajax
 function ajax_submit_form_handler(form_id) {
