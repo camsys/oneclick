@@ -1,6 +1,6 @@
 .navbar.navbar-fixed-top#publicnav
   %nav.navbar-inner
-    .container-fluid
+    .container
       - if !at_root
         = link_to t(:logotext), root_path, :class => 'brand'
       - else
@@ -8,12 +8,15 @@
           =  t(:logotext)
       %h2= t(:one_click_trip_planner)
       .pull-right
+        = link_to error_501_path, id: 'help' do
+          %i.icon.icon-question-sign
+      .pull-right      
         -#<!-- .btn-navbar is used as the toggle for collapsed navbar content -->
         %a.btn.btn-navbar{data: { toggle: "collapse",  target: ".nav-collapse"}}
           %span.icon-bar
           %span.icon-bar
           %span.icon-bar
-        -#<!-- Everything you want hidden at 940px or less, place within here -->
+        -#<!-- Everything you want hidden at @navbarCollapseWidth or less, place within here -->
         .nav-collapse.collapse
           %ul.nav
             - if user_signed_in?
@@ -58,6 +61,4 @@
                     = link_to new_user_registration_path do
                       %i.icon.icon-edit
                       = t(:create_an_account) 
-
-            = link_to error_501_path, id: 'help' do
-              %i.icon.icon-question-sign
+  

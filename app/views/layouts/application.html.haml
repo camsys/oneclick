@@ -18,7 +18,9 @@
   %body{:class => "#{controller_css_class} #{action_name}"}
     / application.html.haml
     #wrap
-      = render 'shared/navigation'
+      .container-fluid
+        .row-fluid
+          = render 'shared/navigation'
       #main{:role => "main"}
         .container-fluid
           = render 'shared/assisting'
