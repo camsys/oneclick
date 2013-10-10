@@ -1,5 +1,3 @@
-require 'pry'
-
 class TripsController < PlaceSearchingController
 
   # set the @trip variable before any actions are invoked
