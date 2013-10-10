@@ -4,13 +4,7 @@ class RegistrationsController < Devise::RegistrationsController
   before_filter :set_locale
 
   def new
-    get_traveler
-    if session[:current_trip_id]
-      @create_inline = true
-      @planned_trip = PlannedTrip.find(session[:current_trip_id])
-    else
-      @create_inline = false
-    end
+    setup_form
     super
   end
 
@@ -20,8 +14,9 @@ class RegistrationsController < Devise::RegistrationsController
   before_filter :get_traveler, :only => [:update, :edit]
 
   def after_sign_in_path_for(resource)
-    get_traveler
+
     if session[:current_trip_id]
+      get_traveler
       @planned_trip = PlannedTrip.find(session[:current_trip_id])
       session[:current_trip_id] =  nil
       @planned_trip.create_itineraries
@@ -47,6 +42,8 @@ class RegistrationsController < Devise::RegistrationsController
     guest_user.email = resource.email
     guest_user.encrypted_password = resource.encrypted_password
 
+    setup_form
+
     if resource.valid? and guest_user.save
       if guest_user.active_for_authentication?
         set_flash_message :notice, :signed_up if is_navigational_format?
@@ -58,9 +55,18 @@ class RegistrationsController < Devise::RegistrationsController
         respond_with guest_user, :location => after_inactive_sign_up_path_for(guest_user)
       end
     else
-      @create_inline = true
       clean_up_passwords resource
       respond_with resource
+    end
+  end
+
+  def setup_form
+    if session[:current_trip_id]
+      get_traveler
+      @create_inline = true
+      @planned_trip = PlannedTrip.find(session[:current_trip_id])
+    else
+      @create_inline = false
     end
   end
 
