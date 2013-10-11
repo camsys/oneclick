@@ -11,11 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131010051208) do
+ActiveRecord::Schema.define(:version => 20131011175154) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
     t.boolean "active",     :null => false
+  end
+
+  create_table "coverages", :force => true do |t|
+    t.string "zip"
   end
 
   create_table "fare_structures", :force => true do |t|
@@ -154,6 +158,12 @@ ActiveRecord::Schema.define(:version => 20131010051208) do
     t.boolean  "active",      :default => true, :null => false
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
+  end
+
+  create_table "service_coverage_maps", :force => true do |t|
+    t.integer "service_id"
+    t.integer "coverage_id"
+    t.string  "rule"
   end
 
   create_table "service_traveler_accommodations_maps", :force => true do |t|

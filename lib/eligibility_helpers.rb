@@ -125,8 +125,24 @@ class EligibilityHelpers
   end
 
   def eligible_by_location(planned_trip, services)
-    #TODO: Need to filter by location (county, city, state, polygon, etc.)
-    services
+    return services #TODO: When TripPlaces are assigned Place objects, delete this line.
+
+    eligible_services  = []
+    services.each do |service|
+      #Match Residence
+      #TODO:  Need to add home Place for each traveler
+
+      #Match Origin
+      zips = service.service_coverage_maps.where(rule: 'origin').map {|c| c.coverage.zip}
+      next if (zips.count > 0) and not(planned_trip.trip.origin.place.zip.in? zips)
+
+      #Match Destination
+      zips = service.service_coverage_maps.where(rule: 'destination').map {|c| c.coverage.zip}
+      next if (zips.count > 0) and not(planned_trip.trip.destination.place.zip.in? zips)
+
+      eligible_services << service
+    end
+    eligible_services
   end
 
   def eligible_by_trip_purpose(planned_trip, services)

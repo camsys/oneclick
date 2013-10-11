@@ -179,6 +179,13 @@ providers.each do |provider|
         ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
       end
 
+      #Add geographic restrictions
+      ['30309', '30308', '30318', '30332'].each do |z|
+        c = Coverage.new(zip: z)
+        ServiceCoverageMap.create(service: service, coverage: c, rule: 'origin')
+
+      end
+
     when "esp#9" #Clayton County Transportation
       #Create service
       service = Service.create(name: 'Clayton NEMT', provider: p, service_type: nemt, advanced_notice_minutes: 14*24*60)
