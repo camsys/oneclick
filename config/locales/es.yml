@@ -229,8 +229,8 @@ es:
   create_account: "[es] Create an account to save your information [\es]"
   
   # General Messages
-  yes: "Sí"
-  no:  "Not"
+  yes_str: "Sí"
+  no_str:  "Not"
   ok: "Ok"
   cancel: "Cancelar"
   edit: "Editar *30*"

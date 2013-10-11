@@ -232,8 +232,8 @@ en:
   create_account: "Create an account to save your information."
 
   # General Messages
-  yes: "Yes"
-  no:  "No"
+  yes_str: "Yes"
+  no_str:  "No"
   ok: "Ok"
   cancel: "Cancel"
   edit: "Edit"
