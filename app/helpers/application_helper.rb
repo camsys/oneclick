@@ -15,6 +15,11 @@ module ApplicationHelper
       TripLeg::FERRY => 'travelcon-boat'
       }
   
+  # REturns the name of the logo image based on the oneclick configuration
+  def get_logo
+    return Oneclick::Application.config.ui_logo
+  end
+  
   # Returns a mode-specific icon
   def get_mode_icon(mode)
     ICON_DICTIONARY.default = 'travelcon-bus'
