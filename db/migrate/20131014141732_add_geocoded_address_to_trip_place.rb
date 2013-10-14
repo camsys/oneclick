@@ -8,10 +8,10 @@ class AddGeocodedAddressToTripPlace < ActiveRecord::Migration
   end
 
   def down
-    add_column :trip_places, :address1
-    add_column :trip_places, :address2
-    add_column :trip_places, :city
-    add_column :trip_places, :state
-    add_column :trip_places, :zip
+    remove_column :trip_places, :address1
+    remove_column :trip_places, :address2
+    remove_column :trip_places, :city
+    remove_column :trip_places, :state
+    remove_column :trip_places, :zip
   end
 end
