@@ -15,6 +15,6 @@ class Service < ActiveRecord::Base
   has_many :traveler_accommodations, through: :service_traveler_accommodations_maps, source: :traveler_accommodation
   has_many :traveler_characteristics, through: :service_traveler_characteristics_maps, source: :traveler_characteristic
   has_many :trip_purposes, through: :service_trip_purpose_maps, source: :trip_purpose
-  has_many :coverage_areas, through: :service_coverage_maps, source: :coverage
+  has_many :coverage_areas, through: :service_coverage_maps, source: :geo_coverage
 
 end

@@ -11,21 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131014185105) do
+ActiveRecord::Schema.define(:version => 20131014171935) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
     t.boolean "active",     :null => false
   end
 
-  create_table "coverages", :force => true do |t|
-    t.string "zip"
-  end
-
   create_table "fare_structures", :force => true do |t|
     t.integer "service_id",                                               :null => false
     t.decimal "fare",                      :precision => 10, :scale => 2
     t.string  "note",       :limit => 254
+  end
+
+  create_table "geo_coverages", :force => true do |t|
+    t.string "value"
+    t.string "type",  :limit => 128
   end
 
   create_table "itineraries", :force => true do |t|
@@ -164,7 +165,7 @@ ActiveRecord::Schema.define(:version => 20131014185105) do
 
   create_table "service_coverage_maps", :force => true do |t|
     t.integer "service_id"
-    t.integer "coverage_id"
+    t.integer "geo_coverage_id"
     t.string  "rule"
   end
 
