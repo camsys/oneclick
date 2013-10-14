@@ -183,6 +183,11 @@ protected
         place.creator = current_user
         place.raw_address = trip_place.raw_address
         place.name = place_proxy.name 
+        place.address1 = trip_place.address1
+        place.address2 = trip_place.address2
+        place.city = trip_place.city
+        place.state = trip_place.state
+        place.zip = trip_place.zip
         place.lat = trip_place.lat
         place.lon = trip_place.lon
         place.active = true
@@ -198,6 +203,10 @@ protected
       place.active = true
       if addr
         place.raw_address = addr[:formatted_address]
+        place.address1 = addr[:street_address]
+        place.city = addr[:city]
+        place.state = addr[:state]
+        place.zip = addr[:zip]
         place.lat = addr[:lat]
         place.lon = addr[:lon]
       else

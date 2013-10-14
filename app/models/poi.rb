@@ -1,4 +1,4 @@
-class Poi < ActiveRecord::Base
+class Poi < GeocodedAddress
   
   # Associations
   belongs_to :poi_type
@@ -6,17 +6,21 @@ class Poi < ActiveRecord::Base
   #after_validation :reverse_geocode
   
   # Updatable attributes
-  attr_accessible :name, :address1, :address2, :city, :state, :zip, :lat, :lon
+  attr_accessible :name
 
   # set the default scope
-  default_scope where('pois.lat IS NOT NULL AND pois.lon IS NOT NULL').order('pois.name')
+  default_scope order('pois.name')
   
   def to_s
     name
   end
   
   def location
-    return [lat, lon]
+    return get_location
+  end
+  
+  def zipcode
+    return get_zipcode
   end
   
   def geocode
@@ -25,17 +29,7 @@ class Poi < ActiveRecord::Base
   end
   
   def address
-    #if address1.blank?
-    #  reverse_geocode
-    #  self.save
-    #end
-    elems = []
-    elems << address1 unless address1.blank?
-    elems << address2 unless address2.blank?
-    elems << city unless city.blank?
-    elems << state unless state.blank?
-    elems << zip unless zip.blank?
-    elems.compact.join(' ')
+    get_address
   end
   
   reverse_geocoded_by :lat, :lon do |obj, results|
