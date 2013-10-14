@@ -15,6 +15,10 @@ class Poi < GeocodedAddress
     name
   end
   
+  def county_name
+    return get_county_name
+  end
+  
   def location
     return get_location
   end
@@ -35,10 +39,11 @@ class Poi < GeocodedAddress
   reverse_geocoded_by :lat, :lon do |obj, results|
     if results.first
       geo = results.first
-      obj.address1 = geo.street_address
-      obj.city    = geo.city
-      obj.zip     = geo.postal_code
-      obj.state   = geo.state_code
+      obj.address1  = geo.street_address
+      obj.city      = geo.city
+      obj.zip       = geo.postal_code
+      obj.state     = geo.state_code
+      obj.county    = geo.county
     end
   end
   

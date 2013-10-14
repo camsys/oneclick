@@ -44,6 +44,12 @@ class TripPlace < GeocodedAddress
     return to_s
   end
   
+  def county_name
+    return poi.county_name unless poi.nil?
+    return place.county_name unless place.nil?
+    return get_county_name     
+  end
+  
   # discover the default string value for this trip place from
   # its relationships
   def to_s

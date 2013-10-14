@@ -188,6 +188,7 @@ protected
         place.city = trip_place.city
         place.state = trip_place.state
         place.zip = trip_place.zip
+        place.county = trip_place.county
         place.lat = trip_place.lat
         place.lon = trip_place.lon
         place.active = true
@@ -207,6 +208,7 @@ protected
         place.city = addr[:city]
         place.state = addr[:state]
         place.zip = addr[:zip]
+        place.county = addr[:county]
         place.lat = addr[:lat]
         place.lon = addr[:lon]
       else
