@@ -2,9 +2,9 @@ class ServiceCoverageMap < ActiveRecord::Base
 
   #associations
   belongs_to :service
-  belongs_to :coverage
+  belongs_to :geo_coverage
 
-  attr_accessible :service, :coverage, :service_id, :coverage_id, :rule
+  attr_accessible :service, :geo_coverage, :service_id, :geo_coverage_id, :rule
 
   # attr_accessible :title, :body
 end

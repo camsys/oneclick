@@ -181,9 +181,12 @@ providers.each do |provider|
 
       #Add geographic restrictions
       ['30309', '30308', '30318', '30332'].each do |z|
-        c = Coverage.new(zip: z)
-        ServiceCoverageMap.create(service: service, coverage: c, rule: 'origin')
-
+        c = GeoCoverage.new(value: z, coverage_type: 'zipcode')
+        ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+      end
+        ['Fulton', 'Dekalb'].each do |z|
+        c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+        ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
       end
 
     when "esp#9" #Clayton County Transportation

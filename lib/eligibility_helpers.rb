@@ -132,12 +132,18 @@ class EligibilityHelpers
       #TODO:  Need to add home Place for each traveler
 
       #Match Origin
-      zips = service.service_coverage_maps.where(rule: 'origin').map {|c| c.coverage.zip}
-      next if (zips.count > 0) and not(planned_trip.trip.origin.zipcode.in? zips)
+      p service
+      coverages = service.service_coverage_maps.where(rule: 'origin').map {|c| c.geo_coverage.value}
+      p coverages
+      unless (coverages.count == 0) or (planned_trip.trip.origin.zipcode.in? coverages) or (planned_trip.trip.origin.county_name.in? coverages)
+        next
+      end
 
       #Match Destination
-      zips = service.service_coverage_maps.where(rule: 'destination').map {|c| c.coverage.zip}
-      next if (zips.count > 0) and not(planned_trip.trip.destination.zipcode.in? zips)
+      coverages = service.service_coverage_maps.where(rule: 'destination').map {|c| c.geo_coverage.value}
+      unless (coverages.count == 0) or (planned_trip.trip.destination.zipcode.in? coverages) or (planned_trip.trip.destination.county_name.in? coverages)
+        next
+      end
 
       eligible_services << service
     end
