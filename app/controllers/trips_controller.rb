@@ -38,7 +38,7 @@ class TripsController < PlaceSearchingController
     @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
     @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
     
-    # Create makers for the map control
+    # Create markers for the map control
     @markers = create_markers(@trip_proxy)
     @places = create_place_markers(@traveler.places)
 
@@ -72,7 +72,7 @@ class TripsController < PlaceSearchingController
     # Set the trip proxy Id to the PK of the trip so we can update it
     @trip_proxy.id = @trip.id
 
-    # Create makers for the map control
+    # Create markers for the map control
     @markers = create_markers(@trip_proxy)
     @places = create_place_markers(@traveler.places)
         
@@ -108,7 +108,7 @@ class TripsController < PlaceSearchingController
     @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
     @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
 
-    # Create makers for the map control
+    # Create markers for the map control
     @markers = create_markers(@trip_proxy)
     @places = create_place_markers(@traveler.places)
 
@@ -171,7 +171,7 @@ class TripsController < PlaceSearchingController
     @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
     @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
 
-    # Create makers for the map control
+    # Create markers for the map control
     @markers = create_markers(@trip_proxy)
     @places = create_place_markers(@traveler.places)
     
@@ -205,7 +205,7 @@ class TripsController < PlaceSearchingController
     # save the id of the trip we are updating
     @trip_proxy.id = @trip.id
 
-    # Create makers for the map control
+    # Create markers for the map control
     @markers = create_markers(@trip_proxy)
     @places = create_place_markers(@traveler.places)
     
@@ -265,7 +265,7 @@ class TripsController < PlaceSearchingController
       @trip = create_trip(@trip_proxy)
     end
 
-    # Create makers for the map control
+    # Create markers for the map control
     @markers = create_markers(@trip_proxy)
     @places = create_place_markers(@traveler.places)
 
@@ -318,20 +318,20 @@ protected
   end
 
   # Create an array of map markers suitable for the Leaflet plugin. If the trip proxy is from an existing trip we will
-  # have 
+  # have start and stop markers
   def create_markers(trip_proxy)
     markers = []
     if trip_proxy.from_place_selected
       place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected.to_i, true)
     else
-      place = {:name => trip_proxy.from_place, :lat => trip_proxy.from_lat, :lon => trip_proxy.from_lon, :address => trip_proxy.from_raw_address}
+      place = {:name => trip_proxy.from_place, :lat => trip_proxy.from_lat, :lon => trip_proxy.from_lon, :formatted_address => trip_proxy.from_raw_address}
     end
     markers << get_addr_marker(place, 'start', 'startIcon')
     
     if trip_proxy.to_place_selected
       place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected.to_i, false)
     else
-      place = {:name => trip_proxy.to_place, :lat => trip_proxy.to_lat, :lon => trip_proxy.to_lon, :address => trip_proxy.to_raw_address}
+      place = {:name => trip_proxy.to_place, :lat => trip_proxy.to_lat, :lon => trip_proxy.to_lon, :formatted_address => trip_proxy.to_raw_address}
     end
     
     markers << get_addr_marker(place, 'stop', 'stopIcon')
@@ -345,6 +345,7 @@ protected
     end
     return markers
   end
+  
 private
   
   # creates a trip_proxy object from form parameters
@@ -368,7 +369,7 @@ private
     # get the planned trip for this trip
     planned_trip = trip.planned_trips.first
     
-    # initailize a trip proxy from this trip
+    # initialize a trip proxy from this trip
     trip_proxy = TripProxy.new
     trip_proxy.traveler = @traveler
     trip_proxy.trip_purpose_id = trip.trip_purpose.id
@@ -381,6 +382,7 @@ private
     trip_proxy.from_raw_address = trip.trip_places.first.address
     trip_proxy.from_lat = trip.trip_places.first.location.first
     trip_proxy.from_lon = trip.trip_places.first.location.last
+    
     if trip.trip_places.first.poi
       trip_proxy.from_place_selected_type = POI_TYPE
       trip_proxy.from_place_selected = trip.trip_places.first.poi.id
@@ -397,6 +399,7 @@ private
     trip_proxy.to_raw_address = trip.trip_places.last.address
     trip_proxy.to_lat = trip.trip_places.last.location.first
     trip_proxy.to_lon = trip.trip_places.last.location.last
+    
     if trip.trip_places.last.poi
       trip_proxy.to_place_selected_type = POI_TYPE
       trip_proxy.to_place_selected = trip.trip_places.last.poi.id
@@ -429,7 +432,11 @@ private
     elsif place[:place_id]
       from_place.place = @traveler.places.find(place[:place_id])
     else
-      from_place.raw_address = place[:address]
+      from_place.raw_address = place[:formatted_address]
+      from_place.address1 = place[:street_address]
+      from_place.city = place[:city]
+      from_place.state = place[:state]
+      from_place.zip = place[:zip]
       from_place.lat = place[:lat]
       from_place.lon = place[:lon]
       from_place.raw = place[:raw]
@@ -444,9 +451,13 @@ private
     elsif place[:place_id]
       to_place.place = @traveler.places.find(place[:place_id])
     else
-      to_place.raw_address = place[:address]
+      to_place.raw_address = place[:formatted_address]
+      to_place.address1 = place[:street_address]
+      to_place.city = place[:city]
+      to_place.state = place[:state]
+      to_place.zip = place[:zip]
       to_place.lat = place[:lat]
-      to_place.lon = place[:lon]  
+      to_place.lon = place[:lon]
       to_place.raw = place[:raw]
     end
 
@@ -473,29 +484,60 @@ private
     if place_type == POI_TYPE
       # the user selected a POI using the type-ahead function
       poi = Poi.find(place_id)
-      return {:poi_id => poi.id, :name => poi.name, :lat => poi.lat, :lon => poi.lon, :address => poi.address}
+      return {
+        :poi_id => poi.id,
+        :name => poi.name, 
+        :formatted_address => poi.address, 
+        :lat => poi.location.first, 
+        :lon => poi.location.last 
+        } 
     elsif place_type == CACHED_ADDRESS_TYPE
       # the user selected an address from the trip-places table using the type-ahead function
       trip_place = @traveler.trip_places.find(place_id)
-      return {:name => trip_place.raw_address, :lat => trip_place.lat, :lon => trip_place.lon, :address => trip_place.raw_address}
+      return {
+        :name => trip_place.raw_address, 
+        :lat => trip_place.lat, 
+        :lon => trip_place.lon, 
+        :formatted_address => trip_place.raw, 
+        :street_address => trip_place.address1, 
+        :city => trip_place.city, 
+        :state => trip_place.state, 
+        :zip => trip_place.zip, 
+        :raw => trip_place.raw
+        }
     elsif place_type == PLACES_TYPE
       # the user selected a place using the places drop-down
       place = @traveler.places.find(place_id)
-      return {:place_id => place.id, :name => place.name, :lat => place.lat, :lon => place.lon, :address => place.address}
+      return {
+        :place_id => place.id, 
+        :name => place.name, 
+        :formatted_address => place.address, 
+        :lat => place.location.first, 
+        :lon => place.location.last 
+        }
     elsif place_type == RAW_ADDRESS_TYPE
       # the user entered a raw address and possibly selected an alternate from the list of possible
       # addresses
       if is_from
-        puts place_id
-        puts get_cached_addresses(CACHED_FROM_ADDRESSES_KEY).ai
+        #puts place_id
+        #puts get_cached_addresses(CACHED_FROM_ADDRESSES_KEY).ai
         place = get_cached_addresses(CACHED_FROM_ADDRESSES_KEY)[place_id]
       else
         place = get_cached_addresses(CACHED_TO_ADDRESSES_KEY)[place_id]
       end
       Rails.logger.info "in get_preselected_place"
       Rails.logger.info "#{is_from} #{place.ai}"
-      return {:name => place[:name], :lat => place[:lat], :lon => place[:lon], :address => place[:formatted_address],
-        raw: place[:raw]}
+      return {
+        :name => place[:name], 
+        :lat => place[:lat], 
+        :lon => place[:lon], 
+        :formatted_address => place[:formatted_address], 
+        :street_address => place[:street_address], 
+        :city => place[:city], 
+        :state => place[:state], 
+        :zip => place[:zip], 
+        :raw => place[:raw]
+        }
     else
       return {}
     end

@@ -1,4 +1,4 @@
-class Place < ActiveRecord::Base
+class Place < GeocodedAddress
 
   # associations
   belongs_to  :user
@@ -7,7 +7,7 @@ class Place < ActiveRecord::Base
   has_many    :trip_places # optional
   
   attr_protected :id, :user_id, :created_at, :updated_at
-  attr_accessible :name, :address1, :address2, :city, :state, :zip, :lat, :lon, :raw_address
+  attr_accessible :name, :raw_address
   attr_accessible :creator_id, :poi_id, :active
   
   scope :active, where("places.active = true")
@@ -31,6 +31,7 @@ class Place < ActiveRecord::Base
     # looks like they are all in the past
     return true
   end
+  
   # Returns true if the user can alter the address or POI reference for this place. false otherwise
   def can_alter_location
     # check all the trip places associated with this place
@@ -57,7 +58,13 @@ class Place < ActiveRecord::Base
   # Use this as the main method for getting a place's location
   def location
     return poi.location unless poi.nil?
-    return [lat, lon]
+    return get_location
+  end
+
+  # Use this as the main method for getting a place's zipcode
+  def zipcode
+    return poi.zipcode unless poi.nil?
+    return get_zipcode
   end
    
   def to_s
@@ -86,13 +93,7 @@ class Place < ActiveRecord::Base
     if poi
       addr = poi.address
     else
-      elems = []
-      elems << address1 unless address1.blank?
-      elems << address2 unless address2.blank?
-      elems << city unless city.blank?
-      elems << state unless state.blank?
-      elems << zip unless zip.blank?
-      addr = elems.compact.join(' ') 
+      addr = get_address
       if addr.blank?
         addr = raw_address   
       end

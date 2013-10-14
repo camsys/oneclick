@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131011175154) do
+ActiveRecord::Schema.define(:version => 20131014141732) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -229,15 +229,20 @@ ActiveRecord::Schema.define(:version => 20131011175154) do
   end
 
   create_table "trip_places", :force => true do |t|
-    t.integer  "trip_id",     :null => false
-    t.integer  "sequence",    :null => false
+    t.integer  "trip_id",                    :null => false
+    t.integer  "sequence",                   :null => false
     t.integer  "place_id"
     t.integer  "poi_id"
     t.string   "raw_address"
     t.float    "lat"
     t.float    "lon"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+    t.string   "address1",    :limit => 128
+    t.string   "address2",    :limit => 128
+    t.string   "city",        :limit => 128
+    t.string   "state",       :limit => 2
+    t.string   "zip",         :limit => 10
   end
 
   create_table "trip_purposes", :force => true do |t|
