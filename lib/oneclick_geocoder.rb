@@ -77,23 +77,24 @@ protected
         @results << {
           :id => i,
           :name => alt.formatted_address.split(",")[0],
-          :formatted_address => sanitize_formattted_address(alt.formatted_address),
-          :street_address => sanitize_formattted_address(alt.address),
+          :formatted_address => sanitize_formatted_address(alt.formatted_address),
+          :street_address => alt.street_address,
           :city => alt.city,
           :state => alt.state_code,
           :zip => alt.postal_code,
           :lat => alt.latitude,
           :lon => alt.longitude,
+          :county => alt.sub_state,
           :raw => alt
         }
         i += 1
       end
     end    
   end    
-
+  
   # Google puts the country designator into the formatted address. We don't want this so we chomp the
   # end of the address string if the designator is there
-  def sanitize_formattted_address(addr)
+  def sanitize_formatted_address(addr)
     if addr.include?(", USA")
       return addr[0..-6]
     else
