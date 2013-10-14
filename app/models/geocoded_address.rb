@@ -3,7 +3,7 @@ class GeocodedAddress < ActiveRecord::Base
   
   attr_accessible :address1, :address2, :city, :state, :zip
   attr_accessible :lat, :lon
-  #attr_accessible :county
+  attr_accessible :county
 
 protected
 
@@ -15,9 +15,9 @@ protected
     return [lat, lon]
   end
 
-  #def county
-  #  return county
-  #end
+  def get_county_name
+    return county
+  end
 
   def get_address
     elems = []

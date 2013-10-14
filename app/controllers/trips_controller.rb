@@ -437,6 +437,7 @@ private
       from_place.city = place[:city]
       from_place.state = place[:state]
       from_place.zip = place[:zip]
+      from_place.county = place[:county]
       from_place.lat = place[:lat]
       from_place.lon = place[:lon]
       from_place.raw = place[:raw]
@@ -456,6 +457,7 @@ private
       to_place.city = place[:city]
       to_place.state = place[:state]
       to_place.zip = place[:zip]
+      to_place.county = place[:county]
       to_place.lat = place[:lat]
       to_place.lon = place[:lon]
       to_place.raw = place[:raw]
@@ -503,6 +505,7 @@ private
         :city => trip_place.city, 
         :state => trip_place.state, 
         :zip => trip_place.zip, 
+        :county => trip_place.county,
         :raw => trip_place.raw
         }
     elsif place_type == PLACES_TYPE
@@ -536,6 +539,7 @@ private
         :city => place[:city], 
         :state => place[:state], 
         :zip => place[:zip], 
+        :county => place[:county],
         :raw => place[:raw]
         }
     else

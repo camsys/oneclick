@@ -85,6 +85,7 @@ class Place < GeocodedAddress
       self.zip = address[:zip]
       self.lat = address[:lat]
       self.lon = address[:lon]
+      self.county = address[:county]
       self.active = true      
     end  
   end
@@ -101,4 +102,11 @@ class Place < GeocodedAddress
     return addr
   end
  
+  def county_name
+    if poi
+      return poi.county_name
+    else
+      return get_county_name
+    end
+  end
 end
