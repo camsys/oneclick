@@ -141,13 +141,13 @@ end
     livery = ServiceType.create(name: 'Livery', note: 'Car service for hire.')
 
 #trip_purposes
-    work = TripPurpose.create(name: 'Work', note: 'Work-related trip.', active: 1)
-    training = TripPurpose.create(name: 'Training/Employment', note: 'Employment or training trip.', active: 1)
-    medical = TripPurpose.create(name: 'Medical', note: 'General medical trip.', active: 1)
-    dialysis = TripPurpose.create(name: 'Dialysis', note: 'Dialysis appointment.', active: 1)
-    cancer = TripPurpose.create(name: 'Cancer Treatment', note: 'Trip to receive cancer treatment.', active: 1)
-    personal = TripPurpose.create(name: 'Personal Errand', note: 'Personal errand/shopping trip.', active: 1)
-    general = TripPurpose.create(name: 'General Purpose', note: 'General purpose/unspecified purpose.', active: 1)
+    work = TripPurpose.create(name: 'Work', note: 'Work-related trip.', active: 1, sort_order: 2)
+    training = TripPurpose.create(name: 'Training/Employment', note: 'Employment or training trip.', active: 1, sort_order: 2)
+    medical = TripPurpose.create(name: 'Medical', note: 'General medical trip.', active: 1, sort_order: 2)
+    dialysis = TripPurpose.create(name: 'Dialysis', note: 'Dialysis appointment.', active: 1, sort_order: 2)
+    cancer = TripPurpose.create(name: 'Cancer Treatment', note: 'Trip to receive cancer treatment.', active: 1, sort_order: 2)
+    personal = TripPurpose.create(name: 'Personal Errand', note: 'Personal errand/shopping trip.', active: 1, sort_order: 2)
+    general = TripPurpose.create(name: 'General Purpose', note: 'General purpose/unspecified purpose.', active: 1, sort_order: 1)
 
 providers = [
     {name: 'Metro Medical Transportation', contact: 'name here', external_id: "esp#2"},

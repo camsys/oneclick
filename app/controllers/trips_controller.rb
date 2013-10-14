@@ -170,6 +170,9 @@ class TripsController < PlaceSearchingController
 
     @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
     @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
+  
+    # Set the trip purpose to its default
+    @trip_proxy.trip_purpose_id = TripPurpose.all.first.id
 
     # Create markers for the map control
     @markers = create_markers(@trip_proxy)
