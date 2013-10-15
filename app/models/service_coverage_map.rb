@@ -6,5 +6,4 @@ class ServiceCoverageMap < ActiveRecord::Base
 
   attr_accessible :service, :geo_coverage, :service_id, :geo_coverage_id, :rule
 
-  # attr_accessible :title, :body
 end
