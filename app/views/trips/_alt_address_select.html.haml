@@ -22,45 +22,7 @@
 :javascript  
   // User has selected an alternate address from the list
   $('.address-select').click(function() {
-    var t = $(this);
-    var id = t.data('id');
-    var index = t.data('index');
-    var type = t.data('type');
-    var addr = t.data('addr');
-    var desc = t.data('desc');
-    var latlon = eval(t.data('latlon'));
-
-    var update_target;
-    var hidden_val;
-    var hidden_type;
-    var panel;
-    var key = 'start';
-    var iconStyle = 'startIcon';
-    if (type == 'from') {
-      update_target = $('#trip_proxy_from_place');
-      hidden_val = $('#from_place_selected');
-      hidden_type = $('#from_place_selected_type');
-      panel = $('#from_place_candidates');
-    } else {
-      update_target = $('#trip_proxy_to_place');
-      hidden_val = $('#to_place_selected');
-      hidden_type = $('#to_place_selected_type');      
-      panel = $('#to_place_candidates');
-      key = 'stop';
-      iconStyle = 'stopIcon';
-    }
-    hidden_val.val(index);
-    hidden_type.val(4);
-    panel.hide();
-    update_target.val(addr);
-    
-    // Remove any candidate markers from the map
-    removeMatchingMarkers(key);
-    // replace the markers with the end point marker
-    marker = create_or_update_marker(key, latlon[0], latlon[1], addr, desc, iconStyle);
-    setMapToBounds();
-    selectMarker(marker);
-    
+    select_candidate_address($(this));
     return false;
   });
 
@@ -70,3 +32,4 @@
     // Pan to the marker
     selectMarkerByName(addr);
   });
+
