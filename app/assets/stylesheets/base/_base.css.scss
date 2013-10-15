@@ -71,12 +71,6 @@ html, body {
   border-bottom-right-radius: 5px; 
 }
 
-@media (max-width: 979px) {
-  #main {
-    padding-top: 0;
-  }  
-}
-
 #help {
   i {
     font-size: 40px;
@@ -243,6 +237,9 @@ a:hover#help {
   .trip_summary_title {
     text-align: center !important;
   }
+  #main {
+    padding-top: 0;
+  }    
 }    
 @media (max-width: 480px ) {
   .trip_summary_icon {
