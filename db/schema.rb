@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131014171935) do
+ActiveRecord::Schema.define(:version => 20131014202338) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(:version => 20131014171935) do
 
   create_table "geo_coverages", :force => true do |t|
     t.string "value"
-    t.string "type",  :limit => 128
+    t.string "coverage_type", :limit => 128
   end
 
   create_table "itineraries", :force => true do |t|
