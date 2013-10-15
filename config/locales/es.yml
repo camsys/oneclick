@@ -329,7 +329,15 @@ es:
       short: ! '%d de %b %H:%M'
       oneclick_short: ! '%-I:%M %p'
     pm: pm    
-    
+  datetime:
+    prompts:
+      day: Día
+      hour: Hora
+      minute: Minutos
+      month: Mes
+      second: Segundos
+      year: Año
+          
   activerecord:
     errors:
       models:
