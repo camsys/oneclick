@@ -11,7 +11,7 @@ FactoryGirl.define do
     #end
     after(:create) do |trip|
       trip.trip_places << FactoryGirl.build(:trip_place1, sequence: 0)
-      trip.trip_places << FactoryGirl.build(:trip_place2, sequence: 0)
+      trip.trip_places << FactoryGirl.build(:trip_place2, sequence: 1)
       trip.save!
     end
     factory :trip_with_owner do
