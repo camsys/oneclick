@@ -260,3 +260,52 @@
     var marker = createMarker(key, lat, lon, icon, desc, addr, false);
     addMarkerToMap(marker, true);
   }
+  
+  // Add the candidate locations to the map
+  function create_candidate_markers() {
+    $('.address-select').each(function() {
+      var t = $(this);
+      var id = t.data('id');
+      var index = t.data('index');
+      var type = t.data('type');
+      var addr = t.data('addr');
+      var desc = t.data('desc');
+      var latlon = eval(t.data('latlon'));
+      add_candidate_marker(index, latlon[0], latlon[1], addr, desc, type);     
+    });
+  };
+  
+  // Selects the first matching candidate in the list of alternate
+  // addresses.
+  function select_first_candidate_address() {
+    $('.address-select').each(function(idx) {
+      var candidate = $(this);
+      select_candidate_address(candidate);
+      return;
+    });
+  };
+      
+  // Select a candidate address
+  function select_candidate_address(candidate) {
+    var id = candidate.data('id');
+    var index = candidate.data('index');
+    var from_to = candidate.data('type');
+    var addr = candidate.data('addr');
+    var desc = candidate.data('desc');
+    var latlon = eval(candidate.data('latlon'));
+
+    $('#place_proxy_raw_address').val(addr);
+    $('#place_id_field').val(index);
+    $('#place_type_field').val(4);
+    $('#select_place').hide();
+   
+    var key = 'place_candidate';
+    var iconStyle = 'yellowIcon';
+    
+    // Remove any candidate markers from the map
+    removeMatchingMarkers(key);
+    // replace the markers with the end point marker
+    marker = create_or_update_marker(key, latlon[0], latlon[1], addr, desc, iconStyle);
+    setMapToBounds();
+    selectMarker(marker);
+  };
