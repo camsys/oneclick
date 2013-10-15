@@ -32,8 +32,15 @@ protected
       params.each do |d|
         a << d[1]
       end
-      month = a[0]
-      day = a[1]
+      locale = I18n.locale.to_s
+      Rails.logger.info "Locale is set to: " + locale
+      if locale == 'en'
+        month = a[1]
+        day = a[0]
+      else
+        month = a[0]
+        day = a[1]
+      end  
       year = a[2]
       date_str = day + '/' + month + '/' + year
 
