@@ -5,6 +5,7 @@ FactoryGirl.define do
     raw_address 'bar'
     lat 33.89415
     lon -84.5463115
+    zip '30308'
   end
 
   factory :trip_place2, class: TripPlace do
@@ -14,8 +15,9 @@ FactoryGirl.define do
     lon -84.383959
     trip_id 1
     add_attribute :sequence, "1"
+    county 'Fulton'
 
-   end
+  end
 
   factory :trip_place3, class: TripPlace do
 
