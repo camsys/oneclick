@@ -132,9 +132,7 @@ class EligibilityHelpers
       #TODO:  Need to add home Place for each traveler
 
       #Match Origin
-      p service
       coverages = service.service_coverage_maps.where(rule: 'origin').map {|c| c.geo_coverage.value}
-      p coverages
       unless (coverages.count == 0) or (planned_trip.trip.origin.zipcode.in? coverages) or (planned_trip.trip.origin.county_name.in? coverages)
         next
       end
