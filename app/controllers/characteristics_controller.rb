@@ -28,10 +28,8 @@ class CharacteristicsController < TravelerAwareController
 
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
 
-    if session[:current_trip_id]
-      get_traveler
-      @planned_trip = PlannedTrip.find(session[:current_trip_id])
-    end
+    get_traveler
+    @planned_trip_id = session[:current_trip_id]
 
     respond_to do |format|
       format.html
