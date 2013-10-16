@@ -4,7 +4,7 @@ class Mode < ActiveRecord::Base
   attr_accessible :id, :name, :active
     
   # set the default scope
-  default_scope where('active = true')
+  default_scope where('active = ?', true)
 
   def self.transit
     where("name = 'Transit'").first
