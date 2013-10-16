@@ -9,6 +9,14 @@ class RegistrationsController < Devise::RegistrationsController
     
 
   def new
+
+    if params['inline'] == '1'
+      session[:inline] = 1
+    else
+      session[:inline] = nil
+      session[:current_trip_id] = nil
+    end
+
     setup_form
     super
   end
@@ -16,7 +24,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   def after_sign_in_path_for(resource)
 
-    if session[:current_trip_id]
+    if params['inline'] == '1'
       get_traveler
       @planned_trip = PlannedTrip.find(session[:current_trip_id])
       session[:current_trip_id] =  nil
@@ -56,13 +64,13 @@ class RegistrationsController < Devise::RegistrationsController
         respond_with guest_user, :location => after_inactive_sign_up_path_for(guest_user)
       end
     else
-      clean_up_passwords resource
       respond_with resource
     end
   end
 
   def setup_form
-    if session[:current_trip_id]
+
+    if session[:inline]
       get_traveler
       @create_inline = true
       @planned_trip = PlannedTrip.find(session[:current_trip_id])

@@ -22,7 +22,7 @@ class TripsController < PlaceSearchingController
     get_trip
 
     # make sure we can find the trip we are supposed to be repeating and that it belongs to us. 
-    if @trip.nil? 
+    if @trip.nil?
       redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
       return            
     end
