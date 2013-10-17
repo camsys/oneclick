@@ -15,7 +15,7 @@ describe UserProfile do
           user_profile = FactoryGirl.create(:user_profile)
           eh = EligibilityHelpers.new
           all_services = Service.all
-          expect(all_services.size).to eq 5
+          expect(all_services.size).to eq 10
           services = eh.get_eligible_services_for_traveler(user_profile)
           expect(services.size).to eq 2
           planned_trip = FactoryGirl.create(:trip_with_places)
@@ -56,7 +56,7 @@ describe UserProfile do
           purpose = TripPurpose.find_by_name('Medical')
           planned_trip.trip.trip_purpose = purpose
           services2 = eh.get_eligible_services_for_trip(planned_trip, acc_and_eligible_services)
-          expect(services2.size).to eq 5
+          expect(services2.size).to eq 9
         end
 
         it "has 5 eligible services for the traveler and x for the trip" do
