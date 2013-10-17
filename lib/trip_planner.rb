@@ -12,8 +12,7 @@ class TripPlanner
     date = trip_datetime.strftime("%Y-%m-%d")
     mode = 'TRANSIT,WALK'
 
-    #TODO:  Move base_url for OpenTripPlanner to a global config file.
-    base_url = "http://arc-otp-demo.camsys-apps.com"
+    base_url = Oneclick::Application.config.open_trip_planner
     url_options = "/opentripplanner-api-webapp/ws/plan?"
     url_options += "arriveBy=" + arriveBy + "&time=" + time
     url_options += "&mode=" + mode + "&date=" + date
