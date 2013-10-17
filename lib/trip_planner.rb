@@ -70,10 +70,11 @@ class TripPlanner
 
   def get_taxi_itineraries(from, to, trip_datetime)
 
-    #TODO: Move the api key or url to a config
-    base_url = 'http://api.taxifarefinder.com/'
-    api_key = '?key=SIefr5akieS5'
-    entity = '&entity_handle=Atlanta'
+    base_url = "http://api.taxifarefinder.com/"
+    api_key = Oneclick::Application.config.taxi_fare_finder_api_key
+    api_key = '?key=' + api_key
+    city = Oneclick::Application.config.taxi_fare_finder_api_city
+    entity = '&entity_handle=' + city
 
     #Get fare
     task = 'fare'
