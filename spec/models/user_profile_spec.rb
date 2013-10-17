@@ -51,7 +51,7 @@ describe UserProfile do
             end
           end
           acc_and_eligible_services = eh.get_accommodating_and_eligible_services_for_traveler(user_profile)
-          expect(acc_and_eligible_services.size).to eq 5
+          expect(acc_and_eligible_services.size).to eq 10
           planned_trip = FactoryGirl.create(:trip_with_places)
           purpose = TripPurpose.find_by_name('Medical')
           planned_trip.trip.trip_purpose = purpose
@@ -72,7 +72,7 @@ describe UserProfile do
             end
           end
           services = eh.get_eligible_services_for_traveler(user_profile)
-          expect(    services.size).to eq 5
+          expect(    services.size).to eq 10
           planned_trip = FactoryGirl.create(:trip_with_places)
           purpose = TripPurpose.find_by_name('Personal')
           planned_trip.trip.trip_purpose = purpose
