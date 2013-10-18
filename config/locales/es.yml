@@ -175,6 +175,9 @@ es:
   profile_updated: "Su perfil ha sido actualizado. *37*"
 
   # new ones
+  volunteer: "[es]Volunteer Service[/es]"
+  nemt: "[es]Non-Emergency Med.[/es]"
+  car_service: "[es]Car Service[/es]"
   buddy_request_sent: "¡Solicitud de amigo enviada!"
   buddy_removed: "Amigo eliminado."
   http_404_not_found: "404 No Fue Encontrado"
