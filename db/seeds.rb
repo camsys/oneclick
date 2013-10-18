@@ -157,14 +157,14 @@ end
 
 providers = [
     {name: 'LIFESPAN Resources, Inc.', contact: 'Lauri Stokes', external_id: "esp#1"},
-    {name: 'Fayette Senior Services', contact: '', external_id: "esp#6"},
+    {name: 'Fayette County', contact: '', external_id: "esp#6"},
     {name: 'Fulton County Office of Aging', contact: 'Ken Van Hoose', external_id: "esp#7"},
     {name: 'Jewish Family & Career Services', contact: 'Gary Miller', external_id: "esp#3"},
     {name: 'Cobb Senior Services', contact: 'Pam Breeden', external_id: "esp#20"},
     {name: 'Rockdale County Senior Services', contact: 'Jackie Lunsford', external_id: "esp#8"},
     {name: 'Cobb Community Transit (CCT)', contact: 'Gary Blackledge', external_id: "esp#15"},
-    {name: 'Mountain Area Transportation Services', contact: 'Nell Childers', external_id: "esp#22"},
-    {name: 'I Care Volunteer Transportation Service', contact: 'T.J. McGiffert', external_id: "esp#34"}
+    {name: 'Transportation Services', contact: 'Nell Childers', external_id: "esp#22"},
+    {name: 'Volunteer Transportation Service', contact: 'T.J. McGiffert', external_id: "esp#34"}
 
 ]
 
@@ -180,7 +180,7 @@ providers.each do |provider|
 
     when "esp#1" #LIFESPAN Resources
       #Create service
-      service = Service.create(name: 'LIFESPAN Resources, Inc.', provider: p, service_type: volunteer, advanced_notice_minutes: 14*24*60)
+      service = Service.create(name: 'Volunteer Transportation from', provider: p, service_type: volunteer, advanced_notice_minutes: 14*24*60)
       #Add Schedules
       (2..3).each do |n|
         Schedule.create(service: service, start_time:"9:00", end_time: "16:30", day_of_week: n)
@@ -236,7 +236,7 @@ providers.each do |provider|
 
     when "esp#7" #Fulton County office of Aging
       #Create service #12
-      service = Service.create(name: 'Fulton County Office of Aging', provider: p, service_type: paratransit, advanced_notice_minutes: 28*24*60)
+      service = Service.create(name: 'Medical Transportation by', provider: p, service_type: nemt, advanced_notice_minutes: 28*24*60)
       #Add Schedules
       (1..5).each do |n|
         Schedule.create(service: service, start_time:"8:30", end_time: "17:00", day_of_week: n)
@@ -289,7 +289,7 @@ providers.each do |provider|
 
     when "esp#3" #Jewish Family & Career Center
                  #Create service #3
-      service = Service.create(name: 'JETS Transportation Program', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+      service = Service.create(name: 'JETS Transportation Program', provider: p, service_type: volunteer, advanced_notice_minutes: 24*60)
       #Add Schedules
       (1..5).each do |n|
         Schedule.create(service: service, start_time:"8:30", end_time: "15:00", day_of_week: n)
@@ -378,7 +378,7 @@ providers.each do |provider|
 
     when "esp#22" #Mountain Area Transportation Services
                   #Create service #41
-      service = Service.create(name: 'Cherokee Area Transportation Services', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+      service = Service.create(name: 'Cherokee Area', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
       #Add Schedules
       (1..5).each do |n|
         Schedule.create(service: service, start_time:"8:30", end_time: "17:00", day_of_week: n)
@@ -405,7 +405,7 @@ providers.each do |provider|
 
     when "esp#34" #I care transportation service.
                   #Create Service 55
-      service = Service.create(name: 'I Care Volunteer Transportation Service', provider: p, service_type: volunteer, advanced_notice_minutes: 7*24*60)
+      service = Service.create(name: 'I Care', provider: p, service_type: volunteer, advanced_notice_minutes: 7*24*60)
       #Add Schedules
       (1..5).each do |n|
         Schedule.create(service: service, start_time:"8:30", end_time: "16:30", day_of_week: n)

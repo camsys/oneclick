@@ -205,7 +205,13 @@ module ApplicationHelper
     if mode.name.downcase == 'transit'
       title = t(:transit)
     elsif mode.name.downcase == 'paratransit'
-      title = t(:paratransit)      
+      title = t(:paratransit)
+    elsif mode.name.downcase == 'volunteer'
+      title = 'Volunteer Service'
+    elsif mode.name.downcase == 'non-emergency medical service'
+      title = 'Non-Emergency Medical'
+    elsif mode.name.downcase == 'livery'
+      title = 'Livery'
     elsif mode.name.downcase == 'taxi'
       title = t(:taxi)      
     elsif mode.name.downcase == 'rideshare'
@@ -220,7 +226,13 @@ module ApplicationHelper
     if mode.name.downcase == 'transit'
       icon_name = 'icon-bus-sign'
     elsif mode.name.downcase == 'paratransit'
-      icon_name = 'icon-truck-sign'      
+      icon_name = 'icon-truck-sign'
+    elsif mode.name.downcase == 'volunteer'
+      icon_name = 'icon-truck-sign'
+    elsif mode.name.downcase == 'non-emergency medical service'
+      icon_name = 'icon-user-md'
+    elsif mode.name.downcase == 'livery'
+      icon_name = 'icon-taxi-sign'
     elsif mode.name.downcase == 'taxi'
       icon_name = 'icon-taxi-sign'      
     elsif mode.name.downcase == 'rideshare'
