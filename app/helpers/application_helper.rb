@@ -207,11 +207,11 @@ module ApplicationHelper
     elsif mode.name.downcase == 'paratransit'
       title = t(:paratransit)
     elsif mode.name.downcase == 'volunteer'
-      title = 'Volunteer Service'
+      title = t(:volunteer)
     elsif mode.name.downcase == 'non-emergency medical service'
-      title = 'Non-Emergency Medical'
+      title = t(:nemt)
     elsif mode.name.downcase == 'livery'
-      title = 'Livery'
+      title = t(:car_service)
     elsif mode.name.downcase == 'taxi'
       title = t(:taxi)      
     elsif mode.name.downcase == 'rideshare'

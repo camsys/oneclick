@@ -178,6 +178,9 @@ en:
   profile_updated: "Your profile was updated."
 
   # new ones
+  volunteer: "Volunteer Service"
+  nemt: "Non-Emergency Med."
+  car_service: "Car Service"
   buddy_request_sent: "Buddy request sent!"
   buddy_removed: "Buddy removed."
   http_404_not_found: "404 Not Found"
