@@ -133,13 +133,15 @@ class EligibilityHelpers
 
       #Match Origin
       coverages = service.service_coverage_maps.where(rule: 'origin').map {|c| c.geo_coverage.value.delete(' ').downcase}
-      unless (coverages.count == 0) or (planned_trip.trip.origin.zipcode.in? coverages) or (planned_trip.trip.origin.county_name.delete(' ').downcase.in? coverages)
+      county_name = planned_trip.trip.origin.county_name || ""
+      unless (coverages.count == 0) or (planned_trip.trip.origin.zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
         next
       end
 
       #Match Destination
+      county_name = planned_trip.trip.destination.county_name || ""
       coverages = service.service_coverage_maps.where(rule: 'destination').map {|c| c.geo_coverage.value.delete(' ').downcase}
-      unless (coverages.count == 0) or (planned_trip.trip.destination.zipcode.in? coverages) or (planned_trip.trip.destination.county_name.delete(' ').downcase.in? coverages)
+      unless (coverages.count == 0) or (planned_trip.trip.destination.zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
         next
       end
 
