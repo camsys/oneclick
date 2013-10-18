@@ -4,8 +4,12 @@
       .row-fluid
         .span12
           %h3.dialog-title{:style => "margin:0px;vertical-align:top;"}
-            %i.icon.icon-2x{:class => get_trip_summary_icon(itinerary.mode)}
-            = get_trip_summary_title(itinerary.mode)
+            -if itinerary.mode and itinerary.mode.name == 'Paratransit'
+              %i.icon.icon-2x{:class => get_trip_summary_icon(itinerary.service.service_type)}
+              = get_trip_summary_title(itinerary.service.service_type)
+            -else
+              %i.icon.icon-2x{:class => get_trip_summary_icon(itinerary.mode)}
+              = get_trip_summary_title(itinerary.mode)
             - if itinerary.hidden
               %i.icon-2x.icon-thumbs-down.pull-right
             
