@@ -343,3 +343,9 @@ td.left, th.left {
   width: 50%;
   margin: 0 auto;
 }
+
+/* https://www.pivotaltracker.com/story/show/55010162 */
+.dropdown-backdrop {
+  position: static;
+}
+
