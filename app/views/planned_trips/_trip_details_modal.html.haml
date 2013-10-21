@@ -21,14 +21,14 @@
       %ul.nav.nav-tabs
         %li.active
           = link_to "Details", "#details_tab", :data => {:toggle => "tab"}
-        - if @itinerary.mode.name.downcase=='transit'
+        - if @itinerary.is_mappable
           %li
             = link_to "Map", "#map_tab", :id => 'map_tab_link', :data => {:toggle => "tab"}
       
       .tab-content
         #details_tab.tab-pane.active
-          = render :partial => @itinerary.mode.name.downcase + '_details', :locals => { :itinerary => @itinerary }
-        - if @itinerary.mode.name.downcase=='transit'
+          = render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
+        - if @itinerary.is_mappable
           #map_tab.tab-pane
             = render :partial => 'map_details', :locals => { :itinerary => @itinerary }
 

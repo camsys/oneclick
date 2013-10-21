@@ -47,6 +47,7 @@ module ApplicationHelper
     
     return html.html_safe     
   end
+  
   # Formats a line in the itinerary
   def format_itinerary_item_old(&block)
 
@@ -68,6 +69,7 @@ module ApplicationHelper
     
     return html.html_safe     
   end
+  
   # Returns a formatted string for an alternate address that includes a A,B,C, etc. designator.
   def get_candidate_list_item_image(index, type)
     if type == "0"
@@ -199,15 +201,51 @@ module ApplicationHelper
     return l time, :format => :oneclick_short unless time.nil?
   end
 
-  def get_trip_summary_title(itinerary)
-    
-    return if itinerary.nil?
-    
+  # Retuens a pseudo-mode for an itineray. The pseudo-mode is used to determine
+  # the correct icon, title, and partial for an itinerary
+  def get_pseudomode_for_itinerary(itinerary)
+
     if itinerary.is_walk
       mode_name = 'walk'
     else
       mode_name = itinerary.mode.name.downcase
     end
+    return mode_name    
+  end
+  
+  # Returns the correct partial for a trip itinerary
+  def get_trip_partial(itinerary)
+    
+    return if itinerary.nil?
+    
+    mode_name = get_pseudomode_for_itinerary(itinerary)
+
+    if mode_name == 'transit'
+      partial = 'transit_details'
+    elsif mode_name == 'paratransit'
+      partial = 'paratransit_details'
+    elsif mode_name == 'volunteer'
+      partial = 'paratransit_details'
+    elsif mode_name == 'non-emergency medical service'
+      partial = 'paratransit_details'
+    elsif mode_name == 'livery'
+      partial = 'paratransit_details'
+    elsif mode_name == 'taxi'
+      partial = 'taxi_details'
+    elsif mode_name == 'rideshare'
+      partial = 'rideshare_details'
+    elsif mode_name == 'walk'
+      partial = 'walk_details'
+    end
+    return partial    
+  end
+  
+  # Returns the correct localized title for a trip itinerary
+  def get_trip_summary_title(itinerary)
+    
+    return if itinerary.nil?
+    
+    mode_name = get_pseudomode_for_itinerary(itinerary)
 
     if mode_name == 'transit'
       title = t(:transit)
@@ -229,15 +267,13 @@ module ApplicationHelper
     return title    
   end
 
+
+  # Returns the correct localized title for a trip itinerary
   def get_trip_summary_icon(itinerary) 
     return if itinerary.nil?
     
-    if itinerary.is_walk
-      mode_name = 'walk'
-    else
-      mode_name = itinerary.mode.name.downcase
-    end
-
+    mode_name = get_pseudomode_for_itinerary(itinerary)
+    
     if mode_name == 'transit'
       icon_name = 'icon-bus-sign'
     elsif mode_name == 'paratransit'

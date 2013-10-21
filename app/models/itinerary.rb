@@ -16,6 +16,11 @@ class Itinerary < ActiveRecord::Base
     select('DISTINCT trip_id').where('status <> 200').order('trip_id')
   end
   
+  # returns true if this itinerary can be mapped
+  def is_mappable
+    return mode.name.downcase == 'transit' ? true : false
+  end
+  
   # returns true if this itinerary is a walk-only trip. These are a special case of Transit
   # trips that only include a WALK leg
   def is_walk
