@@ -24,7 +24,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   def after_sign_in_path_for(resource)
 
-    if params['inline'] == '1'
+    if session[:inline]
       get_traveler
       @planned_trip = PlannedTrip.find(session[:current_trip_id])
       session[:current_trip_id] =  nil
