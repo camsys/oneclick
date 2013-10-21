@@ -10,7 +10,16 @@ class AccommodationsController < TravelerAwareController
 
     @path = new_user_registration_path(inline: 1)
 
-    # Check to see if it was an ajax request from the user profile page
+    #If we are editing eligbility inline, and we are signed in, do not go to the new_user_registrations_page.
+    # Create the itineraries
+    if params['inline'] == '1' and user_signed_in?
+      @planned_trip = PlannedTrip.find(session[:current_trip_id])
+      session[:current_trip_id] =  nil
+      @planned_trip.create_itineraries
+      @path = user_planned_trip_path(@traveler, @planned_trip)
+    end
+
+      # Check to see if it was an ajax request from the user profile page
     if request.xhr?    
       flash[:notice] = t(:profile_updated)
     end

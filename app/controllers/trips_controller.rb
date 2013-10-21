@@ -249,7 +249,7 @@ class TripsController < PlaceSearchingController
             @path = user_planned_trip_path(@traveler, @planned_trip)
           else
             session[:current_trip_id] = @planned_trip.id
-            @path = new_user_characteristic_path(@traveler)
+            @path = new_user_characteristic_path(@traveler, inline: 1)
           end
           format.html { redirect_to @path }
           format.json { render json: @planned_trip, status: :created, location: @planned_trip }
@@ -291,7 +291,7 @@ class TripsController < PlaceSearchingController
             @path = user_planned_trip_path(@traveler, @planned_trip)
           else
             session[:current_trip_id] = @planned_trip.id
-            @path = new_user_characteristic_path(@traveler)
+            @path = new_user_characteristic_path(@traveler, inline: 1)
           end
           format.html { redirect_to @path }
           format.json { render json: @planned_trip, status: :created, location: @planned_trip }
