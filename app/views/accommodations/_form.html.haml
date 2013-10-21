@@ -4,7 +4,7 @@
       = simple_form_for @user_accommodations_proxy, :url => path, :method => 'put', :remote => not(inline)  do |f|
         = f.error_notification
         -TravelerAccommodation.where(:datatype => 'bool').each do |accommodation|
-          = f.input accommodation.code.to_sym, collection: [[true, 'Yes'], [false, 'No'], ['na', 'Unsure']], :required => true, as: :radio_buttons, label: accommodation.note, label_method: :last, value_method: :first, :item_wrapper_class => "inline"
+          = f.input accommodation.code.to_sym, collection: [[true, 'Yes'], [false, 'No'], ['na', 'Unsure']], :required => false, as: :radio_buttons, label: accommodation.note, label_method: :last, value_method: :first, :item_wrapper_class => "inline"
 
 
         .form-actions
