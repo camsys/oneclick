@@ -1,9 +1,9 @@
 .row-fluid
   .span12
     %h1
-      %i.icon.icon-paper-clip
-      = t(:to_see_best_options)
+      %i.icon.icon-info-sign
+      Eligibility - Step 1 of 2
 
-.row-fluid{:style => "margin-top:20px;"}
-  .well.well-small
+.row-fluid
+  .well
     = render partial: 'characteristics/form',  :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
