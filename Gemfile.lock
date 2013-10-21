@@ -408,6 +408,7 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   sextant
   simple_form
+  simplecov
   thin
   travis
   uglifier (>= 1.0.3)
