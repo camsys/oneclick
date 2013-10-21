@@ -4,12 +4,8 @@
       .row-fluid
         .span6
           %h3.dialog-title{:STYLE => "margin:0px;vertical-align:top;"}
-            -if @itinerary.mode and @itinerary.mode.name == 'Paratransit'
-              %i.icon.icon-2x{:class => get_trip_summary_icon(@itinerary.service.service_type)}
-              = get_trip_summary_title(@itinerary.service.service_type)
-            -else
-              %i.icon.icon-2x{:class => get_trip_summary_icon(@itinerary.mode)}
-              = get_trip_summary_title(@itinerary.mode)
+            %i.icon.icon-2x{:class => get_trip_summary_icon(@itinerary)}
+            = get_trip_summary_title(@itinerary)
         .span6
           .pull-right{:style => "display: inline-block"}
             %a{class: "button btn btn-mini btn-success", "data-dismiss" => "modal"}

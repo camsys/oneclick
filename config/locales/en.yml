@@ -103,6 +103,7 @@ en:
   transit: 'Transit'
   details: 'Details'
   rideshare: 'Rideshare'
+  walk: 'Walk'
   transfer: {
     one: '%{count} transfer',
     other: '%{count} transfers',

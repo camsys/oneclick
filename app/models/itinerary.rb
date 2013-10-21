@@ -16,9 +16,17 @@ class Itinerary < ActiveRecord::Base
     select('DISTINCT trip_id').where('status <> 200').order('trip_id')
   end
   
-  # parses the legs and returns an array of TripLeg
+  # returns true if this itinerary is a walk-only trip. These are a special case of Transit
+  # trips that only include a WALK leg
+  def is_walk
+    legs = get_legs
+    return legs.size == 1 && legs.first.mode == TripLeg::WALK
+  end
+  
+  # parses the legs and returns an array of TripLeg. If there are no legs then an
+  # empty array is returned
   def get_legs
-    return ItineraryParser.parse(YAML.load(legs)) unless legs.nil?
+    return legs.nil? ? [] : ItineraryParser.parse(YAML.load(legs))
   end
   
   def unhide

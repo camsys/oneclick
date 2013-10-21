@@ -199,44 +199,61 @@ module ApplicationHelper
     return l time, :format => :oneclick_short unless time.nil?
   end
 
-  def get_trip_summary_title(mode)
-    return if mode.nil?
+  def get_trip_summary_title(itinerary)
     
-    if mode.name.downcase == 'transit'
+    return if itinerary.nil?
+    
+    if itinerary.is_walk
+      mode_name = 'walk'
+    else
+      mode_name = itinerary.mode.name.downcase
+    end
+
+    if mode_name == 'transit'
       title = t(:transit)
-    elsif mode.name.downcase == 'paratransit'
-      title = t(:paratransit)
-    elsif mode.name.downcase == 'volunteer'
+    elsif mode_name == 'paratransit'
+      title = t(:paratransit)      
+    elsif mode_name == 'volunteer'
       title = t(:volunteer)
-    elsif mode.name.downcase == 'non-emergency medical service'
+    elsif mode_name == 'non-emergency medical service'
       title = t(:nemt)
-    elsif mode.name.downcase == 'livery'
+    elsif mode_name == 'livery'
       title = t(:car_service)
-    elsif mode.name.downcase == 'taxi'
+    elsif mode_name == 'taxi'
       title = t(:taxi)      
-    elsif mode.name.downcase == 'rideshare'
+    elsif mode_name == 'rideshare'
       title = t(:rideshare)
+    elsif mode_name == 'walk'
+      title = t(:walk)
     end
     return title    
   end
 
-  def get_trip_summary_icon(mode) 
-    return if mode.nil?
+  def get_trip_summary_icon(itinerary) 
+    return if itinerary.nil?
+    
+    if itinerary.is_walk
+      mode_name = 'walk'
+    else
+      mode_name = itinerary.mode.name.downcase
+    end
 
-    if mode.name.downcase == 'transit'
+    if mode_name == 'transit'
       icon_name = 'icon-bus-sign'
-    elsif mode.name.downcase == 'paratransit'
+    elsif mode_name == 'paratransit'
       icon_name = 'icon-truck-sign'
-    elsif mode.name.downcase == 'volunteer'
+    elsif mode_name == 'volunteer'
       icon_name = 'icon-truck-sign'
-    elsif mode.name.downcase == 'non-emergency medical service'
+    elsif mode_name == 'non-emergency medical service'
       icon_name = 'icon-user-md'
-    elsif mode.name.downcase == 'livery'
+    elsif mode_name == 'livery'
       icon_name = 'icon-taxi-sign'
-    elsif mode.name.downcase == 'taxi'
+    elsif mode_name == 'taxi'
       icon_name = 'icon-taxi-sign'      
-    elsif mode.name.downcase == 'rideshare'
+    elsif mode_name == 'rideshare'
       icon_name = 'icon-group'      
+    elsif mode_name == 'walk'
+      icon_name = 'icon-accessibility-sign'      
     end
     return icon_name
   end
