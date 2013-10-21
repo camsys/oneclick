@@ -207,6 +207,8 @@ module ApplicationHelper
 
     if itinerary.is_walk
       mode_name = 'walk'
+    elsif itinerary.mode.name.downcase == 'paratransit'
+      mode_name = itinerary.service.service_type.name.downcase
     else
       mode_name = itinerary.mode.name.downcase
     end
