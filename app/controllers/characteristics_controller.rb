@@ -8,7 +8,11 @@ class CharacteristicsController < TravelerAwareController
     @user_characteristics_proxy = UserCharacteristicsProxy.new(User.find(params[:user_id]))
     @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
 
-    @path = new_user_accommodation_path(@traveler)
+    if params['inline'] == '1'
+      @path = new_user_accommodation_path(@traveler, inline: 1)
+    else
+      @path = new_user_accommodation_path(@traveler)
+    end
 
     #if we are in the 'wizard' don't flash a notice. This logic checks to see if
     # the request was an ajax request or not. The trip-planning form does not

@@ -6,4 +6,4 @@
 
 .row-fluid{:style => "margin-top:20px;"}
   .well.well-small
-    = render partial: 'accommodations/form',  :locals => {:path => user_accommodation_path(@traveler, @user_accommodations_proxy.id), :inline => true}
+    = render partial: 'accommodations/form',  :locals => {:path => user_accommodation_path(@traveler, @user_accommodations_proxy.id, inline: 1), :inline => true}
