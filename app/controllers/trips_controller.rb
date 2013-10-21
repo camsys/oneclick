@@ -243,8 +243,15 @@ class TripsController < PlaceSearchingController
         if @trip.save
           @trip.reload
           @planned_trip = @trip.planned_trips.first
-          @planned_trip.create_itineraries
-          format.html { redirect_to user_planned_trip_path(@traveler, @planned_trip) }
+
+          if @traveler.user_profile.has_characteristics? and user_signed_in?
+            @planned_trip.create_itineraries
+            @path = user_planned_trip_path(@traveler, @planned_trip)
+          else
+            session[:current_trip_id] = @planned_trip.id
+            @path = new_user_characteristic_path(@traveler)
+          end
+          format.html { redirect_to @path }
           format.json { render json: @planned_trip, status: :created, location: @planned_trip }
         else
           format.html { render action: "new" }
