@@ -6,31 +6,37 @@
           = itinerary.service.name
         =format_itinerary_item do
           = itinerary.service.provider.name
-      -if itinerary.duration
-        = format_itinerary_item do
-          = duration_to_words(itinerary.duration) + " (est.)"
           
-      -if itinerary.cost
+      -if itinerary.is_walk
         =format_itinerary_item do
-          = number_to_currency(itinerary.cost)
-      -if itinerary.transfers
+          = distance_to_words(itinerary.walk_distance)
         =format_itinerary_item do
-          = I18n.translate(:transfer, count: itinerary.transfers)
-      -if itinerary.planned_trip.is_depart == false && itinerary.end_time
-        =format_itinerary_item do
-          = t(:arrive_at) + ' ' + format_time(itinerary.end_time.in_time_zone)
-      -if itinerary.planned_trip.is_depart == true && itinerary.start_time
-        =format_itinerary_item do
-          = t(:depart_at) + ' ' + format_time(itinerary.start_time.in_time_zone)
-      -if itinerary.walk_time
-        =format_itinerary_item do
-          = duration_to_words(itinerary.walk_time) + t(:walking)
-      -if itinerary.mode.name.downcase=='rideshare'
-        =format_itinerary_item do
-          = t(:possible_rideshares1, count: itinerary.ride_count)
-        =format_itinerary_item do
-          = t(:possible_rideshares2)
-        =format_itinerary_item do
-          = t(:view_details1)
-        =format_itinerary_item do
-          = t(:view_details2)
+          = duration_to_words(itinerary.walk_time)
+      - else     
+        -if itinerary.duration
+          = format_itinerary_item do
+            = duration_to_words(itinerary.duration) + " (est.)"     
+        -if itinerary.cost
+          =format_itinerary_item do
+            = number_to_currency(itinerary.cost)
+        -if itinerary.transfers
+          =format_itinerary_item do
+            = I18n.translate(:transfer, count: itinerary.transfers)
+        -if itinerary.planned_trip.is_depart == false && itinerary.end_time
+          =format_itinerary_item do
+            = t(:arrive_at) + ' ' + format_time(itinerary.end_time.in_time_zone)
+        -if itinerary.planned_trip.is_depart == true && itinerary.start_time
+          =format_itinerary_item do
+            = t(:depart_at) + ' ' + format_time(itinerary.start_time.in_time_zone)
+        -if itinerary.walk_time
+          =format_itinerary_item do
+            = duration_to_words(itinerary.walk_time) + t(:walking)
+        -if itinerary.mode.name.downcase=='rideshare'
+          =format_itinerary_item do
+            = t(:possible_rideshares1, count: itinerary.ride_count)
+          =format_itinerary_item do
+            = t(:possible_rideshares2)
+          =format_itinerary_item do
+            = t(:view_details1)
+          =format_itinerary_item do
+            = t(:view_details2)
