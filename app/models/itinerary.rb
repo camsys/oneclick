@@ -12,6 +12,10 @@ class Itinerary < ActiveRecord::Base
     :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
     :ride_count, :external_info
     
+  # returns true if this itinerary failed to work
+  def failed
+    mode.nil?
+  end
   # returns true if this itinerary can be mapped
   def is_mappable
     return mode.name.downcase == 'transit' ? true : false
