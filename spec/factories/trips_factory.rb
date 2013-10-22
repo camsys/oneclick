@@ -9,6 +9,8 @@ FactoryGirl.define do
     #  from_place FactoryGirl.create(:trip_place1)
     #  to_place FactoryGirl.create(:trip_place2)
     #end
+    user {FactoryGirl.create(:user2)}
+
     after(:create) do |trip|
       trip.trip_places << FactoryGirl.build(:trip_place1, sequence: 0)
       trip.trip_places << FactoryGirl.build(:trip_place2, sequence: 1)
