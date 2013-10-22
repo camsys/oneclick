@@ -57,7 +57,7 @@ class TripsController < PlaceSearchingController
   def show
     # See if there is the show_hidden parameter
     @show_hidden = params[:show_hidden]
-    #@next_itinerary_id = @show_hidden.nil? ? @planned_trip.valid_itineraries.first.id : @planned_trip.itineraries.first.id
+    @next_itinerary_id = @show_hidden.nil? ? @trip.valid_itineraries.first.id : @trip.itineraries.first.id
 
     if session[:current_trip_id]
       session[:current_trip_id] = nil
@@ -308,17 +308,9 @@ class TripsController < PlaceSearchingController
       if updated_trip # only created if the form validated and there are no geocoding errors
         if @trip.save
           @trip.reload
-          @planned_trip = @trip.planned_trips.first
-
-          if @traveler.user_profile.has_characteristics? and user_signed_in?
-            @planned_trip.create_itineraries
-            @path = user_planned_trip_path(@traveler, @planned_trip)
-          else
-            session[:current_trip_id] = @planned_trip.id
-            @path = new_user_characteristic_path(@traveler, inline: 1)
-          end
-          format.html { redirect_to @path }
-          format.json { render json: @planned_trip, status: :created, location: @planned_trip }
+          @trip.create_itineraries
+          format.html { redirect_to user_trip_path(@traveler, @trip) }
+          format.json { render json: @trip, status: :created, location: @trip }
         else
           format.html { render action: "new" }
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
