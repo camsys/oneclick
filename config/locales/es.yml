@@ -121,7 +121,7 @@ es:
   e_mail: ' Correo electrónico'
   trip_was_successfully_created: 'El viaje fue creado exitosamente.'
   trip_was_successfully_removed: 'El viaje fue eliminada afortunada. *25*'  
-  trip_created_no_valid_options: "El viaje fue creado, pero no se encontraron opciones válidas de viaje:"
+  trip_created_no_valid_options: "El viaje fue creado, pero no se encontraron opciones válidas de viaje."
   hour: {
     one: '%{count} h',
     other: '%{count} h',

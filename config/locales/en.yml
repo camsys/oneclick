@@ -124,7 +124,7 @@ en:
   e_mail: 'Email'
   trip_was_successfully_created: 'Trip was successfully created.'
   trip_was_successfully_removed: 'Trip was successfully removed.'
-  trip_created_no_valid_options: "Trip created, but no valid trip options could be found:"
+  trip_created_no_valid_options: "Trip created, but no valid trip options could be found."
   hour: {
     one: '%{count} h',
     other: '%{count} h',
