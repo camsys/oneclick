@@ -14,7 +14,7 @@ module ServiceAdapters
         ].each do |p, s1|
           # methods = (s1.public_methods - Object.public_methods).reject{|m| m =~ /=/}
           # methods.each do |m|
-          #   Rails.logger.info "#{m} #{s1.send(m.to_sym)}" rescue "#{m} failed"
+          #   Rails.logger.debug "#{m} #{s1.send(m.to_sym)}" rescue "#{m} failed"
           # end
           query["#{p}.city"] = s1.city rescue ''
           query["#{p}.country"] = s1.country_code rescue ''

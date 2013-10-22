@@ -68,7 +68,7 @@ class PlaceSearchingController < TravelerAwareController
     
     query = params[:query]
     query_str = query + "%"
-    Rails.logger.info query_str
+    Rails.logger.debug query_str
 
     # This array will hold the list of matching places
     matches = []    
@@ -150,13 +150,13 @@ protected
   
   # Cache an array of addresses
   def cache_addresses(key, addresses, expires_in = ADDRESS_CACHE_EXPIRE_SECONDS)
-    Rails.logger.info "PlaceSearchingController CACHE put for key #{get_cache_key(@traveler, key)}"
+    Rails.logger.debug "PlaceSearchingController CACHE put for key #{get_cache_key(@traveler, key)}"
     Rails.cache.write(get_cache_key(@traveler, key), addresses, :expires_in => expires_in)
   end
   
   # Return an array of cached addresses
   def get_cached_addresses(key)
-    Rails.logger.info "PlaceSearchingController CACHE get for key #{get_cache_key(@traveler, key)}"
+    Rails.logger.debug "PlaceSearchingController CACHE get for key #{get_cache_key(@traveler, key)}"
     ret = Rails.cache.read(get_cache_key(@traveler, key))
     return ret.nil? ? [] : ret
   end

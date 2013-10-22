@@ -68,14 +68,14 @@ class TripPlace < GeocodedAddress
   end
   
   def cache_georaw
-    Rails.logger.info "TripPlace writing to cache with TripPlace.raw.#{id}"
+    Rails.logger.debug "TripPlace writing to cache with TripPlace.raw.#{id}"
     Rails.cache.write("TripPlace.raw.#{id}", raw, :expires_in => Rails.application.config.address_cache_expire_seconds)
   end
 
   def restore_georaw
-    Rails.logger.info "TripPlace reading from cache with TripPlace.raw.#{id}"
+    Rails.logger.debug "TripPlace reading from cache with TripPlace.raw.#{id}"
     self.raw = Rails.cache.read("TripPlace.raw.#{id}")
-    Rails.logger.info "Got #{self.raw}"
+    Rails.logger.debug "Got #{self.raw}"
   end
 
 end

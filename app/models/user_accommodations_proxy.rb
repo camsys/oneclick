@@ -27,8 +27,8 @@ class UserAccommodationsProxy < UserProfileProxy
   # Update the user accommodation based on the form params
   def update_maps(new_settings)
     
-    Rails.logger.info "UserAccommodationsProxy.update_maps()"
-    Rails.logger.info new_settings.inspect
+    Rails.logger.debug "UserAccommodationsProxy.update_maps()"
+    Rails.logger.debug new_settings.inspect
     
     
     # Put everything in a big transaction
@@ -38,7 +38,7 @@ class UserAccommodationsProxy < UserProfileProxy
       # active accommodation
       TravelerAccommodation.all.each do |accommodation|
         
-        Rails.logger.info accommodation.inspect
+        Rails.logger.debug accommodation.inspect
         
         # See if this accommodation is represented in the new settings. We want to try to match the accommodation code to
         # one or more params. This is needed for date fields which are split over 3 params {day, month year}
@@ -46,12 +46,12 @@ class UserAccommodationsProxy < UserProfileProxy
         if params.count > 0
           
           # We found a value for this accommodation in the params
-          Rails.logger.info "Found! " + params.inspect
+          Rails.logger.debug "Found! " + params.inspect
             
           # get the new value for this accommodation based on the data type
           new_value = convert_value(accommodation, params)
           
-          Rails.logger.info new_value.nil? ? "NULL" : new_value
+          Rails.logger.debug new_value.nil? ? "NULL" : new_value
           
           # See if this accommodation already exists in the database for this user
           user_accommodation = UserTravelerAccommodationsMap.where("accommodation_id = ? AND user_profile_id = ?", accommodation.id, user.user_profile.id).first
@@ -60,16 +60,16 @@ class UserAccommodationsProxy < UserProfileProxy
             
             # if the value is non null we update otherwise we remove the current setting
             if new_value.nil?
-              Rails.logger.info "Removing existing accommodation"
+              Rails.logger.debug "Removing existing accommodation"
               user_accommodation.destroy
             else
-              Rails.logger.info "Updating existing accommodation"
+              Rails.logger.debug "Updating existing accommodation"
               user_accommodation.value = new_value
               user_accommodation.save
             end
           else
             # we need to create a new one
-            Rails.logger.info "Creating new accommodation"
+            Rails.logger.debug "Creating new accommodation"
             UserTravelerAccommodationsMap.create(:accommodation_id => accommodation.id, :user_profile_id => user.user_profile.id, :value => new_value) unless new_value.nil?
           end
         end

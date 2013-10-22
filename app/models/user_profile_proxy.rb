@@ -33,7 +33,7 @@ protected
         a << d[1]
       end
       locale = I18n.locale.to_s
-      Rails.logger.info "Locale is set to: " + locale
+      Rails.logger.debug "Locale is set to: " + locale
       if locale == 'en'
         month = a[1]
         day = a[0]
@@ -44,7 +44,7 @@ protected
       year = a[2]
       date_str = day + '/' + month + '/' + year
 
-      Rails.logger.info "Parsing date: " + date_str
+      Rails.logger.debug "Parsing date: " + date_str
       
       ret = params.empty? ? nil : Chronic.parse(date_str)
     end

@@ -31,11 +31,11 @@ POI_CLASSES = [
   
 folder_path = DATA_PATH + STATE
 
-Rails.logger.info "Loading POIs for #{STATE} from #{folder_path}"
+Rails.logger.debug "Loading POIs for #{STATE} from #{folder_path}"
 
 POI_CLASSES.each do |poi_class|
   file_name = folder_path + "/" + STATE + "_" + poi_class + ".gpx"
-  Rails.logger.info "Loading POIs for #{poi_class} from #{file_name}"
+  Rails.logger.debug "Loading POIs for #{poi_class} from #{file_name}"
 
   f = File.open(file_name)
   doc = Nokogiri::XML(f)
@@ -81,4 +81,4 @@ POI_CLASSES.each do |poi_class|
     
 end
 
-Rails.logger.info "Processing completed"
+Rails.logger.debug "Processing completed"
