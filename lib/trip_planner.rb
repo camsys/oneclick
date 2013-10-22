@@ -19,7 +19,7 @@ class TripPlanner
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
     url = base_url + url_options
 
-    Rails.logger.info URI.parse(url)
+    Rails.logger.debug URI.parse(url)
     
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
@@ -140,7 +140,7 @@ class TripPlanner
     results = doc.css('#results li div.marker.dest')
     if results.size > 0
       summary = doc.css('.summary').text
-      Rails.logger.info "Summary: #{summary}"
+      Rails.logger.debug "Summary: #{summary}"
       count = %r{(\d+) total result}.match(summary)[1]
       return true, {'mode' => 'rideshare', 'status' => 200, 'count' => count, 'query' => query}
     else

@@ -92,12 +92,12 @@ class PlannedTrip < ActiveRecord::Base
  def create_rideshare_itineraries
     tp = TripPlanner.new
     trip.restore_trip_places_georaw
-    Rails.logger.info "create_rideshare_itineraries"
-    Rails.logger.info trip.trip_places.collect {|tp| tp.raw}
+    Rails.logger.debug "create_rideshare_itineraries"
+    Rails.logger.debug trip.trip_places.collect {|tp| tp.raw}
     from_place = trip.trip_places.first
-    Rails.logger.info from_place.raw.ai
+    Rails.logger.debug from_place.raw.ai
     to_place = trip.trip_places.last
-    Rails.logger.info to_place.raw.ai
+    Rails.logger.debug to_place.raw.ai
     result, response = tp.get_rideshare_itineraries(from_place, to_place, trip_datetime.in_time_zone)
     if result
       itinerary = tp.convert_rideshare_itineraries(response)

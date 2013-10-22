@@ -321,7 +321,7 @@ protected
       begin
         @trip = @traveler.trips.find(params[:id])
       rescue => ex
-        Rails.logger.info ex.message
+        Rails.logger.debug ex.message
         @trip = nil
       end
     end
@@ -364,7 +364,7 @@ private
     trip_proxy = TripProxy.new(params[:trip_proxy])
     trip_proxy.traveler = @traveler
     
-    Rails.logger.info trip_proxy.inspect
+    Rails.logger.debug trip_proxy.inspect
     
     return trip_proxy
         
@@ -538,8 +538,8 @@ private
       else
         place = get_cached_addresses(CACHED_TO_ADDRESSES_KEY)[place_id]
       end
-      Rails.logger.info "in get_preselected_place"
-      Rails.logger.info "#{is_from} #{place.ai}"
+      Rails.logger.debug "in get_preselected_place"
+      Rails.logger.debug "#{is_from} #{place.ai}"
       return {
         :name => place[:name], 
         :lat => place[:lat], 

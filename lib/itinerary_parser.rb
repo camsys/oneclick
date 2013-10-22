@@ -6,14 +6,14 @@ class ItineraryParser
   
   def self.parse(legs)
     
-    Rails.logger.info "Parsing Itinerary Legs"
+    Rails.logger.debug "Parsing Itinerary Legs"
     
     itin = []
     
     legs.each do |leg|
       leg_itin = parse_leg(leg)
       
-      Rails.logger.info leg_itin.inspect
+      Rails.logger.debug leg_itin.inspect
       
       itin << leg_itin unless leg_itin.nil?
     end
@@ -28,8 +28,8 @@ protected
     
     return if leg.blank?
     
-    Rails.logger.info "Leg mode = " + leg['mode']
-    Rails.logger.info "Leg = " + leg.inspect
+    Rails.logger.debug "Leg mode = " + leg['mode']
+    Rails.logger.debug "Leg = " + leg.inspect
     
     if leg['mode'] == 'WALK'
       obj = parse_walk_leg(leg)
@@ -57,7 +57,7 @@ protected
 
   def self.parse_subway_leg(leg)
     
-    Rails.logger.info "Parsing SUBWAY leg"
+    Rails.logger.debug "Parsing SUBWAY leg"
     
     sub = SubwayLeg.new
 
@@ -75,7 +75,7 @@ protected
 
   def self.parse_bus_leg(leg)
 
-    Rails.logger.info "Parsing BUS leg"
+    Rails.logger.debug "Parsing BUS leg"
     
     bus = BusLeg.new
 
@@ -94,7 +94,7 @@ protected
   
   def self.parse_walk_leg(leg)
 
-    Rails.logger.info "Parsing WALK leg"
+    Rails.logger.debug "Parsing WALK leg"
     
     walk = WalkLeg.new    
     return walk

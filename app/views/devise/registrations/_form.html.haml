@@ -19,8 +19,8 @@
               No thanks, just plan my trip
               / = t(:no_thanks_just_plan_it)
 
-    - Rails.logger.info "In view, I18n: #{I18n.locale}"
-    - Rails.logger.info t(:first_name)
+    - Rails.logger.debug "In view, I18n: #{I18n.locale}"
+    - Rails.logger.debug t(:first_name)
     = f.input :first_name, label: t(:first_name), :autofocus => true
     = f.input :last_name, label: t(:last_name)
     = f.input :email, label: t(:email), :required => true

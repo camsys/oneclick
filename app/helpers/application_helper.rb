@@ -316,7 +316,7 @@ module ApplicationHelper
       begin
         translate(key, options.merge({raise: true}))
       rescue Exception => e
-        # Rails.logger.info "key: #{key} not found: #{e.inspect}"
+        # Rails.logger.debug "key: #{key} not found: #{e.inspect}"
       end    
     end
   end
