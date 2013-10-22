@@ -5,8 +5,8 @@ class UserMailer < ActionMailer::Base
   
   helper :application
   
-  def user_trip_email(addresses, planned_trip, subject, from)
-    @planned_trip = planned_trip
+  def user_trip_email(addresses, trip, subject, from)
+    @trip = trip
     @from = from
     
     mail(to: addresses, subject: subject, from: @from)

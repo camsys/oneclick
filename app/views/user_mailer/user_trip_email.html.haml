@@ -5,13 +5,13 @@
 %table
   %tr
     %td= t(:from)
-    %td= @planned_trip.trip.from_place.name
+    %td= @trip.from_place.name
   %tr
     %td= t(:to)
-    %td= @planned_trip.trip.to_place.name
+    %td= @trip.to_place.name
   %tr
     %td= t(:at_time)
-    %td= format_date(@planned_trip.trip_datetime.in_time_zone)
+    %td= format_date(@trip.trip_datetime.in_time_zone)
 
 %hr
 
@@ -27,7 +27,7 @@
       %th Walk Dist                
       %th Cost
   %tbody
-    - @planned_trip.valid_itineraries.each do |itin|
+    - @trip.valid_itineraries.each do |itin|
       %tr
         %td= itin.mode
         %td= itin.start_time.nil? ? "" : format_time(itin.start_time.in_time_zone) 
