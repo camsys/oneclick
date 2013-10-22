@@ -80,7 +80,7 @@ class PlannedTrip < ActiveRecord::Base
   def create_paratransit_itineraries
     tp = TripPlanner.new
     eh = EligibilityHelpers.new
-    passenger_eligible_services = eh.get_accommodating_and_eligible_services_for_traveler(creator.user_profile, self)
+    passenger_eligible_services = eh.get_accommodating_and_eligible_services_for_traveler(self.trip.user.user_profile, self)
     passenger_and_trip_eligible_services = eh.get_eligible_services_for_trip(self, passenger_eligible_services)
     passenger_and_trip_eligible_services.each do |service|
 
