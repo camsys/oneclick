@@ -38,11 +38,19 @@ class TripsController < PlaceSearchingController
     if @time_filter_type.to_i >= 100
       actual_filter = @time_filter_type.to_i - 100
       # get the duration for this time filter
-      duration = TimeFilterHelper.time_filter_as_duration(actual_filter)      
-      @trips = @traveler.trips.scheduled_between(duration.first, duration.last).uniq
+      duration = TimeFilterHelper.time_filter_as_duration(actual_filter)
+      if @traveler.has_role :admin      
+        @trips = Trip.scheduled_between(duration.first, duration.last).uniq
+      else
+        @trips = @traveler.trips.scheduled_between(duration.first, duration.last).uniq
+      end
     else
       # the filter is a trip purpose
-      @trips = @traveler.trips.where('trip_purpose_id = ?', @time_filter_type)
+      if @traveler.has_role :admin      
+        @trips = Trip.where('trip_purpose_id = ?', @time_filter_type)
+      else
+        @trips = @traveler.trips.where('trip_purpose_id = ?', @time_filter_type)
+      end
     end
 
     respond_to do |format|
