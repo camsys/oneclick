@@ -409,6 +409,22 @@ class TripsController < PlaceSearchingController
     end
   end
 
+  def skip
+
+    get_traveler
+
+    @trip = Trip.find(session[:current_trip_id])
+    @trip.trip_parts.each do |tp|
+      tp.create_itineraries
+    end
+    @path = user_trip_path(@traveler, @trip)
+    session[:current_trip_id] = nil
+
+    respond_to do |format|
+      format.html { redirect_to @path }
+    end
+  end
+
   def itinerary
     
     # set the @traveler variable

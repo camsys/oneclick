@@ -73,7 +73,7 @@ class RegistrationsController < Devise::RegistrationsController
     if session[:inline]
       get_traveler
       @create_inline = true
-      @planned_trip = PlannedTrip.find(session[:current_trip_id])
+      @trip = Trip.find(session[:current_trip_id])
     else
       @create_inline = false
     end

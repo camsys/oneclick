@@ -36,7 +36,7 @@ class AccommodationsController < TravelerAwareController
     @user_accommodations_proxy = UserAccommodationsProxy.new(@traveler)
 
     get_traveler
-    @planned_trip_id = session[:current_trip_id]
+    @trip_id = session[:current_trip_id]
 
     respond_to do |format|
       format.html
