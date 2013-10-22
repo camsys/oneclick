@@ -13,7 +13,7 @@ class TripsPerDayReport < AbstractReport
       
       row = BasicReportRow.new(day)
       # get the trips that were generated on this day
-      trips = PlannedTrip.created_between(day.beginning_of_day, day.end_of_day)
+      trips = Trip.created_between(day.beginning_of_day, day.end_of_day)
       trips.each do |trip|
         row.add(trip)
       end     

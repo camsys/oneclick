@@ -9,6 +9,7 @@ class Trip < ActiveRecord::Base
   
   has_many :valid_itineraries,  :through => :trip_parts, :conditions => 'server_status=200 AND hidden=false', :class_name => 'Itinerary' 
   has_many :hidden_itineraries, :through => :trip_parts, :conditions => 'server_status=200 AND hidden=true', :class_name => 'Itinerary'  
+  has_many :itineraries,        :through => :trip_parts, :class_name => 'Itinerary' 
   
   # Scopes
   # Returns a set of trips that have been created between a start and end day
@@ -17,6 +18,17 @@ class Trip < ActiveRecord::Base
   # Returns a set of trips that are scheduled between the start and end time
   def self.scheduled_between(start_time, end_time)
     joins(:trip_parts).where("trip_parts.trip_time > ? AND trip_parts.trip_time < ?", start_time, end_time)
+  end
+  
+  # Returns an array of PlannedTrip that have at least one valid itinerary but all
+  # of them have been hidden by the user
+  def self.rejected
+    joins(:itineraries).where('server_status=200 AND hidden=true')
+  end
+  
+  # Returns an array of PlannedTrip where no valid options were generated
+  def self.failed
+    joins(:itineraries).where('server_status <> 200')
   end
   
   # Returns the date time for the outbound leg of the trip. This is synonymous with the 

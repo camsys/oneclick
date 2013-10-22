@@ -210,7 +210,7 @@ module ApplicationHelper
     elsif itinerary.mode.name.downcase == 'paratransit'
       mode_name = itinerary.service.service_type.name.downcase
     else
-      mode_name = itinerary.mode.name.downcase
+      mode_name = itinerary.mode.name.downcase unless itinerary.mode.nil?
     end
     return mode_name    
   end

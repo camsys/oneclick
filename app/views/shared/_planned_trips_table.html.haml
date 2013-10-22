@@ -12,22 +12,22 @@
           %th.center Created At          
           %th.center Actions
       %tbody
-        - planned_trips.each do |pt|
+        - trips.each do |trip|
           %tr
-            %td.left= pt.id
-            %td.left= pt.trip.user
-            %td.left= pt.creator            
-            %td.left= pt.trip.from_place
-            %td.left= pt.trip.to_place
+            %td.left= trip.id
+            %td.left= trip.user.name
+            %td.left= trip.creator.name           
+            %td.left= trip.from_place.name
+            %td.left= trip.to_place.name
             %td.center.nowrap
-              = format_date_time(pt.trip_datetime)
+              = format_date_time(trip.trip_datetime)
             %td.center.nowrap
-              = format_date_time(pt.created_at)
+              = format_date_time(trip.created_at)
             %td.center.nowrap
-              = link_to user_planned_trip_path(current_user, pt, :show_hidden => 1), {class: "btn btn-mini btn-success text-center"} do
+              = link_to user_trip_path(current_user, trip, :show_hidden => 1), {class: "btn btn-mini btn-success text-center"} do
                 %i.icon-share-sign
                 = "Itinerary"
-              = link_to details_user_planned_trip_path(current_user, pt), {class: "btn btn-mini btn-info text-center"} do
+              = link_to details_user_trip_path(current_user, trip), {class: "btn btn-mini btn-info text-center"} do
                 %i.icon-exclamation-sign
                 = "Details"
 

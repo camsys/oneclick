@@ -77,6 +77,22 @@ class TripsController < PlaceSearchingController
     end
   end
       
+  # GET /trips/1
+  # GET /trips/1.json
+  def details
+
+    # set the @traveler variable
+    get_traveler
+    # set the @trip variable
+    get_trip
+
+    respond_to do |format|
+      format.html # details.html.erb
+      format.json { render json: @trip }
+    end
+
+  end
+      
   # User wants to repeat a trip  
   def repeat
     # set the @traveler variable
