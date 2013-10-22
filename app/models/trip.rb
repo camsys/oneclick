@@ -1,23 +1,51 @@
 class Trip < ActiveRecord::Base
     
-  attr_accessor :name
-
   # Associations
   belongs_to :user
   belongs_to :creator, :class_name => "User", :foreign_key => "creator_id"
   belongs_to :trip_purpose
-  has_many :trip_places
-  has_many :planned_trips, :order => "planned_trips.trip_datetime DESC"
+  has_many :trip_places, :order => "trip_places.sequence ASC"
+  has_many :trip_parts, :order => "trip_parts.sequence ASC"
+  
+  has_many :valid_itineraries,  :through => :trip_parts, :conditions => 'server_status=200 AND hidden=false', :class_name => 'Itinerary' 
+  has_many :hidden_itineraries, :through => :trip_parts, :conditions => 'server_status=200 AND hidden=true', :class_name => 'Itinerary'  
   
   # Scopes
-  scope :created_between, lambda {|from_day, to_day| where("created_at > ? AND created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
-
-  # removes all trip places and planned trips from the object  
-  def clean
-    planned_trips.each do |pt| 
-      pt.itineraries.each { |x| x.destroy }
+  # Returns a set of trips that have been created between a start and end day
+  scope :created_between, lambda {|from_day, to_day| where("trips.created_at > ? AND trips.created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
+    
+  # Returns a set of trips that are scheduled between the start and end time
+  def self.scheduled_between(start_time, end_time)
+    joins(:trip_parts).where("trip_parts.trip_time > ? AND trip_parts.trip_time < ?", start_time, end_time)
+  end
+  
+  # Returns the date time for the outbound leg of the trip. This is synonymous with the 
+  # time and date that the trip is planned for
+  def trip_datetime
+    trip_parts.first.trip_time
+  end
+  # returns true if the trip is scheduled in advance of
+  # the current or passed in date
+  def in_the_future(now=Time.now)
+    trip_datetime > now
+  end
+  
+  # Returns a numeric rating score for the trip
+  def rating
+    if in_the_future
+      return nil
+    else
+      #TODO replace this with actual rating
+      return rand(1..5)
     end
-    planned_trips.each { |x| x.destroy }
+  end
+  
+  # removes all trip places and trip parts from the object  
+  def clean
+    trip_parts.each do |part| 
+      part.itineraries.each { |x| x.destroy }
+    end
+    trip_parts.each { |x| x.destroy }
     trip_places.each { |x| x.destroy}
     save
   end
@@ -25,19 +53,27 @@ class Trip < ActiveRecord::Base
   # returns true is this trip can be edited or deleted. Note that this
   # bascially comes down to wether the planned trip is in the future or not.
   def can_modify
-    if planned_trips.empty?
+    if trip_parts.empty?
       return true
     else
-      return planned_trips.first.in_the_future
+      return trip_parts.first.in_the_future
     end
   end
   
   def to_s
     if trip_places.count > 0
-      "From %s to %s" % [trip_places.first, trip_places.last]
+      msg = "From %s to %s" % [trip_places.first, trip_places.last]
+      if is_return_trip
+        msg << " and back."
+      end 
     else
-      "Uninitialized" 
-    end  
+      msg = "Uninitialized" 
+    end
+    return msg
+  end
+  
+  def is_return_trip
+    trip_parts.last.is_return_trip
   end
   
   def from_place
@@ -55,14 +91,5 @@ class Trip < ActiveRecord::Base
   def restore_trip_places_georaw
     trip_places.each {|tp| tp.restore_georaw}
   end
-
-  def origin
-    self.trip_places.order('sequence').first
-  end
-
-  def destination
-    self.trip_places.order('sequence').last
-  end
-
 
 end

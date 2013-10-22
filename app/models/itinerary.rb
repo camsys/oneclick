@@ -4,18 +4,14 @@ class Itinerary < ActiveRecord::Base
   after_initialize :set_defaults
 
   # Associations
-  belongs_to :planned_trip
+  belongs_to :trip_part
   belongs_to :mode
   belongs_to :service
 
   attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
     :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
     :ride_count, :external_info
-  
-  def self.failed_trip_ids
-    select('DISTINCT trip_id').where('status <> 200').order('trip_id')
-  end
-  
+    
   # returns true if this itinerary can be mapped
   def is_mappable
     return mode.name.downcase == 'transit' ? true : false

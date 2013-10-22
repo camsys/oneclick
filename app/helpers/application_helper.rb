@@ -104,11 +104,11 @@ module ApplicationHelper
   end
   
   # Returns a set of rating icons as a span
-  def get_rating_icons(planned_trip)
-    if planned_trip.in_the_future
+  def get_rating_icons(trip)
+    if trip.in_the_future
       return ""
     end
-    rating = planned_trip.rating
+    rating = trip.rating
     html = "<span>"
     for i in 1..5
       if i <= rating

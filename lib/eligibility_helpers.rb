@@ -1,6 +1,6 @@
 class EligibilityHelpers
 
-  def get_eligible_services_for_traveler(user_profile, trip=nil)
+  def get_eligible_services_for_traveler(user_profile, trip_part=nil)
 
     all_services = Service.all
     fully_eligible_services = []
@@ -10,8 +10,8 @@ class EligibilityHelpers
       service_characteristic_maps.each do |service_characteristic_map|
         service_requirement = service_characteristic_map.traveler_characteristic
         if service_requirement.code = 'age'
-          if trip
-            age_date = trip.trip_datetime
+          if trip_part
+            age_date = trip_part.trip_time
           else
             age_date = Time.now
           end
@@ -90,15 +90,18 @@ class EligibilityHelpers
 
   end
 
-  def get_accommodating_and_eligible_services_for_traveler(user_profile, trip=nil)
+  def get_accommodating_and_eligible_services_for_traveler(trip_part=nil)
 
+    user_profile = trip_part.trip.user.user_profile unless trip_part.nil?
+    
     if user_profile.nil? #TODO:  Need to update to handle anonymous users.  This currently only works with user logged in.
       return []
     end
 
     Rails.logger.debug "Get eligible services"
-    eligible = get_eligible_services_for_traveler(user_profile, trip)
+    eligible = get_eligible_services_for_traveler(user_profile, trip_part)
     Rails.logger.debug "Done get eligible services, get accommodating"
+
     accommodating = get_accommodating_services_for_traveler(user_profile)
     Rails.logger.debug "Done get accommodating"
     Rails.logger.debug eligible.ai
@@ -107,11 +110,11 @@ class EligibilityHelpers
 
   end
 
-  def get_eligible_services_for_trip(planned_trip, services)
-    eligible_by_location = eligible_by_location(planned_trip, services)
-    eligible_by_service_time = eligible_by_service_time(planned_trip, services)
-    eligible_by_advanced_notice = eligible_by_advanced_notice(planned_trip, services)
-    eligible_by_trip_purpose = eligible_by_trip_purpose(planned_trip, services)
+  def get_eligible_services_for_trip(trip_part, services)
+    eligible_by_location = eligible_by_location(trip_part, services)
+    eligible_by_service_time = eligible_by_service_time(trip_part, services)
+    eligible_by_advanced_notice = eligible_by_advanced_notice(trip_part, services)
+    eligible_by_trip_purpose = eligible_by_trip_purpose(trip_part, services)
 
     if Rails.logger.debug?
       {location: eligible_by_location, service_time: eligible_by_service_time,
@@ -124,7 +127,7 @@ class EligibilityHelpers
 
   end
 
-  def eligible_by_location(planned_trip, services)
+  def eligible_by_location(trip_part, services)
 
     eligible_services  = []
     services.each do |service|
@@ -133,15 +136,15 @@ class EligibilityHelpers
 
       #Match Origin
       coverages = service.service_coverage_maps.where(rule: 'origin').map {|c| c.geo_coverage.value.delete(' ').downcase}
-      county_name = planned_trip.trip.origin.county_name || ""
-      unless (coverages.count == 0) or (planned_trip.trip.origin.zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
+      county_name = trip_part.from_trip_place.county_name || ""
+      unless (coverages.count == 0) or (trip_part.from_trip_place.zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
         next
       end
 
       #Match Destination
-      county_name = planned_trip.trip.destination.county_name || ""
+      county_name = trip_part.to_trip_place.county_name || ""
       coverages = service.service_coverage_maps.where(rule: 'destination').map {|c| c.geo_coverage.value.delete(' ').downcase}
-      unless (coverages.count == 0) or (planned_trip.trip.destination.zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
+      unless (coverages.count == 0) or (trip_part.to_trip_place.zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
         next
       end
 
@@ -150,7 +153,7 @@ class EligibilityHelpers
     eligible_services
   end
 
-  def eligible_by_trip_purpose(planned_trip, services)
+  def eligible_by_trip_purpose(trip_part, services)
     eligible_services = []
     services.each do |service|
       maps = service.service_trip_purpose_maps
@@ -158,7 +161,7 @@ class EligibilityHelpers
       maps.each do |map|
         purposes << map.trip_purpose
       end
-      if purposes.include? planned_trip.trip.trip_purpose
+      if purposes.include? trip_part.trip.trip_purpose
         eligible_services << service
       end
     end
@@ -167,9 +170,9 @@ class EligibilityHelpers
 
   end
 
-  def eligible_by_service_time(planned_trip, services)
+  def eligible_by_service_time(trip_part, services)
     #TODO: This does not handle services with 24 hour operations well.
-    wday = planned_trip.trip_datetime.wday
+    wday = trip_part.trip_time.wday
     eligible_services  = []
     services.each do |service|
       schedules = Schedule.where(day_of_week: wday, service_id: service.id)
@@ -177,7 +180,7 @@ class EligibilityHelpers
         # puts "%-30s %-30s %s" % [Time.zone, planned_trip.trip_datetime, planned_trip.trip_datetime.seconds_since_midnight]
         # puts "%-30s %-30s %s" % [Time.zone, schedule.start_time, schedule.start_time.seconds_since_midnight]
         # puts "%-30s %-30s %s" % [Time.zone, schedule.end_time, schedule.end_time.seconds_since_midnight]
-        if planned_trip.trip_datetime.seconds_since_midnight.between?(schedule.start_time.seconds_since_midnight,schedule.end_time.seconds_since_midnight)
+        if trip_part.trip_time.seconds_since_midnight.between?(schedule.start_time.seconds_since_midnight,schedule.end_time.seconds_since_midnight)
           # puts "eligible"
           eligible_services << service
           break
@@ -191,8 +194,8 @@ class EligibilityHelpers
 
   end
 
-  def eligible_by_advanced_notice(planned_trip, services)
-    advanced_notice = (planned_trip.trip_datetime - planned_trip.created_at)/60
+  def eligible_by_advanced_notice(trip_part, services)
+    advanced_notice = (trip_part.trip_time - trip_part.created_at)/60
     within_notice_period = Service.where('advanced_notice_minutes < ?', advanced_notice)
 
     services & within_notice_period
@@ -218,4 +221,4 @@ class EligibilityHelpers
       end
     end
 
-  end
+ end

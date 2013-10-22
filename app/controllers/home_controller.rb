@@ -6,7 +6,7 @@ class HomeController < TravelerAwareController
       @actions += [
         {label: t(:plan_a_trip), target: new_user_trip_path(@traveler), icon: ACTION_ICONS[:plan_a_trip]},
         {label: t(:travel_profile), target: edit_user_registration_path, icon: ACTION_ICONS[:travel_profile]},
-        {label: t(:my_trips), target: user_planned_trips_path(@traveler), icon: ACTION_ICONS[:my_trips]},
+        {label: t(:my_trips), target: user_trips_path(@traveler), icon: ACTION_ICONS[:my_trips]},
       ]
     else
       @actions += [

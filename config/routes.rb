@@ -49,7 +49,7 @@ Oneclick::Application.routes.draw do
       end
       
       # users have trips
-      resources :trips, :only => [:new, :create, :destroy, :edit, :update] do
+      resources :trips, :only => [:show, :index, :new, :create, :destroy, :edit, :update] do
         collection do
           post  'set_traveler'
           get   'unset_traveler'
@@ -58,12 +58,6 @@ Oneclick::Application.routes.draw do
         end
         member do
           get   'repeat'          
-        end
-      end
-
-      # users have planned trips
-      resources :planned_trips, :only => [:show, :index] do
-        member do
           get   'details'
           get   'itinerary'
           post  'email'
@@ -71,7 +65,8 @@ Oneclick::Application.routes.draw do
           get   'unhide_all'
           get   'skip'
         end
-      end      
+      end
+
     end
 
     namespace :admin do

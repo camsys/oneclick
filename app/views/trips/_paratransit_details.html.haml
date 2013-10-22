@@ -1,0 +1,5 @@
+.row-fluid
+  -itinerary.service.service_traveler_characteristics_maps.each do |characteristic|
+    .row-fluid
+      =characteristic.traveler_characteristic.name
+      =characteristic.value

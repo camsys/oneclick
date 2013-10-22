@@ -8,11 +8,66 @@ class TripsController < PlaceSearchingController
   # Format strings for the trip form date and time fields
   TRIP_DATE_FORMAT_STRING = "%m/%d/%Y"
   TRIP_TIME_FORMAT_STRING = "%-I:%M %P"
+  
+  # Set up configurable defaults
+  DEFAULT_RETURN_TRIP_DELAY_MINS  = Rails.application.config.return_trip_delay_mins
+  DEFAULT_TRIP_TIME_AHEAD_MINS    = Rails.application.config.trip_time_ahead_mins
     
   # Modes for creating/updating new trips
   MODE_NEW = "1"        # Its a new trip from scratch
   MODE_EDIT = "2"       # Editing an existing trip that is in the future
   MODE_REPEAT = "3"     # Repeating an existing trip that is in the past
+      
+  def index
+
+    # Filtering logic. See ApplicationHelper.trip_filters
+    if params[:time_filter_type]
+      @time_filter_type = params[:time_filter_type]
+    else
+      @time_filter_type = session[TIME_FILTER_TYPE_SESSION_KEY]
+    end
+    # if it is still not set use the default
+    if @time_filter_type.nil?
+      # default is to use the first time period filter in the TimeFilterHelper class
+      @time_filter_type = "100"
+    end
+    # store it in the session
+    session[TIME_FILTER_TYPE_SESSION_KEY] = @time_filter_type
+
+    # If the filter is at least 100 is must be a time filter, otherwise it will be a TripPurpose
+    if @time_filter_type.to_i >= 100
+      actual_filter = @time_filter_type.to_i - 100
+      # get the duration for this time filter
+      duration = TimeFilterHelper.time_filter_as_duration(actual_filter)      
+      @trips = @traveler.trips.scheduled_between(duration.first, duration.last).uniq
+    else
+      # the filter is a trip purpose
+      @trips = @traveler.trips.where('trip_purpose_id = ?', @time_filter_type)
+    end
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @trips }
+    end
+    
+  end
+     
+  # GET /trips/1
+  # GET /trips/1.json
+  def show
+    # See if there is the show_hidden parameter
+    @show_hidden = params[:show_hidden]
+    #@next_itinerary_id = @show_hidden.nil? ? @planned_trip.valid_itineraries.first.id : @planned_trip.itineraries.first.id
+
+    if session[:current_trip_id]
+      session[:current_trip_id] = nil
+    end
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @trip }
+    end
+  end
       
   # User wants to repeat a trip  
   def repeat
@@ -23,7 +78,7 @@ class TripsController < PlaceSearchingController
 
     # make sure we can find the trip we are supposed to be repeating and that it belongs to us. 
     if @trip.nil?
-      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
+      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
       return            
     end
 
@@ -38,6 +93,11 @@ class TripsController < PlaceSearchingController
     @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
     @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
     
+    if @trip_proxy.is_round_trip == "1"
+      return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
+      @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
+    end
+        
     # Create markers for the map control
     @markers = create_markers(@trip_proxy)
     @places = create_place_markers(@traveler.places)
@@ -56,12 +116,12 @@ class TripsController < PlaceSearchingController
 
     # make sure we can find the trip we are supposed to be updating and that it belongs to us. 
     if @trip.nil? 
-      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
+      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
       return            
     end
     # make sure that the trip can be modified 
     unless @trip.can_modify
-      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
+      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
       return            
     end
 
@@ -129,12 +189,12 @@ class TripsController < PlaceSearchingController
 
     # make sure we can find the trip we are supposed to be removing and that it belongs to us. 
     if @trip.nil?
-      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
+      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
       return            
     end
     # make sure that the trip can be modified 
     unless @trip.can_modify
-      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
+      redirect_to(user_url, :flash => { :alert => t(:error_404) })
       return            
     end
     
@@ -149,7 +209,7 @@ class TripsController < PlaceSearchingController
     end
 
     respond_to do |format|
-      format.html { redirect_to(user_planned_trips_path(@traveler), :flash => { :notice => message}) } 
+      format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => message}) } 
       format.json { head :no_content }
     end
     
@@ -173,6 +233,12 @@ class TripsController < PlaceSearchingController
   
     # Set the trip purpose to its default
     @trip_proxy.trip_purpose_id = TripPurpose.all.first.id
+    
+    # default to a round trip. The default return trip time is set the the default trip time plus
+    # a configurable interval
+    return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
+    @trip_proxy.is_round_trip = "1"
+    @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
 
     # Create markers for the map control
     @markers = create_markers(@trip_proxy)
@@ -194,12 +260,12 @@ class TripsController < PlaceSearchingController
 
     # make sure we can find the trip we are supposed to be updating and that it belongs to us. 
     if @trip.nil?
-      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
+      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
       return            
     end
     # make sure that the trip can be modified 
     unless @trip.can_modify
-      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
+      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
       return            
     end
     
@@ -232,9 +298,9 @@ class TripsController < PlaceSearchingController
         tp.trip = @trip
         @trip.trip_places << tp
       end
-      updated_trip.planned_trips.each do |pt|
+      updated_trip.trip_parts.each do |pt|
         pt.trip = @trip
-        @trip.planned_trips << pt
+        @trip.trip_parts << pt
       end
     end
 
@@ -285,16 +351,17 @@ class TripsController < PlaceSearchingController
           @trip.cache_trip_places_georaw
           @trip.reload
           # @trip.restore_trip_places_georaw
-          @planned_trip = @trip.planned_trips.first
           if @traveler.user_profile.has_characteristics? and user_signed_in?
-            @planned_trip.create_itineraries
-            @path = user_planned_trip_path(@traveler, @planned_trip)
+            @trip.trip_parts.each do |trip_part|
+              trip_part.create_itineraries
+            end
+            @path = user_trip_path(@traveler, @trip)
           else
-            session[:current_trip_id] = @planned_trip.id
-            @path = new_user_characteristic_path(@traveler, inline: 1)
+            session[:current_trip_id] = @trip.id
+            @path = new_user_characteristic_path(@traveler)
           end
           format.html { redirect_to @path }
-          format.json { render json: @planned_trip, status: :created, location: @planned_trip }
+          format.json { render json: @trip, status: :created, location: @trip }
         else
           format.html { render action: "new" }
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
@@ -305,14 +372,98 @@ class TripsController < PlaceSearchingController
     end
   end
 
+  def itinerary
+    
+    # set the @traveler variable
+    get_traveler
+    # set the @trip variable
+    get_trip
+    
+    @itinerary = @trip.valid_itineraries.find(params[:itin])
+    @legs = @itinerary.get_legs
+    if @itinerary.is_mappable == 'transit'      
+      @markers = create_markers(@itinerary, @legs)
+      @polylines = create_polylines(@legs)
+    end
+    
+    #Rails.logger.debug @itinerary.inspect
+    #Rails.logger.debug @markers.inspect    
+    #Rails.logger.debug @polylines.inspect
+
+    respond_to do |format|
+      format.js 
+    end
+    
+  end
+
+  # called when the user wants to hide an option. Invoked via
+  # an ajax call
+  def hide
+
+    # set the @traveler variable
+    get_traveler
+    # set the @trip variable
+    get_trip
+
+    itinerary = @trip.valid_itineraries.find(params[:itinerary])
+    if itinerary.nil?
+      render text: t(:unable_to_remove_itinerary), status: 500
+      return
+    end
+
+    itinerary.hidden = true
+    
+    # find the next unhidden itinerary for this planned trip
+    @next_itinerary_id = nil
+    found = false
+    @trip.valid_itineraries.each do |itin|
+      # if the found falg is set, this is the itinerary we want
+      if found
+        @next_itinerary_id = itin.id
+        break
+      end
+      # if this itin is the one we selected then we mark that we found it. The next
+      # itinerary is the one we want to identify
+      if itin.id == itinerary.id
+        found = true
+      end
+    end
+    if @next_itinerary_id.nil? 
+      @next_itinerary_id = @trip.valid_itineraries.first.id
+    end
+    
+    respond_to do |format|
+      if itinerary.save
+        @trip.reload
+        format.js # hide.js.haml
+      else
+        render text: t(:unable_to_remove_itinerary), status: 500
+      end
+    end
+  end
+
+  # Unhides all the hidden itineraries for a trip
+  def unhide_all
+    # set the @traveler variable
+    get_traveler
+    # set the @trip variable
+    get_trip
+
+    @trip.hidden_itineraries.each do |i|
+      i.hidden = false
+      i.save
+    end
+    redirect_to user_trip_path(@traveler, @trip)   
+  end
+
 protected
   
-  # Set the default travel time/date to 30 mins from now
+  # Set the default travel time/date to x mins from now
   def default_trip_time
-    return Time.now.in_time_zone.next_interval(30.minutes)    
+    return Time.now.in_time_zone.next_interval(DEFAULT_TRIP_TIME_AHEAD_MINS.minutes)    
   end
   
-  
+  # Safely set the @trip variable taking into account trip ownership
   def get_trip
     # limit trips to trips accessible by the user unless an admin
     if @traveler.has_role? :admin
@@ -376,16 +527,23 @@ private
   def create_trip_proxy(trip)
 
     puts "Creating trip proxy from #{trip.ai}"
-    # get the planned trip for this trip
-    planned_trip = trip.planned_trips.first
+    # get the trip parts for this trip
+    trip_part = trip.trip_parts.first
     
     # initialize a trip proxy from this trip
     trip_proxy = TripProxy.new
     trip_proxy.traveler = @traveler
     trip_proxy.trip_purpose_id = trip.trip_purpose.id
-    trip_proxy.arrive_depart = planned_trip.is_depart
-    trip_proxy.trip_date = planned_trip.trip_datetime.strftime(TRIP_DATE_FORMAT_STRING)
-    trip_proxy.trip_time = planned_trip.trip_datetime.strftime(TRIP_TIME_FORMAT_STRING)
+    trip_proxy.arrive_depart = trip_part.is_depart
+    trip_proxy.trip_date = trip_part.trip_time.strftime(TRIP_DATE_FORMAT_STRING)
+    trip_proxy.trip_time = trip_part.trip_time.strftime(TRIP_TIME_FORMAT_STRING)
+    
+    # Check for return trips
+    if trip.trip_parts.count > 1
+      last_trip_part = trip.trip_parts.last
+      trip_proxy.is_round_trip = last_trip_part.is_return_trip ? "1" : "0"
+      trip_proxy.return_trip_time = last_trip_part.trip_time.strftime(TRIP_TIME_FORMAT_STRING)
+    end
     
     # Set the from place
     trip_proxy.from_place = trip.trip_places.first.name
@@ -432,7 +590,7 @@ private
     trip.creator = current_or_guest_user
     trip.user = @traveler
     trip.trip_purpose = TripPurpose.find(trip_proxy.trip_purpose_id)
-
+    
     # get the start for this trip
     from_place = TripPlace.new()
     from_place.sequence = 0
@@ -477,15 +635,40 @@ private
     trip.trip_places << from_place
     trip.trip_places << to_place
 
-    planned_trip = PlannedTrip.new
-    planned_trip.trip = trip
-    planned_trip.creator = trip.creator
-    planned_trip.is_depart = trip_proxy.arrive_depart == t(:departing_at) ? true : false
-    planned_trip.trip_datetime = trip_proxy.trip_datetime
-    planned_trip.trip_status = TripStatus.find_by_name(TripStatus::STATUS_NEW)    
+    # Create the trip aprts. For now we only have at most two but there could be more
+    # in later versions
     
-    trip.planned_trips << planned_trip
+    # set the sequence counter for when we have multiple trip parts
+    sequence = 0
+    
+    # Create the outbound trip part
+    trip_part = TripPart.new
+    trip_part.trip = trip
+    trip_part.sequence = sequence
+    trip_part.is_depart = trip_proxy.arrive_depart == t(:departing_at) ? true : false
+    trip_part.trip_time = trip_proxy.trip_datetime
+    trip_part.from_trip_place = from_place
+    trip_part.to_trip_place = to_place
+    
+    trip.trip_parts << trip_part
+    
+    # create the round trip if needed
+    if trip_proxy.is_round_trip == "1"
+      sequence += 1
+      trip_part = TripPart.new
+      trip_part.trip = trip
+      trip_part.sequence = sequence
+      # the return trip is always a depart at
+      trip_part.is_depart = true
+      # the return trip time is the arrival time plus
+      trip_part.is_return_trip = true
+      trip_part.trip_time = trip_proxy.return_trip_datetime
+      trip_part.from_trip_place = to_place
+      trip_part.to_trip_place = from_place      
 
+      trip.trip_parts << trip_part
+    end
+   
     return trip
   end
   

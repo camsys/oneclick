@@ -6,7 +6,7 @@
   - unless current_user.travelers.empty?
     = render "select_traveler_form"
   
-= simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:style => "margin-top:10px;margin-bottom:10px;"}  do |f| 
+= simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "", :style => "margin-top:10px;margin-bottom:10px;"}  do |f| 
   = f.hidden_field :mode
   = f.hidden_field :from_place_selected, :id => "from_place_selected"
   = f.hidden_field :to_place_selected, :id => "to_place_selected"
@@ -72,6 +72,14 @@
         %i.icon-time
 
   = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
+
+  = f.input :is_round_trip, :label => "Return after", :wrapper_html => {:class => 'controls controls-row'} do
+    = f.input_field :is_round_trip, :as => :boolean     
+    = f.input :return_trip_time, :label => false, :wrapper => :append do
+      #return-trip-time
+        = f.input_field :return_trip_time, :as => :string, :label => false, :style => "width:160px;"
+        %span.add-on
+          %i.icon-time
               
   .form-actions
     = button_tag :type => 'submit', :class => "btn btn-primary" do
@@ -99,6 +107,13 @@
     'scrollDefaultTime': '9:00 am'
     }).on("changeTime", function(e) {
         $('#trip_proxy_trip_time').val($('#trip-time').data('ui-timepicker-value'));
+  });
+  
+  $('#return-trip-time').timepicker({
+    'timeFormat': 'g:i a',
+    'scrollDefaultTime': '10:00 am'
+    }).on("changeTime", function(e) {
+        $('#trip_proxy_return_trip_time').val($('#return-trip-time').data('ui-timepicker-value'));
   });
     
   // Document Ready

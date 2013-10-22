@@ -137,6 +137,8 @@ es:
   time_wrong_format: "La hora debe estar en el formato hh:mm am/pm."
   trips_cannot_be_entered_for_days: "No se pueden introducir viajes para días anteriores."
   trips_cannot_be_entered_for_times: " No se pueden introducir viajes para horas pasadas."
+  return_trip_time_before_start: "[es]Trips cannot return before they are started.[/es]"
+  
   link_to_georgia_commute_options: {
     one:   'Visita %{url} para ver 1 opción para compartir el viaje en vehículo.',
     other: 'Visita %{url} para ver %{count} opciones para compartir el viaje en vehículo.',
