@@ -74,7 +74,11 @@ class PlannedTripsController < TravelerAwareController
   def show
     # See if there is the show_hidden parameter
     @show_hidden = params[:show_hidden]
-    @next_itinerary_id = @show_hidden.nil? ? @planned_trip.valid_itineraries.first.id : @planned_trip.itineraries.first.id
+    if @planned_trip.valid_itineraries.empty?
+      @next_itinerary_id = -1
+    else
+      @next_itinerary_id = @show_hidden.nil? ? @planned_trip.valid_itineraries.first.id : @planned_trip.itineraries.first.id
+    end
 
     if session[:current_trip_id]
       session[:current_trip_id] = nil
