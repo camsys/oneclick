@@ -587,15 +587,17 @@ private
     trip_proxy = TripProxy.new
     trip_proxy.traveler = @traveler
     trip_proxy.trip_purpose_id = trip.trip_purpose.id
+
     trip_proxy.arrive_depart = trip_part.is_depart
-    trip_proxy.trip_date = trip_part.trip_time.strftime(TRIP_DATE_FORMAT_STRING)
-    trip_proxy.trip_time = trip_part.trip_time.strftime(TRIP_TIME_FORMAT_STRING)
+    trip_datetime = trip_part.trip_datetime.in_time_zone
+    trip_proxy.trip_date = trip_datetime.strftime(TRIP_DATE_FORMAT_STRING)
+    trip_proxy.trip_time = trip_datetime.strftime(TRIP_TIME_FORMAT_STRING)
     
     # Check for return trips
     if trip.trip_parts.count > 1
       last_trip_part = trip.trip_parts.last
       trip_proxy.is_round_trip = last_trip_part.is_return_trip ? "1" : "0"
-      trip_proxy.return_trip_time = last_trip_part.trip_time.strftime(TRIP_TIME_FORMAT_STRING)
+      trip_proxy.return_trip_time = last_trip_part.trip_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
     end
     
     # Set the from place
