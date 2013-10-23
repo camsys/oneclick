@@ -62,35 +62,24 @@
         = render partial: 'accommodations/form',  :locals => {:path => user_accommodation_path(@traveler, @user_accommodations_proxy.id), :inline => false}
 
 :javascript
-  $('a#tab1').click(function(e) {
-    e.preventDefault()
-    $(this).tab('show')
-  });
-  $('a#tab2').click(function(e) {
-    e.preventDefault()
-    $(this).tab('show')
-  });
-  $('a#tab3').click(function(e) {
-    e.preventDefault()
-    $(this).tab('show')
-  });
-  $('a#tab4').click(function(e) {
-      e.preventDefault()
-      $(this).tab('show')
-  });
-  $('a#tab5').click(function(e) {
-        e.preventDefault()
-        $(this).tab('show')
-    });
+  
+  // UI variables
+  var settings_tab_key = "settings_tab_key";
 
-  // install an event handler to set the form focus when the user
-  // switches tabs
+  // Document Ready
+  $(document).ready(function(){
+    //go to the latest tab, if it exists
+    var last_tab = get_ui_key_value(settings_tab_key, null);
+    if (last_tab) {
+      $('a[href=' + last_tab + ']').tab('show');
+    } else {
+      // Set the first tab if cookie do not exist
+      $('a[data-toggle="tab"]:first').tab('show');
+    }    
+  });  
+  
+  // install an event handler to save the last viewed tab
   $('a[data-toggle="tab"]').on('shown', function (e) {
-    var id = $(e.target).data('id');
-    if (id == 1) {
-      $('#user_first_name').focus();
-    } else if (id == 2) {
-      $('#user_relationship_email').focus();    
-    }
+    set_ui_key_value(settings_tab_key, $(e.target).attr('href'));    
   });
 
