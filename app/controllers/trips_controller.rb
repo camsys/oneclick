@@ -384,8 +384,9 @@ private
     trip_proxy.traveler = @traveler
     trip_proxy.trip_purpose_id = trip.trip_purpose.id
     trip_proxy.arrive_depart = planned_trip.is_depart
-    trip_proxy.trip_date = planned_trip.trip_datetime.strftime(TRIP_DATE_FORMAT_STRING)
-    trip_proxy.trip_time = planned_trip.trip_datetime.strftime(TRIP_TIME_FORMAT_STRING)
+    trip_datetime = planned_trip.trip_datetime.in_time_zone
+    trip_proxy.trip_date = trip_datetime.strftime(TRIP_DATE_FORMAT_STRING)
+    trip_proxy.trip_time = trip_datetime.strftime(TRIP_TIME_FORMAT_STRING)
     
     # Set the from place
     trip_proxy.from_place = trip.trip_places.first.name
