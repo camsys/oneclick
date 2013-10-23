@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Trip do
  describe "itineraries" do
   it "should be populated with itineraries" do
+    pending "todo"      
     planned_trip = FactoryGirl.create(:trip_with_places)
     test_itineraries = [{'legs'=>'example leg'}]
     trip_planner = double(TripPlanner,
