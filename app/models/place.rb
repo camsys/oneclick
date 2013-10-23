@@ -16,16 +16,11 @@ class Place < GeocodedAddress
   # Returns true if the user can delete this place from their My Places
   # false otherwise
   def can_delete
-    # check all the trip plces associated with this place
+    # check all the trip places associated with this place
     trip_places.each do |tp|
-      if tp.trip
-        # check all the planned trips associated with each trip_place trip
-        tp.trip.planned_trips.each do |pt|
-          # if a planned trip is in the future we can't delete it
-          if pt.in_the_future
-            return false
-          end
-        end
+      # if any trip is in the future it cant be removed
+      if tp.trip.in_the_future
+        return false
       end
     end
     # looks like they are all in the past
@@ -35,12 +30,12 @@ class Place < GeocodedAddress
   # Returns true if the user can alter the address or POI reference for this place. false otherwise
   def can_alter_location
     # check all the trip places associated with this place
-    trip_places.each do |tp|
-      if tp.trip
+    trip_places.each do |trip_place|
+      if trip_place.trip
         # check all the planned trips associated with each trip_place trip
-        tp.trip.planned_trips.each do |pt|
-          # if a planned trip has an itinerary we can't mutate it
-          if pt.itineraries.count > 0
+        trip_place.trip.trip_parts.each do |trip_part|
+          # if a trip part has an itinerary we can't mutate it
+          if trip_part.itineraries.count > 0
             return false
           end
         end

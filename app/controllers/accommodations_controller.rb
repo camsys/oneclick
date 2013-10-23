@@ -13,10 +13,10 @@ class AccommodationsController < TravelerAwareController
     #If we are editing eligbility inline, and we are signed in, do not go to the new_user_registrations_page.
     # Create the itineraries
     if params['inline'] == '1' and user_signed_in?
-      @planned_trip = PlannedTrip.find(session[:current_trip_id])
+      @trip = Trip.find(session[:current_trip_id])
       session[:current_trip_id] =  nil
-      @planned_trip.create_itineraries
-      @path = user_planned_trip_path(@traveler, @planned_trip)
+      @trip.create_itineraries
+      @path = user_trip_path(@traveler, @trip)
     end
 
       # Check to see if it was an ajax request from the user profile page

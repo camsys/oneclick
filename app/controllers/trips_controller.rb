@@ -589,7 +589,7 @@ private
     trip_proxy.trip_purpose_id = trip.trip_purpose.id
 
     trip_proxy.arrive_depart = trip_part.is_depart
-    trip_datetime = trip_part.trip_datetime.in_time_zone
+    trip_datetime = trip_part.trip_time.in_time_zone
     trip_proxy.trip_date = trip_datetime.strftime(TRIP_DATE_FORMAT_STRING)
     trip_proxy.trip_time = trip_datetime.strftime(TRIP_TIME_FORMAT_STRING)
     

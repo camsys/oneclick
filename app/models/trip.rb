@@ -20,7 +20,7 @@ class Trip < ActiveRecord::Base
     joins(:trip_parts).where("trip_parts.trip_time > ? AND trip_parts.trip_time < ?", start_time, end_time)
   end
   
-  # Returns an array of PlannedTrip that have at least one valid itinerary but all
+  # Returns an array of Trips that have at least one valid itinerary but all
   # of them have been hidden by the user
   def self.rejected
     joins(:itineraries).where('server_status=200 AND hidden=true')
@@ -40,6 +40,12 @@ class Trip < ActiveRecord::Base
   # the current or passed in date
   def in_the_future(now=Time.now)
     trip_datetime > now
+  end
+  
+  def create_itineraries
+    trip_parts.each do |trip_part|
+      trip_part.create_itineraries
+    end
   end
   
   # Returns a numeric rating score for the trip
