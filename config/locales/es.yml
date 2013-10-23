@@ -176,6 +176,8 @@ es:
   profile_updated: "Su perfil ha sido actualizado. *37*"
 
   # new ones
+  eligibility: "[es]Eligibility[/es]"
+  accomodations: "[es]Accomodations[/es]"  
   volunteer: "[es]Volunteer Service[/es]"
   nemt: "[es]Non-Emergency Med.[/es]"
   car_service: "[es]Car Service[/es]"

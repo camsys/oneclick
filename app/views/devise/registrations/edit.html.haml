@@ -15,10 +15,11 @@
         = t(:travelers) + " (" + current_user.travelers.count.to_s + ")"
     %li
       %a{href: '#tab4', data: {toggle: 'tab'}}
-        = 'Eligibility'
+        = t(:eligibility)
     %li
       %a{href: '#tab5', data: {toggle: 'tab'}}
-        = 'Accommodations'
+        = t(:accomodations)
+        
   .tab-content
     .tab-pane.active#tab1
       .well

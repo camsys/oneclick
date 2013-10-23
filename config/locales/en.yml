@@ -179,6 +179,8 @@ en:
   profile_updated: "Your profile was updated."
 
   # new ones
+  eligibility: "Eligibility"
+  accomodations: "Accomodations"
   volunteer: "Volunteer Service"
   nemt: "Non-Emergency Med."
   car_service: "Car Service"
