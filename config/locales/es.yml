@@ -235,7 +235,8 @@ es:
   assisted_user_first_name_s_trips: "Viajes de %{name}"
   trip_options_information_from_from: "Información de opciones de viaje de #{@from}"
   create_account: "[es] Create an account to save your information [\es]"
-  
+  assisting_turned_off: "[es]Assisting has been turned off.[/es]"
+
   # General Messages
   yes_str: "Sí"
   no_str:  "Not"

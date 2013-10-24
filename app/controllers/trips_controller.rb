@@ -193,10 +193,11 @@ class TripsController < PlaceSearchingController
     # set the @traveler variable
     get_traveler
     
-    redirect_to root_path, :alert => "Assisting has been turned off."
+    redirect_to root_path, :alert => t(:assisting_turned_off)
 
   end
 
+  # The user has elected to assist another user.
   def set_traveler
 
     # set or update the traveler session key with the id of the traveler
