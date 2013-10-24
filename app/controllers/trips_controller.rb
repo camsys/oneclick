@@ -201,27 +201,13 @@ class TripsController < PlaceSearchingController
 
     # set or update the traveler session key with the id of the traveler
     set_traveler_id(params[:trip_proxy][:traveler])
+    
     # set the @traveler variable
     get_traveler
-
-    @trip_proxy = TripProxy.new()
-    @trip_proxy.traveler = @traveler
-
-    # Set the travel time/date to the default
-    travel_date = default_trip_time
-
-    @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
-    @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
-
-    # Create markers for the map control
-    @markers = create_markers(@trip_proxy)
-    @places = create_place_markers(@traveler.places)
-
-    respond_to do |format|
-      format.html { render :action => 'new'}
-      format.json { render json: @trip_proxy }
-    end
-
+    
+    # show the new form
+    redirect_to new_user_trip_path(@traveler)
+    
   end
     
   # called when the user wants to delete a trip
