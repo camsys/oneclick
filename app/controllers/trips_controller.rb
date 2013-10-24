@@ -412,6 +412,7 @@ class TripsController < PlaceSearchingController
     end
   end
 
+  # Called when the user displays an itinerary details in the modal popup
   def itinerary
     
     # set the @traveler variable
@@ -421,8 +422,8 @@ class TripsController < PlaceSearchingController
     
     @itinerary = @trip.valid_itineraries.find(params[:itin])
     @legs = @itinerary.get_legs
-    if @itinerary.is_mappable == 'transit'      
-      @markers = create_markers(@itinerary, @legs)
+    if @itinerary.is_mappable      
+      @markers = create_itinerary_markers(@itinerary)
       @polylines = create_polylines(@legs)
     end
     
@@ -548,6 +549,63 @@ protected
   end
   
 private
+  
+  # Create an array of map markers suitable for the Leaflet plugin. 
+  def create_itinerary_markers(itinerary)
+    
+    trip = itinerary.trip_part.trip
+    legs = itinerary.get_legs
+    
+    markers = []
+    place = {:name => trip.from_place.name, :lat => trip.from_place.location.first, :lon => trip.from_place.location.last, :address => trip.from_place.address}
+    markers << get_addr_marker(place, 'start', 'startIcon')
+    place = {:name => trip.to_place.name, :lat => trip.to_place.location.first, :lon => trip.to_place.location.last, :address => trip.to_place.address}
+    markers << get_addr_marker(place, 'stop', 'stopIcon')
+    
+    if legs
+      legs.each do |leg|
+        
+        place = {:name => leg.start_place.name, :lat => leg.start_place.lat, :lon => leg.start_place.lon, :address => leg.start_place.name}
+        markers << get_addr_marker(place, 'start_leg', 'blueIcon')
+
+        place = {:name => leg.end_place.name, :lat => leg.end_place.lat, :lon => leg.end_place.lon, :address => leg.end_place.name}
+        markers << get_addr_marker(place, 'start_leg', 'blueIcon')
+        
+      end
+    end
+    
+    return markers.to_json
+  end
+
+
+  def create_polylines(legs)
+      
+    polylines = []
+    legs.each_with_index do |leg, index|
+      polylines << {
+        "id" => index,
+        "geom" => leg.geometry,
+        "options" => get_leg_display_options(leg)
+      }
+    end
+    
+    return polylines.to_json
+  end
+
+  def get_leg_display_options(leg) 
+
+    if leg.mode == TripLeg::WALK
+      a = {"color" => 'red', "width" => "5"}
+    elsif leg.mode == TripLeg::BUS
+      a = {"color" => 'blue', "width" => "5"}
+    elsif leg.mode == TripLeg::SUBWAY
+      a = {"color" => 'green', "width" => "5"}
+    else
+      a = {}
+    end
+    
+    return a
+  end
   
   # creates a trip_proxy object from form parameters
   def create_trip_proxy_from_form_params
