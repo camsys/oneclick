@@ -1,0 +1,9 @@
+.row-fluid
+  .span12
+    %h1
+      %i.icon.icon-info-sign
+      Eligibility - Step 1 of 2
+
+.row-fluid
+  .well
+    = render partial: 'programs/form',  :locals => {:path => user_program_path(@traveler, @user_programs_proxy.id, inline: 1), :inline => true}

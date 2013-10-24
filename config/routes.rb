@@ -22,6 +22,12 @@ Oneclick::Application.routes.draw do
         end
       end
 
+      resources :programs, :only => [:new, :create, :edit, :update] do
+        member do
+          put 'set'
+        end
+      end
+
       resources :accommodations, :only => [:new, :create, :edit, :update] do
         member do
           put 'set'

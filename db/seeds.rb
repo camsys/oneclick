@@ -120,15 +120,15 @@ end
 ##### Eligibility Seeds #####
 
 #Traveler characteristics
-    disabled = TravelerCharacteristic.create(code: 'disabled', name: 'Disabled', note: 'Is the traveler permanently or temporarily disabled?', datatype: 'bool')
-    no_trans = TravelerCharacteristic.create(code: 'no_trans', name: 'No Means of Transportation', note: 'Does the traveler lack access to a vehicle?', datatype: 'bool')
-    nemt_eligible = TravelerCharacteristic.create(code: 'nemt_eligible', name: 'Medicaid/NEMT Eligible', note: 'Is the traveler Medicaid or NEMT Eligible?', datatype: 'bool')
-    ada_eligible = TravelerCharacteristic.create(code: 'ada_eligible', name: 'ADA Paratransit Eligible', note: 'Is the traveler ADA Paratransit eligible?', datatype: 'bool')
-    veteran = TravelerCharacteristic.create(code: 'veteran', name: 'Veteran', note: 'Is the traveler a veteran?', datatype: 'bool')
-    medicare_eligible = TravelerCharacteristic.create(code: 'medicare_eligible', name: 'Medicare Eligible', note: 'Is the traveler Medicare eligible?', datatype: 'bool')
-    low_income = TravelerCharacteristic.create(code: 'low_income', name: 'Low income', note: "Is the traveler classified as low income?", datatype: 'bool')
-    date_of_birth = TravelerCharacteristic.create(code: 'date_of_birth', name: 'Date of Birth', note: "What is the traveler's date of birth?", datatype: 'date')
-    age = TravelerCharacteristic.create(code: 'age', name: 'Age', note: "What is the traveler's age?", datatype: 'integer')
+    disabled = TravelerCharacteristic.create(characteristic_type: 'personal_factor', code: 'disabled', name: 'Disabled', note: 'Is the traveler permanently or temporarily disabled?', datatype: 'bool')
+    no_trans = TravelerCharacteristic.create(characteristic_type: 'personal_factor', code: 'no_trans', name: 'No Means of Transportation', note: 'Does the traveler lack access to a vehicle?', datatype: 'bool')
+    nemt_eligible = TravelerCharacteristic.create(characteristic_type: 'program', code: 'nemt_eligible', name: 'Medicaid/NEMT Eligible', note: 'Is the traveler Medicaid or NEMT Eligible?', datatype: 'bool')
+    ada_eligible = TravelerCharacteristic.create(characteristic_type: 'program', code: 'ada_eligible', name: 'ADA Paratransit Eligible', note: 'Is the traveler ADA Paratransit eligible?', datatype: 'bool')
+    veteran = TravelerCharacteristic.create(characteristic_type: 'personal_factor', code: 'veteran', name: 'Veteran', note: 'Is the traveler a veteran?', datatype: 'bool')
+    medicare_eligible = TravelerCharacteristic.create(characteristic_type: 'program', code: 'medicare_eligible', name: 'Medicare Eligible', note: 'Is the traveler Medicare eligible?', datatype: 'bool')
+    #low_income = TravelerCharacteristic.create(characteristic_type: 'personal_factor', code: 'low_income', name: 'Low income', note: "Is the traveler classified as low income?", datatype: 'bool')
+    date_of_birth = TravelerCharacteristic.create(characteristic_type: 'personal_factor', code: 'date_of_birth', name: 'Date of Birth', note: "What is the traveler's date of birth?", datatype: 'date')
+    age = TravelerCharacteristic.create(characteristic_type: 'personal_factor', code: 'age', name: 'Age', note: "What is the traveler's age?", datatype: 'integer')
 
 #Traveler accommodations
     folding_wheelchair_accessible = TravelerAccommodation.create(code: 'folding_wheelchair_acceessible', name: 'Folding wheelchair accessible.', note: 'Does the traveler require a vehicle than can accept folding wheelchairs?', datatype: 'bool')

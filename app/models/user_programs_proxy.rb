@@ -1,7 +1,7 @@
 
 # Transient class used to aggregate user characteristics so they
 # can be updated in a single form.
-class UserCharacteristicsProxy < UserProfileProxy
+class UserProgramsProxy < UserProfileProxy
 
   def initialize(user = nil)
     super(user)
@@ -14,7 +14,7 @@ class UserCharacteristicsProxy < UserProfileProxy
   def method_missing(code, *args)
 
     # See if the code exists in the characteristics database
-    characteristic = TravelerCharacteristic.personal_factors.find_by_code(code)
+    characteristic = TravelerCharacteristic.programs.find_by_code(code)
     if characteristic.nil?
       return super      
     end
@@ -28,7 +28,7 @@ class UserCharacteristicsProxy < UserProfileProxy
   # Update the user characteristics based on the form params
   def update_maps(new_settings)
     
-    Rails.logger.debug "UserCharacteristicsProxy.update_maps()"
+    Rails.logger.debug "UserProgramsProxy.update_maps()"
     Rails.logger.debug new_settings.inspect
     
     
@@ -37,7 +37,7 @@ class UserCharacteristicsProxy < UserProfileProxy
       
       # Loop through the list of characteristics that could be set. This appraoch ensures we are only updating
       # active characteristics
-      TravelerCharacteristic.personal_factors.each do |characteristic|
+      TravelerCharacteristic.programs.each do |characteristic|
         
         Rails.logger.debug characteristic.inspect
         

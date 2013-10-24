@@ -9,9 +9,9 @@ class CharacteristicsController < TravelerAwareController
     @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
 
     if params['inline'] == '1'
-      @path = new_user_accommodation_path(@traveler, inline: 1)
+      @path = new_user_program_path(@traveler, inline: 1)
     else
-      @path = new_user_accommodation_path(@traveler)
+      @path = new_user_program_path(@traveler)
     end
 
     #if we are in the 'wizard' don't flash a notice. This logic checks to see if

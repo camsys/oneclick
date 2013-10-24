@@ -83,6 +83,7 @@ class RegistrationsController < Devise::RegistrationsController
     session[:location] = edit_user_registration_path
     @user_relationship = UserRelationship.new
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
+    @user_programs_proxy = UserProgramsProxy.new(@traveler)
     @user_accommodations_proxy = UserAccommodationsProxy.new(@traveler)
     super
   end
@@ -90,6 +91,7 @@ class RegistrationsController < Devise::RegistrationsController
   def edit
     @user_relationship = UserRelationship.new
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
+    @user_programs_proxy = UserProgramsProxy.new(@traveler)
     @user_accommodations_proxy = UserAccommodationsProxy.new(@traveler)
     super
   end

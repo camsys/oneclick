@@ -24,6 +24,7 @@ es:
   send_by_email: 'Enviar por correo electrónico'
 
   # Registration, sign in, profile
+  programs:  "[es]Programs[/es]"
   version: 'Versión'
   home: "Inicio"
   log_in: 'Entrar'

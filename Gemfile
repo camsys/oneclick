@@ -35,7 +35,7 @@ group :development do
   gem 'guard-rails'
   gem 'guard-rspec'
   # gem 'pry-stack_explorer'
-  gem 'pry-debugger'
+  #gem 'pry-debugger'
   gem 'html2haml'
   gem 'quiet_assets'
   gem 'listen'
