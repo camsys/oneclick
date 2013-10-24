@@ -3,8 +3,6 @@ module ApplicationHelper
   METERS_TO_MILES = 0.000621371192
   
   include CsHelpers
-
-  ALPHABET = ('A'..'Z').to_a
   
   ICON_DICTIONARY = {
       TripLeg::WALK => 'travelcon-walk', 
@@ -15,7 +13,7 @@ module ApplicationHelper
       TripLeg::FERRY => 'travelcon-boat'
       }
   
-  # REturns the name of the logo image based on the oneclick configuration
+  # Returns the name of the logo image based on the oneclick configuration
   def get_logo
     return Oneclick::Application.config.ui_logo
   end
@@ -70,16 +68,6 @@ module ApplicationHelper
     return html.html_safe     
   end
   
-  # Returns a formatted string for an alternate address that includes a A,B,C, etc. designator.
-  def get_candidate_list_item_image(index, type)
-    if type == "0"
-      return 'http://maps.google.com/mapfiles/marker_green' + ALPHABET[index] + ".png"
-    elsif type == "1"
-      return 'http://maps.google.com/mapfiles/marker' + ALPHABET[index] + ".png"
-    else
-      return 'http://maps.google.com/mapfiles/marker_yellow' + ALPHABET[index] + ".png"
-    end
-  end
   
   # Defines an array of filter options for the MyTrips page. The filters combine date range filters
   # with trip purpose filters. To make sure we can identify which is which, we simply add a constant (100)

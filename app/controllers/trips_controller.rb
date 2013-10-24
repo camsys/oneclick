@@ -144,7 +144,7 @@ class TripsController < PlaceSearchingController
     end
         
     # Create markers for the map control
-    @markers = create_markers(@trip_proxy)
+    @markers = create_trip_proxy_markers(@trip_proxy).to_json
     @places = create_place_markers(@traveler.places)
 
     respond_to do |format|
@@ -178,7 +178,7 @@ class TripsController < PlaceSearchingController
     @trip_proxy.id = @trip.id
 
     # Create markers for the map control
-    @markers = create_markers(@trip_proxy)
+    @markers = create_trip_proxy_markers(@trip_proxy).to_json
     @places = create_place_markers(@traveler.places)
         
     respond_to do |format|
@@ -273,7 +273,7 @@ class TripsController < PlaceSearchingController
     @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
 
     # Create markers for the map control
-    @markers = create_markers(@trip_proxy)
+    @markers = create_trip_proxy_markers(@trip_proxy).to_json
     @places = create_place_markers(@traveler.places)
     
     respond_to do |format|
@@ -307,7 +307,7 @@ class TripsController < PlaceSearchingController
     @trip_proxy.id = @trip.id
 
     # Create markers for the map control
-    @markers = create_markers(@trip_proxy)
+    @markers = create_trip_proxy_markers(@trip_proxy).to_json
     @places = create_place_markers(@traveler.places)
     
     # see if we can continue saving this trip                
@@ -366,7 +366,7 @@ class TripsController < PlaceSearchingController
     end
 
     # Create markers for the map control
-    @markers = create_markers(@trip_proxy)
+    @markers = create_trip_proxy_markers(@trip_proxy).to_json
     @places = create_place_markers(@traveler.places)
 
     respond_to do |format|
@@ -423,8 +423,8 @@ class TripsController < PlaceSearchingController
     @itinerary = @trip.valid_itineraries.find(params[:itin])
     @legs = @itinerary.get_legs
     if @itinerary.is_mappable      
-      @markers = create_itinerary_markers(@itinerary)
-      @polylines = create_polylines(@legs)
+      @markers = create_itinerary_markers(@itinerary).to_json
+      @polylines = create_itinerary_polylines(@legs).to_json
     end
     
     #Rails.logger.debug @itinerary.inspect
@@ -519,94 +519,8 @@ protected
     end
   end
 
-  # Create an array of map markers suitable for the Leaflet plugin. If the trip proxy is from an existing trip we will
-  # have start and stop markers
-  def create_markers(trip_proxy)
-    markers = []
-    if trip_proxy.from_place_selected
-      place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected.to_i, true)
-    else
-      place = {:name => trip_proxy.from_place, :lat => trip_proxy.from_lat, :lon => trip_proxy.from_lon, :formatted_address => trip_proxy.from_raw_address}
-    end
-    markers << get_addr_marker(place, 'start', 'startIcon')
-    
-    if trip_proxy.to_place_selected
-      place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected.to_i, false)
-    else
-      place = {:name => trip_proxy.to_place, :lat => trip_proxy.to_lat, :lon => trip_proxy.to_lon, :formatted_address => trip_proxy.to_raw_address}
-    end
-    
-    markers << get_addr_marker(place, 'stop', 'stopIcon')
-    return markers.to_json
-  end
-  
-  def create_place_markers(places)
-    markers = []    
-    places.each_with_index do |place, index|
-      markers << get_map_marker(place, place.id, 'startIcon')
-    end
-    return markers
-  end
-  
 private
-  
-  # Create an array of map markers suitable for the Leaflet plugin. 
-  def create_itinerary_markers(itinerary)
     
-    trip = itinerary.trip_part.trip
-    legs = itinerary.get_legs
-    
-    markers = []
-    place = {:name => trip.from_place.name, :lat => trip.from_place.location.first, :lon => trip.from_place.location.last, :address => trip.from_place.address}
-    markers << get_addr_marker(place, 'start', 'startIcon')
-    place = {:name => trip.to_place.name, :lat => trip.to_place.location.first, :lon => trip.to_place.location.last, :address => trip.to_place.address}
-    markers << get_addr_marker(place, 'stop', 'stopIcon')
-    
-    if legs
-      legs.each do |leg|
-        
-        place = {:name => leg.start_place.name, :lat => leg.start_place.lat, :lon => leg.start_place.lon, :address => leg.start_place.name}
-        markers << get_addr_marker(place, 'start_leg', 'blueIcon')
-
-        place = {:name => leg.end_place.name, :lat => leg.end_place.lat, :lon => leg.end_place.lon, :address => leg.end_place.name}
-        markers << get_addr_marker(place, 'start_leg', 'blueIcon')
-        
-      end
-    end
-    
-    return markers.to_json
-  end
-
-
-  def create_polylines(legs)
-      
-    polylines = []
-    legs.each_with_index do |leg, index|
-      polylines << {
-        "id" => index,
-        "geom" => leg.geometry,
-        "options" => get_leg_display_options(leg)
-      }
-    end
-    
-    return polylines.to_json
-  end
-
-  def get_leg_display_options(leg) 
-
-    if leg.mode == TripLeg::WALK
-      a = {"color" => 'red', "width" => "5"}
-    elsif leg.mode == TripLeg::BUS
-      a = {"color" => 'blue', "width" => "5"}
-    elsif leg.mode == TripLeg::SUBWAY
-      a = {"color" => 'green', "width" => "5"}
-    else
-      a = {}
-    end
-    
-    return a
-  end
-  
   # creates a trip_proxy object from form parameters
   def create_trip_proxy_from_form_params
 
@@ -618,7 +532,6 @@ private
     return trip_proxy
         
   end
-  
   
   # creates a trip_proxy object from a trip. Note that this does not set the
   # trip id into the proxy as only edit functions need this.

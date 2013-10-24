@@ -1,4 +1,7 @@
 class PlaceSearchingController < TravelerAwareController
+
+  # Include map helpers into this super class
+  include MapHelper
     
   # UI Constants  
   MAX_POIS_FOR_SEARCH = Rails.application.config.ui_search_poi_items
@@ -9,8 +12,6 @@ class PlaceSearchingController < TravelerAwareController
   CACHED_TO_ADDRESSES_KEY = 'CACHED_TO_ADDRESSES_KEY'
   CACHED_PLACES_ADDRESSES_KEY = 'CACHED_PLACES_ADDRESSES_KEY'
 
-  ALPHABET = ('A'..'Z').to_a
-  
   # Constants for type of place user has selected  
   POI_TYPE = "1"
   CACHED_ADDRESS_TYPE = "2"
@@ -49,7 +50,7 @@ class PlaceSearchingController < TravelerAwareController
     @matches = []    
     # We create a unique index for mapping etc for each place we find. Limited to 26 candidates as there are no letters past 'Z'
     geocoder.results.each_with_index do |addr, index|
-      icon_style = icon_base + ALPHABET[index] 
+      icon_style = icon_base + MapHelper::ALPHABET[index] 
       key = key_base + index.to_s
       @matches << get_addr_marker(addr, key, icon_style) unless index > 25
     end
@@ -137,16 +138,6 @@ class PlaceSearchingController < TravelerAwareController
   end
   
 protected
-
-  def get_indexed_marker_icon(index, type)
-    if type == "0"
-      return 'startCandidate' + ALPHABET[index]
-    elsif type == "1"
-      return 'stopCandidate' + ALPHABET[index]
-    else
-      return 'placeCandidate' + ALPHABET[index]
-    end
-  end
   
   # Cache an array of addresses
   def cache_addresses(key, addresses, expires_in = ADDRESS_CACHE_EXPIRE_SECONDS)

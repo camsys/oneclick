@@ -1,7 +1,4 @@
 class PlacesController < PlaceSearchingController
-
-  # include the Leaflet helper into the controller and view
-  helper LeafletHelper
   
   # set the @traveler variable for actions that are not supported by the super class controller
   before_filter :get_traveler, :only => [:index, :edit, :create, :destroy, :update]
@@ -129,6 +126,16 @@ class PlacesController < PlaceSearchingController
 
 
 protected
+
+  def get_indexed_marker_icon(index, type)
+    if type == "0"
+      return 'startCandidate' + ALPHABET[index]
+    elsif type == "1"
+      return 'stopCandidate' + ALPHABET[index]
+    else
+      return 'placeCandidate' + ALPHABET[index]
+    end
+  end
 
   def set_form_variables
     
