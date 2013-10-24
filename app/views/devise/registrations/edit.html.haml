@@ -5,10 +5,10 @@
 %h4
 .tabbable
   %ul.nav.nav-tabs
-    -# render the first n3 tabs only if the current user is operating as themselves. If they are assisting
+    -# render the first 3 tabs only if the current user is operating as themselves. If they are assisting
     -# another user then we don't render the first 3 tabs
     - if is_traveler == false
-      %li.active
+      %li
         %a{href: '#tab1', data: {toggle: 'tab', id: '1'}}
           = t(:my_information)
       %li
@@ -29,7 +29,7 @@
 
 
   .tab-content
-    -# render the first n3 tabs only if the current user is operating as themselves. If they are assisting
+    -# render the first 3 tabs only if the current user is operating as themselves. If they are assisting
     -# another user then we don't render the first 3 tabs
     - if is_traveler == false
       .tab-pane#tab1
@@ -69,9 +69,11 @@
     } 
     if (tab_found == false) {
       // set the first tab if nothing cached
-      $('a[data-toggle="tab"]:first').tab('show');
-    }
-  });
+      var elem = $('a[data-toggle="tab"]').first();
+      elem.tab('show');
+    }    
+  });  
+  
   // install an event handler to save the last viewed tab
   $('a[data-toggle="tab"]').on('shown', function (e) {
     set_ui_key_value(settings_tab_key, $(e.target).attr('href'));
