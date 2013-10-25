@@ -213,7 +213,7 @@ es:
   didn_t_receive_confirmation_instructions: "¿No recibiste instrucciones de confirmación?"
   didn_t_receive_unlock_instructions: "¿No recibiste instrucciones de desbloqueo?"
   sign_in_with_provider_to_s_titleize: "Sign in with %{provider}"
-  assisting_assisted_user_email: "Asistiendo a {assisted_user}"
+  assisting_assisted_user_email: "Asistiendo a %{assisted_user}"
   _menu__object_plural_per_page: "_MENU_ %{object} per page"
   _menu__records_per_page: "_MENU_ records per page"
   showing__start__to__end__of__total__object_plural: "Showing _START_ to _END_ of _TOTAL_ %{object}"
@@ -232,9 +232,11 @@ es:
   arrive: "ARRIVE: "
   trip: "Viaje: "
   est: " (est.)"
+  myself: "yo mismo"  
   assisted_user_first_name_s_trips: "Viajes de %{name}"
   trip_options_information_from_from: "Información de opciones de viaje de #{@from}"
   create_account: "[es] Create an account to save your information [\es]"
+  stop_assisting: "Detener la asistencia"
   assisting_turned_off: "[es]Assisting has been turned off.[/es]"
 
   # General Messages

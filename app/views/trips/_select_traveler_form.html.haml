@@ -1,5 +1,5 @@
 = simple_form_for :trip_proxy, :url => set_traveler_user_trips_path, :html => {:id => 'select_traveler_form'} do |f|  
-  = f.input :traveler, :collection => current_user.confirmed_travelers, :label => t(:assist), :selected => @traveler.id.to_s, :include_blank => 'myself', :input_html => {:style => "width:200px;"}
+  = f.input :traveler, :collection => current_user.confirmed_travelers, :label => t(:assist), :selected => @traveler.id.to_s, :include_blank => t(:myself), :input_html => {:style => "width:200px;"}
 
 :javascript
   $("#trip_proxy_traveler").change(function() {

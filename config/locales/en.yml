@@ -234,9 +234,11 @@ en:
   arrive: "ARRIVE: "
   trip: "Trip: "
   est: " (est.)"
+  myself: "myself"
   assisted_user_first_name_s_trips: "%{name}'s Trips"
   trip_options_information_from_from: "Trip options information from %{from}"
   create_account: "Create an account to save your information."
+  stop_assisting: "Stop assisting"  
   assisting_turned_off: "Assisting has been turned off."
 
   # General Messages
