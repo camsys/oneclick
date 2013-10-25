@@ -194,7 +194,7 @@ end
     door_to_door = TravelerAccommodation.create(
       code: 'door_to_door', 
       name: 'Door-to-door', 
-      note: 'Do you need assistance getting to yuor front door?', 
+      note: 'Do you need assistance getting to your front door?',
       datatype: 'bool')
     curb_to_curb = TravelerAccommodation.create(
       code: 'curb_to_curb', 
