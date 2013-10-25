@@ -60,7 +60,12 @@ en:
   invalid_dob: 'Invalid date of birth'
   to_see_best_options: 'To see the best options, tell us about yourself.'
   skip_this_step: 'Skip this step'
-    
+  buddy_request_sent: "Buddy request sent"
+  no_buddy_email_address: "You must enter the email address for your buddy"
+  no_user_with_email_address: "We can't find a registered user with '%{email}' as their email address."
+  something_went_wrong: "Ooops! Something went wrong. We were unable to process that request. Please try again."
+  request_processed: "Your request has been processed."
+      
   spanish: 'En Español'
   error_not_implemented: "We're sorry, but this functionality has not yet been implemented."
   error_404: "The page you were looking for doesn't exist."
