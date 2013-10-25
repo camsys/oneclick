@@ -17,6 +17,9 @@ Oneclick::Application.routes.draw do
       end
 
       resources :characteristics, :only => [:new, :create, :edit, :update] do
+        collection do
+          get 'header'
+        end
         member do
           put 'set'
         end

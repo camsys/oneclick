@@ -21,3 +21,14 @@
         = link_to :back, :class => "cancel_link" do
           %i.icon.icon-reply
           = t(:cancel)
+:javascript
+  $('input[name="user_characteristics_proxy[disabled]"]:radio').on('change', function(event) {
+    $.ajax({
+      url: 'header',
+      data: {state: event.currentTarget.id},
+      success: function(result) {
+        $('#characteristics_header').html(result)
+      }
+    })
+    
+  })

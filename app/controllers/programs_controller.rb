@@ -1,9 +1,8 @@
 class ProgramsController < TravelerAwareController
 
-  def update
+  before_filter :get_traveler
 
-    # set the @traveler variable
-    get_traveler
+  def update
 
     @path = new_user_registration_path(inline: 1)
 
@@ -46,9 +45,9 @@ class ProgramsController < TravelerAwareController
 
     @user_programs_proxy = UserProgramsProxy.new(@traveler)
 
-    get_traveler
     @planned_trip_id = session[:current_trip_id]
-
+    @total_steps = (@traveler.has_disability? ? 3 : 2)
+    
     respond_to do |format|
       format.html
     end

@@ -124,49 +124,49 @@ end
       characteristic_type: 'personal_factor', 
       code: 'disabled',
       name: 'Disabled', 
-      note: 'Is the traveler permanently or temporarily disabled?', 
+      note: 'Are you permanently or temporarily disabled?', 
       datatype: 'bool')
     no_trans = TravelerCharacteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'no_trans', 
       name: 'No Means of Transportation', 
-      note: 'Does the traveler lack access to a vehicle?', 
+      note: 'Do you own or have access to a personal vehicle?', 
       datatype: 'bool')
     nemt_eligible = TravelerCharacteristic.create(
       characteristic_type: 'program', 
       code: 'nemt_eligible', 
       name: 'Medicaid/NEMT Eligible', 
-      note: 'Is the traveler Medicaid or NEMT Eligible?', 
+      note: 'Are you eligible for Medicaid?', 
       datatype: 'bool')
     ada_eligible = TravelerCharacteristic.create(
       characteristic_type: 'program', 
       code: 'ada_eligible', 
       name: 'ADA Paratransit Eligible', 
-      note: 'Is the traveler ADA Paratransit eligible?', 
+      note: 'Are you eligible for ADA paratransit?', 
       datatype: 'bool')
     veteran = TravelerCharacteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'veteran', 
       name: 'Veteran', 
-      note: 'Is the traveler a veteran?', 
+      note: 'Are you a military veteran?', 
       datatype: 'bool')
     medicare_eligible = TravelerCharacteristic.create(
       characteristic_type: 'program', 
       code: 'medicare_eligible', 
       name: 'Medicare Eligible', 
-      note: 'Is the traveler Medicare eligible?', 
+      note: 'Are you eligibe for Medicare?', 
       datatype: 'bool')
-    #low_income = TravelerCharacteristic.create(
+    low_income = TravelerCharacteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'low_income', 
       name: 'Low income', 
-      note: "Is the traveler classified as low income?", 
-      datatype: 'bool')
+      note: "Are you low income?", 
+      datatype: 'disabled')
     date_of_birth = TravelerCharacteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'date_of_birth', 
       name: 'Date of Birth', 
-      note: "What is the traveler's date of birth?", 
+      note: "What is your date of birth?", 
       datatype: 'date')
     age = TravelerCharacteristic.create(
       characteristic_type: 'personal_factor', 
@@ -179,32 +179,32 @@ end
     folding_wheelchair_accessible = TravelerAccommodation.create(
       code: 'folding_wheelchair_acceessible', 
       name: 'Folding wheelchair accessible.', 
-      note: 'Does the traveler require a vehicle than can accept folding wheelchairs?', 
+      note: 'Do you need a vehicle that has space for a folding wheelchair?', 
       datatype: 'bool')
     motorized_wheelchair_accessible = TravelerAccommodation.create(
       code: 'motorized_wheelchair_accessible', 
       name: 'Motorized wheelchair accessible.', 
-      note: 'Does the traveler require a vehicle than can accept motorized wheelchairs?', 
+      note: 'Do you need a vehicle than has space for a motorized wheelchair?', 
       datatype: 'bool')
     lift_equipped = TravelerAccommodation.create(
       code: 'lift_equipped', 
       name: 'Wheelchair lift equipped vehicle.', 
-      note: 'Does the traveler require a vehicle with a vehicle lift?', 
+      note: 'Do you need a vehicle with a lift?', 
       datatype: 'bool')
     door_to_door = TravelerAccommodation.create(
       code: 'door_to_door', 
       name: 'Door-to-door', 
-      note: 'Does the traveler require door-to-door service?', 
+      note: 'Do you need assistance getting to yuor front door?', 
       datatype: 'bool')
     curb_to_curb = TravelerAccommodation.create(
       code: 'curb_to_curb', 
       name: 'Curb-to-curb', 
-      note: 'Does the traveler require curb-to-curb service?', 
+      note: 'Do you need delivery to the curb in front of your home?', 
       datatype: 'bool')
     driver_assistance_available = TravelerAccommodation.create(
       code: 'driver_assistance_available', 
       name: 'Driver assistance available.', 
-      note: 'Does the traveler require assistance from the driver?', 
+      note: 'Do you need personal assistance from the driver?', 
       datatype: 'bool')
 
 #Service types

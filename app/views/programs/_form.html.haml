@@ -10,8 +10,12 @@
 
         - if inline
           = button_tag :type => 'submit', :class => "btn btn-primary" do
-            %i.icon.icon-arrow-right
-            Next step
+            - if @traveler.has_disability?
+              %i.icon.icon-arrow-right
+              Next step
+            - else
+              %i.icon.icon-arrow-right
+              Save and plan my trip
             / = t(:save)
         - else
           = button_tag type: :submit, class: 'btn btn-primary controls' do
