@@ -75,6 +75,12 @@ class ApplicationController < ActionController::Base
        guest_user
  
   end
+
+protected
+
+  def create_random_string(length=16)
+    SecureRandom.urlsafe_base64(length)
+  end
   
 private
 
@@ -90,11 +96,13 @@ private
   end
 
   def create_guest_user
+    
+    random_string = create_random_string(16)
     u = User.new
     u.first_name = "Visitor"
     u.last_name = "Guest"
-    u.password = "welcome1"
-    u.email = "guest_#{Time.now.to_i}#{rand(99)}@example.com" 
+    u.password = random_string
+    u.email = "guest_#{random_string}@example.com" 
     u.save!(:validate => false)
     session[:guest_user_id] = u.id
     u
