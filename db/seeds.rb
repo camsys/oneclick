@@ -359,7 +359,7 @@ providers.each do |provider|
 
       #Traveler Characteristics Requirements
       ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: no_trans, value: 'true')
+      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: no_trans, value: 'false')
 
       #Traveler Accommodations Provided
       [folding_wheelchair_accessible, driver_assistance_available, motorized_wheelchair_accessible, curb_to_curb, door_to_door, lift_equipped].each do |n|
@@ -385,7 +385,7 @@ providers.each do |provider|
 
       #Traveler Characteristics Requirements
       ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '55', value_relationship_id: 4)
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: no_trans, value: 'true')
+      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: no_trans, value: 'false')
 
       #Traveler Accommodations Provided
       [folding_wheelchair_accessible, driver_assistance_available, door_to_door, curb_to_curb, lift_equipped].each do |n|
