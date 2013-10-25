@@ -135,13 +135,13 @@ end
     nemt_eligible = TravelerCharacteristic.create(
       characteristic_type: 'program', 
       code: 'nemt_eligible', 
-      name: 'Medicaid/NEMT Eligible', 
+      name: 'Medicaid',
       note: 'Are you eligible for Medicaid?', 
       datatype: 'bool')
     ada_eligible = TravelerCharacteristic.create(
       characteristic_type: 'program', 
       code: 'ada_eligible', 
-      name: 'ADA Paratransit Eligible', 
+      name: 'ADA Paratransit',
       note: 'Are you eligible for ADA paratransit?', 
       datatype: 'bool')
     veteran = TravelerCharacteristic.create(
@@ -153,7 +153,7 @@ end
     medicare_eligible = TravelerCharacteristic.create(
       characteristic_type: 'program', 
       code: 'medicare_eligible', 
-      name: 'Medicare Eligible', 
+      name: 'Medicare',
       note: 'Are you eligibe for Medicare?', 
       datatype: 'bool')
     low_income = TravelerCharacteristic.create(

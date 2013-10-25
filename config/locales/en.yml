@@ -179,6 +179,7 @@ en:
   profile_updated: "Your profile was updated."
 
   # new ones
+  do_you_participate:  "Do you currently participate in any of these programs?"
   programs:  "Programs"
   eligibility: "Eligibility"
   accommodations: "Accommodations"

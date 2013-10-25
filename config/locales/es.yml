@@ -24,7 +24,8 @@ es:
   send_by_email: 'Enviar por correo electrónico'
 
   # Registration, sign in, profile
-  programs:  "[es]Programs[/es]"
+  do_you_participate:  "Do you currently participate in any of these programs?"  #Not translated
+  programs:  "Programs"                                                          #Not translated
   version: 'Versión'
   home: "Inicio"
   log_in: 'Entrar'
