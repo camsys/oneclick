@@ -1,0 +1,28 @@
+.row-fluid
+  .span12
+    %h1
+      %i.icon.icon-map-marker
+      Geocode (util only)
+
+.row-fluid
+  .span12
+    = simple_form_for :geocode, url: admin_geocode_path, html: { class: 'form-horizontal' }  do |f|
+      = f.error_notification
+      = f.input :address, input_html: {value: @address}
+      .form-actions
+        = f.submit 'Geocode', class: 'btn btn-info'
+- if @results
+  .row-fluid
+    .span12
+      Included types: 
+      = OneclickGeocoder::INCLUDED_TYPES
+  .row-fluid
+    .span12
+      Jump to: 
+      - (1..@results.size).each do |i|
+        %a{href: "##{i}"}= i
+      %br
+      - @results.each_with_index do |r, i|
+        = i + 1
+        %pre{id: i + 1}
+          = r.data.ai(plain: true)

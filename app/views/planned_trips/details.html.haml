@@ -42,7 +42,7 @@
             %tbody
               - @trip.trip_places.each do |place|
                 %tr
-                  %td.left= place
+                  %td.left= place.name
                   %td.left= place.type
                   %td.left= place.address
                   %td.center.nowrap

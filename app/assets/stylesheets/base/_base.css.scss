@@ -1,0 +1,355 @@
+html, body {
+  height: 100%;
+}
+.center {
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+.first-in-row {
+  margin-left: 0 !important;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+}
+
+.navbar .brand {
+  margin-left: auto;
+}
+
+#publicnav h2 {
+  margin: 0 5px;
+  line-height: normal;
+  display: inline;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height plus any margins */
+  //margin: 0 auto -80px;
+  position: relative;
+}
+
+#main {
+  padding-top: 60px;
+  padding-bottom: 80px;
+}
+
+.dialog-title-bar {
+  background-color:#F5F5F5;
+  padding:5px;
+  margin-bottom: 10px;
+}
+.dialog-body {
+  border: 1px solid #F5F5F5;
+  padding:20px 20px 0px 20px;
+}
+.dialog-footer {
+  background-color:#F5F5F5;
+  padding:5px;
+  margin-top: 10px;
+}
+
+.corner-top { 
+  -moz-border-radius-topleft: 5px; 
+  -webkit-border-top-left-radius: 5px; 
+  border-top-left-radius: 5px; 
+  -moz-border-radius-topright: 5px; 
+  -webkit-border-top-right-radius: 5px; 
+  border-top-right-radius: 5px; 
+}
+.corner-bottom { 
+  -moz-border-radius-bottomleft: 5px; 
+  -webkit-border-bottom-left-radius: 5px; 
+  border-bottom-left-radius: 5px; 
+  -moz-border-radius-bottomright: 5px; 
+  -webkit-border-bottom-right-radius: 5px; 
+  border-bottom-right-radius: 5px; 
+}
+
+#help {
+  i {
+    font-size: 40px;
+    color: #777777;
+  }
+  i:hover {
+    color: #000000;
+  }
+}
+
+a:hover#help {
+  text-decoration: none;
+}
+
+
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+  height: 80px; // include any margins, etc
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+}
+
+.mode_title {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+#details-title {
+  font-weight: bold;
+  color: #0088cc;
+}
+
+.start_icon {
+  color: #51e43f;
+}
+
+.end_icon {
+  color: #e41011;
+}
+
+.itinerary_icons {
+  text-align: center;
+  line-height: normal;
+  font-size: 2.25em;
+}
+
+.itinerary_text {
+  text-align: left;
+  line-height: 1em;
+  padding: 0px;
+}
+
+.itinerary_text_small{
+  font-size: 1em;
+  line-height: 0px;
+  text-align: left;
+  vertical-align: top;
+  color: #0088cc;
+  padding: 0px;
+}
+
+.modal{
+  max-height: 85%;
+  overflow-y: auto;
+}
+
+.trip_basic_text{
+  font-size: 1.5em;
+  color: #0088cc;
+  font-weight: bold;
+  display: inline;
+
+}
+
+.trip_prepositions{
+  font-size: 1em;
+  display: inline;
+  font-weight: bold;
+
+}
+
+.errors #main {
+  color: #00f;
+  div.dialog {
+    width: 25em;
+    padding: 0 4em;
+    margin: 4em auto 0 auto;
+    border: 1px solid #ccc;
+    border-right-color: #999;
+    border-bottom-color: #999;
+    text-align: center;
+  }
+  h1 {
+    font-size: 100%;
+    color: #00f;
+    line-height: 1.5em; 
+  }
+  .the-icon-container {
+    line-height: 4em;
+    padding-top: 5px;
+  }
+  .the-icon {
+    vertical-align: middle;
+  }
+}
+
+// trips specific CSS
+.actionbutton:hover {
+ cursor: pointer;
+ border-color: #0088cc;
+ -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+ -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+ box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+}
+.itinerary-item {
+  line-height: 0;
+  margin-bottom: 10px;
+}
+.trip_summary_text {
+  font-size: 2em;
+}
+
+.candidate-label {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+// Media queries for the show trips view
+.trip_summary_icon {
+  font-size: 4em;  
+}
+// Large desktop
+@media (min-width: 1200px) {
+  .trip_summary_icon {
+    font-size: 5em;
+  }  
+}
+@media (min-width: 768px) and (max-width: 979px) {
+  .trip_summary_icon {
+    font-size: 4em;
+  }  
+}
+@media (max-width: 767px ) {
+  .trip_summary_icon {
+    font-size: 6em;
+    width: 100% !important;
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .trip_summary_text {
+    text-align: center !important;
+  }
+  .trip_summary_title {
+    text-align: center !important;
+  }
+  #main {
+    padding-top: 0;
+  }    
+}    
+@media (max-width: 480px ) {
+  .trip_summary_icon {
+    font-size: 6em;
+    width: 100% !important;
+    float: none;
+    margin-left: auto;
+    margin-right: auto;    
+  }
+  .trip_summary_text {
+    text-align: center !important;
+  }
+  .trip_summary_title {
+    text-align: center !important;
+  }
+}
+
+.dropdown-menu a {
+  cursor: pointer;
+}
+
+.form-horizontal input + .help-block {
+  margin-top: 1px;
+  font-size: 0.85em;
+  color: #777777;
+}
+
+.registrations .form-horizontal .control-group {
+  margin-bottom: 5px;
+}    
+
+// TODO This might want to be more generally available
+.registrations {
+  .tab-content {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+  }
+
+  .nav-tabs {
+    margin-bottom: 0;
+  }
+}
+
+.well > h4 {
+  margin-top: 0;
+}
+
+// See http://stackoverflow.com/a/13307817/222602
+form.form-inline div.control-group {
+  display: inline-block;
+}
+form.form-inline div.control-group div.controls {
+  display: inline-block; 
+}
+form.form-inline .control-label {
+  margin-right: 5px;
+}
+
+td.right, th.right {
+  text-align: right;
+}
+td.center, th.center {
+  text-align: center;
+}
+td.left, th.left {
+  text-align: left;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.ignore-width {
+  width: auto;
+}
+
+.cancel_link {
+  margin-left:5px;
+}
+
+.map {
+  border: 1px solid #E3E3E3;
+}
+
+.loading-indicator {
+  margin-left: 5px;
+  margin-top: 7px;
+}
+.shadow {
+  -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+     -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+          box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);  
+}
+
+/*
+ * Absolute Centering
+ * Table cell approach
+ * See http://codepen.io/shshaw/full/gEiDt
+ */
+
+.Center-Container.is-Table { display: table; }
+.is-Table .Table-Cell {
+  display: table-cell;
+  vertical-align: middle;
+}
+.is-Table .Center-Block {
+  width: 50%;
+  margin: 0 auto;
+}
+
+/* https://www.pivotaltracker.com/story/show/55010162 */
+.dropdown-backdrop {
+  position: static;
+}
+
+.control-group.disabled {
+  font-style: italic;
+}
+

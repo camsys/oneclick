@@ -7,14 +7,29 @@ Oneclick::Application.config.brand = ENV['BRAND'] || 'arc'
 
 case ENV['BRAND'] || 'arc'
 when 'arc'
+  Oneclick::Application.config.ui_logo = 'arc/arc-logo.png'
   Oneclick::Application.config.geocoder_components = 'administrative_area:GA|country:US'
-  Oneclick::Application.config.geocoder_bounds = [[33.737147,-84.406634], [33.764125,-84.370361]]
+  Oneclick::Application.config.map_bounds = [[33.457797,-84.754028], [34.090199,-83.921814]]
+  Oneclick::Application.config.geocoder_bounds = [[33.737147,-84.406634], [33.764125,-84.370361]]  
+  Oneclick::Application.config.open_trip_planner = "http://arc-otp-2.camsys-apps.com"
+  Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
+  Oneclick::Application.config.taxi_fare_finder_api_city = "Atlanta"
 when 'broward'  
+  Oneclick::Application.config.ui_logo = 'broward/bclogo.gif'
   Oneclick::Application.config.geocoder_components = 'administrative_area:FL|country:US'
+  Oneclick::Application.config.map_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
   Oneclick::Application.config.geocoder_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
-when 'yata'  
+  Oneclick::Application.config.open_trip_planner = "http://arc-otp-demo.camsys-apps.com"
+  Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
+  Oneclick::Application.config.taxi_fare_finder_api_city = "Miami"
+when 'yata'
+  Oneclick::Application.config.ui_logo = 'yata/Rabbittransit_red_logo.png'
   Oneclick::Application.config.geocoder_components = 'administrative_area:PA|country:US'
+  Oneclick::Application.config.map_bounds = [[41.970622, -80.461542], [39.734653, -75.007294]]
   Oneclick::Application.config.geocoder_bounds = [[41.970622, -80.461542], [39.734653, -75.007294]]
+  Oneclick::Application.config.open_trip_planner = "http://arc-otp-demo.camsys-apps.com"
+  Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
+  Oneclick::Application.config.taxi_fare_finder_api_city = "Harrisburg-PA"
 end
 
 # General UI configuration settings

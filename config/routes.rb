@@ -9,10 +9,6 @@ Oneclick::Application.routes.draw do
 
     devise_for :users, controllers: {registrations: "registrations"}
 
-    resources :admins, :only => [:index]
-
-    resources :reports, :only => [:index, :show]
-    
     # everything comes under a user id
     resources :users do
       member do
@@ -20,8 +16,26 @@ Oneclick::Application.routes.draw do
         post  'update'
       end
 
-      resources :user_characteristics_proxies
-      resources :user_accommodations_proxies
+      resources :characteristics, :only => [:new, :create, :edit, :update] do
+        collection do
+          get 'header'
+        end
+        member do
+          put 'set'
+        end
+      end
+
+      resources :programs, :only => [:new, :create, :edit, :update] do
+        member do
+          put 'set'
+        end
+      end
+
+      resources :accommodations, :only => [:new, :create, :edit, :update] do
+        member do
+          put 'set'
+        end
+      end
 
       # user relationships
       resources :user_relationships, :only => [:new, :create] do
@@ -64,8 +78,15 @@ Oneclick::Application.routes.draw do
           post  'email'
           get   'hide'
           get   'unhide_all'
+          get   'skip'
         end
       end      
+    end
+
+    namespace :admin do
+      resources :reports, :only => [:index, :show]
+      match '/geocode' => 'util#geocode'
+      match '/' => 'home#index'
     end
     
     match '/' => 'home#index'

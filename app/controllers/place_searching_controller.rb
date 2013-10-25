@@ -20,8 +20,6 @@ class PlaceSearchingController < TravelerAwareController
   # Search for addresses, existing addresses, or POIs based on text string entered by the user
   def geocode
     
-    Rails.logger.info "GEOCODE"
-
     # Populate the @traveler variable
     get_traveler
     
@@ -41,7 +39,6 @@ class PlaceSearchingController < TravelerAwareController
       key_base = 'place_candidate'
       cache_key = CACHED_PLACES_ADDRESSES_KEY
     end
-    Rails.logger.info @query
 
     geocoder = OneclickGeocoder.new
     geocoder.geocode(@query)
@@ -66,14 +63,12 @@ class PlaceSearchingController < TravelerAwareController
   # Search for addresses, existing addresses, or POIs based on text string entered by the user
   def search
     
-    Rails.logger.info "SEARCH"
-
     # Populate the @traveler variable
     get_traveler
     
     query = params[:query]
     query_str = query + "%"
-    Rails.logger.info query_str
+    Rails.logger.debug query_str
 
     # This array will hold the list of matching places
     matches = []    
@@ -82,8 +77,7 @@ class PlaceSearchingController < TravelerAwareController
     
     # First search for matching names in my places
     rel = Place.arel_table[:name].matches(query_str)
-    places = Place.active.where(rel)
-    Rails.logger.info places.ai
+    places = @traveler.places.active.where(rel)
     places.each do |place|
       matches << {
         "index" => counter,
@@ -101,7 +95,6 @@ class PlaceSearchingController < TravelerAwareController
     # Second search for matching address in trip_places. We manually filter these to find unique addresses
     rel = TripPlace.arel_table[:raw_address].matches(query_str)
     tps = @traveler.trip_places.where(rel).order("raw_address")
-    Rails.logger.info tps.ai
     old_addr = ""
     tps.each do |tp|
       if old_addr != tp.raw_address
@@ -123,7 +116,6 @@ class PlaceSearchingController < TravelerAwareController
     # Lastly search for matching names in the POI table
     rel = Poi.arel_table[:name].matches(query_str)
     pois = Poi.where(rel).limit(MAX_POIS_FOR_SEARCH)
-    Rails.logger.info pois.ai
     pois.each do |poi|
       matches << {
         "index" => counter,
@@ -156,38 +148,15 @@ protected
     end
   end
   
-  # create a map marker for a place
-  def get_map_marker(place, id, icon)
-    {
-      "id" => id,
-      "lat" => place.location.first,
-      "lng" => place.location.last,
-      "name" => place.name,
-      "iconClass" => icon,
-      "title" => place.address,
-      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => place.name, :address => place.address} })
-    }
-  end
-  # create a map marker for a geocoded address
-  def get_addr_marker(addr, id, icon)
-    address = addr[:formatted_address].nil? ? addr[:address] : addr[:formatted_address]
-    {
-      "id" => id,
-      "lat" => addr[:lat],
-      "lng" => addr[:lon],
-      "name" => addr[:name],
-      "iconClass" => icon,
-      "title" =>  address,
-      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => addr[:name], :address => address} })
-    }
-  end
-
   # Cache an array of addresses
   def cache_addresses(key, addresses, expires_in = ADDRESS_CACHE_EXPIRE_SECONDS)
+    Rails.logger.debug "PlaceSearchingController CACHE put for key #{get_cache_key(@traveler, key)}"
     Rails.cache.write(get_cache_key(@traveler, key), addresses, :expires_in => expires_in)
   end
+  
   # Return an array of cached addresses
   def get_cached_addresses(key)
+    Rails.logger.debug "PlaceSearchingController CACHE get for key #{get_cache_key(@traveler, key)}"
     ret = Rails.cache.read(get_cache_key(@traveler, key))
     return ret.nil? ? [] : ret
   end

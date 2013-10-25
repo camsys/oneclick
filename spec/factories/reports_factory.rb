@@ -2,6 +2,7 @@
 
 FactoryGirl.define do
   factory :report do
-    string ""
+    name 'Report 1'
+    class_name 'BasicReportRow'
   end
 end

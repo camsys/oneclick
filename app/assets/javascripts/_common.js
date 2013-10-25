@@ -16,6 +16,49 @@ function set_ui_key_value(key, value) {
 	//alert('setting value for ' + key + ' to ' + value);
     window.sessionStorage.setItem(key, value);
 };
+// Displays an alert
+function show_alert(message) {
+	$('#messages').html('<div class="alert alert-error fade in"><a class="close" data-dismiss="alert">x</a><div id="flash_notice">' + message + '</div></div>');
+}
+// Submittal handler for forms sent using ajax
+function ajax_submit_form_handler(form_id) {
+	var form = $('#' + form_id);
+	form.submit(function() {
+	    $.ajax({
+	        data: $(this).serialize(),
+	        type: $(this).attr('method'),
+	        url: $(this).attr('action'), 
+	        success: function(data) {
+	        	//alert('success');
+	        },
+	        error: function (data) {
+	       		//alert('error');
+            	show_alert("We are sorry but something went wrong. Please try again.");	               
+	        }
+	    });
+	    return false;
+	});	
+};
+function ajax_render_action(url, method) {
+	$.ajax({
+    	type: method,
+      	url: url,
+      	beforeSend:function(){
+        	// this is where we append a loading image
+    		//$('#ajax-panel').html('<div class="loading"><img src="/images/loading.gif" alt="Loading..." /></div>');
+  		},
+  		success:function(data){
+		    // successful request; do something with the data
+		    //$('#ajax-panel').empty();
+		    //$(data).find('item').each(function(i){
+		    //  $('#ajax-panel').append('<h4>' + $(this).find('title').text() + '</h4><p>' + $(this).find('link').text() + '</p>');
+		    //});
+		},
+		error: function (data) {
+      		show_alert("We are sorry but something went wrong. Please try again.");                
+      	}
+   	});  
+};
 
 // Used to remove any existing banner messages
 function remove_messages() {
@@ -24,16 +67,17 @@ function remove_messages() {
 
 
 function click_to_nav(url) {
+  alert('Deprecated. Please use event handler!');
   document.location.href = url;
 };
 
 
 // Finds all the class elements on a page and sets the min-height css variable
 // to the maximum height of all the containers
-function make_same_height(class_name) {
+function make_same_height(class_name, buffer) {
 
     // remove any existing height attributes
-    $(class_name).css('min-height', '');
+    $(class_name).css('height', '');
 
     // Set the form parts to equal height
     var max = -1;
@@ -41,7 +85,11 @@ function make_same_height(class_name) {
         var h = $(this).height();
         max = h > max ? h : max;
     });
-    $(class_name).css({'min-height': max});
+    if (buffer) {
+    	max += buffer;
+    }
+    //alert("max = " + max);
+    $(class_name).css({'height': max});
 };
 
 function fix_thumbnail_margins() {

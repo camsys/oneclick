@@ -1,0 +1,10 @@
+.row-fluid
+  .span12
+    %h1
+      %i.icon.icon-info-sign
+      %span#characteristics_header
+        = render partial: 'header', locals: {total_steps: @total_steps}
+
+.row-fluid
+  .well
+    = render partial: 'characteristics/form',  :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}

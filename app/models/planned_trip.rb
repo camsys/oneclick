@@ -11,8 +11,8 @@ class PlannedTrip < ActiveRecord::Base
   attr_accessible :trip_datetime, :is_depart
  
   # Scopes
-  scope :created_between, lambda {|from_day, to_day| where("planned_trips.created_at > ? AND planned_trips.created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day).order("planned_trips.trip_datetime DESC") }
-  scope :scheduled_between, lambda {|from_day, to_day| where("planned_trips.trip_datetime > ? AND planned_trips.trip_datetime < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day).order("planned_trips.trip_datetime DESC") }
+  scope :created_between, lambda {|from_time, to_time| where("planned_trips.created_at > ? AND planned_trips.created_at < ?", from_time, to_time).order("planned_trips.trip_datetime DESC") }
+  scope :scheduled_between, lambda {|from_time, to_time| where("planned_trips.trip_datetime > ? AND planned_trips.trip_datetime < ?", from_time, to_time).order("planned_trips.trip_datetime DESC") }
  
   # Returns an array of PlannedTrip that have at least one valid itinerary but all
   # of them have been hidden by the user
@@ -45,6 +45,7 @@ class PlannedTrip < ActiveRecord::Base
     create_fixed_route_itineraries
     create_taxi_itineraries
     create_paratransit_itineraries
+    create_rideshare_itineraries
   end
 
   # TODO refactor following 3 methods
@@ -79,7 +80,7 @@ class PlannedTrip < ActiveRecord::Base
   def create_paratransit_itineraries
     tp = TripPlanner.new
     eh = EligibilityHelpers.new
-    passenger_eligible_services = eh.get_accommodating_and_eligible_services_for_traveler(creator.user_profile, self)
+    passenger_eligible_services = eh.get_accommodating_and_eligible_services_for_traveler(self.trip.user.user_profile, self)
     passenger_and_trip_eligible_services = eh.get_eligible_services_for_trip(self, passenger_eligible_services)
     passenger_and_trip_eligible_services.each do |service|
 
@@ -87,5 +88,23 @@ class PlannedTrip < ActiveRecord::Base
       self.itineraries << Itinerary.new(itinerary)
     end
   end
+
+ def create_rideshare_itineraries
+    tp = TripPlanner.new
+    trip.restore_trip_places_georaw
+    Rails.logger.debug "create_rideshare_itineraries"
+    Rails.logger.debug trip.trip_places.collect {|tp| tp.raw}
+    from_place = trip.trip_places.first
+    Rails.logger.debug from_place.raw.ai
+    to_place = trip.trip_places.last
+    Rails.logger.debug to_place.raw.ai
+    result, response = tp.get_rideshare_itineraries(from_place, to_place, trip_datetime.in_time_zone)
+    if result
+      itinerary = tp.convert_rideshare_itineraries(response)
+      self.itineraries << Itinerary.new(itinerary)
+    else
+      self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response)
+    end
+  end  
  
 end

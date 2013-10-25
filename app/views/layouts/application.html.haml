@@ -15,9 +15,12 @@
           
       = csrf_meta_tags
       = yield(:head)
-  %body{:class => "#{controller_name} #{action_name}"}
+  %body{:class => "#{controller_css_class} #{action_name}"}
+    / application.html.haml
     #wrap
-      = render 'shared/navigation'
+      .container-fluid
+        .row-fluid
+          = render 'shared/navigation'
       #main{:role => "main"}
         .container-fluid
           = render 'shared/assisting'
@@ -28,8 +31,11 @@
         .container-fluid
           .well
             .pull-left
-              %span= "#{t(:version)} #{Rails.application.config.version}"
-              - if Rails.env.development?
+              - if Rails.env.integration?
+                %span= "#{t(:version)} Auto-deploy"
+              - else
+                %span= "#{t(:version)} #{Rails.application.config.version}"
+              - unless Rails.env.production?
                 %span
                   |
                   %span.visible-phone Phone&nbsp;
@@ -43,21 +49,20 @@
       / ! end of .container
     / ! end of #main
 
-:javascript
-  // Document Ready
-  var localized_yes_str;
-  var localized_no_str;
-  var localized_ok_str;
-  var localized_cancel_str;
-  
-  $(document).ready(function(){
-    // Set default locale configs and other settings that affect every page
-    localized_yes_str = "#{t(:yes)}";
-    localized_no_str = "#{t(:no)}";
-    localized_ok_str = "#{t(:ok)}";
-    localized_cancel_str = "#{t(:cancel)}";
-    
-    bootbox.setDefaults({
-      locale: "#{I18n.locale}"
-    });
-  });
+    :javascript
+      var localized_yes_str;
+      var localized_no_str;
+      var localized_ok_str;
+      var localized_cancel_str;
+      
+      $(document).ready(function(){
+        // Set default locale configs and other settings that affect every page
+        localized_yes_str = "#{t(:yes_str)}";
+        localized_no_str = "#{t(:no_str)}";
+        localized_ok_str = "#{t(:ok)}";
+        localized_cancel_str = "#{t(:cancel)}";
+        
+        bootbox.setDefaults({
+          locale: "#{I18n.locale}"
+        });
+      });

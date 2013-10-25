@@ -96,13 +96,13 @@ class EligibilityHelpers
       return []
     end
 
-    Rails.logger.info "Get eligible services"
+    Rails.logger.debug "Get eligible services"
     eligible = get_eligible_services_for_traveler(user_profile, trip)
-    Rails.logger.info "Done get eligible services, get accommodating"
+    Rails.logger.debug "Done get eligible services, get accommodating"
     accommodating = get_accommodating_services_for_traveler(user_profile)
-    Rails.logger.info "Done get accommodating"
-    Rails.logger.info eligible.ai
-    Rails.logger.info accommodating.ai
+    Rails.logger.debug "Done get accommodating"
+    Rails.logger.debug eligible.ai
+    Rails.logger.debug accommodating.ai
     eligible & accommodating
 
   end
@@ -113,11 +113,11 @@ class EligibilityHelpers
     eligible_by_advanced_notice = eligible_by_advanced_notice(planned_trip, services)
     eligible_by_trip_purpose = eligible_by_trip_purpose(planned_trip, services)
 
-    {
-      location: eligible_by_location, service_time: eligible_by_service_time,
-      advanced_notice: eligible_by_advanced_notice, purpose: eligible_by_trip_purpose
-    }.each do |k, v|
-      puts "#{k} - #{v.map(&:name)}"
+    if Rails.logger.debug?
+      {location: eligible_by_location, service_time: eligible_by_service_time,
+        advanced_notice: eligible_by_advanced_notice, purpose: eligible_by_trip_purpose}.each do |k, v|
+          Rails.logger.debug  "#{k} - #{v.map(&:name)}"
+        end
     end
 
     eligible_by_location & eligible_by_service_time & eligible_by_advanced_notice & eligible_by_trip_purpose
@@ -125,8 +125,29 @@ class EligibilityHelpers
   end
 
   def eligible_by_location(planned_trip, services)
-    #TODO: Need to filter by location (county, city, state, polygon, etc.)
-    services
+
+    eligible_services  = []
+    services.each do |service|
+      #Match Residence
+      #TODO:  Need to add home Place for each traveler
+
+      #Match Origin
+      coverages = service.service_coverage_maps.where(rule: 'origin').map {|c| c.geo_coverage.value.delete(' ').downcase}
+      county_name = planned_trip.trip.origin.county_name || ""
+      unless (coverages.count == 0) or (planned_trip.trip.origin.zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
+        next
+      end
+
+      #Match Destination
+      county_name = planned_trip.trip.destination.county_name || ""
+      coverages = service.service_coverage_maps.where(rule: 'destination').map {|c| c.geo_coverage.value.delete(' ').downcase}
+      unless (coverages.count == 0) or (planned_trip.trip.destination.zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
+        next
+      end
+
+      eligible_services << service
+    end
+    eligible_services
   end
 
   def eligible_by_trip_purpose(planned_trip, services)
@@ -194,7 +215,7 @@ class EligibilityHelpers
         return value1.to_f <= value2.to_f
       else
         return false
+      end
     end
-  end
 
-end
+  end

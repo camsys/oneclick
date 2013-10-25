@@ -1,10 +1,23 @@
 - if @target == "0"
   removeMatchingMarkers('start_');
   $('#from_place_candidates').html("#{escape_javascript(render :partial => 'alt_address_select', :locals => {:results => @matches, :type => "from"})}");
-  $('#from_place_candidates').show();
+  - if @matches.count == 1
+    select_first_candidate_address("from");
+  - else
+    create_candidate_markers("from");  
+    $('#from_place_candidates').show();
+
+  $('#from_geocoding_indicator').hide();
+  
 - else
   removeMatchingMarkers('stop_');
   $('#to_place_candidates').html("#{escape_javascript(render :partial => 'alt_address_select', :locals => {:results => @matches, :type => "to"})}");
-  $('#to_place_candidates').show();
+  - if @matches.count == 1
+    select_first_candidate_address("to");
+  - else
+    create_candidate_markers("to");  
+    $('#to_place_candidates').show();
+
+  $('#to_geocoding_indicator').hide();
 
 setMapToBounds();

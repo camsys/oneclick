@@ -55,10 +55,12 @@ en:
   decline: 'Decline'
   assist: 'Assist'
   revoke: 'Revoke'
-  hide: 'Hide'
   retract: 'Retract'
   visitor: 'Visitor'
-  
+  invalid_dob: 'Invalid date of birth'
+  to_see_best_options: 'To see the best options, tell us about yourself.'
+  skip_this_step: 'Skip this step'
+    
   spanish: 'En Español'
   error_not_implemented: "We're sorry, but this functionality has not yet been implemented."
   error_404: "The page you were looking for doesn't exist."
@@ -70,16 +72,21 @@ en:
   rating: "Rating"
   actions: "Actions"
   filter: "Filter"
-
+  edit_trip: "Edit this trip"
+  repeat_trip: "Repeat this trip."
+  remove_trip: "Remove this trip"
+  rate_trip: "Rate this trip"
+  plan_trip: "Continue planning this trip"
+  
   # Trip planning
   enter_address: 'Enter address'
   select_or_enter_address: 'Select or enter address'
   select: 'Select'
-  date: 'Date'
+  trip_date: 'Date'
   depart_at: 'Depart at'
   arrive_by: 'Arrive by'
   arrive_at: 'Arrive at'
-  time: 'Time'
+  trip_time: 'Time'
   cancel: 'Cancel'
   plan_it: 'Plan it'
   from: 'From'
@@ -87,8 +94,8 @@ en:
   at_time: 'on'
   arrive_depart: 'Arrive/Depart'
   trip_purpose: 'Purpose'
-  departing_at: 'departing at'
-  arriving_by: 'arriving by'  
+  departing_at: 'Departing At'
+  arriving_by: 'Arriving By'  
   correct_errors_to_create_a_trip: 'Please correct the errors below to create a trip.'
   trip_options: 'Trip Options'
   transit_trip: 'Transit Trip'
@@ -96,6 +103,7 @@ en:
   transit: 'Transit'
   details: 'Details'
   rideshare: 'Rideshare'
+  walk: 'Walk'
   transfer: {
     one: '%{count} transfer',
     other: '%{count} transfers',
@@ -116,7 +124,7 @@ en:
   e_mail: 'Email'
   trip_was_successfully_created: 'Trip was successfully created.'
   trip_was_successfully_removed: 'Trip was successfully removed.'
-  trip_created_no_valid_options: "Trip created, but no valid trip options could be found:"
+  trip_created_no_valid_options: "Trip created, but no valid trip options could be found."
   hour: {
     one: '%{count} h',
     other: '%{count} h',
@@ -147,6 +155,8 @@ en:
   confirm_remove_trip: 'Are you sure you want to remove this trip?'
   no_trips_found: 'You have no trips.'
   no_matching_trips_found: 'You have no matching trips.'
+  hide: 'Hide'
+  unhide_all: 'Unhide all'
 
   # My Places form
   found_x_places: {
@@ -166,8 +176,16 @@ en:
   error_updating_addresses:   'An error occured while updating your address book.'
   address_book_updated: 'Your address book has been updated.'
   confirm_remove_place: 'Are you sure you want to remove %{place_name} from your address book?'
+  profile_updated: "Your profile was updated."
 
   # new ones
+  do_you_participate:  "Do you currently participate in any of these programs?"
+  programs:  "Programs"
+  eligibility: "Eligibility"
+  accommodations: "Accommodations"
+  volunteer: "Volunteer Service"
+  nemt: "Non-Emergency Med."
+  car_service: "Car Service"
   buddy_request_sent: "Buddy request sent!"
   buddy_removed: "Buddy removed."
   http_404_not_found: "404 Not Found"
@@ -219,13 +237,89 @@ en:
   est: " (est.)"
   assisted_user_first_name_s_trips: "%{name}'s Trips"
   trip_options_information_from_from: "Trip options information from %{from}"
+  create_account: "Create an account to save your information."
 
   # General Messages
-  yes: "Yes"
-  no:  "No"
+  yes_str: "Yes"
+  no_str:  "No"
   ok: "Ok"
   cancel: "Cancel"
+  edit: "Edit"
+  delete: "Delete"
+  save: "Save"
   
+  date:
+    abbr_day_names:
+    - Sun
+    - Mon
+    - Tue
+    - Wed
+    - Thu
+    - Fri
+    - Sat
+    abbr_month_names:
+    -
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Oct
+    - Nov
+    - Dec
+    day_names:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    formats:
+      default: ! '%Y-%m-%d'
+      long: ! '%B %d, %Y'
+      short: ! '%b %d'
+      oneclick_long: ! '%A, %B %-d %Y'
+      oneclick_short: ! '%A, %B %-d'
+    month_names:
+    -
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+    order:
+    - :month
+    - :day
+    - :year
+  time:
+    am: am
+    formats:
+      default: ! '%a, %d %b %Y %I:%M:%S %p %Z'
+      long: ! '%B %d, %Y %I:%M %p'
+      short: ! '%d %b %I:%M %p'
+      oneclick_short: ! '%-I:%M %p'
+    pm: pm
+  datetime:
+    prompts:
+      day: Day
+      hour: Hour
+      minute: Minute
+      month: Month
+      second: Seconds
+      year: Year          
+
   # Branding
   arc:
     home: 'ARC 1-Click Home'

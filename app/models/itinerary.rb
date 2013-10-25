@@ -8,16 +8,30 @@ class Itinerary < ActiveRecord::Base
   belongs_to :mode
   belongs_to :service
 
-  attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden
+  attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
+    :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
+    :ride_count, :external_info
   
-  def self.get_mode_icon(mode)
-    @icon_dictionary = {'WALK' => 'travelcon-walk', 'TRAM' => 'travelcon-subway', 'SUBWAY' => 'travelcon-subway', 'RAIL' => 'travelcon-train', 'BUS' => 'travelcon-bus', 'FERRY' => 'travelcon-boat'}
-    @icon_dictionary.default = 'travelcon-bus'
-    @icon_dictionary[mode]
-  end
-
   def self.failed_trip_ids
     select('DISTINCT trip_id').where('status <> 200').order('trip_id')
+  end
+  
+  # returns true if this itinerary can be mapped
+  def is_mappable
+    return mode.name.downcase == 'transit' ? true : false
+  end
+  
+  # returns true if this itinerary is a walk-only trip. These are a special case of Transit
+  # trips that only include a WALK leg
+  def is_walk
+    legs = get_legs
+    return legs.size == 1 && legs.first.mode == TripLeg::WALK
+  end
+  
+  # parses the legs and returns an array of TripLeg. If there are no legs then an
+  # empty array is returned
+  def get_legs
+    return legs.nil? ? [] : ItineraryParser.parse(YAML.load(legs))
   end
   
   def unhide

@@ -23,6 +23,8 @@ gem 'awesome_print'
 gem 'chronic'
 gem 'mechanize'
 gem 'activemodel'
+gem 'newrelic_rpm'
+gem 'polylines'
 group :development do
   #gem 'mysql2'
   gem 'better_errors'
@@ -32,6 +34,8 @@ group :development do
   gem 'guard-cucumber'
   gem 'guard-rails'
   gem 'guard-rspec'
+  # gem 'pry-stack_explorer'
+  #gem 'pry-debugger'
   gem 'html2haml'
   gem 'quiet_assets'
   gem 'listen'
@@ -41,6 +45,7 @@ group :development do
   gem 'sextant'
   gem 'rails-erd'
   gem 'growl'
+  gem 'travis'
 end
 group :test do
   gem 'factory_girl_rails'
@@ -50,5 +55,6 @@ group :test do
   gem 'database_cleaner'
   gem 'email_spec'
   gem 'launchy'
-  gem 'coveralls', require: false  
+  gem 'coveralls', require: false
+  gem 'simplecov', require: false  
 end

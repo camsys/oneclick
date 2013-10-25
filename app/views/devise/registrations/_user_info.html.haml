@@ -1,0 +1,27 @@
+.row-fluid
+  .span12
+    = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f|
+      = f.error_notification
+      = display_base_errors resource
+      .row-fluid
+        .span6
+          = f.input :first_name, label: t(:first_name), :autofocus => true, :required => true
+          = f.input :last_name, label: t(:last_name), :required => true
+          = f.input :email, label: t(:email), :required => true
+        .span6
+          = f.input :password, label: t(:password), :autocomplete => "off", :required => false
+          = f.input :password_confirmation, label: t(:password_confirmation), :hint => t(:leave_password_blank), :required => false
+      .row-fluid
+        .span12
+          %hr
+      .row-fluid
+        .span6
+          .actions
+            = button_tag type: :submit, class: 'btn btn-primary controls' do
+              %i.icon.icon-ok
+              = t(:update_my_profile)
+            = link_to :back, :class => "cancel_link" do
+              %i.icon.icon-reply
+              = t(:cancel)
+        .span6
+          = f.input :current_password, label: t(:current_password), :hint => t(:current_password_hint), :required => true

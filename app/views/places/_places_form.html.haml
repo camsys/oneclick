@@ -11,16 +11,22 @@
 
 .row-fluid
   .span12
-    = simple_form_for @place_proxy, :url => @place_proxy.id.nil? ? user_places_path(@traveler) : user_place_path(@traveler, @place_proxy.id), :method => @place_proxy.id.nil? ? 'post' : 'put', :html => {:class => 'form-horizontal', :style => "margin-top:10px;margin-bottom:10px;"}  do |f|
+    = simple_form_for @place_proxy, :url => @place_proxy.id.nil? ? user_places_path(@traveler) : user_place_path(@traveler, @place_proxy.id), :method => @place_proxy.id.nil? ? 'post' : 'put', :html => {:style => "margin-top:10px;margin-bottom:10px;"}  do |f|
       = f.input :raw_address, :class => "inline span12", :label => t(:enter_address) do
-        = f.text_field :raw_address, :placeholder => t(:enter_address_or_place), :id => "poi_typeahead", :autocomplete => "off", :class => "ajax-typeahead", :data => {:link => search_user_places_path, :provide => "typeahead"}
-      = f.input :name, :label => t(:place_name), :placeholder => t(:new_name), :autocomplete => "off"
+        = f.text_field :raw_address, :placeholder => t(:enter_address_or_place), :disabled => ! @place_proxy.can_alter_location, :id => "place_proxy_raw_address", :autocomplete => "off", :class => "ajax-typeahead", :style => "width:300px;", :data => {:link => search_user_places_path, :provide => "typeahead"}
+        = image_tag "ajax-loader.gif", :id => "geocoding_indicator", :style => "display:none;margin-top:-9px;", :class => "loading-indicator"
+
+      = f.input :name, :label => t(:place_name), :placeholder => t(:new_name), :autocomplete => "off", :input_html => {:style => "width:300px;"}
       = f.hidden_field :place_type_id, :id => "place_type_field"
       = f.hidden_field :place_id, :id => "place_id_field"
 
       .form-actions
         = button_tag :type => 'submit', :class => "btn btn-primary" do
-          = "Save"
+          %i.icon.icon-ok
+          = @place_proxy.id.nil? ? t(:save) : t(:update)
+        = link_to :back, :class => "cancel_link" do
+          %i.icon.icon-reply
+          = t(:cancel)
 
 #select_place
   = render :partial => 'alt_address_select', :locals => {:results => [], :type => "place"}
@@ -40,14 +46,13 @@
             %em= place.address
 
 .row-fluid
-  .span12
-    .well.well-small
-      = link_to "#", :class => "btn btn-warning", :id => "delete_button" do
-        %i.icon.icon-remove
-        Delete
-      = link_to "#", :class => "btn btn-primary", :id => "edit_button" do
-        %i.icon.icon-edit
-        Edit
+  .span12{:style => "padding-top:5px"}
+    = link_to "#", :class => "btn btn-danger", :id => "delete_button" do
+      %i.icon.icon-remove
+      = t(:delete)
+    = link_to "#", :class => "btn btn-primary", :id => "edit_button" do
+      %i.icon.icon-edit
+      = t(:edit)
     
 :javascript  
   // Configure UI behaviors
@@ -125,20 +130,23 @@
   });
   
   // Add a change listener on the text field
-  $("#poi_typeahead").bind("keyup input paste", function() {
+  $("#place_proxy_raw_address").bind("keyup input paste", function() {
     $('#place_type_field').val("");
-    $('#place_id_field').val("");    
+    $('#place_id_field').val("");   
+    $('#select_place').hide();  
+    removeMatchingMarkers('place');     
   });
   
    // user has lost focus on the address input
-  $('#poi_typeahead').blur(function() {
+  $('#place_proxy_raw_address').blur(function() {
     if ($('#place_type_field').val() == "") {
       // Do an ajax query to geocode the input text
-      var addr = $('#poi_typeahead').val().trim();
+      var addr = $('#place_proxy_raw_address').val().trim();
       if (addr.length >= geocoder_min_chars) {
         $('#query').val(addr);
         $('#target').val(2);
         $('#query_form').submit();
+        $('#geocoding_indicator').show();        
       }
     }
   });
@@ -146,7 +154,7 @@
   var timeout;
   
   // Enable typeahead for the places forms
-  $('#poi_typeahead').typeahead({
+  $('#place_proxy_raw_address').typeahead({
       items: typeahead_list_length,
       minLength: typeahead_min_chars,
       source: function(query, process) {
@@ -155,7 +163,7 @@
           }
           timeout = setTimeout(function() {
             return $.ajax({
-                url: $('#poi_typeahead').data('link'),
+                url: $('#place_proxy_raw_address').data('link'),
                 type: 'get',
                 data: {
                   query: query
@@ -252,3 +260,52 @@
     var marker = createMarker(key, lat, lon, icon, desc, addr, false);
     addMarkerToMap(marker, true);
   }
+  
+  // Add the candidate locations to the map
+  function create_candidate_markers() {
+    $('.address-select').each(function() {
+      var t = $(this);
+      var id = t.data('id');
+      var index = t.data('index');
+      var type = t.data('type');
+      var addr = t.data('addr');
+      var desc = t.data('desc');
+      var latlon = eval(t.data('latlon'));
+      add_candidate_marker(index, latlon[0], latlon[1], addr, desc, type);     
+    });
+  };
+  
+  // Selects the first matching candidate in the list of alternate
+  // addresses.
+  function select_first_candidate_address() {
+    $('.address-select').each(function(idx) {
+      var candidate = $(this);
+      select_candidate_address(candidate);
+      return;
+    });
+  };
+      
+  // Select a candidate address
+  function select_candidate_address(candidate) {
+    var id = candidate.data('id');
+    var index = candidate.data('index');
+    var from_to = candidate.data('type');
+    var addr = candidate.data('addr');
+    var desc = candidate.data('desc');
+    var latlon = eval(candidate.data('latlon'));
+
+    $('#place_proxy_raw_address').val(addr);
+    $('#place_id_field').val(index);
+    $('#place_type_field').val(4);
+    $('#select_place').hide();
+   
+    var key = 'place_candidate';
+    var iconStyle = 'yellowIcon';
+    
+    // Remove any candidate markers from the map
+    removeMatchingMarkers(key);
+    // replace the markers with the end point marker
+    marker = create_or_update_marker(key, latlon[0], latlon[1], addr, desc, iconStyle);
+    setMapToBounds();
+    selectMarker(marker);
+  };

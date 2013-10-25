@@ -12,15 +12,14 @@ class TripPlanner
     date = trip_datetime.strftime("%Y-%m-%d")
     mode = 'TRANSIT,WALK'
 
-    #TODO:  Move base_url for OpenTripPlanner to a global config file.
-    base_url = "http://arc-otp-demo.camsys-apps.com"
+    base_url = Oneclick::Application.config.open_trip_planner
     url_options = "/opentripplanner-api-webapp/ws/plan?"
     url_options += "arriveBy=" + arriveBy + "&time=" + time
     url_options += "&mode=" + mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
     url = base_url + url_options
 
-    Rails.logger.info URI.parse(url)
+    Rails.logger.debug URI.parse(url)
     
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
@@ -71,10 +70,11 @@ class TripPlanner
 
   def get_taxi_itineraries(from, to, trip_datetime)
 
-    #TODO: Move the api key or url to a config
-    base_url = 'http://api.taxifarefinder.com/'
-    api_key = '?key=SIefr5akieS5'
-    entity = '&entity_handle=Atlanta'
+    base_url = "http://api.taxifarefinder.com/"
+    api_key = Oneclick::Application.config.taxi_fare_finder_api_key
+    api_key = '?key=' + api_key
+    city = Oneclick::Application.config.taxi_fare_finder_api_city
+    entity = '&entity_handle=' + city
 
     #Get fare
     task = 'fare'
@@ -134,22 +134,27 @@ class TripPlanner
   end
 
   def get_rideshare_itineraries(from, to, trip_datetime)
-    query = create_rideshare_query from, to, trip_datetime
+    query = create_rideshare_query(from, to, trip_datetime)
     resp = Mechanize.new.post(service_url, query)
     doc = Nokogiri::HTML(resp.body)
     results = doc.css('#results li div.marker.dest')
     if results.size > 0
       summary = doc.css('.summary').text
-      Rails.logger.info "Summary: #{summary}"
+      Rails.logger.debug "Summary: #{summary}"
       count = %r{(\d+) total result}.match(summary)[1]
-      return true, {'mode' => 'rideshare', 'status' => 200, 'count' => count}
+      return true, {'mode' => 'rideshare', 'status' => 200, 'count' => count, 'query' => query}
     else
       return false, {'mode' => 'rideshare', 'status' => 404, 'count' => results.size}
     end
   end
 
   def convert_rideshare_itineraries(itinerary)
-    itinerary
+    {
+      'mode' => Mode.rideshare,
+      'ride_count' => itinerary['count'],
+      'server_status' => itinerary['status'],
+      'external_info' => YAML.dump(itinerary['query'])
+    }
   end
 
 end

@@ -1,95 +1,81 @@
 %h1
   %i{class: "icon #{CsHelpers::ACTION_ICONS[:travel_profile]}"}
-  = t(:travel_profile)
+  = is_traveler ? "#{@traveler.name}'s #{t(:travel_profile)}" : t(:travel_profile) 
+
 %h4
 .tabbable
   %ul.nav.nav-tabs
-    %li.active
-      %a{href: '#tab1', data: {toggle: 'tab', id: '1'}}
-        = t(:my_information)
-    %li
-      %a{href: '#tab2', data: {toggle: 'tab', id: '2'}}
-        = t(:buddies) + " (" + current_user.delegates.count.to_s + ")"
-    %li
-      %a{href: '#tab3', data: {toggle: 'tab', id: '3'}}
-        = t(:travelers) + " (" + current_user.travelers.count.to_s + ")"
+    -# render the first 3 tabs only if the current user is operating as themselves. If they are assisting
+    -# another user then we don't render the first 3 tabs
+    - if is_traveler == false
+      %li
+        %a{href: '#tab1', data: {toggle: 'tab', id: '1'}}
+          = t(:my_information)
+      %li
+        %a{href: '#tab2', data: {toggle: 'tab', id: '2'}}
+          = t(:buddies) + " (" + current_user.delegates.count.to_s + ")"
+      %li
+        %a{href: '#tab3', data: {toggle: 'tab', id: '3'}}
+          = t(:travelers) + " (" + current_user.travelers.count.to_s + ")"
     %li
       %a{href: '#tab4', data: {toggle: 'tab'}}
-        = 'Eligibility'
+        = t(:eligibility)
     %li
       %a{href: '#tab5', data: {toggle: 'tab'}}
-        = 'Accommodations'
+        = t(:programs)
+    %li
+      %a{href: '#tab6', data: {toggle: 'tab'}}
+        = t(:accommodations)
+
+
   .tab-content
-    .tab-pane.active#tab1
-      .well
-        = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => 'form-horizontal' }) do |f|
-          = f.error_notification
-          = display_base_errors resource
-          .row-fluid
-            .span6
-              = f.input :first_name, label: t(:first_name), :autofocus => true, :required => true
-              = f.input :last_name, label: t(:last_name), :required => true
-              = f.input :email, label: t(:email), :required => true
-            .span6
-              = f.input :password, label: t(:password), :autocomplete => "off", :required => false
-              = f.input :password_confirmation, label: t(:password_confirmation), :hint => t(:leave_password_blank), :required => false
-          .row-fluid
-            .span12
-              %hr
-          .row-fluid
-            .span6
-              .actions
-                = button_tag type: :submit, class: 'btn btn-primary controls' do
-                  %i.icon.icon-ok
-                  = t(:update_my_profile)
-                = link_to :back do
-                  %i.icon.icon-reply
-                  = t(:cancel)
-            .span6
-              = f.input :current_password, label: t(:current_password), :hint => t(:current_password_hint), :required => true
-    .tab-pane#tab2
-      .well#buddies
-        = render partial: 'buddies'
-    .tab-pane#tab3
-      .well#travelers
-        = render partial: 'travelers'
+    -# render the first 3 tabs only if the current user is operating as themselves. If they are assisting
+    -# another user then we don't render the first 3 tabs
+    - if is_traveler == false
+      .tab-pane#tab1
+        .well#user_info
+          = render partial: 'user_info'
+      .tab-pane#tab2
+        .well#buddies
+          = render partial: 'buddies'
+      .tab-pane#tab3
+        .well#travelers
+          = render partial: 'travelers'
     .tab-pane#tab4
       .well#eligibility
-        = render partial: 'eligibility'
+        = render partial: 'characteristics/form',  :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id), :inline => false}
     .tab-pane#tab5
+      .well#programs
+        = render partial: 'programs/form',  :locals => {:path => user_program_path(@traveler, @user_programs_proxy.id), :inline => false}
+    .tab-pane#tab6
       .well#accommodations
-        = render partial: 'accommodations'
+        = render partial: 'accommodations/form',  :locals => {:path => user_accommodation_path(@traveler, @user_accommodations_proxy.id), :inline => false}
 
 :javascript
-  $('a#tab1').click(function(e) {
-    e.preventDefault()
-    $(this).tab('show')
-  });
-  $('a#tab2').click(function(e) {
-    e.preventDefault()
-    $(this).tab('show')
-  });
-  $('a#tab3').click(function(e) {
-    e.preventDefault()
-    $(this).tab('show')
-  });
-  $('a#tab4').click(function(e) {
-      e.preventDefault()
-      $(this).tab('show')
-  });
-  $('a#tab5').click(function(e) {
-        e.preventDefault()
-        $(this).tab('show')
-    });
-
-  // install an event handler to set the form focus when the user
-  // switches tabs
+  // UI variables
+  var settings_tab_key = "settings_tab_key";
+  
+  // Document Ready
+  $(document).ready(function() {
+    // go to the last selected tab if it exists
+    var last_tab = get_ui_key_value(settings_tab_key, null);
+    var tab_found = false;
+    if (last_tab) {
+      var elem = $('a[href=' + last_tab + ']');
+      if (elem.length > 0) {
+        tab_found = true;
+        elem.tab('show');
+      }
+    } 
+    if (tab_found == false) {
+      // set the first tab if nothing cached
+      var elem = $('a[data-toggle="tab"]').first();
+      elem.tab('show');
+    }    
+  });  
+  
+  // install an event handler to save the last viewed tab
   $('a[data-toggle="tab"]').on('shown', function (e) {
-    var id = $(e.target).data('id');
-    if (id == 1) {
-      $('#user_first_name').focus();
-    } else if (id == 2) {
-      $('#user_relationship_email').focus();    
-    }
+    set_ui_key_value(settings_tab_key, $(e.target).attr('href'));
   });
 

@@ -19,6 +19,7 @@ class HomeController < TravelerAwareController
 # {label: t(:change_my_settings), target: error_501_path, icon: ACTION_ICONS[:change_my_settings]},
 # {label: t(:help_and_support), target: error_501_path, icon: ACTION_ICONS[:help_and_support]},
 
+    render 'shared/home'
   end
 
 end

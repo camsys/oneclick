@@ -6,6 +6,70 @@ module ApplicationHelper
 
   ALPHABET = ('A'..'Z').to_a
   
+  ICON_DICTIONARY = {
+      TripLeg::WALK => 'travelcon-walk', 
+      TripLeg::TRAM => 'travelcon-subway', 
+      TripLeg::SUBWAY => 'travelcon-subway', 
+      TripLeg::RAIL => 'travelcon-train', 
+      TripLeg::BUS => 'travelcon-bus', 
+      TripLeg::FERRY => 'travelcon-boat'
+      }
+  
+  # REturns the name of the logo image based on the oneclick configuration
+  def get_logo
+    return Oneclick::Application.config.ui_logo
+  end
+  
+  # Returns a mode-specific icon
+  def get_mode_icon(mode)
+    ICON_DICTIONARY.default = 'travelcon-bus'
+    ICON_DICTIONARY[mode]
+  end
+ 
+  # Formats a line in the itinerary
+  def format_itinerary_item(&block)
+
+     # Check to see if there is any content in the block    
+    content = capture(&block)
+    if content.nil?      
+      content = "&nbsp;"
+    end
+
+    html = "<tr>"
+    html << "<td style='border-top:none;'>"
+    html << "<h4 class='itinerary-item'>"
+    
+    html << content
+
+    html << "</h4>"
+    html << "</td>"
+    html << "</tr>"
+    
+    return html.html_safe     
+  end
+  
+  # Formats a line in the itinerary
+  def format_itinerary_item_old(&block)
+
+     # Check to see if there is any content in the block    
+    content = capture(&block)
+    if content.nil?      
+      content = "<p>&nbsp;</p>"
+    end
+
+    html = "<div class='row-fluid'>"
+    html << "<div class='span12'>"
+    html << "<h4>"
+    
+    html << content
+
+    html << "</h4>"
+    html << "</div>"
+    html << "</div>"
+    
+    return html.html_safe     
+  end
+  
   # Returns a formatted string for an alternate address that includes a A,B,C, etc. designator.
   def get_candidate_list_item_image(index, type)
     if type == "0"
@@ -116,7 +180,7 @@ module ApplicationHelper
   end
 
   def format_date_time(datetime)
-    return datetime.strftime("%-I:%M %p %A, %B %-d %Y") unless datetime.nil?
+    return l datetime, :format => :long unless datetime.nil? 
   end
   
   # Standardized date formatter for the app. Use this wherever you need to display a date
@@ -127,41 +191,107 @@ module ApplicationHelper
       return ""
     end
     if date.year == Date.today.year
-      return date.strftime("%A, %B %-d") unless date.nil?
+      return l date.to_date, :format => :oneclick_short unless date.nil? 
     else
-      return date.strftime("%A, %B %-d %Y") unless date.nil?
+      return l date.to_date, :format => :oneclick_long unless date.nil? 
     end
   end
+  
   def format_time(time)
-    return time.strftime("%-I:%M") unless time.nil?
+    return l time, :format => :oneclick_short unless time.nil?
   end
 
-  def get_trip_summary_title(mode)
-    return if mode.nil?
+  # Retuens a pseudo-mode for an itineray. The pseudo-mode is used to determine
+  # the correct icon, title, and partial for an itinerary
+  def get_pseudomode_for_itinerary(itinerary)
+
+    if itinerary.is_walk
+      mode_name = 'walk'
+    elsif itinerary.mode.name.downcase == 'paratransit'
+      mode_name = itinerary.service.service_type.name.downcase
+    else
+      mode_name = itinerary.mode.name.downcase
+    end
+    return mode_name    
+  end
+  
+  # Returns the correct partial for a trip itinerary
+  def get_trip_partial(itinerary)
     
-    if mode.name.downcase == 'transit'
+    return if itinerary.nil?
+    
+    mode_name = get_pseudomode_for_itinerary(itinerary)
+
+    if mode_name == 'transit'
+      partial = 'transit_details'
+    elsif mode_name == 'paratransit'
+      partial = 'paratransit_details'
+    elsif mode_name == 'volunteer'
+      partial = 'paratransit_details'
+    elsif mode_name == 'non-emergency medical service'
+      partial = 'paratransit_details'
+    elsif mode_name == 'livery'
+      partial = 'paratransit_details'
+    elsif mode_name == 'taxi'
+      partial = 'taxi_details'
+    elsif mode_name == 'rideshare'
+      partial = 'rideshare_details'
+    elsif mode_name == 'walk'
+      partial = 'walk_details'
+    end
+    return partial    
+  end
+  
+  # Returns the correct localized title for a trip itinerary
+  def get_trip_summary_title(itinerary)
+    
+    return if itinerary.nil?
+    
+    mode_name = get_pseudomode_for_itinerary(itinerary)
+
+    if mode_name == 'transit'
       title = t(:transit)
-    elsif mode.name.downcase == 'paratransit'
+    elsif mode_name == 'paratransit'
       title = t(:paratransit)      
-    elsif mode.name.downcase == 'taxi'
+    elsif mode_name == 'volunteer'
+      title = t(:volunteer)
+    elsif mode_name == 'non-emergency medical service'
+      title = t(:nemt)
+    elsif mode_name == 'livery'
+      title = t(:car_service)
+    elsif mode_name == 'taxi'
       title = t(:taxi)      
-    elsif mode == 'rideshare'
+    elsif mode_name == 'rideshare'
       title = t(:rideshare)
+    elsif mode_name == 'walk'
+      title = t(:walk)
     end
     return title    
   end
 
-  def get_trip_summary_icon(mode) 
-    return if mode.nil?
 
-    if mode.name.downcase == 'transit'
+  # Returns the correct localized title for a trip itinerary
+  def get_trip_summary_icon(itinerary) 
+    return if itinerary.nil?
+    
+    mode_name = get_pseudomode_for_itinerary(itinerary)
+    
+    if mode_name == 'transit'
       icon_name = 'icon-bus-sign'
-    elsif mode.name.downcase == 'paratransit'
-      icon_name = 'icon-truck-sign'      
-    elsif mode.name.downcase == 'taxi'
+    elsif mode_name == 'paratransit'
+      icon_name = 'icon-truck-sign'
+    elsif mode_name == 'volunteer'
+      icon_name = 'icon-truck-sign'
+    elsif mode_name == 'non-emergency medical service'
+      icon_name = 'icon-user-md'
+    elsif mode_name == 'livery'
+      icon_name = 'icon-taxi-sign'
+    elsif mode_name == 'taxi'
       icon_name = 'icon-taxi-sign'      
-    elsif mode == 'rideshare'
+    elsif mode_name == 'rideshare'
       icon_name = 'icon-group'      
+    elsif mode_name == 'walk'
+      icon_name = 'icon-accessibility-sign'      
     end
     return icon_name
   end
@@ -186,7 +316,7 @@ module ApplicationHelper
       begin
         translate(key, options.merge({raise: true}))
       rescue Exception => e
-        # Rails.logger.info "key: #{key} not found: #{e.inspect}"
+        # Rails.logger.debug "key: #{key} not found: #{e.inspect}"
       end    
     end
   end
@@ -224,6 +354,11 @@ module ApplicationHelper
   def at_root
     (request.path == root_path) or
     (link_without_locale(request.path) == root_path)
+  end
+
+  # Allow controller to override what controller css class they want to use
+  def controller_css_class
+    controller_name
   end
 
 end

@@ -10,6 +10,7 @@ class Ability
       can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
       #can :manage, BuddyRelationship, :user_id => user.id
       can :manage, User, :id => user.id
+      can :geocode, :util
     end
 
     # Define abilities for the passed in user here. For example:

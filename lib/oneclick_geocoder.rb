@@ -6,6 +6,18 @@ class OneclickGeocoder
   include CsHelpers
 
   attr_accessor :raw_address, :results, :sensor, :bounds, :components, :errors
+
+  INCLUDED_TYPES = %w{
+    airport 
+    establishment
+    intersection 
+    natural_feature 
+    park 
+    point_of_interest
+    premise
+    route 
+    street_address 
+  }
   
   def initialize(attrs = {})
     # reset the current state
@@ -23,7 +35,7 @@ class OneclickGeocoder
   end 
   
   def reverse_geocode(lat, lon)
-    Rails.logger.info "GEOCODE #{[lat, lon]}"
+    Rails.logger.debug "GEOCODE #{[lat, lon]}"
     # reset the current state
     reset
     @raw_address = [lat, lon]
@@ -38,7 +50,7 @@ class OneclickGeocoder
   end
 
   def geocode(raw_address)
-    Rails.logger.info "GEOCODE #{raw_address}"
+    Rails.logger.debug "GEOCODE #{raw_address}"
     # reset the current state
     reset
     @raw_address = raw_address
@@ -47,7 +59,7 @@ class OneclickGeocoder
     end
     begin
       res = Geocoder.search(@raw_address, sensor: @sensor, components: @components, bounds: @bounds)
-      Rails.logger.info res.ai
+      Rails.logger.debug res.ai
       process_results(res)
     rescue Exception => e
       Rails.logger.error format_exception(e)
@@ -65,22 +77,24 @@ protected
         @results << {
           :id => i,
           :name => alt.formatted_address.split(",")[0],
-          :formatted_address => sanitize_formattted_address(alt.formatted_address),
-          :street_address => sanitize_formattted_address(alt.address),
+          :formatted_address => sanitize_formatted_address(alt.formatted_address),
+          :street_address => alt.street_address,
           :city => alt.city,
           :state => alt.state_code,
           :zip => alt.postal_code,
           :lat => alt.latitude,
-          :lon => alt.longitude
+          :lon => alt.longitude,
+          :county => alt.sub_state,
+          :raw => alt
         }
         i += 1
       end
     end    
   end    
-
+  
   # Google puts the country designator into the formatted address. We don't want this so we chomp the
   # end of the address string if the designator is there
-  def sanitize_formattted_address(addr)
+  def sanitize_formatted_address(addr)
     if addr.include?(", USA")
       return addr[0..-6]
     else
@@ -91,7 +105,7 @@ protected
   # Filters addresses returned by Google to only those we want to consider
   def is_valid(addr_types)
     addr_types.each do |addr_type|
-      if ['street_address', 'route', 'intersection', 'natural_feature', 'airport', 'park', 'point_of_interest'].include?(addr_type)
+      if INCLUDED_TYPES.include?(addr_type)
         return true
       end
     end

@@ -24,6 +24,8 @@ es:
   send_by_email: 'Enviar por correo electrónico'
 
   # Registration, sign in, profile
+  do_you_participate:  "Do you currently participate in any of these programs?"  #Not translated
+  programs:  "Programs"                                                          #Not translated
   version: 'Versión'
   home: "Inicio"
   log_in: 'Entrar'
@@ -53,6 +55,10 @@ es:
   assist: 'Asistir'
   revoke: 'Revocar'
   visitor: 'Visitante *12*'
+  invalid_dob: 'Valido Fecha de nacimiento *33*'
+  to_see_best_options: '[es] To see the best options, tell us about yourself. [/es]'
+  skip_this_step: '[es] Skip this step [/es]'
+
 
   spanish: 'En Español'
   error_not_implemented: 'Lo sentimos, pero esta funcionalidad aún no se ha implementado.'
@@ -65,16 +71,21 @@ es:
   rating: "Clasificacion *7*"
   actions: "Acciones *8*"
   filter: "Filtrar *9*"
+  edit_trip: "Editar este viaje *40*"
+  repeat_trip: "Repita este viaje *41*."
+  remove_trip: "Eliminar este viaje *42*"
+  rate_trip: "Valorar este viaje *43*"
+  plan_trip: "Continuar la planificación de este viaje *44*"
 
   # Trip planning
   enter_address: 'Introduce la dirección'
   select_or_enter_address: 'Selecciona o introduce la dirección '
   select: 'Seleccionar'
-  date: 'Fecha'
+  trip_date: 'Fecha'
   depart_at: 'Salir a las'
   arrive_by: 'Llegar a las'
   arrive_at: 'Llegar a'
-  time: 'Hora'
+  trip_time: 'Hora'
   cancel: 'Cancelar'
   plan_it: 'Planear el viaje'
   from: 'De'
@@ -82,8 +93,8 @@ es:
   at_time: 'en'  
   arrive_depart: 'Llegada/Salida *1*'
   trip_purpose: 'Proposito *2*'
-  departing_at: 'con salida a las *3*'
-  arriving_by: 'que lleguen en *4*'
+  departing_at: 'Con salida a las *3*'
+  arriving_by: 'Que lleguen en *4*'
   correct_errors_to_create_a_trip: 'Por favor corrige los errores señalados para crear un viaje.'
   trip_options: 'Opciones de Viaje'
   transit_trip: 'Transit Trip'
@@ -91,6 +102,7 @@ es:
   transit: 'Transporte Público'
   details: 'Detalles'
   rideshare: 'Para Compartir el Viaje'
+  walk: 'Caminar'  
   transfer: {
       one: '%{count} conección',
       other: '%{count} conecciones',
@@ -111,7 +123,7 @@ es:
   e_mail: ' Correo electrónico'
   trip_was_successfully_created: 'El viaje fue creado exitosamente.'
   trip_was_successfully_removed: 'El viaje fue eliminada afortunada. *25*'  
-  trip_created_no_valid_options: "El viaje fue creado, pero no se encontraron opciones válidas de viaje:"
+  trip_created_no_valid_options: "El viaje fue creado, pero no se encontraron opciones válidas de viaje."
   hour: {
     one: '%{count} h',
     other: '%{count} h',
@@ -142,6 +154,8 @@ es:
   confirm_remove_trip: '¿Está seguro que desea eliminar este viaje? *23*'
   no_trips_found: 'No tiene excursiones. *26*'
   no_matching_trips_found: 'Usted no tiene que emparejan viajes. *27*'
+  hide: 'Ocultar *31*'
+  unhide_all: 'Volver a mostrar todos *32*'
 
   # My Places form
   found_x_places: {
@@ -161,8 +175,14 @@ es:
   error_updating_addresses:   'Si produjo un error al acutalizar la libreta de direcciones. *20*'
   address_book_updated: 'Su libreta de direcciones se ha acualizado. *21*'
   confirm_remove_place: 'Esta seguro que desea eliminar %{place_name} de su libreta de direcciones? *22*'
-  
+  profile_updated: "Su perfil ha sido actualizado. *37*"
+
   # new ones
+  eligibility: "[es]Eligibility[/es]"
+  accommodations: "[es]Accommodations[/es]"  
+  volunteer: "[es]Volunteer Service[/es]"
+  nemt: "[es]Non-Emergency Med.[/es]"
+  car_service: "[es]Car Service[/es]"
   buddy_request_sent: "¡Solicitud de amigo enviada!"
   buddy_removed: "Amigo eliminado."
   http_404_not_found: "404 No Fue Encontrado"
@@ -214,12 +234,16 @@ es:
   est: " (est.)"
   assisted_user_first_name_s_trips: "Viajes de %{name}"
   trip_options_information_from_from: "Información de opciones de viaje de #{@from}"
+  create_account: "[es] Create an account to save your information [\es]"
   
   # General Messages
-  yes: "Sí"
-  no:  "Not"
+  yes_str: "Sí"
+  no_str:  "Not"
   ok: "Ok"
   cancel: "Cancelar"
+  edit: "Editar *30*"
+  delete: "Borrar *31*"
+  save: "Guardar *32*"
 
   # Branding
   arc:
@@ -249,6 +273,79 @@ es:
   #     user:
   #       first_name: 'Nombre'
 
+  
+  date:
+    abbr_day_names:
+    - Dom
+    - Lun
+    - Mar
+    - Mié
+    - Jue
+    - Vie
+    - Sáb
+    abbr_month_names:
+    -
+    - Ene
+    - Feb
+    - Mar
+    - Abr
+    - May
+    - Jun
+    - Jul
+    - Ago
+    - Sep
+    - Oct
+    - Nov
+    - Dic
+    day_names:
+    - Domingo
+    - Lunes
+    - Martes
+    - Miércoles
+    - Jueves
+    - Viernes
+    - Sábado
+    formats:
+      default: ! '%d/%m/%Y'
+      long: ! '%d de %B de %Y'
+      short: ! '%d de %b'
+      oneclick_long: ! '%A, %B %-d %Y'
+      oneclick_short: ! '%A, %B %-d'      
+    month_names:
+    -
+    - Enero
+    - Febrero
+    - Marzo
+    - Abril
+    - Mayo
+    - Junio
+    - Julio
+    - Agosto
+    - Septiembre
+    - Octubre
+    - Noviembre
+    - Diciembre
+    order:
+    - :day
+    - :month
+    - :year
+  time:
+    am: am
+    formats:
+      default: ! '%A, %d de %B de %Y %H:%M:%S %z'
+      long: ! '%d de %B de %Y %H:%M'
+      short: ! '%d de %b %H:%M'
+      oneclick_short: ! '%-I:%M %p'
+    pm: pm    
+  datetime:
+    prompts:
+      day: Día
+      hour: Hora
+      minute: Minutos
+      month: Mes
+      second: Segundos
+      year: Año
+          
   activerecord:
     errors:
       models:

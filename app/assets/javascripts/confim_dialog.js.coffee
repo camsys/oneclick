@@ -10,7 +10,7 @@ window.oneclickConfirmBox = (message, callback) ->
       },
       success: {
         label: "Ok",
-        className: "btn-warning",
+        className: "btn-danger",
         callback: callback
       }
     }
@@ -34,7 +34,7 @@ $.rails.allowAction = (element) ->
     # We don't want to pop up another confirmation (recursion)
     .removeAttr('data-confirm')
     # We want a button
-    .addClass('btn').addClass('btn-warning')
+    .addClass('btn').addClass('btn-danger')
     # We want it to sound confirmy
     .html(yes_message)
 
