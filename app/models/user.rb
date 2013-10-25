@@ -22,8 +22,10 @@ class User < ActiveRecord::Base
   # relationships
   has_many :delegate_relationships, :class_name => 'UserRelationship', :foreign_key => :user_id
   has_many :traveler_relationships, :class_name => 'UserRelationship', :foreign_key => :delegate_id
+  has_many :confirmed_traveler_relationships, :class_name => 'UserRelationship', :foreign_key => :delegate_id
   has_many :delegates, :class_name => 'User', :through => :delegate_relationships
   has_many :travelers, :class_name => 'User', :through => :traveler_relationships
+  has_many :confirmed_travelers, :class_name => 'User', :through => :confirmed_traveler_relationships
 
   # Validations
   validates :email, :presence => true

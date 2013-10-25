@@ -7,6 +7,7 @@ class UserRelationship < ActiveRecord::Base
   belongs_to :relationship_status
   belongs_to :traveler, :class_name => 'User', :foreign_key => 'user_id'
   belongs_to :delegate, :class_name => 'User'
+  belongs_to :confirmed_traveler, :class_name => 'User', :foreign_key => 'user_id', :conditions => 'relationship_status_id = 3'
 
   default_scope where('relationship_status_id < ?', RelationshipStatus::HIDDEN)
   
