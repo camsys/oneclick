@@ -7,13 +7,30 @@
 .row-fluid
   %ul.thumbnails
     - @reports.each do |report|
-      %li.trip_summary.thumbnail.box-shadow
-        = render :partial => 'thumbnail', :locals => { :report => report }
+      %li.trip_summary.thumbnail.actionbutton.shadow{:style => 'display:relative;'}
+        .dialog-title-bar.corner-top{:data => {:action => admin_report_path(report)}}
+          .row-fluid
+            .span12
+              %h3.dialog-title{:style => "margin:0px;vertical-align:top;"}
+                %i.icon-bar-chart.icon.icon-2x
+                = report.name
+            
+        .dialog-content{:style => 'padding-left: 10px; padding-right:10px', :data => {:action => admin_report_path(report)}}
+          .row-fluid
+            .span12
+              %p= report.description
   
 
 :javascript
   $(document).ready(function() {
     fix_thumbnails();
+
+    // Enable the quick links
+    $('[data-action]').click(function() {
+      var url = $(this).data('action');
+      nav_to_url(url);
+    });
+    
   });
   
   $(window).resize(function() {
@@ -25,6 +42,5 @@
     $(".thumbnail").css('overflow', '');
     var window_width = $(window).width();
     adjust_thumbnails(window_width);
+    make_same_height('.dialog-content', 0, 100);
   };
-  
-  make_same_height('.thumbnail');

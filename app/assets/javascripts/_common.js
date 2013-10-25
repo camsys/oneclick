@@ -65,6 +65,9 @@ function remove_messages() {
 	$('.alert').alert('close');
 };
 
+function nav_to_url(url) {
+  document.location.href = url;	
+}
 
 function click_to_nav(url) {
   alert('Deprecated. Please use event handler!');
@@ -74,8 +77,13 @@ function click_to_nav(url) {
 
 // Finds all the class elements on a page and sets the min-height css variable
 // to the maximum height of all the containers
-function make_same_height(class_name, buffer) {
+function make_same_height(class_name, buffer, max_height) {
 
+	// See if a max height is set
+	if (max_height) {
+    	$(class_name).css('height', max_height);	
+    	return;	
+	}
     // remove any existing height attributes
     $(class_name).css('height', '');
 
