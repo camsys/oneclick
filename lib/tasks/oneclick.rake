@@ -11,6 +11,29 @@ namespace :oneclick do
     end
   end
 
+  task :update_reports => :environment do
+    reports = [
+      {name: 'Trips Created', description: 'Displays a chart showing the number of trips created each day.', view_name: 'generic_report', class_name: 'TripsCreatedByDayReport', active: 1}, 
+      {name: 'Trips Scheduled', description: 'Displays a chart showing the number of trips scheduled for each day.', view_name: 'generic_report', class_name: 'TripsScheduledByDayReport', active: 1}, 
+      {name: 'Failed Trips', description: 'Displays a report describing the trips that failed.', view_name: 'trips_report', class_name: 'InvalidTripsReport', active: 1}, 
+      {name: 'Rejected Trips', description: 'Displays a report showing trips that were rejected by a user.', view_name: 'trips_report', class_name: 'RejectedTripsReport', active: 1} 
+    ]
+    
+    # Delete existing POIs by truncating the tables
+    %w{reports}.each do |table_name|
+      puts "Truncating table #{table_name}"
+      ActiveRecord::Base.connection.execute("TRUNCATE TABLE #{table_name}")
+    end
+    
+    # load the reports
+    reports.each do |rep|
+      r = Report.new(rep)
+      puts "Loading report #{r.name}"
+      r.save!
+    end
+
+  end
+
   task arc_poi: :environment do
     require 'csv'
 
