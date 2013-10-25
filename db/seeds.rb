@@ -174,6 +174,13 @@ end
       name: 'Age', 
       note: "What is the traveler's age?", 
       datatype: 'integer')
+    walk_distance = TravelerCharacteristic.create(
+      characteristic_type: 'personal_factor', 
+      code: 'walk_distance', 
+      name: 'Walk distance', 
+      note: 'Are you able to comfortably walk for 5, 10, 15, 20, 25, 30 minutes?', 
+      datatype: 'disabled')
+    
 
 #Traveler accommodations
     folding_wheelchair_accessible = TravelerAccommodation.create(
