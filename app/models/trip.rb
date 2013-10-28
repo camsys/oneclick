@@ -55,7 +55,7 @@ class Trip < ActiveRecord::Base
     if trip_part.scheduled_date == now.to_date
       # Check just the times, independent of the time zone
       t1 = trip_part.scheduled_time.strftime("%H:%M")
-      t2 = now.strftime("%H:%M")
+      t2 = now.in_time_zone.strftime("%H:%M")
       puts "t1 = #{t1}, t2 = #{t2}"
       return t1 > t2 ? true : false
     else
