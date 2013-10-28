@@ -32,7 +32,7 @@
       = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "ajax-typeahead input-large", :data => {:link => search_user_trips_path, :provide => "typeahead"}
       = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
-  #from_place_candidates
+  #from_place_candidates{:style => "display:none;"}
     = render :partial => 'alt_address_select', :locals => {:results => [], :type => "from"}
 
   - if user_signed_in?
@@ -54,7 +54,7 @@
       = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :class => "ajax-typeahead input-large", :autocomplete => "off", :data => {:link => search_user_trips_path, :provide => "typeahead"} 
       = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
-  #to_place_candidates
+  #to_place_candidates{:style => "display:none;"}
     = render :partial => 'alt_address_select', :locals => {:results => [], :type => "to"}
 
   = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do

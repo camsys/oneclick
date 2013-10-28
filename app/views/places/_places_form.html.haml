@@ -28,7 +28,7 @@
           %i.icon.icon-reply
           = t(:cancel)
 
-#select_place
+#select_place{:style => "display:none;"}
   = render :partial => 'alt_address_select', :locals => {:results => [], :type => "place"}
       
 .row-fluid
