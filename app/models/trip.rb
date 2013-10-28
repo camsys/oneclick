@@ -17,7 +17,7 @@ class Trip < ActiveRecord::Base
     
   # Returns a set of trips that are scheduled between the start and end time
   def self.scheduled_between(start_time, end_time)
-    joins(:trip_parts).where("trip_parts.scheduled_date >= ? AND trip_parts.scheduled_date <= ?", start_time.to_date, end_time.to_date).order('scheduled_date DESC, scheduled_time DESC').uniq
+    joins(:trip_parts).where("trip_parts.scheduled_date >= ? AND trip_parts.scheduled_date <= ?", start_time.to_date, end_time.to_date).order('trip_parts.scheduled_date DESC, trip_parts.scheduled_time DESC').uniq
   end
   
   # Returns an array of Trips that have at least one valid itinerary but all
