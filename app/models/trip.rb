@@ -19,7 +19,11 @@ class Trip < ActiveRecord::Base
   def self.scheduled_between(start_time, end_time)
     # cant do a sorted join here as PG grumbles so doing an in-memory sort on the trips that are returned. The reverse is because we want to order
     # from newest to oldest
-    joins(:trip_parts).where("trip_parts.scheduled_date >= ? AND trip_parts.scheduled_date <= ?", start_time.to_date, end_time.to_date).uniq.sort_by {|x| x.trip_datetime }.reverse
+    start_time_only = start_time.strftime("%H:%M")
+    end_time_only   = end_time.strftime("%H:%M")
+
+    joins(:trip_parts).where("is_return_trip = ? AND trip_parts.scheduled_date >= ? AND trip_parts.scheduled_date <= ? AND trip_parts.scheduled_time >= ? AND trip_parts.scheduled_time <= ?", 
+      false, start_time.to_date, end_time.to_date, start_time_only, end_time_only).uniq.sort_by {|x| x.trip_datetime }.reverse
   end
   
   # Returns an array of Trips that have at least one valid itinerary but all
@@ -48,7 +52,7 @@ class Trip < ActiveRecord::Base
     
     # First check the days to see of they are equal
     if trip_part.scheduled_date == now.to_date
-      # Cheack just the times, independent of the time zone
+      # Check just the times, independent of the time zone
       t1 = trip_part.scheduled_time.strftime("%H:%M")
       t2 = now.strftime("%H:%M")
       return t1 > t2 ? true : false
@@ -90,7 +94,7 @@ class Trip < ActiveRecord::Base
     if trip_parts.empty?
       return true
     else
-      return trip_parts.first.in_the_future
+      return in_the_future
     end
   end
   
