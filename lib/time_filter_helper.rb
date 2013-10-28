@@ -47,8 +47,12 @@ class TimeFilterHelper
     # If we are filtering on all trips then we need to determine the first and last created trip in the
     # database    
     if filter[:id] == ALL_TRIPS_FILTER
-      start_time = Trip.find(:first, :order => "created_at ASC").created_at
-      end_time = TripPart.find(:first, :order => "scheduled_date DESC, scheduled_time DESC").trip_time
+      if Trip.count > 0
+        start_time = Trip.find(:first, :order => "created_at ASC").created_at
+        end_time = TripPart.find(:first, :order => "scheduled_date DESC, scheduled_time DESC").trip_time
+      else
+        start_time = end_time = Time.now
+      end
     else
       start_time = get_parsed_time(filter[:parse_text_start], filter[:start_filter_type], true)    
       end_time = get_parsed_time(filter[:parse_text_end], filter[:end_filter_type], false)
