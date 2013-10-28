@@ -39,10 +39,23 @@ class Trip < ActiveRecord::Base
     trip_parts.first.trip_time
   end
   
-  # returns true if the trip is scheduled in advance of
-  # the current or passed in date
+  # returns true if the trip is scheduled in advance of the current or passed in date and time.
   def in_the_future(now=Time.now)
-    trip_datetime > now
+    trip_part = trip_parts.first
+    if trip_part.nil?
+      return false
+    end
+    
+    # First check the days to see of they are equal
+    if trip_part.scheduled_date == now.to_date
+      # Cheack just the times, independent of the time zone
+      t1 = trip_part.scheduled_time.strftime("%H:%M")
+      t2 = now.strftime("%H:%M")
+      return t1 > t2 ? true : false
+    else
+      # Ok, days are not equal so return tru is the trip is in the future
+      return trip_part.scheduled_date > now.to_date 
+    end
   end
   
   def create_itineraries
