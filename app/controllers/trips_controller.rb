@@ -42,7 +42,7 @@ class TripsController < PlaceSearchingController
       @trips = @traveler.trips.scheduled_between(duration.first, duration.last)
     else
       # the filter is a trip purpose
-      @trips = @traveler.trips.where('trip_purpose_id = ?', @time_filter_type)
+      @trips = @traveler.trips.where('trip_purpose_id = ?', @time_filter_type).sort_by {|x| x.trip_datetime }.reverse
     end
 
     respond_to do |format|
