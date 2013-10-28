@@ -17,7 +17,9 @@ class Trip < ActiveRecord::Base
     
   # Returns a set of trips that are scheduled between the start and end time
   def self.scheduled_between(start_time, end_time)
-    joins(:trip_parts).where("trip_parts.scheduled_date >= ? AND trip_parts.scheduled_date <= ?", start_time.to_date, end_time.to_date).order('trip_parts.scheduled_date DESC, trip_parts.scheduled_time DESC').uniq
+    # cant do a sorted join here as PG grumbles so doing an in-memory sort on the trips that are returned. The reverse is because we want to order
+    # from newest to oldest
+    joins(:trip_parts).where("trip_parts.scheduled_date >= ? AND trip_parts.scheduled_date <= ?", start_time.to_date, end_time.to_date).uniq.sort_by {|x| x.trip_datetime }.reverse
   end
   
   # Returns an array of Trips that have at least one valid itinerary but all
