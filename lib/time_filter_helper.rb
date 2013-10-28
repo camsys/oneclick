@@ -48,7 +48,7 @@ class TimeFilterHelper
     # database    
     if filter[:id] == ALL_TRIPS_FILTER
       start_time = Trip.find(:first, :order => "created_at ASC").created_at
-      end_time = TripPart.find(:first, :order => "trip_time DESC").trip_time
+      end_time = TripPart.find(:first, :order => "scheduled_date DESC, scheduled_time DESC").trip_time
     else
       start_time = get_parsed_time(filter[:parse_text_start], filter[:start_filter_type], true)    
       end_time = get_parsed_time(filter[:parse_text_end], filter[:end_filter_type], false)

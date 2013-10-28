@@ -11,8 +11,9 @@ class TripPart < ActiveRecord::Base
 
   # Ordering of trip parts within a trip. 0 based
   attr_accessible :sequence
-  # date and time that the trip part is scheduled for
-  attr_accessible :trip_time
+  # date and time that the trip part is scheduled for stored as a string
+  attr_accessible :scheduled_date, :scheduled_time
+  
   # true if the trip_time refers to the deaperture time at the origin. False
   # if it is arrival at the destination
   attr_accessible :is_depart
@@ -23,28 +24,23 @@ class TripPart < ActiveRecord::Base
   scope :created_between, lambda {|from_time, to_time| where("trip_parts.created_at > ? AND trip_parts.created_at < ?", from_time, to_time).order("trip_parts.trip_time DESC") }
   scope :scheduled_between, lambda {|from_time, to_time| where("trip_parts.trip_time > ? AND trip_parts.trip_time < ?", from_time, to_time).order("trip_parts.trip_time DESC") }
  
-  # Returns an array of PlannedTrip that have at least one valid itinerary but all
+  # Converts the string valued trip date and time into a date time object
+  def trip_time
+    DateTime.new(scheduled_date.year, scheduled_date.month, scheduled_date.day, scheduled_time.hour, scheduled_time.min)
+  end
+  
+  # Returns an array of TripPart that have at least one valid itinerary but all
   # of them have been hidden by the user
   def self.rejected
     joins(:itineraries).where('server_status=200 AND hidden=true')
   end
   
-  # Returns an array of PlannedTrip where no valid options were generated
+  # Returns an array of TripPart where no valid options were generated
   def self.failed
     joins(:itineraries).where('server_status <> 200')
   end
-  
-  # Returns a numeric rating score for the trip
-  def rating
-    if in_the_future
-      return nil
-    else
-      #TODO replace this with actual rating
-      return rand(1..5)
-    end
-  end
-  
-  # returns true if the planned trip is scheduled in advance of
+    
+  # returns true if the trip part is scheduled in advance of
   # the current or passed in date
   def in_the_future(now=Time.now)
     trip_time > now

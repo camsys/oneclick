@@ -547,15 +547,15 @@ private
     trip_proxy.trip_purpose_id = trip.trip_purpose.id
 
     trip_proxy.arrive_depart = trip_part.is_depart
-    trip_datetime = trip_part.trip_time.in_time_zone
-    trip_proxy.trip_date = trip_datetime.strftime(TRIP_DATE_FORMAT_STRING)
-    trip_proxy.trip_time = trip_datetime.strftime(TRIP_TIME_FORMAT_STRING)
+    trip_datetime = trip_part.trip_time
+    trip_proxy.trip_date = trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
+    trip_proxy.trip_time = trip_part.scheduled_time.strftime(TRIP_TIME_FORMAT_STRING)
     
     # Check for return trips
     if trip.trip_parts.count > 1
       last_trip_part = trip.trip_parts.last
       trip_proxy.is_round_trip = last_trip_part.is_return_trip ? "1" : "0"
-      trip_proxy.return_trip_time = last_trip_part.trip_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
+      trip_proxy.return_trip_time = last_trip_part.scheduled_time.strftime(TRIP_TIME_FORMAT_STRING)
     end
     
     # Set the from place
@@ -648,18 +648,21 @@ private
     trip.trip_places << from_place
     trip.trip_places << to_place
 
-    # Create the trip aprts. For now we only have at most two but there could be more
+    # Create the trip parts. For now we only have at most two but there could be more
     # in later versions
     
     # set the sequence counter for when we have multiple trip parts
     sequence = 0
+
+    trip_date = Date.strptime(trip_proxy.trip_date, '%m/%d/%Y')
     
     # Create the outbound trip part
     trip_part = TripPart.new
     trip_part.trip = trip
     trip_part.sequence = sequence
     trip_part.is_depart = trip_proxy.arrive_depart == t(:departing_at) ? true : false
-    trip_part.trip_time = trip_proxy.trip_datetime
+    trip_part.scheduled_date = trip_date
+    trip_part.scheduled_time = trip_proxy.trip_time
     trip_part.from_trip_place = from_place
     trip_part.to_trip_place = to_place
     
@@ -675,7 +678,8 @@ private
       trip_part.is_depart = true
       # the return trip time is the arrival time plus
       trip_part.is_return_trip = true
-      trip_part.trip_time = trip_proxy.return_trip_datetime
+      trip_part.scheduled_date = trip_date
+      trip_part.scheduled_time = trip_proxy.return_trip_time
       trip_part.from_trip_place = to_place
       trip_part.to_trip_place = from_place      
 

@@ -195,7 +195,7 @@ class EligibilityHelpers
   end
 
   def eligible_by_advanced_notice(trip_part, services)
-    advanced_notice = (trip_part.trip_time - trip_part.created_at)/60
+    advanced_notice = (trip_part.trip_time.to_time - trip_part.created_at)/60
     within_notice_period = Service.where('advanced_notice_minutes < ?', advanced_notice)
 
     services & within_notice_period
