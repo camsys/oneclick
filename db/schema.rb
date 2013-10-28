@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131021122314) do
+ActiveRecord::Schema.define(:version => 20131028142704) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -75,16 +75,6 @@ ActiveRecord::Schema.define(:version => 20131021122314) do
     t.datetime "created_at",                                   :null => false
     t.datetime "updated_at",                                   :null => false
     t.string   "county",      :limit => 128
-  end
-
-  create_table "planned_trips", :force => true do |t|
-    t.integer  "trip_id",        :null => false
-    t.integer  "creator_id"
-    t.boolean  "is_depart",      :null => false
-    t.datetime "trip_datetime",  :null => false
-    t.integer  "trip_status_id", :null => false
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
   end
 
   create_table "poi_types", :force => true do |t|
@@ -236,7 +226,8 @@ ActiveRecord::Schema.define(:version => 20131021122314) do
     t.integer  "from_trip_place_id",                    :null => false
     t.integer  "to_trip_place_id",                      :null => false
     t.integer  "sequence",                              :null => false
-    t.datetime "trip_time",                             :null => false
+    t.date     "scheduled_date"
+    t.time     "scheduled_time"
     t.boolean  "is_depart",          :default => false
     t.boolean  "is_return_trip",     :default => false
     t.datetime "created_at",                            :null => false
