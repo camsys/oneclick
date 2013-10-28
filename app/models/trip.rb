@@ -17,18 +17,18 @@ class Trip < ActiveRecord::Base
     
   # Returns a set of trips that are scheduled between the start and end time
   def self.scheduled_between(start_time, end_time)
-    joins(:trip_parts).where("trip_parts.trip_time > ? AND trip_parts.trip_time < ?", start_time, end_time).uniq
+    joins(:trip_parts).where("trip_parts.trip_time > ? AND trip_parts.trip_time < ?", start_time, end_time).order('trip_time DESC').uniq
   end
   
   # Returns an array of Trips that have at least one valid itinerary but all
   # of them have been hidden by the user
   def self.rejected
-    joins(:itineraries).where('server_status=200 AND hidden=true')
+    joins(:itineraries).where('server_status=200 AND hidden=true').uniq
   end
   
   # Returns an array of PlannedTrip where no valid options were generated
   def self.failed
-    joins(:itineraries).where('server_status <> 200')
+    joins(:itineraries).where('server_status <> 200').uniq
   end
   
   # Returns the date time for the outbound leg of the trip. This is synonymous with the 
