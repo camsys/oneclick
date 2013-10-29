@@ -146,7 +146,6 @@ class TripPlanner
     agent.read_timeout = MAX_READ_TIMEOUT    
     
     begin
-      agent.read_timeout=2  #set the agent time out
       page = agent.post(service_url, query)
       doc = Nokogiri::HTML(page.body)
       results = doc.css('#results li div.marker.dest')
