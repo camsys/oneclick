@@ -48,10 +48,10 @@ class TimeFilterHelper
     # database    
     if filter[:id] == ALL_TRIPS_FILTER
       if Trip.count > 0
-        start_time = Trip.find(:first, :order => "created_at ASC").created_at
-        end_time = TripPart.find(:first, :order => "scheduled_date DESC, scheduled_time DESC").trip_time
+        start_time = Trip.find(:first, :order => "created_at ASC").created_at.beginning_of_day
+        end_time = TripPart.find(:first, :order => "scheduled_date DESC").trip_time.end_of_day
       else
-        start_time = end_time = Time.now
+        start_time = end_time = Time.zone.now
       end
     else
       start_time = get_parsed_time(filter[:parse_text_start], filter[:start_filter_type], true)    

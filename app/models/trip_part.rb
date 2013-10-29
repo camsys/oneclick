@@ -14,6 +14,7 @@ class TripPart < ActiveRecord::Base
   # date and time that the trip part is scheduled for stored as a string
   attr_accessible :scheduled_date, :scheduled_time
   
+  
   # true if the trip_time refers to the deaperture time at the origin. False
   # if it is arrival at the destination
   attr_accessible :is_depart
@@ -22,9 +23,9 @@ class TripPart < ActiveRecord::Base
  
   # Scopes
   scope :created_between, lambda {|from_time, to_time| where("trip_parts.created_at > ? AND trip_parts.created_at < ?", from_time, to_time).order("trip_parts.trip_time DESC") }
-  scope :scheduled_between, lambda {|from_time, to_time| where("trip_parts.trip_time > ? AND trip_parts.trip_time < ?", from_time, to_time).order("trip_parts.trip_time DESC") }
+  #scope :scheduled_between, lambda {|from_time, to_time| where("trip_parts.trip_time > ? AND trip_parts.trip_time < ?", from_time, to_time).order("trip_parts.trip_time DESC") }
  
-  # Converts the string valued trip date and time into a date time object
+  # Converts the trip date and time into a date time object
   def trip_time
     DateTime.new(scheduled_date.year, scheduled_date.month, scheduled_date.day, scheduled_time.hour, scheduled_time.min)
   end
@@ -46,6 +47,8 @@ class TripPart < ActiveRecord::Base
     trip_time > now
   end
   
+  # Generates itineraries for this trip part. Any existing itineraries should have been removed
+  # before this method is called.
   def create_itineraries
     create_fixed_route_itineraries
     create_taxi_itineraries
@@ -53,7 +56,7 @@ class TripPart < ActiveRecord::Base
     create_rideshare_itineraries
   end
 
-  # TODO refactor following 3 methods
+  # TODO refactor following 4 methods
   def create_fixed_route_itineraries
     tp = TripPlanner.new
     arrive_by = !is_depart
