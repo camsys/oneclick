@@ -43,3 +43,5 @@ Oneclick::Application.config.address_cache_expire_seconds = 3600 # seconds to ke
 Oneclick::Application.config.return_trip_delay_mins = 120   # minutes needed at last trip place before scheduling the return trip
 Oneclick::Application.config.trip_time_ahead_mins = 30      # minutes ahead of now to default the start time to for new trips
 
+Oneclick::Application.config.remote_read_timeout_seconds = 5    # seconds to wait before timing out reading a page through a web request
+Oneclick::Application.config.remote_request_timeout_seconds = 5 # seconds to wait for a remote web site/api to respond to a request
