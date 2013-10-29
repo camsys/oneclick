@@ -68,18 +68,18 @@ class TimeFilterHelper
     parsed_time = Chronic.parse(str)
     
     if filter_type == TIME_FILTER
-      return parsed_time  
+      return parsed_time.in_time_zone  
     elsif filter_type == DAY_FILTER
       if is_start
-        return parsed_time.beginning_of_day
+        return parsed_time.in_time_zone.beginning_of_day
       else
-        return parsed_time.to_date.end_of_day
+        return parsed_time.in_time_zone.to_date.end_of_day
       end
     elsif filter_type == MONTH_FILTER
       if is_start
-        return parsed_time.beginning_of_month
+        return parsed_time.in_time_zone.beginning_of_month
       else
-        return parsed_time.end_of_month
+        return parsed_time.in_time_zone.end_of_month
       end
     end
   end
