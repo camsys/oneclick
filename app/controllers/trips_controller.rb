@@ -368,9 +368,7 @@ class TripsController < PlaceSearchingController
           @trip.reload
           # @trip.restore_trip_places_georaw
           if @traveler.user_profile.has_characteristics? and user_signed_in?
-            @trip.trip_parts.each do |trip_part|
-              trip_part.create_itineraries
-            end
+            @trip.create_itineraries
             @path = user_trip_path(@traveler, @trip)
           else
             session[:current_trip_id] = @trip.id

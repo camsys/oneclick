@@ -60,7 +60,7 @@ class TripPart < ActiveRecord::Base
   def create_fixed_route_itineraries
     tp = TripPlanner.new
     arrive_by = !is_depart
-    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time.in_time_zone, arrive_by.to_s)
+    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s)
     if result
       tp.convert_itineraries(response).each do |itinerary|
         itineraries << Itinerary.new(itinerary)
@@ -72,7 +72,7 @@ class TripPart < ActiveRecord::Base
 
   def create_taxi_itineraries
     tp = TripPlanner.new
-    result, response = tp.get_taxi_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time.in_time_zone)
+    result, response = tp.get_taxi_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time)
     if result
       itinerary = tp.convert_taxi_itineraries(response)
       self.itineraries << Itinerary.new(itinerary)
@@ -98,7 +98,7 @@ class TripPart < ActiveRecord::Base
     trip.restore_trip_places_georaw
     Rails.logger.info "create_rideshare_itineraries"
     Rails.logger.info trip.trip_places.collect {|trp| trp.raw}
-    result, response = tp.get_rideshare_itineraries(from_trip_place, to_trip_place, trip_time.in_time_zone)
+    result, response = tp.get_rideshare_itineraries(from_trip_place, to_trip_place, trip_time)
     if result
       itinerary = tp.convert_rideshare_itineraries(response)
       self.itineraries << Itinerary.new(itinerary)
