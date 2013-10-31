@@ -15,7 +15,7 @@ when 'arc'
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Atlanta"
 when 'broward'  
-  Oneclick::Application.config.ui_logo = 'broward/bclogo.gif'
+  Oneclick::Application.config.ui_logo = 'broward/Broward_211_Get_Connected_get_answers.jpg'
   Oneclick::Application.config.geocoder_components = 'administrative_area:FL|country:US'
   Oneclick::Application.config.map_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
   Oneclick::Application.config.geocoder_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]

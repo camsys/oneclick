@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131024150514) do
+ActiveRecord::Schema.define(:version => 20131031195951) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(:version => 20131024150514) do
 
   create_table "pois", :force => true do |t|
     t.integer  "poi_type_id",                :null => false
-    t.string   "name",        :limit => 64,  :null => false
+    t.string   "name",        :limit => 256, :null => false
     t.string   "address1",    :limit => 128
     t.string   "address2",    :limit => 128
     t.string   "city",        :limit => 128

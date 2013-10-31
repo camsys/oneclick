@@ -46,6 +46,8 @@ group :development do
   gem 'rails-erd'
   gem 'growl'
   gem 'travis'
+  gem 'rgeo'
+  gem 'rgeo-shapefile'
 end
 group :test do
   gem 'factory_girl_rails'
