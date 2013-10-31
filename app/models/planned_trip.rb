@@ -45,7 +45,7 @@ class PlannedTrip < ActiveRecord::Base
     create_fixed_route_itineraries
     create_taxi_itineraries
     create_paratransit_itineraries
-    create_rideshare_itineraries if Rails.Application.config.enable_rideshare
+    create_rideshare_itineraries if Rails.application.config.enable_rideshare
   end
 
   # TODO refactor following 3 methods
