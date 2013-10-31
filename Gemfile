@@ -9,7 +9,7 @@ group :assets do
   # gem 'bootstrap-combobox', '= 1.2.3', path: '/Users/denishaskin/constantorbit/workspace/bootstrap-combobox'
 end
 gem 'jquery-rails'
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', '= 2.3.2.2'
 gem 'cancan'
 gem 'devise', '~> 3.1.0'
 gem 'figaro'
