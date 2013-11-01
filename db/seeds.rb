@@ -541,7 +541,7 @@ providers.each do |provider|
       service = Service.create(name: 'Senior Medical Transportation', provider: p, service_type: paratransit, advanced_notice_minutes: 2*24*60)
       #Add Schedules
       (1..5).each do |n|
-        Schedule.create(service: service, start_time:"9:00", end_time: "12:00", day_of_week: n)
+        Schedule.create(service: service, start_time:"8:00", end_time: "17:00", day_of_week: n)
       end
 
       #Trip Purpose Requirements
@@ -550,13 +550,13 @@ providers.each do |provider|
       end
 
       #Add geographic restrictions
-      ['33063', '33068', '33067', '33073'].each do |z|
-        c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+      ['33063', '33065', '33093', '33068', '33067', '33073'].each do |z|
+        c = GeoCoverage.new(value: z, coverage_type: 'zipcode')
         ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
       end
 
-      ['33063', '33068', '33067', '33073'].each do |z|
-        c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+      ['33063', '33065', '33093', '33068', '33067', '33073'].each do |z|
+        c = GeoCoverage.new(value: z, coverage_type: 'zipcode')
         ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
       end
 
@@ -573,7 +573,7 @@ providers.each do |provider|
       service = Service.create(name: 'Senior Transport', provider: p, service_type: paratransit, advanced_notice_minutes: 3*24*60)
       #Add Schedules
       (1..5).each do |n|
-        Schedule.create(service: service, start_time:"9:00", end_time: "12:00", day_of_week: n)
+        Schedule.create(service: service, start_time:"8:00", end_time: "17:00", day_of_week: n)
       end
 
       #Trip Purpose Requirements
