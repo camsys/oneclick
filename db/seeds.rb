@@ -505,7 +505,7 @@ providers.each do |provider|
 
     when "8" #City of Sunrise
 
-      service = Service.create(name: 'Special & Community Support Services', provider: p, service_type: volunteer, advanced_notice_minutes: 24*60)
+      service = Service.create(name: 'Special & Community Support Services', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
       #Add Schedules
       (1..5).each do |n|
         Schedule.create(service: service, start_time:"8:00", end_time: "17:00", day_of_week: n)
