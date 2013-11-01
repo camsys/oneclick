@@ -367,6 +367,8 @@ providers.each do |provider|
         ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
       end
 
+      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: disabled, value: 'true')
+
       #Traveler Accommodations Provided
       [folding_wheelchair_accessible, door_to_door].each do |n|
         ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
@@ -622,11 +624,11 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: disabled, value: '60', value_relationship_id: 4)
+      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: disabled, value: 'true')
 
       #Traveler Accommodations Requirements
       [curb_to_curb, folding_wheelchair_accessible].each do |n|
-        ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: disabled, value: 'true')
+        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
 
