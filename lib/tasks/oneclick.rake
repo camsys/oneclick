@@ -11,6 +11,10 @@ namespace :oneclick do
     end
   end
 
+  task providers: :environment do
+    require File.join(Rails.root, 'db', 'providers')
+  end
+
   task load_pois: :environment do
     require 'csv'
 
