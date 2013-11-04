@@ -200,6 +200,11 @@ providers.each do |provider|
         c = GeoCoverage.new(value: z, coverage_type: 'zipcode')
         ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
       end
+      ['30327', '30342', '30319', '30326', '30305', '30324', '30309', '30306', '30363'].each do |z|
+        c = GeoCoverage.new(value: z, coverage_type: 'zipcode')
+        ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'residence')
+      end
+
 
 
       #Traveler Accommodations Requirements

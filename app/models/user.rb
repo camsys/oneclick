@@ -57,4 +57,8 @@ class User < ActiveRecord::Base
     email
   end
 
+  def home
+    self.places.find_by_name('Home')
+  end
+
 end

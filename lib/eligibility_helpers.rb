@@ -132,7 +132,17 @@ class EligibilityHelpers
     eligible_services  = []
     services.each do |service|
       #Match Residence
-      #TODO:  Need to add home Place for each traveler
+      coverages = service.service_coverage_maps.where(rule: 'residence').map {|c| c.geo_coverage.value.delete(' ').downcase}
+      if trip_part.trip.user.home
+        county_name = trip_part.trip.user.home.county_name || ""
+        zipcode = trip_part.trip.user.home.zipcode
+      else
+        county_name = ""
+        zipcode = ""
+      end
+      unless (coverages.count == 0) or (zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
+        next
+      end
 
       #Match Origin
       coverages = service.service_coverage_maps.where(rule: 'origin').map {|c| c.geo_coverage.value.delete(' ').downcase}

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131028142704) do
+ActiveRecord::Schema.define(:version => 20131031195951) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(:version => 20131028142704) do
 
   create_table "pois", :force => true do |t|
     t.integer  "poi_type_id",                :null => false
-    t.string   "name",        :limit => 64,  :null => false
+    t.string   "name",        :limit => 256, :null => false
     t.string   "address1",    :limit => 128
     t.string   "address2",    :limit => 128
     t.string   "city",        :limit => 128
@@ -214,11 +214,12 @@ ActiveRecord::Schema.define(:version => 20131028142704) do
 
   create_table "traveler_characteristics", :force => true do |t|
     t.string  "name",                  :limit => 64
-    t.string  "note",                                                   :null => false
-    t.string  "datatype",              :limit => 25,                    :null => false
-    t.boolean "requires_verification",               :default => false, :null => false
-    t.boolean "active",                              :default => true,  :null => false
+    t.string  "note",                                                    :null => false
+    t.string  "datatype",              :limit => 25,                     :null => false
+    t.boolean "requires_verification",                :default => false, :null => false
+    t.boolean "active",                               :default => true,  :null => false
     t.string  "code"
+    t.string  "characteristic_type",   :limit => 128
   end
 
   create_table "trip_parts", :force => true do |t|
@@ -226,12 +227,12 @@ ActiveRecord::Schema.define(:version => 20131028142704) do
     t.integer  "from_trip_place_id",                    :null => false
     t.integer  "to_trip_place_id",                      :null => false
     t.integer  "sequence",                              :null => false
-    t.date     "scheduled_date"
-    t.time     "scheduled_time"
     t.boolean  "is_depart",          :default => false
     t.boolean  "is_return_trip",     :default => false
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
+    t.date     "scheduled_date"
+    t.time     "scheduled_time"
   end
 
   add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"
