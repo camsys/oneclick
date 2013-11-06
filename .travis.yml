@@ -2,6 +2,7 @@ env:
   matrix:
   - ENV_FROM_APPLICATION_YML=true
   global:
+    # This is HEROKU_API_KEY=<Denis' API key>
     secure: CMJUFGiw+vmXKySVyDztUwvJmE18yskWb8tQrW2GUsahRQwanb3UjaEtLC7AKw/tLGlUhgf5g7RdSxp0qis7qBnaNwGVwAWU+lQR4DC9X+qGnwZ7VnG9Z7Vsy7FoJYQhJJf01EF7D7s+Pdhu9U+N/ks6vAAIusodpFBbBa/4qDw=
 branches:
   only:
@@ -29,5 +30,5 @@ deploy:
     repo: camsys/oneclick
     branch: develop
 after_deploy:
-  # we assume heroku toolbelt has been installed
+  - gem install heroku
   - heroku config:set ONECLICK_APP_VERSION=`git describe` --app oneclick-arc-int
