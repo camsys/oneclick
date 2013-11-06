@@ -1,0 +1,33 @@
+%table
+  %tr
+    %td.itinerary_icons
+      %i.icon-play.mode_icon_formatting{:class => 'start_icon'}
+    %td
+      .itinerary_text
+        %p= t(:start) + itinerary.planned_trip.trip.from_place.name
+      .itinerary_text_small
+        = format_time(itinerary.start_time.in_time_zone)
+
+  -@legs.each do |leg|
+    %tr
+      %td.itinerary_icons
+        %i.transit_itinerary_icons.mode_icon_formatting{:class => get_mode_icon(leg.mode)}
+      %td
+        -if leg.mode == TripLeg::WALK
+          .itinerary_text
+            %p= leg.mode + ' ' + t(:to) + ' ' + leg.end_place.name
+          .itinerary_text_small
+            =duration_to_words(leg.duration)
+        -else
+          .itinerary_text
+            %p= leg.agency_id + ' ' + leg.mode + ' ' + leg.route + ' ' + t(:to) + ' ' + leg.end_place.name
+          .itinerary_text_small
+            = format_time(leg.start_time) + ' ' + t(:to) + ' ' + format_time(leg.end_time)
+  %tr
+    %td.itinerary_icons
+      %i.icon-stop.mode_icon_formatting{:class => 'end_icon'}
+    %td
+      .itinerary_text
+        %p= t(:arrive) + itinerary.planned_trip.trip.to_place.name
+      .itinerary_text_small
+        = format_time(itinerary.end_time.in_time_zone)

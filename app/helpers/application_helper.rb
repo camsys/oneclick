@@ -68,7 +68,7 @@ module ApplicationHelper
     return html.html_safe     
   end
   
-  
+
   # Defines an array of filter options for the MyTrips page. The filters combine date range filters
   # with trip purpose filters. To make sure we can identify which is which, we simply add a constant (100)
   # to the time filter id. This assumes thata there are no more than 99 trip purposes
@@ -203,7 +203,7 @@ module ApplicationHelper
     return mode_name    
   end
   
-  # Returns the correct partial for a trip itinerary
+# Returns the correct partial for a trip itinerary
   def get_trip_partial(itinerary)
     
     return if itinerary.nil?

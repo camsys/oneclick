@@ -1,17 +1,15 @@
 class CharacteristicsController < TravelerAwareController
 
+  before_filter :get_traveler
   def update
-
-    # set the @traveler variable
-    get_traveler
 
     @user_characteristics_proxy = UserCharacteristicsProxy.new(User.find(params[:user_id]))
     @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
 
     if params['inline'] == '1'
-      @path = new_user_accommodation_path(@traveler, inline: 1)
+      @path = new_user_program_path(@traveler, inline: 1)
     else
-      @path = new_user_accommodation_path(@traveler)
+      @path = new_user_program_path(@traveler)
     end
 
     #if we are in the 'wizard' don't flash a notice. This logic checks to see if
@@ -32,11 +30,19 @@ class CharacteristicsController < TravelerAwareController
 
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
 
-    get_traveler
-    @trip_id = session[:current_trip_id]
+    @planned_trip_id = session[:current_trip_id]
+    @total_steps = (@traveler.has_disability? ? 3 : 2)
 
     respond_to do |format|
       format.html
+    end
+  end
+
+  def header
+    @total_steps = (params[:state] == 'user_characteristics_proxy_disabled_true' ? 3 : 2)
+    Rails.logger.info  "total_steps: #{@total_steps}"
+    respond_to do |format|
+      format.html { render partial: 'header', locals: {total_steps: @total_steps}}
     end
   end
 

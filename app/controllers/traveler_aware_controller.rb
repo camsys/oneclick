@@ -11,7 +11,6 @@ class TravelerAwareController < ApplicationController
   
 protected
   
-  
   # Update the session variable
   def set_traveler_id(id)
     session[TRAVELER_USER_SESSION_KEY] = id

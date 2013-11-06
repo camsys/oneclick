@@ -300,6 +300,11 @@ class TripsController < PlaceSearchingController
       redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
       return            
     end
+    # make sure that the trip can be modified 
+    unless @trip.can_modify
+      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
+      return            
+    end
     
     # Get the updated trip proxy from the form params
     @trip_proxy = create_trip_proxy_from_form_params
@@ -340,8 +345,16 @@ class TripsController < PlaceSearchingController
       if updated_trip # only created if the form validated and there are no geocoding errors
         if @trip.save
           @trip.reload
-          @trip.create_itineraries
-          format.html { redirect_to user_trip_path(@traveler, @trip) }
+          # @planned_trip = @trip.planned_trips.first
+
+          if @traveler.user_profile.has_characteristics? and user_signed_in?
+            @trip.create_itineraries
+            @path = user_trip_path(@traveler, @trip)
+          else
+            session[:current_trip_id] = @trip.id
+            @path = new_user_characteristic_path(@traveler, inline: 1)
+          end
+          format.html { redirect_to @path }
           format.json { render json: @trip, status: :created, location: @trip }
         else
           format.html { render action: "new" }
@@ -375,6 +388,7 @@ class TripsController < PlaceSearchingController
           @trip.cache_trip_places_georaw
           @trip.reload
           # @trip.restore_trip_places_georaw
+          # @planned_trip = @trip.planned_trips.first
           if @traveler.user_profile.has_characteristics? and user_signed_in?
             @trip.trip_parts.each do |trip_part|
               trip_part.create_itineraries
@@ -382,7 +396,7 @@ class TripsController < PlaceSearchingController
             @path = user_trip_path(@traveler, @trip)
           else
             session[:current_trip_id] = @trip.id
-            @path = new_user_characteristic_path(@traveler)
+            @path = new_user_characteristic_path(@traveler, inline: 1)
           end
           format.html { redirect_to @path }
           format.json { render json: @trip, status: :created, location: @trip }
@@ -517,6 +531,35 @@ protected
         @trip = nil
       end
     end
+  end
+
+  # Create an array of map markers suitable for the Leaflet plugin. If the trip proxy is from an existing trip we will
+  # have start and stop markers
+  def create_markers(trip_proxy)
+    markers = []
+    if trip_proxy.from_place_selected
+      place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected.to_i, true)
+    else
+      place = {:name => trip_proxy.from_place, :lat => trip_proxy.from_lat, :lon => trip_proxy.from_lon, :formatted_address => trip_proxy.from_raw_address}
+    end
+    markers << get_addr_marker(place, 'start', 'startIcon')
+    
+    if trip_proxy.to_place_selected
+      place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected.to_i, false)
+    else
+      place = {:name => trip_proxy.to_place, :lat => trip_proxy.to_lat, :lon => trip_proxy.to_lon, :formatted_address => trip_proxy.to_raw_address}
+    end
+    
+    markers << get_addr_marker(place, 'stop', 'stopIcon')
+    return markers.to_json
+  end
+  
+  def create_place_markers(places)
+    markers = []    
+    places.each_with_index do |place, index|
+      markers << get_map_marker(place, place.id, 'startIcon')
+    end
+    return markers
   end
 
 private

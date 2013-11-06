@@ -110,4 +110,12 @@ class Trip < ActiveRecord::Base
     trip_places.each {|tp| tp.restore_georaw}
   end
 
+  def origin
+    self.trip_places.order('sequence').first
+  end
+
+  def destination
+    self.trip_places.order('sequence').last
+  end
+
 end

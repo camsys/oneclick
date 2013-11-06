@@ -7,7 +7,7 @@ class TripsCreatedByDayReport < AbstractReport
   def get_data(current_user, params)
     
     a = {}
-    duration = get_duration(params[:time_filter_type])
+    duration = TimeFilterHelper.time_filter_as_duration(params[:time_filter_type])
     days = duration.first.to_date..duration.last.to_date
     days.each do |day|
       

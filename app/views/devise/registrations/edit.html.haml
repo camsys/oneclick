@@ -22,8 +22,12 @@
         = t(:eligibility)
     %li
       %a{href: '#tab5', data: {toggle: 'tab'}}
-        = t(:accomodations)
-        
+        = t(:programs)
+    %li
+      %a{href: '#tab6', data: {toggle: 'tab'}}
+        = t(:accommodations)
+
+
   .tab-content
     -# render the first 3 tabs only if the current user is operating as themselves. If they are assisting
     -# another user then we don't render the first 3 tabs
@@ -41,6 +45,9 @@
       .well#eligibility
         = render partial: 'characteristics/form',  :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id), :inline => false}
     .tab-pane#tab5
+      .well#programs
+        = render partial: 'programs/form',  :locals => {:path => user_program_path(@traveler, @user_programs_proxy.id), :inline => false}
+    .tab-pane#tab6
       .well#accommodations
         = render partial: 'accommodations/form',  :locals => {:path => user_accommodation_path(@traveler, @user_accommodations_proxy.id), :inline => false}
 

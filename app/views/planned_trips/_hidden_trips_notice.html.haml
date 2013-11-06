@@ -1,0 +1,5 @@
+- if @planned_trip.hidden_itineraries.count > 0
+  %i.icon-exclamation-sign
+  = t(:trip_options_hidden, :count => @planned_trip.hidden_itineraries.size )
+  = link_to unhide_all_user_planned_trip_path(@traveler, @planned_trip) do
+    = t(:unhide_all)

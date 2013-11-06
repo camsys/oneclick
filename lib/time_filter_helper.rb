@@ -52,8 +52,7 @@ class TimeFilterHelper
     else
       start_time = get_parsed_time(filter[:parse_text_start], filter[:start_filter_type], true)    
       end_time = get_parsed_time(filter[:parse_text_end], filter[:end_filter_type], false)
-    end
-    
+        
     return start_time..end_time
   end
   
