@@ -32,7 +32,7 @@
           .well
             .pull-left
               - if Rails.env.integration?
-                %span= "#{t(:version)} Auto-deploy"
+                %span= "#{t(:version)} #{ENV['ONECLICK_APP_VERSION']}"
               - else
                 %span= "#{t(:version)} #{Rails.application.config.version}"
               - unless Rails.env.production?

@@ -1,5 +1,8 @@
 env:
-- ENV_FROM_APPLICATION_YML=true
+  matrix:
+  - ENV_FROM_APPLICATION_YML=true
+  global:
+    secure: CMJUFGiw+vmXKySVyDztUwvJmE18yskWb8tQrW2GUsahRQwanb3UjaEtLC7AKw/tLGlUhgf5g7RdSxp0qis7qBnaNwGVwAWU+lQR4DC9X+qGnwZ7VnG9Z7Vsy7FoJYQhJJf01EF7D7s+Pdhu9U+N/ks6vAAIusodpFBbBa/4qDw=
 branches:
   only:
     - develop
@@ -17,13 +20,6 @@ notifications:
   email:
   - oneclickcs_github@googlegroups.com
   irc: irc.freenode.net#oneclick
-# after_script:
-# - cat "log/test.log"
-before_deploy:
-# - git describe
-# - bundle exec rake oneclick:version
-# - git commit -am "Bump version"
-- git --no-pager log -50 --pretty="%h %<(60,trunc) %s %<(23,trunc) %ae %ar"
 deploy:
   provider: heroku
   api_key:
@@ -32,3 +28,6 @@ deploy:
   on:
     repo: camsys/oneclick
     branch: develop
+after_deploy:
+  # we assume heroku toolbelt has been installed
+  - heroku config:set ONECLICK_APP_VERSION=`git describe` --app oneclick-arc-int
