@@ -8,7 +8,7 @@ module ApplicationHelper
       TripLeg::WALK => 'travelcon-walk', 
       TripLeg::TRAM => 'travelcon-subway', 
       TripLeg::SUBWAY => 'travelcon-subway', 
-      TripLeg::RAIL => 'travelcon-train', 
+      TripLeg::RAIL => 'travelcon-rail',
       TripLeg::BUS => 'travelcon-bus', 
       TripLeg::FERRY => 'travelcon-boat'
       }

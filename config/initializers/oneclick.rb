@@ -5,6 +5,9 @@ raise "Config not loaded from application.yml" unless ENV['ENV_FROM_APPLICATION_
 # use as Rails.application.config.brand
 Oneclick::Application.config.brand = ENV['BRAND'] || 'arc'
 
+# defaults for all brands
+Oneclick::Application.config.enable_rideshare = false
+
 case ENV['BRAND'] || 'arc'
 when 'arc'
   Oneclick::Application.config.ui_logo = 'arc/arc-logo.png'
@@ -14,8 +17,9 @@ when 'arc'
   Oneclick::Application.config.open_trip_planner = "http://arc-otp-2.camsys-apps.com"
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Atlanta"
+  Oneclick::Application.config.enable_rideshare = true
 when 'broward'  
-  Oneclick::Application.config.ui_logo = 'broward/bclogo.gif'
+  Oneclick::Application.config.ui_logo = 'broward/Broward_211_Get_Connected_get_answers.jpg'
   Oneclick::Application.config.geocoder_components = 'administrative_area:FL|country:US'
   Oneclick::Application.config.map_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
   Oneclick::Application.config.geocoder_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]

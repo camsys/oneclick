@@ -20,7 +20,7 @@
             =duration_to_words(leg.duration)
         -else
           .itinerary_text
-            %p= leg.agency_id + ' ' + leg.mode + ' ' + leg.route + ' ' + t(:to) + ' ' + leg.end_place.name
+            %p= leg.agency_id.upcase + ' ' + leg.mode + ' ' + leg.route + ' ' + t(:to) + ' ' + leg.end_place.name
           .itinerary_text_small
             = format_time(leg.start_time) + ' ' + t(:to) + ' ' + format_time(leg.end_time)
   %tr

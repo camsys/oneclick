@@ -11,7 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20131105161453) do
+||||||| merged common ancestors
+ActiveRecord::Schema.define(:version => 20131024150514) do
+=======
+ActiveRecord::Schema.define(:version => 20131031195951) do
+>>>>>>> broward-release-0.7A
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
