@@ -60,7 +60,7 @@ class EligibilityHelpers
 
   def get_accommodating_services_for_traveler(user_profile)
 
-    if user_profile.nil?   #TODO: Fix this to handle anonymous users.
+    if user_profile.nil?
       return []
     end
 

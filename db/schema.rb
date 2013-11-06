@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131031195951) do
+ActiveRecord::Schema.define(:version => 20131105161453) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(:version => 20131031195951) do
     t.datetime "created_at",                                   :null => false
     t.datetime "updated_at",                                   :null => false
     t.string   "county",      :limit => 128
+    t.boolean  "home"
   end
 
   create_table "poi_types", :force => true do |t|

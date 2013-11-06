@@ -58,7 +58,15 @@ class User < ActiveRecord::Base
   end
 
   def home
-    self.places.find_by_name('Home')
+    self.places.find_by_home(true)
+  end
+
+  def clear_home
+    old_homes = self.places.where(home: true)
+    old_homes.each do |old_home|
+      old_home.home = false
+      old_home.save()
+    end
   end
 
 end
