@@ -570,7 +570,6 @@ private
   # trip id into the proxy as only edit functions need this.
   def create_trip_proxy(trip)
 
-    puts "Creating trip proxy from #{trip.ai}"
     # get the trip parts for this trip
     trip_part = trip.trip_parts.first
     

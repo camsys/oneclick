@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Trip do
  describe "itineraries" do
   it "should be populated with itineraries" do
-    planned_trip = FactoryGirl.create(:trip_with_places)
+    trip = FactoryGirl.create(:trip)
     test_itineraries = [{'legs'=>'example leg'}]
     trip_planner = double(TripPlanner,
       get_fixed_itineraries: [true,[]],
@@ -12,14 +12,14 @@ describe Trip do
       get_rideshare_itineraries: [false,[]],
       convert_itineraries: test_itineraries)
     TripPlanner.stub(:new).and_return(trip_planner)
-    planned_trip.create_itineraries
-    planned_trip.itineraries.should_not be_empty
-    planned_trip.itineraries.first.legs.should eq "example leg"
+    trip.create_itineraries
+    trip.itineraries.should_not be_empty
+    trip.itineraries.first.legs.should eq "example leg"
   end
 
   it "should have one itinerary with status=400 and an error message" do
     pending "todo"      
-    trip = FactoryGirl.create(:trip_with_places)
+    trip = FactoryGirl.create(:trip)
     mock_error = {'id'=>400,'msg'=>'This is a test error message.'}
     trip_planner = double(TripPlanner, get_fixed_itineraries: [false, mock_error],
       get_taxi_itineraries: [false, mock_error],
@@ -36,7 +36,7 @@ describe Trip do
 
       it "should respond to has_valid_itineraries correctly" do
         pending "todo"      
-        trip = FactoryGirl.create(:trip_with_places)
+        trip = FactoryGirl.create(:trip)
         mock_error = {'id'=>400,'msg'=>'This is a test error message.'}
         trip_planner = double(TripPlanner, get_fixed_itineraries: [false, mock_error],
           get_taxi_itineraries: [false, mock_error],
@@ -72,7 +72,7 @@ describe Trip do
     end
     it "should have from_place and to_place aliases even when comes from db" do
       pending "todo"      
-      trip = FactoryGirl.create(:trip_with_places,
+      trip = FactoryGirl.create(:trip,
         from_place_attributes: {sequence: 0, nongeocoded_address: 'bar'}, to_place_attributes: {sequence: 1, nongeocoded_address: 'baz'}
         )
       db_trip = Trip.find(trip.id)

@@ -6,6 +6,8 @@ FactoryGirl.define do
     lat 33.89415
     lon -84.5463115
     zip '30308'
+    # trip {FactoryGirl.create(:trip)}
+    # trip
   end
 
   factory :trip_place2, class: TripPlace do
@@ -13,7 +15,9 @@ FactoryGirl.define do
     raw_address '999 Peachtree street, Atlanta, GA'
     lat 33.781448
     lon -84.383959
-    trip_id 1
+    # trip_id 1
+    # trip {FactoryGirl.create(:trip)}
+    # trip
     add_attribute :sequence, "1"
     county 'Fulton'
 
@@ -24,7 +28,9 @@ FactoryGirl.define do
     raw_address 'Georgia State Capitol, Atlanta, GA'
     lat 33.749426
     lon -84.388117
-    trip_id 1
+    # trip_id 1
+    # trip {FactoryGirl.create(:trip)}
+    # trip
     add_attribute :sequence, "2"
 
   end
