@@ -30,7 +30,7 @@
           - else
             %td.center.nowrap          
 
-          %td.nowrap= format_date(trip.trip_datetime.in_time_zone)
+          %td.nowrap= format_date(trip.trip_datetime)
           %td= trip.from_place.name
           %td= trip.to_place.name
           %td= trip.trip_purpose.name

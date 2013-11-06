@@ -60,7 +60,7 @@ class EligibilityHelpers
 
   def get_accommodating_services_for_traveler(user_profile)
 
-    if user_profile.nil?   #TODO: Fix this to handle anonymous users.
+    if user_profile.nil?
       return []
     end
 
@@ -132,7 +132,17 @@ class EligibilityHelpers
     eligible_services  = []
     services.each do |service|
       #Match Residence
-      #TODO:  Need to add home Place for each traveler
+      coverages = service.service_coverage_maps.where(rule: 'residence').map {|c| c.geo_coverage.value.delete(' ').downcase}
+      if trip_part.trip.user.home
+        county_name = trip_part.trip.user.home.county_name || ""
+        zipcode = trip_part.trip.user.home.zipcode
+      else
+        county_name = ""
+        zipcode = ""
+      end
+      unless (coverages.count == 0) or (zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
+        next
+      end
 
       #Match Origin
       coverages = service.service_coverage_maps.where(rule: 'origin').map {|c| c.geo_coverage.value.delete(' ').downcase}
@@ -195,7 +205,7 @@ class EligibilityHelpers
   end
 
   def eligible_by_advanced_notice(trip_part, services)
-    advanced_notice = (trip_part.trip_time - trip_part.created_at)/60
+    advanced_notice = (trip_part.trip_time.to_time - trip_part.created_at)/60
     within_notice_period = Service.where('advanced_notice_minutes < ?', advanced_notice)
 
     services & within_notice_period

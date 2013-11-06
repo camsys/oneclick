@@ -10,8 +10,8 @@ class TripsScheduledByDayReport < AbstractReport
     time_filter_type = params[:time_filter_type]
     
     if time_filter_type.to_i == TimeFilterHelper::ALL_TRIPS_FILTER
-      start_time = TripPart.find(:first, :order => "trip_time ASC").trip_time
-      end_time = TripPart.find(:first, :order => "trip_time DESC").trip_time
+      start_time = TripPart.find(:first, :order => "scheduled_date ASC, scheduled_date ASC").trip_time
+      end_time = TripPart.find(:first, :order => "scheduled_date DESC, scheduled_date DESC").trip_time
       duration = start_time.to_date..end_time.to_date
     else
       duration = TimeFilterHelper.time_filter_as_duration(params[:time_filter_type])

@@ -58,11 +58,21 @@ class User < ActiveRecord::Base
   end
 
   def has_disability?
-
     disabled = TravelerCharacteristic.find_by_code('disabled')
     disability_status = self.user_profile.user_traveler_characteristics_maps.where(characteristic_id: disabled.id)
     disability_status.count > 0 and disability_status.first.value == 'true'
+  end
 
+  def home
+    self.places.find_by_home(true)
+  end
+
+  def clear_home
+    old_homes = self.places.where(home: true)
+    old_homes.each do |old_home|
+      old_home.home = false
+      old_home.save()
+    end
   end
 
 end

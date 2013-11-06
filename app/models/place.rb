@@ -8,7 +8,7 @@ class Place < GeocodedAddress
   
   attr_protected :id, :user_id, :created_at, :updated_at
   attr_accessible :name, :raw_address
-  attr_accessible :creator_id, :poi_id, :active
+  attr_accessible :creator_id, :poi_id, :active, :home
   
   scope :active, where("places.active = true")
   default_scope order("name")

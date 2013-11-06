@@ -17,6 +17,7 @@
         = image_tag "ajax-loader.gif", :id => "geocoding_indicator", :style => "display:none;margin-top:-9px;", :class => "loading-indicator"
 
       = f.input :name, :label => t(:place_name), :placeholder => t(:new_name), :autocomplete => "off", :input_html => {:style => "width:300px;"}
+      = f.input :home, as: :boolean, :label => false, :inline_label => "This is my home."
       = f.hidden_field :place_type_id, :id => "place_type_field"
       = f.hidden_field :place_id, :id => "place_id_field"
 
@@ -42,6 +43,8 @@
         %li.place-list-item
           = link_to "#", :class => "place-select", :data => {:id => "my_place#{index}", :index => index, :place_id => place.id, :op => place.can_delete, :latlon => [place.location.first, place.location.last], :name => place.to_s, :type => "place", :addr => place.address} do
             %img{:src => get_candidate_list_item_image(index, "0")}
+            -if place.home
+              %i.icon.icon-home
             %strong= place.name
             %em= place.address
 

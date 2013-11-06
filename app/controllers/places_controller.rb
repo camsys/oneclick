@@ -98,8 +98,10 @@ class PlacesController < PlaceSearchingController
         new_place = create_place(@place_proxy)
         place.assign_attributes(new_place.get_modifiable_attributes)
       else
-        # we can only update the name
+        # we can only update the name and home
         place.name = @place_proxy.name
+        @traveler.clear_home
+        place.home = @place_proxy.home
       end
       Rails.logger.debug place.inspect
       valid = true
@@ -151,7 +153,7 @@ protected
   # came from a raw address
   def create_place_proxy(place)
     
-    place_proxy = PlaceProxy.new({:id => place.id, :name => place.name, :raw_address => place.address, :can_alter_location => place.can_alter_location, :lat => place.location.first, :lon => place.location.last})
+    place_proxy = PlaceProxy.new({:id => place.id, :name => place.name, :raw_address => place.address, :can_alter_location => place.can_alter_location, :lat => place.location.first, :lon => place.location.last, :home => place.home})
     if place.poi
       place_proxy.place_type_id = POI_TYPE
       place_proxy.place_id = place.poi.id
@@ -224,6 +226,13 @@ protected
         place.lon = place_proxy.lon
       end    
     end
+    if place_proxy.home.to_i == 0
+      place.home = false
+    else
+      @traveler.clear_home
+      place.home = true
+    end
+
     return place    
   end
   

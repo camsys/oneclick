@@ -47,8 +47,12 @@ class TimeFilterHelper
     # If we are filtering on all trips then we need to determine the first and last created trip in the
     # database    
     if filter[:id] == ALL_TRIPS_FILTER
-      start_time = Trip.find(:first, :order => "created_at ASC").created_at
-      end_time = TripPart.find(:first, :order => "trip_time DESC").trip_time
+      if Trip.count > 0
+        start_time = Trip.find(:first, :order => "created_at ASC").created_at.beginning_of_day
+        end_time = TripPart.find(:first, :order => "scheduled_date DESC").trip_time.end_of_day
+      else
+        start_time = end_time = Time.zone.now
+      end
     else
       start_time = get_parsed_time(filter[:parse_text_start], filter[:start_filter_type], true)    
       end_time = get_parsed_time(filter[:parse_text_end], filter[:end_filter_type], false)
@@ -63,18 +67,18 @@ class TimeFilterHelper
     parsed_time = Chronic.parse(str)
     
     if filter_type == TIME_FILTER
-      return parsed_time  
+      return parsed_time.in_time_zone  
     elsif filter_type == DAY_FILTER
       if is_start
-        return parsed_time.beginning_of_day
+        return parsed_time.in_time_zone.beginning_of_day
       else
-        return parsed_time.to_date.end_of_day
+        return parsed_time.in_time_zone.to_date.end_of_day
       end
     elsif filter_type == MONTH_FILTER
       if is_start
-        return parsed_time.beginning_of_month
+        return parsed_time.in_time_zone.beginning_of_month
       else
-        return parsed_time.end_of_month
+        return parsed_time.in_time_zone.end_of_month
       end
     end
   end
