@@ -26,10 +26,10 @@ class RegistrationsController < Devise::RegistrationsController
 
     if session[:inline]
       get_traveler
-      @planned_trip = PlannedTrip.find(session[:current_trip_id])
+      @trip = Trip.find(session[:current_trip_id])
       session[:current_trip_id] =  nil
-      @planned_trip.create_itineraries
-      user_planned_trip_path(@traveler, @planned_trip)
+      @trip.create_itineraries
+      user_trip_path(@traveler, @trip)
     else
       root_path
     end

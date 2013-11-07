@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   has_many :user_mode_preferences   # 0 or more user mode preferences
   has_many :user_roles
   has_many :roles, :through => :user_roles # one or more user roles
-  has_many :planned_trips, :through => :trips
+  has_many :trip_parts, :through => :trips
   # relationships
   has_many :delegate_relationships, :class_name => 'UserRelationship', :foreign_key => :user_id
   has_many :traveler_relationships, :class_name => 'UserRelationship', :foreign_key => :delegate_id

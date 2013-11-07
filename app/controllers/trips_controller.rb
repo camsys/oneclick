@@ -294,7 +294,7 @@ class TripsController < PlaceSearchingController
     end
     # make sure that the trip can be modified 
     unless @trip.can_modify
-      redirect_to(user_planned_trips_url, :flash => { :alert => t(:error_404) })
+      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
       return            
     end
     
@@ -337,7 +337,6 @@ class TripsController < PlaceSearchingController
       if updated_trip # only created if the form validated and there are no geocoding errors
         if @trip.save
           @trip.reload
-          # @planned_trip = @trip.planned_trips.first
 
           if @traveler.user_profile.has_characteristics? and user_signed_in?
             @trip.create_itineraries
@@ -380,7 +379,6 @@ class TripsController < PlaceSearchingController
           @trip.cache_trip_places_georaw
           @trip.reload
           # @trip.restore_trip_places_georaw
-          # @planned_trip = @trip.planned_trips.first
           if @traveler.user_profile.has_characteristics? and user_signed_in?
             @trip.create_itineraries
             @path = user_trip_path(@traveler, @trip)
