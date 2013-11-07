@@ -349,6 +349,10 @@ td.left, th.left {
   position: static;
 }
 
+.no-bottom-margin{
+  margin-bottom: 0px !important;
+}
+
 .control-group.disabled {
   font-style: italic;
 }

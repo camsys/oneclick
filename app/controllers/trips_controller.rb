@@ -267,7 +267,7 @@ class TripsController < PlaceSearchingController
     # Create markers for the map control
     @markers = create_trip_proxy_markers(@trip_proxy).to_json
     @places = create_place_markers(@traveler.places)
-    
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @trip_proxy }
@@ -654,6 +654,36 @@ private
       from_place.raw = place[:raw]
     end
 
+    #If from_is_home, set the from place as home.
+    unless trip_proxy.from_is_home.to_i == 0
+      unless place[:place_id]
+        new_place = Place.new
+        new_place.user = @traveler
+        new_place.creator = current_user
+        new_place.raw_address = from_place.raw_address
+        new_place.name = 'My Home'
+        new_place.address1 = from_place.address1
+        new_place.address2 = from_place.address2
+        new_place.city = from_place.city
+        new_place.state = from_place.state
+        new_place.zip = from_place.zip
+        new_place.county = from_place.county
+        new_place.lat = from_place.lat
+        new_place.lon = from_place.lon
+        new_place.active = true
+        from_place.place = new_place
+
+        @traveler.clear_home
+        new_place.home = true
+        new_place.save
+      else
+
+        @traveler.clear_home
+        from_place.place.home = true
+        from_place.place.save
+      end
+    end
+
     # get the end for this trip
     to_place = TripPlace.new()
     to_place.sequence = 1
@@ -673,6 +703,38 @@ private
       to_place.lon = place[:lon]
       to_place.raw = place[:raw]
     end
+
+
+    #If to_is_home, set the to place as home.
+    unless trip_proxy.to_is_home.to_i == 0
+      unless place[:place_id]
+        new_place = Place.new
+        new_place.user = @traveler
+        new_place.creator = current_user
+        new_place.raw_address = to_place.raw_address
+        new_place.name = 'My Home'
+        new_place.address1 = to_place.address1
+        new_place.address2 = to_place.address2
+        new_place.city = to_place.city
+        new_place.state = to_place.state
+        new_place.zip = to_place.zip
+        new_place.county = to_place.county
+        new_place.lat = to_place.lat
+        new_place.lon = to_place.lon
+        new_place.active = true
+        to_place.place = new_place
+
+        @traveler.clear_home
+        new_place.home = true
+        new_place.save
+      else
+
+        @traveler.clear_home
+        to_place.place.home = true
+        to_place.place.save
+      end
+    end
+
 
     # add the places to the trip
     trip.trip_places << from_place

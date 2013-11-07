@@ -18,7 +18,7 @@ class TripProxy < Proxy
   # name or raw address of the end points selected by the user. The value could be the
   # name of an object (Place, POI), a previously used address (TripPlace) or a string
   # entered into the control by the user (Raw Address)
-  attr_accessor :from_place, :to_place
+  attr_accessor :from_place, :to_place, :from_is_home, :to_is_home
   # Trip time and date, purpose etc.
   attr_accessor :trip_date, :arrive_depart, :trip_time, :trip_purpose_id
   

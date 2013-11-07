@@ -6,7 +6,7 @@
   - unless current_user.travelers.empty?
     = render "select_traveler_form"
   
-= simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "", :style => "margin-top:10px;margin-bottom:10px;"}  do |f| 
+= simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}  do |f|
   = f.hidden_field :mode
   = f.hidden_field :from_place_selected, :id => "from_place_selected"
   = f.hidden_field :to_place_selected, :id => "to_place_selected"
@@ -15,7 +15,7 @@
 
   - if user_signed_in?
     = f.input :from_place, :wrapper => :append, :class => "inline", :label => t(:from) do
-      = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "ajax-typeahead input-large", :data => {:link => search_user_places_path, :provide => "typeahead"}
+      = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large", :data => {:link => search_user_places_path, :provide => "typeahead"}
       %span.dropdown
         %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
           %span.caret
@@ -25,19 +25,24 @@
               %li
                 %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "from"}}
                   = p["name"]
+      - unless @traveler.home
+        = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
+
       = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
   - else
     = f.input :from_place, :class => "inline", :label => t(:from) do
-      = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "ajax-typeahead input-large", :data => {:link => search_user_trips_path, :provide => "typeahead"}
+      = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large", :data => {:link => search_user_trips_path, :provide => "typeahead"}
+      = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
       = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
+
 
   #from_place_candidates{:style => "display:none;"}
     = render :partial => 'alt_address_select', :locals => {:results => [], :type => "from"}
 
   - if user_signed_in?
     = f.input :to_place, :wrapper => :append, :class => "inline", :label => t(:to) do
-      = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :autocomplete => "off", :class => "ajax-typeahead input-large", :data => {:link => search_user_places_path, :provide => "typeahead"}
+      = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large", :data => {:link => search_user_places_path, :provide => "typeahead"}
       %span.dropdown
         %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
           %span.caret
@@ -47,11 +52,14 @@
               %li
                 %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "to"}}
                   = p["name"]
+      - unless @traveler.home
+        = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
       = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
   - else    
     = f.input :to_place, :class => "inline", :label => t(:to) do
-      = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :class => "ajax-typeahead input-large", :autocomplete => "off", :data => {:link => search_user_trips_path, :provide => "typeahead"} 
+      = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :class => "no-bottom-margin ajax-typeahead input-large", :autocomplete => "off", :data => {:link => search_user_trips_path, :provide => "typeahead"}
+      = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
       = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
   #to_place_candidates{:style => "display:none;"}
@@ -73,8 +81,8 @@
 
   = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
 
-  = f.input :is_round_trip, :label => "Return after", :wrapper_html => {:class => 'controls controls-row'} do
-    = f.input_field :is_round_trip, :as => :boolean     
+  = f.input :is_round_trip, :label => false, :wrapper_html => {:class => 'controls controls-row'} do
+    = f.input_field :is_round_trip, :as => :boolean, :inline_label => "Return after"
     = f.input :return_trip_time, :label => false, :wrapper => :append do
       #return-trip-time
         = f.input_field :return_trip_time, :as => :string, :label => false, :style => "width:160px;"
@@ -467,3 +475,14 @@
     setMapToBounds();
     selectMarker(marker);
   };
+
+  //Only Allow One Checkbox to Be Checked
+  $('#trip_proxy_to_is_home').change(function() {
+    $('#trip_proxy_from_is_home').prop('checked', 0);
+  });
+
+  $('#trip_proxy_from_is_home').change(function() {
+    $('#trip_proxy_to_is_home').prop('checked', 0);
+  });
+
+

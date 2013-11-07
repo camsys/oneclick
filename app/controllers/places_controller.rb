@@ -100,8 +100,12 @@ class PlacesController < PlaceSearchingController
       else
         # we can only update the name and home
         place.name = @place_proxy.name
-        @traveler.clear_home
-        place.home = @place_proxy.home
+        if @place_proxy.home.to_i == 0
+          place.home = false
+        else
+          @traveler.clear_home
+          place.home = true
+        end
       end
       Rails.logger.debug place.inspect
       valid = true
