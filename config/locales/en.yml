@@ -326,11 +326,11 @@ en:
     logotext: ''
     site_title: 'ARC 1-Click'
     site_description: 'ARC 1-Click Application'
-  yata:
-    home: 'YATA Home'
+  pa:
+    home: '1-Click/PA Home'
     logotext: ''
-    site_title: 'YATA 1-Click'
-    site_description: 'YATA 1-Click Application'
+    site_title: '1-Click/PA'
+    site_description: '1-Click/PA Application'
   broward:
     home: '1-Click Broward Home'
     logotext: ''

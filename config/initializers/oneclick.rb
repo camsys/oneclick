@@ -26,8 +26,8 @@ when 'broward'
   Oneclick::Application.config.open_trip_planner = "http://arc-otp-demo.camsys-apps.com"
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Miami"
-when 'yata'
-  Oneclick::Application.config.ui_logo = 'yata/Rabbittransit_red_logo.png'
+when 'pa'
+  Oneclick::Application.config.ui_logo = 'pa/penndotLogo.jpg'
   Oneclick::Application.config.geocoder_components = 'administrative_area:PA|country:US'
   Oneclick::Application.config.map_bounds = [[41.970622, -80.461542], [39.734653, -75.007294]]
   Oneclick::Application.config.geocoder_bounds = [[41.970622, -80.461542], [39.734653, -75.007294]]
