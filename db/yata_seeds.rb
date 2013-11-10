@@ -10,7 +10,7 @@
 # See http://railsapps.github.io/rails-environment-variables.html
 places = [ 
   {active: 1, name: 'My house', raw_address: '100 Dewey Street, West York, PA, 17404'},
-  {active: 1, name: 'Atlanta VA Medical Center', raw_address: '100 W. Market Street, PA, 17401'},
+  {active: 1, name: 'VA York Clinic', raw_address: '2251 Eastern Blvd, York, PA 17402'},
   {active: 1, name: "YMCA Men's Emergency Shelter", raw_address: '310 West Philadelphia Street, York, PA, 17401'}
   ]
 users = [
