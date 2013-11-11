@@ -31,7 +31,7 @@ when 'pa'
   Oneclick::Application.config.geocoder_components = 'administrative_area:PA|country:US'
   Oneclick::Application.config.map_bounds = [[41.970622, -80.461542], [39.734653, -75.007294]]
   Oneclick::Application.config.geocoder_bounds = [[41.970622, -80.461542], [39.734653, -75.007294]]
-  Oneclick::Application.config.open_trip_planner = "http://oneclick-otp-yata .camsys-apps.com"
+  Oneclick::Application.config.open_trip_planner = "http://oneclick-otp-yata.camsys-apps.com"
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Harrisburg-PA"
 end
