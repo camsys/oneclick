@@ -10,7 +10,7 @@ class Itinerary < ActiveRecord::Base
 
   attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
     :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
-    :ride_count, :external_info
+    :ride_count, :external_info, :match_score
     
   # returns true if this itinerary failed to work
   def failed

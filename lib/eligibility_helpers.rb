@@ -1,10 +1,11 @@
 class EligibilityHelpers
 
   def get_eligible_services_for_traveler(user_profile, trip_part=nil)
-
+    tp = TripPlanner.new
     all_services = Service.all
-    fully_eligible_services = []
+    eligible_itineraries = []
     all_services.each do |service|
+      match_score = 0
       is_eligible = true
       service_characteristic_maps = service.service_traveler_characteristics_maps
       service_characteristic_maps.each do |service_characteristic_map|
@@ -20,8 +21,8 @@ class EligibilityHelpers
         end
 
         passenger_characteristic = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: service_requirement.id)
-        if passenger_characteristic.count == 0 #This passenger characteristic is not listed #TODO: Currently we reject ont his but perhaps we should ask for more info
-          is_eligible = false
+        if passenger_characteristic.count == 0 #This passenger characteristic is not listed
+          match_score += 0.25
           break
         end
         if !test_condition(passenger_characteristic.first.value, service_characteristic_map.value_relationship_id , service_characteristic_map.value)
@@ -30,11 +31,13 @@ class EligibilityHelpers
         end
       end
       if is_eligible
-        fully_eligible_services << service
+        #Create itinerary
+        itinerary = tp.convert_paratransit_itineraries(service, match_score)
+        eligible_itineraries << itinerary
       end
     end
-
-    fully_eligible_services
+    #Thisis an array of itinerary hashes
+    eligible_itineraries
 
   end
 
@@ -58,7 +61,7 @@ class EligibilityHelpers
   end
 
 
-  def get_accommodating_services_for_traveler(user_profile)
+  def get_accommodating_services_for_traveler(itineraries, user_profile)
 
     if user_profile.nil?
       return []
@@ -73,20 +76,21 @@ class EligibilityHelpers
 
     #service accommodations
     accommodating_services = []
-    all_services = Service.all
-    all_services.each do |service|
+    #all_services = Service.all
+    itineraries.each do |itinerary|
+      service = itinerary['service']
       accommodations_maps = service.service_traveler_accommodations_maps
       service_accommodations  = []
       accommodations_maps.each do |map|
         service_accommodations << map.traveler_accommodation
       end
 
-      if user_accommodations.count == (service_accommodations & user_accommodations).count
-        accommodating_services << service
-      end
+      match_score = 0.5 * (user_accommodations.count - (service_accommodations & user_accommodations).count)
+      itinerary['match_score'] += match_score.to_f
+
     end
 
-    accommodating_services
+    itineraries
 
   end
 
@@ -101,36 +105,31 @@ class EligibilityHelpers
     Rails.logger.debug "Get eligible services"
     eligible = get_eligible_services_for_traveler(user_profile, trip_part)
     Rails.logger.debug "Done get eligible services, get accommodating"
+    #Creating set of itineraries
 
-    accommodating = get_accommodating_services_for_traveler(user_profile)
-    Rails.logger.debug "Done get accommodating"
-    Rails.logger.debug eligible.ai
-    Rails.logger.debug accommodating.ai
-    eligible & accommodating
-
-  end
-
-  def get_eligible_services_for_trip(trip_part, services)
-    eligible_by_location = eligible_by_location(trip_part, services)
-    eligible_by_service_time = eligible_by_service_time(trip_part, services)
-    eligible_by_advanced_notice = eligible_by_advanced_notice(trip_part, services)
-    eligible_by_trip_purpose = eligible_by_trip_purpose(trip_part, services)
-
-    if Rails.logger.debug?
-      {location: eligible_by_location, service_time: eligible_by_service_time,
-        advanced_notice: eligible_by_advanced_notice, purpose: eligible_by_trip_purpose}.each do |k, v|
-          Rails.logger.debug  "#{k} - #{v.map(&:name)}"
-        end
-    end
-
-    eligible_by_location & eligible_by_service_time & eligible_by_advanced_notice & eligible_by_trip_purpose
+    itineraries = get_accommodating_services_for_traveler(eligible, user_profile)
+    #Rails.logger.debug "Done get accommodating"
+    #Rails.logger.debug eligible.ai
+    #Rails.logger.debug accommodating.ai
+    itineraries
 
   end
 
-  def eligible_by_location(trip_part, services)
+  def get_eligible_services_for_trip(trip_part, itineraries)
+    itineraries = eligible_by_location(trip_part, itineraries)
+    itineraries = eligible_by_service_time(trip_part, itineraries)
+    itineraries = eligible_by_advanced_notice(trip_part, itineraries)
+    itineraries = eligible_by_trip_purpose(trip_part, itineraries)
 
-    eligible_services  = []
-    services.each do |service|
+    #eligible_by_location & eligible_by_service_time & eligible_by_advanced_notice & eligible_by_trip_purpose
+    itineraries
+  end
+
+  def eligible_by_location(trip_part, itineraries)
+
+    eligible_itineraries  = []
+    itineraries.each do |itinerary|
+      service = itinerary['service']
       #Match Residence
       coverages = service.service_coverage_maps.where(rule: 'residence').map {|c| c.geo_coverage.value.delete(' ').downcase}
       if trip_part.trip.user.home
@@ -158,57 +157,64 @@ class EligibilityHelpers
         next
       end
 
-      eligible_services << service
+      eligible_itineraries << itinerary
     end
-    eligible_services
+    eligible_itineraries
   end
 
-  def eligible_by_trip_purpose(trip_part, services)
-    eligible_services = []
-    services.each do |service|
+  def eligible_by_trip_purpose(trip_part, itineraries)
+
+    eligible_itineraries = []
+    itineraries.each do |itinerary|
+      service = itinerary['service']
       maps = service.service_trip_purpose_maps
       purposes = []
       maps.each do |map|
         purposes << map.trip_purpose
       end
       if purposes.include? trip_part.trip.trip_purpose
-        eligible_services << service
+        eligible_itineraries << itinerary
       end
     end
 
-    eligible_services
+    eligible_itineraries
 
   end
 
-  def eligible_by_service_time(trip_part, services)
+  def eligible_by_service_time(trip_part, itineraries)
     #TODO: This does not handle services with 24 hour operations well.
     wday = trip_part.trip_time.wday
-    eligible_services  = []
-    services.each do |service|
+    itineraries.each do |itinerary|
+      service = itinerary['service']
       schedules = Schedule.where(day_of_week: wday, service_id: service.id)
+      if schedules.count == 0
+        itinerary['match_score'] += 1
+      end
       schedules.each do |schedule|
         # puts "%-30s %-30s %s" % [Time.zone, planned_trip.trip_datetime, planned_trip.trip_datetime.seconds_since_midnight]
         # puts "%-30s %-30s %s" % [Time.zone, schedule.start_time, schedule.start_time.seconds_since_midnight]
         # puts "%-30s %-30s %s" % [Time.zone, schedule.end_time, schedule.end_time.seconds_since_midnight]
-        if trip_part.trip_time.seconds_since_midnight.between?(schedule.start_time.seconds_since_midnight,schedule.end_time.seconds_since_midnight)
-          # puts "eligible"
-          eligible_services << service
-          break
-        else
-          # puts "--- NOT ELIGIBLE ---"
+        unless trip_part.trip_time.seconds_since_midnight.between?(schedule.start_time.seconds_since_midnight,schedule.end_time.seconds_since_midnight)
+          itinerary['match_score'] += 1
         end
       end
     end
 
-    eligible_services
+    itineraries
 
   end
 
-  def eligible_by_advanced_notice(trip_part, services)
+  def eligible_by_advanced_notice(trip_part, itineraries)
     advanced_notice = (trip_part.trip_time.to_time - trip_part.created_at)/60
-    within_notice_period = Service.where('advanced_notice_minutes < ?', advanced_notice)
 
-    services & within_notice_period
+    itineraries.each do |itinerary|
+      notice_required = itinerary['service'].advanced_notice_minutes
+      if notice_required > advanced_notice
+        itinerary['match_score'] += 0.5
+      end
+    end
+
+    itineraries
 
   end
 
