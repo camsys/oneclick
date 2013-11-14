@@ -1,0 +1,1152 @@
+OBJECTID	LONGITUDE	LATITUDE	FACNAME	ADDRESS_1	ADDRESS_2	CITY	STATE	ZIP	AREACODE	PHONE	FIPS	COUNTY	TYPE	METHOD
+561052	-76.7637218336635	39.721144565208746	Bethlehem Steltz Reformed Church	5937 Steltz Road		Glen Rock	PA	17327			42133	York	Place of Worship	ArcGIS
+561122	-76.33423909208932	39.72212363596978	Delta United Methodist Church	211-215 Main Street		Delta	PA	17314			42133	York	Place of Worship	ArcGIS
+561246	-76.52257819743525	39.72361820285582	Centre Presbyterian Church	20 New Park Road		New Park	PA	17352			42133	York	Place of Worship	ArcGIS
+561350	-76.86549270644586	39.7250372646935	Black Rock Church Of The Brethren	4097 Glenville Road		Glenville	PA	17329			42133	York	Place of Worship	ArcGIS
+561376	-76.34142271017468	39.72538819370564	Slate Ridge Cemetery	205 Line Road		Delta	PA	17314			42133	York	Cemetery	ArcGIS
+561430	-76.69003361376839	39.72588090651182	Smg Artists	108-110 Glenray Court		New Freedom	PA	17349			42133	York	School	ArcGIS
+561458	-76.32857819052771	39.726160002167475	Emergency Evacuation For Delta Borough & Peach	500 Main Street		Delta	PA	17314			42133	York	Hospital/Polyclinic	ArcGIS
+561472	-76.32615816899666	39.7263191088155	Delta Borough	101 College Avenue		Delta	PA	17314			42133	York	Government Office	ArcGIS
+561477	-76.4519409181255	39.72636815885315	Fawn United Methodist Church	50 South Market Street		Fawn Grove	PA	17321			42133	York	Place of Worship	ArcGIS
+561529	-76.918339085201	39.72703273508298	St David's United Church Of Christ	72 Hobart Road		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+561581	-76.32544091811027	39.72765546344	First Baptist Church	629 Main Street		Delta	PA	17314			42133	York	Place of Worship	ArcGIS
+561589	-76.45165273738608	39.727777288293574	United States Government	26-146 Highway 851		Fawn Grove	PA	17321			42133	York	Government Office	ArcGIS
+561599	-76.56140817488583	39.72793634786863	Immanuel Baptist Church	20901-21131 Highway 24		Stewartstown	PA	17363			42133	York	Place of Worship	ArcGIS
+561642	-76.32086999123358	39.72851270934745	Peach Bottom Township	103 Broad Street		Delta	PA	17314			42133	York	Government Office	ArcGIS
+561724	-76.31995545751825	39.72966180768619	Trinity A M E Zion Church	1022-1098 Main Street		Delta	PA	17314			42133	York	Place of Worship	ArcGIS
+561780	-76.31080908475948	39.730278181191885	Slateville Presbyterian Church	90 Slateville Road		Delta	PA	17314			42133	York	Place of Worship	ArcGIS
+561802	-76.25025634255617	39.73054362568544	Coopers Cemetery	884-887 Orchard Road		Delta	PA	17314			42133	York	Cemetery	ArcGIS
+561829	-76.31750093149813	39.73077908469533	South Eastern School District	1055-1081 Atom Road		Delta	PA	17314			42133	York	School	ArcGIS
+561856	-76.34163816317114	39.7310900016806	Reter Robert Rev	6596 Delta Road		Delta	PA	17314			42133	York	Place of Worship	ArcGIS
+561857	-76.34163816317114	39.7310900016806	Delta Church Of The Nazarene	6596 Delta Road		Delta	PA	17314			42133	York	Place of Worship	ArcGIS
+561858	-76.34163816317114	39.7310900016806	Delta Christian Academy	6596 Delta Road		Delta	PA	17314			42133	York	School	ArcGIS
+561944	-76.98290183273726	39.73196089875016	St Bartholomew's United Church Elca	1002 Grand Valley Road		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+561958	-76.46909638062044	39.73208634822264	South Eastern School District	328-398 Main Street		Fawn Grove	PA	17321			42133	York	School	ArcGIS
+562003	-76.46762181974785	39.73248001949407	Kennard Dale High School	825-1375 Main Street		Fawn Grove	PA	17321			42133	York	School	ArcGIS
+562004	-76.46762181974785	39.73248001949407	South Eastern School District	825-1375 Main Street		Fawn Grove	PA	17321			42133	York	School	ArcGIS
+562070	-76.66404909742425	39.73330817430434	Rock Chapel Cemetery	1274 Oakwood Road		New Freedom	PA	17349			42133	York	Cemetery	ArcGIS
+562206	-76.92223362053169	39.73472092836367	St David Lutheran Church	1032 Musselman Road		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+562251	-76.70246906928185	39.7353081636992	Government Offices City	25 East High Street		New Freedom	PA	17349			42133	York	Government Office	ArcGIS
+562257	-76.70252998170864	39.73535180034498	Government Offices City New Freedom Boro	25 East High Street		New Freedom	PA	17349			42133	York	Government Office	ArcGIS
+562290	-76.69345092330096	39.735791838494606	St John Lutheran Church	175-216 East Main Street		New Freedom	PA	17349			42133	York	Place of Worship	ArcGIS
+562317	-76.58436726419588	39.73613363535003	Hopewell Cemetery	16100-16364 West Liberty Road		Stewartstown	PA	17363			42133	York	Cemetery	ArcGIS
+562349	-76.45170997812099	39.736590902207695	Winward Douglas Rev	486-490 Highway 425		Fawn Grove	PA	17321			42133	York	Place of Worship	ArcGIS
+562498	-76.69926909566465	39.73795088746453	Messiah Jerusalem Church	29-33 East Main Street		New Freedom	PA	17349			42133	York	Place of Worship	ArcGIS
+562594	-76.70263909685956	39.738656370107705	Grace Bible Church	24-36 West Main Street		New Freedom	PA	17349			42133	York	Place of Worship	ArcGIS
+562677	-76.70224547266109	39.73938637776972	Trinity United Methodist Church	9 North 2nd Street		New Freedom	PA	17349			42133	York	Place of Worship	ArcGIS
+562679	-76.67913998640567	39.73940181770479	Mason Dixon Baptist Church	230 Campbell Road		New Freedom	PA	17349			42133	York	Place of Worship	ArcGIS
+562720	-76.71206362381453	39.73970364960631	Bowser Cemetery	2539 Bowser Road		New Freedom	PA	17349			42133	York	Cemetery	ArcGIS
+562723	-76.70105998691439	39.739717253695446	A Child's Place	102 Front Street		New Freedom	PA	17349			42133	York	School	ArcGIS
+562902	-76.60891906754023	39.74077634851022	New Bethel Baptist Church	18954-19052 Ridge Meadow Road		Stewartstown	PA	17363			42133	York	Place of Worship	ArcGIS
+563055	-76.69507183404596	39.741688199066104	New Freedom Baptist Church	222 North Constitution Avenue		New Freedom	PA	17349			42133	York	Place of Worship	ArcGIS
+563063	-76.31243183135042	39.741739979336174	Mount Zion Cemetery	883 Pikes Peak Road		Delta	PA	17314			42133	York	Cemetery	ArcGIS
+563141	-76.41037002268835	39.74228273071242	Mt Olivet United Methodist	786-850 Mount Olivet Church Road		Fawn Grove	PA	17321			42133	York	Place of Worship	ArcGIS
+563178	-76.73904180354127	39.74254906959246	Freedom Thru Jesus Fellowship	14205 Ingham Road		New Freedom	PA	17349			42133	York	Place of Worship	ArcGIS
+563193	-76.2927108918385	39.74264909965964	Mt Nebo United Methodist Church	881-1055 Flintville Road		Delta	PA	17314			42133	York	Place of Worship	ArcGIS
+563215	-76.69451637296706	39.74272728786744	Southern York County Pantry	233 North Constitution Avenue		New Freedom	PA	17349			42133	York	Place of Worship	ArcGIS
+563216	-76.69451637296706	39.74272728786744	St John The Baptist Catholic Church	233 North Constitution Avenue		New Freedom	PA	17349			42133	York	School	ArcGIS
+563369	-76.67513092253219	39.743872714514296	Banach James Rev	11 Harrison Road		New Freedom	PA	17349			42133	York	Place of Worship	ArcGIS
+563612	-76.69050180155575	39.74575544513395	St Benedict's Episcopal Church	330-398 North Constitution Avenue		New Freedom	PA	17349			42133	York	Place of Worship	ArcGIS
+563658	-76.70121452748405	39.74603727102203	Johnston Randy	15604 Hale Drive		New Freedom	PA	17349			42133	York	Place of Worship	ArcGIS
+563777	-76.95292364538172	39.74670363602483	Emmanuel Ucc-Hanover	132 Shorbs Hill Road		Hanover	PA	17331			42133	York	College / University	ArcGIS
+563833	-76.94851093076657	39.74723819670382	West Manheim Elementary School	2434-2472 Baltimore Pike		Hanover	PA	17331			42133	York	School	ArcGIS
+563897	-76.35539999383884	39.74754817222963	Bryansville United Methodist Church	2200-2398 Highway 851		Delta	PA	17314			42133	York	Place of Worship	ArcGIS
+563901	-76.33098818551557	39.7475845596376	Calvary Chapel	5978 Delta Road		Delta	PA	17314			42133	York	Place of Worship	ArcGIS
+564081	-76.6604072498115	39.748700000800795	Grace & Truth Assembly	944 Windy Hill Road		New Freedom	PA	17349			42133	York	Place of Worship	ArcGIS
+564172	-76.79148001254934	39.74939635128726	Church Of Christ	3899 Sticks Road		Glen Rock	PA	17327			42133	York	Place of Worship	ArcGIS
+564371	-76.59151364755978	39.751021828110616	Stewartstown Area Senior Center	11-19 South Main Street		Stewartstown	PA	17363			42133	York	Place of Worship	ArcGIS
+564372	-76.59151364755978	39.751021828110616	Seyco	11-19 South Main Street		Stewartstown	PA	17363			42133	York	School	ArcGIS
+564422	-76.67947636986922	39.75142816201173	Lutheran Social Service	100-198 Luther Road		Shrewsbury	PA	17361			42133	York	Place of Worship	ArcGIS
+564666	-76.67536727592856	39.7531072549511	Chalker David J Do	55 Old Farm Lane		Shrewsbury	PA	17361			42133	York	Hospital/Polyclinic	ArcGIS
+564769	-76.39608817689026	39.75404909099065	Belview Freewill Baptist Church	267 Miller Road		Delta	PA	17314			42133	York	Place of Worship	ArcGIS
+564842	-76.92096180295289	39.75462728831541	Shue George	432 Frogtown Road		Hanover	PA	17331			42133	York	School	ArcGIS
+564913	-76.67772638503283	39.755189104245645	Turnpike Baptist Church	519 South Main Street		Shrewsbury	PA	17361			42133	York	Place of Worship	ArcGIS
+564949	-76.59746456570673	39.75541274793936	Government Offices City	200 Bailey Drive		Stewartstown	PA	17363			42133	York	Library	ArcGIS
+564962	-76.59227091047302	39.75548180399044	Stewartstown Historical Society	1-7 Mill Street		Stewartstown	PA	17363			42133	York	Museum	ArcGIS
+564964	-76.67787998414303	39.75548815884177	Shrewsbury Learning Center	516-526 State Route 3001		Shrewsbury	PA	17361			42133	York	School	ArcGIS
+565031	-76.66803001166001	39.75614181414191	Redeemer's Fellowship	125 South Church Street		Shrewsbury	PA	17361			42133	York	Place of Worship	ArcGIS
+565287	-76.61959907775244	39.758143639382716	Stewartstown Baptist Church	18631 5 Forks Road		Stewartstown	PA	17363			42133	York	Place of Worship	ArcGIS
+565347	-76.3767563425714	39.75850911394345	Hildreth Lee	35 Cedar Trail		Delta	PA	17314			42133	York	Government Office	ArcGIS
+565422	-76.95632090182787	39.75892274415534	West Manheim Elementary School	1992-2016 Baltimore Pike		Hanover	PA	17331			42133	York	School	ArcGIS
+565439	-76.95144729573616	39.75906546940884	Hanover Fellowship Church	190 Smeach Drive		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+565473	-76.9789381942825	39.759335432907775	First Church Of God	530 Fairview Drive		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+565474	-76.96052818998977	39.7593381631402	Little People	71-101 Fairview Drive		Hanover	PA	17331			42133	York	School	ArcGIS
+565598	-76.7001581629017	39.76039998818739	Government Offices City	Main Street East		New Freedom	PA	17349			42133	York	Government Office	ArcGIS
+565608	-76.62697545966138	39.76053362835714	Government Offices City	3030 Bridgeview Road		Stewartstown	PA	17363			42133	York	Government Office	ArcGIS
+565622	-76.47860361478861	39.76061365241088	Fawn Ame Zion Church	245 Alum Rock Road		New Park	PA	17352			42133	York	Place of Worship	ArcGIS
+565695	-76.96507092015575	39.76127728718125	Utz Terrace Luthern Ret Village	Utz Terrace		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+565834	-76.48018818519861	39.76228634342594	Emergency Operation Center	48-98 Alum Rock Road		New Park	PA	17352			42133	York	Government Office	ArcGIS
+565835	-76.48018818519861	39.76228634342594	Government Offices City	48-98 Alum Rock Road		New Park	PA	17352			42133	York	Government Office	ArcGIS
+565878	-76.46835272179634	39.762572735392396	Community Of Christ-Gatchelville	1900-2414 New Park Road		New Park	PA	17352			42133	York	Place of Worship	ArcGIS
+565940	-76.76629182968585	39.76305819896076	St Jacobs Lutheran Church	3444 Sticks Road		Glen Rock	PA	17327			42133	York	Place of Worship	ArcGIS
+565986	-76.59038182500204	39.76358635771545	South Eastern School District	75-77 North Main Street		Stewartstown	PA	17363			42133	York	School	ArcGIS
+566022	-76.67903910902498	39.76407182128382	Freedom Community Church	213-217 South Main Street		Shrewsbury	PA	17361			42133	York	Place of Worship	ArcGIS
+566087	-76.67914092786512	39.764750895989266	St Paul United Church Of Christ	159-199 State Route 3001		Shrewsbury	PA	17361			42133	York	Place of Worship	ArcGIS
+566124	-76.95688728383647	39.7651300217121	Calvary Assembly Of God	71-121 Pumping Station Road		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+566202	-76.86323908787362	39.76599362247088	Manheim Elementary School	5209 Blooming Grove Road		Glenville	PA	17329			42133	York	School	ArcGIS
+566285	-76.73758635429562	39.76683636990272	New Hope Fissel's United Church Of Christ	3074-3922 State Route 3015		Glen Rock	PA	17327			42133	York	Place of Worship	ArcGIS
+566302	-76.67948907957187	39.76701816572363	Christ Lutheran Church	103-109 South Main Street		Shrewsbury	PA	17361			42133	York	School	ArcGIS
+566315	-76.68125817603521	39.767060013596435	Government Offices City Shrewsbury Borough Municipal Building	35 West Railroad Avenue		Shrewsbury	PA	17361			42133	York	Government Office	ArcGIS
+566330	-76.6771118003001	39.76721182393368	Christ Cemetery	Reservoir Avenue		Shrewsbury	PA	17361			42133	York	Cemetery	ArcGIS
+566429	-76.95898998645795	39.76757273241604	Church Of Christ Of Hanover	1599 Wanda Drive		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+566549	-76.67926364710519	39.76897908455108	Ata Delta Black Belt Academy	1-33 Highway 851		Shrewsbury	PA	17361			42133	York	School	ArcGIS
+566574	-76.68228544952038	39.76924725927705	The Imagination Station	Park Avenue		Shrewsbury	PA	17361			42133	York	School	ArcGIS
+566622	-76.67598910989909	39.7695336512435	Grace Fellowship Church	52-98 Highway 851		Shrewsbury	PA	17361			42133	York	Place of Worship	ArcGIS
+566644	-76.98630365526176	39.76981547713159	St Joseph Catholic Church	5141-5157 Grandview Road		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+566684	-76.98746456891668	39.770052724914436	St Joseph Catholic Church Middle School	5141-5157 Grandview Road		Hanover	PA	17331			42133	York	School	ArcGIS
+566705	-76.67409545834975	39.77033638664847	Kiddie Academy Of Shrewsbury	85 East Forrest Avenue		Shrewsbury	PA	17361			42133	York	School	ArcGIS
+566738	-76.99140909574446	39.770646362174276	Thirstysoul Ministries	1111 William Street		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+566752	-76.73715728414865	39.77085819055182	Southern York County Schools	3280 Fissels Church Road		Glen Rock	PA	17327			42133	York	School	ArcGIS
+566765	-76.96044364693064	39.77102271059172	Hanover Karate Academy	1420-1472 Baltimore Street		Hanover	PA	17331			42133	York	School	ArcGIS
+566768	-76.68046273694102	39.771089083483346	Accessible Cpr & First Aid	61-65 North Main Street		Shrewsbury	PA	17361			42133	York	School	ArcGIS
+566787	-76.81279183024964	39.77134181827425	St Jacobs Stone United Church Of Christ	5152 Stone Church Road		Glenville	PA	17329			42133	York	Place of Worship	ArcGIS
+566845	-76.96037091918768	39.771921804371985	Express Care	1408-1414 Baltimore Street		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+567008	-76.93749274831785	39.77390362359935	Government Offices City	691 Pumping Station Road		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+567010	-76.59726907165074	39.77396180579372	Holy Trinity Charismatic Episcopal Church	2069-2237 Plank Road		Stewartstown	PA	17363			42133	York	Place of Worship	ArcGIS
+567013	-76.33577635416167	39.773991838350355	Salem United Methodist	4991-5039 Delta Road		Delta	PA	17314			42133	York	Place of Worship	ArcGIS
+567016	-76.68026088803371	39.774003653666526	Shrewsbury Dunkard Brethren School	2 West Clearview Drive		Shrewsbury	PA	17361			42133	York	Place of Worship	ArcGIS
+567017	-76.68026088803371	39.774003653666526	Shrewsbury Assembly Of God	2 West Clearview Drive		Shrewsbury	PA	17361			42133	York	Place of Worship	ArcGIS
+567034	-76.98244635465255	39.7741836136415	Missionary Bible Baptist Church & Academy	934-990 Beck Mill Road		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+567092	-76.95832362145516	39.77474815980415	Little People	3900-3944 Grandview Road		Hanover	PA	17331			42133	York	School	ArcGIS
+567143	-76.63322910409634	39.77518909234026	St John Lutheran Church	3036 Saddlers Church Road		Stewartstown	PA	17363			42133	York	Place of Worship	ArcGIS
+567215	-76.41450274726135	39.776004537447875	Woodbine Believers Assembly	8893-8899 Woodbine Road		Airville	PA	17302			42133	York	Place of Worship	ArcGIS
+567217	-76.41451272673159	39.77601908299647	Balwin James A Rev	8893-8899 Woodbine Road		Airville	PA	17302			42133	York	Place of Worship	ArcGIS
+567233	-76.51661725274509	39.77615907801754	Whole Gospel Tabernacle	10555 Blue Ball Road		Stewartstown	PA	17363			42133	York	Place of Worship	ArcGIS
+567398	-76.94444090739333	39.77776906783286	Harvest Time Temple Church	700-720 Black Rock Road		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+567402	-76.96111999140366	39.77780183062192	Medexpress Hanover	1157-1199 Baltimore Street		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+567411	-76.95374271510825	39.777921819629555	Hanover Surgicenter	3116 Grandview Road		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+567412	-76.95374271510825	39.777921819629555	Hanover Hospital	3116 Grandview Road		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+567508	-76.96187184092504	39.779036366406274	Clousher's Lottery Service	1049-1055 Baltimore Street		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+567711	-76.96929637848514	39.781525443988414	Jehovah's Witnesses	1 Paradise Court		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+567788	-76.67226455507314	39.782320930155564	Grace United Methodist Church	481-537 Plank Road		New Freedom	PA	17349			42133	York	Place of Worship	ArcGIS
+567789	-76.67226455507314	39.782320930155564	Faith & Fun Christian Preschool	481-537 Plank Road		New Freedom	PA	17349			42133	York	School	ArcGIS
+567851	-76.99892001220964	39.78288364047228	Ruths Arthur L Rev	Morning Glory Drive		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+567872	-76.59531634352055	39.78310817855248	St Paul's Lutheran Church	16572 Barrens Road North		Stewartstown	PA	17363			42133	York	Place of Worship	ArcGIS
+567937	-76.9714181927336	39.78381093096324	Grace United Methodist Church Parsonage	20 Little Knoll Drive		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+567959	-76.96537637667618	39.78400002309493	Martin's Gallery	919-943 Highway 94		Hanover	PA	17331			42133	York	Museum	ArcGIS
+567997	-76.67908815906263	39.78448727543626	Trail Church Of The Nazarene	403 North Main Street		Shrewsbury	PA	17361			42133	York	Place of Worship	ArcGIS
+568064	-76.95992090156783	39.78518635615515	E H Markle Intermediate School	225 Bowman Road		Hanover	PA	17331			42133	York	School	ArcGIS
+568065	-76.95992090156783	39.78518635615515	South Western School District	225 Bowman Road		Hanover	PA	17331			42133	York	School	ArcGIS
+568076	-76.96677999857879	39.78530361493037	Hanover Bible Baptist Church	889 Baltimore Street		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+568093	-76.97820729223402	39.785638162547976	Happy Time Day Care	29 Hill Street		Hanover	PA	17331			42133	York	School	ArcGIS
+568115	-76.8758509258161	39.785830926371546	Lake Marburg Baptist Sbc	3178 Smoketown Road		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+568146	-76.80760726009967	39.786132711200096	Codorus Township Board Of Supervisors	4631 Shaffers Church Road		Glenville	PA	17329			42133	York	Government Office	ArcGIS
+568173	-76.90476634666499	39.786562722806515	Dubs Cemetery	1958 Dubs Church Road		Hanover	PA	17331			42133	York	Cemetery	ArcGIS
+568267	-76.96898089542152	39.787316361100864	Enlightened Learning Center	805-825 Baltimore Street		Hanover	PA	17331			42133	York	School	ArcGIS
+568328	-76.7400272762266	39.7879636144767	Reformed Cemetery	Fair School Road		Glen Rock	PA	17327			42133	York	Cemetery	ArcGIS
+568368	-76.98781634524232	39.78828818262408	Rest Haven Cemetery	591-645 West Granger Street		Hanover	PA	17331			42133	York	Cemetery	ArcGIS
+568370	-76.98236002282046	39.78836180475352	Park Hills School	139-179 West Granger Street		Hanover	PA	17331			42133	York	School	ArcGIS
+568466	-76.74041817019263	39.78966365488896	Chestnut Hill Cemetery	Fair School Road		Glen Rock	PA	17327			42133	York	Cemetery	ArcGIS
+568552	-76.92001634229443	39.79069544737951	Friends Of Codorus State Park	1033-1099 Highway 216		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+568553	-76.92001634229443	39.79069544737951	Commonwealth Of Pennsylvania	1033-1099 Highway 216		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+568554	-76.92001634229443	39.79069544737951	Appalachian Outdoor School Oar House	1033-1099 Highway 216		Hanover	PA	17331			42133	York	School	ArcGIS
+568684	-76.9839372498467	39.79236545523513	New Beginnings	426-498 Boundary Avenue		Hanover	PA	17331			42133	York	School	ArcGIS
+568702	-76.94443365815552	39.79249090470761	Rainbow Castle	2081 Grandview Road		Hanover	PA	17331			42133	York	School	ArcGIS
+568714	-76.93011001155759	39.79266361544478	Sunshine Place Preschool	786-804 Blooming Grove Road		Hanover	PA	17331			42133	York	School	ArcGIS
+568726	-76.7303190875376	39.79285364903592	Glen Rock Borough	1 Manchester Street		Glen Rock	PA	17327			42133	York	Government Office	ArcGIS
+568736	-76.73175363638333	39.792979992894885	Zion Lutheran Church	15-27 Hanover Street		Glen Rock	PA	17327			42133	York	Place of Worship	ArcGIS
+568745	-76.72936543618188	39.79308181173503	Government Offices City Glen Rock Borough	2-18 Baltimore Street		Glen Rock	PA	17327			42133	York	Government Office	ArcGIS
+568789	-76.96951362025456	39.79369729085424	Grace Presbyterian Church	17 Wayne Avenue		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+568796	-76.98327182630337	39.79376455813235	Providence Community Church	305 Meade Avenue		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+568801	-76.96907998402924	39.79384547657258	Mifflin County Lewistown	38-98 Wayne Avenue		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+568830	-76.96900000704846	39.79417997711721	Penn Township Municipal Building	20 Wayne Avenue		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+568840	-76.97009181757933	39.794291822500554	Apostolic Ministries	300 John Street		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+568879	-76.3479945679057	39.794736379655575	New Covenant Community Church	244-298 Slab Road		Delta	PA	17314			42133	York	Place of Worship	ArcGIS
+568954	-76.73239001590245	39.79544727569063	Immanuel United Methodist Church	1-9 New Street		Glen Rock	PA	17327			42133	York	Place of Worship	ArcGIS
+568956	-76.97787547484883	39.795451794696014	God's Meal Barrel	413-449 Highway 94		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569033	-76.97891635242313	39.796416366981425	Hanover Area Historical Society	301-369 Highway 94		Hanover	PA	17331			42133	York	Museum	ArcGIS
+569123	-76.94732544501987	39.79741365498292	Grace United Methodist Church	15-65 Albright Drive		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569131	-76.98506182316663	39.797479086415095	First United Methodist Church	215 West Walnut Street		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569134	-76.97995638268392	39.797497256582595	St Joseph Catholic Church Elementary School	232-236 Baltimore Street		Hanover	PA	17331			42133	York	School	ArcGIS
+569164	-76.97783000235712	39.797800924330055	Hanover Elementry	101-199 East Hanover Street		Hanover	PA	17331			42133	York	School	ArcGIS
+569208	-76.9808663503209	39.798189982450154	West Manheim Elementary School	205 Baltimore Street		Hanover	PA	17331			42133	York	School	ArcGIS
+569211	-76.67910002145177	39.79820998846358	Shrewsbury Township Supervisors	12500-12798 Susquehanna Trail		Glen Rock	PA	17327			42133	York	Government Office	ArcGIS
+569218	-76.98293817307224	39.79823545494187	Covenant Life	117 Ruth Avenue		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569278	-76.97453362329165	39.79897365330113	Hanover Hospital	416-474 York Street		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+569279	-76.97453362329165	39.79897365330113	Penn State York	416-474 York Street		Hanover	PA	17331			42133	York	College / University	ArcGIS
+569285	-76.98546274367587	39.79903362426847	First United Methodist Church	200-210 Frederick Street		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569291	-76.96495728599945	39.79908818184393	Mumma Cemetery	835 York Street		Hanover	PA	17331			42133	York	Cemetery	ArcGIS
+569309	-76.92677635069768	39.79923909779469	God's Missionary Church	1285 Hoff Road		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569378	-76.95850635873552	39.7996736284065	Victory Free Will Baptist Church	1-23 Breezewood Drive		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569388	-76.97502181709244	39.799756382692664	Hanover Child Development Centers	200 Pleasant Street		Hanover	PA	17331			42133	York	School	ArcGIS
+569390	-76.98244183564717	39.799775447246645	Government Offices City Hanover Borough	42-70 Baltimore Street		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+569393	-76.9842363515158	39.79981089319516	Government Offices City Hanover Borough	56-58 Frederick Street		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+569394	-76.9842363515158	39.79981089319516	Hanover Borough	56-58 Frederick Street		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+569399	-76.98260456691409	39.799852741067966	Christian Science Reading Room	41-69 Highway 94		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569404	-76.98257180412503	39.799892706021865	The Frame Shop And Gallery	42 Baltimore Street		Hanover	PA	17331			42133	York	Museum	ArcGIS
+569414	-76.97847273672757	39.79999909094036	International Partnership Ministries	""		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569415	-76.73740182824228	39.79999998532685	Emanuel United Methodist Church	201-299 Main Street		Glen Rock	PA	17327			42133	York	Place of Worship	ArcGIS
+569416	-76.97849453151397	39.80000455140521	International Partnership Ministries	214 York Street		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569426	-76.73749272615274	39.80012181018042	Arthur Hafnagel Public Library Of Glen Rock	201-299 Main Street		Glen Rock	PA	17327			42133	York	Library	ArcGIS
+569435	-76.97963092015006	39.80020272862065	St Paul's Lutheran Church	101-199 Highway 116		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569436	-76.96096361498806	39.80020545885307	Massage Of Trichotomy	901 York Street		Hanover	PA	17331			42133	York	School	ArcGIS
+569451	-76.98689456228918	39.80032634224719	Hanover Area Historical Society	105 High Street		Hanover	PA	17331			42133	York	Museum	ArcGIS
+569452	-76.98896092457568	39.800328178093125	Le Gant	215 Poplar Street		Hanover	PA	17331			42133	York	Museum	ArcGIS
+569471	-76.98067179772437	39.80047090334662	Trinity United Church Of Christ-Toy Workshop	101-199 Highway 116		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569474	-76.98041091930916	39.80049815859786	Trinity United Church Of Christ Office	100-198 Highway 116		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569475	-76.98041091930916	39.80049815859786	Trinity Nursery School	100-198 Highway 116		Hanover	PA	17331			42133	York	School	ArcGIS
+569476	-76.72852819628785	39.800540006470676	Glen Rock Methodist Cemetery	350-368 Church Street		Glen Rock	PA	17327			42133	York	Cemetery	ArcGIS
+569478	-76.98600728382509	39.80056363710301	Hanover Child Development Centers	70-108 West Chestnut Street		Hanover	PA	17331			42133	York	School	ArcGIS
+569479	-76.98600728382509	39.80056363710301	Discovery Place Preschool	70-108 West Chestnut Street		Hanover	PA	17331			42133	York	School	ArcGIS
+569483	-76.98594453555236	39.80060181328395	St Matthew Lutheran Church	2 North Franklin Street		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569510	-76.98350182484842	39.80077546548056	Kyatic Tat	7-15 Highway 194		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569513	-76.981931799987	39.80082818721009	Tallman Will	1-99 Highway 116		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+569514	-76.981931799987	39.80082818721009	York County Probation Department	1-99 Highway 116		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+569530	-76.98203456028659	39.80095636691499	Trinity Lutheran Church	4 York Street		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569531	-76.98203456028659	39.80095636691499	Jefferson Center For Pre-School Children	4 York Street		Hanover	PA	17331			42133	York	School	ArcGIS
+569540	-76.96067816448107	39.80106543499294	Youth For Christ	1-99 Spring Garden Avenue		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569568	-76.98228908385046	39.801448185334685	Salvation Army	108-112 Broadway		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569569	-76.98425362729682	39.80145637603195	Hanover Area Arts Guild	39-43 Carlisle Street		Hanover	PA	17331			42133	York	Museum	ArcGIS
+569578	-76.97857728580014	39.801551840020764	Lohrs Memorial United Methodist Church	200 East Middle Street		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569621	-76.96075089222403	39.80183183006291	South Western School District	98 Spring Garden Avenue		Hanover	PA	17331			42133	York	School	ArcGIS
+569629	-76.98207273646753	39.801891801030244	Emmanuel Ucc-Hanover	130-144 Highway 194		Hanover	PA	17331			42133	York	College / University	ArcGIS
+569677	-76.98541454095174	39.80236455489596	Hanover Area Council Of Churches	144 Carlisle Street		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569733	-76.96597636878734	39.803078181163436	Baresville School	121-135 Sanford Avenue		Hanover	PA	17331			42133	York	School	ArcGIS
+569778	-76.58480273626715	39.803439089645806	Lurz Driver Training Services	14367 Curvin Drive		Stewartstown	PA	17363			42133	York	School	ArcGIS
+569800	-76.97592364110513	39.80363274785586	First Baptist Church	326-398 Terrace Avenue		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569803	-76.3687363789785	39.8036499765639	Pine Grove Presbyterian Church	4317-4383 Delta Road		Airville	PA	17302			42133	York	Place of Worship	ArcGIS
+569821	-76.98106819922822	39.80382725337942	Hanover Day Nursery	304 Broadway		Hanover	PA	17331			42133	York	School	ArcGIS
+569826	-76.97672910674251	39.80389635650347	Ray Allen G Rev	211 Fulton Street		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569833	-76.99829455362018	39.80394088753573	Grace Wesleyan Church	200-204 South Street		Hanover	PA	17331			42133		Place of Worship	ArcGIS
+569842	-76.987043642394	39.80402364182189	Guthrie Memorial Library	307-309 Carlisle Street		Hanover	PA	17331			42133	York	Library	ArcGIS
+569851	-76.98730725104161	39.80412456627555	So's Taekwondo	320 Carlisle Street		Hanover	PA	17331			42133	York	School	ArcGIS
+569890	-76.99526088881586	39.80464363994649	St Vincent Church	188-264 Highway 116		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+569906	-76.99592908966459	39.80476184018116	Depaul Center	188-264 Highway 116		Hanover	PA	17331			42133	York	College / University	ArcGIS
+569947	-76.98495181362922	39.80522546189016	Government Offices City Hanover Borough	69-97 North Street		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+570016	-76.99137638002837	39.806158165772985	Grace United Church Of Christ	100-112 4th Street		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+570101	-76.98280363851602	39.807050904701924	Hanover Health	310 Stock Street		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+570103	-76.91787635787848	39.80705998978567	Hope Baptist Church	99 Hope Way		Hanover	PA	17331			42133	York	School	ArcGIS
+570136	-76.68154908700704	39.80735363098992	St Paul Lutheran Church Hametown	12000-12162 Susquehanna Trail		Glen Rock	PA	17327			42133	York	Place of Worship	ArcGIS
+570186	-76.98339638138937	39.808075447954664	Hanover Hospital Hillside	398 Highland Avenue		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+570187	-76.98339638138937	39.808075447954664	Daniels Warren C Md	398 Highland Avenue		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+570188	-76.98339638138937	39.808075447954664	Center For Acute Rehabilitative Medicine At	398 Highland Avenue		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+570189	-76.98339638138937	39.808075447954664	Hanover Hospital Maternity Services	398 Highland Avenue		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+570190	-76.98339638138937	39.808075447954664	Lifeline Personal Response Service	398 Highland Avenue		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+570191	-76.98339638138937	39.808075447954664	Psychiatric Center Of Hanover Hospital	398 Highland Avenue		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+570192	-76.98339638138937	39.808075447954664	Hanover Hospital	398 Highland Avenue		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+570197	-76.37381908321534	39.80814907008411	Bethany Baptist Church	4152-4162 Delta Road		Airville	PA	17302			42133	York	Place of Worship	ArcGIS
+570208	-76.8063699940829	39.80836725331298	Greenmount United Methodist	4226 Greenmount Church Road		Glen Rock	PA	17327			42133	York	Place of Worship	ArcGIS
+570223	-76.98138909568371	39.808525465574526	Hanover Medical Group Pulmonary And Sleep Medicine	71 George Street		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+570226	-76.98275181117297	39.808548201820386	Hanover Hospital	300 Highland Avenue		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+570282	-76.98878091752773	39.80931271397144	Great Starts Child Care	15-19 Allegheny Avenue		Hanover	PA	17331			42133	York	School	ArcGIS
+570316	-76.37565634134327	39.80966364298358	Lower Chanceford Township Supvr	4088-4128 Highway 74		Airville	PA	17302			42133	York	Government Office	ArcGIS
+570334	-76.92337819986504	39.80994179717979	Hanover Community Church	1951-1959 Smith Station Road		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+570382	-76.98419092609707	39.810383624102386	St Mark Lutheran Church	155-199 Charles Street		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+570446	-76.41252544703937	39.81114272286157	Chanceford Presbyterian Cemetery	1784 Woodbine Road		Airville	PA	17302			42133	York	Cemetery	ArcGIS
+570477	-76.95458456815359	39.81143909429825	Government Offices City	900 Old Ridge Road		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+570536	-76.68461000706262	39.812267249108515	Government Offices City	11505 Susquehanna Trail		Glen Rock	PA	17327			42133	York	Government Office	ArcGIS
+570594	-76.41586362690467	39.81290089839522	Chanceford Presbyterian Church	1822 Woodbine Road		Airville	PA	17302			42133	York	Place of Worship	ArcGIS
+570644	-76.99372089651108	39.813550929076456	Commonwealth Of Pennsylvania Military Affairs Department	2-124 West Clearview Road		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+570700	-76.98747817300581	39.814361808105716	All Saints Episcopal Church	830-898 McCosh Street		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+570733	-76.56453636221951	39.814616378742556	Roundhill Cemetery	1401-6261 Round Hill Church Road		Felton	PA	17322			42133	York	Cemetery	ArcGIS
+570794	-76.83994182632705	39.81541638391509	Christ United Church Of Christ	23-33 Highway 516		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+570807	-76.96436091850718	39.815619080135924	Hanover Hospital	785-799 Cherry Tree Court		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+570808	-76.96464001416285	39.815629106679125	Center For Child Development Ucp/Adult Services	788 Cherry Tree Court		Hanover	PA	17331			42133	York	School	ArcGIS
+570815	-76.92077181643471	39.815746365454345	Bethel Ucc	2112-2124 Yingling Drive		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+570844	-76.57886819951472	39.81606363729094	Lee R W	14111 Cross Roads Avenue		Felton	PA	17322			42133	York	Government Office	ArcGIS
+570856	-76.94104365094718	39.81617727144725	York Road Cemetery	Hanover Road		Hanover	PA	17331			42133	York	Cemetery	ArcGIS
+570895	-76.89528453190213	39.81645363687049	Freedom Path Ministries	1501 Marburg Road		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+570944	-76.96580092781775	39.817040919279	Parsonage Calvary Bible Ch	603 Wilson Avenue		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+570945	-76.96927453662578	39.81705635921408	Hanover Church Of The Brethren	600-602 Wilson Avenue		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+570956	-76.56859184004416	39.81730909400498	Hopewell Presbyterian Church	6863-6973 Church Road		Felton	PA	17322			42133	York	Place of Worship	ArcGIS
+570961	-76.97227270840862	39.81737909151552	Washington Elementry	301-399 Moul Avenue		Hanover	PA	17331			42133	York	School	ArcGIS
+570968	-76.96782092322606	39.817457279723314	Calvary Bible Church	605-699 Wilson Avenue		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+570969	-76.96782092322606	39.817457279723314	Shepherd's Fold Day Care Center	605-699 Wilson Avenue		Hanover	PA	17331			42133	York	School	ArcGIS
+570984	-76.99437092719232	39.81764364162259	Air Force	1046-1108 Highway 94		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+570985	-76.99437092719232	39.81764364162259	United States Army Recruiting Office	1046-1108 Highway 94		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+571081	-76.5775791061549	39.81858637204863	Cross Roads United Methodist	14197-14215 Cross Roads Avenue		Felton	PA	17322			42133	York	Place of Worship	ArcGIS
+571086	-76.97460818688056	39.81870090059142	The Evangelical Brethren Church	925 Broadway		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+571090	-76.97581179572178	39.81872363683728	Foursquare Gospel Church	518 Wilson Avenue		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+571107	-76.57480726122523	39.81883091614226	Round Hill Presbyterian	6601-7099 Church Street		Felton	PA	17322			42133	York	Place of Worship	ArcGIS
+571137	-76.89562180975216	39.819183633927366	Porters Cemetery	1380-1392 Marburg Road		Spring Grove	PA	17362			42133	York	Cemetery	ArcGIS
+571140	-76.95676545898289	39.81922454034071	Glaxosmithkline Consumer Healthcare	53-99 Barnhart Drive		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+571150	-76.97140637741742	39.819321840175476	Hanover Practical Nursing Program	435 Moul Avenue		Hanover	PA	17331			42133	York	College / University	ArcGIS
+571195	-76.95582997779466	39.819903615046165	Government Offices City Hanover Borough	53-99 Barnhart Drive		Hanover	PA	17331			42133	York	Government Office	ArcGIS
+571219	-76.3690391052665	39.82024908359346	New Covenant Community Church	116-262 McCalls Ferry Road		Airville	PA	17302			42133	York	Place of Worship	ArcGIS
+571308	-76.89477727354736	39.82143998273204	Hammonds N Wayne Rev	1354 Marburg Road		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+571312	-76.67281634446017	39.82149270446156	Mt Zion-Potosi United Methodist	10664 Mount Zion Road		Glen Rock	PA	17327			42133	York	Place of Worship	ArcGIS
+571313	-76.67281634446017	39.82149270446156	Happy Hearts Preschool	10664 Mount Zion Road		Glen Rock	PA	17327			42133	York	School	ArcGIS
+571336	-76.80399728088949	39.82171634815528	Zion Schaffer's United Lutheran Church	4532 Shaffer Road		Seven Valleys	PA	17360			42133	York	Place of Worship	ArcGIS
+571408	-76.69639091288944	39.82266999951101	Glenview Alliance Church	10414 Susquehanna Trail South		Glen Rock	PA	17327			42133	York	Place of Worship	ArcGIS
+571461	-76.9729145483926	39.82330181295177	Delong David L Rev	1200-1290 Abbottstown Pike		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+571572	-76.96975910580765	39.824659067976185	Hanover Rehabilitation Centers	250 Fame Avenue		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+571573	-76.96975910580765	39.824659067976185	Hanover Hospital	250 Fame Avenue		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+571574	-76.96975910580765	39.824659067976185	The Hillside Medical Center	250 Fame Avenue		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+571575	-76.96975910580765	39.824659067976185	Hanover Cardiovascular Services	250 Fame Avenue		Hanover	PA	17331			42133	York	Hospital/Polyclinic	ArcGIS
+571595	-76.39555728790315	39.82496089987771	Mckendree United Methodist Church	3708 Delta Road		Airville	PA	17302			42133	York	Place of Worship	ArcGIS
+571667	-76.97494089865222	39.82558000361582	World Martial Arts	440-450 Eisenhower Drive		Hanover	PA	17331			42133	York	School	ArcGIS
+571670	-76.70823725014843	39.825660922056045	Winter Cemetery	300-698 Highway 216		Glen Rock	PA	17327			42133	York	Cemetery	ArcGIS
+571834	-76.97575361352742	39.82735907954939	Jesus Messiah Evangelical Free Church	109 Flickinger Road		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+572303	-76.92075181042128	39.832342742251484	Heidelberg Elementary School	Hanover Road		Spring Grove	PA	17362			42133	York	School	ArcGIS
+572411	-76.9573745361778	39.83383636767807	Jehovah's Witnesses	1750 Youngs Road		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+572428	-76.4913891049277	39.83415274512818	Guinston Presbyterian Church	14130 Guinston Road		Airville	PA	17302			42133	York	Place of Worship	ArcGIS
+572588	-76.57431638426499	39.83657271958627	Old Roundhill Cemetery	6901-6999 Cemetery Road		Felton	PA	17322			42133	York	Cemetery	ArcGIS
+572710	-76.73489090880076	39.83814363883417	St Peter's Church	815-1599 Seitzville Road		Seven Valleys	PA	17360			42133	York	Place of Worship	ArcGIS
+572717	-76.61944180695036	39.83832091564969	Winterstown United Methodist Church	11903-12465 Main Street		Felton	PA	17322			42133	York	Place of Worship	ArcGIS
+572875	-76.70704729246931	39.84006270978881	Government Offices City	9211 Susquehanna Trail South		Seven Valleys	PA	17360			42133	York	Government Office	ArcGIS
+572951	-76.93268273781237	39.84064363734599	Mount Carmel Lutheran Church	6675 Moulstown Road		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+573152	-76.62069361851573	39.842751800432325	Red Lion Area Schools	12008-12034 Winterstown Road		Felton	PA	17322			42133	York	School	ArcGIS
+573171	-76.7382781857767	39.84313182054165	Friedensaal Evangelical Lutheran Church	9141-9665 White Church Road		Seven Valleys	PA	17360			42133	York	Place of Worship	ArcGIS
+573575	-76.71235453478636	39.8478754581555	New Hope Bible Church	242-248 Smeltzer Street		Seven Valleys	PA	17360			42133	York	Place of Worship	ArcGIS
+573740	-76.86636638082082	39.85039635706725	Jehovah's Witnesses	1579-1595 Jefferson Road		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+573781	-76.78673275031659	39.850997290637864	Pet Cemetery	3899-3921 Green Valley Road		Seven Valleys	PA	17360			42133	York	Cemetery	ArcGIS
+573785	-76.43025727101315	39.85104634067551	Red Lion Area Schools	2-38 Chanceford Road		Brogue	PA	17309			42133	York	School	ArcGIS
+573848	-76.56317091649784	39.851739113616034	Government Offices City	84 Water Street		Felton	PA	17322			42133	York	Government Office	ArcGIS
+573872	-76.62057998435941	39.85207361416067	Pleasant View Church Of The Brethren	11263-11409 Winterstown Road		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+573908	-76.56395454027584	39.852672711885354	Denna's Typing Solutions	72-82 Water Street		Felton	PA	17322			42133	York	Place of Worship	ArcGIS
+573960	-76.51118729118798	39.853348161971894	St James Church	2324 Cramer Road		Brogue	PA	17309			42133	York	Place of Worship	ArcGIS
+573969	-76.76971182237787	39.85342272556079	Christ Lutheran Church	80 Main Street		Seven Valleys	PA	17360			42133	York	Place of Worship	ArcGIS
+573971	-76.8757481655165	39.853441837187745	St Peters Lischey's Ucc	5671 Lischeys Church Road		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+574091	-76.56609452469179	39.855043636305794	Faith Baptist Church	55-77 State Route 2054		Felton	PA	17322			42133	York	Place of Worship	ArcGIS
+574156	-76.76840272300461	39.8558981990538	The Carpenter's Workshop Felloship	55 Church Street		Seven Valleys	PA	17360			42133	York	Place of Worship	ArcGIS
+574157	-76.76840272300461	39.8558981990538	Seven Valleys Borough	55 Church Street		Seven Valleys	PA	17360			42133	York	Government Office	ArcGIS
+574190	-76.56411816592926	39.85628546840093	Bethany United Methodist Church	44 High Street		Felton	PA	17322			42133	York	Place of Worship	ArcGIS
+574312	-76.68586181862798	39.85792727954585	Codorus Cemetery	1129 Dunkard Valley Road		Dallastown	PA	17313			42133	York	Cemetery	ArcGIS
+574399	-76.68486999109133	39.85932727682955	Codorus Church Of The Brethren	1368-1898 Dunkard Valley Road		Dallastown	PA	17313			42133	York	Place of Worship	ArcGIS
+574549	-76.62414364376437	39.86140818466464	Shaffer Cemetery	4621 List Road		Red Lion	PA	17356			42133	York	Cemetery	ArcGIS
+574603	-76.78680364221361	39.86212181093212	St Paul Zeiglers Lutheran Church	4258 Zeiglers Church Road		Seven Valleys	PA	17360			42133	York	Place of Worship	ArcGIS
+574608	-76.46242637574117	39.86216182295899	Collinsville Community Library	2600 Delta Road		Brogue	PA	17309			42133	York	Library	ArcGIS
+574640	-76.5409918263469	39.86260727450049	Trinity Cemetery	667 Main Saint Exd		Felton	PA	17322			42133	York	Cemetery	ArcGIS
+574648	-76.37603819729853	39.86284635812928	Indian Steps Museum	205 Indian Steps Road		Airville	PA	17302			42133	York	Museum	ArcGIS
+574750	-76.58666997987875	39.86449000512014	Shoff Preston & Irene	310-430 Husson Road		Felton	PA	17322			42133	York	Place of Worship	ArcGIS
+574754	-76.86804274352777	39.864560002630675	Foundation For A Christian Civilization	1326 Jefferson Road		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+574833	-76.54831727529927	39.86579910449339	Cornerstone Community Church	75-109 Pond Road		Felton	PA	17322			42133	York	Place of Worship	ArcGIS
+575011	-76.67110001679933	39.868371830748174	Ness Cemetery	2228 Dunkard Valley Road		Dallastown	PA	17313			42133	York	Cemetery	ArcGIS
+575117	-76.48512816418196	39.87012092119808	Mt Zion Baptist Church	48 Muddy Creek Forks Road		Brogue	PA	17309			42133	York	Place of Worship	ArcGIS
+575177	-76.70719637257413	39.87107273670786	State Legislators	6814-6902 Susquehanna Trail		York	PA	17403			42133	York	Government Office	ArcGIS
+575214	-76.86514361327967	39.871578159216696	St Paul's Lutheran Church	169-253 Hanover Road		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+575218	-76.82218816049391	39.87161181639224	St Paul's United Church Of Christ	2173 Stoverstown Road		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+575242	-76.48084819535008	39.87210179896599	New Harmony Presbyterian Church	2225-2315 Highway 74		Brogue	PA	17309			42133	York	Place of Worship	ArcGIS
+575265	-76.66090636454197	39.87252818595351	Williams Cemetery	737-855 Highway 214		Dallastown	PA	17313			42133	York	Cemetery	ArcGIS
+575412	-76.86413907604036	39.87550908195534	Spring Grove Area Historical Preservation Society	40-78 North East Street		Spring Grove	PA	17362			42133	York	Museum	ArcGIS
+575443	-76.86449819574976	39.87610544944761	Spring Grove Area School District	100 East College Avenue		Spring Grove	PA	17362			42133	York	School	ArcGIS
+575447	-76.86392997789524	39.87622816868767	Spring Grove Elementary School	150-198 East College Avenue		Spring Grove	PA	17362			42133	York	School	ArcGIS
+575448	-76.86392997789524	39.87622816868767	River Rock Academy	150-198 East College Avenue		Spring Grove	PA	17362			42133	York	School	ArcGIS
+575449	-76.86392997789524	39.87622816868767	Alternative Education Services	150-198 East College Avenue		Spring Grove	PA	17362			42133	York	School	ArcGIS
+575483	-76.86587456240113	39.876647259364404	Sacred Heart Church	137-141 North Main Street		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+575537	-76.7123317985405	39.87750271649889	Salem United Church Of Christ	26-30 Franklin Street		Jacobus	PA	17407			42133	York	Place of Worship	ArcGIS
+575538	-76.7123317985405	39.87750271649889	Joyful Friends Christian Learning Center	26-30 Franklin Street		Jacobus	PA	17407			42133	York	School	ArcGIS
+575570	-76.86550819345392	39.877970904286244	Spring Grove Area Cma Church	197-243 Hanover Road		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+575575	-76.869834529164	39.878091834753334	New Beginning Assembly Of God	239 West Jackson Street		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+575741	-76.58577272194442	39.88108454607134	Zion United Methodist Church	1045-1107 Felton Road		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+575742	-76.58577272194442	39.88108454607134	Head Start Of York Co	1045-1107 Felton Road		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+575808	-76.82297362011785	39.88183361828733	St Pauls Lutheran	4823 Lehman Road		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+575827	-76.81855728088381	39.88213545018885	North Codorus Township Municipal Building	1975 Stoverstown Road		Spring Grove	PA	17362			42133	York	Government Office	ArcGIS
+575844	-76.86568274003702	39.88235725803663	York Adams Zoning & Codes	2-14 Campus Avenue		Spring Grove	PA	17362			42133	York	Government Office	ArcGIS
+575858	-76.58773364077189	39.88267636571916	Graehling Timothy	1044-1106 Felton Road		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+575865	-76.71019454435698	39.882892713102095	Village Library	33 North Main Street		Jacobus	PA	17407			42133	York	Library	ArcGIS
+575932	-76.86448727482008	39.88389635595492	Michael Eva R Md	94-96 Roth Church Road		Thomasville	PA	17364			42133	York	Hospital/Polyclinic	ArcGIS
+575935	-76.84210727722127	39.88393001313047	Hershey Cemetery	Hershey Road		Spring Grove	PA	17362			42133	York	Cemetery	ArcGIS
+575937	-76.8645581667171	39.8839399926007	Spring Grove Diagnostic Center	94-96 Roth Church Road		Thomasville	PA	17364			42133	York	Hospital/Polyclinic	ArcGIS
+576070	-76.7106890930091	39.88562817062382	Christ United Methodist Church	200 North Main Street		Jacobus	PA	17407			42133	York	Place of Worship	ArcGIS
+576098	-76.70687001565379	39.88612817974077	Salem Lutheran Church	51-99 York Road		Jacobus	PA	17407			42133	York	Place of Worship	ArcGIS
+576168	-76.86222998455595	39.8871781894718	Glatfelter Memorial Library	139-199 Glenview Road		Spring Grove	PA	17362			42133	York	Library	ArcGIS
+576200	-76.9208363534804	39.88762274662681	Pleasant Hill Church Of The Brethren	4120-8546 Orchard Road		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+576224	-76.64744636577578	39.88801001597394	St John's Blymire United Church Of Christ	1001-1009 Blymire Road		Dallastown	PA	17313			42133	York	Place of Worship	ArcGIS
+576225	-76.64744636577578	39.88801001597394	Jacobus Community Nursery Preschool	1001-1009 Blymire Road		Dallastown	PA	17313			42133	York	School	ArcGIS
+576383	-76.7865291126363	39.89052818465326	Grace Fellowship	1419 7 Valleys Road		York	PA	17408			42133	York	Place of Worship	ArcGIS
+576386	-76.6010890904655	39.8905699854531	Red Lion Area Schools	198 Country Club Road		Red Lion	PA	17356			42133	York	School	ArcGIS
+576391	-76.84680365357043	39.8905981821638	Sacred Heart Parish Center	1526 Sprenkle Road		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+576410	-76.5917945319884	39.89072000701738	Red Lion Bible Church	52-130 Springvale Road		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+576422	-76.6015381666259	39.890882738284304	Red Lion Area Schools	198 Country Club Road		Red Lion	PA	17356			42133	York	School	ArcGIS
+576461	-76.65022456555678	39.89138453617423	Dallastown Area School District	711-745 New School Lane		Dallastown	PA	17313			42133	York	School	ArcGIS
+576633	-76.59893729073339	39.893793636775605	Focht Lawrence Rev	600 South Main Street		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+576654	-76.58250910566802	39.894225437155	Springvale United Methodist Church	265-299 Circle Drive		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+576658	-76.57010179979231	39.894259988717025	Bethlehem Stonepile United Methodist Church	255-299 Bethlehem Church Road		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+576685	-76.60504274945002	39.89471179510985	Red Lion Area Schools	219-233 Horace Mann Avenue		Red Lion	PA	17356			42133	York	School	ArcGIS
+576784	-76.62458909530586	39.895945436507716	Dairyland Medical Center	Dove Lane		Dallastown	PA	17313			42133	York	Hospital/Polyclinic	ArcGIS
+576855	-76.6206154773809	39.89664362284012	Family Worship Center	925-941 West Broadway		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+576860	-76.61962364984424	39.89668001024808	Keystone Baptist Church	921-923 West Broadway		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+576864	-76.53047365301512	39.896746383139714	Pleasant Grove United Methodist Church	1008-1010 Pleasant Grove Road		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+576943	-76.8151727341403	39.897695468417076	Bair's Codorus Mennonite Church	1000-1198 Bairs Road		York	PA	17408			42133	York	Place of Worship	ArcGIS
+576962	-76.60478365980778	39.89780453649503	Dove Community Cell Church	201 South Charles Street		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+577008	-76.59610636922287	39.89827361866887	Jehovah's Witnesses	301-377 South Boxwood Road		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+577025	-76.60605453592713	39.89849547358962	Kaltreider-Benfer Library	101-199 South Charles Street		Red Lion	PA	17356			42133	York	Library	ArcGIS
+577060	-76.94653819662295	39.89880817934785	Paradisus Church Of God Praise & Worship Center	34 South Ridge Road		Thomasville	PA	17364			42133	York	Place of Worship	ArcGIS
+577088	-76.63257271856378	39.899303622386455	Elijah Outreach Ministry	501-533 Highway 74		Dallastown	PA	17313			42133	York	Place of Worship	ArcGIS
+577091	-76.61016819594614	39.899352719497074	Lighthse Christian School	153 1st Avenue		Red Lion	PA	17356			42133	York	School	ArcGIS
+577153	-76.63868363774525	39.89996363253792	St Joseph-Parish House	300-316 East Main Street		Dallastown	PA	17313			42133	York	Place of Worship	ArcGIS
+577170	-76.63867728289392	39.900055471907834	St Joseph's Church-Dallastown	251-367 East Main Street		Dallastown	PA	17313			42133	York	Place of Worship	ArcGIS
+577171	-76.60727909224126	39.900057260680796	Bethany United Methodist Church	101-199 Highway 74		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+577175	-76.638959108782	39.90010819363735	St Joseph's Church-Dallastown	251-367 East Main Street		Dallastown	PA	17313			42133	York	School	ArcGIS
+577214	-76.60667274527876	39.90050365368175	Bobs Iron Fist Society Karate School	21-99 Highway 74		Red Lion	PA	17356			42133	York	School	ArcGIS
+577217	-76.64146998115055	39.90052365969518	Bethlehem United Methodist Church	101-199 Highway 74		Dallastown	PA	17313			42133	York	School	ArcGIS
+577266	-76.95927910865683	39.90095272984215	Government Offices City	85-91 Beaver Creek Road		Thomasville	PA	17364			42133	York	Government Office	ArcGIS
+577268	-76.6085709158335	39.90099001163661	St Paul's United Methodist Church	65-69 1st Avenue		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+577269	-76.60573909993647	39.90099726087441	Red Lion Area Historical Society	2-24 East Broadway		Red Lion	PA	17356			42133	York	Museum	ArcGIS
+577271	-76.40464910308644	39.90099999110683	Bethel United Methodist Church	1620 Furnace Road		Brogue	PA	17309			42133	York	Place of Worship	ArcGIS
+577300	-76.88714909830698	39.90138363583506	Trinity Roth's United Church Of Christ	6417 Church Road		Spring Grove	PA	17362			42133	York	Place of Worship	ArcGIS
+577316	-76.64733362600596	39.90153817640473	Christ Lutheran Church	130 West Main Street		Dallastown	PA	17313			42133	York	School	ArcGIS
+577337	-76.63616819929834	39.901812705982024	Government Offices City Dallastown Borough	143-199 State Route 74		Dallastown	PA	17313			42133	York	Government Office	ArcGIS
+577358	-76.59009999911396	39.902096367716055	Red Lion Area Schools	700 Delta Road		Red Lion	PA	17356			42133	York	School	ArcGIS
+577364	-76.5893536571304	39.9021372741294	Pleasant View Elementary School	700-714 Delta Road		Red Lion	PA	17356			42133	York	School	ArcGIS
+577373	-76.60825001937799	39.90221456795072	Jubilee Outreach Ministries	117-123 North Main Street		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+577377	-76.6490027394751	39.90226818406673	Lee N Progress	198-298 Highway 74		Dallastown	PA	17313			42133	York	Government Office	ArcGIS
+577403	-76.61066547483068	39.9025327341738	Grace Lutheran Church Of Red Lion	220 North Charles Street		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+577442	-76.72522273213865	39.9030745440906	Bridgeway Community Church	267 Reynolds Mill Road		York	PA	17403			42133	York	Place of Worship	ArcGIS
+577464	-76.78524180804946	39.90325907014393	St Jacobs United Church Of Christ	100-102 Indian Rock Dam Road		New Salem Borough	PA	17408			42133	York	Place of Worship	ArcGIS
+577512	-76.60933909967643	39.90374363932581	St John's United Church Of Christ	143-201 Highway 24		Red Lion	PA	17356			42133	York	School	ArcGIS
+577631	-76.96739180600612	39.90527817116575	Immaculate Heart Of Mary Church	5942 West Canal Road		Thomasville	PA	17364			42133	York	Place of Worship	ArcGIS
+577677	-76.83023636787048	39.90578091051513	Faith E C Church	833 Stoverstown Road		West Manchester	PA	17408			42133	York	Place of Worship	ArcGIS
+577703	-76.60616817008345	39.90601180344666	Red Lion Cemetery	108-198 East Gay Street		Red Lion	PA	17356			42133	York	Cemetery	ArcGIS
+577704	-76.67755635745512	39.906030020687126	Starr Pastor	2730 South Queen Street		Dallastown	PA	17313			42133	York	Place of Worship	ArcGIS
+577858	-76.68058818641352	39.908446370526306	Performance Arts Academy Of York	2705 South Queen Street		York	PA	17403			42133	York	School	ArcGIS
+577930	-76.88453819587126	39.90928907088517	Spring Grove Area School District	440-488 Roth Church Road		Spring Grove	PA	17362			42133	York	School	ArcGIS
+577934	-76.68337726005123	39.90934362846063	Gymnastics Of York	2606 Course Road		York	PA	17402			42133	York	School	ArcGIS
+577943	-76.79120181128016	39.909472749624996	St Paul Lutheran Church	1055 Smith Hill Road		New Salem Borough	PA	17408			42133	York	Place of Worship	ArcGIS
+577955	-76.88455001118743	39.90957725162458	Government Offices City	4300-4302 State Route 3059		Spring Grove	PA	17362			42133	York	Government Office	ArcGIS
+577972	-76.70749636862972	39.90974727920229	Antiochian Orthodox Department Center	105-107 Leader Heights Road		York	PA	17403			42133	York	Place of Worship	ArcGIS
+577981	-76.88479634405402	39.909827256183064	Spring Grove Area School District Intermediate School	440 Roth Church Road		Spring Grove	PA	17362			42133	York	School	ArcGIS
+578049	-76.70047454035182	39.9107300216552	U S Air Force Recruiting	185 Leader Heights Road		York	PA	17403			42133	York	Government Office	ArcGIS
+578127	-76.437512722455	39.91188090876691	Chanceford Alliance Church	2142 Furnace Road		Felton	PA	17322			42133	York	Place of Worship	ArcGIS
+578146	-76.63597727132071	39.912087276679614	Yoe Borough	176-206 North Maple Street		Yoe	PA	17313			42133	York	Government Office	ArcGIS
+578147	-76.76611907187572	39.91211274315789	Heindel Cemetery	1139 Heindel Road		York	PA	17408			42133	York	Cemetery	ArcGIS
+578159	-76.70693182246706	39.912191825752174	Temple Baptist Church S B C	2540 Pine Grove Road		York	PA	17403			42133	York	Place of Worship	ArcGIS
+578160	-76.70693182246706	39.912191825752174	Temple Christian Academy & Preschool	2540 Pine Grove Road		York	PA	17403			42133	York	School	ArcGIS
+578223	-76.62527452486265	39.912692729255625	Pinkney's Vineyard Of Faith Ministries	3251 Cape Horn Road		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+578224	-76.68246908118722	39.91271184088257	Dallastown Area Schools	2546-2574 South Queen Street		York	PA	17402			42133	York	School	ArcGIS
+578286	-76.70727907978733	39.913390915588025	Pine Grove United Methodist Church	2523 Pine Grove Road		York	PA	17403			42133	York	Place of Worship	ArcGIS
+578338	-76.6319981929309	39.91396638268036	Arlington E C Church	585 Lombard Road		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+578350	-76.70729362533591	39.91408180560964	Greek Orthodox Church Of The Annunciation	2519 Pine Grove Road		York	PA	17403			42133	York	Place of Worship	ArcGIS
+578398	-76.47374817886438	39.914447280170364	St Luke Lutheran Church	Burkholder Road		Felton	PA	17322			42133	York	Place of Worship	ArcGIS
+578399	-76.47374817886438	39.914447280170364	St Luke Pre-School	Burkholder Road		Felton	PA	17322			42133	York	School	ArcGIS
+578459	-76.58094910734981	39.914930907892796	Grace United Methodist Church	16-18 West Main Street		Windsor	PA	17366			42133	York	Place of Worship	ArcGIS
+578462	-76.57997634436714	39.91496997846021	Windsor Borough	2 East Main Street		Windsor	PA	17366			42133	York	Government Office	ArcGIS
+578490	-76.69685001559304	39.915206378929554	Health Care Receivable	1895 Powder Mill Road		York	PA	17402			42133	York	Government Office	ArcGIS
+578493	-76.6717390794779	39.91526361966447	York Township	190-200 Oak Road		Dallastown	PA	17313			42133	York	Government Office	ArcGIS
+578575	-76.68254002015722	39.91609817639903	Otterbein United Methodist Church Of Spry	12-32 School Street		York	PA	17402			42133	York	Place of Worship	ArcGIS
+578600	-76.58007180835595	39.91629997823338	Windsor Assembly Of God	21 North Penn Street		Windsor	PA	17366			42133	York	Place of Worship	ArcGIS
+578638	-76.69676180084204	39.91672001036957	Oss Orthopaedic Urgent Care	1871 Powder Mill Road		York	PA	17402			42133	York	Hospital/Polyclinic	ArcGIS
+578665	-76.62683362879437	39.91690001741752	Heston Veterinary Medical Center	780-800 Lombard Road		Red Lion	PA	17356			42133	York	Hospital/Polyclinic	ArcGIS
+578687	-76.62623726130212	39.91709089832217	Almost Home Child Care	780-800 Lombard Road		Red Lion	PA	17356			42133	York	School	ArcGIS
+578688	-76.62623726130212	39.91709089832217	Kidzoo Childcare Center And Preschool	780-800 Lombard Road		Red Lion	PA	17356			42133	York	School	ArcGIS
+578699	-76.63057729524728	39.91716819214349	Internal Revenue Service	3111-3197 Highway 24		Red Lion	PA	17356			42133	York	Government Office	ArcGIS
+578700	-76.63057729524728	39.91716819214349	Usmc	3111-3197 Highway 24		Red Lion	PA	17356			42133	York	Government Office	ArcGIS
+578701	-76.63057729524728	39.91716819214349	Us Air Force Recruiting Office	3111-3197 Highway 24		Red Lion	PA	17356			42133	York	Government Office	ArcGIS
+578704	-76.9394118192725	39.917202743705516	Grove Dale	203 North School House Road		Thomasville	PA	17364			42133	York	Government Office	ArcGIS
+578705	-76.90015183021549	39.917208204170365	Faith & Truth Assembly	2-134 Jackson Square Road		Thomasville	PA	17364			42133	York	Place of Worship	ArcGIS
+578808	-76.63136910972256	39.91837274244418	Memorial Hospital	3125 Cape Horn Road		Red Lion	PA	17356			42133	York	Hospital/Polyclinic	ArcGIS
+578821	-76.65748001699863	39.91846001573573	Susquehanna Memorial Gardens	250 Chestnut Hill Road		York	PA	17402			42133	York	Cemetery	ArcGIS
+578852	-76.6850027368746	39.91867090265382	Christ Lutheran Church Of Spry	2381-2399 Highway 74		York	PA	17402			42133	York	Place of Worship	ArcGIS
+578863	-76.90785000296641	39.918826384682944	Paradise Holtzschwamm Ecc	6807 Lincoln Highway		Thomasville	PA	17364			42133	York	Place of Worship	ArcGIS
+578903	-76.83986636835166	39.919281815694674	West York Church Of The Brethren	5101 Darlington Road		York	PA	17408			42133	York	Place of Worship	ArcGIS
+579029	-76.91771819268992	39.92045816928466	Paradise Lutheran Church	75-99 Church Road		Thomasville	PA	17364			42133	York	Place of Worship	ArcGIS
+579161	-76.70281274905618	39.92156725559653	New Fairview Church Of The Brethren	1853 New Fairview Church Road		York	PA	17403			42133	York	Place of Worship	ArcGIS
+579203	-76.63417908376019	39.92195909102202	Heiland View Cemetery	3050 Cape Horn Road		Red Lion	PA	17356			42133	York	Cemetery	ArcGIS
+579212	-76.70427817777205	39.922047258700054	Stump Cemetery	1853 New Fairview Church Road		York	PA	17403			42133	York	Cemetery	ArcGIS
+579241	-76.63387362723977	39.92226544192893	St Paul's Chapel United Methodist Church	3000-3070 Highway 24		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+579276	-76.5852536482735	39.9225481622035	Emmanuel United Methodist Church	2194 Windsor Road		Windsor	PA	17366			42133	York	Place of Worship	ArcGIS
+579301	-76.82184998825738	39.92277453612964	St Paul's Wolfs Ucc	4487-4501 Wolfs Church Road		West Manchester	PA	17408			42133	York	Place of Worship	ArcGIS
+579354	-76.71717636060801	39.92320727796849	Wellspan Surgery & Rehabilitation Hospital	45 Monument Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+579359	-76.61024365392153	39.923316346046434	Harman John F Rev	1245 Lombard Road		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+579362	-76.58809638510019	39.92335089760846	Red Lion Area Schools	2140 Windsor Road		Windsor	PA	17366			42133	York	School	ArcGIS
+579366	-76.71667908172347	39.92342273096493	Wellspan Imaging	45 Monument Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+579388	-76.71624455111166	39.92360819847772	Apple Hill Surgical Associates	1-25 Monument Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+579389	-76.71624455111166	39.92360819847772	York Cancer Center-Wellspan	1-25 Monument Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+579390	-76.71624455111166	39.92360819847772	Apple Hill Medical Center Cardiac Diagnostic Associates	1-25 Monument Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+579391	-76.71624455111166	39.92360819847772	Wellspan Pharmacy	1-25 Monument Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+579392	-76.71624455111166	39.92360819847772	Apple Hill Medical Center	1-25 Monument Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+579393	-76.71624455111166	39.92360819847772	Apple Hill Medical Center Physician Offices	1-25 Monument Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+579394	-76.71624455111166	39.92360819847772	Wellspan Cardiothoracic Surgery	1-25 Monument Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+579395	-76.71624455111166	39.92360819847772	Cardiac Diagnostic Associates Pc	1-25 Monument Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+579396	-76.71624455111166	39.92360819847772	Apple Hill Dentistry	1-25 Monument Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+579397	-76.71624455111166	39.92360819847772	Wellspan Rehabilitation	1-25 Monument Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+579410	-76.63302363057012	39.92371364193677	End Of The Rainbow Day Care	40-50 Kirkland Drive		Red Lion	PA	17356			42133	York	School	ArcGIS
+579499	-76.63523092933715	39.92435910653964	Saylor Stanley Rep	2977-2997 Highway 24		Red Lion	PA	17356			42133	York	Government Office	ArcGIS
+579824	-76.68613361797287	39.926826342262416	Craig A Bradley Dr	2215 South Queen Street		York	PA	17402			42133	York	Hospital/Polyclinic	ArcGIS
+579825	-76.68613361797287	39.926826342262416	Spry Family Medical Center	2215 South Queen Street		York	PA	17402			42133	York	Hospital/Polyclinic	ArcGIS
+579848	-76.606379998461	39.92699453399419	Jeske Mark W Rev	2650-2698 Freysville Road		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+579849	-76.606379998461	39.92699453399419	Emanuel Lutheran Church	2650-2698 Freysville Road		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+579890	-76.68621999687794	39.92736636340624	Easter Seals Of South Central	2209 South Queen Street		York	PA	17402			42133	York	School	ArcGIS
+579891	-76.69456820031009	39.927383639187255	Children First Learning Center	200-246 Saint Charles Way		York	PA	17402			42133	York	School	ArcGIS
+579906	-76.60425361813418	39.9274354665303	Government Offices City	1625 Windsor Road		Red Lion	PA	17356			42133	York	Government Office	ArcGIS
+580097	-76.75971272271704	39.928829108962674	Indian Rock Elementary School	2201-2299 Indian Rock Dam Road		York	PA	17403			42133	York	School	ArcGIS
+580131	-76.60578725558764	39.929079113521155	Zion United Methodist Church At Freysville	2565-2595 Freysville Road		Red Lion	PA	17356			42133	York	Place of Worship	ArcGIS
+580259	-76.68958180737557	39.930029093185	Wellspan Health Film Library	223-293 Saint Charles Way		York	PA	17402			42133	York	Library	ArcGIS
+580263	-76.85692090639297	39.93004820481195	St Rose Of Lima Church	115-129 North Biesecker Road		Thomasville	PA	17364			42133	York	School	ArcGIS
+580265	-76.68723907966583	39.93006816375241	York County School Of Technology	2123-2139 South Queen Street		York	PA	17402			42133	York	School	ArcGIS
+580358	-76.71107725674271	39.930675452174356	York Hospital	1600-1650 South George Street		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+580368	-76.6626763553918	39.93073273998225	Ore Valley Elementary School	2590-2598 Springwood Road		York	PA	17402			42133	York	School	ArcGIS
+580515	-76.94993728891504	39.93181273519693	Life & Praise Tabernacle	7421-7422 Jacobs Mill Road		East Berlin	PA	17316			42133	York	Place of Worship	ArcGIS
+580577	-76.69419180481968	39.932286383449124	Miller Susan Dorogi	2405 Knobhill Road		York	PA	17403			42133	York	School	ArcGIS
+580681	-76.80756089322148	39.933130919653934	End User	3901-3999 Lincoln Highway		York	PA	17408			42133	York	Government Office	ArcGIS
+580764	-76.69612725716885	39.934006382801854	Aldersgate United Methodist Church	380 Tyler Run Road		York	PA	17403			42133	York	Place of Worship	ArcGIS
+580765	-76.69612725716885	39.934006382801854	Aldersgate Parent-Child Preschool	380 Tyler Run Road		York	PA	17403			42133	York	School	ArcGIS
+580800	-76.67936184132643	39.93430910908985	Yorktown Medical Center	2320-2350 Freedom Way		York	PA	17402			42133	York	Hospital/Polyclinic	ArcGIS
+580877	-76.69154183181655	39.93481820329056	Commonwealth Of Pennsylvania	2120 South Queen Street		York	PA	17403			42133	York	Government Office	ArcGIS
+580878	-76.69154183181655	39.93481820329056	Department Of Motor Vehicles	2120 South Queen Street		York	PA	17403			42133	York	Government Office	ArcGIS
+580880	-76.67787635952413	39.934831807379695	Springwood Chapel	2380-2400 Springwood Road		York	PA	17402			42133	York	Place of Worship	ArcGIS
+580917	-76.68266819986212	39.93505182645451	Framers' Workshop Of York	201-239 Pauline Drive		York	PA	17402			42133	York	Museum	ArcGIS
+581352	-76.71888092002565	39.93808638564532	Catholic Cemeteries	1300-1464 Starcross Road		York	PA	17403			42133	York	Cemetery	ArcGIS
+581358	-76.69015638008143	39.93814725099914	Kumon Math And Reading Center	2083-2087 Springwood Road		York	PA	17403			42133	York	School	ArcGIS
+581367	-76.82336634992983	39.93822181458803	Wolf Cemetery	301 North Emigs Mill Road		York	PA	17404			42133	York	Cemetery	ArcGIS
+581439	-76.69233181044588	39.938867279190916	Commonwealth Of Pennsylvania Commerce Center	2044 Springwood Road		York	PA	17403			42133	York	Government Office	ArcGIS
+581440	-76.6943727062541	39.93886906796388	Gymnastics Of York	2050-2072 South Queen Street		York	PA	17403			42133	York	School	ArcGIS
+581523	-76.71514181965111	39.9395663599098	Violet Hill United Methodist Church	97 Tri Hill Road		York	PA	17403			42133	York	Place of Worship	ArcGIS
+581578	-76.74613635956212	39.93997363527036	Ycds Bbs	Crest Way		York	PA	17403			42133	York	School	ArcGIS
+581646	-76.52488091311811	39.940619099873246	Government Offices City	2401 Craley Road		Windsor	PA	17366			42133	York	Government Office	ArcGIS
+581855	-76.74038729032247	39.94211729137818	Flowers Brian K Md	924 Colonial Avenue		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+581866	-76.70467363781646	39.94225182593441	York County High School	1726 South Queen Street		York	PA	17403			42133	York	School	ArcGIS
+581875	-76.7079927060548	39.942308172282836	Spring Garden Township	340 Tri Hill Road		York	PA	17403			42133	York	Government Office	ArcGIS
+582016	-76.64563273828018	39.94330273005191	Living Word Community Church	2512-2536 Cape Horn Road		York	PA	17402			42133	York	Place of Worship	ArcGIS
+582039	-76.6937591100538	39.94344361945947	Church Of Jesus Christ Of Latter-Day Saints	2062-2098 Hollywood Drive		York	PA	17403			42133	York	Place of Worship	ArcGIS
+582040	-76.6937591100538	39.94344361945947	Church Of Jesus Christ York Second Ward	2062-2098 Hollywood Drive		York	PA	17403			42133	York	Place of Worship	ArcGIS
+582181	-76.69304816694577	39.94438545549903	Ohev Sholom Congregation	2090 Hollywood Drive		York	PA	17403			42133	York	Place of Worship	ArcGIS
+582182	-76.69304816694577	39.94438545549903	Temple Beth York	2090 Hollywood Drive		York	PA	17403			42133	York	Place of Worship	ArcGIS
+582308	-76.72996363952008	39.94525089210374	York College Of Pennsylvania	441-473 Country Club Road		York	PA	17403			42133	York	College / University	ArcGIS
+582311	-76.71964001878484	39.94527273396312	Wellspan Health Imaging	York Hospital Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+582312	-76.71964001878484	39.94527273396312	Wellspan Center For Aging	York Hospital Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+582313	-76.71964001878484	39.94527273396312	Bushwick Bruce M Md	York Hospital Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+582314	-76.71964001878484	39.94527273396312	Wellspan Hospitalists	York Hospital Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+582315	-76.71964001878484	39.94527273396312	Wellspan Health	York Hospital Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+582316	-76.71964001878484	39.94527273396312	Wellspan Health Pharmacy	York Hospital Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+582317	-76.71964001878484	39.94527273396312	Behavorial Health Services	York Hospital Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+582318	-76.71964001878484	39.94527273396312	York Palliative Care Specialists	York Hospital Road		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+582332	-76.69234725038096	39.94535271094389	Jewish Family Services Of York	2004-2060 Hollywood Drive		York	PA	17403			42133	York	School	ArcGIS
+582439	-76.7187836201909	39.94603635172769	York Hospital	1001 South George Street		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+582497	-76.69178637591018	39.94641637183702	Luther Memorial	1907 Hollywood Drive		York	PA	17403			42133	York	Place of Worship	ArcGIS
+582588	-76.72904910580473	39.94701090348333	York College Of Pennsylvania	441 Country Club Road		York	PA	17403			42133	York	College / University	ArcGIS
+582616	-76.76190001547063	39.94717725936917	York Bible Methodist	1745-1747 West Princess Street		York	PA	17404			42133	York	Place of Worship	ArcGIS
+582663	-76.65472634223646	39.947479091270694	Heininger Doug Rev & Becky	801-815 Galtee Court		York	PA	17402			42133	York	Place of Worship	ArcGIS
+582671	-76.65388001725869	39.94751001821381	Jameson School Of Ministry & Theology	84 Governors Pl at Waterf		York	PA	17402			42133	York	School	ArcGIS
+582688	-76.49244819974247	39.94761635605934	Springville Cemetery	157 Gilbert Lane		Wrightsville	PA	17368			42133	York	Cemetery	ArcGIS
+582932	-76.71968271397117	39.94883728775456	Unitarian Universalist Congregation Of York	958-990 South Duke Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+582937	-76.6961681635822	39.94886181277338	Valley View Elementary School	900-914 Southern Road		York	PA	17403			42133	York	School	ArcGIS
+582971	-76.7216908940633	39.94902091942141	Unitarian Universalist Congregation Of York	907-967 Interstate 83 Business		York	PA	17403			42133	York	Place of Worship	ArcGIS
+582975	-76.51302817393483	39.949041819821325	Eshelman Linda Rev	469 Abels Road		Wrightsville	PA	17368			42133	York	Place of Worship	ArcGIS
+582976	-76.51302817393483	39.949041819821325	St Paul's United Methodist Church	469 Abels Road		Wrightsville	PA	17368			42133	York	Place of Worship	ArcGIS
+583004	-76.77940998452365	39.949196360390985	West York Area School District	2605-2647 West Market Street		York	PA	17404			42133	York	School	ArcGIS
+583039	-76.69277909783332	39.94941181338744	York Suburban School District	1600-1652 Hollywood Drive		York	PA	17403			42133	York	School	ArcGIS
+583040	-76.70744270544074	39.949412707773924	York Alliance Church	501-513 Rathton Road		York	PA	17403			42133	York	Place of Worship	ArcGIS
+583147	-76.77982272034906	39.949785431572465	West York Area School District	2601-2699 West Clarke Avenue		West Manchester	PA	17408			42133	York	School	ArcGIS
+583230	-76.7802136143151	39.95019270693303	Lincolnway Elementary School	2600-2698 West Philadelphia Street		West Manchester	PA	17408			42133	York	School	ArcGIS
+583233	-76.71428273789772	39.950210924173504	Pinkney's Vineyard Of Faith Ministries	1008-1098 South Queen Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+583297	-76.72274636425917	39.95050183514533	St Paul's Lutheran Church	39 West Springettsbury Avenue		York	PA	17403			42133	York	School	ArcGIS
+583390	-76.74930182869026	39.95088910449246	Bethel Chapel Assembly Of God	1100-1116 West College Avenue		York	PA	17404			42133	York	Place of Worship	ArcGIS
+583448	-76.72251274109522	39.95125001297484	Diakon Lutheran Soc Min	820-898 Interstate 83 Business		York	PA	17403			42133	York	Place of Worship	ArcGIS
+583542	-76.77802180255613	39.95166364318673	Robin's Nest Day Care & Preschool	2400-2452 West Philadelphia Street		York	PA	17404			42133	York	School	ArcGIS
+583561	-76.78094089174469	39.95176089594851	Government Offices City Emergency 911	260 East Berlin Road		York	PA	17408			42133	York	Government Office	ArcGIS
+583563	-76.72839818073702	39.95177181687819	Faith Tabernacle Church	713 Manor Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+583581	-76.78157181079897	39.95191910821005	York Co	320 East Berlin Road		York	PA	17408			42133	York	Government Office	ArcGIS
+583639	-76.77894000796333	39.95218728293602	York Christian Fellowship	119-121 Weldon Drive		York	PA	17404			42133	York	Place of Worship	ArcGIS
+583642	-76.69995998568626	39.952210913568365	Penn State	1110-1126 Edgecomb Avenue		York	PA	17403			42133	York	College / University	ArcGIS
+583700	-76.72887907822702	39.95244091211342	Mckinley Elementary School	620-624 Manor Street		York	PA	17401			42133	York	School	ArcGIS
+583703	-76.74976361455332	39.952456352048486	Home Calvery Refugee	1037-1039 West Princess Street		West York	PA	17404			42133	York	Place of Worship	ArcGIS
+583765	-76.72711092322314	39.95272998723931	Shiloh Baptist Church	651-699 South Pershing Avenue		York	PA	17401			42133	York	Place of Worship	ArcGIS
+583801	-76.76938452399807	39.95282361538219	Rod West End Lottery	1901-1945 Lincoln Highway		York	PA	17404			42133	York	Government Office	ArcGIS
+583852	-76.74317179788184	39.95307729163254	Seventh-Day Adventist Church	270-274 South Belvidere Avenue		York	PA	17401			42133	York	Place of Worship	ArcGIS
+583855	-76.76876179564104	39.95308910694871	Wanda's Cadettes Baton Studio	7 North Diamond Street		York	PA	17404			42133	York	School	ArcGIS
+583856	-76.72476000481613	39.953091837181134	Jehovah's Witnesses	58-98 West Cottage Place		York	PA	17401			42133	York	Place of Worship	ArcGIS
+583865	-76.74465638529765	39.953127283129646	Shiloh Baptist Church	740 West Locust Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+583866	-76.74465638529765	39.953127283129646	Bethany United Church Of Christ	740 West Locust Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+583867	-76.74465638529765	39.953127283129646	Impact Academy	740 West Locust Street		York	PA	17401			42133	York	School	ArcGIS
+583868	-76.74465638529765	39.953127283129646	Head Start Of York Co	740 West Locust Street		York	PA	17401			42133	York	School	ArcGIS
+583926	-76.71523271756156	39.9534245489528	Washington James	829-831 South Pine Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+583934	-76.76257362971124	39.95349544084982	St Stephen's United Church Of Christ	1501-1599 Lincoln Highway		York	PA	17404			42133	York	Place of Worship	ArcGIS
+583945	-76.7029472836124	39.953541807728016	Penn State York Campus	Irving Avenue		York	PA	17403			42133	York	College / University	ArcGIS
+583961	-76.76122545977057	39.95358181975489	York County Kart Supply	1501 West Market Street		York	PA	17401			42133	York	Government Office	ArcGIS
+583974	-76.71350546897104	39.95363543587089	York Catholic High School	361 East Springettsbury Avenue		York	PA	17403			42133	York	School	ArcGIS
+583981	-76.51473546358488	39.95366909304644	Olewiler Cemetery	337 Forge Hill Road		Wrightsville	PA	17368			42133	York	Cemetery	ArcGIS
+583982	-76.74563545605868	39.95367092889238	Manor Baptist Church	810 West Princess Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584000	-76.75795817180229	39.953772747732515	Reliance Fire Comp Social Hall	1301-1399 Lincoln Highway		York	PA	17404			42133	York	Government Office	ArcGIS
+584035	-76.74365453121779	39.95395637939937	Church Of The Redeemed Of York	245 South Belvidere Avenue		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584045	-76.74740455252201	39.953994555580294	West Poplar Street Church Of God	909-911 West Poplar Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584048	-76.76107910989818	39.954008159669435	Nale Robert E	25-27 North Adams Street		West York	PA	17404			42133	York	Place of Worship	ArcGIS
+584062	-76.72338726278367	39.954050901928724	Crispus Attucks	600-698 Interstate 83 Business		York	PA	17401			42133	York	School	ArcGIS
+584133	-76.74142637912381	39.95432637296548	Weinbron Daniel J	214-224 South West Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584140	-76.72810002052738	39.95438907416524	Bethlehem Baptist Church	474-476 South Pershing Avenue		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584146	-76.78380725920373	39.95441364625704	Jehovah's Witnesses	2701-2721 Bannister Street		West Manchester	PA	17408			42133	York	Place of Worship	ArcGIS
+584148	-76.72340091394578	39.954423625727266	Echterling Christopher K Md	601-605 South George Street		York	PA	17401			42133	York	Hospital/Polyclinic	ArcGIS
+584149	-76.72340091394578	39.954423625727266	Penn State York	601-605 South George Street		York	PA	17401			42133	York	School	ArcGIS
+584185	-76.76530183799514	39.95464726942099	Government Offices City West York Borough	1700 West Philadelphia Street		West York	PA	17404			42133	York	Government Office	ArcGIS
+584188	-76.76646816504193	39.954661814969576	West York Area School District	1749-1799 West Philadelphia Street		West York	PA	17404			42133	York	School	ArcGIS
+584240	-76.74189456691117	39.95491544414696	Community Policing Office	594 West Princess Street		York	PA	17401			42133	York	Government Office	ArcGIS
+584264	-76.65246726319936	39.95497725096023	Covenant Moravian Church	991-1021 Highway 24		York	PA	17402			42133	York	Place of Worship	ArcGIS
+584276	-76.76102634109567	39.95500728351687	West York Missionary Church	1497-1499 West Philadelphia Street		West York	PA	17404			42133	York	Place of Worship	ArcGIS
+584279	-76.76089180653945	39.955016368600624	Mccracken Charles R	1495-1497 West Philadelphia Street		West York	PA	17404			42133	York	Place of Worship	ArcGIS
+584288	-76.74955729371358	39.95508999073006	St Patrick Church	1-43 South Richland Avenue		York	PA	17404			42133	York	Place of Worship	ArcGIS
+584292	-76.72390365329517	39.955110891129976	Crispus Attucks Association	500-598 Interstate 83 Business		York	PA	17401			42133	York	School	ArcGIS
+584314	-76.74433454738269	39.95522909136466	St Paul's United Methodist Church	118-122 South Belvidere Avenue		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584344	-76.72391998761672	39.95537365246409	Susan P Byrnes Health Educational Center	501-599 Interstate 83 Business		York	PA	17401			42133	York	Government Office	ArcGIS
+584353	-76.7263145426695	39.95540001332885	Zion United Church Of Christ	104 Lafayette Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584354	-76.7263145426695	39.95540001332885	Cornerstone Baptist Church	104 Lafayette Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584355	-76.7263145426695	39.95540001332885	Head Start Of York Co	104 Lafayette Street		York	PA	17401			42133	York	School	ArcGIS
+584356	-76.7263145426695	39.95540001332885	Zion Head Start	104 Lafayette Street		York	PA	17401			42133	York	School	ArcGIS
+584362	-76.7395036364773	39.955439083896266	C G B Ministries	501-513 Salem Avenue		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584398	-76.75028184091074	39.95556726360117	Digital Gallery	1001-1009 West Market Street		York	PA	17404			42133	York	Museum	ArcGIS
+584412	-76.96575361948011	39.95560638124155	Amazing Grace Fellowship	2170 Baltimore Pike		East Berlin	PA	17316			42133	York	Place of Worship	ArcGIS
+584433	-76.7493572806522	39.95567637875209	St Patrick Church	740-998 Lincoln Highway		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584450	-76.74911090071262	39.95575273111395	St Rose Of Lime Convent	944 West Market Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584453	-76.67391093229642	39.955765440816606	Ebro-Prokesh Do	1894-2574 Greensprings Drive		East York	PA	17402			42133	York	Hospital/Polyclinic	ArcGIS
+584467	-76.67379273206176	39.955802722611054	Sibora Chan's Kenpo Karate Studio	1894-2574 Greensprings Drive		East York	PA	17402			42133	York	School	ArcGIS
+584479	-76.69433636591911	39.955838168559566	Mount Rose Cemetery	1502 Mount Rose Avenue		York	PA	17403			42133	York	Cemetery	ArcGIS
+584481	-76.74878364940581	39.95585544434058	Children's Home Of York-Strive Group Home	924 West Market Street		York	PA	17401			42133	York	School	ArcGIS
+584482	-76.74878364940581	39.95585544434058	Hoffman Home For Children	924 West Market Street		York	PA	17401			42133	York	School	ArcGIS
+584495	-76.9717563649701	39.955941823245645	Mummert Raymond Rev	54 Reynolds Road		East Berlin	PA	17316			42133	York	Place of Worship	ArcGIS
+584570	-76.73908817041946	39.9562536346174	New Wine Ministries	142-144 South Hartley Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584571	-76.73908817041946	39.9562536346174	Open Door Christian Fellowship	142-144 South Hartley Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584582	-76.74787363469585	39.95630819219286	St Matthew Lutheran Church	757-999 Lincoln Highway		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584583	-76.74787363469585	39.95630819219286	Loving Hands Day Care	757-999 Lincoln Highway		York	PA	17401			42133	York	School	ArcGIS
+584612	-76.74194634718124	39.95649907309752	Lincoln Edison Charter School	555-559 West King Street		York	PA	17401			42133	York	School	ArcGIS
+584613	-76.74194634718124	39.95649907309752	Lincoln Elementary School	555-559 West King Street		York	PA	17401			42133	York	School	ArcGIS
+584625	-76.74694907443731	39.95659180685391	Fire Museum Of York County	757-999 Lincoln Highway		York	PA	17401			42133	York	Museum	ArcGIS
+584693	-76.74504544341775	39.95686454765824	Masjid Attawheed	662 West Market Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584694	-76.72482364747535	39.956867277890666	Assembly Of Pentecostal Church Of Jesus Christ	400 South George Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584698	-76.73514816259706	39.95689547460137	City Of York	374-398 West Princess Street		York	PA	17401			42133	York	Government Office	ArcGIS
+584699	-76.73514816259706	39.95689547460137	Government Offices City Recreational Facilities	374-398 West Princess Street		York	PA	17401			42133	York	Government Office	ArcGIS
+584707	-76.73505274568122	39.95692546008503	Bethel A M E Church	358 West Princess Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584712	-76.72944183561671	39.95695271533628	Studio Gallery 234	300 South Pershing Avenue		York	PA	17401			42133	York	Museum	ArcGIS
+584758	-76.71580361857555	39.95716816833273	Hannah Penn Center	419 East Boundary Avenue		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+584762	-76.72924907179315	39.95721726544335	William Penn Senior High School	113-199 West College Avenue		York	PA	17401			42133	York	School	ArcGIS
+584798	-76.7228199863886	39.95741365388582	Pentacostal Church Of God	401 South Duke Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584805	-76.72297000795288	39.95745729053159	Tabernacle Deliverance Church Of God In Christ	46 East South Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584806	-76.7440600178054	39.95747273046668	United Warriors Unified Martials Arts Tai Chi Do Jo	601-667 Lincoln Highway		York	PA	17401			42133	York	School	ArcGIS
+584813	-76.74400908484883	39.95748911186121	Family Life Ministries International	601-667 Lincoln Highway		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584830	-76.73839544455191	39.95758452877705	Challenge Academy	451-459 West King Street		York	PA	17401			42133	York	School	ArcGIS
+584832	-76.7183309194116	39.95760910086884	Fairview Full Gospel Missionary Baptist Church	465 South Pine Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+584833	-76.72238361993085	39.95761272548775	Daytime Daycare	110 East South Street		York	PA	17401			42133	York	School	ArcGIS
+584840	-76.73787910111339	39.95764271097141	St Paul Evangelical Congregational Church	450 West King Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584886	-76.6976072785063	39.95781819901397	Praise Community Church	733-863 South Ogontz Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+584889	-76.73247088726971	39.95783274456256	Agricultural & Industrial Museum	251-299 West Princess Street		York	PA	17401			42133	York	Museum	ArcGIS
+584891	-76.74289001906673	39.95784182964631	By His Mercy Ministry	589 West Market Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+584892	-76.72081999699374	39.95784182964631	Small Memorial A M E Zion Church	401-427 South Queen Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+584917	-76.72314455453598	39.95802998031854	Gonzalez Margarita	343 South Duke Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+584989	-76.71986361540559	39.95844455198989	Salvation Army	229 East South Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+584993	-76.70769092122624	39.95849543787348	Jehovah's Witnesses	900-912 East Boundary Avenue		York	PA	17403			42133	York	Place of Worship	ArcGIS
+585017	-76.73514726821058	39.958590007475806	The Heart Of God Christian Worship Center	333 West King Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585031	-76.72435729553393	39.95872181179962	House Of Worship	33-35 East College Avenue		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585033	-76.6733281688933	39.95872543641852	St Johns Lutheran School	2664-2694 Mount Rose Avenue		East York	PA	17402			42133	York	School	ArcGIS
+585075	-76.71898725787118	39.95887635236928	Bible Tabernacle Church	343-361 South Pine Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+585097	-76.73342001962004	39.9590318343984	Logos Academy	260-298 West King Street		York	PA	17401			42133	York	School	ArcGIS
+585103	-76.69737817434773	39.95908455612793	Bethany United Methodist Church	1401-1419 Mount Rose Avenue		York	PA	17403			42133	York	Place of Worship	ArcGIS
+585104	-76.69737817434773	39.95908455612793	Bethany Christian Learning	1401-1419 Mount Rose Avenue		York	PA	17403			42133	York	School	ArcGIS
+585132	-76.77923270770813	39.95924907616782	Pathway Community Church	890-898 Taxville Road		West Manchester	PA	17408			42133	York	Place of Worship	ArcGIS
+585140	-76.72596093049792	39.959283627729846	Lutheran Mission Society	221-223 South George Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585156	-76.73766364811694	39.95936544055655	Union Lutheran Church	400-406 Lincoln Highway		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585167	-76.72603455262735	39.959421833977956	Ethiopian Outreach Ministry	221-223 South George Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585177	-76.69764088860886	39.95950816581005	Spring Garden Township	""		Spring Garden	PA	17403			42133	York	Government Office	ArcGIS
+585196	-76.72088090942052	39.9596700026905	Community Progress Council	226 East College Avenue		York	PA	17403			42133	York	School	ArcGIS
+585227	-76.71373546751609	39.95979182754407	York City Parks	600 Vander Avenue		York	PA	17403			42133	York	Government Office	ArcGIS
+585233	-76.72859725233894	39.95981272794399	Saints Peter & Paul Roman Catholic Mission	51-199 West Newton Avenue		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585239	-76.75462728824778	39.959838194422275	Lincoln Intermediate Unit	517 Carlisle Avenue		York	PA	17404			42133	York	School	ArcGIS
+585245	-76.72195817440279	39.95986182505461	First Spanish Assembly Of God	232-298 Highway 74		York	PA	17403			42133	York	Place of Worship	ArcGIS
+585288	-76.72312365413606	39.96014911140754	Unconditional Love Ministries	219 South Howard Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585289	-76.72978452685861	39.96016634011558	First St John's Evangelical Lutheran Church Mo Synod	114 West King Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585293	-76.72438271493924	39.9602008916776	Crispus Attucks Association	50 East Princess Street		York	PA	17401			42133	York	School	ArcGIS
+585295	-76.78548362191067	39.960219108918075	Hollingshead Luther E	1180 Margaret Street		West Manchester	PA	17408			42133	York	Place of Worship	ArcGIS
+585303	-76.73508273116488	39.960259073871974	Soldiers Of Jesus	301-381 Lincoln Highway		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585309	-76.72662635404126	39.96029456689345	El Shaddai Christian Center	140 South George Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585315	-76.63395911175836	39.960349077395946	Locust Grove Elementary School	3200-3360 Highway 124		York	PA	17402			42133	York	School	ArcGIS
+585329	-76.76741725031928	39.96040636520382	West York Area School District High School	1700-1798 Bannister Street		York	PA	17404			42133	York	School	ArcGIS
+585337	-76.66493002103702	39.96044002237937	Community Preschool And Nursery Of York	2824-2844 Carol Road		East York	PA	17402			42133	York	School	ArcGIS
+585352	-76.76583729306061	39.960507289657485	West York Area School District Middle School	1700-1798 Bannister Street		York	PA	17404			42133	York	School	ArcGIS
+585355	-76.72859819379839	39.96053365052225	Government Offices City City Of York	50 West King Street		York	PA	17401			42133	York	Government Office	ArcGIS
+585356	-76.72859819379839	39.96053365052225	Government Offices City Finance Division	50 West King Street		York	PA	17401			42133	York	Government Office	ArcGIS
+585365	-76.75257179981799	39.960580017400446	Gay Robert L Sr	816 Maryland Avenue		York	PA	17404			42133	York	Place of Worship	ArcGIS
+585373	-76.73914635261383	39.960612733116534	Government Offices City Health Bureau	445 West Philadelphia Street		York	PA	17401			42133	York	Government Office	ArcGIS
+585427	-76.71368999502437	39.960753622524095	York First Church Of God	503 Vander Avenue		York	PA	17403			42133	York	Place of Worship	ArcGIS
+585438	-76.73306819622142	39.96089361754517	Government Offices City Health Bureau	233-243 Lincoln Highway		York	PA	17401			42133	York	Government Office	ArcGIS
+585439	-76.73306819622142	39.96089361754517	City Of York	233-243 Lincoln Highway		York	PA	17401			42133	York	Government Office	ArcGIS
+585495	-76.72114729537353	39.961200909911526	J.i Williams Memorial Church	240 East Princess Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+585507	-76.66108999620882	39.96123725024652	Longstown United Methodist Church	2975 Carol Road		East York	PA	17402			42133	York	Place of Worship	ArcGIS
+585508	-76.73865815881304	39.961238191705974	Pace Analytical Life Sciences	120-140 Roosevelt Avenue		York	PA	17401			42133	York	Government Office	ArcGIS
+585509	-76.73865815881304	39.961238191705974	Harrisburg Area Community College	120-140 Roosevelt Avenue		York	PA	17401			42133	York	College / University	ArcGIS
+585515	-76.70768273052899	39.96128361712472	Cathedral Of Praise	886-898 Highway 124		York	PA	17403			42133	York	Place of Worship	ArcGIS
+585521	-76.74847456826647	39.96130729483003	Madison Av Church Of The Brethren	645 Madison Avenue		York	PA	17404			42133	York	Place of Worship	ArcGIS
+585524	-76.72585817019832	39.96134363516502	York County Council Of Churches	30-52 East King Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585536	-76.72941909937086	39.96143274430251	First Church Of Christ Scientist	1-29 South Beaver Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585541	-76.72552183380775	39.96145275031594	Salvation Army	52-56 East King Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585543	-76.73914272799492	39.96146456563211	Commonwealth Of Pennsylvania	""		York	PA	17401			42133	York	Government Office	ArcGIS
+585565	-76.69773729405713	39.961588179258655	Jack & Jill Pre-School & Kindergarten	501-513 South Ogontz Street		York	PA	17403			42133	York	School	ArcGIS
+585569	-76.73034455401587	39.96160907965857	Community Progress Council	100-198 Lincoln Highway		York	PA	17401			42133	York	Government Office	ArcGIS
+585572	-76.67749092602294	39.96162635543959	Old Towne Artisans	2467 Raleigh Drive		East York	PA	17402			42133	York	School	ArcGIS
+585574	-76.72722182714703	39.9616436312206	Schlegel Beth A Rev	101-199 South George Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585575	-76.72722182714703	39.9616436312206	Christ Church Child Care Center	101-199 South George Street		York	PA	17401			42133	York	School	ArcGIS
+585581	-76.73577635141892	39.96165182191787	York Otterbein United Methodist Church	301 West Philadelphia Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585582	-76.72275455495642	39.961660012615134	Jesus Would Obey The Law	125 South Queen Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+585590	-76.73009365507092	39.96168726786638	York County	100-198 Lincoln Highway		York	PA	17401			42133	York	Government Office	ArcGIS
+585604	-76.70145271672637	39.961770022152535	Mt Moriah Baptist Church	1153-1165 East Prospect Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+585615	-76.74711180570425	39.961838183817136	Trinity Lutheran Church	Fern Avenue		York	PA	17404			42133	York	Place of Worship	ArcGIS
+585626	-76.72942729006812	39.96189090554666	Police Heritage Museum	78-98 West Market Street		York	PA	17401			42133	York	Museum	ArcGIS
+585633	-76.70749999324862	39.96192272687627	Calvary Chapel	417-423 Norway Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+585662	-76.72986728114478	39.962077267445935	York Arts	6 North Beaver Street		York	PA	17401			42133	York	School	ArcGIS
+585670	-76.72902820540482	39.962105464156636	The Frame Shop	25-37 Lincoln Highway		York	PA	17401			42133	York	Museum	ArcGIS
+585675	-76.7587054552453	39.96214091010514	Greenmount Cemetery	Carlisle Road		York	PA	17404			42133	York	Cemetery	ArcGIS
+585676	-76.74242272566586	39.962142745951084	Grace United Church Of Christ	223 North Hartley Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585687	-76.7283063413671	39.962230913629114	Trinity United Church Of Christ	6-14 West Market Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585702	-76.72840726582076	39.96229634506129	Child Care Consultants	13 West Market Street		York	PA	17401			42133	York	School	ArcGIS
+585704	-76.7926081634152	39.96232181153957	Health Care Receivable	1375 Setter Run Court		Shiloh	PA	17408			42133	York	Hospital/Polyclinic	ArcGIS
+585709	-76.74371727949051	39.96233362685574	Dcmc Philadelphia Reading	500 Lincoln Street		York	PA	17401			42133	York	Government Office	ArcGIS
+585719	-76.62226274899066	39.96235546871511	Grace Baptist Church	3498-3510 East Prospect Road		York	PA	17402			42133	York	Place of Worship	ArcGIS
+585726	-76.71977728357349	39.96241365090948	Tidings Of Peace Christian School	332 East Poplar Street		York	PA	17403			42133	York	School	ArcGIS
+585764	-76.7299563432093	39.96251363390368	The Studio & Art Bar	25 North Beaver Street		York	PA	17401			42133	York	Museum	ArcGIS
+585771	-76.71968181958468	39.96253910038196	Tidings Of Peace Mennonite Church And School	329 East Poplar Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+585772	-76.71968181958468	39.96253910038196	A Michael St Peter Center	329 East Poplar Street		York	PA	17403			42133	York	School	ArcGIS
+585787	-76.72737909794911	39.96261182812492	Move Up	1-37 Lincoln Highway		York	PA	17401			42133	York	School	ArcGIS
+585792	-76.53853273424842	39.96263183413835	Conoy Township Ema	1-7 2nd Street		York	PA	17406			42133	York	Government Office	ArcGIS
+585793	-76.72192272845427	39.96263272852484	Trinity United Methodist Church	239 East King Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+585807	-76.72659999317649	39.96274998730006	York County	2-64 Lincoln Highway		York	PA	17401			42133	York	Government Office	ArcGIS
+585812	-76.5384836371378	39.962769993313486	2Nd And Race St	110 2nd Street		York	PA	17406			42133	York	Place of Worship	ArcGIS
+585818	-76.72677364537311	39.96279362394583	Government Offices City City Of York	1-37 Lincoln Highway		York	PA	17401			42133	York	Government Office	ArcGIS
+585819	-76.73242908646988	39.96279997879715	Head Start Of York Co	100-114 North Pershing Avenue		York	PA	17401			42133	York	School	ArcGIS
+585820	-76.7267100027139	39.96281273557278	Commonwealth Of Pennsylvania	1-37 Lincoln Highway		York	PA	17401			42133	York	Government Office	ArcGIS
+585852	-76.77121274411523	39.962979985845095	Us Navy Recruiting Office	2154-2172 White Street		York	PA	17404			42133	York	Government Office	ArcGIS
+585853	-76.73147727096008	39.96298182169103	Quaker Meeting York	137-199 Lincoln Highway		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585862	-76.76515092204438	39.963012748634156	Zion United Methodist	1000-1098 Highway 74		York	PA	17404			42133	York	Place of Worship	ArcGIS
+585916	-76.72513729469304	39.96319727468749	Faith United Methodist Church	100-198 Lincoln Highway		York	PA	17403			42133	York	Place of Worship	ArcGIS
+585918	-76.72510636774992	39.963206359771235	Funt Eric Rev	100-198 Lincoln Highway		York	PA	17403			42133	York	Place of Worship	ArcGIS
+585919	-76.72510636774992	39.963206359771235	Faith United Methodist Church Kitchen	100-198 Lincoln Highway		York	PA	17403			42133	York	Place of Worship	ArcGIS
+585923	-76.75375907433767	39.963240016946784	Edgar Fahs Smith Middle School	701-799 Texas Avenue		York	PA	17404			42133	York	School	ArcGIS
+585936	-76.72472818348653	39.963323618546454	Bonham House	124 East Market Street		York	PA	17401			42133	York	Museum	ArcGIS
+585965	-76.7918136187075	39.96343725270276	Reider Edward Russell	1757-1767 Emerald Avenue		Shiloh	PA	17408			42133	York	School	ArcGIS
+585970	-76.7281599914947	39.963461824794564	York County	35-67 BicyclePA Route J		York	PA	17401			42133	York	Library	ArcGIS
+585982	-76.72969725356707	39.96352998645916	Heidelberg United Church Of Christ	35-39 West Philadelphia Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+585999	-76.72403997662437	39.96363637137766	Martin Memorial Library	153 East Market Street		York	PA	17403			42133	York	Library	ArcGIS
+586033	-76.74986816362588	39.96380362164998	Lots Of Love Daycare	575-599 Maryland Avenue		York	PA	17404			42133	York	School	ArcGIS
+586035	-76.71384091097512	39.96380729334186	Seventh-Day Adventist Church	617 East Princess Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586049	-76.72309272719293	39.96383638443904	Vna Home Health Agency	200-298 Lincoln Highway		York	PA	17403			42133	York	Government Office	ArcGIS
+586067	-76.72293908100976	39.963981839924955	Caring Company	235 East Market Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586076	-76.72620547459155	39.96402001610589	First Moravian Church	43 North Duke Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+586078	-76.72241817149288	39.96404816574362	York County Heritage Trust	200-298 Lincoln Highway		York	PA	17403			42133	York	Museum	ArcGIS
+586094	-76.63265274261752	39.96415728089454	Locust Grove Ucc	1035-1065 Locust Grove Road		York	PA	17402			42133	York	Place of Worship	ArcGIS
+586115	-76.72194089862177	39.96419818730789	State Legislators	262-266 East Market Street		York	PA	17403			42133	York	Government Office	ArcGIS
+586116	-76.73081180034377	39.964199081694375	Episcopal Church Of St John The Baptist	131-147 North Beaver Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+586144	-76.72191816237591	39.96430273638046	It Takes A Village	225-267 Lincoln Highway		York	PA	17403			42133	York	School	ArcGIS
+586152	-76.72861273934699	39.9643299916317	Grace & Hope Mission	119-121 North George Street		York	PA	17401			42133	York	Place of Worship	ArcGIS
+586168	-76.7286618364576	39.964425455620514	World A Cuts Barber Institute	121-125 North George Street		York	PA	17401			42133	York	School	ArcGIS
+586172	-76.70479000220519	39.96444725040692	Mount Calvary Baptist Church	363-367 Simpson Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586177	-76.67960817419302	39.96449182851215	East York Elementary School	701 Erlen Drive		East York	PA	17402			42133	York	School	ArcGIS
+586185	-76.74547545502416	39.96458183203612	Hoffman Home For Children	475 Madison Avenue		York	PA	17404			42133	York	School	ArcGIS
+586191	-76.70595910655736	39.96466275047634	Church Of The Living God	341-375 Wheatfield Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586196	-76.7266818060032	39.96469546619243	Commonwealth Of Pennsylvania Revenue Department	110 North Duke Street		York	PA	17401			42133	York	Government Office	ArcGIS
+586197	-76.7266818060032	39.96469546619243	Welfare Department	110 North Duke Street		York	PA	17401			42133	York	Government Office	ArcGIS
+586200	-76.7202727266121	39.96470634004915	Asbury Un Church	349-351 East Market Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586206	-76.72657363231173	39.96473001775446	Lincoln Intermediate Unit	107 North Duke Street		York	PA	17401			42133	York	Government Office	ArcGIS
+586207	-76.72657363231173	39.96473001775446	Commonwealth Of Pennsylvania Commerce Center	107 North Duke Street		York	PA	17401			42133	York	Government Office	ArcGIS
+586239	-76.74328091303276	39.964913649421305	Childrens Home Of York-Tindall House	441 Linden Avenue		York	PA	17404			42133	York	School	ArcGIS
+586247	-76.72475638019723	39.96495455583466	Peter Richards	154 East Philadelphia Street		York	PA	17403			42133	York	Museum	ArcGIS
+586251	-76.7090681822641	39.964980022312936	Second Church Of The Brethren	822 East Princess Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586260	-76.70925454416337	39.965025447731676	Emmanual Church Of God In Christ	801-825 East Princess Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586278	-76.74815089450559	39.96512637218534	New Hope Academy Charter School	644-698 North Hartley Street		York	PA	17404			42133	York	School	ArcGIS
+586285	-76.71877001610176	39.96525365750376	Friendship Baptist C	411-427 Lincoln Highway		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586294	-76.69488726091966	39.96533547033046	Breast Center At Memorial Hospital	1600-1698 6th Avenue		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+586295	-76.69488726091966	39.96533547033046	Elmwood Endoscopy Center Pc	1600-1698 6th Avenue		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+586314	-76.7293499962468	39.965490905286615	State Senate	238-242 North George Street		York	PA	17401			42133	York	Government Office	ArcGIS
+586357	-76.69143544689804	39.96572179821814	Memorial Hospital	1748-1760 6th Avenue		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+586379	-76.72182999469788	39.965840892839296	Church Of Christ At York	300-358 Lincoln Highway		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586385	-76.72204092868895	39.96587455001484	York City Schools	301-349 Lincoln Highway		York	PA	17403			42133	York	School	ArcGIS
+586386	-76.72204092868895	39.96587455001484	Children's Home Of York	301-349 Lincoln Highway		York	PA	17403			42133	York	School	ArcGIS
+586393	-76.71947093266658	39.965906371344445	Grace U M Church	31-41 North Broad Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586402	-76.63755817003884	39.96597001400365	The Praise Center	3924 Farm Drive		York	PA	17402			42133	York	Place of Worship	ArcGIS
+586405	-76.72959816495934	39.96597363862256	Learning Sciences International	238-242 North George Street		York	PA	17401			42133	York	School	ArcGIS
+586413	-76.63742274109613	39.966040011514195	Abundant Life Center	3924 Farm Drive		York	PA	17402			42133	York	Place of Worship	ArcGIS
+586414	-76.63742274109613	39.966040011514195	Grace Academy	3924 Farm Drive		York	PA	17402			42133	York	School	ArcGIS
+586456	-76.72976635669112	39.96630362016181	Gloria's Grocery & Lottery	238-242 North George Street		York	PA	17401			42133	York	Government Office	ArcGIS
+586489	-76.67846001731374	39.96648725182865	Central Pa Conference United Methodist Church	2430 Bradford Drive		East York	PA	17402			42133	York	Place of Worship	ArcGIS
+586521	-76.69065365896597	39.96670091605214	Surgical Center Of York	401-499 Wheaton Street		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+586531	-76.69753365637685	39.96681728044088	St Andrews Episcopal Church	1500-1516 4th Avenue		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586550	-76.72024820159326	39.96693910529445	Government Offices City City Of York	114 North Broad Street		York	PA	17403			42133	York	Government Office	ArcGIS
+586552	-76.69785544721884	39.96694908476468	Phineas Davis Elementary School	276-298 South Ogontz Street		York	PA	17403			42133	York	School	ArcGIS
+586592	-76.69375637982138	39.96724635058784	Memorial Hospital	South Belmont Street		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+586602	-76.67303000868367	39.967298177930886	York Suburban School District High School	428-454 Sundale Drive		East York	PA	17402			42133	York	School	ArcGIS
+586614	-76.71480816641999	39.96745092972758	New Harvest Community Church	26-52 Ridge Avenue		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586615	-76.71480816641999	39.96745092972758	Believers Tabernacle Of Faith	26-52 Ridge Avenue		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586622	-76.74935271457385	39.967502709997646	Faith United Church Of Christ	425 Pacific Avenue		York	PA	17404			42133	York	Place of Worship	ArcGIS
+586626	-76.71301816955673	39.967525446243506	St Mark's Lutheran Church	732-794 Lincoln Highway		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586633	-76.6926800092256	39.967569082889284	Memorial Hospital	325 South Belmont Street		York	PA	17403			42133	York	Hospital/Polyclinic	ArcGIS
+586666	-76.73503363405426	39.96787002040432	Cpc Jefferson	""		York	PA	17401			42133	York	Library	ArcGIS
+586671	-76.74936363550353	39.96798271310118	United Faith Church Of Christ	509-511 Pacific Avenue		York	PA	17404			42133	York	Place of Worship	ArcGIS
+586680	-76.73432452679218	39.968028185592885	Grace Lutheran Church Of York	142 Jefferson Avenue		York	PA	17401			42133	York	Place of Worship	ArcGIS
+586712	-76.71163907267294	39.96823728373801	Church On The Rock	803 East Market Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586713	-76.73066182585248	39.96823907251098	Commonwealth Of Pennsylvania Pa Army National Guard	403-413 North George Street		York	PA	17401			42133	York	Government Office	ArcGIS
+586720	-76.77957092701762	39.96827635430543	Church Of The Open Door	1 Carlisle Court		Shiloh	PA	17408			42133	York	Place of Worship	ArcGIS
+586723	-76.7145472880048	39.96829725470535	Eastern School District	1-99 North Lee Street		York	PA	17403			42133	York	School	ArcGIS
+586724	-76.72229361640687	39.96830271517019	Stillmeadow Church Of Hte Naxarene	350 Chestnut Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586742	-76.71604726828271	39.96854274025844	Helen Thakston Middle School	625 East Philadelphia Street		York	PA	17403			42133	York	School	ArcGIS
+586748	-76.60525726098702	39.968617256774365	Immanuel Evangelical Free Church Of York	1130 Witmer Road		York	PA	17406			42133	York	Place of Worship	ArcGIS
+586751	-76.68004091603187	39.968643617639124	Eastminster Pre-School	311-381 Haines Road		East York	PA	17402			42133	York	School	ArcGIS
+586753	-76.7211990756436	39.96865091394991	Alexander D Goode Elementary School	251-399 North Broad Street		York	PA	17403			42133	York	School	ArcGIS
+586756	-76.80372637593109	39.96867543896873	Myers Robert	2059 Thelon Drive		York	PA	17408			42133	York	Place of Worship	ArcGIS
+586784	-76.73183907382894	39.96886909717878	Glory House Ministries	2-40 Jefferson Avenue		York	PA	17401			42133	York	Place of Worship	ArcGIS
+586789	-76.72663092011962	39.96890270728135	Westminster Presbyterian Church	155-199 Perry Place		York	PA	17401			42133	York	Place of Worship	ArcGIS
+586816	-76.71587818216445	39.969113641272415	Unity Church Of God In Christ	650-698 Gas Avenue		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586821	-76.7403263778957	39.969130022666945	Grace Brethren Church	661 North Newberry Street		York	PA	17404			42133	York	Place of Worship	ArcGIS
+586835	-76.8307063444308	39.9692390907449	New Creation Community Church At Emig Mill	3 Emig Mill Road		Dover	PA	17315			42133	York	School	ArcGIS
+586837	-76.70488725496696	39.96927001768802	Government Offices City Recreational Facilities	100-130 South Lehman Street		York	PA	17403			42133	York	Government Office	ArcGIS
+586839	-76.7173054346994	39.96927816131232	Community Church Of God	605 Wallace Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+586849	-76.74889728356212	39.96933361327426	Mdd Consulting	850 Wood Street		York	PA	17404			42133	York	Hospital/Polyclinic	ArcGIS
+586910	-76.66638636466915	39.96976546072662	Saint Joseph Convent	405 Quaker Drive		East York	PA	17402			42133	York	Place of Worship	ArcGIS
+586912	-76.67050364930708	39.96978363089411	First Church Of The Brethren	2710-2898 Kingston Road		East York	PA	17402			42133	York	School	ArcGIS
+586913	-76.73340909869036	39.969787255513026	Carman's Day Care	601-649 North Beaver Street		York	PA	17404			42133	York	School	ArcGIS
+586954	-76.52328179715951	39.97003909591744	Government Offices City	37 West Maple Street		East Prospect	PA	17368			42133	York	Government Office	ArcGIS
+586990	-76.69147183430601	39.97031546134068	York Church Of Christ	150 South Manheim Street		East York	PA	17402			42133	York	Place of Worship	ArcGIS
+587001	-76.79680180041498	39.97044091081317	Norman A Trimmer Elementary School	1900 Brenda Road		York	PA	17408			42133	York	School	ArcGIS
+587041	-76.67592090116153	39.97070997992562	Central Pa Conference-York District Umc	2570-2586 Kingston Road		East York	PA	17402			42133	York	Place of Worship	ArcGIS
+587042	-76.67592090116153	39.97070997992562	Commonwealth Of Pennsylvania	2570-2586 Kingston Road		East York	PA	17402			42133	York	Government Office	ArcGIS
+587043	-76.67592090116153	39.97070997992562	Right At Home	2570-2586 Kingston Road		East York	PA	17402			42133	York	School	ArcGIS
+587044	-76.70621000550233	39.970728197166096	Fourth United Methodist Church	1067 East Market Street		York	PA	17403			42133	York	Place of Worship	ArcGIS
+587067	-76.6759363410966	39.97094727478145	Cook Elizabeth L	2573-2587 Kingston Road		East York	PA	17402			42133	York	School	ArcGIS
+587069	-76.6768227251742	39.97096365617598	Meadows Psychiatric Center	2451 Kingston Court		East York	PA	17402			42133	York	Hospital/Polyclinic	ArcGIS
+587149	-76.56022452498506	39.9716263494869	Canadochly Lutheran Church	4916 East Prospect Road		York	PA	17406			42133	York	Place of Worship	ArcGIS
+587168	-76.58789180596045	39.97175179895938	Christ United Methodist Church Of Yorkanna	3 Main Street		Yorkana	PA	17406			42133	York	Place of Worship	ArcGIS
+587185	-76.56440272204976	39.97186001972382	Canadochly Evangelical & Reformed Church	4833-4845 East Prospect Road		York	PA	17406			42133	York	Place of Worship	ArcGIS
+587222	-76.67205183230912	39.97218727103065	East York Kindercare	120 South Northern Way		East York	PA	17402			42133	York	School	ArcGIS
+587237	-76.680410909598	39.97229455033563	Kids Now	2340 Eastern Boulevard		East York	PA	17402			42133	York	School	ArcGIS
+587238	-76.680410909598	39.97229455033563	The Fathers Workshop Of York County	2340 Eastern Boulevard		East York	PA	17402			42133	York	School	ArcGIS
+587253	-76.70059363497298	39.97233362090304	A Michael St Peter Center	1409-1427 Lincoln Highway		York	PA	17403			42133	York	Place of Worship	ArcGIS
+587274	-76.74760635435636	39.97251635818341	Denvers Elementary School	801-821 Chanceford Avenue		York	PA	17404			42133	York	School	ArcGIS
+587290	-76.67834365292501	39.97262001286949	Commonwealth Of Pennsylvania Commerce Center	2424 Eastern Boulevard		East York	PA	17402			42133	York	Government Office	ArcGIS
+587360	-76.66662182367904	39.973165447405194	Yorkshire Elementary School	205-299 Mills Street		East York	PA	17402			42133	York	School	ArcGIS
+587379	-76.69226270732183	39.97325818116158	Advent Lutheran Church	1775 East Market Street		East York	PA	17402			42133	York	Place of Worship	ArcGIS
+587394	-76.68789635958488	39.973410885885315	Government Offices City	2000-2018 East Market Street		East York	PA	17402			42133	York	Government Office	ArcGIS
+587404	-76.68835089621012	39.97353365219834	Center For Creative Arts And Play Therapy	2001 East Market Street		East York	PA	17402			42133	York	Museum	ArcGIS
+587408	-76.6879600022441	39.97356274329553	Dunkerley Jeffrey Dpm	2001-2019 Lincoln Highway		York	PA	17402			42133	York	Hospital/Polyclinic	ArcGIS
+587439	-76.68481091451048	39.97379999107838	Wellspan Readycare	2205 East Market Street		East York	PA	17402			42133	York	Hospital/Polyclinic	ArcGIS
+587591	-76.75464545841527	39.97479727907988	Commonwealth Of Pennsylvania	""		West Manchester	PA	17404			42133	York	Government Office	ArcGIS
+587613	-76.5445827410031	39.974929083403694	Liberty Bible Camp	1131-1133 Keller Road		York	PA	17406			42133	York	School	ArcGIS
+587638	-76.69388272368035	39.97519090327834	Hess Steven M	111 North Hills Road		East York	PA	17402			42133	York	Hospital/Polyclinic	ArcGIS
+587650	-76.58526725236263	39.975321813215665	Yorkana Church Of The Bretheren	30-38 Main Street		Yorkana	PA	17406			42133	York	Place of Worship	ArcGIS
+587666	-76.73388091109662	39.97541727720448	Prospect Hill Cemetery	48-98 Dewey Avenue		York	PA	17404			42133	York	Cemetery	ArcGIS
+587676	-76.68365908593931	39.975456347771896	Emmanuel Christian Fellowship	2301-2303 East Philadelphia Street		East York	PA	17402			42133	York	Place of Worship	ArcGIS
+587685	-76.7324672626508	39.975559108071494	St Peters Lutheran Church	901-945 BicyclePA Route J		York	PA	17404			42133	York	Place of Worship	ArcGIS
+587726	-76.92980728526958	39.97592364117277	West Manchester Township Farmers & Sportsman	4902-4994 Pine Hill Road		Dover	PA	17315			42133	York	Government Office	ArcGIS
+587795	-76.79922907118385	39.97655634900002	Shiloh United Church Of Christ	2275 Willow Road		Shiloh	PA	17408			42133	York	School	ArcGIS
+587817	-76.7309672823729	39.97686180552044	Iglesia De Dios	31 East 6th Avenue		York	PA	17404			42133	York	Place of Worship	ArcGIS
+587822	-76.77009179541422	39.976883647379815	State Legislators	1577-1599 Kenneth Road		Shiloh	PA	17408			42133	York	Government Office	ArcGIS
+587823	-76.79396725428555	39.97688727199872	Taxpayer Assistance Organization	2062-2098 Highway 74		Shiloh	PA	17408			42133	York	Government Office	ArcGIS
+587824	-76.66051909519484	39.97689273246357	Yorkshire United Methodist Church	105-111 Edgewood Road		East York	PA	17402			42133	York	Place of Worship	ArcGIS
+587843	-76.6498545249177	39.977094534297905	King James Bible Church	3519-3525 Stone Ridge Road		York	PA	17402			42133	York	Place of Worship	ArcGIS
+587869	-76.78161907206365	39.97726089018374	Moul Margaret E Cerebral Palsy Home	2050 Barley Road		York	PA	17408			42133	York	Government Office	ArcGIS
+587890	-76.72732270452772	39.977410017361535	North York Borough	332-398 East 6th Avenue		York	PA	17404			42133	York	Government Office	ArcGIS
+587892	-76.76316001773327	39.97743181214794	West York Kindercare	1500-1550 Rodney Road		Shiloh	PA	17408			42133	York	School	ArcGIS
+587927	-76.49616818849006	39.97771274364954	Susquehanna Heritage	1706 Long Level Road		Wrightsville	PA	17368			42133	York	Museum	ArcGIS
+587931	-76.64117638701927	39.97773726866836	Good News Free Will Baptists Church	518-530 Locust Grove Road		York	PA	17402			42133	York	Place of Worship	ArcGIS
+587942	-76.68636361651791	39.97789726970287	American Kenpo Karate	2151 Industrial Highway		East York	PA	17402			42133	York	School	ArcGIS
+587949	-76.68594998630601	39.97796637282693	Major Restoration Services	2151 Industrial Highway		East York	PA	17402			42133	York	Museum	ArcGIS
+587967	-76.68430271469626	39.978152734726194	Gymboree Play And Music	2300 Industrial Highway		East York	PA	17402			42133	York	School	ArcGIS
+588023	-76.77560728856288	39.978631796370266	Kindercare Learning Center	1742-1798 Kenneth Road		Shiloh	PA	17408			42133	York	School	ArcGIS
+588024	-76.78827453139434	39.97866088746745	Charles B Wallace Elementary School	2065 High Street		Shiloh	PA	17408			42133	York	School	ArcGIS
+588040	-76.72870274287096	39.97882729042625	Central High School	275-299 East 7th Avenue		York	PA	17404			42133	York	School	ArcGIS
+588041	-76.72870274287096	39.97882729042625	York Learning Center	275-299 East 7th Avenue		York	PA	17404			42133	York	School	ArcGIS
+588064	-76.73357272434377	39.97897001567975	Vietnamese Alliance Church Of York	1130-1198 BicyclePA Route J		York	PA	17404			42133	York	Place of Worship	ArcGIS
+588103	-76.65487090333589	39.979307293529786	Eastside Church & Ministries	3430 Eastern Boulevard		York	PA	17402			42133	York	Place of Worship	ArcGIS
+588120	-76.75426727415189	39.97941819745367	Kim's Karate	970 Loucks Road		York	PA	17404			42133	York	School	ArcGIS
+588147	-76.80339634731888	39.97953818646131	Shiloh Lutheran Church	2201 Church Road		York	PA	17408			42133	York	School	ArcGIS
+588156	-76.73375273139172	39.97959547426919	Children's Home Of York-George Group Home	1298 North George Street		York	PA	17404			42133	York	School	ArcGIS
+588166	-76.73546270420124	39.97965271500411	Messiah United Methodist Church	101-199 West 9th Avenue		York	PA	17404			42133	York	Place of Worship	ArcGIS
+588214	-76.657520923412	39.98014726365622	The Montessori Children's House Of York	3417 East Market Street		York	PA	17402			42133	York	School	ArcGIS
+588226	-76.83669364998572	39.98028725867729	Dover Area Community Library	3708-3720 Davidsburg Road		Dover	PA	17315			42133	York	Library	ArcGIS
+588263	-76.6948882023791	39.980603636127405	Lcbc York	951 North Hills Road		York	PA	17402			42133	York	Place of Worship	ArcGIS
+588264	-76.6948882023791	39.980603636127405	Lancaster County Bible Ch	951 North Hills Road		York	PA	17402			42133	York	Place of Worship	ArcGIS
+588265	-76.66265361914593	39.98060909659225	Child Evangelism Fellowship Of York County	36-70 Highway 24		East York	PA	17402			42133	York	Place of Worship	ArcGIS
+588304	-76.78108907746302	39.980929098661264	Healthsouth Rehab Hospital Of York	1850 Normandie Drive		York	PA	17408			42133	York	Hospital/Polyclinic	ArcGIS
+588305	-76.70003638512111	39.9809390781315	The Pentecostal Of York	1550 11th Avenue		York	PA	17402			42133	York	Place of Worship	ArcGIS
+588364	-76.735701834903	39.98143000216471	Lebanon Cemetery	117 Olympia Avenue		York	PA	17404			42133	York	Cemetery	ArcGIS
+588401	-76.82233182720685	39.98180729204161	St David's E C Church	2410-2496 Oakland Road		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+588417	-76.85630363850079	39.98194272098432	York Bible Church	4192 Marlborough Road		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+588423	-76.73897180603073	39.98196908184909	Reedy Bud Rev	1500-1510 Angel Drive		York	PA	17404			42133	York	Place of Worship	ArcGIS
+588494	-76.91865725142408	39.98249272159838	Lindsay William Rev	5920-5926 Pinchtown Road		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+588510	-76.82351547710762	39.98267362303281	Creative Kid's Day Care	3152-3170 Grenway Road		Dover	PA	17315			42133	York	School	ArcGIS
+588537	-76.6949745342112	39.982840920378095	North Hills Elementary School	1716-1720 North Hills Road		York	PA	17406			42133	York	School	ArcGIS
+588541	-76.7609109181664	39.98287180024825	Memorial Hospital	505-541 Greenbriar Road		York	PA	17404			42133	York	Hospital/Polyclinic	ArcGIS
+588542	-76.7609109181664	39.98287180024825	Industrial Resource Center	505-541 Greenbriar Road		York	PA	17404			42133	York	Hospital/Polyclinic	ArcGIS
+588543	-76.7609109181664	39.98287180024825	Greenbrier Medical Center	505-541 Greenbriar Road		York	PA	17404			42133	York	Hospital/Polyclinic	ArcGIS
+588551	-76.70790816299566	39.98292819366965	U-Gro Learning Centres	1315-1353 North Sherman Street Ext		York	PA	17406			42133	York	School	ArcGIS
+588563	-76.75348454476035	39.98299362510183	Commonwealth Of Pennsylvania Labor And Industry Department	841 Vogelsong Road		York	PA	17404			42133	York	Government Office	ArcGIS
+588569	-76.75792089000784	39.98304907706377	United States Government	950 Borom Road		York	PA	17404			42133	York	Government Office	ArcGIS
+588570	-76.75792089000784	39.98304907706377	Social Security Administration	950 Borom Road		York	PA	17404			42133	York	Government Office	ArcGIS
+588581	-76.74120909028143	39.98316271122008	United States Government	401 Loucks Road		York	PA	17404			42133	York	Government Office	ArcGIS
+588586	-76.82663636813054	39.983196368395625	Gay Bob Ministries	3267-3299 Davidsburg Road		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+588640	-76.76660547690355	39.9835854735887	Cityview Community Church	1655 Roosevelt Avenue		York	PA	17408			42133	York	Place of Worship	ArcGIS
+588669	-76.73892270892011	39.98384183299851	Allied Associates Management	2-260 Loucks Road		York	PA	17404			42133	York	School	ArcGIS
+588687	-76.64778999847714	39.98399180748981	Stony Brook Mennonite Church	15-35 Locust Grove Road		York	PA	17402			42133	York	Place of Worship	ArcGIS
+588706	-76.82759091387274	39.98415364437025	Dwell Ministries	2209-2213 Locust Road		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+588729	-76.82508634928254	39.98432635510741	Weigelstown Elementary School	3187-3223 Carlisle Road		Dover	PA	17315			42133	York	School	ArcGIS
+588761	-76.82096092102033	39.98459726006581	Robin's Nest Day Care & Preschool	3291-3301 Alta Vista Road		Dover	PA	17315			42133	York	School	ArcGIS
+588764	-76.70250818692223	39.98462272654409	Zion Bible Church	1550 North East Street		York	PA	17406			42133	York	Place of Worship	ArcGIS
+588799	-76.75868361338594	39.98488544080523	Career Success & Beyond	1530 Clugston Road		York	PA	17404			42133	York	School	ArcGIS
+588800	-76.75868361338594	39.98488544080523	Consolidated School Of Business	1530 Clugston Road		York	PA	17404			42133	York	College / University	ArcGIS
+588821	-76.68456274579793	39.985002746653414	Unified Solution Group	Memory Ln Exd		York	PA	17402			42133	York	School	ArcGIS
+588836	-76.81624091403883	39.98508272363418	Urban Marsha	2050-2088 Oakland Road		Dover	PA	17315			42133	York	Museum	ArcGIS
+589126	-76.73977270558976	39.98706816748046	Commonwealth Of Pennsylvania	1900-1964 State Route 4005		York	PA	17404			42133	York	Government Office	ArcGIS
+589139	-76.74623728401578	39.9871199948235	Concentra Medical Center	1952-2098 Pennsylvania Avenue		York	PA	17404			42133	York	Hospital/Polyclinic	ArcGIS
+589165	-76.55570547252438	39.98731454742003	Christ Chapel	808-816 Poff Road		York	PA	17406			42133	York	Place of Worship	ArcGIS
+589170	-76.7279036320849	39.98739909047916	Government Offices City City Of York	1625-1799 Toronita Street		York	PA	17402			42133	York	Government Office	ArcGIS
+589178	-76.64342365074019	39.98750001493282	The Framers & Framers Gallery	3780 East Market Street		York	PA	17402			42133	York	Museum	ArcGIS
+589185	-76.82856909024729	39.98755998590015	Mason Charles	2072-2098 Andover Drive		Dover	PA	17315			42133	York	School	ArcGIS
+589203	-76.66010819521537	39.98763817410796	Strickler-Miller Cemetery	3394-3482 Concord Road		York	PA	17402			42133	York	Cemetery	ArcGIS
+589216	-76.82326820278156	39.98775999896153	Friendship Community Church	3380 Fox Run Road		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+589234	-76.74647726203105	39.98790818467987	Skyline Gymnastics Center	2101 Pennsylvania Avenue		York	PA	17404			42133	York	School	ArcGIS
+589285	-76.64797452453047	39.98821637143271	York County	100-106 Pleasant Acres Road		York	PA	17402			42133	York	Government Office	ArcGIS
+589307	-76.6480408974221	39.98833000558903	York County	100-106 Pleasant Acres Road		York	PA	17402			42133	York	Government Office	ArcGIS
+589316	-76.64805727881664	39.98835909668621	Us Department Of Agriculture	100-106 Pleasant Acres Road		York	PA	17402			42133	York	Government Office	ArcGIS
+589353	-76.86195818521107	39.988668177825545	Strayers Cemetery	3013 West Canal Road		Dover	PA	17315			42133	York	Cemetery	ArcGIS
+589371	-76.65869727700198	39.988906367067855	Us Department Of Agriculture	3500-3542 Concord Road		York	PA	17402			42133	York	Government Office	ArcGIS
+589379	-76.648418187299	39.98897636457839	York County	108-160 Pleasant Acres Road		York	PA	17402			42133	York	Government Office	ArcGIS
+589421	-76.95617455195547	39.98926270947186	St Paul's Red Run Ucc	6623 Davidsburg Road		East Berlin	PA	17316			42133	York	Place of Worship	ArcGIS
+589424	-76.86044728400347	39.989289070336625	Salem United Church Of Christ	2983-2987 West Canal Road		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+589425	-76.83724727521869	39.98929547226092	Baylor Melissa Do	3700-3896 Highway 74		Dover	PA	17315			42133	York	Hospital/Polyclinic	ArcGIS
+589474	-76.65131910632007	39.98978729068061	York County	3552-3578 Heindel Road		York	PA	17402			42133	York	Government Office	ArcGIS
+589496	-76.63999819758334	39.989969086501524	York Okinawan Karate Academy	3901-3929 Lincoln Highway		York	PA	17402			42133	York	School	ArcGIS
+589497	-76.69384365311294	39.98998363205011	The North Hills Bible Church	1931 North Hills Road		York	PA	17406			42133	York	Place of Worship	ArcGIS
+589577	-76.69434907562176	39.99065818775018	Central York Middle School	1950-1998 North Hills Road		York	PA	17406			42133	York	School	ArcGIS
+589645	-76.85745363122601	39.99129089557743	Union Cemetery	2726-2762 West Canal Road		Dover	PA	17315			42133	York	Cemetery	ArcGIS
+589674	-76.70081638428022	39.99157545169793	Mt Zion United Church Of Christ	1088-1280 Ridgewood Road		York	PA	17406			42133	York	School	ArcGIS
+589713	-76.55917272648107	39.99187728359945	Mt Pisgah Trinity United Methodist Church	5615-5751 Mount Pisgah Road		York	PA	17406			42133	York	Place of Worship	ArcGIS
+589774	-76.62824727724019	39.992633652126216	New Freedom Christian School	152 Campbell Road		York	PA	17402			42133	York	School	ArcGIS
+589779	-76.64923819848498	39.992677288772	Stonybrook Bible Church	245 Pleasant Acres Road		York	PA	17402			42133	York	Place of Worship	ArcGIS
+589794	-76.77833093076842	39.99283907857947	Providence Presbyterian Church	1100-1144 Sarazen Way		York	PA	17404			42133	York	Place of Worship	ArcGIS
+589844	-76.76804181452225	39.993319081683	Christian School Of York	841 Greenbriar Road		York	PA	17404			42133	York	School	ArcGIS
+589867	-76.70618275025107	39.99343182145282	Slavic Pentacostal Church Of York	2080 North Sherman Street Ext		York	PA	17406			42133	York	Place of Worship	ArcGIS
+589911	-76.63442998270516	39.99380181501894	Nanny's Kids	4071-4099 Lincoln Highway		York	PA	17402			42133	York	School	ArcGIS
+589946	-76.86361454190458	39.99415636864998	North Salem Elementary School	5081-5105 North Salem Church Road		Dover	PA	17315			42133	York	School	ArcGIS
+590031	-76.53680638004437	39.9947472756774	Eastern York Middle School	800-826 Cool Creek Road		Wrightsville	PA	17368			42133	York	School	ArcGIS
+590054	-76.5400363862182	39.9948718307634	Freedom Life	790 Almoney Road		Wrightsville	PA	17368			42133	York	Place of Worship	ArcGIS
+590061	-76.9828291049943	39.994946347279324	Kralltown Menonite School	6715-6717 Davidsburg Road		East Berlin	PA	17316			42133	York	School	ArcGIS
+590088	-76.84416361296456	39.99518091190273	Creative Kids Day Care	4022-4158 Highway 74		Dover	PA	17315			42133	York	School	ArcGIS
+590090	-76.84419180967527	39.995220923929594	Dover Dragon Tae Kwon Do	4022-4158 Highway 74		Dover	PA	17315			42133	York	School	ArcGIS
+590119	-76.74443909645525	39.995434541080115	First Assembly Of God	2260 North Susquehanna Trail		York	PA	17404			42133	York	Place of Worship	ArcGIS
+590122	-76.75778089498677	39.99544819224222	Zion Lutheran Church	2215-2291 Brandywine Lane		York	PA	17404			42133	York	School	ArcGIS
+590134	-76.94518819083635	39.99554728084994	Bermudian Church Of The Brethren	279 Bermudian Church Road		East Berlin	PA	17316			42133	York	Place of Worship	ArcGIS
+590140	-76.53650817276176	39.995616383973996	Eastern York Sc	800-826 Cool Creek Road		Wrightsville	PA	17368			42133	York	School	ArcGIS
+590213	-76.6579881697399	39.99626909781468	Art Institute Of York	3678-3682 Pleasant Valley Road		York	PA	17406			42133	York	School	ArcGIS
+590224	-76.65787001657819	39.996404526757395	Art Institute Of York	3685 Pleasant Valley Road		York	PA	17406			42133	York	College / University	ArcGIS
+590225	-76.7494754338139	39.99641634207356	Nace Sean	435 Harvest Drive		York	PA	17404			42133	York	Place of Worship	ArcGIS
+590271	-76.67568727799758	39.996790007331555	Church Gary E	3301 Overview Drive		York	PA	17406			42133	York	Place of Worship	ArcGIS
+590277	-76.74535819624896	39.9968454592935	Matylewicz Robert Do	2339 North Susquehanna Trail		York	PA	17404			42133	York	Hospital/Polyclinic	ArcGIS
+590279	-76.79549453688767	39.996850919758344	Calvary Baptist Church	2704-2798 Bull Road		York	PA	17404			42133	York	Place of Worship	ArcGIS
+590302	-76.70710274443125	39.99707818807097	Central York School District	751-799 Marion Road		York	PA	17406			42133	York	School	ArcGIS
+590334	-76.633918205345	39.997383644591395	Children's Home Of York	77 Shoe House Road		York	PA	17406			42133	York	School	ArcGIS
+590397	-76.99823910165824	39.997917263810926	New Life Assembly Of God	1911-1981 Highway 194		East Berlin	PA	17316			42133	York	Place of Worship	ArcGIS
+590428	-76.67772727941932	39.998306369004	York Christian Church	1964 Mount Zion Road		York	PA	17406			42133	York	Place of Worship	ArcGIS
+590475	-76.70636271022605	39.998879105863914	St John Chrysostom Orthodox Church	2401-2403 North Sherman Street Ext		York	PA	17406			42133	York	Place of Worship	ArcGIS
+590504	-76.66464452345706	39.99924636919761	Martin Library At The Art Institute Of York In Springettsbury Township	1701-1999 Williams Road		York	PA	17406			42133	York	Library	ArcGIS
+590512	-76.66464362907057	39.99930271554604	York Technical Institute	1701-1999 Williams Road		York	PA	17406			42133	York	College / University	ArcGIS
+590517	-76.6646418402976	39.9993608977404	Faith Alive Community Church	1701-1999 Williams Road		York	PA	17406			42133	York	Place of Worship	ArcGIS
+590531	-76.85804543263991	39.99943908594821	Dover Intermediate School	4500 Intermediate Avenue		Dover	PA	17315			42133	York	School	ArcGIS
+590537	-76.85281364829825	39.99955272010452	Dover High School	50-98 State Route 4002		Dover	PA	17315			42133	York	School	ArcGIS
+590546	-76.85285907371698	39.99965543333114	Dover United Church Of Christ	55-61 West Canal Street		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+590622	-76.85077181103057	40.000216354874894	Dover Intermediate School	2-98 School Lane		Dover	PA	17315			42133	York	School	ArcGIS
+590623	-76.85077181103057	40.000216354874894	Dover High School	2-98 School Lane		Dover	PA	17315			42133	York	School	ArcGIS
+590624	-76.85077181103057	40.000216354874894	Dover Area School District	2-98 School Lane		Dover	PA	17315			42133	York	School	ArcGIS
+590701	-76.83665363795885	40.000871798948	Krupinski Driving School	1782 Rocky Road		Dover	PA	17315			42133	York	School	ArcGIS
+590778	-76.8504608940453	40.00154089418322	Otterbein United Methodist Church	1-49 Highway 74		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+590787	-76.85059726444747	40.00166182465031	Calvary Lutheran Parish House	1-49 Highway 74		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+590793	-76.6828081948832	40.00170546129608	Mt Zion Lutheran Church	2197-2243 Mount Zion Road		York	PA	17406			42133	York	Place of Worship	ArcGIS
+590801	-76.85076729202518	40.001813634987556	Calvary Lutheran Church	1-49 Highway 74		Dover	PA	17315			42133	York	School	ArcGIS
+590836	-76.85119819801808	40.00218635878609	Creekside Service	1-49 Highway 74		Dover	PA	17315			42133	York	Government Office	ArcGIS
+590889	-76.60891092391594	40.002545431422526	Alternative Education Services	300-364 West Beaver Street		Hallam	PA	17406			42133	York	School	ArcGIS
+590897	-76.53822181726315	40.00264635587618	Susquehanna Grace Brethren Church	6704 Sunrise Avenue		Wrightsville	PA	17368			42133	York	Place of Worship	ArcGIS
+590924	-76.607537287497	40.00292182691294	Hallam Borough	250 West Beaver Street		Hallam	PA	17406			42133	York	Government Office	ArcGIS
+590965	-76.76799907226295	40.003197250876724	Jehovah's Witnesses	797-1017 Highway 238		York	PA	17404			42133	York	Place of Worship	ArcGIS
+591012	-76.70288001633429	40.00378363889875	Pleasureville United Methodist	2600-2606 North Sherman Street Ext		York	PA	17406			42133	York	Place of Worship	ArcGIS
+591026	-76.6154672946389	40.00397089518451	Valley View Alliance Church	56 Alliance Avenue		York	PA	17406			42133	York	Place of Worship	ArcGIS
+591028	-76.73319637592633	40.003972731030444	Hayshire Elementary School	2800-2826 Hayshire Drive		York	PA	17406			42133	York	School	ArcGIS
+591029	-76.73319637592633	40.003972731030444	Central York School District	2800-2826 Hayshire Drive		York	PA	17406			42133	York	School	ArcGIS
+591039	-76.73153361730851	40.004057274089575	Hayshire Ucc	100-110 Haybrook Drive		York	PA	17406			42133	York	School	ArcGIS
+591054	-76.69463546758821	40.00418728964041	A Michael St Peter Center	2361 Druck Valley Road		York	PA	17406			42133	York	School	ArcGIS
+591062	-76.60685091648077	40.00424726060775	St James Lutheran Church	100-198 Lincoln Highway		York	PA	17406			42133	York	Place of Worship	ArcGIS
+591066	-76.61889816118763	40.00428543678868	Kreutz Creek Presbyterian Church	82 Old Church Lane		York	PA	17406			42133	York	Place of Worship	ArcGIS
+591069	-76.67824997770916	40.00428637824814	Hoover Thelma	3370-3382 Deininger Road		York	PA	17406			42133	York	Place of Worship	ArcGIS
+591133	-76.84429908898025	40.00474180925987	Dover Elementary School	93-199 Highway 921		Dover	PA	17315			42133	York	School	ArcGIS
+591256	-76.83986090788683	40.00568543407239	A Michael St Peter Center	102 Delwood Drive		Dover	PA	17315			42133	York	School	ArcGIS
+591313	-76.72443727251469	40.006042717935856	Faith Bible Fellowship Church	675 Woodland View Drive		York	PA	17406			42133	York	Place of Worship	ArcGIS
+591396	-76.62045815950584	40.006713649017	Kreutz Creek Cemetery	4901-4903 Pleasant Valley Road		York	PA	17406			42133	York	Cemetery	ArcGIS
+591441	-76.85630726311969	40.00704636078868	Dover Assembly Of God	4700-4798 Highway 74		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+591821	-76.68081634911262	40.01007183489574	First Baptist Church	3399 Druck Valley Road		York	PA	17406			42133	York	Place of Worship	ArcGIS
+591857	-76.9074800094003	40.0103409040082	Harmony Grove Community Church	6399-6411 Harmony Grove Road		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+592014	-76.70127727575678	40.011631833213954	Central York High School	609-669 Mundis Mill Road		York	PA	17406			42133	York	School	ArcGIS
+592099	-76.75854729005674	40.01220908907926	North York Gospel Chapel	2826-3026 State Route 4009		York	PA	17404			42133	York	Place of Worship	ArcGIS
+592135	-76.75369180705955	40.012643619691076	Central York School District	579 Church Road		York	PA	17404			42133	York	School	ArcGIS
+592136	-76.75369180705955	40.012643619691076	Roundtown Elementary School	579 Church Road		York	PA	17404			42133	York	School	ArcGIS
+592140	-76.849722742759	40.01274543853121	New Hope Ministries Inc Dover Center	1710 Butter Road		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+592151	-76.74889634210265	40.0128490932173	Sinking Springs Elementary School	2912-3014 North Susquehanna Trail		York	PA	17404			42133	York	School	ArcGIS
+592152	-76.74889634210265	40.0128490932173	Central York School District	2912-3014 North Susquehanna Trail		York	PA	17404			42133	York	School	ArcGIS
+592164	-76.58675183977843	40.01294545159259	Gateway Church	50 Blunston Lane		York	PA	17406			42133	York	Place of Worship	ArcGIS
+592165	-76.58675183977843	40.01294545159259	New Wine Christian Center	50 Blunston Lane		York	PA	17406			42133	York	Place of Worship	ArcGIS
+592187	-76.97942092761845	40.01324728349411	Government Offices City	33 Creek Road		East Berlin	PA	17316			42133	York	Government Office	ArcGIS
+592290	-76.58333090562697	40.01402271657486	Kreutz Creek Valley Library	85 Walnut Springs Road		York	PA	17406			42133	York	Library	ArcGIS
+592654	-76.72891000517015	40.017324556105166	Otterbein United Methodist Church	3255 North George Street		Emigsville	PA	17406			42133	York	Place of Worship	ArcGIS
+592850	-76.55721001888065	40.019023655057964	Strickler Cemetery	25 Stricklers Lane		York	PA	17406			42133	York	Cemetery	ArcGIS
+592896	-76.74759091442128	40.01947725022376	Grace Lutheran Church	498 Church Road		York	PA	17406			42133	York	Place of Worship	ArcGIS
+592904	-76.5384699859757	40.01954183434243	Kling Mary	700-798 Sunset Drive		Wrightsville	PA	17368			42133	York	Place of Worship	ArcGIS
+592954	-76.52297634063909	40.020011810902744	Wrightsville Borough Waste Water Department	701-799 Water Street		Wrightsville	PA	17368			42133	York	Government Office	ArcGIS
+592973	-76.70394363015444	40.02020273888037	York County	400 Mundis Race Road		York	PA	17406			42133	York	Government Office	ArcGIS
+592979	-76.75254638041268	40.02031001818536	Manchester Township Tax Collector Office	3200 Farmtrail Road		York	PA	17406			42133	York	Government Office	ArcGIS
+593111	-76.52395362262716	40.02143365004582	Wrightsville Borough	601-647 Water Street		Wrightsville	PA	17368			42133	York	Government Office	ArcGIS
+593131	-76.86950271177881	40.021602736164084	Lighthouse Baptist Church Of Greater York	5501 Carlisle Road		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+593228	-76.53227725396752	40.022522730344264	Assembly Of God	365 Orange Street		Wrightsville	PA	17368			42133	York	Place of Worship	ArcGIS
+593349	-76.5315509179974	40.02392362201445	Eastern York School District	104-158 South 3rd Street		Wrightsville	PA	17368			42133	York	School	ArcGIS
+593387	-76.53152818175154	40.02423726923214	Eastern York Sc	247 Chestnut Street		Wrightsville	PA	17368			42133	York	School	ArcGIS
+593396	-76.5312227252311	40.024323648137205	Wrightsville Elementary School	239 Chestnut Street		Wrightsville	PA	17368			42133	York	School	ArcGIS
+593482	-76.53403547657415	40.02494727088071	Grace United Methodist Church	400-404 Hellam Street		Wrightsville	PA	17368			42133	York	Place of Worship	ArcGIS
+593575	-76.53091001947287	40.025548204451326	Trinity Lutheran Church	201-225 Lincoln Highway		Wrightsville	PA	17368			42133	York	Place of Worship	ArcGIS
+593665	-76.53282273557619	40.02624271909185	The Wrightsville Historical Museum	309 Locust Street		Wrightsville	PA	17368			42133	York	Museum	ArcGIS
+593679	-76.53268547078754	40.02636816856433	Locust Street United Methodist	304 Locust Street		Wrightsville	PA	17368			42133	York	Place of Worship	ArcGIS
+593757	-76.5305072631177	40.02692635987566	Wrightsville Presbyterian	211 North 2nd Street		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+593964	-76.75031907563222	40.028811820727725	Holy Saviour Cemetery	3568-3572 North Susquehanna Trail		York	PA	17406			42133	York	Cemetery	ArcGIS
+594093	-76.5923891107077	40.02999001016366	Fairmont United Methodist Church	5609-5635 Furnace Road		York	PA	17406			42133	York	Place of Worship	ArcGIS
+594226	-76.84786091253928	40.03115454843747	Babey-Jones Christine Rev	1430 Cherry Road		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+594249	-76.53037272856147	40.03128818860722	Government Offices City	600-636 Waterworks Lane		Wrightsville	PA	17368			42133	York	Government Office	ArcGIS
+594554	-76.82957998233792	40.0335336164822	Dover Bethany United Methodist Church	4500-4548 State Route 4001		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+594555	-76.82957998233792	40.0335336164822	Dover Bethany Child Care	4500-4548 State Route 4001		Dover	PA	17315			42133	York	School	ArcGIS
+595730	-76.7378963768944	40.041405441429745	Strip-It-Clean Llc Pl A Strip-It-Clean	20 Leigh Drive		York	PA	17406			42133	York	School	ArcGIS
+595933	-76.72967997778605	40.04265998322753	Brenda's Early Sprouts Family Child Care	39-131 Greenfield Street		Manchester	PA	17345			42133	York	School	ArcGIS
+596218	-76.72412362529701	40.044525438066174	Commonwealth Of Pennsylvania Commerce Center	4145-4171 North George Saint Exd		Manchester	PA	17345			42133	York	Government Office	ArcGIS
+596288	-76.73096271629454	40.04493906827806	Manchester Assembly Of God	4125 Merino Drive		Manchester	PA	17345			42133	York	Place of Worship	ArcGIS
+596467	-76.72380908369283	40.04611998794641	Memorial Hospital	4201-4299 BicyclePA Route J		Manchester	PA	17345			42133	York	Hospital/Polyclinic	ArcGIS
+596785	-76.68996634649028	40.04862271669066	Christ Lutheran Church Starview	4601-4699 Highway 24		Mount Wolf	PA	17347			42133	York	Place of Worship	ArcGIS
+597014	-76.76457183033314	40.05049636222656	Quickel Lutheran Church	95 Canal Road Exd		York	PA	17406			42133	York	Place of Worship	ArcGIS
+597019	-76.72667361530594	40.050569089969514	St Paul United Methodist Church	4382-4392 State Route 1031		Manchester	PA	17345			42133	York	Place of Worship	ArcGIS
+597039	-76.76715180582573	40.05076180672012	Bible Baptist Church	4218-4230 North Susquehanna Trail		York	PA	17404			42133	York	Place of Worship	ArcGIS
+597070	-76.94266183145976	40.051045468454134	Government Offices City	269-299 Carlisle Road		Wellsville	PA	17365			42133	York	Government Office	ArcGIS
+597223	-76.69305819348898	40.052266353076384	Starview United Church Of Christ	4790-4834 Highway 24		Mount Wolf	PA	17347			42133	York	Place of Worship	ArcGIS
+597625	-76.90451817795244	40.05634908615228	Salem Cemetery	650 East Camping Area Road		Wellsville	PA	17365			42133	York	Cemetery	ArcGIS
+597655	-76.72189999220842	40.056566374994674	Christ Lutheran Church	80 South Main Street		Manchester	PA	17345			42133	York	Place of Worship	ArcGIS
+597909	-76.77670272371265	40.05867543246749	Conewago Township Municipal Building	380-384 Copenhaffer Road		York	PA	17404			42133	York	Government Office	ArcGIS
+597913	-76.69623001746845	40.05868997801608	East Manchester Township	5085-5099 Highway 24		Mount Wolf	PA	17347			42133	York	Government Office	ArcGIS
+598095	-76.71508909792159	40.060240891250544	Spring Forge Intermediate School	233-281 South Hartman Street		Manchester	PA	17345			42133	York	School	ArcGIS
+598134	-76.70329543531915	40.060519986906215	Northeastern School District	429-447 Maple Street		Mount Wolf	PA	17347			42133	York	School	ArcGIS
+598153	-76.70322454342212	40.06066638385158	Mt Wolf Community Church	76 South 6th Street		Mount Wolf	PA	17347			42133	York	Place of Worship	ArcGIS
+598166	-76.7147536559175	40.060789997478125	Northeastern School District	201-231 South Hartman Street		Manchester	PA	17345			42133	York	School	ArcGIS
+598344	-77.00191455937357	40.06235545626118	Christ Lutheran Church Dillsburg	232 Kralltown Road		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+598345	-77.00191455937357	40.06235545626118	Faith United Lutherin Parish	232 Kralltown Road		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+598400	-76.78190998303549	40.06277817155682	Mt Washington United Brethren In Christ Church	470-552 Copenhaffer Road		York	PA	17404			42133	York	Place of Worship	ArcGIS
+598401	-76.70283454384257	40.06278909248651	Mount Wolf Medical Center	72-74 5th Street		Mount Wolf	PA	17347			42133	York	Hospital/Polyclinic	ArcGIS
+598470	-76.70532818750307	40.063527290845784	St John Lutheran Church	11-99 3rd Street		Hanover	PA	17331			42133	York	Place of Worship	ArcGIS
+598589	-76.70730727649803	40.06465817194405	Otterbein Early Education Center	Center Street		Mount Wolf	PA	17347			42133	York	School	ArcGIS
+598631	-76.70216634299383	40.065062717072195	Government Offices City	345 Chestnut Street		Mount Wolf	PA	17347			42133	York	Government Office	ArcGIS
+598680	-76.71781363451362	40.06544819764636	Caldwell Scott	14 Haverford Circle		Manchester	PA	17345			42133	York	Government Office	ArcGIS
+598726	-76.91439182814078	40.06589637942028	Government Offices City	3300 Rosstown Road		Wellsville	PA	17365			42133	York	Government Office	ArcGIS
+598737	-76.91417726953081	40.06599000756316	St Michaels Lutheran Church	3365-3481 Rosstown Road		Wellsville	PA	17365			42133	York	Place of Worship	ArcGIS
+598741	-76.6707309176197	40.066054544608846	Community United Methodist Church	878-886 Market Street		Mount Wolf	PA	17347			42133	York	Place of Worship	ArcGIS
+598834	-76.67050637953949	40.06685365539491	Saginaw Community Church Childcare Center	1046-1052 2nd Street		Mount Wolf	PA	17347			42133	York	School	ArcGIS
+598987	-76.99746635173695	40.06823181081924	Colors 4 Causes	9488-9492 Carlisle Road		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+599014	-76.85391727414527	40.068456348899446	Rohler's Assembly Of God	767-819 Rohlers Church Road		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+599218	-76.7161572778201	40.070360921378466	Greater Grace Church Of York	140 Meeting House Road		Manchester	PA	17345			42133	York	Place of Worship	ArcGIS
+599414	-77.09459728866453	40.07238002240028	Harmony Bethel Church Of God	1 Clear Spring Road		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+599431	-76.75203634475253	40.07252999689159	Conewago Township Sewer Authority	501-599 State Route 1021		Manchester	PA	17345			42133	York	Government Office	ArcGIS
+599653	-77.07229999827891	40.07485092981493	St John's Lutheran Church	20-30 Central View Road		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+599666	-76.9010100175824	40.075021804706154	Pinchot Park Assembly Of God	2801 Highway 177		Wellsville	PA	17365			42133	York	Place of Worship	ArcGIS
+600125	-77.07401910324515	40.079395448753885	Celebration Community Church	1000-1098 Coffeetown Road		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+600149	-77.05545818300165	40.07963999284752	Community United Methodist Church Parsonage	800 Range End Road		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+600404	-76.82630544513182	40.082509984925466	Mountain Grove Chapel	285-621 State Route 4018		Dover	PA	17315			42133	York	Place of Worship	ArcGIS
+600508	-76.76808907578693	40.0837054501424	Baltimore School Of Massage York Campus	Red Rock Road		York	PA	17406			42133	York	School	ArcGIS
+600817	-77.04447907112034	40.08763001802973	Jacobs Brothers	203-213 Glenwood Road		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+600907	-76.88697728195629	40.088633613809584	Commonwealth Of Pennsylvania State Parks Bureau	1894-2298 Rosstown Road		Lewisberry	PA	17339			42133	York	Government Office	ArcGIS
+600908	-76.88697728195629	40.088633613809584	Commonwealth Of Pennsylvania Gifford Pinchot State Park	1894-2298 Rosstown Road		Lewisberry	PA	17339			42133	York	Government Office	ArcGIS
+600909	-76.88697728195629	40.088633613809584	Commonwealth Of Pennsylvania	1894-2298 Rosstown Road		Lewisberry	PA	17339			42133	York	Government Office	ArcGIS
+601023	-76.71643091301092	40.09001454653931	Ambassadors Bible Chapel	3000-3048 Highway 181		Manchester	PA	17345			42133	York	Place of Worship	ArcGIS
+601050	-76.76203181979444	40.09040365173237	Strine Town U B Church	5601-5739 Highway 295		Manchester	PA	17345			42133	York	Place of Worship	ArcGIS
+601316	-76.72172092661994	40.09326272288064	Cassels C & Ma Church	847-861 Cassel Road		Manchester	PA	17345			42133	York	Place of Worship	ArcGIS
+601351	-77.04976729595637	40.09362273697653	Lawco	601-607 State Route 4043		Dillsburg	PA	17019			42133	York	Government Office	ArcGIS
+601374	-77.03104180860001	40.09376908684892	After Hours Saturdays Sundays & Holidaysnorthern Elementary School	649-699 South Baltimore Street		Dillsburg	PA	17019			42133	York	School	ArcGIS
+601377	-77.03104364444594	40.09382999927571	Northern York Co School	649-699 South Baltimore Street		Dillsburg	PA	17019			42133	York	School	ArcGIS
+601395	-77.04961270831373	40.09403999180732	Christian Missionary Alliance Church	553-599 State Route 4043		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+602070	-77.02859363743121	40.10088091865079	Barger Henry	1-5 Beechwood Drive		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+602403	-77.01445362250013	40.10368726806952	Wolgamuth Church Of The Brethren	120 Old York Road		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+602440	-77.0153381707318	40.1039554427955	Hope Grace Brethren Church	110 Old York Road		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+602652	-77.03610271805044	40.1058718305907	Dillsburg Karate Academy	216 South 2nd Street		Dillsburg	PA	17019			42133	York	School	ArcGIS
+602730	-77.03894634926363	40.1067300179576	Hughes D V	235 Gettysburg Street		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+602743	-77.03457270521591	40.10679728523572	New Hope Ministries Inc Dlsb	213 South Baltimore Street		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+602795	-77.03475181787736	40.10742363821164	St Paul's Lutheran Church	161-199 South Baltimore Street		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+602829	-77.0348500120986	40.1078100131723	Government Offices City Dillsburg Borough	147-159 South Baltimore Street		Dillsburg	PA	17019			42133	York	Government Office	ArcGIS
+602844	-77.05136820068793	40.10795179696633	Arnold's United Methodist Church	406-412 Mountain Road		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+602868	-77.03185725370761	40.10818000673841	Northern York County School District	150-182 South Chestnut Street		Dillsburg	PA	17019			42133	York	School	ArcGIS
+602869	-77.03185725370761	40.10818000673841	After Hours Saturdays Sundays & Holidaysdillsburg Elementary School	150-182 South Chestnut Street		Dillsburg	PA	17019			42133	York	School	ArcGIS
+602876	-77.03864635320805	40.10824270793817	Spuler Steve	101 Beaver Street		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+602879	-77.0350817994166	40.10828907481636	Franklintown Borough	144 South Baltimore Street		Dillsburg	PA	17019			42133	York	Government Office	ArcGIS
+602967	-77.04111909646863	40.109065449356564	Dillsburg Cemetery	1 U.S. 15		Dillsburg	PA	17019			42133	York	Cemetery	ArcGIS
+602969	-77.03789728099207	40.10907910051867	Dillsburg Assembly Of God Church	137-201 West York Street		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+603069	-76.71583454551867	40.10980910818068	Holy Infant Church Hall	34 3rd Street		York Haven	PA	17370			42133	York	Place of Worship	ArcGIS
+603146	-76.71407815875799	40.110489077272604	United States Government	19 Pennsylvania Avenue		York Haven	PA	17370			42133	York	Government Office	ArcGIS
+603150	-77.03549453524202	40.110512707904945	Dillsburg Area Public Library	1-99 Highway 74		Dillsburg	PA	17019			42133	York	Library	ArcGIS
+603167	-77.03721180436231	40.1106881959475	New Hope Ministries Inc Dillsburg Center	2-98 North 2nd Street		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+603195	-77.03413454998518	40.11103545326776	Dillsburg Brethren In Christ	16-18 East Harrisburg Street		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+603242	-77.03444363112452	40.11144272862833	First Foundation Church	5 Harrisburg Pike		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+603247	-77.04042274598217	40.11152816607394	Isshenryu Karate School	1 U.S. 15		Dillsburg	PA	17019			42133	York	School	ArcGIS
+603275	-77.03871272609967	40.111755434386566	York County	120-124 West Church Street		Dillsburg	PA	17019			42133	York	Government Office	ArcGIS
+603276	-77.03867181968633	40.111760000464926	Holy Spirit Dillsburg Center	120-124 West Church Street		Dillsburg	PA	17019			42133	York	Hospital/Polyclinic	ArcGIS
+603277	-77.03867181968633	40.111760000464926	County Of York Adult Probation Office	120-124 West Church Street		Dillsburg	PA	17019			42133	York	Government Office	ArcGIS
+603297	-77.0372018248921	40.11195728329388	Susquehanna Valley Picture C	98 West Church Street		Dillsburg	PA	17019			42133	York	Museum	ArcGIS
+603303	-76.71338637434988	40.11203726027465	York Haven Community Ministry Center	13 South Front Street		York Haven	PA	17370			42133	York	Place of Worship	ArcGIS
+603326	-77.03603093176694	40.112280909981806	Child Care Management Consultants	101 North Baltimore Street		Dillsburg	PA	17019			42133	York	School	ArcGIS
+603428	-77.02974909062128	40.11303638412209	Calvary Umc	219-235 Mumper Lane		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+603576	-77.01488998895788	40.114476346359695	Little Dreams Learning Center	229-231 Ore Bank Road		Dillsburg	PA	17019			42133	York	School	ArcGIS
+603670	-76.99290907602237	40.115429103328935	Chestnut Grove United Methodist Church	429-485 Chestnut Grove Road		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+604066	-76.74300365322304	40.119207274270885	Pleasant Grove United Methodist Church	890 Pleasant Grove Road		York Haven	PA	17370			42133	York	Place of Worship	ArcGIS
+604163	-76.95912183785474	40.1203581613826	Edson John & Linton Rev	600-698 State Route 4035		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+604345	-77.01281002258224	40.122099108208204	Lucas Tom Rev	17-19 Spend a Buck Drive		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+604456	-76.9273527121765	40.12315274255813	Myers Cemetery	711 East Mount Airy Road		Lewisberry	PA	17339			42133	York	Cemetery	ArcGIS
+604796	-77.01540816824233	40.127050008121245	Ference Lenoard	7 Ruffian Circle		Dillsburg	PA	17019			42133	York	School	ArcGIS
+604823	-77.0447863634867	40.1273972654415	Donald K Peters	287 Camp Ground Road		Dillsburg	PA	17019			42133	York	School	ArcGIS
+604876	-77.02276543852432	40.12796637768251	State Legislators	811 U.S. 15		Dillsburg	PA	17019			42133	York	Government Office	ArcGIS
+605032	-76.85011453111153	40.12996363684496	Redland Valley Brethren In Church	3555 Lewisberry Road		York Haven	PA	17370			42133	York	Place of Worship	ArcGIS
+605033	-76.85011453111153	40.12996363684496	Munchkin Meadow Preschool	3555 Lewisberry Road		York Haven	PA	17370			42133	York	School	ArcGIS
+605104	-77.0201081692104	40.130939082987084	Keystone Baptist Association	847-899 U.S. 15		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+605107	-77.02004452655119	40.13099910102739	First Korean Church Dillsburg	847-899 U.S. 15		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+605111	-76.79302725409192	40.13106363807309	Newberrytown Church Of God	2290-2292 Old Trail Road		York Haven	PA	17370			42133	York	Place of Worship	ArcGIS
+605158	-76.80061089830005	40.131472749279595	Elementary Schools	2426-2448 Old Trail Road		York Haven	PA	17370			42133	York	School	ArcGIS
+605165	-77.0387336264996	40.13156727180895	Crossroads Bible Church	900-990 Highway 74		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+605380	-76.78827274262137	40.134066375934296	Paddletown Saint Pauls United Methodist Chu	250-252 Church Road		Goldsboro	PA	17319			42133	York	Place of Worship	ArcGIS
+605386	-76.78729635501979	40.13413637344483	Paddletown Cemetery	250-252 Church Road		Goldsboro	PA	17319			42133	York	Cemetery	ArcGIS
+605447	-76.80516727962815	40.13501183659275	Government Offices City Newberry Township	1897-1933 Old Trail Road		Goldsboro	PA	17319			42133	York	Government Office	ArcGIS
+605489	-76.98355727681036	40.135561837206815	Fileys Nursery School	15 South Fileys Road		Dillsburg	PA	17019			42133	York	School	ArcGIS
+605495	-77.04161816412613	40.13562816302547	Agape Residential Ministries	999-1013 Highway 74		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+605496	-77.04161816412613	40.13562816302547	Cumberland Valley Church	999-1013 Highway 74		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+605500	-77.04172906805003	40.135757284189836	Agape Residential Ministries	999-1013 BicyclePA Route J-2		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+605522	-76.85953180882868	40.13605271416705	Annie E Sterline Library	466-480 Market Street		Lewisberry	PA	17339			42133	York	Library	ArcGIS
+605578	-76.98490817698344	40.136826358474835	Christ Lutheran Church	15 South Fileys Road		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+605579	-76.98490817698344	40.136826358474835	Day Care At Filey's	15 South Fileys Road		Dillsburg	PA	17019			42133	York	School	ArcGIS
+605590	-76.96333180917608	40.1369808990445	Mount Pleasant Church Of God	142 South York Road		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+605665	-76.86760091660518	40.13800271206482	Bonsai South Point School House	700-710 Siddonsburg Road		Lewisberry	PA	17339			42133	York	School	ArcGIS
+605674	-77.00587179590401	40.13813908246699	Cedar Hill Baptist Church	162 Chestnut Grove Road		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+605707	-76.96409001354878	40.13870000401074	Government Offices City	100-142 State Route 4035		Dillsburg	PA	17019			42133	York	Government Office	ArcGIS
+605830	-76.97815998389636	40.14028090272887	A-Team	157-299 State Route 4028		Dillsburg	PA	17019			42133	York	Museum	ArcGIS
+605861	-76.86412001148638	40.1405718137007	St Johns Cemetery	849 Heck Hill Road		Lewisberry	PA	17339			42133	York	Cemetery	ArcGIS
+605899	-77.01692090529586	40.14105817165555	Monaghan Presbyterian Church	1185 Gettysburg Pike		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+605932	-76.7692763503066	40.14154001060501	Shiloh God's Missionary Church	20 Paddletown Road		Goldsboro	PA	17319			42133	York	Place of Worship	ArcGIS
+605946	-76.97434636700591	40.14182635549849	Billet Larry Reverend	1-9 Audubon Park		Dillsburg	PA	17019			42133	York	Place of Worship	ArcGIS
+606807	-76.79712090809751	40.15267361598302	Elementary Schools	601-665 Red Mill Road		Goldsboro	PA	17319			42133	York	School	ArcGIS
+606818	-76.81787999495133	40.152765455352935	Red Land Community Library	2-66 Robinhood Drive		Goldsboro	PA	17319			42133	York	Library	ArcGIS
+606918	-76.80999089422276	40.1541636167907	Crossroads Middle School	40 Fishing Creek Road		Goldsboro	PA	17319			42133	York	School	ArcGIS
+607031	-76.83996545695939	40.155383654099424	Grace Baptist Church Of Lewisberry	666-672 Wyndamere Road		Goldsboro	PA	17319			42133	York	Place of Worship	ArcGIS
+607309	-76.81003820256042	40.15919364637099	Yocumtown Church Of God	190-200 Red Mill Road		Goldsboro	PA	17319			42133	York	Place of Worship	ArcGIS
+607319	-76.8332781762991	40.15926274949504	Wyndamere Heights Evangelical	714-806 Wyndamere Road		Lewisberry	PA	17339			42133	York	Place of Worship	ArcGIS
+607467	-76.88955546867592	40.16110636247431	Jehovah's Witnesses	580 Nauvoo Road		Lewisberry	PA	17339			42133	York	Place of Worship	ArcGIS
+607686	-76.79704271988972	40.164070924154586	Fetrow Cemetery	851-875 Yocumtown Road		Goldsboro	PA	17319			42133	York	Cemetery	ArcGIS
+607724	-76.82881179849498	40.16463909493614	Community Care Of Harrisburg	674 Yorktown Road		Lewisberry	PA	17339			42133	York	Government Office	ArcGIS
+607762	-76.8303854479753	40.165317275255106	Gross Scott District Justice	689-699 Yorktown Road		Lewisberry	PA	17339			42133	York	Government Office	ArcGIS
+607896	-76.77957271579058	40.16711456842914	Zion Lutheran Church	433-499 Yocumtown Road		Goldsboro	PA	17319			42133	York	Place of Worship	ArcGIS
+607985	-76.76922725319598	40.16825180437874	Miller Cemetery	176-298 Yocumtown Road		Goldsboro	PA	17319			42133	York	Cemetery	ArcGIS
+608111	-76.89011182414131	40.17017092240636	Mt Zion Lutheran Church	868 Old Stage Road		Lewisberry	PA	17339			42133	York	Place of Worship	ArcGIS
+608173	-76.88981455831815	40.17083545156322	Mount Zion Lutheran Church	870 Lewisberry Road		Lewisberry	PA	17339			42133	York	Place of Worship	ArcGIS
+608303	-76.88960997917842	40.172420021973224	Elementary Schools	850 Lewisberry Road		Lewisberry	PA	17339			42133	York	School	ArcGIS
+608344	-76.82054361911656	40.173032723787045	Salem United Methodist Church	362-396 Highway 262		Goldsboro	PA	17319			42133	York	Place of Worship	ArcGIS
+608345	-76.82054361911656	40.173032723787045	Salem Comm Nursery School	362-396 Highway 262		Goldsboro	PA	17319			42133	York	School	ArcGIS
+608588	-76.78583455092281	40.17603819188067	Fisher Cemetery	159-253 Highway 262		Goldsboro	PA	17319			42133	York	Cemetery	ArcGIS
+608595	-76.79049910594237	40.17622634255291	Salem United Methodist Church	217 Valley Road		Goldsboro	PA	17319			42133	York	Place of Worship	ArcGIS
+608599	-76.83183454236962	40.176251809031186	Family Of God Rock Worship Center	564 Old York Road		Etters	PA	17319			42133	York	Place of Worship	ArcGIS
+608876	-76.84478365816214	40.1797781866417	Praise The Lord Fellowship	537-541 Fishing Creek Road		Lewisberry	PA	17339			42133	York	Place of Worship	ArcGIS
+608877	-76.84499816969914	40.17978910757138	Faith Assembly Of God Church	537-541 Fishing Creek Road		Lewisberry	PA	17339			42133	York	Place of Worship	ArcGIS
+608887	-76.87222272936545	40.17998544894088	Red Land High S	765-779 Fishing Creek Road		New Cumberland	PA	17070			42133	York	School	ArcGIS
+608968	-76.87747362533406	40.18123090565493	Elementary Schools	814-898 Highway 262		New Cumberland	PA	17070			42133	York	School	ArcGIS
+609272	-76.90499182620464	40.185463613222126	Fairview Bethel Cemetery	949 Old Forge Road		Lewisberry	PA	17339			42133	York	Cemetery	ArcGIS
+609323	-76.83956180621773	40.18610361736016	New Life Baptist Church	661-699 Big Spring Road		New Cumberland	PA	17070			42133	York	Place of Worship	ArcGIS
+609366	-76.83689455743358	40.186981810740505	Red Land Baptist Church	661-699 Big Spring Road		New Cumberland	PA	17070			42133	York	Place of Worship	ArcGIS
+609660	-76.8927381665121	40.192129993482496	Roof Memorial Park	289 Bradley Circle		New Cumberland	PA	17070			42133	York	Cemetery	ArcGIS
+609662	-76.89016181563841	40.19215908457968	Abwe Guest House	570-572 Lewisberry Road		New Cumberland	PA	17070			42133	York	Place of Worship	ArcGIS
+609663	-76.89016181563841	40.19215908457968	Abwe Main Office	570-572 Lewisberry Road		New Cumberland	PA	17070			42133	York	Place of Worship	ArcGIS
+609912	-76.89128728334481	40.19538998514	Fairview Bethel Community Outreach Center	290 Spanglers Mill Road		New Cumberland	PA	17070			42133	York	Place of Worship	ArcGIS
+609957	-76.89181727794544	40.196096362169655	Fairview Bethel Church Of God Parsonage	800 Old Forge Road		New Cumberland	PA	17070			42133	York	Place of Worship	ArcGIS
+609970	-76.8766708899291	40.196237251577216	Hindu American Religious Institute	301 Steigerwalt Hollow Road		New Cumberland	PA	17070			42133	York	Place of Worship	ArcGIS
+610016	-76.86181635434406	40.1971491021331	Fairview Brethren In Christ Church	700-798 Evergreen Road		New Cumberland	PA	17070			42133	York	Place of Worship	ArcGIS
+610430	-76.88523911243608	40.202569084219974	Fairview Elementary School	462-464 Lewisberry Road		New Cumberland	PA	17070			42133	York	School	ArcGIS
+610653	-76.89928088607296	40.205070918577746	New Cumberland Alliance Church	148-150 Spanglers Mill Road		New Cumberland	PA	17070			42133	York	Place of Worship	ArcGIS
+611250	-76.84386361690899	40.213212707024226	Us Department Of Defense	H Avenue		New Cumberland	PA	17070			42133	York	Government Office	ArcGIS
+611251	-76.84386361690899	40.213212707024226	United States Government	H Avenue		New Cumberland	PA	17070			42133	York	Government Office	ArcGIS
+611367	-76.87327273909648	40.21484726893134	U S Geological Survey	408-428 Limekiln Road		New Cumberland	PA	17070			42133	York	Government Office	ArcGIS
+611424	-76.86588091725245	40.21559634114732	Government Offices City	201 Fairview Road		New Cumberland	PA	17070			42133	York	Government Office	ArcGIS
+611448	-76.89774819007896	40.21595908547563	Heilman Lester C Jr Pastor	244 Green Lane Drive		Camp Hill	PA	17011			42133	York	Place of Worship	ArcGIS
+611964	-76.85552363934168	40.22154274028888	Puorro P	200-298 Ramsay Place		New Cumberland	PA	17070			42133	York	Place of Worship	ArcGIS
+612113	-76.85572271094361	40.22348092287048	West Shore School District	301-307 Ross Avenue		New Cumberland	PA	17070			42133	York	School	ArcGIS
