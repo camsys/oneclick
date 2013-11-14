@@ -11,7 +11,13 @@ describe Trip do
       get_paratransit_itineraries: [false,[]],
       get_rideshare_itineraries: [false,[]],
       convert_itineraries: test_itineraries)
+
+    eligibilility_helpers = double(EligibilityHelpers,
+      get_accommodating_and_eligible_services_for_traveler: [],
+      get_eligible_services_for_trip: [])
+
     TripPlanner.stub(:new).and_return(trip_planner)
+    EligibilityHelpers.stub(:new).and_return(eligibilility_helpers)
     trip.create_itineraries
     trip.itineraries.should_not be_empty
     trip.itineraries.first.legs.should eq "example leg"
