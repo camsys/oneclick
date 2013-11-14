@@ -31,8 +31,8 @@
         .container-fluid
           .well
             .pull-left
-              - if Rails.env.integration?
-                %span= "#{t(:version)} #{ENV['ONECLICK_APP_VERSION']}"
+              - unless Rails.env.production?
+                %span= "#{t(:version)} #{ENV['ONECLICK_APP_VERSION'] || Rails.application.config.version}"
               - else
                 %span= "#{t(:version)} #{Rails.application.config.version}"
               - unless Rails.env.production?
