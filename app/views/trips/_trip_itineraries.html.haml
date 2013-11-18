@@ -13,8 +13,23 @@
       .dialog-content{:style => 'padding-left: 10px; padding-right:10px', :data => {:action => itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id)}}
         .row-fluid
           .span12
+
             = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary}
-          
+
+
+        -if itinerary.missing_information
+          .row-fluid
+            %i.icon.icon-question-sign
+            More information is needed.
+        -if itinerary.accommodation_mismatch
+          .row-fluid
+            %i.icon.icon-warning-sign
+            Some accommodations unavailable.
+        -if itinerary.date_mismatch or itinerary.time_mismatch or itinerary.too_late
+          .row-fluid
+            %i.icon.icon-calendar
+            This trip is not possible as scheduled.
+
       .dialog-footer.corner-bottom
         .row-fluid
           .pull-right

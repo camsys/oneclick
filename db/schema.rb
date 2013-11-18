@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131112195939) do
+ActiveRecord::Schema.define(:version => 20131117174933) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -45,13 +45,20 @@ ActiveRecord::Schema.define(:version => 20131112195939) do
     t.integer  "transfers"
     t.integer  "count"
     t.text     "legs"
-    t.decimal  "cost",           :precision => 10, :scale => 2
-    t.boolean  "hidden",                                                         :null => false
-    t.datetime "created_at",                                                     :null => false
-    t.datetime "updated_at",                                                     :null => false
+    t.decimal  "cost",                     :precision => 10, :scale => 2
+    t.boolean  "hidden",                                                                     :null => false
+    t.datetime "created_at",                                                                 :null => false
+    t.datetime "updated_at",                                                                 :null => false
     t.integer  "ride_count"
     t.text     "external_info"
-    t.float    "match_score",                                   :default => 0.0
+    t.float    "match_score",                                             :default => 0.0
+    t.boolean  "missing_information",                                     :default => false
+    t.boolean  "partial_match",                                           :default => false
+    t.text     "missing_information_text"
+    t.boolean  "date_mismatch",                                           :default => false
+    t.boolean  "time_mismatch",                                           :default => false
+    t.boolean  "too_late",                                                :default => false
+    t.string   "missing_accommodations",                                  :default => ""
   end
 
   create_table "modes", :force => true do |t|
@@ -232,6 +239,7 @@ ActiveRecord::Schema.define(:version => 20131112195939) do
     t.boolean "active",                               :default => true,  :null => false
     t.string  "code"
     t.string  "characteristic_type",   :limit => 128
+    t.string  "desc",                                 :default => ""
   end
 
   create_table "trip_parts", :force => true do |t|

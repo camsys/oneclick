@@ -7,10 +7,12 @@ class EligibilityHelpers
     all_services.each do |service|
       match_score = 0
       is_eligible = true
+      missing_information = false
+      missing_information_text = ''
       service_characteristic_maps = service.service_traveler_characteristics_maps
       service_characteristic_maps.each do |service_characteristic_map|
         service_requirement = service_characteristic_map.traveler_characteristic
-        if service_requirement.code = 'age'
+        if service_requirement.code == 'age'
           if trip_part
             age_date = trip_part.trip_time
           else
@@ -22,8 +24,18 @@ class EligibilityHelpers
 
         passenger_characteristic = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: service_requirement.id)
         if passenger_characteristic.count == 0 #This passenger characteristic is not listed
+          missing_information = true
           match_score += 0.25
-          break
+          if service_requirement.code == 'age'
+            if service_characteristic_map.value_relationship_id == 3 or service_characteristic_map.value_relationship_id == 4
+              missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or older\n'
+            elsif service_characteristic_map.value_relationship_id == 5 or service_characteristic_map.value_relationship_id == 6
+              missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or younger\n'
+            end
+          else
+            missing_information_text += service_requirement.desc + '\n'
+          end
+          next
         end
         if !test_condition(passenger_characteristic.first.value, service_characteristic_map.value_relationship_id , service_characteristic_map.value)
           is_eligible = false
@@ -32,7 +44,7 @@ class EligibilityHelpers
       end
       if is_eligible
         #Create itinerary
-        itinerary = tp.convert_paratransit_itineraries(service, match_score)
+        itinerary = tp.convert_paratransit_itineraries(service, match_score, missing_information, missing_information_text)
         eligible_itineraries << itinerary
       end
     end
@@ -86,7 +98,15 @@ class EligibilityHelpers
       end
 
       match_score = 0.5 * (user_accommodations.count - (service_accommodations & user_accommodations).count)
+      if match_score > 0
+        itinerary['accommodation_mismatch'] = true
+      end
       itinerary['match_score'] += match_score.to_f
+      missing_accommodations = user_accommodations - service_accommodations
+      missing_accommodations.each do |accommodation|
+        itinerary['missing_accommodations'] += (accommodation.name + ',')
+      end
+
 
     end
 
@@ -189,6 +209,7 @@ class EligibilityHelpers
       schedules = Schedule.where(day_of_week: wday, service_id: service.id)
       if schedules.count == 0
         itinerary['match_score'] += 1
+        itinerary['date_mismatch'] = true
       end
       schedules.each do |schedule|
         # puts "%-30s %-30s %s" % [Time.zone, planned_trip.trip_datetime, planned_trip.trip_datetime.seconds_since_midnight]
@@ -196,6 +217,8 @@ class EligibilityHelpers
         # puts "%-30s %-30s %s" % [Time.zone, schedule.end_time, schedule.end_time.seconds_since_midnight]
         unless trip_part.trip_time.seconds_since_midnight.between?(schedule.start_time.seconds_since_midnight,schedule.end_time.seconds_since_midnight)
           itinerary['match_score'] += 1
+          itinerary['time_mismatch'] = true
+
         end
       end
     end
@@ -210,7 +233,8 @@ class EligibilityHelpers
     itineraries.each do |itinerary|
       notice_required = itinerary['service'].advanced_notice_minutes
       if notice_required > advanced_notice
-        itinerary['match_score'] += 0.5
+        itinerary['match_score'] += 0.01
+        itinerary['too_late'] = true
       end
     end
 

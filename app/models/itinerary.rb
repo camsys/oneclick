@@ -10,7 +10,8 @@ class Itinerary < ActiveRecord::Base
 
   attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
     :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
-    :ride_count, :external_info, :match_score
+    :ride_count, :external_info, :match_score, :missing_information, :missing_information_text, :date_mismatch,
+    :time_mismatch, :too_late, :accommodation_mismatch, :missing_accommodations
     
   # returns true if this itinerary failed to work
   def failed
@@ -44,11 +45,14 @@ class Itinerary < ActiveRecord::Base
     self.save()
   end
 
+
+
 protected
 
   # Set resonable defaults for a new itinerary
   def set_defaults
     self.hidden ||= false
-  end    
+  end
+
 
 end

@@ -2,6 +2,7 @@
   .span12
     %table.table
       -if itinerary.service
+
         =format_itinerary_item do
           = itinerary.service.name
         =format_itinerary_item do
@@ -40,3 +41,4 @@
             = t(:view_details1)
           =format_itinerary_item do
             = t(:view_details2)
+

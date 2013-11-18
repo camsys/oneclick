@@ -1,6 +1,6 @@
 class TravelerCharacteristic < ActiveRecord::Base
 
-  attr_accessible :id, :code, :name, :note, :datatype, :active, :characteristic_type
+  attr_accessible :id, :code, :name, :note, :datatype, :active, :characteristic_type, :desc
 
   has_many :user_traveler_characteristics_maps
   has_many :user_profiles, through: :user_traveler_characteristics_maps

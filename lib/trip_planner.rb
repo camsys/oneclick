@@ -125,7 +125,7 @@ class TripPlanner
     trip_itinerary
   end
 
-  def convert_paratransit_itineraries(service, match_score = 0)
+  def convert_paratransit_itineraries(service, match_score = 0, missing_information = false, missing_information_text = '')
     trip_itinerary = {}
     trip_itinerary['mode'] = Mode.paratransit
     trip_itinerary['service'] = service
@@ -133,6 +133,9 @@ class TripPlanner
     trip_itinerary['walk_distance'] = 0
     trip_itinerary['server_status'] = 200
     trip_itinerary['match_score'] = match_score
+    trip_itinerary['missing_information'] = missing_information
+    trip_itinerary['missing_information_text'] = missing_information_text
+    trip_itinerary['missing_accommodations'] = ''
     trip_itinerary
 
   end
