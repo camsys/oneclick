@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131117174933) do
+ActiveRecord::Schema.define(:version => 20131118143037) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(:version => 20131117174933) do
     t.text     "external_info"
     t.float    "match_score",                                             :default => 0.0
     t.boolean  "missing_information",                                     :default => false
-    t.boolean  "partial_match",                                           :default => false
+    t.boolean  "accommodation_mismatch",                                  :default => false
     t.text     "missing_information_text"
     t.boolean  "date_mismatch",                                           :default => false
     t.boolean  "time_mismatch",                                           :default => false
