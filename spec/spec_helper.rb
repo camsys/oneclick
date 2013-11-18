@@ -1,14 +1,23 @@
 ENV["RAILS_ENV"] ||= 'test'
 
 require 'simplecov'
-SimpleCov.start 'rails'
-
 require 'coveralls'
-# See https://github.com/lemurheavy/coveralls-ruby/issues/22
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+  SimpleCov::Formatter::HTMLFormatter,
+  # Coveralls::SimpleCov::Formatter
+]
+SimpleCov.start 'rails'
+# Coveralls.wear_merged!('rails')
+
+# require 'simplecov'
+# SimpleCov.start 'rails'
+
+# require 'coveralls'
+# # See https://github.com/lemurheavy/coveralls-ruby/issues/22
 # SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
 #   SimpleCov::Formatter::HTMLFormatter
 # ]
-Coveralls.wear_merged!('rails')
+# Coveralls.wear_merged!('rails')
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require File.expand_path("../../config/environment", __FILE__)

@@ -86,16 +86,6 @@ ActiveRecord::Schema.define(:version => 20131118143037) do
     t.boolean  "home"
   end
 
-  create_table "planned_trips", :force => true do |t|
-    t.integer  "trip_id",        :null => false
-    t.integer  "creator_id"
-    t.boolean  "is_depart",      :null => false
-    t.datetime "trip_datetime",  :null => false
-    t.integer  "trip_status_id", :null => false
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
-  end
-
   create_table "poi_types", :force => true do |t|
     t.string  "name",   :limit => 64, :null => false
     t.boolean "active",               :null => false
