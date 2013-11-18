@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131118143037) do
+ActiveRecord::Schema.define(:version => 20131118161308) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -183,6 +183,7 @@ ActiveRecord::Schema.define(:version => 20131118143037) do
     t.boolean "requires_verification",               :default => false, :null => false
     t.boolean "active",                              :default => true,  :null => false
     t.integer "value_relationship_id",               :default => 1,     :null => false
+    t.integer "group",                               :default => 0,     :null => false
   end
 
   create_table "service_trip_purpose_maps", :force => true do |t|

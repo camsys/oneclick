@@ -1,15 +1,36 @@
 class EligibilityHelpers
 
   def get_eligible_services_for_traveler(user_profile, trip_part=nil)
-    tp = TripPlanner.new
     all_services = Service.all
     eligible_itineraries = []
     all_services.each do |service|
-      match_score = 0
+      itinerary = get_service_itinerary(service, user_profile, trip_part)
+      if itinerary
+        eligible_itineraries << itinerary
+      end
+    end
+
+    #This is an array of itinerary hashes
+    eligible_itineraries
+  end
+
+  def get_service_itinerary(service, user_profile, trip_part=nil)
+    tp = TripPlanner.new
+    min_match_score = Float::INFINITY
+    itinerary = nil
+    is_eligible = false
+    missing_information = false
+    missing_information_text = ''
+    groups = service.service_traveler_characteristics_maps.pluck(:group).uniq
+    if groups.count == 0
       is_eligible = true
-      missing_information = false
-      missing_information_text = ''
-      service_characteristic_maps = service.service_traveler_characteristics_maps
+      min_match_score = 0
+    end
+    groups.each do |group|
+      group_missing_information_text = ''
+      group_match_score = 0
+      group_eligible = true
+      service_characteristic_maps = service.service_traveler_characteristics_maps.where(group: group)
       service_characteristic_maps.each do |service_characteristic_map|
         service_requirement = service_characteristic_map.traveler_characteristic
         if service_requirement.code == 'age'
@@ -24,33 +45,41 @@ class EligibilityHelpers
 
         passenger_characteristic = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: service_requirement.id)
         if passenger_characteristic.count == 0 #This passenger characteristic is not listed
-          missing_information = true
-          match_score += 0.25
+          group_match_score += 0.25
           if service_requirement.code == 'age'
             if service_characteristic_map.value_relationship_id == 3 or service_characteristic_map.value_relationship_id == 4
-              missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or older\n'
+              group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or older\n'
             elsif service_characteristic_map.value_relationship_id == 5 or service_characteristic_map.value_relationship_id == 6
-              missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or younger\n'
+              group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or younger\n'
             end
           else
-            missing_information_text += service_requirement.desc + '\n'
+            group_missing_information_text += service_requirement.desc + '\n'
           end
           next
         end
         if !test_condition(passenger_characteristic.first.value, service_characteristic_map.value_relationship_id , service_characteristic_map.value)
-          is_eligible = false
+          group_eligible = false
           break
         end
       end
-      if is_eligible
-        #Create itinerary
-        itinerary = tp.convert_paratransit_itineraries(service, match_score, missing_information, missing_information_text)
-        eligible_itineraries << itinerary
+      if group_eligible
+        is_eligible = true
+        if group_match_score < min_match_score
+          missing_information_text = group_missing_information_text
+          min_match_score = group_match_score
+        end
       end
     end
-    #Thisis an array of itinerary hashes
-    eligible_itineraries
 
+    if is_eligible
+      #Create itinerary
+      if min_match_score > 0.0
+        missing_information = true
+      end
+      itinerary = tp.convert_paratransit_itineraries(service, min_match_score, missing_information, missing_information_text)
+    end
+
+    itinerary
   end
 
   def update_age(user_profile, date = Time.now)
@@ -107,11 +136,9 @@ class EligibilityHelpers
         itinerary['missing_accommodations'] += (accommodation.name + ',')
       end
 
-
     end
 
     itineraries
-
   end
 
   def get_accommodating_and_eligible_services_for_traveler(trip_part=nil)
