@@ -19,12 +19,10 @@ script:
 - bundle exec /usr/bin/env RAILS_ENV=test rake db:drop db:create db:reset
 # - bundle exec /usr/bin/env RAILS_ENV=test COVERALLS_NOISY=true rake oneclick:test_with_coveralls
 # :spec, :cucumber, 'coveralls:push'
-- bundle exec /usr/bin/env RAILS_ENV=test COVERALLS_NOISY=true rake spec
-- cat coverage/.resultset.json
-- bundle exec /usr/bin/env RAILS_ENV=test COVERALLS_NOISY=true rake cucumber
-- cat coverage/.resultset.json
+- bundle exec /usr/bin/env RAILS_ENV=test COVERALLS_NOISY=true oneclick:all_tests
+# - cat coverage/.resultset.json
 - bundle exec /usr/bin/env RAILS_ENV=test COVERALLS_NOISY=true rake coveralls:push
-- cat coverage/.resultset.json
+# - cat coverage/.resultset.json
 notifications:
   email:
   - oneclickcs_github@googlegroups.com

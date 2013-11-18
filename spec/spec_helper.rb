@@ -6,7 +6,7 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
   SimpleCov::Formatter::HTMLFormatter,
   # Coveralls::SimpleCov::Formatter
 ]
-SimpleCov.refuse_coverage_drop
+SimpleCov.maximum_coverage_drop 1
 SimpleCov.start 'rails'
 # Coveralls.wear_merged!('rails')
 
