@@ -91,24 +91,6 @@ class RegistrationsController < Devise::RegistrationsController
   def edit
     @user_relationship = UserRelationship.new
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
-
-    #Add dob
-    dob_characteristic = TravelerCharacteristic.find_by_code('date_of_birth')
-    map = UserTravelerCharacteristicsMap.where(characteristic_id: dob_characteristic.id, user_profile_id: @user_characteristics_proxy.user.user_profile.id).first
-    unless map.nil?
-      begin
-        temp_date = Date.parse(map.value)
-      rescue
-        @user_characteristics_proxy.dob_day = 'dd'
-        @user_characteristics_proxy.dob_month = 'mm'
-        @user_characteristics_proxy.dob_year = 'yyyy'
-      else
-        @user_characteristics_proxy.dob_day = temp_date.day
-        @user_characteristics_proxy.dob_month = temp_date.month
-        @user_characteristics_proxy.dob_year = temp_date.year
-      end
-    end
-
     @user_programs_proxy = UserProgramsProxy.new(@traveler)
     @user_accommodations_proxy = UserAccommodationsProxy.new(@traveler)
     super
