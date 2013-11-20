@@ -83,10 +83,13 @@ class TripPart < ActiveRecord::Base
 
   def create_paratransit_itineraries
     eh = EligibilityHelpers.new
+    fh = FareHelper.new
     itineraries = eh.get_accommodating_and_eligible_services_for_traveler(self)
     itineraries = eh.get_eligible_services_for_trip(self, itineraries)
     itineraries.each do |itinerary|
-      self.itineraries << Itinerary.new(itinerary)
+      new_itinerary = Itinerary.new(itinerary)
+      fh.calculate_fare(new_itinerary)
+      self.itineraries << new_itinerary
     end
   end
 

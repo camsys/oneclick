@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131118161308) do
+ActiveRecord::Schema.define(:version => 20131120195305) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -19,9 +19,12 @@ ActiveRecord::Schema.define(:version => 20131118161308) do
   end
 
   create_table "fare_structures", :force => true do |t|
-    t.integer "service_id",                                               :null => false
-    t.decimal "fare",                      :precision => 10, :scale => 2
+    t.integer "service_id",                                                             :null => false
     t.string  "note",       :limit => 254
+    t.integer "fare_type",                                               :default => 0
+    t.decimal "base",                      :precision => 6, :scale => 2
+    t.decimal "rate",                      :precision => 6, :scale => 2
+    t.string  "desc"
   end
 
   create_table "geo_coverages", :force => true do |t|
@@ -59,6 +62,7 @@ ActiveRecord::Schema.define(:version => 20131118161308) do
     t.boolean  "time_mismatch",                                           :default => false
     t.boolean  "too_late",                                                :default => false
     t.string   "missing_accommodations",                                  :default => ""
+    t.string   "cost_comments"
   end
 
   create_table "modes", :force => true do |t|

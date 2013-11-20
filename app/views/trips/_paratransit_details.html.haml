@@ -1,4 +1,9 @@
 .row-fluid
+  -if itinerary.cost_comments
+    %h4
+      Cost Details
+    =itinerary.cost_comments
+
   -if itinerary.missing_information
     %h4
       %i.icon.icon-question-sign

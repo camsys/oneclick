@@ -19,7 +19,10 @@
             = duration_to_words(itinerary.duration) + " (est.)"     
         -if itinerary.cost
           =format_itinerary_item do
-            = number_to_currency(itinerary.cost)
+            = number_to_currency(itinerary.cost) + ' (est.)'
+        -if itinerary.cost_comments
+          =format_itinerary_item do
+            = "CLICK for cost details."
         -if itinerary.transfers
           =format_itinerary_item do
             = I18n.translate(:transfer, count: itinerary.transfers)
