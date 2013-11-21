@@ -18,8 +18,15 @@
           = format_itinerary_item do
             = duration_to_words(itinerary.duration) + " (est.)"     
         -if itinerary.cost
-          =format_itinerary_item do
-            = number_to_currency(itinerary.cost) + ' (est.)'
+          -if itinerary.mode.name.downcase == 'taxi'
+            =format_itinerary_item do
+              = number_to_currency(itinerary.cost.round) + " (est.)"
+          -else
+            =format_itinerary_item do
+              -unless itinerary.cost == 0
+                = number_to_currency(itinerary.cost)
+              -else
+                = "No cost for this service."
         -if itinerary.cost_comments
           =format_itinerary_item do
             = "CLICK for cost details."
