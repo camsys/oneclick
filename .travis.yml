@@ -14,6 +14,8 @@ before_script:
 - git config user.name "Denis Haskin"
 rvm:
 - 1.9.3
+language: ruby
+cache: bundler
 bundler_args: --without development
 script:
 - bundle exec /usr/bin/env RAILS_ENV=test rake db:drop db:create db:reset
