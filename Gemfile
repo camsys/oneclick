@@ -25,6 +25,8 @@ gem 'mechanize'
 gem 'activemodel'
 gem 'newrelic_rpm'
 gem 'polylines'
+gem 'activemdb'
+
 group :development do
   #gem 'mysql2'
   gem 'better_errors'
