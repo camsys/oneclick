@@ -1,5 +1,5 @@
 class TimeFilterHelper
-
+  
   TIME_FILTER = 0
   DAY_FILTER = 1
   MONTH_FILTER = 2
@@ -56,17 +56,17 @@ class TimeFilterHelper
     else
       start_time = get_parsed_time(filter[:parse_text_start], filter[:start_filter_type], true)    
       end_time = get_parsed_time(filter[:parse_text_end], filter[:end_filter_type], false)
-
-      return start_time..end_time
     end
+    
+    return start_time..end_time
   end
-
+  
   protected
-
+  
   def self.get_parsed_time(str, filter_type, is_start)
-
+    
     parsed_time = Chronic.parse(str)
-
+    
     if filter_type == TIME_FILTER
       return parsed_time.in_time_zone  
     elsif filter_type == DAY_FILTER
