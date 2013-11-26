@@ -10,6 +10,7 @@ es:
   help_and_support: 'Ayuda y Soporte'
   create_an_account: 'Crear una Cuenta'
   travel_profile: 'Perfil del Viaje'
+  my_travel_profile: '[es13]Mis Perfil del Viaje[/es]'
   my_trips: 'Mis Viajes'
   my_places: 'Mis Lugares *10*'
   places: 'Lugares *11*'
@@ -167,9 +168,9 @@ es:
   unhide_all: 'Volver a mostrar todos *32*'
   round_trip: '[es11]Round trip[/es]'
   one_way: '[es12]One-way trip[/es]'
-  returning_at: '[es13]returning at[/es]'
-  returning: '[es14]returning[/es]'
-  at: '[es15]at[/es]'
+  returning_at: '[es171]returning at[/es]'
+  returning: '[es172]returning[/es]'
+  at: '[es173]at[/es]'
 
   # My Places form
   found_x_places: {

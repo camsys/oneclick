@@ -1,5 +1,6 @@
 class Admin::HomeController < Admin::BaseController
 
+  # before_filter :setup_actions
   def index
     @actions = [
         {label: t(:find_traveler), target: error_501_path, icon: ACTION_ICONS[:find_traveler]},
