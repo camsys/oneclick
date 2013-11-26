@@ -283,7 +283,11 @@ module ApplicationHelper
     end
     return icon_name
   end
-  
+
+  def get_trip_direction_icon(itinerary)
+    (itinerary.trip_part.is_return_trip ? 'icon-arrow-left' : 'icon-arrow-right')
+  end
+
   def display_base_errors resource
     return '' if (resource.errors.empty?) or (resource.errors[:base].empty?)
     messages = resource.errors[:base].map { |msg| content_tag(:p, msg) }.join

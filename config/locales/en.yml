@@ -163,6 +163,11 @@ en:
   no_matching_trips_found: 'You have no matching trips.'
   hide: 'Hide'
   unhide_all: 'Unhide all'
+  round_trip: 'Round trip'
+  one_way: 'One-way trip'
+  returning_at: 'returning at'
+  returning: 'returning'
+  at: 'at'
 
   # My Places form
   found_x_places: {

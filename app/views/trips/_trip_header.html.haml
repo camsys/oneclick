@@ -1,0 +1,16 @@
+%h2
+  - out = trip.trip_parts.first
+  = round_trip(trip)
+  = t(:from).downcase
+  %span.place_name= trip.from_place.name
+  = t(:to).downcase
+  %span.place_name= trip.to_place.name
+  = depart_arrive(out).downcase
+  = format_date(out.trip_time.in_time_zone)
+  = t(:at)
+  - unless trip.is_return_trip
+    = format_time(out.trip_time.in_time_zone)
+  - else
+    = format_time(out.trip_time.in_time_zone) + ', '
+    = t(:returning)
+    = format_time(trip.trip_parts.last.trip_time.in_time_zone)

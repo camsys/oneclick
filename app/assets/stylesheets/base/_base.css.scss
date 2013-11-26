@@ -324,8 +324,8 @@ td.left, th.left {
 }
 .shadow {
   -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-     -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-          box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);  
+  -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+  box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);  
 }
 
 /*
@@ -334,8 +334,8 @@ td.left, th.left {
  * See http://codepen.io/shshaw/full/gEiDt
  */
 
-.Center-Container.is-Table { display: table; }
-.is-Table .Table-Cell {
+ .Center-Container.is-Table { display: table; }
+ .is-Table .Table-Cell {
   display: table-cell;
   vertical-align: middle;
 }
@@ -355,4 +355,17 @@ td.left, th.left {
 
 .control-group.disabled {
   font-style: italic;
+}
+
+.trip_header {
+  .row-fluid [class*="span"] {
+    min-height: 0;
+  }
+  h2 {
+    font-weight: normal;
+    margin: 0;
+  }
+  .place_name {
+    font-weight: bold;
+  }
 }
