@@ -361,10 +361,10 @@ td.left, th.left {
   .row-fluid [class*="span"] {
     min-height: 0;
   }
-  h2 {
-    font-weight: normal;
-    margin: 0;
-  }
+  line-height: normal;
+  font-size: 1.5em;
+  font-weight: normal;
+  margin: 0;
   .place_name {
     font-weight: bold;
   }

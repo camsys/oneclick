@@ -13,9 +13,23 @@
           %i.icon-edit
 
 .row-fluid
-  %ul.thumbnails#itineraries
-    = render :partial => 'trip_itineraries', :locals => {:itineraries => @show_hidden.nil? ? @trip.valid_itineraries.order('match_score') : @trip.itineraries.order('match_score') }
+  .span12
+    %h2= t(:outbound)
 
+.row-fluid
+  %ul.thumbnails#itineraries
+    = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden) }
+
+- if @trip.is_return_trip
+  .row-fluid
+    .span12
+      %h2= t(:return)
+
+  .row-fluid
+    %ul.thumbnails#itineraries
+      = render :partial => 'trip_itineraries', :locals => {:itineraries => return_itineraries(@show_hidden) }
+
+  
 .row-fluid
   .well.well-small.span12
     = link_to new_user_trip_path do

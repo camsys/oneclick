@@ -26,4 +26,16 @@ module TripsHelper
     trip_part.is_depart ? t(:departing_at) : t(:arriving_by)
   end
 
+  def outbound_itineraries show_hidden
+    itineraries(show_hidden, @trip.trip_parts.first)
+  end
+
+  def return_itineraries show_hidden
+    itineraries(show_hidden, @trip.trip_parts.last)
+  end
+
+  def itineraries show_hidden, trip_part
+    (show_hidden.nil? ? trip_part.valid_itineraries : trip_part.itineraries).order('match_score')
+  end
+
 end

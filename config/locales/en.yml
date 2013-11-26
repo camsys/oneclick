@@ -117,6 +117,7 @@ en:
   remove: 'Remove'
   reload: 'Reload'
   return: 'Return'
+  outbound: 'Outbound'
   paratransit: 'Paratransit'
   mode: 'Mode'
   duration: 'Duration'

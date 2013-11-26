@@ -117,6 +117,7 @@ es:
   remove: 'Eliminar'
   reload: 'Recargar'
   return: 'Retornar'
+  outbound: '[es120]Outbound[/es]'
   paratransit: 'Transporte Público para Discapacitados'
   mode: 'Medio de Transporte'
   duration: 'Duración'
