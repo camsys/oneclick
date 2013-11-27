@@ -2,8 +2,9 @@
   %div.responsive-mbp.row-fluid.navbar-inner
     %div.back-button.pull-left
       .arrow
-        .arrow-btn
-          %a{href: "#"} Back      
+        = link_to :back, :class => "arrow-btn" do
+          %span.hidden back
+        %span Back      
         -#<!-- .btn-navbar is used as the toggle for collapsed navbar content -->
     %a.btn.btn-navbar{data: { toggle: "collapse",  target: ".nav-collapse"}}
       %span.icon-bar
