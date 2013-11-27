@@ -314,7 +314,7 @@ a{
 	.row, .row-fluid{
 		overflow-y: hidden;
 		// TO DO: FIX THIS TERRIBLENESS
-		height:900px;
+		//height:900px;
 		.span4{
 			color: $white;
 			padding: 36px;
@@ -589,6 +589,7 @@ a{
 
 					input[type="radio"] + label.yes, input[type="radio"] + label.no, input[type="radio"] + label.unsure{
 						//margin-left:-9999px;
+						text-indent: -9999px;
 						display: inline-block;
 						height:40px;
 						width: 40px;
