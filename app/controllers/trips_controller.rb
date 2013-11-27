@@ -84,7 +84,7 @@ class TripsController < PlaceSearchingController
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
     UserMailer.user_trip_email(email_addresses, @trip, "ARC OneClick Trip Itinerary", from_email).deliver
     respond_to do |format|
-      format.html { redirect_to user_trip_url(current_user, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
+      format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
       format.json { render json: @trip }
     end
   end
@@ -106,7 +106,7 @@ class TripsController < PlaceSearchingController
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
     UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, "ARC OneClick Trip Itinerary", from_email).deliver
     respond_to do |format|
-      format.html { redirect_to user_trip_url(current_user, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
+      format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
       format.json { render json: @trip }
     end
   end
