@@ -8,7 +8,7 @@
         %br
         = format_time(itinerary.start_time.in_time_zone)
 
-  -@legs.each do |leg|
+  -itinerary.get_legs.each do |leg|
     -if leg.mode == TripLeg::WALK
       .itinerary_text
         %p

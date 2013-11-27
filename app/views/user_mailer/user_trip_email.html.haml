@@ -2,52 +2,56 @@
 
 %hr
 
-%table
+%table{style: "font-size:1.4em;"}
   %tr
-    %td= t(:from)
-    %td= @trip.from_place.name
+    %td{style: "color:grey;"}
+      %strong
+        = t(:from) + ':  '
+    %td
+      %strong
+        =@trip.from_place.name
   %tr
-    %td= t(:to)
-    %td= @trip.to_place.name
+    %td{style: "color:grey; weight:strong;"}
+      %strong
+        =t(:to) + ':  '
+    %td
+      %strong
+        =@trip.to_place.name
   %tr
-    %td= t(:at_time)
-    %td= format_date(@trip.trip_datetime.in_time_zone)
+    %td{style: "color:grey;"}
+      %strong
+        =t(:at_time)
+    %td
+      %strong
+        =format_date(@trip.trip_datetime.in_time_zone)
 
-%hr
+- @trip.valid_itineraries.each do |itinerary|
 
+  %hr{style: "height:12px; background:#848484;"}
+  %h2
+    -if itinerary.mode.name.downcase == 'paratransit'
+      =itinerary.service.name
+      %h3
+        =itinerary.service.provider.name
+    -else
+      =itinerary.mode.name
+
+  %hr
+  %h3
+    Summary:
+  = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
+
+  %hr
+  %h3
+    Details:
+  = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
+
+%hr{style: "height:12px; background:#848484;"}
 %table
-  %thead
+  %tbody
     %tr
-      %th Mode
-      %th Start Time
-      %th End Time
-      %th Walk Time
-      %th Transit Time
-      %th Wait Time
-      %th Walk Dist                
-      %th Cost
-  %tbody
-    - @trip.valid_itineraries.each do |itin|
-      %tr
-        %td= itin.mode
-        %td= itin.start_time.nil? ? "" : format_time(itin.start_time.in_time_zone) 
-        %td= itin.end_time.nil? ? "" : format_date_time(itin.end_time.in_time_zone)
-        %td= itin.walk_time.nil? ? "" : duration_to_words(itin.walk_time)
-        %td= itin.transit_time.nil? ? "" : duration_to_words(itin.transit_time)
-        %td= itin.wait_time.nil? ? "" : duration_to_words(itin.wait_time)
-        %td= itin.walk_distance.nil? ? "" : distance_to_words(itin.walk_distance)
-        %td= itin.cost.nil? ? "" : number_to_currency(itin.cost)
-
-
-%p Thank you for using ARC OneClick Software.
-
-%hr
-
-%table
-  %tbody
+      %td Thank you for using ARC OneClick Software.
     %tr
       %td This email is automatically sent by the OneClick system. Please do not reply to this email.
     %tr
       %td Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of ARC OneClick
- 
-  

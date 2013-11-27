@@ -5,24 +5,36 @@
 %h2
   -if @itinerary.mode.name.downcase == 'paratransit'
     =@itinerary.service.name
-    %br
-    =@itinerary.service.provider.name
+    %h3
+      =@itinerary.service.provider.name
   -else
     =@itinerary.mode.name
 %hr
 
-%h4
-  =t(:from) + ':  '
-  =@trip.from_place.name
-%h4
-  =t(:to) + ':  '
-  =@trip.to_place.name
-%h4
-  =t(:at_time)
-  =format_date(@trip.trip_datetime.in_time_zone)
+%table{style: "font-size:1.4em;"}
+  %tr
+    %td{style: "color:grey;"}
+      %strong
+        = t(:from) + ':  '
+    %td
+      %strong
+        =@trip.from_place.name
+  %tr
+    %td{style: "color:grey; weight:strong;"}
+      %strong
+        =t(:to) + ':  '
+    %td
+      %strong
+        =@trip.to_place.name
+  %tr
+    %td{style: "color:grey;"}
+      %strong
+        =t(:at_time)
+    %td
+      %strong
+        =format_date(@trip.trip_datetime.in_time_zone)
 
-  %hr
-
+%hr
 %h3
   Summary:
 
