@@ -15,6 +15,8 @@ module CsHelpers
     :agents_agencies => 'icon-umbrella',
     :reports => 'icon-bar-chart'
   }
+  # Session key for storing the traveler id
+  TRAVELER_USER_SESSION_KEY = 'traveler'
 
   def current_or_guest_user
     if current_user
@@ -27,6 +29,21 @@ module CsHelpers
     else
       guest_user
     end
+  end
+
+  # Sets the #traveler class variable
+  def get_traveler
+    if user_signed_in?
+      if session[TRAVELER_USER_SESSION_KEY].blank?
+        @traveler = current_user
+      else
+        @traveler = current_user.travelers.find(session[TRAVELER_USER_SESSION_KEY])
+      end 
+    else
+      # will always be a guest user
+      @traveler = current_or_guest_user
+    end
+    @traveler
   end
   
   # find guest_user object associated with the current session,
@@ -42,21 +59,12 @@ module CsHelpers
 
     def actions options = {}
       a = if user_signed_in?
-        # if current_user.has_role? :admin
-        #   [
-        #     {label: t(:find_traveler), target: error_501_path, icon: ACTION_ICONS[:find_traveler]},
-        #     {label: t(:create_traveler), target: error_501_path, icon: ACTION_ICONS[:create_traveler]},
-        #     {label: t(:agents_agencies), target: error_501_path, icon: ACTION_ICONS[:agents_agencies]},
-        #     {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports]},
-        #   ]          
-        # else
-          [
-            {label: t(:plan_a_trip), target: new_user_trip_path(@traveler), icon: ACTION_ICONS[:plan_a_trip]},
-            {label: t(:my_travel_profile), target: edit_user_registration_path, icon: ACTION_ICONS[:travel_profile]},
-            {label: t(:my_trips), target: user_trips_path(@traveler), icon: ACTION_ICONS[:my_trips]},
-            {label: t(:my_places), target: user_trips_path(@traveler), icon: ACTION_ICONS[:my_places]},
-          ]
-        # end
+        [
+          {label: t(:plan_a_trip), target: new_user_trip_path(get_traveler), icon: ACTION_ICONS[:plan_a_trip]},
+          {label: t(:my_travel_profile), target: edit_user_registration_path, icon: ACTION_ICONS[:travel_profile]},
+          {label: t(:my_trips), target: user_trips_path(get_traveler), icon: ACTION_ICONS[:my_trips]},
+          {label: t(:my_places), target: user_places_path(get_traveler), icon: ACTION_ICONS[:my_places]},
+        ]
       else
         [
           {label: t(:plan_a_trip), target: new_user_trip_path(current_or_guest_user), icon: ACTION_ICONS[:plan_a_trip]},

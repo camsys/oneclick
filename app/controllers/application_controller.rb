@@ -11,9 +11,6 @@ class ApplicationController < ActionController::Base
   before_filter :setup_actions
   after_filter :clear_location
 
-  # Session key for storing the traveler id
-  TRAVELER_USER_SESSION_KEY = 'traveler'
-
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_path, :alert => exception.message
   end
@@ -50,53 +47,6 @@ class ApplicationController < ActionController::Base
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
-  end
-
-  ######################################################################
-  #
-  # Manage guest users
-  #
-  ######################################################################
-  
-  # if user is logged in, return current_user, else return guest_user
-  def current_or_guest_user
-    if current_user
-      if session[:guest_user_id]
-        logging_in
-        #guest_user.destroy
-        session[:guest_user_id] = nil
-      end
-      current_user
-    else
-      guest_user
-    end
-  end
-  
-  # find guest_user object associated with the current session,
-  # creating one as needed
-  def guest_user
-    # Cache the value the first time it's gotten.
-    @cached_guest_user ||= User.find(session[:guest_user_id] ||= create_guest_user.id)
-
-    rescue ActiveRecord::RecordNotFound # if session[:guest_user_id] invalid
-     session[:guest_user_id] = nil
-     guest_user
-
-   end
-
-  # Sets the #traveler class variable
-  def get_traveler
-
-    if user_signed_in?
-      if session[TRAVELER_USER_SESSION_KEY].blank?
-        @traveler = current_user
-      else
-        @traveler = current_user.travelers.find(session[TRAVELER_USER_SESSION_KEY])
-      end 
-    else
-      # will always be a guest user
-      @traveler = current_or_guest_user
-    end
   end
 
   protected
