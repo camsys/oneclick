@@ -34,3 +34,38 @@
     })
     
   })
+
+
+
+/ SO...somehow we gotta get that to look like this.
+
+%table.pull-right
+  %thead 
+    %tr 
+      %th 
+      %th Yes
+      %th No
+      %th Unsure
+  %tbody 
+    %tr.disabled 
+      %td Is the traveler permanently or temporarily disabled?
+      %td 
+        %input{:type => "radio", :name=> "disabled", :id => "disabled-y", :value => "true"}/
+        %label.yes{:for => "disabled-y"}
+      %td 
+        %input{:type => "radio", :name=> "disabled", :id => "disabled-n", :value => "false"}/ 
+        %label.no{:for => "disabled-n"} 
+      %td 
+        %input{:type => "radio", :name=> "disabled", :id => "disabled-na", :value => "na"}/ 
+        %label.unsure{:for => "disabled-na"}
+    %tr.vehicle 
+      %td Does the traveller lack access to a vehicle?
+      %td 
+        %input{:type => "radio", :id => "disabled-y", :value => "true"}/
+        %label.yes{:for => "disabled-y"}
+      %td 
+        %input{:type => "radio", :value => "false"}/ 
+        %label.no 
+      %td 
+        %input{:type => "radio", :value => "na"}/ 
+        %label.unsure
