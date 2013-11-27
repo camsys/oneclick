@@ -1,10 +1,10 @@
-.row-fluid
-  .span12
-    %h1
-      %i.icon.icon-info-sign
-      %span#characteristics_header
-        = render partial: 'header', locals: {total_steps: @total_steps}
+%div.responsive-mbp.row-fluid
+  .span4.description
+    %h1 
+      = render partial: 'header', locals: {total_steps: @total_steps}
+    %h4 Tell us About Yourself
+    %p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, assumenda, minima, soluta rerum voluptatum at ullam consectetur consequatur molestiae veniam vel eius iure recusandae molestias delectus officiis excepturi. Amet, fugiat.
+  %div.span8.inputs
+    .row-fluid.questions
+      = render partial: 'characteristics/form',  :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
 
-.row-fluid
-  .well
-    = render partial: 'characteristics/form',  :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}

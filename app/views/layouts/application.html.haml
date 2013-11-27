@@ -17,10 +17,8 @@
       = yield(:head)
   %body{:class => "#{controller_css_class} #{action_name}"}
     / application.html.haml
-    #wrap
-      .container-fluid
-        .row-fluid
-          = render 'shared/navigation'
+    = render 'shared/navigation'
+    .container-fluid
       #main{:role => "main"}
         .container-fluid
           = render 'shared/assisting'
