@@ -50,6 +50,7 @@ group :development do
   gem 'travis'
   gem 'rgeo'
   gem 'rgeo-shapefile'
+  gem "letter_opener"
 end
 group :test do
   gem 'factory_girl_rails'

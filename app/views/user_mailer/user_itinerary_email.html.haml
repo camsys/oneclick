@@ -1,0 +1,48 @@
+%p= t(:trip_options_information_from_from, from: @from)
+
+%hr
+
+%h2
+  -if @itinerary.mode.name.downcase == 'paratransit'
+    =@itinerary.service.name
+    %br
+    =@itinerary.service.provider.name
+  -else
+    =@itinerary.mode.name
+%hr
+
+%h4
+  =t(:from) + ':  '
+  =@trip.from_place.name
+%h4
+  =t(:to) + ':  '
+  =@trip.to_place.name
+%h4
+  =t(:at_time)
+  =format_date(@trip.trip_datetime.in_time_zone)
+
+  %hr
+
+%h3
+  Summary:
+
+= render :partial => 'trip_summary_header', :locals => { :itinerary => @itinerary }
+
+%hr
+%h3
+  Details:
+
+= render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
+
+%hr
+
+%table
+  %tbody
+    %tr
+      %td Thank you for using ARC OneClick Software.
+    %tr
+      %td This email is automatically sent by the OneClick system. Please do not reply to this email.
+    %tr
+      %td Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of ARC OneClick
+ 
+  

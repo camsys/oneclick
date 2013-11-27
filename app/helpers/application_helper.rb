@@ -45,7 +45,19 @@ module ApplicationHelper
     
     return html.html_safe     
   end
-  
+
+  # Formats a line in the itinerary
+  def format_email_itinerary_item(&block)
+
+    # Check to see if there is any content in the block
+    content = capture(&block)
+    if content.nil?
+      content = "&nbsp;"
+    end
+    html << content
+    return html.html_safe
+  end
+
   # Formats a line in the itinerary
   def format_itinerary_item_old(&block)
 
@@ -58,13 +70,13 @@ module ApplicationHelper
     html = "<div class='row-fluid'>"
     html << "<div class='span12'>"
     html << "<h4>"
-    
+
     html << content
 
     html << "</h4>"
     html << "</div>"
     html << "</div>"
-    
+
     return html.html_safe     
   end
   
@@ -223,9 +235,9 @@ module ApplicationHelper
     elsif mode_name == 'taxi'
       partial = 'taxi_details'
     elsif mode_name == 'rideshare'
-      partial = 'rideshare_details'
+      partial = 'trips/rideshare_details'
     elsif mode_name == 'walk'
-      partial = 'walk_details'
+      partial = 'trips/walk_details'
     end
     return partial    
   end

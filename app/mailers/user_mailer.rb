@@ -8,7 +8,16 @@ class UserMailer < ActionMailer::Base
   def user_trip_email(addresses, trip, subject, from)
     @trip = trip
     @from = from
-    
+
+    mail(to: addresses, subject: subject, from: @from)
+  end
+
+  def user_itinerary_email(addresses, trip, itinerary, subject, from)
+    @trip = trip
+    @from = from
+    @itinerary = itinerary
+    @legs = @itinerary.get_legs
+
     mail(to: addresses, subject: subject, from: @from)
   end
 

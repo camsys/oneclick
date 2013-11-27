@@ -44,7 +44,7 @@
               =link_to hide_user_trip_path(@traveler, @trip, :itinerary => itinerary), {:class => "btn btn-mini btn-danger", :remote => true, :alt => get_alt_button_text(itinerary, 'remove'), :title => get_alt_button_text(itinerary, 'remove') } do
                 %i.icon-remove
                 =t(:remove)
-
+    = render partial: 'send_itinerary_by_email', locals: {trip: @trip, itinerary: itinerary}
       
  
 :javascript
