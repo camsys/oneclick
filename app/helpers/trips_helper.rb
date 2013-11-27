@@ -35,7 +35,9 @@ module TripsHelper
   end
 
   def itineraries show_hidden, trip_part
-    (show_hidden.nil? ? trip_part.valid_itineraries : trip_part.itineraries).order('match_score')
+    # (show_hidden.nil? ? trip_part.valid_itineraries.with_mode : trip_part.itineraries.with_mode).order('match_score')
+    t = trip_part.itineraries.valid
+    (show_hidden.nil? ? t.visible : t).order('match_score')
   end
 
 end

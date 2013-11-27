@@ -25,7 +25,7 @@
       %strong
         =format_date(@trip.trip_datetime.in_time_zone)
 
-- @trip.valid_itineraries.each do |itinerary|
+- @trip.itineraries.valid.visible.each do |itinerary|
 
   %hr{style: "height:12px; background:#848484;"}
   %h2

@@ -55,9 +55,9 @@ class TripsController < PlaceSearchingController
   # GET /trips/1
   # GET /trips/1.json
   def show
-    # See if there is the show_hidden parameter
     @show_hidden = params[:show_hidden]
-    @next_itinerary_id = @show_hidden.nil? ? @trip.valid_itineraries.first.id : @trip.itineraries.first.id
+    @next_itinerary_id = @show_hidden.nil? ? @trip.itineraries.valid.visible.first.id :
+      @trip.itineraries.valid.first.id
 
     if session[:current_trip_id]
       session[:current_trip_id] = nil
@@ -443,7 +443,7 @@ class TripsController < PlaceSearchingController
     # set the @trip variable
     get_trip
     
-    @itinerary = @trip.valid_itineraries.find(params[:itin])
+    @itinerary = @trip.itineraries.valid.find(params[:itin])
     @legs = @itinerary.get_legs
     if @itinerary.is_mappable      
       @markers = create_itinerary_markers(@itinerary).to_json
@@ -469,7 +469,7 @@ class TripsController < PlaceSearchingController
     # set the @trip variable
     get_trip
 
-    itinerary = @trip.valid_itineraries.find(params[:itinerary])
+    itinerary = @trip.itineraries.valid.find(params[:itinerary])
     if itinerary.nil?
       render text: t(:unable_to_remove_itinerary), status: 500
       return
@@ -480,7 +480,7 @@ class TripsController < PlaceSearchingController
     # find the next unhidden itinerary for this planned trip
     @next_itinerary_id = nil
     found = false
-    @trip.valid_itineraries.each do |itin|
+    @trip.itineraries.valid.visible.each do |itin|
       # if the found falg is set, this is the itinerary we want
       if found
         @next_itinerary_id = itin.id
@@ -493,7 +493,7 @@ class TripsController < PlaceSearchingController
       end
     end
     if @next_itinerary_id.nil? 
-      @next_itinerary_id = @trip.valid_itineraries.first.id
+      @next_itinerary_id = @trip.itineraries.valid.visible.first.id
     end
     
     respond_to do |format|
@@ -513,7 +513,7 @@ class TripsController < PlaceSearchingController
     # set the @trip variable
     get_trip
 
-    @trip.hidden_itineraries.each do |i|
+    @trip.itineraries.valid.hidden.each do |i|
       i.hidden = false
       i.save
     end

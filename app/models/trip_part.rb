@@ -6,8 +6,8 @@ class TripPart < ActiveRecord::Base
   belongs_to :to_trip_place,    :class_name => "TripPlace", :foreign_key => "to_trip_place_id"
 
   has_many :itineraries
-  has_many :valid_itineraries, :conditions => 'server_status=200 AND hidden=false', :class_name => 'Itinerary' 
-  has_many :hidden_itineraries, :conditions => 'server_status=200 AND hidden=true', :class_name => 'Itinerary'
+  # has_many :valid_itineraries, :conditions => 'server_status=200 AND hidden=false', :class_name => 'Itinerary' 
+  # has_many :hidden_itineraries, :conditions => 'server_status=200 AND hidden=true', :class_name => 'Itinerary'
 
   # Ordering of trip parts within a trip. 0 based
   attr_accessible :sequence

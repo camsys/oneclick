@@ -17,8 +17,7 @@
     %h2= t(:outbound)
 
 .row-fluid
-  %ul.thumbnails#itineraries
-    = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden) }
+  = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden) }
 
 - if @trip.is_return_trip
   .row-fluid
@@ -26,8 +25,7 @@
       %h2= t(:return)
 
   .row-fluid
-    %ul.thumbnails#itineraries
-      = render :partial => 'trip_itineraries', :locals => {:itineraries => return_itineraries(@show_hidden) }
+    = render :partial => 'trip_itineraries', :locals => {:itineraries => return_itineraries(@show_hidden) }
 
   
 .row-fluid

@@ -7,8 +7,8 @@ class Trip < ActiveRecord::Base
   has_many :trip_places, :order => "trip_places.sequence ASC"
   has_many :trip_parts, :order => "trip_parts.sequence ASC"
   
-  has_many :valid_itineraries,  :through => :trip_parts, :conditions => 'server_status=200 AND hidden=false AND match_score < 3', :class_name => 'Itinerary'
-  has_many :hidden_itineraries, :through => :trip_parts, :conditions => 'server_status=200 AND hidden=true AND match_score < 3', :class_name => 'Itinerary'
+  # has_many :valid_itineraries,  :through => :trip_parts, :conditions => 'server_status=200 AND hidden=false AND match_score < 3', :class_name => 'Itinerary'
+  # has_many :hidden_itineraries, :through => :trip_parts, :conditions => 'server_status=200 AND hidden=true AND match_score < 3', :class_name => 'Itinerary'
   has_many :itineraries,        :through => :trip_parts, :class_name => 'Itinerary' 
   
   # Scopes
