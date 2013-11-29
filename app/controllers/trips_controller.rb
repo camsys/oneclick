@@ -1,7 +1,11 @@
 class TripsController < PlaceSearchingController
 
   # set the @trip variable before any actions are invoked
-  before_filter :get_trip, :only => [:show]
+  before_filter :get_traveler, only: [:email, :email_itinerary, :details, :repeat, :edit, :destroy,
+    :update, :skip, :itinerary, :hide, :unhide_all, :select]
+  before_filter :get_trip, :only => [:show, :email, :email_itinerary, :details, :repeat, :edit,
+    :destroy, :update, :itinerary, :hide, :unhide_all, :select]
+
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
   
@@ -70,11 +74,6 @@ class TripsController < PlaceSearchingController
   end
       
   def email
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-    
     Rails.logger.info "Begin email"
     email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
     Rails.logger.info email_addresses.inspect
@@ -90,11 +89,6 @@ class TripsController < PlaceSearchingController
   end
 
   def email_itinerary
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-
     @itinerary = Itinerary.find(params[:itinerary].to_i)
 
     Rails.logger.info "Begin email"
@@ -114,26 +108,14 @@ class TripsController < PlaceSearchingController
   # GET /trips/1
   # GET /trips/1.json
   def details
-
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-
     respond_to do |format|
       format.html # details.html.erb
       format.json { render json: @trip }
     end
-
   end
       
   # User wants to repeat a trip  
   def repeat
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-
     # make sure we can find the trip we are supposed to be repeating and that it belongs to us. 
     if @trip.nil?
       redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
@@ -167,11 +149,6 @@ class TripsController < PlaceSearchingController
 
   # User wants to edit a trip in the future  
   def edit
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-
     # make sure we can find the trip we are supposed to be updating and that it belongs to us. 
     if @trip.nil? 
       redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
@@ -226,12 +203,6 @@ class TripsController < PlaceSearchingController
     
   # called when the user wants to delete a trip
   def destroy
-
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-
     # make sure we can find the trip we are supposed to be removing and that it belongs to us. 
     if @trip.nil?
       redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
@@ -297,12 +268,6 @@ class TripsController < PlaceSearchingController
 
   # updates a trip
   def update
-
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-
     # make sure we can find the trip we are supposed to be updating and that it belongs to us. 
     if @trip.nil?
       redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
@@ -420,9 +385,6 @@ class TripsController < PlaceSearchingController
   end
 
   def skip
-
-    get_traveler
-
     @trip = Trip.find(session[:current_trip_id])
     @trip.trip_parts.each do |tp|
       tp.create_itineraries
@@ -437,12 +399,6 @@ class TripsController < PlaceSearchingController
 
   # Called when the user displays an itinerary details in the modal popup
   def itinerary
-    
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-    
     @itinerary = @trip.itineraries.valid.find(params[:itin])
     @legs = @itinerary.get_legs
     if @itinerary.is_mappable      
@@ -463,12 +419,6 @@ class TripsController < PlaceSearchingController
   # called when the user wants to hide an option. Invoked via
   # an ajax call
   def hide
-
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-
     itinerary = @trip.itineraries.valid.find(params[:itinerary])
     if itinerary.nil?
       render text: t(:unable_to_remove_itinerary), status: 500
@@ -508,16 +458,14 @@ class TripsController < PlaceSearchingController
 
   # Unhides all the hidden itineraries for a trip
   def unhide_all
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-
     @trip.itineraries.valid.hidden.each do |i|
       i.hidden = false
       i.save
     end
     redirect_to user_trip_path(@traveler, @trip)   
+  end
+
+  def select
   end
 
 protected
