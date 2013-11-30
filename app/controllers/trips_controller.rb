@@ -1,4 +1,5 @@
 class TripsController < PlaceSearchingController
+  include TripsSupport
 
   # set the @trip variable before any actions are invoked
   before_filter :get_traveler, only: [:email, :email_itinerary, :details, :repeat, :edit, :destroy,
@@ -449,9 +450,13 @@ class TripsController < PlaceSearchingController
     respond_to do |format|
       if itinerary.save
         @trip.reload
-        format.js # hide.js.haml
+        # format.js # hide.js.haml
+        # TOOD For now, don't do ajax
+        format.html { redirect_to user_trip_path(@traveler, @trip) }
       else
-        render text: t(:unable_to_remove_itinerary), status: 500
+        # TODO for now, no ajax
+        # render text: t(:unable_to_remove_itinerary), status: 500
+        format.html { redirect_to(user_trip_path(@traveler, @trip), :flash => { error: t(:unable_to_remove_itinerary)}) } 
       end
     end
   end
@@ -466,6 +471,15 @@ class TripsController < PlaceSearchingController
   end
 
   def select
+    # hides all other itineraries for this trip part
+    Rails.logger.info params.inspect
+    itinerary = @trip.itineraries.valid.find(params[:itin])
+    itinerary.hide_others
+    message = t(:outbound_selected).html_safe
+    respond_to do |format|
+      format.html { redirect_to(user_trip_path(@traveler, @trip), :flash => { :local_outbound_part_message => message}) } 
+      format.json { head :no_content }
+    end
   end
 
 protected

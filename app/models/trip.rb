@@ -181,4 +181,13 @@ class Trip < ActiveRecord::Base
     self.trip_places.order('sequence').last
   end
 
+  def outbound_part
+    trip_parts.first
+  end
+
+  # TOOD This needs to change when/if we have multi-leg trips
+  def return_part
+    trip_parts.last
+  end
+
 end

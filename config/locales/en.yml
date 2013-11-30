@@ -207,6 +207,7 @@ en:
   arc_oneclick_trip_itinerary: "ARC OneClick Trip Itinerary"
   an_email_was_sent_to_email_addresses_join: "An email was sent to %{addresses}."
   unable_to_remove_itinerary: 'Unable to remove itinerary.'
+  outbound_selected: 'Outbound option selected, now select your <a href="#return_section">return option</a> below.'
   not_authorized_as_an_administrator: 'Not authorized as an administrator.'
   n_a: 'n/a'
   less_than_1_block: "less than 1 block"

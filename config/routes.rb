@@ -67,6 +67,7 @@ Oneclick::Application.routes.draw do
         end
         member do
           get   'repeat'          
+          get   'select'
           get   'details'
           get   'itinerary'
           post  'email'
@@ -74,6 +75,12 @@ Oneclick::Application.routes.draw do
           get   'hide'
           get   'unhide_all'
           get   'skip'
+        end
+      end
+
+      resources :trip_parts do
+        member do
+          get 'unhide_all'
         end
       end
 

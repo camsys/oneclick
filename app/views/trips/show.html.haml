@@ -12,29 +12,40 @@
         = link_to edit_user_trip_path(@traveler, @trip), :class => "btn btn-small pull-right", :alt => t(:edit_trip), :title => t(:edit_trip) do
           %i.icon-edit
 
-.row-fluid
-  .span12
-    %h2= t(:outbound)
-
-.row-fluid
-  = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden) }
+%div{id: 'outbound_section'}
+  .row-fluid.section_header
+    .span12
+      %a
+        %h2= t(:outbound)
+        - if flash[:local_outbound_part_message]
+          %div{class: "alert alert-success fade in"}
+            %a.close{"data-dismiss" => "alert"} ×
+            = content_tag :div, flash[:local_outbound_part_message], id: "flash_outbound_part_message "
+  - if @trip.outbound_part.has_hidden_options?
+    .row-fluid
+      .span12#outbound_hidden_trips_notice
+        = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
+  .row-fluid
+    = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden) }
 
 - if @trip.is_return_trip
-  .row-fluid
-    .span12
-      %h2= t(:return)
-
-  .row-fluid
-    = render :partial => 'trip_itineraries', :locals => {:itineraries => return_itineraries(@show_hidden) }
-
+  %div{id: 'return_section'}
+    .row-fluid.section_header
+      .span12
+        %a
+          %h2= t(:return)
+    - if @trip.return_part.has_hidden_options?
+      .row-fluid
+        .span12#outbound_hidden_trips_notice
+          = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.return_part}
+    .row-fluid
+      = render :partial => 'trip_itineraries', :locals => {:itineraries => return_itineraries(@show_hidden) }
   
 .row-fluid
   .well.well-small.span12
     = link_to new_user_trip_path do
       %i{class: CsHelpers::ACTION_ICONS[:plan_a_trip]}
       = t(:plan_a_new_trip)
-    %span#hidden_trips_notice
-      = render partial: 'hidden_trips_notice', locals: {trip: @trip}
     = link_to '#', {href: '#send_trip_by_email', class: "pull-right", data: {toggle: 'modal'}} do
       %i.icon-envelope
       =t(:send_by_email)

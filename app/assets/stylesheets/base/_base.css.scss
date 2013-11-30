@@ -132,6 +132,13 @@ a:hover#help {
   color: #e41011;
 }
 
+.section_header {
+  a, a:hover{
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
 .itinerary_icons {
   text-align: center;
   line-height: normal;
@@ -192,17 +199,13 @@ a:hover#help {
   .the-icon-container {
     line-height: 4em;
     padding-top: 5px;
-}
+  }
   .the-icon {
     vertical-align: middle;
   }
 }
 
-.actionbutton {
-  height: 282px;
-}
-
-.actionbutton:hover {
+.home.index .actionbutton:hover {
  cursor: pointer;
  border-color: #0088cc;
  -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
@@ -391,7 +394,7 @@ td.left, th.left {
     min-height: 0;
   }
   line-height: normal;
-  font-size: 28px;
+  font-size: 18px;
   font-weight: normal;
   margin: 0;
   .place_name {

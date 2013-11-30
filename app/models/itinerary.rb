@@ -52,6 +52,13 @@ class Itinerary < ActiveRecord::Base
     self.save()
   end
 
+  def hide_others
+    trip_part.itineraries.valid.each do |i|
+      next if i==self
+      i.hidden = true
+      i.save
+    end
+  end
 
 
 protected
