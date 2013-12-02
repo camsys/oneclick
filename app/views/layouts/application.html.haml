@@ -27,25 +27,18 @@
           #messages
             = render 'shared/messages'
           = yield
-      #footer
-        .container-fluid
-          .well
-            .pull-left
-              - unless Rails.env.production?
-                %span= "#{t(:version)} #{ENV['ONECLICK_APP_VERSION'] || Rails.application.config.version}"
-              - else
-                %span= "#{t(:version)} #{Rails.application.config.version}"
-              - unless Rails.env.production?
-                %span
-                  |
-                  %span.visible-phone Phone&nbsp;
-                  %span.visible-table Tablet&nbsp;
-                  %span.visible-desktop Desktop
-            .pull-right
-              -# Don't localize next 2 strings
-              = link_using_locale('English', 'en')
-              |
-              = link_using_locale('En Español', 'es')
+    .next-footer-container.step1-btn
+      .container-fluid
+        .row-fluid
+          .span4
+            .edit-trip-btn.hidden 
+              %h3 Edit Your Trip
+          .span8
+            .next-step-container
+              .next-step-btn.hidden
+                %h1 Next Step
+                %div.arrow-container.pull-right
+                  .arrow
       / ! end of .container
     / ! end of #main
 
@@ -65,4 +58,6 @@
         bootbox.setDefaults({
           locale: "#{I18n.locale}"
         });
+
+
       });
