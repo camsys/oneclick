@@ -26,6 +26,7 @@ gem 'activemodel'
 gem 'newrelic_rpm'
 gem 'polylines'
 gem 'activemdb'
+gem 'ajaxful_rating', '>= 3.0.0.beta7'
 gem 'comfortable_mexican_sofa'
 
 group :development do

@@ -1,7 +1,6 @@
 Oneclick::Application.routes.draw do
 
 
-  
   scope "(:locale)", locale: /en|es/ do
 
     authenticated :user do
@@ -79,6 +78,7 @@ Oneclick::Application.routes.draw do
           get   'hide'
           get   'unhide_all'
           get   'skip'
+          post  'rate'
           post  'comments'
         end
       end

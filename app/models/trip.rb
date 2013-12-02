@@ -7,6 +7,10 @@ class Trip < ActiveRecord::Base
   has_many :trip_places, :order => "trip_places.sequence ASC"
   has_many :trip_parts, :order => "trip_parts.sequence ASC"
 
+  # Needed to Rate Strips
+  ajaxful_rateable :stars => 5
+
+
   #Accessible attributes
   attr_accessible :user_comments
   
@@ -110,12 +114,12 @@ class Trip < ActiveRecord::Base
   end
   
   # Returns a numeric rating score for the trip
-  def rating
+  def get_rating
     if in_the_future
       return nil
     else
       #TODO replace this with actual rating
-      return rand(1..5)
+      return rand(0..5)
     end
   end
   

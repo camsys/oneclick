@@ -33,6 +33,7 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
+    ajaxful_rating (3.0.0.beta8)
     arel (3.0.2)
     atomic (1.1.14)
     awesome_print (1.2.0)
@@ -376,6 +377,7 @@ PLATFORMS
 DEPENDENCIES
   activemdb
   activemodel
+  ajaxful_rating (>= 3.0.0.beta7)
   awesome_print
   better_errors
   binding_of_caller
