@@ -439,6 +439,18 @@ class TripsController < PlaceSearchingController
     
   end
 
+  #selects the itinerary
+  def select
+
+    @itinerary = Itinerary.find(params[:itinerary].to_i)
+    @itinerary.select
+
+    respond_to do |format|
+      format.js
+    end
+
+  end
+
   # called when the user wants to hide an option. Invoked via
   # an ajax call
   def hide
