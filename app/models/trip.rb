@@ -6,6 +6,9 @@ class Trip < ActiveRecord::Base
   belongs_to :trip_purpose
   has_many :trip_places, :order => "trip_places.sequence ASC"
   has_many :trip_parts, :order => "trip_parts.sequence ASC"
+
+  #Accessible attributes
+  attr_accessible :user_comments
   
   # has_many :valid_itineraries,  :through => :trip_parts, :conditions => 'server_status=200 AND hidden=false AND match_score < 3', :class_name => 'Itinerary'
   # has_many :hidden_itineraries, :through => :trip_parts, :conditions => 'server_status=200 AND hidden=true AND match_score < 3', :class_name => 'Itinerary'

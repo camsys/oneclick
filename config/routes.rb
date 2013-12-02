@@ -77,6 +77,7 @@ Oneclick::Application.routes.draw do
           get   'hide'
           get   'unhide_all'
           get   'skip'
+          post  'comments'
         end
       end
 

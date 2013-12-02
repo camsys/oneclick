@@ -248,7 +248,7 @@ class TripsController < PlaceSearchingController
     end
 
     respond_to do |format|
-      format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => message}) } 
+      format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => message}) }
       format.json { head :no_content }
     end
     
@@ -499,6 +499,16 @@ class TripsController < PlaceSearchingController
     itinerary.hide_others
     respond_to do |format|
       format.html { redirect_to(user_trip_path(@traveler, @trip)) } 
+      format.json { head :no_content }
+    end
+  end
+
+  def comments
+    @trip = Trip.find(params[:id].to_i)
+    @trip.user_comments = params['trip']['user_comments']
+    @trip.save
+    respond_to do |format|
+      format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => t(:comments_sent)}) }
       format.json { head :no_content }
     end
   end

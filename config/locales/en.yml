@@ -192,6 +192,10 @@ en:
   profile_updated: "Your profile was updated."
 
   # new ones
+  comments: "Comments"
+  comments_sent: "Comments sent."
+  leave_comments: "Leave comments on this trip."
+  submit: "Submit"
   do_you_participate:  "Do you currently participate in any of these programs?"
   programs:  "Programs"
   eligibility: "Eligibility"

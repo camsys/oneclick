@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131202010632) do
+ActiveRecord::Schema.define(:version => 20131202222633) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(:version => 20131202010632) do
     t.boolean  "too_late",                                                :default => false
     t.string   "missing_accommodations",                                  :default => ""
     t.string   "cost_comments"
+    t.boolean  "selected"
   end
 
   create_table "modes", :force => true do |t|
@@ -131,6 +132,19 @@ ActiveRecord::Schema.define(:version => 20131202010632) do
     t.boolean "active",                    :default => true, :null => false
     t.string  "email"
   end
+
+  create_table "rates", :force => true do |t|
+    t.integer  "rater_id"
+    t.integer  "rateable_id"
+    t.string   "rateable_type"
+    t.integer  "stars",         :null => false
+    t.string   "dimension"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "rates", ["rateable_id", "rateable_type"], :name => "index_rates_on_rateable_id_and_rateable_type"
+  add_index "rates", ["rater_id"], :name => "index_rates_on_rater_id"
 
   create_table "relationship_statuses", :force => true do |t|
     t.string "name", :limit => 64
@@ -289,8 +303,9 @@ ActiveRecord::Schema.define(:version => 20131202010632) do
     t.integer  "user_id"
     t.integer  "trip_purpose_id"
     t.integer  "creator_id"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.string   "user_comments",   :limit => 1000
   end
 
   create_table "user_mode_preferences", :force => true do |t|

@@ -20,6 +20,7 @@
         %th= t(:to)
         %th= t(:trip_purpose)
         -# %th= t(:rating)
+        %th.center= t(:comments)
         %th.center= t(:actions)
     %tbody
       - @trips.each do |trip|
@@ -34,6 +35,10 @@
           %td= trip.from_place.name
           %td= trip.to_place.name
           %td= trip.trip_purpose.name
+          %td.center.no_wrap
+            =link_to '#', {href: '#user_comments_' + trip.id.to_s, class: 'btn btn-block', data: {toggle: 'modal'}} do
+              %i.icon-pencil
+
           -# %td.nowrap= get_rating_icons(trip)
           - if trip.in_the_future
             %td.center.nowrap          
@@ -49,13 +54,14 @@
                 %i.icon-rotate-right
               -# = link_to user_trip_path(@traveler, trip), {:alt => t(:rate_trip), :title => t(:rate_trip), :class => "btn btn-small"} do
                 -# %i.icon-thumbs-up
-        
+        = render partial: 'user_comments', locals: {trip: trip}
+
 - else
   .row-fluid
     .span12
       %h4= @time_filter_type == "100" ? t(:no_trips_found) : t(:no_matching_trips_found)
 
-= link_to(t(:plan_a_trip), new_user_trip_path(@traveler))       
+= link_to(t(:plan_a_trip), new_user_trip_path(@traveler))
 
 = render partial: 'shared/parameterized_datatable_javascript', locals: { table_id: '#datatable',
   object_plural: 'trips',

@@ -193,7 +193,11 @@ es:
   profile_updated: "Su perfil ha sido actualizado. *37*"
 
   # new ones
-  eligibility: "[es4]Eligibility[/es]"
+  comments: "[es]Comments[/es]"
+  comments_sent: "[es]Comments sent.[/es]"
+  leave_comments: "[es]Leave comments on this trip.[/es]"
+  submit: "[es]Submit[/es]"
+  eligibility: "[es]Eligibility[/es]"
   accommodations: "[es5]Accommodations[/es]"  
   volunteer: "[es6]Volunteer Service[/es]"
   nemt: "[es7]Non-Emergency Med.[/es]"
