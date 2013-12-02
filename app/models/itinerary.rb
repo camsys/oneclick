@@ -24,9 +24,16 @@ class Itinerary < ActiveRecord::Base
   def failed
     mode.nil?
   end
+
   # returns true if this itinerary can be mapped
   def is_mappable
     return mode.name.downcase == 'transit' ? true : false
+  end
+
+  # This one is selected if no other valid ones in the trip_part are visible.
+  # See also TripPart#selected?
+  def selected?
+    trip_part.selected?
   end
   
   # returns true if this itinerary is a walk-only trip. These are a special case of Transit

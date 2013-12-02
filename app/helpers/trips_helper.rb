@@ -40,4 +40,16 @@ module TripsHelper
     (show_hidden.nil? ? t.visible : t).order('match_score')
   end
 
+  def itinerary_thumbnail_class itinerary
+    itinerary.selected? ? 'itinerary_thumbnail_selected' : ''
+  end
+
+  def outbound_section_class trip
+    if trip.both_parts_selected?
+      'span6'
+    else
+      (trip.outbound_part.selected? ? 'span3' : 'span12')
+    end
+  end
+
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131120195305) do
+ActiveRecord::Schema.define(:version => 20131202010632) do
 
   create_table "coverage_areas", :force => true do |t|
     t.integer "service_id", :null => false
@@ -129,6 +129,7 @@ ActiveRecord::Schema.define(:version => 20131120195305) do
     t.string  "contact",     :limit => 64
     t.string  "external_id", :limit => 25
     t.boolean "active",                    :default => true, :null => false
+    t.string  "email"
   end
 
   create_table "relationship_statuses", :force => true do |t|
@@ -215,6 +216,7 @@ ActiveRecord::Schema.define(:version => 20131120195305) do
     t.boolean  "active",                                     :default => true,  :null => false
     t.datetime "created_at",                                                    :null => false
     t.datetime "updated_at",                                                    :null => false
+    t.string   "email"
   end
 
   create_table "traveler_accommodations", :force => true do |t|

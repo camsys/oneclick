@@ -28,6 +28,12 @@ class TripPart < ActiveRecord::Base
   def has_hidden_options?
     itineraries.valid.hidden.count > 0
   end
+
+  # We define that an itinerary has been selected if there is exactly 1 visible valid one.
+  # We might want a more explicit selection flag in the future.
+  def selected?
+    itineraries.valid.visible.count == 1
+  end
  
   # Converts the trip date and time into a date time object
   def trip_time

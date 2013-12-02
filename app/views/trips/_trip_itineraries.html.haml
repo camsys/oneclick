@@ -1,8 +1,8 @@
 - itineraries.valid.each_slice(4) do |itineraries|
   %ul.thumbnails#itineraries
     - itineraries.each do |itinerary|
-      %li.span3
-        .thumbnail.actionbutton.shadow{:tabindex => -1}
+      %li{class: (itinerary.trip_part.selected? ? 'span12' : 'span3')}
+        .thumbnail.actionbutton.shadow{:tabindex => -1, class: itinerary_thumbnail_class(itinerary)}
 
           .dialog-title-bar.corner-top
             .row-fluid

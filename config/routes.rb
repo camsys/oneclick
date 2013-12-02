@@ -72,6 +72,8 @@ Oneclick::Application.routes.draw do
           get   'itinerary'
           post  'email'
           post  'email_itinerary'
+          get   'email_itinerary2_values'
+          post  'email2'
           get   'hide'
           get   'unhide_all'
           get   'skip'

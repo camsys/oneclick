@@ -139,6 +139,14 @@ a:hover#help {
   }
 }
 
+.selected_notices .alert {
+  margin-bottom: 0px;
+}
+
+.itinerary_thumbnail_selected {
+  border: solid green 1px;
+}
+
 .itinerary_icons {
   text-align: center;
   line-height: normal;

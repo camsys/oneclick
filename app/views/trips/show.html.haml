@@ -1,45 +1,89 @@
 .row-fluid
-  .span12
+  .span3
     %h1
       %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
       = t(:trip_options)
-.well.trip_header
-  .row-fluid
-    .span10
+  .span9.well.trip_header
+    %div{class: (@trip.in_the_future ? 'span11' : 'span12')}
       = render partial: 'trip_header', locals: {trip: @trip}
-    .span2
-      - if @trip.in_the_future
+    - if @trip.in_the_future
+      .span1
         = link_to edit_user_trip_path(@traveler, @trip), :class => "btn btn-small pull-right", :alt => t(:edit_trip), :title => t(:edit_trip) do
           %i.icon-edit
 
-%div{id: 'outbound_section'}
-  .row-fluid.section_header
-    .span12
-      %a
-        %h2= t(:outbound)
-        - if flash[:local_outbound_part_message]
-          %div{class: "alert alert-success fade in"}
-            %a.close{"data-dismiss" => "alert"} ×
-            = content_tag :div, flash[:local_outbound_part_message], id: "flash_outbound_part_message "
-  - if @trip.outbound_part.has_hidden_options?
-    .row-fluid
-      .span12#outbound_hidden_trips_notice
-        = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
-  .row-fluid
-    = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden) }
-
-- if @trip.is_return_trip
-  %div{id: 'return_section'}
-    .row-fluid.section_header
+- if @trip.any_parts_selected?
+  .row-fluid.selected_notices{style: 'margin-top: 19px;'}
+    - if @trip.both_parts_selected?
+      .span6
+        .alert.alert-success.fade.in
+          = content_tag :div, t(:outbound_selected_short)
+      .span6
+        .alert.alert-success.fade.in
+          = content_tag :div, t(:return_selected)
+    - elsif @trip.only_outbound_selected?
       .span12
-        %a
-          %h2= t(:return)
-    - if @trip.return_part.has_hidden_options?
+        .alert.alert-success.fade.in
+          = content_tag :div, t(:outbound_selected)
+    - elsif @trip.only_return_selected?
+      .span12
+        .alert.alert-success.fade.in
+          = content_tag :div, t(:return_selected)
+
+- if @trip.both_parts_selected?
+  .row-fluid{style: 'margin-top: 19px;'}
+    .span12.well
+      %h2 Trip planned and saved.
+      %p You can now do one or more of the following to finish your trip planning:
       .row-fluid
-        .span12#outbound_hidden_trips_notice
-          = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.return_part}
-    .row-fluid
-      = render :partial => 'trip_itineraries', :locals => {:itineraries => return_itineraries(@show_hidden) }
+        .span6{style: 'margin-bottom: 9px;'}
+          =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+            %i.icon-envelope
+            =t(:e_mail) + " your trip plan to yourself or someone helping you."
+        .span6{style: 'margin-bottom: 9px;'}
+          =link_to '#', {href: email_itinerary2_values_user_trip_path(@traveler, @trip), class: 'btn btn-block',
+            data: {remote: true}, id: 'email_itinerary2'} do
+            %i.icon-ticket
+            Email a booking request to the provider.
+      .row-fluid
+        .span6{style: 'margin-bottom: 9px;'}
+          =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+            %i.icon-search
+            View trip details so that you can call the provider.
+        .span6{style: 'margin-bottom: 9px;'}
+          =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+            %i.icon-print
+            Print your trip plan.
+      .row-fluid
+        .span6.offset3
+          =link_to user_trips_path(get_traveler), {class: 'btn btn-block'} do
+            %i.icon-share-alt.icon-flip-horizontal
+            I'm done, just show me all my planned trips.
+
+
+
+.row-fluid
+  %div{class: outbound_section_class(@trip)}
+    %div{id: 'outbound_section'}
+      .row-fluid.section_header
+        .span12
+          %a
+            %h2= t(:outbound)
+      .row-fluid
+        = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden) }
+      - if @trip.outbound_part.has_hidden_options?
+        .row-fluid
+          .span12#outbound_hidden_trips_notice
+            = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
+
+  - if @trip.is_return_trip
+    - if @trip.outbound_part.selected?
+      %div{class: @trip.return_part.selected? ? 'span6' : 'span9'}
+        = render partial: 'return_trip'
+    - else
+      .row-fluid
+        .span12
+          = render partial: 'return_trip'
+
   
 .row-fluid
   .well.well-small.span12
@@ -51,7 +95,18 @@
       =t(:send_by_email)
 
     = render partial: 'send_trip_by_email', locals: {trip: @trip}
+    = render partial: 'send_trip_by_email_to_provider'
 
 
 #itinerary_modal.modal.hide.fade
-  
+
+:javascript
+  $('#email_itinerary2').on('ajax:success', function (event, data, status, xhr) {
+    console.log(event)
+    console.log(data)
+    console.log(status)
+    console.log(xhr)
+    console.log(data['created_at'])
+    $('#send_trip_by_email_to_provider #email_email_addresses').val(data['email'])
+    $('#send_trip_by_email_to_provider').modal('show')
+  })

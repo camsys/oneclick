@@ -207,6 +207,8 @@ es:
   an_email_was_sent_to_email_addresses_join: "Se fue enviado un correo electrónico a %{addresses}."
   unable_to_remove_itinerary: 'No se puede eliminar el itinerario.'
   outbound_selected: '[es209]Outbound option selected, now select your return option.[/es]'
+  outbound_selected_short: '[es210]Outbound option selected.[/es]'
+  return_selected: '[es211]Return option selected.[/es]'
   not_authorized_as_an_administrator: 'No está autorizado como un administrador.'
   n_a: 'n/a'
   less_than_1_block: "a menos the 1 cuadra"

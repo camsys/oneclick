@@ -190,4 +190,20 @@ class Trip < ActiveRecord::Base
     trip_parts.last
   end
 
+  def both_parts_selected?
+    trip_parts.first.selected? and trip_parts.last.selected?
+  end
+
+  def any_parts_selected?
+    trip_parts.first.selected? or trip_parts.last.selected?
+  end
+
+  def only_outbound_selected?
+    trip_parts.first.selected? and !trip_parts.last.selected?
+  end
+
+  def only_return_selected?
+    !trip_parts.first.selected? and trip_parts.last.selected?
+  end
+
 end

@@ -3,9 +3,9 @@ class TripsController < PlaceSearchingController
 
   # set the @trip variable before any actions are invoked
   before_filter :get_traveler, only: [:email, :email_itinerary, :details, :repeat, :edit, :destroy,
-    :update, :skip, :itinerary, :hide, :unhide_all, :select]
+    :update, :skip, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2]
   before_filter :get_trip, :only => [:show, :email, :email_itinerary, :details, :repeat, :edit,
-    :destroy, :update, :itinerary, :hide, :unhide_all, :select]
+    :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2]
 
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
@@ -104,6 +104,28 @@ class TripsController < PlaceSearchingController
       format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
       format.json { render json: @trip }
     end
+  end
+      
+  def email_itinerary2_values
+    # @itinerary = Itinerary.find(params[:itinerary].to_i)
+
+    # Rails.logger.info "Begin email"
+    # email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
+    # Rails.logger.info email_addresses.inspect
+    # email_addresses << current_user.email if user_signed_in? && params[:email][:send_to_me]
+    # email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
+    # Rails.logger.info email_addresses.inspect
+    # from_email = user_signed_in? ? current_user.email : params[:email][:from]
+    # UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, "ARC OneClick Trip Itinerary", from_email).deliver
+    services = @trip.trip_parts.collect {|tp| tp.itineraries.valid.selected.collect{|i| i.service.name}}
+    providers = @trip.trip_parts.collect {|tp| tp.itineraries.valid.selected.collect{|i| i.provider.name}}
+    respond_to do |format|
+      # format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
+      format.json { render json: @trip }
+    end
+  end
+
+  def email2
   end
       
   # GET /trips/1
@@ -475,9 +497,8 @@ class TripsController < PlaceSearchingController
     Rails.logger.info params.inspect
     itinerary = @trip.itineraries.valid.find(params[:itin])
     itinerary.hide_others
-    message = t(:outbound_selected).html_safe
     respond_to do |format|
-      format.html { redirect_to(user_trip_path(@traveler, @trip), :flash => { :local_outbound_part_message => message}) } 
+      format.html { redirect_to(user_trip_path(@traveler, @trip)) } 
       format.json { head :no_content }
     end
   end
