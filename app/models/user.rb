@@ -6,6 +6,9 @@ class User < ActiveRecord::Base
   # devise configuration
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
+  # Needed to Rate Trips
+  ajaxful_rater
+
   # Updatable attributes
   attr_accessible :email, :password, :password_confirmation, :remember_me
   attr_accessible :first_name, :last_name, :prefix, :suffix, :nickname

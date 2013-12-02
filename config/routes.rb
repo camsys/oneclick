@@ -78,6 +78,7 @@ Oneclick::Application.routes.draw do
           get   'hide'
           get   'unhide_all'
           get   'skip'
+          post  'rate'
         end
       end
 
@@ -104,6 +105,5 @@ Oneclick::Application.routes.draw do
 
     root :to => "home#index"
   end
-
 
 end

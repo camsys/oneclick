@@ -515,6 +515,15 @@ class TripsController < PlaceSearchingController
     end
   end
 
+  def rate
+    @trip = Trip.find(params[:id])
+    @trip.rate(params[:stars], current_user, params[:dimension])
+    render :update do |page|
+      page.replace_html @trip.wrapper_dom_id(params), ratings_for(@trip, params.merge(:wrap => false))
+      page.visual_effect :highlight, @trip.wrapper_dom_id(params)
+    end
+  end
+
 protected
   
   # Set the default travel time/date to x mins from now
@@ -864,4 +873,7 @@ private
       return {}
     end
   end
+
+
+
 end
