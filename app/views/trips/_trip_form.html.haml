@@ -207,6 +207,36 @@
       if(tripformView.indexCounter == 0){
         $('div.next-step-btn').removeClass('hidden');
       }
+      if(tripformView.indexCounter == 9){
+        $('#left-description').addClass('hidden');
+        $('#left-results').removeClass('hidden');
+        
+        //pull input value from From section, add to results section
+        var overviewFrom = $('#trip_proxy_from_place').val();
+        $('#left-results .from').html(overviewFrom);
+        
+        //pull input value from To section, add to results section
+        var overviewTo = $('#trip_proxy_to_place').val();
+        $('#left-results .to').html(overviewTo);
+        
+        //pull input value from Date section, add to results section
+        var overviewDate = $('#trip_proxy_trip_date').val();
+        $('#left-results .date').html(overviewDate);
+        
+        //pull input value from From section, add to results section
+        var overviewTime = $('#trip_proxy_trip_time').val();
+        $('#left-results .time').html(overviewTime);
+        
+        //if value exists
+        //pull input value from From section, add to results section
+        var overviewReturn = $('#trip_proxy_return_trip_time').val();
+        $('#left-results .return').html(overviewReturn);
+        
+        //pull input value from From section, add to results section
+        var overviewReason = $('#trip_proxy_trip_purpose_id option[selected]').text();
+        $('#left-results .reason').html(overviewReason);
+
+      }
       //TODO: This needs to be 9 to include the overview
       if(tripformView.indexCounter == 8){
         $('#new_user_characteristics_proxy').submit();
