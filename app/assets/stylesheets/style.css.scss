@@ -337,7 +337,7 @@ a{
 
 // RETURN TRIP
 
-#step2, #eligibility{
+#step2, #eligibility, #current-location{
 
 	.title-container{
 		position:relative;
@@ -565,7 +565,7 @@ a{
 }
 
 //QUESTIONS CHARACTERISTICS
-.questions, .programs-section{
+.questions, .programs-section, .accommodations-section{
 	padding: 20px;
 	table{
 		thead{
