@@ -1028,7 +1028,7 @@ label.time{
 	position: absolute;
 	width: 100%;
 	background-image: url(../assets/kiosk/bg_black.png);
-	height: 1500px;
+	//height: 1500px;
 	overflow-y: hidden;
 	
 	// TO DO: work with Camsys to nest the login container so it looks good at all sizes.
@@ -1037,7 +1037,7 @@ label.time{
 	}
 
 	.login-header{
-		margin-top: 45px;
+		margin-top: 100px;
 
 		h1{
 			font-size: 72px;
@@ -1064,7 +1064,7 @@ label.time{
 			}
 		}
 	}
-	p.input-container{
+	div.control-group{
 		position:relative;
 		height:84px;
 		width: 100%;
@@ -1101,10 +1101,16 @@ label.time{
 			margin-left:18px;
 			color: $gray4;
 		}
-		input:focus + label, input.hasValue + label{
+		//FIX FOR THEIR CODE
+		div.controls{
+			margin-left:0;
+		}
+
+		div.controls input:focus + label, div.controls input.hasValue + label{
 			margin-top: 18px;
 		}
-		input{
+		div.controls input{
+			font-family: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 			position: absolute;
 			height: 100%;
 			width: 100%;
@@ -1114,7 +1120,8 @@ label.time{
 			padding-top: 24px;
 		}
 	}
-	a.login-btn{
+	button.login-btn{
+		font-family: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 		border: 4px solid $blue;
 		background-color: rgba($blue, 0.3);
 		text-align: center;

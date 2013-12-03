@@ -24,16 +24,20 @@
             %a{:href => "#"} Register Now
     .row-fluid
       .span6.offset3
-        = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
-          %p.input-container
-            = f.input :email, :autofocus => true, :required => true, :label => t(:email)
-            %label{:for => "user_email"} Email Address 
-          %p.input-container 
-            = f.input :password, :required => true, :label => t(:password)
-            %label{:for => "user_password"} Password
+        = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal input-container' }) do |f|
+          = f.input :email, :autofocus => true, :required => true
+          = f.input :password, :required => true
     .row-fluid
-      .span6.offset3  
-        %a.login-btn.pull-left{:href => "#"} Log In
+      .span6.offset3
+        = button_tag type: :submit, class: 'login-btn pull-left' do
+          = t(:log_in)  
+        /%a.login-btn.pull-left{:href => "#"} Log In
         .cancel-container.pull-right
           %a.cancel-btn{:href => "#"} Cancel 
       .span3.hidden
+
+
+:javascript
+  $(document).ready(function(){
+    $('.navbar').addClass('hidden');
+  });
