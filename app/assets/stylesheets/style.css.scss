@@ -453,6 +453,10 @@ a{
 			padding: 36px;
 		}
 
+		&.selected + li{
+			border-top:1px solid $blue;
+		}
+
 		a{
 			color: $gray6;
 			&:hover, &:active{
