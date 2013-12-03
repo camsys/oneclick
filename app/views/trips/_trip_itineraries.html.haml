@@ -9,7 +9,6 @@
               .span12
                 %h3.dialog-title{:style => "margin:0px;vertical-align:top;"}
                   %i.icon{:class => get_trip_summary_icon(itinerary)}
-                  %i.icon{:class => get_trip_direction_icon(itinerary), style: 'color: green;'}
                   = get_trip_summary_title(itinerary)
                   - if itinerary.hidden
                     %i.icon-2x.icon-thumbs-down.pull-right

@@ -768,7 +768,7 @@ private
     trip_part.sequence = sequence
     trip_part.is_depart = trip_proxy.arrive_depart == t(:departing_at) ? true : false
     trip_part.scheduled_date = trip_date
-    trip_part.scheduled_time = trip_proxy.trip_time
+    trip_part.scheduled_time = Time.parse(trip_proxy.trip_time)
     trip_part.from_trip_place = from_place
     trip_part.to_trip_place = to_place
     
@@ -785,7 +785,7 @@ private
       # the return trip time is the arrival time plus
       trip_part.is_return_trip = true
       trip_part.scheduled_date = trip_date
-      trip_part.scheduled_time = trip_proxy.return_trip_time
+      trip_part.scheduled_time = Time.parse(trip_proxy.return_trip_time)
       trip_part.from_trip_place = to_place
       trip_part.to_trip_place = from_place      
 
