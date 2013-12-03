@@ -2,7 +2,7 @@ class TripsController < PlaceSearchingController
   include TripsSupport
 
   # set the @trip variable before any actions are invoked
-  before_filter :get_traveler, only: [:email, :email_itinerary, :details, :repeat, :edit, :destroy,
+  before_filter :get_traveler, only: [:new, :email, :email_itinerary, :details, :repeat, :edit, :destroy,
     :update, :skip, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2]
   before_filter :get_trip, :only => [:show, :email, :email_itinerary, :details, :repeat, :edit,
     :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2]
