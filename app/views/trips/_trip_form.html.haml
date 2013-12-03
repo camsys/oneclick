@@ -102,8 +102,8 @@
     = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
   
   / TODO: RETURN TRIP IN 1 or 2 SECTIONS
-  #return-yesno{ :data => {:index => 7}}
-    %span#current-location.row-fluid{ :data => {:index => 0}}
+  #return-yesno{ :data => {:index => 6}}
+    %span#return-trip.row-fluid
       .span8.offset2
         .title-container
           .bar
@@ -112,7 +112,7 @@
         %a#no{:href => "#", :name => "yesno", :value => "no"} No
         %a#yes{:href => "#", :name => "yesno", :value => "yes"} Yes
 
-  #timepicker-two{ :data => {:index => 8}}
+  #timepicker-two{ :data => {:index => 7}}
     = f.input :is_round_trip, :label => false, :wrapper_html => {:class => 'controls controls-row'} do
       = f.input_field :is_round_trip, :as => :boolean, :inline_label => "Return after"
       = f.input :return_trip_time, :label => false, :wrapper => :append do
@@ -207,7 +207,7 @@
       if(tripformView.indexCounter == 0){
         $('div.next-step-btn').removeClass('hidden');
       }
-      if(tripformView.indexCounter == 9){
+      if(tripformView.indexCounter == 7){
         $('#left-description').addClass('hidden');
         $('#left-results').removeClass('hidden');
         
