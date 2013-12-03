@@ -96,6 +96,9 @@ namespace :oneclick do
       #Traveler Characteristics Requirements
       disabled = TravelerCharacteristic.find_by_code('disabled')
       age = TravelerCharacteristic.find_by_code('age')
+      c = GeoCoverage.new(value: 'Dekalb', coverage_type: 'county_name')
+      ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'residence')
+
       ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: disabled, group: 1, value: 'true')
       ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, group: 2, value: '55', value_relationship_id: 4)
 
