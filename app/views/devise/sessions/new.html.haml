@@ -1,14 +1,39 @@
-%h1
-  %i.icon-signin
-  = t(:log_in)
-%h4
-.well
-  = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
-    = f.input :email, :autofocus => true, :required => true, :label => t(:email)
-    = f.input :password, :required => true, :label => t(:password)
-    = f.input :remember_me, :label => t(:remember_me), :as => :boolean if devise_mapping.rememberable?
-    .actions
-      = button_tag type: :submit, class: 'btn btn-primary controls' do
-        %i.icon.icon-signin
-        = t(:log_in)
-      = render "devise/shared/links"
+/ %h1
+/   %i.icon-signin
+/   = t(:log_in)
+/ %h4
+/ .well
+/   = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
+/     = f.input :email, :autofocus => true, :required => true, :label => t(:email)
+/     = f.input :password, :required => true, :label => t(:password)
+/     = f.input :remember_me, :label => t(:remember_me), :as => :boolean if devise_mapping.rememberable?
+/     .actions
+/       = button_tag type: :submit, class: 'btn btn-primary controls' do
+/         %i.icon.icon-signin
+/         = t(:log_in)
+/       = render "devise/shared/links"
+
+.login-container
+  .container-fluid
+    .responsive-mbp.row-fluid
+      .span6.offset3
+        .login-header
+          %h1.pull-left Log In
+          .account-container.pull-right
+            %p Need an Account?
+            %a{:href => "#"} Register Now
+    .row-fluid
+      .span6.offset3
+        = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
+          %p.input-container
+            = f.input :email, :autofocus => true, :required => true, :label => t(:email)
+            %label{:for => "user_email"} Email Address 
+          %p.input-container 
+            = f.input :password, :required => true, :label => t(:password)
+            %label{:for => "user_password"} Password
+    .row-fluid
+      .span6.offset3  
+        %a.login-btn.pull-left{:href => "#"} Log In
+        .cancel-container.pull-right
+          %a.cancel-btn{:href => "#"} Cancel 
+      .span3.hidden
