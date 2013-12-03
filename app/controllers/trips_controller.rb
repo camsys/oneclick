@@ -528,10 +528,12 @@ class TripsController < PlaceSearchingController
   def rate
     @trip = Trip.find(params[:id])
     @trip.rate(params[:stars], current_user, params[:dimension])
-    render :update do |page|
-      page.replace_html @trip.wrapper_dom_id(params), ratings_for(@trip, params.merge(:wrap => false))
-      page.visual_effect :highlight, @trip.wrapper_dom_id(params)
+
+    respond_to do |format|
+      format.html { redirect_to(user_trips_path(@traveler)) }
+      format.json { head :no_content }
     end
+
   end
 
 protected
