@@ -859,3 +859,296 @@ input#txtDate{
 	}
 }
 
+
+//TIME PICKER
+label.time{
+	@extend label.date;
+
+	input{
+		@extend input#txtDate;
+	}
+}
+
+%time-selectors{
+	list-style-type: none;
+	float:left;
+	border-left:1px solid $gray4;
+	margin:0 !important;
+	padding:0;
+	height:74px;
+	text-align:center;
+	padding-top:30px;
+	font-size:21px;
+	font-weight:600;
+	color: $gray6;
+
+	&:last-child{
+		border-right:1px solid $gray4;
+	}
+
+	&:active{
+		background-color: $gray2;
+	}
+
+	&.selected{
+		@extend %selected;
+		background-color: $white;
+		background-image:none;
+		border:0px solid $black;
+	}
+}
+
+.timetable{
+	margin: 200px 0;
+
+	ul{
+		border-top:1px solid $gray4;
+		margin-bottom:0;
+		li{
+			@extend %time-selectors;
+			width:16.6666666666666667%;
+
+			&.ampm{
+				border-bottom:1px solid $gray4;
+				padding-top:26px;
+			}
+
+		}
+	}
+}
+
+.dob-breadcrumb{
+
+	ul{
+		height: 100px;
+		padding: 30px 0;
+		li{
+			width:33%;
+			list-style-type: none;
+			float:left;
+			border-bottom: 4px solid $gray3;
+			margin-right: 4px;
+			padding-left:10px;
+			padding-bottom:10px;
+			color: $gray4;
+			height:50px;
+			
+
+			span.type{
+				display: block;
+				padding-top:20px;
+				font-size:16px;
+				font-weight: 600;
+			}
+			
+			span.input{
+				font-size:21px;
+				font-weight:300;
+				display: block;
+			}
+
+			&:last-child{
+				margin-right:0px;
+			}
+
+			&.current{
+				border-bottom: 4px solid $blue;
+				color: $gray6;
+
+				span.type{
+					font-size:16px;
+					font-weight: 600;
+					color: $gray6;
+				}
+				
+				span.input{
+					font-size:21px;
+					font-weight:300;
+					display: block;
+				}
+			}
+			&.chosen{
+				span.type{
+					padding-top:0;
+				}
+			}
+		}
+	}
+}
+
+.monthtable{
+	padding-bottom:20px;
+	ul{
+		border-top:1px solid $gray4;
+		clear:left;
+		display: flex;
+		margin-bottom:0;
+
+		&:last-child{
+			border-bottom:1px solid $gray4;
+		}
+
+		li{
+			@extend %time-selectors;
+			width: 25%;
+		}
+	}
+}
+
+.daytable{
+	padding-bottom:20px;
+	ul{
+		border-top:1px solid $gray4;
+		clear:left;
+		display: flex;
+		margin-bottom:0;
+
+		// &:last-child{
+		// 	border-bottom:1px solid $gray4;
+		// }
+
+		li{
+			@extend %time-selectors;
+			width: 12.5%;
+
+			&.ninja{
+				border-bottom:1px solid $gray1;
+				border-right: 1px solid $gray1;
+			}
+			&.bottom{
+				border-bottom: 1px solid $gray4;
+			}
+		}
+	}
+}
+
+
+//LOGIN 
+.login-container{
+	position: absolute;
+	width: 100%;
+	background-image: url(../assets/kiosk/bg_black.png);
+	height: 1500px;
+	overflow-y: hidden;
+	
+	// TO DO: work with Camsys to nest the login container so it looks good at all sizes.
+	.container-fluid{
+		background-image: url(../assets/kiosk/bg_black.png);
+	}
+
+	.login-header{
+		margin-top: 45px;
+
+		h1{
+			font-size: 72px;
+			color: $white;
+			text-transform: uppercase;
+			margin-bottom:24px;
+
+		}
+		.account-container{
+			text-align:right;
+			p{
+				font-size: 21px;
+				color: $gray3;
+
+			}
+			a{
+				font-size: 21px;
+				color: $white;
+				text-transform: uppercase;
+				font-weight: 600;
+				border-bottom: 1px solid $blue;
+				letter-spacing:2px;
+				text-decoration: none;
+			}
+		}
+	}
+	p.input-container{
+		position:relative;
+		height:84px;
+		width: 100%;
+		margin-bottom: 0;
+
+		&.error{
+			&:before{
+				content: url(../assets/kiosk/icon-error.png);
+				position:absolute;
+				top: 24px;
+				left: -50px;
+			}
+			label{
+				color:$red;
+				transition: all 0.2s ease;
+			}
+			input:focus + label, input.hasValue + label{
+				color: desaturate($red, 60%);
+			}
+			input{
+				background-color: lighten($red, 30%);
+				color: darken($red, 40%);
+			}
+
+		}
+
+		label{
+			transition: margin-top 0.2s ease;
+			position: absolute;
+			font-weight: 700;
+			font-size:16px;
+			z-index:100;
+			margin-top:32px;
+			margin-left:18px;
+			color: $gray4;
+		}
+		input:focus + label, input.hasValue + label{
+			margin-top: 18px;
+		}
+		input{
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			border-radius: 0;
+			padding-left: 15px;
+			font-size: 32px;
+			padding-top: 24px;
+		}
+	}
+	a.login-btn{
+		border: 4px solid $blue;
+		background-color: rgba($blue, 0.3);
+		text-align: center;
+		padding: 30px 0;
+		font-size: 32px;
+		font-weight: 700;
+		color: $white;
+		text-decoration: none;
+		margin-top: 24px;
+		width:320px;
+
+		&:active{
+			margin: 18px -6px 24px;
+			padding:36px 6px;
+			width:332px;
+		}
+	}
+
+
+	.cancel-container{
+		padding-top: 58px;
+		a.cancel-btn{
+			text-decoration: none;
+			border-bottom: 1px solid $gray4;
+			color: $gray4;
+			text-align: right;
+			font-size: 21px;
+			text-transform: uppercase;
+			font-weight: 600;
+			letter-spacing:2px;
+		}
+	}
+	
+
+}
+
+
