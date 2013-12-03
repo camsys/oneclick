@@ -92,6 +92,13 @@ namespace :oneclick do
         puts "Fare already exists for " + service.name
       end
 
+
+      #Traveler Characteristics Requirements
+      disabled = TravelerCharacteristic.find_by_code('disabled')
+      age = TravelerCharacteristic.find_by_code('age')
+      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: disabled, group: 1, value: 'true')
+      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, group: 2, value: '55', value_relationship_id: 4)
+
     end # task
   end
 end
