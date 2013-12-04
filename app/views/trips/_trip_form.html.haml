@@ -103,7 +103,7 @@
   / TODO: ADD THE DIV WITH THE DATA INDEX
   #purposepicker{ :data => {:index => 5}}
     / = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
-    = f.input :trip_purpose_id, :class => "hidden"
+    / = f.input :trip_purpose_id, :class => "hidden"
     %ul.purpose.span8.offset2
       - TripPurpose.all.each do |purpose|
         %li  
