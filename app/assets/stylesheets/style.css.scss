@@ -507,7 +507,7 @@ div.trip_proxy_trip_purpose_id{
 			border-radius:0;
 			//TO DO: find the actual Bootstrap in Sass files and add them to this application.
 			//otherwise 
-		 width: 103.5%;
+		 	width: 103.5%;
 			height: 128px;
 			border: 0px solid white;
 			box-shadow: 0px 2px 3px -1px rgba($black, 0.16);
@@ -547,6 +547,7 @@ div.trip_proxy_trip_purpose_id{
 
 // EDIT TRIP BUTTON
 .edit-trip-btn{
+	cursor:pointer !important;
 	height:166px;
 	font-weight:700;
 	font-size: 21px;

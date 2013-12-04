@@ -214,6 +214,11 @@
     $('#current-location a#yes').on('click', function(){
       $()
     });
+
+    $('.edit-trip-btn').on('click', function(){
+      $('*[data-index=1]').removeClass('hidden');
+      tripformView.indexCounter = 1;
+    });
     //END DP CODE
     
     // Hide what we don't need
