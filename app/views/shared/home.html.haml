@@ -1,7 +1,15 @@
 .row-fluid
   .span12
+    .center.span6
+      - if user_signed_in?
+        = cms_snippet_content('home-top-logged-in')
+      - else
+        = cms_snippet_content('home-top')
+.row-fluid
+  .span12
     %ul.thumbnails
       - @actions.each do |action|
+        - next if action[:not_on_homepage]
         %li.center.span3
           %a.span12.thumbnail.btn.actionbutton{alt: action[:label], title: action[:label], href: action[:target]}
             .row-fluid
@@ -13,3 +21,18 @@
                 .Table-Cell
                   .Center-Block
                     = action[:label]
+.row-fluid
+  - if user_signed_in?
+    .span4
+      = cms_snippet_content('home-bottom-left-logged-in')
+    .span4
+      = cms_snippet_content('home-bottom-center-logged-in')
+    .span4
+      = cms_snippet_content('home-bottom-right-logged-in')
+  - else
+    .span4
+      = cms_snippet_content('home-bottom-left')
+    .span4
+      = cms_snippet_content('home-bottom-center')
+    .span4
+      = cms_snippet_content('home-bottom-right')

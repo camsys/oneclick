@@ -26,6 +26,7 @@ gem 'activemodel'
 gem 'newrelic_rpm'
 gem 'polylines'
 gem 'activemdb'
+gem 'comfortable_mexican_sofa'
 
 group :development do
   #gem 'mysql2'
