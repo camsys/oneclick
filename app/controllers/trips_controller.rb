@@ -531,7 +531,7 @@ class TripsController < PlaceSearchingController
 
     respond_to do |format|
       format.html { redirect_to(user_trips_path(@traveler)) }
-      format.json { head :no_content }
+      format.js {render inline: "location.reload();" }
     end
 
   end

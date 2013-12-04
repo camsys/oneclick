@@ -20,9 +20,10 @@
         %th= t(:to)
         %th= t(:trip_purpose)
         -# %th= t(:rating)
+        %th.center= "Rating"
         %th.center= t(:comments)
         %th.center= t(:actions)
-    %tbody
+    %tbody{ :id => 'trips_table'}
       - @trips.each do |trip|
         %tr
           - if trip.in_the_future
