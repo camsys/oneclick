@@ -82,8 +82,6 @@
     #to_place_candidates{:style => "display:none;"}
       = render :partial => 'alt_address_select', :locals => {:results => [], :type => "to"}
 
-  / TODO: ADD THE DIV WITH THE DATA INDEX
-  / TODO: ADD DATEPICKER
   %div{:data => {:index => 3}}
     = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
       #trip-date
@@ -151,6 +149,7 @@
  
   //CG EDITS
   //TODO: Create a module class for creating view
+  var tripformWrapper;
   var tripformView = {};
   tripformView.indexCounter = 0;
   tripformView.formItems = [];
@@ -196,7 +195,7 @@
 
   });
 
-  var tripformWrapper = function(){
+  tripformWrapper = function() {
     
     // INIT VIEW
     tripformView.init = function(){
@@ -212,13 +211,24 @@
       //reveal first form item
       $('*[data-index="0"]').removeClass('hidden');
 
+
     }
     
     // HANDLERS
 
     tripformView.nextBtnHandler = function() {
+
+      // TODO: All indexCounter logic should be put in the "indexChange" event
       if(tripformView.indexCounter == 0){
         $('div.next-step-btn').removeClass('hidden');
+      }
+
+      if (tripformView.indexCounter == 3) {
+        //focus datepicker
+        // PITA: tadaapickr.js line 79:81, manually "show" calendar since api doesn't
+        // support it.
+        // TODO: move this logic (for index=3) to indexChange event...
+        $('#trip-date').data("calendar", this).click();
       }
       if(tripformView.indexCounter == 7){
         $('#left-description').addClass('hidden');
