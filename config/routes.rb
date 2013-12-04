@@ -70,6 +70,7 @@ Oneclick::Application.routes.draw do
           get   'select'
           get   'details'
           get   'itinerary'
+          post  'select'
           post  'email'
           post  'email_itinerary'
           get   'email_itinerary2_values'
@@ -77,6 +78,7 @@ Oneclick::Application.routes.draw do
           get   'hide'
           get   'unhide_all'
           get   'skip'
+          post  'rate'
           post  'comments'
         end
       end

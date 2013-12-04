@@ -1,21 +1,23 @@
 - itineraries.valid.each_slice(4) do |itineraries|
   %ul.thumbnails#itineraries
     - itineraries.each do |itinerary|
-      %li{class: (itinerary.trip_part.selected? ? 'span12' : 'span3')}
-        .thumbnail.actionbutton.shadow{:tabindex => -1, class: itinerary_thumbnail_class(itinerary)}
-
-          .dialog-title-bar.corner-top
+      %li.span3
+        .thumbnail.actionbutton.shadow{:tabindex => -1}
+          .dialog-title-bar.corner-top{:data => {:action => itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id)}}
             .row-fluid
               .span12
                 %h3.dialog-title{:style => "margin:0px;vertical-align:top;"}
                   %i.icon{:class => get_trip_summary_icon(itinerary)}
+                  %i.icon.icon-2x{:class => get_trip_summary_icon(itinerary)}
+                  %i.icon.icon-2x{:class => get_trip_direction_icon(itinerary), style: 'color: green;'}
                   = get_trip_summary_title(itinerary)
                   - if itinerary.hidden
                     %i.icon-2x.icon-thumbs-down.pull-right
                   
-          .dialog-content{:style => 'padding-left: 10px; padding-right:10px'}
+          .dialog-content{:style => 'padding-left: 10px; padding-right:10px', :data => {:action => itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id)}}
             .row-fluid
               .span12
+
                 = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary}
 
             -if itinerary.missing_information

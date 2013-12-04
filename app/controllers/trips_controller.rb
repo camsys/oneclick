@@ -439,6 +439,18 @@ class TripsController < PlaceSearchingController
     
   end
 
+  #selects the itinerary
+  def select
+
+    @itinerary = Itinerary.find(params[:itinerary].to_i)
+    @itinerary.select
+
+    respond_to do |format|
+      format.js
+    end
+
+  end
+
   # called when the user wants to hide an option. Invoked via
   # an ajax call
   def hide
@@ -511,6 +523,17 @@ class TripsController < PlaceSearchingController
       format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => t(:comments_sent)}) }
       format.json { head :no_content }
     end
+  end
+
+  def rate
+    @trip = Trip.find(params[:id])
+    @trip.rate(params[:stars], current_user, params[:dimension])
+
+    respond_to do |format|
+      format.html { redirect_to(user_trips_path(@traveler)) }
+      format.js {render inline: "location.reload();" }
+    end
+
   end
 
 protected

@@ -108,7 +108,7 @@ module ApplicationHelper
     if trip.in_the_future
       return ""
     end
-    rating = trip.rating
+    rating = trip.get_rating
     html = "<span>"
     for i in 1..5
       if i <= rating
