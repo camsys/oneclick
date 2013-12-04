@@ -20,8 +20,9 @@
         %th= t(:to)
         %th= t(:trip_purpose)
         -# %th= t(:rating)
+        %th.center= "Rating"
         %th.center= t(:actions)
-    %tbody
+    %tbody{ :id => 'trips_table'}
       - @trips.each do |trip|
         %tr
           - if trip.in_the_future
@@ -34,7 +35,7 @@
           %td= trip.from_place.name
           %td= trip.to_place.name
           %td= trip.trip_purpose.name
-          %td= ratings_for trip, :remote_options => {:url => rate_user_trip_path(@traveler,trip)}
+          %td.center= ratings_for trip, :remote_options => {:url => rate_user_trip_path(@traveler,trip)}
           - if trip.in_the_future
             %td.center.nowrap          
               = link_to user_trip_path(@traveler, trip), {:class => "btn btn-small", :alt => t(:plan_trip), :title => t(:plan_trip)} do
@@ -70,3 +71,4 @@
   $('#time_filter').change(function() {
     $('#time_filter_form').submit();
   });
+
