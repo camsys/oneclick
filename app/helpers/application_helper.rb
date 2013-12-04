@@ -296,8 +296,8 @@ module ApplicationHelper
     return icon_name
   end
 
-  def get_trip_direction_icon(itinerary)
-    (itinerary.trip_part.is_return_trip ? 'icon-arrow-left' : 'icon-arrow-right')
+  def get_trip_direction_icon(itin_or_trip)
+    (itin_or_trip.is_return_trip ? 'icon-arrow-left' : 'icon-arrow-right')
   end
 
   def display_base_errors resource

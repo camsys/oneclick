@@ -29,6 +29,10 @@ class TripPart < ActiveRecord::Base
     itineraries.valid.hidden.count > 0
   end
 
+  def is_return_trip?
+    is_return_trip
+  end
+
   # We define that an itinerary has been selected if there is exactly 1 visible valid one.
   # We might want a more explicit selection flag in the future.
   def selected?

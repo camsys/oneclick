@@ -2,7 +2,9 @@
   .row-fluid.section_header
     .span12
       %a
-        %h2= t(:return)
+        %h2
+          = t(:return)
+          %i.icon{:class => get_trip_direction_icon(@trip.return_part), style: 'color: green;'}
   .row-fluid
     = render :partial => 'trip_itineraries', :locals => {:itineraries => return_itineraries(@show_hidden) }
   - if @trip.return_part.has_hidden_options?

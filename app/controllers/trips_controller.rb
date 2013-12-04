@@ -2,7 +2,7 @@ class TripsController < PlaceSearchingController
   include TripsSupport
 
   # set the @trip variable before any actions are invoked
-  before_filter :get_traveler, only: [:email, :email_itinerary, :details, :repeat, :edit, :destroy,
+  before_filter :get_traveler, only: [:new, :email, :email_itinerary, :details, :repeat, :edit, :destroy,
     :update, :skip, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2]
   before_filter :get_trip, :only => [:show, :email, :email_itinerary, :details, :repeat, :edit,
     :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2]
@@ -248,7 +248,7 @@ class TripsController < PlaceSearchingController
     end
 
     respond_to do |format|
-      format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => message}) } 
+      format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => message}) }
       format.json { head :no_content }
     end
     
@@ -511,6 +511,16 @@ class TripsController < PlaceSearchingController
     itinerary.hide_others
     respond_to do |format|
       format.html { redirect_to(user_trip_path(@traveler, @trip)) } 
+      format.json { head :no_content }
+    end
+  end
+
+  def comments
+    @trip = Trip.find(params[:id].to_i)
+    @trip.user_comments = params['trip']['user_comments']
+    @trip.save
+    respond_to do |format|
+      format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => t(:comments_sent)}) }
       format.json { head :no_content }
     end
   end
@@ -781,7 +791,7 @@ private
     trip_part.sequence = sequence
     trip_part.is_depart = trip_proxy.arrive_depart == t(:departing_at) ? true : false
     trip_part.scheduled_date = trip_date
-    trip_part.scheduled_time = trip_proxy.trip_time
+    trip_part.scheduled_time = Time.parse(trip_proxy.trip_time)
     trip_part.from_trip_place = from_place
     trip_part.to_trip_place = to_place
     
@@ -798,7 +808,7 @@ private
       # the return trip time is the arrival time plus
       trip_part.is_return_trip = true
       trip_part.scheduled_date = trip_date
-      trip_part.scheduled_time = trip_proxy.return_trip_time
+      trip_part.scheduled_time = Time.parse(trip_proxy.return_trip_time)
       trip_part.from_trip_place = to_place
       trip_part.to_trip_place = from_place      
 
@@ -875,7 +885,4 @@ private
       return {}
     end
   end
-
-
-
 end

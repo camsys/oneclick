@@ -18,16 +18,18 @@
         .alert.alert-success.fade.in
           = content_tag :div, t(:outbound_selected_short)
       .span6
-        .alert.alert-success.fade.in
-          = content_tag :div, t(:return_selected)
+        - if @trip.is_return_trip
+          .alert.alert-success.fade.in
+            = content_tag :div, t(:return_selected)
     - elsif @trip.only_outbound_selected?
       .span12
         .alert.alert-success.fade.in
           = content_tag :div, t(:outbound_selected)
     - elsif @trip.only_return_selected?
       .span12
-        .alert.alert-success.fade.in
-          = content_tag :div, t(:return_selected)
+        - if @trip.is_return_trip
+          .alert.alert-success.fade.in
+            = content_tag :div, t(:return_selected)
 
 - if @trip.both_parts_selected?
   .row-fluid{style: 'margin-top: 19px;'}
@@ -67,7 +69,9 @@
       .row-fluid.section_header
         .span12
           %a
-            %h2= t(:outbound)
+            %h2
+              = t(:outbound)
+              %i.icon{:class => get_trip_direction_icon(@trip.outbound_part), style: 'color: green;'}
       .row-fluid
         = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden) }
       - if @trip.outbound_part.has_hidden_options?
