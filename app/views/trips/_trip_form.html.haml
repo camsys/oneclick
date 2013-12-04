@@ -82,6 +82,8 @@
     #to_place_candidates{:style => "display:none;"}
       = render :partial => 'alt_address_select', :locals => {:results => [], :type => "to"}
 
+  / TODO: ADD THE DIV WITH THE DATA INDEX
+  / TODO: ADD DATEPICKER
   %div{:data => {:index => 3}}
     = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
       #trip-date
@@ -101,11 +103,11 @@
   / TODO: ADD THE DIV WITH THE DATA INDEX
   #purposepicker{ :data => {:index => 5}}
     / = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
-    / = f.input :trip_purpose_id, :class => "hidden"
+    = f.input :trip_purpose_id
     %ul.purpose.span8.offset2
       - TripPurpose.all.each do |purpose|
-        %li  
-          = purpose.name 
+        %li{:name => purpose.id}
+          = purpose.name
 
       / TODO: Add class of selected to li to show state
 
@@ -150,7 +152,6 @@
  
   //CG EDITS
   //TODO: Create a module class for creating view
-  var tripformWrapper;
   var tripformView = {};
   tripformView.indexCounter = 0;
   tripformView.formItems = [];
@@ -186,6 +187,7 @@
     //DP CODE
     $('#purposepicker ul li').on('click', function(){
       var purposeSelect = $(this);
+      var purposeId = purposeSelect.attr('name');
       //Part 1
       if ( purposeSelect.hasClass('selected')){
       //if class already exists on THIS li
@@ -193,6 +195,8 @@
       } else {
         $('#purposepicker ul li').removeClass('selected');
         purposeSelect.addClass('selected');
+
+        $('#trip_proxy_trip_purpose_id').val(purposeId);
       }
     });
 
@@ -225,7 +229,7 @@
 
   });
 
-  tripformWrapper = function() {
+  var tripformWrapper = function(){
     
     // INIT VIEW
     tripformView.init = function(){
@@ -241,24 +245,13 @@
       //reveal first form item
       $('*[data-index="0"]').removeClass('hidden');
 
-
     }
     
     // HANDLERS
 
     tripformView.nextBtnHandler = function() {
-
-      // TODO: All indexCounter logic should be put in the "indexChange" event
       if(tripformView.indexCounter == 0){
         $('div.next-step-btn').removeClass('hidden');
-      }
-
-      if (tripformView.indexCounter == 3) {
-        //focus datepicker
-        // PITA: tadaapickr.js line 79:81, manually "show" calendar since api doesn't
-        // support it.
-        // TODO: move this logic (for index=3) to indexChange event...
-        $('#trip-date').data("calendar", this).click();
       }
       if(tripformView.indexCounter == 7){
         $('#left-description').addClass('hidden');
@@ -286,7 +279,7 @@
         $('#left-results .return').html(overviewReturn);
         
         //pull input value from From section, add to results section
-        var overviewReason = $('#trip_proxy_trip_purpose_id option[selected]').text();
+        var overviewReason = $('#purposepicker ul li.selected').text();
         $('#left-results .reason').html(overviewReason);
 
         $('.edit-trip-btn').removeClass('hidden');

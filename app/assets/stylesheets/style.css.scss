@@ -426,6 +426,17 @@ a{
 }
 
 // PURPOSE SECTION
+// hidden input
+div.trip_proxy_trip_purpose_id{
+	display:none !important;
+	//border:1px solid red;
+
+	label, input{
+		display:none !important;
+	}
+}
+
+//list view
 .purpose{
 	position:absolute;
 	top:0;
