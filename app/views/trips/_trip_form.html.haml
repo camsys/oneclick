@@ -100,13 +100,14 @@
   
   / TODO: ADD THE DIV WITH THE DATA INDEX
   #purposepicker{ :data => {:index => 5}}
-    = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
+    / = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
     %ul.purpose.span8.offset2
-      = TripPurpose.all.each do |purpose|
+      - TripPurpose.select("name").each do |purpose|
         %li  
           = purpose.name 
+
       / TODO: Add class of selected to li to show state
-      
+
       / %li 
       /   %a{:href => "#"} Training/Employment 
       / %li.selected
@@ -119,7 +120,6 @@
         .title-container
           .bar
           %h3 Need a return trip?
-
         %a#no{:href => "#", :name => "yesno", :value => "no"} No
         %a#yes{:href => "#", :name => "yesno", :value => "yes"} Yes
 
@@ -181,6 +181,35 @@
     $('.combobox').combobox({
       force_match: false
     });
+
+    //DP CODE
+    $('#purposepicker ul li').on('click', function(){
+      var purposeSelect = $(this);
+      //Part 1
+      if ( purposeSelect.hasClass('selected')){
+      //if class already exists on THIS li
+        //do nothing
+      } else {
+        $('#purposepicker ul li').removeClass('selected');
+        purposeSelect.addClass('selected');
+      }
+    });
+
+    //create hidden input for TripPurposes
+    //pass selected value into hidden input
+      //which does it need the name, the id, something else?
+    //submit the hidden value
+
+    $('#return-yesno a#no').on('click', function(){
+      //skip return trip
+      //remove from the overview
+      //make sure the value is set properly
+    });
+
+    $('#current-location a#yes').on('click', function(){
+      $()
+    });
+    //END DP CODE
     
     // Hide what we don't need
     $('#from_place_candidates').hide();
