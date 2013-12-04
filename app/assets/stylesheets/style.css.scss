@@ -1081,10 +1081,15 @@ label.time{
 
 
 //LOGIN 
+body.sessions.new{
+	background-image: url(../assets/kiosk/bg_black.png);
+	.container-fluid{
+		background-image: url(../assets/kiosk/bg_black.png);
+	}
+}
 .login-container{
 	position: absolute;
 	width: 100%;
-	background-image: url(../assets/kiosk/bg_black.png);
 	//height: 1500px;
 	overflow-y: hidden;
 	

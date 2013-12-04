@@ -21,7 +21,7 @@
           %h1.pull-left Log In
           .account-container.pull-right
             %p Need an Account?
-            %a{:href => "#"} Register Now
+            = link_to "Register Now", new_user_registration_path 
     .row-fluid
       .span6.offset3
         = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal input-container' }) do |f|
@@ -39,5 +39,6 @@
 
 :javascript
   $(document).ready(function(){
-    $('.navbar').addClass('hidden');
+    $('.navbar, .next-footer-container').addClass('hidden');
+
   });
