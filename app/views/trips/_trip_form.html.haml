@@ -259,6 +259,11 @@
       if(tripformView.indexCounter == 0){
         $('div.next-step-btn').removeClass('hidden');
       }
+      if(tripformView.indexCounter == 2){
+        //call datepicker
+        $('#trip_proxy_trip_date').click();
+      }
+
       if(tripformView.indexCounter == 7){
         $('#left-description').addClass('hidden');
         $('#left-results').removeClass('hidden');
