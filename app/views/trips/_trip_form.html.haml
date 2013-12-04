@@ -104,20 +104,14 @@
   #purposepicker{ :data => {:index => 5}}
     = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
     %ul.purpose.span8.offset2
-      %li 
-        %a{:href => "#"} General Purpose 
-      %li 
-        %a{:href => "#"} Training/Employment 
-      %li.selected
-        %a{:href => "#"} Medical 
-      %li 
-        %a{:href => "#"} Work 
-      %li 
-        %a{:href => "#"} Cancer Treatment 
-      %li 
-        %a{:href => "#"} Personal Errand
-      %li 
-        %a{:href => "#"} Dialysis
+      = TripPurpose.all.each do |purpose|
+        %li  
+          = purpose.name 
+      / TODO: Add class of selected to li to show state
+      
+      / %li 
+      /   %a{:href => "#"} Training/Employment 
+      / %li.selected
 
   
   / TODO: RETURN TRIP IN 1 or 2 SECTIONS
