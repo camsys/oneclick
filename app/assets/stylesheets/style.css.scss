@@ -15,6 +15,9 @@ $blue: #00b8d0;
 $green: #7ec537;
 $yellow: #fdd73e;
 
+$kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
+
+
 
 // FONT AVENIR NEXT
 //@import url(assets/fonts/?family=Avenir+Next:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800);
@@ -347,6 +350,7 @@ a{
 
 		h3{
 			position: absolute;
+			font-size:18px;
 			top: 0;
 			left: 0;
 			right: 0;
@@ -482,29 +486,50 @@ a{
 .inputs{
 	margin:0px !important;
 
+	form#query_form{
+		margin:0;
+	}
+
 	position: relative;
 	form{
 		input.address{
+			border-radius:0;
 			//TO DO: find the actual Bootstrap in Sass files and add them to this application.
 			//otherwise 
-			width: 103.5%;
+		 width: 103.5%;
 			height: 128px;
-			border-top: 0px solid white;
-			border-bottom: 1px solid black;
-			border-right: 0px solid white;
-			border-left: 0px solid white;
+			border: 0px solid white;
+			box-shadow: 0px 2px 3px -1px rgba($black, 0.16);
 			margin-right:-20px!important;
 			//background-color: rgba(255,255,255,.88);
 			//margin-left:-20px !important;
 			//webkit-tap-highlight-color:rgba(0,0,0,0);
-			background: rgba(255,255,255,.88) url(../assets/kiosk/icon-address.png) no-repeat 60px 44px;
+			background: $white url(../assets/kiosk/icon-address.png) no-repeat 60px 44px;
 			padding-left: 100px;
+			font-family: $kioskfonts;
+			font-size:21px;
 
 			&:focus{
 				outline:none;
 			}
 
 		}
+		span.extend-me{
+			position: absolute;
+			height: 128px;
+			background-color: $white;
+			width: 50px;
+			top: 0;
+			right: -40px;
+			box-shadow: 9px 2px 3px -1px rgba($black, 0.16);
+		}
+	}
+}
+
+//PLAN A TRIP SPECIFIC FIXES
+#from_input, #to_input{
+	label{
+		display: none;
 	}
 }
 
@@ -1161,5 +1186,44 @@ label.time{
 	
 
 }
+
+
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) { 
+
+	body{
+		padding:0;
+	}
+
+	.responsive-mbp{
+		height:auto;
+	}
+
+	.next-footer-container{
+		height: 150px;
+	}
+
+	.next-step-container{
+		padding:0;
+		.next-step-btn{
+			height:100px;
+			h1{
+				margin-top:30px;
+			}
+			.arrow-container{
+				width: 150px;
+				height: 100px;
+			}
+		}
+	}
+	
+
+
+
+}
+ 
+/* Landscape phones and down */
+//@media (max-width: 480px) { ... }
 
 
