@@ -157,28 +157,28 @@
 
   //CG END
 
-  $.fn.datepicker.Calendar.setDefaultLocale("#{I18n.locale}");
-  
-  $('#trip-date').datepicker().on("dateChange", function(e) {
-      $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
-  });  
-  
-  $('#trip-time').timepicker({
-    'timeFormat': 'g:i a',
-    'scrollDefaultTime': '9:00 am'
-    }).on("changeTime", function(e) {
-        $('#trip_proxy_trip_time').val($('#trip-time').data('ui-timepicker-value'));
-  });
-  
-  $('#return-trip-time').timepicker({
-    'timeFormat': 'g:i a',
-    'scrollDefaultTime': '10:00 am'
-    }).on("changeTime", function(e) {
-        $('#trip_proxy_return_trip_time').val($('#return-trip-time').data('ui-timepicker-value'));
-  });
-    
   // Document Ready
-  $(document).ready(function(){ 
+  $(document).ready(function(){
+    $.fn.datepicker.Calendar.setDefaultLocale("#{I18n.locale}");
+    
+    $('#trip-date').datepicker().on("dateChange", function(e) {
+        $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
+    });
+
+    $('#trip-time').timepicker({
+      'timeFormat': 'g:i a',
+      'scrollDefaultTime': '9:00 am'
+      }).on("changeTime", function(e) {
+          $('#trip_proxy_trip_time').val($('#trip-time').data('ui-timepicker-value'));
+    });
+
+    $('#return-trip-time').timepicker({
+      'timeFormat': 'g:i a',
+      'scrollDefaultTime': '10:00 am'
+      }).on("changeTime", function(e) {
+          $('#trip_proxy_return_trip_time').val($('#return-trip-time').data('ui-timepicker-value'));
+    });
+
     $('.combobox').combobox({
       force_match: false
     });
@@ -221,6 +221,8 @@
     // Other setup
     $('.dropdown-toggle').dropdown();
 
+    // hide all form items to prevent flash of itms on screen
+    //$('*[data-index]').addClass('hidden');
     tripformWrapper();
 
   });
@@ -231,6 +233,10 @@
     tripformView.init = function(){
       this.formItems = $('*[data-index]');
       this.formItems.addClass('hidden');
+      this.nextButton = $('div.next-step-btn');
+      this.tripDateCal = $('#trip-date'); 
+      this.formEle = $('#new_trip_proxy');
+
 
       $('#new_trip_proxy').on('indexChange', tripformView.indexChangeHandler);
 
@@ -241,68 +247,18 @@
       //reveal first form item
       $('*[data-index="0"]').removeClass('hidden');
 
-
+      //trigger indexchange event
+      this.formEle.trigger('indexChange');
     }
     
     // HANDLERS
-
     tripformView.nextBtnHandler = function() {
 
-      // TODO: All indexCounter logic should be put in the "indexChange" event
-      if(tripformView.indexCounter == 0){
-        $('div.next-step-btn').removeClass('hidden');
-      }
-
-      if (tripformView.indexCounter == 3) {
-        //focus datepicker
-        // PITA: tadaapickr.js line 79:81, manually "show" calendar since api doesn't
-        // support it.
-        // TODO: move this logic (for index=3) to indexChange event...
-        $('#trip-date').data("calendar", this).click();
-      }
-      if(tripformView.indexCounter == 7){
-        $('#left-description').addClass('hidden');
-        $('#left-results').removeClass('hidden');
-        
-        //pull input value from From section, add to results section
-        var overviewFrom = $('#trip_proxy_from_place').val();
-        $('#left-results .from').html(overviewFrom);
-        
-        //pull input value from To section, add to results section
-        var overviewTo = $('#trip_proxy_to_place').val();
-        $('#left-results .to').html(overviewTo);
-        
-        //pull input value from Date section, add to results section
-        var overviewDate = $('#trip_proxy_trip_date').val();
-        $('#left-results .date').html(overviewDate);
-        
-        //pull input value from From section, add to results section
-        var overviewTime = $('#trip_proxy_trip_time').val();
-        $('#left-results .time').html(overviewTime);
-        
-        //if value exists
-        //pull input value from From section, add to results section
-        var overviewReturn = $('#trip_proxy_return_trip_time').val();
-        $('#left-results .return').html(overviewReturn);
-        
-        //pull input value from From section, add to results section
-        var overviewReason = $('#trip_proxy_trip_purpose_id option[selected]').text();
-        $('#left-results .reason').html(overviewReason);
-
-        $('.edit-trip-btn').removeClass('hidden');
-
-      }
-      //TODO: This needs to be 9 to include the overview
-      if(tripformView.indexCounter == 8){
-        $('#new_user_characteristics_proxy').submit();
-      }
       //increment counter
       tripformView.indexCounter++;
       
       //trigger counter change event
-
-      // TODO: Alter this to match the button.
-      $('#new_trip_proxy').trigger('indexChange')
+      tripformView.formEle.trigger('indexChange');
     }
 
     tripformView.indexChangeHandler = function() {
@@ -314,16 +270,85 @@
 
       // matched element visible
       matchedElement.removeClass('hidden');
+
+      // we need to wait for ALL javascript to be done to start processing the indexchange event
+      // something rails is doing is preventing us from doing custom actions on the datepicker -MB
+      var readyState = setInterval(function() {
+        if (document.readyState === "complete") {
+          switch(tripformView.indexCounter) {
+            case 0:
+              tripformView.nextButton.removeClass('hidden');
+                break;
+
+            case 3:
+              console.log('hello');
+              $('#trip-date').click();
+              break;
+
+            case 7:
+              (function() {
+                var leftResults = $('#left-results');
+
+                $('#left-description').addClass('hidden');
+                leftResults.removeClass('hidden');
+
+                //pull input value from From section, add to results section
+                var overviewFrom = $('#trip_proxy_from_place').val();
+                  //$('#left-results .from').html(overviewFrom);
+                leftResults.find('.from').html(overviewFrom);
+
+                //pull input value from To section, add to results section
+                var overviewTo = $('#trip_proxy_to_place').val();
+                  //$('#left-results .to').html(overviewTo);
+                leftResults.find('.to').html(overviewTo);
+
+                //pull input value from Date section, add to results section
+                var overviewDate = $('#trip_proxy_trip_date').val();
+                  //$('#left-results .date').html(overviewDate);
+                leftResults.find('.date').html(overviewDate);
+
+                //pull input value from From section, add to results section
+                var overviewTime = $('#trip_proxy_trip_time').val();
+                  //$('#left-results .time').html(overviewTime);
+                leftResults.find('.time').html(overviewTime);
+
+                //if value exists
+                //pull input value from From section, add to results section
+                var overviewReturn = $('#trip_proxy_return_trip_time').val();
+                  //$('#left-results .return').html(overviewReturn);
+                leftResults.find('.return').html(overviewReturn);
+
+                //pull input value from From section, add to results section
+                var overviewReason = $('#trip_proxy_trip_purpose_id option[selected]').text();
+                  //$('#left-results .reason').html(overviewReason);
+                leftResults.find('.reason').html(overviewReason);
+
+                $('.edit-trip-btn').removeClass('hidden');
+              })();
+              break;
+
+            //TODO: This needs to be 9 to include the overview
+            case 8:
+              $('#new_user_characteristics_proxy').submit();
+              break;
+          };
+
+          clearInterval(readyState);
+        }
+      }, 10);
+
+
     }
+
 
     // excute init view
     tripformView.init();
   };
     
 
-    
-    
-    
+
+
+
   //(function() {
     // Listeners
 
@@ -331,16 +356,16 @@
     $("#trip_proxy_from_place").bind("keyup input paste", function() {
       $('#from_place_selected').val("");
       $('#from_place_selected_type').val("");
-      $('#from_place_candidates').hide();  
+      $('#from_place_candidates').hide();
       removeMatchingMarkers('start');
     });
     $("#trip_proxy_to_place").bind("keyup input paste", function() {
       $('#to_place_selected').val("");
-      $('#to_place_selected_type').val("");    
-      $('#to_place_candidates').hide();  
+      $('#to_place_selected_type').val("");
+      $('#to_place_candidates').hide();
       removeMatchingMarkers('stop');
     });
-    
+
 
     // Actions
 
@@ -357,7 +382,7 @@
         }
       }
     });
-    
+
     // user has lost focus on the to address
     $('#trip_proxy_to_place').blur(function() {
         if ($('#to_place_selected').val() == "") {
@@ -371,7 +396,7 @@
         }
       }
     });
-    
+
     // User has selected a pre-defined place from the dropdown.
     $('.place-option').on('click', function(event) {
       var t = $(event.target);
@@ -398,14 +423,14 @@
       var marker = create_or_update_marker(key, latlon[0], latlon[1], name, desc, iconStyle);
       setMapToBounds();
       selectMarker(marker);
-      
+
       $('#' + t.parents('ul').data('target')).val(name);
     });
 
 
     var from_timeout;
     var to_timeout;
-    
+
     // Enable typeahead for the places forms
     $('#trip_proxy_from_place').typeahead({
         items: typeahead_list_length,
@@ -414,7 +439,7 @@
             if (from_timeout) {
               clearTimeout(from_timeout);
             }
-            from_timeout = setTimeout(function() {      
+            from_timeout = setTimeout(function() {
                 return $.ajax({
                     url: $('#trip_proxy_from_place').data('link'),
                     type: 'get',
@@ -423,26 +448,26 @@
                     },
                     dataType: 'json',
                     success: function(result) {
-      
+
                       var resultList = result.map(function (item) {
                           var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, desc: item.description, lat: item.lat, lon: item.lon, addr: item.address };
                           return JSON.stringify(aItem);
                       });
-      
+
                       return process(resultList);
                     },
                     error: function (data) {
-                        show_alert("We are sorry but something went wrong. Please try again.");                
+                        show_alert("We are sorry but something went wrong. Please try again.");
                     }
                 });
-            }, typeahead_delay);            
+            }, typeahead_delay);
         },
       matcher: function (obj) {
           var item = JSON.parse(obj);
           return ~item.name.toLowerCase().indexOf(this.query.toLowerCase())
       },
 
-      sorter: function (items) {          
+      sorter: function (items) {
          var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
           while (aItem = items.shift()) {
               var item = JSON.parse(aItem);
@@ -466,19 +491,19 @@
 
       updater: function (obj) {
           var item = JSON.parse(obj);
-          
+
           // create marker on the map
           removeMatchingMarkers('start');
           create_or_update_typeahead_marker(item, 'start', 'startIcon');
-                  
+
           // Update the UI
           $('#from_place_selected_type').attr('value', item.type);
           $('#from_place_selected').attr('value', item.id);
 
           return item.name;
-      }  
-    });  
-    
+      }
+    });
+
     // Enable typeahead for the places forms
     $('#trip_proxy_to_place').typeahead({
         items: typeahead_list_length,
@@ -487,7 +512,7 @@
             if (to_timeout) {
               clearTimeout(to_timeout);
             }
-            to_timeout = setTimeout(function() {      
+            to_timeout = setTimeout(function() {
                 return $.ajax({
                     url: $('#trip_proxy_to_place').data('link'),
                     type: 'get',
@@ -496,26 +521,26 @@
                     },
                     dataType: 'json',
                     success: function(result) {
-      
+
                       var resultList = result.map(function (item) {
                           var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, desc: item.description, lat: item.lat, lon: item.lon, addr: item.address };
                           return JSON.stringify(aItem);
                       });
-      
+
                       return process(resultList);
                     },
                     error: function (data) {
-                        show_alert("We are sorry but something went wrong. Please try again.");                
+                        show_alert("We are sorry but something went wrong. Please try again.");
                     }
                 });
-            }, typeahead_delay);            
+            }, typeahead_delay);
         },
       matcher: function (obj) {
           var item = JSON.parse(obj);
           return ~item.name.toLowerCase().indexOf(this.query.toLowerCase())
       },
 
-      sorter: function (items) {          
+      sorter: function (items) {
          var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
           while (aItem = items.shift()) {
               var item = JSON.parse(aItem);
@@ -539,26 +564,26 @@
 
       updater: function (obj) {
           var item = JSON.parse(obj);
-          
+
           // create marker on the map
           removeMatchingMarkers('stop');
           create_or_update_typeahead_marker(item, 'stop', 'stopIcon');
-                  
+
           // Update the UI
           $('#to_place_selected_type').attr('value', item.type);
           $('#to_place_selected').attr('value', item.id);
-          
+
           return item.name;
-        }  
-    });  
-    
+        }
+    });
+
     // Functions
     function create_or_update_typeahead_marker(item, key, iconStyle) {
       marker = create_or_update_marker(key, item.lat, item.lon, item.name, item.desc, iconStyle);
       setMapToBounds();
       selectMarker(marker);
     };
-      
+
     function create_or_update_marker(key, lat, lon, name, desc, iconStyle) {
       // See if we can find this existing marker
       marker = findMarkerById(key);
@@ -589,7 +614,7 @@
       var marker = createMarker(key, lat, lon, icon, desc, addr, false);
       addMarkerToMap(marker, true);
     }
-      
+
     // Add the candidate locations to the map
     function create_candidate_markers(from_to_type) {
       $('.address-select').each(function() {
@@ -602,7 +627,7 @@
         var latlon = eval(t.data('latlon'));
         if (type === from_to_type) {
           add_candidate_marker(index, latlon[0], latlon[1], addr, desc, type);
-        }     
+        }
       });
     };
 
@@ -618,7 +643,7 @@
         }
       });
     };
-        
+
     // Select a candidate address
     function select_candidate_address(candidate) {
       var id = candidate.data('id');
@@ -642,7 +667,7 @@
       } else {
         update_target = $('#trip_proxy_to_place');
         hidden_val = $('#to_place_selected');
-        hidden_type = $('#to_place_selected_type');      
+        hidden_type = $('#to_place_selected_type');
         panel = $('#to_place_candidates');
         key = 'stop';
         iconStyle = 'stopIcon';
@@ -651,7 +676,7 @@
       hidden_type.val(4);
       panel.hide();
       update_target.val(addr);
-      
+
       // Remove any candidate markers from the map
       removeMatchingMarkers(key);
       // replace the markers with the end point marker
@@ -668,6 +693,6 @@
     $('#trip_proxy_from_is_home').change(function() {
       $('#trip_proxy_to_is_home').prop('checked', 0);
     });
-  
+
   // })();
 
