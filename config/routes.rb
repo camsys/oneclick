@@ -80,6 +80,7 @@ Oneclick::Application.routes.draw do
           get   'skip'
           post  'rate'
           post  'comments'
+          get   'edit_rating'
         end
       end
 
