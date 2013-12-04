@@ -255,6 +255,8 @@
         var overviewReason = $('#trip_proxy_trip_purpose_id option[selected]').text();
         $('#left-results .reason').html(overviewReason);
 
+        $('.edit-trip-btn').removeClass('hidden');
+
       }
       //TODO: This needs to be 9 to include the overview
       if(tripformView.indexCounter == 8){
