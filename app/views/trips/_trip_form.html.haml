@@ -80,7 +80,7 @@
 
   / TODO: ADD THE DIV WITH THE DATA INDEX
   / TODO: ADD DATEPICKER
-  #datepicker{ :data => {:index => 3}}
+  %div{:data => {:index => 3}}
     = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
       #trip-date
         = f.input_field :trip_date, :as => :string, :label => false, :style => "width:160px;" 
