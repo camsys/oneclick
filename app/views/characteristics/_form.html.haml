@@ -6,8 +6,11 @@
         = f.error_notification
         .eligibility-question{ :data => {:index => 0}}
           = render partial: 'characteristics/eligibility_alert', locals: {inline: inline}
-
         %div{ :data => {:index => 1}}
+          .input-header
+            .step-number Step 1 of 3
+            .step-title Questions
+            %span.extend-me
           %table#characteristics_one.pull-right
             %thead 
               %tr 
