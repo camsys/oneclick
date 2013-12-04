@@ -25,15 +25,15 @@
           #messages
             = render 'shared/messages'
           = yield
-    .next-footer-container.step1-btn
+    .next-footer-container.step1-btn.hidden 
       .container-fluid
         .row-fluid
           .span4
-            .edit-trip-btn.hidden 
+            .edit-trip-btn.hidden
               %h3 Edit Your Trip
           .span8
             .next-step-container
-              .next-step-btn.hidden
+              .next-step-btn
                 %h1 Next Step
                 %div.arrow-container.pull-right
                   .arrow
