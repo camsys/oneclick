@@ -4,10 +4,12 @@
     .span12
       = simple_form_for @user_programs_proxy, :url => path, :html => { :class => "form-horizontal" }, :method => 'put', :remote => not(inline)  do |f|
         = f.error_notification
-        %h4
-          = t(:do_you_participate)
 
         %div{ :data => {:index => 0}}
+          .input-header
+            .step-number Step 2 of 3
+            .step-title Accommodations
+            %span.extend-me
           %table#characteristics_one.pull-right
             %thead 
               %tr 
