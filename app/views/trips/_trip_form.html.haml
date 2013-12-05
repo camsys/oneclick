@@ -87,7 +87,7 @@
   %div{:data => {:index => 3}}
     = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
       #trip-date
-        = f.input_field :trip_date, :as => :string, :label => false, :style => "width:160px;" 
+        = f.input_field :trip_date, :as => :string, :label => false
 
   
     / TODO: ADD BUTTON THAT ALTERS THIS?
@@ -96,7 +96,7 @@
   #timepicker-one{ :data => {:index => 4}}
     = f.input :trip_time, :wrapper => :append, :label => t(:trip_time) do
       #trip-time
-        = f.input_field :trip_time, :as => :string, :label => false, :style => "width:160px;"
+        = f.input_field :trip_time, :as => :string, :label => false
         %span.add-on
           %i.icon-time
   
