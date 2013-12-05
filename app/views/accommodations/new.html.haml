@@ -1,11 +1,10 @@
-.row-fluid
-  .span12
-    %h1
-      / %i.icon.icon-paper-clip
-      %i.icon.icon-info-sign
+%div.responsive-mbp.row-fluid
+  .span4.description
+    %h1 
       Your Needs - Step 3 of 3
-      / = t(:to_see_best_options)
+    %h4 Tell us About Yourself
+    %p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, assumenda, minima, soluta rerum voluptatum at ullam consectetur consequatur molestiae veniam vel eius iure recusandae molestias delectus officiis excepturi. Amet, fugiat.
+  %div.span8.inputs
+    .row-fluid.accommodations-section
+      = render partial: 'accommodations/form',  :locals => {:path => user_accommodation_path(@traveler, @user_accommodations_proxy.id, inline: 1), :inline => true}
 
-.row-fluid
-  .well
-    = render partial: 'accommodations/form',  :locals => {:path => user_accommodation_path(@traveler, @user_accommodations_proxy.id, inline: 1), :inline => true}

@@ -6,90 +6,134 @@
   - unless current_user.travelers.empty?
     = render "select_traveler_form"
   
-= simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}  do |f|
+= simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "no-bottom-margin"}  do |f|
   = f.hidden_field :mode
   = f.hidden_field :from_place_selected, :id => "from_place_selected"
   = f.hidden_field :to_place_selected, :id => "to_place_selected"
   = f.hidden_field :from_place_selected_type, :id => "from_place_selected_type"
   = f.hidden_field :to_place_selected_type, :id => "to_place_selected_type"
 
-  - if user_signed_in?
-    = f.input :from_place, :wrapper => :append, :class => "inline", :label => t(:from) do
-      = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large", :data => {:link => search_user_places_path, :provide => "typeahead"}
-      %span.dropdown
-        %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
-          %span.caret
-        - if @places.count > 0
-          %ul.dropdown-menu{:data => {:target => 'trip_proxy_from_place'}}
-            - @places.each do |p|
-              %li
-                %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "from"}}
-                  = p["name"]
-      - unless @traveler.home
+  / TODO: ADD BUTTON FUNCTIONALITY:
+  / IF NO, CLOSE
+  %span#current-location.row-fluid{ :data => {:index => 0}}
+    .span8.offset2
+      .title-container
+        .bar
+        %h3 Start at your current location?
+
+      %a#no{:href => "#", :name => "yesno", :value => "no"} No
+      %a#yes{:href => "#", :name => "yesno", :value => "yes"} Yes
+  
+  / TODO: ADD THE DIV WITH THE DATA INDEX
+  #from_input{ :data => {:index => 1}}
+    - if user_signed_in?
+      = f.input :from_place, :wrapper => :append, :class => "inline", :label => t(:from) do
+        = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large address", :data => {:link => search_user_places_path, :provide => "typeahead"}
+        %span.extend-me
+        %span.dropdown
+          %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
+            %span.caret
+          - if @places.count > 0
+            %ul.dropdown-menu{:data => {:target => 'trip_proxy_from_place'}}
+              - @places.each do |p|
+                %li
+                  %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "from"}}
+                    = p["name"]
+        - unless @traveler.home
+          = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
+
+        = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
+
+    - else
+      = f.input :from_place, :class => "inline", :label => t(:from) do
+        = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large address", :data => {:link => search_user_trips_path, :provide => "typeahead"}
+        %span.extend-me
         = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
+        = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
-      = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
+    #from_place_candidates{:style => "display:none;"}
+      = render :partial => 'alt_address_select', :locals => {:results => [], :type => "from"}
 
-  - else
-    = f.input :from_place, :class => "inline", :label => t(:from) do
-      = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large", :data => {:link => search_user_trips_path, :provide => "typeahead"}
-      = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
-      = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
+  #to_input{ :data => {:index => 2}}
+    - if user_signed_in?
+      = f.input :to_place, :wrapper => :append, :class => "inline", :label => t(:to) do
+        = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large address", :data => {:link => search_user_places_path, :provide => "typeahead"}
+        %span.extend-me
+        %span.dropdown
+          %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
+            %span.caret
+          - if @places.count > 0
+            %ul.dropdown-menu{:data => {:target => 'trip_proxy_to_place'}}
+              - @places.each do |p|
+                %li
+                  %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "to"}}
+                    = p["name"]
+        - unless @traveler.home
+          = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
+        = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
-
-  #from_place_candidates{:style => "display:none;"}
-    = render :partial => 'alt_address_select', :locals => {:results => [], :type => "from"}
-
-  - if user_signed_in?
-    = f.input :to_place, :wrapper => :append, :class => "inline", :label => t(:to) do
-      = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large", :data => {:link => search_user_places_path, :provide => "typeahead"}
-      %span.dropdown
-        %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
-          %span.caret
-        - if @places.count > 0
-          %ul.dropdown-menu{:data => {:target => 'trip_proxy_to_place'}}
-            - @places.each do |p|
-              %li
-                %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "to"}}
-                  = p["name"]
-      - unless @traveler.home
+    - else    
+      = f.input :to_place, :class => "inline", :label => t(:to) do
+        = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :class => "no-bottom-margin ajax-typeahead input-large address", :autocomplete => "off", :data => {:link => search_user_trips_path, :provide => "typeahead"}
+        %span.extend-me
         = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
-      = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
+        = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
-  - else    
-    = f.input :to_place, :class => "inline", :label => t(:to) do
-      = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :class => "no-bottom-margin ajax-typeahead input-large", :autocomplete => "off", :data => {:link => search_user_trips_path, :provide => "typeahead"}
-      = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
-      = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
+    #to_place_candidates{:style => "display:none;"}
+      = render :partial => 'alt_address_select', :locals => {:results => [], :type => "to"}
 
-  #to_place_candidates{:style => "display:none;"}
-    = render :partial => 'alt_address_select', :locals => {:results => [], :type => "to"}
+  %div{:data => {:index => 3}}
+    = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
+      #trip-date
+        = f.input_field :trip_date, :as => :string, :label => false
 
-  = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
-    #trip-date
-      = f.input_field :trip_date, :as => :string, :label => false, :style => "width:160px;" 
-      %span.add-on
-        %i.icon-calendar
+  
+    / TODO: ADD BUTTON THAT ALTERS THIS?
+    = f.input :arrive_depart, :collection => [t(:departing_at), t(:arriving_by)], :include_blank => false, :label => t(:arrive_depart), :input_html => {:style => "width:200px;"}
 
-  = f.input :arrive_depart, :collection => [t(:departing_at), t(:arriving_by)], :include_blank => false, :label => t(:arrive_depart), :input_html => {:style => "width:200px;"}
-
-  = f.input :trip_time, :wrapper => :append, :label => t(:trip_time) do
-    #trip-time
-      = f.input_field :trip_time, :as => :string, :label => false, :style => "width:160px;"
-      %span.add-on
-        %i.icon-time
-
-  = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
-
-  = f.input :is_round_trip, :label => false, :wrapper_html => {:class => 'controls controls-row'} do
-    = f.input_field :is_round_trip, :as => :boolean, :inline_label => "Return after"
-    = f.input :return_trip_time, :label => false, :wrapper => :append do
-      #return-trip-time
-        = f.input_field :return_trip_time, :as => :string, :label => false, :style => "width:160px;"
+  #timepicker-one{ :data => {:index => 4}}
+    = f.input :trip_time, :wrapper => :append, :label => t(:trip_time) do
+      #trip-time
+        = f.input_field :trip_time, :as => :string, :label => false
         %span.add-on
           %i.icon-time
+  
+  / TODO: ADD THE DIV WITH THE DATA INDEX
+  #purposepicker{ :data => {:index => 5}}
+    / = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
+    = f.input :trip_purpose_id
+    %ul.purpose.span8.offset2
+      - TripPurpose.all.each do |purpose|
+        %li{:name => purpose.id}
+          = purpose.name
+
+      / TODO: Add class of selected to li to show state
+
+      / %li 
+      /   %a{:href => "#"} Training/Employment 
+      / %li.selected
+
+  
+  / TODO: RETURN TRIP IN 1 or 2 SECTIONS
+  #return-yesno{ :data => {:index => 6}}
+    %span#return-trip.row-fluid
+      .span8.offset2
+        .title-container
+          .bar
+          %h3 Need a return trip?
+        %a#no{:href => "#", :name => "yesno", :value => "no"} No
+        %a#yes{:href => "#", :name => "yesno", :value => "yes"} Yes
+
+  #timepicker-two{ :data => {:index => 7}}
+    = f.input :is_round_trip, :label => false, :wrapper_html => {:class => 'controls controls-row'} do
+      = f.input_field :is_round_trip, :as => :boolean, :inline_label => "Return after"
+      = f.input :return_trip_time, :label => false, :wrapper => :append do
+        #return-trip-time
+          = f.input_field :return_trip_time, :as => :string, :label => false, :style => "width:160px;"
+          %span.add-on
+            %i.icon-time
               
-  .form-actions
+  .form-actions.hidden
     = button_tag :type => 'submit', :class => "btn btn-primary" do
       %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
       = t(:plan_it)
@@ -98,391 +142,553 @@
       = t(:cancel)
 
 :javascript
+
   // Configure UI behaviors
   var typeahead_delay = +"#{Rails.application.config.ui_typeahead_delay}";
   var typeahead_min_chars = +"#{Rails.application.config.ui_typeahead_min_chars}";
   var typeahead_list_length = +"#{Rails.application.config.ui_typeahead_list_length}";
   var geocoder_min_chars = +"#{Rails.application.config.ui_min_geocode_chars}";
  
-  $.fn.datepicker.Calendar.setDefaultLocale("#{I18n.locale}");
-  
-  $('#trip-date').datepicker().on("dateChange", function(e) {
-      $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
-  });  
-  
-  $('#trip-time').timepicker({
-    'timeFormat': 'g:i a',
-    'scrollDefaultTime': '9:00 am'
-    }).on("changeTime", function(e) {
-        $('#trip_proxy_trip_time').val($('#trip-time').data('ui-timepicker-value'));
-  });
-  
-  $('#return-trip-time').timepicker({
-    'timeFormat': 'g:i a',
-    'scrollDefaultTime': '10:00 am'
-    }).on("changeTime", function(e) {
-        $('#trip_proxy_return_trip_time').val($('#return-trip-time').data('ui-timepicker-value'));
-  });
-    
+  //CG EDITS
+  //TODO: Create a module class for creating view
+  var tripformWrapper;
+  var tripformView = {};
+  tripformView.indexCounter = 0;
+  tripformView.formItems = [];
+
+  //CG END
+
   // Document Ready
   $(document).ready(function(){
+    $.fn.datepicker.Calendar.setDefaultLocale("#{I18n.locale}");
+    
+    $('#trip-date').datepicker().on("dateChange", function(e) {
+        $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
+    });
+
+    $('#trip-time').timepicker({
+      'timeFormat': 'g:i a',
+      'scrollDefaultTime': '9:00 am'
+      }).on("changeTime", function(e) {
+          $('#trip_proxy_trip_time').val($('#trip-time').data('ui-timepicker-value'));
+    });
+
+    $('#return-trip-time').timepicker({
+      'timeFormat': 'g:i a',
+      'scrollDefaultTime': '10:00 am'
+      }).on("changeTime", function(e) {
+          $('#trip_proxy_return_trip_time').val($('#return-trip-time').data('ui-timepicker-value'));
+    });
+
     $('.combobox').combobox({
       force_match: false
     });
+
+    //DP CODE
+    $('#purposepicker ul li').on('click', function(){
+      var purposeSelect = $(this);
+      var purposeId = purposeSelect.attr('name');
+      //Part 1
+      if ( purposeSelect.hasClass('selected')){
+      //if class already exists on THIS li
+        //do nothing
+      } else {
+        $('#purposepicker ul li').removeClass('selected');
+        purposeSelect.addClass('selected');
+
+        $('#trip_proxy_trip_purpose_id').val(purposeId);
+      }
+    });
+
+    //create hidden input for TripPurposes
+    //pass selected value into hidden input
+      //which does it need the name, the id, something else?
+    //submit the hidden value
+
+    $('#return-yesno a#no').on('click', function(){
+      //Temporary Address.
+      $('input#trip_proxy_from_place').val('Cemetery Drive, Decatur, GA 30033');
+    });
+
+    $('.edit-trip-btn').on('click', function(){
+      $('*[data-index=1]').removeClass('hidden');
+      tripformView.indexCounter = 1;
+    });
+    //END DP CODE
     
     // Hide what we don't need
     $('#from_place_candidates').hide();
     $('#to_place_candidates').hide();
     // Install a submit handler on the query form
     ajax_submit_form_handler('query_form');
-  });
-  
-  // Other setup
-  $('.dropdown-toggle').dropdown();
-  
-  
-  // Listeners
 
-  // Add change listeners on the text fields
-  $("#trip_proxy_from_place").bind("keyup input paste", function() {
-    $('#from_place_selected').val("");
-    $('#from_place_selected_type').val("");
-    $('#from_place_candidates').hide();  
-    removeMatchingMarkers('start');
-  });
-  $("#trip_proxy_to_place").bind("keyup input paste", function() {
-    $('#to_place_selected').val("");
-    $('#to_place_selected_type').val("");    
-    $('#to_place_candidates').hide();  
-    removeMatchingMarkers('stop');
-  });
-  
+    // Other setup
+    $('.dropdown-toggle').dropdown();
 
-  // Actions
+    tripformWrapper();
 
-  // user has lost focus on the from address
-  $('#trip_proxy_from_place').blur(function() {
-    if ($('#from_place_selected').val() == "") {
-      // Do an ajax query to geocode the input text
-      var addr = $('#trip_proxy_from_place').val().trim();
-      if (addr.length >= geocoder_min_chars) {
-        $('#query').val(addr);
-        $('#target').val(0);
-        $('#query_form').submit();
-        $('#from_geocoding_indicator').show();
-      }
+  });
+
+  var tripformWrapper = function(){
+    
+    // INIT VIEW
+    tripformView.init = function(){
+      this.formItems = $('*[data-index]');
+      this.formItems.addClass('hidden');
+      this.nextButton = $('.next-step-btn');
+      this.tripDateCal = $('#trip-date'); 
+      this.formEle = $('#new_trip_proxy');
+
+
+      this.formEle.on('indexChange', tripformView.indexChangeHandler);
+
+      $('input#trip_proxy_from_place').val('200 Peachtree Street Northeast, Atlanta, GA 30303');
+
+      $('.next-step-btn, a#yes').on('click', tripformView.nextBtnHandler);
+
+      //reveal first form item
+      $('*[data-index="0"]').removeClass('hidden');
     }
-  });
-  
-  // user has lost focus on the to address
-  $('#trip_proxy_to_place').blur(function() {
-      if ($('#to_place_selected').val() == "") {
-      // Do an ajax query to geocode the input text
-      var addr = $('#trip_proxy_to_place').val().trim();
-      if (addr.length >= geocoder_min_chars) {
-        $('#query').val(addr);
-        $('#target').val(1);
-        $('#query_form').submit();
-        $('#to_geocoding_indicator').show();
-      }
+    
+    // HANDLERS
+    tripformView.nextBtnHandler = function() {
+      //increment counter
+      tripformView.indexCounter++;
+      //trigger indexchange event
+      tripformView.formEle.trigger('indexChange');
     }
-  });
-  
-  // User has selected a pre-defined place from the dropdown.
-  $('.place-option').on('click', function(event) {
-    var t = $(event.target);
-    var id = t.data('id');
-    var from_to = t.data('type');
-    var name = t.data('value');
-    var desc = t.data('desc');
-    var latlon = eval(t.data('latlon'));
-    var iconStyle = 'startIcon';
-    var key;
-    if (from_to == 'from') {
-      $('#from_place_selected').val(id);
-      $('#from_place_selected_type').val(3);
+
+    tripformView.indexChangeHandler = function() {
+      //hide everything again
+      tripformView.formItems.addClass('hidden');
+
+      //find element matching current index
+      var matchedElement = $('div[data-index="' + tripformView.indexCounter +  '"]');
+
+      // matched element visible
+      matchedElement.removeClass('hidden');
+
+      // we need to wait for ALL javascript to be done to start processing the indexchange event
+      // something rails is doing is preventing us from doing custom actions on the datepicker -MB
+      var readyState = setInterval(function() {
+        if (document.readyState === "complete") {
+          switch(tripformView.indexCounter) {
+            case 1:
+              $('div.next-footer-container').removeClass('hidden');
+              break;
+
+            case 3:
+              $('#trip-date').click();
+              break;
+
+            case 8:
+              (function() {
+                var leftResults = $('#left-results');
+
+                $('#left-description').addClass('hidden');
+                leftResults.removeClass('hidden');
+
+                //pull input value from From section, add to results section
+                var overviewFrom = $('#trip_proxy_from_place').val();
+                  //$('#left-results .from').html(overviewFrom);
+                leftResults.find('.from').html(overviewFrom);
+
+                //pull input value from To section, add to results section
+                var overviewTo = $('#trip_proxy_to_place').val();
+                  //$('#left-results .to').html(overviewTo);
+                leftResults.find('.to').html(overviewTo);
+
+                //pull input value from Date section, add to results section
+                var overviewDate = $('#trip_proxy_trip_date').val();
+                  //$('#left-results .date').html(overviewDate);
+                leftResults.find('.date').html(overviewDate);
+
+                //pull input value from From section, add to results section
+                var overviewTime = $('#trip_proxy_trip_time').val();
+                  //$('#left-results .time').html(overviewTime);
+                leftResults.find('.time').html(overviewTime);
+
+                //if value exists
+                //pull input value from From section, add to results section
+                var overviewReturn = $('#trip_proxy_return_trip_time').val();
+                  //$('#left-results .return').html(overviewReturn);
+                leftResults.find('.return').html(overviewReturn);
+
+                //pull input value from From section, add to results section
+                var overviewReason = $('#purposepicker ul li.selected').text();
+                  //$('#left-results .reason').html(overviewReason);
+                leftResults.find('.reason').html(overviewReason);
+
+                $('.edit-trip-btn').removeClass('hidden');
+              })();
+              break;
+
+            //TODO: This needs to be 9 to include the overview
+            case 9:
+              // in this form view (when index=8) change the next buttons click eventhandler
+              tripformView.nextButton.off('click');
+              tripformView.nextButton.on('click', function() {
+                tripformView.formEle.submit();
+              });
+              break;
+          };
+
+          clearInterval(readyState);
+        }
+      }, 10);
+
+
+    }
+
+
+    // excute init view
+    tripformView.init();
+  };
+    
+
+
+
+
+    // Listeners
+
+    // Add change listeners on the text fields
+    $("#trip_proxy_from_place").bind("keyup input paste", function() {
+      $('#from_place_selected').val("");
+      $('#from_place_selected_type').val("");
       $('#from_place_candidates').hide();
-      key = 'start';
-    } else {
-      iconStyle = 'stopIcon';
-      $('#to_place_selected').val(id);
-      $('#to_place_selected_type').val(3);
+      removeMatchingMarkers('start');
+    });
+    $("#trip_proxy_to_place").bind("keyup input paste", function() {
+      $('#to_place_selected').val("");
+      $('#to_place_selected_type').val("");
       $('#to_place_candidates').hide();
-      key = 'stop';
-    }
-    removeMatchingMarkers(key);
-    var marker = create_or_update_marker(key, latlon[0], latlon[1], name, desc, iconStyle);
-    setMapToBounds();
-    selectMarker(marker);
-    
-    $('#' + t.parents('ul').data('target')).val(name);
-  });
+      removeMatchingMarkers('stop');
+    });
 
 
-  var from_timeout;
-  var to_timeout;
-  
-  // Enable typeahead for the places forms
-  $('#trip_proxy_from_place').typeahead({
-      items: typeahead_list_length,
-      minLength: typeahead_min_chars,
-      source: function(query, process) {
-          if (from_timeout) {
-            clearTimeout(from_timeout);
-          }
-          from_timeout = setTimeout(function() {      
-              return $.ajax({
-                  url: $('#trip_proxy_from_place').data('link'),
-                  type: 'get',
-                  data: {
-                    query: query
-                  },
-                  dataType: 'json',
-                  success: function(result) {
-    
-                    var resultList = result.map(function (item) {
-                        var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, desc: item.description, lat: item.lat, lon: item.lon, addr: item.address };
-                        return JSON.stringify(aItem);
-                    });
-    
-                    return process(resultList);
-                  },
-                  error: function (data) {
-                      show_alert("We are sorry but something went wrong. Please try again.");                
-                  }
-              });
-          }, typeahead_delay);            
-      },
-    matcher: function (obj) {
-        var item = JSON.parse(obj);
-        return ~item.name.toLowerCase().indexOf(this.query.toLowerCase())
-    },
+    // Actions
 
-    sorter: function (items) {          
-       var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
-        while (aItem = items.shift()) {
-            var item = JSON.parse(aItem);
-            if (!item.name.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(JSON.stringify(item));
-            else if (~item.name.indexOf(this.query)) caseSensitive.push(JSON.stringify(item));
-            else caseInsensitive.push(JSON.stringify(item));
+    // user has lost focus on the from address
+    $('#trip_proxy_from_place').blur(function() {
+      if ($('#from_place_selected').val() == "") {
+        // Do an ajax query to geocode the input text
+        var addr = $('#trip_proxy_from_place').val().trim();
+        if (addr.length >= geocoder_min_chars) {
+          $('#query').val(addr);
+          $('#target').val(0);
+          $('#query_form').submit();
+          $('#from_geocoding_indicator').show();
         }
+      }
+    });
 
-        return beginswith.concat(caseSensitive, caseInsensitive)
-
-    },
-
-
-    highlighter: function (obj) {
-        var item = JSON.parse(obj);
-        var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
-        return item.name.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
-            return '<strong>' + match + '</strong>'
-        })
-    },
-
-    updater: function (obj) {
-        var item = JSON.parse(obj);
-        
-        // create marker on the map
-        removeMatchingMarkers('start');
-        create_or_update_typeahead_marker(item, 'start', 'startIcon');
-                
-        // Update the UI
-        $('#from_place_selected_type').attr('value', item.type);
-        $('#from_place_selected').attr('value', item.id);
-
-        return item.name;
-    }  
-  });  
-  
-  // Enable typeahead for the places forms
-  $('#trip_proxy_to_place').typeahead({
-      items: typeahead_list_length,
-      minLength: typeahead_min_chars,
-      source: function(query, process) {
-          if (to_timeout) {
-            clearTimeout(to_timeout);
-          }
-          to_timeout = setTimeout(function() {      
-              return $.ajax({
-                  url: $('#trip_proxy_to_place').data('link'),
-                  type: 'get',
-                  data: {
-                    query: query
-                  },
-                  dataType: 'json',
-                  success: function(result) {
-    
-                    var resultList = result.map(function (item) {
-                        var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, desc: item.description, lat: item.lat, lon: item.lon, addr: item.address };
-                        return JSON.stringify(aItem);
-                    });
-    
-                    return process(resultList);
-                  },
-                  error: function (data) {
-                      show_alert("We are sorry but something went wrong. Please try again.");                
-                  }
-              });
-          }, typeahead_delay);            
-      },
-    matcher: function (obj) {
-        var item = JSON.parse(obj);
-        return ~item.name.toLowerCase().indexOf(this.query.toLowerCase())
-    },
-
-    sorter: function (items) {          
-       var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
-        while (aItem = items.shift()) {
-            var item = JSON.parse(aItem);
-            if (!item.name.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(JSON.stringify(item));
-            else if (~item.name.indexOf(this.query)) caseSensitive.push(JSON.stringify(item));
-            else caseInsensitive.push(JSON.stringify(item));
+    // user has lost focus on the to address
+    $('#trip_proxy_to_place').blur(function() {
+        if ($('#to_place_selected').val() == "") {
+        // Do an ajax query to geocode the input text
+        var addr = $('#trip_proxy_to_place').val().trim();
+        if (addr.length >= geocoder_min_chars) {
+          $('#query').val(addr);
+          $('#target').val(1);
+          $('#query_form').submit();
+          $('#to_geocoding_indicator').show();
         }
+      }
+    });
 
-        return beginswith.concat(caseSensitive, caseInsensitive)
-
-    },
-
-
-    highlighter: function (obj) {
-        var item = JSON.parse(obj);
-        var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
-        return item.name.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
-            return '<strong>' + match + '</strong>'
-        })
-    },
-
-    updater: function (obj) {
-        var item = JSON.parse(obj);
-        
-        // create marker on the map
-        removeMatchingMarkers('stop');
-        create_or_update_typeahead_marker(item, 'stop', 'stopIcon');
-                
-        // Update the UI
-        $('#to_place_selected_type').attr('value', item.type);
-        $('#to_place_selected').attr('value', item.id);
-        
-        return item.name;
-      }  
-  });  
-  
-  // Functions
-  function create_or_update_typeahead_marker(item, key, iconStyle) {
-    marker = create_or_update_marker(key, item.lat, item.lon, item.name, item.desc, iconStyle);
-    setMapToBounds();
-    selectMarker(marker);
-  };
-    
-  function create_or_update_marker(key, lat, lon, name, desc, iconStyle) {
-    // See if we can find this existing marker
-    marker = findMarkerById(key);
-    if (marker) {
-      removeMarkerFromMap(marker);
-    }
-    var marker = createMarker(key, lat, lon, iconStyle, desc, name, true);
-    addMarkerToMap(marker, true);
-    return marker;
-  };
-  // Add a list of candidate markers to the map
-  var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Z', 'Y', 'Z'];
-  function add_candidate_marker(index, lat, lon, addr, desc, type) {
-    var iconStyle;
-    var key_template;
-    if (type == 'from') {
-      iconStyle = 'startCandidate';
-      key_template = 'start_candidate';
-    } else if (type == 'to') {
-      iconStyle = 'stopCandidate';
-      key_template = 'stop_candidate';
-    } else {
-      iconStyle = 'placeCandidate';
-      key_template = 'place_candidate';
-    }
-    var icon = iconStyle + alphabet[index];
-    var key = key_template + index;
-    var marker = createMarker(key, lat, lon, icon, desc, addr, false);
-    addMarkerToMap(marker, true);
-  }
-    
-  // Add the candidate locations to the map
-  function create_candidate_markers(from_to_type) {
-    $('.address-select').each(function() {
-      var t = $(this);
+    // User has selected a pre-defined place from the dropdown.
+    $('.place-option').on('click', function(event) {
+      var t = $(event.target);
       var id = t.data('id');
-      var index = t.data('index');
-      var type = t.data('type');
-      var addr = t.data('addr');
+      var from_to = t.data('type');
+      var name = t.data('value');
       var desc = t.data('desc');
       var latlon = eval(t.data('latlon'));
-      if (type === from_to_type) {
-        add_candidate_marker(index, latlon[0], latlon[1], addr, desc, type);
-      }     
-    });
-  };
+      var iconStyle = 'startIcon';
+      var key;
+      if (from_to == 'from') {
+        $('#from_place_selected').val(id);
+        $('#from_place_selected_type').val(3);
+        $('#from_place_candidates').hide();
+        key = 'start';
+      } else {
+        iconStyle = 'stopIcon';
+        $('#to_place_selected').val(id);
+        $('#to_place_selected_type').val(3);
+        $('#to_place_candidates').hide();
+        key = 'stop';
+      }
+      removeMatchingMarkers(key);
+      var marker = create_or_update_marker(key, latlon[0], latlon[1], name, desc, iconStyle);
+      setMapToBounds();
+      selectMarker(marker);
 
-  // Selects the first matching from or to candidate in the list of alternate
-  // addresses.
-  function select_first_candidate_address(from_to) {
-    $('.address-select').each(function(idx) {
-      var candidate = $(this);
-      var type = candidate.data('type');
-      if (type == from_to) {
-        select_candidate_address(candidate);
-        return;
+      $('#' + t.parents('ul').data('target')).val(name);
+    });
+
+
+    var from_timeout;
+    var to_timeout;
+
+    // Enable typeahead for the places forms
+    $('#trip_proxy_from_place').typeahead({
+        items: typeahead_list_length,
+        minLength: typeahead_min_chars,
+        source: function(query, process) {
+            if (from_timeout) {
+              clearTimeout(from_timeout);
+            }
+            from_timeout = setTimeout(function() {
+                return $.ajax({
+                    url: $('#trip_proxy_from_place').data('link'),
+                    type: 'get',
+                    data: {
+                      query: query
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+
+                      var resultList = result.map(function (item) {
+                          var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, desc: item.description, lat: item.lat, lon: item.lon, addr: item.address };
+                          return JSON.stringify(aItem);
+                      });
+
+                      return process(resultList);
+                    },
+                    error: function (data) {
+                        show_alert("We are sorry but something went wrong. Please try again.");
+                    }
+                });
+            }, typeahead_delay);
+        },
+      matcher: function (obj) {
+          var item = JSON.parse(obj);
+          return ~item.name.toLowerCase().indexOf(this.query.toLowerCase())
+      },
+
+      sorter: function (items) {
+         var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
+          while (aItem = items.shift()) {
+              var item = JSON.parse(aItem);
+              if (!item.name.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(JSON.stringify(item));
+              else if (~item.name.indexOf(this.query)) caseSensitive.push(JSON.stringify(item));
+              else caseInsensitive.push(JSON.stringify(item));
+          }
+
+          return beginswith.concat(caseSensitive, caseInsensitive)
+
+      },
+
+
+      highlighter: function (obj) {
+          var item = JSON.parse(obj);
+          var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
+          return item.name.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+              return '<strong>' + match + '</strong>'
+          })
+      },
+
+      updater: function (obj) {
+          var item = JSON.parse(obj);
+
+          // create marker on the map
+          removeMatchingMarkers('start');
+          create_or_update_typeahead_marker(item, 'start', 'startIcon');
+
+          // Update the UI
+          $('#from_place_selected_type').attr('value', item.type);
+          $('#from_place_selected').attr('value', item.id);
+
+          return item.name;
       }
     });
-  };
-      
-  // Select a candidate address
-  function select_candidate_address(candidate) {
-    var id = candidate.data('id');
-    var index = candidate.data('index');
-    var type = candidate.data('type');
-    var addr = candidate.data('addr');
-    var desc = candidate.data('desc');
-    var latlon = eval(candidate.data('latlon'));
 
-    var update_target;
-    var hidden_val;
-    var hidden_type;
-    var panel;
-    var key = 'start';
-    var iconStyle = 'startIcon';
-    if (type == 'from') {
-      update_target = $('#trip_proxy_from_place');
-      hidden_val = $('#from_place_selected');
-      hidden_type = $('#from_place_selected_type');
-      panel = $('#from_place_candidates');
-    } else {
-      update_target = $('#trip_proxy_to_place');
-      hidden_val = $('#to_place_selected');
-      hidden_type = $('#to_place_selected_type');      
-      panel = $('#to_place_candidates');
-      key = 'stop';
-      iconStyle = 'stopIcon';
+    // Enable typeahead for the places forms
+    $('#trip_proxy_to_place').typeahead({
+        items: typeahead_list_length,
+        minLength: typeahead_min_chars,
+        source: function(query, process) {
+            if (to_timeout) {
+              clearTimeout(to_timeout);
+            }
+            to_timeout = setTimeout(function() {
+                return $.ajax({
+                    url: $('#trip_proxy_to_place').data('link'),
+                    type: 'get',
+                    data: {
+                      query: query
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+
+                      var resultList = result.map(function (item) {
+                          var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, desc: item.description, lat: item.lat, lon: item.lon, addr: item.address };
+                          return JSON.stringify(aItem);
+                      });
+
+                      return process(resultList);
+                    },
+                    error: function (data) {
+                        show_alert("We are sorry but something went wrong. Please try again.");
+                    }
+                });
+            }, typeahead_delay);
+        },
+      matcher: function (obj) {
+          var item = JSON.parse(obj);
+          return ~item.name.toLowerCase().indexOf(this.query.toLowerCase())
+      },
+
+      sorter: function (items) {
+         var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
+          while (aItem = items.shift()) {
+              var item = JSON.parse(aItem);
+              if (!item.name.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(JSON.stringify(item));
+              else if (~item.name.indexOf(this.query)) caseSensitive.push(JSON.stringify(item));
+              else caseInsensitive.push(JSON.stringify(item));
+          }
+
+          return beginswith.concat(caseSensitive, caseInsensitive)
+
+      },
+
+
+      highlighter: function (obj) {
+          var item = JSON.parse(obj);
+          var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
+          return item.name.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+              return '<strong>' + match + '</strong>'
+          })
+      },
+
+      updater: function (obj) {
+          var item = JSON.parse(obj);
+
+          // create marker on the map
+          removeMatchingMarkers('stop');
+          create_or_update_typeahead_marker(item, 'stop', 'stopIcon');
+
+          // Update the UI
+          $('#to_place_selected_type').attr('value', item.type);
+          $('#to_place_selected').attr('value', item.id);
+
+          return item.name;
+        }
+    });
+
+    // Functions
+    function create_or_update_typeahead_marker(item, key, iconStyle) {
+      marker = create_or_update_marker(key, item.lat, item.lon, item.name, item.desc, iconStyle);
+      setMapToBounds();
+      selectMarker(marker);
+    };
+
+    function create_or_update_marker(key, lat, lon, name, desc, iconStyle) {
+      // See if we can find this existing marker
+      marker = findMarkerById(key);
+      if (marker) {
+        removeMarkerFromMap(marker);
+      }
+      var marker = createMarker(key, lat, lon, iconStyle, desc, name, true);
+      addMarkerToMap(marker, true);
+      return marker;
+    };
+    // Add a list of candidate markers to the map
+    var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Z', 'Y', 'Z'];
+    function add_candidate_marker(index, lat, lon, addr, desc, type) {
+      var iconStyle;
+      var key_template;
+      if (type == 'from') {
+        iconStyle = 'startCandidate';
+        key_template = 'start_candidate';
+      } else if (type == 'to') {
+        iconStyle = 'stopCandidate';
+        key_template = 'stop_candidate';
+      } else {
+        iconStyle = 'placeCandidate';
+        key_template = 'place_candidate';
+      }
+      var icon = iconStyle + alphabet[index];
+      var key = key_template + index;
+      var marker = createMarker(key, lat, lon, icon, desc, addr, false);
+      addMarkerToMap(marker, true);
     }
-    hidden_val.val(index);
-    hidden_type.val(4);
-    panel.hide();
-    update_target.val(addr);
-    
-    // Remove any candidate markers from the map
-    removeMatchingMarkers(key);
-    // replace the markers with the end point marker
-    marker = create_or_update_marker(key, latlon[0], latlon[1], addr, desc, iconStyle);
-    setMapToBounds();
-    selectMarker(marker);
-  };
 
-  //Only Allow One Checkbox to Be Checked
-  $('#trip_proxy_to_is_home').change(function() {
-    $('#trip_proxy_from_is_home').prop('checked', 0);
-  });
+    // Add the candidate locations to the map
+    function create_candidate_markers(from_to_type) {
+      $('.address-select').each(function() {
+        var t = $(this);
+        var id = t.data('id');
+        var index = t.data('index');
+        var type = t.data('type');
+        var addr = t.data('addr');
+        var desc = t.data('desc');
+        var latlon = eval(t.data('latlon'));
+        if (type === from_to_type) {
+          add_candidate_marker(index, latlon[0], latlon[1], addr, desc, type);
+        }
+      });
+    };
 
-  $('#trip_proxy_from_is_home').change(function() {
-    $('#trip_proxy_to_is_home').prop('checked', 0);
-  });
+    // Selects the first matching from or to candidate in the list of alternate
+    // addresses.
+    function select_first_candidate_address(from_to) {
+      $('.address-select').each(function(idx) {
+        var candidate = $(this);
+        var type = candidate.data('type');
+        if (type == from_to) {
+          select_candidate_address(candidate);
+          return;
+        }
+      });
+    };
 
+    // Select a candidate address
+    function select_candidate_address(candidate) {
+      var id = candidate.data('id');
+      var index = candidate.data('index');
+      var type = candidate.data('type');
+      var addr = candidate.data('addr');
+      var desc = candidate.data('desc');
+      var latlon = eval(candidate.data('latlon'));
 
+      var update_target;
+      var hidden_val;
+      var hidden_type;
+      var panel;
+      var key = 'start';
+      var iconStyle = 'startIcon';
+      if (type == 'from') {
+        update_target = $('#trip_proxy_from_place');
+        hidden_val = $('#from_place_selected');
+        hidden_type = $('#from_place_selected_type');
+        panel = $('#from_place_candidates');
+      } else {
+        update_target = $('#trip_proxy_to_place');
+        hidden_val = $('#to_place_selected');
+        hidden_type = $('#to_place_selected_type');
+        panel = $('#to_place_candidates');
+        key = 'stop';
+        iconStyle = 'stopIcon';
+      }
+      hidden_val.val(index);
+      hidden_type.val(4);
+      panel.hide();
+      update_target.val(addr);
+
+      // Remove any candidate markers from the map
+      removeMatchingMarkers(key);
+      // replace the markers with the end point marker
+      marker = create_or_update_marker(key, latlon[0], latlon[1], addr, desc, iconStyle);
+      setMapToBounds();
+      selectMarker(marker);
+    };
+
+    //Only Allow One Checkbox to Be Checked
+    $('#trip_proxy_to_is_home').change(function() {
+      $('#trip_proxy_from_is_home').prop('checked', 0);
+    });
+
+    $('#trip_proxy_from_is_home').change(function() {
+      $('#trip_proxy_to_is_home').prop('checked', 0);
+    });
