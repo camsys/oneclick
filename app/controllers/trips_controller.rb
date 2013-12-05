@@ -542,7 +542,7 @@ class TripsController < PlaceSearchingController
     @trip.user_comments = params['trip']['user_comments']
     @trip.save
     respond_to do |format|
-      format.html { redirect_to(admin_trips_path, :flash => { :notice => "LO Comments Updated."}) }
+      format.html { redirect_to(admin_trips_path, :flash => { :notice => t(:comments_updated)}) }
       format.json { head :no_content }
     end
   end

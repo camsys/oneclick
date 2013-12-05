@@ -49,6 +49,7 @@ es:
   my_information: 'Mi información'
   buddies: 'Amigos'
   travelers: 'Viajeros'
+  traveler: 'Viajero'
   send_buddy_request: 'Enviar solicitud de amigo'
   buddys_email_address: "Correo electrónico del amigo"
   accept: 'Aceptar'
@@ -193,6 +194,9 @@ es:
   profile_updated: "Su perfil ha sido actualizado. *37*"
 
   # new ones
+  please_tell_us: "[es]Please tell us about your recent trip.[/es]"
+  comments_updated: "[es]Comments updated.[/es]"
+  trips: "[es]Trips[/es]"
   comments: "[es]Comments[/es]"
   comments_sent: "[es]Comments sent.[/es]"
   leave_comments: "[es]Leave comments on this trip.[/es]"

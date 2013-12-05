@@ -3,7 +3,7 @@
     .pull-left
       %h1
         %i.icon.icon-tags
-        = "LO Trips"
+        = t(:trips)
     .pull-right
       = form_tag admin_trips_path, :id => 'time_filter_form', :method => "get", :class => 'navbar-form form-inline pull-right', :style => "margin-top:20px;" do
         .input-prepend
@@ -15,7 +15,7 @@
     %thead
       %tr
         %th{:style => 'width:26px'}
-        %th= "LO Traveler"
+        %th= t(:traveler)
         %th= t(:trip_date)
         %th= t(:from)
         %th= t(:to)

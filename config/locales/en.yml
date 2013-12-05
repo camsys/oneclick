@@ -50,6 +50,7 @@ en:
   my_information: 'My information'
   buddies: 'Buddies'
   travelers: 'Travelers'
+  traveler: 'Traveler'
   send_buddy_request: 'Send buddy request'
   buddys_email_address: "Buddy's email address"
   accept: 'Accept'
@@ -192,6 +193,9 @@ en:
   profile_updated: "Your profile was updated."
 
   # new ones
+  please_tell_us: "Please tell us about your recent trip."
+  comments_updated: "Comments updated."
+  trips: "Trips"
   comments: "Comments"
   comments_sent: "Comments sent."
   leave_comments: "Leave comments on this trip."

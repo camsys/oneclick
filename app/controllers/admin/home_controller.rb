@@ -5,7 +5,7 @@ class Admin::HomeController < Admin::BaseController
     @actions = [
         {label: t(:find_traveler), target: error_501_path, icon: ACTION_ICONS[:find_traveler]},
         {label: t(:create_traveler), target: error_501_path, icon: ACTION_ICONS[:create_traveler]},
-        {label: "LO Trips", target: admin_trips_path, icon: ACTION_ICONS[:trips]},
+        {label: t(:trips), target: admin_trips_path, icon: ACTION_ICONS[:trips]},
         {label: t(:agents_agencies), target: error_501_path, icon: ACTION_ICONS[:agents_agencies]},
         {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports]},
     ]

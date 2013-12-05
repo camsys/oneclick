@@ -19,8 +19,7 @@
         %th= t(:from)
         %th= t(:to)
         %th= t(:trip_purpose)
-        -# %th= t(:rating)
-        %th.center= "Rating"
+        %th.center= t(:rating)
         %th.center= t(:comments)
         %th.center= t(:actions)
     %tbody{ :id => 'trips_table'}
@@ -40,9 +39,6 @@
           %td.center.no_wrap
             =link_to '#', {href: '#user_comments_' + trip.id.to_s, class: 'btn btn-block', data: {toggle: 'modal'}} do
               %i.icon-pencil
-
-          -# %td.nowrap= get_rating_icons(trip)
-          %td.center= ratings_for trip, :remote_options => {:url => rate_user_trip_path(@traveler,trip)}
           - if trip.in_the_future
             %td.center.nowrap          
               = link_to user_trip_path(@traveler, trip), {:class => "btn btn-small", :alt => t(:plan_trip), :title => t(:plan_trip)} do
