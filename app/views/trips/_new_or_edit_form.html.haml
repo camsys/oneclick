@@ -14,14 +14,16 @@
 
 
 .row-fluid{:style => "margin-top:20px;"}
-  .well.well-small
-    .row-fluid    
+  %div{class: (cms_snippet_content('plan-a-trip').empty? ? 'span12' : 'span9')}  
+    .row-fluid.well.well-small
       #trip_form.span12
         = link_to "#" do      
           %i.icon.icon-map-marker.icon-2x.pull-right#map-icon
         = render 'trip_form'
       #trip_map.span6
         = render 'trip_map'  
+  - unless cms_snippet_content('plan-a-trip').empty?
+    .span3= cms_snippet_content('plan-a-trip')
 
 :javascript
   // UI variables

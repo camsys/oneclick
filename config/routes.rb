@@ -1,6 +1,7 @@
 Oneclick::Application.routes.draw do
 
 
+  
   scope "(:locale)", locale: /en|es/ do
 
     authenticated :user do
@@ -108,5 +109,9 @@ Oneclick::Application.routes.draw do
     root :to => "home#index"
   end
 
+  ComfortableMexicanSofa::Routing.admin(:path => '/cms-admin')
+  
+  # Make sure this routeset is defined last
+  ComfortableMexicanSofa::Routing.content(:path => '/', :sitemap => false)
 
 end

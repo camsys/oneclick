@@ -68,8 +68,8 @@ module CsHelpers
       else
         [
           {label: t(:plan_a_trip), target: new_user_trip_path(current_or_guest_user), icon: ACTION_ICONS[:plan_a_trip]},
-          {label: t(:log_in), target: new_user_session_path, icon: ACTION_ICONS[:log_in]},
-          {label: t(:create_an_account), target: new_user_registration_path, icon: ACTION_ICONS[:create_an_account]}
+          {label: t(:log_in), target: new_user_session_path, icon: ACTION_ICONS[:log_in], not_on_homepage: true},
+          {label: t(:create_an_account), target: new_user_registration_path, icon: ACTION_ICONS[:create_an_account], not_on_homepage: true}
         ]
       end
       if options[:with_logout]
