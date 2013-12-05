@@ -245,7 +245,7 @@
 
       this.formEle.on('indexChange', tripformView.indexChangeHandler);
 
-      $('input#trip_proxy_from_place').val('Cemetery Drive, Decatur, GA 30033');
+      $('input#trip_proxy_from_place').val('200 Peachtree Street Northeast, Atlanta, GA 30303');
 
       $('.next-step-btn, a#yes').on('click', tripformView.nextBtnHandler);
 
@@ -285,7 +285,7 @@
               $('#trip-date').click();
               break;
 
-            case 7:
+            case 8:
               (function() {
                 var leftResults = $('#left-results');
 
@@ -319,7 +319,7 @@
                 leftResults.find('.return').html(overviewReturn);
 
                 //pull input value from From section, add to results section
-                var overviewReason = $('#trip_proxy_trip_purpose_id option[selected]').text();
+                var overviewReason = $('#purposepicker ul li.selected').text();
                   //$('#left-results .reason').html(overviewReason);
                 leftResults.find('.reason').html(overviewReason);
 
@@ -328,7 +328,7 @@
               break;
 
             //TODO: This needs to be 9 to include the overview
-            case 8:
+            case 9:
               // in this form view (when index=8) change the next buttons click eventhandler
               tripformView.nextButton.off('click');
               tripformView.nextButton.on('click', function() {
