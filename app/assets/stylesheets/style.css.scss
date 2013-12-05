@@ -937,6 +937,17 @@ label.time{
 		@extend input#txtDate;
 	}
 }
+//Datepicker input
+.trip_proxy_trip_date{
+	label{
+		@extend label.date;
+	}
+
+	input#trip_proxy_trip_date{
+		@extend input#txtDate;
+	}
+}
+
 
 %time-selectors{
 	list-style-type: none;
