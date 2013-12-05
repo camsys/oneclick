@@ -1,10 +1,13 @@
-%h1
-  %i.icon-edit
-  -if @create_inline
-    Register
-    / = t(:create_account)
-  -else
-    = t(:sign_up)
+/ %h1
+/   %i.icon-edit
+/   -if @create_inline
+/     Register
+/     / = t(:create_account)
+/   -else
+/     = t(:sign_up)
+
+.login-container
+  .container-fluid
 
 = render partial: 'devise/registrations/form'
 

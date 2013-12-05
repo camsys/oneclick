@@ -1093,10 +1093,13 @@ label.time{
 
 
 //LOGIN 
-body.sessions.new{
+body.sessions.new, body.registrations.new{
 	background-image: url(../assets/kiosk/bg_black.png);
 	.container-fluid{
 		background-image: url(../assets/kiosk/bg_black.png);
+	}
+	label{
+		text-align: left;
 	}
 }
 .login-container{
@@ -1171,9 +1174,10 @@ body.sessions.new{
 			font-weight: 700;
 			font-size:16px;
 			z-index:100;
-			margin-top:18px;
+			margin-top:14px;
 			margin-left:18px;
 			color: $gray4;
+			width: 300px;
 		}
 		//FIX FOR THEIR CODE
 		div.controls{
