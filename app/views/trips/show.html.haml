@@ -3,13 +3,6 @@
     %h1
       %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
       = t(:trip_options)
-    .row-fluid
-      .span3
-        ="Trip Rating "
-      .span5
-        =ratings_for @trip, :remote_options => {:url => rate_user_trip_path(@traveler,@trip)}
-      .span4
-        Comments
   .span9.well.trip_header
     %div{class: (@trip.in_the_future ? 'span11' : 'span12')}
       = render partial: 'trip_header', locals: {trip: @trip}

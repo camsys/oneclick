@@ -13,7 +13,8 @@ module CsHelpers
     :find_traveler => 'icon-search',
     :create_traveler =>'icon-user',
     :agents_agencies => 'icon-umbrella',
-    :reports => 'icon-bar-chart'
+    :reports => 'icon-bar-chart',
+    :trips => 'icon-tags'
   }
   # Session key for storing the traveler id
   TRAVELER_USER_SESSION_KEY = 'traveler'
