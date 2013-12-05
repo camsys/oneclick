@@ -47,6 +47,7 @@ class TripsController < PlaceSearchingController
       @trips = @traveler.trips.scheduled_between(duration.first, duration.last)
     else
       # the filter is a trip purpose
+      # Okay to leave as UTC since we're just sorting by it?
       @trips = @traveler.trips.where('trip_purpose_id = ?', @time_filter_type).sort_by {|x| x.trip_datetime }.reverse
     end
 

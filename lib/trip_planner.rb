@@ -12,8 +12,8 @@ class TripPlanner
   def get_fixed_itineraries(from, to, trip_datetime, arriveBy)
 
     #Parameters
-    time = trip_datetime.strftime("%-I:%M%p")
-    date = trip_datetime.strftime("%Y-%m-%d")
+    time = trip_datetime.in_time_zone.strftime("%-I:%M%p")
+    date = trip_datetime.in_time_zone.strftime("%Y-%m-%d")
     mode = 'TRANSIT,WALK'
 
     base_url = Oneclick::Application.config.open_trip_planner
