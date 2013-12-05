@@ -105,6 +105,18 @@ class TripsController < PlaceSearchingController
       format.json { render json: @trip }
     end
   end
+
+  def email_feedback
+    Rails.logger.info "Begin email"
+    @trip = Trip.find(params[:id])
+    email_address = @trip.user.email
+    from_email = user_signed_in? ? current_user.email : params[:email][:from]
+    UserMailer.feedback_email(email_address, @trip, from_email).deliver
+    respond_to do |format|
+      format.html { redirect_to admin_trips_path, :notice => "An email was sent to #{email_address}."  }
+      format.json { render json: @trip }
+    end
+  end
       
   def email_itinerary2_values
     # @itinerary = Itinerary.find(params[:itinerary].to_i)
@@ -521,6 +533,16 @@ class TripsController < PlaceSearchingController
     @trip.save
     respond_to do |format|
       format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => t(:comments_sent)}) }
+      format.json { head :no_content }
+    end
+  end
+
+  def admin_comments
+    @trip = Trip.find(params[:id].to_i)
+    @trip.user_comments = params['trip']['user_comments']
+    @trip.save
+    respond_to do |format|
+      format.html { redirect_to(admin_trips_path, :flash => { :notice => "LO Comments Updated."}) }
       format.json { head :no_content }
     end
   end

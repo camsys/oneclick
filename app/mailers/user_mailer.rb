@@ -60,4 +60,13 @@ class UserMailer < ActionMailer::Base
     mail(to: @to_email, subject: "1-Click buddy request from #{@from_email}")
   end
 
+  def feedback_email(to_email, trip, from_email)
+    @to_email = to_email
+    @from_email = from_email
+    @trip = trip
+
+    # TODO localize
+    mail(to: @to_email, from: @from_email, subject: "1-Click Feedback")
+  end
+
 end

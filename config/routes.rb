@@ -1,7 +1,6 @@
 Oneclick::Application.routes.draw do
 
 
-  
   scope "(:locale)", locale: /en|es/ do
 
     authenticated :user do
@@ -81,7 +80,9 @@ Oneclick::Application.routes.draw do
           get   'skip'
           post  'rate'
           post  'comments'
+          post  'admin_comments'
           get   'edit_rating'
+          get   'email_feedback'
         end
       end
 
@@ -95,6 +96,7 @@ Oneclick::Application.routes.draw do
 
     namespace :admin do
       resources :reports, :only => [:index, :show]
+      resources :trips, :only => [:index]
       match '/geocode' => 'util#geocode'
       match '/' => 'home#index'
     end
