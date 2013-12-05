@@ -142,6 +142,7 @@
       = t(:cancel)
 
 :javascript
+
   // Configure UI behaviors
   var typeahead_delay = +"#{Rails.application.config.ui_typeahead_delay}";
   var typeahead_min_chars = +"#{Rails.application.config.ui_typeahead_min_chars}";
@@ -205,12 +206,6 @@
     //submit the hidden value
 
     $('#return-yesno a#no').on('click', function(){
-      //skip return trip
-      //remove from the overview
-      //make sure the value is set properly
-    });
-
-    $('#current-location a#yes').on('click', function(){
       //Temporary Address.
       $('input#trip_proxy_from_place').val('Cemetery Drive, Decatur, GA 30033');
     });
@@ -240,31 +235,26 @@
     tripformView.init = function(){
       this.formItems = $('*[data-index]');
       this.formItems.addClass('hidden');
-      this.nextButton = $('div.next-step-btn');
+      this.nextButton = $('.next-step-btn');
       this.tripDateCal = $('#trip-date'); 
       this.formEle = $('#new_trip_proxy');
 
 
-      $('#new_trip_proxy').on('indexChange', tripformView.indexChangeHandler);
+      this.formEle.on('indexChange', tripformView.indexChangeHandler);
 
-      //add click handler to next button
-      //TODO: match the correct YES/NO buttons to the handler.
+      $('input#trip_proxy_from_place').val('Cemetery Drive, Decatur, GA 30033');
+
       $('.next-step-btn, a#yes').on('click', tripformView.nextBtnHandler);
 
       //reveal first form item
       $('*[data-index="0"]').removeClass('hidden');
-
-      //trigger indexchange event
-      this.formEle.trigger('indexChange');
     }
     
     // HANDLERS
     tripformView.nextBtnHandler = function() {
-
       //increment counter
       tripformView.indexCounter++;
-      
-      //trigger counter change event
+      //trigger indexchange event
       tripformView.formEle.trigger('indexChange');
     }
 
@@ -283,9 +273,9 @@
       var readyState = setInterval(function() {
         if (document.readyState === "complete") {
           switch(tripformView.indexCounter) {
-            case 0:
-              tripformView.nextButton.removeClass('hidden');
-                break;
+            case 1:
+              $('div.next-footer-container').removeClass('hidden');
+              break;
 
             case 3:
               console.log('hello');
@@ -336,7 +326,11 @@
 
             //TODO: This needs to be 9 to include the overview
             case 8:
-              $('#new_user_characteristics_proxy').submit();
+              // in this form view (when index=8) change the next buttons click eventhandler
+              tripformView.nextButton.off('click');
+              tripformView.nextButton.on('click', function() {
+                tripformView.formEle.submit();
+              });
               break;
           };
 
@@ -356,7 +350,6 @@
 
 
 
-  //(function() {
     // Listeners
 
     // Add change listeners on the text fields
@@ -700,6 +693,3 @@
     $('#trip_proxy_from_is_home').change(function() {
       $('#trip_proxy_to_is_home').prop('checked', 0);
     });
-
-  // })();
-
