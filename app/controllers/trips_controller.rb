@@ -547,17 +547,6 @@ class TripsController < PlaceSearchingController
 
   end
 
-  def edit_rating
-
-    @trip = Trip.find(params[:id])
-
-    respond_to do |format|
-      format.html
-      format.json { render json: @trip }
-    end
-
-  end
-
 protected
   
   # Set the default travel time/date to x mins from now

@@ -213,4 +213,8 @@ class Trip < ActiveRecord::Base
     !trip_parts.first.selected? and trip_parts.last.selected?
   end
 
+  def md5_hash
+    Digest::MD5.hexdigest(self.id.to_s + self.user.id.to_s + self.created_at.to_s)
+  end
+
 end

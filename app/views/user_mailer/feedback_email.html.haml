@@ -25,7 +25,7 @@
 
 %hr
 %h3
-  =link_to edit_rating_user_trip_url(:user_id => @trip.user.id, :id => @trip.id) do
+  =link_to ratings_url(:user_id => @trip.user.id, :id => @trip.id, :hash => @trip.md5_hash) do
     Click here to provide feedback about your trip.
 %hr
 %table

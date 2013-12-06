@@ -36,10 +36,12 @@ class RatingsController < ApplicationController
   def index
     @trip = Trip.find(params[:id])
     @traveler = User.find(params[:user_id])
-    hash = User.find(params[:hash])
-    #if @trip.md5_hash == params[:hash]
-    #  @current_user ||= @traveler
-    #end
+
+    unless @trip.md5_hash == params[:hash]
+      render text: t(:error_404), status: 404
+      return
+    end
+
     respond_to do |format|
       format.html
       format.json { render json: @trip }
