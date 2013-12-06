@@ -111,7 +111,10 @@ Oneclick::Application.routes.draw do
   end
 
   ComfortableMexicanSofa::Routing.admin(:path => '/cms-admin')
-  
+
+  mount_sextant if Rails.env.development?
+  match '*not_found' => 'errors#handle404'
+
   # Make sure this routeset is defined last
   ComfortableMexicanSofa::Routing.content(:path => '/', :sitemap => false)
 
