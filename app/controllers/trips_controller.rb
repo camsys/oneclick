@@ -1,7 +1,12 @@
 class TripsController < PlaceSearchingController
+  include TripsSupport
 
   # set the @trip variable before any actions are invoked
-  before_filter :get_trip, :only => [:show]
+  before_filter :get_traveler, only: [:show, :new, :email, :email_itinerary, :details, :repeat, :edit, :destroy,
+    :update, :skip, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2, :create]
+  before_filter :get_trip, :only => [:show, :email, :email_itinerary, :details, :repeat, :edit,
+    :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2]
+
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
   
@@ -42,6 +47,7 @@ class TripsController < PlaceSearchingController
       @trips = @traveler.trips.scheduled_between(duration.first, duration.last)
     else
       # the filter is a trip purpose
+      # Okay to leave as UTC since we're just sorting by it?
       @trips = @traveler.trips.where('trip_purpose_id = ?', @time_filter_type).sort_by {|x| x.trip_datetime }.reverse
     end
 
@@ -55,9 +61,9 @@ class TripsController < PlaceSearchingController
   # GET /trips/1
   # GET /trips/1.json
   def show
-    # See if there is the show_hidden parameter
     @show_hidden = params[:show_hidden]
-    @next_itinerary_id = @show_hidden.nil? ? @trip.valid_itineraries.first.id : @trip.itineraries.first.id
+    @next_itinerary_id = @show_hidden.nil? ? @trip.itineraries.valid.visible.first.id :
+      @trip.itineraries.valid.first.id
 
     if session[:current_trip_id]
       session[:current_trip_id] = nil
@@ -70,12 +76,6 @@ class TripsController < PlaceSearchingController
   end
       
   def email
-
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-    
     Rails.logger.info "Begin email"
     email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
     Rails.logger.info email_addresses.inspect
@@ -85,34 +85,73 @@ class TripsController < PlaceSearchingController
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
     UserMailer.user_trip_email(email_addresses, @trip, "ARC OneClick Trip Itinerary", from_email).deliver
     respond_to do |format|
-      format.html { redirect_to user_trip_url(current_user, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
+      format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
       format.json { render json: @trip }
     end
+  end
+
+  def email_itinerary
+    @itinerary = Itinerary.find(params[:itinerary].to_i)
+
+    Rails.logger.info "Begin email"
+    email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
+    Rails.logger.info email_addresses.inspect
+    email_addresses << current_user.email if user_signed_in? && params[:email][:send_to_me]
+    email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
+    Rails.logger.info email_addresses.inspect
+    from_email = user_signed_in? ? current_user.email : params[:email][:from]
+    UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, "ARC OneClick Trip Itinerary", from_email).deliver
+    respond_to do |format|
+      format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
+      format.json { render json: @trip }
+    end
+  end
+
+  def email_feedback
+    Rails.logger.info "Begin email"
+    @trip = Trip.find(params[:id])
+    email_address = @trip.user.email
+    from_email = user_signed_in? ? current_user.email : params[:email][:from]
+    UserMailer.feedback_email(email_address, @trip, from_email).deliver
+    respond_to do |format|
+      format.html { redirect_to admin_trips_path, :notice => "An email was sent to #{email_address}."  }
+      format.json { render json: @trip }
+    end
+  end
+      
+  def email_itinerary2_values
+    # @itinerary = Itinerary.find(params[:itinerary].to_i)
+
+    # Rails.logger.info "Begin email"
+    # email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
+    # Rails.logger.info email_addresses.inspect
+    # email_addresses << current_user.email if user_signed_in? && params[:email][:send_to_me]
+    # email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
+    # Rails.logger.info email_addresses.inspect
+    # from_email = user_signed_in? ? current_user.email : params[:email][:from]
+    # UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, "ARC OneClick Trip Itinerary", from_email).deliver
+    services = @trip.trip_parts.collect {|tp| tp.itineraries.valid.selected.collect{|i| i.service.name}}
+    providers = @trip.trip_parts.collect {|tp| tp.itineraries.valid.selected.collect{|i| i.provider.name}}
+    respond_to do |format|
+      # format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
+      format.json { render json: @trip }
+    end
+  end
+
+  def email2
   end
       
   # GET /trips/1
   # GET /trips/1.json
   def details
-
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-
     respond_to do |format|
       format.html # details.html.erb
       format.json { render json: @trip }
     end
-
   end
       
   # User wants to repeat a trip  
   def repeat
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-
     # make sure we can find the trip we are supposed to be repeating and that it belongs to us. 
     if @trip.nil?
       redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
@@ -146,11 +185,6 @@ class TripsController < PlaceSearchingController
 
   # User wants to edit a trip in the future  
   def edit
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-
     # make sure we can find the trip we are supposed to be updating and that it belongs to us. 
     if @trip.nil? 
       redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
@@ -205,12 +239,6 @@ class TripsController < PlaceSearchingController
     
   # called when the user wants to delete a trip
   def destroy
-
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-
     # make sure we can find the trip we are supposed to be removing and that it belongs to us. 
     if @trip.nil?
       redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
@@ -233,7 +261,7 @@ class TripsController < PlaceSearchingController
     end
 
     respond_to do |format|
-      format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => message}) } 
+      format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => message}) }
       format.json { head :no_content }
     end
     
@@ -276,12 +304,6 @@ class TripsController < PlaceSearchingController
 
   # updates a trip
   def update
-
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-
     # make sure we can find the trip we are supposed to be updating and that it belongs to us. 
     if @trip.nil?
       redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
@@ -399,9 +421,6 @@ class TripsController < PlaceSearchingController
   end
 
   def skip
-
-    get_traveler
-
     @trip = Trip.find(session[:current_trip_id])
     @trip.trip_parts.each do |tp|
       tp.create_itineraries
@@ -416,13 +435,7 @@ class TripsController < PlaceSearchingController
 
   # Called when the user displays an itinerary details in the modal popup
   def itinerary
-    
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-    
-    @itinerary = @trip.valid_itineraries.find(params[:itin])
+    @itinerary = @trip.itineraries.valid.find(params[:itin])
     @legs = @itinerary.get_legs
     if @itinerary.is_mappable      
       @markers = create_itinerary_markers(@itinerary).to_json
@@ -442,13 +455,7 @@ class TripsController < PlaceSearchingController
   # called when the user wants to hide an option. Invoked via
   # an ajax call
   def hide
-
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-
-    itinerary = @trip.valid_itineraries.find(params[:itinerary])
+    itinerary = @trip.itineraries.valid.find(params[:itinerary])
     if itinerary.nil?
       render text: t(:unable_to_remove_itinerary), status: 500
       return
@@ -459,7 +466,7 @@ class TripsController < PlaceSearchingController
     # find the next unhidden itinerary for this planned trip
     @next_itinerary_id = nil
     found = false
-    @trip.valid_itineraries.each do |itin|
+    @trip.itineraries.valid.visible.each do |itin|
       # if the found falg is set, this is the itinerary we want
       if found
         @next_itinerary_id = itin.id
@@ -472,31 +479,83 @@ class TripsController < PlaceSearchingController
       end
     end
     if @next_itinerary_id.nil? 
-      @next_itinerary_id = @trip.valid_itineraries.first.id
+      @next_itinerary_id = @trip.itineraries.valid.visible.first.id
     end
     
     respond_to do |format|
       if itinerary.save
         @trip.reload
-        format.js # hide.js.haml
+        # format.js # hide.js.haml
+        # TOOD For now, don't do ajax
+        format.html { redirect_to user_trip_path(@traveler, @trip) }
       else
-        render text: t(:unable_to_remove_itinerary), status: 500
+        # TODO for now, no ajax
+        # render text: t(:unable_to_remove_itinerary), status: 500
+        format.html { redirect_to(user_trip_path(@traveler, @trip), :flash => { error: t(:unable_to_remove_itinerary)}) } 
       end
     end
   end
 
   # Unhides all the hidden itineraries for a trip
   def unhide_all
-    # set the @traveler variable
-    get_traveler
-    # set the @trip variable
-    get_trip
-
-    @trip.hidden_itineraries.each do |i|
+    @trip.itineraries.valid.hidden.each do |i|
       i.hidden = false
       i.save
     end
     redirect_to user_trip_path(@traveler, @trip)   
+  end
+
+  def select
+    # hides all other itineraries for this trip part
+    Rails.logger.info params.inspect
+    itinerary = @trip.itineraries.valid.find(params[:itin])
+    itinerary.hide_others
+    respond_to do |format|
+      format.html { redirect_to(user_trip_path(@traveler, @trip)) } 
+      format.json { head :no_content }
+    end
+  end
+
+  def comments
+    @trip = Trip.find(params[:id].to_i)
+    @trip.user_comments = params['trip']['user_comments']
+    @trip.save
+    respond_to do |format|
+      format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => t(:comments_sent)}) }
+      format.json { head :no_content }
+    end
+  end
+
+  def admin_comments
+    @trip = Trip.find(params[:id].to_i)
+    @trip.user_comments = params['trip']['user_comments']
+    @trip.save
+    respond_to do |format|
+      format.html { redirect_to(admin_trips_path, :flash => { :notice => t(:comments_updated)}) }
+      format.json { head :no_content }
+    end
+  end
+
+  def rate
+    @trip = Trip.find(params[:id])
+    @trip.rate(params[:stars], current_user, params[:dimension])
+
+    respond_to do |format|
+      format.html { redirect_to(user_trips_path(@traveler)) }
+      format.js {render inline: "location.reload();" }
+    end
+
+  end
+
+  def edit_rating
+
+    @trip = Trip.find(params[:id])
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @trip }
+    end
+
   end
 
 protected
@@ -754,7 +813,7 @@ private
     trip_part.sequence = sequence
     trip_part.is_depart = trip_proxy.arrive_depart == t(:departing_at) ? true : false
     trip_part.scheduled_date = trip_date
-    trip_part.scheduled_time = trip_proxy.trip_time
+    trip_part.scheduled_time = Time.parse(trip_proxy.trip_time)
     trip_part.from_trip_place = from_place
     trip_part.to_trip_place = to_place
     
@@ -771,7 +830,7 @@ private
       # the return trip time is the arrival time plus
       trip_part.is_return_trip = true
       trip_part.scheduled_date = trip_date
-      trip_part.scheduled_time = trip_proxy.return_trip_time
+      trip_part.scheduled_time = Time.parse(trip_proxy.return_trip_time)
       trip_part.from_trip_place = to_place
       trip_part.to_trip_place = from_place      
 

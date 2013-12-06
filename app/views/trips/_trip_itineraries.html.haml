@@ -1,58 +1,61 @@
-- itineraries.each do |itinerary|
-  - if itinerary.mode
-    %li.trip_summary.thumbnail.actionbutton.shadow{:style => 'display:relative;', :id => "ipanel#{itinerary.id}", :tabindex => -1}
-      .dialog-title-bar.corner-top{:data => {:action => itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id)}}
-        .row-fluid
-          .span12
-            %h3.dialog-title{:style => "margin:0px;vertical-align:top;"}
-              %i.icon.icon-2x{:class => get_trip_summary_icon(itinerary)}
-              = get_trip_summary_title(itinerary)
-              - if itinerary.hidden
-                %i.icon-2x.icon-thumbs-down.pull-right
-              
-      .dialog-content{:style => 'padding-left: 10px; padding-right:10px', :data => {:action => itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id)}}
-        .row-fluid
-          .span12
+- itineraries.valid.each_slice(4) do |itineraries|
+  %ul.thumbnails#itineraries
+    - itineraries.each do |itinerary|
+      %li{class: (itinerary.trip_part.selected? ? 'span12' : 'span3')}
+        .thumbnail.actionbutton.shadow{:tabindex => -1, class: itinerary_thumbnail_class(itinerary)}
 
-            = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary}
+          .dialog-title-bar.corner-top
+            .row-fluid
+              .span12
+                %h3.dialog-title{:style => "margin:0px;vertical-align:top;"}
+                  %i.icon{:class => get_trip_summary_icon(itinerary)}
+                  %i.icon{:class => get_trip_direction_icon(itinerary), style: 'color: green;'}
+                  = get_trip_summary_title(itinerary)
+                  - if itinerary.hidden
+                    %i.icon-2x.icon-thumbs-down.pull-right
+                  
+          .dialog-content{:style => 'padding-left: 10px; padding-right:10px'}
+            .row-fluid
+              .span12
+                = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary}
 
+            -if itinerary.missing_information
+              .row-fluid
+                %i.icon.icon-question-sign
+                More information is needed.
+            -if itinerary.accommodation_mismatch
+              .row-fluid
+                %i.icon.icon-warning-sign
+                Some accommodations unavailable.
+            -if itinerary.date_mismatch or itinerary.time_mismatch or itinerary.too_late
+              .row-fluid
+                %i.icon.icon-calendar
+                This trip is not possible as scheduled.
 
-        -if itinerary.missing_information
-          .row-fluid
-            %i.icon.icon-question-sign
-            More information is needed.
-        -if itinerary.accommodation_mismatch
-          .row-fluid
-            %i.icon.icon-warning-sign
-            Some accommodations unavailable.
-        -if itinerary.date_mismatch or itinerary.time_mismatch or itinerary.too_late
-          .row-fluid
-            %i.icon.icon-calendar
-            This trip is not possible as scheduled.
+          .dialog-footer.corner-bottom
+            .row-fluid
+              .pull-right
+                .span12.btn-toolbar{:style => 'margin-bottom:0;margin-right:5px;'}
+                  =link_to select_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "btn btn-mini btn-inverse", :alt => get_alt_button_text(itinerary, 'select'), :title => get_alt_button_text(itinerary, 'select')} do
+                    %i.icon-check
+                    =t(:select)
+                  =link_to itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "btn btn-mini btn-inverse", :remote => true, :alt => get_alt_button_text(itinerary, 'view'), :title => get_alt_button_text(itinerary, 'view') } do
+                    %i.icon-search
+                    =t(:view_details1)
+                  =link_to hide_user_trip_path(@traveler, @trip, :itinerary => itinerary), {:class => "btn btn-mini btn-inverse", :alt => get_alt_button_text(itinerary, 'remove'), :title => get_alt_button_text(itinerary, 'remove') } do
+                    %i.icon-remove
+                    =t(:hide)
 
-      .dialog-footer.corner-bottom
-        .row-fluid
-          .pull-right
-            .span12.btn-toolbar{:style => 'margin-bottom:0;margin-right:5px;'}
-              =link_to "#", {:class => "btn btn-mini btn-info", :alt => get_alt_button_text(itinerary, 'select'), :title => get_alt_button_text(itinerary, 'select')} do
-                %i.icon-ticket
-                =t(:select)
-              =link_to itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "btn btn-mini btn-success", :remote => true, :alt => get_alt_button_text(itinerary, 'view'), :title => get_alt_button_text(itinerary, 'view') } do
-                %i.icon-search
-                =t(:view)
-              =link_to hide_user_trip_path(@traveler, @trip, :itinerary => itinerary), {:class => "btn btn-mini btn-danger", :remote => true, :alt => get_alt_button_text(itinerary, 'remove'), :title => get_alt_button_text(itinerary, 'remove') } do
-                %i.icon-remove
-                =t(:remove)
-
+      = render partial: 'send_itinerary_by_email', locals: {trip: @trip, itinerary: itinerary}
       
  
 :javascript
-  // Capture the panel to get focus
-  var focus_panel_id = "ipanel#{@next_itinerary_id}";
+  // // Capture the panel to get focus
+  // var focus_panel_id = "ipanel#{@next_itinerary_id}";
   
   $(document).ready(function() {
-    // Fix the size and layoout of the thumbnails
-    fix_thumbnails();
+    // // Fix the size and layoout of the thumbnails
+    // fix_thumbnails();
 
     // Enable the quick links
     $('[data-action]').click(function() {
@@ -60,24 +63,24 @@
       //alert(url);      
       ajax_render_action(url, 'GET');
     });
-    // Set the panel focus
-    set_focus(focus_panel_id);
+    // // Set the panel focus
+    // set_focus(focus_panel_id);
   });
   
-  $(window).resize(function() {
-    fix_thumbnails();
-  });
+  // $(window).resize(function() {
+  //   fix_thumbnails();
+  // });
   
-  function set_focus(elem_id) {
-    //alert(elem_id);
-    $(elem_id).focus();
-  };
+  // function set_focus(elem_id) {
+  //   //alert(elem_id);
+  //   $(elem_id).focus();
+  // };
   
   
-  function fix_thumbnails() {
-    $(".thumbnail").css('height', '');
-    $(".thumbnail").css('overflow', '');
-    var window_width = $(window).width();
-    adjust_thumbnails(window_width);
-    make_same_height('.dialog-content', 0);
-  };
+  // function fix_thumbnails() {
+  //   $(".thumbnail").css('height', '');
+  //   $(".thumbnail").css('overflow', '');
+  //   var window_width = $(window).width();
+  //   adjust_thumbnails(window_width);
+  //   make_same_height('.dialog-content', 0);
+  // };

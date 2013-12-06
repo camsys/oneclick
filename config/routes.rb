@@ -67,12 +67,27 @@ Oneclick::Application.routes.draw do
         end
         member do
           get   'repeat'          
+          get   'select'
           get   'details'
           get   'itinerary'
           post  'email'
+          post  'email_itinerary'
+          get   'email_itinerary2_values'
+          post  'email2'
           get   'hide'
           get   'unhide_all'
           get   'skip'
+          post  'rate'
+          post  'comments'
+          post  'admin_comments'
+          get   'edit_rating'
+          get   'email_feedback'
+        end
+      end
+
+      resources :trip_parts do
+        member do
+          get 'unhide_all'
         end
       end
 
@@ -80,6 +95,7 @@ Oneclick::Application.routes.draw do
 
     namespace :admin do
       resources :reports, :only => [:index, :show]
+      resources :trips, :only => [:index]
       match '/geocode' => 'util#geocode'
       match '/' => 'home#index'
     end
@@ -94,5 +110,12 @@ Oneclick::Application.routes.draw do
     root :to => "home#index"
   end
 
+  ComfortableMexicanSofa::Routing.admin(:path => '/cms-admin')
+
+  mount_sextant if Rails.env.development?
+  match '*not_found' => 'errors#handle404'
+
+  # Make sure this routeset is defined last
+  ComfortableMexicanSofa::Routing.content(:path => '/', :sitemap => false)
 
 end

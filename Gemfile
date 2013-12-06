@@ -26,6 +26,9 @@ gem 'activemodel'
 gem 'newrelic_rpm'
 gem 'polylines'
 gem 'activemdb'
+gem 'ajaxful_rating', '>= 3.0.0.beta7'
+gem 'comfortable_mexican_sofa'
+gem 'honeybadger'
 
 group :development do
   #gem 'mysql2'
@@ -50,6 +53,7 @@ group :development do
   gem 'travis'
   gem 'rgeo'
   gem 'rgeo-shapefile'
+  gem "letter_opener"
 end
 group :test do
   gem 'factory_girl_rails'

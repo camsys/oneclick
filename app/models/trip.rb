@@ -6,9 +6,16 @@ class Trip < ActiveRecord::Base
   belongs_to :trip_purpose
   has_many :trip_places, :order => "trip_places.sequence ASC"
   has_many :trip_parts, :order => "trip_parts.sequence ASC"
+
+  # Needed to Rate Strips
+  ajaxful_rateable :stars => 5
+
+
+  #Accessible attributes
+  attr_accessible :user_comments
   
-  has_many :valid_itineraries,  :through => :trip_parts, :conditions => 'server_status=200 AND hidden=false AND match_score < 3', :class_name => 'Itinerary'
-  has_many :hidden_itineraries, :through => :trip_parts, :conditions => 'server_status=200 AND hidden=true AND match_score < 3', :class_name => 'Itinerary'
+  # has_many :valid_itineraries,  :through => :trip_parts, :conditions => 'server_status=200 AND hidden=false AND match_score < 3', :class_name => 'Itinerary'
+  # has_many :hidden_itineraries, :through => :trip_parts, :conditions => 'server_status=200 AND hidden=true AND match_score < 3', :class_name => 'Itinerary'
   has_many :itineraries,        :through => :trip_parts, :class_name => 'Itinerary' 
   
   # Scopes
@@ -107,12 +114,12 @@ class Trip < ActiveRecord::Base
   end
   
   # Returns a numeric rating score for the trip
-  def rating
+  def get_rating
     if in_the_future
       return nil
     else
       #TODO replace this with actual rating
-      return rand(1..5)
+      return rand(0..5)
     end
   end
   
@@ -179,6 +186,31 @@ class Trip < ActiveRecord::Base
 
   def destination
     self.trip_places.order('sequence').last
+  end
+
+  def outbound_part
+    trip_parts.first
+  end
+
+  # TOOD This needs to change when/if we have multi-leg trips
+  def return_part
+    trip_parts.last
+  end
+
+  def both_parts_selected?
+    trip_parts.first.selected? and trip_parts.last.selected?
+  end
+
+  def any_parts_selected?
+    trip_parts.first.selected? or trip_parts.last.selected?
+  end
+
+  def only_outbound_selected?
+    trip_parts.first.selected? and !trip_parts.last.selected?
+  end
+
+  def only_return_selected?
+    !trip_parts.first.selected? and trip_parts.last.selected?
   end
 
 end

@@ -12,8 +12,8 @@ class TripPlanner
   def get_fixed_itineraries(from, to, trip_datetime, arriveBy)
 
     #Parameters
-    time = trip_datetime.strftime("%-I:%M%p")
-    date = trip_datetime.strftime("%Y-%m-%d")
+    time = trip_datetime.in_time_zone.strftime("%-I:%M%p")
+    date = trip_datetime.in_time_zone.strftime("%Y-%m-%d")
     mode = 'TRANSIT,WALK'
 
     base_url = Oneclick::Application.config.open_trip_planner
@@ -29,16 +29,31 @@ class TripPlanner
       resp = Net::HTTP.get_response(URI.parse(url))
       Rails.logger.info(resp.inspect)
     rescue Exception=>e
+      Honeybadger.notify(
+        :error_class   => "Service failure",
+        :error_message => "Service failure: fixed: #{e.message}",
+        :parameters    => {url: url}
+      )
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
 
     if resp.code != "200"
+      Honeybadger.notify(
+        :error_class   => "Service failure",
+        :error_message => "Service failure: fixed: resp.code not 200, #{resp.message}",
+        :parameters    => {resp_code: resp.code, resp: resp}
+      )
       return false, {'id'=>resp.code.to_i, 'msg'=>resp.message}
     end
 
     data = resp.body
     result = JSON.parse(data)
     if result.has_key? 'error'
+      Honeybadger.notify(
+        :error_class   => "Service failure",
+        :error_message => "Service failure: fixed: result has error: #{result['error']}",
+        :parameters    => {result: result}
+      )
       return false, result['error']
     else
       return true, result['plan']
@@ -52,8 +67,8 @@ class TripPlanner
   def fixup_transfers_count(transfers)
     transfers == -1 ? nil : transfers
   end
-  def convert_itineraries(plan)
 
+  def convert_itineraries(plan)
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
       trip_itinerary['mode'] = Mode.transit
@@ -69,7 +84,6 @@ class TripPlanner
       trip_itinerary['server_status'] = 200
       trip_itinerary
     end
-
   end
 
   def get_taxi_itineraries(from, to, trip_datetime)
@@ -87,11 +101,21 @@ class TripPlanner
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
+      Honeybadger.notify(
+        :error_class   => "Service failure",
+        :error_message => "Service failure: taxi: #{e.message}",
+        :parameters    => {url: url, resp: resp}
+      )
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
 
     fare = JSON.parse(resp.body)
     if fare['status'] != "OK"
+      Honeybadger.notify(
+        :error_class   => "Service failure",
+        :error_message => "Service failure: taxi: fare status not OK",
+        :parameters    => {fare: fare}
+      )
       return false, fare['explanation']
     end
 
@@ -101,11 +125,21 @@ class TripPlanner
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
+      Honeybadger.notify(
+        :error_class   => "Service failure",
+        :error_message => "Service failure: taxi: #{e.message}",
+        :parameters    => {resp: resp}
+      )
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
 
     businesses = JSON.parse(resp.body)
     if businesses['status'] != "OK"
+      Honeybadger.notify(
+        :error_class   => "Service failure",
+        :error_message => "Service failure: taxi: business status not OK",
+        :parameters    => {businesses: businesses}
+      )
       return false, businesses['explanation']
     else
       return true, [fare, businesses]
@@ -153,6 +187,11 @@ class TripPlanner
       doc = Nokogiri::HTML(page.body)
       results = doc.css('#results li div.marker.dest')
     rescue Exception=>e
+      Honeybadger.notify(
+        :error_class   => "Service failure",
+        :error_message => "Service failure: rideshare: #{e.message}",
+        :parameters    => {service_url: service_url, query: query}
+      )
       Rails.logger.warn e.to_s
       return false, {'id'=>500, 'msg'=>e.to_s}
     end    

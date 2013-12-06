@@ -123,7 +123,9 @@ When /^I sign in with a wrong password$/ do
 end
 
 When /^I edit my account details$/ do
-  click_link "Edit account"
+  within(:css, "#publicnav") do
+    click_link "My Travel Profile"
+  end
   fill_in "First name", :with => "new first name"
   fill_in "Last name", :with => "new last name"
   fill_in "user_current_password", :with => @visitor[:password]

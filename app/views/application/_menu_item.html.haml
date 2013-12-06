@@ -1,0 +1,6 @@
+- if menu_item[:divider_before]
+  %li.divider.text-left
+%li
+  = link_to menu_item[:target], method: (menu_item[:method] || 'get') do
+    %i.icon{class: menu_item[:icon]}
+    = menu_item[:label]
