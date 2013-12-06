@@ -18,7 +18,7 @@ class Itinerary < ActiveRecord::Base
   attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
     :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
     :ride_count, :external_info, :match_score, :missing_information, :missing_information_text, :date_mismatch,
-    :time_mismatch, :too_late, :accommodation_mismatch, :missing_accommodations, :selected
+    :time_mismatch, :too_late, :accommodation_mismatch, :missing_accommodations
     
   # returns true if this itinerary failed to work
   def failed
@@ -64,17 +64,6 @@ class Itinerary < ActiveRecord::Base
 
   def hide
     self.hidden = true
-    self.save()
-  end
-
-  def select
-    Itinerary.update_all("selected = #{false}", "trip_part_id = #{self.trip_part_id}")
-    self.selected = true
-    self.save()
-  end
-
-  def unselect
-    self.selected = false
     self.save()
   end
 

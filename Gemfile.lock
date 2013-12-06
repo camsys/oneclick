@@ -177,6 +177,9 @@ GEM
     hike (1.2.3)
     hoe (3.7.1)
       rake (>= 0.8, < 11.0)
+    honeybadger (1.9.4)
+      faraday (~> 0.7)
+      json
     hpricot (0.8.6)
     html2haml (1.0.1)
       erubis (~> 2.7.0)
@@ -403,6 +406,7 @@ DEPENDENCIES
   guard-rails
   guard-rspec
   haml-rails
+  honeybadger
   html2haml
   jquery-rails
   launchy
