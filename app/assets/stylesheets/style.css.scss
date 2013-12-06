@@ -321,7 +321,7 @@ a{
 		overflow-y: hidden;
 		// TO DO: FIX THIS TERRIBLENESS
 		//height:900px;
-		.span4{
+		.info{
 			color: $white;
 			padding: 36px;
 			height: inherit;
@@ -553,7 +553,8 @@ div.trip_proxy_trip_purpose_id{
 	font-size: 21px;
 	border: 3px solid $gray3;
 	color: $gray3;
-	margin-top: -16px;
+	margin: 18px 30px;
+	background-color: rgba($gray6, 0.6);
 
 	h3{
 		text-align: center;
@@ -1251,6 +1252,56 @@ body.sessions.new, body.registrations.new{
 	}
 	
 
+}
+
+//for future use
+.icon-taxi{
+	height:50px;
+	width: 48px;
+	background: url(../assets/kiosk/icon-taxi.png) no-repeat center center;
+}
+
+.actionbutton{
+	padding: 0px;
+	border-radius: 0;
+	border: 1px solid $gray4;
+	box-shadow: 0px 1px 3px rgba($black, 0.16);
+	background-color: $white;
+	.dialog-title-bar{
+		border-radius: inherit;
+		border:2px solid $white;
+		box-shadow: 0px 1px 0px $gray4;
+		background-color: $gray6;
+		color: $white;
+
+		i{
+			display: block;
+			text-align: center;
+			font-size: 3.3em;
+			margin-top: 5px;
+		}
+		h3{
+			clear:both;
+			text-align:center;
+			margin:0;
+		}
+	}
+	.dialog-footer{
+		border-radius: inherit;
+		border:2px solid $white;
+		background-color:$blue;
+		color:$white;
+		box-shadow: 0px -1px 0px $gray4;
+		a{
+			color: $white;
+			font-size:21px;
+			text-align:center;
+			text-transform:uppercase;
+			display: block;
+			font-family:$kioskfonts;
+			font-weight:700;
+		}
+	}
 }
 
 
