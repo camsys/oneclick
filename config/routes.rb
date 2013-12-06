@@ -9,6 +9,9 @@ Oneclick::Application.routes.draw do
 
     devise_for :users, controllers: {registrations: "registrations"}
 
+    #Ratings do not come under a user id
+
+
     # everything comes under a user id
     resources :users do
       member do

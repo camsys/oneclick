@@ -1,0 +1,29 @@
+.row-fluid
+  .span3
+    .pull-left
+      %h1
+        %i.icon.icon-star
+        = "Rate your recent trip."
+
+
+  .span9.well.trip_header
+    = render partial: 'trips/trip_header', locals: {trip: @trip}
+
+.row-fluid.top-margin
+  =ratings_for @trip, :remote_options => {:url => rate_user_trip_path(@traveler,@trip)}
+
+
+.row-fluid.top-margin
+  = simple_form_for :trip, url: comments_user_trip_path(@traveler, @trip), html: { class: 'form-vertical',
+    id: 'user_comments_form_' + @trip.id.to_s} do |f|
+    = f.error_notification
+    = f.input :user_comments, :as => :text, label: "Tell us about your recent trip.", required: false, :input_html => { :rows=> 8, :columns => 50 , :style => 'width: 98%', :value => @trip.user_comments}
+    = button_tag type: :submit, class: 'pull-right btn btn-info' do
+      =t(:submit)
+
+:javascript
+  $('#send_by_email_form').on('submit', function() {
+    $('#send_trip_by_email').modal('hide')
+  })
+
+
