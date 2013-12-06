@@ -42,10 +42,12 @@
         %button.btn.btn-info
           %i.icon-comments
           =t(:chat)
-        %button.btn.btn-info
-          %i.icon-envelope
-          =t(:e_mail)
-                
+        %button.btn.btn-info{:id => "email_itinerary"}
+          =link_to '#', {href: '#send_itinerary_by_email_' + @itinerary.id.to_s, class: "btn-info", data: {toggle: 'modal'}} do
+            %i.icon-envelope
+            =t(:e_mail)
+
+
 :javascript
   $('body').on('shown', '#map_tab_link', function() {
     $('#lmap').css('height', '300px');
@@ -53,5 +55,11 @@
     invalidateMap();
     showMap();
   });
+
+  $('#email_itinerary').click(function(){
+        $('#itinerary_modal').modal('hide');
+   });
+
+
 
 = yield :scripts

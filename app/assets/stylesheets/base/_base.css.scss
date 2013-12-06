@@ -1,6 +1,22 @@
 html, body {
   height: 100%;
 }
+
+// These are the bootstrap original sizes
+// h1 { font-size: 36px; line-height: 40px; }
+// h2 { font-size: 30px; line-height: 40px; }
+// h3 { font-size: 24px; line-height: 40px; }
+// h4 { font-size: 18px; line-height: 20px; }
+// h5 { font-size: 14px; line-height: 20px; }
+// h6 { font-size: 12px; line-height: 20px; }
+
+h1 { font-size: 30px; line-height: 32px; }
+h2 { font-size: 26px; line-height: 28px; }
+h3 { font-size: 22px; line-height: 24px; }
+h4 { font-size: 18px; line-height: 20px; }
+h5 { font-size: 14px; line-height: 20px; }
+h6 { font-size: 12px; line-height: 20px; }
+
 .center {
   float: none;
   margin-left: auto;
@@ -47,14 +63,17 @@ html, body {
   padding:5px;
   margin-bottom: 10px;
 }
+.dialog-content {
+  min-height: 175px;
+}
 .dialog-body {
   border: 1px solid #F5F5F5;
   padding:20px 20px 0px 20px;
 }
 .dialog-footer {
   background-color:#F5F5F5;
-  padding:5px;
-  margin-top: 10px;
+  // padding:5px;
+  // margin-top: 10px;
 }
 
 .corner-top { 
@@ -114,6 +133,21 @@ a:hover#help {
 
 .end_icon {
   color: #e41011;
+}
+
+.section_header {
+  a, a:hover{
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.selected_notices .alert {
+  margin-bottom: 0px;
+}
+
+.itinerary_thumbnail_selected {
+  border: solid green 1px;
 }
 
 .itinerary_icons {
@@ -182,14 +216,20 @@ a:hover#help {
   }
 }
 
-// trips specific CSS
-.actionbutton:hover {
+.home.index .actionbutton:hover {
  cursor: pointer;
  border-color: #0088cc;
  -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
  -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
  box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
 }
+
+// trips specific CSS
+
+.trips.show .actionbutton {
+  height: auto;
+}
+
 .itinerary-item {
   line-height: 0;
   margin-bottom: 10px;
@@ -328,8 +368,8 @@ td.left, th.left {
 }
 .shadow {
   -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-     -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-          box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);  
+  -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+  box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);  
 }
 
 /*
@@ -338,8 +378,8 @@ td.left, th.left {
  * See http://codepen.io/shshaw/full/gEiDt
  */
 
-.Center-Container.is-Table { display: table; }
-.is-Table .Table-Cell {
+ .Center-Container.is-Table { display: table; }
+ .is-Table .Table-Cell {
   display: table-cell;
   vertical-align: middle;
 }
@@ -359,4 +399,21 @@ td.left, th.left {
 
 .control-group.disabled {
   font-style: italic;
+}
+
+.trip_header {
+  .row-fluid [class*="span"] {
+    min-height: 0;
+  }
+  line-height: normal;
+  font-size: 18px;
+  font-weight: normal;
+  margin: 0;
+  .place_name {
+    font-weight: bold;
+  }
+}
+
+.top-margin{
+  margin-top: 20px;
 }

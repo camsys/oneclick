@@ -15,6 +15,6 @@
             %i.icon-envelope
             =t(:e_mail)
 :javascript
-  $('#send_by_email_form').('submit', function() {
+  $('#send_by_email_form').on('submit', function() {
     $('#send_trip_by_email').modal('hide')
   })

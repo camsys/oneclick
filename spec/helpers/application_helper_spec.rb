@@ -81,4 +81,12 @@ describe ApplicationHelper do
     end
   end
 
+  it "returns correct trip itinerary direction icon" do
+    trip = FactoryGirl.create(:round_trip)
+    trip.trip_parts.first.itineraries << FactoryGirl.create(:itinerary)
+    trip.trip_parts.last.itineraries << FactoryGirl.create(:itinerary)
+    get_trip_direction_icon(trip.trip_parts.first.itineraries.first).should eq 'icon-arrow-right'
+    get_trip_direction_icon(trip.trip_parts.last.itineraries.first).should eq 'icon-arrow-left'
+  end
+
 end

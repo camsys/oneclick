@@ -82,6 +82,8 @@
     #to_place_candidates{:style => "display:none;"}
       = render :partial => 'alt_address_select', :locals => {:results => [], :type => "to"}
 
+  / TODO: ADD THE DIV WITH THE DATA INDEX
+  / TODO: ADD DATEPICKER
   %div{:data => {:index => 3}}
     = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
       #trip-date
@@ -151,7 +153,7 @@
  
   //CG EDITS
   //TODO: Create a module class for creating view
-  var tripformWrapper;
+
   var tripformView = {};
   tripformView.indexCounter = 0;
   tripformView.formItems = [];
@@ -225,6 +227,8 @@
     // Other setup
     $('.dropdown-toggle').dropdown();
 
+    // hide all form items to prevent flash of itms on screen
+    //$('*[data-index]').addClass('hidden');
     tripformWrapper();
 
   });
