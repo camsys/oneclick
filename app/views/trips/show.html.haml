@@ -71,8 +71,7 @@
           %a
             %h2
               = t(:outbound)
-              %i.icon{:class => get_trip_direction_icon(@trip.outbound_part), style: 'color: green;'}
-      .row-fluid
+      .row-fluid.itineraries_holder
         = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden) }
       - if @trip.outbound_part.has_hidden_options?
         .row-fluid
@@ -80,13 +79,9 @@
             = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
 
   - if @trip.is_return_trip
-    - if @trip.outbound_part.selected?
-      %div{class: @trip.return_part.selected? ? 'span6' : 'span9'}
+    .row-fluid
+      .span12
         = render partial: 'return_trip'
-    - else
-      .row-fluid
-        .span12
-          = render partial: 'return_trip'
 
   
 .row-fluid
@@ -114,3 +109,28 @@
     $('#send_trip_by_email_to_provider #email_email_addresses').val(data['email'])
     $('#send_trip_by_email_to_provider').modal('show')
   })
+
+  /**
+   * Adds 0 left margin to the first thumbnail on each row that don't get it via CSS rules.
+   * Recall the function when the floating of the elements changed.
+   */
+  function fixThumbnailMargins() {
+      $('.itineraries_holder .thumbnails').each(function () {
+          var $thumbnails = $(this).children(),
+              previousOffsetLeft = $thumbnails.first().offset().left;
+          $thumbnails.removeClass('first-in-row');
+          $thumbnails.first().addClass('first-in-row');
+          $thumbnails.each(function () {
+              var $thumbnail = $(this),
+                  offsetLeft = $thumbnail.offset().left;
+              if (offsetLeft < previousOffsetLeft) {
+                  $thumbnail.addClass('first-in-row');
+              }
+              previousOffsetLeft = offsetLeft;
+          });
+      });
+  }
+
+  // Fix the margins when potentally the floating changed
+  $(window).resize(fixThumbnailMargins);
+  fixThumbnailMargins();
