@@ -1,6 +1,10 @@
 class RatingsController < ApplicationController
 
   skip_before_filter :authenticate_user!
+  skip_before_filter :set_locale
+  skip_before_filter :get_traveler
+  skip_before_filter :setup_actions
+  skip_after_filter :clear_location
 
   def comments
     @trip = Trip.find(params[:id].to_i)
@@ -41,6 +45,15 @@ class RatingsController < ApplicationController
       render text: t(:error_404), status: 404
       return
     end
+
+    if params[:taken] == 'true'
+      @trip.taken = true
+    elsif params[:taken] == 'false'
+      @trip.taken = false
+    else
+      @trip.taken = nil
+    end
+    @trip.save
 
     respond_to do |format|
       format.html

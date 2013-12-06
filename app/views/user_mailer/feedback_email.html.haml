@@ -1,37 +1,23 @@
-%h2= "Please tell us about your recent trip."
-
-%table{style: "font-size:1.4em;"}
-  %tr
-    %td{style: "color:grey;"}
-      %strong
-        = t(:from) + ':  '
-    %td
-      %strong
-        =@trip.from_place.name
-  %tr
-    %td{style: "color:grey; weight:strong;"}
-      %strong
-        =t(:to) + ':  '
-    %td
-      %strong
-        =@trip.to_place.name
-  %tr
-    %td{style: "color:grey;"}
-      %strong
-        =t(:at_time)
-    %td
-      %strong
-        =format_date(@trip.trip_datetime.in_time_zone)
+%h4="Hello!  On " + format_date(@trip.trip_parts.first.trip_time.in_time_zone) + " you used the 1-Click Trip Planner to plan a trip for " + format_date(@trip.trip_parts.first.trip_time.in_time_zone) + ", from " + @trip.from_place.name + " to " + @trip.to_place.name + ". Please give us some feedback:"
 
 %hr
 %h3
-  =link_to ratings_url(:user_id => @trip.user.id, :id => @trip.id, :hash => @trip.md5_hash) do
-    Click here to provide feedback about your trip.
+  =link_to ratings_url(:user_id => @trip.user.id, :id => @trip.id, :hash => @trip.md5_hash, :taken => true) do
+    Click HERE if you made the trip as planned, and everything worked out just fine.
+%h3
+  =link_to ratings_url(:user_id => @trip.user.id, :id => @trip.id, :hash => @trip.md5_hash, :taken => false) do
+    Click HERE if you decided not to make the trip at all.
+%h3
+  =link_to ratings_url(:user_id => @trip.user.id, :id => @trip.id, :hash => @trip.md5_hash, :taken => 'nil') do
+    Click
+    HERE
+    if you want to provide more feedback, or if things didn't work out as planned.
 %hr
+
+%h4= "Thanks for taking the time to respond."
+
 %table
   %tbody
-    %tr
-      %td Thank you for using ARC OneClick Software.
     %tr
       %td This email is automatically sent by the OneClick system. Please do not reply to this email.
     %tr
