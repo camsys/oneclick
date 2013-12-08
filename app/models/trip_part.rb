@@ -82,6 +82,16 @@ class TripPart < ActiveRecord::Base
     else
       itineraries << Itinerary.new('server_status'=>response['id'], 'server_status'=>response['msg'])
     end
+    hide_duplicate_fixed_route(itineraries)
+  end
+
+  def hide_duplicate_fixed_route itineraries
+    seen = {}
+    itineraries.each do |i|
+      mar = i.mode_and_routes
+      i.hide if seen[mar]
+      seen[mar] = true
+    end
   end
 
   def create_taxi_itineraries

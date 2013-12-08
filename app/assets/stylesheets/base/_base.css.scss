@@ -168,8 +168,10 @@ a:hover#help {
   padding: 0px;
 }
 
-.itineraries_holder li {
-  width: 20em !important;
+@media (min-width: 768px ) {
+  .itineraries_holder li {
+    width: 20em !important;
+  }
 }
 
 .modal{

@@ -1,5 +1,7 @@
 class Mode < ActiveRecord::Base
-  
+
+  has_many :itineraries
+    
   # Updatable attributes
   attr_accessible :id, :name, :active
     

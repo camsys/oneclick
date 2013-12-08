@@ -56,6 +56,11 @@ class Itinerary < ActiveRecord::Base
   def get_legs
     return legs.nil? ? [] : ItineraryParser.parse(YAML.load(legs))
   end
+
+  def mode_and_routes
+    routes = get_legs.map(&:route)
+    [mode.name] + routes
+  end
   
   def unhide
     self.hidden = false
