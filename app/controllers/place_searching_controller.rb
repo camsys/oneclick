@@ -157,9 +157,4 @@ protected
     return "%06d:%s" % [user.id, key]
   end
   
-  # Update the session variable
-  def set_traveler_id(id)
-    session[TRAVELER_USER_SESSION_KEY] = id
-  end
-  
 end

@@ -8,7 +8,6 @@ ENV["RAILS_ENV"] ||= 'test'
 require 'simplecov'
 SimpleCov.command_name 'cucumber'
 
-puts "///////// env.br ///////////"
 require 'cucumber/rails'
 
 # Capybara defaults to CSS3 selectors rather than XPath.

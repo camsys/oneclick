@@ -2,10 +2,15 @@ class ApplicationController < ActionController::Base
   include CsHelpers
   include LocaleHelpers
 
+  # include the helper method in any controller which needs to know about guest users
+  helper_method :current_or_guest_user
+  
   protect_from_forgery
   before_filter :set_locale
+  before_filter :get_traveler
+  before_filter :setup_actions
   after_filter :clear_location
-   
+
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_path, :alert => exception.message
   end
@@ -44,45 +49,23 @@ class ApplicationController < ActionController::Base
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
   end
 
-  ######################################################################
-  #
-  # Manage guest users
-  #
-  ######################################################################
-  
-  # if user is logged in, return current_user, else return guest_user
-  def current_or_guest_user
-    if current_user
-      if session[:guest_user_id]
-        logging_in
-        #guest_user.destroy
-        session[:guest_user_id] = nil
-      end
-      current_user
-    else
-      guest_user
-    end
-  end
-  
-  # find guest_user object associated with the current session,
-  # creating one as needed
-  def guest_user
-    # Cache the value the first time it's gotten.
-    @cached_guest_user ||= User.find(session[:guest_user_id] ||= create_guest_user.id)
-
-    rescue ActiveRecord::RecordNotFound # if session[:guest_user_id] invalid
-       session[:guest_user_id] = nil
-       guest_user
- 
-  end
-
-protected
+  protected
 
   def create_random_string(length=16)
     SecureRandom.urlsafe_base64(length)
   end
   
-private
+
+  def setup_actions
+    @actions = actions
+  end
+
+  # Update the session variable
+  def set_traveler_id(id)
+    session[TRAVELER_USER_SESSION_KEY] = id
+  end
+  
+  private
 
   # called (once) when the user logs in, insert any code your application needs
   # to hand off from guest_user to current_user.
@@ -96,7 +79,7 @@ private
   end
 
   def create_guest_user
-    
+
     random_string = create_random_string(16)
     u = User.new
     u.first_name = "Visitor"
@@ -113,5 +96,5 @@ private
   # End of Manage guest users
   #
   ######################################################################
-    
+
 end

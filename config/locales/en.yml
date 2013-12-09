@@ -13,6 +13,7 @@ en:
   help_and_support: 'Help & Support'
   create_an_account: 'Create an Account'
   travel_profile: 'Travel Profile'
+  my_travel_profile: 'My Travel Profile'
   my_trips: 'My Trips'
   my_places: 'My Places'
   places: 'Places'
@@ -49,6 +50,7 @@ en:
   my_information: 'My information'
   buddies: 'Buddies'
   travelers: 'Travelers'
+  traveler: 'Traveler'
   send_buddy_request: 'Send buddy request'
   buddys_email_address: "Buddy's email address"
   accept: 'Accept'
@@ -117,6 +119,7 @@ en:
   remove: 'Remove'
   reload: 'Reload'
   return: 'Return'
+  outbound: 'Outbound'
   paratransit: 'Paratransit'
   mode: 'Mode'
   duration: 'Duration'
@@ -163,6 +166,11 @@ en:
   no_matching_trips_found: 'You have no matching trips.'
   hide: 'Hide'
   unhide_all: 'Unhide all'
+  round_trip: 'Round trip'
+  one_way: 'One-way trip'
+  returning_at: 'returning at'
+  returning: 'returning'
+  at: 'at'
 
   # My Places form
   found_x_places: {
@@ -185,6 +193,13 @@ en:
   profile_updated: "Your profile was updated."
 
   # new ones
+  please_tell_us: "Please tell us about your recent trip."
+  comments_updated: "Comments updated."
+  trips: "Trips"
+  comments: "Comments"
+  comments_sent: "Comments sent."
+  leave_comments: "Leave comments on this trip."
+  submit: "Submit"
   do_you_participate:  "Do you currently participate in any of these programs?"
   programs:  "Programs"
   eligibility: "Eligibility"
@@ -200,6 +215,9 @@ en:
   arc_oneclick_trip_itinerary: "ARC OneClick Trip Itinerary"
   an_email_was_sent_to_email_addresses_join: "An email was sent to %{addresses}."
   unable_to_remove_itinerary: 'Unable to remove itinerary.'
+  outbound_selected: 'Outbound option selected, now select your return option.'
+  outbound_selected_short: 'Outbound option selected.'
+  return_selected: 'Return option selected.'
   not_authorized_as_an_administrator: 'Not authorized as an administrator.'
   n_a: 'n/a'
   less_than_1_block: "less than 1 block"

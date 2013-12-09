@@ -3,10 +3,15 @@ require 'spec_helper'
 describe HomeController do
 
   it "should have language-selection links" do
+    puts "before visit"
     visit "/"
+    puts "before test 1"
     page.should_not have_link("English", href: "/en")
+    puts "before test 2"
     page.should have_text("English")
+    puts "before test 3"
     page.should have_link(I18n.t(:spanish), href: "/es")
+    puts "after test 3"
   end
 
   it "should switch to spanish when selection link is clicked" do
