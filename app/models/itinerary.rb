@@ -59,6 +59,7 @@ class Itinerary < ActiveRecord::Base
 
   def mode_and_routes
     routes = get_legs.map(&:route)
+    puts mode.inspect
     [mode.name] + routes
   end
   

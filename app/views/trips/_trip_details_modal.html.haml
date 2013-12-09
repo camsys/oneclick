@@ -13,7 +13,7 @@
               =t(:return)
             =link_to hide_user_trip_path(@traveler, @trip, :itinerary => @itinerary), {"data-dismiss" => "modal",  class: "btn btn-mini btn-danger", remote: true} do
               %i.icon-remove
-              =t(:remove)
+              =t(:hide)
 .modal-body
   = render :partial => 'trip_summary_header', :locals => { :itinerary => @itinerary }
   .thumbnail
