@@ -552,6 +552,40 @@ div.trip_proxy_trip_purpose_id{
 	}
 }
 
+#from_place_candidates{
+	@extend .span10;
+	position: absolute;
+	top: 148px;
+	left: 20px;
+	z-index: 100;
+	background-color: $gray1;
+	border: 1px solid $gray4;
+	height: 280px;
+	overflow:auto;
+	
+	ul{
+		padding:0;
+		li{
+			border-bottom: 1px solid $gray3;
+			font-size: 21px;
+			font-weight:600;
+			height: 72px;
+
+			a, a.address-select{
+				padding: 20px 40px 17px;
+				color: $gray6;
+
+				&:hover{
+					// border-bottom: 1px solid $gray3;
+					// padding-bottom: 17px;
+				}
+			}
+		}
+	}
+	
+
+}
+
 // EDIT TRIP BUTTON
 .edit-trip-btn{
 	cursor:pointer !important;
