@@ -387,6 +387,9 @@ class TripsController < PlaceSearchingController
     # inflate a trip proxy object from the form params
     @trip_proxy = create_trip_proxy_from_form_params
        
+    Rails.logger.info "TripsController#create"
+    Rails.logger.info "@trip_proxy #{@trip_proxy.ai}"
+    Rails.logger.info "valid? #{@trip_proxy.valid?}"
     if @trip_proxy.valid?
       @trip = create_trip(@trip_proxy)
     end
@@ -628,7 +631,12 @@ private
     trip_datetime = trip_part.trip_time
     trip_proxy.trip_date = trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
     trip_proxy.trip_time = trip_part.scheduled_time.strftime(TRIP_TIME_FORMAT_STRING)
-    
+    Rails.logger.info "create_trip_proxy"
+    Rails.logger.info "trip_part.scheduled_date #{trip_part.scheduled_date}"
+    Rails.logger.info "trip_part.scheduled_time #{trip_part.scheduled_time}"
+    Rails.logger.info "trip_proxy.trip_date #{trip_proxy.trip_date}"
+    Rails.logger.info "trip_proxy.trip_time #{trip_proxy.trip_time}"
+
     # Check for return trips
     if trip.trip_parts.count > 1
       last_trip_part = trip.trip_parts.last
@@ -802,7 +810,12 @@ private
     trip_part.sequence = sequence
     trip_part.is_depart = trip_proxy.arrive_depart == t(:departing_at) ? true : false
     trip_part.scheduled_date = trip_date
-    trip_part.scheduled_time = Time.parse(trip_proxy.trip_time)
+    trip_part.scheduled_time = Time.zone.parse(trip_proxy.trip_time)
+    Rails.logger.info "create_trip"
+    Rails.logger.info "trip_date #{trip_date}"
+    Rails.logger.info "trip_part.scheduled_date #{trip_part.scheduled_date}"
+    Rails.logger.info "trip_proxy.trip_time #{trip_proxy.trip_time}"
+    Rails.logger.info "trip_part.scheduled_time #{trip_part.scheduled_time}"
     trip_part.from_trip_place = from_place
     trip_part.to_trip_place = to_place
     
@@ -819,7 +832,7 @@ private
       # the return trip time is the arrival time plus
       trip_part.is_return_trip = true
       trip_part.scheduled_date = trip_date
-      trip_part.scheduled_time = Time.parse(trip_proxy.return_trip_time)
+      trip_part.scheduled_time = Time.zone.parse(trip_proxy.return_trip_time)
       trip_part.from_trip_place = to_place
       trip_part.to_trip_place = from_place      
 
