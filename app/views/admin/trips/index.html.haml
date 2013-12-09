@@ -20,6 +20,7 @@
         %th= t(:from)
         %th= t(:to)
         %th= t(:trip_purpose)
+        %th= t(:taken)
         %th= t(:rating)
         %th.center= t(:comments)
         %th.center= "Send Follow-up Email"
@@ -36,6 +37,13 @@
           %td= trip.from_place.name
           %td= trip.to_place.name
           %td= trip.trip_purpose.name
+          %td
+            -if trip.taken == true
+              ="Yes"
+            -elsif trip.taken == false
+              ="No"
+            -else
+              ="Not answered."
           %td.center= ratings_for trip, :remote_options => {:url => rate_user_trip_path(trip.user,trip)}
           %td.center.no_wrap
             =link_to '#', {href: '#user_comments_' + trip.id.to_s, class: 'btn btn-block', data: {toggle: 'modal'}} do

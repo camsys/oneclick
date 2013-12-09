@@ -1,4 +1,4 @@
-%h4="Hello!  On " + format_date(@trip.trip_parts.first.trip_time.in_time_zone) + " you used the 1-Click Trip Planner to plan a trip for " + format_date(@trip.trip_parts.first.trip_time.in_time_zone) + ", from " + @trip.from_place.name + " to " + @trip.to_place.name + ". Please give us some feedback:"
+%h4="Hello!  On " + format_date(@trip.created_at.in_time_zone) + " you used the 1-Click Trip Planner to plan a trip for " + format_date(@trip.trip_parts.first.trip_time.in_time_zone) + ", from " + @trip.from_place.name + " to " + @trip.to_place.name + ". Please give us some feedback:"
 
 %hr
 %h3

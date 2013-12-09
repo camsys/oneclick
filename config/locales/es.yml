@@ -194,6 +194,7 @@ es:
   profile_updated: "Su perfil ha sido actualizado. *37*"
 
   # new ones
+  taken: "[es]Trip taken?[/es]"
   please_tell_us: "[es]Please tell us about your recent trip.[/es]"
   comments_updated: "[es]Comments updated.[/es]"
   trips: "[es]Trips[/es]"

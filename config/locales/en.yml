@@ -193,6 +193,7 @@ en:
   profile_updated: "Your profile was updated."
 
   # new ones
+  taken: "Trip Taken?"
   please_tell_us: "Please tell us about your recent trip."
   comments_updated: "Comments updated."
   trips: "Trips"
