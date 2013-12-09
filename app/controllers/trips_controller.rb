@@ -167,11 +167,11 @@ class TripsController < PlaceSearchingController
     travel_date = default_trip_time
     
     @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
-    @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
+    @trip_proxy.trip_time = travel_date.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
     
     if @trip_proxy.is_round_trip == "1"
       return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
-      @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
+      @trip_proxy.return_trip_time = return_trip_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
     end
         
     # Create markers for the map control
@@ -630,7 +630,7 @@ private
     trip_proxy.arrive_depart = trip_part.is_depart
     trip_datetime = trip_part.trip_time
     trip_proxy.trip_date = trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
-    trip_proxy.trip_time = trip_part.scheduled_time.strftime(TRIP_TIME_FORMAT_STRING)
+    trip_proxy.trip_time = trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
     Rails.logger.info "create_trip_proxy"
     Rails.logger.info "trip_part.scheduled_date #{trip_part.scheduled_date}"
     Rails.logger.info "trip_part.scheduled_time #{trip_part.scheduled_time}"
@@ -641,7 +641,7 @@ private
     if trip.trip_parts.count > 1
       last_trip_part = trip.trip_parts.last
       trip_proxy.is_round_trip = last_trip_part.is_return_trip ? "1" : "0"
-      trip_proxy.return_trip_time = last_trip_part.scheduled_time.strftime(TRIP_TIME_FORMAT_STRING)
+      trip_proxy.return_trip_time = last_trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
     end
     
     # Set the from place
