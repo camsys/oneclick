@@ -101,11 +101,6 @@
 
 :javascript
   $('#email_itinerary2').on('ajax:success', function (event, data, status, xhr) {
-    console.log(event)
-    console.log(data)
-    console.log(status)
-    console.log(xhr)
-    console.log(data['created_at'])
     $('#send_trip_by_email_to_provider #email_email_addresses').val(data['email'])
     $('#send_trip_by_email_to_provider').modal('show')
   })
