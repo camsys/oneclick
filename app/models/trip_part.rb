@@ -88,6 +88,11 @@ class TripPart < ActiveRecord::Base
   def hide_duplicate_fixed_route itineraries
     seen = {}
     itineraries.each do |i|
+      if i.mode.nil?
+        Rails.logger.info "hide_duplicate_fixed_route"
+        Rails.logger.info "Skipping itinerary because mode is nil: #{i.ai}"
+        next
+      end
       mar = i.mode_and_routes
       i.hide if seen[mar]
       seen[mar] = true
