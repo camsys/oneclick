@@ -104,26 +104,28 @@ module ApplicationHelper
   end
   
   # Returns a set of rating icons as a span
-  def get_rating_icons(trip)
-    if trip.in_the_future
-      return ""
-    end
+  def get_rating_icons(trip, size=1)
     rating = trip.get_rating
     html = "<span>"
     for i in 1..5
+      link = rate_rating_url(trip, :user_id => trip.user.id, :stars => i)
+      html << "<a title='Rate " + i.to_s + " Stars' href=" + link + " style='color: black; text-decoration: none' data-method='post' data-remote='true'><i id=" + trip.id.to_s + '_' + i.to_s + " class='icon-" + size.to_s
       if i <= rating
-        html << "<i class='icon icon-star'></i>"
+        html << "x icon-star'> </i></a>"
       else
-        html << "<i class='icon icon-star-empty'></i>"
+        html << "x icon-star-empty'> </i></a>"
       end
     end
     html << "<span>"
     return html.html_safe
   end
   
-  # Returns true if the current user is a traveler, false if the current
-  # user is operating as a delegate 
-  def is_traveler
+  # Returns true if the current user is assisting the traveler, false if the current
+  # user is the current traveler
+  def is_assisting
+    unless current_user
+      return false
+    end
     if @traveler
       return @traveler.id == current_or_guest_user.id ? false : true
     else

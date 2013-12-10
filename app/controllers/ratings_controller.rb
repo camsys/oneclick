@@ -29,7 +29,8 @@ class RatingsController < ApplicationController
   def rate
     @trip = Trip.find(params[:id])
     @traveler = User.find(params[:user_id])
-    @trip.rate(params[:stars],  @traveler, params[:dimension])
+    @trip.rating = params[:stars].to_i
+    @trip.save
 
     respond_to do |format|
       format.html { redirect_to(root_path) }

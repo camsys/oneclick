@@ -3,7 +3,7 @@
     .pull-left
       %h1
         %i.icon.icon-tags
-        = is_traveler ? t(:assisted_user_first_name_s_trips, name: @traveler.first_name) : t(:my_trips)
+        = is_assisting ? t(:assisted_user_first_name_s_trips, name: @traveler.first_name) : t(:my_trips)
     .pull-right
       = form_tag user_trips_path(@traveler), :id => 'time_filter_form', :method => "get", :class => 'navbar-form form-inline pull-right', :style => "margin-top:20px;" do
         .input-prepend
@@ -35,7 +35,8 @@
           %td= trip.from_place.name
           %td= trip.to_place.name
           %td= trip.trip_purpose.name
-          %td.center= ratings_for trip, :remote_options => {:url => rate_user_trip_path(@traveler,trip)}
+          %td.nowrap.center= get_rating_icons(trip)
+          //%td.center= ratings_for trip, :remote_options => {:url => rate_user_trip_path(@traveler,trip)}
           %td.center.no_wrap
             =link_to '#', {href: '#user_comments_' + trip.id.to_s, class: 'btn btn-block', data: {toggle: 'modal'}} do
               %i.icon-pencil

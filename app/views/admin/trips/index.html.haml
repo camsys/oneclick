@@ -21,7 +21,7 @@
         %th= t(:to)
         %th= t(:trip_purpose)
         %th= t(:taken)
-        %th= t(:rating)
+        %th.center= t(:rating)
         %th.center= t(:comments)
         %th.center= "Send Follow-up Email"
     %tbody{ :id => 'trips_table'}
@@ -44,8 +44,9 @@
               ="No"
             -else
               ="Not answered."
-          %td.center= ratings_for trip, :remote_options => {:url => rate_user_trip_path(trip.user,trip)}
-          %td.center.no_wrap
+          %td.center.nowrap
+            =get_rating_icons(trip)
+          %td.center.nowrap
             =link_to '#', {href: '#user_comments_' + trip.id.to_s, class: 'btn btn-block', data: {toggle: 'modal'}} do
               %i.icon-pencil
 
