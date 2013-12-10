@@ -552,28 +552,44 @@ div.trip_proxy_trip_purpose_id{
 	}
 }
 
-#from_place_candidates{
-	@extend .span10;
+#from_place_candidates, #to_place_candidates{
+	@extend .span12;
 	position: absolute;
-	top: 148px;
-	left: 20px;
+	top: 131px;
 	z-index: 100;
-	background-color: $gray1;
-	border: 1px solid $gray4;
-	height: 280px;
 	overflow:auto;
+	background-color:rgba($white, .88);
+	overflow:hidden;
+	//TODO: Fix this for non-kiosk views.
+	height: 765px;
+
+	.search-dropdown-container{
+		padding: 0 20px;
+	}
+	.candidate-list{
+		background-color: $gray1;
+		border: 1px solid $gray4;
+
+	}
+	h6{
+		margin-left:60px;
+	}
 	
 	ul{
 		padding:0;
+		height: 280px;
+		overflow:scroll;
 		li{
 			border-bottom: 1px solid $gray3;
 			font-size: 21px;
 			font-weight:600;
-			height: 72px;
+			height: 69px;
 
 			a, a.address-select{
-				padding: 20px 40px 17px;
+				padding: 24px 20px;
 				color: $gray6;
+				width: inherit;
+				margin: 0;
 
 				&:hover{
 					// border-bottom: 1px solid $gray3;
@@ -582,8 +598,41 @@ div.trip_proxy_trip_purpose_id{
 			}
 		}
 	}
-	
+}
 
+//scrollbar for location section
+.scroller-container{
+	height: 600px;
+	.scroll-up{
+		height: 84px !important;
+		width: 84px !important;
+		@extend %card-btn;
+		@extend %rotate90;
+	}
+	.scrollbar{
+		height:112px;
+		width:84px;
+		.scrollbar-bar{
+			background-color:$gray2;
+			width:12px;
+			text-align:center;
+			margin:0 auto;
+			padding:2px;
+			height:100%;
+			border-radius:12px;
+			.scrollbar-scroll{
+				border-radius: 8px;
+				background-color: $white;
+				height:50px;
+			}
+		}
+	}
+	.scroll-down{
+		@extend %card-btn;
+		@extend %rotate-90;
+		height: 84px !important;
+		width: 84px !important;
+	}
 }
 
 // EDIT TRIP BUTTON
@@ -778,6 +827,25 @@ div.trip_proxy_trip_purpose_id{
     -o-transform: scaleX(-1);
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
+}
+
+%rotate-90{
+	transform: rotate(-90deg);
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+
+}
+
+%rotate90{
+	transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
 }
 
 //CONTAINER PLACEHOLDER
@@ -1292,6 +1360,24 @@ body.sessions.new, body.registrations.new{
 	}
 	
 
+}
+
+.loading-indicator{
+	position: absolute;
+	top: 50px;
+	right: 30px;
+}
+
+.alert{
+	margin-bottom:0;
+	border-radius:0;
+	color:$red;
+	background-color: lighten($red,30%);
+	font-size:16px;
+}
+
+.control-group{
+	margin-bottom:3px;
 }
 
 

@@ -28,7 +28,7 @@
   #from_input{ :data => {:index => 1}}
     - if user_signed_in?
       = f.input :from_place, :wrapper => :append, :class => "inline", :label => t(:from) do
-        = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large address", :data => {:link => search_user_places_path, :provide => "typeahead"}
+        = f.text_field :from_place, :placeholder => t(:dream_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large address", :data => {:link => search_user_places_path, :provide => "typeahead"}
         %span.dropdown
           %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
             %span.caret
@@ -46,11 +46,14 @@
     - else
       = f.input :from_place, :class => "inline", :label => t(:from) do
         = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large address", :data => {:link => search_user_trips_path, :provide => "typeahead"}
-        = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
+        / = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
         = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
     #from_place_candidates{:style => "display:none;"}
       = render :partial => 'alt_address_select', :locals => {:results => [], :type => "from"}
+      // TODO: Find out why the buttons won't show up here.
+      .kiosk-scroll-buttons Where am I.
+
 
   #to_input{ :data => {:index => 2}}
     - if user_signed_in?

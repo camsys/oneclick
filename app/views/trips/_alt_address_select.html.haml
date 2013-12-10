@@ -4,14 +4,20 @@
       %h6= t(:found_x_matches, :count => results.count )
 
   .row-fluid
-    .span12
-      .candidate-list
+    .search-dropdown-container
+      .candidate-list.span10
         %ul.nav.nav-list
           - results.each_with_index do |addr, index|
             %li
               = link_to "#", :class => "address-select", :data => {:id => addr["id"], :index => index, :latlon => [addr["lat"], addr["lng"]], :desc => addr["description"], :type => type, :addr => addr["title"]} do
-                %img{:src => get_candidate_list_item_image(index,  @target)}
+                / %img{:src => get_candidate_list_item_image(index,  @target)}
                 = addr["title"] 
+      .scroller-container.span2.pull-right
+        .scroll-up.disabled
+        .scrollbar
+          .scrollbar-bar
+            .scrollbar-scroll
+        .scroll-down
 - else
   .row-fluid
     .control-group.string
