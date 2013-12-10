@@ -106,17 +106,17 @@ module ApplicationHelper
   # Returns a set of rating icons as a span
   def get_rating_icons(trip, size=1)
     rating = trip.get_rating
-    html = "<span>"
+    html = "<span id='stars'>"
     for i in 1..5
-      link = rate_rating_url(trip, :user_id => trip.user.id, :stars => i)
-      html << "<a title='Rate " + i.to_s + " Stars' href=" + link + " style='color: black; text-decoration: none' data-method='post' data-remote='true'><i id=" + trip.id.to_s + '_' + i.to_s + " class='icon-" + size.to_s
+      link = rate_rating_url(trip, :user_id => trip.user.id, :stars => i, :size => size)
+      html << "<a title='Rate " + i.to_s + " Stars' href=" + link + " style='color: black; text-decoration: none' data-method='post' data-remote='true'><i id=star" + trip.id.to_s + '_' + i.to_s + " class='icon-" + size.to_s
       if i <= rating
         html << "x icon-star'> </i></a>"
       else
         html << "x icon-star-empty'> </i></a>"
       end
     end
-    html << "<span>"
+    html << "</span>"
     return html.html_safe
   end
   

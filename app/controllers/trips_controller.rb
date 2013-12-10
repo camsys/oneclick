@@ -523,6 +523,7 @@ class TripsController < PlaceSearchingController
     @trip = Trip.find(params[:id].to_i)
     @trip.user_comments = params['trip']['user_comments']
     @trip.save
+
     respond_to do |format|
       format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => t(:comments_sent)}) }
       format.json { head :no_content }

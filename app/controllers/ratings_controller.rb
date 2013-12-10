@@ -1,5 +1,7 @@
 class RatingsController < ApplicationController
 
+  include ApplicationHelper
+
   skip_before_filter :authenticate_user!
   skip_before_filter :set_locale
   skip_before_filter :get_traveler
@@ -32,9 +34,13 @@ class RatingsController < ApplicationController
     @trip.rating = params[:stars].to_i
     @trip.save
 
+    size = params[:size] || 1
+
+    new_icon = get_rating_icons(@trip,size)
+
     respond_to do |format|
       format.html { redirect_to(root_path) }
-      format.js {render inline: "location.reload();" }
+      format.js {render inline: "$('#star" + @trip.id.to_s + "_" + @trip.rating.to_s + "').closest('span').replaceWith(\"" + new_icon + "\");" }
     end
   end
 
