@@ -6,7 +6,7 @@ namespace :oneclick do
       [{code: 'disabled', desc: 'persons with disabilities'},
         {code: 'no_trans', desc: 'persons with no means of transportation'},
         {code: 'nemt_eligible', desc: 'persons eligible for Medicaid'},
-        {code: 'ada_eligible', desc: 'persons eligible for ADA Paratarnsit'},
+        {code: 'ada_eligible', desc: 'persons eligible for ADA Paratransit'},
         {code: 'veteran', desc: 'military veterans'}].each do |c|
           t = TravelerCharacteristic.find_by_code(c[:code])
           t.update_attributes! desc: c[:desc]
