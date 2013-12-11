@@ -321,7 +321,7 @@ a{
 		overflow-y: hidden;
 		// TO DO: FIX THIS TERRIBLENESS
 		//height:900px;
-		.span4.description{
+		.span4{
 			color: $white;
 			padding: 36px;
 			height: inherit;
@@ -1001,9 +1001,9 @@ label.time{
 
 	ul{
 		height: 100px;
-		padding: 30px 0 0 35px;
+		padding: 30px 0;
 		li{
-			width:32%;
+			width:33%;
 			list-style-type: none;
 			float:left;
 			border-bottom: 4px solid $gray3;
@@ -1025,7 +1025,6 @@ label.time{
 				font-size:21px;
 				font-weight:300;
 				display: block;
-
 			}
 
 			&:last-child{
@@ -1040,12 +1039,6 @@ label.time{
 					font-size:16px;
 					font-weight: 600;
 					color: $gray6;
-					padding-top:20px;
-					transition: padding-top 100ms linear;
-
-					&.val-added{
-						padding-top:0px;
-					}
 				}
 				
 				span.input{
@@ -1063,7 +1056,7 @@ label.time{
 	}
 }
 
-#monthtable{
+.monthtable{
 	padding-bottom:20px;
 	ul{
 		border-top:1px solid $gray4;
@@ -1082,7 +1075,7 @@ label.time{
 	}
 }
 
-#daytable{
+.daytable{
 	padding-bottom:20px;
 	ul{
 		border-top:1px solid $gray4;
@@ -1105,50 +1098,6 @@ label.time{
 			&.bottom{
 				border-bottom: 1px solid $gray4;
 			}
-		}
-	}
-}
-
-
-
-#yeartable{
-	.decade-prev, .decade-next{
-		.prev-container{
-			@extend %card-btn-container;
-			float:right;
-			background-position: right center;
-			margin-top:147px;
-			
-			.prev-btn{
-				@extend %card-btn;
-			}
-		}
-		.next-container{
-			@extend %card-btn-container;
-			float:left;
-			background-position: left center;
-			margin-top:147px;
-			.next-btn{
-				@extend %card-btn;
-				float:right;
-				@extend %flip;
-			}
-		}
-	}
-	padding-bottom:20px;
-	ul{
-		border-top:1px solid $gray4;
-		clear:left;
-		display: flex;
-		margin-bottom:0;
-
-		&:last-child{
-			border-bottom:1px solid $gray4;
-		}
-
-		li{
-			@extend %time-selectors;
-			width: 50%;
 		}
 	}
 }

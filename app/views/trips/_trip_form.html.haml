@@ -82,6 +82,8 @@
     #to_place_candidates{:style => "display:none;"}
       = render :partial => 'alt_address_select', :locals => {:results => [], :type => "to"}
 
+  / TODO: ADD THE DIV WITH THE DATA INDEX
+  / TODO: ADD DATEPICKER
   %div{:data => {:index => 3}}
     = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
       #trip-date
@@ -149,9 +151,207 @@
   var typeahead_list_length = +"#{Rails.application.config.ui_typeahead_list_length}";
   var geocoder_min_chars = +"#{Rails.application.config.ui_min_geocode_chars}";
  
+  //CG EDITS
+  //TODO: Create a module class for creating view
 
+  var tripformView = {};
+  tripformView.indexCounter = 0;
+  tripformView.formItems = [];
 
   //CG END
+
+  // Document Ready
+  $(document).ready(function(){
+    $.fn.datepicker.Calendar.setDefaultLocale("#{I18n.locale}");
+    
+    $('#trip-date').datepicker().on("dateChange", function(e) {
+        $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
+    });
+
+    $('#trip-time').timepicker({
+      'timeFormat': 'g:i a',
+      'scrollDefaultTime': '9:00 am'
+      }).on("changeTime", function(e) {
+          $('#trip_proxy_trip_time').val($('#trip-time').data('ui-timepicker-value'));
+    });
+
+    $('#return-trip-time').timepicker({
+      'timeFormat': 'g:i a',
+      'scrollDefaultTime': '10:00 am'
+      }).on("changeTime", function(e) {
+          $('#trip_proxy_return_trip_time').val($('#return-trip-time').data('ui-timepicker-value'));
+    });
+
+    $('.combobox').combobox({
+      force_match: false
+    });
+
+    //DP CODE
+    $('#purposepicker ul li').on('click', function(){
+      var purposeSelect = $(this);
+      var purposeId = purposeSelect.attr('name');
+      //Part 1
+      if ( purposeSelect.hasClass('selected')){
+      //if class already exists on THIS li
+        //do nothing
+      } else {
+        $('#purposepicker ul li').removeClass('selected');
+        purposeSelect.addClass('selected');
+
+        $('#trip_proxy_trip_purpose_id').val(purposeId);
+      }
+    });
+
+    //create hidden input for TripPurposes
+    //pass selected value into hidden input
+      //which does it need the name, the id, something else?
+    //submit the hidden value
+
+    $('#return-yesno a#no').on('click', function(){
+      //Temporary Address.
+      $('input#trip_proxy_from_place').val('Cemetery Drive, Decatur, GA 30033');
+    });
+
+    $('.edit-trip-btn').on('click', function(){
+      $('*[data-index=1]').removeClass('hidden');
+      tripformView.indexCounter = 1;
+    });
+    //END DP CODE
+    
+    // Hide what we don't need
+    $('#from_place_candidates').hide();
+    $('#to_place_candidates').hide();
+    // Install a submit handler on the query form
+    ajax_submit_form_handler('query_form');
+
+    // Other setup
+    $('.dropdown-toggle').dropdown();
+
+    // hide all form items to prevent flash of itms on screen
+    //$('*[data-index]').addClass('hidden');
+    tripformWrapper();
+
+  });
+
+  var tripformWrapper = function(){
+    
+    // INIT VIEW
+    tripformView.init = function(){
+      this.formItems = $('*[data-index]');
+      this.formItems.addClass('hidden');
+      this.nextButton = $('.next-step-btn');
+      this.tripDateCal = $('#trip-date'); 
+      this.formEle = $('#new_trip_proxy');
+
+
+      this.formEle.on('indexChange', tripformView.indexChangeHandler);
+
+      $('input#trip_proxy_from_place').val('200 Peachtree Street Northeast, Atlanta, GA 30303');
+
+      $('.next-step-btn, a#yes').on('click', tripformView.nextBtnHandler);
+
+      //reveal first form item
+      $('*[data-index="0"]').removeClass('hidden');
+    }
+    
+    // HANDLERS
+    tripformView.nextBtnHandler = function() {
+      //increment counter
+      tripformView.indexCounter++;
+      //trigger indexchange event
+      tripformView.formEle.trigger('indexChange');
+    }
+
+    tripformView.indexChangeHandler = function() {
+      //hide everything again
+      tripformView.formItems.addClass('hidden');
+
+      //find element matching current index
+      var matchedElement = $('div[data-index="' + tripformView.indexCounter +  '"]');
+
+      // matched element visible
+      matchedElement.removeClass('hidden');
+
+      // we need to wait for ALL javascript to be done to start processing the indexchange event
+      // something rails is doing is preventing us from doing custom actions on the datepicker -MB
+      var readyState = setInterval(function() {
+        if (document.readyState === "complete") {
+          switch(tripformView.indexCounter) {
+            case 1:
+              $('div.next-footer-container').removeClass('hidden');
+              break;
+
+            case 3:
+              $('#trip-date').click();
+              break;
+
+            case 8:
+              (function() {
+                var leftResults = $('#left-results');
+
+                $('#left-description').addClass('hidden');
+                leftResults.removeClass('hidden');
+
+                //pull input value from From section, add to results section
+                var overviewFrom = $('#trip_proxy_from_place').val();
+                  //$('#left-results .from').html(overviewFrom);
+                leftResults.find('.from').html(overviewFrom);
+
+                //pull input value from To section, add to results section
+                var overviewTo = $('#trip_proxy_to_place').val();
+                  //$('#left-results .to').html(overviewTo);
+                leftResults.find('.to').html(overviewTo);
+
+                //pull input value from Date section, add to results section
+                var overviewDate = $('#trip_proxy_trip_date').val();
+                  //$('#left-results .date').html(overviewDate);
+                leftResults.find('.date').html(overviewDate);
+
+                //pull input value from From section, add to results section
+                var overviewTime = $('#trip_proxy_trip_time').val();
+                  //$('#left-results .time').html(overviewTime);
+                leftResults.find('.time').html(overviewTime);
+
+                //if value exists
+                //pull input value from From section, add to results section
+                var overviewReturn = $('#trip_proxy_return_trip_time').val();
+                  //$('#left-results .return').html(overviewReturn);
+                leftResults.find('.return').html(overviewReturn);
+
+                //pull input value from From section, add to results section
+                var overviewReason = $('#purposepicker ul li.selected').text();
+                  //$('#left-results .reason').html(overviewReason);
+                leftResults.find('.reason').html(overviewReason);
+
+                $('.edit-trip-btn').removeClass('hidden');
+              })();
+              break;
+
+            //TODO: This needs to be 9 to include the overview
+            case 9:
+              // in this form view (when index=8) change the next buttons click eventhandler
+              tripformView.nextButton.off('click');
+              tripformView.nextButton.on('click', function() {
+                tripformView.formEle.submit();
+              });
+              break;
+          };
+
+          clearInterval(readyState);
+        }
+      }, 10);
+
+
+    }
+
+
+    // excute init view
+    tripformView.init();
+  };
+    
+
+
+
 
     // Listeners
 

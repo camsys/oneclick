@@ -50,100 +50,7 @@
         / -TravelerCharacteristic.personal_factors.where(:datatype => 'disabled').each do |characteristic|
         /   = f.input characteristic.code.to_sym, collection: [[true, 'Yes'], [false, 'No'], ['na', 'Not sure']], :required => false, as: :radio_buttons, label: characteristic.note + " (not yet available)", label_method: :last, value_method: :first, :item_wrapper_class => "inline", disabled: true
         .dob-temp{ :data => {:index => 2}}
-          / = f.input :date_of_birth, :as => :date, :start_year => Date.today.year - 12, :end_year => 1900, :required => false, :prompt => %w[t(:month) t(:day) t(:year)], :input_html => {:style => "width:auto;"}
-          .dob.row-fluid
-            .dob-breadcrumb
-              %ul
-                %li.month.current 
-                  %span.type  Month
-                  %span.input
-                %li.day
-                  
-                  %span.type  Day
-                  %span.input 
-                %li.year 
-                  
-                  %span.type  Year
-                  %span.input 
-          .row-fluid
-            #monthtable.dob-section.hidden
-              %ul
-                %li January
-                %li February
-                %li March
-                %li April
-              %ul 
-                %li May
-                %li June
-                %li July
-                %li August
-              %ul 
-                %li September
-                %li October
-                %li November
-                %li December
-            #daytable.dob-section.hidden
-              %ul 
-                %li 1
-                %li 2
-                %li 3
-                %li 4
-                %li 5
-                %li 6
-                %li 7
-                %li 8
-              %ul 
-                %li #
-                %li ##
-                %li ##
-                %li ##
-                %li ##
-                %li ##
-                %li ##
-                %li ##
-              %ul 
-                %li ##
-                %li ##
-                %li ##
-                %li ##
-                %li ##
-                %li ##
-                %li ##
-                %li ##
-              %ul 
-                %li.bottom ##
-                %li.bottom ##
-                %li.bottom ##
-                %li.bottom ##
-                %li.bottom ##
-                %li.bottom ##
-                %li.bottom ##
-                %li.ninja
-            #yeartable.dob-section
-              .decade-prev.span3
-                .prev-container
-                  .prev-btn
-              #yearlist.span6
-                %ul
-                  %li 1960
-                  %li 1961
-                %ul
-                  %li 1962
-                  %li 1963
-                %ul
-                  %li 1964
-                  %li 1965
-                %ul
-                  %li 1966
-                  %li 1967
-                %ul
-                  %li 1968
-                  %li 1969
-              .decade-next.span3
-                .next-container
-                  .next-btn
-
-
+          = f.input :date_of_birth, :as => :date, :start_year => Date.today.year - 12, :end_year => 1900, :required => false, :prompt => %w[t(:month) t(:day) t(:year)], :input_html => {:style => "width:auto;"}
         
         - if inline
           = button_tag :type => 'submit', :class => "btn btn-primary hidden" do
@@ -161,22 +68,8 @@
   / SO...somehow we gotta get that to look like this.
         
 :javascript
-  var dobFirst;
   $(document).ready(function() { 
-    
-    
-    $('#monthtable ul li').on('click', function(){
-      dobFirst = $(this);
-      $('#monthtable ul li').removeClass('selected');
-      dobFirst.addClass('selected');
-      $('.dob-breadcrumb li.month span.input').text(dobFirst.html());
-      $('li.month span.type').addClass('val-added');
-      $('#monthtable').fadeOut(function(){
-        $('#daytable').fadeIn().removeClass('hidden');
-        $('.dob-breadcrumb li.month').toggleClass('current chosen');
-        $('.dob-breadcrumb li.day').addClass('current');
-      });
-    });
+
 
     characteristicsView = {};
     characteristicsView.indexCounter = 0;
