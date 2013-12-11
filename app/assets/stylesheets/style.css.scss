@@ -1371,9 +1371,15 @@ body.sessions.new, body.registrations.new{
 .alert{
 	margin-bottom:0;
 	border-radius:0;
-	color:$red;
-	background-color: lighten($red,30%);
 	font-size:16px;
+	&.alert-error{
+		color:$red;
+		background-color: lighten($red,30%);
+	}
+	&.alert-success{
+		color:darken($green,10%);
+		background-color: lighten($green,30%);
+	}
 }
 
 .control-group{
