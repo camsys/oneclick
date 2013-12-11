@@ -62,8 +62,6 @@ class TripsController < PlaceSearchingController
   # GET /trips/1.json
   def show
     @show_hidden = params[:show_hidden]
-    @next_itinerary_id = @show_hidden.nil? ? @trip.itineraries.valid.visible.first.id :
-      @trip.itineraries.valid.first.id
 
     if session[:current_trip_id]
       session[:current_trip_id] = nil
@@ -465,25 +463,6 @@ class TripsController < PlaceSearchingController
     end
 
     itinerary.hidden = true
-    
-    # find the next unhidden itinerary for this planned trip
-    @next_itinerary_id = nil
-    found = false
-    @trip.itineraries.valid.visible.each do |itin|
-      # if the found falg is set, this is the itinerary we want
-      if found
-        @next_itinerary_id = itin.id
-        break
-      end
-      # if this itin is the one we selected then we mark that we found it. The next
-      # itinerary is the one we want to identify
-      if itin.id == itinerary.id
-        found = true
-      end
-    end
-    if @next_itinerary_id.nil? 
-      @next_itinerary_id = @trip.itineraries.valid.visible.first.id
-    end
     
     respond_to do |format|
       if itinerary.save
