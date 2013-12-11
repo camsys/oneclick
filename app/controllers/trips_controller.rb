@@ -76,14 +76,17 @@ class TripsController < PlaceSearchingController
   def email
     Rails.logger.info "Begin email"
     email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
-    Rails.logger.info email_addresses.inspect
-    email_addresses << current_user.email if user_signed_in? && params[:email][:send_to_me]
-    email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
+    params[:email][:send_email_to].each do |email|
+      unless email == ""
+        email_addresses << email
+      end
+    end
+
     Rails.logger.info email_addresses.inspect
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
     UserMailer.user_trip_email(email_addresses, @trip, "ARC OneClick Trip Itinerary", from_email).deliver
     respond_to do |format|
-      format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
+      format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.to_sentence}"  }
       format.json { render json: @trip }
     end
   end

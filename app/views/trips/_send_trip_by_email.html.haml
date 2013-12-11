@@ -6,12 +6,13 @@
           id: 'send_by_email_form' }, data: {dismiss: 'modal'}  do |f|
           = f.error_notification
           - if user_signed_in?
-            - if assisting?
-              = f.input :send_to_traveler, as: :boolean, label: t(:send_to_traveler)
-            = f.input :send_to_me, as: :boolean, label: t(:send_to_me)
+            - if is_assisting
+              = f.input :send_email_to, label: t(:send_email_to), :required => false, collection: [[@traveler.first_name + " " + @traveler.last_name + ": " + @traveler.email, @traveler.email], ['Me: '+  @current_user.email, @current_user.email]], :input_html => { :checked => true}, :as => :check_boxes
+            - else
+              = f.input :send_email_to, label: t(:send_email_to), :required => false, collection: [['Me: '+  @current_user.email, @current_user.email]], :input_html => { :checked => true}, :as => :check_boxes
           - else
             = f.input :from, label: t(:from_address), required: true
-          = f.input :email_addresses, label: t(:email_addresses), required: false
+          = f.input :email_addresses, label: t(:additional_emails), required: false
           = button_tag type: :submit, class: 'btn btn-info' do
             %i.icon-envelope
             =t(:e_mail)
