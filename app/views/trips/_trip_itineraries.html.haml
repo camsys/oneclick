@@ -31,9 +31,13 @@
 
           .dialog-footer.corner-bottom
             .row-fluid
-              .span12.btn-toolbar{:style => 'margin-bottom:0;margin-right:5px;'}
-                =link_to itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "random", :remote => true, :alt => get_alt_button_text(itinerary, 'view'), :title => get_alt_button_text(itinerary, 'view') } do
-                  =t(:view_details1)
+              .span12{:style => 'margin-bottom:0;'}
+                =link_to select_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "select", :alt => get_alt_button_text(itinerary, 'select'), :title => get_alt_button_text(itinerary, 'select')} do
+                  =t(:select)
+                =link_to itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "details", :remote => true, :alt => get_alt_button_text(itinerary, 'view'), :title => get_alt_button_text(itinerary, 'view') } do
+                  =t(:details)
+                =link_to hide_user_trip_path(@traveler, @trip, :itinerary => itinerary), {:class => "hide", :alt => get_alt_button_text(itinerary, 'remove'), :title => get_alt_button_text(itinerary, 'remove') } do
+                  =t(:hide)
 
           = render partial: 'send_itinerary_by_email', locals: {trip: @trip, itinerary: itinerary}
       

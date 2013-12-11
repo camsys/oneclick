@@ -489,6 +489,20 @@ div.trip_proxy_trip_purpose_id{
 	}
 }
 
+//RESULTS DETAIL PAGE
+.modal-backdrop{
+	background: rgba(0,0,0,0.5) url(../assets/kiosk/bg_black.png);
+	z-index:100;
+}
+
+.in{
+	opacity:1.0 !important;
+}
+
+.modal-container{
+	@extend .login-container;
+}
+
 
 //NEXT STEP BUTTON
 //TO DO: Place in a bottom footer
@@ -1289,7 +1303,6 @@ body.sessions.new, body.registrations.new{
 	.dialog-footer{
 		border-radius: inherit;
 		border:2px solid $white;
-		background-color:$blue;
 		color:$white;
 		box-shadow: 0px -1px 0px $gray4;
 		a{
@@ -1300,6 +1313,22 @@ body.sessions.new, body.registrations.new{
 			display: block;
 			font-family:$kioskfonts;
 			font-weight:700;
+			width: 33.3%;
+			float: left;
+			line-height: 1.9em;
+			text-decoration: none;
+
+			&.select{
+				background-color: $green;
+				border-right:1px solid $white;
+			}
+			&.details{
+				background-color: $blue;
+				border-right:1px solid $white;
+			}
+			&.hide{
+				background-color: $red;
+			}
 		}
 	}
 }
