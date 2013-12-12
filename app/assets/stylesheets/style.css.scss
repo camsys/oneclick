@@ -374,7 +374,7 @@ a{
 			position: absolute;
 			border-bottom: 1px solid $gray3;
 			width: 99%;
-			height: 15px;
+			height: 8px;
 			margin: 5px;
 		}
 
@@ -493,6 +493,20 @@ div.trip_proxy_trip_purpose_id{
 	p{
 		margin-bottom: 36px;
 	}
+}
+
+//RESULTS DETAIL PAGE
+.modal-backdrop{
+	background: rgba(0,0,0,0.5) url(../assets/kiosk/bg_black.png);
+	z-index:100;
+}
+
+.in{
+	opacity:1.0 !important;
+}
+
+.modal-container{
+	@extend .login-container;
 }
 
 
@@ -643,7 +657,8 @@ div.trip_proxy_trip_purpose_id{
 	font-size: 21px;
 	border: 3px solid $gray3;
 	color: $gray3;
-	margin-top: -16px;
+	margin: 0 !important;
+	background-color: rgba($gray6, 0.6);
 
 	h3{
 		text-align: center;
@@ -657,9 +672,15 @@ div.trip_proxy_trip_purpose_id{
 	background-color: rgba(0,0,0,0);
 	border: 0px solid white;
 	height: 186px;
+	margin-top:0;
 
 	.container-fluid, .row-fluid{
 		background-color: rgba(0,0,0,0);
+
+		.span4{
+			padding:20px;
+
+		}
 	}
 }
 
@@ -1386,10 +1407,68 @@ body.sessions.new, body.registrations.new{
 	margin-bottom:3px;
 }
 
+//for future use
+.icon-taxi{
+	height:50px;
+	width: 48px;
+	background: url(../assets/kiosk/icon-taxi.png) no-repeat center center;
+}
 
-@media (min-width: 1200px){
-	.span8plus{
-		width: 68.37197% !important;
+.actionbutton{
+	padding: 0px;
+	border-radius: 0;
+	border: 1px solid $gray4;
+	box-shadow: 0px 1px 3px rgba($black, 0.16);
+	background-color: $white;
+	.dialog-title-bar{
+		border-radius: inherit;
+		border:2px solid $white;
+		box-shadow: 0px 1px 0px $gray4;
+		background-color: $gray6;
+		color: $white;
+
+		i{
+			display: block;
+			text-align: center;
+			font-size: 3.3em;
+			margin-top: 5px;
+		}
+		h3{
+			clear:both;
+			text-align:center;
+			margin:0;
+		}
+	}
+	.dialog-footer{
+		border-radius: inherit;
+		border:2px solid $white;
+		color:$white;
+		box-shadow: 0px -1px 0px $gray4;
+		a{
+			color: $white;
+			font-size:21px;
+			text-align:center;
+			text-transform:uppercase;
+			display: block;
+			font-family:$kioskfonts;
+			font-weight:700;
+			width: 33.3%;
+			float: left;
+			line-height: 1.9em;
+			text-decoration: none;
+
+			&.select{
+				background-color: $green;
+				border-right:1px solid $white;
+			}
+			&.details{
+				background-color: $blue;
+				border-right:1px solid $white;
+			}
+			&.hide{
+				background-color: $red;
+			}
+		}
 	}
 }
 
@@ -1422,10 +1501,13 @@ body.sessions.new, body.registrations.new{
 			}
 		}
 	}
-	
 
+}
 
-
+@media (min-width: 1200px){
+	.span8plus{
+		width: 68.37197% !important;
+	}
 }
  
 /* Landscape phones and down */

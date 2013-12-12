@@ -41,6 +41,7 @@
             = render 'trip_map'  
 
 
+
 :javascript
   // UI variables
   var trip_map_key = "trip_map_key";
@@ -73,12 +74,10 @@
  
   function open_map() {
     //alert('opening map');
-    // $('#trip_form').removeClass('span12');
-    // $('#trip_form').addClass('span6');
     $('#trip_map').show();
     invalidateMap();
-    $('#map-icon').removeClass('icon-map-marker');
-    $('#map-icon').addClass('icon-play');
+    / $('#map-icon').removeClass('icon-map-marker');
+    / $('#map-icon').addClass('icon-play');
     // make sure no popups are currently being shown or they will get messed up
     closePopup();
     // refresh the map display
@@ -88,11 +87,9 @@
   
   function close_map() {
     //alert('closing map');
-    // $('#trip_form').removeClass('span6');
-    // $('#trip_form').addClass('span12');
     $('#trip_map').hide();
-    $('#map-icon').removeClass('icon-play');
-    $('#map-icon').addClass('icon-map-marker');
+    / $('#map-icon').removeClass('icon-play');
+    / $('#map-icon').addClass('icon-map-marker');
     set_ui_key_value(trip_map_key, 0);
   };
    
