@@ -38,6 +38,15 @@ class TripPart < ActiveRecord::Base
   def selected?
     itineraries.valid.visible.count == 1
   end
+
+  # Returns the itinerary selected for this trip.  If one isn't selected, returns nil
+  def selected_itinerary
+    if selected?
+      return itineraries.valid.visible.first
+    else
+      return nil
+    end
+  end
  
   # Converts the trip date and time into a date time object
   def trip_time

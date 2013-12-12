@@ -2,23 +2,25 @@
   %div{:class => "modal-header"}
     .row-fluid
       .span12
-        = simple_form_for :email, url: email2_user_trip_path(@traveler, @trip), html: { class: 'form-horizontal',
-          id: 'send_by_email_to_provider_form' }, data: {dismiss: 'modal'}  do |f|
-          = f.error_notification
-          - if user_signed_in?
-            - if assisting?
-              = f.input :send_to_traveler, as: :boolean, label: t(:send_to_traveler)
-          - else
-            = f.input :from, label: t(:from_address), required: true
-          = f.input :provider, label: 'Provider name', required: false, disabled: true
-          = f.input :service, label: 'Service', required: false, disabled: true
-          = f.input :email_addresses, label: t(:email_addresses), required: false, disabled: true
-          = f.input :comments, as: :text, label: 'comments', required: false, input_html: {rows: 3}
-          = f.input :copy_self, as: :boolean
-          = button_tag type: :submit, class: 'btn btn-info' do
-            %i.icon-envelope
-            =t(:e_mail)
+        -if @trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service
+          = simple_form_for :email, url: email_provider_user_trip_path(@traveler, @trip), html: { class: 'form-horizontal',
+            id: 'send_by_email_to_provider_form' }, data: {dismiss: 'modal'}  do |f|
+            = f.error_notification
+            - if user_signed_in?
+              - if assisting?
+                = f.input :send_to_traveler, as: :boolean, label: t(:send_to_traveler)
+            - else
+              = f.input :from, label: t(:from_address), required: true
+            = f.input :provider, label: 'Provider name', required: false, disabled: true, :input_html => { :value => @trip.outbound_part.selected_itinerary.service.provider.name }
+            = f.input :service, label: 'Service', required: false, disabled: true, :input_html => { :value => @trip.outbound_part.selected_itinerary.service.name }
+            = f.input :email_addresses, label: t(:email_addresses), required: false, disabled: true, :input_html => { :value => "dedwards@camsys.com"}
+            = f.input :comments, as: :text, label: 'comments', required: false, input_html: {rows: 3}
+            = f.input :copy_self, as: :boolean
+            = button_tag type: :submit, class: 'btn btn-info' do
+              %i.icon-envelope
+              =t(:e_mail)
+
 :javascript
   $('#send_by_email_to_provider_form').on('submit', function() {
-    $('#send_trip_by_email)to_provider').modal('hide')
+    $('#send_trip_by_email_to_provider').modal('hide')
   })

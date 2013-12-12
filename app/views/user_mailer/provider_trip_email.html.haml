@@ -1,0 +1,87 @@
+//%p= t(:trip_options_information_from_from, from: @traveler.name)
+%h3="Trip request from " + @traveler.name
+
+%hr{style: "height:12px; background:#848484;"}
+
+%table{style: "font-size:1.4em;"}
+  %tr
+    %td{style: "color:grey;"}
+      %strong
+        = t(:from)
+    %td
+      %strong
+        =@trip.from_place.name
+  %tr
+    %td{style: "color:grey; weight:strong;"}
+      %strong
+        =t(:to)
+    %td
+      %strong
+        =@trip.to_place.name
+  %tr
+    %td{style: "color:grey;"}
+      %strong
+        =t(:at_time)
+    %td
+      %strong
+        =format_date(@trip.trip_datetime.in_time_zone)
+  %tr
+    %td{style: "color:grey;"}
+      %strong
+        ='at'
+    %td
+      %strong
+        =format_time(@trip.trip_datetime.in_time_zone)
+
+%hr{style: "height:12px; background:#848484;"}
+%h2="Passenger Information"
+%table{style: "font-size:1.4em;"}
+  %tr
+    %td{style: "color:grey; weight:strong;"}
+      ="Name"
+    %td
+      =@traveler.name
+  %tr
+    %td{style: "color:grey; weight:strong;"}
+      ="Email"
+    %td
+      =@traveler.email
+  %tr
+    %td{style: "color:grey; weight:strong;"}
+      ="Comments"
+    %td
+      =@comments
+
+
+- @trip.itineraries.valid.visible.each do |itinerary|
+  %hr{style: "height:12px; background:#848484;"}
+  %h2="Service Information"
+  %h3
+    -if itinerary.mode.name.downcase == 'paratransit'
+      =itinerary.service.name
+      %h3
+        =itinerary.service.provider.name
+    -else
+      =itinerary.mode.name
+  %h3
+    =@provider.email
+
+  %hr
+  %h3
+    Summary:
+  = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
+
+  %hr
+  %h3
+    Details:
+  = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
+
+%hr{style: "height:12px; background:#848484;"}
+%table
+  %tbody
+    %tr
+      %td Thank you for using ARC OneClick Software.
+    %tr
+      %td This email is automatically sent by the OneClick system. Please do not reply to this email.
+    %tr
+      %td Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of ARC OneClick

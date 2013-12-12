@@ -75,6 +75,7 @@ Oneclick::Application.routes.draw do
           get   'details'
           get   'itinerary'
           post  'email'
+          post  'email_provider'
           post  'email_itinerary'
           get   'email_itinerary2_values'
           post  'email2'
