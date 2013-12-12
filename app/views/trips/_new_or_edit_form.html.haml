@@ -37,8 +37,6 @@
       .row-fluid    
         #trip_form.span12
           = render 'trip_form'
-        #trip_map.span6
-          = render 'trip_map'  
 
 
 :javascript
@@ -73,8 +71,6 @@
  
   function open_map() {
     //alert('opening map');
-    $('#trip_form').removeClass('span12');
-    $('#trip_form').addClass('span6');
     $('#trip_map').show();
     invalidateMap();
     $('#map-icon').removeClass('icon-map-marker');
@@ -88,8 +84,6 @@
   
   function close_map() {
     //alert('closing map');
-    $('#trip_form').removeClass('span6');
-    $('#trip_form').addClass('span12');
     $('#trip_map').hide();
     $('#map-icon').removeClass('icon-play');
     $('#map-icon').addClass('icon-map-marker');
