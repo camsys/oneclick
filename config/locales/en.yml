@@ -87,6 +87,8 @@ en:
   
   # Trip planning
   enter_address: 'Enter address'
+  enter_to: 'Enter to address'
+  enter_from: 'Enter from address'
   select_or_enter_address: 'Select or enter address'
   select: 'Select'
   trip_date: 'Date'
