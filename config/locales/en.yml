@@ -193,6 +193,7 @@ en:
   profile_updated: "Your profile was updated."
 
   # new ones
+  close: "Close"
   name: "Name"
   trip_request_from: "Trip request from "
   send_email_to: "Send email to"
