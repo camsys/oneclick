@@ -207,10 +207,17 @@
       //which does it need the name, the id, something else?
     //submit the hidden value
 
-    $('#return-yesno a#no').on('click', function(){
+    $('#current-location a').on('click', function(){
       //Temporary Address.
-      $('input#trip_proxy_from_place').val('Cemetery Drive, Decatur, GA 30033');
+      if($(this).is('#no')){
+        $('input#trip_proxy_from_place').val('');
+        alert('no');
+      } else if($(this).is('#yes')){
+        $('input#trip_proxy_from_place').val('Cemetery Drive, Decatur, GA 30033');
+        alert('yes');
+      }
     });
+
 
     $('.edit-trip-btn').on('click', function(){
       $('*[data-index=1]').removeClass('hidden');
@@ -248,7 +255,7 @@
 
       $('input#trip_proxy_from_place').val('200 Peachtree Street Northeast, Atlanta, GA 30303');
 
-      $('.next-step-btn, a#yes').on('click', tripformView.nextBtnHandler);
+      $('.next-step-btn, a#yes, a#no').on('click', tripformView.nextBtnHandler);
 
       //reveal first form item
       $('*[data-index="0"]').removeClass('hidden');
