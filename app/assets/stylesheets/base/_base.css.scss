@@ -234,11 +234,18 @@ a:hover#help {
 }
 
 .itinerary-item {
-  line-height: 0;
-  margin-bottom: 10px;
 }
+
 .trip_summary_text {
   font-size: 2em;
+}
+
+.trip_summary_header .row-fluid {
+  line-height: normal;
+  padding-bottom: 5px;
+  [class*="span"] {
+    min-height: 0;
+  }
 }
 
 .candidate-label {

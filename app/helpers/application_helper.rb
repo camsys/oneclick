@@ -25,28 +25,6 @@ module ApplicationHelper
   end
  
   # Formats a line in the itinerary
-  def format_itinerary_item(&block)
-
-     # Check to see if there is any content in the block    
-    content = capture(&block)
-    if content.nil?      
-      content = "&nbsp;"
-    end
-
-    html = "<tr>"
-    html << "<td style='border-top:none;'>"
-    html << "<h4 class='itinerary-item'>"
-    
-    html << content
-
-    html << "</h4>"
-    html << "</td>"
-    html << "</tr>"
-    
-    return html.html_safe     
-  end
-
-  # Formats a line in the itinerary
   def format_email_itinerary_item(&block)
 
     # Check to see if there is any content in the block
@@ -57,29 +35,6 @@ module ApplicationHelper
     html << content
     return html.html_safe
   end
-
-  # Formats a line in the itinerary
-  def format_itinerary_item_old(&block)
-
-     # Check to see if there is any content in the block    
-    content = capture(&block)
-    if content.nil?      
-      content = "<p>&nbsp;</p>"
-    end
-
-    html = "<div class='row-fluid'>"
-    html << "<div class='span12'>"
-    html << "<h4>"
-
-    html << content
-
-    html << "</h4>"
-    html << "</div>"
-    html << "</div>"
-
-    return html.html_safe     
-  end
-  
 
   # Defines an array of filter options for the MyTrips page. The filters combine date range filters
   # with trip purpose filters. To make sure we can identify which is which, we simply add a constant (100)
@@ -150,7 +105,7 @@ module ApplicationHelper
     dist_str
   end
   
-  def duration_to_words(time_in_seconds)
+  def duration_to_words(time_in_seconds, options = {})
     
     return t(:n_a) unless time_in_seconds
 
@@ -160,10 +115,11 @@ module ApplicationHelper
 
     time_string = ''
     if hours > 0
-      time_string << I18n.translate(:hour, count: hours)  + ' '
+      format = (options[:suppress_minutes] and minutes==0 ? :hour_long : :hour)
+      time_string << I18n.translate(format, count: hours)  + ' '
     end
 
-    if minutes > 0 || hours > 0
+    if minutes > 0 || (hours > 0 and !options[:suppress_minutes])
       time_string << I18n.translate(:minute, count: minutes)
     end
 
@@ -203,7 +159,7 @@ module ApplicationHelper
     return l time, :format => :oneclick_short unless time.nil?
   end
 
-  # Retuens a pseudo-mode for an itineray. The pseudo-mode is used to determine
+  # Retuens a pseudo-mode for an itinerary. The pseudo-mode is used to determine
   # the correct icon, title, and partial for an itinerary
   def get_pseudomode_for_itinerary(itinerary)
 

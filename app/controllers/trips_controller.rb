@@ -480,6 +480,7 @@ class TripsController < PlaceSearchingController
     #Rails.logger.debug @markers.inspect    
     #Rails.logger.debug @polylines.inspect
 
+    @itinerary = ItineraryDecorator.decorate(@itinerary)
     respond_to do |format|
       format.js 
     end

@@ -137,6 +137,10 @@ es:
     one: '%{count} h',
     other: '%{count} h',
   }
+  hour_long: {
+    one: '[es141]%{count} hora',
+    other: '[es142]%{count} horas',
+  }
   minute: {
     one: '%{count} min',
     other: '%{count} mins',
