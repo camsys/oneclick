@@ -180,6 +180,7 @@ ActiveRecord::Schema.define(:version => 20131203203453) do
     t.boolean  "too_late",                                                :default => false
     t.string   "missing_accommodations",                                  :default => ""
     t.string   "cost_comments"
+    t.boolean  "selected",                                                :default => false
   end
 
   create_table "modes", :force => true do |t|
