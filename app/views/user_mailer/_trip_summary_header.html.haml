@@ -44,11 +44,4 @@
               = duration_to_words(itinerary.walk_time) + t(:walking)
           -if itinerary.mode.name.downcase=='rideshare'
             %li
-              = t(:possible_rideshares1, count: itinerary.ride_count)
-            %li
-              = t(:possible_rideshares2)
-            %li
-              = t(:view_details1)
-            %li
-              = t(:view_details2)
-
+              = t(:possible_rideshares1, count: itinerary.ride_count) + ' ' + t(:possible_rideshares2)

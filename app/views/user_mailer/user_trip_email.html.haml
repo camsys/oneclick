@@ -27,10 +27,13 @@
 
 
 -@trip.trip_parts.each do |trip_part|
-  %hr{style: "height:12px; background:#848484;"}
+
   -if trip_part.is_return_trip?
-    %h3="Return Trip Options"
+    -unless trip_part.itineraries.valid.visible.count == 0
+      %hr{style: "height:12px; background:#848484;"}
+      %h3="Return Trip Options"
   -else
+    %hr{style: "height:12px; background:#848484;"}
     %h3="Outbound Trip Options"
 
   - trip_part.itineraries.valid.visible.each do |itinerary|
@@ -46,10 +49,11 @@
 
     %hr
     %h3
-      Summary:
-    = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
+      -unless itinerary.mode.name.downcase == 'rideshare'
+        Summary:
+        = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
 
-    %hr
+        %hr
     %h3
       Details:
     = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
