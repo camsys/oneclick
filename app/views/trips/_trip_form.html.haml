@@ -329,17 +329,22 @@
                 leftResults.find('.reason').html(overviewReason);
 
                 $('.edit-trip-btn').removeClass('hidden');
+
+                tripformView.nextButton.off('click');
+                tripformView.nextButton.on('click', function() {
+                  tripformView.formEle.submit();
+                });
               })();
               break;
 
             //TODO: This needs to be 9 to include the overview
-            case 9:
+            //case 9:
               // in this form view (when index=8) change the next buttons click eventhandler
-              tripformView.nextButton.off('click');
-              tripformView.nextButton.on('click', function() {
-                tripformView.formEle.submit();
-              });
-              break;
+             // tripformView.nextButton.off('click');
+             // tripformView.nextButton.on('click', function() {
+             //   tripformView.formEle.submit();
+             // });
+             // break;
           };
 
           clearInterval(readyState);
