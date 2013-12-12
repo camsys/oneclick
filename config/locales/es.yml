@@ -10,6 +10,7 @@ es:
   help_and_support: 'Ayuda y Soporte'
   create_an_account: 'Crear una Cuenta'
   travel_profile: 'Perfil del Viaje'
+  my_travel_profile: '[es13]Mis Perfil del Viaje[/es]'
   my_trips: 'Mis Viajes'
   my_places: 'Mis Lugares *10*'
   places: 'Lugares *11*'
@@ -48,16 +49,23 @@ es:
   my_information: 'Mi información'
   buddies: 'Amigos'
   travelers: 'Viajeros'
+  traveler: 'Viajero'
   send_buddy_request: 'Enviar solicitud de amigo'
   buddys_email_address: "Correo electrónico del amigo"
   accept: 'Aceptar'
   decline: 'Rechazar'
   assist: 'Asistir'
+  retract: 'Retraer'  
   revoke: 'Revocar'
   visitor: 'Visitante *12*'
   invalid_dob: 'Valido Fecha de nacimiento *33*'
-  to_see_best_options: '[es] To see the best options, tell us about yourself. [/es]'
-  skip_this_step: '[es] Skip this step [/es]'
+  to_see_best_options: '[es1] To see the best options, tell us about yourself. [/es]'
+  skip_this_step: '[es2] Skip this step [/es]'
+  buddy_request_sent: "Solicitud de amigo enviada"
+  no_buddy_email_address: "Debe introducir la dirección de correo electrónico de su amigo"
+  no_user_with_email_address: "No podemos encontrar un usuario registrado con '%{email}' como su dirección de correo electrónico."
+  something_went_wrong: "Ooops! Algo salió mal. No hemos podido procesar la solicitud. Por favor, inténtelo de nuevo."
+  request_processed: "Su solicitud ha sido procesada."
 
 
   spanish: 'En Español'
@@ -79,6 +87,8 @@ es:
 
   # Trip planning
   enter_address: 'Introduce la dirección'
+  enter_to: 'Introduce la dirección'
+  enter_from: 'Introduce la dirección'
   select_or_enter_address: 'Selecciona o introduce la dirección '
   select: 'Seleccionar'
   trip_date: 'Fecha'
@@ -111,6 +121,7 @@ es:
   remove: 'Eliminar'
   reload: 'Recargar'
   return: 'Retornar'
+  outbound: '[es120]Outbound[/es]'
   paratransit: 'Transporte Público para Discapacitados'
   mode: 'Medio de Transporte'
   duration: 'Duración'
@@ -139,6 +150,8 @@ es:
   time_wrong_format: "La hora debe estar en el formato hh:mm am/pm."
   trips_cannot_be_entered_for_days: "No se pueden introducir viajes para días anteriores."
   trips_cannot_be_entered_for_times: " No se pueden introducir viajes para horas pasadas."
+  return_trip_time_before_start: "[es3]Trips cannot return before they are started.[/es]"
+  
   link_to_georgia_commute_options: {
     one:   'Visita %{url} para ver 1 opción para compartir el viaje en vehículo.',
     other: 'Visita %{url} para ver %{count} opciones para compartir el viaje en vehículo.',
@@ -156,6 +169,11 @@ es:
   no_matching_trips_found: 'Usted no tiene que emparejan viajes. *27*'
   hide: 'Ocultar *31*'
   unhide_all: 'Volver a mostrar todos *32*'
+  round_trip: '[es11]Round trip[/es]'
+  one_way: '[es12]One-way trip[/es]'
+  returning_at: '[es171]returning at[/es]'
+  returning: '[es172]returning[/es]'
+  at: '[es173]at[/es]'
 
   # My Places form
   found_x_places: {
@@ -178,11 +196,18 @@ es:
   profile_updated: "Su perfil ha sido actualizado. *37*"
 
   # new ones
+  please_tell_us: "[es]Please tell us about your recent trip.[/es]"
+  comments_updated: "[es]Comments updated.[/es]"
+  trips: "[es]Trips[/es]"
+  comments: "[es]Comments[/es]"
+  comments_sent: "[es]Comments sent.[/es]"
+  leave_comments: "[es]Leave comments on this trip.[/es]"
+  submit: "[es]Submit[/es]"
   eligibility: "[es]Eligibility[/es]"
-  accommodations: "[es]Accommodations[/es]"  
-  volunteer: "[es]Volunteer Service[/es]"
-  nemt: "[es]Non-Emergency Med.[/es]"
-  car_service: "[es]Car Service[/es]"
+  accommodations: "[es5]Accommodations[/es]"  
+  volunteer: "[es6]Volunteer Service[/es]"
+  nemt: "[es7]Non-Emergency Med.[/es]"
+  car_service: "[es8]Car Service[/es]"
   buddy_request_sent: "¡Solicitud de amigo enviada!"
   buddy_removed: "Amigo eliminado."
   http_404_not_found: "404 No Fue Encontrado"
@@ -191,6 +216,9 @@ es:
   arc_oneclick_trip_itinerary: "ARC OneClick Itinerario de Viaje"
   an_email_was_sent_to_email_addresses_join: "Se fue enviado un correo electrónico a %{addresses}."
   unable_to_remove_itinerary: 'No se puede eliminar el itinerario.'
+  outbound_selected: '[es209]Outbound option selected, now select your return option.[/es]'
+  outbound_selected_short: '[es210]Outbound option selected.[/es]'
+  return_selected: '[es211]Return option selected.[/es]'
   not_authorized_as_an_administrator: 'No está autorizado como un administrador.'
   n_a: 'n/a'
   less_than_1_block: "a menos the 1 cuadra"
@@ -213,7 +241,7 @@ es:
   didn_t_receive_confirmation_instructions: "¿No recibiste instrucciones de confirmación?"
   didn_t_receive_unlock_instructions: "¿No recibiste instrucciones de desbloqueo?"
   sign_in_with_provider_to_s_titleize: "Sign in with %{provider}"
-  assisting_assisted_user_email: "Asistiendo a {assisted_user}"
+  assisting_assisted_user_email: "Asistiendo a %{assisted_user}"
   _menu__object_plural_per_page: "_MENU_ %{object} per page"
   _menu__records_per_page: "_MENU_ records per page"
   showing__start__to__end__of__total__object_plural: "Showing _START_ to _END_ of _TOTAL_ %{object}"
@@ -232,10 +260,13 @@ es:
   arrive: "ARRIVE: "
   trip: "Viaje: "
   est: " (est.)"
+  myself: "yo mismo"  
   assisted_user_first_name_s_trips: "Viajes de %{name}"
   trip_options_information_from_from: "Información de opciones de viaje de #{@from}"
-  create_account: "[es] Create an account to save your information [\es]"
-  
+  create_account: "[es9] Create an account to save your information [\es]"
+  stop_assisting: "Detener la asistencia"
+  assisting_turned_off: "[es10]Assisting has been turned off.[/es]"
+
   # General Messages
   yes_str: "Sí"
   no_str:  "Not"
@@ -250,10 +281,10 @@ es:
     logotext: ''
     site_title: 'ARC 1-Click'
     site_description: ' Applicación ARC 1-Click'
-  yata:
+  pa:
     logotext: ''
-    site_title: 'YATA 1-Click'
-    site_description: 'Aplicación YATA 1-Click '
+    site_title: 'PA/1-Click'
+    site_description: 'Aplicación PA/1-Click '
   broward:
     logotext: ''
     site_title: 'Broward 1-Click'

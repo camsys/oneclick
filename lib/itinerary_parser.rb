@@ -37,6 +37,8 @@ protected
       obj = parse_bus_leg(leg)
     elsif leg['mode'] == 'SUBWAY'
       obj = parse_subway_leg(leg)
+    elsif leg['mode'] == 'RAIL'
+      obj = parse_rail_leg(leg)
     end
     
     # parse the common properties
@@ -72,6 +74,25 @@ protected
     
     return sub    
   end
+
+  def self.parse_rail_leg(leg)
+
+    Rails.logger.debug "Parsing RAIL leg"
+
+    sub = RailLeg.new
+
+    sub.agency_name = leg['agencyName']
+    sub.agency_id = leg['agencyId']
+
+    sub.head_sign = leg['headsign']
+    sub.route = leg['route']
+    sub.route_id = leg['routeId']
+    sub.route_short_name = leg['routeShortName']
+    sub.route_long_name = leg['routeLongName']
+
+    return sub
+  end
+
 
   def self.parse_bus_leg(leg)
 

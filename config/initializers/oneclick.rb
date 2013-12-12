@@ -5,6 +5,9 @@ raise "Config not loaded from application.yml" unless ENV['ENV_FROM_APPLICATION_
 # use as Rails.application.config.brand
 Oneclick::Application.config.brand = ENV['BRAND'] || 'arc'
 
+# defaults for all brands
+Oneclick::Application.config.enable_rideshare = false
+
 case ENV['BRAND'] || 'arc'
 when 'arc'
   Oneclick::Application.config.ui_logo = 'arc/arc-logo.png'
@@ -14,20 +17,21 @@ when 'arc'
   Oneclick::Application.config.open_trip_planner = "http://arc-otp-2.camsys-apps.com"
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Atlanta"
+  Oneclick::Application.config.enable_rideshare = true
 when 'broward'  
-  Oneclick::Application.config.ui_logo = 'broward/bclogo.gif'
+  Oneclick::Application.config.ui_logo = 'broward/Broward_211_Get_Connected_get_answers.jpg'
   Oneclick::Application.config.geocoder_components = 'administrative_area:FL|country:US'
   Oneclick::Application.config.map_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
   Oneclick::Application.config.geocoder_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
   Oneclick::Application.config.open_trip_planner = "http://arc-otp-demo.camsys-apps.com"
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Miami"
-when 'yata'
-  Oneclick::Application.config.ui_logo = 'yata/Rabbittransit_red_logo.png'
+when 'pa'
+  Oneclick::Application.config.ui_logo = 'pa/penndotLogo.jpg'
   Oneclick::Application.config.geocoder_components = 'administrative_area:PA|country:US'
   Oneclick::Application.config.map_bounds = [[41.970622, -80.461542], [39.734653, -75.007294]]
   Oneclick::Application.config.geocoder_bounds = [[41.970622, -80.461542], [39.734653, -75.007294]]
-  Oneclick::Application.config.open_trip_planner = "http://arc-otp-demo.camsys-apps.com"
+  Oneclick::Application.config.open_trip_planner = "http://oneclick-otp-yata.camsys-apps.com:8080"
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Harrisburg-PA"
 end
@@ -40,4 +44,8 @@ Oneclick::Application.config.ui_search_poi_items = 10       # max number of matc
 Oneclick::Application.config.ui_min_geocode_chars = 5       # Minimum number of characters (not including whitespace) before sending to the geocoder 
 
 Oneclick::Application.config.address_cache_expire_seconds = 3600 # seconds to keep addresses returned from the geocoder in the cache
+Oneclick::Application.config.return_trip_delay_mins = 120   # minutes needed at last trip place before scheduling the return trip
+Oneclick::Application.config.trip_time_ahead_mins = 30      # minutes ahead of now to default the start time to for new trips
 
+Oneclick::Application.config.remote_read_timeout_seconds = 5    # seconds to wait before timing out reading a page through a web request
+Oneclick::Application.config.remote_request_timeout_seconds = 5 # seconds to wait for a remote web site/api to respond to a request

@@ -1,29 +1,31 @@
 env:
-- ENV_FROM_APPLICATION_YML=true
+  matrix:
+  - ENV_FROM_APPLICATION_YML=true
+  global:
+    # This is HEROKU_API_KEY=<Denis' API key>
+    secure: CMJUFGiw+vmXKySVyDztUwvJmE18yskWb8tQrW2GUsahRQwanb3UjaEtLC7AKw/tLGlUhgf5g7RdSxp0qis7qBnaNwGVwAWU+lQR4DC9X+qGnwZ7VnG9Z7Vsy7FoJYQhJJf01EF7D7s+Pdhu9U+N/ks6vAAIusodpFBbBa/4qDw=
 branches:
   only:
     - develop
 before_script:
+- git describe
 - mv config/database.yml.travis config/database.yml
 - git config user.email "denis+camsys@constantorbit.com"
 - git config user.name "Denis Haskin"
 rvm:
 - 1.9.3
+language: ruby
+cache: bundler
 bundler_args: --without development
 script:
 - bundle exec /usr/bin/env RAILS_ENV=test rake db:drop db:create db:reset
-- bundle exec /usr/bin/env RAILS_ENV=test rake oneclick:test_with_coveralls
+- bundle exec /usr/bin/env RAILS_ENV=test COVERALLS_NOISY=true rake oneclick:test_with_coveralls
+# - bundle exec /usr/bin/env RAILS_ENV=test COVERALLS_NOISY=true rake oneclick:all_tests
+# - bundle exec /usr/bin/env RAILS_ENV=test COVERALLS_NOISY=true rake coveralls:push
 notifications:
   email:
   - oneclickcs_github@googlegroups.com
   irc: irc.freenode.net#oneclick
-# after_script:
-# - cat "log/test.log"
-before_deploy:
-# - git describe
-# - bundle exec rake oneclick:version
-# - git commit -am "Bump version"
-- git --no-pager log -50 --pretty="%h %<(60,trunc) %s %<(23,trunc) %ae %ar"
 deploy:
   provider: heroku
   api_key:
@@ -32,3 +34,8 @@ deploy:
   on:
     repo: camsys/oneclick
     branch: develop
+after_deploy:
+  - gem install heroku
+  - git branch -lavv
+  - git describe
+  - heroku config:set ONECLICK_APP_VERSION=`git describe` --app oneclick-arc-int

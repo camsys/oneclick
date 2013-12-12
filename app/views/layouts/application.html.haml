@@ -4,6 +4,7 @@
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
       %title= content_for?(:title) ? yield(:title) : t(:site_title)
       %meta{:content => content_for?(:description) ? yield(:description) : t(:site_description), :name => "description"}
+      = ajaxful_rating_style
       = stylesheet_link_tag "application", :media => "all"
       = stylesheet_link_tag brand, :media => "all"
       = stylesheet_link_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.css", :media => "all"
@@ -12,40 +13,32 @@
       = javascript_include_tag "http://maps.google.com/maps/api/js?v=3.2&sensor=false"
       = javascript_include_tag "application" # TODO This should go in footer
       = javascript_include_tag "https://www.google.com/jsapi"
-          
+
+
       = csrf_meta_tags
       = yield(:head)
   %body{:class => "#{controller_css_class} #{action_name}"}
     / application.html.haml
-    #wrap
-      .container-fluid
-        .row-fluid
-          = render 'shared/navigation'
+    = render 'shared/navigation'
+    .container-fluid
       #main{:role => "main"}
         .container-fluid
           = render 'shared/assisting'
           #messages
             = render 'shared/messages'
           = yield
-      #footer
-        .container-fluid
-          .well
-            .pull-left
-              - if Rails.env.integration?
-                %span= "#{t(:version)} Auto-deploy"
-              - else
-                %span= "#{t(:version)} #{Rails.application.config.version}"
-              - unless Rails.env.production?
-                %span
-                  |
-                  %span.visible-phone Phone&nbsp;
-                  %span.visible-table Tablet&nbsp;
-                  %span.visible-desktop Desktop
-            .pull-right
-              -# Don't localize next 2 strings
-              = link_using_locale('English', 'en')
-              |
-              = link_using_locale('En Español', 'es')
+    .next-footer-container.step1-btn.hidden 
+      .container-fluid
+        .row-fluid
+          .span4
+            .edit-trip-btn.hidden
+              %h3 Edit Your Trip
+          .span8
+            .next-step-container
+              .next-step-btn
+                %h1 Next Step
+                %div.arrow-container.pull-right
+                  .arrow
       / ! end of .container
     / ! end of #main
 
@@ -65,4 +58,6 @@
         bootbox.setDefaults({
           locale: "#{I18n.locale}"
         });
+
+
       });

@@ -4,12 +4,18 @@ class TimeFilterHelper
   DAY_FILTER = 1
   MONTH_FILTER = 2
   
+  ALL_TRIPS_FILTER = 0
+  TODAY_FILTER = 1
+  TRIPS_COMING_UP_FILTER = 2
+  LAST_7_DAYS_FILTER = 3
+  LAST_30_DAYS_FILTER = 4
+  
   @time_filter_array = [
-    {:id => 0, :value => :all_trips, :parse_text_start => "1 year ago", :parse_text_end => "1 year from now", :start_filter_type => MONTH_FILTER, :end_filter_type => MONTH_FILTER},
-    {:id => 1, :value => :today, :parse_text_start => "today", :parse_text_end => "today", :start_filter_type => DAY_FILTER, :end_filter_type => DAY_FILTER},
-    {:id => 2, :value => :trips_coming_up, :parse_text_start => "now", :parse_text_end => "1 year from now", :start_filter_type => TIME_FILTER, :end_filter_type => MONTH_FILTER},
-    {:id => 3, :value => :last_7_days, :parse_text_start => "7 days ago", :parse_text_end => "yesterday", :start_filter_type => DAY_FILTER, :end_filter_type => DAY_FILTER},
-    {:id => 4, :value => :last_30_days, :parse_text_start => "30 days ago", :parse_text_end => "yesterday", :start_filter_type => DAY_FILTER, :end_filter_type => DAY_FILTER}
+    {:id => ALL_TRIPS_FILTER, :value => :all_trips, :parse_text_start => "1 year ago", :parse_text_end => "1 year from now", :start_filter_type => MONTH_FILTER, :end_filter_type => MONTH_FILTER},
+    {:id => TODAY_FILTER, :value => :today, :parse_text_start => "today", :parse_text_end => "today", :start_filter_type => DAY_FILTER, :end_filter_type => DAY_FILTER},
+    {:id => TRIPS_COMING_UP_FILTER, :value => :trips_coming_up, :parse_text_start => "now", :parse_text_end => "1 year from now", :start_filter_type => TIME_FILTER, :end_filter_type => MONTH_FILTER},
+    {:id => LAST_7_DAYS_FILTER, :value => :last_7_days, :parse_text_start => "7 days ago", :parse_text_end => "yesterday", :start_filter_type => DAY_FILTER, :end_filter_type => DAY_FILTER},
+    {:id => LAST_30_DAYS_FILTER, :value => :last_30_days, :parse_text_start => "30 days ago", :parse_text_end => "yesterday", :start_filter_type => DAY_FILTER, :end_filter_type => DAY_FILTER}
     #{:id => 4, :value => :today, :parse_text_start => "today", :parse_text_end => "today", :is_day_duration => true},
     #{:id => 5, :value => :yesterday, :parse_text_start => "yesterday", :parse_text_end => "yesterday", :is_day_duration => true},
     #{:id => 6, :value => :this_month, :parse_text_start => "today", :parse_text_end => "today", :is_day_duration => false},    
@@ -37,9 +43,20 @@ class TimeFilterHelper
     if filter.nil?
       filter = @time_filter_array.first      
     end    
-    
-    start_time = get_parsed_time(filter[:parse_text_start], filter[:start_filter_type], true)    
-    end_time = get_parsed_time(filter[:parse_text_end], filter[:end_filter_type], false)
+
+    # If we are filtering on all trips then we need to determine the first and last created trip in the
+    # database    
+    if filter[:id] == ALL_TRIPS_FILTER
+      if Trip.count > 0
+        start_time = Trip.find(:first, :order => "created_at ASC").created_at.beginning_of_day
+        end_time = TripPart.find(:first, :order => "scheduled_date DESC").trip_time.end_of_day
+      else
+        start_time = end_time = Time.zone.now
+      end
+    else
+      start_time = get_parsed_time(filter[:parse_text_start], filter[:start_filter_type], true)    
+      end_time = get_parsed_time(filter[:parse_text_end], filter[:end_filter_type], false)
+    end
     
     return start_time..end_time
   end
@@ -51,18 +68,18 @@ class TimeFilterHelper
     parsed_time = Chronic.parse(str)
     
     if filter_type == TIME_FILTER
-      return parsed_time  
+      return parsed_time.in_time_zone  
     elsif filter_type == DAY_FILTER
       if is_start
-        return parsed_time.beginning_of_day
+        return parsed_time.in_time_zone.beginning_of_day
       else
-        return parsed_time.to_date.end_of_day
+        return parsed_time.in_time_zone.to_date.end_of_day
       end
     elsif filter_type == MONTH_FILTER
       if is_start
-        return parsed_time.beginning_of_month
+        return parsed_time.in_time_zone.beginning_of_month
       else
-        return parsed_time.end_of_month
+        return parsed_time.in_time_zone.end_of_month
       end
     end
   end

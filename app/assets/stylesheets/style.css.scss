@@ -1,0 +1,1295 @@
+//@import "bootstrap.css";
+//@import "bootstrap-responsive.min.css"; 
+
+// KIOSK COLORS
+$white: #fff;
+$black: #000;
+$gray1: #f2f2f2;
+$gray2: #e6e6e6;
+$gray3: #d1cfcd;
+$gray4: #a49f9b;
+$gray5: #7d7874;
+$gray6: #45413d;
+$red: #f34c51;
+$blue: #00b8d0;
+$green: #7ec537;
+$yellow: #fdd73e;
+
+$kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
+
+
+
+// FONT AVENIR NEXT
+//@import url(assets/fonts/?family=Avenir+Next:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800);
+*{
+	box-sizing:border-box;
+	font-family: 'Avenir Next', Helvetica, sans-serif;
+}
+
+//FIXES
+
+h1{
+	font-size: 36px;
+	font-weight: 700;
+}
+
+h4{
+	font-size: 18px;
+	font-weight: 400;
+	text-transform: uppercase;
+}
+
+h5{
+	font-size:16px;
+}
+
+.navbar-search{
+	.search-query{
+		line-height: 1.4;
+		padding: 6px 14px 3px;
+	}
+}
+
+//NAV
+
+//UNIFIED NAV STYLE FOR KIOSK
+.nav-a{
+	//Pulling from .nav > li > a // TO DO: find a way of extending this, make it a variable.
+	text-transform: uppercase;
+	font-size: 16px;
+	font-weight: 600;
+	color: $gray4;
+	text-decoration: none;
+	margin: 48px 42px;
+	padding: 0;
+	border-bottom: 1px solid $gray2;
+	&:hover{
+		background-color:rgba(255,255,255,0.0);
+		color: $gray3;
+	}
+	&:active{
+		color: $gray5;
+	}
+}
+
+
+.navbar-inner{
+	height: 128px;
+	background-image: none;
+	background-color: $white;
+	border-radius:0px;
+	border:0px solid $white;
+	padding-left:0;
+}
+
+//BACK BUTTON
+.back-button{
+	border-right: 1px solid $gray3;
+	height:128px;
+
+	&:active{
+		background-color: $gray1;
+
+		.arrow{
+			a.arrow-btn{
+				height:78px;
+				width:78px;
+				margin:12px auto 0;
+				border: 2px solid $gray5;
+			}
+			span{
+				bottom: 24px;
+				color: $gray5;
+				text-decoration: none;
+			}
+
+		} 
+	}
+
+	.arrow{
+		width: 211px;
+		height: 100%;
+		position: relative;
+
+		a.arrow-btn{
+			text-indent: -9999px;
+			display:block;
+			margin: 18px auto 0;
+			border-radius:50%;
+			height:66px;
+			width:66px;
+			border: 2px solid $gray4;
+			background: $white url(../assets/kiosk/arrow.png) no-repeat center;
+
+			
+		}
+		span{
+			//Pulling from .nav > li > a // TO DO: find a way of extending this, make it a variable.
+			text-transform: uppercase;
+			font-size: 16px;
+			font-weight: 600;
+			color: $gray4;
+			position: absolute;
+			bottom: 30px;
+			text-align: center;
+			left: 0;
+			right: 0;
+			margin-left: 80px;
+			border-bottom: 1px solid $gray2;
+			width: 50px;
+
+		}
+	}
+}
+
+.navbar{
+	position: relative;
+	box-shadow: 0px 2px 8px rgba(0,0,0,0.16);
+	z-index:100;
+	//Inserting a .row-fluid
+	.row-fluid{
+		max-width: 1440px;
+		margin: 0 auto;
+	}
+	.nav{
+		li{
+			a{
+				padding:0 0 2px;
+			}
+		}
+	}
+	.nav{
+		> li{
+			&.active{
+				a{
+					color: $blue;
+					background-color:rgba(255,255,255,0.0);
+					&:hover{
+						color: lighten($blue, 5%);
+						background-color:rgba(255,255,255,0.0);
+					}
+				}
+			}
+			> a{
+				@extend .nav-a;
+			}
+		}
+	}
+}
+
+//NAV TIDYING
+a{
+	color: $blue;
+}
+.nav-pills{
+	li{
+		&:hover{
+			background-color: $gray2;
+			border-radius: 0;
+		}
+		a{
+			color: $blue;
+			&:hover, &:focus{
+				background-color: $gray2;
+			}
+
+		}
+		
+
+		&.active{
+			a{
+				background-color: $blue;
+				border-radius:0;
+			}
+		}
+	}
+
+}
+
+.label, .badge{
+	padding: 4px 8px;
+}
+
+//FOOTER
+%footer-container{
+	position: fixed;
+	bottom:0;
+	width: 100%;
+	background-color: $white;
+	height:136px;
+	border-top:1px solid $gray3;
+}
+
+.footer-container{
+	@extend %footer-container;
+}
+
+.responsive-mbp{
+	max-width: 1440px;
+	margin: 0 auto;
+	height:inherit;
+}
+
+
+.footer{
+	height:136px;
+	width: 100%;
+	position: relative;
+
+	.details{
+		border-right: 1px solid $gray3;
+		width: 420px;
+		height: 100%;
+
+		&:active{
+			background-color: $gray2;
+		}
+
+		h1{
+			text-align: center;
+			margin-top: 48px;
+		}
+	}
+
+	ul{
+		li{
+			list-style-type: none;
+			float:left;
+			a{
+				@extend .nav-a;
+				padding-top: 15px;
+				display: inline-block;
+			}
+		}
+	}
+}
+
+//ATTRACT LOOP
+.penndot-logo{
+	background: url(../assets/kiosk/penndot-logo.svg) no-repeat center center;
+	background-size: 100%;
+
+}
+
+.attract-screen{
+	height:1024px;
+	.attract-top{
+		height: 50%;
+		padding:30px 45px;
+
+        .oneclick{
+			@extend .penndot-logo;
+			height:47px;
+			width: 205px;
+
+        }
+        .penndot{
+			@extend .penndot-logo;
+			height:47px;
+			width: 205px;
+        }
+        .title{
+        	color: $gray6;
+        	font-size: 120px;
+        	font-weight:700;
+        	text-align: center;
+        	clear:left;
+        	margin-top: 20%;
+        	letter-spacing:-5px;
+        }
+    }
+	.attract-bottom{
+		height:50%;
+		background: $blue url(../assets/kiosk/attract-bottom.jpg) no-repeat center center;
+	}
+}
+
+// PAGE 2 - TRIP PLANNING / QUESTIONS
+
+.container-fluid{
+	margin: 0 auto;
+	max-width: 1440px;
+	background-color: $gray1;
+	padding-left: 0px;
+	padding-right: 0px;
+	z-index:0;
+	position:relative;
+	margin-top: -20px;
+	height:100%;
+	// TO DO: FIX THIS TERRIBLENESS
+	.row, .row-fluid{
+		overflow-y: hidden;
+		// TO DO: FIX THIS TERRIBLENESS
+		//height:900px;
+		.span4{
+			color: $white;
+			padding: 36px;
+			height: inherit;
+			border-right: 1px solid $gray3;
+			background-color: $gray6;
+
+			h1{
+				text-transform: uppercase;
+			}
+			h4{
+				padding-bottom: 40px;
+			}
+		}
+	}
+}
+
+// RETURN TRIP
+
+#step2, #eligibility, #current-location, #return-trip{
+
+	.title-container{
+		position:relative;
+		height: 50px;
+		margin-top: 27px;
+
+
+		h3{
+			position: absolute;
+			font-size:18px;
+			top: 0;
+			left: 0;
+			right: 0;
+			max-width: 395px;
+			display: inline-block;
+			margin: 0 auto;
+			text-transform: uppercase;
+			text-align:center;
+			color: $gray4;
+			background-color: $gray1;
+			//position: absolute;
+		}
+
+		.bar{
+			position: absolute;
+			border-bottom: 1px solid $gray3;
+			width: 99%;
+			height: 15px;
+			margin: 5px;
+		}
+
+	}
+
+	a{
+		display: block;
+		cursor: pointer;  
+	    position: relative;  
+	    font-size: 36px; 
+	    font-weight: 800;
+	    color: $gray6;
+	    //width: 500px;
+		border: 4px solid $gray5;
+		text-align: center;
+		background-color: $white;
+		margin: 14px 14px 28px;
+		text-decoration: none;
+
+		&:before{
+			width: 500px;
+			border: 4px solid $gray5;
+
+		}
+		&#no{
+			content: "NO";
+			height: 256px;
+			padding-top: 120px;
+
+			&:active{
+				//TO DO: Refactor all of this to make more sense.
+				margin: 8px 8px -8px;
+				border: 4px solid $blue;
+				height: 268px;
+				padding-top:124px;
+			}
+		}
+		&#yes{
+			content: "Yes";
+			height: 128px;
+			padding-top: 50px;
+			margin: 34px 14px 20px 14px;
+
+			&:active{
+				margin: 28px 8px 14px 8px;
+				border: 4px solid $blue;
+				height: 140px;
+				padding-top:56px;
+			}
+
+		}
+
+		
+	}
+}
+
+// PURPOSE SECTION
+// hidden input
+div.trip_proxy_trip_purpose_id{
+	display:none !important;
+	//border:1px solid red;
+
+	label, input{
+		display:none !important;
+	}
+}
+
+//list view
+.purpose{
+	position:absolute;
+	top:0;
+	margin-top:40px;
+	li{
+		z-index: 0;
+		padding:30px;
+		list-style-type: none;
+		font-size: 21px;
+		font-weight:700;
+		border-top:1px solid $gray3;
+		&:last-child{
+			border-bottom: 1px solid $gray3;
+		}
+		&:active{
+			background: $gray2;
+		}
+
+		&.selected{
+			z-index: 200;
+			background: $white url(../assets/kiosk/checkmark.png) no-repeat center right;
+			// box-shadow: 0px 4px 10px rgba(0,0,0,0.2), 
+			// 	0px 8px 24px rgba(0,0,0,0.04), 
+			// 	inset 0 0 0 2px $gray4, 
+			// 	inset 0 0 0 3px $white, 
+			// 	inset 0 0 0 7px $blue;
+			// margin: -6px;
+			@extend %selected;
+			padding: 36px;
+		}
+
+		&.selected + li{
+			border-top:1px solid $blue;
+		}
+
+		a{
+			color: $gray6;
+			&:hover, &:active{
+				text-decoration: none;
+
+			}
+		}
+	}
+}
+
+//LEFT RESULTS PAGE
+#left-results{
+	p{
+		margin-bottom: 36px;
+	}
+}
+
+
+//NEXT STEP BUTTON
+//TO DO: Place in a bottom footer
+
+
+.inputs{
+	margin:0px !important;
+
+	form#query_form{
+		margin:0;
+	}
+
+	position: relative;
+	form{
+		input.address{
+			border-radius:0;
+			//TO DO: find the actual Bootstrap in Sass files and add them to this application.
+			//otherwise 
+		 	width: 103.5%;
+			height: 128px;
+			border: 0px solid white;
+			box-shadow: 0px 2px 3px -1px rgba($black, 0.16);
+			margin-right:-20px!important;
+			//background-color: rgba(255,255,255,.88);
+			//margin-left:-20px !important;
+			//webkit-tap-highlight-color:rgba(0,0,0,0);
+			background: $white url(../assets/kiosk/icon-address.png) no-repeat 60px 44px;
+			padding-left: 100px;
+			font-family: $kioskfonts;
+			font-size:21px;
+
+			&:focus{
+				outline:none;
+			}
+
+		}
+		//TODO: Fix this atrocity
+		span.extend-me{
+			position: fixed;
+			height: 128px;
+			background-color: white;
+			width: 50px;
+			top: 128px;
+			right: 0px;
+			box-shadow: 9px 2px 3px -1px rgba($black, 0.16);
+		}
+	}
+}
+
+//PLAN A TRIP SPECIFIC FIXES
+#from_input, #to_input{
+	label{
+		display: none;
+	}
+}
+
+// EDIT TRIP BUTTON
+.edit-trip-btn{
+	cursor:pointer !important;
+	height:166px;
+	font-weight:700;
+	font-size: 21px;
+	border: 3px solid $gray3;
+	color: $gray3;
+	margin-top: -16px;
+
+	h3{
+		text-align: center;
+		margin-top: 60px;
+	}
+}
+
+// NEXT STEP BUTTON
+.next-footer-container{
+	@extend %footer-container;
+	background-color: rgba(0,0,0,0);
+	border: 0px solid white;
+	height: 186px;
+
+	.container-fluid, .row-fluid{
+		background-color: rgba(0,0,0,0);
+	}
+}
+
+.next-step-container{
+	padding:20px 30px 20px 0;
+
+	> .next-step-btn{
+		height: 166px;
+		border-top:1px solid lighten($blue, 5%);
+		outline: 1px solid darken($blue, 10%);
+		color: white;
+		background-color: $blue;
+		box-shadow: 0px 2px 8px rgba(0,0,0,0.4);
+		text-align: center;
+
+		&:active{
+			background-color: lighten($blue, 10%);
+			border-top:1px solid lighten($blue, 15%);
+		}
+
+		h1{
+			margin: 64px 0 64px 64px;
+			float:left;
+		}
+		.arrow-container{
+			width: 200px;
+			height: 166px;
+			background: rgba(255,255,255,.24) url(../assets/kiosk/arrow-next-step.png) no-repeat center center;
+			border-left: 1px solid rgba(255,255,255,.44);
+			.arrow{
+				//background: url(../assets/kiosk/arrow-next-step.png) no-repeat center center;
+			}
+		}
+	}
+}
+
+//ELIGIBILITY HEADER
+.input-header{
+	height: 128px;
+	border-top: 0px solid white;
+	//border-bottom: 1px solid black;
+	border-right: 0px solid white;
+	border-left: 0px solid white;
+	background-color: rgba(255,255,255,.88);
+	box-shadow: 0px 1px 3px -1px rgba(0,0,0,0.24);
+	padding-left: 36px;
+
+	.step-number{
+		font-size: 16px;
+		font-weight: 700;
+		color: $gray4;
+		padding-top:30px;
+	}
+	.step-title{
+		color: $gray6;
+		font-size: 36px;
+		clear:left;
+		margin-top:16px;
+	}
+}
+
+//QUESTIONS CHARACTERISTICS
+.questions, .programs-section, .accommodations-section{
+
+	table{
+		margin-top: 30px;
+		thead{
+			tr{
+				th{
+
+				}
+			}
+		}
+		tbody{
+			tr{
+				td{
+					font-size: 16px;
+					border-right: 1px solid $gray3;
+					padding: 12px 24px;
+					color: rgba(0,0,0,0);
+
+					&:first-child{
+						color: $gray6;
+						text-align:right;
+					}
+
+					&:last-child{
+						border-right: 1px solid $gray3;
+					}
+
+					label.disabled{
+						font-style: italic;
+					}
+
+
+
+					input[type="radio"]{
+						display: none;
+					}
+
+					input[type="radio"] + label.yes, input[type="radio"] + label.no, input[type="radio"] + label.unsure{
+						text-indent: -9999px;
+						display: inline-block;
+						height:40px;
+						width: 40px;
+						border-radius: 50%;
+						border: 2px solid $gray6;
+						background-color: $gray2;
+						cursor: pointer;
+
+						&:checked{
+							box-shadow: inset 0 0 0 4px $gray2,
+										inset 0 0 0 20px $gray6;
+						}
+						&:active{
+							background-color: $white;
+
+						}
+
+						&.disabled{
+							opacity: 50%;
+						}
+					}
+					
+					input[type="radio"]:checked + label.yes, input[type="radio"]:checked + label.no, input[type="radio"]:checked + label.unsure{
+						box-shadow: inset 0 0 0 4px $gray2,
+									inset 0 0 0 20px $gray6;
+					}
+
+					// input[type="radio"] + label.disabled{
+					// 	border: 2px solid rgba($gray6, .5);
+					// 	background-color: rgba($gray2, .5);
+					// }
+				}
+			}
+		}
+	}
+
+}
+
+
+// CARDS
+.card{
+	height: 342px;
+	border: 1px solid $gray4;
+	box-shadow: 0px 2px 8px rgba(0,0,0,0.4);
+	margin-top: 24px;
+	background-color: $white;
+}
+
+//SELECTED BUTTON
+%selected{
+	margin: -6px;
+	box-shadow: 0px 4px 10px rgba(0,0,0,0.2), 
+				0px 8px 24px rgba(0,0,0,0.04), 
+				inset 0 0 0 2px $gray4, 
+				inset 0 0 0 3px $white, 
+				inset 0 0 0 7px $blue;
+	//remember to adjust your padding accordingly.
+}
+
+//
+%flip{
+	-moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+//CONTAINER PLACEHOLDER
+%card-btn-container{
+	margin-top: 350px;
+	height: 84px;
+	width: 100px;
+	background: url(../assets/kiosk/card-dashes.png) no-repeat;
+}
+//CARD PLACEHOLDER
+%card-btn{
+	height:100%;
+	width: 84px;
+	background: url(../assets/kiosk/card-btn-default.png) no-repeat center center;
+
+	&.disabled{
+		background: url(../assets/kiosk/card-btn-inactive.png) no-repeat center center;
+		&:active{
+			background: url(../assets/kiosk/card-btn-inactive.png) no-repeat center center;
+		}
+	}
+	&:active{
+		background: url(../assets/kiosk/card-btn-active.png) no-repeat center center;
+	}
+}
+
+//refactor later to combine prev and next. Then just rotate 180 deg. Make sure it works in IE9.
+.card-prev{
+	.prev-container{
+		@extend %card-btn-container;
+		float:right;
+		background-position: right center;
+		
+		.prev-btn{
+			@extend %card-btn;
+		}
+	}
+}
+.card-next{
+	.next-container{
+		@extend %card-btn-container;
+		float:left;
+		background-position: left center;
+		.next-btn{
+			@extend %card-btn;
+			float:right;
+			@extend %flip;
+		}
+	}
+}
+
+// DETAIL VIEW -- to replace the modal view.
+// TO DO - Animate the slide in of the DETAIL VIEW
+.detail-view{
+	position: absolute;
+	height:100%;
+	width: 100%;
+	z-index: 200;
+
+	.close-section{
+		width: 33.3%;
+		background-color: $black;
+		height: inherit;
+		padding-top: 28%;
+		float:left;
+
+		.close-btn-container{
+			margin-left: 24px;
+			display: inline-block;
+			text-align: center;
+			.close-btn{
+				background: url(../assets/kiosk/close-btn-default.png) no-repeat center center;
+				height: 84px;
+				width: 84px;
+			}
+			p{
+				color: $white;
+				display: inline-block;
+				text-transform: uppercase;
+				border-bottom: 1px solid $blue;
+			}
+		}
+
+	}
+	.detail-section{
+		width: 66.67%;
+		height: inherit;
+		background-color: $white;
+		float:left;
+
+	}
+}
+
+//CALENDAR / DATEPICKER FIRST ONE
+label.date{
+	span{
+		position:absolute;
+		top:32px;
+		left: 36px;
+		font-weight:700;
+		color: $gray4;
+	}
+}
+
+input#txtDate{
+	padding-left: 34px !important;
+	@extend input.address;
+	position: absolute;
+	width: 100%;
+	top: 0;
+	border-radius: 0px;
+	background-image: none !important;
+	font-size: 36px;
+	
+}
+
+#datepicker{
+	//display:block;
+	border-radius:0;
+	background-color:rgba(0,0,0,0);
+	box-shadow: 0px 0px 0px rgba(0,0,0,0);
+	border:0px solid rgba(0,0,0,0);
+	table.table-condensed{
+		margin: 0 auto;
+		thead{
+			tr{
+				th{
+					border-radius: 0;
+					&.month{
+
+						&.prev{
+							@extend %card-btn;
+							height: 84px;
+							display:hidden;
+
+						}
+						&.name{
+							font-size: 21px;
+							padding-bottom:21px;
+						}
+						&.next{
+							@extend %card-btn;
+							@extend %flip;
+							height: 84px;
+							display:hidden;
+						}
+					}
+					&.dow{
+						font-size: 14px;
+						font-weight:300;
+						color: $gray4;
+						padding-bottom: 21px;
+
+					}
+					
+				}
+			}
+		}
+		tbody{
+			tr{
+				td{
+					border-radius: 0;
+					height: 74px;
+					width: 74px;
+					font-size: 21px;
+					font-weight:700;
+					color: $gray6;
+					border:1px solid $gray3;
+					&.day{
+						&.old{
+							color: $gray3;
+						}
+						&.new{
+							color: $gray3;
+						}
+						&.active{
+							@extend %selected;
+							background-color: $white;
+							background-image:none;
+							border:0px solid $black;
+						}
+						&:active{
+
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+//TIME PICKER
+label.time{
+	@extend label.date;
+
+	input{
+		@extend input#txtDate;
+	}
+}
+//Datepicker input
+.trip_proxy_trip_date{
+	label{
+		@extend label.date;
+	}
+
+	input#trip_proxy_trip_date{
+		@extend input#txtDate;
+	}
+}
+
+
+%time-selectors{
+	list-style-type: none;
+	float:left;
+	border-left:1px solid $gray4;
+	margin:0 !important;
+	padding:0;
+	height:74px;
+	text-align:center;
+	padding-top:30px;
+	font-size:21px;
+	font-weight:600;
+	color: $gray6;
+
+	&:last-child{
+		border-right:1px solid $gray4;
+	}
+
+	&:active{
+		background-color: $gray2;
+	}
+
+	&.selected{
+		@extend %selected;
+		background-color: $white;
+		background-image:none;
+		border:0px solid $black;
+	}
+}
+
+.timetable{
+	margin: 200px 0;
+
+	ul{
+		border-top:1px solid $gray4;
+		margin-bottom:0;
+		li{
+			@extend %time-selectors;
+			width:16.6666666666666667%;
+
+			&.ampm{
+				border-bottom:1px solid $gray4;
+				padding-top:26px;
+			}
+
+		}
+	}
+}
+
+.dob-breadcrumb{
+
+	ul{
+		height: 100px;
+		padding: 30px 0;
+		li{
+			width:33%;
+			list-style-type: none;
+			float:left;
+			border-bottom: 4px solid $gray3;
+			margin-right: 4px;
+			padding-left:10px;
+			padding-bottom:10px;
+			color: $gray4;
+			height:50px;
+			
+
+			span.type{
+				display: block;
+				padding-top:20px;
+				font-size:16px;
+				font-weight: 600;
+			}
+			
+			span.input{
+				font-size:21px;
+				font-weight:300;
+				display: block;
+			}
+
+			&:last-child{
+				margin-right:0px;
+			}
+
+			&.current{
+				border-bottom: 4px solid $blue;
+				color: $gray6;
+
+				span.type{
+					font-size:16px;
+					font-weight: 600;
+					color: $gray6;
+				}
+				
+				span.input{
+					font-size:21px;
+					font-weight:300;
+					display: block;
+				}
+			}
+			&.chosen{
+				span.type{
+					padding-top:0;
+				}
+			}
+		}
+	}
+}
+
+.monthtable{
+	padding-bottom:20px;
+	ul{
+		border-top:1px solid $gray4;
+		clear:left;
+		display: flex;
+		margin-bottom:0;
+
+		&:last-child{
+			border-bottom:1px solid $gray4;
+		}
+
+		li{
+			@extend %time-selectors;
+			width: 25%;
+		}
+	}
+}
+
+.daytable{
+	padding-bottom:20px;
+	ul{
+		border-top:1px solid $gray4;
+		clear:left;
+		display: flex;
+		margin-bottom:0;
+
+		// &:last-child{
+		// 	border-bottom:1px solid $gray4;
+		// }
+
+		li{
+			@extend %time-selectors;
+			width: 12.5%;
+
+			&.ninja{
+				border-bottom:1px solid $gray1;
+				border-right: 1px solid $gray1;
+			}
+			&.bottom{
+				border-bottom: 1px solid $gray4;
+			}
+		}
+	}
+}
+
+
+//LOGIN 
+body.sessions.new, body.registrations.new{
+	background-image: url(../assets/kiosk/bg_black.png);
+	.container-fluid{
+		background-image: url(../assets/kiosk/bg_black.png);
+	}
+	label{
+		text-align: left;
+	}
+
+	.registrations .form-horizontal .control-group {
+	  margin-bottom: 0px;
+	}    
+}
+
+
+.login-container{
+	position: absolute;
+	width: 100%;
+	//height: 1500px;
+	overflow-y: hidden;
+	
+	// TO DO: work with Camsys to nest the login container so it looks good at all sizes.
+	.container-fluid{
+		background-image: url(../assets/kiosk/bg_black.png);
+	}
+
+	.login-header{
+		margin-top: 100px;
+
+		h1{
+			font-size: 72px;
+			color: $white;
+			text-transform: uppercase;
+			margin-bottom:24px;
+
+		}
+		.account-container{
+			text-align:right;
+			p{
+				font-size: 21px;
+				color: $gray3;
+
+			}
+			a{
+				font-size: 21px;
+				color: $white;
+				text-transform: uppercase;
+				font-weight: 600;
+				border-bottom: 1px solid $blue;
+				letter-spacing:2px;
+				text-decoration: none;
+			}
+		}
+	}
+	div.control-group{
+		position:relative;
+		height:84px;
+		width: 100%;
+		margin-bottom: 0;
+
+		&.error{
+			&:before{
+				content: url(../assets/kiosk/icon-error.png);
+				position:absolute;
+				top: 24px;
+				left: -50px;
+			}
+			label{
+				color:$red;
+				transition: all 0.2s ease;
+			}
+			input:focus + label, input.hasValue + label{
+				color: desaturate($red, 60%);
+			}
+			input{
+				background-color: lighten($red, 30%);
+				color: darken($red, 40%);
+			}
+
+		}
+
+		label{
+			transition: margin-top 0.2s ease;
+			position: absolute;
+			font-weight: 700;
+			font-size:16px;
+			z-index:100;
+			margin-top:14px;
+			margin-left:18px;
+			color: $gray4;
+			width: 300px;
+		}
+		//FIX FOR THEIR CODE
+		div.controls{
+			margin-left:0;
+		}
+
+		div.controls input:focus + label, div.controls input.hasValue + label{
+			margin-top: 18px;
+		}
+		div.controls input{
+			font-family: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			border-radius: 0;
+			padding-left: 15px;
+			font-size: 32px;
+			padding-top: 24px;
+		}
+	}
+	button.login-btn{
+		font-family: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
+		border: 4px solid $blue;
+		background-color: rgba($blue, 0.3);
+		text-align: center;
+		padding: 30px 0;
+		font-size: 32px;
+		font-weight: 700;
+		color: $white;
+		text-decoration: none;
+		margin-top: 24px;
+		width:320px;
+
+		&:active{
+			margin: 18px -6px 24px;
+			padding:36px 6px;
+			width:332px;
+		}
+	}
+
+
+	.cancel-container{
+		padding-top: 58px;
+		a.cancel-btn{
+			text-decoration: none;
+			border-bottom: 1px solid $gray4;
+			color: $gray4;
+			text-align: right;
+			font-size: 21px;
+			text-transform: uppercase;
+			font-weight: 600;
+			letter-spacing:2px;
+		}
+	}
+	
+
+}
+
+
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) { 
+
+	body{
+		padding:0;
+	}
+
+	.responsive-mbp{
+		height:auto;
+	}
+
+	.next-footer-container{
+		height: 150px;
+	}
+
+	.next-step-container{
+		padding:0;
+		.next-step-btn{
+			height:100px;
+			h1{
+				margin-top:30px;
+			}
+			.arrow-container{
+				width: 150px;
+				height: 100px;
+			}
+		}
+	}
+	
+
+
+
+}
+ 
+/* Landscape phones and down */
+//@media (max-width: 480px) { ... }
+
+

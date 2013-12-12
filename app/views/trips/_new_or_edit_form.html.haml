@@ -1,27 +1,45 @@
-.row-fluid
-  .span12
-    %h1
-      %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-      = t(:plan_a_trip)
-      
--if @trip_proxy.errors.any?
-  .row-fluid
-    .span12
-      %h4
-        %div{:class => "alert alert-error"}
-          %a.close{"data-dismiss" => "alert"} ×
-          %div= t(:correct_errors_to_create_a_trip)
+%div.responsive-mbp.row-fluid
+  .span4
+    #left-description
+      %h1 
+        = t(:plan_a_trip)
+      %h4 Tell us About Your Trip
+      %p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, assumenda, minima, soluta rerum voluptatum at ullam consectetur consequatur molestiae veniam vel eius iure recusandae molestias delectus officiis excepturi. Amet, fugiat.
+    #left-results.hidden
+      %h1 Overview
+      %h4 Lorem Ipsum
+      %h5 From
+      %p.from n/a
+      %h5 Destination
+      %p.to n/a
+      %h5 Date
+      %p.date n/a
+      %h5 Departure Time
+      %p.time n/a
+      %h5 Return Time
+      %p.return n/a
+      %h5 Purpose
+      %p.reason n/a
 
 
-.row-fluid{:style => "margin-top:20px;"}
-  .well.well-small
-    .row-fluid    
-      #trip_form.span12
-        = link_to "#" do      
-          %i.icon.icon-map-marker.icon-2x.pull-right#map-icon
-        = render 'trip_form'
-      #trip_map.span6
-        = render 'trip_map'  
+  %div.span8.inputs
+    .row-fluid
+      -if @trip_proxy.errors.any?
+        .row-fluid
+          .span12
+            %h4
+              %div{:class => "alert alert-error"}
+                %a.close{"data-dismiss" => "alert"} ×
+                %div= t(:correct_errors_to_create_a_trip)
+
+
+
+      .row-fluid    
+        #trip_form.span12
+          = render 'trip_form'
+        #trip_map.span6
+          = render 'trip_map'  
+
 
 :javascript
   // UI variables

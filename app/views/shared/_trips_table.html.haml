@@ -1,0 +1,34 @@
+.row-fluid
+  .span12
+    %table.table.table.condensed.table-striped.table-hover.table-bordered#datatable
+      %thead
+        %tr
+          %th.left Id
+          %th.left User
+          %th.left Creator
+          %th.left From
+          %th.left To
+          %th.center Trip Date/Time
+          %th.center Created At          
+          %th.center Actions
+      %tbody
+        - trips.each do |trip|
+          %tr
+            %td.left= trip.id
+            %td.left= trip.user.name
+            %td.left= trip.creator.name           
+            %td.left= trip.from_place.name
+            %td.left= trip.to_place.name
+            %td.center.nowrap
+              = format_date_time(trip.trip_datetime)
+            %td.center.nowrap
+              = format_date_time(trip.created_at)
+            %td.center.nowrap
+              = link_to user_trip_path(current_user, trip, :show_hidden => 1), {class: "btn btn-mini btn-success text-center"} do
+                %i.icon-share-sign
+                = "Itinerary"
+              = link_to details_user_trip_path(current_user, trip), {class: "btn btn-mini btn-info text-center"} do
+                %i.icon-exclamation-sign
+                = "Details"
+
+= render 'shared/datatable_javascript'

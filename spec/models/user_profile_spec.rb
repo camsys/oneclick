@@ -19,7 +19,7 @@ describe UserProfile do
           expect(all_services.size).to eq 10
           services = eh.get_eligible_services_for_traveler(user_profile)
           expect(services.size).to eq 2
-          planned_trip = FactoryGirl.create(:trip_with_places)
+          planned_trip = FactoryGirl.create(:trip_part)
           purpose = TripPurpose.find_by_name('Medical')
           planned_trip.trip.trip_purpose = purpose
           services = eh.get_eligible_services_for_trip(planned_trip, services)
@@ -33,7 +33,7 @@ describe UserProfile do
           eh = EligibilityHelpers.new
           services = eh.get_eligible_services_for_traveler(user_profile)
           expect(    services.size).to eq 2
-          planned_trip = FactoryGirl.create(:trip_with_places2)
+          planned_trip = FactoryGirl.create(:trip_part2)
           purpose = TripPurpose.find_by_name('Medical')
           planned_trip.trip.trip_purpose = purpose
           services = eh.get_eligible_services_for_trip(planned_trip, services)
@@ -55,7 +55,7 @@ describe UserProfile do
           end
           acc_and_eligible_services = eh.get_accommodating_and_eligible_services_for_traveler(user_profile)
           expect(acc_and_eligible_services.size).to eq 10
-          planned_trip = FactoryGirl.create(:trip_with_places)
+          planned_trip = FactoryGirl.create(:trip_part)
           purpose = TripPurpose.find_by_name('Medical')
           planned_trip.trip.trip_purpose = purpose
           services2 = eh.get_eligible_services_for_trip(planned_trip, acc_and_eligible_services)
@@ -77,7 +77,7 @@ describe UserProfile do
           end
           services = eh.get_eligible_services_for_traveler(user_profile)
           expect(    services.size).to eq 10
-          planned_trip = FactoryGirl.create(:trip_with_places)
+          planned_trip = FactoryGirl.create(:trip_part)
           purpose = TripPurpose.find_by_name('Personal')
           planned_trip.trip.trip_purpose = purpose
           services = eh.get_eligible_services_for_trip(planned_trip, services)

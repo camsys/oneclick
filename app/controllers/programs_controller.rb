@@ -15,10 +15,10 @@ class ProgramsController < TravelerAwareController
         @path = new_user_accommodation_path(@traveler, inline: 1)
       else
         if user_signed_in?
-          @planned_trip = PlannedTrip.find(session[:current_trip_id])
+          @trip = Trip.find(session[:current_trip_id])          
           session[:current_trip_id] =  nil
-          @planned_trip.create_itineraries
-          @path = user_planned_trip_path(@traveler, @planned_trip)
+          @trip.create_itineraries
+          @path = user_trip_path(@traveler, @trip)
         else
           @path = new_user_registration_path(inline: 1)
         end
@@ -45,7 +45,7 @@ class ProgramsController < TravelerAwareController
 
     @user_programs_proxy = UserProgramsProxy.new(@traveler)
 
-    @planned_trip_id = session[:current_trip_id]
+    @trip_id = session[:current_trip_id]
     @total_steps = (@traveler.has_disability? ? 3 : 2)
     
     respond_to do |format|
