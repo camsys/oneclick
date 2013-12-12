@@ -25,26 +25,34 @@
       %strong
         =format_date(@trip.trip_datetime.in_time_zone)
 
-- @trip.itineraries.valid.visible.each do |itinerary|
 
+-@trip.trip_parts.each do |trip_part|
   %hr{style: "height:12px; background:#848484;"}
-  %h2
-    -if itinerary.mode.name.downcase == 'paratransit'
-      =itinerary.service.name
-      %h3
-        =itinerary.service.provider.name
-    -else
-      =itinerary.mode.name
+  -if trip_part.is_return_trip?
+    %h3="Return Trip Options"
+  -else
+    %h3="Outbound Trip Options"
 
-  %hr
-  %h3
-    Summary:
-  = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
+  - trip_part.itineraries.valid.visible.each do |itinerary|
 
-  %hr
-  %h3
-    Details:
-  = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
+    %hr{style: "height:12px; background:#848484;"}
+    %h2
+      -if itinerary.mode.name.downcase == 'paratransit'
+        =itinerary.service.name
+        %h3
+          =itinerary.service.provider.name
+      -else
+        =itinerary.mode.name
+
+    %hr
+    %h3
+      Summary:
+    = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
+
+    %hr
+    %h3
+      Details:
+    = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
 
 %hr{style: "height:12px; background:#848484;"}
 %table
