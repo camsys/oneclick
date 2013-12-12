@@ -42,9 +42,14 @@
             %i.icon-envelope
             =t(:e_mail) + " your trip plan to yourself or someone helping you."
         .span6{style: 'margin-bottom: 9px;'}
-          =link_to '#', {href: '#send_trip_by_email_to_provider', class: 'btn btn-block', data: {toggle: 'modal'}} do
-            %i.icon-ticket
-            Email a booking request to the provider.
+          -if (@trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service) or (@trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.service)
+            =link_to '#', {href: '#send_trip_by_email_to_provider', class: 'btn btn-block', data: {toggle: 'modal'}} do
+              %i.icon-ticket
+              Email a booking request to the provider.
+          -else
+            =link_to '#', {href: '#send_trip_by_email_to_provider', disabled: true, class: 'btn btn-block', data: {toggle: 'modal'}} do
+              %i.icon-ticket
+              Email a booking request to the provider.
       .row-fluid
         .span6{style: 'margin-bottom: 9px;'}
           =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do

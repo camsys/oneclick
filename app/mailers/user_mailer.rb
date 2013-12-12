@@ -12,13 +12,31 @@ class UserMailer < ActionMailer::Base
     mail(to: addresses, subject: subject, from: @from)
   end
 
-  def provider_trip_email(trip, subject, from, comments)
+  def provider_trip_email(emails, trip, subject, from, comments)
     @trip = trip
     @from = from
     @comments = comments
-    @provider = trip.outbound_part.selected_itinerary.service.provider
+    @type = "One Way Trip"
+    @return = nil
+    if @trip.outbound_part.selected_itinerary.service
+      @service = @trip.outbound_part.selected_itinerary.service
+      @provider = @service.provider
+      @itinerary = @trip.outbound_part.selected_itinerary
+      @trip_part = @trip.outbound_part
+      if @trip.is_return_trip and @trip.return_part.selected_itinerary
+        if @trip.return_part.selected_itinerary.service == @service
+          @type = "Round Trip"
+          @return = @trip.return_part.trip_time
+        end
+      end
+    else
+      @provider = @trip.return_part.selected_itinerary.service.provider
+      @itinerary = @trip.return_part.selected_itinerary
+      @trip_part = @trip.return_part
+    end
     @traveler = trip.user
-    addresses = @trip.outbound_part.selected_itinerary.service.provider.email
+    addresses = [@provider.email]
+    addresses << emails
 
     mail(to: addresses, subject: subject, from: @from)
   end

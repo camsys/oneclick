@@ -1,8 +1,9 @@
 //%p= t(:trip_options_information_from_from, from: @traveler.name)
-%h3="Trip request from " + @traveler.name
+%h3=t(:trip_request_from) + @traveler.name
 
 %hr{style: "height:12px; background:#848484;"}
-
+%h3
+  =@type
 %table{style: "font-size:1.4em;"}
   %tr
     %td{style: "color:grey;"}
@@ -24,57 +25,65 @@
         =t(:at_time)
     %td
       %strong
-        =format_date(@trip.trip_datetime.in_time_zone)
+        =format_date(@trip_part.trip_time.in_time_zone)
   %tr
     %td{style: "color:grey;"}
       %strong
-        ='at'
+        =t(:depart)
     %td
       %strong
-        =format_time(@trip.trip_datetime.in_time_zone)
+        =format_time(@trip_part.trip_time.in_time_zone)
+  -if @return
+    %tr
+      %td{style: "color:grey;"}
+        %strong
+          =t(:return)
+      %td
+        %strong
+          =format_time(@return.in_time_zone)
 
 %hr{style: "height:12px; background:#848484;"}
 %h2="Passenger Information"
 %table{style: "font-size:1.4em;"}
   %tr
     %td{style: "color:grey; weight:strong;"}
-      ="Name"
+      =t(:name)
     %td
       =@traveler.name
   %tr
     %td{style: "color:grey; weight:strong;"}
-      ="Email"
+      =t(:email)
     %td
       =@traveler.email
   %tr
     %td{style: "color:grey; weight:strong;"}
-      ="Comments"
+      =t(:comments)
     %td
       =@comments
 
 
-- @trip.itineraries.valid.visible.each do |itinerary|
-  %hr{style: "height:12px; background:#848484;"}
-  %h2="Service Information"
-  %h3
-    -if itinerary.mode.name.downcase == 'paratransit'
-      =itinerary.service.name
-      %h3
-        =itinerary.service.provider.name
-    -else
-      =itinerary.mode.name
-  %h3
-    =@provider.email
 
-  %hr
-  %h3
-    Summary:
-  = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
+%hr{style: "height:12px; background:#848484;"}
+%h2="Service Information"
+%h3
+  -if @itinerary.mode.name.downcase == 'paratransit'
+    =@itinerary.service.name
+    %h3
+      =@itinerary.service.provider.name
+  -else
+    =@itinerary.mode.name
+%h3
+  =@provider.email
 
-  %hr
-  %h3
-    Details:
-  = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
+%hr
+%h3
+  Summary:
+= render :partial => 'trip_summary_header', :locals => { :itinerary => @itinerary }
+
+%hr
+%h3
+  Details:
+= render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
 
 %hr{style: "height:12px; background:#848484;"}
 %table

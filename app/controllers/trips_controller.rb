@@ -93,11 +93,28 @@ class TripsController < PlaceSearchingController
 
   def email_provider
     Rails.logger.info "Begin email"
+    emails = []
     @trip = Trip.find(params[:id].to_i)
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    provider = @trip.outbound_part.selected_itinerary.service.provider
+
+    #IF this is a guest, save their email address
+    unless user_signed_in?
+      @trip.user.email = from_email
+      @trip.user.save
+    end
+
+    #If the outbound trip has selected an itinerary with a service, mail it. Otherwise mail the return itinerary
+    if @trip.outbound_part.selected_itinerary.service
+      provider = @trip.outbound_part.selected_itinerary.service.provider
+    else
+      provider = @trip.return_part.selected_itinerary.service.provider
+    end
+
     comments = params[:email][:comments]
-    UserMailer.provider_trip_email(@trip, "ARC OneClick Trip Request", from_email, comments).deliver
+    if params[:email][:copy_self] == '1'
+      emails << from_email
+    end
+    UserMailer.provider_trip_email(emails, @trip, "ARC OneClick Trip Request", from_email, comments).deliver
     respond_to do |format|
       format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{provider.name}."  }
       format.json { render json: @trip }

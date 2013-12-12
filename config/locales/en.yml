@@ -193,6 +193,8 @@ en:
   profile_updated: "Your profile was updated."
 
   # new ones
+  name: "Name"
+  trip_request_from: "Trip request from "
   send_email_to: "Send email to"
   additional_emails: "Additional emails"
   taken: "Trip Taken?"

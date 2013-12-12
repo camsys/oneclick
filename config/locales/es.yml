@@ -194,6 +194,8 @@ es:
   profile_updated: "Su perfil ha sido actualizado. *37*"
 
   # new ones
+  name: "Nombre"
+  trip_request_from: "[es]Trip request from[/es] "
   send_email_to: "[es]Send email to[/es]"
   additional_emails: "[es]Additional emails[/es]"
   taken: "[es]Trip taken?[/es]"
