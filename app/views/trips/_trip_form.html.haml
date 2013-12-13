@@ -163,7 +163,7 @@
   // Document Ready
   $(document).ready(function(){
     $.fn.datepicker.Calendar.setDefaultLocale("#{I18n.locale}");
-    
+
     $('#trip-date').datepicker().on("dateChange", function(e) {
         $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
     });
@@ -221,9 +221,15 @@
 
     $('.edit-trip-btn').on('click', function(){
       $('*[data-index=1]').removeClass('hidden');
+      //Unhide the return trip if it was hidden
       $('#left-results p.return').show();
       $('#left-results p.return').prev('h5').show();
+      //hide the results and show the description
+      $('#left-description').removeClass('hidden');
+      $('#left-results').addClass('hidden');
+
       tripformView.indexCounter = 1;
+      tripformView.formEle.trigger('indexChange');
     });
 
     //If they click no on return trip, jump straight to Overview
@@ -253,13 +259,13 @@
   });
 
   var tripformWrapper = function(){
-    
+
     // INIT VIEW
     tripformView.init = function(){
       this.formItems = $('*[data-index]');
       this.formItems.addClass('hidden');
       this.nextButton = $('.next-step-btn');
-      this.tripDateCal = $('#trip-date'); 
+      this.tripDateCal = $('#trip-date');
       this.formEle = $('#new_trip_proxy');
 
 
@@ -272,13 +278,18 @@
       //reveal first form item
       $('*[data-index="0"]').removeClass('hidden');
     }
-    
+
     // HANDLERS
     tripformView.nextBtnHandler = function() {
       //increment counter
       tripformView.indexCounter++;
       //trigger indexchange event
       tripformView.formEle.trigger('indexChange');
+    }
+
+    //save form submit handler since we need to remove it if the user wants to edit their trip
+    tripformView.submitButtonhandler = function() {
+      tripformView.formEle.submit();
     }
 
     tripformView.indexChangeHandler = function() {
@@ -298,6 +309,9 @@
           switch(tripformView.indexCounter) {
             case 1:
               $('div.next-footer-container').removeClass('hidden');
+              //remove submit handler on next button
+              tripformView.nextButton.off('click');
+              tripformView.nextButton.on('click', tripformView.nextBtnHandler);
               break;
 
             case 3:
@@ -345,9 +359,7 @@
                 $('.edit-trip-btn').removeClass('hidden');
 
                 tripformView.nextButton.off('click');
-                tripformView.nextButton.on('click', function() {
-                  tripformView.formEle.submit();
-                });
+                tripformView.nextButton.on('click', tripformView.submitButtonhandler);
               })();
               break;
           };
