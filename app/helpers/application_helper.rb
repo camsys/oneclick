@@ -106,7 +106,6 @@ module ApplicationHelper
   end
   
   def duration_to_words(time_in_seconds, options = {})
-    
     return t(:n_a) unless time_in_seconds
 
     time_in_seconds = time_in_seconds.to_i
@@ -115,7 +114,7 @@ module ApplicationHelper
 
     time_string = ''
     if hours > 0
-      format = (options[:suppress_minutes] and minutes==0 ? :hour_long : :hour)
+      format = ((options[:suppress_minutes] and minutes==0) ? :hour_long : :hour)
       time_string << I18n.translate(format, count: hours)  + ' '
     end
 

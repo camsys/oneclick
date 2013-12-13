@@ -21,7 +21,7 @@ guard :rspec, all_on_start: true do
   watch(%r{^spec/support/(.+)\.rb$})                  { "spec" }
   watch('config/routes.rb')                           { "spec/routing" }
   watch('app/controllers/application_controller.rb')  { "spec/controllers" }
-  watch('app/helpers/application_helper/rb')          { "spec/features/localization_spec.rb" }
+  watch('app/helpers/application_helper.rb')          { ["spec/features/localization_spec.rb", 'spec/decorators'] }
   watch(%r{^spec/factories/(.+)\.rb$})                { "spec" }
 
   # special cases
@@ -30,7 +30,7 @@ guard :rspec, all_on_start: true do
   watch('app/models/user.rb')                         { 'spec/models/user_profile_spec.rb' }
   watch('lib/eligibility_helpers.rb')                 { 'spec/models/user_profile_spec.rb' }
   watch('app/controllers/place_searching_controller.rb') { 'spec/controllers/trips_controller_spec.rb' }
-  
+
   # Capybara features specs
   watch(%r{^app/views/(.+)/.*\.(erb|haml)$})          { |m| ["spec/features/#{m[1]}_spec.rb", 'spec/features/localization_spec.rb'] }
   # TODO This should be done smarter, not with explicit file mapping.
