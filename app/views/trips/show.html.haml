@@ -59,11 +59,12 @@
           =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
             %i.icon-print
             Print your trip plan.
-      .row-fluid
-        .span6.offset3
-          =link_to user_trips_path(get_traveler), {class: 'btn btn-block'} do
-            %i.icon-share-alt.icon-flip-horizontal
-            I'm done, just show me all my planned trips.
+      -if user_signed_in?
+        .row-fluid
+          .span6.offset3
+            =link_to user_trips_path(get_traveler), {class: 'btn btn-block'} do
+              %i.icon-share-alt.icon-flip-horizontal
+              I'm done, just show me all my planned trips.
 
 
 
