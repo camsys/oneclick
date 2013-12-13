@@ -449,7 +449,7 @@ div.trip_proxy_trip_purpose_id{
 	margin-top:40px;
 	li{
 		z-index: 0;
-		padding:30px;
+		padding:24px 30px;
 		list-style-type: none;
 		font-size: 21px;
 		font-weight:700;
@@ -471,7 +471,7 @@ div.trip_proxy_trip_purpose_id{
 			// 	inset 0 0 0 7px $blue;
 			// margin: -6px;
 			@extend %selected;
-			padding: 36px;
+			padding: 30px 36px;
 		}
 
 		&.selected + li{
