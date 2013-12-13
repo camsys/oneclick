@@ -497,12 +497,14 @@ div.trip_proxy_trip_purpose_id{
 
 //RESULTS DETAIL PAGE
 .modal-backdrop{
-	background: rgba(0,0,0,0.5) url(../assets/kiosk/bg_black.png);
-	z-index:100;
+	background: rgba(0,0,0,0);// url(../assets/kiosk/bg_black.png);
+	z-index:1;
+	pointer-events:none;
 }
 
 .in{
 	opacity:1.0 !important;
+	top:15% !important;
 }
 
 .modal-container{
