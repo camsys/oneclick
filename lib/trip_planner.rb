@@ -69,6 +69,8 @@ class TripPlanner
   end
 
   def convert_itineraries(plan)
+    match_score = -0.3
+    match_score_incr = 0.1
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
       trip_itinerary['mode'] = Mode.transit
@@ -82,6 +84,8 @@ class TripPlanner
       trip_itinerary['walk_distance'] = itinerary['walkDistance']
       trip_itinerary['legs'] = itinerary['legs']
       trip_itinerary['server_status'] = 200
+      trip_itinerary['match_score'] = match_score
+      match_score += match_score_incr
       trip_itinerary
     end
   end
@@ -156,6 +160,7 @@ class TripPlanner
     trip_itinerary['cost'] = itinerary[0]['total_fare']
     trip_itinerary['server_status'] = 200
     trip_itinerary['server_message'] = itinerary[1]['businesses']
+    trip_itinerary['match_score'] = 1.2
     trip_itinerary
   end
 
@@ -210,7 +215,9 @@ class TripPlanner
       'mode' => Mode.rideshare,
       'ride_count' => itinerary['count'],
       'server_status' => itinerary['status'],
-      'external_info' => YAML.dump(itinerary['query'])
+      'external_info' => YAML.dump(itinerary['query']),
+      'match_score' => 1.1
+
     }
   end
 
