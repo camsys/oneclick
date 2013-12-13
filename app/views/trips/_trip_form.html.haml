@@ -221,8 +221,13 @@
 
     $('.edit-trip-btn').on('click', function(){
       $('*[data-index=1]').removeClass('hidden');
+      //Unhide the return trip if it was hidden
       $('#left-results p.return').show();
       $('#left-results p.return').prev('h5').show();
+      //hide the results and show the description
+      $('#left-description').removeClass('hidden');
+      $('#left-results').addClass('hidden');
+
       tripformView.indexCounter = 1;
     });
 
