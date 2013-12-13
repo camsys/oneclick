@@ -1,4 +1,4 @@
-.row-fluid
+.row-fluid.results-header
   .span3
     %h1
       %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
@@ -14,7 +14,7 @@
 
 
 - if @trip.any_parts_selected?
-  .row-fluid.selected_notices{style: 'margin-top: 19px;'}
+  .row-fluid.selected_notices.results-header
     - if @trip.both_parts_selected?
       .span6
         .alert.alert-success.fade.in
@@ -33,43 +33,42 @@
           .alert.alert-success.fade.in
             = content_tag :div, t(:return_selected)
 
-- if @trip.both_parts_selected?
-  .row-fluid{style: 'margin-top: 19px;'}
-    .span12.well
+  - if @trip.both_parts_selected?
+    .span12
       %h2 Trip planned and saved.
-      %p You can now do one or more of the following to finish your trip planning:
-      .row-fluid
-        .span6{style: 'margin-bottom: 9px;'}
-          =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
-            %i.icon-envelope
-            =t(:e_mail) + " your trip plan to yourself or someone helping you."
-        .span6{style: 'margin-bottom: 9px;'}
-          =link_to '#', {href: email_itinerary2_values_user_trip_path(@traveler, @trip), class: 'btn btn-block',
-            data: {remote: true}, id: 'email_itinerary2'} do
-            %i.icon-ticket
-            Email a booking request to the provider.
-      .row-fluid
-        .span6{style: 'margin-bottom: 9px;'}
-          =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
-            %i.icon-search
-            View trip details so that you can call the provider.
-        .span6{style: 'margin-bottom: 9px;'}
-          =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
-            %i.icon-print
-            Print your trip plan.
-      .row-fluid
-        .span6.offset3
-          =link_to user_trips_path(get_traveler), {class: 'btn btn-block'} do
-            %i.icon-share-alt.icon-flip-horizontal
-            I'm done, just show me all my planned trips.
+      / %p You can now do one or more of the following to finish your trip planning:
+      / .row-fluid
+      /   .span6{style: 'margin-bottom: 9px;'}
+      /     =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+      /       %i.icon-envelope
+      /       =t(:e_mail) + " your trip plan to yourself or someone helping you."
+      /   .span6{style: 'margin-bottom: 9px;'}
+      /     =link_to '#', {href: email_itinerary2_values_user_trip_path(@traveler, @trip), class: 'btn btn-block',
+      /       data: {remote: true}, id: 'email_itinerary2'} do
+      /       %i.icon-ticket
+      /       Email a booking request to the provider.
+      / .row-fluid
+      /   .span6{style: 'margin-bottom: 9px;'}
+      /     =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+      /       %i.icon-search
+      /       View trip details so that you can call the provider.
+      /   .span6{style: 'margin-bottom: 9px;'}
+      /     =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+      /       %i.icon-print
+      /       Print your trip plan.
+      / .row-fluid
+      /   .span6.offset3
+      /     =link_to user_trips_path(get_traveler), {class: 'btn btn-block'} do
+      /       %i.icon-share-alt.icon-flip-horizontal
+      /       I'm done, just show me all my planned trips.
 
 
 
-.row-fluid
-  %div{class: outbound_section_class(@trip)}
+.row-fluid.results-view
+  %div.span6
     %div{id: 'outbound_section'}
       .row-fluid.section_header
-        .span12
+        .span6
           %a
             %h2
               = t(:outbound)
@@ -78,17 +77,16 @@
         = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden) }
       - if @trip.outbound_part.has_hidden_options?
         .row-fluid
-          .span12#outbound_hidden_trips_notice
+          .span6#outbound_hidden_trips_notice
             = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
 
   - if @trip.is_return_trip
     - if @trip.outbound_part.selected?
-      %div{class: @trip.return_part.selected? ? 'span6' : 'span9'}
+      %div{class: @trip.return_part.selected? ? 'span6' : 'span6'}
         = render partial: 'return_trip'
     - else
-      .row-fluid
-        .span12
-          = render partial: 'return_trip'
+      .span6
+        = render partial: 'return_trip'
 
   
 .row-fluid
