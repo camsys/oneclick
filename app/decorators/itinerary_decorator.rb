@@ -22,7 +22,7 @@ class ItineraryDecorator < Draper::Decorator
   def cost_in_words
     return h.number_to_currency(cost.round) + " (est)" if mode.name.downcase == 'taxi'
     return 'Click for cost details' if cost_comments
-    return 'No cost' if cost.nil?
+    return 'Not available' if cost.nil?
     (cost != 0 ? h.number_to_currency(cost) : "No cost for this service.")
   end
 
@@ -38,7 +38,7 @@ class ItineraryDecorator < Draper::Decorator
     when 'Taxi'
       'Yes'
     when 'Paratransit'
-      h.duration_to_words(service.advanced_notice_minutes*60, suppress_minutes: true)
+      h.duration_to_words(service.advanced_notice_minutes*60, suppress_minutes: true, days_only: true)
     when 'Rideshare'
       h.t(:possible_rideshares, count: ride_count) + ' ' + h.t(:view_details)
     else

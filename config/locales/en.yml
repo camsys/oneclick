@@ -145,6 +145,10 @@ en:
     one: '%{count} min',
     other: '%{count} mins',
   }
+  day: {
+    one: '%{count} day',
+    other: '%{count} days',
+  }
   less_than_one_minute: 'Under 1 min'
   invalid_address: "Invalid address."
   invalid_location: "Invalid location."

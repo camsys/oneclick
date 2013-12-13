@@ -35,6 +35,20 @@ describe ItineraryDecorator do
         object.duration = nil
         expect(decorator.duration_in_words).to eq 'Not available'
       end
+      it "gives Book Ahead notes in days when > 24 hours" do
+        I18n.locale = :en
+        service = Service.new advanced_notice_minutes: 60*24 + 60
+        object.mode = Mode::PARATRANSIT
+        object.service = service
+        expect(decorator.notes).to eq '1 day'
+      end
+      it "gives Book Ahead notes in days when > 24 hours (more than 1 day)" do
+        I18n.locale = :en
+        service = Service.new advanced_notice_minutes: 60*24*3
+        object.mode = Mode::PARATRANSIT
+        object.service = service
+        expect(decorator.notes).to eq '3 days'
+      end
     end
     describe "in spanish" do
       it "creates correct string for an hour and some minutes" do

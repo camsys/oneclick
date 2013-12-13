@@ -113,6 +113,11 @@ module ApplicationHelper
     minutes = (time_in_seconds - (hours * 3600))/60
 
     time_string = ''
+
+    if time_in_seconds > 60*60*24 and options[:days_only]
+      return I18n.translate(:day, count: hours / 24)
+    end
+
     if hours > 0
       format = ((options[:suppress_minutes] and minutes==0) ? :hour_long : :hour)
       time_string << I18n.translate(format, count: hours)  + ' '
