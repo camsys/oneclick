@@ -50,46 +50,10 @@
   $(document).ready(function(){
     // open or close the map on load based on last state
     var trip_map_open = get_ui_key_value(trip_map_key, 0);
-    //alert(trip_map_key + ' = ' + trip_map_open);
-    if (trip_map_open == 1) {
-      open_map();
-    } else {
-      close_map();
-    }
+    $('#trip_map').hide();
 
-    // install event handlers
-    $('#map-icon').click(function(){
-      var trip_map_open = get_ui_key_value(trip_map_key, 0);
-      //alert(trip_map_key + ' = ' + trip_map_open);
-      if (trip_map_open == 1) {
-        // user is closing the map
-        close_map();
-      } else {
-        // user is opening the map
-        open_map();
-      }
-    }); 
     
   });
  
-  function open_map() {
-    //alert('opening map');
-    $('#trip_map').show();
-    invalidateMap();
-    / $('#map-icon').removeClass('icon-map-marker');
-    / $('#map-icon').addClass('icon-play');
-    // make sure no popups are currently being shown or they will get messed up
-    closePopup();
-    // refresh the map display
-    setMapToBounds();
-    set_ui_key_value(trip_map_key, 1);
-  };
-  
-  function close_map() {
-    //alert('closing map');
-    $('#trip_map').hide();
-    / $('#map-icon').removeClass('icon-play');
-    / $('#map-icon').addClass('icon-map-marker');
-    set_ui_key_value(trip_map_key, 0);
-  };
+
    
