@@ -107,6 +107,9 @@
 #itinerary_modal.modal.hide.fade
 
 :javascript
+  $('#main').css('overflow', 'scroll');
+  
+
   $('#email_itinerary2').on('ajax:success', function (event, data, status, xhr) {
     console.log(event)
     console.log(data)

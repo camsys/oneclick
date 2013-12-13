@@ -7,7 +7,6 @@
             .row-fluid
               .span12
                 %i.icon.icon-2x{:class => get_trip_summary_icon(itinerary)}
-                %i.icon{:class => get_trip_direction_icon(itinerary), style: 'color: green;'}
                   - if itinerary.hidden
                     %i.icon-2x.icon-thumbs-down.pull-righ
                 %h3
