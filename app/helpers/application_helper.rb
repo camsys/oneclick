@@ -199,7 +199,7 @@ module ApplicationHelper
     elsif mode_name == 'rideshare'
       partial = 'rideshare_details'
     elsif mode_name == 'walk'
-      partial = 'trips/walk_details'
+      partial = 'walk_details'
     end
     return partial    
   end

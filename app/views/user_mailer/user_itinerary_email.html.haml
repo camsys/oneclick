@@ -8,7 +8,7 @@
     %h3
       =@itinerary.service.provider.name
   -else
-    =@itinerary.mode.name
+    =get_trip_summary_title(@itinerary)
 %hr
 
 %table{style: "font-size:1.4em;"}

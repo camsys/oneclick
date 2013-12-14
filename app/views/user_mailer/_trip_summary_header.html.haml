@@ -29,7 +29,7 @@
           -else
             -if itinerary.cost_comments
               %li
-                = itinerary.cost_comments
+                = itinerary.cost_comments.html_safe
           -if itinerary.transfers
             %li
               = I18n.translate(:transfer, count: itinerary.transfers)
