@@ -76,9 +76,11 @@ class TripsController < PlaceSearchingController
   def email
     Rails.logger.info "Begin email"
     email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
-    params[:email][:send_email_to].each do |email|
-      unless email == ""
-        email_addresses << email
+    if user_signed_in?
+      params[:email][:send_email_to].each do |email|
+        unless email == ""
+          email_addresses << email
+        end
       end
     end
 
