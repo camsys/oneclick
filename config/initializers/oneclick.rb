@@ -9,7 +9,7 @@ Oneclick::Application.config.brand = ENV['BRAND'] || 'arc'
 Oneclick::Application.config.enable_rideshare = false
 
 case ENV['BRAND'] || 'arc'
-when 'arc'
+  when 'arc'
   Oneclick::Application.config.ui_logo = 'arc/arc-logo.png'
   Oneclick::Application.config.geocoder_components = 'administrative_area:GA|country:US'
   Oneclick::Application.config.map_bounds = [[33.457797,-84.754028], [34.090199,-83.921814]]
@@ -18,6 +18,8 @@ when 'arc'
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Atlanta"
   Oneclick::Application.config.enable_rideshare = true
+  Oneclick::Application.config.name = 'ARC OneClick'
+
 when 'broward'  
   Oneclick::Application.config.ui_logo = 'broward/Broward_211_Get_Connected_get_answers.jpg'
   Oneclick::Application.config.geocoder_components = 'administrative_area:FL|country:US'
@@ -26,6 +28,8 @@ when 'broward'
   Oneclick::Application.config.open_trip_planner = "http://arc-otp-demo.camsys-apps.com"
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Miami"
+  Oneclick::Application.config.name = 'OneClick'
+
 when 'pa'
   Oneclick::Application.config.ui_logo = 'pa/penndotLogo.jpg'
   Oneclick::Application.config.geocoder_components = 'administrative_area:PA|country:US'
@@ -34,6 +38,8 @@ when 'pa'
   Oneclick::Application.config.open_trip_planner = "http://oneclick-otp-yata.camsys-apps.com:8080"
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Harrisburg-PA"
+  Oneclick::Application.config.name = '1-Click/PA'
+
 end
 
 # General UI configuration settings
