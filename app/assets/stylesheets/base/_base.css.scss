@@ -62,7 +62,19 @@ h6 { font-size: 12px; line-height: 20px; }
 }
 .dialog-content {
   min-height: 175px;
+  padding-left: 10px;
+  padding-right:10px;
 }
+.one-note {
+  min-height: 211px;
+}
+.two-notes {
+  min-height: 247px;
+}
+.three-notes {
+  min-height: 283px;
+}
+
 .dialog-body {
   border: 1px solid #F5F5F5;
   padding:20px 20px 0px 20px;

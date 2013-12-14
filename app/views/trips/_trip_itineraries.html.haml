@@ -13,7 +13,7 @@
                 - if itinerary.hidden
                   %i.icon-2x.icon-thumbs-down.pull-right
                 
-        .dialog-content{:style => 'padding-left: 10px; padding-right:10px'}
+        .dialog-content{class: dialog_content_class(trip_part)}
           .row-fluid
             .span12
               = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary}

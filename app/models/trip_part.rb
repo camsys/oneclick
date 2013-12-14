@@ -145,4 +145,8 @@ class TripPart < ActiveRecord::Base
     end
   end  
 
+  def max_notes_count
+    itineraries.valid.visible.map(&:notes_count).max
+  end
+
 end

@@ -81,6 +81,12 @@ class Itinerary < ActiveRecord::Base
     end
   end
 
+  def notes_count
+    [(missing_information ? 1 : 0), 
+    (accommodation_mismatch ? 1 : 0),
+    ((date_mismatch or time_mismatch or too_late) ? 1 : 0)].sum
+  end
+
   protected
 
   # Set resonable defaults for a new itinerary

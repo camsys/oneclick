@@ -44,6 +44,19 @@ module TripsHelper
     itinerary.selected? ? 'itinerary_thumbnail_selected' : ''
   end
 
+  def dialog_content_class trip_part
+    case trip_part.max_notes_count
+    when 0
+      ''
+    when 1
+      'one-note'
+    when 2
+      'two-notes'
+    else
+      'three-notes'
+    end
+  end
+
   def outbound_section_class trip
     if trip.both_parts_selected?
       'span6'
