@@ -22,6 +22,8 @@
         %th.center= t(:rating)
         %th.center= t(:comments)
         %th.center= t(:actions)
+        - if Rails.env.development?
+          %th.center= 'Max notes'
     %tbody{ :id => 'trips_table'}
       - @trips.each do |trip|
         %tr
@@ -53,6 +55,8 @@
                 %i.icon-rotate-right
               -# = link_to user_trip_path(@traveler, trip), {:alt => t(:rate_trip), :title => t(:rate_trip), :class => "btn btn-small"} do
                 -# %i.icon-thumbs-up
+          - if Rails.env.development?
+            %td= "%s / %s" % [trip.outbound_part.max_notes_count, trip.return_part.max_notes_count]
         = render partial: 'user_comments', locals: {trip: trip}
 
 - else

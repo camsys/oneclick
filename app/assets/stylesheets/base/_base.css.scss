@@ -66,13 +66,13 @@ h6 { font-size: 12px; line-height: 20px; }
   padding-right:10px;
 }
 .one-note {
-  min-height: 211px;
+  min-height: 196px; // 211px;
 }
 .two-notes {
-  min-height: 247px;
+  min-height: 217px; // 247px;
 }
 .three-notes {
-  min-height: 283px;
+  min-height: 238px; // 283px;
 }
 
 .dialog-body {
@@ -182,7 +182,7 @@ a:hover#help {
 
 @media (min-width: 768px ) {
   .itineraries_holder li {
-    width: 20em !important;
+    min-width: 23em !important;
   }
 }
 
