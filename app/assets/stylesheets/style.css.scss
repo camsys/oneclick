@@ -1060,6 +1060,10 @@ input#txtDate{
 	}
 }
 
+//OVERRIDE TADAAAPICKR'S STYLES
+.datepicker thead tr:first-child th:hover {
+  background: inherit;
+}
 
 //TIME PICKER
 label.time{
