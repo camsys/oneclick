@@ -171,6 +171,9 @@
 
     $('.next-step-btn, a#yes, a#no').on('click', tripformView.nextBtnHandler);
 
+    //set calendar to today
+    this.calendar.setDate(new Date());
+
     //reveal first form item
     $('*[data-index="0"]').removeClass('hidden');
   }
