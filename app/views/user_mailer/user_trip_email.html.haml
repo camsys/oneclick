@@ -1,4 +1,8 @@
-%p= t(:trip_options_information_from_from, from: @from)
+- unless @comments.blank?
+  %h3 Comments
+  %p= @comments
+
+%h3= t(:trip_options_information_from_from, from: @from)
 
 %hr
 

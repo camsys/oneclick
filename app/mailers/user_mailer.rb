@@ -5,9 +5,10 @@ class UserMailer < ActionMailer::Base
   
   helper :application, :trips
   
-  def user_trip_email(addresses, trip, subject, from)
+  def user_trip_email(addresses, trip, subject, from, comments)
     @trip = trip
     @from = from
+    @comments = comments
 
     mail(to: addresses, subject: subject, from: @from)
   end
@@ -41,11 +42,12 @@ class UserMailer < ActionMailer::Base
     mail(to: addresses, subject: subject, from: @from)
   end
 
-  def user_itinerary_email(addresses, trip, itinerary, subject, from)
+  def user_itinerary_email(addresses, trip, itinerary, subject, from, comments)
     @trip = trip
     @from = from
     @itinerary = itinerary
     @legs = @itinerary.get_legs
+    @comments = comments
 
     mail(to: addresses, subject: subject, from: @from)
   end

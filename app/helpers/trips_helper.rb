@@ -65,4 +65,14 @@ module TripsHelper
     end
   end
 
+  def send_trip_by_email_list traveler, is_assisting
+    list = []
+    list << ["Traveler: " + traveler.email + " (" + traveler.name + ")", traveler.email] if is_assisting
+    current_user.buddies.confirmed.each do |buddy|
+      list << ["Buddy: " + buddy.email + " (" + buddy.name + ")", buddy.email]
+    end
+    list << ['Me: '+  current_user.email, current_user.email]
+    list
+  end
+
 end

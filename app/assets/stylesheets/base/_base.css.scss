@@ -190,6 +190,9 @@ a:hover#help {
 .modal{
   max-height: 85%;
   overflow-y: auto;
+  form {
+    margin: 0;
+  }
 }
 
 .trip_basic_text{
