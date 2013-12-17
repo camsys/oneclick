@@ -1040,9 +1040,11 @@ input#txtDate{
 					&.day{
 						&.old{
 							color: $gray3;
+              pointer-events: none;
 						}
 						&.new{
 							color: $gray3;
+              pointer-events: none;
 						}
 						&.active{
 							@extend %selected;
