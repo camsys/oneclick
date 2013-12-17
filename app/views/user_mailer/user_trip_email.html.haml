@@ -1,4 +1,8 @@
-%p= t(:trip_options_information_from_from, from: @from)
+- unless @comments.blank?
+  %h3 Comments
+  %p= @comments
+
+%h3= t(:trip_options_information_from_from, from: @from)
 
 %hr
 
@@ -25,33 +29,45 @@
       %strong
         =format_date(@trip.trip_datetime.in_time_zone)
 
-- @trip.itineraries.valid.visible.each do |itinerary|
 
-  %hr{style: "height:12px; background:#848484;"}
-  %h2
-    -if itinerary.mode.name.downcase == 'paratransit'
-      =itinerary.service.name
-      %h3
-        =itinerary.service.provider.name
-    -else
-      =itinerary.mode.name
+-@trip.trip_parts.each do |trip_part|
 
-  %hr
-  %h3
-    Summary:
-  = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
+  -if trip_part.is_return_trip?
+    -unless trip_part.itineraries.valid.visible.count == 0
+      %hr{style: "height:12px; background:#848484;"}
+      %h3="Return Trip Options"
+  -else
+    %hr{style: "height:12px; background:#848484;"}
+    %h3="Outbound Trip Options"
 
-  %hr
-  %h3
-    Details:
-  = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
+  - trip_part.itineraries.valid.visible.each do |itinerary|
+
+    %hr{style: "height:12px; background:#848484;"}
+    %h2
+      -if itinerary.mode.name.downcase == 'paratransit'
+        =itinerary.service.name
+        %h3
+          =itinerary.service.provider.name
+      -else
+        =get_trip_summary_title(itinerary)
+
+    %hr
+    %h3
+      -unless itinerary.mode.name.downcase == 'rideshare'
+        Summary:
+        = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
+
+        %hr
+    %h3
+      Details:
+    = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
 
 %hr{style: "height:12px; background:#848484;"}
 %table
   %tbody
     %tr
-      %td Thank you for using ARC OneClick Software.
+      %td="Thank you for using " + Oneclick::Application.config.name + " Software."
     %tr
       %td This email is automatically sent by the OneClick system. Please do not reply to this email.
     %tr
-      %td Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of ARC OneClick
+      %td="Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of " + Oneclick::Application.config.name

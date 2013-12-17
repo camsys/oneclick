@@ -16,10 +16,10 @@ class Itinerary < ActiveRecord::Base
   scope :good_score, where('match_score < 3')
 
   attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
-    :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
-    :ride_count, :external_info, :match_score, :missing_information, :missing_information_text, :date_mismatch,
-    :time_mismatch, :too_late, :accommodation_mismatch, :missing_accommodations
-    
+  :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
+  :ride_count, :external_info, :match_score, :missing_information, :missing_information_text, :date_mismatch,
+  :time_mismatch, :too_late, :accommodation_mismatch, :missing_accommodations
+
   # returns true if this itinerary failed to work
   def failed
     mode.nil?
@@ -56,6 +56,12 @@ class Itinerary < ActiveRecord::Base
   def get_legs
     return legs.nil? ? [] : ItineraryParser.parse(YAML.load(legs))
   end
+
+  def mode_and_routes
+    routes = get_legs.map(&:route)
+    puts mode.inspect
+    [mode.name] + routes
+  end
   
   def unhide
     self.hidden = false
@@ -75,8 +81,13 @@ class Itinerary < ActiveRecord::Base
     end
   end
 
+  def notes_count
+    [(missing_information ? 1 : 0), 
+    (accommodation_mismatch ? 1 : 0),
+    ((date_mismatch or time_mismatch or too_late) ? 1 : 0)].sum
+  end
 
-protected
+  protected
 
   # Set resonable defaults for a new itinerary
   def set_defaults

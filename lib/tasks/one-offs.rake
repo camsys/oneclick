@@ -6,7 +6,7 @@ namespace :oneclick do
       [{code: 'disabled', desc: 'persons with disabilities'},
         {code: 'no_trans', desc: 'persons with no means of transportation'},
         {code: 'nemt_eligible', desc: 'persons eligible for Medicaid'},
-        {code: 'ada_eligible', desc: 'persons eligible for ADA Paratarnsit'},
+        {code: 'ada_eligible', desc: 'persons eligible for ADA Paratransit'},
         {code: 'veteran', desc: 'military veterans'}].each do |c|
           t = TravelerCharacteristic.find_by_code(c[:code])
           t.update_attributes! desc: c[:desc]
@@ -119,6 +119,7 @@ namespace :oneclick do
       # site.snippets.create! identifier: 'home-bottom-right', label: 'home-bottom-right', content: '<div class="well">This is content for home-bottom-right</div>'
       brand = Oneclick::Application.config.brand
       case brand
+
       when 'arc'
         text = <<EOT
 <h2 style="text-align: justify;">1-Click/ARC helps you find options to get from here to there, using public transit,
@@ -137,6 +138,33 @@ EOT
         text = <<EOT
 <span style="float: right;">1-Click/ARC is sponsored by the 
 <a href="http://www.atlantaregional.com/" target=_blank>Atlanta Regional Commission</a>.</span>
+EOT
+        site.snippets.create! identifier: 'home-bottom-right-logged-in', label: 'home-bottom-right-logged-in', content: text
+        site.snippets.create! identifier: 'home-bottom-right', label: 'home-bottom-right', content: text
+        text = <<EOT
+Tell us about your trip.  The more information you give us, the more options we can find!
+EOT
+        site.snippets.create! identifier: 'plan-a-trip', label: 'plan a trip', content: text
+
+      when 'pa'
+        text = <<EOT
+<h2 style="text-align: justify;">1-Click/PA helps you find options to get from here to there, using public transit,
+ door-to-door services, and specialized transportation.  Give it a try, and
+ <a href="mailto://OneClick@camsys.com">tell us</a> what you think.</h2>
+EOT
+        site.snippets.create! identifier: 'home-top-logged-in', label: 'home-top-logged-in', content: text
+        site.snippets.create! identifier: 'home-top', label: 'home-top', content: text
+        text = <<EOT
+1-Click/PA was funded by the
+ <a href="http://www.fta.dot.gov/grants/13094_13528.html" target=_blank>Veterans Transportation 
+ Community Living Initiative</a>.
+EOT
+        site.snippets.create! identifier: 'home-bottom-left-logged-in', label: 'home-bottom-left-logged-in', content: text
+        site.snippets.create! identifier: 'home-bottom-left', label: 'home-bottom-left', content: text
+        text = <<EOT
+<span style="float: right;">1-Click/PA is sponsored by the
+<a href="http://www.dot.state.pa.us/" target=_blank>Pennsylvania Department of Transportation</a> and the
+<a href="http://www.rabbittransit.org/" target=_blank>York Adams Transportation Authority</a>.</span>
 EOT
         site.snippets.create! identifier: 'home-bottom-right-logged-in', label: 'home-bottom-right-logged-in', content: text
         site.snippets.create! identifier: 'home-bottom-right', label: 'home-bottom-right', content: text

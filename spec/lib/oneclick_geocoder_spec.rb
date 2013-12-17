@@ -16,7 +16,7 @@ describe OneclickGeocoder do
       longitude: 2.0
       )
     # mock_results = double(each: [mock_result])
-    mock_results = double('results')
+    mock_results = double('results', {size: 1})
     allow(mock_results).to receive(:each).and_yield mock_result
     Geocoder.stub(:search).and_return mock_results
   end

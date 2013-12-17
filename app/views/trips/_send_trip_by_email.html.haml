@@ -1,20 +1,30 @@
-%div{:class => "modal hide fade", :id => "send_trip_by_email"}
-  %div{:class => "modal-header"}
-    .row-fluid
-      .span12
-        = simple_form_for :email, url: email_user_trip_path(@traveler, @trip), html: { class: 'form-horizontal',
-          id: 'send_by_email_form' }, data: {dismiss: 'modal'}  do |f|
-          = f.error_notification
-          - if user_signed_in?
-            - if assisting?
-              = f.input :send_to_traveler, as: :boolean, label: t(:send_to_traveler)
-          - else
-            = f.input :from, label: t(:from_address), required: true
-          = f.input :email_addresses, label: t(:email_addresses), required: false
-          = button_tag type: :submit, class: 'btn btn-info' do
-            %i.icon-envelope
-            =t(:e_mail)
+.modal.hide.fade#send_trip_by_email
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3 Send trip plan by email
+    = simple_form_for :email, url: email_user_trip_path(@traveler, @trip), html: { class: 'form-horizontal',
+      id: 'send_by_email_form' }, data: {dismiss: 'modal'}  do |f|
+      .modal-body
+        = f.error_notification
+        - if user_signed_in?
+          = f.input :send_email_to, label: t(:send_email_to), :required => false,
+            collection: send_trip_by_email_list(@traveler, is_assisting),
+            :input_html => { :checked => true}, :as => :check_boxes
+        - else
+          = f.input :from, label: t(:from_address), required: true
+        = f.input :email_addresses, label: 'Additional email addresses', required: false
+        = f.input :email_comments, as: :text, label: 'Comments', required: false, input_html: {rows: 3}
+      .modal-footer
+        = button_tag type: :submit, class: 'btn btn-info' do
+          %i.icon-envelope
+          Send
+        = link_to '#', :class => "cancel_link" do
+          %i.icon.icon-reply
+          = t(:cancel)
 :javascript
   $('#send_by_email_form').on('submit', function() {
     $('#send_trip_by_email').modal('hide')
+  })
+  $('.cancel_link').on('click', function() {
+    $('#send_trip_by_email').modal('hide')  
   })

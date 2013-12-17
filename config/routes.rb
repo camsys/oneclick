@@ -3,11 +3,15 @@ Oneclick::Application.routes.draw do
 
   scope "(:locale)", locale: /en|es/ do
 
+
+
+
     authenticated :user do
       root :to => 'home#index'
     end
 
     devise_for :users, controllers: {registrations: "registrations"}
+
 
     # everything comes under a user id
     resources :users do
@@ -71,6 +75,7 @@ Oneclick::Application.routes.draw do
           get   'details'
           get   'itinerary'
           post  'email'
+          post  'email_provider'
           post  'email_itinerary'
           get   'email_itinerary2_values'
           post  'email2'
@@ -91,6 +96,15 @@ Oneclick::Application.routes.draw do
         end
       end
 
+    end
+
+    #Ratings do not come under a user id
+    resources :ratings do
+      member do
+        get   'edit'
+        post  'rate'
+        post  'comments'
+      end
     end
 
     namespace :admin do

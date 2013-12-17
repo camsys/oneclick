@@ -60,7 +60,7 @@ en:
   retract: 'Retract'
   visitor: 'Visitor'
   invalid_dob: 'Invalid date of birth'
-  to_see_best_options: 'To see the best options, tell us about yourself.'
+  to_see_best_options: 'To see the best options, please tell us about yourself.'
   skip_this_step: 'Skip this step'
   buddy_request_sent: "Buddy request sent"
   no_buddy_email_address: "You must enter the email address for your buddy"
@@ -139,9 +139,17 @@ en:
     one: '%{count} h',
     other: '%{count} h',
   }
+  hour_long: {
+    one: '%{count} hour',
+    other: '%{count} hours',
+  }
   minute: {
     one: '%{count} min',
     other: '%{count} mins',
+  }
+  day: {
+    one: '%{count} day',
+    other: '%{count} days',
   }
   less_than_one_minute: 'Under 1 min'
   invalid_address: "Invalid address."
@@ -195,6 +203,12 @@ en:
   profile_updated: "Your profile was updated."
 
   # new ones
+  close: "Close"
+  name: "Name"
+  trip_request_from: "Trip request from "
+  send_email_to: "Send email to"
+  additional_emails: "Additional emails"
+  taken: "Trip Taken?"
   please_tell_us: "Please tell us about your recent trip."
   comments_updated: "Comments updated."
   trips: "Trips"

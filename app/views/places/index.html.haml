@@ -2,7 +2,7 @@
   .span12
     %h1
       %i.icon.icon-map-marker
-      = is_traveler ? "#{@traveler.name}'s #{t(:places)}" : t(:my_places) 
+      = is_assisting ? "#{@traveler.name}'s #{t(:places)}" : t(:my_places)
 
 .row-fluid{:style => "margin-top:20px;"}
   .well.well-small

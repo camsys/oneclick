@@ -44,12 +44,35 @@ module TripsHelper
     itinerary.selected? ? 'itinerary_thumbnail_selected' : ''
   end
 
+  def dialog_content_class trip_part
+    case trip_part.max_notes_count
+    when 0
+      ''
+    when 1
+      'one-note'
+    when 2
+      'two-notes'
+    else
+      'three-notes'
+    end
+  end
+
   def outbound_section_class trip
     if trip.both_parts_selected?
       'span6'
     else
       (trip.outbound_part.selected? ? 'span3' : 'span12')
     end
+  end
+
+  def send_trip_by_email_list traveler, is_assisting
+    list = []
+    list << ["Traveler: " + traveler.email + " (" + traveler.name + ")", traveler.email] if is_assisting
+    current_user.buddies.confirmed.each do |buddy|
+      list << ["Buddy: " + buddy.email + " (" + buddy.name + ")", buddy.email]
+    end
+    list << ['Me: '+  current_user.email, current_user.email]
+    list
   end
 
 end

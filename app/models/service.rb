@@ -35,4 +35,8 @@ class Service < ActiveRecord::Base
     end
   end
 
+  def full_name
+    provider.name.blank? ? name : ("%s, %s" % [name, provider.name])
+  end
+
 end

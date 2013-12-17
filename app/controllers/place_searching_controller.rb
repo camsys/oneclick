@@ -2,7 +2,7 @@ class PlaceSearchingController < TravelerAwareController
 
   # Include map helpers into this super class
   include MapHelper
-    
+
   # UI Constants  
   MAX_POIS_FOR_SEARCH = Rails.application.config.ui_search_poi_items
   ADDRESS_CACHE_EXPIRE_SECONDS = Rails.application.config.address_cache_expire_seconds
@@ -20,7 +20,7 @@ class PlaceSearchingController < TravelerAwareController
 
   # Search for addresses, existing addresses, or POIs based on text string entered by the user
   def geocode
-    
+
     # Populate the @traveler variable
     get_traveler
     
@@ -41,15 +41,23 @@ class PlaceSearchingController < TravelerAwareController
       cache_key = CACHED_PLACES_ADDRESSES_KEY
     end
 
-    geocoder = OneclickGeocoder.new
-    geocoder.geocode(@query)
-    # cache the results
-    cache_addresses(cache_key, geocoder.results)
+    unless ENV['FAKE_GEOCODING_RESULTS']
+      geocoder = OneclickGeocoder.new
+      geocoder.geocode(@query)
+      # cache the results
+      cache_addresses(cache_key, geocoder.results)
+    else
+      geocoder = OneclickGeocoderFake.new
+    end
+
+    Rails.logger.info "geocoder is #{geocoder.class}"
 
     # This array will hold the list of candidate places
     @matches = []    
     # We create a unique index for mapping etc for each place we find. Limited to 26 candidates as there are no letters past 'Z'
-    geocoder.results.each_with_index do |addr, index|
+    # TODO Limit to 20 results for now; more than 20 seems to blow up something in the Javascript; see https://www.pivotaltracker.com/story/show/62266768
+    geocoder.results.first(20).each_with_index do |addr, index|
+      Rails.logger.debug "In geocoder.results.each_with_index loop, index #{index} addr #{addr}"
       icon_style = icon_base + MapHelper::ALPHABET[index] 
       key = key_base + index.to_s
       @matches << get_addr_marker(addr, key, icon_style) unless index > 25
@@ -63,7 +71,7 @@ class PlaceSearchingController < TravelerAwareController
   
   # Search for addresses, existing addresses, or POIs based on text string entered by the user
   def search
-    
+
     # Populate the @traveler variable
     get_traveler
     
@@ -137,7 +145,7 @@ class PlaceSearchingController < TravelerAwareController
     end
   end
   
-protected
+  protected
   
   # Cache an array of addresses
   def cache_addresses(key, addresses, expires_in = ADDRESS_CACHE_EXPIRE_SECONDS)
@@ -151,7 +159,7 @@ protected
     ret = Rails.cache.read(get_cache_key(@traveler, key))
     return ret.nil? ? [] : ret
   end
-    
+
   # generates a cache key that is unique for a user and key name
   def get_cache_key(user, key)
     return "%06d:%s" % [user.id, key]

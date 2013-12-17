@@ -65,7 +65,20 @@ h6 { font-size: 12px; line-height: 20px; }
 }
 .dialog-content {
   min-height: 175px;
+  padding-left: 10px;
+  padding-right:10px;
 }
+.one-note {
+  min-height: 210px; // 196px; // 211px;
+}
+
+.two-notes {
+  min-height: 245px; // 217px; // 247px;
+}
+.three-notes {
+  min-height: 280px; // 238px; // 283px;
+}
+
 .dialog-body {
   border: 1px solid #F5F5F5;
   padding:20px 20px 0px 20px;
@@ -171,9 +184,18 @@ a:hover#help {
   padding: 0px;
 }
 
+@media (min-width: 768px ) {
+  .itineraries_holder li {
+    min-width: 23em !important;
+  }
+}
+
 .modal{
   max-height: 85%;
   overflow-y: auto;
+  form {
+    margin: 0;
+  }
 }
 
 .trip_basic_text{
@@ -231,11 +253,18 @@ a:hover#help {
 }
 
 .itinerary-item {
-  line-height: 0;
-  margin-bottom: 10px;
 }
+
 .trip_summary_text {
   font-size: 2em;
+}
+
+.trip_summary_header .row-fluid {
+  line-height: normal;
+  padding-bottom: 5px;
+  [class*="span"] {
+    min-height: 0;
+  }
 }
 
 .candidate-label {
@@ -417,3 +446,5 @@ td.left, th.left {
 .top-margin{
   margin-top: 20px;
 }
+
+.trips.show .first-in-row { margin-left: 0 !important; }

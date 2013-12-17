@@ -38,6 +38,15 @@ class TripPart < ActiveRecord::Base
   def selected?
     itineraries.valid.visible.count == 1
   end
+
+  # Returns the itinerary selected for this trip.  If one isn't selected, returns nil
+  def selected_itinerary
+    if selected?
+      return itineraries.valid.visible.first
+    else
+      return nil
+    end
+  end
  
   # Converts the trip date and time into a date time object
   def trip_time
@@ -82,6 +91,21 @@ class TripPart < ActiveRecord::Base
     else
       itineraries << Itinerary.new('server_status'=>response['id'], 'server_status'=>response['msg'])
     end
+    hide_duplicate_fixed_route(itineraries)
+  end
+
+  def hide_duplicate_fixed_route itineraries
+    seen = {}
+    itineraries.each do |i|
+      if i.mode.nil?
+        Rails.logger.info "hide_duplicate_fixed_route"
+        Rails.logger.info "Skipping itinerary because mode is nil: #{i.ai}"
+        next
+      end
+      mar = i.mode_and_routes
+      i.hide if seen[mar]
+      seen[mar] = true
+    end
   end
 
   def create_taxi_itineraries
@@ -120,5 +144,9 @@ class TripPart < ActiveRecord::Base
       self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response)
     end
   end  
+
+  def max_notes_count
+    itineraries.valid.visible.map(&:notes_count).max
+  end
 
 end

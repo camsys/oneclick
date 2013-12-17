@@ -11,12 +11,9 @@
             = get_trip_summary_title(@itinerary)
         .span6
           .pull-right{:style => "display: inline-block"}
-            %a{class: "button btn btn-mini btn-success", "data-dismiss" => "modal"}
-              %i.icon-reply
-              =t(:return)
-            =link_to hide_user_trip_path(@traveler, @trip, :itinerary => @itinerary), {"data-dismiss" => "modal",  class: "btn btn-mini btn-danger", remote: true} do
-              %i.icon-remove
-              =t(:remove)
+            %a{class: "button btn btn-mini btn-danger", "data-dismiss" => "modal"}
+              %i.danger.icon-remove
+              =t(:close)
 .modal-body
   = render :partial => 'trip_summary_header', :locals => { :itinerary => @itinerary }
   .thumbnail

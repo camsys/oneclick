@@ -62,8 +62,6 @@ class TripsController < PlaceSearchingController
   # GET /trips/1.json
   def show
     @show_hidden = params[:show_hidden]
-    @next_itinerary_id = @show_hidden.nil? ? @trip.itineraries.valid.visible.first.id :
-      @trip.itineraries.valid.first.id
 
     if session[:current_trip_id]
       session[:current_trip_id] = nil
@@ -78,14 +76,50 @@ class TripsController < PlaceSearchingController
   def email
     Rails.logger.info "Begin email"
     email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
-    Rails.logger.info email_addresses.inspect
-    email_addresses << current_user.email if user_signed_in? && params[:email][:send_to_me]
-    email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
+    if user_signed_in?
+      params[:email][:send_email_to].each do |email|
+        unless email == ""
+          email_addresses << email
+        end
+      end
+    end
+
     Rails.logger.info email_addresses.inspect
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    UserMailer.user_trip_email(email_addresses, @trip, "ARC OneClick Trip Itinerary", from_email).deliver
+    UserMailer.user_trip_email(email_addresses, @trip, "ARC OneClick Trip Itinerary", from_email,
+      params[:email][:email_comments]).deliver
     respond_to do |format|
-      format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
+      format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.to_sentence}."  }
+      format.json { render json: @trip }
+    end
+  end
+
+  def email_provider
+    Rails.logger.info "Begin email"
+    emails = []
+    @trip = Trip.find(params[:id].to_i)
+    from_email = user_signed_in? ? current_user.email : params[:email][:from]
+
+    #IF this is a guest, save their email address
+    unless user_signed_in?
+      @trip.user.email = from_email
+      @trip.user.save
+    end
+
+    #If the outbound trip has selected an itinerary with a service, mail it. Otherwise mail the return itinerary
+    if @trip.outbound_part.selected_itinerary.service
+      provider = @trip.outbound_part.selected_itinerary.service.provider
+    else
+      provider = @trip.return_part.selected_itinerary.service.provider
+    end
+
+    comments = params[:email][:comments]
+    if params[:email][:copy_self] == '1'
+      emails << from_email
+    end
+    UserMailer.provider_trip_email(emails, @trip, "ARC OneClick Trip Request", from_email, comments).deliver
+    respond_to do |format|
+      format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{provider.name}."  }
       format.json { render json: @trip }
     end
   end
@@ -100,7 +134,8 @@ class TripsController < PlaceSearchingController
     email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
     Rails.logger.info email_addresses.inspect
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, "ARC OneClick Trip Itinerary", from_email).deliver
+    UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, "ARC OneClick Trip Itinerary", from_email,
+      params[:email][:email_comments]).deliver
     respond_to do |format|
       format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
       format.json { render json: @trip }
@@ -167,11 +202,11 @@ class TripsController < PlaceSearchingController
     travel_date = default_trip_time
     
     @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
-    @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
+    @trip_proxy.trip_time = travel_date.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
     
     if @trip_proxy.is_round_trip == "1"
       return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
-      @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
+      @trip_proxy.return_trip_time = return_trip_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
     end
         
     # Create markers for the map control
@@ -387,6 +422,9 @@ class TripsController < PlaceSearchingController
     # inflate a trip proxy object from the form params
     @trip_proxy = create_trip_proxy_from_form_params
        
+    Rails.logger.info "TripsController#create"
+    Rails.logger.info "@trip_proxy #{@trip_proxy.ai}"
+    Rails.logger.info "valid? #{@trip_proxy.valid?}"
     if @trip_proxy.valid?
       @trip = create_trip(@trip_proxy)
     end
@@ -446,6 +484,7 @@ class TripsController < PlaceSearchingController
     #Rails.logger.debug @markers.inspect    
     #Rails.logger.debug @polylines.inspect
 
+    @itinerary = ItineraryDecorator.decorate(@itinerary)
     respond_to do |format|
       format.js 
     end
@@ -462,25 +501,6 @@ class TripsController < PlaceSearchingController
     end
 
     itinerary.hidden = true
-    
-    # find the next unhidden itinerary for this planned trip
-    @next_itinerary_id = nil
-    found = false
-    @trip.itineraries.valid.visible.each do |itin|
-      # if the found falg is set, this is the itinerary we want
-      if found
-        @next_itinerary_id = itin.id
-        break
-      end
-      # if this itin is the one we selected then we mark that we found it. The next
-      # itinerary is the one we want to identify
-      if itin.id == itinerary.id
-        found = true
-      end
-    end
-    if @next_itinerary_id.nil? 
-      @next_itinerary_id = @trip.itineraries.valid.visible.first.id
-    end
     
     respond_to do |format|
       if itinerary.save
@@ -520,6 +540,7 @@ class TripsController < PlaceSearchingController
     @trip = Trip.find(params[:id].to_i)
     @trip.user_comments = params['trip']['user_comments']
     @trip.save
+
     respond_to do |format|
       format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => t(:comments_sent)}) }
       format.json { head :no_content }
@@ -534,28 +555,6 @@ class TripsController < PlaceSearchingController
       format.html { redirect_to(admin_trips_path, :flash => { :notice => t(:comments_updated)}) }
       format.json { head :no_content }
     end
-  end
-
-  def rate
-    @trip = Trip.find(params[:id])
-    @trip.rate(params[:stars], current_user, params[:dimension])
-
-    respond_to do |format|
-      format.html { redirect_to(user_trips_path(@traveler)) }
-      format.js {render inline: "location.reload();" }
-    end
-
-  end
-
-  def edit_rating
-
-    @trip = Trip.find(params[:id])
-
-    respond_to do |format|
-      format.html
-      format.json { render json: @trip }
-    end
-
   end
 
 protected
@@ -638,13 +637,18 @@ private
     trip_proxy.arrive_depart = trip_part.is_depart
     trip_datetime = trip_part.trip_time
     trip_proxy.trip_date = trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
-    trip_proxy.trip_time = trip_part.scheduled_time.strftime(TRIP_TIME_FORMAT_STRING)
-    
+    trip_proxy.trip_time = trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
+    Rails.logger.info "create_trip_proxy"
+    Rails.logger.info "trip_part.scheduled_date #{trip_part.scheduled_date}"
+    Rails.logger.info "trip_part.scheduled_time #{trip_part.scheduled_time}"
+    Rails.logger.info "trip_proxy.trip_date #{trip_proxy.trip_date}"
+    Rails.logger.info "trip_proxy.trip_time #{trip_proxy.trip_time}"
+
     # Check for return trips
     if trip.trip_parts.count > 1
       last_trip_part = trip.trip_parts.last
       trip_proxy.is_round_trip = last_trip_part.is_return_trip ? "1" : "0"
-      trip_proxy.return_trip_time = last_trip_part.scheduled_time.strftime(TRIP_TIME_FORMAT_STRING)
+      trip_proxy.return_trip_time = last_trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
     end
     
     # Set the from place
@@ -813,7 +817,12 @@ private
     trip_part.sequence = sequence
     trip_part.is_depart = trip_proxy.arrive_depart == t(:departing_at) ? true : false
     trip_part.scheduled_date = trip_date
-    trip_part.scheduled_time = Time.parse(trip_proxy.trip_time)
+    trip_part.scheduled_time = Time.zone.parse(trip_proxy.trip_time)
+    Rails.logger.info "create_trip"
+    Rails.logger.info "trip_date #{trip_date}"
+    Rails.logger.info "trip_part.scheduled_date #{trip_part.scheduled_date}"
+    Rails.logger.info "trip_proxy.trip_time #{trip_proxy.trip_time}"
+    Rails.logger.info "trip_part.scheduled_time #{trip_part.scheduled_time}"
     trip_part.from_trip_place = from_place
     trip_part.to_trip_place = to_place
     
@@ -830,7 +839,7 @@ private
       # the return trip time is the arrival time plus
       trip_part.is_return_trip = true
       trip_part.scheduled_date = trip_date
-      trip_part.scheduled_time = Time.parse(trip_proxy.return_trip_time)
+      trip_part.scheduled_time = Time.zone.parse(trip_proxy.return_trip_time)
       trip_part.from_trip_place = to_place
       trip_part.to_trip_place = from_place      
 

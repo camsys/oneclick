@@ -1,5 +1,4 @@
 class Trip < ActiveRecord::Base
-    
   # Associations
   belongs_to :user
   belongs_to :creator, :class_name => "User", :foreign_key => "creator_id"
@@ -7,12 +6,8 @@ class Trip < ActiveRecord::Base
   has_many :trip_places, :order => "trip_places.sequence ASC"
   has_many :trip_parts, :order => "trip_parts.sequence ASC"
 
-  # Needed to Rate Strips
-  ajaxful_rateable :stars => 5
-
-
   #Accessible attributes
-  attr_accessible :user_comments
+  attr_accessible :user_comments, :taken, :rating
   
   # has_many :valid_itineraries,  :through => :trip_parts, :conditions => 'server_status=200 AND hidden=false AND match_score < 3', :class_name => 'Itinerary'
   # has_many :hidden_itineraries, :through => :trip_parts, :conditions => 'server_status=200 AND hidden=true AND match_score < 3', :class_name => 'Itinerary'
@@ -115,11 +110,10 @@ class Trip < ActiveRecord::Base
   
   # Returns a numeric rating score for the trip
   def get_rating
-    if in_the_future
-      return nil
+    if self.rating
+      return self.rating
     else
-      #TODO replace this with actual rating
-      return rand(0..5)
+      return 0
     end
   end
   
@@ -211,6 +205,10 @@ class Trip < ActiveRecord::Base
 
   def only_return_selected?
     !trip_parts.first.selected? and trip_parts.last.selected?
+  end
+
+  def md5_hash
+    Digest::MD5.hexdigest(self.id.to_s + self.user.id.to_s + self.created_at.to_s)
   end
 
 end

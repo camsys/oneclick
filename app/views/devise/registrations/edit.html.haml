@@ -1,13 +1,13 @@
 %h1
   %i{class: "icon #{CsHelpers::ACTION_ICONS[:travel_profile]}"}
-  = is_traveler ? "#{@traveler.name}'s #{t(:travel_profile)}" : t(:travel_profile) 
+  = is_assisting ? "#{@traveler.name}'s #{t(:travel_profile)}" : t(:travel_profile)
 
 %h4
 .tabbable
   %ul.nav.nav-tabs
     -# render the first 3 tabs only if the current user is operating as themselves. If they are assisting
     -# another user then we don't render the first 3 tabs
-    - if is_traveler == false
+    - if is_assisting == false
       %li
         %a{href: '#tab1', data: {toggle: 'tab', id: '1'}}
           = t(:my_information)
@@ -31,7 +31,7 @@
   .tab-content
     -# render the first 3 tabs only if the current user is operating as themselves. If they are assisting
     -# another user then we don't render the first 3 tabs
-    - if is_traveler == false
+    - if is_assisting == false
       .tab-pane#tab1
         .well#user_info
           = render partial: 'user_info'
