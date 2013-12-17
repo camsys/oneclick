@@ -30,6 +30,11 @@ class User < ActiveRecord::Base
   has_many :travelers, :class_name => 'User', :through => :traveler_relationships
   has_many :confirmed_travelers, :class_name => 'User', :through => :confirmed_traveler_relationships
 
+  has_many :buddy_relationships, class_name: 'UserRelationship', foreign_key: :user_id
+  has_many :buddies, class_name: 'User', through: :buddy_relationships, source: :delegate
+
+  scope :confirmed, where('relationship_status_id = ?', RelationshipStatus::CONFIRMED)
+
   # Validations
   validates :email, :presence => true
   validates :first_name, :presence => true

@@ -1,54 +1,13 @@
+- i = itinerary
 .row-fluid.trip_summary_header
   .span12
-    %table.table
-      -if itinerary.service
+    = render partial: 'itinerary_item', locals: {object: i.service.full_name, label: 'Name'}
+    = render partial: 'itinerary_item', locals: {object: i.duration_in_words, label: 'Trip duration'}
+    = render partial: 'itinerary_item', locals: {object: i.cost_in_words, label: 'Cost'}
+    = render partial: 'itinerary_item', locals: {object: i.walking_time, label: 'Walking time'}
+    = render partial: 'itinerary_item', locals: {object: i.transfers_in_words, label: 'Transfers'}
+    = render partial: 'itinerary_item', locals: {object: i.notes, label: i.notes_label}
+    / t(:possible_rideshares, count: i.ride_count), label: 'Notes'}
+    / = render partial: 'itinerary_item', locals: {object: '', label: 'Book ahead'}
 
-        =format_itinerary_item do
-          = itinerary.service.name
-        =format_itinerary_item do
-          = itinerary.service.provider.name
-          
-      -if itinerary.is_walk
-        =format_itinerary_item do
-          = distance_to_words(itinerary.walk_distance)
-        =format_itinerary_item do
-          = duration_to_words(itinerary.walk_time)
-      - else     
-        -if itinerary.duration
-          = format_itinerary_item do
-            = duration_to_words(itinerary.duration) + " (est.)"     
-        -if itinerary.cost
-          -if itinerary.mode.name.downcase == 'taxi'
-            =format_itinerary_item do
-              = number_to_currency(itinerary.cost.round) + " (est.)"
-          -else
-            =format_itinerary_item do
-              -unless itinerary.cost == 0
-                = number_to_currency(itinerary.cost)
-              -else
-                = "No cost for this service."
-        -if itinerary.cost_comments
-          =format_itinerary_item do
-            = "CLICK for cost details."
-        -if itinerary.transfers
-          =format_itinerary_item do
-            = I18n.translate(:transfer, count: itinerary.transfers)
-        -if itinerary.trip_part.is_depart == false && itinerary.end_time
-          =format_itinerary_item do
-            = t(:arrive_at) + ' ' + format_time(itinerary.end_time.in_time_zone)
-        -if itinerary.trip_part.is_depart == true && itinerary.start_time
-          =format_itinerary_item do
-            = t(:depart_at) + ' ' + format_time(itinerary.start_time.in_time_zone)
-        -if itinerary.walk_time
-          =format_itinerary_item do
-            = duration_to_words(itinerary.walk_time) + t(:walking)
-        -if itinerary.mode.name.downcase=='rideshare'
-          =format_itinerary_item do
-            = t(:possible_rideshares1, count: itinerary.ride_count)
-          =format_itinerary_item do
-            = t(:possible_rideshares2)
-          =format_itinerary_item do
-            = t(:view_details1)
-          =format_itinerary_item do
-            = t(:view_details2)
 

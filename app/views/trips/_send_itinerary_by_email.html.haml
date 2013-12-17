@@ -1,26 +1,26 @@
-%div{:class => "modal hide fade", :id => "send_itinerary_by_email_" + itinerary.id.to_s}
-  %div{:class => "modal-header"}
-    .row-fluid
-      .span12
-        = simple_form_for :email, url: email_itinerary_user_trip_path(@traveler, @trip, itinerary: itinerary), html: { class: 'form-horizontal',
-          id: 'send_itinerary_by_email_form_' + itinerary.id.to_s }, data: {dismiss: 'modal'}  do |f|
-          = f.error_notification
-          - if user_signed_in?
-            - if assisting?
-              = f.input :send_to_traveler, as: :boolean, label: t(:send_to_traveler)
-          - else
-            = f.input :from, label: t(:from_address), required: true
-          - if user_signed_in?
-            = f.input :email_addresses, label: t(:email_addresses), required: false, :input_html => { :value => @traveler.email }
-          -else
-            = f.input :email_addresses, label: t(:email_addresses), required: false
-          = button_tag type: :submit, class: 'pull-right btn btn-info' do
-            %i.icon-envelope
-            =t(:e_mail)
-
-:javascript
-
-
-
-
-
+.modal.hide.fade{id: "send_itinerary_by_email_" + itinerary.id.to_s}
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3 Send itinerary by email
+  = simple_form_for :email, url: email_itinerary_user_trip_path(@traveler, @trip, itinerary: itinerary), html: { class: 'form-horizontal',
+    id: 'send_itinerary_by_email_form_' + itinerary.id.to_s }, data: {dismiss: 'modal'}  do |f|
+    .modal-body
+      = f.error_notification
+      - if user_signed_in?
+        - if assisting?
+          = f.input :send_to_traveler, as: :boolean, label: t(:send_to_traveler)
+        - else
+          = f.input :send_email_to, label: t(:send_email_to), :required => false,
+            collection: send_trip_by_email_list(@traveler, is_assisting),
+            :input_html => { :checked => true}, :as => :check_boxes        
+      - else
+        = f.input :from, label: t(:from_address), required: true
+      = f.input :email_addresses, label: 'Additional email addresses', required: false
+      = f.input :email_comments, as: :text, label: 'Comments', required: false, input_html: {rows: 3}
+    .modal-footer
+      = button_tag class: 'btn', data: {dismiss: 'modal'} do
+        %i.icon.icon-reply
+        = t(:cancel)
+      = button_tag type: :submit, class: 'pull-right btn btn-info' do
+        %i.icon-envelope
+        Send

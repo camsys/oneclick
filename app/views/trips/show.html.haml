@@ -41,12 +41,16 @@
       /   .span6{style: 'margin-bottom: 9px;'}
       /     =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
       /       %i.icon-envelope
-      /       =t(:e_mail) + " your trip plan to yourself or someone helping you."
+      /       =t(:e_mail) + " your trip plan."
       /   .span6{style: 'margin-bottom: 9px;'}
-      /     =link_to '#', {href: email_itinerary2_values_user_trip_path(@traveler, @trip), class: 'btn btn-block',
-      /       data: {remote: true}, id: 'email_itinerary2'} do
-      /       %i.icon-ticket
-      /       Email a booking request to the provider.
+      /     -if (@trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service) or (@trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.service)
+      /       =link_to '#', {href: '#send_trip_by_email_to_provider', class: 'btn btn-block', data: {toggle: 'modal'}} do
+      /         %i.icon-ticket
+      /         Email a booking request to the provider.
+      /     -else
+      /       =link_to '#', {disabled: true, class: 'btn btn-block'} do
+      /         %i.icon-ticket
+      /         Email a booking request to the provider.
       / .row-fluid
       /   .span6{style: 'margin-bottom: 9px;'}
       /     =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
@@ -56,11 +60,12 @@
       /     =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
       /       %i.icon-print
       /       Print your trip plan.
-      / .row-fluid
-      /   .span6.offset3
-      /     =link_to user_trips_path(get_traveler), {class: 'btn btn-block'} do
-      /       %i.icon-share-alt.icon-flip-horizontal
-      /       I'm done, just show me all my planned trips.
+      / -if user_signed_in?
+      /   .row-fluid
+      /     .span6.offset3
+      /       =link_to user_trips_path(get_traveler), {class: 'btn btn-block'} do
+      /         %i.icon-share-alt.icon-flip-horizontal
+      /         I'm done, just show me all my planned trips.
 
 
 
@@ -72,22 +77,17 @@
           %a
             %h2
               = t(:outbound)
-              %i.icon{:class => get_trip_direction_icon(@trip.outbound_part), style: 'color: green;'}
-      .row-fluid
-        = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden) }
+      .row-fluid.itineraries_holder
+        = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
+          trip_part: @trip.outbound_part }
       - if @trip.outbound_part.has_hidden_options?
         .row-fluid
           .span6#outbound_hidden_trips_notice
             = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
 
   - if @trip.is_return_trip
-    - if @trip.outbound_part.selected?
-      %div{class: @trip.return_part.selected? ? 'span6' : 'span6'}
-        = render partial: 'return_trip'
-    - else
-      .span6
-        = render partial: 'return_trip'
-
+    .span6
+      = render partial: 'return_trip'
   
 .row-fluid
   .well.well-small.span12
@@ -109,11 +109,31 @@
   
 
   $('#email_itinerary2').on('ajax:success', function (event, data, status, xhr) {
-    console.log(event)
-    console.log(data)
-    console.log(status)
-    console.log(xhr)
-    console.log(data['created_at'])
     $('#send_trip_by_email_to_provider #email_email_addresses').val(data['email'])
     $('#send_trip_by_email_to_provider').modal('show')
   })
+
+  /**
+   * Adds 0 left margin to the first thumbnail on each row that don't get it via CSS rules.
+   * Recall the function when the floating of the elements changed.
+   */
+  function fixThumbnailMargins() {
+      $('.itineraries_holder .thumbnails').each(function () {
+          var $thumbnails = $(this).children(),
+              previousOffsetLeft = $thumbnails.first().offset().left;
+          $thumbnails.removeClass('first-in-row');
+          $thumbnails.first().addClass('first-in-row');
+          $thumbnails.each(function () {
+              var $thumbnail = $(this),
+                  offsetLeft = $thumbnail.offset().left;
+              if (offsetLeft < previousOffsetLeft) {
+                  $thumbnail.addClass('first-in-row');
+              }
+              previousOffsetLeft = offsetLeft;
+          });
+      });
+  }
+
+  // Fix the margins when potentally the floating changed
+  $(window).resize(fixThumbnailMargins);
+  fixThumbnailMargins();

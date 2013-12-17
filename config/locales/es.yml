@@ -139,9 +139,17 @@ es:
     one: '%{count} h',
     other: '%{count} h',
   }
+  hour_long: {
+    one: '[es141]%{count} hora',
+    other: '[es142]%{count} horas',
+  }
   minute: {
     one: '%{count} min',
     other: '%{count} mins',
+  }
+  day: {
+    one: '[es149]%{count} day',
+    other: '[es150]%{count} days',
   }
   less_than_one_minute: 'Menos de 1 min'
   invalid_address: "Dirección incorrecta."
@@ -196,6 +204,12 @@ es:
   profile_updated: "Su perfil ha sido actualizado. *37*"
 
   # new ones
+  close: "[es]Close[/es]"
+  name: "Nombre"
+  trip_request_from: "[es]Trip request from[/es] "
+  send_email_to: "[es]Send email to[/es]"
+  additional_emails: "[es]Additional emails[/es]"
+  taken: "[es]Trip taken?[/es]"
   please_tell_us: "[es]Please tell us about your recent trip.[/es]"
   comments_updated: "[es]Comments updated.[/es]"
   trips: "[es]Trips[/es]"

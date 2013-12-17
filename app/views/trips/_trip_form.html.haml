@@ -211,7 +211,8 @@
       if($(this).is('#no')){
         $('input#trip_proxy_from_place').val('');
       } else if($(this).is('#yes')){
-        $('input#trip_proxy_from_place').val('');
+      
+        //$('input#trip_proxy_from_place').val('');
         //CURRENTLY NOT WORKING
         //$('input#trip_proxy_from_place').val('Cemetery Drive, Decatur, GA 30033');
       }
@@ -489,7 +490,7 @@
                       return process(resultList);
                     },
                     error: function (data) {
-                        show_alert("We are sorry but something went wrong. Please try again.");
+                        show_alert("We are sorry but something went wrong. Please try again. [1]");
                     }
                 });
             }, typeahead_delay);
@@ -562,7 +563,7 @@
                       return process(resultList);
                     },
                     error: function (data) {
-                        show_alert("We are sorry but something went wrong. Please try again.");
+                        show_alert("We are sorry but something went wrong. Please try again. [2]");
                     }
                 });
             }, typeahead_delay);
