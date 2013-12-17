@@ -504,7 +504,15 @@ div.trip_proxy_trip_purpose_id{
 
 .in{
 	opacity:1.0 !important;
-	top:15% !important;
+	top:0% !important;
+}
+
+.modal{
+	margin-left:0;
+	position:absolute;
+	left:0;
+	width:100%;
+	top:0;
 }
 
 .modal-container{
@@ -928,47 +936,168 @@ div.trip_proxy_trip_purpose_id{
 	}
 }
 
+// // DETAIL VIEW -- to replace the modal view.
+// // TO DO - Animate the slide in of the DETAIL VIEW
+// .detail-view{
+// 	position: absolute;
+// 	height:100%;
+// 	width: 100%;
+// 	z-index: 200;
+
+// 	.close-section{
+// 		width: 33.3%;
+// 		background-color: $black;
+// 		height: inherit;
+// 		padding-top: 28%;
+// 		float:left;
+
+// 		.close-btn-container{
+// 			margin-left: 24px;
+// 			display: inline-block;
+// 			text-align: center;
+// 			.close-btn{
+// 				background: url(../assets/kiosk/close-btn-default.png) no-repeat center center;
+// 				height: 84px;
+// 				width: 84px;
+// 			}
+// 			p{
+// 				color: $white;
+// 				display: inline-block;
+// 				text-transform: uppercase;
+// 				border-bottom: 1px solid $blue;
+// 			}
+// 		}
+
+// 	}
+// 	.detail-section{
+// 		width: 66.67%;
+// 		height: inherit;
+// 		background-color: $white;
+// 		float:left;
+
+// 	}
+// }
+
+
 // DETAIL VIEW -- to replace the modal view.
 // TO DO - Animate the slide in of the DETAIL VIEW
-.detail-view{
-	position: absolute;
+.detail-view, #itinerary_modal{
+	position: fixed;
 	height:100%;
 	width: 100%;
-	z-index: 200;
+	z-index: 100;
+	background-color: $black;
 
-	.close-section{
-		width: 33.3%;
-		background-color: $black;
-		height: inherit;
-		padding-top: 28%;
-		float:left;
+	.detail-container{
+		height:inherit;
 
-		.close-btn-container{
-			margin-left: 24px;
-			display: inline-block;
-			text-align: center;
-			.close-btn{
-				background: url(../assets/kiosk/close-btn-default.png) no-repeat center center;
-				height: 84px;
-				width: 84px;
-			}
-			p{
-				color: $white;
-				display: inline-block;
-				text-transform: uppercase;
-				border-bottom: 1px solid $blue;
-			}
+		&.container-fluid{
+			margin-top:0;
+		}
+		.row-fluid{
+			height:inherit;
 		}
 
-	}
-	.detail-section{
-		width: 66.67%;
-		height: inherit;
-		background-color: $white;
-		float:left;
+		.close-section{
+			//TODO: Add pattern bg.
+			background-color: $black;
+			height: inherit;
+			padding-top: 0px;
+			float:left;
+			position: relative;
+			border-right:0px solid black;
 
+			.left-content{
+				text-align: right;
+				position: absolute;
+				top: 50px;
+				right: 22px; 
+
+				h5{
+					color: $gray3;
+				}
+
+				p{
+					font-size: 21px;
+					padding-bottom: 36px;
+					color: $white;
+				}
+			}
+
+			.close-btn-container{
+				margin-left: 24px;
+				display: inline-block;
+				text-align: center;
+				margin-top: 450px;
+				.close-btn{
+					background: url(../assets/kiosk/close-btn-default.png) no-repeat center center;
+					height: 84px;
+					width: 84px;
+				}
+				p{
+					color: $white;
+					display: inline-block;
+					text-transform: uppercase;
+					border-bottom: 1px solid $blue;
+				}
+			}
+		}
+	}	
+}
+
+.detail-section{
+	height: inherit;
+	background-color: $white;
+	float:left;
+	margin:0 !important;
+	.detail-header{
+		width:100%;
+		height:128px;
+		background-color: $gray6;
+		color: $white;
+		.taxi-icon{
+			float:left;
+			height:100%;
+			width: 100px;
+		}
+		h1{
+			float:left;
+			font-size: 60px;
+			line-height: 1.8em;
+			margin-left: 12px;
+		}
+	}
+	.detail-main{
+		font-size:18px;
+
+		.detail-options{
+			@extend .dob-breadcrumb;
+			ul{
+				li{
+					width:49% !important;
+					cursor:pointer;
+				}
+			}
+		}
+		.detail-content{
+			.directions{
+				ul{
+					margin-top:30px;
+					li{
+						list-style-type:none;
+						margin-bottom:20px;
+						.icon{
+							height:50px;
+							width:50px;
+							float:left;
+						}
+					}
+				}
+			}
+		}
 	}
 }
+//END OF THE RESULTS DETAIL SECTION
 
 //CALENDAR / DATEPICKER FIRST ONE
 label.date{
