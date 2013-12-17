@@ -30,6 +30,14 @@ class TripLeg
   
   # array of points that make a polyline shape for the leg
   attr_accessor :geometry
+
+  def route
+    "n/a"
+  end
+
+  def route_id
+    "n/a"
+  end
     
   #  
   def initialize(attrs = {})

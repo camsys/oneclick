@@ -25,28 +25,6 @@ module ApplicationHelper
   end
  
   # Formats a line in the itinerary
-  def format_itinerary_item(&block)
-
-     # Check to see if there is any content in the block    
-    content = capture(&block)
-    if content.nil?      
-      content = "&nbsp;"
-    end
-
-    html = "<tr>"
-    html << "<td style='border-top:none;'>"
-    html << "<h4 class='itinerary-item'>"
-    
-    html << content
-
-    html << "</h4>"
-    html << "</td>"
-    html << "</tr>"
-    
-    return html.html_safe     
-  end
-
-  # Formats a line in the itinerary
   def format_email_itinerary_item(&block)
 
     # Check to see if there is any content in the block
@@ -57,29 +35,6 @@ module ApplicationHelper
     html << content
     return html.html_safe
   end
-
-  # Formats a line in the itinerary
-  def format_itinerary_item_old(&block)
-
-     # Check to see if there is any content in the block    
-    content = capture(&block)
-    if content.nil?      
-      content = "<p>&nbsp;</p>"
-    end
-
-    html = "<div class='row-fluid'>"
-    html << "<div class='span12'>"
-    html << "<h4>"
-
-    html << content
-
-    html << "</h4>"
-    html << "</div>"
-    html << "</div>"
-
-    return html.html_safe     
-  end
-  
 
   # Defines an array of filter options for the MyTrips page. The filters combine date range filters
   # with trip purpose filters. To make sure we can identify which is which, we simply add a constant (100)
@@ -104,26 +59,28 @@ module ApplicationHelper
   end
   
   # Returns a set of rating icons as a span
-  def get_rating_icons(trip)
-    if trip.in_the_future
-      return ""
-    end
+  def get_rating_icons(trip, size=1)
     rating = trip.get_rating
-    html = "<span>"
+    html = "<span id='stars'>"
     for i in 1..5
+      link = rate_rating_url(trip, :user_id => trip.user.id, :stars => i, :size => size)
+      html << "<a title='Rate " + i.to_s + " Stars' href=" + link + " style='color: black; text-decoration: none' data-method='post' data-remote='true'><i id=star" + trip.id.to_s + '_' + i.to_s + " class='icon-" + size.to_s
       if i <= rating
-        html << "<i class='icon icon-star'></i>"
+        html << "x icon-star'> </i></a>"
       else
-        html << "<i class='icon icon-star-empty'></i>"
+        html << "x icon-star-empty'> </i></a>"
       end
     end
-    html << "<span>"
+    html << "</span>"
     return html.html_safe
   end
   
-  # Returns true if the current user is a traveler, false if the current
-  # user is operating as a delegate 
-  def is_traveler
+  # Returns true if the current user is assisting the traveler, false if the current
+  # user is the current traveler
+  def is_assisting
+    unless current_user
+      return false
+    end
     if @traveler
       return @traveler.id == current_or_guest_user.id ? false : true
     else
@@ -148,8 +105,7 @@ module ApplicationHelper
     dist_str
   end
   
-  def duration_to_words(time_in_seconds)
-    
+  def duration_to_words(time_in_seconds, options = {})
     return t(:n_a) unless time_in_seconds
 
     time_in_seconds = time_in_seconds.to_i
@@ -157,11 +113,17 @@ module ApplicationHelper
     minutes = (time_in_seconds - (hours * 3600))/60
 
     time_string = ''
-    if hours > 0
-      time_string << I18n.translate(:hour, count: hours)  + ' '
+
+    if time_in_seconds > 60*60*24 and options[:days_only]
+      return I18n.translate(:day, count: hours / 24)
     end
 
-    if minutes > 0 || hours > 0
+    if hours > 0
+      format = ((options[:suppress_minutes] and minutes==0) ? :hour_long : :hour)
+      time_string << I18n.translate(format, count: hours)  + ' '
+    end
+
+    if minutes > 0 || (hours > 0 and !options[:suppress_minutes])
       time_string << I18n.translate(:minute, count: minutes)
     end
 
@@ -201,7 +163,7 @@ module ApplicationHelper
     return l time, :format => :oneclick_short unless time.nil?
   end
 
-  # Retuens a pseudo-mode for an itineray. The pseudo-mode is used to determine
+  # Retuens a pseudo-mode for an itinerary. The pseudo-mode is used to determine
   # the correct icon, title, and partial for an itinerary
   def get_pseudomode_for_itinerary(itinerary)
 
@@ -235,9 +197,9 @@ module ApplicationHelper
     elsif mode_name == 'taxi'
       partial = 'taxi_details'
     elsif mode_name == 'rideshare'
-      partial = 'trips/rideshare_details'
+      partial = 'rideshare_details'
     elsif mode_name == 'walk'
-      partial = 'trips/walk_details'
+      partial = 'walk_details'
     end
     return partial    
   end

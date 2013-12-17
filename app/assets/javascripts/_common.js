@@ -31,9 +31,9 @@ function ajax_submit_form_handler(form_id) {
 	        success: function(data) {
 	        	//alert('success');
 	        },
-	        error: function (data) {
+	        error: function (data, textStatus, errorThrown) {
 	       		//alert('error');
-            	show_alert("We are sorry but something went wrong. Please try again.");	               
+            	show_alert("We are sorry but something went wrong. Please try again. [3]");	               
 	        }
 	    });
 	    return false;
@@ -54,8 +54,9 @@ function ajax_render_action(url, method) {
 		    //  $('#ajax-panel').append('<h4>' + $(this).find('title').text() + '</h4><p>' + $(this).find('link').text() + '</p>');
 		    //});
 		},
-		error: function (data) {
-      		show_alert("We are sorry but something went wrong. Please try again.");                
+            error: function (data, textStatus, errorThrown) {
+                //alert('error');
+                show_alert("We are sorry but something went wrong. Please try again. [4]");                
       	}
    	});  
 };
