@@ -710,6 +710,10 @@ div.trip_proxy_trip_purpose_id{
 			background-color: lighten($blue, 10%);
 			border-top:1px solid lighten($blue, 15%);
 		}
+		&.stop {
+			background-color: lighten($red, 10%);
+			border: none;
+		}
 
 		h1{
 			margin: 64px 0 64px 64px;
