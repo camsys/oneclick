@@ -95,9 +95,47 @@
   #timepicker-one{ :data => {:index => 4}}
     = f.input :trip_time, :wrapper => :append, :label => t(:trip_time) do
       #trip-time
-        = f.input_field :trip_time, :as => :string, :label => false
-        %span.add-on
-          %i.icon-time
+        = f.label :trip_time
+        = f.input :trip_time, :as => :string, :label => false
+
+    .row-fluid
+      .span10.offset1
+        .timetable
+          %ul.row-fluid.time
+            %li 1:00
+            %li 1:30
+            %li 2:00
+            %li 2:30
+            %li 3:00
+            %li 3:30
+          %ul.row-fluid.time
+            %li 4:00
+            %li 4:40
+            %li 5:00
+            %li 5:30
+            %li.selected 6:00
+            %li 6:30
+          %ul.row-fluid.time
+            %li 7:00
+            %li 7:30
+            %li 8:00
+            %li 8:30
+            %li 9:00
+            %li 9:30
+          %ul.row-fluid.time
+            %li 10:00
+            %li 10:30
+            %li 11:00
+            %li 11:30
+            %li 12:00
+            %li 12:30
+          %ul.row-fluid.timeofday
+            %li.notime
+            %li.notime
+            %li.notime
+            %li.notime
+            %li.ampm.selected am
+            %li.ampm pm
   
   / TODO: ADD THE DIV WITH THE DATA INDEX
   #purposepicker{ :data => {:index => 5}}
