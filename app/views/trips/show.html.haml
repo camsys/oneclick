@@ -1,16 +1,16 @@
-.row-fluid.results-header
-  .span3
-    %h1
-      %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-      = t(:trip_options)
+/ .row-fluid.results-header
+/   .span3
+/     %h1
+/       %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
+/       = t(:trip_options)
 
-  .span9.well.trip_header
-    %div{class: (@trip.in_the_future ? 'span11' : 'span12')}
-      = render partial: 'trip_header', locals: {trip: @trip}
-    - if @trip.in_the_future
-      .span1
-        = link_to edit_user_trip_path(@traveler, @trip), :class => "btn btn-small pull-right", :alt => t(:edit_trip), :title => t(:edit_trip) do
-          %i.icon-edit
+/   .span9.well.trip_header
+/     %div{class: (@trip.in_the_future ? 'span11' : 'span12')}
+/       = render partial: 'trip_header', locals: {trip: @trip}
+/     - if @trip.in_the_future
+/       .span1
+/         = link_to edit_user_trip_path(@traveler, @trip), :class => "btn btn-small pull-right", :alt => t(:edit_trip), :title => t(:edit_trip) do
+/           %i.icon-edit
 
 
 - if @trip.any_parts_selected?
@@ -70,24 +70,33 @@
 
 
 .row-fluid.results-view
-  %div.span6
-    %div{id: 'outbound_section'}
-      .row-fluid.section_header
-        .span6
-          %a
-            %h2
-              = t(:outbound)
+  .span1
+    %p
+      = t(:outbound)
+    .prev-btn.disabled
+  %div.span10
+    %div{id: 'outbound_section'}   
       .row-fluid.itineraries_holder
         = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
           trip_part: @trip.outbound_part }
-      - if @trip.outbound_part.has_hidden_options?
-        .row-fluid
-          .span6#outbound_hidden_trips_notice
-            = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
+      / - if @trip.outbound_part.has_hidden_options?
+      /   .row-fluid
+      /     .span6#outbound_hidden_trips_notice
+      /       = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
+  .span1
+    .next-btn
 
-  - if @trip.is_return_trip
-    .span6
+- if @trip.is_return_trip
+  .row-fluid.results-view
+    .span1
+      %p
+        = t(:return)
+      .prev-btn.disabled
+      .card-prev
+    %div.span10
       = render partial: 'return_trip'
+    .span1
+      .next-btn
   
 .row-fluid
   .well.well-small.span12
@@ -101,11 +110,14 @@
     = render partial: 'send_trip_by_email', locals: {trip: @trip}
     = render partial: 'send_trip_by_email_to_provider'
 
+.results-footer-container
+  .trip-overview.pull-left
+  .new-trip.pull-right
 
 #itinerary_modal.modal.hide.fade
 
 :javascript
-  $('#main').css('overflow', 'scroll');
+  $('.back-button').hide();
   
 
   $('#email_itinerary2').on('ajax:success', function (event, data, status, xhr) {

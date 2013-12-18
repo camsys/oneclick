@@ -516,7 +516,27 @@ div.trip_proxy_trip_purpose_id{
 }
 
 .results-view{
-	padding: 0 36px 36px 36px;
+	padding: 24px 36px 0;
+
+	.span1{
+		//border-right:1px solid $gray4;
+		height:328px;
+		text-align: right;
+
+		p{
+			text-transform: uppercase;
+			font-weight:600;
+		}
+		.prev-btn{
+			@extend %card-btn;
+			margin-top:-20px
+		}
+		.next-btn{
+			@extend %card-btn;
+			float:right;
+			@extend %flip;
+		}
+	}
 }
 
 
@@ -1430,6 +1450,12 @@ body.sessions.new, body.registrations.new{
 	background: url(../assets/kiosk/icon-taxi.png) no-repeat center center;
 }
 
+//
+#itineraries{
+	height:330px;
+	overflow:hidden;
+}
+
 .actionbutton{
 	padding: 0px;
 	border-radius: 0;
@@ -1472,17 +1498,19 @@ body.sessions.new, body.registrations.new{
 			float: left;
 			line-height: 1.9em;
 			text-decoration: none;
+			background-color: $blue;
 
 			&.select{
-				background-color: $green;
+				// background-color: $green;
 				border-right:1px solid $white;
+				border-left:1px solid $white;
 			}
 			&.details{
-				background-color: $blue;
+				// background-color: $blue;
 				border-right:1px solid $white;
 			}
 			&.hide{
-				background-color: $red;
+				// background-color: $red;
 			}
 		}
 	}

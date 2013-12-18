@@ -1,7 +1,7 @@
 / - itineraries.valid.each_slice(2) do |itineraries|
 %ul.thumbnails#itineraries
   - ItineraryDecorator.decorate_collection(itineraries.valid).each do |itinerary|
-    %li{class: (itinerary.trip_part.selected? ? 'span6' : 'span6')}
+    %li{class: (itinerary.trip_part.selected? ? 'span3' : 'span3')}
       .thumbnail.actionbutton.shadow{:tabindex => -1, class: itinerary_thumbnail_class(itinerary)}
         .dialog-title-bar.corner-top{:data => {:action => itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id)}}
           .row-fluid
