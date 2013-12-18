@@ -152,7 +152,7 @@ tripformView.indexChangeHandler = function() {
 
         case 4:
           $.fn.datepicker.Calendar.hide();
-          //tripformView.calendar.$cal.hide();
+          tripformView.timepickerInit();
           break;
 
         case 8:
@@ -224,6 +224,32 @@ tripformView.nextButtonValidate = function($inputelem) {
       //reattach click event handler to next button
       tripformView.nextButton.on('click', tripformView.nextBtnHandler);
     }
+  });
+};
+
+tripformView.timepickerInit = function() {
+  var timetable = $('#timepicker-one').find('.timetable');
+  var timeInput = $('#trip_proxy_trip_time');
+
+  //add click event to time items
+  timetable.find('li').on('click', function(e) {
+    var target = $(e.target);
+
+    //clear time
+    if(target.hasClass('ampm') === false) {
+      //clear all time selected
+      timetable.find('li').not('.ampm').removeClass('selected');
+    } else {
+      timetable.find('.ampm').removeClass('selected');
+    }
+    //add selected class to target
+    target.addClass('selected');
+
+    //create val for input
+    var selectedTimeElems = timetable.find('li.selected');
+    var timeval = $(selectedTimeElems[0]).text() + " " + $(selectedTimeElems[1]).text();
+    timeInput.val(timeval);
+
   });
 };
 
