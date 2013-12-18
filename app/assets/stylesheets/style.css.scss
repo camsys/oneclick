@@ -1001,6 +1001,7 @@ div.trip_proxy_trip_purpose_id{
 		.close-section{
 			//TODO: Add pattern bg.
 			background-color: $black;
+			background-image: url(../assets/kiosk/bg_black.png);
 			height: inherit;
 			padding-top: 0px;
 			float:left;
@@ -1141,7 +1142,7 @@ div.trip_proxy_trip_purpose_id{
 	border-top:1px solid $gray4;
 	.print-me{
 		width:inherit;
-		height:150px;
+		height:137px;
 		background-color: $gray2;
 		width:100%;
 		font-size: 32px;

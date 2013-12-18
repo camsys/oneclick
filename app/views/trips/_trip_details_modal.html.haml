@@ -76,6 +76,11 @@
     }
   });
 
+  $('.close-btn-container').on('click', function(){
+    //$('.navbar').removeClass('hidden');
+    $('.navbar').css('z-index', 1);
+  });
+
 
 
 = yield :scripts

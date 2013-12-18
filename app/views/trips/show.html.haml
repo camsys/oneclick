@@ -106,6 +106,10 @@
 
 :javascript
   $('#main').css('overflow', 'scroll');
+  $('a.details').on('click', function(){
+    //$('.navbar').addClass('hidden');
+    $('.navbar').css('z-index', 0);
+  });
   
 
   $('#email_itinerary2').on('ajax:success', function (event, data, status, xhr) {
