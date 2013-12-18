@@ -23,87 +23,39 @@
           =t(:close)
     .detail-section.span8plus
       .detail-header
-        .taxi-icon
-        %h1 Taxi
+        %i.icon.icon-5x{:class => get_trip_summary_icon(@itinerary)}
+        %h1
+          = @itinerary.service.full_name
       .detail-main
-        .detail-options
-          %ul 
-            %li.current
-              %span.type Details
-            %li 
-              %span.type Map
-
-        .detail-content
-          .directions
-
-            %ul 
-              %li 
-                %span.icon 
-                .directions-copy
-                  .directions-location 
-                    %strong Start 
-                    at 6325 Hospital Parkway Johns Creek GA 30097
-                  .directions-time 3:42am
-              %li 
-                %span.icon 
-                .directions-copy
-                  .directions-location 
-                    %strong Start 
-                    at 6325 Hospital Parkway Johns Creek GA 30097
-                  .directions-time 3:42am
-          .map.hidden
-          .phone-list.hidden
-      .detail-footer
-    .modal-header
-      .row-fluid
-        .span12
-          .row-fluid
-            .span6
-              %h3.dialog-title{:STYLE => "margin:0px;vertical-align:top;"}
-                %i.icon.icon-2x{:class => get_trip_summary_icon(@itinerary)}
-                = get_trip_summary_title(@itinerary)
-            .span6
-              .pull-right{:style => "display: inline-block"}
-                %a{class: "button btn btn-mini btn-danger", "data-dismiss" => "modal"}
-                  %i.danger.icon-remove
-                  =t(:close)
-    .modal-body
-      = render :partial => 'trip_summary_header', :locals => { :itinerary => @itinerary }
-      .thumbnail
-        .tabbable
-          %ul.nav.nav-tabs
-            %li.active
-              = link_to "Details", "#details_tab", :data => {:toggle => "tab"}
-            - if @itinerary.is_mappable
-              %li
-                = link_to "Map", "#map_tab", :id => 'map_tab_link', :data => {:toggle => "tab"}
-          
-          .tab-content
-            #details_tab.tab-pane.active
-              = render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
-            - if @itinerary.is_mappable
-              #map_tab.tab-pane
-                = render :partial => 'map_details', :locals => { :itinerary => @itinerary }
-
-    .modal-footer
-      .row-fluid
-        .pull-right{:style => "display: inline-block"}
-          .span12.btn-toolbar
-            %button.btn.btn-info
-              %i.icon-print
-              =t(:print)
-            %button.btn.btn-info
-              %i.icon-comments
-              =t(:chat)
-            %button.btn.btn-info{:id => "email_itinerary"}
-              =link_to '#', {href: '#send_itinerary_by_email_' + @itinerary.id.to_s, class: "btn-info", data: {toggle: 'modal'}} do
-                %i.icon-envelope
-                =t(:e_mail)
+        .thumbnail
+          .tabbable
+            %ul.nav.nav-tabs
+              %li.active
+                = link_to "Details", "#details_tab", :data => {:toggle => "tab"}
+              - if @itinerary.is_mappable
+                %li
+                  = link_to "Map", "#map_tab", :id => 'map_tab_link', :data => {:toggle => "tab"}
+            
+            .tab-content
+              #details_tab.tab-pane.active
+                = render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
+              - if @itinerary.is_mappable
+                #map_tab.tab-pane
+                  = render :partial => 'map_details', :locals => { :itinerary => @itinerary }
+        
+        .detail-footer
+          .print-me
+            =t(:print)
+        / %li 
+        /   =t(:chat)
+        / %li{:id => "email_itinerary"}
+        /   =link_to '#', {href: '#send_itinerary_by_email_' + @itinerary.id.to_s, class: "btn-info", data: {toggle: 'modal'}} do
+        /     =t(:e_mail)
 
 
 :javascript
   $('body').on('shown', '#map_tab_link', function() {
-    $('#lmap').css('height', '300px');
+    $('#lmap').css('height', '576px');
     //alert("invalidating map");
     invalidateMap();
     showMap();

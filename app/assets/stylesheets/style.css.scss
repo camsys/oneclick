@@ -1055,29 +1055,64 @@ div.trip_proxy_trip_purpose_id{
 		height:128px;
 		background-color: $gray6;
 		color: $white;
-		.taxi-icon{
+		i{
 			float:left;
-			height:100%;
-			width: 100px;
+			margin-top: 22px;
+			margin-left: 24px;
+			color: $gray4;
 		}
 		h1{
 			float:left;
 			font-size: 60px;
 			line-height: 1.8em;
 			margin-left: 12px;
+			width: 89%;
+			overflow: hidden;
+			height: 108px;
 		}
 	}
 	.detail-main{
 		font-size:18px;
 
-		.detail-options{
+		.thumbnail{
+			border:0px solid $white;
+			box-shadow: none;
+		}
+
+		.tabbable{
 			@extend .dob-breadcrumb;
 			ul{
+				&.nav-tabs{
+					border-bottom:0px solid $white;
+
+				}
 				li{
 					width:49% !important;
 					cursor:pointer;
+
+					&.active{
+						@extend .current;
+					}
+
+					a{
+						border:0px solid $white;
+						color: $gray6;
+						font-size:inherit;
+						padding-bottom: 0;
+						padding-top:20px;
+						font-size:16px;
+						font-weight: 600;
+
+						&:hover{
+							background-color:$white;
+						}
+					}
 				}
 			}
+		}
+		.tab-content{
+			padding-left:40px;
+			padding-right:40px;
 		}
 		.detail-content{
 			.directions{
@@ -1097,6 +1132,30 @@ div.trip_proxy_trip_purpose_id{
 		}
 	}
 }
+
+
+.detail-footer{
+	position: absolute;
+	bottom:0;
+	width: 68.51197%;
+	border-top:1px solid $gray4;
+	.print-me{
+		width:inherit;
+		height:150px;
+		background-color: $gray2;
+		width:100%;
+		font-size: 32px;
+		font-weight: 600;
+		text-align: center;
+		padding-top: 70px;
+
+		&:active{
+			background-color: $gray3;
+		}
+
+	}
+}
+
 //END OF THE RESULTS DETAIL SECTION
 
 //CALENDAR / DATEPICKER FIRST ONE

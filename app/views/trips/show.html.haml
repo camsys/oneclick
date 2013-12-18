@@ -15,23 +15,23 @@
 
 - if @trip.any_parts_selected?
   .row-fluid.selected_notices.results-header
-    - if @trip.both_parts_selected?
-      .span6
-        .alert.alert-success.fade.in
-          = content_tag :div, t(:outbound_selected_short)
-      .span6
-        - if @trip.is_return_trip
-          .alert.alert-success.fade.in
-            = content_tag :div, t(:return_selected)
-    - elsif @trip.only_outbound_selected?
-      .span12
-        .alert.alert-success.fade.in
-          = content_tag :div, t(:outbound_selected)
-    - elsif @trip.only_return_selected?
-      .span12
-        - if @trip.is_return_trip
-          .alert.alert-success.fade.in
-            = content_tag :div, t(:return_selected)
+    / - if @trip.both_parts_selected?
+    /   .span6
+    /     .alert.alert-success.fade.in
+    /       = content_tag :div, t(:outbound_selected_short)
+    /   .span6
+    /     - if @trip.is_return_trip
+    /       .alert.alert-success.fade.in
+    /         = content_tag :div, t(:return_selected)
+    / - elsif @trip.only_outbound_selected?
+    /   .span12
+    /     .alert.alert-success.fade.in
+    /       = content_tag :div, t(:outbound_selected)
+    / - elsif @trip.only_return_selected?
+    /   .span12
+    /     - if @trip.is_return_trip
+    /       .alert.alert-success.fade.in
+    /         = content_tag :div, t(:return_selected)
 
   - if @trip.both_parts_selected?
     .span12
