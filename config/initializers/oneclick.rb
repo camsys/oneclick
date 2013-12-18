@@ -19,6 +19,7 @@ case ENV['BRAND'] || 'arc'
   Oneclick::Application.config.taxi_fare_finder_api_city = "Atlanta"
   Oneclick::Application.config.enable_rideshare = true
   Oneclick::Application.config.name = 'ARC OneClick'
+  ENV['SMTP_MAIL_USER_NAME'] = "oneclick.arc.camsys"
 
 when 'broward'  
   Oneclick::Application.config.ui_logo = 'broward/Broward_211_Get_Connected_get_answers.jpg'
@@ -29,6 +30,7 @@ when 'broward'
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Miami"
   Oneclick::Application.config.name = 'OneClick'
+  ENV['SMTP_MAIL_USER_NAME'] = "oneclick.broward.camsys"
 
 when 'pa'
   Oneclick::Application.config.ui_logo = 'pa/penndotLogo.jpg'
@@ -39,6 +41,7 @@ when 'pa'
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Harrisburg-PA"
   Oneclick::Application.config.name = '1-Click/PA'
+  ENV['SMTP_MAIL_USER_NAME'] = "oneclick.pa.camsys"
 
 end
 

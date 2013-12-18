@@ -86,7 +86,8 @@ class TripsController < PlaceSearchingController
 
     Rails.logger.info email_addresses.inspect
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    UserMailer.user_trip_email(email_addresses, @trip, "ARC OneClick Trip Itinerary", from_email,
+    subject = Oneclick::Application.config.name + ' Trip Itinerary'
+    UserMailer.user_trip_email(email_addresses, @trip, subject, from_email,
       params[:email][:email_comments]).deliver
     respond_to do |format|
       format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.to_sentence}."  }
@@ -117,7 +118,8 @@ class TripsController < PlaceSearchingController
     if params[:email][:copy_self] == '1'
       emails << from_email
     end
-    UserMailer.provider_trip_email(emails, @trip, "ARC OneClick Trip Request", from_email, comments).deliver
+    subject = Oneclick::Application.config.name + ' Trip Request'
+    UserMailer.provider_trip_email(emails, @trip, subject, from_email, comments).deliver
     respond_to do |format|
       format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{provider.name}."  }
       format.json { render json: @trip }
@@ -134,7 +136,8 @@ class TripsController < PlaceSearchingController
     email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
     Rails.logger.info email_addresses.inspect
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, "ARC OneClick Trip Itinerary", from_email,
+    subject = Oneclick::Application.config.name + ' Trip Itinerary'
+    UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, subject, from_email,
       params[:email][:email_comments]).deliver
     respond_to do |format|
       format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
