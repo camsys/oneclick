@@ -165,12 +165,49 @@
 
   #timepicker-two{ :data => {:index => 7}}
     = f.input :is_round_trip, :label => false, :wrapper_html => {:class => 'controls controls-row'} do
-      = f.input_field :is_round_trip, :as => :boolean, :inline_label => "Return after"
+      = f.input_field :is_round_trip, :as => :boolean, :inline_label => "Return after", :class => "hidden"
       = f.input :return_trip_time, :label => false, :wrapper => :append do
         #return-trip-time
-          = f.input_field :return_trip_time, :as => :string, :label => false, :style => "width:160px;"
-          %span.add-on
-            %i.icon-time
+          = f.input_field :return_trip_time, :as => :string, :label => false
+
+    .row-fluid
+      .span10.offset1
+        .timetable
+          %ul.row-fluid.time
+            %li 1:00
+            %li 1:30
+            %li 2:00
+            %li 2:30
+            %li 3:00
+            %li 3:30
+          %ul.row-fluid.time
+            %li 4:00
+            %li 4:40
+            %li 5:00
+            %li 5:30
+            %li.selected 6:00
+            %li 6:30
+          %ul.row-fluid.time
+            %li 7:00
+            %li 7:30
+            %li 8:00
+            %li 8:30
+            %li 9:00
+            %li 9:30
+          %ul.row-fluid.time
+            %li 10:00
+            %li 10:30
+            %li 11:00
+            %li 11:30
+            %li 12:00
+            %li 12:30
+          %ul.row-fluid.timeofday
+            %li.notime
+            %li.notime
+            %li.notime
+            %li.notime
+            %li.ampm.selected am
+            %li.ampm pm
               
   .form-actions.hidden
     = button_tag :type => 'submit', :class => "btn btn-primary" do
