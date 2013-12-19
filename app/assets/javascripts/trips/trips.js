@@ -231,6 +231,15 @@ tripformView.timepickerInit = function($inputelem, $timepickerelem) {
   var timetable = $($timepickerelem).find('.timetable');
   var timeInput = $($inputelem);
 
+  //set first load selected time
+  var timeTokens = timeInput.val().split(' ');
+  var liTimeSelector = 'li:contains("' + timeTokens[0] + '")';
+  var liAmPmSelector = 'li:contains("' + timeTokens[1] + '")';
+  var timeElem = timetable.find(liTimeSelector);
+  var amPmElem = timetable.find(liAmPmSelector);
+  timeElem.addClass('selected');
+  amPmElem.addClass('selected');
+
   //add click event to time items
   timetable.find('li').on('click', function(e) {
     var target = $(e.target);
