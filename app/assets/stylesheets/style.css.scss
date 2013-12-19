@@ -715,6 +715,7 @@ div.trip_proxy_trip_purpose_id{
 			border: none;
 			color: rgba($white, .5);
 			outline: 1px solid darken($gray4, 10%);
+			pointer-events: none;
 		}
 
 		h1{
