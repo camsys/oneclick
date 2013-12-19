@@ -112,7 +112,8 @@
         %p
           Outbound Selected
       - else 
-        = t(:outbound)
+        %p 
+          = t(:outbound)
         .prev-btn.disabled
     %div.span10
       %div{id: 'outbound_section'}   
@@ -142,7 +143,8 @@
         = render partial: 'return_trip'
       - if @trip.only_return_selected?
       - else 
-        .next-btn
+        .span1
+          .next-btn
 
 
     = render partial: 'send_trip_by_email', locals: {trip: @trip}

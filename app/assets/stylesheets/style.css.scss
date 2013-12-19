@@ -1589,6 +1589,7 @@ body.sessions.new, body.registrations.new{
 			text-align: center;
 			font-size: 3.3em;
 			margin-top: 5px;
+			color:$gray3;
 		}
 		h3{
 			clear:both;
@@ -1609,7 +1610,7 @@ body.sessions.new, body.registrations.new{
 			display: block;
 			font-family:$kioskfonts;
 			font-weight:700;
-			width: 33.3%;
+			width: 158px;
 			float: left;
 			line-height: 1.9em;
 			text-decoration: none;
@@ -1617,12 +1618,13 @@ body.sessions.new, body.registrations.new{
 
 			&.select{
 				// background-color: $green;
-				border-right:1px solid $white;
+				// border-right:1px solid $white;
 				border-left:1px solid $white;
+				border-right:3px solid $white;
 			}
 			&.details{
 				// background-color: $blue;
-				border-right:1px solid $white;
+				border-right:2px solid $white;
 			}
 			&.hide{
 				// background-color: $red;
