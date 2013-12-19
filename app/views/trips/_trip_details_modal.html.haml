@@ -36,7 +36,7 @@
                 %li
                   = link_to "Map", "#map_tab", :id => 'map_tab_link', :data => {:toggle => "tab"}
             
-            .tab-content
+            .tab-content.row-fluid
               #details_tab.tab-pane.active
                 = render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
               - if @itinerary.is_mappable
