@@ -126,6 +126,7 @@ tripformView.indexChangeHandler = function() {
     if (document.readyState === "complete") {
       switch(tripformView.indexCounter) {
         case 1:
+
           $('div.next-footer-container').removeClass('hidden');
           $('#trip_map').show();
 
@@ -198,10 +199,11 @@ tripformView.indexChangeHandler = function() {
             //$('#left-results .reason').html(overviewReason);
             leftResults.find('.reason').html(overviewReason);
 
-            $('.edit-trip-btn').removeClass('hidden');
+            //$('.edit-trip-btn').removeClass('hidden');
+            tripformView.editTripButtonInit();
             $.fn.datepicker.Calendar.hide();
 
-            tripformView.nextButton.off('click');
+            tripformView.nextButton.off('click', tripformView.nextBtnHandler);
             tripformView.nextButton.on('click', tripformView.submitButtonhandler);
           })();
           break;
@@ -214,19 +216,13 @@ tripformView.indexChangeHandler = function() {
 tripformView.nextButtonValidate = function($inputelem) {
   var tripProxyFromPlace = $inputelem;
 
-  //remove submit handler on next button
-  tripformView.nextButton.off('click');
-
   //add blur event handler to input field
   tripProxyFromPlace.on('blur', function() {
     if (tripProxyFromPlace.val() === '') {
-      tripformView.nextButton.off('click');
       tripformView.nextButton.addClass('stop');
     }
     else {
       tripformView.nextButton.removeClass('stop');
-      //reattach click event handler to next button
-      tripformView.nextButton.on('click', tripformView.nextBtnHandler);
     }
   });
 };
@@ -234,6 +230,7 @@ tripformView.nextButtonValidate = function($inputelem) {
 tripformView.timepickerInit = function($inputelem, $timepickerelem) {
   var timetable = $($timepickerelem).find('.timetable');
   var timeInput = $($inputelem);
+  tripButton.removeClass('hidden');
 
   //add click event to time items
   timetable.find('li').on('click', function(e) {
@@ -242,7 +239,9 @@ tripformView.timepickerInit = function($inputelem, $timepickerelem) {
     //clear time
     if(target.hasClass('ampm') === false) {
       //clear all time selected
+    //Unhide the return trip if it was hidden
       timetable.find('li').not('.ampm').removeClass('selected');
+    leftResults.prev('h5').show();
     } else {
       timetable.find('.ampm').removeClass('selected');
     }
@@ -254,6 +253,30 @@ tripformView.timepickerInit = function($inputelem, $timepickerelem) {
     var timeval = $(selectedTimeElems[0]).text() + " " + $(selectedTimeElems[1]).text();
     timeInput.val(timeval);
 
+  });
+};
+
+tripformView.editTripButtonInit = function() {
+  var tripButton = $('.edit-trip-btn');
+  var leftResults = $('#left-results p.return');
+  tripButton.removeClass('hidden');
+
+  tripButton.off('click');
+
+  tripButton.on('click', function(){
+    $('*[data-index=1]').removeClass('hidden');
+    //Unhide the return trip if it was hidden
+    leftResults.show();
+    leftResults.prev('h5').show();
+    //hide the results and show the description
+    $('#left-description').removeClass('hidden');
+    $('#left-results, .edit-trip-btn').addClass('hidden');
+
+    tripformView.indexCounter = 1;
+    tripformView.nextButton.off('click', tripformView.submitButtonhandler);
+    tripformView.nextButton.on('click', tripformView.nextBtnHandler);
+
+    tripformView.formEle.trigger('indexChange');
   });
 };
 
