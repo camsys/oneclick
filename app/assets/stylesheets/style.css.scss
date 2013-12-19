@@ -711,8 +711,11 @@ div.trip_proxy_trip_purpose_id{
 			border-top:1px solid lighten($blue, 15%);
 		}
 		&.stop {
-			background-color: lighten($red, 10%);
+			background-color: $gray4;
 			border: none;
+			color: rgba($white, .5);
+			outline: 1px solid darken($gray4, 10%);
+			pointer-events: none;
 		}
 
 		h1{
