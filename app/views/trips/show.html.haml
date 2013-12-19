@@ -16,26 +16,26 @@
 - if @trip.any_parts_selected?
   .row-fluid.selected_notices.results-header
     - if @trip.both_parts_selected?
-      .span6
-        .alert.alert-success.fade.in
-          = content_tag :div, t(:outbound_selected_short)
-      .span6
-        - if @trip.is_return_trip
-          .alert.alert-success.fade.in
-            = content_tag :div, t(:return_selected)
+      / .span6
+      /   .alert.alert-success.fade.in
+      /     = content_tag :div, t(:outbound_selected_short)
+      / .span6
+      /   - if @trip.is_return_trip
+      /     .alert.alert-success.fade.in
+      /       = content_tag :div, t(:return_selected)
     - elsif @trip.only_outbound_selected?
-      .span12
-        .alert.alert-success.fade.in
-          = content_tag :div, t(:outbound_selected)
+      / .span12
+      /   .alert.alert-success.fade.in
+      /     = content_tag :div, t(:outbound_selected)
     - elsif @trip.only_return_selected?
-      .span12
-        - if @trip.is_return_trip
-          .alert.alert-success.fade.in
-            = content_tag :div, t(:return_selected)
+      / .span12
+      /   - if @trip.is_return_trip
+      /     .alert.alert-success.fade.in
+      /       = content_tag :div, t(:return_selected)
 
   - if @trip.both_parts_selected?
     .span12
-      %h2 Trip planned and saved.
+      / %h2 Trip planned and saved.
       / %p You can now do one or more of the following to finish your trip planning:
       / .row-fluid
       /   .span6{style: 'margin-bottom: 9px;'}
@@ -68,35 +68,81 @@
       /         I'm done, just show me all my planned trips.
 
 
-
-.row-fluid.results-view
-  .span1
-    %p
-      = t(:outbound)
-    .prev-btn.disabled
-  %div.span10
-    %div{id: 'outbound_section'}   
-      .row-fluid.itineraries_holder
-        = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
-          trip_part: @trip.outbound_part }
-      / - if @trip.outbound_part.has_hidden_options?
-      /   .row-fluid
-      /     .span6#outbound_hidden_trips_notice
-      /       = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
-  .span1
-    .next-btn
-
-- if @trip.is_return_trip
+- if @trip.both_parts_selected?
   .row-fluid.results-view
     .span1
       %p
-        = t(:return)
-      .prev-btn.disabled
-      .card-prev
-    %div.span10
-      = render partial: 'return_trip'
+        Outbound Selected
+    %div.span5
+      %div{id: 'outbound_section'}   
+        .row-fluid.itineraries_holder
+          = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
+            trip_part: @trip.outbound_part }
+    .span5
+      %h2 Trip planned and saved.
+      %p You can now do one or more of the following to finish your trip planning:
+      .row-fluid
+        .span12
+          =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+            =t(:e_mail) + " your trip plan."
+      .row-fluid
+        .span12
+          =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+            View trip details to call the provider.
+      .row-fluid
+        .span12
+          =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+            Print your trip plan.
+
+  - if @trip.is_return_trip
+    .row-fluid.results-view
+      .span1
+        %p
+          Return Selected
+      %div.span5
+        = render partial: 'return_trip'
+
+
+
+
+- else
+  .row-fluid.results-view
     .span1
-      .next-btn
+      - if @trip.only_outbound_selected?
+        %p
+          Outbound Selected
+      - else 
+        = t(:outbound)
+        .prev-btn.disabled
+    %div.span10
+      %div{id: 'outbound_section'}   
+        .row-fluid.itineraries_holder
+          = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
+            trip_part: @trip.outbound_part }
+        / - if @trip.outbound_part.has_hidden_options?
+        /   .row-fluid
+        /     .span6#outbound_hidden_trips_notice
+        /       = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
+    .span1
+      - if @trip.only_outbound_selected?
+      - else 
+        .next-btn
+
+  - if @trip.is_return_trip
+    .row-fluid.results-view
+      .span1
+        %p
+          - if @trip.only_return_selected?
+            Return Selected
+          - else
+            = t(:return)
+        .prev-btn.disabled
+        .card-prev
+      %div.span10
+        = render partial: 'return_trip'
+      - if @trip.only_return_selected?
+      - else 
+        .next-btn
 
 
     = render partial: 'send_trip_by_email', locals: {trip: @trip}

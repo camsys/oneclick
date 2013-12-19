@@ -1,7 +1,9 @@
 .row-fluid.itineraries_holder
   = render :partial => 'trip_itineraries', :locals => {:itineraries => return_itineraries(@show_hidden),
     trip_part: @trip.return_part }
-- if @trip.return_part.has_hidden_options?
-  .row-fluid
-    .span12#outbound_hidden_trips_notice
-      = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.return_part}
+- if @trip.both_parts_selected?
+- else
+  - if @trip.return_part.has_hidden_options?
+    .row-fluid
+      .span12#outbound_hidden_trips_notice
+        = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.return_part}

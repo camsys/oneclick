@@ -526,6 +526,7 @@ div.trip_proxy_trip_purpose_id{
 		p{
 			text-transform: uppercase;
 			font-weight:600;
+			margin-bottom:0;
 		}
 		.prev-btn{
 			@extend %card-btn;
@@ -536,6 +537,17 @@ div.trip_proxy_trip_purpose_id{
 			float:right;
 			@extend %flip;
 		}
+	}
+	.btn-block{
+		height:73px;
+		border: 6px solid $gray3;
+		margin-bottom:10px;
+		font-size:21px;
+		text-transform:uppercase;
+		padding-top:21px;
+		border-radius: 0px;
+		background-color: $white;
+		background-image:none;
 	}
 }
 
