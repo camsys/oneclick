@@ -97,27 +97,59 @@
       = render partial: 'return_trip'
     .span1
       .next-btn
-  
-.row-fluid
-  .well.well-small.span12
-    = link_to new_user_trip_path do
-      %i{class: CsHelpers::ACTION_ICONS[:plan_a_trip]}
-      = t(:plan_a_new_trip)
-    = link_to '#', {href: '#send_trip_by_email', class: "pull-right", data: {toggle: 'modal'}} do
-      %i.icon-envelope
-      =t(:send_by_email)
+
 
     = render partial: 'send_trip_by_email', locals: {trip: @trip}
     = render partial: 'send_trip_by_email_to_provider'
 
-.results-footer-container
-  .trip-overview.pull-left
+.results-footer.responsive-mbp
+  .trip-overview.pull-left.span4
+    Trip Overview
   .new-trip.pull-right
+    = link_to new_user_trip_path do
+      = t(:plan_a_new_trip)
+
+#overview-modal.hide
+  .row-fluid
+    .span4.info
+      %h1 Overview
+      %h4 Lorem Ipsum
+      
+      %h5 From
+      %p.from 
+        = @trip.from_place.name
+      %h5 Destination
+      %p.to 
+        = @trip.to_place.name
+      %h5 Date
+      %p.date 
+        = format_date(@trip.trip_parts.first.trip_time.in_time_zone)
+      %h5 Departure Time
+      %p.time 
+        = format_time(@trip.trip_parts.first.trip_time.in_time_zone)
+      %h5 Return Time
+      %p.return 
+        = format_time(@trip.trip_parts.last.trip_time.in_time_zone)
+      %h5 Purpose
+      %p.reason 
+        = @trip.trip_purpose
+      .close-overview
+        .close-btn
+          Close Trip Overview
+
+    .span8plus
 
 #itinerary_modal.modal.hide.fade
 
 :javascript
   $('.back-button').hide();
+
+  $('.trip-overview').on('click', function(){
+    $('#overview-modal').removeClass('hide');
+  });
+  $('.close-btn').on('click', function(){
+    $('#overview-modal').addClass('hide');
+  });
   
 
   $('#email_itinerary2').on('ajax:success', function (event, data, status, xhr) {
