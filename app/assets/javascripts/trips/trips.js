@@ -230,7 +230,6 @@ tripformView.nextButtonValidate = function($inputelem) {
 tripformView.timepickerInit = function($inputelem, $timepickerelem) {
   var timetable = $($timepickerelem).find('.timetable');
   var timeInput = $($inputelem);
-  tripButton.removeClass('hidden');
 
   //add click event to time items
   timetable.find('li').on('click', function(e) {
@@ -239,9 +238,8 @@ tripformView.timepickerInit = function($inputelem, $timepickerelem) {
     //clear time
     if(target.hasClass('ampm') === false) {
       //clear all time selected
-    //Unhide the return trip if it was hidden
+      //Unhide the return trip if it was hidden
       timetable.find('li').not('.ampm').removeClass('selected');
-    leftResults.prev('h5').show();
     } else {
       timetable.find('.ampm').removeClass('selected');
     }
