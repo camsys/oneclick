@@ -153,7 +153,7 @@ tripformView.indexChangeHandler = function() {
 
         case 4:
           $.fn.datepicker.Calendar.hide();
-          tripformView.timepickerInit();
+          tripformView.timepickerInit($('#trip_proxy_trip_time'), $('#timepicker-one'));
           break;
 
         case 8:
