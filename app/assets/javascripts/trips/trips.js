@@ -228,6 +228,8 @@ tripformView.editTripButtonInit = function() {
   var leftResults = $('#left-results p.return');
   tripButton.removeClass('hidden');
 
+  tripButton.off('click');
+
   tripButton.on('click', function(){
     $('*[data-index=1]').removeClass('hidden');
     //Unhide the return trip if it was hidden
