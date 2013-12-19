@@ -1238,9 +1238,11 @@ input#txtDate{
 					&.day{
 						&.old{
 							color: $gray3;
+              pointer-events: none;
 						}
 						&.new{
 							color: $gray3;
+              pointer-events: none;
 						}
 						&.active{
 							@extend %selected;
@@ -1258,6 +1260,10 @@ input#txtDate{
 	}
 }
 
+//OVERRIDE TADAAAPICKR'S STYLES
+.datepicker thead tr:first-child th:hover {
+  background: inherit;
+}
 
 //TIME PICKER
 label.time{
