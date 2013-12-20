@@ -272,19 +272,27 @@ a{
 
 //ATTRACT LOOP
 .penndot-logo{
-	background: url(../assets/kiosk/penndot-logo.svg) no-repeat center center;
+	background: url(../assets/kiosk/penndot-logo.png) no-repeat center center;
 	background-size: 100%;
-
 }
 
-.attract-screen{
+.oneclick-logo{
+	background: url(../assets/kiosk/oneclick-logo.png) no-repeat center center;
+	background-size: 100%;
+}
+
+.attract-container{
 	height:1024px;
-	.attract-top{
-		height: 50%;
-		padding:30px 45px;
+	position: fixed;
+	top:0;
+
+	.attract-header{
+		height: 73px;
+		padding:0px 45px;
+		border-bottom:1px solid $gray3;
 
         .oneclick{
-			@extend .penndot-logo;
+			@extend .oneclick-logo;
 			height:47px;
 			width: 205px;
 
@@ -294,6 +302,8 @@ a{
 			height:47px;
 			width: 205px;
         }
+    }
+    .attract-main{
         .title{
         	color: $gray6;
         	font-size: 120px;
