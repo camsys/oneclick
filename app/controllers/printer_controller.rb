@@ -1,3 +1,3 @@
-class PrinterController < ActionController
+class PrinterController < ActionController::Base
 
 end
