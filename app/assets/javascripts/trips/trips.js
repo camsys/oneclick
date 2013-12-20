@@ -156,6 +156,10 @@ tripformView.indexChangeHandler = function() {
           tripformView.timepickerInit($('#trip_proxy_trip_time'), $('#timepicker-one'));
           break;
 
+        case 7:
+          tripformView.timepickerInit($('#trip_proxy_return_trip_time'), $('#timepicker-two'));
+          break;
+
         case 8:
           (function() {
             var leftResults = $('#left-results');
@@ -236,7 +240,6 @@ tripformView.timepickerInit = function($inputelem, $timepickerelem) {
   timeElem.addClass('selected');
   amPmElem.addClass('selected');
 
-
   //add click event to time items
   timetable.find('li').on('click', function(e) {
     var target = $(e.target);
@@ -283,6 +286,7 @@ tripformView.editTripButtonInit = function() {
     tripformView.formEle.trigger('indexChange');
   });
 };
+
 
 
 
