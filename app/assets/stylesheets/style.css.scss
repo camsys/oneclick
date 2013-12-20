@@ -1370,6 +1370,25 @@ label.time{
 	}
 }
 
+#trip-time{
+	label{
+		@extend label.date;
+	}
+	#trip_proxy_trip_time, #trip_proxy_return_trip_time{
+
+		@extend input#txtDate;
+	}
+}
+
+.trip_proxy_return_trip_time{
+	label{
+		@extend label.date;
+	}
+
+	input#trip_proxy_return_trip_time{
+		@extend input#txtDate;
+	}
+}
 
 %time-selectors{
 	list-style-type: none;
@@ -1404,17 +1423,24 @@ label.time{
 	margin: 200px 0;
 
 	ul{
-		border-top:1px solid $gray4;
 		margin-bottom:0;
+		margin-left:0;
+
 		li{
+			border-top:1px solid $gray4;
 			@extend %time-selectors;
-			width:16.6666666666666667%;
+			width:16.66666666667%;
+
+			&.notime{
+				border-top:1px solid $gray4;
+				border-right:0px solid $gray4;
+				border-left:0px solid $gray4;
+			}
 
 			&.ampm{
 				border-bottom:1px solid $gray4;
 				padding-top:26px;
 			}
-
 		}
 	}
 }

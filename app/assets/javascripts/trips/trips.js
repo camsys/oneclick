@@ -15,7 +15,7 @@ tripformView.init = function(){
 
   this.formEle.on('indexChange', tripformView.indexChangeHandler);
 
-  $('input#trip_proxy_from_place').val('200 Peachtree Street Northeast, Atlanta, GA 30303');
+  $('input#trip_proxy_from_place').val('');
 
   $('.next-step-btn, a#yes, a#no').on('click', tripformView.nextBtnHandler);
 
@@ -153,7 +153,11 @@ tripformView.indexChangeHandler = function() {
 
         case 4:
           $.fn.datepicker.Calendar.hide();
-          //tripformView.calendar.$cal.hide();
+          tripformView.timepickerInit($('#trip_proxy_trip_time'), $('#timepicker-one'));
+          break;
+
+        case 7:
+          tripformView.timepickerInit($('#trip_proxy_return_trip_time'), $('#timepicker-two'));
           break;
 
         case 8:
@@ -223,6 +227,42 @@ tripformView.nextButtonValidate = function($inputelem) {
   });
 };
 
+tripformView.timepickerInit = function($inputelem, $timepickerelem) {
+  var timetable = $($timepickerelem).find('.timetable');
+  var timeInput = $($inputelem);
+
+  //set first load selected time
+  var timeTokens = timeInput.val().split(' ');
+  var liTimeSelector = 'li:contains("' + timeTokens[0] + '")';
+  var liAmPmSelector = 'li:contains("' + timeTokens[1] + '")';
+  var timeElem = timetable.find(liTimeSelector).first();
+  var amPmElem = timetable.find(liAmPmSelector);
+  timeElem.addClass('selected');
+  amPmElem.addClass('selected');
+
+  //add click event to time items
+  timetable.find('li').not('.notime').on('click', function(e) {
+    var target = $(e.target);
+
+    //clear time
+    if(target.hasClass('ampm') === false) {
+      //clear all time selected
+      //Unhide the return trip if it was hidden
+      timetable.find('li').not('.ampm').removeClass('selected');
+    } else {
+      timetable.find('.ampm').removeClass('selected');
+    }
+    //add selected class to target
+    target.addClass('selected');
+
+    //create val for input
+    var selectedTimeElems = timetable.find('li.selected');
+    var timeval = $(selectedTimeElems[0]).text() + " " + $(selectedTimeElems[1]).text();
+    timeInput.val(timeval);
+
+  });
+};
+
 tripformView.editTripButtonInit = function() {
   var tripButton = $('.edit-trip-btn');
   var leftResults = $('#left-results p.return');
@@ -246,6 +286,7 @@ tripformView.editTripButtonInit = function() {
     tripformView.formEle.trigger('indexChange');
   });
 };
+
 
 
 
