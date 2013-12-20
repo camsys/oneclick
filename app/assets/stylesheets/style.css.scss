@@ -26,6 +26,22 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 	font-family: 'Avenir Next', Helvetica, sans-serif;
 }
 
+body{
+	overflow: hidden;
+	// pointer-events: none;
+
+	// a, button{
+	// 	pointer-events: all;
+	// }
+}
+
+*::selection {
+	background: rgba(0,0,0,0); /* Safari */
+}
+*::-moz-selection {
+	background: rgba(0,0,0,0); /* Firefox */
+}
+
 //FIXES
 
 .span8plus{
