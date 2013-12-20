@@ -22,9 +22,9 @@ h6 { font-size: 12px; line-height: 20px; }
   margin-left: auto;
   margin-right: auto;
 }
-.first-in-row {
-  margin-left: 0 !important;
-}
+// .first-in-row {
+//   margin-left: 0 !important;
+// }
 
 .dropdown-toggle {
   cursor: pointer;
@@ -72,12 +72,12 @@ h6 { font-size: 12px; line-height: 20px; }
   min-height: 210px; // 196px; // 211px;
 }
 
-.two-notes {
-  min-height: 245px; // 217px; // 247px;
-}
-.three-notes {
-  min-height: 280px; // 238px; // 283px;
-}
+// .two-notes {
+//   min-height: 245px; // 217px; // 247px;
+// }
+// .three-notes {
+//   min-height: 280px; // 238px; // 283px;
+// }
 
 .dialog-body {
   border: 1px solid #F5F5F5;
@@ -447,4 +447,4 @@ td.left, th.left {
   margin-top: 20px;
 }
 
-.trips.show .first-in-row { margin-left: 0 !important; }
+// .trips.show .first-in-row { margin-left: 0 !important; }
