@@ -241,7 +241,7 @@ tripformView.timepickerInit = function($inputelem, $timepickerelem) {
   amPmElem.addClass('selected');
 
   //add click event to time items
-  timetable.find('li').on('click', function(e) {
+  timetable.find('li').not('.notime').on('click', function(e) {
     var target = $(e.target);
 
     //clear time
