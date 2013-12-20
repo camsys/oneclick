@@ -504,7 +504,15 @@ div.trip_proxy_trip_purpose_id{
 
 .in{
 	opacity:1.0 !important;
-	top:15% !important;
+	top:0% !important;
+}
+
+.modal{
+	margin-left:0;
+	position:absolute;
+	left:0;
+	width:100%;
+	top:0;
 }
 
 .modal-container{
@@ -1003,47 +1011,229 @@ div.trip_proxy_trip_purpose_id{
 	}
 }
 
+// // DETAIL VIEW -- to replace the modal view.
+// // TO DO - Animate the slide in of the DETAIL VIEW
+// .detail-view{
+// 	position: absolute;
+// 	height:100%;
+// 	width: 100%;
+// 	z-index: 200;
+
+// 	.close-section{
+// 		width: 33.3%;
+// 		background-color: $black;
+// 		height: inherit;
+// 		padding-top: 28%;
+// 		float:left;
+
+// 		.close-btn-container{
+// 			margin-left: 24px;
+// 			display: inline-block;
+// 			text-align: center;
+// 			.close-btn{
+// 				background: url(../assets/kiosk/close-btn-default.png) no-repeat center center;
+// 				height: 84px;
+// 				width: 84px;
+// 			}
+// 			p{
+// 				color: $white;
+// 				display: inline-block;
+// 				text-transform: uppercase;
+// 				border-bottom: 1px solid $blue;
+// 			}
+// 		}
+
+// 	}
+// 	.detail-section{
+// 		width: 66.67%;
+// 		height: inherit;
+// 		background-color: $white;
+// 		float:left;
+
+// 	}
+// }
+
+
 // DETAIL VIEW -- to replace the modal view.
 // TO DO - Animate the slide in of the DETAIL VIEW
-.detail-view{
-	position: absolute;
+.detail-view, #itinerary_modal{
+	position: fixed;
 	height:100%;
 	width: 100%;
-	z-index: 200;
+	z-index: 100;
+	background-color: $black;
 
-	.close-section{
-		width: 33.3%;
-		background-color: $black;
-		height: inherit;
-		padding-top: 28%;
-		float:left;
+	.detail-container{
+		height:inherit;
 
-		.close-btn-container{
-			margin-left: 24px;
-			display: inline-block;
-			text-align: center;
-			.close-btn{
-				background: url(../assets/kiosk/close-btn-default.png) no-repeat center center;
-				height: 84px;
-				width: 84px;
+		&.container-fluid{
+			margin-top:0;
+		}
+		.row-fluid{
+			height:inherit;
+		}
+
+		.close-section{
+			//TODO: Add pattern bg.
+			background-color: $black;
+			background-image: url(../assets/kiosk/bg_black.png);
+			height: inherit;
+			padding-top: 0px;
+			float:left;
+			position: relative;
+			border-right:0px solid black;
+
+			.left-content{
+				text-align: right;
+				position: absolute;
+				top: 50px;
+				right: 22px; 
+
+				h5{
+					color: $gray3;
+				}
+
+				p{
+					font-size: 21px;
+					padding-bottom: 36px;
+					color: $white;
+				}
 			}
-			p{
-				color: $white;
+
+			.close-btn-container{
+				margin-left: 45px;
 				display: inline-block;
-				text-transform: uppercase;
-				border-bottom: 1px solid $blue;
+				text-align: center;
+				margin-top: 450px;
+				cursor:pointer;
+				.close-btn{
+					background: url(../assets/kiosk/close-btn-default.png) no-repeat center center;
+					height: 84px;
+					width: 84px;
+				}
+				p{
+					color: $white;
+					display: inline-block;
+					text-transform: uppercase;
+					border-bottom: 1px solid $blue;
+				}
 			}
+		}
+	}	
+}
+
+.detail-section{
+	height: inherit;
+	background-color: $white;
+	float:left;
+	margin:0 !important;
+	.detail-header{
+		width:100%;
+		height:128px;
+		background-color: $gray6;
+		color: $white;
+		i{
+			float:left;
+			margin-top: 22px;
+			margin-left: 24px;
+			color: $gray4;
+		}
+		h1{
+			float:left;
+			font-size: 60px;
+			line-height: 1.8em;
+			margin-left: 12px;
+			width: 87%;
+			overflow: hidden;
+			height: 108px;
+		}
+	}
+	.detail-main{
+		font-size:18px;
+
+		.thumbnail{
+			border:0px solid $white;
+			box-shadow: none;
+		}
+
+		.tabbable{
+			@extend .dob-breadcrumb;
+			ul{
+				&.nav-tabs{
+					border-bottom:0px solid $white;
+
+				}
+				li{
+					width:49% !important;
+					cursor:pointer;
+
+					&.active{
+						@extend .current;
+					}
+
+					a{
+						border:0px solid $white;
+						color: $gray6;
+						font-size:inherit;
+						padding-bottom: 0;
+						padding-top:20px;
+						font-size:16px;
+						font-weight: 600;
+
+						&:hover{
+							background-color:$white;
+						}
+					}
+				}
+			}
+		}
+		.tab-content{
+			padding-left:40px;
+			padding-right:40px;
+		}
+		.detail-content{
+			.directions{
+				ul{
+					margin-top:30px;
+					li{
+						list-style-type:none;
+						margin-bottom:20px;
+						.icon{
+							height:50px;
+							width:50px;
+							float:left;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+.detail-footer{
+	position: absolute;
+	bottom:0;
+	width: 68.51197%;
+	border-top:1px solid $gray4;
+	.print-me{
+		width:inherit;
+		height:137px;
+		background-color: $gray2;
+		width:100%;
+		font-size: 32px;
+		font-weight: 600;
+		text-align: center;
+		padding-top: 70px;
+
+		&:active{
+			background-color: $gray3;
 		}
 
 	}
-	.detail-section{
-		width: 66.67%;
-		height: inherit;
-		background-color: $white;
-		float:left;
-
-	}
 }
+
+//END OF THE RESULTS DETAIL SECTION
 
 //CALENDAR / DATEPICKER FIRST ONE
 label.date{
