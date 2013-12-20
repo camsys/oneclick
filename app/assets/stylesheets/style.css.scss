@@ -285,6 +285,8 @@ a{
 	height:1024px;
 	position: fixed;
 	top:0;
+	background-color: $white;
+	width:100%;
 
 	.attract-header{
 		height: 73px;
@@ -295,26 +297,29 @@ a{
 			@extend .oneclick-logo;
 			height:47px;
 			width: 205px;
+			margin-top:13px;
 
         }
         .penndot{
 			@extend .penndot-logo;
 			height:47px;
 			width: 205px;
+			margin-top:13px;
         }
     }
     .attract-main{
+    	height:438px;
         .title{
         	color: $gray6;
         	font-size: 120px;
         	font-weight:700;
         	text-align: center;
         	clear:left;
-        	margin-top: 20%;
+        	margin-top: 173px;
         	letter-spacing:-5px;
         }
     }
-	.attract-bottom{
+	.attract-footer{
 		height:50%;
 		background: $blue url(../assets/kiosk/attract-bottom.jpg) no-repeat center center;
 	}
