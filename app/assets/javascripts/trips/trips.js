@@ -15,7 +15,7 @@ tripformView.init = function(){
 
   this.formEle.on('indexChange', tripformView.indexChangeHandler);
 
-  $('input#trip_proxy_from_place').val('200 Peachtree Street Northeast, Atlanta, GA 30303');
+  $('input#trip_proxy_from_place').val('');
 
   $('.next-step-btn, a#yes, a#no').on('click', tripformView.nextBtnHandler);
 
