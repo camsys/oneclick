@@ -235,7 +235,7 @@ tripformView.timepickerInit = function($inputelem, $timepickerelem) {
   var timeTokens = timeInput.val().split(' ');
   var liTimeSelector = 'li:contains("' + timeTokens[0] + '")';
   var liAmPmSelector = 'li:contains("' + timeTokens[1] + '")';
-  var timeElem = timetable.find(liTimeSelector);
+  var timeElem = timetable.find(liTimeSelector).first();
   var amPmElem = timetable.find(liAmPmSelector);
   timeElem.addClass('selected');
   amPmElem.addClass('selected');
