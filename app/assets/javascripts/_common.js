@@ -152,13 +152,13 @@ function adjust_thumbnails(window_width) {
     $('.thumbnail').removeClass('first-in-row');
     // Add the first-in-row class to the first thumbnail in each row
     var i = 0;
-    $('.thumbnail').each(function() {
-        var remainder = i % counter;
-        //alert('i = ' + i + ' remainder = ' + remainder);
-        if (remainder == 0) {
-            $(this).addClass('first-in-row');
-        }
-        i++;
-    });
+    // $('.thumbnail').each(function() {
+    //     var remainder = i % counter;
+    //     //alert('i = ' + i + ' remainder = ' + remainder);
+    //     if (remainder == 0) {
+    //         $(this).addClass('first-in-row');
+    //     }
+    //     i++;
+    // });
 };
 

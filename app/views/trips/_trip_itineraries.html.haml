@@ -1,7 +1,7 @@
 / - itineraries.valid.each_slice(2) do |itineraries|
 %ul.thumbnails#itineraries
   - ItineraryDecorator.decorate_collection(itineraries.valid).each do |itinerary|
-    %li{class: (itinerary.trip_part.selected? ? 'span6' : 'span6')}
+    %li{class: (itinerary.trip_part.selected? ? 'span3' : 'span3')}
       .thumbnail.actionbutton.shadow{:tabindex => -1, class: itinerary_thumbnail_class(itinerary)}
         .dialog-title-bar.corner-top{:data => {:action => itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id)}}
           .row-fluid
@@ -35,8 +35,8 @@
                 =t(:select)
               =link_to itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "details", :remote => true, :alt => get_alt_button_text(itinerary, 'view'), :title => get_alt_button_text(itinerary, 'view') } do
                 =t(:details)
-              =link_to hide_user_trip_path(@traveler, @trip, :itinerary => itinerary), {:class => "hide", :alt => get_alt_button_text(itinerary, 'remove'), :title => get_alt_button_text(itinerary, 'remove') } do
-                =t(:hide)
+              / =link_to hide_user_trip_path(@traveler, @trip, :itinerary => itinerary), {:class => "hide", :alt => get_alt_button_text(itinerary, 'remove'), :title => get_alt_button_text(itinerary, 'remove') } do
+              /   =t(:hide)
 
         = render partial: 'send_itinerary_by_email', locals: {trip: @trip, itinerary: itinerary}
       
