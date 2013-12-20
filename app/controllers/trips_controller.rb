@@ -3,9 +3,9 @@ class TripsController < PlaceSearchingController
 
   # set the @trip variable before any actions are invoked
   before_filter :get_traveler, only: [:show, :new, :email, :email_itinerary, :details, :repeat, :edit, :destroy,
-    :update, :skip, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2, :create]
+    :update, :skip, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2, :create, :show_printer_friendly]
   before_filter :get_trip, :only => [:show, :email, :email_itinerary, :details, :repeat, :edit,
-    :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2]
+    :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2, :show_printer_friendly]
 
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
@@ -72,7 +72,21 @@ class TripsController < PlaceSearchingController
       format.json { render json: @trip }
     end
   end
-      
+
+  def show_printer_friendly
+    @show_hidden = params[:show_hidden]
+    @print = params[:print]
+
+    if session[:current_trip_id]
+      session[:current_trip_id] = nil
+    end
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @trip }
+    end
+  end
+
   def email
     Rails.logger.info "Begin email"
     email_addresses = params[:email][:email_addresses].split(/[ ,]+/)

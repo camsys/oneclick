@@ -1,0 +1,3 @@
+class PrinterController < ActionController
+
+end
