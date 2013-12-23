@@ -8,6 +8,7 @@ tripformView.init = function(){
   this.formItems = $('*[data-index]');
   this.formItems.addClass('hidden');
   this.calendar = $('#trip-date').data('calendar');
+  this.purposepickerSels = $('#purposepicker ul li');
   this.nextButton = $('.next-step-btn');
   this.tripDateCal = $('#trip-date');
   this.formEle = $('#new_trip_proxy');
@@ -114,8 +115,17 @@ tripformView.indexChangeHandler = function() {
   matchedElement.removeClass('hidden');
 
   if (tripformView.indexCounter < 3){
+    // Show the "Next Step" button - it might've been hidden by a step, and then the user started over
+    tripformView.nextButton.show();
+
     //if there's no from place input value, add stop class to next btn
     if ( $('#trip_proxy_from_place').val() === '' || $('#trip_proxy_to_place').val() === '' ) {
+      tripformView.nextButton.addClass('stop');
+    }
+  }
+  else if (tripformView.indexCounter == 5){
+    //if there's nothing selected in the "purposes" list, add stop class to next btn
+    if ($('#purposepicker ul li.selected').text() === '') {
       tripformView.nextButton.addClass('stop');
     }
   }
@@ -135,12 +145,12 @@ tripformView.indexChangeHandler = function() {
           $('div.next-footer-container').removeClass('hidden');
           $('#trip_map').show();
 
-          tripformView.nextButtonValidate($('#trip_proxy_from_place'));
+          tripformView.nextButtonValidateLocation($('#trip_proxy_from_place'));
           break;
 
         case 2:
           // Enter arrival address
-          tripformView.nextButtonValidate($('#trip_proxy_to_place'));
+          tripformView.nextButtonValidateLocation($('#trip_proxy_to_place'));
           break;
 
         case 3:
@@ -166,6 +176,7 @@ tripformView.indexChangeHandler = function() {
 
         case 5:
           // Purposes
+          tripformView.nextButtonValidatePurpose();
           break;
 
         case 6:
@@ -233,17 +244,24 @@ tripformView.indexChangeHandler = function() {
   }, 10);
 };
 
-tripformView.nextButtonValidate = function($inputelem) {
-  var tripProxyFromPlace = $inputelem;
+tripformView.nextButtonValidateLocation = function($inputelem) {
+  var tripProxyPlace = $inputelem;
 
   //add blur event handler to input field
-  tripProxyFromPlace.on('blur', function() {
-    if (tripProxyFromPlace.val() === '') {
+  tripProxyPlace.on('blur', function() {
+    if (tripProxyPlace.val() === '') {
       tripformView.nextButton.addClass('stop');
     }
     else {
       tripformView.nextButton.removeClass('stop');
     }
+  });
+};
+
+tripformView.nextButtonValidatePurpose = function() {
+  // Enable the "Next Step" button when the user clicks on one of the list elements
+  tripformView.purposepickerSels.on('click', function() {
+    tripformView.nextButton.removeClass('stop');
   });
 };
 
