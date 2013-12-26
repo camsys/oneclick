@@ -113,10 +113,15 @@ tripformView.indexChangeHandler = function() {
   // matched element visible
   matchedElement.removeClass('hidden');
 
-  if (tripformView.indexCounter < 3){
-    // Show the "Next Step" button - it might've been hidden by a step, and then the user started over
+  // Hide the "Next Step" button on "Start at your current location?" and "Need a return trip?"
+  if (tripformView.indexCounter == 0 || tripformView.indexCounter == 6) {
+    tripformView.nextButton.hide();
+  }
+  else {
     tripformView.nextButton.show();
-    
+  }
+
+  if (tripformView.indexCounter < 3){
     //if there's no from place input value, add stop class to next btn
     if ( $('#trip_proxy_from_place').val() === '' || $('#trip_proxy_to_place').val() === '' ) {
       tripformView.nextButton.addClass('stop');
@@ -173,12 +178,10 @@ tripformView.indexChangeHandler = function() {
 
         case 6:
           // "Need a Return Trip?"
-          tripformView.nextButton.toggle();
           break;
 
         case 7:
           // Time Picker (return trip)
-          tripformView.nextButton.toggle();
           tripformView.timepickerInit($('#trip_proxy_return_trip_time'), $('#timepicker-two'));
           break;
 
