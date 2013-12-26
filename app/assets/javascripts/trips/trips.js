@@ -113,6 +113,14 @@ tripformView.indexChangeHandler = function() {
   // matched element visible
   matchedElement.removeClass('hidden');
 
+  // Hide the "Next Step" button on "Start at your current location?" and "Need a return trip?"
+  if (tripformView.indexCounter == 0 || tripformView.indexCounter == 6) {
+    tripformView.nextButton.hide();
+  }
+  else {
+    tripformView.nextButton.show();
+  }
+
   if (tripformView.indexCounter < 3){
     //if there's no from place input value, add stop class to next btn
     if ( $('#trip_proxy_from_place').val() === '' || $('#trip_proxy_to_place').val() === '' ) {
@@ -125,8 +133,13 @@ tripformView.indexChangeHandler = function() {
   var readyState = setInterval(function() {
     if (document.readyState === "complete") {
       switch(tripformView.indexCounter) {
-        case 1:
 
+        case 0:
+          // "Start at your current location?"
+          break;
+
+        case 1:
+          // Enter departure address
           $('div.next-footer-container').removeClass('hidden');
           $('#trip_map').show();
 
@@ -134,10 +147,12 @@ tripformView.indexChangeHandler = function() {
           break;
 
         case 2:
+          // Enter arrival address
           tripformView.nextButtonValidate($('#trip_proxy_to_place'));
           break;
 
         case 3:
+          // Date Picker
           //$('#trip-date').click();
           $('#trip_map').hide();
 
@@ -152,15 +167,26 @@ tripformView.indexChangeHandler = function() {
           break;
 
         case 4:
+          // Time Picker (outbound trip)
           $.fn.datepicker.Calendar.hide();
           tripformView.timepickerInit($('#trip_proxy_trip_time'), $('#timepicker-one'));
           break;
 
+        case 5:
+          // Purposes
+          break;
+
+        case 6:
+          // "Need a Return Trip?"
+          break;
+
         case 7:
+          // Time Picker (return trip)
           tripformView.timepickerInit($('#trip_proxy_return_trip_time'), $('#timepicker-two'));
           break;
 
         case 8:
+          // Trip overview
           (function() {
             var leftResults = $('#left-results');
             $('#trip_map').show();
