@@ -587,16 +587,20 @@ protected
   # Safely set the @trip variable taking into account trip ownership
   def get_trip
     # limit trips to trips accessible by the user unless an admin
+    Rails.logger.info "get_trip, traveler is #{@traveler}"
     if @traveler.has_role? :admin
+      Rails.logger.info "get_trip, traveler is admin"
       @trip = Trip.find(params[:id])
     else
       begin
         @trip = @traveler.trips.find(params[:id])
+        Rails.logger.info "Normal user found trip: #{@trip}"
       rescue => ex
-        Rails.logger.debug ex.message
+        Rails.logger.info "get_trip: #{ex.message}"
         @trip = nil
       end
     end
+    Rails.logger.info "get_trip, returning, @trip is #{@trip}"
   end
 
   # Create an array of map markers suitable for the Leaflet plugin. If the trip proxy is from an existing trip we will
