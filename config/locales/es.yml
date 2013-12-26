@@ -204,6 +204,7 @@ es:
   # new ones
   close: "[es]Close[/es]"
   name: "Nombre"
+  send: "[es]Send[/es]"
   trip_request_from: "[es]Trip request from[/es] "
   send_email_to: "[es]Send email to[/es]"
   additional_emails: "[es]Additional emails[/es]"

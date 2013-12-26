@@ -52,11 +52,11 @@
               Email a booking request to the provider.
       .row-fluid
         .span6{style: 'margin-bottom: 9px;'}
-          =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+          =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: false) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
             %i.icon-search
             View trip details so that you can call the provider.
         .span6{style: 'margin-bottom: 9px;'}
-          =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+          =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
             %i.icon-print
             Print your trip plan.
       -if user_signed_in?
