@@ -176,7 +176,14 @@ tripformView.indexChangeHandler = function() {
         case 4:
           // Time Picker (outbound trip)
           $.fn.datepicker.Calendar.hide();
-          tripformView.timepickerInit($('#trip_proxy_trip_time'), $('#timepicker-one'));
+
+          // Initialize time picker for outbound trip
+          tripformView.timepickerInit('#trip_proxy_trip_time', '#timepicker-one');
+
+          // Initialize time picker for return trip -- doing it here, even if we don't need it, because we will
+          // be updating it based on selections in outbound trip date picker
+          tripformView.timepickerInit('#trip_proxy_return_trip_time', '#timepicker-two');
+
           break;
 
         case 5:
@@ -190,7 +197,6 @@ tripformView.indexChangeHandler = function() {
 
         case 7:
           // Time Picker (return trip)
-          tripformView.timepickerInit($('#trip_proxy_return_trip_time'), $('#timepicker-two'));
           break;
 
         case 8:
@@ -268,18 +274,14 @@ tripformView.nextButtonValidatePurpose = function() {
   });
 };
 
-tripformView.timepickerInit = function($inputelem, $timepickerelem) {
-  var timetable = $($timepickerelem).find('.timetable');
-  var timeInput = $($inputelem);
+tripformView.timepickerInit = function(inputelemId, timepickerelemId) {
+  var isOutbound = (inputelemId == '#trip_proxy_trip_time');
 
-  //set first load selected time
-  var timeTokens = timeInput.val().split(' ');
-  var liTimeSelector = 'li:contains("' + timeTokens[0] + '")';
-  var liAmPmSelector = 'li:contains("' + timeTokens[1] + '")';
-  var timeElem = timetable.find(liTimeSelector).first();
-  var amPmElem = timetable.find(liAmPmSelector);
-  timeElem.addClass('selected');
-  amPmElem.addClass('selected');
+  var timeInput = $(inputelemId);
+  var timetable = $(timepickerelemId).find('.timetable');
+
+  // Set the selected time on the outbound time picker widget
+  tripformView.updateTimePicker(timeInput, timetable);
 
   //add click event to time items
   timetable.find('li').not('.notime').on('click', function(e) {
@@ -298,10 +300,69 @@ tripformView.timepickerInit = function($inputelem, $timepickerelem) {
 
     //create val for input
     var selectedTimeElems = timetable.find('li.selected');
-    var timeval = $(selectedTimeElems[0]).text() + " " + $(selectedTimeElems[1]).text();
+    var selectedTimeStr = $(selectedTimeElems[0]).text();
+    var selectedAmPmStr = $(selectedTimeElems[1]).text();
+    var timeval = selectedTimeStr + " " + selectedAmPmStr;
+    
     timeInput.val(timeval);
 
+    if (isOutbound) {
+      // Update time on return trip time picker
+      var timeElems = selectedTimeStr.split(':');
+      var hour = parseInt(timeElems[0]);
+      var minuteStr= timeElems[1];
+      var ampmStr = selectedAmPmStr;
+
+      if (hour >= 10) {
+        // If time is 10:00 or later, switch the period
+        ampmStr = (ampmStr == 'am') ? 'pm' : 'am';
+
+        // If time is 11:00 or later, subtract 12
+        if (hour >= 11) {
+          hour -= 12;
+        }
+      }
+
+      // Increment the hour by 2
+      hour += 2;
+
+      // Concatenate terms to create the return time string
+      var returnTime = hour.toString() + ':' + minuteStr + ' ' + ampmStr;
+
+      // Set the time value on the return time picker
+      var returnTimeInput = $('#trip_proxy_return_trip_time');
+      returnTimeInput.val(returnTime);
+
+      // Get the return time picker widget
+      var returnTimetable = $('#timepicker-two').find('.timetable');
+      
+      // Clear all selected times on the return time picker widget
+      returnTimetable.find('li').removeClass('selected');
+
+      // Set the selected time on the return time picker widget
+      tripformView.updateTimePicker(returnTimeInput, returnTimetable);
+    }
+
   });
+};
+
+// Set the selected time on a time picker widget
+tripformView.updateTimePicker = function(timeInput, timetable) {
+
+  // Read the time from the input field and split it on a space character
+  var timeTokens = timeInput.val().split(' ');
+ 
+  // Define selectors for finding the right time elements
+  var liTimeSelector = 'li:contains("' + timeTokens[0] + '")';
+  var liAmPmSelector = 'li:contains("' + timeTokens[1] + '")';
+ 
+  // Use the selectors to find the right time elements
+  var timeElem = timetable.find(liTimeSelector).first();
+  var amPmElem = timetable.find(liAmPmSelector);
+ 
+  // Now that we have the right time elements, set them selected
+  timeElem.addClass('selected');
+  amPmElem.addClass('selected');
 };
 
 tripformView.editTripButtonInit = function() {
