@@ -36,13 +36,13 @@
                   %td
                     = f.label characteristic.note + " (not yet available)", :class => 'disabled'
                   %td 
-                    = f.radio_button characteristic.code.to_sym, true
+                    = f.radio_button characteristic.code.to_sym, true, :disabled => true
                     = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true, disabled: true
                   %td 
-                    = f.radio_button characteristic.code.to_sym, false
+                    = f.radio_button characteristic.code.to_sym, false, :disabled => true
                     = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no', :value => false, disabled: true
                   %td 
-                    = f.radio_button characteristic.code.to_sym, "na"
+                    = f.radio_button characteristic.code.to_sym, "na", :disabled => true
                     = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na", disabled: true
       
 
