@@ -123,9 +123,6 @@ tripformView.indexChangeHandler = function() {
   }
 
   if (tripformView.indexCounter < 3){
-    // Show the "Next Step" button - it might've been hidden by a step, and then the user started over
-    tripformView.nextButton.show();
-
     //if there's no from place input value, add stop class to next btn
     if ( $('#trip_proxy_from_place').val() === '' || $('#trip_proxy_to_place').val() === '' ) {
       tripformView.nextButton.addClass('stop');
