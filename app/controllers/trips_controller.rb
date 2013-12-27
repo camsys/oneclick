@@ -3,9 +3,9 @@ class TripsController < PlaceSearchingController
 
   # set the @trip variable before any actions are invoked
   before_filter :get_traveler, only: [:show, :new, :email, :email_itinerary, :details, :repeat, :edit, :destroy,
-    :update, :skip, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2, :create]
+    :update, :skip, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2, :create, :show_printer_friendly]
   before_filter :get_trip, :only => [:show, :email, :email_itinerary, :details, :repeat, :edit,
-    :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2]
+    :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2, :show_printer_friendly]
 
 
   TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
@@ -72,7 +72,21 @@ class TripsController < PlaceSearchingController
       format.json { render json: @trip }
     end
   end
-      
+
+  def show_printer_friendly
+    @show_hidden = params[:show_hidden]
+    @print = params[:print]
+
+    if session[:current_trip_id]
+      session[:current_trip_id] = nil
+    end
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @trip }
+    end
+  end
+
   def email
     Rails.logger.info "Begin email"
     email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
@@ -86,7 +100,11 @@ class TripsController < PlaceSearchingController
 
     Rails.logger.info email_addresses.inspect
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    UserMailer.user_trip_email(email_addresses, @trip, "ARC OneClick Trip Itinerary", from_email,
+    if from_email == ""
+    from_email = Oneclick::Application.config.name
+    end
+    subject = Oneclick::Application.config.name + ' Trip Itinerary'
+    UserMailer.user_trip_email(email_addresses, @trip, subject, from_email,
       params[:email][:email_comments]).deliver
     respond_to do |format|
       format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.to_sentence}."  }
@@ -117,7 +135,8 @@ class TripsController < PlaceSearchingController
     if params[:email][:copy_self] == '1'
       emails << from_email
     end
-    UserMailer.provider_trip_email(emails, @trip, "ARC OneClick Trip Request", from_email, comments).deliver
+    subject = Oneclick::Application.config.name + ' Trip Request'
+    UserMailer.provider_trip_email(emails, @trip, subject, from_email, comments).deliver
     respond_to do |format|
       format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{provider.name}."  }
       format.json { render json: @trip }
@@ -134,7 +153,8 @@ class TripsController < PlaceSearchingController
     email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
     Rails.logger.info email_addresses.inspect
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, "ARC OneClick Trip Itinerary", from_email,
+    subject = Oneclick::Application.config.name + ' Trip Itinerary'
+    UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, subject, from_email,
       params[:email][:email_comments]).deliver
     respond_to do |format|
       format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
@@ -567,16 +587,20 @@ protected
   # Safely set the @trip variable taking into account trip ownership
   def get_trip
     # limit trips to trips accessible by the user unless an admin
+    Rails.logger.info "get_trip, traveler is #{@traveler}"
     if @traveler.has_role? :admin
+      Rails.logger.info "get_trip, traveler is admin"
       @trip = Trip.find(params[:id])
     else
       begin
         @trip = @traveler.trips.find(params[:id])
+        Rails.logger.info "Normal user found trip: #{@trip}"
       rescue => ex
-        Rails.logger.debug ex.message
+        Rails.logger.info "get_trip: #{ex.message}"
         @trip = nil
       end
     end
+    Rails.logger.info "get_trip, returning, @trip is #{@trip}"
   end
 
   # Create an array of map markers suitable for the Leaflet plugin. If the trip proxy is from an existing trip we will

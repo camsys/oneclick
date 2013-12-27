@@ -205,6 +205,7 @@ en:
   # new ones
   close: "Close"
   name: "Name"
+  send: "Send"
   trip_request_from: "Trip request from "
   send_email_to: "Send email to"
   additional_emails: "Additional emails"

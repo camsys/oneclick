@@ -11,13 +11,13 @@
             collection: send_trip_by_email_list(@traveler, is_assisting),
             :input_html => { :checked => true}, :as => :check_boxes
         - else
-          = f.input :from, label: t(:from_address), required: true
-        = f.input :email_addresses, label: 'Additional email addresses', required: false
+          = f.input :from, label: t(:from), required: false
+        = f.input :email_addresses, label: t(:to), required: true, hint: "Use commas to separate multiple emails."
         = f.input :email_comments, as: :text, label: 'Comments', required: false, input_html: {rows: 3}
       .modal-footer
         = button_tag type: :submit, class: 'btn btn-info' do
           %i.icon-envelope
-          Send
+          = t(:send)
         = link_to '#', :class => "cancel_link" do
           %i.icon.icon-reply
           = t(:cancel)

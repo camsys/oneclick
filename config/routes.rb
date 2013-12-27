@@ -87,6 +87,7 @@ Oneclick::Application.routes.draw do
           post  'admin_comments'
           get   'edit_rating'
           get   'email_feedback'
+          get   'show_printer_friendly'
         end
       end
 
