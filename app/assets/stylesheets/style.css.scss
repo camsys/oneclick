@@ -908,6 +908,10 @@ div.trip_proxy_trip_purpose_id{
 							opacity: 50%;
 						}
 					}
+
+					input[type="radio"] + label.disabled{
+						cursor: not-allowed;
+					}
 					
 					input[type="radio"]:checked + label.yes, input[type="radio"]:checked + label.no, input[type="radio"]:checked + label.unsure{
 						box-shadow: inset 0 0 0 4px $gray2,
