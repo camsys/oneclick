@@ -319,8 +319,9 @@ tripformView.timepickerInit = function(inputelemId, timepickerelemId) {
       var ampmStr = selectedAmPmStr;
 
       if (hour >= 10) {
-        // If time is 10:00 or later, switch the period
-        ampmStr = (ampmStr == 'am') ? 'pm' : 'am';
+        // If time is 10:00 or later, but less then 12:00, switch the period
+        if (hour < 12)
+          ampmStr = (ampmStr == 'am') ? 'pm' : 'am';
 
         // If time is 11:00 or later, subtract 12
         if (hour >= 11) {
