@@ -146,9 +146,14 @@ tripformView.indexChangeHandler = function() {
           break;
 
         case 1:
+
           // Enter departure address
           $('div.next-footer-container').removeClass('hidden');
+          
+          // Show the google map and re-calculate size. Have to do show() before reset to ensure
+          // that leaflet code knows the size of the map, so it can calculate size correctly.
           $('#trip_map').show();
+          resetMapView();
 
           tripformView.nextButtonValidateLocation($('#trip_proxy_from_place'));
           break;

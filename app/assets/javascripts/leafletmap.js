@@ -424,3 +424,8 @@ function resetMap() {
 	removePolylines();
 	//LMmap.remove();
 };
+
+// Wrapper for _resetView()
+function resetMapView() {
+	LMmap._resetView(LMmap.getCenter(), LMmap.getZoom(), true);
+}
