@@ -36,14 +36,14 @@
                   %td
                     = f.label characteristic.note + " (not yet available)", :class => 'disabled'
                   %td 
-                    = f.radio_button characteristic.code.to_sym, true
-                    = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true, disabled: true
+                    = f.radio_button characteristic.code.to_sym, true, :disabled => true
+                    = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes disabled', :value => true, disabled: true
                   %td 
-                    = f.radio_button characteristic.code.to_sym, false
-                    = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no', :value => false, disabled: true
+                    = f.radio_button characteristic.code.to_sym, false, :disabled => true
+                    = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no disabled', :value => false, disabled: true
                   %td 
-                    = f.radio_button characteristic.code.to_sym, "na"
-                    = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na", disabled: true
+                    = f.radio_button characteristic.code.to_sym, "na", :disabled => true
+                    = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure disabled', :value => "na", disabled: true
       
 
         / -TravelerCharacteristic.personal_factors.where(:datatype => 'disabled').each do |characteristic|
