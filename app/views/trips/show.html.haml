@@ -175,9 +175,12 @@
       %h5 Departure Time
       %p.time 
         = format_time(@trip.trip_parts.first.trip_time.in_time_zone)
-      %h5 Return Time
-      %p.return 
-        = format_time(@trip.trip_parts.last.trip_time.in_time_zone)
+      
+      - if @trip.both_parts_selected?
+        %h5 Return Time
+        %p.return 
+          = format_time(@trip.trip_parts.last.trip_time.in_time_zone)
+      
       %h5 Purpose
       %p.reason 
         = @trip.trip_purpose
