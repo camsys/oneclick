@@ -168,6 +168,7 @@
       = f.input_field :is_round_trip, :as => :boolean, :inline_label => "Return after", :class => "hidden"
       = f.input :return_trip_time, :label => false, :wrapper => :append do
         #return-trip-time
+          = f.label :return_trip_time
           = f.input_field :return_trip_time, :as => :string, :label => false
 
     .row-fluid
