@@ -165,17 +165,11 @@ tripformView.indexChangeHandler = function() {
 
         case 3:
           // Date Picker
-          //$('#trip-date').click();
           $('#trip_map').hide();
 
           //show the calendar
           tripformView.calendar.mbShow();
 
-          //trigger a datechange event
-          $('#trip-date').datepicker().trigger('dateChange');
-
-          //update input field with the current time #why do i have to manually do this?!
-          tripformView.tripDateCal.find('input').val(Date.format(new Date(), tripformView.dateFormat));
           break;
 
         case 4:

@@ -652,7 +652,7 @@
     //If they click no on return trip, jump straight to Overview
     $('#return-yesno a#no').on('click', function(){
       //
-      $('#trip_proxy_is_return_trip').prop('checked', false);
+      $('#trip_proxy_is_round_trip').prop('checked', false);
       $('#left-results p.return').hide();
       $('#left-results p.return').prev('h5').hide();
       tripformView.indexCounter = 7;
