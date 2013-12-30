@@ -318,8 +318,10 @@ a{
 			margin-top:13px;
         }
     }
-    .attract-main{
+    a.attract-main{
     	height:438px;
+    	display:block;
+    	text-decoration: none;
         .title{
         	color: $gray6;
         	font-size: 120px;
@@ -330,7 +332,8 @@ a{
         	letter-spacing:-5px;
         }
     }
-	.attract-footer{
+	a.attract-footer{
+		display: block;
 		height:50%;
 		background: $blue url(../assets/kiosk/attract-bottom.jpg) no-repeat center center;
 	}
