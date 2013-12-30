@@ -26,6 +26,17 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 	font-family: 'Avenir Next', Helvetica, sans-serif;
 }
 
+body{
+	overflow: hidden;
+}
+
+*::selection {
+	background: rgba(0,0,0,0); /* Safari */
+}
+*::-moz-selection {
+	background: rgba(0,0,0,0); /* Firefox */
+}
+
 //FIXES
 
 .span8plus{
@@ -911,6 +922,10 @@ div.trip_proxy_trip_purpose_id{
 						&.disabled{
 							opacity: 50%;
 						}
+					}
+
+					input[type="radio"] + label.disabled{
+						cursor: not-allowed;
 					}
 					
 					input[type="radio"]:checked + label.yes, input[type="radio"]:checked + label.no, input[type="radio"]:checked + label.unsure{

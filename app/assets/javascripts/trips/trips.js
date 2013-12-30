@@ -8,6 +8,7 @@ tripformView.init = function(){
   this.formItems = $('*[data-index]');
   this.formItems.addClass('hidden');
   this.calendar = $('#trip-date').data('calendar');
+  this.purposepickerSels = $('#purposepicker ul li');
   this.nextButton = $('.next-step-btn');
   this.tripDateCal = $('#trip-date');
   this.formEle = $('#new_trip_proxy');
@@ -113,9 +114,23 @@ tripformView.indexChangeHandler = function() {
   // matched element visible
   matchedElement.removeClass('hidden');
 
+  // Hide the "Next Step" button on "Start at your current location?" and "Need a return trip?"
+  if (tripformView.indexCounter == 0 || tripformView.indexCounter == 6) {
+    tripformView.nextButton.hide();
+  }
+  else {
+    tripformView.nextButton.show();
+  }
+
   if (tripformView.indexCounter < 3){
     //if there's no from place input value, add stop class to next btn
     if ( $('#trip_proxy_from_place').val() === '' || $('#trip_proxy_to_place').val() === '' ) {
+      tripformView.nextButton.addClass('stop');
+    }
+  }
+  else if (tripformView.indexCounter == 5){
+    //if there's nothing selected in the "purposes" list, add stop class to next btn
+    if ($('#purposepicker ul li.selected').text() === '') {
       tripformView.nextButton.addClass('stop');
     }
   }
@@ -125,42 +140,66 @@ tripformView.indexChangeHandler = function() {
   var readyState = setInterval(function() {
     if (document.readyState === "complete") {
       switch(tripformView.indexCounter) {
+
+        case 0:
+          // "Start at your current location?"
+          break;
+
         case 1:
 
+          // Enter departure address
           $('div.next-footer-container').removeClass('hidden');
+          
+          // Show the google map and re-calculate size. Have to do show() before reset to ensure
+          // that leaflet code knows the size of the map, so it can calculate size correctly.
           $('#trip_map').show();
+          resetMapView();
 
-          tripformView.nextButtonValidate($('#trip_proxy_from_place'));
+          tripformView.nextButtonValidateLocation($('#trip_proxy_from_place'));
           break;
 
         case 2:
-          tripformView.nextButtonValidate($('#trip_proxy_to_place'));
+          // Enter arrival address
+          tripformView.nextButtonValidateLocation($('#trip_proxy_to_place'));
           break;
 
         case 3:
-          //$('#trip-date').click();
+          // Date Picker
           $('#trip_map').hide();
 
           //show the calendar
           tripformView.calendar.mbShow();
 
-          //trigger a datechange event
-          $('#trip-date').datepicker().trigger('dateChange');
-
-          //update input field with the current time #why do i have to manually do this?!
-          tripformView.tripDateCal.find('input').val(Date.format(new Date(), tripformView.dateFormat));
           break;
 
         case 4:
+          // Time Picker (outbound trip)
           $.fn.datepicker.Calendar.hide();
-          tripformView.timepickerInit($('#trip_proxy_trip_time'), $('#timepicker-one'));
+
+          // Initialize time picker for outbound trip
+          tripformView.timepickerInit('#trip_proxy_trip_time', '#timepicker-one');
+
+          // Initialize time picker for return trip -- doing it here, even if we don't need it, because we will
+          // be updating it based on selections in outbound trip date picker
+          tripformView.timepickerInit('#trip_proxy_return_trip_time', '#timepicker-two');
+
+          break;
+
+        case 5:
+          // Purposes
+          tripformView.nextButtonValidatePurpose();
+          break;
+
+        case 6:
+          // "Need a Return Trip?"
           break;
 
         case 7:
-          tripformView.timepickerInit($('#trip_proxy_return_trip_time'), $('#timepicker-two'));
+          // Time Picker (return trip)
           break;
 
         case 8:
+          // Trip overview
           (function() {
             var leftResults = $('#left-results');
             $('#trip_map').show();
@@ -213,12 +252,12 @@ tripformView.indexChangeHandler = function() {
   }, 10);
 };
 
-tripformView.nextButtonValidate = function($inputelem) {
-  var tripProxyFromPlace = $inputelem;
+tripformView.nextButtonValidateLocation = function($inputelem) {
+  var tripProxyPlace = $inputelem;
 
   //add blur event handler to input field
-  tripProxyFromPlace.on('blur', function() {
-    if (tripProxyFromPlace.val() === '') {
+  tripProxyPlace.on('blur', function() {
+    if (tripProxyPlace.val() === '') {
       tripformView.nextButton.addClass('stop');
     }
     else {
@@ -227,18 +266,21 @@ tripformView.nextButtonValidate = function($inputelem) {
   });
 };
 
-tripformView.timepickerInit = function($inputelem, $timepickerelem) {
-  var timetable = $($timepickerelem).find('.timetable');
-  var timeInput = $($inputelem);
+tripformView.nextButtonValidatePurpose = function() {
+  // Enable the "Next Step" button when the user clicks on one of the list elements
+  tripformView.purposepickerSels.on('click', function() {
+    tripformView.nextButton.removeClass('stop');
+  });
+};
 
-  //set first load selected time
-  var timeTokens = timeInput.val().split(' ');
-  var liTimeSelector = 'li:contains("' + timeTokens[0] + '")';
-  var liAmPmSelector = 'li:contains("' + timeTokens[1] + '")';
-  var timeElem = timetable.find(liTimeSelector).first();
-  var amPmElem = timetable.find(liAmPmSelector);
-  timeElem.addClass('selected');
-  amPmElem.addClass('selected');
+tripformView.timepickerInit = function(inputelemId, timepickerelemId) {
+  var isOutbound = (inputelemId == '#trip_proxy_trip_time');
+
+  var timeInput = $(inputelemId);
+  var timetable = $(timepickerelemId).find('.timetable');
+
+  // Set the selected time on the outbound time picker widget
+  tripformView.updateTimePicker(timeInput, timetable);
 
   //add click event to time items
   timetable.find('li').not('.notime').on('click', function(e) {
@@ -257,10 +299,70 @@ tripformView.timepickerInit = function($inputelem, $timepickerelem) {
 
     //create val for input
     var selectedTimeElems = timetable.find('li.selected');
-    var timeval = $(selectedTimeElems[0]).text() + " " + $(selectedTimeElems[1]).text();
+    var selectedTimeStr = $(selectedTimeElems[0]).text();
+    var selectedAmPmStr = $(selectedTimeElems[1]).text();
+    var timeval = selectedTimeStr + " " + selectedAmPmStr;
+    
     timeInput.val(timeval);
 
+    if (isOutbound) {
+      // Update time on return trip time picker
+      var timeElems = selectedTimeStr.split(':');
+      var hour = parseInt(timeElems[0]);
+      var minuteStr= timeElems[1];
+      var ampmStr = selectedAmPmStr;
+
+      if (hour >= 10) {
+        // If time is 10:00 or later, but less then 12:00, switch the period
+        if (hour < 12)
+          ampmStr = (ampmStr == 'am') ? 'pm' : 'am';
+
+        // If time is 11:00 or later, subtract 12
+        if (hour >= 11) {
+          hour -= 12;
+        }
+      }
+
+      // Increment the hour by 2
+      hour += 2;
+
+      // Concatenate terms to create the return time string
+      var returnTime = hour.toString() + ':' + minuteStr + ' ' + ampmStr;
+
+      // Set the time value on the return time picker
+      var returnTimeInput = $('#trip_proxy_return_trip_time');
+      returnTimeInput.val(returnTime);
+
+      // Get the return time picker widget
+      var returnTimetable = $('#timepicker-two').find('.timetable');
+      
+      // Clear all selected times on the return time picker widget
+      returnTimetable.find('li').removeClass('selected');
+
+      // Set the selected time on the return time picker widget
+      tripformView.updateTimePicker(returnTimeInput, returnTimetable);
+    }
+
   });
+};
+
+// Set the selected time on a time picker widget
+tripformView.updateTimePicker = function(timeInput, timetable) {
+
+  // Read the time from the input field and split it on a space character
+  var timeTokens = timeInput.val().split(' ');
+ 
+  // Define selectors for finding the right time elements
+  var liTimeSelector = 'li:contains("' + timeTokens[0] + '")';
+  var liAmPmSelector = 'li:contains("' + timeTokens[1] + '")';
+ 
+  // Use the selectors to find the right time elements
+  var timeElem = timetable.find(liTimeSelector).first();
+  var amPmElem = timetable.find(liAmPmSelector);
+ 
+  // Now that we have the right time elements, set them selected
+  timeElem.addClass('selected');
+  amPmElem.addClass('selected');
 };
 
 tripformView.editTripButtonInit = function() {

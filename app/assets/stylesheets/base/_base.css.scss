@@ -448,3 +448,11 @@ td.left, th.left {
 }
 
 // .trips.show .first-in-row { margin-left: 0 !important; }
+
+/* Printer Friendly */
+@media print {
+  #publicnav,#footer,#help{
+    display: none;
+  }
+
+}
