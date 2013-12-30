@@ -1028,48 +1028,6 @@ div.trip_proxy_trip_purpose_id{
 	}
 }
 
-// // DETAIL VIEW -- to replace the modal view.
-// // TO DO - Animate the slide in of the DETAIL VIEW
-// .detail-view{
-// 	position: absolute;
-// 	height:100%;
-// 	width: 100%;
-// 	z-index: 200;
-
-// 	.close-section{
-// 		width: 33.3%;
-// 		background-color: $black;
-// 		height: inherit;
-// 		padding-top: 28%;
-// 		float:left;
-
-// 		.close-btn-container{
-// 			margin-left: 24px;
-// 			display: inline-block;
-// 			text-align: center;
-// 			.close-btn{
-// 				background: url(../assets/kiosk/close-btn-default.png) no-repeat center center;
-// 				height: 84px;
-// 				width: 84px;
-// 			}
-// 			p{
-// 				color: $white;
-// 				display: inline-block;
-// 				text-transform: uppercase;
-// 				border-bottom: 1px solid $blue;
-// 			}
-// 		}
-
-// 	}
-// 	.detail-section{
-// 		width: 66.67%;
-// 		height: inherit;
-// 		background-color: $white;
-// 		float:left;
-
-// 	}
-// }
-
 
 // DETAIL VIEW -- to replace the modal view.
 // TO DO - Animate the slide in of the DETAIL VIEW
@@ -1149,6 +1107,7 @@ div.trip_proxy_trip_purpose_id{
 		min-height:128px;
 		background-color: $gray6;
 		color: $white;
+		display:inline-block;
 		i{
 			float:left;
 			margin-top: 22px;
@@ -1158,13 +1117,11 @@ div.trip_proxy_trip_purpose_id{
 		h1{
 			float:left;
 			font-size: 60px;
-			line-height: 1em;
+			line-height: 1.1em;
 			margin-left: 12px;
 			margin-top: 33px;
-			margin-bottom:33px;
+			margin-bottom:28px;
 			width: 87%;
-			overflow: hidden;
-			height: 108px;
 		}
 	}
 	.detail-main{
@@ -1845,7 +1802,7 @@ body.sessions.new, body.registrations.new{
 		box-shadow: 0px 1px 0px $gray4;
 		background-color: $gray6;
 		color: $white;
-
+		height:93px;
 		i{
 			display: block;
 			text-align: center;
