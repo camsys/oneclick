@@ -663,6 +663,8 @@ div.trip_proxy_trip_purpose_id{
 	}
 }
 
+
+
 #from_place_candidates, #to_place_candidates{
 	@extend .span12;
 	position: absolute;
@@ -1367,6 +1369,16 @@ label.time{
 .trip_proxy_trip_date{
 	label{
 		@extend label.date;
+		pointer-events:none;
+		z-index: 100;
+		position:absolute;
+		top: 28px;
+		left: 35px;
+		color: $gray4;
+		font-weight:700;
+		abbr{
+			display: none;
+		}
 	}
 
 	input#trip_proxy_trip_date{
@@ -1374,14 +1386,31 @@ label.time{
 	}
 }
 
-#trip-time{
+
+
+#trip-time, #return-trip-time{
 	label{
 		@extend label.date;
+		pointer-events:none;
+		z-index: 100;
+		position:absolute;
+		top: 28px;
+		left: 35px;
+		color: $gray4;
+		font-weight:700;
+		abbr{
+			display: none;
+		}
 	}
 	#trip_proxy_trip_time, #trip_proxy_return_trip_time{
 
 		@extend input#txtDate;
 	}
+}
+
+input#trip_proxy_trip_time.string.required,
+input#trip_proxy_return_trip_time.string.optional{
+	pointer-events:none;
 }
 
 .trip_proxy_return_trip_time{
