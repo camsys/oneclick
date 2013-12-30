@@ -1,3 +1,7 @@
+require 'active_mdb'
+
+# TODO Class not currently used, may not be at all.
+
 # ["tProvider", "tProviderGrid", "tService", "tServiceGrid", "tServiceCfg", "tServiceCost"]
 module Esp
   class Provider < ActiveMDB::Base
