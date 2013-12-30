@@ -1146,7 +1146,7 @@ div.trip_proxy_trip_purpose_id{
 	margin:0 !important;
 	.detail-header{
 		width:100%;
-		height:128px;
+		min-height:128px;
 		background-color: $gray6;
 		color: $white;
 		i{
@@ -1158,8 +1158,10 @@ div.trip_proxy_trip_purpose_id{
 		h1{
 			float:left;
 			font-size: 60px;
-			line-height: 1.8em;
+			line-height: 1em;
 			margin-left: 12px;
+			margin-top: 33px;
+			margin-bottom:33px;
 			width: 87%;
 			overflow: hidden;
 			height: 108px;
