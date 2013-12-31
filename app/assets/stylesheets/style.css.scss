@@ -283,39 +283,57 @@ a{
 
 //ATTRACT LOOP
 .penndot-logo{
-	background: url(../assets/kiosk/penndot-logo.svg) no-repeat center center;
+	background: url(../assets/kiosk/penndot-logo.png) no-repeat center center;
 	background-size: 100%;
-
 }
 
-.attract-screen{
+.oneclick-logo{
+	background: url(../assets/kiosk/oneclick-logo.png) no-repeat center center;
+	background-size: 100%;
+}
+
+.attract-container{
 	height:1024px;
-	.attract-top{
-		height: 50%;
-		padding:30px 45px;
+	position: fixed;
+	top:0;
+	background-color: $white;
+	width:100%;
+
+	.attract-header{
+		height: 73px;
+		padding:0px 45px;
+		border-bottom:1px solid $gray3;
 
         .oneclick{
-			@extend .penndot-logo;
+			@extend .oneclick-logo;
 			height:47px;
 			width: 205px;
+			margin-top:13px;
 
         }
         .penndot{
 			@extend .penndot-logo;
 			height:47px;
 			width: 205px;
+			margin-top:13px;
         }
+    }
+    a.attract-main{
+    	height:438px;
+    	display:block;
+    	text-decoration: none;
         .title{
         	color: $gray6;
         	font-size: 120px;
         	font-weight:700;
         	text-align: center;
         	clear:left;
-        	margin-top: 20%;
+        	margin-top: 173px;
         	letter-spacing:-5px;
         }
     }
-	.attract-bottom{
+	a.attract-footer{
+		display: block;
 		height:50%;
 		background: $blue url(../assets/kiosk/attract-bottom.jpg) no-repeat center center;
 	}
@@ -662,6 +680,8 @@ div.trip_proxy_trip_purpose_id{
 		display: none;
 	}
 }
+
+
 
 #from_place_candidates, #to_place_candidates{
 	@extend .span12;
@@ -1367,6 +1387,16 @@ label.time{
 .trip_proxy_trip_date{
 	label{
 		@extend label.date;
+		pointer-events:none;
+		z-index: 100;
+		position:absolute;
+		top: 28px;
+		left: 35px;
+		color: $gray4;
+		font-weight:700;
+		abbr{
+			display: none;
+		}
 	}
 
 	input#trip_proxy_trip_date{
@@ -1374,14 +1404,31 @@ label.time{
 	}
 }
 
-#trip-time{
+
+
+#trip-time, #return-trip-time{
 	label{
 		@extend label.date;
+		pointer-events:none;
+		z-index: 100;
+		position:absolute;
+		top: 28px;
+		left: 35px;
+		color: $gray4;
+		font-weight:700;
+		abbr{
+			display: none;
+		}
 	}
 	#trip_proxy_trip_time, #trip_proxy_return_trip_time{
 
 		@extend input#txtDate;
 	}
+}
+
+input#trip_proxy_trip_time.string.required,
+input#trip_proxy_return_trip_time.string.optional{
+	pointer-events:none;
 }
 
 .trip_proxy_return_trip_time{
