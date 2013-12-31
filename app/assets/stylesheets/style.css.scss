@@ -67,6 +67,22 @@ h5{
 	}
 }
 
+.fadeout{
+	position:absolute;
+	background: -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 90%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(90%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 90%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 90%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 90%); /* IE10+ */
+	background: linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 90%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+	top:0;
+	right:0;
+	width:124px;
+	height:124px;
+
+}
+
 //NAV
 
 //UNIFIED NAV STYLE FOR KIOSK
@@ -283,39 +299,57 @@ a{
 
 //ATTRACT LOOP
 .penndot-logo{
-	background: url(../assets/kiosk/penndot-logo.svg) no-repeat center center;
+	background: url(../assets/kiosk/penndot-logo.png) no-repeat center center;
 	background-size: 100%;
-
 }
 
-.attract-screen{
+.oneclick-logo{
+	background: url(../assets/kiosk/oneclick-logo.png) no-repeat center center;
+	background-size: 100%;
+}
+
+.attract-container{
 	height:1024px;
-	.attract-top{
-		height: 50%;
-		padding:30px 45px;
+	position: fixed;
+	top:0;
+	background-color: $white;
+	width:100%;
+
+	.attract-header{
+		height: 73px;
+		padding:0px 45px;
+		border-bottom:1px solid $gray3;
 
         .oneclick{
-			@extend .penndot-logo;
+			@extend .oneclick-logo;
 			height:47px;
 			width: 205px;
+			margin-top:13px;
 
         }
         .penndot{
 			@extend .penndot-logo;
 			height:47px;
 			width: 205px;
+			margin-top:13px;
         }
+    }
+    a.attract-main{
+    	height:438px;
+    	display:block;
+    	text-decoration: none;
         .title{
         	color: $gray6;
         	font-size: 120px;
         	font-weight:700;
         	text-align: center;
         	clear:left;
-        	margin-top: 20%;
+        	margin-top: 173px;
         	letter-spacing:-5px;
         }
     }
-	.attract-bottom{
+	a.attract-footer{
+		display: block;
 		height:50%;
 		background: $blue url(../assets/kiosk/attract-bottom.jpg) no-repeat center center;
 	}
@@ -696,13 +730,13 @@ div.trip_proxy_trip_purpose_id{
 			border-bottom: 1px solid $gray3;
 			font-size: 21px;
 			font-weight:600;
-			height: 69px;
 
 			a, a.address-select{
-				padding: 24px 20px;
+				padding: 18px 20px;
 				color: $gray6;
 				width: inherit;
 				margin: 0;
+				line-height:1.3;
 
 				&:hover{
 					// border-bottom: 1px solid $gray3;
