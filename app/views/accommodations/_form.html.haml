@@ -8,41 +8,42 @@
           .input-header
             .step-number Step 3 of 3
             .step-title Questions
-          %table#characteristics_one.pull-right
-            %thead 
-              %tr 
-                %th 
-                %th Yes
-                %th No
-                %th Unsure
-            %tbody 
-              -TravelerAccommodation.where(:datatype => 'bool').each do |accommodation|
+          .pull-right
+            %table#characteristics_one
+              %thead 
                 %tr 
-                  %td
-                    = f.label accommodation.note 
-                  %td 
-                    = f.radio_button accommodation.code.to_sym, true
-                    = f.label accommodation.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
-                  %td 
-                    = f.radio_button accommodation.code.to_sym, false
-                    = f.label accommodation.code.to_sym, nil, :text => nil, :class => 'no', :value => false
-                  %td 
-                    = f.radio_button accommodation.code.to_sym, "na"
-                    = f.label accommodation.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
+                  %th 
+                  %th Yes
+                  %th No
+                  %th Unsure
+              %tbody 
+                -TravelerAccommodation.where(:datatype => 'bool').each do |accommodation|
+                  %tr 
+                    %td
+                      = f.label accommodation.note 
+                    %td 
+                      = f.radio_button accommodation.code.to_sym, true
+                      = f.label accommodation.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
+                    %td 
+                      = f.radio_button accommodation.code.to_sym, false
+                      = f.label accommodation.code.to_sym, nil, :text => nil, :class => 'no', :value => false
+                    %td 
+                      = f.radio_button accommodation.code.to_sym, "na"
+                      = f.label accommodation.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
 
-              -TravelerAccommodation.where(:datatype => 'disabled').each do |characteristic|
-                %tr 
-                  %td
-                    = f.label characteristic.note + " (not yet available)", :class => 'disabled'
-                  %td 
-                    = f.radio_button characteristic.code.to_sym, true
-                    = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
-                  %td 
-                    = f.radio_button characteristic.code.to_sym, false
-                    = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no', :value => false
-                  %td 
-                    = f.radio_button characteristic.code.to_sym, "na"
-                    = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
+                -TravelerAccommodation.where(:datatype => 'disabled').each do |characteristic|
+                  %tr 
+                    %td
+                      = f.label characteristic.note + " (not yet available)", :class => 'disabled'
+                    %td 
+                      = f.radio_button characteristic.code.to_sym, true
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
+                    %td 
+                      = f.radio_button characteristic.code.to_sym, false
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no', :value => false
+                    %td 
+                      = f.radio_button characteristic.code.to_sym, "na"
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
 
 :javascript
   $(document).ready(function(){
