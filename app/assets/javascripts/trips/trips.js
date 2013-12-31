@@ -19,10 +19,10 @@ tripformView.init = function(){
   $('input#trip_proxy_from_place').val('');
 
   // "Next Step", "Start at your current location?" -> NO
-  $('.next-step-btn, a#no').on('click', tripformView.nextBtnHandler);
+  $('.next-step-btn, a#no, #return-trip #yes').on('click', tripformView.nextBtnHandler);
 
   // "Start at your current location?" -> YES
-  $('a#yes').on('click', tripformView.useCurrentLocationHandler);
+  $('#current-location a#yes').on('click', tripformView.useCurrentLocationHandler);
 
   //set calendar to today
   this.calendar.setDate(new Date());
