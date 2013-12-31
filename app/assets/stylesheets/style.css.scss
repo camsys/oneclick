@@ -1207,6 +1207,20 @@ div.trip_proxy_trip_purpose_id{
 		.tab-content{
 			padding-left:40px;
 			padding-right:40px;
+
+			i{
+				color: $gray3;
+
+				&.start_icon{
+					color: #7ec537;
+				}
+				&.end_icon{
+					color: $red;
+				}
+			}
+			.itinerary_text_small{
+				color: $gray6;
+			}
 		}
 		.detail-content{
 			.directions{
@@ -1219,6 +1233,7 @@ div.trip_proxy_trip_purpose_id{
 							height:50px;
 							width:50px;
 							float:left;
+
 						}
 					}
 				}
@@ -1856,6 +1871,9 @@ body.sessions.new, body.registrations.new{
 			text-align:center;
 			margin:0;
 		}
+	}
+	.dialog-content{
+		height:175px !important;
 	}
 	.dialog-footer{
 		border-radius: inherit;
