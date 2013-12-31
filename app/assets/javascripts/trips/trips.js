@@ -18,7 +18,11 @@ tripformView.init = function(){
 
   $('input#trip_proxy_from_place').val('');
 
-  $('.next-step-btn, a#yes, a#no').on('click', tripformView.nextBtnHandler);
+  // "Next Step", "Start at your current location?" -> NO
+  $('.next-step-btn, a#no').on('click', tripformView.nextBtnHandler);
+
+  // "Start at your current location?" -> YES
+  $('a#yes').on('click', tripformView.useCurrentLocationHandler);
 
   //set calendar to today
   this.calendar.setDate(new Date());
@@ -95,9 +99,45 @@ tripformView.overrideTaddaapicker = function() {
 tripformView.nextBtnHandler = function() {
   //increment counter
   tripformView.indexCounter++;
+
   //trigger indexchange event
   tripformView.formEle.trigger('indexChange');
 };
+
+tripformView.useCurrentLocationHandler = function() {
+  
+  // Increment counter by two, to skip "From" selection
+  tripformView.indexCounter += 2;
+
+  $('div.next-footer-container').removeClass('hidden');
+  
+  // Show the google map and re-calculate size. Have to do show() before reset to ensure
+  // that leaflet code knows the size of the map, so it can calculate size correctly.
+  $('#trip_map').show();
+  resetMapView();
+
+  // ***************
+  // Currently hard-coding this in place -- synchrotron will be doing this in the future!!!!
+  // ***************
+  addrConfig.setCurrentMachineNameInField("machine1");
+
+  // Synchrotron will have set the machine name, so we can get the machine address
+  var item = JSON.parse(addrConfig.getCurrentMachineAddressInField());
+
+  removeMatchingMarkers('start');
+  marker = create_or_update_marker('start', item.lat, item.lon, item.addr, getFormattedAddrForMarker(item.addr), 'startIcon');
+  setMapToBounds();
+  selectMarker(marker);
+  //marker.openPopup();
+
+  // Update the UI
+  $('#from_place_selected_type').attr('value', item.type);
+  $('#from_place_selected').attr('value', item.id);
+  $('#trip_proxy_from_place').val(item.addr);
+
+  //trigger indexchange event
+  tripformView.formEle.trigger('indexChange');
+}
 
 //save form submit handler since we need to remove it if the user wants to edit their trip
 tripformView.submitButtonhandler = function() {
@@ -201,6 +241,10 @@ tripformView.indexChangeHandler = function() {
         case 8:
           // Trip overview
           (function() {
+
+            // Make sure the map shows the start/end markers
+            setMapToBounds();
+
             var leftResults = $('#left-results');
             $('#trip_map').show();
 
