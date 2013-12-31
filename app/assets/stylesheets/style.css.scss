@@ -714,13 +714,13 @@ div.trip_proxy_trip_purpose_id{
 			border-bottom: 1px solid $gray3;
 			font-size: 21px;
 			font-weight:600;
-			height: 69px;
 
 			a, a.address-select{
-				padding: 24px 20px;
+				padding: 18px 20px;
 				color: $gray6;
 				width: inherit;
 				margin: 0;
+				line-height:1.3;
 
 				&:hover{
 					// border-bottom: 1px solid $gray3;
