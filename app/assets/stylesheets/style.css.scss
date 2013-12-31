@@ -887,6 +887,21 @@ div.trip_proxy_trip_purpose_id{
 }
 
 //QUESTIONS CHARACTERISTICS
+//Specific fix for the programs section, which truncates the label by almost 50%
+.programs-section table{
+	width:585px;
+
+	tr{
+		td{
+			&:first-child{
+				label{
+					min-width:240px;
+				}
+			}
+		}
+	}
+}
+
 .questions, .programs-section, .accommodations-section{
 
 	table{
