@@ -9,42 +9,43 @@
           .input-header
             .step-number Step 2 of 3
             .step-title Programs
-          %table#characteristics_one.pull-right
-            %thead 
-              %tr 
-                %th 
-                %th Yes
-                %th No
-                %th Unsure
-            %tbody 
-              -TravelerCharacteristic.programs.where(:datatype => 'bool').each do |characteristic|
+          .pull-right
+            %table#characteristics_one
+              %thead 
                 %tr 
-                  %td
-                    = f.label characteristic.note 
-                  %td 
-                    = f.radio_button characteristic.code.to_sym, true
-                    = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
-                  %td 
-                    = f.radio_button characteristic.code.to_sym, false
-                    = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no', :value => false
-                  %td 
-                    = f.radio_button characteristic.code.to_sym, "na"
-                    = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
-                    / TODO: label is adding text that we don't want to show, work with CamSys to remove or hide it.
-                      
-              -TravelerCharacteristic.programs.where(:datatype => 'disabled').each do |characteristic|
-                %tr 
-                  %td
-                    = f.label characteristic.note + " (not yet available)", :class => 'disabled'
-                  %td 
-                    = f.radio_button characteristic.code.to_sym, true
-                    = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
-                  %td 
-                    = f.radio_button characteristic.code.to_sym, false
-                    = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no', :value => false
-                  %td 
-                    = f.radio_button characteristic.code.to_sym, "na"
-                    = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
+                  %th 
+                  %th Yes
+                  %th No
+                  %th Unsure
+              %tbody 
+                -TravelerCharacteristic.programs.where(:datatype => 'bool').each do |characteristic|
+                  %tr 
+                    %td
+                      = f.label characteristic.note 
+                    %td 
+                      = f.radio_button characteristic.code.to_sym, true
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
+                    %td 
+                      = f.radio_button characteristic.code.to_sym, false
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no', :value => false
+                    %td 
+                      = f.radio_button characteristic.code.to_sym, "na"
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
+                      / TODO: label is adding text that we don't want to show, work with CamSys to remove or hide it.
+                        
+                -TravelerCharacteristic.programs.where(:datatype => 'disabled').each do |characteristic|
+                  %tr 
+                    %td
+                      = f.label characteristic.note + " (not yet available)", :class => 'disabled'
+                    %td 
+                      = f.radio_button characteristic.code.to_sym, true
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
+                    %td 
+                      = f.radio_button characteristic.code.to_sym, false
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no', :value => false
+                    %td 
+                      = f.radio_button characteristic.code.to_sym, "na"
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
 
         / - if inline
         /   = button_tag :type => 'submit', :class => "btn btn-primary controls hidden" do
