@@ -620,24 +620,6 @@
       }
     });
 
-    //create hidden input for TripPurposes
-    //pass selected value into hidden input
-      //which does it need the name, the id, something else?
-    //submit the hidden value
-
-    $('#current-location a').on('click', function(){
-      //Temporary Address.
-      if($(this).is('#no')){
-        $('input#trip_proxy_from_place').val('');
-      } else if($(this).is('#yes')){
-      
-        //$('input#trip_proxy_from_place').val('');
-        //CURRENTLY NOT WORKING
-        //$('input#trip_proxy_from_place').val('Cemetery Drive, Decatur, GA 30033');
-      }
-    });
-
-
     $('.edit-trip-btn').on('click', function(){
       $('*[data-index=1]').removeClass('hidden');
       //Unhide the return trip if it was hidden
@@ -651,20 +633,12 @@
       tripformView.formEle.trigger('indexChange');
     });
 
-    //If they click no on return trip, jump straight to Overview
-    $('#return-yesno a#no').on('click', function(){
-      //
-      $('#trip_proxy_is_round_trip').prop('checked', false);
-      $('#left-results p.return').hide();
-      $('#left-results p.return').prev('h5').hide();
-      tripformView.indexCounter = 7;
-    });
-
     //END DP CODE
 
     // Hide what we don't need
     $('#from_place_candidates').hide();
     $('#to_place_candidates').hide();
+
     // Install a submit handler on the query form
     ajax_submit_form_handler('query_form');
 

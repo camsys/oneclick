@@ -18,11 +18,14 @@ tripformView.init = function(){
 
   $('input#trip_proxy_from_place').val('');
 
-  // "Next Step", "Start at your current location?" -> NO
-  $('.next-step-btn, a#no, #return-trip #yes').on('click', tripformView.nextBtnHandler);
+  // "Next Step", "Start at your current location?" -> NO, "Need a return trip?" -> YES
+  $('.next-step-btn, #current-location a#no, #return-trip #yes').on('click', tripformView.nextBtnHandler);
 
   // "Start at your current location?" -> YES
   $('#current-location a#yes').on('click', tripformView.useCurrentLocationHandler);
+
+  // "Need a return trip?" -> NO
+  $('#return-trip a#no').on('click', tripformView.noReturnTripHandler);
 
   //set calendar to today
   this.calendar.setDate(new Date());
@@ -134,6 +137,22 @@ tripformView.useCurrentLocationHandler = function() {
   $('#from_place_selected_type').attr('value', item.type);
   $('#from_place_selected').attr('value', item.id);
   $('#trip_proxy_from_place').val(item.addr);
+
+  //trigger indexchange event
+  tripformView.formEle.trigger('indexChange');
+}
+
+tripformView.noReturnTripHandler = function() {
+
+  // Register that we do not want a return trip
+  $('#trip_proxy_is_round_trip').prop('checked', false);
+
+  // Hide the "Return Trip" section on the trip summary
+  $('#left-results p.return').hide();
+  $('#left-results p.return').prev('h5').hide();
+
+  // Set counter to go directly to Trip Overview page
+  tripformView.indexCounter = 8;
 
   //trigger indexchange event
   tripformView.formEle.trigger('indexChange');
