@@ -248,7 +248,6 @@
     removeMatchingMarkers('stop');
   });
 
-
   ///////////////////////////////////////////////////
   // ACTIONS
   //
@@ -620,20 +619,38 @@
       }
     });
 
-    //create hidden input for TripPurposes
-    //pass selected value into hidden input
-      //which does it need the name, the id, something else?
-    //submit the hidden value
-
     $('#current-location a').on('click', function(){
       //Temporary Address.
       if($(this).is('#no')){
         $('input#trip_proxy_from_place').val('');
       } else if($(this).is('#yes')){
-      
-        //$('input#trip_proxy_from_place').val('');
-        //CURRENTLY NOT WORKING
-        //$('input#trip_proxy_from_place').val('Cemetery Drive, Decatur, GA 30033');
+        //DO NOTHING
+      }
+    });
+
+    //FROM LABEL APPEAR
+    $('input#trip_proxy_from_place').focus(function(){
+        $('#from_input').addClass('text-added');
+    });
+
+    $('input#trip_proxy_from_place').blur(function(){
+      if($(this).val().length > 0){
+        //do nothing
+      } else {
+        $('#from_input').removeClass('text-added');
+      }
+    });
+
+    //TO LABEL APPEAR
+    $('input#trip_proxy_to_place').focus(function(){
+        $('#to_input').addClass('text-added');
+    });
+
+    $('input#trip_proxy_to_place').blur(function(){
+      if($(this).val().length > 0){
+        //do nothing
+      } else {
+        $('#to_input').removeClass('text-added');
       }
     });
 
