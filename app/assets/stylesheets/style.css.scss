@@ -697,7 +697,25 @@ div.trip_proxy_trip_purpose_id{
 //PLAN A TRIP SPECIFIC FIXES
 #from_input, #to_input{
 	label{
-		display: none;
+		display:none;
+	}
+	input{
+		line-height: 1.7em;
+		padding-top:20px;
+	}
+
+	label.string{
+		position: absolute;
+		z-index: 10;
+		color: $gray4;
+		top: 41px;
+		left:100px;
+		display:block;
+		font-weight:600;
+		abbr{
+			text-decoration: none;
+			display:none;
+		}
 	}
 }
 

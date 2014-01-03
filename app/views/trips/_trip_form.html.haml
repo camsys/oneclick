@@ -248,7 +248,6 @@
     removeMatchingMarkers('stop');
   });
 
-
   ///////////////////////////////////////////////////
   // ACTIONS
   //
@@ -617,6 +616,32 @@
         purposeSelect.addClass('selected');
 
         $('#trip_proxy_trip_purpose_id').val(purposeId);
+      }
+    });
+
+    //FROM LABEL APPEAR
+    $('input#trip_proxy_from_place').focus(function(){
+        $('#from_input').addClass('text-added');
+    });
+
+    $('input#trip_proxy_from_place').blur(function(){
+      if($(this).val().length > 0){
+        //do nothing
+      } else {
+        $('#from_input').removeClass('text-added');
+      }
+    });
+
+    //TO LABEL APPEAR
+    $('input#trip_proxy_to_place').focus(function(){
+        $('#to_input').addClass('text-added');
+    });
+
+    $('input#trip_proxy_to_place').blur(function(){
+      if($(this).val().length > 0){
+        //do nothing
+      } else {
+        $('#to_input').removeClass('text-added');
       }
     });
 
