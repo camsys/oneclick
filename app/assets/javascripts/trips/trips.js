@@ -226,7 +226,7 @@ tripformView.indexChangeHandler = function() {
 
             $('#left-description').addClass('hidden');
             leftResults.removeClass('hidden');
-
+            
             //pull input value from From section, add to results section
             var overviewFrom = $('#trip_proxy_from_place').val();
             //$('#left-results .from').html(overviewFrom);

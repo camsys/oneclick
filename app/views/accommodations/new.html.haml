@@ -1,9 +1,9 @@
 %div.responsive-mbp.row-fluid
   .span4.info
     %h1 
-      Your Needs - Step 3 of 3
-    %h4 Tell us About Yourself
-    %p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, assumenda, minima, soluta rerum voluptatum at ullam consectetur consequatur molestiae veniam vel eius iure recusandae molestias delectus officiis excepturi. Amet, fugiat.
+      About You
+    %h4 A Few Follow-up Questions
+    %p Given your responses, we have one last page of follow-up questions. Answer all questions you are comfortable providing an answer for. If you do not wish to answer a question, select 'Unsure'. <br><br> Tap 'Next Step' when you have finished with these questions.
   %div.span8plus.inputs
     .row-fluid.accommodations-section
       = render partial: 'accommodations/form',  :locals => {:path => user_accommodation_path(@traveler, @user_accommodations_proxy.id, inline: 1), :inline => true}
