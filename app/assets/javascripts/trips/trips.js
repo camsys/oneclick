@@ -128,10 +128,9 @@ tripformView.useCurrentLocationHandler = function() {
   var item = JSON.parse(addrConfig.getCurrentMachineAddressInField());
 
   removeMatchingMarkers('start');
+
+  // Create a marker to keep around, but don't display it on the map
   marker = create_or_update_marker('start', item.lat, item.lon, item.addr, getFormattedAddrForMarker(item.addr), 'startIcon');
-  setMapToBounds();
-  selectMarker(marker);
-  //marker.openPopup();
 
   // Update the UI
   $('#from_place_selected_type').attr('value', item.type);
@@ -198,6 +197,9 @@ tripformView.indexChangeHandler = function() {
   // something rails is doing is preventing us from doing custom actions on the datepicker -MB
   var readyState = setInterval(function() {
     if (document.readyState === "complete") {
+
+      var thisMarker; 
+
       switch(tripformView.indexCounter) {
 
         case 0:
@@ -212,13 +214,42 @@ tripformView.indexChangeHandler = function() {
           // Show the google map and re-calculate size. Have to do show() before reset to ensure
           // that leaflet code knows the size of the map, so it can calculate size correctly.
           $('#trip_map').show();
-          resetMapView();
+          resetMapView(); // If you don't do this, map will be the size of a postage stamp!
+
+          // Remove all markers from the map, but keep them around
+          removeMarkersKeepCache();
+
+          // Find the "start" marker -- if found, show it. Otherwise, show original map
+          thisMarker = findMarkerById('start');
+
+          if (thisMarker) {
+            addMarkerToMap(thisMarker, false);
+            selectMarker(thisMarker);
+          }
+          else
+            showMapOriginal();
+
 
           tripformView.nextButtonValidateLocation($('#trip_proxy_from_place'));
           break;
 
         case 2:
           // Enter arrival address
+
+          // Remove all markers from the map, but keep them around
+          removeMarkersKeepCache();
+
+          // Find the "stop" marker -- if found, show it. Otherwise, show original map
+          thisMarker = findMarkerById('stop');
+
+          if (thisMarker) {
+            addMarkerToMap(thisMarker, false);
+            selectMarker(thisMarker);
+          }
+          else
+            showMapOriginal();
+
+
           tripformView.nextButtonValidateLocation($('#trip_proxy_to_place'));
           break;
 
@@ -261,8 +292,11 @@ tripformView.indexChangeHandler = function() {
           // Trip overview
           (function() {
 
-            // Make sure the map shows the start/end markers
-            setMapToBounds();
+            // Show the map with the start & end pins
+            showMap();
+
+            // Close any markers that are popped up
+            closePopup();
 
             var leftResults = $('#left-results');
             $('#trip_map').show();

@@ -10,6 +10,7 @@ var LMcircles = new Array();
 var LMpolylines = new Array();
 var LMmap;
 var LMbounds;
+var LMcacheBounds;
 var LMcurrent_popup;
 
 var OPENSTREETMAP_URL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -88,6 +89,12 @@ function showMap() {
 	}
 	LMmap.fitBounds(mapBounds);
 };
+
+function showMapOriginal() {
+	mapBounds = LMcacheBounds;
+	LMmap.fitBounds(mapBounds);
+}
+
 /*
  * Replaces the markers on the map with a new set
  */
@@ -150,6 +157,13 @@ function replacePolylines(arr, updateMap) {
 		}
 	}
 };
+
+function removeMarkersKeepCache() {
+	for(var i=0;i<LMmarkers.length;i++){
+		LMmap.removeLayer(LMmarkers[i]);
+	}
+}
+
 /*
  * 
  */
@@ -409,6 +423,9 @@ function setMapToBounds(marker_array) {
 function setMapBounds(minLat, minLon, maxLat, maxLon) {
 	LMbounds = [[minLat, minLon], [maxLat, maxLon]];	
 };
+function cacheMapBounds(minLat, minLon, maxLat, maxLon) {
+	LMcacheBounds = [[minLat, minLon], [maxLat, maxLon]];		
+}
 function closePopup() {
 	if (LMcurrent_popup) {
 		LMcurrent_popup._source.closePopup();
