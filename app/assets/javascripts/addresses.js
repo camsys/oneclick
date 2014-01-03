@@ -14,9 +14,9 @@ var addrConfig = {
         "machine1" : '{' + 
 			'"id" : 1,' +
 			'"type" : "2",' +
-			'"addr" : "200 Peachtree Drive, White, GA 30184",' +
-			'"lat"  : 34.216618,' +
-			'"lon"  : -84.6367147' +
+			'"addr" : "Fulton-Dekalb Hospital Authority, Georgia State University, 50 Hurt Plaza Southeast #803, Atlanta, GA 30303",' +
+			'"lat"  : 33.753594,' +
+			'"lon"  : -84.386415' +
 		'}',
         "machine2" : '{' + 
 			'"id" : 1,' +
