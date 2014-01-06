@@ -254,6 +254,32 @@ EOT
 Tell us about your trip.  The more information you give us, the more options we can find!
 EOT
         site.snippets.create! identifier: 'plan-a-trip', label: 'plan a trip', content: text
+
+      when 'broward'
+        text = <<EOT
+<h2 style="text-align: justify;">1-Click/Broward helps you find options to get from here to there, using public transit,
+ door-to-door services, and specialized transportation.  Give it a try, and
+ <a href="mailto://OneClick@camsys.com">tell us</a> what you think.</h2>
+EOT
+        site.snippets.create! identifier: 'home-top-logged-in', label: 'home-top-logged-in', content: text
+        site.snippets.create! identifier: 'home-top', label: 'home-top', content: text
+        text = <<EOT
+1-Click/Broward was funded by the
+ <a href="http://www.fta.dot.gov/grants/13094_13528.html" target=_blank>Veterans Transportation 
+ Community Living Initiative</a>.
+EOT
+        site.snippets.create! identifier: 'home-bottom-left-logged-in', label: 'home-bottom-left-logged-in', content: text
+        site.snippets.create! identifier: 'home-bottom-left', label: 'home-bottom-left', content: text
+        text = <<EOT
+<span style="float: right;">1-Click/Broward is sponsored by 
+<a href="http://211-broward.org/" target=_blank>2-1-1 Broward</a>.</span>
+EOT
+        site.snippets.create! identifier: 'home-bottom-right-logged-in', label: 'home-bottom-right-logged-in', content: text
+        site.snippets.create! identifier: 'home-bottom-right', label: 'home-bottom-right', content: text
+        text = <<EOT
+Tell us about your trip.  The more information you give us, the more options we can find!
+EOT
+        site.snippets.create! identifier: 'plan-a-trip', label: 'plan a trip', content: text
       else
         raise "Don't know how to handle brand #{brand}"
       end
