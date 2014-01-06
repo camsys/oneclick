@@ -219,7 +219,7 @@ class EligibilityHelpers
       maps.each do |map|
         purposes << map.trip_purpose
       end
-      if purposes.include? trip_part.trip.trip_purpose
+      if purposes.include? trip_part.trip.trip_purpose or purposes.count == 0
         eligible_itineraries << itinerary
       end
     end

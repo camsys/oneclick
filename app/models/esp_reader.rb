@@ -49,6 +49,12 @@ class EspReader
     esp_configs.shift
     create_or_update_eligibility(esp_configs)
 
+    #Add County Coverage Rules
+    esp_configs = entries['tServiceCfg']
+    esp_configs.shift
+    create_or_update_coverages(esp_configs)
+
+
   end
 
   def create_or_update_providers esp_providers
@@ -79,6 +85,9 @@ class EspReader
       service.coverage_areas.destroy_all
       service.traveler_accommodations.destroy_all
       service.traveler_characteristics.destroy_all
+      #Add Curb to Curb by default
+      accommodation = TravelerAccommodation.find_by_code('curb_to_curb')
+      ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: accommodation, value: 'true')
 
       #Set new schedule
       (0..6).each do |day|
@@ -99,6 +108,7 @@ class EspReader
   def create_or_update_eligibility esp_configs
     esp_configs.each do |config|
       service = Service.find_by_external_id(config[1])
+
       case config[2].to_i
         when 1,2
           add_accommodation(service, config[3])
@@ -106,6 +116,18 @@ class EspReader
           add_eligibility(service, config[3])
         when 6 #ZipCode Restriction
           c = GeoCoverage.find_or_create_by_value(value: config[3], coverage_type: 'zipcode')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+      end
+    end
+  end
+
+  def create_or_update_coverages esp_configs
+    esp_configs.each do |config|
+      service = Service.find_by_external_id(config[1])
+      case config[2].downcase
+        when 'county'
+          c = GeoCoverage.find_or_create_by_value(value: config[3], coverage_type: 'county_name')
           ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
           ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
       end
