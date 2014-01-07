@@ -2,8 +2,8 @@
   .span4.info
     %h1 
       About You
-    %h4 A Few Follow-up Questions
-    %p Given your responses, we have one last page of follow-up questions. Answer all questions you are comfortable providing an answer for. If you do not wish to answer a question, select "Unsure". <br><br> Tap "Next Step" when you have finished with these questions.
+    %h4 Tell Us About Qualifying Programs
+    %p Do you currently participate in any of the following programs? If you do not wish to answer a question, select "Unsure". <br><br> Tap "Next Step" when you have finished with these questions.
   %div.span8plus.inputs
     .row-fluid.programs-section
       = render partial: 'programs/form',  :locals => {:path => user_program_path(@traveler, @user_programs_proxy.id, inline: 1), :inline => true}

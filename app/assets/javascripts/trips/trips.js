@@ -192,7 +192,7 @@ tripformView.indexChangeHandler = function() {
           // be updating it based on selections in outbound trip date picker
           tripformView.timepickerInit('#trip_proxy_return_trip_time', '#timepicker-two');
           $('#left-description h4').html("Tell Us What Time You'll Be Leaving");
-          $('#left-description p').html("Choose the time you will be leaving from your starting location. The next hour or half-hour has already been selected for you. <br><br> Tap \"Next Step\" when you have selected the correct date to leave.");
+          $('#left-description p').html("Choose the time you will be leaving from your starting location. The next hour or half-hour has already been selected for you. <br><br> Tap \"Next Step\" when you have selected the correct time to leave.");
 
           break;
 
@@ -200,7 +200,7 @@ tripformView.indexChangeHandler = function() {
           // Purposes
           tripformView.nextButtonValidatePurpose();
           $('#left-description h4').html("Tell Us Why You Are Making This Trip");
-          $('#left-description p').html("Choose the option that best describes why you are making this trip. Providing this information helps us provide the best travel options for you, and helps us improve this system in the future. <br><br> Tap \"Next Step\" when you have selected the option that best describes your trip. If you do not know what to choose, choose \"General Purpose\".");
+          $('#left-description p').html("Choose the option that best describes why you are making this trip. Providing this information helps us provide the best travel options for you, and helps us improve this system in the future. <br><br> Tap \"Next Step\" when you have selected the option that best describes your trip. If you do not know what to choose, select \"General Purpose\".");
 
           break;
 
