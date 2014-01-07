@@ -69,10 +69,12 @@
 
 
 - if @trip.both_parts_selected?
-  .row-fluid.results-view
+  .row-fluid.results-view.timeOut
     .span1
       %p
-        Outbound Selected
+        Trip Selected
+        - if @trip.outbound_part.has_hidden_options?
+          = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
     %div.span5
       %div{id: 'outbound_section'}   
         .row-fluid.itineraries_holder
@@ -81,24 +83,30 @@
     .span5
       %h2 Trip planned and saved.
       %p You can now do one or more of the following to finish your trip planning:
-      .row-fluid
-        .span12
-          =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
-            =t(:e_mail) + " your trip plan."
-      .row-fluid
-        .span12
-          =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: false) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
-            View trip details to call the provider.
+      / .row-fluid
+      /   .span12
+      /     =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+      /       =t(:e_mail) + " your trip plan."
+      / .row-fluid
+      /   .span12
+      /     =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: false) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
+      /       View trip details to call the provider.
       .row-fluid
         .span12
           =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
-            Print your trip plan.
+            Print your trip plan
+      .row-fluid
+        .span12
+          = link_to new_user_trip_path, {class: 'btn btn-block'} do
+            = t(:plan_a_new_trip)
 
   - if @trip.is_return_trip
     .row-fluid.results-view
       .span1
         %p
           Return Selected
+          - if @trip.return_part.has_hidden_options?
+            = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.return_part}
       %div.span5
         = render partial: 'return_trip'
 
@@ -110,16 +118,19 @@
     .span1
       - if @trip.only_outbound_selected?
         %p
-          Outbound Selected
+          Trip Selected
+          - if @trip.outbound_part.has_hidden_options?
+            = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
       - else 
         %p 
-          = t(:outbound)
+          = t(:depart)
         .prev-btn.disabled
     %div.span10
       %div{id: 'outbound_section'}   
         .row-fluid.itineraries_holder
           = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
             trip_part: @trip.outbound_part }
+        / HIDDEN OPTIONS    
         / - if @trip.outbound_part.has_hidden_options?
         /   .row-fluid
         /     .span6#outbound_hidden_trips_notice
@@ -135,9 +146,11 @@
         %p
           - if @trip.only_return_selected?
             Return Selected
+            - if @trip.return_part.has_hidden_options?
+              = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.return_part}
           - else
             = t(:return)
-        .prev-btn.disabled
+            .prev-btn.disabled
         .card-prev
       %div.span10
         = render partial: 'return_trip'
@@ -153,15 +166,15 @@
 .results-footer.responsive-mbp
   .trip-overview.pull-left.span4
     Trip Overview
-  .new-trip.pull-right
-    = link_to new_user_trip_path do
-      = t(:plan_a_new_trip)
+  / .new-trip.pull-right
+  /   = link_to new_user_trip_path do
+  /     = t(:plan_a_new_trip)
 
 #overview-modal.hide
   .row-fluid
     .span4.info
       %h1 Overview
-      %h4 Lorem Ipsum
+      %h4 This Is What You Told Us
       
       %h5 From
       %p.from 
@@ -236,3 +249,24 @@
   // Fix the margins when potentally the floating changed
   $(window).resize(fixThumbnailMargins);
   fixThumbnailMargins();
+
+  //CG DP EDIT
+  if($('div.results-view').hasClass('timeOut')){
+    var activityTimeout = setTimeout(resetApp, 60000);
+  }
+  
+
+  function resetActive(){
+    clearTimeout(activityTimeout);
+    activityTimeout = setTimeout(resetApp, 60000);
+  }
+
+  function resetApp(){
+    window.location.href = "/";
+  }
+
+  $(document).bind('mousemove', function(){
+    if($('div.results-view').hasClass('timeOut')){
+      resetActive();
+    }
+  });
