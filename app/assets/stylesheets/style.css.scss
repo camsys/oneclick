@@ -448,21 +448,21 @@ a{
 			border: 4px solid $gray5;
 
 		}
-		&#no{
-			content: "NO";
-			height: 256px;
-			padding-top: 120px;
+		&#yes{
+			content: "Yes";
+			height: 128px;
+			padding-top: 50px;
 
 			&:active{
 				//TO DO: Refactor all of this to make more sense.
-				margin: 8px 8px -8px;
+				margin: 8px 8px -6px;
 				border: 4px solid $blue;
-				height: 268px;
-				padding-top:124px;
+				height: 140px;
+				padding-top:56px;
 			}
 		}
-		&#yes{
-			content: "Yes";
+		&#no{
+			content: "No";
 			height: 128px;
 			padding-top: 50px;
 			margin: 34px 14px 20px 14px;
