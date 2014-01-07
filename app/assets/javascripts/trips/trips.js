@@ -200,7 +200,7 @@ tripformView.indexChangeHandler = function() {
           // Purposes
           tripformView.nextButtonValidatePurpose();
           $('#left-description h4').html("Tell Us Why You Are Making This Trip");
-          $('#left-description p').html("Choose the option that best describes why you are making this trip. Providing this information helps us provide the best travel options for you, and helps us improve this system in the future. <br><br> Tap \"Next Step\" If you do not know what to choose, choose \"General Purpose\".");
+          $('#left-description p').html("Choose the option that best describes why you are making this trip. Providing this information helps us provide the best travel options for you, and helps us improve this system in the future. <br><br> Tap \"Next Step\" when you have selected the option that best describes your trip. If you do not know what to choose, choose \"General Purpose\".");
 
           break;
 
@@ -400,6 +400,8 @@ tripformView.editTripButtonInit = function() {
     //hide the results and show the description
     $('#left-description').removeClass('hidden');
     $('#left-results, .edit-trip-btn').addClass('hidden');
+     $('#left-description h4').html("Tell Us Where You're Starting");
+     $('#left-description p').html("Will you be traveling from your current location? Tap \"yes\" or \"no\". If \"no\", you will be prompted to enter an address to travel from in the next step.");
 
     tripformView.indexCounter = 1;
     tripformView.nextButton.off('click', tripformView.submitButtonhandler);

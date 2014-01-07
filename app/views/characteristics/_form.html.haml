@@ -8,7 +8,7 @@
           = render partial: 'characteristics/eligibility_alert', locals: {inline: inline}
         %div{ :data => {:index => 1}}
           .input-header
-            .step-number Step 1 of 3
+            .step-number
             .step-title Questions
           .pull-right
             %table#characteristics_one
@@ -79,11 +79,12 @@
       if(characteristicsView.indexCounter == 0){
         $('div.next-footer-container').removeClass('hidden');
         //add the new copy for the questions section
-        $('.info p').html("Answer all questions you are comfortable providing an answer for. If you do not wish to answer a question, select 'Unsure'. Answering these questions will ensure you see personalized travel options. <br><br> Tap 'Next Step' when you have finished with these questions.");
+        $('.info p').html("Answer all questions you are comfortable providing an answer for. If you do not wish to answer a question, select \"Unsure\". Answering these questions will ensure you see personalized travel options. <br><br> Tap \"Next Step\" when you have finished with these questions.");
       }
       if(characteristicsView.indexCounter == 1){
         //copy for the birthday section
-        $('.info p').html("Sharing your birthdate allows us to provide you with the best travel options, including those that may be discounted or only available to seniors.<br><br>Tap 'Next Step' when you have selected the correct date.");
+        $('.info h4').html('Tell us your Date of Birth');
+        $('.info p').html("Sharing your birthdate allows us to provide you with the best travel options, including those that may be discounted or only available to seniors.<br><br>Tap \"Next Step\" when you have selected the correct date.");
       }
       if(characteristicsView.indexCounter == 2){
         $('#new_user_characteristics_proxy').submit();
