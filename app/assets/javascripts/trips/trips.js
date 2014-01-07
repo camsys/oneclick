@@ -156,11 +156,17 @@ tripformView.indexChangeHandler = function() {
           resetMapView();
 
           tripformView.nextButtonValidateLocation($('#trip_proxy_from_place'));
+          $('#left-description p').html("Enter the address where you will start your trip. You can provide an address, the name of common landmarks or local businesses. The location you select will be shown on the map to confirm you have selected the correct location. <br><br> Tap \"Next Step\" when you have selected the correct starting location.");
+
           break;
 
         case 2:
           // Enter arrival address
           tripformView.nextButtonValidateLocation($('#trip_proxy_to_place'));
+          $('#left-description h4').html("Tell Us Where You're Going");
+          $('#left-description p').html("Enter the address where you will end your trip. You can provide an address, the name of common landmarks or local businesses. The location you select will be shown on the map to confirm you have selected the correct location. <br><br> Tap \"Next Step\" when you have selected the correct destination location.");
+
+
           break;
 
         case 3:
@@ -169,6 +175,9 @@ tripformView.indexChangeHandler = function() {
 
           //show the calendar
           tripformView.calendar.mbShow();
+          $('#left-description h4').html("Tell Us What Day You'll Be Leaving");
+          $('#left-description p').html("Choose the date you will be leaving from your starting location. Today's date has already been selected for you. <br><br> Tap \"Next Step\" when you have selected the correct date to leave.");
+
 
           break;
 
@@ -182,20 +191,31 @@ tripformView.indexChangeHandler = function() {
           // Initialize time picker for return trip -- doing it here, even if we don't need it, because we will
           // be updating it based on selections in outbound trip date picker
           tripformView.timepickerInit('#trip_proxy_return_trip_time', '#timepicker-two');
+          $('#left-description h4').html("Tell Us What Time You'll Be Leaving");
+          $('#left-description p').html("Choose the time you will be leaving from your starting location. The next hour or half-hour has already been selected for you. <br><br> Tap \"Next Step\" when you have selected the correct time to leave.");
 
           break;
 
         case 5:
           // Purposes
           tripformView.nextButtonValidatePurpose();
+          $('#left-description h4').html("Tell Us Why You Are Making This Trip");
+          $('#left-description p').html("Choose the option that best describes why you are making this trip. Providing this information helps us provide the best travel options for you, and helps us improve this system in the future. <br><br> Tap \"Next Step\" when you have selected the option that best describes your trip. If you do not know what to choose, select \"General Purpose\".");
+
           break;
 
         case 6:
           // "Need a Return Trip?"
+          $('#left-description h4').html("Tell Us About Your Return Trip");
+          $('#left-description p').html("Would you like to see options for a return trip? Tap \"yes\" or \"no\". If \"yes\", you will be prompted to enter a return time (that is, a time to be picked up at your destination) in the next step.");
+
           break;
 
         case 7:
           // Time Picker (return trip)
+          $('#left-description h4').html("Tell Us When You'll Be Ready To Return");
+          $('#left-description p').html("Choose the time you will be leaving your destination location, to return back to your starting location. A time 2 hours from the departure time you chose has already been selected for you.<br><br>Tap \"Next Step\" when you have selected the correct time to leave your destination.");
+
           break;
 
         case 8:
@@ -206,7 +226,7 @@ tripformView.indexChangeHandler = function() {
 
             $('#left-description').addClass('hidden');
             leftResults.removeClass('hidden');
-
+            
             //pull input value from From section, add to results section
             var overviewFrom = $('#trip_proxy_from_place').val();
             //$('#left-results .from').html(overviewFrom);
@@ -380,6 +400,8 @@ tripformView.editTripButtonInit = function() {
     //hide the results and show the description
     $('#left-description').removeClass('hidden');
     $('#left-results, .edit-trip-btn').addClass('hidden');
+     $('#left-description h4').html("Tell Us Where You're Starting");
+     $('#left-description p').html("Will you be traveling from your current location? Tap \"yes\" or \"no\". If \"no\", you will be prompted to enter an address to travel from in the next step.");
 
     tripformView.indexCounter = 1;
     tripformView.nextButton.off('click', tripformView.submitButtonhandler);
