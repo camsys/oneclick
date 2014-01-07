@@ -284,6 +284,7 @@ en:
   assisting_turned_off: "Assisting has been turned off."
 
   # General Messages
+  undo: Undo
   yes_str: "Yes"
   no_str:  "No"
   ok: "Ok"
