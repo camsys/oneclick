@@ -21,8 +21,8 @@
         .bar
         %h3 Start at your current location?
 
-      %a#no{:href => "#", :name => "yesno", :value => "no"} No
       %a#yes{:href => "#", :name => "yesno", :value => "yes"} Yes
+      %a#no{:href => "#", :name => "yesno", :value => "no"} No
   
   / TODO: ADD THE DIV WITH THE DATA INDEX
   #from_input{ :data => {:index => 1}}
@@ -162,8 +162,8 @@
         .title-container
           .bar
           %h3 Do you need a return trip?
-        %a#no{:href => "#", :name => "yesno", :value => "no"} No
         %a#yes{:href => "#", :name => "yesno", :value => "yes"} Yes
+        %a#no{:href => "#", :name => "yesno", :value => "no"} No
 
   #timepicker-two{ :data => {:index => 7}}
     = f.input :is_round_trip, :label => false, :wrapper_html => {:class => 'controls controls-row'} do
