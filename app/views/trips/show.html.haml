@@ -252,13 +252,13 @@
 
   //CG DP EDIT
   if($('div.results-view').hasClass('timeOut')){
-    var activityTimeout = setTimeout(resetApp, 15000);
+    var activityTimeout = setTimeout(resetApp, 60000);
   }
   
 
   function resetActive(){
     clearTimeout(activityTimeout);
-    activityTimeout = setTimeout(resetApp, 15000);
+    activityTimeout = setTimeout(resetApp, 60000);
   }
 
   function resetApp(){
