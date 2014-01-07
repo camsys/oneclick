@@ -60,7 +60,7 @@ en:
   retract: 'Retract'
   visitor: 'Visitor'
   invalid_dob: 'Invalid date of birth'
-  to_see_best_options: 'To see the best options, please tell us about yourself.'
+  to_see_best_options: 'Would you tell us more about yourself?'
   skip_this_step: 'Skip this step'
   buddy_request_sent: "Buddy request sent"
   no_buddy_email_address: "You must enter the email address for your buddy"
