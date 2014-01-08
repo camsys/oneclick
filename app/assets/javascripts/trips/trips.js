@@ -224,6 +224,7 @@ tripformView.indexChangeHandler = function() {
 
           if (thisMarker) {
             addMarkerToMap(thisMarker, false);
+            setMapToMarkerBounds(thisMarker);
             selectMarker(thisMarker);
           }
           else
@@ -246,6 +247,7 @@ tripformView.indexChangeHandler = function() {
 
           if (thisMarker) {
             addMarkerToMap(thisMarker, false);
+            setMapToMarkerBounds(thisMarker);
             selectMarker(thisMarker);
           }
           else

@@ -306,8 +306,7 @@
     }
     removeMatchingMarkers(key);
     var marker = create_or_update_marker(key, latlon[0], latlon[1], name, desc, iconStyle);
-    setMapToBounds();
-    selectMarker(marker);
+    zoom_to_marker(marker);
 
     $('#' + t.parents('ul').data('target')).val(name);
   });
@@ -379,7 +378,8 @@
 
         // create marker on the map
         removeMatchingMarkers('start');
-        create_or_update_typeahead_marker(item, 'start', 'startIcon');
+        marker = create_or_update_marker('start', item.lat, item.lon, item.name, item.desc, 'startIcon');
+        zoom_to_marker(marker);
 
         // Update the UI
         $('#from_place_selected_type').attr('value', item.type);
@@ -452,7 +452,8 @@
 
         // create marker on the map
         removeMatchingMarkers('stop');
-        create_or_update_typeahead_marker(item, 'stop', 'stopIcon');
+        marker = create_or_update_marker('stop', item.lat, item.lon, item.name, item.desc, 'stopIcon');
+        zoom_to_marker(marker);
 
         // Update the UI
         $('#to_place_selected_type').attr('value', item.type);
@@ -467,11 +468,14 @@
   //
   //
   ///////////////////////////////////////////////////
-  function create_or_update_typeahead_marker(item, key, iconStyle) {
-    marker = create_or_update_marker(key, item.lat, item.lon, item.name, item.desc, iconStyle);
-    setMapToBounds();
-    selectMarker(marker);
-  };
+
+  function zoom_to_marker(marker) {
+    if (marker) {
+      //setMapToBounds();
+      setMapToMarkerBounds(marker);
+      selectMarker(marker);
+    }
+  }
 
   function create_or_update_marker(key, lat, lon, name, desc, iconStyle) {
     // See if we can find this existing marker
@@ -483,8 +487,10 @@
     addMarkerToMap(marker, true);
     return marker;
   };
+  
   // Add a list of candidate markers to the map
   var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Z', 'Y', 'Z'];
+
   function add_candidate_marker(index, lat, lon, addr, desc, type) {
     var iconStyle;
     var key_template;
@@ -570,8 +576,7 @@
     removeMatchingMarkers(key);
     // replace the markers with the end point marker
     marker = create_or_update_marker(key, latlon[0], latlon[1], addr, desc, iconStyle);
-    setMapToBounds();
-    selectMarker(marker);
+    zoom_to_marker(marker);
   };
 
   //Only Allow One Checkbox to Be Checked

@@ -411,6 +411,13 @@ function calcMapBounds(marker_array) {
 	
 	return [[minLat, minLng], [maxLat, maxLng]];
 };
+
+function calcMarkerBounds(marker) {
+	if (marker == null)
+		return nil;
+	return [[marker.getLatLng().lat, marker.getLatLng().lng], [marker.getLatLng().lat, marker.getLatLng().lng]];
+}
+
 function setMapToBounds(marker_array) {
 	if (marker_array == null) {
 		marker_array = LMmarkers;
@@ -420,6 +427,12 @@ function setMapToBounds(marker_array) {
 		LMmap.fitBounds(LMbounds);		
 	}
 };
+
+function setMapToMarkerBounds(marker) {
+	if (marker)
+		LMmap.fitBounds(calcMarkerBounds(marker));		
+}
+
 function setMapBounds(minLat, minLon, maxLat, maxLon) {
 	LMbounds = [[minLat, minLon], [maxLat, maxLon]];	
 };
