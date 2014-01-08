@@ -224,8 +224,7 @@ tripformView.indexChangeHandler = function() {
 
           if (thisMarker) {
             addMarkerToMap(thisMarker, false);
-            setMapToMarkerBounds(thisMarker);
-            selectMarker(thisMarker);
+            zoom_to_marker(thisMarker);
           }
           else
             showMapOriginal();
@@ -247,8 +246,7 @@ tripformView.indexChangeHandler = function() {
 
           if (thisMarker) {
             addMarkerToMap(thisMarker, false);
-            setMapToMarkerBounds(thisMarker);
-            selectMarker(thisMarker);
+            zoom_to_marker(thisMarker);
           }
           else
             showMapOriginal();
