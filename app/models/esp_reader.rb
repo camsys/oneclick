@@ -30,7 +30,8 @@ class EspReader
     end
   end
 
-  #This is the main function.  It unpacks the esp data and stores it in our format
+  # This is the main function.
+  # It unpacks the esp data and stores it in our format
   def unpack
     entries = self.run
 
@@ -44,16 +45,20 @@ class EspReader
     esp_services.shift #deletes header row
     services = create_or_update_services(esp_services)
 
+    #Add County Coverage Rules
+    esp_configs = entries['tServiceGrid']
+    esp_configs.shift
+    create_or_update_coverages(esp_configs)
+
     #Add Eligibility
     esp_configs = entries['tServiceCfg']
     esp_configs.shift
     create_or_update_eligibility(esp_configs)
 
-    #Add County Coverage Rules
-    esp_configs = entries['tServiceCfg']
+    #Add Fares
+    esp_configs = entries['tServiceCost']
     esp_configs.shift
-    create_or_update_coverages(esp_configs)
-
+    create_or_update_fares(esp_configs)
 
   end
 
@@ -82,9 +87,10 @@ class EspReader
 
       #Clean up this service
       service.schedules.destroy_all
-      service.coverage_areas.destroy_all
+      service.service_coverage_maps.destroy_all
       service.traveler_accommodations.destroy_all
       service.traveler_characteristics.destroy_all
+      service.fare_structures.destroy_all
       #Add Curb to Curb by default
       accommodation = TravelerAccommodation.find_by_code('curb_to_curb')
       ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: accommodation, value: 'true')
@@ -97,8 +103,10 @@ class EspReader
         end
       end
 
-      #TODO: Purposes
+      #Set Cost Comments
+      FareStructure.create(service: service, fare_type: 2, desc: esp_service[70])
 
+      #TODO: Purposes
       services << service
     end
 
@@ -116,8 +124,8 @@ class EspReader
           add_eligibility(service, config[3])
         when 6 #ZipCode Restriction
           c = GeoCoverage.find_or_create_by_value(value: config[3], coverage_type: 'zipcode')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'destination')
+          ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'origin')
       end
     end
   end
@@ -128,8 +136,24 @@ class EspReader
       case config[2].downcase
         when 'county'
           c = GeoCoverage.find_or_create_by_value(value: config[3], coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'destination')
+          ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'origin')
+      end
+    end
+  end
+
+  def create_or_update_fares esp_configs
+    esp_configs.each do |config|
+      service = Service.find_by_external_id(config[1])
+      fare = FareStructure.find_by_service_id(service.id)
+      case config[2].downcase
+        when 'transportation'
+          amount = config[3].to_f
+          if amount >= fare.base.to_f
+            fare.base = amount
+            fare.fare_type = 0
+            fare.save
+          end
       end
     end
   end
@@ -175,10 +199,12 @@ class EspReader
           characteristic = TravelerCharacteristic.find_by_code('veteran')
           ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: characteristic, value: true, group: group)
         when 'county resident'
-          p 'todo'
-          #TODO: Get County
-          #c = GeoCoverage.find_or_create_by_value(value: COUNTY_NAME_HERE, coverage_type: 'county_name')
-          #ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'residence')
+          # When county resident is required.  The person must also be a resident of the county in addition to traveling within that county.
+          # The coverages were created previously.
+          service.coverage_areas.where(:coverage_type => "county_name").map(&:value).uniq.each do |county_name|
+            c = GeoCoverage.find_or_create_by_value(value: county_name, coverage_type: 'county_name')
+            ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'residence')
+          end
         when 'military/veteran'
           characteristic = TravelerCharacteristic.find_by_code('veteran')
           ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: characteristic, value: true, group: group)

@@ -141,7 +141,7 @@ ActiveRecord::Schema.define(:version => 20140108194606) do
     t.integer "fare_type",                                               :default => 0
     t.decimal "base",                      :precision => 6, :scale => 2
     t.decimal "rate",                      :precision => 6, :scale => 2
-    t.string  "desc"
+    t.text    "desc"
   end
 
   create_table "geo_coverages", :force => true do |t|
@@ -179,7 +179,7 @@ ActiveRecord::Schema.define(:version => 20140108194606) do
     t.boolean  "time_mismatch",                                           :default => false
     t.boolean  "too_late",                                                :default => false
     t.string   "missing_accommodations",                                  :default => ""
-    t.string   "cost_comments"
+    t.text     "cost_comments"
     t.boolean  "selected"
   end
 
