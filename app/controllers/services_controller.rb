@@ -18,4 +18,3 @@ class ServicesController < ApplicationController
 
   end
 end
-
