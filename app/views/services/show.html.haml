@@ -1,0 +1,121 @@
+.well
+  .row-fluid
+    %h2
+      =@service.name
+  .row-fluid
+    %h3
+      ="Provided by "
+      =@service.provider.name
+
+.row-fluid
+  .span4
+    .well
+      %h4="Accommodations Provided"
+      .well.white-well
+        -if @service.traveler_accommodations.count == 0
+          ="No accommodations provided"
+        -else
+          %ul
+            -@service.traveler_accommodations.each do |accom|
+              %li
+                =accom.name
+  .span4
+    .well
+      %h4="Eligibility Rules"
+      ="If ANY of the following rules are satsified, the traveler may be eligible to use this service."
+      .well.white-well
+        -if @service.service_traveler_characteristics_maps.count > 0
+          %ul
+          -groups = @service.service_traveler_characteristics_maps.map(&:group).uniq
+          -groups.each do |group|
+            -group_string = ""
+            %li
+              -@service.service_traveler_characteristics_maps.where(group: group).each do |map|
+                -if map.traveler_characteristic.code == "age"
+                  -group_string +="Age is " + @eh.relationship_to_words(map.value_relationship_id) + " " + map.value + " "
+                -else
+                  -group_string += map.traveler_characteristic.name + " "
+                -group_string += "AND "
+              =group_string[0..-6]
+        -else
+          ="No restriction"
+
+  .span4
+    .well
+      %h4="Trip Purposes Served"
+      .well.white-well
+        -if @service.trip_purposes.count == 0
+          ="No restriction"
+        -else
+          %ul
+            -@service.trip_purposes.each do |purpose|
+              %li
+                =purpose.name
+
+.row-fluid
+  .span4
+    .well
+      %h4="Fare"
+      -@service.fare_structures.each do |fare|
+        .well.white-well
+          .row_fluid
+            -if fare.base
+              %b="Cost: "
+              =number_to_currency(fare.base.to_f).to_s
+            -else
+              %b="Cost:"
+              ="Flat fare unavailable."
+          %b="Comments:  "
+          =fare.desc
+  .span4
+    .well
+      %h4="Schedule"
+      %table.ALTtable
+        %tr
+          %th.text-center
+            Day
+          %th.text-center
+            Start Time
+          %th.text-center
+            End Time
+        %tbody
+          -@service.schedules.order(:day_of_week, :start_time, :end_time).each do |schedule|
+            %tr
+              %td.text-center
+                =Date::DAYNAMES[schedule.day_of_week]
+              %td.text-center
+                =schedule.start_time.strftime('%I:%M %p').sub(/^[0]*/,"")
+              %td.text-center
+                =schedule.end_time.strftime('%I:%M %p').sub(/^[0]*/,"")
+  .span4
+    .well
+      %h4="Advanced Notice Required"
+      .well.white-well
+        -if @service.advanced_notice_minutes > 0
+          ="This service requires "
+          %b=duration_to_words(@service.advanced_notice_minutes*60).downcase
+          =" of advanced notice to book a trip."
+        -else
+          ="This service does not require advanced notice to book a trip."
+.well
+  .row-fluid.text-center
+    .span12
+      %h3="Coverage Areas"
+
+  .row-fluid
+    -types = @service.coverage_areas.map(&:coverage_type).uniq
+    -['Origins', 'Destinations', 'Residences'].each do |rule|
+      .span4
+        %h4=rule
+        -types.each do |type|
+          %b
+            =type.humanize.split[0].pluralize + ' served'
+          .well.white-well
+            -coverage_string = ""
+            -@service.service_coverage_maps.where(rule: rule.singularize.downcase).each do |map|
+              -if map.geo_coverage.coverage_type == type
+                -coverage_string += map.geo_coverage.value + ', '
+            -if coverage_string == ""
+              ="N/A"
+            -else
+              =coverage_string.chop.chop

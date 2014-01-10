@@ -286,6 +286,24 @@ class EligibilityHelpers
       else
         return false
       end
-    end
+  end
 
- end
+  def relationship_to_words(operator)
+    case operator
+      when 1 # general equals
+        return "equal to"
+      when 2 # float equals
+        return "equal to"
+      when 3 # greater than
+        return "greater than"
+      when 4 # greather than or equal
+        return "at least"
+      when 5 # less than
+        return "less than"
+      when 6 # less than or equal
+        return "less than or equal to"
+      else
+        return ""
+    end
+  end
+end
