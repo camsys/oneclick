@@ -630,6 +630,8 @@
 
     //FROM LABEL APPEAR
     $('input#trip_proxy_from_place').focus(function(){
+        if (window.cocoa)
+          window.cocoa.openKeyboard();
         $('#from_input').addClass('text-added');
     });
 
@@ -643,6 +645,8 @@
 
     //TO LABEL APPEAR
     $('input#trip_proxy_to_place').focus(function(){
+        if (window.cocoa)
+          window.cocoa.openKeyboard();
         $('#to_input').addClass('text-added');
     });
 
