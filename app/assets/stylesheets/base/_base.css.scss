@@ -388,7 +388,10 @@ td.left, th.left {
 }
 
 .map {
-  border: 1px solid #E3E3E3;
+  border-top: 0px solid #E3E3E3;
+  border-right: 0px solid #E3E3E3;
+  border-left: 0px solid #E3E3E3;
+  border-bottom: 1px solid #E3E3E3;
 }
 
 .loading-indicator {
