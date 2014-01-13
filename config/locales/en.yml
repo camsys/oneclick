@@ -201,6 +201,7 @@ en:
   profile_updated: "Your profile was updated."
 
   # new ones
+  view_services: "View Services"
   close: "Close"
   name: "Name"
   send: "Send"

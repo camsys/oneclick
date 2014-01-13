@@ -1,17 +1,34 @@
+.row-fluid
+  .span12.pull-right
+    = simple_form_for @services, :url => service_path(), :method => 'get', :html => {:class => "form-horizontal pull-right pull-down", :id => "service_form"}  do |f|
+      = f.input :id, :collection => @services, :label => "Select Service:", :selected => @service.id, :input_html => {:id => "next_service", :onchange => "$('#service_form').submit();"}
+
 .well
   .row-fluid
-    %h2
-      =@service.name
-  .row-fluid
-    %h3
-      ="Provided by "
-      =@service.provider.name
+    .span8
+      %h2
+        =@service.name
+      %h3
+        ="Provided by "
+        =@service.provider.name
+    .span4
+      %table.pull-right
+        %tr
+          %td.text-right.h4
+            ="Contact Name:  "
+          %td.text-left
+            %b=@service.provider.contact.to_s
+        %tr
+          %td.text-right.h4
+            ="Contact Email: "
+          %td.text-left
+            %b=@service.provider.email.to_s
 
 .row-fluid
   .span4
-    .well
+    .well.well1
       %h4="Accommodations Provided"
-      .well.white-well
+      .well.white-well.wwell1
         -if @service.traveler_accommodations.count == 0
           ="No accommodations provided"
         -else
@@ -20,10 +37,10 @@
               %li
                 =accom.name
   .span4
-    .well
+    .well.well1
       %h4="Eligibility Rules"
       ="If ANY of the following rules are satsified, the traveler may be eligible to use this service."
-      .well.white-well
+      .well.white-well.wwell1
         -if @service.service_traveler_characteristics_maps.count > 0
           %ul
           -groups = @service.service_traveler_characteristics_maps.map(&:group).uniq
@@ -41,9 +58,9 @@
           ="No restriction"
 
   .span4
-    .well
+    .well.well1
       %h4="Trip Purposes Served"
-      .well.white-well
+      .well.white-well.wwell1
         -if @service.trip_purposes.count == 0
           ="No restriction"
         -else
@@ -54,10 +71,10 @@
 
 .row-fluid
   .span4
-    .well
+    .well.well2
       %h4="Fare"
       -@service.fare_structures.each do |fare|
-        .well.white-well
+        .well.white-well.wwell2
           .row_fluid
             -if fare.base
               %b="Cost: "
@@ -68,7 +85,7 @@
           %b="Comments:  "
           =fare.desc
   .span4
-    .well
+    .well.well2
       %h4="Schedule"
       %table.ALTtable
         %tr
@@ -88,12 +105,12 @@
               %td.text-center
                 =schedule.end_time.strftime('%I:%M %p').sub(/^[0]*/,"")
   .span4
-    .well
+    .well.well2
       %h4="Advanced Notice Required"
-      .well.white-well
+      .well.white-well.wwell2
         -if @service.advanced_notice_minutes > 0
           ="This service requires "
-          %b=duration_to_words(@service.advanced_notice_minutes*60).downcase
+          %b=duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
           =" of advanced notice to book a trip."
         -else
           ="This service does not require advanced notice to book a trip."
@@ -119,3 +136,18 @@
               ="N/A"
             -else
               =coverage_string.chop.chop
+
+:javascript
+  boxes = $('.well1');
+  maxHeight = Math.max.apply(
+    Math, boxes.map(function() {
+      return $(this).height();
+  }).get());
+  boxes.height(maxHeight);
+
+  boxes = $('.well2');
+  maxHeight = Math.max.apply(
+    Math, boxes.map(function() {
+      return $(this).height();
+  }).get());
+  boxes.height(maxHeight);
