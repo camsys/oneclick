@@ -226,6 +226,8 @@ tripformView.indexChangeHandler = function() {
 
             $('#left-description').addClass('hidden');
             leftResults.removeClass('hidden');
+            $('#lmap').css('height','690px');
+            $('#_GMapContainer').css('height','690px');
             
             //pull input value from From section, add to results section
             var overviewFrom = $('#trip_proxy_from_place').val();
@@ -402,6 +404,8 @@ tripformView.editTripButtonInit = function() {
     $('#left-results, .edit-trip-btn').addClass('hidden');
      $('#left-description h4').html("Tell Us Where You're Starting");
      $('#left-description p').html("Will you be traveling from your current location? Tap \"yes\" or \"no\". If \"no\", you will be prompted to enter an address to travel from in the next step.");
+     $('#lmap').css('height','558px');
+     $('#_GMapContainer').css('height','558px');
 
     tripformView.indexCounter = 1;
     tripformView.nextButton.off('click', tripformView.submitButtonhandler);
