@@ -11,19 +11,23 @@ var addrConfig = {
     },
 
     "addresses" : {
+
+    	// Robert W Woodruff Library
         "machine1" : '{' + 
-			'"id" : 1,' +
-			'"type" : "2",' +
-			'"addr" : "Fulton-Dekalb Hospital Authority, Georgia State University, 50 Hurt Plaza Southeast #803, Atlanta, GA 30303",' +
-			'"lat"  : 33.753594,' +
-			'"lon"  : -84.386415' +
+			'"id" : 8768,' +
+			'"type" : "1",' +
+			'"addr" : "828 Mitchell Street Southwest, Atlanta, GA 30314",' +
+			'"lat"  : 33.7532,' +
+			'"lon"  :  -84.4146' +
 		'}',
+
+		// Stewart Lakewood Branch Atlanta-Fulton Library
         "machine2" : '{' + 
-			'"id" : 1,' +
-			'"type" : "2",' +
-			'"addr" : "253 Mangum Street Northwest",' +
-			'"lat"  : 33.760757,' +
-			'"lon"  : -84.399097' +
+			'"id" : 8813,' +
+			'"type" : "1",' +
+			'"addr" : "2891 Lakewood Avenue Southwest, Atlanta, GA 30315",' +
+			'"lat"  : 33.6973,' +
+			'"lon"  : -84.4113' +
 		'}',
     }
 }
