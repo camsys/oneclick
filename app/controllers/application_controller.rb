@@ -64,7 +64,19 @@ class ApplicationController < ActionController::Base
   def set_traveler_id(id)
     session[TRAVELER_USER_SESSION_KEY] = id
   end
-  
+
+  def after_sign_in_path_for(resource)
+    if session[:inline]
+      get_traveler
+      @trip = Trip.find(session[:current_trip_id])
+      session[:current_trip_id] =  nil
+      @trip.create_itineraries
+      user_trip_path(@traveler, @trip)
+    else
+      new_user_trip_path(current_or_guest_user)
+    end
+  end
+
   private
 
   # called (once) when the user logs in, insert any code your application needs
