@@ -27,7 +27,7 @@ namespace :oneclick do
     end # task
 
     desc "Add Fare Structures for ARC"
-    task :add_fares => :environment do
+    task :add_fares_arc => :environment do
 
       service = Service.find_by_name('JETS Transportation Program')
       if service and service.fare_structures.count == 0
@@ -183,6 +183,54 @@ namespace :oneclick do
         provider.external_id = "18575"
         provider.save
       end
+
+    end # task
+
+    desc "Add Fare Structures for Broward"
+    task :add_fares_broward => :environment do
+
+      service = Service.find_by_name('BC Paratransit')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 0, base: 3.50)
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+      service = Service.find_by_name('Social Services: Limited Transportation')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 2, desc: "Tamarac Para-transit fee is $30.00 for 3 months or 40.00 for 6 months per person for unlimited marketing and medical transportation.")
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+      service = Service.find_by_name('Social Services')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 0, base: 1)
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+      service = Service.find_by_name('Joseph Meyerhoff Senior Center')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 0, base: 0, desc: "Free service for Senior Center members.")
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+      service = Service.find_by_name('Road to Recovery')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 0, base: 0)
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+      service = Service.find_by_name('Special & Community Support Services')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 0, base: 3)
+      else
+        puts "Fare already exists for " + service.name
+      end
+
 
     end # task
 
