@@ -14,33 +14,38 @@
 /       = render "devise/shared/links"
 
 / TODO: This is unstable for some reason. Work with Camsys to figure it out.
-.login-container
-  .container-fluid
-    .responsive-mbp.row-fluid
-      .span6.offset3
-        .login-header
-          %h1.pull-left Log In
-          .account-container.pull-right
-            %p Need an Account?
-            = link_to 'Register', new_user_registration_path
-    = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
-      .row-fluid
-        .span6.offset3
-          .input-container
-            = f.input :email, :autofocus => true, :required => true
-            = f.input :password, :required => true
-      .row-fluid
-        .span6.offset3
-          = button_tag :submit, class: 'login-btn pull-left' do
-            = t(:log_in)
-          /%a.login-btn.pull-left{:href => "#"} Log In
-          .cancel-container.pull-right
-            %a.cancel-btn{:href => new_user_trip_path(current_or_guest_user)} Cancel
-        .span3.hidden
+/ %div
+/   .container-fluid
+/     .responsive-mbp.row-fluid
+/       .span6.offset3
+/         .login-header
+/           %h1.pull-left Log In
+/           .account-container.pull-right
+/             %p Need an Account?
+/             = link_to 'Register', new_user_registration_path
+    
 
-
-:javascript
-  $(document).ready(function(){
-    $('.navbar').addClass('hidden');
-
-  });
+// TAKE 3
+.container-fluid
+  %div.responsive-mbp.row-fluid
+    .span4.info
+      #left-description
+        %h1 
+          = t(:log_in)
+        %h4 Speed up the process
+        %p If you already have an account, log in your details here.
+    %div.span8plus.inputs
+      = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
+        .row-fluid
+          .span12
+            .input-container
+              = f.input :email, :autofocus => true, :required => true
+              = f.input :password, :required => true
+        .row-fluid
+          .span12
+            = button_tag :submit, class: 'login-btn pull-left' do
+              = t(:log_in)
+            /%a.login-btn.pull-left{:href => "#"} Log In
+            .cancel-container.pull-right
+              %a.cancel-btn{:href => new_user_trip_path(current_or_guest_user)} Cancel
+          .span3.hidden
