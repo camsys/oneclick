@@ -313,13 +313,11 @@ tripformView.indexChangeHandler = function() {
           (function() {
 
             // Show the map with the start & end pins
-            showMap();
-
-            // Close any markers that are popped up
-            closePopup();
+            $('#trip_map').show(); // do this first, or the other leaflet actions won't work
+            refreshMarkers();
+            setMapToBounds();
 
             var leftResults = $('#left-results');
-            $('#trip_map').show();
 
             $('#left-description').addClass('hidden');
             leftResults.removeClass('hidden');
