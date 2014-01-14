@@ -18,7 +18,14 @@ tripformView.init = function(){
 
   $('input#trip_proxy_from_place').val('');
 
-  $('.next-step-btn, a#yes, a#no').on('click', tripformView.nextBtnHandler);
+  // "Next Step", "Start at your current location?" -> NO, "Need a return trip?" -> YES
+  $('.next-step-btn, #current-location a#no, #return-trip #yes').on('click', tripformView.nextBtnHandler);
+
+  // "Start at your current location?" -> YES
+  $('#current-location a#yes').on('click', tripformView.useCurrentLocationHandler);
+
+  // "Need a return trip?" -> NO
+  $('#return-trip a#no').on('click', tripformView.noReturnTripHandler);
 
   //set calendar to today
   this.calendar.setDate(new Date());
@@ -95,9 +102,60 @@ tripformView.overrideTaddaapicker = function() {
 tripformView.nextBtnHandler = function() {
   //increment counter
   tripformView.indexCounter++;
+
   //trigger indexchange event
   tripformView.formEle.trigger('indexChange');
 };
+
+tripformView.useCurrentLocationHandler = function() {
+  
+  // Increment counter by two, to skip "From" selection
+  tripformView.indexCounter += 2;
+
+  $('div.next-footer-container').removeClass('hidden');
+  
+  // Show the google map and re-calculate size. Have to do show() before reset to ensure
+  // that leaflet code knows the size of the map, so it can calculate size correctly.
+  $('#trip_map').show();
+  resetMapView();
+
+  // ***************
+  // Currently hard-coding this in place -- synchrotron will be doing this in the future!!!!
+  // ***************
+  addrConfig.setCurrentMachineNameInField("machine1");
+
+  // Synchrotron will have set the machine name, so we can get the machine address
+  var item = JSON.parse(addrConfig.getCurrentMachineAddressInField());
+
+  removeMatchingMarkers('start');
+
+  // Create a marker to keep around, but don't display it on the map
+  marker = create_or_update_marker('start', item.lat, item.lon, item.addr, getFormattedAddrForMarker(item.addr), 'startIcon');
+
+  // Update the UI
+  $('#from_place_selected_type').attr('value', item.type);
+  $('#from_place_selected').attr('value', item.id);
+  $('#trip_proxy_from_place').val(item.addr);
+
+  //trigger indexchange event
+  tripformView.formEle.trigger('indexChange');
+}
+
+tripformView.noReturnTripHandler = function() {
+
+  // Register that we do not want a return trip
+  $('#trip_proxy_is_round_trip').prop('checked', false);
+
+  // Hide the "Return Trip" section on the trip summary
+  $('#left-results p.return').hide();
+  $('#left-results p.return').prev('h5').hide();
+
+  // Set counter to go directly to Trip Overview page
+  tripformView.indexCounter = 8;
+
+  //trigger indexchange event
+  tripformView.formEle.trigger('indexChange');
+}
 
 //save form submit handler since we need to remove it if the user wants to edit their trip
 tripformView.submitButtonhandler = function() {
@@ -139,6 +197,9 @@ tripformView.indexChangeHandler = function() {
   // something rails is doing is preventing us from doing custom actions on the datepicker -MB
   var readyState = setInterval(function() {
     if (document.readyState === "complete") {
+
+      var thisMarker; 
+
       switch(tripformView.indexCounter) {
 
         case 0:
@@ -153,7 +214,21 @@ tripformView.indexChangeHandler = function() {
           // Show the google map and re-calculate size. Have to do show() before reset to ensure
           // that leaflet code knows the size of the map, so it can calculate size correctly.
           $('#trip_map').show();
-          resetMapView();
+          resetMapView(); // If you don't do this, map will be the size of a postage stamp!
+
+          // Remove all markers from the map, but keep them around
+          removeMarkersKeepCache();
+
+          // Find the "start" marker -- if found, show it. Otherwise, show original map
+          thisMarker = findMarkerById('start');
+
+          if (thisMarker) {
+            addMarkerToMap(thisMarker, false);
+            zoom_to_marker(thisMarker);
+          }
+          else
+            showMapOriginal();
+
 
           tripformView.nextButtonValidateLocation($('#trip_proxy_from_place'));
           $('#left-description p').html("Enter the address where you will start your trip. You can provide an address, the name of common landmarks or local businesses. The location you select will be shown on the map to confirm you have selected the correct location. <br><br> Tap \"Next Step\" when you have selected the correct starting location.");
@@ -162,6 +237,21 @@ tripformView.indexChangeHandler = function() {
 
         case 2:
           // Enter arrival address
+
+          // Remove all markers from the map, but keep them around
+          removeMarkersKeepCache();
+
+          // Find the "stop" marker -- if found, show it. Otherwise, show original map
+          thisMarker = findMarkerById('stop');
+
+          if (thisMarker) {
+            addMarkerToMap(thisMarker, false);
+            zoom_to_marker(thisMarker);
+          }
+          else
+            showMapOriginal();
+
+
           tripformView.nextButtonValidateLocation($('#trip_proxy_to_place'));
           $('#left-description h4').html("Tell Us Where You're Going");
           $('#left-description p').html("Enter the address where you will end your trip. You can provide an address, the name of common landmarks or local businesses. The location you select will be shown on the map to confirm you have selected the correct location. <br><br> Tap \"Next Step\" when you have selected the correct destination location.");
@@ -221,13 +311,23 @@ tripformView.indexChangeHandler = function() {
         case 8:
           // Trip overview
           (function() {
-            var leftResults = $('#left-results');
+
+            // Show the map at the full-panel size
+            $('#lmap').css('height','690px');
+            $('#_GMapContainer').css('height','690px');
             $('#trip_map').show();
+
+            // Show the start & end pins and ensure proper zoom/pan
+            refreshMarkers();
+            setMapToBounds();
+
+            // Do this last
+            invalidateMap();
+
+            var leftResults = $('#left-results');
 
             $('#left-description').addClass('hidden');
             leftResults.removeClass('hidden');
-            $('#lmap').css('height','690px');
-            $('#_GMapContainer').css('height','690px');
             
             //pull input value from From section, add to results section
             var overviewFrom = $('#trip_proxy_from_place').val();

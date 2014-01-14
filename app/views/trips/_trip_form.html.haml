@@ -306,8 +306,7 @@
     }
     removeMatchingMarkers(key);
     var marker = create_or_update_marker(key, latlon[0], latlon[1], name, desc, iconStyle);
-    setMapToBounds();
-    selectMarker(marker);
+    zoom_to_marker(marker);
 
     $('#' + t.parents('ul').data('target')).val(name);
   });
@@ -379,7 +378,8 @@
 
         // create marker on the map
         removeMatchingMarkers('start');
-        create_or_update_typeahead_marker(item, 'start', 'startIcon');
+        marker = create_or_update_marker('start', item.lat, item.lon, item.name, item.desc, 'startIcon');
+        zoom_to_marker(marker);
 
         // Update the UI
         $('#from_place_selected_type').attr('value', item.type);
@@ -452,7 +452,8 @@
 
         // create marker on the map
         removeMatchingMarkers('stop');
-        create_or_update_typeahead_marker(item, 'stop', 'stopIcon');
+        marker = create_or_update_marker('stop', item.lat, item.lon, item.name, item.desc, 'stopIcon');
+        zoom_to_marker(marker);
 
         // Update the UI
         $('#to_place_selected_type').attr('value', item.type);
@@ -467,11 +468,14 @@
   //
   //
   ///////////////////////////////////////////////////
-  function create_or_update_typeahead_marker(item, key, iconStyle) {
-    marker = create_or_update_marker(key, item.lat, item.lon, item.name, item.desc, iconStyle);
-    setMapToBounds();
-    selectMarker(marker);
-  };
+
+  function zoom_to_marker(marker) {
+    if (marker) {
+      //setMapToBounds();
+      setMapToMarkerBounds(marker);
+      selectMarker(marker);
+    }
+  }
 
   function create_or_update_marker(key, lat, lon, name, desc, iconStyle) {
     // See if we can find this existing marker
@@ -483,8 +487,10 @@
     addMarkerToMap(marker, true);
     return marker;
   };
+  
   // Add a list of candidate markers to the map
   var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Z', 'Y', 'Z'];
+
   function add_candidate_marker(index, lat, lon, addr, desc, type) {
     var iconStyle;
     var key_template;
@@ -570,8 +576,7 @@
     removeMatchingMarkers(key);
     // replace the markers with the end point marker
     marker = create_or_update_marker(key, latlon[0], latlon[1], addr, desc, iconStyle);
-    setMapToBounds();
-    selectMarker(marker);
+    zoom_to_marker(marker);
   };
 
   //Only Allow One Checkbox to Be Checked
@@ -619,15 +624,6 @@
       }
     });
 
-    $('#current-location a').on('click', function(){
-      //Temporary Address.
-      if($(this).is('#no')){
-        $('input#trip_proxy_from_place').val('');
-      } else if($(this).is('#yes')){
-        //DO NOTHING
-      }
-    });
-
     //FROM LABEL APPEAR
     $('input#trip_proxy_from_place').focus(function(){
         if (window.cocoa)
@@ -658,7 +654,6 @@
       }
     });
 
-
     $('.edit-trip-btn').on('click', function(){
       $('*[data-index=1]').removeClass('hidden');
       //Unhide the return trip if it was hidden
@@ -672,20 +667,12 @@
       tripformView.formEle.trigger('indexChange');
     });
 
-    //If they click no on return trip, jump straight to Overview
-    $('#return-yesno a#no').on('click', function(){
-      //
-      $('#trip_proxy_is_round_trip').prop('checked', false);
-      $('#left-results p.return').hide();
-      $('#left-results p.return').prev('h5').hide();
-      tripformView.indexCounter = 7;
-    });
-
     //END DP CODE
 
     // Hide what we don't need
     $('#from_place_candidates').hide();
     $('#to_place_candidates').hide();
+
     // Install a submit handler on the query form
     ajax_submit_form_handler('query_form');
 
