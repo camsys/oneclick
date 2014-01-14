@@ -1,4 +1,5 @@
 class Itinerary < ActiveRecord::Base
+  include CsHelpers
 
   # Callbacks
   after_initialize :set_defaults
