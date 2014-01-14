@@ -312,17 +312,22 @@ tripformView.indexChangeHandler = function() {
           // Trip overview
           (function() {
 
-            // Show the map with the start & end pins
-            $('#trip_map').show(); // do this first, or the other leaflet actions won't work
+            // Show the map at the full-panel size
+            $('#lmap').css('height','690px');
+            $('#_GMapContainer').css('height','690px');
+            $('#trip_map').show();
+
+            // Show the start & end pins and ensure proper zoom/pan
             refreshMarkers();
             setMapToBounds();
+
+            // Do this last
+            invalidateMap();
 
             var leftResults = $('#left-results');
 
             $('#left-description').addClass('hidden');
             leftResults.removeClass('hidden');
-            $('#lmap').css('height','690px');
-            $('#_GMapContainer').css('height','690px');
             
             //pull input value from From section, add to results section
             var overviewFrom = $('#trip_proxy_from_place').val();
