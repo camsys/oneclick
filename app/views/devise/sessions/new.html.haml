@@ -23,19 +23,20 @@
           .account-container.pull-right
             %p Need an Account?
             = link_to 'Register', new_user_registration_path
-    .row-fluid
-      .span6.offset3
-        = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal input-container' }) do |f|
-          = f.input :email, :autofocus => true, :required => true
-          = f.input :password, :required => true
-    .row-fluid
-      .span6.offset3
-        = button_tag :submit, class: 'login-btn pull-left' do
-          = t(:log_in)  
-        /%a.login-btn.pull-left{:href => "#"} Log In
-        .cancel-container.pull-right
-          %a.cancel-btn{:href => "#"} Cancel 
-      .span3.hidden
+    = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
+      .row-fluid
+        .span6.offset3
+          .input-container
+            = f.input :email, :autofocus => true, :required => true
+            = f.input :password, :required => true
+      .row-fluid
+        .span6.offset3
+          = button_tag :submit, class: 'login-btn pull-left' do
+            = t(:log_in)
+          /%a.login-btn.pull-left{:href => "#"} Log In
+          .cancel-container.pull-right
+            %a.cancel-btn{:href => "#"} Cancel
+        .span3.hidden
 
 
 :javascript
