@@ -6,7 +6,7 @@ class RegistrationsController < Devise::RegistrationsController
   before_filter :get_traveler, :only => [:update, :edit]
 
   helper_method :current_or_guest_user
-    
+
 
   def new
 
@@ -21,31 +21,17 @@ class RegistrationsController < Devise::RegistrationsController
     super
   end
 
-
-  def after_sign_in_path_for(resource)
-
-    if session[:inline]
-      get_traveler
-      @trip = Trip.find(session[:current_trip_id])
-      session[:current_trip_id] =  nil
-      @trip.create_itineraries
-      user_trip_path(@traveler, @trip)
-    else
-      root_path
-    end
-  end
-
   # Overrides the Devise create method for new registrations
   def create
     #puts ">>>>> IN CREATE"
     session[:location] = new_user_registration_path
-    
+
     build_resource(sign_up_params)
     #puts "RESOURCE OBJ"
     #puts resource.inspect
     #puts "GUEST USER"
     #puts guest_user.inspect
-    
+
     guest_user.first_name = resource.first_name
     guest_user.last_name = resource.last_name
     guest_user.email = resource.email
@@ -96,4 +82,4 @@ class RegistrationsController < Devise::RegistrationsController
     super
   end
 
-end 
+end
