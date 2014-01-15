@@ -304,7 +304,7 @@ a{
 //ATTRACT LOOP
 .penndot-logo{
 	background: url(../assets/kiosk/penndot-logo.png) no-repeat center center;
-	background-size: 100%;
+	//background-size: 100%;
 }
 
 .oneclick-logo{
@@ -1662,23 +1662,6 @@ input#trip_proxy_return_trip_time.string.optional{
 	}
 }
 
-
-//LOGIN 
-body.sessions.new, body.registrations.new{
-	background-image: url(../assets/kiosk/bg_black.png);
-	.container-fluid{
-		background-image: url(../assets/kiosk/bg_black.png);
-	}
-	label{
-		text-align: left;
-	}
-
-	.registrations .form-horizontal .control-group {
-	  margin-bottom: 0px;
-	}    
-}
-
-
 .login-container{
 	position: absolute;
 	width: 100%;
@@ -1795,7 +1778,6 @@ body.sessions.new, body.registrations.new{
 		}
 	}
 
-
 	.cancel-container{
 		padding-top: 58px;
 		a.cancel-btn{
@@ -1809,9 +1791,154 @@ body.sessions.new, body.registrations.new{
 			letter-spacing:2px;
 		}
 	}
-	
-
 }
+
+/**
+ *------------------------------------------
+ * LOGIN DESIGN 01-14-14
+ *------------------------------------------
+**/
+//LOGIN 
+body.sessions.new, body.registrations.new{
+	.container-fluid{
+		margin-top:0px;
+	}
+	.navbar{
+		margin-bottom:0;
+	}
+	#main{
+		padding-top:0;
+		margin-top:0px;
+	}
+}
+
+#login{
+	.input-container{
+		padding-top:85px;
+	}
+	.info{
+		//margin-top: 20px;
+	}
+
+	.span8login{
+		width: 68.31197%;
+		margin-left: 0;
+		
+		.span12login{
+			//width: 68.11197%;
+			margin-right:0;
+			padding-right:2.5641%;
+			margin-left:0;
+			padding-left:2.5641%;
+		}
+
+	}
+
+	div.control-group{
+		position:relative;
+		height:84px;
+		width: 100%;
+		margin-bottom: 0;
+
+		&.error{
+			&:before{
+				content: url(../assets/kiosk/icon-error.png);
+				position:absolute;
+				top: 24px;
+				left: -50px;
+			}
+			label{
+				color:$red;
+				transition: all 0.2s ease;
+			}
+			input:focus + label, input.hasValue + label{
+				color: desaturate($red, 60%);
+			}
+			input{
+				background-color: lighten($red, 30%);
+				color: darken($red, 40%);
+			}
+
+		}
+
+		label{
+			transition: margin-top 0.2s ease;
+			position: absolute;
+			font-weight: 600;
+			font-size:16px;
+			z-index:100;
+			margin-top:14px;
+			margin-left:35px;
+			color: $gray4;
+			width: 300px;
+			text-align: left;
+
+			abbr{
+				display: none;
+			}
+		}
+		//FIX FOR THEIR CODE
+		div.controls{
+			margin-left:0;
+		}
+
+		div.controls input:focus + label, div.controls input.hasValue + label{
+			margin-top: 18px;
+		}
+		div.controls input{
+			font-family: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			border-radius: 0;
+			padding-left: 32px;
+			font-size: 32px;
+			padding-top: 24px;
+		}
+	}
+
+	button.login-btn{
+		width:320px;
+		margin-top: 24px;
+		margin-left: 22px;
+		padding: 30px 0;
+		background-color: $white;
+		border: 4px solid $blue;
+		font-family: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
+		text-align: center;
+		font-size: 32px;
+		font-weight: 700;
+		color: $black;
+		text-decoration: none;
+		outline:0;
+
+		&:active{
+			margin: 18px -6px 24px 16px;
+			padding:36px 6px;
+			width:332px;
+		}
+	}
+
+	.cancel-container{
+		height: 90px;
+		padding-top: 58px;
+		a.cancel-btn{
+			height:23px;
+			display: inline-block;
+			text-decoration: none;
+			border-bottom: 1px solid $gray5;
+			color: $gray4;
+			text-align: right;
+			font-size: 21px;
+			text-transform: uppercase;
+			font-weight: 600;
+			letter-spacing:2px;
+			margin-right:22px;
+			overflow:hidden;
+		}
+	}
+}
+// END LOGIN DESIGN 01-14-14
 
 .loading-indicator{
 	position: absolute;
