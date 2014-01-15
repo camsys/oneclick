@@ -106,12 +106,12 @@
                 =schedule.end_time.strftime('%I:%M %p').sub(/^[0]*/,"")
   .span4
     .well.well2
-      %h4="Advanced Notice Required"
+      %h4="Advance Notice Required"
       .well.white-well.wwell2
         -if @service.advanced_notice_minutes > 0
           ="This service requires "
           %b=duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
-          =" of advanced notice to book a trip."
+          =" of advance notice to book a trip."
         -else
           ="This service does not require advanced notice to book a trip."
 .well
