@@ -360,6 +360,9 @@ tripformView.indexChangeHandler = function() {
             //$('#left-results .reason').html(overviewReason);
             leftResults.find('.reason').html(overviewReason);
 
+            //rename the Next Step button to say Plan my Trip
+            $('.next-step-btn h1').html('Plan my Trip');
+
             //$('.edit-trip-btn').removeClass('hidden');
             tripformView.editTripButtonInit();
             $.fn.datepicker.Calendar.hide();
@@ -499,6 +502,8 @@ tripformView.editTripButtonInit = function() {
     //Unhide the return trip if it was hidden
     leftResults.show();
     leftResults.prev('h5').show();
+    //update the large blue button to read Next Step once again
+    $('.next-step-btn h1').html('Next Step');
     //hide the results and show the description
     $('#left-description').removeClass('hidden');
     $('#left-results, .edit-trip-btn').addClass('hidden');
