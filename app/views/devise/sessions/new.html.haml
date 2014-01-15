@@ -26,18 +26,22 @@
     
 
 // TAKE 3
-.container-fluid
+#login.container-fluid
   %div.responsive-mbp.row-fluid
     .span4.info
       #left-description
         %h1 
           = t(:log_in)
-        %h4 Speed up the process
-        %p If you already have an account, log in your details here.
-    %div.span8plus.inputs
+        %h4 Have we met before?
+        %p 
+          Have you created an account with us before? If so, enter your E-mail address and password, then tap "Log In". Logging in will allow us to skip some questions you may have previously answered.
+          %br/ 
+          %br/ 
+          If you do not have an account, tap "Skip This Step"--you will still be able to book a trip today without one.
+    %div.span8login
       = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
         .row-fluid
-          .span12
+          .span12login
             .input-container
               = f.input :email, :autofocus => true, :required => true
               = f.input :password, :required => true
