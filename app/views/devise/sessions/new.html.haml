@@ -37,7 +37,7 @@
           Have you created an account with us before? If so, enter your E-mail address and password, then tap "Log In". Logging in will allow us to skip some questions you may have previously answered.
           %br/ 
           %br/ 
-          If you do not have an account, tap "Skip This Step"--you will still be able to book a trip today without one.
+          If you do not have an account, tap "Skip This Step" &mdash; you will still be able to book a trip today without one.
     %div.span8login
       = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
         .row-fluid
@@ -51,5 +51,5 @@
               = t(:log_in)
             /%a.login-btn.pull-left{:href => "#"} Log In
             .cancel-container.pull-right
-              %a.cancel-btn{:href => new_user_trip_path(current_or_guest_user)} Cancel
+              %a.cancel-btn{:href => new_user_trip_path(current_or_guest_user)} Skip this step
           .span3.hidden
