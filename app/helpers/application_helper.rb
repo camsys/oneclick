@@ -3,19 +3,17 @@ module ApplicationHelper
   METERS_TO_MILES = 0.000621371192
   
   include CsHelpers
-
-  ALPHABET = ('A'..'Z').to_a
   
   ICON_DICTIONARY = {
       TripLeg::WALK => 'travelcon-walk', 
       TripLeg::TRAM => 'travelcon-subway', 
       TripLeg::SUBWAY => 'travelcon-subway', 
-      TripLeg::RAIL => 'travelcon-train', 
+      TripLeg::RAIL => 'travelcon-rail',
       TripLeg::BUS => 'travelcon-bus', 
       TripLeg::FERRY => 'travelcon-boat'
       }
   
-  # REturns the name of the logo image based on the oneclick configuration
+  # Returns the name of the logo image based on the oneclick configuration
   def get_logo
     return Oneclick::Application.config.ui_logo
   end
@@ -27,60 +25,17 @@ module ApplicationHelper
   end
  
   # Formats a line in the itinerary
-  def format_itinerary_item(&block)
+  def format_email_itinerary_item(&block)
 
-     # Check to see if there is any content in the block    
+    # Check to see if there is any content in the block
     content = capture(&block)
-    if content.nil?      
+    if content.nil?
       content = "&nbsp;"
     end
-
-    html = "<tr>"
-    html << "<td style='border-top:none;'>"
-    html << "<h4 class='itinerary-item'>"
-    
     html << content
-
-    html << "</h4>"
-    html << "</td>"
-    html << "</tr>"
-    
-    return html.html_safe     
+    return html.html_safe
   end
-  
-  # Formats a line in the itinerary
-  def format_itinerary_item_old(&block)
 
-     # Check to see if there is any content in the block    
-    content = capture(&block)
-    if content.nil?      
-      content = "<p>&nbsp;</p>"
-    end
-
-    html = "<div class='row-fluid'>"
-    html << "<div class='span12'>"
-    html << "<h4>"
-    
-    html << content
-
-    html << "</h4>"
-    html << "</div>"
-    html << "</div>"
-    
-    return html.html_safe     
-  end
-  
-  # Returns a formatted string for an alternate address that includes a A,B,C, etc. designator.
-  def get_candidate_list_item_image(index, type)
-    if type == "0"
-      return 'http://maps.google.com/mapfiles/marker_green' + ALPHABET[index] + ".png"
-    elsif type == "1"
-      return 'http://maps.google.com/mapfiles/marker' + ALPHABET[index] + ".png"
-    else
-      return 'http://maps.google.com/mapfiles/marker_yellow' + ALPHABET[index] + ".png"
-    end
-  end
-  
   # Defines an array of filter options for the MyTrips page. The filters combine date range filters
   # with trip purpose filters. To make sure we can identify which is which, we simply add a constant (100)
   # to the time filter id. This assumes thata there are no more than 99 trip purposes
@@ -104,26 +59,28 @@ module ApplicationHelper
   end
   
   # Returns a set of rating icons as a span
-  def get_rating_icons(planned_trip)
-    if planned_trip.in_the_future
-      return ""
-    end
-    rating = planned_trip.rating
-    html = "<span>"
+  def get_rating_icons(trip, size=1)
+    rating = trip.get_rating
+    html = "<span id='stars'>"
     for i in 1..5
+      link = rate_rating_url(trip, :user_id => trip.user.id, :stars => i, :size => size)
+      html << "<a title='Rate " + i.to_s + " Stars' href=" + link + " style='color: black; text-decoration: none' data-method='post' data-remote='true'><i id=star" + trip.id.to_s + '_' + i.to_s + " class='icon-" + size.to_s
       if i <= rating
-        html << "<i class='icon icon-star'></i>"
+        html << "x icon-star'> </i></a>"
       else
-        html << "<i class='icon icon-star-empty'></i>"
+        html << "x icon-star-empty'> </i></a>"
       end
     end
-    html << "<span>"
+    html << "</span>"
     return html.html_safe
   end
   
-  # Returns true if the current user is a traveler, false if the current
-  # user is operating as a delegate 
-  def is_traveler
+  # Returns true if the current user is assisting the traveler, false if the current
+  # user is the current traveler
+  def is_assisting
+    unless current_user
+      return false
+    end
     if @traveler
       return @traveler.id == current_or_guest_user.id ? false : true
     else
@@ -148,8 +105,7 @@ module ApplicationHelper
     dist_str
   end
   
-  def duration_to_words(time_in_seconds)
-    
+  def duration_to_words(time_in_seconds, options = {})
     return t(:n_a) unless time_in_seconds
 
     time_in_seconds = time_in_seconds.to_i
@@ -157,11 +113,17 @@ module ApplicationHelper
     minutes = (time_in_seconds - (hours * 3600))/60
 
     time_string = ''
-    if hours > 0
-      time_string << I18n.translate(:hour, count: hours)  + ' '
+
+    if time_in_seconds > 60*60*24 and options[:days_only]
+      return I18n.translate(:day, count: hours / 24)
     end
 
-    if minutes > 0 || hours > 0
+    if hours > 0
+      format = ((options[:suppress_minutes] and minutes==0) ? :hour_long : :hour)
+      time_string << I18n.translate(format, count: hours)  + ' '
+    end
+
+    if minutes > 0 || (hours > 0 and !options[:suppress_minutes])
       time_string << I18n.translate(:minute, count: minutes)
     end
 
@@ -201,7 +163,7 @@ module ApplicationHelper
     return l time, :format => :oneclick_short unless time.nil?
   end
 
-  # Retuens a pseudo-mode for an itineray. The pseudo-mode is used to determine
+  # Retuens a pseudo-mode for an itinerary. The pseudo-mode is used to determine
   # the correct icon, title, and partial for an itinerary
   def get_pseudomode_for_itinerary(itinerary)
 
@@ -210,12 +172,12 @@ module ApplicationHelper
     elsif itinerary.mode.name.downcase == 'paratransit'
       mode_name = itinerary.service.service_type.name.downcase
     else
-      mode_name = itinerary.mode.name.downcase
+      mode_name = itinerary.mode.name.downcase unless itinerary.mode.nil?
     end
     return mode_name    
   end
   
-  # Returns the correct partial for a trip itinerary
+# Returns the correct partial for a trip itinerary
   def get_trip_partial(itinerary)
     
     return if itinerary.nil?
@@ -295,7 +257,11 @@ module ApplicationHelper
     end
     return icon_name
   end
-  
+
+  def get_trip_direction_icon(itin_or_trip)
+    (itin_or_trip.is_return_trip ? 'icon-arrow-left' : 'icon-arrow-right')
+  end
+
   def display_base_errors resource
     return '' if (resource.errors.empty?) or (resource.errors[:base].empty?)
     messages = resource.errors[:base].map { |msg| content_tag(:p, msg) }.join

@@ -1,0 +1,3 @@
+$('#itineraries').html("#{escape_javascript(render :partial => 'trip_itineraries', :locals => {:itineraries => @trip.itineraries.valid.visible, :selected => @next_itinerary})}");
+$('#hidden_trips_notice').html("#{escape_javascript(render 'hidden_trips_notice')}");
+fix_thumbnails();

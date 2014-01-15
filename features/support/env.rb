@@ -6,16 +6,8 @@
 ENV["RAILS_ENV"] ||= 'test'
 
 require 'simplecov'
-SimpleCov.start 'rails'
+SimpleCov.command_name 'cucumber'
 
-require 'coveralls'
-# See https://github.com/lemurheavy/coveralls-ruby/issues/22
-# SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-#   SimpleCov::Formatter::HTMLFormatter
-# ]
-Coveralls.wear_merged!('rails')
-
-puts "///////// env.br ///////////"
 require 'cucumber/rails'
 
 # Capybara defaults to CSS3 selectors rather than XPath.

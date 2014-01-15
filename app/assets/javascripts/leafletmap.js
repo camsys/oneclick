@@ -10,6 +10,7 @@ var LMcircles = new Array();
 var LMpolylines = new Array();
 var LMmap;
 var LMbounds;
+var LMcacheBounds;
 var LMcurrent_popup;
 
 var OPENSTREETMAP_URL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -88,6 +89,12 @@ function showMap() {
 	}
 	LMmap.fitBounds(mapBounds);
 };
+
+function showMapOriginal() {
+	mapBounds = LMcacheBounds;
+	LMmap.fitBounds(mapBounds);
+}
+
 /*
  * Replaces the markers on the map with a new set
  */
@@ -150,6 +157,13 @@ function replacePolylines(arr, updateMap) {
 		}
 	}
 };
+
+function removeMarkersKeepCache() {
+	for(var i=0;i<LMmarkers.length;i++){
+		LMmap.removeLayer(LMmarkers[i]);
+	}
+}
+
 /*
  * 
  */
@@ -397,6 +411,13 @@ function calcMapBounds(marker_array) {
 	
 	return [[minLat, minLng], [maxLat, maxLng]];
 };
+
+function calcMarkerBounds(marker) {
+	if (marker == null)
+		return nil;
+	return [[marker.getLatLng().lat, marker.getLatLng().lng], [marker.getLatLng().lat, marker.getLatLng().lng]];
+}
+
 function setMapToBounds(marker_array) {
 	if (marker_array == null) {
 		marker_array = LMmarkers;
@@ -406,9 +427,18 @@ function setMapToBounds(marker_array) {
 		LMmap.fitBounds(LMbounds);		
 	}
 };
+
+function setMapToMarkerBounds(marker) {
+	if (marker)
+		LMmap.fitBounds(calcMarkerBounds(marker));		
+}
+
 function setMapBounds(minLat, minLon, maxLat, maxLon) {
 	LMbounds = [[minLat, minLon], [maxLat, maxLon]];	
 };
+function cacheMapBounds(minLat, minLon, maxLat, maxLon) {
+	LMcacheBounds = [[minLat, minLon], [maxLat, maxLon]];		
+}
 function closePopup() {
 	if (LMcurrent_popup) {
 		LMcurrent_popup._source.closePopup();
@@ -424,3 +454,15 @@ function resetMap() {
 	removePolylines();
 	//LMmap.remove();
 };
+
+// Wrapper for _resetView()
+function resetMapView() {
+	LMmap._resetView(LMmap.getCenter(), LMmap.getZoom(), true);
+}
+
+function getFormattedAddrForMarker(addr) {
+	return "<div class='well well-small'><div class='row-fluid'>" + 
+		"<div class='span3'><i class='icon icon-3x icon-building'></i></div>" + 
+		"<div class='span9'><div class='caption'><h4>" + addr + "</h4></div></div>" + 
+		"</div></div>";
+}

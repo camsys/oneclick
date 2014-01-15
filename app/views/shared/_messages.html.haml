@@ -1,4 +1,5 @@
 - flash.each do |name, msg|
+  - next if name.to_s =~ /^local_/
   - if msg.is_a?(String)
     %div{:class => "alert alert-#{name == :notice ? "success" : "error"} fade in"}
       %a.close{"data-dismiss" => "alert"} ×

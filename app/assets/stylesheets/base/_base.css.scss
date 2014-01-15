@@ -1,14 +1,30 @@
 html, body {
   height: 100%;
 }
+
+// These are the bootstrap original sizes
+// h1 { font-size: 36px; line-height: 40px; }
+// h2 { font-size: 30px; line-height: 40px; }
+// h3 { font-size: 24px; line-height: 40px; }
+// h4 { font-size: 18px; line-height: 20px; }
+// h5 { font-size: 14px; line-height: 20px; }
+// h6 { font-size: 12px; line-height: 20px; }
+
+h1 { font-size: 30px; line-height: 32px; }
+h2 { font-size: 26px; line-height: 28px; }
+h3 { font-size: 22px; line-height: 24px; }
+h4 { font-size: 18px; line-height: 20px; }
+h5 { font-size: 14px; line-height: 20px; }
+h6 { font-size: 12px; line-height: 20px; }
+
 .center {
   float: none;
   margin-left: auto;
   margin-right: auto;
 }
-.first-in-row {
-  margin-left: 0 !important;
-}
+// .first-in-row {
+//   margin-left: 0 !important;
+// }
 
 .dropdown-toggle {
   cursor: pointer;
@@ -35,8 +51,11 @@ html, body {
 }
 
 #main {
-  padding-top: 60px;
-  padding-bottom: 80px;
+  //DP-Edit
+  padding-top: 20px;
+  overflow:hidden;
+  height:inherit;
+  //padding-bottom: 80px;
 }
 
 .dialog-title-bar {
@@ -44,14 +63,30 @@ html, body {
   padding:5px;
   margin-bottom: 10px;
 }
+.dialog-content {
+  min-height: 175px;
+  padding-left: 10px;
+  padding-right:10px;
+}
+// .one-note {
+//   min-height: 210px; // 196px; // 211px;
+// }
+
+// .two-notes {
+//   min-height: 245px; // 217px; // 247px;
+// }
+// .three-notes {
+//   min-height: 280px; // 238px; // 283px;
+// }
+
 .dialog-body {
   border: 1px solid #F5F5F5;
   padding:20px 20px 0px 20px;
 }
 .dialog-footer {
   background-color:#F5F5F5;
-  padding:5px;
-  margin-top: 10px;
+  // padding:5px;
+  // margin-top: 10px;
 }
 
 .corner-top { 
@@ -113,6 +148,21 @@ a:hover#help {
   color: #e41011;
 }
 
+.section_header {
+  a, a:hover{
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.selected_notices .alert {
+  margin-bottom: 0px;
+}
+
+.itinerary_thumbnail_selected {
+  border: solid green 1px;
+}
+
 .itinerary_icons {
   text-align: center;
   line-height: normal;
@@ -134,9 +184,18 @@ a:hover#help {
   padding: 0px;
 }
 
+@media (min-width: 768px ) {
+  .itineraries_holder li {
+    min-width: 23em !important;
+  }
+}
+
 .modal{
   max-height: 85%;
   overflow-y: auto;
+  form {
+    margin: 0;
+  }
 }
 
 .trip_basic_text{
@@ -179,20 +238,33 @@ a:hover#help {
   }
 }
 
-// trips specific CSS
-.actionbutton:hover {
+.home.index .actionbutton:hover {
  cursor: pointer;
  border-color: #0088cc;
  -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
  -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
  box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
 }
-.itinerary-item {
-  line-height: 0;
-  margin-bottom: 10px;
+
+// trips specific CSS
+
+.trips.show .actionbutton {
+  height: auto;
 }
+
+.itinerary-item {
+}
+
 .trip_summary_text {
   font-size: 2em;
+}
+
+.trip_summary_header .row-fluid {
+  line-height: normal;
+  padding-bottom: 5px;
+  [class*="span"] {
+    min-height: 0;
+  }
 }
 
 .candidate-label {
@@ -259,9 +331,10 @@ a:hover#help {
   color: #777777;
 }
 
-.registrations .form-horizontal .control-group {
-  margin-bottom: 5px;
-}    
+// CG EDIT
+// .registrations .form-horizontal .control-group {
+//   margin-bottom: 5px;
+// }    
 
 // TODO This might want to be more generally available
 .registrations {
@@ -315,7 +388,10 @@ td.left, th.left {
 }
 
 .map {
-  border: 1px solid #E3E3E3;
+  border-top: 0px solid #E3E3E3;
+  border-right: 0px solid #E3E3E3;
+  border-left: 0px solid #E3E3E3;
+  border-bottom: 1px solid #E3E3E3;
 }
 
 .loading-indicator {
@@ -324,8 +400,8 @@ td.left, th.left {
 }
 .shadow {
   -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-     -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-          box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);  
+  -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+  box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);  
 }
 
 /*
@@ -334,8 +410,8 @@ td.left, th.left {
  * See http://codepen.io/shshaw/full/gEiDt
  */
 
-.Center-Container.is-Table { display: table; }
-.is-Table .Table-Cell {
+ .Center-Container.is-Table { display: table; }
+ .is-Table .Table-Cell {
   display: table-cell;
   vertical-align: middle;
 }
@@ -349,7 +425,37 @@ td.left, th.left {
   position: static;
 }
 
+.no-bottom-margin{
+  margin-bottom: 0px !important;
+}
+
 .control-group.disabled {
   font-style: italic;
 }
 
+.trip_header {
+  .row-fluid [class*="span"] {
+    min-height: 0;
+  }
+  line-height: normal;
+  font-size: 18px;
+  font-weight: normal;
+  margin: 0;
+  .place_name {
+    font-weight: bold;
+  }
+}
+
+.top-margin{
+  margin-top: 20px;
+}
+
+// .trips.show .first-in-row { margin-left: 0 !important; }
+
+/* Printer Friendly */
+@media print {
+  #publicnav,#footer,#help{
+    display: none;
+  }
+
+}

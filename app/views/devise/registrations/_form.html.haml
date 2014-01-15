@@ -1,41 +1,96 @@
-%h4
-.well
-  = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
-    = f.error_notification
-    = display_base_errors resource
+/ Old Code
 
-    - if @create_inline
-      .alert.alert-info.alert-block
-        .row-fluid
-          .span12
-            %p
-              Registering for ARC One-Click allows you to save your eligibility and needs information for planning
-              future trips, as well as the ability to save and reuse trips, set up a travel buddy, and more.
-            / = t(:to_see_best_options)
-        .row-fluid
-          .span12
-            %a.btn.btn-success{:alt => 'alt words', :title => 'title here', :href => skip_user_planned_trip_path(@traveler, @planned_trip.id)}
-              %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-              No thanks, just plan my trip
-              / = t(:no_thanks_just_plan_it)
+/ %h4
+/ .well
+/   = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
+/     = f.error_notification
+/     = display_base_errors resource
 
-    - Rails.logger.debug "In view, I18n: #{I18n.locale}"
-    - Rails.logger.debug t(:first_name)
-    = f.input :first_name, label: t(:first_name), :autofocus => true
-    = f.input :last_name, label: t(:last_name)
-    = f.input :email, label: t(:email), :required => true
-    = f.input :password, label: t(:password), :required => true
-    = f.input :password_confirmation, :label => t(:retype_your_password), :required => true
-    - if @create_inline
-      .form-actions
-        = button_tag :type => 'submit', :class => "btn btn-primary" do
-          %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-          Sign up and plan my trip
-          / = t(:plan_it)
-    - else
-      .actions
-        = button_tag type: :submit, class: 'btn btn-primary controls' do
-          %i.icon.icon-edit
-          = t(:sign_up)
-        = render "devise/shared/links"
+/     - if @create_inline
+/       .alert.alert-info.alert-block
+/         .row-fluid
+/           .span12
+/             %p
+/               Registering for One-Click allows you to save your eligibility and needs information for planning
+/               future trips, as well as the ability to save and reuse trips, set up a travel buddy, and more.
+/             / = t(:to_see_best_options)
+/         .row-fluid
+/           .span12
+/             %a.btn.btn-success{:alt => 'alt words', :title => 'title here', :href => skip_user_trip_path(@traveler, @trip.id)}
+/               %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
+/               No thanks, just plan my trip
+/               / = t(:no_thanks_just_plan_it)
 
+/     - Rails.logger.debug "In view, I18n: #{I18n.locale}"
+/     - Rails.logger.debug t(:first_name)
+/     = f.input :first_name, label: t(:first_name), :autofocus => true
+/     = f.input :last_name, label: t(:last_name)
+/     = f.input :email, label: t(:email), :required => true
+/     = f.input :password, label: t(:password), :required => true
+/     = f.input :password_confirmation, :label => t(:retype_your_password), :required => true
+/     - if @create_inline
+/       .form-actions
+/         = button_tag :type => 'submit', :class => "btn btn-primary" do
+/           %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
+/           Sign up and plan my trip
+/           / = t(:plan_it)
+/     - else
+/       .actions
+/         = button_tag type: :submit, class: 'btn btn-primary controls' do
+/           %i.icon.icon-edit
+/           = t(:sign_up)
+/         = render "devise/shared/links"
+
+/ Updated Code
+.login-container
+  .container-fluid
+    .responsive-mbp.row-fluid
+      .span6.offset3
+        .login-header
+          %h1.pull-left Register
+          .account-container.pull-right
+            %p Have an Account?
+            = link_to new_user_session_path do
+              = t(:log_in)
+    = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
+      .row-fluid
+        .span6.offset3
+
+          = f.error_notification
+          = display_base_errors resource
+
+          - if @create_inline
+            .alert.alert-info.alert-block
+              .row-fluid
+                .span12
+                  %p
+                    Registering for ARC One-Click allows you to save your eligibility and needs information for planning
+                    future trips, as well as the ability to save and reuse trips, set up a travel buddy, and more.
+                  / = t(:to_see_best_options)
+              .row-fluid
+                .span12
+                  %a.btn.btn-success{:alt => 'alt words', :title => 'title here', :href => skip_user_trip_path(@traveler, @trip.id)}
+                    %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
+                    No thanks, just plan my trip
+
+          - Rails.logger.debug "In view, I18n: #{I18n.locale}"
+          - Rails.logger.debug t(:first_name)
+          = f.input :first_name, label: t(:first_name), :autofocus => true
+          = f.input :last_name, label: t(:last_name)
+          = f.input :email, label: t(:email), :required => true
+          = f.input :password, label: t(:password), :required => true
+          = f.input :password_confirmation, :label => t(:retype_your_password), :required => true
+      .row-fluid
+        .span6.offset3
+          = button_tag :submit, class: 'login-btn pull-left' do
+            = t(:sign_up)
+          /%a.login-btn.pull-left{:href => "#"} Log In
+          .cancel-container.pull-right
+            %a.cancel-btn{:href => new_user_session_path} Cancel
+        .span3.hidden
+
+:javascript
+  $(document).ready(function(){
+    $('.navbar').addClass('hidden');
+
+  });

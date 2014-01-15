@@ -1,0 +1,52 @@
+/ - itineraries.valid.each_slice(2) do |itineraries|
+%ul.thumbnails#itineraries
+  - ItineraryDecorator.decorate_collection(itineraries.valid).each do |itinerary|
+    %li{class: (itinerary.trip_part.selected? ? 'span3' : 'span3')}
+      .thumbnail.actionbutton.shadow{:tabindex => -1, class: itinerary_thumbnail_class(itinerary)}
+        .dialog-title-bar.corner-top{:data => {:action => itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id)}}
+          .row-fluid
+            .span12
+              %i.icon.icon-2x{:class => get_trip_summary_icon(itinerary)}
+                - if itinerary.hidden
+                  %i.icon-2x.icon-thumbs-down.pull-right
+              %h3
+                = get_trip_summary_title(itinerary)     
+                  
+        .dialog-content{class: dialog_content_class(trip_part)}
+          = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary}
+
+          -if itinerary.missing_information
+            .row-fluid
+              %i.icon.icon-question-sign
+              More information is needed.
+          -if itinerary.accommodation_mismatch
+            .row-fluid
+              %i.icon.icon-warning-sign
+              Some accommodations unavailable.
+          -if itinerary.date_mismatch or itinerary.time_mismatch or itinerary.too_late
+            .row-fluid
+              %i.icon.icon-calendar
+              This trip is not possible as scheduled.
+
+        .dialog-footer.corner-bottom
+          .row-fluid
+            .span12{:style => 'margin-bottom:0;'}
+              =link_to select_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "select", :alt => get_alt_button_text(itinerary, 'select'), :title => get_alt_button_text(itinerary, 'select')} do
+                =t(:select)
+              =link_to itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "details", :remote => true, :alt => get_alt_button_text(itinerary, 'view'), :title => get_alt_button_text(itinerary, 'view') } do
+                =t(:details)
+              / =link_to hide_user_trip_path(@traveler, @trip, :itinerary => itinerary), {:class => "hide", :alt => get_alt_button_text(itinerary, 'remove'), :title => get_alt_button_text(itinerary, 'remove') } do
+              /   =t(:hide)
+
+        = render partial: 'send_itinerary_by_email', locals: {trip: @trip, itinerary: itinerary}
+      
+ 
+:javascript
+  $(document).ready(function() {
+    // Enable the quick links
+    $('[data-action]').click(function() {
+      var url = $(this).data('action');
+      ajax_render_action(url, 'GET');
+    });
+  });
+  

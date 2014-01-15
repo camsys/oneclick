@@ -1,7 +1,4 @@
 class PlacesController < PlaceSearchingController
-
-  # include the Leaflet helper into the controller and view
-  helper LeafletHelper
   
   # set the @traveler variable for actions that are not supported by the super class controller
   before_filter :get_traveler, :only => [:index, :edit, :create, :destroy, :update]
@@ -101,8 +98,14 @@ class PlacesController < PlaceSearchingController
         new_place = create_place(@place_proxy)
         place.assign_attributes(new_place.get_modifiable_attributes)
       else
-        # we can only update the name
+        # we can only update the name and home
         place.name = @place_proxy.name
+        if @place_proxy.home.to_i == 0
+          place.home = false
+        else
+          @traveler.clear_home
+          place.home = true
+        end
       end
       Rails.logger.debug place.inspect
       valid = true
@@ -130,6 +133,16 @@ class PlacesController < PlaceSearchingController
 
 protected
 
+  def get_indexed_marker_icon(index, type)
+    if type == "0"
+      return 'startCandidate' + ALPHABET[index]
+    elsif type == "1"
+      return 'stopCandidate' + ALPHABET[index]
+    else
+      return 'placeCandidate' + ALPHABET[index]
+    end
+  end
+
   def set_form_variables
     
     @places = @traveler.places
@@ -144,7 +157,7 @@ protected
   # came from a raw address
   def create_place_proxy(place)
     
-    place_proxy = PlaceProxy.new({:id => place.id, :name => place.name, :raw_address => place.address, :can_alter_location => place.can_alter_location, :lat => place.location.first, :lon => place.location.last})
+    place_proxy = PlaceProxy.new({:id => place.id, :name => place.name, :raw_address => place.address, :can_alter_location => place.can_alter_location, :lat => place.location.first, :lon => place.location.last, :home => place.home})
     if place.poi
       place_proxy.place_type_id = POI_TYPE
       place_proxy.place_id = place.poi.id
@@ -217,6 +230,13 @@ protected
         place.lon = place_proxy.lon
       end    
     end
+    if place_proxy.home.to_i == 0
+      place.home = false
+    else
+      @traveler.clear_home
+      place.home = true
+    end
+
     return place    
   end
   

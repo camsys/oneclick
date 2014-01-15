@@ -17,4 +17,26 @@ class Service < ActiveRecord::Base
   has_many :trip_purposes, through: :service_trip_purpose_maps, source: :trip_purpose
   has_many :coverage_areas, through: :service_coverage_maps, source: :geo_coverage
 
+  def human_readable_advanced_notice
+    if self.advanced_notice_minutes < (24*60)
+      hours = self.advanced_notice_minutes/60.round
+      if hours == 1
+        return "1 hour"
+      else
+        return hours.to_s + " hours"
+      end
+    else
+      days = self.advanced_notice_minutes/(24*60).round
+      if days == 1
+        return "1 day"
+      else
+        return days.to_s + " days"
+      end
+    end
+  end
+
+  def full_name
+    provider.name.blank? ? name : ("%s, %s" % [name, provider.name])
+  end
+
 end

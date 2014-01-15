@@ -6,6 +6,9 @@ class User < ActiveRecord::Base
   # devise configuration
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
+  # Needed to Rate Trips
+  ajaxful_rater
+
   # Updatable attributes
   attr_accessible :email, :password, :password_confirmation, :remember_me
   attr_accessible :first_name, :last_name, :prefix, :suffix, :nickname
@@ -18,12 +21,19 @@ class User < ActiveRecord::Base
   has_many :user_mode_preferences   # 0 or more user mode preferences
   has_many :user_roles
   has_many :roles, :through => :user_roles # one or more user roles
-  has_many :planned_trips, :through => :trips
+  has_many :trip_parts, :through => :trips
   # relationships
   has_many :delegate_relationships, :class_name => 'UserRelationship', :foreign_key => :user_id
   has_many :traveler_relationships, :class_name => 'UserRelationship', :foreign_key => :delegate_id
+  has_many :confirmed_traveler_relationships, :class_name => 'UserRelationship', :foreign_key => :delegate_id
   has_many :delegates, :class_name => 'User', :through => :delegate_relationships
   has_many :travelers, :class_name => 'User', :through => :traveler_relationships
+  has_many :confirmed_travelers, :class_name => 'User', :through => :confirmed_traveler_relationships
+
+  has_many :buddy_relationships, class_name: 'UserRelationship', foreign_key: :user_id
+  has_many :buddies, class_name: 'User', through: :buddy_relationships, source: :delegate
+
+  scope :confirmed, where('relationship_status_id = ?', RelationshipStatus::CONFIRMED)
 
   # Validations
   validates :email, :presence => true
@@ -56,11 +66,21 @@ class User < ActiveRecord::Base
   end
 
   def has_disability?
-
     disabled = TravelerCharacteristic.find_by_code('disabled')
     disability_status = self.user_profile.user_traveler_characteristics_maps.where(characteristic_id: disabled.id)
     disability_status.count > 0 and disability_status.first.value == 'true'
+  end
 
+  def home
+    self.places.find_by_home(true)
+  end
+
+  def clear_home
+    old_homes = self.places.where(home: true)
+    old_homes.each do |old_home|
+      old_home.home = false
+      old_home.save()
+    end
   end
 
 end

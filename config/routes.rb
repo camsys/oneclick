@@ -3,11 +3,15 @@ Oneclick::Application.routes.draw do
 
   scope "(:locale)", locale: /en|es/ do
 
+
+
+
     authenticated :user do
       root :to => 'home#index'
     end
 
     devise_for :users, controllers: {registrations: "registrations"}
+
 
     # everything comes under a user id
     resources :users do
@@ -58,7 +62,7 @@ Oneclick::Application.routes.draw do
       end
       
       # users have trips
-      resources :trips, :only => [:new, :create, :destroy, :edit, :update] do
+      resources :trips, :only => [:show, :index, :new, :create, :destroy, :edit, :update] do
         collection do
           post  'set_traveler'
           get   'unset_traveler'
@@ -67,24 +71,46 @@ Oneclick::Application.routes.draw do
         end
         member do
           get   'repeat'          
-        end
-      end
-
-      # users have planned trips
-      resources :planned_trips, :only => [:show, :index] do
-        member do
+          get   'select'
           get   'details'
           get   'itinerary'
           post  'email'
+          post  'email_provider'
+          post  'email_itinerary'
+          get   'email_itinerary2_values'
+          post  'email2'
           get   'hide'
           get   'unhide_all'
           get   'skip'
+          post  'rate'
+          post  'comments'
+          post  'admin_comments'
+          get   'edit_rating'
+          get   'email_feedback'
+          get   'show_printer_friendly'
         end
-      end      
+      end
+
+      resources :trip_parts do
+        member do
+          get 'unhide_all'
+        end
+      end
+
+    end
+
+    #Ratings do not come under a user id
+    resources :ratings do
+      member do
+        get   'edit'
+        post  'rate'
+        post  'comments'
+      end
     end
 
     namespace :admin do
       resources :reports, :only => [:index, :show]
+      resources :trips, :only => [:index]
       match '/geocode' => 'util#geocode'
       match '/' => 'home#index'
     end
@@ -99,5 +125,12 @@ Oneclick::Application.routes.draw do
     root :to => "home#index"
   end
 
+  ComfortableMexicanSofa::Routing.admin(:path => '/cms-admin')
+
+  mount_sextant if Rails.env.development?
+  match '*not_found' => 'errors#handle404'
+
+  # Make sure this routeset is defined last
+  ComfortableMexicanSofa::Routing.content(:path => '/', :sitemap => false)
 
 end

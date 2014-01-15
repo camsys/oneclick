@@ -1,15 +1,13 @@
-.row-fluid
-  .span12
-    %ul.thumbnails
-      - @actions.each do |action|
-        %li.center.span3
-          %a.span12.thumbnail.btn.actionbutton{alt: action[:label], title: action[:label], href: action[:target]}
-            .row-fluid
-              .span3
-                %i.center{class: action[:icon], alt: action[:label], style: 'font-size: 3em;'}
-              / .span9.actionlabel{style: 'text-align: left;'}
-              /   = action[:label]
-              .span9.actionlabel.Center-Container.is-Table
-                .Table-Cell
-                  .Center-Block
-                    = action[:label]
+.attract-container
+  .attract-header
+    .oneclick.pull-left
+    .penndot.pull-right
+  - @actions.each do |action|
+    %a.attract-main.row-fluid{alt: action[:label], href: action[:target]}
+      .title Touch to begin
+    %a.attract-footer{alt: action[:label], href: action[:target]}
+
+
+:javascript
+  $('.navbar').hide();
+

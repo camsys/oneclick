@@ -1,62 +1,28 @@
-.navbar.navbar-fixed-top#publicnav
-  %nav.navbar-inner
-    .container-fluid
-      = link_to root_path, :class => 'brand', :style => "padding:0px;margin-left:0px;margin-top:5px;" do
-        = image_tag get_logo, :style => "height:30px;"
-        = t(:one_click_trip_planner) 
-      
-      .pull-right
-        = link_to error_501_path, id: 'help' do
-          %i.icon.icon-question-sign
-      .pull-right      
+.navbar
+  %div.responsive-mbp.row-fluid.navbar-inner
+    %div.back-button.pull-left
+      .arrow
+        = link_to :back, {}, :class => "arrow-btn"
+        %span Back      
         -#<!-- .btn-navbar is used as the toggle for collapsed navbar content -->
-        %a.btn.btn-navbar{data: { toggle: "collapse",  target: ".nav-collapse"}}
-          %span.icon-bar
-          %span.icon-bar
-          %span.icon-bar
+    %a.btn.btn-navbar{data: { toggle: "collapse",  target: ".nav-collapse"}}
+      %span.icon-bar
+      %span.icon-bar
+      %span.icon-bar
         -#<!-- Everything you want hidden at @navbarCollapseWidth or less, place within here -->
-        .nav-collapse.collapse
-          %ul.nav
-            - if user_signed_in?
-              %li.dropdown
-                %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}
-                  %i.icon.icon-user
-                  = "#{t(:welcome)}, #{current_user.welcome}"
-                  %b.caret
-                %ul.dropdown-menu{role: 'menu'}
-                  %li
-                    = link_to edit_user_registration_path do
-                      %i.icon.icon-cogs
-                      = t(:edit_account) 
-                  %li
-                    = link_to user_places_path(current_user) do
-                      %i.icon.icon-map-marker
-                      = t(:my_places) 
-                  - if current_user.has_role? :admin
-                    %li.divider.text-left
-                    %li
-                      = link_to admin_path do
-                        %i.icon.icon-wrench
-                        = t(:admin)
-                  %li.divider.text-left
-                  %li
-                    = link_to destroy_user_session_path, :method=>'delete' do
-                      %i.icon.icon-signout
-                      = t(:logout)
-            - else
-              %li.dropdown
-                %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}
-                  %i.icon.icon-user
-                  = "#{t(:welcome)}, #{t(:visitor)}"
-                  %b.caret
-                %ul.dropdown-menu{role: 'menu'}
-                  %li
-                    = link_to new_user_session_path do
-                      %i.icon.icon-key
-                      = t(:log_in) 
-                  %li.divider.text-edit
-                  %li
-                    = link_to new_user_registration_path do
-                      %i.icon.icon-edit
-                      = t(:create_an_account) 
+    .nav-collapse.collapse.pull-right
+      %ul.nav.pull-right
+        - if user_signed_in?
+          %li 
+            = link_to destroy_user_session_path, :method=>'delete' do
+              = t(:logout)
+          %li 
+            = link_to ("Help"), error_501_path 
+        - else
+          / %li 
+          /   = link_to new_user_session_path do
+          /     = t(:log_in) 
+          %li 
+            = link_to ("Help"), error_501_path 
+     
   

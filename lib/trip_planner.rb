@@ -3,13 +3,17 @@ require 'net/http'
 require 'mechanize'
 
 class TripPlanner
+
+  MAX_REQUEST_TIMEOUT = Rails.application.config.remote_request_timeout_seconds
+  MAX_READ_TIMEOUT    = Rails.application.config.remote_read_timeout_seconds
+  
   include ServiceAdapters::RideshareAdapter
 
   def get_fixed_itineraries(from, to, trip_datetime, arriveBy)
 
     #Parameters
-    time = trip_datetime.strftime("%-I:%M%p")
-    date = trip_datetime.strftime("%Y-%m-%d")
+    time = trip_datetime.in_time_zone.strftime("%-I:%M%p")
+    date = trip_datetime.in_time_zone.strftime("%Y-%m-%d")
     mode = 'TRANSIT,WALK'
 
     base_url = Oneclick::Application.config.open_trip_planner
@@ -25,16 +29,31 @@ class TripPlanner
       resp = Net::HTTP.get_response(URI.parse(url))
       Rails.logger.info(resp.inspect)
     rescue Exception=>e
+      Honeybadger.notify(
+        :error_class   => "Service failure",
+        :error_message => "Service failure: fixed: #{e.message}",
+        :parameters    => {url: url}
+      )
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
 
     if resp.code != "200"
+      Honeybadger.notify(
+        :error_class   => "Service failure",
+        :error_message => "Service failure: fixed: resp.code not 200, #{resp.message}",
+        :parameters    => {resp_code: resp.code, resp: resp}
+      )
       return false, {'id'=>resp.code.to_i, 'msg'=>resp.message}
     end
 
     data = resp.body
     result = JSON.parse(data)
     if result.has_key? 'error'
+      Honeybadger.notify(
+        :error_class   => "Service failure",
+        :error_message => "Service failure: fixed: result has error: #{result['error']}",
+        :parameters    => {result: result}
+      )
       return false, result['error']
     else
       return true, result['plan']
@@ -48,8 +67,10 @@ class TripPlanner
   def fixup_transfers_count(transfers)
     transfers == -1 ? nil : transfers
   end
-  def convert_itineraries(plan)
 
+  def convert_itineraries(plan)
+    match_score = -0.3
+    match_score_incr = 0.1
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
       trip_itinerary['mode'] = Mode.transit
@@ -63,9 +84,10 @@ class TripPlanner
       trip_itinerary['walk_distance'] = itinerary['walkDistance']
       trip_itinerary['legs'] = itinerary['legs']
       trip_itinerary['server_status'] = 200
+      trip_itinerary['match_score'] = match_score
+      match_score += match_score_incr
       trip_itinerary
     end
-
   end
 
   def get_taxi_itineraries(from, to, trip_datetime)
@@ -83,11 +105,21 @@ class TripPlanner
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
+      Honeybadger.notify(
+        :error_class   => "Service failure",
+        :error_message => "Service failure: taxi: #{e.message}",
+        :parameters    => {url: url, resp: resp}
+      )
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
 
     fare = JSON.parse(resp.body)
     if fare['status'] != "OK"
+      Honeybadger.notify(
+        :error_class   => "Service failure",
+        :error_message => "Service failure: taxi: fare status not OK",
+        :parameters    => {fare: fare}
+      )
       return false, fare['explanation']
     end
 
@@ -97,11 +129,21 @@ class TripPlanner
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
+      Honeybadger.notify(
+        :error_class   => "Service failure",
+        :error_message => "Service failure: taxi: #{e.message}",
+        :parameters    => {resp: resp}
+      )
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
 
     businesses = JSON.parse(resp.body)
     if businesses['status'] != "OK"
+      Honeybadger.notify(
+        :error_class   => "Service failure",
+        :error_message => "Service failure: taxi: business status not OK",
+        :parameters    => {businesses: businesses}
+      )
       return false, businesses['explanation']
     else
       return true, [fare, businesses]
@@ -118,26 +160,46 @@ class TripPlanner
     trip_itinerary['cost'] = itinerary[0]['total_fare']
     trip_itinerary['server_status'] = 200
     trip_itinerary['server_message'] = itinerary[1]['businesses']
+    trip_itinerary['match_score'] = 1.2
     trip_itinerary
   end
 
-  def convert_paratransit_itineraries(service)
+  def convert_paratransit_itineraries(service, match_score = 0, missing_information = false, missing_information_text = '')
     trip_itinerary = {}
     trip_itinerary['mode'] = Mode.paratransit
     trip_itinerary['service'] = service
     trip_itinerary['walk_time'] = 0
     trip_itinerary['walk_distance'] = 0
     trip_itinerary['server_status'] = 200
-
+    trip_itinerary['match_score'] = match_score
+    trip_itinerary['missing_information'] = missing_information
+    trip_itinerary['missing_information_text'] = missing_information_text
+    trip_itinerary['missing_accommodations'] = ''
     trip_itinerary
 
   end
 
   def get_rideshare_itineraries(from, to, trip_datetime)
     query = create_rideshare_query(from, to, trip_datetime)
-    resp = Mechanize.new.post(service_url, query)
-    doc = Nokogiri::HTML(resp.body)
-    results = doc.css('#results li div.marker.dest')
+    
+    agent = Mechanize.new
+    agent.keep_alive=false
+    agent.open_timeout = MAX_REQUEST_TIMEOUT
+    agent.read_timeout = MAX_READ_TIMEOUT    
+    
+    begin
+      page = agent.post(service_url, query)
+      doc = Nokogiri::HTML(page.body)
+      results = doc.css('#results li div.marker.dest')
+    rescue Exception=>e
+      Honeybadger.notify(
+        :error_class   => "Service failure",
+        :error_message => "Service failure: rideshare: #{e.message}",
+        :parameters    => {service_url: service_url, query: query}
+      )
+      Rails.logger.warn e.to_s
+      return false, {'id'=>500, 'msg'=>e.to_s}
+    end    
     if results.size > 0
       summary = doc.css('.summary').text
       Rails.logger.debug "Summary: #{summary}"
@@ -153,7 +215,9 @@ class TripPlanner
       'mode' => Mode.rideshare,
       'ride_count' => itinerary['count'],
       'server_status' => itinerary['status'],
-      'external_info' => YAML.dump(itinerary['query'])
+      'external_info' => YAML.dump(itinerary['query']),
+      'match_score' => 1.1
+
     }
   end
 

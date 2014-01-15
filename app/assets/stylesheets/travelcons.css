@@ -8,11 +8,11 @@
 .travelcon-subway:before,
 .travelcon-walk:before,
 .travelcon-bus:before,
-.travelcon-train:before,
+.travelcon-rail:before,
 .travelcon-boat:before{font-family:'travel-icons';font-style:normal;font-weight:normal;}
 .travelcon-subway:before{content:"r";}
 .travelcon-walk:before{content:":";}
 .travelcon-bus:before{content:"b";}
-.travelcon-train:before{content:">";}
+.travelcon-rail:before{content:">";}
 .travelcon-boat:before{content:"P"}
 

@@ -31,9 +31,9 @@ function ajax_submit_form_handler(form_id) {
 	        success: function(data) {
 	        	//alert('success');
 	        },
-	        error: function (data) {
+	        error: function (data, textStatus, errorThrown) {
 	       		//alert('error');
-            	show_alert("We are sorry but something went wrong. Please try again.");	               
+            	show_alert("We are sorry but something went wrong. Please try again. [3]");	               
 	        }
 	    });
 	    return false;
@@ -54,8 +54,9 @@ function ajax_render_action(url, method) {
 		    //  $('#ajax-panel').append('<h4>' + $(this).find('title').text() + '</h4><p>' + $(this).find('link').text() + '</p>');
 		    //});
 		},
-		error: function (data) {
-      		show_alert("We are sorry but something went wrong. Please try again.");                
+            error: function (data, textStatus, errorThrown) {
+                //alert('error');
+                show_alert("We are sorry but something went wrong. Please try again. [4]");                
       	}
    	});  
 };
@@ -65,6 +66,9 @@ function remove_messages() {
 	$('.alert').alert('close');
 };
 
+function nav_to_url(url) {
+  document.location.href = url;	
+}
 
 function click_to_nav(url) {
   alert('Deprecated. Please use event handler!');
@@ -74,8 +78,13 @@ function click_to_nav(url) {
 
 // Finds all the class elements on a page and sets the min-height css variable
 // to the maximum height of all the containers
-function make_same_height(class_name, buffer) {
+function make_same_height(class_name, buffer, max_height) {
 
+	// See if a max height is set
+	if (max_height) {
+    	$(class_name).css('height', max_height);	
+    	return;	
+	}
     // remove any existing height attributes
     $(class_name).css('height', '');
 
@@ -143,13 +152,13 @@ function adjust_thumbnails(window_width) {
     $('.thumbnail').removeClass('first-in-row');
     // Add the first-in-row class to the first thumbnail in each row
     var i = 0;
-    $('.thumbnail').each(function() {
-        var remainder = i % counter;
-        //alert('i = ' + i + ' remainder = ' + remainder);
-        if (remainder == 0) {
-            $(this).addClass('first-in-row');
-        }
-        i++;
-    });
+    // $('.thumbnail').each(function() {
+    //     var remainder = i % counter;
+    //     //alert('i = ' + i + ' remainder = ' + remainder);
+    //     if (remainder == 0) {
+    //         $(this).addClass('first-in-row');
+    //     }
+    //     i++;
+    // });
 };
 

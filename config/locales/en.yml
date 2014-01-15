@@ -13,6 +13,7 @@ en:
   help_and_support: 'Help & Support'
   create_an_account: 'Create an Account'
   travel_profile: 'Travel Profile'
+  my_travel_profile: 'My Travel Profile'
   my_trips: 'My Trips'
   my_places: 'My Places'
   places: 'Places'
@@ -49,6 +50,7 @@ en:
   my_information: 'My information'
   buddies: 'Buddies'
   travelers: 'Travelers'
+  traveler: 'Traveler'
   send_buddy_request: 'Send buddy request'
   buddys_email_address: "Buddy's email address"
   accept: 'Accept'
@@ -58,9 +60,14 @@ en:
   retract: 'Retract'
   visitor: 'Visitor'
   invalid_dob: 'Invalid date of birth'
-  to_see_best_options: 'To see the best options, tell us about yourself.'
+  to_see_best_options: 'Would you tell us more about yourself?'
   skip_this_step: 'Skip this step'
-    
+  buddy_request_sent: "Buddy request sent"
+  no_buddy_email_address: "You must enter the email address for your buddy"
+  no_user_with_email_address: "We can't find a registered user with '%{email}' as their email address."
+  something_went_wrong: "Ooops! Something went wrong. We were unable to process that request. Please try again."
+  request_processed: "Your request has been processed."
+      
   spanish: 'En Español'
   error_not_implemented: "We're sorry, but this functionality has not yet been implemented."
   error_404: "The page you were looking for doesn't exist."
@@ -80,6 +87,8 @@ en:
   
   # Trip planning
   enter_address: 'Enter address'
+  enter_to: 'Tap to enter a destination location'
+  enter_from: 'Tap to enter a starting location'
   select_or_enter_address: 'Select or enter address'
   select: 'Select'
   trip_date: 'Date'
@@ -112,6 +121,7 @@ en:
   remove: 'Remove'
   reload: 'Reload'
   return: 'Return'
+  outbound: 'Outbound'
   paratransit: 'Paratransit'
   mode: 'Mode'
   duration: 'Duration'
@@ -129,9 +139,17 @@ en:
     one: '%{count} h',
     other: '%{count} h',
   }
+  hour_long: {
+    one: '%{count} hour',
+    other: '%{count} hours',
+  }
   minute: {
     one: '%{count} min',
     other: '%{count} mins',
+  }
+  day: {
+    one: '%{count} day',
+    other: '%{count} days',
   }
   less_than_one_minute: 'Under 1 min'
   invalid_address: "Invalid address."
@@ -140,6 +158,7 @@ en:
   time_wrong_format: "Time must be in hh:mm am/pm format."
   trips_cannot_be_entered_for_days: "Trips cannot be entered for days earlier than today."
   trips_cannot_be_entered_for_times: "Trips cannot be entered for past times."
+  return_trip_time_before_start: "Trips cannot return before they are started."
   link_to_georgia_commute_options: {
     one:   'Visit %{url} to view 1 possible rideshare.',
     other: 'Visit %{url} to view %{count} possible rideshares.',
@@ -157,6 +176,11 @@ en:
   no_matching_trips_found: 'You have no matching trips.'
   hide: 'Hide'
   unhide_all: 'Unhide all'
+  round_trip: 'Round trip'
+  one_way: 'One-way trip'
+  returning_at: 'returning at'
+  returning: 'returning'
+  at: 'at'
 
   # My Places form
   found_x_places: {
@@ -179,6 +203,20 @@ en:
   profile_updated: "Your profile was updated."
 
   # new ones
+  close: "Close"
+  name: "Name"
+  send: "Send"
+  trip_request_from: "Trip request from "
+  send_email_to: "Send email to"
+  additional_emails: "Additional emails"
+  taken: "Trip Taken?"
+  please_tell_us: "Please tell us about your recent trip."
+  comments_updated: "Comments updated."
+  trips: "Trips"
+  comments: "Comments"
+  comments_sent: "Comments sent."
+  leave_comments: "Leave comments on this trip."
+  submit: "Submit"
   do_you_participate:  "Do you currently participate in any of these programs?"
   programs:  "Programs"
   eligibility: "Eligibility"
@@ -194,6 +232,9 @@ en:
   arc_oneclick_trip_itinerary: "ARC OneClick Trip Itinerary"
   an_email_was_sent_to_email_addresses_join: "An email was sent to %{addresses}."
   unable_to_remove_itinerary: 'Unable to remove itinerary.'
+  outbound_selected: 'Outbound option selected, now select your return option.'
+  outbound_selected_short: 'Outbound option selected.'
+  return_selected: 'Return option selected.'
   not_authorized_as_an_administrator: 'Not authorized as an administrator.'
   n_a: 'n/a'
   less_than_1_block: "less than 1 block"
@@ -235,11 +276,15 @@ en:
   arrive: "ARRIVE: "
   trip: "Trip: "
   est: " (est.)"
+  myself: "myself"
   assisted_user_first_name_s_trips: "%{name}'s Trips"
   trip_options_information_from_from: "Trip options information from %{from}"
   create_account: "Create an account to save your information."
+  stop_assisting: "Stop assisting"  
+  assisting_turned_off: "Assisting has been turned off."
 
   # General Messages
+  undo: Undo
   yes_str: "Yes"
   no_str:  "No"
   ok: "Ok"
@@ -326,11 +371,11 @@ en:
     logotext: ''
     site_title: 'ARC 1-Click'
     site_description: 'ARC 1-Click Application'
-  yata:
-    home: 'YATA Home'
+  pa:
+    home: '1-Click/PA Home'
     logotext: ''
-    site_title: 'YATA 1-Click'
-    site_description: 'YATA 1-Click Application'
+    site_title: '1-Click/PA'
+    site_description: '1-Click/PA Application'
   broward:
     home: '1-Click Broward Home'
     logotext: ''
