@@ -57,7 +57,7 @@
 
 
   #to_input{ :data => {:index => 2}}
-    - if user_signed_in?
+    - if false && user_signed_in?
       = f.input :to_place, :wrapper => :append, :class => "inline", :label => t(:to) do
         = f.text_field :to_place, :placeholder => t(:enter_to), :id => "trip_proxy_to_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large address", :data => {:link => search_user_places_path, :provide => "typeahead"}
         %span.dropdown
