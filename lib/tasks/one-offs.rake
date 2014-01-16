@@ -104,6 +104,88 @@ namespace :oneclick do
 
     end # task
 
+    desc "Add ESP Identifiers to Providers and Services"
+    task :add_esp_ids => :environment do
+
+      service = Service.find_by_name('JETS Transportation Program')
+      if service
+        p "updated service: " + service.name
+        service.external_id = "89144135357234431111"
+        service.save
+      end
+
+      service = Service.find_by_name('Medical Transportation by')
+      if service
+        p "updated service: " + service.name
+        service.external_id = "32138199527497131111"
+        service.save
+      end
+
+      service = Service.find_by_name('Fayette Senior Services')
+      if service
+        p "updated service: " + service.name
+        service.external_id = "86869601213076809999"
+        service.save
+      end
+
+      service = Service.find_by_name('Dial-a-Ride for Seniors (DARTS)')
+      if service
+        p "updated service: " + service.name
+        service.external_id = "54104859570670229999"
+        service.save
+      end
+
+      service = Service.find_by_name('CCT Paratransit')
+      if service
+        p "updated service: " + service.name
+        service.external_id = "57874876269921009999"
+        service.save
+      end
+
+      service = Service.find_by_name('Cherokee Area')
+      if service
+        p "updated service: " + service.name
+        service.external_id = "65980602734372809999"
+        service.save
+      end
+
+      provider = Provider.find_by_external_id("esp#6")
+      if provider
+        p "updating provider:  "  + provider.name
+        provider.external_id = "17471"
+        provider.save
+      end
+
+      provider = Provider.find_by_external_id("esp#7")
+      if provider
+        p "updating provider:  "  + provider.name
+        provider.external_id = "17472"
+        provider.save
+      end
+
+      provider = Provider.find_by_external_id("esp#3")
+      if provider
+        p "updating provider:  "  + provider.name
+        provider.external_id = "17436"
+        provider.save
+      end
+
+      provider = Provider.find_by_external_id("esp#15")
+      if provider
+        p "updating provider:  "  + provider.name
+        provider.external_id = "17625"
+        provider.save
+      end
+
+      provider = Provider.find_by_external_id("esp#22")
+      if provider
+        p "updating provider:  "  + provider.name
+        provider.external_id = "18575"
+        provider.save
+      end
+
+    end # task
+
     desc "Set up cms entries"
     task cms: :environment do
       Cms::Site.destroy_all

@@ -2,6 +2,9 @@ class EspReader
 
   DELIMITER='::'
 
+  SERVICE_DICT = Hash.new #Creates a temporary mapping between ServiceId and ServiceRefId
+  PROVIDER_DICT = Hash.new #Creates a temporary mapping between ProviderId and Xid
+
   def run
     table = {}
     ["tProvider", "tProviderGrid", "tService", "tServiceGrid", "tServiceCfg", "tServiceCost"].each do |t|
@@ -75,7 +78,8 @@ class EspReader
   def create_or_update_providers esp_providers
     providers = []
     esp_providers.each do |esp_provider|
-      provider = Provider.find_or_initialize_by_external_id(esp_provider[0])
+      PROVIDER_DICT[esp_provider[0]] = esp_provider[37]
+      provider = Provider.find_or_initialize_by_external_id(esp_provider[37])
       provider.name = esp_provider[1]
       provider.contact = esp_provider[3]
       provider.email = esp_provider[23]
@@ -88,9 +92,10 @@ class EspReader
   def create_or_update_services esp_services
     services = []
     esp_services.each do |esp_service|
-      service = Service.find_or_initialize_by_external_id(esp_service[0])
+      SERVICE_DICT[esp_service[0]] = esp_service[73]
+      service = Service.find_or_initialize_by_external_id(esp_service[73])
       service.name = esp_service[1]
-      service.provider = Provider.find_by_external_id(esp_service[2])
+      service.provider = Provider.find_by_external_id(PROVIDER_DICT[esp_service[2]])
       service.service_type = ServiceType.find_by_name('Paratransit')
       service.advanced_notice_minutes = 0  #TODO: Need to get this from ESP
       service.active = true
@@ -126,7 +131,7 @@ class EspReader
 
   def create_or_update_eligibility esp_configs
     esp_configs.each do |config|
-      service = Service.find_by_external_id(config[1])
+      service = Service.find_by_external_id(SERVICE_DICT[config[1]])
 
       case config[2].to_i
         when 1,2
@@ -143,7 +148,7 @@ class EspReader
 
   def create_or_update_coverages esp_configs
     esp_configs.each do |config|
-      service = Service.find_by_external_id(config[1])
+      service = Service.find_by_external_id(SERVICE_DICT[config[1]])
       case config[2].downcase
         when 'county'
           c = GeoCoverage.find_or_create_by_value(value: config[3], coverage_type: 'county_name')
@@ -155,7 +160,7 @@ class EspReader
 
   def create_or_update_fares esp_configs
     esp_configs.each do |config|
-      service = Service.find_by_external_id(config[1])
+      service = Service.find_by_external_id(SERVICE_DICT[config[1]])
       fare = FareStructure.find_by_service_id(service.id)
       case config[2].downcase
         when 'transportation'
