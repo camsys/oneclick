@@ -1,7 +1,7 @@
 class EligibilityHelpers
 
   def get_eligible_services_for_traveler(user_profile, trip_part=nil)
-    all_services = Service.all
+    all_services = Service.active
     eligible_itineraries = []
     all_services.each do |service|
       itinerary = get_service_itinerary(service, user_profile, trip_part)

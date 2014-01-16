@@ -11,6 +11,11 @@
       %h3
         ="Provided by "
         =@service.provider.name
+      -unless @service.active
+        %h3.warning
+          ="This service is currently inactive."
+
+
     .span4
       %table.pull-right
         %tr

@@ -45,6 +45,17 @@ class EspReader
     esp_services.shift #deletes header row
     services = create_or_update_services(esp_services)
 
+    #deactive services that are not included in the list
+    all_services = Service.all
+
+    all_services.each do |s|
+      unless s.in? services
+        s.active = false
+        s.save
+      end
+    end
+
+
     #Add County Coverage Rules
     esp_configs = entries['tServiceGrid']
     esp_configs.shift
@@ -83,6 +94,7 @@ class EspReader
       service.provider = Provider.find_by_external_id(esp_service[2])
       service.service_type = ServiceType.find_by_name('Paratransit')
       service.advanced_notice_minutes = 0  #TODO: Need to get this from ESP
+      service.active = true
       service.save
 
       #Clean up this service

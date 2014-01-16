@@ -348,6 +348,7 @@ ActiveRecord::Schema.define(:version => 20140108194606) do
     t.datetime "created_at",                                                    :null => false
     t.datetime "updated_at",                                                    :null => false
     t.string   "email"
+    t.string   "external_id",                  :limit => 25
   end
 
   create_table "traveler_accommodations", :force => true do |t|
