@@ -1,0 +1,158 @@
+.row-fluid
+  .span12.pull-right
+    = simple_form_for @services, :url => service_path(), :method => 'get', :html => {:class => "form-horizontal pull-right pull-down", :id => "service_form"}  do |f|
+      = f.input :id, :collection => @services, :label => "Select Service:", :selected => @service.id, :input_html => {:id => "next_service", :onchange => "$('#service_form').submit();"}
+
+.well
+  .row-fluid
+    .span8
+      %h2
+        =@service.name
+      %h3
+        ="Provided by "
+        =@service.provider.name
+      -unless @service.active
+        %h3.warning
+          ="This service is currently inactive."
+
+
+    .span4
+      %table.pull-right
+        %tr
+          %td.text-right.h4
+            ="Contact Name:  "
+          %td.text-left
+            %b=@service.provider.contact.to_s
+        %tr
+          %td.text-right.h4
+            ="Contact Email: "
+          %td.text-left
+            %b=@service.provider.email.to_s
+
+.row-fluid
+  .span4
+    .well.well1
+      %h4="Accommodations Provided"
+      .well.white-well.wwell1
+        -if @service.traveler_accommodations.count == 0
+          ="No accommodations provided"
+        -else
+          %ul
+            -@service.traveler_accommodations.each do |accom|
+              %li
+                =accom.name
+  .span4
+    .well.well1
+      %h4="Eligibility Rules"
+      ="If ANY of the following rules are satsified, the traveler may be eligible to use this service."
+      .well.white-well.wwell1
+        -if @service.service_traveler_characteristics_maps.count > 0
+          %ul
+          -groups = @service.service_traveler_characteristics_maps.map(&:group).uniq
+          -groups.each do |group|
+            -group_string = ""
+            %li
+              -@service.service_traveler_characteristics_maps.where(group: group).each do |map|
+                -if map.traveler_characteristic.code == "age"
+                  -group_string +="Age is " + @eh.relationship_to_words(map.value_relationship_id) + " " + map.value + " "
+                -else
+                  -group_string += map.traveler_characteristic.name + " "
+                -group_string += "AND "
+              =group_string[0..-6]
+        -else
+          ="No restriction"
+
+  .span4
+    .well.well1
+      %h4="Trip Purposes Served"
+      .well.white-well.wwell1
+        -if @service.trip_purposes.count == 0
+          ="No restriction"
+        -else
+          %ul
+            -@service.trip_purposes.each do |purpose|
+              %li
+                =purpose.name
+
+.row-fluid
+  .span4
+    .well.well2
+      %h4="Fare"
+      -@service.fare_structures.each do |fare|
+        .well.white-well.wwell2
+          .row_fluid
+            -if fare.base
+              %b="Cost: "
+              =number_to_currency(fare.base.to_f).to_s
+            -else
+              %b="Cost:"
+              ="Flat fare unavailable."
+          %b="Comments:  "
+          =fare.desc
+  .span4
+    .well.well2
+      %h4="Schedule"
+      %table.ALTtable
+        %tr
+          %th.text-center
+            Day
+          %th.text-center
+            Start Time
+          %th.text-center
+            End Time
+        %tbody
+          -@service.schedules.order(:day_of_week, :start_time, :end_time).each do |schedule|
+            %tr
+              %td.text-center
+                =Date::DAYNAMES[schedule.day_of_week]
+              %td.text-center
+                =schedule.start_time.strftime('%I:%M %p').sub(/^[0]*/,"")
+              %td.text-center
+                =schedule.end_time.strftime('%I:%M %p').sub(/^[0]*/,"")
+  .span4
+    .well.well2
+      %h4="Advance Notice Required"
+      .well.white-well.wwell2
+        -if @service.advanced_notice_minutes > 0
+          ="This service requires "
+          %b=duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
+          =" of advance notice to book a trip."
+        -else
+          ="This service does not require advanced notice to book a trip."
+.well
+  .row-fluid.text-center
+    .span12
+      %h3="Coverage Areas"
+
+  .row-fluid
+    -types = @service.coverage_areas.map(&:coverage_type).uniq
+    -['Origins', 'Destinations', 'Residences'].each do |rule|
+      .span4
+        %h4=rule
+        -types.each do |type|
+          %b
+            =type.humanize.split[0].pluralize + ' served'
+          .well.white-well
+            -coverage_string = ""
+            -@service.service_coverage_maps.where(rule: rule.singularize.downcase).each do |map|
+              -if map.geo_coverage.coverage_type == type
+                -coverage_string += map.geo_coverage.value + ', '
+            -if coverage_string == ""
+              ="N/A"
+            -else
+              =coverage_string.chop.chop
+
+:javascript
+  boxes = $('.well1');
+  maxHeight = Math.max.apply(
+    Math, boxes.map(function() {
+      return $(this).height();
+  }).get());
+  boxes.height(maxHeight);
+
+  boxes = $('.well2');
+  maxHeight = Math.max.apply(
+    Math, boxes.map(function() {
+      return $(this).height();
+  }).get());
+  boxes.height(maxHeight);
