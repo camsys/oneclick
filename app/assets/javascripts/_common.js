@@ -101,25 +101,6 @@ function make_same_height(class_name, buffer, max_height) {
     $(class_name).css({'height': max});
 };
 
-function fix_thumbnail_margins() {
-
-    $('.thumbnail').removeClass('first-in-row');
-
-    $('.thumbnails').each(function () {
-        var $thumbnails = $(this).children();
-        var previousOffsetLeft = $thumbnails.first().offset().left;
-
-        $thumbnails.first().addClass('first-in-row');
-        $thumbnails.each(function () {
-            var $thumbnail = $(this);
-            var offsetLeft = $thumbnail.offset().left;
-            if (offsetLeft < previousOffsetLeft) {
-                $thumbnail.addClass('first-in-row');
-            }
-            previousOffsetLeft = offsetLeft;
-        });
-    });
-};
 function get_viewport_width() {
     var x = 0;
     if (self.innerHeight) {
@@ -149,16 +130,6 @@ function adjust_thumbnails(window_width) {
     }
     //alert('Window = ' + window_width + ' setting icon size to ' + icon_size + ' and span size to ' + span_size);
     $('.trip_summary').removeClass("span12 span6 span4 span3").addClass(span_size);
-    $('.thumbnail').removeClass('first-in-row');
-    // Add the first-in-row class to the first thumbnail in each row
-    var i = 0;
-    // $('.thumbnail').each(function() {
-    //     var remainder = i % counter;
-    //     //alert('i = ' + i + ' remainder = ' + remainder);
-    //     if (remainder == 0) {
-    //         $(this).addClass('first-in-row');
-    //     }
-    //     i++;
-    // });
-};
 
+    var i = 0;
+};

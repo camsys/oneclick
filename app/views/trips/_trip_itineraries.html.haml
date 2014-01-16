@@ -1,5 +1,5 @@
 / - itineraries.valid.each_slice(2) do |itineraries|
-%ul.thumbnails#itineraries
+%ul.thumbnails#itineraries{ 'data-offset' => '0' }
   - ItineraryDecorator.decorate_collection(itineraries.valid).each do |itinerary|
     %li{class: (itinerary.trip_part.selected? ? 'span3' : 'span3')}
       .thumbnail.actionbutton.shadow{:tabindex => -1, class: itinerary_thumbnail_class(itinerary)}

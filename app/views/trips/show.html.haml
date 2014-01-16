@@ -69,7 +69,7 @@
 
 
 - if @trip.both_parts_selected?
-  .row-fluid.results-view.timeOut
+  .row-fluid.results-view.timeOut.js-trip-itineraries-slides
     .span1
       %p
         Trip Selected
@@ -101,7 +101,7 @@
             = t(:plan_a_new_trip)
 
   - if @trip.is_return_trip
-    .row-fluid.results-view
+    .row-fluid.results-view.js-trip-itineraries-slides
       .span1
         %p
           Return Selected
@@ -114,7 +114,7 @@
 
 
 - else
-  .row-fluid.results-view
+  .row-fluid.results-view.js-trip-itineraries-slides
     .span1
       - if @trip.only_outbound_selected?
         %p
@@ -124,7 +124,7 @@
       - else 
         %p 
           = t(:depart)
-        .prev-btn.disabled
+        .prev-btn
     %div.span10
       %div{id: 'outbound_section'}   
         .row-fluid.itineraries_holder
@@ -141,7 +141,7 @@
         .next-btn
 
   - if @trip.is_return_trip
-    .row-fluid.results-view
+    .row-fluid.results-view.js-trip-itineraries-slides
       .span1
         %p
           - if @trip.only_return_selected?
@@ -150,7 +150,7 @@
               = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.return_part}
           - else
             = t(:return)
-            .prev-btn.disabled
+            .prev-btn
         .card-prev
       %div.span10
         = render partial: 'return_trip'
@@ -225,36 +225,10 @@
     $('#send_trip_by_email_to_provider').modal('show')
   })
 
-  /**
-   * Adds 0 left margin to the first thumbnail on each row that don't get it via CSS rules.
-   * Recall the function when the floating of the elements changed.
-   */
-  function fixThumbnailMargins() {
-      $('.itineraries_holder .thumbnails').each(function () {
-          var $thumbnails = $(this).children(),
-              previousOffsetLeft = $thumbnails.first().offset().left;
-          $thumbnails.removeClass('first-in-row');
-          $thumbnails.first().addClass('first-in-row');
-          $thumbnails.each(function () {
-              var $thumbnail = $(this),
-                  offsetLeft = $thumbnail.offset().left;
-              if (offsetLeft < previousOffsetLeft) {
-                  $thumbnail.addClass('first-in-row');
-              }
-              previousOffsetLeft = offsetLeft;
-          });
-      });
-  }
-
-  // Fix the margins when potentally the floating changed
-  $(window).resize(fixThumbnailMargins);
-  fixThumbnailMargins();
-
   //CG DP EDIT
   if($('div.results-view').hasClass('timeOut')){
     var activityTimeout = setTimeout(resetApp, 60000);
   }
-  
 
   function resetActive(){
     clearTimeout(activityTimeout);
