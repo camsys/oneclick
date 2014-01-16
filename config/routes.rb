@@ -1,5 +1,6 @@
 Oneclick::Application.routes.draw do
 
+  match '/configuration' => 'configuration#configuration'
 
   scope "(:locale)", locale: /en|es/ do
 
