@@ -27,9 +27,6 @@ jQuery(function ($) {
     var steps = offset / width
       , total = $holder.find('.thumbnail').length;
 
-    console.log(steps);
-    console.log($holder.find('.thumbnail').length);
-
     if (steps <= 0 && steps + total <= 3) {
       $holder.find('.next-btn').addClass('disabled');
     } else {
