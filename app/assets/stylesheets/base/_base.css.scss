@@ -193,6 +193,7 @@ a:hover#help {
   #itineraries .span3 {
     width: 321px;
     margin-left: 18px;
+    &:first-child { margin-left: 0 }
   }
 }
 
