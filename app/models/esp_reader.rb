@@ -1,7 +1,6 @@
 class EspReader
 
   DELIMITER='::'
-  MDB_FILE='~/Downloads/ESPTEST/melton_esptest1222013.MDB'
 
   def run
     table = {}
