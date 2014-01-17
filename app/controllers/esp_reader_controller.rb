@@ -8,9 +8,11 @@ class EspReaderController < ApplicationController
   end
 
   def update
+
     esp = EspReader.new
-    esp.unpack(params[:esp_upload][:zip].path)
+    esp.unpack(params[:esp_upload][:zip].tempfile.path)
     redirect_to confirm_esp_reader_index_path
+
   end
 
 end
