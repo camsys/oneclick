@@ -429,7 +429,7 @@ a{
 
 	}
 
-	a{
+	a {
 		display: block;
 		cursor: pointer;  
 	    position: relative;  
@@ -764,10 +764,26 @@ div.trip_proxy_trip_purpose_id{
 	//TODO: Fix this for non-kiosk views.
 	height: 765px;
 
-	.search-dropdown-container{
+	.search-dropdown-container {
 		padding: 0 20px;
+
+		.candidate-list {
+			height: 280px;
+			overflow: hidden;
+		}
+
+		.js-candidate-list-inner {
+			height: 9999px;
+			-webkit-transition: margin-top 0.2s ease;
+			        transition: margin-top 0.2s ease;
+		}
+
+		.candidate-list .js-candidate-list-inner ul.nav.nav-list {
+			height: auto;
+		}
 	}
-	.candidate-list{
+
+	.candidate-list {
 		background-color: $gray1;
 		border: 1px solid $gray4;
 
@@ -821,6 +837,7 @@ div.trip_proxy_trip_purpose_id{
 			padding:2px;
 			height:100%;
 			border-radius:12px;
+			visibility: hidden;
 			.scrollbar-scroll{
 				border-radius: 8px;
 				background-color: $white;
