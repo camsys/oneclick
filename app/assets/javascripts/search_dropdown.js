@@ -27,11 +27,6 @@ window.scrollContent = function ($, options) {
   function checkButtonsEnabled ($holder, offset) {
     var steps = offset / size;
 
-    console.log('steps: ' + steps);
-    console.log('offset: ' + offset);
-    console.log('size: ' + size);
-    console.log('options.total($holder): ' + options.total($holder));
-
     if (steps <= 0 && Math.abs(offset - size) >= options.total($holder)) {
       $holder.find('.js-next-btn').addClass('disabled');
     } else {
