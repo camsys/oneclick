@@ -16,6 +16,18 @@ class EspReader
       ensure
         tempfile.close
         tempfile.unlink
+
+      end
+    end
+    table
+  end
+
+  def run_zip(tempfilepath)
+    table = {}
+    require 'zip'
+    Zip::File.open(tempfilepath) do |zipfile|
+      zipfile.each do |file|
+        table[file.name[0..-5]] = to_csv file.get_input_stream
       end
     end
     table
@@ -33,9 +45,9 @@ class EspReader
   end
 
   # This is the main function.
-  # It unpacks the esp data and stores it in our format
-  def unpack
-    entries = self.run
+  # It unpacks the esp data and stores it in the OneClick format
+  def unpack(tempfilepath)
+    entries = self.run_zip(tempfilepath)
 
     #Create or update providers
     esp_providers = entries['tProvider']
@@ -56,7 +68,6 @@ class EspReader
         s.save
       end
     end
-
 
     #Add County Coverage Rules
     esp_configs = entries['tServiceGrid']

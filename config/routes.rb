@@ -120,6 +120,14 @@ Oneclick::Application.routes.draw do
         get 'view'
       end
     end
+
+    resources :esp_reader do
+      collection do
+        get 'upload'
+        get 'confirm'
+        post 'update'
+      end
+    end
     
     match '/' => 'home#index'
 
