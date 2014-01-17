@@ -158,7 +158,7 @@ h5{
 			border: 2px solid $gray4;
 			background: $white url(../assets/kiosk/arrow.png) no-repeat center;
 
-			
+
 		}
 		span{
 			//Pulling from .nav > li > a // TO DO: find a way of extending this, make it a variable.
@@ -231,7 +231,7 @@ a{
 			}
 
 		}
-		
+
 
 		&.active{
 			a{
@@ -330,8 +330,8 @@ a{
 			width: 205px;
 			margin-top:13px;
 
-        }
-        .penndot{
+		}
+		.penndot{
 			@extend .penndot-logo;
 			height:47px;
 			width: 205px;
@@ -432,11 +432,11 @@ a{
 	a {
 		display: block;
 		cursor: pointer;  
-	    position: relative;  
-	    font-size: 36px; 
-	    font-weight: 800;
-	    color: $gray6;
-	    //width: 500px;
+		position: relative;
+		font-size: 36px;
+		font-weight: 800;
+		color: $gray6;
+		//width: 500px;
 		border: 4px solid $gray5;
 		text-align: center;
 		background-color: $white;
@@ -476,7 +476,7 @@ a{
 
 		}
 
-		
+
 	}
 }
 
@@ -1077,9 +1077,9 @@ div.trip_proxy_trip_purpose_id{
 //
 %flip{
 	-moz-transform: scaleX(-1);
-    -o-transform: scaleX(-1);
-    -webkit-transform: scaleX(-1);
-    transform: scaleX(-1);
+	-o-transform: scaleX(-1);
+	-webkit-transform: scaleX(-1);
+	transform: scaleX(-1);
 }
 
 %rotate-90{
@@ -1131,7 +1131,7 @@ div.trip_proxy_trip_purpose_id{
 		@extend %card-btn-container;
 		float:right;
 		background-position: right center;
-		
+
 		.prev-btn{
 			@extend %card-btn;
 		}
@@ -1368,7 +1368,7 @@ input#txtDate{
 	border-radius: 0px;
 	background-image: none !important;
 	font-size: 36px;
-	
+
 }
 
 #datepicker{
@@ -1409,7 +1409,7 @@ input#txtDate{
 						padding-bottom: 21px;
 
 					}
-					
+
 				}
 			}
 		}
@@ -1522,7 +1522,7 @@ input#trip_proxy_return_trip_time.string.optional{
 %time-selectors{
 	list-style-type: none;
 	float:left;
-	border-left:1px solid $gray4;
+	//border-left:1px solid $gray4;
 	margin:0 !important;
 	padding:0;
 	height:74px;
@@ -1533,7 +1533,7 @@ input#trip_proxy_return_trip_time.string.optional{
 	color: $gray6;
 
 	&:last-child{
-		border-right:1px solid $gray4;
+		//border-right:1px solid $gray4;
 	}
 
 	&:active{
@@ -1589,7 +1589,7 @@ input#trip_proxy_return_trip_time.string.optional{
 			padding-bottom:10px;
 			color: $gray4;
 			height:50px;
-			
+
 
 			span.type{
 				display: block;
@@ -1597,7 +1597,7 @@ input#trip_proxy_return_trip_time.string.optional{
 				font-size:16px;
 				font-weight: 600;
 			}
-			
+
 			span.input{
 				font-size:21px;
 				font-weight:300;
@@ -1617,7 +1617,7 @@ input#trip_proxy_return_trip_time.string.optional{
 					font-weight: 600;
 					color: $gray6;
 				}
-				
+
 				span.input{
 					font-size:21px;
 					font-weight:300;
@@ -1679,12 +1679,105 @@ input#trip_proxy_return_trip_time.string.optional{
 	}
 }
 
+#yeartable{
+	position: relative;
+	.decade-prev {
+	  left: 0;
+	}
+	.decade-next {
+	  right: 0;
+	}
+	.decade-prev, .decade-next{
+		position: absolute;
+		top: 0;
+		.prev-container{
+			@extend %card-btn-container;
+			float:right;
+			background-position: right center;
+			margin-top:147px;
+
+			.prev-btn{
+				@extend %card-btn;
+			}
+		}
+		.next-container{
+			@extend %card-btn-container;
+			float:left;
+			background-position: left center;
+			margin-top:147px;
+			.next-btn{
+				@extend %card-btn;
+				float:right;
+				@extend %flip;
+			}
+		}
+	}
+	padding-bottom:20px;
+	ul{
+		border:1px solid $gray4;
+		//clear:left;
+		//display: flex;
+		margin-bottom:0;
+
+		&:last-child{
+			//border-bottom:1px solid $gray4;
+		}
+
+		li{
+			@extend %time-selectors;
+			width: 50%;
+		}
+	}
+}
+
+$ulWidth: 387px;
+$numOfGroups: 12;
+$animationTime: 300ms;
+
+#yearContainer {
+	height: inherit;
+	left: 0;
+	width: ($ulWidth * $numOfGroups);
+	position: relative;
+	-webkit-transition: left $animationTime ease-out;
+	-moz-transition: left $animationTime ease-out;
+	-o-transition: left $animationTime ease-out;
+	transition: left $animationTime ease-out;
+	-webkit-transform: translate3d(0, 0, 0)
+}
+
+#yearlist {
+	height: 376px;
+	width: 412px;
+	overflow: hidden;
+	position: relative;
+	margin: 0 auto;
+	ul {
+		float: left;
+		overflow: inherit;
+		width: $ulWidth;
+		height: inherit;
+	}
+	li {
+		border-bottom: 1px solid $gray4;
+		&:nth-child(2n) {
+			border-left: 1px solid $gray4;
+		}
+		&.soloYear {
+			border-right: 1px solid $gray4;
+		}
+		&.bottom {
+			border-bottom: none;
+		}
+	}
+}
+
 .login-container{
 	position: absolute;
 	width: 100%;
 	//height: 1500px;
 	overflow-y: hidden;
-	
+
 	// TO DO: work with Camsys to nest the login container so it looks good at all sizes.
 	.container-fluid{
 		background-image: url(../assets/kiosk/bg_black.png);
@@ -2156,8 +2249,12 @@ body.sessions.new, body.registrations.new{
 		width: 68.37197% !important;
 	}
 }
- 
+
 /* Landscape phones and down */
 //@media (max-width: 480px) { ... }
 
 
+//hide depart dropdown in tripform view
+.trip_proxy_arrive_depart {
+  display: none;
+}

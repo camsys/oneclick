@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131209211910) do
+ActiveRecord::Schema.define(:version => 20140108194606) do
 
   create_table "cms_blocks", :force => true do |t|
     t.integer  "page_id",    :null => false
@@ -141,7 +141,7 @@ ActiveRecord::Schema.define(:version => 20131209211910) do
     t.integer "fare_type",                                               :default => 0
     t.decimal "base",                      :precision => 6, :scale => 2
     t.decimal "rate",                      :precision => 6, :scale => 2
-    t.string  "desc"
+    t.text    "desc"
   end
 
   create_table "geo_coverages", :force => true do |t|
@@ -179,7 +179,7 @@ ActiveRecord::Schema.define(:version => 20131209211910) do
     t.boolean  "time_mismatch",                                           :default => false
     t.boolean  "too_late",                                                :default => false
     t.string   "missing_accommodations",                                  :default => ""
-    t.string   "cost_comments"
+    t.text     "cost_comments"
     t.boolean  "selected",                                                :default => false
   end
 
@@ -348,6 +348,7 @@ ActiveRecord::Schema.define(:version => 20131209211910) do
     t.datetime "created_at",                                                    :null => false
     t.datetime "updated_at",                                                    :null => false
     t.string   "email"
+    t.string   "external_id",                  :limit => 25
   end
 
   create_table "traveler_accommodations", :force => true do |t|
