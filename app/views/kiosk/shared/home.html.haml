@@ -1,0 +1,13 @@
+.attract-container
+  .attract-header
+    .oneclick.pull-left
+    .penndot.pull-right
+  - @actions.each do |action|
+    %a.attract-main.row-fluid{alt: action[:label], href: action[:target]}
+      .title Touch to begin
+    %a.attract-footer{alt: action[:label], href: action[:target]}
+
+
+:javascript
+  $('.navbar').hide();
+
