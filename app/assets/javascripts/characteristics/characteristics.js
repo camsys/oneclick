@@ -301,17 +301,40 @@ characteristicsView.populateYears = function () {
 
 $(document).ready(function () {
   "use strict";
+  var dateSegments = ['year', 'month', 'day'];
 
-  $('#monthtable ul li').on('click', function () {
-    dobFirst = $(this);
-    $('#monthtable ul li').removeClass('selected');
-    dobFirst.addClass('selected');
-    $('.dob-breadcrumb li.month span.input').text(dobFirst.html());
-    $('li.month span.type').addClass('val-added');
-    $('#monthtable').fadeOut(function () {
-      $('#daytable').fadeIn().removeClass('hidden');
-      $('.dob-breadcrumb li.month').toggleClass('current chosen');
-      $('.dob-breadcrumb li.day').addClass('current');
+  dateSegments.forEach(function (segment, i, arr) {
+    $('.js-dob-pickers').on('click', '#'+ segment +'table ul li', function () {
+      var dobFirst = $(this)
+        , next = arr[arr.indexOf(segment) + 1];
+
+      $('#'+ segment +' ul li').removeClass('selected');
+
+      dobFirst
+        .closest('.dob-section').find('li').removeClass('selected').end().end()
+        .addClass('selected');
+
+      $('.dob-breadcrumb li.'+ segment +' span.input').text(dobFirst.html());
+      $('li.'+ segment +' span.type').addClass('val-added');
+      $('.dob-breadcrumb li.'+ segment).addClass('chosen');
+
+      $('#user_characteristics_proxy_date_of_birth').val(
+        $('.js-dob-pickers')
+          .parent()
+          .find('.dob .chosen .input')
+          .map(function (i, e) { return $(e).text() })
+          .toArray()
+          .join('-')
+      );
+
+      if (typeof next != 'undefined') {
+        // $('#'+ segment +'table').fadeOut(function () {
+        //   $('#'+ next +'table').fadeIn().removeClass('hidden');
+        //   $('.dob-breadcrumb li.'+ segment).removeClass('current');
+        //   $('.dob-breadcrumb li.'+ next).addClass('current');
+        // });
+      } else {
+      }
     });
   });
 

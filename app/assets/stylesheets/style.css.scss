@@ -1546,6 +1546,11 @@ input#trip_proxy_return_trip_time.string.optional{
 		background-image:none;
 		border:0px solid $black;
 	}
+
+	&:hover {
+		background: #eee;
+		cursor: pointer;
+	}
 }
 
 .timetable{
@@ -1633,7 +1638,7 @@ input#trip_proxy_return_trip_time.string.optional{
 	}
 }
 
-.monthtable{
+#monthtable{
 	padding-bottom:20px;
 	ul{
 		border-top:1px solid $gray4;
@@ -1652,7 +1657,7 @@ input#trip_proxy_return_trip_time.string.optional{
 	}
 }
 
-.daytable{
+#daytable{
 	padding-bottom:20px;
 	ul{
 		border-top:1px solid $gray4;
@@ -1679,14 +1684,18 @@ input#trip_proxy_return_trip_time.string.optional{
 	}
 }
 
-#yeartable{
+#yeartable {
 	position: relative;
+	padding-bottom:20px;
+
 	.decade-prev {
 	  left: 0;
 	}
+
 	.decade-next {
 	  right: 0;
 	}
+
 	.decade-prev, .decade-next{
 		position: absolute;
 		top: 0;
@@ -1712,7 +1721,8 @@ input#trip_proxy_return_trip_time.string.optional{
 			}
 		}
 	}
-	padding-bottom:20px;
+
+
 	ul{
 		border:1px solid $gray4;
 		//clear:left;
