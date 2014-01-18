@@ -20,6 +20,10 @@ module CsHelpers
   # Session key for storing the traveler id
   TRAVELER_USER_SESSION_KEY = 'traveler'
 
+  def ui_mode_kiosk?
+    Oneclick::Application.config.ui_mode=='kiosk'
+  end
+
   def current_or_guest_user
     if current_user
       if session[:guest_user_id]
@@ -60,6 +64,7 @@ module CsHelpers
     end
 
     def actions options = {}
+      Rails.logger.info "IN ACTIONS"
       a = if user_signed_in?
         [
           {label: t(:plan_a_trip), target: new_user_trip_path(get_traveler), icon: ACTION_ICONS[:plan_a_trip]},
@@ -77,12 +82,13 @@ module CsHelpers
       if options[:with_logout]
         a << {label: t(:logout), target: destroy_user_session_path, icon: 'icon-signout', divider_before: true,
           method: 'delete'}
-                      #     = link_to , :method=>'delete' do
-                      # %i.icon.icon-signout
-                      # = t(:logout)
-                    end
-                    a
-                  end
+        #     = link_to , :method=>'delete' do
+        # %i.icon.icon-signout
+        # = t(:logout)
+      end
+      Rails.logger.info "ACTIONS about to return #{a.ai}"
+      a
+    end
 
 
   # TODO Unclear whether this will need to be more flexible depending on how clients want to do their domains
@@ -102,4 +108,63 @@ module CsHelpers
   def format_exception e
     [e.message, e.backtrace].flatten.join("\n")
   end
+
+  # Kiosk-related helpers
+
+  def user_trip_path_for_ui_mode traveler, trip
+    unless ui_mode_kiosk?
+      user_trip_path traveler, trip
+    else
+      kiosk_user_trip_path traveler, trip
+    end
+  end
+
+  def new_user_characteristic_path_for_ui_mode traveler, options = {}
+    unless ui_mode_kiosk?
+      new_user_characteristic_path traveler, options
+    else
+      new_kiosk_user_characteristic_path traveler, options
+    end
+  end
+
+  def unhide_all_user_trip_part_path_for_ui_mode traveler, trip_part
+    unless ui_mode_kiosk?
+      unhide_all_user_trip_part_path traveler, trip_part
+    else
+      unhide_all_kiosk_user_trip_part_path traveler, trip_part
+    end
+  end
+
+  def new_user_program_path_for_ui_mode traveler, options = {}
+    unless ui_mode_kiosk?
+      new_user_program_path traveler, options
+    else
+      new_kiosk_user_program_path traveler, options
+    end
+  end
+
+  def user_program_path_for_ui_mode traveler, user_programs_proxy_id, options = {}
+    unless ui_mode_kiosk?
+      user_program_path traveler, user_programs_proxy_id, options
+    else
+      kiosk_user_program_path traveler, user_programs_proxy_id, options
+    end
+  end
+
+  def new_user_accommodation_path_for_ui_mode traveler, options = {}
+    unless ui_mode_kiosk?
+      new_user_accommodation_path traveler, options
+    else
+      new_kiosk_user_accommodation_path traveler, options
+    end
+  end
+
+  def skip_user_trip_path_for_ui_mode traveler, current_trip_id
+    unless ui_mode_kiosk?
+      skip_user_trip_path traveler, current_trip_id
+    else
+      skip_kiosk_user_trip_path traveler, current_trip_id
+    end
+  end
+
 end

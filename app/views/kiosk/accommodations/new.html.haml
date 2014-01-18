@@ -6,5 +6,5 @@
     %p Given your responses, we have one last page of follow-up questions. Answer all questions you are comfortable providing an answer for. If you do not wish to answer a question, select "Unsure". <br><br> Tap "Next Step" when you have finished with these questions.
   %div.span8plus.inputs
     .row-fluid.accommodations-section
-      = render partial: 'accommodations/form',  :locals => {:path => user_accommodation_path(@traveler, @user_accommodations_proxy.id, inline: 1), :inline => true}
+      = render partial: 'kiosk/accommodations/form',  :locals => {:path => kiosk_user_accommodation_path(@traveler, @user_accommodations_proxy.id, inline: 1), :inline => true}
 

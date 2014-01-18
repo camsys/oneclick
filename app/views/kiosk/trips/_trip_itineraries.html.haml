@@ -3,7 +3,7 @@
   - ItineraryDecorator.decorate_collection(itineraries.valid).each do |itinerary|
     %li{class: (itinerary.trip_part.selected? ? 'span3' : 'span3')}
       .thumbnail.actionbutton.shadow{:tabindex => -1, class: itinerary_thumbnail_class(itinerary)}
-        .dialog-title-bar.corner-top{:data => {:action => itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id)}}
+        .dialog-title-bar.corner-top{:data => {:action => itinerary_kiosk_user_trip_path(@traveler, @trip, :itin => itinerary.id)}}
           .row-fluid
             .span12
               %i.icon.icon-2x{:class => get_trip_summary_icon(itinerary)}
@@ -31,9 +31,9 @@
         .dialog-footer.corner-bottom
           .row-fluid
             .span12{:style => 'margin-bottom:0;'}
-              =link_to select_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "select", :alt => get_alt_button_text(itinerary, 'select'), :title => get_alt_button_text(itinerary, 'select')} do
+              =link_to select_kiosk_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "select", :alt => get_alt_button_text(itinerary, 'select'), :title => get_alt_button_text(itinerary, 'select')} do
                 =t(:select)
-              =link_to itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "details", :remote => true, :alt => get_alt_button_text(itinerary, 'view'), :title => get_alt_button_text(itinerary, 'view') } do
+              =link_to itinerary_kiosk_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "details", :remote => true, :alt => get_alt_button_text(itinerary, 'view'), :title => get_alt_button_text(itinerary, 'view') } do
                 =t(:details)
               / =link_to hide_user_trip_path(@traveler, @trip, :itinerary => itinerary), {:class => "hide", :alt => get_alt_button_text(itinerary, 'remove'), :title => get_alt_button_text(itinerary, 'remove') } do
               /   =t(:hide)

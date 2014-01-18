@@ -6,5 +6,5 @@
     %p Do you currently participate in any of the following programs? If you do not wish to answer a question, select "Unsure". <br><br> Tap "Next Step" when you have finished with these questions.
   %div.span8plus.inputs
     .row-fluid.programs-section
-      = render partial: 'programs/form',  :locals => {:path => user_program_path(@traveler, @user_programs_proxy.id, inline: 1), :inline => true}
+      = render partial: 'kiosk/programs/form',  :locals => {:path => user_program_path_for_ui_mode(@traveler, @user_programs_proxy.id, inline: 1), :inline => true}
 

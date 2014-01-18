@@ -6,7 +6,7 @@
   - unless current_user.travelers.empty?
     = render "select_traveler_form"
   
-= simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "no-bottom-margin"}  do |f|
+= simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? kiosk_user_trips_path : kiosk_user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "no-bottom-margin"}  do |f|
   = f.hidden_field :mode
   = f.hidden_field :from_place_selected, :id => "from_place_selected"
   = f.hidden_field :to_place_selected, :id => "to_place_selected"

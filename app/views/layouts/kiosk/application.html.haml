@@ -7,6 +7,7 @@
       = ajaxful_rating_style
       = stylesheet_link_tag "application", :media => "all"
       = stylesheet_link_tag brand, :media => "all"
+      = stylesheet_link_tag 'kiosk/_base', :media => "all"
       = stylesheet_link_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.css", :media => "all"
       
       = javascript_include_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"
@@ -19,7 +20,7 @@
       = yield(:head)
   %body{:class => "#{controller_css_class} #{action_name}"}
     / application.html.haml
-    = render 'shared/navigation'
+    = render 'kiosk/shared/navigation'
     .container-fluid
       #main{:role => "main"}
         .container-fluid

@@ -16,7 +16,7 @@ class AccommodationsController < TravelerAwareController
       @trip = Trip.find(session[:current_trip_id])
       session[:current_trip_id] =  nil
       @trip.create_itineraries
-      @path = user_trip_path(@traveler, @trip)
+      @path = user_trip_path_for_ui_mode(@traveler, @trip)
     end
 
       # Check to see if it was an ajax request from the user profile page

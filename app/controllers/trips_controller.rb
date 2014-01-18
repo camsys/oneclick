@@ -461,18 +461,20 @@ class TripsController < PlaceSearchingController
           # @trip.restore_trip_places_georaw
           if @traveler.user_profile.has_characteristics? and user_signed_in?
             @trip.create_itineraries
-            @path = user_trip_path(@traveler, @trip)
+            @path = user_trip_path_for_ui_mode(@traveler, @trip)
           else
             session[:current_trip_id] = @trip.id
-            @path = new_user_characteristic_path(@traveler, inline: 1)
+            @path = new_user_characteristic_path_for_ui_mode(@traveler, inline: 1)
           end
           format.html { redirect_to @path }
           format.json { render json: @trip, status: :created, location: @trip }
         else
+          # TODO Will this get handled correctly?
           format.html { render action: "new" }
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
       else
+        # TODO Will this get handled correctly?
         format.html { render action: "new", flash[:alert] => t(:correct_errors_to_create_a_trip) }
       end
     end
@@ -483,7 +485,7 @@ class TripsController < PlaceSearchingController
     @trip.trip_parts.each do |tp|
       tp.create_itineraries
     end
-    @path = user_trip_path(@traveler, @trip)
+    @path = user_trip_path_for_ui_mode(@traveler, @trip)
     session[:current_trip_id] = nil
 
     respond_to do |format|
@@ -542,7 +544,7 @@ class TripsController < PlaceSearchingController
       i.hidden = false
       i.save
     end
-    redirect_to user_trip_path(@traveler, @trip)   
+    redirect_to user_trip_path_for_ui_mode(@traveler, @trip)   
   end
 
   def select
@@ -551,7 +553,7 @@ class TripsController < PlaceSearchingController
     itinerary = @trip.itineraries.valid.find(params[:itin])
     itinerary.hide_others
     respond_to do |format|
-      format.html { redirect_to(user_trip_path(@traveler, @trip)) } 
+      format.html { redirect_to(user_trip_path_for_ui_mode(@traveler, @trip)) } 
       format.json { head :no_content }
     end
   end

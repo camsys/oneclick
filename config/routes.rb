@@ -4,10 +4,6 @@ Oneclick::Application.routes.draw do
 
   scope "(:locale)", locale: /en|es/ do
 
-    namespace :kiosk do
-      match '/', to: 'home#index'
-    end
-
     if Oneclick::Application.config.ui_mode == 'kiosk'
       root to: redirect('/kiosk')
     else
@@ -114,6 +110,98 @@ Oneclick::Application.routes.draw do
         post  'rate'
         post  'comments'
       end
+    end
+
+    namespace :kiosk do
+      match '/', to: 'home#index'
+      devise_for :users, controllers: {registrations: "kiosk/registrations"}
+
+      # TODO can probably remove a lot of these routes
+      resources :users do
+        member do
+          get   'profile'
+          post  'update'
+        end
+
+        resources :characteristics, :only => [:new, :create, :edit, :update] do
+          collection do
+            get 'header'
+          end
+          member do
+            put 'set'
+          end
+        end
+
+        resources :programs, :only => [:new, :create, :edit, :update] do
+          member do
+            put 'set'
+          end
+        end
+
+        resources :accommodations, :only => [:new, :create, :edit, :update] do
+          member do
+            put 'set'
+          end
+        end
+
+        # user relationships
+        resources :user_relationships, :only => [:new, :create] do
+          member do
+            get   'traveler_retract'
+            get   'traveler_revoke'
+            get   'traveler_hide'
+            get   'delegate_accept'
+            get   'delegate_decline'
+            get   'delegate_revoke'
+          end
+        end
+
+        # users have places
+        resources :places, :only => [:index, :new, :create, :destroy, :edit, :update] do
+          collection do
+            get   'search'
+            post  'geocode'
+          end
+        end
+        
+        # users have trips
+        resources :trips, :only => [:show, :index, :new, :create, :destroy, :edit, :update] do
+          collection do
+            post  'set_traveler'
+            get   'unset_traveler'
+            get   'search'
+            post  'geocode'
+          end
+          member do
+            get   'repeat'          
+            get   'select'
+            get   'details'
+            get   'itinerary'
+            post  'email'
+            post  'email_provider'
+            post  'email_itinerary'
+            get   'email_itinerary2_values'
+            post  'email2'
+            get   'hide'
+            get   'unhide_all'
+            get   'skip'
+            post  'rate'
+            post  'comments'
+            post  'admin_comments'
+            get   'edit_rating'
+            get   'email_feedback'
+            get   'show_printer_friendly'
+          end
+        end
+
+        resources :trip_parts do
+          member do
+            get 'unhide_all'
+          end
+        end
+
+      end
+
     end
 
     namespace :admin do
