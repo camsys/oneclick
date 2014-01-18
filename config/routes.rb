@@ -112,9 +112,15 @@ Oneclick::Application.routes.draw do
       end
     end
 
+    # scope('/kiosk') do
+    #   devise_for :users, as: 'kiosk', controllers: {sessions: "kiosk/sessions"}      
+    # end
+
+    # match '/kiosk_user/kiosk/users/sign_in', to: 'kiosk/sessions#create'
+
     namespace :kiosk do
       match '/', to: 'home#index'
-      devise_for :users, controllers: {registrations: "kiosk/registrations"}
+      # devise_for :users, controllers: {registrations: "kiosk/registrations"}
 
       # TODO can probably remove a lot of these routes
       resources :users do
@@ -200,9 +206,15 @@ Oneclick::Application.routes.draw do
           end
         end
 
-      end
+      end # kiosk
 
+    end # user
+
+    devise_scope :user do
+      post '/user/kiosk/sign_in' => 'kiosk/sessions#create'
+      get '/kiosk/sign_in' => 'kiosk/sessions#new'
     end
+
 
     namespace :admin do
       resources :reports, :only => [:index, :show]
