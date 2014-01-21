@@ -50,7 +50,7 @@ protected
         date_str = day + '/' + month + '/' + year
       end
 
-      Rails.logger.debug "Parsing date: " + date_str
+      Rails.logger.debug "Parsing date: " + date_str if date_str.present?
 
       ret = params.empty? ? nil : Chronic.parse(date_str)
     end
