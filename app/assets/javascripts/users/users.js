@@ -3,28 +3,30 @@ var loginView = {
 
 loginView.init = function () {
 
+  alert("LOGIN VIEW INIT");
+
   $('input#user_email').click(function(){
-       if (window.cocoa)
-        window.cocoa.openKeyboard();
+      alert("CLICK EMAIL");
+       //if (window.cocoa)
+       // window.cocoa.openKeyboard();
   });
 
   $('input#user_email').blur(function(){
-      alert("IN BLUR, BEFORE COCOA CHECK");
-      if (window.cocoa)
-      {
-        alert("IN BLUR COCOA");
-        window.cocoa.closeKeyboard();
-      }
+      alert("BLUR EMAIL");
+      //if (window.cocoa)
+      //  window.cocoa.closeKeyboard();
   });
 
   $('input#user_password').click(function(){
-       if (window.cocoa)
-        window.cocoa.openKeyboard();
+      alert("CLICK PASSWORD");
+       //if (window.cocoa)
+       // window.cocoa.openKeyboard();
   });
 
   $('input#user_password').blur(function(){
-      if (window.cocoa)
-        window.cocoa.closeKeyboard();
+      alert("BLUR PASSWORD");
+      //if (window.cocoa)
+      //  window.cocoa.closeKeyboard();
   });
 
 };
