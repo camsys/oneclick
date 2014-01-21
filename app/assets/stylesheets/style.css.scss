@@ -1640,17 +1640,24 @@ input#trip_proxy_return_trip_time.string.optional{
 
 #monthtable{
 	padding-bottom:20px;
-	ul{
+
+	ul {
 		border-top:1px solid $gray4;
 		clear:left;
 		display: flex;
 		margin-bottom:0;
 
+		&:after {
+		  content: "";
+		  display: table;
+		  clear: both;
+		}
+
 		&:last-child{
 			border-bottom:1px solid $gray4;
 		}
 
-		li{
+		li {
 			@extend %time-selectors;
 			width: 25%;
 		}
@@ -1723,7 +1730,7 @@ input#trip_proxy_return_trip_time.string.optional{
 	}
 
 
-	ul{
+	ul {
 		border:1px solid $gray4;
 		//clear:left;
 		//display: flex;
@@ -1733,9 +1740,14 @@ input#trip_proxy_return_trip_time.string.optional{
 			//border-bottom:1px solid $gray4;
 		}
 
-		li{
+		li {
 			@extend %time-selectors;
 			width: 50%;
+			border-left-width: 0;
+
+			&.bottom {
+				border-right-width: 0;
+			}
 		}
 	}
 }
@@ -1757,7 +1769,7 @@ $animationTime: 300ms;
 }
 
 #yearlist {
-	height: 376px;
+	height: 372px;
 	width: 412px;
 	overflow: hidden;
 	position: relative;
