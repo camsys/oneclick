@@ -1522,7 +1522,7 @@ input#trip_proxy_return_trip_time.string.optional{
 %time-selectors{
 	list-style-type: none;
 	float:left;
-	//border-left:1px solid $gray4;
+	border-left:1px solid $gray4;
 	margin:0 !important;
 	padding:0;
 	height:74px;
@@ -1533,7 +1533,7 @@ input#trip_proxy_return_trip_time.string.optional{
 	color: $gray6;
 
 	&:last-child{
-		//border-right:1px solid $gray4;
+		border-right:1px solid $gray4;
 	}
 
 	&:active{
