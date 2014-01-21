@@ -233,6 +233,10 @@ tripformView.indexChangeHandler = function() {
           tripformView.nextButtonValidateLocation($('#trip_proxy_from_place'));
           $('#left-description p').html("Enter the address where you will start your trip. You can provide an address, the name of common landmarks or local businesses. The location you select will be shown on the map to confirm you have selected the correct location. <br><br> Tap \"Next Step\" when you have selected the correct starting location.");
 
+          // If text input is empty, bring focus, which should open keyboard
+          if ($('#from_place_selected').val() == "")
+            $('input#trip_proxy_from_place').focus();
+
           break;
 
         case 2:
@@ -256,6 +260,9 @@ tripformView.indexChangeHandler = function() {
           $('#left-description h4').html("Tell Us Where You're Going");
           $('#left-description p').html("Enter the address where you will end your trip. You can provide an address, the name of common landmarks or local businesses. The location you select will be shown on the map to confirm you have selected the correct location. <br><br> Tap \"Next Step\" when you have selected the correct destination location.");
 
+          // If text input is empty, bring focus, which should open keyboard
+          if ($('#to_place_selected').val() == "")
+            $('input#trip_proxy_to_place').focus();
 
           break;
 
