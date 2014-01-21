@@ -1,10 +1,10 @@
-.row-fluid
-  .span12
-    %h1
-      %i.icon.icon-info-sign#programs_header
-      Programs - Step 2 of
-      = @total_steps
+%div.responsive-mbp.row-fluid
+  .span4.info
+    %h1 
+      About You
+    %h4 Tell Us About Qualifying Programs
+    %p Do you currently participate in any of the following programs? If you do not wish to answer a question, select "Unsure". <br><br> Tap "Next Step" when you have finished with these questions.
+  %div.span8plus.inputs
+    .row-fluid.programs-section
+      = render partial: 'programs/form',  :locals => {:path => user_program_path(@traveler, @user_programs_proxy.id, inline: 1), :inline => true}
 
-.row-fluid
-  .well
-    = render partial: 'programs/form',  :locals => {:path => user_program_path(@traveler, @user_programs_proxy.id, inline: 1), :inline => true}

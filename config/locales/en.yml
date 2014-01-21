@@ -60,7 +60,7 @@ en:
   retract: 'Retract'
   visitor: 'Visitor'
   invalid_dob: 'Invalid date of birth'
-  to_see_best_options: 'To see the best options, tell us about yourself.'
+  to_see_best_options: 'Would you tell us more about yourself?'
   skip_this_step: 'Skip this step'
   buddy_request_sent: "Buddy request sent"
   no_buddy_email_address: "You must enter the email address for your buddy"
@@ -87,6 +87,8 @@ en:
   
   # Trip planning
   enter_address: 'Enter address'
+  enter_to: 'Tap to enter a destination location'
+  enter_from: 'Tap to enter a starting location'
   select_or_enter_address: 'Select or enter address'
   select: 'Select'
   trip_date: 'Date'
@@ -283,6 +285,7 @@ en:
   assisting_turned_off: "Assisting has been turned off."
 
   # General Messages
+  undo: Undo
   yes_str: "Yes"
   no_str:  "No"
   ok: "Ok"

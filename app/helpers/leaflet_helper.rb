@@ -47,6 +47,7 @@ module LeafletHelper
     js << "addPolylines(#{options[:polylines]});" unless options[:polylines].nil?
     # set the map bounds
     js << "setMapBounds(#{MAP_BOUNDS[0][0]},#{MAP_BOUNDS[0][1]},#{MAP_BOUNDS[1][0]},#{MAP_BOUNDS[1][1]});"
+    js << "cacheMapBounds(#{MAP_BOUNDS[0][0]},#{MAP_BOUNDS[0][1]},#{MAP_BOUNDS[1][0]},#{MAP_BOUNDS[1][1]});"
     js << "showMap();"
     js * ("\n")
   end

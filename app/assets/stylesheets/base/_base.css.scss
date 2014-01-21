@@ -22,9 +22,6 @@ h6 { font-size: 12px; line-height: 20px; }
   margin-left: auto;
   margin-right: auto;
 }
-.first-in-row {
-  margin-left: 0 !important;
-}
 
 .dropdown-toggle {
   cursor: pointer;
@@ -51,8 +48,11 @@ h6 { font-size: 12px; line-height: 20px; }
 }
 
 #main {
-  padding-top: 60px;
-  padding-bottom: 80px;
+  //DP-Edit
+  padding-top: 20px;
+  overflow:hidden;
+  height:inherit;
+  //padding-bottom: 80px;
 }
 
 .dialog-title-bar {
@@ -65,16 +65,16 @@ h6 { font-size: 12px; line-height: 20px; }
   padding-left: 10px;
   padding-right:10px;
 }
-.one-note {
-  min-height: 210px; // 196px; // 211px;
-}
+// .one-note {
+//   min-height: 210px; // 196px; // 211px;
+// }
 
-.two-notes {
-  min-height: 245px; // 217px; // 247px;
-}
-.three-notes {
-  min-height: 280px; // 238px; // 283px;
-}
+// .two-notes {
+//   min-height: 245px; // 217px; // 247px;
+// }
+// .three-notes {
+//   min-height: 280px; // 238px; // 283px;
+// }
 
 .dialog-body {
   border: 1px solid #F5F5F5;
@@ -179,6 +179,22 @@ a:hover#help {
   vertical-align: top;
   color: #0088cc;
   padding: 0px;
+}
+
+.container-fluid .row-fluid.itineraries_holder {
+  overflow: hidden;
+
+  .thumbnails {
+    width: 9999px;
+    -webkit-transition: margin-left 0.2s ease;
+            transition: margin-left 0.2s ease;
+  }
+
+  #itineraries .span3 {
+    width: 321px;
+    margin-left: 18px;
+    &:first-child { margin-left: 0 }
+  }
 }
 
 @media (min-width: 768px ) {
@@ -328,9 +344,10 @@ a:hover#help {
   color: #777777;
 }
 
-.registrations .form-horizontal .control-group {
-  margin-bottom: 5px;
-}    
+// CG EDIT
+// .registrations .form-horizontal .control-group {
+//   margin-bottom: 5px;
+// }    
 
 // TODO This might want to be more generally available
 .registrations {
@@ -384,7 +401,10 @@ td.left, th.left {
 }
 
 .map {
-  border: 1px solid #E3E3E3;
+  border-top: 0px solid #E3E3E3;
+  border-right: 0px solid #E3E3E3;
+  border-left: 0px solid #E3E3E3;
+  border-bottom: 1px solid #E3E3E3;
 }
 
 .loading-indicator {
@@ -443,7 +463,7 @@ td.left, th.left {
   margin-top: 20px;
 }
 
-.trips.show .first-in-row { margin-left: 0 !important; }
+// .trips.show .first-in-row { margin-left: 0 !important; }
 
 .white-well{
   background: #FFFFFF;

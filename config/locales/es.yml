@@ -87,6 +87,8 @@ es:
 
   # Trip planning
   enter_address: 'Introduce la dirección'
+  enter_to: 'Introduce la dirección'
+  enter_from: 'Introduce la dirección'
   select_or_enter_address: 'Selecciona o introduce la dirección '
   select: 'Seleccionar'
   trip_date: 'Fecha'
