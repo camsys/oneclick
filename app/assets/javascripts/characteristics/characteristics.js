@@ -99,6 +99,11 @@ characteristicsView.nextBtnHandler = function () {
     characteristicsView.dob.counter++;
   }
 
+  if (characteristicsView.indexCounter == 2) {
+    $('#left-description h4').text('Tell Us Your Date of Birth')
+    $('#left-description p').html('Sharing your birthdate allows us to provide you with the best travel options, including those that may be discounted or only available to seniors.<br><br>Tap "Next Step" when you have selected the correct date.')
+  }
+
   //trigger counter change event
   $('#eligibility_form').trigger('indexChange');
 };
@@ -258,17 +263,27 @@ characteristicsView.populateYears = function () {
     yearContainer.append(yearPage);
   });
 
-  //add whole year container to dom
-  $('#yearlist').append(yearContainer);
 
   /*..............................................................................
    * Year Pagination Button Events
    *.............................................................................*/
 
+  characteristicsView.dob.displayYearPage = function () {
+    var yearPageWidth = this.yearlist.width();
+    var leftOffset;
+
+    leftOffset = this.yearpage * yearPageWidth * -1;
+    yearContainer.css('left', leftOffset);
+  };
+
+  characteristicsView.dob.yearpage = 3;
+  characteristicsView.dob.displayYearPage();
+
+  //add whole year container to dom
+  $('#yearlist').append(yearContainer);
+
   $('.next-btn, .prev-btn').on('click', function(e) {
     var $target = $(e.target);
-    var leftOffset;
-    var yearPageWidth = characteristicsView.dob.yearlist.width();
 
     if ($target.hasClass('next-btn')) {
       //increment page
@@ -285,9 +300,7 @@ characteristicsView.populateYears = function () {
       }
     }
 
-    leftOffset = characteristicsView.dob.yearpage * yearPageWidth * -1;
-    $('#yearContainer', '#yearlist').css('left', leftOffset);
-
+    characteristicsView.dob.displayYearPage();
   });
 };
 
