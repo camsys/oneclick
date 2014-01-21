@@ -78,7 +78,7 @@ class Trip < ActiveRecord::Base
   end
   
   # returns true if the trip is scheduled in advance of the current or passed in date and time.
-  def in_the_future(compare_time=Time.current.utc)
+  def in_the_future(compare_time=Time.zone.now)
     trip_part = trip_parts.first
     if trip_part.nil?
       return false

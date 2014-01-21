@@ -3,12 +3,10 @@ class FareHelper
   def calculate_fare(itinerary)
 
     #Check to see if a flat rate exists
-    my_fare = itinerary.service.fare_structures.where(fare_type: 0).order(:base).first
+    itinerary.cost = itinerary.service.fare_structures.where(fare_type: 0).pluck(:base).min
 
-    if my_fare
-      itinerary.cost = my_fare.base
-      itinerary.cost_comments= my_fare.desc
-    else
+    #Check to see if a complex fare structure exists
+    unless itinerary.cost
       itinerary.cost_comments = itinerary.service.fare_structures.where(fare_type: 2).pluck(:desc).first
     end
 

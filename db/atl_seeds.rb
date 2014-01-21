@@ -180,12 +180,12 @@ end
 
 #Traveler accommodations
     folding_wheelchair_accessible = TravelerAccommodation.create(
-      code: 'folding_wheelchair_accessible',
+      code: 'folding_wheelchair_acceessible', 
       name: 'Folding wheelchair accessible.', 
       note: 'Do you need a vehicle that has space for a folding wheelchair?', 
       datatype: 'bool')
     motorized_wheelchair_accessible = TravelerAccommodation.create(
-      code: 'motorized_wheelchair_accessible',
+      code: 'motorized_wheelchair_accessible', 
       name: 'Motorized wheelchair accessible.', 
       note: 'Do you need a vehicle than has space for a motorized wheelchair?', 
       datatype: 'bool')

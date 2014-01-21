@@ -114,12 +114,6 @@ Oneclick::Application.routes.draw do
       match '/geocode' => 'util#geocode'
       match '/' => 'home#index'
     end
-
-    resources :services do
-      member do
-        get 'view'
-      end
-    end
     
     match '/' => 'home#index'
 
