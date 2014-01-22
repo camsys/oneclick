@@ -103,6 +103,13 @@ class EspReader
 
     provider.name = esp_provider[1]
     provider.contact = esp_provider[3]
+    provider.contact_title = esp_provider[4]
+    provider.address = esp_provider[5]
+    provider.city = esp_provider[6]
+    provider.state = esp_provider[7]
+    provider.zip = esp_provider[8]
+    provider.phone = '(' + esp_provider[16].to_s + ') ' + esp_provider[17].to_s
+    provider.url = esp_provider[24]
     provider.email = esp_provider[23]
     provider.save
 
@@ -118,6 +125,11 @@ class EspReader
       SERVICE_DICT[esp_service[0]] = esp_service[73]
       service = Service.find_or_initialize_by_external_id(esp_service[73])
       service.name = esp_service[1]
+      service.contact = esp_service[4]
+      service.contact_title = esp_service[5]
+      service.email = esp_service[28]
+      service.phone = '(' + esp_service[21].to_s + ') ' + esp_service[22].to_s
+      service.url = esp_service[29]
 
       service.service_type = ServiceType.find_by_name('Paratransit')
       service.advanced_notice_minutes = 0  #TODO: Need to get this from ESP
@@ -132,6 +144,7 @@ class EspReader
       service.service_coverage_maps.destroy_all
       service.traveler_accommodations.destroy_all
       service.traveler_characteristics.destroy_all
+      service.service_trip_purpose_maps.destroy_all
       service.fare_structures.destroy_all
       #Add Curb to Curb by default
       accommodation = TravelerAccommodation.find_by_code('curb_to_curb')
@@ -149,6 +162,7 @@ class EspReader
       FareStructure.create(service: service, fare_type: 2, desc: esp_service[70])
 
       #TODO: Purposes
+      #Purposes will be listed ast tServiceCfg CfgNum = 5.  The sample data did not include any purpose examples.
       services << service
     end
 
@@ -212,7 +226,9 @@ class EspReader
         accommodation = TravelerAccommodation.find_by_code('door_to_door')
       when 'driver assistance'
         accommodation = TravelerAccommodation.find_by_code('driver_assistance_available')
-      when 'ground', 'volunteer services', 'companion allowed'
+      when 'companion allowed'
+        accommodation = TravelerAccommodation.find_by_code('companion_allowed')
+      when 'ground', 'volunteer services'
         return
       else
         raise "ACCOMMODATION NOT FOUND:  " + accommodation.to_s

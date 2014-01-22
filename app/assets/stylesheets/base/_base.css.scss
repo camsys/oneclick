@@ -481,6 +481,34 @@ td.left, th.left {
   background: #FFFFFF;
 }
 
+.warning{
+  color: red;
+}
+
+.service-picker{
+  vertical-position: bottom;
+}
+
+.ALTtable{
+  width:100%;
+  border-collapse:collapse;
+}
+.ALTtable td{
+  padding:7px; border:1px solid;
+}
+/* provide some minimal visual accomodation for IE8 and below */
+.ALTtable tr{
+  background: #FFFFFF;
+}
+/*  Define the background color for all the ODD background rows  */
+.ALTtable tr:nth-child(odd){
+  background: whitesmoke;
+}
+/*  Define the background color for all the EVEN background rows  */
+.ALTtable tr:nth-child(even){
+  background: #FFFFFF;
+}
+
 /* Printer Friendly */
 @media print {
   #publicnav,#footer,#help{

@@ -282,6 +282,15 @@ namespace :oneclick do
 
     end # task
 
+    desc "Add Companion Allowed Accommodation"
+    task :add_companion => :environment do
+      companion_allowed = TravelerAccommodation.find_or_initialize_by_code('companion_allowed')
+      companion_allowed.name = 'Traveler Companion Permitted'
+      companion_allowed.note = 'Do you travel with a companion?'
+      companion_allowed.datatype = 'bool'
+      companion_allowed.save()
+    end
+
     desc "Set up cms entries"
     task cms: :environment do
       Cms::Site.destroy_all

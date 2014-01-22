@@ -133,7 +133,7 @@ module CsHelpers
     if mode_name == 'transit'
       title = I18n.t(:transit)
     elsif mode_name == 'paratransit'
-      title = I18n.t(:paratransit)      
+      title = I18n.t(:specialized_services)      
     elsif mode_name == 'volunteer'
       title = I18n.t(:volunteer)
     elsif mode_name == 'non-emergency medical service'

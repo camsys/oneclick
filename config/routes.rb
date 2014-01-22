@@ -236,6 +236,8 @@ Oneclick::Application.routes.draw do
         post 'update'
       end
     end
+    
+    match '/' => 'home#index'
 
     match '/404' => 'errors#error_404', as: 'error_404'
     match '/422' => 'errors#error_422', as: 'error_422'
