@@ -53,3 +53,29 @@
             .cancel-container.pull-right
               %a.cancel-btn{:href => new_user_trip_path(current_or_guest_user)} Skip this step
           .span3.hidden
+
+:javascript
+
+  $('input#user_email').click(function(){
+    console.log("email click");
+    if (window.cocoa)
+      window.cocoa.openKeyboard();
+  });
+
+  $('input#user_email').blur(function(){
+    console.log("email blur");
+    if (window.cocoa)
+      window.cocoa.closeKeyboard();
+  });
+
+  $('input#user_password').click(function(){
+    console.log("password click");
+     if (window.cocoa)
+      window.cocoa.openKeyboard();
+  });
+
+  $('input#user_password').blur(function(){
+    console.log("password blur");
+    if (window.cocoa)
+      window.cocoa.closeKeyboard();
+  });
