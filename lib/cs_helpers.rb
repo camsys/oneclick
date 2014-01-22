@@ -74,8 +74,8 @@ module CsHelpers
         ]
       else
         [
-          {label: t(:log_in), target: new_user_session_path, icon: ACTION_ICONS[:log_in], not_on_homepage: true},
           {label: t(:plan_a_trip), target: new_user_trip_path(current_or_guest_user), icon: ACTION_ICONS[:plan_a_trip]},
+          {label: t(:log_in), target: new_user_session_path, icon: ACTION_ICONS[:log_in], not_on_homepage: true},
           {label: t(:create_an_account), target: new_user_registration_path, icon: ACTION_ICONS[:create_an_account], not_on_homepage: true}
         ]
       end
@@ -107,6 +107,47 @@ module CsHelpers
 
   def format_exception e
     [e.message, e.backtrace].flatten.join("\n")
+  end
+
+  # Retuens a pseudo-mode for an itinerary. The pseudo-mode is used to determine
+  # the correct icon, title, and partial for an itinerary
+  def get_pseudomode_for_itinerary(itinerary)
+
+    if itinerary.is_walk
+      mode_name = 'walk'
+    elsif itinerary.mode.name.downcase == 'paratransit'
+      mode_name = itinerary.service.service_type.name.downcase
+    else
+      mode_name = itinerary.mode.name.downcase unless itinerary.mode.nil?
+    end
+    return mode_name    
+  end
+
+  # Returns the correct localized title for a trip itinerary
+  def get_trip_summary_title(itinerary)
+    
+    return if itinerary.nil?
+    
+    mode_name = get_pseudomode_for_itinerary(itinerary)
+
+    if mode_name == 'transit'
+      title = I18n.t(:transit)
+    elsif mode_name == 'paratransit'
+      title = I18n.t(:paratransit)      
+    elsif mode_name == 'volunteer'
+      title = I18n.t(:volunteer)
+    elsif mode_name == 'non-emergency medical service'
+      title = I18n.t(:nemt)
+    elsif mode_name == 'livery'
+      title = I18n.t(:car_service)
+    elsif mode_name == 'taxi'
+      title = I18n.t(:taxi)      
+    elsif mode_name == 'rideshare'
+      title = I18n.t(:rideshare)
+    elsif mode_name == 'walk'
+      title = I18n.t(:walk)
+    end
+    return title    
   end
 
   # Kiosk-related helpers

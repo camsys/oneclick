@@ -20,7 +20,11 @@ class ProgramsController < TravelerAwareController
           @trip.create_itineraries
           @path = user_trip_path_for_ui_mode(@traveler, @trip)
         else
-          @path = skip_user_trip_path_for_ui_mode(@traveler, session[:current_trip_id])
+          if ui_mode_kiosk?
+            @path = skip_user_trip_path_for_ui_mode(@traveler, session[:current_trip_id])
+          else
+            @path = new_user_registration_path(inline: 1)
+          end
         end
       end
     else

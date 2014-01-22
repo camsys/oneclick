@@ -1,0 +1,14 @@
+%h1
+  %i.icon-signin
+  = t(:log_in)
+%h4
+.well
+  = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
+    = f.input :email, :autofocus => true, :required => true, :label => t(:email)
+    = f.input :password, :required => true, :label => t(:password)
+    = f.input :remember_me, :label => t(:remember_me), :as => :boolean if devise_mapping.rememberable?
+    .actions
+      = button_tag type: :submit, class: 'btn btn-primary controls' do
+        %i.icon.icon-signin
+        = t(:log_in)
+      = render "devise/shared/links"

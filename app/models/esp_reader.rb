@@ -2,6 +2,10 @@ class EspReader
 
   DELIMITER='::'
 
+  SERVICE_DICT = Hash.new #Creates a temporary mapping between ServiceId and ServiceRefId
+  PROVIDER_DICT = Hash.new #Creates a temporary mapping between ProviderId and Xid
+  @esp_providers
+
   def run
     table = {}
     ["tProvider", "tProviderGrid", "tService", "tServiceGrid", "tServiceCfg", "tServiceCost"].each do |t|
@@ -13,6 +17,18 @@ class EspReader
       ensure
         tempfile.close
         tempfile.unlink
+
+      end
+    end
+    table
+  end
+
+  def run_zip(tempfilepath)
+    table = {}
+    require 'zip'
+    Zip::File.open(tempfilepath) do |zipfile|
+      zipfile.each do |file|
+        table[file.name[0..-5]] = to_csv file.get_input_stream
       end
     end
     table
@@ -29,15 +45,22 @@ class EspReader
     end
   end
 
-  # This is the main function.
-  # It unpacks the esp data and stores it in our format
-  def unpack
-    entries = self.run
+  def get_esp_provider provider_id
+    @esp_providers.each do |esp_provider|
+      if provider_id == esp_provider[0]
+        return esp_provider
+      end
+    end
+    nil
+  end
 
-    #Create or update providers
-    esp_providers = entries['tProvider']
-    esp_providers.shift #deletes header row
-    providers = create_or_update_providers(esp_providers)
+  # This is the main function.
+  # It unpacks the esp data and stores it in the OneClick format
+  def unpack(tempfilepath)
+    entries = self.run_zip(tempfilepath)
+
+    #Pull out the Esp Providers
+    @esp_providers = entries['tProvider']
 
     #Create or update services
     esp_services = entries['tService']
@@ -53,7 +76,6 @@ class EspReader
         s.save
       end
     end
-
 
     #Add County Coverage Rules
     esp_configs = entries['tServiceGrid']
@@ -72,28 +94,37 @@ class EspReader
 
   end
 
-  def create_or_update_providers esp_providers
-    providers = []
-    esp_providers.each do |esp_provider|
-      provider = Provider.find_or_initialize_by_external_id(esp_provider[0])
-      provider.name = esp_provider[1]
-      provider.contact = esp_provider[3]
-      provider.email = esp_provider[23]
-      provider.save
-      providers << provider
+  def create_or_update_provider esp_provider, service, create = false
+    if create
+      provider = Provider.new
+    else
+      provider = service.provider
     end
-    providers
+
+    provider.name = esp_provider[1]
+    provider.contact = esp_provider[3]
+    provider.email = esp_provider[23]
+    provider.save
+
+    if create #assign service to the new provider
+      service.provider = provider
+      service.save
+    end
   end
 
   def create_or_update_services esp_services
     services = []
     esp_services.each do |esp_service|
-      service = Service.find_or_initialize_by_external_id(esp_service[0])
+      SERVICE_DICT[esp_service[0]] = esp_service[73]
+      service = Service.find_or_initialize_by_external_id(esp_service[73])
       service.name = esp_service[1]
-      service.provider = Provider.find_by_external_id(esp_service[2])
+
       service.service_type = ServiceType.find_by_name('Paratransit')
       service.advanced_notice_minutes = 0  #TODO: Need to get this from ESP
       service.active = true
+      esp_provider = get_esp_provider(esp_service[2])
+
+      create_or_update_provider(esp_provider, service, service.provider.nil?)
       service.save
 
       #Clean up this service
@@ -126,7 +157,7 @@ class EspReader
 
   def create_or_update_eligibility esp_configs
     esp_configs.each do |config|
-      service = Service.find_by_external_id(config[1])
+      service = Service.find_by_external_id(SERVICE_DICT[config[1]])
 
       case config[2].to_i
         when 1,2
@@ -143,7 +174,7 @@ class EspReader
 
   def create_or_update_coverages esp_configs
     esp_configs.each do |config|
-      service = Service.find_by_external_id(config[1])
+      service = Service.find_by_external_id(SERVICE_DICT[config[1]])
       case config[2].downcase
         when 'county'
           c = GeoCoverage.find_or_create_by_value(value: config[3], coverage_type: 'county_name')
@@ -155,7 +186,7 @@ class EspReader
 
   def create_or_update_fares esp_configs
     esp_configs.each do |config|
-      service = Service.find_by_external_id(config[1])
+      service = Service.find_by_external_id(SERVICE_DICT[config[1]])
       fare = FareStructure.find_by_service_id(service.id)
       case config[2].downcase
         when 'transportation'

@@ -228,7 +228,15 @@ Oneclick::Application.routes.draw do
         get 'view'
       end
     end
-    
+
+    resources :esp_reader do
+      collection do
+        get 'upload'
+        get 'confirm'
+        post 'update'
+      end
+    end
+
     match '/404' => 'errors#error_404', as: 'error_404'
     match '/422' => 'errors#error_422', as: 'error_422'
     match '/500' => 'errors#error_500', as: 'error_500'

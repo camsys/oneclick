@@ -1,4 +1,5 @@
 class AccommodationsController < TravelerAwareController
+  include CsHelpers
 
   def update
 
@@ -8,7 +9,11 @@ class AccommodationsController < TravelerAwareController
     @user_accommodations_proxy = UserAccommodationsProxy.new(User.find(params[:user_id]))
     @user_accommodations_proxy.update_maps(params[:user_accommodations_proxy])
 
-    @path = skip_user_trip_path(@traveler, session[:current_trip_id])
+    if ui_mode_kiosk?
+      @path = skip_user_trip_path(@traveler, session[:current_trip_id])
+    else
+      @path = new_user_registration_path(inline: 1)
+    end
 
     #If we are editing eligbility inline, and we are signed in, do not go to the new_user_registrations_page.
     # Create the itineraries
