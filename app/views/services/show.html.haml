@@ -5,7 +5,7 @@
 
 .well
   .row-fluid
-    .span8
+    .span6
       %h2
         =@service.name
       %h3
@@ -14,20 +14,72 @@
       -unless @service.active
         %h3.warning
           ="This service is currently inactive."
+      %h4
+        =@service.phone
+      %h4
+        =link_to @service.url, @service.url
+
+    .span3
+      .well
+        %h3.text-center
+          ="Service Contact Information:"
+        %table.center.ALTtable-no-border
+          %tr
+            %td.text-left.h4
+              ="Contact:"
+            %td.text-left
+              %b=@service.contact.to_s
+          %tr
+            %td.text-left.h4
+              ="Title:  "
+            %td.text-left
+              %b=@service.contact_title.to_s
+          %tr
+            %td.text-left.h4
+              ="Email:  "
+            %td.text-left
+              %b=@service.email.to_s
 
 
-    .span4
-      %table.pull-right
-        %tr
-          %td.text-right.h4
-            ="Contact Name:  "
-          %td.text-left
-            %b=@service.provider.contact.to_s
-        %tr
-          %td.text-right.h4
-            ="Contact Email: "
-          %td.text-left
-            %b=@service.provider.email.to_s
+    .span3
+      .well
+        %h3.text-center
+          ="Provider Contact Information:"
+        %table.center.ALTtable-no-border
+          %tr
+            %td.text-left.h4
+              ="Contact:"
+            %td.text-left
+              %b=@service.provider.contact.to_s
+          %tr
+            %td.text-left.h4
+              ="Title: "
+            %td.text-left
+              %b=@service.provider.contact_title.to_s
+          %tr
+            %td.text-left.h4
+              ="Email: "
+            %td.text-left
+              %b=@service.provider.email.to_s
+          %tr
+            %td.text-left.h4
+              ="Phone: "
+            %td.text-left
+              %b=@service.provider.phone.to_s
+          %tr
+            %td.text-left.h4
+              ="Address: "
+            %td.text-left
+              %b=@service.provider.address.to_s
+          %tr
+            %td.text-left.h4
+            %td.text-left
+              %b=@service.provider.city.to_s + ' ' + @service.provider.state.to_s + ' ' + @service.provider.zip.to_s
+          %tr
+            %td.text-left.h4
+              ="URL: "
+            %td.text-left
+              = link_to @service.provider.url.to_s, @service.provider.url.to_s
 
 .row-fluid
   .span4

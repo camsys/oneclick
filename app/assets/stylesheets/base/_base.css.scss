@@ -477,6 +477,24 @@ td.left, th.left {
   background: #FFFFFF;
 }
 
+.ALTtable-no-border{
+  width:100%;
+  border-collapse:collapse;
+}
+
+/* provide some minimal visual accomodation for IE8 and below */
+.ALTtable-no-border tr{
+  background: #FFFFFF;
+}
+/*  Define the background color for all the ODD background rows  */
+.ALTtable-no-border tr:nth-child(odd){
+  background: #FFFFFF;
+}
+/*  Define the background color for all the EVEN background rows  */
+.ALTtable-no-border tr:nth-child(even){
+  background: whitesmoke;
+}
+
 .white-well{
   background: #FFFFFF;
 }
