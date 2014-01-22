@@ -1384,6 +1384,7 @@ input#txtDate{
 				th{
 					border-radius: 0;
 					&.month{
+						text-indent: -999em;
 
 						&.prev{
 							@extend %card-btn;
