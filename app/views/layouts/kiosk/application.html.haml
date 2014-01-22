@@ -8,6 +8,7 @@
       = stylesheet_link_tag "application", :media => "all"
       = stylesheet_link_tag brand, :media => "all"
       = stylesheet_link_tag 'kiosk/_base', :media => "all"
+      = stylesheet_link_tag 'kiosk/style', :media => "all"
       = stylesheet_link_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.css", :media => "all"
       
       = javascript_include_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"
@@ -18,8 +19,8 @@
 
       = csrf_meta_tags
       = yield(:head)
-  %body{:class => "#{controller_css_class} #{action_name}"}
-    / application.html.haml
+  %body{:class => "kiosk #{controller_css_class} #{action_name}"}
+    / kiosk/application.html.haml
     = render 'kiosk/shared/navigation'
     .container-fluid
       #main{:role => "main"}
