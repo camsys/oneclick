@@ -10,7 +10,7 @@ Oneclick::Application.routes.draw do
       root :to => 'home#index'
     end
 
-    devise_for :users, controllers: {registrations: "registrations"}
+    devise_for :users, controllers: {registrations: "registrations", sessions: "sessions"}
 
 
     # everything comes under a user id
@@ -113,6 +113,12 @@ Oneclick::Application.routes.draw do
       resources :trips, :only => [:index]
       match '/geocode' => 'util#geocode'
       match '/' => 'home#index'
+    end
+
+    resources :services do
+      member do
+        get 'view'
+      end
     end
     
     match '/' => 'home#index'

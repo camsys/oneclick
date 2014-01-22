@@ -28,29 +28,35 @@ protected
     elsif type == 'integer'
       ret = params[characeristic.code].blank? ? nil : params[characeristic.code].to_i
     elsif type == 'date'
-      a = []
-      params.each do |d|
-        a << d[1]
-      end
-      locale = I18n.locale.to_s
-      Rails.logger.debug "Locale is set to: " + locale
-      if locale == 'en'
-        month = a[1]
-        day = a[0]
+      if params.length == 1
+        # it is a datestring, not a rails date form field.
+        date_str = params.values.first
+        date_str = nil if date_str.split('-').length < 3
       else
-        month = a[0]
-        day = a[1]
-      end  
-      year = a[2]
-      date_str = day + '/' + month + '/' + year
+        a = []
+        params.each do |d|
+          a << d[1]
+        end
+        locale = I18n.locale.to_s
+        Rails.logger.debug "Locale is set to: " + locale
+        if locale == 'en'
+          month = a[1]
+          day = a[0]
+        else
+          month = a[0]
+          day = a[1]
+        end
+        year = a[2]
+        date_str = day + '/' + month + '/' + year
+      end
 
-      Rails.logger.debug "Parsing date: " + date_str
-      
+      Rails.logger.debug "Parsing date: " + date_str if date_str.present?
+
       ret = params.empty? ? nil : Chronic.parse(date_str)
     end
-    
+
     return ret
-    
+
   end
 
   # coerce value into a type based on the data type
@@ -63,8 +69,8 @@ protected
     elsif type == 'date'
       ret = user_characteristic.nil? ? nil : Chronic.parse(user_characteristic.value)
     end
-    
+
     return ret
   end
-  
+
 end

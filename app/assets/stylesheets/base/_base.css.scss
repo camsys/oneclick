@@ -22,9 +22,6 @@ h6 { font-size: 12px; line-height: 20px; }
   margin-left: auto;
   margin-right: auto;
 }
-// .first-in-row {
-//   margin-left: 0 !important;
-// }
 
 .dropdown-toggle {
   cursor: pointer;
@@ -182,6 +179,22 @@ a:hover#help {
   vertical-align: top;
   color: #0088cc;
   padding: 0px;
+}
+
+.container-fluid .row-fluid.itineraries_holder {
+  overflow: hidden;
+
+  .thumbnails {
+    width: 9999px;
+    -webkit-transition: margin-left 0.2s ease;
+            transition: margin-left 0.2s ease;
+  }
+
+  #itineraries .span3 {
+    width: 321px;
+    margin-left: 18px;
+    &:first-child { margin-left: 0 }
+  }
 }
 
 @media (min-width: 768px ) {
@@ -451,6 +464,38 @@ td.left, th.left {
 }
 
 // .trips.show .first-in-row { margin-left: 0 !important; }
+
+.ALTtable{
+  width:100%;
+  border-collapse:collapse;
+}
+.ALTtable td{
+  padding:7px; border:1px solid;
+}
+/* provide some minimal visual accomodation for IE8 and below */
+.ALTtable tr{
+  background: #FFFFFF;
+}
+/*  Define the background color for all the ODD background rows  */
+.ALTtable tr:nth-child(odd){
+  background: whitesmoke;
+}
+/*  Define the background color for all the EVEN background rows  */
+.ALTtable tr:nth-child(even){
+  background: #FFFFFF;
+}
+
+.white-well{
+  background: #FFFFFF;
+}
+
+.warning{
+  color: red;
+}
+
+.service-picker{
+  vertical-position: bottom;
+}
 
 /* Printer Friendly */
 @media print {

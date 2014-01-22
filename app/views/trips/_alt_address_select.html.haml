@@ -6,26 +6,28 @@
   .row-fluid
     .search-dropdown-container
       .candidate-list.span10
-        %ul.nav.nav-list
-          - results.each_with_index do |addr, index|
-            %li
-              = link_to "#", :class => "address-select", :data => {:id => addr["id"], :index => index, :latlon => [addr["lat"], addr["lng"]], :desc => addr["description"], :type => type, :addr => addr["title"]} do
-                / %img{:src => get_candidate_list_item_image(index,  @target)}
-                = addr["title"] 
+        .js-candidate-list-inner{'data-offset' => '0'}
+          %ul.nav.nav-list
+            - results.each_with_index do |addr, index|
+              %li
+                = link_to "#", :class => "address-select", :data => {:id => addr["id"], :index => index, :latlon => [addr["lat"], addr["lng"]], :desc => addr["description"], :type => type, :addr => addr["title"]} do
+                  / %img{:src => get_candidate_list_item_image(index,  @target)}
+                  = addr["title"]
+
       .scroller-container.span2.pull-right
-        .scroll-up.disabled
+        .scroll-up.js-prev-btn
         .scrollbar
           .scrollbar-bar
             .scrollbar-scroll
-        .scroll-down
+        .scroll-down.js-next-btn
 - else
   .row-fluid
     .control-group.string
       .controls
         .alert.alert-error
           = t(:nothing_found)
-    
-:javascript  
+
+:javascript
   // User has selected an alternate address from the list
   $('.address-select').click(function() {
     select_candidate_address($(this));
@@ -39,3 +41,13 @@
     selectMarkerByName(addr);
   });
 
+
+  scrollContent($, {
+    rootSel: '.search-dropdown-container',
+    listSel: '.js-candidate-list-inner',
+    property: 'margin-top',
+    size: 280,
+    total: function ($root) {
+      return $root.find('.js-candidate-list-inner ul.nav.nav-list').height();
+    }
+  });

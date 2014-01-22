@@ -26,7 +26,7 @@
   
   / TODO: ADD THE DIV WITH THE DATA INDEX
   #from_input{ :data => {:index => 1}}
-    - if user_signed_in?
+    - if false && user_signed_in?
       = f.input :from_place, :wrapper => :append, :class => "inline", :label => t(:from) do
         = f.text_field :from_place, :placeholder => t(:enter_from), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large address", :data => {:link => search_user_places_path, :provide => "typeahead"}
         %span.dropdown
@@ -57,7 +57,7 @@
 
 
   #to_input{ :data => {:index => 2}}
-    - if user_signed_in?
+    - if false && user_signed_in?
       = f.input :to_place, :wrapper => :append, :class => "inline", :label => t(:to) do
         = f.text_field :to_place, :placeholder => t(:enter_to), :id => "trip_proxy_to_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large address", :data => {:link => search_user_places_path, :provide => "typeahead"}
         %span.dropdown
@@ -143,6 +143,10 @@
   #purposepicker{ :data => {:index => 5}}
     / = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
     = f.input :trip_purpose_id
+    .span8.offset2
+      .title-container
+        .bar
+        %h3 What is the purpose of your trip?
     %ul.purpose.span8.offset2
       - TripPurpose.all.each do |purpose|
         %li{:name => purpose.id}
@@ -631,6 +635,11 @@
         $('#from_input').addClass('text-added');
     });
 
+    $('input#trip_proxy_from_place').click(function(){
+         if (window.cocoa)
+          window.cocoa.openKeyboard();
+    });
+
     $('input#trip_proxy_from_place').blur(function(){
       if($(this).val().length > 0){
         //do nothing
@@ -644,6 +653,11 @@
         if (window.cocoa)
           window.cocoa.openKeyboard();
         $('#to_input').addClass('text-added');
+    });
+
+    $('input#trip_proxy_to_place').click(function(){
+         if (window.cocoa)
+          window.cocoa.openKeyboard();
     });
 
     $('input#trip_proxy_to_place').blur(function(){

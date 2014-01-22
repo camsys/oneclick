@@ -20,7 +20,7 @@ class ProgramsController < TravelerAwareController
           @trip.create_itineraries
           @path = user_trip_path(@traveler, @trip)
         else
-          @path = new_user_registration_path(inline: 1)
+          @path = skip_user_trip_path(@traveler, session[:current_trip_id])
         end
       end
     else

@@ -8,6 +8,7 @@ class Admin::HomeController < Admin::BaseController
         {label: t(:trips), target: admin_trips_path, icon: ACTION_ICONS[:trips]},
         {label: t(:agents_agencies), target: error_501_path, icon: ACTION_ICONS[:agents_agencies]},
         {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports]},
+        {label: t(:view_services), target: service_path(1), icon: ACTION_ICONS[:services]},
     ]
     render '/shared/home'
   end
