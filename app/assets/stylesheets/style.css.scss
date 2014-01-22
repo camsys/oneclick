@@ -1893,7 +1893,12 @@ body.sessions.new, body.registrations.new{
 			border-radius: 0;
 			padding-left: 32px;
 			font-size: 32px;
-			padding-top: 24px;
+			padding-top: 31px;
+
+			&::-webkit-input-placeholder {
+			  line-height:1em;
+			  padding-top:6px;
+			}
 		}
 	}
 
