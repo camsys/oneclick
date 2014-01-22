@@ -1423,8 +1423,8 @@ input#txtDate{
 					font-weight:700;
 					color: $gray6;
 					border:1px solid $gray3;
-					&.day{
-						&.old{
+					&.day {
+						&.old, &.disabled {
 							color: $gray3;
               pointer-events: none;
 						}
