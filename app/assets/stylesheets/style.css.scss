@@ -1546,6 +1546,11 @@ input#trip_proxy_return_trip_time.string.optional{
 		background-image:none;
 		border:0px solid $black;
 	}
+
+	&:hover {
+		background: #eee;
+		cursor: pointer;
+	}
 }
 
 .timetable{
@@ -1633,26 +1638,33 @@ input#trip_proxy_return_trip_time.string.optional{
 	}
 }
 
-.monthtable{
+#monthtable{
 	padding-bottom:20px;
-	ul{
+
+	ul {
 		border-top:1px solid $gray4;
 		clear:left;
 		display: flex;
 		margin-bottom:0;
 
+		&:after {
+		  content: "";
+		  display: table;
+		  clear: both;
+		}
+
 		&:last-child{
 			border-bottom:1px solid $gray4;
 		}
 
-		li{
+		li {
 			@extend %time-selectors;
 			width: 25%;
 		}
 	}
 }
 
-.daytable{
+#daytable{
 	padding-bottom:20px;
 	ul{
 		border-top:1px solid $gray4;
@@ -1675,6 +1687,109 @@ input#trip_proxy_return_trip_time.string.optional{
 			&.bottom{
 				border-bottom: 1px solid $gray4;
 			}
+		}
+	}
+}
+
+#yeartable {
+	position: relative;
+	padding-bottom:20px;
+
+	.decade-prev {
+	  left: 0;
+	}
+
+	.decade-next {
+	  right: 0;
+	}
+
+	.decade-prev, .decade-next{
+		position: absolute;
+		top: 0;
+		.prev-container{
+			@extend %card-btn-container;
+			float:right;
+			background-position: right center;
+			margin-top:147px;
+
+			.prev-btn{
+				@extend %card-btn;
+			}
+		}
+		.next-container{
+			@extend %card-btn-container;
+			float:left;
+			background-position: left center;
+			margin-top:147px;
+			.next-btn{
+				@extend %card-btn;
+				float:right;
+				@extend %flip;
+			}
+		}
+	}
+
+
+	ul {
+		border:1px solid $gray4;
+		//clear:left;
+		//display: flex;
+		margin-bottom:0;
+
+		&:last-child{
+			//border-bottom:1px solid $gray4;
+		}
+
+		li {
+			@extend %time-selectors;
+			width: 50%;
+			border-left-width: 0;
+
+			&.bottom {
+				border-right-width: 0;
+			}
+		}
+	}
+}
+
+$ulWidth: 387px;
+$numOfGroups: 12;
+$animationTime: 300ms;
+
+#yearContainer {
+	height: inherit;
+	left: 0;
+	width: ($ulWidth * $numOfGroups);
+	position: relative;
+	-webkit-transition: left $animationTime ease-out;
+	-moz-transition: left $animationTime ease-out;
+	-o-transition: left $animationTime ease-out;
+	transition: left $animationTime ease-out;
+	-webkit-transform: translate3d(0, 0, 0)
+}
+
+#yearlist {
+	height: 372px;
+	width: 412px;
+	overflow: hidden;
+	position: relative;
+	margin: 0 auto;
+	ul {
+		float: left;
+		overflow: inherit;
+		width: $ulWidth;
+		height: inherit;
+	}
+	li {
+		border-bottom: 1px solid $gray4;
+		&:nth-child(2n) {
+			border-left: 1px solid $gray4;
+		}
+		&.soloYear {
+			border-right: 1px solid $gray4;
+		}
+		&.bottom {
+			border-bottom: none;
 		}
 	}
 }
@@ -2161,3 +2276,7 @@ body.sessions.new, body.registrations.new{
 //@media (max-width: 480px) { ... }
 
 
+//hide depart dropdown in tripform view
+.trip_proxy_arrive_depart {
+  display: none;
+}
