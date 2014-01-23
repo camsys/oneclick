@@ -1522,7 +1522,7 @@ input#trip_proxy_return_trip_time.string.optional{
 %time-selectors{
 	list-style-type: none;
 	float:left;
-	border-left:1px solid $gray4;
+	border-left:1px solid $gray3;
 	margin:0 !important;
 	padding:0;
 	height:74px;
@@ -1533,7 +1533,7 @@ input#trip_proxy_return_trip_time.string.optional{
 	color: $gray6;
 
 	&:last-child{
-		border-right:1px solid $gray4;
+		border-right:1px solid $gray3;
 	}
 
 	&:active{
@@ -1561,7 +1561,7 @@ input#trip_proxy_return_trip_time.string.optional{
 		margin-left:0;
 
 		li{
-			border-top:1px solid $gray4;
+			border-top:1px solid $gray3;
 			@extend %time-selectors;
 			width:16.66666666667%;
 
@@ -1642,7 +1642,7 @@ input#trip_proxy_return_trip_time.string.optional{
 	padding-bottom:20px;
 
 	ul {
-		border-top:1px solid $gray4;
+		border-top:1px solid $gray3;
 		clear:left;
 		display: flex;
 		margin-bottom:0;
@@ -1654,7 +1654,7 @@ input#trip_proxy_return_trip_time.string.optional{
 		}
 
 		&:last-child{
-			border-bottom:1px solid $gray4;
+			border-bottom:1px solid $gray3;
 		}
 
 		li {
@@ -1667,7 +1667,7 @@ input#trip_proxy_return_trip_time.string.optional{
 #daytable{
 	padding-bottom:20px;
 	ul{
-		border-top:1px solid $gray4;
+		border-top:1px solid $gray3;
 		clear:left;
 		display: flex;
 		margin-bottom:0;
@@ -1685,7 +1685,7 @@ input#trip_proxy_return_trip_time.string.optional{
 				border-right: 1px solid $gray1;
 			}
 			&.bottom{
-				border-bottom: 1px solid $gray4;
+				border-bottom: 1px solid $gray3;
 			}
 		}
 	}
@@ -1731,7 +1731,7 @@ input#trip_proxy_return_trip_time.string.optional{
 
 
 	ul {
-		border:1px solid $gray4;
+		border:1px solid $gray3;
 		//clear:left;
 		//display: flex;
 		margin-bottom:0;
@@ -1781,12 +1781,12 @@ $animationTime: 300ms;
 		height: inherit;
 	}
 	li {
-		border-bottom: 1px solid $gray4;
+		border-bottom: 1px solid $gray3;
 		&:nth-child(2n) {
-			border-left: 1px solid $gray4;
+			border-left: 1px solid $gray3;
 		}
 		&.soloYear {
-			border-right: 1px solid $gray4;
+			border-right: 1px solid $gray3;
 		}
 		&.bottom {
 			border-bottom: none;
