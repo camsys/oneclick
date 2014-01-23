@@ -1692,7 +1692,7 @@ input#trip_proxy_return_trip_time.string.optional{
 		clear:left;
 		display: flex;
 		margin-bottom:0;
-		border-right:1px solid $gray3;
+		border-right:5px solid $gray3;
 
 		&:last-child{
 			border-bottom:0px solid $gray3;
