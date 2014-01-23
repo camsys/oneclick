@@ -3,12 +3,15 @@
     .oneclick.pull-left
     .penndot.pull-right
   - @actions.each do |action|
-    %a.attract-main.row-fluid{alt: action[:label], href: action[:target]}
+    .attract-main.row-fluid{alt: action[:label], href: action[:target]}
       .title Tap anywhere to begin
       .subtitle or
       #login-button{:href => "#"} log in
     %a.attract-footer{alt: action[:label], href: action[:target]}
 
-
 :javascript
   $('.navbar').hide();
+  $('#login-button').on('click',function(){
+    //Since we the entire space is clickable except for this button, I went with the option of using JS to control the href
+    window.location.href = "/pandas/sign_in";
+  });
