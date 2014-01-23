@@ -1371,6 +1371,28 @@ input#txtDate{
 	
 }
 
+#date-arrow-prev{
+	height: 90px;
+	width: 90px;
+	top: 140px;
+	left: 92px;
+	position: absolute;
+	@extend %card-btn;
+	//float:right;
+	//@extend %flip;
+}
+#date-arrow-next{
+	@extend #date-arrow-prev;
+	//height: 90px;
+	//width: 90px;
+	//top: 140px;
+	left: 724px;
+	//position: absolute;
+	//@extend %card-btn;
+	//float:right;
+	@extend %flip;
+}
+
 #datepicker{
 	//display:block;
 	border-radius:0;
@@ -1378,7 +1400,7 @@ input#txtDate{
 	box-shadow: 0px 0px 0px rgba(0,0,0,0);
 	border:0px solid rgba(0,0,0,0);
 	table.table-condensed{
-		margin: 0 auto;
+		margin: 22px auto 0;
 		thead{
 			tr{
 				th{
@@ -1386,20 +1408,20 @@ input#txtDate{
 					&.month{
 
 						&.prev{
-							@extend %card-btn;
-							height: 84px;
+							// @extend %card-btn;
+							// height: 84px;
 							display:hidden;
 
 						}
 						&.name{
 							font-size: 21px;
-							padding-bottom:21px;
+							padding-bottom:15px;
 							text-transform: uppercase;
 						}
 						&.next{
-							@extend %card-btn;
-							@extend %flip;
-							height: 84px;
+							// @extend %card-btn;
+							// @extend %flip;
+							// height: 84px;
 							display:hidden;
 						}
 					}

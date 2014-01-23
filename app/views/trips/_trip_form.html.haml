@@ -88,7 +88,9 @@
   %div{:data => {:index => 3}}
     = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
       #trip-date
+        #date-arrow-prev.prev.month
         = f.input_field :trip_date, :as => :string, :label => false
+        #date-arrow-next.next.month
 
   
     / TODO: ADD BUTTON THAT ALTERS THIS?
@@ -682,6 +684,13 @@
     });
 
     //END DP CODE
+    
+    //CLick Tadaaapicker buttons(now hidden) when you click the outside buttons.
+    var datePrev = $('#date-arrow-prev');
+    datePrev.on('click', function(){ $('th.month.prev').click();});
+
+    var dateNext = $('#date-arrow-next');
+    dateNext.on('click', function(){ $('th.month.next').click();});
 
     // Hide what we don't need
     $('#from_place_candidates').hide();
