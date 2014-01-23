@@ -1534,7 +1534,6 @@ input#trip_proxy_return_trip_time.string.optional{
 	color: $gray6;
 
 	&:last-child{
-		//border-right:1px solid $gray4;
 	}
 
 	&:active{
@@ -1571,6 +1570,10 @@ input#trip_proxy_return_trip_time.string.optional{
 				border-top:1px solid $gray3;
 				border-right:0px solid $gray3;
 				border-left:0px solid $gray3;
+
+				&:active, &:hover{
+					background-color: $gray1;
+				}
 			}
 
 			&.ampm{
