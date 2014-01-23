@@ -1394,6 +1394,7 @@ input#txtDate{
 						&.name{
 							font-size: 21px;
 							padding-bottom:21px;
+							text-transform: uppercase;
 						}
 						&.next{
 							@extend %card-btn;
@@ -1407,6 +1408,7 @@ input#txtDate{
 						font-weight:300;
 						color: $gray4;
 						padding-bottom: 21px;
+						text-transform: uppercase;
 
 					}
 					
