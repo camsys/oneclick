@@ -344,18 +344,51 @@ a{
     	text-decoration: none;
         .title{
         	color: $gray6;
-        	font-size: 120px;
+        	font-size: 96px;
         	font-weight:700;
         	text-align: center;
         	clear:left;
         	margin-top: 173px;
-        	letter-spacing:-5px;
+        	letter-spacing:-2px;
+        	height:1em;
+        }
+        .subtitle{
+			color: $gray4;
+			font-size:32px;
+			text-align: center;
+			line-height: 0.9em;
         }
     }
 	a.attract-footer{
 		display: block;
 		height:50%;
 		background: $blue url(/assets/kiosk/attract-bottom.jpg) no-repeat center center;
+	}
+}
+#login-button{
+	display: block;
+	cursor: pointer;  
+    position: relative;  
+    font-size: 36px; 
+    font-weight: 600;
+    text-transform:uppercase;
+    color: $gray6;
+	text-align: center;
+	background-color: $white;
+	text-decoration: none;
+	height: 88px;
+	width: 296px;
+	border: 4px solid $blue;
+	margin: 24px auto 0;
+	padding-top: 31px;
+	&:active{
+		//TO DO: Refactor all of this to make more sense.
+		//margin: 8px 8px -6px;
+		margin: 20px auto 0;
+		border: 4px solid $blue;
+		height: 100px;
+		width: 308px;
+		padding-top:35px;
 	}
 }
 
@@ -674,12 +707,7 @@ div.trip_proxy_trip_purpose_id{
 		@extend .nav-a;
 		display: block;
 	}
-
-
-
-
 }
-
 
 //NEXT STEP BUTTON
 //TO DO: Place in a bottom footer
