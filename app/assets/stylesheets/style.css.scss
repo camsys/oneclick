@@ -1560,14 +1560,23 @@ input#trip_proxy_return_trip_time.string.optional{
 		margin-bottom:0;
 		margin-left:0;
 		border-right: 1px solid $gray3;
+		border-bottom:1px solid $gray3;
+
+		&:first-child{
+			border-top:1px solid $gray3;
+		}
+		&:last-child{
+			border-bottom:0px solid $gray3;
+			border-top:0px solid $gray3;
+		}
 
 		li{
-			border-top:1px solid $gray3;
+			
 			@extend %time-selectors;
 			width:16.66666666667%;
 
 			&.notime{
-				border-top:1px solid $gray3;
+				//border-top:1px solid $gray3;
 				border-right:0px solid $gray3;
 				border-left:0px solid $gray3;
 
@@ -1577,6 +1586,7 @@ input#trip_proxy_return_trip_time.string.optional{
 			}
 
 			&.ampm{
+				border-top:0px solid $gray3;
 				border-bottom:1px solid $gray3;
 				padding-top:26px;
 			}
