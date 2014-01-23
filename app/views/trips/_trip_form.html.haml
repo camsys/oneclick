@@ -88,7 +88,7 @@
   %div{:data => {:index => 3}}
     = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
       #trip-date
-        #date-arrow-prev.prev.month
+        #date-arrow-prev.prev.month.disabled
         = f.input_field :trip_date, :as => :string, :label => false
         #date-arrow-next.next.month
 
@@ -606,9 +606,12 @@
     //Override Tadaapicker's Calendar hide methods
     tripformView.overrideTaddaapicker();
 
-    $('#trip-date').datepicker().on("dateChange", function(e) {
-        $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
-    });
+    $('#trip-date')
+      .datepicker()
+      .on("dateChange", function(e) {
+          $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
+      }).data('calendar')
+        .setStartDate(new Date);
 
     $('.combobox').combobox({
       force_match: false
