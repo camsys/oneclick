@@ -70,45 +70,60 @@
 
 - if @trip.both_parts_selected?
   .row-fluid.results-view.timeOut.js-trip-itineraries-slides
-    .span1
-      %p
-        Trip Selected
-        - if @trip.outbound_part.has_hidden_options?
-          = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
-    %div.span5
-      %div{id: 'outbound_section'}   
-        .row-fluid.itineraries_holder
-          = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
-            trip_part: @trip.outbound_part }
-    .span5
-      %h2 Trip planned and saved.
-      %p You can now do one or more of the following to finish your trip planning:
-      / .row-fluid
-      /   .span12
-      /     =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
-      /       =t(:e_mail) + " your trip plan."
-      / .row-fluid
-      /   .span12
-      /     =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: false) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
-      /       View trip details to call the provider.
+    .span6
       .row-fluid
-        .span12
-          =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
-            Print your trip plan
+        .span2
+          %p
+            Trip Selected
+            - if @trip.outbound_part.has_hidden_options?
+              = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
+        %div.span10
+          %div{id: 'outbound_section'}   
+            .row-fluid.itineraries_holder
+              = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
+                trip_part: @trip.outbound_part }
+       
+      - if @trip.is_return_trip
+        .row-fluid.js-trip-itineraries-slides
+          .span2
+            %p
+              Return Selected
+              - if @trip.return_part.has_hidden_options?
+                = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.return_part}
+          %div.span10
+            = render partial: 'return_trip'
+    .span6
       .row-fluid
-        .span12
-          = link_to new_user_trip_path, {class: 'btn btn-block'} do
-            = t(:plan_a_new_trip)
+        .span10
+          %h2 Trip planned and saved.
+          %p You can now do one or more of the following to finish your trip planning:
+          / .row-fluid
+          /   .span12
+          /     =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+          /       =t(:e_mail) + " your trip plan."
+          / .row-fluid
+          /   .span12
+          /     =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: false) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
+          /       View trip details to call the provider.
+          .row-fluid
+            .span12
+              =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
+                Print your trip plan
+          .row-fluid
+            .span12
+              = link_to new_user_trip_path, {class: 'btn btn-block'} do
+                = t(:plan_a_new_trip)
+          .row-fluid
+            .span12
+              =link_to '#', {href: '#send_trip_by_email_to_provider', class: 'btn btn-block', data: {toggle: 'modal'}} do
+                Email to provider
+          .row-fluid
+            .span12
+              =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+                View trip details
 
-  - if @trip.is_return_trip
-    .row-fluid.results-view.js-trip-itineraries-slides
-      .span1
-        %p
-          Return Selected
-          - if @trip.return_part.has_hidden_options?
-            = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.return_part}
-      %div.span5
-        = render partial: 'return_trip'
+
+
 
 
 
