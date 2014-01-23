@@ -1703,7 +1703,7 @@ input#trip_proxy_return_trip_time.string.optional{
 			@extend %time-selectors;
 			width: 12.5%;
 
-			&:first-child{
+			&:last-child{
 				border-right:5px solid $gray3;
 			}
 
