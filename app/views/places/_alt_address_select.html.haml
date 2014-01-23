@@ -4,8 +4,8 @@
       %h6= t(:found_x_matches, :count => results.count )
 
   .row-fluid
-    .span12
-      .candidate-list.thumbnail{:style => "height:100px;overflow:auto;"}
+    .search-dropdown-container
+      .candidate-list.span10
         %ul.nav.nav-list
           - results.each_with_index do |addr, index|
             %li

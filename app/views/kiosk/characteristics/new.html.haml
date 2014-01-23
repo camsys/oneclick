@@ -1,0 +1,14 @@
+%div.responsive-mbp.row-fluid
+  .span4.info
+    %h1 
+      = render partial: 'header', locals: {total_steps: @total_steps}
+    %h4 Tell Us More About Yourself
+    %p 
+      Would you be willing to answer a few questions about yourself to determine the best travel options? Questions include date of birth, any mobility challenges and basic demographics. Answering these questions will help us personalize the results you see.
+      %br 
+      %br  
+      If you want to see personalized results, tap "Yes". If you tap "No", you will still receive travel options, but they may not be personalized to your needs.
+  %div.span8plus.inputs
+    .row-fluid.questions
+      = render partial: 'form',  :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
+

@@ -1,0 +1,28 @@
+.navbar
+  %div.responsive-mbp.row-fluid.navbar-inner
+    %div.back-button.pull-left
+      .arrow
+        = link_to :back, {}, :class => "arrow-btn"
+        %span Back      
+        -#<!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+    %a.btn.btn-navbar{data: { toggle: "collapse",  target: ".nav-collapse"}}
+      %span.icon-bar
+      %span.icon-bar
+      %span.icon-bar
+        -#<!-- Everything you want hidden at @navbarCollapseWidth or less, place within here -->
+    .nav-collapse.collapse.pull-right
+      %ul.nav.pull-right
+        - if user_signed_in?
+          %li 
+            = link_to destroy_user_session_path, :method=>'delete' do
+              = t(:logout)
+          %li 
+            = link_to ("Help"), error_501_path 
+        - else
+          / %li 
+          /   = link_to new_user_session_path do
+          /     = t(:log_in) 
+          %li 
+            = link_to ("Help"), error_501_path 
+     
+  
