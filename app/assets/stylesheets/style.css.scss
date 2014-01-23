@@ -395,7 +395,7 @@ a{
 
 // RETURN TRIP
 
-#step2, #eligibility, #current-location, #return-trip{
+#step2, #eligibility, #current-location, #return-trip, #purposepicker{
 
 	.title-container{
 		position:relative;
@@ -495,7 +495,7 @@ div.trip_proxy_trip_purpose_id{
 .purpose{
 	position:absolute;
 	top:0;
-	margin-top:40px;
+	margin-top:80px;
 	li{
 		z-index: 0;
 		padding:24px 30px;
@@ -1384,6 +1384,7 @@ input#txtDate{
 				th{
 					border-radius: 0;
 					&.month{
+						&.next, &.prev { text-indent: -999em }
 
 						&.prev{
 							@extend %card-btn;
@@ -1423,8 +1424,8 @@ input#txtDate{
 					font-weight:700;
 					color: $gray6;
 					border:1px solid $gray3;
-					&.day{
-						&.old{
+					&.day {
+						&.old, &.disabled {
 							color: $gray3;
               pointer-events: none;
 						}
