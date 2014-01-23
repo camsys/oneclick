@@ -604,9 +604,12 @@
     //Override Tadaapicker's Calendar hide methods
     tripformView.overrideTaddaapicker();
 
-    $('#trip-date').datepicker().on("dateChange", function(e) {
-        $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
-    });
+    $('#trip-date')
+      .datepicker()
+      .on("dateChange", function(e) {
+          $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
+      }).data('calendar')
+        .setStartDate(new Date);
 
     $('.combobox').combobox({
       force_match: false
