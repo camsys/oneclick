@@ -1566,13 +1566,13 @@ input#trip_proxy_return_trip_time.string.optional{
 			width:16.66666666667%;
 
 			&.notime{
-				border-top:1px solid $gray4;
-				border-right:0px solid $gray4;
-				border-left:0px solid $gray4;
+				border-top:1px solid $gray3;
+				border-right:0px solid $gray3;
+				border-left:0px solid $gray3;
 			}
 
 			&.ampm{
-				border-bottom:1px solid $gray4;
+				border-bottom:1px solid $gray3;
 				padding-top:26px;
 			}
 		}
