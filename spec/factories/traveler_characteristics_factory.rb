@@ -16,6 +16,7 @@ FactoryGirl.define do
   end
 
   factory :dob_characteristic, class: 'TravelerCharacteristic' do
+    characteristic_type 'personal_factor'
     code 'date_of_birth'
     name 'Date of Birth'
     note 'Date of Birth'

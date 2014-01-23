@@ -21,6 +21,10 @@ module CsHelpers
   TRAVELER_USER_SESSION_KEY = 'traveler'
 
   def ui_mode_kiosk?
+    CsHelpers::ui_mode_kiosk?
+  end
+
+  def self.ui_mode_kiosk?
     Oneclick::Application.config.ui_mode=='kiosk'
   end
 

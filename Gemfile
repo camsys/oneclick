@@ -59,6 +59,7 @@ group :development do
 end
 group :test do
   gem 'factory_girl_rails'
+  gem 'rspec-core',  :github => 'camsys/rspec-core', :ref => 'b51bb0329cbbeaa3a8e59c55f406fe347a6f70a4'
   gem 'rspec-rails'
   gem 'capybara'
   gem 'cucumber-rails', :require=>false
