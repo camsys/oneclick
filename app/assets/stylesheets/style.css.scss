@@ -395,7 +395,7 @@ a{
 
 // RETURN TRIP
 
-#step2, #eligibility, #current-location, #return-trip{
+#step2, #eligibility, #current-location, #return-trip, #purposepicker{
 
 	.title-container{
 		position:relative;
@@ -495,7 +495,7 @@ div.trip_proxy_trip_purpose_id{
 .purpose{
 	position:absolute;
 	top:0;
-	margin-top:40px;
+	margin-top:80px;
 	li{
 		z-index: 0;
 		padding:24px 30px;
@@ -1384,6 +1384,7 @@ input#txtDate{
 				th{
 					border-radius: 0;
 					&.month{
+						&.next, &.prev { text-indent: -999em }
 
 						&.prev{
 							@extend %card-btn;
@@ -1423,8 +1424,8 @@ input#txtDate{
 					font-weight:700;
 					color: $gray6;
 					border:1px solid $gray3;
-					&.day{
-						&.old{
+					&.day {
+						&.old, &.disabled {
 							color: $gray3;
               pointer-events: none;
 						}
@@ -1522,7 +1523,7 @@ input#trip_proxy_return_trip_time.string.optional{
 %time-selectors{
 	list-style-type: none;
 	float:left;
-	border-left:1px solid $gray4;
+	border-left:1px solid $gray3;
 	margin:0 !important;
 	padding:0;
 	height:74px;
@@ -1533,7 +1534,6 @@ input#trip_proxy_return_trip_time.string.optional{
 	color: $gray6;
 
 	&:last-child{
-		border-right:1px solid $gray4;
 	}
 
 	&:active{
@@ -1559,24 +1559,43 @@ input#trip_proxy_return_trip_time.string.optional{
 	ul{
 		margin-bottom:0;
 		margin-left:0;
+		border-right: 1px solid $gray3;
+		border-bottom:1px solid $gray3;
+
+		&:first-child{
+			border-top:1px solid $gray3;
+		}
+		&:last-child{
+			border-bottom:0px solid $gray3;
+			border-top:0px solid $gray3;
+		}
 
 		li{
-			border-top:1px solid $gray4;
+			
 			@extend %time-selectors;
 			width:16.66666666667%;
 
 			&.notime{
-				border-top:1px solid $gray4;
-				border-right:0px solid $gray4;
-				border-left:0px solid $gray4;
+				//border-top:1px solid $gray3;
+				border-right:0px solid $gray3;
+				border-left:0px solid $gray3;
+
+				&:active, &:hover{
+					background-color: $gray1;
+				}
 			}
 
 			&.ampm{
-				border-bottom:1px solid $gray4;
+				border-top:0px solid $gray3;
+				border-bottom:1px solid $gray3;
 				padding-top:26px;
 			}
 		}
 	}
+}
+
+.dob-temp{
+	padding-right:25px;
 }
 
 .dob-breadcrumb{
@@ -1642,10 +1661,12 @@ input#trip_proxy_return_trip_time.string.optional{
 	padding-bottom:20px;
 
 	ul {
-		border-top:1px solid $gray4;
+		border-top:1px solid $gray3;
 		clear:left;
 		display: flex;
 		margin-bottom:0;
+		margin-right:2px;
+		border-right: 1px solid $gray3;
 
 		&:after {
 		  content: "";
@@ -1654,7 +1675,7 @@ input#trip_proxy_return_trip_time.string.optional{
 		}
 
 		&:last-child{
-			border-bottom:1px solid $gray4;
+			border-bottom:1px solid $gray3;
 		}
 
 		li {
@@ -1667,25 +1688,35 @@ input#trip_proxy_return_trip_time.string.optional{
 #daytable{
 	padding-bottom:20px;
 	ul{
-		border-top:1px solid $gray4;
+		border-top:1px solid $gray3;
 		clear:left;
 		display: flex;
 		margin-bottom:0;
+		border-right:0px solid $gray3;
 
-		// &:last-child{
-		// 	border-bottom:1px solid $gray4;
-		// }
+		&:last-child{
+			border-bottom:0px solid $gray3;
+			border-right:0px solid $gray3;
+		}
 
 		li{
 			@extend %time-selectors;
 			width: 12.5%;
+
+			&:last-child{
+				border-right:1px solid $gray3;
+			}
 
 			&.ninja{
 				border-bottom:1px solid $gray1;
 				border-right: 1px solid $gray1;
 			}
 			&.bottom{
-				border-bottom: 1px solid $gray4;
+				border-bottom: 1px solid $gray3;
+
+				&:last-child{
+					border-right:1px solid $gray3;
+				}
 			}
 		}
 	}
@@ -1731,7 +1762,7 @@ input#trip_proxy_return_trip_time.string.optional{
 
 
 	ul {
-		border:1px solid $gray4;
+		border:1px solid $gray3;
 		//clear:left;
 		//display: flex;
 		margin-bottom:0;
@@ -1781,12 +1812,12 @@ $animationTime: 300ms;
 		height: inherit;
 	}
 	li {
-		border-bottom: 1px solid $gray4;
+		border-bottom: 1px solid $gray3;
 		&:nth-child(2n) {
-			border-left: 1px solid $gray4;
+			border-left: 1px solid $gray3;
 		}
 		&.soloYear {
-			border-right: 1px solid $gray4;
+			border-right: 1px solid $gray3;
 		}
 		&.bottom {
 			border-bottom: none;
