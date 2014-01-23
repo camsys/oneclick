@@ -1523,7 +1523,7 @@ input#trip_proxy_return_trip_time.string.optional{
 %time-selectors{
 	list-style-type: none;
 	float:left;
-	border-left:1px solid $gray4;
+	border-left:1px solid $gray3;
 	margin:0 !important;
 	padding:0;
 	height:74px;
@@ -1534,7 +1534,7 @@ input#trip_proxy_return_trip_time.string.optional{
 	color: $gray6;
 
 	&:last-child{
-		border-right:1px solid $gray4;
+		//border-right:1px solid $gray4;
 	}
 
 	&:active{
@@ -1560,20 +1560,21 @@ input#trip_proxy_return_trip_time.string.optional{
 	ul{
 		margin-bottom:0;
 		margin-left:0;
+		border-right: 1px solid $gray3;
 
 		li{
-			border-top:1px solid $gray4;
+			border-top:1px solid $gray3;
 			@extend %time-selectors;
 			width:16.66666666667%;
 
 			&.notime{
-				border-top:1px solid $gray4;
-				border-right:0px solid $gray4;
-				border-left:0px solid $gray4;
+				border-top:1px solid $gray3;
+				border-right:0px solid $gray3;
+				border-left:0px solid $gray3;
 			}
 
 			&.ampm{
-				border-bottom:1px solid $gray4;
+				border-bottom:1px solid $gray3;
 				padding-top:26px;
 			}
 		}
@@ -1647,11 +1648,12 @@ input#trip_proxy_return_trip_time.string.optional{
 	padding-bottom:20px;
 
 	ul {
-		border-top:1px solid $gray4;
+		border-top:1px solid $gray3;
 		clear:left;
 		display: flex;
 		margin-bottom:0;
 		margin-right:2px;
+		border-right: 1px solid $gray3;
 
 		&:after {
 		  content: "";
@@ -1660,7 +1662,7 @@ input#trip_proxy_return_trip_time.string.optional{
 		}
 
 		&:last-child{
-			border-bottom:1px solid $gray4;
+			border-bottom:1px solid $gray3;
 		}
 
 		li {
@@ -1673,14 +1675,16 @@ input#trip_proxy_return_trip_time.string.optional{
 #daytable{
 	padding-bottom:20px;
 	ul{
-		border-top:1px solid $gray4;
+		border-top:1px solid $gray3;
 		clear:left;
 		display: flex;
 		margin-bottom:0;
+		border-right:1px solid $gray3;
 
-		// &:last-child{
-		// 	border-bottom:1px solid $gray4;
-		// }
+		&:last-child{
+			border-bottom:0px solid $gray3;
+			border-right:0px solid $gray3;
+		}
 
 		li{
 			@extend %time-selectors;
@@ -1691,7 +1695,11 @@ input#trip_proxy_return_trip_time.string.optional{
 				border-right: 1px solid $gray1;
 			}
 			&.bottom{
-				border-bottom: 1px solid $gray4;
+				border-bottom: 1px solid $gray3;
+
+				&:last-child{
+					border-right:1px solid $gray3;
+				}
 			}
 		}
 	}
@@ -1737,7 +1745,7 @@ input#trip_proxy_return_trip_time.string.optional{
 
 
 	ul {
-		border:1px solid $gray4;
+		border:1px solid $gray3;
 		//clear:left;
 		//display: flex;
 		margin-bottom:0;
@@ -1787,12 +1795,12 @@ $animationTime: 300ms;
 		height: inherit;
 	}
 	li {
-		border-bottom: 1px solid $gray4;
+		border-bottom: 1px solid $gray3;
 		&:nth-child(2n) {
-			border-left: 1px solid $gray4;
+			border-left: 1px solid $gray3;
 		}
 		&.soloYear {
-			border-right: 1px solid $gray4;
+			border-right: 1px solid $gray3;
 		}
 		&.bottom {
 			border-bottom: none;
