@@ -1,65 +1,63 @@
 
-= image_tag get_logo, :style => "height:30px;"
-= t(:one_click_trip_planner)
+= image_tag get_logo, :style => "height:30px;margin-top:50px;"
+.title-desc
+  = t(:one_click_trip_planner)
 
 %hr
 
-%table{style: "font-size:1.4em;"}
+%table#printer-friendly
   %tr
-    %td{style: "color:grey;"}
-      %strong
-        = t(:from) + ':  '
-    %td
-      %strong
-        =@trip.from_place.name
+    %h4 
+      = t(:from) + ':  ' 
   %tr
-    %td{style: "color:grey; weight:strong;"}
-      %strong
-        =t(:to) + ':  '
-    %td
-      %strong
-        =@trip.to_place.name
+    %p
+      =@trip.from_place.name
   %tr
-    %td{style: "color:grey;"}
-      %strong
-        =t(:at_time)
-    %td
-      %strong
-        =format_date(@trip.trip_datetime.in_time_zone)
+    %h4
+      =t(:to) + ':  '
+  %tr
+    %p
+      =@trip.to_place.name
+  %tr
+    %h4
+      =t(:at_time) + ':  '
+  %tr
+    %p
+      =format_date(@trip.trip_datetime.in_time_zone)
 
 
 -@trip.trip_parts.each do |trip_part|
 
   -if trip_part.is_return_trip?
     -unless trip_part.itineraries.valid.visible.count == 0
-      %hr{style: "height:12px; background:#848484;"}
-      %h3="Return Trip Options"
+      %hr
+      %h4="Return Trip Options"
   -else
-    %hr{style: "height:12px; background:#848484;"}
-    %h3="Outbound Trip Options"
+    %hr
+    %h4="Outbound Trip Options"
 
   - ItineraryDecorator.decorate_collection(trip_part.itineraries.valid.visible).each do |itinerary|
 
-    %hr{style: "height:12px; background:#848484;"}
-    %h2
+    %p
       -if itinerary.mode.name.downcase == 'paratransit'
         =itinerary.service.name
-        %h3
+        %p
           =itinerary.service.provider.name
       -else
-        =get_trip_summary_title(itinerary)
-
+        %p
+          =get_trip_summary_title(itinerary)
     %hr
 
     -unless itinerary.mode.name.downcase == 'rideshare'
-      %h3
+      %h4
         Summary:
       = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
       %hr
 
-    %h3
+    %h4
       Details:
-    = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
+    .details
+      = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
 
 %hr{style: "height:12px; background:#848484;"}
 %table
@@ -71,5 +69,10 @@
 
 :javascript
 $(document).ready(function() {
-      window.print();
+      //window.print();
+      $('.navbar').addClass('hidden');
+      $('.container-fluid').css({
+        'background-color':'#fff',
+        'width':'220px'
+        });
 });

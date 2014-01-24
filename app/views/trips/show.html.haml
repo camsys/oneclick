@@ -116,7 +116,7 @@
           .row-fluid
             .span12
               =link_to '#', {href: '#send_trip_by_email_to_provider', class: 'btn btn-block', data: {toggle: 'modal'}} do
-                Email to provider
+                Email provider
           .row-fluid
             .span12
               =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
@@ -140,7 +140,7 @@
         %p 
           = t(:depart)
         .prev-btn
-    %div.span10
+    %div.span10.card-view-resize
       %div{id: 'outbound_section'}   
         .row-fluid.itineraries_holder
           = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
@@ -167,7 +167,7 @@
             = t(:return)
             .prev-btn
         .card-prev
-      %div.span10
+      %div.span10.card-view-resize
         = render partial: 'return_trip'
       - if @trip.only_return_selected?
       - else 

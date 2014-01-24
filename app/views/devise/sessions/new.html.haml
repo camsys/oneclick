@@ -43,8 +43,8 @@
         .row-fluid
           .span12login
             .input-container
-              = f.input :email, :required => true
-              = f.input :password, :required => true
+              = f.input :email, :required => true, :placeholder => "Tap here to enter your email address"
+              = f.input :password, :required => true, :placeholder => "Tap here to enter your password"
         .row-fluid
           .span12
             = button_tag :submit, class: 'login-btn pull-left' do
