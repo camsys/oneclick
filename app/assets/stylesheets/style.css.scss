@@ -2274,6 +2274,42 @@ body.sessions.new, body.registrations.new{
 	}
 }
 
+/**
+ *------------------------------------------
+ * PRINTER STYLE
+ *------------------------------------------
+**/
+.show_printer_friendly{
+	h3{
+		font-weight: 600;
+	}
+	p{
+		font-size: 18px;
+		line-height: 1.2em;
+		padding-bottom:5px;
+	}
+	h4{
+		font-weight: 600;
+		font-size:16px;
+		margin-bottom: 1px;
+	}
+
+	hr{
+		border-top:1px solid black;
+	}
+	a{
+		color:black;
+	}
+	.details{
+		tr{
+			border-bottom:30px solid white;
+		}
+		
+	}
+}
+
+
+
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) { 
