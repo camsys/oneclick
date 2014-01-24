@@ -2054,9 +2054,14 @@ body.sessions.new, body.registrations.new{
 			height: 100%;
 			width: 100%;
 			border-radius: 0;
-			padding-left: 32px;
-			font-size: 32px;
-			padding-top: 24px;
+			padding-left: 34px;
+			font-size: 21px;
+			padding-top: 19px;
+
+			&::-webkit-input-placeholder {
+			  line-height:1em;
+			  padding-top:5px;
+			}
 		}
 	}
 
