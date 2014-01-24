@@ -39,7 +39,6 @@
   - ItineraryDecorator.decorate_collection(trip_part.itineraries.valid.visible).each do |itinerary|
 
     %p
-      
       -if itinerary.mode.name.downcase == 'paratransit'
         =itinerary.service.name
         %p
@@ -47,7 +46,6 @@
       -else
         %p
           =get_trip_summary_title(itinerary)
-
     %hr
 
     -unless itinerary.mode.name.downcase == 'rideshare'
