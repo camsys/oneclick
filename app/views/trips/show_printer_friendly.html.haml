@@ -5,62 +5,61 @@
 
 %hr
 
-%table{style: "font-size:1em;"}
-  %tr{style: "margin-bottom:40px;"}
-    %td{style: "color:black; vertical-align:top;"}
-      %strong
-        = t(:from) + ':  ' 
-    %td{style: "clear:left;"}
-      %strong{style: "font-size:1.2em;"}
-        =@trip.from_place.name
-  %tr{style: "margin-bottom:40px;"}
-    %td{style: "color:black; weight:strong; vertical-align:top; vertical-align:top;"}
-      %strong
-        =t(:to) + ':  '
-    %td
-      %strong{style: "font-size:1.2em;"}
-        =@trip.to_place.name
-  %tr{style: "margin-bottom:40px;"}
-    %td{style: "color:black; vertical-align:top;"}
-      %strong
-        =t(:at_time)
-    %td
-      %strong{style: "font-size:1.2em;"}
-        =format_date(@trip.trip_datetime.in_time_zone)
+%table#printer-friendly
+  %tr
+    %h4 
+      = t(:from) + ':  ' 
+  %tr
+    %p
+      =@trip.from_place.name
+  %tr
+    %h4
+      =t(:to) + ':  '
+  %tr
+    %p
+      =@trip.to_place.name
+  %tr
+    %h4
+      =t(:at_time) + ':  '
+  %tr
+    %p
+      =format_date(@trip.trip_datetime.in_time_zone)
 
 
 -@trip.trip_parts.each do |trip_part|
 
   -if trip_part.is_return_trip?
     -unless trip_part.itineraries.valid.visible.count == 0
-      %hr{style: "height:12px; background:#848484;"}
-      %h3="Return Trip Options"
+      %hr
+      %h4="Return Trip Options"
   -else
-    %hr{style: "height:12px; background:#848484;"}
-    %h3="Outbound Trip Options"
+    %hr
+    %h4="Outbound Trip Options"
 
   - ItineraryDecorator.decorate_collection(trip_part.itineraries.valid.visible).each do |itinerary|
 
-    %hr{style: "height:12px; background:#848484;"}
-    %h2
+    %p
+      
       -if itinerary.mode.name.downcase == 'paratransit'
         =itinerary.service.name
-        %h3
+        %p
           =itinerary.service.provider.name
       -else
-        =get_trip_summary_title(itinerary)
+        %p
+          =get_trip_summary_title(itinerary)
 
     %hr
 
     -unless itinerary.mode.name.downcase == 'rideshare'
-      %h3
+      %h4
         Summary:
       = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
       %hr
 
-    %h3
+    %h4
       Details:
-    = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
+    .details
+      = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
 
 %hr{style: "height:12px; background:#848484;"}
 %table
