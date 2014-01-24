@@ -77,7 +77,7 @@
             Trip Selected
             - if @trip.outbound_part.has_hidden_options?
               = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
-        %div.span10
+        %div.span10.card-view-resize
           %div{id: 'outbound_section'}   
             .row-fluid.itineraries_holder
               = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
