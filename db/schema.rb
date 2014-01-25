@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140123204803) do
+ActiveRecord::Schema.define(:version => 20140125161114) do
 
   create_table "cms_blocks", :force => true do |t|
     t.integer  "page_id",    :null => false
@@ -147,7 +147,7 @@ ActiveRecord::Schema.define(:version => 20140123204803) do
   create_table "geo_coverages", :force => true do |t|
     t.string  "value"
     t.string  "coverage_type", :limit => 128
-    t.spatial "polygon",       :limit => {:srid=>0, :type=>"polygon"}
+    t.spatial "polygon",       :limit => {:srid=>4326, :type=>"geometry", :geographic=>true}
   end
 
   create_table "itineraries", :force => true do |t|

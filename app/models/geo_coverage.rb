@@ -13,4 +13,12 @@ class GeoCoverage < ActiveRecord::Base
     return self.polygon.contains?(point)
   end
 
+  def polygon_to_array
+    geometry = []
+    self.polygon.first.exterior_ring.points.each do |point|
+      geometry << [point.y, point.x]
+    end
+    geometry
+  end
+
 end

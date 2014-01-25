@@ -184,7 +184,7 @@
         -types.each do |type|
           %b
             =type.humanize.split[0].pluralize + ' served'
-          .well.white-well
+          .well.white-well.text-left
             -coverage_string = ""
             -@service.service_coverage_maps.where(rule: rule.singularize.downcase).each do |map|
               -if map.geo_coverage.coverage_type == type
@@ -193,6 +193,17 @@
               ="N/A"
             -else
               =coverage_string.chop.chop
+            .span4
+
+.row-fluid.text-center
+  .span3
+  .span6
+    %h4='Polygon Map'
+    .well.white-well
+      = LeafletMap({ :mapid => "lmap_" + "origin",  :polylines => @polylines['origin'], :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :style => "height:500px;" })
+  .span3
+= yield :scripts
+
 
 :javascript
   boxes = $('.well1');
