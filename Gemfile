@@ -31,9 +31,9 @@ gem 'comfortable_mexican_sofa'
 gem 'honeybadger'
 gem 'draper'
 gem 'rubyzip'
-gem 'activerecord-postgis-adapter'
-gem 'rgeo-activerecord'
-gem 'ffi-geos'
+# gem 'activerecord-postgis-adapter'
+# gem 'rgeo-activerecord'
+# gem 'ffi-geos'
 
 group :development do
   #gem 'mysql2'

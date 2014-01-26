@@ -26,8 +26,6 @@ GEM
       activesupport (= 3.2.14)
       arel (~> 3.0.2)
       tzinfo (~> 0.3.29)
-    activerecord-postgis-adapter (0.6.5)
-      rgeo-activerecord (~> 0.5.0)
     activeresource (3.2.14)
       activemodel (= 3.2.14)
       activesupport (= 3.2.14)
@@ -140,8 +138,6 @@ GEM
       faraday (>= 0.7.4, < 0.9)
     fastercsv (1.5.5)
     ffi (1.9.3)
-    ffi-geos (0.4.0)
-      ffi (>= 1.0.0)
     figaro (0.7.0)
       bundler (~> 1.0)
       rails (>= 3, < 5)
@@ -298,10 +294,6 @@ GEM
     rest-client (1.6.7)
       mime-types (>= 1.16)
     rgeo (0.3.20)
-    rgeo-activerecord (0.5.0)
-      activerecord (>= 3.0.3)
-      arel (>= 2.0.6)
-      rgeo (>= 0.3.20)
     rgeo-shapefile (0.2.3)
       dbf (>= 1.7.0)
       rgeo (>= 0.3.3)
@@ -395,7 +387,6 @@ PLATFORMS
 DEPENDENCIES
   activemdb
   activemodel
-  activerecord-postgis-adapter
   ajaxful_rating (>= 3.0.0.beta7)
   awesome_print
   better_errors
@@ -414,7 +405,6 @@ DEPENDENCIES
   draper
   email_spec
   factory_girl_rails
-  ffi-geos
   figaro
   geocoder
   growl
@@ -441,7 +431,6 @@ DEPENDENCIES
   rb-fsevent
   rb-inotify
   rgeo
-  rgeo-activerecord
   rgeo-shapefile
   rolify
   rspec-core
