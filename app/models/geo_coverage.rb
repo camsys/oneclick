@@ -15,7 +15,7 @@ class GeoCoverage < ActiveRecord::Base
 
   def polygon_to_array
     geometry = []
-    self.polygon.first.exterior_ring.points.each do |point|
+    self.polygon.exterior_ring.points.each do |point|
       geometry << [point.y, point.x]
     end
     geometry
