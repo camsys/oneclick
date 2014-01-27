@@ -51,6 +51,46 @@ class Itinerary < ActiveRecord::Base
     legs = get_legs
     return legs.size == 1 && legs.first.mode == TripLeg::WALK
   end
+
+  # Determines whether we are using rail, bus and rail, or just bus for the transit trips
+  def transit_type
+    unless mode.name.downcase == 'transit'
+      return nil
+    end
+    bus = false
+    rail = false
+    legs = get_legs
+    legs.each do |leg|
+      case leg.mode.downcase
+        when 'walk'
+          next
+        when 'bus'
+          bus = true
+          next
+        when 'subway'
+          rail = true
+          next
+        when 'tram'
+          rail = true
+          next
+        when 'rail'
+          rail = true
+          next
+        else
+          return 'transit'
+      end
+    end
+
+    if bus and !rail
+      return 'bus'
+    elsif !bus and rail
+      return 'rail'
+    elsif bus and rail
+      return 'railbus'
+    else
+      return 'transit'
+    end
+  end
   
   # parses the legs and returns an array of TripLeg. If there are no legs then an
   # empty array is returned
