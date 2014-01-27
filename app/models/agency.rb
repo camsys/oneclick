@@ -9,7 +9,7 @@ class Agency < Organization
   end
   attr_accessible :parent
   belongs_to :parent, class_name: 'Agency'
-  has_many :sub_agencies, class_name: 'Agency', foreign_key: :parent_id
+  has_many :sub_agencies, class_name: 'Agency', foreign_key: :parent_id, order: 'name'
   validates :parent, no_provider_hierarchy: true
 
 end

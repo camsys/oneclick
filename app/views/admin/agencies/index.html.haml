@@ -18,7 +18,7 @@
           - else
             = ''
         %td
-          = render partial: agency.sub_agencies, spacer_template: 'comma'
+          = render partial: agency.sub_agencies
         %td.center
           = link_to edit_admin_agency_path(agency), {class: 'btn'} do
             %i.icon-pencil

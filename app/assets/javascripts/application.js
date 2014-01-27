@@ -16,4 +16,4 @@
 //= require bootstrap-typeahead
 //= require bootstrap-combobox
 //= require config
-//= require_tree .
+//= require_tree ./includes
