@@ -5,8 +5,8 @@ module Kiosk
 
     def index
       @actions = [
-        {label: t(:log_in), target: kiosk_sign_in_path, icon: ACTION_ICONS[:log_in], not_on_homepage: true},
-      ]      
+        {label: t(:log_in), target: kiosk_user_session_path, icon: ACTION_ICONS[:log_in], not_on_homepage: true},
+      ]
       Rails.logger.info "Kiosk::HomeController#index, @actions is #{@actions.ai}"
       render 'kiosk/shared/home'
     end
