@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
   # Updatable attributes
   attr_accessible :email, :password, :password_confirmation, :remember_me
   attr_accessible :first_name, :last_name, :prefix, :suffix, :nickname
+  attr_accessible :role_ids 
 
   # Associations
   has_many :places, :conditions => ['active = ?', true] # 0 or more places, only active places are available
@@ -48,6 +49,7 @@ class User < ActiveRecord::Base
   belongs_to :provider, class_name: 'Organization'
 
   scope :confirmed, where('relationship_status_id = ?', RelationshipStatus::CONFIRMED)
+  scope :registered, where('first_name != ? and last_name != ?', 'Visitor', 'Guest').order(:email)
 
   # Validations
   validates :email, :presence => true
@@ -97,6 +99,11 @@ class User < ActiveRecord::Base
       old_home.home = false
       old_home.save()
     end
+  end
+
+  # TODO Should be in decorator
+  def email_and_agency
+    agency.nil? ? email : "#{email} (#{agency.name})"
   end
 
 end

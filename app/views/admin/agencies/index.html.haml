@@ -1,14 +1,14 @@
 %h1 Agencies
 
-%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable
+%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_agencies_table
   %thead
     %tr
       %th= t(:name)
       / TODO I18N
-      %th Parent
+      %th Parent Agency
       %th Sub-agencies
       %th
-  %tbody{ :id => 'admin_agencies_table'}
+  %tbody
     - @agencies.each do |agency|
       %tr
         %td= agency.name
@@ -29,4 +29,17 @@
 
 = link_to 'New Agency', new_admin_agency_path, {class: 'btn'}
 
-= render 'shared/datatable_javascript'
+/ = render 'shared/datatable_javascript'
+
+:javascript
+  $(document).ready(function() {
+    $('#admin_agencies_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ agencies per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ agencies",
+              "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
+              "sInfoFiltered": "(filtered from _MAX_ total agencies)"
+          }
+      } );
+  } );

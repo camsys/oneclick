@@ -1,8 +1,5 @@
 Oneclick::Application.routes.draw do
 
-  resources :organizations
-
-
   match '/configuration' => 'configuration#configuration'
 
   scope "(:locale)", locale: /en|es/ do
@@ -225,12 +222,20 @@ Oneclick::Application.routes.draw do
       match '/geocode' => 'util#geocode'
       match '/' => 'home#index'
       resources :agencies do
-        resources :users
+        get 'select_user'
+        resources :users do
+          post 'add_to_agency', on: :collection
+          put 'add_to_agency', on: :collection
+        end
       end
-      resources :providers do
+      resources :provider_orgs do
         resources :users
+        resources :services
       end
-      resources :users
+      resources :users do
+        put 'update_roles', on: :member
+      end
+      resources :providers
     end
 
     resources :services do

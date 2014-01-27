@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" id="1" measuredWidth="960" measuredHeight="700">
+    <screen xsi:type="model:Screen" href="assets/Components/BasedScreenLoggedInTitleOnly.screen#/"/>
+    <overrides>
+      <widgets ref="/@widgets.0/@instance/@widgets.2" x="658" text="Welcome, Agency Staff"/>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Master" id="2" x="119" y="197" measuredWidth="300" measuredHeight="180">
+    <screen xsi:type="model:Screen" href="assets/Components/ClientInfo.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Master" id="3" x="119" y="385" measuredWidth="300" measuredHeight="75">
+    <screen xsi:type="model:Screen" href="assets/Components/MainButton.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Master" id="4" x="119" y="562" measuredWidth="300" measuredHeight="75">
+    <screen xsi:type="model:Screen" href="assets/Components/MainButton.screen#/"/>
+    <overrides>
+      <widgets ref="2" text="Previous Trips"/>
+      <widgets ref="3">
+        <attributes key="icon" value="assets/reply (custom)"/>
+      </widgets>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Master" id="5" x="119" y="473" measuredWidth="300" measuredHeight="75">
+    <screen xsi:type="model:Screen" href="assets/Components/MainButton.screen#/"/>
+    <overrides>
+      <widgets ref="2" text="Travel Profile"/>
+      <widgets ref="3">
+        <attributes key="icon" value="assets/cogs (custom)"/>
+      </widgets>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Label" id="6" x="120" y="130" text="Traveler Services" measuredWidth="297" measuredHeight="62">
+    <font size="40px"/>
+  </widgets>
+  <widgets xsi:type="model:VLine" id="7" x="481" y="144" height="493" measuredWidth="6" measuredHeight="493"/>
+  <widgets xsi:type="model:Label" id="8" x="550" y="136" text="Agent Services" measuredWidth="265" measuredHeight="62">
+    <font size="40px"/>
+  </widgets>
+  <widgets xsi:type="model:Master" id="9" x="548" y="198" width="323" measuredWidth="323" measuredHeight="75">
+    <screen xsi:type="model:Screen" href="assets/Components/MainButton.screen#/"/>
+    <overrides>
+      <widgets ref="2" x="344" width="242" text="Find Traveler"/>
+      <widgets ref="1" width="323"/>
+      <widgets ref="3" width="85">
+        <attributes key="icon" value="assets/search (custom)"/>
+      </widgets>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Master" id="10" x="549" y="290" width="323" measuredWidth="323" measuredHeight="75">
+    <screen xsi:type="model:Screen" href="assets/Components/MainButton.screen#/"/>
+    <overrides>
+      <widgets ref="2" x="344" width="242" text="Create Traveler"/>
+      <widgets ref="1" width="323"/>
+      <widgets ref="3" width="85">
+        <attributes key="icon" value="user (custom)"/>
+      </widgets>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Master" id="11" x="549" y="386" width="323" measuredWidth="323" measuredHeight="75">
+    <screen xsi:type="model:Screen" href="assets/Components/MainButton.screen#/"/>
+    <overrides>
+      <widgets ref="2" x="344" width="242" text="Agents/Agencies"/>
+      <widgets ref="1" width="323"/>
+      <widgets ref="3" width="85">
+        <attributes key="icon" value="assets/info-sign (custom)"/>
+      </widgets>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Master" id="13" x="548" y="483" width="323" measuredWidth="323" measuredHeight="75">
+    <screen xsi:type="model:Screen" href="assets/Components/MainButton.screen#/"/>
+    <overrides>
+      <widgets ref="2" x="343" y="291" width="242" text="Reports"/>
+      <widgets ref="1" x="263" y="280" width="323"/>
+      <widgets ref="3" x="264" y="284" width="85">
+        <attributes key="icon" value="assets/info-sign (custom)"/>
+      </widgets>
+    </overrides>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

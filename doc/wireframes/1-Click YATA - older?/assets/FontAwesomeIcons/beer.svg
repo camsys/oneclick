@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Converted from Font Awesome. Glyph: f0fc -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2048" height="2048" xml:space="preserve">
+<g transform="translate(192, 1664) scale(1, -1)">
+	<path id="beer" d="M640 640v384h-256v-256q0 -53 37.5 -90.5t90.5 -37.5h128zM1664 192v-192h-1152v192l128 192h-128q-159 0 -271.5 112.5t-112.5 271.5v320l-64 64l32 128h480l32 128h960l32 -192l-64 -32v-800z" />
+</g>
+</svg>	

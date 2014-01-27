@@ -18,8 +18,8 @@ describe Organization do
 
   describe "provider organizations cannot be in hierarchy" do
     it 'should not be valid' do
-      provider_organization1.update_attribute(:parent, provider_organization2)
-      provider_organization1.should_not be_valid
+      expect{provider_organization1.update_attribute(:parent, provider_organization2)}.to raise_error
+      # provider_organization1.should_not be_valid
     end
   end
 

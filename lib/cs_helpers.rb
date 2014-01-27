@@ -12,10 +12,13 @@ module CsHelpers
     :help_and_support => 'icon-question-sign',
     :find_traveler => 'icon-search',
     :create_traveler =>'icon-user',
-    :agents_agencies => 'icon-umbrella',
+    :agents_agencies => 'icon-sitemap',
+    :providers => 'icon-umbrella',
     :reports => 'icon-bar-chart',
     :trips => 'icon-tags',
-    :services => 'icon-bus-sign'
+    :services => 'icon-bus-sign',
+    :users => 'icon-group',
+
   }
 
   def admin_menu
@@ -24,8 +27,8 @@ module CsHelpers
     {label: t(:create_traveler), target: error_501_path, icon: ACTION_ICONS[:create_traveler]},
     {label: t(:trips), target: admin_trips_path, icon: ACTION_ICONS[:trips]},
     {label: t(:agencies), target: admin_agencies_path, icon: ACTION_ICONS[:agents_agencies]},
-    {label: t(:providers), target: admin_providers_path, icon: ACTION_ICONS[:agents_agencies]},
-    {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:agents_agencies]},
+    {label: t(:providers), target: admin_provider_orgs_path, icon: ACTION_ICONS[:providers]},
+    {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users]},
     {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports]},
     {label: t(:view_services), target: service_path(Service.first.id), icon: ACTION_ICONS[:services]},
   ]  
@@ -82,7 +85,6 @@ end
     end
 
     def actions options = {}
-      Rails.logger.info "IN ACTIONS"
       a = if user_signed_in?
         [
           {label: t(:plan_a_trip), target: new_user_trip_path(get_traveler), icon: ACTION_ICONS[:plan_a_trip]},
@@ -104,7 +106,6 @@ end
         # %i.icon.icon-signout
         # = t(:logout)
       end
-      Rails.logger.info "ACTIONS about to return #{a.ai}"
       a
     end
 

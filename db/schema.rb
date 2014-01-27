@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140125155620) do
+ActiveRecord::Schema.define(:version => 20140202155209) do
 
   create_table "cms_blocks", :force => true do |t|
     t.integer  "page_id",    :null => false
@@ -147,6 +147,7 @@ ActiveRecord::Schema.define(:version => 20140125155620) do
   create_table "geo_coverages", :force => true do |t|
     t.string "value"
     t.string "coverage_type", :limit => 128
+    t.string "polygon"
   end
 
   create_table "itineraries", :force => true do |t|
@@ -251,18 +252,19 @@ ActiveRecord::Schema.define(:version => 20140125155620) do
   end
 
   create_table "providers", :force => true do |t|
-    t.string  "name",          :limit => 64,                    :null => false
-    t.string  "contact",       :limit => 64
-    t.string  "external_id",   :limit => 25
-    t.boolean "active",                       :default => true, :null => false
+    t.string  "name",            :limit => 64,                    :null => false
+    t.string  "contact",         :limit => 64
+    t.string  "external_id",     :limit => 25
+    t.boolean "active",                         :default => true, :null => false
     t.string  "email"
-    t.string  "contact_title", :limit => 100
-    t.string  "address",       :limit => 100
-    t.string  "city",          :limit => 100
-    t.string  "state",         :limit => 25
-    t.string  "zip",           :limit => 10
+    t.string  "contact_title",   :limit => 100
+    t.string  "address",         :limit => 100
+    t.string  "city",            :limit => 100
+    t.string  "state",           :limit => 25
+    t.string  "zip",             :limit => 10
     t.string  "url"
-    t.string  "phone",         :limit => 25
+    t.string  "phone",           :limit => 25
+    t.integer "provider_org_id"
   end
 
   create_table "rates", :force => true do |t|

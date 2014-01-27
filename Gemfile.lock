@@ -443,7 +443,7 @@ DEPENDENCIES
   rgeo
   rgeo-activerecord
   rgeo-shapefile
-  rolify
+  rolify (= 3.2.0)
   rspec-core
   rspec-rails
   rubyzip

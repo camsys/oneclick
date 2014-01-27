@@ -9,8 +9,8 @@
       %h2
         =@service.name
       %h3
-        ="Provided by "
-        =@service.provider.name
+        Provided by
+        = link_to @service.provider.name, admin_provider_path(@service.provider)
       -unless @service.active
         %h3.warning
           ="This service is currently inactive."

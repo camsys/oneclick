@@ -3,7 +3,7 @@
 
   .form-inputs
     = f.input :name
-    = f.association :parent
+    = f.association :parent, collection: @agency.possible_parents
 
   .form-actions
     = f.button :submit

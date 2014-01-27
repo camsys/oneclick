@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore" xmlns:o="http://wireframesketcher.com/1.0/model/overrides">
+  <widgets xsi:type="model:Master" id="3" x="-8" width="1025" height="769" measuredWidth="1025" measuredHeight="769">
+    <screen xsi:type="model:WidgetGroup" href="../empty/assets/Bootstrap/Bootstrap.screen#Alert%20Error"/>
+    <overrides>
+      <widgetChanges xsi:type="o:Insert" newIndex="3">
+        <object xsi:type="model:Browser" width="1025" height="769" text="OneClick Atlanta&#xA;http://oneclick.atlantaregional.com" background="#6fa8dc"/>
+      </widgetChanges>
+      <widgetChanges xsi:type="o:Delete" ref="79"/>
+      <widgetChanges xsi:type="o:Delete" ref="78"/>
+      <widgetChanges xsi:type="o:Delete" ref="77"/>
+    </overrides>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

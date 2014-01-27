@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" id="1" measuredWidth="960" measuredHeight="700">
+    <screen xsi:type="model:Screen" href="assets/Components/BasedScreenLoggedInTitleOnly.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Master" id="2" x="640" y="190" measuredWidth="300" measuredHeight="200">
+    <screen xsi:type="model:Screen" href="assets/Components/TripOption.screen#/"/>
+    <overrides>
+      <widgets ref="10">
+        <attributes key="icon" value="truck (custom)"/>
+      </widgets>
+      <widgets ref="11" text="Taxicab"/>
+      <widgets ref="13" text="Time: 28 Minutes&#xA;Cost: $70.00&#xA;Door-to-Door"/>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Master" id="3" x="16" y="190" measuredWidth="300" measuredHeight="200">
+    <screen xsi:type="model:Screen" href="assets/Components/TripOption.screen#/"/>
+    <overrides>
+      <widgets ref="11" text="Bus &amp; Train"/>
+      <widgets ref="13" text="Time: 90 Minutes&#xA;Cost: $2.25&#xA;Two Transfers"/>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Master" id="4" x="328" y="190" measuredWidth="300" measuredHeight="200">
+    <screen xsi:type="model:Screen" href="assets/Components/TripOption.screen#/"/>
+    <overrides>
+      <widgets ref="10">
+        <attributes key="icon" value="assets/fighter-jet (custom)"/>
+      </widgets>
+      <widgets ref="11" text="Private Jet"/>
+      <widgets ref="13" text="Time: 4 Minutes&#xA;Cost: $1,200.00&#xA;Reserve 1 week ahead"/>
+      <widgets ref="9" link="TripPlan%20Step%205.screen"/>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Label" id="7" x="16" y="134" text="My Home to Physical Therapy, August 4" measuredWidth="570" measuredHeight="53">
+    <font size="32px"/>
+  </widgets>
+  <widgets xsi:type="model:Icon" id="9" x="700" y="600" width="70" height="66" measuredWidth="70" measuredHeight="66" icon="assets/ok (large)"/>
+  <widgets xsi:type="model:Icon" id="10" x="777" y="600" width="70" height="66" measuredWidth="70" measuredHeight="66" icon="assets/plus (custom)"/>
+  <widgets xsi:type="model:Icon" id="11" x="855" y="600" width="70" height="66" measuredWidth="70" measuredHeight="66" icon="assets/mail-reply-all (custom)"/>
+  <widgets xsi:type="model:Panel" id="13" width="960" height="700" measuredWidth="960" measuredHeight="700" alpha="192"/>
+  <widgets xsi:type="model:Master" id="15" x="282" y="172" measuredWidth="434" measuredHeight="444">
+    <screen xsi:type="model:Screen" href="assets/Components/DetailedOptions.screen#/"/>
+    <overrides>
+      <widgets ref="16" link="TravelerLandingPage.screen"/>
+    </overrides>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>
