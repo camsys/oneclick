@@ -20,6 +20,10 @@ module CsHelpers
   # Session key for storing the traveler id
   TRAVELER_USER_SESSION_KEY = 'traveler'
 
+  def ui_mode_kiosk?
+    Oneclick::Application.config.ui_mode=='kiosk'
+  end
+
   def current_or_guest_user
     if current_user
       if session[:guest_user_id]
@@ -60,6 +64,7 @@ module CsHelpers
     end
 
     def actions options = {}
+      Rails.logger.info "IN ACTIONS"
       a = if user_signed_in?
         [
           {label: t(:plan_a_trip), target: new_user_trip_path(get_traveler), icon: ACTION_ICONS[:plan_a_trip]},
@@ -69,20 +74,21 @@ module CsHelpers
         ]
       else
         [
-          {label: t(:log_in), target: new_user_session_path, icon: ACTION_ICONS[:log_in], not_on_homepage: true},
           {label: t(:plan_a_trip), target: new_user_trip_path(current_or_guest_user), icon: ACTION_ICONS[:plan_a_trip]},
+          {label: t(:log_in), target: new_user_session_path, icon: ACTION_ICONS[:log_in], not_on_homepage: true},
           {label: t(:create_an_account), target: new_user_registration_path, icon: ACTION_ICONS[:create_an_account], not_on_homepage: true}
         ]
       end
       if options[:with_logout]
         a << {label: t(:logout), target: destroy_user_session_path, icon: 'icon-signout', divider_before: true,
           method: 'delete'}
-                      #     = link_to , :method=>'delete' do
-                      # %i.icon.icon-signout
-                      # = t(:logout)
-                    end
-                    a
-                  end
+        #     = link_to , :method=>'delete' do
+        # %i.icon.icon-signout
+        # = t(:logout)
+      end
+      Rails.logger.info "ACTIONS about to return #{a.ai}"
+      a
+    end
 
 
   # TODO Unclear whether this will need to be more flexible depending on how clients want to do their domains
@@ -102,4 +108,104 @@ module CsHelpers
   def format_exception e
     [e.message, e.backtrace].flatten.join("\n")
   end
+
+  # Retuens a pseudo-mode for an itinerary. The pseudo-mode is used to determine
+  # the correct icon, title, and partial for an itinerary
+  def get_pseudomode_for_itinerary(itinerary)
+
+    if itinerary.is_walk
+      mode_name = 'walk'
+    elsif itinerary.mode.name.downcase == 'paratransit'
+      mode_name = itinerary.service.service_type.name.downcase
+    else
+      mode_name = itinerary.mode.name.downcase unless itinerary.mode.nil?
+    end
+    return mode_name    
+  end
+
+  # Returns the correct localized title for a trip itinerary
+  def get_trip_summary_title(itinerary)
+    
+    return if itinerary.nil?
+    
+    mode_name = get_pseudomode_for_itinerary(itinerary)
+
+    if mode_name == 'transit'
+      title = I18n.t(:transit)
+    elsif mode_name == 'paratransit'
+      title = I18n.t(:specialized_services)      
+    elsif mode_name == 'volunteer'
+      title = I18n.t(:volunteer)
+    elsif mode_name == 'non-emergency medical service'
+      title = I18n.t(:nemt)
+    elsif mode_name == 'livery'
+      title = I18n.t(:car_service)
+    elsif mode_name == 'taxi'
+      title = I18n.t(:taxi)      
+    elsif mode_name == 'rideshare'
+      title = I18n.t(:rideshare)
+    elsif mode_name == 'walk'
+      title = I18n.t(:walk)
+    end
+    return title    
+  end
+
+  # Kiosk-related helpers
+
+  def user_trip_path_for_ui_mode traveler, trip
+    unless ui_mode_kiosk?
+      user_trip_path traveler, trip
+    else
+      kiosk_user_trip_path traveler, trip
+    end
+  end
+
+  def new_user_characteristic_path_for_ui_mode traveler, options = {}
+    unless ui_mode_kiosk?
+      new_user_characteristic_path traveler, options
+    else
+      new_kiosk_user_characteristic_path traveler, options
+    end
+  end
+
+  def unhide_all_user_trip_part_path_for_ui_mode traveler, trip_part
+    unless ui_mode_kiosk?
+      unhide_all_user_trip_part_path traveler, trip_part
+    else
+      unhide_all_kiosk_user_trip_part_path traveler, trip_part
+    end
+  end
+
+  def new_user_program_path_for_ui_mode traveler, options = {}
+    unless ui_mode_kiosk?
+      new_user_program_path traveler, options
+    else
+      new_kiosk_user_program_path traveler, options
+    end
+  end
+
+  def user_program_path_for_ui_mode traveler, user_programs_proxy_id, options = {}
+    unless ui_mode_kiosk?
+      user_program_path traveler, user_programs_proxy_id, options
+    else
+      kiosk_user_program_path traveler, user_programs_proxy_id, options
+    end
+  end
+
+  def new_user_accommodation_path_for_ui_mode traveler, options = {}
+    unless ui_mode_kiosk?
+      new_user_accommodation_path traveler, options
+    else
+      new_kiosk_user_accommodation_path traveler, options
+    end
+  end
+
+  def skip_user_trip_path_for_ui_mode traveler, current_trip_id
+    unless ui_mode_kiosk?
+      skip_user_trip_path traveler, current_trip_id
+    else
+      skip_kiosk_user_trip_path traveler, current_trip_id
+    end
+  end
+
 end

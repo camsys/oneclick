@@ -11,7 +11,7 @@ class TripPartsController < PlaceSearchingController
       i.hidden = false
       i.save
     end
-    redirect_to user_trip_path(@traveler, trip_part.trip)
+    redirect_to user_trip_path_for_ui_mode(@traveler, trip_part.trip)
   end
 
 end

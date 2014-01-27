@@ -1,0 +1,261 @@
+/ .row-fluid.results-header
+/   .span3
+/     %h1
+/       %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
+/       = t(:trip_options)
+
+/   .span9.well.trip_header
+/     %div{class: (@trip.in_the_future ? 'span11' : 'span12')}
+/       = render partial: 'trip_header', locals: {trip: @trip}
+/     - if @trip.in_the_future
+/       .span1
+/         = link_to edit_user_trip_path(@traveler, @trip), :class => "btn btn-small pull-right", :alt => t(:edit_trip), :title => t(:edit_trip) do
+/           %i.icon-edit
+
+
+/ - if @trip.any_parts_selected?
+/   .row-fluid.selected_notices.results-header
+/     - if @trip.both_parts_selected?
+/       .span6
+/         .alert.alert-success.fade.in
+/           = content_tag :div, t(:outbound_selected_short)
+/       .span6
+/         - if @trip.is_return_trip
+/           .alert.alert-success.fade.in
+/             = content_tag :div, t(:return_selected)
+/     - elsif @trip.only_outbound_selected?
+/       .span12
+/         .alert.alert-success.fade.in
+/           = content_tag :div, t(:outbound_selected)
+/     - elsif @trip.only_return_selected?
+/       .span12
+/         - if @trip.is_return_trip
+/           .alert.alert-success.fade.in
+/             = content_tag :div, t(:return_selected)
+
+/   - if @trip.both_parts_selected?
+/     .span12
+/       %h2 Trip planned and saved.
+/       %p You can now do one or more of the following to finish your trip planning:
+/       .row-fluid
+/         .span6{style: 'margin-bottom: 9px;'}
+/           =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+/             %i.icon-envelope
+/             =t(:e_mail) + " your trip plan."
+/         .span6{style: 'margin-bottom: 9px;'}
+/           -if (@trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service) or (@trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.service)
+/             =link_to '#', {href: '#send_trip_by_email_to_provider', class: 'btn btn-block', data: {toggle: 'modal'}} do
+/               %i.icon-ticket
+/               Email a booking request to the provider.
+/           -else
+/             =link_to '#', {disabled: true, class: 'btn btn-block'} do
+/               %i.icon-ticket
+/               Email a booking request to the provider.
+/       .row-fluid
+/         .span6{style: 'margin-bottom: 9px;'}
+/           =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+/             %i.icon-search
+/             View trip details so that you can call the provider.
+/         .span6{style: 'margin-bottom: 9px;'}
+/           =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+/             %i.icon-print
+/             Print your trip plan.
+/       -if user_signed_in?
+/         .row-fluid
+/           .span6.offset3
+/             =link_to user_trips_path(get_traveler), {class: 'btn btn-block'} do
+/               %i.icon-share-alt.icon-flip-horizontal
+/               I'm done, just show me all my planned trips.
+
+
+- if @trip.both_parts_selected?
+  .row-fluid.results-view.timeOut.js-trip-itineraries-slides
+    .span6
+      .row-fluid
+        .span2
+          %p
+            Trip Selected
+            - if @trip.outbound_part.has_hidden_options?
+              = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
+        %div.span10
+          %div{id: 'outbound_section'}   
+            .row-fluid.itineraries_holder
+              = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
+                trip_part: @trip.outbound_part }
+       
+      - if @trip.is_return_trip
+        .row-fluid.js-trip-itineraries-slides
+          .span2
+            %p
+              Return Selected
+              - if @trip.return_part.has_hidden_options?
+                = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.return_part}
+          %div.span10
+            = render partial: 'return_trip'
+    .span6
+      .row-fluid
+        .span10
+          %h2 Trip planned and saved.
+          %p You can now do one or more of the following to finish your trip planning:
+          / .row-fluid
+          /   .span12
+          /     =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+          /       =t(:e_mail) + " your trip plan."
+          / .row-fluid
+          /   .span12
+          /     =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: false) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
+          /       View trip details to call the provider.
+          .row-fluid
+            .span12
+              =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
+                Print your trip plan
+          .row-fluid
+            .span12
+              = link_to new_user_trip_path, {class: 'btn btn-block'} do
+                = t(:plan_a_new_trip)
+          .row-fluid
+            .span12
+              =link_to '#', {href: '#send_trip_by_email_to_provider', class: 'btn btn-block', data: {toggle: 'modal'}} do
+                Email provider
+          .row-fluid
+            .span12
+              =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+                View trip details
+
+
+
+
+
+
+
+- else
+  .row-fluid.results-view.js-trip-itineraries-slides
+    .span1
+      - if @trip.only_outbound_selected?
+        %p
+          Trip Selected
+          - if @trip.outbound_part.has_hidden_options?
+            = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
+      - else 
+        %p 
+          = t(:depart)
+        .prev-btn
+    %div.span10.card-view-resize
+      %div{id: 'outbound_section'}   
+        .row-fluid.itineraries_holder
+          = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
+            trip_part: @trip.outbound_part }
+        / HIDDEN OPTIONS    
+        / - if @trip.outbound_part.has_hidden_options?
+        /   .row-fluid
+        /     .span6#outbound_hidden_trips_notice
+        /       = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
+    .span1
+      - if @trip.only_outbound_selected?
+      - else 
+        .next-btn
+
+  - if @trip.is_return_trip
+    .row-fluid.results-view.js-trip-itineraries-slides
+      .span1
+        %p
+          - if @trip.only_return_selected?
+            Return Selected
+            - if @trip.return_part.has_hidden_options?
+              = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.return_part}
+          - else
+            = t(:return)
+            .prev-btn
+        .card-prev
+      %div.span10.card-view-resize
+        = render partial: 'return_trip'
+      - if @trip.only_return_selected?
+      - else 
+        .span1
+          .next-btn
+
+
+    = render partial: 'send_trip_by_email', locals: {trip: @trip}
+    = render partial: 'send_trip_by_email_to_provider'
+
+.results-footer.responsive-mbp
+  .trip-overview.pull-left.span4
+    Trip Overview
+  / .new-trip.pull-right
+  /   = link_to new_user_trip_path do
+  /     = t(:plan_a_new_trip)
+
+#overview-modal.hide
+  .row-fluid
+    .span4.info
+      %h1 Overview
+      %h4 This Is What You Told Us
+      
+      %h5 From
+      %p.from 
+        = @trip.from_place.name
+      %h5 Destination
+      %p.to 
+        = @trip.to_place.name
+      %h5 Date
+      %p.date 
+        = format_date(@trip.trip_parts.first.trip_time.in_time_zone)
+      %h5 Departure Time
+      %p.time 
+        = format_time(@trip.trip_parts.first.trip_time.in_time_zone)
+      
+      - if @trip.is_return_trip
+        %h5 Return Time
+        %p.return 
+          = format_time(@trip.trip_parts.last.trip_time.in_time_zone)
+      
+      %h5 Purpose
+      %p.reason 
+        = @trip.trip_purpose
+      .close-overview
+        .close-btn
+          Close Trip Overview
+
+    .span8plus
+
+#itinerary_modal.hide.fade
+
+:javascript
+  //$('#main').css('overflow', 'scroll');
+  $('a.details').on('click', function(){
+    $('.navbar').css('z-index', 0);
+  });
+  $('.back-button').hide();
+
+  $('.trip-overview').on('click', function(){
+    $('#overview-modal').removeClass('hide');
+  });
+  $('.close-btn').on('click', function(){
+    $('#overview-modal').addClass('hide');
+  });
+  
+
+  $('#email_itinerary2').on('ajax:success', function (event, data, status, xhr) {
+    $('#send_trip_by_email_to_provider #email_email_addresses').val(data['email'])
+    $('#send_trip_by_email_to_provider').modal('show')
+  })
+
+  //CG DP EDIT
+  if($('div.results-view').hasClass('timeOut')){
+    var activityTimeout = setTimeout(resetApp, 60000);
+  }
+
+  function resetActive(){
+    clearTimeout(activityTimeout);
+    activityTimeout = setTimeout(resetApp, 60000);
+  }
+
+  function resetApp(){
+    window.location.href = "/";
+  }
+
+  $(document).bind('mousemove', function(){
+    if($('div.results-view').hasClass('timeOut')){
+      resetActive();
+    }
+  });

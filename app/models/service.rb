@@ -11,6 +11,7 @@ class Service < ActiveRecord::Base
   has_many :service_coverage_maps
   has_many :itineraries
   attr_accessible :id, :name, :provider, :provider_id, :service_type, :advanced_notice_minutes, :external_id, :active
+  attr_accessible :contact, :contact_title, :phone, :url, :email
 
   has_many :traveler_accommodations, through: :service_traveler_accommodations_maps, source: :traveler_accommodation
   has_many :traveler_characteristics, through: :service_traveler_characteristics_maps, source: :traveler_characteristic
@@ -18,6 +19,10 @@ class Service < ActiveRecord::Base
   has_many :coverage_areas, through: :service_coverage_maps, source: :geo_coverage
 
   scope :active, where(active: true)
+
+  include Validations
+
+  before_validation :check_url_protocol
 
   def human_readable_advanced_notice
     if self.advanced_notice_minutes < (24*60)

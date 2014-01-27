@@ -163,20 +163,6 @@ module ApplicationHelper
     return l time, :format => :oneclick_short unless time.nil?
   end
 
-  # Retuens a pseudo-mode for an itinerary. The pseudo-mode is used to determine
-  # the correct icon, title, and partial for an itinerary
-  def get_pseudomode_for_itinerary(itinerary)
-
-    if itinerary.is_walk
-      mode_name = 'walk'
-    elsif itinerary.mode.name.downcase == 'paratransit'
-      mode_name = itinerary.service.service_type.name.downcase
-    else
-      mode_name = itinerary.mode.name.downcase unless itinerary.mode.nil?
-    end
-    return mode_name    
-  end
-  
 # Returns the correct partial for a trip itinerary
   def get_trip_partial(itinerary)
     
@@ -204,34 +190,6 @@ module ApplicationHelper
     return partial    
   end
   
-  # Returns the correct localized title for a trip itinerary
-  def get_trip_summary_title(itinerary)
-    
-    return if itinerary.nil?
-    
-    mode_name = get_pseudomode_for_itinerary(itinerary)
-
-    if mode_name == 'transit'
-      title = t(:transit)
-    elsif mode_name == 'paratransit'
-      title = t(:paratransit)      
-    elsif mode_name == 'volunteer'
-      title = t(:volunteer)
-    elsif mode_name == 'non-emergency medical service'
-      title = t(:nemt)
-    elsif mode_name == 'livery'
-      title = t(:car_service)
-    elsif mode_name == 'taxi'
-      title = t(:taxi)      
-    elsif mode_name == 'rideshare'
-      title = t(:rideshare)
-    elsif mode_name == 'walk'
-      title = t(:walk)
-    end
-    return title    
-  end
-
-
   # Returns the correct localized title for a trip itinerary
   def get_trip_summary_icon(itinerary) 
     return if itinerary.nil?

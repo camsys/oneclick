@@ -1,0 +1,113 @@
+#eligibility_form
+
+  .row-fluid
+    .span12
+      = simple_form_for @user_characteristics_proxy, :url => path, :method => 'put', :remote => not(inline)  do |f|
+        = f.error_notification
+        .eligibility-question{ :data => {:index => 0}}
+          = render partial: 'characteristics/eligibility_alert', locals: {inline: inline}
+        %div{ :data => {:index => 1}}
+          .input-header
+            .step-number
+            .step-title Questions
+          .pull-right
+            %table#characteristics_one
+              %thead 
+                %tr 
+                  %th 
+                  %th Yes
+                  %th No
+                  %th Unsure
+              %tbody 
+                -TravelerCharacteristic.personal_factors.where(:datatype => 'bool').each do |characteristic|
+                  %tr 
+                    %td
+                      = f.label characteristic.note 
+                    %td 
+                      = f.radio_button characteristic.code.to_sym, true
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
+                    %td 
+                      = f.radio_button characteristic.code.to_sym, false
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no', :value => false
+                    %td 
+                      = f.radio_button characteristic.code.to_sym, "na"
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
+                -TravelerCharacteristic.personal_factors.where(:datatype => 'disabled').each do |characteristic|
+                  %tr 
+                    %td
+                      = f.label characteristic.note + " (not yet available)", :class => 'disabled'
+                    %td 
+                      = f.radio_button characteristic.code.to_sym, true, :disabled => true
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes disabled', :value => true, disabled: true
+                    %td 
+                      = f.radio_button characteristic.code.to_sym, false, :disabled => true
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no disabled', :value => false, disabled: true
+                    %td 
+                      = f.radio_button characteristic.code.to_sym, "na", :disabled => true
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure disabled', :value => "na", disabled: true
+      
+
+        / -TravelerCharacteristic.personal_factors.where(:datatype => 'disabled').each do |characteristic|
+        /   = f.input characteristic.code.to_sym, collection: [[true, 'Yes'], [false, 'No'], ['na', 'Not sure']], :required => false, as: :radio_buttons, label: characteristic.note + " (not yet available)", label_method: :last, value_method: :first, :item_wrapper_class => "inline", disabled: true
+        .dob-temp{ :data => {:index => 2}}
+          = f.input :date_of_birth, :as => :hidden
+
+          .dob.row-fluid
+            .dob-breadcrumb
+              %ul
+                %li.year
+                  %span.type  Year
+                  %span.input
+
+                %li.month.current
+                  %span.type  Month
+                  %span.input
+
+                %li.day
+                  %span.type  Day
+                  %span.input
+
+          .row-fluid.js-dob-pickers
+            #yeartable.dob-section{ :data => {:dobindex => 0}}
+              .decade-prev.span3
+                .prev-container
+                  .prev-btn
+              #yearlist
+
+              .decade-next.span3
+                .next-container
+                  .next-btn
+            #monthtable.dob-section.hidden{ :data => {:dobindex => 1}}
+              %ul
+                %li January
+                %li February
+                %li March
+                %li April
+              %ul
+                %li May
+                %li June
+                %li July
+                %li August
+              %ul
+                %li September
+                %li October
+                %li November
+                %li December
+            #daytable.dob-section.hidden{ :data => {:dobindex => 2}}
+
+        - if inline
+          = button_tag :type => 'submit', :class => "btn btn-primary hidden" do
+            %i.icon.icon-arrow-right
+            Next step
+            / = t(:save)
+        - else
+          = button_tag type: :submit, class: 'btn btn-primary controls hidden' do
+            %i.icon.icon-ok
+            = t(:update)
+        = link_to :back, :class => "cancel_link hidden" do
+          %i.icon.icon-reply
+          = t(:cancel)
+
+  / SO...somehow we gotta get that to look like this.
+        
+:javascript

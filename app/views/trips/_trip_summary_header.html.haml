@@ -1,11 +1,11 @@
 - i = itinerary
 .row-fluid.trip_summary_header
   .span12
-    / = render partial: 'itinerary_item', locals: {object: i.service.full_name, label: 'Name'}
+    = render partial: 'itinerary_item', locals: {object: i.service.name, label: 'Name'}
     = render partial: 'itinerary_item', locals: {object: i.duration_in_words, label: 'Trip duration'}
     = render partial: 'itinerary_item', locals: {object: i.cost_in_words, label: 'Cost'}
-    / = render partial: 'itinerary_item', locals: {object: i.walking_time, label: 'Walking time'}
-    / = render partial: 'itinerary_item', locals: {object: i.transfers_in_words, label: 'Transfers'}
+    = render partial: 'itinerary_item', locals: {object: i.walking_time, label: 'Walking time'}
+    = render partial: 'itinerary_item', locals: {object: i.transfers_in_words, label: 'Transfers'}
     = render partial: 'itinerary_item', locals: {object: i.notes, label: i.notes_label}
     / t(:possible_rideshares, count: i.ride_count), label: 'Notes'}
     / = render partial: 'itinerary_item', locals: {object: '', label: 'Book ahead'}

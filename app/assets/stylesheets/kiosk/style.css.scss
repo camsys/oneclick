@@ -156,7 +156,7 @@ h5{
 			height:66px;
 			width:66px;
 			border: 2px solid $gray4;
-			background: $white url(../assets/kiosk/arrow.png) no-repeat center;
+			background: $white url(/assets/kiosk/arrow.png) no-repeat center;
 
 			
 		}
@@ -303,12 +303,12 @@ a{
 
 //ATTRACT LOOP
 .penndot-logo{
-	background: url(../assets/kiosk/penndot-logo.png) no-repeat center center;
+	background: url(/assets/kiosk/penndot-logo.png) no-repeat center center;
 	//background-size: 100%;
 }
 
 .oneclick-logo{
-	background: url(../assets/kiosk/oneclick-logo.png) no-repeat center center;
+	background: url(/assets/kiosk/oneclick-logo.png) no-repeat center center;
 	background-size: 100%;
 }
 
@@ -355,7 +355,7 @@ a{
 	a.attract-footer{
 		display: block;
 		height:50%;
-		background: $blue url(../assets/kiosk/attract-bottom.jpg) no-repeat center center;
+		background: $blue url(/assets/kiosk/attract-bottom.jpg) no-repeat center center;
 	}
 }
 
@@ -512,7 +512,7 @@ div.trip_proxy_trip_purpose_id{
 
 		&.selected{
 			z-index: 200;
-			background: $white url(../assets/kiosk/checkmark.png) no-repeat center right;
+			background: $white url(/assets/kiosk/checkmark.png) no-repeat center right;
 			// box-shadow: 0px 4px 10px rgba(0,0,0,0.2), 
 			// 	0px 8px 24px rgba(0,0,0,0.04), 
 			// 	inset 0 0 0 2px $gray4, 
@@ -546,7 +546,7 @@ div.trip_proxy_trip_purpose_id{
 
 //RESULTS DETAIL PAGE
 .modal-backdrop{
-	background: rgba(0,0,0,0);// url(../assets/kiosk/bg_black.png);
+	background: rgba(0,0,0,0);// url(/assets/kiosk/bg_black.png);
 	z-index:1;
 	pointer-events:none;
 }
@@ -706,7 +706,7 @@ div.trip_proxy_trip_purpose_id{
 			//background-color: rgba(255,255,255,.88);
 			//margin-left:-20px !important;
 			//webkit-tap-highlight-color:rgba(0,0,0,0);
-			background: $white url(../assets/kiosk/icon-address.png) no-repeat 60px 44px;
+			background: $white url(/assets/kiosk/icon-address.png) no-repeat 60px 44px;
 			padding-left: 100px;
 			font-family: $kioskfonts;
 			font-size:21px;
@@ -923,10 +923,10 @@ div.trip_proxy_trip_purpose_id{
 		.arrow-container{
 			width: 200px;
 			height: 166px;
-			background: rgba(255,255,255,.24) url(../assets/kiosk/arrow-next-step.png) no-repeat center center;
+			background: rgba(255,255,255,.24) url(/assets/kiosk/arrow-next-step.png) no-repeat center center;
 			border-left: 1px solid rgba(255,255,255,.44);
 			.arrow{
-				//background: url(../assets/kiosk/arrow-next-step.png) no-repeat center center;
+				//background: url(/assets/kiosk/arrow-next-step.png) no-repeat center center;
 			}
 		}
 	}
@@ -1110,22 +1110,22 @@ div.trip_proxy_trip_purpose_id{
 	margin-top: 350px;
 	height: 84px;
 	width: 100px;
-	background: url(../assets/kiosk/card-dashes.png) no-repeat;
+	background: url(/assets/kiosk/card-dashes.png) no-repeat;
 }
 //CARD PLACEHOLDER
 %card-btn{
 	height:100%;
 	width: 84px;
-	background: url(../assets/kiosk/card-btn-default.png) no-repeat center center;
+	background: url(/assets/kiosk/card-btn-default.png) no-repeat center center;
 
 	&.disabled{
-		background: url(../assets/kiosk/card-btn-inactive.png) no-repeat center center;
+		background: url(/assets/kiosk/card-btn-inactive.png) no-repeat center center;
 		&:active{
-			background: url(../assets/kiosk/card-btn-inactive.png) no-repeat center center;
+			background: url(/assets/kiosk/card-btn-inactive.png) no-repeat center center;
 		}
 	}
 	&:active{
-		background: url(../assets/kiosk/card-btn-active.png) no-repeat center center;
+		background: url(/assets/kiosk/card-btn-active.png) no-repeat center center;
 	}
 }
 
@@ -1177,7 +1177,7 @@ div.trip_proxy_trip_purpose_id{
 		.close-section{
 			//TODO: Add pattern bg.
 			background-color: $black;
-			background-image: url(../assets/kiosk/bg_black.png);
+			background-image: url(/assets/kiosk/bg_black.png);
 			height: inherit;
 			padding-top: 0px;
 			float:left;
@@ -1208,7 +1208,7 @@ div.trip_proxy_trip_purpose_id{
 				margin-top: 450px;
 				cursor:pointer;
 				.close-btn{
-					background: url(../assets/kiosk/close-btn-default.png) no-repeat center center;
+					background: url(/assets/kiosk/close-btn-default.png) no-repeat center center;
 					height: 84px;
 					width: 84px;
 				}
@@ -1837,7 +1837,7 @@ $animationTime: 300ms;
 	
 	// TO DO: work with Camsys to nest the login container so it looks good at all sizes.
 	.container-fluid{
-		background-image: url(../assets/kiosk/bg_black.png);
+		background-image: url(/assets/kiosk/bg_black.png);
 	}
 
 	.login-header{
@@ -1876,7 +1876,7 @@ $animationTime: 300ms;
 
 		&.error{
 			&:before{
-				content: url(../assets/kiosk/icon-error.png);
+				content: url(/assets/kiosk/icon-error.png);
 				position:absolute;
 				top: 24px;
 				left: -50px;
@@ -2009,7 +2009,7 @@ body.sessions.new, body.registrations.new{
 
 		&.error{
 			&:before{
-				content: url(../assets/kiosk/icon-error.png);
+				content: url(/assets/kiosk/icon-error.png);
 				position:absolute;
 				top: 24px;
 				left: -50px;
@@ -2140,7 +2140,7 @@ body.sessions.new, body.registrations.new{
 .icon-taxi{
 	height:50px;
 	width: 48px;
-	background: url(../assets/kiosk/icon-taxi.png) no-repeat center center;
+	background: url(/assets/kiosk/icon-taxi.png) no-repeat center center;
 }
 
 //
