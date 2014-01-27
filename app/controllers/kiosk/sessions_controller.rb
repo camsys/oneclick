@@ -15,10 +15,10 @@ module Kiosk
     def new
       super
     end
-    
+
     def create
       super
     end
-    
+
   end
 end
