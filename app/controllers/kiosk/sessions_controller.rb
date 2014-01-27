@@ -1,5 +1,5 @@
 module Kiosk
-  class SessionsController < Devise::SessionsController
+  class SessionsController < ::SessionsController
     include Kiosk::Behavior
 
     def after_sign_up_path_for resource
