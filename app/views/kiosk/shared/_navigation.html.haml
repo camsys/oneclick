@@ -13,8 +13,8 @@
     .nav-collapse.collapse.pull-right
       %ul.nav.pull-right
         - if user_signed_in?
-          %li 
-            = link_to destroy_user_session_path, :method=>'delete' do
+          %li
+            = link_to destroy_kiosk_user_session_path, :method=>'delete' do
               = t(:logout)
           %li 
             = link_to ("Help"), error_501_path 
