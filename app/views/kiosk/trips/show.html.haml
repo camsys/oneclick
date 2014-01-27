@@ -78,11 +78,11 @@
             - if @trip.outbound_part.has_hidden_options?
               = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
         %div.span10
-          %div{id: 'outbound_section'}   
+          %div{id: 'outbound_section'}
             .row-fluid.itineraries_holder
               = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
                 trip_part: @trip.outbound_part }
-       
+
       - if @trip.is_return_trip
         .row-fluid.js-trip-itineraries-slides
           .span2
@@ -136,23 +136,23 @@
           Trip Selected
           - if @trip.outbound_part.has_hidden_options?
             = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
-      - else 
-        %p 
+      - else
+        %p
           = t(:depart)
         .prev-btn
     %div.span10.card-view-resize
-      %div{id: 'outbound_section'}   
+      %div{id: 'outbound_section'}
         .row-fluid.itineraries_holder
           = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
             trip_part: @trip.outbound_part }
-        / HIDDEN OPTIONS    
+        / HIDDEN OPTIONS
         / - if @trip.outbound_part.has_hidden_options?
         /   .row-fluid
         /     .span6#outbound_hidden_trips_notice
         /       = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
     .span1
       - if @trip.only_outbound_selected?
-      - else 
+      - else
         .next-btn
 
   - if @trip.is_return_trip
@@ -170,7 +170,7 @@
       %div.span10.card-view-resize
         = render partial: 'return_trip'
       - if @trip.only_return_selected?
-      - else 
+      - else
         .span1
           .next-btn
 
@@ -190,27 +190,27 @@
     .span4.info
       %h1 Overview
       %h4 This Is What You Told Us
-      
+
       %h5 From
-      %p.from 
+      %p.from
         = @trip.from_place.name
       %h5 Destination
-      %p.to 
+      %p.to
         = @trip.to_place.name
       %h5 Date
-      %p.date 
+      %p.date
         = format_date(@trip.trip_parts.first.trip_time.in_time_zone)
       %h5 Departure Time
-      %p.time 
+      %p.time
         = format_time(@trip.trip_parts.first.trip_time.in_time_zone)
-      
+
       - if @trip.is_return_trip
         %h5 Return Time
-        %p.return 
+        %p.return
           = format_time(@trip.trip_parts.last.trip_time.in_time_zone)
-      
+
       %h5 Purpose
-      %p.reason 
+      %p.reason
         = @trip.trip_purpose
       .close-overview
         .close-btn
@@ -233,7 +233,7 @@
   $('.close-btn').on('click', function(){
     $('#overview-modal').addClass('hide');
   });
-  
+
 
   $('#email_itinerary2').on('ajax:success', function (event, data, status, xhr) {
     $('#send_trip_by_email_to_provider #email_email_addresses').val(data['email'])

@@ -7,7 +7,7 @@ Oneclick::Application.routes.draw do
     if Oneclick::Application.config.ui_mode == 'kiosk'
       root to: redirect('/kiosk')
     else
-      root :to => "home#index"    
+      root :to => "home#index"
     end
 
     authenticated :user do
@@ -64,7 +64,7 @@ Oneclick::Application.routes.draw do
           post  'geocode'
         end
       end
-      
+
       # users have trips
       resources :trips, :only => [:show, :index, :new, :create, :destroy, :edit, :update] do
         collection do
@@ -74,7 +74,7 @@ Oneclick::Application.routes.draw do
           post  'geocode'
         end
         member do
-          get   'repeat'          
+          get   'repeat'
           get   'select'
           get   'details'
           get   'itinerary'
@@ -113,7 +113,7 @@ Oneclick::Application.routes.draw do
     end
 
     # scope('/kiosk') do
-    #   devise_for :users, as: 'kiosk', controllers: {sessions: "kiosk/sessions"}      
+    #   devise_for :users, as: 'kiosk', controllers: {sessions: "kiosk/sessions"}
     # end
 
     # match '/kiosk_user/kiosk/users/sign_in', to: 'kiosk/sessions#create'
@@ -169,7 +169,7 @@ Oneclick::Application.routes.draw do
             post  'geocode'
           end
         end
-        
+
         # users have trips
         resources :trips, :only => [:show, :index, :new, :create, :destroy, :edit, :update] do
           collection do
@@ -179,7 +179,7 @@ Oneclick::Application.routes.draw do
             post  'geocode'
           end
           member do
-            get   'repeat'          
+            get   'repeat'
             get   'select'
             get   'details'
             get   'itinerary'
@@ -236,7 +236,7 @@ Oneclick::Application.routes.draw do
         post 'update'
       end
     end
-    
+
     match '/' => 'home#index'
 
     match '/404' => 'errors#error_404', as: 'error_404'

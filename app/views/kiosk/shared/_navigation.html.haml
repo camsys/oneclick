@@ -3,7 +3,7 @@
     %div.back-button.pull-left
       .arrow
         = link_to :back, {}, :class => "arrow-btn"
-        %span Back      
+        %span Back
         -#<!-- .btn-navbar is used as the toggle for collapsed navbar content -->
     %a.btn.btn-navbar{data: { toggle: "collapse",  target: ".nav-collapse"}}
       %span.icon-bar
@@ -16,13 +16,12 @@
           %li
             = link_to destroy_kiosk_user_session_path, :method=>'delete' do
               = t(:logout)
-          %li 
-            = link_to ("Help"), error_501_path 
+          %li
+            = link_to ("Help"), error_501_path
         - else
-          / %li 
+          / %li
           /   = link_to new_user_session_path do
-          /     = t(:log_in) 
-          %li 
-            = link_to ("Help"), error_501_path 
-     
-  
+          /     = t(:log_in)
+          %li
+            = link_to ("Help"), error_501_path
+
