@@ -1,11 +1,11 @@
-= form_tag geocode_kiosk_trips_path, :remote => true, :id => "query_form" do
+= form_tag geocode_kiosk_user_trips_path, :remote => true, :id => "query_form" do
   = hidden_field_tag :query
   = hidden_field_tag :target
 
 - if user_signed_in?
   - unless current_user.travelers.empty?
     = render "select_traveler_form"
-  
+
 = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? kiosk_user_trips_path : kiosk_user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "no-bottom-margin"}  do |f|
   = f.hidden_field :mode
   = f.hidden_field :from_place_selected, :id => "from_place_selected"
@@ -23,7 +23,7 @@
 
       %a#yes{:href => "#", :name => "yesno", :value => "yes"} Yes
       %a#no{:href => "#", :name => "yesno", :value => "no"} No
-  
+
   / TODO: ADD THE DIV WITH THE DATA INDEX
   #from_input{ :data => {:index => 1}}
     - if false && user_signed_in?
@@ -90,6 +90,7 @@
       #trip-date
         = f.input_field :trip_date, :as => :string, :label => false
 
+
     / TODO: ADD BUTTON THAT ALTERS THIS?
     = f.input :arrive_depart, :collection => [t(:departing_at), t(:arriving_by)], :include_blank => false, :label => t(:arrive_depart), :input_html => {:style => "width:200px;"}
 
@@ -137,7 +138,7 @@
             %li.notime
             %li.ampm am
             %li.ampm pm
-  
+
   / TODO: ADD THE DIV WITH THE DATA INDEX
   #purposepicker{ :data => {:index => 5}}
     / = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
@@ -153,8 +154,8 @@
 
       / TODO: Add class of selected to li to show state
 
-      / %li 
-      /   %a{:href => "#"} Training/Employment 
+      / %li
+      /   %a{:href => "#"} Training/Employment
       / %li.selected
 
   / TODO: RETURN TRIP IN 1 or 2 SECTIONS
@@ -213,7 +214,7 @@
             %li.notime
             %li.ampm am
             %li.ampm pm
-              
+
   .form-actions.hidden
     = button_tag :type => 'submit', :class => "btn btn-primary" do
       %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
@@ -489,7 +490,7 @@
     addMarkerToMap(marker, true);
     return marker;
   };
-  
+
   // Add a list of candidate markers to the map
   var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Z', 'Y', 'Z'];
 
