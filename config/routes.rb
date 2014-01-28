@@ -212,6 +212,7 @@ Oneclick::Application.routes.draw do
     devise_scope :user do
       post '/kiosk/sign_in' => 'kiosk/sessions#create', as: :kiosk_user_session
       get '/kiosk/sign_in' => 'kiosk/sessions#new', as: :new_kiosk_user_session
+      match '/kiosk/session/destroy' => 'kiosk/sessions#destroy', as: :destroy_kiosk_user_session
     end
 
 
