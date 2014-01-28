@@ -3,12 +3,12 @@ var loginView = {
 
 loginView.init = function () {
 
-  $('input#kiosk_user_email').click(function(){
+  $('input#user_email').click(function(){
        if (window.cocoa)
         window.cocoa.openKeyboard();
   });
 
-  $('input#kiosk_user_password').click(function(){
+  $('input#user_password').click(function(){
        if (window.cocoa)
         window.cocoa.openKeyboard();
   });
