@@ -120,7 +120,6 @@ Oneclick::Application.routes.draw do
 
     namespace :kiosk do
       match '/', to: 'home#index'
-      devise_for :users, path: '', controllers: {registrations: "kiosk/registrations", sessions: 'kiosk/sessions'}
 
       # TODO can probably remove a lot of these routes
       resources :users do
