@@ -10,7 +10,7 @@ module Kiosk
         ]
       else
         [
-          {label: t(:log_in), target: new_user_session_path, icon: ACTION_ICONS[:log_in], not_on_homepage: true}
+          {label: t(:log_in), target: new_kiosk_user_session_path, icon: ACTION_ICONS[:log_in], not_on_homepage: true}
         ]
       end
 
