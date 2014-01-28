@@ -1,10 +1,11 @@
-%div.responsive-mbp.row-fluid
-  .span4.info
-    %h1 
-      About You
-    %h4 A Few Follow-up Questions
-    %p Given your responses, we have one last page of follow-up questions. Answer all questions you are comfortable providing an answer for. If you do not wish to answer a question, select "Unsure". <br><br> Tap "Next Step" when you have finished with these questions.
-  %div.span8plus.inputs
-    .row-fluid.accommodations-section
-      = render partial: 'accommodations/form',  :locals => {:path => user_accommodation_path(@traveler, @user_accommodations_proxy.id, inline: 1), :inline => true}
+.row-fluid
+  .span12
+    %h1
+      / %i.icon.icon-paper-clip
+      %i.icon.icon-info-sign
+      Your Needs - Step 3 of 3
+      / = t(:to_see_best_options)
 
+.row-fluid
+  .well
+    = render partial: 'accommodations/form',  :locals => {:path => user_accommodation_path(@traveler, @user_accommodations_proxy.id, inline: 1), :inline => true}

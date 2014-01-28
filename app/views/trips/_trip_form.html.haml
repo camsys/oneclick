@@ -6,217 +6,90 @@
   - unless current_user.travelers.empty?
     = render "select_traveler_form"
   
-= simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "no-bottom-margin"}  do |f|
+= simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}  do |f|
   = f.hidden_field :mode
   = f.hidden_field :from_place_selected, :id => "from_place_selected"
   = f.hidden_field :to_place_selected, :id => "to_place_selected"
   = f.hidden_field :from_place_selected_type, :id => "from_place_selected_type"
   = f.hidden_field :to_place_selected_type, :id => "to_place_selected_type"
 
-  / TODO: ADD BUTTON FUNCTIONALITY:
-  / IF NO, CLOSE
-  %span#current-location.row-fluid{ :data => {:index => 0}}
-    .span8.offset2
-      .title-container
-        .bar
-        %h3 Start at your current location?
+  - if user_signed_in?
+    = f.input :from_place, :wrapper => :append, :class => "inline", :label => t(:from) do
+      = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large", :data => {:link => search_user_places_path, :provide => "typeahead"}
+      %span.dropdown
+        %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
+          %span.caret
+        - if @places.count > 0
+          %ul.dropdown-menu{:data => {:target => 'trip_proxy_from_place'}}
+            - @places.each do |p|
+              %li
+                %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "from"}}
+                  = p["name"]
+      - unless @traveler.home
+        = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
 
-      %a#yes{:href => "#", :name => "yesno", :value => "yes"} Yes
-      %a#no{:href => "#", :name => "yesno", :value => "no"} No
-  
-  / TODO: ADD THE DIV WITH THE DATA INDEX
-  #from_input{ :data => {:index => 1}}
-    - if false && user_signed_in?
-      = f.input :from_place, :wrapper => :append, :class => "inline", :label => t(:from) do
-        = f.text_field :from_place, :placeholder => t(:enter_from), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large address", :data => {:link => search_user_places_path, :provide => "typeahead"}
-        %span.dropdown
-          %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
-            %span.caret
-          - if @places.count > 0
-            %ul.dropdown-menu{:data => {:target => 'trip_proxy_from_place'}}
-              - @places.each do |p|
-                %li
-                  %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "from"}}
-                    = p["name"]
-        - unless @traveler.home
-          = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
+      = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
-        = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
-
-    - else
-      .fadeout
-      = f.input :from_place, :class => "inline", :label => t(:from) do
-        = f.text_field :from_place, :placeholder => t(:enter_from), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large address", :data => {:link => search_user_trips_path, :provide => "typeahead"}
-        / = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
-        = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
-
-    #from_place_candidates{:style => "display:none;"}
-      = render :partial => 'alt_address_select', :locals => {:results => [], :type => "from"}
-      // TODO: Find out why the buttons won't show up here.
-      .kiosk-scroll-buttons Where am I.
+  - else
+    = f.input :from_place, :class => "inline", :label => t(:from) do
+      = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large", :data => {:link => search_user_trips_path, :provide => "typeahead"}
+      = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
+      = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
 
-  #to_input{ :data => {:index => 2}}
-    - if false && user_signed_in?
-      = f.input :to_place, :wrapper => :append, :class => "inline", :label => t(:to) do
-        = f.text_field :to_place, :placeholder => t(:enter_to), :id => "trip_proxy_to_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large address", :data => {:link => search_user_places_path, :provide => "typeahead"}
-        %span.dropdown
-          %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
-            %span.caret
-          - if @places.count > 0
-            %ul.dropdown-menu{:data => {:target => 'trip_proxy_to_place'}}
-              - @places.each do |p|
-                %li
-                  %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "to"}}
-                    = p["name"]
-        - unless @traveler.home
-          = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
-        = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
+  #from_place_candidates{:style => "display:none;"}
+    = render :partial => 'alt_address_select', :locals => {:results => [], :type => "from"}
 
-    - else
-      .fadeout    
-      = f.input :to_place, :class => "inline", :label => t(:to) do
-        = f.text_field :to_place, :placeholder => t(:enter_to), :id => "trip_proxy_to_place", :class => "no-bottom-margin ajax-typeahead input-large address", :autocomplete => "off", :data => {:link => search_user_trips_path, :provide => "typeahead"}
+  - if user_signed_in?
+    = f.input :to_place, :wrapper => :append, :class => "inline", :label => t(:to) do
+      = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large", :data => {:link => search_user_places_path, :provide => "typeahead"}
+      %span.dropdown
+        %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
+          %span.caret
+        - if @places.count > 0
+          %ul.dropdown-menu{:data => {:target => 'trip_proxy_to_place'}}
+            - @places.each do |p|
+              %li
+                %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "to"}}
+                  = p["name"]
+      - unless @traveler.home
         = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
-        = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
+      = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
-    #to_place_candidates{:style => "display:none;"}
-      = render :partial => 'alt_address_select', :locals => {:results => [], :type => "to"}
+  - else    
+    = f.input :to_place, :class => "inline", :label => t(:to) do
+      = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :class => "no-bottom-margin ajax-typeahead input-large", :autocomplete => "off", :data => {:link => search_user_trips_path, :provide => "typeahead"}
+      = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
+      = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
-  / TODO: ADD THE DIV WITH THE DATA INDEX
-  / TODO: ADD DATEPICKER
-  %div{:data => {:index => 3}}
-    = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
-      #trip-date
-        = f.input_field :trip_date, :as => :string, :label => false
+  #to_place_candidates{:style => "display:none;"}
+    = render :partial => 'alt_address_select', :locals => {:results => [], :type => "to"}
 
-  
-    / TODO: ADD BUTTON THAT ALTERS THIS?
-    = f.input :arrive_depart, :collection => [t(:departing_at), t(:arriving_by)], :include_blank => false, :label => t(:arrive_depart), :input_html => {:style => "width:200px;"}
+  = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
+    #trip-date
+      = f.input_field :trip_date, :as => :string, :label => false, :style => "width:160px;" 
+      %span.add-on
+        %i.icon-calendar
 
-  #timepicker-one{ :data => {:index => 4}}
-    = f.input :trip_time, :wrapper => :append, :label => t(:trip_time) do
-      #trip-time
-        = f.label :departing_at
-        = f.input :trip_time, :as => :string, :label => false
+  = f.input :arrive_depart, :collection => [t(:departing_at), t(:arriving_by)], :include_blank => false, :label => t(:arrive_depart), :input_html => {:style => "width:200px;"}
 
-    .row-fluid
-      .span10.offset1
-        .timetable
-          %ul.row-fluid.time
-            %li 1:00
-            %li 1:30
-            %li 2:00
-            %li 2:30
-            %li 3:00
-            %li 3:30
-          %ul.row-fluid.time
-            %li 4:00
-            %li 4:30
-            %li 5:00
-            %li 5:30
-            %li 6:00
-            %li 6:30
-          %ul.row-fluid.time
-            %li 7:00
-            %li 7:30
-            %li 8:00
-            %li 8:30
-            %li 9:00
-            %li 9:30
-          %ul.row-fluid.time
-            %li 10:00
-            %li 10:30
-            %li 11:00
-            %li 11:30
-            %li 12:00
-            %li 12:30
-          %ul.row-fluid.timeofday
-            %li.notime
-            %li.notime
-            %li.notime
-            %li.notime
-            %li.ampm am
-            %li.ampm pm
-  
-  / TODO: ADD THE DIV WITH THE DATA INDEX
-  #purposepicker{ :data => {:index => 5}}
-    / = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
-    = f.input :trip_purpose_id
-    .span8.offset2
-      .title-container
-        .bar
-        %h3 What is the purpose of your trip?
-    %ul.purpose.span8.offset2
-      - TripPurpose.all.each do |purpose|
-        %li{:name => purpose.id}
-          = purpose.name
+  = f.input :trip_time, :wrapper => :append, :label => t(:trip_time) do
+    #trip-time
+      = f.input_field :trip_time, :as => :string, :label => false, :style => "width:160px;"
+      %span.add-on
+        %i.icon-time
 
-      / TODO: Add class of selected to li to show state
+  = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
 
-      / %li 
-      /   %a{:href => "#"} Training/Employment 
-      / %li.selected
-
-  
-  / TODO: RETURN TRIP IN 1 or 2 SECTIONS
-  #return-yesno{ :data => {:index => 6}}
-    %span#return-trip.row-fluid
-      .span8.offset2
-        .title-container
-          .bar
-          %h3 Do you need a return trip?
-        %a#yes{:href => "#", :name => "yesno", :value => "yes"} Yes
-        %a#no{:href => "#", :name => "yesno", :value => "no"} No
-
-  #timepicker-two{ :data => {:index => 7}}
-    = f.input :is_round_trip, :label => false, :wrapper_html => {:class => 'controls controls-row'} do
-      = f.input_field :is_round_trip, :as => :boolean, :inline_label => "Return after", :class => "hidden"
-      = f.input :return_trip_time, :label => false, :wrapper => :append do
-        #return-trip-time
-          = f.label :return_trip_time
-          = f.input_field :return_trip_time, :as => :string, :label => false
-
-    .row-fluid
-      .span10.offset1
-        .timetable
-          %ul.row-fluid.time
-            %li 1:00
-            %li 1:30
-            %li 2:00
-            %li 2:30
-            %li 3:00
-            %li 3:30
-          %ul.row-fluid.time
-            %li 4:00
-            %li 4:30
-            %li 5:00
-            %li 5:30
-            %li 6:00
-            %li 6:30
-          %ul.row-fluid.time
-            %li 7:00
-            %li 7:30
-            %li 8:00
-            %li 8:30
-            %li 9:00
-            %li 9:30
-          %ul.row-fluid.time
-            %li 10:00
-            %li 10:30
-            %li 11:00
-            %li 11:30
-            %li 12:00
-            %li 12:30
-          %ul.row-fluid.timeofday
-            %li.notime
-            %li.notime
-            %li.notime
-            %li.notime
-            %li.ampm am
-            %li.ampm pm
+  = f.input :is_round_trip, :label => false, :wrapper_html => {:class => 'controls controls-row'} do
+    = f.input_field :is_round_trip, :as => :boolean, :inline_label => "Return after"
+    = f.input :return_trip_time, :label => false, :wrapper => :append do
+      #return-trip-time
+        = f.input_field :return_trip_time, :as => :string, :label => false, :style => "width:160px;"
+        %span.add-on
+          %i.icon-time
               
-  .form-actions.hidden
+  .form-actions
     = button_tag :type => 'submit', :class => "btn btn-primary" do
       %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
       = t(:plan_it)
@@ -225,38 +98,67 @@
       = t(:cancel)
 
 :javascript
-
   // Configure UI behaviors
   var typeahead_delay = +"#{Rails.application.config.ui_typeahead_delay}";
   var typeahead_min_chars = +"#{Rails.application.config.ui_typeahead_min_chars}";
   var typeahead_list_length = +"#{Rails.application.config.ui_typeahead_list_length}";
   var geocoder_min_chars = +"#{Rails.application.config.ui_min_geocode_chars}";
+ 
+  $.fn.datepicker.Calendar.setDefaultLocale("#{I18n.locale}");
+  
+  $('#trip-date').datepicker().on("dateChange", function(e) {
+      $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
+  });  
+  
+  $('#trip-time').timepicker({
+    'timeFormat': 'g:i a',
+    'scrollDefaultTime': '9:00 am'
+    }).on("changeTime", function(e) {
+        $('#trip_proxy_trip_time').val($('#trip-time').data('ui-timepicker-value'));
+  });
+  
+  $('#return-trip-time').timepicker({
+    'timeFormat': 'g:i a',
+    'scrollDefaultTime': '10:00 am'
+    }).on("changeTime", function(e) {
+        $('#trip_proxy_return_trip_time').val($('#return-trip-time').data('ui-timepicker-value'));
+  });
+    
+  // Document Ready
+  $(document).ready(function(){
+    $('.combobox').combobox({
+      force_match: false
+    });
+    
+    // Hide what we don't need
+    $('#from_place_candidates').hide();
+    $('#to_place_candidates').hide();
+    // Install a submit handler on the query form
+    ajax_submit_form_handler('query_form');
+  });
+  
+  // Other setup
+  $('.dropdown-toggle').dropdown();
+  
+  
+  // Listeners
 
-
-  ///////////////////////////////////////////////////
-  // LISTENERS
-  //
-  //
-  ///////////////////////////////////////////////////
   // Add change listeners on the text fields
   $("#trip_proxy_from_place").bind("keyup input paste", function() {
     $('#from_place_selected').val("");
     $('#from_place_selected_type').val("");
-    $('#from_place_candidates').hide();
+    $('#from_place_candidates').hide();  
     removeMatchingMarkers('start');
   });
   $("#trip_proxy_to_place").bind("keyup input paste", function() {
     $('#to_place_selected').val("");
-    $('#to_place_selected_type').val("");
-    $('#to_place_candidates').hide();
+    $('#to_place_selected_type').val("");    
+    $('#to_place_candidates').hide();  
     removeMatchingMarkers('stop');
   });
+  
 
-  ///////////////////////////////////////////////////
-  // ACTIONS
-  //
-  //
-  ///////////////////////////////////////////////////
+  // Actions
 
   // user has lost focus on the from address
   $('#trip_proxy_from_place').blur(function() {
@@ -271,7 +173,7 @@
       }
     }
   });
-
+  
   // user has lost focus on the to address
   $('#trip_proxy_to_place').blur(function() {
       if ($('#to_place_selected').val() == "") {
@@ -285,7 +187,7 @@
       }
     }
   });
-
+  
   // User has selected a pre-defined place from the dropdown.
   $('.place-option').on('click', function(event) {
     var t = $(event.target);
@@ -310,15 +212,16 @@
     }
     removeMatchingMarkers(key);
     var marker = create_or_update_marker(key, latlon[0], latlon[1], name, desc, iconStyle);
-    zoom_to_marker(marker);
-
+    setMapToBounds();
+    selectMarker(marker);
+    
     $('#' + t.parents('ul').data('target')).val(name);
   });
 
 
   var from_timeout;
   var to_timeout;
-
+  
   // Enable typeahead for the places forms
   $('#trip_proxy_from_place').typeahead({
       items: typeahead_list_length,
@@ -327,7 +230,7 @@
           if (from_timeout) {
             clearTimeout(from_timeout);
           }
-          from_timeout = setTimeout(function() {
+          from_timeout = setTimeout(function() {      
               return $.ajax({
                   url: $('#trip_proxy_from_place').data('link'),
                   type: 'get',
@@ -336,26 +239,26 @@
                   },
                   dataType: 'json',
                   success: function(result) {
-
+    
                     var resultList = result.map(function (item) {
                         var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, desc: item.description, lat: item.lat, lon: item.lon, addr: item.address };
                         return JSON.stringify(aItem);
                     });
-
+    
                     return process(resultList);
                   },
                   error: function (data) {
-                      show_alert("We are sorry but something went wrong. Please try again.");
+                      show_alert("We are sorry but something went wrong. Please try again. [1]");                
                   }
               });
-          }, typeahead_delay);
+          }, typeahead_delay);            
       },
     matcher: function (obj) {
         var item = JSON.parse(obj);
         return ~item.name.toLowerCase().indexOf(this.query.toLowerCase())
     },
 
-    sorter: function (items) {
+    sorter: function (items) {          
        var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
         while (aItem = items.shift()) {
             var item = JSON.parse(aItem);
@@ -379,20 +282,19 @@
 
     updater: function (obj) {
         var item = JSON.parse(obj);
-
+        
         // create marker on the map
         removeMatchingMarkers('start');
-        marker = create_or_update_marker('start', item.lat, item.lon, item.name, item.desc, 'startIcon');
-        zoom_to_marker(marker);
-
+        create_or_update_typeahead_marker(item, 'start', 'startIcon');
+                
         // Update the UI
         $('#from_place_selected_type').attr('value', item.type);
         $('#from_place_selected').attr('value', item.id);
 
         return item.name;
-    }
-  });
-
+    }  
+  });  
+  
   // Enable typeahead for the places forms
   $('#trip_proxy_to_place').typeahead({
       items: typeahead_list_length,
@@ -401,7 +303,7 @@
           if (to_timeout) {
             clearTimeout(to_timeout);
           }
-          to_timeout = setTimeout(function() {
+          to_timeout = setTimeout(function() {      
               return $.ajax({
                   url: $('#trip_proxy_to_place').data('link'),
                   type: 'get',
@@ -410,26 +312,26 @@
                   },
                   dataType: 'json',
                   success: function(result) {
-
+    
                     var resultList = result.map(function (item) {
                         var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, desc: item.description, lat: item.lat, lon: item.lon, addr: item.address };
                         return JSON.stringify(aItem);
                     });
-
+    
                     return process(resultList);
                   },
                   error: function (data) {
-                      show_alert("We are sorry but something went wrong. Please try again.");
+                      show_alert("We are sorry but something went wrong. Please try again. [2]");
                   }
               });
-          }, typeahead_delay);
+          }, typeahead_delay);            
       },
     matcher: function (obj) {
         var item = JSON.parse(obj);
         return ~item.name.toLowerCase().indexOf(this.query.toLowerCase())
     },
 
-    sorter: function (items) {
+    sorter: function (items) {          
        var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
         while (aItem = items.shift()) {
             var item = JSON.parse(aItem);
@@ -453,34 +355,26 @@
 
     updater: function (obj) {
         var item = JSON.parse(obj);
-
+        
         // create marker on the map
         removeMatchingMarkers('stop');
-        marker = create_or_update_marker('stop', item.lat, item.lon, item.name, item.desc, 'stopIcon');
-        zoom_to_marker(marker);
-
+        create_or_update_typeahead_marker(item, 'stop', 'stopIcon');
+                
         // Update the UI
         $('#to_place_selected_type').attr('value', item.type);
         $('#to_place_selected').attr('value', item.id);
-
+        
         return item.name;
-      }
-  });
-
-  ///////////////////////////////////////////////////
-  // FUNCTIONS
-  //
-  //
-  ///////////////////////////////////////////////////
-
-  function zoom_to_marker(marker) {
-    if (marker) {
-      //setMapToBounds();
-      setMapToMarkerBounds(marker);
-      selectMarker(marker);
-    }
-  }
-
+      }  
+  });  
+  
+  // Functions
+  function create_or_update_typeahead_marker(item, key, iconStyle) {
+    marker = create_or_update_marker(key, item.lat, item.lon, item.name, item.desc, iconStyle);
+    setMapToBounds();
+    selectMarker(marker);
+  };
+    
   function create_or_update_marker(key, lat, lon, name, desc, iconStyle) {
     // See if we can find this existing marker
     marker = findMarkerById(key);
@@ -491,10 +385,8 @@
     addMarkerToMap(marker, true);
     return marker;
   };
-  
   // Add a list of candidate markers to the map
   var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Z', 'Y', 'Z'];
-
   function add_candidate_marker(index, lat, lon, addr, desc, type) {
     var iconStyle;
     var key_template;
@@ -513,7 +405,7 @@
     var marker = createMarker(key, lat, lon, icon, desc, addr, false);
     addMarkerToMap(marker, true);
   }
-
+    
   // Add the candidate locations to the map
   function create_candidate_markers(from_to_type) {
     $('.address-select').each(function() {
@@ -526,7 +418,7 @@
       var latlon = eval(t.data('latlon'));
       if (type === from_to_type) {
         add_candidate_marker(index, latlon[0], latlon[1], addr, desc, type);
-      }
+      }     
     });
   };
 
@@ -542,7 +434,7 @@
       }
     });
   };
-
+      
   // Select a candidate address
   function select_candidate_address(candidate) {
     var id = candidate.data('id');
@@ -566,7 +458,7 @@
     } else {
       update_target = $('#trip_proxy_to_place');
       hidden_val = $('#to_place_selected');
-      hidden_type = $('#to_place_selected_type');
+      hidden_type = $('#to_place_selected_type');      
       panel = $('#to_place_candidates');
       key = 'stop';
       iconStyle = 'stopIcon';
@@ -575,12 +467,13 @@
     hidden_type.val(4);
     panel.hide();
     update_target.val(addr);
-
+    
     // Remove any candidate markers from the map
     removeMatchingMarkers(key);
     // replace the markers with the end point marker
     marker = create_or_update_marker(key, latlon[0], latlon[1], addr, desc, iconStyle);
-    zoom_to_marker(marker);
+    setMapToBounds();
+    selectMarker(marker);
   };
 
   //Only Allow One Checkbox to Be Checked
@@ -590,121 +483,4 @@
 
   $('#trip_proxy_from_is_home').change(function() {
     $('#trip_proxy_to_is_home').prop('checked', 0);
-  });
-
-
-  ///////////////////////////////////////////////////
-  // Document Ready
-  //
-  //
-  ///////////////////////////////////////////////////
-  $(document).ready(function(){
-    $.fn.datepicker.Calendar.setDefaultLocale("#{I18n.locale}");
-
-    //Override Tadaapicker's Calendar hide methods
-    tripformView.overrideTaddaapicker();
-
-    $('#trip-date')
-      .datepicker()
-      .on("dateChange", function(e) {
-          $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
-      }).data('calendar')
-        .setStartDate(new Date);
-
-    $('.combobox').combobox({
-      force_match: false
-    });
-
-    //DP CODE
-    $('#purposepicker ul li').on('click', function(){
-      var purposeSelect = $(this);
-      var purposeId = purposeSelect.attr('name');
-      //Part 1
-      if ( purposeSelect.hasClass('selected')){
-      //if class already exists on THIS li
-        //do nothing
-      } else {
-        $('#purposepicker ul li').removeClass('selected');
-        purposeSelect.addClass('selected');
-
-        $('#trip_proxy_trip_purpose_id').val(purposeId);
-      }
-    });
-
-    //FROM LABEL APPEAR
-    $('input#trip_proxy_from_place').focus(function(){
-        if (window.cocoa)
-          window.cocoa.openKeyboard();
-        $('#from_input').addClass('text-added');
-    });
-
-    $('input#trip_proxy_from_place').click(function(){
-         if (window.cocoa)
-          window.cocoa.openKeyboard();
-    });
-
-    $('input#trip_proxy_from_place').blur(function(){
-      if (window.cocoa)
-        window.cocoa.closeKeyboard();
-
-      if($(this).val().length > 0){
-        //do nothing
-      } else {
-        $('#from_input').removeClass('text-added');
-      }
-    });
-
-    //TO LABEL APPEAR
-    $('input#trip_proxy_to_place').focus(function(){
-        if (window.cocoa)
-          window.cocoa.openKeyboard();
-        $('#to_input').addClass('text-added');
-    });
-
-    $('input#trip_proxy_to_place').click(function(){
-         if (window.cocoa)
-          window.cocoa.openKeyboard();
-    });
-
-    $('input#trip_proxy_to_place').blur(function(){
-      if (window.cocoa)
-        window.cocoa.closeKeyboard();
-
-      if($(this).val().length > 0){
-        //do nothing
-      } else {
-        $('#to_input').removeClass('text-added');
-      }
-    });
-
-    $('.edit-trip-btn').on('click', function(){
-      $('*[data-index=1]').removeClass('hidden');
-      //Unhide the return trip if it was hidden
-      $('#left-results p.return').show();
-      $('#left-results p.return').prev('h5').show();
-      //hide the results and show the description
-      $('#left-description').removeClass('hidden');
-      $('#left-results, .edit-trip-btn').addClass('hidden');
-
-      tripformView.indexCounter = 1;
-      tripformView.formEle.trigger('indexChange');
-    });
-
-    //END DP CODE
-
-    // Hide what we don't need
-    $('#from_place_candidates').hide();
-    $('#to_place_candidates').hide();
-
-    // Install a submit handler on the query form
-    ajax_submit_form_handler('query_form');
-
-    // Other setup
-    $('.dropdown-toggle').dropdown();
-
-    // hide all form items to prevent flash of itms on screen
-    //$('*[data-index]').addClass('hidden');
-
-    // excute init view
-    tripformView.init();
   });

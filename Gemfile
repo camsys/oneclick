@@ -30,6 +30,7 @@ gem 'ajaxful_rating', '>= 3.0.0.beta7'
 gem 'comfortable_mexican_sofa'
 gem 'honeybadger'
 gem 'draper'
+gem 'rubyzip'
 
 group :development do
   #gem 'mysql2'
