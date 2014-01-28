@@ -366,7 +366,7 @@ providers.each do |provider|
 
       ['33305', '33311', '33334'].each do |z|
         c = GeoCoverage.new(value: z, coverage_type: 'zipcode')
-        ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+        ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
       end
 
       ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: disabled, value: 'true')

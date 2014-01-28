@@ -4,6 +4,7 @@ raise "Config not loaded from application.yml" unless ENV['ENV_FROM_APPLICATION_
 
 # use as Rails.application.config.brand
 Oneclick::Application.config.brand = ENV['BRAND'] || 'arc'
+Oneclick::Application.config.ui_mode = ENV['UI_MODE'] || 'desktop'
 
 # defaults for all brands
 Oneclick::Application.config.enable_rideshare = false
