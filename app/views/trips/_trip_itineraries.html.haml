@@ -1,19 +1,22 @@
-/ - itineraries.valid.each_slice(2) do |itineraries|
-%ul.thumbnails#itineraries{ 'data-offset' => '0' }
+/ - itineraries.valid.each_slice(4) do |itineraries|
+%ul.thumbnails#itineraries
   - ItineraryDecorator.decorate_collection(itineraries.valid).each do |itinerary|
-    %li{class: (itinerary.trip_part.selected? ? 'span3' : 'span3')}
+    %li.span3
       .thumbnail.actionbutton.shadow{:tabindex => -1, class: itinerary_thumbnail_class(itinerary)}
-        .dialog-title-bar.corner-top{:data => {:action => itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id)}}
+
+        .dialog-title-bar.corner-top
           .row-fluid
             .span12
-              %i.icon.icon-2x{:class => get_trip_summary_icon(itinerary)}
+              %h3.dialog-title{:style => "margin:0px;vertical-align:top;"}
+                %i.icon{:class => get_trip_summary_icon(itinerary)}
+                = get_trip_summary_title(itinerary)
                 - if itinerary.hidden
                   %i.icon-2x.icon-thumbs-down.pull-right
-              %h3
-                = get_trip_summary_title(itinerary)     
-                  
+                
         .dialog-content{class: dialog_content_class(trip_part)}
-          = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary}
+          .row-fluid
+            .span12
+              = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary}
 
           -if itinerary.missing_information
             .row-fluid
@@ -30,15 +33,19 @@
 
         .dialog-footer.corner-bottom
           .row-fluid
-            .span12{:style => 'margin-bottom:0;'}
-              =link_to select_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "select", :alt => get_alt_button_text(itinerary, 'select'), :title => get_alt_button_text(itinerary, 'select')} do
-                =t(:select)
-              =link_to itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "details", :remote => true, :alt => get_alt_button_text(itinerary, 'view'), :title => get_alt_button_text(itinerary, 'view') } do
-                =t(:details)
-              / =link_to hide_user_trip_path(@traveler, @trip, :itinerary => itinerary), {:class => "hide", :alt => get_alt_button_text(itinerary, 'remove'), :title => get_alt_button_text(itinerary, 'remove') } do
-              /   =t(:hide)
+            .pull-right
+              .span12.btn-toolbar{:style => 'margin-bottom:0;margin-right:5px;'}
+                =link_to select_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "btn btn-mini btn-info", :alt => get_alt_button_text(itinerary, 'select'), :title => get_alt_button_text(itinerary, 'select')} do
+                  %i.icon-check
+                  =t(:select)
+                =link_to itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "btn btn-mini btn-success", :remote => true, :alt => get_alt_button_text(itinerary, 'view'), :title => get_alt_button_text(itinerary, 'view') } do
+                  %i.icon-search
+                  =t(:view_details1)
+                =link_to hide_user_trip_path(@traveler, @trip, :itinerary => itinerary), {:class => "btn btn-mini btn-danger", :alt => get_alt_button_text(itinerary, 'remove'), :title => get_alt_button_text(itinerary, 'remove') } do
+                  %i.icon-remove
+                  =t(:hide)
 
-        = render partial: 'send_itinerary_by_email', locals: {trip: @trip, itinerary: itinerary}
+      = render partial: 'send_itinerary_by_email', locals: {trip: @trip, itinerary: itinerary}
       
  
 :javascript

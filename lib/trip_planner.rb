@@ -102,6 +102,7 @@ class TripPlanner
     task = 'fare'
     fare_options = "&origin=" + to[0].to_s + ',' + to[1].to_s + "&destination=" + from[0].to_s + ',' + from[1].to_s
     url = base_url + task + api_key + entity + fare_options
+    Rails.logger.debug "TripPlanner#get_taxi_itineraries: url: #{url}"
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
@@ -112,6 +113,8 @@ class TripPlanner
       )
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
+
+    Rails.logger.debug "TripPlanner#get_taxi_itineraries: resp.body: #{resp.body}"
 
     fare = JSON.parse(resp.body)
     if fare['status'] != "OK"
@@ -126,6 +129,7 @@ class TripPlanner
     #Get providers
     task = 'businesses'
     url = base_url + task + api_key + entity
+    Rails.logger.debug "TripPlanner#get_taxi_itineraries: url: #{url}"
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
@@ -137,6 +141,7 @@ class TripPlanner
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
 
+    Rails.logger.debug "TripPlanner#get_taxi_itineraries: resp.body: #{resp.body}"
     businesses = JSON.parse(resp.body)
     if businesses['status'] != "OK"
       Honeybadger.notify(

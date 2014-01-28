@@ -12,15 +12,19 @@ class ProgramsController < TravelerAwareController
     if params['inline'] == '1'
 
       if @traveler.has_disability?
-        @path = new_user_accommodation_path(@traveler, inline: 1)
+        @path = new_user_accommodation_path_for_ui_mode(@traveler, inline: 1)
       else
         if user_signed_in?
           @trip = Trip.find(session[:current_trip_id])          
           session[:current_trip_id] =  nil
           @trip.create_itineraries
-          @path = user_trip_path(@traveler, @trip)
+          @path = user_trip_path_for_ui_mode(@traveler, @trip)
         else
-          @path = skip_user_trip_path(@traveler, session[:current_trip_id])
+          if ui_mode_kiosk?
+            @path = skip_user_trip_path_for_ui_mode(@traveler, session[:current_trip_id])
+          else
+            @path = new_user_registration_path(inline: 1)
+          end
         end
       end
     else

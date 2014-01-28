@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140108194606) do
+ActiveRecord::Schema.define(:version => 20140121221711) do
 
   create_table "cms_blocks", :force => true do |t|
     t.integer  "page_id",    :null => false
@@ -180,7 +180,7 @@ ActiveRecord::Schema.define(:version => 20140108194606) do
     t.boolean  "too_late",                                                :default => false
     t.string   "missing_accommodations",                                  :default => ""
     t.text     "cost_comments"
-    t.boolean  "selected",                                                :default => false
+    t.boolean  "selected"
   end
 
   create_table "modes", :force => true do |t|
@@ -243,11 +243,18 @@ ActiveRecord::Schema.define(:version => 20140108194606) do
   end
 
   create_table "providers", :force => true do |t|
-    t.string  "name",        :limit => 64,                   :null => false
-    t.string  "contact",     :limit => 64
-    t.string  "external_id", :limit => 25
-    t.boolean "active",                    :default => true, :null => false
+    t.string  "name",          :limit => 64,                    :null => false
+    t.string  "contact",       :limit => 64
+    t.string  "external_id",   :limit => 25
+    t.boolean "active",                       :default => true, :null => false
     t.string  "email"
+    t.string  "contact_title", :limit => 100
+    t.string  "address",       :limit => 100
+    t.string  "city",          :limit => 100
+    t.string  "state",         :limit => 25
+    t.string  "zip",           :limit => 10
+    t.string  "url"
+    t.string  "phone",         :limit => 25
   end
 
   create_table "rates", :force => true do |t|
@@ -336,19 +343,23 @@ ActiveRecord::Schema.define(:version => 20140108194606) do
   end
 
   create_table "services", :force => true do |t|
-    t.string   "name",                         :limit => 64,                    :null => false
-    t.integer  "provider_id",                                                   :null => false
-    t.integer  "service_type_id",                                               :null => false
-    t.integer  "advanced_notice_minutes",                    :default => 0,     :null => false
-    t.boolean  "volunteer_drivers_used",                     :default => false, :null => false
-    t.boolean  "accepting_new_clients",                      :default => true,  :null => false
-    t.boolean  "wait_list_in_effect",                        :default => false, :null => false
-    t.boolean  "requires_prior_authorization",               :default => false, :null => false
-    t.boolean  "active",                                     :default => true,  :null => false
-    t.datetime "created_at",                                                    :null => false
-    t.datetime "updated_at",                                                    :null => false
+    t.string   "name",                         :limit => 64,                     :null => false
+    t.integer  "provider_id",                                                    :null => false
+    t.integer  "service_type_id",                                                :null => false
+    t.integer  "advanced_notice_minutes",                     :default => 0,     :null => false
+    t.boolean  "volunteer_drivers_used",                      :default => false, :null => false
+    t.boolean  "accepting_new_clients",                       :default => true,  :null => false
+    t.boolean  "wait_list_in_effect",                         :default => false, :null => false
+    t.boolean  "requires_prior_authorization",                :default => false, :null => false
+    t.boolean  "active",                                      :default => true,  :null => false
+    t.datetime "created_at",                                                     :null => false
+    t.datetime "updated_at",                                                     :null => false
     t.string   "email"
     t.string   "external_id",                  :limit => 25
+    t.string   "contact_title",                :limit => 100
+    t.string   "contact",                      :limit => 100
+    t.string   "phone",                        :limit => 25
+    t.string   "url"
   end
 
   create_table "traveler_accommodations", :force => true do |t|

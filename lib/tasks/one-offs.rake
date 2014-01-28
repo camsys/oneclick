@@ -27,7 +27,7 @@ namespace :oneclick do
     end # task
 
     desc "Add Fare Structures for ARC"
-    task :add_fares => :environment do
+    task :add_fares_arc => :environment do
 
       service = Service.find_by_name('JETS Transportation Program')
       if service and service.fare_structures.count == 0
@@ -104,6 +104,193 @@ namespace :oneclick do
 
     end # task
 
+    desc "Add ESP Identifiers to Providers and Services"
+    task :add_esp_ids => :environment do
+
+      service = Service.find_by_name('JETS Transportation Program')
+      if service
+        p "updated service: " + service.name
+        service.external_id = "89144135357234431111"
+        service.save
+      end
+
+      service = Service.find_by_name('Medical Transportation by')
+      if service
+        p "updated service: " + service.name
+        service.external_id = "32138199527497131111"
+        service.save
+      end
+
+      service = Service.find_by_name('Fayette Senior Services')
+      if service
+        p "updated service: " + service.name
+        service.external_id = "86869601213076809999"
+        service.save
+      end
+
+      service = Service.find_by_name('Dial-a-Ride for Seniors (DARTS)')
+      if service
+        p "updated service: " + service.name
+        service.external_id = "54104859570670229999"
+        service.save
+      end
+
+      service = Service.find_by_name('CCT Paratransit')
+      if service
+        p "updated service: " + service.name
+        service.external_id = "57874876269921009999"
+        service.save
+      end
+
+      service = Service.find_by_name('Cherokee Area')
+      if service
+        p "updated service: " + service.name
+        service.external_id = "65980602734372809999"
+        service.save
+      end
+
+      provider = Provider.find_by_external_id("esp#6")
+      if provider
+        p "updating provider:  "  + provider.name
+        provider.external_id = "17471"
+        provider.save
+      end
+
+      provider = Provider.find_by_external_id("esp#7")
+      if provider
+        p "updating provider:  "  + provider.name
+        provider.external_id = "17472"
+        provider.save
+      end
+
+      provider = Provider.find_by_external_id("esp#3")
+      if provider
+        p "updating provider:  "  + provider.name
+        provider.external_id = "17436"
+        provider.save
+      end
+
+      provider = Provider.find_by_external_id("esp#15")
+      if provider
+        p "updating provider:  "  + provider.name
+        provider.external_id = "17625"
+        provider.save
+      end
+
+      provider = Provider.find_by_external_id("esp#22")
+      if provider
+        p "updating provider:  "  + provider.name
+        provider.external_id = "18575"
+        provider.save
+      end
+
+    end # task
+
+    desc "Add Fare Structures for Broward"
+    task :add_fares_broward => :environment do
+
+      service = Service.find_by_name('BC Paratransit')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 0, base: 3.50)
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+      service = Service.find_by_name('Social Services: Limited Transportation')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 2, desc: "Tamarac Para-transit fee is $30.00 for 3 months or 40.00 for 6 months per person for unlimited marketing and medical transportation.")
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+      service = Service.find_by_name('Social Services')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 0, base: 1)
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+      service = Service.find_by_name('Joseph Meyerhoff Senior Center')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 0, base: 0, desc: "Free service for Senior Center members.")
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+      service = Service.find_by_name('Road to Recovery')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 0, base: 0)
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+      service = Service.find_by_name('Special & Community Support Services')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 0, base: 3)
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+
+    end # task
+
+    desc "Add Fare Structures for Broward"
+    task :add_fares_broward => :environment do
+
+      service = Service.find_by_name('BC Paratransit')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 0, base: 3.50)
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+      service = Service.find_by_name('Social Services: Limited Transportation')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 2, desc: "Tamarac Para-transit fee is $30.00 for 3 months or 40.00 for 6 months per person for unlimited marketing and medical transportation.")
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+      service = Service.find_by_name('Social Services')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 0, base: 1)
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+      service = Service.find_by_name('Joseph Meyerhoff Senior Center')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 0, base: 0, desc: "Free service for Senior Center members.")
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+      service = Service.find_by_name('Road to Recovery')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 0, base: 0)
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+      service = Service.find_by_name('Special & Community Support Services')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 0, base: 3)
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+
+    end # task
+
+    desc "Add Companion Allowed Accommodation"
+    task :add_companion => :environment do
+      companion_allowed = TravelerAccommodation.find_or_initialize_by_code('companion_allowed')
+      companion_allowed.name = 'Traveler Companion Permitted'
+      companion_allowed.note = 'Do you travel with a companion?'
+      companion_allowed.datatype = 'bool'
+      companion_allowed.save()
+    end
+
     desc "Set up cms entries"
     task cms: :environment do
       Cms::Site.destroy_all
@@ -165,6 +352,32 @@ EOT
 <span style="float: right;">1-Click/PA is sponsored by the
 <a href="http://www.dot.state.pa.us/" target=_blank>Pennsylvania Department of Transportation</a> and the
 <a href="http://www.rabbittransit.org/" target=_blank>York Adams Transportation Authority</a>.</span>
+EOT
+        site.snippets.create! identifier: 'home-bottom-right-logged-in', label: 'home-bottom-right-logged-in', content: text
+        site.snippets.create! identifier: 'home-bottom-right', label: 'home-bottom-right', content: text
+        text = <<EOT
+Tell us about your trip.  The more information you give us, the more options we can find!
+EOT
+        site.snippets.create! identifier: 'plan-a-trip', label: 'plan a trip', content: text
+
+      when 'broward'
+        text = <<EOT
+<h2 style="text-align: justify;">1-Click/Broward helps you find options to get from here to there, using public transit,
+ door-to-door services, and specialized transportation.  Give it a try, and
+ <a href="mailto://OneClick@camsys.com">tell us</a> what you think.</h2>
+EOT
+        site.snippets.create! identifier: 'home-top-logged-in', label: 'home-top-logged-in', content: text
+        site.snippets.create! identifier: 'home-top', label: 'home-top', content: text
+        text = <<EOT
+1-Click/Broward was funded by the
+ <a href="http://www.fta.dot.gov/grants/13094_13528.html" target=_blank>Veterans Transportation 
+ Community Living Initiative</a>.
+EOT
+        site.snippets.create! identifier: 'home-bottom-left-logged-in', label: 'home-bottom-left-logged-in', content: text
+        site.snippets.create! identifier: 'home-bottom-left', label: 'home-bottom-left', content: text
+        text = <<EOT
+<span style="float: right;">1-Click/Broward is sponsored by 
+<a href="http://211-broward.org/" target=_blank>2-1-1 Broward</a>.</span>
 EOT
         site.snippets.create! identifier: 'home-bottom-right-logged-in', label: 'home-bottom-right-logged-in', content: text
         site.snippets.create! identifier: 'home-bottom-right', label: 'home-bottom-right', content: text
