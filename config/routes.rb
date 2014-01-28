@@ -210,10 +210,10 @@ Oneclick::Application.routes.draw do
 
     end # user
 
-    # devise_scope :user do
-    #   post '/user/kiosk/sign_in' => 'kiosk/sessions#create'
-    #   get '/kiosk/sign_in' => 'kiosk/sessions#new'
-    # end
+    devise_scope :user do
+      post '/kiosk/sign_in' => 'kiosk/sessions#create', as: :kiosk_user_session
+      get '/kiosk/sign_in' => 'kiosk/sessions#new', as: :new_kiosk_user_session
+    end
 
 
     namespace :admin do
