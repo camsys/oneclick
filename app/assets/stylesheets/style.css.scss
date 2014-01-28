@@ -1524,6 +1524,28 @@ input#trip_proxy_return_trip_time.string.optional{
 	}
 }
 
+//Arrive and depart toggle button
+#arrive-depart-toggle{
+	//position:absolute;
+	float:right;
+	background-color: rgba(0,0,0,0);
+	height:28px;
+	width:44px;
+	position:absolute;
+	right:40px;
+	top:42px;
+	cursor:pointer;
+
+	.arrive-depart-circle{
+		border-radius: 50%;
+		background-color: $gray3;
+		height:6px;
+		width:6px;
+		margin:5px auto;
+
+	}
+}
+
 %time-selectors{
 	list-style-type: none;
 	float:left;

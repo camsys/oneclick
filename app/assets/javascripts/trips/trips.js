@@ -352,6 +352,13 @@ tripformView.indexChangeHandler = function() {
             leftResults.find('.date').html(overviewDate);
 
             //pull input value from From section, add to results section
+            //CHANGE LABEL
+            var overviewTimeLabel = $('#trip-time').children('label');
+            var wordSlice = overviewTimeLabel.html();
+            var firstWord = wordSlice.split(" ");
+            var realFirstWord = firstWord[0];
+            var timeLabelChange = $('.time-label').html(realFirstWord + ' Time')
+            //CHANGE VAL
             var overviewTime = $('#trip_proxy_trip_time').val();
             //$('#left-results .time').html(overviewTime);
             leftResults.find('.time').html(overviewTime);
