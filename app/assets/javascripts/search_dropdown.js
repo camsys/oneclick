@@ -16,7 +16,6 @@ window.scrollContent = function ($, options) {
     if (direction == 'forward') amount = amount * -1;
     offset = offset + amount;
 
-
     $list
       .data('offset',        offset)
       .css(options.property, offset + 'px');
@@ -43,10 +42,17 @@ window.scrollContent = function ($, options) {
   $roots.on('click', '.js-next-btn:not(.disabled)', moveSlidesForward);
   $roots.on('click', '.js-prev-btn:not(.disabled)', moveSlidesBackward);
 
-  $roots.each (function () {
-    $el = $(this);
+  $roots.each(function () {
+    var $el = $(this);
+
     setTimeout(function () {
       checkButtonsEnabled($el, $(this).find(options.listSel).data('offset'));
     }, 50);
+
+    $el.data('scroll-content', {
+      refresh: function () {
+        checkButtonsEnabled($el, $el.find(options.listSel).data('offset'));
+      }
+    });
   });
 }

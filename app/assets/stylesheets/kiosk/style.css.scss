@@ -882,20 +882,20 @@ div.trip_proxy_trip_purpose_id{
 	height: 186px;
 	margin-top:0;
 
-	.container-fluid, .row-fluid{
+	.container-fluid, .row-fluid {
 		background-color: rgba(0,0,0,0);
 
-		.span4{
+		.span4 {
 			padding:20px;
 
 		}
 	}
 }
 
-.next-step-container{
+.next-step-container {
 	padding:20px 30px 20px 0;
 
-	> .next-step-btn{
+	> .next-step-btn {
 		height: 166px;
 		border-top:1px solid lighten($blue, 5%);
 		outline: 1px solid darken($blue, 10%);
@@ -904,7 +904,7 @@ div.trip_proxy_trip_purpose_id{
 		box-shadow: 0px 2px 8px rgba(0,0,0,0.4);
 		text-align: center;
 
-		&:active{
+		&:active {
 			background-color: lighten($blue, 10%);
 			border-top:1px solid lighten($blue, 15%);
 		}
@@ -920,7 +920,7 @@ div.trip_proxy_trip_purpose_id{
 			margin: 64px 0 64px 64px;
 			float:left;
 		}
-		.arrow-container{
+		.arrow-container {
 			width: 200px;
 			height: 166px;
 			background: rgba(255,255,255,.24) url(/assets/kiosk/arrow-next-step.png) no-repeat center center;
@@ -933,7 +933,7 @@ div.trip_proxy_trip_purpose_id{
 }
 
 //ELIGIBILITY HEADER
-.input-header{
+.input-header {
 	height: 128px;
 	border-top: 0px solid white;
 	//border-bottom: 1px solid black;
@@ -2350,9 +2350,3 @@ body.sessions.new, body.registrations.new{
  
 /* Landscape phones and down */
 //@media (max-width: 480px) { ... }
-
-
-//hide depart dropdown in tripform view
-.trip_proxy_arrive_depart {
-  display: none;
-}

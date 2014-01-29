@@ -405,6 +405,7 @@ DEPENDENCIES
   draper
   email_spec
   factory_girl_rails
+  faraday_middleware
   figaro
   geocoder
   growl

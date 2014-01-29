@@ -1,0 +1,57 @@
+= f.hidden_field :mode
+= f.hidden_field :from_place_selected, id: "from_place_selected"
+= f.hidden_field :from_place_selected_type, id: "from_place_selected_type"
+
+/ TODO: ADD BUTTON FUNCTIONALITY:
+/ IF NO, CLOSE
+%span#current-location.row-fluid.js-hide-nav-button(data-index=0)
+  .span8.offset2
+    .title-container
+      .bar
+      %h3 Start at your current location?
+
+    %a#yes(href="#" name="yesno" value="yes") Yes
+    %a#no.js-progress-sequence( href="#" name="yesno" value="no") No
+
+/ TODO: ADD THE DIV WITH THE DATA INDEX
+#from_input(data-index=1)
+  .fadeout
+
+  = f.input :from_place, class: 'inline', label: t(:from) do
+    - data = {placeholder: t(:enter_from), link: search_kiosk_user_trips_path, provide: 'typeahead'}
+    - opts = {id: 'trip_proxy_from_place', autocomplete: 'off', class: 'no-bottom-margin ajax-typeahead input-large address', data: data}
+    = f.text_field :from_place, opts
+    = image_tag 'ajax-loader.gif', id: 'from_geocoding_indicator', style: 'display:none;', class: 'loading-indicator'
+
+  #from_place_candidates.js-typeahead-visibility-root.hidden
+    .row-fluid
+      .span12
+        %h6=# t(:found_x_matches, count: results.count )
+
+    .row-fluid
+      .search-dropdown-container
+        .candidate-list.span10
+          .js-candidate-list-inner{'data-offset' => '0'}
+            %ul.nav.nav-list
+              -# ([]).each_with_index do |addr, index|
+                %li
+                  %a.address-select{href: '#', data: {id: addr['id'], index: index, latlon: [addr['lat'], addr['lng']], desc: addr['description'], type: type, addr: addr['title']}= addr['title']
+
+        .scroller-container.span2.pull-right
+          .scroll-up.js-prev-btn
+          .scrollbar
+            .scrollbar-bar
+              .scrollbar-scroll
+          .scroll-down.js-next-btn
+
+  #trip_map
+    = LeafletMap(mapid: 'lmap', markers: @markers, tile_provider: 'GOOGLEMAP', min_zoom: 3, max_zoom: 15, class: 'map', style: 'height:558px')
+    = yield :scripts
+
+.form-actions.hidden
+  = button_tag type: 'submit', class: "btn btn-primary" do
+    %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
+    = t(:plan_it)
+  = link_to :back, class: "cancel_link" do
+    %i.icon.icon-reply
+    = t(:cancel)

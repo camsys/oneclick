@@ -1,3 +1,8 @@
+jQuery(function ($) {
+(function () {
+if ($('.js-trip-wizard-form').length > 0) return;
+// -- END START OF DISABLING CODE -- !://
+
 /**
  * Created by Miguel Bermudez on 12/9/13.
  */
@@ -26,7 +31,7 @@ var characteristicsView = {
  *.............................................................................*/
 characteristicsView.init = function () {
   "use strict";
-
+  return;
   //cache all form items
   this.formItems = $('*[data-index]');
   this.formItems.addClass('hidden');
@@ -378,3 +383,7 @@ window.CGUtils = {
     return range;
   }
 }
+
+// -- END DISABLING CODE -- !://
+})();
+});

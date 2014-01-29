@@ -31,6 +31,7 @@ gem 'comfortable_mexican_sofa'
 gem 'honeybadger'
 gem 'draper'
 gem 'rubyzip'
+gem 'faraday_middleware'
 
 group :development do
   #gem 'mysql2'

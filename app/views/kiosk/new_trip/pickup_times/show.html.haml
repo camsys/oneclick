@@ -1,0 +1,53 @@
+%div{:data => {:index => 1}}
+  = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
+    #trip-date= f.input_field :trip_date, :as => :string, :label => false
+
+
+#timepicker-one{ :data => {:index => 2}}
+  %div(style="margin-top: 130px")
+    / TODO: ADD BUTTON THAT ALTERS THIS?
+    = f.input :arrive_depart, :collection => [t(:departing_at), t(:arriving_by)], :include_blank => false, :label => t(:arrive_depart), :input_html => {:style => "width:200px;"}
+
+  = f.input :trip_time, :wrapper => :append, :label => t(:trip_time) do
+    #trip-time
+      = f.label :departing_at
+      = f.input :trip_time, :as => :string, :label => false
+
+  .row-fluid
+    .span10.offset1
+      .timetable
+        %ul.row-fluid.time
+          %li 1:00
+          %li 1:30
+          %li 2:00
+          %li 2:30
+          %li 3:00
+          %li 3:30
+        %ul.row-fluid.time
+          %li 4:00
+          %li 4:30
+          %li 5:00
+          %li 5:30
+          %li 6:00
+          %li 6:30
+        %ul.row-fluid.time
+          %li 7:00
+          %li 7:30
+          %li 8:00
+          %li 8:30
+          %li 9:00
+          %li 9:30
+        %ul.row-fluid.time
+          %li 10:00
+          %li 10:30
+          %li 11:00
+          %li 11:30
+          %li 12:00
+          %li 12:30
+        %ul.row-fluid.timeofday
+          %li.notime
+          %li.notime
+          %li.notime
+          %li.notime
+          %li.ampm am
+          %li.ampm pm
