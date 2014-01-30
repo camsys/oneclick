@@ -15,7 +15,7 @@ class ServicesController < ApplicationController
       coverages = @service.service_coverage_maps.where(rule: rule).type_polygon.first
       polylines[rule] = []
       if coverages
-        geometry = coverages.geo_coverage.polygon_to_array
+        geometry = Boundary.find(3).geom
         polylines[rule] << {
           "id" => 0,
           "geom" => geometry,

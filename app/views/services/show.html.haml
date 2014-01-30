@@ -200,6 +200,7 @@
   .span6
     %h4='Polygon Map'
     .well.white-well
+
       = LeafletMap({ :mapid => "lmap_" + "origin",  :polylines => @polylines['origin'], :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :style => "height:500px;" })
   .span3
 = yield :scripts

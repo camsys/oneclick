@@ -25,7 +25,7 @@ module CsHelpers
   end
 
   def self.ui_mode_kiosk?
-    Oneclick::Application.config.ui_mode=='kiosk'
+    Boundary::Application.config.ui_mode=='kiosk'
   end
 
   def current_or_guest_user
