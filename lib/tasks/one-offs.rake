@@ -304,7 +304,7 @@ namespace :oneclick do
       # site.snippets.create! identifier: 'home-bottom-left', label: 'home-bottom-left', content: '<div class="well">This is content for home-bottom-left</div>'
       # site.snippets.create! identifier: 'home-bottom-center', label: 'home-bottom-center', content: '<div class="well">This is content for home-bottom-center</div>'
       # site.snippets.create! identifier: 'home-bottom-right', label: 'home-bottom-right', content: '<div class="well">This is content for home-bottom-right</div>'
-      brand = Oneclick::Application.config.brand
+      brand = Boundary::Application.config.brand
       case brand
 
       when 'arc'

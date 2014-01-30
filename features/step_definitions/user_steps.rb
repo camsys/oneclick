@@ -160,7 +160,7 @@ Then /^I see an unconfirmed account message$/ do
 end
 
 Then /^I see a successful sign in message$/ do
-  page.should have_content "Signed in successfully."
+  page.should have_content "Welcome, #{@user.first_name}"
 end
 
 Then /^I should see a successful sign up message$/ do
@@ -183,8 +183,10 @@ Then /^I should see a mismatched password message$/ do
   page.should have_content "Passworddoesn't match confirmation"
 end
 
-Then /^I should see a signed out message$/ do
-  page.should have_content "Signed out successfully."
+unless CsHelpers::ui_mode_kiosk?
+  Then /^I should see a signed out message$/ do
+    page.should have_content "Signed out successfully."
+  end
 end
 
 Then /^I see an invalid login message$/ do

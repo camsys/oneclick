@@ -19,3 +19,7 @@ is similar, please contact us and we'll add a note to the README so that others 
 h2. License
 
 TBD
+
+h2. Misc
+
+Some additional text to make it deploy.

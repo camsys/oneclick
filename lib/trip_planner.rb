@@ -16,7 +16,7 @@ class TripPlanner
     date = trip_datetime.in_time_zone.strftime("%Y-%m-%d")
     mode = 'TRANSIT,WALK'
 
-    base_url = Oneclick::Application.config.open_trip_planner
+    base_url = Boundary::Application.config.open_trip_planner
     url_options = "/opentripplanner-api-webapp/ws/plan?"
     url_options += "arriveBy=" + arriveBy + "&time=" + time
     url_options += "&mode=" + mode + "&date=" + date
@@ -93,9 +93,9 @@ class TripPlanner
   def get_taxi_itineraries(from, to, trip_datetime)
 
     base_url = "http://api.taxifarefinder.com/"
-    api_key = Oneclick::Application.config.taxi_fare_finder_api_key
+    api_key = Boundary::Application.config.taxi_fare_finder_api_key
     api_key = '?key=' + api_key
-    city = Oneclick::Application.config.taxi_fare_finder_api_city
+    city = Boundary::Application.config.taxi_fare_finder_api_city
     entity = '&entity_handle=' + city
 
     #Get fare

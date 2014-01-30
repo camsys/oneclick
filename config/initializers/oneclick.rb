@@ -21,6 +21,7 @@ case ENV['BRAND'] || 'arc'
   Oneclick::Application.config.enable_rideshare = true
   Oneclick::Application.config.name = 'ARC OneClick'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.arc.camsys"
+  ENV['SHAPEFILE'] = "/Users/dedwards/Downloads/ParatransitBuffer_100812/ParatransitBuffer_100812.shp"
   honeybadger_api_key = 'ba642a71'
 
 when 'broward'  

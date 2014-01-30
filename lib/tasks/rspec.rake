@@ -17,6 +17,13 @@ if %w{development test}.include? Rails.env
     RSpec::Core::RakeTask.new(:spec)
 
     namespace :spec do
+
+      RSpec::Core::RakeTask.new(:desktop)
+
+      RSpec::Core::RakeTask.new(:kiosk) do |t|
+        t.ruby_opts = 'UI_MODE=kiosk'
+      end
+
       types = begin
         dirs = Dir['./spec/**/*_spec.rb'].
         map { |f| f.sub(/^\.\/(spec\/\w+)\/.*/, '\\1') }.

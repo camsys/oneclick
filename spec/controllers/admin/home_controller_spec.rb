@@ -3,6 +3,9 @@ require 'spec_helper'
 describe Admin::HomeController do
 
   describe "GET 'index'" do
+    before(:each) do
+      FactoryGirl.create(:service)
+    end
     it "redirects if not logged in" do
       get :index
       response.status.should eq 302

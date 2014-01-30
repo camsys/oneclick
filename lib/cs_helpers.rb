@@ -21,7 +21,11 @@ module CsHelpers
   TRAVELER_USER_SESSION_KEY = 'traveler'
 
   def ui_mode_kiosk?
-    Oneclick::Application.config.ui_mode=='kiosk'
+    CsHelpers::ui_mode_kiosk?
+  end
+
+  def self.ui_mode_kiosk?
+    Boundary::Application.config.ui_mode=='kiosk'
   end
 
   def current_or_guest_user
@@ -117,6 +121,8 @@ module CsHelpers
       mode_name = 'walk'
     elsif itinerary.mode.name.downcase == 'paratransit'
       mode_name = itinerary.service.service_type.name.downcase
+    elsif itinerary.mode.name.downcase == 'transit'
+      mode_name = itinerary.transit_type
     else
       mode_name = itinerary.mode.name.downcase unless itinerary.mode.nil?
     end
@@ -129,8 +135,13 @@ module CsHelpers
     return if itinerary.nil?
     
     mode_name = get_pseudomode_for_itinerary(itinerary)
-
-    if mode_name == 'transit'
+    if mode_name == 'rail'
+      title = "Rail"
+    elsif mode_name == 'railbus'
+      title = "Rail and Bus"
+    elsif mode_name == 'bus'
+      title = "Bus"
+    elsif mode_name == 'transit'
       title = I18n.t(:transit)
     elsif mode_name == 'paratransit'
       title = I18n.t(:specialized_services)      
@@ -149,6 +160,27 @@ module CsHelpers
     end
     return title    
   end
+
+  #Generates a transit name of the form AGENCY MODE, AGENCY MODE e.g., MARTA Bus, MARTA Subway, CCT Bus
+  def get_trip_summary_name(itinerary)
+
+    return if itinerary.nil?
+
+    return itinerary.service.name if itinerary.service
+
+    return get_trip_summary_title(itinerary) unless itinerary.mode.name.downcase == 'transit'
+
+    name_string = ""
+    legs = itinerary.get_legs
+    arrow = "\u2023"
+    legs.each do |leg|
+      if leg.mode.downcase.in? ['rail', 'subway', 'tram', 'bus']
+        name_string += leg.agency_id.to_s + " " + leg.mode.to_s.humanize + ' ' + arrow + ' '
+      end
+    end
+    name_string.chop.chop
+  end
+
 
   # Kiosk-related helpers
 
