@@ -147,7 +147,7 @@ ActiveRecord::Schema.define(:version => 20140125155620) do
   create_table "geo_coverages", :force => true do |t|
     t.string "value"
     t.string "coverage_type", :limit => 128
-    t.string "polygon",       :limit => nil
+    t.string "polygon"
   end
 
   create_table "itineraries", :force => true do |t|
