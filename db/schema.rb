@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140121221711) do
+ActiveRecord::Schema.define(:version => 20140125155620) do
 
   create_table "cms_blocks", :force => true do |t|
     t.integer  "page_id",    :null => false
@@ -147,6 +147,7 @@ ActiveRecord::Schema.define(:version => 20140121221711) do
   create_table "geo_coverages", :force => true do |t|
     t.string "value"
     t.string "coverage_type", :limit => 128
+    t.string "polygon",       :limit => nil
   end
 
   create_table "itineraries", :force => true do |t|
@@ -186,6 +187,14 @@ ActiveRecord::Schema.define(:version => 20140121221711) do
   create_table "modes", :force => true do |t|
     t.string  "name",   :limit => 64, :null => false
     t.boolean "active",               :null => false
+  end
+
+  create_table "organizations", :force => true do |t|
+    t.string   "name"
+    t.string   "type"
+    t.integer  "parent_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "places", :force => true do |t|
@@ -503,6 +512,8 @@ ActiveRecord::Schema.define(:version => 20140121221711) do
     t.string   "last_sign_in_ip",        :limit => 16
     t.datetime "created_at",                                           :null => false
     t.datetime "updated_at",                                           :null => false
+    t.integer  "agency_id"
+    t.integer  "provider_id"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

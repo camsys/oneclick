@@ -158,7 +158,7 @@ namespace :oneclick do
     type_count = Hash.new(0)
     CSV.open("output.csv", "wb", {col_sep: "\t"}) do |csv|
       csv << %w{OBJECTID  LONGITUDE LATITUDE  FACNAME ADDRESS_1 ADDRESS_2 CITY  STATE ZIP AREACODE  PHONE FIPS  COUNTY  TYPE  METHOD}
-      Dir.glob('/Users/dhaskin/Downloads/weogeo_j65310/data/*_point.shp').each do |shp|
+      Dir.glob('/Users/dedwards/Downloads/ParatransitBuffer_100812/*.shp').each do |shp|
         puts shp
         RGeo::Shapefile::Reader.open(shp) do |shapefile|
           # input_rows = shapefile.size

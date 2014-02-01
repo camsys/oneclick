@@ -170,7 +170,7 @@ module ApplicationHelper
     
     mode_name = get_pseudomode_for_itinerary(itinerary)
 
-    if mode_name == 'transit'
+    if mode_name.in? ['transit', 'rail', 'bus', 'railbus']
       partial = 'transit_details'
     elsif mode_name == 'paratransit'
       partial = 'paratransit_details'
@@ -195,8 +195,13 @@ module ApplicationHelper
     return if itinerary.nil?
     
     mode_name = get_pseudomode_for_itinerary(itinerary)
-    
-    if mode_name == 'transit'
+    if mode_name == 'rail'
+      icon_name = 'icon-bus-sign'
+    elsif mode_name == 'railbus'
+      icon_name = 'icon-bus-sign'
+    elsif mode_name == 'bus'
+      icon_name = 'icon-bus-sign'
+    elsif mode_name == 'transit'
       icon_name = 'icon-bus-sign'
     elsif mode_name == 'paratransit'
       icon_name = 'icon-truck-sign'

@@ -34,6 +34,9 @@ gem 'rubyzip'
 gem 'faraday_middleware'
 
 group :development do
+  gem 'activerecord-postgis-adapter'
+  gem 'rgeo-activerecord'
+  gem 'ffi-geos'
   #gem 'mysql2'
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :rbx]
@@ -60,6 +63,7 @@ group :development do
 end
 group :test do
   gem 'factory_girl_rails'
+  gem 'rspec-core'
   gem 'rspec-rails'
   gem 'capybara'
   gem 'cucumber-rails', :require=>false

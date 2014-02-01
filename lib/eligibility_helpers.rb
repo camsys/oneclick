@@ -177,6 +177,7 @@ class EligibilityHelpers
     eligible_itineraries  = []
     itineraries.each do |itinerary|
       service = itinerary['service']
+
       #Match Residence
       coverages = service.service_coverage_maps.where(rule: 'residence').map {|c| c.geo_coverage.value.delete(' ').downcase}
       if trip_part.trip.user.home
@@ -190,6 +191,24 @@ class EligibilityHelpers
         next
       end
 
+      #Todo: If the user does not list his home, then this itinerary is thrown out.  Instead, we should show the itinerary
+      #but warn that we don't know the user's home address.
+      coverages = service.service_coverage_maps.where(rule: 'residence').type_polygon
+      if !coverages.empty? and trip_part.user.home.nil?
+        next
+      end
+      within = coverages.empty?
+      coverages.each do |coverage|
+        if coverage.geo_coverage.polygon_contains?(trip_part.user.home.lon, trip_part.user.home.lat)
+          within = true
+          break
+        end
+      end
+
+      unless within
+        next
+      end
+
       #Match Origin
       coverages = service.service_coverage_maps.where(rule: 'origin').map {|c| c.geo_coverage.value.delete(' ').downcase}
       county_name = trip_part.from_trip_place.county_name || ""
@@ -197,10 +216,36 @@ class EligibilityHelpers
         next
       end
 
+      coverages = service.service_coverage_maps.where(rule: 'origin').type_polygon
+      within = coverages.empty?
+      coverages.each do |coverage|
+        if coverage.geo_coverage.polygon_contains?(trip_part.from_trip_place.lon, trip_part.from_trip_place.lat)
+          within = true
+          break
+        end
+      end
+
+      unless within
+        next
+      end
+
       #Match Destination
       county_name = trip_part.to_trip_place.county_name || ""
       coverages = service.service_coverage_maps.where(rule: 'destination').map {|c| c.geo_coverage.value.delete(' ').downcase}
       unless (coverages.count == 0) or (trip_part.to_trip_place.zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
+        next
+      end
+
+      coverages = service.service_coverage_maps.where(rule: 'destination').type_polygon
+      within = coverages.empty?
+      coverages.each do |coverage|
+        if coverage.geo_coverage.polygon_contains?(trip_part.to_trip_place.lon, trip_part.to_trip_place.lat)
+          within = true
+          break
+        end
+      end
+
+      unless within
         next
       end
 

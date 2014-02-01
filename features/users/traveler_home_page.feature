@@ -1,3 +1,4 @@
+@desktop
 Feature: Traveler Home Page
   As a visitor to the website
   I want to see the actions I can take listed on the homepage
