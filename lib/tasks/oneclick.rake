@@ -7,7 +7,7 @@ namespace :oneclick do
   task version: :environment do
     version = `git describe`.chomp
     File.open('config/initializers/version.rb', 'w') do |f|
-      f.puts "Boundary::Application.config.version = '#{version}'"
+      f.puts "Oneclick::Application.config.version = '#{version}'"
     end
   end
 
