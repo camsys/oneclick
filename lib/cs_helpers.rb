@@ -17,6 +17,20 @@ module CsHelpers
     :trips => 'icon-tags',
     :services => 'icon-bus-sign'
   }
+
+  def admin_menu
+  [
+    {label: t(:find_traveler), target: error_501_path, icon: ACTION_ICONS[:find_traveler]},
+    {label: t(:create_traveler), target: error_501_path, icon: ACTION_ICONS[:create_traveler]},
+    {label: t(:trips), target: admin_trips_path, icon: ACTION_ICONS[:trips]},
+    {label: t(:agencies), target: admin_agencies_path, icon: ACTION_ICONS[:agents_agencies]},
+    {label: t(:providers), target: admin_providers_path, icon: ACTION_ICONS[:agents_agencies]},
+    {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:agents_agencies]},
+    {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports]},
+    {label: t(:view_services), target: service_path(Service.first.id), icon: ACTION_ICONS[:services]},
+  ]  
+end
+  
   # Session key for storing the traveler id
   TRAVELER_USER_SESSION_KEY = 'traveler'
 

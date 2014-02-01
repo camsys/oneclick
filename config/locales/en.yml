@@ -21,7 +21,11 @@ en:
   # Agent View strings
   find_traveler: "Find Traveler"
   create_traveler: "Create Traveler"
-  agents_agencies: "Agents Agencies"
+  agencies: "Agencies"
+  providers: "Providers"
+  agencies: "Agencies"
+  users: "Users"
+  agents_agencies: "Agencies, Providers, Users"
   # Agent and Admin string
   reports: "Reports"
   admin: 'Admin'

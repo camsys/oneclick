@@ -1,4 +1,15 @@
 class User < ActiveRecord::Base
+  include ActiveModel::Validations
+
+  # Validator(s)
+  class OrganizationTypeValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      record.errors.add attribute, "agency org must be of correct type" if !record.agency.nil? and
+        !record.agency.agency?
+      record.errors.add attribute, "provider org must be of correct type" if !record.provider.nil? and
+        !record.provider.provider?
+    end
+  end
 
   # enable roles for this model
   rolify
@@ -33,12 +44,17 @@ class User < ActiveRecord::Base
   has_many :buddy_relationships, class_name: 'UserRelationship', foreign_key: :user_id
   has_many :buddies, class_name: 'User', through: :buddy_relationships, source: :delegate
 
+  belongs_to :agency, class_name: 'Organization'
+  belongs_to :provider, class_name: 'Organization'
+
   scope :confirmed, where('relationship_status_id = ?', RelationshipStatus::CONFIRMED)
 
   # Validations
   validates :email, :presence => true
   validates :first_name, :presence => true
   validates :last_name, :presence => true
+  validates :agency, organization_type: true
+  validates :provider, organization_type: true
 
   before_create :make_user_profile
 

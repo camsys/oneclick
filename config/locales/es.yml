@@ -18,6 +18,9 @@ es:
   # Agent View strings
   find_traveler: "Encontrar al Viajero"
   create_traveler: "Crear un Viajero"
+  agencies: "[es21]Agencies[es]"
+  providers: "[es22]Providers[es]"
+  agencies: "[es23]Agencies[es]"
   agents_agencies: "Agencias Agentes"
   # Agent and Admin string
   reports: "Reportes"

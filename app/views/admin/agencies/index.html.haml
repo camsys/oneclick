@@ -1,0 +1,32 @@
+%h1 Agencies
+
+%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable
+  %thead
+    %tr
+      %th= t(:name)
+      / TODO I18N
+      %th Parent
+      %th Sub-agencies
+      %th
+  %tbody{ :id => 'admin_agencies_table'}
+    - @agencies.each do |agency|
+      %tr
+        %td= agency.name
+        %td
+          - if agency.parent
+            = link_to agency.parent.name, [:admin, agency.parent]
+          - else
+            = ''
+        %td
+          = render partial: agency.sub_agencies, spacer_template: 'comma'
+        %td.center
+          = link_to edit_admin_agency_path(agency), {class: 'btn'} do
+            %i.icon-pencil
+            = t(:edit)
+          = link_to admin_agency_users_path(agency), {class: 'btn'} do
+            %i.icon-group
+            = t(:users)
+
+= link_to 'New Agency', new_admin_agency_path, {class: 'btn'}
+
+= render 'shared/datatable_javascript'

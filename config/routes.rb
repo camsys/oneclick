@@ -1,5 +1,8 @@
 Oneclick::Application.routes.draw do
 
+  resources :organizations
+
+
   match '/configuration' => 'configuration#configuration'
 
   scope "(:locale)", locale: /en|es/ do
@@ -221,6 +224,13 @@ Oneclick::Application.routes.draw do
       resources :trips, :only => [:index]
       match '/geocode' => 'util#geocode'
       match '/' => 'home#index'
+      resources :agencies do
+        resources :users
+      end
+      resources :providers do
+        resources :users
+      end
+      resources :users
     end
 
     resources :services do

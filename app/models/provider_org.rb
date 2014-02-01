@@ -1,0 +1,2 @@
+class ProviderOrg < Organization
+end
