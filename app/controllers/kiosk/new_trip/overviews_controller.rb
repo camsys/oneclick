@@ -5,6 +5,8 @@ class Kiosk::NewTrip::OverviewsController < Kiosk::NewTrip::BaseController
 
     if @trip_proxy.valid?
       @trip = create_trip(@trip_proxy)
+    else
+      raise @trip_proxy.errors.inspect
     end
 
     # Create markers for the map control

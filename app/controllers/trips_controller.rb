@@ -1,6 +1,4 @@
 class TripsController < PlaceSearchingController
-  include TripsSupport
-
   # set the @trip variable before any actions are invoked
   before_filter :get_traveler, only: [:show, :new, :email, :email_itinerary, :details, :repeat, :edit, :destroy,
     :update, :skip, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2, :create, :show_printer_friendly]
@@ -586,14 +584,14 @@ protected
   def create_markers(trip_proxy)
     markers = []
     if trip_proxy.from_place_selected
-      place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected.to_i, true)
+      place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected, true)
     else
       place = {:name => trip_proxy.from_place, :lat => trip_proxy.from_lat, :lon => trip_proxy.from_lon, :formatted_address => trip_proxy.from_raw_address}
     end
     markers << get_addr_marker(place, 'start', 'startIcon')
 
     if trip_proxy.to_place_selected
-      place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected.to_i, false)
+      place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected, false)
     else
       place = {:name => trip_proxy.to_place, :lat => trip_proxy.to_lat, :lon => trip_proxy.to_lon, :formatted_address => trip_proxy.to_raw_address}
     end
@@ -614,7 +612,6 @@ private
 
   # creates a trip_proxy object from form parameters
   def create_trip_proxy_from_form_params
-
     trip_proxy = TripProxy.new(params[:trip_proxy])
     trip_proxy.traveler = @traveler
 
@@ -702,7 +699,7 @@ private
     # get the start for this trip
     from_place = TripPlace.new()
     from_place.sequence = 0
-    place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected.to_i, true)
+    place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected, true)
     if place[:poi_id]
       from_place.poi = Poi.find(place[:poi_id])
     elsif place[:place_id]
@@ -752,7 +749,7 @@ private
     # get the end for this trip
     to_place = TripPlace.new()
     to_place.sequence = 1
-    place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected.to_i, false)
+    place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected, false)
     if place[:poi_id]
       to_place.poi = Poi.find(place[:poi_id])
     elsif place[:place_id]
@@ -854,8 +851,8 @@ private
   # Get the selected place for this trip-end based on the type of place
   # selected and the data for that place
   def get_preselected_place(place_type, place_id, is_from = false)
-
-    if place_type == POI_TYPE
+    case place_type
+    when POI_TYPE
       # the user selected a POI using the type-ahead function
       poi = Poi.find(place_id)
       return {
@@ -865,7 +862,7 @@ private
         :lat => poi.location.first,
         :lon => poi.location.last
         }
-    elsif place_type == CACHED_ADDRESS_TYPE
+    when CACHED_ADDRESS_TYPE
       # the user selected an address from the trip-places table using the type-ahead function
       trip_place = @traveler.trip_places.find(place_id)
       return {
@@ -880,7 +877,7 @@ private
         :county => trip_place.county,
         :raw => trip_place.raw
         }
-    elsif place_type == PLACES_TYPE
+    when PLACES_TYPE
       # the user selected a place using the places drop-down
       place = @traveler.places.find(place_id)
       return {
@@ -890,15 +887,15 @@ private
         :lat => place.location.first,
         :lon => place.location.last
         }
-    elsif place_type == RAW_ADDRESS_TYPE
+    when RAW_ADDRESS_TYPE
       # the user entered a raw address and possibly selected an alternate from the list of possible
       # addresses
       if is_from
         #puts place_id
         #puts get_cached_addresses(CACHED_FROM_ADDRESSES_KEY).ai
-        place = get_cached_addresses(CACHED_FROM_ADDRESSES_KEY)[place_id]
+        place = get_cached_addresses(CACHED_FROM_ADDRESSES_KEY)[place_id.to_i]
       else
-        place = get_cached_addresses(CACHED_TO_ADDRESSES_KEY)[place_id]
+        place = get_cached_addresses(CACHED_TO_ADDRESSES_KEY)[place_id.to_i]
       end
       Rails.logger.debug "in get_preselected_place"
       Rails.logger.debug "#{is_from} #{place.ai}"
@@ -914,6 +911,17 @@ private
         :county => place[:county],
         :raw => place[:raw]
         }
+    when PLACES_AUTOCOMPLETE_TYPE
+      result = get_places_autocomplete_details(place_id)
+      place = result.body['result']
+
+      {
+        place_id:          false,
+        name:              place['formatted_address'],
+        formatted_address: place['formatted_address'],
+        lat:               place['geometry']['location']['lat'],
+        lon:               place['geometry']['location']['lng'],
+      }
     else
       return {}
     end

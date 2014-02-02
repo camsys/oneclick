@@ -2,21 +2,7 @@ class PlaceSearchingController < TravelerAwareController
 
   # Include map helpers into this super class
   include MapHelper
-
-  # UI Constants
-  MAX_POIS_FOR_SEARCH = Rails.application.config.ui_search_poi_items
-  ADDRESS_CACHE_EXPIRE_SECONDS = Rails.application.config.address_cache_expire_seconds
-
-  # Cache keys
-  CACHED_FROM_ADDRESSES_KEY = 'CACHED_FROM_ADDRESSES_KEY'
-  CACHED_TO_ADDRESSES_KEY = 'CACHED_TO_ADDRESSES_KEY'
-  CACHED_PLACES_ADDRESSES_KEY = 'CACHED_PLACES_ADDRESSES_KEY'
-
-  # Constants for type of place user has selected
-  POI_TYPE = "1"
-  CACHED_ADDRESS_TYPE = "2"
-  PLACES_TYPE = "3"
-  RAW_ADDRESS_TYPE = "4"
+  include TripsSupport
 
   # Search for addresses, existing addresses, or POIs based on text string entered by the user
   # def geocode
@@ -168,16 +154,19 @@ class PlaceSearchingController < TravelerAwareController
   end
 
   def details
-    result = google_api.get('details/json') do |req|
-      req.params['reference'] = params[:id]
-      req.params['sensor']    = true
-      req.params['key']       = 'AIzaSyBHlpj9FucwX45l2qUZ3441bkqvcxR8QDM'
-    end
-
+    result = get_places_autocomplete_details(params[:id])
     render json: result.body
   end
 
   protected
+
+  def get_places_autocomplete_details reference
+    google_api.get('details/json') do |req|
+      req.params['reference'] = reference
+      req.params['sensor']    = true
+      req.params['key']       = 'AIzaSyBHlpj9FucwX45l2qUZ3441bkqvcxR8QDM'
+    end
+  end
 
   def google_api
     connection = Faraday.new('https://maps.googleapis.com/maps/api/place') do |conn|

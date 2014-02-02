@@ -10,7 +10,7 @@ class Kiosk::NewTrip::BaseController < Kiosk::TripsController
     # @markers = create_trip_proxy_markers(@trip_proxy).to_json
     # @places = create_place_markers(@traveler.places)
 
-    if builder.respond_to? :defaults
+    if builder.try :respond_to?, :defaults
       builder.defaults(@trip_proxy)
     end
 
@@ -32,6 +32,7 @@ protected
 
   def builder
     "trip/#{current_step}".camelize.constantize
+  rescue NameError
   end
 
   def next_step_url

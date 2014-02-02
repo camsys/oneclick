@@ -15,6 +15,22 @@ module TripsSupport
   MODE_EDIT   = "2" # Editing an existing trip that is in the future
   MODE_REPEAT = "3" # Repeating an existing trip that is in the past
 
+  # UI Constants
+  MAX_POIS_FOR_SEARCH = Rails.application.config.ui_search_poi_items
+  ADDRESS_CACHE_EXPIRE_SECONDS = Rails.application.config.address_cache_expire_seconds
+
+  # Cache keys
+  CACHED_FROM_ADDRESSES_KEY = 'CACHED_FROM_ADDRESSES_KEY'
+  CACHED_TO_ADDRESSES_KEY = 'CACHED_TO_ADDRESSES_KEY'
+  CACHED_PLACES_ADDRESSES_KEY = 'CACHED_PLACES_ADDRESSES_KEY'
+
+  # Constants for type of place user has selected
+  POI_TYPE = "1"
+  CACHED_ADDRESS_TYPE = "2"
+  PLACES_TYPE = "3"
+  RAW_ADDRESS_TYPE = "4"
+  PLACES_AUTOCOMPLETE_TYPE = '5'
+
   # Set the default travel time/date to x mins from now
   def default_trip_time
     Time.now.in_time_zone.next_interval(DEFAULT_TRIP_TIME_AHEAD_MINS.minutes)

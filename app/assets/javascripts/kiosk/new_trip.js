@@ -52,9 +52,5 @@ jQuery(function ($) {
 
   viewSequence($);
 
-  $('.js-trip-wizard-form').on('ajax:complete', function (e, xhr) {
-    var data = xhr.responseJSON;
-    NewTrip.update(data.trip);
-    window.location = data.location;
-  });
+  $('.js-trip-wizard-form').on('ajax:complete', NewTrip.stepCompleteHandler);
 });

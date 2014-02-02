@@ -73,4 +73,20 @@ jQuery(function ($) {
 
   // tripformView.nextButton.off('click', tripformView.nextBtnHandler);
   // tripformView.nextButton.on('click', tripformView.submitButtonhandler);
+
+  $('.js-trip-wizard-form').on('submit', function (e) {
+    e.stopPropagation(); e.preventDefault();
+    $form = $(e.target);
+
+    // this is the final step. Instead of POSTing the form, let's get
+    // the trip object from localStorage and post all of the params from that.
+    // this essentially acts the 'build' step.
+    jQuery.ajax($form.attr('action'), {
+      data: { trip_proxy: NewTrip.read() },
+      type: 'POST',
+      complete: function (xhr, status) {
+        NewTrip.stepCompleteHandler(e, xhr);
+      }
+    });
+  });
 });

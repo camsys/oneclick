@@ -167,4 +167,10 @@
       // }
     });
   }
+
+  NewTrip.stepCompleteHandler = function (e, xhr) {
+    var data = xhr.responseJSON;
+    NewTrip.update(data.trip);
+    window.location = data.location;
+  };
 })();
