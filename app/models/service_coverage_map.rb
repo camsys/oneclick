@@ -8,4 +8,5 @@ class ServiceCoverageMap < ActiveRecord::Base
 
   scope :type_polygon, self.joins(:geo_coverage).where("coverage_type = ?", "polygon")
 
+
 end
