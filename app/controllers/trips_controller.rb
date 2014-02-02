@@ -7,24 +7,7 @@ class TripsController < PlaceSearchingController
   before_filter :get_trip, :only => [:show, :email, :email_itinerary, :details, :repeat, :edit,
     :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2, :show_printer_friendly]
 
-
-  TIME_FILTER_TYPE_SESSION_KEY = 'trips_time_filter_type'
-
-  # Format strings for the trip form date and time fields
-  TRIP_DATE_FORMAT_STRING = "%m/%d/%Y"
-  TRIP_TIME_FORMAT_STRING = "%-I:%M %P"
-
-  # Set up configurable defaults
-  DEFAULT_RETURN_TRIP_DELAY_MINS  = Rails.application.config.return_trip_delay_mins
-  DEFAULT_TRIP_TIME_AHEAD_MINS    = Rails.application.config.trip_time_ahead_mins
-
-  # Modes for creating/updating new trips
-  MODE_NEW = "1"        # Its a new trip from scratch
-  MODE_EDIT = "2"       # Editing an existing trip that is in the future
-  MODE_REPEAT = "3"     # Repeating an existing trip that is in the past
-
   def index
-
     # Filtering logic. See ApplicationHelper.trip_filters
     if params[:time_filter_type]
       @time_filter_type = params[:time_filter_type]
@@ -58,8 +41,6 @@ class TripsController < PlaceSearchingController
 
   end
 
-  # GET /trips/1
-  # GET /trips/1.json
   def show
     @show_hidden = params[:show_hidden]
 
@@ -580,11 +561,6 @@ class TripsController < PlaceSearchingController
   end
 
 protected
-
-  # Set the default travel time/date to x mins from now
-  def default_trip_time
-    return Time.now.in_time_zone.next_interval(DEFAULT_TRIP_TIME_AHEAD_MINS.minutes)
-  end
 
   # Safely set the @trip variable taking into account trip ownership
   def get_trip

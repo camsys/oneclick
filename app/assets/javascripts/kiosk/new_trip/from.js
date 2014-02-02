@@ -28,5 +28,5 @@ jQuery(function ($) {
   }
 
   $('#current-location a#yes').on('click', useCurrentLocationHandler);
-  setupPlacesSearchTypeahead('from', 'stop');
+  setupPlacesSearchTypeahead('from', 'start');
 });

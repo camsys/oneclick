@@ -4,38 +4,22 @@ class Kiosk::NewTrip::BaseController < Kiosk::TripsController
   layout false
 
   def show
-    @trip_proxy = TripProxy.new()
-    @trip_proxy.traveler = @traveler
+    @trip_proxy = model.new
 
-    # set the flag so we know what to do when the user submits the form
-    @trip_proxy.mode = MODE_NEW
+    # # Create markers for the map control
+    # @markers = create_trip_proxy_markers(@trip_proxy).to_json
+    # @places = create_place_markers(@traveler.places)
 
-    # Set the travel time/date to the default
-    travel_date = default_trip_time
-
-    @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
-    @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
-
-    # Set the trip purpose to its default
-    @trip_proxy.trip_purpose_id = TripPurpose.all.first.id
-
-    # default to a round trip. The default return trip time is set the the default trip time plus
-    # a configurable interval
-    return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
-    @trip_proxy.is_round_trip = "1"
-    @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
-
-    # Create markers for the map control
-    @markers = create_trip_proxy_markers(@trip_proxy).to_json
-    @places = create_place_markers(@traveler.places)
+    if builder.respond_to? :defaults
+      builder.defaults(@trip_proxy)
+    end
 
     render 'layouts/kiosk/new_trip', layout: false
   end
 
   def create
-    if steps.last == current_step
-
-    @trip_proxy = create_trip_proxy_from_form_params
+    @trip_proxy = model.new(params[:trip_proxy])
+    @trip_proxy.valid?
 
     render_response
   end
@@ -43,7 +27,11 @@ class Kiosk::NewTrip::BaseController < Kiosk::TripsController
 protected
 
   def model
-    "trip/"
+    "trip/validation_wrapper/#{current_step}".camelize.constantize
+  end
+
+  def builder
+    "trip/#{current_step}".camelize.constantize
   end
 
   def next_step_url

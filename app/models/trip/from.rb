@@ -1,4 +1,6 @@
 module Trip::From
+  extend ActiveSupport::Concern
+
   included do
     # name or raw address of the end points selected by the user. The value could be the
     # name of an object (Place, POI), a previously used address (TripPlace) or a string
