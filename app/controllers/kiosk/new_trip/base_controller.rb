@@ -44,6 +44,14 @@ protected
     url_for_step current_step
   end
 
+  def back_url
+    if current_step_index == 0
+      root_path
+    else
+      url_for_step(previous_step)
+    end
+  end
+
   def render_response
     render json: {
       location: next_step_url,
@@ -61,6 +69,10 @@ protected
 
   def next_step
     steps[current_step_index + 1]
+  end
+
+  def previous_step
+    steps[current_step_index - 1]
   end
 
   def url_for_step step

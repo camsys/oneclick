@@ -27,13 +27,13 @@ class PlaceSearchingController < TravelerAwareController
   #     cache_key = CACHED_PLACES_ADDRESSES_KEY
   #   end
 
-  #   unless ENV['FAKE_GEOCODING_RESULTS']
+  #   if ENV['FAKE_GEOCODING_RESULTS']
+  #     geocoder = OneclickGeocoderFake.new
+  #   else
   #     geocoder = OneclickGeocoder.new
   #     geocoder.geocode(@query)
   #     # cache the results
   #     cache_addresses(cache_key, geocoder.results)
-  #   else
-  #     geocoder = OneclickGeocoderFake.new
   #   end
 
   #   Rails.logger.info "geocoder is #{geocoder.class}"
@@ -130,7 +130,7 @@ class PlaceSearchingController < TravelerAwareController
       req.params['input']    = query
       req.params['sensor']   = false
       req.params['key']      = 'AIzaSyBHlpj9FucwX45l2qUZ3441bkqvcxR8QDM'
-      req.params['types']    = 'geocode'
+      req.params['types']    = 'establishment'
       req.params['location'] = params[:map_center]
       req.params['radius']   = 20_000
     end
