@@ -33,6 +33,8 @@ class Kiosk::NewTrip::BaseController < Kiosk::TripsController
   end
 
   def create
+    if steps.last == current_step
+
     @trip_proxy = create_trip_proxy_from_form_params
 
     render_response
@@ -40,7 +42,12 @@ class Kiosk::NewTrip::BaseController < Kiosk::TripsController
 
 protected
 
+  def model
+    "trip/"
+  end
+
   def next_step_url
+    return nil if next_step.blank?
     url_for_step next_step
   end
 
