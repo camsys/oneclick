@@ -28,6 +28,7 @@ module Trip::ReturnTime
   end
 
   def self.defaults trip
+    travel_date = TripsSupport.default_trip_time
     # default to a round trip. The default return trip time is set the the default trip time plus
     # a configurable interval
     return_trip_time = travel_date + TripsSupport::DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
