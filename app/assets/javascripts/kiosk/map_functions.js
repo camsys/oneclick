@@ -81,6 +81,7 @@ function select_candidate_address(candidate) {
   var panel;
   var key = 'start';
   var iconStyle = 'startIcon';
+
   if (type == 'from') {
     update_target = $('#trip_proxy_from_place');
     hidden_val = $('#from_place_selected');
@@ -94,6 +95,7 @@ function select_candidate_address(candidate) {
     key = 'stop';
     iconStyle = 'stopIcon';
   }
+
   hidden_val.val(index);
   hidden_type.val(4);
   panel.hide();

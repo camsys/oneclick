@@ -1,16 +1,29 @@
-= f.hidden_field :to_place_selected, :id => "to_place_selected"
-= f.hidden_field :to_place_selected_type, :id => "to_place_selected_type"
+= f.hidden_field :mode
+= f.hidden_field :from_place_selected, id: "from_place_selected"
+= f.hidden_field :from_place_selected_type, id: "from_place_selected_type"
+
+/ TODO: ADD BUTTON FUNCTIONALITY:
+/ IF NO, CLOSE
+%span#current-location.row-fluid.js-hide-nav-button(data-index=0)
+  .span8.offset2
+    .title-container
+      .bar
+      %h3 Start at your current location?
+
+    %a#yes(href="#" name="yesno" value="yes") Yes
+    %a#no.js-progress-sequence( href="#" name="yesno" value="no") No
 
 / TODO: ADD THE DIV WITH THE DATA INDEX
-#to_input{ :data => {:index => 2}}
+#from_input(data-index=1)
   .fadeout
 
-  = f.input :to_place, :class => "inline", :label => t(:to) do
-    = f.text_field :to_place, :placeholder => t(:enter_to), :id => "trip_proxy_to_place", :class => "no-bottom-margin ajax-typeahead input-large address", :autocomplete => "off", :data => {:link => search_kiosk_user_trips_path, :provide => "typeahead"}
-    = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
-    = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
+  = f.input :from_place, class: 'inline', label: t(:from) do
+    - data = {placeholder: t(:enter_from), link: search_kiosk_user_trips_path, provide: 'typeahead'}
+    - opts = {id: 'trip_proxy_from_place', autocomplete: 'off', class: 'no-bottom-margin ajax-typeahead input-large address', data: data}
+    = f.text_field :from_place, opts
+    = image_tag 'ajax-loader.gif', id: 'from_geocoding_indicator', style: 'display:none;', class: 'loading-indicator'
 
-  #to_place_candidates.js-typeahead-visibility-root.hidden
+  #from_place_candidates.js-typeahead-visibility-root.hidden
     .row-fluid
       .span12
         %h6=# t(:found_x_matches, count: results.count )

@@ -70,113 +70,115 @@ jQuery(function ($) {
     return this;
   };
 
-  $('#trip_proxy_from_place').typeahead({
-    items: typeaheadListLength,
-    minLength: typeaheadMinChars,
-    menu: $('ul.nav.nav-list')[0],
-    item: '<li><a class="address-select" href="#"></a></li>',
-    source: function(query, process) {
-      if (typeaheadTimeouts.from) clearTimeout(typeaheadTimeouts.from);
+  window.setupPlacesSearchTypeahead = function (locationName, markerName) {
+    $('#trip_proxy_'+ locationName +'_place').typeahead({
+      items: typeaheadListLength,
+      minLength: typeaheadMinChars,
+      menu: $('ul.nav.nav-list')[0],
+      item: '<li><a class="address-select" href="#"></a></li>',
+      source: function(query, process) {
+        if (typeaheadTimeouts[locationName]) clearTimeout(typeaheadTimeouts[locationName]);
 
-      typeaheadTimeouts.from = setTimeout(function() {
-        return $.ajax({
-          url: $('#trip_proxy_from_place').data('link'),
-          type: 'get',
-          data: { query: query, map_center: LMmap.getCenter().lat + ',' + LMmap.getCenter().lng },
-          dataType: 'json',
-          success: function(result) {
-            var resultList = result.map(function (item) {
-              var aItem = {
-                index: item.index,
-                type: item.type,
-                id: item.id,
-                name: item.name,
-                desc: item.description,
-                lat: item.lat,
-                lon: item.lon,
-                addr: item.address
-              };
+        typeaheadTimeouts[locationName] = setTimeout(function() {
+          return $.ajax({
+            url: $('#trip_proxy_'+ locationName +'_place').data('link'),
+            type: 'get',
+            data: { query: query, map_center: LMmap.getCenter().lat + ',' + LMmap.getCenter().lng },
+            dataType: 'json',
+            success: function(result) {
+              var resultList = result.map(function (item) {
+                var aItem = {
+                  index: item.index,
+                  type: item.type,
+                  id: item.id,
+                  name: item.name,
+                  desc: item.description,
+                  lat: item.lat,
+                  lon: item.lon,
+                  addr: item.address
+                };
 
-              return JSON.stringify(aItem);
-            });
+                return JSON.stringify(aItem);
+              });
 
-            return process(resultList);
-          },
-          error: function (data) {
-            show_alert('We are sorry but something went wrong. Please try again.');
-          }
-        });
-      }, typeaheadDelay);
-    },
+              return process(resultList);
+            },
+            error: function (data) {
+              show_alert('We are sorry but something went wrong. Please try again.');
+            }
+          });
+        }, typeaheadDelay);
+      },
 
-    matcher: function (obj) {
-      var item = JSON.parse(obj);
-      return ~item.name.toLowerCase().indexOf(this.query.toLowerCase())
-    },
+      matcher: function (obj) {
+        var item = JSON.parse(obj);
+        return ~item.name.toLowerCase().indexOf(this.query.toLowerCase())
+      },
 
-    sorter: function (items) {
-      var beginswith = []
-        , caseSensitive = []
-        , caseInsensitive = []
-        , item;
+      sorter: function (items) {
+        var beginswith = []
+          , caseSensitive = []
+          , caseInsensitive = []
+          , item;
 
-      while (aItem = items.shift()) {
-        var item = JSON.parse(aItem);
+        while (aItem = items.shift()) {
+          var item = JSON.parse(aItem);
 
-        if (!item.name.toLowerCase().indexOf(this.query.toLowerCase()))
-          beginswith.push(JSON.stringify(item));
-        else if (~item.name.indexOf(this.query))
-          caseSensitive.push(JSON.stringify(item));
-        else
-          caseInsensitive.push(JSON.stringify(item));
-      }
+          if (!item.name.toLowerCase().indexOf(this.query.toLowerCase()))
+            beginswith.push(JSON.stringify(item));
+          else if (~item.name.indexOf(this.query))
+            caseSensitive.push(JSON.stringify(item));
+          else
+            caseInsensitive.push(JSON.stringify(item));
+        }
 
-      return beginswith.concat(caseSensitive, caseInsensitive);
-    },
+        return beginswith.concat(caseSensitive, caseInsensitive);
+      },
 
-    highlighter: function (obj) {
-      var item = JSON.parse(obj);
-      var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
-      return item.name.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
-        return '<strong>' + match + '</strong>'
-      })
-    },
+      highlighter: function (obj) {
+        var item = JSON.parse(obj);
+        var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
+        return item.name.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+          return '<strong>' + match + '</strong>'
+        })
+      },
 
-    updater: function (obj) {
-      var item = JSON.parse(obj);
+      updater: function (obj) {
+        var item = JSON.parse(obj);
 
-      function showMarker () {
-        // create marker on the map
-        removeMatchingMarkers('start');
-        var marker = create_or_update_marker('start', item.lat, item.lon, item.name, item.desc, 'startIcon');
-        zoom_to_marker(marker);
-      }
+        function showMarker () {
+          // create marker on the map
+          removeMatchingMarkers(markerName);
+          var marker = create_or_update_marker(markerName, item.lat, item.lon, item.name, item.desc, markerName + 'Icon');
+          zoom_to_marker(marker);
+        }
 
-      if (item.type == '5') {
-        $.get('/place_details/' + item.id + '.json', function (data) {
-          item.lat = data.result.geometry.location.lat;
-          item.lon = data.result.geometry.location.lng;
+        if (item.type == '5') {
+          $.get('/place_details/' + item.id + '.json', function (data) {
+            item.lat = data.result.geometry.location.lat;
+            item.lon = data.result.geometry.location.lng;
+            showMarker();
+          });
+        } else {
           showMarker();
-        });
-      } else {
-        showMarker();
+        }
+
+        // Update the UI
+        $('#'+ locationName +'_place_selected_type').attr('value', item.type);
+        $('#'+ locationName +'_place_selected').attr('value', item.id);
+
+        return item.name;
       }
+    });
+  };
 
-      // Update the UI
-      $('#from_place_selected_type').attr('value', item.type);
-      $('#from_place_selected').attr('value', item.id);
-
-      return item.name;
-    }
-  });
-
-  // User has selected an alternate address from the list
+  // User has selected an alternate address in the list
   $('.address-select').click(function() {
     select_candidate_address($(this));
     return false;
   });
 
-  // User has selected an alternate address from the list
+  // User has selected an alternate address in the list
   $('.address-select').hover(function() {
     var addr = $(this).data('addr');
     // Pan to the marker

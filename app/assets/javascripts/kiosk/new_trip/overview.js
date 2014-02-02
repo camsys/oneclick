@@ -39,8 +39,11 @@ jQuery(function ($) {
   // Show the start & end pins and ensure proper zoom/pan
   // See if we can find this existing marker
 
-  var marker = findMarkerById('start');
-  addMarkerToMap(marker, true);
+  ['start', 'stop'].forEach(function (markerName) {
+    var marker = findMarkerById(markerName);
+    addMarkerToMap(marker, true);
+  });
+
   refreshMarkers();
   setMapToBounds();
 
