@@ -6,7 +6,7 @@ module Kiosk
     def index
       @actions = if user_signed_in?
         [
-          {label: t(:plan_a_trip), target: new_kiosk_user_trip_path(user_id: get_traveler.id), icon: ACTION_ICONS[:plan_a_trip]}
+          {label: t(:plan_a_trip), target: kiosk_user_new_trip_start_path(user_id: get_traveler.id), icon: ACTION_ICONS[:plan_a_trip]}
         ]
       else
         [

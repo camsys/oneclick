@@ -8,7 +8,8 @@ module Kiosk
     end
 
     def back_url
-      raise 'Not implemented'
+      # raise 'Not implemented'
+      ''
     end
   end
 end

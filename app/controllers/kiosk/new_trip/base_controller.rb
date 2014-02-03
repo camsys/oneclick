@@ -60,6 +60,7 @@ protected
   end
 
   def current_step_index
+    return 0 if current_step == 'start'
     steps.index(current_step)
   end
 
