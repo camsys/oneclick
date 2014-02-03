@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" id="1" measuredWidth="960" measuredHeight="700">
+    <screen xsi:type="model:Screen" href="assets/Components/BasedScreenLoggedInTitleOnly.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="3" x="44" y="142" text="My Trips" measuredWidth="105" measuredHeight="40">
+    <font size="24px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:VScrollbar" id="6" x="903" y="192" height="265" measuredWidth="17" measuredHeight="265"/>
+  <widgets xsi:type="model:Icon" id="7" x="780" y="504" width="57" height="53" measuredWidth="57" measuredHeight="53" icon="assets/mail-reply (large)" link="TravelerLandingPage.screen"/>
+  <widgets xsi:type="model:Table" id="10" x="44" y="192" width="850" height="265" text="Date, From, To, Rating, Actions&#xA;(bg:lightGreen).September 30, (bg:lightGreen).My House, (bg:lightGreen).My Doctor,(bg:lightGreen). , (bg:lightGreen).[Change]   [View]&#xA;(bg:lightGreen).September 15, (bg:lightGreen).1550 Mount Zion Rd., (bg:lightGreen).York County Office Building,(bg:lightGreen). , (bg:lightGreen).[Change]   [View]&#xA;September 4, My House, York Cemetary, {assets/star}{assets/star}{assets/star}{assets/star}{assets/star},[Feedback]   [Repeat]&#xA;August 18, Community Center, 284 Main Street, {assets/star}{assets/star}{assets/star}{assets/star}{assets/star-half-empty},[Feedback]   [Repeat]&#xA;August 11, My House, Physical Therapy, {assets/star}{assets/star}{assets/star}{assets/star-empty}{assets/star-empty},[Feedback]   [Repeat]&#xA;July 11, My House, etc., {assets/star}{assets/star}{assets/star-empty}{assets/star-empty}{assets/star-empty},[Feedback]   [Repeat]&#xA;May 4, My House, etc., {assets/star}{assets/star}{assets/star-empty}{assets/star-empty}{assets/star-empty},[Feedback]   [Repeat]&#xA;May 1, My House, etc., {assets/star}{assets/star}{assets/star-empty}{assets/star-empty}{assets/star-empty},[Feedback]   [Repeat]" measuredWidth="850" measuredHeight="265" alternative="#eeeeee">
+    <font size="16px"/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" id="1" x="2" y="1" measuredWidth="960" measuredHeight="700">
+    <screen xsi:type="model:Screen" href="assets/Components/BasedScreenLoggedInTitleOnly.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Text" id="2" x="250" y="224" text="Service Providers:&#xA;* Information on their service area, fares/programs, &#xA;    and times of service&#xA;&#xA;Agency and Account Management&#xA;* Set up new agencies and agent accounts&#xA;&#xA;Other Accessibility Functions:&#xA;* Ranking possible shelter locations&#xA;* Identifying workplaces that are most accessible&#xA;## Like this" measuredWidth="585" measuredHeight="352">
+    <font size="24px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="3" x="20" y="149" text="Additional Features and Functions" measuredWidth="646" measuredHeight="67">
+    <font size="43px"/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

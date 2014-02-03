@@ -1,7 +1,7 @@
 module ApplicationHelper
 
   METERS_TO_MILES = 0.000621371192
-  
+
   include CsHelpers
   
   ICON_DICTIONARY = {
@@ -289,5 +289,6 @@ module ApplicationHelper
   def controller_css_class
     controller_name
   end
+
 
 end

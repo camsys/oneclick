@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Converted from Font Awesome. Glyph: f017 -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2048" height="2048" xml:space="preserve">
+<g transform="translate(256, 1664) scale(1, -1)">
+	<path id="time" d="M768 1408q209 0 385.5 -103t279.5 -279.5t103 -385.5t-103 -385.5t-279.5 -279.5t-385.5 -103t-385.5 103t-279.5 279.5t-103 385.5t103 385.5t279.5 279.5t385.5 103zM768 96q148 0 273 73t198 198t73 273t-73 273t-198 198t-273 73t-273 -73t-198 -198t-73 -273 t73 -273t198 -198t273 -73zM1024 640q26 0 45 -19t19 -45v-96q0 -26 -19 -45t-45 -19h-416q-26 0 -45 19t-19 45v480q0 26 19 45t45 19h96q26 0 45 -19t19 -45v-320h256z" />
+</g>
+</svg>	

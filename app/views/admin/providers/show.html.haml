@@ -1,0 +1,10 @@
+%p
+  %b Name:
+  = @provider.name
+
+%p
+  %pre= @provider.inspect
+
+= link_to 'Edit', edit_admin_provider_path(@provider)
+\|
+= link_to 'List', admin_providers_path

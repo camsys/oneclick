@@ -1,3 +1,6 @@
+- content_for :head do
+  = javascript_include_tag 'tadaaapickr.pack.min.js'
+
 = form_tag geocode_user_trips_path, :remote => true, :id => "query_form" do
   = hidden_field_tag :query
   = hidden_field_tag :target

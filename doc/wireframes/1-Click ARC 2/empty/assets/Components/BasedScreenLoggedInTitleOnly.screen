@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore" xmlns:o="http://wireframesketcher.com/1.0/model/overrides">
+  <widgets xsi:type="model:Master" id="1" measuredWidth="960" measuredHeight="700">
+    <screen xsi:type="model:Screen" href="BaseScreenTitleOnly.screen#/"/>
+    <overrides>
+      <widgetChanges xsi:type="o:Insert" newIndex="3">
+        <object xsi:type="model:Link" x="791" y="104" text="Log Out">
+          <font/>
+        </object>
+      </widgetChanges>
+      <widgetChanges xsi:type="o:Insert" newIndex="2">
+        <object xsi:type="model:Icon" x="866" y="82" icon="assets/cog (large)"/>
+      </widgetChanges>
+      <widgetChanges xsi:type="o:Insert" newIndex="2">
+        <object xsi:type="model:Label" x="729" y="72" text="Welcome, Fred">
+          <font size="20px"/>
+        </object>
+      </widgetChanges>
+    </overrides>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

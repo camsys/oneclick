@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @organization.name
+%p
+  %b Org type:
+  = @organization.org_type
+%p
+  %b Parent:
+  = @organization.parent_id
+
+= link_to 'Edit', edit_organization_path(@organization)
+\|
+= link_to 'Back', organizations_path

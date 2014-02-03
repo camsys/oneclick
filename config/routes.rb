@@ -221,6 +221,21 @@ Oneclick::Application.routes.draw do
       resources :trips, :only => [:index]
       match '/geocode' => 'util#geocode'
       match '/' => 'home#index'
+      resources :agencies do
+        get 'select_user'
+        resources :users do
+          post 'add_to_agency', on: :collection
+          put 'add_to_agency', on: :collection
+        end
+      end
+      resources :provider_orgs do
+        resources :users
+        resources :services
+      end
+      resources :users do
+        put 'update_roles', on: :member
+      end
+      resources :providers
     end
 
     resources :services do

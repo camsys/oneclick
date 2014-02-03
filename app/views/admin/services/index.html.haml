@@ -1,0 +1,36 @@
+%h1 Services
+
+%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_services_table
+  %thead
+    %tr
+      %th= t(:name)
+      / TODO I18N
+      %th Info
+      %th
+  %tbody
+    - @services.each do |service|
+      %tr
+        %td= service.name
+        %td
+          %pre= service.ai(html: true)
+        %td.center
+          = link_to error_501_path, {class: 'btn'} do
+            %i.icon-pencil
+            = t(:edit)
+
+/ = link_to 'New Agency', new_admin_agency_path, {class: 'btn'}
+
+/ = render 'shared/datatable_javascript'
+
+:javascript
+  $(document).ready(function() {
+    $('#admin_services_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ services per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ services",
+              "sInfoEmpty": "Showing 0 to 0 of 0 services",
+              "sInfoFiltered": "(filtered from _MAX_ total services)"
+          }
+      } );
+  } );

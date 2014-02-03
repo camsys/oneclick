@@ -10,7 +10,7 @@ Oneclick::Application.config.ui_mode = ENV['UI_MODE'] || 'desktop'
 Oneclick::Application.config.enable_rideshare = false
 
 case ENV['BRAND'] || 'arc'
-  when 'arc'
+when 'arc'
   Oneclick::Application.config.ui_logo = 'arc/arc-logo.png'
   Oneclick::Application.config.geocoder_components = 'administrative_area:GA|country:US'
   Oneclick::Application.config.map_bounds = [[33.457797,-84.754028], [34.090199,-83.921814]]
@@ -69,3 +69,10 @@ Oneclick::Application.config.trip_time_ahead_mins = 30      # minutes ahead of n
 
 Oneclick::Application.config.remote_read_timeout_seconds = 5    # seconds to wait before timing out reading a page through a web request
 Oneclick::Application.config.remote_request_timeout_seconds = 5 # seconds to wait for a remote web site/api to respond to a request
+
+ROLES = [
+  'System Administrator',
+  'Agency Administrator',
+  'Agency Agent',
+  'Provider Staff'
+]
