@@ -8,7 +8,7 @@
       %thead
         %tr
           %td Trip Date
-          - keys = @data.first[1].keys
+          - keys = @data.collect {|d| d[1].keys}.flatten.uniq
           - keys.each do |k|
             %td= k
       %tbody

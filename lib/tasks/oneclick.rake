@@ -237,6 +237,7 @@ namespace :oneclick do
       Rails.logger.info "Added characterstics to user"
     end
     users.each_with_index do |u, ui|
+      d = Date.today + rand(-30..30).days
       (1..100).each do |i|
         text_size = rand(200)
         t = u.trips.create! trip_purpose: TripPurpose.all.sample,
@@ -244,9 +245,16 @@ namespace :oneclick do
           taken: [true, false].sample,
           rating: [nil, [*0..5]].flatten.sample
         t.trip_parts.create! from_trip_place: TripPlace.all.sample, to_trip_place: TripPlace.all.sample, sequence: 0,
-          scheduled_date: (Date.today + rand(-30..30).days), scheduled_time: Time.now
+          scheduled_date: (d + rand(-5..5).days), scheduled_time: Time.now
         Rails.logger.info "Added trip #{i} to user #{ui}"
       end
+    end
+  end
+
+  task populate_provider_orgs: :environment do
+    Provider.all.each do |p|
+      p.create_provider_org! name: p.name
+      p.save!
     end
   end
 
