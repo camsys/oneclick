@@ -30,7 +30,7 @@
                   /   = link_to destroy_user_session_path, :method=>'delete' do
                   /     %i.icon.icon-signout
                   /     = t(:logout)
-                  - if current_user.has_role? :admin
+                  - if is_admin?
                     %li.divider.text-left
                     %li
                       = link_to admin_path do

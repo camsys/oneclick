@@ -59,6 +59,10 @@ end
     end
   end
 
+  def is_admin?
+    current_user and (current_user.has_role?(:admin) or current_user.has_role?('System Administrator'))
+  end
+
   # Sets the #traveler class variable
   def get_traveler
     if user_signed_in?

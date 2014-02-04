@@ -19,7 +19,7 @@
         %td= user.roles.first.name.titleize unless user.roles.first.nil?
         %td.center
           %a.btn{"data-toggle" => "modal", :href => "#role-options-#{user.id}", :type => "button"} Change role
-          = render partial: user, locals: {agency: @agency}
+        = render partial: user, locals: {agency: @agency}
 
 = link_to 'Add User', '#select_user', {class: 'btn', "data-toggle" => "modal"}
 

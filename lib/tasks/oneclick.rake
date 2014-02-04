@@ -241,11 +241,11 @@ namespace :oneclick do
       (1..100).each do |i|
         text_size = rand(200)
         t = u.trips.create! trip_purpose: TripPurpose.all.sample,
-          user_comments: LoremIpsum.generate.truncate(text_size, omission: '').split.sample(text_size).join(' '),
-          taken: [true, false].sample,
-          rating: [nil, [*0..5]].flatten.sample
+        user_comments: LoremIpsum.generate.truncate(text_size, omission: '').split.sample(text_size).join(' '),
+        taken: [true, false].sample,
+        rating: [nil, [*0..5]].flatten.sample
         t.trip_parts.create! from_trip_place: TripPlace.all.sample, to_trip_place: TripPlace.all.sample, sequence: 0,
-          scheduled_date: (d + rand(-5..5).days), scheduled_time: Time.now
+        scheduled_date: (d + rand(-5..5).days), scheduled_time: Time.now
         Rails.logger.info "Added trip #{i} to user #{ui}"
       end
     end
@@ -258,4 +258,44 @@ namespace :oneclick do
     end
   end
 
-end
+  task more_users: :environment do
+    users = (1..20).each do |i|
+      random_string = ((0...16).map { (65 + rand(26)).chr }.join)
+      u = User.new
+      u.first_name = "Sample"
+      u.last_name = "User#{i}"
+      u.password = random_string
+      u.email = "#{u.first_name.downcase}_#{u.last_name.downcase}@camsys.com" 
+      u.save!(:validate => false)      
+      Rails.logger.info "Generated user"
+      u
+    end
+  end
+
+  task fix_roles: :environment do
+    Role.destroy_all
+    ROLES.each do |r|
+      Role.create! name: r
+    end
+    # For old times's sake
+    Role.create! name: :admin
+    u = User.find_by_email('email@camsys.com')
+    u.add_role 'System Administrator'
+    u.add_role :admin
+  end
+
+  task create_arc_agencies: :environment do
+    ['Atlanta Regional Commission',
+      'ARC Mobility Management',
+      'ARC Agewise',
+      'ARC Workforce Development',
+      'Veterans Affairs',
+      'Disability Link',
+      'Cobb County Transit',
+      'Goodwill Industries'].each do |a|
+        Agency.create! name: a
+      end
+
+    end
+
+  end
