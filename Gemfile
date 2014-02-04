@@ -31,6 +31,7 @@ gem 'comfortable_mexican_sofa'
 gem 'honeybadger'
 gem 'draper'
 gem 'rubyzip'
+gem 'lorem-ipsum-me'
 
 group :development do
   gem 'activerecord-postgis-adapter'

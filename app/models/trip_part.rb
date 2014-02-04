@@ -12,7 +12,7 @@ class TripPart < ActiveRecord::Base
   # Ordering of trip parts within a trip. 0 based
   attr_accessible :sequence
   # date and time that the trip part is scheduled for stored as a string
-  attr_accessible :scheduled_date, :scheduled_time
+  attr_accessible :scheduled_date, :scheduled_time, :from_trip_place, :to_trip_place
   
   
   # true if the trip_time refers to the deaperture time at the origin. False

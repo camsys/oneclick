@@ -214,6 +214,7 @@ GEM
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
+    lorem-ipsum-me (0.1.0)
     lumberjack (1.0.4)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -430,6 +431,7 @@ DEPENDENCIES
   launchy
   letter_opener
   listen
+  lorem-ipsum-me
   mechanize
   newrelic_rpm
   pg

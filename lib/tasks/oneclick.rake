@@ -1,3 +1,5 @@
+require 'lorem-ipsum'
+
 #encoding: utf-8
 namespace :oneclick do
   task :seed_data => :environment do
@@ -34,14 +36,26 @@ namespace :oneclick do
 
   end
 
-  task providers: :environment do
-    require File.join(Rails.root, 'db', 'providers')
-  end
+  task :update_reports2 => :environment do
+    reports = [
+      {name: 'Trips Planned', description: 'Trips planned with various breakdowns.',
+        view_name: 'breakdown_report', class_name: 'TripsBreakdownReport', active: 1}, 
+      ]
+      reports.each do |rep|
+        r = Report.new(rep)
+        puts "Loading report #{r.name}"
+        r.save!
+      end
+    end
 
-  task load_pois: :environment do
-    require 'csv'
+    task providers: :environment do
+      require File.join(Rails.root, 'db', 'providers')
+    end
 
-    FILENAME = ENV['FILENAME']
+    task load_pois: :environment do
+      require 'csv'
+
+      FILENAME = ENV['FILENAME']
     # FILENAME = File.join(Rails.root, 'db', 'arc_poi_data', 'CommFacil_20131015.txt')
 
     puts
@@ -199,6 +213,41 @@ namespace :oneclick do
     # type_count.each do |k, v|
     #   puts [k, v].join("\t")
     # end
+  end
+
+  task generate_trips: :environment do
+    users = (1..100).each.collect do |i|
+      random_string = ((0...16).map { (65 + rand(26)).chr }.join)
+      u = User.new
+      u.first_name = "Visitor"
+      u.last_name = "Guest"
+      u.password = random_string
+      u.email = "guest_#{random_string}@example.com" 
+      u.save!(:validate => false)      
+      Rails.logger.info "Generated user"
+      u
+    end
+    users.each do |u|
+      u.user_profile.user_traveler_characteristics_maps.create! traveler_characteristic: TravelerCharacteristic.where(datatype: 'bool').sample,
+      value: [true, false].sample
+      u.user_profile.user_traveler_characteristics_maps.create! traveler_characteristic: TravelerCharacteristic.where(datatype: 'bool').sample,
+      value: [true, false].sample
+      u.user_profile.user_traveler_characteristics_maps.create! traveler_characteristic: TravelerCharacteristic.where(datatype: 'bool').sample,
+      value: [true, false].sample
+      Rails.logger.info "Added characterstics to user"
+    end
+    users.each_with_index do |u, ui|
+      (1..100).each do |i|
+        text_size = rand(200)
+        t = u.trips.create! trip_purpose: TripPurpose.all.sample,
+          user_comments: LoremIpsum.generate.truncate(text_size, omission: '').split.sample(text_size).join(' '),
+          taken: [true, false].sample,
+          rating: [nil, [*0..5]].flatten.sample
+        t.trip_parts.create! from_trip_place: TripPlace.all.sample, to_trip_place: TripPlace.all.sample, sequence: 0,
+          scheduled_date: (Date.today + rand(-30..30).days), scheduled_time: Time.now
+        Rails.logger.info "Added trip #{i} to user #{ui}"
+      end
+    end
   end
 
 end
