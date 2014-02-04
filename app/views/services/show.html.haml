@@ -140,7 +140,10 @@
               %b="Cost:"
               ="Flat fare unavailable."
           %b="Comments:  "
-          =fare.desc.html_safe
+          -if fare.desc
+            =fare.desc.html_safe
+          -else
+            =""
   .span4
     .well.well2
       %h4="Schedule"
