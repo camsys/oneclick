@@ -105,7 +105,7 @@ module Oneclick
     config.assets.precompile += stylesheets
     config.assets.precompile += ['tadaaapickr.pack.min.js']
 
-    Rails.logger.info config.assets.precompile.inspect
+    puts config.assets.precompile.inspect
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.1'
