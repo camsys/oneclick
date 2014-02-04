@@ -140,7 +140,7 @@
               %b="Cost:"
               ="Flat fare unavailable."
           %b="Comments:  "
-          =fare.desc
+          =fare.desc.html_safe
   .span4
     .well.well2
       %h4="Schedule"
@@ -158,9 +158,9 @@
               %td.text-center
                 =Date::DAYNAMES[schedule.day_of_week]
               %td.text-center
-                =schedule.start_time.strftime('%I:%M %p').sub(/^[0]*/,"")
+                =schedule.start_time.in_time_zone.strftime('%I:%M %p').sub(/^[0]*/,"")
               %td.text-center
-                =schedule.end_time.strftime('%I:%M %p').sub(/^[0]*/,"")
+                =schedule.end_time.in_time_zone.strftime('%I:%M %p').sub(/^[0]*/,"")
   .span4
     .well.well2
       %h4="Advance Notice Required"

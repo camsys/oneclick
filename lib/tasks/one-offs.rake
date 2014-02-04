@@ -317,6 +317,63 @@ namespace :oneclick do
       end
     end
 
+    desc "Add Disabled American Vets Van to Lebanon"
+    task :add_dav => :environment do
+
+      if TripPurpose.find_by_name('Visit Lebanon VA Medical Center').nil?
+
+        lebanon = TripPurpose.create(
+            name: 'Visit Lebanon VA Medical Center',
+            note: 'Visit Lebanon VA Medical Center',
+            active: 1,
+            sort_order: 2)
+
+        provider = {name: 'Veterans Affairs', contact: '', external_id:  "6"}
+        p = Provider.create! provider
+        p.save
+
+        #Create service Disabled American Vets van
+        paratransit = ServiceType.find_by_name('Paratransit')
+        service = Service.create(name: 'Disabled American Veterans: Van to Lebanon VA', provider: p, service_type: paratransit, advanced_notice_minutes: 5*24*60)
+        #Add Schedules
+        (1..5).each do |n|
+          Schedule.create(service: service, start_time:"13:00", end_time: "17:00", day_of_week: n)
+        end
+
+        FareStructure.create(service: service, fare_type: 0, base: 0.00, desc: 'The Transportation Van is a VOLUNTEERED shuttle that runs from York Out Patient Clinic to Lebanon Hospital. The van is a 7-8 passenger van and operates Monday thru Friday 8:00 AM-12:00 PM. The van leaves normally one hour and a half to an hour and fifteen minutes prior to the first appointment (i.e. appt in Lebanon is at 8:00A.M. departure time is 6:45 AM) and leaves Lebanon VA to come back to York at 12:00 PM. Any appointments after 11:30 AM, is the Patients responsibility to obtain return transportation to York. The DRIVER is NOT responsible for patients return trip to York if appointment runs past 12:00 P.M.<br>
+When scheduling appointment(s), patients must inform the scheduling clerk that they are passengers on the York Shuttle Van and request appointment(s) between 8:00 A.M. and 11:00 A.M. to accommodate the vans normal operation schedule. Once the appointment in Lebanon is scheduled the veteran needs to call 771-9218 five (5) working days prior to the appointment to make arrangements to get onto the van. We take the first 8 Veterans and can take stand by names but cannot guarantee a ride. The van driver will get the list of veteran’s names 2-3 days prior to the date and will call the veterans with a departure time. The veterans are responsible for providing their own transportation to York Clinic for departure to Lebanon.')
+
+        #Trip purpose requirements
+        ServiceTripPurposeMap.create(service: service, trip_purpose: lebanon, value: 'true')
+
+        #Add geographic restrictions
+        ['York', 'Adams'].each do |z|
+          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+        end
+
+        #Traveler Accommodations Requirements
+        folding_wheelchair_accessible = TravelerAccommodation.find_by_code('folding_wheelchair_acceessible')
+        [folding_wheelchair_accessible].each do |n|
+          ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        end
+
+      else
+        puts 'Already added Disabled American Vets van'
+      end
+
+    end
+
+    desc "Add 5 hours"
+    task :add_five_hours => :environment do
+      Schedule.all.each do |s|
+        s.start_time += (5*3600)
+        s.end_time += (5*3600)
+        s.save
+      end
+    end
+
+
     desc "Set up cms entries"
     task cms: :environment do
       Cms::Site.destroy_all
