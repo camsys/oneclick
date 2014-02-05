@@ -71,5 +71,5 @@ group :test do
   gem 'email_spec'
   gem 'launchy'
   gem 'coveralls', require: false
-  gem 'simplecov', require: false  
+  gem 'simplecov', require: false
 end

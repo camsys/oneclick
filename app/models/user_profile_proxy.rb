@@ -4,9 +4,9 @@
 class UserProfileProxy < Proxy
 
   PARAM_NOT_SET = "na"
-  
+
   attr_accessor :user
-  
+
   def initialize(user = nil)
     super
     self.user ||= user
@@ -17,7 +17,7 @@ class UserProfileProxy < Proxy
   end
 
 protected
-  
+
   # Convert the params into a typed value for the database. For most types the params list is a single hash {"x" = "y"}. For
   # date fields the hash for Jan 8 2001 looks like  {"date_of_birth(2i)"=>"1", "date_of_birth(3i)"=>"8", "date_of_birth(1i)"=>"2001"}
   def convert_value(characeristic, params)

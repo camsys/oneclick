@@ -86,21 +86,21 @@ h6 { font-size: 12px; line-height: 20px; }
   // margin-top: 10px;
 }
 
-.corner-top { 
-  -moz-border-radius-topleft: 5px; 
-  -webkit-border-top-left-radius: 5px; 
-  border-top-left-radius: 5px; 
-  -moz-border-radius-topright: 5px; 
-  -webkit-border-top-right-radius: 5px; 
-  border-top-right-radius: 5px; 
+.corner-top {
+  -moz-border-radius-topleft: 5px;
+  -webkit-border-top-left-radius: 5px;
+  border-top-left-radius: 5px;
+  -moz-border-radius-topright: 5px;
+  -webkit-border-top-right-radius: 5px;
+  border-top-right-radius: 5px;
 }
-.corner-bottom { 
-  -moz-border-radius-bottomleft: 5px; 
-  -webkit-border-bottom-left-radius: 5px; 
-  border-bottom-left-radius: 5px; 
-  -moz-border-radius-bottomright: 5px; 
-  -webkit-border-bottom-right-radius: 5px; 
-  border-bottom-right-radius: 5px; 
+.corner-bottom {
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 #help {
@@ -224,7 +224,7 @@ a:hover#help {
   h1 {
     font-size: 100%;
     color: #00f;
-    line-height: 1.5em; 
+    line-height: 1.5em;
   }
   .the-icon-container {
     line-height: 4em;
@@ -271,18 +271,18 @@ a:hover#help {
 
 // Media queries for the show trips view
 .trip_summary_icon {
-  font-size: 4em;  
+  font-size: 4em;
 }
 // Large desktop
 @media (min-width: 1200px) {
   .trip_summary_icon {
     font-size: 5em;
-  }  
+  }
 }
 @media (min-width: 768px) and (max-width: 979px) {
   .trip_summary_icon {
     font-size: 4em;
-  }  
+  }
 }
 @media (max-width: 767px ) {
   .trip_summary_icon {
@@ -300,15 +300,15 @@ a:hover#help {
   }
   #main {
     padding-top: 0;
-  }    
-}    
+  }
+}
 @media (max-width: 480px ) {
   .trip_summary_icon {
     font-size: 6em;
     width: 100% !important;
     float: none;
     margin-left: auto;
-    margin-right: auto;    
+    margin-right: auto;
   }
   .trip_summary_text {
     text-align: center !important;
@@ -330,7 +330,7 @@ a:hover#help {
 
 .registrations .form-horizontal .control-group {
   margin-bottom: 5px;
-}    
+}
 
 // TODO This might want to be more generally available
 .registrations {
@@ -355,7 +355,7 @@ form.form-inline div.control-group {
   display: inline-block;
 }
 form.form-inline div.control-group div.controls {
-  display: inline-block; 
+  display: inline-block;
 }
 form.form-inline .control-label {
   margin-right: 5px;
@@ -394,7 +394,7 @@ td.left, th.left {
 .shadow {
   -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
   -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-  box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);  
+  box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
 }
 
 /*
