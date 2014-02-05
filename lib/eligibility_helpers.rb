@@ -287,10 +287,9 @@ class EligibilityHelpers
         # puts "%-30s %-30s %s" % [Time.zone, planned_trip.trip_datetime, planned_trip.trip_datetime.seconds_since_midnight]
         # puts "%-30s %-30s %s" % [Time.zone, schedule.start_time, schedule.start_time.seconds_since_midnight]
         # puts "%-30s %-30s %s" % [Time.zone, schedule.end_time, schedule.end_time.seconds_since_midnight]
-        unless trip_part.trip_time.seconds_since_midnight.between?(schedule.start_time.seconds_since_midnight,schedule.end_time.seconds_since_midnight)
+        unless trip_part.trip_time.in_time_zone.seconds_since_midnight.between?(schedule.start_seconds,schedule.end_seconds)
           itinerary['match_score'] += 1
           itinerary['time_mismatch'] = true
-
         end
       end
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140202155209) do
+ActiveRecord::Schema.define(:version => 20140205212419) do
 
   create_table "cms_blocks", :force => true do |t|
     t.integer  "page_id",    :null => false
@@ -306,13 +306,13 @@ ActiveRecord::Schema.define(:version => 20140202155209) do
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
   create_table "schedules", :force => true do |t|
-    t.integer  "service_id",                    :null => false
-    t.time     "start_time",                    :null => false
-    t.time     "end_time",                      :null => false
-    t.integer  "day_of_week",                   :null => false
-    t.boolean  "active",      :default => true, :null => false
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.integer  "service_id",                      :null => false
+    t.integer  "day_of_week",                     :null => false
+    t.boolean  "active",        :default => true, :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.integer  "start_seconds"
+    t.integer  "end_seconds"
   end
 
   create_table "service_coverage_maps", :force => true do |t|

@@ -156,14 +156,14 @@
           %th.text-center
             End Time
         %tbody
-          -@service.schedules.order(:day_of_week, :start_time, :end_time).each do |schedule|
+          -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
             %tr
               %td.text-center
                 =Date::DAYNAMES[schedule.day_of_week]
               %td.text-center
-                =schedule.start_time.in_time_zone.strftime('%I:%M %p').sub(/^[0]*/,"")
+                =schedule.start_string
               %td.text-center
-                =schedule.end_time.in_time_zone.strftime('%I:%M %p').sub(/^[0]*/,"")
+                =schedule.end_string
   .span4
     .well.well2
       %h4="Advance Notice Required"
