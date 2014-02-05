@@ -189,10 +189,10 @@
 
     if (hasErrors) {
       $('#trip-error').show();
-      $('#trip-error').html(error);
+      $('#trip-error-text').html(error);
     } else {
       $('#trip-error').hide();
-      $('#trip-error').html('');
+      $('#trip-error-text').html('');
       NewTrip.update(data.trip);
       window.location = data.location;
     }
