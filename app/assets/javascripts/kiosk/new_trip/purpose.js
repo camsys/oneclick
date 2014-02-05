@@ -2,14 +2,17 @@ jQuery(function ($) {
   if (!$('.js-trip-wizard-form').hasClass('js-purpose-wizard-step')) return;
 
   var purposepickerSels = $('#purposepicker ul li');
+
   var nextButtonValidatePurpose = function() {
-    // Enable the "Next Step" button when the user clicks on one of the list elements
-    // purposepickerSels.on('click', function() {
-    //   nextButton.removeClass('stop');
-    // });
+    //Enable the "Next Step" button when the user clicks on one of the list elements
+    $('#purposepicker ul li').on('click', function() {
+      $('.next-step-btn').removeClass('stop');
+    });
   };
 
+  $('.next-step-btn').addClass('stop');
   nextButtonValidatePurpose();
+
   $('#left-description h4').html("Tell Us Why You Are Making This Trip");
   $('#left-description p').html("Choose the option that best describes why you are making this trip. Providing this information helps us provide the best travel options for you, and helps us improve this system in the future. <br><br> Tap \"Next Step\" when you have selected the option that best describes your trip. If you do not know what to choose, select \"General Purpose\".");
 

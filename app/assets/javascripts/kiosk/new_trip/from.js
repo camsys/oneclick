@@ -1,6 +1,19 @@
 jQuery(function ($) {
   if (!$('.js-trip-wizard-form').hasClass('js-from-wizard-step')) return;
 
+  var nextButtonValidateFromLocation = function() {
+    var tripProxyPlace = $('#trip_proxy_from_place');
+
+    //add blur event handler to input field
+    tripProxyPlace.on('blur', function() {
+        if (tripProxyPlace.val() === '') {
+            $('.next-step-btn').addClass('stop');
+        } else {
+            $('.next-step-btn').removeClass('stop');
+        }
+    });
+  }
+
   var useCurrentLocationHandler = function() {
     // Show the google map and re-calculate size. Have to do removeClass('hidden') before reset to ensure
     // that leaflet code knows the size of the map, so it can calculate size correctly.
@@ -26,6 +39,9 @@ jQuery(function ($) {
     $('#trip_proxy_from_place').val(item.addr);
     $('.js-trip-wizard-form').submit();
   }
+
+  $('.next-step-btn').addClass('stop');
+  nextButtonValidateFromLocation();
 
   $('#current-location a#yes').on('click', useCurrentLocationHandler);
   setupPlacesSearchTypeahead('from', 'start');

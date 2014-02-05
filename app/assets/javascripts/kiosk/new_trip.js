@@ -8,9 +8,19 @@ function viewSequence ($) {
 
     els.addClass('hidden').removeClass('current');
     nextEl.removeClass('hidden').addClass('current');
-    showNavButton()
+    updateMap();
+    showNavButton();
 
     if (e) e.preventDefault();
+  }
+
+  function updateMap() {
+    if (els.filter('.current').hasClass('location-from')) {
+      // Show the google map and re-calculate size. Have to do show() before reset to ensure
+      // that leaflet code knows the size of the map, so it can calculate size correctly.
+      $('#trip_map').show();
+      resetMapView(); // If you don't do this, map will be the size of a postage stamp!
+    }
   }
 
   function showNavButton () {
