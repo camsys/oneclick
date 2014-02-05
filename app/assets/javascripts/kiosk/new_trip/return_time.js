@@ -14,4 +14,8 @@ jQuery(function ($) {
 
   NewTrip.timepickerInit('#trip_proxy_return_trip_time', '#timepicker-two');
   $('#return-trip a#no').on('click', noReturnTripHandler);
+
+  $('.js-trip-wizard-form').find('#trip_proxy_trip_time').val(
+    NewTrip.read().trip_time
+  );
 });
