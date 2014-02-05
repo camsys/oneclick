@@ -15,6 +15,31 @@ jQuery(function ($) {
     force_match: false
   });
 
+  // +        #arrive-depart-toggle
+  // +          .arrive-depart-circle
+  // +          .arrive-depart-circle
+  // +          .arrive-depart-circle
+
+  //TOGGLE THE ARRIVE/DEPART STATE
+  $('#arrive-depart-toggle').on('click', function(){
+    var timeSection = $('#trip-time');
+    var timeLabel = timeSection.children('label').text();
+    $('#trip_proxy_arrive_depart option:selected').removeAttr("selected");
+
+    if(timeLabel === 'Departing at'){
+      //change the label to arriving
+      timeSection.children('label').html('Arriving at');
+      $('#trip_proxy_arrive_depart').find('option[value="Arriving By"]').attr('selected',true);
+      //change the dropdown selected state...
+    }
+    else {
+      //change the label to departing
+      timeSection.children('label').html('Departing at');
+      $('#trip_proxy_arrive_depart').find('option[value="Departing At"]').attr('selected',true);
+      //toggle the arriving/departing state
+    }
+  });
+
   // Time Picker (outbound trip)
   // $.fn.datepicker.Calendar.hide();
 
