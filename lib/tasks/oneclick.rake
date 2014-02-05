@@ -296,6 +296,17 @@ namespace :oneclick do
         Agency.create! name: a
       end
 
-    end
-
   end
+
+  task create_pa_agencies: :environment do
+    ['York Area Agency on Aging',
+     'Penn-Mar Human Services',
+     'Touch A Life',
+     'York Adams Transit Authority',
+     'York Center for Independent Living',
+     'Staying Connected'].each do |a|
+        Agency.create! name: a
+      end
+  end
+
+end

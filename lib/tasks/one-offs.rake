@@ -364,6 +364,99 @@ When scheduling appointment(s), patients must inform the scheduling clerk that t
 
     end
 
+    desc "Add Rabbit General Public"
+    task :add_rabbit_general => :environment do
+      provider = Provider.find_by_external_id('1')
+
+      #Create service Disabled American Vets van
+      paratransit = ServiceType.find_by_name('Paratransit')
+      service = Service.create(name: 'General Public Shared Ride', provider: provider, service_type: paratransit, advanced_notice_minutes: 24*60)
+
+      #Add Schedules
+      (1..5).each do |n|
+        Schedule.create(service: service, start_time:"5:45", end_time: "23:30", day_of_week: n)
+      end
+      Schedule.create(service: service, start_time:"7:15", end_time: "21:45", day_of_week: 6)
+      Schedule.create(service: service, start_time:"9:15", end_time: "18:00", day_of_week: 0)
+
+      service.schedules.each do |sc|
+        sc.start_time += 5*3600
+        sc.end_time += 5*3600
+        sc.save
+      end
+
+      #Add geographic restrictions
+      ['York', 'Adams'].each do |z|
+        c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+        ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+      end
+      ['York', 'Adams'].each do |z|
+        c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+        ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+      end
+
+      medical = TripPurpose.find_by_name('Medical')
+      cancer = TripPurpose.find_by_name('Cancer Treatment')
+      #Trip purpose requirements
+      [medical, cancer].each do |n|
+        ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+      end
+      FareStructure.create(service: service, fare_type: 2, desc:  "Zone 1: $15.65, Zone 2: $22.00, Zone 3: $30.50, Zone 4: $44.25")
+
+      #Traveler Accommodations Requirements
+      folding_wheelchair_accessible = TravelerAccommodation.find_by_code('folding_wheelchair_acceessible')
+      motorized_wheelchair_accessible = TravelerAccommodation.find_by_code('motorized_wheelchair_accessible')
+      curb_to_curb = TravelerAccommodation.find_by_code('curb_to_curb')
+      [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
+        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+      end
+
+    end
+
+    desc "Add URSL to PA"
+    task :add_urls_to_pa => :environment do
+
+      service = Service.find_by_name('Senior Shared Ride')
+      service.url = "http://www.rabbittransit.org/"
+      service.save
+
+      service = Service.find_by_name('Shared Ride for Ages 60-64')
+      service.url = "http://www.rabbittransit.org/"
+      service.save
+
+      service = Service.find_by_name('Medical Assistance Transportation Program')
+      service.url = "http://www.rabbittransit.org/"
+      service.save
+
+      service = Service.find_by_name('ADA Complementary Service')
+      service.url = "http://www.rabbittransit.org/"
+      service.save
+
+      service = Service.find_by_name('Service for Persons with Disabilities')
+      service.url = "http://www.rabbittransit.org/"
+      service.save
+
+      service = Service.find_by_name('Staying Connected')
+      service.url = "http://www.stayingconnectedyork.org/"
+      service.save
+
+      service = Service.find_by_name('Road to Recovery Program')
+      service.url = "http://www.cancer.org/treatment/supportprogramsservices/road-to-recovery"
+      service.save
+
+      service = Service.find_by_name('Touch a Life')
+      service.url = "http://www.lutheranscp.org/cos/touch-a-life"
+      service.save
+
+      service = Service.find_by_name('Area Agency on Aging')
+      service.url = "http://yorkcountypa.gov/health-human-services/agency-on-aging.html"
+      service.save
+
+      service = Service.find_by_name('General Public Shared Ride')
+      service.url = "http://www.rabbittransit.org/"
+      service.save
+    end
+
     desc "Add 5 hours"
     task :add_five_hours => :environment do
       Schedule.all.each do |s|

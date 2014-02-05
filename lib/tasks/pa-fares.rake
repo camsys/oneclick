@@ -67,6 +67,14 @@ namespace :oneclick do
         puts "Fare already exists for " + service.name
       end
 
+      service = Service.find_by_name('General Public Shared Ride')
+      if service and service.fare_structures.count == 0
+        FareStructure.create(service: service, fare_type: 2, desc:  "Zone 1: $15.65, Zone 2: $22.00, Zone 3: $30.50, Zone 4: $44.25")
+      else
+        puts "Fare already exists for " + service.name
+      end
+
+
     end # task
   end
 end
