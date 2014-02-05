@@ -64,6 +64,8 @@ jQuery(function ($) {
   leftResults.find('.return') .html(trip.return_trip_time);
   leftResults.find('.reason') .html(trip.trip_purpose.name);
 
+  if(!trip.return_trip_time) $('.return').prev('h5').hide();
+
   //rename the Next Step button to say Plan my Trip
   $('.next-step-btn h1').html('Plan my Trip');
 

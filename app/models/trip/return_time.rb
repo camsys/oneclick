@@ -40,11 +40,11 @@ protected
 
   # Validation. Check that the return trip time is well formatted and after the trip time
   def validate_return_trip_time
-
     if is_round_trip == "1"
       begin
-        return_time = Time.strptime(@return_trip_time, "%H:%M %p")
-        trip_time = Time.strptime(@trip_time, "%H:%M %p")
+        return_time = Time.strptime(self.return_trip_time, "%H:%M %p")
+        trip_time = Time.strptime(self.trip_time, "%H:%M %p")
+
         if return_time < trip_time
           errors.add(:return_trip_time, I18n.translate(:return_trip_time_before_start))
         end

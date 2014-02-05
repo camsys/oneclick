@@ -1,12 +1,13 @@
 class Kiosk::NewTrip::OverviewsController < Kiosk::NewTrip::BaseController
   def create
     # inflate a trip proxy object from the form params
+    params[:trip_proxy].delete(:trip_purpose)
     @trip_proxy = create_trip_proxy_from_form_params
 
     if @trip_proxy.valid?
       @trip = create_trip(@trip_proxy)
     else
-      raise @trip_proxy.errors.inspect
+      raise @trip_proxy.errors.as_json.inspect
     end
 
     # Create markers for the map control
