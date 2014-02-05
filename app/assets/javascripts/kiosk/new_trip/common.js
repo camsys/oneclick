@@ -188,8 +188,11 @@
     }
 
     if (hasErrors) {
-      ;
+      $('#trip-error').show();
+      $('#trip-error').html(error);
     } else {
+      $('#trip-error').hide();
+      $('#trip-error').html('');
       NewTrip.update(data.trip);
       window.location = data.location;
     }

@@ -26,13 +26,10 @@
 
     %div.span8plus.inputs
       .row-fluid
-        -if @trip_proxy.errors.any?
-          .row-fluid
-            .span12
-              %h4
-                %div.alert.alert-error
-                  %a.close{"data-dismiss" => "alert"} ×
-                  %div= t(:correct_errors_to_create_a_trip)
+        .row-fluid
+          .span12
+            %h4
+              #trip-error.alert.alert-error{:style => "display: none;"}
 
         .row-fluid
           #trip_form.span12
