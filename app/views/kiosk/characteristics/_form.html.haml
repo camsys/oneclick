@@ -1,5 +1,4 @@
 #eligibility_form
-
   .row-fluid
     .span12
       = simple_form_for @user_characteristics_proxy, :url => path, :method => 'put', :remote => not(inline)  do |f|
@@ -111,3 +110,71 @@
   / SO...somehow we gotta get that to look like this.
 
 :javascript
+  $(document).ready(function() {
+    characteristicsView = {};
+    characteristicsView.indexCounter = 0;
+    characteristicsView.formItems = [];
+
+    characteristicsView.nextBtnHandler = function () {
+      if (characteristicsView.indexCounter == 0) {
+        $('div.next-footer-container').removeClass('hidden');
+        //add the new copy for the questions section
+        $('.info p').html("Answer all questions you are comfortable providing an answer for. If you do not wish to answer a question, select \"Unsure\". Answering these questions will ensure you see personalized travel options. <br><br> Tap \"Next Step\" when you have finished with these questions.");
+      }
+
+      if(characteristicsView.indexCounter == 1){
+        //copy for the birthday section
+        $('.info h4').html('Tell us your Date of Birth');
+        $('.info p').html("Sharing your birthdate allows us to provide you with the best travel options, including those that may be discounted or only available to seniors.<br><br>Tap \"Next Step\" when you have selected the correct date.");
+      }
+      if(characteristicsView.indexCounter == 2){
+        $('#new_user_characteristics_proxy').submit();
+      }
+      //increment counter
+      characteristicsView.indexCounter++;
+
+      //trigger counter change event
+      $('#eligibility_form').trigger('indexChange')
+    }
+
+    characteristicsView.indexChangeHandler = function() {
+      //hide everything again
+      characteristicsView.formItems.addClass('hidden');
+
+      //find element matching current index
+      var matchedElement = $('div[data-index="' + characteristicsView.indexCounter +  '"]');
+
+      // matched element visible
+      matchedElement.removeClass('hidden');
+    }
+
+    characteristicsView.init = function() {
+      //cache all form items
+      this.formItems = $('*[data-index]');
+      this.formItems.addClass('hidden');
+
+
+      $('#eligibility_form').on('indexChange', characteristicsView.indexChangeHandler);
+
+
+      //add click handler to next button
+      $('.next-step-btn, a#yes').on('click', characteristicsView.nextBtnHandler);
+
+      //reveal first form item
+      $('div[data-index="0"]').removeClass('hidden');
+
+
+      $('input[name="user_characteristics_proxy[disabled]"]:radio').on('change', function(event) {
+        $.ajax({
+          url: 'header',
+          data: {state: event.currentTarget.id},
+          success: function(result) {
+            $('#characteristics_header').html(result)
+          }
+        });
+      });
+    }
+
+    //kick everything off
+    characteristicsView.init();
+  });
