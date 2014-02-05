@@ -207,6 +207,7 @@ en:
   profile_updated: "Your profile was updated."
 
   # new ones
+  services: "Services"
   specialized_services: "Specialized Services"
   view_services: "View Services"
   close: "Close"

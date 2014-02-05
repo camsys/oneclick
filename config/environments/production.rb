@@ -12,7 +12,7 @@ Oneclick::Application.configure do
   # config.active_record.mass_assignment_sanitizer
   # config.active_record.auto_explain_threshold_in_seconds
 
-  config.serve_static_assets = true
+  config.serve_static_assets = false
 
   config.assets.compress = true
   config.assets.compile = false

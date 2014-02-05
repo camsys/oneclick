@@ -28,10 +28,11 @@ module CsHelpers
     {label: t(:create_traveler), target: error_501_path, icon: ACTION_ICONS[:create_traveler]},
     {label: t(:trips), target: admin_trips_path, icon: ACTION_ICONS[:trips]},
     {label: t(:agencies), target: admin_agencies_path, icon: ACTION_ICONS[:agents_agencies]},
-    {label: t(:providers), target: admin_provider_orgs_path, icon: ACTION_ICONS[:providers]},
     {label: t(:users), target: users_path, icon: ACTION_ICONS[:users]},
+    {label: t(:providers), target: admin_provider_orgs_path, icon: ACTION_ICONS[:providers]},
+    {label: t(:services), target: service_path(Service.first.id), icon: ACTION_ICONS[:services]},
     {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports]},
-    {label: t(:view_services), target: service_path(Service.first.id), icon: ACTION_ICONS[:services]},
+
   ]  
 end
   

@@ -207,6 +207,7 @@ es:
   profile_updated: "Su perfil ha sido actualizado. *37*"
 
   # new ones
+  services: "[es]Services[/es]"
   specialized_services: "[es]Specialized Services[/es]"
   view_services: "[es]View Services[/es]"
   close: "[es]Close[/es]"
