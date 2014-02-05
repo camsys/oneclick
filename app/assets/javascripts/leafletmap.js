@@ -369,7 +369,7 @@ function createMarker(id, lat, lng, iconClass, popupText, name, open) {
 		popupText: popupText,
 		name:      name,
 		open:      open
-	}))
+	}));
 
 	return marker;
 };

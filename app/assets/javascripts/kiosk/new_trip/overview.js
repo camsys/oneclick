@@ -62,7 +62,7 @@ jQuery(function ($) {
   leftResults.find('.date')   .html(trip.trip_date);
   leftResults.find('.time')   .html(trip.trip_time);
   leftResults.find('.return') .html(trip.return_trip_time);
-  leftResults.find('.reason') .html(trip.trip_purpose_id);
+  leftResults.find('.reason') .html(trip.trip_purpose.name);
 
   //rename the Next Step button to say Plan my Trip
   $('.next-step-btn h1').html('Plan my Trip');

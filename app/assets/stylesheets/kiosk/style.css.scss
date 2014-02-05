@@ -1,5 +1,5 @@
 //@import "bootstrap.css";
-//@import "bootstrap-responsive.min.css"; 
+//@import "bootstrap-responsive.min.css";
 
 // KIOSK COLORS
 $white: #fff;
@@ -140,7 +140,7 @@ h5{
 				text-decoration: none;
 			}
 
-		} 
+		}
 	}
 
 	.arrow{
@@ -158,7 +158,7 @@ h5{
 			border: 2px solid $gray4;
 			background: $white url(/assets/kiosk/arrow.png) no-repeat center;
 
-			
+
 		}
 		span{
 			//Pulling from .nav > li > a // TO DO: find a way of extending this, make it a variable.
@@ -231,7 +231,7 @@ a{
 			}
 
 		}
-		
+
 
 		&.active{
 			a{
@@ -476,7 +476,7 @@ a{
 
 		}
 
-		
+
 	}
 }
 
@@ -513,10 +513,10 @@ div.trip_proxy_trip_purpose_id{
 		&.selected{
 			z-index: 200;
 			background: $white url(/assets/kiosk/checkmark.png) no-repeat center right;
-			// box-shadow: 0px 4px 10px rgba(0,0,0,0.2), 
-			// 	0px 8px 24px rgba(0,0,0,0.04), 
-			// 	inset 0 0 0 2px $gray4, 
-			// 	inset 0 0 0 3px $white, 
+			// box-shadow: 0px 4px 10px rgba(0,0,0,0.2),
+			// 	0px 8px 24px rgba(0,0,0,0.04),
+			// 	inset 0 0 0 2px $gray4,
+			// 	inset 0 0 0 3px $white,
 			// 	inset 0 0 0 7px $blue;
 			// margin: -6px;
 			@extend %selected;
@@ -697,7 +697,7 @@ div.trip_proxy_trip_purpose_id{
 		input.address{
 			border-radius:0;
 			//TO DO: find the actual Bootstrap in Sass files and add them to this application.
-			//otherwise 
+			//otherwise
 		 	width: 100%;
 			height: 128px;
 			border: 0px solid white;
@@ -795,7 +795,7 @@ div.trip_proxy_trip_purpose_id{
 	h6{
 		margin-left:60px;
 	}
-	
+
 	ul{
 		padding:0;
 		height: 280px;
@@ -1040,7 +1040,7 @@ div.trip_proxy_trip_purpose_id{
 					input[type="radio"] + label.disabled{
 						cursor: not-allowed;
 					}
-					
+
 					input[type="radio"]:checked + label.yes, input[type="radio"]:checked + label.no, input[type="radio"]:checked + label.unsure{
 						box-shadow: inset 0 0 0 4px $gray2,
 									inset 0 0 0 20px $gray6;
@@ -1070,10 +1070,10 @@ div.trip_proxy_trip_purpose_id{
 //SELECTED BUTTON
 %selected{
 	margin: -6px;
-	box-shadow: 0px 4px 10px rgba(0,0,0,0.2), 
-				0px 8px 24px rgba(0,0,0,0.04), 
-				inset 0 0 0 2px $gray4, 
-				inset 0 0 0 3px $white, 
+	box-shadow: 0px 4px 10px rgba(0,0,0,0.2),
+				0px 8px 24px rgba(0,0,0,0.04),
+				inset 0 0 0 2px $gray4,
+				inset 0 0 0 3px $white,
 				inset 0 0 0 7px $blue;
 	//remember to adjust your padding accordingly.
 }
@@ -1135,7 +1135,7 @@ div.trip_proxy_trip_purpose_id{
 		@extend %card-btn-container;
 		float:right;
 		background-position: right center;
-		
+
 		.prev-btn{
 			@extend %card-btn;
 		}
@@ -1188,7 +1188,7 @@ div.trip_proxy_trip_purpose_id{
 				text-align: right;
 				position: absolute;
 				top: 50px;
-				right: 22px; 
+				right: 22px;
 
 				h5{
 					color: $gray3;
@@ -1220,7 +1220,7 @@ div.trip_proxy_trip_purpose_id{
 				}
 			}
 		}
-	}	
+	}
 }
 
 .detail-section{
@@ -1372,7 +1372,7 @@ input#txtDate{
 	border-radius: 0px;
 	background-image: none !important;
 	font-size: 36px;
-	
+
 }
 
 #datepicker{
@@ -1414,7 +1414,7 @@ input#txtDate{
 						padding-bottom: 21px;
 
 					}
-					
+
 				}
 			}
 		}
@@ -1597,7 +1597,7 @@ input#trip_proxy_return_trip_time.string.optional{
 		}
 
 		li{
-			
+
 			@extend %time-selectors;
 			width:16.66666666667%;
 
@@ -1639,7 +1639,7 @@ input#trip_proxy_return_trip_time.string.optional{
 			padding-bottom:10px;
 			color: $gray4;
 			height:50px;
-			
+
 
 			span.type{
 				display: block;
@@ -1647,7 +1647,7 @@ input#trip_proxy_return_trip_time.string.optional{
 				font-size:16px;
 				font-weight: 600;
 			}
-			
+
 			span.input{
 				font-size:21px;
 				font-weight:300;
@@ -1667,7 +1667,7 @@ input#trip_proxy_return_trip_time.string.optional{
 					font-weight: 600;
 					color: $gray6;
 				}
-				
+
 				span.input{
 					font-size:21px;
 					font-weight:300;
@@ -1856,7 +1856,7 @@ $animationTime: 300ms;
 	width: 100%;
 	//height: 1500px;
 	overflow-y: hidden;
-	
+
 	// TO DO: work with Camsys to nest the login container so it looks good at all sizes.
 	.container-fluid{
 		background-image: url(/assets/kiosk/bg_black.png);
@@ -1987,7 +1987,7 @@ $animationTime: 300ms;
  * LOGIN DESIGN 01-14-14
  *------------------------------------------
 **/
-//LOGIN 
+//LOGIN
 body.sessions.new, body.registrations.new{
 	.container-fluid{
 		margin-top:0px;
@@ -2012,7 +2012,7 @@ body.sessions.new, body.registrations.new{
 	.span8login{
 		width: 68.31197%;
 		margin-left: 0;
-		
+
 		.span12login{
 			//width: 68.11197%;
 			margin-right:0;
@@ -2201,7 +2201,7 @@ body.sessions.new, body.registrations.new{
 		padding-left:2.5641%;
 		height:inherit;
 	}
-	
+
 
 
 	.close-overview{
@@ -2326,7 +2326,7 @@ body.sessions.new, body.registrations.new{
 		tr{
 			border-bottom:30px solid white;
 		}
-		
+
 	}
 }
 
@@ -2334,7 +2334,7 @@ body.sessions.new, body.registrations.new{
 
 
 /* Landscape phone to portrait tablet */
-@media (max-width: 767px) { 
+@media (max-width: 767px) {
 
 	body{
 		padding:0;
@@ -2369,6 +2369,6 @@ body.sessions.new, body.registrations.new{
 		width: 68.37197% !important;
 	}
 }
- 
+
 /* Landscape phones and down */
 //@media (max-width: 480px) { ... }

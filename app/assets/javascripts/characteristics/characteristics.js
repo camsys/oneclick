@@ -87,7 +87,6 @@ characteristicsView.init = function () {
  * Characteristics Form View Next Button Handlers
  *.............................................................................*/
 characteristicsView.nextBtnHandler = function () {
-
   //if we're on the last dob form item, switch dobview flag to adv to next
   //characteristic form item
   if (characteristicsView.dob.counter >= characteristicsView.dob.states.YEAR) {

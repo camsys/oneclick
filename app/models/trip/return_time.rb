@@ -13,7 +13,6 @@ module Trip::ReturnTime
   # Returns the return trip date and time as a DateTime class. If the round-trip is not defined
   # we return nil
   def return_trip_datetime
-
     if is_round_trip != "1"
       return nil
     end
