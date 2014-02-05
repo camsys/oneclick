@@ -21,12 +21,12 @@ jQuery(function ($) {
   // +          .arrive-depart-circle
 
   //TOGGLE THE ARRIVE/DEPART STATE
-  $('#arrive-depart-toggle').on('click', function(){
+  $('#arrive-depart-toggle').on('click', function () {
     var timeSection = $('#trip-time');
     var timeLabel = timeSection.children('label').text();
     $('#trip_proxy_arrive_depart option:selected').removeAttr("selected");
 
-    if(timeLabel === 'Departing at'){
+    if (timeLabel === 'Departing at') {
       //change the label to arriving
       timeSection.children('label').html('Arriving at');
       $('#trip_proxy_arrive_depart').find('option[value="Arriving By"]').attr('selected',true);
@@ -39,12 +39,6 @@ jQuery(function ($) {
       //toggle the arriving/departing state
     }
   });
-
-  // Time Picker (outbound trip)
-  // $.fn.datepicker.Calendar.hide();
-
-  // Initialize time picker for outbound trip
-  NewTrip.timepickerInit('#trip_proxy_trip_time', '#timepicker-one');
 
   $('#left-description h4').html("Tell Us What Time You'll Be Leaving");
   $('#left-description p').html("Choose the time you will be leaving from your starting location. The next hour or half-hour has already been selected for you. <br><br> Tap \"Next Step\" when you have selected the correct time to leave.");

@@ -22,7 +22,6 @@
   NewTrip.timepickerInit = function (inputelemId, timepickerelemId) {
     // Set the selected time on a time picker widget
     function updateTimePicker (timeInput, timetable) {
-
       // Read the time from the input field and split it on a space character
       var timeTokens = timeInput.val().split(' ');
 
@@ -63,7 +62,7 @@
         }
 
         var targetPos = $target.offset()
-          , inputDate = this._parse($target.val());
+          , inputDate = this._parse($target.find('input').val());
 
         //targetPos is now static, change these values to change the calendar's position
         targetPos = {
@@ -117,6 +116,7 @@
       } else {
         timetable.find('.ampm').removeClass('selected');
       }
+
       //add selected class to target
       target.addClass('selected');
 
