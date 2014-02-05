@@ -17,8 +17,8 @@
   .fadeout
 
   = f.input :from_place, class: 'inline', label: t(:from) do
-    - data = {placeholder: t(:enter_from), link: search_kiosk_user_trips_path, provide: 'typeahead'}
-    - opts = {id: 'trip_proxy_from_place', autocomplete: 'off', class: 'no-bottom-margin ajax-typeahead input-large address', data: data}
+    - data = {link: search_kiosk_user_trips_path, provide: 'typeahead'}
+    - opts = {placeholder: t(:enter_from), id: 'trip_proxy_from_place', autocomplete: 'off', class: 'no-bottom-margin ajax-typeahead input-large address', data: data}
     = f.text_field :from_place, opts
     = image_tag 'ajax-loader.gif', id: 'from_geocoding_indicator', style: 'display:none;', class: 'loading-indicator'
 
