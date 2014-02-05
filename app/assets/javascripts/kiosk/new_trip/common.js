@@ -170,7 +170,29 @@
 
   NewTrip.stepCompleteHandler = function (e, xhr) {
     var data = xhr.responseJSON;
-    NewTrip.update(data.trip);
-    window.location = data.location;
+
+    var hasErrors = false, errorArr = null, error = null;
+
+    // Loop over the errors object and see if we have any errors
+    for (var err in data.trip.errors) {
+      hasErrors = true;
+
+      // Get the error array for this field
+      errorArr = data.trip.errors[err];
+
+      // Take first error
+      error = errorArr[0];
+
+      // found an error so we can stop
+      break;
+    }
+
+    if (hasErrors) {
+      ;
+    } else {
+      NewTrip.update(data.trip);
+      window.location = data.location;
+    }
   };
 })();
+ 
