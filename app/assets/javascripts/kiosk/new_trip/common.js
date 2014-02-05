@@ -197,5 +197,16 @@
       window.location = data.location;
     }
   };
+
+  NewTrip.requirePresenceToContinue = function ($el) {
+    //add blur event handler to input field
+    $el.on('blur', function(e) {
+      if ($(e.target).val() === '') {
+        $('.next-step-btn').addClass('stop');
+      } else {
+        $('.next-step-btn').removeClass('stop');
+      }
+    });
+  }
 })();
- 
+
