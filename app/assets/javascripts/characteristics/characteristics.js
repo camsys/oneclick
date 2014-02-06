@@ -31,7 +31,7 @@ var characteristicsView = {
  *.............................................................................*/
 characteristicsView.init = function () {
   "use strict";
-  return;
+
   //cache all form items
   this.formItems = $('*[data-index]');
   this.formItems.addClass('hidden');
@@ -147,7 +147,6 @@ characteristicsView.indexChangeHandler = function () {
       case characteristicsView.states.DOB:
         // populate years
         characteristicsView.populateYears();
-
 
         // get month from previous dob form item or if there was a problem,
         // create the current month

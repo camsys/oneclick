@@ -45,7 +45,6 @@ function viewSequence ($) {
       progress();
     }
   });
-
 };
 
 function zoom_to_marker(marker) {
@@ -57,9 +56,7 @@ function zoom_to_marker(marker) {
 }
 
 jQuery(function ($) {
-  var tripformView = {}
-    , geocoderMinChars = + $('meta[name="ui_min_geocode_chars"]')     .attr('content');
-
+  if ($('.js-trip-wizard-form').length < 1) return;
   viewSequence($);
 
   $('.js-trip-wizard-form input').each(function () {

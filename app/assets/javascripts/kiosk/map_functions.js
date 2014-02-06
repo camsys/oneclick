@@ -5,7 +5,7 @@ function create_or_update_typeahead_marker(item, key, iconStyle) {
 };
 
 function restore_marker_from_local_storage(key) {
-  var marker = findMarkerById('start');
+  var marker = findMarkerById(key);
 
   if (marker) {
     addMarkerToMap(marker, true);
