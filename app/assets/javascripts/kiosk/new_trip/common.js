@@ -11,6 +11,8 @@
   };
 
   NewTrip.start = function () {
+    localStorage.removeItem('marker:start');
+    localStorage.removeItem('marker:stop');
     this.write({});
   }
 
@@ -169,9 +171,8 @@
   }
 
   NewTrip.stepCompleteHandler = function (e, xhr) {
-    var data = xhr.responseJSON;
-
-    var hasErrors = false, errorArr = null, error = null;
+    var data = xhr.responseJSON
+      , hasErrors = false, errorArr = null, error = null;
 
     // Loop over the errors object and see if we have any errors
     for (var err in data.trip.errors) {

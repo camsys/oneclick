@@ -62,5 +62,14 @@ jQuery(function ($) {
 
   viewSequence($);
 
+  $('.js-trip-wizard-form input').each(function () {
+    $input = $(this);
+    var result = $input.prop('name').match(/trip_proxy\[(.*)\]/);
+
+    if (result && NewTrip.read()[result[1]]) {
+      $input.val(NewTrip.read()[result[1]]);
+    }
+  });
+
   $('.js-trip-wizard-form').on('ajax:complete', NewTrip.stepCompleteHandler);
 });

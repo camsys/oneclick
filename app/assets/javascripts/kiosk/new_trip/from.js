@@ -29,6 +29,7 @@ jQuery(function ($) {
 
   $('.next-step-btn').addClass('stop');
   NewTrip.requirePresenceToContinue($('#trip_proxy_from_place'));
+  restore_marker_from_local_storage('start');
 
   $('#current-location a#yes').on('click', useCurrentLocationHandler);
   setupPlacesSearchTypeahead('from', 'start');

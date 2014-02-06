@@ -40,7 +40,7 @@
       .container-fluid
         .row-fluid
           .span4
-            .edit-trip-btn.hidden
+            %a.edit-trip-btn.hidden{href: kiosk_user_new_trip_from_path(current_or_guest_user)}
               %h3 Make Changes
           .span8
             .next-step-container

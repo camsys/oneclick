@@ -858,17 +858,23 @@ div.trip_proxy_trip_purpose_id{
 }
 
 // EDIT TRIP BUTTON
-.edit-trip-btn{
-	cursor:pointer !important;
-	height:166px;
-	font-weight:700;
+.edit-trip-btn {
+	cursor: pointer !important;
+	height: 166px;
+	font-weight: 700;
 	font-size: 21px;
 	border: 3px solid $gray3;
 	color: $gray3;
 	margin: 0 !important;
 	background-color: rgba($gray6, 0.6);
+	display: block;
 
-	h3{
+	&:hover {
+		text-decoration: none;
+		color: $gray3;
+	}
+
+	h3 {
 		text-align: center;
 		margin-top: 60px;
 	}

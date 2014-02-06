@@ -4,6 +4,14 @@ function create_or_update_typeahead_marker(item, key, iconStyle) {
   selectMarker(marker);
 };
 
+function restore_marker_from_local_storage(key) {
+  var marker = findMarkerById('start');
+
+  if (marker) {
+    addMarkerToMap(marker, true);
+  }
+}
+
 function create_or_update_marker(key, lat, lon, name, desc, iconStyle) {
   // See if we can find this existing marker
 
