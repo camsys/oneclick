@@ -1,9 +1,10 @@
 function viewSequence ($) {
-  var els = $('*[data-index]');
+  var els = $('*[data-index]')
+    , firstEl;
   if(els.length < 1) return;
 
-  function progress (e) {
-    var nextIndex = els.index(els.filter('.current')) + 1
+  function changeFrames(e, dir) {
+    var nextIndex = els.index(els.filter('.current')) + dir
       , nextEl    = $(els[nextIndex]);
 
     els.addClass('hidden').removeClass('current');
@@ -12,6 +13,14 @@ function viewSequence ($) {
     showNavButton();
 
     if (e) e.preventDefault();
+  }
+
+  function progress (e) {
+    changeFrames(e, 1);
+  }
+
+  function goBack (e) {
+    changeFrames(e, -1);
   }
 
   function updateMap() {
@@ -31,18 +40,31 @@ function viewSequence ($) {
     }
   }
 
+  if (window.location.hash == '#back') {
+    firstEl = els.last();
+  } else {
+    firstEl = els.first();
+  }
+
   els.addClass('hidden');
-  els.first().removeClass('hidden').addClass('current');
+  firstEl.removeClass('hidden').addClass('current');
   showNavButton();
 
   $(document).on('click', '.js-progress-sequence', progress);
 
   $(document).on('click', '.next-step-btn', function () {
-
     if (els.filter('.current').is(els.last())) {
       $('.js-trip-wizard-form').submit();
     } else {
       progress();
+    }
+  });
+
+  $(document).on('click', '.back-button a', function (e) {
+    if (els.filter('.current').is(els.first())) {
+      $(e.target)
+    } else {
+      goBack(e);
     }
   });
 };

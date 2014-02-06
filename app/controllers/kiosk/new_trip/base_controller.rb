@@ -46,9 +46,9 @@ protected
 
   def back_url
     if current_step_index == 0
-      root_path
+      root_path(anchor: 'back')
     else
-      url_for_step(previous_step)
+      url_for_step(previous_step, anchor: 'back')
     end
   end
 
@@ -76,8 +76,8 @@ protected
     steps[current_step_index - 1]
   end
 
-  def url_for_step step
-    url_for(controller: "kiosk/new_trip/#{step.pluralize}", action: 'show', user_id: params[:user_id])
+  def url_for_step step, options = {}
+    url_for(options.reverse_merge(controller: "kiosk/new_trip/#{step.pluralize}", action: 'show', user_id: params[:user_id]))
   end
 
   def steps
