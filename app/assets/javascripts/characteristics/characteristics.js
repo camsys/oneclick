@@ -66,6 +66,8 @@ characteristicsView.init = function () {
   //add click handler to next button
   $('.next-step-btn, a#yes').on('click', characteristicsView.nextBtnHandler);
 
+  $('.back-button a').on('click', characteristicsView.backBtnHandler);
+
   //add click handlers to dob form li elements (table)
   characteristicsView.dobItems.find('li').on('click', characteristicsView.handleDobElemClick);
 
@@ -101,6 +103,33 @@ characteristicsView.nextBtnHandler = function () {
   else {
     //increment the dob counter
     characteristicsView.dob.counter++;
+  }
+
+  if (characteristicsView.indexCounter == 2) {
+    $('#left-description h4').text('Tell Us Your Date of Birth')
+    $('#left-description p').html('Sharing your birthdate allows us to provide you with the best travel options, including those that may be discounted or only available to seniors.<br><br>Tap "Next Step" when you have selected the correct date.')
+  }
+
+  //trigger counter change event
+  $('#eligibility_form').trigger('indexChange');
+};
+
+characteristicsView.backBtnHandler = function (e) {
+  if (characteristicsView.indexCounter > 0) e.preventDefault();
+
+  // We've completely backed out of the dob view. if it is down to zero.
+  if (characteristicsView.dob.counter <= 0) {
+    characteristicsView.dobView = false;
+  }
+
+  //if we're in the dob section, don't increment the index
+  if (characteristicsView.dobView === false) {
+    //increment counter
+    characteristicsView.indexCounter--;
+  }
+  else {
+    //increment the dob counter
+    characteristicsView.dob.counter--;
   }
 
   if (characteristicsView.indexCounter == 2) {
