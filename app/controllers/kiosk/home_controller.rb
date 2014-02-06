@@ -1,5 +1,5 @@
 module Kiosk
-  class HomeController < ActionController::Base
+  class HomeController < ApplicationController
     include Kiosk::Behavior
     include CsHelpers
 
