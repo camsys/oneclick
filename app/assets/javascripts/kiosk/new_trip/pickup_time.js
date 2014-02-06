@@ -4,7 +4,7 @@ jQuery(function ($) {
   $('#trip-date')
     .datepicker()
     .on("dateChange", function(e) {
-        $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
+      $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
     }).data('calendar')
       .setStartDate(new Date);
 
@@ -14,11 +14,6 @@ jQuery(function ($) {
   $('.combobox').combobox({
     force_match: false
   });
-
-  // +        #arrive-depart-toggle
-  // +          .arrive-depart-circle
-  // +          .arrive-depart-circle
-  // +          .arrive-depart-circle
 
   //TOGGLE THE ARRIVE/DEPART STATE
   $('#arrive-depart-toggle').on('click', function () {
@@ -31,8 +26,7 @@ jQuery(function ($) {
       timeSection.children('label').html('Arriving at');
       $('#trip_proxy_arrive_depart').find('option[value="Arriving By"]').attr('selected',true);
       //change the dropdown selected state...
-    }
-    else {
+    } else {
       //change the label to departing
       timeSection.children('label').html('Departing at');
       $('#trip_proxy_arrive_depart').find('option[value="Departing At"]').attr('selected',true);

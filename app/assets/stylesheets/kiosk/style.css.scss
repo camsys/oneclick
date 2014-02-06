@@ -2372,3 +2372,9 @@ body.sessions.new, body.registrations.new{
 
 /* Landscape phones and down */
 //@media (max-width: 480px) { ... }
+
+
+//hide depart dropdown in tripform view
+.trip_proxy_arrive_depart {
+  display: none;
+}
