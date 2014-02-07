@@ -27,7 +27,8 @@ jQuery(function ($) {
     $('.js-trip-wizard-form').submit();
   }
 
-  $('.next-step-btn').addClass('stop');
+  if ($('#trip_proxy_from_place').val() === '')
+    $('.next-step-btn').addClass('stop');
   NewTrip.requirePresenceToContinue($('#trip_proxy_from_place'));
   restore_marker_from_local_storage('start');
 
