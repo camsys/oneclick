@@ -57,8 +57,12 @@ jQuery(function ($) {
     jQuery.ajax($form.attr('action'), {
       data: { trip_proxy: NewTrip.read() },
       type: 'POST',
+      error: function (xhr, status, error) {
+        NewTrip.showError(error);
+      },
       complete: function (xhr, status) {
-        NewTrip.stepCompleteHandler(e, xhr);
+        if (status != 'error')
+          NewTrip.stepCompleteHandler(e, xhr);
       }
     });
   });

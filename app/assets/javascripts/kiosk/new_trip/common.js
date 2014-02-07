@@ -189,15 +189,23 @@
     }
 
     if (hasErrors) {
-      $('#trip-error').show();
-      $('#trip-error-text').html(error);
+      NewTrip.showError(error);
     } else {
-      $('#trip-error').hide();
-      $('#trip-error-text').html('');
+      NewTrip.hideError();
       NewTrip.update(data.trip);
       window.location = data.location;
     }
   };
+
+  NewTrip.showError = function (error) {
+    $('#trip-error').show();
+    $('#trip-error-text').html(error);
+  }
+
+  NewTrip.hideError = function() {
+    $('#trip-error').hide();
+    $('#trip-error-text').html('');
+  }
 
   NewTrip.requirePresenceToContinue = function ($el) {
     //add blur event handler to input field
