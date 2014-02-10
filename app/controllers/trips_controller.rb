@@ -82,7 +82,9 @@ class TripsController < PlaceSearchingController
     end
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html {
+        render :show_printer_friendly_failed
+      }
       format.json { render json: @trip }
     end
   end
