@@ -61,18 +61,28 @@ characteristicsView.init = function () {
   };
 
   //add indexChange handler to form
-  $('#eligibility_form').on('indexChange', characteristicsView.indexChangeHandler);
+  $('#eligibility_form').on('indexChange', characteristicsView.indexChangeHandler.bind(characteristicsView));
 
   //add click handler to next button
-  $('.next-step-btn, a#yes').on('click', characteristicsView.nextBtnHandler);
+  $('.next-step-btn, a#yes').on('click', characteristicsView.nextBtnHandler.bind(characteristicsView));
 
-  $('.back-button a').on('click', characteristicsView.backBtnHandler);
+  $('.back-button a').on('click', characteristicsView.backBtnHandler.bind(characteristicsView));
 
   //add click handlers to dob form li elements (table)
-  characteristicsView.dobItems.find('li').on('click', characteristicsView.handleDobElemClick);
+  characteristicsView.dobItems.find('li').on('click', characteristicsView.handleDobElemClick.bind(characteristicsView));
 
   //reveal first form item
-  $('div[data-index="0"]').removeClass('hidden');
+  if (true) {
+    $('*[data-index=0]').removeClass('hidden');
+  } else {
+    $('*[data-index]').last().removeClass('hidden');
+    $('div.next-footer-container').removeClass('hidden');
+    characteristicsView.indexCounter = 2;
+    characteristicsView.dobView = true;
+    characteristicsView.initDOB();
+    characteristicsView.dob.counter = 3;
+    characteristicsView.backBtnHandler();
+  }
 
   $('input[name="user_characteristics_proxy[disabled]"]:radio').on('change', function (event) {
     $.ajax({
@@ -115,24 +125,22 @@ characteristicsView.nextBtnHandler = function () {
 };
 
 characteristicsView.backBtnHandler = function (e) {
-  if (characteristicsView.indexCounter > 0) e.preventDefault();
+  if (e && this.indexCounter > 0) e.preventDefault();
 
   // We've completely backed out of the dob view. if it is down to zero.
-  if (characteristicsView.dob.counter <= 0) {
-    characteristicsView.dobView = false;
-  }
+  if (this.dob.counter <= 0)
+    this.dobView = false;
 
   //if we're in the dob section, don't increment the index
-  if (characteristicsView.dobView === false) {
+  if (this.dobView === false) {
     //increment counter
-    characteristicsView.indexCounter--;
-  }
-  else {
+    this.indexCounter--;
+  } else {
     //increment the dob counter
-    characteristicsView.dob.counter--;
+    this.dob.counter--;
   }
 
-  if (characteristicsView.indexCounter == 2) {
+  if (this.indexCounter == 2) {
     $('#left-description h4').text('Tell Us Your Date of Birth')
     $('#left-description p').html('Sharing your birthdate allows us to provide you with the best travel options, including those that may be discounted or only available to seniors.<br><br>Tap "Next Step" when you have selected the correct date.')
   }
@@ -141,81 +149,86 @@ characteristicsView.backBtnHandler = function (e) {
   $('#eligibility_form').trigger('indexChange');
 };
 
+characteristicsView.initDOB = function () {
+  // populate years
+  this.populateYears();
+
+  // get month from previous dob form item or if there was a problem,
+  // create the current month
+  this.dob.params.month = this.dob.params.month || new Date().getMonth();
+  var month = this.dob.params.month;
+
+  //setup initial ul template
+  var dobDaysTemplate = $('<ul>');
+
+  //flag we're in the dob section
+  this.dobView = true;
+
+  //populate dob days view
+  //  convert num of days into range array
+  var dayArray = CGUtils.range( 1, (this.dob.numberOfDays(month) + 1) );
+
+  $.each(dayArray, function(index, day) {
+    var liElem;
+    var numberOfDaysInRow = 8;
+
+    //check if current iteration is last row
+    var lastRow = ((index+1) % dayArray.length === 0);
+
+    if ( index >= Math.floor(dayArray.length/numberOfDaysInRow) * numberOfDaysInRow) {
+      liElem = $('<li>').addClass('bottom').text(day);
+    } else {
+      liElem = $('<li>').text(day);
+    }
+
+    //atached li elem to current ul elem
+    dobDaysTemplate.append(liElem);
+
+    if( ((index+1) % numberOfDaysInRow === 0) || lastRow ) {
+      this.dob.daytable.append(dobDaysTemplate);
+      //reset ul elem
+      dobDaysTemplate = $('<ul>');
+    }
+  }.bind(this));
+}
+
 /*..............................................................................
  * Characteristics Form View Index Change Handler
  *.............................................................................*/
 characteristicsView.indexChangeHandler = function () {
   //hide everything again
-  if (characteristicsView.indexCounter != characteristicsView.states.PROGRAMS) {
-    characteristicsView.formItems.addClass('hidden');
+  if (this.indexCounter != this.states.PROGRAMS) {
+    this.formItems.addClass('hidden');
   }
 
   //hide all dob form items
-  characteristicsView.dobItems.addClass('hidden');
+  this.dobItems.addClass('hidden');
 
   //remove current class from dob breadcrumbs
-  characteristicsView.dob.breadcrumbs.removeClass('current');
+  this.dob.breadcrumbs.removeClass('current');
 
   //find element matching current index and dob index
-  var matchedElement = $('div[data-index="' + characteristicsView.indexCounter + '"]');
-  var matchedDOBElement = $('div[data-dobindex="' + characteristicsView.dob.counter+ '"]');
+  var matchedElement = $('div[data-index="' + this.indexCounter + '"]');
+  var matchedDOBElement = $('div[data-dobindex="' + this.dob.counter + '"]');
 
   //set current dob breadcrumb
-  $(characteristicsView.dob.breadcrumbs[characteristicsView.dob.counter]).addClass('current');
+  $(this.dob.breadcrumbs[this.dob.counter]).addClass('current');
 
   //matched element visible
   matchedElement.removeClass('hidden');
   matchedDOBElement.removeClass('hidden');
 
-  if (characteristicsView.dobView === false) {
-    switch(characteristicsView.indexCounter) {
-      case characteristicsView.states.QUESTIONS:
+  if (this.dobView === false) {
+    switch(this.indexCounter) {
+      case this.states.QUESTIONS:
         $('div.next-footer-container').removeClass('hidden');
         break;
 
-      case characteristicsView.states.DOB:
-        // populate years
-        characteristicsView.populateYears();
-
-        // get month from previous dob form item or if there was a problem,
-        // create the current month
-        characteristicsView.dob.params.month = characteristicsView.dob.params.month || new Date().getMonth();
-        var month = characteristicsView.dob.params.month;
-
-        //setup initial ul template
-        var dobDaysTemplate = $('<ul>');
-
-        //flag we're in the dob section
-        characteristicsView.dobView = true;
-
-        //populate dob days view
-        //  convert num of days into range array
-        var dayArray = CGUtils.range( 1, (characteristicsView.dob.numberOfDays(month) + 1) );
-        $.each(dayArray, function(index, day) {
-          var liElem;
-          var numberOfDaysInRow = 8;
-
-          //check if current iteration is last row
-          var lastRow = ((index+1) % dayArray.length === 0);
-
-          if ( index >= Math.floor(dayArray.length/numberOfDaysInRow) * numberOfDaysInRow) {
-            liElem = $('<li>').addClass('bottom').text(day);
-          } else {
-            liElem = $('<li>').text(day);
-          }
-
-          //atached li elem to current ul elem
-          dobDaysTemplate.append(liElem);
-
-          if( ((index+1) % numberOfDaysInRow === 0) || lastRow ) {
-            characteristicsView.dob.daytable.append(dobDaysTemplate);
-            //reset ul elem
-            dobDaysTemplate = $('<ul>');
-          }
-        });
+      case this.states.DOB:
+        this.initDOB();
 
         //attach template to view
-        //characteristicsView.dob.daytable.append(dobDaysTemplate);
+        //this.dob.daytable.append(dobDaysTemplate);
         break;
 
       case characteristicsView.states.PROGRAMS:

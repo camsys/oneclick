@@ -1,10 +1,10 @@
 class CharacteristicsController < TravelerAwareController
-
   before_filter :get_traveler
-  def update
 
+  def update
     @user_characteristics_proxy = UserCharacteristicsProxy.new(User.find(params[:user_id]))
     @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
+    binding.pry
 
     if params['inline'] == '1'
       @path = new_user_program_path_for_ui_mode(@traveler, inline: 1)
@@ -22,12 +22,10 @@ class CharacteristicsController < TravelerAwareController
     respond_to do |format|
       format.html { redirect_to @path }
       format.js { render "characteristics/update_form" }
-
     end
   end
 
   def new
-
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
 
     @trip_id = session[:current_trip_id]
@@ -45,5 +43,4 @@ class CharacteristicsController < TravelerAwareController
       format.html { render partial: 'header', locals: {total_steps: @total_steps}}
     end
   end
-
 end
