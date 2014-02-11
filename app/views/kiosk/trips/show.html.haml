@@ -107,7 +107,7 @@
           /       View trip details to call the provider.
           .row-fluid
             .span12
-              =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
+              = link_to show_printer_friendly_kiosk_user_trip_url(@traveler,@trip, print: true, protocol: 'print'), class: 'btn btn-block', data: {toggle: 'modal'} do
                 Print your trip plan
           .row-fluid
             .span12
