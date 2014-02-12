@@ -33,10 +33,9 @@ jQuery(function ($) {
   leftResults.find('.time')   .html(trip.trip_time);
   leftResults.find('.return') .html(trip.return_trip_time);
 
-  if (trip.trip_purpose)
-    leftResults.find('.reason') .html(trip.trip_purpose.name);
-
-  if(!trip.return_trip_time) $('.return').prev('h5').hide();
+  if (trip.trip_purpose) leftResults.find('.reason').html(trip.trip_purpose.name);
+  if (!trip.return_trip_time) $('.return').prev('h5').hide();
+  if (trip.arrive_depart === 'Arriving By') $('.time').prev('h5').text('Arrival Time');
 
   //rename the Next Step button to say Plan my Trip
   $('.next-step-btn h1').html('Plan my Trip');
