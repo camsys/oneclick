@@ -202,9 +202,14 @@ characteristicsView.dob.init = function () {
         , month = result[1]
         , day   = result[2];
 
-    try { $('#yeartable') .find('li:contains('+ year  +')').click(); } catch (e) {};
-    try { $('#monthtable').find('li:contains('+ month +')').click(); } catch (e) {};
-    try { $('#daytable')  .find('li:contains('+ day   +')').click(); } catch (e) {};
+    try { $('#yeartable  li:contains('+ year  +')').click(); } catch (e) {};
+    try { $('#monthtable li:contains('+ month +')').click(); } catch (e) {};
+    try { $('#daytable   li:contains('+ day   +')').click(); } catch (e) {};
+
+    // make sure the correct page is visible.
+    var page = $('#yearContainer > ul').index($('#yeartable li:contains('+ year +')').closest('ul'));
+    characteristicsView.dob.yearpage = page;
+    characteristicsView.dob.displayYearPage();
   }
 };
 

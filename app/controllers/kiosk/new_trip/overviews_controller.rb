@@ -19,7 +19,7 @@ class Kiosk::NewTrip::OverviewsController < Kiosk::NewTrip::BaseController
       @trip.reload
 
       # @trip.restore_trip_places_georaw
-      if @traveler.user_profile.has_characteristics? and user_signed_in?
+      if @traveler.user_profile.has_characteristics? && user_signed_in?
         @trip.create_itineraries
         @path = user_trip_path_for_ui_mode(@traveler, @trip)
       else
