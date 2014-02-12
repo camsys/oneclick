@@ -20,18 +20,21 @@ protected
 
   # Convert the params into a typed value for the database. For most types the params list is a single hash {"x" = "y"}. For
   # date fields the hash for Jan 8 2001 looks like  {"date_of_birth(2i)"=>"1", "date_of_birth(3i)"=>"8", "date_of_birth(1i)"=>"2001"}
-  def convert_value(characeristic, params)
-    type = characeristic.datatype
-
-    if type == 'bool'
-      ret = params[characeristic.code].blank? || params[characeristic.code] == PARAM_NOT_SET ? nil : params[characeristic.code]
-    elsif type == 'integer'
-      ret = params[characeristic.code].blank? ? nil : params[characeristic.code].to_i
-    elsif type == 'date'
+  def convert_value(characteristic, params)
+    ret = case characteristic.datatype
+    when 'bool'
+      params[characteristic.code].blank? || params[characteristic.code] == PARAM_NOT_SET ? nil : params[characteristic.code]
+    when 'integer'
+      params[characteristic.code].blank? ? nil : params[characteristic.code].to_i
+    when 'date'
       if params.length == 1
         # it is a datestring, not a rails date form field.
         date_str = params.values.first
-        date_str = nil if date_str.split('-').length < 3
+        date_str = if (y,m,d = date_str.split('-')).length < 3
+          nil
+        else
+          "#{d}-#{m}-#{y}"
+        end
       else
         a = []
         params.each do |d|
@@ -52,16 +55,15 @@ protected
 
       Rails.logger.debug "Parsing date: " + date_str if date_str.present?
 
-      ret = params.empty? ? nil : Chronic.parse(date_str)
+      params.empty? ? nil : Chronic.parse(date_str)
     end
 
     return ret
-
   end
 
   # coerce value into a type based on the data type
-  def coerce_value(characeristic, user_characteristic)
-    type = characeristic.datatype
+  def coerce_value(characteristic, user_characteristic)
+    type = characteristic.datatype
     if type == 'bool'
       ret = user_characteristic.nil? ? PARAM_NOT_SET : user_characteristic.value
     elsif type == 'integer'

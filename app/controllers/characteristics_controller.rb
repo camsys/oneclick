@@ -4,7 +4,6 @@ class CharacteristicsController < TravelerAwareController
   def update
     @user_characteristics_proxy = UserCharacteristicsProxy.new(User.find(params[:user_id]))
     @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
-    binding.pry
 
     if params['inline'] == '1'
       @path = new_user_program_path_for_ui_mode(@traveler, inline: 1)
@@ -39,6 +38,7 @@ class CharacteristicsController < TravelerAwareController
   def header
     @total_steps = (params[:state] == 'user_characteristics_proxy_disabled_true' ? 3 : 2)
     Rails.logger.info  "total_steps: #{@total_steps}"
+
     respond_to do |format|
       format.html { render partial: 'header', locals: {total_steps: @total_steps}}
     end

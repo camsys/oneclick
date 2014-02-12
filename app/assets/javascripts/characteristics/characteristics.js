@@ -72,7 +72,7 @@ characteristicsView.init = function () {
   characteristicsView.dobItems.find('li').on('click', characteristicsView.handleDobElemClick.bind(characteristicsView));
 
   //reveal first form item
-  if (true) {
+  if (window.location.hash != '#back') {
     $('*[data-index=0]').removeClass('hidden');
   } else {
     $('*[data-index]').last().removeClass('hidden');
@@ -166,7 +166,7 @@ characteristicsView.initDOB = function () {
 
   //populate dob days view
   //  convert num of days into range array
-  var dayArray = CGUtils.range( 1, (this.dob.numberOfDays(month) + 1) );
+  var dayArray = CGUtils.range(1, (this.dob.numberOfDays(month) + 1) );
 
   $.each(dayArray, function(index, day) {
     var liElem;
@@ -175,7 +175,7 @@ characteristicsView.initDOB = function () {
     //check if current iteration is last row
     var lastRow = ((index+1) % dayArray.length === 0);
 
-    if ( index >= Math.floor(dayArray.length/numberOfDaysInRow) * numberOfDaysInRow) {
+    if (index >= Math.floor(dayArray.length / numberOfDaysInRow) * numberOfDaysInRow) {
       liElem = $('<li>').addClass('bottom').text(day);
     } else {
       liElem = $('<li>').text(day);
@@ -184,13 +184,24 @@ characteristicsView.initDOB = function () {
     //atached li elem to current ul elem
     dobDaysTemplate.append(liElem);
 
-    if( ((index+1) % numberOfDaysInRow === 0) || lastRow ) {
+    if( ((index + 1) % numberOfDaysInRow === 0) || lastRow ) {
       this.dob.daytable.append(dobDaysTemplate);
       //reset ul elem
       dobDaysTemplate = $('<ul>');
     }
   }.bind(this));
-}
+
+  if ($('#user_characteristics_proxy_date_of_birth').val()) {
+    var result  = $('#user_characteristics_proxy_date_of_birth').val().split('-')
+        , year  = result[0]
+        , month = result[1]
+        , day   = result[2];
+
+    try { $('#yeartable') .find('li:contains('+ year  +')').click(); } catch (e) {};
+    try { $('#monthtable').find('li:contains('+ month +')').click(); } catch (e) {};
+    try { $('#daytable')  .find('li:contains('+ day   +')').click(); } catch (e) {};
+  }
+};
 
 /*..............................................................................
  * Characteristics Form View Index Change Handler
@@ -384,21 +395,11 @@ $(document).ready(function () {
           .toArray()
           .join('-')
       );
-
-      if (typeof next != 'undefined') {
-        // $('#'+ segment +'table').fadeOut(function () {
-        //   $('#'+ next +'table').fadeIn().removeClass('hidden');
-        //   $('.dob-breadcrumb li.'+ segment).removeClass('current');
-        //   $('.dob-breadcrumb li.'+ next).addClass('current');
-        // });
-      } else {
-      }
     });
   });
 
   //kick everything off
   characteristicsView.init();
-
 });
 
 window.CGUtils = {
@@ -409,6 +410,7 @@ window.CGUtils = {
       stop = start || 0;
       start = 0;
     }
+
     step = arguments[2] || 1;
 
     var length = Math.max(Math.ceil((stop - start) / step), 0);

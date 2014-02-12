@@ -7,12 +7,15 @@ class UserCharacteristicsProxy < UserProfileProxy
     super(user)
   end
 
+  def date_of_birth
+    super.try :strftime, '%Y-%B-%d'
+  end
+
   # callback used to derive the value of a user characteristic using a dynamic finder.
   # This method is used to lookup the value of a user characteristics from the database
   # based on the characteristic code which is the name of the attribute being queried on
   # the object.
   def method_missing(code, *args)
-
     # See if the code exists in the characteristics database
     characteristic = TravelerCharacteristic.personal_factors.find_by_code(code)
     if characteristic.nil?
@@ -22,7 +25,6 @@ class UserCharacteristicsProxy < UserProfileProxy
     map = UserTravelerCharacteristicsMap.where("characteristic_id = ? AND user_profile_id = ?", characteristic.id, user.user_profile.id).first
     # if the user has an existing characteristics stored we return it.
     return coerce_value(characteristic, map)
-
   end
 
   # Update the user characteristics based on the form params
@@ -41,7 +43,6 @@ class UserCharacteristicsProxy < UserProfileProxy
         # one or more params. This is needed for date fields which are split over 3 params {day, month year}
         params = new_settings.select {|k, _| k.include? characteristic.code}
         if params.count > 0
-
           # We found a value for this characteristic in the params
           Rails.logger.debug "Found! " + params.inspect
 

@@ -18,5 +18,11 @@ module Kiosk
       render 'kiosk/shared/home'
     end
 
+  protected
+
+    def back_url
+      '/'
+    end
+
   end
 end

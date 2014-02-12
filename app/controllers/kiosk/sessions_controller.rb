@@ -25,5 +25,11 @@ module Kiosk
     def destroy
       super
     end
+
+  protected
+
+    def back_url
+      kiosk_path
+    end
   end
 end
