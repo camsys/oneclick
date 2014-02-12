@@ -28,4 +28,7 @@ jQuery(function ($) {
       $('#trip_proxy_trip_purpose_id').val(purposeId);
     }
   });
+
+  var purpose = NewTrip.read().trip_purpose;
+  if (purpose) $('#purposepicker ul li:contains('+ purpose.name +')').click();
 });
