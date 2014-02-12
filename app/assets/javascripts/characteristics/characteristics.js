@@ -198,9 +198,9 @@ characteristicsView.dob.init = function () {
 
   if ($('#user_characteristics_proxy_date_of_birth').val()) {
     var result  = $('#user_characteristics_proxy_date_of_birth').val().split('-')
-        , year  = result[0]
-        , month = result[1]
-        , day   = result[2];
+      , year    = result[0]
+      , month   = result[1]
+      , day     = result[2];
 
     try { $('#yeartable  li:contains('+ year  +')').click(); } catch (e) {};
     try { $('#monthtable li:contains('+ month +')').click(); } catch (e) {};
