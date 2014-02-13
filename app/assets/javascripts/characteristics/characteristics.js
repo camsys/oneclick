@@ -149,8 +149,8 @@ characteristicsView.backBtnHandler = function (e) {
   //trigger counter change event
   $('#eligibility_form').trigger('indexChange');
 };
-characteristicsView.dob.setupDays = function () {
 
+characteristicsView.dob.setupDays = function () {
   // populate dob days view
   // convert num of days into range array
   // setup initial ul template
@@ -181,7 +181,7 @@ characteristicsView.dob.setupDays = function () {
       dobDaysTemplate = $('<ul>');
     }
   }.bind(this));
-}
+};
 
 characteristicsView.dob.init = function () {
   // flag we're in the dob section. This needs to happen

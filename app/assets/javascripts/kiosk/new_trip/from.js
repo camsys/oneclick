@@ -36,7 +36,7 @@ jQuery(function ($) {
   $('#current-location a#yes').on('click', useCurrentLocationHandler);
   setupPlacesSearchTypeahead('from', 'start');
 
-  if (localStorage.getItem('marker:start')) {
+  if (localStorage.getItem('marker:start') && window.location.hash != '#back') {
     $('.js-progress-sequence:first').click();
   }
 });
