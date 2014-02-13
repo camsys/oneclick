@@ -24,6 +24,7 @@ jQuery(function ($) {
     $('#from_place_selected_type').attr('value', item.type);
     $('#from_place_selected').attr('value', item.id);
     $('#trip_proxy_from_place').val(item.addr);
+    $('#trip_proxy_use_current_location').val('yes');
     $('.js-trip-wizard-form').submit();
   }
 
@@ -34,9 +35,6 @@ jQuery(function ($) {
   restore_marker_from_local_storage('start');
 
   $('#current-location a#yes').on('click', useCurrentLocationHandler);
+  $('#current-location a#no').on('click', function () { $('#trip_proxy_use_current_location').val('no') });
   setupPlacesSearchTypeahead('from', 'start');
-
-  if (localStorage.getItem('marker:start') && window.location.hash != '#back') {
-    $('.js-progress-sequence:first').click();
-  }
 });

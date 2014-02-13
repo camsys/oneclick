@@ -17,6 +17,7 @@
   .fadeout
 
   = f.input :from_place, class: 'inline', label: t(:from) do
+    = f.hidden_field :use_current_location
     - data = {link: search_kiosk_user_trips_path, provide: 'typeahead'}
     - opts = {placeholder: t(:enter_from), id: 'trip_proxy_from_place', autocomplete: 'off', class: 'no-bottom-margin ajax-typeahead input-large address', data: data}
     = f.text_field :from_place, opts

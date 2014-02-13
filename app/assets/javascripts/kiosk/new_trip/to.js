@@ -7,4 +7,9 @@ jQuery(function ($) {
   restore_marker_from_local_storage('stop');
 
   setupPlacesSearchTypeahead('to', 'stop');
+
+  if (NewTrip.read().use_current_location == 'yes') {
+    var $btn = $('.back-button .arrow-btn')
+    $btn.attr('href', $btn.attr('href').replace('#back',''));
+  }
 });

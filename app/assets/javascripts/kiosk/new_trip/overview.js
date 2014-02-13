@@ -43,16 +43,20 @@ jQuery(function ($) {
   $('.edit-trip-btn').removeClass('hidden');
   $.fn.datepicker.Calendar.hide();
 
-  // tripformView.nextButton.off('click', tripformView.nextBtnHandler);
-  // tripformView.nextButton.on('click', tripformView.submitButtonhandler);
-
   $('.js-trip-wizard-form').on('submit', function (e) {
     e.stopPropagation(); e.preventDefault();
-    var $form = $(e.target);
+    var $form = $(e.target)
+      , trip_data = NewTrip.read();
 
     // clean up the data
-    var trip_data = NewTrip.read();
+    // default trip time is only used by the wizard. It does not end up getting stored.
     delete trip_data.default_return_trip_time;
+
+    // same with whether or not the user chose to use the current location.
+    // only the user's current location's data ends up getting stored.
+    // we keep track of their choice so that the back button can behave properly during
+    // the course of the wizard.
+    delete trip_data.use_current_location;
 
     // this is the final step. Instead of POSTing the form, let's get
     // the trip object from localStorage and post all of the params from that.
@@ -64,8 +68,7 @@ jQuery(function ($) {
         NewTrip.showError(error);
       },
       complete: function (xhr, status) {
-        if (status != 'error')
-          NewTrip.stepCompleteHandler(e, xhr);
+        if (status != 'error') NewTrip.stepCompleteHandler(e, xhr);
       }
     });
   });
