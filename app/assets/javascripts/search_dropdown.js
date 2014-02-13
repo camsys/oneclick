@@ -9,14 +9,17 @@ window.scrollContent = function ($, options) {
 
   function moveSlides (e, direction, amount) {
     var $holder     = $(e.delegateTarget)
-      , $nextButton = $(e.target)
       , $list       = $holder.find(options.listSel)
       , offset      = $list.data('offset');
 
     if (direction == 'forward') amount = amount * -1;
     offset = offset + amount;
 
-    $list
+    changeOffset($holder, offset);
+  }
+
+  function changeOffset($holder, offset) {
+    $holder.find(options.listSel)
       .data('offset',        offset)
       .css(options.property, offset + 'px');
 
@@ -52,6 +55,9 @@ window.scrollContent = function ($, options) {
     $el.data('scroll-content', {
       refresh: function () {
         checkButtonsEnabled($el, $el.find(options.listSel).data('offset'));
+      },
+      resetOffset: function () {
+        changeOffset($el, 0);
       }
     });
   });

@@ -48,7 +48,12 @@ jQuery(function ($) {
     })
 
     items.first().addClass('active');
-    this.$menu.html(items);
+
+    this.$menu
+      .html(items)
+      .closest('.js-typeahead-visibility-root').find('.search-dropdown-container')
+        .data('scroll-content').resetOffset();
+
     return this;
   };
 
