@@ -48,13 +48,17 @@ jQuery(function ($) {
 
   $('.js-trip-wizard-form').on('submit', function (e) {
     e.stopPropagation(); e.preventDefault();
-    $form = $(e.target);
+    var $form = $(e.target);
+
+    // clean up the data
+    var trip_data = NewTrip.read();
+    delete trip_data.default_return_trip_time;
 
     // this is the final step. Instead of POSTing the form, let's get
     // the trip object from localStorage and post all of the params from that.
     // this essentially acts the 'build' step.
     jQuery.ajax($form.attr('action'), {
-      data: { trip_proxy: NewTrip.read() },
+      data: { trip_proxy: trip_data },
       type: 'POST',
       error: function (xhr, status, error) {
         NewTrip.showError(error);
