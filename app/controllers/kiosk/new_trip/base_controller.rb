@@ -46,7 +46,7 @@ protected
 
   def back_url
     if current_step_index == 0
-      kiosk_path
+      kiosk_user_session_path
     else
       url_for_step(previous_step, anchor: 'back')
     end
