@@ -16,6 +16,8 @@ jQuery(function ($) {
 
   if (NewTrip.read().return_trip_time) {
     $('.js-trip-wizard-form').find('#trip_proxy_return_trip_time').val(NewTrip.read().return_trip_time);
+  } else if (NewTrip.read().default_return_trip_time) {
+    $('.js-trip-wizard-form').find('#trip_proxy_return_trip_time').val(NewTrip.read().default_return_trip_time);
   }
 
   NewTrip.timepickerInit('#trip_proxy_return_trip_time', '#timepicker-two');
