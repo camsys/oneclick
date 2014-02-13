@@ -184,6 +184,8 @@ characteristicsView.dob.setupDays = function () {
 }
 
 characteristicsView.dob.init = function () {
+  if (this.isIinitialized) return;
+  this.isIinitialized = true;
   // populate years
   characteristicsView.populateYears();
 
