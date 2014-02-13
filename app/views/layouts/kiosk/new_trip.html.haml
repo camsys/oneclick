@@ -2,10 +2,13 @@
   %div.responsive-mbp.row-fluid
     .span4.info
       #left-description
-        %h1
-          = t(:plan_a_trip)
-        %h4 Tell Us Where You're Starting
-        %p Will you be traveling from your current location? Tap "yes" or "no". If "no", you will be prompted to enter an address to travel from in the next step.
+        %h1= t(:plan_a_trip)
+
+        .js-sidebar-text-series
+          - t(current_step, scope: :new_trip).each do |text|
+            .sidebar-text.hidden
+              %h4= text['heading'].html_safe
+              %p=  text['paragraph'].html_safe
 
       #left-results.hidden
         %h1 Overview

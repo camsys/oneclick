@@ -1,16 +1,26 @@
 function viewSequence ($) {
-  var els = $('*[data-index]')
+  var els   = $('*[data-index]')
+    , texts = $('.js-sidebar-text-series > .sidebar-text')
     , firstEl;
   if(els.length < 1) return;
 
-  function changeFrames(e, dir) {
-    var nextIndex = els.index(els.filter('.current')) + dir
-      , nextEl    = $(els[nextIndex]);
-
+  function showFrameForIndex(index) {
+    // show the page section at the given index
     els.addClass('hidden').removeClass('current');
-    nextEl.removeClass('hidden').addClass('current');
+    els.eq(index).removeClass('hidden').addClass('current');
+
+    // show the corresponding sidebar text
+    texts.addClass('hidden');
+    texts.eq(index).removeClass('hidden');
+
     updateMap();
     showNavButton();
+  }
+
+  function changeFrames(e, dir) {
+    var nextIndex = els.index(els.filter('.current')) + dir;
+
+    showFrameForIndex(nextIndex);
 
     if (e) e.preventDefault();
   }
@@ -41,14 +51,10 @@ function viewSequence ($) {
   }
 
   if (window.location.hash == '#back') {
-    firstEl = els.last();
+    showFrameForIndex(els.length - 1);
   } else {
-    firstEl = els.first();
+    showFrameForIndex(0);
   }
-
-  els.addClass('hidden');
-  firstEl.removeClass('hidden').addClass('current');
-  showNavButton();
 
   $(document).on('click', '.js-progress-sequence', progress);
 

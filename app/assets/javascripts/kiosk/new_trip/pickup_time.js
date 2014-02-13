@@ -48,7 +48,4 @@ jQuery(function ($) {
 
     toggleArriveDepart(inverseValue);
   }
-
-  $('#left-description h4').html("Tell Us What Time You'll Be Leaving");
-  $('#left-description p').html("Choose the time you will be leaving from your starting location. The next hour or half-hour has already been selected for you. <br><br> Tap \"Next Step\" when you have selected the correct time to leave.");
 });
