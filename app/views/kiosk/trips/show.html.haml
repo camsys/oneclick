@@ -111,7 +111,7 @@
                 Print your trip plan
           .row-fluid
             .span12
-              = link_to new_kiosk_user_trip_path, {class: 'btn btn-block'} do
+              = link_to kiosk_user_new_trip_start_path(current_or_guest_user), {class: 'btn btn-block'} do
                 = t(:plan_a_new_trip)
           .row-fluid
             .span12
@@ -121,12 +121,6 @@
             .span12
               =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
                 View trip details
-
-
-
-
-
-
 
 - else
   .row-fluid.results-view.js-trip-itineraries-slides

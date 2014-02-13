@@ -1,9 +1,14 @@
+jQuery(function ($) {
+(function () {
+if ($('.js-trip-wizard-form').length > 0) return;
+// -- END START OF DISABLING CODE -- !://
+
 /**
  * Created by Miguel Bermudez on 12/9/13.
  */
 
 var dobFirst;
-var characteristicsView = {
+window.characteristicsView = {
   indexCounter: 0,
   dobView: false,
   formItems: [],
@@ -18,6 +23,25 @@ var characteristicsView = {
     RETURN: 6,
     RETURNTIME: 7,
     OVERVIEW: 8
+  },
+  dob: {
+    counter: 0,
+    states: {
+      MONTH: 1,
+      DAY: 2,
+      YEAR: 0
+    },
+
+    yearpage: 0,
+    params: {},
+
+    //get number of days for a particular month, months are 0 based
+    numberOfDays: function(month) {
+      var now = new Date();
+      var m = month + 1;
+      var d = new Date(now.getUTCFullYear(), m, 0);
+      return d.getDate();
+    }
   }
 };
 
@@ -31,41 +55,35 @@ characteristicsView.init = function () {
   this.formItems = $('*[data-index]');
   this.formItems.addClass('hidden');
   this.dobItems = $('.dob-section', '#new_user_characteristics_proxy');
-  this.dob = {
-    counter: 0,
-    states: {
-      MONTH: 0,
-      DAY: 1,
-      YEAR: 2
-    },
-    yearpage: 0,
-    params: {},
-    breadcrumbs: $('.dob-breadcrumb li'),
-    monthtable: $('#monthtable'),
-    daytable: $('#daytable'),
-    yeartable: $('#yeartable'),
-    yearlist: $('#yearlist'),
-
-    //get number of days for a particular month, months are 0 based
-    numberOfDays: function(month) {
-      var now = new Date();
-      var m = month + 1;
-      var d = new Date(now.getUTCFullYear(), m, 0);
-      return d.getDate();
-    }
-  };
+  this.dob.breadcrumbs = $('.dob-breadcrumb li');
+  this.dob.monthtable = $('#monthtable');
+  this.dob.daytable = $('#daytable');
+  this.dob.yeartable = $('#yeartable');
+  this.dob.yearlist = $('#yearlist');
 
   //add indexChange handler to form
-  $('#eligibility_form').on('indexChange', characteristicsView.indexChangeHandler);
+  $('#eligibility_form').on('indexChange', characteristicsView.indexChangeHandler.bind(characteristicsView));
 
   //add click handler to next button
-  $('.next-step-btn, a#yes').on('click', characteristicsView.nextBtnHandler);
+  $('.next-step-btn, a#yes').on('click', characteristicsView.nextBtnHandler.bind(characteristicsView));
+
+  $('.back-button a').on('click', characteristicsView.backBtnHandler.bind(characteristicsView));
 
   //add click handlers to dob form li elements (table)
-  characteristicsView.dobItems.find('li').on('click', characteristicsView.handleDobElemClick);
+  characteristicsView.dobItems.on('click', 'li', characteristicsView.handleDobElemClick.bind(characteristicsView));
 
   //reveal first form item
-  $('div[data-index="0"]').removeClass('hidden');
+  if (window.location.hash != '#back') {
+    $('*[data-index=0]').removeClass('hidden');
+  } else {
+    $('*[data-index]').last().removeClass('hidden');
+    $('div.next-footer-container').removeClass('hidden');
+    characteristicsView.indexCounter = 2;
+    characteristicsView.dobView = true;
+    characteristicsView.dob.init();
+    characteristicsView.dob.counter = 3;
+    characteristicsView.backBtnHandler();
+  }
 
   $('input[name="user_characteristics_proxy[disabled]"]:radio').on('change', function (event) {
     $.ajax({
@@ -82,10 +100,9 @@ characteristicsView.init = function () {
  * Characteristics Form View Next Button Handlers
  *.............................................................................*/
 characteristicsView.nextBtnHandler = function () {
-
   //if we're on the last dob form item, switch dobview flag to adv to next
   //characteristic form item
-  if (characteristicsView.dob.counter >= characteristicsView.dob.states.YEAR) {
+  if (characteristicsView.dob.counter >= characteristicsView.dob.states.DAY) {
     characteristicsView.dobView = false;
   }
 
@@ -108,82 +125,142 @@ characteristicsView.nextBtnHandler = function () {
   $('#eligibility_form').trigger('indexChange');
 };
 
+characteristicsView.backBtnHandler = function (e) {
+  if (e && this.indexCounter > 0) e.preventDefault();
+
+  // We've completely backed out of the dob view. if it is down to zero.
+  if (this.dob.counter <= 0)
+    this.dobView = false;
+
+  //if we're in the dob section, don't increment the index
+  if (this.dobView === false) {
+    //increment counter
+    this.indexCounter--;
+  } else {
+    //increment the dob counter
+    this.dob.counter--;
+  }
+
+  if (this.indexCounter == 2) {
+    $('#left-description h4').text('Tell Us Your Date of Birth')
+    $('#left-description p').html('Sharing your birthdate allows us to provide you with the best travel options, including those that may be discounted or only available to seniors.<br><br>Tap "Next Step" when you have selected the correct date.')
+  }
+
+  //trigger counter change event
+  $('#eligibility_form').trigger('indexChange');
+};
+
+characteristicsView.dob.setupDays = function () {
+  // populate dob days view
+  // convert num of days into range array
+  // setup initial ul template
+  var dayArray = CGUtils.range(1, (this.numberOfDays(this.params.month) + 1))
+    , dobDaysTemplate = $('<ul>');
+
+  this.daytable.html('');
+
+  $.each(dayArray, function(index, day) {
+    var liElem;
+    var numberOfDaysInRow = 8;
+
+    //check if current iteration is last row
+    var lastRow = ((index+1) % dayArray.length === 0);
+
+    if (index >= Math.floor(dayArray.length / numberOfDaysInRow) * numberOfDaysInRow) {
+      liElem = $('<li>').addClass('bottom').text(day);
+    } else {
+      liElem = $('<li>').text(day);
+    }
+
+    //atached li elem to current ul elem
+    dobDaysTemplate.append(liElem);
+
+    if( ((index + 1) % numberOfDaysInRow === 0) || lastRow ) {
+      this.daytable.append(dobDaysTemplate);
+      //reset ul elem
+      dobDaysTemplate = $('<ul>');
+    }
+  }.bind(this));
+};
+
+characteristicsView.dob.init = function () {
+  // flag we're in the dob section. This needs to happen
+  // every time.
+  characteristicsView.dobView = true;
+
+  // don't run this code more than once
+  if (this.isIinitialized) return;
+
+  // flag that this code has been executed.
+  this.isIinitialized = true;
+
+  // populate years
+  characteristicsView.populateYears();
+
+  // get month from previous dob form item or if there was a problem,
+  // create the current month
+  this.params.month = this.params.month || new Date().getMonth();
+
+  this.setupDays();
+
+  if ($('#user_characteristics_proxy_date_of_birth').val()) {
+    var result  = $('#user_characteristics_proxy_date_of_birth').val().split('-')
+      , year    = result[0]
+      , month   = result[1]
+      , day     = result[2];
+
+    try { $('#yeartable  li:contains('+ year  +')').click(); } catch (e) {};
+    try { $('#monthtable li:contains('+ month +')').click(); } catch (e) {};
+    try { $('#daytable   li:contains('+ day   +')').click(); } catch (e) {};
+
+    // make sure the correct page is visible.
+    var page = $('#yearContainer > ul').index($('#yeartable li:contains('+ year +')').closest('ul'));
+    characteristicsView.dob.yearpage = page;
+    characteristicsView.dob.displayYearPage();
+  }
+};
+
 /*..............................................................................
  * Characteristics Form View Index Change Handler
  *.............................................................................*/
 characteristicsView.indexChangeHandler = function () {
   //hide everything again
-  if (characteristicsView.indexCounter != characteristicsView.states.PROGRAMS) {
-    characteristicsView.formItems.addClass('hidden');
+  if (this.indexCounter != this.states.PROGRAMS) {
+    this.formItems.addClass('hidden');
   }
 
   //hide all dob form items
-  characteristicsView.dobItems.addClass('hidden');
+  this.dobItems.addClass('hidden');
 
   //remove current class from dob breadcrumbs
-  characteristicsView.dob.breadcrumbs.removeClass('current');
+  this.dob.breadcrumbs.removeClass('current');
 
   //find element matching current index and dob index
-  var matchedElement = $('div[data-index="' + characteristicsView.indexCounter + '"]');
-  var matchedDOBElement = $('div[data-dobindex="' + characteristicsView.dob.counter+ '"]');
+  var matchedElement = $('div[data-index="' + this.indexCounter + '"]');
+  var matchedDOBElement = $('div[data-dobindex="' + this.dob.counter + '"]');
 
   //set current dob breadcrumb
-  $(characteristicsView.dob.breadcrumbs[characteristicsView.dob.counter]).addClass('current');
+  $(this.dob.breadcrumbs[this.dob.counter]).addClass('current');
 
   //matched element visible
   matchedElement.removeClass('hidden');
   matchedDOBElement.removeClass('hidden');
 
-  if (characteristicsView.dobView === false) {
-    switch(characteristicsView.indexCounter) {
-      case characteristicsView.states.QUESTIONS:
+  if (this.dobView === false) {
+    switch(this.indexCounter) {
+      case this.states.YESNO:
+        $('div.next-footer-container').addClass('hidden');
+        break;
+
+      case this.states.QUESTIONS:
         $('div.next-footer-container').removeClass('hidden');
         break;
 
-      case characteristicsView.states.DOB:
-        // populate years
-        characteristicsView.populateYears();
-
-
-        // get month from previous dob form item or if there was a problem,
-        // create the current month
-        characteristicsView.dob.params.month = characteristicsView.dob.params.month || new Date().getMonth();
-        var month = characteristicsView.dob.params.month;
-
-        //setup initial ul template
-        var dobDaysTemplate = $('<ul>');
-
-        //flag we're in the dob section
-        characteristicsView.dobView = true;
-
-        //populate dob days view
-        //  convert num of days into range array
-        var dayArray = CGUtils.range( 1, (characteristicsView.dob.numberOfDays(month) + 1) );
-        $.each(dayArray, function(index, day) {
-          var liElem;
-          var numberOfDaysInRow = 8;
-
-          //check if current iteration is last row
-          var lastRow = ((index+1) % dayArray.length === 0);
-
-          if ( index >= Math.floor(dayArray.length/numberOfDaysInRow) * numberOfDaysInRow) {
-            liElem = $('<li>').addClass('bottom').text(day);
-          } else {
-            liElem = $('<li>').text(day);
-          }
-
-          //atached li elem to current ul elem
-          dobDaysTemplate.append(liElem);
-
-          if( ((index+1) % numberOfDaysInRow === 0) || lastRow ) {
-            characteristicsView.dob.daytable.append(dobDaysTemplate);
-            //reset ul elem
-            dobDaysTemplate = $('<ul>');
-          }
-        });
+      case this.states.DOB:
+        this.dob.init();
 
         //attach template to view
-        //characteristicsView.dob.daytable.append(dobDaysTemplate);
+        //this.dob.daytable.append(dobDaysTemplate);
         break;
 
       case characteristicsView.states.PROGRAMS:
@@ -198,18 +275,17 @@ characteristicsView.indexChangeHandler = function () {
  *.............................................................................*/
 characteristicsView.handleDobElemClick = function(e) {
   var $target = $(e.target);
-  var value = $target.val();
 
-  //set dob params on li elem click
-  switch ($target.attr('data-dobindex')) {
+  // set dob params on li elem click
+  switch ($target.closest('*[data-dobindex]').data('dobindex')) {
     case characteristicsView.dob.states.MONTH:
-      characteristicsView.dob.params.month = value;
+      characteristicsView.dob.params.month = $target.parent().parent().find('li').index($target);
       break;
     case characteristicsView.dob.states.DAY:
-      characteristicsView.dob.params.day = value;
+      characteristicsView.dob.params.day = parseInt($target.text());
       break;
     case characteristicsView.dob.states.YEAR:
-      characteristicsView.dob.params.year = value;
+      characteristicsView.dob.params.year = $target.text();
       break;
   }
 };
@@ -327,6 +403,26 @@ $(document).ready(function () {
         .closest('.dob-section').find('li').removeClass('selected').end().end()
         .addClass('selected');
 
+      // month requires extra handling for days in the month
+      if (segment == 'month') {
+        // first, clear out any previously selected value. This will prevent
+        // the 30th from being selected if the user changes the month from June
+        // to February.
+        $('.dob-breadcrumb li.day span.input').text('');
+        $('li.day span.type').removeClass('val-added');
+        $('.dob-breadcrumb li.day').removeClass('chosen');
+
+        // clear out / populate the days.
+        characteristicsView.dob.setupDays();
+
+        // find the current day and click on it. If the day is not present i.e. a
+        // day was selected that is not available for the given month, the value will
+        // be reset and no day will be selected.
+        var day = characteristicsView.dob.params.day;
+        delete characteristicsView.dob.params.day
+        try { $('#daytable').find('li:contains('+ day +')').click(); } catch (e) {};
+      }
+
       $('.dob-breadcrumb li.'+ segment +' span.input').text(dobFirst.html());
       $('li.'+ segment +' span.type').addClass('val-added');
       $('.dob-breadcrumb li.'+ segment).addClass('chosen');
@@ -339,21 +435,11 @@ $(document).ready(function () {
           .toArray()
           .join('-')
       );
-
-      if (typeof next != 'undefined') {
-        // $('#'+ segment +'table').fadeOut(function () {
-        //   $('#'+ next +'table').fadeIn().removeClass('hidden');
-        //   $('.dob-breadcrumb li.'+ segment).removeClass('current');
-        //   $('.dob-breadcrumb li.'+ next).addClass('current');
-        // });
-      } else {
-      }
     });
   });
 
-  //kick everything off
+  // kick everything off
   characteristicsView.init();
-
 });
 
 window.CGUtils = {
@@ -364,6 +450,7 @@ window.CGUtils = {
       stop = start || 0;
       start = 0;
     }
+
     step = arguments[2] || 1;
 
     var length = Math.max(Math.ceil((stop - start) / step), 0);
@@ -378,3 +465,7 @@ window.CGUtils = {
     return range;
   }
 }
+
+// -- END DISABLING CODE -- !://
+})();
+});

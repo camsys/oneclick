@@ -140,8 +140,6 @@ GEM
       faraday (>= 0.7.4, < 0.9)
     fastercsv (1.5.5)
     ffi (1.9.3)
-    ffi-geos (0.4.0)
-      ffi (>= 1.0.0)
     figaro (0.7.0)
       bundler (~> 1.0)
       rails (>= 3, < 5)
@@ -414,7 +412,7 @@ DEPENDENCIES
   draper
   email_spec
   factory_girl_rails
-  ffi-geos
+  faraday_middleware
   figaro
   geocoder
   growl

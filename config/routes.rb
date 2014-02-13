@@ -118,6 +118,8 @@ Oneclick::Application.routes.draw do
 
     # match '/kiosk_user/kiosk/users/sign_in', to: 'kiosk/sessions#create'
 
+    get 'place_details/:id' => 'place_searching#details', as: 'place_details'
+
     namespace :kiosk do
       match '/', to: 'home#index'
 
@@ -126,6 +128,16 @@ Oneclick::Application.routes.draw do
         member do
           get   'profile'
           post  'update'
+        end
+
+        namespace :new_trip do
+          resource :start
+          resource :to
+          resource :from
+          resource :pickup_time
+          resource :purpose
+          resource :return_time
+          resource :overview
         end
 
         resources :characteristics, :only => [:new, :create, :edit, :update] do
@@ -177,7 +189,9 @@ Oneclick::Application.routes.draw do
             get   'search'
             post  'geocode'
           end
+
           member do
+            get 'start'
             get   'repeat'
             get   'select'
             get   'details'
@@ -246,12 +260,13 @@ Oneclick::Application.routes.draw do
 
   end
 
-  ComfortableMexicanSofa::Routing.admin(:path => '/cms-admin')
+  unless Oneclick::Application.config.ui_mode == 'kiosk'
+    ComfortableMexicanSofa::Routing.admin(:path => '/cms-admin')
 
-  mount_sextant if Rails.env.development?
-  match '*not_found' => 'errors#handle404'
+    mount_sextant if Rails.env.development?
+    match '*not_found' => 'errors#handle404'
 
-  # Make sure this routeset is defined last
-  ComfortableMexicanSofa::Routing.content(:path => '/', :sitemap => false)
-
+    # Make sure this routeset is defined last
+    ComfortableMexicanSofa::Routing.content(:path => '/', :sitemap => false)
+  end
 end

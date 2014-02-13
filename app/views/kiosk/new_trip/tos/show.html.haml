@@ -1,0 +1,44 @@
+= f.hidden_field :to_place_selected, :id => "to_place_selected"
+= f.hidden_field :to_place_selected_type, :id => "to_place_selected_type"
+
+/ TODO: ADD THE DIV WITH THE DATA INDEX
+#to_input{ :data => {:index => 2}}
+  .fadeout
+
+  = f.input :to_place, :class => "inline", :label => t(:to) do
+    = f.text_field :to_place, :placeholder => t(:enter_to), :id => "trip_proxy_to_place", :class => "no-bottom-margin ajax-typeahead input-large address", :autocomplete => "off", :data => {:link => search_kiosk_user_trips_path, :provide => "typeahead"}
+    = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
+    = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
+
+  #to_place_candidates.js-typeahead-visibility-root.hidden
+    .row-fluid
+      .span12
+        %h6=# t(:found_x_matches, count: results.count )
+
+    .row-fluid
+      .search-dropdown-container
+        .candidate-list.span10
+          .js-candidate-list-inner{'data-offset' => '0'}
+            %ul.nav.nav-list
+              -# ([]).each_with_index do |addr, index|
+                %li
+                  %a.address-select{href: '#', data: {id: addr['id'], index: index, latlon: [addr['lat'], addr['lng']], desc: addr['description'], type: type, addr: addr['title']}= addr['title']
+
+        .scroller-container.span2.pull-right
+          .scroll-up.js-prev-btn
+          .scrollbar
+            .scrollbar-bar
+              .scrollbar-scroll
+          .scroll-down.js-next-btn
+
+  #trip_map
+    = LeafletMap(mapid: 'lmap', markers: @markers, tile_provider: 'GOOGLEMAP', min_zoom: 3, max_zoom: 15, class: 'map', style: 'height:558px')
+    = yield :scripts
+
+.form-actions.hidden
+  = button_tag type: 'submit', class: "btn btn-primary" do
+    %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
+    = t(:plan_it)
+  = link_to :back, class: "cancel_link" do
+    %i.icon.icon-reply
+    = t(:cancel)

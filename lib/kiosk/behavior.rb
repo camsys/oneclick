@@ -1,9 +1,14 @@
 module Kiosk
   module Behavior
-    def self.included(base)
-      base.class_eval do
-        layout 'kiosk/application'
-      end
+    extend ActiveSupport::Concern
+
+    included do
+      layout 'kiosk/application'
+      helper_method :back_url
+    end
+
+    def back_url
+      raise 'Not implemented'
     end
   end
 end

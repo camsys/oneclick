@@ -4,12 +4,12 @@ module Kiosk
 
     def after_sign_up_path_for resource
       Rails.logger.info "Kiosk::SessionsController#after_sign_up_path_for"
-      new_kiosk_user_trip_path resource
+      kiosk_user_new_trip_start_path resource
     end
 
     def after_sign_in_path_for resource
       Rails.logger.info "Kiosk::SessionsController#after_sign_in_path_for"
-      new_kiosk_user_trip_path resource
+      kiosk_user_new_trip_start_path resource
     end
 
     def new
@@ -22,9 +22,14 @@ module Kiosk
       respond_with resource, :location => after_sign_in_path_for(resource)
     end
 
-
     def destroy
       super
+    end
+
+  protected
+
+    def back_url
+      kiosk_path
     end
   end
 end
