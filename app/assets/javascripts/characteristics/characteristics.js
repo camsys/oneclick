@@ -184,17 +184,22 @@ characteristicsView.dob.setupDays = function () {
 }
 
 characteristicsView.dob.init = function () {
+  // flag we're in the dob section. This needs to happen
+  // every time.
+  characteristicsView.dobView = true;
+
+  // don't run this code more than once
   if (this.isIinitialized) return;
+
+  // flag that this code has been executed.
   this.isIinitialized = true;
+
   // populate years
   characteristicsView.populateYears();
 
   // get month from previous dob form item or if there was a problem,
   // create the current month
   this.params.month = this.params.month || new Date().getMonth();
-
-  //flag we're in the dob section
-  characteristicsView.dobView = true;
 
   this.setupDays();
 
@@ -243,6 +248,10 @@ characteristicsView.indexChangeHandler = function () {
 
   if (this.dobView === false) {
     switch(this.indexCounter) {
+      case this.states.YESNO:
+        $('div.next-footer-container').addClass('hidden');
+        break;
+
       case this.states.QUESTIONS:
         $('div.next-footer-container').removeClass('hidden');
         break;
