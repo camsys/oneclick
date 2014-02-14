@@ -9,8 +9,8 @@ describe Service do
 
   it "has eligibility information" do
     service = FactoryGirl.create(:populated_service)
-    service.traveler_accommodations.should_not be_empty
-    service.traveler_accommodations.first.name.should eq 'Wheelchair Accessible'
+    service.accommodations.should_not be_empty
+    service.accommodations.first.name.should eq 'Wheelchair Accessible'
   end
 
 end
