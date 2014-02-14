@@ -148,7 +148,7 @@ class EspReader
       service.fare_structures.destroy_all
       #Add Curb to Curb by default
       accommodation = Accommodation.find_by_code('curb_to_curb')
-      ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: accommodation, value: 'true')
+      ServiceAccommodation.create(service: service, traveler_accommodation: accommodation, value: 'true')
 
       #Set new schedule
       (0..6).each do |day|
@@ -233,29 +233,29 @@ class EspReader
       else
         raise "ACCOMMODATION NOT FOUND:  " + accommodation.to_s
     end
-    ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: accommodation, value: 'true')
+    ServiceAccommodation.create(service: service, traveler_accommodation: accommodation, value: 'true')
   end
 
   def add_eligibility(service, eligibility)
     #Give all rules in this eligibility the same group.
-    group = (service.service_traveler_characteristics_maps.pluck(:group).max || -1) + 1
+    group = (service.service_characterstics.pluck(:group).max || -1) + 1
     rules = eligibility.split(' and ')
     rules.each do |rule|
       if rule[0..2].downcase == 'age'
         characteristic = Characteristic.find_by_code('age')
-        ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: characteristic, value: rule.gsub(/[^0-9]/, ''), value_relationship_id: 4, group: group)
+        ServiceCharacteristic.create(service: service, traveler_characteristic: characteristic, value: rule.gsub(/[^0-9]/, ''), value_relationship_id: 4, group: group)
         next
       end
 
       case rule.downcase
         when 'disabled'
           characteristic = Characteristic.find_by_code('disabled')
-          ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: characteristic, value: true, group: group)
+          ServiceCharacteristic.create(service: service, traveler_characteristic: characteristic, value: true, group: group)
         when 'disabled veteran'
           characteristic = Characteristic.find_by_code('disabled')
-          ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: characteristic, value: true, group: group)
+          ServiceCharacteristic.create(service: service, traveler_characteristic: characteristic, value: true, group: group)
           characteristic = Characteristic.find_by_code('veteran')
-          ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: characteristic, value: true, group: group)
+          ServiceCharacteristic.create(service: service, traveler_characteristic: characteristic, value: true, group: group)
         when 'county resident'
           # When county resident is required.  The person must also be a resident of the county in addition to traveling within that county.
           # The coverages were created previously.
@@ -265,7 +265,7 @@ class EspReader
           end
         when 'military/veteran'
           characteristic = Characteristic.find_by_code('veteran')
-          ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: characteristic, value: true, group: group)
+          ServiceCharacteristic.create(service: service, traveler_characteristic: characteristic, value: true, group: group)
         else
           raise "ELIGIBILITY RULE NOT FOUND:  " + rule.to_s
       end

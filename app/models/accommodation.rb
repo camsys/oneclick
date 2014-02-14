@@ -5,8 +5,8 @@ class Accommodation < ActiveRecord::Base
   has_many :user_accommodations
   has_many :user_profiles, through: :user_accommodations
 
-  has_many :service_traveler_accommodations_maps
-  has_many :services, through: :service_traveler_accommodations_maps
+  has_many :service_accommodations
+  has_many :services, through: :service_accommodations
 
   # set the default scope
   default_scope where('accommodations.active = ?', true)

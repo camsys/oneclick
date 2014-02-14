@@ -294,11 +294,11 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '65', value_relationship_id: 4)
+      ServiceCharacteristic.create(service: service, traveler_characteristic: age, value: '65', value_relationship_id: 4)
 
       #Traveler Accommodations Requirements
       [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
       #Shared Ride for Ages 60-64
@@ -325,12 +325,12 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '64', value_relationship_id: 6)
+      ServiceCharacteristic.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
+      ServiceCharacteristic.create(service: service, traveler_characteristic: age, value: '64', value_relationship_id: 6)
 
       #Traveler Accommodations Requirements
       [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
       #Medical Assistance Transportation Program
@@ -361,11 +361,11 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: matp, value: 'true')
+      ServiceCharacteristic.create(service: service, traveler_characteristic: matp, value: 'true')
 
       #Traveler Accommodations Requirements
       [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
       #ADA Complementary
@@ -392,11 +392,11 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: ada_eligible, value: 'true')
+      ServiceCharacteristic.create(service: service, traveler_characteristic: ada_eligible, value: 'true')
 
       #Traveler Accommodations Requirements
       [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
       #Service for Persons with Disabilities
@@ -423,11 +423,11 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: disabled, value: 'true')
+      ServiceCharacteristic.create(service: service, traveler_characteristic: disabled, value: 'true')
 
       #Traveler Accommodations Requirements
       [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
     when "2" #Faith in Action Network
@@ -456,11 +456,11 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
+      ServiceCharacteristic.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
 
       #Traveler Accommodations Requirements
       [curb_to_curb, folding_wheelchair_accessible].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
     when "3" #American Cancer Society
@@ -491,7 +491,7 @@ providers.each do |provider|
 
       #Traveler Accommodations Requirements
       [curb_to_curb, folding_wheelchair_accessible].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
     when "4" #Luthern Social Services of South Central PA
@@ -522,7 +522,7 @@ providers.each do |provider|
 
       #Traveler Accommodations Requirements
       [curb_to_curb, folding_wheelchair_accessible].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
     when "5" #Area Agency on Aging
@@ -551,11 +551,11 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Required
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
+      ServiceCharacteristic.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
 
       #Traveler Accommodations Requirements
       [curb_to_curb, folding_wheelchair_accessible].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
 

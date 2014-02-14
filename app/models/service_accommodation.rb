@@ -1,4 +1,4 @@
-class ServiceTravelerAccommodationsMap < ActiveRecord::Base
+class ServiceAccommodation < ActiveRecord::Base
 
   #associations
   belongs_to :service

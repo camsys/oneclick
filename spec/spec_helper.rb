@@ -54,8 +54,8 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation, {except: %w{traveler_characteristics traveler_accommodations
       service_types trip_purposes providers services schedules service_trip_purpose_maps
-      service_traveler_characteristics_maps
-      service_traveler_accommodations_maps
+      service_characteristics
+      service_accommodations
       user_accommodations
       user_characteristics
       }}

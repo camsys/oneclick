@@ -99,8 +99,8 @@ namespace :oneclick do
       c = GeoCoverage.new(value: 'Dekalb', coverage_type: 'county_name')
       ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'residence')
 
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: disabled, group: 1, value: 'true')
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, group: 2, value: '55', value_relationship_id: 4)
+      ServiceCharacteristic.create(service: service, traveler_characteristic: disabled, group: 1, value: 'true')
+      ServiceCharacteristic.create(service: service, traveler_characteristic: age, group: 2, value: '55', value_relationship_id: 4)
 
     end # task
 
@@ -355,7 +355,7 @@ When scheduling appointment(s), patients must inform the scheduling clerk that t
         #Traveler Accommodations Requirements
         folding_wheelchair_accessible = Accommodation.find_by_code('folding_wheelchair_acceessible')
         [folding_wheelchair_accessible].each do |n|
-          ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
         end
 
       else
@@ -408,7 +408,7 @@ When scheduling appointment(s), patients must inform the scheduling clerk that t
       motorized_wheelchair_accessible = Accommodation.find_by_code('motorized_wheelchair_accessible')
       curb_to_curb = Accommodation.find_by_code('curb_to_curb')
       [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
     end

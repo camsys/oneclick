@@ -21,7 +21,7 @@ class EligibilityHelpers
     is_eligible = false
     missing_information = false
     missing_information_text = ''
-    groups = service.service_traveler_characteristics_maps.pluck(:group).uniq
+    groups = service.service_characteristics.pluck(:group).uniq
     if groups.count == 0
       is_eligible = true
       min_match_score = 0
@@ -30,7 +30,7 @@ class EligibilityHelpers
       group_missing_information_text = ''
       group_match_score = 0
       group_eligible = true
-      service_characteristic_maps = service.service_traveler_characteristics_maps.where(group: group)
+      service_characteristic_maps = service.service_characteristics.where(group: group)
       service_characteristic_maps.each do |service_characteristic_map|
         service_requirement = service_characteristic_map.characteristic
         if service_requirement.code == 'age'
@@ -120,7 +120,7 @@ class EligibilityHelpers
     #all_services = Service.all
     itineraries.each do |itinerary|
       service = itinerary['service']
-      accommodations_maps = service.service_traveler_accommodations_maps
+      accommodations_maps = service.service_accommodations
       service_accommodations  = []
       accommodations_maps.each do |map|
         service_accommodations << map.accommodation

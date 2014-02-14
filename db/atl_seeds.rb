@@ -320,7 +320,7 @@ providers.each do |provider|
 
       #Traveler Accommodations Requirements
       [door_to_door, curb_to_curb, folding_wheelchair_accessible].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
 
@@ -344,11 +344,11 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
+      ServiceCharacteristic.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
 
       #Traveler Accommodations Requirements
       [door_to_door, curb_to_curb, driver_assistance_available, motorized_wheelchair_accessible, lift_equipped].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
     when "esp#7" #Fulton County office of Aging
@@ -370,12 +370,12 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: no_trans, value: 'false')
+      ServiceCharacteristic.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
+      ServiceCharacteristic.create(service: service, traveler_characteristic: no_trans, value: 'false')
 
       #Traveler Accommodations Provided
       [folding_wheelchair_accessible, driver_assistance_available, motorized_wheelchair_accessible, curb_to_curb, door_to_door, lift_equipped].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
       #Create service #11 DARTS
@@ -396,11 +396,11 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '55', value_relationship_id: 4)
+      ServiceCharacteristic.create(service: service, traveler_characteristic: age, value: '55', value_relationship_id: 4)
 
       #Traveler Accommodations Provided
       [folding_wheelchair_accessible, driver_assistance_available, door_to_door, curb_to_curb, lift_equipped].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
     when "esp#3" #Jewish Family & Career Center
@@ -429,7 +429,7 @@ providers.each do |provider|
 
       #Traveler Accommodations Requirements
       [door_to_door, curb_to_curb, driver_assistance_available, folding_wheelchair_accessible, motorized_wheelchair_accessible, lift_equipped].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
     when "esp#20" #Cobb Senior Services
@@ -452,11 +452,11 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
+      ServiceCharacteristic.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
 
       #Traveler Accommodations Requirements
       [door_to_door, curb_to_curb, driver_assistance_available, folding_wheelchair_accessible, motorized_wheelchair_accessible, lift_equipped].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
     when "esp#15" #Cobb Community Transit
@@ -485,11 +485,11 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: ada_eligible, value: 'true')
+      ServiceCharacteristic.create(service: service, traveler_characteristic: ada_eligible, value: 'true')
 
       #Traveler Accommodations Requirements
       [curb_to_curb, folding_wheelchair_accessible, motorized_wheelchair_accessible, lift_equipped].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
     when "esp#22" #Mountain Area Transportation Services
@@ -512,11 +512,11 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: ada_eligible, value: 'true')
+      ServiceCharacteristic.create(service: service, traveler_characteristic: ada_eligible, value: 'true')
 
       #Traveler Accommodations Requirements
       [curb_to_curb, door_to_door, folding_wheelchair_accessible, lift_equipped].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
     when "esp#34" #I care transportation service.
@@ -544,12 +544,12 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: disabled, value: 'true')
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '55', value_relationship_id: 4)
+      ServiceCharacteristic.create(service: service, traveler_characteristic: disabled, value: 'true')
+      ServiceCharacteristic.create(service: service, traveler_characteristic: age, value: '55', value_relationship_id: 4)
 
       #Traveler Accommodations Requirements
       [curb_to_curb].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
     when "esp#8" #Rockdale County Senior Services
@@ -577,11 +577,11 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
+      ServiceCharacteristic.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
 
       #Traveler Accommodations Requirements
       [curb_to_curb, door_to_door, driver_assistance_available, folding_wheelchair_accessible, motorized_wheelchair_accessible, lift_equipped].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
       end
 
   end

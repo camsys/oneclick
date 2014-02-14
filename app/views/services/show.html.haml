@@ -98,13 +98,13 @@
       %h4="Eligibility Rules"
       ="If ANY of the following rules are satsified, the traveler may be eligible to use this service."
       .well.white-well.wwell1
-        -if @service.service_traveler_characteristics_maps.count > 0
+        -if @service.service_characteristics.count > 0
           %ul
-          -groups = @service.service_traveler_characteristics_maps.map(&:group).uniq
+          -groups = @service.service_characteristics.map(&:group).uniq
           -groups.each do |group|
             -group_string = ""
             %li
-              -@service.service_traveler_characteristics_maps.where(group: group).each do |map|
+              -@service.service_characteristics.where(group: group).each do |map|
                 -if map.characteristic.code == "age"
                   -group_string +="Age is " + @eh.relationship_to_words(map.value_relationship_id) + " " + map.value + " "
                 -else

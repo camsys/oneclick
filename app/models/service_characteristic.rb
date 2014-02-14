@@ -1,4 +1,4 @@
-class ServiceTravelerCharacteristicsMap < ActiveRecord::Base
+class ServiceCharacteristic < ActiveRecord::Base
 
   #associations
   belongs_to :service

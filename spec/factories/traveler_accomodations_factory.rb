@@ -13,7 +13,7 @@ FactoryGirl.define do
     value 'true'
   end
 
-  factory :service_wheelchair_accommodation, class: 'ServiceTravelerAccommodationsMap' do
+  factory :service_wheelchair_accommodation, class: 'ServiceAccommodation' do
     traveler_accommodation factory: :wheelchair_accommodation
     value 'true'
     active 1

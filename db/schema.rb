@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140214210611) do
+ActiveRecord::Schema.define(:version => 20140214212515) do
 
   create_table "accommodations", :force => true do |t|
     t.string  "name",                  :limit => 64,                    :null => false
@@ -21,20 +21,6 @@ ActiveRecord::Schema.define(:version => 20140214210611) do
     t.boolean "active",                              :default => true,  :null => false
     t.string  "code"
   end
-
-  create_table "boundaries", :primary_key => "gid", :force => true do |t|
-    t.string  "agency", :limit => 254
-    t.spatial "geom",   :limit => {:srid=>4326, :type=>"multi_polygon"}
-  end
-
-  add_index "boundaries", ["geom"], :name => "boundaries_geom_gist", :spatial => true
-
-  create_table "boundary", :primary_key => "gid", :force => true do |t|
-    t.string  "agency", :limit => 254
-    t.spatial "geom",   :limit => {:srid=>4326, :type=>"multi_polygon"}
-  end
-
-  add_index "boundary", ["geom"], :name => "boundary_geom_gist", :spatial => true
 
   create_table "characteristics", :force => true do |t|
     t.string  "name",                  :limit => 64
@@ -223,16 +209,6 @@ ActiveRecord::Schema.define(:version => 20140214210611) do
     t.boolean "active",               :null => false
   end
 
-  create_table "oneclick", :primary_key => "gid", :force => true do |t|
-    t.integer "objectid"
-    t.integer "id"
-    t.decimal "shape_leng"
-    t.decimal "shape_area"
-    t.spatial "geom",       :limit => {:srid=>4326, :type=>"multi_polygon"}
-  end
-
-  add_index "oneclick", ["geom"], :name => "oneclick_geom_gist", :spatial => true
-
   create_table "organizations", :force => true do |t|
     t.string   "name"
     t.string   "type"
@@ -359,13 +335,7 @@ ActiveRecord::Schema.define(:version => 20140214210611) do
     t.integer  "end_seconds"
   end
 
-  create_table "service_coverage_maps", :force => true do |t|
-    t.integer "service_id"
-    t.integer "geo_coverage_id"
-    t.string  "rule"
-  end
-
-  create_table "service_traveler_accommodations_maps", :force => true do |t|
+  create_table "service_accommodations", :force => true do |t|
     t.integer "service_id",                                             :null => false
     t.integer "accommodation_id",                                       :null => false
     t.string  "value",                 :limit => 64,                    :null => false
@@ -373,7 +343,7 @@ ActiveRecord::Schema.define(:version => 20140214210611) do
     t.boolean "active",                              :default => true,  :null => false
   end
 
-  create_table "service_traveler_characteristics_maps", :force => true do |t|
+  create_table "service_characteristics", :force => true do |t|
     t.integer "service_id",                                             :null => false
     t.integer "characteristic_id",                                      :null => false
     t.string  "value",                 :limit => 64,                    :null => false
@@ -381,6 +351,12 @@ ActiveRecord::Schema.define(:version => 20140214210611) do
     t.boolean "active",                              :default => true,  :null => false
     t.integer "value_relationship_id",               :default => 1,     :null => false
     t.integer "group",                               :default => 0,     :null => false
+  end
+
+  create_table "service_coverage_maps", :force => true do |t|
+    t.integer "service_id"
+    t.integer "geo_coverage_id"
+    t.string  "rule"
   end
 
   create_table "service_trip_purpose_maps", :force => true do |t|
