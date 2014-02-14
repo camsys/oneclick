@@ -4,6 +4,10 @@ class Schedule < ActiveRecord::Base
   belongs_to :service
 
   attr_accessible :service, :service_id, :start_time, :end_time, :day_of_week, :start_seconds, :end_seconds
+  validates :day_of_week, :presence => true
+  # 0=Sunday
+  validates_numericality_of :day_of_week, greater_than_or_equal_to: 0,
+    less_than_or_equal_to: 6
 
   def start_string
     human_readable(start_seconds)
@@ -30,6 +34,14 @@ class Schedule < ActiveRecord::Base
     minute = "%.2d" % minute
     hour.to_s + ':' + minute.to_s + ' ' + ampm
 
+  end
+
+  def start_time= t
+    self.start_seconds = Time.parse(t).seconds_since_midnight
+  end
+
+  def end_time= t
+    self.end_seconds = Time.parse(t).seconds_since_midnight
   end
 
 end

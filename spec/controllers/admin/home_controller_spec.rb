@@ -4,7 +4,7 @@ describe Admin::HomeController do
 
   describe "GET 'index'" do
     before(:each) do
-      FactoryGirl.create(:service)
+      FactoryGirl.create(:populated_service)
     end
     it "redirects if not logged in" do
       get :index
