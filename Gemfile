@@ -32,11 +32,12 @@ gem 'honeybadger'
 gem 'draper'
 gem 'rubyzip'
 gem 'lorem-ipsum-me'
+gem 'faraday_middleware'
 
 group :development do
   gem 'activerecord-postgis-adapter'
   gem 'rgeo-activerecord'
-  gem 'ffi-geos'
+  #gem 'ffi-geos'
   #gem 'mysql2'
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :rbx]
@@ -71,5 +72,5 @@ group :test do
   gem 'email_spec'
   gem 'launchy'
   gem 'coveralls', require: false
-  gem 'simplecov', require: false  
+  gem 'simplecov', require: false
 end

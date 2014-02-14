@@ -7,7 +7,7 @@ Oneclick::Application.routes.draw do
     if Oneclick::Application.config.ui_mode == 'kiosk'
       root to: redirect('/kiosk')
     else
-      root :to => "home#index"    
+      root :to => "home#index"
     end
 
     authenticated :user do
@@ -64,7 +64,7 @@ Oneclick::Application.routes.draw do
           post  'geocode'
         end
       end
-      
+
       # users have trips
       resources :trips, :only => [:show, :index, :new, :create, :destroy, :edit, :update] do
         collection do
@@ -74,7 +74,7 @@ Oneclick::Application.routes.draw do
           post  'geocode'
         end
         member do
-          get   'repeat'          
+          get   'repeat'
           get   'select'
           get   'details'
           get   'itinerary'
@@ -113,20 +113,31 @@ Oneclick::Application.routes.draw do
     end
 
     # scope('/kiosk') do
-    #   devise_for :users, as: 'kiosk', controllers: {sessions: "kiosk/sessions"}      
+    #   devise_for :users, as: 'kiosk', controllers: {sessions: "kiosk/sessions"}
     # end
 
     # match '/kiosk_user/kiosk/users/sign_in', to: 'kiosk/sessions#create'
 
+    get 'place_details/:id' => 'place_searching#details', as: 'place_details'
+
     namespace :kiosk do
       match '/', to: 'home#index'
-      # devise_for :users, controllers: {registrations: "kiosk/registrations"}
 
       # TODO can probably remove a lot of these routes
       resources :users do
         member do
           get   'profile'
           post  'update'
+        end
+
+        namespace :new_trip do
+          resource :start
+          resource :to
+          resource :from
+          resource :pickup_time
+          resource :purpose
+          resource :return_time
+          resource :overview
         end
 
         resources :characteristics, :only => [:new, :create, :edit, :update] do
@@ -169,7 +180,7 @@ Oneclick::Application.routes.draw do
             post  'geocode'
           end
         end
-        
+
         # users have trips
         resources :trips, :only => [:show, :index, :new, :create, :destroy, :edit, :update] do
           collection do
@@ -178,8 +189,10 @@ Oneclick::Application.routes.draw do
             get   'search'
             post  'geocode'
           end
+
           member do
-            get   'repeat'          
+            get 'start'
+            get   'repeat'
             get   'select'
             get   'details'
             get   'itinerary'
@@ -211,8 +224,9 @@ Oneclick::Application.routes.draw do
     end # user
 
     devise_scope :user do
-      post '/user/kiosk/sign_in' => 'kiosk/sessions#create'
-      get '/kiosk/sign_in' => 'kiosk/sessions#new'
+      post '/kiosk/sign_in' => 'kiosk/sessions#create', as: :kiosk_user_session
+      get '/kiosk/sign_in' => 'kiosk/sessions#new', as: :new_kiosk_user_session
+      match '/kiosk/session/destroy' => 'kiosk/sessions#destroy', as: :destroy_kiosk_user_session
     end
 
 
@@ -251,7 +265,7 @@ Oneclick::Application.routes.draw do
         post 'update'
       end
     end
-    
+
     match '/' => 'home#index'
 
     match '/404' => 'errors#error_404', as: 'error_404'
@@ -261,12 +275,13 @@ Oneclick::Application.routes.draw do
 
   end
 
-  ComfortableMexicanSofa::Routing.admin(:path => '/cms-admin')
+  unless Oneclick::Application.config.ui_mode == 'kiosk'
+    ComfortableMexicanSofa::Routing.admin(:path => '/cms-admin')
 
-  mount_sextant if Rails.env.development?
-  match '*not_found' => 'errors#handle404'
+    mount_sextant if Rails.env.development?
+    match '*not_found' => 'errors#handle404'
 
-  # Make sure this routeset is defined last
-  ComfortableMexicanSofa::Routing.content(:path => '/', :sitemap => false)
-
+    # Make sure this routeset is defined last
+    ComfortableMexicanSofa::Routing.content(:path => '/', :sitemap => false)
+  end
 end

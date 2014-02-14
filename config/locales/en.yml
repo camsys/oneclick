@@ -91,8 +91,8 @@ en:
   
   # Trip planning
   enter_address: 'Enter address'
-  enter_to: 'Tap to enter a destination location'
-  enter_from: 'Tap to enter a starting location'
+  enter_to: 'Tap here to enter a destination location'
+  enter_from: 'Tap here to enter a starting location'
   select_or_enter_address: 'Select or enter address'
   select: 'Select'
   trip_date: 'Date'

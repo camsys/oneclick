@@ -71,14 +71,14 @@ end
         @traveler = current_user
       else
         @traveler = current_user.travelers.find(session[TRAVELER_USER_SESSION_KEY])
-      end 
+      end
     else
       # will always be a guest user
       @traveler = current_or_guest_user
     end
     @traveler
   end
-  
+
   # find guest_user object associated with the current session,
   # creating one as needed
   def guest_user
@@ -147,14 +147,14 @@ end
     else
       mode_name = itinerary.mode.name.downcase unless itinerary.mode.nil?
     end
-    return mode_name    
+    return mode_name
   end
 
   # Returns the correct localized title for a trip itinerary
   def get_trip_summary_title(itinerary)
-    
+
     return if itinerary.nil?
-    
+
     mode_name = get_pseudomode_for_itinerary(itinerary)
     if mode_name == 'rail'
       title = "Rail"
@@ -165,7 +165,7 @@ end
     elsif mode_name == 'transit'
       title = I18n.t(:transit)
     elsif mode_name == 'paratransit'
-      title = I18n.t(:specialized_services)      
+      title = I18n.t(:specialized_services)
     elsif mode_name == 'volunteer'
       title = I18n.t(:volunteer)
     elsif mode_name == 'non-emergency medical service'
@@ -173,13 +173,13 @@ end
     elsif mode_name == 'livery'
       title = I18n.t(:car_service)
     elsif mode_name == 'taxi'
-      title = I18n.t(:taxi)      
+      title = I18n.t(:taxi)
     elsif mode_name == 'rideshare'
       title = I18n.t(:rideshare)
     elsif mode_name == 'walk'
       title = I18n.t(:walk)
     end
-    return title    
+    return title
   end
 
   #Generates a transit name of the form AGENCY MODE, AGENCY MODE e.g., MARTA Bus, MARTA Subway, CCT Bus
