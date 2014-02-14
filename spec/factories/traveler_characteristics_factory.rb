@@ -37,27 +37,27 @@ FactoryGirl.define do
     datatype 'bool'
   end
 
-  factory :veteran_characteristic_map, class: 'UserTravelerCharacteristicsMap' do
+  factory :veteran_characteristic_map, class: 'UserCharacteristic' do
     traveler_characteristic factory: :veteran_characteristic
     value 'true'
   end
 
-  factory :ada_characteristic_map, class: 'UserTravelerCharacteristicsMap' do
+  factory :ada_characteristic_map, class: 'UserCharacteristic' do
     traveler_characteristic factory: :ada_characteristic
     value 'true'
   end
 
-  factory :dob_characteristic_map, class: 'UserTravelerCharacteristicsMap' do
+  factory :dob_characteristic_map, class: 'UserCharacteristic' do
     traveler_characteristic factory: :dob_characteristic
     value '05/11/1905'
   end
 
-  factory :disabled_characteristic_map, class: 'UserTravelerCharacteristicsMap' do
+  factory :disabled_characteristic_map, class: 'UserCharacteristic' do
     traveler_characteristic factory: :disabled_characteristic
     value 'true'
   end
 
-  factory :nemt_characteristic_map, class: 'UserTravelerCharacteristicsMap' do
+  factory :nemt_characteristic_map, class: 'UserCharacteristic' do
     traveler_characteristic factory: :nemt_characteristic
     value 'true'
   end

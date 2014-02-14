@@ -85,7 +85,7 @@ class User < ActiveRecord::Base
 
   def has_disability?
     disabled = Characteristic.find_by_code('disabled')
-    disability_status = self.user_profile.user_traveler_characteristics_maps.where(characteristic_id: disabled.id)
+    disability_status = self.user_profile.user_characteristics.where(characteristic_id: disabled.id)
     disability_status.count > 0 and disability_status.first.value == 'true'
   end
 

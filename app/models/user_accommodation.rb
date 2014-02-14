@@ -1,4 +1,4 @@
-class UserTravelerAccommodationsMap < ActiveRecord::Base
+class UserAccommodation < ActiveRecord::Base
 
   #associations
   belongs_to :user_profile

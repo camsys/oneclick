@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140214180218) do
+ActiveRecord::Schema.define(:version => 20140214210611) do
 
   create_table "accommodations", :force => true do |t|
     t.string  "name",                  :limit => 64,                    :null => false
@@ -21,6 +21,20 @@ ActiveRecord::Schema.define(:version => 20140214180218) do
     t.boolean "active",                              :default => true,  :null => false
     t.string  "code"
   end
+
+  create_table "boundaries", :primary_key => "gid", :force => true do |t|
+    t.string  "agency", :limit => 254
+    t.spatial "geom",   :limit => {:srid=>4326, :type=>"multi_polygon"}
+  end
+
+  add_index "boundaries", ["geom"], :name => "boundaries_geom_gist", :spatial => true
+
+  create_table "boundary", :primary_key => "gid", :force => true do |t|
+    t.string  "agency", :limit => 254
+    t.spatial "geom",   :limit => {:srid=>4326, :type=>"multi_polygon"}
+  end
+
+  add_index "boundary", ["geom"], :name => "boundary_geom_gist", :spatial => true
 
   create_table "characteristics", :force => true do |t|
     t.string  "name",                  :limit => 64
@@ -208,6 +222,16 @@ ActiveRecord::Schema.define(:version => 20140214180218) do
     t.string  "name",   :limit => 64, :null => false
     t.boolean "active",               :null => false
   end
+
+  create_table "oneclick", :primary_key => "gid", :force => true do |t|
+    t.integer "objectid"
+    t.integer "id"
+    t.decimal "shape_leng"
+    t.decimal "shape_area"
+    t.spatial "geom",       :limit => {:srid=>4326, :type=>"multi_polygon"}
+  end
+
+  add_index "oneclick", ["geom"], :name => "oneclick_geom_gist", :spatial => true
 
   create_table "organizations", :force => true do |t|
     t.string   "name"
@@ -449,6 +473,24 @@ ActiveRecord::Schema.define(:version => 20140214180218) do
     t.integer  "rating"
   end
 
+  create_table "user_accommodations", :force => true do |t|
+    t.integer  "user_profile_id",                                   :null => false
+    t.integer  "accommodation_id",                                  :null => false
+    t.string   "value",            :limit => 64,                    :null => false
+    t.boolean  "verified",                       :default => false, :null => false
+    t.datetime "verified_at"
+    t.integer  "verified_by_id"
+  end
+
+  create_table "user_characteristics", :force => true do |t|
+    t.integer  "user_profile_id",                                    :null => false
+    t.integer  "characteristic_id",                                  :null => false
+    t.string   "value",             :limit => 64,                    :null => false
+    t.boolean  "verified",                        :default => false, :null => false
+    t.datetime "verified_at"
+    t.integer  "verified_by_id"
+  end
+
   create_table "user_mode_preferences", :force => true do |t|
     t.integer  "user_id"
     t.integer  "mode_id"
@@ -475,24 +517,6 @@ ActiveRecord::Schema.define(:version => 20140214180218) do
     t.integer  "role_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "user_traveler_accommodations_maps", :force => true do |t|
-    t.integer  "user_profile_id",                                   :null => false
-    t.integer  "accommodation_id",                                  :null => false
-    t.string   "value",            :limit => 64,                    :null => false
-    t.boolean  "verified",                       :default => false, :null => false
-    t.datetime "verified_at"
-    t.integer  "verified_by_id"
-  end
-
-  create_table "user_traveler_characteristics_maps", :force => true do |t|
-    t.integer  "user_profile_id",                                    :null => false
-    t.integer  "characteristic_id",                                  :null => false
-    t.string   "value",             :limit => 64,                    :null => false
-    t.boolean  "verified",                        :default => false, :null => false
-    t.datetime "verified_at"
-    t.integer  "verified_by_id"
   end
 
   create_table "users", :force => true do |t|

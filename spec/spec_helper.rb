@@ -56,8 +56,8 @@ RSpec.configure do |config|
       service_types trip_purposes providers services schedules service_trip_purpose_maps
       service_traveler_characteristics_maps
       service_traveler_accommodations_maps
-      user_traveler_accommodations_maps
-      user_traveler_characteristics_maps
+      user_accommodations
+      user_characteristics
       }}
     DatabaseCleaner.start
   end

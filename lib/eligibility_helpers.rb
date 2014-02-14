@@ -43,7 +43,7 @@ class EligibilityHelpers
           update_age(user_profile, age_date)
         end
 
-        passenger_characteristic = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: service_requirement.id)
+        passenger_characteristic = UserCharacteristic.where(user_profile_id: user_profile.id, characteristic_id: service_requirement.id)
         if passenger_characteristic.count == 0 #This passenger characteristic is not listed
           group_match_score += 0.25
           if service_requirement.code == 'age'
@@ -86,13 +86,13 @@ class EligibilityHelpers
 
     dob = Characteristic.find_by_code('date_of_birth')
     age = Characteristic.find_by_code('age')
-    passenger_dob = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: dob.id)
+    passenger_dob = UserCharacteristic.where(user_profile_id: user_profile.id, characteristic_id: dob.id)
     if passenger_dob.count != 0 && passenger_dob.first.value != 'na'
       passenger_dob = passenger_dob.first.value.to_date
     else
       return
     end
-    passenger_age_characteristic = UserTravelerCharacteristicsMap.find_or_initialize_by_user_profile_id_and_characteristic_id(user_profile.id, age.id)
+    passenger_age_characteristic = UserCharacteristic.find_or_initialize_by_user_profile_id_and_characteristic_id(user_profile.id, age.id)
 
     new_age = date.year - passenger_dob.year
     new_age -= 1 if date < passenger_dob + new_age.years
@@ -109,7 +109,7 @@ class EligibilityHelpers
     end
 
     #user accommodations
-    accommodations_maps = user_profile.user_traveler_accommodations_maps.where('value = ? ', 'true')
+    accommodations_maps = user_profile.user_accommodations.where('value = ? ', 'true')
     user_accommodations = []
     accommodations_maps.each do |map|
       user_accommodations << map.accommodation

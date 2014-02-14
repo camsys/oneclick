@@ -8,7 +8,7 @@ FactoryGirl.define do
     active 1
   end
 
-  factory :wheelchair_accommodation_requirement, class: 'UserTravelerAccommodationsMap' do
+  factory :wheelchair_accommodation_requirement, class: 'UserAccommodation' do
     traveler_accommodation factory: :wheelchair_accommodation
     value 'true'
   end

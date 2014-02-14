@@ -48,9 +48,9 @@ describe UserProfile do
           characteristics = Characteristic.all
           characteristics.each do |c|
             if c.code == 'date_of_birth'
-              UserTravelerCharacteristicsMap.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: '05/11/1905')
+              UserCharacteristic.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: '05/11/1905')
             elsif c.code != 'age'
-              UserTravelerCharacteristicsMap.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: 'true')
+              UserCharacteristic.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: 'true')
             end
           end
           acc_and_eligible_services = eh.get_accommodating_and_eligible_services_for_traveler(user_profile)
@@ -70,9 +70,9 @@ describe UserProfile do
           characteristics = Characteristic.all
           characteristics.each do |c|
             if c.code == 'date_of_birth'
-              UserTravelerCharacteristicsMap.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: '05/11/1905')
+              UserCharacteristic.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: '05/11/1905')
             elsif c.code != 'age'
-              UserTravelerCharacteristicsMap.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: 'true')
+              UserCharacteristic.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: 'true')
             end
           end
           services = eh.get_eligible_services_for_traveler(user_profile)

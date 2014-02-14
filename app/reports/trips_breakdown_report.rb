@@ -14,7 +14,7 @@ class TripsBreakdownReport < AbstractReport
     join trip_parts tp on tp.trip_id=t.id
     join users u on t.user_id=u.id
     join user_profiles up on u.id=up.user_id
-    join public.user_traveler_characteristics_maps utcm on up.id=utcm.user_profile_id
+    join public.user_characteristics utcm on up.id=utcm.user_profile_id
     join public.traveler_characteristics tc on tc.id=utcm.characteristic_id
     where utcm.value='t'
     group by tp.scheduled_date, tc.code, utcm.value
