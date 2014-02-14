@@ -14,7 +14,7 @@ class UserCharacteristicsProxy < UserProfileProxy
   def method_missing(code, *args)
 
     # See if the code exists in the characteristics database
-    characteristic = TravelerCharacteristic.personal_factors.find_by_code(code)
+    characteristic = Characteristic.personal_factors.find_by_code(code)
     if characteristic.nil?
       return super      
     end
@@ -37,7 +37,7 @@ class UserCharacteristicsProxy < UserProfileProxy
       
       # Loop through the list of characteristics that could be set. This appraoch ensures we are only updating
       # active characteristics
-      TravelerCharacteristic.personal_factors.each do |characteristic|
+      Characteristic.personal_factors.each do |characteristic|
         
         Rails.logger.debug characteristic.inspect
         

@@ -86,11 +86,11 @@
     .well.well1
       %h4="Accommodations Provided"
       .well.white-well.wwell1
-        -if @service.traveler_accommodations.count == 0
+        -if @service.accommodations.count == 0
           ="No accommodations provided"
         -else
           %ul
-            -@service.traveler_accommodations.each do |accom|
+            -@service.accommodations.each do |accom|
               %li
                 =accom.name
   .span4
@@ -105,10 +105,10 @@
             -group_string = ""
             %li
               -@service.service_traveler_characteristics_maps.where(group: group).each do |map|
-                -if map.traveler_characteristic.code == "age"
+                -if map.characteristic.code == "age"
                   -group_string +="Age is " + @eh.relationship_to_words(map.value_relationship_id) + " " + map.value + " "
                 -else
-                  -group_string += map.traveler_characteristic.name + " "
+                  -group_string += map.characteristic.name + " "
                 -group_string += "AND "
               =group_string[0..-6]
         -else

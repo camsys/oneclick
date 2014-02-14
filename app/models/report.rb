@@ -29,7 +29,7 @@ class Report < ActiveRecord::Base
   end
 
   def self.traveler_types
-    ['All'] + TravelerCharacteristic.all.map(&:name).sort
+    ['All'] + Characteristic.all.map(&:name).sort
   end
 
   def self.trip_purposes

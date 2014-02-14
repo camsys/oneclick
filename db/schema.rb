@@ -11,7 +11,27 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140205212419) do
+ActiveRecord::Schema.define(:version => 20140214180218) do
+
+  create_table "accommodations", :force => true do |t|
+    t.string  "name",                  :limit => 64,                    :null => false
+    t.string  "note"
+    t.string  "datatype",              :limit => 25,                    :null => false
+    t.boolean "requires_verification",               :default => false, :null => false
+    t.boolean "active",                              :default => true,  :null => false
+    t.string  "code"
+  end
+
+  create_table "characteristics", :force => true do |t|
+    t.string  "name",                  :limit => 64
+    t.string  "note",                                                    :null => false
+    t.string  "datatype",              :limit => 25,                     :null => false
+    t.boolean "requires_verification",                :default => false, :null => false
+    t.boolean "active",                               :default => true,  :null => false
+    t.string  "code"
+    t.string  "characteristic_type",   :limit => 128
+    t.string  "desc",                                 :default => ""
+  end
 
   create_table "cms_blocks", :force => true do |t|
     t.integer  "page_id",    :null => false
@@ -370,26 +390,6 @@ ActiveRecord::Schema.define(:version => 20140205212419) do
     t.string   "contact",                      :limit => 100
     t.string   "phone",                        :limit => 25
     t.string   "url"
-  end
-
-  create_table "traveler_accommodations", :force => true do |t|
-    t.string  "name",                  :limit => 64,                    :null => false
-    t.string  "note"
-    t.string  "datatype",              :limit => 25,                    :null => false
-    t.boolean "requires_verification",               :default => false, :null => false
-    t.boolean "active",                              :default => true,  :null => false
-    t.string  "code"
-  end
-
-  create_table "traveler_characteristics", :force => true do |t|
-    t.string  "name",                  :limit => 64
-    t.string  "note",                                                    :null => false
-    t.string  "datatype",              :limit => 25,                     :null => false
-    t.boolean "requires_verification",                :default => false, :null => false
-    t.boolean "active",                               :default => true,  :null => false
-    t.string  "code"
-    t.string  "characteristic_type",   :limit => 128
-    t.string  "desc",                                 :default => ""
   end
 
   create_table "trip_parts", :force => true do |t|

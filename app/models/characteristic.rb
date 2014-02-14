@@ -1,4 +1,4 @@
-class TravelerCharacteristic < ActiveRecord::Base
+class Characteristic < ActiveRecord::Base
 
   attr_accessible :id, :code, :name, :note, :datatype, :active, :characteristic_type, :desc
 
@@ -9,7 +9,7 @@ class TravelerCharacteristic < ActiveRecord::Base
   has_many :services, through: :service_traveler_characteristics_maps
 
   # set the default scope
-  default_scope where('traveler_characteristics.active = ?', true)
+  default_scope where('characteristics.active = ?', true)
   scope :personal_factors, where('characteristic_type = ?', 'personal_factor')
   scope :programs, where('characteristic_type = ?', 'program')
 

@@ -1,7 +1,7 @@
 I18n.locale='en'
 
 FactoryGirl.define do
-  factory :wheelchair_accommodation, class: 'TravelerAccommodation' do
+  factory :wheelchair_accommodation, class: 'Accommodation' do
     name 'Wheelchair Accessible'
     note 'wheelchair note'
     datatype 'bool'

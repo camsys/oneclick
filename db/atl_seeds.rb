@@ -122,55 +122,55 @@ end
 
 #Traveler characteristics
 
-    disabled = TravelerCharacteristic.create(
+    disabled = Characteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'disabled',
       name: 'Disabled', 
       note: 'Do you have a permanent or temporary disability?',
       datatype: 'bool')
-    no_trans = TravelerCharacteristic.create(
+    no_trans = Characteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'no_trans', 
       name: 'No Means of Transportation', 
       note: 'Do you own or have access to a personal vehicle?', 
       datatype: 'bool')
-    nemt_eligible = TravelerCharacteristic.create(
+    nemt_eligible = Characteristic.create(
       characteristic_type: 'program', 
       code: 'nemt_eligible', 
       name: 'Medicaid',
       note: 'Are you eligible for Medicaid?', 
       datatype: 'bool')
-    ada_eligible = TravelerCharacteristic.create(
+    ada_eligible = Characteristic.create(
       characteristic_type: 'program', 
       code: 'ada_eligible', 
       name: 'ADA Paratransit',
       note: 'Are you eligible for ADA paratransit?', 
       datatype: 'bool')
-    veteran = TravelerCharacteristic.create(
+    veteran = Characteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'veteran', 
       name: 'Veteran', 
       note: 'Are you a military veteran?', 
       datatype: 'bool')
-    low_income = TravelerCharacteristic.create(
+    low_income = Characteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'low_income', 
       name: 'Low income', 
       note: "Are you low income?", 
       datatype: 'disabled')
-    date_of_birth = TravelerCharacteristic.create(
+    date_of_birth = Characteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'date_of_birth', 
       name: 'Date of Birth', 
       note: "What is your date of birth?", 
       datatype: 'date')
-    age = TravelerCharacteristic.create(
+    age = Characteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'age', 
       name: 'Age', 
       note: "What is the traveler's age?", 
       datatype: 'integer')
-    walk_distance = TravelerCharacteristic.create(
+    walk_distance = Characteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'walk_distance', 
       name: 'Walk distance', 
@@ -179,32 +179,32 @@ end
     
 
 #Traveler accommodations
-    folding_wheelchair_accessible = TravelerAccommodation.create(
+    folding_wheelchair_accessible = Accommodation.create(
       code: 'folding_wheelchair_accessible',
       name: 'Folding wheelchair accessible.', 
       note: 'Do you need a vehicle that has space for a folding wheelchair?', 
       datatype: 'bool')
-    motorized_wheelchair_accessible = TravelerAccommodation.create(
+    motorized_wheelchair_accessible = Accommodation.create(
       code: 'motorized_wheelchair_accessible',
       name: 'Motorized wheelchair accessible.', 
       note: 'Do you need a vehicle than has space for a motorized wheelchair?', 
       datatype: 'bool')
-    lift_equipped = TravelerAccommodation.create(
+    lift_equipped = Accommodation.create(
       code: 'lift_equipped', 
       name: 'Wheelchair lift equipped vehicle.', 
       note: 'Do you need a vehicle with a lift?', 
       datatype: 'bool')
-    door_to_door = TravelerAccommodation.create(
+    door_to_door = Accommodation.create(
       code: 'door_to_door', 
       name: 'Door-to-door', 
       note: 'Do you need assistance getting to your front door?',
       datatype: 'bool')
-    curb_to_curb = TravelerAccommodation.create(
+    curb_to_curb = Accommodation.create(
       code: 'curb_to_curb', 
       name: 'Curb-to-curb', 
       note: 'Do you need delivery to the curb in front of your home?', 
       datatype: 'bool')
-    driver_assistance_available = TravelerAccommodation.create(
+    driver_assistance_available = Accommodation.create(
       code: 'driver_assistance_available', 
       name: 'Driver assistance available.', 
       note: 'Do you need personal assistance from the driver?', 

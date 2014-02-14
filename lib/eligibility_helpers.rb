@@ -32,7 +32,7 @@ class EligibilityHelpers
       group_eligible = true
       service_characteristic_maps = service.service_traveler_characteristics_maps.where(group: group)
       service_characteristic_maps.each do |service_characteristic_map|
-        service_requirement = service_characteristic_map.traveler_characteristic
+        service_requirement = service_characteristic_map.characteristic
         if service_requirement.code == 'age'
           if trip_part
             age_date = trip_part.trip_time
@@ -84,8 +84,8 @@ class EligibilityHelpers
 
   def update_age(user_profile, date = Time.now)
 
-    dob = TravelerCharacteristic.find_by_code('date_of_birth')
-    age = TravelerCharacteristic.find_by_code('age')
+    dob = Characteristic.find_by_code('date_of_birth')
+    age = Characteristic.find_by_code('age')
     passenger_dob = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: dob.id)
     if passenger_dob.count != 0 && passenger_dob.first.value != 'na'
       passenger_dob = passenger_dob.first.value.to_date
@@ -112,7 +112,7 @@ class EligibilityHelpers
     accommodations_maps = user_profile.user_traveler_accommodations_maps.where('value = ? ', 'true')
     user_accommodations = []
     accommodations_maps.each do |map|
-      user_accommodations << map.traveler_accommodation
+      user_accommodations << map.accommodation
     end
 
     #service accommodations
@@ -123,7 +123,7 @@ class EligibilityHelpers
       accommodations_maps = service.service_traveler_accommodations_maps
       service_accommodations  = []
       accommodations_maps.each do |map|
-        service_accommodations << map.traveler_accommodation
+        service_accommodations << map.accommodation
       end
 
       match_score = 0.5 * (user_accommodations.count - (service_accommodations & user_accommodations).count)

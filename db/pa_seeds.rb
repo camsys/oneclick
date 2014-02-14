@@ -121,61 +121,61 @@ end
 
 #Traveler characteristics
 
-    disabled = TravelerCharacteristic.create(
+    disabled = Characteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'disabled',
       name: 'Disabled', 
       note: 'Do you have a permanent or temporary disability?',
       datatype: 'bool')
-    no_trans = TravelerCharacteristic.create(
+    no_trans = Characteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'no_trans', 
       name: 'No Means of Transportation', 
       note: 'Do you own or have access to a personal vehicle?', 
       datatype: 'bool')
-    nemt_eligible = TravelerCharacteristic.create(
+    nemt_eligible = Characteristic.create(
       characteristic_type: 'program', 
       code: 'nemt_eligible', 
       name: 'Medicaid',
       note: 'Are you eligible for Medicaid?', 
       datatype: 'bool')
-    ada_eligible = TravelerCharacteristic.create(
+    ada_eligible = Characteristic.create(
       characteristic_type: 'program', 
       code: 'ada_eligible', 
       name: 'ADA Paratransit',
       note: 'Are you eligible for ADA paratransit?', 
       datatype: 'bool')
-    matp = TravelerCharacteristic.create(
+    matp = Characteristic.create(
       characteristic_type: 'program',
       code: 'matp',
       name: 'Medical Assistance Transportation Program',
       note: 'Do you have a Medical Assistance Access Card?',
       datatype: 'bool')
-    veteran = TravelerCharacteristic.create(
+    veteran = Characteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'veteran', 
       name: 'Veteran', 
       note: 'Are you a military veteran?', 
       datatype: 'bool')
-    low_income = TravelerCharacteristic.create(
+    low_income = Characteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'low_income', 
       name: 'Low income', 
       note: "Are you low income?", 
       datatype: 'disabled')
-    date_of_birth = TravelerCharacteristic.create(
+    date_of_birth = Characteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'date_of_birth', 
       name: 'Date of Birth', 
       note: "What is your date of birth?", 
       datatype: 'date')
-    age = TravelerCharacteristic.create(
+    age = Characteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'age', 
       name: 'Age', 
       note: "What is the traveler's age?", 
       datatype: 'integer')
-    walk_distance = TravelerCharacteristic.create(
+    walk_distance = Characteristic.create(
       characteristic_type: 'personal_factor', 
       code: 'walk_distance', 
       name: 'Walk distance', 
@@ -184,27 +184,27 @@ end
     
 
 #Traveler accommodations
-    folding_wheelchair_accessible = TravelerAccommodation.create(
+    folding_wheelchair_accessible = Accommodation.create(
       code: 'folding_wheelchair_acceessible', 
       name: 'Folding wheelchair accessible.', 
       note: 'Do you need a vehicle that has space for a folding wheelchair?', 
       datatype: 'bool')
-    motorized_wheelchair_accessible = TravelerAccommodation.create(
+    motorized_wheelchair_accessible = Accommodation.create(
       code: 'motorized_wheelchair_accessible', 
       name: 'Motorized wheelchair accessible.', 
       note: 'Do you need a vehicle than has space for a motorized wheelchair?', 
       datatype: 'bool')
-    door_to_door = TravelerAccommodation.create(
+    door_to_door = Accommodation.create(
       code: 'door_to_door', 
       name: 'Door-to-door', 
       note: 'Do you need assistance getting to your front door?',
       datatype: 'bool')
-    curb_to_curb = TravelerAccommodation.create(
+    curb_to_curb = Accommodation.create(
       code: 'curb_to_curb', 
       name: 'Curb-to-curb', 
       note: 'Do you need delivery to the curb in front of your home?', 
       datatype: 'bool')
-    driver_assistance_available = TravelerAccommodation.create(
+    driver_assistance_available = Accommodation.create(
       code: 'driver_assistance_available', 
       name: 'Driver assistance available.', 
       note: 'Do you need personal assistance from the driver?', 
@@ -274,10 +274,15 @@ providers.each do |provider|
       service = Service.create(name: 'Senior Shared Ride', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
       #Add Schedules
       (1..5).each do |n|
-        Schedule.create(service: service, start_time:"5:45", end_time: "23:30", day_of_week: n)
+        Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
       end
-      Schedule.create(service: service, start_time:"7:15", end_time: "21:45", day_of_week: 6)
-      Schedule.create(service: service, start_time:"9:15", end_time: "18:00", day_of_week: 0)
+      Schedule.create(service: service, start_seconds:7.25*3600, end_seconds: 21.75*3600, day_of_week: 6)
+      Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
+      #Trip purpose requirements
+      [medical, cancer, general, grocery].each do |n|
+        ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+      end
+
       #Trip purpose requirements
       [general, medical, cancer, grocery].each do |n|
         ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
@@ -294,21 +299,21 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '65', value_relationship_id: 4)
+      ServiceTravelerCharacteristicsMap.create(service: service, characteristic: age, value: '65', value_relationship_id: 4)
 
       #Traveler Accommodations Requirements
       [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceTravelerAccommodationsMap.create(service: service, accommodation: n, value: 'true')
       end
 
       #Shared Ride for Ages 60-64
       service = Service.create(name: 'Shared Ride for Ages 60-64', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
       #Add Schedules
       (1..5).each do |n|
-        Schedule.create(service: service, start_time:"5:45", end_time: "23:30", day_of_week: n)
+        Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
       end
-      Schedule.create(service: service, start_time:"7:15", end_time: "21:45", day_of_week: 6)
-      Schedule.create(service: service, start_time:"9:15", end_time: "18:00", day_of_week: 0)
+      Schedule.create(service: service, start_seconds:7.25*3600, end_seconds: 21.75*3600, day_of_week: 6)
+      Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
       #Trip purpose requirements
       [medical, cancer].each do |n|
         ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
@@ -325,22 +330,22 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '64', value_relationship_id: 6)
+      ServiceTravelerCharacteristicsMap.create(service: service, characteristic: age, value: '60', value_relationship_id: 4)
+      ServiceTravelerCharacteristicsMap.create(service: service, characteristic: age, value: '64', value_relationship_id: 6)
 
       #Traveler Accommodations Requirements
       [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceTravelerAccommodationsMap.create(service: service, accommodation: n, value: 'true')
       end
 
       #Medical Assistance Transportation Program
       service = Service.create(name: 'Medical Assistance Transportation Program', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
       #Add Schedules
       (1..5).each do |n|
-        Schedule.create(service: service, start_time:"5:45", end_time: "23:30", day_of_week: n)
+        Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
       end
-      Schedule.create(service: service, start_time:"7:15", end_time: "21:45", day_of_week: 6)
-      Schedule.create(service: service, start_time:"9:15", end_time: "18:00", day_of_week: 0)
+      Schedule.create(service: service, start_seconds:7.25*3600, end_seconds: 21.75*3600, day_of_week: 6)
+      Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
       #Trip purpose requirements
       [medical, cancer].each do |n|
         ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
@@ -361,21 +366,21 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: matp, value: 'true')
+      ServiceTravelerCharacteristicsMap.create(service: service, characteristic: matp, value: 'true')
 
       #Traveler Accommodations Requirements
       [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceTravelerAccommodationsMap.create(service: service, accommodation: n, value: 'true')
       end
 
       #ADA Complementary
       service = Service.create(name: 'ADA Complementary Service', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
       #Add Schedules
       (1..5).each do |n|
-        Schedule.create(service: service, start_time:"5:45", end_time: "23:30", day_of_week: n)
+        Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
       end
-      Schedule.create(service: service, start_time:"7:15", end_time: "21:45", day_of_week: 6)
-      Schedule.create(service: service, start_time:"9:15", end_time: "18:00", day_of_week: 0)
+      Schedule.create(service: service, start_seconds:7.25*3600, end_seconds: 21.75*3600, day_of_week: 6)
+      Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
       #Trip purpose requirements
       [medical, cancer, general, grocery].each do |n|
         ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
@@ -392,21 +397,27 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: ada_eligible, value: 'true')
+      ServiceTravelerCharacteristicsMap.create(service: service, characteristic: ada_eligible, value: 'true')
 
       #Traveler Accommodations Requirements
       [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceTravelerAccommodationsMap.create(service: service, accommodation: n, value: 'true')
       end
 
       #Service for Persons with Disabilities
       service = Service.create(name: 'Service for Persons with Disabilities', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
       #Add Schedules
+      #Add Schedules
       (1..5).each do |n|
-        Schedule.create(service: service, start_time:"5:45", end_time: "23:30", day_of_week: n)
+        Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
       end
-      Schedule.create(service: service, start_time:"7:15", end_time: "21:45", day_of_week: 6)
-      Schedule.create(service: service, start_time:"9:15", end_time: "18:00", day_of_week: 0)
+      Schedule.create(service: service, start_seconds:7.25*3600, end_seconds: 21.75*3600, day_of_week: 6)
+      Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
+      #Trip purpose requirements
+      [medical, cancer, general, grocery].each do |n|
+        ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+      end
+
       #Trip purpose requirements
       [medical, cancer, general, grocery].each do |n|
         ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
@@ -423,11 +434,11 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: disabled, value: 'true')
+      ServiceTravelerCharacteristicsMap.create(service: service, characteristic: disabled, value: 'true')
 
       #Traveler Accommodations Requirements
       [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceTravelerAccommodationsMap.create(service: service, accommodation: n, value: 'true')
       end
 
     when "2" #Faith in Action Network
@@ -435,7 +446,7 @@ providers.each do |provider|
       service = Service.create(name: 'Staying Connected', provider: p, service_type: paratransit, advanced_notice_minutes: 7*24*60)
       #Add Schedules
       (1..4).each do |n|
-        Schedule.create(service: service, start_time:"9:00", end_time: "16:00", day_of_week: n)
+        Schedule.create(service: service, start_seconds:9*3600, end_seconds:16*3600, day_of_week: n)
       end
 
       #Trip Purpose Requirements
@@ -456,11 +467,11 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Requirements
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
+      ServiceTravelerCharacteristicsMap.create(service: service,characteristic: age, value: '60', value_relationship_id: 4)
 
       #Traveler Accommodations Requirements
       [curb_to_curb, folding_wheelchair_accessible].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceTravelerAccommodationsMap.create(service: service, accommodation: n, value: 'true')
       end
 
     when "3" #American Cancer Society
@@ -468,7 +479,7 @@ providers.each do |provider|
       service = Service.create(name: 'Road to Recovery Program', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
       #Add Schedules
       (1..5).each do |n|
-        Schedule.create(service: service, start_time:"8:30", end_time: "16:30", day_of_week: n)
+        Schedule.create(service: service, start_seconds:8.5*3600, end_seconds: 16.5*3600, day_of_week: n)
       end
 
       #Trip Purpose Requirements
@@ -491,7 +502,7 @@ providers.each do |provider|
 
       #Traveler Accommodations Requirements
       [curb_to_curb, folding_wheelchair_accessible].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceTravelerAccommodationsMap.create(service: service, accommodation: n, value: 'true')
       end
 
     when "4" #Luthern Social Services of South Central PA
@@ -499,7 +510,7 @@ providers.each do |provider|
       service = Service.create(name: 'Touch a Life', provider: p, service_type: paratransit, advanced_notice_minutes: 5*24*60)
       #Add Schedules
       (1..5).each do |n|
-        Schedule.create(service: service, start_time:"8:30", end_time: "16:30", day_of_week: n)
+        Schedule.create(service: service, start_seconds:8.5*3600, end_seconds: 16.5*3600, day_of_week: n)
       end
 
       #Trip Purpose Requirements
@@ -522,7 +533,7 @@ providers.each do |provider|
 
       #Traveler Accommodations Requirements
       [curb_to_curb, folding_wheelchair_accessible].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceTravelerAccommodationsMap.create(service: service, accommodation: n, value: 'true')
       end
 
     when "5" #Area Agency on Aging
@@ -530,7 +541,7 @@ providers.each do |provider|
       service = Service.create(name: 'Area Agency on Aging', provider: p, service_type: paratransit, advanced_notice_minutes: 5*24*60)
       #Add Schedules
       (1..5).each do |n|
-        Schedule.create(service: service, start_time:"8:00", end_time: "16:30", day_of_week: n)
+        Schedule.create(service: service, start_seconds:8*3600, end_seconds: 16.5*3600, day_of_week: n)
       end
 
       #Trip Purpose Requirements
@@ -551,11 +562,11 @@ providers.each do |provider|
       end
 
       #Traveler Characteristics Required
-      ServiceTravelerCharacteristicsMap.create(service: service, traveler_characteristic: age, value: '60', value_relationship_id: 4)
+      ServiceTravelerCharacteristicsMap.create(service: service, characteristic: age, value: '60', value_relationship_id: 4)
 
       #Traveler Accommodations Requirements
       [curb_to_curb, folding_wheelchair_accessible].each do |n|
-        ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
+        ServiceTravelerAccommodationsMap.create(service: service, accommodation: n, value: 'true')
       end
 
 

@@ -228,11 +228,11 @@ namespace :oneclick do
       u
     end
     users.each do |u|
-      u.user_profile.user_traveler_characteristics_maps.create! traveler_characteristic: TravelerCharacteristic.where(datatype: 'bool').sample,
+      u.user_profile.user_traveler_characteristics_maps.create! traveler_characteristic: Characteristic.where(datatype: 'bool').sample,
       value: [true, false].sample
-      u.user_profile.user_traveler_characteristics_maps.create! traveler_characteristic: TravelerCharacteristic.where(datatype: 'bool').sample,
+      u.user_profile.user_traveler_characteristics_maps.create! traveler_characteristic: Characteristic.where(datatype: 'bool').sample,
       value: [true, false].sample
-      u.user_profile.user_traveler_characteristics_maps.create! traveler_characteristic: TravelerCharacteristic.where(datatype: 'bool').sample,
+      u.user_profile.user_traveler_characteristics_maps.create! traveler_characteristic: Characteristic.where(datatype: 'bool').sample,
       value: [true, false].sample
       Rails.logger.info "Added characterstics to user"
     end

@@ -8,10 +8,10 @@ namespace :oneclick do
         {code: 'nemt_eligible', desc: 'persons eligible for Medicaid'},
         {code: 'ada_eligible', desc: 'persons eligible for ADA Paratransit'},
         {code: 'veteran', desc: 'military veterans'}].each do |c|
-          t = TravelerCharacteristic.find_by_code(c[:code])
+          t = Characteristic.find_by_code(c[:code])
           t.update_attributes! desc: c[:desc]
         end
-        TravelerCharacteristic.find_by_code('low_income').update_attributes! name: 'low income individuals'
+        Characteristic.find_by_code('low_income').update_attributes! name: 'low income individuals'
 
         [{code: 'folding_wheelchair_acceessible', name: 'Folding wheelchair access'},
           {code: 'motorized_wheelchair_accessible', name: 'Motorized wheelchair access'},
@@ -19,7 +19,7 @@ namespace :oneclick do
           {code: 'door_to_door', name: 'Door-to-door assistance'},
           {code: 'curb_to_curb', name: 'Curb-to-curb service'},
           {code: 'driver_assistance_available', name: 'Driver assistance'}].each do |c|
-            t = TravelerAccommodation.find_by_code(c[:code])
+            t = Accommodation.find_by_code(c[:code])
             t.update_attributes! name: c[:name]
           #
         end
@@ -94,8 +94,8 @@ namespace :oneclick do
 
 
       #Traveler Characteristics Requirements
-      disabled = TravelerCharacteristic.find_by_code('disabled')
-      age = TravelerCharacteristic.find_by_code('age')
+      disabled = Characteristic.find_by_code('disabled')
+      age = Characteristic.find_by_code('age')
       c = GeoCoverage.new(value: 'Dekalb', coverage_type: 'county_name')
       ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'residence')
 
@@ -284,7 +284,7 @@ namespace :oneclick do
 
     desc "Add Companion Allowed Accommodation"
     task :add_companion => :environment do
-      companion_allowed = TravelerAccommodation.find_or_initialize_by_code('companion_allowed')
+      companion_allowed = Accommodation.find_or_initialize_by_code('companion_allowed')
       companion_allowed.name = 'Traveler Companion Permitted'
       companion_allowed.note = 'Do you travel with a companion?'
       companion_allowed.datatype = 'bool'
@@ -353,7 +353,7 @@ When scheduling appointment(s), patients must inform the scheduling clerk that t
         end
 
         #Traveler Accommodations Requirements
-        folding_wheelchair_accessible = TravelerAccommodation.find_by_code('folding_wheelchair_acceessible')
+        folding_wheelchair_accessible = Accommodation.find_by_code('folding_wheelchair_acceessible')
         [folding_wheelchair_accessible].each do |n|
           ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
         end
@@ -404,9 +404,9 @@ When scheduling appointment(s), patients must inform the scheduling clerk that t
       FareStructure.create(service: service, fare_type: 2, desc:  "Zone 1: $15.65, Zone 2: $22.00, Zone 3: $30.50, Zone 4: $44.25")
 
       #Traveler Accommodations Requirements
-      folding_wheelchair_accessible = TravelerAccommodation.find_by_code('folding_wheelchair_acceessible')
-      motorized_wheelchair_accessible = TravelerAccommodation.find_by_code('motorized_wheelchair_accessible')
-      curb_to_curb = TravelerAccommodation.find_by_code('curb_to_curb')
+      folding_wheelchair_accessible = Accommodation.find_by_code('folding_wheelchair_acceessible')
+      motorized_wheelchair_accessible = Accommodation.find_by_code('motorized_wheelchair_accessible')
+      curb_to_curb = Accommodation.find_by_code('curb_to_curb')
       [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
         ServiceTravelerAccommodationsMap.create(service: service, traveler_accommodation: n, value: 'true')
       end

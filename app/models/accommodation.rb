@@ -1,4 +1,4 @@
-class TravelerAccommodation < ActiveRecord::Base
+class Accommodation < ActiveRecord::Base
   
   attr_accessible :id, :code, :name, :note, :datatype, :active
 
@@ -9,6 +9,6 @@ class TravelerAccommodation < ActiveRecord::Base
   has_many :services, through: :service_traveler_accommodations_maps
 
   # set the default scope
-  default_scope where('traveler_accommodations.active = ?', true)
+  default_scope where('accommodations.active = ?', true)
 
 end

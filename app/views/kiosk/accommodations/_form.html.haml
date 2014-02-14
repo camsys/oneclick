@@ -17,7 +17,7 @@
                   %th No
                   %th Unsure
               %tbody 
-                -TravelerAccommodation.where(:datatype => 'bool').each do |accommodation|
+                -Accommodation.where(:datatype => 'bool').each do |accommodation|
                   %tr 
                     %td
                       = f.label accommodation.note 
@@ -31,7 +31,7 @@
                       = f.radio_button accommodation.code.to_sym, "na"
                       = f.label accommodation.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
 
-                -TravelerAccommodation.where(:datatype => 'disabled').each do |characteristic|
+                -Accommodation.where(:datatype => 'disabled').each do |characteristic|
                   %tr 
                     %td
                       = f.label characteristic.note + " (not yet available)", :class => 'disabled'

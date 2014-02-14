@@ -13,7 +13,7 @@ class UserAccommodationsProxy < UserProfileProxy
   def method_missing(code, *args)
 
     # See if the code exists in the accommodation database
-    accommodation = TravelerAccommodation.find_by_code(code)
+    accommodation = Accommodation.find_by_code(code)
     if accommodation.nil?
       return super      
     end
@@ -36,7 +36,7 @@ class UserAccommodationsProxy < UserProfileProxy
       
       # Loop through the list of accommodation that could be set. This appraoch ensures we are only updating
       # active accommodation
-      TravelerAccommodation.all.each do |accommodation|
+      Accommodation.all.each do |accommodation|
         
         Rails.logger.debug accommodation.inspect
         
