@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 ruby '1.9.3'
 gem 'rails', '3.2.14'
+
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
@@ -8,6 +9,7 @@ group :assets do
   gem 'bootstrap-combobox', '= 1.2.1'
   # gem 'bootstrap-combobox', '= 1.2.3', path: '/Users/denishaskin/constantorbit/workspace/bootstrap-combobox'
 end
+
 gem 'jquery-rails'
 gem 'bootstrap-sass', '= 2.3.2.2'
 gem 'cancan'
@@ -32,6 +34,7 @@ gem 'honeybadger'
 gem 'draper'
 gem 'rubyzip'
 gem 'faraday_middleware'
+gem 'twilio-ruby'
 
 group :development do
   gem 'activerecord-postgis-adapter'

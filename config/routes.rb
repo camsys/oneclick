@@ -124,6 +124,9 @@ Oneclick::Application.routes.draw do
       match '/', to: 'home#index'
 
       resources :locations, only: [:show]
+      resources :call, only: [:show] do
+        post :outgoing, on: :collection
+      end
 
       # TODO can probably remove a lot of these routes
       resources :users do
