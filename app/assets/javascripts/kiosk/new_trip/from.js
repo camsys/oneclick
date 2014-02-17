@@ -13,7 +13,7 @@ jQuery(function ($) {
     resetMapView();
 
     // Synchrotron will have set the machine name, so we can get the machine address
-    var item = JSON.parse(addrConfig.getCurrentMachineAddressInField());
+    var item = addrConfig.getCurrentMachineAddressInField();
 
     removeMatchingMarkers('start');
 
