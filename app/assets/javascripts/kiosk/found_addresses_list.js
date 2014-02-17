@@ -23,6 +23,13 @@ jQuery(function ($) {
       .on('mouseleave', 'li', $.proxy(this.mouseleave, this))
   };
 
+  Typeahead.prototype.click = function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.select();
+    // this.$element.focus();
+  }
+
   Typeahead.prototype.process = function (items) {
     var that = this;
 
