@@ -61,7 +61,8 @@ class TripsController < PlaceSearchingController
       session[:current_trip_id] = nil
     end
 
-    Rails.logger.info 'Trip: ' @trip.inspect
+    Rails.logger.info 'Trip: ' + @trip.inspect
+
     respond_to do |format|
       format.html {
         Rails.logger.info 'rendering HTML'
