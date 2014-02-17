@@ -37,4 +37,22 @@ jQuery(function ($) {
   $('#current-location a#yes').on('click', useCurrentLocationHandler);
   $('#current-location a#no').on('click', function () { $('#trip_proxy_use_current_location').val('no') });
   setupPlacesSearchTypeahead('from', 'start');
+
+  //FROM LABEL APPEAR
+  $('input#trip_proxy_from_place').focus(function(){
+      if (window.cocoa)
+        window.cocoa.openKeyboard();
+      $('#from_input').addClass('text-added');
+  });
+  $('input#trip_proxy_from_place').click(function(){
+       if (window.cocoa)
+        window.cocoa.openKeyboard();
+  });
+  $('input#trip_proxy_from_place').blur(function(){
+    if($(this).val().length > 0){
+      //do nothing
+    } else {
+      $('#from_input').removeClass('text-added');
+    }
+  });
 });
