@@ -123,6 +123,8 @@ Oneclick::Application.routes.draw do
     namespace :kiosk do
       match '/', to: 'home#index'
 
+      resources :locations, only: [:show]
+
       # TODO can probably remove a lot of these routes
       resources :users do
         member do
