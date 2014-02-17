@@ -53,6 +53,7 @@ class TripsController < PlaceSearchingController
   end
 
   def show_printer_friendly
+    Rails.logger.info 'inside of show_printer_friendly'
     @show_hidden = params[:show_hidden]
     @print = params[:print]
 
@@ -60,11 +61,15 @@ class TripsController < PlaceSearchingController
       session[:current_trip_id] = nil
     end
 
+    Rails.logger.info 'Trip: ' @trip.inspect
     respond_to do |format|
       format.html {
+        Rails.logger.info 'rendering HTML'
         render :show_printer_friendly_failed if @trip.nil?
       }
-      format.json { render json: @trip }
+      format.json {
+        Rails.logger.info 'rendering JSON'
+        render json: @trip }
     end
   end
 

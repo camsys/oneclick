@@ -1,4 +1,4 @@
-
+- Rails.logger.info 'inside of kiosk/trips/show_printer_friendly.html.haml'
 = image_tag get_logo, :style => "height:30px;margin-top:50px;"
 .title-desc
   = t(:one_click_trip_planner)
@@ -7,8 +7,8 @@
 
 %table#printer-friendly
   %tr
-    %h4 
-      = t(:from) + ':  ' 
+    %h4
+      = t(:from) + ':  '
   %tr
     %p
       =@trip.from_place.name
