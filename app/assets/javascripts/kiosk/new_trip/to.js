@@ -24,10 +24,15 @@ jQuery(function ($) {
         window.cocoa.openKeyboard();
   });
   $('input#trip_proxy_to_place').blur(function(){
+    if (window.cocoa)
+      window.cocoa.closeKeyboard();
+
     if($(this).val().length > 0){
       //do nothing
     } else {
       $('#to_input').removeClass('text-added');
     }
   });
+
+  $('input#trip_proxy_to_place').focus();
 });

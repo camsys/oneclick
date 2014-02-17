@@ -48,11 +48,17 @@ jQuery(function ($) {
        if (window.cocoa)
         window.cocoa.openKeyboard();
   });
+
   $('input#trip_proxy_from_place').blur(function(){
+    if (window.cocoa)
+      window.cocoa.closeKeyboard();
+
     if($(this).val().length > 0){
       //do nothing
     } else {
       $('#from_input').removeClass('text-added');
     }
   });
+
+  $('input#trip_proxy_from_place').focus();
 });
