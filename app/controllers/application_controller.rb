@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
   before_filter :get_traveler
   before_filter :setup_actions
   after_filter :clear_location
-  before_filter :dump_session
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_path, :alert => exception.message
@@ -109,9 +108,4 @@ class ApplicationController < ActionController::Base
   #
   ######################################################################
 
-
-  def dump_session
-    Rails.logger.info '**** SESSION DUMP ****'
-    Rails.logger.info session.to_hash.ai
-  end
 end
