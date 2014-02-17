@@ -35,7 +35,14 @@ jQuery(function ($) {
   restore_marker_from_local_storage('start');
 
   $('#current-location a#yes').on('click', useCurrentLocationHandler);
-  $('#current-location a#no').on('click', function () { $('#trip_proxy_use_current_location').val('no') });
+  $('#current-location a#no').on('click', function () {
+    $('#trip_proxy_use_current_location').val('no');
+    // poor man's nextTick.
+    setTimeout(function () {
+      $('input#trip_proxy_from_place').focus();
+    }, 0);
+  });
+
   setupPlacesSearchTypeahead('from', 'start');
 
   //FROM LABEL APPEAR
@@ -60,5 +67,4 @@ jQuery(function ($) {
     }
   });
 
-  $('input#trip_proxy_from_place').focus();
 });
