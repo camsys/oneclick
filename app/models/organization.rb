@@ -1,6 +1,6 @@
 class Organization < ActiveRecord::Base
 
-  attr_accessible :name
+  # attr_accessible :name
 
   # validates :org_type, presence: true
 

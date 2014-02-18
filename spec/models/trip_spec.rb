@@ -144,9 +144,9 @@ EOT
     test_itineraries = [{'mode'=>Mode.new(name: 'TRANSIT', active: true), 'legs'=>legs}]
     trip_planner = double(TripPlanner,
       get_fixed_itineraries: [true,[]],
-      get_taxi_itineraries: [false,[]],
-      get_paratransit_itineraries: [false,[]],
-      get_rideshare_itineraries: [false,[]],
+      get_taxi_itineraries: [false,['Test does not implement get_taxi_itineraries']],
+      get_paratransit_itineraries: [false,['Test does not implement get_paratransit_itineraries']],
+      get_rideshare_itineraries: [false,['Test does not implement get_rideshare_itineraries']],
       convert_itineraries: test_itineraries)
 
     eligibilility_helpers = double(EligibilityHelpers,

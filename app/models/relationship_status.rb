@@ -7,7 +7,7 @@ class RelationshipStatus < ActiveRecord::Base
   REVOKED = 5
   HIDDEN = 6
   
-  attr_accessible :id, :name
+  # attr_accessible :id, :name
    
   def self.requested
     find(REQUESTED)

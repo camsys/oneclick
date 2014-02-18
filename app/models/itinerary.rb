@@ -10,16 +10,16 @@ class Itinerary < ActiveRecord::Base
   belongs_to :service
 
   # You should usually *always* used the valid scope
-  scope :valid, where('mode_id is not null and server_status=200')
-  scope :invalid, where('mode_id is null or server_status!=200')
-  scope :visible, where('hidden=false')
-  scope :hidden, where('hidden=true')
-  scope :good_score, where('match_score < 3')
+  scope :valid, -> {where('mode_id is not null and server_status=200')}
+  scope :invalid, -> {where('mode_id is null or server_status!=200')}
+  scope :visible, -> {where('hidden=false')}
+  scope :hidden, -> {where('hidden=true')}
+  scope :good_score, -> {where('match_score < 3')}
 
-  attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
-  :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
-  :ride_count, :external_info, :match_score, :missing_information, :missing_information_text, :date_mismatch,
-  :time_mismatch, :too_late, :accommodation_mismatch, :missing_accommodations
+  # attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
+  # :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
+  # :ride_count, :external_info, :match_score, :missing_information, :missing_information_text, :date_mismatch,
+  # :time_mismatch, :too_late, :accommodation_mismatch, :missing_accommodations
 
   # returns true if this itinerary failed to work
   def failed
