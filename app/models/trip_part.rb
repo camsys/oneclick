@@ -6,20 +6,18 @@ class TripPart < ActiveRecord::Base
   belongs_to :to_trip_place,    :class_name => "TripPlace", :foreign_key => "to_trip_place_id"
 
   has_many :itineraries
-  # has_many :valid_itineraries, :conditions => 'server_status=200 AND hidden=false', :class_name => 'Itinerary' 
-  # has_many :hidden_itineraries, :conditions => 'server_status=200 AND hidden=true', :class_name => 'Itinerary'
 
   # Ordering of trip parts within a trip. 0 based
-  attr_accessible :sequence
+  # attr_accessible :sequence
   # date and time that the trip part is scheduled for stored as a string
-  attr_accessible :scheduled_date, :scheduled_time, :from_trip_place, :to_trip_place
+  # attr_accessible :scheduled_date, :scheduled_time, :from_trip_place, :to_trip_place
   
   
   # true if the trip_time refers to the deaperture time at the origin. False
   # if it is arrival at the destination
-  attr_accessible :is_depart
+  # attr_accessible :is_depart
   # true if the trip part is the return trip
-  attr_accessible :is_return_trip
+  # attr_accessible :is_return_trip
  
   # Scopes
   scope :created_between, lambda {|from_time, to_time| where("trip_parts.created_at > ? AND trip_parts.created_at < ?", from_time, to_time).order("trip_parts.trip_time DESC") }
@@ -115,7 +113,7 @@ class TripPart < ActiveRecord::Base
       itinerary = tp.convert_taxi_itineraries(response)
       self.itineraries << Itinerary.new(itinerary)
     else
-      self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response)
+      self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s)
     end
   end
 
@@ -141,7 +139,7 @@ class TripPart < ActiveRecord::Base
       itinerary = tp.convert_rideshare_itineraries(response)
       self.itineraries << Itinerary.new(itinerary)
     else
-      self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response)
+      self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s)
     end
   end  
 

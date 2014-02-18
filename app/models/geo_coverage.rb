@@ -5,7 +5,7 @@ class GeoCoverage < ActiveRecord::Base
   has_many :services, through: :service_coverage_maps
 
   #coverage_type: zipcode, county_name, polygon
-  attr_accessible :coverage_type, :value, :polygon
+  # attr_accessible :coverage_type, :value, :polygon
 
   def polygon_contains?(lon, lat)
     factory = RGeo::Geographic.simple_mercator_factory

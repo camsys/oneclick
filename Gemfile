@@ -1,22 +1,19 @@
 source 'https://rubygems.org'
 ruby '1.9.3'
-gem 'rails', '3.2.14'
-group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'uglifier', '>= 1.0.3'
-  gem 'bootstrap-combobox', '= 1.2.1'
-  # gem 'bootstrap-combobox', '= 1.2.3', path: '/Users/denishaskin/constantorbit/workspace/bootstrap-combobox'
-end
+gem 'rails', '4.0.3'
+gem 'sass-rails'
+gem 'coffee-rails'
+gem 'uglifier', '>= 1.0.3'
+gem 'bootstrap-combobox'
 gem 'jquery-rails'
-gem 'bootstrap-sass', '= 2.3.2.2'
+gem 'bootstrap-sass', '~> 2.3.2.0'
 gem 'cancan'
-gem 'devise', '~> 3.1.0'
+gem 'devise'
 gem 'figaro'
 gem 'geocoder'
 gem 'haml-rails'
 gem 'pg'
-gem 'rolify', '= 3.2.0'
+gem 'rolify'
 gem 'simple_form'
 gem 'thin'
 gem 'awesome_print'
@@ -27,7 +24,7 @@ gem 'newrelic_rpm'
 gem 'polylines'
 gem 'activemdb'
 gem 'ajaxful_rating', '>= 3.0.0.beta7'
-gem 'comfortable_mexican_sofa'
+gem 'comfortable_mexican_sofa', '~> 1.11.0'
 gem 'honeybadger'
 gem 'draper'
 gem 'rubyzip'
@@ -72,4 +69,8 @@ group :test do
   gem 'launchy'
   gem 'coveralls', require: false
   gem 'simplecov', require: false  
+end
+
+group :production do
+  gem 'rails_12factor'
 end

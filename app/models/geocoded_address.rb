@@ -1,9 +1,9 @@
 class GeocodedAddress < ActiveRecord::Base
   self.abstract_class = true  
   
-  attr_accessible :address1, :address2, :city, :state, :zip
-  attr_accessible :lat, :lon
-  attr_accessible :county
+  # # attr_accessible :address1, :address2, :city, :state, :zip
+  # # attr_accessible :lat, :lon
+  # # attr_accessible :county
 
 protected
 
