@@ -25,8 +25,7 @@ end
 
 def load_pois
   require 'csv'
-  return
-  filename  = ENV['FILENAME']
+  filename  = Oneclick::Application.config.poi_file
   # FILENAME = File.join(Rails.root, 'db', 'arc_poi_data', 'CommFacil_20131015.txt')
 
   puts
@@ -63,9 +62,9 @@ def load_pois
         #If we have already created this POI, don't create it again.
         p = Poi.find_by_name(row[3])
         unless p.nil?
-          return
+          next
         end
-
+        p row
         p = Poi.new
         p.poi_type = poi_type
         p.lon = row[1]
@@ -98,6 +97,7 @@ def load_pois
 end
 
 def generate_trips
+  puts 'Generating trips and sample users...'
   #Check to see if we already have a large set of users
   if User.all.count >= 100
     return
@@ -115,11 +115,11 @@ def generate_trips
     u
   end
   users.each do |u|
-    u.user_profile.traveler_characteristics.create! traveler_characteristic: Characteristic.where(datatype: 'bool').sample,
+    u.user_profile.user_characteristics.create! characteristic: Characteristic.where(datatype: 'bool').sample,
     value: [true, false].sample
-    u.user_profile.traveler_characteristics.create! traveler_characteristic: Characteristic.where(datatype: 'bool').sample,
+    u.user_profile.user_characteristics.create! characteristic: Characteristic.where(datatype: 'bool').sample,
     value: [true, false].sample
-    u.user_profile.traveler_characteristics.create! traveler_characteristic: Characteristic.where(datatype: 'bool').sample,
+    u.user_profile.user_characteristics.create! characteristic: Characteristic.where(datatype: 'bool').sample,
     value: [true, false].sample
     Rails.logger.info "Added characterstics to user"
   end
@@ -150,5 +150,5 @@ end
 
 update_reports
 load_pois
-generate_trips
+#generate_trips
 populate_provider_orgs

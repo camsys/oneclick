@@ -28,6 +28,7 @@ when 'arc'
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
   ENV['GOOGLE_GEOCODER_TIMEOUT']= "5"
   honeybadger_api_key = 'ba642a71'
+  Oneclick::Application.config.poi_file = 'db/arc_poi_data/CommFacil_20131015.txt'
 
 when 'broward'  
   Oneclick::Application.config.ui_logo = 'broward/Broward_211_Get_Connected_get_answers.jpg'
@@ -46,6 +47,7 @@ when 'broward'
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
   ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
   honeybadger_api_key = '789c7911'
+  Oneclick::Application.config.poi_file = 'db/broward_poi_data/broward-poi-from-arcgis.csv'
 
 when 'pa'
   Oneclick::Application.config.ui_logo = 'pa/penndotLogo.jpg'
@@ -64,6 +66,7 @@ when 'pa'
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
   ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
   honeybadger_api_key = 'f49faffa'
+  Oneclick::Application.config.poi_file = 'db/pa/pa-poi-from-arc.csv'
 
 end
 

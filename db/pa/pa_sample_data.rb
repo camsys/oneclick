@@ -560,9 +560,9 @@ def add_dav
     end
 
     #Traveler Accommodations Requirements
-    folding_wheelchair_accessible = Accommodation.find_by_code('folding_wheelchair_acceessible')
+    folding_wheelchair_accessible = Accommodation.find_by_code('folding_wheelchair_accessible')
     [folding_wheelchair_accessible].each do |n|
-      ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
+      ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
     end
 
   else
@@ -609,11 +609,11 @@ def add_rabbit_general
   FareStructure.create(service: service, fare_type: 2, desc:  "Zone 1: $15.65, Zone 2: $22.00, Zone 3: $30.50, Zone 4: $44.25")
 
   #Traveler Accommodations Requirements
-  folding_wheelchair_accessible = Accommodation.find_by_code('folding_wheelchair_acceessible')
+  folding_wheelchair_accessible = Accommodation.find_by_code('folding_wheelchair_accessible')
   motorized_wheelchair_accessible = Accommodation.find_by_code('motorized_wheelchair_accessible')
   curb_to_curb = Accommodation.find_by_code('curb_to_curb')
   [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-    ServiceAccommodation.create(service: service, traveler_accommodation: n, value: 'true')
+    ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
   end
 
 end
