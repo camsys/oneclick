@@ -1,24 +1,22 @@
-%h4="Hello!  On " + format_date(@trip.created_at.in_time_zone) + " you used the 1-Click Trip Planner to plan a trip for " + format_date(@trip.trip_parts.first.trip_time.in_time_zone) + ", from " + @trip.from_place.name + " to " + @trip.to_place.name + ". Please give us some feedback:"
+%h4=t(:hello) +"  On " + format_date(@trip.created_at.in_time_zone) + " you used the 1-Click Trip Planner to plan a trip for " + format_date(@trip.trip_parts.first.trip_time.in_time_zone) + ",  " + t(:from) + @trip.from_place.name + " " + t(:to) +" " + @trip.to_place.name + ". " + t(:solicit_feedback)
 
 %hr
 %h3
   =link_to ratings_url(:user_id => @trip.user.id, :id => @trip.id, :hash => @trip.md5_hash, :taken => true) do
-    Click HERE if you made the trip as planned, and everything worked out just fine.
+    =t(:success_feedback_link)
 %h3
   =link_to ratings_url(:user_id => @trip.user.id, :id => @trip.id, :hash => @trip.md5_hash, :taken => false) do
-    Click HERE if you decided not to make the trip at all.
+    =t(:no_trip_taken_feedback_link)
 %h3
   =link_to ratings_url(:user_id => @trip.user.id, :id => @trip.id, :hash => @trip.md5_hash, :taken => 'nil') do
-    Click
-    HERE
-    if you want to provide more feedback, or if things didn't work out as planned.
+    =t(:more_feedback_link)
 %hr
 
-%h4= "Thanks for taking the time to respond."
+%h4= t(:thanks_for_responding)
 
 %table
   %tbody
     %tr
-      %td This email is automatically sent by the OneClick system. Please do not reply to this email.
+      %td= t(:do_not_reply)
     %tr
       %td= "Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of " + Oneclick::Application.config.name

@@ -1,6 +1,6 @@
 .row-fluid
   .span12
-    %h4 Add a new buddy
+    %h4= t(:add_new_buddy)
 .row-fluid
   .span12
     = simple_form_for [current_user, @user_relationship], remote: true, html: { class: 'form-inline' } do |f|

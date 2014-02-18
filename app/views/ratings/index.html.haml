@@ -4,13 +4,13 @@
       -if @trip.taken == true or @trip.taken == false
         %h1
           %i.icon.icon-star
-          ="Thank you for your feedback!"
+          =t(:thanks_for_the_feedback)
         %h4
-          ="If you would like to provide optional comments or a rating for your trip, you can do so below."
+          =t(:optional_comments_descr)
       -else
         %h1
           %i.icon.icon-star
-          = "Rate your recent trip."
+          =t(:rate_recent)
 
 .row-fluid
   .span12.well.trip_header
@@ -19,13 +19,13 @@
 .row-fluid.top-margin
   .span12
     %h4
-      Rate your trip:
+      =t(:rate_trip) + ":"
     =get_rating_icons(@trip,2)
 
 .row-fluid.top-margin
   .span12
     %h4
-      Please tell us about your trip:
+      =t(:please_tell_us)
     = simple_form_for :trip, url: comments_rating_path(:user_id => @traveler.id, :id => @trip.id), html: { class: 'form-vertical',
       id: 'user_comments_form_' + @trip.id.to_s} do |f|
       = f.error_notification

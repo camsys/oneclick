@@ -7,7 +7,7 @@
     %table.table.table.condensed.table-striped.table-hover.table-bordered#datatable
       %thead
         %tr
-          %td Trip Date
+          %td= t(:trip_date)
           - keys = @data.collect {|d| d[1].keys}.flatten.uniq
           - keys.each do |k|
             %td= k

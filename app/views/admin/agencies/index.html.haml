@@ -1,12 +1,11 @@
-%h1 Agencies
+%h1= t(:agencies)
 
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_agencies_table
   %thead
     %tr
       %th= t(:name)
-      / TODO I18N
-      %th Parent Agency
-      %th Sub-agencies
+      %th= t(:parents_agency)
+      %th= t(:subagencies)
       %th
   %tbody
     - @agencies.each do |agency|
@@ -27,7 +26,7 @@
             %i.icon-group
             = t(:users)
 
-= link_to 'New Agency', new_admin_agency_path, {class: 'btn'}
+= link_to t(:new_agency), new_admin_agency_path, {class: 'btn'}
 
 / = render 'shared/datatable_javascript'
 

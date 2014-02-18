@@ -1,4 +1,4 @@
-%h1 Provider Organizations
+%h1= t(:provider_org)
 
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_provider_orgs_table
   %thead
@@ -18,7 +18,7 @@
           /   = t(:users)
           = link_to admin_provider_org_services_path(provider_org), {class: 'btn'} do
             %i.icon-info-sign
-            = 'Services'
+            = t(:services)
 
 = link_to 'New Provider Organization', new_admin_provider_org_path, {class: 'btn'}
 

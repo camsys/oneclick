@@ -7,15 +7,15 @@
         %div{ :data => {:index => 0}}
           .input-header
             .step-number
-            .step-title Questions
+            .step-title= t(:questions)
           .pull-right
             %table#characteristics_one
               %thead 
                 %tr 
                   %th 
-                  %th Yes
-                  %th No
-                  %th Unsure
+                  %th= t(:yes_str)
+                  %th= t(:no_str)
+                  %th= t(:unsure_str)
               %tbody 
                 -Accommodation.where(:datatype => 'bool').each do |accommodation|
                   %tr 

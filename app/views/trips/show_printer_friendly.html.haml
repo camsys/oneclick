@@ -53,12 +53,12 @@
 
     -unless itinerary.mode.name.downcase == 'rideshare'
       %h3
-        Summary:
+        =t(:summary) + ":"
       = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
       %hr
 
     %h3
-      Details:
+      =t(:details) + ":"
     = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
 
 %hr{style: "height:12px; background:#848484;"}

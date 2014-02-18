@@ -36,7 +36,7 @@ gem 'lorem-ipsum-me'
 group :development do
   gem 'activerecord-postgis-adapter'
   gem 'rgeo-activerecord'
-  gem 'ffi-geos'
+  # gem 'ffi-geos'
   #gem 'mysql2'
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :rbx]
