@@ -6,6 +6,7 @@ module ServiceAdapters
     end
 
     def create_rideshare_query from, to, trip_datetime
+      binding.pry
       query = {}
       query['date'] = trip_datetime.in_time_zone.strftime("%m/%d/%Y %-I:%M %p") # TODO format 8/21/2013 8:00 AM
       to = find_place(to)
