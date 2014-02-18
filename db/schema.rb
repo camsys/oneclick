@@ -373,6 +373,7 @@ ActiveRecord::Schema.define(version: 20140214212515) do
   create_table "service_types", force: true do |t|
     t.string "name", limit: 64, null: false
     t.string "note"
+    t.string "code"
   end
 
   create_table "services", force: true do |t|
@@ -433,6 +434,7 @@ ActiveRecord::Schema.define(version: 20140214212515) do
     t.string  "note"
     t.boolean "active",                default: true, null: false
     t.integer "sort_order"
+    t.string  "code"
   end
 
   create_table "trip_statuses", force: true do |t|

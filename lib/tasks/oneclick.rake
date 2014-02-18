@@ -12,114 +12,7 @@ namespace :oneclick do
       f.puts "Oneclick::Application.config.version = '#{version}'"
     end
   end
-
-  task :update_reports => :environment do
-    reports = [
-      {name: 'Trips Created', description: 'Displays a chart showing the number of trips created each day.', view_name: 'generic_report', class_name: 'TripsCreatedByDayReport', active: 1}, 
-      {name: 'Trips Scheduled', description: 'Displays a chart showing the number of trips scheduled for each day.', view_name: 'generic_report', class_name: 'TripsScheduledByDayReport', active: 1}, 
-      {name: 'Failed Trips', description: 'Displays a report describing the trips that failed.', view_name: 'trips_report', class_name: 'InvalidTripsReport', active: 1}, 
-      {name: 'Rejected Trips', description: 'Displays a report showing trips that were rejected by a user.', view_name: 'trips_report', class_name: 'RejectedTripsReport', active: 1} 
-    ]
-    
-    # Delete existing POIs by truncating the tables
-    %w{reports}.each do |table_name|
-      puts "Truncating table #{table_name}"
-      ActiveRecord::Base.connection.execute("TRUNCATE TABLE #{table_name}")
-    end
-    
-    # load the reports
-    reports.each do |rep|
-      r = Report.new(rep)
-      puts "Loading report #{r.name}"
-      r.save!
-    end
-
-  end
-
-  task :update_reports2 => :environment do
-    reports = [
-      {name: 'Trips Planned', description: 'Trips planned with various breakdowns.',
-        view_name: 'breakdown_report', class_name: 'TripsBreakdownReport', active: 1}, 
-      ]
-      reports.each do |rep|
-        r = Report.new(rep)
-        puts "Loading report #{r.name}"
-        r.save!
-      end
-    end
-
-    task providers: :environment do
-      require File.join(Rails.root, 'db', 'providers')
-    end
-
-    task load_pois: :environment do
-      require 'csv'
-
-      FILENAME = ENV['FILENAME']
-    # FILENAME = File.join(Rails.root, 'db', 'arc_poi_data', 'CommFacil_20131015.txt')
-
-    puts
-    puts "Loading POI and POI TYPES from file '#{FILENAME}'"
-    puts "Starting at: #{Time.now}"
-
-    # Delete existing POIs by truncating the tables
-    %w{poi_types pois}.each do |table_name|
-      puts "Truncating table #{table_name}"
-      ActiveRecord::Base.connection.execute("TRUNCATE TABLE #{table_name}")
-    end
-
-    count_good = 0
-    count_bad = 0
-    count_failed = 0
-    count_poi_type = 0
-
-    File.open(FILENAME) do |f|
-
-      CSV.foreach(f, {:col_sep => "\t", :headers => true}) do |row|
-
-        poi_type_name = row[13]
-        if poi_type_name.blank?
-          poi_type_name = 'Unknown'
-        end
-        poi_type = PoiType.find_by_name(poi_type_name)
-        if poi_type.nil?
-          puts "Adding new poi type #{poi_type_name}"
-          poi_type = PoiType.create!({:name => poi_type_name, :active => true})
-          count_poi_type += 1
-        end
-        if poi_type
-          p = Poi.new
-          p.poi_type = poi_type
-          p.lon = row[1]
-          p.lat = row[2]
-          p.name = row[3]
-          p.address1 = row[4]
-          p.address2 = row[5]
-          p.city = row[6]
-          p.state = 'GA'
-          p.zip = row[8]
-          p.county = row[12]
-          begin
-            if p.name && row[2] != "0.0"
-              p.save!
-              count_good += 1
-            else
-              count_bad += 1      
-            end
-          rescue Exception => e
-            puts "Failed to save: #{e.message} for #{p.ai}"
-            count_failed += 1
-          end
-        else
-          puts ">>> Can't find POI type '#{poi_type_name}'"
-        end
-      end
-    end
-    puts
-    puts "Loaded #{count_poi_type} POI Types and #{count_good} POIs. #{count_bad} were skipped, #{count_failed} failed to save."
-  end 
-
-  # OBJECTID  LONGITUDE LATITUDE  FACNAME ADDRESS_1 ADDRESS_2 CITY  STATE ZIP AREACODE  PHONE FIPS  COUNTY  TYPE  METHOD
+   # OBJECTID  LONGITUDE LATITUDE  FACNAME ADDRESS_1 ADDRESS_2 CITY  STATE ZIP AREACODE  PHONE FIPS  COUNTY  TYPE  METHOD
   task convert_shp_to_csv: :environment do
     require 'rgeo/shapefile'
     require 'csv'
@@ -215,63 +108,6 @@ namespace :oneclick do
     # end
   end
 
-  task generate_trips: :environment do
-    users = (1..100).each.collect do |i|
-      random_string = ((0...16).map { (65 + rand(26)).chr }.join)
-      u = User.new
-      u.first_name = "Visitor"
-      u.last_name = "Guest"
-      u.password = random_string
-      u.email = "guest_#{random_string}@example.com" 
-      u.save!(:validate => false)      
-      Rails.logger.info "Generated user"
-      u
-    end
-    users.each do |u|
-      u.user_profile.user_traveler_characteristics_maps.create! traveler_characteristic: Characteristic.where(datatype: 'bool').sample,
-      value: [true, false].sample
-      u.user_profile.user_traveler_characteristics_maps.create! traveler_characteristic: Characteristic.where(datatype: 'bool').sample,
-      value: [true, false].sample
-      u.user_profile.user_traveler_characteristics_maps.create! traveler_characteristic: Characteristic.where(datatype: 'bool').sample,
-      value: [true, false].sample
-      Rails.logger.info "Added characterstics to user"
-    end
-    users.each_with_index do |u, ui|
-      d = Date.today + rand(-30..30).days
-      (1..100).each do |i|
-        text_size = rand(200)
-        t = u.trips.create! trip_purpose: TripPurpose.all.sample,
-        user_comments: LoremIpsum.generate.truncate(text_size, omission: '').split.sample(text_size).join(' '),
-        taken: [true, false].sample,
-        rating: [nil, [*0..5]].flatten.sample
-        t.trip_parts.create! from_trip_place: TripPlace.all.sample, to_trip_place: TripPlace.all.sample, sequence: 0,
-        scheduled_date: (d + rand(-5..5).days), scheduled_time: Time.now
-        Rails.logger.info "Added trip #{i} to user #{ui}"
-      end
-    end
-  end
-
-  task populate_provider_orgs: :environment do
-    Provider.all.each do |p|
-      p.create_provider_org! name: p.name
-      p.save!
-    end
-  end
-
-  task more_users: :environment do
-    users = (1..20).each do |i|
-      random_string = ((0...16).map { (65 + rand(26)).chr }.join)
-      u = User.new
-      u.first_name = "Sample"
-      u.last_name = "User#{i}"
-      u.password = random_string
-      u.email = "#{u.first_name.downcase}_#{u.last_name.downcase}@camsys.com" 
-      u.save!(:validate => false)      
-      Rails.logger.info "Generated user"
-      u
-    end
-  end
-
   task fix_roles: :environment do
     Role.destroy_all
     ROLES.each do |r|
@@ -284,29 +120,5 @@ namespace :oneclick do
     u.add_role :admin
   end
 
-  task create_arc_agencies: :environment do
-    ['Atlanta Regional Commission',
-      'ARC Mobility Management',
-      'ARC Agewise',
-      'ARC Workforce Development',
-      'Veterans Affairs',
-      'Disability Link',
-      'Cobb County Transit',
-      'Goodwill Industries'].each do |a|
-        Agency.create! name: a
-      end
-
-  end
-
-  task create_pa_agencies: :environment do
-    ['York Area Agency on Aging',
-     'Penn-Mar Human Services',
-     'Touch A Life',
-     'York Adams Transit Authority',
-     'York Center for Independent Living',
-     'Staying Connected'].each do |a|
-        Agency.create! name: a
-      end
-  end
 
 end
