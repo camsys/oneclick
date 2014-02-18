@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140125155620) do
+ActiveRecord::Schema.define(:version => 20140217150157) do
 
   create_table "cms_blocks", :force => true do |t|
     t.integer  "page_id",    :null => false
@@ -182,6 +182,16 @@ ActiveRecord::Schema.define(:version => 20140125155620) do
     t.string   "missing_accommodations",                                  :default => ""
     t.text     "cost_comments"
     t.boolean  "selected"
+  end
+
+  create_table "kiosk_locations", :force => true do |t|
+    t.string   "name"
+    t.integer  "address_type"
+    t.string   "addr"
+    t.float    "lat"
+    t.float    "lon"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "modes", :force => true do |t|
