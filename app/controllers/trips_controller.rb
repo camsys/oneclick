@@ -62,7 +62,7 @@ class TripsController < PlaceSearchingController
 
     respond_to do |format|
       format.html {
-        render :show_printer_friendly_failed
+        render :show_printer_friendly_failed if @trip.nil?
       }
       format.json { render json: @trip }
     end
