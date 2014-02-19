@@ -22,7 +22,7 @@
   });
 
   Twilio.Device.disconnect(function (conn) {
-    if (window.cocoa) closeTelWindow();
+    if (window.cocoa) window.cocoa.closeTelWindow();
   })
 
   /* Connect to Twilio when we call this function. */
