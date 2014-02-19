@@ -124,7 +124,7 @@ Oneclick::Application.routes.draw do
       match '/', to: 'home#index'
 
       resources :locations, only: [:show]
-      resources :call, only: [:show] do
+      resources :call, only: [:show, :index] do
         post :outgoing, on: :collection
       end
 

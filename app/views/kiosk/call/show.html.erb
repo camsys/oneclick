@@ -22,12 +22,18 @@
   });
 
   Twilio.Device.disconnect(function (conn) {
-    console.log('Close the window.');
+    if (window.cocoa) window.cocoa.close();
   })
 
   /* Connect to Twilio when we call this function. */
   function call () {
-    Twilio.Device.connect({PhoneNumber: '<%= @number %>'});
+    if (window.cocoa && window.cocoa.getTelNumber()) {
+      var number = window.cocoa.getTelNumber();
+    } else {
+      var number = '<%= @number %>';
+    }
+
+    Twilio.Device.connect({PhoneNumber: number});
   }
 
   function hangup () {

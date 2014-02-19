@@ -1,6 +1,10 @@
 class Kiosk::CallController < ApplicationController
   layout 'kiosk/call'
 
+  def index
+    show
+  end
+
   def show
     # Find these values at twilio.com/user/account
     account_sid = 'AC8ce255eb06b3f705093906a659782983'
