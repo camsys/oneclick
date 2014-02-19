@@ -1,5 +1,5 @@
 class Kiosk::CallController < ApplicationController
-  include Kiosk::Behavior
+  layout 'kiosk/call'
 
   def show
     # Find these values at twilio.com/user/account

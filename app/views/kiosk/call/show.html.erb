@@ -21,13 +21,17 @@
     $("#log").text("Dialing <%= @number %>");
   });
 
+  Twilio.Device.disconnect(function (conn) {
+    console.log('Close the window.');
+  })
+
   /* Connect to Twilio when we call this function. */
-  function call() {
+  function call () {
     Twilio.Device.connect({PhoneNumber: '<%= @number %>'});
   }
 
-  function hangup() {
-      Twilio.Device.disconnectAll();
+  function hangup () {
+    Twilio.Device.disconnectAll();
   }
 
   $('.js-call').on('click', call);
