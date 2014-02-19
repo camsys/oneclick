@@ -16,6 +16,7 @@ class Kiosk::CallController < ApplicationController
     capability.allow_client_outgoing demo_app_sid
     @token = capability.generate(10000)
     @number = params[:id]
+    render :show
   end
 
   def outgoing
