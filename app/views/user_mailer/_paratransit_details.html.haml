@@ -22,7 +22,7 @@
 
     -if itinerary.too_late
       %li
-        = t(:trip_insufficient_notice)
+      = t(:trip_insufficient_notice_a) + itinerary.service.human_readable_advanced_notice + t(:trip_insufficient_notice_b)
     -if itinerary.date_mismatch or itinerary.time_mismatch
       %li
         = t(:trip_outside_service_hours)
