@@ -7,8 +7,8 @@
 
 %table#printer-friendly
   %tr
-    %h4 
-      = t(:from) + ':  ' 
+    %h4
+      = t(:from) + ':  '
   %tr
     %p
       =@trip.from_place.name
@@ -68,11 +68,11 @@
       %td="Provided by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of " + Oneclick::Application.config.name
 
 :javascript
-$(document).ready(function() {
-      //window.print();
-      $('.navbar').addClass('hidden');
-      $('.container-fluid').css({
-        'background-color':'#fff',
-        'width':'220px'
-        });
-});
+  $(document).ready(function() {
+    //window.print();
+    $('.navbar').addClass('hidden');
+    $('.container-fluid').css({
+      'background-color':'#fff',
+      'width':'220px'
+      });
+  });

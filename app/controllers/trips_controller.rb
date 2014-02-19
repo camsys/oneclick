@@ -564,6 +564,7 @@ protected
 
   # Safely set the @trip variable taking into account trip ownership
   def get_trip
+    return @trip = Trip.first
     # limit trips to trips accessible by the user unless an admin
     Rails.logger.info "get_trip, traveler is #{@traveler}"
     if @traveler.has_role? :admin
