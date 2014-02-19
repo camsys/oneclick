@@ -1,24 +1,25 @@
 <script type="text/javascript" src="//static.twilio.com/libs/twiliojs/1.1/twilio.min.js"></script>
-<button class="js-call">Call</button>
 <button class="js-hangup">Hangup</button>
-<div id="log"></div>
+<div class="number-display"></div>
 
 <script type="text/javascript">
   /* Create the Client with a Capability Token */
-  Twilio.Device.setup("<%= @token %>", {debug: true});
+  Twilio.Device.setup("<%= @token %>", {
+    debug: true
+  });
 
   /* Let us know when the client is ready. */
   Twilio.Device.ready(function (device) {
-    $("#log").text("Ready");
+    console.log("Ready");
   });
 
   /* Report any errors on the screen */
   Twilio.Device.error(function (error) {
-    $("#log").text("Error: " + error.message.message);
+    console.log("Error: " + error.message.message);
   });
 
   Twilio.Device.connect(function (conn) {
-    $("#log").text("Dialing <%= @number %>");
+    console.log("Dialing <%= @number %>");
   });
 
   Twilio.Device.disconnect(function (conn) {
@@ -34,12 +35,13 @@
     }
 
     Twilio.Device.connect({PhoneNumber: number});
+    $('.number-display').text('Calling '+ number.split('://')[1]);
   }
 
   function hangup () {
     Twilio.Device.disconnectAll();
   }
 
-  $('.js-call').on('click', call);
+  call();
   $('.js-hangup').on('click', hangup);
 </script>
