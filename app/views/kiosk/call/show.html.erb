@@ -1,5 +1,6 @@
 <script type="text/javascript" src="//static.twilio.com/libs/twiliojs/1.1/twilio.min.js"></script>
-<button class="call" onclick="call();">Call</button>
+<button class="js-call">Call</button>
+<button class="js-hangup">Hangup</button>
 <div id="log">Loading pigeons...</div>
 
 <script type="text/javascript">
@@ -13,16 +14,22 @@
 
   /* Report any errors on the screen */
   Twilio.Device.error(function (error) {
-    debugger;
     $("#log").text("Error: " + error.message);
   });
 
   Twilio.Device.connect(function (conn) {
-    $("#log").text("Successfully established call");
+    $("#log").text("Dialing <%= @number %>");
   });
 
   /* Connect to Twilio when we call this function. */
   function call() {
     Twilio.Device.connect({PhoneNumber: '<%= @number %>'});
   }
+
+  function hangup() {
+      Twilio.Device.disconnectAll();
+  }
+
+  $('.js-call').on('click', call);
+  $('.js-hangup').on('click', hangup);
 </script>
