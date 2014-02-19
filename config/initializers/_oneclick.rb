@@ -23,6 +23,10 @@ when 'arc'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.arc.camsys"
   ENV['SHAPEFILE'] = "/Users/dedwards/Downloads/ParatransitBuffer_100812/ParatransitBuffer_100812.shp"
   honeybadger_api_key = 'ba642a71'
+  ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
+  ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
+  ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
+  ENV['GOOGLE_GEOCODER_TIMEOUT']= "5"
 
 when 'broward'  
   Oneclick::Application.config.ui_logo = 'broward/Broward_211_Get_Connected_get_answers.jpg'
@@ -35,6 +39,10 @@ when 'broward'
   Oneclick::Application.config.name = 'OneClick'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.broward.camsys"
   honeybadger_api_key = '789c7911'
+  ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
+  ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
+  ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
+  ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
 
 when 'pa'
   Oneclick::Application.config.ui_logo = 'pa/penndotLogo.jpg'
@@ -47,6 +55,10 @@ when 'pa'
   Oneclick::Application.config.name = '1-Click/PA'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.pa.camsys"
   honeybadger_api_key = 'f49faffa'
+  ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
+  ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
+  ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
+  ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
 
 end
 
