@@ -23,6 +23,8 @@ class Kiosk::CallController < ApplicationController
     @caller_id = '+16467620669'
     number = params[:PhoneNumber]
 
+    number = number.split('://').last if number =~ /^tel:\/\//
+
     response = Twilio::TwiML::Response.new do |r|
       # Should be your Twilio Number or a verified Caller ID
       r.Dial :callerId => @caller_id do |d|

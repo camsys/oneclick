@@ -1,7 +1,7 @@
 <script type="text/javascript" src="//static.twilio.com/libs/twiliojs/1.1/twilio.min.js"></script>
 <button class="js-call">Call</button>
 <button class="js-hangup">Hangup</button>
-<div id="log">Loading pigeons...</div>
+<div id="log"></div>
 
 <script type="text/javascript">
   /* Create the Client with a Capability Token */
@@ -14,7 +14,7 @@
 
   /* Report any errors on the screen */
   Twilio.Device.error(function (error) {
-    $("#log").text("Error: " + error.message);
+    $("#log").text("Error: " + error.message.message);
   });
 
   Twilio.Device.connect(function (conn) {
