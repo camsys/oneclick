@@ -12,7 +12,7 @@ end
 KioskLocation.create!([{
   name: 'machine1',
   poi_id: 8768,
-  address_type: 1,
+  address_type: 6,
   addr: '828 Mitchell Street Southwest, Atlanta, GA 30314',
   lat: 33.7532,
   lon:  -84.4146
@@ -20,7 +20,7 @@ KioskLocation.create!([{
 {
   name: 'machine2',
   poi_id: 8813,
-  address_type: 1,
+  address_type: 6,
   addr: '2891 Lakewood Avenue Southwest, Atlanta, GA 30315',
   lat: 33.6973,
   lon: -84.4113

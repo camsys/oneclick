@@ -924,6 +924,15 @@ private
         lat:               place['geometry']['location']['lat'],
         lon:               place['geometry']['location']['lng'],
       }
+    when KIOSK_LOCATION_TYPE
+      place = KioskLocation.find(place_id)
+
+      {
+        name:              place[:name],
+        formatted_address: place[:addr],
+        lat:               place[:lat],
+        lon:               place[:lon]
+      }
     else
       return {}
     end

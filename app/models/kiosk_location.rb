@@ -7,7 +7,7 @@ class KioskLocation < ActiveRecord::Base
     # have the JSON return to Poi id as the id.. this will make it compatible with
     # RideshareAdapter
     id = result.delete('poi_id')
-    result['id'] = id
+    # result['id'] = id
 
     result
   end

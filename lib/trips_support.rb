@@ -30,6 +30,7 @@ module TripsSupport
   PLACES_TYPE = "3"
   RAW_ADDRESS_TYPE = "4"
   PLACES_AUTOCOMPLETE_TYPE = '5'
+  KIOSK_LOCATION_TYPE = '6'
 
   # Set the default travel time/date to x mins from now
   def default_trip_time
