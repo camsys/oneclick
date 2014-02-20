@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140218212105) do
+ActiveRecord::Schema.define(:version => 20140220224403) do
 
   create_table "cms_blocks", :force => true do |t|
     t.integer  "page_id",    :null => false
@@ -192,7 +192,6 @@ ActiveRecord::Schema.define(:version => 20140218212105) do
     t.float    "lon"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
-    t.integer  "poi_id"
   end
 
   create_table "modes", :force => true do |t|
