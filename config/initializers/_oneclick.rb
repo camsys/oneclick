@@ -69,11 +69,11 @@ Honeybadger.configure do |config|
 end
 
 # SMTP Mail Sender Account
-ENV['SMTP_MAIL_ADDR'] =                "smtp.gmail.com"
-ENV['SMTP_MAIL_PORT'] =                 "587"
-ENV['SMTP_MAIL_DOMAIN'] =            "gmail.com"
-ENV['SMTP_MAIL_USER_NAME'] = "oneclick.arc.camsys"
-ENV['SMTP_MAIL_PASSWORD'] =   "CatDogMonkey"
+# ENV['SMTP_MAIL_ADDR'] =                "smtp.gmail.com"
+# ENV['SMTP_MAIL_PORT'] =                 "587"
+# ENV['SMTP_MAIL_DOMAIN'] =            "gmail.com"
+# ENV['SMTP_MAIL_USER_NAME'] = "oneclick.arc.camsys"
+# ENV['SMTP_MAIL_PASSWORD'] =   "CatDogMonkey"
 
 # General UI configuration settings
 Oneclick::Application.config.ui_typeahead_delay = 300       # milliseconds delay between keystrokes before a query is sent to the server to retrieve a typeahead list

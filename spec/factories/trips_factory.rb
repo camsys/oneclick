@@ -13,7 +13,7 @@ FactoryGirl.define do
     # user {FactoryGirl.create(:user2)}
     user
 
-    after(:create) do |trip|
+    after(:build) do |trip|
       trip_place1 = FactoryGirl.build(:trip_place1, sequence: 0)
       trip_place2 = FactoryGirl.build(:trip_place2, sequence: 1)
       trip.trip_places << trip_place1
@@ -24,11 +24,16 @@ FactoryGirl.define do
     factory :trip_with_owner do
       association :owner, factory: :user_with_places
     end
-    factory :round_trip do
-      after(:create) do |trip|
-        trip.trip_parts << FactoryGirl.build(:trip_part2, sequence: 1, from_trip_place: trip.trip_places[1],
-          to_trip_place: trip.trip_places[0], is_return_trip: true)
-      end      
+    factory :round_trip, parent: :trip do
+      after(:build) do |trip|
+        trip.trip_parts << FactoryGirl.build(:trip_part2, sequence: 1, from_trip_place: trip.trip_places[1], to_trip_place: trip.trip_places[0], is_return_trip: true)
+      end
+    end
+    factory :trip_with_selected_itineraries, parent: :round_trip do
+      after (:build) do |trip|
+        trip.outbound_part.itineraries << FactoryGirl.create(:pt_itinerary)
+        trip.return_part.itineraries << FactoryGirl.create(:pt_itinerary)
+      end
     end
   end
 end
