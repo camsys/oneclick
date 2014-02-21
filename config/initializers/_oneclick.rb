@@ -1,13 +1,12 @@
-# Check that we got loaded from application.yml
-
-raise "Config not loaded from application.yml" unless ENV['ENV_FROM_APPLICATION_YML']
-
 # use as Rails.application.config.brand
 Oneclick::Application.config.brand = ENV['BRAND'] || 'arc'
 Oneclick::Application.config.ui_mode = ENV['UI_MODE'] || 'desktop'
 
 # defaults for all brands
 Oneclick::Application.config.enable_rideshare = false
+ENV['SMTP_MAIL_ADDR'] = "smtp.gmail.com"
+ENV['SMTP_MAIL_PORT'] = '587'
+ENV['SMTP_MAIL_DOMAIN'] = "gmail.com"
 
 case ENV['BRAND'] || 'arc'
 when 'arc'
@@ -21,12 +20,14 @@ when 'arc'
   Oneclick::Application.config.enable_rideshare = true
   Oneclick::Application.config.name = 'ARC OneClick'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.arc.camsys"
+  ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey"
+  ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@atlantaregional.com"
   ENV['SHAPEFILE'] = "/Users/dedwards/Downloads/ParatransitBuffer_100812/ParatransitBuffer_100812.shp"
-  honeybadger_api_key = 'ba642a71'
   ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
   ENV['GOOGLE_GEOCODER_TIMEOUT']= "5"
+  honeybadger_api_key = 'ba642a71'
 
 when 'broward'  
   Oneclick::Application.config.ui_logo = 'broward/Broward_211_Get_Connected_get_answers.jpg'
@@ -38,11 +39,13 @@ when 'broward'
   Oneclick::Application.config.taxi_fare_finder_api_city = "Miami"
   Oneclick::Application.config.name = 'OneClick'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.broward.camsys"
-  honeybadger_api_key = '789c7911'
+  ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey"
+  ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@browardmpo.org"
   ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
   ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
+  honeybadger_api_key = '789c7911'
 
 when 'pa'
   Oneclick::Application.config.ui_logo = 'pa/penndotLogo.jpg'
@@ -54,11 +57,13 @@ when 'pa'
   Oneclick::Application.config.taxi_fare_finder_api_city = "Harrisburg-PA"
   Oneclick::Application.config.name = '1-Click/PA'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.pa.camsys"
-  honeybadger_api_key = 'f49faffa'
+  ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey"
+  ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@rabbittransit.org"
   ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
   ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
+  honeybadger_api_key = 'f49faffa'
 
 end
 
