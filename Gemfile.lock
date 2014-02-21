@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/EppO/rolify.git
+  revision: 0b00fa41224dc4e33b059cd0cd31cd42b022b03b
+  ref: 0b00fa41224dc4e33b059cd0cd31cd42b022b03b
+  specs:
+    rolify (3.4.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -321,7 +328,6 @@ GEM
     rgeo-shapefile (0.2.3)
       dbf (>= 1.7.0)
       rgeo (>= 0.3.3)
-    rolify (3.4.0)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
@@ -467,7 +473,7 @@ DEPENDENCIES
   rgeo
   rgeo-activerecord
   rgeo-shapefile
-  rolify
+  rolify!
   rspec-core
   rspec-rails
   rubyzip

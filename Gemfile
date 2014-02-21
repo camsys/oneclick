@@ -13,7 +13,8 @@ gem 'figaro'
 gem 'geocoder'
 gem 'haml-rails'
 gem 'pg'
-gem 'rolify'
+# See https://github.com/EppO/rolify/issues/221
+gem 'rolify', git: 'https://github.com/EppO/rolify.git', ref: '0b00fa41224dc4e33b059cd0cd31cd42b022b03b'
 gem 'simple_form'
 gem 'thin'
 gem 'awesome_print'
@@ -29,6 +30,7 @@ gem 'honeybadger'
 gem 'draper'
 gem 'rubyzip'
 gem 'lorem-ipsum-me'
+gem 'rails_12factor', group: [:integration, :production, :qa, :staging]
 
 group :development do
   gem 'activerecord-postgis-adapter'
@@ -71,6 +73,3 @@ group :test do
   gem 'simplecov', require: false  
 end
 
-group :production do
-  gem 'rails_12factor'
-end
