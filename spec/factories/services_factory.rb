@@ -10,8 +10,8 @@ FactoryGirl.define do
     provider
     service_type
     after(:build) do |s|
-      build(:eight_to_five_wednesday, service: s)
-      build(:service_wheelchair_accommodation, service: s)
+      create(:eight_to_five_wednesday, service: s)
+      create(:service_wheelchair_accommodation, service: s)
     end
   end
 end
