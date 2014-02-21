@@ -2,7 +2,8 @@ class KioskLocation < ActiveRecord::Base
   attr_accessible :addr, :address_type, :lat, :lon, :name
 
   def as_json *args
-    super(except: [:address_type], methods: [:type])
+    result = super(except: [:address_type], methods: ['type'])
+    result
   end
 
   def type
