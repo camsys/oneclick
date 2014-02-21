@@ -23,7 +23,7 @@
         %th.center= t(:comments)
         %th.center= t(:actions)
         - if Rails.env.development?
-          %th.center= 'Max notes'
+          %th.center= t(:max_notes)
     %tbody{ :id => 'trips_table'}
       - @trips.each do |trip|
         %tr

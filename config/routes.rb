@@ -251,6 +251,8 @@ Oneclick::Application.routes.draw do
         post 'update'
       end
     end
+
+
     
     get '/' => 'home#index'
 
@@ -261,10 +263,8 @@ Oneclick::Application.routes.draw do
 
   end
 
-  comfy_route :cms_admin, :path => '/admin'
-  comfy_route :cms, :path => '/', :sitemap => false
-
+    resources :translations
   # mount_sextant if Rails.env.development?
-  get '*not_found' => 'errors#handle404'
+  # get '*not_found' => 'errors#handle404'
 
 end

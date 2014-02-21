@@ -25,7 +25,9 @@ gem 'newrelic_rpm'
 gem 'polylines'
 gem 'activemdb'
 gem 'ajaxful_rating', '>= 3.0.0.beta7'
-gem 'comfortable_mexican_sofa', '~> 1.11.0'
+ gem 'i18n-active_record',
+      :git => 'git://github.com/svenfuchs/i18n-active_record.git',
+      :require => 'i18n/active_record'
 gem 'honeybadger'
 gem 'draper'
 gem 'rubyzip'

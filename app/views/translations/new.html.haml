@@ -1,0 +1,12 @@
+%h1 Define A Translation
+
+#translations_form
+    .row-fluid
+        .span12
+            = simple_form_for @translation do |t|
+
+                = t.input :key
+                = t.input :locale
+                = t.input :value
+                = t.submit "Create Translation", { class: "btn btn-primary" }
+                = link_to "Back", translations_path

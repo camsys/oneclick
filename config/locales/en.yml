@@ -130,6 +130,7 @@ en:
   rate_trip: "Rate this trip"
   rate_recent: "Rate your recent trip"
   plan_trip: "Continue planning this trip"
+  max_notes: 'Max notes'
   
   # Trip planning
   enter_address: 'Enter address'
@@ -271,6 +272,7 @@ en:
   service: "Service"
   services: "Services"
   active: "Active"
+  select_service: "Select Service"
   service_is_inactive: "This service is currently inactive."
   service_contact: "Service Contact Information"
   specialized_services: "Specialized Services"

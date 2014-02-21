@@ -27,6 +27,7 @@ class RegistrationsController < Devise::RegistrationsController
     session[:location] = new_user_registration_path
 
     build_resource(sign_up_params)
+    puts "RESOURCE: #{resource.ai}"
     #puts "RESOURCE OBJ"
     #puts resource.inspect
     #puts "GUEST USER"
@@ -38,7 +39,6 @@ class RegistrationsController < Devise::RegistrationsController
     guest_user.encrypted_password = resource.encrypted_password
 
     setup_form
-
     if resource.valid? and guest_user.save
       if guest_user.active_for_authentication?
         set_flash_message :notice, :signed_up if is_navigational_format?

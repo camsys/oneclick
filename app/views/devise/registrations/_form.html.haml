@@ -49,7 +49,7 @@
         .login-header
           %h1.pull-left= t(:register)
           .account-container.pull-right
-            %p= t(:have_an_account_questions)
+            %p= I18n.t(:have_an_account_question)
             = link_to new_user_session_path do
               = t(:log_in)
     = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
@@ -64,10 +64,7 @@
               .row-fluid
                 .span12
                   %p
-                    Registering for ARC One-Click allows you to save your eligibility and needs information for planning
-                    future trips, as well as the ability to save and reuse trips, set up a travel buddy, and more.
-                    / This might be better served by the CMS, rather than the code
-                  / = t(:to_see_best_options)
+                    =cms_snippet_content("registration-reasoning")
               .row-fluid
                 .span12
                   %a.btn.btn-success{:alt => 'alt words', :title => 'title here', :href => skip_user_trip_path(@traveler, @trip.id)}
@@ -87,7 +84,7 @@
             = t(:sign_up)
           /%a.login-btn.pull-left{:href => "#"} Log In
           .cancel-container.pull-right
-            %a.cancel-btn{:href => new_user_session_path} Cancel
+            %a.cancel-btn{:href => new_user_session_path}= t(:cancel)
         .span3.hidden
 
 :javascript

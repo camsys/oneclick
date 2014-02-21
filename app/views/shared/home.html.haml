@@ -2,9 +2,9 @@
   .span12
     .center.span6
       - if user_signed_in?
-        = cms_snippet_content('home-top-logged-in')
+        = cms_snippet_content('home-top-logged-in_html')
       - else
-        = cms_snippet_content('home-top')
+        = cms_snippet_content('home-top_html')
 .row-fluid
   .span12
     %ul.thumbnails
@@ -24,15 +24,15 @@
 .row-fluid
   - if user_signed_in?
     .span4
-      = cms_snippet_content('home-bottom-left-logged-in')
+      = cms_snippet_content('home-bottom-left-logged-in_html')
     .span4
-      = cms_snippet_content('home-bottom-center-logged-in')
+      = cms_snippet_content('home-bottom-center-logged-in_html')
     .span4
-      = cms_snippet_content('home-bottom-right-logged-in')
+      = cms_snippet_content('home-bottom-right-logged-in_html')
   - else
     .span4
-      = cms_snippet_content('home-bottom-left')
+      = cms_snippet_content('home-bottom-left_html')
     .span4
-      = cms_snippet_content('home-bottom-center')
+      = cms_snippet_content('home-bottom-center_html')
     .span4
-      = cms_snippet_content('home-bottom-right')
+      = cms_snippet_content('home-bottom-right_html')

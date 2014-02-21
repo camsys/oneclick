@@ -9,9 +9,9 @@
           = t(:do_you_participate)
 
         -Characteristic.programs.where(:datatype => 'bool').each do |characteristic|
-          = f.input characteristic.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:unsure_str)]], :required => false, as: :radio_buttons, label: characteristic.name, label_method: :last, value_method: :first, :item_wrapper_class => "inline"
+          = f.input characteristic.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:unsure_str)]], :required => false, as: :radio_buttons, label: t(characteristic.name), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
         -Characteristic.programs.where(:datatype => 'disabled').each do |characteristic|
-          = f.input characteristic.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:unsure_str)]], :required => false, as: :radio_buttons, label: characteristic.name + " (not yet available)", label_method: :last, value_method: :first, :item_wrapper_class => "inline", disabled: true
+          = f.input characteristic.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:unsure_str)]], :required => false, as: :radio_buttons, label: t(characteristic.name) + " (not yet available)", label_method: :last, value_method: :first, :item_wrapper_class => "inline", disabled: true
 
         - if inline
           = button_tag :type => 'submit', :class => "btn btn-primary controls" do

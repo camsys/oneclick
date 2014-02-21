@@ -1,7 +1,7 @@
 .row-fluid
   .span12.pull-right
     = simple_form_for @services, :url => service_path(), :method => 'get', :html => {:class => "form-horizontal pull-right pull-down", :id => "service_form"}  do |f|
-      = f.input :id, :collection => @services, :label => "Select Service:", :selected => @service.id, :input_html => {:id => "next_service", :onchange => "$('#service_form').submit();"}
+      = f.input :id, :collection => @services, :label => t(:select_service)+":", :selected => @service.id, :input_html => {:id => "next_service", :onchange => "$('#service_form').submit();"}
 
 .well
   .row-fluid
@@ -92,7 +92,7 @@
           %ul
             -@service.accommodations.each do |accom|
               %li
-                =accom.name
+                =t(accom.name)
   .span4
     .well.well1
       %h4= t(:eligibility)
@@ -124,7 +124,7 @@
           %ul
             -@service.trip_purposes.each do |purpose|
               %li
-                =purpose.name
+                =t(purpose.name)
 
 .row-fluid
   .span4
@@ -169,7 +169,7 @@
       %h4= t(:advance_notice_required)
       .well.white-well.wwell2
         -if @service.advanced_notice_minutes > 0
-          =t(:service_notice_required) + " "
+          =t(:service_notice_required) + " " ## TODO Interpolate
           %b=duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
           =" " + t(:service_notice_str) + "."
         -else
@@ -181,7 +181,7 @@
 
   .row-fluid
     -types = @service.coverage_areas.map(&:coverage_type).uniq
-    -['Origins', 'Destinations', 'Residences'].each do |rule|
+    -['Origins', 'Destinations', 'Residences'].each do |rule| ##TODO Internationalize
       .span4
         %h4=rule
         -types.each do |type|

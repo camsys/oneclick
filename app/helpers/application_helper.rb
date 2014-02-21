@@ -3,6 +3,7 @@ module ApplicationHelper
   METERS_TO_MILES = 0.000621371192
 
   include CsHelpers
+  include LocaleHelpers
   
   ICON_DICTIONARY = {
       TripLeg::WALK => 'travelcon-walk', 

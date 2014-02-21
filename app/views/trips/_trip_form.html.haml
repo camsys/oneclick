@@ -82,7 +82,7 @@
       %span.add-on
         %i.fa-time
 
-  = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
+  = f.input :trip_purpose_id, :collection =>  TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}, :value => :id, :label_method => lambda { |v| t(v.name)}
 
   = f.input :is_round_trip, :label => false, :wrapper_html => {:class => 'controls controls-row'} do
     = f.input_field :is_round_trip, :as => :boolean, :inline_label => t(:return_after)

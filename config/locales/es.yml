@@ -130,6 +130,7 @@ es:
   rate_trip: "Valorar este viaje *43*"
   rate_recent: "[es118]Rate your recent trip[/es]"
   plan_trip: "Continuar la planificación de este viaje *44*"
+  max_notes: '[es133]Max notes[/es]'
 
   # Trip planning
   enter_address: 'Introduce la dirección'
@@ -272,6 +273,7 @@ es:
   service: "[es]Service[/es]"
   services: "[es]Services[/es]"
   active: "[es240]Active[/es]"
+  select_service: "[es276]Select Service[/es]"
   service_is_inactive: "[es219]This service is currently inactive.[/es]"
   service_contact: "[es220]Service Contact Information[/es]"
   specialized_services: "[es]Specialized Services[/es]"
