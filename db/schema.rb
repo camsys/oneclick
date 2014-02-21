@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140217150157) do
+ActiveRecord::Schema.define(:version => 20140220224403) do
 
   create_table "cms_blocks", :force => true do |t|
     t.integer  "page_id",    :null => false
