@@ -4,4 +4,5 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-Oneclick::Application.config.secret_token = '552e9e74a1794c6d92dffd9e7790e2ca47ba207d2c220c07d78cb9ddac8cc46d4c83cf4b21577cede4e0e98af4d975b68b9885a074faa7322ff0abbb66938458'
+Oneclick::Application.config.secret_token =    '552e9e74a1794c6d92dffd9e7790e2ca47ba207d2c220c07d78cb9ddac8cc46d4c83cf4b21577cede4e0e98af4d975b68b9885a074faa7322ff0abbb66938458'
+Oneclick::Application.config.secret_key_base = 'ZaD8KPJgcHtPdJVVVbUGXs3Aaxz84ZNkshdVBjUW5VCy44u67NNH2Cs7XTZZqLMhgUPJ56cHPXXFXucRYBgSSsycn6k26TaPvtvw4bPck4Tyunud6xjmvFdg66938458'

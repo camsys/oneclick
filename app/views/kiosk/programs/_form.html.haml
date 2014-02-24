@@ -18,7 +18,7 @@
                   %th No
                   %th Unsure
               %tbody 
-                -TravelerCharacteristic.programs.where(:datatype => 'bool').each do |characteristic|
+                -Characteristic.programs.where(:datatype => 'bool').each do |characteristic|
                   %tr 
                     %td
                       = f.label characteristic.note 
@@ -33,7 +33,7 @@
                       = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
                       / TODO: label is adding text that we don't want to show, work with CamSys to remove or hide it.
                         
-                -TravelerCharacteristic.programs.where(:datatype => 'disabled').each do |characteristic|
+                -Characteristic.programs.where(:datatype => 'disabled').each do |characteristic|
                   %tr 
                     %td
                       = f.label characteristic.note + " (not yet available)", :class => 'disabled'

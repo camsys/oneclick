@@ -3,14 +3,10 @@ Oneclick::Application.configure do
 
   config.cache_classes = true
 
-  # config.whiny_nils
-
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
   # config.action_dispatch.best_standards_support
-  # config.active_record.mass_assignment_sanitizer
-  # config.active_record.auto_explain_threshold_in_seconds
 
   config.serve_static_assets = false
 
@@ -38,4 +34,6 @@ Oneclick::Application.configure do
   config.action_mailer.default :charset => "utf-8"
 
   config.log_level = :info
+
+  config.eager_load = true
 end

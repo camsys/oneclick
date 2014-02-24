@@ -1,12 +1,12 @@
-%h1 Services
+%h1= t(:services)
 
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_services_table
   %thead
     %tr
       %th= t(:name)
-      %th Provider
-      %th Type
-      %th Active
+      %t= t(:provider)
+      %th= t(:type)
+      %th= t(:active)
   %tbody
     - @services.each do |service|
       %tr
@@ -28,7 +28,7 @@
     $('#admin_services_table').dataTable( {
           "oLanguage": {
               "sLengthMenu": "Display _MENU_ services per page",
-              "sZeroRecords": "Nothing found - sorry",
+              "sZeroRecords": t(:Nothing_found_sorry),
               "sInfo": "Showing _START_ to _END_ of _TOTAL_ services",
               "sInfoEmpty": "Showing 0 to 0 of 0 services",
               "sInfoFiltered": "(filtered from _MAX_ total services)"

@@ -22,7 +22,6 @@ module CsHelpers
   }
 
   def admin_menu
-    puts "ADMIN_MENU #{current_user}"
   [
     {label: t(:find_traveler), target: error_501_path, icon: ACTION_ICONS[:find_traveler]},
     {label: t(:create_traveler), target: error_501_path, icon: ACTION_ICONS[:create_traveler]},

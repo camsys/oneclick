@@ -7,10 +7,10 @@ class Agency < Organization
   #     record.errors.add attribute, "provider organization cannot have parents" if record.provider? and !record.parent.nil?
   #   end
   # end
-  attr_accessible :parent
+  # attr_accessible :parent
   # validates :parent, no_provider_hierarchy: true
   belongs_to :parent, class_name: 'Agency'
-  has_many :sub_agencies, class_name: 'Agency', foreign_key: :parent_id, order: 'name'
+  has_many :sub_agencies, -> {order('name')}, class_name: 'Agency', foreign_key: :parent_id
   has_many :users
 
   def unselected_users

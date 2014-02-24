@@ -240,12 +240,13 @@ module ApplicationHelper
   def t(key, options={})
     branded_key = [brand, key].join('.')
     begin
-      translate(branded_key, options.merge({raise: true}))
+      I18n.translate(branded_key, options.merge({raise: true}))
     rescue Exception => e
       begin
-        translate(key, options.merge({raise: true}))
+        I18n.translate(key, options.merge({raise: true}))
       rescue Exception => e
-        # Rails.logger.debug "key: #{key} not found: #{e.inspect}"
+        Rails.logger.info "key: #{key} not found: #{e.inspect}"
+        # Note we swallow the exception
       end
     end
   end

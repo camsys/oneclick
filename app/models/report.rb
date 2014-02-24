@@ -1,9 +1,9 @@
 class Report < ActiveRecord::Base
   
-  attr_accessible :string, :description, :name, :view_name, :class_name, :active
+  # attr_accessible :string, :description, :name, :view_name, :class_name, :active
   
   # default scope
-  default_scope where(:active => true)
+  default_scope {where(:active => true)}
 
   def name_and_id
     [name, id]
@@ -29,7 +29,7 @@ class Report < ActiveRecord::Base
   end
 
   def self.traveler_types
-    ['All'] + TravelerCharacteristic.all.map(&:name).sort
+    ['All'] + Characteristic.all.map(&:name).sort
   end
 
   def self.trip_purposes

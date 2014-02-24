@@ -29,14 +29,14 @@
                 %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "from"}}
                   = p["name"]
       - unless @traveler.home
-        = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
+        = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => t(:my_home_chkbox_label)
 
       = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
   - else
     = f.input :from_place, :class => "inline", :label => t(:from) do
       = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large", :data => {:link => search_user_trips_path, :provide => "typeahead"}
-      = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
+      = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => t(:my_home_chkbox_label)
       = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
 
@@ -56,13 +56,13 @@
                 %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "to"}}
                   = p["name"]
       - unless @traveler.home
-        = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
+        = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => t(:my_home_chkbox_label)
       = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
   - else
     = f.input :to_place, :class => "inline", :label => t(:to) do
       = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :class => "no-bottom-margin ajax-typeahead input-large", :autocomplete => "off", :data => {:link => search_user_trips_path, :provide => "typeahead"}
-      = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
+      = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => t(:my_home_chkbox_label)
       = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
   #to_place_candidates{:style => "display:none;"}
@@ -85,7 +85,7 @@
   = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
 
   = f.input :is_round_trip, :label => false, :wrapper_html => {:class => 'controls controls-row'} do
-    = f.input_field :is_round_trip, :as => :boolean, :inline_label => "Return after"
+    = f.input_field :is_round_trip, :as => :boolean, :inline_label => t(:return_after)
     = f.input :return_trip_time, :label => false, :wrapper => :append do
       #return-trip-time
         = f.input_field :return_trip_time, :as => :string, :label => false, :style => "width:160px;"

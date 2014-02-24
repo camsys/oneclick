@@ -9,11 +9,11 @@
       %h2
         =@service.name
       %h3
-        Provided by
+        = t(:provided_by)
         = link_to @service.provider.name, admin_provider_path(@service.provider)
       -unless @service.active
         %h3.warning
-          ="This service is currently inactive."
+          = t(:service_is_inactive)
       %h4
         =@service.phone
       %h4
@@ -22,21 +22,21 @@
     .span3
       .well
         %h3.text-center
-          ="Service Contact Information:"
+          = t(:service_contact) + ":"
         %table.center.ALTtable-no-border
           %tr
             %td.text-left.h4
-              ="Contact:"
+              = t(:contact) + ":"
             %td.text-left
               %b=@service.contact.to_s
           %tr
             %td.text-left.h4
-              ="Title:  "
+              = t(:title)+":  "
             %td.text-left
               %b=@service.contact_title.to_s
           %tr
             %td.text-left.h4
-              ="Email:  "
+              = t(:email)+ ":  "
             %td.text-left
               %b=@service.email.to_s
 
@@ -44,31 +44,31 @@
     .span3
       .well
         %h3.text-center
-          ="Provider Contact Information:"
+          =t(:provider_contact_info) +":"
         %table.center.ALTtable-no-border
           %tr
             %td.text-left.h4
-              ="Contact:"
+              =t(:contact) +":"
             %td.text-left
               %b=@service.provider.contact.to_s
           %tr
             %td.text-left.h4
-              ="Title: "
+              = t(:title)+":  "
             %td.text-left
               %b=@service.provider.contact_title.to_s
           %tr
             %td.text-left.h4
-              ="Email: "
+              = t(:email)+ ":  "
             %td.text-left
               %b=@service.provider.email.to_s
           %tr
             %td.text-left.h4
-              ="Phone: "
+              =t(:phone) + ": "
             %td.text-left
               %b=@service.provider.phone.to_s
           %tr
             %td.text-left.h4
-              ="Address: "
+              =t(:address) + ": "
             %td.text-left
               %b=@service.provider.address.to_s
           %tr
@@ -77,49 +77,49 @@
               %b=@service.provider.city.to_s + ' ' + @service.provider.state.to_s + ' ' + @service.provider.zip.to_s
           %tr
             %td.text-left.h4
-              ="URL: "
+              =t(:url) + ": "
             %td.text-left
               = link_to @service.provider.url.to_s, @service.provider.url.to_s
 
 .row-fluid
   .span4
     .well.well1
-      %h4="Accommodations Provided"
+      %h4=t(:accommodations)
       .well.white-well.wwell1
-        -if @service.traveler_accommodations.count == 0
-          ="No accommodations provided"
+        -if @service.accommodations.count == 0
+          = t(:no_accommodations)
         -else
           %ul
-            -@service.traveler_accommodations.each do |accom|
+            -@service.accommodations.each do |accom|
               %li
                 =accom.name
   .span4
     .well.well1
-      %h4="Eligibility Rules"
-      ="If ANY of the following rules are satsified, the traveler may be eligible to use this service."
+      %h4= t(:eligibility)
+      = t(:eligibility_rules_descr)
       .well.white-well.wwell1
-        -if @service.service_traveler_characteristics_maps.count > 0
+        -if @service.service_characteristics.count > 0
           %ul
-          -groups = @service.service_traveler_characteristics_maps.map(&:group).uniq
+          -groups = @service.service_characteristics.map(&:group).uniq
           -groups.each do |group|
             -group_string = ""
             %li
               -@service.service_traveler_characteristics_maps.where(group: group).each do |map|
                 -if map.traveler_characteristic.code == "age"
-                  -group_string +="Age is " + @eh.relationship_to_words(map.value_relationship_id) + " " + map.value + " "
+                  -group_string += t(:age_is) +" "+ @eh.relationship_to_words(map.value_relationship_id) + " " + map.value + " "
                 -else
                   -group_string += map.traveler_characteristic.name + " "
                 -group_string += "AND "
-              =group_string[0..-6]
+            =group_string[0..-6]
         -else
-          ="No restriction"
+          = t(:no_restriction)
 
   .span4
     .well.well1
-      %h4="Trip Purposes Served"
+      %h4= t(:trip_purposes)
       .well.white-well.wwell1
         -if @service.trip_purposes.count == 0
-          ="No restriction"
+          = t(:no_restriction)
         -else
           %ul
             -@service.trip_purposes.each do |purpose|
@@ -129,24 +129,24 @@
 .row-fluid
   .span4
     .well.well2
-      %h4="Fare"
+      %h4= t(:fare)
       -@service.fare_structures.each do |fare|
         .well.white-well.wwell2
           .row_fluid
             -if fare.base
-              %b="Cost: "
+              %b=t(:cost)
               =number_to_currency(fare.base.to_f).to_s
             -else
-              %b="Cost:"
-              ="Flat fare unavailable."
-          %b="Comments:  "
+              %b=t(:cost)
+              =t(:flat_fare_unavailable) + "."
+          %b=t(:comments) + ":  "
           -if fare.desc
             =fare.desc.html_safe
           -else
             =""
   .span4
     .well.well2
-      %h4="Schedule"
+      %h4= t(:schedule)
       %table.ALTtable
         %tr
           %th.text-center
@@ -166,18 +166,18 @@
                 =schedule.end_string
   .span4
     .well.well2
-      %h4="Advance Notice Required"
+      %h4= t(:advance_notice_required)
       .well.white-well.wwell2
         -if @service.advanced_notice_minutes > 0
-          ="This service requires "
+          =t(:service_notice_required) + " "
           %b=duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
-          =" of advance notice to book a trip."
+          =" " + t(:service_notice_str) + "."
         -else
-          ="This service does not require advanced notice to book a trip."
+          =t(:service_notice_not_required) + "."
 .well
   .row-fluid.text-center
     .span12
-      %h3="Coverage Areas"
+      %h3= t(:coverage_areas)
 
   .row-fluid
     -types = @service.coverage_areas.map(&:coverage_type).uniq
@@ -186,14 +186,14 @@
         %h4=rule
         -types.each do |type|
           %b
-            =type.humanize.split[0].pluralize + ' served'
+            =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
           .well.white-well.text-left
             -coverage_string = ""
             -@service.service_coverage_maps.where(rule: rule.singularize.downcase).each do |map|
               -if map.geo_coverage.coverage_type == type
                 -coverage_string += map.geo_coverage.value + ', '
             -if coverage_string == ""
-              ="N/A"
+              = t(:n_a)
             -else
               =coverage_string.chop.chop
             .span4
@@ -201,7 +201,7 @@
 .row-fluid.text-center
   .span3
   .span6
-    %h4='Service Area Map'
+    %h4=t(:service_area_map)
     .well.white-well
 
       = LeafletMap({ :mapid => "lmap_" + "origin",  :polylines => @polylines['origin'], :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :style => "height:500px;" })

@@ -10,7 +10,17 @@ FactoryGirl.define do
     wait_time 1
     walk_distance 1.5
     transfers 1
-    legs "MyString"
+    legs {test_legs}
     cost "9.99"
-  end
+    mode
+    server_status "200"
+      factory :pt_itinerary do
+        hidden false
+        
+        after (:build) do |itinerary|
+            itinerary.service = FactoryGirl.create(:populated_service)
+            itinerary.save!
+        end
+      end
+    end
 end

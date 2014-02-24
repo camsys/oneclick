@@ -2,14 +2,14 @@ class UserProfile < ActiveRecord::Base
   
   # Associations
   belongs_to :user
-  has_many :user_traveler_characteristics_maps
-  has_many :user_traveler_accommodations_maps
+  has_many :user_characteristics
+  has_many :user_accommodations
 
-  has_many :traveler_accommodations, through: :user_traveler_accommodations_maps, source: :traveler_accommodation
-  has_many :traveler_characteristics, through: :user_traveler_characteristics_maps, source: :traveler_characteristic
+  has_many :accommodations, through: :user_accommodations, source: :accommodation
+  has_many :characteristics, through: :user_characteristics, source: :characteristic
 
   def has_characteristics?
-    if self.traveler_characteristics.count > 0
+    if self.characteristics.count > 0
       true
     else
       false

@@ -1,13 +1,13 @@
 %p#notice= notice
 
 %p
-  %b Name:
+  %b= t(:name) + ":"
   = @organization.name
 %p
-  %b Org type:
+  %b= t(:org_type) + ":"
   = @organization.org_type
 %p
-  %b Parent:
+  %b= t(:parent) + ":"
   = @organization.parent_id
 
 = link_to 'Edit', edit_organization_path(@organization)

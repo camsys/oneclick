@@ -7,17 +7,17 @@
         %div{ :data => {:index => 0}}
           .input-header
             .step-number
-            .step-title Questions
+            .step-title= t(:questions)
           .pull-right
             %table#characteristics_one
               %thead 
                 %tr 
                   %th 
-                  %th Yes
-                  %th No
-                  %th Unsure
+                  %th= t(:yes_str)
+                  %th= t(:no_str)
+                  %th= t(:unsure_str)
               %tbody 
-                -TravelerAccommodation.where(:datatype => 'bool').each do |accommodation|
+                -Accommodation.where(:datatype => 'bool').each do |accommodation|
                   %tr 
                     %td
                       = f.label accommodation.note 
@@ -31,7 +31,7 @@
                       = f.radio_button accommodation.code.to_sym, "na"
                       = f.label accommodation.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
 
-                -TravelerAccommodation.where(:datatype => 'disabled').each do |characteristic|
+                -Accommodation.where(:datatype => 'disabled').each do |characteristic|
                   %tr 
                     %td
                       = f.label characteristic.note + " (not yet available)", :class => 'disabled'
