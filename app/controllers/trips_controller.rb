@@ -62,7 +62,7 @@ class TripsController < PlaceSearchingController
 
     respond_to do |format|
       format.html {
-        render :show_printer_friendly_failed
+        render :show_printer_friendly_failed if @trip.nil?
       }
       format.json { render json: @trip }
     end
@@ -923,6 +923,15 @@ private
         formatted_address: place['formatted_address'],
         lat:               place['geometry']['location']['lat'],
         lon:               place['geometry']['location']['lng'],
+      }
+    when KIOSK_LOCATION_TYPE
+      place = KioskLocation.find(place_id)
+
+      {
+        name:              place[:name],
+        formatted_address: place[:addr],
+        lat:               place[:lat],
+        lon:               place[:lon]
       }
     else
       return {}

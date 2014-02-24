@@ -3,27 +3,27 @@ module ApplicationHelper
   METERS_TO_MILES = 0.000621371192
 
   include CsHelpers
-  
+
   ICON_DICTIONARY = {
-      TripLeg::WALK => 'travelcon-walk', 
-      TripLeg::TRAM => 'travelcon-subway', 
-      TripLeg::SUBWAY => 'travelcon-subway', 
+      TripLeg::WALK => 'travelcon-walk',
+      TripLeg::TRAM => 'travelcon-subway',
+      TripLeg::SUBWAY => 'travelcon-subway',
       TripLeg::RAIL => 'travelcon-rail',
-      TripLeg::BUS => 'travelcon-bus', 
+      TripLeg::BUS => 'travelcon-bus',
       TripLeg::FERRY => 'travelcon-boat'
       }
-  
+
   # Returns the name of the logo image based on the oneclick configuration
   def get_logo
     return Oneclick::Application.config.ui_logo
   end
-  
+
   # Returns a mode-specific icon
   def get_mode_icon(mode)
     ICON_DICTIONARY.default = 'travelcon-bus'
     ICON_DICTIONARY[mode]
   end
- 
+
   # Formats a line in the itinerary
   def format_email_itinerary_item(&block)
 
@@ -53,11 +53,11 @@ module ApplicationHelper
       elems << {
         :id => tp.id,
         :value => tp
-      }      
+      }
     end
-    return elems  
+    return elems
   end
-  
+
   # Returns a set of rating icons as a span
   def get_rating_icons(trip, size=1)
     rating = trip.get_rating
@@ -74,7 +74,7 @@ module ApplicationHelper
     html << "</span>"
     return html.html_safe
   end
-  
+
   # Returns true if the current user is assisting the traveler, false if the current
   # user is the current traveler
   def is_assisting
@@ -85,26 +85,26 @@ module ApplicationHelper
       return @traveler.id == current_or_guest_user.id ? false : true
     else
       return false
-    end  
+    end
   end
 
   def distance_to_words(dist_in_meters)
     return t(:n_a) unless dist_in_meters
-    
+
     # convert the meters to miles
     miles = dist_in_meters * METERS_TO_MILES
     if miles < 0.25
       dist_str = t(:less_than_1_block)
     elsif miles < 0.5
-      dist_str = t(:about_2_blocks)      
+      dist_str = t(:about_2_blocks)
     elsif miles < 1
-      dist_str = t(:about_4_blocks)      
+      dist_str = t(:about_4_blocks)
     else
       dist_str = t(:twof_miles) % [miles]
     end
     dist_str
   end
-  
+
   def duration_to_words(time_in_seconds, options = {})
     return t(:n_a) unless time_in_seconds
 
@@ -142,32 +142,32 @@ module ApplicationHelper
   end
 
   def format_date_time(datetime)
-    return l datetime, :format => :long unless datetime.nil? 
+    return l datetime, :format => :long unless datetime.nil?
   end
-  
+
   # Standardized date formatter for the app. Use this wherever you need to display a date
   # in the UI. The formatted displays dates as Day of Week, Month Day eg. Tuesday, June 5
-  # if the date is from a previous year, the year is appended eg Tuesday, June 5 2012 
+  # if the date is from a previous year, the year is appended eg Tuesday, June 5 2012
   def format_date(date)
     if date.nil?
       return ""
     end
     if date.year == Date.today.year
-      return l date.to_date, :format => :oneclick_short unless date.nil? 
+      return l date.to_date, :format => :oneclick_short unless date.nil?
     else
-      return l date.to_date, :format => :oneclick_long unless date.nil? 
+      return l date.to_date, :format => :oneclick_long unless date.nil?
     end
   end
-  
+
   def format_time(time)
     return l time, :format => :oneclick_short unless time.nil?
   end
 
 # Returns the correct partial for a trip itinerary
   def get_trip_partial(itinerary)
-    
+
     return if itinerary.nil?
-    
+
     mode_name = get_pseudomode_for_itinerary(itinerary)
 
     if mode_name.in? ['transit', 'rail', 'bus', 'railbus']
@@ -187,13 +187,13 @@ module ApplicationHelper
     elsif mode_name == 'walk'
       partial = 'walk_details'
     end
-    return partial    
+    return partial
   end
-  
+
   # Returns the correct localized title for a trip itinerary
-  def get_trip_summary_icon(itinerary) 
+  def get_trip_summary_icon(itinerary)
     return if itinerary.nil?
-    
+
     mode_name = get_pseudomode_for_itinerary(itinerary)
     if mode_name == 'rail'
       icon_name = 'icon-bus-sign'
@@ -212,11 +212,11 @@ module ApplicationHelper
     elsif mode_name == 'livery'
       icon_name = 'icon-taxi-sign'
     elsif mode_name == 'taxi'
-      icon_name = 'icon-taxi-sign'      
+      icon_name = 'icon-taxi-sign'
     elsif mode_name == 'rideshare'
-      icon_name = 'icon-group'      
+      icon_name = 'icon-group'
     elsif mode_name == 'walk'
-      icon_name = 'icon-accessibility-sign'      
+      icon_name = 'icon-accessibility-sign'
     end
     return icon_name
   end
@@ -246,7 +246,7 @@ module ApplicationHelper
         translate(key, options.merge({raise: true}))
       rescue Exception => e
         # Rails.logger.debug "key: #{key} not found: #{e.inspect}"
-      end    
+      end
     end
   end
 
@@ -277,7 +277,7 @@ module ApplicationHelper
     parts.delete_at(1) if has_locale
     parts = parts.join('/')
     return '/' if parts.empty?
-    parts 
+    parts
   end
 
   def at_root
@@ -290,5 +290,11 @@ module ApplicationHelper
     controller_name
   end
 
-
+  def tel_link num
+    if num =~ /([0-9]{3})-([0-9]{3})-([0-9]{4})/
+      link_to num, "tel://+1#{$1}#{$2}#{$3}"
+    else
+      num
+    end
+  end
 end
