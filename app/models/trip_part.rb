@@ -111,7 +111,8 @@ class TripPart < ActiveRecord::Base
     result, response = tp.get_taxi_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time)
     if result
       itinerary = tp.convert_taxi_itineraries(response)
-      self.itineraries << Itinerary.new(itinerary)
+      i = Itinerary.new(itinerary)
+      self.itineraries << i
     else
       self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s)
     end

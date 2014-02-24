@@ -18,10 +18,10 @@
         .span6
           .actions
             = button_tag type: :submit, class: 'btn btn-primary controls' do
-              %i.icon.icon-ok
+              %i.fa.fa-check
               = t(:update_my_profile)
             = link_to :back, :class => "cancel_link" do
-              %i.icon.icon-reply
+              %i.fa.fa-reply
               = t(:cancel)
         .span6
           = f.input :current_password, label: t(:current_password), :hint => t(:current_password_hint), :required => true

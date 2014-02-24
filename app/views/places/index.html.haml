@@ -1,7 +1,7 @@
 .row-fluid
   .span12
     %h1
-      %i.icon.icon-map-marker
+      %i.fa.fa-map-marker
       = is_assisting ? "#{@traveler.name}'s #{t(:places)}" : t(:my_places)
 
 .row-fluid{:style => "margin-top:20px;"}
@@ -9,7 +9,7 @@
     .row-fluid
       #places_form.span12
         = link_to "#" do
-          %i.icon.icon-map-marker.icon-2x.pull-right#map-icon
+          %i.fa.fa-map-marker.fa-2x.pull-right#map-icon
         = render 'places_form'
       #places_map.span6
         = render 'places_map'  
@@ -50,8 +50,8 @@
     $('#places_form').addClass('span6');
     $('#places_map').show();
     invalidateMap();
-    $('#map-icon').removeClass('icon-map-marker');
-    $('#map-icon').addClass('icon-play');
+    $('#map-icon').removeClass('fa-map-marker');
+    $('#map-icon').addClass('fa-play');
     // make sure no popups are currently being shown or they will get messed up
     closePopup();
     // refresh the map display
@@ -64,7 +64,7 @@
     $('#places_form').removeClass('span6');
     $('#places_form').addClass('span12');
     $('#places_map').hide();
-    $('#map-icon').removeClass('icon-play');
-    $('#map-icon').addClass('icon-map-marker');
+    $('#map-icon').removeClass('fa-play');
+    $('#map-icon').addClass('fa-map-marker');
     set_ui_key_value(place_map_key, 0);
   };

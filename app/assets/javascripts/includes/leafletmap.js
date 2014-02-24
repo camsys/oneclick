@@ -462,7 +462,7 @@ function resetMapView() {
 
 function getFormattedAddrForMarker(addr) {
 	return "<div class='well well-small'><div class='row-fluid'>" + 
-		"<div class='span3'><i class='icon icon-3x icon-building'></i></div>" + 
+		"<div class='span3'><i class='fa fa-3x fa-building-o'></i></div>" + 
 		"<div class='span9'><div class='caption'><h4>" + addr + "</h4></div></div>" + 
 		"</div></div>";
 }

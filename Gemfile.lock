@@ -154,6 +154,8 @@ GEM
     figaro (0.7.0)
       bundler (~> 1.0)
       rails (>= 3, < 5)
+    font-awesome-rails (4.0.3.1)
+      railties (>= 3.2, < 5.0)
     formatador (0.2.4)
     formatted_form (2.1.2)
       rails (>= 3.1)
@@ -444,6 +446,7 @@ DEPENDENCIES
   email_spec
   factory_girl_rails
   figaro
+  font-awesome-rails
   geocoder
   growl
   guard (~> 1.8.3)

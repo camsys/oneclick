@@ -13,15 +13,15 @@
 
         - if inline
           = button_tag :type => 'submit', :class => "btn btn-primary" do
-            %i.icon.icon-arrow-right
+            %i.fa.fa-arrow-right
             =t(:next_step)
             / = t(:save)
         - else
           = button_tag type: :submit, class: 'btn btn-primary controls' do
-            %i.icon.icon-ok
+            %i.fa.fa-check
             = t(:update)
         = link_to :back, :class => "cancel_link" do
-          %i.icon.icon-reply
+          %i.fa.fa-reply
           = t(:cancel)
 :javascript
   $('input[name="user_characteristics_proxy[disabled]"]:radio').on('change', function(event) {

@@ -31,6 +31,7 @@ gem 'draper'
 gem 'rubyzip'
 gem 'lorem-ipsum-me'
 gem 'rails_12factor', group: [:integration, :production, :qa, :staging]
+gem 'font-awesome-rails'
 
 group :development do
   gem 'activerecord-postgis-adapter'

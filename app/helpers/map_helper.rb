@@ -34,7 +34,7 @@ module MapHelper
       "name" => place.name,
       "iconClass" => icon,
       "title" => place.address,
-      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => place.name, :address => place.address} })
+      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'fa-building-o', :name => place.name, :address => place.address} })
     }
   end
   
@@ -52,7 +52,7 @@ module MapHelper
       "name" => addr[:name],
       "iconClass" => icon,
       "title" =>  address,
-      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => addr[:name], :address => address} })
+      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'fa-building-o', :name => addr[:name], :address => address} })
     }
   end
 

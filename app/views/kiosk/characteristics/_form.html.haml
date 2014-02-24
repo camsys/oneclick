@@ -54,15 +54,15 @@
         
         - if inline
           = button_tag :type => 'submit', :class => "btn btn-primary hidden" do
-            %i.icon.icon-arrow-right
+            %i.fa.fa-arrow-right
             Next step
             / = t(:save)
         - else
           = button_tag type: :submit, class: 'btn btn-primary controls hidden' do
-            %i.icon.icon-ok
+            %i.fa.fa-check
             = t(:update)
         = link_to :back, :class => "cancel_link hidden" do
-          %i.icon.icon-reply
+          %i.fa.fa-reply
           = t(:cancel)
 
   / SO...somehow we gotta get that to look like this.

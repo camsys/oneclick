@@ -18,7 +18,7 @@
         = f.input :summary_type, collection: Report.summary_types, include_blank: false, label: t(:summary_type)
       .span4
         = button_tag type: :submit, class: 'btn btn-primary controls' do
-          %i.icon.icon-ok
+          %i.fa.fa-check
           =t (:run)
 
 :javascript

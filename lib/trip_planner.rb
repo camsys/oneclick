@@ -82,7 +82,7 @@ class TripPlanner
       trip_itinerary['end_time'] = Time.at((itinerary['endTime']).to_f/1000)
       trip_itinerary['transfers'] = fixup_transfers_count(itinerary['transfers'])
       trip_itinerary['walk_distance'] = itinerary['walkDistance']
-      trip_itinerary['legs'] = itinerary['legs']
+      trip_itinerary['legs'] = itinerary['legs'].to_yaml
       trip_itinerary['server_status'] = 200
       trip_itinerary['match_score'] = match_score
       match_score += match_score_incr
@@ -130,6 +130,7 @@ class TripPlanner
     task = 'businesses'
     url = base_url + task + api_key + entity
     Rails.logger.debug "TripPlanner#get_taxi_itineraries: url: #{url}"
+    puts "TripPlanner#get_taxi_itineraries: url: #{url}"
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
@@ -164,7 +165,7 @@ class TripPlanner
     trip_itinerary['walk_distance'] = 0
     trip_itinerary['cost'] = itinerary[0]['total_fare']
     trip_itinerary['server_status'] = 200
-    trip_itinerary['server_message'] = itinerary[1]['businesses']
+    trip_itinerary['server_message'] = itinerary[1]['businesses'].to_yaml
     trip_itinerary['match_score'] = 1.2
     trip_itinerary
   end

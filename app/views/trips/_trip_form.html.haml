@@ -1,5 +1,5 @@
 - content_for :head do
-  = javascript_include_tag 'tadaaapickr.pack.min.js'
+  = javascript_include_tag asset_path('tadaaapickr.pack.min.js')
 
 = form_tag geocode_user_trips_path, :remote => true, :id => "query_form" do
   = hidden_field_tag :query
@@ -72,7 +72,7 @@
     #trip-date
       = f.input_field :trip_date, :as => :string, :label => false, :style => "width:160px;" 
       %span.add-on
-        %i.icon-calendar
+        %i.fa.fa-calendar
 
   = f.input :arrive_depart, :collection => [t(:departing_at), t(:arriving_by)], :include_blank => false, :label => t(:arrive_depart), :input_html => {:style => "width:200px;"}
 
@@ -80,7 +80,7 @@
     #trip-time
       = f.input_field :trip_time, :as => :string, :label => false, :style => "width:160px;"
       %span.add-on
-        %i.icon-time
+        %i.fa-time
 
   = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
 
@@ -90,14 +90,14 @@
       #return-trip-time
         = f.input_field :return_trip_time, :as => :string, :label => false, :style => "width:160px;"
         %span.add-on
-          %i.icon-time
+          %i.fa-time
               
   .form-actions
     = button_tag :type => 'submit', :class => "btn btn-primary" do
       %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
       = t(:plan_it)
     = link_to :back, :class => "cancel_link" do
-      %i.icon.icon-reply
+      %i.fa.fa-reply
       = t(:cancel)
 
 :javascript

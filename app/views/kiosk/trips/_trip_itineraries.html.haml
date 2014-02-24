@@ -6,9 +6,9 @@
         .dialog-title-bar.corner-top{:data => {:action => itinerary_kiosk_user_trip_path(@traveler, @trip, :itin => itinerary.id)}}
           .row-fluid
             .span12
-              %i.icon.icon-2x{:class => get_trip_summary_icon(itinerary)}
+              %i.fa.fa-2x{:class => get_trip_summary_icon(itinerary)}
                 - if itinerary.hidden
-                  %i.icon-2x.icon-thumbs-down.pull-right
+                  %i.fa-2x.fa-thumbs-down.pull-right
               %h3
                 = get_trip_summary_title(itinerary)     
                   
@@ -17,15 +17,15 @@
 
           -if itinerary.missing_information
             .row-fluid
-              %i.icon.icon-question-sign
+              %i.fa.fa-question-circle
               More information is needed.
           -if itinerary.accommodation_mismatch
             .row-fluid
-              %i.icon.icon-warning-sign
+              %i.fa.fa-warning
               Some accommodations unavailable.
           -if itinerary.date_mismatch or itinerary.time_mismatch or itinerary.too_late
             .row-fluid
-              %i.icon.icon-calendar
+              %i.fa.fa-calendar
               This trip is not possible as scheduled.
 
         .dialog-footer.corner-bottom

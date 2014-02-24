@@ -4,12 +4,12 @@
       .row-fluid
         .span6
           %h3.dialog-title{:STYLE => "margin:0px;vertical-align:top;"}
-            %i.icon.icon-2x{:class => get_trip_summary_icon(@itinerary)}
+            %i.fa.fa-2x{:class => get_trip_summary_icon(@itinerary)}
             = get_trip_summary_title(@itinerary)
         .span6
           .pull-right{:style => "display: inline-block"}
             %a{class: "button btn btn-mini btn-danger", "data-dismiss" => "modal"}
-              %i.danger.icon-remove
+              %i.danger.fa-times
               =t(:close)
 .modal-body
   = render :partial => 'trip_summary_header', :locals => { :itinerary => @itinerary }
@@ -34,14 +34,14 @@
     .pull-right{:style => "display: inline-block"}
       .span12.btn-toolbar
         %button.btn.btn-info
-          %i.icon-print
+          %i.fa-print
           =t(:print)
         %button.btn.btn-info
-          %i.icon-comments
+          %i.fa-comments
           =t(:chat)
         %button.btn.btn-info{:id => "email_itinerary"}
           =link_to '#', {href: '#send_itinerary_by_email_' + @itinerary.id.to_s, class: "btn-info", data: {toggle: 'modal'}} do
-            %i.icon-envelope
+            %i.fa-envelope-o
             =t(:e_mail)
 
 

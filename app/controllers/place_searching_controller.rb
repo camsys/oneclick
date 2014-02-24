@@ -96,7 +96,7 @@ class PlaceSearchingController < TravelerAwareController
         "lat" => place.location.first,
         "lon" => place.location.last,
         "address" => place.address,
-        "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => place.name, :address => place.address} })
+        "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'fa-building-o', :name => place.name, :address => place.address} })
       }
       counter += 1
     end
@@ -115,7 +115,7 @@ class PlaceSearchingController < TravelerAwareController
           "lat" => tp.lat,
           "lon" => tp.lon,
           "address" => tp.raw_address,
-          "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => tp.name, :address => tp.raw_address} })
+          "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'fa-building-o', :name => tp.name, :address => tp.raw_address} })
         }
         counter += 1
         old_addr = tp.raw_address
@@ -134,7 +134,7 @@ class PlaceSearchingController < TravelerAwareController
         "lat" => poi.lat,
         "lon" => poi.lon,
         "address" => poi.address,
-        "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => poi.name, :address => poi.address} })
+        "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'fa-building-o', :name => poi.name, :address => poi.address} })
       }
       counter += 1
     end

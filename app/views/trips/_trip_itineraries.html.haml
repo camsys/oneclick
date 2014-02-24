@@ -8,10 +8,10 @@
           .row-fluid
             .span12
               %h3.dialog-title{:style => "margin:0px;vertical-align:top;"}
-                %i.icon{:class => get_trip_summary_icon(itinerary)}
+                %i.fa{:class => get_trip_summary_icon(itinerary)}
                 = get_trip_summary_title(itinerary)
                 - if itinerary.hidden
-                  %i.icon-2x.icon-thumbs-down.pull-right
+                  %i.fa-2x.fa-thumbs-down.pull-right
                 
         .dialog-content{class: dialog_content_class(trip_part)}
           .row-fluid
@@ -20,15 +20,15 @@
 
           -if itinerary.missing_information
             .row-fluid
-              %i.icon.icon-question-sign
+              %i.fa.fa-question-circle
               More information is needed.
           -if itinerary.accommodation_mismatch
             .row-fluid
-              %i.icon.icon-warning-sign
+              %i.fa.fa-warning
               =t(:missing_accommodations)
           -if itinerary.date_mismatch or itinerary.time_mismatch or itinerary.too_late
             .row-fluid
-              %i.icon.icon-calendar
+              %i.fa.fa-calendar
               =t(:trip_not_possible_as_schedule)
 
         .dialog-footer.corner-bottom
@@ -36,13 +36,13 @@
             .pull-right
               .span12.btn-toolbar{:style => 'margin-bottom:0;margin-right:5px;'}
                 =link_to select_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "btn btn-mini btn-info", :alt => get_alt_button_text(itinerary, 'select'), :title => get_alt_button_text(itinerary, 'select')} do
-                  %i.icon-check
+                  %i.fa-check
                   =t(:select)
                 =link_to itinerary_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "btn btn-mini btn-success", :remote => true, :alt => get_alt_button_text(itinerary, 'view'), :title => get_alt_button_text(itinerary, 'view') } do
-                  %i.icon-search
+                  %i.fa-search
                   =t(:view_details1)
                 =link_to hide_user_trip_path(@traveler, @trip, :itinerary => itinerary), {:class => "btn btn-mini btn-danger", :alt => get_alt_button_text(itinerary, 'remove'), :title => get_alt_button_text(itinerary, 'remove') } do
-                  %i.icon-remove
+                  %i.fa-times
                   =t(:hide)
 
       = render partial: 'send_itinerary_by_email', locals: {trip: @trip, itinerary: itinerary}

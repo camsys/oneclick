@@ -3,13 +3,13 @@
     .pull-left
       -if @trip.taken == true or @trip.taken == false
         %h1
-          %i.icon.icon-star
+          %i.fa.fa-star
           =t(:thanks_for_the_feedback)
         %h4
           =t(:optional_comments_descr)
       -else
         %h1
-          %i.icon.icon-star
+          %i.fa.fa-star
           =t(:rate_recent)
 
 .row-fluid

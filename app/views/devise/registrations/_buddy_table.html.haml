@@ -22,15 +22,15 @@
               %td.center
                 - if relationship.retractable
                   = link_to traveler_retract_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-warning text-center" do
-                    %i.icon-remove
+                    %i.fa-times
                     =t(:retract)
                 - if relationship.revokable
                   = link_to traveler_revoke_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-warning text-center" do
-                    %i.icon-remove
+                    %i.fa-times
                     =t(:revoke)
                 - if relationship.hidable
                   = link_to traveler_hide_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-warning text-center" do
-                    %i.icon-remove
+                    %i.fa-times
                     =t(:hide)
     - else
       =t(:not_any_buddies)

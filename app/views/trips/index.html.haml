@@ -2,7 +2,7 @@
   .span12
     .pull-left
       %h1
-        %i.icon.icon-tags
+        %i.fa.fa-tags
         = is_assisting ? t(:assisted_user_first_name_s_trips, name: @traveler.first_name) : t(:my_trips)
     .pull-right
       = form_tag user_trips_path(@traveler), :id => 'time_filter_form', :method => "get", :class => 'navbar-form form-inline pull-right', :style => "margin-top:20px;" do
@@ -29,7 +29,7 @@
         %tr
           - if trip.in_the_future
             %td.center.nowrap          
-              %i.icon-asterisk
+              %i.fa-asterisk
           - else
             %td.center.nowrap          
 
@@ -40,21 +40,21 @@
           %td.nowrap.center= get_rating_icons(trip)
           %td.center.no_wrap
             =link_to '#', {href: '#user_comments_' + trip.id.to_s, class: 'btn btn-block', data: {toggle: 'modal'}} do
-              %i.icon-pencil
+              %i.fa-pencil
           - if trip.in_the_future
             %td.center.nowrap          
               = link_to user_trip_path(@traveler, trip), {:class => "btn btn-small", :alt => t(:plan_trip), :title => t(:plan_trip)} do
-                %i.icon-mail-forward
+                %i.fa-mail-forward
               = link_to edit_user_trip_path(@traveler, trip), {:class => "btn btn-small", :alt => t(:edit_trip), :title => t(:edit_trip)} do
-                %i.icon-edit
+                %i.fa-edit
               = link_to user_trip_path(@traveler, trip), {:alt => t(:remove_trip), :title => t(:remove_trip), :class => "btn btn-small btn-danger delete-button", :method => :delete, :confirm => t(:confirm_remove_trip)} do
-                %i.icon-remove
+                %i.fa-times
           - else
             %td.center.nowrap          
               = link_to repeat_user_trip_path(@traveler, trip), {:alt => t(:repeat_trip), :title => t(:repeat_trip), :class => "btn btn-small"} do
-                %i.icon-rotate-right
+                %i.fa-rotate-right
               -# = link_to user_trip_path(@traveler, trip), {:alt => t(:rate_trip), :title => t(:rate_trip), :class => "btn btn-small"} do
-                -# %i.icon-thumbs-up
+                -# %i.fa-thumbs-up
           - if Rails.env.development?
             %td= "%s / %s" % [trip.outbound_part.max_notes_count, trip.return_part.max_notes_count]
         = render partial: 'user_comments', locals: {trip: trip}

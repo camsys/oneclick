@@ -46,8 +46,8 @@ describe ApplicationHelper do
     trip = FactoryGirl.create(:round_trip)
     trip.trip_parts.first.itineraries << FactoryGirl.create(:itinerary)
     trip.trip_parts.last.itineraries << FactoryGirl.create(:itinerary)
-    get_trip_direction_icon(trip.trip_parts.first.itineraries.first).should eq 'icon-arrow-right'
-    get_trip_direction_icon(trip.trip_parts.last.itineraries.first).should eq 'icon-arrow-left'
+    get_trip_direction_icon(trip.trip_parts.first.itineraries.first).should eq 'fa-arrow-right'
+    get_trip_direction_icon(trip.trip_parts.last.itineraries.first).should eq 'fa-arrow-left'
   end
 
 end

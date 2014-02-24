@@ -19,15 +19,15 @@
               %td.center
                 - if relationship.acceptable
                   = link_to delegate_accept_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-success text-center" do
-                    %i.icon-ok
+                    %i.fa-ok
                     =t(:accept)
                 - if relationship.declinable
                   = link_to delegate_decline_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-primary text-center" do
-                    %i.icon-compass
+                    %i.fa-compass
                     =t(:decline)
                 - if relationship.revokable
                   = link_to delegate_revoke_user_user_relationship_path(current_user, relationship), remote: true, class: "btn btn-mini btn-warning text-center" do
-                    %i.icon-remove
+                    %i.fa-times
                     =t(:revoke)
     - else
       =t(:no_buddies)

@@ -50,18 +50,18 @@
         / - if inline
         /   = button_tag :type => 'submit', :class => "btn btn-primary controls hidden" do
         /     - if @traveler.has_disability?
-        /       %i.icon.icon-arrow-right
+        /       %i.fa.fa-arrow-right
         /       Next step
         /     - else
-        /       %i.icon.icon-arrow-right
+        /       %i.fa.fa-arrow-right
         /       Save and plan my trip
         /     / = t(:save)
         / - else
         /   = button_tag type: :submit, class: 'btn btn-primary controls' do
-        /     %i.icon.icon-ok
+        /     %i.fa.fa-check
         /     = t(:update)
         / = link_to :back, :class => "cancel_link hidden" do
-        /   %i.icon.icon-reply
+        /   %i.fa.fa-reply
         /   = t(:cancel)
 
 :javascript

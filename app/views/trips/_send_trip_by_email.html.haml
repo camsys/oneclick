@@ -16,10 +16,10 @@
         = f.input :email_comments, as: :text, label: t(:comments), required: false, input_html: {rows: 3}
       .modal-footer
         = button_tag type: :submit, class: 'btn btn-info' do
-          %i.icon-envelope
+          %i.fa-envelope-o
           = t(:send)
         = link_to '#', :class => "cancel_link" do
-          %i.icon.icon-reply
+          %i.fa.fa-reply
           = t(:cancel)
 :javascript
   $('#send_by_email_form').on('submit', function() {

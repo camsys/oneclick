@@ -1,5 +1,5 @@
 %h1
-  %i.icon-signin
+  %i.fa-signin
   = t(:log_in)
 %h4
 .well
@@ -9,6 +9,6 @@
     = f.input :remember_me, :label => t(:remember_me), :as => :boolean if devise_mapping.rememberable?
     .actions
       = button_tag type: :submit, class: 'btn btn-primary controls' do
-        %i.icon.icon-signin
+        %i.fa.fa-sign-in
         = t(:log_in)
       = render "devise/shared/links"

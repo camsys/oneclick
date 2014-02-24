@@ -25,10 +25,10 @@
               = format_date_time(trip.created_at)
             %td.center.nowrap
               = link_to user_trip_path(current_user, trip, :show_hidden => 1), {class: "btn btn-mini btn-success text-center"} do
-                %i.icon-share-sign
+                %i.fa-share-sign
                 = t(:itinerary)
               = link_to details_user_trip_path(current_user, trip), {class: "btn btn-mini btn-info text-center"} do
-                %i.icon-exclamation-sign
+                %i.fa-exclamation-sign
                 = t(:details)
 
 = render 'shared/datatable_javascript'

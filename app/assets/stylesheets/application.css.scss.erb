@@ -9,10 +9,13 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
 */
-@import "includes/*";
+@import url(<%= asset_path("includes/_bootstrap_and_overrides") %>);
+@import url(<%= asset_path("includes/jquery.timepicker.css") %>);
+@import url(<%= asset_path("includes/tadaaapickr.css") %>);
 @import "bootstrap-combobox";
 @import "font-awesome";
-@import "font-awesome-ext";
+// @import "font-awesome-ext";
 @import "travelcons";
 @import "bootstrap_datatable";
-@import "base/*";
+@import url(<%= asset_path("base/_base.css") %>);
+@import url(<%= asset_path("base/home.css") %>);

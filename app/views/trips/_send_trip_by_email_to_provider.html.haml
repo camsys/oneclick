@@ -23,10 +23,10 @@
         = f.input :copy_self, as: :boolean
         .modal-footer
           = button_tag type: :submit, class: 'btn btn-info' do
-            %i.icon-envelope
+            %i.fa-envelope-o
             = t(:send)
           = link_to '#', :class => "cancel_provider_link" do
-            %i.icon.icon-reply
+            %i.fa.fa-reply
             = t(:cancel)
 
 :javascript

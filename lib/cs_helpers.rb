@@ -1,23 +1,23 @@
 module CsHelpers
 
   ACTION_ICONS = {
-    :plan_a_trip => 'icon-share-sign',
-    :log_in => 'icon-key icon-rotate-90',
-    :create_an_account => 'icon-edit',
-    :identify_places =>'icon-map-marker',
-    :travel_profile => 'icon-cogs',
-    :my_travel_profile => 'icon-cogs',
-    :my_trips => 'icon-share-alt icon-flip-horizontal',
-    :my_places => 'icon-map-marker',
-    :help_and_support => 'icon-question-sign',
-    :find_traveler => 'icon-search',
-    :create_traveler =>'icon-user',
-    :agents_agencies => 'icon-sitemap',
-    :providers => 'icon-umbrella',
-    :reports => 'icon-bar-chart',
-    :trips => 'icon-tags',
-    :services => 'icon-bus-sign',
-    :users => 'icon-group',
+    :plan_a_trip => 'fa fa-share-square',
+    :log_in => 'fa fa-key fa-rotate-90',
+    :create_an_account => 'fa fa-edit',
+    :identify_places =>'fa fa-map-marker',
+    :travel_profile => 'fa fa-cogs',
+    :my_travel_profile => 'fa fa-cogs',
+    :my_trips => 'fa fa-share-alt fa-flip-horizontal',
+    :my_places => 'fa fa-map-marker',
+    :help_and_support => 'fa fa-question-sign',
+    :find_traveler => 'fa fa-search',
+    :create_traveler =>'fa fa-user',
+    :agents_agencies => 'fa fa-sitemap',
+    :providers => 'fa fa-umbrella',
+    :reports => 'fa fa-bar-chart',
+    :trips => 'fa fa-tags',
+    :services => 'fa fa-bus-sign',
+    :users => 'fa fa-group',
 
   }
 
@@ -105,10 +105,10 @@ end
         ]
       end
       if options[:with_logout]
-        a << {label: t(:logout), target: destroy_user_session_path, icon: 'icon-signout', divider_before: true,
+        a << {label: t(:logout), target: destroy_user_session_path, icon: 'fa-sign-out', divider_before: true,
           method: 'delete'}
         #     = link_to , :method=>'delete' do
-        # %i.icon.icon-signout
+        # %i.fa.fa-sign-out
         # = t(:logout)
       end
       a

@@ -23,10 +23,10 @@
 
       .form-actions
         = button_tag :type => 'submit', :class => "btn btn-primary" do
-          %i.icon.icon-ok
+          %i.fa.fa-check
           = @place_proxy.id.nil? ? t(:save) : t(:update)
         = link_to :back, :class => "cancel_link" do
-          %i.icon.icon-reply
+          %i.fa.fa-reply
           = t(:cancel)
 
 #select_place{:style => "display:none;"}
@@ -44,17 +44,17 @@
           = link_to "#", :class => "place-select", :data => {:id => "my_place#{index}", :index => index, :place_id => place.id, :op => place.can_delete, :latlon => [place.location.first, place.location.last], :name => place.to_s, :type => "place", :addr => place.address} do
             %img{:src => get_candidate_list_item_image(index, "0")}
             -if place.home
-              %i.icon.icon-home
+              %i.fa.fa-home
             %strong= place.name
             %em= place.address
 
 .row-fluid
   .span12{:style => "padding-top:5px"}
     = link_to "#", :class => "btn btn-danger", :id => "delete_button" do
-      %i.icon.icon-remove
+      %i.fa.fa-times
       = t(:delete)
     = link_to "#", :class => "btn btn-primary", :id => "edit_button" do
-      %i.icon.icon-edit
+      %i.fa.fa-edit
       = t(:edit)
     
 :javascript  

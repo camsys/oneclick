@@ -6,7 +6,7 @@
 
   -if itinerary.missing_information
     %h4
-      %i.icon.icon-question-sign
+      %i.fa.fa-question-circle
       This service is intended for
       / not sure how to handle that...
       -count = 0
@@ -21,7 +21,7 @@
 
   -if itinerary.accommodation_mismatch
     %h4
-      %i.icon.icon-warning-sign
+      %i.fa.fa-warning
       =t(:trip_needs_more_accommodations) + ":"
     %ul
       -itinerary.missing_accommodations.split(',').each do |accommodation|
@@ -29,11 +29,11 @@
           =accommodation
   -if itinerary.too_late
     %h4
-      %i.icon.icon-calendar
+      %i.fa.fa-calendar
       = t(:trip_insufficient_notice_a) + itinerary.service.human_readable_advanced_notice + t(:trip_insufficient_notice_b)
   -if itinerary.date_mismatch or itinerary.time_mismatch
     %h4
-      %i.icon.icon-calendar
+      %i.fa.fa-calendar
       = t(:trip_outside_service_hours)
 
   .row-fluid.hidden

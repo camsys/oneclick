@@ -10,7 +10,7 @@
 /     - if @trip.in_the_future
 /       .span1
 /         = link_to edit_user_trip_path(@traveler, @trip), :class => "btn btn-small pull-right", :alt => t(:edit_trip), :title => t(:edit_trip) do
-/           %i.icon-edit
+/           %i.fa-edit
 
 
 / - if @trip.any_parts_selected?
@@ -40,31 +40,31 @@
 /       .row-fluid
 /         .span6{style: 'margin-bottom: 9px;'}
 /           =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
-/             %i.icon-envelope
+/             %i.fa-envelope-o
 /             =t(:e_mail) + " your trip plan."
 /         .span6{style: 'margin-bottom: 9px;'}
 /           -if (@trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service) or (@trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.service)
 /             =link_to '#', {href: '#send_trip_by_email_to_provider', class: 'btn btn-block', data: {toggle: 'modal'}} do
-/               %i.icon-ticket
+/               %i.fa-ticket
 /               Email a booking request to the provider.
 /           -else
 /             =link_to '#', {disabled: true, class: 'btn btn-block'} do
-/               %i.icon-ticket
+/               %i.fa-ticket
 /               Email a booking request to the provider.
 /       .row-fluid
 /         .span6{style: 'margin-bottom: 9px;'}
 /           =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
-/             %i.icon-search
+/             %i.fa-search
 /             View trip details so that you can call the provider.
 /         .span6{style: 'margin-bottom: 9px;'}
 /           =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
-/             %i.icon-print
+/             %i.fa-print
 /             Print your trip plan.
 /       -if user_signed_in?
 /         .row-fluid
 /           .span6.offset3
 /             =link_to user_trips_path(get_traveler), {class: 'btn btn-block'} do
-/               %i.icon-share-alt.icon-flip-horizontal
+/               %i.fa-share-alt.fa-flip-horizontal
 /               I'm done, just show me all my planned trips.
 
 

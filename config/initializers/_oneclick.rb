@@ -14,7 +14,7 @@ when 'arc'
   Oneclick::Application.config.geocoder_components = 'administrative_area:GA|country:US'
   Oneclick::Application.config.map_bounds = [[33.457797,-84.754028], [34.090199,-83.921814]]
   Oneclick::Application.config.geocoder_bounds = [[33.737147,-84.406634], [33.764125,-84.370361]]  
-  Oneclick::Application.config.open_trip_planner = "http://otp-arc.camsys-apps.com"
+  Oneclick::Application.config.open_trip_planner = "http://arc-otp-2.camsys-apps.com"
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Atlanta"
   Oneclick::Application.config.enable_rideshare = true

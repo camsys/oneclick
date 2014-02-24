@@ -20,10 +20,10 @@
           = render partial: agency.sub_agencies
         %td.center
           = link_to edit_admin_agency_path(agency), {class: 'btn'} do
-            %i.icon-pencil
+            %i.fa-pencil
             = t(:edit)
           = link_to admin_agency_users_path(agency), {class: 'btn'} do
-            %i.icon-group
+            %i.fa-group
             = t(:users)
 
 = link_to t(:new_agency), new_admin_agency_path, {class: 'btn'}

@@ -64,11 +64,11 @@ module ApplicationHelper
     html = "<span id='stars'>"
     for i in 1..5
       link = rate_rating_url(trip, :user_id => trip.user.id, :stars => i, :size => size)
-      html << "<a title='Rate " + i.to_s + " Stars' href=" + link + " style='color: black; text-decoration: none' data-method='post' data-remote='true'><i id=star" + trip.id.to_s + '_' + i.to_s + " class='icon-" + size.to_s
+      html << "<a title='Rate " + i.to_s + " Stars' href=" + link + " style='color: black; text-decoration: none' data-method='post' data-remote='true'><i id=star" + trip.id.to_s + '_' + i.to_s + " class='fa-" + size.to_s
       if i <= rating
-        html << "x icon-star'> </i></a>"
+        html << "x fa-star'> </i></a>"
       else
-        html << "x icon-star-empty'> </i></a>"
+        html << "x fa-star-o'> </i></a>"
       end
     end
     html << "</span>"
@@ -136,7 +136,7 @@ module ApplicationHelper
 
   def get_boolean(val)
     if val
-      return "<i class='icon-ok'></i>".html_safe
+      return "<i class='fa-check'></i>".html_safe
     end
     #return val.nil? ? 'N' : val == true ? 'Y' : 'N'
   end
@@ -204,17 +204,17 @@ module ApplicationHelper
     elsif mode_name == 'transit'
       icon_name = 'icon-bus-sign'
     elsif mode_name == 'paratransit'
-      icon_name = 'icon-truck-sign'
+      icon_name = 'fa-truck'
     elsif mode_name == 'volunteer'
-      icon_name = 'icon-truck-sign'
+      icon_name = 'fa-truck'
     elsif mode_name == 'non-emergency medical service'
-      icon_name = 'icon-user-md'
+      icon_name = 'fa-user-md'
     elsif mode_name == 'livery'
       icon_name = 'icon-taxi-sign'
     elsif mode_name == 'taxi'
       icon_name = 'icon-taxi-sign'      
     elsif mode_name == 'rideshare'
-      icon_name = 'icon-group'      
+      icon_name = 'fa-group'      
     elsif mode_name == 'walk'
       icon_name = 'icon-accessibility-sign'      
     end
@@ -222,7 +222,7 @@ module ApplicationHelper
   end
 
   def get_trip_direction_icon(itin_or_trip)
-    (itin_or_trip.is_return_trip ? 'icon-arrow-left' : 'icon-arrow-right')
+    (itin_or_trip.is_return_trip ? 'fa-arrow-left' : 'fa-arrow-right')
   end
 
   def display_base_errors resource

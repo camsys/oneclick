@@ -1,10 +1,10 @@
 %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}
-  %i.icon.icon-wrench
+  %i.fa.fa-wrench
   = t(:admin)
   %b.caret
 %ul.dropdown-menu{role: 'menu'}
   - admin_menu.each do |action|
     %li
       = link_to action[:target], method: (action[:method] || 'get') do
-        %i.icon{class: action[:icon]}
+        %i.fa{class: action[:icon]}
         = action[:label]

@@ -18,7 +18,7 @@
     .row-fluid.well.well-small
       #trip_form.span12
         = link_to "#" do      
-          %i.icon.icon-map-marker.icon-2x.pull-right#map-icon
+          %i.fa.fa-map-marker.fa-2x.pull-right#map-icon
         = render 'trip_form'
       #trip_map.span6
         = render 'trip_map'  
@@ -32,7 +32,7 @@
   // Document Ready
   $(document).ready(function(){
     // open or close the map on load based on last state
-    var trip_map_open = get_ui_key_value(trip_map_key, 0);
+    var trip_map_open = get_ui_key_value(trip_map_key, 1);
     //alert(trip_map_key + ' = ' + trip_map_open);
     if (trip_map_open == 1) {
       open_map();
@@ -42,7 +42,7 @@
 
     // install event handlers
     $('#map-icon').click(function(){
-      var trip_map_open = get_ui_key_value(trip_map_key, 0);
+      var trip_map_open = get_ui_key_value(trip_map_key, 1);
       //alert(trip_map_key + ' = ' + trip_map_open);
       if (trip_map_open == 1) {
         // user is closing the map
@@ -61,8 +61,8 @@
     $('#trip_form').addClass('span6');
     $('#trip_map').show();
     invalidateMap();
-    $('#map-icon').removeClass('icon-map-marker');
-    $('#map-icon').addClass('icon-play');
+    $('#map-icon').removeClass('fa-map-marker');
+    $('#map-icon').addClass('fa-play');
     // make sure no popups are currently being shown or they will get messed up
     closePopup();
     // refresh the map display
@@ -75,8 +75,8 @@
     $('#trip_form').removeClass('span6');
     $('#trip_form').addClass('span12');
     $('#trip_map').hide();
-    $('#map-icon').removeClass('icon-play');
-    $('#map-icon').addClass('icon-map-marker');
+    $('#map-icon').removeClass('fa-play');
+    $('#map-icon').addClass('fa-map-marker');
     set_ui_key_value(trip_map_key, 0);
   };
    
