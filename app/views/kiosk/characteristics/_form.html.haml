@@ -21,6 +21,8 @@
                 - Characteristic.personal_factors.where(:datatype => 'bool').each do |characteristic|
                   %tr
                     %td
+                      = f.label characteristic.note
+                    %td
                       = f.radio_button characteristic.code.to_sym, true
                       = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
                     %td
