@@ -3,8 +3,6 @@ jQuery(function ($) {
 if ($('.js-trip-wizard-form').length > 0) return;
 // -- END START OF DISABLING CODE -- !://
 
-debugger
-
 /**
  * Created by Miguel Bermudez on 12/9/13.
  */

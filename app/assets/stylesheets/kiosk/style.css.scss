@@ -363,7 +363,7 @@ a{
 	a.attract-footer{
 		display: block;
 		height:50%;
-		background: $blue image-url(kiosk/attract-bottom.jpg) no-repeat center center;
+		background: $blue image-url("kiosk/attract-bottom.jpg") no-repeat center center;
 	}
 }
 #login-button{
