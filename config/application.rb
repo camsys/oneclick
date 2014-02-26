@@ -87,14 +87,6 @@ module Oneclick
     # For heroku; see http://blog.nathanhumbert.com/2012/01/rails-32-on-heroku-tip.html
     config.assets.initialize_on_precompile = false
 
-    # because application.css.scss only uses @import, not require, we need to make
-    # sure all stylesheets are precompiled for the asset pipeline
-    # none of that made any sense.
-    # stylesheets = Dir.glob(File.join('app', 'assets', 'stylesheets', '**', '*')).map {
-    #     |d| d.gsub(%r{app/assets/stylesheets/}, '')
-    #     }.map {|d| d.gsub(%r{\.scss$}, '')}
-    #     .select{|d| d =~ %r{\.css}} - ["application.css"]
-    # config.assets.precompile += stylesheets
     config.assets.precompile += ['tadaaapickr.pack.min.js']
 
     # Version of your assets, change this if you want to expire all your assets
