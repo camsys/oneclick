@@ -84,8 +84,6 @@ module Oneclick
 
     # Enable the asset pipeline
     config.assets.enabled = true
-    # For heroku; see http://blog.nathanhumbert.com/2012/01/rails-32-on-heroku-tip.html
-    config.assets.initialize_on_precompile = false
 
     config.assets.precompile += %w(
       tadaaapickr.pack.min.js
