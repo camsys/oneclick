@@ -14,16 +14,18 @@ jQuery(function ($) {
   }
 
   //TO LABEL APPEAR
-  $('input#trip_proxy_to_place').focus(function(){
+  $('input#trip_proxy_to_place').focus(function () {
       if (window.cocoa)
         window.cocoa.openKeyboard();
       $('#to_input').addClass('text-added');
   });
-  $('input#trip_proxy_to_place').click(function(){
+
+  $('input#trip_proxy_to_place').click(function () {
        if (window.cocoa)
         window.cocoa.openKeyboard();
   });
-  $('input#trip_proxy_to_place').blur(function(){
+
+  $('input#trip_proxy_to_place').blur(function () {
     if (window.cocoa)
       window.cocoa.closeKeyboard();
 

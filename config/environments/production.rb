@@ -8,7 +8,7 @@ Oneclick::Application.configure do
 
   # config.action_dispatch.best_standards_support
 
-  config.serve_static_assets = false
+  config.serve_static_assets = true
 
   config.assets.compress = true
   config.assets.compile = false
@@ -35,5 +35,5 @@ Oneclick::Application.configure do
 
   config.log_level = :info
 
-  config.eager_load = true  
+  config.eager_load = true
 end

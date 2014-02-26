@@ -34,10 +34,10 @@ module Oneclick
 
     # don't generate RSpec tests for views and helpers
     config.generators do |g|
-      
+
       g.test_framework :rspec, fixture: true
       g.fixture_replacement :factory_girl, dir: 'spec/factories'
-      
+
       g.view_specs false
       g.helper_specs false
     end
@@ -89,11 +89,12 @@ module Oneclick
 
     # because application.css.scss only uses @import, not require, we need to make
     # sure all stylesheets are precompiled for the asset pipeline
-    stylesheets = Dir.glob(File.join('app', 'assets', 'stylesheets', '**', '*')).map {
-        |d| d.gsub(%r{app/assets/stylesheets/}, '')
-        }.map {|d| d.gsub(%r{\.scss$}, '')}
-        .select{|d| d =~ %r{\.css}} - ["application.css"]
-    config.assets.precompile += stylesheets
+    # none of that made any sense.
+    # stylesheets = Dir.glob(File.join('app', 'assets', 'stylesheets', '**', '*')).map {
+    #     |d| d.gsub(%r{app/assets/stylesheets/}, '')
+    #     }.map {|d| d.gsub(%r{\.scss$}, '')}
+    #     .select{|d| d =~ %r{\.css}} - ["application.css"]
+    # config.assets.precompile += stylesheets
     config.assets.precompile += ['tadaaapickr.pack.min.js']
 
     # Version of your assets, change this if you want to expire all your assets

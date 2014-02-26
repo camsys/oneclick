@@ -1,8 +1,6 @@
 jQuery(function ($) {
   if (!$('.js-trip-wizard-form').hasClass('js-pickup-time-wizard-step')) return;
 
-  debugger;
-
   $('#trip-date')
     .datepicker()
     .on("dateChange", function(e) {
