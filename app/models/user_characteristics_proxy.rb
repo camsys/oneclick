@@ -33,10 +33,10 @@ class UserCharacteristicsProxy < UserProfileProxy
     Rails.logger.debug new_settings.inspect
 
     # Put everything in a big transaction
-    UserTravelerCharacteristicsMap.transaction do
+    UserCharacteristic.transaction do
       # Loop through the list of characteristics that could be set. This appraoch ensures we are only updating
       # active characteristics
-      TravelerCharacteristic.personal_factors.each do |characteristic|
+      Characteristic.personal_factors.each do |characteristic|
         Rails.logger.debug characteristic.inspect
 
         # See if this characteristic is represented in the new settings. We want to try to match the characteristic code to

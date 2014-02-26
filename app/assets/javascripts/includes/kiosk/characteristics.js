@@ -54,7 +54,7 @@ characteristicsView.init = function () {
   //cache all form items
   this.formItems = $('*[data-index]');
   this.formItems.addClass('hidden');
-  this.dobItems = $('.dob-section', '#new_user_characteristics_proxy');
+  this.dobItems = $('.dob-section', '.new_user_characteristics_proxy');
   this.dob.breadcrumbs = $('.dob-breadcrumb li');
   this.dob.monthtable = $('#monthtable');
   this.dob.daytable = $('#daytable');
@@ -264,7 +264,7 @@ characteristicsView.indexChangeHandler = function () {
         break;
 
       case characteristicsView.states.PROGRAMS:
-        $('#new_user_characteristics_proxy').submit();
+        $('.new_user_characteristics_proxy').submit();
         break;
     }
   }
