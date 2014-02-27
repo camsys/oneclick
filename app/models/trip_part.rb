@@ -84,9 +84,17 @@ class TripPart < ActiveRecord::Base
     result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s)
     if result
       tp.convert_itineraries(response).each do |itinerary|
-        Rails.logger.info itinerary.inspect
-        itinerary['server_message'] = itinerary['server_message'].to_yaml if itinerary['server_message'].is_a? Array
-        itineraries << Itinerary.new(itinerary)
+        serialized_itinerary = {}
+
+        itinerary.each do |k,v|
+          if v.is_a? Array
+            serialized_itinerary[k] = v.to_yaml
+          else
+            serialized_itinerary[k] = v
+          end
+        end
+
+        itineraries << Itinerary.new(serialized_itinerary)
       end
     else
       itineraries << Itinerary.new('server_status'=>response['id'], 'server_status'=>response['msg'])
