@@ -116,11 +116,6 @@ characteristicsView.nextBtnHandler = function () {
     characteristicsView.dob.counter++;
   }
 
-  if (characteristicsView.indexCounter == 2) {
-    $('#left-description h4').text('Tell Us Your Date of Birth')
-    $('#left-description p').html('Sharing your birthdate allows us to provide you with the best travel options, including those that may be discounted or only available to seniors.<br><br>Tap "Next Step" when you have selected the correct date.')
-  }
-
   //trigger counter change event
   $('#eligibility_form').trigger('indexChange');
 };
@@ -139,11 +134,6 @@ characteristicsView.backBtnHandler = function (e) {
   } else {
     //increment the dob counter
     this.dob.counter--;
-  }
-
-  if (this.indexCounter == 2) {
-    $('#left-description h4').text('Tell Us Your Date of Birth')
-    $('#left-description p').html('Sharing your birthdate allows us to provide you with the best travel options, including those that may be discounted or only available to seniors.<br><br>Tap "Next Step" when you have selected the correct date.')
   }
 
   //trigger counter change event
@@ -224,6 +214,20 @@ characteristicsView.dob.init = function () {
  * Characteristics Form View Index Change Handler
  *.............................................................................*/
 characteristicsView.indexChangeHandler = function () {
+  if (this.indexCounter == 2) {
+    $('#left-description h4').text('Tell Us Your Date of Birth')
+    $('#left-description p').html('Sharing your birthdate allows us to provide you with the best travel options, including those that may be discounted or only available to seniors.<br><br>Tap "Next Step" when you have selected the correct date.')
+  }
+
+  if (this.indexCounter == 1) {
+    $('#left-description h4').text('Tell Us More About Yourself')
+    $('#left-description p').html('Answer all questions you are comfortable providing an answer for. If you do not wish to answer a question, select "Unsure". Answering these questions will ensure you see personalized travel options.<br><br>Tap "Next Step" when you have finished with these questions.')
+  }
+
+  if (this.indexCounter == 0) {
+    $('#left-description p').html('Would you be willing to answer a few questions about yourself to determine the best travel options? Questions include date of birth, any mobility challenges and basic demographics. Answering these questions will help us personalize the results you see.<br><br>If you want to see personalized results, tap "Yes". If you tap "No", you will still receive travel options, but they may not be personalized to your needs.')
+  }
+
   //hide everything again
   if (this.indexCounter != this.states.PROGRAMS) {
     this.formItems.addClass('hidden');
