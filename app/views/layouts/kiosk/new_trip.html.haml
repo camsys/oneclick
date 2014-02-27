@@ -5,7 +5,7 @@
         %h1= t(:plan_a_trip)
 
         .js-sidebar-text-series
-          - (t(current_step, scope: :new_trip) || []).each do |text|
+          - (t(:new_trip)[current_step.to_sym] || []).each do |text|
             .sidebar-text.hidden
               %h4= text['heading'].html_safe
               %p=  text['paragraph'].html_safe

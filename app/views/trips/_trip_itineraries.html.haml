@@ -25,11 +25,11 @@
           -if itinerary.accommodation_mismatch
             .row-fluid
               %i.icon.icon-warning-sign
-              Some accommodations unavailable.
+              =t(:missing_accommodations)
           -if itinerary.date_mismatch or itinerary.time_mismatch or itinerary.too_late
             .row-fluid
               %i.icon.icon-calendar
-              This trip is not possible as scheduled.
+              =t(:trip_not_possible_as_schedule)
 
         .dialog-footer.corner-bottom
           .row-fluid

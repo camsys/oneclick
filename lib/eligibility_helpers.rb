@@ -21,7 +21,7 @@ class EligibilityHelpers
     is_eligible = false
     missing_information = false
     missing_information_text = ''
-    groups = service.service_traveler_characteristics_maps.pluck(:group).uniq
+    groups = service.service_characteristics.pluck(:group).uniq
     if groups.count == 0
       is_eligible = true
       min_match_score = 0
@@ -30,9 +30,9 @@ class EligibilityHelpers
       group_missing_information_text = ''
       group_match_score = 0
       group_eligible = true
-      service_characteristic_maps = service.service_traveler_characteristics_maps.where(group: group)
+      service_characteristic_maps = service.service_characteristics.where(group: group)
       service_characteristic_maps.each do |service_characteristic_map|
-        service_requirement = service_characteristic_map.traveler_characteristic
+        service_requirement = service_characteristic_map.characteristic
         if service_requirement.code == 'age'
           if trip_part
             age_date = trip_part.trip_time
@@ -43,7 +43,7 @@ class EligibilityHelpers
           update_age(user_profile, age_date)
         end
 
-        passenger_characteristic = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: service_requirement.id)
+        passenger_characteristic = UserCharacteristic.where(user_profile_id: user_profile.id, characteristic_id: service_requirement.id)
         if passenger_characteristic.count == 0 #This passenger characteristic is not listed
           group_match_score += 0.25
           if service_requirement.code == 'age'
@@ -84,15 +84,15 @@ class EligibilityHelpers
 
   def update_age(user_profile, date = Time.now)
 
-    dob = TravelerCharacteristic.find_by_code('date_of_birth')
-    age = TravelerCharacteristic.find_by_code('age')
-    passenger_dob = UserTravelerCharacteristicsMap.where(user_profile_id: user_profile.id, characteristic_id: dob.id)
+    dob = Characteristic.find_by_code('date_of_birth')
+    age = Characteristic.find_by_code('age')
+    passenger_dob = UserCharacteristic.where(user_profile_id: user_profile.id, characteristic_id: dob.id)
     if passenger_dob.count != 0 && passenger_dob.first.value != 'na'
       passenger_dob = passenger_dob.first.value.to_date
     else
       return
     end
-    passenger_age_characteristic = UserTravelerCharacteristicsMap.find_or_initialize_by_user_profile_id_and_characteristic_id(user_profile.id, age.id)
+    passenger_age_characteristic = UserCharacteristic.find_or_initialize_by_user_profile_id_and_characteristic_id(user_profile.id, age.id)
 
     new_age = date.year - passenger_dob.year
     new_age -= 1 if date < passenger_dob + new_age.years
@@ -109,10 +109,10 @@ class EligibilityHelpers
     end
 
     #user accommodations
-    accommodations_maps = user_profile.user_traveler_accommodations_maps.where('value = ? ', 'true')
+    accommodations_maps = user_profile.user_accommodations.where('value = ? ', 'true')
     user_accommodations = []
     accommodations_maps.each do |map|
-      user_accommodations << map.traveler_accommodation
+      user_accommodations << map.accommodation
     end
 
     #service accommodations
@@ -120,10 +120,10 @@ class EligibilityHelpers
     #all_services = Service.all
     itineraries.each do |itinerary|
       service = itinerary['service']
-      accommodations_maps = service.service_traveler_accommodations_maps
+      accommodations_maps = service.service_accommodations
       service_accommodations  = []
       accommodations_maps.each do |map|
-        service_accommodations << map.traveler_accommodation
+        service_accommodations << map.accommodation
       end
 
       match_score = 0.5 * (user_accommodations.count - (service_accommodations & user_accommodations).count)
@@ -287,10 +287,9 @@ class EligibilityHelpers
         # puts "%-30s %-30s %s" % [Time.zone, planned_trip.trip_datetime, planned_trip.trip_datetime.seconds_since_midnight]
         # puts "%-30s %-30s %s" % [Time.zone, schedule.start_time, schedule.start_time.seconds_since_midnight]
         # puts "%-30s %-30s %s" % [Time.zone, schedule.end_time, schedule.end_time.seconds_since_midnight]
-        unless trip_part.trip_time.seconds_since_midnight.between?(schedule.start_time.seconds_since_midnight,schedule.end_time.seconds_since_midnight)
+        unless trip_part.trip_time.in_time_zone.seconds_since_midnight.between?(schedule.start_seconds,schedule.end_seconds)
           itinerary['match_score'] += 1
           itinerary['time_mismatch'] = true
-
         end
       end
     end

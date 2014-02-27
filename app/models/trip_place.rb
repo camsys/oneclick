@@ -11,11 +11,11 @@ class TripPlace < GeocodedAddress
   belongs_to :poi     # optional
   
   # Updatable attributes
-  attr_accessible :sequence, :raw_address
+  # attr_accessible :sequence, :raw_address
   attr_accessor :raw
   
   # set the default scope
-  default_scope order('sequence ASC')
+  default_scope {order('sequence ASC')}
   
   # discover the location for this trip place from
   # its relationships

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" id="1" measuredWidth="960" measuredHeight="700">
+    <screen xsi:type="model:Screen" href="assets/Components/BaseScreenTitleOnly.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Master" id="2" x="218" y="248" measuredWidth="585" measuredHeight="361">
+    <screen xsi:type="model:Screen" href="assets/Components/SaveProfileInformation.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="3" x="634" y="501" text="Create Account" measuredWidth="153" measuredHeight="38" state="selected" link="TripPlan%20Step%204.screen">
+    <font size="20px"/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

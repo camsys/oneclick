@@ -11,22 +11,55 @@ es:
   create_an_account: 'Crear una Cuenta'
   travel_profile: 'Perfil del Viaje'
   my_travel_profile: '[es13]Mis Perfil del Viaje[/es]'
+  my_travelers: "[es14]My Travelers[/es]"
   my_trips: 'Mis Viajes'
   my_places: 'Mis Lugares *10*'
+  place: "[es16]Place[/es]"
   places: 'Lugares *11*'
+  type: "[es18]Type[/es]"
+  my_home_chkbox_label: "[es17]This is my home[/es]"
   
   # Agent View strings
   find_traveler: "Encontrar al Viajero"
   create_traveler: "Crear un Viajero"
+  agencies: "[es21]Agencies[es]"
+  parent_agency: "[es26]Parent Agency[/es]"
+  parent: "[es27]Parent[/es]"
+  subagencies: "[es27]Sub-agencies[/es]"
+  new_agency: "[es29]New Agency[/es]"
+  provider: "[es25]Provider[/es]"
+  providers: "[es22]Providers[es]"
+  editing_org: "[es30]Editing organization[/es]"
+  listing_orgs: "[es31]Listing Organizations[/es]"
+  provider_orgs: "[es30]Provider Organizations[/es]"
+  org_type: "[es33]Org type[/es]"
+  new_organization: "[es35]New Organization[/es]"
+  provider_name: "[es23]Provider name[/es]"
+  provider_contact_info: "[es24]Provider Contact Information[/es]"
+  provided_by: "[es24]Provided by[/es]"
   agents_agencies: "Agencias Agentes"
+  confirm_msg: "[es40]Are you sure?[/es]"
+  change_role: "[es41]Change Role[/es]"
+  delete_user: "[es41]Delete user[/es]"
   # Agent and Admin string
   reports: "Reportes"
-  admin: 'Admin'
+  report_name: "[es46]Report Name[/es]"
+  date_range: "[es47]Date Range[/es]"
+  traveler_type: "[es48]Traveler Type[/es]"
+  display_type: "[es49]Display Type[/es]"
+  summary_type: "[es50]Summary Type[/es]"
+  run: "[es51]Run[/es]"
+  users: "[es42]Users[/es]"
+  admin: '[es42]Admin[/es]'
   send_by_email: 'Enviar por correo electrónico'
+  send_itinerary_by_email: "[es32]Send itinerary by email[/es]"
+  send_trip_by_email: "[es29]Send trip plan by email[/es]"
+  send_follow_up_email: "[es29]Send Follow-up Email[/es]"
 
   # Registration, sign in, profile
-  do_you_participate:  "Do you currently participate in any of these programs?"  #Not translated
-  programs:  "Programs"                                                          #Not translated
+  about_you: '[es32]About You[/es]' # Not translated
+  do_you_participate:  "[es61]Do you currently participate in any of these programs?[/es]"  #Not translated
+  programs:  "[es62]Programs[/es]"                                                          #Not translated
   version: 'Versión'
   home: "Inicio"
   log_in: 'Entrar'
@@ -35,6 +68,7 @@ es:
   first_name: 'Nombre'
   last_name: 'Apellido'
   email: 'Correo electrónico'
+  address: "[es47]Address[/es]"
   remember_me: 'Acuérdate de mí *5*'  
   password: 'Contraseña'
   password_confirmation: 'Confirme la contraseña'
@@ -50,7 +84,9 @@ es:
   buddies: 'Amigos'
   travelers: 'Viajeros'
   traveler: 'Viajero'
+  add_user: "[es81]Add User[/es]"
   send_buddy_request: 'Enviar solicitud de amigo'
+  add_new_buddy:  "[es82]Add a new buddy[/es]"
   buddys_email_address: "Correo electrónico del amigo"
   accept: 'Aceptar'
   decline: 'Rechazar'
@@ -58,11 +94,20 @@ es:
   retract: 'Retraer'  
   revoke: 'Revocar'
   visitor: 'Visitante *12*'
+  questions: "[es77]Questions[/es]"
   invalid_dob: 'Valido Fecha de nacimiento *33*'
+  plan_with_you_in_mind: "[es77]We'd like to plan a trip with your needs in mind.[/es]"
   to_see_best_options: '[es1] To see the best options, tell us about yourself. [/es]'
+  follow_up_questions: '[es68]A Few Follow-up Questions[/es68]'
+  follow_up_question_descr: '[es69]Given your responses, we have one last page of follow-up questions. Answer all questions you are comfortable providing an answer for. If you do not wish to answer a question, select "Unsure". <br><br> Tap "Next Step" when you have finished with these questions.[/es]'
+  next_step: "[es81]Next Step[/es]"
+  step_one_of: "[es82]Step 1 of[/es]"
   skip_this_step: '[es2] Skip this step [/es]'
   buddy_request_sent: "Solicitud de amigo enviada"
   no_buddy_email_address: "Debe introducir la dirección de correo electrónico de su amigo"
+  register: "[es86]Register[/es]"
+  registered: "[es83]Registered[/es]"
+  have_an_account_question: "[es88]Have an Account?[/es]"
   no_user_with_email_address: "No podemos encontrar un usuario registrado con '%{email}' como su dirección de correo electrónico."
   something_went_wrong: "Ooops! Algo salió mal. No hemos podido procesar la solicitud. Por favor, inténtelo de nuevo."
   request_processed: "Su solicitud ha sido procesada."
@@ -83,10 +128,12 @@ es:
   repeat_trip: "Repita este viaje *41*."
   remove_trip: "Eliminar este viaje *42*"
   rate_trip: "Valorar este viaje *43*"
+  rate_recent: "[es118]Rate your recent trip[/es]"
   plan_trip: "Continuar la planificación de este viaje *44*"
 
   # Trip planning
   enter_address: 'Introduce la dirección'
+  location: "[es106]Location[/es]"
   enter_to: 'Introduce la dirección'
   enter_from: 'Introduce la dirección'
   select_or_enter_address: 'Selecciona o introduce la dirección '
@@ -94,6 +141,9 @@ es:
   trip_date: 'Fecha'
   depart_at: 'Salir a las'
   arrive_by: 'Llegar a las'
+  save_and_plan_trip: "[es114]Save and plan my trip[/es]"
+  trip_planned_and_saved: "[es132]Trip planned and saved[/es]"
+  finish_trip_planning_options: "[es133]You can now do one or more of the following to finish your trip planning[/es]"
   arrive_at: 'Llegar a'
   trip_time: 'Hora'
   cancel: 'Cancelar'
@@ -103,20 +153,27 @@ es:
   at_time: 'en'  
   arrive_depart: 'Llegada/Salida *1*'
   trip_purpose: 'Proposito *2*'
+  trip_purposes: "[es118]Trip Purposes[/es]"
   departing_at: 'Con salida a las *3*'
   arriving_by: 'Que lleguen en *4*'
   correct_errors_to_create_a_trip: 'Por favor corrige los errores señalados para crear un viaje.'
+  no_thanks_just_plan_it: "[es127]No thanks, just plan my trip[/es]"
+  disability_explanation_str: "[es128]We noticed you mentioned a disability and/or difficulty walking for certain periods of time.  Would you please tell us more about which accommodations you require for your trip?[/es]"
   trip_options: 'Opciones de Viaje'
   transit_trip: 'Transit Trip'
   taxi: 'Taxi'
   transit: 'Transporte Público'
   details: 'Detalles'
+  summary: "[es154]Summary[/es]"
+  trip_details: "[es129]Trip Details[/es]"
+  trip_date: "[es130]Trip Date[/es]"
   rideshare: 'Para Compartir el Viaje'
   walk: 'Caminar'  
   transfer: {
       one: '%{count} conección',
       other: '%{count} conecciones',
   }
+  transfers: "[es160]Transfers[/es]"
   view: 'Mostrar'
   remove: 'Eliminar'
   reload: 'Recargar'
@@ -124,6 +181,9 @@ es:
   outbound: '[es120]Outbound[/es]'
   paratransit: 'Transporte Público para Discapacitados'
   mode: 'Medio de Transporte'
+  direction_short: "[es147]Dir[/es]"
+  status: "[es148]Status[/es]"
+  hidden: "[es149]Hidden[/es]"
   duration: 'Duración'
   walking: 'Caminando'
   depart: 'Salida'
@@ -132,6 +192,7 @@ es:
   print: 'Imprimir'
   chat: 'Charlar en línea'
   e_mail: ' Correo electrónico'
+  created: "[es152]Created[/es]"
   trip_was_successfully_created: 'El viaje fue creado exitosamente.'
   trip_was_successfully_removed: 'El viaje fue eliminada afortunada. *25*'  
   trip_created_no_valid_options: "El viaje fue creado, pero no se encontraron opciones válidas de viaje."
@@ -181,7 +242,10 @@ es:
   one_way: '[es12]One-way trip[/es]'
   returning_at: '[es171]returning at[/es]'
   returning: '[es172]returning[/es]'
+  return_after: "[es199]Return after[/es]"
   at: '[es173]at[/es]'
+  fare: "[es198]Fare[/es]"
+  flat_fare_unavailable: "[es199]Flat fare unavailable[/es]"
 
   # My Places form
   found_x_places: {
@@ -202,15 +266,47 @@ es:
   address_book_updated: 'Su libreta de direcciones se ha acualizado. *21*'
   confirm_remove_place: 'Esta seguro que desea eliminar %{place_name} de su libreta de direcciones? *22*'
   profile_updated: "Su perfil ha sido actualizado. *37*"
+  updated: "[es242]Updated[/es]"
 
   # new ones
+  service: "[es]Service[/es]"
+  services: "[es]Services[/es]"
+  active: "[es240]Active[/es]"
+  service_is_inactive: "[es219]This service is currently inactive.[/es]"
+  service_contact: "[es220]Service Contact Information[/es]"
   specialized_services: "[es]Specialized Services[/es]"
   view_services: "[es]View Services[/es]"
+  no_restriction: "[es217]No restriction[/es]"
+  contact: "[es224]Contact[/es]"
+  title: "[es225]Title[/es]"
+  phone: "[es227]Phone[/es]"
+  url: "[es229]URL[/es]"
   close: "[es]Close[/es]"
   name: "Nombre"
   send: "[es]Send[/es]"
+  schedule: "[es236]Schedule[/es]"
+  advance_notice_required: "[es237]Advance Notice Required[/es]"
+  service_notice_required: "[es238]This service requires[/es]"
+  service_notice_str: "[es239]of advance notice to book a trip[/es]"
+  service_intended_for: "[es291]This service is intended for [/es]"
+  trip_not_possible_as_schedule: "[es291]This trip is not possible as scheduled.[/es]"
+  trip_outside_service_hours: "[es274]This trip occurs outside the normal hours for this service.[/es]"
+  trip_insufficient_notice_a: "[es275]This trip must be booked '[/es]"
+  trip_insufficient_notice_b: "[es294]in advance.[/es]"
+  more_information_required: "[es294]More information is needed.[/es]"
+  service_notice_not_required: "[es240]This service does not require advanced notice to book a trip[/es]"
+  no_cost_for_service:  "[es281]No cost for this service[/es]"
+  addl_cost_details: "[es299]Additional Cost Details[/es]"
+  view_trip_details: "[es298]View trip details so that you can call the provider.[/es]"
+  email_trip_details:  "[es299]Email your trip plan.[/es]"
+  print_trip_details: "[es299]Print your trip plan.[/es]"
+  view_planned_trips: "[es300]I'm done, just show me all my planned trips.[/es]"
+  coverage_areas: "[es241]Coverage Areas[/es]"
+  served_areas: "[es242]served[/es]"
+  service_area_map: "[es243]Service Area Map[/es]"
   trip_request_from: "[es]Trip request from[/es] "
   send_email_to: "[es]Send email to[/es]"
+  email_hint: "[es224]Use commas to separate multiple emails.[/es]"
   additional_emails: "[es]Additional emails[/es]"
   taken: "[es]Trip taken?[/es]"
   please_tell_us: "[es]Please tell us about your recent trip.[/es]"
@@ -221,10 +317,15 @@ es:
   leave_comments: "[es]Leave comments on this trip.[/es]"
   submit: "[es]Submit[/es]"
   eligibility: "[es]Eligibility[/es]"
+  eligibility_rules_descr: "[es246]If ANY of the following rules are satsified, the traveler may be eligible to use this service.[/es]"
+  age_is: "[es247]Age is[/es]"
   accommodations: "[es5]Accommodations[/es]"  
+  missing_accommodations: "[es315]Some accommodations unavailable.[/es]"
+  no_accommodations: "[es247]No accommodations provided[/es]"
   volunteer: "[es6]Volunteer Service[/es]"
   nemt: "[es7]Non-Emergency Med.[/es]"
   car_service: "[es8]Car Service[/es]"
+  buddy: "[es287]Buddy[/es]"
   buddy_request_sent: "¡Solicitud de amigo enviada!"
   buddy_removed: "Amigo eliminado."
   http_404_not_found: "404 No Fue Encontrado"
@@ -233,6 +334,8 @@ es:
   arc_oneclick_trip_itinerary: "ARC OneClick Itinerario de Viaje"
   an_email_was_sent_to_email_addresses_join: "Se fue enviado un correo electrónico a %{addresses}."
   unable_to_remove_itinerary: 'No se puede eliminar el itinerario.'
+  return_trip_options: "[es335]Return Trip Options[/es]"
+  outbound_trip_options: "[es336]Outbound Trip Options[/es]"
   outbound_selected: '[es209]Outbound option selected, now select your return option.[/es]'
   outbound_selected_short: '[es210]Outbound option selected.[/es]'
   return_selected: '[es211]Return option selected.[/es]'
@@ -245,6 +348,9 @@ es:
   one_click_buddy_request_from_from_email: "1-Click solicitud de amigo de %{from_email}"
   you_can_t_be_your_own_buddy: "No puedes ser tu propio amigo."
   you_ve_already_asked_them_to_be_a_buddy: "Ya le has solicitado ser amigo."
+  my_buddies: "[es331]My Buddies[/es]"
+  not_any_buddies: "[es332]You don't have any buddies. Send a buddy request by entering their email address above.[/es]"
+  no_buddies: "[es307]You don't have any travelers that have asked you to be their travel buddy.[/es]"
   address_is_required: "Se require una dirección"
   all_trips: "Todos los viajes *22*"
   trips_coming_up: "Excursiones viene *23*"  
@@ -255,6 +361,9 @@ es:
   today: "Hoy"
   yesterday: "Ayer"
   ago: " hace"
+  new_esp_successfully_uploaded: "New ESP File Successfully Uploaded"
+  thanks_for_the_feedback: "[es330]Thank you for your feedback![/es]"
+  optional_comments_descr: "[es331]If you would like to provide optional comments or a rating for your trip, you can do so below.[/es]"
   didn_t_receive_confirmation_instructions: "¿No recibiste instrucciones de confirmación?"
   didn_t_receive_unlock_instructions: "¿No recibiste instrucciones de desbloqueo?"
   sign_in_with_provider_to_s_titleize: "Sign in with %{provider}"
@@ -269,9 +378,16 @@ es:
     other: '%{count} opciones escondidas.'
   }
   send_to_traveler: 'Enviar al viajero'
+  send_request_to_provider: "[es283]Send request to the provider[/es]"
   from_address: 'De la dirección'
   email_addresses: 'Correos electrónicos'
   start: "START: "
+  start_time: "[es324]Start Time[/es]"
+  end_time: "[es325]End Time[/es]"
+  walk_time: "es[326]Walk Time[/es]"
+  transit_time: "[es327]Transit Time[/es]"
+  wait_time: "[es328]Wait Time[/es]"
+  walk_distance_short: "[es329]Walk Dist[/es]"
   on: ' en '
   walking: ' caminando'
   arrive: "ARRIVE: "
@@ -285,13 +401,39 @@ es:
   assisting_turned_off: "[es10]Assisting has been turned off.[/es]"
 
   # General Messages
+  hello: "Hola"
+  id: "[es370]ID[/es]"
+  user: "[es329]User[/es]"
+  username: "[es349]Username[/es]"
+  undo: "[es330]Undo[/es]"
+  creator: "[es331]Creator[/es]"
   yes_str: "Sí"
   no_str:  "Not"
+  no_answer_str: "[es294]Not answered[/es]"
+  unsure_str: "[es299]Unsure[/es]"
+  not_sure_str: "[es352]Not sure[/es]"
   ok: "Ok"
   cancel: "Cancelar"
   edit: "Editar *30*"
   delete: "Borrar *31*"
   save: "Guardar *32*"
+  and: "[es305]and[/es]"
+  itinerary: "[es307]Itinerary[/es]"
+  itineraries: "[es339]Itineraries[/es]"
+  in_str: "[es358]In[/es]"
+  out_str: "[es359]Out[/es]"
+  role: "[es368]Role[/es]"
+  change_role: "[es360]Change Role[/es]"
+  select_users: "[es370]Select users[/es]"
+  add: "[es371]Add[/es]"
+  count: "[es385]Count[/es]"
+  do_not_reply: "[es386]This email is sent from an email address that is not monitored. Please do not reply to this message.[/es]"
+  nothing_found_sorry: "[es407]Nothing found - sorry[/es]"
+  solicit_feedback: "[es428]Please give us some feedback:[/es]"
+  thanks_for_responding: "[es429]Thanks for taking the time to respond.[/es]"
+  success_feedback_link: "[es430]Click HERE if you made the trip as planned, and everything worked out just fine.[/es]"
+  no_trip_taken_feedback_link: "[es431]Click HERE if you decided not to make the trip at all.[/es]"
+  more_feedback_link: "[es432]Click HERE if you want to provide more feedback, or if things didn't work out as planned.[/es]"
 
   # Branding
   arc:

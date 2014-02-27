@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" id="26" measuredWidth="960" measuredHeight="700">
+    <screen xsi:type="model:Screen" href="assets/Components/BaseScreenTitleOnly.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Master" id="28" x="139" y="151" measuredWidth="704" measuredHeight="494">
+    <screen xsi:type="model:Screen" href="assets/Components/NewPlace.screen#/"/>
+    <overrides>
+      <widgets ref="14" link="AnonymousTripPlan.screen"/>
+    </overrides>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

@@ -2,14 +2,7 @@ class Admin::HomeController < Admin::BaseController
 
   # before_filter :setup_actions
   def index
-    @actions = [
-        {label: t(:find_traveler), target: error_501_path, icon: ACTION_ICONS[:find_traveler]},
-        {label: t(:create_traveler), target: error_501_path, icon: ACTION_ICONS[:create_traveler]},
-        {label: t(:trips), target: admin_trips_path, icon: ACTION_ICONS[:trips]},
-        {label: t(:agents_agencies), target: error_501_path, icon: ACTION_ICONS[:agents_agencies]},
-        {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports]},
-        {label: t(:view_services), target: service_path(Service.first.id), icon: ACTION_ICONS[:services]},
-    ]
+    @actions = admin_menu
     render '/shared/home'
   end
 

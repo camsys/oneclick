@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Panel" id="2" x="287" y="213" width="434" height="444" measuredWidth="434" measuredHeight="444" border="solid-rounded"/>
+  <widgets xsi:type="model:Icon" id="5" x="672" y="223" width="38" height="34" measuredWidth="38" measuredHeight="34" icon="assets/remove (large)"/>
+  <widgets xsi:type="model:Label" id="7" x="308" y="234" text="Three Trip Options" measuredWidth="250" measuredHeight="46" foreground="#0000ff">
+    <font size="28px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Text" id="8" x="361" y="280" text="Bus and Train&#xA;&#x9;....details...&#xA;&#x9;   &#xA;Taxicab&#xA;&#x9;...details...&#xA;&#x9;   &#xA;Volunteer Service&#xA;&#x9;...details...&#xA;   " measuredWidth="152" measuredHeight="252">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Icon" id="12" x="633" y="225" width="38" height="34" measuredWidth="38" measuredHeight="34" icon="assets/mail-reply (custom)"/>
+  <widgets xsi:type="model:Icon" id="16" x="656" y="600" width="40" height="40" measuredWidth="40" measuredHeight="40" icon="email (large)"/>
+  <widgets xsi:type="model:Icon" id="17" x="604" y="600" width="40" height="40" measuredWidth="40" measuredHeight="40" icon="comments (custom)"/>
+  <widgets xsi:type="model:Icon" id="18" x="555" y="601" width="40" height="40" measuredWidth="40" measuredHeight="40" icon="pin (custom)"/>
+  <widgets xsi:type="model:VScrollbar" id="19" x="626" y="288" height="289" measuredWidth="17" measuredHeight="289"/>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

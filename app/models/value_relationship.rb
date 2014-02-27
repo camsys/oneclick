@@ -1,3 +1,3 @@
 class ValueRelationship < ActiveRecord::Base
-  attr_accessible :id, :relationship
+  # attr_accessible :id, :relationship
 end

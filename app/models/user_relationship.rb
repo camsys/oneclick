@@ -8,10 +8,9 @@ class UserRelationship < ActiveRecord::Base
   belongs_to :traveler, :class_name => 'User', :foreign_key => 'user_id'
   belongs_to :delegate, :class_name => 'User'
   belongs_to :buddy, :class_name => 'User', :foreign_key => 'user_id'
-  belongs_to :confirmed_traveler, :class_name => 'User', :foreign_key => 'user_id', :conditions => 'relationship_status_id = 3'
+  belongs_to :confirmed_traveler, -> {where 'relationship_status_id = 3'}, :class_name => 'User', :foreign_key => 'user_id'
 
-  # default_scope where('relationship_status_id < ?', RelationshipStatus::HIDDEN)
-  scope :not_hidden, where('relationship_status_id != ?', RelationshipStatus::HIDDEN)
+  scope :not_hidden, -> {where('relationship_status_id != ?', RelationshipStatus::HIDDEN)}
 
   def revokable
     relationship_status_id == RelationshipStatus::CONFIRMED

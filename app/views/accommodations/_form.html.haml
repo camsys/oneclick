@@ -4,15 +4,15 @@
       = simple_form_for @user_accommodations_proxy, :url => path, :method => 'put', :remote => not(inline)  do |f|
         = f.error_notification
         = render partial: 'accommodations/eligibility_alert', locals: {inline: inline}
-        -TravelerAccommodation.where(:datatype => 'bool').each do |accommodation|
-          = f.input accommodation.code.to_sym, collection: [[true, 'Yes'], [false, 'No'], ['na', 'Not sure']], :required => false, as: :radio_buttons, label: accommodation.note, label_method: :last, value_method: :first, :item_wrapper_class => "inline"
-        -TravelerAccommodation.where(:datatype => 'disabled').each do |characteristic|
-          = f.input characteristic.code.to_sym, collection: [[true, 'Yes'], [false, 'No'], ['na', 'Not sure']], :required => false, as: :radio_buttons, label: characteristic.note + " (not yet available)", label_method: :last, value_method: :first, :item_wrapper_class => "inline", disabled: true
+        -Accommodation.where(:datatype => 'bool').each do |accommodation|
+          = f.input accommodation.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: accommodation.note, label_method: :last, value_method: :first, :item_wrapper_class => "inline"
+        -Accommodation.where(:datatype => 'disabled').each do |characteristic|
+          = f.input characteristic.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: characteristic.note + " (not yet available)", label_method: :last, value_method: :first, :item_wrapper_class => "inline", disabled: true
 
         - if inline
           = button_tag :type => 'submit', :class => "btn btn-primary" do
             %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-            Save and plan my trip
+            =t(:save_and_plan_trip)
             / = t(:plan_it)
           = link_to :back, :class => "cancel_link" do
             %i.icon.icon-reply

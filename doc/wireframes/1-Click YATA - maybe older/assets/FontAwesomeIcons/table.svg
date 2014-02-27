@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Converted from Font Awesome. Glyph: f0ce -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2048" height="2048" xml:space="preserve">
+<g transform="translate(192, 1664) scale(1, -1)">
+	<path id="table" d="M512 160v192q0 14 -9 23t-23 9h-320q-14 0 -23 -9t-9 -23v-192q0 -14 9 -23t23 -9h320q14 0 23 9t9 23zM512 544v192q0 14 -9 23t-23 9h-320q-14 0 -23 -9t-9 -23v-192q0 -14 9 -23t23 -9h320q14 0 23 9t9 23zM1024 160v192q0 14 -9 23t-23 9h-320q-14 0 -23 -9t-9 -23 v-192q0 -14 9 -23t23 -9h320q14 0 23 9t9 23zM512 928v192q0 14 -9 23t-23 9h-320q-14 0 -23 -9t-9 -23v-192q0 -14 9 -23t23 -9h320q14 0 23 9t9 23zM1024 544v192q0 14 -9 23t-23 9h-320q-14 0 -23 -9t-9 -23v-192q0 -14 9 -23t23 -9h320q14 0 23 9t9 23zM1536 160v192 q0 14 -9 23t-23 9h-320q-14 0 -23 -9t-9 -23v-192q0 -14 9 -23t23 -9h320q14 0 23 9t9 23zM1024 928v192q0 14 -9 23t-23 9h-320q-14 0 -23 -9t-9 -23v-192q0 -14 9 -23t23 -9h320q14 0 23 9t9 23zM1536 544v192q0 14 -9 23t-23 9h-320q-14 0 -23 -9t-9 -23v-192 q0 -14 9 -23t23 -9h320q14 0 23 9t9 23zM1536 928v192q0 14 -9 23t-23 9h-320q-14 0 -23 -9t-9 -23v-192q0 -14 9 -23t23 -9h320q14 0 23 9t9 23zM1664 1248v-1088q0 -66 -47 -113t-113 -47h-1344q-66 0 -113 47t-47 113v1088q0 66 47 113t113 47h1344q66 0 113 -47t47 -113 z" />
+</g>
+</svg>	

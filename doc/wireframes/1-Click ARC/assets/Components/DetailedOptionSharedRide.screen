@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Panel" id="1" x="287" y="213" width="434" height="444" measuredWidth="434" measuredHeight="444" border="solid-rounded"/>
+  <widgets xsi:type="model:Icon" id="2" x="672" y="223" width="38" height="34" measuredWidth="38" measuredHeight="34" icon="assets/remove (large)"/>
+  <widgets xsi:type="model:Icon" id="3" x="304" y="232" width="49" height="49" measuredWidth="49" measuredHeight="49" foreground="#0000ff" icon="assets/group (custom)"/>
+  <widgets xsi:type="model:Label" id="4" x="361" y="234" text="Shared Ride" measuredWidth="162" measuredHeight="46" foreground="#0000ff">
+    <font size="28px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Text" id="5" x="361" y="280" text="Time: 60 Minutes&#xA;Cost: $11.25&#xA;No Transfers&#xA;Must reserve One Week ahead!&#xA;&#xA;You are elible for:&#xA;&#xA;" measuredWidth="270" measuredHeight="168">
+    <font size="20px" bold="false"/>
+  </widgets>
+  <widgets xsi:type="model:Icon" id="8" x="633" y="225" width="38" height="34" measuredWidth="38" measuredHeight="34" icon="assets/mail-reply (custom)"/>
+  <widgets xsi:type="model:Icon" id="12" x="656" y="600" width="40" height="40" measuredWidth="40" measuredHeight="40" icon="email (large)"/>
+  <widgets xsi:type="model:Icon" id="13" x="604" y="600" width="40" height="40" measuredWidth="40" measuredHeight="40" icon="comments (custom)"/>
+  <widgets xsi:type="model:Icon" id="14" x="555" y="601" width="40" height="40" measuredWidth="40" measuredHeight="40" icon="pin (custom)"/>
+  <widgets xsi:type="model:Text" id="15" x="378" y="456" text="Senior Shared Ride Service&#xA;&#xA;" measuredWidth="253" measuredHeight="28">
+    <font size="20px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="16" x="440" y="504" text="Book This Trip!" measuredWidth="149" measuredHeight="38" state="selected">
+    <font size="20px"/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

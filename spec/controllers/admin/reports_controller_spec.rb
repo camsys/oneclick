@@ -17,7 +17,7 @@ describe Admin::ReportsController do
     it "returns http success" do
       BasicReportRow.stub(new: double('mock report', get_data: 'stuff'))
       report = create(:report)
-      get :show, id: report.id
+      get :show, id: report.id, generated_report: {report_name: report.id}
       response.should be_success
     end
   end

@@ -1,0 +1,44 @@
+%h1= t(:agencies)
+
+%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_agencies_table
+  %thead
+    %tr
+      %th= t(:name)
+      %th= t(:parents_agency)
+      %th= t(:subagencies)
+      %th
+  %tbody
+    - @agencies.each do |agency|
+      %tr
+        %td= agency.name
+        %td
+          - if agency.parent
+            = link_to agency.parent.name, [:admin, agency.parent]
+          - else
+            = ''
+        %td
+          = render partial: agency.sub_agencies
+        %td.center
+          = link_to edit_admin_agency_path(agency), {class: 'btn'} do
+            %i.icon-pencil
+            = t(:edit)
+          = link_to admin_agency_users_path(agency), {class: 'btn'} do
+            %i.icon-group
+            = t(:users)
+
+= link_to t(:new_agency), new_admin_agency_path, {class: 'btn'}
+
+/ = render 'shared/datatable_javascript'
+
+:javascript
+  $(document).ready(function() {
+    $('#admin_agencies_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ agencies per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ agencies",
+              "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
+              "sInfoFiltered": "(filtered from _MAX_ total agencies)"
+          }
+      } );
+  } );

@@ -1,0 +1,17 @@
+%p
+  %b Name:
+  = @agency.name
+%p
+  %b Parent:
+  - if @agency.parent
+    = link_to @agency.parent.name, [:admin, @agency.parent]
+  - else
+    = ''
+%p
+  %b Sub-agencies:
+  - @agency.sub_agencies.each do |agency|
+    = link_to agency.name, [:admin, agency]
+
+= link_to 'Edit', edit_admin_agency_path(@agency)
+\|
+= link_to 'List', admin_agencies_path

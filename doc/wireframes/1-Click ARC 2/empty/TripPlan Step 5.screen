@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" id="1" measuredWidth="960" measuredHeight="700">
+    <screen xsi:type="model:Screen" href="assets/Components/BasedScreenLoggedInTitleOnly.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Master" id="2" x="328" y="190" measuredWidth="300" measuredHeight="200">
+    <screen xsi:type="model:Screen" href="assets/Components/TripOption.screen#/"/>
+    <overrides>
+      <widgets ref="10">
+        <attributes key="icon" value="truck (custom)"/>
+      </widgets>
+      <widgets ref="11" text="Taxicab"/>
+      <widgets ref="13" text="Time: 28 Minutes&#xA;Cost: $70.00&#xA;Door-to-Door"/>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Master" id="3" x="14" y="189" measuredWidth="300" measuredHeight="200">
+    <screen xsi:type="model:Screen" href="assets/Components/TripOption.screen#/"/>
+    <overrides>
+      <widgets ref="11" text="Public Transit"/>
+      <widgets ref="13" text="Time: 90 Minutes&#xA;Cost: $2.25&#xA;Two Transfers"/>
+      <widgets ref="8" link="TripPlan%20Step%206.screen"/>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Master" id="5" x="640" y="190" measuredWidth="300" measuredHeight="200">
+    <screen xsi:type="model:Screen" href="assets/Components/TripOption.screen#/"/>
+    <overrides>
+      <widgets ref="10">
+        <attributes key="icon" value="car (custom)"/>
+      </widgets>
+      <widgets ref="11" text="Volunteer Svc."/>
+      <widgets ref="13" text="Time: 40 Minutes&#xA;Cost: Free&#xA;Must reserve early!"/>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Label" id="7" x="16" y="134" text="My Home to Physical Therapy, August 4" measuredWidth="570" measuredHeight="53">
+    <font size="32px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="8" x="10" y="10" text="225" measuredWidth="23" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="9" x="20" y="20" text="225" measuredWidth="23" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Icon" id="10" x="700" y="600" width="70" height="66" measuredWidth="70" measuredHeight="66" icon="assets/ok (large)" link="TripPlan%20Step%207.screen"/>
+  <widgets xsi:type="model:Icon" id="11" x="777" y="600" width="70" height="66" measuredWidth="70" measuredHeight="66" icon="assets/plus (custom)"/>
+  <widgets xsi:type="model:Icon" id="12" x="855" y="600" width="70" height="66" measuredWidth="70" measuredHeight="66" icon="assets/mail-reply-all (custom)" link="TripPlan%20Step%204.screen"/>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

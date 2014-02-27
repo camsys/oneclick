@@ -1,6 +1,6 @@
 Oneclick::Application.routes.draw do
 
-  match '/configuration' => 'configuration#configuration'
+  get '/configuration' => 'configuration#configuration'
 
   scope "(:locale)", locale: /en|es/ do
 
@@ -11,7 +11,7 @@ Oneclick::Application.routes.draw do
     end
 
     authenticated :user do
-      root :to => 'home#index'
+      root :to => 'home#index', as: :authenticated_root
     end
 
     devise_for :users, controllers: {registrations: "registrations", sessions: "sessions"}
@@ -116,12 +116,12 @@ Oneclick::Application.routes.draw do
     #   devise_for :users, as: 'kiosk', controllers: {sessions: "kiosk/sessions"}
     # end
 
-    # match '/kiosk_user/kiosk/users/sign_in', to: 'kiosk/sessions#create'
+    # get '/kiosk_user/kiosk/users/sign_in', to: 'kiosk/sessions#create'
 
     get 'place_details/:id' => 'place_searching#details', as: 'place_details'
 
     namespace :kiosk do
-      match '/', to: 'home#index'
+      get '/', to: 'home#index'
 
       resources :locations, only: [:show]
       resources :call, only: [:show, :index] do
@@ -232,15 +232,30 @@ Oneclick::Application.routes.draw do
     devise_scope :user do
       post '/kiosk/sign_in' => 'kiosk/sessions#create', as: :kiosk_user_session
       get '/kiosk/sign_in' => 'kiosk/sessions#new', as: :new_kiosk_user_session
-      match '/kiosk/session/destroy' => 'kiosk/sessions#destroy', as: :destroy_kiosk_user_session
+      get '/kiosk/session/destroy' => 'kiosk/sessions#destroy', as: :destroy_kiosk_user_session
     end
 
 
     namespace :admin do
       resources :reports, :only => [:index, :show]
       resources :trips, :only => [:index]
-      match '/geocode' => 'util#geocode'
-      match '/' => 'home#index'
+      get '/geocode' => 'util#geocode'
+      get '/' => 'home#index'
+      resources :agencies do
+        get 'select_user'
+        resources :users do
+          post 'add_to_agency', on: :collection
+          put 'add_to_agency', on: :collection
+        end
+      end
+      resources :provider_orgs do
+        resources :users
+        resources :services
+      end
+      resources :users do
+        put 'update_roles', on: :member
+      end
+      resources :providers
     end
 
     resources :services do
@@ -256,21 +271,21 @@ Oneclick::Application.routes.draw do
         post 'update'
       end
     end
+\
+    get '/' => 'home#index'
 
-    match '/' => 'home#index'
-
-    match '/404' => 'errors#error_404', as: 'error_404'
-    match '/422' => 'errors#error_422', as: 'error_422'
-    match '/500' => 'errors#error_500', as: 'error_500'
-    match '/501' => 'errors#error_501', as: 'error_501'
+    get '/404' => 'errors#error_404', as: 'error_404'
+    get '/422' => 'errors#error_422', as: 'error_422'
+    get '/500' => 'errors#error_500', as: 'error_500'
+    get '/501' => 'errors#error_501', as: 'error_501'
 
   end
 
   unless Oneclick::Application.config.ui_mode == 'kiosk'
-    ComfortableMexicanSofa::Routing.admin(:path => '/cms-admin')
+    get '*not_found' => 'errors#handle404'
 
-    mount_sextant if Rails.env.development?
-    match '*not_found' => 'errors#handle404'
+    comfy_route :cms_admin, :path => '/admin'
+    comfy_route :cms, :path => '/', :sitemap => false
 
     # Make sure this routeset is defined last
     ComfortableMexicanSofa::Routing.content(:path => '/', :sitemap => false)

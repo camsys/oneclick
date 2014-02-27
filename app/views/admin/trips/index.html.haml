@@ -23,7 +23,7 @@
         %th= t(:taken)
         %th.center= t(:rating)
         %th.center= t(:comments)
-        %th.center= "Send Follow-up Email"
+        %th.center= t(:send_follow_up_email)
     %tbody{ :id => 'trips_table'}
       - @trips.each do |trip|
         %tr
@@ -39,11 +39,11 @@
           %td= trip.trip_purpose.name
           %td
             -if trip.taken == true
-              ="Yes"
+              =t(:yes_str)
             -elsif trip.taken == false
-              ="No"
+              =t(:no_str)
             -else
-              ="Not answered."
+              =t(:no_answer_str)
           %td.center.nowrap
             =get_rating_icons(trip)
           %td.center.nowrap

@@ -7,14 +7,16 @@ class Admin::ReportsController < Admin::BaseController
   
   def index
     @reports = Report.all
-        
+    @generated_report = GeneratedReport.new
   end
 
   # renders a dashboard detail page. Actual details depends on the id parameter passed
   # from the view
   def show
-    
-    @report = Report.find(params[:id])
+
+    @generated_report = GeneratedReport.new
+    @generated_report.report_name = params[:generated_report][:report_name]
+    @report = Report.find(params[:generated_report][:report_name])
 
     # Filtering logic. See ApplicationHelper.trip_filters
     if params[:time_filter_type]
@@ -42,6 +44,7 @@ class Admin::ReportsController < Admin::BaseController
         format.html
       end
     end
+
   end
 
 end

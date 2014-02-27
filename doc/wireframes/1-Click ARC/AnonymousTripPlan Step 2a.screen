@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore" xmlns:o="http://wireframesketcher.com/1.0/model/overrides">
+  <widgets xsi:type="model:Master" id="25" measuredWidth="960" measuredHeight="700">
+    <screen xsi:type="model:Screen" href="assets/Components/BaseScreenTitleOnly.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Window" id="2" x="314" y="284" width="449" height="337" text="About Your Trip" measuredWidth="449" measuredHeight="337"/>
+  <widgets xsi:type="model:Combo" id="7" x="400" y="320" width="231" text="My Home" measuredWidth="231" measuredHeight="33">
+    <font size="19px"/>
+  </widgets>
+  <widgets xsi:type="model:DateField" id="8" x="406" y="417" width="161" text="8/4/2013" measuredWidth="161" measuredHeight="23"/>
+  <widgets xsi:type="model:Spinner" id="9" x="404" y="448" text="12" measuredWidth="46" measuredHeight="36">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Spinner" id="10" x="454" y="448" text="30" measuredWidth="46" measuredHeight="36">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="11" x="499" y="443" height="51" text="(o) AM&#xA;( ) PM" measuredWidth="48" measuredHeight="51" selection="0" border="false" alpha="0" rowHeight="20">
+    <font size="12px"/>
+    <items x="0" y="2" width="48" height="22" text="(o) AM"/>
+    <items x="0" y="24" width="48" height="22" text="( ) PM"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="13" x="372" y="526" text="[x] Service Animal&#xA;[ ] Home Health Aide&#xA;[ ] Family Member" measuredWidth="127" measuredHeight="70" alpha="0">
+    <font/>
+    <items x="0" y="2" width="127" height="22" text="[x] Service Animal"/>
+    <items x="0" y="24" width="127" height="22" text="[ ] Home Health Aide"/>
+    <items x="0" y="46" width="127" height="22" text="[ ] Family Member"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="14" x="345" y="319" text="From" measuredWidth="51" measuredHeight="36" textAlignment="Right">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Combo" id="15" x="403" y="368" width="231" text="Physical Therapy" measuredWidth="231" measuredHeight="33">
+    <font size="19px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="16" x="369" y="367" text="To" measuredWidth="27" measuredHeight="36" textAlignment="Right">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="17" x="350" y="408" text="Date" measuredWidth="46" measuredHeight="36" textAlignment="Right">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="18" x="350" y="447" text="Time" measuredWidth="47" measuredHeight="36" textAlignment="Right">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="19" x="533" y="526" text="[x] One Way Trip&#xA;[ ] Round Trip&#xA;[ ] Many Stops" measuredWidth="101" measuredHeight="70" alpha="0">
+    <font/>
+    <items x="0" y="2" width="101" height="22" text="[x] One Way Trip"/>
+    <items x="0" y="24" width="101" height="22" text="[ ] Round Trip"/>
+    <items x="0" y="46" width="101" height="22" text="[ ] Many Stops"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="20" x="372" y="499" text="Traveling With..." measuredWidth="115" measuredHeight="29">
+    <font size="16px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="21" x="533" y="493" measuredWidth="5" measuredHeight="29">
+    <font size="16px"/>
+  </widgets>
+  <widgets xsi:type="model:Master" id="22" x="196" y="156" measuredWidth="717" measuredHeight="513">
+    <screen xsi:type="model:Screen" href="assets/Components/TravelProfile.screen#/"/>
+    <overrides>
+      <widgetChanges xsi:type="o:Insert" newIndex="16">
+        <object xsi:type="model:Button" x="748" y="468" text="Close" link="AnonymousTripPlan%20Step%202.screen">
+          <font size="20px"/>
+        </object>
+      </widgetChanges>
+      <widgetChanges xsi:type="o:Insert" newIndex="16">
+        <object xsi:type="model:HLine" x="559" y="275" width="269"/>
+      </widgetChanges>
+      <widgetChanges xsi:type="o:Insert" newIndex="16">
+        <object xsi:type="model:TextArea" x="559" y="241" width="302" height="292" text="Agent Live Chat&#xD;&#xA;&#xD;&#xA;Customer: Why do you want to know how old I am?&#xD;&#xA;&#xD;&#xA;Agent: Because you might be eligible for special reduced fares if you are over 60 years old.&#xD;&#xA;&#xD;&#xA;Customer: Oh, OK.  Thanks!&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;">
+          <font size="16px"/>
+        </object>
+      </widgetChanges>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Button" id="23" x="699" y="612" text="OK" measuredWidth="47" measuredHeight="38" state="selected" link="AnonymousTripPlan%20Step%203.screen" style="pointright">
+    <font size="20px"/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>
