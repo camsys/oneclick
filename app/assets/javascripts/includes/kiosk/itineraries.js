@@ -1,5 +1,6 @@
 jQuery(function ($) {
   $itineraries = $('.js-trip-itineraries-slides');
+  debugger;
   if ($itineraries.length < 1) return;
 
   var width = 18 + 321 + 1;
