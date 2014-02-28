@@ -12,6 +12,11 @@ module Kiosk
       render 'kiosk/shared/home'
     end
 
+    def reset
+      reset_session
+      render layout: false
+    end
+
   protected
 
     def back_url
