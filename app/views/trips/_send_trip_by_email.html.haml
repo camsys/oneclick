@@ -16,7 +16,7 @@
         = f.input :email_comments, as: :text, label: t(:comments), required: false, input_html: {rows: 3}
       .modal-footer
         = button_tag type: :submit, class: 'btn btn-info' do
-          %i.fa-envelope-o
+          %i.fa.fa-envelope-o
           = t(:send)
         = link_to '#', :class => "cancel_link" do
           %i.fa.fa-reply

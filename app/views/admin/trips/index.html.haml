@@ -29,7 +29,7 @@
         %tr
           - if trip.in_the_future
             %td.center.nowrap          
-              %i.fa-asterisk
+              %i.fa.fa-asterisk
           - else
             %td.center.nowrap          
           %td.nowrap= trip.user.name
@@ -48,12 +48,12 @@
             =get_rating_icons(trip)
           %td.center.nowrap
             =link_to '#', {href: '#user_comments_' + trip.id.to_s, class: 'btn btn-block', data: {toggle: 'modal'}} do
-              %i.fa-pencil
+              %i.fa.fa-pencil
 
 
           %td.center.nowrap
             = link_to email_feedback_user_trip_path(trip.user, trip), {:class => "btn btn-block", :alt => t(:plan_trip), :title => t(:plan_trip)} do
-              %i.fa-envelope-o
+              %i.fa.fa-envelope-o
 
         = render partial: 'user_comments', locals: {trip: trip}
 

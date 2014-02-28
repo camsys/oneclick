@@ -34,14 +34,14 @@
     .pull-right{:style => "display: inline-block"}
       .span12.btn-toolbar
         %button.btn.btn-info
-          %i.fa-print
+          %i.fa.fa-print
           =t(:print)
         %button.btn.btn-info
-          %i.fa-comments
+          %i.fa.fa-comments
           =t(:chat)
         %button.btn.btn-info{:id => "email_itinerary"}
           =link_to '#', {href: '#send_itinerary_by_email_' + @itinerary.id.to_s, class: "btn-info", data: {toggle: 'modal'}} do
-            %i.fa-envelope-o
+            %i.fa.fa-envelope-o
             =t(:e_mail)
 
 

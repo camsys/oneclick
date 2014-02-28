@@ -9,7 +9,7 @@
     - if @trip.in_the_future
       .span1
         = link_to edit_user_trip_path(@traveler, @trip), :class => "btn btn-small pull-right", :alt => t(:edit_trip), :title => t(:edit_trip) do
-          %i.fa-edit
+          %i.fa.fa-edit
 
 - if @trip.any_parts_selected?
   .row-fluid.selected_notices{style: 'margin-top: 19px;'}
@@ -39,31 +39,31 @@
       .row-fluid
         .span6{style: 'margin-bottom: 9px;'}
           =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
-            %i.fa-envelope-o
+            %i.fa.fa-envelope-o
             =t(:email_trip_details)
         .span6{style: 'margin-bottom: 9px;'}
           -if (@trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service) or (@trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.service)
             =link_to '#', {href: '#send_trip_by_email_to_provider', class: 'btn btn-block', data: {toggle: 'modal'}} do
-              %i.fa-ticket
+              %i.fa.fa-ticket
               =t(:send_email_to) + " " + t(:provider)
           -else
             =link_to '#', {disabled: true, class: 'btn btn-block'} do
-              %i.fa-ticket
+              %i.fa.fa-ticket
               =t(:send_email_to) + " " + t(:provider)
       .row-fluid
         .span6{style: 'margin-bottom: 9px;'}
           =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: false) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
-            %i.fa-search
+            %i.fa.fa-search
             =t(:view_trip_details)
         .span6{style: 'margin-bottom: 9px;'}
           =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
-            %i.fa-print
+            %i.fa.fa-print
             =t(:print_trip_details)
       -if user_signed_in?
         .row-fluid
           .span6.offset3
             =link_to user_trips_path(get_traveler), {class: 'btn btn-block'} do
-              %i.fa-share-alt.fa-flip-horizontal
+              %i.fa.fa-share-alt.fa-flip-horizontal
               =t(:view_planned_trips)
 
 
@@ -96,7 +96,7 @@
       %i{class: CsHelpers::ACTION_ICONS[:plan_a_trip]}
       = t(:plan_a_new_trip)
     = link_to '#', {href: '#send_trip_by_email', class: "pull-right", data: {toggle: 'modal'}} do
-      %i.fa-envelope-o
+      %i.fa.fa-envelope-o
       =t(:send_by_email)
 
     = render partial: 'send_trip_by_email', locals: {trip: @trip}
