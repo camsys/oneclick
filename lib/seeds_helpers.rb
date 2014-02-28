@@ -16,7 +16,7 @@ module SeedsHelpers
             record[:code] = p[:code]
             p[:xlate].each do |k,v|
                 translation_fkey = "#{p[:code]}_#{k}"
-                puts (Translation.create!(key: translation_fkey, locale: :en, value: v)).ai
+                Translation.create!(key: translation_fkey, locale: :en, value: v)
                 Translation.create!(key: translation_fkey, locale: :es, value: "[es]#{v}[/es]")
                 record[k] = translation_fkey
             end
