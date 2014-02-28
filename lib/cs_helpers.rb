@@ -14,9 +14,9 @@ module CsHelpers
     :create_traveler =>'fa fa-user',
     :agents_agencies => 'fa fa-sitemap',
     :providers => 'fa fa-umbrella',
-    :reports => 'fa fa-bar-chart',
+    :reports => 'fa fa-bar-chart-o',
     :trips => 'fa fa-tags',
-    :services => 'fa fa-bus-sign',
+    :services => 'icon-bus-sign',
     :users => 'fa fa-group',
 
   }

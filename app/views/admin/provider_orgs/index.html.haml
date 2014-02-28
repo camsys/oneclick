@@ -11,13 +11,13 @@
         %td= provider_org.name
         %td.center
           = link_to edit_admin_provider_org_path(provider_org), {class: 'btn'} do
-            %i.fa-pencil
+            %i.fa.fa-pencil
             = t(:edit)
           / = link_to admin_provider_org_users_path(provider_org), {class: 'btn'} do
-          /   %i.fa-group
+          /   %i.fa.fa-group
           /   = t(:users)
           = link_to admin_provider_org_services_path(provider_org), {class: 'btn'} do
-            %i.fa-info-circle
+            %i.fa.fa-info-circle
             = t(:services)
 
 = link_to 'New Provider Organization', new_admin_provider_org_path, {class: 'btn'}

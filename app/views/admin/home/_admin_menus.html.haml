@@ -6,5 +6,5 @@
   - admin_menu.each do |action|
     %li
       = link_to action[:target], method: (action[:method] || 'get') do
-        %i.fa{class: action[:icon]}
+        %i{class: action[:icon]}
         = action[:label]

@@ -33,7 +33,7 @@
       = f.association :users, collection: @agency.unselected_users, as: :check_boxes, label_method: :email_and_agency, value_method: :id
       .modal-footer
         = button_tag type: :submit, class: 'btn btn-info' do
-          %i.fa-plus
+          %i.fa.fa-plus
           =t(:add)
         %a{'data-dismiss' => 'modal'}
           %i.fa.fa-reply

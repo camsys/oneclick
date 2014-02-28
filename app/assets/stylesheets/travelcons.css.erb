@@ -1,9 +1,9 @@
 @font-face{
     font-family:'travel-icons';
-    src: url('../assets/travelcons.eot');
-    src: url('../assets/travelcons.eot') format('embedded-opentype'),
-         url('../assets/travelcons.woff') format('woff'),
-         url('../assets/travelcons.ttf') format('truetype');
+    src: url(<%= asset_path('/assets/travelcons.eot') %>);
+    src: url(<%= asset_path('/assets/travelcons.eot') %>) format('embedded-opentype'),
+         url(<%= asset_path('/assets/travelcons.woff') %>) format('woff'),
+         url(<%= asset_path('/assets/travelcons.ttf') %>) format('truetype');
     font-weight:normal;font-style:normal;}
 .travelcon-subway:before,
 .travelcon-walk:before,
