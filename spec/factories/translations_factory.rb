@@ -2,9 +2,15 @@
 
 FactoryGirl.define do
 
-  factory :cms_snippet, class: Translation do
-    key 'home-bottom-left_html'
+  factory :en_cms_snippet, class: Translation do
+    key 'cms_snippet'
     value "FG Snippet Text"
     locale :en
+  end
+
+  factory :es_cms_snippet, class: Translation do
+    key 'cms_snippet'
+    value "FG Snippet Text"
+    locale :es
   end
 end

@@ -4,14 +4,13 @@ require "support/oneclick_spec_helpers"
 
 describe "shared/home.html.haml" do
 
-    before(:all) do
-        factory = FactoryGirl.create(:cms_snippet)
+    before(:each) do
         I18n.locale = :en
+        assign(:actions, [])
+        render
     end
 
-  it "accurately pulls from the CMS" do
-    assign(:actions, [])
-    render
-    expect(rendered).to include("FG Snippet Text")
+  it "respects the locale" do
+    expect(rendered).to include("locale=en")
   end
 end

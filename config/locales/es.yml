@@ -543,6 +543,10 @@ es:
       models:
         user:
           attributes:
+            first_name:
+              blank: "no puede estar en blanco"
+            last_name:
+              blank: "no puede estar en blanco"
             email:
               blank: "no puede estar en blanco"
               invalid: "no es válido"
@@ -551,4 +555,18 @@ es:
               confirmation: "no coincide con la confirmación"
             current_password:
               blank: "no puede estar en blanco"
-
+  activemodel:
+    errors:
+      models:
+        place_proxy:
+          attributes:
+            name:
+              blank:  "no puede estar en blanco"
+            raw_address:
+              blank: "no puede estar en blanco"
+        trip_proxy:
+          attributes:
+            from_place:
+              blank: "no puede estar en blanco"
+            to_place:
+              blank: "no puede estar en blanco"
