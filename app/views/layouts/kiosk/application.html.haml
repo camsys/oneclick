@@ -16,6 +16,9 @@
       = javascript_include_tag "application" # TODO This should go in footer
       = javascript_include_tag "https://www.google.com/jsapi"
 
+      - if Rails.env.development?
+        = javascript_include_tag 'cocoa_test'
+
       %meta{name: "ui_typeahead_delay",       content: Rails.application.config.ui_typeahead_delay}
       %meta{name: "ui_typeahead_min_chars",   content: Rails.application.config.ui_typeahead_min_chars}
       %meta{name: "ui_typeahead_list_length", content: Rails.application.config.ui_typeahead_list_length}
