@@ -8,20 +8,19 @@ Oneclick::Application.configure do
 
   config.action_dispatch.best_standards_support = :builtin
 
-  # # development settings
+  # development settings
   config.serve_static_assets = true
-  # config.assets.compress = false
-  # # config.assets.compile
-  # # config.assets.digest
-  # config.assets.debug = true
+  config.assets.compress = false
+  # config.assets.compile
+  # config.assets.digest
+  config.assets.debug = true
 
-  # QA settings
-  # config.serve_static_assets = false
-
-  config.assets.compress = true
-  config.assets.compile = false
-  config.assets.digest = true
-  # config.assets.debug
+  # # QA settings
+  # # config.serve_static_assets = false
+  # config.assets.compress = true
+  # config.assets.compile = false
+  # config.assets.digest = true
+  # # config.assets.debug
 
   # config.i18n.fallbacks
 
