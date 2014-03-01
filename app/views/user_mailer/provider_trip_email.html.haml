@@ -66,7 +66,7 @@
 %hr{style: "height:12px; background:#848484;"}
 %h2="Service Information"
 %h3
-  -if @itinerary.mode.name.downcase == 'paratransit'
+  -if @itinerary.mode.code == 'mode_paratransit'
     =@itinerary.service.name
     %h3
       =@itinerary.service.provider.name
