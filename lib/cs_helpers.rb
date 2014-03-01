@@ -7,7 +7,7 @@ module CsHelpers
     :identify_places =>'fa fa-map-marker',
     :travel_profile => 'fa fa-cogs',
     :my_travel_profile => 'fa fa-cogs',
-    :my_trips => 'fa fa-share-alt fa-flip-horizontal',
+    :my_trips => 'fa fa-share-square fa-flip-horizontal',
     :my_places => 'fa fa-map-marker',
     :help_and_support => 'fa fa-question-sign',
     :find_traveler => 'fa fa-search',
