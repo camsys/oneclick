@@ -3,6 +3,8 @@ module TripsHelper
   include ServiceAdapters::RideshareAdapter
 
   def get_alt_button_text(itinerary, button_action)
+    # TODO This may need fixing mode.name/code
+    # TODO Also, this code is duplicated in planned_trips_helper.rb
     "#{button_action.capitalize} #{itinerary.mode.name.downcase} option."
   end
 

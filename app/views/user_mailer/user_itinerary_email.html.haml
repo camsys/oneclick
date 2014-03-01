@@ -7,7 +7,7 @@
 %hr
 
 %h2
-  -if @itinerary.mode.name.downcase == 'paratransit'
+  -if @itinerary.mode.code == 'mode_paratransit'
     =@itinerary.service.name
     %h3
       =@itinerary.service.provider.name
@@ -40,7 +40,7 @@
 
 
 
--unless @itinerary.mode.name.downcase == 'rideshare'
+-unless @itinerary.mode.code == 'mode_rideshare'
   %hr
   %h3
     =t(:summary) + ":"

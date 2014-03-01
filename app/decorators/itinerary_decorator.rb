@@ -20,7 +20,7 @@ class ItineraryDecorator < Draper::Decorator
   end
 
   def cost_in_words
-    return h.number_to_currency(cost.round) + " (est)" if mode.name.downcase == 'taxi'
+    return h.number_to_currency(cost.round) + " (est)" if mode.code == 'mode_taxi'
     return 'Click for cost details' if cost.nil?
     return 'Not available' if cost.nil?
     (cost != 0 ? h.number_to_currency(cost) : "No cost for this service.")
@@ -32,14 +32,14 @@ class ItineraryDecorator < Draper::Decorator
   end
 
   def notes
-    case mode.name
-    when 'Transit'
+    case mode.code
+    when 'mode_transit'
       'No'
-    when 'Taxi'
+    when 'mode_taxi'
       'Yes'
-    when 'Paratransit'
+    when 'mode_paratransit'
       h.duration_to_words(service.advanced_notice_minutes*60, suppress_minutes: true, days_only: true)
-    when 'Rideshare'
+    when 'mode_rideshare'
       h.t(:possible_rideshares, count: ride_count) + ' ' + h.t(:view_details)
     else
       'None'
@@ -47,10 +47,10 @@ class ItineraryDecorator < Draper::Decorator
   end
 
   def notes_label
-    case mode.name
-    when 'Rideshare'
+    case mode.code
+    when 'mode_rideshare'
       'Note'
-    when 'Transit', 'Taxi', 'Paratransit'
+    when 'mode_transit', 'mode_taxi', 'mode_paratransit'
       'Book ahead'
     else
       'Note'

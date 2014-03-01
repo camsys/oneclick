@@ -15,7 +15,7 @@
               = duration_to_words(itinerary.duration) + " " + t(:est)
 
           -if itinerary.cost
-            -if itinerary.mode.name.downcase == 'taxi'
+            -if itinerary.mode.code == 'mode_taxi'
               %li
                 = number_to_currency(itinerary.cost.round) + " " + t(:est)
             -else
@@ -42,6 +42,6 @@
           -if itinerary.walk_time
             %li
               = duration_to_words(itinerary.walk_time) + t(:walking)
-          -if itinerary.mode.name.downcase=='rideshare'
+          -if itinerary.mode.code =='mode_rideshare'
             %li
               = t(:possible_rideshares1, count: itinerary.ride_count) + ' ' + t(:possible_rideshares2)

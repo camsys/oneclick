@@ -44,7 +44,7 @@
 
     %hr{style: "height:12px; background:#848484;"}
     %h2
-      -if itinerary.mode.name.downcase == 'paratransit'
+      -if itinerary.mode.code == 'mode_paratransit'
         =itinerary.service.name
         %h3
           =itinerary.service.provider.name
@@ -53,7 +53,7 @@
 
     %hr
     %h3
-      -unless itinerary.mode.name.downcase == 'rideshare'
+      -unless itinerary.mode.code == 'mode_rideshare'
         =t(:summary) + ":"
         = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
 

@@ -139,9 +139,9 @@ end
 
     if itinerary.is_walk
       mode_name = 'walk'
-    elsif itinerary.mode.name.downcase == 'paratransit'
+    elsif itinerary.mode.code == 'mode_paratransit'
       mode_name = itinerary.service.service_type.name.downcase
-    elsif itinerary.mode.name.downcase == 'transit'
+    elsif itinerary.mode.code == 'mode_transit'
       mode_name = itinerary.transit_type
     else
       mode_name = itinerary.mode.name.downcase unless itinerary.mode.nil?
@@ -188,7 +188,7 @@ end
 
     return itinerary.service.name if itinerary.service
 
-    return get_trip_summary_title(itinerary) unless itinerary.mode.name.downcase == 'transit'
+    return get_trip_summary_title(itinerary) unless itinerary.mode.code == 'mode_transit'
 
     name_string = ""
     legs = itinerary.get_legs

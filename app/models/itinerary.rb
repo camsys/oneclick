@@ -36,7 +36,7 @@ class Itinerary < ActiveRecord::Base
 
   # returns true if this itinerary can be mapped
   def is_mappable
-    return mode.name.downcase == 'transit' ? true : false
+    return mode.code == 'mode_transit' ? true : false
   end
 
   # This one is selected if no other valid ones in the trip_part are visible.
@@ -54,7 +54,7 @@ class Itinerary < ActiveRecord::Base
 
   # Determines whether we are using rail, bus and rail, or just bus for the transit trips
   def transit_type
-    unless mode.name.downcase == 'transit'
+    unless mode.code == 'mode_transit'
       return nil
     end
     bus = false
