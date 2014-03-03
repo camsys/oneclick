@@ -4,7 +4,7 @@
   %thead
     %tr
       %th= t(:name)
-      %t= t(:provider)
+      %th= t(:provider)
       %th= t(:type)
       %th= t(:active)
   %tbody
@@ -12,8 +12,8 @@
       %tr
         %td= service.name
         %td= service.provider.name
-        %td= service.service_type.name
-        %td= service.active
+        %td= cms_snippet_content(service.service_type.name)
+        %td= t(service.active)
         / %td.center
         /   = link_to error_501_path, {class: 'btn'} do
         /     %i.fa.fa-pencil
