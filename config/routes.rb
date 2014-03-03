@@ -123,6 +123,8 @@ Oneclick::Application.routes.draw do
     namespace :kiosk do
       get '/', to: 'home#index'
 
+      get 'itineraries/:id/print' => 'trips#itinerary_print', as: 'print_itinerary'
+
       resources :locations, only: [:show]
       resources :call, only: [:show, :index] do
         post :outgoing, on: :collection
@@ -271,7 +273,7 @@ Oneclick::Application.routes.draw do
         post 'update'
       end
     end
-\
+
     get '/' => 'home#index'
 
     get '/404' => 'errors#error_404', as: 'error_404'
