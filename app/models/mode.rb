@@ -5,12 +5,6 @@ class Mode < ActiveRecord::Base
   # Updatable attributes
   # attr_accessible :id, :name, :active
     
-  # TODO Unclear if we should have these constants any more
-  PARATRANSIT = Mode.new name: 'Paratransit', active: true
-  TRANSIT = Mode.new name: 'Transit', active: true
-  TAXI = Mode.new name: 'Taxi', active: true
-  RIDESHARE = Mode.new name: 'Rideshare', active: true
-
   # set the default scope
   default_scope {where('active = ?', true)}
 

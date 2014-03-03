@@ -924,8 +924,8 @@ private
       else
         place = get_cached_addresses(CACHED_TO_ADDRESSES_KEY)[place_id]
       end
-      Rails.logger.debug "in get_preselected_place"
-      Rails.logger.debug "#{is_from} #{place.ai}"
+      Rails.logger.info "in get_preselected_place"
+      Rails.logger.info "#{is_from} #{place.ai}"
       return {
         :name => place[:name], 
         :lat => place[:lat], 

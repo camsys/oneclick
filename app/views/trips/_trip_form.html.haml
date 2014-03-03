@@ -80,7 +80,7 @@
     #trip-time
       = f.input_field :trip_time, :as => :string, :label => false, :style => "width:160px;"
       %span.add-on
-        %i.fa.fa-time
+        %i.fa.fa-clock-o
 
   = f.input :trip_purpose_id, :collection =>  TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}, :value => :id, :label_method => lambda { |v| t(v.name)}
 
@@ -90,7 +90,7 @@
       #return-trip-time
         = f.input_field :return_trip_time, :as => :string, :label => false, :style => "width:160px;"
         %span.add-on
-          %i.fa.fa-time
+          %i.fa.fa-clock-o
               
   .form-actions
     = button_tag :type => 'submit', :class => "btn btn-primary" do
