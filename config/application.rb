@@ -95,8 +95,15 @@ module Oneclick
         .select{|d| d =~ %r{\.css}} - ["application.css"]
     config.assets.precompile += stylesheets
     config.assets.precompile += ['tadaaapickr.pack.min.js']
+    config.assets.precompile << 'bootstrap-combobox.css'
+
+    puts "PRECOMPILE"
+    puts config.assets.precompile
 
     config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
+
+    puts "PATHS"
+    puts config.assets.paths
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.1'

@@ -9,7 +9,7 @@
         .span6
           .pull-right{:style => "display: inline-block"}
             %a{class: "button btn btn-mini btn-danger", "data-dismiss" => "modal"}
-              %i.danger.fa-times
+              %i.danger.fa.fa-times
               =t(:close)
 .modal-body
   = render :partial => 'trip_summary_header', :locals => { :itinerary => @itinerary }
