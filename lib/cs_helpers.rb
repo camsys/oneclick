@@ -138,15 +138,15 @@ end
   def get_pseudomode_for_itinerary(itinerary)
 
     if itinerary.is_walk
-      mode_name = 'walk'
+      mode_code = 'walk'
     elsif itinerary.mode.code == 'mode_paratransit'
-      mode_name = itinerary.service.service_type.name.downcase
+      mode_code = itinerary.service.service_type.name.downcase
     elsif itinerary.mode.code == 'mode_transit'
-      mode_name = itinerary.transit_type
+      mode_code = itinerary.transit_type
     else
-      mode_name = itinerary.mode.name.downcase unless itinerary.mode.nil?
+      mode_code = itinerary.mode.code.gsub(/^mode_/, '') rescue 'UNKNOWN'
     end
-    return mode_name    
+    return mode_code    
   end
 
   # Returns the correct localized title for a trip itinerary
@@ -154,29 +154,29 @@ end
     
     return if itinerary.nil?
     
-    mode_name = get_pseudomode_for_itinerary(itinerary)
-    if mode_name == 'rail'
-      title = "Rail"
-    elsif mode_name == 'railbus'
-      title = "Rail and Bus"
-    elsif mode_name == 'bus'
-      title = "Bus"
-    elsif mode_name == 'transit'
-      title = I18n.t(:transit)
-    elsif mode_name == 'paratransit'
-      title = I18n.t(:specialized_services)      
-    elsif mode_name == 'volunteer'
-      title = I18n.t(:volunteer)
-    elsif mode_name == 'non-emergency medical service'
-      title = I18n.t(:nemt)
-    elsif mode_name == 'livery'
-      title = I18n.t(:car_service)
-    elsif mode_name == 'taxi'
-      title = I18n.t(:taxi)      
-    elsif mode_name == 'rideshare'
-      title = I18n.t(:rideshare)
-    elsif mode_name == 'walk'
-      title = I18n.t(:walk)
+    mode_code = get_pseudomode_for_itinerary(itinerary)
+    title = if mode_code == 'rail'
+      "Rail"
+    elsif mode_code == 'railbus'
+      "Rail and Bus"
+    elsif mode_code == 'bus'
+      "Bus"
+    elsif mode_code == 'transit'
+      I18n.t(:transit)
+    elsif mode_code == 'paratransit'
+      I18n.t(:specialized_services)      
+    elsif mode_code == 'volunteer'
+      I18n.t(:volunteer)
+    elsif mode_code == 'non-emergency medical service'
+      I18n.t(:nemt)
+    elsif mode_code == 'livery'
+      I18n.t(:car_service)
+    elsif mode_code == 'taxi'
+      I18n.t(:taxi)      
+    elsif mode_code == 'rideshare'
+      I18n.t(:rideshare)
+    elsif mode_code == 'walk'
+      I18n.t(:walk)
     end
     return title    
   end

@@ -164,29 +164,30 @@ module ApplicationHelper
     return l time, :format => :oneclick_short unless time.nil?
   end
 
-# Returns the correct partial for a trip itinerary
+  # TODO These next 2 methods are very similar to methods in CsHelper,should possible be consolidated
+  # Returns the correct partial for a trip itinerary
   def get_trip_partial(itinerary)
     
     return if itinerary.nil?
     
-    mode_name = get_pseudomode_for_itinerary(itinerary)
+    mode_code = get_pseudomode_for_itinerary(itinerary)
 
-    if mode_name.in? ['transit', 'rail', 'bus', 'railbus']
-      partial = 'transit_details'
-    elsif mode_name == 'paratransit'
-      partial = 'paratransit_details'
-    elsif mode_name == 'volunteer'
-      partial = 'paratransit_details'
-    elsif mode_name == 'non-emergency medical service'
-      partial = 'paratransit_details'
-    elsif mode_name == 'livery'
-      partial = 'paratransit_details'
-    elsif mode_name == 'taxi'
-      partial = 'taxi_details'
-    elsif mode_name == 'rideshare'
-      partial = 'rideshare_details'
-    elsif mode_name == 'walk'
-      partial = 'walk_details'
+    partial = if mode_code.in? ['transit', 'rail', 'bus', 'railbus']
+      'transit_details'
+    elsif mode_code == 'paratransit'
+      'paratransit_details'
+    elsif mode_code == 'volunteer'
+      'paratransit_details'
+    elsif mode_code == 'non-emergency medical service'
+      'paratransit_details'
+    elsif mode_code == 'livery'
+      'paratransit_details'
+    elsif mode_code == 'taxi'
+      'taxi_details'
+    elsif mode_code == 'rideshare'
+      'rideshare_details'
+    elsif mode_code == 'walk'
+      'walk_details'
     end
     return partial    
   end
@@ -195,29 +196,30 @@ module ApplicationHelper
   def get_trip_summary_icon(itinerary) 
     return if itinerary.nil?
     
-    mode_name = get_pseudomode_for_itinerary(itinerary)
-    if mode_name == 'rail'
-      icon_name = 'icon-bus-sign'
-    elsif mode_name == 'railbus'
-      icon_name = 'icon-bus-sign'
-    elsif mode_name == 'bus'
-      icon_name = 'icon-bus-sign'
-    elsif mode_name == 'transit'
-      icon_name = 'icon-bus-sign'
-    elsif mode_name == 'paratransit'
-      icon_name = 'fa-truck'
-    elsif mode_name == 'volunteer'
-      icon_name = 'fa-truck'
-    elsif mode_name == 'non-emergency medical service'
-      icon_name = 'fa-user-md'
-    elsif mode_name == 'livery'
-      icon_name = 'icon-taxi-sign'
-    elsif mode_name == 'taxi'
-      icon_name = 'icon-taxi-sign'      
-    elsif mode_name == 'rideshare'
-      icon_name = 'fa-group'      
-    elsif mode_name == 'walk'
-      icon_name = 'icon-accessibility-sign'      
+    mode_code = get_pseudomode_for_itinerary(itinerary)
+    puts "get_trip_summary_icon, mode_code is #{mode_code}"
+    icon_name = if mode_code == 'rail'
+      'icon-bus-sign'
+    elsif mode_code == 'railbus'
+      'icon-bus-sign'
+    elsif mode_code == 'bus'
+      'icon-bus-sign'
+    elsif mode_code == 'transit'
+      'icon-bus-sign'
+    elsif mode_code == 'paratransit'
+      'fa-truck'
+    elsif mode_code == 'volunteer'
+      'fa-truck'
+    elsif mode_code == 'non-emergency medical service'
+      'fa-user-md'
+    elsif mode_code == 'livery'
+      'icon-taxi-sign'
+    elsif mode_code == 'taxi'
+      'icon-taxi-sign'      
+    elsif mode_code == 'rideshare'
+      'fa-group'      
+    elsif mode_code == 'walk'
+      'icon-accessibility-sign'      
     end
     return icon_name
   end
