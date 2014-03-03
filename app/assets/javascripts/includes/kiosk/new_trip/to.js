@@ -37,5 +37,6 @@ jQuery(function ($) {
     }
   });
 
-  $('input#trip_proxy_to_place').focus();
+  if ($('input#trip_proxy_to_place').val() == '')
+    $('input#trip_proxy_to_place').focus();
 });
