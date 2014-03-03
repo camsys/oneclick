@@ -132,11 +132,6 @@ en:
   plan_trip: "Continue planning this trip"
   max_notes: 'Max notes'
   
-||||||| merged common ancestors
-  
-=======
-
->>>>>>> ed44dea9e44b80e6743abafc1dc012adc94b43c6
   # Trip planning
   enter_address: 'Enter address'
   location: "Location"

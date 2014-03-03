@@ -11,13 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20140227205539) do
-||||||| merged common ancestors
-ActiveRecord::Schema.define(version: 20140218205736) do
-=======
-ActiveRecord::Schema.define(version: 20140220224403) do
->>>>>>> ed44dea9e44b80e6743abafc1dc012adc94b43c6
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,14 +90,14 @@ ActiveRecord::Schema.define(version: 20140220224403) do
     t.boolean  "selected"
   end
 
-  create_table "kiosk_locations", :force => true do |t|
+  create_table "kiosk_locations", force: true do |t|
     t.string   "name"
     t.integer  "address_type"
     t.string   "addr"
     t.float    "lat"
     t.float    "lon"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "modes", force: true do |t|
