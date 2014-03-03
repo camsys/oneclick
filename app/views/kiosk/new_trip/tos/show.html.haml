@@ -32,7 +32,7 @@
           .scroll-down.js-next-btn
 
   #trip_map
-    = LeafletMap(mapid: 'lmap', markers: @markers, tile_provider: 'GOOGLEMAP', min_zoom: 3, max_zoom: 15, class: 'map', style: 'height:558px')
+    = LeafletMap(mapid: 'lmap', markers: @markers, tile_provider: 'GOOGLEMAP', min_zoom: 3, max_zoom: 15, class: 'map', style: 'height:558px', zoom: Oneclick::Application.config.default_zoom)
     = yield :scripts
 
 .form-actions.hidden
