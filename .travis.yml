@@ -17,7 +17,7 @@ language: ruby
 cache: bundler
 bundler_args: --without development
 script:
-- bundle exec /usr/bin/env RAILS_ENV=test rake db:drop db:create db:reset oneclick:add_sample_data
+- bundle exec /usr/bin/env RAILS_ENV=test rake db:drop db:create db:reset
 - bundle exec /usr/bin/env UI_MODE=desktop RAILS_ENV=test COVERALLS_NOISY=true rake oneclick:test_with_coveralls
 # - bundle exec /usr/bin/env UI_MODE=kiosk RAILS_ENV=test COVERALLS_NOISY=true rake oneclick:test_with_coveralls
 # - bundle exec /usr/bin/env RAILS_ENV=test COVERALLS_NOISY=true rake oneclick:all_tests
