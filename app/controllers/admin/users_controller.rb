@@ -3,9 +3,16 @@ class Admin::UsersController < Admin::BaseController
   # GET /users
   # GET /users.json
   def index
-    @agency = Agency.find(params[:agency_id]) 
-    @users = @agency.users
-
+    #Get the broadest list of user
+    if params[:text]
+      @users = User.where("upper(first_name) LIKE ? OR upper(last_name) LIKE ? OR upper(email) LIKE ?", 
+      "%#{params[:text].upcase}%", "%#{params[:text].upcase}%", "%#{params[:text].upcase}%")
+    else
+      @users = User.all
+    end
+    ##winnow down
+    @users = @users.registered if params[:registered]
+    @users = @users.delete_if{ |x| x.roles.count > 0} if params[:traveler]
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }

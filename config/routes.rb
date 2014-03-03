@@ -256,7 +256,7 @@ Oneclick::Application.routes.draw do
         put 'update_roles', on: :member
       end
       resources :providers
-    end
+    end#admin
 
     resources :services do
       member do

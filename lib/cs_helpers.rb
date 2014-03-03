@@ -10,7 +10,7 @@ module CsHelpers
     :my_trips => 'fa fa-share-square fa-flip-horizontal',
     :my_places => 'fa fa-map-marker',
     :help_and_support => 'fa fa-question-sign',
-    :find_traveler => 'fa fa-search',
+    # :find_traveler => 'fa fa-search',
     :create_traveler =>'fa fa-user',
     :agents_agencies => 'fa fa-sitemap',
     :providers => 'fa fa-umbrella',
@@ -23,11 +23,11 @@ module CsHelpers
 
   def admin_menu
   [
-    {label: t(:find_traveler), target: error_501_path, icon: ACTION_ICONS[:find_traveler]},
+    # {label: t(:find_traveler), target: search_admin_users_path, icon: ACTION_ICONS[:find_traveler]},
     {label: t(:create_traveler), target: error_501_path, icon: ACTION_ICONS[:create_traveler]},
     {label: t(:trips), target: admin_trips_path, icon: ACTION_ICONS[:trips]},
     {label: t(:agencies), target: admin_agencies_path, icon: ACTION_ICONS[:agents_agencies]},
-    {label: t(:users), target: users_path, icon: ACTION_ICONS[:users]},
+    {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users]},
     {label: t(:providers), target: admin_provider_orgs_path, icon: ACTION_ICONS[:providers]},
     {label: t(:services), target: service_path(Service.first.id), icon: ACTION_ICONS[:services]},
     {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports]},

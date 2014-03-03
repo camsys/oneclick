@@ -436,6 +436,7 @@ es:
   success_feedback_link: "[es430]Click HERE if you made the trip as planned, and everything worked out just fine.[/es]"
   no_trip_taken_feedback_link: "[es431]Click HERE if you decided not to make the trip at all.[/es]"
   more_feedback_link: "[es432]Click HERE if you want to provide more feedback, or if things didn't work out as planned.[/es]"
+  search: "[es439]Search[/es]"
 
   # Branding
   arc:
