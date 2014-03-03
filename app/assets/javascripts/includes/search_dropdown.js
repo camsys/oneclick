@@ -9,15 +9,17 @@ window.scrollContent = function ($, options) {
 
   function moveSlides (e, direction, amount) {
     var $holder     = $(e.delegateTarget)
-      , $nextButton = $(e.target)
       , $list       = $holder.find(options.listSel)
       , offset      = $list.data('offset');
 
     if (direction == 'forward') amount = amount * -1;
     offset = offset + amount;
 
+    changeOffset($holder, offset);
+  }
 
-    $list
+  function changeOffset($holder, offset) {
+    $holder.find(options.listSel)
       .data('offset',        offset)
       .css(options.property, offset + 'px');
 
@@ -43,10 +45,20 @@ window.scrollContent = function ($, options) {
   $roots.on('click', '.js-next-btn:not(.disabled)', moveSlidesForward);
   $roots.on('click', '.js-prev-btn:not(.disabled)', moveSlidesBackward);
 
-  $roots.each (function () {
-    $el = $(this);
+  $roots.each(function () {
+    var $el = $(this);
+
     setTimeout(function () {
       checkButtonsEnabled($el, $(this).find(options.listSel).data('offset'));
     }, 50);
+
+    $el.data('scroll-content', {
+      refresh: function () {
+        checkButtonsEnabled($el, $el.find(options.listSel).data('offset'));
+      },
+      resetOffset: function () {
+        changeOffset($el, 0);
+      }
+    });
   });
 }

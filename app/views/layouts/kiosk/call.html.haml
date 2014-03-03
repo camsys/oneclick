@@ -1,0 +1,45 @@
+!!!
+%html
+  %head
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
+      %title= content_for?(:title) ? yield(:title) : t(:site_title)
+      %meta{:content => content_for?(:description) ? yield(:description) : t(:site_description), :name => "description"}
+      = ajaxful_rating_style
+      = stylesheet_link_tag "application", :media => "all"
+      = stylesheet_link_tag brand, :media => "all"
+      = stylesheet_link_tag 'kiosk/_base', :media => "all"
+      = stylesheet_link_tag 'kiosk/style', :media => "all"
+      = stylesheet_link_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.css", :media => "all"
+
+      = javascript_include_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"
+      = javascript_include_tag "http://maps.google.com/maps/api/js?v=3.2&sensor=false"
+      = javascript_include_tag "application" # TODO This should go in footer
+      = javascript_include_tag "https://www.google.com/jsapi"
+
+      %meta{name: "ui_typeahead_delay",       content: Rails.application.config.ui_typeahead_delay}
+      %meta{name: "ui_typeahead_min_chars",   content: Rails.application.config.ui_typeahead_min_chars}
+      %meta{name: "ui_typeahead_list_length", content: Rails.application.config.ui_typeahead_list_length}
+      %meta{name: "ui_min_geocode_chars",     content: Rails.application.config.ui_min_geocode_chars}
+
+      = csrf_meta_tags
+      = yield(:head)
+  %body{:class => "kiosk #{controller_css_class} #{action_name}"}
+    .kiosk-call-window= yield
+
+    :javascript
+      var localized_yes_str;
+      var localized_no_str;
+      var localized_ok_str;
+      var localized_cancel_str;
+
+      $(document).ready(function(){
+        // Set default locale configs and other settings that affect every page
+        localized_yes_str = "#{t(:yes_str)}";
+        localized_no_str = "#{t(:no_str)}";
+        localized_ok_str = "#{t(:ok)}";
+        localized_cancel_str = "#{t(:cancel)}";
+
+        bootbox.setDefaults({
+          locale: "#{I18n.locale}"
+        });
+      });

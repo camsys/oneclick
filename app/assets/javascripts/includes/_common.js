@@ -1,6 +1,6 @@
 // session based variable storage for UI key/value pairs
 
-// get a key value, if the key does not exist the default value is returned  
+// get a key value, if the key does not exist the default value is returned
 function get_ui_key_value(key, default_val) {
     var value;
     try {
@@ -11,11 +11,13 @@ function get_ui_key_value(key, default_val) {
     //alert('getting value for ' + key + '; val = ' + value);
     return value;
 };
+
 // Set a key value. Keys must be unique strings
 function set_ui_key_value(key, value) {
     //alert('setting value for ' + key + ' to ' + value);
     window.sessionStorage.setItem(key, value);
 };
+
 // Displays an alert
 function show_alert(message) {
     $('#messages').html('<div class="alert alert-error fade in"><a class="close" data-dismiss="alert">x</a><div id="flash_notice">' + message + '</div></div>');

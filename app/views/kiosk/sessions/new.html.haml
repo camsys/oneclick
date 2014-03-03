@@ -23,34 +23,55 @@
 /           .account-container.pull-right
 /             %p Need an Account?
 /             = link_to 'Register', new_user_registration_path
-    
+
 
 // TAKE 3
 #login.container-fluid
   %div.responsive-mbp.row-fluid
     .span4.info
       #left-description
-        %h1 
+        %h1
           = t(:log_in)
         %h4 Have we met before?
-        %p 
+        %p
           Have you created an account with us before? If so, enter your E-mail address and password, then tap "Log In". Logging in will allow us to skip some questions you may have previously answered.
-          %br/ 
-          %br/ 
+          %br/
+          %br/
           If you do not have an account, tap "Skip This Step" &mdash; you will still be able to book a trip today without one.
     %div.span8login
-      = simple_form_for(resource, :url => kiosk_sign_in_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
-        / = simple_form_for(resource, :as => resource_name, :url => kiosk_users_sign_in_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
+      = simple_form_for(resource, :as => resource_name, :url => kiosk_user_session_path, :html => {:class => 'form-horizontal' }) do |f|
         .row-fluid
           .span12login
             .input-container
-              = f.input :email, :required => true
-              = f.input :password, :required => true
+              = f.input :email, :required => true, :placeholder => "Tap here to enter your email address"
+              = f.input :password, :required => true, :placeholder => "Tap here to enter your password"
         .row-fluid
           .span12
             = button_tag :submit, class: 'login-btn pull-left' do
               = t(:log_in)
             /%a.login-btn.pull-left{:href => "#"} Log In
             .cancel-container.pull-right
-              %a.cancel-btn{:href => new_kiosk_user_trip_path(current_or_guest_user)} Skip this step
+              %a.cancel-btn{:href => kiosk_user_new_trip_start_path(current_or_guest_user)} Skip this step
           .span3.hidden
+
+:javascript
+
+  $('input#user_email').click(function(){
+    if (window.cocoa)
+      window.cocoa.openKeyboard();
+  });
+
+  $('input#user_email').blur(function(){
+    if (window.cocoa)
+      window.cocoa.closeKeyboard();
+  });
+
+  $('input#user_password').click(function(){
+     if (window.cocoa)
+      window.cocoa.openKeyboard();
+  });
+
+  $('input#user_password').blur(function(){
+    if (window.cocoa)
+      window.cocoa.closeKeyboard();
+  });

@@ -10,38 +10,38 @@
             .step-title= t(:questions)
           .pull-right
             %table#characteristics_one
-              %thead 
-                %tr 
-                  %th 
+              %thead
+                %tr
+                  %th
                   %th= t(:yes_str)
                   %th= t(:no_str)
                   %th= t(:unsure_str)
-              %tbody 
+              %tbody
                 -Accommodation.where(:datatype => 'bool').each do |accommodation|
-                  %tr 
+                  %tr
                     %td
-                      = f.label accommodation.note 
-                    %td 
+                      = f.label accommodation.note
+                    %td
                       = f.radio_button accommodation.code.to_sym, true
                       = f.label accommodation.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
-                    %td 
+                    %td
                       = f.radio_button accommodation.code.to_sym, false
                       = f.label accommodation.code.to_sym, nil, :text => nil, :class => 'no', :value => false
-                    %td 
+                    %td
                       = f.radio_button accommodation.code.to_sym, "na"
                       = f.label accommodation.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
 
                 -Accommodation.where(:datatype => 'disabled').each do |characteristic|
-                  %tr 
+                  %tr
                     %td
                       = f.label characteristic.note + " (not yet available)", :class => 'disabled'
-                    %td 
+                    %td
                       = f.radio_button characteristic.code.to_sym, true
                       = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
-                    %td 
+                    %td
                       = f.radio_button characteristic.code.to_sym, false
                       = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no', :value => false
-                    %td 
+                    %td
                       = f.radio_button characteristic.code.to_sym, "na"
                       = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
 
@@ -49,6 +49,6 @@
   $(document).ready(function(){
     $('.next-footer-container').removeClass('hidden');
     $('.next-step-btn').on('click', function(){
-      $('#new_user_accommodations_proxy').submit();
+      $('*[id*=new_user_accommodations_proxy]').submit();
     });
   });

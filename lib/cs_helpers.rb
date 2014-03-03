@@ -70,14 +70,14 @@ end
         @traveler = current_user
       else
         @traveler = current_user.travelers.find(session[TRAVELER_USER_SESSION_KEY])
-      end 
+      end
     else
       # will always be a guest user
       @traveler = current_or_guest_user
     end
     @traveler
   end
-  
+
   # find guest_user object associated with the current session,
   # creating one as needed
   def guest_user
@@ -151,7 +151,7 @@ end
 
   # Returns the correct localized title for a trip itinerary
   def get_trip_summary_title(itinerary)
-    
+
     return if itinerary.nil?
     
     mode_code = get_pseudomode_for_itinerary(itinerary)
@@ -178,7 +178,7 @@ end
     elsif mode_code == 'walk'
       I18n.t(:walk)
     end
-    return title    
+    return title
   end
 
   #Generates a transit name of the form AGENCY MODE, AGENCY MODE e.g., MARTA Bus, MARTA Subway, CCT Bus

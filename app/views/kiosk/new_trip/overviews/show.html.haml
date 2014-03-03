@@ -1,0 +1,4 @@
+%div(data-index=0)
+  #trip_map
+    = LeafletMap(mapid: 'lmap', markers: @markers, tile_provider: 'GOOGLEMAP', min_zoom: 3, max_zoom: 15, class: 'map', style: 'height:558px')
+    = yield :scripts

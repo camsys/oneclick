@@ -20,7 +20,7 @@ module MapHelper
       return 'http://maps.google.com/mapfiles/marker_yellow' + ALPHABET[index] + ".png"
     end
   end
-  
+
   # create a map marker for a place
   #
   # place is an instance of the Place class
@@ -37,7 +37,7 @@ module MapHelper
       "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'fa-building-o', :name => place.name, :address => place.address} })
     }
   end
-  
+
   # create a map marker for a geocoded address
   #
   # addr is a hash returned from the OneClick Geocoder
@@ -58,66 +58,66 @@ module MapHelper
 
   # create an array of map markers for a collection of Place objects
   def create_place_markers(places)
-    markers = []    
+    markers = []
     places.each do |place|
       markers << get_map_marker(place, place.id, 'startIcon')
     end
     return markers
   end
-  
+
   # Create an array of map markers for a trip proxy. If the trip proxy is from an existing trip we will
   # have start and stop markers
   def create_trip_proxy_markers(trip_proxy)
-    
+
     markers = []
     if trip_proxy.from_place_selected
-      place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected.to_i, true)
+      place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected, true)
     else
       place = {:name => trip_proxy.from_place, :lat => trip_proxy.from_lat, :lon => trip_proxy.from_lon, :formatted_address => trip_proxy.from_raw_address}
     end
     markers << get_addr_marker(place, 'start', 'startIcon')
-    
+
     if trip_proxy.to_place_selected
-      place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected.to_i, false)
+      place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected, false)
     else
       place = {:name => trip_proxy.to_place, :lat => trip_proxy.to_lat, :lon => trip_proxy.to_lon, :formatted_address => trip_proxy.to_raw_address}
     end
-    
+
     markers << get_addr_marker(place, 'stop', 'stopIcon')
-    
+
     return markers
   end
-  
-  # Create an array of map markers suitable for the Leaflet plugin. 
+
+  # Create an array of map markers suitable for the Leaflet plugin.
   def create_itinerary_markers(itinerary)
-    
+
     trip = itinerary.trip_part.trip
     legs = itinerary.get_legs
-    
+
     markers = []
     place = {:name => trip.from_place.name, :lat => trip.from_place.location.first, :lon => trip.from_place.location.last, :address => trip.from_place.address}
     markers << get_addr_marker(place, 'start', 'startIcon')
     place = {:name => trip.to_place.name, :lat => trip.to_place.location.first, :lon => trip.to_place.location.last, :address => trip.to_place.address}
     markers << get_addr_marker(place, 'stop', 'stopIcon')
-    
+
     if legs
       legs.each do |leg|
-        
+
         place = {:name => leg.start_place.name, :lat => leg.start_place.lat, :lon => leg.start_place.lon, :address => leg.start_place.name}
         markers << get_addr_marker(place, 'start_leg', 'blueIcon')
 
         place = {:name => leg.end_place.name, :lat => leg.end_place.lat, :lon => leg.end_place.lon, :address => leg.end_place.name}
         markers << get_addr_marker(place, 'start_leg', 'blueIcon')
-        
+
       end
     end
-    
+
     return markers
   end
 
   #Returns an array of polylines, one for each leg
   def create_itinerary_polylines(legs)
-      
+
     polylines = []
     legs.each_with_index do |leg, index|
       polylines << {
@@ -126,14 +126,14 @@ module MapHelper
         "options" => get_leg_display_options(leg)
       }
     end
-    
+
     return polylines
   end
 
 protected
 
   # Gets leaflet rendering hash for a leg based on the mode of the leg
-  def get_leg_display_options(leg) 
+  def get_leg_display_options(leg)
 
     if leg.mode == TripLeg::WALK
       a = {"color" => 'red', "width" => "5"}
@@ -144,8 +144,8 @@ protected
     else
       a = {}
     end
-    
+
     return a
   end
-  
+
 end
