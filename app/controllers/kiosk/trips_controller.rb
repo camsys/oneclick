@@ -2,12 +2,12 @@ module Kiosk
   class TripsController < ::TripsController
     include Behavior
 
-    # def start
-    #   get_traveler
-    #   get_trip
+    def itinerary_print
+      @itinerary = Itinerary.find(params[:id])
+      @legs = @itinerary.get_legs
+      @itinerary = ItineraryDecorator.decorate(@itinerary)
+    end
 
-    #   @trip_proxy = create_trip_proxy(@trip)
-    # end
   protected
 
     def back_url
