@@ -8,6 +8,8 @@ ENV['SMTP_MAIL_ADDR'] = "smtp.gmail.com"
 ENV['SMTP_MAIL_PORT'] = '587'
 ENV['SMTP_MAIL_DOMAIN'] = "gmail.com"
 
+Oneclick::Application.config.default_zoom = nil
+
 case ENV['BRAND'] || 'arc'
 when 'arc'
   Oneclick::Application.config.ui_logo = 'arc/arc-logo.png'
