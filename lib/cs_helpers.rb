@@ -106,7 +106,7 @@ end
       end
       if options[:with_logout]
         a << {label: t(:logout), target: destroy_user_session_path, icon: 'fa-sign-out', divider_before: true,
-          method: 'delete'}
+          method: :delete}
         #     = link_to , :method=>'delete' do
         # %i.fa.fa-sign-out
         # = t(:logout)

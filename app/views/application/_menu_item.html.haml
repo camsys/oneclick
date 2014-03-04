@@ -1,6 +1,11 @@
 - if menu_item[:divider_before]
   %li.divider.text-left
 %li
-  = link_to menu_item[:target] do
-    %i.fa{class: menu_item[:icon]}
-    = menu_item[:label]
+  - unless menu_item.include? :method
+    = link_to menu_item[:target] do
+      %i.fa{class: menu_item[:icon]}
+      = menu_item[:label]
+  - else
+    = link_to menu_item[:target], method: menu_item[:method] do
+      %i.fa{class: menu_item[:icon]}
+      = menu_item[:label]  
