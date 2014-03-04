@@ -90,6 +90,16 @@ ActiveRecord::Schema.define(version: 20140227205539) do
     t.boolean  "selected"
   end
 
+  create_table "kiosk_locations", force: true do |t|
+    t.string   "name"
+    t.integer  "address_type"
+    t.string   "addr"
+    t.float    "lat"
+    t.float    "lon"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "modes", force: true do |t|
     t.string  "name",   limit: 64, null: false
     t.boolean "active",            null: false

@@ -33,21 +33,22 @@ function init(mapId, options) {
 	if (options.tile_provider == 'OPENSTREETMAP') {
 		var mapUrl = OPENSTREETMAP_URL;
 		var mapAttrib = OPENSTREETMAP_ATTRIB;
-		L.tileLayer(mapUrl, {minZoom: options.min_zoom, maxZoom: options.max_zoom, attribution: mapAttrib}).addTo(LMmap);		
+		L.tileLayer(mapUrl, {minZoom: options.min_zoom, maxZoom: options.max_zoom, attribution: mapAttrib}).addTo(LMmap);
 	} else if (options.tile_provider == 'GOOGLEMAP') {
 		var googleLayer = new L.Google('ROADMAP');
       	LMmap.addLayer(googleLayer);
 	} else {
 		var mapUrl = CLOUDMADE_URL;
-		var mapAttrib = CLOUDMADE_ATTRIB;		
+		var mapAttrib = CLOUDMADE_ATTRIB;
 		L.tileLayer(mapUrl, {minZoom: options.min_zoom, maxZoom: options.max_zoom, attribution: mapAttrib, styleId: options.tile_style_id}).addTo(LMmap);
-	}	
+	}
 	// install a popup listener
 	LMmap.on('popupopen', function(event){
 		//alert('popup opened');
 		LMcurrent_popup = event.popup;
 	});
 };
+
 /**
  * Centers the map on a specified marker without changing the zoom level
  */
@@ -62,7 +63,7 @@ function centerOnMarker(markerId) {
  * Pans the map to a gven coordinate without changing the zoom level
  */
 function panTo(lat, lng) {
-	var latlng = new L.LatLng(lat, lng); 
+	var latlng = new L.LatLng(lat, lng);
 	LMmap.panTo(latlng);
 };
 /*
@@ -119,7 +120,7 @@ function replaceMarkers(arr, updateMap) {
 function refreshMarkers() {
 	for(var i=0;i<LMmarkers.length;i++){
 		LMmap.removeLayer(LMmarkers[i]);
-	}	
+	}
 	// Add the markers to the map
 	for (var i=0;i<LMmarkers.length;i++) {
 		LMmap.addLayer(LMmarkers[i]);
@@ -165,7 +166,7 @@ function removeMarkersKeepCache() {
 }
 
 /*
- * 
+ *
  */
 function removeMarkers() {
 	// Loop through the markers and remove them from the map
@@ -173,27 +174,27 @@ function removeMarkers() {
 	for(var i=0;i<LMmarkers.length;i++){
 		//alert('Removing Marker ' + LMmarkers[i].id);
 		LMmap.removeLayer(LMmarkers[i]);
-	}	
+	}
 	LMmarkers = new Array();
 };
 /*
- * 
+ *
  */
 function removeCircles() {
 	// Loop through the circles and remove them from the map
 	for(var i=0;i<LMcircles.length;i++){
 		LMmap.removeLayer(LMcircles[i]);
-	}		
+	}
 	LMcircles = new Array();
 };
 /*
- * 
+ *
  */
 function removePolylines() {
 	// Loop through the polylines and remove them from the map
 	for(var i=0;i<LMpolylines.length;i++){
 		LMmap.removeLayer(LMpolylines[i]);
-	}		
+	}
 	LMpolylines = new Array();
 };
 /*
@@ -202,7 +203,7 @@ function removePolylines() {
  */
 function addMarkers(arr) {
 	//alert('Adding ' + data.length + ' markers');
-	
+
 	for(var i=0;i < arr.length;i++){
         var obj = arr[i];
 		if (obj.lat == null || obj.lng == null) {
@@ -216,7 +217,7 @@ function addMarkers(arr) {
         var title = obj.title;
         var open = obj.open;
         marker = createMarker(id, lat, lng, iconClass, popupText, title, open);
-        
+
     	// Add this marker to the list of markers
 		LMmarkers.push(marker);
     }
@@ -225,9 +226,9 @@ function addMarkers(arr) {
 function addMarkerToMap(marker, cache) {
 	if (cache) {
 	  	// Add this marker to the list of markers
-		LMmarkers.push(marker);		
+		LMmarkers.push(marker);
 	}
-	LMmap.addLayer(marker);	
+	LMmap.addLayer(marker);
 };
 // Removes a marker from the map and removes it from the cache
 // if it is stored there
@@ -241,7 +242,7 @@ function removeMarkerFromMap(marker) {
 		}
 	}
 	LMmarkers = markers;
-	LMmap.removeLayer(marker);	
+	LMmap.removeLayer(marker);
 };
 // Removes markers with an id matching the input string
 function removeMatchingMarkers(match) {
@@ -250,7 +251,7 @@ function removeMatchingMarkers(match) {
 		var marker = LMmarkers[i];
 		var id = marker.id;
 		if (id != null && id.indexOf(match) !=-1) {
-			LMmap.removeLayer(marker);		
+			LMmap.removeLayer(marker);
 			continue;
 		} else {
 			markers.push(marker);
@@ -259,7 +260,7 @@ function removeMatchingMarkers(match) {
 	LMmarkers = markers;
 }
 /*
- * 
+ *
  */
 function addCircles(arr) {
 	for(var i=0;i<arr.length;i++) {
@@ -271,11 +272,11 @@ function addCircles(arr) {
         if (obj.options) {
         	options = obj.options;
         }
-        addCircle(lat, lng, radius, options);		
+        addCircle(lat, lng, radius, options);
 	}
 };
 /*
- * 
+ *
  */
 function addPolylines(arr) {
 	for(var i=0;i<arr.length;i++) {
@@ -286,29 +287,43 @@ function addPolylines(arr) {
         if (obj.options) {
         	options = obj.options;
         }
-        addPolyline(geom, options);		
+        addPolyline(geom, options);
 	}
 };
 
 function selectMarkerById(id) {
 	marker = findMarkerById(id);
 	if (marker) {
-	  	selectMarker(marker);		
+	  	selectMarker(marker);
 	}
 };
+
 function selectMarkerByName(name) {
 	marker = findMarkerByName(name);
 	if (marker) {
-	  	selectMarker(marker);		
+	  	selectMarker(marker);
 	}
 };
+
+function findMarkerInStorage (id) {
+	var json = localStorage.getItem('marker:'+id);
+
+	if (json) {
+		var data = JSON.parse(json);
+		return createMarker(data.id, data.lat, data.lng, data.iconClass, data.popupText, data.name, data.open)
+	}
+}
+
 function findMarkerById(id) {
-	for (var i=0;i<LMmarkers.length;i++) {
-		if (LMmarkers[i].id == id) {
-			return LMmarkers[i];
-		}
-	}
+	var marker;
+
+	LMmarkers.forEach(function (marker) {
+		if (marker.id == id) return marker;
+	});
+
+	if (marker = findMarkerInStorage(id)) return marker;
 };
+
 function findMarkerByName(name) {
 	for (var i=0;i<LMmarkers.length;i++) {
 		if (LMmarkers[i].name === name) {
@@ -318,34 +333,44 @@ function findMarkerByName(name) {
 };
 
 /*
- * Creates a single marker and returns it. If the iconClass is set 
+ * Creates a single marker and returns it. If the iconClass is set
  * then the iconClass must be defined in the page
  */
 function createMarker(id, lat, lng, iconClass, popupText, name, open) {
-	
 	//alert(id + "," + lat + "," + lng + "," + popupText + "," + title + "," + open);
-	
+
 	var options = {};
 	if (name) {
 		options = {
 			"title" : name
 		};
 	}
-	var latlng = new L.LatLng(lat, lng); 
+	var latlng = new L.LatLng(lat, lng);
 	var marker = L.marker(latlng, options);
 	marker.id = id;
 	marker.name = name;
 	if (iconClass) {
 		//alert(iconClass);
-		marker.setIcon(eval(iconClass));	
+		marker.setIcon(eval(iconClass));
 	}
-	// Add the popup text and mark for open on init if needed	
+	// Add the popup text and mark for open on init if needed
 	if (popupText) {
-		marker.bindPopup(popupText).openPopup();	
+		marker.bindPopup(popupText).openPopup();
 		if (open) {
 			marker.openPopup();
 		}
-	}	
+	}
+
+	localStorage.setItem('marker:'+id, JSON.stringify({
+		id:        id,
+		lat:       lat,
+		lng:       lng,
+		iconClass: iconClass,
+		popupText: popupText,
+		name:      name,
+		open:      open
+	}));
+
 	return marker;
 };
 /*
@@ -353,7 +378,7 @@ function createMarker(id, lat, lng, iconClass, popupText, name, open) {
  * where each sub array has length 2
  */
 function addPolyline(arr, options) {
-	
+
 	var latlngs = new Array();
 	for (var i = 0; i < arr.length; i++) {
 		var pnt = arr[i];
@@ -364,13 +389,13 @@ function addPolyline(arr, options) {
 
 	// Add this polyline to the list of polylines
 	LMpolylines.push(pline);
-	
+
 }
 /*
- * 
+ *
  */
 function addCircle(lat, lng, radius, options) {
-	var latlng = new L.LatLng(lat, lng); 
+	var latlng = new L.LatLng(lat, lng);
 	var circle = L.circle(latlng, radius, options);
 
 	// Add this circle to the list of circles
@@ -384,7 +409,7 @@ function addCircle(lat, lng, radius, options) {
 function selectMarker(marker) {
 	if (marker) {
 		marker.openPopup();
-		LMmap.panTo(marker.getLatLng());	
+		LMmap.panTo(marker.getLatLng());
 	}
 };
 /**
@@ -399,16 +424,16 @@ function calcMapBounds(marker_array) {
 	var minLng = marker_array[0].getLatLng().lng;
 	var maxLat = marker_array[0].getLatLng().lat;
 	var maxLng = marker_array[0].getLatLng().lng;
-	
+
 	if (marker_array.length > 1) {
 		for(var i=1; i<marker_array.length;i++) {
 			minLat = minLat < marker_array[i].getLatLng().lat ? minLat : marker_array[i].getLatLng().lat;
 			minLng = minLng < marker_array[i].getLatLng().lng ? minLng : marker_array[i].getLatLng().lng;
 			maxLat = maxLat > marker_array[i].getLatLng().lat ? maxLat : marker_array[i].getLatLng().lat;
 			maxLng = maxLng > marker_array[i].getLatLng().lng ? maxLng : marker_array[i].getLatLng().lng;
-		}		
+		}
 	}
-	
+
 	return [[minLat, minLng], [maxLat, maxLng]];
 };
 
@@ -424,20 +449,20 @@ function setMapToBounds(marker_array) {
 	}
 	if (marker_array.length > 0) {
 		LMbounds = calcMapBounds(marker_array);
-		LMmap.fitBounds(LMbounds);		
+		LMmap.fitBounds(LMbounds);
 	}
 };
 
 function setMapToMarkerBounds(marker) {
 	if (marker)
-		LMmap.fitBounds(calcMarkerBounds(marker));		
+		LMmap.fitBounds(calcMarkerBounds(marker));
 }
 
 function setMapBounds(minLat, minLon, maxLat, maxLon) {
-	LMbounds = [[minLat, minLon], [maxLat, maxLon]];	
+	LMbounds = [[minLat, minLon], [maxLat, maxLon]];
 };
 function cacheMapBounds(minLat, minLon, maxLat, maxLon) {
-	LMcacheBounds = [[minLat, minLon], [maxLat, maxLon]];		
+	LMcacheBounds = [[minLat, minLon], [maxLat, maxLon]];
 }
 function closePopup() {
 	if (LMcurrent_popup) {
@@ -445,7 +470,7 @@ function closePopup() {
 	}
 };
 function invalidateMap() {
-	//L.Util.requestAnimFrame(LMmap.invalidateSize, LMmap,!1, LMmap._container);	
+	//L.Util.requestAnimFrame(LMmap.invalidateSize, LMmap,!1, LMmap._container);
 	LMmap.invalidateSize(false);
 };
 function resetMap() {
@@ -461,8 +486,8 @@ function resetMapView() {
 }
 
 function getFormattedAddrForMarker(addr) {
-	return "<div class='well well-small'><div class='row-fluid'>" + 
+	return "<div class='well well-small'><div class='row-fluid'>" +
 		"<div class='span3'><i class='fa fa-3x fa-building-o'></i></div>" + 
-		"<div class='span9'><div class='caption'><h4>" + addr + "</h4></div></div>" + 
+		"<div class='span9'><div class='caption'><h4>" + addr + "</h4></div></div>" +
 		"</div></div>";
 }

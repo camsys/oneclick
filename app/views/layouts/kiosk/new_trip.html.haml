@@ -1,0 +1,42 @@
+- content_for :layout_template do
+  %div.responsive-mbp.row-fluid
+    .span4.info
+      #left-description
+        %h1= t(:plan_a_trip)
+
+        .js-sidebar-text-series
+          - (t(:new_trip)[current_step.to_sym] || []).each do |text|
+            .sidebar-text.hidden
+              %h4= text['heading'].html_safe
+              %p=  text['paragraph'].html_safe
+
+      #left-results.hidden
+        %h1 Overview
+        %h4 This Is What You Told Us
+        %p Tap "Plan my Trip" if everything is correct or "Make Changes" if you need to go back to make changes.
+        %h5 From
+        %p.from n/a
+        %h5 Destination
+        %p.to n/a
+        %h5 Date
+        %p.date n/a
+        %h5 Departure Time
+        %p.time n/a
+        %h5 Return Time
+        %p.return n/a
+        %h5 Purpose
+        %p.reason n/a
+
+    %div.span8plus.inputs
+      .row-fluid
+        #trip-error.row-fluid{:style => "display: none;"}
+          .span12
+            %h4
+              #trip-error-text.alert.alert-error
+
+        .row-fluid
+          #trip_form.span12
+            = simple_form_for @trip_proxy, as: :trip_proxy, url: current_step_url, html: {class: "no-bottom-margin js-trip-wizard-form js-#{current_step.dasherize}-wizard-step"}, remote: true do |f|
+              = render template: "kiosk/new_trip/#{current_step.pluralize}/show", locals: { f: f }
+
+= render template: 'layouts/kiosk/application'

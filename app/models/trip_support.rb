@@ -1,0 +1,2 @@
+module TripSupport
+end

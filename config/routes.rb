@@ -7,7 +7,7 @@ Oneclick::Application.routes.draw do
     if Oneclick::Application.config.ui_mode == 'kiosk'
       root to: redirect('/kiosk')
     else
-      root :to => "home#index"    
+      root :to => "home#index"
     end
 
     authenticated :user do
@@ -64,7 +64,7 @@ Oneclick::Application.routes.draw do
           post  'geocode'
         end
       end
-      
+
       # users have trips
       resources :trips, :only => [:show, :index, :new, :create, :destroy, :edit, :update] do
         collection do
@@ -74,7 +74,7 @@ Oneclick::Application.routes.draw do
           post  'geocode'
         end
         member do
-          get   'repeat'          
+          get   'repeat'
           get   'select'
           get   'details'
           get   'itinerary'
@@ -113,20 +113,37 @@ Oneclick::Application.routes.draw do
     end
 
     # scope('/kiosk') do
-    #   devise_for :users, as: 'kiosk', controllers: {sessions: "kiosk/sessions"}      
+    #   devise_for :users, as: 'kiosk', controllers: {sessions: "kiosk/sessions"}
     # end
 
     # get '/kiosk_user/kiosk/users/sign_in', to: 'kiosk/sessions#create'
 
+    get 'place_details/:id' => 'place_searching#details', as: 'place_details'
+
     namespace :kiosk do
       get '/', to: 'home#index'
-      # devise_for :users, controllers: {registrations: "kiosk/registrations"}
+
+      resources :locations, only: [:show]
+      resources :call, only: [:show, :index] do
+        post :outgoing, on: :collection
+        get :test, on: :collection
+      end
 
       # TODO can probably remove a lot of these routes
       resources :users do
         member do
           get   'profile'
           post  'update'
+        end
+
+        namespace :new_trip do
+          resource :start
+          resource :to
+          resource :from
+          resource :pickup_time
+          resource :purpose
+          resource :return_time
+          resource :overview
         end
 
         resources :characteristics, :only => [:new, :create, :edit, :update] do
@@ -169,7 +186,7 @@ Oneclick::Application.routes.draw do
             post  'geocode'
           end
         end
-        
+
         # users have trips
         resources :trips, :only => [:show, :index, :new, :create, :destroy, :edit, :update] do
           collection do
@@ -178,8 +195,10 @@ Oneclick::Application.routes.draw do
             get   'search'
             post  'geocode'
           end
+
           member do
-            get   'repeat'          
+            get 'start'
+            get   'repeat'
             get   'select'
             get   'details'
             get   'itinerary'
@@ -211,8 +230,9 @@ Oneclick::Application.routes.draw do
     end # user
 
     devise_scope :user do
-      post '/user/kiosk/sign_in' => 'kiosk/sessions#create'
-      get '/kiosk/sign_in' => 'kiosk/sessions#new'
+      post '/kiosk/sign_in' => 'kiosk/sessions#create', as: :kiosk_user_session
+      get '/kiosk/sign_in' => 'kiosk/sessions#new', as: :new_kiosk_user_session
+      get '/kiosk/session/destroy' => 'kiosk/sessions#destroy', as: :destroy_kiosk_user_session
     end
 
 
@@ -264,7 +284,5 @@ Oneclick::Application.routes.draw do
   end
 
     resources :translations
-  # mount_sextant if Rails.env.development?
-  # get '*not_found' => 'errors#handle404'
 
 end

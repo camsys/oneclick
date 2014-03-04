@@ -1,0 +1,11 @@
+= image_tag get_logo, :style => "height:30px;"
+= t(:one_click_trip_planner)
+
+%hr
+
+%p You have tried to print an invalid trip.
+
+:javascript
+  $(document).ready(function() {
+    window.print();
+  });
