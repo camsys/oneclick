@@ -1,0 +1,14 @@
+.tap-timeout-overlay {
+  color: white;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 255, 0.5);
+  z-index: 9999;
+  text-align: center;
+
+  .big-number {
+    font-size: 100px;
+    line-height: 1.1;
+  }
+}
