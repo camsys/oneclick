@@ -21,10 +21,15 @@
       %meta{name: "ui_typeahead_list_length", content: Rails.application.config.ui_typeahead_list_length}
       %meta{name: "ui_min_geocode_chars",     content: Rails.application.config.ui_min_geocode_chars}
 
+      %meta{name: "session_timeout",       content: Rails.application.config.session_timeout}
+      %meta{name: "session_alert_timeout", content: Rails.application.config.session_alert_timeout}
+
       = csrf_meta_tags
       = yield(:head)
   %body{:class => "kiosk #{controller_css_class} #{action_name}"}
     / kiosk/application.html.haml
+    - unless @hide_timeout
+      = render 'kiosk/shared/tap_timeout'
     = render 'kiosk/shared/navigation'
     .container-fluid
       #main{:role => "main"}

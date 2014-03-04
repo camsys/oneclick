@@ -1,5 +1,4 @@
 Oneclick::Application.routes.draw do
-
   get '/configuration' => 'configuration#configuration'
 
   scope "(:locale)", locale: /en|es/ do
@@ -122,6 +121,7 @@ Oneclick::Application.routes.draw do
 
     namespace :kiosk do
       get '/', to: 'home#index'
+      get 'reset', to: 'home#reset'
 
       get 'itineraries/:id/print' => 'trips#itinerary_print', as: 'print_itinerary'
 
