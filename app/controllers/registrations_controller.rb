@@ -1,6 +1,7 @@
 # app/controllers/registrations_controller.rb
 class RegistrationsController < Devise::RegistrationsController
   include LocaleHelpers
+  before_filter :configure_permitted_parameters
   before_filter :set_locale
   # set the @traveler variable before any actions are invoked
   before_filter :get_traveler, :only => [:update, :edit]
@@ -82,4 +83,14 @@ class RegistrationsController < Devise::RegistrationsController
     super
   end
 
+  protected
+ 
+  # See https://gist.github.com/bluemont/e304e65e7e15d77d3cb9
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) do |u|
+      u.permit(:first_name, :last_name,
+        :email, :password, :password_confirmation)
+    end
+  end
+ 
 end
