@@ -23,6 +23,9 @@ jQuery(function ($) {
   }
 
   function triggerReset () {
+    if (window.cocoa)
+      window.cocoa.closeKeyboard();
+
     window.location = '/kiosk/reset';
   }
 
