@@ -6,6 +6,8 @@ jQuery(function ($) {
     , timerInterval
     , $tapTimeoutOverlay = $('.js-tap-timeout-overlay');
 
+  if ($tapTimeoutOverlay.length < 1) return;
+
   function triggerAlert () {
     var counter = secondsToReset;
     resetTimeout = setTimeout(triggerReset, secondsToReset * 1000);

@@ -507,3 +507,8 @@ td.left, th.left {
 
 @import 'kiosk/call_window';
 @import 'kiosk/tap_timeout';
+
+body.print {
+  overflow: initial;
+  height: initial;
+}

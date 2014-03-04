@@ -28,7 +28,8 @@
       = yield(:head)
   %body{:class => "kiosk #{controller_css_class} #{action_name}"}
     / kiosk/application.html.haml
-    = render 'kiosk/shared/tap_timeout'
+    - unless @hide_timeout
+      = render 'kiosk/shared/tap_timeout'
     = render 'kiosk/shared/navigation'
     .container-fluid
       #main{:role => "main"}

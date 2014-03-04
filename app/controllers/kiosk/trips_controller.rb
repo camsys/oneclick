@@ -6,6 +6,7 @@ module Kiosk
       @itinerary = Itinerary.find(params[:id])
       @legs = @itinerary.get_legs
       @itinerary = ItineraryDecorator.decorate(@itinerary)
+      @hide_timeout = true
     end
 
   protected
