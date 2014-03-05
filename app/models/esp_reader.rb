@@ -218,9 +218,7 @@ class EspReader
   end
 
   def add_accommodation(service, accommodation)
-    p accommodation
-    p service
-    p '------'
+
     case accommodation.downcase
       when 'wheelchair lift'
         accommodation = Accommodation.find_by_code('lift_equipped')
