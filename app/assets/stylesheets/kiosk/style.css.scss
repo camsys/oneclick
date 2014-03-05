@@ -801,7 +801,7 @@ div.trip_proxy_trip_purpose_id{
 		padding: 0 20px;
 
 		.candidate-list {
-			height: 280px;
+			height: 274px;
 			overflow: hidden;
 		}
 
@@ -825,14 +825,14 @@ div.trip_proxy_trip_purpose_id{
 		margin-left:60px;
 	}
 
-	ul{
-		padding:0;
-		height: 280px;
-		overflow:scroll;
-		li{
+	ul {
+		padding: 0;
+		overflow: scroll;
+
+		li {
 			border-bottom: 1px solid $gray3;
 			font-size: 21px;
-			font-weight:600;
+			font-weight: 600;
 
 			a, a.address-select{
 				padding: 18px 20px;
@@ -840,6 +840,7 @@ div.trip_proxy_trip_purpose_id{
 				width: inherit;
 				margin: 0;
 				line-height:1.3;
+				height: 90px;
 
 				&:hover{
 					// border-bottom: 1px solid $gray3;

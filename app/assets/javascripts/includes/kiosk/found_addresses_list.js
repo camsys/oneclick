@@ -201,7 +201,7 @@ jQuery(function ($) {
     rootSel: '.search-dropdown-container',
     listSel: '.js-candidate-list-inner',
     property: 'margin-top',
-    size: 280,
+    size: 273,
     total: function ($root) {
       return $root.find('.js-candidate-list-inner ul.nav.nav-list').height();
     }
