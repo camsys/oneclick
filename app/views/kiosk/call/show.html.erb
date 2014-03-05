@@ -40,7 +40,7 @@
     }
 
     Twilio.Device.connect({PhoneNumber: number});
-    $('.number-display').text(number.split('://')[1]);
+    $('.number-display').text(' '+ number.split('://')[1]);
   }
 
   function hangup () {

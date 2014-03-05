@@ -6,6 +6,7 @@ $gray3: #d1cfcd;
 $gray4: #a49f9b;
 $gray5: #7d7874;
 $gray6: #45413d;
+$blue: #00b8d0;
 
 .kiosk-call-window {
   height:100%;
@@ -22,17 +23,42 @@ $gray6: #45413d;
     height: 96px;
     border-bottom: 1px solid #45413d;
     padding-top:37px;
+    letter-spacing: 0.14em;
   }
   .call-label{
     color: $gray3;
-    padding-top:200px;
+    padding-top:217px;
+    letter-spacing: 0.14em;
 
   }
   .number-display{
     color: $white;
     font-size: 73px;
-    line-height: 1em;
+    line-height: 1.4em;
     font-weight: 800;
+    letter-spacing: -0.07em;
+  }
+
+  .js-hangup{
+    width:400px;
+    margin-top: 90px;
+    margin-left: 22px;
+    padding: 54px 0;
+    background-color: rgba($blue, 0.3);
+    border: 4px solid $blue;
+    text-align: center;
+    font-family: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
     letter-spacing: -0.02em;
+    font-size: 32px;
+    font-weight: 700;
+    color: $white;
+    text-decoration: none;
+    outline:0;
+
+    &:active{
+      margin: 84px -6px 24px 16px;
+      padding:36px 6px;
+      width:332px;
+    }
   }
 }
