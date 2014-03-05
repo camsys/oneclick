@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20140220224403) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "accommodations", force: true do |t|
     t.string  "name",                  limit: 64,                 null: false
     t.string  "note"
@@ -41,7 +44,7 @@ ActiveRecord::Schema.define(version: 20140220224403) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "cms_blocks", ["page_id", "identifier"], :name => "index_cms_blocks_on_page_id_and_identifier"
+  add_index "cms_blocks", ["page_id", "identifier"], name: "index_cms_blocks_on_page_id_and_identifier", using: :btree
 
   create_table "cms_categories", force: true do |t|
     t.integer "site_id",          null: false
@@ -49,7 +52,7 @@ ActiveRecord::Schema.define(version: 20140220224403) do
     t.string  "categorized_type", null: false
   end
 
-  add_index "cms_categories", ["site_id", "categorized_type", "label"], :name => "index_cms_categories_on_site_id_and_categorized_type_and_label", :unique => true
+  add_index "cms_categories", ["site_id", "categorized_type", "label"], name: "index_cms_categories_on_site_id_and_categorized_type_and_label", unique: true, using: :btree
 
   create_table "cms_categorizations", force: true do |t|
     t.integer "category_id",      null: false
@@ -57,7 +60,7 @@ ActiveRecord::Schema.define(version: 20140220224403) do
     t.integer "categorized_id",   null: false
   end
 
-  add_index "cms_categorizations", ["category_id", "categorized_type", "categorized_id"], :name => "index_cms_categorizations_on_cat_id_and_catd_type_and_catd_id", :unique => true
+  add_index "cms_categorizations", ["category_id", "categorized_type", "categorized_id"], name: "index_cms_categorizations_on_cat_id_and_catd_type_and_catd_id", unique: true, using: :btree
 
   create_table "cms_files", force: true do |t|
     t.integer  "site_id",                                    null: false
@@ -72,10 +75,10 @@ ActiveRecord::Schema.define(version: 20140220224403) do
     t.datetime "updated_at",                                 null: false
   end
 
-  add_index "cms_files", ["site_id", "block_id"], :name => "index_cms_files_on_site_id_and_block_id"
-  add_index "cms_files", ["site_id", "file_file_name"], :name => "index_cms_files_on_site_id_and_file_file_name"
-  add_index "cms_files", ["site_id", "label"], :name => "index_cms_files_on_site_id_and_label"
-  add_index "cms_files", ["site_id", "position"], :name => "index_cms_files_on_site_id_and_position"
+  add_index "cms_files", ["site_id", "block_id"], name: "index_cms_files_on_site_id_and_block_id", using: :btree
+  add_index "cms_files", ["site_id", "file_file_name"], name: "index_cms_files_on_site_id_and_file_file_name", using: :btree
+  add_index "cms_files", ["site_id", "label"], name: "index_cms_files_on_site_id_and_label", using: :btree
+  add_index "cms_files", ["site_id", "position"], name: "index_cms_files_on_site_id_and_position", using: :btree
 
   create_table "cms_layouts", force: true do |t|
     t.integer  "site_id",                    null: false
@@ -92,8 +95,8 @@ ActiveRecord::Schema.define(version: 20140220224403) do
     t.datetime "updated_at",                 null: false
   end
 
-  add_index "cms_layouts", ["parent_id", "position"], :name => "index_cms_layouts_on_parent_id_and_position"
-  add_index "cms_layouts", ["site_id", "identifier"], :name => "index_cms_layouts_on_site_id_and_identifier", :unique => true
+  add_index "cms_layouts", ["parent_id", "position"], name: "index_cms_layouts_on_parent_id_and_position", using: :btree
+  add_index "cms_layouts", ["site_id", "identifier"], name: "index_cms_layouts_on_site_id_and_identifier", unique: true, using: :btree
 
   create_table "cms_pages", force: true do |t|
     t.integer  "site_id",                        null: false
@@ -112,8 +115,8 @@ ActiveRecord::Schema.define(version: 20140220224403) do
     t.datetime "updated_at",                     null: false
   end
 
-  add_index "cms_pages", ["parent_id", "position"], :name => "index_cms_pages_on_parent_id_and_position"
-  add_index "cms_pages", ["site_id", "full_path"], :name => "index_cms_pages_on_site_id_and_full_path"
+  add_index "cms_pages", ["parent_id", "position"], name: "index_cms_pages_on_parent_id_and_position", using: :btree
+  add_index "cms_pages", ["site_id", "full_path"], name: "index_cms_pages_on_site_id_and_full_path", using: :btree
 
   create_table "cms_revisions", force: true do |t|
     t.string   "record_type", null: false
@@ -122,7 +125,7 @@ ActiveRecord::Schema.define(version: 20140220224403) do
     t.datetime "created_at"
   end
 
-  add_index "cms_revisions", ["record_type", "record_id", "created_at"], :name => "index_cms_revisions_on_rtype_and_rid_and_created_at"
+  add_index "cms_revisions", ["record_type", "record_id", "created_at"], name: "index_cms_revisions_on_rtype_and_rid_and_created_at", using: :btree
 
   create_table "cms_sites", force: true do |t|
     t.string  "label",                       null: false
@@ -133,8 +136,8 @@ ActiveRecord::Schema.define(version: 20140220224403) do
     t.boolean "is_mirrored", default: false, null: false
   end
 
-  add_index "cms_sites", ["hostname"], :name => "index_cms_sites_on_hostname"
-  add_index "cms_sites", ["is_mirrored"], :name => "index_cms_sites_on_is_mirrored"
+  add_index "cms_sites", ["hostname"], name: "index_cms_sites_on_hostname", using: :btree
+  add_index "cms_sites", ["is_mirrored"], name: "index_cms_sites_on_is_mirrored", using: :btree
 
   create_table "cms_snippets", force: true do |t|
     t.integer  "site_id",                    null: false
@@ -147,8 +150,8 @@ ActiveRecord::Schema.define(version: 20140220224403) do
     t.datetime "updated_at",                 null: false
   end
 
-  add_index "cms_snippets", ["site_id", "identifier"], :name => "index_cms_snippets_on_site_id_and_identifier", :unique => true
-  add_index "cms_snippets", ["site_id", "position"], :name => "index_cms_snippets_on_site_id_and_position"
+  add_index "cms_snippets", ["site_id", "identifier"], name: "index_cms_snippets_on_site_id_and_identifier", unique: true, using: :btree
+  add_index "cms_snippets", ["site_id", "position"], name: "index_cms_snippets_on_site_id_and_position", using: :btree
 
   create_table "coverage_areas", force: true do |t|
     t.integer "service_id", null: false
@@ -204,14 +207,14 @@ ActiveRecord::Schema.define(version: 20140220224403) do
     t.boolean  "selected"
   end
 
-  create_table "kiosk_locations", force: true do |t|
+  create_table "kiosk_locations", :force => true do |t|
     t.string   "name"
     t.integer  "address_type"
     t.string   "addr"
     t.float    "lat"
     t.float    "lon"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "modes", force: true do |t|
@@ -307,8 +310,8 @@ ActiveRecord::Schema.define(version: 20140220224403) do
     t.datetime "updated_at",    null: false
   end
 
-  add_index "rates", ["rateable_id", "rateable_type"], :name => "index_rates_on_rateable_id_and_rateable_type"
-  add_index "rates", ["rater_id"], :name => "index_rates_on_rater_id"
+  add_index "rates", ["rateable_id", "rateable_type"], name: "index_rates_on_rateable_id_and_rateable_type", using: :btree
+  add_index "rates", ["rater_id"], name: "index_rates_on_rater_id", using: :btree
 
   create_table "relationship_statuses", force: true do |t|
     t.string "name", limit: 64
@@ -332,8 +335,8 @@ ActiveRecord::Schema.define(version: 20140220224403) do
     t.datetime "updated_at",               null: false
   end
 
-  add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
-  add_index "roles", ["name"], :name => "index_roles_on_name"
+  add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
+  add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "schedules", force: true do |t|
     t.integer  "service_id",                   null: false
@@ -416,7 +419,7 @@ ActiveRecord::Schema.define(version: 20140220224403) do
     t.time     "scheduled_time"
   end
 
-  add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"
+  add_index "trip_parts", ["trip_id", "sequence"], name: "index_trip_parts_on_trip_id_and_sequence", using: :btree
 
   create_table "trip_places", force: true do |t|
     t.integer  "trip_id",                 null: false
@@ -529,8 +532,8 @@ ActiveRecord::Schema.define(version: 20140220224403) do
     t.integer  "provider_id"
   end
 
-  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "value_relationships", force: true do |t|
     t.string   "relationship", limit: 64
