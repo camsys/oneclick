@@ -28,7 +28,10 @@ include SeedsHelpers
  {klass: Accommodation, code: 'door_to_door', name: 'Door-to-door', note: 'Do you need assistance getting to your front door?', datatype: 'bool'},
  {klass: Accommodation, code: 'curb_to_curb', name: 'Curb-to-curb', note: 'Do you need delivery to the curb in front of your home?', datatype: 'bool'},
  {klass: Accommodation, code: 'driver_assistance_available', name: 'Driver assistance available.', note: 'Do you need personal assistance from the driver?', datatype: 'bool'},
- #Service types 
+ {klass: Accommodation, code: 'stretcher_accessible', name: 'Stretcher accessible.', note: 'Do you need a vehicle that can accommodate a stretcher?', datatype: 'bool'},
+ {klass: Accommodation, code: 'companion_allowed', name: 'Traveler Companion Permitted', note: 'Do you travel with a companion?', datatype: 'bool'},
+
+ #Service types
  {klass: ServiceType, code: 'paratransit', name: 'Paratransit', note: 'This is a general purpose paratransit service.'},
  {klass: ServiceType, code: 'volunteer', name: 'Volunteer', note: ''},
  {klass: ServiceType, code: 'nemt', name: 'Non-Emergency Medical Service', note: 'This is a paratransit service only to be used for medical trips.'},

@@ -103,14 +103,14 @@
           -groups = @service.service_characteristics.map(&:group).uniq
           -groups.each do |group|
             -group_string = ""
+            -@service.service_characteristics.where(group: group).each do |map|
+              -if map.characteristic.code == "age"
+                -group_string += "Age is "+ @eh.relationship_to_words(map.value_relationship_id).to_s + " " + map.value.to_s + " "
+              -else
+                -group_string += t(map.characteristic.name) + " "
+              -group_string += "AND "
             %li
-              -@service.service_traveler_characteristics_maps.where(group: group).each do |map|
-                -if map.traveler_characteristic.code == "age"
-                  -group_string += t(:age_is) +" "+ @eh.relationship_to_words(map.value_relationship_id) + " " + map.value + " "
-                -else
-                  -group_string += map.traveler_characteristic.name + " "
-                -group_string += "AND "
-            =group_string[0..-6]
+              =group_string[0..-6]
         -else
           = t(:no_restriction)
 

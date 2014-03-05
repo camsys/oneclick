@@ -12,11 +12,12 @@ class EspReader
       tempfile = Tempfile.new("#{t}.csv")
       begin
         # TODO input MDB file needs to be parameterized
-        `mdb-export -R '||' -b raw db/arc/melton_esptest1222013.MDB #{t} | dos2unix > #{tempfile.path}`
+        p tempfile.path
+        `mdb-export -R '||' -b raw db/arc/trans22714.MDB #{t} | dos2unix > #{tempfile.path}`
         table[t] = to_csv tempfile
       ensure
         tempfile.close
-        tempfile.unlink
+        #tempfile.unlink
 
       end
     end
@@ -115,6 +116,7 @@ class EspReader
 
     if create #assign service to the new provider
       service.provider = provider
+      service.service_type = ServiceType.find_by_code('paratransit')
       service.save
     end
   end
@@ -123,7 +125,8 @@ class EspReader
     services = []
     esp_services.each do |esp_service|
       SERVICE_DICT[esp_service[0]] = esp_service[73]
-      service = Service.find_or_initialize_by_external_id(esp_service[73])
+      service = Service.where(external_id: esp_service[73]).first_or_initialize
+      #service = Service.find_or_initialize_by_external_id(esp_service[73])
       service.name = esp_service[1]
       service.contact = esp_service[4]
       service.contact_title = esp_service[5]
@@ -131,7 +134,7 @@ class EspReader
       service.phone = '(' + esp_service[21].to_s + ') ' + esp_service[22].to_s
       service.url = esp_service[29]
 
-      service.service_type = ServiceType.find_by_name('Paratransit')
+      service.service_type = ServiceType.find_by_code('paratransit')
       service.advanced_notice_minutes = 0  #TODO: Need to get this from ESP
       service.active = true
       esp_provider = get_esp_provider(esp_service[2])
@@ -142,19 +145,19 @@ class EspReader
       #Clean up this service
       service.schedules.destroy_all
       service.service_coverage_maps.destroy_all
-      service.traveler_accommodations.destroy_all
-      service.traveler_characteristics.destroy_all
+      service.service_accommodations.destroy_all
+      service.service_characteristics.destroy_all
       service.service_trip_purpose_maps.destroy_all
       service.fare_structures.destroy_all
       #Add Curb to Curb by default
       accommodation = Accommodation.find_by_code('curb_to_curb')
-      ServiceAccommodation.create(service: service, traveler_accommodation: accommodation, value: 'true')
+      ServiceAccommodation.create(service: service, accommodation: accommodation, value: 'true')
 
       #Set new schedule
       (0..6).each do |day|
         index = 43 + 2*day
         if esp_service[index] and esp_service[index+1]
-          Schedule.create(service: service, start_time: esp_service[index], end_time: esp_service[index+1], day_of_week: day)
+          Schedule.create(service: service, start_seconds: Time.parse(esp_service[index][9..16]).seconds_since_midnight, end_seconds: Time.parse(esp_service[index+1][9..16]).seconds_since_midnight, day_of_week: day)
         end
       end
 
@@ -215,6 +218,9 @@ class EspReader
   end
 
   def add_accommodation(service, accommodation)
+    p accommodation
+    p service
+    p '------'
     case accommodation.downcase
       when 'wheelchair lift'
         accommodation = Accommodation.find_by_code('lift_equipped')
@@ -226,36 +232,40 @@ class EspReader
         accommodation = Accommodation.find_by_code('door_to_door')
       when 'driver assistance'
         accommodation = Accommodation.find_by_code('driver_assistance_available')
-      when 'companion allowed'
+      when 'companion allowed', 'escort allowed'
         accommodation = Accommodation.find_by_code('companion_allowed')
+      when 'curb to curb'
+        accommodation = Accommodation.find_by_code('curb_to_curb')
+      when 'stretchers'
+        accommodation = Accommodation.find_by_code('stretcher_accessible')
       when 'ground', 'volunteer services'
         return
       else
         raise "ACCOMMODATION NOT FOUND:  " + accommodation.to_s
     end
-    ServiceAccommodation.create(service: service, traveler_accommodation: accommodation, value: 'true')
+    ServiceAccommodation.find_or_create_by(service: service, accommodation: accommodation, value: 'true')
   end
 
   def add_eligibility(service, eligibility)
     #Give all rules in this eligibility the same group.
-    group = (service.service_characterstics.pluck(:group).max || -1) + 1
+    group = (service.service_characteristics.pluck(:group).max || -1) + 1
     rules = eligibility.split(' and ')
     rules.each do |rule|
       if rule[0..2].downcase == 'age'
         characteristic = Characteristic.find_by_code('age')
-        ServiceCharacteristic.create(service: service, traveler_characteristic: characteristic, value: rule.gsub(/[^0-9]/, ''), value_relationship_id: 4, group: group)
+        ServiceCharacteristic.create(service: service, characteristic: characteristic, value: rule.gsub(/[^0-9]/, ''), value_relationship_id: 4, group: group)
         next
       end
 
       case rule.downcase
         when 'disabled'
           characteristic = Characteristic.find_by_code('disabled')
-          ServiceCharacteristic.create(service: service, traveler_characteristic: characteristic, value: true, group: group)
+          ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
         when 'disabled veteran'
           characteristic = Characteristic.find_by_code('disabled')
-          ServiceCharacteristic.create(service: service, traveler_characteristic: characteristic, value: true, group: group)
+          ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
           characteristic = Characteristic.find_by_code('veteran')
-          ServiceCharacteristic.create(service: service, traveler_characteristic: characteristic, value: true, group: group)
+          ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
         when 'county resident'
           # When county resident is required.  The person must also be a resident of the county in addition to traveling within that county.
           # The coverages were created previously.
@@ -265,7 +275,12 @@ class EspReader
           end
         when 'military/veteran'
           characteristic = Characteristic.find_by_code('veteran')
-          ServiceCharacteristic.create(service: service, traveler_characteristic: characteristic, value: true, group: group)
+          ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
+        when 'medical purposes only'
+          medical = TripPurpose.find_by_code('medical')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: medical, value: 'true')
+        when 'no restrictions'
+          return
         else
           raise "ELIGIBILITY RULE NOT FOUND:  " + rule.to_s
       end
