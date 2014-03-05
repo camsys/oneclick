@@ -2344,7 +2344,11 @@ body.sessions.new, body.registrations.new{
 	p{
 		font-size: 18px;
 		line-height: 1.2em;
-		padding-bottom:5px;
+		padding-bottom:3px;
+
+		&:empty{
+			display: none;
+		}
 	}
 	h4{
 		font-weight: 600;
@@ -2354,6 +2358,8 @@ body.sessions.new, body.registrations.new{
 
 	hr{
 		border-top:1px solid black;
+		margin-top: 10px;
+		margin-bottom:10px;
 	}
 	a{
 		color:black;
@@ -2365,7 +2371,7 @@ body.sessions.new, body.registrations.new{
 
 	.details{
 		tr{
-			border-bottom:30px solid white;
+			border-bottom:5px solid white;
 		}
 
 	}
