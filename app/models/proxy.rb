@@ -1,15 +1,15 @@
-require 'active_model'
-
 # Base class for transient models. Provides naming and validations via ActiveModel
 # so concrete classes can call xxx.valid? to validate the transient
 # model and forms can process error messages.
+# replace this with ActiveModel::Model after upgrading to rails 4:
+# http://api.rubyonrails.org/classes/ActiveModel/Model.html
 class Proxy
   include ActiveModel::Conversion
-  include ActiveModel::Validations  
+  include ActiveModel::Validations
   attr_reader   :errors
-  
+
   def initialize(attrs = {})
-    @errors = ActiveModel::Errors.new(self)    
+    @errors = ActiveModel::Errors.new(self)
   end
 
   # ensure that they are never stored in the database
@@ -19,6 +19,5 @@ class Proxy
 
   def persisted?
     @persisted
-  end       
-  
+  end
 end

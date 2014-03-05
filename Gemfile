@@ -32,6 +32,8 @@ gem 'honeybadger'
 gem 'draper'
 gem 'rubyzip'
 gem 'lorem-ipsum-me'
+gem 'faraday_middleware'
+gem 'twilio-ruby'
 gem 'rails_12factor', group: [:integration, :production, :qa, :staging]
 gem 'font-awesome-rails'
 
@@ -63,6 +65,7 @@ group :development do
   gem 'rgeo-shapefile'
   gem "letter_opener"
 end
+
 group :test do
   gem 'factory_girl_rails'
   gem 'rspec-core'
@@ -73,6 +76,6 @@ group :test do
   gem 'email_spec'
   gem 'launchy'
   gem 'coveralls', require: false
-  gem 'simplecov', require: false  
+  gem 'simplecov', require: false
 end
 

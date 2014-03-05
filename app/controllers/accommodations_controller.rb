@@ -25,7 +25,7 @@ class AccommodationsController < TravelerAwareController
     end
 
       # Check to see if it was an ajax request from the user profile page
-    if request.xhr?    
+    if request.xhr?
       flash[:notice] = t(:profile_updated)
     end
 

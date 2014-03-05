@@ -34,10 +34,10 @@ module Oneclick
 
     # don't generate RSpec tests for views and helpers
     config.generators do |g|
-      
+
       g.test_framework :rspec, fixture: true
       g.fixture_replacement :factory_girl, dir: 'spec/factories'
-      
+
       g.view_specs false
       g.helper_specs false
     end
@@ -94,19 +94,17 @@ module Oneclick
         }.map {|d| d.gsub(%r{\.scss$}, '')}
         .select{|d| d =~ %r{\.css}} - ["application.css"]
     config.assets.precompile += stylesheets
-    config.assets.precompile += ['tadaaapickr.pack.min.js']
-    config.assets.precompile << 'bootstrap-combobox.css'
 
-    puts "PRECOMPILE"
-    puts config.assets.precompile
+    config.assets.precompile += %w(
+      tadaaapickr.pack.min.js
+      kiosk/_base.css
+      kiosk/style.css
+    )
 
     config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
 
-    puts "PATHS"
-    puts config.assets.paths
-
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.1'
+    config.assets.version = '1.3'
 
     # See http://work.stevegrossi.com/2013/04/06/dynamic-error-pages-with-rails-3-2/
     config.exceptions_app = self.routes

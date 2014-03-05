@@ -21,7 +21,7 @@ en:
   places: 'Places'
   type: "Type"
   my_home_chkbox_label: "This is my home"
-  
+
   # Agent View strings
   find_traveler: "Find Traveler"
   create_traveler: "Create Traveler"
@@ -58,14 +58,14 @@ en:
   send_itinerary_by_email: "Send itinerary by email"
   send_trip_by_email: "Send trip plan by email"
   send_follow_up_email: "Send Follow-up Email"
-  
+
   # Registration, sign in, profile
   about_you: 'About You'
   version: 'Version'
   home: 'en no-brand Home'
   log_in: 'Log in'
   sign_up: 'Sign up'
-  welcome: 'Welcome'  
+  welcome: 'Welcome'
   first_name: 'First name'
   last_name: 'Last name'
   email: 'Email address'
@@ -79,7 +79,7 @@ en:
   logout: 'Logout'
   edit_account: 'Edit account'
   update_my_profile: 'Update my profile'
-  current_password_hint: "Enter your current password to confirm your changes."  
+  current_password_hint: "Enter your current password to confirm your changes."
   leave_password_blank: "Leave both blank if you don't want to change your password."
   my_information: 'My information'
   buddies: 'Buddies'
@@ -112,14 +112,14 @@ en:
   no_user_with_email_address: "We can't find a registered user with '%{email}' as their email address."
   something_went_wrong: "Ooops! Something went wrong. We were unable to process that request. Please try again."
   request_processed: "Your request has been processed."
-      
+
   spanish: 'En Español'
   error_not_implemented: "We're sorry, but this functionality has not yet been implemented."
   error_404: "The page you were looking for doesn't exist."
   error_404_mistyped: 'You may have mistyped the address or the page may have moved.'
   error_422: 'The change you wanted was rejected.'
   error_422_detail: "Maybe you tried to change something you didn't have access to."
-  
+
   # Trip History and Rating
   rating: "Rating"
   actions: "Actions"
@@ -153,7 +153,7 @@ en:
   trip_purpose: 'Purpose'
   trip_purposes: "Trip Purposes"
   departing_at: 'Departing At'
-  arriving_by: 'Arriving By'  
+  arriving_by: 'Arriving By'
   save_and_plan_trip: "Save and plan my trip"
   trip_planned_and_saved: "Trip planned and saved"
   finish_trip_planning_options: "You can now do one or more of the following to finish your trip planning"
@@ -397,7 +397,7 @@ en:
   assisted_user_first_name_s_trips: "%{name}'s Trips"
   trip_options_information_from_from: "Trip options information from %{from}"
   create_account: "Create an account to save your information."
-  stop_assisting: "Stop assisting"  
+  stop_assisting: "Stop assisting"
   assisting_turned_off: "Assisting has been turned off."
   new_esp_successfully_uploaded: "New ESP File Successfully Uploaded"
   thanks_for_the_feedback: "Thank you for your feedback!"
@@ -437,7 +437,7 @@ en:
   success_feedback_link: "Click HERE if you made the trip as planned, and everything worked out just fine."
   no_trip_taken_feedback_link: "Click HERE if you decided not to make the trip at all."
   more_feedback_link: "Click HERE if you want to provide more feedback, or if things didn't work out as planned."
-  
+
   date:
     abbr_day_names:
     - Sun
@@ -508,7 +508,7 @@ en:
       minute: Minute
       month: Month
       second: Seconds
-      year: Year          
+      year: Year
 
   # Branding
   arc:

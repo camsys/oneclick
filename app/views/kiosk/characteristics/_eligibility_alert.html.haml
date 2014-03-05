@@ -3,8 +3,8 @@
     .span8.offset2
       .title-container
         .bar
-        %h3 
+        %h3
           = t(:to_see_best_options)
 
       %a#yes{:href => "#", :name => "yesnopandameat", :value => "yes"} Yes
-      %a#no{:href => skip_user_trip_path(@traveler, @trip_id), :name => "yesno", :value => "no"} No
+      %a#no{:href => skip_kiosk_user_trip_path(@traveler, @trip_id), :name => "yesno", :value => "no"} No
