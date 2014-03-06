@@ -824,9 +824,9 @@ div.trip_proxy_trip_purpose_id{
 	h6{
 		margin-left:60px;
 	}
-	ul::-webkit-scrollbar {  
-		display: none;
-	}
+	// ul::-webkit-scrollbar {  
+	// 	display: none;
+	// }
 
 	ul {
 		padding: 0;
@@ -853,9 +853,9 @@ div.trip_proxy_trip_purpose_id{
 }
 
 //override for getting control of the dropdown focus color
-.nav-list > .active > a, .nav-list > .active > a:hover, .nav-list > .active > a:focus{
-	background-color: $gray1 !important;
-}
+// .nav-list > .active > a, .nav-list > .active > a:hover, .nav-list > .active > a:focus{
+// 	background-color: $gray1 !important;
+// }
 
 //scrollbar for location section
 .scroller-container{
