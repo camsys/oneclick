@@ -19,6 +19,7 @@ module Trip::From
     # if PLACE -- the id of the Place selected
     # if RAW ADDRESS -- the index of the address in the geocoder cache for that end point
     attr_accessor :from_place_selected
+    attr_accessor :from_place_object
 
     # Other attributes that are used to cache trip data during edits and repeats
     #
@@ -39,6 +40,8 @@ protected
 
   # Validation. Check that there has been a selection for the from place
   def validate_from_selection
+    # TODO Just check that somethign was selected, for now
+    return !from_place_object.nil?
     if from_place_selected.blank? || from_place_selected_type.blank?
       errors.add(:from_place, I18n.translate(:nothing_found))
       return false

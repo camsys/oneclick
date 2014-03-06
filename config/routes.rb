@@ -235,6 +235,8 @@ Oneclick::Application.routes.draw do
       get '/kiosk/session/destroy' => 'kiosk/sessions#destroy', as: :destroy_kiosk_user_session
     end
 
+    # TODO This should go somewhere else
+    get '/place_search' => 'trips#search'
 
     namespace :admin do
       resources :reports, :only => [:index, :show]

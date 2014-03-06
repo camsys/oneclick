@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140227205539) do
+ActiveRecord::Schema.define(version: 20140308183247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -304,9 +304,9 @@ ActiveRecord::Schema.define(version: 20140227205539) do
   end
 
   create_table "trip_parts", force: true do |t|
-    t.integer  "trip_id",                            null: false
-    t.integer  "from_trip_place_id",                 null: false
-    t.integer  "to_trip_place_id",                   null: false
+    t.integer  "trip_id"
+    t.integer  "from_trip_place_id"
+    t.integer  "to_trip_place_id"
     t.integer  "sequence",                           null: false
     t.boolean  "is_depart",          default: false
     t.boolean  "is_return_trip",     default: false
@@ -319,7 +319,7 @@ ActiveRecord::Schema.define(version: 20140227205539) do
   add_index "trip_parts", ["trip_id", "sequence"], name: "index_trip_parts_on_trip_id_and_sequence", using: :btree
 
   create_table "trip_places", force: true do |t|
-    t.integer  "trip_id",                 null: false
+    t.integer  "trip_id"
     t.integer  "sequence",                null: false
     t.integer  "place_id"
     t.integer  "poi_id"

@@ -10,7 +10,12 @@ class Trip < ActiveRecord::Base
   # attr_accessible :user_comments, :taken, :rating, :trip_purpose
   
   has_many :itineraries,        :through => :trip_parts, :class_name => 'Itinerary' 
-  
+
+  # We don't actually run these validations; sort of complicated to make it work
+  # and I don't want to deal with it right now.
+  # validate :validate_at_least_one_trip_place
+  # validate :validate_at_least_one_trip_part
+
   # Scopes
   # Returns a set of trips that have been created between a start and end day
   scope :created_between, lambda {|from_day, to_day| where("trips.created_at > ? AND trips.created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
@@ -39,6 +44,64 @@ class Trip < ActiveRecord::Base
   # Returns an array of Trips where no valid options were generated
   def self.failed
     joins(:itineraries).where('server_status <> 200').uniq
+  end
+
+  def self.create_from_proxy trip_proxy, user, traveler
+    puts "Trip#create_from_proxy"
+    puts trip_proxy.ai
+    puts ""
+
+    trip = Trip.new()
+    trip.creator = user
+    trip.user = traveler
+    trip.trip_purpose = TripPurpose.find(trip_proxy.trip_purpose_id)
+
+    from_place = TripPlace.new_from_trip_proxy_place(trip_proxy.from_place_object)
+    from_place.sequence = 0
+
+    to_place = TripPlace.new_from_trip_proxy_place(trip_proxy.to_place_object)
+    to_place.sequence = 1
+
+    trip.trip_places << from_place
+    trip.trip_places << to_place
+
+    # set the sequence counter for when we have multiple trip parts
+    sequence = 0
+
+    trip_date = Date.strptime(trip_proxy.trip_date, '%m/%d/%Y')
+
+    # Create the outbound trip part
+    trip_part = TripPart.new
+    trip_part.trip = trip
+    trip_part.sequence = sequence
+    # TODO Change this when we change view to return non-localied value.
+    trip_part.is_depart = trip_proxy.arrive_depart == 'Departing At' ? true : false
+    trip_part.scheduled_date = trip_date
+    trip_part.scheduled_time = Time.zone.parse(trip_proxy.trip_time)
+    trip_part.from_trip_place = from_place
+    trip_part.to_trip_place = to_place
+
+    raise 'TripPart not valid' unless trip_part.valid?
+    trip.trip_parts << trip_part
+
+    # create the round trip if needed
+    if trip_proxy.is_round_trip == "1"
+      sequence += 1
+      trip_part = TripPart.new
+      trip_part.trip = trip
+      trip_part.sequence = sequence
+      trip_part.is_depart = true
+      trip_part.is_return_trip = true
+      trip_part.scheduled_date = trip_date
+      trip_part.scheduled_time = Time.zone.parse(trip_proxy.return_trip_time)
+      trip_part.from_trip_place = to_place
+      trip_part.to_trip_place = from_place
+
+      raise 'TripPart not valid' unless trip_part.valid?
+      trip.trip_parts << trip_part
+    end
+
+    trip
   end
 
   # Returns true if the trip is scheduled to start withing the period
@@ -207,6 +270,16 @@ class Trip < ActiveRecord::Base
 
   def md5_hash
     Digest::MD5.hexdigest(self.id.to_s + self.user.id.to_s + self.created_at.to_s)
+  end
+
+  private
+
+  def validate_at_least_one_trip_place
+    errors.add(:trip_places, 'is empty') unless trip_places.count > 0
+  end
+
+  def validate_at_least_one_trip_part
+    errors.add(:trip_parts, 'is empty') unless trip_parts.count > 0
   end
 
 end
