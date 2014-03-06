@@ -2360,7 +2360,7 @@ body.sessions.new, body.registrations.new{
 	}
 	h4{
 		font-weight: 600;
-		font-size:16px;
+		font-size:15px;
 		margin-bottom: 1px;
 	}
 
@@ -2376,6 +2376,8 @@ body.sessions.new, body.registrations.new{
 
 	.container-fluid {
 		height:auto;
+		padding: 0 10px;
+		border: 1px solid #fafafa;
 	}
 
 	.details{
