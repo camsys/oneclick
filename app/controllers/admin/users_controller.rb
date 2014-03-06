@@ -4,7 +4,7 @@ class Admin::UsersController < Admin::BaseController
   # GET /users.json
   def index
     #Get the broadest list of user
-    if params[:text]
+    if params[:text] != [""]
       @users = User.where("upper(first_name) LIKE ? OR upper(last_name) LIKE ? OR upper(email) LIKE ?", 
       "%#{params[:text].upcase}%", "%#{params[:text].upcase}%", "%#{params[:text].upcase}%")
     else
