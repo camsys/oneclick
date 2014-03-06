@@ -130,7 +130,6 @@ class PlaceSearchingController < TravelerAwareController
       req.params['input']    = query
       req.params['sensor']   = false
       req.params['key']      = 'AIzaSyBHlpj9FucwX45l2qUZ3441bkqvcxR8QDM'
-      req.params['types']    = 'establishment'
       req.params['location'] = params[:map_center]
       req.params['radius']   = 20_000
     end
