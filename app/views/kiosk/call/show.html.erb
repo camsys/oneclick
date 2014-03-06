@@ -1,6 +1,11 @@
 <script type="text/javascript" src="//static.twilio.com/libs/twiliojs/1.1/twilio.min.js"></script>
-<button class="js-hangup">Hangup</button>
+<div class="call-header">
+  Pick up the phone attached to this kiosk
+</div>
+<div class="call-label">On the phone with</div>
 <div class="number-display"></div>
+<button class="js-hangup">End Call</button>
+
 
 <script type="text/javascript">
   /* Create the Client with a Capability Token */
@@ -35,7 +40,7 @@
     }
 
     Twilio.Device.connect({PhoneNumber: number});
-    $('.number-display').text('Calling '+ number.split('://')[1]);
+    $('.number-display').text(' '+ number.split('://')[1]);
   }
 
   function hangup () {
