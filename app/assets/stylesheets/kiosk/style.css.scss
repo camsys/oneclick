@@ -831,31 +831,30 @@ div.trip_proxy_trip_purpose_id{
 	ul {
 		padding: 0;
 		overflow: scroll;
+		background-color:$white;
 
 
 		li {
 			border-bottom: 1px solid $gray3;
 			font-size: 21px;
 			font-weight: 600;
-			background-color:$white;
 
 			a, a.address-select{
 				padding: 18px 20px;
 				color: $gray6;
-				background-color: $white;
 				text-shadow:none;
 				width: inherit;
 				margin: 0;
 				line-height:1.3;
 				height: 90px;
-
-				&:active{
-					background-color: $gray1;
-				}
-
 			}
 		}
 	}
+}
+
+//override for getting control of the dropdown focus color
+.nav-list > .active > a, .nav-list > .active > a:hover, .nav-list > .active > a:focus{
+	background-color: $gray1 !important;
 }
 
 //scrollbar for location section
