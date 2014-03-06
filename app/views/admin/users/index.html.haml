@@ -5,19 +5,16 @@
   %h5= t(:filter)
   =form_tag({controller: "admin/users", action: "index"}, method: 'get', :class => "form-inline") do
     .row-fluid
-      .span5  
-        =label_tag :text, t(:search)
-        =text_field_tag :text,params[:text], {:class => "search-query"}
-      .span2
-        =label_tag :registered, "#{t(:registered)}?"
-        =check_box_tag :registered
-      .span2
-        =label_tag :traveler, "#{t(:traveler)}?"
-        =check_box_tag :traveler
-
+      =label_tag :text, t(:search)
+      =text_field_tag :text,params[:text], {:class => "search-query"}
+    .row-fluid
+      =label_tag :registered, "#{t(:registered)}?"
+      =check_box_tag :registered
+      =label_tag :traveler, "#{t(:traveler)}?"
+      =check_box_tag :traveler
     .row-fluid
       .span5
-        =submit_tag 'Go!', name: nil, :class => "btn btn-primary"
+        =submit_tag t(:search), name: nil, :class => "btn btn-primary"
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_users_table
   %thead
     %tr
@@ -29,13 +26,17 @@
   %tbody
     - @users.each do |user|
       %tr
-        %td= link_to user.name, [:admin, user]
+        -if user.is_registered?
+          %td= link_to user.name, edit_user_path(user.id)
+        -else
+          %td= user.name
         %td= user.email
         %td= user.created_at.to_date
         %td= user.roles.first.name.titleize unless user.roles.first.nil?
         %td.center
-          %a.btn{:href => error_501_path, :type => "button", :class => "btn btn-success"}= t(:aid_user)
-          %a.btn{"data-toggle" => "modal", :href => "#role-options-#{user.id}", :type => "button", :class => "btn btn-danger"}= t(:change_role)
+          -unless user.email.include? "example.com"
+            %a.btn{:href => error_501_path, :type => "button", :class => "btn btn-success"}= t(:aid_user)
+            %a.btn{"data-toggle" => "modal", :href => "#role-options-#{user.id}", :type => "button", :class => "btn btn-danger"}= t(:change_role)
         = render partial: user, locals: {agency: @agency} if @agency
 
 = link_to t(:add_user), '#select_user', {class: 'btn', "data-toggle" => "modal"}

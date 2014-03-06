@@ -41,6 +41,7 @@ class User < ActiveRecord::Base
   has_many :delegates, :class_name => 'User', :through => :delegate_relationships
   has_many :travelers, :class_name => 'User', :through => :traveler_relationships
   has_many :confirmed_travelers, :class_name => 'User', :through => :confirmed_traveler_relationships
+  has_many :approved_agencies, :class_name => 'Agency', :through => :agency_user_relationships
 
   has_many :buddy_relationships, class_name: 'UserRelationship', foreign_key: :user_id
   has_many :buddies, class_name: 'User', through: :buddy_relationships, source: :delegate

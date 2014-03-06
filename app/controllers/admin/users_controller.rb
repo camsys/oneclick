@@ -44,4 +44,9 @@ class Admin::UsersController < Admin::BaseController
     redirect_to admin_agency_users_path(agency)
   end
 
+  def show
+    redirect_to edit_user_path :users   #This is not just the edit action, because of Devise.  Actually points to registration_controller#edit
+  end
+
+
 end

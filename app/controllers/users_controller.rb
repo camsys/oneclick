@@ -32,4 +32,8 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit
+    set_traveler_id params[:id] || current_user
+    redirect_to edit_user_registration_path
+  end
 end
