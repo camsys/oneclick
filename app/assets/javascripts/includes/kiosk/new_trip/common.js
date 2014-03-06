@@ -68,7 +68,7 @@
 
         //targetPos is now static, change these values to change the calendar's position
         targetPos = {
-          left: 103,
+          left: 165,
           top: 124
         };
 
