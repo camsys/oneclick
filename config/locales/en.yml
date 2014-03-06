@@ -438,6 +438,7 @@ en:
   no_trip_taken_feedback_link: "Click HERE if you decided not to make the trip at all."
   more_feedback_link: "Click HERE if you want to provide more feedback, or if things didn't work out as planned."
   search: "Search"
+  aid_user: "Aid User"
   
   date:
     abbr_day_names:
