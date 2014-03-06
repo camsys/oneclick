@@ -106,4 +106,11 @@ class User < ActiveRecord::Base
     agency.nil? ? email : "#{email} (#{agency.name})"
   end
 
+  def is_visitor?
+    email.include? "example.com"
+  end
+  def is_registered?
+    !is_visitor?
+  end
+
 end
