@@ -99,6 +99,7 @@ module Oneclick
       tadaaapickr.pack.min.js
       kiosk/_base.css
       kiosk/style.css
+      trips.css
     )
 
     config.assets.paths << Rails.root.join('app', 'assets', 'fonts')

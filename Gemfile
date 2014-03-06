@@ -36,6 +36,8 @@ gem 'faraday_middleware'
 gem 'twilio-ruby'
 gem 'rails_12factor', group: [:integration, :production, :qa, :staging]
 gem 'font-awesome-rails'
+gem 'twitter-typeahead-rails', git: 'https://github.com/Qureana/twitter-typeahead-rails'
+gem 'handlebars_assets'
 
 group :development do
   gem 'activerecord-postgis-adapter'

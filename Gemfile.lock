@@ -12,6 +12,15 @@ GIT
   specs:
     rolify (3.4.0)
 
+GIT
+  remote: https://github.com/Qureana/twitter-typeahead-rails
+  revision: cb6c90502956a2b4a206e7a14dad4f00d3930ee3
+  specs:
+    twitter-typeahead-rails (0.10.1)
+      actionpack (>= 3.1)
+      jquery-rails
+      railties (>= 3.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -176,6 +185,11 @@ GEM
       activesupport (>= 4.0.1)
       haml (>= 3.1, < 5.0)
       railties (>= 4.0.1)
+    handlebars_assets (0.15)
+      execjs (>= 1.2.9)
+      multi_json
+      sprockets (>= 2.0.3)
+      tilt
     highline (1.6.21)
     hike (1.2.3)
     hoe (3.9.0)
@@ -416,6 +430,7 @@ DEPENDENCIES
   guard-rails
   guard-rspec
   haml-rails
+  handlebars_assets
   honeybadger
   html2haml
   i18n-active_record!
@@ -449,4 +464,5 @@ DEPENDENCIES
   thin
   travis
   twilio-ruby
+  twitter-typeahead-rails!
   uglifier (>= 1.0.3)
