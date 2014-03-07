@@ -34,10 +34,20 @@ class EspReader
   @s_time_idx
 
   #Services Config
-  @c_info_idx
   @c_id_idx
   @c_cfg_idx
   @c_item_idx
+
+  #Service Cost
+  @cost_id_idx
+  @cost_type_idx
+  @cost_amount_idx
+  @cost_unit_idx
+
+  #Service Grid
+  @g_id_idx
+  @g_grp_idx
+  @g_item_idx
 
   def assign_provider_indices
     @p_name_idx = @esp_providers.first.index("Name")
@@ -72,10 +82,22 @@ class EspReader
   end
 
   def assign_config_indices(configs)
-    @c_info_idx = configs.first.index("InfoID")
     @c_id_idx = configs.first.index("ServiceID")
-    @c_cfg_idx = configs.first.index("Grp")
+    @c_cfg_idx = configs.first.index("CfgNum")
     @c_item_idx = configs.first.index("Item")
+  end
+
+  def assign_cost_indices(configs)
+    @cost_id_idx = configs.first.index("ServiceID")
+    @cost_type_idx = configs.first.index("CostType")
+    @cost_amount_idx = configs.first.index("Amount")
+    @cost_unit_idx = configs.first.index("CostUnit")
+  end
+
+  def assign_grid_indices(configs)
+    @g_id_idx = configs.first.index("ServiceID")
+    @g_grp_idx = configs.first.index("Grp")
+    @g_item_idx = configs.first.index("Item")
   end
 
   def run
@@ -113,16 +135,11 @@ class EspReader
       tempfile = Tempfile.new("#{t}.csv")
       #tempfile = Tempfilenew(tempfilepath)
       begin
-        # TODO input MDB file needs to be parameterized
-        #tempfilepath = 'db/arc/trans22714.MDB'
-        p tempfile.path
-        #`mdb-export -R '||' -b raw ` + tempfilepath + ` #{t} | dos2unix > #{tempfile.path}`
         system "mdb-export -R '||' -b raw " + tempfilepath + " #{t} | dos2unix > #{tempfile.path}"
         table[t] = to_csv tempfile
       ensure
         tempfile.close
-        #tempfile.unlink
-
+        tempfile.unlink
       end
     end
     table
@@ -176,17 +193,19 @@ class EspReader
 
     #Add County Coverage Rules
     esp_configs = entries['tServiceGrid']
-    assign_config_indices(esp_configs)
+    assign_grid_indices(esp_configs)
     esp_configs.shift
     create_or_update_coverages(esp_configs)
 
     #Add Eligibility
     esp_configs = entries['tServiceCfg']
+    assign_config_indices(esp_configs)
     esp_configs.shift
     create_or_update_eligibility(esp_configs)
 
     #Add Fares
     esp_configs = entries['tServiceCost']
+    assign_cost_indices(esp_configs)
     esp_configs.shift
     create_or_update_fares(esp_configs)
 
@@ -288,10 +307,10 @@ class EspReader
 
   def create_or_update_coverages esp_configs
     esp_configs.each do |config|
-      service = Service.find_by_external_id(SERVICE_DICT[config[1]])
-      case config[@c_cfg_idx].downcase
+      service = Service.find_by_external_id(SERVICE_DICT[config[@g_id_idx]])
+      case config[@g_grp_idx].downcase
         when 'county'
-          c = GeoCoverage.find_or_create_by_value(value: config[@c_item_idx], coverage_type: 'county_name')
+          c = GeoCoverage.find_or_create_by_value(value: config[@g_item_idx], coverage_type: 'county_name')
           ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'destination')
           ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'origin')
       end
@@ -300,11 +319,11 @@ class EspReader
 
   def create_or_update_fares esp_configs
     esp_configs.each do |config|
-      service = Service.find_by_external_id(SERVICE_DICT[config[1]])
+      service = Service.find_by_external_id(SERVICE_DICT[config[@cost_id_idx]])
       fare = FareStructure.find_by_service_id(service.id)
-      case config[@c_cfg_idx].downcase
+      case config[@cost_type_idx].downcase
         when 'transportation'
-          amount = config[@c_item_idx].to_f
+          amount = config[@cost_amount_idx].to_f
           if amount >= fare.base.to_f
             fare.base = amount
             fare.fare_type = 0
@@ -321,7 +340,7 @@ class EspReader
         accommodation = Accommodation.find_by_code('lift_equipped')
       when 'wheelchair/fold'
         accommodation = Accommodation.find_by_code('folding_wheelchair_accessible')
-      when 'wheelchair/ motor'
+      when 'wheelchair/ motor', 'wheelchair/motor'
         accommodation = Accommodation.find_by_code('motorized_wheelchair_accessible')
       when 'door to door'
         accommodation = Accommodation.find_by_code('door_to_door')
