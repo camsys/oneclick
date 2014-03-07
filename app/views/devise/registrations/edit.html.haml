@@ -17,6 +17,9 @@
       %li
         %a{href: '#tab3', data: {toggle: 'tab', id: '3'}}
           = t(:travelers) + " (" + current_user.travelers.count.to_s + ")"
+      %li
+        %a{href: '#tab7', data: {toggle: 'tab', id: '7'}}
+          = t(:agencies) + " (" + current_user.approved_agencies.count.to_s + ")"
     %li
       %a{href: '#tab4', data: {toggle: 'tab'}}
         = t(:eligibility)
@@ -50,6 +53,9 @@
     .tab-pane#tab6
       .well#accommodations
         = render partial: 'accommodations/form',  :locals => {:path => user_accommodation_path(@traveler, @user_accommodations_proxy.id), :inline => false}
+    .tab-pane#tab7
+      .well#agencies
+        = render partial: 'agencies'
 
 :javascript
   

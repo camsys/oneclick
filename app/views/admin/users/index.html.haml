@@ -26,8 +26,8 @@
   %tbody
     - @users.each do |user|
       %tr
-        -if user.is_registered?
-          %td= link_to user.name, edit_user_path(user.id)
+        -if can_be_impersonated_by_current_user(user)
+          %td= link_to user.name, edit_admin_agency_user_path(current_user.agency.id,user.id)
         -else
           %td= user.name
         %td= user.email

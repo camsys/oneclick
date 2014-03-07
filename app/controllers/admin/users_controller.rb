@@ -44,8 +44,15 @@ class Admin::UsersController < Admin::BaseController
     redirect_to admin_agency_users_path(agency)
   end
 
-  def show
-    redirect_to edit_user_path :users   #This is not just the edit action, because of Devise.  Actually points to registration_controller#edit
+  # Impersonate a user to edit their traveler profile.
+  def edit
+    traveler_id = params[:id]
+    agency_id = params[:agency_id]
+    AgencyUserRelationship.find_or_create_by(user_id: traveler_id, agency_id: agency_id) do |aur|
+      aur.creator = current_user.id
+    end
+    set_traveler_id traveler_id
+    redirect_to edit_user_path traveler_id   #edit_user_path is not user#edit, because of Devise.  Actually points to registration_controller#edit
   end
 
 
