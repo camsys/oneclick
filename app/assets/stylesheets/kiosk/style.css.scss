@@ -854,7 +854,7 @@ div.trip_proxy_trip_purpose_id{
 
 //override for getting control of the dropdown focus color
 .nav-list > .active > a, .nav-list > .active > a:hover, .nav-list > .active > a:focus{
-	background-color: red !important;
+	background-color: $gray2 !important;
 }
 
 //scrollbar for location section
