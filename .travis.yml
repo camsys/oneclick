@@ -29,7 +29,7 @@ notifications:
 deploy:
   provider: heroku
   api_key:
-    secure: h4oO5/falwm1cIWu8SlGlJlWZese5B/ZIMaU2+e6kwhE/ekci2t9f/XeudpzHxLsBL5OAQiB9idZL2OCligYU8BexrrevzUcBwD4yg/OKVI/HK2VS/NON+fTWPf72tgFUF8cugZTN77X6ZtvapxICJs5y//1PcAG4VWc+z2feCk=
+    secure: J+aNJ0eoiYAhlMp6fhlPksfPSamkfKzuqzqY/Q9j4Up8UGMfz8EyRXpOfbm8qprQG3PO4mqSzP1FBZZrl6aJ8km8wLyIeMu8Cut+QzenZGTvGME/6jhmAL5PJeXlHQQ2eR1jw1RuyGZ+/kziwPdbN3sv2121T8QYBwlEQ306Bk0=
   app: oneclick-arc-int
   on:
     repo: camsys/oneclick
