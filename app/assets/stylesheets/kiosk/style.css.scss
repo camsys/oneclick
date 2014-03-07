@@ -792,7 +792,7 @@ div.trip_proxy_trip_purpose_id{
 	top: 131px;
 	z-index: 100;
 	overflow:auto;
-	background-color:rgba($white, .88);
+	background-color:rgba($white, 0.88);
 	overflow:hidden;
 	//TODO: Fix this for non-kiosk views.
 	height: 765px;
@@ -824,10 +824,15 @@ div.trip_proxy_trip_purpose_id{
 	h6{
 		margin-left:60px;
 	}
+	ul::-webkit-scrollbar {  
+		display: none;
+	}
 
 	ul {
 		padding: 0;
 		overflow: scroll;
+		background-color:$white;
+
 
 		li {
 			border-bottom: 1px solid $gray3;
@@ -837,18 +842,19 @@ div.trip_proxy_trip_purpose_id{
 			a, a.address-select{
 				padding: 18px 20px;
 				color: $gray6;
+				text-shadow:none;
 				width: inherit;
 				margin: 0;
 				line-height:1.3;
 				height: 90px;
-
-				&:hover{
-					// border-bottom: 1px solid $gray3;
-					// padding-bottom: 17px;
-				}
 			}
 		}
 	}
+}
+
+//override for getting control of the dropdown focus color
+.nav-list > .active > a, .nav-list > .active > a:hover, .nav-list > .active > a:focus{
+	background-color: $gray2 !important;
 }
 
 //scrollbar for location section
