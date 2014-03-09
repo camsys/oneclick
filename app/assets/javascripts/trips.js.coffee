@@ -2,58 +2,41 @@ $ ->
   # Twitter typeahead exmaple.
 
   # instantiate the bloodhound suggestion engine
-  numbers = new Bloodhound(
+  places = new Bloodhound
     datumTokenizer: (d) ->
-      Bloodhound.tokenizers.whitespace d.num
-
-    queryTokenizer: Bloodhound.tokenizers.whitespace
-    local: [
-      {
-        num: "one"
-      }
-      {
-        num: "two"
-      }
-      {
-        num: "three"
-      }
-      {
-        num: "four"
-      }
-      {
-        num: "five"
-      }
-      {
-        num: "six"
-      }
-      {
-        num: "seven"
-      }
-      {
-        num: "eight"
-      }
-      {
-        num: "nine"
-      }
-      {
-        num: "ten"
-      }
-    ]
-  )
+      Bloodhound.tokenizers.whitespace(d.value)
+    queryTokenizer:
+      Bloodhound.tokenizers.whitespace
+    remote:
+      '/place_search.json?no_map_partial=true&query=%QUERY'
+    # prefetch: '../data/films/post_1960.json'
 
   # initialize the bloodhound suggestion engine
-  numbers.initialize()
-
-  # instantiate the typeahead UI
-  console.log $("#trip_proxy_from_place")
+  places.initialize()
 
   $("#trip_proxy_from_place").typeahead null,
-    displayKey: "num"
-    source: numbers.ttAdapter()
+    displayKey: "name"
+    source: places.ttAdapter()
     templates:
       suggestion: Handlebars.compile([
-        '<li><a>{{num}}</a></li>'
+        '<li><a>{{name}}</a></li>'
         #   ,
         # '<p class="repo-name">{{name}}</p>',
         # '<p class="repo-description">{{description}}</p>'
       ].join(''))
+  $('#trip_proxy_from_place').on 'typeahead:selected', (e, s, d) ->
+    $('#from_place_object').val(JSON.stringify(s))
+
+  $("#trip_proxy_to_place").typeahead null,
+    displayKey: "name"
+    source: places.ttAdapter()
+    templates:
+      suggestion: Handlebars.compile([
+        '<li><a>{{name}}</a></li>'
+        #   ,
+        # '<p class="repo-name">{{name}}</p>',
+        # '<p class="repo-description">{{description}}</p>'
+      ].join(''))
+  $('#trip_proxy_to_place').on 'typeahead:selected', (e, s, d) ->
+    $('#to_place_object').val(JSON.stringify(s))
+

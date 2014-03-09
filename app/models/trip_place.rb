@@ -1,10 +1,13 @@
 class TripPlace < GeocodedAddress
-  
+
   TYPES = [
     "Poi",
     "Place",
     "Street Address"
   ]
+
+  validate :validator
+
   # Associations
   belongs_to :trip    # everyone trip place must belong to a trip
   belongs_to :place   # optional
@@ -16,7 +19,24 @@ class TripPlace < GeocodedAddress
   
   # set the default scope
   default_scope {order('sequence ASC')}
-  
+
+  def self.new_from_trip_proxy_place json_string
+    # TODO handle types? e.g. POI_TYPE
+    # TODO This isn't quiet right yet, because we're doing the raw address and not setting the type
+    j = JSON.parse(json_string)
+    tp = TripPlace.new(
+      address1: j['address1'],
+      address2: j['address2'],
+      city: j['city'],
+      state: j['state'],
+      zip: j['zip'],
+      county: j['county'],
+      lat: j['lat'],
+      lon: j['lon'],
+      raw_address: j['full_address'])
+    tp
+  end
+
   # discover the location for this trip place from
   # its relationships
   def location
@@ -76,6 +96,27 @@ class TripPlace < GeocodedAddress
     Rails.logger.debug "TripPlace reading from cache with TripPlace.raw.#{id}"
     self.raw = Rails.cache.read("TripPlace.raw.#{id}")
     Rails.logger.debug "Got #{self.raw}"
+  end
+
+  private
+
+  def validator
+    if !place.nil? && !poi.nil?
+      errors.add(:base, 'TripPlace cannot be both place and POI')
+      return
+    end
+    if !place.nil? && !raw_address.nil?
+      errors.add(:base, 'TripPlace cannot have address if predefined place')
+      return
+    end
+    if !poi.nil? && !raw_address.nil?
+      errors.add(:base, 'TripPlace cannot have address if POI')
+      return
+    end
+    if (place.nil? && poi.nil?) && raw_address.nil?
+      errors.add(:base, 'TripPlace must have raw address if not predefined place or POI')
+      return
+    end
   end
 
 end
