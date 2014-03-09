@@ -100,6 +100,7 @@ module Oneclick
       kiosk/_base.css
       kiosk/style.css
       trips.css
+      trips.js
     )
 
     config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
