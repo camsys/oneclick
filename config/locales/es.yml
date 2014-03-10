@@ -347,7 +347,7 @@ es:
   about_2_blocks: "aproximadament 2 cuadras"
   about_4_blocks: "aproximadamente 4 cuadras"
   twof_miles: "%.2f millas"
-  one_click_buddy_request_from_from_email: "1-Click solicitud de amigo de %{from_email}"
+  one_click_buddy_request_from_from_email: "1-Click solicitud de amigo de %{@from_email}"
   you_can_t_be_your_own_buddy: "No puedes ser tu propio amigo."
   you_ve_already_asked_them_to_be_a_buddy: "Ya le has solicitado ser amigo."
   my_buddies: "[es331]My Buddies[/es]"
