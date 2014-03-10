@@ -10,7 +10,14 @@ class Poi < GeocodedAddress
 
   # set the default scope
   default_scope {order('pois.name')}
-  
+
+  def self.get_by_query_str(query_str, limit)
+    rel = Poi.arel_table[:name].matches(query_str)
+    pois = Poi.where(rel).limit(limit)
+    puts pois.ai
+    pois
+  end
+
   def to_s
     name
   end

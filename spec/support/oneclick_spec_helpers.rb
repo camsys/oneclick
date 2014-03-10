@@ -4,6 +4,12 @@ module OneclickSpecHelpers
     mock_user = FactoryGirl.create user
     sign_in mock_user
   end
+
+  def login_as_using_find_by(options = {})
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+    user = User.find_by options
+    sign_in user
+  end
 end
 
 RSpec.configure do |c|

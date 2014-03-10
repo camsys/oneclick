@@ -8,8 +8,8 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
-*/
-@import url(<%= asset_path("includes/_bootstrap_and_overrides") %>);
+ */
+@import "includes/_bootstrap_and_overrides";
 @import url(<%= asset_path("includes/jquery.timepicker.css") %>);
 @import url(<%= asset_path("includes/tadaaapickr.css") %>);
 @import url(<%= asset_path("bootstrap-combobox") %>);
@@ -19,3 +19,4 @@
 @import url(<%= asset_path("bootstrap_datatable") %>);
 @import url(<%= asset_path("base/_base.css") %>);
 @import url(<%= asset_path("base/home.css") %>);
+@import "trips";
