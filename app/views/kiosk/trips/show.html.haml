@@ -113,14 +113,6 @@
             .span12
               = link_to kiosk_user_new_trip_start_path(current_or_guest_user), {class: 'btn btn-block'} do
                 = t(:plan_a_new_trip)
-          .row-fluid
-            .span12
-              =link_to '#', {href: '#send_trip_by_email_to_provider', class: 'btn btn-block', data: {toggle: 'modal'}} do
-                Email provider
-          .row-fluid
-            .span12
-              =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
-                View trip details
 
 - else
   .row-fluid.results-view.js-trip-itineraries-slides
