@@ -2380,13 +2380,15 @@ body.sessions.new, body.registrations.new{
 		color:black;
 	}
 
-	.container-fluid {
-		height:auto;
-		padding: 0;
-		border-right: 10px solid #fff;
-		border-left: 7px solid #fff;
+	.container-fluid{
 		background-color:#fff;
-	}
+		& > #main > .container-fluid {
+			height:auto;
+			padding: 0;
+			border-right: 10px solid #fff;
+			border-left: 7px solid #fff;
+		}
+	} 
 
 	.details{
 		tr{
