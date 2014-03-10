@@ -6,10 +6,10 @@ class Poi < GeocodedAddress
   #after_validation :reverse_geocode
   
   # Updatable attributes
-  attr_accessible :name
+  # attr_accessible :name
 
   # set the default scope
-  default_scope order('pois.name')
+  default_scope {order('pois.name')}
   
   def to_s
     name

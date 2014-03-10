@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Converted from Font Awesome. Glyph: f13d -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2048" height="2048" xml:space="preserve">
+<g transform="translate(128, 1664) scale(1, -1)">
+	<path id="anchor" d="M960 1280q0 26 -19 45t-45 19t-45 -19t-19 -45t19 -45t45 -19t45 19t19 45zM1790 276q-8 -20 -30 -20h-112q0 -137 -99.5 -251t-272 -179.5t-380.5 -65.5t-380.5 65.5t-272 179.5t-99.5 251h-112q-22 0 -30 20q-8 19 7 35l224 224q10 9 23 9q12 0 23 -9l224 -224 q15 -16 7 -35q-8 -20 -30 -20h-112q0 -85 112.5 -162.5t287.5 -100.5v647h-192q-26 0 -45 19t-19 45v128q0 26 19 45t45 19h192v163q-58 34 -93 92.5t-35 128.5q0 106 75 181t181 75t181 -75t75 -181q0 -70 -35 -128.5t-93 -92.5v-163h192q26 0 45 -19t19 -45v-128 q0 -26 -19 -45t-45 -19h-192v-647q175 23 287.5 100.5t112.5 162.5h-112q-22 0 -30 20q-8 19 7 35l224 224q11 9 23 9t23 -9l224 -224q15 -16 7 -35z" />
+</g>
+</svg>	

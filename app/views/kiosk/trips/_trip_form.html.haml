@@ -1,0 +1,225 @@
+= form_tag geocode_kiosk_user_trips_path, :remote => true, :id => "query_form" do
+  = hidden_field_tag :query
+  = hidden_field_tag :target
+
+- if user_signed_in?
+  - unless current_user.travelers.empty?
+    = render "select_traveler_form"
+
+= simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? kiosk_user_trips_path : kiosk_user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "no-bottom-margin"}  do |f|
+  = f.hidden_field :mode
+  = f.hidden_field :from_place_selected, :id => "from_place_selected"
+  = f.hidden_field :from_place_selected_type, :id => "from_place_selected_type"
+  = f.hidden_field :to_place_selected, :id => "to_place_selected"
+  = f.hidden_field :to_place_selected_type, :id => "to_place_selected_type"
+
+  / TODO: ADD BUTTON FUNCTIONALITY:
+  / IF NO, CLOSE
+  %span#current-location.row-fluid{ :data => {:index => 0}}
+    .span8.offset2
+      .title-container
+        .bar
+        %h3 Start at your current location?
+
+      %a#yes{:href => "#", :name => "yesno", :value => "yes"} Yes
+      %a#no{:href => "#", :name => "yesno", :value => "no"} No
+
+  / TODO: ADD THE DIV WITH THE DATA INDEX
+  #from_input{ :data => {:index => 1}}
+    - if false && user_signed_in?
+      = f.input :from_place, :wrapper => :append, :class => "inline", :label => t(:from) do
+        = f.text_field :from_place, :placeholder => t(:enter_from), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large address", :data => {:link => search_kiosk_user_places_path, :provide => "typeahead"}
+        %span.dropdown
+          %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
+            %span.caret
+          - if @places.count > 0
+            %ul.dropdown-menu{:data => {:target => 'trip_proxy_from_place'}}
+              - @places.each do |p|
+                %li
+                  %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "from"}}
+                    = p["name"]
+        - unless @traveler.home
+          = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => t(:my_home_chkbox_label)
+
+        = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
+
+    - else
+      .fadeout
+      = f.input :from_place, :class => "inline", :label => t(:from) do
+        = f.text_field :from_place, :placeholder => t(:enter_from), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large address", :data => {:link => search_kiosk_user_trips_path, :provide => "typeahead"}
+        / = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
+        = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
+
+    #from_place_candidates{:style => "display:none;"}
+      = render :partial => 'alt_address_select', :locals => {:results => [], :type => "from"}
+      // TODO: Find out why the buttons won't show up here.
+      .kiosk-scroll-buttons Where am I.
+
+
+  #to_input{ :data => {:index => 2}}
+    - if false && user_signed_in?
+      = f.input :to_place, :wrapper => :append, :class => "inline", :label => t(:to) do
+        = f.text_field :to_place, :placeholder => t(:enter_to), :id => "trip_proxy_to_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large address", :data => {:link => search_kiosk_user_places_path, :provide => "typeahead"}
+        %span.dropdown
+          %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
+            %span.caret
+          - if @places.count > 0
+            %ul.dropdown-menu{:data => {:target => 'trip_proxy_to_place'}}
+              - @places.each do |p|
+                %li
+                  %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "to"}}
+                    = p["name"]
+        - unless @traveler.home
+          = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => t(:my_home_chkbox_label)
+        = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
+
+    - else
+      .fadeout
+      = f.input :to_place, :class => "inline", :label => t(:to) do
+        = f.text_field :to_place, :placeholder => t(:enter_to), :id => "trip_proxy_to_place", :class => "no-bottom-margin ajax-typeahead input-large address", :autocomplete => "off", :data => {:link => search_user_trips_path, :provide => "typeahead"}
+        = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => t(:my_home_chkbox_label)
+        = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
+
+    #to_place_candidates{:style => "display:none;"}
+      = render :partial => 'alt_address_select', :locals => {:results => [], :type => "to"}
+
+  / TODO: ADD THE DIV WITH THE DATA INDEX
+  / TODO: ADD DATEPICKER
+  %div{:data => {:index => 3}}
+    = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
+      #trip-date
+        = f.input_field :trip_date, :as => :string, :label => false
+
+
+    / TODO: ADD BUTTON THAT ALTERS THIS?
+    = f.input :arrive_depart, :collection => [t(:departing_at), t(:arriving_by)], :include_blank => false, :label => t(:arrive_depart), :input_html => {:style => "width:200px;"}
+
+  #timepicker-one{ :data => {:index => 4}}
+    = f.input :trip_time, :wrapper => :append, :label => t(:trip_time) do
+      #trip-time
+        = f.label :departing_at
+        = f.input :trip_time, :as => :string, :label => false
+
+    .row-fluid
+      .span10.offset1
+        .timetable
+          %ul.row-fluid.time
+            %li 1:00
+            %li 1:30
+            %li 2:00
+            %li 2:30
+            %li 3:00
+            %li 3:30
+          %ul.row-fluid.time
+            %li 4:00
+            %li 4:30
+            %li 5:00
+            %li 5:30
+            %li 6:00
+            %li 6:30
+          %ul.row-fluid.time
+            %li 7:00
+            %li 7:30
+            %li 8:00
+            %li 8:30
+            %li 9:00
+            %li 9:30
+          %ul.row-fluid.time
+            %li 10:00
+            %li 10:30
+            %li 11:00
+            %li 11:30
+            %li 12:00
+            %li 12:30
+          %ul.row-fluid.timeofday
+            %li.notime
+            %li.notime
+            %li.notime
+            %li.notime
+            %li.ampm am
+            %li.ampm pm
+
+  / TODO: ADD THE DIV WITH THE DATA INDEX
+  #purposepicker{ :data => {:index => 5}}
+    / = f.input :trip_purpose_id, :collection => TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}
+    = f.input :trip_purpose_id
+    .span8.offset2
+      .title-container
+        .bar
+        %h3 What is the purpose of your trip?
+    %ul.purpose.span8.offset2
+      - TripPurpose.all.each do |purpose|
+        %li{:name => purpose.id}
+          = purpose.name
+
+      / TODO: Add class of selected to li to show state
+
+      / %li
+      /   %a{:href => "#"} Training/Employment
+      / %li.selected
+
+
+  / TODO: RETURN TRIP IN 1 or 2 SECTIONS
+  #return-yesno{ :data => {:index => 6}}
+    %span#return-trip.row-fluid
+      .span8.offset2
+        .title-container
+          .bar
+          %h3 Do you need a return trip?
+        %a#yes{:href => "#", :name => "yesno", :value => "yes"} Yes
+        %a#no{:href => "#", :name => "yesno", :value => "no"} No
+
+  #timepicker-two{ :data => {:index => 7}}
+    = f.input :is_round_trip, :label => false, :wrapper_html => {:class => 'controls controls-row'} do
+      = f.input_field :is_round_trip, :as => :boolean, :inline_label => "Return after", :class => "hidden"
+      = f.input :return_trip_time, :label => false, :wrapper => :append do
+        #return-trip-time
+          = f.label :return_trip_time
+          = f.input_field :return_trip_time, :as => :string, :label => false
+
+    .row-fluid
+      .span10.offset1
+        .timetable
+          %ul.row-fluid.time
+            %li 1:00
+            %li 1:30
+            %li 2:00
+            %li 2:30
+            %li 3:00
+            %li 3:30
+          %ul.row-fluid.time
+            %li 4:00
+            %li 4:30
+            %li 5:00
+            %li 5:30
+            %li 6:00
+            %li 6:30
+          %ul.row-fluid.time
+            %li 7:00
+            %li 7:30
+            %li 8:00
+            %li 8:30
+            %li 9:00
+            %li 9:30
+          %ul.row-fluid.time
+            %li 10:00
+            %li 10:30
+            %li 11:00
+            %li 11:30
+            %li 12:00
+            %li 12:30
+          %ul.row-fluid.timeofday
+            %li.notime
+            %li.notime
+            %li.notime
+            %li.notime
+            %li.ampm am
+            %li.ampm pm
+
+  .form-actions.hidden
+    = button_tag :type => 'submit', :class => "btn btn-primary" do
+      %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
+      = t(:plan_it)
+    = link_to :back, :class => "cancel_link" do
+      %i.icon.icon-reply
+      = t(:cancel)

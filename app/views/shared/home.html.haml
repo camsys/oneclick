@@ -1,13 +1,38 @@
-.attract-container
-  .attract-header
-    .oneclick.pull-left
-    .penndot.pull-right
-  - @actions.each do |action|
-    %a.attract-main.row-fluid{alt: action[:label], href: action[:target]}
-      .title Touch to begin
-    %a.attract-footer{alt: action[:label], href: action[:target]}
-
-
-:javascript
-  $('.navbar').hide();
-
+.row-fluid
+  .span12
+    .center.span6
+      - if user_signed_in?
+        = cms_snippet_content('home-top-logged-in')
+      - else
+        = cms_snippet_content('home-top')
+.row-fluid
+  .span12
+    %ul.thumbnails
+      - @actions.each do |action|
+        - next if action[:not_on_homepage]
+        %li.center.span3
+          %a.span12.thumbnail.btn.actionbutton{alt: action[:label], title: action[:label], href: action[:target]}
+            .row-fluid
+              .span3
+                %i.center{class: action[:icon], alt: action[:label], style: 'font-size: 3em;'}
+              / .span9.actionlabel{style: 'text-align: left;'}
+              /   = action[:label]
+              .span9.actionlabel.Center-Container.is-Table
+                .Table-Cell
+                  .Center-Block
+                    = action[:label]
+.row-fluid
+  - if user_signed_in?
+    .span4
+      = cms_snippet_content('home-bottom-left-logged-in')
+    .span4
+      = cms_snippet_content('home-bottom-center-logged-in')
+    .span4
+      = cms_snippet_content('home-bottom-right-logged-in')
+  - else
+    .span4
+      = cms_snippet_content('home-bottom-left')
+    .span4
+      = cms_snippet_content('home-bottom-center')
+    .span4
+      = cms_snippet_content('home-bottom-right')

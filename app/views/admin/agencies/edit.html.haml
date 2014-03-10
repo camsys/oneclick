@@ -1,0 +1,7 @@
+%h1= "Edit #{@agency.name}"
+
+= render 'form'
+
+= link_to 'Show', [:admin, @agency]
+\|
+= link_to 'List', admin_agencies_path

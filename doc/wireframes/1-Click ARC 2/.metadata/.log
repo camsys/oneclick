@@ -1,0 +1,41 @@
+!SESSION 2014-01-30 10:02:00.647 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_65
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -keyring /Users/dhaskin/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -data /Users/dhaskin/clients/cs/1-click/oneclick/doc/wireframes/1-Click ARC 2 -keyring /Users/dhaskin/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.ui 4 4 2014-01-30 10:02:02.968
+!MESSAGE Unable to create menu item "org.eclipse.ui.update.findAndInstallUpdates", command "org.eclipse.ui.update.findAndInstallUpdates" not defined
+
+!ENTRY org.eclipse.ui 4 4 2014-01-30 10:02:02.969
+!MESSAGE Unable to create menu item "org.eclipse.ui.update.manageConfiguration", command "org.eclipse.ui.update.manageConfiguration" not defined
+
+!ENTRY com.wireframesketcher.ui 1 0 2014-01-30 10:02:03.224
+!MESSAGE WireframeSketcher v4.0.1 (full)
+
+!ENTRY org.eclipse.ui 4 4 2014-01-30 10:02:03.361
+!MESSAGE Unable to find view with id: org.eclipse.jdt.ui.PackageExplorer, when creating perspective com.wireframesketcher.ui.perspective
+
+!ENTRY org.eclipse.core.net 1 0 2014-01-30 10:02:04.372
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+!SESSION 2014-01-31 10:32:06.556 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_65
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -keyring /Users/dhaskin/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -data /Users/dhaskin/clients/cs/1-click/oneclick/doc/wireframes/1-Click ARC 2 -keyring /Users/dhaskin/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.ui 4 4 2014-01-31 10:32:08.603
+!MESSAGE Unable to create menu item "org.eclipse.ui.update.findAndInstallUpdates", command "org.eclipse.ui.update.findAndInstallUpdates" not defined
+
+!ENTRY org.eclipse.ui 4 4 2014-01-31 10:32:08.604
+!MESSAGE Unable to create menu item "org.eclipse.ui.update.manageConfiguration", command "org.eclipse.ui.update.manageConfiguration" not defined
+
+!ENTRY com.wireframesketcher.ui 1 0 2014-01-31 10:32:08.970
+!MESSAGE WireframeSketcher v4.0.1 (full)
+
+!ENTRY org.eclipse.core.net 1 0 2014-01-31 10:32:12.351
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences

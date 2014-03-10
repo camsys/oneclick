@@ -4,70 +4,27 @@
     .span12
       = simple_form_for @user_programs_proxy, :url => path, :html => { :class => "form-horizontal" }, :method => 'put', :remote => not(inline)  do |f|
         = f.error_notification
+        = render partial: 'programs/eligibility_alert', locals: {inline: inline}
+        %h4
+          = t(:do_you_participate)
 
-        %div{ :data => {:index => 0}}
-          .input-header
-            .step-number
-            .step-title Programs
-          .pull-right
-            %table#characteristics_one
-              %thead 
-                %tr 
-                  %th 
-                  %th Yes
-                  %th No
-                  %th Unsure
-              %tbody 
-                -TravelerCharacteristic.programs.where(:datatype => 'bool').each do |characteristic|
-                  %tr 
-                    %td
-                      = f.label characteristic.note 
-                    %td 
-                      = f.radio_button characteristic.code.to_sym, true
-                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
-                    %td 
-                      = f.radio_button characteristic.code.to_sym, false
-                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no', :value => false
-                    %td 
-                      = f.radio_button characteristic.code.to_sym, "na"
-                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
-                      / TODO: label is adding text that we don't want to show, work with CamSys to remove or hide it.
-                        
-                -TravelerCharacteristic.programs.where(:datatype => 'disabled').each do |characteristic|
-                  %tr 
-                    %td
-                      = f.label characteristic.note + " (not yet available)", :class => 'disabled'
-                    %td 
-                      = f.radio_button characteristic.code.to_sym, true
-                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
-                    %td 
-                      = f.radio_button characteristic.code.to_sym, false
-                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no', :value => false
-                    %td 
-                      = f.radio_button characteristic.code.to_sym, "na"
-                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
+        -Characteristic.programs.where(:datatype => 'bool').each do |characteristic|
+          = f.input characteristic.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:unsure_str)]], :required => false, as: :radio_buttons, label: characteristic.name, label_method: :last, value_method: :first, :item_wrapper_class => "inline"
+        -Characteristic.programs.where(:datatype => 'disabled').each do |characteristic|
+          = f.input characteristic.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:unsure_str)]], :required => false, as: :radio_buttons, label: characteristic.name + " (not yet available)", label_method: :last, value_method: :first, :item_wrapper_class => "inline", disabled: true
 
-        / - if inline
-        /   = button_tag :type => 'submit', :class => "btn btn-primary controls hidden" do
-        /     - if @traveler.has_disability?
-        /       %i.icon.icon-arrow-right
-        /       Next step
-        /     - else
-        /       %i.icon.icon-arrow-right
-        /       Save and plan my trip
-        /     / = t(:save)
-        / - else
-        /   = button_tag type: :submit, class: 'btn btn-primary controls' do
-        /     %i.icon.icon-ok
-        /     = t(:update)
-        / = link_to :back, :class => "cancel_link hidden" do
-        /   %i.icon.icon-reply
-        /   = t(:cancel)
-
-:javascript
-  $(document).ready(function(){
-    $('.next-footer-container').removeClass('hidden');
-    $('.next-step-btn').on('click', function(){
-      $('#new_user_programs_proxy').submit();
-    });
-  });
+        - if inline
+          = button_tag :type => 'submit', :class => "btn btn-primary controls" do
+            - if @traveler.has_disability?
+              %i.icon.icon-arrow-right
+              =t(:next_step)
+            - else
+              %i.icon.icon-arrow-right
+              = t(:save_and_plan_trip)
+        - else
+          = button_tag type: :submit, class: 'btn btn-primary controls' do
+            %i.icon.icon-ok
+            = t(:update)
+        = link_to :back, :class => "cancel_link" do
+          %i.icon.icon-reply
+          = t(:cancel)

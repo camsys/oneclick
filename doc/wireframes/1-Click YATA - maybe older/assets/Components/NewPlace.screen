@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Window" id="1" x="168" y="72" width="704" height="494" text="Define a New Place or Location" measuredWidth="704" measuredHeight="494"/>
+  <widgets xsi:type="model:Map" id="2" x="360" y="148" width="512" height="414" measuredWidth="512" measuredHeight="414"/>
+  <widgets xsi:type="model:Label" id="3" x="192" y="106" text="Enter the Location" measuredWidth="163" measuredHeight="36">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="4" x="360" y="106" width="502" text="Type an Address, or anything Google Maps will accept" measuredWidth="502" measuredHeight="36">
+    <font size="20px" italic="true"/>
+  </widgets>
+  <widgets xsi:type="model:Icon" id="5" x="616" y="328" measuredWidth="32" measuredHeight="32" icon="favorites (large)"/>
+  <widgets xsi:type="model:Label" id="6" x="191" y="152" text="Enter a Name:" measuredWidth="102" measuredHeight="29">
+    <font size="16px"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="8" x="191" y="178" width="154" text="My Sister's House" measuredWidth="154" measuredHeight="29">
+    <font size="16px" italic="false"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="9" x="191" y="280" width="154" text="My House&#xD;&#xA;My Office&#xD;&#xA;|Dr. Kildare&#xD;&#xA;Physical Therapy&#xD;&#xA;VA Clinic" measuredWidth="154" measuredHeight="149" verticalScrollbar="true">
+    <font size="16px"/>
+    <items x="0" y="2" width="137" height="29" text="My House"/>
+    <items x="0" y="31" width="137" height="29" text="My Office"/>
+    <items x="0" y="60" width="137" height="29" text="|Dr. Kildare"/>
+    <items x="0" y="89" width="137" height="29" text="Physical Therapy"/>
+    <items x="0" y="118" width="137" height="29" text="VA Clinic"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="11" x="191" y="248" text="My Places" measuredWidth="74" measuredHeight="29">
+    <font size="16px"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="12" x="191" y="437" text="Delete" measuredWidth="64" measuredHeight="31">
+    <font size="16px"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="13" x="298" y="437" text="Edit" measuredWidth="46" measuredHeight="31">
+    <font size="16px"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="14" x="290" y="213" text="Save" measuredWidth="53" measuredHeight="31" state="selected">
+    <font size="16px"/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

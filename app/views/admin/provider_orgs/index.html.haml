@@ -1,0 +1,38 @@
+%h1= t(:provider_org)
+
+%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_provider_orgs_table
+  %thead
+    %tr
+      %th= t(:name)
+      %th
+  %tbody
+    - @provider_orgs.each do |provider_org|
+      %tr
+        %td= provider_org.name
+        %td.center
+          = link_to edit_admin_provider_org_path(provider_org), {class: 'btn'} do
+            %i.icon-pencil
+            = t(:edit)
+          / = link_to admin_provider_org_users_path(provider_org), {class: 'btn'} do
+          /   %i.icon-group
+          /   = t(:users)
+          = link_to admin_provider_org_services_path(provider_org), {class: 'btn'} do
+            %i.icon-info-sign
+            = t(:services)
+
+= link_to 'New Provider Organization', new_admin_provider_org_path, {class: 'btn'}
+
+/ = render 'shared/datatable_javascript'
+
+:javascript
+  $(document).ready(function() {
+    $('#admin_provider_orgs_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ provider organizations per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ provider organizations ",
+              "sInfoEmpty": "Showing 0 to 0 of 0 provider organizations ",
+              "sInfoFiltered": "(filtered from _MAX_ total provider organizations )"
+          }
+      } );
+  } );

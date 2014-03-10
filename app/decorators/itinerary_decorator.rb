@@ -13,7 +13,7 @@ class ItineraryDecorator < Draper::Decorator
   def service
     s = object.service
     return s if s
-    return Service.new(name: mode.name,
+    return Service.new(name: get_trip_summary_name(object),
       service_type: ServiceType.new(name: 'Faked service type'),
       provider: Provider.new()
       )
@@ -62,7 +62,7 @@ class ItineraryDecorator < Draper::Decorator
   end
 
   def transfers_in_words
-    transfers || 'n/a'
+    transfers || 'None'
     # I18n.translate(:transfer, count: i.transfers)
   end
 

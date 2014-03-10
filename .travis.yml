@@ -7,9 +7,7 @@ env:
 branches:
   only:
     - develop
-    - 0.11
 before_script:
-- git describe
 - mv config/database.yml.travis config/database.yml
 - git config user.email "denis+camsys@constantorbit.com"
 - git config user.name "Denis Haskin"
@@ -20,7 +18,8 @@ cache: bundler
 bundler_args: --without development
 script:
 - bundle exec /usr/bin/env RAILS_ENV=test rake db:drop db:create db:reset
-- bundle exec /usr/bin/env RAILS_ENV=test COVERALLS_NOISY=true rake oneclick:test_with_coveralls
+- bundle exec /usr/bin/env UI_MODE=desktop RAILS_ENV=test COVERALLS_NOISY=true rake oneclick:test_with_coveralls
+# - bundle exec /usr/bin/env UI_MODE=kiosk RAILS_ENV=test COVERALLS_NOISY=true rake oneclick:test_with_coveralls
 # - bundle exec /usr/bin/env RAILS_ENV=test COVERALLS_NOISY=true rake oneclick:all_tests
 # - bundle exec /usr/bin/env RAILS_ENV=test COVERALLS_NOISY=true rake coveralls:push
 notifications:

@@ -4,12 +4,12 @@
     -if itinerary.cost_comments and itinerary.cost
       %li
         %h4
-          Additional cost details:
+          = t(:addl_cost_details)
         =itinerary.cost_comments.html_safe
 
     -if itinerary.missing_information
       %li
-        This service is intended for
+        =t(:service_intended_for)
         -count = 0
         -itinerary.missing_information_text.split('\n').each do |info|
           -count += 1
@@ -22,14 +22,14 @@
 
     -if itinerary.too_late
       %li
-        = "This trip must be booked " + itinerary.service.human_readable_advanced_notice + " in advance."
+      = t(:trip_insufficient_notice_a) + itinerary.service.human_readable_advanced_notice + t(:trip_insufficient_notice_b)
     -if itinerary.date_mismatch or itinerary.time_mismatch
       %li
-        = "This trip occurs outside the normal hours for this service."
+        = t(:trip_outside_service_hours)
 
   -if itinerary.accommodation_mismatch
     %h4
-      These accommodations are not provided by this service:
+      =t(:trip_needs_more_accomodations)
     %ul
       -itinerary.missing_accommodations.split(',').each do |accommodation|
         %li
@@ -37,3 +37,4 @@
 
 %span{style: 'font-style: italic'}
   (Detailed directions on contacting provider and scheduling trip will be given here.)
+  / Leaving as is, because it's going to be replaced

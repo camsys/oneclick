@@ -6,12 +6,12 @@ class Place < GeocodedAddress
   belongs_to  :poi       # optional
   has_many    :trip_places # optional
   
-  attr_protected :id, :user_id, :created_at, :updated_at
-  attr_accessible :name, :raw_address
-  attr_accessible :creator_id, :poi_id, :active, :home
+  # attr_protected :id, :user_id, :created_at, :updated_at
+  # attr_accessible :name, :raw_address
+  # attr_accessible :creator_id, :poi_id, :active, :home, :lat, :lon
   
-  scope :active, where("places.active = true")
-  default_scope order("name")
+  scope :active, -> {where("places.active = true")}
+  default_scope {order("name")}
   
   # Returns true if the user can delete this place from their My Places
   # false otherwise

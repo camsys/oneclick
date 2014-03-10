@@ -1,26 +1,24 @@
 class TripPart < ActiveRecord::Base
-  
+
   #associations
   belongs_to :trip
   belongs_to :from_trip_place,  :class_name => "TripPlace", :foreign_key => "from_trip_place_id"
   belongs_to :to_trip_place,    :class_name => "TripPlace", :foreign_key => "to_trip_place_id"
 
   has_many :itineraries
-  # has_many :valid_itineraries, :conditions => 'server_status=200 AND hidden=false', :class_name => 'Itinerary' 
-  # has_many :hidden_itineraries, :conditions => 'server_status=200 AND hidden=true', :class_name => 'Itinerary'
 
   # Ordering of trip parts within a trip. 0 based
-  attr_accessible :sequence
+  # attr_accessible :sequence
   # date and time that the trip part is scheduled for stored as a string
-  attr_accessible :scheduled_date, :scheduled_time
-  
-  
+  # attr_accessible :scheduled_date, :scheduled_time, :from_trip_place, :to_trip_place
+
+
   # true if the trip_time refers to the deaperture time at the origin. False
   # if it is arrival at the destination
-  attr_accessible :is_depart
+  # attr_accessible :is_depart
   # true if the trip part is the return trip
-  attr_accessible :is_return_trip
- 
+  # attr_accessible :is_return_trip
+
   # Scopes
   scope :created_between, lambda {|from_time, to_time| where("trip_parts.created_at > ? AND trip_parts.created_at < ?", from_time, to_time).order("trip_parts.trip_time DESC") }
   #scope :scheduled_between, lambda {|from_time, to_time| where("trip_parts.trip_time > ? AND trip_parts.trip_time < ?", from_time, to_time).order("trip_parts.trip_time DESC") }
@@ -47,29 +45,29 @@ class TripPart < ActiveRecord::Base
       return nil
     end
   end
- 
+
   # Converts the trip date and time into a date time object
   def trip_time
     DateTime.new(scheduled_date.year, scheduled_date.month, scheduled_date.day, scheduled_time.hour, scheduled_time.min)
   end
-  
+
   # Returns an array of TripPart that have at least one valid itinerary but all
   # of them have been hidden by the user
   def self.rejected
     joins(:itineraries).where('server_status=200 AND hidden=true')
   end
-  
+
   # Returns an array of TripPart where no valid options were generated
   def self.failed
     joins(:itineraries).where('server_status <> 200')
   end
-    
+
   # returns true if the trip part is scheduled in advance of
   # the current or passed in date
   def in_the_future(now=Time.now)
     trip_time > now
   end
-  
+
   # Generates itineraries for this trip part. Any existing itineraries should have been removed
   # before this method is called.
   def create_itineraries
@@ -86,7 +84,17 @@ class TripPart < ActiveRecord::Base
     result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s)
     if result
       tp.convert_itineraries(response).each do |itinerary|
-        itineraries << Itinerary.new(itinerary)
+        serialized_itinerary = {}
+
+        itinerary.each do |k,v|
+          if v.is_a? Array
+            serialized_itinerary[k] = v.to_yaml
+          else
+            serialized_itinerary[k] = v
+          end
+        end
+
+        itineraries << Itinerary.new(serialized_itinerary)
       end
     else
       itineraries << Itinerary.new('server_status'=>response['id'], 'server_status'=>response['msg'])
@@ -113,9 +121,10 @@ class TripPart < ActiveRecord::Base
     result, response = tp.get_taxi_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time)
     if result
       itinerary = tp.convert_taxi_itineraries(response)
+      itinerary['server_message'] = itinerary['server_message'].to_yaml if itinerary['server_message'].is_a? Array
       self.itineraries << Itinerary.new(itinerary)
     else
-      self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response)
+      self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s)
     end
   end
 
@@ -141,9 +150,9 @@ class TripPart < ActiveRecord::Base
       itinerary = tp.convert_rideshare_itineraries(response)
       self.itineraries << Itinerary.new(itinerary)
     else
-      self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response)
+      self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s)
     end
-  end  
+  end
 
   def max_notes_count
     itineraries.valid.visible.map(&:notes_count).max

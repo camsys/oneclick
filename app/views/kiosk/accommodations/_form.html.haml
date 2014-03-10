@@ -1,0 +1,54 @@
+#accommodations_form
+  .row-fluid
+    .span12
+      = simple_form_for @user_accommodations_proxy, :url => path, :method => 'put', :remote => not(inline)  do |f|
+        = f.error_notification
+
+        %div{ :data => {:index => 0}}
+          .input-header
+            .step-number
+            .step-title= t(:questions)
+          .pull-right
+            %table#characteristics_one
+              %thead
+                %tr
+                  %th
+                  %th= t(:yes_str)
+                  %th= t(:no_str)
+                  %th= t(:unsure_str)
+              %tbody
+                -Accommodation.where(:datatype => 'bool').each do |accommodation|
+                  %tr
+                    %td
+                      = f.label accommodation.note
+                    %td
+                      = f.radio_button accommodation.code.to_sym, true
+                      = f.label accommodation.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
+                    %td
+                      = f.radio_button accommodation.code.to_sym, false
+                      = f.label accommodation.code.to_sym, nil, :text => nil, :class => 'no', :value => false
+                    %td
+                      = f.radio_button accommodation.code.to_sym, "na"
+                      = f.label accommodation.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
+
+                -Accommodation.where(:datatype => 'disabled').each do |characteristic|
+                  %tr
+                    %td
+                      = f.label characteristic.note + " (not yet available)", :class => 'disabled'
+                    %td
+                      = f.radio_button characteristic.code.to_sym, true
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
+                    %td
+                      = f.radio_button characteristic.code.to_sym, false
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no', :value => false
+                    %td
+                      = f.radio_button characteristic.code.to_sym, "na"
+                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
+
+:javascript
+  $(document).ready(function(){
+    $('.next-footer-container').removeClass('hidden');
+    $('.next-step-btn').on('click', function(){
+      $('*[id*=new_user_accommodations_proxy]').submit();
+    });
+  });

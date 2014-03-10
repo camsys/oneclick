@@ -1,0 +1,69 @@
+en:
+  new_trip:
+    from:
+      - heading: Tell Us Where You're Starting
+        paragraph: |
+          Will you be traveling from your current location? Tap "yes" or "no".
+          If "no", you will be prompted to enter an address to travel from in
+          the next step.
+
+      - heading: Tell Us Where You're Starting
+        paragraph: |
+          Enter the address where you will start your trip. You can provide an
+          address, the name of common landmarks or local businesses. The
+          location you select will be shown on the map to confirm you have
+          selected the correct location. <br><br> Tap "Next Step" when you
+          have selected the correct starting location.
+
+    to:
+      - heading: Tell Us Where You're Going
+        paragraph: |
+          Enter the address where you will end your trip. You can provide an
+          address, the name of common landmarks or local businesses. The
+          location you select will be shown on the map to confirm you have
+          selected the correct location. <br><br> Tap "Next Step" when you
+          have selected the correct destination location.
+
+    pickup_time:
+      - heading: Tell Us What Day You'll Be Leaving
+        paragraph: |
+          Choose the date you will be leaving from your starting location.
+          Today's date has already been selected for you. <br><br> Tap "Next
+          Step" when you have selected the correct date to leave.
+
+      - heading: Tell Us What Time You'll Be Leaving
+        paragraph: |
+          Choose the time you will be leaving from your starting location. The
+          next hour or half-hour has already been selected for you. <br><br>
+          Tap "Next Step" when you have selected the correct time to leave.
+
+    purpose:
+      - heading: Tell Us Why You Are Making This Trip
+        paragraph: |
+          Choose the option that best describes why you are making this trip.
+          Providing this information helps us provide the best travel options
+          for you, and helps us improve this system in the future. <br><br>
+          Tap "Next Step" when you have selected the option that best
+          describes your trip. If you do not know what to choose, select
+          "General Purpose".
+
+    return_time:
+      - heading: Tell Us About Your Return Trip
+        paragraph: |
+          Would you like to see options for a return trip? Tap "yes" or "no".
+          If "yes", you will be prompted to enter a return time (that is, a
+          time to be picked up at your destination) in the next step.
+
+      - heading: Tell Us When You'll Be Ready To Return
+        paragraph: |
+          Choose the time you will be leaving your destination location, to
+          return back to your starting location. A time 2 hours from the
+          departure time you chose has already been selected for you.
+          <br><br> Tap "Next Step" when you have selected the correct time to
+          leave your destination.
+
+    overview:
+      - heading: This Is What You Told Us
+        paragraph: |
+          Tap "Next Step" if everything is correct or "Edit Your Trip" if you
+          need to go back to make changes.

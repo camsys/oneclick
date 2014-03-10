@@ -1,0 +1,11 @@
+.modal{:id => "role-options-#{user.id}", :style => "display: none;"}
+  = simple_form_for user, :url => update_roles_admin_user_path(user), :html => {:method => :put, :class => 'form-horizontal' } do |f|
+    = f.hidden_field :agency_id, id: agency.id
+    .modal-header
+      %a.close{"data-dismiss" => "modal"} ×
+      %h3= t(:change_role)
+    .modal-body
+      = f.input_field :role_name, :collection => ROLES, :as => :radio_buttons, checked: (user.roles.first.name rescue nil)
+    .modal-footer
+      = f.submit "Change Role", :class => "btn"
+      %a.btn{"data-dismiss" => "modal", :href => "#"} Close

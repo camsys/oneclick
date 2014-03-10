@@ -1,5 +1,6 @@
-# A sample Guardfile
 # More info at https://github.com/guard/guard#readme
+
+raise "UI_MODE must be desktop or kiosk" unless ENV.include? 'UI_MODE'
 
 guard 'bundler' do
   watch('Gemfile')
@@ -42,13 +43,31 @@ guard :rspec, all_on_start: true do
   watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$})   { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance' }
 end
 
-guard 'cucumber', all_on_start: true do
+def cucumber
   watch(%r{^features/.+\.feature$})
   watch(%r{^features/support/.+$})          { 'features' }
   watch(%r{^features/step_definitions/(.+)_steps\.rb$}) { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'features' }
 end
 
-guard 'rails' do
+if ENV['UI_MODE']=='desktop'
+  guard 'cucumber', cli: '--profile desktop --color --format progress --strict', all_on_start: true do
+    cucumber
+  end
+else
+  guard 'cucumber', cli: 'UI_MODE=kiosk --profile kiosk --color --format progress --strict', all_on_start: true do
+    cucumber
+  end
+end
+
+if ENV['UI_MODE']=='desktop'
+  port = 3000
+  pid_file = 'tmp/pids/desktop.pid'
+else
+  port = 3001
+  pid_file = 'tmp/pids/kiosk.pid'
+end
+
+guard 'rails', port: port, pid_file: pid_file do
   watch('Gemfile.lock')
   watch(%r{^(config|lib)/.*})
   watch('app/models/ability.rb')

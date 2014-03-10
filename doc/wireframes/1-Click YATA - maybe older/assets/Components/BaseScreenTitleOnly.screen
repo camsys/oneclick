@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Browser" id="1" width="960" height="700" text="Open Source 1-Click Software for Mobility Management&#xA;http://www.1click_broward.camsys-apps.com" measuredWidth="960" measuredHeight="700"/>
+  <widgets xsi:type="model:WidgetGroup" id="4" x="12" y="63" width="938" measuredWidth="938" measuredHeight="66" link="../../AnonymousLandingPage.screen">
+    <widgets xsi:type="model:Panel" id="2" width="938" height="66" measuredWidth="938" measuredHeight="66"/>
+    <widgets xsi:type="model:Label" id="3" x="10" y="2" width="514" text="1-Click Trip Planner" measuredWidth="514" measuredHeight="62">
+      <font size="40px" bold="true"/>
+    </widgets>
+  </widgets>
+  <widgets xsi:type="model:Icon" id="5" x="893" y="73" width="55" height="47" measuredWidth="55" measuredHeight="47" icon="assets/question-sign (large)"/>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

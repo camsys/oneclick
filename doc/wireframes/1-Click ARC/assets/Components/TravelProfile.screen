@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Group" id="1" x="144" y="112" width="593" height="513" text="Travel Profile" measuredWidth="593" measuredHeight="513">
+    <font size="24px"/>
+  </widgets>
+  <widgets xsi:type="model:Text" id="2" x="160" y="160" text="To see the best options, tell us about yourself..." measuredWidth="405" measuredHeight="28">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="4" x="222" y="246" text="[x] A Veteran &#xA;[ ] Active-Duty Military&#xA;[ ] Medicare Eligible&#xA;[ ] Vision impaired&#xA;[ ] Mobility impaired&#xA;&#x9;~[ ] Etc...~&#xA;" measuredWidth="168" measuredHeight="178" border="false" alpha="0">
+    <font size="16px"/>
+    <items x="0" y="2" width="168" height="29" text="[x] A Veteran "/>
+    <items x="0" y="31" width="168" height="29" text="[ ] Active-Duty Military"/>
+    <items x="0" y="60" width="168" height="29" text="[ ] Medicare Eligible"/>
+    <items x="0" y="89" width="168" height="29" text="[ ] Vision impaired"/>
+    <items x="0" y="118" width="168" height="29" text="[ ] Mobility impaired"/>
+    <items x="0" y="147" width="168" height="29" text="&#x9;~[ ] Etc...~"/>
+  </widgets>
+  <widgets xsi:type="model:Text" id="5" x="165" y="212" text="Are you any of the following:" measuredWidth="251" measuredHeight="28">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Text" id="6" x="165" y="432" text="What year and month were you born?" measuredWidth="330" measuredHeight="28">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Spinner" id="7" x="320" y="472" text="1957" measuredWidth="68" measuredHeight="36">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Spinner" id="9" x="232" y="473" text="March" measuredWidth="78" measuredHeight="33">
+    <font size="19px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="10" x="400" y="472" text="You are 56 Years Old" measuredWidth="186" measuredHeight="36">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Text" id="11" x="176" y="520" text="Other questions - program eligibility, etc..." measuredWidth="367" measuredHeight="28">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="12" x="648" y="568" text="OK" measuredWidth="47" measuredHeight="38" state="selected" style="pointright">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="13" x="576" y="155" text="Skip this Step" measuredWidth="139" measuredHeight="38" style="pointright">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="14" x="467" y="246" text="[x] A Bus Pass &#xA;[x] A Bicycle&#xA;[ ] Etc.&#xA;" measuredWidth="108" measuredHeight="91" border="false" alpha="0">
+    <font size="16px"/>
+    <items x="0" y="2" width="108" height="29" text="[x] A Bus Pass "/>
+    <items x="0" y="31" width="108" height="29" text="[x] A Bicycle"/>
+    <items x="0" y="60" width="108" height="29" text="[ ] Etc."/>
+  </widgets>
+  <widgets xsi:type="model:Text" id="15" x="446" y="211" text="Do you have access to:" measuredWidth="197" measuredHeight="28">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:VLine" id="16" x="429" y="216" height="208" measuredWidth="6" measuredHeight="208"/>
+  <widgets xsi:type="model:Button" id="17" x="309" y="392" text="Details" measuredWidth="67" measuredHeight="31">
+    <font size="16px"/>
+  </widgets>
+  <widgets xsi:type="model:Icon" id="19" x="574" y="558" width="54" height="57" measuredWidth="54" measuredHeight="57" icon="help (large)"/>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 
   # include the helper method in any controller which needs to know about guest users
   helper_method :current_or_guest_user
-  
+
   protect_from_forgery
   before_filter :set_locale
   before_filter :get_traveler
@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
   def create_random_string(length=16)
     SecureRandom.urlsafe_base64(length)
   end
-  
+
 
   def setup_actions
     @actions = actions
@@ -91,13 +91,12 @@ class ApplicationController < ActionController::Base
   end
 
   def create_guest_user
-
     random_string = create_random_string(16)
     u = User.new
     u.first_name = "Visitor"
     u.last_name = "Guest"
     u.password = random_string
-    u.email = "guest_#{random_string}@example.com" 
+    u.email = "guest_#{random_string}@example.com"
     u.save!(:validate => false)
     session[:guest_user_id] = u.id
     u

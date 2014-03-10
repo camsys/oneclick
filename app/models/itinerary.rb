@@ -1,4 +1,5 @@
 class Itinerary < ActiveRecord::Base
+  include CsHelpers
 
   # Callbacks
   after_initialize :set_defaults
@@ -9,16 +10,16 @@ class Itinerary < ActiveRecord::Base
   belongs_to :service
 
   # You should usually *always* used the valid scope
-  scope :valid, where('mode_id is not null and server_status=200')
-  scope :invalid, where('mode_id is null or server_status!=200')
-  scope :visible, where('hidden=false')
-  scope :hidden, where('hidden=true')
-  scope :good_score, where('match_score < 3')
+  scope :valid, -> {where('mode_id is not null and server_status=200')}
+  scope :invalid, -> {where('mode_id is null or server_status!=200')}
+  scope :visible, -> {where('hidden=false')}
+  scope :hidden, -> {where('hidden=true')}
+  scope :good_score, -> {where('match_score < 3')}
 
-  attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
-  :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
-  :ride_count, :external_info, :match_score, :missing_information, :missing_information_text, :date_mismatch,
-  :time_mismatch, :too_late, :accommodation_mismatch, :missing_accommodations
+  # attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
+  # :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
+  # :ride_count, :external_info, :match_score, :missing_information, :missing_information_text, :date_mismatch,
+  # :time_mismatch, :too_late, :accommodation_mismatch, :missing_accommodations
 
   # returns true if this itinerary failed to work
   def failed
@@ -50,6 +51,46 @@ class Itinerary < ActiveRecord::Base
     legs = get_legs
     return legs.size == 1 && legs.first.mode == TripLeg::WALK
   end
+
+  # Determines whether we are using rail, bus and rail, or just bus for the transit trips
+  def transit_type
+    unless mode.name.downcase == 'transit'
+      return nil
+    end
+    bus = false
+    rail = false
+    legs = get_legs
+    legs.each do |leg|
+      case leg.mode.downcase
+        when 'walk'
+          next
+        when 'bus'
+          bus = true
+          next
+        when 'subway'
+          rail = true
+          next
+        when 'tram'
+          rail = true
+          next
+        when 'rail'
+          rail = true
+          next
+        else
+          return 'transit'
+      end
+    end
+
+    if bus and !rail
+      return 'bus'
+    elsif !bus and rail
+      return 'rail'
+    elsif bus and rail
+      return 'railbus'
+    else
+      return 'transit'
+    end
+  end
   
   # parses the legs and returns an array of TripLeg. If there are no legs then an
   # empty array is returned
@@ -59,7 +100,6 @@ class Itinerary < ActiveRecord::Base
 
   def mode_and_routes
     routes = get_legs.map(&:route)
-    puts mode.inspect
     [mode.name] + routes
   end
   

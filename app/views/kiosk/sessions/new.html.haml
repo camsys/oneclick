@@ -1,0 +1,77 @@
+/ %h1
+/   %i.icon-signin
+/   = t(:log_in)
+/ %h4
+/ .well
+/   = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
+/     = f.input :email, :autofocus => true, :required => true, :label => t(:email)
+/     = f.input :password, :required => true, :label => t(:password)
+/     = f.input :remember_me, :label => t(:remember_me), :as => :boolean if devise_mapping.rememberable?
+/     .actions
+/       = button_tag type: :submit, class: 'btn btn-primary controls' do
+/         %i.icon.icon-signin
+/         = t(:log_in)
+/       = render "devise/shared/links"
+
+/ TODO: This is unstable for some reason. Work with Camsys to figure it out.
+/ %div
+/   .container-fluid
+/     .responsive-mbp.row-fluid
+/       .span6.offset3
+/         .login-header
+/           %h1.pull-left Log In
+/           .account-container.pull-right
+/             %p Need an Account?
+/             = link_to 'Register', new_user_registration_path
+
+
+// TAKE 3
+#login.container-fluid
+  %div.responsive-mbp.row-fluid
+    .span4.info
+      #left-description
+        %h1
+          = t(:log_in)
+        %h4 Have we met before?
+        %p
+          Have you created an account with us before? If so, enter your E-mail address and password, then tap "Log In". Logging in will allow us to skip some questions you may have previously answered.
+          %br/
+          %br/
+          If you do not have an account, tap "Skip This Step" &mdash; you will still be able to book a trip today without one.
+    %div.span8login
+      = simple_form_for(resource, :as => resource_name, :url => kiosk_user_session_path, :html => {:class => 'form-horizontal' }) do |f|
+        .row-fluid
+          .span12login
+            .input-container
+              = f.input :email, :required => true, :placeholder => "Tap here to enter your email address"
+              = f.input :password, :required => true, :placeholder => "Tap here to enter your password"
+        .row-fluid
+          .span12
+            = button_tag :submit, class: 'login-btn pull-left' do
+              = t(:log_in)
+            /%a.login-btn.pull-left{:href => "#"} Log In
+            .cancel-container.pull-right
+              %a.cancel-btn{:href => kiosk_user_new_trip_start_path(current_or_guest_user)} Skip this step
+          .span3.hidden
+
+:javascript
+
+  $('input#user_email').click(function(){
+    if (window.cocoa)
+      window.cocoa.openKeyboard();
+  });
+
+  $('input#user_email').blur(function(){
+    if (window.cocoa)
+      window.cocoa.closeKeyboard();
+  });
+
+  $('input#user_password').click(function(){
+     if (window.cocoa)
+      window.cocoa.openKeyboard();
+  });
+
+  $('input#user_password').blur(function(){
+    if (window.cocoa)
+      window.cocoa.closeKeyboard();
+  });

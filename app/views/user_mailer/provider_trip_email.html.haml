@@ -1,5 +1,5 @@
 //%p= t(:trip_options_information_from_from, from: @traveler.name)
-%h3=t(:trip_request_from) + @traveler.name
+%h3="Trip request from " + @traveler.name
 
 %hr{style: "height:12px; background:#848484;"}
 %h3
@@ -8,28 +8,28 @@
   %tr
     %td{style: "color:grey;"}
       %strong
-        = t(:from)
+        From
     %td
       %strong
         =@trip.from_place.name
   %tr
     %td{style: "color:grey; weight:strong;"}
       %strong
-        =t(:to)
+        To
     %td
       %strong
         =@trip.to_place.name
   %tr
     %td{style: "color:grey;"}
       %strong
-        =t(:at_time)
+        At
     %td
       %strong
         =format_date(@trip_part.trip_time.in_time_zone)
   %tr
     %td{style: "color:grey;"}
       %strong
-        =t(:depart)
+        Depart
     %td
       %strong
         =format_time(@trip_part.trip_time.in_time_zone)
@@ -37,7 +37,7 @@
     %tr
       %td{style: "color:grey;"}
         %strong
-          =t(:return)
+          Return
       %td
         %strong
           =format_time(@return.in_time_zone)
@@ -47,17 +47,17 @@
 %table{style: "font-size:1.4em;"}
   %tr
     %td{style: "color:grey; weight:strong;"}
-      =t(:name)
+      Name
     %td
       =@traveler.name
   %tr
     %td{style: "color:grey; weight:strong;"}
-      =t(:email)
+      Email Address
     %td
       =@traveler.email
   %tr
     %td{style: "color:grey; weight:strong;"}
-      =t(:comments)
+      Comments
     %td
       =@comments
 
@@ -91,6 +91,6 @@
     %tr
       %td="Thank you for using " + Oneclick::Application.config.name + " Software."
     %tr
-      %td This email is automatically sent by the OneClick system. Please do not reply to this email.
+      %td This email is sent from an email address that is not monitored. Please do not reply to this message.
     %tr
       %td="Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of " + Oneclick::Application.config.name

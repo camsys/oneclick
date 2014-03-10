@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore" xmlns:o="http://wireframesketcher.com/1.0/model/overrides">
+  <widgets xsi:type="model:Master" id="1" measuredWidth="960" measuredHeight="700">
+    <screen xsi:type="model:Screen" href="assets/Components/BasedScreenLoggedInTitleOnly.screen#/"/>
+    <overrides>
+      <widgets ref="1">
+        <widgetChanges xsi:type="o:Delete" ref="/@widgets.5"/>
+        <widgetChanges xsi:type="o:Delete" ref="/@widgets.2"/>
+      </widgets>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Master" id="6" x="12" y="136" measuredWidth="365" measuredHeight="158">
+    <screen xsi:type="model:WidgetGroup" href="assets/Bootstrap/Bootstrap.screen#Heading%201"/>
+    <overrides>
+      <widgetChanges xsi:type="o:Insert" newIndex="1">
+        <object xsi:type="model:Combo" x="108" y="72" width="257" text="Trips Planned&#xA;Foo&#xA;Bar&#xA;Blat">
+          <font/>
+        </object>
+      </widgetChanges>
+      <widgets ref="129" text="Trip Plan Reports"/>
+    </overrides>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

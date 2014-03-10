@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Panel" id="2" width="577" height="689" measuredWidth="577" measuredHeight="689"/>
+  <widgets xsi:type="model:Master" id="3" x="145" y="146" measuredWidth="300" measuredHeight="180">
+    <screen xsi:type="model:Screen" href="assets/Components/ClientInfo.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Master" id="4" x="145" y="334" measuredWidth="300" measuredHeight="75">
+    <screen xsi:type="model:Screen" href="assets/Components/MainButton.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Master" id="5" x="145" y="511" measuredWidth="300" measuredHeight="75">
+    <screen xsi:type="model:Screen" href="assets/Components/MainButton.screen#/"/>
+    <overrides>
+      <widgets ref="2" text="Previous Trips"/>
+      <widgets ref="3">
+        <attributes key="icon" value="assets/reply (custom)"/>
+      </widgets>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Master" id="6" x="145" y="422" measuredWidth="300" measuredHeight="75">
+    <screen xsi:type="model:Screen" href="assets/Components/MainButton.screen#/"/>
+    <overrides>
+      <widgets ref="2" text="Travel Profile"/>
+      <widgets ref="3">
+        <attributes key="icon" value="assets/cogs (custom)"/>
+      </widgets>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Label" id="7" x="72" y="7" text="1-Click Trip Planner" measuredWidth="373" measuredHeight="62">
+    <font size="40px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Icon" id="8" x="10" y="10" width="55" height="55" measuredWidth="55" measuredHeight="55" icon="text-align-justify (large)"/>
+  <widgets xsi:type="model:ButtonBar" id="9" x="10" y="622" text="Trip Planning    ,    Agent Features    ,     Settings" measuredWidth="555" measuredHeight="57" selection="0">
+    <font size="24px"/>
+    <items x="0" y="0" width="190" height="57" text="Trip Planning    "/>
+    <items x="190" y="0" width="230" height="57" text="   Agent Features    "/>
+    <items x="420" y="0" width="135" height="57" text="    Settings"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="10" x="158" y="86" text="Trip Planning (for Agents)" measuredWidth="278" measuredHeight="40">
+    <font size="24px"/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

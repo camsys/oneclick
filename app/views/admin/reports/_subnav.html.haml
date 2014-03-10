@@ -1,26 +1,28 @@
-.row-fluid
-  .span12
-    .navbar
-      .navbar-inner
-        .container
-          %ul.nav
-            %li.dropdown
-              %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}              
-                Report
-                %b.caret
-              %ul.dropdown-menu{role: 'menu'}
-                - Report.all.each do |report|
-                  %li
-                    = link_to report.name, admin_report_path(report)
-          = form_tag admin_report_url(@report), :id => 'time_filter_form', :method => "get", :class => 'navbar-form form-inline pull-right' do
-            .input-prepend
-              %span.add-on Filter
-              = select_tag(:time_filter_type, options_for_select(TimeFilterHelper::time_filters.collect{|r| [r[:value], r[:id]]}, :selected => @time_filter_type), :style => 'margin-top:0px', :id => 'time_filter')
+.well
+  - puts @generated_report.inspect
+  = simple_form_for @generated_report, url: admin_report_path(Report.all.first.id), html: { method: 'get', id: 'report_form', class: 'form-horizontal' }  do |f|
+    .row-fluid
+      .span4
+        = f.input :report_name, collection: Report.names_and_ids, include_blank: false, label: t(:report_name)
+      .span
+        = f.input :date_range, collection: Report.date_options, include_blank: false, label: t(:date_range)
+    .row-fluid
+      .span4
+        = f.input :trip_purpose, collection: Report.trip_purposes, include_blank: false, label: t(:trip_purpose)
+      .span4
+        = f.input :traveler_type, collection: Report.traveler_types, include_blank: false, label: t(:traveler_type)
+    .row-fluid
+      .span4
+        = f.input :display_type, collection: Report.display_types, include_blank: false, label: t(:display_type)
+      .span4
+        = f.input :summary_type, collection: Report.summary_types, include_blank: false, label: t(:summary_type)
+      .span4
+        = button_tag type: :submit, class: 'btn btn-primary controls' do
+          %i.icon.icon-ok
+          =t (:run)
 
 :javascript
-  
-  // Add a listener on the asset type filter that submits the form when changed
-  $('#time_filter').change(function() {
-    $('#time_filter_form').submit();
-  });
-  
+  $('#report_report_name').on('change', function(event) {
+    $('#report_form').attr('action', "/admin/reports/" + this.value)
+    console.log(this.value)
+  })

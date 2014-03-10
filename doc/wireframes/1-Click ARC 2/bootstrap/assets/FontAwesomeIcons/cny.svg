@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Converted from Font Awesome. Glyph: f158 -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2048" height="2048" xml:space="preserve">
+  <metadata>
+    <rdf:RDF>
+      <cc:Work>
+        <dc:subject>
+          <rdf:Bag><rdf:li>renminbi</rdf:li></rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+<g transform="translate(192, 1664) scale(1, -1)">
+	<path id="cny" d="M1664 352v-32q0 -132 -94 -226t-226 -94h-128q-132 0 -226 94t-94 226v480h-224q-2 -102 -14.5 -190.5t-30.5 -156t-48.5 -126.5t-57 -99.5t-67.5 -77.5t-69.5 -58.5t-74 -44t-69 -32t-65.5 -25.5q-4 -2 -32 -13q-8 -2 -12 -2q-22 0 -30 20l-71 178q-5 13 0 25t17 17 q7 3 20 7.5t18 6.5q31 12 46.5 18.5t44.5 20t45.5 26t42 32.5t40.5 42.5t34.5 53.5t30.5 68.5t22.5 83.5t17 103t6.5 123h-256q-14 0 -23 9t-9 23v160q0 14 9 23t23 9h1216q14 0 23 -9t9 -23v-160q0 -14 -9 -23t-23 -9h-224v-512q0 -26 19 -45t45 -19h128q26 0 45 19t19 45 v64q0 14 9 23t23 9h192q14 0 23 -9t9 -23zM1280 1376v-160q0 -14 -9 -23t-23 -9h-960q-14 0 -23 9t-9 23v160q0 14 9 23t23 9h960q14 0 23 -9t9 -23z" />
+</g>
+</svg>	

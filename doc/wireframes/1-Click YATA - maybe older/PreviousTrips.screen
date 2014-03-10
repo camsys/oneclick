@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" id="1" measuredWidth="960" measuredHeight="700">
+    <screen xsi:type="model:Screen" href="assets/Components/BasedScreenLoggedInTitleOnly.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="2" x="254" y="259" width="494" height="211" text="From Home to Dr. Wu (April 17)&#xA;From Home to My Sister's House (March 30)&#xA;|From Home to the VA Clinic (March 27)&#xA;From the VA Clinic to Physical Therapy (March 1)&#xA;From Home to Physical Therapy (February 1)&#xA;From Home to 450 W. Main St. (January 14)&#xA;From Current Location to Dr. Wu (December 21, 2012)" measuredWidth="494" measuredHeight="211" rowHeight="20">
+    <font size="20px"/>
+    <items x="0" y="2" width="494" height="38" text="From Home to Dr. Wu (April 17)"/>
+    <items x="0" y="40" width="494" height="38" text="From Home to My Sister's House (March 30)"/>
+    <items x="0" y="78" width="494" height="38" text="|From Home to the VA Clinic (March 27)"/>
+    <items x="0" y="116" width="494" height="38" text="From the VA Clinic to Physical Therapy (March 1)"/>
+    <items x="0" y="154" width="494" height="38" text="From Home to Physical Therapy (February 1)"/>
+    <items x="0" y="192" width="494" height="38" text="From Home to 450 W. Main St. (January 14)"/>
+    <items x="0" y="230" width="494" height="38" text="From Current Location to Dr. Wu (December 21, 2012)"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="3" x="254" y="224" text="Choose a Saved Trip" measuredWidth="182" measuredHeight="36">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="4" x="368" y="480" text="Repeat This Trip" measuredWidth="159" measuredHeight="38">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="5" x="536" y="480" text="Comment on This Trip" measuredWidth="212" measuredHeight="38" state="selected">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:VScrollbar" id="6" x="728" y="259" height="211" measuredWidth="17" measuredHeight="211"/>
+  <widgets xsi:type="model:Icon" id="7" x="768" y="203" width="57" height="53" measuredWidth="57" measuredHeight="53" icon="assets/mail-reply (large)" link="TravelerLandingPage.screen"/>
+  <widgets xsi:type="model:Master" id="9" x="260" y="491" measuredWidth="92" measuredHeight="16">
+    <screen xsi:type="model:WidgetGroup" href="assets/Stars.screen#Stars%204%20of%205"/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

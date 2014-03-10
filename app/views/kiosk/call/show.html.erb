@@ -1,0 +1,52 @@
+<script type="text/javascript" src="//static.twilio.com/libs/twiliojs/1.1/twilio.min.js"></script>
+<div class="call-header">
+  Pick up the phone attached to this kiosk
+</div>
+<div class="call-label">On the phone with</div>
+<div class="number-display"></div>
+<button class="js-hangup">End Call</button>
+
+
+<script type="text/javascript">
+  /* Create the Client with a Capability Token */
+  Twilio.Device.setup("<%= @token %>", {
+    debug: true
+  });
+
+  /* Let us know when the client is ready. */
+  Twilio.Device.ready(function (device) {
+    console.log("Ready");
+  });
+
+  /* Report any errors on the screen */
+  Twilio.Device.error(function (error) {
+    console.log("Error: " + error.message.message);
+  });
+
+  Twilio.Device.connect(function (conn) {
+    console.log("Dialing <%= @number %>");
+  });
+
+  Twilio.Device.disconnect(function (conn) {
+    if (window.cocoa) window.cocoa.closeTelWindow();
+  })
+
+  /* Connect to Twilio when we call this function. */
+  function call () {
+    if (window.cocoa && window.cocoa.getTelNumber()) {
+      var number = window.cocoa.getTelNumber();
+    } else {
+      var number = '<%= @number %>';
+    }
+
+    Twilio.Device.connect({PhoneNumber: number});
+    $('.number-display').text(' '+ number.split('://')[1]);
+  }
+
+  function hangup () {
+    Twilio.Device.disconnectAll();
+  }
+
+  call();
+  $('.js-hangup').on('click', hangup);
+</script>
