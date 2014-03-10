@@ -69,9 +69,13 @@ end
       if session[TRAVELER_USER_SESSION_KEY].blank?
         @traveler = current_user
       else
-        # Check among all the users the current_user might impersonate
+        # Check among all the users the current_user might impersonate.  First the customers if user is an agent, then travelers if user is a buddy
         if current_user.agency
-          @traveler = current_user.agency.customers.find(session[TRAVELER_USER_SESSION_KEY])
+          begin
+            @traveler = current_user.agency.customers.find(session[TRAVELER_USER_SESSION_KEY])
+          rescue
+            @traveler = current_user.travelers.find(session[TRAVELER_USER_SESSION_KEY])
+          end
         else
           @traveler = current_user.travelers.find(session[TRAVELER_USER_SESSION_KEY])
         end
