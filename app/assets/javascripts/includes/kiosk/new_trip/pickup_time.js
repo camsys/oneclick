@@ -8,6 +8,13 @@ jQuery(function ($) {
     }).data('calendar')
       .setStartDate(new Date);
 
+  //CLick Tadaaapicker buttons(now hidden) when you click the outside buttons.
+  var datePrev = $('#date-arrow-prev');
+  datePrev.on('click', function(){ $('th.month.prev').click();});
+
+  var dateNext = $('#date-arrow-next');
+  dateNext.on('click', function(){ $('th.month.next').click();});
+
   NewTrip.timepickerInit('#trip_proxy_trip_time', '#timepicker-one');
   $('#trip-date').data('calendar').mbShow();
   $('.combobox').combobox({ force_match: false });

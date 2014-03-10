@@ -47,6 +47,9 @@
       //remove click handler off document
       $(document).off('click.datepicker');
 
+      // noop.. mbShow does everything we need.
+      $.fn.datepicker.Calendar.prototype.show = function () {};
+
       //hijack tadaapicker's internal method
       $.fn.datepicker.Calendar.prototype.mbShow = function() {
         var $cal = this.$cal
