@@ -1,6 +1,8 @@
 %div{:data => {:index => 1}}
   = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
+    #date-arrow-prev.prev.month.disabled
     #trip-date= f.input_field :trip_date, :as => :string, :label => false
+    #date-arrow-next.next.month
 
 #timepicker-one{ :data => {:index => 2}}
   %div(style="margin-top: 130px")
