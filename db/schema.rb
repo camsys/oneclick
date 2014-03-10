@@ -25,6 +25,15 @@ ActiveRecord::Schema.define(version: 20140308183247) do
     t.string  "code"
   end
 
+  create_table "agency_user_relationships", force: true do |t|
+    t.integer  "agency_id",                          null: false
+    t.integer  "user_id",                            null: false
+    t.integer  "relationship_status_id", default: 3, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "creator",                            null: false
+  end
+
   create_table "characteristics", force: true do |t|
     t.string  "name",                  limit: 64
     t.string  "note",                                              null: false
@@ -194,8 +203,8 @@ ActiveRecord::Schema.define(version: 20140308183247) do
     t.datetime "updated_at",    null: false
   end
 
-  add_index "rates", ["rateable_id", "rateable_type"], name: "index_rates_on_rateable_id_and_rateable_type", using: :btree
-  add_index "rates", ["rater_id"], name: "index_rates_on_rater_id", using: :btree
+  add_index "rates", ["rateable_id", "rateable_type"], :name => "index_rates_on_rateable_id_and_rateable_type"
+  add_index "rates", ["rater_id"], :name => "index_rates_on_rater_id"
 
   create_table "relationship_statuses", force: true do |t|
     t.string "name", limit: 64
@@ -220,8 +229,8 @@ ActiveRecord::Schema.define(version: 20140308183247) do
     t.datetime "updated_at",               null: false
   end
 
-  add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
-  add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
+  add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
+  add_index "roles", ["name"], :name => "index_roles_on_name"
 
   create_table "schedules", force: true do |t|
     t.integer  "service_id",                   null: false
@@ -316,7 +325,7 @@ ActiveRecord::Schema.define(version: 20140308183247) do
     t.time     "scheduled_time"
   end
 
-  add_index "trip_parts", ["trip_id", "sequence"], name: "index_trip_parts_on_trip_id_and_sequence", using: :btree
+  add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"
 
   create_table "trip_places", force: true do |t|
     t.integer  "trip_id"
@@ -430,8 +439,8 @@ ActiveRecord::Schema.define(version: 20140308183247) do
     t.integer  "provider_id"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "value_relationships", force: true do |t|
     t.string   "relationship", limit: 64

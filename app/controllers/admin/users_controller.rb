@@ -11,7 +11,7 @@ class Admin::UsersController < Admin::BaseController
       @users = User.all
     end
     ##winnow down
-    @users = @users.registered if params[:registered]
+    @users = @users.registered unless params[:visitors]
     @users = @users.delete_if{ |x| x.roles.count > 0} if params[:traveler]
     respond_to do |format|
       format.html # index.html.erb
