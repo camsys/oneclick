@@ -22,4 +22,9 @@ jQuery(function ($) {
 
   NewTrip.timepickerInit('#trip_proxy_return_trip_time', '#timepicker-two');
   $('#return-trip a#no').on('click', noReturnTripHandler);
+
+  $('#return-trip a#yes').on('click', function () {
+    // Register that we * do * want a return trip
+    $('#trip_proxy_is_round_trip').prop('checked', true);
+  });
 });
