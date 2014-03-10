@@ -14,7 +14,7 @@
 
 
 .row-fluid{:style => "margin-top:20px;"}
-  %div{class: (cms_snippet_content('plan-a-trip').empty? ? 'span12' : 'span9')}  
+  %div{class: (cms_snippet_content('plan-a-trip_html').empty? ? 'span12' : 'span9')}  
     .row-fluid.well.well-small
       #trip_form.span12
         = link_to "#" do      
@@ -22,8 +22,8 @@
         = render 'trip_form'
       #trip_map.span6
         = render 'trip_map'  
-  - unless cms_snippet_content('plan-a-trip').empty?
-    .span3= cms_snippet_content('plan-a-trip')
+  - unless cms_snippet_content('plan-a-trip_html').empty?
+    .span3= cms_snippet_content('plan-a-trip_html')
 
 :javascript
   // UI variables
