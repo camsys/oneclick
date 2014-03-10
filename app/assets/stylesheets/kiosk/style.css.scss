@@ -2371,31 +2371,60 @@ body.sessions.new, body.registrations.new{
 	h3{
 		font-weight: 600;
 	}
-	p{
-		font-size: 18px;
+	p, .details{
+		font-size: 13px;
 		line-height: 1.2em;
-		padding-bottom:5px;
+		padding-bottom:3px;
+
+		h4{
+			font-size: 13px;
+			line-height: 1.2em;
+			padding-bottom:3px;
+			text-transform: none;
+			font-weight: 400;
+		}
+
+		&:empty{
+			display: none;
+		}
 	}
 	h4{
 		font-weight: 600;
-		font-size:16px;
+		font-size:14px;
 		margin-bottom: 1px;
 	}
 
+
 	hr{
 		border-top:1px solid black;
+		margin-top: 10px;
+		margin-bottom:10px;
 	}
 	a{
 		color:black;
 	}
 
-	.container-fluid {
-		height:auto;
-	}
+	.container-fluid{
+		background-color:#fff;
+		& > #main > .container-fluid {
+			height:auto;
+			padding: 0;
+			border-right: 10px solid #fff;
+			border-left: 7px solid #fff;
+		}
+	} 
 
 	.details{
 		tr{
-			border-bottom:30px solid white;
+			border-bottom:5px solid white;
+		}
+		td{
+			padding:0;
+
+			&.itinerary_icons{
+				text-align:right;
+				float:left;
+			}
 		}
 
 	}

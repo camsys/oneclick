@@ -128,7 +128,6 @@ Oneclick::Application.routes.draw do
       resources :locations, only: [:show]
       resources :call, only: [:show, :index] do
         post :outgoing, on: :collection
-        get :test, on: :collection
       end
 
       # TODO can probably remove a lot of these routes
