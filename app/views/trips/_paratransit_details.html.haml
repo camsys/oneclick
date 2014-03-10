@@ -22,7 +22,7 @@
   -if itinerary.accommodation_mismatch
     %h4
       %i.icon.icon-warning-sign
-      =t(:trip_needs_more_accommodations) + ":"
+      = t(:trip_needs_more_accommodations).to_s + ":"
     %ul
       -itinerary.missing_accommodations.split(',').each do |accommodation|
         %li
