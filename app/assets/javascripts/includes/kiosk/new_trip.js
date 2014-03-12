@@ -83,6 +83,18 @@ function zoom_to_marker(marker) {
   }
 }
 
+function setInputToLocalValue ($input, key, value) {
+  // hardcoding.
+  var booleanProperties = ['trip_proxy[is_round_trip]'];
+
+  if ($.inArray($input.prop('name'), booleanProperties) != -1) {
+    if ($input.prop('type') != 'hidden')
+      $input.prop('checked', (value == '1'));
+  } else {
+    $input.val(value);
+  }
+}
+
 jQuery(function ($) {
   if ($('.js-trip-wizard-form').length < 1) return;
   viewSequence($);
@@ -91,8 +103,8 @@ jQuery(function ($) {
     $input = $(this);
     var result = $input.prop('name').match(/trip_proxy\[(.*)\]/);
 
-    if (result && NewTrip.read()[result[1]]) {
-      $input.val(NewTrip.read()[result[1]]);
+    if (result && typeof NewTrip.read()[result[1]] != 'undefined') {
+      setInputToLocalValue($input, result[1], NewTrip.read()[result[1]]);
     }
   });
 
