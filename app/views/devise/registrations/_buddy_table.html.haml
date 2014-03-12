@@ -17,7 +17,7 @@
             %tr
               %td.left= relationship.delegate.name
               %td.left= relationship.delegate.email
-              %td.left= relationship.relationship_status
+              %td.left= t(relationship.relationship_status)
               %td.left= distance_of_time_in_words_to_now(relationship.updated_at).to_s + " " + t(:ago)
               %td.center
                 - if relationship.retractable
