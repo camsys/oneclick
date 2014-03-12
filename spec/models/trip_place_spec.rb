@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 # TODO This JSON is duplicated in another spec 
-FROM_PLACE_OBJECT = <<EOF
+FROM_PLACE_OBJECT_POI = <<EOF
 {
   "index": 0,
   "type": "1",
@@ -21,6 +21,19 @@ FROM_PLACE_OBJECT = <<EOF
 }
 EOF
 
+FROM_PLACE_OBJECT_AUTOCOMPLETE = <<EOF
+{
+  "index": 0,
+  "type": "5",
+  "type_name": "PLACES_AUTOCOMPLETE_TYPE",
+  "name": "730 Peachtree Street Northeast, Atlanta, GA, United States",
+  "id": "CnRoAAAALT2S6a6w2o0Szna-Tkt__c5wTXlx8-BlEnkfAzKvX9OyY3q_dJg8HaJc7aDiRlbS8xc5CgnG8hieFP4eSsNslc_RYcPUAGzmDd3qUE1fTJc06QAG7FTiDSIzfjXg3cIZ-_4EA_QvIh7PQmLFGEobxxIQvwRKEfPTJX6V7EwDeL2aVhoUN2FVCpV2blzkr03QnJT9vjIRjIg",
+  "lat": null,
+  "lon": null,
+  "address": "730 Peachtree Street Northeast, Atlanta, GA, United States",
+  "description": "(not rendered)"
+}
+EOF
 
 describe TripPlace do
 
@@ -30,8 +43,13 @@ describe TripPlace do
     place.raw_address.should_not be_nil
   end
 
-  it "can be created from JSON" do
-    place = TripPlace.new_from_trip_proxy_place(FROM_PLACE_OBJECT)
+  it "can be created from POI JSON" do
+    place = TripPlace.new.from_trip_proxy_place(FROM_PLACE_OBJECT_POI, 0)
+    place.should be_valid
+  end
+
+  it "can be created from GOOGLE JSON" do
+    place = TripPlace.new.from_trip_proxy_place(FROM_PLACE_OBJECT_AUTOCOMPLETE, 0)
     place.should be_valid
   end
 

@@ -4,7 +4,7 @@ class TripProxy < Proxy
   # Type of operation. Defined in TripController. One of NEW, EDIT, REPEAT
   attr_accessor :mode
   # Id of the trip being re-planned, edited, etc. Null if mode is NEW
-  attr_accessor :id
+  attr_accessor :id, :map_center
 
   include Trip::From
   include Trip::PickupTime

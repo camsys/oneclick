@@ -12,7 +12,12 @@ describe TripsController do
         'reference' => 'mock reference'
       }
 
-      mock_google_api = double(get: double(body: {'predictions' => [mock_prediction]}))
+      mock_google_api = double(
+        get: double(
+          body: {'predictions' => [mock_prediction]},
+          status: 200
+          )
+        )
       PlaceSearchingController.any_instance.stub(:google_api).and_return(mock_google_api)
 
       # # TODO This should go into a factory
@@ -20,7 +25,7 @@ describe TripsController do
         zip: '95060'
       Poi.should_receive(:get_by_query_str).and_return [mock_poi]
 
-      get :search, no_map_partial: 'true', query: 'f', format: :json
+      get :search, no_map_partial: 'true', query: 'carter', format: :json
 
       j = JSON.parse(response.body)
       j.size.should eq 2

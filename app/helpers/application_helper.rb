@@ -197,7 +197,6 @@ module ApplicationHelper
     return if itinerary.nil?
     
     mode_code = get_pseudomode_for_itinerary(itinerary)
-    puts "get_trip_summary_icon, mode_code is #{mode_code}"
     icon_name = if mode_code == 'rail'
       'icon-bus-sign'
     elsif mode_code == 'railbus'

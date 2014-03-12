@@ -227,7 +227,6 @@ describe Trip do
     t = Trip.create_from_proxy(tp, u, u)
     t.save
     t.trip_datetime.to_s.should eq (tomorrow.strftime + "T" + trip_time.strftime("%H:%M") + ":00+00:00")
-    puts t.trip_parts.ai
     t.trip_parts.size.should eq 2
     t.trip_parts.each do |tp|
       tp.should be_valid

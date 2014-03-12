@@ -10,7 +10,11 @@ class TripPlanner
   include ServiceAdapters::RideshareAdapter
 
   def get_fixed_itineraries(from, to, trip_datetime, arriveBy)
-
+    Rails.logger.info ""
+    Rails.logger.info "get_fixed_itineraries"
+    Rails.logger.info from.ai
+    Rails.logger.info to.ai
+    Rails.logger.info ""
     #Parameters
     time = trip_datetime.in_time_zone.strftime("%-I:%M%p")
     date = trip_datetime.in_time_zone.strftime("%Y-%m-%d")
@@ -129,8 +133,7 @@ class TripPlanner
     #Get providers
     task = 'businesses'
     url = base_url + task + api_key + entity
-    Rails.logger.debug "TripPlanner#get_taxi_itineraries: url: #{url}"
-    puts "TripPlanner#get_taxi_itineraries: url: #{url}"
+    Rails.logger.info "TripPlanner#get_taxi_itineraries: url: #{url}"
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e

@@ -1,4 +1,5 @@
 class TripPlace < GeocodedAddress
+  include TripsSupport
 
   TYPES = [
     "Poi",
@@ -20,28 +21,79 @@ class TripPlace < GeocodedAddress
   # set the default scope
   default_scope {order('sequence ASC')}
 
-  def self.new_from_trip_proxy_place json_string
-    # TODO handle types? e.g. POI_TYPE
-    # TODO This isn't quiet right yet, because we're doing the raw address and not setting the type
-    j = JSON.parse(json_string)
-    tp = TripPlace.new(
-      address1: j['address1'],
-      address2: j['address2'],
-      city: j['city'],
-      state: j['state'],
-      zip: j['zip'],
-      county: j['county'],
-      lat: j['lat'],
-      lon: j['lon'],
-      raw_address: j['full_address'])
-    tp
+  def from_trip_proxy_place json_string, sequence, manual_entry = '', map_center = ''
+    puts ""
+    puts "TripPlace#from_trip_proxy_place"
+    puts json_string
+    puts ""
+    self.sequence = sequence
+    j = JSON.parse(json_string) rescue {'type_name' => 'MANUAL_ENTRY'}
+    case j['type_name']
+    when 'POI_TYPE'
+      self.update_attributes(
+        address1: j['address1'],
+        address2: j['address2'],
+        city: j['city'],
+        state: j['state'],
+        zip: j['zip'],
+        county: j['county'],
+        lat: j['lat'],
+        lon: j['lon'],
+        raw_address: j['full_address'])
+    when 'PLACES_AUTOCOMPLETE_TYPE'
+      details = get_places_autocomplete_details(j['id'])
+      d = cleanup_google_details(details.body['result'])
+      puts "result types"
+      puts details.body['result']['types'].ai
+      self.update_attributes(
+        address1: d['address1'],
+        city: d['city'],
+        state: d['state'],
+        zip: d['zip'],
+        county: d['county'],
+        lat: d['lat'],
+        lon: d['lon'],
+        raw_address: j['address'],
+        result_types: d['result_types']
+        )
+    when 'MANUAL_ENTRY'
+      result = google_place_search(manual_entry, map_center)
+      if result.body['status'] == 'ZERO_RESULTS'
+        self.errors.add(:base, "No results for search string")
+        return self
+      end
+      first_result = result.body['predictions'].first
+      puts first_result.ai
+      id = first_result['reference']
+      # TODO Copied from above, should be refactored
+      details = get_places_autocomplete_details(id)
+      puts details.ai
+      puts "result types"
+      puts details.body['result']['types'].ai
+      d = cleanup_google_details(details.body['result'])
+      self.update_attributes(
+        address1: d['address1'],
+        city: d['city'],
+        state: d['state'],
+        zip: d['zip'],
+        county: d['county'],
+        lat: d['lat'],
+        lon: d['lon'],
+        raw_address: first_result['description'],
+        result_types: d['result_types']
+        )
+    else
+      raise "TripPlace.new_from_trip_proxy_place doesn't know how to handle type '#{j['type_name']}'"
+    end
+    self
   end
 
   # discover the location for this trip place from
   # its relationships
   def location
-    return poi.location unless poi.nil?
-    return place.location unless place.nil?
+    # TODO Check this
+    # return poi.location unless poi.nil?
+    # return place.location unless place.nil?
     return get_location
   end
   

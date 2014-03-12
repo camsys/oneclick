@@ -70,6 +70,14 @@ when 'pa'
 
 end
 
+case Oneclick::Application.config.ui_mode
+when 'desktop'
+  Oneclick::Application.config.google_place_search = 'geocode'
+when 'kiosk'
+  Oneclick::Application.config.google_place_search = 'places'
+else
+  raise "UI mode #{Oneclick::Application.config.ui_mode} not supported."
+end
 
 # # SMTP Mail Sender Account
 ENV['SMTP_MAIL_ADDR'] =           "smtp.gmail.com"

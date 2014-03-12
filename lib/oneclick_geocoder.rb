@@ -60,6 +60,7 @@ class OneclickGeocoder
     begin
       res = Geocoder.search(@raw_address, sensor: @sensor, components: @components, bounds: @bounds)
       Rails.logger.info "# results from geocode: #{res.size}"
+      Rails.logger.info "# results from geocode: #{res.ai}"
       process_results(res)
       Rails.logger.info "# results after processing: #{@results.size}"
     rescue Exception => e
