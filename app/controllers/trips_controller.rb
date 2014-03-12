@@ -424,11 +424,14 @@ class TripsController < PlaceSearchingController
     @trip_proxy = create_trip_proxy_from_form_params
 
     Rails.logger.info "TripsController#create"
-    Rails.logger.info "@trip_proxy #{@trip_proxy.ai}"
+    Rails.logger.info @trip_proxy.ai
     Rails.logger.info "valid? #{@trip_proxy.valid?}"
+    Rails.logger.info "errors #{@trip_proxy.errors.ai}"
     if @trip_proxy.valid?
-      @trip = create_trip(@trip_proxy)
+      @trip = Trip.create_from_proxy(@trip_proxy, current_or_guest_user, @traveler)
     end
+
+    Rails.logger.info @trip.ai
 
     # Create markers for the map control
     @markers = create_trip_proxy_markers(@trip_proxy).to_json
@@ -691,8 +694,10 @@ private
   end
 
   # Creates a trip object from a trip proxy
-  def create_trip(trip_proxy)
-
+  def create_trip_old(trip_proxy)
+    Rails.logger.info "TripsController#create_trip"
+    Rails.logger.info trip_proxy.ai
+    
     trip = Trip.new()
     trip.creator = current_or_guest_user
     trip.user = @traveler
@@ -799,6 +804,8 @@ private
       end
     end
 
+    raise "from place not valid: #{from_place.errors.messages}" unless from_place.valid?
+    raise "to place not valid: #{to_place.errors.messages}" unless to_place.valid?
 
     # add the places to the trip
     trip.trip_places << from_place
@@ -819,14 +826,10 @@ private
     trip_part.is_depart = trip_proxy.arrive_depart == t(:departing_at) ? true : false
     trip_part.scheduled_date = trip_date
     trip_part.scheduled_time = Time.zone.parse(trip_proxy.trip_time)
-    Rails.logger.info "create_trip"
-    Rails.logger.info "trip_date #{trip_date}"
-    Rails.logger.info "trip_part.scheduled_date #{trip_part.scheduled_date}"
-    Rails.logger.info "trip_proxy.trip_time #{trip_proxy.trip_time}"
-    Rails.logger.info "trip_part.scheduled_time #{trip_part.scheduled_time}"
     trip_part.from_trip_place = from_place
     trip_part.to_trip_place = to_place
 
+    raise 'TripPart not valid' unless trip_part.valid?
     trip.trip_parts << trip_part
 
     # create the round trip if needed
@@ -835,15 +838,14 @@ private
       trip_part = TripPart.new
       trip_part.trip = trip
       trip_part.sequence = sequence
-      # the return trip is always a depart at
       trip_part.is_depart = true
-      # the return trip time is the arrival time plus
       trip_part.is_return_trip = true
       trip_part.scheduled_date = trip_date
       trip_part.scheduled_time = Time.zone.parse(trip_proxy.return_trip_time)
       trip_part.from_trip_place = to_place
       trip_part.to_trip_place = from_place
 
+      raise 'TripPart not valid' unless trip_part.valid?
       trip.trip_parts << trip_part
     end
 
@@ -892,13 +894,14 @@ private
     when RAW_ADDRESS_TYPE
       # the user entered a raw address and possibly selected an alternate from the list of possible
       # addresses
-      if is_from
-        #puts place_id
-        #puts get_cached_addresses(CACHED_FROM_ADDRESSES_KEY).ai
-        place = get_cached_addresses(CACHED_FROM_ADDRESSES_KEY)[place_id.to_i]
-      else
-        place = get_cached_addresses(CACHED_TO_ADDRESSES_KEY)[place_id.to_i]
-      end
+
+      # if is_from
+      #   #puts place_id
+      #   #puts get_cached_addresses(CACHED_FROM_ADDRESSES_KEY).ai
+      #   place = get_cached_addresses(CACHED_FROM_ADDRESSES_KEY)[place_id.to_i]
+      # else
+      #   place = get_cached_addresses(CACHED_TO_ADDRESSES_KEY)[place_id.to_i]
+      # end
       Rails.logger.info "in get_preselected_place"
       Rails.logger.info "#{is_from} #{place.ai}"
       return {
@@ -934,7 +937,7 @@ private
         lon:               place[:lon]
       }
     else
-      return {}
+      raise "unhandled place type: #{place_type}"
     end
   end
 end

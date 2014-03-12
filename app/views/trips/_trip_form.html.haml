@@ -1,5 +1,7 @@
 - content_for :head do
-  = javascript_include_tag asset_path('tadaaapickr.pack.min.js')
+  / = javascript_include_tag asset_path('tadaaapickr.pack.min.js')
+  = stylesheet_link_tag 'typeahead.js-bootstrap.css'
+  = javascript_include_tag asset_path('trips.js')
 
 = form_tag geocode_user_trips_path, :remote => true, :id => "query_form" do
   = hidden_field_tag :query
@@ -9,64 +11,16 @@
   - unless current_user.travelers.empty?
     = render "select_traveler_form"
 
-= simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}  do |f|
+= simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}  do |f|
   = f.hidden_field :mode
-  = f.hidden_field :from_place_selected, :id => "from_place_selected"
-  = f.hidden_field :to_place_selected, :id => "to_place_selected"
-  = f.hidden_field :from_place_selected_type, :id => "from_place_selected_type"
-  = f.hidden_field :to_place_selected_type, :id => "to_place_selected_type"
+  = f.hidden_field :from_place_object, :id => "from_place_object"
+  = f.hidden_field :to_place_object, :id => "to_place_object"
 
-  - if user_signed_in?
-    = f.input :from_place, :wrapper => :append, :class => "inline", :label => t(:from) do
-      = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large", :data => {:link => search_user_places_path, :provide => "typeahead"}
-      %span.dropdown
-        %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
-          %span.caret
-        - if @places.count > 0
-          %ul.dropdown-menu{:data => {:target => 'trip_proxy_from_place'}}
-            - @places.each do |p|
-              %li
-                %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "from"}}
-                  = p["name"]
-      - unless @traveler.home
-        = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => t(:my_home_chkbox_label)
+  = f.input :from_place, :class => "inline", :label => t(:from) do
+    = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off"
 
-      = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
-
-  - else
-    = f.input :from_place, :class => "inline", :label => t(:from) do
-      = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large", :data => {:link => search_user_trips_path, :provide => "typeahead"}
-      = f.input :from_is_home, id: "from_is_home", as: :boolean, :label => false, :inline_label => t(:my_home_chkbox_label)
-      = image_tag "ajax-loader.gif", :id => "from_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
-
-
-  #from_place_candidates{:style => "display:none;"}
-    = render :partial => 'alt_address_select', :locals => {:results => [], :type => "from"}
-
-  - if user_signed_in?
-    = f.input :to_place, :wrapper => :append, :class => "inline", :label => t(:to) do
-      = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :autocomplete => "off", :class => "no-bottom-margin ajax-typeahead input-large", :data => {:link => search_user_places_path, :provide => "typeahead"}
-      %span.dropdown
-        %a.add-on.btn.dropdown-toggle{:data => {:toggle => 'dropdown'}, :href => '#', :class => @places.empty? ? "disabled" : ""}
-          %span.caret
-        - if @places.count > 0
-          %ul.dropdown-menu{:data => {:target => 'trip_proxy_to_place'}}
-            - @places.each do |p|
-              %li
-                %a.place-option{:data => {:value => p["name"], :id => p["id"], :latlon => [p["lat"], p["lng"]], :desc => p["description"], :type => "to"}}
-                  = p["name"]
-      - unless @traveler.home
-        = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => t(:my_home_chkbox_label)
-      = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
-
-  - else
-    = f.input :to_place, :class => "inline", :label => t(:to) do
-      = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :class => "no-bottom-margin ajax-typeahead input-large", :autocomplete => "off", :data => {:link => search_user_trips_path, :provide => "typeahead"}
-      = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => t(:my_home_chkbox_label)
-      = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
-
-  #to_place_candidates{:style => "display:none;"}
-    = render :partial => 'alt_address_select', :locals => {:results => [], :type => "to"}
+  = f.input :to_place, :class => "inline", :label => t(:to) do
+    = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :autocomplete => "off"
 
   = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
     #trip-date
@@ -74,6 +28,7 @@
       %span.add-on
         %i.fa.fa-calendar
 
+  / #TODO This needs to return non-localized value
   = f.input :arrive_depart, :collection => [t(:departing_at), t(:arriving_by)], :include_blank => false, :label => t(:arrive_depart), :input_html => {:style => "width:200px;"}
 
   = f.input :trip_time, :wrapper => :append, :label => t(:trip_time) do

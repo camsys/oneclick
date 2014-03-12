@@ -354,7 +354,7 @@ en:
   about_2_blocks: "about 2 blocks"
   about_4_blocks: "about 4 blocks"
   twof_miles: "%.2f miles"
-  one_click_buddy_request_from_from_email: "1-Click buddy request from %{from_email}"
+  one_click_buddy_request_from_from_email: "1-Click buddy request from %{@from_email}"
   you_can_t_be_your_own_buddy: "You can't be your own buddy."
   you_ve_already_asked_them_to_be_a_buddy: "You've already asked them to be a buddy."
   my_buddies: "My buddies"

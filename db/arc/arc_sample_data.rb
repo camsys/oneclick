@@ -559,7 +559,7 @@ end
 def add_companion
   #Add Companion Allowed Accommodation
   companion_allowed = Accommodation.find_or_initialize_by_code('companion_allowed')
-  companion_allowed.name = 'Traveler Companion Permitted'
+  companion_allowed.name = 'traveler_companion_name'
   companion_allowed.note = 'Do you travel with a companion?'
   companion_allowed.datatype = 'bool'
   companion_allowed.save()
@@ -618,7 +618,7 @@ add_users_and_places
 add_providers_and_services
 add_fares
 add_esp_ids
-add_companion
+#add_companion
 setup_cms
 create_agencies
 puts 'Done Adding ARC Sample Data'

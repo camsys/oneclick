@@ -5,16 +5,19 @@
   %h5= t(:filter)
   =form_tag({controller: "admin/users", action: "index"}, method: 'get', :class => "form-inline") do
     .row-fluid
-      =label_tag :text, t(:search)
-      =text_field_tag :text,params[:text], {:class => "search-query"}
-    .row-fluid
-      =label_tag :registered, "#{t(:registered)}?"
-      =check_box_tag :registered
-      =label_tag :traveler, "#{t(:traveler)}?"
-      =check_box_tag :traveler
+      .span5  
+        =label_tag :text, t(:search)
+        =text_field :text,'', :class => "search-query"
+      .span2
+        =label_tag :visitor, "#{t(:visitor)}?"
+        =check_box_tag :visitors
+      .span2
+        =label_tag :traveler, "#{t(:traveler)}?"
+        =check_box_tag :traveler
+
     .row-fluid
       .span5
-        =submit_tag t(:search), name: nil, :class => "btn btn-primary"
+        =submit_tag 'Go!', name: nil, :class => "btn btn-primary"
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_users_table
   %thead
     %tr

@@ -19,6 +19,9 @@ class TripPart < ActiveRecord::Base
   # true if the trip part is the return trip
   # attr_accessible :is_return_trip
 
+  validates :from_trip_place, presence: true
+  validates :to_trip_place, presence: true
+
   # Scopes
   scope :created_between, lambda {|from_time, to_time| where("trip_parts.created_at > ? AND trip_parts.created_at < ?", from_time, to_time).order("trip_parts.trip_time DESC") }
   #scope :scheduled_between, lambda {|from_time, to_time| where("trip_parts.trip_time > ? AND trip_parts.trip_time < ?", from_time, to_time).order("trip_parts.trip_time DESC") }

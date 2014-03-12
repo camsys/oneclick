@@ -2,11 +2,20 @@
 
 h1. Oneclick
 
-This is the One-Click VTCLI project being developed by Cambridge Systematics for multiple clients.
+This is the OneClick VTCLI project being developed by Cambridge Systematics for multiple clients.
+
+Note that active development on this project is on the @develop@ branch; the @master@ branch is the most recent 'public'
+release, and so may be quite dated.
+
+h1. Other
+
+h2. License
+
+This One-Click project is dual-licensed under the ["MIT":http://opensource.org/licenses/MIT] and ["GPL v3":https://www.gnu.org/licenses/gpl-3.0.txt] licenses.
 
 h2. Contributing
 
-If you make improvements to this application, please share with others.
+If you make improvements to this project, please share with others.
 
 * Fork the project on GitHub.
 * Make your feature addition or bug fix.
@@ -15,11 +24,3 @@ If you make improvements to this application, please share with others.
 
 If you add functionality to this application, create an alternative implementation, or build an application that
 is similar, please contact us and we'll add a note to the README so that others can find your work.
-
-h2. License
-
-TBD
-
-h2. Misc
-
-Some additional text to make it deploy.
