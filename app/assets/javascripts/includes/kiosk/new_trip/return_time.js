@@ -24,6 +24,9 @@ jQuery(function ($) {
   $('#return-trip a#no').on('click', noReturnTripHandler);
 
   $('#return-trip a#yes').on('click', function () {
+    // something is setting the val to 0. The page seems to load with the correct value of 1
+    $('#trip_proxy_is_round_trip').val('1');
+
     // Register that we * do * want a return trip
     $('#trip_proxy_is_round_trip').prop('checked', true);
   });
