@@ -48,12 +48,9 @@ Oneclick::Application.routes.draw do
       # user-agency relationships
       resources :agency_user_relationships, :only => [:new, :create] do
         member do
-          get   'traveler_retract'
           get   'traveler_revoke'
           get   'traveler_hide'
-          get   'delegate_accept'
-          get   'delegate_decline'
-          get   'delegate_revoke'
+          get   'agency_revoke'
         end
       end
 
@@ -255,7 +252,7 @@ Oneclick::Application.routes.draw do
       get '/' => 'home#index'
       resources :agencies do
         get 'select_user'
-        resources :users do
+        resources :users do   #employees, not customers
           post 'add_to_agency', on: :collection
           put 'add_to_agency', on: :collection
         end

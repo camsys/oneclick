@@ -1,4 +1,4 @@
-require 'spec_helper'
+(require 'spec_helper'
 
 describe AgencyUserRelationship do
     describe "responds to relationship methods" do
@@ -8,4 +8,6 @@ describe AgencyUserRelationship do
         it { should respond_to(:declinable) }
         it { should respond_to(:hidable) }
     end
+
+    
 end

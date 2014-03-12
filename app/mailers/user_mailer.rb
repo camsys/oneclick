@@ -100,4 +100,12 @@ class UserMailer < ActionMailer::Base
     mail(to: @to_email, from: @from_email, subject: "1-Click Feedback")
   end
 
+  def agency_helping_email(to_email, from_email, agency)
+    @agency = agency
+    @to_email = to_email
+    @from_email = from_email
+
+    mail(to: @to_email, subject: t(:agency_now_assisting, from_email: @from_email))
+  end
+
 end
