@@ -16,12 +16,11 @@
           %li
             = link_to destroy_kiosk_user_session_path, method: 'delete' do
               = t(:logout)
-          %li
-            = link_to ("Help"), error_501_path
+          /%li
+          /  = link_to ("Help"), error_501_path
         - else
           / %li
           /   = link_to new_user_session_path do
           /     = t(:log_in)
-          %li
-            = link_to ("Help"), error_501_path
-
+          /%li
+          /  = link_to ("Help"), error_501_path
