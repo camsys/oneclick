@@ -359,7 +359,9 @@ class TripsController < PlaceSearchingController
     # Get the updated trip proxy from the form params
     @trip_proxy = create_trip_proxy_from_form_params
     # save the id of the trip we are updating
-    @trip_proxy.id = @trip.id
+    if @trip_proxy.valid?
+      @trip_proxy.id = @trip.id
+  end
 
     # Create markers for the map control
     @markers = create_trip_proxy_markers(@trip_proxy).to_json
@@ -565,6 +567,12 @@ class TripsController < PlaceSearchingController
 
 protected
 
+  
+  # Set the default travel time/date to x mins from now
+  def default_trip_time
+    return Time.now.in_time_zone.next_interval(DEFAULT_TRIP_TIME_AHEAD_MINS.minutes)    
+  end
+  
   # Safely set the @trip variable taking into account trip ownership
   def get_trip
     # limit trips to trips accessible by the user unless an admin
@@ -617,6 +625,7 @@ private
 
   # creates a trip_proxy object from form parameters
   def create_trip_proxy_from_form_params
+
     trip_proxy = TripProxy.new(params[:trip_proxy])
     trip_proxy.traveler = @traveler
 

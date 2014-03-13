@@ -255,6 +255,7 @@ Oneclick::Application.routes.draw do
       resources :agencies do
         get 'select_user'
         resources :users do   #employees, not customers
+          get 'aid_user', on: :member
           post 'add_to_agency', on: :collection
           put 'add_to_agency', on: :collection
         end

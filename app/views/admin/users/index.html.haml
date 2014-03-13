@@ -38,7 +38,7 @@
         %td= user.roles.first.name.titleize unless user.roles.first.nil?
         %td.center
           -unless user.is_visitor?
-            %a.btn{:href => aid_user_admin_agency_user_path(current_user.agency.id,user.id), :type => "button", :class => "btn btn-success"}= t(:aid_user)
+            = link_to t(:aid_user), aid_user_admin_agency_user_path(current_user.agency.id, user.id), :class => "btn btn-success"
             %a.btn{"data-toggle" => "modal", :href => "#role-options-#{user.id}", :type => "button", :class => "btn btn-danger"}= t(:change_role)
         = render partial: user, locals: {agency: @agency} if @agency
 
