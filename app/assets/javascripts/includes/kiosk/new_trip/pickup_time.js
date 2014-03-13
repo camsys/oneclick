@@ -21,17 +21,16 @@ jQuery(function ($) {
 
   function toggleArriveDepart(currentValue) {
     var timeSection = $('#trip-time');
-    $('#trip_proxy_arrive_depart option:selected').removeAttr("selected");
 
     if (currentValue === 'Departing at') {
       //change the label to arriving
       timeSection.children('label').html('Arriving at');
-      $('#trip_proxy_arrive_depart').find('option[value="Arriving By"]').attr('selected', true);
+      $('#trip_proxy_arrive_depart').val('Arriving By');
       //change the dropdown selected state...
     } else {
       //change the label to departing
       timeSection.children('label').html('Departing at');
-      $('#trip_proxy_arrive_depart').find('option[value="Departing At"]').attr('selected', true);
+      $('#trip_proxy_arrive_depart').val('Departing At');
       //toggle the arriving/departing state
     }
   }
