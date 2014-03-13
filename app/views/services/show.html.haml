@@ -1,7 +1,9 @@
 .row-fluid
-  .span12.pull-right
-    = simple_form_for @services, :url => service_path(), :method => 'get', :html => {:class => "form-horizontal pull-right pull-down", :id => "service_form"}  do |f|
-      = f.input :id, :collection => @services, :label => t(:select_service)+":", :selected => @service.id, :input_html => {:id => "next_service", :onchange => "$('#service_form').submit();"}
+  .span6.pull-left
+    =link_to t(:back_to_services), services_path
+  .span6.pull-right
+    = simple_form_for @services, :url => service_path, :method => 'get', :html => {:class => "form-horizontal pull-right pull-down", :id => "service_form"}  do |f|
+      = f.input :id, :collection => @services, :label => t(:select_service)+":", :selected => @service.id, :input_html => {:id => @service.id, :onchange => "$('#service_form').submit();"}
 
 .well
   .row-fluid
@@ -17,7 +19,8 @@
       %h4
         =@service.phone
       %h4
-        =link_to @service.url, @service.url
+        -if @service.url
+          =link_to @service.url, @service.url
 
     .span3
       .well

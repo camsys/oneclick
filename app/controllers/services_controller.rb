@@ -2,9 +2,12 @@ class ServicesController < ApplicationController
 
   include ApplicationHelper
 
+  def index
+    @services = Service.all(:order => "name")
+  end
+
   def show
     @services = Service.all(:order => "name")
-
     if params['service']
       params[:id] = params['service']['id']
     end
