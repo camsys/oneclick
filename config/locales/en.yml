@@ -276,6 +276,7 @@ en:
   updated: "Updated"
 
   # new ones
+  back_to_services: "Back to services"
   service: "Service"
   services: "Services"
   active: "Active"

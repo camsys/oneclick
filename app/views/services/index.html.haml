@@ -1,0 +1,27 @@
+%h1= t(:services)
+
+%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_services_table
+  %thead
+    %tr
+      %th= t(:name)
+      %th= t(:provider)
+  %tbody
+    -@services.each do |service|
+      %tr
+        %td
+          =link_to service.name, service_path(service.id)
+        %td
+          =service.provider.name
+
+:javascript
+  $(document).ready(function() {
+    $('#admin_services_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ services per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ services",
+              "sInfoEmpty": "Showing 0 to 0 of 0 services",
+              "sInfoFiltered": "(filtered from _MAX_ total services)"
+          }
+      } );
+  } );
