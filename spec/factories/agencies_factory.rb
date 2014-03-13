@@ -8,15 +8,15 @@ FactoryGirl.define do
    # 'Cobb County Transit',
    # 'Goodwill Industries'
 
-    factory :arc_agency, class: "organization" do
+    factory :arc_agency, class: "agency" do
         name 'Atlanta Regional Commission'
         type "Agency"
     end
-    factory :arc_mobility_mgmt_agency, :class => 'organization' do
+    factory :arc_mobility_mgmt_agency, :class => 'agency' do
         name 'ARC Mobility Management'
         type "Agency"
     end
-    factory :va_agency, :class => 'organization' do
+    factory :va_agency, :class => 'agency' do
         name 'Veterans Affairs'
         type "Agency"
     end

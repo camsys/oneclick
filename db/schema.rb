@@ -34,15 +34,6 @@ ActiveRecord::Schema.define(version: 20140308183247) do
     t.integer  "creator",                            null: false
   end
 
-  create_table "agency_user_relationships", force: true do |t|
-    t.integer  "agency_id",                          null: false
-    t.integer  "user_id",                            null: false
-    t.integer  "relationship_status_id", default: 3, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "creator",                            null: false
-  end
-
   create_table "characteristics", force: true do |t|
     t.string  "name",                  limit: 64
     t.string  "note",                                              null: false
