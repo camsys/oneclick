@@ -76,7 +76,7 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def edit
-    @agency_user_relationship = AgencyUserRelationship.new
+    @agency_user_relationships = AgencyUserRelationship.new(@traveler)
     @user_relationship = UserRelationship.new
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
     @user_programs_proxy = UserProgramsProxy.new(@traveler)

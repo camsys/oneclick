@@ -70,6 +70,7 @@ es:
   home: "Inicio"
   log_in: 'Entrar'
   sign_up: 'Registrarse'
+  sign_up_and_plan: "[es]Sign up and plan my trip[/es]"
   welcome: 'Bienvenido'
   first_name: 'Nombre'
   last_name: 'Apellido'

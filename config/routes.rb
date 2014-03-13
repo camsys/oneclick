@@ -45,15 +45,6 @@ Oneclick::Application.routes.draw do
         end
       end
 
-      # user-agency relationships
-      resources :agency_user_relationships, :only => [:new, :create] do
-        member do
-          get   'traveler_revoke'
-          get   'traveler_hide'
-          get   'agency_revoke'
-        end
-      end
-
       # user relationships
       resources :user_relationships, :only => [:new, :create] do
         member do
@@ -253,9 +244,14 @@ Oneclick::Application.routes.draw do
       get '/geocode' => 'util#geocode'
       get '/' => 'home#index'
       resources :agencies do
+        resources :travelers, controller: 'agency_user_relationships' do
+          get   'aid_user'
+          get   'agency_revoke'
+          get   'traveler_revoke'
+          get   'traveler_hide'
+        end
         get 'select_user'
         resources :users do   #employees, not customers
-          get 'aid_user', on: :member
           post 'add_to_agency', on: :collection
           put 'add_to_agency', on: :collection
         end
@@ -264,7 +260,7 @@ Oneclick::Application.routes.draw do
         resources :users
         resources :services
       end
-      resources :users do
+      resources :users do #admin users
         put 'update_roles', on: :member
       end
       resources :providers

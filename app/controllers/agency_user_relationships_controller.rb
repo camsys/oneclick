@@ -1,4 +1,27 @@
 class AgencyUserRelationshipsController < ApplicationController
+    
+
+    # GET /users
+    # GET /users.json
+    def index
+      #Get the broadest list of user
+      if params[:text]# and params[:text]  != [""]
+        @users = User.where("upper(first_name) LIKE ? OR upper(last_name) LIKE ? OR upper(email) LIKE ?", 
+          "%#{params[:text].upcase}%", "%#{params[:text].upcase}%", "%#{params[:text].upcase}%")
+      else
+        @users = User.all
+      end
+      ##winnow down
+      @users = @users.registered unless params[:visitors]
+      @users = @users.delete_if{ |x| x.roles.count > 0} if params[:traveler]
+      respond_to do |format|
+        format.html { render :index}
+        format.json { render json: @users }
+      end
+    end
+    
+
+
     def create
         agency = Agency.find(params[:agency_user_relationship][:agency])
 

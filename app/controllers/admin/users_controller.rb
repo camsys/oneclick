@@ -1,18 +1,9 @@
 class Admin::UsersController < Admin::BaseController
 
-  # GET /users
-  # GET /users.json
-  def index
-    #Get the broadest list of user
-    if params[:text]# and params[:text]  != [""]
-      @users = User.where("upper(first_name) LIKE ? OR upper(last_name) LIKE ? OR upper(email) LIKE ?", 
-        "%#{params[:text].upcase}%", "%#{params[:text].upcase}%", "%#{params[:text].upcase}%")
-    else
-      @users = User.all
-    end
-    ##winnow down
-    @users = @users.registered unless params[:visitors]
-    @users = @users.delete_if{ |x| x.roles.count > 0} if params[:traveler]
+ def index
+    @agency = Agency.find(params[:agency_id]) 
+    @users = @agency.users
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
@@ -43,24 +34,3 @@ class Admin::UsersController < Admin::BaseController
     end
     redirect_to admin_agency_users_path(agency)
   end
-
-  # Impersonate a user to edit their traveler profile.
-  def edit
-    agency_staff_impersonate(params[:id], params[:agency_id])
-    redirect_to edit_user_path traveler_id   #edit_user_path is not user#edit, because of Devise.  Actually points to registration_controller#edit
-  end
-
-  def aid_user
-    agency_staff_impersonate(params[:id], params[:agency_id])
-    redirect_to new_user_trip_path(params[:id])
-  end
-
-private
-
-  def agency_staff_impersonate(user_id, agency_id)
-    AgencyUserRelationship.find_or_create_by(user_id: user_id, agency_id: agency_id) do |aur|
-      aur.creator = current_user.id
-    end
-    set_traveler_id user_id
-  end
-end
