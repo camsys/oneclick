@@ -1,5 +1,14 @@
-// This is trips.css.scss
+.place_picker {
+  width: 30em;
+}
+
 .tt-dropdown-menu {
-  @extend .dropdown-menu;
-  // font: bold;
+  max-height: 20em;
+  overflow-y: scroll;
+  width: 30em;
+}
+
+.tt-suggestion.tt-is-under-cursor a {
+  cursor: pointer;
+  color: blue;
 }

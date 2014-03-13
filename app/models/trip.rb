@@ -22,15 +22,12 @@ class Trip < ActiveRecord::Base
     
   # Returns a set of trips that are scheduled between the start and end time
   def self.scheduled_between(start_time, end_time)
-    puts "scheduled_between() start_time = #{start_time}, end_time = #{end_time}"
     
     # cant do a sorted join here as PG grumbles so doing an in-memory sort on the trips that are returned after we have performed a sub-filter on them. The reverse 
     #is because we want to order from newest to oldest
     res = joins(:trip_parts).where("sequence = ? AND trip_parts.scheduled_date >= ? AND trip_parts.scheduled_date <= ?", 0, start_time.to_date, end_time.to_date).uniq
-    puts "Primary filter has #{res.count} results"
     # Now we need to filter through the results and remove any which fall outside the time range
     res = res.reject{|x| ! x.scheduled_in_range(start_time, end_time) }
-    puts "Secondary filter has #{res.count} results"
     return res.sort_by {|x| x.trip_datetime }.reverse
 
   end
@@ -47,20 +44,15 @@ class Trip < ActiveRecord::Base
   end
 
   def self.create_from_proxy trip_proxy, user, traveler
-    puts "Trip#create_from_proxy"
-    puts trip_proxy.ai
-    puts ""
-
     trip = Trip.new()
     trip.creator = user
     trip.user = traveler
     trip.trip_purpose = TripPurpose.find(trip_proxy.trip_purpose_id)
 
-    from_place = TripPlace.new_from_trip_proxy_place(trip_proxy.from_place_object)
-    from_place.sequence = 0
-
-    to_place = TripPlace.new_from_trip_proxy_place(trip_proxy.to_place_object)
-    to_place.sequence = 1
+    from_place = TripPlace.new.from_trip_proxy_place(trip_proxy.from_place_object, 0,
+      trip_proxy.from_place, trip_proxy.map_center)
+    to_place = TripPlace.new.from_trip_proxy_place(trip_proxy.to_place_object, 1,
+      trip_proxy.to_place, trip_proxy.map_center)
 
     trip.trip_places << from_place
     trip.trip_places << to_place
@@ -109,13 +101,10 @@ class Trip < ActiveRecord::Base
   # to the user
   def scheduled_in_range(start_time, end_time)
 
-    puts "start_time = #{start_time}, end_time = #{end_time}, trip_datetime = #{trip_datetime}"
-    
     # See if the trip date is on or after the start time
     start_time_res = in_the_future(start_time)
     # See if the trip date is on or after the end time
     end_time_res = in_the_future(end_time)
-    puts "start_time_res = #{start_time_res}, end_time_res = #{end_time_res}"
     
     if start_time_res
       # the trip is on or after the start time
@@ -144,18 +133,15 @@ class Trip < ActiveRecord::Base
     if trip_part.nil?
       return false
     end
-    puts "compare_time = #{compare_time}, trip_part.scheduled_date = #{trip_part.scheduled_date}"
     
     # First check the days to see of they are equal
     if trip_part.scheduled_date == compare_time.to_date
       # Check just the times, independent of the time zone
       t1 = trip_part.scheduled_time.strftime("%H:%M")
       t2 = compare_time.strftime("%H:%M")
-      puts "t1 = #{t1}, t2 = #{t2}"
       return t1 > t2 ? true : false
     else
       # Ok, days are not equal so return true if the trip is in the future
-      puts "trip_part.scheduled_date = #{trip_part.scheduled_date}, compare_time.to_date = #{compare_time.to_date}"
       return trip_part.scheduled_date > compare_time.to_date 
     end
   end

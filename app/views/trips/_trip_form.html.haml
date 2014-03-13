@@ -15,12 +15,13 @@
   = f.hidden_field :mode
   = f.hidden_field :from_place_object, :id => "from_place_object"
   = f.hidden_field :to_place_object, :id => "to_place_object"
+  = f.hidden_field :map_center, id: "map_center"
 
   = f.input :from_place, :class => "inline", :label => t(:from) do
-    = f.text_field :from_place, :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off"
+    = f.text_field :from_place, class: 'place_picker', :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off"
 
   = f.input :to_place, :class => "inline", :label => t(:to) do
-    = f.text_field :to_place, :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :autocomplete => "off"
+    = f.text_field :to_place, class: 'place_picker', :placeholder => t(:enter_address), :id => "trip_proxy_to_place", :autocomplete => "off"
 
   = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
     #trip-date
@@ -39,13 +40,13 @@
 
   = f.input :trip_purpose_id, :collection =>  TripPurpose.all, :label => t(:trip_purpose), :selected => @trip_proxy.trip_purpose_id, :input_html => {:style => "width:200px;"}, :value => :id, :label_method => lambda { |v| t(v.name)}
 
-  = f.input :is_round_trip, :label => false, :wrapper_html => {:class => 'controls controls-row'} do
-    = f.input_field :is_round_trip, :as => :boolean, :inline_label => t(:return_after)
-    = f.input :return_trip_time, :label => false, :wrapper => :append do
-      #return-trip-time
-        = f.input_field :return_trip_time, :as => :string, :label => false, :style => "width:160px;"
-        %span.add-on
-          %i.fa.fa-clock-o
+  / = f.input :is_round_trip, :label => false, :wrapper_html => {:class => 'controls controls-row'} do
+  = f.input :is_round_trip, label: false, :as => :boolean, :inline_label => t(:return_after)
+  = f.input :return_trip_time, :label => false, :wrapper => :append do
+    #return-trip-time
+      = f.input_field :return_trip_time, :as => :string, :label => false, :style => "width:160px;"
+      %span.add-on
+        %i.fa.fa-clock-o
               
   .form-actions
     = button_tag :type => 'submit', :class => "btn btn-primary" do
