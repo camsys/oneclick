@@ -44,7 +44,8 @@
                   = render :partial => 'map_details', :locals => { :itinerary => @itinerary }
 
         .detail-footer
-          .print-me= link_to t(:print), kiosk_print_itinerary_url(@itinerary, protocol: 'print')
+          %a.print-me{href: kiosk_print_itinerary_url(@itinerary, protocol: 'print')}
+            %span= t(:print)
         / %li
         /   =t(:chat)
         / %li{:id => "email_itinerary"}

@@ -824,7 +824,7 @@ div.trip_proxy_trip_purpose_id{
 	h6{
 		margin-left:60px;
 	}
-	ul::-webkit-scrollbar {  
+	ul::-webkit-scrollbar {
 		display: none;
 	}
 
@@ -1384,6 +1384,7 @@ div.trip_proxy_trip_purpose_id{
 		font-weight: 600;
 		text-align: center;
 		padding-top: 70px;
+		display: block;
 
 		&:active{
 			background-color: $gray3;
@@ -2413,7 +2414,7 @@ body.sessions.new, body.registrations.new{
 			border-right: 10px solid #fff;
 			border-left: 7px solid #fff;
 		}
-	} 
+	}
 
 	.details{
 		tr{
