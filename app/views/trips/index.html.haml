@@ -36,7 +36,7 @@
           %td.nowrap= format_date(trip.trip_datetime)
           %td= trip.from_place.name
           %td= trip.to_place.name
-          %td= trip.trip_purpose.name
+          %td= t(trip.trip_purpose.name)
           %td.nowrap.center= get_rating_icons(trip)
           %td.center.no_wrap
             =link_to '#', {href: '#user_comments_' + trip.id.to_s, class: 'btn btn-block', data: {toggle: 'modal'}} do

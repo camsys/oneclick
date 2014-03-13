@@ -138,6 +138,7 @@ en:
   rate_recent: "Rate your recent trip"
   plan_trip: "Continue planning this trip"
   max_notes: 'Max notes'
+
   
   # Trip planning
   enter_address: 'Enter address'
@@ -294,6 +295,8 @@ en:
   name: "Name"
   send: "Send"
   schedule: "Schedule"
+  book_ahead: 'Book Ahead'
+  note: "Note"
   advance_notice_required: "Advance Notice Required"
   service_notice_required: "This service requires"
   service_notice_str: "of advance notice to book a trip"
@@ -307,6 +310,7 @@ en:
   service_notice_not_required: "This service does not require advanced notice to book a trip"
   no_cost_for_service:  "No cost for this service"
   addl_cost_details: "Additional Cost Details"
+  click_for_cost_details: 'Click for cost details'
   view_trip_details: "View trip details so that you can call the provider."
   email_trip_details:  "Email your trip plan."
   print_trip_details: "Print your trip plan."
@@ -352,6 +356,7 @@ en:
   return_selected: 'Return option selected.'
   not_authorized_as_an_administrator: 'Not authorized as an administrator.'
   n_a: 'n/a'
+  not_available: 'Not Available'
   less_than_1_block: "less than 1 block"
   about_2_blocks: "about 2 blocks"
   about_4_blocks: "about 4 blocks"
@@ -447,6 +452,7 @@ en:
   more_feedback_link: "Click HERE if you want to provide more feedback, or if things didn't work out as planned."
   search: "Search"
   aid_user: "Aid User"
+  none: "None"
   
   date:
     abbr_day_names:

@@ -295,6 +295,8 @@ es:
   name: "Nombre"
   send: "[es]Send[/es]"
   schedule: "[es236]Schedule[/es]"
+  book_ahead: '[es]Book Ahead[/es]'
+  note: "[es]Note[/es]"
   advance_notice_required: "[es237]Advance Notice Required[/es]"
   service_notice_required: "[es238]This service requires[/es]"
   service_notice_str: "[es239]of advance notice to book a trip[/es]"
@@ -307,6 +309,7 @@ es:
   service_notice_not_required: "[es240]This service does not require advanced notice to book a trip[/es]"
   no_cost_for_service:  "[es281]No cost for this service[/es]"
   addl_cost_details: "[es299]Additional Cost Details[/es]"
+  click_for_cost_details: '[es]Click for cost details[es]'
   view_trip_details: "[es298]View trip details so that you can call the provider.[/es]"
   email_trip_details:  "[es299]Email your trip plan.[/es]"
   print_trip_details: "[es299]Print your trip plan.[/es]"
@@ -351,6 +354,7 @@ es:
   return_selected: '[es211]Return option selected.[/es]'
   not_authorized_as_an_administrator: 'No está autorizado como un administrador.'
   n_a: 'n/a'
+  not_available: '[es]Not Available[/es]'
   less_than_1_block: "a menos the 1 cuadra"
   about_2_blocks: "aproximadament 2 cuadras"
   about_4_blocks: "aproximadamente 4 cuadras"
@@ -446,6 +450,7 @@ es:
   more_feedback_link: "[es432]Click HERE if you want to provide more feedback, or if things didn't work out as planned.[/es]"
   search: "[es439]Search[/es]"
   aid_user: "[es440]Aid User[/es]"
+  none: "[es]None[/es]"
 
   # Branding
   arc:
@@ -540,6 +545,17 @@ es:
       oneclick_short: ! '%-I:%M %p'
     pm: pm    
   datetime:
+    distance_in_words:
+      x_days:
+            one: '1 minuto'
+            other: '{{count}} minutos'
+      x_hours:
+            one: '1 hora'
+            other: '{{count}} horas'
+      x_minutes:
+            one: '1 minuto'
+            other: '{{count}} minutos'
+
     prompts:
       day: Día
       hour: Hora

@@ -21,22 +21,22 @@ class ItineraryDecorator < Draper::Decorator
 
   def cost_in_words
     return h.number_to_currency(cost.round) + " (est)" if mode.code == 'mode_taxi'
-    return 'Click for cost details' if cost.nil?
-    return 'Not available' if cost.nil?
-    (cost != 0 ? h.number_to_currency(cost) : "No cost for this service.")
+    return I18n.t(:click_for_cost_details) if cost.nil?
+    return I18n.t(:not_available) if cost.nil?
+    (cost != 0 ? h.number_to_currency(cost) : I18n.t(:no_cost_for_service))
   end
 
   def duration_in_words
     # TODO should be t(:not_available)
-    (duration ? h.duration_to_words(duration) + " (est.)" : 'Not available')
+    (duration ? h.duration_to_words(duration) + " (est.)" : I18n.t(:not_available))
   end
 
   def notes
     case mode.code
     when 'mode_transit'
-      'No'
+      I18n.t(:no_str)
     when 'mode_taxi'
-      'Yes'
+      I18n.t(:yes_str)
     when 'mode_paratransit'
       h.duration_to_words(service.advanced_notice_minutes*60, suppress_minutes: true, days_only: true)
     when 'mode_rideshare'
@@ -49,11 +49,11 @@ class ItineraryDecorator < Draper::Decorator
   def notes_label
     case mode.code
     when 'mode_rideshare'
-      'Note'
+      I18n.t(:note)
     when 'mode_transit', 'mode_taxi', 'mode_paratransit'
-      'Book ahead'
+      I18n.t(:book_ahead)
     else
-      'Note'
+      I18n.t(:note)
     end
   end
 
@@ -62,7 +62,7 @@ class ItineraryDecorator < Draper::Decorator
   end
 
   def transfers_in_words
-    transfers || 'None'
+    transfers || I18n.t(:none)
     # I18n.translate(:transfer, count: i.transfers)
   end
 
