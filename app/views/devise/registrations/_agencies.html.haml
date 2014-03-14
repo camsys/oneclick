@@ -1,14 +1,13 @@
 .row-fluid
   .span12
-    %h4= t(:add_new_agency)
+%h4= t(:add_new_agency)
 .row-fluid
   .span12
-    = simple_form_for @agency_user_relationship, remote: true, html: { class: 'form-inline' } do |f|
+    = simple_form_for [get_traveler, @agency_user_relationship], remote: true, html: { class: 'form-inline' } do |f|
       = f.error_notification
       = f.input :agency, collection: Agency.all, label: t(:agencies)
       = button_tag type: :submit, class: 'btn btn-primary controls' do
         %i.fa.fa-check
         = t(:add_agency)
-
   #agencies_table
     = render 'agency_table'

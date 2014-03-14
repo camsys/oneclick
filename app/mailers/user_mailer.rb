@@ -105,7 +105,7 @@ class UserMailer < ActionMailer::Base
     @to_email = to_email
     @from_email = from_email
 
-    mail(to: @to_email, subject: t(:agency_now_assisting, from_email: @from_email))
+    mail(to: @to_email, subject: t(:agency_now_assisting, agency: agency.name), from: @from_email)
   end
 
 end

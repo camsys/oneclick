@@ -31,7 +31,7 @@ en:
   agency_added: "Agency added"
   my_agencies: "My Agencies"
   not_any_agencies: "You haven't approved any agencies to help you"
-  agency_now_assisting: "#{@agency} now assisting"
+  agency_now_assisting: "%{agency} now assisting"
   parent_agency: "Parent Agency"
   parent: "Parent"
   subagencies: "Sub-agencies"

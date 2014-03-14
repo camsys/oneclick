@@ -66,6 +66,9 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
+    if session[:agency]
+      return new_user_registration_path
+    end
     if session[:inline]
       get_traveler
       @trip = Trip.find(session[:current_trip_id])

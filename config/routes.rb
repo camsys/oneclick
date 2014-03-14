@@ -45,6 +45,14 @@ Oneclick::Application.routes.draw do
         end
       end
 
+      resources :agency_user_relationships, controller: 'admin/agency_user_relationships', :only => [:create,:destroy] do
+        member do
+          get   'traveler_revoke'
+          get   'traveler_hide'
+        end
+      end
+
+
       # user relationships
       resources :user_relationships, :only => [:new, :create] do
         member do
@@ -247,8 +255,6 @@ Oneclick::Application.routes.draw do
         resources :travelers, controller: 'agency_user_relationships' do
           get   'aid_user'
           get   'agency_revoke'
-          get   'traveler_revoke'
-          get   'traveler_hide'
         end
         get 'select_user'
         resources :users do   #employees, not customers

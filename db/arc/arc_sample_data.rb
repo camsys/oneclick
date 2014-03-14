@@ -571,25 +571,25 @@ def setup_cms
  door-to-door services, and specialized transportation.  Give it a try, and
  <a href="mailto://OneClick@camsys.com">tell us</a> what you think.</h2>
 EOT
-      Translation.find_by(:key => 'home-top_html').update_attributes(:value => text)
-      Translation.find_by(:key => 'home-top-logged-in_html').update_attributes(:value => text)
+      Translation.find_or_create_by(:key => 'home-top_html').update_attributes(:value => text)
+      Translation.find_or_create_by(:key => 'home-top-logged-in_html').update_attributes(:value => text)
       text = <<EOT
 1-Click/ARC was funded by the
  <a href="http://www.fta.dot.gov/grants/13094_13528.html" target=_blank>Veterans Transportation
  Community Living Initiative</a>.
 EOT
-      Translation.find_by(:key => 'home-bottom-left_html').update_attributes(:value => text)
-      Translation.find_by(:key => 'home-bottom-left-logged-in_html').update_attributes(:value => text)
+      Translation.find_or_create_by(:key => 'home-bottom-left_html').update_attributes(:value => text)
+      Translation.find_or_create_by(:key => 'home-bottom-left-logged-in_html').update_attributes(:value => text)
       text = <<EOT
 <span style="float: right;">1-Click/ARC is sponsored by the
 <a href="http://www.atlantaregional.com/" target=_blank>Atlanta Regional Commission</a>.</span>
 EOT
-      Translation.find_by(:key => 'home-bottom-right_html').update_attributes(:value => text)
-      Translation.find_by(:key => 'home-bottom-right-logged-in_html').update_attributes(:value => text)
+      Translation.find_or_create_by(:key => 'home-bottom-right_html').update_attributes(:value => text)
+      Translation.find_or_create_by(:key => 'home-bottom-right-logged-in_html').update_attributes(:value => text)
       text = <<EOT
 Tell us about your trip.  The more information you give us, the more options we can find!
 EOT
-      Translation.find_by(:key  => 'plan-a-trip_html').update_attributes(:value => text)
+      Translation.find_or_create_by(:key  => 'plan-a-trip_html').update_attributes(:value => text)
 end
 
 def create_agencies

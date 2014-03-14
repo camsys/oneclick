@@ -1,0 +1,77 @@
+%h1
+  = link_to @agency.name, [:admin, @agency] if @agency
+  
+%h2= t(:find_traveler)
+.well.well-sm#filters
+  %h5= t(:filter)
+  =form_tag({controller: "admin/users", action: "index"}, method: 'get', :class => "form-inline") do
+    .row-fluid
+      .span5  
+        =label_tag :text, t(:search)
+        =text_field :text,'', :class => "search-query"
+      .span2
+        =label_tag :visitor, "#{t(:visitor)}?"
+        =check_box_tag :visitors
+      .span2
+        =label_tag :traveler, "#{t(:traveler)}?"
+        =check_box_tag :traveler
+
+    .row-fluid
+      .span5
+        =submit_tag 'Go!', name: nil, :class => "btn btn-primary"
+%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_users_table
+  %thead
+    %tr
+      %th= t(:username)
+      %th= t(:email)
+      %th= t(:registered)
+      %th= t(:role)
+      %th
+  %tbody
+    - @users.each do |traveler|
+      %tr
+        -if can_be_impersonated_by_current_user(traveler)
+          %td= link_to traveler.name, edit_admin_agency_traveler_path(@agency,traveler.id)
+        -else
+          %td= traveler.name
+        %td= traveler.email
+        %td= traveler.created_at.to_date
+        %td= traveler.roles.first.name.titleize unless traveler.roles.first.nil?
+        %td.center
+          -unless traveler.is_visitor?
+            = link_to t(:plan_a_trip), admin_agency_traveler_aid_user_path(@agency, traveler.id), :class => "btn btn-success"
+            %a.btn{"data-toggle" => "modal", :href => "#role-options-#{traveler.id}", :type => "button", :class => "btn btn-danger"}= t(:change_role)
+        = render partial: traveler, locals: {agency: @agency} if @agency
+
+/ = link_to t(:add_user), new_admin_agency_user_path , {class: 'btn', "data-toggle" => "modal"}
+
+/ # = link_to t(:add_user), '#select_user', {class: 'btn', "data-toggle" => "modal"}
+/////////// Not working yet because agency information is not passed
+/ .modal.hide.fade#select_user
+/ .modal-header
+/   %a.close{"data-dismiss" => "modal"} ×
+/   %h3= t(:select_users)
+/   = simple_form_for @agency, url: add_to_agency_admin_agency_users_path(@agency), html: { class: 'form-horizontal'},
+/     data: {dismiss: 'modal'}  do |f|
+/     = f.error_notification
+/     = f.association :users, collection: @agency.unselected_users, as: :check_boxes, label_method: :email_and_agency, value_method: :id
+/     .modal-footer
+/       = button_tag type: :submit, class: 'btn btn-info' do
+/         %i.fa.fa-plus
+/         =t(:add)
+/       %a{'data-dismiss' => 'modal'}
+/         %i.fa.fa-reply
+/         = t(:cancel)
+
+:javascript
+  $(document).ready(function() {
+    $('#admin_agencies_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ agencies per page",
+              "sZeroRecords": t(:Nothing_found),
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ agencies",
+              "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
+              "sInfoFiltered": "(filtered from _MAX_ total agencies)"
+          }
+      } );
+  } );

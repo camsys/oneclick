@@ -24,7 +24,7 @@ module CsHelpers
   def admin_menu
   [
     {label: t(:find_traveler), target: admin_agency_travelers_path(current_user.agency), icon: ACTION_ICONS[:find_traveler]},
-    {label: t(:create_traveler), target: new_admin_agency_traveler_path(current_user.agency), icon: ACTION_ICONS[:create_traveler]},
+    {label: t(:create_traveler), target: new_admin_agency_user_path(current_user.agency), icon: ACTION_ICONS[:create_traveler]},
     {label: t(:trips), target: admin_trips_path, icon: ACTION_ICONS[:trips]},
     {label: t(:agencies), target: admin_agencies_path, icon: ACTION_ICONS[:agents_agencies]},
     {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users]},

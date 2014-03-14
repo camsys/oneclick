@@ -3,9 +3,9 @@
   = t(:sign_up)
 %h4
 .well
-  = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
+  = simple_form_for [:admin, @user], :html => {:class => 'form-horizontal' } do |f|
     = f.error_notification
-    = display_base_errors resource
+    = display_base_errors @user
 
     - if @create_inline
       .alert.alert-info.alert-block
@@ -13,7 +13,6 @@
           .span12
             %p
               =cms_snippet_content('registration-reasoning')
-            / = t(:to_see_best_options)
         .row-fluid
           .span12
             %a.btn.btn-success{:alt => 'alt words', :title => 'title here', :href => skip_user_trip_path(@traveler, @trip.id)}
@@ -27,16 +26,9 @@
     = f.input :email, label: t(:email), :required => true
     = f.input :password, label: t(:password), :required => true
     = f.input :password_confirmation, :label => t(:retype_your_password), :required => true
-    = f.hidden :approved_agencies if session[:agency]
-    - if @create_inline
-      .form-actions
-        = button_tag :type => 'submit', :class => "btn btn-primary" do
-          %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-          =t(:sign_up_and_plan)
-    - else
-      .actions
-        = button_tag type: :submit, class: 'btn btn-primary controls' do
-          %i.fa.fa-edit
-          = t(:sign_up)
-        = render "devise/shared/links"
+    = f.input :approved_agencies, as: :hidden, :input_html => { :value => session[:agency] } if session[:agency]
+    .actions
+      = button_tag type: :submit, class: 'btn btn-primary controls' do
+        %i.fa.fa-edit
+        = t(:sign_up)
 
