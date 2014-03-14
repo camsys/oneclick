@@ -10,13 +10,13 @@
  *
  */
 @import "includes/_bootstrap_and_overrides";
-@import url(<%= asset_path("includes/jquery.timepicker.css") %>);
-@import url(<%= asset_path("includes/tadaaapickr.css") %>);
-@import url(<%= asset_path("bootstrap-combobox") %>);
+@import "includes/jquery.timepicker";
+@import "includes/tadaaapickr";
+@import "bootstrap-combobox";
 @import "font-awesome";
-@import url(<%= asset_path("font-awesome-ext.css") %>);
-@import url(<%= asset_path("travelcons.css") %>);
-@import url(<%= asset_path("bootstrap_datatable") %>);
-@import url(<%= asset_path("base/_base.css") %>);
-@import url(<%= asset_path("base/home.css") %>);
+@import "font-awesome-ext";
+@import "travelcons";
+@import "bootstrap_datatable";
+@import "base/_base";
+@import "base/home";
 @import "trips";

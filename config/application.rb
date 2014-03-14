@@ -40,7 +40,7 @@ module Oneclick
 
       g.view_specs false
       g.helper_specs false
-    end
+  end
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -87,21 +87,10 @@ module Oneclick
     # For heroku; see http://blog.nathanhumbert.com/2012/01/rails-32-on-heroku-tip.html
     config.assets.initialize_on_precompile = false
 
-    # because application.css.scss only uses @import, not require, we need to make
-    # sure all stylesheets are precompiled for the asset pipeline
-    stylesheets = Dir.glob(File.join('app', 'assets', 'stylesheets', '**', '*')).map {
-        |d| d.gsub(%r{app/assets/stylesheets/}, '')
-        }.map {|d| d.gsub(%r{\.scss$}, '')}
-        .select{|d| d =~ %r{\.css}} - ["application.css"]
-    config.assets.precompile += stylesheets
-
-    config.assets.precompile += %w(
-      tadaaapickr.pack.min.js
-      kiosk/_base.css
-      kiosk/style.css
-      trips.css
-      trips.js
-    )
+    # Add in here any css or js that is *not* specified in application.css.scss or
+    # application.js (e.g. will typically be referenced directly in a view or a
+    # template
+    config.assets.precompile += %w{tadaaapickr.pack.min.js trips.js typeahead.js-bootstrap.css}
 
     config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
 
@@ -110,7 +99,9 @@ module Oneclick
 
     # See http://work.stevegrossi.com/2013/04/06/dynamic-error-pages-with-rails-3-2/
     config.exceptions_app = self.routes
+
   end
+
 end
 
 
