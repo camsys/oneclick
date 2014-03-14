@@ -67,7 +67,7 @@ characteristicsView.init = function () {
   //add click handler to next button
   $('.next-step-btn, a#yes').on('click', characteristicsView.nextBtnHandler.bind(characteristicsView));
 
-  $('.back-button a').on('click', characteristicsView.backBtnHandler.bind(characteristicsView));
+  $('.back-button').on('click', characteristicsView.backBtnHandler.bind(characteristicsView));
 
   //add click handlers to dob form li elements (table)
   characteristicsView.dobItems.on('click', 'li', characteristicsView.handleDobElemClick.bind(characteristicsView));

@@ -66,7 +66,7 @@ function viewSequence ($) {
     }
   });
 
-  $(document).on('click', '.back-button a', function (e) {
+  $(document).on('click', '.back-button', function (e) {
     if (els.filter('.current').is(els.first())) {
       $(e.target)
     } else {
