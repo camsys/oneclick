@@ -10,7 +10,7 @@ jQuery(function ($) {
   setupPlacesSearchTypeahead('to', 'stop');
 
   if (NewTrip.read().use_current_location == 'yes') {
-    var $btn = $('.back-button .arrow-btn')
+    var $btn = $('.back-button')
     $btn.attr('href', $btn.attr('href').replace('#back',''));
   }
 
