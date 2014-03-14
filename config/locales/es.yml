@@ -546,15 +546,18 @@ es:
     pm: pm    
   datetime:
     distance_in_words:
+      about_x_hours:
+            one: '[es]about 1 hour'
+            other: '[es]%{count} hours[/es]'
       x_days:
             one: '1 minuto'
-            other: '{{count}} minutos'
+            other: '%{count} dias'
       x_hours:
             one: '1 hora'
-            other: '{{count}} horas'
+            other: '%{count} horas'
       x_minutes:
             one: '1 minuto'
-            other: '{{count}} minutos'
+            other: '%{count} minutos'
 
     prompts:
       day: Día
