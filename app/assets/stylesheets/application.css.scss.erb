@@ -9,7 +9,14 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  */
-@import "includes/_bootstrap_and_overrides";
+
+// @import "includes/_bootstrap_and_overrides";
+/* bootstrap custom configuration */
+$navbarCollapseWidth: 766px;
+
+@import "bootstrap";
+@import "bootstrap-responsive";
+
 @import url(<%= asset_path("includes/jquery.timepicker.css") %>);
 @import url(<%= asset_path("includes/tadaaapickr.css") %>);
 @import url(<%= asset_path("bootstrap-combobox") %>);
@@ -18,5 +25,46 @@
 @import url(<%= asset_path("travelcons.css") %>);
 @import url(<%= asset_path("bootstrap_datatable") %>);
 @import url(<%= asset_path("base/_base.css") %>);
-@import url(<%= asset_path("base/home.css") %>);
+// @import "home";
 @import "trips";
+
+// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.home.index {
+  .actionbutton {
+    @extend .btn;
+    cursor: pointer;
+    overflow: auto;
+    margin-top: 10px;
+
+    i {
+      width: 100%;
+    }
+    
+    .actionlabel {
+      // display: inline;
+      font-size: 1.5em;
+    }
+  }
+
+  .Center-Container.is-Table {
+   min-height: 2em;
+ }
+
+  .is-Table .Center-Block {
+    width: 90%;
+  }
+
+  .thumbnails > li {
+    margin-bottom: auto;
+  }
+
+  .center {
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+}
