@@ -301,6 +301,7 @@ ActiveRecord::Schema.define(version: 20140417194136) do
     t.string   "contact",                      limit: 100
     t.string   "phone",                        limit: 25
     t.string   "url"
+    t.string   "booking_service_code"
   end
 
   create_table "translations", force: true do |t|

@@ -13,6 +13,7 @@ class Service < ActiveRecord::Base
   has_many :itineraries
   # attr_accessible :id, :name, :provider, :provider_id, :service_type, :advanced_notice_minutes, :external_id, :active
   # attr_accessible :contact, :contact_title, :phone, :url, :email
+  # attr_accessible: booking_service_id
 
   has_many :accommodations, through: :service_accommodations, source: :accommodation
   has_many :characteristics, through: :service_characteristics, source: :characteristic

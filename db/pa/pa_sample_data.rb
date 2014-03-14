@@ -129,6 +129,7 @@ def add_providers_and_services
 
         #Create service Senior Shared Ride
         service = Service.create(name: 'Senior Shared Ride', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        service.booking_service_code = 'ecolane'
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
@@ -165,6 +166,7 @@ def add_providers_and_services
 
         #Shared Ride for Ages 60-64
         service = Service.create(name: 'Shared Ride for Ages 60-64', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        service.booking_service_code = 'ecolane'
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
@@ -197,6 +199,7 @@ def add_providers_and_services
 
         #Medical Assistance Transportation Program
         service = Service.create(name: 'Medical Assistance Transportation Program', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        service.booking_service_code = 'ecolane'
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
@@ -232,6 +235,7 @@ def add_providers_and_services
 
         #ADA Complementary
         service = Service.create(name: 'ADA Complementary Service', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        service.booking_service_code = 'ecolane'
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
@@ -263,6 +267,7 @@ def add_providers_and_services
 
         #Service for Persons with Disabilities
         service = Service.create(name: 'Service for Persons with Disabilities', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        service.booking_service_code = 'ecolane'
         #Add Schedules
         #Add Schedules
         (1..5).each do |n|

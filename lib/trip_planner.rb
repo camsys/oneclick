@@ -10,6 +10,7 @@ class TripPlanner
   include ServiceAdapters::RideshareAdapter
 
   def get_fixed_itineraries(from, to, trip_datetime, arriveBy)
+
     Rails.logger.info ""
     Rails.logger.info "get_fixed_itineraries"
     Rails.logger.info from.ai
@@ -29,7 +30,7 @@ class TripPlanner
     url = base_url + url_options
 
     Rails.logger.debug URI.parse(url)
-    
+    t = Time.now
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
       Rails.logger.info(resp.inspect)
@@ -61,6 +62,8 @@ class TripPlanner
       )
       return false, result['error']
     else
+      p 'Calling home took...'
+      p Time.now - t
       return true, result['plan']
     end
 
@@ -196,13 +199,17 @@ class TripPlanner
   end
 
   def get_rideshare_itineraries(from, to, trip_datetime)
+
+    return false, {'id'=>500, 'msg'=>"Test Remove Me"}
+    t = Time.now
     query = create_rideshare_query(from, to, trip_datetime)
     
     agent = Mechanize.new
     agent.keep_alive=false
     agent.open_timeout = MAX_REQUEST_TIMEOUT
     agent.read_timeout = MAX_READ_TIMEOUT    
-    
+
+
     begin
       page = agent.post(service_url, query)
       doc = Nokogiri::HTML(page.body)
@@ -220,6 +227,8 @@ class TripPlanner
       summary = doc.css('.summary').text
       Rails.logger.debug "Summary: #{summary}"
       count = %r{(\d+) total result}.match(summary)[1]
+      p 'Calling rideshare took'
+      p Time.now - t
       return true, {'mode' => 'rideshare', 'status' => 200, 'count' => count, 'query' => query}
     else
       return false, {'mode' => 'rideshare', 'status' => 404, 'count' => results.size}
