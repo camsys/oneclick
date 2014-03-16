@@ -305,8 +305,8 @@ characteristicsView.handleDobElemClick = function(e) {
  *.............................................................................*/
 characteristicsView.populateYears = function () {
   var now = new Date();
-  var nowYear = now.getUTCFullYear();
-  var beginYear = nowYear - 100;
+  var nowYear = now.getUTCFullYear() - 11;
+  var beginYear = now.getUTCFullYear() - 100;
   var yearRange = CGUtils.range(beginYear, nowYear + 1);
   var yearGroups = [];
   var numYearsInGroup = 10;
@@ -374,8 +374,8 @@ characteristicsView.populateYears = function () {
     if ($target.hasClass('next-btn')) {
       //increment page
       characteristicsView.dob.yearpage += 1;
-      if (characteristicsView.dob.yearpage > yearGroups.length) {
-        characteristicsView.dob.yearpage = yearGroups.length;
+      if (characteristicsView.dob.yearpage >= yearGroups.length) {
+        characteristicsView.dob.yearpage = yearGroups.length - 1;
       }
     }
 
