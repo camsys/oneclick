@@ -18,23 +18,47 @@ module CsHelpers
     :trips => 'fa fa-tags',
     :services => 'icon-bus-sign',
     :users => 'fa fa-group',
+    :feedback => 'fa fa-thumbs-o-up',
 
   }
 
   def admin_menu
-  [
-    {label: t(:find_traveler), target: admin_agency_travelers_path(current_user.agency), icon: ACTION_ICONS[:find_traveler]},
-    {label: t(:create_traveler), target: new_admin_agency_user_path(current_user.agency), icon: ACTION_ICONS[:create_traveler]},
-    {label: t(:trips), target: admin_trips_path, icon: ACTION_ICONS[:trips]},
-    {label: t(:agencies), target: admin_agencies_path, icon: ACTION_ICONS[:agents_agencies]},
-    {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users]},
-    {label: t(:providers), target: admin_provider_orgs_path, icon: ACTION_ICONS[:providers]},
-    {label: t(:services), target: services_path, icon: ACTION_ICONS[:services]},
-    {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports]},
+    [
+      {label: t(:create_traveler), target: create_travelers_path, icon: ACTION_ICONS[:create_traveler], access: :admin_create_traveler},
+      {label: t(:find_traveler), target: find_travelers_path, icon: ACTION_ICONS[:find_traveler], access: :admin_find_traveler},
+      {label: t(:trips), target: create_trips_path, icon: ACTION_ICONS[:trips], access: :admin_trips},
+      {label: t(:agencies), target: admin_agencies_path, icon: ACTION_ICONS[:agents_agencies], access: :admin_agencies},
+      {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
+      {label: t(:providers), target: admin_provider_orgs_path, icon: ACTION_ICONS[:providers], access: :admin_providers},
+      {label: t(:services), target: services_path, icon: ACTION_ICONS[:services], access: :admin_services},
+      {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports], access: :admin_reports},
+      {label: t(:feedback), target: admin_feedback_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback},
+    ]  
+  end
 
-  ]  
-end
-  
+  def has_agency_specific_role?
+    [:agency_administrator, :agent].any? do |r|
+      User.with_role(r, :any).include?(current_user)
+    end
+  end
+
+  def find_travelers_path
+    has_agency_specific_role? ? admin_agency_travelers_path(current_user.agency) : admin_travelers_path
+  end
+
+  def create_travelers_path
+    has_agency_specific_role? ? new_admin_agency_user_path(current_user.agency) : new_admin_user_path
+  end
+
+  def create_trips_path
+    User.with_role(:provider_staff, :any).include?(current_user) ? admin_provider_trips_path(current_user.provider) : admin_trips_path
+  end
+
+  def show_action action
+    return true unless action.include? :access
+    can? :access, action[:access]
+  end
+
   # Session key for storing the traveler id
   TRAVELER_USER_SESSION_KEY = 'traveler'
 
@@ -210,7 +234,6 @@ end
     name_string.chop.chop
   end
 
-
   # Kiosk-related helpers
 
   def user_trip_path_for_ui_mode traveler, trip
@@ -269,4 +292,10 @@ end
     end
   end
 
+end
+
+class String
+  def to_sample_email suffix
+    downcase.gsub(/[^a-z\s]/, '').gsub(/\s/, '_') + '_' + suffix + '@camsys.com'
+  end
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Admin::HomeController do
+describe Admin::AdminHomeController do
 
   describe "GET 'index'" do
     before(:each) do

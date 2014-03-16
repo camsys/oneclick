@@ -1,4 +1,5 @@
 class Service < ActiveRecord::Base
+  resourcify
 
   #associations
   belongs_to :provider

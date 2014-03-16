@@ -525,6 +525,8 @@ en:
       month: Month
       second: Seconds
       year: Year
+  unauthorized:
+    default: 'You are not authorized to access that page.'
 
   # Branding
   arc:

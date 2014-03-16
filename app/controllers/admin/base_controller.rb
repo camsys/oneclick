@@ -1,6 +1,7 @@
 class Admin::BaseController < ApplicationController
-
-  # cancan authorization for the controller
-  authorize_resource :class => false
+  check_authorization
+  
+  # # cancan authorization for the controller
+  # authorize_resource :class => false
   
 end

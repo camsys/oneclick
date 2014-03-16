@@ -1,3 +1,14 @@
 // Place all the styles related to the Admin/Home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+body {
+  .admin {
+    .home {      
+      .home_menu_item {
+        @extend .offset6;
+        @extend .span6;
+      }
+    }
+  }
+}

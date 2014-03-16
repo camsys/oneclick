@@ -250,7 +250,12 @@ Oneclick::Application.routes.draw do
       resources :reports, :only => [:index, :show]
       resources :trips, :only => [:index]
       get '/geocode' => 'util#geocode'
-      get '/' => 'home#index'
+      get '/' => 'admin_home#index'
+      resource :feedback
+      resources :travelers, controller: 'agency_user_relationships' do
+        get   'aid_user'
+        get   'agency_revoke'
+      end
       resources :agencies do
         resources :travelers, controller: 'agency_user_relationships' do
           get   'aid_user'
@@ -269,7 +274,9 @@ Oneclick::Application.routes.draw do
       resources :users do #admin users
         put 'update_roles', on: :member
       end
-      resources :providers
+      resources :providers do
+        resources :trips, only: [:index, :show]
+      end
     end#admin
 
     resources :services do

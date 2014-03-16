@@ -239,13 +239,34 @@ a:hover#help {
   }
 }
 
-.home.index .actionbutton:hover {
- cursor: pointer;
- border-color: #0088cc;
- -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
- -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
- box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+.home.index {
+  .actionbutton:hover {
+    cursor: pointer;
+    border-color: #0088cc;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+    -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+    box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+  }
+
+  .home_menu_item {
+    @extend .center;
+    @extend .span3;
+  }  
+
 }
+
+.home.index.admin {
+  .home_menu_item {
+    @extend .offset6;
+    @extend .span6;
+  }  
+  .admin_menu {
+    .home_menu_item {
+      @extend .span6;
+    }  
+  }
+}
+
 
 // trips specific CSS
 

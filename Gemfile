@@ -68,6 +68,8 @@ group :development do
   gem 'rgeo'
   gem 'rgeo-shapefile'
   gem "letter_opener"
+  gem 'yard'
+  gem 'RedCloth' # Needed by yard
 end
 
 group :test do

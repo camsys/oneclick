@@ -30,12 +30,12 @@ describe Organization do
       user.should_not be_valid
     end
     it 'should not be valid to assign agency as provider for a user' do
-      user.update_attribute(:provider, agency_organization1)
+      user.update_attribute(:provider_org, agency_organization1)
       user.should_not be_valid
     end
     it 'should be valid' do
       user.agency = agency_organization1
-      user.provider = provider_organization1
+      user.provider_org = provider_organization1
       user.save!
       user.should be_valid
     end

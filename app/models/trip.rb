@@ -19,6 +19,13 @@ class Trip < ActiveRecord::Base
   # Scopes
   # Returns a set of trips that have been created between a start and end day
   scope :created_between, lambda {|from_day, to_day| where("trips.created_at > ? AND trips.created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
+  # scope :by_provider, ->(p) { where("distinct t.* from trips t join trip_parts tp on tp.trip_id=t.id " +
+  #   "join itineraries i on i.trip_part_id=tp.id " +
+  #   "join services s on s.id=i.service_id " +
+  #   "join providers p on p.id=s.provider_id") }
+  scope :by_provider, ->(p) { joins(itineraries: {service: :provider}).where('providers.id=?', p).distinct }
+  # .join(:services).join(:providers) }
+    # .where('providers.id=?', p)}
     
   # Returns a set of trips that are scheduled between the start and end time
   def self.scheduled_between(start_time, end_time)
@@ -75,6 +82,9 @@ class Trip < ActiveRecord::Base
 
     raise 'TripPart not valid' unless trip_part.valid?
     trip.trip_parts << trip_part
+
+    trip.scheduled_date = trip_part.scheduled_date
+    trip.scheduled_time = trip_part.scheduled_time
 
     # create the round trip if needed
     if trip_proxy.is_round_trip == "1"

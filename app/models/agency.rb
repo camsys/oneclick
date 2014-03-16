@@ -1,4 +1,5 @@
 class Agency < Organization
+  resourcify
   # include ActiveModel::Validations
 
   # # Validator(s)

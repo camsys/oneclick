@@ -2,14 +2,17 @@ include SeedsHelpers
 
 ### Non Internationlized Records ###
 
+# TODO This is actually not necessary,  because of the way rolify works
 # load the roles
-[
-    {name: 'admin'},
-    {name: 'agent'},
-    {name: 'agent_admin'},
-].each do |role|
-  r = Role.new(role)
-  r.save!
+%w{
+  system_administrator
+  agency_administrator
+  agent
+  provider_staff
+  registered_traveler
+  anonymous_traveler
+}.each do |role|
+  Role.create!(name: role.to_sym)
 end
 
 #Create reports and internationalize their names
@@ -24,15 +27,11 @@ end
   Translation.create!(key: rep[:class_name], locale: :es, value: "[es]#{rep[:class_name]}[/es]")
 end
 
-#Create Admin User
+# Create Admin User
 User.find_by_email(admin[:email]).destroy rescue nil
-admin = {first_name: 'sys', last_name: 'admin', email: 'email@camsys.com'}
-u = User.create! admin.merge({password: 'welcome1'})
-up = UserProfile.new
-up.user = u
-up.save!
-u.add_role 'admin'
-u.save!
+u = User.create! first_name: 'sys', last_name: 'admin', email: 'email@camsys.com', password: 'welcome1'
+up = UserProfile.create! user: u
+u.add_role :system_administrator
 
 ### Internationalized Records ###
 

@@ -566,6 +566,8 @@ es:
       month: Mes
       second: Segundos
       year: Año
+  unauthorized:
+    default: '[es570]You are not authorized to access that page.[/es]'
           
   activerecord:
     errors:

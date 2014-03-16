@@ -1,4 +1,6 @@
 class Admin::AgenciesController < Admin::OrganizationsController
+  load_and_authorize_resource
+
   # GET /agencies
   # GET /agencies.json
   def index

@@ -1,43 +1,51 @@
 class Admin::AgencyUserRelationshipsController < ApplicationController
+  # TODO Not working yet, needs rework
+  # load_and_authorize_resource
 
-    def index
-      if params[:text]
-        @users = User.where("upper(first_name) LIKE ? OR upper(last_name) LIKE ? OR upper(email) LIKE ?", 
-          "%#{params[:text].upcase}%", "%#{params[:text].upcase}%", "%#{params[:text].upcase}%")
-      else
-        @users = User.all
-      end
-      @users = @users.registered unless params[:visitors]
-      @users = @users.delete_if{ |x| x.roles.count > 0} if params[:traveler]
+  def index
+    if params[:agency_id]
       @agency = Agency.find(params[:agency_id])
-      respond_to do |format|
-        format.html
-        format.json { render json: @users }
-      end
+      authorize! :manage_users, @agency
+    else
+      authorize! :manage_users, Agency
     end
-    
 
-    def create
-        agency = Agency.find(params[:agency_user_relationship][:agency])
+    if params[:text]
+      @users = User.where("upper(first_name) LIKE ? OR upper(last_name) LIKE ? OR upper(email) LIKE ?", 
+        "%#{params[:text].upcase}%", "%#{params[:text].upcase}%", "%#{params[:text].upcase}%")
+    else
+      @users = User.all
+    end
+    @users = @users.registered unless params[:visitors]
+    @users = @users.delete_if{ |x| x.roles.count > 0} if params[:traveler]
+    respond_to do |format|
+      format.html
+      format.json { render json: @users }
+    end
+  end
+  
 
-        if agency
+  def create
+    agency = Agency.find(params[:agency_user_relationship][:agency])
+
+    if agency
             @agency_user_relationship = AgencyUserRelationship.new  #defaults to Status = 3, i.e. Active
             @agency_user_relationship.user = params[:traveler_id]||get_traveler
             @agency_user_relationship.agency = agency
             @agency_user_relationship.creator = current_user.id
-        end
+          end
 
-        if @agency_user_relationship.save
+          if @agency_user_relationship.save
             unless (get_traveler == current_user)   #don't send email if they picked themself up
-                UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.user.email, agency).deliver
+              UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.user.email, agency).deliver
             end
             flash[:notice] = t(:agency_added)
 
             respond_to do |format|
-                format.js {render "user_relationships/update_buddy_table"}
+              format.js {render "user_relationships/update_buddy_table"}
             end
+          end
         end
-    end
 
   # Impersonate a user to edit their traveler profile.
   def edit
@@ -53,7 +61,7 @@ class Admin::AgencyUserRelationshipsController < ApplicationController
 
   # A traveler revokes a  request
   def traveler_revoke
-  update_agency_relationship(current_user, params[:id], RelationshipStatus.revoked)
+    update_agency_relationship(current_user, params[:id], RelationshipStatus.revoked)
     respond_to do |format|
       format.js {render "user_relationships/update_buddy_table"}
     end
@@ -65,7 +73,7 @@ class Admin::AgencyUserRelationshipsController < ApplicationController
     respond_to do |format|
       format.js {render "user_relationships/update_buddy_table"}
     end
-        
+    
   end
 
   ##TODO Talk with Denis about what he wants this to be
@@ -73,7 +81,7 @@ class Admin::AgencyUserRelationshipsController < ApplicationController
     update_agency_relationship(current_user, params[:id], RelationshipStatus.revoked)
   end
 
-private
+  private
 
   def agency_staff_impersonate(user_id, agency_id)
     @agency_user_relationship = AgencyUserRelationship.find_or_create_by(user_id: user_id, agency_id: agency_id) do |aur|

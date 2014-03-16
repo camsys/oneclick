@@ -1,5 +1,4 @@
 .well
-  - puts @generated_report.inspect
   = simple_form_for @generated_report, url: admin_report_path(Report.all.first.id), html: { method: 'get', id: 'report_form', class: 'form-horizontal' }  do |f|
     .row-fluid
       .span4

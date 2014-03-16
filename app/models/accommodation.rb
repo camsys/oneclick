@@ -1,3 +1,11 @@
+# An accomodation a traveler might require, for example:
+# code: 'folding_wheelchair_accessible'
+# name: 'Folding wheelchair accessible.'
+# note: 'Do you need a vehicle that has space for a folding wheelchair?'
+# datatype: 'bool'
+#
+# Services have accommodations that they offer; users have accomodations that they require.
+#
 class Accommodation < ActiveRecord::Base
   
   # attr_accessible :id, :code, :name, :note, :datatype, :active

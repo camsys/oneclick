@@ -1,6 +1,7 @@
 class Admin::UsersController < Admin::BaseController
+  load_and_authorize_resource
 
- def index
+  def index
     @agency = Agency.find(params[:agency_id]) 
     @users = @agency.users
 
@@ -50,7 +51,6 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def add_to_agency
-    puts "ADD_TO_AGENCY"
     agency = Agency.find(params[:agency_id])
     params[:agency][:user_ids].reject{|u| u.blank?}.each do |user_id|
       u = User.find(user_id)

@@ -33,7 +33,7 @@ include SeedsHelpers
 
  #Service types
  {klass: ServiceType, code: 'paratransit', name: 'Paratransit', note: 'This is a general purpose paratransit service.'},
- {klass: ServiceType, code: 'volunteer', name: 'Volunteer', note: ''},
+ {klass: ServiceType, code: 'volunteer', name: 'Volunteer', note: 'This is a volunteer service'},
  {klass: ServiceType, code: 'nemt', name: 'Non-Emergency Medical Service', note: 'This is a paratransit service only to be used for medical trips.'},
  #trip_purposes 
  {klass: TripPurpose, code: 'work', name: 'Work', note: 'Work-related trip.', active: 1, sort_order: 2},

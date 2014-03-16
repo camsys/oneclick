@@ -190,12 +190,22 @@ def generate_trips
 end
 
 def populate_provider_orgs
+  puts "Will populate provider orgs for #{Provider.count} providers"
   Provider.all.each do |p|
     unless p.provider_org.nil?
+      puts "Skipping #{p.name}, provider_org is not nil"
       next
     end
-    p.create_provider_org! name: p.name
+    po = p.create_provider_org! name: p.name
     p.save!
+
+    puts "Saved #{po.ai}"
+    # provider staff user
+    u = po.users.create! first_name: p.name, last_name: 'Staff',
+      email: p.name.to_sample_email('staff'), password: 'welcome1'
+    up = UserProfile.create! user: u
+    u.add_role :provider_staff, p
+
   end
 end
 

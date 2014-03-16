@@ -581,7 +581,7 @@ EOT
       Translation.find_or_create_by(:key => 'home-bottom-left_html').update_attributes(:value => text)
       Translation.find_or_create_by(:key => 'home-bottom-left-logged-in_html').update_attributes(:value => text)
       text = <<EOT
-<span style="float: right;">1-Click/ARC is sponsored by the
+<span style="float: right;">1-Click/ARC is sponsored basey the
 <a href="http://www.atlantaregional.com/" target=_blank>Atlanta Regional Commission</a>.</span>
 EOT
       Translation.find_or_create_by(:key => 'home-bottom-right_html').update_attributes(:value => text)
@@ -592,7 +592,7 @@ EOT
       Translation.find_or_create_by(:key  => 'plan-a-trip_html').update_attributes(:value => text)
 end
 
-def create_agencies
+def create_agencies_and_agency_users
   ['Atlanta Regional Commission',
    'ARC Mobility Management',
    'ARC Agewise',
@@ -601,13 +601,27 @@ def create_agencies
    'Disability Link',
    'Cobb County Transit',
    'Goodwill Industries'].each do |a|
-    a = Agency.find_by_name(a)
-    unless a.nil?
+    agency = Agency.find_by_name(a)
+    unless agency.nil?
       puts "#{a} already exists"
       next
     end
-    puts "Creating #{a}"
-    Agency.create! name: a
+    puts "Creating #{a.ai}"
+    agency = Agency.create! name: a
+
+    # agency admin
+    u = User.create! first_name: a, last_name: 'Agency Admin',
+      email: a.downcase.gsub(/ /, '_') + '_admin@camsys.com', password: 'welcome1'
+    up = UserProfile.create! user: u
+    agency.users << u
+    u.add_role :agency_administrator, agency
+
+    # agency agent
+    u = User.create! first_name: a, last_name: 'Agent',
+      email: a.downcase.gsub(/ /, '_') + '_agent@camsys.com', password: 'welcome1'
+    up = UserProfile.create! user: u
+    agency.users << u
+    u.add_role :agent, agency
   end
 
 end
@@ -620,5 +634,5 @@ add_fares
 add_esp_ids
 #add_companion
 setup_cms
-create_agencies
+create_agencies_and_agency_users
 puts 'Done Adding ARC Sample Data'

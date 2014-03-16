@@ -4,5 +4,5 @@ class Translation < ActiveRecord::Base
     
     validates :key, presence: true
 
-    validates :locale, :value, presence: true, on: :update
+    validates :locale, :value, presence: true
 end

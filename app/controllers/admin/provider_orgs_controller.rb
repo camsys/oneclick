@@ -1,4 +1,6 @@
-class Admin::ProviderOrgsController < ApplicationController
+class Admin::ProviderOrgsController < Admin::BaseController
+  load_and_authorize_resource
+
   # GET /admin/provider_orgs
   # GET /admin/provider_orgs.json
   def index

@@ -84,8 +84,6 @@ class TripPart < ActiveRecord::Base
   def create_fixed_route_itineraries
     tp = TripPlanner.new
     arrive_by = !is_depart
-    puts from_trip_place.ai
-    puts to_trip_place.ai
     result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s)
     if result
       tp.convert_itineraries(response).each do |itinerary|

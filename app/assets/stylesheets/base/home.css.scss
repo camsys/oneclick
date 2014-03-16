@@ -38,3 +38,8 @@
   }
 
 }
+
+.home_menu_item {
+  @extend .center;
+  @extend .span3;
+}

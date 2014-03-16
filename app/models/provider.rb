@@ -1,4 +1,5 @@
 class Provider < ActiveRecord::Base
+  resourcify
 
   #associations
   has_many :services

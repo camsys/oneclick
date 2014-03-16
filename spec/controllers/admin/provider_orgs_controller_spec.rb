@@ -30,6 +30,10 @@ describe Admin::ProviderOrgsController do
   # Admin::ProviderOrgsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
+  before (:each) do
+      login_as_using_find_by(email: 'email@camsys.com')
+  end
+
   describe "GET index" do
     it "assigns all admin_provider_orgs as @admin_provider_orgs" do
       provider_org = ProviderOrg.create! valid_attributes

@@ -6,21 +6,8 @@
       - else
         = cms_snippet_content('home-top_html')
 .row-fluid
-  .span12
-    %ul.thumbnails
-      - @actions.each do |action|
-        - next if action[:not_on_homepage]
-        %li.center.span3
-          %a.span12.thumbnail.btn.actionbutton{alt: action[:label], title: action[:label], href: action[:target]}
-            .row-fluid
-              .span3
-                %i.center{class: action[:icon], alt: action[:label], style: 'font-size: 3em;'}
-              / .span9.actionlabel{style: 'text-align: left;'}
-              /   = action[:label]
-              .span9.actionlabel.Center-Container.is-Table
-                .Table-Cell
-                  .Center-Block
-                    = action[:label]
+  .span4.offset4
+    = render partial: 'shared/actions_menu', locals: {actions: @actions}
 .row-fluid
   - if user_signed_in?
     .span4

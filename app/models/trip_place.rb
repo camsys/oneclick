@@ -22,10 +22,6 @@ class TripPlace < GeocodedAddress
   default_scope {order('sequence ASC')}
 
   def from_trip_proxy_place json_string, sequence, manual_entry = '', map_center = ''
-    puts ""
-    puts "TripPlace#from_trip_proxy_place"
-    puts json_string
-    puts ""
     self.sequence = sequence
     j = JSON.parse(json_string) rescue {'type_name' => 'MANUAL_ENTRY'}
     case j['type_name']
@@ -43,8 +39,6 @@ class TripPlace < GeocodedAddress
     when 'PLACES_AUTOCOMPLETE_TYPE'
       details = get_places_autocomplete_details(j['id'])
       d = cleanup_google_details(details.body['result'])
-      puts "result types"
-      puts details.body['result']['types'].ai
       self.update_attributes(
         address1: d['address1'],
         city: d['city'],
@@ -63,13 +57,8 @@ class TripPlace < GeocodedAddress
         return self
       end
       first_result = result.body['predictions'].first
-      puts first_result.ai
-      id = first_result['reference']
       # TODO Copied from above, should be refactored
       details = get_places_autocomplete_details(id)
-      puts details.ai
-      puts "result types"
-      puts details.body['result']['types'].ai
       d = cleanup_google_details(details.body['result'])
       self.update_attributes(
         address1: d['address1'],

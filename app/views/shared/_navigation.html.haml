@@ -30,7 +30,7 @@
                   /   = link_to destroy_user_session_path, :method=>'delete' do
                   /     %i.fa.fa-sign-out
                   /     = t(:logout)
-                  - if is_admin?
+                  - if can? :see, :admin_menu
                     %li.divider.text-left
                     %li
                       = link_to admin_path do
@@ -55,7 +55,7 @@
                   /     = t(:create_an_account) 
 
       .pull-right  
-        - if current_user and current_user.has_role?(:admin)
+        - if can? :see, :admin_menu
           %ul.nav
             %li.dropdown
-              %a.btn.btn-navbar= render partial: 'admin/home/admin_menus'
+              %a.btn.btn-navbar= render partial: 'admin/admin_home/admin_dropdown_menus'
