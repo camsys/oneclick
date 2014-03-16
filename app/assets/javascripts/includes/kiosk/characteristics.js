@@ -268,7 +268,13 @@ characteristicsView.indexChangeHandler = function () {
         break;
 
       case characteristicsView.states.PROGRAMS:
-        $('.new_user_characteristics_proxy').submit();
+        if (!window.new_user_characteristics_proxy_submitted) {
+          console.log('submitting');
+          $('.new_user_characteristics_proxy').submit();
+        }
+
+        window.new_user_characteristics_proxy_submitted = true;
+
         break;
     }
   }
@@ -439,6 +445,14 @@ $(document).ready(function () {
           .toArray()
           .join('-')
       );
+    });
+  });
+
+  $('.js-prevent-double-click').on('click', function () {
+    $(this).off('click').on('click', function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+      return false;
     });
   });
 
