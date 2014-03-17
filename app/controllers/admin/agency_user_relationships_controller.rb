@@ -5,9 +5,9 @@ class Admin::AgencyUserRelationshipsController < ApplicationController
   def index
     if params[:agency_id]
       @agency = Agency.find(params[:agency_id])
-      authorize! :manage_users, @agency
+      authorize! :manage_travelers, @agency
     else
-      authorize! :manage_users, Agency
+      authorize! :manage_travelers, Agency
     end
 
     if params[:text]

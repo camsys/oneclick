@@ -31,7 +31,7 @@
     - @users.each do |traveler|
       %tr
         -if can_be_impersonated_by_current_user(traveler)
-          %td= link_to traveler.name, edit_admin_agency_traveler_path(@agency,traveler.id)
+          %td= link_to traveler.name, edit_admin_agency_traveler_path(@agency.id,traveler.id)
         -else
           %td= traveler.name
         %td= traveler.email
