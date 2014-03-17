@@ -17,7 +17,7 @@ class Ability
       can [:access], :admin_services
       can [:access], :admin_reports
       can [:access], :admin_feedback
-      can :manage_travelers, Agency
+      # can :manage_travelers, Agency #Turned off for now.
       return
     end
     if User.with_role(:agency_administrator, :any).include?(user)
