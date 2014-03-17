@@ -103,6 +103,7 @@ en:
   revoke: 'Revoke'
   retract: 'Retract'
   visitor: 'Visitor'
+  include_visitors: "Include Visitors"
   questions: "Questions"
   invalid_dob: 'Invalid date of birth'
   plan_with_you_in_mind: "We'd like to plan a trip with your needs in mind."
