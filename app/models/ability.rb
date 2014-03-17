@@ -36,6 +36,8 @@ class Ability
 
       can :manage, AgencyUserRelationship, agency_id: user.agency
       can :manage, Agency, id: user.agency
+
+      can :perform, :assist_user
     end
     if user.has_role? :agency_administrator
       can [:see], :admin_menu
@@ -49,6 +51,7 @@ class Ability
       can [:access], :admin_reports
       can [:access], :admin_feedback
       can [:index, :show], :reports
+      can :perform, :assist_user
     end
 
     if User.with_role(:provider_staff, :any).include?(user)

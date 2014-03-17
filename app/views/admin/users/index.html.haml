@@ -30,7 +30,7 @@
     - @users.each do |user|
       %tr
         -if can_be_impersonated_by_current_user(user)
-          %td= link_to user.name, edit_admin_agency_user_path(current_user.agency.id,user.id)
+          %td= link_to user.name, edit_admin_agency_user_path(current_user.agency, user)
         -else
           %td= user.name
         %td= user.email
@@ -38,8 +38,11 @@
         %td= user.roles.first.name.titleize unless user.roles.first.nil?
         %td.center
           -unless user.is_visitor?
-            = link_to t(:aid_user), aid_user_admin_agency_user_path(current_user.agency.id, user.id), :class => "btn btn-success"
-            %a.btn{"data-toggle" => "modal", :href => "#role-options-#{user.id}", :type => "button", :class => "btn btn-danger"}= t(:change_role)
+            - if can? :perform, :assist_user
+              = link_to t(:aid_user), admin_agency_traveler_aid_user_path(current_user.agency || '', user), :class => "btn btn-success"
+              %a.btn{"data-toggle" => "modal", :href => "#role-options-#{user.id}", :type => "button", :class => "btn btn-danger"}= t(:change_role)
+            - else
+              n/a
         = render partial: user, locals: {agency: @agency} if @agency
 
 = link_to t(:add_user), '#select_user', {class: 'btn', "data-toggle" => "modal"}
