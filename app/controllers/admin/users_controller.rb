@@ -2,8 +2,12 @@ class Admin::UsersController < Admin::BaseController
   load_and_authorize_resource
 
   def index
-    @agency = Agency.find(params[:agency_id]) 
-    @users = @agency.users
+    if params[:agency_id]
+      @agency = Agency.find(params[:agency_id]) 
+      @users = @agency.users
+    else
+      @users = User.all.sort
+    end
 
     respond_to do |format|
       format.html # index.html.erb

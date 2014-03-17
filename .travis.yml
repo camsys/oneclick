@@ -7,6 +7,7 @@ env:
 branches:
   only:
     - develop
+    - 0.19
 before_script:
   - mv config/database.yml.travis config/database.yml
   - git config user.email "denis+camsys@constantorbit.com"
