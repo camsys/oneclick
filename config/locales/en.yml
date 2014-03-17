@@ -25,6 +25,7 @@ en:
   # Agent View strings
   find_traveler: "Find Traveler"
   create_traveler: "Create Traveler"
+  feedback: "Feedback"
   agencies: "Agencies"
   add_new_agency: "Add a new Agency"
   add_agency: "Add Agency"
