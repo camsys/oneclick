@@ -219,7 +219,7 @@ en:
   time_wrong_format: "Time must be in hh:mm am/pm format."
   trips_cannot_be_entered_for_days: "Trips cannot be entered for days earlier than today."
   trips_cannot_be_entered_for_times: "Trips cannot be entered for past times."
-  return_trip_time_before_start: "Trips cannot return before they are started."
+  return_trip_time_before_start: "A return trip must begin after the departing trip."
   link_to_georgia_commute_options: {
     one:   'Visit %{url} to view 1 possible rideshare.',
     other: 'Visit %{url} to view %{count} possible rideshares.',
