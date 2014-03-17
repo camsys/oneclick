@@ -17,6 +17,7 @@ class Ability
       can [:access], :admin_services
       can [:access], :admin_reports
       can [:access], :admin_feedback
+      can :manage_travelers, Agency
       return
     end
     if User.with_role(:agency_administrator, :any).include?(user)
@@ -36,10 +37,12 @@ class Ability
 
       can :manage, AgencyUserRelationship, agency_id: user.agency
       can :manage, Agency, id: user.agency
+      can :manage_travelers, Agency
     end
     if user.has_role? :agency_administrator
       can [:see], :admin_menu
       can [:index, :show], :reports
+      can :manage_travelers, Agency
     end
     if User.with_role(:agent, :any).include?(user)
       can [:see], :admin_menu
@@ -49,6 +52,7 @@ class Ability
       can [:access], :admin_reports
       can [:access], :admin_feedback
       can [:index, :show], :reports
+      can :manage_travelers, :agency
     end
 
     if User.with_role(:provider_staff, :any).include?(user)
