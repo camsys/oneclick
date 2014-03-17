@@ -1,5 +1,4 @@
 jQuery(function ($) {
-  return false;
   var secondsToAlert = $('meta[name="session_timeout"]')       .attr('content')
     , secondsToReset = $('meta[name="session_alert_timeout"]') .attr('content')
     , alertTimeout
