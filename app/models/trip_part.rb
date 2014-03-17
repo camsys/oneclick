@@ -68,9 +68,14 @@ class TripPart < ActiveRecord::Base
     trip_time > now
   end
 
+  def remove_existing_itineraries
+    itineraries.destroy_all
+  end
+
   # Generates itineraries for this trip part. Any existing itineraries should have been removed
   # before this method is called.
   def create_itineraries
+    remove_existing_itineraries
     create_fixed_route_itineraries
     create_taxi_itineraries
     create_paratransit_itineraries
