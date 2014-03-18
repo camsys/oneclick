@@ -310,6 +310,7 @@ characteristicsView.populateYears = function () {
   var yearRange = CGUtils.range(beginYear, nowYear + 1);
   var yearGroups = [];
   var numYearsInGroup = 10;
+  this.dob.yearGroups = yearGroups;
 
   //reset yearsPage
   characteristicsView.dob.yearpage = 0;
@@ -355,11 +356,18 @@ characteristicsView.populateYears = function () {
    *.............................................................................*/
 
   characteristicsView.dob.displayYearPage = function () {
-    var yearPageWidth = this.yearlist.width();
-    var leftOffset;
+    var yearPageWidth = this.yearlist.width()
+      , leftOffset
+      , count = this.yearGroups.length;
 
+    // show the page
     leftOffset = this.yearpage * yearPageWidth * -1;
     yearContainer.css('left', leftOffset);
+
+    // disable the buttons
+    $('#yeartable .prev-btn, #yeartable .next-btn').removeClass('disabled');
+    if (this.yearpage == 0)         $('#yeartable .prev-btn').addClass('disabled');
+    if (this.yearpage == count - 1) $('#yeartable .next-btn').addClass('disabled');
   };
 
   characteristicsView.dob.yearpage = 3;
