@@ -31,7 +31,7 @@ deploy:
   app: oneclick-arc-int
   on:
     repo: camsys/oneclick
-    branch: develop
+    branch: 0.19
 after_deploy:
   - gem install heroku
   - git branch -lavv
