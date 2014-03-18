@@ -26,7 +26,7 @@
     = f.input :email, label: t(:email), :required => true
     = f.input :password, label: t(:password), :required => true
     = f.input :password_confirmation, :label => t(:retype_your_password), :required => true
-    = f.input :approved_agencies, as: :hidden, :input_html => { :value => session[:agency] } if session[:agency]
+    = f.input :approved_agencies, as: :hidden, :input_html => { :value => params[:agency_id]}
     .actions
       = button_tag type: :submit, class: 'btn btn-primary controls' do
         %i.fa.fa-edit

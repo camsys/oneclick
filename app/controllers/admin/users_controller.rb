@@ -1,5 +1,5 @@
 class Admin::UsersController < Admin::BaseController
-  load_and_authorize_resource
+  skip_authorization_check :only => [:create, :new]
 
   def index
     if params[:agency_id]
@@ -17,40 +17,31 @@ class Admin::UsersController < Admin::BaseController
 
   def new
     @user = User.new
-    session[:agency] = params[:agency_id]
   end
 
   def create
-    usr = params[:user]
-
     @user = User.new
-    @user.first_name = usr[:first_name]
-    @user.last_name = usr[:last_name]
-    @user.email = usr[:email]
-    @user.password = usr[:password]
-    @user.password_confirmation = usr[:password_confirmation]
-    @user.save!
-
-
-    agency = Agency.find(usr[:approved_agencies])
-
-    if agency
+    @agency = Agency.find(params[:user][:approved_agencies])
+    if @user.update_attributes(user_params)
+      if @agency
         @agency_user_relationship = AgencyUserRelationship.new  #defaults to Status = 3, i.e. Active
-        @agency_user_relationship.user = @user || get_traveler
-        @agency_user_relationship.agency = agency
+        @agency_user_relationship.user = @user ||   get_traveler
+        @agency_user_relationship.agency = @agency
         @agency_user_relationship.creator = current_user.id
-        @agency_user_relationship.save!
-    end
+        @agency_user_relationship.save
+      end
     
-    if @agency_user_relationship.valid? and @user.valid?
-        UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.user.email, agency).deliver
+      if @agency_user_relationship.valid?
+        UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.user.email, @agency).deliver
         flash[:notice] = t(:agency_added)
     
-        session.delete(:agency)
         agency_staff_impersonate(@agency_user_relationship.user.id, @agency_user_relationship.agency.id)
         redirect_to new_user_trip_path(@user)
-    else
-      redirect_to new_admin_user_path
+      else
+        redirect_to(:back)
+      end
+    else # user.update_attributes
+      redirect_to :back
     end
   end
 
@@ -86,4 +77,12 @@ private
     end
     set_traveler_id user_id
   end
+
+  def user_params
+    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
+  end
+
+  # def aur_params
+  #   params.require(:agency_user_relationship).permit(:approved_agencies)
+  # end
 end
