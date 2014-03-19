@@ -10,11 +10,14 @@ env:
 #     - 0.19
 before_script:
   - pwd
-  - ls
-  - git describe
+  - ls -a
   - mv config/database.yml.travis config/database.yml
   - git config user.email "denis+camsys@constantorbit.com"
   - git config user.name "Denis Haskin"
+after_script:
+  - pwd
+  - ls -a
+  - git describe
 rvm:
   - 1.9.3
 language: ruby
