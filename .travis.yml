@@ -9,6 +9,9 @@ env:
 #     - develop
 #     - 0.19
 before_script:
+  - pwd
+  - ls
+  - git describe
   - mv config/database.yml.travis config/database.yml
   - git config user.email "denis+camsys@constantorbit.com"
   - git config user.name "Denis Haskin"
@@ -35,5 +38,7 @@ deploy:
 after_deploy:
   - gem install heroku
   - git branch -lavv
+  - pwd
+  - ls
   - git describe
   - heroku config:set ONECLICK_APP_VERSION=`git describe` --app oneclick-arc-int
