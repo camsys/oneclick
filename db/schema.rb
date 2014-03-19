@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140317013219) do
+ActiveRecord::Schema.define(version: 20140318201448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -203,8 +203,8 @@ ActiveRecord::Schema.define(version: 20140317013219) do
     t.datetime "updated_at",    null: false
   end
 
-  add_index "rates", ["rateable_id", "rateable_type"], :name => "index_rates_on_rateable_id_and_rateable_type"
-  add_index "rates", ["rater_id"], :name => "index_rates_on_rater_id"
+  add_index "rates", ["rateable_id", "rateable_type"], name: "index_rates_on_rateable_id_and_rateable_type", using: :btree
+  add_index "rates", ["rater_id"], name: "index_rates_on_rater_id", using: :btree
 
   create_table "relationship_statuses", force: true do |t|
     t.string "name", limit: 64
@@ -229,8 +229,8 @@ ActiveRecord::Schema.define(version: 20140317013219) do
     t.datetime "updated_at",               null: false
   end
 
-  add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
-  add_index "roles", ["name"], :name => "index_roles_on_name"
+  add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
+  add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "schedules", force: true do |t|
     t.integer  "service_id",                   null: false
@@ -325,7 +325,7 @@ ActiveRecord::Schema.define(version: 20140317013219) do
     t.time     "scheduled_time"
   end
 
-  add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"
+  add_index "trip_parts", ["trip_id", "sequence"], name: "index_trip_parts_on_trip_id_and_sequence", using: :btree
 
   create_table "trip_places", force: true do |t|
     t.integer  "trip_id"
@@ -374,7 +374,7 @@ ActiveRecord::Schema.define(version: 20140317013219) do
     t.time     "scheduled_time"
   end
 
-  add_index "trips", ["scheduled_date", "scheduled_time"], :name => "index_trips_on_scheduled_date_and_scheduled_time"
+  add_index "trips", ["scheduled_date", "scheduled_time"], name: "index_trips_on_scheduled_date_and_scheduled_time", using: :btree
 
   create_table "user_accommodations", force: true do |t|
     t.integer  "user_profile_id",                             null: false
@@ -429,7 +429,7 @@ ActiveRecord::Schema.define(version: 20140317013219) do
     t.string   "last_name",              limit: 64,              null: false
     t.string   "suffix",                 limit: 4
     t.string   "email",                  limit: 128,             null: false
-    t.string   "encrypted_password",     limit: 64,              null: false
+    t.string   "encrypted_password",     limit: 64
     t.string   "reset_password_token",   limit: 64
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -442,10 +442,12 @@ ActiveRecord::Schema.define(version: 20140317013219) do
     t.datetime "updated_at",                                     null: false
     t.integer  "agency_id"
     t.integer  "provider_org_id"
+    t.string   "authentication_token"
   end
 
-  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "value_relationships", force: true do |t|
     t.string   "relationship", limit: 64

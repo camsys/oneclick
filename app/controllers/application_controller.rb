@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
   include CsHelpers
   include LocaleHelpers
 
+  acts_as_token_authentication_handler_for User
+
   # include the helper method in any controller which needs to know about guest users
   helper_method :current_or_guest_user
 
