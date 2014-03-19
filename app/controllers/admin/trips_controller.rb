@@ -1,11 +1,12 @@
 class Admin::TripsController < Admin::BaseController
 
-  # load the cancan authorizations
   load_and_authorize_resource  
   
   TIME_FILTER_TYPE_SESSION_KEY = 'reports_time_filter_type'
   
   def index
+
+    puts @trips.ai
 
     # Filtering logic. See ApplicationHelper.trip_filters
     if params[:time_filter_type]
@@ -21,6 +22,8 @@ class Admin::TripsController < Admin::BaseController
 
     if params[:provider_id]
       @trips = Trip.by_provider(params[:provider_id])
+    elsif params[:agency_id]
+      @trips = Trip.by_agency(params[:agency_id])
     else
       @trips = Trip.all
     end

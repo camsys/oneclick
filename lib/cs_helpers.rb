@@ -51,7 +51,13 @@ module CsHelpers
   end
 
   def create_trips_path
-    User.with_role(:provider_staff, :any).include?(current_user) ? admin_provider_trips_path(current_user.provider) : admin_trips_path
+    if User.with_role(:provider_staff, :any).include?(current_user)
+      admin_provider_trips_path(current_user.provider)
+    elsif has_agency_specific_role?
+      admin_agency_trips_path(current_user.agency)
+    else
+      admin_trips_path
+    end
   end
 
   def show_action action
