@@ -24,4 +24,12 @@ class Agency < Organization
     Agency.all - [self]
   end
 
+  def name_and_id
+    [name, id]
+  end
+
+  def self.names_and_ids
+    Agency.all.map(&:name_and_id)
+  end
+
 end

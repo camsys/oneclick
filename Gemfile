@@ -40,6 +40,7 @@ gem 'rails_12factor', group: [:integration, :production, :qa, :staging]
 gem 'font-awesome-rails'
 gem 'twitter-typeahead-rails', git: 'https://github.com/Qureana/twitter-typeahead-rails'
 gem 'handlebars_assets'
+gem 'simple_token_authentication'
 
 group :development do
   gem 'activerecord-postgis-adapter'

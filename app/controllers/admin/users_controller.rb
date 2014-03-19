@@ -1,5 +1,7 @@
 class Admin::UsersController < Admin::BaseController
   skip_authorization_check :only => [:create, :new]
+  before_action :load_user, only: :create
+  load_and_authorize_resource
 
   def index
     if params[:agency_id]
@@ -20,24 +22,38 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def create
+    usr = params[:user]
     @user = User.new
-    @agency = Agency.find(params[:user][:approved_agencies])
-    if @user.update_attributes(user_params)
-      if @agency
-        @agency_user_relationship = AgencyUserRelationship.new  #defaults to Status = 3, i.e. Active
-        @agency_user_relationship.user = @user ||   get_traveler
-        @agency_user_relationship.agency = @agency
-        @agency_user_relationship.creator = current_user.id
-        @agency_user_relationship.save
+    @user.first_name = usr[:first_name]
+    @user.last_name = usr[:last_name]
+    @user.email = usr[:email]
+    @user.password = @user.password_confirmation = SecureRandom.urlsafe_base64(16)
+    @user.save!
+
+    if usr[:agency]
+      agency = Agency.find(usr[:agency])
+      unless agency
+        flash[:alert] = 'Agency not found'
+        redirect_to :back
       end
-    
-      if @agency_user_relationship.valid?
-        UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.user.email, @agency).deliver
+      @agency_user_relationship = AgencyUserRelationship.new  #defaults to Status = 3, i.e. Active
+      @agency_user_relationship.user = @user || get_traveler
+      @agency_user_relationship.agency = agency
+      @agency_user_relationship.creator = current_user.id
+      @agency_user_relationship.save!
+    end
+
+    if @agency_user_relationship.valid? and @user.valid?
+        UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.user.email, agency).deliver
         flash[:notice] = t(:agency_added)
     
+        session.delete(:agency)
+      unless current_user.has_role? :system_administrator
+        session.delete(:agency)
         agency_staff_impersonate(@agency_user_relationship.user.id, @agency_user_relationship.agency.id)
         redirect_to new_user_trip_path(@user)
       else
+        flash[:notice] = t(:user_created_and_added_to_agency, user: @user.email, agency: agency.try(:name))
         redirect_to(:back)
       end
     else # user.update_attributes
@@ -78,11 +94,17 @@ private
     set_traveler_id user_id
   end
 
-  def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
+  # TODO THese from Aaron's changes
+  # def user_params
+  #   params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
+  # end
+
+  # # def aur_params
+  # #   params.require(:agency_user_relationship).permit(:approved_agencies)
+  # # end
+
+  def load_user
+    @user = params.require(:user).permit(:first_name, :last_name, :email, :agency)
   end
 
-  # def aur_params
-  #   params.require(:agency_user_relationship).permit(:approved_agencies)
-  # end
 end

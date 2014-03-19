@@ -13,7 +13,10 @@ class User < ActiveRecord::Base
 
   # enable roles for this model
   rolify
-  
+
+  # See https://github.com/gonzalo-bulnes/simple_token_authentication
+  acts_as_token_authenticatable
+
   # devise configuration
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 

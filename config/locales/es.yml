@@ -26,6 +26,7 @@ es:
   agencies: "[es21]Agencies[es]"
   add_new_agency: "[es26]Add a new Agency[/es]"
   agency_added: "[es27]Agency added[/es]"
+  user_created_and_added_to_agency: "[es29]User %{user} created and added to agency %{agency}[/es]"
   add_agency: "[es26]Add Agency[/es]"
   my_agencies: "[es27]My Agencies[/es]"
   not_any_agencies: "[es28]You haven't approved any agencies to help you[/es]"

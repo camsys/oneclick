@@ -39,6 +39,7 @@ class Ability
       can :manage, Agency, id: user.agency
       can :manage_travelers, Agency
       can :perform, :assist_user
+      can :create, User
     end
     if user.has_role? :agency_administrator
       can [:see], :admin_menu

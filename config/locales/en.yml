@@ -30,6 +30,7 @@ en:
   add_new_agency: "Add a new Agency"
   add_agency: "Add Agency"
   agency_added: "Agency added"
+  user_created_and_added_to_agency: "User %{user} created and added to agency %{agency}"
   my_agencies: "My Agencies"
   not_any_agencies: "You haven't approved any agencies to help you"
   agency_now_assisting: "%{agency} now assisting"
