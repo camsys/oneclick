@@ -22,6 +22,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def create
+<<<<<<< HEAD
     usr = params[:user]
 
     @user = User.new
@@ -40,7 +41,6 @@ class Admin::UsersController < Admin::BaseController
 
     unless @user.valid?
       render action: 'new'
-      return
       return
     end
 

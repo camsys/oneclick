@@ -37,7 +37,7 @@ class Ability
 
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
       can :manage, Agency, id: user.agency.try(:id)
-      # can :manage_travelers, Agency
+      can :manage_travelers, Agency
       can :perform, :assist_user
       can :create, User
       can [:index, :show], :reports
