@@ -28,7 +28,7 @@ class Admin::UsersController < Admin::BaseController
     @user.last_name = usr[:last_name]
     @user.email = usr[:email]
     @user.password = @user.password_confirmation = SecureRandom.urlsafe_base64(16)
-    @user.save!
+    @user.save
 
     if usr[:agency]
       agency = Agency.find(usr[:agency])
@@ -40,7 +40,7 @@ class Admin::UsersController < Admin::BaseController
       @agency_user_relationship.user = @user || get_traveler
       @agency_user_relationship.agency = agency
       @agency_user_relationship.creator = current_user.id
-      @agency_user_relationship.save!
+      @agency_user_relationship.save
     end
 
     if @agency_user_relationship.valid? and @user.valid?
