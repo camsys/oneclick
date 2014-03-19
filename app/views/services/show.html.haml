@@ -21,6 +21,9 @@
       %h4
         -if @service.url
           =link_to @service.url, @service.url
+      %h5
+        -if @service.external_id
+          =t(:service_id).to_s + ": " + @service.external_id.to_s
 
     .span3
       .well

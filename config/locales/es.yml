@@ -280,6 +280,8 @@ es:
   updated: "[es242]Updated[/es]"
 
   # new ones
+  inactive: "[es]Inactive[/es]"
+  service_id: "[es]Service Id[/es]"
   back_to_services: "[es]Back to services[/es]"
   service: "[es]Service[/es]"
   services: "[es]Services[/es]"
