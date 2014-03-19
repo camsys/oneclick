@@ -27,7 +27,7 @@ class Ability
 
       can [:access], :admin_find_traveler
       can [:access], :admin_create_traveler
-      # can [:access], :admin_trips
+      can [:access], :admin_trips
       can [:access], :admin_agencies
       can [:access], :admin_users
       can [:access], :admin_providers
@@ -35,16 +35,12 @@ class Ability
       can [:access], :admin_reports
       can [:access], :admin_feedback
 
-      can :manage, AgencyUserRelationship, agency_id: user.agency
-      can :manage, Agency, id: user.agency
-      can :manage_travelers, Agency
+      can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
+      can :manage, Agency, id: user.agency.try(:id)
+      # can :manage_travelers, Agency
       can :perform, :assist_user
       can :create, User
-    end
-    if user.has_role? :agency_administrator
-      can [:see], :admin_menu
       can [:index, :show], :reports
-      can :manage_travelers, Agency
     end
     if User.with_role(:agent, :any).include?(user)
       can [:see], :admin_menu

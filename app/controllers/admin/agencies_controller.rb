@@ -1,10 +1,11 @@
 class Admin::AgenciesController < Admin::OrganizationsController
+  before_filter :load_agency, only: [:create]
   load_and_authorize_resource
 
   # GET /agencies
   # GET /agencies.json
   def index
-    @agencies = Agency.all
+    puts @agencies.ai
 
     respond_to do |format|
       format.html # index.html.erb
@@ -15,7 +16,7 @@ class Admin::AgenciesController < Admin::OrganizationsController
   # GET /agencies/1
   # GET /agencies/1.json
   def show
-    @agency = Agency.find(params[:id])
+    puts @agency.id
 
     respond_to do |format|
       format.html # show.html.erb
@@ -26,7 +27,8 @@ class Admin::AgenciesController < Admin::OrganizationsController
   # GET /agencies/new
   # GET /agencies/new.json
   def new
-    @agency = Agency.new
+    puts @agency.id
+    # @agency = Agency.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -36,14 +38,16 @@ class Admin::AgenciesController < Admin::OrganizationsController
 
   # GET /agencies/1/edit
   def edit
-    @agency = Agency.find(params[:id])
+    puts @agency.id
+    # @agency = Agency.find(params[:id])
   end
 
   # POST /agencies
   # POST /agencies.json
   def create
+    puts @agency.id
     params[:agency][:parent] = Agency.find(params[:agency].delete :parent_id) rescue nil
-    @agency = Agency.new(params[:agency])
+    # @agency = Agency.new(params[:agency])
 
     respond_to do |format|
       if @agency.save
@@ -59,11 +63,12 @@ class Admin::AgenciesController < Admin::OrganizationsController
   # PUT /agencies/1
   # PUT /agencies/1.json
   def update
+    puts @agency.id
     params[:agency][:parent] = Agency.find(params[:agency].delete :parent_id) rescue nil
-    @agency = Agency.find(params[:id])
+    # @agency = Agency.find(params[:id])
 
     respond_to do |format|
-      if @agency.update_attributes(params[:agency])
+      if @agency.update_attributes(agency_params(params[:agency]))
         format.html { redirect_to [:admin, @agency], notice: 'Agency was successfully updated.' }
         format.json { head :no_content }
       else
@@ -76,7 +81,8 @@ class Admin::AgenciesController < Admin::OrganizationsController
   # DELETE /agencies/1
   # DELETE /agencies/1.json
   def destroy
-    @agency = Agency.find(params[:id])
+    puts @agency.id
+    # @agency = Agency.find(params[:id])
     @agency.destroy
 
     respond_to do |format|
@@ -84,4 +90,14 @@ class Admin::AgenciesController < Admin::OrganizationsController
       format.json { head :no_content }
     end
   end
+end
+
+private
+
+def agency_params params
+  params.permit(:name, :parent_id)
+end
+
+def load_agency
+  @agency = Agency.new(agency_params(params))
 end

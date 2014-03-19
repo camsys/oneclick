@@ -267,6 +267,7 @@ Oneclick::Application.routes.draw do
           post 'add_to_agency', on: :collection
           put 'add_to_agency', on: :collection
         end
+        resources :trips
       end
       resources :provider_orgs do
         resources :users
