@@ -179,7 +179,7 @@ module CsHelpers
     if itinerary.is_walk
       mode_code = 'walk'
     elsif itinerary.mode.code == 'mode_paratransit'
-      mode_code = itinerary.service.service_type.name.downcase
+      mode_code = itinerary.service.service_type.code.downcase
     elsif itinerary.mode.code == 'mode_transit'
       mode_code = itinerary.transit_type
     else
