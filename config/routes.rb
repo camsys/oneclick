@@ -291,4 +291,6 @@ Oneclick::Application.routes.draw do
     # Make sure this routeset is defined last
     ComfortableMexicanSofa::Routing.content(:path => '/', :sitemap => false)
   end
+
+  get 'heartbeat' => Proc.new { [200, {'Content-Type' => 'text/plain'}, ['ok']] }
 end
