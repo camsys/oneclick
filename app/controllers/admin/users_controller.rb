@@ -23,14 +23,28 @@ class Admin::UsersController < Admin::BaseController
 
   def create
     usr = params[:user]
+
     @user = User.new
     @user.first_name = usr[:first_name]
     @user.last_name = usr[:last_name]
     @user.email = usr[:email]
     @user.password = @user.password_confirmation = SecureRandom.urlsafe_base64(16)
+
+    if usr[:agency].blank?
+      @user.errors.add(:agency, 'is required')
+      render action: 'new'
+      return
+    end
+
     @user.save
 
-    if usr[:agency]
+    unless @user.valid?
+      render action: 'new'
+      return
+      return
+    end
+
+    unless usr[:agency].blank?
       agency = Agency.find(usr[:agency])
       unless agency
         flash[:alert] = 'Agency not found'
@@ -104,7 +118,8 @@ private
   # # end
 
   def load_user
-    @user = params.require(:user).permit(:first_name, :last_name, :email, :agency)
+    params[:agency_id] = params[:agency]
+    @user = User.new(params.require(:user).permit(:first_name, :last_name, :email, :agency_id))
   end
 
 end
