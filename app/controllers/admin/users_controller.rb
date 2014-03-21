@@ -22,7 +22,6 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def create
-<<<<<<< HEAD
     usr = params[:user]
 
     @user = User.new
