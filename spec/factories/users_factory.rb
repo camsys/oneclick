@@ -36,4 +36,10 @@ FactoryGirl.define do
       end
     end
   end
+  # factory :agency_admin do
+  #   first_name 'ARC'
+  #   last_name 'Admin'
+  #   email 'ARC_Admin@example.com'
+  #   agency FactoryGirl.create :arc_mobility_mgmt_agency
+  # end
 end

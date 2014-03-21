@@ -22,9 +22,11 @@ es:
   # Agent View strings
   find_traveler: "Encontrar al Viajero"
   create_traveler: "Crear un Viajero"
+  feedback: "[es]Feedback[/es]"
   agencies: "[es21]Agencies[es]"
   add_new_agency: "[es26]Add a new Agency[/es]"
   agency_added: "[es27]Agency added[/es]"
+  user_created_and_added_to_agency: "[es29]User %{user} created and added to agency %{agency}[/es]"
   add_agency: "[es26]Add Agency[/es]"
   my_agencies: "[es27]My Agencies[/es]"
   not_any_agencies: "[es28]You haven't approved any agencies to help you[/es]"
@@ -101,6 +103,7 @@ es:
   retract: 'Retraer'  
   revoke: 'Revocar'
   visitor: 'Visitante *12*'
+  include_visitors: "[es]Include Visitors[/es]"
   questions: "[es77]Questions[/es]"
   invalid_dob: 'Valido Fecha de nacimiento *33*'
   plan_with_you_in_mind: "[es77]We'd like to plan a trip with your needs in mind.[/es]"
@@ -277,6 +280,8 @@ es:
   updated: "[es242]Updated[/es]"
 
   # new ones
+  inactive: "[es]Inactive[/es]"
+  service_id: "[es]Service Id[/es]"
   back_to_services: "[es]Back to services[/es]"
   service: "[es]Service[/es]"
   services: "[es]Services[/es]"

@@ -25,10 +25,12 @@ en:
   # Agent View strings
   find_traveler: "Find Traveler"
   create_traveler: "Create Traveler"
+  feedback: "Feedback"
   agencies: "Agencies"
   add_new_agency: "Add a new Agency"
   add_agency: "Add Agency"
   agency_added: "Agency added"
+  user_created_and_added_to_agency: "User %{user} created and added to agency %{agency}"
   my_agencies: "My Agencies"
   not_any_agencies: "You haven't approved any agencies to help you"
   agency_now_assisting: "%{agency} now assisting"
@@ -102,6 +104,7 @@ en:
   revoke: 'Revoke'
   retract: 'Retract'
   visitor: 'Visitor'
+  include_visitors: "Include Visitors"
   questions: "Questions"
   invalid_dob: 'Invalid date of birth'
   plan_with_you_in_mind: "We'd like to plan a trip with your needs in mind."
@@ -277,6 +280,8 @@ en:
   updated: "Updated"
 
   # new ones
+  inactive: "Inactive"
+  service_id: "Service Id"
   back_to_services: "Back to services"
   service: "Service"
   services: "Services"

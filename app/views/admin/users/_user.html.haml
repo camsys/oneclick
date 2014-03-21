@@ -1,5 +1,5 @@
 .modal{:id => "role-options-#{user.id}", :style => "display: none;"}
-  = simple_form_for user, :url => update_roles_admin_user_path(user), :html => {:method => :put, :class => 'form-horizontal' } do |f|
+  = simple_form_for [@agency,user], :url => update_roles_admin_user_path(user), :html => {:method => :put, :class => 'form-horizontal' } do |f|
     = f.hidden_field :agency_id, id: agency.id
     .modal-header
       %a.close{"data-dismiss" => "modal"} ×

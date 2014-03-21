@@ -17,6 +17,7 @@ class Ability
       can [:access], :admin_services
       can [:access], :admin_reports
       can [:access], :admin_feedback
+      # can :manage_travelers, Agency #Turned off for now.
       return
     end
     if User.with_role(:agency_administrator, :any).include?(user)
@@ -26,7 +27,7 @@ class Ability
 
       can [:access], :admin_find_traveler
       can [:access], :admin_create_traveler
-      # can [:access], :admin_trips
+      can [:access], :admin_trips
       can [:access], :admin_agencies
       can [:access], :admin_users
       can [:access], :admin_providers
@@ -34,11 +35,11 @@ class Ability
       can [:access], :admin_reports
       can [:access], :admin_feedback
 
-      can :manage, AgencyUserRelationship, agency_id: user.agency
-      can :manage, Agency, id: user.agency
-    end
-    if user.has_role? :agency_administrator
-      can [:see], :admin_menu
+      can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
+      can :manage, Agency, id: user.agency.try(:id)
+      # can :manage_travelers, Agency
+      can :perform, :assist_user
+      can :create, User
       can [:index, :show], :reports
     end
     if User.with_role(:agent, :any).include?(user)
@@ -49,6 +50,7 @@ class Ability
       can [:access], :admin_reports
       can [:access], :admin_feedback
       can [:index, :show], :reports
+      can :manage_travelers, :agency
     end
 
     if User.with_role(:provider_staff, :any).include?(user)

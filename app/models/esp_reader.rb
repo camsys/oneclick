@@ -6,129 +6,69 @@ class EspReader
   PROVIDER_DICT = Hash.new #Creates a temporary mapping between ProviderId and Xid
   @esp_providers
 
-  #Providers indices
-  @p_name_idx
-  @p_contact_idx
-  @p_contact_title_idx
-  @p_address_idx
-  @p_city_idx
-  @p_state_idx
-  @p_zip_idx
-  @p_area_code_idx
-  @p_phone_idx
-  @p_url_idx
-  @p_email_idx
-
-  #Services indices
-  @s_id_idx
-  @s_ref_id_idx
-  @s_name_idx
-  @s_contact_idx
-  @s_contact_title_idx
-  @s_email_idx
-  @s_area_code_idx
-  @s_phone_idx
-  @s_url_idx
-  @s_provider_id_idx
-  @s_cost_comments_idx
-  @s_time_idx
-
-  #Services Config
-  @c_id_idx
-  @c_cfg_idx
-  @c_item_idx
-
-  #Service Cost
-  @cost_id_idx
-  @cost_type_idx
-  @cost_amount_idx
-  @cost_unit_idx
-
-  #Service Grid
-  @g_id_idx
-  @g_grp_idx
-  @g_item_idx
-
+  ########################
+  # Find indices of relevant columns
+  ########################
   def assign_provider_indices
-    @p_name_idx = @esp_providers.first.index("Name")
-    @p_contact_idx = @esp_providers.first.index("Contact")
-    @p_contact_title_idx = @esp_providers.first.index("ContactTitle")
-    @p_address_idx = @esp_providers.first.index("LocAddress")
-    @p_city_idx = @esp_providers.first.index("LocCity")
-    @p_state_idx = @esp_providers.first.index("LocState")
-    @p_zip_idx = @esp_providers.first.index("LocZipCode")
-    @p_area_code_idx = @esp_providers.first.index("AreaCode1")
-    @p_phone_idx = @esp_providers.first.index("Phone1")
-    @p_url_idx = @esp_providers.first.index("URL")
-    @p_email_idx = @esp_providers.first.index("Email")
-    @p_provider_id_idx = @esp_providers.first.index("ProviderID")
-
+    @provider_idx = {}
+    ['Name', 'Contact', 'ContactTitle', 'LocAddress', 'LocCity', 'LocState', 'LocZipCode', 'AreaCode1', 'Phone1', 'URL', 'Email', 'ProviderID'].each do |column_name|
+      @provider_idx[column_name] = @esp_providers.first.index(column_name)
+      if @provider_idx[column_name].nil?
+        return false, 'Missing column ' + column_name + ' from tProvider table.'
+      end
+    end
+    return true, "Success"
   end
 
   def assign_service_indices(services)
-    @s_id_idx = services.first.index("ServiceID")
-    @s_ref_id_idx = services.first.index("ServiceRefID")
-    @s_name_idx = services.first.index("OrgName")
-    @s_contact_idx = services.first.index("Contact")
-    @s_contact_title_idx = services.first.index("ContactTitle")
-    @s_email_idx = services.first.index("Email")
-    @s_area_code_idx = services.first.index("AreaCode1")
-    @s_phone_idx = services.first.index("Phone1")
-    @s_url_idx = services.first.index("URL")
-    @s_provider_id_idx = services.first.index("ProviderID")
-    @s_cost_comments_idx = services.first.index("CostComments")
-    @s_time_idx = services.first.index("TimeSun1")
-
+    @service_idx = {}
+    ['ServiceID', 'ServiceRefID', 'OrgName', 'Contact', 'ContactTitle', 'Email', 'AreaCode1', 'Phone1', 'URL', 'ProviderID', 'CostComments', 'TimeSun1'].each do |column_name|
+      @service_idx[column_name] = services.first.index(column_name)
+      if @service_idx[column_name].nil?
+        return false, 'Missing column ' + column_name + ' from tService table.'
+      end
+    end
+    return true, "Success"
   end
 
   def assign_config_indices(configs)
-    @c_id_idx = configs.first.index("ServiceID")
-    @c_cfg_idx = configs.first.index("CfgNum")
-    @c_item_idx = configs.first.index("Item")
-  end
-
-  def assign_cost_indices(configs)
-    @cost_id_idx = configs.first.index("ServiceID")
-    @cost_type_idx = configs.first.index("CostType")
-    @cost_amount_idx = configs.first.index("Amount")
-    @cost_unit_idx = configs.first.index("CostUnit")
-  end
-
-  def assign_grid_indices(configs)
-    @g_id_idx = configs.first.index("ServiceID")
-    @g_grp_idx = configs.first.index("Grp")
-    @g_item_idx = configs.first.index("Item")
-  end
-
-  def run
-    table = {}
-    ["tProvider", "tProviderGrid", "tService", "tServiceGrid", "tServiceCfg", "tServiceCost"].each do |t|
-      tempfile = Tempfile.new("#{t}.csv")
-      begin
-        # TODO input MDB file needs to be parameterized
-        p tempfile.path
-        `mdb-export -R '||' -b raw db/arc/trans22714.MDB #{t} | dos2unix > #{tempfile.path}`
-        table[t] = to_csv tempfile
-      ensure
-        tempfile.close
-        #tempfile.unlink
-
+    @config_idx = {}
+    ['ServiceID', 'CfgNum', 'Item'].each do |column_name|
+      @config_idx[column_name] = configs.first.index(column_name)
+      if @config_idx[column_name].nil?
+        return false, 'Missing column ' + column_name + ' from tServiceCfg'
       end
     end
-    table
+    return true, "Success"
   end
 
-  def run_zip(tempfilepath)
-    table = {}
-    require 'zip'
-    Zip::File.open(tempfilepath) do |zipfile|
-      zipfile.each do |file|
-        table[file.name[0..-5]] = to_csv file.get_input_stream
+  def assign_cost_indices(costs)
+    @costs_idx = {}
+    ['ServiceID', 'CostType', 'Amount', 'CostUnit'].each do |column_name|
+      @costs_idx[column_name] = costs.first.index(column_name)
+      if @costs_idx[column_name].nil?
+        return false, 'Missing column ' + column_name + ' from tServiceCost'
       end
     end
-    table
+    return true, "Success"
   end
 
+  def assign_grid_indices(grids)
+    @grid_idx = {}
+    ['ServiceID', 'Grp', 'Item'].each do |column_name|
+      @grid_idx[column_name] = grids.first.index(column_name)
+      if @grid_idx[column_name].nil?
+        return false, 'Missing column ' + column_name + ' from tServiceGrid'
+      end
+    end
+    return true, "Success"
+  end
+  #end add indices
+  ########################
+
+  ########################
+  # File Extraction
+  ########################
   def unpack_to_table(tempfilepath)
     table = {}
     ["tProvider", "tProviderGrid", "tService", "tServiceGrid", "tServiceCfg", "tServiceCost"].each do |t|
@@ -158,32 +98,84 @@ class EspReader
 
   def get_esp_provider provider_id
     @esp_providers.each do |esp_provider|
-      if provider_id == esp_provider[@p_provider_id_idx]
+      if provider_id == esp_provider[@provider_idx["ProviderID"]]
         return esp_provider
       end
     end
     nil
   end
+  # End File Extraction
+  ########################
 
+  #########################
   # This is the main function.
   # It unpacks the esp data and stores it in the OneClick format
+  #########################
   def unpack(tempfilepath)
     entries = self.unpack_to_table(tempfilepath)
 
-    #Pull out the Esp Providers
+
+    ###########
+    ## Go through each table and confirm that we have all the columns needed to build the data
+    ###########
+
+    #Confirm tProvider has necessary columns
     @esp_providers = entries['tProvider']
     #Find the indices of the important columns
-    assign_provider_indices
+    if @esp_providers.nil? || @esp_providers.empty?
+      return false, "tProvider table is missing or invalid."
+    end
+    result, message = assign_provider_indices
+    unless result
+      return result, message
+    end
 
-    #Create or update services
+    #Confirm tService has necessary columns
     esp_services = entries['tService']
-    assign_service_indices(esp_services)
+    if esp_services.nil? || esp_services.empty?
+      return false, "tService table is missing or invalid."
+    end
+    result, message = assign_service_indices(esp_services)
+    unless result
+      return result, message
+    end
+
+    #Confirm tServiceGrid has necessary columns
+    esp_grids = entries['tServiceGrid']
+    if esp_grids.nil? || esp_grids.empty?
+      return false, "tServiceGrid is missing or invalid."
+    end
+    result, message = assign_grid_indices(esp_grids)
+    unless result
+      return result, message
+    end
+
+    esp_configs = entries['tServiceCfg']
+    if esp_configs.nil? || esp_configs.empty?
+      return false, "tServiceCfg is missing or invalid."
+    end
+    result, message = assign_config_indices(esp_configs)
+    unless result
+      return result, message
+    end
+
+    esp_costs = entries['tServiceCost']
+    if esp_costs.nil? || esp_configs.empty?
+      return false, "tServiecCost is missing or invalid."
+    end
+    result, message = assign_cost_indices(esp_costs)
+    unless result
+      return result, message
+    end
+
+    #########
+    #Create the entries
+    #########
+
     esp_services.shift #deletes header row
     services = create_or_update_services(esp_services)
-
     #deactive services that are not included in the list
     all_services = Service.all
-
     all_services.each do |s|
       unless s.in? services
         s.active = false
@@ -192,25 +184,36 @@ class EspReader
     end
 
     #Add County Coverage Rules
-    esp_configs = entries['tServiceGrid']
-    assign_grid_indices(esp_configs)
-    esp_configs.shift
-    create_or_update_coverages(esp_configs)
+    #from tServiceGrid
+    esp_grids.shift
+    result, message = create_or_update_coverages(esp_grids)
+    unless result
+      return result, message
+    end
 
     #Add Eligibility
-    esp_configs = entries['tServiceCfg']
-    assign_config_indices(esp_configs)
+    #from tServiceCfg
     esp_configs.shift
-    create_or_update_eligibility(esp_configs)
+    result, message = create_or_update_eligibility(esp_configs)
+    unless result
+      return result, message
+    end
 
     #Add Fares
-    esp_configs = entries['tServiceCost']
-    assign_cost_indices(esp_configs)
     esp_configs.shift
-    create_or_update_fares(esp_configs)
+    result, message = create_or_update_fares(esp_configs)
+    unless result
+      return result, message
+    end
+
+    return true, "Success!"
 
   end
 
+
+  #########################
+  # Create OneClick records from ESP
+  #########################
   def create_or_update_provider esp_provider, service, create = false
     if create
       provider = Provider.new
@@ -218,16 +221,19 @@ class EspReader
       provider = service.provider
     end
 
-    provider.name = esp_provider[@p_name_idx]
-    provider.contact = esp_provider[@p_contact_idx]
-    provider.contact_title = esp_provider[@p_contact_title_idx]
-    provider.address = esp_provider[@p_address_idx]
-    provider.city = esp_provider[@p_city_idx]
-    provider.state = esp_provider[@p_state_idx]
-    provider.zip = esp_provider[@p_zip_idx]
-    provider.phone = '(' + esp_provider[@p_area_code_idx].to_s + ') ' + esp_provider[@p_phone_idx].to_s
-    provider.url = esp_provider[@p_url_idx]
-    provider.email = esp_provider[@p_email_idx]
+    #tProvider Column Names
+    #['Name', 'Contact', 'ContactTitle', 'LocAddress', 'LocCity', 'LocState', 'LocZipCode', 'AreaCode1', 'Phone1', 'URL', 'Email', 'ProviderID']
+
+    provider.name = esp_provider[@provider_idx["Name"]]
+    provider.contact = esp_provider[@provider_idx["Contact"]]
+    provider.contact_title = esp_provider[@provider_idx["ContactTitle"]]
+    provider.address = esp_provider[@provider_idx["LocAddress"]]
+    provider.city = esp_provider[@provider_idx["LocCity"]]
+    provider.state = esp_provider[@provider_idx["LocState"]]
+    provider.zip = esp_provider[@provider_idx["LocZipCode"]]
+    provider.phone = '(' + esp_provider[@provider_idx["AreaCode1"]].to_s + ') ' + esp_provider[@provider_idx["Phone1"]].to_s
+    provider.url = esp_provider[@provider_idx["URL"]]
+    provider.email = esp_provider[@provider_idx["Email"]]
     provider.save
 
     if create #assign service to the new provider
@@ -238,22 +244,25 @@ class EspReader
   end
 
   def create_or_update_services esp_services
+
+    #['ServiceID', 'ServiceRefID', 'OrgName', 'Contact', 'ContactTitle', 'Email', 'AreaCode1', 'Phone1', 'URL', 'ProviderID', 'CostComments', 'TimeSun1']
+
     services = []
     esp_services.each do |esp_service|
 
-      SERVICE_DICT[esp_service[@s_id_idx]] = esp_service[@s_ref_id_idx]
-      service = Service.where(external_id: esp_service[@s_ref_id_idx]).first_or_initialize
-      service.name = esp_service[@s_name_idx]
-      service.contact = esp_service[@s_contact_idx]
-      service.contact_title = esp_service[@s_contact_title_idx]
-      service.email = esp_service[@s_email_idx]
-      service.phone = '(' + esp_service[@s_area_code_idx].to_s + ') ' + esp_service[@s_phone_idx].to_s
-      service.url = esp_service[@s_url_idx]
+      SERVICE_DICT[esp_service[@service_idx['ServiceID']]] = esp_service[@service_idx['ServiceRefID']]
+      service = Service.where(external_id: esp_service[@service_idx['ServiceRefID']]).first_or_initialize
+      service.name = esp_service[@service_idx['OrgName']]
+      service.contact = esp_service[@service_idx['Contact']]
+      service.contact_title = esp_service[@service_idx['ContactTitle']]
+      service.email = esp_service[@service_idx['Email']]
+      service.phone = '(' + esp_service[@service_idx['AreaCode1']].to_s + ') ' + esp_service[@service_idx['Phone1']].to_s
+      service.url = esp_service[@service_idx['URL']]
 
       service.service_type = ServiceType.find_by_code('paratransit')
       service.advanced_notice_minutes = 0  #TODO: Need to get this from ESP
       service.active = true
-      esp_provider = get_esp_provider(esp_service[@s_provider_id_idx])
+      esp_provider = get_esp_provider(esp_service[@service_idx['ProviderID']])
 
       create_or_update_provider(esp_provider, service, service.provider.nil?)
       service.save
@@ -271,17 +280,14 @@ class EspReader
 
       #Set new schedule
       (0..6).each do |day|
-        index = @s_time_idx + 2*day
+        index = @service_idx['TimeSun1'] + 2*day
         if esp_service[index] and esp_service[index+1]
           Schedule.create(service: service, start_seconds: Time.parse(esp_service[index][9..16]).seconds_since_midnight, end_seconds: Time.parse(esp_service[index+1][9..16]).seconds_since_midnight, day_of_week: day)
         end
       end
 
       #Set Cost Comments
-      FareStructure.create(service: service, fare_type: 2, desc: esp_service[@s_cost_comments_idx])
-
-      #TODO: Purposes
-      #Purposes will be listed ast tServiceCfg CfgNum = 5.  The sample data did not include any purpose examples.
+      FareStructure.create(service: service, fare_type: 2, desc: esp_service[@service_idx['CostComments']])
       services << service
     end
 
@@ -289,41 +295,57 @@ class EspReader
   end
 
   def create_or_update_eligibility esp_configs
-    esp_configs.each do |config|
-      service = Service.find_by_external_id(SERVICE_DICT[config[@c_id_idx]])
 
-      case config[@c_cfg_idx].to_i
+    #['ServiceID', 'CfgNum', 'Item']
+    esp_configs.each do |config|
+      service = Service.find_by_external_id(SERVICE_DICT[config[@config_idx['ServiceID']]])
+      case config[@config_idx['CfgNum']].to_i
         when 1,2
-          add_accommodation(service, config[@c_item_idx])
+          result, message = add_accommodation(service, config[@config_idx['Item']])
         when 5
-          add_eligibility(service, config[@c_item_idx])
+          result, message = add_eligibility(service, config[@config_idx['Item']])
         when 6 #ZipCode Restriction
-          c = GeoCoverage.find_or_create_by_value(value: config[@c_item_idx], coverage_type: 'zipcode')
+          c = GeoCoverage.find_or_create_by_value(value: config[@config_idx['Item']], coverage_type: 'zipcode')
           ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'destination')
           ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'origin')
+          result = true
+        else
+          result = true
       end
+      unless result
+        return result, message
+      end
+
     end
+    return true, "Success"
   end
 
-  def create_or_update_coverages esp_configs
-    esp_configs.each do |config|
-      service = Service.find_by_external_id(SERVICE_DICT[config[@g_id_idx]])
-      case config[@g_grp_idx].downcase
+  def create_or_update_coverages esp_grids
+
+    #['ServiceID', 'Grp', 'Item']
+
+    esp_grids.each do |grid|
+      service = Service.find_by_external_id(SERVICE_DICT[grid[@grid_idx['ServiceID']]])
+      case grid[@grid_idx['Grp']].downcase
         when 'county'
-          c = GeoCoverage.find_or_create_by_value(value: config[@g_item_idx], coverage_type: 'county_name')
+          c = GeoCoverage.find_or_create_by_value(value: grid[@grid_idx['Item']], coverage_type: 'county_name')
           ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'destination')
           ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'origin')
       end
     end
+    return true, "Success"
   end
 
   def create_or_update_fares esp_configs
+
+    #['ServiceID', 'CostType', 'Amount', 'CostUnit']
+
     esp_configs.each do |config|
-      service = Service.find_by_external_id(SERVICE_DICT[config[@cost_id_idx]])
+      service = Service.find_by_external_id(SERVICE_DICT[config[@costs_idx['ServiceID']]])
       fare = FareStructure.find_by_service_id(service.id)
-      case config[@cost_type_idx].downcase
+      case config[@costs_idx['CostType']].downcase
         when 'transportation'
-          amount = config[@cost_amount_idx].to_f
+          amount = config[@costs_idx['Amount']].to_f
           if amount >= fare.base.to_f
             fare.base = amount
             fare.fare_type = 0
@@ -331,6 +353,7 @@ class EspReader
           end
       end
     end
+    return true, "Success"
   end
 
   def add_accommodation(service, accommodation)
@@ -353,11 +376,12 @@ class EspReader
       when 'stretchers'
         accommodation = Accommodation.find_by_code('stretcher_accessible')
       when 'ground', 'volunteer services'
-        return
+        return true, "Success"
       else
-        raise "ACCOMMODATION NOT FOUND:  " + accommodation.to_s
+        return false, "Accommodation not found:  " + accommodation.to_s + ', For service:  ' + service.name.to_s + '.'
     end
     ServiceAccommodation.find_or_create_by(service: service, accommodation: accommodation, value: 'true')
+    return true, "Success"
   end
 
   def add_eligibility(service, eligibility)
@@ -394,12 +418,17 @@ class EspReader
           medical = TripPurpose.find_by_code('medical')
           ServiceTripPurposeMap.create(service: service, trip_purpose: medical, value: 'true')
         when 'no restrictions'
-          return
+          return true, "Success"
         else
-          raise "ELIGIBILITY RULE NOT FOUND:  " + rule.to_s
+          return false, "Eligibility rule not found:  " + rule.to_s + ", for Service:  " + service.name.to_s + '.'
       end
 
     end
+    return true, "Success"
   end
+
+  #End create OneClick Records from ESP
+  ######################
+
 
 end

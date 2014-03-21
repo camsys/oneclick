@@ -250,6 +250,7 @@ Oneclick::Application.routes.draw do
       resources :reports, :only => [:index, :show]
       resources :trips, :only => [:index]
       get '/geocode' => 'util#geocode'
+      get '/raise' => 'util#raise'
       get '/' => 'admin_home#index'
       resource :feedback
       resources :travelers, controller: 'agency_user_relationships' do
@@ -266,6 +267,7 @@ Oneclick::Application.routes.draw do
           post 'add_to_agency', on: :collection
           put 'add_to_agency', on: :collection
         end
+        resources :trips
       end
       resources :provider_orgs do
         resources :users
