@@ -26,7 +26,15 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    I18n.locale = params[:locale] || I18n.default_locale
+    #If set in URL, use that and set it to user's preference
+    #If not, use the user's preference
+    #Fall back to default if that doesn't exist somehow
+    if params[:locale]
+       I18n.locale = params[:locale]
+       current_user.update_attributes(preferred_locale: params[:locale])
+    else
+      I18n.locale = current_user.preferred_locale
+    end
   end
 
   def default_url_options(options={})
