@@ -8,7 +8,7 @@ class UserCharacteristicsProxy < UserProfileProxy
   end
 
   def date_of_birth
-    super.try :strftime, '%Y-%B-%d'
+    super
   end
 
   # callback used to derive the value of a user characteristic using a dynamic finder.
