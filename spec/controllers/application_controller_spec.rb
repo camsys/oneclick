@@ -30,10 +30,8 @@ describe ApplicationController do
 
       it "should set the preference for a user based on the URL" do
         # @user.preferred_locale = :en #This is the default- language = :en
-        puts "COMPARE FROM"
         get :index, :locale => :es
-        puts "COMPARE TO"
-        @user.reload
+        @user.reload  #required to update the object with the new preferred locale
         expect(@user.preferred_locale).to eq("es")
       end
   end
