@@ -8,8 +8,8 @@ class ApplicationController < ActionController::Base
   helper_method :current_or_guest_user
 
   protect_from_forgery
-  before_filter :set_locale
   before_filter :get_traveler
+  before_filter :set_locale
   before_filter :setup_actions
   after_filter :clear_location
 
@@ -29,15 +29,11 @@ class ApplicationController < ActionController::Base
     #If set in URL, use that and set it to user's preference
     #If not, use the user's preference
     #Fall back to default if that doesn't exist somehow
-    if current_user
-      if params[:locale]
-        I18n.locale = params[:locale]
-        current_user.update_attributes(preferred_locale: params[:locale])
-      else
-        I18n.locale = current_user.preferred_locale
-      end
+    if params[:locale]
+       I18n.locale = params[:locale]
+       current_or_guest_user.update_attributes(preferred_locale: params[:locale])
     else
-      I18n.locale = I18n.default_locale
+      I18n.locale = current_or_guest_user.preferred_locale
     end
   end
 
