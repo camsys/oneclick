@@ -8,7 +8,8 @@
           = f.input :first_name, label: t(:first_name), :autofocus => true, :required => true
           = f.input :last_name, label: t(:last_name), :required => true
           = f.input :email, label: t(:email), :required => true
-          =f.input :preferred_locale, label: t(:preferred_locale), :collection => Translation.available_locales, :include_blank => false
+          /=f.input :preferred_locale, label: t(:preferred_locale), :collection => Translation.available_locales, :include_blank => false
+          / TODO: Rework this so it can be edited in the user profile in addition to from the locale links in the lower-right corner
         .span6
           = f.input :password, label: t(:password), :autocomplete => "off", :required => false
           = f.input :password_confirmation, label: t(:password_confirmation), :hint => t(:leave_password_blank), :required => false
