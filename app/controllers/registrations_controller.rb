@@ -41,6 +41,7 @@ class RegistrationsController < Devise::RegistrationsController
 
     setup_form
     if resource.valid? and guest_user.save
+      guest_user.add_role :registered_traveler
       if guest_user.active_for_authentication?
         set_flash_message :notice, :signed_up if is_navigational_format?
         sign_up(resource_name, guest_user)
