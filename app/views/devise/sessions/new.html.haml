@@ -8,7 +8,7 @@
       = f.input :email, :autofocus => true, :required => true, :label => t(:email)
       = f.input :password, :required => true, :label => t(:password)
     - else
-      = f.input :email, :autofocus => true, :required => true, :label => t(:email), collection: User.registered.order(:email).pluck(:email)
+      = f.input :email, :autofocus => true, :required => true, :label => t(:email), collection: User.any_role.order(:email).pluck(:email)
       = f.input :password, :required => true, :label => t(:password), input_html: {value: 'welcome1'}
     = f.input :remember_me, :label => t(:remember_me), :as => :boolean if devise_mapping.rememberable?
     .actions

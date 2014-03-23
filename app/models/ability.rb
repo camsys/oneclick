@@ -5,10 +5,14 @@ class Ability
     user ||= User.new # guest user (not logged in)
     if user.has_role?(:admin) or user.has_role?(:system_administrator)
       # admin users can do anything      
-      can :manage, :all
+      # can :manage, :all
+
+      # TODO Are these 2 redundant?
       can [:see], :admin_menu
-      # TODO Can this be done more efficiently?
-      can [:access], :admin_find_traveler
+      can [:index], :admin_home
+
+      # TODO Can this whole block be done more efficiently?
+      # can [:access], :admin_find_traveler
       can [:access], :admin_create_traveler
       can [:access], :admin_trips
       can [:access], :admin_agencies

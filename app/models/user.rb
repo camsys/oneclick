@@ -56,6 +56,7 @@ class User < ActiveRecord::Base
 
   scope :confirmed, -> {where('relationship_status_id = ?', RelationshipStatus::CONFIRMED)}
   scope :registered, -> {with_role(:registered_traveler)}
+  scope :any_role, -> {joins(:roles)}
 
   # Validations
   validates :email, :presence => true

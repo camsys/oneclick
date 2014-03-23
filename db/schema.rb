@@ -429,7 +429,7 @@ ActiveRecord::Schema.define(version: 20140318215639) do
     t.string   "last_name",              limit: 64,                 null: false
     t.string   "suffix",                 limit: 4
     t.string   "email",                  limit: 128,                null: false
-    t.string   "encrypted_password",     limit: 64,                 null: false
+    t.string   "encrypted_password",     limit: 64
     t.string   "reset_password_token",   limit: 64
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -442,8 +442,8 @@ ActiveRecord::Schema.define(version: 20140318215639) do
     t.datetime "updated_at",                                        null: false
     t.integer  "agency_id"
     t.integer  "provider_org_id"
-    t.string   "preferred_locale",                   default: "en"
     t.string   "authentication_token"
+    t.string   "preferred_locale",                   default: "en"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
