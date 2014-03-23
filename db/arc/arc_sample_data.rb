@@ -610,14 +610,14 @@ def create_agencies_and_agency_users
     agency = Agency.create! name: a
 
     # agency admin
-    u = User.create! first_name: a, last_name: 'Agency Admin',
+    u = User.create! first_name: a + ' Agency Admin', last_name: 'Agency Admin',
       email: a.downcase.gsub(/ /, '_') + '_admin@camsys.com', password: 'welcome1'
     up = UserProfile.create! user: u
     agency.users << u
     u.add_role :agency_administrator, agency
 
     # agency agent
-    u = User.create! first_name: a, last_name: 'Agent',
+    u = User.create! first_name: a + ' Agent', last_name: 'Agent',
       email: a.downcase.gsub(/ /, '_') + '_agent@camsys.com', password: 'welcome1'
     up = UserProfile.create! user: u
     agency.users << u

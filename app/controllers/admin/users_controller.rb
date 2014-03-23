@@ -2,15 +2,9 @@ class Admin::UsersController < Admin::BaseController
   skip_authorization_check :only => [:create, :new]
   before_action :load_user, only: :create
   load_and_authorize_resource
+  before_action :load_users, only: :index
 
   def index
-    if params[:agency_id]
-      @agency = Agency.find(params[:agency_id]) 
-      @users = @agency.users
-    else
-      @users = User.all.sort
-    end
-
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
@@ -57,10 +51,10 @@ class Admin::UsersController < Admin::BaseController
     end
 
     if @agency_user_relationship.valid? and @user.valid?
-        UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.user.email, agency).deliver
-        flash[:notice] = t(:agency_added)
-    
-        session.delete(:agency)
+      UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.user.email, agency).deliver
+      flash[:notice] = t(:agency_added)
+
+      session.delete(:agency)
       unless current_user.has_role? :system_administrator
         session.delete(:agency)
         agency_staff_impersonate(@agency_user_relationship.user.id, @agency_user_relationship.agency.id)
@@ -99,7 +93,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
 
-private 
+  private 
   def agency_staff_impersonate(user_id, agency_id)
     @agency_user_relationship = AgencyUserRelationship.find_or_create_by(user_id: user_id, agency_id: agency_id) do |aur|
       aur.creator = current_user.id
@@ -119,6 +113,16 @@ private
   def load_user
     params[:agency_id] = params[:agency]
     @user = User.new(params.require(:user).permit(:first_name, :last_name, :email, :agency_id))
+    puts "load_user, @user is #{@user.ai}"
+  end
+
+  def load_users
+    puts "start of load_users, @users is #{@users.ai}"
+    if params[:agency_id]
+      @agency = Agency.find(params[:agency_id]) 
+      @users = @agency.users
+    end
+    puts "end of load_users, @users is #{@users.ai}"
   end
 
 end

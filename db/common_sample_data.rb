@@ -201,7 +201,7 @@ def populate_provider_orgs
 
     puts "Saved #{po.ai}"
     # provider staff user
-    u = po.users.create! first_name: p.name, last_name: 'Staff',
+    u = po.users.create! first_name: p.name + ' Provider Staff', last_name: 'Staff',
       email: p.name.to_sample_email('staff'), password: 'welcome1'
     up = UserProfile.create! user: u
     u.add_role :provider_staff, p

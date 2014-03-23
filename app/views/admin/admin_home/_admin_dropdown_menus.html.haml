@@ -4,6 +4,7 @@
   %b.caret
 %ul.dropdown-menu{role: 'menu'}
   - admin_menu.each do |action|
+    - next unless show_action(action)
     %li
       = link_to action[:target], method: (action[:method] || 'get') do
         %i{class: action[:icon]}

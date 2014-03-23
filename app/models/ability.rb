@@ -45,6 +45,7 @@ class Ability
       can :perform, :assist_user
       can :create, User
       can [:index, :show], :reports
+      can [:read, :update], User, {agency_id: user.agency.try(:id)}
     end
     if User.with_role(:agent, :any).include?(user)
       can [:see], :admin_menu
@@ -74,7 +75,7 @@ class Ability
 
     can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
     #can :manage, BuddyRelationship, :user_id => user.id
-    can :manage, User, :id => user.id
+    can [:read, :update], User, :id => user.id
     can :geocode, :util
   end
 
