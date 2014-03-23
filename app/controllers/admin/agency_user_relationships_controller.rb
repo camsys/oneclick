@@ -1,4 +1,4 @@
-class Admin::AgencyUserRelationshipsController < ApplicationController
+class Admin::AgencyUserRelationshipsController < Admin::BaseController
   # TODO Not working yet, needs rework
   # load_and_authorize_resource
 

@@ -71,7 +71,7 @@ class Ability
       can [:access], :admin_feedback
 
       can [:index, :show], :reports
-      can [:show], ProviderOrg, id: user.provider_org_id
+      can [:manage], ProviderOrg, id: user.try(:provider_org_id)
     end
 
     can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 

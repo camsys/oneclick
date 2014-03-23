@@ -1,10 +1,11 @@
 class Admin::ProviderOrgsController < Admin::BaseController
+  before_filter :load_provider, only: [:update, :create]
   load_and_authorize_resource
 
   # GET /admin/provider_orgs
   # GET /admin/provider_orgs.json
   def index
-    @provider_orgs = ProviderOrg.all
+    # @provider_orgs = ProviderOrg.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -15,7 +16,7 @@ class Admin::ProviderOrgsController < Admin::BaseController
   # GET /admin/provider_orgs/1
   # GET /admin/provider_orgs/1.json
   def show
-    @provider_org = ProviderOrg.find(params[:id])
+    # @provider_org = ProviderOrg.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -26,7 +27,7 @@ class Admin::ProviderOrgsController < Admin::BaseController
   # GET /admin/provider_orgs/new
   # GET /admin/provider_orgs/new.json
   def new
-    @provider_org = ProviderOrg.new
+    # @provider_org = ProviderOrg.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -36,13 +37,13 @@ class Admin::ProviderOrgsController < Admin::BaseController
 
   # GET /admin/provider_orgs/1/edit
   def edit
-    @provider_org = ProviderOrg.find(params[:id])
+    # @provider_org = ProviderOrg.find(params[:id])
   end
 
   # POST /admin/provider_orgs
   # POST /admin/provider_orgs.json
   def create
-    @provider_org = ProviderOrg.new(params[:provider_org])
+    # @provider_org = ProviderOrg.new(params[:provider_org])
 
     respond_to do |format|
       if @provider_org.save
@@ -58,10 +59,10 @@ class Admin::ProviderOrgsController < Admin::BaseController
   # PUT /admin/provider_orgs/1
   # PUT /admin/provider_orgs/1.json
   def update
-    @provider_org = ProviderOrg.find(params[:id])
+    # @provider_org = ProviderOrg.find(params[:id])
 
     respond_to do |format|
-      if @provider_org.update_attributes(params[:provider_org])
+      if @provider_org.update_attributes(okay_params)
         format.html { redirect_to [:admin, @provider_org], notice: 'Provider org was successfully updated.' }
         format.json { head :no_content }
       else
@@ -74,7 +75,7 @@ class Admin::ProviderOrgsController < Admin::BaseController
   # DELETE /admin/provider_orgs/1
   # DELETE /admin/provider_orgs/1.json
   def destroy
-    @provider_org = ProviderOrg.find(params[:id])
+    # @provider_org = ProviderOrg.find(params[:id])
     @provider_org.destroy
 
     respond_to do |format|
@@ -82,4 +83,19 @@ class Admin::ProviderOrgsController < Admin::BaseController
       format.json { head :no_content }
     end
   end
+
+  protected
+
+  def load_provider
+    if params[:id]
+      @provider_org = ProviderOrg.find(params[:id])
+    else
+      @provider_org = ProviderOrg.new(okay_params)
+    end
+  end
+
+  def okay_params
+    params.permit(:provider_org).permit(:name)
+  end
+
 end

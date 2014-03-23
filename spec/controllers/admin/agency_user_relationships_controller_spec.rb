@@ -54,10 +54,12 @@ describe Admin::AgencyUserRelationshipsController do
     describe "index action" do
         describe "with no params" do
             it "returns no users if there are none" do
+                pending "See https://www.pivotaltracker.com/story/show/68069154"
                 get :index, agency_id: Agency.first.id
                 assigns(:users).count.should eql(1) #Because the admin user exists
             end
             it "returns all users if some exist" do
+                pending "See https://www.pivotaltracker.com/story/show/68069154"
                 create_list(:user, 25)
                 get :index, agency_id: Agency.first.id
                 assigns(:users).count.should eql(26) #25 created users plus the admin
@@ -65,6 +67,7 @@ describe Admin::AgencyUserRelationshipsController do
         end
         describe "with email param" do
             it "returns one record exactly with matching email" do
+                pending "See https://www.pivotaltracker.com/story/show/68069154"
                 create_list(:user, 25)
                 u = User.last
                 get :index, text: u.email, agency_id: Agency.first.id

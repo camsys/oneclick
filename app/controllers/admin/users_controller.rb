@@ -31,6 +31,8 @@ class Admin::UsersController < Admin::BaseController
     end
 
     @user.save
+    # TODO This needs to be fixed, I think.  We may be creating a staff/admin user.
+    @user.add_role :registered_traveler
 
     unless @user.valid?
       render action: 'new'
@@ -113,16 +115,13 @@ class Admin::UsersController < Admin::BaseController
   def load_user
     params[:agency_id] = params[:agency]
     @user = User.new(params.require(:user).permit(:first_name, :last_name, :email, :agency_id))
-    puts "load_user, @user is #{@user.ai}"
   end
 
   def load_users
-    puts "start of load_users, @users is #{@users.ai}"
     if params[:agency_id]
       @agency = Agency.find(params[:agency_id]) 
       @users = @agency.users
     end
-    puts "end of load_users, @users is #{@users.ai}"
   end
 
 end

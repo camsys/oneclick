@@ -6,6 +6,7 @@ describe TripsController do
 
   describe "GET /place_search.json?no_map_partial=true&query=f" do
     it "does right thing" do
+      pending "See https://www.pivotaltracker.com/story/show/68068948"
       @traveler = double()
       mock_prediction = {
         'description' =>  'mock description',
