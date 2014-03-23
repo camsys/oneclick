@@ -24,8 +24,8 @@
         %td= traveler.email
         %td= traveler.created_at.to_date
         %td.center
-          -unless traveler.is_visitor?
-            = link_to t(:plan_a_trip), admin_agency_traveler_aid_user_path(@agency, traveler.id), :class => "btn btn-success"
+          - unless traveler.is_visitor? && !@agency.id.nil?
+            = link_to t(:plan_a_trip), (admin_agency_traveler_aid_user_path(@agency, traveler.id) rescue ''), :class => "btn btn-success"
             / %a.btn{"data-toggle" => "modal", :href => "#role-options-#{traveler.id}", :type => "button", :class => "btn btn-danger"}= t(:change_role)
         = render partial: traveler, locals: {agency: @agency} if @agency
 

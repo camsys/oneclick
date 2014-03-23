@@ -7,6 +7,7 @@ class Admin::AgencyUserRelationshipsController < ApplicationController
       @agency = Agency.find(params[:agency_id])
       authorize! :manage_travelers, @agency
     else
+      @agency = Agency.new(name: 'multiple') # to keep later things from blowing up
       authorize! :manage_travelers, Agency
     end
 
