@@ -12,7 +12,7 @@ class Ability
       can [:index], :admin_home
 
       # TODO Can this whole block be done more efficiently?
-      # can [:access], :admin_find_traveler
+      can [:access], :admin_find_traveler
       can [:access], :admin_create_traveler
       can [:access], :admin_trips
       can [:access], :admin_agencies
