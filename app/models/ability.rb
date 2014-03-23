@@ -57,6 +57,7 @@ class Ability
       can [:index, :show], :reports
       can :manage_travelers, :agency
       can :perform, :assist_user
+      can :create, User
     end
 
     if User.with_role(:provider_staff, :any).include?(user)
