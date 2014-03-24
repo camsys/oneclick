@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140324134440) do
+ActiveRecord::Schema.define(version: 20140324202042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,8 +95,8 @@ ActiveRecord::Schema.define(version: 20140324134440) do
     t.string   "missing_accommodations",                            default: ""
     t.text     "cost_comments"
     t.boolean  "selected"
-    t.time     "start_time"
-    t.time     "end_time"
+    t.datetime "start_time"
+    t.datetime "end_time"
   end
 
   create_table "kiosk_locations", force: true do |t|
@@ -429,7 +429,11 @@ ActiveRecord::Schema.define(version: 20140324134440) do
     t.string   "last_name",              limit: 64,                 null: false
     t.string   "suffix",                 limit: 4
     t.string   "email",                  limit: 128,                null: false
+<<<<<<< HEAD
     t.string   "encrypted_password",     limit: 64
+=======
+    t.string   "encrypted_password",     limit: 64,                 null: false
+>>>>>>> [Fixes#67658830] Uses a datetime object for the trip time instead of time.  Using Time only does not let us properly account for daylight savings time.
     t.string   "reset_password_token",   limit: 64
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
