@@ -40,6 +40,7 @@ es:
   editing_org: "[es30]Editing organization[/es]"
   listing_orgs: "[es31]Listing Organizations[/es]"
   provider_orgs: "[es30]Provider Organizations[/es]"
+  new_provider_org: '[es]New Provider Organization[/es]'
   org_type: "[es33]Org type[/es]"
   new_organization: "[es35]New Organization[/es]"
   provider_name: "[es23]Provider name[/es]"

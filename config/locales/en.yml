@@ -40,6 +40,7 @@ en:
   new_agency: "New Agency"
   providers: "Providers"
   provider_orgs: "Provider Organizations"
+  new_provider_org: 'New Provider Organization'
   org_type: "Org type"
   new_organization: "New Organization"
   editing_orgs: "Editing organization"
