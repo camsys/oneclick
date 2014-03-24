@@ -38,11 +38,9 @@
         %td= user.roles.first.name.titleize unless user.roles.first.nil?
         %td.center
           -unless user.is_visitor?
-            - if can? :perform, :assist_user
-              = link_to t(:aid_user), admin_agency_traveler_aid_user_path(current_user.agency || '', user), :class => "btn btn-success"
-              %a.btn{"data-toggle" => "modal", :href => "#role-options-#{user.id}", :type => "button", :class => "btn btn-danger"}= t(:change_role)
-            - else
-              n/a
+            %a.btn{"data-toggle" => "modal", :href => "#role-options-#{user.id}", :type => "button", :class => "btn btn-danger"}= t(:change_role)
+          - else
+            &nbsp;
         = render partial: user, locals: {agency: @agency} if @agency
 
 = link_to t(:add_user), '#select_user', {class: 'btn', "data-toggle" => "modal"}
