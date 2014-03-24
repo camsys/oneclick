@@ -429,11 +429,7 @@ ActiveRecord::Schema.define(version: 20140324202042) do
     t.string   "last_name",              limit: 64,                 null: false
     t.string   "suffix",                 limit: 4
     t.string   "email",                  limit: 128,                null: false
-<<<<<<< HEAD
-    t.string   "encrypted_password",     limit: 64
-=======
     t.string   "encrypted_password",     limit: 64,                 null: false
->>>>>>> [Fixes#67658830] Uses a datetime object for the trip time instead of time.  Using Time only does not let us properly account for daylight savings time.
     t.string   "reset_password_token",   limit: 64
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
