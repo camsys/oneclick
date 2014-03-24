@@ -16,8 +16,8 @@ class TripPlanner
     Rails.logger.info to.ai
     Rails.logger.info ""
     #Parameters
-    time = trip_datetime.in_time_zone.strftime("%-I:%M%p")
-    date = trip_datetime.in_time_zone.strftime("%Y-%m-%d")
+    time = trip_datetime.strftime("%-I:%M%p")
+    date = trip_datetime.strftime("%Y-%m-%d")
     mode = 'TRANSIT,WALK'
 
     base_url = Oneclick::Application.config.open_trip_planner
@@ -82,8 +82,8 @@ class TripPlanner
       trip_itinerary['walk_time'] = itinerary['walkTime']
       trip_itinerary['transit_time'] = itinerary['transitTime']
       trip_itinerary['wait_time'] = itinerary['waitingTime']
-      trip_itinerary['start_time'] = Time.at((itinerary['startTime']).to_f/1000)
-      trip_itinerary['end_time'] = Time.at((itinerary['endTime']).to_f/1000)
+      trip_itinerary['start_time'] = Time.at((itinerary['startTime']).to_f/1000).in_time_zone("UTC")
+      trip_itinerary['end_time'] = Time.at((itinerary['endTime']).to_f/1000).in_time_zone("UTC")
       trip_itinerary['transfers'] = fixup_transfers_count(itinerary['transfers'])
       trip_itinerary['walk_distance'] = itinerary['walkDistance']
       trip_itinerary['legs'] = itinerary['legs'].to_yaml

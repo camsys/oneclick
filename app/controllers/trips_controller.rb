@@ -651,6 +651,7 @@ private
     trip_proxy.arrive_depart = trip_part.is_depart
     trip_datetime = trip_part.trip_time
     trip_proxy.trip_date = trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
+    temp_time = trip_part.scheduled_time
     trip_proxy.trip_time = trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
     Rails.logger.info "create_trip_proxy"
     Rails.logger.info "trip_part.scheduled_date #{trip_part.scheduled_date}"

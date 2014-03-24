@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140318215639) do
+ActiveRecord::Schema.define(version: 20140324134440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,8 +72,6 @@ ActiveRecord::Schema.define(version: 20140318215639) do
     t.integer  "server_status"
     t.text     "server_message"
     t.integer  "duration"
-    t.datetime "start_time"
-    t.datetime "end_time"
     t.integer  "walk_time"
     t.integer  "transit_time"
     t.integer  "wait_time"
@@ -97,6 +95,8 @@ ActiveRecord::Schema.define(version: 20140318215639) do
     t.string   "missing_accommodations",                            default: ""
     t.text     "cost_comments"
     t.boolean  "selected"
+    t.time     "start_time"
+    t.time     "end_time"
   end
 
   create_table "kiosk_locations", force: true do |t|
@@ -322,7 +322,7 @@ ActiveRecord::Schema.define(version: 20140318215639) do
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
     t.date     "scheduled_date"
-    t.time     "scheduled_time"
+    t.datetime "scheduled_time"
   end
 
   add_index "trip_parts", ["trip_id", "sequence"], name: "index_trip_parts_on_trip_id_and_sequence", using: :btree
@@ -371,7 +371,7 @@ ActiveRecord::Schema.define(version: 20140318215639) do
     t.boolean  "taken"
     t.integer  "rating"
     t.date     "scheduled_date"
-    t.time     "scheduled_time"
+    t.datetime "scheduled_time"
   end
 
   add_index "trips", ["scheduled_date", "scheduled_time"], name: "index_trips_on_scheduled_date_and_scheduled_time", using: :btree

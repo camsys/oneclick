@@ -78,7 +78,7 @@ class Trip < ActiveRecord::Base
     # TODO Change this when we change view to return non-localied value.
     trip_part.is_depart = trip_proxy.arrive_depart == 'Departing At' ? true : false
     trip_part.scheduled_date = trip_date
-    trip_part.scheduled_time = Time.zone.parse(trip_proxy.trip_time)
+    trip_part.scheduled_time = Time.zone.parse(trip_date.year.to_s + '-' + trip_date.month.to_s + '-' + trip_date.day.to_s + ' ' + trip_proxy.trip_time).in_time_zone("UTC")
     trip_part.from_trip_place = from_place
     trip_part.to_trip_place = to_place
 
@@ -97,7 +97,7 @@ class Trip < ActiveRecord::Base
       trip_part.is_depart = true
       trip_part.is_return_trip = true
       trip_part.scheduled_date = trip_date
-      trip_part.scheduled_time = Time.zone.parse(trip_proxy.return_trip_time)
+      trip_part.scheduled_time = Time.zone.parse(trip_date.year.to_s + '-' + trip_date.month.to_s + '-' + trip_date.day.to_s + ' ' + trip_proxy.return_trip_time).in_time_zone("UTC")
       trip_part.from_trip_place = to_place
       trip_part.to_trip_place = from_place
 
@@ -140,12 +140,14 @@ class Trip < ActiveRecord::Base
   end
   
   # returns true if the trip is scheduled in advance of the current or passed in date and time.
-  def in_the_future(compare_time=Time.current.utc)
+  def in_the_future(compare_time=DateTime.current.utc)
     trip_part = trip_parts.first
     if trip_part.nil?
       return false
     end
     
+    return trip_part.scheduled_time > compare_time ? true : false
+
     # First check the days to see of they are equal
     if trip_part.scheduled_date == compare_time.to_date
       # Check just the times, independent of the time zone
