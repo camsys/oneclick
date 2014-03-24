@@ -3,27 +3,16 @@
   
 %h2= t(:find_traveler)
 .well.well-sm#filters
-  %h5= t(:filter)
   =form_tag({controller: "admin/agency_user_relationships", action: "index"}, method: 'get', :class => "form-inline") do
-    .row-fluid
-      .span3
-        =label_tag :text, t(:search)
-        =text_field_tag :text, params[:text], :class => "search-query"
-      .span2
-        =label_tag :visitors, "#{t(:include_visitors)}?"
-        =check_box_tag :visitors
-      .span7
-      
-    .row-fluid
-      .span5
-        =submit_tag 'Go!', name: nil, :class => "btn btn-primary"
+    =label_tag :text, t(:search)
+    =text_field_tag :text, params[:text]
+    =submit_tag 'Go!', name: nil, :class => "btn btn-primary"
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_users_table
   %thead
     %tr
-      %th= t(:username)
+      %th= t(:name)
       %th= t(:email)
       %th= t(:registered)
-      %th= t(:role)
       %th
   %tbody
     - @users.each do |traveler|
@@ -34,11 +23,10 @@
           %td= traveler.name
         %td= traveler.email
         %td= traveler.created_at.to_date
-        %td= traveler.roles.first.name.titleize unless traveler.roles.first.nil?
         %td.center
-          -unless traveler.is_visitor?
-            = link_to t(:plan_a_trip), admin_agency_traveler_aid_user_path(@agency, traveler.id), :class => "btn btn-success"
-            %a.btn{"data-toggle" => "modal", :href => "#role-options-#{traveler.id}", :type => "button", :class => "btn btn-danger"}= t(:change_role)
+          - unless traveler.is_visitor? || current_user.agency.nil?
+            = link_to t(:plan_a_trip), (admin_agency_traveler_aid_user_path(@agency, traveler.id) rescue ''), :class => "btn btn-success"
+            / %a.btn{"data-toggle" => "modal", :href => "#role-options-#{traveler.id}", :type => "button", :class => "btn btn-danger"}= t(:change_role)
         = render partial: traveler, locals: {agency: @agency} if @agency
 
 / = link_to t(:add_user), new_admin_agency_user_path , {class: 'btn', "data-toggle" => "modal"}

@@ -182,8 +182,6 @@ module TripsSupport
     r['state'] = r['administrative_area_level_1']
     r['lat'] = detail_result['geometry']['location']['lat']
     r['lon'] = detail_result['geometry']['location']['lng']
-    puts "detail_result['types']"
-    puts detail_result['types']
     r['result_types'] = (detail_result['types'] || []).join('|')
     r
   end

@@ -55,7 +55,8 @@ class User < ActiveRecord::Base
   # has_one :provider, through: :provider_org
 
   scope :confirmed, -> {where('relationship_status_id = ?', RelationshipStatus::CONFIRMED)}
-  scope :registered, -> {where('first_name != ? and last_name != ?', 'Visitor', 'Guest').order(:email)}
+  scope :registered, -> {with_role(:registered_traveler)}
+  scope :any_role, -> {joins(:roles)}
 
   # Validations
   validates :email, :presence => true

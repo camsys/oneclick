@@ -41,6 +41,7 @@ class RegistrationsController < Devise::RegistrationsController
 
     setup_form
     if resource.valid? and guest_user.save
+      guest_user.add_role :registered_traveler
       if guest_user.active_for_authentication?
         set_flash_message :notice, :signed_up if is_navigational_format?
         sign_up(resource_name, guest_user)
@@ -68,6 +69,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   def update
     session[:location] = edit_user_registration_path
+    @agency_user_relationship = AgencyUserRelationship.new
     @user_relationship = UserRelationship.new
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
     @user_programs_proxy = UserProgramsProxy.new(@traveler)
@@ -90,7 +92,11 @@ class RegistrationsController < Devise::RegistrationsController
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) do |u|
       u.permit(:first_name, :last_name,
-        :email, :password, :password_confirmation, :approved_agencies)
+        :email, :password, :password_confirmation, :approved_agencies, :preferred_locale)
+    end
+    devise_parameter_sanitizer.for(:account_update) do |u|
+      u.permit(:first_name, :last_name,
+        :email, :password, :password_confirmation, :approved_agencies, :preferred_locale, :current_password)
     end
   end
  

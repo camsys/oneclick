@@ -64,11 +64,15 @@ class Admin::AgenciesController < Admin::OrganizationsController
   # PUT /agencies/1.json
   def update
     puts @agency.id
-    params[:agency][:parent] = Agency.find(params[:agency].delete :parent_id) rescue nil
+    # params[:agency][:parent] = Agency.find(params[:agency].delete :parent_id)
+    # puts params[:agency][:parent].ai
     # @agency = Agency.find(params[:id])
 
+    puts agency_params(params).ai
+    
     respond_to do |format|
-      if @agency.update_attributes(agency_params(params[:agency]))
+      if @agency.update_attributes!(agency_params(params))
+        puts @agency.ai
         format.html { redirect_to [:admin, @agency], notice: 'Agency was successfully updated.' }
         format.json { head :no_content }
       else
@@ -95,7 +99,7 @@ end
 private
 
 def agency_params params
-  params.permit(:name, :parent_id)
+  params.require(:agency).permit(:name, :parent_id, :parent)
 end
 
 def load_agency

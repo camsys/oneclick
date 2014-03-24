@@ -6,8 +6,12 @@ class Ability
     if user.has_role?(:admin) or user.has_role?(:system_administrator)
       # admin users can do anything      
       can :manage, :all
+
+      # TODO Are these 2 redundant?
       can [:see], :admin_menu
-      # TODO Can this be done more efficiently?
+      can [:index], :admin_home
+
+      # TODO Can this whole block be done more efficiently?
       can [:access], :admin_find_traveler
       can [:access], :admin_create_traveler
       can [:access], :admin_trips
@@ -37,20 +41,28 @@ class Ability
 
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
       can :manage, Agency, id: user.agency.try(:id)
-      # can :manage_travelers, Agency
+      can :manage_travelers, Agency
       can :perform, :assist_user
       can :create, User
+      can :manage, [ProviderOrg, Service]
       can [:index, :show], :reports
+      can [:read, :update], User, {agency_id: user.agency.try(:id)}
     end
     if User.with_role(:agent, :any).include?(user)
       can [:see], :admin_menu
       can [:index], :admin_home
       can [:access], :admin_find_traveler
       can [:access], :admin_create_traveler
+      can [:access], :admin_trips
+      can [:access], :admin_providers
+      can [:access], :admin_services
       can [:access], :admin_reports
       can [:access], :admin_feedback
       can [:index, :show], :reports
+      can [:index, :show], [ProviderOrg, Service]
       can :manage_travelers, :agency
+      can :perform, :assist_user
+      can :create, User
     end
 
     if User.with_role(:provider_staff, :any).include?(user)
@@ -64,12 +76,13 @@ class Ability
       can [:access], :admin_feedback
 
       can [:index, :show], :reports
-      can [:show], ProviderOrg, id: user.provider_org_id
+      can [:manage], ProviderOrg, id: user.try(:provider_org_id)
+      # can [:manage], Service
     end
 
     can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
     #can :manage, BuddyRelationship, :user_id => user.id
-    can :manage, User, :id => user.id
+    can [:read, :update], User, :id => user.id
     can :geocode, :util
   end
 

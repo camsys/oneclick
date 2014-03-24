@@ -10,9 +10,10 @@
       %tr
         %td= provider_org.name
         %td.center
-          = link_to edit_admin_provider_org_path(provider_org), {class: 'btn'} do
-            %i.fa.fa-pencil
-            = t(:edit)
+          - if can? :edit, provider_org
+            = link_to edit_admin_provider_org_path(provider_org), {class: 'btn'} do
+              %i.fa.fa-pencil
+              = t(:edit)
           / = link_to admin_provider_org_users_path(provider_org), {class: 'btn'} do
           /   %i.fa.fa-group
           /   = t(:users)
