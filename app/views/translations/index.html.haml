@@ -23,7 +23,7 @@
       .span2
         =t.locale
       .span6.text-left
-        = t.value.html_safe
+        = t.value ? t.value.html_safe : ""
       .span4
         = link_to edit_translation_path(t), class: "btn btn-primary" do
           %i.icon-edit
