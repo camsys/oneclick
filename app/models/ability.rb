@@ -44,6 +44,7 @@ class Ability
       can :manage_travelers, Agency
       can :perform, :assist_user
       can :create, User
+      can :manage, [ProviderOrg, Service]
       can [:index, :show], :reports
       can [:read, :update], User, {agency_id: user.agency.try(:id)}
     end
@@ -52,9 +53,13 @@ class Ability
       can [:index], :admin_home
       can [:access], :admin_find_traveler
       can [:access], :admin_create_traveler
+      can [:access], :admin_trips
+      can [:access], :admin_providers
+      can [:access], :admin_services
       can [:access], :admin_reports
       can [:access], :admin_feedback
       can [:index, :show], :reports
+      can [:index, :show], [ProviderOrg, Service]
       can :manage_travelers, :agency
       can :perform, :assist_user
       can :create, User
@@ -72,6 +77,7 @@ class Ability
 
       can [:index, :show], :reports
       can [:manage], ProviderOrg, id: user.try(:provider_org_id)
+      # can [:manage], Service
     end
 
     can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
