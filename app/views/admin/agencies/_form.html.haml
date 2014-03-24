@@ -2,8 +2,8 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :name
-    = f.association :parent, collection: @agency.possible_parents
+    = f.input :name, label: t(:name)
+    = f.association :parent, collection: @agency.possible_parents, label: t(:parent)
 
   .form-actions
     = f.button :submit

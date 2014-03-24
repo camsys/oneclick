@@ -29,6 +29,8 @@ en:
   agencies: "Agencies"
   add_new_agency: "Add a new Agency"
   add_agency: "Add Agency"
+  edit_agency_name: 'Edit %{name}'
+  update_agency: "Update Agency"
   agency_added: "Agency added"
   user_created_and_added_to_agency: "User %{user} created and added to agency %{agency}"
   my_agencies: "My Agencies"
@@ -460,6 +462,10 @@ en:
   search: "Search"
   aid_user: "Aid User"
   none: "None"
+  show: "Show"
+  list: "List"
+  name: "Name"
+
   
   date:
     abbr_day_names:
