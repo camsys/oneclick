@@ -37,11 +37,11 @@ Translation.find_or_create_by(:key => 'registration-reasoning', locale: :en, com
 # Email bodies
 text="Your traveler has revoked your status"
 Translation.find_or_create_by(:key => 'traveler_revoke_email', locale: :en, complete: true, value: text)
-text="Your traveler has declined their status"
+text="Your buddy has declined your request"
 Translation.find_or_create_by(:key => 'traveler_decline_email', locale: :en, complete: true, value: text)
-text="Your traveler has confirmed your status"
+text="Your buddy has accepted your request"
 Translation.find_or_create_by(:key => 'traveler_confirm_email', locale: :en, complete: true, value: text)
-text="Your buddy has revoked their status"
+text="Your buddy has revoked your status"
 Translation.find_or_create_by(:key => 'buddy_revoke_email', locale: :en, complete: true, value: text)
 text="A traveler has requested that you help them plan trips."
 Translation.find_or_create_by(:key => 'buddy_request_email', locale: :en, complete: true, value: text)

@@ -368,7 +368,11 @@ es:
   about_2_blocks: "aproximadament 2 cuadras"
   about_4_blocks: "aproximadamente 4 cuadras"
   twof_miles: "%.2f millas"
-  one_click_buddy_request_from_from_email: "1-Click solicitud de amigo de %{@from_email}"
+  one_click_buddy_request_from_from_email: "[es]1-Click solicitud de amigo de %{from}[/es]"
+  one_click_buddy_revoke_from_from_email: "[es]1-Click buddy revoked by %{by}[/es]"
+  one_click_traveler_confirmation_from_from_email: "[es]1-Click buddy confirmation by %{by}[/es]"
+  one_click_traveler_decline_by_from_email: "[es]1-Click traveler request declined by %{by}[/es]"
+  one_click_traveler_revoke_by_from_email: "[es]1-Click traveler revoked by %{by}[/es]"
   you_can_t_be_your_own_buddy: "No puedes ser tu propio amigo."
   you_ve_already_asked_them_to_be_a_buddy: "Ya le has solicitado ser amigo."
   my_buddies: "[es331]My Buddies[/es]"
@@ -567,6 +571,9 @@ es:
       x_hours:
             one: '1 hora'
             other: '%{count} horas'
+      less_than_x_minutes:
+            one: '[es]less than 1 minute[/es]'
+            other: '[es]less than %{count} minutes[/es]'
       x_minutes:
             one: '1 minuto'
             other: '%{count} minutos'
