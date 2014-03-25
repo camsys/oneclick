@@ -11,18 +11,20 @@
       .span12
         %h3 Enter a Name
     .row-fluid
-      .span12
-        = text_field_tag :place_name, ''
-    .row-fluid
-      .span12
+      .span9
+        = text_field_tag :place_name, '', style: 'width: 100%;'
+      .span3
         .btn.btn-primary.pull-right
           Save
     .row-fluid
       .span12
         %h3 My Places
     .row-fluid
-      .span12
-        box
+      .span12{style: 'max-height: 300px;'}
+        %table.table.table-bordered
+          - @places.each_with_index do |place, i|
+            %tr
+              %td= ('A'..'Z').to_a[i] + ' ' + place.name
     .row-fluid
       .span6
         .btn.btn-primary
@@ -32,10 +34,6 @@
           Edit
 
   .span9
-    #map{style: 'height: 500px'}
-    / = LeafletMap({ :mapid => 'lmap', :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height:500px;" })
+    = LeafletMap({ :mapid => 'lmap', :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height:500px;" })
 
-:javascript
-  var map = L.map('map', {tile_provider: 'GOOGLEMAP'}).setView([51.505, -0.09], 13);
-  var googleLayer = new L.Google('ROADMAP');
-  map.addLayer(googleLayer);
+= yield :scripts

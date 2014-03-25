@@ -144,13 +144,15 @@ protected
   end
 
   def set_form_variables
-    
     @places = @traveler.places
     if @place_proxy.nil?
       @place_proxy = PlaceProxy.new 
     end
     @markers = generate_map_markers(@places)
-    
+    puts "PLACES"
+    puts @places.ai
+    puts "MARKERS"
+    puts @markers.ai
   end
 
   # Creates a place proxy from a place. Assumes that if the place is not a POI it
@@ -243,12 +245,12 @@ protected
   #
   # generate an array of map markers for use with the leaflet plugin
   #
-  def generate_map_markers(places)
+  def generate_map_markers(places, iconName = nil)
 
     objs = []
     places.each_with_index do |place, index|
       place_id = 'my_place' + index.to_s
-      objs << get_map_marker(place, place_id, get_indexed_marker_icon(index, "0"))
+      objs << get_map_marker(place, place_id, (iconName ? iconName : get_indexed_marker_icon(index, "0")))
     end
     return objs.to_json
   end
