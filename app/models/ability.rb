@@ -58,6 +58,9 @@ class Ability
       can [:access], :admin_services
       can [:access], :admin_reports
       can [:access], :admin_feedback
+      can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
+      can :manage_travelers, Agency, id: user.agency.try(:id)
+      # can [:read, :update], User, {agency_id: user.agency.try(:id)}
       can [:index, :show], :reports
       can [:index, :show], [ProviderOrg, Service]
       can :manage_travelers, :agency

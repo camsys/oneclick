@@ -81,12 +81,20 @@ class ApplicationController < ActionController::Base
     end
     if session[:inline]
       get_traveler
+      unless Trip.where(id: session[:current_trip_id]).exists?
+        session[:current_trip_id] =  nil
+        return new_user_trip_path(current_or_guest_user)
+      end
       @trip = Trip.find(session[:current_trip_id])
       session[:current_trip_id] =  nil
       @trip.create_itineraries
       user_trip_path(@traveler, @trip)
     else
-      new_user_trip_path(current_or_guest_user)
+      if ui_mode_kiosk?
+        new_user_trip_path(current_or_guest_user)
+      else
+        root_path
+      end
     end
   end
 
