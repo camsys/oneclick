@@ -88,8 +88,8 @@ jQuery(function ($) {
       , $selectedField     = $('#'+ locationName +'_place_selected');
 
     $placeField.on('change', function () {
-      $selectedTypeField.val('');
-      $selectedField.val('');
+      $selectedTypeField.val('').change();
+      $selectedField.val('').change();
     });
 
     $placeField.typeahead({
@@ -186,8 +186,8 @@ jQuery(function ($) {
 
         setTimeout(function () {
           // Update the UI
-          $selectedTypeField.val(item.type);
-          $selectedField    .val(item.id);
+          $selectedTypeField.val(item.type).change();
+          $selectedField    .val(item.id).change();
         }, 0);
 
         return item.name;

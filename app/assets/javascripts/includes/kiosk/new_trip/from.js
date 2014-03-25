@@ -31,7 +31,7 @@ jQuery(function ($) {
   if ($('#trip_proxy_from_place').val() === '')
     $('.next-step-btn').addClass('stop');
 
-  NewTrip.requirePresenceToContinue($('#trip_proxy_from_place'));
+  NewTrip.requirePresenceToContinue($('#from_place_selected'));
   restore_marker_from_local_storage('start');
 
   $('#current-location a#yes').on('click', useCurrentLocationHandler);
