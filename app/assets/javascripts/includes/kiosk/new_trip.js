@@ -19,6 +19,7 @@ function viewSequence ($) {
 
   function changeFrames(e, dir) {
     var nextIndex = els.index(els.filter('.current')) + dir;
+    NewTrip.hideError();
 
     showFrameForIndex(nextIndex);
 
