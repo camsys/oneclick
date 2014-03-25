@@ -58,7 +58,7 @@ class TripPlace < GeocodedAddress
       end
       first_result = result.body['predictions'].first
       # TODO Copied from above, should be refactored
-      details = get_places_autocomplete_details(id)
+      details = get_places_autocomplete_details(first_result['reference'])
       d = cleanup_google_details(details.body['result'])
       self.update_attributes(
         address1: d['address1'],

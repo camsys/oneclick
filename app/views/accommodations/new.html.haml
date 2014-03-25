@@ -6,5 +6,9 @@
       / = t(:to_see_best_options)
 
 .row-fluid
+  .span12
+    = render partial: 'trips/trip_header', locals: {trip: @trip}
+
+.row-fluid
   .well
     = render partial: 'accommodations/form',  :locals => {:path => user_accommodation_path(@traveler, @user_accommodations_proxy.id, inline: 1), :inline => true}

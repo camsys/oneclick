@@ -26,8 +26,16 @@ $ ->
       ].join(''))
   
   $('#trip_proxy_from_place').on 'typeahead:selected', (e, s, d) ->
+    console.log 'selected'
+    $('#from_place_object').val(JSON.stringify(s))
+  $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, s, d) ->
+    console.log 'autocompleted'
     $('#from_place_object').val(JSON.stringify(s))
   $('#trip_proxy_to_place').on 'typeahead:selected', (e, s, d) ->
+    console.log 'selected'
+    $('#to_place_object').val(JSON.stringify(s))
+  $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, s, d) ->
+    console.log 'autocompleted'
     $('#to_place_object').val(JSON.stringify(s))
 
   $('#new_trip_proxy').on 'submit', ->

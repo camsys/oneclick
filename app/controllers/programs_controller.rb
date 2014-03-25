@@ -49,6 +49,7 @@ class ProgramsController < TravelerAwareController
     @user_programs_proxy = UserProgramsProxy.new(@traveler)
 
     @trip_id = session[:current_trip_id]
+    @trip = Trip.find(@trip_id)
     @total_steps = (@traveler.has_disability? ? 3 : 2)
 
     respond_to do |format|
