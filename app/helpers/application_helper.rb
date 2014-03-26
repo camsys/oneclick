@@ -180,6 +180,8 @@ module ApplicationHelper
       'paratransit_details'
     elsif mode_code == 'non-emergency medical service'
       'paratransit_details'
+    elsif mode_code == 'nemt'
+      'paratransit_details'
     elsif mode_code == 'livery'
       'paratransit_details'
     elsif mode_code == 'taxi'
@@ -209,8 +211,10 @@ module ApplicationHelper
       'fa-truck'
     elsif mode_code == 'volunteer'
       'fa-truck'
+    elsif mode_code == 'nemt'
+      'fa-truck'
     elsif mode_code == 'non-emergency medical service'
-      'fa-user-md'
+      'fa-truck'
     elsif mode_code == 'livery'
       'icon-taxi-sign'
     elsif mode_code == 'taxi'
@@ -218,7 +222,7 @@ module ApplicationHelper
     elsif mode_code == 'rideshare'
       'fa-group'      
     elsif mode_code == 'walk'
-      'icon-accessibility-sign'      
+      'icon-accessibility-sign'
     end
     return icon_name
   end

@@ -208,6 +208,8 @@ module CsHelpers
       I18n.t(:volunteer)
     elsif mode_code == 'non-emergency medical service'
       I18n.t(:nemt)
+    elsif mode_code == 'nemt'
+      I18n.t(:nemt)
     elsif mode_code == 'livery'
       I18n.t(:car_service)
     elsif mode_code == 'taxi'
