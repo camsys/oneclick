@@ -99,5 +99,9 @@ class RegistrationsController < Devise::RegistrationsController
         :email, :password, :password_confirmation, :approved_agencies, :preferred_locale, :current_password)
     end
   end
+
+  def after_update_path_for(resource)
+    edit_user_registration_path(locale: resource.preferred_locale)
+  end
  
 end

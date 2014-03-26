@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe HomeController do
   include CsHelpers
+  include Warden::Test::Helpers
+  Warden.test_mode!
   
   unless CsHelpers::ui_mode_kiosk?
     it "should have language-selection links" do
@@ -36,5 +38,32 @@ describe HomeController do
       click_link 'English'
       I18n.locale.should be :en
     end
+
+    it "should use the users default if not set in the url"
+      # I18n.locale.should be :en
+      # expect(@user.preferred_locale).to eq('en')
+      # @user.preferred_locale = 'es'
+      # @user.reload
+      # get :index
+      # expect(@user.preferred_locale).to eq(:es)
+      # expect(I18n.locale).to eq(:es)
+    
+
+    # it "should use the users default at root" do
+    #   user = FactoryGirl.create(:spanish_user)
+    #   login_as(user, :scope => :user)
+    #   visit '/'
+    #   expect(I18n.locale).to eq(:es)
+    #   logout(:user)
+    #   Warden.test_reset! 
+    # end
+
+    # it "should use the users default on login and not change the user's default" do
+    #   user = FactoryGirl.create(:spanish_user)
+    #   login_as(user, :scope => :user)
+    #   expect(I18n.locale).to eq(:es)
+    #   logout(:user)
+    #   Warden.test_reset! 
+    # end
   end
 end

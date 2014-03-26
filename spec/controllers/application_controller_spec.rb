@@ -15,24 +15,17 @@ describe ApplicationController do
   end
   
   describe "set_locale" do
-      it "should use the locale in the URL if set" do
-        get :index, :locale => :en
-        I18n.locale.should be(:en)
+    it "should use the locale in the URL if set" do
+      get :index, :locale => 'en'
+      expect(I18n.locale).to eq(:en)
+    end
 
-        get :index, :locale => :es
-        I18n.locale.should be(:es)
-      end
-
-      it "should use the default locale if not set in the URL" do
-        get :index
-        I18n.locale.should be(I18n.default_locale)
-      end
-
-      it "should set the preference for a user based on the URL" do
-        # @user.preferred_locale = :en #This is the default- language = :en
-        get :index, :locale => :es
-        @user.reload  #required to update the object with the new preferred locale
-        expect(@user.preferred_locale).to eq("es")
-      end
+    it "should not change the users preference" do
+      @user2 = FactoryGirl.create(:user2)
+      @user2.update_attributes(preferred_locale: 'es')
+      @user2.reload
+      expect(I18n.locale).to eq(:en)
+      expect(@user2.preferred_locale).to eq('es')
+    end
   end
 end

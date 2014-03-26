@@ -26,12 +26,8 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    #If set in URL, use that and set it to user's preference
-    #If not, use the user's preference
-    #Fall back to default if that doesn't exist somehow
     if params[:locale]
        I18n.locale = params[:locale]
-       current_or_guest_user.update_attributes(preferred_locale: params[:locale])
     else
       I18n.locale = current_or_guest_user.preferred_locale
     end
@@ -77,13 +73,13 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     if session[:agency]
-      return new_user_registration_path
+      return new_user_registration_path(locale: current_or_guest_user.preferred_locale)
     end
     if session[:inline]
       get_traveler
       unless Trip.where(id: session[:current_trip_id]).exists?
         session[:current_trip_id] =  nil
-        return new_user_trip_path(current_or_guest_user)
+        return new_user_trip_path(current_or_guest_user, locale: current_or_guest_user.preferred_locale)
       end
       @trip = Trip.find(session[:current_trip_id])
       session[:current_trip_id] =  nil
@@ -93,7 +89,7 @@ class ApplicationController < ActionController::Base
       if ui_mode_kiosk?
         new_user_trip_path(current_or_guest_user)
       else
-        root_path
+        root_path(locale: current_or_guest_user.preferred_locale)
       end
     end
   end
