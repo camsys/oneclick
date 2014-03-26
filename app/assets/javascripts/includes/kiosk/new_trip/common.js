@@ -211,13 +211,16 @@
   }
 
   NewTrip.requirePresenceToContinue = function ($el) {
-    //add blur event handler to input field
-    $el.on('blur', function(e) {
+    // add blur event handler to input field
+    function enableNextButton (e) {
       if ($(e.target).val() === '') {
         $('.next-step-btn').addClass('stop');
       } else {
         $('.next-step-btn').removeClass('stop');
       }
-    });
+    }
+
+    $el.on('blur', enableNextButton);
+    $el.change('blur', enableNextButton);
   }
 })();
