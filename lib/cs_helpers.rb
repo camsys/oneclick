@@ -32,7 +32,7 @@ module CsHelpers
       {label: t(:providers), target: admin_provider_orgs_path, icon: ACTION_ICONS[:providers], access: :admin_providers},
       {label: t(:services), target: services_path, icon: ACTION_ICONS[:services], access: :admin_services},
       {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports], access: :admin_reports},
-      {label: t(:feedback), target: admin_feedback_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback},
+      # {label: t(:feedback), target: admin_feedback_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback},
     ]  
   end
 
