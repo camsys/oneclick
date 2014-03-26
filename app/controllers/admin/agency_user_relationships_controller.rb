@@ -50,16 +50,14 @@ class Admin::AgencyUserRelationshipsController < Admin::BaseController
 
   # Impersonate a user to edit their traveler profile.
   def edit
-    authorize! :assist_user, User.find(params[:id])
-    authorize! :manage_travelers, Agency.find(params[:agency_id])
+    authorize! :perform, :assist_user
     agency_staff_impersonate(params[:id], params[:agency_id])
     redirect_to edit_user_path params[:id]   #edit_user_path is not user#edit, because of Devise.  Actually points to registration_controller#edit
   end
 
 
   def aid_user
-    authorize! :assist_user, User.find(params[:traveler_id])
-    authorize! :manage_travelers, Agency.find(params[:agency_id])
+    authorize! :perform, :assist_user
     agency_staff_impersonate(params[:traveler_id], params[:agency_id])
     redirect_to new_user_trip_path(params[:traveler_id])
   end
