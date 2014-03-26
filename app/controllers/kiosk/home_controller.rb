@@ -4,6 +4,8 @@ module Kiosk
     include CsHelpers
 
     def index
+      reset_session
+
       @actions = [
         {label: t(:plan_a_trip), target: kiosk_user_new_trip_start_path(user_id: get_traveler.id), icon: ACTION_ICONS[:plan_a_trip]}
       ]
