@@ -39,9 +39,6 @@ class Admin::AgencyUserRelationshipsController < Admin::BaseController
           end
 
           if @agency_user_relationship.save
-            unless (get_traveler == current_user)   #don't send email if they picked themself up
-              UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.user.email, agency).deliver
-            end
             flash[:notice] = t(:agency_added)
 
             respond_to do |format|
@@ -53,14 +50,14 @@ class Admin::AgencyUserRelationshipsController < Admin::BaseController
   # Impersonate a user to edit their traveler profile.
   def edit
     authorize! :perform, :assist_user
-    agency_staff_impersonate(params[:id], params[:agency_id])
+    agency_staff_assist_user(params[:id], params[:agency_id])
     redirect_to edit_user_path params[:id]   #edit_user_path is not user#edit, because of Devise.  Actually points to registration_controller#edit
   end
 
 
   def aid_user
     authorize! :perform, :assist_user
-    agency_staff_impersonate(params[:traveler_id], params[:agency_id])
+    agency_staff_assist_user(params[:traveler_id], params[:agency_id])
     redirect_to new_user_trip_path(params[:traveler_id])
   end
 
@@ -88,8 +85,9 @@ class Admin::AgencyUserRelationshipsController < Admin::BaseController
 
   private
 
-  def agency_staff_impersonate(user_id, agency_id)
+  def agency_staff_assist_user(user_id, agency_id)
     @agency_user_relationship = AgencyUserRelationship.find_or_create_by(user_id: user_id, agency_id: agency_id) do |aur|
+      UserMailer.agency_helping_email(aur.user.email, aur.user.email, aur.agency).deliver #Only send email if the AUR is being created
       aur.creator = current_user.id
     end
     set_traveler_id user_id
