@@ -361,7 +361,7 @@ class TripsController < PlaceSearchingController
     # save the id of the trip we are updating
     if @trip_proxy.valid?
       @trip_proxy.id = @trip.id
-  end
+    end
 
     # Create markers for the map control
     @markers = create_trip_proxy_markers(@trip_proxy).to_json
@@ -372,7 +372,7 @@ class TripsController < PlaceSearchingController
 
       # create a trip from the trip proxy. We need to do this first before any
       # trip places are removed from the database
-      updated_trip = create_trip(@trip_proxy)
+      updated_trip = Trip.create_from_proxy(@trip_proxy, current_or_guest_user, @traveler)
 
       # remove any child objects in the old trip
       @trip.clean
