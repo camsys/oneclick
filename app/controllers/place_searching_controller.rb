@@ -85,6 +85,7 @@ class PlaceSearchingController < TravelerAwareController
         "lat" => place.location.first,
         "lon" => place.location.last,
         "address" => place.address,
+        "full_address" => place.address,
         "description" => map_partial(no_map_partial, { :place => {:icon => 'fa-building-o', :name => place.name, :address => place.address} })
       }
       matches <<  m.merge(place.interesting_attributes)
@@ -175,6 +176,7 @@ def search_my
         "lat" => place.location.first,
         "lon" => place.location.last,
         "address" => place.address,
+        "full_address" => place.address,
         "description" => map_partial(no_map_partial, { :place => {:icon => 'fa-building-o', :name => place.name, :address => place.address} })
       }
       counter += 1

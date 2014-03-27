@@ -1,14 +1,25 @@
 .place_picker {
-  width: 30em;
+  width: 20em;
 }
 
 .tt-dropdown-menu {
   max-height: 20em;
   overflow-y: scroll;
-  width: 30em;
+  width: 20em;
 }
 
 .tt-suggestion.tt-is-under-cursor a {
   cursor: pointer;
   color: blue;
+}
+
+.trips.new {
+  .form-horizontal {
+    .control-label {
+      width: 100px;
+    }
+    .controls {
+      margin-left: 120px;
+    }
+  }
 }

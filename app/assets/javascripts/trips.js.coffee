@@ -1,3 +1,23 @@
+create_or_update_marker = (key, lat, lon, name, desc, iconStyle) ->  
+  marker = findMarkerById(key)
+  removeMarkerFromMap marker  if marker
+  marker = createMarker(key, lat, lon, iconStyle, desc, name, true)
+  addMarkerToMap marker, true
+  marker
+
+update_map = (type, e, s, d) ->
+  console.log s
+  if type=='from'
+    key = 'start'
+    icon = 'startIcon'
+  else
+    key = 'stop'
+    icon = 'stopIcon'
+  removeMatchingMarkers(key);
+  marker = create_or_update_marker(key, s.lat, s.lon, s.name, s.full_address, icon);
+  setMapToBounds();
+  selectMarker(marker);
+
 $ ->
 
   places = new Bloodhound
@@ -27,12 +47,16 @@ $ ->
   
   $('#trip_proxy_from_place').on 'typeahead:selected', (e, s, d) ->
     $('#from_place_object').val(JSON.stringify(s))
+    update_map('from', e, s, d)
   $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, s, d) ->
     $('#from_place_object').val(JSON.stringify(s))
+    update_map('from', e, s, d)
   $('#trip_proxy_to_place').on 'typeahead:selected', (e, s, d) ->
     $('#to_place_object').val(JSON.stringify(s))
+    update_map('to', e, s, d)
   $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, s, d) ->
     $('#to_place_object').val(JSON.stringify(s))
+    update_map('to', e, s, d)
 
   $('#new_trip_proxy').on 'submit', ->
     $('#map_center').val((LMmap.getCenter().lat + ',' + LMmap.getCenter().lng))
