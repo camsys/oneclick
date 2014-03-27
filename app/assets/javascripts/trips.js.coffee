@@ -6,7 +6,16 @@ create_or_update_marker = (key, lat, lon, name, desc, iconStyle) ->
   marker
 
 update_map = (type, e, s, d) ->
-  console.log s
+  lat = s.lat
+  lon = s.lon
+  if lat==null
+    $.ajax
+      type: 'GET'
+      url: '/place_details/' + s.id
+      async: false
+      success: (data) ->
+        lat = data.result.geometry.location.lat
+        lon = data.result.geometry.location.lng
   if type=='from'
     key = 'start'
     icon = 'startIcon'
@@ -14,7 +23,7 @@ update_map = (type, e, s, d) ->
     key = 'stop'
     icon = 'stopIcon'
   removeMatchingMarkers(key);
-  marker = create_or_update_marker(key, s.lat, s.lon, s.name, s.full_address, icon);
+  marker = create_or_update_marker(key, lat, lon, s.name, s.full_address, icon);
   setMapToBounds();
   selectMarker(marker);
 

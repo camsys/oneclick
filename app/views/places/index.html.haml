@@ -1,39 +1,45 @@
-.row-fluid
-  .span12
-    %h3 Enter the Location
-.row-fluid
-  .span12
-    = text_field_tag :from_place, '', class: 'place_picker', autocomplete: "off", placeholder: 'Type an Address, or anything Google Maps will accept'
+- content_for :head do
+  = stylesheet_link_tag 'typeahead.js-bootstrap.css'
+  = javascript_include_tag asset_path('places.js')
 
-.row-fluid
-  .span3
-    .row-fluid
-      .span12
-        %h3 Enter a Name
-    .row-fluid
-      .span9
-        = text_field_tag :place_name, '', style: 'width: 100%;'
-      .span3
-        .btn.btn-primary.pull-right
-          Save
-    .row-fluid
-      .span12
-        %h3 My Places
-    .row-fluid
-      .span12{style: 'max-height: 300px;'}
-        %table.table.table-bordered
-          - @places.each_with_index do |place, i|
-            %tr
-              %td= ('A'..'Z').to_a[i] + ' ' + place.name
-    .row-fluid
-      .span6
-        .btn.btn-primary
-          Delete
-      .span6
-        .btn.btn-primary.pull-right
-          Edit
+= simple_form_for :places, url: handle_user_places_path(@traveler) do
+  .row-fluid
+    .span12
+      %h3 Enter the Location
+  .row-fluid
+    .span12
+      = text_field_tag :from_place, '', class: 'place_picker', autocomplete: "off", placeholder: 'Type an Address, or anything Google Maps will accept', data: {foo: 'bar'}
+      = hidden_field_tag :json
 
-  .span9
-    = LeafletMap({ :mapid => 'lmap', :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height:500px;" })
+  .row-fluid
+    .span3
+      .row-fluid
+        .span12
+          %h3 Enter a Name
+      .row-fluid
+        .span9
+          = text_field_tag :place_name, '', style: 'width: 100%;'
+        .span3
+          = button_tag type: :submit, name: 'save', class: 'btn btn-primary pull-right' do
+            Save
+      .row-fluid
+        .span12
+          %h3 My Places
+      .row-fluid
+        .span12.places-table-container
+          %table.table.table-bordered#places-table
+            - @places.each_with_index do |place, i|
+              %tr
+                %td{id: "place-#{i}", data: {address: place.raw_address, placename: place.name, json: place.to_json}}= ('A'..'Z').to_a[i] + ' ' + place.name
+      .row-fluid
+        .span6
+          = button_tag type: :submit, name: 'delete', class: 'btn btn-primary' do
+            Delete
+        .span6
+          / = button_tag type: :submit, name: 'edit', class: 'btn btn-primary pull-right' do
+          /   Edit
+
+    .span9
+      = LeafletMap({ :mapid => 'lmap', :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height:500px;" })
 
 = yield :scripts
