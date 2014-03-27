@@ -541,7 +541,7 @@ def add_dav
     p.save
 
     #Create service Disabled American Vets van
-    paratransit = ServiceType.find_by_name('Paratransit')
+    paratransit = ServiceType.find_by_code('paratransit')
     service = Service.create(name: 'Disabled American Veterans: Van to Lebanon VA', provider: p, service_type: paratransit, advanced_notice_minutes: 5*24*60)
     #Add Schedules
     (1..5).each do |n|
@@ -577,7 +577,7 @@ def add_rabbit_general
   provider = Provider.find_by_external_id('1')
 
   #Create service Disabled American Vets van
-  paratransit = ServiceType.find_by_name('Paratransit')
+  paratransit = ServiceType.find_by_code('paratransit')
   s = Service.find_by_name('General Public Shared Ride')
   unless s.nil?
     return
@@ -601,8 +601,8 @@ def add_rabbit_general
     ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
   end
 
-  medical = TripPurpose.find_by_name('Medical')
-  cancer = TripPurpose.find_by_name('Cancer Treatment')
+  medical = TripPurpose.find_by_code('medical')
+  cancer = TripPurpose.find_by_code('cancer')
   #Trip purpose requirements
   [medical, cancer].each do |n|
     ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
