@@ -425,16 +425,10 @@ class TripsController < PlaceSearchingController
     # inflate a trip proxy object from the form params
     @trip_proxy = create_trip_proxy_from_form_params
 
-    Rails.logger.info "TripsController#create"
-    Rails.logger.info @trip_proxy.ai
-    Rails.logger.info "valid? #{@trip_proxy.valid?}"
-    Rails.logger.info "errors #{@trip_proxy.errors.ai}"
     # TODO If trip_proxy isn't valid, should go back to form right now, before this.
     if @trip_proxy.valid?
       @trip = Trip.create_from_proxy(@trip_proxy, current_or_guest_user, @traveler)
     end
-
-    Rails.logger.info @trip.ai
 
     # Create markers for the map control
     @markers = create_trip_proxy_markers(@trip_proxy).to_json
