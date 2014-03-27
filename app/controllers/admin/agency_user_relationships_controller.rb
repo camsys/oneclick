@@ -1,7 +1,7 @@
 class Admin::AgencyUserRelationshipsController < Admin::BaseController
   # TODO Not working yet, needs rework
   # load_and_authorize_resource
-  skip_authorization_check :only => [:create]#This should get cancan'd at some point, but currently any user can do this at any time
+  skip_authorization_check :only => [:create, :traveler_revoke, :traveler_hide, :agency_revoke]# TODO This should get cancan'd at some point, but currently any user can do this at any time
     
 
   def index
