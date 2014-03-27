@@ -3,7 +3,7 @@
     %a.close{"data-dismiss" => "modal"} ×
     %h3= t(:send_trip_by_email)
     = simple_form_for :email, url: email_user_trip_path(@traveler, @trip), html: { class: 'form-horizontal',
-      id: 'send_by_email_form' }, data: {dismiss: 'modal'}  do |f|
+      id: 'send_by_email_form' }  do |f|
       .modal-body
         = f.error_notification
         - if user_signed_in?
@@ -18,13 +18,6 @@
         = button_tag type: :submit, class: 'btn btn-info' do
           %i.fa.fa-envelope-o
           = t(:send)
-        = link_to '#', :class => "cancel_link" do
+        = link_to '#', class: "cancel_link", data: {dismiss: 'modal'} do
           %i.fa.fa-reply
           = t(:cancel)
-:javascript
-  $('#send_by_email_form').on('submit', function() {
-    $('#send_trip_by_email').modal('hide')
-  })
-  $('.cancel_link').on('click', function() {
-    $('#send_trip_by_email').modal('hide')  
-  })

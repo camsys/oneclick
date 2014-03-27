@@ -2,34 +2,32 @@
 %p Note: All content translations can be entered as HTML
 
 .row-fluid
-    = link_to  new_translation_path, :class => "btn btn-primary" do
-        %i.icon-plus= " Add Key"
-/ %dl.dl-horizontal
-/     - @translations_proxies.each do |p|
-/         %dt= p.key
-/         - p.translations.each do |t|
-/             %dd= t.locale
-/             %dd= t.value.html_safe
-.table-responsive.table-hover
-    %table.table-hover.table-condensed
-        %tr
-            %th
-                %h3 Locale
-            %th
-                %h3 Value
-            %th
-        - @translations_proxies.each do |p|
-            %tr.text-centered
-                %td
-                    %h5= p.key
-                %td
-                    = link_to "Add translation", new_translation_path(key: p.key)
-            - p.translations.each do |t|
-                %tr
-                    %td= t.locale
-                    %td.text-left= t.value ? t.value.html_safe : "<MISSING>"
-                    %td
-                        = link_to edit_translation_path(t), class: "btn btn-primary" do
-                            %i.icon-edit= " Edit"
-                        = link_to translation_path(t), method: :delete, class: "btn btn-danger" do
-                            %i.icon-trash= " Delete"
+  = link_to new_translation_path, :class => "btn btn-primary" do
+    %i.icon-plus
+    Add Key
+.row-fluid
+  .span2
+    %h3 Locale
+  .span6
+    %h3 Value
+  .span4
+- @translations_proxies.each do |p|
+  .row-fluid{id: p.key}
+    .span2
+      %h5= p.key
+    .span6
+      %h5= link_to "Add translation", new_translation_path(key: p.key)
+    .span4
+  - p.translations.each do |t|
+    .row-fluid{id: t.value}
+      .span2
+        =t.locale
+      .span6.text-left
+        = t.value ? t.value.html_safe : ""
+      .span4
+        = link_to edit_translation_path(t), class: "btn btn-primary" do
+          %i.icon-edit
+          Edit
+        = link_to translation_path(t), method: :delete, class: "btn btn-danger" do
+          %i.icon-trash
+          Delete

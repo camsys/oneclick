@@ -1,3 +1,5 @@
+# TODO There's a lot of duplication between this and trips.json
+
 create_or_update_marker = (key, lat, lon, name, desc, iconStyle) ->  
   marker = findMarkerById(key)
   removeMarkerFromMap marker  if marker
@@ -6,16 +8,9 @@ create_or_update_marker = (key, lat, lon, name, desc, iconStyle) ->
   marker
 
 update_map = (type, e, s, d) ->
-  lat = s.lat
-  lon = s.lon
-  if lat==null
-    $.ajax
-      type: 'GET'
-      url: '/place_details/' + s.id
-      async: false
-      success: (data) ->
-        lat = data.result.geometry.location.lat
-        lon = data.result.geometry.location.lng
+  console.log s
+  if s.lat==null
+    return
   if type=='from'
     key = 'start'
     icon = 'startIcon'
@@ -23,11 +18,21 @@ update_map = (type, e, s, d) ->
     key = 'stop'
     icon = 'stopIcon'
   removeMatchingMarkers(key);
-  marker = create_or_update_marker(key, lat, lon, s.name, s.full_address, icon);
+  marker = create_or_update_marker(key, s.lat, s.lon, s.name, s.full_address, icon);
   setMapToBounds();
   selectMarker(marker);
 
 $ ->
+  console.log 'places.js.coffee'
+  $('#places-table td').on 'click', (e) ->
+    $('#places-table tr').removeClass('success')
+    $(e.target).closest('tr').addClass('success')
+    # console.log e
+    # console.log e.target.dataset.placename
+    # console.log $('#from_place').data('foo')
+    $('#from_place').val(e.target.dataset.address)
+    $('#json').val(e.target.dataset.json)
+    $('#place_name').val(e.target.dataset.placename)
 
   places = new Bloodhound
     datumTokenizer: (d) ->
@@ -54,18 +59,9 @@ $ ->
         '<a>{{name}}</a>'
       ].join(''))
   
-  $('#trip_proxy_from_place').on 'typeahead:selected', (e, s, d) ->
-    $('#from_place_object').val(JSON.stringify(s))
+  $('#from_place').on 'typeahead:selected', (e, s, d) ->
+    $('#json').val(JSON.stringify(s))
     update_map('from', e, s, d)
-  $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, s, d) ->
-    $('#from_place_object').val(JSON.stringify(s))
+  $('#from_place').on 'typeahead:autocompleted', (e, s, d) ->
+    $('#json').val(JSON.stringify(s))
     update_map('from', e, s, d)
-  $('#trip_proxy_to_place').on 'typeahead:selected', (e, s, d) ->
-    $('#to_place_object').val(JSON.stringify(s))
-    update_map('to', e, s, d)
-  $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, s, d) ->
-    $('#to_place_object').val(JSON.stringify(s))
-    update_map('to', e, s, d)
-
-  $('#new_trip_proxy').on 'submit', ->
-    $('#map_center').val((LMmap.getCenter().lat + ',' + LMmap.getCenter().lng))

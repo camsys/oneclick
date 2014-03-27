@@ -22,10 +22,11 @@ class PlacesController < PlaceSearchingController
     end
         
   end
+
   # not really a destroy -- just hides the place by setting active = false
   def destroy
-    
-    place = @traveler.places.find(params[:delete_place_id])
+    j = JSON.parse(params[:json])    
+    place = @traveler.places.find(j['id'])
     if place
       place.active = false
       if place.save
@@ -47,12 +48,30 @@ class PlacesController < PlaceSearchingController
 
   def create
 
-    # inflate a place proxy object from the form params
-    @place_proxy = PlaceProxy.new(params[:place_proxy])
-       
-    if @place_proxy.valid?
-      place = create_place(@place_proxy)
+    j = JSON.parse(params[:json])
+    if j['type_name']=='PLACES_AUTOCOMPLETE_TYPE'
+      Rails.logger.info "Was autocompleted, creating new"
+      details = get_places_autocomplete_details(j['id'])
+      d = cleanup_google_details(details.body['result'])
+      Rails.logger.info d
+      j = j.merge!(d).keep_if {|k, v| %w{raw_address address1 address2 city state zip lat lon county}.include? k}
+      place = Place.create!(j.merge({name: params[:place_name], user: @traveler}))
+      place.update_attribute(:raw_address, place.get_address)
+    else
+      Rails.logger.info "updating"
+      place = Place.find(j['id'])
+      j.delete 'id'
+      place.update_attributes!(j.merge({name: params[:place_name]}))
     end
+
+    Rails.logger.info place.ai
+
+    # # inflate a place proxy object from the form params
+    # @place_proxy = PlaceProxy.new(params[:place_proxy])
+       
+    # if @place_proxy.valid?
+    #   place = create_place(@place_proxy)
+    # end
 
     # set the basic form variables
     set_form_variables
@@ -72,6 +91,14 @@ class PlacesController < PlaceSearchingController
     end
   end
   
+  def handle
+    if params[:save]
+      create
+    elsif params[:delete]
+      destroy
+    end
+  end
+
   # updates a place
   def update
 
@@ -144,13 +171,11 @@ protected
   end
 
   def set_form_variables
-    
     @places = @traveler.places
     if @place_proxy.nil?
       @place_proxy = PlaceProxy.new 
     end
     @markers = generate_map_markers(@places)
-    
   end
 
   # Creates a place proxy from a place. Assumes that if the place is not a POI it
@@ -243,12 +268,12 @@ protected
   #
   # generate an array of map markers for use with the leaflet plugin
   #
-  def generate_map_markers(places)
+  def generate_map_markers(places, iconName = nil)
 
     objs = []
     places.each_with_index do |place, index|
       place_id = 'my_place' + index.to_s
-      objs << get_map_marker(place, place_id, get_indexed_marker_icon(index, "0"))
+      objs << get_map_marker(place, place_id, (iconName ? iconName : get_indexed_marker_icon(index, "0")))
     end
     return objs.to_json
   end

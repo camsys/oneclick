@@ -193,15 +193,15 @@
         = @trip.to_place.name
       %h5 Date
       %p.date
-        = format_date(@trip.trip_parts.first.trip_time.in_time_zone)
+        = format_date(@trip.trip_parts.first.trip_time)
       %h5 Departure Time
       %p.time
-        = format_time(@trip.trip_parts.first.trip_time.in_time_zone)
+        = format_time(@trip.trip_parts.first.trip_time)
 
       - if @trip.is_return_trip
         %h5 Return Time
         %p.return
-          = format_time(@trip.trip_parts.last.trip_time.in_time_zone)
+          = format_time(@trip.trip_parts.last.trip_time)
 
       %h5 Purpose
       %p.reason

@@ -26,6 +26,11 @@ FactoryGirl.define do
       last_name 'User'
       email 'example2@example.com'
     end
+    factory :spanish_user do
+      first_name 'Spanish'
+      last_name 'user'
+      preferred_locale 'es'
+    end
     factory :admin do
     first_name 'Admin'
     last_name 'User'

@@ -55,3 +55,25 @@
     = link_to :back, :class => "cancel_link" do
       %i.fa.fa-reply
       = t(:cancel)
+
+:javascript
+  // $.fn.datepicker.Calendar.setDefaultLocale("#{I18n.locale}");
+  
+  $('#trip-date').datepicker().on("dateChange", function(e) {
+    $('#trip_proxy_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
+  });  
+
+  $('#trip-time').timepicker({
+    'timeFormat': 'g:i a',
+    'scrollDefaultTime': '9:00 am'
+    }).on("changeTime", function(e) {
+        $('#trip_proxy_trip_time').val($('#trip-time').data('ui-timepicker-value'));
+  });
+  
+  $('#return-trip-time').timepicker({
+    'timeFormat': 'g:i a',
+    'scrollDefaultTime': '10:00 am'
+    }).on("changeTime", function(e) {
+        $('#trip_proxy_return_trip_time').val($('#return-trip-time').data('ui-timepicker-value'));
+  });
+    

@@ -6,11 +6,11 @@
   = t(:to).downcase
   %span.place_name= trip.to_place.name
   = depart_arrive(out).downcase
-  = format_date(out.trip_time.in_time_zone)
+  = format_date(out.trip_time)
   = t(:at)
   - unless trip.is_return_trip
-    = format_time(out.trip_time.in_time_zone)
+    = format_time(out.trip_time)
   - else
-    = format_time(out.trip_time.in_time_zone) + ', '
+    = format_time(out.trip_time) + ', '
     = t(:returning)
-    = format_time(trip.trip_parts.last.trip_time.in_time_zone)
+    = format_time(trip.trip_parts.last.trip_time)

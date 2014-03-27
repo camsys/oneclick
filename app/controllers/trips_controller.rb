@@ -361,7 +361,7 @@ class TripsController < PlaceSearchingController
     # save the id of the trip we are updating
     if @trip_proxy.valid?
       @trip_proxy.id = @trip.id
-  end
+    end
 
     # Create markers for the map control
     @markers = create_trip_proxy_markers(@trip_proxy).to_json
@@ -372,7 +372,7 @@ class TripsController < PlaceSearchingController
 
       # create a trip from the trip proxy. We need to do this first before any
       # trip places are removed from the database
-      updated_trip = create_trip(@trip_proxy)
+      updated_trip = Trip.create_from_proxy(@trip_proxy, current_or_guest_user, @traveler)
 
       # remove any child objects in the old trip
       @trip.clean
@@ -425,16 +425,10 @@ class TripsController < PlaceSearchingController
     # inflate a trip proxy object from the form params
     @trip_proxy = create_trip_proxy_from_form_params
 
-    Rails.logger.info "TripsController#create"
-    Rails.logger.info @trip_proxy.ai
-    Rails.logger.info "valid? #{@trip_proxy.valid?}"
-    Rails.logger.info "errors #{@trip_proxy.errors.ai}"
     # TODO If trip_proxy isn't valid, should go back to form right now, before this.
     if @trip_proxy.valid?
       @trip = Trip.create_from_proxy(@trip_proxy, current_or_guest_user, @traveler)
     end
-
-    Rails.logger.info @trip.ai
 
     # Create markers for the map control
     @markers = create_trip_proxy_markers(@trip_proxy).to_json
@@ -651,6 +645,7 @@ private
     trip_proxy.arrive_depart = trip_part.is_depart
     trip_datetime = trip_part.trip_time
     trip_proxy.trip_date = trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
+    temp_time = trip_part.scheduled_time
     trip_proxy.trip_time = trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
     Rails.logger.info "create_trip_proxy"
     Rails.logger.info "trip_part.scheduled_date #{trip_part.scheduled_date}"

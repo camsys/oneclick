@@ -9,7 +9,7 @@
 
     -if (@trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service) or (@trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.service)
       = simple_form_for :email, url: email_provider_user_trip_path(@traveler, @trip), html: { class: 'form-horizontal',
-        id: 'send_by_email_to_provider_form' }, data: {dismiss: 'modal'}  do |f|
+        id: 'send_by_email_to_provider_form' }  do |f|
         = f.error_notification
         - if user_signed_in?
           - if assisting?

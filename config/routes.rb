@@ -68,6 +68,7 @@ Oneclick::Application.routes.draw do
       # users have places
       resources :places, :only => [:index, :new, :create, :destroy, :edit, :update] do
         collection do
+          post 'handle'
           get   'search'
           post  'geocode'
         end
@@ -245,6 +246,9 @@ Oneclick::Application.routes.draw do
 
     # TODO This should go somewhere else
     get '/place_search' => 'trips#search'
+    get '/place_search_my' => 'trips#search_my'
+    get '/place_search_poi' => 'trips#search_poi'
+    get '/place_search_geo' => 'trips#search_geo'
 
     namespace :admin do
       resources :reports, :only => [:index, :show]

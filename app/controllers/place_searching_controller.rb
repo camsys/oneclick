@@ -76,7 +76,7 @@ class PlaceSearchingController < TravelerAwareController
     rel = Place.arel_table[:name].matches(query_str)
     places = @traveler.places.active.where(rel)
     places.each do |place|
-      matches << {
+      m = {
         "index" => counter,
         "type" => PLACES_TYPE,
         "type_name" => 'PLACES_TYPE',
@@ -85,8 +85,10 @@ class PlaceSearchingController < TravelerAwareController
         "lat" => place.location.first,
         "lon" => place.location.last,
         "address" => place.address,
+        "full_address" => place.address,
         "description" => map_partial(no_map_partial, { :place => {:icon => 'fa-building-o', :name => place.name, :address => place.address} })
       }
+      matches <<  m.merge(place.interesting_attributes)
       counter += 1
     end
 
@@ -143,6 +145,44 @@ class PlaceSearchingController < TravelerAwareController
     counter += places_matches.size
 
     Rails.logger.info "PlaceSearchingController#search - returning #{matches.size} results for #{query_str}"
+    render :json => matches.to_json
+  end
+
+def search_my
+    Rails.logger.info "PlaceSearchingController#search_my"
+    Rails.logger.info params.ai
+    # Populate the @traveler variable
+    get_traveler
+
+    query = params[:query]
+    query_str = query + "%"
+    Rails.logger.info "query_str: #{query_str}"
+
+    no_map_partial = params[:no_map_partial].to_bool
+
+    matches = []
+    counter = 0
+
+    # First search for matching names in my places
+    rel = Place.arel_table[:name].matches(query_str)
+    places = @traveler.places.active.where(rel)
+    places.each do |place|
+      matches << {
+        "index" => counter,
+        "type" => PLACES_TYPE,
+        "type_name" => 'PLACES_TYPE',
+        "name" => place.name,
+        "id" => place.id,
+        "lat" => place.location.first,
+        "lon" => place.location.last,
+        "address" => place.address,
+        "full_address" => place.address,
+        "description" => map_partial(no_map_partial, { :place => {:icon => 'fa-building-o', :name => place.name, :address => place.address} })
+      }
+      counter += 1
+    end
+
+    Rails.logger.info "PlaceSearchingController#search_my - returning #{matches.size} results for #{query_str}"
     render :json => matches.to_json
   end
 

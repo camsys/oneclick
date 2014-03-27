@@ -1,7 +1,12 @@
 %h1
   %i.fa.fa-key.fa-rotate-90
   = t(:sign_up)
-%h4
+
+- if @create_inline
+  .row-fluid
+    .span12
+      = render partial: 'trips/trip_header', locals: {trip: @trip}
+
 .well
   = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
     = f.error_notification

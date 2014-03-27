@@ -159,7 +159,6 @@ function adjust_thumbnails(window_width) {
     $('.thumbnail').removeClass('first-in-row');
     // Add the first-in-row class to the first thumbnail in each row
     if (OneClick.Config['ui_mode'] != 'kiosk') {
-        console.log('not kiosk')
         var i = 0;
         $('.thumbnail').each(function() {
             var remainder = i % counter;
@@ -170,6 +169,6 @@ function adjust_thumbnails(window_width) {
             i++;
         })
     } else {
-        console.log('kiosk')
+        // console.log('kiosk')
     }
 };

@@ -29,6 +29,8 @@ en:
   agencies: "Agencies"
   add_new_agency: "Add a new Agency"
   add_agency: "Add Agency"
+  edit_agency_name: 'Edit %{name}'
+  update_agency: "Update Agency"
   agency_added: "Agency added"
   user_created_and_added_to_agency: "User %{user} created and added to agency %{agency}"
   my_agencies: "My Agencies"
@@ -40,6 +42,7 @@ en:
   new_agency: "New Agency"
   providers: "Providers"
   provider_orgs: "Provider Organizations"
+  new_provider_org: 'New Provider Organization'
   org_type: "Org type"
   new_organization: "New Organization"
   editing_orgs: "Editing organization"
@@ -367,7 +370,11 @@ en:
   about_2_blocks: "about 2 blocks"
   about_4_blocks: "about 4 blocks"
   twof_miles: "%.2f miles"
-  one_click_buddy_request_from_from_email: "1-Click buddy request from %{@from_email}"
+  one_click_buddy_request_from_from_email: "1-Click buddy request from %{from}"
+  one_click_buddy_revoke_from_from_email: "1-Click buddy revoked by %{by}"
+  one_click_traveler_confirmation_from_from_email: "1-Click buddy confirmation by %{by}"
+  one_click_traveler_decline_by_from_email: '1-Click traveler request declined by %{by}'
+  one_click_traveler_revoke_by_from_email: '1-Click traveler revoked by %{by}'
   you_can_t_be_your_own_buddy: "You can't be your own buddy."
   you_ve_already_asked_them_to_be_a_buddy: "You've already asked them to be a buddy."
   my_buddies: "My buddies"
@@ -459,6 +466,10 @@ en:
   search: "Search"
   aid_user: "Aid User"
   none: "None"
+  show: "Show"
+  list: "List"
+  name: "Name"
+
   
   date:
     abbr_day_names:

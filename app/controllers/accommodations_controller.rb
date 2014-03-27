@@ -42,6 +42,7 @@ class AccommodationsController < TravelerAwareController
 
     get_traveler
     @trip_id = session[:current_trip_id]
+    @trip = Trip.find(@trip_id)
 
     respond_to do |format|
       format.html

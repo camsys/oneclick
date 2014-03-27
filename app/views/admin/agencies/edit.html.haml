@@ -1,7 +1,7 @@
-%h1= "Edit #{@agency.name}"
+%h1= t(:edit_agency_name, name: @agency.name)
 
 = render 'form'
 
-= link_to 'Show', [:admin, @agency]
+= link_to t(:show), [:admin, @agency]
 \|
-= link_to 'List', admin_agencies_path
+= link_to t(:list), admin_agencies_path

@@ -1,70 +1,45 @@
-.row-fluid
-  .span12
-    %h1
-      %i.fa.fa-map-marker
-      = is_assisting ? "#{@traveler.name}'s #{t(:places)}" : t(:my_places)
+- content_for :head do
+  = stylesheet_link_tag 'typeahead.js-bootstrap.css'
+  = javascript_include_tag asset_path('places.js')
 
-.row-fluid{:style => "margin-top:20px;"}
-  .well.well-small
-    .row-fluid
-      #places_form.span12
-        = link_to "#" do
-          %i.fa.fa-map-marker.fa-2x.pull-right#map-icon
-        = render 'places_form'
-      #places_map.span6
-        = render 'places_map'  
+= simple_form_for :places, url: handle_user_places_path(@traveler) do
+  .row-fluid
+    .span12
+      %h3 Enter the Location
+  .row-fluid
+    .span12
+      = text_field_tag :from_place, '', class: 'place_picker', autocomplete: "off", placeholder: 'Type an Address, or anything Google Maps will accept', data: {foo: 'bar'}
+      = hidden_field_tag :json
 
-:javascript
-  // UI variables
-  var place_map_key = "place_map_key";
+  .row-fluid
+    .span3
+      .row-fluid
+        .span12
+          %h3 Enter a Name
+      .row-fluid
+        .span9
+          = text_field_tag :place_name, '', style: 'width: 100%;'
+        .span3
+          = button_tag type: :submit, name: 'save', class: 'btn btn-primary pull-right' do
+            Save
+      .row-fluid
+        .span12
+          %h3 My Places
+      .row-fluid
+        .span12.places-table-container
+          %table.table.table-bordered#places-table
+            - @places.each_with_index do |place, i|
+              %tr
+                %td{id: "place-#{i}", data: {address: place.raw_address, placename: place.name, json: place.to_json}}= ('A'..'Z').to_a[i] + ' ' + place.name
+      .row-fluid
+        .span6
+          = button_tag type: :submit, name: 'delete', class: 'btn btn-primary' do
+            Delete
+        .span6
+          / = button_tag type: :submit, name: 'edit', class: 'btn btn-primary pull-right' do
+          /   Edit
 
-  // Document Ready
-  $(document).ready(function(){
-    // open or close the map on load based on last state
-    var map_open = get_ui_key_value(place_map_key, 0);
-    //alert(place_map_key + ' = ' + map_open);
-    if (map_open == 1) {
-      open_map();
-    } else {
-      close_map();
-    }
+    .span9
+      = LeafletMap({ :mapid => 'lmap', :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height:500px;" })
 
-    // install event handlers
-    $('#map-icon').click(function(){
-      var map_open = get_ui_key_value(place_map_key, 0);
-      //alert(place_map_key + ' = ' + map_open);
-      if (map_open == 1) {
-        // user is closing the map
-        close_map();
-      } else {
-        // user is opening the map
-        open_map();
-      }
-    }); 
-    
-  });
- 
-  function open_map() {
-    //alert('opening map');
-    $('#places_form').removeClass('span12');
-    $('#places_form').addClass('span6');
-    $('#places_map').show();
-    invalidateMap();
-    $('#map-icon').removeClass('fa-map-marker');
-    $('#map-icon').addClass('fa-play');
-    // make sure no popups are currently being shown or they will get messed up
-    closePopup();
-    // refresh the map display
-    setMapToBounds();
-    set_ui_key_value(place_map_key, 1);
-  };
-  
-  function close_map() {
-    //alert('closing map');
-    $('#places_form').removeClass('span6');
-    $('#places_form').addClass('span12');
-    $('#places_map').hide();
-    $('#map-icon').removeClass('fa-play');
-    $('#map-icon').addClass('fa-map-marker');
-    set_ui_key_value(place_map_key, 0);
-  };
+= yield :scripts

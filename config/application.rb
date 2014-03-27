@@ -91,7 +91,7 @@ module Oneclick
     # Add in here any css or js that is *not* specified in application.css.scss or
     # application.js (e.g. will typically be referenced directly in a view or a
     # template
-    config.assets.precompile += %w{tadaaapickr.pack.min.js trips.js typeahead.js-bootstrap.css}
+    config.assets.precompile += %w{tadaaapickr.pack.min.js trips.js places.js typeahead.js-bootstrap.css}
 
     config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
 

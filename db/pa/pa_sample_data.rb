@@ -58,6 +58,7 @@ def add_users_and_places
       ump.mode = mode
       ump.save!
     end
+    u.add_role :registered_traveler    
   end
 end
 
@@ -683,43 +684,31 @@ end
 
 
 def add_cms
-  Cms::Site.destroy_all
-  site = Cms::Site.where(identifier: 'default').first_or_create(label: 'default', hostname: 'localhost', path: 'content')
-  # site.snippets.create! identifier: 'plan-a-trip', label: 'plan a trip', content: '<div class="well">This is the content for Plan A Trip</div>'
-  # site.snippets.create! identifier: 'home-top-logged-in', label: 'home-top-logged-in', content: '<div class="well">This is content for home-top-logged-in</div>'
-  # site.snippets.create! identifier: 'home-top', label: 'home-top', content: '<div class="well">This is content for home-top</div>'
-  # site.snippets.create! identifier: 'home-bottom-left-logged-in', label: 'home-bottom-left-logged-in', content: '<div class="well">This is content for home-bottom-left-logged-in</div>'
-  # site.snippets.create! identifier: 'home-bottom-center-logged-in', label: 'home-bottom-center-logged-in', content: '<div class="well">This is content for home-bottom-center-logged-in</div>'
-  # site.snippets.create! identifier: 'home-bottom-right-logged-in', label: 'home-bottom-right-logged-in', content: '<div class="well">This is content for home-bottom-right-logged-in</div>'
-  # site.snippets.create! identifier: 'home-bottom-left', label: 'home-bottom-left', content: '<div class="well">This is content for home-bottom-left</div>'
-  # site.snippets.create! identifier: 'home-bottom-center', label: 'home-bottom-center', content: '<div class="well">This is content for home-bottom-center</div>'
-  # site.snippets.create! identifier: 'home-bottom-right', label: 'home-bottom-right', content: '<div class="well">This is content for home-bottom-right</div>'
-  brand = Oneclick::Application.config.brand
   text = <<EOT
 <h2 style="text-align: justify;">1-Click/PA helps you find options to get from here to there, using public transit,
  door-to-door services, and specialized transportation.  Give it a try, and
  <a href="mailto://OneClick@camsys.com">tell us</a> what you think.</h2>
 EOT
-      site.snippets.create! identifier: 'home-top-logged-in', label: 'home-top-logged-in', content: text
-      site.snippets.create! identifier: 'home-top', label: 'home-top', content: text
+      Translation.find_or_create_by(:key => 'home-top_html').update_attributes(:value => text)
+      Translation.find_or_create_by(:key => 'home-top-logged-in_html').update_attributes(:value => text)
       text = <<EOT
 1-Click/PA was funded by the
  <a href="http://www.fta.dot.gov/grants/13094_13528.html" target=_blank>Veterans Transportation
  Community Living Initiative</a>.
 EOT
-      site.snippets.create! identifier: 'home-bottom-left-logged-in', label: 'home-bottom-left-logged-in', content: text
-      site.snippets.create! identifier: 'home-bottom-left', label: 'home-bottom-left', content: text
+      Translation.find_or_create_by(:key => 'home-bottom-left_html').update_attributes(:value => text)
+      Translation.find_or_create_by(:key => 'home-bottom-left-logged-in_html').update_attributes(:value => text)
       text = <<EOT
 <span style="float: right;">1-Click/PA is sponsored by the
 <a href="http://www.dot.state.pa.us/" target=_blank>Pennsylvania Department of Transportation</a> and the
 <a href="http://www.rabbittransit.org/" target=_blank>York Adams Transportation Authority</a>.</span>
 EOT
-      site.snippets.create! identifier: 'home-bottom-right-logged-in', label: 'home-bottom-right-logged-in', content: text
-      site.snippets.create! identifier: 'home-bottom-right', label: 'home-bottom-right', content: text
+      Translation.find_or_create_by(:key => 'home-bottom-right_html').update_attributes(:value => text)
+      Translation.find_or_create_by(:key => 'home-bottom-right-logged-in_html').update_attributes(:value => text)
       text = <<EOT
 Tell us about your trip.  The more information you give us, the more options we can find!
 EOT
-      site.snippets.create! identifier: 'plan-a-trip', label: 'plan a trip', content: text
+      Translation.find_or_create_by(:key  => 'plan-a-trip_html').update_attributes(:value => text)
 end
 
 ### MAIN ###

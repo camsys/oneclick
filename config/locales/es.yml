@@ -28,6 +28,8 @@ es:
   agency_added: "[es27]Agency added[/es]"
   user_created_and_added_to_agency: "[es29]User %{user} created and added to agency %{agency}[/es]"
   add_agency: "[es26]Add Agency[/es]"
+  edit_agency_name: '[es]Edit %{name}[/es]'
+  update_agency: "[es]Update Agency[/es]"
   my_agencies: "[es27]My Agencies[/es]"
   not_any_agencies: "[es28]You haven't approved any agencies to help you[/es]"
   agency_now_assisting: "[es30]#{@agency} now assisting[/es]"
@@ -40,6 +42,7 @@ es:
   editing_org: "[es30]Editing organization[/es]"
   listing_orgs: "[es31]Listing Organizations[/es]"
   provider_orgs: "[es30]Provider Organizations[/es]"
+  new_provider_org: '[es]New Provider Organization[/es]'
   org_type: "[es33]Org type[/es]"
   new_organization: "[es35]New Organization[/es]"
   provider_name: "[es23]Provider name[/es]"
@@ -365,7 +368,11 @@ es:
   about_2_blocks: "aproximadament 2 cuadras"
   about_4_blocks: "aproximadamente 4 cuadras"
   twof_miles: "%.2f millas"
-  one_click_buddy_request_from_from_email: "1-Click solicitud de amigo de %{@from_email}"
+  one_click_buddy_request_from_from_email: "[es]1-Click solicitud de amigo de %{from}[/es]"
+  one_click_buddy_revoke_from_from_email: "[es]1-Click buddy revoked by %{by}[/es]"
+  one_click_traveler_confirmation_from_from_email: "[es]1-Click buddy confirmation by %{by}[/es]"
+  one_click_traveler_decline_by_from_email: "[es]1-Click traveler request declined by %{by}[/es]"
+  one_click_traveler_revoke_by_from_email: "[es]1-Click traveler revoked by %{by}[/es]"
   you_can_t_be_your_own_buddy: "No puedes ser tu propio amigo."
   you_ve_already_asked_them_to_be_a_buddy: "Ya le has solicitado ser amigo."
   my_buddies: "[es331]My Buddies[/es]"
@@ -457,6 +464,9 @@ es:
   search: "[es439]Search[/es]"
   aid_user: "[es440]Aid User[/es]"
   none: "[es]None[/es]"
+  show: "[es]Show[/es]"
+  list: "[es]List[/es]"
+  name: "[es]Name[/es]"
 
   # Branding
   arc:
@@ -561,6 +571,9 @@ es:
       x_hours:
             one: '1 hora'
             other: '%{count} horas'
+      less_than_x_minutes:
+            one: '[es]less than 1 minute[/es]'
+            other: '[es]less than %{count} minutes[/es]'
       x_minutes:
             one: '1 minuto'
             other: '%{count} minutos'

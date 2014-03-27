@@ -3,7 +3,7 @@
     %a.close{"data-dismiss" => "modal"} ×
     %h3= t(:send_itinerary_by_email)
   = simple_form_for :email, url: email_itinerary_user_trip_path(@traveler, @trip, itinerary: itinerary), html: { class: 'form-horizontal',
-    id: 'send_itinerary_by_email_form_' + itinerary.id.to_s }, data: {dismiss: 'modal'}  do |f|
+    id: 'send_itinerary_by_email_form_' + itinerary.id.to_s }  do |f|
     .modal-body
       = f.error_notification
       - if user_signed_in?

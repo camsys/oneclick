@@ -1,6 +1,8 @@
 class Admin::AgencyUserRelationshipsController < Admin::BaseController
   # TODO Not working yet, needs rework
   # load_and_authorize_resource
+  skip_authorization_check :only => [:create, :traveler_revoke, :traveler_hide, :agency_revoke]# TODO This should get cancan'd at some point, but currently any user can do this at any time
+    
 
   def index
     if params[:agency_id]
@@ -50,12 +52,14 @@ class Admin::AgencyUserRelationshipsController < Admin::BaseController
 
   # Impersonate a user to edit their traveler profile.
   def edit
+    authorize! :perform, :assist_user
     agency_staff_impersonate(params[:id], params[:agency_id])
     redirect_to edit_user_path params[:id]   #edit_user_path is not user#edit, because of Devise.  Actually points to registration_controller#edit
   end
 
 
   def aid_user
+    authorize! :perform, :assist_user
     agency_staff_impersonate(params[:traveler_id], params[:agency_id])
     redirect_to new_user_trip_path(params[:traveler_id])
   end

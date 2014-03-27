@@ -32,7 +32,7 @@ module CsHelpers
       {label: t(:providers), target: admin_provider_orgs_path, icon: ACTION_ICONS[:providers], access: :admin_providers},
       {label: t(:services), target: services_path, icon: ACTION_ICONS[:services], access: :admin_services},
       {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports], access: :admin_reports},
-      {label: t(:feedback), target: admin_feedback_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback},
+      # {label: t(:feedback), target: admin_feedback_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback},
     ]  
   end
 
@@ -131,10 +131,10 @@ module CsHelpers
     def actions options = {}
       a = if user_signed_in?
         [
-          {label: t(:plan_a_trip), target: new_user_trip_path(get_traveler), icon: ACTION_ICONS[:plan_a_trip]},
-          {label: t(:my_travel_profile), target: edit_user_registration_path, icon: ACTION_ICONS[:travel_profile]},
-          {label: t(:my_trips), target: user_trips_path(get_traveler), icon: ACTION_ICONS[:my_trips]},
-          {label: t(:my_places), target: user_places_path(get_traveler), icon: ACTION_ICONS[:my_places]},
+          {label: t(:plan_a_trip), target: new_user_trip_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:plan_a_trip]},
+          {label: t(:my_travel_profile), target: edit_user_registration_path(locale: I18n.locale), icon: ACTION_ICONS[:travel_profile]},
+          {label: t(:my_trips), target: user_trips_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_trips]},
+          {label: t(:my_places), target: user_places_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_places]},
         ]
       else
         [
@@ -207,6 +207,8 @@ module CsHelpers
     elsif mode_code == 'volunteer'
       I18n.t(:volunteer)
     elsif mode_code == 'non-emergency medical service'
+      I18n.t(:nemt)
+    elsif mode_code == 'nemt'
       I18n.t(:nemt)
     elsif mode_code == 'livery'
       I18n.t(:car_service)
