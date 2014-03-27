@@ -25,8 +25,21 @@ class TripPlace < GeocodedAddress
     self.sequence = sequence
     j = JSON.parse(json_string) rescue {'type_name' => 'MANUAL_ENTRY'}
     case j['type_name']
+    when 'PLACES_TYPE'
+      self.update_attributes(
+        place_id: j['id'],
+        address1: j['address1'],
+        address2: j['address2'],
+        city: j['city'],
+        state: j['state'],
+        zip: j['zip'],
+        county: j['county'],
+        lat: j['lat'],
+        lon: j['lon'],
+        raw_address: j['full_address'])
     when 'POI_TYPE'
       self.update_attributes(
+        poi_id: j['id'],
         address1: j['address1'],
         address2: j['address2'],
         city: j['city'],
@@ -74,6 +87,9 @@ class TripPlace < GeocodedAddress
     else
       raise "TripPlace.new_from_trip_proxy_place doesn't know how to handle type '#{j['type_name']}'"
     end
+    Rails.logger.info "FROM trip_prox_place"
+    Rails.logger.info self.ai
+    Rails.logger.info ""
     self
   end
 

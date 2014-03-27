@@ -456,11 +456,15 @@ class TripsController < PlaceSearchingController
           format.html { redirect_to @path }
           format.json { render json: @trip, status: :created, location: @trip }
         else
+          Rails.logger.warn "Could not save trip: #{@trip_proxy.errors.ai}"
+          Rails.logger.warn "Could not save trip: #{@trip.errors.ai}"
           # TODO Will this get handled correctly?
           format.html { render action: "new", flash[:alert] => t(:correct_errors_to_create_a_trip) }
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
       else
+          Rails.logger.warn "No trip: #{@trip_proxy.errors.ai}"
+          Rails.logger.warn "No trip: #{@trip.errors.ai}"
         # TODO Will this get handled correctly?
         format.html { render action: "new", flash[:alert] => t(:correct_errors_to_create_a_trip) }
       end
