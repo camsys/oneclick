@@ -1,22 +1,94 @@
 require 'spec_helper'
 
 describe Admin::UsersController do
+  include Devise::TestHelpers
+  before (:all) do
+    FactoryGirl.create(:arc_mobility_mgmt_agency)
+    FactoryGirl.create(:admin)
+    create_list(:user, 25)
+    create_list(:agency_admin, 1)
+    create_list(:agency_agent, 10)
+  end
+
+  after(:all) do
+    User.delete_all
+  end
+
+  describe "'travelers' action" do
+    describe "for sys admin" do
+      before(:each) do
+        login_as_using_find_by(email: 'admin@example.com')
+      end
+      describe "with no params" do
+        it "it returns nobody" do #find traveler will be based on AgencyUserRelationships, which sysadmin has none of
+          get admin_user_travelers_path, user_id: current_user.id
+          assigns(:users).count.should eql(0) #25 travelers
+        end
+      end
+      describe "with email param" do
+        it "returns an exact match" do
+          get admin_user_travelers_path, user_id: current_user.id, text: 'email5@factory.com' #should be unique
+          assigns(:users).count.should eql(1)
+        end
+        it "returns multiple full-text matches" do
+          get admin_user_travelers_path, user_id: current_user.id, text: '@factory.com' #should be unique
+          assigns(:users).count.should eql(25) #25 travelers
+        end
+      end
+    end
+    describe "for agency staff" do
+      before(:each) do
+        login_as_using_find_by(email: 'email1@agency.com')
+        agency_id = Agency.find_by(name: "ARC Mobility Management").id
+      end
+      describe "with no params" do
+        it "returns all travelers with existing AgencyUserRelationships with the current agency" do
+          get admin_agency_travelers_path, id: agency_id
+          assigns(:users).count should eql(0)
+          AgencyUserRelationship.new(agency_id: agency_id, user_id: 13, creator: current_user )
+          get admin_agency_travelers_path, id: agency_id
+          assigns(:users).count should eql(1)
+        end
+      end
+      describe "with email param" do
+        it "returns all travelers with existing AURs and any matching travelers" do
+          AgencyUserRelationship.new(agency_id: agency_id, user_id: 13, creator: current_user )
+          get admin_agency_travelers_path, id: agency_id, text: "email5@factory.com"
+          assigns(:users).count should eql(2) #one with an AUR and one with matching email
+        end
+      end
+    end
+  end
+
+  describe "index action" do
+    describe "for sys admin" do
+      describe "with no params" do
+        it "returns no users if there are none" do
+          get :index
+          assigns(:users).count.should eql(11) #Because 10 agents and an admin associated with this agency
+        end
+        it "returns all users if some exist" do
+          get :index
+          assigns(:users).count.should eql(26) #25 created users plus the admin
+        end
+      end
+      describe "with email param" do
+        it "returns one record exactly with matching email" do
+          u = User.last
+          get :index, text: u.email
+          assigns(:users).count.should eql(1)
+        end
+      end
+    end
+  end
 
   describe "create action" do
     before(:each) do
-      FactoryGirl.create(:arc_mobility_mgmt_agency)
       request.env["HTTP_REFERER"] = new_admin_agency_user_path(Agency.first.id)
-      login_as_using_find_by(email: 'email@camsys.com')
     end
 
-    # TODO This can't work without more user parameters
-    # it "should use the current users agency if it exists" do
-    #     params = {:user =>  {:agency => Agency.find_by(name: "ARC Mobility Management") } }
-    #     get 'create', params
-    #     expect(assigns(:agency).name).to eq("ARC Mobility Management")
-    # end
-
     it "should create a user with an agency_user_relationship if current_user has an agency" do
+      login_as_using_find_by(email: 'admin@example.com')
       params = {
         user: {
           first_name: "Test",
@@ -26,11 +98,14 @@ describe Admin::UsersController do
           }
       }
       get 'create', params
+      created_user = User.last
       expect(assigns(:user)).to be_valid
+      expect(assigns(:agency_user_relationship)).to be_valid
     end
 
     # TODO Unless I did the merge wrong, this request was okay...
     it "should not create a user and return to the creation form if there's something wrong with the request" do
+      login_as_using_find_by(email: 'admin@example.com')
       params = {
         user: {
           first_name: "Test",
@@ -44,8 +119,5 @@ describe Admin::UsersController do
       # expect(assigns(:user)).not_to be_valid
       # expect response.status.should eq 302
     end
-
   end
-
-
 end
