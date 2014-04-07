@@ -4,10 +4,9 @@ class Admin::UsersController < Admin::BaseController
   load_and_authorize_resource
   
   def index
-    if params[:text]
-      filters = params[:text].split(" ").map(&:upcase)
-      conditions[:first_name] = 
-      @users.where()
+    if params[:text] && params[:text].present?
+      @users = @users.where('upper(first_name) LIKE ? OR upper(last_name) LIKE ? OR upper(email) LIKE ?', 
+              "%#{params[:text].upcase}%", "%#{params[:text].upcase}%", "%#{params[:text].upcase}%").uniq  #merge in the found users
     end
     respond_to do |format|
       format.html # index.html.erb
