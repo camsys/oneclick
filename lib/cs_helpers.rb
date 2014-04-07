@@ -43,11 +43,11 @@ module CsHelpers
   end
 
   def find_travelers_path
-    has_agency_specific_role? ? admin_agency_travelers_path(current_user.agency) : admin_travelers_path
+    admin_agency_travelers_path(current_user.agency) if has_agency_specific_role?
   end
 
   def create_travelers_path
-    has_agency_specific_role? ? new_admin_agency_user_path(current_user.agency) : new_admin_user_path
+    new_admin_agency_user_path(current_user.agency) if has_agency_specific_role?
   end
 
   def create_trips_path
