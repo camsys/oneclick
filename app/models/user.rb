@@ -114,7 +114,7 @@ class User < ActiveRecord::Base
   end
 
   def is_visitor?
-    email.include? "example.com"
+    email.include? "example.com" #TODO Run a migration on all guest users to add anonymous_traveler role, then update this method
   end
 
   def is_registered?

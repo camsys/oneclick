@@ -115,6 +115,7 @@ class ApplicationController < ActionController::Base
     u.password = random_string
     u.email = "guest_#{random_string}@example.com"
     u.save!(:validate => false)
+    u.add_role :anonymous_traveler
     session[:guest_user_id] = u.id
     u
   end
