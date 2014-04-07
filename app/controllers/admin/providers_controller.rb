@@ -1,4 +1,5 @@
 class Admin::ProvidersController < ApplicationController
+  load_and_authorize_resource
   # GET /admin/providers
   # GET /admin/providers.json
   def index

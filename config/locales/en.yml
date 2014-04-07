@@ -28,7 +28,9 @@ en:
   feedback: "Feedback"
   agencies: "Agencies"
   add_new_agency: "Add a new Agency"
+  create_agency: 'Create Agency'
   add_agency: "Add Agency"
+  agency_profile: "Agency Profile"
   edit_agency_name: 'Edit %{name}'
   update_agency: "Update Agency"
   agency_added: "Agency added"
@@ -41,6 +43,7 @@ en:
   subagencies: "Sub-agencies"
   new_agency: "New Agency"
   providers: "Providers"
+  provider_profile: "Provider Profile"
   provider_orgs: "Provider Organizations"
   new_provider_org: 'New Provider Organization'
   org_type: "Org type"
@@ -52,9 +55,11 @@ en:
   provider_contact_info: "Provider Contact Information"
   provided_by: "Provided by"
   users: "Users"
+  agents: "Agents"
   agents_agencies: "Agencies, Providers, Users"
   confirm_msg: "Are you sure?"
   change_role: "Change Role"
+  create_user: "Create User"
   delete_user: "Delete user"
   # Agent and Admin string
   reports: "Reports"
@@ -65,6 +70,8 @@ en:
   summary_type: "Summary Type"
   run: "Run"
   admin: 'Admin'
+  admin_actions: 'Admin'
+  staff_actions: 'Staff'
   send_by_email: 'Send by email'
   send_itinerary_by_email: "Send itinerary by email"
   send_trip_by_email: "Send trip plan by email"

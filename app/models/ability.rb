@@ -9,31 +9,28 @@ class Ability
 
       # TODO Are these 2 redundant?
       can [:see], :admin_menu
+      can :see, :staff_menu
       can [:index], :admin_home
 
-      # TODO Can this whole block be done more efficiently?
-      cannot [:access], :admin_find_traveler
+      can [:access], :any
+      can [:access], :staff_travelers
       cannot [:access], :admin_create_traveler
-      cannot :travelers, Agency
-      can [:access], :admin_trips
-      can [:access], :admin_agencies
       can [:access], :admin_users
-      can [:access], :admin_providers
-      can [:access], :admin_services
-      can [:access], :admin_reports
-      can [:access], :admin_feedback
-      # can :manage_travelers, Agency #Turned off for now.
+      cannot :access, :show_agency
+      cannot :access, :show_provider
+      cannot :travelers, Agency
       return
     end
     if User.with_role(:agency_administrator, :any).include?(user)
       # TODO Are these 2 redundant?
-      can [:see], :admin_menu
+      can [:see], :staff_menu
       can [:index], :admin_home
 
-      can [:access], :admin_find_traveler
+      can [:access], :staff_travelers
       can :travelers, Agency, {agency_id: user.agency.try(:id)}
       can :travelers, User #can find any user if they search
       # can :edit, User, {user.approved_agencies.contains? }
+      can :access, :show_agency
       can [:access], :admin_create_traveler
       can [:access], :admin_trips
       can [:access], :admin_agencies
@@ -45,50 +42,53 @@ class Ability
 
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
       can :manage, Agency, id: user.agency.try(:id)
-      can :manage_travelers, Agency
+      can :read, Agency
       can :perform, :assist_user
       can :create, User
       can :manage, [ProviderOrg, Service]
       can [:index, :show], :reports
-      can [:read, :update], User, {agency_id: user.agency.try(:id)}
+      can [:read, :update], User, agency_id: user.agency.try(:id)
     end
     if User.with_role(:agent, :any).include?(user)
-      can [:see], :admin_menu
+      can [:see], :staff_menu
       can [:index], :admin_home
-      can [:access], :admin_find_traveler
+      can [:access], :show_agency
+      can [:access], :staff_travelers
       can [:access], :admin_create_traveler
+      can [:access], :admin_agencies
       can [:access], :admin_trips
       can [:access], :admin_providers
       can [:access], :admin_services
-      can [:access], :admin_reports
+      cannot [:access], :admin_reports
       can [:access], :admin_feedback
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
-      can :manage_travelers, Agency, id: user.agency.try(:id)
+      can [:travelers], Agency, id: user.agency.try(:id)
+      can [:read], Agency
       # can [:read, :update], User, {agency_id: user.agency.try(:id)}
       can [:index, :show], :reports
       can [:index, :show], [ProviderOrg, Service]
-      can :manage_travelers, :agency
       can :perform, :assist_user
       can :create, User
     end
 
     if User.with_role(:provider_staff, :any).include?(user)
-      can [:see], :admin_menu
+      can [:see], :staff_menu
       can [:index], :admin_home
 
       can [:access], :admin_trips
-      can [:access], :admin_providers
-      can [:access], :admin_services
+      can [:access], :show_provider
       can [:access], :admin_reports
       can [:access], :admin_feedback
 
       can [:index, :show], :reports
       can [:manage], ProviderOrg, id: user.try(:provider_org_id)
-      # can [:manage], Service
+      can [:manage], Provider, id: user.try(:provider_org_id)
+      can [:update, :show], Service do |s|
+        user.provider.services.include?(s)
+      end
     end
 
     can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
-    #can :manage, BuddyRelationship, :user_id => user.id
     can [:read, :update], User, :id => user.id
     can :geocode, :util
   end

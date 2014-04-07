@@ -63,7 +63,7 @@ class ApplicationController < ActionController::Base
 
 
   def setup_actions
-    @actions = actions
+    @actions = traveler_actions
   end
 
   # Update the session variable

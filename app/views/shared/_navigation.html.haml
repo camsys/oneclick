@@ -25,17 +25,7 @@
                   = "#{t(:welcome)}, #{current_user.welcome}"
                   %b.caret
                 %ul.dropdown-menu{role: 'menu'}
-                  = render partial: 'menu_item', collection: actions(with_logout: true)
-                  / %li
-                  /   = link_to destroy_user_session_path, :method=>'delete' do
-                  /     %i.fa.fa-sign-out
-                  /     = t(:logout)
-                  - if can? :see, :admin_menu
-                    %li.divider.text-left
-                    %li
-                      = link_to admin_path do
-                        %i.fa.fa-wrench
-                        = t(:admin)
+                  = render partial: 'menu_item', collection: traveler_actions(with_logout: true)
             - else
               %li.dropdown
                 %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}
@@ -43,19 +33,15 @@
                   = "#{t(:welcome)}, #{t(:visitor)}"
                   %b.caret
                 %ul.dropdown-menu{role: 'menu'}
-                  = render partial: 'menu_item', collection: actions
-                  / %li
-                  /   = link_to new_user_session_path do
-                  /     %i.fa.fa-key
-                  /     = t(:log_in) 
-                  / %li.divider.text-edit
-                  / %li
-                  /   = link_to new_user_registration_path do
-                  /     %i.fa.fa-edit
-                  /     = t(:create_an_account) 
+                  = render partial: 'menu_item', collection: traveler_actions
 
       .pull-right  
+        - if can? :see, :staff_menu
+          %ul.nav
+            %li.dropdown
+              %a.btn.btn-navbar= render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => staff_actions, :title => t(:staff_actions) }
+      .pull-right
         - if can? :see, :admin_menu
           %ul.nav
             %li.dropdown
-              %a.btn.btn-navbar= render partial: 'admin/admin_home/admin_dropdown_menus'
+              %a.btn.btn-navbar= render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => admin_actions, :title => t(:admin_actions) }

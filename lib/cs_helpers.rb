@@ -11,8 +11,8 @@ module CsHelpers
     :my_places => 'fa fa-map-marker',
     :help_and_support => 'fa fa-question-sign',
     :find_traveler => 'fa fa-search',
-    :create_traveler =>'fa fa-user',
     :agents_agencies => 'fa fa-sitemap',
+    :create_agency => 'fa fa-plus-square',
     :providers => 'fa fa-umbrella',
     :reports => 'fa fa-bar-chart-o',
     :trips => 'fa fa-tags',
@@ -22,17 +22,22 @@ module CsHelpers
 
   }
 
-  def admin_menu
+  def admin_actions
     [
-      {label: t(:create_traveler), target: create_travelers_path, icon: ACTION_ICONS[:create_traveler], access: :admin_create_traveler},
-      {label: t(:find_traveler), target: find_travelers_path, icon: ACTION_ICONS[:find_traveler], access: :admin_find_traveler},
+      {label: t(:agents), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
+    ]
+  end
+
+  def staff_actions
+    [
+      {label: t(:agency_profile), target: agency_profile_path, icon: ACTION_ICONS[:find_traveler], access: :show_agency}, #TODO find icon
+      {label: t(:provider_profile), target: provider_profile_path, icon: ACTION_ICONS[:find_traveler], access: :show_provider}, #TODO find icon
+      {label: t(:travelers), target: find_travelers_path, icon: ACTION_ICONS[:find_traveler], access: :staff_travelers},
       {label: t(:trips), target: create_trips_path, icon: ACTION_ICONS[:trips], access: :admin_trips},
       {label: t(:agencies), target: admin_agencies_path, icon: ACTION_ICONS[:agents_agencies], access: :admin_agencies},
-      {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
       {label: t(:providers), target: admin_provider_orgs_path, icon: ACTION_ICONS[:providers], access: :admin_providers},
       {label: t(:services), target: services_path, icon: ACTION_ICONS[:services], access: :admin_services},
-      {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports], access: :admin_reports},
-      # {label: t(:feedback), target: admin_feedback_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback},
+      {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports], access: :admin_reports}
     ]  
   end
 
@@ -48,6 +53,14 @@ module CsHelpers
 
   def create_travelers_path
     new_admin_agency_user_path(current_user.agency) if has_agency_specific_role?
+  end
+
+  def agency_profile_path
+    admin_agency_path(current_user.agency) if has_agency_specific_role?
+  end
+
+  def provider_profile_path
+    admin_provider_path(current_user.provider) if current_user.has_role? :provider_staff, :any
   end
 
   def create_trips_path
@@ -128,7 +141,7 @@ module CsHelpers
       guest_user
     end
 
-    def actions options = {}
+    def traveler_actions options = {}
       a = if user_signed_in?
         [
           {label: t(:plan_a_trip), target: new_user_trip_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:plan_a_trip]},
