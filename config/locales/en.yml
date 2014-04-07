@@ -98,6 +98,8 @@ en:
   buddies: 'Buddies'
   travelers: 'Travelers'
   traveler: 'Traveler'
+  matching_travelers: "Matching Travelers"
+  authorized_travelers: "Authorized Travelers"
   add_user: "Add User"
   send_buddy_request: 'Send buddy request'
   add_new_buddy:  "Add a new buddy"

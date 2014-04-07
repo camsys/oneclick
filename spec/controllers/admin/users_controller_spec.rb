@@ -14,62 +14,12 @@ describe Admin::UsersController do
     User.delete_all
   end
 
-  describe "'travelers' action" do
-    describe "for sys admin" do
-      before(:each) do
-        login_as_using_find_by(email: 'admin@example.com')
-      end
-      describe "with no params" do
-        it "it returns nobody" do #find traveler will be based on AgencyUserRelationships, which sysadmin has none of
-          get admin_user_travelers_path, user_id: current_user.id
-          assigns(:users).count.should eql(0) #25 travelers
-        end
-      end
-      describe "with email param" do
-        it "returns an exact match" do
-          get admin_user_travelers_path, user_id: current_user.id, text: 'email5@factory.com' #should be unique
-          assigns(:users).count.should eql(1)
-        end
-        it "returns multiple full-text matches" do
-          get admin_user_travelers_path, user_id: current_user.id, text: '@factory.com' #should be unique
-          assigns(:users).count.should eql(25) #25 travelers
-        end
-      end
-    end
-    describe "for agency staff" do
-      before(:each) do
-        login_as_using_find_by(email: 'email1@agency.com')
-        agency_id = Agency.find_by(name: "ARC Mobility Management").id
-      end
-      describe "with no params" do
-        it "returns all travelers with existing AgencyUserRelationships with the current agency" do
-          get admin_agency_travelers_path, id: agency_id
-          assigns(:users).count should eql(0)
-          AgencyUserRelationship.new(agency_id: agency_id, user_id: 13, creator: current_user )
-          get admin_agency_travelers_path, id: agency_id
-          assigns(:users).count should eql(1)
-        end
-      end
-      describe "with email param" do
-        it "returns all travelers with existing AURs and any matching travelers" do
-          AgencyUserRelationship.new(agency_id: agency_id, user_id: 13, creator: current_user )
-          get admin_agency_travelers_path, id: agency_id, text: "email5@factory.com"
-          assigns(:users).count should eql(2) #one with an AUR and one with matching email
-        end
-      end
-    end
-  end
-
   describe "index action" do
     describe "for sys admin" do
       describe "with no params" do
-        it "returns no users if there are none" do
-          get :index
-          assigns(:users).count.should eql(11) #Because 10 agents and an admin associated with this agency
-        end
         it "returns all users if some exist" do
           get :index
-          assigns(:users).count.should eql(26) #25 created users plus the admin
+          assigns(:users).count.should eql(11) #1 admin and 10 agents
         end
       end
       describe "with email param" do

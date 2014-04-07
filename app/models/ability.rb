@@ -30,6 +30,9 @@ class Ability
       can [:index], :admin_home
 
       can [:access], :admin_find_traveler
+      can :travelers, Agency, {agency_id: user.agency.try(:id)}
+      can :travelers, User
+      # can :edit, User, {user.approved_agencies.contains? }
       can [:access], :admin_create_traveler
       can [:access], :admin_trips
       can [:access], :admin_agencies

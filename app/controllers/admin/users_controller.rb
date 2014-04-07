@@ -2,9 +2,13 @@ class Admin::UsersController < Admin::BaseController
   skip_authorization_check :only => [:create, :new]
   before_action :load_user, only: :create
   load_and_authorize_resource
-  before_action :load_users, only: :index
-
+  
   def index
+    if params[:text]
+      filters = params[:text].split(" ").map(&:upcase)
+      conditions[:first_name] = 
+      @users.where()
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
@@ -112,16 +116,8 @@ class Admin::UsersController < Admin::BaseController
   # #   params.require(:agency_user_relationship).permit(:approved_agencies)
   # # end
 
-  def load_user
+  def load_users
     params[:agency_id] = params[:agency]
     @user = User.new(params.require(:user).permit(:first_name, :last_name, :email, :agency_id))
   end
-
-  def load_users
-    if params[:agency_id]
-      @agency = Agency.find(params[:agency_id]) 
-      @users = @agency.users
-    end
-  end
-
 end

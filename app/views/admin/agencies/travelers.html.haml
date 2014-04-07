@@ -1,0 +1,37 @@
+%h1
+  = link_to @agency.name, [:admin, @agency] if @agency
+  
+%h2= t(:find_traveler)
+.well.well-sm#filters
+  =form_tag(admin_agency_travelers_path, method: :get, :class => "form-inline") do
+    =label_tag :text, t(:search)
+    =text_field_tag :text, params[:text]
+    =submit_tag t(:search), name: nil, :class => "btn btn-primary"
+-if @found_travelers
+  %h3= t(:matching_travelers)
+  %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#searched_travelers_table
+    %thead
+      %tr
+        %th.span4= t(:name)
+        %th.span4= t(:email)
+        %th.span4= t(:registered)
+    %tbody
+      -@found_travelers.each do |traveler|
+        %tr
+          %td.span4= traveler.name
+          %td.span4= traveler.email
+          %td.span4= traveler.created_at.to_date
+-if @pre_auth_travelers
+  %h3= t(:authorized_travelers)
+  %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#preauth_travelers_table
+    %thead
+      %tr
+        %th.span4= t(:name)
+        %th.span4= t(:email)
+        %th.span4= t(:registered)
+    %tbody 
+      - @pre_auth_travelers.each do |traveler|
+        %tr
+          %td.span4= link_to traveler.name, edit_admin_agency_agency_user_relationship_path(@agency.id,traveler.id)
+          %td.span4= traveler.email
+          %td.span4= traveler.created_at.to_date

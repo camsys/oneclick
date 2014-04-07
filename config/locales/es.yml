@@ -97,6 +97,8 @@ es:
   buddies: 'Amigos'
   travelers: 'Viajeros'
   traveler: 'Viajero'
+  matching_travelers: "[es]Matching Travelers[/es]"
+  authorized_travelers: "[es]Authorized Travelers[/es]"
   add_user: "[es81]Add User[/es]"
   send_buddy_request: 'Enviar solicitud de amigo'
   add_new_buddy:  "[es82]Add a new buddy[/es]"

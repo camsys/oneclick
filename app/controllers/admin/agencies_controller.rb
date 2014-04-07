@@ -2,6 +2,20 @@ class Admin::AgenciesController < Admin::OrganizationsController
   before_filter :load_agency, only: [:create]
   load_and_authorize_resource
 
+
+  # GET /agencies/1/travelers
+  def travelers
+    @agency = Agency.find(params[:agency_id])
+    authorize! :travelers, @agency #can current user access travelers for this agency
+
+    @pre_auth_travelers = @agency.customers
+
+    if params[:text] && params[:text].present?
+      @found_travelers = (User.where('upper(first_name) LIKE ? OR upper(last_name) LIKE ? OR upper(email) LIKE ?', 
+              "%#{params[:text].upcase}%", "%#{params[:text].upcase}%", "%#{params[:text].upcase}%")).uniq  #merge in the found users
+    end
+  end
+
   # GET /agencies
   # GET /agencies.json
   def index

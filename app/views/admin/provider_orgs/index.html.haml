@@ -8,22 +8,13 @@
   %tbody
     - @provider_orgs.each do |provider_org|
       %tr
-        %td= provider_org.name
+        %td= link_to provider_org.name, admin_provider_org_path(provider_org)
         %td.center
-          - if can? :edit, provider_org
-            = link_to edit_admin_provider_org_path(provider_org), {class: 'btn'} do
-              %i.fa.fa-pencil
-              = t(:edit)
-          / = link_to admin_provider_org_users_path(provider_org), {class: 'btn'} do
-          /   %i.fa.fa-group
-          /   = t(:users)
           = link_to admin_provider_org_services_path(provider_org), {class: 'btn'} do
             %i.fa.fa-info-circle
             = t(:services)
 
 = link_to t(:new_provider_org), new_admin_provider_org_path, {class: 'btn'}
-
-/ = render 'shared/datatable_javascript'
 
 :javascript
   $(document).ready(function() {
