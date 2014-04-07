@@ -14,6 +14,7 @@ class Ability
       # TODO Can this whole block be done more efficiently?
       cannot [:access], :admin_find_traveler
       cannot [:access], :admin_create_traveler
+      cannot :travelers, Agency
       can [:access], :admin_trips
       can [:access], :admin_agencies
       can [:access], :admin_users
@@ -31,7 +32,7 @@ class Ability
 
       can [:access], :admin_find_traveler
       can :travelers, Agency, {agency_id: user.agency.try(:id)}
-      can :travelers, User
+      can :travelers, User #can find any user if they search
       # can :edit, User, {user.approved_agencies.contains? }
       can [:access], :admin_create_traveler
       can [:access], :admin_trips
