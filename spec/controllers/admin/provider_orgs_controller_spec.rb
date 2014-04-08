@@ -32,7 +32,11 @@ describe Admin::ProviderOrgsController do
 
   before (:all) do
     FactoryGirl.create(:admin)
-    end
+  end
+
+  after (:all) do
+    User.delete_all
+  end
 
   before (:each) do
       login_as_using_find_by(email: 'admin@example.com')
