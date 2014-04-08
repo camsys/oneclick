@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+		<meta content='1-Click Application' name='description'> </meta>
+
+		<title>Review</title>
+		
+		<!-- Bootstrap core CSS -->
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+		<link href="datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="stylesheets/arc.css" media="all" rel="stylesheet" />
+		
+		<!-- Dependent JS Libs-->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"></script>
+	</head>
+	<body>
+		<div id="wrap">
+			<div class="navbar navbar-default navbar-fixed-top" role="navigation" id='publicNav'>	
+				<div class="container-fluid">
+					<div class='.navbar-header'>
+						<a class="navbar-brand" href="/en" id="logo" style="text-indent:-9999px;">Logo</a>
+						<div class='pull-right'>
+							<a href="/501" id="help">
+								<i class='fa fa-question-circle'></i>
+								<span class="sr-only">Help</span>
+							</a>
+						</div>
+						<button type="button" class="navbar-toggle" data-target='#userMenuNavbar' data-toggle='collapse'>
+							<span class="sr-only">User menu</span>
+							 <span class="icon-bar"></span>
+							 <span class="icon-bar"></span>
+						 </button>
+					</div><!--end of navbar-header-->
+					<div class='collapse navbar-collapse navbar-right' id="userMenuNavbar">
+						<ul class='nav navbar-nav'>
+							<li class='dropdown' id='userDropdown'>
+								<a class='dropdown-toggle' data-target='#' data-toggle='dropdown'>
+									Welcome, Guest
+									<b class='caret'></b>
+								</a>
+								<ul class='dropdown-menu' role='menu'>
+									<li>
+										<a href="/users/sign_in">
+										Log In
+										</a>
+									</li>
+									<li>
+										<a href="/users/sign_up">
+										Create An Account
+										</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div><!--end of collapse navbar-collapse-->
+				</div>
+			</div><!--end of publicNav-->
+			
+			<div id="main" role="main" class="container">
+				<ol class="breadcrumb" id="wizards">
+				  <li class="prevStep"><a href="trip.html">Trip</a></li>
+				  <li class="prevStep"><a href="options.html">Options</a></li>
+				  <li class="activeStep">Review</li>
+				  <li class="nextStep">Plan</li>
+				</ol>
+							
+				<div class='row'>
+					<div class='col-xs-12 form-group visible-xs'>
+						<button class="btn btn-default active pull-left" id="filterButton">Show Filters</button>
+						<script type="text/javascript">
+							$(function () {
+								//show or hide filters when click Filter button
+								$('#filterButton').on('click', function(e) {
+									e.preventDefault();
+									var $filterDiv = $('#filterDiv');
+									if($filterDiv.hasClass('hidden-xs')) {
+										$('#filterDiv').removeClass('hidden-xs');
+										$(this).text('Hide Filters');
+									} else {
+										$('#filterDiv').addClass('hidden-xs');
+										$(this).text('Show Filters');
+									}
+								});
+							});
+						</script>
+					</div>
+					<div class='col-md-3 col-xs-12 hidden-xs' id="filterDiv">
+						<div class='col-sm-12 well' style="padding: 0px;">
+							<form role="form" style="padding: 5px 0px;">
+								<label class="col-sm-12">Transporation Modes</label>
+								<div class="col-sm-12" id="modePlaceholder">
+									
+								</div>
+								<label class="col-sm-12">Number of transfers</label>
+								<div class="col-sm-12" id="transferCountSliderPlaceholder">
+									
+								</div>
+							
+								<label class="col-sm-12">Cost</label>
+								<div class="col-sm-12" id="costSliderPlaceholder">
+									
+								</div>
+								<label class="col-sm-12">Time</label>
+								<div class="col-sm-12" id="timeSliderPlaceholder">
+									
+								</div>
+							</form>
+						</div>
+					</div><!--end of filter column-->
+					<div class='col-md-9' style="padding: 0px;">
+						<div class='col-xs-12 well' id="outboundReview" style="padding: 0px;">
+							<label class="col-sm-12" id="outboundReviewSubject">Outbound - 40 Courtland Street NE Atlanta, GA 30308 to Atlanta VA Medical Center</label>
+							<div class='col-xs-12 singlePlanHeader' id="returnReviewHeader" style="padding: 0px;">
+								<div class='col-xs-3' style="padding: 0px;">
+								
+								</div>
+								<div class='col-xs-8' style="padding: 0px;">
+									<button class="btn btn-default btn-xs pull-right prevPeriod"> -30</button>
+								</div>
+								<div class='col-xs-1' style="padding: 0px; border-left: 2px black solid;">
+									<button class="btn btn-default btn-xs pull-left nextPeriod"> +30</button>
+								</div>
+							</div>
+							<div class='col-xs-12 singlePlanReview singlePlanUnselected' style="padding: 0px; ">
+								<div class='col-xs-3' style="height: 50px; padding: 0px; border-right: 1px black solid;">
+									<table>
+										<tbody>
+											<tr>
+												<td style="width: 80px;"><a href="http://www.itsmarta.com/">Bus</a></td>
+												<td>$3.5</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class='col-xs-8' style="padding: 0px; height: 100%;height: 50px;" id="testChartBusOutbound">
+								</div>
+								<div class='col-xs-1' style="height: 50px; padding: 0px; border-left: 2px black solid;">
+									<button class="btn btn-default btn-xs pull-right singlePlanSelect"> Select</button>
+									<script type="text/javascript">
+									$(function () {
+										$('.singlePlanReview .singlePlanSelect').click( function() {
+											$(this).parents('.singlePlanReview')
+												.removeClass('singlePlanUnselected')
+												.addClass('singlePlanSelected');
+											$(this).parents('.singlePlanReview').siblings()
+												.removeClass('singlePlanSelected')
+												.addClass('singlePlanUnselected');
+										});
+									});
+									</script>
+								</div>
+							</div>
+							<div class='col-xs-12 singlePlanReview singlePlanUnselected' style="padding: 0px;">
+								<div class='col-xs-3' style="height: 50px; padding: 0px; border-right: 1px black solid;">
+									<table>
+										<tbody>
+											<tr>
+												<td style="width: 80px;">Taxi</td>
+												<td>$22.5</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class='col-xs-8' style="padding: 0px; height: 100%;height: 50px;" id="testChartTaxiOutbound">
+								</div>
+								<div class='col-xs-1' style="height: 50px; padding: 0px; border-left: 2px black solid;">
+									<button class="btn btn-default btn-xs pull-right singlePlanSelect">Select</button>
+								</div>
+							</div>
+							<div class='col-xs-12 singlePlanReview singlePlanUnselected' style="padding: 0px;">
+								<div class='col-xs-3' style="height: 50px; padding: 0px; border-right: 1px black solid;">
+									<table>
+										<tbody>
+											<tr>
+												<td style="width: 80px;">Paratransit</td>
+												<td>$25</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class='col-xs-8' style="padding: 0px; height: 100%;height: 50px;" id="testChartParatransitOutbound">
+								</div>
+								<div class='col-xs-1' style="height: 50px; padding: 0px; border-left: 2px black solid;">
+									<button class="btn btn-default btn-xs pull-right singlePlanQuestion">?</button>
+									<script type="text/javascript">
+									$(function () {
+										$('.singlePlanReview .singlePlanQuestion').click( function() {
+											$(this).parents('.singlePlanReview').remove();
+										});
+									});
+									</script>
+								</div>
+							</div>
+						</div>
+						<div class='col-xs-12 well' id="returnReview" style="padding: 0px;">
+							<label class="col-sm-12" id="returnReviewSubject">Return - Atlanta VA Medical Center to 40 Courtland Street NE Atlanta, GA 30308</label>
+							<div class='col-xs-12 singlePlanHeader' id="returnReviewHeader" style="padding: 0px;">
+								<div class='col-xs-3' style="padding: 0px;border-right: 2px black solid;">
+									<button class="btn btn-default btn-xs pull-right prevPeriod"> -30</button>
+								</div>
+								<div class='col-xs-8' style="padding: 0px;">
+									<button class="btn btn-default btn-xs pull-left nextPeriod"> +30</button>
+								</div>
+								<div class='col-xs-1' style="padding: 0px; ">
+									
+								</div>
+							</div>
+							<div class='col-xs-12 singlePlanReview singlePlanUnselected' style="padding: 0px; ">
+								<div class='col-xs-3' style="height: 50px; padding: 0px; border-right: 2px black solid;">
+									<table>
+										<tbody>
+											<tr>
+												<td style="width: 80px;"><a href="http://www.itsmarta.com/">Bus</a></td>
+												<td>$3.5</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class='col-xs-8' style="padding: 0px; height: 100%;height: 50px;" id="testChartBusReturn">
+								</div>
+								<div class='col-xs-1' style="height: 50px; padding: 0px; border-left: 1px black solid;">
+									<button class="btn btn-default btn-xs pull-right singlePlanSelect"> Select</button>
+								</div>
+							</div>
+							<div class='col-xs-12 singlePlanReview singlePlanUnselected' style="padding: 0px;">
+								<div class='col-xs-3' style="height: 50px; padding: 0px; border-right: 2px black solid;">
+									<table>
+										<tbody>
+											<tr>
+												<td style="width: 80px;">Taxi</td>
+												<td>$22.5</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class='col-xs-8' style="padding: 0px; height: 100%;height: 50px;" id="testChartTaxiReturn">
+								</div>
+								<div class='col-xs-1' style="height: 50px; padding: 0px; border-left: 1px black solid;">
+									<button class="btn btn-default btn-xs pull-right singlePlanSelect">Select</button>
+								</div>
+							</div>
+							<div class='col-xs-12 singlePlanReview singlePlanUnselected' style="padding: 0px;">
+								<div class='col-xs-3' style="height: 50px; padding: 0px; border-right: 2px black solid;">
+									<table>
+										<tbody>
+											<tr>
+												<td style="width: 80px;">Paratransit</td>
+												<td>$25</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class='col-xs-8' style="padding: 0px; height: 100%;height: 50px;" id="testChartParatransitReturn">
+								</div>
+								<div class='col-xs-1' style="height: 50px; padding: 0px; border-left: 1px black solid;">
+									<button class="btn btn-default btn-xs pull-right singlePlanQuestion">?</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-12 form-group">
+							<div class="col-xs-10" id="modeLegendPlaceholder" style="padding: 0px;">
+							</div>
+							<button type="submit" class="btn btn-default active pull-right">Plan</button>
+						</div>
+					</div><!--end of review columns-->
+					
+				</div>
+				
+			</div><!--end of main-->
+			
+			<div id='footer'>
+			<div id='feedback' class="col-xs-12">
+				<div class='pull-left'>
+					<a href="http://www.fta.dot.gov/grants/13094_13528.html" target="_blank">More About This Initiative</a>
+				</div>
+				<div class='pull-right'>
+					<a href="mailto://OneClick@camsys.com">Send your Feedback</a>
+				</div>
+			</div>
+			<div id='versionLang' class="col-xs-12">
+				<div class='pull-left'>
+					<span id="versionInfo">Version</span>
+				</div>
+				<div class='pull-right'>
+					English
+					|
+					<a href="/es">En Español</a>
+				</div>
+			</div>
+		</div><!--end of footer-->
+		</div><!--end of wrap-->
+		
+		<script type="text/javascript">
+			$(function () {
+				var div = d3.select("body").append("div")   
+				.attr("class", "tooltip")               
+				.style("opacity", 0);
+				
+				//create a chart
+				var createChart = function(chartDivId, data, xDomain, ticks, barHeight, tipText, classSelector) {
+					var $chart = $('#' + chartDivId);
+					var width = $chart.width();
+					var height = $chart.height();
+					var chart = d3.select('#' + chartDivId) 
+					  .append('svg')
+					  .attr('class', 'chart')
+					  .attr('width', width)
+					  .attr('height', height);
+					
+					var x, y;
+					x = d3.scale.linear()
+					   .domain(xDomain)
+					   .range([0, width]);
+
+					y = d3.scale.linear()
+					   .domain([0, 2])
+					   .range([0, height]);
+					
+					chart.selectAll("line")
+					  .data(ticks)
+					  .enter().append("line")
+					  .attr("x1", function(d) { return x(d); })
+					  .attr("x2", function(d) { return x(d); })
+					  .attr("y1", 0)
+					  .attr("y2", height);
+					
+					chart.selectAll("rect")
+					   .data(data)
+					   .enter().append("rect")
+					   .attr('class', function(d) { return classSelector(d.modeId); })
+					   .attr("x", function(d) { return x(d.xMin); })
+					   .attr("y", y(1) - barHeight/2)
+					   .attr("width", function(d) { return x(d.xMax) - x(d.xMin); })
+					   .attr("height", barHeight)
+					   .on("mouseover", function(d) {
+							div.transition()        
+								.duration(200)      
+								.style("opacity", .9);
+							div .html(tipText)  
+								.style("left", d3.event.pageX + "px")     
+								.style("top", (d3.event.pageY - 28) + "px");    
+							})                  
+						.on("mouseout", function(d) {       
+							div.transition()        
+								.duration(500)      
+								.style("opacity", 0);   
+						});
+				};
+				
+				var resizeChart = function(chartDivId, xDomain, barHeight) {
+					var $chart = $('#' + chartDivId);
+					var width = $chart.width();
+					var height = $chart.height();
+					console.log(height);
+					var svgSelector = '#' + chartDivId + ">svg";
+					var chart = d3.select(svgSelector)
+						.attr('width', width);
+					
+					var x, y;
+					x = d3.scale.linear()
+					   .domain(xDomain)
+					   .range([0, width]);
+
+					y = d3.scale.linear()
+					   .domain([0, 2])
+					   .range([0, height]);
+					
+					chart.selectAll("line")
+					  .attr("x1", function(d) { return x(d); } )
+					  .attr("x2", function(d) { return x(d); })
+					  .attr("y1", 0)
+					  .attr("y2", height);
+					
+					chart.selectAll("rect")
+					   .attr("x", function(d) { return x(d.xMin); })
+					   .attr("y", y(1) - barHeight/2)
+					   .attr("width", function(d) { return x(d.xMax) - x(d.xMin); })
+					   .attr("height", barHeight);
+				};
+				
+				//sample for outbound
+				var sampleDataBusOutbound = [
+					{
+						xMin: 8,
+						xMax: 8.5,
+						modeId: 0
+					},
+					{
+						xMin: 8.5,
+						xMax: 8.8,
+						modeId: 2
+					},
+					{
+						xMin: 8.8,
+						xMax: 9,
+						modeId: 1
+					},
+					{
+						xMin: 9,
+						xMax: 9.8,
+						modeId: 2
+					}
+				];
+				var sampleDataTaxiOutbound = [
+					{
+						xMin: 8.5,
+						xMax: 9.2,
+						modeId: 2
+					}
+				];
+				var sampleDataParatransitOutbound = [
+					{
+						xMin: 7,
+						xMax: 10.1,
+						modeId: 2
+					}
+				];
+				
+				var ticksOutbound = [8.5, 9, 9.5];
+				var xDomainOutbound = [8, 10];
+				
+				var barHeight = 20;
+				var classSelector = function(modeId) {
+					var className = '';
+					switch(modeId) {
+						case 0:
+							className = 'walkTime';
+							break;
+						case 1:
+							className = 'transferTime';
+							break;
+						case 2:
+							className = 'vehicleTime';
+							break;
+						default:
+							break;
+					}
+					
+					return className;
+				};
+				
+				createChart('testChartBusOutbound', sampleDataBusOutbound, xDomainOutbound, ticksOutbound, barHeight, 'walk to main st<br>take #2 bus to oak st<br>transfer to #3 bus to the destination', classSelector);
+				createChart('testChartTaxiOutbound', sampleDataTaxiOutbound, xDomainOutbound, ticksOutbound, barHeight, 'Taxi service', classSelector);
+				createChart('testChartParatransitOutbound', sampleDataParatransitOutbound, xDomainOutbound, ticksOutbound, barHeight, 'Paratransit service', classSelector);
+				
+				//sample for return
+				var sampleDataBusReturn = [
+					{
+						xMin: 1.8,
+						xMax: 2.1,
+						modeId: 0
+					},
+					{
+						xMin: 2.1,
+						xMax: 2.5,
+						modeId: 2
+					},
+					{
+						xMin: 2.5,
+						xMax: 2.7,
+						modeId: 1
+					},
+					{
+						xMin: 2.7,
+						xMax: 3.7,
+						modeId: 2
+					}
+				];
+				var sampleDataTaxiReturn = [
+					{
+						xMin: 1.6,
+						xMax: 2.3,
+						modeId: 2
+					}
+				];
+				var sampleDataParatransitReturn = [
+					{
+						xMin: 1.4,
+						xMax: 4.1,
+						modeId: 2
+					}
+				];
+				
+				var ticksReturn = [2, 2.5, 3, 3.5];
+				var xDomainReturn = [1.5, 4];
+				createChart('testChartBusReturn', sampleDataBusReturn, xDomainReturn, ticksReturn, barHeight, 'walk to main st<br>take #2 bus to oak st<br>transfer to #3 bus to the destination', classSelector);
+				createChart('testChartTaxiReturn', sampleDataTaxiReturn, xDomainReturn, ticksReturn, barHeight, 'Taxi service', classSelector);
+				createChart('testChartParatransitReturn', sampleDataParatransitReturn, xDomainReturn, ticksReturn, barHeight, 'Paratransit service', classSelector);
+				
+				//resize
+				var resizeTimer;
+				window.onresize = function(event) {
+					clearTimeout(resizeTimer);
+					resizeTimer = setTimeout(function()
+					{
+					  resizeChart('testChartBusOutbound', xDomainOutbound, barHeight);
+					  resizeChart('testChartTaxiOutbound', xDomainOutbound, barHeight);
+					  resizeChart('testChartParatransitOutbound', xDomainOutbound, barHeight);
+					  resizeChart('testChartBusReturn', xDomainReturn, barHeight);
+					  resizeChart('testChartTaxiReturn', xDomainReturn, barHeight);
+					  resizeChart('testChartParatransitReturn', xDomainReturn, barHeight);
+					}, 100);
+				  };
+			});
+			
+		</script>
+		
+		<!-- Dependent JS Libs-->
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="datetimepicker/moment.js"></script>
+		<script src="datetimepicker/bootstrap-datetimepicker.js"></script>
+	</body>
+</html>

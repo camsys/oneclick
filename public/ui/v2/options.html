@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+		<meta content='1-Click Application' name='description'> </meta>
+
+		<title>Options</title>
+		
+		<!-- Bootstrap core CSS -->
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		
+		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+		<link href="datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="stylesheets/arc.css" media="all" rel="stylesheet" />
+		
+		<!-- Dependent JS Libs-->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	</head>
+	<body>
+		<div id="wrap">
+		<div class="navbar navbar-default navbar-fixed-top" role="navigation" id='publicNav'>	
+			<div class="container-fluid">
+				<div class='.navbar-header'>
+					<a class="navbar-brand" href="/en" id="logo" style="text-indent:-9999px;">Logo</a>
+					<div class='pull-right'>
+						<a href="/501" id="help">
+							<i class='fa fa-question-circle'></i>
+							<span class="sr-only">Help</span>
+						</a>
+					</div>
+					<button type="button" class="navbar-toggle" data-target='#userMenuNavbar' data-toggle='collapse'>
+						<span class="sr-only">User menu</span>
+						 <span class="icon-bar"></span>
+						 <span class="icon-bar"></span>
+					 </button>
+				</div><!--end of navbar-header-->
+				<div class='collapse navbar-collapse navbar-right' id="userMenuNavbar">
+					<ul class='nav navbar-nav'>
+						<li class='dropdown' id='userDropdown'>
+							<a class='dropdown-toggle' data-target='#' data-toggle='dropdown'>
+								Welcome, Guest
+								<b class='caret'></b>
+							</a>
+							<ul class='dropdown-menu' role='menu'>
+								<li>
+									<a href="/users/sign_in">
+									Log In
+									</a>
+								</li>
+								<li>
+									<a href="/users/sign_up">
+									Create An Account
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div><!--end of collapse navbar-collapse-->
+			</div>
+		</div><!--end of publicNav-->
+		
+		<div id="main" class="container">
+			<ol class="breadcrumb" id="wizards">
+			  <li class="prevStep"><a href="trip.html">Trip</a></li>
+			  <li class="activeStep">Options</li>
+			  <li class="nextStep">Review</li>
+			  <li class="nextStep">Plan</li>
+			</ol>
+						
+			<div class='row'>
+				<div class='col-md-8 col-sm-6'>
+					<div class='col-sm-12 well'>
+						<form role="form" id="optionsForm">
+							<div class="col-sm-12 form-group">
+								<label class="col-sm-5 control-label" for="yearBirth">Year of Birth</label>
+								<div class="col-md-4 col-sm-7">
+									<input type="text" class="form-control" name="yearBirth" id="yearBirth" label="false"/>
+									<script type="text/javascript">
+										$(function () {
+											//TODO: provide a list of years
+										});
+									</script>
+								</div>
+							</div>
+							<div class="col-sm-12 form-group">
+								<button type="submit" class="btn btn-default active pull-right">Search</button>
+							</div>
+						</form>
+					</div>
+				</div><!--end of options column-->
+				<div class='col-md-4 col-sm-6'>
+					<div class='well' id="cmsPlaceholder">
+						TODO:(CMS)
+					</div>
+				</div><!--end of CMS column-->
+				
+			</div>
+			
+		</div><!--end of main-->
+		
+		<div id='footer'>
+			<div id='feedback' class="col-xs-12">
+				<div class='pull-left'>
+					<a href="http://www.fta.dot.gov/grants/13094_13528.html" target="_blank">More About This Initiative</a>
+				</div>
+				<div class='pull-right'>
+					<a href="mailto://OneClick@camsys.com">Send your Feedback</a>
+				</div>
+			</div>
+			<div id='versionLang' class="col-xs-12">
+				<div class='pull-left'>
+					<span id="versionInfo">Version</span>
+				</div>
+				<div class='pull-right'>
+					English
+					|
+					<a href="/es">En Español</a>
+				</div>
+			</div>
+		</div><!--end of footer-->
+		</div><!--end of wrap-->
+		
+		<!-- Dependent JS Libs-->
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="datetimepicker/moment.js"></script>
+		<script src="datetimepicker/bootstrap-datetimepicker.js"></script>
+	</body>
+</html>
