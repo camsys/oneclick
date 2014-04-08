@@ -23,14 +23,19 @@ end
     {name: 'Rejected Trips', description: 'Displays a report showing trips that were rejected by a user.', view_name: 'trips_report', class_name: 'RejectedTripsReport', active: 1}
 ].each do |rep|
   Report.create!(rep)
-  Translation.create!(key: rep[:class_name], locale: :en, value: rep[:class_name])
-  Translation.create!(key: rep[:class_name], locale: :es, value: "[es]#{rep[:class_name]}[/es]")
+  Translation.find_or_create_by!(key: rep[:class_name], locale: :en, value: rep[:class_name])
+  Translation.find_or_create_by!(key: rep[:class_name], locale: :es, value: "[es]#{rep[:class_name]}[/es]")
 end
 
 # Create Admin User
 User.find_by_email(admin[:email]).destroy rescue nil
-u = User.create! first_name: 'sys', last_name: 'admin', email: 'email@camsys.com', password: 'welcome1'
-up = UserProfile.create! user: u
+u = User.find_or_create_by!(email: 'email@camsys.com') do |u|
+  u.first_name = 'sys'
+  u.last_name = 'admin' 
+  u.password = u.password_confirmation ='welcome1'
+  
+end
+up = UserProfile.find_or_create_by! user: u
 u.add_role :system_administrator
 
 ### Internationalized Records ###

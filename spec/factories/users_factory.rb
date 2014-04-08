@@ -50,8 +50,8 @@ FactoryGirl.define do
       first_name 'Agency'
       last_name 'Administrator'
       email { generate(:agency_email) }
-      agency FactoryGirl.create :arc_mobility_mgmt_agency
       after(:create) do |u|
+        u.agency FactoryGirl.create :arc_mobility_mgmt_agency
         u.add_role :agency_administrator
         u.save!
       end
@@ -60,8 +60,8 @@ FactoryGirl.define do
       first_name 'Agency'
       last_name 'Agent'
       email { generate(:agent_email) }
-      agency FactoryGirl.create :arc_mobility_mgmt_agency
       after(:create) do |u|
+        u.agency FactoryGirl.create :arc_mobility_mgmt_agency
         u.add_role :agent
         u.save!
       end
