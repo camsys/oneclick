@@ -27,7 +27,7 @@ class Ability
       can [:index], :admin_home
 
       can [:access], :staff_travelers
-      can :travelers, Agency, {agency_id: user.agency.try(:id)}
+      can :travelers, Agency, {id: user.agency.try(:id)}
       can :travelers, User #can find any user if they search
       # can :edit, User, {user.approved_agencies.contains? }
       can [:access], :show_agency
@@ -41,7 +41,7 @@ class Ability
       can [:access], :admin_feedback
 
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
-      can :manage, Agency, id: user.agency.try(:id)
+      can [:read, :edit], Agency, id: user.agency.try(:id)
       can :read, Agency
       can :perform, :assist_user
       can :create, User

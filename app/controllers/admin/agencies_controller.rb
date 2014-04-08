@@ -1,13 +1,11 @@
 class Admin::AgenciesController < Admin::OrganizationsController
   before_filter :load_agency, only: [:create]
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:travelers]
+  load_and_authorize_resource :id_param => :agency_id,  only: :travelers #TODO implies a refactor needed
 
 
   # GET /agencies/1/travelers
   def travelers
-    @agency = Agency.find(params[:agency_id])
-    authorize! :travelers, @agency #can current user access travelers for this agency
-
     @pre_auth_travelers = @agency.customers
 
     if params[:text] && params[:text].present?
@@ -19,8 +17,6 @@ class Admin::AgenciesController < Admin::OrganizationsController
   # GET /agencies
   # GET /agencies.json
   def index
-    puts @agencies.ai
-
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @agencies }
