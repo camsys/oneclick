@@ -30,7 +30,7 @@ class Ability
       can :travelers, Agency, {agency_id: user.agency.try(:id)}
       can :travelers, User #can find any user if they search
       # can :edit, User, {user.approved_agencies.contains? }
-      can :access, :show_agency
+      can [:access], :show_agency
       can [:access], :admin_create_traveler
       can [:access], :admin_trips
       can [:access], :admin_agencies
