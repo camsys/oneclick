@@ -162,14 +162,14 @@ class TripPlace < GeocodedAddress
       errors.add(:base, 'TripPlace cannot be both place and POI')
       return
     end
-    if !place.nil? && !raw_address.nil?
-      errors.add(:base, 'TripPlace cannot have address if predefined place')
-      return
-    end
-    if !poi.nil? && !raw_address.nil?
-      errors.add(:base, 'TripPlace cannot have address if POI')
-      return
-    end
+    #if !place.nil? && !raw_address.nil?
+    #  errors.add(:base, 'TripPlace cannot have address if predefined place')
+    #  return
+    #end
+    #if !poi.nil? && !raw_address.nil?
+    #  errors.add(:base, 'TripPlace cannot have address if POI')
+    #  return
+    #end
     if (place.nil? && poi.nil?) && raw_address.nil?
       errors.add(:base, 'TripPlace must have raw address if not predefined place or POI')
       return

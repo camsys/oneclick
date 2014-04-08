@@ -104,7 +104,6 @@ class Trip < ActiveRecord::Base
       raise 'TripPart not valid' unless trip_part.valid?
       trip.trip_parts << trip_part
     end
-
     trip
   end
 
