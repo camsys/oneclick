@@ -1,7 +1,9 @@
 %h1
   = link_to @agency.name, [:admin, @agency] if @agency
   
-%h2= t(:find_traveler)
+%span
+  = link_to  t(:create_traveler), new_user_path, {class: 'btn pull-right'}
+  %h2= t(:find_traveler)
 .well.well-sm#filters
   =form_tag(admin_agency_travelers_path, method: :get, :class => "form-inline") do
     =label_tag :text, t(:search)
