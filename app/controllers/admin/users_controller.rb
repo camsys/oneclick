@@ -115,7 +115,7 @@ class Admin::UsersController < Admin::BaseController
   # #   params.require(:agency_user_relationship).permit(:approved_agencies)
   # # end
 
-  def load_users
+  def load_user
     params[:agency_id] = params[:agency]
     @user = User.new(params.require(:user).permit(:first_name, :last_name, :email, :agency_id))
   end

@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Admin::UsersController do
   include Devise::TestHelpers
   before (:all) do
+    User.delete_all
     FactoryGirl.create(:arc_mobility_mgmt_agency)
     FactoryGirl.create(:admin)
     create_list(:user, 25)
@@ -16,10 +17,13 @@ describe Admin::UsersController do
 
   describe "index action" do
     describe "for sys admin" do
+      before(:each) do
+        login_as_using_find_by(email: 'admin@example.com')
+      end
       describe "with no params" do
         it "returns all users if some exist" do
           get :index
-          assigns(:users).count.should eql(11) #1 admin and 10 agents
+          assigns(:users).count.should eql(37) #1 sys admin, 1 agency admin, 10 agents and 25 users
         end
       end
       describe "with email param" do
