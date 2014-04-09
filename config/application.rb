@@ -89,6 +89,10 @@ module Oneclick
       tadaaapickr.pack.min.js
       kiosk/_base.css
       kiosk/style.css
+      kiosk/pa.css
+      default/arc.css
+      default/pa.css
+      default/broward.css
     )
 
     # Version of your assets, change this if you want to expire all your assets

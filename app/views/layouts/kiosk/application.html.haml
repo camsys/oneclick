@@ -5,15 +5,15 @@
       %title= content_for?(:title) ? yield(:title) : t(:site_title)
       %meta{:content => content_for?(:description) ? yield(:description) : t(:site_description), :name => "description"}
       = ajaxful_rating_style
-      = stylesheet_link_tag "application", :media => "all"
-      = stylesheet_link_tag brand, :media => "all"
+      = stylesheet_link_tag "kiosk/application", :media => "all"
+      = stylesheet_link_tag 'kiosk/' + brand, :media => "all"
       = stylesheet_link_tag 'kiosk/_base', :media => "all"
       = stylesheet_link_tag 'kiosk/style', :media => "all"
       = stylesheet_link_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.css", :media => "all"
 
       = javascript_include_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"
       = javascript_include_tag "http://maps.google.com/maps/api/js?v=3.2&sensor=false"
-      = javascript_include_tag "application" # TODO This should go in footer
+      = javascript_include_tag "kiosk/application" # TODO This should go in footer
       = javascript_include_tag "https://www.google.com/jsapi"
 
       %meta{name: "ui_typeahead_delay",       content: Rails.application.config.ui_typeahead_delay}
@@ -27,7 +27,7 @@
       = csrf_meta_tags
       = yield(:head)
   %body{:class => "kiosk #{controller_css_class} #{action_name}"}
-    / kiosk/application.html.haml
+    / layouts/kiosk/application.html.haml
     - unless @hide_timeout
       = render 'kiosk/shared/tap_timeout'
     = render 'kiosk/shared/navigation'
