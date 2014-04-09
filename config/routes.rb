@@ -312,6 +312,9 @@ Oneclick::Application.routes.draw do
 
   end
 
-    resources :translations
+  unless Oneclick::Application.config.ui_mode == 'kiosk'
+    get '*not_found' => 'errors#handle404'
+  end
 
+  get 'heartbeat' => Proc.new { [200, {'Content-Type' => 'text/plain'}, ['ok']] }
 end
