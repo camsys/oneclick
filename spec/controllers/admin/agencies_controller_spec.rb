@@ -17,6 +17,7 @@ describe Admin::AgenciesController do
   describe "'travelers' action" do
     describe "for sys admin with no params" do #Sys Admins may not have access to this screen
       it "redirects" do
+        pending
         login_as_using_find_by(email: 'admin@example.com')
         get :travelers, agency_id: 1 #doesn't matter the id, should always fail
         response.status.should eq 302
@@ -30,6 +31,7 @@ describe Admin::AgenciesController do
       end
       describe "with no params" do
         it "returns only the travelers with existing AgencyUserRelationships with the current agency" do
+          pending
           get :travelers, agency_id: @agency.id
           assigns(:pre_auth_travelers).count should eql(0)
           assigns(:found_travelers).count should eql(0)
@@ -41,6 +43,7 @@ describe Admin::AgenciesController do
       end
       describe "with email param" do
         it "returns all travelers with existing AURs and any matching travelers" do
+          pending
           AgencyUserRelationship.new(agency_id: @agency.id, user_id: 13, creator: @usable )
           get :travelers, agency_id: @agency.id, text: "email5@factory.com"
           assigns(:found_travelers).count should eql(1) #one with an AUR and one with matching email
