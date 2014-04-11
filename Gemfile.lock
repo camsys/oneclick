@@ -68,7 +68,7 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bootstrap-combobox (1.2.6)
-    bootstrap-sass (2.3.2.2)
+    bootstrap-sass (3.1.1.0)
       sass (~> 3.2)
     builder (3.1.4)
     cancan (1.6.10)
@@ -429,7 +429,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap-combobox
-  bootstrap-sass (~> 2.3.2.0)
+  bootstrap-sass (~> 3.1.1)
   cancan
   capybara
   chronic
@@ -479,7 +479,7 @@ DEPENDENCIES
   rspec-core
   rspec-rails
   rubyzip
-  sass-rails
+  sass-rails (>= 3.2)
   sextant
   simple_form
   simple_token_authentication
