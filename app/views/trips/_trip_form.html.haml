@@ -1,7 +1,7 @@
 - content_for :head do
-  / = javascript_include_tag asset_path('tadaaapickr.pack.min.js')
+  = javascript_include_tag asset_path('default/tadaaapickr.pack.min.js')
   = stylesheet_link_tag 'typeahead.js-bootstrap.css'
-  = javascript_include_tag asset_path('trips.js')
+  = javascript_include_tag asset_path('default/trips.js')
 
 = form_tag geocode_user_trips_path, :remote => true, :id => "query_form" do
   = hidden_field_tag :query
