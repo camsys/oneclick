@@ -284,12 +284,6 @@ Oneclick::Application.routes.draw do
 
   unless Oneclick::Application.config.ui_mode == 'kiosk'
     get '*not_found' => 'errors#handle404'
-
-    comfy_route :cms_admin, :path => '/admin'
-    comfy_route :cms, :path => '/', :sitemap => false
-
-    # Make sure this routeset is defined last
-    ComfortableMexicanSofa::Routing.content(:path => '/', :sitemap => false)
   end
 
   get 'heartbeat' => Proc.new { [200, {'Content-Type' => 'text/plain'}, ['ok']] }

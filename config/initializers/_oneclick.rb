@@ -4,9 +4,12 @@ Oneclick::Application.config.ui_mode = ENV['UI_MODE'] || 'desktop'
 
 # defaults for all brands
 Oneclick::Application.config.enable_rideshare = false
-ENV['SMTP_MAIL_ADDR'] = "smtp.gmail.com"
-ENV['SMTP_MAIL_PORT'] = '587'
-ENV['SMTP_MAIL_DOMAIN'] = "gmail.com"
+ENV['SMTP_MAIL_ADDR'] ||= "smtp.gmail.com"
+ENV['SMTP_MAIL_PORT'] ||= '587'
+ENV['SMTP_MAIL_DOMAIN'] ||= "gmail.com"
+# Kiosk session timeouts
+ENV['SESSION_TIMEOUT'] ||= '10'
+ENV['SESSION_ALERT_TIMEOUT'] ||= '30'
 
 Oneclick::Application.config.default_zoom = nil
 
