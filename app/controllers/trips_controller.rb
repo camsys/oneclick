@@ -55,6 +55,7 @@ class TripsController < PlaceSearchingController
   def show_printer_friendly
     @show_hidden = params[:show_hidden]
     @print = params[:print]
+    @hide_timeout = true
 
     if session[:current_trip_id]
       session[:current_trip_id] = nil

@@ -50,7 +50,7 @@ protected
         return_time = Time.strptime(self.return_trip_time, "%H:%M %p")
         trip_time = Time.strptime(self.trip_time, "%H:%M %p")
 
-        if return_time < trip_time
+        if return_time <= trip_time
           errors.add(:return_trip_time, I18n.translate(:return_trip_time_before_start))
         end
       rescue Exception => e

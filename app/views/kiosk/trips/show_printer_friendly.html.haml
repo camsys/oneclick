@@ -38,14 +38,15 @@
 
   - ItineraryDecorator.decorate_collection(trip_part.itineraries.valid.visible).each do |itinerary|
 
-    %p
-      -if itinerary.mode.name.downcase == 'paratransit'
+    
+    -if itinerary.mode.name.downcase == 'paratransit'
+      %p
         =itinerary.service.name
-        %p
-          =itinerary.service.provider.name
-      -else
-        %p
-          =get_trip_summary_title(itinerary)
+      %p
+        =itinerary.service.provider.name
+    -else
+      %p
+        =get_trip_summary_title(itinerary)
     %hr
 
     -unless itinerary.mode.name.downcase == 'rideshare'
@@ -71,8 +72,9 @@
   $(document).ready(function() {
     //window.print();
     $('.navbar').addClass('hidden');
-    $('.container-fluid').css({
+    $('body').addClass('print');
+    $('#main').children('.container-fluid').css({
       'background-color':'#fff',
-      'width':'220px'
+      'width':'224px'
       });
   });

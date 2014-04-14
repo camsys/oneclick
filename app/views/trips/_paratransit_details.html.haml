@@ -36,6 +36,10 @@
       %i.fa.fa-calendar
       = t(:trip_outside_service_hours)
 
+  - if itinerary.service.try(:phone)
+    %h4= tel_link itinerary.service.phone
+
+
   .row-fluid.hidden
     ="SCORE: " + itinerary.match_score.to_s
 

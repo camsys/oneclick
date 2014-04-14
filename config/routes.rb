@@ -1,5 +1,4 @@
 Oneclick::Application.routes.draw do
-
   get '/configuration' => 'configuration#configuration'
 
   scope "(:locale)", locale: /en|es/ do
@@ -131,11 +130,13 @@ Oneclick::Application.routes.draw do
 
     namespace :kiosk do
       get '/', to: 'home#index'
+      get 'reset', to: 'home#reset'
+
+      get 'itineraries/:id/print' => 'trips#itinerary_print', as: 'print_itinerary'
 
       resources :locations, only: [:show]
       resources :call, only: [:show, :index] do
         post :outgoing, on: :collection
-        get :test, on: :collection
       end
 
       # TODO can probably remove a lot of these routes
@@ -301,8 +302,6 @@ Oneclick::Application.routes.draw do
       end
     end
 
-
-    
     get '/' => 'home#index'
 
     get '/404' => 'errors#error_404', as: 'error_404'
@@ -312,6 +311,11 @@ Oneclick::Application.routes.draw do
 
   end
 
-    resources :translations
+  resources :translations
 
+  unless Oneclick::Application.config.ui_mode == 'kiosk'
+    get '*not_found' => 'errors#handle404'
+  end
+
+  get 'heartbeat' => Proc.new { [200, {'Content-Type' => 'text/plain'}, ['ok']] }
 end
