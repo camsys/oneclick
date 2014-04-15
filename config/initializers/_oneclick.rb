@@ -73,7 +73,7 @@ when 'pa'
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
   ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
   honeybadger_api_key = 'f49faffa'
-  Oneclick::Application.config.poi_file = 'db/pa/pa-poi-from-arc.csv'
+  Oneclick::Application.config.poi_file = 'db/pa/pa-poi-from-arcgis.csv'
 
 end
 

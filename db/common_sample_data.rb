@@ -123,6 +123,7 @@ def load_pois
   count_bad = 0
   count_failed = 0
   count_poi_type = 0
+  count_possible_existing = 0
 
   File.open(filename) do |f|
 
@@ -141,11 +142,11 @@ def load_pois
       if poi_type
 
         #If we have already created this POI, don't create it again.
-        p = Poi.find_by_name(row[3])
-        unless p.nil?
-          next
+        if Poi.exists?(name: row[3], poi_type: poi_type, city: row[6])
+          puts "Possible duplicate: #{row}"
+          count_possible_existing += 1
+          # next
         end
-        p row
         p = Poi.new
         p.poi_type = poi_type
         p.lon = row[1]
@@ -154,7 +155,7 @@ def load_pois
         p.address1 = row[4]
         p.address2 = row[5]
         p.city = row[6]
-        p.state = 'GA'
+        p.state = row[7]
         p.zip = row[8]
         p.county = row[12]
         begin
@@ -174,7 +175,8 @@ def load_pois
     end
   end
   puts
-  puts "Loaded #{count_poi_type} POI Types and #{count_good} POIs. #{count_bad} were skipped, #{count_failed} failed to save."
+  puts "Loaded #{count_poi_type} POI Types and #{count_good} POIs."
+  puts "  #{count_bad} bad were skipped, #{count_failed} failed to save, #{count_possible_existing} possible existing."
 end
 
 def generate_trips
@@ -229,7 +231,7 @@ def populate_provider_orgs
     po = p.create_provider_org! name: p.name
     p.save!
 
-    puts "Saved #{po.ai}"
+    # puts "Saved #{po.ai}"
     # provider staff user
     u = po.users.create! first_name: p.name + ' Provider Staff', last_name: 'Staff',
       email: p.name.to_sample_email('staff'), password: 'welcome1'
