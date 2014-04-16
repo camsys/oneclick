@@ -257,17 +257,18 @@ Oneclick::Application.routes.draw do
       get '/raise' => 'util#raise'
       get '/' => 'admin_home#index'
       resource :feedback
-      resources :travelers, controller: 'agency_user_relationships' do
+      resources 'agency_user_relationships' do
         get   'aid_user'
         get   'agency_revoke'
       end
       resources :agencies do
-        resources :travelers, controller: 'agency_user_relationships' do
+        get 'travelers'
+        resources 'agency_user_relationships' do
           get   'aid_user'
           get   'agency_revoke'
         end
         get 'select_user'
-        resources :users do   #employees, not customers
+        resources :users do
           post 'add_to_agency', on: :collection
           put 'add_to_agency', on: :collection
         end
@@ -278,6 +279,7 @@ Oneclick::Application.routes.draw do
         resources :services
       end
       resources :users do #admin users
+        get 'travelers'
         put 'update_roles', on: :member
       end
       resources :providers do
@@ -310,6 +312,9 @@ Oneclick::Application.routes.draw do
 
   end
 
-    resources :translations
+  unless Oneclick::Application.config.ui_mode == 'kiosk'
+    get '*not_found' => 'errors#handle404'
+  end
 
+  get 'heartbeat' => Proc.new { [200, {'Content-Type' => 'text/plain'}, ['ok']] }
 end

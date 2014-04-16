@@ -206,6 +206,7 @@ describe Trip do
   end
 
   it "should convert a trip proxy to a trip" do
+    FactoryGirl.create(:trip_purpose)
     tomorrow = Date.tomorrow
     trip_time = Time.now + 1.hour
     return_trip_time = Time.now + 2.hours

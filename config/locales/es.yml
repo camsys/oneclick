@@ -27,7 +27,9 @@ es:
   add_new_agency: "[es26]Add a new Agency[/es]"
   agency_added: "[es27]Agency added[/es]"
   user_created_and_added_to_agency: "[es29]User %{user} created and added to agency %{agency}[/es]"
+  create_agency: '[es]Create Agency[/es]'
   add_agency: "[es26]Add Agency[/es]"
+  agency_profile: "[es]Agency Profile[/es]"
   edit_agency_name: '[es]Edit %{name}[/es]'
   update_agency: "[es]Update Agency[/es]"
   my_agencies: "[es27]My Agencies[/es]"
@@ -38,6 +40,7 @@ es:
   subagencies: "[es27]Sub-agencies[/es]"
   new_agency: "[es29]New Agency[/es]"
   provider: "[es25]Provider[/es]"
+  provider_profile: "[es]Provider Profile[/es]"
   providers: "[es22]Providers[es]"
   editing_org: "[es30]Editing organization[/es]"
   listing_orgs: "[es31]Listing Organizations[/es]"
@@ -61,7 +64,11 @@ es:
   summary_type: "[es50]Summary Type[/es]"
   run: "[es51]Run[/es]"
   users: "[es42]Users[/es]"
+  agents: "[es67]Agents[/es]"
+  create_user: "[es]Create User[/es]"
   admin: '[es42]Admin[/es]'
+  admin_actions: '[es]Admin[/es]'
+  staff_actions: '[es]Staff[/es]'
   send_by_email: 'Enviar por correo electrónico'
   send_itinerary_by_email: "[es32]Send itinerary by email[/es]"
   send_trip_by_email: "[es29]Send trip plan by email[/es]"
@@ -97,6 +104,8 @@ es:
   buddies: 'Amigos'
   travelers: 'Viajeros'
   traveler: 'Viajero'
+  matching_travelers: "[es]Matching Travelers[/es]"
+  authorized_travelers: "[es]Authorized Travelers[/es]"
   add_user: "[es81]Add User[/es]"
   send_buddy_request: 'Enviar solicitud de amigo'
   add_new_buddy:  "[es82]Add a new buddy[/es]"

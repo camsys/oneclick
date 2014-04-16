@@ -1,9 +1,9 @@
 %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}
   %i.fa.fa-wrench
-  = t(:admin)
+  =title
   %b.caret
 %ul.dropdown-menu{role: 'menu'}
-  - admin_menu.each do |action|
+  - available_actions.each do |action|
     - next unless show_action(action)
     %li
       = link_to action[:target], method: (action[:method] || 'get') do

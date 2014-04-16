@@ -67,7 +67,7 @@ characteristicsView.init = function () {
   //add click handler to next button
   $('.next-step-btn, a#yes').on('click', characteristicsView.nextBtnHandler.bind(characteristicsView));
 
-  $('.back-button a').on('click', characteristicsView.backBtnHandler.bind(characteristicsView));
+  $('.back-button').on('click', characteristicsView.backBtnHandler.bind(characteristicsView));
 
   //add click handlers to dob form li elements (table)
   characteristicsView.dobItems.on('click', 'li', characteristicsView.handleDobElemClick.bind(characteristicsView));
@@ -268,7 +268,13 @@ characteristicsView.indexChangeHandler = function () {
         break;
 
       case characteristicsView.states.PROGRAMS:
-        $('.new_user_characteristics_proxy').submit();
+        if (!window.new_user_characteristics_proxy_submitted) {
+          console.log('submitting');
+          $('.new_user_characteristics_proxy').submit();
+        }
+
+        window.new_user_characteristics_proxy_submitted = true;
+
         break;
     }
   }
@@ -299,11 +305,12 @@ characteristicsView.handleDobElemClick = function(e) {
  *.............................................................................*/
 characteristicsView.populateYears = function () {
   var now = new Date();
-  var nowYear = now.getUTCFullYear();
-  var beginYear = nowYear - 100;
+  var nowYear = now.getUTCFullYear() - 11;
+  var beginYear = now.getUTCFullYear() - 100;
   var yearRange = CGUtils.range(beginYear, nowYear + 1);
   var yearGroups = [];
   var numYearsInGroup = 10;
+  this.dob.yearGroups = yearGroups;
 
   //reset yearsPage
   characteristicsView.dob.yearpage = 0;
@@ -349,11 +356,18 @@ characteristicsView.populateYears = function () {
    *.............................................................................*/
 
   characteristicsView.dob.displayYearPage = function () {
-    var yearPageWidth = this.yearlist.width();
-    var leftOffset;
+    var yearPageWidth = this.yearlist.width()
+      , leftOffset
+      , count = this.yearGroups.length;
 
+    // show the page
     leftOffset = this.yearpage * yearPageWidth * -1;
     yearContainer.css('left', leftOffset);
+
+    // disable the buttons
+    $('#yeartable .prev-btn, #yeartable .next-btn').removeClass('disabled');
+    if (this.yearpage == 0)         $('#yeartable .prev-btn').addClass('disabled');
+    if (this.yearpage == count - 1) $('#yeartable .next-btn').addClass('disabled');
   };
 
   characteristicsView.dob.yearpage = 3;
@@ -368,8 +382,8 @@ characteristicsView.populateYears = function () {
     if ($target.hasClass('next-btn')) {
       //increment page
       characteristicsView.dob.yearpage += 1;
-      if (characteristicsView.dob.yearpage > yearGroups.length) {
-        characteristicsView.dob.yearpage = yearGroups.length;
+      if (characteristicsView.dob.yearpage >= yearGroups.length) {
+        characteristicsView.dob.yearpage = yearGroups.length - 1;
       }
     }
 
@@ -439,6 +453,14 @@ $(document).ready(function () {
           .toArray()
           .join('-')
       );
+    });
+  });
+
+  $('.js-prevent-double-click').on('click', function () {
+    $(this).off('click').on('click', function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+      return false;
     });
   });
 

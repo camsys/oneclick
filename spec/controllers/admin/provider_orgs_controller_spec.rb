@@ -30,8 +30,16 @@ describe Admin::ProviderOrgsController do
   # Admin::ProviderOrgsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
+  before (:all) do
+    FactoryGirl.create(:admin)
+  end
+
+  after (:all) do
+    User.delete_all
+  end
+
   before (:each) do
-      login_as_using_find_by(email: 'email@camsys.com')
+      login_as_using_find_by(email: 'admin@example.com')
   end
 
   describe "GET index" do

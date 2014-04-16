@@ -47,7 +47,7 @@ class Admin::AgencyUserRelationshipsController < Admin::BaseController
           end
         end
 
-  # Impersonate a user to edit their traveler profile.
+  # Impersonate a user to edit_user_path their traveler profile.
   def edit
     authorize! :perform, :assist_user
     agency_staff_assist_user(params[:id], params[:agency_id])
@@ -86,10 +86,7 @@ class Admin::AgencyUserRelationshipsController < Admin::BaseController
   private
 
   def agency_staff_assist_user(user_id, agency_id)
-    @agency_user_relationship = AgencyUserRelationship.find_or_create_by(user_id: user_id, agency_id: agency_id) do |aur|
-      UserMailer.agency_helping_email(aur.user.email, aur.user.email, aur.agency).deliver #Only send email if the AUR is being created
-      aur.creator = current_user.id
-    end
+    @agency_user_relationship = AgencyUserRelationship.find_by(user_id: user_id, agency_id: agency_id) 
     set_traveler_id user_id
   end
 

@@ -13,12 +13,16 @@ module SeedsHelpers
   #       }
   def build_internationalized_records p
     begin
-      record = p[:klass].new
+      record = p[:klass].find_by(code: p[:code]) || p[:klass].new
       record[:code] = p[:code]
       p[:xlate].each do |k,v|
         translation_fkey = "#{p[:code]}_#{k}"
-        Translation.create!(key: translation_fkey, locale: 'en', value: v)
-        Translation.create!(key: translation_fkey, locale: 'es', value: "[es]#{v}[/es]")
+        Translation.find_or_create_by!(key: translation_fkey, locale: "en") do |t|
+          t.value = v
+        end
+        Translation.find_or_create_by!(key: translation_fkey, locale: "es") do |t|
+          t.value = "[es]#{v}[/es]"
+        end
         record[k] = translation_fkey
       end
       p[:no_xlate].each do |k,v|

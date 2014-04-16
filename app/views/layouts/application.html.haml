@@ -5,13 +5,13 @@
       %title= content_for?(:title) ? yield(:title) : t(:site_title)
       %meta{:content => content_for?(:description) ? yield(:description) : t(:site_description), :name => "description"}
       = ajaxful_rating_style
-      = stylesheet_link_tag "application", :media => "all"
-      = stylesheet_link_tag brand, :media => "all"
-      = stylesheet_link_tag "http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css", :media => "all"
+      = stylesheet_link_tag "default/application", :media => "all"
+      = stylesheet_link_tag 'default/' + brand, :media => "all"
+      = stylesheet_link_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.css", :media => "all"
       
       = javascript_include_tag "http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"
       = javascript_include_tag "http://maps.google.com/maps/api/js?v=3.2&sensor=false"
-      = javascript_include_tag "application" # TODO This should go in footer
+      = javascript_include_tag "default/application" # TODO This should go in footer
       = javascript_include_tag "https://www.google.com/jsapi"
 
 

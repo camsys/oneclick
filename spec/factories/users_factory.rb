@@ -4,6 +4,12 @@ FactoryGirl.define do
   sequence :email do |n|
     "email#{n}@factory.com"
   end
+  sequence :agency_email do |n|
+    "email#{n}@agency.com"
+  end
+  sequence :agent_email do |n|
+    "agent#{n}@agency.com"
+  end
 
   factory :user do
     first_name 'Test'
@@ -32,19 +38,33 @@ FactoryGirl.define do
       preferred_locale 'es'
     end
     factory :admin do
-    first_name 'Admin'
-    last_name 'User'
+      first_name 'System'
+      last_name 'admin'
       email 'admin@example.com'
       after(:create) do |u|
-        u.add_role 'admin'
+        u.add_role :system_administrator
         u.save
       end
     end
+    factory :agency_admin do
+      first_name 'Agency'
+      last_name 'Administrator'
+      email { generate(:agency_email) }
+      after(:create) do |u|
+        u.agency FactoryGirl.create :arc_mobility_mgmt_agency
+        u.add_role :agency_administrator
+        u.save!
+      end
+    end
+    factory :agency_agent do
+      first_name 'Agency'
+      last_name 'Agent'
+      email { generate(:agent_email) }
+      after(:create) do |u|
+        u.agency FactoryGirl.create :arc_mobility_mgmt_agency
+        u.add_role :agent
+        u.save!
+      end
+    end
   end
-  # factory :agency_admin do
-  #   first_name 'ARC'
-  #   last_name 'Admin'
-  #   email 'ARC_Admin@example.com'
-  #   agency FactoryGirl.create :arc_mobility_mgmt_agency
-  # end
 end

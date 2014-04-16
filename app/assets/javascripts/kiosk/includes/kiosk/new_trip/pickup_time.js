@@ -8,23 +8,29 @@ jQuery(function ($) {
     }).data('calendar')
       .setStartDate(new Date);
 
+  //CLick Tadaaapicker buttons(now hidden) when you click the outside buttons.
+  var datePrev = $('#date-arrow-prev');
+  datePrev.on('click', function(){ $('th.month.prev').click();});
+
+  var dateNext = $('#date-arrow-next');
+  dateNext.on('click', function(){ $('th.month.next').click();});
+
   NewTrip.timepickerInit('#trip_proxy_trip_time', '#timepicker-one');
   $('#trip-date').data('calendar').mbShow();
   $('.combobox').combobox({ force_match: false });
 
   function toggleArriveDepart(currentValue) {
     var timeSection = $('#trip-time');
-    $('#trip_proxy_arrive_depart option:selected').removeAttr("selected");
 
     if (currentValue === 'Departing at') {
       //change the label to arriving
       timeSection.children('label').html('Arriving at');
-      $('#trip_proxy_arrive_depart').find('option[value="Arriving By"]').attr('selected', true);
+      $('#trip_proxy_arrive_depart').val('Arriving By');
       //change the dropdown selected state...
     } else {
       //change the label to departing
       timeSection.children('label').html('Departing at');
-      $('#trip_proxy_arrive_depart').find('option[value="Departing At"]').attr('selected', true);
+      $('#trip_proxy_arrive_depart').val('Departing At');
       //toggle the arriving/departing state
     }
   }

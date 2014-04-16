@@ -1,0 +1,40 @@
+// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.home.index {
+  .actionbutton {
+    @extend .btn;
+    cursor: pointer;
+    overflow: auto;
+    margin-top: 10px;
+
+    i {
+      width: 100%;
+    }
+    
+    .actionlabel {
+      // display: inline;
+      font-size: 1.5em;
+    }
+  }
+
+  .Center-Container.is-Table {
+   min-height: 2em;
+ }
+
+  .is-Table .Center-Block {
+    width: 90%;
+  }
+
+  .thumbnails > li {
+    margin-bottom: auto;
+  }
+
+  .center {
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+}

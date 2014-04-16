@@ -1,12 +1,22 @@
 class Admin::AgenciesController < Admin::OrganizationsController
   before_filter :load_agency, only: [:create]
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:travelers]
+  load_and_authorize_resource :id_param => :agency_id,  only: :travelers #TODO implies a refactor needed
+
+
+  # GET /agencies/1/travelers
+  def travelers
+    @pre_auth_travelers = @agency.customers
+
+    if params[:text] && params[:text].present?
+      @found_travelers = (User.where('upper(first_name) LIKE ? OR upper(last_name) LIKE ? OR upper(email) LIKE ?', 
+              "%#{params[:text].upcase}%", "%#{params[:text].upcase}%", "%#{params[:text].upcase}%")).uniq  #merge in the found users
+    end
+  end
 
   # GET /agencies
   # GET /agencies.json
   def index
-    puts @agencies.ai
-
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @agencies }

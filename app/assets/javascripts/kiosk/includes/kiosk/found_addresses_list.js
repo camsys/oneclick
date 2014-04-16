@@ -83,7 +83,16 @@ jQuery(function ($) {
   };
 
   window.setupPlacesSearchTypeahead = function (locationName, markerName) {
-    $('#trip_proxy_'+ locationName +'_place').typeahead({
+    var $placeField        = $('#trip_proxy_'+ locationName +'_place')
+      , $selectedTypeField = $('#'+ locationName +'_place_selected_type')
+      , $selectedField     = $('#'+ locationName +'_place_selected');
+
+    $placeField.on('change', function () {
+      $selectedTypeField.val('').change();
+      $selectedField.val('').change();
+    });
+
+    $placeField.typeahead({
       items: typeaheadListLength,
       minLength: typeaheadMinChars,
       menu: $('ul.nav.nav-list')[0],
@@ -175,9 +184,11 @@ jQuery(function ($) {
           showMarker();
         }
 
-        // Update the UI
-        $('#'+ locationName +'_place_selected_type').attr('value', item.type);
-        $('#'+ locationName +'_place_selected').attr('value', item.id);
+        setTimeout(function () {
+          // Update the UI
+          $selectedTypeField.val(item.type).change();
+          $selectedField    .val(item.id).change();
+        }, 0);
 
         return item.name;
       }
@@ -201,7 +212,7 @@ jQuery(function ($) {
     rootSel: '.search-dropdown-container',
     listSel: '.js-candidate-list-inner',
     property: 'margin-top',
-    size: 280,
+    size: 273,
     total: function ($root) {
       return $root.find('.js-candidate-list-inner ul.nav.nav-list').height();
     }

@@ -3,13 +3,14 @@ jQuery(function ($) {
 
   if ($('#trip_proxy_to_place').val() === '')
   	$('.next-step-btn').addClass('stop');
-  NewTrip.requirePresenceToContinue($('#trip_proxy_to_place'));
+
+  NewTrip.requirePresenceToContinue($('#to_place_selected'));
   restore_marker_from_local_storage('stop');
 
   setupPlacesSearchTypeahead('to', 'stop');
 
   if (NewTrip.read().use_current_location == 'yes') {
-    var $btn = $('.back-button .arrow-btn')
+    var $btn = $('.back-button')
     $btn.attr('href', $btn.attr('href').replace('#back',''));
   }
 
@@ -36,5 +37,6 @@ jQuery(function ($) {
     }
   });
 
-  $('input#trip_proxy_to_place').focus();
+  if ($('input#trip_proxy_to_place').val() == '')
+    $('input#trip_proxy_to_place').focus();
 });
