@@ -75,12 +75,6 @@ class TripPlanner
   def convert_itineraries(plan)
     match_score = -0.3
     match_score_incr = 0.1
-
-    puts ""
-    puts "CONVERT_ITINERARIES"
-    puts plan.ai
-    puts ""
-
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
       trip_itinerary['mode'] = Mode.transit
@@ -96,8 +90,6 @@ class TripPlanner
       trip_itinerary['server_status'] = 200
       trip_itinerary['match_score'] = match_score
       match_score += match_score_incr
-      puts "convert_itineraries"
-      puts trip_itinerary.ai
       trip_itinerary
     end
   end
