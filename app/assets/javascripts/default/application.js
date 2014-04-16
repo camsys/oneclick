@@ -18,4 +18,4 @@
 //= require handlebars
 //= require twitter/typeahead
 //= require default/config
-//= require_tree ./includes
+//= require_tree .

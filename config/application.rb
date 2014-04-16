@@ -96,6 +96,7 @@ module Oneclick
       default/pa.css
       default/broward.css
       default/tadaaapickr.en.js
+      default/typeahead.js-bootstrap.css
     )
 
     # Version of your assets, change this if you want to expire all your assets
