@@ -45,7 +45,7 @@ $ ->
 
   places.initialize()
 
-  $(".place_picker").typeahead null,
+  $(".plan-a-trip .place_picker").typeahead null,
     limit: 20,
     displayKey: "name"
     source: places.ttAdapter()

@@ -1,4 +1,4 @@
-# TODO There's a lot of duplication between this and trips.json
+# TODO There's a lot of duplication between this and trips.js.coffee
 
 create_or_update_marker = (key, lat, lon, name, desc, iconStyle) ->  
   marker = findMarkerById(key)
@@ -50,7 +50,7 @@ $ ->
 
   places.initialize()
 
-  $(".place_picker").typeahead null,
+  $(".places .place_picker").typeahead null,
     limit: 20,
     displayKey: "name"
     source: places.ttAdapter()

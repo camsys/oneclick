@@ -2,7 +2,7 @@
   = stylesheet_link_tag 'typeahead.js-bootstrap.css'
   = javascript_include_tag asset_path('places.js')
 
-= simple_form_for :places, url: handle_user_places_path(@traveler) do
+= simple_form_for :places, url: handle_user_places_path(@traveler), html: {class: 'places'} do
   .row-fluid
     .span12
       %h3 Enter the Location

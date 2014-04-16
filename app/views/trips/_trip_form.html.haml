@@ -1,7 +1,5 @@
 - content_for :head do
   = javascript_include_tag asset_path('default/tadaaapickr.en.js')
-  = stylesheet_link_tag asset_path('default/typeahead.js-bootstrap.css')
-  / = javascript_include_tag asset_path('default/trips.js')
 
 = form_tag geocode_user_trips_path, :remote => true, :id => "query_form" do
   = hidden_field_tag :query
@@ -11,7 +9,7 @@
   - unless current_user.travelers.empty?
     = render "select_traveler_form"
 
-= simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}  do |f|
+= simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}  do |f|
   = f.hidden_field :mode
   = f.hidden_field :from_place_object, :id => "from_place_object"
   = f.hidden_field :to_place_object, :id => "to_place_object"
