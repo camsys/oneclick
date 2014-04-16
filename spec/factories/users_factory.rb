@@ -4,7 +4,7 @@ FactoryGirl.define do
   sequence :email do |n|
     "email#{n}@factory.com"
   end
-  sequence :agency_email do |n|
+  sequence :agency_admin_email do |n|
     "email#{n}@agency.com"
   end
   sequence :agent_email do |n|
@@ -49,7 +49,7 @@ FactoryGirl.define do
     factory :agency_admin do
       first_name 'Agency'
       last_name 'Administrator'
-      email { generate(:agency_email) }
+      email { generate(:agency_admin_email) }
       after(:create) do |u|
         u.agency FactoryGirl.create :arc_mobility_mgmt_agency
         u.add_role :agency_administrator
