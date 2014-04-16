@@ -1,4 +1,5 @@
 namespace :oneclick do
+  desc "Add Sample Data for configured brand."
   task :add_sample_data => :environment do
     case Oneclick::Application.config.brand
       when 'arc'

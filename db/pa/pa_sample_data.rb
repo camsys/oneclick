@@ -22,6 +22,7 @@ def add_users_and_places
     {first_name: 'Galina', last_name: 'Dymkova', email: 'gdymkova@camsys.com'},
     {first_name: 'Aaron', last_name: 'Magil', email: 'amagil@camsys.com'},
     {first_name: 'Julian', last_name: 'Ray', email: 'jray@camsys.com'},
+    {first_name: 'Scott', last_name: 'Meeks', email: 'smeeks@camsys.com'},
     {first_name: 'sys', last_name: 'admin', email: 'email@camsys.com'},
   ]
 
