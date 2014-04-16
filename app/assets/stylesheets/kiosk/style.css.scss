@@ -128,7 +128,7 @@ h5{
 		background-color: $gray1;
 
 		.arrow{
-			a.arrow-btn{
+			.arrow-btn{
 				height:78px;
 				width:78px;
 				margin:12px auto 0;
@@ -148,7 +148,7 @@ h5{
 		height: 100%;
 		position: relative;
 
-		a.arrow-btn{
+		.arrow-btn{
 			text-indent: -9999px;
 			display:block;
 			margin: 18px auto 0;
@@ -613,7 +613,7 @@ div.trip_proxy_trip_purpose_id{
 		width: 1002px !important;
 	}
 
-	.span1{
+	.span1, .span2{
 		//border-right:1px solid $gray4;
 		height:328px;
 		text-align: right;
@@ -792,16 +792,17 @@ div.trip_proxy_trip_purpose_id{
 	top: 131px;
 	z-index: 100;
 	overflow:auto;
-	background-color:rgba($white, .88);
+	background-color:rgba($white, 0.88);
 	overflow:hidden;
 	//TODO: Fix this for non-kiosk views.
 	height: 765px;
 
 	.search-dropdown-container {
 		padding: 0 20px;
+		width: 876px;
 
 		.candidate-list {
-			height: 280px;
+			height: 274px;
 			overflow: hidden;
 		}
 
@@ -824,30 +825,37 @@ div.trip_proxy_trip_purpose_id{
 	h6{
 		margin-left:60px;
 	}
+	ul::-webkit-scrollbar {
+		display: none;
+	}
 
-	ul{
-		padding:0;
-		height: 280px;
-		overflow:scroll;
-		li{
+	ul {
+		padding: 0;
+		overflow: scroll;
+		background-color:$white;
+
+
+		li {
 			border-bottom: 1px solid $gray3;
 			font-size: 21px;
-			font-weight:600;
+			font-weight: 600;
 
 			a, a.address-select{
 				padding: 18px 20px;
 				color: $gray6;
+				text-shadow:none;
 				width: inherit;
 				margin: 0;
 				line-height:1.3;
-
-				&:hover{
-					// border-bottom: 1px solid $gray3;
-					// padding-bottom: 17px;
-				}
+				height: 90px;
 			}
 		}
 	}
+}
+
+//override for getting control of the dropdown focus color
+.nav-list > .active > a, .nav-list > .active > a:hover, .nav-list > .active > a:focus{
+	background-color: $gray2 !important;
 }
 
 //scrollbar for location section
@@ -905,7 +913,7 @@ div.trip_proxy_trip_purpose_id{
 
 	h3 {
 		text-align: center;
-		margin-top: 60px;
+		margin-top: 66px;
 	}
 }
 
@@ -1377,6 +1385,7 @@ div.trip_proxy_trip_purpose_id{
 		font-weight: 600;
 		text-align: center;
 		padding-top: 70px;
+		display: block;
 
 		&:active{
 			background-color: $gray3;
@@ -1410,6 +1419,28 @@ input#txtDate{
 
 }
 
+#date-arrow-prev{
+	height: 90px;
+	width: 90px;
+	top: 140px;
+	left: 59px;
+	position: absolute;
+	@extend %card-btn;
+	//float:right;
+	//@extend %flip;
+}
+#date-arrow-next{
+	@extend #date-arrow-prev;
+	//height: 90px;
+	//width: 90px;
+	//top: 140px;
+	left: 724px;
+	//position: absolute;
+	//@extend %card-btn;
+	//float:right;
+	@extend %flip;
+}
+
 #datepicker{
 	//display:block;
 	border-radius:0;
@@ -1417,7 +1448,7 @@ input#txtDate{
 	box-shadow: 0px 0px 0px rgba(0,0,0,0);
 	border:0px solid rgba(0,0,0,0);
 	table.table-condensed{
-		margin: 0 auto;
+		margin: 22px auto 0;
 		thead{
 			tr{
 				th{
@@ -1426,19 +1457,20 @@ input#txtDate{
 						&.next, &.prev { text-indent: -999em }
 
 						&.prev{
-							@extend %card-btn;
-							height: 84px;
+							// @extend %card-btn;
+							// height: 84px;
 							display:hidden;
 
 						}
 						&.name{
 							font-size: 21px;
-							padding-bottom:21px;
+							padding-bottom:15px;
+							text-transform: uppercase;
 						}
 						&.next{
-							@extend %card-btn;
-							@extend %flip;
-							height: 84px;
+							// @extend %card-btn;
+							// @extend %flip;
+							// height: 84px;
 							display:hidden;
 						}
 					}
@@ -1447,6 +1479,7 @@ input#txtDate{
 						font-weight:300;
 						color: $gray4;
 						padding-bottom: 21px;
+						text-transform: uppercase;
 
 					}
 
@@ -1612,6 +1645,10 @@ input#trip_proxy_return_trip_time.string.optional{
 		background: #eee;
 		cursor: pointer;
 	}
+}
+
+.kiosk-timepicker {
+	margin-top: 130px;
 }
 
 .timetable{
@@ -1789,6 +1826,7 @@ input#trip_proxy_return_trip_time.string.optional{
 
 	.decade-prev {
 	  left: 0;
+	  margin-left: 25px;
 	}
 
 	.decade-next {
@@ -2336,35 +2374,64 @@ body.sessions.new, body.registrations.new{
  * PRINTER STYLE
  *------------------------------------------
 **/
-.show_printer_friendly{
+.show_printer_friendly, .itinerary_print{
 	h3{
 		font-weight: 600;
 	}
-	p{
-		font-size: 18px;
+	p, .details{
+		font-size: 13px;
 		line-height: 1.2em;
-		padding-bottom:5px;
+		padding-bottom:3px;
+
+		h4{
+			font-size: 13px;
+			line-height: 1.2em;
+			padding-bottom:3px;
+			text-transform: none;
+			font-weight: 400;
+		}
+
+		&:empty{
+			display: none;
+		}
 	}
 	h4{
 		font-weight: 600;
-		font-size:16px;
+		font-size:14px;
 		margin-bottom: 1px;
 	}
 
+
 	hr{
 		border-top:1px solid black;
+		margin-top: 10px;
+		margin-bottom:10px;
 	}
 	a{
 		color:black;
 	}
 
-	.container-fluid {
-		height:auto;
+	.container-fluid{
+		background-color:#fff;
+		& > #main > .container-fluid {
+			height:auto;
+			padding: 0;
+			border-right: 10px solid #fff;
+			border-left: 7px solid #fff;
+		}
 	}
 
 	.details{
 		tr{
-			border-bottom:30px solid white;
+			border-bottom:5px solid white;
+		}
+		td{
+			padding:0;
+
+			&.itinerary_icons{
+				text-align:right;
+				float:left;
+			}
 		}
 
 	}

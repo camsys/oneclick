@@ -1,9 +1,9 @@
 @font-face{
     font-family:'travel-icons';
-    src: asset-url('travelcons.eot');
-    src: asset-url('travelcons.eot') format('embedded-opentype'),
-         asset-url('travelcons.woff') format('woff'),
-         asset-url('travelcons.ttf') format('truetype');
+    src: font-url('travelcons.eot');
+    src: font-url('travelcons.eot') format('embedded-opentype'),
+         font-url('travelcons.woff') format('woff'),
+         font-url('travelcons.ttf') format('truetype');
     font-weight:normal;font-style:normal;}
 .travelcon-subway:before,
 .travelcon-walk:before,
@@ -15,3 +15,4 @@
 .travelcon-bus:before{content:"b";}
 .travelcon-rail:before{content:">";}
 .travelcon-boat:before{content:"P"}
+

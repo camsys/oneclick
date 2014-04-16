@@ -1,0 +1,63 @@
+= image_tag get_logo, :style => "margin-top:50px;"
+.title-desc= t(:one_click_trip_planner)
+
+%hr
+
+%table#printer-friendly
+  %tr
+    %h4= t(:from) + ':  '
+  %tr
+    %p= @itinerary.trip_part.trip.from_place.name
+  %tr
+    %h4= t(:to) + ':  '
+  %tr
+    %p= @itinerary.trip_part.trip.to_place.name
+  %tr
+    %h4= t(:at_time) + ':  '
+  %tr
+    %p= format_date(@itinerary.trip_part.trip.trip_datetime.in_time_zone)
+
+- if @itinerary.trip_part.is_return_trip?
+  - unless @itinerary.trip_part.itineraries.valid.visible.count == 0
+    %hr
+    %h4 Return Trip Options
+- else
+  %hr
+  %h4 Outbound Trip Options
+
+%p
+  - if @itinerary.mode.name.downcase == 'paratransit'
+    = @itinerary.service.name
+    %p= @itinerary.service.provider.name
+  - else
+    %p= get_trip_summary_title(@itinerary)
+
+%hr
+
+- unless @itinerary.mode.name.downcase == 'rideshare'
+  %h4 Summary:
+  = render partial: 'trip_summary_header', locals: { itinerary: @itinerary }
+  %hr
+
+%h4 Details:
+.details= render partial: get_trip_partial(@itinerary), locals: { itinerary: @itinerary }
+
+%hr{style: 'height:12px; background:#848484;'}
+
+%table
+  %tbody
+    %tr
+      %td= "Thank you for using #{Oneclick::Application.config.name} Software."
+    %tr
+      %td= 'Provided by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of '+ Oneclick::Application.config.name
+
+:javascript
+  $(document).ready(function() {
+    //window.print();
+    $('.navbar').addClass('hidden');
+    $('body').addClass('print');
+    $('.container-fluid').css({
+      'background-color':'#fff',
+      'width':'220px'
+      });
+  });

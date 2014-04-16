@@ -364,25 +364,6 @@
             return this;
         },
 
-        calculateDateOffset: function(offset, unit, fantomMove) {
-            return Date.add((fantomMove ? this.displayedDate : this.selectedDate || this.defaultDate), offset, unit);
-        },
-
-        isDateOutOfRange: function(date) {
-            return (
-                (typeof this.startDate != 'undefined' && yyyymm(date) < yyyymm(this.startDate)) ||
-                (typeof this.endDate != 'undefined' && yyyymm(date) > yyyymm(this.endDate))
-            );
-        },
-
-        disableMonthNavButtons: function() {
-            if (this.isDateOutOfRange(this.calculateDateOffset(-1, 'month', true)))
-                this.$cal.find('.prev.month').addClass('disabled');
-
-            if (this.isDateOutOfRange(this.calculateDateOffset(1, 'month', true)))
-                this.$cal.find('.next.month').addClass('disabled');
-        },
-
         // Move the displayed date display from specified offset
         // When fantomMove is TRUE, don't update the selected date
         navigate: function(offset, unit, fantomMove) {
@@ -390,23 +371,13 @@
             // Cancel the first move when no date was selected : the default date will be displayed instead
             if (!fantomMove && !this.selectedDate) offset = 0;
 
-            var newDate = this.calculateDateOffset(offset, unit, fantomMove),
-                nextDate = this.calculateDateOffset(offset * 2, unit, fantomMove),
+            var newDate = Date.add((fantomMove ? this.displayedDate : this.selectedDate || this.defaultDate), offset, unit),
                 $days = this.$cal.data("$days");
 
-            this.isDateOutOfRange
-
-            if (this.isDateOutOfRange(newDate)) return this.select();
-
-            if (this.isDateOutOfRange(nextDate)) {
-                if (offset == -1) {
-                    this.$cal.find('.prev.month').addClass('disabled');
-                } else {
-                    this.$cal.find('.next.month').addClass('disabled');
-                }
-            } else {
-                this.$cal.find('.prev.month').removeClass('disabled');
-                this.$cal.find('.next.month').removeClass('disabled');
+            // Check that we do not pass the boundaries if they are set
+            if ((this.startDate && yyyymm(newDate) < yyyymm(this.startDate)) ||
+                (this.endDate && yyyymm(newDate) > yyyymm(this.endDate))) {
+                return this.select();
             }
 
             if (yyyymm(newDate) != yyyymm(this.displayedDate) || !this.selectedIndex) {
@@ -438,8 +409,6 @@
         // Set a new start date
         setStartDate: function(d) {
             this.startDate = this._parse(d);
-
-            if (d) this.disableMonthNavButtons();
             return this;
         },
 
@@ -685,7 +654,7 @@
     };
 
     // Every other clicks must hide the calendars
-    $(document).bind("click.datepicker", Calendar.hide);
+    $(document).bind("click", Calendar.hide);
 
     // Plugin entry
     $.fn.datepicker = function(arg) {
@@ -759,57 +728,3 @@
     }
 
 })(jQuery);
-/**
- * French translation for Date locales
- */
-;
-(function($) {
-
-    var code = "fr",
-        translations = {
-            defaults: {
-                dateFormat: "dd/mm/yyyy",
-                firstDayOfWeek: 1
-            },
-            days: ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"],
-            daysShort: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"],
-            daysMin: ["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"],
-            months: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
-                "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
-            ],
-            monthsShort: ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Aoû", "Sep", "Oct", "Nov", "Déc"]
-        };
-
-    $.each([Date.locales, $.fn.datepicker.Calendar.locales], function(i, locale) {
-        if (locale) locale[code] = translations;
-    });
-
-})(jQuery);
-/**
- * Japanese translation for bootstrap-datepicker
- * Norio Suzuki <https://github.com/suzuki/>
- */
-/**
- * French translation for Date locales
- */
-;
-(function($) {
-
-    var code = "ja",
-        translations = {
-            defaults: {
-                dateFormat: "yyyy-mm-dd",
-                firstDayOfWeek: 0
-            },
-            days: ["日曜", "月曜", "火曜", "水曜", "木曜", "金曜", "土曜", "日曜"],
-            daysShort: ["日", "月", "火", "水", "木", "金", "土", "日"],
-            daysMin: ["日", "月", "火", "水", "木", "金", "土", "日"],
-            months: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
-            monthsShort: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
-        };
-
-    $.each([Date.locales, $.fn.datepicker.Calendar.locales], function(i, locale) {
-        if (locale) locale[code] = translations;
-    });
-
-}(jQuery));

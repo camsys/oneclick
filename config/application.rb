@@ -88,17 +88,14 @@ module Oneclick
     # For heroku; see http://blog.nathanhumbert.com/2012/01/rails-32-on-heroku-tip.html
     config.assets.initialize_on_precompile = false
 
-    # For the non-fontawesome font files
-    config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
-    
     config.assets.precompile += %w(
-      default/tadaaapickr.pack.min.js
       kiosk/_base.css
       kiosk/style.css
       kiosk/pa.css
       default/arc.css
       default/pa.css
       default/broward.css
+      default/tadaaapickr.en.js
     )
 
     # Version of your assets, change this if you want to expire all your assets
