@@ -1,4 +1,4 @@
-.row-fluid
+.row
   .span12
     .pull-left
       %h1
@@ -58,7 +58,7 @@
         = render partial: 'user_comments', locals: {trip: trip}
 
 - else
-  .row-fluid
+  .row
     .span12
       %h4= @time_filter_type == "100" ? t(:no_trips_found) : t(:no_matching_trips_found)
 

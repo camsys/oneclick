@@ -1,12 +1,12 @@
 %h1
   ESP File Upload
-.row-fluid
+.row
   .span6.pull-left
     =link_to t(:back_to_services), services_path
-.row-fluid
+.row
   .span12
     ="Upload a formatted MDB file exported from ESP."
-.row-fluid
+.row
   .span12
     = simple_form_for :esp_upload, :url => esp_reader_index_path, :method => 'post'  do |f|
       =f.file_field :zip

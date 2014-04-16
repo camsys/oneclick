@@ -1,7 +1,7 @@
-.row-fluid
+.row
   .span12
 %h4= t(:add_new_agency)
-.row-fluid
+.row
   .span12
     = simple_form_for [current_user, @agency_user_relationship], remote: true, html: { class: 'form-inline' } do |f|
       = f.error_notification

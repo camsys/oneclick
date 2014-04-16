@@ -1,6 +1,6 @@
 %div{:class => "modal hide fade", :id => "user_comments_" + trip.id.to_s}
   %div{:class => "modal-header"}
-    .row-fluid
+    .row
       .span12
         = simple_form_for :trip, url: admin_comments_user_trip_path(@traveler, trip), html: { class: 'form-horizontal',
           id: 'user_comments_form_' + trip.id.to_s}  do |f|

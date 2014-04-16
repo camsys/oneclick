@@ -1,4 +1,4 @@
-.row-fluid
+.row
   .span12
     .pull-left
       -if @trip.taken == true or @trip.taken == false
@@ -12,17 +12,17 @@
           %i.fa.fa-star
           =t(:rate_recent)
 
-.row-fluid
+.row
   .span12.well.trip_header
     = render partial: 'trips/trip_header', locals: {trip: @trip}
 
-.row-fluid.top-margin
+.row.top-margin
   .span12
     %h4
       =t(:rate_trip) + ":"
     =get_rating_icons(@trip,2)
 
-.row-fluid.top-margin
+.row.top-margin
   .span12
     %h4
       =t(:please_tell_us)

@@ -41,6 +41,8 @@ gem 'font-awesome-rails'
 gem 'twitter-typeahead-rails', git: 'https://github.com/Qureana/twitter-typeahead-rails'
 gem 'handlebars_assets'
 gem 'simple_token_authentication'
+gem 'momentjs-rails', '~> 2.5.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
 
 group :development do
   gem 'activerecord-postgis-adapter'

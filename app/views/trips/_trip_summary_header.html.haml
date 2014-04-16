@@ -1,5 +1,5 @@
 - i = itinerary
-.row-fluid.trip_summary_header
+.row.trip_summary_header
   .span12
     = render partial: 'itinerary_item', locals: {object: i.service.full_name, label: t(:name)}
     = render partial: 'itinerary_item', locals: {object: i.duration_in_words, label: t(:duration)}

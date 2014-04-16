@@ -1,14 +1,14 @@
-.row-fluid
+.row
   .span12
     %h1
       %i.fa.fa-info-circle
       Your Needs - Step 3 of 3
       / = t(:to_see_best_options)
 
-.row-fluid
+.row
   .span12
     = render partial: 'trips/trip_header', locals: {trip: @trip}
 
-.row-fluid
+.row
   .well
     = render partial: 'accommodations/form',  :locals => {:path => user_accommodation_path(@traveler, @user_accommodations_proxy.id, inline: 1), :inline => true}

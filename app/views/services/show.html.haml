@@ -1,4 +1,4 @@
-.row-fluid
+.row
   .span6.pull-left
     =link_to t(:back_to_services), services_path
   .span6.pull-right
@@ -6,7 +6,7 @@
       = f.input :id, :collection => @services, :label => t(:select_service)+":", :selected => @service.id, :input_html => {:id => @service.id, :onchange => "$('#service_form').submit();"}
 
 .well
-  .row-fluid
+  .row
     .span6
       %h2
         =@service.name
@@ -87,7 +87,7 @@
             %td.text-left
               = link_to @service.provider.url.to_s, @service.provider.url.to_s
 
-.row-fluid
+.row
   .span4
     .well.well1
       %h4=t(:accommodations)
@@ -132,7 +132,7 @@
               %li
                 =t(purpose.name)
 
-.row-fluid
+.row
   .span4
     .well.well2
       %h4= t(:fare)
@@ -181,11 +181,11 @@
         -else
           =t(:service_notice_not_required) + "."
 .well
-  .row-fluid.text-center
+  .row.text-center
     .span12
       %h3= t(:coverage_areas)
 
-  .row-fluid
+  .row
     -types = @service.coverage_areas.map(&:coverage_type).uniq
     -['Origins', 'Destinations', 'Residences'].each do |rule| ##TODO Internationalize
       .span4
@@ -204,7 +204,7 @@
               =coverage_string.chop.chop
             .span4
 
-.row-fluid.text-center
+.row.text-center
   .span3
   .span6
     %h4=t(:service_area_map)

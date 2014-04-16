@@ -1,10 +1,10 @@
-.row-fluid
+.row
   .span12
     %h1
       %i.fa.fa-map-marker
       Geocode (util only)
 
-.row-fluid
+.row
   .span12
     = simple_form_for :geocode, url: admin_geocode_path, html: { class: 'form-horizontal' }  do |f|
       = f.error_notification
@@ -12,11 +12,11 @@
       .form-actions
         = f.submit 'Geocode', class: 'btn btn-info'
 - if @results
-  .row-fluid
+  .row
     .span12
       Included types: 
       = OneclickGeocoder::INCLUDED_TYPES
-  .row-fluid
+  .row
     .span12
       Jump to:  
       / This screen is not public, will not internationalize.

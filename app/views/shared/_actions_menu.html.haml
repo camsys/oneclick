@@ -2,10 +2,10 @@
   - actions.each do |action|
     - next if action[:not_on_homepage]
     - next unless show_action(action)
-    .row-fluid
+    .row
       %li
         %a.span12.thumbnail.btn.actionbutton{alt: action[:label], title: action[:label], href: action[:target]}
-          .row-fluid
+          .row
             .span3
               %i.center{class: action[:icon], alt: action[:label], style: 'font-size: 3em;'}
             .span9.actionlabel.Center-Container.is-Table

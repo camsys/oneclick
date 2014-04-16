@@ -8,7 +8,6 @@ create_or_update_marker = (key, lat, lon, name, desc, iconStyle) ->
   marker
 
 update_map = (type, e, s, d) ->
-  console.log s
   if s.lat==null
     return
   if type=='from'
@@ -23,13 +22,9 @@ update_map = (type, e, s, d) ->
   selectMarker(marker);
 
 $ ->
-  console.log 'places.js.coffee'
   $('#places-table td').on 'click', (e) ->
     $('#places-table tr').removeClass('success')
     $(e.target).closest('tr').addClass('success')
-    # console.log e
-    # console.log e.target.dataset.placename
-    # console.log $('#from_place').data('foo')
     $('#from_place').val(e.target.dataset.address)
     $('#json').val(e.target.dataset.json)
     $('#place_name').val(e.target.dataset.placename)

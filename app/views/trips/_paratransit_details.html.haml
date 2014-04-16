@@ -1,4 +1,4 @@
-.row-fluid
+.row
   -if itinerary.cost_comments
     %h4
       Cost Details
@@ -40,7 +40,7 @@
     %h4= tel_link itinerary.service.phone
 
 
-  .row-fluid.hidden
+  .row.hidden
     ="SCORE: " + itinerary.match_score.to_s
 
 %span{style: 'font-style: italic'}

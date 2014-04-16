@@ -1,7 +1,7 @@
 .modal-header
-  .row-fluid
+  .row
     .span12
-      .row-fluid
+      .row
         .span6
           %h3.dialog-title{:STYLE => "margin:0px;vertical-align:top;"}
             %i.fa.fa-2x{:class => get_trip_summary_icon(@itinerary)}
@@ -30,7 +30,7 @@
             = render :partial => 'map_details', :locals => { :itinerary => @itinerary }
 
 .modal-footer
-  .row-fluid
+  .row
     .pull-right{:style => "display: inline-block"}
       .span12.btn-toolbar
         %button.btn.btn-info

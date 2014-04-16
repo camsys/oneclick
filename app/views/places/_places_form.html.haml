@@ -9,7 +9,7 @@
 = form_tag edit_user_place_path(@traveler, 0), :id => "edit_form", :method => :get do
   = hidden_field_tag :edit_place_id
 
-.row-fluid
+.row
   .span12
     = simple_form_for @place_proxy, :url => @place_proxy.id.nil? ? user_places_path(@traveler) : user_place_path(@traveler, @place_proxy.id), :method => @place_proxy.id.nil? ? 'post' : 'put', :html => {:style => "margin-top:10px;margin-bottom:10px;"}  do |f|
       = f.input :raw_address, :class => "inline span12", :label => t(:enter_address) do
@@ -32,11 +32,11 @@
 #select_place{:style => "display:none;"}
   = render :partial => 'trips/alt_address_select', :locals => {:results => [], :type => "place"}
       
-.row-fluid
+.row
   .span12
     %h6= t(:found_x_places, :count => @places.count )
 
-.row-fluid
+.row
   .places-list.span12.thumbnail{:style => "height:200px;overflow:auto;"}
     %ul.nav.nav-list
       - @places.each_with_index do |place, index|
@@ -48,7 +48,7 @@
             %strong= place.name
             %em= place.address
 
-.row-fluid
+.row
   .span12{:style => "padding-top:5px"}
     = link_to "#", :class => "btn btn-danger", :id => "delete_button" do
       %i.fa.fa-times

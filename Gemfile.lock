@@ -70,6 +70,8 @@ GEM
     bootstrap-combobox (1.2.6)
     bootstrap-sass (3.1.1.0)
       sass (~> 3.2)
+    bootstrap3-datetimepicker-rails (3.0.0)
+      momentjs-rails (~> 2.5.0)
     builder (3.1.4)
     cancan (1.6.10)
     capybara (2.2.1)
@@ -241,6 +243,8 @@ GEM
     mime-types (1.25.1)
     mini_portile (0.5.3)
     minitest (4.7.5)
+    momentjs-rails (2.5.1)
+      railties (>= 3.1)
     multi_json (1.9.2)
     multi_test (0.1.1)
     multipart-post (1.2.0)
@@ -430,6 +434,7 @@ DEPENDENCIES
   binding_of_caller
   bootstrap-combobox
   bootstrap-sass (~> 3.1.1)
+  bootstrap3-datetimepicker-rails (~> 3.0.0)
   cancan
   capybara
   chronic
@@ -462,6 +467,7 @@ DEPENDENCIES
   listen
   lorem-ipsum-me
   mechanize
+  momentjs-rails (~> 2.5.0)
   newrelic_rpm
   pg
   polylines

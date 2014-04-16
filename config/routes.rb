@@ -6,11 +6,11 @@ Oneclick::Application.routes.draw do
     if Oneclick::Application.config.ui_mode == 'kiosk'
       root to: redirect('/kiosk')
     else
-      root :to => "home#index"
+      root :to => 'trips#new'
     end
 
     authenticated :user do
-      root :to => 'home#index', as: :authenticated_root
+      root :to => 'trips#new', as: :authenticated_root
     end
 
     devise_for :users, controllers: {registrations: "registrations", sessions: "sessions"}

@@ -1,9 +1,9 @@
 - unless results.empty?
-  .row-fluid
+  .row
     .span12
       %h6= t(:found_x_matches, :count => results.count )
 
-  .row-fluid
+  .row
     .search-dropdown-container
       .candidate-list.span10
         .js-candidate-list-inner{'data-offset' => '0'}
@@ -21,7 +21,7 @@
             .scrollbar-scroll
         .scroll-down.js-next-btn
 - else
-  .row-fluid
+  .row
     .control-group.string
       .controls
         .alert.alert-error

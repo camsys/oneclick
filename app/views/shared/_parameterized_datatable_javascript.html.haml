@@ -11,7 +11,7 @@
   	$('#{table_id}').dataTable( {
   		"bFilter" : false,
   		"bSort" : #{bSort},
-  		"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+  		"sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
   		"sPaginationType": "bootstrap",
       "bLengthChange": #{bLengthChange},
   		"oLanguage": {
@@ -23,7 +23,7 @@
 
 
   $.extend( true, $.fn.dataTable.defaults, {
-  	"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+  	"sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
   	"sPaginationType": "bootstrap",
   	"oLanguage": {
   		"sLengthMenu": "#{sLengthMenu}"

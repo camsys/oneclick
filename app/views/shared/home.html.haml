@@ -1,14 +1,14 @@
-.row-fluid
+.row
   .span12
     .center.span6
       - if user_signed_in?
         = cms_snippet_content('home-top-logged-in_html')
       - else
         = cms_snippet_content('home-top_html')
-.row-fluid
+.row
   .span4.offset4
     = render partial: 'shared/actions_menu', locals: {actions: @actions}
-.row-fluid
+.row
   - if user_signed_in?
     .span4
       = cms_snippet_content('home-bottom-left-logged-in_html')
