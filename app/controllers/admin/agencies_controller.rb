@@ -1,4 +1,4 @@
-class Admin::AgenciesController < Admin::OrganizationsController
+class Admin::AgenciesController < ApplicationController
   before_filter :load_agency, only: [:create]
   load_and_authorize_resource except: [:travelers]
   load_and_authorize_resource :id_param => :agency_id,  only: :travelers #TODO implies a refactor needed

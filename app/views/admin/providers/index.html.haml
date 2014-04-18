@@ -1,0 +1,30 @@
+%h1= t(:providers)
+
+%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_providers_table
+  %thead
+    %tr
+      %th= t(:name)
+      %th
+  %tbody
+    - @providers.each do |provider|
+      %tr
+        %td= link_to provider.name, admin_provider_path(provider)
+        %td.center
+          = link_to admin_provider_services_path(provider), {class: 'btn'} do
+            %i.fa.fa-info-circle
+            = t(:services)
+
+= link_to t(:new_provider), new_admin_provider_path, {class: 'btn'}
+
+:javascript
+  $(document).ready(function() {
+    $('#admin_providers_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ provider per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ provider  ",
+              "sInfoEmpty": "Showing 0 to 0 of 0 provider  ",
+              "sInfoFiltered": "(filtered from _MAX_ total provider )"
+          }
+      } );
+  } );

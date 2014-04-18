@@ -275,15 +275,13 @@ Oneclick::Application.routes.draw do
         end
         resources :trips
       end
-      resources :provider_orgs do
-        resources :users
-        resources :services
-      end
       resources :users do #admin users
         get 'travelers'
         put 'update_roles', on: :member
       end
       resources :providers do
+        resources :users
+        resources :services
         resources :trips, only: [:index, :show]
       end
     end#admin

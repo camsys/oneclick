@@ -35,7 +35,7 @@ module CsHelpers
       {label: t(:provider_profile), target: provider_profile_path, icon: ACTION_ICONS[:find_traveler], access: :show_provider}, #TODO find icon
       {label: t(:trips), target: create_trips_path, icon: ACTION_ICONS[:trips], access: :admin_trips},
       {label: t(:agencies), target: admin_agencies_path, icon: ACTION_ICONS[:agents_agencies], access: :admin_agencies},
-      {label: t(:providers), target: admin_provider_orgs_path, icon: ACTION_ICONS[:providers], access: :admin_providers},
+      {label: t(:providers), target: admin_providers_path, icon: ACTION_ICONS[:providers], access: :admin_providers},
       {label: t(:services), target: services_path, icon: ACTION_ICONS[:services], access: :admin_services},
       {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports], access: :admin_reports}
     ]  

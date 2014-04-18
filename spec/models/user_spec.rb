@@ -171,5 +171,24 @@ describe User do
   describe 'travelers' do
     
   end
+
+  let(:user) {FactoryGirl.create(:user)}
+  let(:agency_organization1) { FactoryGirl.create(:arc_agency)}
+  let(:provider_organization1) { FactoryGirl.create(:provider)}
+  
+  it 'should be valid for a user to belong to a provider and an agency' do
+    user.agency = agency_organization1
+    user.provider = provider_organization1
+    user.save!
+    user.should be_valid
+  end
+  
+  it 'should not be valid to assign provider as agency for a user' do
+    expect{user.update_attribute(:agency, provider_organization1)}.to raise_error(ActiveRecord::AssociationTypeMismatch)
+  end
+  
+  it 'should not be valid to assign agency as provider for a user' do
+    expect{user.update_attribute(:provider, agency_organization1)}.to raise_error(ActiveRecord::AssociationTypeMismatch)
+  end
   
 end

@@ -1,4 +1,4 @@
-class Agency < Organization
+class Agency < ActiveRecord::Base
   resourcify
   # include ActiveModel::Validations
 
