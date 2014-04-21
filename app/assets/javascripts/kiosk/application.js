@@ -13,6 +13,4 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
-//= require bootstrap-typeahead
-//= require bootstrap-combobox
 //= require_tree ./includes
