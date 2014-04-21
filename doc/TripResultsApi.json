@@ -1,0 +1,62 @@
+//Request TBD
+//Response
+{
+	"status" : Number,		// return 0 if something went wrong, interpret anything else as success, alternatively HTTP Codes (200/500)
+	"trip_parts" : [				// Trips in order (from Origin 1 -> Dest 1, then Origin 2 -> Dest 2, etc.
+		{
+			"trip_part_id": Number	//ActiveRecord ID
+			"is_depart_at": Boolean	// If true, trip planned as depart-at, if false, trip planned as arrive-by
+			"description" : String,	// Textual description of trip, e.g. "Outbound - 40 Courtland Street NE Atlanta, GA 30308 to Atlanta VA Medical Center"
+			"start_time"  :	String, // Start Time requested by user if "depart_by", earliest leaving time (perhaps with a fudge factor) if "arrive_by"
+			"end_time"    :	String, // Latest arriving time if "depart_by", user requested time if "arrive_by"
+			"itineraries" : [		// List of potential trip parts
+				{	// individual itinerary
+					"id" : Number, 		// ActiveRecord ID
+					"missing_information" : [	// Missing info is add'l information that services require travelers to match
+						{
+							"short_desc" : String,	// A short version of the information required
+							"long_desc"	 : String,	// The complete description of information required from user
+							"type"		 : String,	// Type of response required.  Options determined by Eligibility Questions
+							"options"	 : [		// Options available to the user for selection.
+								{	//An individual selection option
+									"text" : String, // Displayable description of option
+									"value": String, // Internal value of option (for instance on checkbox or radiobutton)
+								},
+							],
+							"success_condition" : String // Value to compare against the chosen option, e.g. ">=65", "==1" (for radio button or checkbox)
+						},
+					],
+					"mode" : String,	// t(Mode.code)
+					"mode_name" : String, 	// Mode.name
+					"service_name" : String // Service.name if mode is service, null otherwise
+					"contact_information" : String	// Contact information for service/provider/mode
+					"cost" : {
+						"price" : Number,	// Number if a cost is displayable (a straightforward number), else null
+						"comments" : String	// Any textural information pertaining to price.  For display if a simple price is not available.
+					},
+					"duration" : {
+						"external_duration"  : String, 	// (seconds) Textural description of duration, for display to users
+						"sortable_duration"  : Number, 	// (seconds) For filtering purposes, not display
+						"total_walk_time"    : Number,	// (seconds) 
+						"total_walk_dist"    : Number,	// (feet?) 
+						"total_transit_time" : Number,	// (seconds) 
+						"total_wait_time"    : Number,	// (seconds) 
+					},
+					"transfers" : Number,
+					"start_time" : String,	// UTC time of the trip as a string, per ISO 8601
+					"end_time" : String,	// UTC time of the trip as a string, per ISO 8601
+					"legs" : [				//Each portion of the itinerary, equivalent to a single colored box within a racelane from the wireframes
+						{
+							"type" : String				// String description of the leg ("wait"/"bus"/"walk" etc...)
+							"description" : String,		// Textural description of the step involved, e.g. "Walk to Bleecker St"
+							"start_time" : String,		// UTC time of the leg as a string, per ISO 8601
+							"end_time" : String,		// UTC time of the leg as a string, per ISO 8601
+							"start_place" : String,		// Allows Google Street Viewing of location
+							"end_place" : String,		// Allows Google Street Viewing of location
+						},
+					],
+				},
+			]
+		}
+	]
+}
