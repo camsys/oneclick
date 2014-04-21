@@ -16,7 +16,8 @@
 						{
 							"short_desc" : String,	// A short version of the information required
 							"long_desc"	 : String,	// The complete description of information required from user
-							"type"		 : String,	// Type of response required.  Options determined by Eligibility Questions
+							"data_type"	 : String,	// Data type of response required.  Options determined by Eligibility Questions
+							"control_type" : String, //Type of UI control, e.g., radio, checkbox, dropdown, datetimepicker, etc. Options determined by Eligibility Questions
 							"options"	 : [		// Options available to the user for selection.
 								{	//An individual selection option
 									"text" : String, // Displayable description of option
