@@ -1,5 +1,5 @@
 .row
-  .span12
+  .col-sm-12
     .pull-left
       %h1
         %i.fa.fa-tags
@@ -43,17 +43,17 @@
               %i.fa.fa-pencil
           - if trip.in_the_future
             %td.center.nowrap          
-              = link_to user_trip_path(@traveler, trip), {:class => "btn btn-small", :alt => t(:plan_trip), :title => t(:plan_trip)} do
+              = link_to user_trip_path(@traveler, trip), {:class => "btn btn-sm", :alt => t(:plan_trip), :title => t(:plan_trip)} do
                 %i.fa.fa-mail-forward
-              = link_to edit_user_trip_path(@traveler, trip), {:class => "btn btn-small", :alt => t(:edit_trip), :title => t(:edit_trip)} do
+              = link_to edit_user_trip_path(@traveler, trip), {:class => "btn btn-sm", :alt => t(:edit_trip), :title => t(:edit_trip)} do
                 %i.fa.fa-edit
-              = link_to user_trip_path(@traveler, trip), {:alt => t(:remove_trip), :title => t(:remove_trip), :class => "btn btn-small btn-danger delete-button", :method => :delete, :confirm => t(:confirm_remove_trip)} do
+              = link_to user_trip_path(@traveler, trip), {:alt => t(:remove_trip), :title => t(:remove_trip), :class => "btn btn-sm btn-danger delete-button", :method => :delete, :confirm => t(:confirm_remove_trip)} do
                 %i.fa.fa-times
           - else
             %td.center.nowrap          
-              = link_to repeat_user_trip_path(@traveler, trip), {:alt => t(:repeat_trip), :title => t(:repeat_trip), :class => "btn btn-small"} do
+              = link_to repeat_user_trip_path(@traveler, trip), {:alt => t(:repeat_trip), :title => t(:repeat_trip), :class => "btn btn-sm"} do
                 %i.fa.fa-rotate-right
-              -# = link_to user_trip_path(@traveler, trip), {:alt => t(:rate_trip), :title => t(:rate_trip), :class => "btn btn-small"} do
+              -# = link_to user_trip_path(@traveler, trip), {:alt => t(:rate_trip), :title => t(:rate_trip), :class => "btn btn-sm"} do
                 -# %i.fa.fa-thumbs-up
           - if Rails.env.development?
             %td= "%s / %s" % [trip.outbound_part.max_notes_count, trip.return_part.max_notes_count]
@@ -61,7 +61,7 @@
 
 - else
   .row
-    .span12
+    .col-sm-12
       %h4= @time_filter_type == "100" ? t(:no_trips_found) : t(:no_matching_trips_found)
 
 = link_to(t(:plan_a_trip), new_user_trip_path(@traveler))

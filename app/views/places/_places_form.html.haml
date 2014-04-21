@@ -10,9 +10,9 @@
   = hidden_field_tag :edit_place_id
 
 .row
-  .span12
+  .col-sm-12
     = simple_form_for @place_proxy, :url => @place_proxy.id.nil? ? user_places_path(@traveler) : user_place_path(@traveler, @place_proxy.id), :method => @place_proxy.id.nil? ? 'post' : 'put', :html => {:style => "margin-top:10px;margin-bottom:10px;"}  do |f|
-      = f.input :raw_address, :class => "inline span12", :label => t(:enter_address) do
+      = f.input :raw_address, :class => "inline col-sm-12", :label => t(:enter_address) do
         = f.text_field :raw_address, :placeholder => t(:enter_address_or_place), :disabled => ! @place_proxy.can_alter_location, :id => "place_proxy_raw_address", :autocomplete => "off", :class => "ajax-typeahead", :style => "width:300px;", :data => {:link => search_user_places_path, :provide => "typeahead"}
         = image_tag "ajax-loader.gif", :id => "geocoding_indicator", :style => "display:none;margin-top:-9px;", :class => "loading-indicator"
 
@@ -33,11 +33,11 @@
   = render :partial => 'trips/alt_address_select', :locals => {:results => [], :type => "place"}
       
 .row
-  .span12
+  .col-sm-12
     %h6= t(:found_x_places, :count => @places.count )
 
 .row
-  .places-list.span12.thumbnail{:style => "height:200px;overflow:auto;"}
+  .places-list.col-sm-12.thumbnail{:style => "height:200px;overflow:auto;"}
     %ul.nav.nav-list
       - @places.each_with_index do |place, index|
         %li.place-list-item
@@ -49,7 +49,7 @@
             %em= place.address
 
 .row
-  .span12{:style => "padding-top:5px"}
+  .col-sm-12{:style => "padding-top:5px"}
     = link_to "#", :class => "btn btn-danger", :id => "delete_button" do
       %i.fa.fa-times
       = t(:delete)

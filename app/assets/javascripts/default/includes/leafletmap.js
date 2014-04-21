@@ -506,7 +506,7 @@ function resetMapView() {
 
 function getFormattedAddrForMarker(addr) {
     return "<div class='well well-small'><div class='row'>" +
-        "<div class='span3'><i class='fa fa-3x fa-building-o'></i></div>" +
-        "<div class='span9'><div class='caption'><h4>" + addr + "</h4></div></div>" +
+        "<div class='col-sm-3'><i class='fa fa-3x fa-building-o'></i></div>" +
+        "<div class='col-sm-9'><div class='caption'><h4>" + addr + "</h4></div></div>" +
         "</div></div>";
 }

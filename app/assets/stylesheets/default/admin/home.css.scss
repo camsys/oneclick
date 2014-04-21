@@ -6,8 +6,8 @@ body {
   .admin {
     .home {      
       .home_menu_item {
-        @extend .offset6;
-        @extend .span6;
+        @extend .col-sm-offset-6;
+        @extend .col-sm-6;
       }
     }
   }

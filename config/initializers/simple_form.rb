@@ -66,7 +66,7 @@ SimpleForm.setup do |config|
   config.error_notification_tag = :div
 
   # CSS class to add for error notification helper.
-  config.error_notification_class = 'alert alert-error'
+  config.error_notification_class = 'alert alert-danger'
 
   # ID to add for error notification helper.
   # config.error_notification_id = nil
@@ -146,7 +146,7 @@ SimpleForm.setup do |config|
     b.use :placeholder
     b.use :label
     b.wrapper :append, tag: 'div', class: 'controls' do |input|
-      input.wrapper tag: 'div', class: 'input-append span4' do |append|
+      input.wrapper tag: 'div', class: 'input-append col-sm-4' do |append|
         append.use :input
       end
       input.use :hint,  wrap_with: { tag: 'span', class: 'help-block' }

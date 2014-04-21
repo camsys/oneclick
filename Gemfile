@@ -50,7 +50,7 @@ group :development do
   # gem 'ffi-geos'
   #gem 'mysql2'
   gem 'better_errors'
-  gem 'binding_of_caller', :platforms=>[:mri_19, :rbx]
+  gem 'binding_of_caller'
   gem 'guard', '~> 1.8.3'
   gem 'guard-bundler'
   gem 'guard-cucumber'

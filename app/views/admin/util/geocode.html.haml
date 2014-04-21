@@ -1,11 +1,11 @@
 .row
-  .span12
+  .col-sm-12
     %h1
       %i.fa.fa-map-marker
       Geocode (util only)
 
 .row
-  .span12
+  .col-sm-12
     = simple_form_for :geocode, url: admin_geocode_path, html: { class: 'form-horizontal' }  do |f|
       = f.error_notification
       = f.input :address, input_html: {value: @address}
@@ -13,11 +13,11 @@
         = f.submit 'Geocode', class: 'btn btn-info'
 - if @results
   .row
-    .span12
+    .col-sm-12
       Included types: 
       = OneclickGeocoder::INCLUDED_TYPES
   .row
-    .span12
+    .col-sm-12
       Jump to:  
       / This screen is not public, will not internationalize.
       - (1..@results.size).each do |i|

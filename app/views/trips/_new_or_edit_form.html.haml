@@ -2,7 +2,12 @@
 .row
   .col-md-8.col-sm-6
     .col-sm-12.well
-      %form{:role => "form"}
+      = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}  do |f|
+        = f.hidden_field :mode
+        = f.hidden_field :from_place_object, :id => "from_place_object"
+        = f.hidden_field :to_place_object, :id => "to_place_object"
+        = f.hidden_field :map_center, id: "map_center"
+        / %form{:role => "form"}
         #tripOptions.col-sm-12.form-group
           %label.col-sm-3{:style => "font-weight: normal;"}
             %input{:checked => "", :name => "tripOptions", :type => "radio", :value => "roundTrip"}/
@@ -25,15 +30,19 @@
           %label.col-sm-3.control-label Modes
           #modePlaceholder.col-sm-9
         .col-sm-12.form-group
-          %label.col-sm-3.control-label{:for => "tripPurposeOptions"} Trip Purpose
+          %label.col-sm-3.control-label{:for => "trip_purpose_id"} Trip Purpose
           .col-sm-9
-            %select#tripPurposeOptions.form-control{:name => "tripPurpose"}
+            / %select#tripPurposeOptions.form-control{:name => "tripPurpose"}
+            = f.input_field :trip_purpose_id, :collection =>  TripPurpose.all, :label => false, :selected => @trip_proxy.trip_purpose_id, class: "form-control", :value => :id, :label_method => lambda { |v| t(v.name)}
+
         .col-sm-12.form-group
           %label.col-sm-3.control-label Leaving From
           .col-sm-9
             .input-group
-              %label.control-label.sr-only{:for => "fromAddress"} Type the from address
-              %input#fromAddress.form-control{:name => "fromAddress", :type => "text"}/
+              %label.control-label.sr-only{:for => "trip_proxy_from_place"} Type the from address
+              %input#trip_proxy_from_place.form-control.place_picker{:name => "trip_proxy[from_place]",
+                autocomplete: 'off', :type => "text"}/
+              / = f.text_field :from_place, class: 'place_picker', :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off"
               %span.input-group-btn
                 %label.control-label.sr-only{:for => "fromAddressMarkerButton"} Click button to open the map and locate the from address
                 %button#fromAddressMarkerButton.btn.btn-default{"data-target" => "#mapModal", "data-toggle" => "modal", :type => "button"}
@@ -47,8 +56,10 @@
           %label.col-sm-3.control-label Going To
           .col-sm-9
             .input-group
-              %label.control-label.sr-only{:for => "toAddress"} Type the to address
-              %input#toAddress.form-control{:name => "toAddress", :type => "text"}/
+              %label.control-label.sr-only{:for => "trip_proxy_to_place"} Type the to address
+              %input#trip_proxy_to_place.form-control.place_picker{:name => "trip_proxy[to_place]",
+                autocomplete: 'off', :type => "text"}/
+              / %input#toAddress.form-control{:name => "toAddress", :type => "text"}/
               %span.input-group-btn
                 %label.control-label.sr-only{:for => "toAddressMarkerButton"} Click button to open the map and locate the to address
                 %button#toAddressMarkerButton.btn.btn-default{"data-target" => "#mapModal", "data-toggle" => "modal", :type => "button"}
@@ -99,7 +110,10 @@
             %label.control-label.sr-only{:for => "travellersOptions"} Select how many travellers
             %select#travellersOptions.form-control{:name => "travellers"}
         .col-sm-12.form-group
-          %button.btn.btn-default.active.pull-right{:type => "submit"} Search
+          / %button.btn.btn-default.active.pull-right{:type => "submit"} Search
+          = button_tag :type => 'submit', :class => "btn btn-default active pull-right" do
+            %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
+            = t(:plan_it)
   / end of trip column
   .col-md-4.col-sm-6
     #cmsPlaceholder.well

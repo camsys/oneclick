@@ -1,5 +1,5 @@
 .row
-  .span12
+  .col-sm-12
     .pull-left
       -if @trip.taken == true or @trip.taken == false
         %h1
@@ -13,17 +13,17 @@
           =t(:rate_recent)
 
 .row
-  .span12.well.trip_header
+  .col-sm-12.well.trip_header
     = render partial: 'trips/trip_header', locals: {trip: @trip}
 
 .row.top-margin
-  .span12
+  .col-sm-12
     %h4
       =t(:rate_trip) + ":"
     =get_rating_icons(@trip,2)
 
 .row.top-margin
-  .span12
+  .col-sm-12
     %h4
       =t(:please_tell_us)
     = simple_form_for :trip, url: comments_rating_path(:user_id => @traveler.id, :id => @trip.id), html: { class: 'form-vertical',

@@ -1,28 +1,28 @@
 .row
-  .span6.center
+  .col-sm-6.center
     - @actions.each_slice(2) do |actions|
       .row
-        .span12
+        .col-sm-12
           %ul.thumbnails
             - actions.each do |action|
-              %li.span6{:style => "min-height: 124px;"}
+              %li.col-sm-6{:style => "min-height: 124px;"}
                 .row
-                  %a.span12.thumbnail.actionbutton{alt: action[:label], title: action[:label], href: action[:target]}
+                  %a.col-sm-12.thumbnail.actionbutton{alt: action[:label], title: action[:label], href: action[:target]}
                     .row
-                      .span6
+                      .col-sm-6
                         %i.center{class: action[:icon], alt: action[:label]}
-                      .span6.actionlabel
+                      .col-sm-6.actionlabel
                         %p.center= action[:label]
 
 - @actions.each_slice(2) do |action|
   .row
-    .span12
+    .col-sm-12
       %ul.thumbnails
-        %li.center.span3
+        %li.center.col-sm-3
           .row
-            %a.span12.thumbnail.btn.actionbutton{alt: action[:label], title: action[:label], href: action[:target]}
+            %a.col-sm-12.thumbnail.btn.actionbutton{alt: action[:label], title: action[:label], href: action[:target]}
               .row
-                .span3
+                .col-sm-3
                   %i.center{class: action[:icon], alt: action[:label], style: 'font-size: 3em;'}
-                .span9.actionlabel{style: 'text-align: left;'}
+                .col-sm-9.actionlabel{style: 'text-align: left;'}
                   = action[:label]

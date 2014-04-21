@@ -1,5 +1,5 @@
 .row
-  .span12
+  .col-sm-12
     %table.table.table.condensed.table-striped.table-hover.table-bordered#datatable
       %thead
         %tr
@@ -24,10 +24,10 @@
             %td.center.nowrap
               = format_date_time(trip.created_at)
             %td.center.nowrap
-              = link_to user_trip_path(current_user, trip, :show_hidden => 1), {class: "btn btn-mini btn-success text-center"} do
+              = link_to user_trip_path(current_user, trip, :show_hidden => 1), {class: "btn btn-xs btn-success text-center"} do
                 %i.fa.fa-share-sign
                 = t(:itinerary)
-              = link_to details_user_trip_path(current_user, trip), {class: "btn btn-mini btn-info text-center"} do
+              = link_to details_user_trip_path(current_user, trip), {class: "btn btn-xs btn-info text-center"} do
                 %i.fa.fa-exclamation-sign
                 = t(:details)
 

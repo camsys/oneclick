@@ -1,11 +1,11 @@
 - if inline
   .alert.alert-info.alert-block
     .row
-      .span12
+      .col-sm-12
         %p
           =cms_snippet_content('gather-program-info_html')
     .row
-      .span12
+      .col-sm-12
         %a.btn.btn-success{:alt => 'alt words', :title => 'title here', :href => skip_user_trip_path(@traveler, @trip_id)}
           %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
           = t(:no_thanks_just_plan_it)

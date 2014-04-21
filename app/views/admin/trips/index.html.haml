@@ -1,5 +1,5 @@
 .row
-  .span12
+  .col-sm-12
     .pull-left
       %h1
         %i.fa.fa-tags
@@ -59,7 +59,7 @@
 
 - else
   .row
-    .span12
+    .col-sm-12
       %h4= @time_filter_type == "100" ? t(:no_trips_found) : t(:no_matching_trips_found)
 
 = link_to(t(:plan_a_trip), new_user_trip_path(@traveler))

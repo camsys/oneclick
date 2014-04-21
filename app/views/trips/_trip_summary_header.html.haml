@@ -1,6 +1,6 @@
 - i = itinerary
 .row.trip_summary_header
-  .span12
+  .col-sm-12
     = render partial: 'itinerary_item', locals: {object: i.service.full_name, label: t(:name)}
     = render partial: 'itinerary_item', locals: {object: i.duration_in_words, label: t(:duration)}
     = render partial: 'itinerary_item', locals: {object: i.cost_in_words, label: t(:cost)}
