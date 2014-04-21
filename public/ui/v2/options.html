@@ -9,7 +9,7 @@
 		
 		<!-- Bootstrap core CSS -->
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		
+		<link href="bootstrap-accesibility/css/bootstrap-accessibility.css" rel="stylesheet">
 		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
 		<link href="datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
 
@@ -64,15 +64,18 @@
 		
 		<div id="main" class="container">
 			<ol class="breadcrumb" id="wizards">
-			  <li class="prevStep"><a href="trip.html">Trip</a></li>
-			  <li class="activeStep">Options</li>
-			  <li class="nextStep">Review</li>
-			  <li class="nextStep">Plan</li>
+			  <li class="prev-page"><a href="trip.html">Trip</a></li>
+			  <li class="current-page">Options</li>
+			  <li class="next-page">Review</li>
+			  <li class="next-page">Plan</li>
 			</ol>
 						
 			<div class='row'>
-				<div class='col-md-8 col-sm-6'>
-					<div class='col-sm-12 well'>
+				<div class='col-md-8 col-sm-7 col-xs-12'>
+					<div class="col-xs-12 form-group">
+							<button type="button" class="btn btn-default pull-right action-button">Search</button>
+					</div>
+					<div class='col-xs-12 well'>
 						<form role="form" id="optionsForm">
 							<div class="col-sm-12 form-group">
 								<label class="col-sm-5 control-label" for="yearBirth">Year of Birth</label>
@@ -85,13 +88,10 @@
 									</script>
 								</div>
 							</div>
-							<div class="col-sm-12 form-group">
-								<button type="submit" class="btn btn-default active pull-right">Search</button>
-							</div>
 						</form>
 					</div>
 				</div><!--end of options column-->
-				<div class='col-md-4 col-sm-6'>
+				<div class='col-md-4 col-sm-5 col-xs-12'>
 					<div class='well' id="cmsPlaceholder">
 						TODO:(CMS)
 					</div>
@@ -117,7 +117,7 @@
 				<div class='pull-right'>
 					English
 					|
-					<a href="/es">En Español</a>
+					<a href="/es">En Espaï¿½ol</a>
 				</div>
 			</div>
 		</div><!--end of footer-->
@@ -125,6 +125,7 @@
 		
 		<!-- Dependent JS Libs-->
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="bootstrap-accesibility/js/bootstrap-accessibility.min.js"></script>
 		<script src="datetimepicker/moment.js"></script>
 		<script src="datetimepicker/bootstrap-datetimepicker.js"></script>
 	</body>

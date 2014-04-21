@@ -9,14 +9,15 @@
 		
 		<!-- Bootstrap core CSS -->
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+		<link href="bootstrap-accesibility/css/bootstrap-accessibility.css" rel="stylesheet">
+		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
 		<link href="datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
 
 		<!-- Custom styles for this template -->
 		<link href="stylesheets/arc.css" media="all" rel="stylesheet" />
 		
 		<!-- Dependent JS Libs-->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	</head>
 	<body>
 		<div id="wrap">
@@ -63,15 +64,18 @@
 			
 			<div id="main" role="main" class="container">
 				<ol class="breadcrumb" id="wizards">
-				  <li class="activeStep">Trip</li>
-				  <li class="nextStep">Options</li>
-				  <li class="nextStep">Review</li>
-				  <li class="nextStep">Plan</li>
+				  <li class="current-page">Trip</li>
+				  <li class="next-page">Options</li>
+				  <li class="next-page">Review</li>
+				  <li class="next-page">Plan</li>
 				</ol>
 							
 				<div class='row'>
-					<div class='col-md-8 col-sm-6'>
-						<div class='col-sm-12 well'>
+					<div class='col-sm-7 col-xs-12'>
+						<div class="col-xs-12 form-group">
+							<button type="button" class="btn btn-default pull-right action-button">Search</button>
+						</div>
+						<div class='col-xs-12 well'>
 							<form role="form">
 								<div class="col-sm-12 form-group" id="tripOptions">
 									<label class="col-sm-3" style="font-weight: normal;">
@@ -115,7 +119,7 @@
 											<span class="input-group-btn">
 												<label class="control-label sr-only" for="fromAddressMarkerButton">Click button to open the map and locate the from address</label>
 												<button type="button" class="btn btn-default" data-toggle="modal" data-target="#mapModal" id="fromAddressMarkerButton"><i class='fa fa-map-marker'></i></button>
-												<div class="modal fade active col-sm-12" id="mapModal" tabindex="-1" role="dialog" aria-describedby="map to select location">
+												<div class="modal fade col-sm-12" id="mapModal" tabindex="-1" role="dialog" aria-describedby="map to select location">
 												  <div class="modal-dialog">
 													<div class="modal-content">
 													  <div class="modal-body">
@@ -195,21 +199,10 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-sm-12 form-group">
-									<label class="col-sm-3 control-label">Travellers</label>
-									<div class="col-md-4 col-sm-9">
-										<label class="control-label sr-only" for="travellersOptions">Select how many travellers</label>
-										<select name="travellers" id="travellersOptions" class="form-control">
-										</select>
-									</div>
-								</div>
-								<div class="col-sm-12 form-group">
-									<button type="submit" class="btn btn-default active pull-right">Search</button>
-								</div>
 							</form>
 						</div>
 					</div><!--end of trip column-->
-					<div class='col-md-4 col-sm-6'>
+					<div class='col-sm-5 col-xs-12'>
 						<div class='well' id="cmsPlaceholder">
 							TODO:(CMS)
 						</div>
@@ -235,7 +228,7 @@
 				<div class='pull-right'>
 					English
 					|
-					<a href="/es">En Espanol</a>
+					<a href="/es">En Espa�ol</a>
 				</div>
 			</div>
 		</div><!--end of footer-->
@@ -243,6 +236,7 @@
 		
 		<!-- Dependent JS Libs-->
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="bootstrap-accesibility/js/bootstrap-accessibility.min.js"></script>
 		<script src="datetimepicker/moment.js"></script>
 		<script src="datetimepicker/bootstrap-datetimepicker.js"></script>
 	</body>
