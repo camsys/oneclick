@@ -9,12 +9,12 @@ describe ApplicationController do
     end
   end
 
-  before (:each) do
-    @user = FactoryGirl.create(:user)
-    sign_in @user
-  end
-  
   describe "set_locale" do
+    before (:each) do
+      @user = FactoryGirl.create(:user)
+      sign_in @user
+    end
+
     it "should use the locale in the URL if set" do
       get :index, :locale => 'en'
       expect(I18n.locale).to eq(:en)
@@ -27,5 +27,19 @@ describe ApplicationController do
       expect(I18n.locale).to eq(:en)
       expect(@user2.preferred_locale).to eq('es')
     end
+  end
+
+  describe 'users preferred locale' do
+    it "should use the users default if not set in the url" do
+      @user = FactoryGirl.create(:user)
+      expect(@user.preferred_locale).to eq('en')
+      @user.update_attribute :preferred_locale, 'es'
+      @user.reload
+      expect(@user.preferred_locale).to eq('es')
+      sign_in @user
+      get :index
+      expect(I18n.locale).to eq(:es)
+    end
+
   end
 end

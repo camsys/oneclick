@@ -10,7 +10,7 @@ describe HomeController do
       visit "/"
       page.should_not have_link("English", href: "/en")
       page.should have_text("English")
-      page.should have_link(I18n.t(:spanish), href: "/es")
+      page.should have_link(I18n.t(:spanish))
     end
 
     it "should switch to spanish when selection link is clicked" do
@@ -22,13 +22,13 @@ describe HomeController do
     end
 
     it "should stick to selected language as I navigate" do
-      pending "todo"
       visit "/"
       click_link I18n.t(:spanish)
       I18n.locale.should be :es
       click_link I18n.t(:log_in)
       I18n.locale.should be :es
-      page.should have_text(I18n.t('simple_form.labels.defaults.email'))
+      page.should have_text('Correo electrónico')
+      # page.should have_text(I18n.t('simple_form.labels.defaults.email'))
     end
 
     it "should switch to another locale correctly when in the non-default locale" do
@@ -38,16 +38,6 @@ describe HomeController do
       click_link 'English'
       I18n.locale.should be :en
     end
-
-    it "should use the users default if not set in the url"
-      # I18n.locale.should be :en
-      # expect(@user.preferred_locale).to eq('en')
-      # @user.preferred_locale = 'es'
-      # @user.reload
-      # get :index
-      # expect(@user.preferred_locale).to eq(:es)
-      # expect(I18n.locale).to eq(:es)
-    
 
     # it "should use the users default at root" do
     #   user = FactoryGirl.create(:spanish_user)

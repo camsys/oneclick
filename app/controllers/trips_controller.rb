@@ -307,7 +307,6 @@ class TripsController < PlaceSearchingController
   # GET /trips/new
   # GET /trips/new.json
   def new
-    puts @traveler.inspect
     @trip_proxy = TripProxy.new()
     @trip_proxy.traveler = @traveler
 

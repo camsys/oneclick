@@ -123,7 +123,7 @@ When /^I sign in with a wrong password$/ do
 end
 
 When /^I edit my account details$/ do
-  within(:css, "#publicnav") do
+  within(:css, "#publicNav") do
     click_link "My Travel Profile"
   end
   fill_in "First name", :with => "new first name"

@@ -44,7 +44,7 @@
       #feedback.col-xs-12
         .pull-left
           %a{:href => "http://www.fta.dot.gov/grants/13094_13528.html", :target => "_blank"} More About This Initiative
-        .pull-right
+        .pull-righ
           %a{:href => "mailto://OneClick@camsys.com"} Send your Feedback
       #versionLang.col-xs-12
         .pull-left
@@ -57,9 +57,10 @@
           - else
             %span#versionInfo= "#{t(:version)} #{Rails.application.config.version}"
         .pull-right
-          English
+          -# Don't localize next 2 strings
+          = link_using_locale('English', 'en')
           |
-          %a{:href => "/es"} En Español
+          = link_using_locale('En Español', 'es')
     / end of footer
   / end of wrap
   / Dependent JS Libs
