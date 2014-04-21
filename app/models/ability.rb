@@ -15,6 +15,7 @@ class Ability
       can [:access], :any
       can [:access], :staff_travelers
       cannot [:access], :admin_create_traveler
+      cannot [:access], :staff_travelers
       can [:access], :admin_users
       cannot :access, :show_agency
       cannot :access, :show_provider

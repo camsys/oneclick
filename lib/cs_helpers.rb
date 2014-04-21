@@ -24,7 +24,7 @@ module CsHelpers
 
   def admin_actions
     [
-      {label: t(:agents), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
+      {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
     ]
   end
 
