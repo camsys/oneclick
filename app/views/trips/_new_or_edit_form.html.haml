@@ -6,29 +6,33 @@
         /%button.btn.btn-default.pull-right.action-button{:type => "button"}Search
         = button_tag :type => 'submit', :class => "btn btn-default pull-right action-button" do
           =t(:plan_it)
-      .col-xs-12.well
+      .col-sm-12.panel
         = f.hidden_field :mode
         = f.hidden_field :from_place_object, :id => "from_place_object"
         = f.hidden_field :to_place_object, :id => "to_place_object"
         = f.hidden_field :map_center, id: "map_center"
         / %form{:role => "form"}
-        #tripOptions.col-sm-12.form-group
-          %label.col-sm-3{:style => "font-weight: normal;"}
-            %input{:checked => "", :name => "tripOptions", :type => "radio", :value => "roundTrip"}/
-            Round-trip
-          %label.col-sm-9{:style => "font-weight: normal;"}
-            %input{:name => "tripOptions", :type => "radio", :value => "oneWay"}/
-            One-way
-          :javascript
-            $(function () {
-              $('#tripOptions :radio').change(function() {
-                if(this.value === 'oneWay') {
-                  $('#returnDatetimeOptions').hide();
-                } else {
-                  $('#returnDatetimeOptions').show();
-                }
+        = f.input :trip_options, as: :radio_buttons
+        #tripOptions.col-sm-9.col-sm-offset-3
+          .form-group
+            %label.col-sm-4{:style => "font-weight: normal;"}
+              %input{:checked => "", :name => "tripOptions", :type => "radio", :value => "roundTrip"}/
+              Round-trip
+            %label.col-sm-4{:style => "font-weight: normal;"}
+              %input{:name => "tripOptions", :type => "radio", :value => "oneWay"}/
+              One-way
+            :javascript
+              $(function () {
+                $('#tripOptions :radio').change(function() {
+                  console.log('change');
+                  if(this.value === 'oneWay') {
+                    $('#returnDatetimeOptions').hide();
+                  } else {
+                    $('#returnDatetimeOptions').show();
+                  }
+                });
               });
-            });
+
         .col-sm-12.form-group
           %label.col-sm-3.control-label Modes
           #modePlaceholder.col-sm-9
