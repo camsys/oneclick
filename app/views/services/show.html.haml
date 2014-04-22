@@ -1,15 +1,26 @@
 .row
   .col-sm-6.pull-left
     =link_to t(:back_to_services), services_path
+    %h2
+      =@service.name
   .col-sm-6.pull-right
-    = simple_form_for @services, :url => service_path, :method => 'get', :html => {:class => "form-horizontal pull-right pull-down", :id => "service_form"}  do |f|
-      = f.input :id, :collection => @services, :label => t(:select_service)+":", :selected => @service.id, :input_html => {:id => @service.id, :onchange => "$('#service_form').submit();"}
+    = simple_form_for @services, :url => service_path, :method => 'get', :html => {:class => "form-horizontal pull-right", :id => "service_form"}  do |f|
+      = f.label :id, t(:select_service)+": "
+      = f.input_field :id, :collection => @services, label: false, :selected => @service.id, :onchange => "$('#service_form').submit();"
+    .row
+      .col-sm-6.pull-right.form-group
+        - if can? :update, @service
+          = link_to edit_service_path(@service), {class: 'btn btn-default', role: 'button'} do
+            = icon_label(:edit)
+        - if can? :destroy, @service
+          = simple_form_for @service, url: service_path, method: :delete, :html => {:class => "form-horizontal pull-right", :id => "delete_service_form"}  do |f|
+            -# TODO: Control presence via cancan
+            = button_tag type: 'submit', class: "btn btn-default" do
+              = icon_label(:delete)
 
 .well
   .row
     .col-sm-6
-      %h2
-        =@service.name
       %h3
         = t(:provided_by)
         = link_to @service.provider.name, admin_provider_path(@service.provider)
@@ -25,71 +36,62 @@
         -if @service.external_id
           =t(:service_id).to_s + ": " + @service.external_id.to_s
 
-    .col-sm-3
-      .well
-        %h3.text-center
-          = t(:service_contact) + ":"
-        %table.center.ALTtable-no-border
-          %tr
-            %td.text-left.h4
-              = t(:contact) + ":"
-            %td.text-left
-              %b=@service.contact.to_s
-          %tr
-            %td.text-left.h4
-              = t(:title)+":  "
-            %td.text-left
-              %b=@service.contact_title.to_s
-          %tr
-            %td.text-left.h4
-              = t(:email)+ ":  "
-            %td.text-left
-              %b=@service.email.to_s
-
-
-    .col-sm-3
-      .well
-        %h3.text-center
-          =t(:provider_contact_info) +":"
-        %table.center.ALTtable-no-border
-          %tr
-            %td.text-left.h4
-              =t(:contact) +":"
-            %td.text-left
-              %b=@service.provider.contact.to_s
-          %tr
-            %td.text-left.h4
-              = t(:title)+":  "
-            %td.text-left
-              %b=@service.provider.contact_title.to_s
-          %tr
-            %td.text-left.h4
-              = t(:email)+ ":  "
-            %td.text-left
-              %b=@service.provider.email.to_s
-          %tr
-            %td.text-left.h4
-              =t(:phone) + ": "
-            %td.text-left
-              %b=@service.provider.phone.to_s
-          %tr
-            %td.text-left.h4
-              =t(:address) + ": "
-            %td.text-left
-              %b=@service.provider.address.to_s
-          %tr
-            %td.text-left.h4
-            %td.text-left
-              %b=@service.provider.city.to_s + ' ' + @service.provider.state.to_s + ' ' + @service.provider.zip.to_s
-          %tr
-            %td.text-left.h4
-              =t(:url) + ": "
-            %td.text-left
-              = link_to @service.provider.url.to_s, @service.provider.url.to_s
+    .col-sm-4.well
+      %table.ALTtable-no-border
+        %tr
+          %td.text-left.h4
+            = t(:contact) + ":"
+          %td.text-left
+            %b=@service.contact.to_s
+        %tr
+          %td.text-left.h4
+            = t(:title)+":  "
+          %td.text-left
+            %b=@service.contact_title.to_s
+        %tr
+          %td.text-left.h4
+            = t(:phone)+ ":  "
+          %td.text-left
+            %b=@service.phone.to_s
+        %tr
+          %td.text-left.h4
+            = t(:email)+ ":  "
+          %td.text-left
+            %b=@service.email.to_s
 
 .row
   .col-sm-4
-    .well.well1
+    .well.well2
+      %h4= t(:schedule)
+      %table.ALTtable
+        %tr
+          %th.text-center
+            Day
+          %th.text-center
+            Start Time
+          %th.text-center
+            End Time
+        %tbody
+          -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
+            %tr
+              %td.text-center
+                =Date::DAYNAMES[schedule.day_of_week]
+              %td.text-center
+                =schedule.start_string
+              %td.text-center
+                =schedule.end_string
+  .col-sm-4
+    .well.well2
+      %h4= t(:advance_notice_required)
+      .well.white-well.wwell2
+        -if @service.advanced_notice_minutes > 0
+          =t(:service_notice_required) + " " ## TODO Interpolate
+          %b=duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
+          =" " + t(:service_notice_str) + "."
+        -else
+          =t(:service_notice_not_required) + "."
+  .col-sm-4
+    .well.well2
       %h4=t(:accommodations)
       .well.white-well.wwell1
         -if @service.accommodations.count == 0
@@ -99,6 +101,7 @@
             -@service.accommodations.each do |accom|
               %li
                 =t(accom.name)
+.row
   .col-sm-4
     .well.well1
       %h4= t(:eligibility)
@@ -132,9 +135,8 @@
               %li
                 =t(purpose.name)
 
-.row
   .col-sm-4
-    .well.well2
+    .well.well1 
       %h4= t(:fare)
       -@service.fare_structures.each do |fare|
         .well.white-well.wwell2
@@ -150,45 +152,15 @@
             =fare.desc.html_safe
           -else
             =""
-  .col-sm-4
-    .well.well2
-      %h4= t(:schedule)
-      %table.ALTtable
-        %tr
-          %th.text-center
-            Day
-          %th.text-center
-            Start Time
-          %th.text-center
-            End Time
-        %tbody
-          -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
-            %tr
-              %td.text-center
-                =Date::DAYNAMES[schedule.day_of_week]
-              %td.text-center
-                =schedule.start_string
-              %td.text-center
-                =schedule.end_string
-  .col-sm-4
-    .well.well2
-      %h4= t(:advance_notice_required)
-      .well.white-well.wwell2
-        -if @service.advanced_notice_minutes > 0
-          =t(:service_notice_required) + " " ## TODO Interpolate
-          %b=duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
-          =" " + t(:service_notice_str) + "."
-        -else
-          =t(:service_notice_not_required) + "."
 .well
   .row.text-center
     .col-sm-12
       %h3= t(:coverage_areas)
 
   .row
-    -types = @service.coverage_areas.map(&:coverage_type).uniq
-    -['Origins', 'Destinations', 'Residences'].each do |rule| ##TODO Internationalize
-      .col-sm-4
+    .col-sm-6
+      -types = @service.coverage_areas.map(&:coverage_type).uniq
+      -['Origins', 'Destinations', 'Residences'].each do |rule| ##TODO Internationalize
         %h4=rule
         -types.each do |type|
           %b
@@ -202,18 +174,14 @@
               = t(:n_a)
             -else
               =coverage_string.chop.chop
-            .col-sm-4
 
-.row.text-center
-  .col-sm-3
-  .col-sm-6
-    %h4=t(:service_area_map)
-    .well.white-well
+    .col-sm-6.text-center
+      %h4=t(:service_area_map)
+      .well.white-well
 
-      = LeafletMap({ :mapid => "lmap_" + "origin",  :polylines => @polylines['origin'], :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :style => "height:500px;" })
-  .col-sm-3
+        = LeafletMap({ :mapid => "lmap_" + "origin",  :polylines => @polylines['origin'], :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :style => "height:500px;" })
+
 = yield :scripts
-
 
 :javascript
   boxes = $('.well1');
