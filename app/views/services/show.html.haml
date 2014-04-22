@@ -1,16 +1,18 @@
 .row
   .col-sm-6.pull-left
     =link_to t(:back_to_services), services_path
+    %h2
+      =@service.name
   .col-sm-6.pull-right
     = simple_form_for @services, :url => service_path, :method => 'get', :html => {:class => "form-horizontal pull-right", :id => "service_form"}  do |f|
       = f.label :id, t(:select_service)+": "
       = f.input_field :id, :collection => @services, label: false, :selected => @service.id, :onchange => "$('#service_form').submit();"
     .row
       .col-sm-6.pull-right.form-group
-        - if true
+        - if can? :update, @service
           = link_to edit_service_path(@service), {class: 'btn btn-default', role: 'button'} do
             = icon_label(:edit)
-        - if true
+        - if can? :destroy, @service
           = simple_form_for @service, url: service_path, method: :delete, :html => {:class => "form-horizontal pull-right", :id => "delete_service_form"}  do |f|
             -# TODO: Control presence via cancan
             = button_tag type: 'submit', class: "btn btn-default" do
@@ -19,8 +21,6 @@
 .well
   .row
     .col-sm-6
-      %h2
-        =@service.name
       %h3
         = t(:provided_by)
         = link_to @service.provider.name, admin_provider_path(@service.provider)
@@ -50,13 +50,48 @@
             %b=@service.contact_title.to_s
         %tr
           %td.text-left.h4
+            = t(:phone)+ ":  "
+          %td.text-left
+            %b=@service.phone.to_s
+        %tr
+          %td.text-left.h4
             = t(:email)+ ":  "
           %td.text-left
             %b=@service.email.to_s
 
 .row
   .col-sm-4
-    .well.well1
+    .well.well2
+      %h4= t(:schedule)
+      %table.ALTtable
+        %tr
+          %th.text-center
+            Day
+          %th.text-center
+            Start Time
+          %th.text-center
+            End Time
+        %tbody
+          -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
+            %tr
+              %td.text-center
+                =Date::DAYNAMES[schedule.day_of_week]
+              %td.text-center
+                =schedule.start_string
+              %td.text-center
+                =schedule.end_string
+  .col-sm-4
+    .well.well2
+      %h4= t(:advance_notice_required)
+      .well.white-well.wwell2
+        -if @service.advanced_notice_minutes > 0
+          =t(:service_notice_required) + " " ## TODO Interpolate
+          %b=duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
+          =" " + t(:service_notice_str) + "."
+        -else
+          =t(:service_notice_not_required) + "."
+  .col-sm-4
+    .well.well2
       %h4=t(:accommodations)
       .well.white-well.wwell1
         -if @service.accommodations.count == 0
@@ -66,6 +101,7 @@
             -@service.accommodations.each do |accom|
               %li
                 =t(accom.name)
+.row
   .col-sm-4
     .well.well1
       %h4= t(:eligibility)
@@ -99,9 +135,8 @@
               %li
                 =t(purpose.name)
 
-.row
   .col-sm-4
-    .well.well2
+    .well.well1
       %h4= t(:fare)
       -@service.fare_structures.each do |fare|
         .well.white-well.wwell2
@@ -117,36 +152,6 @@
             =fare.desc.html_safe
           -else
             =""
-  .col-sm-4
-    .well.well2
-      %h4= t(:schedule)
-      %table.ALTtable
-        %tr
-          %th.text-center
-            Day
-          %th.text-center
-            Start Time
-          %th.text-center
-            End Time
-        %tbody
-          -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
-            %tr
-              %td.text-center
-                =Date::DAYNAMES[schedule.day_of_week]
-              %td.text-center
-                =schedule.start_string
-              %td.text-center
-                =schedule.end_string
-  .col-sm-4
-    .well.well2
-      %h4= t(:advance_notice_required)
-      .well.white-well.wwell2
-        -if @service.advanced_notice_minutes > 0
-          =t(:service_notice_required) + " " ## TODO Interpolate
-          %b=duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
-          =" " + t(:service_notice_str) + "."
-        -else
-          =t(:service_notice_not_required) + "."
 .well
   .row.text-center
     .col-sm-12
