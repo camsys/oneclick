@@ -1,10 +1,55 @@
-%p
-  %b Name:
-  = @provider.name
+.row
+  .col-sm-6.pull-left
+    = link_to t(:back_to_providers), admin_providers_path
+    %h2
+      = @provider.name
+  .col-sm-6.pull-right
+    = simple_form_for @providers, url: admin_providers_path, :method => 'get', :html => {:class => "form-horizontal pull-right", :id => "provider_form"}  do |f|
+      = f.label :id, t(:select_provider)+": "
+      = f.input_field :id, collection: @providers, label: false, selected: @provider.id, :onchange => "$('#provider_form').submit();"
+    .row
+      .col-sm-6.pull-right.form-group
+        - if can? :update, @provider
+          = link_to edit_admin_provider_path(@provider), {class: 'btn btn-default', role: 'button'} do
+            = icon_label(:edit)
+        - if can? :destroy, @provider
+          = simple_form_for @provider, url: admin_provider_path, method: :delete, :html => {class: "form-horizontal pull-right", id: "delete_provider_form"}  do |f|
+            = button_tag type: 'submit', class: "btn btn-default" do
+              = icon_label(:delete)
+
+.row
+  .col-sm-4
+    .well.well1
+      %h4= t(:information)
+      %table.ALTtable-no-border
+        %tr
+          %td.text-left.h4
+            = t(:address) + ":"
+          %td.text-left
+            %b= @provider.address.to_s
+          %td.text-left
+            %b= @provider.city.to_s
+          %td.text-left
+            %b= @provider.state.to_s
+          %td.text-left
+            %b= @provider.zip.to_s
+        %tr
+          %td.text-left.h4
+            = t(:phone)+ ":  "
+          %td.text-left
+            %b= @provider.phone.to_s
+        %tr
+          %td.text-left.h4
+            = t(:email)+ ":  "
+          %td.text-left
+            %b= @provider.email.to_s
+        %tr
+          %td.text-left.h4
+            = t(:url)+ ":  "
+          %td.text-left
+            - if @provider.url
+              %b= link_to @provider.url, @provider.url
 
 %p
   %pre= @provider.inspect
 
-= link_to 'Edit', edit_admin_provider_path(@provider)
-\|
-= link_to 'List', admin_providers_path

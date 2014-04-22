@@ -54,6 +54,8 @@ en:
   provider: "Provider"
   provider_contact_info: "Provider Contact Information"
   provided_by: "Provided by"
+  select_provider: "Select Provider"
+  back_to_providers: "Back to providers"
   users: "Users"
   agents: "Agents"
   agents_agencies: "Agencies, Providers, Users"
@@ -478,7 +480,7 @@ en:
   show: "Show"
   list: "List"
   name: "Name"
-
+  information: "Information"
   
   date:
     abbr_day_names:

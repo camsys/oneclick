@@ -1,6 +1,6 @@
 .row
   .col-sm-6.pull-left
-    =link_to t(:back_to_services), services_path
+    = link_to t(:back_to_services), services_path
     %h2
       =@service.name
   .col-sm-6.pull-right
@@ -30,7 +30,7 @@
       %h4
         =@service.phone
       %h4
-        -if @service.url
+        - if @service.url
           =link_to @service.url, @service.url
       %h5
         -if @service.external_id

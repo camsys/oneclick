@@ -15,6 +15,7 @@ class Admin::ProvidersController < ApplicationController
   # GET /admin/providers/1.json
   def show
     @admin_provider = Provider.find(params[:id])
+    @providers = Provider.order(name: :asc).to_a
 
     respond_to do |format|
       format.html # show.html.erb
