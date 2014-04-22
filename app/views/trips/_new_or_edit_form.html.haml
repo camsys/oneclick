@@ -60,6 +60,7 @@
                 %label.control-label.sr-only{:for => "toAddressMarkerButton"} Click button to open the map and locate the to address
                 %button#toAddressMarkerButton.btn.btn-default{"data-target" => "#mapModal", "data-toggle" => "modal", :type => "button"}
                   %i.fa.fa-map-marker
+
         .col-sm-12.form-group
           %label.col-sm-3.control-label{:for => "outboundOptions"} Outbound
           .col-lg-3.col-md-4
@@ -76,10 +77,11 @@
                     defaultDate: new Date(),
                     pickTime: false
                   });
-                  });
-              .col-md-6
-                %label.control-label.sr-only{:for => "trip_proxy_outbound_trip_time"} Type or select the outbound time
-                %input#trip_proxy_outbound_trip_time.form-control{:label => "false", :name => "trip_proxy[trip_time]", :type => "text"}/
+                });
+            .col-md-6
+              %label.control-label.sr-only{:for => "trip_proxy_outbound_trip_time"} Type or select the outbound time
+              %input#trip_proxy_outbound_trip_time.form-control{:label => "false", :name => "trip_proxy[trip_time]", :type => "text"}/
+
           #returnDatetimeOptions.col-sm-12.form-group
             %label.col-sm-3.control-label{:for => "returnOptions"} Return
             .col-lg-3.col-md-4
