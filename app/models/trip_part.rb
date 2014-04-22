@@ -148,9 +148,6 @@ class TripPart < ActiveRecord::Base
       self.itineraries << new_itinerary
     end
 
-    #Mark bookable itineraries as such
-    eh.find_bookable_itineraries(self, self.itineraries)
-
   end
 
  def create_rideshare_itineraries
