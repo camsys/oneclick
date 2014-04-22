@@ -61,26 +61,26 @@
                 %button#toAddressMarkerButton.btn.btn-default{"data-target" => "#mapModal", "data-toggle" => "modal", :type => "button"}
                   %i.fa.fa-map-marker
 
-        .col-sm-12.form-group
-          %label.col-sm-3.control-label{:for => "outboundOptions"} Outbound
-          .col-lg-3.col-md-4
-            %select#outboundOptions.form-control{:name => "outboundOptions"}
-              %option Departing At
-              %option{:selected => ""} Arriving At
-          .col-lg-6.col-md-5.col-sm-12{:style => "padding: 0px;"}
-            %label.control-label.sr-only{:for => "trip_proxy_outbound_trip_date"} Type or select the outbound date
-            .col-md-6
-              %input#trip_proxy_outbound_trip_date.form-control{:label => "false", :name => "trip_proxy[trip_date]", :type => "text"}/
-              :javascript
-                $(function () {
-                  $('#trip_proxy_outbound_trip_date').datetimepicker({
-                    defaultDate: new Date(),
-                    pickTime: false
+          .col-sm-12.form-group
+            %label.col-sm-3.control-label{:for => "outboundOptions"} Outbound
+            .col-lg-3.col-md-4
+              %select#outboundOptions.form-control{:name => "outboundOptions"}
+                %option Departing At
+                %option{:selected => ""} Arriving At
+            .col-lg-6.col-md-5.col-sm-12{:style => "padding: 0px;"}
+              %label.control-label.sr-only{:for => "trip_proxy_outbound_trip_date"} Type or select the outbound date
+              .col-md-6
+                %input#trip_proxy_outbound_trip_date.form-control{:label => "false", :name => "trip_proxy[trip_date]", :type => "text"}/
+                :javascript
+                  $(function () {
+                    $('#trip_proxy_outbound_trip_date').datetimepicker({
+                      defaultDate: new Date(),
+                      pickTime: false
+                    });
                   });
-                });
-            .col-md-6
-              %label.control-label.sr-only{:for => "trip_proxy_outbound_trip_time"} Type or select the outbound time
-              %input#trip_proxy_outbound_trip_time.form-control{:label => "false", :name => "trip_proxy[trip_time]", :type => "text"}/
+              .col-md-6
+                %label.control-label.sr-only{:for => "trip_proxy_outbound_trip_time"} Type or select the outbound time
+                %input#trip_proxy_outbound_trip_time.form-control{:label => "false", :name => "trip_proxy[trip_time]", :type => "text"}/
 
           #returnDatetimeOptions.col-sm-12.form-group
             %label.col-sm-3.control-label{:for => "returnOptions"} Return
