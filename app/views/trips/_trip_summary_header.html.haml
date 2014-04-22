@@ -7,8 +7,6 @@
     = render partial: 'itinerary_item', locals: {object: i.walking_time, label: t(:walk_time)}
     = render partial: 'itinerary_item', locals: {object: i.transfers_in_words, label: t(:transfers)}
     = render partial: 'itinerary_item', locals: {object: i.notes, label: i.notes_label}
-    -if i.service.booking_service_code
-      =i.service.booking_service_code
     / t(:possible_rideshares, count: i.ride_count), label: 'Notes'}
     / = render partial: 'itinerary_item', locals: {object: '', label: 'Book ahead'}
 

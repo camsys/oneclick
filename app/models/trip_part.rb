@@ -141,11 +141,16 @@ class TripPart < ActiveRecord::Base
     fh = FareHelper.new
     itineraries = eh.get_accommodating_and_eligible_services_for_traveler(self)
     itineraries = eh.get_eligible_services_for_trip(self, itineraries)
+
     itineraries.each do |itinerary|
       new_itinerary = Itinerary.new(itinerary)
       fh.calculate_fare(new_itinerary)
       self.itineraries << new_itinerary
     end
+
+    #Mark bookable itineraries as such
+    eh.find_bookable_itineraries(self, self.itineraries)
+
   end
 
  def create_rideshare_itineraries

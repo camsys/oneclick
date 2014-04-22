@@ -75,6 +75,11 @@ when 'pa'
   honeybadger_api_key = 'f49faffa'
   Oneclick::Application.config.poi_file = 'db/pa/pa-poi-from-arcgis.csv'
 
+  ##Ecolane Variables
+  Oneclick::Application.config.ecolane_system_id = "ococtest"
+  Oneclick::Application.config.ecolane_x_ecolane_token = ENV['X_ECOLANE_TOKEN']
+  Oneclick::Application.config.ecolane_base_url = "https://rabbit-test.ecolane.com"
+
 end
 
 case Oneclick::Application.config.ui_mode

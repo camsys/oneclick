@@ -1,25 +1,49 @@
-require 'json'
 require 'net/http'
 require 'OpenSSL'
+require 'Indirizzo'
 
 class EcolaneHelpers
 
-  MAX_REQUEST_TIMEOUT = Rails.application.config.remote_request_timeout_seconds
-  MAX_READ_TIMEOUT    = Rails.application.config.remote_read_timeout_seconds
+  SYSTEM_ID = Oneclick::Application.config.ecolane_system_id
+  X_ECOLANE_TOKEN = Oneclick::Application.config.ecolane_x_ecolane_token
+  BASE_URL = Oneclick::Application.config.ecolane_base_url
 
-  #todo: Make configurable
-  SYSTEM_ID = "ococtest"
-  X_ECOLANE_TOKEN = "RIOEDkA3kBaIvpOHK9w2"
-  BASE_URL = "https://rabbit-test.ecolane.com"
 
+  ## Post/Put Operations
+  def book_itinerary(itinerary)
+    funding_options = query_funding_options(itinerary)
+    funding_xml = Nokogiri::XML(funding_options.body)
+    request_booking(itinerary, funding_xml)
+  end
+
+  def request_booking(itinerary, funding_xml)
+    url_options = "/api/order/" + SYSTEM_ID + "?overlaps=reject"
+    url = BASE_URL + url_options
+    order =  build_order(itinerary, funding_xml)
+    order = Nokogiri::XML(order)
+    order.children.first.set_attribute('version', '2')
+    order = order.to_s
+    send_request(url, 'POST', order)
+  end
+
+  def query_funding_options(itinerary)
+    url_options = "/api/order/" + SYSTEM_ID + '/queryfunding'
+    url = BASE_URL + url_options
+    order =  build_order(itinerary)
+    order = Nokogiri::XML(order)
+    order.children.first.set_attribute('version', '2')
+    order = order.to_s
+    send_request(url, 'POST', order)
+  end
+
+
+  ## GET Operations
   def fetch_customer_information(customer_id, funding=false, locations=false)
-
     url_options = "/api/customer/" + SYSTEM_ID + '/'
     url_options += customer_id.to_s
     url_options += "?funding=" + funding.to_s + "&locations=" + locations.to_s
 
     url = BASE_URL + url_options
-    p url
     Rails.logger.debug URI.parse(url)
     t = Time.now
 
@@ -27,30 +51,23 @@ class EcolaneHelpers
 
     if resp.code != "200"
       Honeybadger.notify(
-        :error_class   => "Service failure",
-        :error_message => "Service failure: fixed: resp.code not 200, #{resp.message}",
-        :parameters    => {resp_code: resp.code, resp: resp}
+          :error_class   => "Service failure",
+          :error_message => "Service failure: fixed: resp.code not 200, #{resp.message}",
+          :parameters    => {resp_code: resp.code, resp: resp}
       )
       return false, {'id'=>resp.code.to_i, 'msg'=>resp.message}
     end
-
-    data = resp.body
-    #doc = Nokogiri::XML(data)
-    return data
-
+    resp.body
   end
 
   def search_for_customers(terms = {}, type = 'exact')
-
     url_options = "/api/customer/" + SYSTEM_ID + '/search?type='
     url_options += type
     terms.each do |term|
       url_options += '&' + term[0].to_s + '=' + term[1].to_s
     end
     url = BASE_URL + url_options
-    p url
-    resp = send_request(url)
-
+    send_request(url)
   end
 
   def check_customer_validity(customer_id, service=nil)
@@ -60,9 +77,8 @@ class EcolaneHelpers
     unless service.nil?
       url_options += "?service=" + service.to_s
     end
-
     url = BASE_URL + url_options
-    resp = send_request(url)
+    send_request(url)
   end
 
   def fetch_customer_orders(customer_id)
@@ -70,59 +86,58 @@ class EcolaneHelpers
     url_options += customer_id.to_s
     url_options += "/orders"
     url = BASE_URL + url_options
-    p url
     send_request(url)
   end
 
-  def query_funding_options(customer_id)
-    url_options = "/api/order/" + SYSTEM_ID + '/queryfunding'
-    url = BASE_URL + url_options
-    order =  build_order
-    #order = fetch_customer_orders(76331)
-    p order
-    p url
-    order = Nokogiri::XML(order)
-    order.children.first.set_attribute('version', '2')
-    order = order.to_s
-    puts order
-    send_request(url, 'POST', order)
 
-  end
-
-
-  def build_order
-    order_hash = build_order_hash
+  ## Building hash objects that become XML nodes
+  def build_order(itinerary, funding_xml=nil)
+    order_hash = build_order_hash(itinerary, funding_xml)
     order_hash.to_xml(root: 'order', :dasherize => false)
   end
 
-  def build_order_hash
-    {customer_id: 76331, assistant: false, companions: 0, children: 0, other_passengers: 0, pickup: build_pu_hash, dropoff: build_do_hash}
-
-  end
-
-  def build_pu_hash
-    pu_do_hash = {requested: (Time.now + 7200).xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash}
-
-  end
-
-  def build_do_hash #temp funciton
-    pu_do_hash = {requested: (Time.now + 14400).xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash}
-
-  end
-
-
-  def build_location_hash
-    location_hash = {name: 'Test Location', latitude: 39.970806, longitude: -76.742463}
-  end
-
-  def get_location_element
-    builder = Nokogiri::XML::Builder.new do |xml|
-        xml.latitude {39.963964}
-        xml.longitude {-76.690171}
+  def build_order_hash(itinerary, funding_xml=nil)
+    #TODO: Pull Passengers from itinerary
+    order = {customer_id: get_customer_id(itinerary), assistant: false, companions: 0, children: 0, other_passengers: 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
+    if funding_xml
+      order[:funding] = build_funding_hash(itinerary, funding_xml)
     end
-    builder.xml
+    order
   end
 
+  def build_funding_hash(itinerary, funding_xml)
+    purpose = itinerary.trip_part.trip.trip_purpose.code
+    #TODO: Pickup here by matching the tripPurpose
+    funding_source  =  funding_xml.xpath("funding_options").xpath("option").first.xpath("funding_source").text
+    purpose  = funding_xml.xpath("funding_options").xpath("option").first.xpath("purpose").text
+    {funding_source: funding_source, purpose: purpose}
+  end
+
+  def build_pu_hash(itinerary)
+    if itinerary.trip_part.is_depart
+      pu_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(itinerary.trip_part.from_trip_place)}
+    else
+      pu_hash = {location: build_location_hash(itinerary.trip_part.from_trip_place)}
+    end
+    pu_hash
+  end
+
+  def build_do_hash(itinerary) #temp funciton
+    if itinerary.trip_part.is_depart
+      do_hash = {location: build_location_hash(itinerary.trip_part.to_trip_place)}
+    else
+      do_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(itinerary.trip_part.to_trip_place)}
+    end
+    do_hash
+  end
+
+  def build_location_hash(place)
+    parsable_address = Indirizzo::Address.new(place.address1)
+    {street_number: parsable_address.number, street:parsable_address.street.first, city: place.city, state: place.state, zip: place.zip}
+  end
+
+
+  ## Send the Requests
   def send_request(url, type='GET', message=nil)
     begin
       uri = URI.parse(url)
@@ -149,9 +164,24 @@ class EcolaneHelpers
           :error_message => "Service failure: fixed: #{e.message}",
           :parameters    => {url: url}
       )
-      p 'failure'
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
+  end
+
+
+  ## Utility functions:
+  def get_customer_id(itinerary)
+    itinerary.trip_part.trip.user.user_profile.user_services.where(service: itinerary.service).first.external_user_id
+  end
+
+
+  ### Testing functions:
+  def test_build_location_hash(place)
+    {street_number: 434, street:"W Princess St", city: "York", state: 'PA'}
+  end
+
+  def test_build_location2_hash(place)
+    {street_number: 514, street:"S Pershing Ave", city: "York", state: 'PA'}
   end
 
 end

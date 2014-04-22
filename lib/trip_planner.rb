@@ -62,8 +62,6 @@ class TripPlanner
       )
       return false, result['error']
     else
-      p 'Calling home took...'
-      p Time.now - t
       return true, result['plan']
     end
 
@@ -227,8 +225,6 @@ class TripPlanner
       summary = doc.css('.summary').text
       Rails.logger.debug "Summary: #{summary}"
       count = %r{(\d+) total result}.match(summary)[1]
-      p 'Calling rideshare took'
-      p Time.now - t
       return true, {'mode' => 'rideshare', 'status' => 200, 'count' => count, 'query' => query}
     else
       return false, {'mode' => 'rideshare', 'status' => 404, 'count' => results.size}
