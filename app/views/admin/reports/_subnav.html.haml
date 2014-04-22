@@ -1,21 +1,21 @@
 .well
   = simple_form_for @generated_report, url: admin_report_path(Report.all.first.id), html: { method: 'get', id: 'report_form', class: 'form-horizontal' }  do |f|
-    .row-fluid
-      .span4
+    .row
+      .col-sm-4
         = f.input :report_name, collection: Report.names_and_ids, include_blank: false, label: t(:report_name)
       .span
         = f.input :date_range, collection: Report.date_options, include_blank: false, label: t(:date_range)
-    .row-fluid
-      .span4
+    .row
+      .col-sm-4
         = f.input :trip_purpose, collection: Report.trip_purposes, include_blank: false, label: t(:trip_purpose)
-      .span4
+      .col-sm-4
         = f.input :traveler_type, collection: Report.traveler_types, include_blank: false, label: t(:traveler_type)
-    .row-fluid
-      .span4
+    .row
+      .col-sm-4
         = f.input :display_type, collection: Report.display_types, include_blank: false, label: t(:display_type)
-      .span4
+      .col-sm-4
         = f.input :summary_type, collection: Report.summary_types, include_blank: false, label: t(:summary_type)
-      .span4
+      .col-sm-4
         = button_tag type: :submit, class: 'btn btn-primary controls' do
           %i.fa.fa-check
           =t (:run)
@@ -23,5 +23,4 @@
 :javascript
   $('#report_report_name').on('change', function(event) {
     $('#report_form').attr('action', "/admin/reports/" + this.value)
-    console.log(this.value)
   })

@@ -1,13 +1,13 @@
-.row-fluid
-  .span6.pull-left
+.row
+  .col-sm-6.pull-left
     =link_to t(:back_to_services), services_path
-  .span6.pull-right
+  .col-sm-6.pull-right
     = simple_form_for @services, :url => service_path, :method => 'get', :html => {:class => "form-horizontal pull-right pull-down", :id => "service_form"}  do |f|
       = f.input :id, :collection => @services, :label => t(:select_service)+":", :selected => @service.id, :input_html => {:id => @service.id, :onchange => "$('#service_form').submit();"}
 
 .well
-  .row-fluid
-    .span6
+  .row
+    .col-sm-6
       %h2
         =@service.name
       %h3
@@ -25,7 +25,7 @@
         -if @service.external_id
           =t(:service_id).to_s + ": " + @service.external_id.to_s
 
-    .span3
+    .col-sm-3
       .well
         %h3.text-center
           = t(:service_contact) + ":"
@@ -47,7 +47,7 @@
               %b=@service.email.to_s
 
 
-    .span3
+    .col-sm-3
       .well
         %h3.text-center
           =t(:provider_contact_info) +":"
@@ -87,8 +87,8 @@
             %td.text-left
               = link_to @service.provider.url.to_s, @service.provider.url.to_s
 
-.row-fluid
-  .span4
+.row
+  .col-sm-4
     .well.well1
       %h4=t(:accommodations)
       .well.white-well.wwell1
@@ -99,7 +99,7 @@
             -@service.accommodations.each do |accom|
               %li
                 =t(accom.name)
-  .span4
+  .col-sm-4
     .well.well1
       %h4= t(:eligibility)
       = t(:eligibility_rules_descr)
@@ -120,7 +120,7 @@
         -else
           = t(:no_restriction)
 
-  .span4
+  .col-sm-4
     .well.well1
       %h4= t(:trip_purposes)
       .well.white-well.wwell1
@@ -132,8 +132,8 @@
               %li
                 =t(purpose.name)
 
-.row-fluid
-  .span4
+.row
+  .col-sm-4
     .well.well2
       %h4= t(:fare)
       -@service.fare_structures.each do |fare|
@@ -150,7 +150,7 @@
             =fare.desc.html_safe
           -else
             =""
-  .span4
+  .col-sm-4
     .well.well2
       %h4= t(:schedule)
       %table.ALTtable
@@ -170,7 +170,7 @@
                 =schedule.start_string
               %td.text-center
                 =schedule.end_string
-  .span4
+  .col-sm-4
     .well.well2
       %h4= t(:advance_notice_required)
       .well.white-well.wwell2
@@ -181,14 +181,14 @@
         -else
           =t(:service_notice_not_required) + "."
 .well
-  .row-fluid.text-center
-    .span12
+  .row.text-center
+    .col-sm-12
       %h3= t(:coverage_areas)
 
-  .row-fluid
+  .row
     -types = @service.coverage_areas.map(&:coverage_type).uniq
     -['Origins', 'Destinations', 'Residences'].each do |rule| ##TODO Internationalize
-      .span4
+      .col-sm-4
         %h4=rule
         -types.each do |type|
           %b
@@ -202,16 +202,16 @@
               = t(:n_a)
             -else
               =coverage_string.chop.chop
-            .span4
+            .col-sm-4
 
-.row-fluid.text-center
-  .span3
-  .span6
+.row.text-center
+  .col-sm-3
+  .col-sm-6
     %h4=t(:service_area_map)
     .well.white-well
 
       = LeafletMap({ :mapid => "lmap_" + "origin",  :polylines => @polylines['origin'], :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :style => "height:500px;" })
-  .span3
+  .col-sm-3
 = yield :scripts
 
 

@@ -1,8 +1,8 @@
 %h1 Define A Translation
 
 #translations_form
-    .row-fluid
-        .span12
+    .row
+        .col-sm-12
             = simple_form_for @translation do |t|
                 = t.input :key
                 = t.input :locale

@@ -20,7 +20,7 @@ function set_ui_key_value(key, value) {
 
 // Displays an alert
 function show_alert(message) {
-    $('#messages').html('<div class="alert alert-error fade in"><a class="close" data-dismiss="alert">x</a><div id="flash_notice">' + message + '</div></div>');
+    $('#messages').html('<div class="alert alert-danger fade in"><a class="close" data-dismiss="alert">x</a><div id="flash_notice">' + message + '</div></div>');
 }
 // Submittal handler for forms sent using ajax
 function ajax_submit_form_handler(form_id) {
@@ -142,20 +142,20 @@ function adjust_thumbnails(window_width) {
     var span_size;
     var counter = 0;
     if (window_width > 1400) {
-        span_size = "span3";
+        span_size = "col-sm-3";
         counter = 4;
     } else if (window_width > 979) {
-        span_size = "span4";
+        span_size = "col-sm-4";
         counter = 3;
     } else if (window_width > 767) {
-        span_size = "span6";
+        span_size = "col-sm-6";
         counter = 2;
     } else {
-        span_size = "span12";
+        span_size = "col-sm-12";
         counter = 1;
     }
     //alert('Window = ' + window_width + ' setting icon size to ' + icon_size + ' and span size to ' + span_size);
-    $('.trip_summary').removeClass("span12 span6 span4 span3").addClass(span_size);
+    $('.trip_summary').removeClass("col-sm-12 col-sm-6 col-sm-4 col-sm-3").addClass(span_size);
     $('.thumbnail').removeClass('first-in-row');
     // Add the first-in-row class to the first thumbnail in each row
     if (OneClick.Config['ui_mode'] != 'kiosk') {

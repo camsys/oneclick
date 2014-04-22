@@ -14,26 +14,26 @@
   %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#searched_travelers_table
     %thead
       %tr
-        %th.span4= t(:name)
-        %th.span4= t(:email)
-        %th.span4= t(:registered)
+        %th.col-sm-4= t(:name)
+        %th.col-sm-4= t(:email)
+        %th.col-sm-4= t(:registered)
     %tbody
       -@found_travelers.each do |traveler|
         %tr
-          %td.span4= traveler.name
-          %td.span4= traveler.email
-          %td.span4= traveler.created_at.to_date
+          %td.col-sm-4= traveler.name
+          %td.col-sm-4= traveler.email
+          %td.col-sm-4= traveler.created_at.to_date
 -if @pre_auth_travelers
   %h3= t(:authorized_travelers)
   %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#preauth_travelers_table
     %thead
       %tr
-        %th.span4= t(:name)
-        %th.span4= t(:email)
-        %th.span4= t(:registered)
+        %th.col-sm-4= t(:name)
+        %th.col-sm-4= t(:email)
+        %th.col-sm-4= t(:registered)
     %tbody 
       - @pre_auth_travelers.each do |traveler|
         %tr
-          %td.span4= link_to traveler.name, edit_admin_agency_agency_user_relationship_path(@agency.id,traveler.id)
-          %td.span4= traveler.email
-          %td.span4= traveler.created_at.to_date
+          %td.col-sm-4= link_to traveler.name, edit_admin_agency_agency_user_relationship_path(@agency.id,traveler.id)
+          %td.col-sm-4= traveler.email
+          %td.col-sm-4= traveler.created_at.to_date

@@ -19,7 +19,7 @@ when 'arc'
   Oneclick::Application.config.geocoder_components = 'administrative_area:GA|country:US'
   Oneclick::Application.config.map_bounds = [[33.457797,-84.754028], [34.090199,-83.921814]]
   Oneclick::Application.config.geocoder_bounds = [[33.737147,-84.406634], [33.764125,-84.370361]]  
-  Oneclick::Application.config.open_trip_planner = "http://arc-otp-2.camsys-apps.com"
+  Oneclick::Application.config.open_trip_planner = "http://otpv1-arc.camsys-apps.com:8080/otp/routers/atl/plan?"
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Atlanta"
   Oneclick::Application.config.enable_rideshare = true
@@ -40,7 +40,7 @@ when 'broward'
   Oneclick::Application.config.geocoder_components = 'administrative_area:FL|country:US'
   Oneclick::Application.config.map_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
   Oneclick::Application.config.geocoder_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
-  Oneclick::Application.config.open_trip_planner = "http://otp-broward.camsys-apps.com"
+  Oneclick::Application.config.open_trip_planner = "http://otp-broward.camsys-apps.com/opentripplanner-api-webapp/ws/plan?"
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Miami"
   Oneclick::Application.config.name = 'OneClick'
@@ -61,7 +61,7 @@ when 'pa'
   Oneclick::Application.config.map_bounds      = [[40.0262999543423,  -76.56372070312499], [39.87970800405549, -76.90189361572266]]
   Oneclick::Application.config.geocoder_bounds = [[40.0262999543423,  -76.56372070312499], [39.87970800405549, -76.90189361572266]]
   Oneclick::Application.config.default_zoom = 12
-  Oneclick::Application.config.open_trip_planner = "http://otp-pa.camsys-apps.com:8080"
+  Oneclick::Application.config.open_trip_planner = "http://otp-pa.camsys-apps.com:8080/opentripplanner-api-webapp/ws/plan?"
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Harrisburg-PA"
   Oneclick::Application.config.name = '1-Click/PA'

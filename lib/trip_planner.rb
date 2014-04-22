@@ -21,10 +21,11 @@ class TripPlanner
     mode = 'TRANSIT,WALK'
 
     base_url = Oneclick::Application.config.open_trip_planner
-    url_options = "/opentripplanner-api-webapp/ws/plan?"
-    url_options += "arriveBy=" + arriveBy + "&time=" + time
+
+    url_options = "arriveBy=" + arriveBy + "&time=" + time
     url_options += "&mode=" + mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
+
     url = base_url + url_options
 
     Rails.logger.debug URI.parse(url)
@@ -52,7 +53,7 @@ class TripPlanner
 
     data = resp.body
     result = JSON.parse(data)
-    if result.has_key? 'error'
+    if result.has_key? 'error' and not result['error'].nil?
       Honeybadger.notify(
         :error_class   => "Service failure",
         :error_message => "Service failure: fixed: result has error: #{result['error']}",
@@ -89,6 +90,12 @@ class TripPlanner
       trip_itinerary['legs'] = itinerary['legs'].to_yaml
       trip_itinerary['server_status'] = 200
       trip_itinerary['match_score'] = match_score
+      begin
+        #TODO: Need better documentaiton of OTP Fare Object to make this more generic
+        trip_itinerary['cost'] = itinerary['fare'].first[1]['regular']['cents'].to_f/100.0
+      rescue
+        #do nothing, leave the cost element blank
+      end
       match_score += match_score_incr
       trip_itinerary
     end

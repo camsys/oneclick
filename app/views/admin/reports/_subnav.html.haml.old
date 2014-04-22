@@ -1,5 +1,5 @@
-.row-fluid
-  .span12
+.row
+  .col-sm-12
     .navbar
       .navbar-inner
         .container

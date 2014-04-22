@@ -1,16 +1,6 @@
 class User < ActiveRecord::Base
   include ActiveModel::Validations
 
-  # Validator(s)
-  class OrganizationTypeValidator < ActiveModel::EachValidator
-    def validate_each(record, attribute, value)
-      record.errors.add attribute, "agency org must be of correct type" if !record.agency.nil? and
-        !record.agency.agency?
-      record.errors.add attribute, "provider org must be of correct type" if !record.provider_org.nil? and
-        !record.provider_org.provider?
-    end
-  end
-
   # enable roles for this model
   rolify
 
@@ -50,9 +40,8 @@ class User < ActiveRecord::Base
   has_many :buddy_relationships, class_name: 'UserRelationship', foreign_key: :user_id
   has_many :buddies, class_name: 'User', through: :buddy_relationships, source: :delegate
 
-  belongs_to :agency, class_name: 'Organization'
-  belongs_to :provider_org, class_name: 'Organization'
-  # has_one :provider, through: :provider_org
+  belongs_to :agency
+  belongs_to :provider
 
   scope :confirmed, -> {where('relationship_status_id = ?', RelationshipStatus::CONFIRMED)}
   scope :registered, -> {with_role(:registered_traveler)}
@@ -62,9 +51,7 @@ class User < ActiveRecord::Base
   validates :email, :presence => true
   validates :first_name, :presence => true
   validates :last_name, :presence => true
-  validates :agency, organization_type: true
-  validates :provider_org, organization_type: true
-
+  
   before_create :make_user_profile
 
   def make_user_profile
@@ -119,10 +106,6 @@ class User < ActiveRecord::Base
 
   def is_registered?
     !is_visitor?
-  end
-
-  def provider
-    provider_org.try(:provider)
   end
 
   # # Rolify has global roles and resource-bound roles, but what we need to know here is whether

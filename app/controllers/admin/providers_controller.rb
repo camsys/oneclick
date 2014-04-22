@@ -14,7 +14,7 @@ class Admin::ProvidersController < ApplicationController
   # GET /admin/providers/1
   # GET /admin/providers/1.json
   def show
-    @provider = Provider.find(params[:id])
+    @admin_provider = Provider.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -41,11 +41,11 @@ class Admin::ProvidersController < ApplicationController
   # POST /admin/providers
   # POST /admin/providers.json
   def create
-    @admin_provider = Provider.new(params[:admin_provider])
+    @admin_provider = Provider.new(okay_params)
 
     respond_to do |format|
       if @admin_provider.save
-        format.html { redirect_to [:admin, @admin_provider], notice: 'Provider org was successfully created.' }
+        format.html { redirect_to [:admin, @admin_provider], notice: 'Provider was successfully created.' } #TODO Internationalize
         format.json { render json: @admin_provider, status: :created, location: @admin_provider }
       else
         format.html { render action: "new" }
@@ -60,8 +60,8 @@ class Admin::ProvidersController < ApplicationController
     @admin_provider = Provider.find(params[:id])
 
     respond_to do |format|
-      if @admin_provider.update_attributes(params[:admin_provider])
-        format.html { redirect_to [:admin, @admin_provider], notice: 'Provider org was successfully updated.' }
+      if @admin_provider.update_attributes(okay_params)
+        format.html { redirect_to [:admin, @admin_provider], notice: 'Provider was successfully updated.' } #TODO Internationalize
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -81,4 +81,11 @@ class Admin::ProvidersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+
+  def okay_params
+    params.require(:admin_provider).permit(:name) ##TODO Bring in line with data reqs
+  end
+
 end

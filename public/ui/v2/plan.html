@@ -8,15 +8,14 @@
 		
 		<!-- Bootstrap core CSS -->
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		
+		<link href="bootstrap-accesibility/css/bootstrap-accessibility.css" rel="stylesheet">
 		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
-		<link href="datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
 
 		<!-- Custom styles for this template -->
 		<link href="stylesheets/arc.css" media="all" rel="stylesheet" />
 		
 		<!-- Dependent JS Libs-->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	</head>
 	<body>
 		<div id="wrap">
@@ -63,16 +62,17 @@
 			
 			<div id="main" role="main" class="container">
 				<ol class="breadcrumb" id="wizards">
-				  <li class="prevStep"><a href="trip.html">Trip</a></li>
-				  <li class="prevStep"><a href="options.html">Options</a></li>
-				  <li class="prevStep"><a href="review.html">Review</a></li>
-				  <li class="activeStep">Plan</li>
+				  <li class="prev-page"><a href="trip.html">Trip</a></li>
+				  <li class="prev-page"><a href="options.html">Options</a></li>
+				  <li class="prev-page"><a href="review.html">Review</a></li>
+				  <li class="current-page">Plan</li>
 				</ol>
 							
 				<div class='row'>
 					<div class='col-xs-12 form-group'>
-						<button class="btn btn-default active pull-right" id="emailButton">Email</button>
-						<button class="btn btn-default active pull-right" id="printButton" style="margin-right: 5px;">Print</button>
+						<button class="btn btn-default pull-right action-button" id="emailButton">Email</button>
+						<button class="btn btn-default pull-right action-button" id="printButton" style="margin-right: 5px;">Print</button>
+						<button class="btn btn-default pull-right action-button" id="saveButton" style="margin-right: 5px;">Save</button>
 					</div>
 					<div class='col-xs-12 well' id="outboundPlan" style="padding: 0px;">
 						<label class="col-xs-12" id="outboundPlanSubject">Outbound</label>
@@ -119,7 +119,7 @@
 				<div class='pull-right'>
 					English
 					|
-					<a href="/es">En Español</a>
+					<a href="/es">En Espaï¿½ol</a>
 				</div>
 			</div>
 		</div><!--end of footer-->
@@ -127,6 +127,7 @@
 		
 		<!-- Dependent JS Libs-->
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="bootstrap-accesibility/js/bootstrap-accessibility.min.js"></script>
 		<script src="datetimepicker/moment.js"></script>
 		<script src="datetimepicker/bootstrap-datetimepicker.js"></script>
 	</body>

@@ -1,8 +1,8 @@
-.row-fluid
-  .span12
+.row
+  .col-sm-12
     %h4= t(:add_new_buddy)
-.row-fluid
-  .span12
+.row
+  .col-sm-12
     = simple_form_for [current_user, @user_relationship], remote: true, html: { class: 'form-inline' } do |f|
       = f.error_notification
       = f.input :email, label: t(:buddys_email_address), as: :email

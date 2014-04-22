@@ -1,0 +1,6 @@
+.navbar .brandXXXX {
+  background-image: image-url('arc/arc-logo.png');
+  width: 94px;
+  height: 40px;
+  padding: 0;
+}

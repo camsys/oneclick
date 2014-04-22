@@ -1,11 +1,11 @@
 - if inline
   .alert.alert-info.alert-block
-    .row-fluid
-      .span12
+    .row
+      .col-sm-12
         %p
           =t(:disability_explanation_str)
-    .row-fluid
-      .span12
+    .row
+      .col-sm-12
         %a.btn.btn-success{:alt => 'alt words', :title => 'title here', :href => skip_user_trip_path(@traveler, @trip_id)}
           %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
           = t(:no_thanks_just_plan_it)

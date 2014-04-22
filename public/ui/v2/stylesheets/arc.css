@@ -1,24 +1,24 @@
 html, body {
-  height: 100%;
+	height: 100%;
 }
 
 /* Wrapper for page content to push down footer */
 #wrap {
-  min-height: 100%;
-  height: auto !important;
-  height: 100%;
-  /* Negative indent footer by it's height plus any margins */
-  margin: 0 auto -40px;
-  position: relative;
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	/* Negative indent footer by it's height plus any margins */
+	margin: 0 auto -40px;
+	position: relative;
 }
 
 #footer {
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 40px;
-  background-color: #f5f5f5;
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	/* Set the fixed height of the footer here */
+	height: 40px;
+	background-color: #f5f5f5;
 }
 
 #main {
@@ -64,6 +64,10 @@ html, body {
 	.form-group .control-label {
 		text-align: left;
 	}
+	
+	.tick-label-hidden-xs {
+		visibility: hidden !important;
+	}
 }
 
 @media(min-width:768px){
@@ -94,21 +98,29 @@ html, body {
 		text-align: right;
 	}
 	
+	.tick-label-hidden-sm {
+		visibility: hidden !important;
+	}
+}
+@media(min-width:992px){
+	.tick-label-visible-md {
+		visibility: visible !important;
+	}
 }
 
 .dropdown-toggle {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .dropdown-menu a {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 #userDropdown .dropdown-toggle{
-  background-color: transparent;
-  color: #FEC800;
-  font-size: 1em;
-  font-weight: bold;
+	background-color: transparent;
+	color: #FEC800;
+	font-size: 1em;
+	font-weight: bold;
 }
 
 #help i{
@@ -157,7 +169,7 @@ html, body {
 	color: #499bea;
 }
 
-.activeStep {
+.current-page {
 	width: 80px;
 	background-image: url('../images/active.png');
 	text-align: center;
@@ -165,23 +177,23 @@ html, body {
 	color: white;
 }
 
-.prevStep {
+.prev-page {
 	width: 80px;
 	background-image: url('../images/inactive.png');
 	text-align: center;
 }
 
-.prevStep a{
+.prev-page a{
 	font-weight: bold;
 	color: black;
 }
 
-.prevStep a:hover {
+.prev-page a:hover {
 	text-decoration: none;
 	cursor: pointer;
 }
 
-.nextStep {
+.next-page {
 	width: 80px;
 	background-image: url('../images/inactive.png');
 	text-align: center;
@@ -201,7 +213,27 @@ html, body {
 	content: '';
 }
 
-.prevPeriod {
+.action-button {
+	float: right !important;
+}
+
+.highlight-left-border {
+	border-left: 2px black solid;
+}
+
+.highlight-right-border {
+	border-right: 2px black solid;
+}
+
+.regular-left-border {
+	border-left: 1px black solid;
+}
+
+.regular-right-border {
+	border-right: 1px black solid;
+}
+
+.prev-period {
 	width: 30px;
 	height: 20px;
 	background-image: url('../images/prevPeriod.png');
@@ -211,7 +243,7 @@ html, body {
 	border: none;
 }
 
-.nextPeriod {
+.next-period {
 	width: 30px;
 	height: 20px;
 	background-image: url('../images/nextPeriod.png');
@@ -221,58 +253,54 @@ html, body {
 	border: none;
 }
 
-.singlePlanHeader{
+.single-plan-header{
 	background-color: whitesmoke;
 	border: 2px whitesmoke solid;
 	border-bottom: none;
 }
 
-.singlePlanReview{
+.single-plan-review{
 	background-color: white;
 	border-radius: 3px;
 	border: 2px whitesmoke solid;
+	height: 50px;
 }
 
-.singlePlanSelected {
+.single-plan-selected {
 	border: 2px black solid;
 }
 
-.singlePlanUnselected {
+.single-plan-unselected {
 	border: 2px whitesmoke solid;
 }
 
-.singlePlanSelect {
+.select-column {
 }
 
-.singlePlanQuestion {
+.single-plan-select {
 }
 
+.single-plan-question {
+}
+
+/*Review page timeline chart styles*/
 .chart {
 	background: none;
 }
  
 .chart rect {
-  stroke: none;
+	stroke: none;
 }
 
 .chart line {
-  stroke: black;
+	stroke: black;
 }
 
-.chart rect:hover {
-  fill: grey;
-}
-.walkTime {
-  fill: #499bea;
-}
-.transferTime {
-  fill: #FEC800;
-}
-.vehicleTime {
-  fill: #FF9900;
+.axis text {
+  font: 10px sans-serif;
 }
 
-div.tooltip {   
+.chart-tooltip {   
   position: absolute;           
   text-align: center;           
   width: 100px;                  
@@ -285,3 +313,50 @@ div.tooltip {
   pointer-events: none;         
 }
 
+.slider-tip {
+    opacity:1;
+    bottom:120%;
+}
+/*styles for trip leg types*/
+.travel-legend-container {
+	margin-right: 5px; 
+	display: inline-block; 
+}
+.travel-legend {
+	width: 50px;
+	height: 30px;
+	display: inline-block;
+	margin-right: 2px;
+}
+.travel-legend-walk {
+	background-color: #499bea;
+}
+.travel-legend-transfer {
+	background-color: #FEC800;
+}
+.travel-legend-vehicle {
+	background-color: #FF9900;
+}
+.travel-type-walk {
+	fill: #499bea;
+}
+.travel-type-transfer {
+	fill: #FEC800;
+}
+.travel-type-vehicle {
+	fill: #FF9900;
+}
+
+/*styles for trip mode service*/
+.trip-mode-icon {
+	text-align: center;
+	line-height: normal;
+	font-size: 1em;
+}
+.trip-bus-marta {
+}
+
+.trip-mode-cost {
+	text-align: center;
+	width: 100%;
+}

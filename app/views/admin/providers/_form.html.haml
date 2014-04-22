@@ -1,0 +1,9 @@
+= simple_form_for([:admin, @provider], html: { class: 'form-horizontal'}) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name
+
+  .form-actions
+    = f.button :submit, 'Save'
+    = link_to 'Cancel', :back

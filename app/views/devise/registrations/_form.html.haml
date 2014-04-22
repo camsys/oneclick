@@ -3,8 +3,8 @@
   = t(:sign_up)
 
 - if @create_inline
-  .row-fluid
-    .span12
+  .row
+    .col-sm-12
       = render partial: 'trips/trip_header', locals: {trip: @trip}
 
 .well
@@ -14,13 +14,13 @@
 
     - if @create_inline
       .alert.alert-info.alert-block
-        .row-fluid
-          .span12
+        .row
+          .col-sm-12
             %p
               =cms_snippet_content('registration-reasoning')
             / = t(:to_see_best_options)
-        .row-fluid
-          .span12
+        .row
+          .col-sm-12
             %a.btn.btn-success{:alt => 'alt words', :title => 'title here', :href => skip_user_trip_path(@traveler, @trip.id)}
               %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
               =t(:no_thanks_just_plan_it)

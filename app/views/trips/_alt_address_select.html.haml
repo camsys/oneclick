@@ -1,11 +1,11 @@
 - unless results.empty?
-  .row-fluid
-    .span12
+  .row
+    .col-sm-12
       %h6= t(:found_x_matches, :count => results.count )
 
-  .row-fluid
+  .row
     .search-dropdown-container
-      .candidate-list.span10
+      .candidate-list.col-sm-10
         .js-candidate-list-inner{'data-offset' => '0'}
           %ul.nav.nav-list
             - results.each_with_index do |addr, index|
@@ -14,17 +14,17 @@
                   / %img{:src => get_candidate_list_item_image(index,  @target)}
                   = addr["title"]
 
-      .scroller-container.span2.pull-right
+      .scroller-container.col-sm-2.pull-right
         .scroll-up.js-prev-btn
         .scrollbar
           .scrollbar-bar
             .scrollbar-scroll
         .scroll-down.js-next-btn
 - else
-  .row-fluid
+  .row
     .control-group.string
       .controls
-        .alert.alert-error
+        .alert.alert-danger
           = t(:nothing_found)
 
 :javascript

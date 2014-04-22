@@ -38,7 +38,9 @@ $ ->
       rateLimitWait: 600
       replace: (url, query) ->
         url = url + '&query=' + query
-        url = url + '&map_center=' + (LMmap.getCenter().lat + ',' + LMmap.getCenter().lng)
+        # TODO This may need to get handled differently depending on whether map is shown
+        # url = url + '&map_center=' + (LMmap.getCenter().lat + ',' + LMmap.getCenter().lng)
+        url = url + '&map_center=33.7550,-84.3900'
         return url
     limit: 20
     # prefetch: '../data/films/post_1960.json'
@@ -56,16 +58,20 @@ $ ->
   
   $('#trip_proxy_from_place').on 'typeahead:selected', (e, s, d) ->
     $('#from_place_object').val(JSON.stringify(s))
-    update_map('from', e, s, d)
+    # TODO put back update_maps
+    # update_map('from', e, s, d)
   $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, s, d) ->
     $('#from_place_object').val(JSON.stringify(s))
-    update_map('from', e, s, d)
+    # TODO put back update_maps
+    # update_map('from', e, s, d)
   $('#trip_proxy_to_place').on 'typeahead:selected', (e, s, d) ->
     $('#to_place_object').val(JSON.stringify(s))
-    update_map('to', e, s, d)
+    # TODO put back update_maps
+    # update_map('to', e, s, d)
   $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, s, d) ->
     $('#to_place_object').val(JSON.stringify(s))
-    update_map('to', e, s, d)
+    # TODO put back update_maps
+    # update_map('to', e, s, d)
 
   $('#new_trip_proxy').on 'submit', ->
     $('#map_center').val((LMmap.getCenter().lat + ',' + LMmap.getCenter().lng))

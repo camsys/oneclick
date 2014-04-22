@@ -45,7 +45,7 @@ class Ability
       can :read, Agency
       can :perform, :assist_user
       can :create, User
-      can :manage, [ProviderOrg, Service]
+      can :manage, [Provider, Service]
       can [:index, :show], Report
       can [:read, :update], User, agency_id: user.agency.try(:id)
     end
@@ -66,7 +66,7 @@ class Ability
       can [:read], Agency
       # can [:read, :update], User, {agency_id: user.agency.try(:id)}
       can [:index, :show], Report
-      can [:index, :show], [ProviderOrg, Service]
+      can [:index, :show], [Provider, Service]
       can :perform, :assist_user
       can :create, User
     end
@@ -81,8 +81,7 @@ class Ability
       can [:access], :admin_feedback
 
       can [:index, :show], Report
-      can [:manage], ProviderOrg, id: user.try(:provider_org_id)
-      can [:manage], Provider, id: user.try(:provider_org_id)
+      can [:manage], Provider, id: user.try(:provider_id)
       can [:update, :show], Service do |s|
         user.provider.services.include?(s)
       end

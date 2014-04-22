@@ -2,69 +2,71 @@
 %html
   %head
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
-      %title= content_for?(:title) ? yield(:title) : t(:site_title)
-      %meta{:content => content_for?(:description) ? yield(:description) : t(:site_description), :name => "description"}
-      = ajaxful_rating_style
-      = stylesheet_link_tag "default/application", :media => "all"
-      = stylesheet_link_tag 'default/' + brand, :media => "all"
-      = stylesheet_link_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.css", :media => "all"
-      
-      = javascript_include_tag "http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"
-      = javascript_include_tag "http://maps.google.com/maps/api/js?v=3.2&sensor=false"
-      = javascript_include_tag "default/application" # TODO This should go in footer
-      = javascript_include_tag "https://www.google.com/jsapi"
+    %title= content_for?(:title) ? yield(:title) : t(:site_title)
+    %meta{:content => content_for?(:description) ? yield(:description) : t(:site_description), :name => "description"}
 
+    = stylesheet_link_tag "default/application", :media => "all"
+    = stylesheet_link_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.css", :media => "all"
+    / From gem
+    / %link{:href => "//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css", :rel => "stylesheet"}/
+    / From gem
+    / %link{:href => "http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css", :rel => "stylesheet"}/
+    / From gem
+    / %link{:href => "datetimepicker/bootstrap-datetimepicker.css", :rel => "stylesheet"}/
+    / Custom styles for this template
+    / TODO compile in
+    / %link{:href => "stylesheets/arc.css", :media => "all", :rel => "stylesheet"}/
+    = stylesheet_link_tag 'default/' + brand, :media => "all"
+    / Dependent JS Libs
+    / From framework
+    / %script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"}
 
-      = csrf_meta_tags
-      = yield(:head)
+    = javascript_include_tag "http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"
+    = javascript_include_tag "http://maps.google.com/maps/api/js?v=3.2&sensor=false"
+    = javascript_include_tag "default/application"
+    / TODO Why do we have this?
+    = javascript_include_tag "https://www.google.com/jsapi"
+
+    = csrf_meta_tags
+    = yield(:head)
+
   %body{:class => "#{controller_css_class} #{action_name}"}
     / application.html.haml
     #wrap
-      .container-fluid
-        .row-fluid
-          = render 'shared/navigation'
-      #main{:role => "main"}
-        .container-fluid
-          = render 'shared/assisting'
-          #messages
-            = render 'shared/messages'
-          = yield
-      #footer
-        .container-fluid
-          .well
-            .pull-left
-              - unless Rails.env.production?
-                %span= "#{t(:version)} #{ENV['ONECLICK_APP_VERSION'] || Rails.application.config.version}"
-              - else
-                %span= "#{t(:version)} #{Rails.application.config.version}"
-              - unless Rails.env.production?
-                %span
-                  |
-                  %span.visible-phone Phone&nbsp;
-                  %span.visible-table Tablet&nbsp;
-                  %span.visible-desktop Desktop
-            .pull-right
-              -# Don't localize next 2 strings
-              = link_using_locale('English', 'en')
-              |
-              = link_using_locale('En Español', 'es')
-      / ! end of .container
-    / ! end of #main
+      = render 'shared/navigation'
+      #main.container{:role => "main"}
+        = render 'shared/assisting'
+        #messages
+          = render 'shared/messages'
+        = yield
 
-    :javascript
-      var localized_yes_str;
-      var localized_no_str;
-      var localized_ok_str;
-      var localized_cancel_str;
-      
-      $(document).ready(function(){
-        // Set default locale configs and other settings that affect every page
-        localized_yes_str = "#{t(:yes_str)}";
-        localized_no_str = "#{t(:no_str)}";
-        localized_ok_str = "#{t(:ok)}";
-        localized_cancel_str = "#{t(:cancel)}";
-        
-        bootbox.setDefaults({
-          locale: "#{I18n.locale}"
-        });
-      });
+    #footer
+      #feedback.col-xs-12
+        .pull-left
+          %a{:href => "http://www.fta.dot.gov/grants/13094_13528.html", :target => "_blank"} More About This Initiative
+        .pull-righ
+          %a{:href => "mailto://OneClick@camsys.com"} Send your Feedback
+      #versionLang.col-xs-12
+        .pull-left
+          - unless Rails.env.production?
+            %span#versionInfo
+              = "#{t(:version)} #{ENV['ONECLICK_APP_VERSION'] || Rails.application.config.version}"
+              |
+              - %w{xs sm md lg}.each do |s|
+                %span{class: "oc-visible-#{s}"}= s
+          - else
+            %span#versionInfo= "#{t(:version)} #{Rails.application.config.version}"
+        .pull-right
+          -# Don't localize next 2 strings
+          = link_using_locale('English', 'en')
+          |
+          = link_using_locale('En Español', 'es')
+    / end of footer
+  / end of wrap
+  / Dependent JS Libs
+  / From gem
+  / %script{:src => "//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"}
+  / From gem
+  / %script{:src => "datetimepicker/moment.js"}
+  / %script{:src => "datetimepicker/bootstrap-datetimepicker.js"}
+

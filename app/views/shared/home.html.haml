@@ -1,25 +1,25 @@
-.row-fluid
-  .span12
-    .center.span6
+.row
+  .col-sm-12
+    .center.col-sm-6
       - if user_signed_in?
         = cms_snippet_content('home-top-logged-in_html')
       - else
         = cms_snippet_content('home-top_html')
-.row-fluid
-  .span4.offset4
+.row
+  .col-sm-4.col-sm-offset-4
     = render partial: 'shared/actions_menu', locals: {actions: @actions}
-.row-fluid
+.row
   - if user_signed_in?
-    .span4
+    .col-sm-4
       = cms_snippet_content('home-bottom-left-logged-in_html')
-    .span4
+    .col-sm-4
       = cms_snippet_content('home-bottom-center-logged-in_html')
-    .span4
+    .col-sm-4
       = cms_snippet_content('home-bottom-right-logged-in_html')
   - else
-    .span4
+    .col-sm-4
       = cms_snippet_content('home-bottom-left_html')
-    .span4
+    .col-sm-4
       = cms_snippet_content('home-bottom-center_html')
-    .span4
+    .col-sm-4
       = cms_snippet_content('home-bottom-right_html')

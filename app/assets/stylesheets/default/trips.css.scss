@@ -1,11 +1,15 @@
 .place_picker {
-  width: 20em;
+  // width: 20em;
+}
+
+.twitter-typeahead {
+  display: table-cell !important;
 }
 
 .tt-dropdown-menu {
   max-height: 20em;
   overflow-y: scroll;
-  width: 20em;
+  width: 100%;
 }
 
 .tt-suggestion.tt-is-under-cursor a {

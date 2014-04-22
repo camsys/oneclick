@@ -1,30 +1,30 @@
 %h1 Content Translations
 %p Note: All content translations can be entered as HTML
 
-.row-fluid
+.row
   = link_to new_translation_path, :class => "btn btn-primary" do
     %i.icon-plus
     Add Key
-.row-fluid
-  .span2
+.row
+  .col-sm-2
     %h3 Locale
-  .span6
+  .col-sm-6
     %h3 Value
-  .span4
+  .col-sm-4
 - @translations_proxies.each do |p|
-  .row-fluid{id: p.key}
-    .span2
+  .row{id: p.key}
+    .col-sm-2
       %h5= p.key
-    .span6
+    .col-sm-6
       %h5= link_to "Add translation", new_translation_path(key: p.key)
-    .span4
+    .col-sm-4
   - p.translations.each do |t|
-    .row-fluid{id: t.value}
-      .span2
+    .row{id: t.value}
+      .col-sm-2
         =t.locale
-      .span6.text-left
+      .col-sm-6.text-left
         = t.value ? t.value.html_safe : ""
-      .span4
+      .col-sm-4
         = link_to edit_translation_path(t), class: "btn btn-primary" do
           %i.icon-edit
           Edit

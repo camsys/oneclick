@@ -1,5 +1,5 @@
 %h3= t(:users)
-.span8
+.col-sm-8
   %table.table.table-condensed
     %thead
       %tr
@@ -17,6 +17,6 @@
           %td= user.created_at.to_date
           %td= user.roles.first.name.titleize unless user.roles.first.nil?
           %td
-            %a.btn.btn-mini{"data-toggle" => "modal", :href => "#role-options-#{user.id}", :type => "button"}= t(:change_role)
+            %a.btn.btn-xs{"data-toggle" => "modal", :href => "#role-options-#{user.id}", :type => "button"}= t(:change_role)
             = render user
-          %td= link_to(t(:delete_user), user_path(user), :data => { :confirm => t(:confirm_msg) }, :method => :delete, :class => 'btn btn-mini') unless user == current_user
+          %td= link_to(t(:delete_user), user_path(user), :data => { :confirm => t(:confirm_msg) }, :method => :delete, :class => 'btn btn-xs') unless user == current_user

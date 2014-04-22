@@ -13,8 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
-//= require bootstrap-combobox
 //= require handlebars
 //= require twitter/typeahead
+//= require moment
+//= require bootstrap-datetimepicker
 //= require default/config
 //= require_tree .

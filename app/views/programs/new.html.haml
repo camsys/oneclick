@@ -1,14 +1,14 @@
-.row-fluid
-  .span12
+.row
+  .col-sm-12
     %h1
       %i.fa.fa-info-circle#programs_header
       Programs - Step 2 of
       = @total_steps
 
-.row-fluid
-  .span12
+.row
+  .col-sm-12
     = render partial: 'trips/trip_header', locals: {trip: @trip}
 
-.row-fluid
+.row
   .well
     = render partial: 'programs/form',  :locals => {:path => user_program_path(@traveler, @user_programs_proxy.id, inline: 1), :inline => true}

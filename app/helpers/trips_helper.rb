@@ -61,9 +61,9 @@ module TripsHelper
 
   def outbound_section_class trip
     if trip.both_parts_selected?
-      'span6'
+      'col-sm-6'
     else
-      (trip.outbound_part.selected? ? 'span3' : 'span12')
+      (trip.outbound_part.selected? ? 'col-sm-3' : 'col-sm-12')
     end
   end
 

@@ -1,0 +1,47 @@
+.navbar.navbar-fixed-top#publicnav
+  %nav.navbar-inner
+    .container-fluid
+      = link_to root_path(locale: I18n.locale), :class => 'brand', :style => "padding:0px;margin-left:0px;margin-top:5px;" do
+        = image_tag get_logo, :style => "height:30px;"
+        = t(:one_click_trip_planner) 
+
+
+      .pull-right
+        = link_to error_501_path, id: 'help' do
+          %i.fa.fa-question-circle
+      .pull-right      
+        -#<!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        %a.btn.btn-navbar{data: { toggle: "collapse",  target: ".nav-collapse"}}
+          %span.icon-bar
+          %span.icon-bar
+          %span.icon-bar
+        -#<!-- Everything you want hidden at @navbarCollapseWidth or less, place within here -->
+        .nav-collapse.collapse
+          %ul.nav
+            - if user_signed_in?
+              %li.dropdown
+                %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}
+                  %i.fa.fa-user
+                  = "#{t(:welcome)}, #{current_user.welcome}"
+                  %b.caret
+                %ul.dropdown-menu{role: 'menu'}
+                  = render partial: 'menu_item', collection: traveler_actions(with_logout: true)
+            - else
+              %li.dropdown
+                %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}
+                  %i.fa.fa-user
+                  = "#{t(:welcome)}, #{t(:visitor)}"
+                  %b.caret
+                %ul.dropdown-menu{role: 'menu'}
+                  = render partial: 'menu_item', collection: traveler_actions
+
+      .pull-right  
+        - if can? :see, :staff_menu
+          %ul.nav
+            %li.dropdown
+              %a.btn.btn-navbar= render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => staff_actions, :title => t(:staff_actions) }
+      .pull-right
+        - if can? :see, :admin_menu
+          %ul.nav
+            %li.dropdown
+              %a.btn.btn-navbar= render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => admin_actions, :title => t(:admin_actions) }

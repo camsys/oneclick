@@ -1,34 +1,34 @@
-.row-fluid
-  .span12
+.row
+  .col-sm-12
     %h1
       %i.fa.fa-tags
       = t(:trip) + @trip.id.to_s
     
-.row-fluid
-  .span12
-    .row-fluid
-      .span4
+.row
+  .col-sm-12
+    .row
+      .col-sm-4
         %fieldset
           %legend= t(:trip_details)
-          %p.span12
-            %span.span4.text-right= t(:user) + ":"
-            %span.span8= @trip.user.nil? ? t(:anonymous) : link_to(@trip.user.name, user_path(@trip.user))      
-          %p.span12
-            %span.span4.text-right= t(:creator) + ":"
-            %span.span8= @trip.creator.nil? ? "" : link_to(@trip.creator.name, user_path(@trip.creator))      
-          %p.span12
-            %span.span4.text-right= t(:trip_date) + ":"          
-            %span.span8= format_date_time(@trip.trip_datetime)          
-          %p.span12
-            %span.span4.text-right= t(:return) + ":"
-            %span.span8= @trip.is_return_trip ? t(:yes_str) : t(:no_str)
-          %p.span12
-            %span.span4.text-right= t(:trip_purpose) + ":"
-            %span.span8= @trip.trip_purpose.name      
-          %p.span12
-            %span.span4.text-right= t(:created) + ":"
-            %span.span8= format_date_time(@trip.created_at)          
-      .span8
+          %p.col-sm-12
+            %span.col-sm-4.text-right= t(:user) + ":"
+            %span.col-sm-8= @trip.user.nil? ? t(:anonymous) : link_to(@trip.user.name, user_path(@trip.user))      
+          %p.col-sm-12
+            %span.col-sm-4.text-right= t(:creator) + ":"
+            %span.col-sm-8= @trip.creator.nil? ? "" : link_to(@trip.creator.name, user_path(@trip.creator))      
+          %p.col-sm-12
+            %span.col-sm-4.text-right= t(:trip_date) + ":"          
+            %span.col-sm-8= format_date_time(@trip.trip_datetime)          
+          %p.col-sm-12
+            %span.col-sm-4.text-right= t(:return) + ":"
+            %span.col-sm-8= @trip.is_return_trip ? t(:yes_str) : t(:no_str)
+          %p.col-sm-12
+            %span.col-sm-4.text-right= t(:trip_purpose) + ":"
+            %span.col-sm-8= @trip.trip_purpose.name      
+          %p.col-sm-12
+            %span.col-sm-4.text-right= t(:created) + ":"
+            %span.col-sm-8= format_date_time(@trip.created_at)          
+      .col-sm-8
         %fieldset
           %legend= t(:places)
           %table.table.table.condensed.table-striped.table-hover.table-bordered
@@ -48,12 +48,12 @@
                   %td.center.nowrap
                     = sprintf("[%.6f, %.6f]", place.location[0], place.location[1]) unless place.location[0].nil?
                   %td.center.nowrap
-                    = link_to "#", {class: "btn btn-mini btn-success text-center"} do
+                    = link_to "#", {class: "btn btn-xs btn-success text-center"} do
                       %i.fa.fa-search
                       =t(:view)
 
-    .row-fluid
-      .span12
+    .row
+      .col-sm-12
         %fieldset
           %legend= t(:itineraries)
           %table.table.table.condensed.table-striped.table-hover.table-bordered

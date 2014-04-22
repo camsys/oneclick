@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140324202042) do
+ActiveRecord::Schema.define(version: 20140417194136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,18 @@ ActiveRecord::Schema.define(version: 20140324202042) do
     t.boolean "requires_verification",            default: false, null: false
     t.boolean "active",                           default: true,  null: false
     t.string  "code"
+  end
+
+  create_table "agencies", force: true do |t|
+    t.string  "name",      limit: 64
+    t.string  "address",   limit: 100
+    t.string  "city",      limit: 100
+    t.string  "state",     limit: 64
+    t.string  "zip",       limit: 10
+    t.string  "phone",     limit: 25
+    t.string  "email"
+    t.string  "url"
+    t.integer "parent_id"
   end
 
   create_table "agency_user_relationships", force: true do |t|
@@ -105,22 +117,14 @@ ActiveRecord::Schema.define(version: 20140324202042) do
     t.string   "addr"
     t.float    "lat"
     t.float    "lon"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "modes", force: true do |t|
     t.string  "name",   limit: 64, null: false
     t.boolean "active",            null: false
     t.string  "code"
-  end
-
-  create_table "organizations", force: true do |t|
-    t.string   "name"
-    t.string   "type"
-    t.integer  "parent_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "places", force: true do |t|
@@ -178,19 +182,18 @@ ActiveRecord::Schema.define(version: 20140324202042) do
   end
 
   create_table "providers", force: true do |t|
-    t.string  "name",            limit: 64,                 null: false
-    t.string  "contact",         limit: 64
-    t.string  "external_id",     limit: 25
-    t.boolean "active",                      default: true, null: false
+    t.string  "name",          limit: 64,                 null: false
+    t.string  "contact",       limit: 64
+    t.string  "external_id",   limit: 25
+    t.boolean "active",                    default: true, null: false
     t.string  "email"
-    t.string  "contact_title",   limit: 100
-    t.string  "address",         limit: 100
-    t.string  "city",            limit: 100
-    t.string  "state",           limit: 64
-    t.string  "zip",             limit: 10
+    t.string  "contact_title", limit: 100
+    t.string  "address",       limit: 100
+    t.string  "city",          limit: 100
+    t.string  "state",         limit: 64
+    t.string  "zip",           limit: 10
     t.string  "url"
-    t.string  "phone",           limit: 25
-    t.integer "provider_org_id"
+    t.string  "phone",         limit: 25
   end
 
   create_table "rates", force: true do |t|
@@ -439,9 +442,9 @@ ActiveRecord::Schema.define(version: 20140324202042) do
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
     t.integer  "agency_id"
-    t.integer  "provider_org_id"
     t.string   "preferred_locale",                   default: "en"
     t.string   "authentication_token"
+    t.integer  "provider_id"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree

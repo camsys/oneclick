@@ -1,7 +1,7 @@
 #program_form
 
-  .row-fluid
-    .span12
+  .row
+    .col-sm-12
       = simple_form_for @user_programs_proxy, :url => path, :html => { :class => "form-horizontal" }, :method => 'put', :remote => not(inline)  do |f|
         = f.error_notification
         = render partial: 'programs/eligibility_alert', locals: {inline: inline}

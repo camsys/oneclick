@@ -15,7 +15,8 @@ module Trip::PickupTime
   # Returns the trip date and time as a DateTime class
   def trip_datetime
     begin
-      return DateTime.strptime([trip_date, trip_time, DateTime.current.zone].join(' '), '%m/%d/%Y %H:%M %p %z')
+      return Chronic.parse([trip_date, trip_time].join(' '))
+      # return DateTime.strptime([trip_date, trip_time, DateTime.current.zone].join(' '), '%m/%d/%Y %H:%M %p %z')
     rescue Exception => e
       Rails.logger.warn "trip_datetime #{trip_date} #{trip_time}"
       Rails.logger.warn e.message

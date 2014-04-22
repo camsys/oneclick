@@ -34,10 +34,6 @@ h6 { font-size: 12px; line-height: 20px; }
   cursor: pointer;  
 }
 
-.navbar .brand {
-  margin-left: auto;
-}
-
 #publicnav h2 {
   margin: 0 5px;
   line-height: normal;
@@ -250,19 +246,19 @@ a:hover#help {
 
   .home_menu_item {
     @extend .center;
-    @extend .span3;
+    @extend .col-sm-3;
   }  
 
 }
 
 .home.index.admin {
   .home_menu_item {
-    @extend .offset6;
-    @extend .span6;
+    @extend .col-sm-offset-6;
+    @extend .col-sm-6;
   }  
   .admin_menu {
     .home_menu_item {
-      @extend .span6;
+      @extend .col-sm-6;
     }  
   }
 }
@@ -281,7 +277,7 @@ a:hover#help {
   font-size: 2em;
 }
 
-.trip_summary_header .row-fluid {
+.trip_summary_header .row {
   line-height: normal;
   padding-bottom: 5px;
   [class*="span"] {
@@ -452,7 +448,7 @@ td.left, th.left {
 }
 
 .trip_header {
-  .row-fluid [class*="span"] {
+  .row [class*="span"] {
     min-height: 0;
   }
   line-height: normal;
@@ -540,4 +536,48 @@ td.left, th.left {
     display: none;
   }
 
+}
+
+// From bootstrap. We define our own classes for visibility which use display: inline
+// instead of display: block.
+
+// Responsive utilities
+// -------------------------
+// More easily include all the states for responsive-utilities.less.
+// [converter] $parent hack
+@mixin oc-responsive-visibility($parent) {
+  #{$parent} {
+    display: inline !important;
+  }
+  table#{$parent}  { display: table; }
+  tr#{$parent}     { display: table-row !important; }
+  th#{$parent},
+  td#{$parent}     { display: table-cell !important; }
+}
+
+// [converter] $parent hack
+@mixin oc-responsive-invisibility($parent) {
+  #{$parent} {
+    display: none !important;
+  }
+}
+
+// Visibility utilities
+
+@include oc-responsive-invisibility('.oc-visible-xs, .oc-visible-sm, .oc-visible-md, .oc-visible-lg');
+
+@media (max-width: $screen-xs-max) {
+  @include oc-responsive-visibility('.oc-visible-xs');
+}
+
+@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+  @include oc-responsive-visibility('.oc-visible-sm');
+}
+
+@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+  @include oc-responsive-visibility('.oc-visible-md');
+}
+
+@media (min-width: $screen-lg-min) {
+  @include oc-responsive-visibility('.oc-visible-lg');
 }

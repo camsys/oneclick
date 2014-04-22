@@ -6,11 +6,11 @@ Oneclick::Application.routes.draw do
     if Oneclick::Application.config.ui_mode == 'kiosk'
       root to: redirect('/kiosk')
     else
-      root :to => "home#index"
+      root to: 'home#index'
     end
 
     authenticated :user do
-      root :to => 'home#index', as: :authenticated_root
+      root :to => 'trips#new', as: :authenticated_root
     end
 
     devise_for :users, controllers: {registrations: "registrations", sessions: "sessions"}
@@ -275,15 +275,13 @@ Oneclick::Application.routes.draw do
         end
         resources :trips
       end
-      resources :provider_orgs do
-        resources :users
-        resources :services
-      end
       resources :users do #admin users
         get 'travelers'
         put 'update_roles', on: :member
       end
       resources :providers do
+        resources :users
+        resources :services
         resources :trips, only: [:index, :show]
       end
     end#admin
@@ -314,7 +312,7 @@ Oneclick::Application.routes.draw do
   resources :translations
 
   unless Oneclick::Application.config.ui_mode == 'kiosk'
-    get '*not_found' => 'errors#handle404'
+    # get '*not_found' => 'errors#handle404'
   end
 
   get 'heartbeat' => Proc.new { [200, {'Content-Type' => 'text/plain'}, ['ok']] }

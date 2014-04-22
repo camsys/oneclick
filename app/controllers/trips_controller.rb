@@ -307,7 +307,6 @@ class TripsController < PlaceSearchingController
   # GET /trips/new
   # GET /trips/new.json
   def new
-
     @trip_proxy = TripProxy.new()
     @trip_proxy.traveler = @traveler
 
@@ -429,6 +428,11 @@ class TripsController < PlaceSearchingController
     # TODO If trip_proxy isn't valid, should go back to form right now, before this.
     if @trip_proxy.valid?
       @trip = Trip.create_from_proxy(@trip_proxy, current_or_guest_user, @traveler)
+    else
+      Rails.logger.info "Not valid: #{@trip_proxy.ai}"
+      flash[:notice] = t(:correct_errors_to_create_a_trip)
+      render action: "new"
+      return
     end
 
     # Create markers for the map control

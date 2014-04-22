@@ -1,6 +1,6 @@
 #accommodations_form
-  .row-fluid
-    .span12
+  .row
+    .col-sm-12
       = simple_form_for @user_accommodations_proxy, :url => path, :method => 'put', :remote => not(inline)  do |f|
         = f.error_notification
         = render partial: 'accommodations/eligibility_alert', locals: {inline: inline}
