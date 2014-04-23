@@ -24,6 +24,7 @@ GIT
 GEM
   remote: http://rubygems.org/
   specs:
+    Indirizzo (0.1.7)
     RedCloth (4.2.9)
     RedCloth (4.2.9-x86-mingw32)
     actionmailer (4.0.3)
@@ -424,6 +425,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  Indirizzo
   RedCloth
   activemdb
   activemodel
