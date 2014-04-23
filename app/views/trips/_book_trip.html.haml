@@ -1,0 +1,7 @@
+-if @trip.outbound_part.selected_itinerary.is_bookable
+  ="Would you like to book a trip with " + @trip.outbound_part.selected_itinerary.service.name + "?"
+  =link_to book_user_trip_path(@traveler, @trip, :itin => @trip.outbound_part.selected_itinerary.id), {:class => "btn btn-xs btn-info", :remote => true} do
+    %i.fa.fa-search
+    ="Yes"
+  %button#fromAddressMarkerButton.btn.btn-default{"data-target" => "#bookingModal", "data-dismiss" => "modal", :type => "button"}
+    ="No"

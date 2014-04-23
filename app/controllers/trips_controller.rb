@@ -580,6 +580,18 @@ class TripsController < PlaceSearchingController
     end
   end
 
+  def book
+    @itinerary = Itinerary.find(params[:itin].to_i )
+    puts params.ai
+    puts @itinerary.id
+    eh = EcolaneHelpers.new
+    result, message = eh.book_itinerary(@itinerary)
+    respond_to do |format|
+      format.js
+    end
+
+  end
+
 protected
 
   

@@ -13,7 +13,9 @@ class EcolaneHelpers
   def book_itinerary(itinerary)
     funding_options = query_funding_options(itinerary)
     funding_xml = Nokogiri::XML(funding_options.body)
-    request_booking(itinerary, funding_xml)
+    resp  = request_booking(itinerary, funding_xml)
+    puts resp.ai
+    return true, "Success!"
   end
 
   def request_booking(itinerary, funding_xml)

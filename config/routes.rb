@@ -103,6 +103,7 @@ Oneclick::Application.routes.draw do
           get   'show_printer_friendly'
           get   'example'
           get   'trip_plans_review'
+          get   'book'
         end
       end
 

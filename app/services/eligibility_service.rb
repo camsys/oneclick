@@ -194,6 +194,7 @@ class EligibilityService
         next
       end
       user_service = UserService.where(user_profile: traveler.user_profile, service: itinerary['service']).first
+
       if user_service and not user_service.disabled
         itinerary['is_bookable'] = true
       end
