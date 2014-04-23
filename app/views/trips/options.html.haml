@@ -1,0 +1,16 @@
+= render partial: 'breadcrumbs'
+.row
+  .col-sm-7.col-xs-12
+    .col-xs-12.form-group
+      %button.btn.btn-default.pull-right.action-button{:type => "button"}Search
+    .col-xs-12.well
+      %form{:role => "form"}
+        .col-sm-12.form-group
+          %label.col-sm-5.control-label{:for => "yearBirth"}
+          %input#yearBirth.form-control{:name => "yearBirth",
+                autocomplete: 'off', :label="false", :type => "text"}/
+  / end of options column
+  .col-sm-5.col-xs-12
+    #cmsPlaceholder.well
+      TODO:(CMS)
+  / end of CMS column
