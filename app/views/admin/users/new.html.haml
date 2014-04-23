@@ -9,12 +9,9 @@
     = f.input :first_name, label: t(:first_name), :autofocus => true
     = f.input :last_name, label: t(:last_name)
     = f.input :email, label: t(:email), :required => true
-    - if params[:agency_id]
-      = f.input :agency, as: :hidden, :input_html => { :value => params[:agency_id] }
-    - else
-      = f.input :agency, collection: Agency.names_and_ids
+    = f.input :password
+    = f.input :password_confirmation
     .actions
       = button_tag type: :submit, class: 'btn btn-primary controls' do
         %i.fa.fa-edit
         = t(:create_traveler)
-

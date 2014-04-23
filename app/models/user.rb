@@ -35,10 +35,21 @@ class User < ActiveRecord::Base
   has_many :travelers, :class_name => 'User', :through => :traveler_relationships
   has_many :confirmed_travelers, :class_name => 'User', :through => :confirmed_traveler_relationships
   has_many :agency_user_relationships, foreign_key: :user_id
-  has_many :approved_agencies, :class_name => 'Agency', :through => :agency_user_relationships, source: :agency
+  accepts_nested_attributes_for :agency_user_relationships 
+  has_many :approved_agencies,-> { where "agency_user_relationships.relationship_status_id = ?", RelationshipStatus.confirmed }, class_name: 'Agency', :through => :agency_user_relationships, source: :agency #Scope to only include approved relationships
+  accepts_nested_attributes_for :approved_agencies
 
   has_many :buddy_relationships, class_name: 'UserRelationship', foreign_key: :user_id
+  accepts_nested_attributes_for :buddy_relationships
   has_many :buddies, class_name: 'User', through: :buddy_relationships, source: :delegate
+
+  has_many :user_characteristics, through: :user_profile
+  accepts_nested_attributes_for :user_characteristics
+  has_many :characteristics, through: :user_characteristics
+  
+  has_many :user_accommodations, through: :user_profile
+  accepts_nested_attributes_for :user_accommodations
+  has_many :accommodations, through: :user_accommodations
 
   belongs_to :agency
   belongs_to :provider
@@ -46,6 +57,7 @@ class User < ActiveRecord::Base
 
   scope :confirmed, -> {where('relationship_status_id = ?', RelationshipStatus::CONFIRMED)}
   scope :registered, -> {with_role(:registered_traveler)}
+  # scope :buddyable, -> User.where.not(id: User.with_role(:anonymous_traveler).pluck(users: :id))
   scope :any_role, -> {joins(:roles)}
 
   # Validations

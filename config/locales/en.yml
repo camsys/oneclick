@@ -26,6 +26,7 @@ en:
   find_traveler: "Find Traveler"
   create_traveler: "Create Traveler"
   feedback: "Feedback"
+  agency: "Agency"
   agencies: "Agencies"
   add_new_agency: "Add a new Agency"
   create_agency: 'Create Agency'
@@ -34,9 +35,11 @@ en:
   edit_agency_name: 'Edit %{name}'
   update_agency: "Update Agency"
   agency_added: "Agency added"
+  specific_agency_added: "%{agency} added"
   user_created_and_added_to_agency: "User %{user} created and added to agency %{agency}"
   my_agencies: "My Agencies"
   not_any_agencies: "You haven't approved any agencies to help you"
+  no_agency_selected: "You must enter any agencies you want to assist you."
   agency_now_assisting: "%{agency} now assisting"
   parent_agency: "Parent Agency"
   parent: "Parent"
@@ -108,6 +111,7 @@ en:
   current_password_hint: "Enter your current password to confirm your changes."
   leave_password_blank: "Leave both blank if you don't want to change your password."
   my_information: 'My information'
+  user_information: 'User Info'
   buddies: 'Buddies'
   travelers: 'Travelers'
   traveler: 'Traveler'
@@ -402,8 +406,8 @@ en:
   one_click_traveler_revoke_by_from_email: '1-Click traveler revoked by %{by}'
   you_can_t_be_your_own_buddy: "You can't be your own buddy."
   you_ve_already_asked_them_to_be_a_buddy: "You've already asked them to be a buddy."
-  my_buddies: "My buddies"
-  not_any_buddies: "You don't have any buddies. Send a buddy request by entering their email address above."
+  my_buddies: "%{owner} buddies"
+  not_any_buddies: "You don't have any buddies."
   no_buddies: "You don't have any travelers that have asked you to be their travel buddy."
   address_is_required: "Address is required"
   all_trips: "All trips"
@@ -471,6 +475,7 @@ en:
   edit: "Edit"
   delete: "Delete"
   save: "Save"
+  apply: "Apply"
   and: "and"
   new: "New"
   itinerary: "Itinerary"

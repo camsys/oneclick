@@ -67,11 +67,33 @@ class UserProfileProxy < Proxy
     elsif type == 'integer'
       ret = user_characteristic.nil? ? 0 : user_characteristic.value.to_i
     elsif type == 'date'
+
       # TODO We probably need a separate datatype for age
-      ret = user_characteristic.nil? ? nil : Chronic.parse(user_characteristic.value).year
+      #Note, Chronic.parse returns nil for value = "false"
+      ret = (user_characteristic.nil? || Chronic.parse(user_characteristic.value).nil?) ? nil : Chronic.parse(user_characteristic.value).year
     end
 
     return ret
+  end
+
+  # coerce value into a localized description based on the data type
+  # returns a string if it can be displayed as stored (dates and numbers)
+  # returns a symbol if it needs to be localied
+  def coerce_value_to_string(characteristic, user_characteristic)
+    if user_characteristic.nil? 
+      return :no_answer_str
+    else
+      type = characteristic.datatype
+      if type == 'bool' # column is saved as a varchar "true"/"false", convert to symbol representing "yes"/"no"
+        ret = (user_characteristic.value == "true") ? :yes_str : :no_str 
+      elsif type == 'integer' # All other cases, just pass value (numbers and dates are already internationalized)
+        ret = user_characteristic.value
+      elsif type == 'date'
+        ret = Chronic.parse(user_characteristic.value).to_s
+      end
+
+      return ret
+    end
   end
 
 end

@@ -74,7 +74,8 @@ class RegistrationsController < Devise::RegistrationsController
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
     @user_programs_proxy = UserProgramsProxy.new(@traveler)
     @user_accommodations_proxy = UserAccommodationsProxy.new(@traveler)
-    super
+    @user = @traveler
+    render 'edit'
   end
 
   def edit
@@ -83,7 +84,9 @@ class RegistrationsController < Devise::RegistrationsController
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
     @user_programs_proxy = UserProgramsProxy.new(@traveler)
     @user_accommodations_proxy = UserAccommodationsProxy.new(@traveler)
-    super
+    @user = @traveler
+    
+    render 'edit'
   end
 
   protected

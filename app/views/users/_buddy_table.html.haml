@@ -8,8 +8,8 @@
             %th.left= t(:email)
             %th.left= t(:status)
             %th.left= t(:updated)
-            - if can? :edit, user
-              %th.center= t(:actions)
+            / - if can? :edit, user
+            /   %th.center= t(:actions)
         %tbody
           - user.delegate_relationships.each do |relationship|
             %tr
@@ -17,20 +17,20 @@
               %td.left= relationship.delegate.email
               %td.left= t(relationship.relationship_status)
               %td.left= distance_of_time_in_words_to_now(relationship.updated_at).to_s + " " + t(:ago)
-              - if can? :edit, user
-                %td.center
-                  - if relationship.retractable
-                    = link_to traveler_retract_user_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
-                      %i.fa.fa-times
-                      =t(:retract)
-                  - if relationship.revokable
-                    = link_to traveler_revoke_user_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
-                      %i.fa.fa-times
-                      =t(:revoke)
-                  - if relationship.hidable
-                    = link_to traveler_hide_user_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
-                      %i.fa.fa-times
-                      =t(:hide)
+              / - if can? :edit, user
+              /   %td.center
+              /     - if relationship.retractable
+              /       = link_to traveler_retract_user_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
+              /         %i.fa.fa-times
+              /         =t(:retract)
+              /     - if relationship.revokable
+              /       = link_to traveler_revoke_user_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
+              /         %i.fa.fa-times
+              /         =t(:revoke)
+              /     - if relationship.hidable
+              /       = link_to traveler_hide_user_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
+              /         %i.fa.fa-times
+              /         =t(:hide)
     - else
       =t(:not_any_buddies)
 

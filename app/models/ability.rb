@@ -30,6 +30,7 @@ class Ability
       can [:access], :staff_travelers
       can :travelers, Agency, {id: user.agency.try(:id)}
       can :travelers, User #can find any user if they search
+      can :show, User #can find any user if they search
       # can :edit, User, {user.approved_agencies.contains? }
       can [:access], :show_agency
       can [:access], :admin_create_traveler
@@ -43,8 +44,10 @@ class Ability
 
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
       can [:read, :update], Agency, id: user.agency.try(:id)
+      can [:update, :full_info, :assist], User do |u|
+        u.approved_agencies.include? user.try(:agency)
+      end
       can :read, Agency
-      can :perform, :assist_user
       can :create, User
       can :manage, [Provider, Service]
       can [:index, :show], Report
@@ -63,6 +66,29 @@ class Ability
       cannot [:access], :admin_reports
       can [:access], :admin_feedback
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
+      can :read, Agency
+      can :create, User
+      can :manage, [Provider, Service]
+      can [:index, :show], Report
+      can [:read, :update], User, agency_id: user.agency.try(:id)
+    end
+    if User.with_role(:agent, :any).include?(user)
+      can [:see], :staff_menu
+      can [:index], :admin_home
+      can [:access], :show_agency
+      can [:access], :staff_travelers
+      can [:access], :admin_create_traveler
+      can [:access], :admin_agencies
+      can [:access], :admin_trips
+      can [:access], :admin_providers
+      can [:access], :admin_services
+      cannot [:access], :admin_reports
+      can [:access], :admin_feedback
+      can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
+      can [:update, :full_info, :assist], User do |u|
+        u.approved_agencies.include? user.try(:agency)
+      end
+      can :show, User #can find any user if they search
       can [:travelers], Agency, id: user.agency.try(:id)
       can [:read], Agency
       # can [:read, :update], User, {agency_id: user.agency.try(:id)}
@@ -89,7 +115,7 @@ class Ability
     end
 
     can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
-    can [:read, :update], User, :id => user.id
+    can [:read, :update, :full_edit], User, :id => user.id
     can :geocode, :util
   end
 

@@ -1,0 +1,55 @@
+/ TODO Requires a decomposition into partials for reuse.  This code should work across the admin and public-facing UI.
+/ Note the use of form-horizontal throughout on <divs>.  Just hijacking bootstrap styling.  Needs to be fixed.  Also, could use simpleform's wrappers api to centralize
+.header
+  -if can? :edit, @user
+    %button.action-button.pull-right
+      =link_to t(:edit), edit_admin_user_path(@user)
+  -if can? :assist, @user
+    %button.action-button.pull-right
+      =link_to t(:assist), error_501_path
+  %h2=@user.name
+
+.row
+  .col-sm-6
+    .well#user_info
+      / Everybody can see this
+      %h3=t(:user_information)
+      .form-horizontal
+        .form-group
+          %label.col-sm-4.col-md-2.col-lg-2.control-label= t(:first_name)
+          .col-sm-8.col-md-10.col-lg-10
+            %p.form-control-static= @user.first_name
+        .form-group
+          %label.col-sm-4.col-md-2.col-lg-2.control-label= t(:last_name)
+          .col-sm-8.col-md-10.col-lg-10
+            %p.form-control-static= @user.last_name
+        .form-group
+          %label.col-sm-4.col-md-2.col-lg-2.control-label= t(:email)
+          .col-sm-8.col-md-10.col-lg-10
+            %p.form-control-static= @user.email
+        .form-group
+          %label.col-sm-4.col-md-2.col-lg-2.control-label= t(:preferred_locale)
+          .col-sm-8.col-md-10.col-lg-10
+            %p.form-control-static= @user.preferred_locale
+  - if can? :full_info, @user
+    .col-sm-6
+      .well#agencies
+        = render partial: 'users/agency_table', locals: { user: @user }
+- if can? :full_info, @user
+  .row
+    .col-sm-6
+      .well#buddies
+        .form-horizontal
+          %h3=t(:buddies)
+          = render partial: 'users/buddy_table', locals: { user: @user }
+    .col-sm-6
+      .well#travelers
+        %h3= t(:travelers)
+        = render partial: 'users/traveler_table', locals: { user: @user }
+  .well#eligibility
+    %h3= t(:eligibility)
+    = render :partial =>'show_characteristics_answers', :locals => { :user_characteristics => @user_characteristics_proxy, collection: Characteristic.personal_factors }
+    %h3= t(:programs)
+    = render :partial =>'show_characteristics_answers', :locals => { :user_characteristics => @user_programs_proxy, collection: Characteristic.programs }
+    %h3= t(:accommodations)
+    = render :partial =>'show_characteristics_answers', :locals => { :user_characteristics => @user_accommodations_proxy, collection: Accommodation.all }

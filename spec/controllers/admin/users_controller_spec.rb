@@ -4,10 +4,10 @@ describe Admin::UsersController do
   include Devise::TestHelpers
   before (:all) do
     User.delete_all
-    FactoryGirl.create(:arc_mobility_mgmt_agency)
     FactoryGirl.create(:admin)
+    @agency = FactoryGirl.create(:arc_mobility_mgmt_agency)
     create_list(:user, 25)
-    create_list(:agency_admin, 1)
+    @agency_admin = FactoryGirl.create(:agency_admin)
     create_list(:agency_agent, 10)
   end
 
@@ -43,13 +43,16 @@ describe Admin::UsersController do
     end
 
     it "should create a user with an agency_user_relationship if current_user has an agency" do
-      login_as_using_find_by(email: 'admin@example.com')
+      pending "https://www.pivotaltracker.com/story/show/70102276"
+      login_as_using_find_by(email: @agency_admin.email)
       params = {
         user: {
-          first_name: "Test",
+          first_name: "Valid",
           last_name: "Test",
           email: "AdminUserController@example.com",
-          agency: Agency.find_by(name: "ARC Mobility Management") 
+          agency: Agency.find_by(name: "ARC Mobility Management"),
+          password: "abcdefgh",
+          password_confirmation: "abcdefgh"
           }
       }
       get 'create', params
@@ -58,21 +61,21 @@ describe Admin::UsersController do
       expect(assigns(:agency_user_relationship)).to be_valid
     end
 
-    # TODO Unless I did the merge wrong, this request was okay...
     it "should not create a user and return to the creation form if there's something wrong with the request" do
       login_as_using_find_by(email: 'admin@example.com')
       params = {
         user: {
-          first_name: "Test",
+          first_name: "Invalid",
           last_name: "Test",
           email: "AdminUserController@example.com",
           agency: Agency.find_by(name: "ARC Mobility Management") 
+          #missing password information
           }
       }
       get 'create', params
-      expect(assigns(:user)).to be_valid
-      # expect(assigns(:user)).not_to be_valid
-      # expect response.status.should eq 302
+      # expect(assigns(:user)).to be_valid
+      expect(assigns(:user)).not_to be_valid
+      expect response.status.should eq 302
     end
   end
 end

@@ -38,4 +38,8 @@ class Agency < ActiveRecord::Base
     user.add_role(:internal_contact, self)
   end
 
+  def agency_id
+    id
+  end
+
 end

@@ -28,7 +28,7 @@
     %tbody 
       - @pre_auth_travelers.each do |traveler|
         %tr
-          %td.col-sm-4= link_to traveler.name, edit_admin_agency_agency_user_relationship_path(@agency.id,traveler.id)
+          %td.col-sm-4= link_to traveler.name, admin_user_path(traveler)
           %td.col-sm-4= traveler.email
           %td.col-sm-4= traveler.created_at.to_date
 = render partial: 'shared/parameterized_datatable_javascript', locals: { table_id: '#preauth_travelers_table',

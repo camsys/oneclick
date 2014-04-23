@@ -23,9 +23,11 @@ es:
   find_traveler: "Encontrar al Viajero"
   create_traveler: "Crear un Viajero"
   feedback: "[es]Feedback[/es]"
+  agency: "[es]Agency[/es]"
   agencies: "[es21]Agencies[es]"
   add_new_agency: "[es26]Add a new Agency[/es]"
   agency_added: "[es27]Agency added[/es]"
+  specific_agency_added: "[es29]%{agency} added[/es]"
   user_created_and_added_to_agency: "[es29]User %{user} created and added to agency %{agency}[/es]"
   create_agency: '[es]Create Agency[/es]'
   add_agency: "[es26]Add Agency[/es]"
@@ -34,6 +36,7 @@ es:
   update_agency: "[es]Update Agency[/es]"
   my_agencies: "[es27]My Agencies[/es]"
   not_any_agencies: "[es28]You haven't approved any agencies to help you[/es]"
+  no_agency_selected: "[es37]You must enter any agency you want to assist you.[/es]"
   agency_now_assisting: "[es30]#{@agency} now assisting[/es]"
   parent_agency: "[es26]Parent Agency[/es]"
   parent: "[es27]Parent[/es]"
@@ -107,6 +110,7 @@ es:
   current_password_hint: "Introduce tu contraseña actual para guardar los cambios."  
   leave_password_blank: "Deja ambas casillas en blanco si no quieres cambiar tu contraseña."
   my_information: 'Mi información'
+  user_information: '[es104]User Info[/es]'
   buddies: 'Amigos'
   travelers: 'Viajeros'
   traveler: 'Viajero'
@@ -399,8 +403,8 @@ es:
   one_click_traveler_revoke_by_from_email: "[es]1-Click traveler revoked by %{by}[/es]"
   you_can_t_be_your_own_buddy: "No puedes ser tu propio amigo."
   you_ve_already_asked_them_to_be_a_buddy: "Ya le has solicitado ser amigo."
-  my_buddies: "[es331]My Buddies[/es]"
-  not_any_buddies: "[es332]You don't have any buddies. Send a buddy request by entering their email address above.[/es]"
+  my_buddies: "[es331]%{owner} Buddies[/es]"
+  not_any_buddies: "[es332]You don't have any buddies.[/es]"
   no_buddies: "[es307]You don't have any travelers that have asked you to be their travel buddy.[/es]"
   address_is_required: "Se require una dirección"
   all_trips: "Todos los viajes *22*"
@@ -468,6 +472,7 @@ es:
   edit: "Editar *30*"
   delete: "Borrar *31*"
   save: "Guardar *32*"
+  apply: "[es457]Apply[/es]"
   and: "[es305]and[/es]"
   new: "[es459]New[es]"
   itinerary: "[es307]Itinerary[/es]"

@@ -1,3 +1,4 @@
+/ Expects a "user" local to be set
 .row
   .col-sm-12
     - unless user.traveler_relationships.empty?
@@ -8,7 +9,8 @@
             %th.left= t(:email)
             %th.left= t(:status)
             %th.left= t(:updated)
-            %th.center= t(:actions)
+            - if can? :edit_buddies, @user
+              %th.center= t(:actions)
         %tbody
           - user.traveler_relationships.each do |relationship|
             %tr
@@ -16,19 +18,20 @@
               %td.left= relationship.traveler.email
               %td.left= t(relationship.relationship_status)
               %td.left= distance_of_time_in_words_to_now(relationship.updated_at) +" " + t(:ago)
-              %td.center
-                - if relationship.acceptable
-                  = link_to delegate_accept_user_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-success text-center" do
-                    %i.fa.fa-ok
-                    =t(:accept)
-                - if relationship.declinable
-                  = link_to delegate_decline_user_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-primary text-center" do
-                    %i.fa.fa-compass
-                    =t(:decline)
-                - if relationship.revokable
-                  = link_to delegate_revoke_user_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
-                    %i.fa.fa-times
-                    =t(:revoke)
+              - if can? :edit_buddies, @user
+                %td.center
+                  - if relationship.acceptable
+                    = link_to delegate_accept_user_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-success text-center" do
+                      %i.fa.fa-ok
+                      =t(:accept)
+                  - if relationship.declinable
+                    = link_to delegate_decline_user_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-primary text-center" do
+                      %i.fa.fa-compass
+                      =t(:decline)
+                  - if relationship.revokable
+                    = link_to delegate_revoke_user_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
+                      %i.fa.fa-times
+                      =t(:revoke)
     - else
       =t(:no_buddies)
 

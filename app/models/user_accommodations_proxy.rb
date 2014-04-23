@@ -24,6 +24,14 @@ class UserAccommodationsProxy < UserProfileProxy
 
   end
 
+  # Returns a symbol if it needs to be run through I18n or a string if it can be displayed as is
+  def get_answer_description(code)
+    accommodation = Accommodation.find_by_code(code)
+    map = UserAccommodation.where("accommodation_id = ? AND user_profile_id = ?", accommodation.id, user.user_profile.id).first
+    # if the user has an existing accommodation stored we return it.
+    return coerce_value_to_string(accommodation, map)
+  end
+
   # Update the user accommodation based on the form params
   def update_maps(new_settings)
     

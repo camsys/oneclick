@@ -41,6 +41,32 @@ module CsHelpers
     ]  
   end
 
+  def traveler_actions options = {}
+    a = if user_signed_in?
+      [
+        {label: t(:plan_a_trip), target: new_user_trip_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:plan_a_trip]},
+        {label: t(:my_travel_profile), target: edit_user_path(get_traveler), locale: I18n.locale, icon: ACTION_ICONS[:travel_profile]},
+        {label: t(:my_trips), target: user_trips_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_trips]},
+        {label: t(:my_places), target: user_places_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_places]},
+      ]
+    else
+      [
+        {label: t(:plan_a_trip), target: new_user_trip_path(current_or_guest_user), icon: ACTION_ICONS[:plan_a_trip]},
+        {label: t(:log_in), target: new_user_session_path, icon: ACTION_ICONS[:log_in], not_on_homepage: true},
+        {label: t(:create_an_account), target: new_user_registration_path, icon: ACTION_ICONS[:create_an_account], not_on_homepage: true}
+      ]
+    end
+    if options[:with_logout]
+      a << {label: t(:logout), target: destroy_user_session_path, icon: 'fa-sign-out', divider_before: true,
+        method: :delete}
+      #     = link_to , :method=>'delete' do
+      # %i.fa.fa-sign-out
+      # = t(:logout)
+    end
+    a
+  end
+
+
   def has_agency_specific_role?
     [:agency_administrator, :agent].any? do |r|
       User.with_role(r, :any).include?(current_user)
@@ -140,32 +166,6 @@ module CsHelpers
       session[:guest_user_id] = nil
       guest_user
     end
-
-    def traveler_actions options = {}
-      a = if user_signed_in?
-        [
-          {label: t(:plan_a_trip), target: new_user_trip_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:plan_a_trip]},
-          {label: t(:my_travel_profile), target: edit_user_registration_path(locale: I18n.locale), icon: ACTION_ICONS[:travel_profile]},
-          {label: t(:my_trips), target: user_trips_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_trips]},
-          {label: t(:my_places), target: user_places_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_places]},
-        ]
-      else
-        [
-          {label: t(:plan_a_trip), target: new_user_trip_path(current_or_guest_user), icon: ACTION_ICONS[:plan_a_trip]},
-          {label: t(:log_in), target: new_user_session_path, icon: ACTION_ICONS[:log_in], not_on_homepage: true},
-          {label: t(:create_an_account), target: new_user_registration_path, icon: ACTION_ICONS[:create_an_account], not_on_homepage: true}
-        ]
-      end
-      if options[:with_logout]
-        a << {label: t(:logout), target: destroy_user_session_path, icon: 'fa-sign-out', divider_before: true,
-          method: :delete}
-        #     = link_to , :method=>'delete' do
-        # %i.fa.fa-sign-out
-        # = t(:logout)
-      end
-      a
-    end
-
 
   # TODO Unclear whether this will need to be more flexible depending on how clients want to do their domains
   # may have to vary by environment

@@ -33,6 +33,13 @@ class UserCharacteristicsProxy < UserProfileProxy
     return coerce_value(characteristic, map)
   end
 
+  # Returns a symbol if it needs to be run through I18n or a string if it can be displayed as is
+  def get_answer_description(code)
+    characteristic = Characteristic.find_by_code(code)
+    map = UserCharacteristic.where("characteristic_id = ? AND user_profile_id = ?", characteristic.id, user.user_profile.id).first
+    return coerce_value_to_string(characteristic, map)
+  end
+
   def update_maps(new_settings)
     update_maps_characteristics(new_settings)
     update_maps_accommodations(new_settings)

@@ -51,7 +51,7 @@ FactoryGirl.define do
       last_name 'Administrator'
       email { generate(:agency_admin_email) }
       after(:create) do |u|
-        u.agency FactoryGirl.create :arc_mobility_mgmt_agency
+        u.agency { |a| a.association(:arc_mobility_mgmt_agency) }
         u.add_role :agency_administrator
         u.save!
       end

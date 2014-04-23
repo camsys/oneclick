@@ -5,26 +5,26 @@
         %th.left= t(:agency)
         %th.left= t(:status)
         %th.left= t(:updated)
-        %th.center= t(:actions)
+        /%th.center= t(:actions)
     %tbody
       - user.agency_user_relationships.each do |relationship|
         %tr
           %td.left= relationship.agency.name
           %td.left= t(relationship.relationship_status)
           %td.left= distance_of_time_in_words_to_now(relationship.updated_at).to_s + " " + t(:ago)
-          %td.center
-            - if relationship.retractable
-              = link_to traveler_retract_user_agency_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
-                %i.fa.fa-times
-                =t(:retract)
-            - if relationship.revokable
-              = link_to traveler_revoke_user_agency_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
-                %i.fa.fa-times
-                =t(:revoke)
-            - if relationship.hidable
-              = link_to traveler_hide_user_agency_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
-                %i.fa.fa-times
-                =t(:hide)
+          / %td.center
+          /   - if relationship.retractable
+          /     = link_to traveler_retract_user_agency_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
+          /       %i.fa.fa-times
+          /       =t(:retract)
+          /   - if relationship.revokable
+          /     = link_to traveler_revoke_user_agency_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
+          /       %i.fa.fa-times
+          /       =t(:revoke)
+          /   - if relationship.hidable
+          /     = link_to traveler_hide_user_agency_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
+          /       %i.fa.fa-times
+          /       =t(:hide)
 - else
   =t(:not_any_agencies)
 

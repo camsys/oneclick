@@ -25,6 +25,14 @@ class UserProgramsProxy < UserProfileProxy
 
   end
 
+  # Returns a symbol if it needs to be run through I18n or a string if it can be displayed as is
+  def get_answer_description(code)
+    characteristic = Characteristic.programs.find_by_code(code)
+    map = UserCharacteristic.where("characteristic_id = ? AND user_profile_id = ?", characteristic.id, user.user_profile.id).first
+    # if the user has an existing accommodation stored we return it.
+    return coerce_value_to_string(characteristic, map)
+  end
+
   # Update the user characteristics based on the form params
   def update_maps(new_settings)
     
