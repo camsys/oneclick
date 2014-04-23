@@ -1,7 +1,11 @@
 = render partial: 'breadcrumbs'
 .row
-  .col-md-8.col-sm-6
-    .col-sm-12.well
+  .col-sm-7.col-xs-12
+    .col-xs-12.form-group
+      /%button.btn.btn-default.pull-right.action-button{:type => "button"}Search
+      = button_tag :type => 'submit', :class => "btn btn-default pull-right action-button" do
+        =t(:search)
+    .col-xs-12.well
       = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}  do |f|
         = f.hidden_field :mode
         = f.hidden_field :from_place_object, :id => "from_place_object"
@@ -18,7 +22,6 @@
           :javascript
             $(function () {
               $('#tripOptions :radio').change(function() {
-                console.log('change');
                 if(this.value === 'oneWay') {
                   $('#returnDatetimeOptions').hide();
                 } else {
@@ -34,7 +37,6 @@
           .col-sm-9
             / %select#tripPurposeOptions.form-control{:name => "tripPurpose"}
             = f.input_field :trip_purpose_id, :collection =>  TripPurpose.all, :label => false, :selected => @trip_proxy.trip_purpose_id, class: "form-control", :value => :id, :label_method => lambda { |v| t(v.name)}
-
         .col-sm-12.form-group
           %label.col-sm-3.control-label Leaving From
           .col-sm-9
@@ -47,11 +49,11 @@
                 %label.control-label.sr-only{:for => "fromAddressMarkerButton"} Click button to open the map and locate the from address
                 %button#fromAddressMarkerButton.btn.btn-default{"data-target" => "#mapModal", "data-toggle" => "modal", :type => "button"}
                   %i.fa.fa-map-marker
-              #mapModal.modal.fade.active.col-sm-12{"aria-describedby" => "map to select location", :role => "dialog", :tabindex => "-1"}
-                .modal-dialog
-                  .modal-content
-                    .modal-body
-                      #lmap.map{:style => "height:500px;"}
+                #mapModal.modal.fade.col-sm-12{"aria-describedby" => "map to select location", :role => "dialog", :tabindex => "-1"}
+                  .modal-dialog
+                    .modal-content
+                      .modal-body
+                        #lmap.map{:style => "height:500px;"}
         .col-sm-12.form-group
           %label.col-sm-3.control-label Going To
           .col-sm-9
@@ -71,8 +73,8 @@
               %option Departing At
               %option{:selected => ""} Arriving At
           .col-lg-6.col-md-5.col-sm-12{:style => "padding: 0px;"}
-            #outbound-trip-date.col-md-6.controls
-              %label.control-label.sr-only{:for => "trip_proxy_outbound_trip_date"} Type or select the outbound date
+            %label.control-label.sr-only{:for => "trip_proxy_outbound_trip_date"} Type or select the outbound date
+            .col-md-6
               %input#trip_proxy_outbound_trip_date.form-control{:label => "false", :name => "trip_proxy[trip_date]", :type => "text"}/
               :javascript
                 $(function () {
@@ -109,13 +111,8 @@
           .col-md-4.col-sm-9
             %label.control-label.sr-only{:for => "travellersOptions"} Select how many travellers
             %select#travellersOptions.form-control{:name => "travellers"}
-        .col-sm-12.form-group
-          / %button.btn.btn-default.active.pull-right{:type => "submit"} Search
-          = button_tag :type => 'submit', :class => "btn btn-default active pull-right" do
-            %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-            = t(:plan_it)
   / end of trip column
-  .col-md-4.col-sm-6
+  .col-sm-5.col-xs-12
     #cmsPlaceholder.well
       TODO:(CMS)
   / end of CMS column

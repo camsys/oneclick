@@ -1,6 +1,6 @@
 #publicNav.navbar.navbar-default.navbar-fixed-top{:role => "navigation"}
   .container-fluid
-    .navbar-header
+    #navHeader
       %a#logo.navbar-brand{:href => "/en", :style => "text-indent:-9999px;"} Logo
       .pull-right
         %a#help{:href => "/501"}
@@ -8,6 +8,7 @@
           %span.sr-only Help
       %button.navbar-toggle{"data-target" => "#userMenuNavbar", "data-toggle" => "collapse", :type => "button"}
         %span.sr-only User menu
+        %span.icon-bar
         %span.icon-bar
         %span.icon-bar
     / end of navbar-header
