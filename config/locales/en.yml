@@ -89,7 +89,7 @@ en:
   welcome: 'Welcome'
   first_name: 'First name'
   last_name: 'Last name'
-  email: 'Email address'
+  email: 'Email'
   preferred_locale: "Preferred Language"
   address: "Address"
   remember_me: 'Remember me'
@@ -481,7 +481,8 @@ en:
   list: "List"
   name: "Name"
   information: "Information"
-  
+  internal_contact: "Internal Contact"
+
   date:
     abbr_day_names:
     - Sun

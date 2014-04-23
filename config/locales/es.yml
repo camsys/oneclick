@@ -479,6 +479,7 @@ es:
   list: "[es]List[/es]"
   name: "[es]Name[/es]"
   information: "[es]information[/es]"
+  internal_contact: "[es]Internal Contact[/es]"
 
   # Branding
   arc:

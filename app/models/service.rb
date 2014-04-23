@@ -12,6 +12,8 @@ class Service < ActiveRecord::Base
   has_many :service_coverage_maps
   has_many :itineraries
   has_many :user_services
+  has_many :users # primarily for internal contact
+
   # attr_accessible :id, :name, :provider, :provider_id, :service_type, :advanced_notice_minutes, :external_id, :active
   # attr_accessible :contact, :contact_title, :phone, :url, :email
   # attr_accessible: booking_service_id
@@ -50,4 +52,13 @@ class Service < ActiveRecord::Base
     provider.name.blank? ? name : ("%s, %s" % [name, provider.name])
   end
 
+  def internal_contact
+    users.each do |u|
+      if u.has_role? :internal_contact, self
+        return u
+      end
+    end
+    nil
+  end
+  
 end
