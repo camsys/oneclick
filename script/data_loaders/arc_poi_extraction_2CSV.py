@@ -31,7 +31,7 @@ def get_layerIds(mapserverUrl):
     return layerInfos
 
 ## given layer url, query all features, and save into a json file
-def process_layer_query(param):
+def process_layer_query(param, fieldMapping):
     try:
         url = param['url']
         postData = urllib.urlencode(param['postData'])
@@ -48,31 +48,24 @@ def process_layer_query(param):
             print 'empty data to save into ' + saveFilePath
             return
 
-        attrFieldNameDict = response['fieldAliases'] #attribute field name with alias
-        attrFieldNames = []
-        attrFieldAlias = []
-        for name in attrFieldNameDict:
-            attrFieldNames.append(name)
-            attrFieldAlias.append(attrFieldNameDict[name])
-
-        firstFeat = features[0]
-        firstFeatGeom = firstFeat['geometry']
-        geomFieldNames = []
-        for name in firstFeatGeom:
-            geomFieldNames.append(name)
-
-        allFieldAlias = attrFieldAlias + geomFieldNames
+        headerRowNames = []
+        for field in fieldMapping:
+            headerRowNames.append(field['OutputName'])
         
         f = csv.writer(open(saveFilePath, 'wb'))
-        f.writerow(allFieldAlias)
+        f.writerow(headerRowNames)
         for feat in features:
             attrs = feat['attributes']
             geom = feat['geometry']
             valList = []
-            for attrName in attrFieldNames:
-                valList.append(attrs[attrName])
-            for geomName in geomFieldNames:
-                valList.append(geom[geomName])
+            for field in fieldMapping:
+                fieldName = field['SourceFieldName']
+                if attrs.has_key(fieldName): # in attributes?
+                    valList.append(attrs[fieldName])
+                elif geom.has_key(fieldName): # in geometry?
+                    valList.append(geom[fieldName])
+                else: # assign empty
+                    valList.append("")
             f.writerow(valList)
                 
         print 'done with ' + saveFilePath
@@ -96,13 +89,75 @@ def main(mapServiceRootUrl):
                 'where': '1=1',
                 'f': 'pjson',
                 'returnGeometry': 'true',
-                'outFields': '*'
+                'outFields': '*',
+                'outSR': '4326'
                 },
             'saveFilePath': folderName + '/' + str(layer['name']) + '.csv'
             })
-                             
+
+    # All layers in this map service have same fields, so can use one config
+    # otherwise, need to have each mapping for each layer
+    fieldMapping = [
+        {
+            "OutputName": "OBJECTID",
+            "SourceFieldName": "OBJECTID"
+        },
+        {
+            "OutputName": "LONGITUDE",
+            "SourceFieldName": "y"
+        },
+        {
+            "OutputName": "LATITUDE",
+            "SourceFieldName": "x"
+        },
+        {
+            "OutputName": "POI_NAME",
+            "SourceFieldName": "OrgName"
+        },
+        {
+            "OutputName": "Address_1",
+            "SourceFieldName": "LocAddress"
+        },
+        {
+            "OutputName": "Address_2",
+            "SourceFieldName": ""
+        },
+        {
+            "OutputName": "CITY",
+            "SourceFieldName": "LocCity"
+        },
+        {
+            "OutputName": "STATE",
+            "SourceFieldName": "LocState"
+        },
+        {
+            "OutputName": "ZIP",
+            "SourceFieldName": "LocZipCode"
+        },
+        {
+            "OutputName": "RESERVED_1",
+            "SourceFieldName": ""
+        },
+        {
+            "OutputName": "RESERVED_2",
+            "SourceFieldName": ""
+        },
+        {
+            "OutputName": "RESERVED_3",
+            "SourceFieldName": ""
+        },
+        {
+            "OutputName": "COUNTY",
+            "SourceFieldName": "County"
+        },
+        {
+            "OutputName": "POI_TYPE",
+            "SourceFieldName": "ServiceDes"
+        }
+    ]
+    
     for param in params:
-        process_layer_query(param)
+        process_layer_query(param, fieldMapping)
 
     print 'All done.'
 
