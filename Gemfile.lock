@@ -22,7 +22,7 @@ GIT
       railties (>= 3.1)
 
 GEM
-  remote: https://rubygems.org/
+  remote: http://rubygems.org/
   specs:
     RedCloth (4.2.9)
     RedCloth (4.2.9-x86-mingw32)
