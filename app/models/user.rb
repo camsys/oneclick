@@ -42,6 +42,7 @@ class User < ActiveRecord::Base
 
   belongs_to :agency
   belongs_to :provider
+  belongs_to :service
 
   scope :confirmed, -> {where('relationship_status_id = ?', RelationshipStatus::CONFIRMED)}
   scope :registered, -> {with_role(:registered_traveler)}

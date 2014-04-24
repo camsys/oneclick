@@ -38,6 +38,12 @@ describe Admin::ProvidersController do
       get :show, {:id => provider.to_param}, valid_session
       assigns(:provider).should eq(provider)
     end
+    it "assigns all admin_providers as @providers" do
+      provider = create(:provider)
+      provider2 = create(:provider)
+      get :show, {:id => provider.to_param}, valid_session
+      assigns(:providers).should eq([provider, provider2])
+    end
   end
 
   describe "GET new" do

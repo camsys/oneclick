@@ -3,16 +3,18 @@ class ServicesController < ApplicationController
   include ApplicationHelper
 
   def index
-    @services = Service.all(:order => "name")
+    @services = Service.order(:name).to_a
   end
 
   def show
-    @services = Service.all(:order => "name")
+    @services = Service.order(:name).to_a
     if params['service']
       params[:id] = params['service']['id']
     end
 
     @service = Service.find(params[:id])
+    @contact = @service.internal_contact
+    
     polylines = {}
     ['origin', 'destination', 'residence'].each do |rule|
       coverages = @service.service_coverage_maps.where(rule: rule).type_polygon.first

@@ -13,4 +13,11 @@ describe Service do
     service.accommodations.first.name.should eq 'Wheelchair Accessible'
   end
 
+  it "has an internal contact" do
+    service = FactoryGirl.create(:populated_service)
+    service.users.should_not be_empty
+    service.internal_contact.should_not be nil
+    service.internal_contact.name.should eq 'Service Contact'
+  end
+
 end

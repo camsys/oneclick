@@ -54,6 +54,8 @@ en:
   provider: "Provider"
   provider_contact_info: "Provider Contact Information"
   provided_by: "Provided by"
+  select_provider: "Select Provider"
+  back_to_providers: "Back to providers"
   users: "Users"
   agents: "Agents"
   agents_agencies: "Agencies, Providers, Users"
@@ -87,7 +89,7 @@ en:
   welcome: 'Welcome'
   first_name: 'First name'
   last_name: 'Last name'
-  email: 'Email address'
+  email: 'Email'
   preferred_locale: "Preferred Language"
   address: "Address"
   remember_me: 'Remember me'
@@ -478,8 +480,9 @@ en:
   show: "Show"
   list: "List"
   name: "Name"
+  information: "Information"
+  internal_contact: "Internal Contact"
 
-  
   date:
     abbr_day_names:
     - Sun

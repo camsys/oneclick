@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140420190928) do
+ActiveRecord::Schema.define(version: 20140423215233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -183,18 +183,16 @@ ActiveRecord::Schema.define(version: 20140420190928) do
   end
 
   create_table "providers", force: true do |t|
-    t.string  "name",          limit: 64,                 null: false
-    t.string  "contact",       limit: 64
-    t.string  "external_id",   limit: 25
-    t.boolean "active",                    default: true, null: false
+    t.string  "name",        limit: 64,                 null: false
+    t.string  "external_id", limit: 25
+    t.boolean "active",                  default: true, null: false
     t.string  "email"
-    t.string  "contact_title", limit: 100
-    t.string  "address",       limit: 100
-    t.string  "city",          limit: 100
-    t.string  "state",         limit: 64
-    t.string  "zip",           limit: 10
+    t.string  "address",     limit: 100
+    t.string  "city",        limit: 100
+    t.string  "state",       limit: 64
+    t.string  "zip",         limit: 10
     t.string  "url"
-    t.string  "phone",         limit: 25
+    t.string  "phone",       limit: 25
   end
 
   create_table "rates", force: true do |t|
@@ -285,21 +283,19 @@ ActiveRecord::Schema.define(version: 20140420190928) do
   end
 
   create_table "services", force: true do |t|
-    t.string   "name",                         limit: 64,                  null: false
-    t.integer  "provider_id",                                              null: false
-    t.integer  "service_type_id",                                          null: false
-    t.integer  "advanced_notice_minutes",                  default: 0,     null: false
-    t.boolean  "volunteer_drivers_used",                   default: false, null: false
-    t.boolean  "accepting_new_clients",                    default: true,  null: false
-    t.boolean  "wait_list_in_effect",                      default: false, null: false
-    t.boolean  "requires_prior_authorization",             default: false, null: false
-    t.boolean  "active",                                   default: true,  null: false
-    t.datetime "created_at",                                               null: false
-    t.datetime "updated_at",                                               null: false
+    t.string   "name",                         limit: 64,                 null: false
+    t.integer  "provider_id",                                             null: false
+    t.integer  "service_type_id",                                         null: false
+    t.integer  "advanced_notice_minutes",                 default: 0,     null: false
+    t.boolean  "volunteer_drivers_used",                  default: false, null: false
+    t.boolean  "accepting_new_clients",                   default: true,  null: false
+    t.boolean  "wait_list_in_effect",                     default: false, null: false
+    t.boolean  "requires_prior_authorization",            default: false, null: false
+    t.boolean  "active",                                  default: true,  null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.string   "email"
     t.string   "external_id",                  limit: 25
-    t.string   "contact_title",                limit: 100
-    t.string   "contact",                      limit: 100
     t.string   "phone",                        limit: 25
     t.string   "url"
     t.string   "booking_service_code"
@@ -454,11 +450,15 @@ ActiveRecord::Schema.define(version: 20140420190928) do
     t.string   "preferred_locale",                   default: "en"
     t.string   "authentication_token"
     t.integer  "provider_id"
+    t.integer  "service_id"
+    t.string   "title",                  limit: 64
+    t.string   "phone",                  limit: 25
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["service_id"], name: "index_users_on_service_id", using: :btree
 
   create_table "value_relationships", force: true do |t|
     t.string   "relationship", limit: 64

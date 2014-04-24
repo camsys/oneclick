@@ -66,5 +66,10 @@ FactoryGirl.define do
         u.save!
       end
     end
+    factory :service_contact do
+      first_name 'Service'
+      last_name 'Contact'
+      email { generate(:email) }
+    end
   end
 end

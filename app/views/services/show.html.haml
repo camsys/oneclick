@@ -1,6 +1,6 @@
 .row
   .col-sm-6.pull-left
-    =link_to t(:back_to_services), services_path
+    = link_to t(:back_to_services), services_path
     %h2
       =@service.name
   .col-sm-6.pull-right
@@ -20,7 +20,7 @@
 
 .well
   .row
-    .col-sm-6
+    .col-sm-4
       %h3
         = t(:provided_by)
         = link_to @service.provider.name, admin_provider_path(@service.provider)
@@ -30,35 +30,42 @@
       %h4
         =@service.phone
       %h4
-        -if @service.url
+        =@service.email
+      %h4
+        - if @service.url
           =link_to @service.url, @service.url
       %h5
         -if @service.external_id
           =t(:service_id).to_s + ": " + @service.external_id.to_s
 
     .col-sm-4.well
-      %table.ALTtable-no-border
-        %tr
-          %td.text-left.h4
-            = t(:contact) + ":"
-          %td.text-left
-            %b=@service.contact.to_s
-        %tr
-          %td.text-left.h4
-            = t(:title)+":  "
-          %td.text-left
-            %b=@service.contact_title.to_s
-        %tr
-          %td.text-left.h4
-            = t(:phone)+ ":  "
-          %td.text-left
-            %b=@service.phone.to_s
-        %tr
-          %td.text-left.h4
-            = t(:email)+ ":  "
-          %td.text-left
-            %b=@service.email.to_s
-
+      %h4= t(:internal_contact)
+      %table.table.table-condensed
+        - if @contact
+          %tr
+            %td.text-right
+              = t(:name) + ": "
+            %td.text-left
+              %b= @contact.name.to_s
+          %tr
+            %td.text-right
+              = t(:title)+": "
+            %td.text-left
+              %b= @contact.title.to_s
+          %tr
+            %td.text-right
+              = t(:phone)+ ": "
+            %td.text-left
+              %b= @contact.phone.to_s
+          %tr
+            %td.text-right
+              = t(:email)+ ":  "
+            %td.text-left
+              %b= @contact.email.to_s
+        - else
+          %tr
+            %td= t(:nothing_found_sorry)
+          
 .row
   .col-sm-4
     .well.well2

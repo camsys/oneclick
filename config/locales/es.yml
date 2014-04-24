@@ -42,6 +42,8 @@ es:
   provider: "[es25]Provider[/es]"
   provider_profile: "[es]Provider Profile[/es]"
   providers: "[es22]Providers[es]"
+  select_provider: "[es]Select Provider[/es]"
+  back_to_providers: "[es]Back to providers[/es]"
   editing_org: "[es30]Editing organization[/es]"
   listing_orgs: "[es31]Listing Organizations[/es]"
   provider_orgs: "[es30]Provider Organizations[/es]"
@@ -476,6 +478,8 @@ es:
   show: "[es]Show[/es]"
   list: "[es]List[/es]"
   name: "[es]Name[/es]"
+  information: "[es]information[/es]"
+  internal_contact: "[es]Internal Contact[/es]"
 
   # Branding
   arc:
