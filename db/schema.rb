@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140423182222) do
+ActiveRecord::Schema.define(version: 20140423215233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -183,18 +183,16 @@ ActiveRecord::Schema.define(version: 20140423182222) do
   end
 
   create_table "providers", force: true do |t|
-    t.string  "name",          limit: 64,                 null: false
-    t.string  "contact",       limit: 64
-    t.string  "external_id",   limit: 25
-    t.boolean "active",                    default: true, null: false
+    t.string  "name",        limit: 64,                 null: false
+    t.string  "external_id", limit: 25
+    t.boolean "active",                  default: true, null: false
     t.string  "email"
-    t.string  "contact_title", limit: 100
-    t.string  "address",       limit: 100
-    t.string  "city",          limit: 100
-    t.string  "state",         limit: 64
-    t.string  "zip",           limit: 10
+    t.string  "address",     limit: 100
+    t.string  "city",        limit: 100
+    t.string  "state",       limit: 64
+    t.string  "zip",         limit: 10
     t.string  "url"
-    t.string  "phone",         limit: 25
+    t.string  "phone",       limit: 25
   end
 
   create_table "rates", force: true do |t|
@@ -453,6 +451,8 @@ ActiveRecord::Schema.define(version: 20140423182222) do
     t.string   "authentication_token"
     t.integer  "provider_id"
     t.integer  "service_id"
+    t.string   "title",                  limit: 64
+    t.string   "phone",                  limit: 25
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree

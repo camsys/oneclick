@@ -51,12 +51,12 @@
             %td.text-right
               = t(:title)+": "
             %td.text-left
-              %b placeholder, add column to user
+              %b= @contact.title.to_s
           %tr
             %td.text-right
               = t(:phone)+ ": "
             %td.text-left
-              %b placeholder, add column to user
+              %b= @contact.phone.to_s
           %tr
             %td.text-right
               = t(:email)+ ":  "
