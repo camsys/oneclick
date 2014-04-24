@@ -1,10 +1,13 @@
 - Rails.logger.debug "table_id is #{table_id}"
+- # define reaonable defaults
+= table_id = "#datatable" if table_id.nil?
 - # object_singular (not used yet)
 - # object_plural
-- # bLengthChange
-- # sLengthMenu
-- # sInfo
-- # bSort
+- bLengthChange = true if bLengthChange.nil?
+- sLengthMenu = "Display _MENU_ per page" if sLengthMenu.nil?
+- sInfo = "Showing _START_ to _END_ of _TOTAL_" if sInfo.nil?
+- bSort = true if bSort.nil?
+
 :javascript
   
   $(document).ready(function() {
@@ -15,8 +18,9 @@
   		"sPaginationType": "bootstrap",
       "bLengthChange": #{bLengthChange},
   		"oLanguage": {
-  			"sLengthMenu": "#{sLengthMenu}",
-        "sInfo": "#{sInfo}"
+                        "sLengthMenu": "#{sLengthMenu}",
+                        "sInfo": "#{sInfo}",
+                        "sZeroRecords": "#{t(:nothing_found)}"
   		}
   	} );
   } );

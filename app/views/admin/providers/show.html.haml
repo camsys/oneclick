@@ -17,13 +17,13 @@
             = button_tag type: 'submit', class: "btn btn-default" do
               = icon_label(:delete)
 
-.row
-  .col-sm-4
-    .well.well1
-      %h4= t(:information)
-      %table.ALTtable-no-border
+.well              
+  .row
+    .col-sm-4
+      %h4= t(:provider_contact_info)
+      %table.table.table-condensed
         %tr
-          %td.text-left.h4
+          %td.text-right
             = t(:address) + ":"
           %td.text-left
             %b= @provider.address.to_s
@@ -34,22 +34,86 @@
           %td.text-left
             %b= @provider.zip.to_s
         %tr
-          %td.text-left.h4
+          %td.text-right
             = t(:phone)+ ":  "
-          %td.text-left
+          %td.text-left{colspan: 4}
             %b= @provider.phone.to_s
         %tr
-          %td.text-left.h4
+          %td.text-right
             = t(:email)+ ":  "
-          %td.text-left
-            %b= @provider.email.to_s
+          %td.text-left{colspan: 4}
+            %b= mail_to @provider.email.to_s
         %tr
-          %td.text-left.h4
+          %td.text-right
             = t(:url)+ ":  "
-          %td.text-left
+          %td.text-left{colspan: 4}
             - if @provider.url
               %b= link_to @provider.url, @provider.url
 
-%p
-  %pre= @provider.inspect
+    .col-sm-4.well
+      %h4= t(:internal_contact)
+      %table.table.table-condensed
+        - if @contact
+          %tr
+            %td.text-right
+              = t(:name) + ": "
+            %td.text-left
+              %b= @contact.name.to_s
+          %tr
+            %td.text-right
+              = t(:title)+": "
+            %td.text-left
+              %b= @contact.title.to_s
+          %tr
+            %td.text-right
+              = t(:phone)+ ": "
+            %td.text-left
+              %b= @contact.phone.to_s
+          %tr
+            %td.text-right
+              = t(:email)+ ":  "
+            %td.text-left
+              %b= mail_to @contact.email.to_s
+        - else
+          %tr
+            %td= t(:nothing_found_sorry)
+.well
+  .row
+    .col-sm-12
+      %h4= t(:staff_actions)
+      %table.ALTtable.table-condensed
+        %tr
+          %th.text-left
+            = t(:name)
+          %th.text-left
+            = t(:title)
+          %th.text-left
+            = t(:phone)
+          %th.text-left
+            = t(:email)
 
+        - if @staff.count > 0
+          - @staff.each do |s|
+            %tr
+              %td.text-left
+                %b= s.name.to_s
+              %td.text-left
+                %b= s.title.to_s
+              %td.text-left
+                %b= s.phone.to_s
+              %td.text-left
+                %b= mail_to s.email.to_s
+        - else
+          %tr
+            %td= t(:nothing_found_sorry)
+
+.well
+  .row
+    .col-sm-12
+      %h4= t(:services)
+      = render 'services/table'
+            
+= render partial: 'shared/parameterized_datatable_javascript',
+locals: {table_id: '#admin_services_table',
+sLengthMenu: "Display _MENU_ services per page",
+sInfo: "Showing _START_ to _END_ of _TOTAL_ services"}

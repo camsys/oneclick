@@ -103,7 +103,10 @@ def add_providers_and_services
   grocery = TripPurpose.find_by_code('grocery')
 
   providers = [
-      {name: 'Rabbit Transit', contact: '', external_id: "1"},
+      {name: 'Rabbit Transit',
+       address: '1230 Roosevelt Ave.', city: 'York', state: 'PA', zip: '17404',
+       phone: '717-846-RIDE', email: 'info@rabbittransit.org',
+       url: 'http://www.rabbittransit.org/', external_id: "1"},
       {name: 'Faith in Action Network', contact: '', external_id: "2"},
       {name: 'American Cancer Society', contact: '', external_id: "3"},
       {name: 'Lutheran Social Services', contact: '', external_id: "4"},

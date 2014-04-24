@@ -16,15 +16,7 @@
 
 = link_to t(:new_provider), new_admin_provider_path, {class: 'btn'}
 
-:javascript
-  $(document).ready(function() {
-    $('#admin_providers_table').dataTable( {
-          "oLanguage": {
-              "sLengthMenu": "Display _MENU_ provider per page",
-              "sZeroRecords": "Nothing found - sorry",
-              "sInfo": "Showing _START_ to _END_ of _TOTAL_ provider  ",
-              "sInfoEmpty": "Showing 0 to 0 of 0 provider  ",
-              "sInfoFiltered": "(filtered from _MAX_ total provider )"
-          }
-      } );
-  } );
+= render partial: 'shared/parameterized_datatable_javascript',
+locals: {table_id: '#admin_providers_table',
+sLengthMenu: "Display _MENU_ providers per page",
+sInfo: "Showing _START_ to _END_ of _TOTAL_ providers"}

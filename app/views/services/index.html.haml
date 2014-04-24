@@ -1,36 +1,10 @@
 %h1= t(:services)
 
-%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_services_table
-  %thead
-    %tr
-      %th= t(:name)
-      %th= t(:status)
-      %th= t(:service_id)
-      %th= t(:provider)
-  %tbody
-    -@services.each do |service|
-      %tr
-        %td
-          =link_to service.name, service_path(service.id)
-        %td
-          -if service.active == false
-            = t(:inactive)
-        %td
-          =service.external_id
-        %td
-          =service.provider.name
+= render 'table'
 
 =link_to "Update Services", upload_esp_reader_index_path
 
-:javascript
-  $(document).ready(function() {
-    $('#admin_services_table').dataTable( {
-          "oLanguage": {
-              "sLengthMenu": "Display _MENU_ services per page",
-              "sZeroRecords": "Nothing found - sorry",
-              "sInfo": "Showing _START_ to _END_ of _TOTAL_ services",
-              "sInfoEmpty": "Showing 0 to 0 of 0 services",
-              "sInfoFiltered": "(filtered from _MAX_ total services)"
-          }
-      } );
-  } );
+= render partial: 'shared/parameterized_datatable_javascript',
+locals: {table_id: '#admin_services_table',
+sLengthMenu: "Display _MENU_ services per page",
+sInfo: "Showing _START_ to _END_ of _TOTAL_ services"}

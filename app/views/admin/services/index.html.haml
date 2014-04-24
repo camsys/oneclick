@@ -14,24 +14,8 @@
         %td= service.provider.name
         %td= cms_snippet_content(service.service_type.name)
         %td= t(service.active)
-        / %td.center
-        /   = link_to error_501_path, {class: 'btn'} do
-        /     %i.fa.fa-pencil
-        /     = t(:edit)
 
-/ = link_to 'New Agency', new_admin_agency_path, {class: 'btn'}
-
-/ = render 'shared/datatable_javascript'
-
-:javascript
-  $(document).ready(function() {
-    $('#admin_services_table').dataTable( {
-          "oLanguage": {
-              "sLengthMenu": "Display _MENU_ services per page",
-              "sZeroRecords": t(:Nothing_found_sorry),
-              "sInfo": "Showing _START_ to _END_ of _TOTAL_ services",
-              "sInfoEmpty": "Showing 0 to 0 of 0 services",
-              "sInfoFiltered": "(filtered from _MAX_ total services)"
-          }
-      } );
-  } );
+= render partial: 'shared/parameterized_datatable_javascript',
+locals: {table_id: '#admin_services_table',
+sLengthMenu: "Display _MENU_ services per page",
+sInfo: "Showing _START_ to _END_ of _TOTAL_ services"}

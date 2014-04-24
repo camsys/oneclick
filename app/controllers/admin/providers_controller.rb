@@ -17,6 +17,11 @@ class Admin::ProvidersController < ApplicationController
     @admin_provider = Provider.find(params[:id])
     @providers = Provider.order(name: :asc).to_a
 
+    # assume only one internal contact for now
+    @contact = @admin_provider.users.with_role(:internal_contact, @admin_provider).first
+    @staff = @admin_provider.users.with_role(:provider_staff, @admin_provider)
+    @services = @admin_provider.services
+    
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @provider }
