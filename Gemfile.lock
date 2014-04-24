@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/plataformatec/simple_form.git
+  revision: d7306558665d38fe3a0c277ce263e99f635958de
+  specs:
+    simple_form (3.1.0.rc1)
+      actionpack (~> 4.0)
+      activemodel (~> 4.0)
+
+GIT
   remote: git://github.com/svenfuchs/i18n-active_record.git
   revision: 2d9a22b6a4e5d809782cdbfa65b14d9e47aa27fc
   specs:
@@ -339,9 +347,6 @@ GEM
     sexp_processor (4.4.3)
     sextant (0.2.4)
       rails (>= 3.2)
-    simple_form (3.0.2)
-      actionpack (~> 4.0)
-      activemodel (~> 4.0)
     simple_token_authentication (1.2.0)
       actionmailer (>= 3.2.6, < 5)
       activerecord (>= 3.2.6, < 5)
@@ -423,7 +428,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap-combobox
-  bootstrap-sass (~> 3.1.1)
+  bootstrap-sass (~> 3.1.1.0)
   bootstrap3-datetimepicker-rails (~> 3.0.0)
   cancan
   capybara
@@ -475,9 +480,9 @@ DEPENDENCIES
   rspec-core
   rspec-rails
   rubyzip
-  sass-rails (>= 3.2)
+  sass-rails (~> 4.0.2)
   sextant
-  simple_form
+  simple_form (~> 3.1.0.rc1)!
   simple_token_authentication
   simplecov
   sprockets (= 2.11.0)
