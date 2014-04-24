@@ -4,6 +4,50 @@ include TripsSupport
 
 describe TripsController do
 
+  describe 'shows' do
+    it 'returns a trip as JSON' do
+      service1 = FactoryGirl.create(:populated_service)
+      service2 = FactoryGirl.create(:populated_service)
+      restricted_service = FactoryGirl.create(:restricted_service)
+      itin1 = FactoryGirl.create(:itinerary, service: service1)
+      itin2 = FactoryGirl.create(:itinerary, service: service2)
+      itin3 = FactoryGirl.create(:itinerary, service: restricted_service)
+      user = FactoryGirl.create(:user)
+      sign_in user
+
+      trip = FactoryGirl.create(:trip, trip_purpose: TripPurpose.find_by_name('Medical'), user: user)
+      trip_part = create(:trip_part)
+      trip_part.itineraries << itin1
+      trip_part.itineraries << itin2
+      trip_part.itineraries << itin3
+      trip.trip_parts << trip_part
+
+      get :show, user_id: user.id, id: trip.id, format: :json
+      j = JSON.parse(response.body)
+
+      # puts j.ai
+
+      t = HashWithIndifferentAccess.new(j['trip'])
+      t[:status].should eq 0
+      t[:trip_parts].size.should eq 2
+      tp = t[:trip_parts][1]
+      tp[:description].should eq "One-way trip from , ,  30308 to , ,   departing at Wednesday, August 2 2113 at 12:30 PM"
+      tp[:is_depart_at].should be_true
+      tp[:start_time].should eq "2113-08-02T12:30:03.000-05:00"
+      tp[:itineraries].size.should eq 3
+      i = tp[:itineraries][2]
+      i[:mode].should eq 'mode_paratransit'
+      i[:mode_name].should eq 'Paratransit'
+      mi = i[:missing_information][0]
+      mi[:question].should eq "What is your birth year?"
+      mi[:description].should eq "You must be 65 or older to use this service. Please confirm your birth year."
+      mi[:data_type].should eq "integer"
+      mi[:options].should eq nil
+      mi[:success_condition].should eq ">=65"
+      # TODO check more components
+    end
+  end
+
   describe "GET /place_search.json?no_map_partial=true&query=f" do
     it "does right thing" do
       pending "See https://www.pivotaltracker.com/story/show/68068948"

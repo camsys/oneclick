@@ -55,7 +55,7 @@
                             "description": String, // Textural description of the step involved, e.g. "Walk to Bleecker St"
                             "start_time": String, // UTC time of the leg as a string, per ISO 8601
                             "end_time": String, // UTC time of the leg as a string, per ISO 8601
-                            "start_place": String, // Allows Google Street Viewing of location
+                            "start_place": String, // Allows Google Street Viewing of location, lat,long or textual description. See https://developers.google.com/maps/documentation/streetview/#url_parameters
                             "end_place": String, // Allows Google Street Viewing of location
                         }
                     ]

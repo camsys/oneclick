@@ -21,6 +21,10 @@ FactoryGirl.define do
     add_attribute :sequence, "1"
     county 'Fulton'
 
+    factory :from_trip_place do
+      add_attribute :sequence, "0"
+    end
+      
   end
 
   factory :trip_place3, class: TripPlace do
@@ -32,6 +36,10 @@ FactoryGirl.define do
     # trip {FactoryGirl.create(:trip)}
     # trip
     add_attribute :sequence, "2"
+
+    factory :to_trip_place do
+      add_attribute :sequence, "1"
+    end
 
   end
 end

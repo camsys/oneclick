@@ -60,5 +60,10 @@ class Service < ActiveRecord::Base
     end
     nil
   end
+
+  def contact_information
+    # TODO
+    "To be replaced by Scott's work"
+  end
   
 end

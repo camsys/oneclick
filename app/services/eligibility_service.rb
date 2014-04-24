@@ -1,10 +1,11 @@
-class EligibilityHelpers
+class EligibilityService
+  include EligibilityOperators
 
-  def get_eligible_services_for_traveler(user_profile, trip_part=nil)
+  def get_eligible_services_for_traveler(user_profile, trip_part=nil, return_with=:itinerary)
     all_services = Service.active
     eligible_itineraries = []
     all_services.each do |service|
-      itinerary = get_service_itinerary(service, user_profile, trip_part)
+      itinerary = get_service_itinerary(service, user_profile, trip_part, return_with)
       if itinerary
         eligible_itineraries << itinerary
       end
@@ -14,13 +15,14 @@ class EligibilityHelpers
     eligible_itineraries
   end
 
-  def get_service_itinerary(service, user_profile, trip_part=nil)
+  def get_service_itinerary(service, user_profile, trip_part=nil, return_with=:itinerary)
     tp = TripPlanner.new
     min_match_score = Float::INFINITY
     itinerary = nil
     is_eligible = false
     missing_information = false
     missing_information_text = ''
+    missing_info = []
     groups = service.service_characteristics.pluck(:group).uniq
     if groups.count == 0
       is_eligible = true
@@ -28,9 +30,11 @@ class EligibilityHelpers
     end
     groups.each do |group|
       group_missing_information_text = ''
+      group_missing_info = []
       group_match_score = 0
       group_eligible = true
       service_characteristic_maps = service.service_characteristics.where(group: group)
+      
       service_characteristic_maps.each do |service_characteristic_map|
         service_requirement = service_characteristic_map.characteristic
         if service_requirement.code == 'age'
@@ -49,11 +53,14 @@ class EligibilityHelpers
           if service_requirement.code == 'age'
             if service_characteristic_map.value_relationship_id == 3 or service_characteristic_map.value_relationship_id == 4
               group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or older\n'
+              group_missing_info << service_requirement.for_missing_info(service)
             elsif service_characteristic_map.value_relationship_id == 5 or service_characteristic_map.value_relationship_id == 6
               group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or younger\n'
+              group_missing_info << service_requirement.for_missing_info(service)
             end
           else
             group_missing_information_text += service_requirement.desc + '\n'
+            group_missing_info << service_requirement.for_missing_info(service)
           end
           next
         end
@@ -61,15 +68,18 @@ class EligibilityHelpers
           group_eligible = false
           break
         end
-      end
+      end  # service_characteristic_maps.each do
+
       if group_eligible
         is_eligible = true
         if group_match_score < min_match_score
           missing_information_text = group_missing_information_text
           min_match_score = group_match_score
         end
+        missing_info << group_missing_info
       end
-    end
+
+    end # groups.each do
 
     if is_eligible
       #Create itinerary
@@ -77,9 +87,15 @@ class EligibilityHelpers
         missing_information = true
       end
       itinerary = tp.convert_paratransit_itineraries(service, min_match_score, missing_information, missing_information_text)
+      # itinerary['missing_info'] = missing_info.flatten
     end
 
-    itinerary
+    case return_with
+    when :itinerary
+      return itinerary    
+    when :missing_info
+      return missing_info.flatten
+    end
   end
 
   def update_age(user_profile, date = Time.now)
@@ -155,9 +171,8 @@ class EligibilityHelpers
     #Creating set of itineraries
 
     itineraries = get_accommodating_services_for_traveler(eligible, user_profile)
-    #Rails.logger.debug "Done get accommodating"
-    #Rails.logger.debug eligible.ai
-    #Rails.logger.debug accommodating.ai
+    Rails.logger.debug "Done get accommodating"
+    Rails.logger.debug eligible.ai
     itineraries
 
   end
@@ -327,41 +342,4 @@ class EligibilityHelpers
 
   end
 
-  def test_condition(value1, operator, value2)
-    case operator
-      when 1 # general equals
-        return value1 == value2
-      when 2 # float equals
-        return value1.to_f == value2.to_f
-      when 3 # greater than
-        return value1.to_f > value2.to_f
-      when 4 # greather than or equal
-        return value1.to_f >= value2.to_f
-      when 5 # less than
-        return value1.to_f < value2.to_f
-      when 6 # less than or equal
-        return value1.to_f <= value2.to_f
-      else
-        return false
-      end
-  end
-
-  def relationship_to_words(operator)
-    case operator
-      when 1 # general equals
-        return "equal to"
-      when 2 # float equals
-        return "equal to"
-      when 3 # greater than
-        return "greater than"
-      when 4 # greather than or equal
-        return "at least"
-      when 5 # less than
-        return "less than"
-      when 6 # less than or equal
-        return "less than or equal to"
-      else
-        return ""
-    end
-  end
 end

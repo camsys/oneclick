@@ -185,6 +185,25 @@ module CsHelpers
     [e.message, e.backtrace].flatten.join("\n")
   end
 
+  # Standardized date formatter for the app. Use this wherever you need to display a date
+  # in the UI. The formatted displays dates as Day of Week, Month Day eg. Tuesday, June 5
+  # if the date is from a previous year, the year is appended eg Tuesday, June 5 2012
+  def format_date(date)
+    if date.nil?
+      return ""
+    end
+    if date.year == Date.today.year
+      return I18n.l date.to_date, :format => :oneclick_short unless date.nil?
+    else
+      return I18n.l date.to_date, :format => :oneclick_long unless date.nil?
+    end
+  end
+
+  def format_time(time)
+    return I18n.l time, :format => :oneclick_short unless time.nil?
+  end
+
+
   # Retuens a pseudo-mode for an itinerary. The pseudo-mode is used to determine
   # the correct icon, title, and partial for an itinerary
   def get_pseudomode_for_itinerary(itinerary)

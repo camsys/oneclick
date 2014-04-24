@@ -23,6 +23,15 @@ FactoryGirl.define do
     datatype 'date'
   end
 
+  factory :age_characteristic, class: 'Characteristic' do
+    characteristic_type 'personal_factor'
+    code 'age'
+    name 'age_name'
+    note 'age_note'
+    datatype 'integer'
+    desc 'age_desc'
+  end
+
   factory :disabled_characteristic, class: 'Characteristic' do
     code 'disabled'
     name 'Disabled'

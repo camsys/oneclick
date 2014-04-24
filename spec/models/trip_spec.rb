@@ -54,12 +54,12 @@ describe Trip do
         get_rideshare_itineraries: [false,['Test does not implement get_rideshare_itineraries']],
         convert_itineraries: test_itineraries)
 
-      eligibilility_helpers = double(EligibilityHelpers,
+      eligibilility_helpers = double(EligibilityService,
         get_accommodating_and_eligible_services_for_traveler: [],
         get_eligible_services_for_trip: [])
 
       TripPlanner.stub(:new).and_return(trip_planner)
-      EligibilityHelpers.stub(:new).and_return(eligibilility_helpers)
+      EligibilityService.stub(:new).and_return(eligibilility_helpers)
       trip.create_itineraries
       trip.itineraries.should_not be_empty
       trip.itineraries.first.legs.should eq legs

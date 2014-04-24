@@ -33,7 +33,7 @@ class ServicesController < ApplicationController
     @polylines['destination'] = polylines['destination'].to_json || nil
     @polylines['residence'] = polylines['residence'].to_json || nil
 
-    @eh = EligibilityHelpers.new
+    @eh = EligibilityService.new
     respond_to do |format|
       format.html
       format.json { render json: @service }

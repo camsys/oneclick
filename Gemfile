@@ -77,6 +77,10 @@ group :development do
   gem 'RedCloth' # Needed by yard
 end
 
+group :development, :test do
+  gem 'factory_girl_rails'
+end
+  
 group :test do
   gem 'factory_girl_rails'
   gem 'rspec-core'

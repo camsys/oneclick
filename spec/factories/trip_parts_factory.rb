@@ -9,6 +9,9 @@ FactoryGirl.define do
     # from_trip_place {FactoryGirl.create(:trip_place1)}
     # to_trip_place {FactoryGirl.create(:trip_place2)}
     # trip
+    from_trip_place
+    to_trip_place
+    add_attribute :sequence, "0"
 
     factory :trip_part2 do
       scheduled_date {Time.zone.local(2013,7,2,12,30,3)}

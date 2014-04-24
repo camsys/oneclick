@@ -1,7 +1,11 @@
 class TripPartSerializer < ActiveModel::Serializer
+  include CsHelpers
+
   attributes :id, :description
-  # , :start_time, :end_time
   attribute :is_depart, key: :is_depart_at
+  attribute :scheduled_time, key: :start_time
+  attribute :end_time
+  has_many :itineraries
 
   def description
     # out = trip_parts.first
@@ -24,6 +28,10 @@ class TripPartSerializer < ActiveModel::Serializer
 
   def depart_arrive 
     object.is_depart ? I18n.t(:departing_at) : I18n.t(:arriving_by)
+  end
+
+  def end_time
+    "end time"
   end
 
 end

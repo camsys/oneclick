@@ -59,8 +59,10 @@ guard :rspec, all_on_start: true do
   watch('app/models/buddy_relationship.rb')           { 'spec/models/user_spec.rb' }
   watch(%r{app/models/.+traveler.+.rb})               { 'spec/models/user_profile_spec.rb' }
   watch('app/models/user.rb')                         { 'spec/models/user_profile_spec.rb' }
-  watch('lib/eligibility_helpers.rb')                 { 'spec/models/user_profile_spec.rb' }
+  watch('app/services/eligibility_service.rb')        { 'spec/models/user_profile_spec.rb' }
   watch('app/controllers/place_searching_controller.rb') { 'spec/controllers/trips_controller_spec.rb' }
+  watch('app/models/characteristic.rb')               { 'spec/services/eligibility_service_spec.rb' }
+  watch(%r{app/serializers/.+\.rb})                   { 'spec/controllers/trips_controller_spec.rb' }
 
   # Capybara features specs
   watch(%r{^app/views/(.+)/.*\.(erb|haml)$})          { |m| ["spec/features/#{m[1]}_spec.rb", 'spec/features/localization_spec.rb'] }
