@@ -41,4 +41,20 @@ class ServicesController < ApplicationController
 
   end
 
+  # GET /services/new
+  def new
+    @service = Service.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @admin_provider }
+    end
+  end
+
+    # GET /services/1/edit
+  def edit
+    @service = Service.find(params[:id])
+    @contact = @service.internal_contact
+  end
+  
 end

@@ -3,7 +3,9 @@ module AdminHelper
   ACTION_ICONS = {
     new: 'fa fa-edit',
     edit: 'fa fa-edit',
-    delete: 'fa fa-eraser'
+    delete: 'fa fa-eraser',
+    apply: 'fa fa-check',
+    cancel: 'fa fa-times'
   }
 
   def icon_label(action)

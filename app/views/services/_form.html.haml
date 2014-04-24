@@ -1,0 +1,177 @@
+.row
+  .col-sm-6.pull-left
+    %h2
+      =@service.name
+  .col-sm-6.pull-right
+    .row
+      .col-sm-6.pull-right
+        - if can? :update, @service
+          = link_to service_path(@service), {class: 'btn btn-default', role: 'button'} do
+            = icon_label(:apply)
+          = link_to service_path(@service), {class: 'btn btn-default pull-right', role: 'button'} do
+            = icon_label(:cancel)
+
+.well
+  .row
+    .col-sm-4
+      %h3
+        = t(:provided_by)
+        =  @service.provider.name
+      - unless @service.active
+        %h3.warning
+          = t(:service_is_inactive)
+      %h4
+        =@service.phone
+      %h4
+        =@service.email
+      %h4
+        = @service.url
+      %h5
+        -if @service.external_id
+          =t(:service_id).to_s + ": " + @service.external_id.to_s
+
+    .col-sm-4.well
+      %h4= t(:internal_contact)
+      %table.table.table-condensed
+        - if @contact
+          %tr
+            %td.text-right
+              = t(:name) + ": "
+            %td.text-left
+              %b= @contact.name.to_s
+          %tr
+            %td.text-right
+              = t(:title)+": "
+            %td.text-left
+              %b= @contact.title.to_s
+          %tr
+            %td.text-right
+              = t(:phone)+ ": "
+            %td.text-left
+              %b= @contact.phone.to_s
+          %tr
+            %td.text-right
+              = t(:email)+ ":  "
+            %td.text-left
+              %b= @contact.email.to_s
+        - else
+          %tr
+            %td= t(:nothing_found_sorry)
+          
+.row
+  .col-sm-4
+    .well.well2
+      %h4= t(:schedule)
+      %table.ALTtable
+        %tr
+          %th.text-center
+            Day
+          %th.text-center
+            Start Time
+          %th.text-center
+            End Time
+        %tbody
+          -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
+            %tr
+              %td.text-center
+                =Date::DAYNAMES[schedule.day_of_week]
+              %td.text-center
+                =schedule.start_string
+              %td.text-center
+                =schedule.end_string
+  .col-sm-4
+    .well.well2
+      %h4= t(:advance_notice_required)
+      .well.white-well.wwell2
+        -if @service.advanced_notice_minutes > 0
+          =t(:service_notice_required) + " " ## TODO Interpolate
+          %b=duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
+          =" " + t(:service_notice_str) + "."
+        -else
+          =t(:service_notice_not_required) + "."
+  .col-sm-4
+    .well.well2
+      %h4=t(:accommodations)
+      .well.white-well.wwell1
+        -if @service.accommodations.count == 0
+          = t(:no_accommodations)
+        -else
+          %ul
+            -@service.accommodations.each do |accom|
+              %li
+                =t(accom.name)
+.row
+  .col-sm-4
+    .well.well1
+      %h4= t(:eligibility)
+      = t(:eligibility_rules_descr)
+      .well.white-well.wwell1
+        -if @service.service_characteristics.count > 0
+          %ul
+          -groups = @service.service_characteristics.map(&:group).uniq
+          -groups.each do |group|
+            -group_string = ""
+            -@service.service_characteristics.where(group: group).each do |map|
+              -if map.characteristic.code == "age"
+                -group_string += "Age is "+ @eh.relationship_to_words(map.value_relationship_id).to_s + " " + map.value.to_s + " "
+              -else
+                -group_string += t(map.characteristic.name) + " "
+              -group_string += "AND "
+            %li
+              =group_string[0..-6]
+        -else
+          = t(:no_restriction)
+
+  .col-sm-4
+    .well.well1
+      %h4= t(:trip_purposes)
+      .well.white-well.wwell1
+        -if @service.trip_purposes.count == 0
+          = t(:no_restriction)
+        -else
+          %ul
+            -@service.trip_purposes.each do |purpose|
+              %li
+                =t(purpose.name)
+
+  .col-sm-4
+    .well.well1 
+      %h4= t(:fare)
+      -@service.fare_structures.each do |fare|
+        .well.white-well.wwell2
+          .row_fluid
+            -if fare.base
+              %b=t(:cost)
+              =number_to_currency(fare.base.to_f).to_s
+            -else
+              %b=t(:cost)
+              =t(:flat_fare_unavailable) + "."
+          %b=t(:comments) + ":  "
+          -if fare.desc
+            =fare.desc.html_safe
+          -else
+            =""
+.well
+  .row.text-center
+    .col-sm-12
+      %h3= t(:coverage_areas)
+
+  .row
+    .col-sm-6
+      -types = @service.coverage_areas.map(&:coverage_type).uniq
+      -['Origins', 'Destinations', 'Residences'].each do |rule| ##TODO Internationalize
+        %h4=rule
+        -types.each do |type|
+          %b
+            =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
+          .well.white-well.text-left
+            -coverage_string = ""
+            -@service.service_coverage_maps.where(rule: rule.singularize.downcase).each do |map|
+              -if map.geo_coverage.coverage_type == type
+                -coverage_string += map.geo_coverage.value + ', '
+            -if coverage_string == ""
+              = t(:n_a)
+            -else
+              =coverage_string.chop.chop
+
+          

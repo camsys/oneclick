@@ -172,6 +172,7 @@ es:
   finish_trip_planning_options: "[es133]You can now do one or more of the following to finish your trip planning[/es]"
   arrive_at: 'Llegar a'
   trip_time: 'Hora'
+  apply: 'Applicar'
   cancel: 'Cancelar'
   plan_it: 'Planear el viaje'
   from: 'De'
