@@ -141,6 +141,8 @@ protected
       a = {"color" => 'blue', "width" => "5"}
     elsif leg.mode == TripLeg::SUBWAY
       a = {"color" => 'green', "width" => "5"}
+    elsif leg.mode == TripLeg::CAR
+      a = {"color" => 'yellow', "width" => "5"}
     else
       a = {}
     end

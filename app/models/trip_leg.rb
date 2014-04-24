@@ -10,6 +10,7 @@ class TripLeg
   RAIL    = 'RAIL'
   BUS     = 'BUS'
   FERRY   = 'FERRY'
+  CAR     = 'CAR'
    
   # Type of mode
   attr_accessor :mode

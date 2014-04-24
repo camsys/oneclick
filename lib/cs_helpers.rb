@@ -213,6 +213,8 @@ module CsHelpers
       "Rail and Bus"
     elsif mode_code == 'bus'
       "Bus"
+    elsif mode_code == 'drivetransit'
+      "Drive to Transit"
     elsif mode_code == 'transit'
       I18n.t(:transit)
     elsif mode_code == 'paratransit'

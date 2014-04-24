@@ -11,7 +11,8 @@ module ApplicationHelper
       TripLeg::SUBWAY => 'travelcon-subway',
       TripLeg::RAIL => 'travelcon-rail',
       TripLeg::BUS => 'travelcon-bus',
-      TripLeg::FERRY => 'travelcon-boat'
+      TripLeg::FERRY => 'travelcon-boat',
+      TripLeg::CAR => 'travelcon-car'
       }
 
   # Returns the name of the logo image based on the oneclick configuration
@@ -172,7 +173,7 @@ module ApplicationHelper
     
     mode_code = get_pseudomode_for_itinerary(itinerary)
 
-    partial = if mode_code.in? ['transit', 'rail', 'bus', 'railbus']
+    partial = if mode_code.in? ['transit', 'rail', 'bus', 'railbus', 'drivetransit']
       'transit_details'
     elsif mode_code == 'paratransit'
       'paratransit_details'
@@ -223,6 +224,8 @@ module ApplicationHelper
       'fa-group'      
     elsif mode_code == 'walk'
       'icon-accessibility-sign'
+    elsif mode_code == 'drivetransit'
+      'icon-bus-sign'
     end
     return icon_name
   end

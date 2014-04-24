@@ -76,6 +76,8 @@ class Itinerary < ActiveRecord::Base
         when 'rail'
           rail = true
           next
+        when 'car'
+          return 'drivetransit'
         else
           return 'transit'
       end
@@ -90,6 +92,7 @@ class Itinerary < ActiveRecord::Base
     else
       return 'transit'
     end
+
   end
   
   # parses the legs and returns an array of TripLeg. If there are no legs then an

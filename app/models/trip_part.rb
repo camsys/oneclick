@@ -86,10 +86,10 @@ class TripPart < ActiveRecord::Base
   end
 
   # TODO refactor following 4 methods
-  def create_fixed_route_itineraries
+  def create_fixed_route_itineraries(mode="TRANSIT,WALK")
     tp = TripPlanner.new
     arrive_by = !is_depart
-    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s)
+    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode)
     if result
       tp.convert_itineraries(response).each do |itinerary|
         serialized_itinerary = {}
@@ -107,7 +107,27 @@ class TripPart < ActiveRecord::Base
     else
       itineraries << Itinerary.new('server_status'=>response['id'], 'server_status'=>response['msg'])
     end
+
+    if mode == 'TRANSIT,WALK'
+      check_for_long_walks(itineraries)
+    end
+
     hide_duplicate_fixed_route(itineraries)
+  end
+
+  def check_for_long_walks itineraries
+    long_walks = false
+    itineraries.each do |itinerary|
+      first_leg = itinerary.get_legs.first
+      #TODO: Perhaps make the 20 minute threshold configurable.
+      if first_leg.mode == 'WALK' and first_leg.duration > 1200
+        long_walks = true
+        itinerary.hide
+      end
+    end
+    if long_walks
+      create_fixed_route_itineraries('CAR,TRANSIT,WALK')
+    end
   end
 
   def hide_duplicate_fixed_route itineraries

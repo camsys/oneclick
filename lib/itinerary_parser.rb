@@ -33,6 +33,8 @@ protected
     
     if leg['mode'] == 'WALK'
       obj = parse_walk_leg(leg)
+    elsif leg['mode'] ==  'CAR'
+      obj = parse_car_leg(leg)
     elsif leg['mode'] == 'BUS'
       obj = parse_bus_leg(leg)
     elsif leg['mode'] == 'SUBWAY'
@@ -120,6 +122,14 @@ protected
     walk = WalkLeg.new    
     return walk
     
+  end
+
+  def self.parse_car_leg(leg)
+    Rails.logger.debug "Parsing CAR leg"
+
+    car = CarLeg.new
+    return car
+
   end
   
   def self.parse_place(place_part)

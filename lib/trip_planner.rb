@@ -9,7 +9,7 @@ class TripPlanner
   
   include ServiceAdapters::RideshareAdapter
 
-  def get_fixed_itineraries(from, to, trip_datetime, arriveBy)
+  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK")
 
     Rails.logger.info ""
     Rails.logger.info "get_fixed_itineraries"
@@ -19,16 +19,13 @@ class TripPlanner
     #Parameters
     time = trip_datetime.strftime("%-I:%M%p")
     date = trip_datetime.strftime("%Y-%m-%d")
-    mode = 'TRANSIT,WALK'
-
     base_url = Oneclick::Application.config.open_trip_planner
-
-    url_options = "arriveBy=" + arriveBy + "&time=" + time
+    #url_options = "arriveBy=" + arriveBy
+    url_options = "&time=" + time
     url_options += "&mode=" + mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
 
     url = base_url + url_options
-
     Rails.logger.debug URI.parse(url)
     t = Time.now
     begin

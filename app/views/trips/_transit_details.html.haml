@@ -16,13 +16,14 @@
         -if leg.mode == TripLeg::WALK
           .itinerary_text
             %p= leg.mode + ' ' + t(:to) + ' ' + leg.end_place.name
-          .itinerary_text_small
-            =duration_to_words(leg.duration)
+        -elsif leg.mode == TripLeg::CAR
+          .itinerary_text
+            %p= "Drive or taxi to " + ' ' + t(:to) + ' ' + leg.end_place.name
         -else
           .itinerary_text
             %p= leg.agency_id + ' ' + leg.mode + ' ' + leg.route + ' ' + t(:to) + ' ' + leg.end_place.name
-          .itinerary_text_small
-            = format_time(leg.start_time) + ' ' + t(:to) + ' ' + format_time(leg.end_time)
+        .itinerary_text_small
+          = format_time(leg.start_time) + ' ' + t(:to) + ' ' + format_time(leg.end_time)
   %tr
     %td.itinerary_icons
       %i.fa.fa-stop.mode_icon_formatting{:class => 'end_icon'}
