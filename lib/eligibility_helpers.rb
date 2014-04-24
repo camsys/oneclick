@@ -167,8 +167,22 @@ class EligibilityHelpers
     itineraries = eligible_by_service_time(trip_part, itineraries)
     itineraries = eligible_by_advanced_notice(trip_part, itineraries)
     itineraries = eligible_by_trip_purpose(trip_part, itineraries)
+    itineraries = find_bookable_itineraries(trip_part, itineraries)
+    itineraries
+  end
 
-    #eligible_by_location & eligible_by_service_time & eligible_by_advanced_notice & eligible_by_trip_purpose
+  def find_bookable_itineraries(trip_part, itineraries)
+    #see if the traveler is registered with any of these services
+    traveler = trip_part.trip.user
+    itineraries.each do |itinerary|
+      if itinerary['service'].nil?
+        next
+      end
+      user_service = UserService.where(user_profile: traveler.user_profile, service: itinerary['service']).first
+      if user_service and not user_service.disabled
+        itinerary['is_bookable'] = true
+      end
+    end
     itineraries
   end
 

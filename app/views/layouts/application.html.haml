@@ -24,8 +24,6 @@
     = javascript_include_tag "http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"
     = javascript_include_tag "http://maps.google.com/maps/api/js?v=3.2&sensor=false"
     = javascript_include_tag "default/application"
-    / TODO Why do we have this?
-    = javascript_include_tag "https://www.google.com/jsapi"
 
     = csrf_meta_tags
     = yield(:head)
@@ -40,27 +38,27 @@
           = render 'shared/messages'
         = yield
 
-    #footer
-      #feedback.col-xs-12
-        .pull-left
-          %a{:href => "http://www.fta.dot.gov/grants/13094_13528.html", :target => "_blank"} More About This Initiative
-        .pull-righ
-          %a{:href => "mailto://OneClick@camsys.com"} Send your Feedback
-      #versionLang.col-xs-12
-        .pull-left
-          - unless Rails.env.production?
-            %span#versionInfo
-              = "#{t(:version)} #{ENV['ONECLICK_APP_VERSION'] || Rails.application.config.version}"
-              |
-              - %w{xs sm md lg}.each do |s|
-                %span{class: "oc-visible-#{s}"}= s
-          - else
-            %span#versionInfo= "#{t(:version)} #{Rails.application.config.version}"
-        .pull-right
-          -# Don't localize next 2 strings
-          = link_using_locale('English', 'en')
-          |
-          = link_using_locale('En Español', 'es')
+      #footer
+        #feedback.col-xs-12
+          .pull-left
+            %a{:href => "http://www.fta.dot.gov/grants/13094_13528.html", :target => "_blank"} More About This Initiative
+          .pull-right
+            %a{:href => "mailto://OneClick@camsys.com"} Send your Feedback
+        #versionLang.col-xs-12
+          .pull-left
+            - unless Rails.env.production?
+              %span#versionInfo
+                = "#{t(:version)} #{ENV['ONECLICK_APP_VERSION'] || Rails.application.config.version}"
+                |
+                - %w{xs sm md lg}.each do |s|
+                  %span{class: "oc-visible-#{s}"}= s
+            - else
+              %span#versionInfo= "#{t(:version)} #{Rails.application.config.version}"
+          .pull-right
+            -# Don't localize next 2 strings
+            = link_using_locale('English', 'en')
+            |
+            = link_using_locale('En Español', 'es')
     / end of footer
   / end of wrap
   / Dependent JS Libs

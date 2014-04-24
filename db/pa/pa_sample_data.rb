@@ -24,6 +24,7 @@ def add_users_and_places
     {first_name: 'Julian', last_name: 'Ray', email: 'jray@camsys.com'},
     {first_name: 'Scott', last_name: 'Meeks', email: 'smeeks@camsys.com'},
     {first_name: 'sys', last_name: 'admin', email: 'email@camsys.com'},
+    {first_name: 'Test', last_name: 'Customer', email: 'ecolane@camsys.com'}
   ]
 
   users.each do |user|
@@ -129,6 +130,7 @@ def add_providers_and_services
 
         #Create service Senior Shared Ride
         service = Service.create(name: 'Senior Shared Ride', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        service.booking_service_code = 'ecolane'
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
@@ -165,6 +167,7 @@ def add_providers_and_services
 
         #Shared Ride for Ages 60-64
         service = Service.create(name: 'Shared Ride for Ages 60-64', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        service.booking_service_code = 'ecolane'
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
@@ -197,6 +200,7 @@ def add_providers_and_services
 
         #Medical Assistance Transportation Program
         service = Service.create(name: 'Medical Assistance Transportation Program', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        service.booking_service_code = 'ecolane'
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
@@ -232,6 +236,7 @@ def add_providers_and_services
 
         #ADA Complementary
         service = Service.create(name: 'ADA Complementary Service', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        service.booking_service_code = 'ecolane'
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
@@ -263,6 +268,7 @@ def add_providers_and_services
 
         #Service for Persons with Disabilities
         service = Service.create(name: 'Service for Persons with Disabilities', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        service.booking_service_code = 'ecolane'
         #Add Schedules
         #Add Schedules
         (1..5).each do |n|
@@ -712,6 +718,25 @@ EOT
       Translation.find_or_create_by(:key  => 'plan-a-trip_html').update_attributes(:value => text)
 end
 
+def add_booking_service_codes
+  services = Service.all
+  services.each do |service|
+    if service.provider.external_id == '1'
+      service.booking_service_code = 'ecolane'
+      service.save
+    end
+  end
+end
+
+def create_ecolane_user
+  e_user = User.find_by_email('ecolane@camsys.com')
+  services = Provider.find_by_external_id('1').services
+  services.each do |service|
+    mapping = UserService.where(user_profile_id: e_user.user_profile.id, service_id: service.id, external_user_id: '76331').first_or_create
+  end
+
+end
+
 ### MAIN ###
 puts 'Adding PA Sample Data'
 add_users_and_places
@@ -721,4 +746,6 @@ add_dav
 add_rabbit_general
 add_urls_to_pa
 add_cms
+add_booking_service_codes
+create_ecolane_user
 puts 'Done Adding PA Sample Data'
