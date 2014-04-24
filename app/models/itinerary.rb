@@ -130,6 +130,11 @@ class Itinerary < ActiveRecord::Base
     ((date_mismatch or time_mismatch or too_late) ? 1 : 0)].sum
   end
 
+  def as_json
+    h = super
+    h['mode'] = self.mode.name
+  end
+
   protected
 
   # Set resonable defaults for a new itinerary
