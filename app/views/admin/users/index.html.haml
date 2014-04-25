@@ -1,12 +1,6 @@
-%h1
-  = link_to @agency.name, [:admin, @agency] if @agency
-  =t(:users)
-.well.well-sm#filters
-  %h5= t(:filter)
-  =form_tag(admin_users_path, action: "index", method: :get, :class => "form-inline") do
-    =label_tag :text, t(:search)
-    =text_field_tag :text, params[:text]
-    =submit_tag t(:search), name: nil, :class => "btn btn-primary"
+.header
+  = link_to t(:add_user), new_user_path, {class: 'action-button pull-right'}
+  %h1= t(:users)
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_users_table
   %thead
     %tr
@@ -23,17 +17,16 @@
         %td= user.roles.first.name.titleize unless user.roles.first.nil?
         = render partial: user, locals: {agency: @agency} if @agency
 
-= link_to t(:add_user), '#select_user', {class: 'btn', "data-toggle" => "modal"}
-
 :javascript
   $(document).ready(function() {
-    $('#admin_agencies_table').dataTable( {
+    $('#admin_users_table').dataTable( {
           "oLanguage": {
-              "sLengthMenu": "Display _MENU_ agencies per page",
-              "sZeroRecords": t(:Nothing_found),
-              "sInfo": "Showing _START_ to _END_ of _TOTAL_ agencies",
+              "sLengthMenu": "Display _MENU_ users per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ users",
               "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
-              "sInfoFiltered": "(filtered from _MAX_ total agencies)"
-          }
+              "sInfoFiltered": "(filtered from _MAX_ total users)",
+          },
+          "sDom": '<f><l>rtip',
       } );
   } );

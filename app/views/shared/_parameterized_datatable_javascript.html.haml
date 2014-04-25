@@ -7,20 +7,21 @@
 - sLengthMenu = "Display _MENU_ per page" if sLengthMenu.nil?
 - sInfo = "Showing _START_ to _END_ of _TOTAL_" if sInfo.nil?
 - bSort = true if bSort.nil?
+- bFilter = false if bFilter.nil?
 
 :javascript
   
   $(document).ready(function() {
   	$('#{table_id}').dataTable( {
-  		"bFilter" : false,
+  		"bFilter" : #{bFilter},
   		"bSort" : #{bSort},
-  		"sDom": "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+  		"sDom": '<f><l>rtip',
   		"sPaginationType": "bootstrap",
       "bLengthChange": #{bLengthChange},
   		"oLanguage": {
                         "sLengthMenu": "#{sLengthMenu}",
                         "sInfo": "#{sInfo}",
-                        "sZeroRecords": "#{t(:nothing_found)}"
+                        "sZeroRecords": "#{t(:nothing_found_sorry)}"
   		}
   	} );
   } );

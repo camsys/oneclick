@@ -456,6 +456,7 @@ es:
   delete: "Borrar *31*"
   save: "Guardar *32*"
   and: "[es305]and[/es]"
+  new: "[es459]New[es]"
   itinerary: "[es307]Itinerary[/es]"
   itineraries: "[es339]Itineraries[/es]"
   in_str: "[es358]In[/es]"

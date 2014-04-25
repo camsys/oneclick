@@ -1,4 +1,7 @@
-%h1= t(:agencies)
+.header
+  %button.action-button.pull-right
+    = link_to t(:new), new_admin_agency_path
+  %h1= t(:agencies)
 
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_agencies_table
   %thead
@@ -9,7 +12,7 @@
   %tbody
     - @agencies.each do |agency|
       %tr
-        %td= link_to agency.name, edit_admin_agency_path(agency)
+        %td= link_to agency.name, admin_agency_path(agency)
         %td
           - if agency.parent
             = link_to agency.parent.name, [:admin, agency.parent]
@@ -17,9 +20,6 @@
             = ''
         %td
           = render partial: agency.sub_agencies
-= link_to t(:new_agency), new_admin_agency_path, {class: 'btn'}
-
-/ = render 'shared/datatable_javascript'
 
 :javascript
   $(document).ready(function() {
@@ -30,6 +30,7 @@
               "sInfo": "Showing _START_ to _END_ of _TOTAL_ agencies",
               "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
               "sInfoFiltered": "(filtered from _MAX_ total agencies)"
-          }
+          },
+          "sDom": '<f><l>rtip',
       } );
   } );

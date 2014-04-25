@@ -8,9 +8,9 @@ class Admin::AgenciesController < ApplicationController
   def travelers
     @pre_auth_travelers = @agency.customers
 
-    if params[:text] && params[:text].present?
-      @found_travelers = (User.where('upper(first_name) LIKE ? OR upper(last_name) LIKE ? OR upper(email) LIKE ?', 
-              "%#{params[:text].upcase}%", "%#{params[:text].upcase}%", "%#{params[:text].upcase}%")).uniq  #merge in the found users
+    respond_to do |format|
+      format.html # travelers.html.erb
+      format.json { render json: @pre_auth_travelers }
     end
   end
 

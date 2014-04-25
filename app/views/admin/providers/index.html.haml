@@ -1,4 +1,7 @@
-%h1= t(:providers)
+.header
+  %button.action-button.pull-right
+    = link_to t(:new_agency), new_admin_agency_path
+  %h1= t(:providers)
 
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_providers_table
   %thead
@@ -19,4 +22,5 @@
 = render partial: 'shared/parameterized_datatable_javascript',
 locals: {table_id: '#admin_providers_table',
 sLengthMenu: "Display _MENU_ providers per page",
-sInfo: "Showing _START_ to _END_ of _TOTAL_ providers"}
+sInfo: "Showing _START_ to _END_ of _TOTAL_ providers",
+bFilter: true}
