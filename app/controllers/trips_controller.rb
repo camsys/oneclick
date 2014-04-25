@@ -565,6 +565,10 @@ class TripsController < PlaceSearchingController
     end
   end
 
+  def example
+    @sample_data = {a: [1, 2], b: {c: [3, 4]}}
+  end
+
 protected
 
   

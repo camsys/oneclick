@@ -1,0 +1,10 @@
+#data1
+#data2
+
+:javascript
+  var data = function() {
+    return #{@sample_data.to_json}
+  }
+
+  $('#data1').html(data().a[0])
+  $('#data2').html(data().b.c[1])

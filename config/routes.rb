@@ -80,6 +80,7 @@ Oneclick::Application.routes.draw do
           get   'unset_traveler'
           get   'search'
           post  'geocode'
+          get   'example'
         end
         member do
           get   'repeat'
