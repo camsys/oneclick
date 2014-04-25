@@ -59,7 +59,7 @@ end
 def add_providers_and_services
   providers = [
       {name: 'LIFESPAN Resources, Inc.', contact: 'Lauri Stokes', external_id: "esp#1"},
-      {name: 'Fayette County', contact: '', external_id: "esp#6"},
+      {name: 'Fayette County', contact: 'Maurice Ravel', external_id: "esp#6"},
       {name: 'Fulton County Office of Aging', contact: 'Ken Van Hoose', external_id: "esp#7"},
       {name: 'Jewish Family & Career Services', contact: 'Gary Miller', external_id: "esp#3"},
       {name: 'Cobb Senior Services', contact: 'Pam Breeden', external_id: "esp#20"},
@@ -112,8 +112,16 @@ def add_providers_and_services
       next
     end
 
+    contact = provider.delete(:contact)
+    (first_name, last_name) = contact.split(/ /, 2)
     p = Provider.create! provider
     p.save
+
+    u = User.create! first_name: first_name, last_name: last_name,
+      email: contact.downcase.gsub(' ', '_').gsub(%r{\W}, '') + '@camsys.com', password: 'welcome1'
+    up = UserProfile.create! user: u
+    # p.users << u
+    u.add_role :internal_contact, p
 
     case p.external_id
 
