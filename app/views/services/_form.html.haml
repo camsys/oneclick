@@ -30,8 +30,8 @@ wrapper: :horizontal_form do |f|
 
       .col-sm-4.well
         %h4= t(:internal_contact)
-        = f.input_field :internal_contact, collection: @staff,
-                selected: (@contact.id if @contact), include_blank: "None"
+        = f.input_field :internal_contact, collection: @staff, 
+                selected: (@contact.id if @contact) , include_blank: "None"
 
   .row
     .col-sm-4

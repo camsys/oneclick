@@ -25,9 +25,16 @@ describe Service do
     @service.internal_contact.name.should eq 'Service Contact'
 
     user = FactoryGirl.create(:user)
+
     @service.internal_contact = user
+    @service.save
     @service.reload
     @service.internal_contact.should eq user
+
+    @service.internal_contact = nil
+    @service.save
+    @service.reload
+    @service.internal_contact.should be_nil
   end
   
 end

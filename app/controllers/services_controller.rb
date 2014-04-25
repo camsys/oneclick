@@ -66,6 +66,9 @@ class ServicesController < ApplicationController
 
     respond_to do |format|
       if @service.update_attributes(service_params)
+        # internal_contact is a special case
+        @service.internal_contact = User.find_by_id(params[:service][:internal_contact])
+
         format.html { redirect_to @service, notice: t(:service) + ' ' + t(:was_successfully_updated) } 
         format.json { head :no_content }
       else
@@ -76,7 +79,7 @@ class ServicesController < ApplicationController
   end
 
   def service_params
-    params.require(:service).permit(:name, :phone) 
+    params.require(:service).permit(:name, :phone, :email, :url, :external_id) 
   end
 
 end

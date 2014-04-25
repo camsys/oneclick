@@ -71,7 +71,11 @@ class Service < ActiveRecord::Base
     if !former.nil? && (user != former)
       former.remove_role :internal_contact, self
     end
-    user.add_role :internal_contact, self
+    if !user.nil?
+      users << user
+      user.add_role :internal_contact, self
+      self.save
+    end
   end
   
 end
