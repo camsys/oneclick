@@ -65,5 +65,13 @@ class Service < ActiveRecord::Base
     # TODO
     "To be replaced by Scott's work"
   end
+
+  def internal_contact= user
+    former = internal_contact
+    if !former.nil? && (user != former)
+      former.remove_role :internal_contact, self
+    end
+    user.add_role :internal_contact, self
+  end
   
 end

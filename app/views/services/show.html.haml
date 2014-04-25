@@ -10,12 +10,12 @@
     .row
       .col-sm-6.pull-right.form-group
         - if can? :update, @service
-          = link_to edit_service_path(@service), {class: 'btn btn-default', role: 'button'} do
+          = link_to edit_service_path(@service), {class: 'btn action-button btn-default', role: 'button'} do
             = icon_label(:edit)
         - if can? :destroy, @service
           = simple_form_for @service, url: service_path, method: :delete, :html => {:class => "form-horizontal pull-right", :id => "delete_service_form"}  do |f|
             -# TODO: Control presence via cancan
-            = button_tag type: 'submit', class: "btn btn-default" do
+            = button_tag type: 'submit', class: "btn action-button btn-default" do
               = icon_label(:delete)
 
 .well
@@ -73,16 +73,16 @@
       %table.ALTtable
         %tr
           %th.text-center
-            Day
+            = t('datetime.prompts.day')
           %th.text-center
-            Start Time
+            = t(:start_time)
           %th.text-center
-            End Time
+            = t(:end_time)
         %tbody
           -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
             %tr
               %td.text-center
-                =Date::DAYNAMES[schedule.day_of_week]
+                = t('date.day_names')[schedule.day_of_week]
               %td.text-center
                 =schedule.start_string
               %td.text-center

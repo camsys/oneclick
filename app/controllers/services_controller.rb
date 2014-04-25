@@ -55,6 +55,28 @@ class ServicesController < ApplicationController
   def edit
     @service = Service.find(params[:id])
     @contact = @service.internal_contact
+
+    @staff = User.with_role(:provider_staff, @service.provider)
   end
-  
+
+  # PUT /services/1
+  # PUT /services/1.json
+  def update
+    @service = Service.find(params[:id])
+
+    respond_to do |format|
+      if @service.update_attributes(service_params)
+        format.html { redirect_to @service, notice: t(:service) + ' ' + t(:was_successfully_updated) } 
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @admin_provider.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def service_params
+    params.require(:service).permit(:name, :phone) 
+  end
+
 end

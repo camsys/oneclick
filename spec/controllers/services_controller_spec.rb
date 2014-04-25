@@ -46,5 +46,20 @@ describe ServicesController do
       assigns(:contact).should eq contact
     end
   end
+
+  describe "GET edit" do
+    it "assigns necessary variables" do
+      service = Service.create! valid_attributes
+      contact = FactoryGirl.create(:service_contact, service: service)
+      contact.add_role :internal_contact, service
+      contact.add_role :provider_staff, service.provider
+
+      get :edit, {id: service.to_param}, valid_session
+
+      assigns(:service).should eq service
+      assigns(:contact).should eq contact
+      assigns(:staff). should =~ [contact]
+    end
+  end
   
 end

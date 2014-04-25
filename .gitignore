@@ -85,3 +85,5 @@ pickle-email-*.html
 *~
 
 TAGS
+
+*.haml#

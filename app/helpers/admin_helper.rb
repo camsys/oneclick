@@ -9,6 +9,7 @@ module AdminHelper
   }
 
   def icon_label(action)
-    "<i class='icon #{ACTION_ICONS[action]}'>&nbsp;</i>#{t(action)}".html_safe
+    # "<i class='icon #{ACTION_ICONS[action]}'>&nbsp;</i>#{t(action)}".html_safe
+    "#{t(action)}".html_safe
   end
 end
