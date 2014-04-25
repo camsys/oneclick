@@ -299,6 +299,7 @@ es:
   # new ones
   inactive: "[es]Inactive[/es]"
   service_id: "[es]Service Id[/es]"
+  booking_service_code: "[es]Booking Service Code[/es]"
   back_to_services: "[es]Back to services[/es]"
   service: "[es]Service[/es]"
   services: "[es]Services[/es]"
@@ -308,6 +309,9 @@ es:
   service_contact: "[es220]Service Contact Information[/es]"
   specialized_services: "[es]Specialized Services[/es]"
   view_services: "[es]View Services[/es]"
+  origins: "[es]Origins[/es]"
+  destinations: "[es]Destinations[/es]"
+  residences: "[es]Residences[/es]"
   no_restriction: "[es217]No restriction[/es]"
   contact: "[es224]Contact[/es]"
   title: "[es225]Title[/es]"

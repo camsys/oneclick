@@ -37,6 +37,9 @@
       %h5
         -if @service.external_id
           =t(:service_id).to_s + ": " + @service.external_id.to_s
+      %h5
+        -if @service.booking_service_code
+          =t(:booking_service_code).to_s + ": " + @service.booking_service_code.to_s
 
     .col-sm-4.well
       %h4= t(:internal_contact)
@@ -166,10 +169,10 @@
 
   .row
     .col-sm-6
-      -types = @service.coverage_areas.map(&:coverage_type).uniq
-      -['Origins', 'Destinations', 'Residences'].each do |rule| ##TODO Internationalize
-        %h4=rule
-        -types.each do |type|
+      - types = @service.coverage_areas.map(&:coverage_type).uniq
+      - ['origins', 'destinations', 'residences'].each do |rule| 
+        %h4= t(rule)
+        - types.each do |type|
           %b
             =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
           .well.white-well.text-left

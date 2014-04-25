@@ -27,7 +27,8 @@ wrapper: :horizontal_form do |f|
         = f.input :email
         = f.input :url
         = f.input :external_id, label: t(:service_id)
-
+        = f.input :booking_service_code
+        
       .col-sm-4.well
         %h4= t(:internal_contact)
         = f.input_field :internal_contact, collection: @staff, 
@@ -58,9 +59,10 @@ wrapper: :horizontal_form do |f|
       .well.well2
         %h4= t(:advance_notice_required)
         .well.white-well.wwell2
+          = f.input_field :advanced_notice_minutes
           -if @service.advanced_notice_minutes > 0
-            =t(:service_notice_required) + " " ## TODO Interpolate
-            %b=duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
+            = t(:service_notice_required) + " " ## TODO Interpolate
+            %b= duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
             =" " + t(:service_notice_str) + "."
           -else
             =t(:service_notice_not_required) + "."
@@ -101,6 +103,7 @@ wrapper: :horizontal_form do |f|
         .well.well1
           %h4= t(:trip_purposes)
           .well.white-well.wwell1
+            = f.input_field :trip_purposes
             -if @service.trip_purposes.count == 0
               = t(:no_restriction)
             -else
@@ -134,18 +137,18 @@ wrapper: :horizontal_form do |f|
     .row
       .col-sm-6
         -types = @service.coverage_areas.map(&:coverage_type).uniq
-        -['Origins', 'Destinations', 'Residences'].each do |rule| ##TODO Internationalize
-          %h4=rule
-          -types.each do |type|
-            %b
-              =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
-            .well.white-well.text-left
-              -coverage_string = ""
-              -@service.service_coverage_maps.where(rule: rule.singularize.downcase).each do |map|
-                -if map.geo_coverage.coverage_type == type
-                  -coverage_string += map.geo_coverage.value + ', '
-              -if coverage_string == ""
-                = t(:n_a)
-              -else
-                =coverage_string.chop.chop
+      - ['origins', 'destinations', 'residences'].each do |rule| 
+        %h4= t(rule)
+        - types.each do |type|
+          %b
+            =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
+          .well.white-well.text-left
+            -coverage_string = ""
+            -@service.service_coverage_maps.where(rule: rule.singularize.downcase).each do |map|
+              -if map.geo_coverage.coverage_type == type
+                -coverage_string += map.geo_coverage.value + ', '
+            -if coverage_string == ""
+              = t(:n_a)
+            -else
+              =coverage_string.chop.chop
 

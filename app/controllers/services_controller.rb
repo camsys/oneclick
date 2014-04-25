@@ -79,7 +79,7 @@ class ServicesController < ApplicationController
   end
 
   def service_params
-    params.require(:service).permit(:name, :phone, :email, :url, :external_id) 
+    params.require(:service).permit(:name, :phone, :email, :url, :external_id, :booking_service_code) 
   end
 
 end

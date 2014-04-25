@@ -297,8 +297,10 @@ en:
   updated: "Updated"
 
   # new ones
+  # Services
   inactive: "Inactive"
   service_id: "Service Id"
+  booking_service_code: "Booking Service Code"
   back_to_services: "Back to services"
   service: "Service"
   services: "Services"
@@ -308,6 +310,9 @@ en:
   service_contact: "Service Contact Information"
   specialized_services: "Specialized Services"
   view_services: "View Services"
+  origins: "Origins"
+  destinations: "Destinations"
+  residences: "Residences"
   no_restriction: "No restriction"
   contact: "Contact"
   title: "Title"
