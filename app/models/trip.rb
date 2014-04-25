@@ -27,7 +27,7 @@ class Trip < ActiveRecord::Base
   # .join(:services).join(:providers) }
     # .where('providers.id=?', p)}
 
-  scope :by_agency, ->(a) { joins(user: :approved_agencies).where('organizations.id' => a) }
+  scope :by_agency, ->(a) { joins(user: :approved_agencies).where('agencies.id' => a) }
 
   # Returns a set of trips that are scheduled between the start and end time
   def self.scheduled_between(start_time, end_time)
