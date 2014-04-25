@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140423215233) do
+ActiveRecord::Schema.define(version: 20140425165642) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -301,6 +301,13 @@ ActiveRecord::Schema.define(version: 20140423215233) do
     t.string   "booking_service_code"
   end
 
+  create_table "services_users", id: false, force: true do |t|
+    t.integer "user_id",    null: false
+    t.integer "service_id", null: false
+  end
+
+  add_index "services_users", ["service_id", "user_id"], name: "index_services_users_on_service_id_and_user_id", using: :btree
+
   create_table "translations", force: true do |t|
     t.string   "key"
     t.text     "interpolations"
@@ -450,7 +457,6 @@ ActiveRecord::Schema.define(version: 20140423215233) do
     t.string   "preferred_locale",                   default: "en"
     t.string   "authentication_token"
     t.integer  "provider_id"
-    t.integer  "service_id"
     t.string   "title",                  limit: 64
     t.string   "phone",                  limit: 25
   end

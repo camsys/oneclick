@@ -12,7 +12,7 @@ class Service < ActiveRecord::Base
   has_many :service_coverage_maps
   has_many :itineraries
   has_many :user_services
-  has_many :users # primarily for internal contact
+  has_and_belongs_to_many :users # primarily for internal contact
 
   # attr_accessible :id, :name, :provider, :provider_id, :service_type, :advanced_notice_minutes, :external_id, :active
   # attr_accessible :contact, :contact_title, :phone, :url, :email

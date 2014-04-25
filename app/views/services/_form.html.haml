@@ -26,7 +26,7 @@ wrapper: :horizontal_form do |f|
         = f.input :phone
         = f.input :email
         = f.input :url
-        = f.input :external_id
+        = f.input :external_id, label: t(:service_id)
 
       .col-sm-4.well
         %h4= t(:internal_contact)

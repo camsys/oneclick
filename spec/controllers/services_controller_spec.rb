@@ -40,7 +40,7 @@ describe ServicesController do
       service = Service.create! valid_attributes
       get :show, {id: service.to_param}, valid_session
       assigns(:contact).should be_nil
-      contact = FactoryGirl.create(:service_contact, service: service)
+      contact = FactoryGirl.create(:service_contact, services: [service])
       contact.add_role :internal_contact, service
       get :show, {id: service.to_param}, valid_session
       assigns(:contact).should eq contact
@@ -50,7 +50,7 @@ describe ServicesController do
   describe "GET edit" do
     it "assigns necessary variables" do
       service = Service.create! valid_attributes
-      contact = FactoryGirl.create(:service_contact, service: service)
+      contact = FactoryGirl.create(:service_contact, services: [service])
       contact.add_role :internal_contact, service
       contact.add_role :provider_staff, service.provider
 
