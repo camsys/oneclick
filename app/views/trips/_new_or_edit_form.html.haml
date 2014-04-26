@@ -6,31 +6,37 @@
         /%button.btn.btn-default.pull-right.action-button{:type => "button"}Search
         = button_tag :type => 'submit', :class => "btn btn-default pull-right action-button" do
           =t(:plan_it)
-      .col-xs-12.panel
+      .col-xs-12.well
         = f.hidden_field :mode
         = f.hidden_field :from_place_object, :id => "from_place_object"
         = f.hidden_field :to_place_object, :id => "to_place_object"
         = f.hidden_field :map_center, id: "map_center"
         / %form{:role => "form"}
-        = f.input :trip_options, as: :radio_buttons
-            :javascript
-              $(function () {
-                $('#tripOptions :radio').change(function() {
-                  console.log('change');
-                  if(this.value === 'oneWay') {
-                    $('#returnDatetimeOptions').hide();
-                  } else {
-                    $('#returnDatetimeOptions').show();
-                  }
-                });
+        #tripOptions.col-sm-12.form-group
+          %label.col-sm-3{:style => "font-weight: normal;"}
+            %input{:checked => "", :name => "tripOptions", :type => "radio", :value => "roundTrip"}/
+            Round-trip
+          %label.col-sm-9{:style => "font-weight: normal;"}
+            %input{:name => "tripOptions", :type => "radio", :value => "oneWay"}/
+            One-way
+          :javascript
+            $(function () {
+              $('#tripOptions :radio').change(function() {
+                if(this.value === 'oneWay') {
+                  $('#returnDatetimeOptions').hide();
+                } else {
+                  $('#returnDatetimeOptions').show();
+                }
               });
             });
         .col-sm-12.form-group
           %label.col-sm-3.control-label Modes
           #modePlaceholder.col-sm-9
-
-          = f.input :trip_purpose_id, :collection =>  TripPurpose.all, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}
-
+        .col-sm-12.form-group
+          %label.col-sm-3.control-label{:for => "trip_purpose_id"} Trip Purpose
+          .col-sm-9
+            / %select#tripPurposeOptions.form-control{:name => "tripPurpose"}
+            = f.input_field :trip_purpose_id, :collection =>  TripPurpose.all, :label => false, :selected => @trip_proxy.trip_purpose_id, class: "form-control", :value => :id, :label_method => lambda { |v| t(v.name)}
         .col-sm-12.form-group
           %label.col-sm-3.control-label Leaving From
           .col-sm-9
@@ -60,45 +66,43 @@
                 %label.control-label.sr-only{:for => "toAddressMarkerButton"} Click button to open the map and locate the to address
                 %button#toAddressMarkerButton.btn.btn-default{"data-target" => "#mapModal", "data-toggle" => "modal", :type => "button"}
                   %i.fa.fa-map-marker
-
-          .col-sm-12.form-group
-            %label.col-sm-3.control-label{:for => "outboundOptions"} Outbound
-            .col-lg-3.col-md-4
-              %select#outboundOptions.form-control{:name => "outboundOptions"}
-                %option Departing At
-                %option{:selected => ""} Arriving At
-            .col-lg-6.col-md-5.col-sm-12{:style => "padding: 0px;"}
-              %label.control-label.sr-only{:for => "trip_proxy_outbound_trip_date"} Type or select the outbound date
-              .col-md-6
-                %input#trip_proxy_outbound_trip_date.form-control{:label => "false", :name => "trip_proxy[trip_date]", :type => "text"}/
-                :javascript
-                  $(function () {
-                    $('#trip_proxy_outbound_trip_date').datetimepicker({
-                      defaultDate: new Date(),
-                      pickTime: false
-                    });
+        .col-sm-12.form-group
+          %label.col-sm-3.control-label{:for => "outboundOptions"} Outbound
+          .col-lg-3.col-md-4
+            %select#outboundOptions.form-control{:name => "outboundOptions"}
+              %option Departing At
+              %option{:selected => ""} Arriving At
+          .col-lg-6.col-md-5.col-sm-12{:style => "padding: 0px;"}
+            %label.control-label.sr-only{:for => "trip_proxy_outbound_trip_date"} Type or select the outbound date
+            .col-md-6
+              %input#trip_proxy_outbound_trip_date.form-control{:label => "false", :name => "trip_proxy[trip_date]", :type => "text"}/
+              :javascript
+                $(function () {
+                  $('#trip_proxy_outbound_trip_date').datetimepicker({
+                    defaultDate: new Date(),
+                    pickTime: false
                   });
-              .col-md-6
-                %label.control-label.sr-only{:for => "trip_proxy_outbound_trip_time"} Type or select the outbound time
-                %input#trip_proxy_outbound_trip_time.form-control{:label => "false", :name => "trip_proxy[trip_time]", :type => "text"}/
-
-          #returnDatetimeOptions.col-sm-12.form-group
-            %label.col-sm-3.control-label{:for => "returnOptions"} Return
-            .col-lg-3.col-md-4
-              %select#returnOptions.form-control{:name => "returnOptions"}
-                %option{:selected => ""} Departing At
-                %option Arriving At
-            .col-lg-6.col-md-5.col-sm-12{:style => "padding: 0px;"}
-              %label.control-label.sr-only{:for => "trip_proxy_return_trip_date"} Type or select the return date
-              .col-md-6
-                %input#trip_proxy_return_trip_date.form-control{:label => "false", :name => "trip_proxy[trip_date]", :type => "text"}/
-                :javascript
-                  $(function () {
-                    $('#trip_proxy_return_trip_date').datetimepicker({
-                      defaultDate: new Date(),
-                      pickTime: false
-                    });
+                });
+            .col-md-6
+              %label.control-label.sr-only{:for => "trip_proxy_outbound_trip_time"} Type or select the outbound time
+              %input#trip_proxy_outbound_trip_time.form-control{:label => "false", :name => "trip_proxy[trip_time]", :type => "text"}/
+        #returnDatetimeOptions.col-sm-12.form-group
+          %label.col-sm-3.control-label{:for => "returnOptions"} Return
+          .col-lg-3.col-md-4
+            %select#returnOptions.form-control{:name => "returnOptions"}
+              %option{:selected => ""} Departing At
+              %option Arriving At
+          .col-lg-6.col-md-5.col-sm-12{:style => "padding: 0px;"}
+            %label.control-label.sr-only{:for => "trip_proxy_return_trip_date"} Type or select the return date
+            .col-md-6
+              %input#trip_proxy_return_trip_date.form-control{:label => "false", :name => "trip_proxy[trip_date]", :type => "text"}/
+              :javascript
+                $(function () {
+                  $('#trip_proxy_return_trip_date').datetimepicker({
+                    defaultDate: new Date(),
+                    pickTime: false
                   });
+                });
             .col-md-6
               %label.control-label.sr-only{:for => "trip_proxy_return_trip_time"} Type or select the return time
               %input#trip_proxy_return_trip_time.form-control{:label => "false", :name => "trip_proxy[return_trip_time]", :type => "text"}/
