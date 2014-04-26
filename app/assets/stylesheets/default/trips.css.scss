@@ -17,13 +17,19 @@
   color: blue;
 }
 
-.trips.new {
-  .form-horizontal {
-    .control-label {
-      width: 100px;
-    }
-    .controls {
-      margin-left: 120px;
-    }
+// .trips.new {
+//   .form-horizontal {
+//     .control-label {
+//       width: 100px;
+//     }
+//     .controls {
+//       margin-left: 120px;
+//     }
+//   }
+// }
+
+.plan-a-trip {
+  .radio {
+    display: inline-block;
   }
 }

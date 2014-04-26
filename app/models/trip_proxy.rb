@@ -5,6 +5,7 @@ class TripProxy < Proxy
   attr_accessor :mode
   # Id of the trip being re-planned, edited, etc. Null if mode is NEW
   attr_accessor :id, :map_center
+  attr_accessor :trip_options
 
   include Trip::From
   include Trip::PickupTime
