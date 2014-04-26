@@ -27,7 +27,7 @@ describe TripsController do
 
       # puts j.ai
 
-      t = HashWithIndifferentAccess.new(j['trip'])
+      t = HashWithIndifferentAccess.new(j)
       t[:status].should eq 0
       t[:trip_parts].size.should eq 2
       tp = t[:trip_parts][1]

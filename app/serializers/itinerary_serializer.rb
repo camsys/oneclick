@@ -20,7 +20,7 @@ class ItinerarySerializer < ActiveModel::Serializer
   end
 
   def cost
-    fare = object.service.fare_structures.first
+    fare = object.service.fare_structures.first rescue nil
     if fare.nil?
       {cost: nil, comments: 'Unknown'} # TODO I18n
     else

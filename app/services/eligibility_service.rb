@@ -23,7 +23,7 @@ class EligibilityService
     missing_information = false
     missing_information_text = ''
     missing_info = []
-    groups = service.service_characteristics.pluck(:group).uniq
+    groups = service.service_characteristics.pluck(:group).uniq rescue []
     if groups.count == 0
       is_eligible = true
       min_match_score = 0

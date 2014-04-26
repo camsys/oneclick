@@ -1,10 +1,14 @@
-#data1
-#data2
+.description
+  Trip description is
+  %span#data1
+.id
+  Trip id is
+  %span#data2
 
 :javascript
   var data = function() {
-    return #{@sample_data.to_json}
+    return #{TripSerializer.new(@trip).to_json}
   }
 
-  $('#data1').html(data().a[0])
-  $('#data2').html(data().b.c[1])
+  $('#data1').html(data().trip_parts[0].description)
+  $('#data2').html(data().trip_parts[0].id)

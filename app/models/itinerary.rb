@@ -131,7 +131,7 @@ class Itinerary < ActiveRecord::Base
   end
 
   def service_name
-    service.name
+    service.name rescue nil
   end
 
   protected

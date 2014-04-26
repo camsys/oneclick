@@ -80,7 +80,6 @@ Oneclick::Application.routes.draw do
           get   'unset_traveler'
           get   'search'
           post  'geocode'
-          get   'example'
         end
         member do
           get   'repeat'
@@ -101,6 +100,7 @@ Oneclick::Application.routes.draw do
           get   'edit_rating'
           get   'email_feedback'
           get   'show_printer_friendly'
+          get   'example'
         end
       end
 
