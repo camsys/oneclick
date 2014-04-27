@@ -74,20 +74,16 @@ $ ->
 
   $('#trip_proxy_from_place').on 'typeahead:selected', (e, s, d) ->
     $('#from_place_object').val(JSON.stringify(s))
-    # TODO put back update_maps
-    # update_map('from', e, s, d)
+    update_map('from', e, s, d)
   $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, s, d) ->
     $('#from_place_object').val(JSON.stringify(s))
-    # TODO put back update_maps
-    # update_map('from', e, s, d)
+    update_map('from', e, s, d)
   $('#trip_proxy_to_place').on 'typeahead:selected', (e, s, d) ->
     $('#to_place_object').val(JSON.stringify(s))
-    # TODO put back update_maps
-    # update_map('to', e, s, d)
+    update_map('to', e, s, d)
   $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, s, d) ->
     $('#to_place_object').val(JSON.stringify(s))
-    # TODO put back update_maps
-    # update_map('to', e, s, d)
+    update_map('to', e, s, d)
 
   $('#new_trip_proxy').on 'submit', ->
     $('#map_center').val((LMmap.getCenter().lat + ',' + LMmap.getCenter().lng))

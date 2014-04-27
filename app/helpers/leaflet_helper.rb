@@ -41,18 +41,21 @@ module LeafletHelper
       :tile_style_id => tile_style_id
     }.to_json
 
-    js << "init('#{mapid}', #{mapopts});"
+    js << "var CsMaps = CsMaps || {};"
+    js << "CsMaps.#{mapid} = Object.create(CsLeaflet.Leaflet);"
+    js << "m = CsMaps.#{mapid};"
+    js << "m.init('#{mapid}', #{mapopts});"
     # add any markers
-    js << "addMarkers(#{options[:markers]});" unless options[:markers].nil?
+    js << "m.addMarkers(#{options[:markers]});" unless options[:markers].nil?
     # add any circles
-    js << "addCircles(#{options[:circles]});" unless options[:circles].nil?
+    js << "m.addCircles(#{options[:circles]});" unless options[:circles].nil?
     # add any polylines
-    js << "addPolylines(#{options[:polylines]});" unless options[:polylines].nil?
+    js << "m.addPolylines(#{options[:polylines]});" unless options[:polylines].nil?
     # set the map bounds
-    js << "setMapBounds(#{MAP_BOUNDS[0][0]},#{MAP_BOUNDS[0][1]},#{MAP_BOUNDS[1][0]},#{MAP_BOUNDS[1][1]});"
-    js << "cacheMapBounds(#{MAP_BOUNDS[0][0]},#{MAP_BOUNDS[0][1]},#{MAP_BOUNDS[1][0]},#{MAP_BOUNDS[1][1]});"
-    js << "showMap();"
-    js << "LMmap.setZoom(#{options[:zoom]});" if options[:zoom].present?
+    js << "m.setMapBounds(#{MAP_BOUNDS[0][0]},#{MAP_BOUNDS[0][1]},#{MAP_BOUNDS[1][0]},#{MAP_BOUNDS[1][1]});"
+    js << "m.cacheMapBounds(#{MAP_BOUNDS[0][0]},#{MAP_BOUNDS[0][1]},#{MAP_BOUNDS[1][0]},#{MAP_BOUNDS[1][1]});"
+    js << "m.showMap();"
+    js << "m.LMmap.setZoom(#{options[:zoom]});" if options[:zoom].present?
     js * ("\n")
   end
 end
