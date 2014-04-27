@@ -26,6 +26,7 @@ var CLOUDMADE_ATTRIB = 'Map data &copy; <a href="http://openstreetmap.org">OpenS
  * that should be passed to the map constructor
  */
 function init(mapId, options) {
+    console.log("leafletmap init: " + mapId)
     LMmap = L.map(mapId);
     //alert(options.tile_provider);
     //alert(options.min_zoom);

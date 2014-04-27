@@ -37,35 +37,10 @@
           .col-sm-9
             / %select#tripPurposeOptions.form-control{:name => "tripPurpose"}
             = f.input_field :trip_purpose_id, :collection =>  TripPurpose.all, :label => false, :selected => @trip_proxy.trip_purpose_id, class: "form-control", :value => :id, :label_method => lambda { |v| t(v.name)}
-        .col-sm-12.form-group
-          %label.col-sm-3.control-label Leaving From
-          .col-sm-9
-            .input-group
-              %label.control-label.sr-only{:for => "trip_proxy_from_place"} Type the from address
-              %input#trip_proxy_from_place.form-control.place_picker{:name => "trip_proxy[from_place]",
-                autocomplete: 'off', :type => "text"}/
-              / = f.text_field :from_place, class: 'place_picker', :placeholder => t(:enter_address), :id => "trip_proxy_from_place", :autocomplete => "off"
-              %span.input-group-btn
-                %label.control-label.sr-only{:for => "fromAddressMarkerButton"} Click button to open the map and locate the from address
-                %button#fromAddressMarkerButton.btn.btn-default{"data-target" => "#mapModal", "data-toggle" => "modal", :type => "button"}
-                  %i.fa.fa-map-marker
-                #mapModal.modal.fade.col-sm-12{"aria-describedby" => "map to select location", :role => "dialog", :tabindex => "-1"}
-                  .modal-dialog
-                    .modal-content
-                      .modal-body
-                        #lmap.map{:style => "height:500px;"}
-        .col-sm-12.form-group
-          %label.col-sm-3.control-label Going To
-          .col-sm-9
-            .input-group
-              %label.control-label.sr-only{:for => "trip_proxy_to_place"} Type the to address
-              %input#trip_proxy_to_place.form-control.place_picker{:name => "trip_proxy[to_place]",
-                autocomplete: 'off', :type => "text"}/
-              / %input#toAddress.form-control{:name => "toAddress", :type => "text"}/
-              %span.input-group-btn
-                %label.control-label.sr-only{:for => "toAddressMarkerButton"} Click button to open the map and locate the to address
-                %button#toAddressMarkerButton.btn.btn-default{"data-target" => "#mapModal", "data-toggle" => "modal", :type => "button"}
-                  %i.fa.fa-map-marker
+
+        = render partial: 'location_input', locals: {dir: 'from'}
+        = render partial: 'location_input', locals: {dir: 'to'}
+
         .col-sm-12.form-group
           %label.col-sm-3.control-label{:for => "outboundOptions"} Outbound
           .col-lg-3.col-md-4

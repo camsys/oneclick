@@ -56,6 +56,22 @@ $ ->
         '<a>{{name}}</a>'
       ].join(''))
   
+  # Show/hide map popover when in input field
+  $('#trip_proxy_from_place').on 'typeahead:opened', () ->
+    $('#fromAddressMarkerButton').popover('show')
+  $('#trip_proxy_from_place').on 'typeahead:closed', () ->
+    $('#fromAddressMarkerButton').popover('hide')
+  $('#trip_proxy_to_place').on 'typeahead:opened', () ->
+    $('#toAddressMarkerButton').popover('show')
+  $('#trip_proxy_to_place').on 'typeahead:closed', () ->
+    $('#toAddressMarkerButton').popover('hide')
+
+  # Hide the other map when one is shown
+  $('#fromAddressMarkerButton').on 'show.bs.popover', () ->
+    $('#toAddressMarkerButton').popover('hide')
+  $('#toAddressMarkerButton').on 'show.bs.popover', () ->
+    $('#fromAddressMarkerButton').popover('hide')
+
   $('#trip_proxy_from_place').on 'typeahead:selected', (e, s, d) ->
     $('#from_place_object').val(JSON.stringify(s))
     # TODO put back update_maps

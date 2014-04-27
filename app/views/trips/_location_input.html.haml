@@ -1,0 +1,32 @@
+- if dir=='from'
+  - label='Leaving From'
+  - sr_label = 'Type the from address'
+- elsif dir=='to'
+  - label='Going To'
+  - sr_label = 'Type the to address'
+.col-sm-12.form-group
+  %label.col-sm-3.control-label= label
+  .col-sm-9
+    .input-group
+      %label.control-label.sr-only{for: "trip_proxy_#{dir}_place"}= sr_label
+      %input.form-control.place_picker{name: "trip_proxy[#{dir}_place]", autocomplete: 'off', type: "text", id: "trip_proxy_#{dir}_place"}
+      %span.input-group-btn
+        %label.control-label.sr-only{for: "#{dir}AddressMarkerButton"} Click button to open the map and locate the  address
+        %button.btn.btn-default{type: "button", id: "#{dir}AddressMarkerButton"}
+          %i.fa.fa-map-marker
+        / #fromMapTitle{class: 'hide'}
+        /   Map
+        %div{id: "#{dir}MapContainer", class: 'hide'}
+          / .content{style: 'width: 100px; height: 100px;'}
+          / %button.btn.btn-default{type: 'test'}
+          /   Click Me
+          /         #lmap.map{:style => "height:500px;"}
+          = LeafletMap({ :mapid => "#{dir}Map", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '400px;', :style => "height: 300px; width: 400px;" })
+          = yield :scripts
+        :javascript
+          $('##{dir}AddressMarkerButton').popover({ 
+            html: true,
+            content: function() {
+              return $("##{dir}MapContainer").html();
+            }
+          });
