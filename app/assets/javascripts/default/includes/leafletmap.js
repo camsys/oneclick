@@ -42,7 +42,6 @@ CsLeaflet.Leaflet = {
     // TODO make this a constructor
 
     init: function(mapId, options) {
-        console.log("leafletmap init: " + mapId)
         this.LMmap = L.map(mapId);
         //alert(options.tile_provider);
         //alert(options.min_zoom);
@@ -82,7 +81,7 @@ CsLeaflet.Leaflet = {
         var marker = findMarkerById(markerId);
         if (marker) {
             var latlng = marker.getLatLng();
-            panTo(latlng.lat, latlng.lng);
+            this.panTo(latlng.lat, latlng.lng);
         }
     },
 
@@ -112,7 +111,7 @@ CsLeaflet.Leaflet = {
         }
         var mapBounds;
         if (this.LMmarkers.length > 0) {
-            mapBounds = calcMapBounds(this.LMmarkers);
+            mapBounds = this.calcMapBounds(this.LMmarkers);
         } else {
             mapBounds = this.LMbounds;
         }
@@ -129,11 +128,11 @@ CsLeaflet.Leaflet = {
      */
     replaceMarkers: function(arr, updateMap) {
         //alert('Replacing Markers');
-        removeMarkers();
-        addMarkers(arr);
+        this.removeMarkers();
+        this.addMarkers(arr);
         if (updateMap) {
             //alert('Updating map');
-            showMap();
+            this.showMap();
         } else {
             // Add the markers to the map
             for (var i = 0; i < this.LMmarkers.length; i++) {
@@ -161,11 +160,11 @@ CsLeaflet.Leaflet = {
      */
     replaceCircles: function(arr, updateMap) {
         //alert('Replacing Circles');
-        removeCircles();
-        addCircles(arr);
+        this.removeCircles();
+        this.addCircles(arr);
         if (updateMap) {
             //alert('Updating map');
-            showMap();
+            this.showMap();
         } else {
             for (var i = 0; i < this.LMcircles.length; i++) {
                 this.LMmap.addLayer(this.LMcircles[i]);
@@ -178,11 +177,11 @@ CsLeaflet.Leaflet = {
      */
     replacePolylines: function(arr, updateMap) {
         //alert('Replacing Polylines');
-        removePolylines();
-        addPolylines(arr);
+        this.removePolylines();
+        this.addPolylines(arr);
         if (updateMap) {
             //alert('Updating map');
-            showMap();
+            this.showMap();
         } else {
             for (var i = 0; i < this.LMpolylines.length; i++) {
                 this.LMmap.addLayer(this.LMpolylines[i]);
@@ -250,7 +249,7 @@ CsLeaflet.Leaflet = {
             var popupText = obj.description;
             var title = obj.title;
             var open = obj.open;
-            marker = createMarker(id, lat, lng, iconClass, popupText, title, open);
+            marker = this.createMarker(id, lat, lng, iconClass, popupText, title, open);
 
             // Add this marker to the list of markers
             this.LMmarkers.push(marker);
@@ -310,7 +309,7 @@ CsLeaflet.Leaflet = {
             if (obj.options) {
                 options = obj.options;
             }
-            addCircle(lat, lng, radius, options);
+            this.addCircle(lat, lng, radius, options);
         }
     },
 
@@ -326,21 +325,21 @@ CsLeaflet.Leaflet = {
             if (obj.options) {
                 options = obj.options;
             }
-            addPolyline(geom, options);
+            this.addPolyline(geom, options);
         }
     },
 
     selectMarkerById: function(id) {
-        marker = findMarkerById(id);
+        marker = this.findMarkerById(id);
         if (marker) {
-            selectMarker(marker);
+            this.selectMarker(marker);
         }
     },
 
     selectMarkerByName: function(name) {
-        marker = findMarkerByName(name);
+        marker = this.findMarkerByName(name);
         if (marker) {
-            selectMarker(marker);
+            this.selectMarker(marker);
         }
     },
 
@@ -349,7 +348,7 @@ CsLeaflet.Leaflet = {
 
         if (json) {
             var data = JSON.parse(json);
-            return createMarker(data.id, data.lat, data.lng, data.iconClass, data.popupText, data.name, data.open)
+            return this.createMarker(data.id, data.lat, data.lng, data.iconClass, data.popupText, data.name, data.open)
         }
     },
 
@@ -360,7 +359,7 @@ CsLeaflet.Leaflet = {
             if (marker.id == id) return marker;
         });
 
-        if (marker = findMarkerInStorage(id)) return marker;
+        if (marker = this.findMarkerInStorage(id)) return marker;
     },
 
     findMarkerByName: function(name) {
@@ -490,14 +489,14 @@ CsLeaflet.Leaflet = {
             marker_array = this.LMmarkers;
         }
         if (marker_array.length > 0) {
-            this.LMbounds = calcMapBounds(marker_array);
+            this.LMbounds = this.calcMapBounds(marker_array);
             this.LMmap.fitBounds(this.LMbounds);
         }
     },
 
     setMapToMarkerBounds: function(marker) {
         if (marker)
-            this.LMmap.fitBounds(calcMarkerBounds(marker));
+            this.LMmap.fitBounds(this.calcMarkerBounds(marker));
     },
 
     setMapBounds: function(minLat, minLon, maxLat, maxLon) {
@@ -526,9 +525,9 @@ CsLeaflet.Leaflet = {
     },
 
     resetMap: function() {
-        removeMarkers();
-        removeCircles();
-        removePolylines();
+        this.removeMarkers();
+        this.removeCircles();
+        this.removePolylines();
         //this.LMmap.remove();
     },
 
@@ -542,5 +541,11 @@ CsLeaflet.Leaflet = {
             "<div class='col-sm-3'><i class='fa fa-3x fa-building-o'></i></div>" +
             "<div class='col-sm-9'><div class='caption'><h4>" + addr + "</h4></div></div>" +
             "</div></div>";
+    },
+
+    refresh: function() {
+        // this.LMmap.setView(bounds.getCenter(), map.getBoundsZoom(bounds), true)
+        this.LMmap.invalidateSize(false);
+        this.LMmap.fitBounds(this.LMbounds);
     }
 }

@@ -1,11 +1,11 @@
-create_or_update_marker = (key, lat, lon, name, desc, iconStyle) ->  
-  marker = findMarkerById(key)
-  removeMarkerFromMap marker  if marker
-  marker = createMarker(key, lat, lon, iconStyle, desc, name, true)
-  addMarkerToMap marker, true
+create_or_update_marker = (map, key, lat, lon, name, desc, iconStyle) ->  
+  marker = map.findMarkerById(key)
+  map.removeMarkerFromMap marker  if marker
+  marker = map.createMarker(key, lat, lon, iconStyle, desc, name, true)
+  map.addMarkerToMap marker, true
   marker
 
-update_map = (type, e, s, d) ->
+update_map = (map, type, e, s, d) ->
   lat = s.lat
   lon = s.lon
   if lat==null
@@ -22,10 +22,28 @@ update_map = (type, e, s, d) ->
   else
     key = 'stop'
     icon = 'stopIcon'
-  removeMatchingMarkers(key);
-  marker = create_or_update_marker(key, lat, lon, s.name, s.full_address, icon);
-  setMapToBounds();
-  selectMarker(marker);
+  map.removeMatchingMarkers(key);
+  marker = create_or_update_marker(map, key, lat, lon, s.name, s.full_address, icon);
+  map.setMapToBounds();
+  map.selectMarker(marker);
+
+toggle_map = (dir) ->
+  if dir=='from'
+    otherdir = 'to'
+  else
+    otherdir = 'from'  
+  c = '#' + dir + "MapContainer"
+  $(c).toggleClass('hide')
+  CsMaps[dir + "Map"].refresh()
+  if !$(c).hasClass('hide')
+    hide_map(otherdir)
+
+hide_map = (dir) ->
+  $('#' + dir + "MapContainer").addClass('hide')
+
+show_map = (dir) ->
+  $('#' + dir + "MapContainer").removeClass('hide')
+  CsMaps[dir + "Map"].refresh()
 
 $ ->
 
@@ -58,13 +76,13 @@ $ ->
   
   # Show/hide map popover when in input field
   $('#trip_proxy_from_place').on 'typeahead:opened', () ->
-    $('#fromAddressMarkerButton').popover('show')
-  $('#trip_proxy_from_place').on 'typeahead:closed', () ->
-    $('#fromAddressMarkerButton').popover('hide')
+    show_map('from')
+  $('#trip_proxy_from_place').on 'focusout', () ->
+    hide_map('from')
   $('#trip_proxy_to_place').on 'typeahead:opened', () ->
-    $('#toAddressMarkerButton').popover('show')
-  $('#trip_proxy_to_place').on 'typeahead:closed', () ->
-    $('#toAddressMarkerButton').popover('hide')
+    show_map('to')
+  $('#trip_proxy_to_place').on 'focusout', () ->
+    hide_map('to')
 
   # Hide the other map when one is shown
   $('#fromAddressMarkerButton').on 'show.bs.popover', () ->
@@ -74,16 +92,25 @@ $ ->
 
   $('#trip_proxy_from_place').on 'typeahead:selected', (e, s, d) ->
     $('#from_place_object').val(JSON.stringify(s))
-    update_map('from', e, s, d)
+    update_map(CsMaps.fromMap, 'from', e, s, d)
   $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, s, d) ->
     $('#from_place_object').val(JSON.stringify(s))
-    update_map('from', e, s, d)
+    update_map(CsMaps.fromMap, 'from', e, s, d)
   $('#trip_proxy_to_place').on 'typeahead:selected', (e, s, d) ->
     $('#to_place_object').val(JSON.stringify(s))
-    update_map('to', e, s, d)
+    update_map(CsMaps.toMap, 'to', e, s, d)
   $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, s, d) ->
     $('#to_place_object').val(JSON.stringify(s))
-    update_map('to', e, s, d)
+    update_map(CsMaps.toMap, 'to', e, s, d)
 
+  # TODO This needs to be done differently.
+  # Not sure why the form needs a map center on submit, it has two locations...
+  # Maybe this is only needed if the user typed something in, did not geocode.
+  # For now use the fromMap center.
   $('#new_trip_proxy').on 'submit', ->
-    $('#map_center').val((LMmap.getCenter().lat + ',' + LMmap.getCenter().lng))
+    $('#map_center').val((CMaps.fromMap.getCenter().lat + ',' + CMaps.fromMap.getCenter().lng))
+
+  $('#fromAddressMarkerButton').on 'click', ->
+    toggle_map('from')
+  $('#toAddressMarkerButton').on 'click', ->
+    toggle_map('to')
