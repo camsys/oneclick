@@ -6,7 +6,8 @@
 //Response
 // Items are REQUIRED unless "Opt" is indicated
 {
-    "status": "Number", // return 0 if something went wrong, interpret anything else as success, alternatively HTTP Codes (200/500)
+    "status": "Number", // 0=error, 1=success. Any other values currently undefined.
+    "status_text": "String Opt", // if status==0, may be present with an error message.
     "trip_parts": [ // Trips in order (from Origin 1 -> Dest 1, then Origin 2 -> Dest 2, etc.
         {
             "trip_part_id": "Number", //ActiveRecord ID

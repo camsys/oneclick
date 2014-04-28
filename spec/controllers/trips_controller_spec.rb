@@ -28,7 +28,7 @@ describe TripsController do
       # puts j.ai
 
       t = HashWithIndifferentAccess.new(j)
-      t[:status].should eq 0
+      t[:status].should eq 1
       t[:trip_parts].size.should eq 2
       tp = t[:trip_parts][1]
       tp[:description].should eq "One-way trip from , ,  30308 to , ,   departing at Wednesday, August 2 2113 at 12:30 PM"
