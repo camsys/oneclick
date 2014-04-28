@@ -1,0 +1,42 @@
+= render partial: 'breadcrumbs'
+- if @tripResponse.status == 0
+  .row
+    .col-sm-12
+      %h4= t(:no_trips_found)
+
+- else
+  .row
+    .col-xs-12.form-group.visible-xs
+      %button#filterButton.btn.btn-default.pull-left.action-button Show Filters
+      :javascript
+        $(function () {
+          //show or hide filters when click Filter button
+          $('#filterButton').on('click', function(e) {
+            e.preventDefault();
+            var $filterDiv = $('#filterDiv');
+            if($filterDiv.hasClass('hidden-xs')) {
+              $('#filterDiv').removeClass('hidden-xs');
+              $(this).text('Hide Filters');
+            } else {
+              $('#filterDiv').addClass('hidden-xs');
+              $(this).text('Show Filters');
+            }
+          });
+        });
+    #filterDiv.col-md-3.col-xs-12.hidden-xs
+      #filterContainer.col-sm-12.well{style: "padding: 0px;"}
+    / end of filter column
+    .col-md-9
+      .col-xs-12.form-group
+        #legendContainer.col-xs-10{style: "padding: 0px; height: 100%;"}
+        %button.btn.btn-default.pull-right.action-button Plan
+      #tripContainer.col-xs-12{style: "padding: 0px;"}
+        #tickLabelContainer.col-xs-12{style: "padding: 0px;"}
+      / end of trip container
+    / end of review columns
+    
+:javascript
+  $(function() {
+    var pageRenderer = new TripReviewPageRenderer(30, 20);
+    pageRenderer.processTripResponse(#{@tripResponse.to_json});
+  });

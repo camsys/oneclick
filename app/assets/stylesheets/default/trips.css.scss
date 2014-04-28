@@ -17,22 +17,281 @@
   color: blue;
 }
 
-// .trips.new {
-//   .form-horizontal {
-//     .control-label {
-//       width: 100px;
-//     }
-//     .controls {
-//       margin-left: 120px;
-//     }
-//   }
-// }
+/* override jQuery UI slider to not load image resource but only use bg color*/
+.ui-widget-content {
+  background: white;
+}
+.ui-widget-header {
+  background: #ccc;
+}
+.ui-slider {
+  .ui-state-default {
+    background: #e6e6e6;
+  }
+}
 
-.plan-a-trip {
-  .radio {
-    display: inline-block;
+@media(max-width:767px){
+  .form-group .control-label {
+    text-align: left;
   }
-  .popover {
-    max-width: inherit;
+  
+  .tick-label-hidden-xs {
+    visibility: hidden !important;
   }
+}
+
+@media(min-width:768px){
+  .form-group .control-label {
+    text-align: right;
+  }
+  
+  .tick-label-hidden-sm {
+    visibility: hidden !important;
+  }
+}
+@media(min-width:992px){
+  .tick-label-visible-md {
+    visibility: visible !important;
+  }
+}
+
+.page-action-button-container {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-bottom: 10px;
+  padding-left: 0px;
+  padding-right: 0px; 
+}
+
+.action-button {
+  background: #eeeeee; /* Old browsers */
+  background: -moz-linear-gradient(top,  #ffffff 0%, #AFAFAF 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#AFAFAF)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #ffffff 0%,#AFAFAF 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#AFAFAF',GradientType=0 ); /* IE6-9 */
+  min-width: 60px;
+  height: 25px;
+  border-radius: 8px;
+  font-weight: bold;
+  padding: 2px;
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+
+.action-button:hover, .action-button:focus {
+  background-position: 0;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+}
+
+.dropdown-menu a {
+  cursor: pointer;
+}
+
+.btn .fa-map-marker {
+  color: #499bea;
+}
+
+/*breadcrumbs*/
+.current-page {
+  width: 80px;
+  background-image: image-url('active.png');
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}
+
+.prev-page {
+  width: 80px;
+  background-image: image-url('inactive.png');
+  text-align: center;
+}
+
+.prev-page {
+  a{
+    font-weight: bold;
+    color: black;
+  }
+
+  a:hover {
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+.next-page {
+  width: 80px;
+  background-image: image-url('inactive.png');
+  text-align: center;
+  font-weight: bold;
+  color: black;
+}
+
+#wizards{
+  padding: 0px;
+  margin-bottom: 5px;
+  background-color: transparent;
+}
+
+#wizards>li+li:before{
+  visibility: hidden;
+  padding: 0px;
+  content: '';
+}
+
+/*highlight vertical line style(either left or right side of each chart)*/
+.highlight-left-border {
+  border-left: 2px black solid;
+}
+
+.highlight-right-border {
+  border-right: 2px black solid;
+}
+
+.regular-left-border {
+  border-left: 1px black solid;
+}
+
+.regular-right-border {
+  border-right: 1px black solid;
+}
+
+.prev-period {
+  width: 30px;
+  height: 20px;
+  background-image: image-url('prevPeriod.png');
+  background-color: transparent;
+  text-align: center;
+  color: black;
+  border: none;
+}
+
+.next-period {
+  width: 30px;
+  height: 20px;
+  background-image: image-url('nextPeriod.png');
+  background-color: transparent;
+  text-align: center;
+  color: black;
+  border: none;
+}
+
+
+.single-plan-header{
+  background-color: whitesmoke;
+  border: 2px whitesmoke solid;
+  border-bottom: none;
+}
+
+.single-plan-review{
+  background-color: white;
+  border-radius: 3px;
+  border: 2px whitesmoke solid;
+  height: 50px;
+}
+
+.single-plan-selected {
+  border: 2px black solid;
+}
+
+.single-plan-unselected {
+  border: 2px whitesmoke solid;
+}
+
+.select-column {
+}
+
+.single-plan-select {
+}
+
+.single-plan-question {
+}
+
+/*Review page timeline chart styles*/
+.chart {
+  background: none;
+}
+ 
+.chart rect {
+  stroke: none;
+}
+
+.chart line {
+  stroke: black;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.chart-tooltip {   
+  position: absolute;           
+  text-align: center;           
+  width: 100px;                  
+  height: auto;                 
+  padding: 2px;             
+  font: 12px sans-serif;        
+  background: white;   
+  border: 1px black solid;      
+  border-radius: 5px;           
+  pointer-events: none;         
+}
+
+.slider-tip {
+    opacity:1;
+    bottom:120%;
+}
+
+.travel-legend-container {
+  margin-right: 5px; 
+  display: inline-block; 
+}
+
+.travel-legend {
+  width: 50px;
+  height: 30px;
+  display: inline-block;
+  margin-right: 2px;
+}
+
+.travel-legend-walk {
+  background-color: #499bea;
+}
+
+.travel-legend-transfer {
+  background-color: #FEC800;
+}
+
+.travel-legend-vehicle {
+  background-color: #FF9900;
+}
+
+.travel-type-walk {
+  fill: #499bea;
+}
+
+.travel-type-transfer {
+  fill: #FEC800;
+}
+
+.travel-type-vehicle {
+  fill: #FF9900;
+}
+
+/*styles for trip mode service*/
+.trip-mode-icon {
+  text-align: center;
+  line-height: normal;
+  font-size: 1em;
+}
+
+.trip-mode-cost {
+  text-align: center;
+  width: 100%;
 }
