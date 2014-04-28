@@ -102,6 +102,7 @@ Oneclick::Application.routes.draw do
           get   'email_feedback'
           get   'show_printer_friendly'
           get   'example'
+          get   'trip_plans_review'
         end
       end
 

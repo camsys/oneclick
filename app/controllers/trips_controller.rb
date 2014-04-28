@@ -569,6 +569,17 @@ class TripsController < PlaceSearchingController
   def example
   end
 
+  def trip_plans_review
+
+    @trip = Trip.find(params[:id].to_i)
+    @tripResponse = TripSerializer.new(@trip)
+
+    respond_to do |format|
+      format.html # trip_plans_review.html.erb
+      format.json { render json: @tripResponse }
+    end
+  end
+
 protected
 
   
