@@ -19,3 +19,16 @@
 //= require bootstrap-datetimepicker
 //= require default/config
 //= require_tree .
+//
+moment.fn.next15 = function() {
+    var intervals = Math.floor(this.minutes() / 15);
+    if (this.minutes() % 15 != 0)
+        intervals++;
+    if (intervals == 4) {
+        this.add('hours', 1);
+        intervals = 0;
+    }
+    this.minutes(intervals * 15);
+    this.seconds(0);
+    return this;
+}
