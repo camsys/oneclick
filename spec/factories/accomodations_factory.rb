@@ -10,12 +10,10 @@ FactoryGirl.define do
 
   factory :wheelchair_accommodation_requirement, class: 'UserAccommodation' do
     accommodation factory: :wheelchair_accommodation
-    value 'true'
   end
 
   factory :service_wheelchair_accommodation, class: 'ServiceAccommodation' do
     accommodation factory: :wheelchair_accommodation
-    value 'true'
     active 1
   end
 

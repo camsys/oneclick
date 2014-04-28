@@ -9,7 +9,6 @@ module LeafletHelper
   MAP_BOUNDS = Rails.application.config.map_bounds
 
   def LeafletMap(options)
-    puts "LeafletMap #{options.ai}"
     options_with_indifferent_access = options.with_indifferent_access
 
     js_dependencies = Array.new
@@ -23,7 +22,6 @@ module LeafletHelper
   # Generates the Leaflet JS code to create the map from the options hash
   # passed in via the LeafletMap helper method
   def generate_map(options)
-    puts "generate_map #{options.ai}"
     js = []
     # Add any icon definitions
     js << options[:icons] unless options[:icons].nil?
