@@ -31,7 +31,7 @@ describe TripsController do
       t[:status].should eq 1
       t[:trip_parts].size.should eq 2
       tp = t[:trip_parts][1]
-      tp[:description].should eq "One-way trip from , ,  30308 to , ,   departing at Wednesday, August 2 2113 at 12:30 PM"
+      tp[:description].should eq "Outbound - 999 West Peachtree St NW Atlanta, GA 30309 to 206 Washington St SW Atlanta, GA 30334"
       tp[:is_depart_at].should be_true
       tp[:start_time].should eq "2113-08-02T12:30:03.000-05:00"
       tp[:itineraries].size.should eq 3

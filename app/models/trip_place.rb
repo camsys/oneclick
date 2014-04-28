@@ -28,6 +28,7 @@ class TripPlace < GeocodedAddress
     when 'PLACES_TYPE'
       self.update_attributes(
         place_id: j['id'],
+        name: j['name'],
         address1: j['address1'],
         address2: j['address2'],
         city: j['city'],
@@ -40,6 +41,7 @@ class TripPlace < GeocodedAddress
     when 'POI_TYPE'
       self.update_attributes(
         poi_id: j['id'],
+        name: j['name'],
         address1: j['address1'],
         address2: j['address2'],
         city: j['city'],
@@ -118,9 +120,15 @@ class TripPlace < GeocodedAddress
   end
   
   def name
-    return to_s
+    n = read_attribute(:name)
+    n.blank? ? to_s : n
   end
-  
+
+  def name2
+    n = read_attribute(:name)
+    n.blank? ? get_address(2) : n
+  end
+    
   def county_name
     return poi.county_name unless poi.nil?
     return place.county_name unless place.nil?

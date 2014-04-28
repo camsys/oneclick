@@ -19,11 +19,20 @@ class GeocodedAddress < ActiveRecord::Base
     return county
   end
 
-  def get_address
-    # a1, [a2, ]city, state zip
-    [[address1, address2].reject{|a| a.blank?}.join(', '),
-    city,
-    [state, zip].join(' ')].join(', ')
+  def get_address(format = 1)
+    case format
+    when 2
+      # a1[, a2] city, state zip
+      [[[address1, address2].reject{|a| a.blank?}.join(', '),
+      city].join(' '),
+      [state, zip].join(' ')].join(', ')      
+    else
+      # when 1
+      # a1, [a2, ]city, state zip
+      [[address1, address2].reject{|a| a.blank?}.join(', '),
+      city,
+      [state, zip].join(' ')].join(', ')      
+    end
   end
   
 end

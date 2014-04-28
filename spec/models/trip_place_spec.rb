@@ -53,4 +53,15 @@ describe TripPlace do
     place.should be_valid
   end
 
+  it "can have a name and prefers that to address" do
+    p = TripPlace.new(address1: '1 Main St', city: 'Atlanta', state: 'GA')
+    p.name.should eq '1 Main St, Atlanta, GA ' # note trailing blank
+    p.name = 'Goodwill Atlanta'
+    p.name.should eq 'Goodwill Atlanta'
+  end
+
+  it "defaults to the address if it does not have name" do
+    
+  end
+
 end
