@@ -46,15 +46,35 @@ wrapper: :horizontal_form do |f|
               = t(:start_time)
             %th.text-center
               = t(:end_time)
+            %th.text-center
+              Clear?
           %tbody
-            -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
+            - # display each day of week, Monday 1st, Sunday last
+            - count = 0
+            - (1..7).each do |i|
+              - day_of_week = i % 7
+              - schedule = @schedules[day_of_week]
               %tr
                 %td.text-center
-                  = t('date.day_names')[schedule.day_of_week]
-                %td.text-center
-                  = schedule.start_string
-                %td.text-center
-                  =schedule.end_string
+                  = t('date.day_names')[day_of_week]
+                %td
+                  %input.form-control.text-right{type: "text",
+                        value: "#{schedule.start_time if schedule}",
+                        name: "service[schedules_attributes][][start_time]"}
+                %td
+                  %input.form-control.text-right{type: "text",
+                        value: "#{schedule.end_time if schedule}",
+                        name: "service[schedules_attributes][][end_time]"}
+                %td
+                  %input.form-control.checkbox{type: "checkbox",
+                        value: "1", name: "service[schedules_attributes][][_destroy]"}
+                - if schedule
+                  %input{type: "hidden", value: "#{schedule.id}",
+                         name: "service[schedules_attributes][][id]"}
+                - else
+                  %input{type: "hidden", value: "#{day_of_week}",
+                         name: "service[schedules_attributes][][day_of_week]"}
+                
     .col-sm-4
       .well.well2
         %h4= t(:advance_notice_required)

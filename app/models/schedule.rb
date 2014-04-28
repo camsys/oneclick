@@ -12,12 +12,16 @@ class Schedule < ActiveRecord::Base
   def start_string
     human_readable(start_seconds)
   end
-
+  alias_method :start_time, :start_string
+  
   def end_string
     human_readable(end_seconds)
   end
-
+  alias_method :end_time, :end_string
+  
   def human_readable(seconds)
+    return '' if seconds.nil?
+    
     hour = seconds/3600
     minute = (seconds - (hour*3600))/60
     ampm = 'AM'
@@ -44,4 +48,9 @@ class Schedule < ActiveRecord::Base
     self.end_seconds = Time.parse(t).seconds_since_midnight
   end
 
+  # simplify debugging
+  def to_s
+    "<#{day_of_week}: #{start_string} - #{end_string}>"
+  end
+  
 end

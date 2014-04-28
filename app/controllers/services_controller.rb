@@ -55,7 +55,10 @@ class ServicesController < ApplicationController
   def edit
     @service = Service.find(params[:id])
     @contact = @service.internal_contact
-
+    
+    @schedules = []
+    @service.schedules.each {|s| @schedules[s.day_of_week] = s}
+    
     @staff = User.with_role(:provider_staff, @service.provider)
     @eh = EligibilityService.new
   end
@@ -67,6 +70,7 @@ class ServicesController < ApplicationController
 
     respond_to do |format|
       par = service_params
+
       if @service.update_attributes(service_params)
         # internal_contact is a special case
         @service.internal_contact = User.find_by_id(params[:service][:internal_contact])
@@ -81,7 +85,11 @@ class ServicesController < ApplicationController
   end
 
   def service_params
-    params.require(:service).permit(:name, :phone, :email, :url, :external_id, :booking_service_code, :advanced_notice_minutes, { accommodation_ids: [] }, { trip_purpose_ids: [] })
+    params.require(:service).permit(:name, :phone, :email, :url, :external_id,
+                                    :booking_service_code, :advanced_notice_minutes,
+                                    { schedules_attributes: [ :day_of_week, :start_time, :end_time, :id, :_destroy ] },
+                                    { accommodation_ids: [] },
+                                    { trip_purpose_ids: [] })
   end
 
 end
