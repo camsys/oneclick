@@ -96,7 +96,7 @@
       .well.white-well.wwell2
         -if @service.advanced_notice_minutes > 0
           =t(:service_notice_required) + " " ## TODO Interpolate
-          %b=duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
+          %b= duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
           =" " + t(:service_notice_str) + "."
         -else
           =t(:service_notice_not_required) + "."

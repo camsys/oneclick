@@ -9,7 +9,7 @@ wrapper: :horizontal_form do |f|
       .row
         .col-sm-6.pull-right
           - if can? :update, @service
-            = button_tag type: 'submit', class: "btn action-button active" do
+            = button_tag type: 'submit', class: "btn action-button default" do
               = icon_label(:apply)
             = link_to service_path(@service), {class: 'btn action-button pull-right', role: 'button'} do
               = icon_label(:cancel)

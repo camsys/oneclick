@@ -57,7 +57,7 @@ class ServicesController < ApplicationController
     @contact = @service.internal_contact
 
     @staff = User.with_role(:provider_staff, @service.provider)
-    @eh = EligibilityHelpers.new
+    @eh = EligibilityService.new
   end
 
   # PUT /services/1
