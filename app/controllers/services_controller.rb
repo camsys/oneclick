@@ -57,6 +57,7 @@ class ServicesController < ApplicationController
     @contact = @service.internal_contact
 
     @staff = User.with_role(:provider_staff, @service.provider)
+    @eh = EligibilityHelpers.new
   end
 
   # PUT /services/1
@@ -65,6 +66,7 @@ class ServicesController < ApplicationController
     @service = Service.find(params[:id])
 
     respond_to do |format|
+      par = service_params
       if @service.update_attributes(service_params)
         # internal_contact is a special case
         @service.internal_contact = User.find_by_id(params[:service][:internal_contact])
@@ -79,7 +81,7 @@ class ServicesController < ApplicationController
   end
 
   def service_params
-    params.require(:service).permit(:name, :phone, :email, :url, :external_id, :booking_service_code) 
+    params.require(:service).permit(:name, :phone, :email, :url, :external_id, :booking_service_code, :advanced_notice_minutes, { accommodation_ids: [] }, { trip_purpose_ids: [] })
   end
 
 end

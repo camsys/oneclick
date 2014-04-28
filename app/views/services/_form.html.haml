@@ -70,65 +70,56 @@ wrapper: :horizontal_form do |f|
       .well.well2
         %h4=t(:accommodations)
         .well.white-well.wwell1
-          -if @service.accommodations.count == 0
-            = t(:no_accommodations)
-          -else
+          = f.association :accommodations,
+                collection: Accommodation.all.map{|a| [ t(a.name), a.id ] }, label: false,
+                input_html: { size: Accommodation.count }
+  .row
+    .col-sm-4
+      .well.well1
+        %h4= t(:eligibility)
+        = t(:eligibility_rules_descr)
+        .well.white-well.wwell1
+          -if @service.service_characteristics.count > 0
             %ul
-              -@service.accommodations.each do |accom|
-                %li
-                  =t(accom.name)
-    .row
-      .col-sm-4
-        .well.well1
-          %h4= t(:eligibility)
-          = t(:eligibility_rules_descr)
-          .well.white-well.wwell1
-            -if @service.service_characteristics.count > 0
-              %ul
-              -groups = @service.service_characteristics.map(&:group).uniq
-              -groups.each do |group|
-                -group_string = ""
-                -@service.service_characteristics.where(group: group).each do |map|
-                  -if map.characteristic.code == "age"
-                    -group_string += "Age is "+ @eh.relationship_to_words(map.value_relationship_id).to_s + " " + map.value.to_s + " "
-                  -else
-                    -group_string += t(map.characteristic.name) + " "
-                  -group_string += "AND "
-                %li
-                  =group_string[0..-6]
-            -else
-              = t(:no_restriction)
-
-      .col-sm-4
-        .well.well1
-          %h4= t(:trip_purposes)
-          .well.white-well.wwell1
-            = f.input_field :trip_purposes
-            -if @service.trip_purposes.count == 0
-              = t(:no_restriction)
-            -else
-              %ul
-                -@service.trip_purposes.each do |purpose|
-                  %li
-                    =t(purpose.name)
-
-      .col-sm-4
-        .well.well1 
-          %h4= t(:fare)
-          -@service.fare_structures.each do |fare|
-            .well.white-well.wwell2
-              .row_fluid
-                -if fare.base
-                  %b=t(:cost)
-                  =number_to_currency(fare.base.to_f).to_s
+            -groups = @service.service_characteristics.map(&:group).uniq
+            -groups.each do |group|
+              -group_string = ""
+              -@service.service_characteristics.where(group: group).each do |map|
+                -if map.characteristic.code == "age"
+                  -group_string += "Age is "+ @eh.relationship_to_words(map.value_relationship_id).to_s + " " + map.value.to_s + " "
                 -else
-                  %b=t(:cost)
-                  =t(:flat_fare_unavailable) + "."
-              %b=t(:comments) + ":  "
-              -if fare.desc
-                =fare.desc.html_safe
+                  -group_string += t(map.characteristic.name) + " "
+                -group_string += "AND "
+              %li
+                =group_string[0..-6]
+          -else
+            = t(:no_restriction)
+
+    .col-sm-4
+      .well.well1
+        %h4= t(:trip_purposes)
+        .well.white-well.wwell1
+          = f.association :trip_purposes,
+                collection: TripPurpose.all.map{|p| [ t(p.name), p.id ] }, label: false,
+                input_html: { size: TripPurpose.count }
+
+    .col-sm-4
+      .well.well1 
+        %h4= t(:fare)
+        -@service.fare_structures.each do |fare|
+          .well.white-well.wwell2
+            .row_fluid
+              -if fare.base
+                %b=t(:cost)
+                =number_to_currency(fare.base.to_f).to_s
               -else
-                =""
+                %b=t(:cost)
+                =t(:flat_fare_unavailable) + "."
+            %b=t(:comments) + ":  "
+            -if fare.desc
+              =fare.desc.html_safe
+            -else
+              =""
   .well
     .row.text-center
       .col-sm-12
