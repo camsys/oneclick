@@ -38,7 +38,6 @@
 :javascript
   $(function() {
     var tripResponse = #{@tripResponse.to_json};
-    console.log(tripResponse);
     var pageRenderer = new TripReviewPageRenderer(30, 20);
     pageRenderer.processTripResponse(tripResponse);
   });

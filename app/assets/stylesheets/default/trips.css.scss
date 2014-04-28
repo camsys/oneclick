@@ -205,6 +205,7 @@
 }
 
 .select-column {
+  text-align: center;
 }
 
 .single-plan-select {
@@ -233,7 +234,7 @@
 .chart-tooltip {   
   position: absolute;           
   text-align: center;           
-  width: 100px;                  
+  width: 300px;                  
   height: auto;                 
   padding: 2px;             
   font: 12px sans-serif;        
@@ -255,9 +256,10 @@
 
 .travel-legend {
   width: 50px;
-  height: 30px;
+  height: 25px;
   display: inline-block;
   margin-right: 2px;
+  border: 1px black solid
 }
 
 .travel-legend-walk {
