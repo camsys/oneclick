@@ -16,9 +16,10 @@
           %i.fa.fa-map-marker
         / #fromMapTitle{class: 'hide'}
         /   Map
-      %div{id: "#{dir}MapContainer", class: 'hide', style: 'position: absolute; top: 0; right:-400px;'}
-        / .content{style: 'width: 100px; height: 100px;'}
-        / %button.btn.btn-default{type: 'test'}
-        /   Click Me
-        /         #lmap.map{:style => "height:500px;"}
-        = LeafletMap({ :mapid => "#{dir}Map", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '400px;', :style => "height: 300px; width: 400px;" })
+      - if dir=='from'
+        %div{id: "tripMapContainer", class: 'hide', style: 'position: absolute; top: 0; right:-400px;'}
+          / .content{style: 'width: 100px; height: 100px;'}
+          / %button.btn.btn-default{type: 'test'}
+          /   Click Me
+          /         #lmap.map{:style => "height:500px;"}
+          = LeafletMap({ :mapid => "tripMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '400px;', :style => "height: 300px; width: 400px;" })

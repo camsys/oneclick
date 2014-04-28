@@ -76,41 +76,35 @@ $ ->
   
   # Show/hide map popover when in input field
   $('#trip_proxy_from_place').on 'typeahead:opened', () ->
-    show_map('from')
+    show_map('trip')
   $('#trip_proxy_from_place').on 'focusout', () ->
-    hide_map('from')
+    hide_map('trip')
   $('#trip_proxy_to_place').on 'typeahead:opened', () ->
-    show_map('to')
+    show_map('trip')
   $('#trip_proxy_to_place').on 'focusout', () ->
-    hide_map('to')
-
-  # Hide the other map when one is shown
-  $('#fromAddressMarkerButton').on 'show.bs.popover', () ->
-    $('#toAddressMarkerButton').popover('hide')
-  $('#toAddressMarkerButton').on 'show.bs.popover', () ->
-    $('#fromAddressMarkerButton').popover('hide')
+    hide_map('trip')
 
   $('#trip_proxy_from_place').on 'typeahead:selected', (e, s, d) ->
     $('#from_place_object').val(JSON.stringify(s))
-    update_map(CsMaps.fromMap, 'from', e, s, d)
+    update_map(CsMaps.tripMap, 'trip', e, s, d)
   $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, s, d) ->
     $('#from_place_object').val(JSON.stringify(s))
-    update_map(CsMaps.fromMap, 'from', e, s, d)
+    update_map(CsMaps.tripMap, 'trip', e, s, d)
   $('#trip_proxy_to_place').on 'typeahead:selected', (e, s, d) ->
     $('#to_place_object').val(JSON.stringify(s))
-    update_map(CsMaps.toMap, 'to', e, s, d)
+    update_map(CsMaps.tripMap, 'trip', e, s, d)
   $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, s, d) ->
     $('#to_place_object').val(JSON.stringify(s))
-    update_map(CsMaps.toMap, 'to', e, s, d)
+    update_map(CsMaps.tripMap, 'trip', e, s, d)
 
   # TODO This needs to be done differently.
   # Not sure why the form needs a map center on submit, it has two locations...
   # Maybe this is only needed if the user typed something in, did not geocode.
   # For now use the fromMap center.
   $('#new_trip_proxy').on 'submit', ->
-    $('#map_center').val((CMaps.fromMap.getCenter().lat + ',' + CMaps.fromMap.getCenter().lng))
+    $('#map_center').val((CMaps.tripMap.getCenter().lat + ',' + CMaps.tripMap.getCenter().lng))
 
   $('#fromAddressMarkerButton').on 'click', ->
-    toggle_map('from')
+    toggle_map('trip')
   $('#toAddressMarkerButton').on 'click', ->
-    toggle_map('to')
+    toggle_map('trip')
