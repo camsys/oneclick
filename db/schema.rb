@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140428130108) do
+ActiveRecord::Schema.define(version: 20140428135709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -245,11 +245,10 @@ ActiveRecord::Schema.define(version: 20140428130108) do
   end
 
   create_table "service_accommodations", force: true do |t|
-    t.integer "service_id",                                       null: false
-    t.integer "accommodation_id",                                 null: false
-    t.string  "value",                 limit: 64
-    t.boolean "requires_verification",            default: false, null: false
-    t.boolean "active",                           default: true,  null: false
+    t.integer "service_id",                            null: false
+    t.integer "accommodation_id",                      null: false
+    t.boolean "requires_verification", default: false, null: false
+    t.boolean "active",                default: true,  null: false
   end
 
   create_table "service_characteristics", force: true do |t|
@@ -269,10 +268,9 @@ ActiveRecord::Schema.define(version: 20140428130108) do
   end
 
   create_table "service_trip_purpose_maps", force: true do |t|
-    t.integer "service_id",                                      null: false
-    t.integer "trip_purpose_id",                                 null: false
-    t.string  "value",                 limit: 64
-    t.boolean "active",                           default: true, null: false
+    t.integer "service_id",                           null: false
+    t.integer "trip_purpose_id",                      null: false
+    t.boolean "active",                default: true, null: false
     t.integer "value_relationship_id"
   end
 
