@@ -13,8 +13,10 @@
             "trip_part_id": "Number", //ActiveRecord ID
             "is_depart_at": "Boolean", // If true, trip planned as depart-at, if false, trip planned as arrive-by
             "description": "String", // Textual description of trip, e.g. "Outbound - 40 Courtland Street NE Atlanta, GA 30308 to Atlanta VA Medical Center"
-            "start_time": "String", // Start Time requested by user if "depart_by", earliest leaving time (perhaps with a fudge factor) if "arrive_by"
-            "end_time": "String", // Latest arriving time if "depart_by", user requested time if "arrive_by"
+            "start_time": "String", // Start Time requested by user if "depart_by", earliest leaving time (perhaps with a fudge factor) if "arrive_by". Null if unspecified by the user.
+            "end_time": "String", // Latest arriving time if "depart_by", user requested time if "arrive_by" Null if unspecified by the user.
+            "min_ui_duration": "Integer Opt", // minimum time range the UI should show
+            "max_ui_duration": "Integer Opt", // maximum time range the UI should show
             "itineraries": [ // List of potential itineraries
                 { // individual itinerary
                     "id": "Number", // ActiveRecord ID
@@ -55,9 +57,10 @@
                         "total_wait_time": "Number", // (seconds) 
                     },
                     "transfers": "Number", // 0 if no transfers
-                    "start_time": "String", // UTC time of start of itinerary, per ISO 8601
-                    "end_time": "String", // UTC time of end of itinerary, per ISO 8601
-                    "scheduled": "Boolean", // Whether start/end_time are from a schedule, or estimated
+                    "start_time": "String", // UTC time of start of itinerary, per ISO 8601. Null if unknown.
+                    "end_time": "String", // UTC time of end of itinerary, per ISO 8601. Null if unknown.
+                    "start_time_adj": "String", // start_time adjusted by +(0.5 * service_window). Null if start_time unknown
+                    "service_window": "Integer", // service's service window (e.g. window for commitment of pickup), in minutes
                     "legs": [ //Each portion of the itinerary, equivalent to a single colored box within a racelane from the wireframes
                         {
                             "type": "String", // "String" description of the leg ("wait"/"bus"/"walk" etc...)
