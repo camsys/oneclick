@@ -1,4 +1,10 @@
-= render partial: 'breadcrumbs'
+%ol#wizards.breadcrumb
+  %li.breadcrumb-page.prev-page
+    %a{href: "#"} Trip
+  %li.breadcrumb-page.prev-page
+    %a{href: "#"} Options
+  %li.breadcrumb-page.current-page Review
+  %li.breadcrumb-page.next-page Plan
 - if @tripResponse.status == 0
   .row
     .col-sm-12
@@ -27,7 +33,7 @@
       #filterContainer.col-sm-12.well{style: "padding: 0px;"}
     / end of filter column
     .col-md-9
-      .col-xs-12.form-group
+      .col-xs-12.page-action-button-container
         #legendContainer.col-xs-10{style: "padding: 0px; height: 100%;"}
         %button.btn.btn-default.pull-right.action-button Plan
       #tripContainer.col-xs-12{style: "padding: 0px;"}

@@ -99,24 +99,29 @@
 }
 
 /*breadcrumbs*/
+.breadcrumb-page {
+  margin: 3px 0px;
+  width: 100px;
+  height: 30px;
+  text-align: center;
+}
+
 .current-page {
-  width: 80px;
   background-image: image-url('active.png');
-  text-align: center;
   font-weight: bold;
+  font-size: 16px;
   color: white;
+  line-height: 30px;
 }
 
 .prev-page {
-  width: 80px;
   background-image: image-url('inactive.png');
-  text-align: center;
-}
 
-.prev-page {
   a{
     font-weight: bold;
     color: black;
+    font-size: 16px;
+    line-height: 30px;
   }
 
   a:hover {
@@ -126,11 +131,11 @@
 }
 
 .next-page {
-  width: 80px;
   background-image: image-url('inactive.png');
-  text-align: center;
   font-weight: bold;
   color: black;
+  font-size: 16px;
+  line-height: 30px;
 }
 
 #wizards{
@@ -163,7 +168,7 @@
 }
 
 .prev-period {
-  width: 30px;
+  width: 40px;
   height: 20px;
   background-image: image-url('prevPeriod.png');
   background-color: transparent;
@@ -173,7 +178,7 @@
 }
 
 .next-period {
-  width: 30px;
+  width: 40px;
   height: 20px;
   background-image: image-url('nextPeriod.png');
   background-color: transparent;
@@ -205,7 +210,8 @@
 }
 
 .select-column {
-  text-align: center;
+  text-align: right;
+  line-height: 50px;
 }
 
 .single-plan-select {
@@ -259,7 +265,12 @@
   height: 25px;
   display: inline-block;
   margin-right: 2px;
-  border: 1px black solid
+  border: 1px black solid;
+}
+
+.travel-legend-text {
+  float: right;
+  line-height: 30px
 }
 
 .travel-legend-walk {

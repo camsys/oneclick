@@ -1,7 +1,12 @@
-= render partial: 'breadcrumbs'
+%ol#wizards.breadcrumb
+  %li.breadcrumb-page.prev-page 
+    %a{href: "#"}Trip
+  %li.breadcrumb-page.current-page Options
+  %li.breadcrumb-page.next-page Review
+  %li.breadcrumb-page.next-page Plan
 .row
   .col-sm-7.col-xs-12
-    .col-xs-12.form-group
+    .col-xs-12.page-action-button-container
       %button.btn.btn-default.pull-right.action-button{:type => "button"}Search
     .col-xs-12.well
       %form{:role => "form"}

@@ -626,7 +626,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 						legendTags += 
 							"<div class='travel-legend-container'>" + 
 							"<div class='travel-legend " + className + "'/>" +
-							"<span>" + legendText + "</span>" +
+							"<span class='travel-legend-text'>" + legendText + "</span>" +
 							"</div>";
 					}
 				});
