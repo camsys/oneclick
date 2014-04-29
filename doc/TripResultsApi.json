@@ -49,12 +49,12 @@
                         "comments": "String Opt" // Any textural information pertaining to price.  For display if a simple price is not available.
                     },
                     "duration": {
-                        "external_duration": "String", // (seconds) Textural description of duration, for display to users
-                        "sortable_duration": "Number", // (seconds) For filtering purposes, not display
-                        "total_walk_time": "Number", // (seconds) 
-                        "total_walk_dist": "Number", // (feet?) 
-                        "total_transit_time": "Number", // (seconds) 
-                        "total_wait_time": "Number", // (seconds) 
+                        "external_duration": "String Opt", // (seconds) Textural description of duration, for display to users
+                        "sortable_duration": "Number Opt", // (seconds) For filtering purposes, not display
+                        "total_walk_time": "Number Opt", // (seconds) 
+                        "total_walk_dist": "Number Opt", // (feet?) 
+                        "total_transit_time": "Number Opt", // (seconds) 
+                        "total_wait_time": "Number Opt", // (seconds) 
                     },
                     "transfers": "Number", // 0 if no transfers
                     "start_time": "String", // UTC time of start of itinerary, per ISO 8601. Null if unknown.
