@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140428191723) do
+ActiveRecord::Schema.define(version: 20140429193006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -298,6 +298,8 @@ ActiveRecord::Schema.define(version: 20140428191723) do
     t.string   "phone",                        limit: 25
     t.string   "url"
     t.string   "booking_service_code"
+    t.integer  "service_window"
+    t.float    "time_factor"
   end
 
   create_table "services_users", id: false, force: true do |t|
