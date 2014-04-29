@@ -134,7 +134,7 @@ def add_providers_and_services
         end
         #Trip purpose requirements
         [medical, dialysis, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -150,7 +150,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [door_to_door, curb_to_curb, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
 
@@ -164,7 +164,7 @@ def add_providers_and_services
 
         #Trip Purpose Requirements
         [medical, dialysis, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -178,7 +178,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [door_to_door, curb_to_curb, driver_assistance_available, motorized_wheelchair_accessible, lift_equipped].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "esp#7" #Fulton County office of Aging
@@ -190,7 +190,7 @@ def add_providers_and_services
         end
         #Trip Purpose Requirements
         [medical, dialysis, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -205,7 +205,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Provided
         [folding_wheelchair_accessible, driver_assistance_available, motorized_wheelchair_accessible, curb_to_curb, door_to_door, lift_equipped].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
         #Create service #11 DARTS
@@ -216,7 +216,7 @@ def add_providers_and_services
         end
         #Trip Purpose Requirements
         [work, training, medical, dialysis, cancer, personal, general].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -230,7 +230,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Provided
         [folding_wheelchair_accessible, driver_assistance_available, door_to_door, curb_to_curb, lift_equipped].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "esp#3" #Jewish Family & Career Center
@@ -243,7 +243,7 @@ def add_providers_and_services
 
         #Trip Purpose Requirements
         [medical, dialysis, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -259,7 +259,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [door_to_door, curb_to_curb, driver_assistance_available, folding_wheelchair_accessible, motorized_wheelchair_accessible, lift_equipped].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "esp#20" #Cobb Senior Services
@@ -272,7 +272,7 @@ def add_providers_and_services
 
         #Trip Purpose Requirements
         [work, training, medical, dialysis, cancer, personal, general].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -286,7 +286,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [door_to_door, curb_to_curb, driver_assistance_available, folding_wheelchair_accessible, motorized_wheelchair_accessible, lift_equipped].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "esp#15" #Cobb Community Transit
@@ -300,7 +300,7 @@ def add_providers_and_services
 
         #Trip Purpose Requirements
         [work, training, medical, dialysis, cancer, personal, general].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -319,7 +319,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible, motorized_wheelchair_accessible, lift_equipped].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "esp#22" #Mountain Area Transportation Services
@@ -332,7 +332,7 @@ def add_providers_and_services
 
         #Trip Purpose Requirements
         [work, training, medical, dialysis, cancer, personal, general].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -346,7 +346,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [curb_to_curb, door_to_door, folding_wheelchair_accessible, lift_equipped].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "esp#34" #I care transportation service.
@@ -359,7 +359,7 @@ def add_providers_and_services
 
         #Trip Purpose Requirements
         [medical, dialysis, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -379,7 +379,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [curb_to_curb].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "esp#8" #Rockdale County Senior Services
@@ -392,7 +392,7 @@ def add_providers_and_services
 
         #Trip Purpose Requirements
         [work, training, medical, dialysis, cancer, personal, general].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -411,7 +411,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [curb_to_curb, door_to_door, driver_assistance_available, folding_wheelchair_accessible, motorized_wheelchair_accessible, lift_equipped].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
     end
