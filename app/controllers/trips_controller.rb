@@ -47,6 +47,31 @@ class TripsController < PlaceSearchingController
       session[:current_trip_id] = nil
     end
 
+    #if this trip has been booked, get booking information
+    if @trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.booking_confirmation
+      eh = EcolaneHelpers.new
+      result, message = eh.get_trip_info(@trip.outbound_part.selected_itinerary)
+      if result
+        @outbound_pu_time = message[:pu_time]
+        @outbound_do_time = message[:do_time]
+      else
+        @outbound_pu_time = "not yet assigned."
+        @outbound_do_time = "not yet assigned."
+      end
+    end
+
+    if @trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.booking_confirmation
+      eh = EcolaneHelpers.new
+      result, message = eh.get_trip_info(@trip.return_part.selected_itinerary)
+      if result
+        @return_pu_time = message[:pu_time]
+        @return_do_time = message[:do_time]
+      else
+        @return_pu_time = "not yet assigned."
+        @return_do_time = "not yet assigned."
+      end
+    end
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trip }
@@ -582,12 +607,11 @@ class TripsController < PlaceSearchingController
 
   def book
     @itinerary = Itinerary.find(params[:itin].to_i )
-    puts params.ai
-    puts @itinerary.id
     eh = EcolaneHelpers.new
-    result, message = eh.book_itinerary(@itinerary)
+    result, messages = eh.book_itinerary(@itinerary)
+
     respond_to do |format|
-      format.js
+      format.json { render json: [result, messages] }
     end
 
   end

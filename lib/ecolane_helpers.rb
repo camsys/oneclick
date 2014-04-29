@@ -14,8 +14,51 @@ class EcolaneHelpers
     funding_options = query_funding_options(itinerary)
     funding_xml = Nokogiri::XML(funding_options.body)
     resp  = request_booking(itinerary, funding_xml)
-    puts resp.ai
-    return true, "Success!"
+    result, messages = unpack_booking_response(resp, itinerary)
+    if result
+      return get_trip_info(itinerary)
+    else
+      return result, messages
+    end
+  end
+
+  def unpack_booking_response (resp, itinerary)
+    resp_xml = Nokogiri::XML(resp.body)
+    status = resp_xml.xpath("status").attribute('result').value
+    messages = []
+    case status
+      when "failure"
+        resp_xml.xpath("status").xpath("error").each do |error|
+          messages << error.xpath("message").text
+        end
+        return false, messages
+
+      when "success"
+        confirmation = resp_xml.xpath("status").xpath("success").attribute('resource_id').value
+        messages << "Trip#" + confirmation.to_s + " successfully booked."
+        itinerary.booking_confirmation = confirmation
+        itinerary.save
+        return true, messages
+    end
+
+    return false, ["Unknown response."]
+  end
+
+  def get_trip_info(itinerary)
+    resp = fetch_single_order(itinerary.booking_confirmation)
+    return unpack_fetch_single(resp, itinerary.booking_confirmation)
+
+  end
+
+  def unpack_fetch_single (resp, confirmation)
+    unless resp.code == "200"
+      return false, resp.message
+    end
+    resp_xml = Nokogiri::XML(resp.body)
+    pu_time = DateTime.xmlschema(resp_xml.xpath("order").xpath("pickup").xpath("negotiated").text).strftime("%b %e, %l:%M %p")
+    do_time = DateTime.xmlschema(resp_xml.xpath("order").xpath("dropoff").xpath("negotiated").text).strftime("%b %e, %l:%M %p")
+    return true, {pu_time: pu_time, do_time: do_time, confirmation: confirmation}
+
   end
 
   def request_booking(itinerary, funding_xml)
@@ -25,7 +68,8 @@ class EcolaneHelpers
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '2')
     order = order.to_s
-    send_request(url, 'POST', order)
+    result  = send_request(url, 'POST', order)
+    result
   end
 
   def query_funding_options(itinerary)
@@ -91,6 +135,13 @@ class EcolaneHelpers
     send_request(url)
   end
 
+  def fetch_single_order(trip_id)
+    url_options = "/api/order/" + SYSTEM_ID + '/'
+    url_options += trip_id.to_s
+    url = BASE_URL + url_options
+    send_request(url)
+  end
+
 
   ## Building hash objects that become XML nodes
   def build_order(itinerary, funding_xml=nil)
@@ -117,18 +168,18 @@ class EcolaneHelpers
 
   def build_pu_hash(itinerary)
     if itinerary.trip_part.is_depart
-      pu_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(itinerary.trip_part.from_trip_place)}
+      pu_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: test_build_location_hash(itinerary.trip_part.from_trip_place)}
     else
-      pu_hash = {location: build_location_hash(itinerary.trip_part.from_trip_place)}
+      pu_hash = {location: test_build_location_hash(itinerary.trip_part.from_trip_place)}
     end
     pu_hash
   end
 
   def build_do_hash(itinerary) #temp funciton
     if itinerary.trip_part.is_depart
-      do_hash = {location: build_location_hash(itinerary.trip_part.to_trip_place)}
+      do_hash = {location: test2_build_location_hash(itinerary.trip_part.to_trip_place)}
     else
-      do_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(itinerary.trip_part.to_trip_place)}
+      do_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: test2_build_location_hash(itinerary.trip_part.to_trip_place)}
     end
     do_hash
   end
@@ -182,7 +233,7 @@ class EcolaneHelpers
     {street_number: 434, street:"W Princess St", city: "York", state: 'PA'}
   end
 
-  def test_build_location2_hash(place)
+  def test2_build_location_hash(place)
     {street_number: 514, street:"S Pershing Ave", city: "York", state: 'PA'}
   end
 

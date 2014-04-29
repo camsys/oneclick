@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 20140428191723) do
     t.datetime "start_time"
     t.datetime "end_time"
     t.boolean  "is_bookable",                                       default: false, null: false
+    t.string   "booking_confirmation"
   end
 
   create_table "kiosk_locations", force: true do |t|
