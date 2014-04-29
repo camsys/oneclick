@@ -26,7 +26,7 @@ class TripPlanner
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
 
     url = base_url + url_options
-    Rails.logger.debug URI.parse(url)
+    Rails.logger.info URI.parse(url)
     t = Time.now
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
@@ -77,7 +77,7 @@ class TripPlanner
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
       trip_itinerary['mode'] = Mode.transit
-      trip_itinerary['duration'] = itinerary['duration'].to_f/1000
+      trip_itinerary['duration'] = itinerary['duration']
       trip_itinerary['walk_time'] = itinerary['walkTime']
       trip_itinerary['transit_time'] = itinerary['transitTime']
       trip_itinerary['wait_time'] = itinerary['waitingTime']
