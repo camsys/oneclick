@@ -1,0 +1,24 @@
+- i = itinerary
+.row.col-sm-12{style: "background: white; margin: 0px 0px 5px 0px; border-radius: 5px;"}
+  %table
+    %tbody
+      %tr
+        %td.itinerary_icons{:width => '20%', :style => "text-align: left;"}
+          /%i.transit_itinerary_icons.mode_icon_formatting{:class => get_mode_icon(i.mode)}
+          %i.transit_itinerary_icons.mode_icon_formatting{:class => get_mode_icon('bus')}
+        %td{:width => '20%'}
+          .itinerary_text
+            = i.cost_in_words
+        %td{:width => '20%'}
+          .itinerary_text
+            /= format_time(i.start_time) + ' ' + t(:to) + ' ' + format_time(i.end_time)
+            TODO: Time range
+          .itinerary_text_small
+            = i.duration_in_words
+        %td{:width => '20%'}
+          .itinerary_text
+            = i.walking_time
+        %td{:width => '20%'}
+          .itinerary_text
+            = i.transfers_in_words
+

@@ -34,10 +34,32 @@
         #tickLabelContainer.col-xs-12{style: "padding: 0px;"}
       / end of trip container
     / end of review columns
-    
+#itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
 :javascript
   $(function() {
     var tripResponse = #{@tripResponse.to_json};
     var pageRenderer = new TripReviewPageRenderer(30, 20);
     pageRenderer.processTripResponse(tripResponse);
+
+    //click chart to show details in modal dialog
+    d3.selectAll("rect")
+      .on("click", function(tripLeg){
+        if(typeof(tripLeg) === 'object' && tripLeg != null) {
+          var planId = tripLeg.planId;
+          $.ajax({
+            url: window.location.href + '/itinerary', //TODO: is this the best way to get itinerary?
+            data: {itin: planId},
+            success: function(result) {
+              if(CsMaps != null && CsMaps.lmap != null) {
+                CsMaps.lmap.resetMap();
+              }
+              $('#itinerary_modal').html(result); 
+              $('#itinerary_modal').modal({keyboard: false});
+              $('#lmap').css('height', '300px');
+              CsMaps.lmap.invalidateMap();
+              CsMaps.lmap.showMap();
+            }
+          })
+        }
+      })
   });

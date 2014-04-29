@@ -102,7 +102,7 @@ $ ->
   # Maybe this is only needed if the user typed something in, did not geocode.
   # For now use the fromMap center.
   $('#new_trip_proxy').on 'submit', ->
-    $('#map_center').val((CMaps.tripMap.getCenter().lat + ',' + CMaps.tripMap.getCenter().lng))
+    $('#map_center').val((CsMaps.tripMap.getCenter().lat + ',' + CsMaps.tripMap.getCenter().lng))
 
   $('#fromAddressMarkerButton').on 'click', ->
     toggle_map('trip')

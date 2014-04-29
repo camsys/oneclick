@@ -198,6 +198,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 			if(typeof(tripPlan) === 'object' && tripPlan != null) {
 				var tripPlanChartId = tripPlanDivPrefix + tripId + "_" + tripPlan.id;
 				createChart(
+					tripPlan.id,
 					tripPlanChartId, 
 					tripPlan.legs, 
 					tripStartTime, 
@@ -496,7 +497,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 			});
 
 			var missInfoTags = 
-			'<div class="modal fade" data-backdrop="static" id="' + missInfoDivId + '" tabindex="-1" role="dialog" aria-labelledby="'+ missInfoDivId + '-title" aria-hidden="true">' +
+			'<div class="modal fade" data-backdrop="static" id="' + missInfoDivId + '-restriction" tabindex="-1" role="dialog" aria-labelledby="'+ missInfoDivId + '-title" aria-hidden="true">' +
 			  '<div class="modal-dialog">' +
 			    '<div class="modal-content">' +
 			      '<div class="modal-header">' +
@@ -571,8 +572,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 									'<script type="text/javascript">' +
 										'$(function () {' +
 											'$("#' + controlName + '-date").datetimepicker({' +
-												'defaultDate: new Date(),' +
-												'pickTime: false ' +
+												'defaultDate: new Date()'
 											'});' +
 										'});' +
 									'</script>';
@@ -941,6 +941,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	
 	/**
 	 * Create a timeline chart
+	 * @param {number} planId 
 	 * @param {string} chartDivId 
 	 * @param {Array} tripLegs
 	 * @param {Date} tripStartTime
@@ -948,11 +949,18 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	 * @param {number} intervalStep
 	 * @param {number} barHeight
 	 */
-	function createChart(chartDivId, tripLegs, tripStartTime, tripEndTime, intervalStep, barHeight) {
+	function createChart(planId, chartDivId, tripLegs, tripStartTime, tripEndTime, intervalStep, barHeight) {
 		if(! tripStartTime instanceof Date || ! tripEndTime instanceof Date || 
 			! tripLegs instanceof Array || typeof(intervalStep) != 'number' || typeof(barHeight) != 'number') {
 			return;
 		}
+
+		//planId is used in chart_onclick event
+		//sent to server to get itinerary and render plan details modal
+		tripLegs.forEach(function(leg){
+			leg.planId = planId;
+		});
+
 		var $chart = $('#' + chartDivId);
 		if($chart.length === 0) { //this chart div doesnt exist
 			return;
