@@ -73,7 +73,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
 	var tripContainerId = 'tripContainer'; //id of trip container Div
 	var legendContainerId = "legendContainer"; //id of legend container div
-	var filterContainerId = "filterContainer"; //id of legend container div
+	var filterContainerId = "filterContainer"; //id of filter container div
 	var modeContainerId = "modeContainer"; //id of mode filter container div
 	var transferSliderId = "transferSlider"; //id of transfer filter slider
 	var costSliderId = "costSlider"; //id of cost filter slider
@@ -120,6 +120,11 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		
 		//process legends
 		addLegendHtml(tripParts);
+
+		//add sorting dropdown change listener
+		$('.single-trip-part select').on('change', function(e){
+			sortItineraryBy(e.currentTarget);
+		});
 		
 		//process filters
 		addFilterHtml(tripParts);
@@ -167,7 +172,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 			return resizeChartArray;
 		}
 		
-		var tripTags = "<div class='col-xs-12 well' style='padding: 0px;'>";
+		var tripTags = "<div class='col-xs-12 well single-trip-part'>";
 		
 		var tickLabels = getTickLabels(tripStartTime, tripEndTime, intervalStep);
 		//process header
@@ -176,6 +181,19 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		
 		//process each trip plan
 		var tripPlans = trip.itineraries;
+		tripPlans = tripPlans.sort(function(itin1, itin2) {
+			if(isDepartAt) {
+				var departTime1 = parseDate(itin1.start_time);
+				var departTime2 = parseDate(itin2.start_time);
+				
+				return (departTime1 - departTime2);
+			} else {
+				var arrivalTime1 = parseDate(itin1.end_time);
+				var arrivalTime2 = parseDate(itin2.end_time);
+				
+				return (arrivalTime1 - arrivalTime2);
+			}
+		});
 		tripPlans.forEach(function(tripPlan) {
 			if(typeof(tripPlan) === 'object' && tripPlan != null) {
 				tripTags += addTripPlanHtml(
@@ -183,6 +201,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 					tripPlan,
 					trip.start_time,
 					trip.end_time,
+					tripPlan.start_time,
+					tripPlan.end_time,
 					isDepartAt
 				);
 			}
@@ -364,17 +384,27 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 			});
 		}
 		
+		var sorterTags = 
+		'<label' + (isDepartAt ? ' class="negative-margin-left"' : '') + '>Sort by: </label>' + 
+		'<select style="display: inline-block;"' + (isDepartAt ? '' : ' class="negative-margin-right"') + '>' +
+			'<option value="start-time" ' + (isDepartAt ? ' selected' : '') + '>Departure Time</option>' +
+			'<option value="end-time" ' + (isDepartAt ? '' : ' selected') + '>Arrival Time</option>' +
+			'<option value="cost" >Cost</option>' +
+			'<option value="duration" >Travel Time</option>' +
+		'</select>';
+		
 		var tripHeaderTags = tripDescTag +
 				"<div class='col-xs-12 single-plan-header' style='padding: 0px;'>" +
 					"<div class='col-xs-2' style='padding: 0px;'>" +
 						(isDepartAt ? ("<button class='btn btn-default btn-xs pull-right prev-period'> -" + intervelStep + "</button>") : "") +
 					"</div>" +
-					"<div class='col-xs-9 " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap;'>" +
+					"<div class='col-xs-9 " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
 						(
 							isDepartAt ? 
 							("<button class='btn btn-default btn-xs pull-left next-period'> +" + intervelStep + "</button>") : 
 							("<button class='btn btn-default btn-xs pull-right prev-period'> -" + intervelStep + "</button>")
 						) +
+						sorterTags +
 					"</div>" +
 					"<div class='col-xs-1 select-column' style='padding: 0px;'>" +	
 						(isDepartAt ? "" : ("<button class='btn btn-default btn-xs pull-left next-period'> +" + intervelStep + "</button>")) +
@@ -394,12 +424,14 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	 * Render trip part
 	 * @param {number} tripId
 	 * @param {Object} tripPlan
-	 * @param {string} strStartTime: trip start time
-	 * @param {string} strEndTime: trip end time
+	 * @param {string} strTripStartTime: trip start time
+	 * @param {string} strTripEndTime: trip end time
+	 * @param {string} strPlanStartTime: trip itinerary start time
+	 * @param {string} strPlanEndTime: trip itinerary end time
 	 * @param {bool} isDepartAt: true if departing at, false if arriving at
 	 * @return {string} HTML tags of each trip plan
 	 */
-	function addTripPlanHtml(tripId, tripPlan, strStartTime, strEndTime, isDepartAt) {
+	function addTripPlanHtml(tripId, tripPlan, strTripStartTime, strTripEndTime, strPlanStartTime, strPlanEndTime, isDepartAt) {
 		if(typeof(tripPlan)!= 'object' || tripPlan === null) {
 			return "";
 		}
@@ -427,8 +459,10 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		var dataTags = 
 			" data-trip-id='" + tripId + "'" +
 			" data-plan-id='" + planId + "'" +
-			" data-start-time='" + strStartTime + "'" +
-			" data-end-time='" + strEndTime + "'" +
+			" data-trip-start-time='" + strTripStartTime + "'" +
+			" data-trip-end-time='" + strTripEndTime + "'" +
+			" data-start-time='" + strPlanStartTime + "'" +
+			" data-end-time='" + strPlanEndTime + "'" +
 			" data-mode='" + mode + "'" +
 			" data-transfer='" + transfers.toString() + "'" +
 			" data-cost='" + ((typeof(cost) === 'object'  && cost != null) ? cost.price : '') + "'" +
@@ -1141,8 +1175,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 				
 				var tmpTripId = plan.attributes['data-trip-id'].value;
 				var tmpPlanId = plan.attributes['data-plan-id'].value;
-				var tmpTripStartTime = parseDate(plan.attributes['data-start-time'].value);
-				var tmpTripEndTime = parseDate(plan.attributes['data-end-time'].value);		
+				var tmpTripStartTime = parseDate(plan.attributes['data-trip-start-time'].value);
+				var tmpTripEndTime = parseDate(plan.attributes['data-trip-end-time'].value);		
 				var tmpChartDivId = tripPlanDivPrefix + tmpTripId + "_" + tmpPlanId;	
 				resizeChart(tmpChartDivId, tmpTripStartTime, tmpTripEndTime, intervalStep, barHeight);
 			} else {
@@ -1223,6 +1257,76 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		visible = (typeof(duration) === 'number' && duration >= minDuration && duration <= maxDuration);
 		
 		return visible;
+	}
+
+	/*
+	* based on given sortKey, get the value from itinerary container
+	* @param {object/dom} plan
+	* @param {string} sortKey
+	*/
+	function findSortValue(plan, sortKey) {
+		if(!plan || (typeof(sortKey) != 'string' || sortKey.trim().length === 0)) {
+			return null;
+		}
+		var attr = plan.attributes['data-' + sortKey];
+		if(!attr) {
+			return null;
+		}
+		
+		var rawValue = attr.value;
+		switch(sortKey) {
+			case 'start-time':
+			case 'end-time':
+				rawValue = parseDate(rawValue);
+				break;
+			case 'duration':
+			case 'price':
+				rawValue = parseFloat(rawValue);
+				break;
+			default:
+				break;
+		}
+		
+		return rawValue;
+	}
+	
+	/*
+	 * Sort trip itineraries by given type
+	 * @param {object/dom} sortDropdown
+	 */
+	function sortItineraryBy(sortDropdown) {
+		var sortKey = sortDropdown.value;
+		var planContainer = $(sortDropdown).parents('.single-trip-part');
+		var plans = planContainer.find('.single-plan-review');
+		var sortArray = [];
+		if(plans.length > 0) {
+			for(var i=0, planCount=plans.length; i<planCount; i++) {
+				sortArray.push({
+					itinerary: plans[i],
+					value: findSortValue(plans[i], sortKey)
+				});
+			}			
+		}
+		
+		sortArray = sortArray.sort(function(sortItem1, sortItem2){
+			return (sortItem1.value - sortItem2.value);
+		});
+		
+		if(sortArray.length > 0) {
+			var planHeader = planContainer.find('.single-plan-header');
+			var startInsertIndex = 0;
+			if(planHeader.length > 0) {
+				startInsertIndex= planContainer.children().index(planHeader[0]);
+			}
+			sortArray.forEach(function(sortItem) {
+				var detachItem = $(sortItem.itinerary).detach();
+				if (startInsertIndex === 0) {
+					planContainer.prepend(detachItem);
+				} else {
+					planContainer.children().eq(startInsertIndex++).after(detachItem);
+				}
+			});
+		}
 	}
 
 	//public methods

@@ -99,19 +99,22 @@
 }
 
 /*breadcrumbs*/
+$breadcrumb-height: 30px;
+$breadcrumb-font-size: 16px;
+
 .breadcrumb-page {
   margin: 3px 0px;
   width: 100px;
-  height: 30px;
+  height: $breadcrumb-height;
   text-align: center;
 }
 
 .current-page {
   background-image: image-url('active.png');
   font-weight: bold;
-  font-size: 16px;
+  font-size: $breadcrumb-font-size;
   color: white;
-  line-height: 30px;
+  line-height: $breadcrumb-height;
 }
 
 .prev-page {
@@ -120,8 +123,8 @@
   a{
     font-weight: bold;
     color: black;
-    font-size: 16px;
-    line-height: 30px;
+    font-size: $breadcrumb-font-size;
+    line-height: $breadcrumb-height;
   }
 
   a:hover {
@@ -134,8 +137,8 @@
   background-image: image-url('inactive.png');
   font-weight: bold;
   color: black;
-  font-size: 16px;
-  line-height: 30px;
+  font-size: $breadcrumb-font-size;
+  line-height: $breadcrumb-height;
 }
 
 #wizards{
@@ -167,8 +170,9 @@
   border-right: 1px black solid;
 }
 
+$period-nav-button-width: 40px;
 .prev-period {
-  width: 40px;
+  width: $period-nav-button-width;
   height: 20px;
   background-image: image-url('prevPeriod.png');
   background-color: transparent;
@@ -178,7 +182,7 @@
 }
 
 .next-period {
-  width: 40px;
+  width: $period-nav-button-width;
   height: 20px;
   background-image: image-url('nextPeriod.png');
   background-color: transparent;
@@ -187,6 +191,17 @@
   border: none;
 }
 
+.negative-margin-left {
+  margin-left: -$period-nav-button-width;
+}
+
+.negative-margin-right {
+  margin-right: -$period-nav-button-width;
+}
+
+.single-trip-part {
+  padding: 0px;
+}
 
 .single-plan-header{
   background-color: whitesmoke;
@@ -260,9 +275,10 @@
   display: inline-block; 
 }
 
+$legend-height: 20px;
 .travel-legend {
-  width: 50px;
-  height: 25px;
+  width: 35px;
+  height: $legend-height;
   display: inline-block;
   margin-right: 2px;
   border: 1px black solid;
@@ -270,7 +286,7 @@
 
 .travel-legend-text {
   float: right;
-  line-height: 30px
+  line-height: $legend-height
 }
 
 .travel-legend-walk {

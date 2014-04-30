@@ -1,12 +1,14 @@
+$nav-start-color: #FAFAFA;
+$nav-end-color: #A3A3A3;
 #publicNav{
-  background: #FAFAFA;
-  background: -moz-linear-gradient(top,  #FAFAFA 0%, #A3A3A3 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FAFAFA), color-stop(100%,#A3A3A3));
-  background: -webkit-linear-gradient(top,  #FAFAFA 0%,#A3A3A3 100%);
-  background: -o-linear-gradient(top,  #FAFAFA 0%,#A3A3A3 100%);
-  background: -ms-linear-gradient(top,  #FAFAFA 0%,#A3A3A3 100%);
-  background: linear-gradient(to bottom,  #FAFAFA 0%,#A3A3A3 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FAFAFA', endColorstr='#A3A3A3',GradientType=0 );
+  background: $nav-start-color;
+  background: -moz-linear-gradient(top,  $nav-start-color 0%, $nav-end-color 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$nav-start-color), color-stop(100%,$nav-end-color));
+  background: -webkit-linear-gradient(top,  $nav-start-color 0%,$nav-end-color 100%);
+  background: -o-linear-gradient(top,  $nav-start-color 0%,$nav-end-color 100%);
+  background: -ms-linear-gradient(top,  $nav-start-color 0%,$nav-end-color 100%);
+  background: linear-gradient(to bottom,  $nav-start-color 0%,$nav-end-color 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$nav-start-color}', endColorstr='#{$nav-end-color}',GradientType=0 );
 }
 
 @media(max-width:767px){
@@ -55,15 +57,17 @@
   }
 }
 
+$feedback-start-color: #F8F02A;
+$feedback-end-color: #CCA23D;
 #feedback {
-  background: #F8F02A;
-  background: -moz-linear-gradient(top,  #F8F02A 0%, #CCA23D 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F8F02A), color-stop(100%,#CCA23D));
-  background: -webkit-linear-gradient(top,  #F8F02A 0%,#CCA23D 100%);
-  background: -o-linear-gradient(top,  #F8F02A 0%,#CCA23D 100%);
-  background: -ms-linear-gradient(top,  #F8F02A 0%,#CCA23D 100%);
-  background: linear-gradient(to bottom,  #F8F02A 0%,#CCA23D 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F8F02A', endColorstr='#CCA23D',GradientType=0 );
+  background: $feedback-start-color;
+  background: -moz-linear-gradient(top,  $feedback-start-color 0%, $feedback-end-color 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$feedback-start-color), color-stop(100%,$feedback-end-color));
+  background: -webkit-linear-gradient(top,  $feedback-start-color 0%,$feedback-end-color 100%);
+  background: -o-linear-gradient(top,  $feedback-start-color 0%,$feedback-end-color 100%);
+  background: -ms-linear-gradient(top,  $feedback-start-color 0%,$feedback-end-color 100%);
+  background: linear-gradient(to bottom,  $feedback-start-color 0%,$feedback-end-color 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$feedback-start-color}', endColorstr='#{$feedback-end-color}',GradientType=0 );
 
   a{
     color: black;
@@ -72,15 +76,17 @@
   }
 }
 
+$versionLang-start-color: #7DCCE6;
+$versionLang-end-color: #3681B3;
 #versionLang {
-  background: #7DCCE6;
-  background: -moz-linear-gradient(top,  #7DCCE6 0%, #3681B3 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7DCCE6), color-stop(100%,#3681B3));
-  background: -webkit-linear-gradient(top,  #7DCCE6 0%,#3681B3 100%);
-  background: -o-linear-gradient(top,  #7DCCE6 0%,#3681B3 100%);
-  background: -ms-linear-gradient(top,  #7DCCE6 0%,#3681B3 100%);
-  background: linear-gradient(to bottom,  #7DCCE6 0%,#3681B3 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7DCCE6', endColorstr='#3681B3',GradientType=0 );
+  background: $versionLang-start-color;
+  background: -moz-linear-gradient(top,  $versionLang-start-color 0%, $versionLang-end-color 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$versionLang-start-color), color-stop(100%,$versionLang-end-color));
+  background: -webkit-linear-gradient(top,  $versionLang-start-color 0%,$versionLang-end-color 100%);
+  background: -o-linear-gradient(top,  $versionLang-start-color 0%,$versionLang-end-color 100%);
+  background: -ms-linear-gradient(top,  $versionLang-start-color 0%,$versionLang-end-color 100%);
+  background: linear-gradient(to bottom,  $versionLang-start-color 0%,$versionLang-end-color 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$versionLang-start-color}', endColorstr='$versionLang-end-color',GradientType=0 );
   height: 20px;
   color: #FEC800;
   font-size: 12px;
