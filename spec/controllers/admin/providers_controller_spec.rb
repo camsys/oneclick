@@ -42,7 +42,8 @@ describe Admin::ProvidersController do
       provider = create(:provider)
       provider2 = create(:provider)
       get :show, {:id => provider.to_param}, valid_session
-      assigns(:providers).should eq([provider, provider2])
+      assigns(:providers).should include provider
+      assigns(:providers).should include provider2
     end
   end
 
@@ -101,14 +102,13 @@ describe Admin::ProvidersController do
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested admin_provider" do
-        pending "not sure why this failing"
         provider = Provider.create! valid_attributes
         # Assuming there are no other admin_providers in the database, this
         # specifies that the Provider created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Provider.any_instance.should_receive(:update_attributes).with({ admin_provider: {"name" => "params"} })
-        put :update, {:id => provider.to_param, :admin_provider => { admin_provider: {"name" => "params"} }}, valid_session
+        Provider.any_instance.should_receive(:update_attributes).with( {"name" => "params"} )
+        put :update, {:id => provider.to_param, :admin_provider => { "name" => "params" }}, valid_session
       end
 
       it "assigns the requested admin_provider as @admin_provider" do
