@@ -89,9 +89,6 @@ class TripPlace < GeocodedAddress
     else
       raise "TripPlace.new_from_trip_proxy_place doesn't know how to handle type '#{j['type_name']}'"
     end
-    Rails.logger.info "FROM trip_prox_place"
-    Rails.logger.info self.ai
-    Rails.logger.info ""
     self
   end
 

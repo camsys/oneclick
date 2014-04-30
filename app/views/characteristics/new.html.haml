@@ -1,14 +1,50 @@
-.row
-  .col-sm-12
-    %h1
-      %i.fa.fa-info-circle
-      %span#characteristics_header
-        = render partial: 'header', locals: {total_steps: @total_steps}
+/ .row
+/   .col-sm-12
+/     %h1
+/       %i.fa.fa-info-circle
+/       %span#characteristics_header
+/         = render partial: 'header', locals: {total_steps: @total_steps}
 
-.row
-  .col-sm-12
-    = render partial: 'trips/trip_header', locals: {trip: @trip}
+/ .row
+/   .col-sm-12
+/     = render partial: 'trips/trip_header', locals: {trip: @trip}
 
+/ .row
+/   .well
+/     = render partial: 'characteristics/form',  :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
+
+%ol#wizards.breadcrumb
+  %li.breadcrumb-page.prev-page 
+    %a{href: "#"}Trip
+  %li.breadcrumb-page.current-page Options
+  %li.breadcrumb-page.next-page Review
+  %li.breadcrumb-page.next-page Plan
 .row
-  .well
-    = render partial: 'characteristics/form',  :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
+  .col-sm-7.col-xs-12
+    = simple_form_for @user_characteristics_proxy, :url => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :method => 'put', html: {class: 'form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_and_checkboxes, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |f|
+      .col-xs-12.page-action-button-container
+        %button.btn.btn-default.pull-right.action-button{:type => "button"}Search
+        =button_tag :type => 'submit', :class => "btn btn-default pull-right action-button" do
+          %i.fa.fa-arrow-right
+          =t(:next_step)
+
+      .col-xs-12.well
+        = f.error_notification
+        / %form{:role => "form"}
+        .form-group
+
+        -Characteristic.active.enabled.each do |c|
+          - next if c.code=='age' # TODO kludge
+          - case c.datatype
+          - when 'bool'
+            = f.input c.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(c.note), label_method: :last, value_method: :first
+          - else
+            = f.input c.code.to_sym, label: t(c.note)
+        -Accommodation.where(:datatype => 'bool').each do |a|
+          = f.input a.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(a.note), label_method: :last, value_method: :first
+
+  / end of options column
+  .col-sm-5.col-xs-12
+    #cmsPlaceholder.well
+      TODO:(CMS)
+  / end of CMS column

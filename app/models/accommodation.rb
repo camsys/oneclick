@@ -3,6 +3,7 @@
 # name: 'Folding wheelchair accessible.'
 # note: 'Do you need a vehicle that has space for a folding wheelchair?'
 # datatype: 'bool'
+# sequence: integer
 #
 # Services have accommodations that they offer; users have accomodations that they require.
 #

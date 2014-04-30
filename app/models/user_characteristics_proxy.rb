@@ -17,12 +17,18 @@ class UserCharacteristicsProxy < UserProfileProxy
   # the object.
   def method_missing(code, *args)
     # See if the code exists in the characteristics database
-    characteristic = Characteristic.personal_factors.find_by_code(code)
+    characteristic = Characteristic.enabled.find_by_code(code)
     if characteristic.nil?
-      return super
+      characteristic = Accommodation.where(code: code).first
+      if characteristic.nil?
+        return super
+      end
     end
 
     map = UserCharacteristic.where("characteristic_id = ? AND user_profile_id = ?", characteristic.id, user.user_profile.id).first
+    unless map
+      map = UserAccommodation.where(accommodation: characteristic, user_profile: user.user_profile).first
+    end    
     # if the user has an existing characteristics stored we return it.
     return coerce_value(characteristic, map)
   end

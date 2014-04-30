@@ -1,7 +1,7 @@
 class Characteristic < ActiveRecord::Base
   include EligibilityOperators
 
-  # attr_accessible :id, :code, :name, :note, :datatype, :active, :characteristic_type, :desc
+  # attr_accessible :id, :code, :name, :note, :datatype, :active, :characteristic_type, :desc, :sequence
 
   has_many :user_characteristics
   has_many :user_profiles, through: :user_characteristics
@@ -11,6 +11,8 @@ class Characteristic < ActiveRecord::Base
 
   # set the default scope
   default_scope {where('characteristics.active = ?', true)}
+  scope :active, -> {where(active: true)}
+  scope :enabled, -> {where('datatype != ?', 'disabled')}
   scope :personal_factors, -> {where('characteristic_type = ?', 'personal_factor')}
   scope :programs, -> {where('characteristic_type = ?', 'program')}
   scope :enabled, -> { where.not(datatype: 'disabled') }

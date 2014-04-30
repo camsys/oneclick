@@ -25,7 +25,7 @@ include SeedsHelpers
   desc: "TK"},
  { klass: Characteristic, characteristic_type: 'personal_factor', code: 'low_income', name: 'Is Low income', note: "Are you low income?", datatype: 'disabled',
   desc: "TK"},
- { klass: Characteristic, characteristic_type: 'personal_factor', code: 'date_of_birth', name: 'Date of Birth is', note: "What is your date of birth?", datatype: 'date',
+ { klass: Characteristic, characteristic_type: 'personal_factor', code: 'date_of_birth', name: 'Year of Birth', note: "What is your birth year?", datatype: 'date',
   desc: "TK"},
  { klass: Characteristic, characteristic_type: 'personal_factor', code: 'age', name: 'Age is', note: "What is your birth year?", datatype: 'integer',
     desc: 'You must be 65 or older to use this service. Please confirm your birth year.'},

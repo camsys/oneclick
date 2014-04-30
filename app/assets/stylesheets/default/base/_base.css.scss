@@ -530,6 +530,13 @@ td.left, th.left {
   background: #FFFFFF;
 }
 
+body.characteristics {
+  .radio {
+    display: inline-block;
+    margin-right: 15px;
+  }
+}
+
 /* Printer Friendly */
 @media print {
   #publicnav,#footer,#help{
