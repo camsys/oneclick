@@ -355,12 +355,14 @@ class EligibilityService
 
   def translate_service_characteristic_map(map)
     case map.characteristic.datatype
-      when 'integer'
-        I18n.t(map.characteristic.name) +
-          ' ' + relationship_to_words(map.value_relationship_id) +
-          ' ' + map.value.to_s
-       else
-        I18n.t(map.characteristic.name)
+    when 'bool'
+      ((map.value == 'true') ? '' : 'Not ') + I18n.t(map.characteristic.name)
+    when 'integer'
+      I18n.t(map.characteristic.name) +
+        ' ' + relationship_to_words(map.value_relationship_id) +
+        ' ' + map.value.to_s
+    else
+      I18n.t(map.characteristic.name)
     end
   end
   

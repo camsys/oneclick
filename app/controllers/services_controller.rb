@@ -91,7 +91,7 @@ class ServicesController < ApplicationController
                                       [ :day_of_week, :start_time, :end_time, :id, :_destroy ] },
                                     { service_characteristics_attributes:
                                       [ :id, :active, :characteristic_id, :group, :value,
-                                        :value_relationship_id ] },
+                                        :value_relationship_id, :_destroy ] },
                                     { accommodation_ids: [] },
                                     { trip_purpose_ids: [] })
   end

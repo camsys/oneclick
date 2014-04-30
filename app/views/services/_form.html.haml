@@ -114,6 +114,7 @@ wrapper: :horizontal_form do |f|
               - Characteristic.enabled.each do |c|
                 %tr
                   %td.text-center
+                    %input{type: "hidden", name: input_name(f, :service_characteristics, :id)}
                     = check_box_tag input_name(f, :service_characteristics, :active),
                         true, false, class: "form-control checkbox"
                     %input{type: "hidden", value: "#{c.id}",
@@ -127,7 +128,7 @@ wrapper: :horizontal_form do |f|
                     -   when 'bool'
                       = " is "
                       = select_tag(input_name(f, :service_characteristics, :value),
-                        options_for_select([['true', true], ['false', false]]))
+                        options_for_select([['true', 'true'], ['false', 'false']]))
                     -   when 'integer', 'date'
                       = select_tag(input_name(f, :service_characteristics, :value_relationship_id),
                         options_for_select(@eh.operator_select_options, 4))
@@ -151,13 +152,13 @@ wrapper: :horizontal_form do |f|
               - @service.service_characteristics.where(group: group).each do |map|
                 %tr
                   %td
+                    %input{type: "hidden", value: "#{map.id}",
+                      name: input_name(f, :service_characteristics, :id)}
                     %input.form-control.checkbox{type: "checkbox",
                         value: "1", 
                         name: input_name(f, :service_characteristics, :_destroy)}
                     %input{type: "hidden", value: "#{map.characteristic.id}",
                         name: input_name(f, :service_characteristics, :characteristic_id)}
-                    %input{type: "hidden", value: "#{map.id}",
-                        name: input_name(f, :service_characteristics, :id)}
                     %input{type: "hidden", value: "true",
                         name: input_name(f, :service_characteristics, :active)}
 
@@ -171,7 +172,7 @@ wrapper: :horizontal_form do |f|
                     -   when 'bool'
                       = " is "
                       = select_tag(input_name(f, :service_characteristics, :value),
-                        options_for_select([['true', true], ['false', false]]))
+                        options_for_select([['true', 'true'], ['false', 'false']], map.value))
                     -   when 'integer', 'date'
                       = select_tag(input_name(f, :service_characteristics, :value_relationship_id),
                         options_for_select(@eh.operator_select_options, map.value_relationship_id))
