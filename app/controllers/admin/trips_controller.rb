@@ -6,8 +6,6 @@ class Admin::TripsController < Admin::BaseController
   
   def index
 
-    puts @trips.ai
-
     # Filtering logic. See ApplicationHelper.trip_filters
     if params[:time_filter_type]
       @time_filter_type = params[:time_filter_type]

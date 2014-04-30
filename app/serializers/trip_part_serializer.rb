@@ -35,9 +35,6 @@ class TripPartSerializer < ActiveModel::Serializer
   end
 
   def start_time
-    puts "============="
-    puts object.ai
-    puts "============="
     object.is_depart ? object.trip_time : nil
   end
 
