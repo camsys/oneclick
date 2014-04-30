@@ -66,8 +66,11 @@ RSpec.configure do |config|
   config.before(:each) do
   end
 
+  config.after(:each) do
+    I18n.locale = :en
+  end
+
   config.after(:suite) do
     DatabaseCleaner.clean
-    I18n.locale = :en
   end
 end
