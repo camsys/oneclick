@@ -16,8 +16,6 @@ class UserProfileProxy < Proxy
     return 1
   end
 
-protected
-
   # Convert the params into a typed value for the database. For most types the params list is a single hash {"x" = "y"}. For
   # date fields the hash for Jan 8 2001 looks like  {"date_of_birth(2i)"=>"1", "date_of_birth(3i)"=>"8", "date_of_birth(1i)"=>"2001"}
   def convert_value(characteristic, params)
@@ -31,7 +29,7 @@ protected
         # it is a datestring, not a rails date form field.
         date_str = params.values.first
         date_str = if (y,m,d = date_str.split('-')).length < 3
-          nil
+          "1-1-#{date_str}"
         else
           "#{d}-#{m}-#{y}"
         end
@@ -69,7 +67,8 @@ protected
     elsif type == 'integer'
       ret = user_characteristic.nil? ? 0 : user_characteristic.value.to_i
     elsif type == 'date'
-      ret = user_characteristic.nil? ? nil : Chronic.parse(user_characteristic.value)
+      # TODO We probably need a separate datatype for age
+      ret = user_characteristic.nil? ? nil : Chronic.parse(user_characteristic.value).year
     end
 
     return ret

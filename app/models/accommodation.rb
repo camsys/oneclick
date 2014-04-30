@@ -19,5 +19,6 @@ class Accommodation < ActiveRecord::Base
 
   # set the default scope
   default_scope {where('accommodations.active = ?', true)}
-
+  scope :active, -> {where(active: true)}
+  scope :enabled, -> { where.not(datatype: 'disabled') }
 end
