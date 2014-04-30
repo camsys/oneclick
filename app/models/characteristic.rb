@@ -13,7 +13,8 @@ class Characteristic < ActiveRecord::Base
   default_scope {where('characteristics.active = ?', true)}
   scope :personal_factors, -> {where('characteristic_type = ?', 'personal_factor')}
   scope :programs, -> {where('characteristic_type = ?', 'program')}
-
+  scope :enabled, -> { where.not(datatype: 'disabled') }
+  
   # builds a hash of details about a characteristic; is used by the javascript
   # client to knwo whether to ask the user for more info
   def for_missing_info(service)

@@ -31,12 +31,16 @@ module EligibilityOperators
       when 5 # less than
         return "less than"
       when 6 # less than or equal
-        return "less than or equal to"
+        return "at most"
       else
         return ""
     end
   end
 
+  def operator_select_options
+    (1..6).map { |op| [relationship_to_words(op), op] }
+  end
+  
   def relationship_to_symbol(operator)
     case operator
       when 1 # general equals

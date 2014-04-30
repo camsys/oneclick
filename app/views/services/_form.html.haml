@@ -39,15 +39,16 @@ wrapper: :horizontal_form do |f|
       .well.well2
         %h4= t(:schedule)
         %table.ALTtable
-          %tr
-            %th.text-center
-              = t('datetime.prompts.day')
-            %th.text-center
-              = t(:start_time)
-            %th.text-center
-              = t(:end_time)
-            %th.text-center
-              Clear?
+          %thead
+            %tr
+              %th.text-center
+                = t('datetime.prompts.day')
+              %th.text-center
+                = t(:start_time)
+              %th.text-center
+                = t(:end_time)
+              %th.text-center
+                Clear?
           %tbody
             - # display each day of week, Monday 1st, Sunday last
             - count = 0
@@ -99,22 +100,62 @@ wrapper: :horizontal_form do |f|
         %h4= t(:eligibility)
         = t(:eligibility_rules_descr)
         .well.white-well.wwell1
-          -if @service.service_characteristics.count > 0
-            %ul
-            -groups = @service.service_characteristics.map(&:group).uniq
-            -groups.each do |group|
-              -group_string = ""
-              -@service.service_characteristics.where(group: group).each do |map|
-                -if map.characteristic.code == "age"
-                  -group_string += "Age is "+ @eh.relationship_to_words(map.value_relationship_id).to_s + " " + map.value.to_s + " "
-                -else
-                  -group_string += t(map.characteristic.name) + " "
-                -group_string += "AND "
-              %li
-                =group_string[0..-6]
-          -else
-            = t(:no_restriction)
-
+          %h4 Add new rules
+          %table.ALTtable
+            %thead
+              %tr
+                %th.text-center
+                  &nbsp;Add&nbsp;
+                %th.text-center
+                  Rule
+            %tbody
+              - Characteristic.enabled.each do |c|
+                %tr
+                  %td.text-center
+                    = check_box_tag "service[service_characteristic_attributes][#{c.id}]", "1", false, class: "form-control checkbox" 
+                  %td.text-center
+                    = t(c.name)
+                    - case c.datatype
+                    -   when 'bool'
+                      = " is "
+                      = select(:c, :value, [['true', true], ['false', false]])
+                    -   when 'integer', 'date'
+                      = select_tag("service[service_characteristic_attributes][][value_relationship_id]",
+                      options_for_select(@eh.operator_select_options, 4))
+                      = number_field(:service_characteristic, :value, in: 1..120,
+                        class: "text-right")
+                    
+          %h4 Modify existing rules
+          %table.ALTtable
+            %thead
+              %tr
+                %th.text-center
+                  Delete
+                %th.text-center
+                  Rule
+            %tbody
+            - groups = @service.service_characteristics.map(&:group).uniq
+            - groups.each do |group|
+              %tr
+                %td
+                  = check_box_tag("service[service_characteristic_attributes[#{group}][_destroy]",
+                  "1", false, class: "form-control checkbox")
+                %td
+                  - join_string = ''
+                  - @service.service_characteristics.where(group: group).each do |m|
+                    = join_string
+                    - join_string = ' AND '
+                    = t(m.characteristic.name)
+                    - case m.characteristic.datatype
+                    -   when 'bool'
+                      = " is "
+                      = select(:m, :value, [['true', true], ['false', false]])
+                    -   when 'integer', 'date'
+                      = select_tag("service[service_characteristic_attributes][][value_relationship_id]",
+                        options_for_select(@eh.operator_select_options, m.value_relationship_id))
+                      = number_field(:m, :value, in: 1..120, value: m.value,
+                        class: "text-right")
+                  
     .col-sm-4
       .well.well1
         %h4= t(:trip_purposes)

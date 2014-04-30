@@ -343,4 +343,25 @@ class EligibilityService
 
   end
 
+  # Generate a string from an array of service_characteristics
+  # TODO: translate strings for special code cases
+  def service_characteristics_group_to_s(group)
+    translated = group.map do |m|
+      translate_service_characteristic_map m
+    end
+  
+    translated.join " AND "
+  end
+
+  def translate_service_characteristic_map(map)
+    case map.characteristic.datatype
+      when 'integer'
+        I18n.t(map.characteristic.name) +
+          ' ' + relationship_to_words(map.value_relationship_id) +
+          ' ' + map.value.to_s
+       else
+        I18n.t(map.characteristic.name)
+    end
+  end
+  
 end
