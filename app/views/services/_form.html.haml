@@ -26,10 +26,13 @@ wrapper: :horizontal_form do |f|
         = f.input :phone
         = f.input :email
         = f.input :url
+      .col-sm-4
         = f.input :external_id, label: t(:service_id)
         = f.input :booking_service_code
+        = f.input :service_window, as: :integer
+        = f.input :time_factor, as: :float
         
-      .col-sm-4.well
+      .col-sm-4
         %h4= t(:internal_contact)
         = f.input_field :internal_contact, collection: @staff, 
                 selected: (@contact.id if @contact) , include_blank: "None"
@@ -80,11 +83,22 @@ wrapper: :horizontal_form do |f|
       .well.well2
         %h4= t(:advance_notice_required)
         .well.white-well.wwell2
-          = f.input_field :advanced_notice_minutes
-          -if @service.advanced_notice_minutes > 0
+          - minutes_total = @service.advanced_notice_minutes
+          -if minutes_total > 0
             = t(:service_notice_required) + " " ## TODO Interpolate
-            %b= duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
-            =" " + t(:service_notice_str) + "."
+            %input.text-right{type: "number", min: 0, max: 30,
+                value: minutes_total / (60 * 24),
+                name: "service[notice_days_part]"}
+            %b days, 
+            %input.text-right{type: "number", min: 0, max: 23,
+                value: (minutes_total / 60) % 24,
+                name: "service[notice_hours_part]"}
+            %b hours, 
+            %input.text-right{type: "number", min: 0, max: 59,
+                value: minutes_total % (60 * 24),
+                name: "service[notice_minutes_part]"}
+            %b minutes 
+            = " " + t(:service_notice_str) + "."
           -else
             =t(:service_notice_not_required) + "."
     .col-sm-4

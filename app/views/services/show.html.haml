@@ -40,7 +40,14 @@
       %h5
         -if @service.booking_service_code
           =t(:booking_service_code).to_s + ": " + @service.booking_service_code.to_s
-
+      %h5
+        - if @service.service_window
+          = t(:service_window).to_s + ": " + @service.service_window.to_s
+      %h5
+        - if @service.time_factor
+          = t(:time_factor).to_s + ": " + @service.time_factor.to_s
+          
+          
     .col-sm-4.well
       %h4= t(:internal_contact)
       %table.table.table-condensed

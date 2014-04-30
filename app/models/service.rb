@@ -84,5 +84,33 @@ class Service < ActiveRecord::Base
       self.save
     end
   end
+
+  def notice_days_part
+    advanced_notice_minutes / (60 * 24)
+  end
+  
+  def notice_days_part= value
+    update_attributes(advanced_notice_minutes:
+                      (value.to_i * (60 * 24)) + (notice_hours_part * 60) + notice_minutes_part)
+  end
+
+  def notice_hours_part
+    (advanced_notice_minutes / 60) % 24
+  end
+
+  def notice_hours_part= value
+    update_attributes(advanced_notice_minutes:
+      (notice_days_part * (60 * 24)) + (value.to_i * 60) + notice_minutes_part)
+  end
+  
+
+  def notice_minutes_part
+    advanced_notice_minutes % (60 * 24)
+  end
+
+  def notice_minutes_part= value
+    update_attributes(advanced_notice_minutes:
+      (notice_days_part * (60 * 24)) + (notice_hours_part * 60) + value.to_i)
+  end
   
 end
