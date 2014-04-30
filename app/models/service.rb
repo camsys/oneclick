@@ -65,8 +65,9 @@ class Service < ActiveRecord::Base
   end
 
   def contact_information
-    # TODO
-    "To be replaced by Scott's work"
+    {
+      url: url
+    }
   end
 
   def internal_contact= user

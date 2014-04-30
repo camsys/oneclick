@@ -51,7 +51,11 @@ class TripPart < ActiveRecord::Base
 
   # Converts the trip date and time into a date time object
   def trip_time
-    DateTime.new(scheduled_date.year, scheduled_date.month, scheduled_date.day, scheduled_time.hour, scheduled_time.min)
+    # puts scheduled_date.ai
+    # puts scheduled_time.ai
+    # DateTime.new(scheduled_date.year, scheduled_date.month, scheduled_date.day,
+    #   scheduled_time.hour, scheduled_time.min, 0, scheduled_time.offset)
+    scheduled_time
   end
 
   # Returns an array of TripPart that have at least one valid itinerary but all
@@ -180,7 +184,8 @@ class TripPart < ActiveRecord::Base
       itinerary = tp.convert_rideshare_itineraries(response)
       self.itineraries << Itinerary.new(itinerary)
     else
-      self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s)
+      self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s,
+        'mode' => Mode.rideshare)
     end
   end
 

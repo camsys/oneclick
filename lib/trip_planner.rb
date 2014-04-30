@@ -90,9 +90,21 @@ class TripPlanner
       trip_itinerary['match_score'] = match_score
       begin
         #TODO: Need better documentaiton of OTP Fare Object to make this more generic
-        trip_itinerary['cost'] = itinerary['fare'].first[1]['regular']['cents'].to_f/100.0
-      rescue
+        # trip_itinerary['cost'] = itinerary['fare'].first[1]['regular']['cents'].to_f/100.0
+        puts itinerary['fare'].ai
+        trip_itinerary['cost'] = itinerary['fare']['fare']['regular']['cents'].to_f/100.0
+      rescue Exception => e
+        Rails.logger.error e
+        Rails.logger.error itinerary['fare'].ai
         #do nothing, leave the cost element blank
+      end
+      puts itinerary['legs'].ai
+      agency_id = itinerary['legs'].detect{|l| !l['agencyId'].blank?}['agencyId'] rescue nil
+      if agency_id
+        s = Service.where(name: agency_id).first
+        if s
+          trip_itinerary['service'] = s
+        end
       end
       match_score += match_score_incr
       trip_itinerary
@@ -175,6 +187,7 @@ class TripPlanner
     trip_itinerary['server_status'] = 200
     trip_itinerary['server_message'] = itinerary[1]['businesses'].to_yaml
     trip_itinerary['match_score'] = 1.2
+    trip_itinerary['service'] = (ServiceType.where(code: 'taxi').first.services.first rescue nil)
     trip_itinerary
   end
 
@@ -195,7 +208,6 @@ class TripPlanner
 
   def get_rideshare_itineraries(from, to, trip_datetime)
 
-    return false, {'id'=>500, 'msg'=>"Test Remove Me"}
     t = Time.now
     query = create_rideshare_query(from, to, trip_datetime)
     
@@ -216,13 +228,14 @@ class TripPlanner
         :parameters    => {service_url: service_url, query: query}
       )
       Rails.logger.warn e.to_s
-      return false, {'id'=>500, 'msg'=>e.to_s}
+      return false, {'id'=>500, 'msg'=>e.to_s, 'mode' => 'rideshare'}
     end    
     if results.size > 0
       summary = doc.css('.summary').text
       Rails.logger.debug "Summary: #{summary}"
       count = %r{(\d+) total result}.match(summary)[1]
-      return true, {'mode' => 'rideshare', 'status' => 200, 'count' => count, 'query' => query}
+      return true, {'mode' => 'rideshare', 'status' => 200, 'count' => count, 'query' => query,
+        'service' => (ServiceType.where(code: 'rideshare').first.services.first rescue nil)}
     else
       return false, {'mode' => 'rideshare', 'status' => 404, 'count' => results.size}
     end
@@ -234,8 +247,8 @@ class TripPlanner
       'ride_count' => itinerary['count'],
       'server_status' => itinerary['status'],
       'external_info' => YAML.dump(itinerary['query']),
+      'service' => itinerary['service'],
       'match_score' => 1.1
-
     }
   end
 

@@ -56,6 +56,27 @@ def add_users_and_places
   end
 end
 
+def add_ancillary_services
+  providers = [
+    # TODO correct URLs
+    {name: 'MARTA', url: 'http://www.marta.com'},
+    {name: 'GRTA', url: 'http://www.grta.com'},
+    {name: 'CCT', url: 'http://www.cct.com'},
+  ]
+
+  s = ServiceType.where(code: 'fixed').first
+  providers.each do |p|
+    provider = Provider.create! p.reject{|k| k==:url}
+    provider.services.create! p.merge(active: false, service_type: s)
+  end
+  provider = Provider.create!({name: 'Taxi services'})
+  provider.services.create!({name: 'Taxi services', active: false,
+    service_type: ServiceType.where(code: 'taxi').first})
+  provider = Provider.create!({name: 'Georgia Commute Options'})
+  provider.services.create!({name: 'Georgia Commute Options', active: false,
+      service_type: ServiceType.where(code: 'rideshare').first, url: 'https://www.mygacommuteoptions.com'})
+end
+
 def add_providers_and_services
   providers = [
       {name: 'LIFESPAN Resources, Inc.', contact: 'Lauri Stokes', external_id: "esp#1"},
@@ -639,6 +660,7 @@ end
 puts 'Adding ARC Sample Data'
 add_users_and_places
 add_providers_and_services
+add_ancillary_services
 add_fares
 add_esp_ids
 #add_companion

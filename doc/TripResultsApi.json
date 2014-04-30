@@ -41,7 +41,8 @@
                     "mode_name": "String", // Mode.name
                     "service_name": "String", // Service.name if mode is service, null otherwise
                     "contact_information": { // Contact information for service/provider/mode
-                        "url": "String Opt" // url to go to if user clicks icon
+                        "url": "String Opt", // url to go to if user clicks icon
+                        "text": "String Opt" // contact information text
                         // additional components possible, TBD
                     },
                     "cost": {
