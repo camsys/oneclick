@@ -84,6 +84,7 @@
 
 .action-button:hover, .action-button:focus {
   background-position: 0;
+  color: inherit;
 }
 
 .dropdown-toggle {
@@ -256,7 +257,7 @@ $single-plan-height: 50px;
 .chart-tooltip {   
   position: absolute;           
   text-align: center;           
-  width: 300px;                  
+  width: 200px;                  
   height: auto;                 
   padding: 2px;             
   font: 12px sans-serif;        

@@ -54,7 +54,7 @@
         if(typeof(tripLeg) === 'object' && tripLeg != null) {
           var planId = tripLeg.planId;
           $.ajax({
-            url: window.location.href + '/itinerary', //TODO: is this the best way to get itinerary?
+            url: window.location.href + '/../itinerary', //TODO: what is the best way to get itinerary? 
             data: {itin: planId},
             success: function(result) {
               if(CsMaps != null && CsMaps.lmap != null) {
