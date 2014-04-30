@@ -10,7 +10,7 @@ html, body {
   height: auto !important;
   height: 100%;
   /* Negative indent footer by it's height plus any margins */
-  margin: 0 auto -$footer-height;
+  margin: 0 auto  $footer-height * -1;
   position: relative;
 }
 
@@ -35,10 +35,24 @@ html, body {
   #publicNav .container-fluid {
     padding: 0px;
   }
+
+  #logo{
+    width: 250px;
+    height: 50px;
+    line-height: 50px;
+    padding: 0;
+  }
 }
 
 @media(min-width:768px){
   #main {
-    padding-top: 80px;
+    padding-top: 65px;
+  }
+
+  #logo{
+    width: 300px;
+    height: 60px;
+    line-height: 60px;
+    padding: 0;
   }
 }

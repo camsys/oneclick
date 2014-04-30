@@ -445,7 +445,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		var transfers = tripPlan.transfers;
 		var duration = tripPlan.duration;
 						
-		var cssName = "trip-" + removeSpace(modeName.toLowerCase()) + "-" + removeSpace(serviceName.toLowerCase());
+		var cssName = "trip-mode-" + removeSpace(modeName.toLowerCase()) + "-" + removeSpace(serviceName.toLowerCase());
 		var modeServiceUrl = "";
 		if(typeof(contact_information) === 'object'  && contact_information != null) {
 			modeServiceUrl = contact_information.url;
@@ -473,10 +473,9 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 					"<table>" +
 						"<tbody>" +
 							"<tr>" +
-								"<td class='trip-mode-icon'>" +
+								"<td class='trip-mode-icon " + cssName + "'>" +
 									"<a href='" + modeServiceUrl + "' target='_blank'" + 
-										(typeof(modeServiceUrl) === 'string' && modeServiceUrl.trim().length > 0 ? "" : " onclick='return false'") + //if there is no url, then make this hyperlink inactive
-										" class='" + cssName + "'>" + serviceName + " " + modeName +
+										(typeof(modeServiceUrl) === 'string' && modeServiceUrl.trim().length > 0 ? "" : " onclick='return false'>") + //if there is no url, then make this hyperlink inactive
 									"</a>" +
 								"</td>" +
 								"<td class='trip-mode-cost'>" +

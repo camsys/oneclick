@@ -192,11 +192,11 @@ $period-nav-button-width: 40px;
 }
 
 .negative-margin-left {
-  margin-left: -$period-nav-button-width;
+  margin-left: $period-nav-button-width * -1;
 }
 
 .negative-margin-right {
-  margin-right: -$period-nav-button-width;
+  margin-right: -$period-nav-button-width * -1;
 }
 
 .single-trip-part {
@@ -209,11 +209,12 @@ $period-nav-button-width: 40px;
   border-bottom: none;
 }
 
+$single-plan-height: 50px;
 .single-plan-review{
   background-color: white;
   border-radius: 3px;
   border: 2px whitesmoke solid;
-  height: 50px;
+  height: $single-plan-height;
 }
 
 .single-plan-selected {
@@ -226,7 +227,7 @@ $period-nav-button-width: 40px;
 
 .select-column {
   text-align: right;
-  line-height: 50px;
+  line-height: $single-plan-height;
 }
 
 .single-plan-select {
@@ -315,9 +316,16 @@ $legend-height: 20px;
 
 /*styles for trip mode service*/
 .trip-mode-icon {
-  text-align: center;
-  line-height: normal;
-  font-size: 1em;
+  background-repeat: no-repeat;
+  width: 50px;
+  height: $single-plan-height;
+  float: left;
+  background-position: center;
+
+  a {
+    display: block;
+    height: $single-plan-height;
+  }
 }
 
 .trip-mode-cost {
