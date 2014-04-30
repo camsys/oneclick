@@ -115,7 +115,7 @@ wrapper: :horizontal_form do |f|
                 %tr
                   %td.text-center
                     = check_box_tag input_name(f, :service_characteristics, :active),
-                        "1", false, class: "form-control checkbox"
+                        true, false, class: "form-control checkbox"
                     %input{type: "hidden", value: "#{c.id}",
                         name: input_name(f, :service_characteristics, :characteristic_id)}
                   %td.text-center
@@ -154,8 +154,12 @@ wrapper: :horizontal_form do |f|
                     %input.form-control.checkbox{type: "checkbox",
                         value: "1", 
                         name: input_name(f, :service_characteristics, :_destroy)}
+                    %input{type: "hidden", value: "#{map.characteristic.id}",
+                        name: input_name(f, :service_characteristics, :characteristic_id)}
                     %input{type: "hidden", value: "#{map.id}",
                         name: input_name(f, :service_characteristics, :id)}
+                    %input{type: "hidden", value: "true",
+                        name: input_name(f, :service_characteristics, :active)}
 
                   %td.text-center
                     = group

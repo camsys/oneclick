@@ -87,7 +87,11 @@ class ServicesController < ApplicationController
   def service_params
     params.require(:service).permit(:name, :phone, :email, :url, :external_id,
                                     :booking_service_code, :advanced_notice_minutes,
-                                    { schedules_attributes: [ :day_of_week, :start_time, :end_time, :id, :_destroy ] },
+                                    { schedules_attributes:
+                                      [ :day_of_week, :start_time, :end_time, :id, :_destroy ] },
+                                    { service_characteristics_attributes:
+                                      [ :id, :active, :characteristic_id, :group, :value,
+                                        :value_relationship_id ] },
                                     { accommodation_ids: [] },
                                     { trip_purpose_ids: [] })
   end
