@@ -12,4 +12,12 @@ module AdminHelper
     # "<i class='icon #{ACTION_ICONS[action]}'>&nbsp;</i>#{t(action)}".html_safe
     "#{t(action)}".html_safe
   end
+
+  # Construct a name for an iput control appropriate for setting nested attributes
+  def input_name form_builder, nest, attribute=nil
+    name = form_builder.object_name + '[' + nest.to_s + '_attributes][]'
+    name += '[' + attribute.to_s + ']' if !attribute.nil?
+    name
+  end
+  
 end

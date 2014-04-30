@@ -61,7 +61,7 @@ wrapper: :horizontal_form do |f|
                 %td
                   %input.form-control.text-right{type: "text",
                         value: "#{schedule.start_time if schedule}",
-                        name: "service[schedules_attributes][][start_time]"}
+                        name: input_name(f, :schedules, :start_time)}
                 %td
                   %input.form-control.text-right{type: "text",
                         value: "#{schedule.end_time if schedule}",
@@ -107,23 +107,32 @@ wrapper: :horizontal_form do |f|
                 %th.text-center
                   &nbsp;Add&nbsp;
                 %th.text-center
+                  Group
+                %th.text-center
                   Rule
             %tbody
               - Characteristic.enabled.each do |c|
                 %tr
                   %td.text-center
-                    = check_box_tag "service[service_characteristic_attributes][#{c.id}]", "1", false, class: "form-control checkbox" 
+                    = check_box_tag input_name(f, :service_characteristics, :active),
+                        "1", false, class: "form-control checkbox"
+                    %input{type: "hidden", value: "#{c.id}",
+                        name: input_name(f, :service_characteristics, :characteristic_id)}
+                  %td.text-center
+                    = select_tag(input_name(f, :service_characteristics, :group),
+                      options_for_select((0..Characteristic.enabled.count).map{|id| ["#{id}", id]}))
                   %td.text-center
                     = t(c.name)
                     - case c.datatype
                     -   when 'bool'
                       = " is "
-                      = select(:c, :value, [['true', true], ['false', false]])
+                      = select_tag(input_name(f, :service_characteristics, :value),
+                        options_for_select([['true', true], ['false', false]]))
                     -   when 'integer', 'date'
-                      = select_tag("service[service_characteristic_attributes][][value_relationship_id]",
-                      options_for_select(@eh.operator_select_options, 4))
-                      = number_field(:service_characteristic, :value, in: 1..120,
-                        class: "text-right")
+                      = select_tag(input_name(f, :service_characteristics, :value_relationship_id),
+                        options_for_select(@eh.operator_select_options, 4))
+                      %input.text-right{type: "number", min: 1, max: 120,
+                        name: input_name(f, :service_characteristics, :value)}
                     
           %h4 Modify existing rules
           %table.ALTtable
@@ -132,29 +141,38 @@ wrapper: :horizontal_form do |f|
                 %th.text-center
                   Delete
                 %th.text-center
+                  &nbsp;Group&nbsp;
+                %th.text-center
                   Rule
             %tbody
             - groups = @service.service_characteristics.map(&:group).uniq
             - groups.each do |group|
-              %tr
-                %td
-                  = check_box_tag("service[service_characteristic_attributes[#{group}][_destroy]",
-                  "1", false, class: "form-control checkbox")
-                %td
-                  - join_string = ''
-                  - @service.service_characteristics.where(group: group).each do |m|
+              - join_string = ''
+              - @service.service_characteristics.where(group: group).each do |map|
+                %tr
+                  %td
+                    %input.form-control.checkbox{type: "checkbox",
+                        value: "1", 
+                        name: input_name(f, :service_characteristics, :_destroy)}
+                    %input{type: "hidden", value: "#{map.id}",
+                        name: input_name(f, :service_characteristics, :id)}
+
+                  %td.text-center
+                    = group
+                  %td
                     = join_string
                     - join_string = ' AND '
-                    = t(m.characteristic.name)
-                    - case m.characteristic.datatype
+                    = t(map.characteristic.name)
+                    - case map.characteristic.datatype
                     -   when 'bool'
                       = " is "
-                      = select(:m, :value, [['true', true], ['false', false]])
+                      = select_tag(input_name(f, :service_characteristics, :value),
+                        options_for_select([['true', true], ['false', false]]))
                     -   when 'integer', 'date'
-                      = select_tag("service[service_characteristic_attributes][][value_relationship_id]",
-                        options_for_select(@eh.operator_select_options, m.value_relationship_id))
-                      = number_field(:m, :value, in: 1..120, value: m.value,
-                        class: "text-right")
+                      = select_tag(input_name(f, :service_characteristics, :value_relationship_id),
+                        options_for_select(@eh.operator_select_options, map.value_relationship_id))
+                      %input.text-right{type: "number", min: 1, max: 120, value: map.value,
+                        name: input_name(f, :service_characteristics, :value)}
                   
     .col-sm-4
       .well.well1
