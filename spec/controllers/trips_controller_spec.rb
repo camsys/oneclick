@@ -37,7 +37,7 @@ describe TripsController do
       tp[:itineraries].size.should eq 3
       i = tp[:itineraries][2]
       i[:mode].should eq 'mode_paratransit'
-      i[:mode_name].should eq 'Paratransit'
+      i[:mode_name].should eq 'Specialized Services'
       mi = i[:missing_information][0]
       mi[:question].should eq "What is your birth year?"
       mi[:description].should eq "You must be 65 or older to use this service. Please confirm your birth year."
