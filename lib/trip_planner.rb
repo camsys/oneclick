@@ -11,11 +11,6 @@ class TripPlanner
 
   def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK")
 
-    Rails.logger.info ""
-    Rails.logger.info "get_fixed_itineraries"
-    Rails.logger.info from.ai
-    Rails.logger.info to.ai
-    Rails.logger.info ""
     #Parameters
     time = trip_datetime.strftime("%-I:%M%p")
     date = trip_datetime.strftime("%Y-%m-%d")

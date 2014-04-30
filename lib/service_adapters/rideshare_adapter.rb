@@ -32,7 +32,7 @@ module ServiceAdapters
       query['search'] = 'search'
       query['window'] = 3
       query['windowOption'] = 'hours'
-      Rails.logger.info "Rideshare query is #{query.ai}"
+      Rails.logger.debug "Rideshare query is #{query.ai}"
       query
     end
 

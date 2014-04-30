@@ -177,8 +177,6 @@ class TripPart < ActiveRecord::Base
  def create_rideshare_itineraries
     tp = TripPlanner.new
     trip.restore_trip_places_georaw
-    Rails.logger.info "create_rideshare_itineraries"
-    Rails.logger.info trip.trip_places.collect {|trp| trp.raw}
     result, response = tp.get_rideshare_itineraries(from_trip_place, to_trip_place, trip_time)
     if result
       itinerary = tp.convert_rideshare_itineraries(response)
