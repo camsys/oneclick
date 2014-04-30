@@ -95,7 +95,7 @@ wrapper: :horizontal_form do |f|
                 name: "service[notice_hours_part]"}
             %b hours, 
             %input.text-right{type: "number", min: 0, max: 59,
-                value: minutes_total % (60 * 24),
+                value: minutes_total % 60,
                 name: "service[notice_minutes_part]"}
             %b minutes 
             = " " + t(:service_notice_str) + "."
@@ -204,20 +204,13 @@ wrapper: :horizontal_form do |f|
     .col-sm-4
       .well.well1 
         %h4= t(:fare)
-        -@service.fare_structures.each do |fare|
+        = f.simple_fields_for :fare_structures do |fare|
           .well.white-well.wwell2
             .row_fluid
-              -if fare.base
-                %b=t(:cost)
-                =number_to_currency(fare.base.to_f).to_s
-              -else
-                %b=t(:cost)
-                =t(:flat_fare_unavailable) + "."
-            %b=t(:comments) + ":  "
-            -if fare.desc
-              =fare.desc.html_safe
-            -else
-              =""
+              = fare.input :base, as: :currency
+              = fare.input :rate, as: :currency
+              = fare.input :desc, label: t(:comments), as: :text
+              
   .well
     .row.text-center
       .col-sm-12

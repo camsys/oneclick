@@ -20,6 +20,8 @@ class Service < ActiveRecord::Base
   accepts_nested_attributes_for :service_characteristics, allow_destroy: true,
   reject_if: proc { |attributes| attributes['active'] != 'true' }
 
+  accepts_nested_attributes_for :fare_structures
+  
   # attr_accessible :id, :name, :provider, :provider_id, :service_type, :advanced_notice_minutes, :external_id, :active
   # attr_accessible :contact, :contact_title, :phone, :url, :email
   # attr_accessible: booking_service_id
@@ -105,7 +107,7 @@ class Service < ActiveRecord::Base
   
 
   def notice_minutes_part
-    advanced_notice_minutes % (60 * 24)
+    advanced_notice_minutes % 60
   end
 
   def notice_minutes_part= value

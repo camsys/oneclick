@@ -274,6 +274,7 @@ es:
   at: '[es173]at[/es]'
   fare: "[es198]Fare[/es]"
   flat_fare_unavailable: "[es199]Flat fare unavailable[/es]"
+  rate: "[es]Rate[/es]"
 
   # My Places form
   found_x_places: {

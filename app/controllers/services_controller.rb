@@ -95,7 +95,10 @@ class ServicesController < ApplicationController
                                       [ :id, :active, :characteristic_id, :group, :value,
                                         :value_relationship_id, :_destroy ] },
                                     { accommodation_ids: [] },
-                                    { trip_purpose_ids: [] })
+                                    { trip_purpose_ids: [] },
+                                    { fare_structures_attributes:
+                                      [ :id, :base, :rate, :desc ] }
+                                    )
   end
 
 end

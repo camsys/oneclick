@@ -274,7 +274,8 @@ en:
   at: 'at'
   fare: "Fare"
   flat_fare_unavailable: "Flat fare unavailable"
-
+  rate: "Rate"
+  
   # My Places form
   found_x_places: {
     one:    'Found %{count} place in your address book.',

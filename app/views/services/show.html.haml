@@ -151,17 +151,19 @@
       -@service.fare_structures.each do |fare|
         .well.white-well.wwell2
           .row_fluid
+            %b= t(:cost) + ": "
             -if fare.base
-              %b=t(:cost)
-              =number_to_currency(fare.base.to_f).to_s
+              = number_to_currency(fare.base.to_f).to_s
             -else
-              %b=t(:cost)
-              =t(:flat_fare_unavailable) + "."
-          %b=t(:comments) + ":  "
+              = t(:flat_fare_unavailable) + "."
+          .row_fluid
+            - if fare.rate
+              %b= t(:rate) + ": "
+              = number_to_currency(fare.rate.to_f).to_s
+          %b= t(:comments) + ":  "
           -if fare.desc
-            =fare.desc.html_safe
-          -else
-            =""
+            = fare.desc.html_safe
+
 .well
   .row.text-center
     .col-sm-12
