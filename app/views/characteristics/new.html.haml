@@ -1,18 +1,3 @@
-/ .row
-/   .col-sm-12
-/     %h1
-/       %i.fa.fa-info-circle
-/       %span#characteristics_header
-/         = render partial: 'header', locals: {total_steps: @total_steps}
-
-/ .row
-/   .col-sm-12
-/     = render partial: 'trips/trip_header', locals: {trip: @trip}
-
-/ .row
-/   .well
-/     = render partial: 'characteristics/form',  :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
-
 %ol#wizards.breadcrumb
   %li.breadcrumb-page.prev-page 
     %a{href: "#"}Trip
@@ -22,8 +7,8 @@
 
 = render partial: 'form', :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
 
-  / end of options column
-  .col-sm-5.col-xs-12
-    #cmsPlaceholder.well
-      TODO:(CMS)
-  / end of CMS column
+/ end of options column
+.col-sm-5.col-xs-12
+  #cmsPlaceholder.well
+    TODO:(CMS)
+/ end of CMS column
