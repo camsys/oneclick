@@ -33,6 +33,7 @@ class Service < ActiveRecord::Base
   has_many :origins, -> { where "service_coverage_maps.rule = 'origin'" }, through: :service_coverage_maps, source: :geo_coverage
   has_many :destinations, -> { where "service_coverage_maps.rule = 'destination'" }, through: :service_coverage_maps, source: :geo_coverage
   has_many :residences, -> { where "service_coverage_maps.rule = 'residence'" }, through: :service_coverage_maps, source: :geo_coverage
+  
   has_many :user_profiles, through: :user_services, source: :user_profile
 
   scope :active, -> {where(active: true)}
@@ -41,6 +42,10 @@ class Service < ActiveRecord::Base
 
   before_validation :check_url_protocol
 
+  validates :name, presence: true
+  validates :provider, presence: true
+  validates :service_type, presence: true
+  
   def human_readable_advanced_notice
     if self.advanced_notice_minutes < (24*60)
       hours = self.advanced_notice_minutes/60.round

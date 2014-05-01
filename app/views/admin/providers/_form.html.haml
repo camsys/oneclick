@@ -1,9 +1,12 @@
-= simple_form_for([:admin, @provider], html: { class: 'form-horizontal'}) do |f|
+= simple_form_for [:admin, @provider], html: { class: 'form-horizontal'},
+        wrapper: :horizontal_form do |f|
   = f.error_notification
-
-  .form-inputs
-    = f.input :name
-
-  .form-actions
-    = f.button :submit, 'Save'
-    = link_to 'Cancel', :back
+  .row
+    .col-sm-6.pull-left
+      %h2
+        = f.input :name
+    .col-sm-6.pull-right
+      .row
+        .col-sm-6.pull-right
+          = f.button :submit, 'Save', class: "btn action-button default"
+          = link_to 'Cancel', :back, class: "btn action-button default"

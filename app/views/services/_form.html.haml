@@ -1,6 +1,11 @@
-= simple_form_for @service, url: @service.id.nil? ? services_path : service_path,
-method: @service.id.nil? ? 'post' : 'put', html: { class: 'form-horizontal' },
-wrapper: :horizontal_form do |f|
+= simple_form_for @service,
+        url: @service.id.nil? ? services_path(provider_id: @provider) : service_path,
+        method: @service.id.nil? ? 'post' : 'put', html: { class: 'form-horizontal' },
+        wrapper: :horizontal_form do |f|
+  - if @service.new_record?
+    = f.hidden_field :provider, value: @provider.id
+    
+  = f.error_notification
   .row
     .col-sm-6.pull-left
       %h2
@@ -11,7 +16,7 @@ wrapper: :horizontal_form do |f|
           - if can? :update, @service
             = button_tag type: 'submit', class: "btn action-button default" do
               = icon_label(:apply)
-            = link_to service_path(@service), {class: 'btn action-button pull-right', role: 'button'} do
+            = link_to (@service.new_record? ? admin_provider_path(@provider) : service_path(@service)), {class: 'btn action-button pull-right', role: 'button'} do
               = icon_label(:cancel)
 
   .well
@@ -26,6 +31,8 @@ wrapper: :horizontal_form do |f|
         = f.input :phone
         = f.input :email
         = f.input :url
+        = f.association :service_type,
+                collection: ServiceType.all.map{|t| [ t(t.name), t.id ] }
       .col-sm-4
         = f.input :external_id, label: t(:service_id)
         = f.input :booking_service_code
@@ -84,23 +91,21 @@ wrapper: :horizontal_form do |f|
         %h4= t(:advance_notice_required)
         .well.white-well.wwell2
           - minutes_total = @service.advanced_notice_minutes
-          -if minutes_total > 0
-            = t(:service_notice_required) + " " ## TODO Interpolate
-            %input.text-right{type: "number", min: 0, max: 30,
-                value: minutes_total / (60 * 24),
-                name: "service[notice_days_part]"}
-            %b days, 
-            %input.text-right{type: "number", min: 0, max: 23,
-                value: (minutes_total / 60) % 24,
-                name: "service[notice_hours_part]"}
-            %b hours, 
-            %input.text-right{type: "number", min: 0, max: 59,
-                value: minutes_total % 60,
-                name: "service[notice_minutes_part]"}
-            %b minutes 
-            = " " + t(:service_notice_str) + "."
-          -else
-            =t(:service_notice_not_required) + "."
+          = t(:service_notice_required) + " " ## TODO Interpolate
+          %input.text-right{type: "number", min: 0, max: 30,
+              value: minutes_total / (60 * 24),
+              name: "service[notice_days_part]"}
+          %b days, 
+          %input.text-right{type: "number", min: 0, max: 23,
+              value: (minutes_total / 60) % 24,
+              name: "service[notice_hours_part]"}
+          %b hours, 
+          %input.text-right{type: "number", min: 0, max: 59,
+              value: minutes_total % 60,
+              name: "service[notice_minutes_part]"}
+          %b minutes 
+          = " " + t(:service_notice_str) + "."
+
     .col-sm-4
       .well.well2
         %h4=t(:accommodations)

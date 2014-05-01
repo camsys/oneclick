@@ -47,6 +47,7 @@ en:
   provider_profile: "Provider Profile"
   provider_orgs: "Provider Organizations"
   new_provider_org: 'New Provider Organization'
+  new_provider: "New Provider"
   org_type: "Org type"
   new_organization: "New Organization"
   editing_orgs: "Editing organization"
@@ -308,6 +309,7 @@ en:
   service: "Service"
   services: "Services"
   active: "Active"
+  add_service: "Add new Service"
   select_service: "Select Service"
   service_is_inactive: "This service is currently inactive."
   service_contact: "Service Contact Information"
