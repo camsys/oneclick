@@ -1,5 +1,7 @@
 class ServiceCoverageMap < ActiveRecord::Base
 
+  attr_accessor :allow_action
+  
   #associations
   belongs_to :service
   belongs_to :geo_coverage

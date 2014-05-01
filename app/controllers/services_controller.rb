@@ -146,7 +146,9 @@ protected
                                       [ :id, :base, :rate, :desc ] },
                                     { origin_ids: [] },
                                     { destination_ids: [] },
-                                    { residence_ids: [] }
+                                    { residence_ids: [] },
+                                    { service_coverage_maps_attributes:
+                                      [ :id, :rule, :geo_coverage_id, :_destroy, :allow_action ] }
                                     )
   end
 

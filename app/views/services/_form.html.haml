@@ -223,15 +223,34 @@
 
     .row
       .col-sm-12
+        - index = 0
         - types = GeoCoverage.pluck(:coverage_type).uniq
         - [:origins, :destinations, :residences].each do |rule| 
           %h4= t(rule)
           - types.each do |type|
             %b
-              =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
+              = type.humanize.split[0].pluralize + ' ' + t(:served_areas)
             .well.white-well.text-left
-              = f.association rule,
-                  collection: GeoCoverage.where(coverage_type: type).order(:value).map{|c| [ c.value, c.id ] },
-                  label: false, as: 'check_boxes', item_wrapper_class: 'checkbox-inline'
-
+              - checked = @service.send(rule).pluck(:geo_coverage_id)
+              - GeoCoverage.where(coverage_type: type).order(:value).map{|c| [ c.value, c.id ] }.each do |pair|
+                %input{type: "hidden", value: pair[1],
+                       name: input_name(f, :service_coverage_maps, :geo_coverage_id)}
+                %input{type: "hidden", value: rule.to_s.singularize,
+                       name: input_name(f, :service_coverage_maps, :rule)}
+                - if checked.include?(pair[1])
+                  %input{type: "hidden",
+                         value: "#{@service.send(rule).find_by(geo_coverage_id: pair[1]).id}",
+                         name: input_name(f, :service_coverage_maps, :id)}
+                  %input{type: "hidden",
+                         value: "1",
+                         name: input_name(f, :service_coverage_maps, :_destroy)}
+                %span
+                  %label
+                    %input.checkbox.checkbox-inline{type: "checkbox",
+                          checked: checked.include?(pair[1]),
+                          value: "1", 
+                          name: input_name(f, :service_coverage_maps, :allow_action)}
+                  = pair[0]
+                  &nbsp;
+                - index += 1
 

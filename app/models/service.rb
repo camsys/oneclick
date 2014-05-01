@@ -21,6 +21,10 @@ class Service < ActiveRecord::Base
   reject_if: proc { |attributes| attributes['active'] != 'true' }
 
   accepts_nested_attributes_for :fare_structures
+
+  accepts_nested_attributes_for :service_coverage_maps, allow_destroy: true,
+  reject_if: proc { |attributes| ((attributes['_destroy'] == 1) && attributes['allow_action'] == 1) ||
+    (attributes['allow_action'].blank? && attributes['_destroy'].blank?)  }
   
   # attr_accessible :id, :name, :provider, :provider_id, :service_type, :advanced_notice_minutes, :external_id, :active
   # attr_accessible :contact, :contact_title, :phone, :url, :email
@@ -30,10 +34,13 @@ class Service < ActiveRecord::Base
   has_many :characteristics, through: :service_characteristics, source: :characteristic
   has_many :trip_purposes, through: :service_trip_purpose_maps, source: :trip_purpose
   has_many :coverage_areas, through: :service_coverage_maps, source: :geo_coverage
-  has_many :origins, -> { where "service_coverage_maps.rule = 'origin'" }, through: :service_coverage_maps, source: :geo_coverage
-  has_many :destinations, -> { where "service_coverage_maps.rule = 'destination'" }, through: :service_coverage_maps, source: :geo_coverage
-  has_many :residences, -> { where "service_coverage_maps.rule = 'residence'" }, through: :service_coverage_maps, source: :geo_coverage
+
+  has_many :origins, -> { where rule: 'origin' }, class_name: "ServiceCoverageMap"
   
+  has_many :destinations, -> { where rule: 'destination' }, class_name: "ServiceCoverageMap"
+    
+  has_many :residences, -> { where rule: 'residence' }, class_name: "ServiceCoverageMap"
+    
   has_many :user_profiles, through: :user_services, source: :user_profile
 
   scope :active, -> {where(active: true)}
@@ -45,7 +52,7 @@ class Service < ActiveRecord::Base
   validates :name, presence: true
   validates :provider, presence: true
   validates :service_type, presence: true
-  
+
   def human_readable_advanced_notice
     if self.advanced_notice_minutes < (24*60)
       hours = self.advanced_notice_minutes/60.round
