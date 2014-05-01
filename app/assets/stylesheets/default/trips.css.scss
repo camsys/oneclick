@@ -205,9 +205,9 @@ $period-nav-button-width: 40px;
 }
 
 .single-plan-header{
-  background-color: whitesmoke;
-  border: 2px whitesmoke solid;
-  border-bottom: none;
+  background-color: transparante;
+  border: none;
+  padding: 2px;
 }
 
 $single-plan-height: 50px;
@@ -332,4 +332,52 @@ $legend-height: 20px;
 .trip-mode-cost {
   text-align: center;
   width: 100%;
+}
+
+.mode_transit {
+  background-image: image-url('transit.png');
+}
+
+.mode_paratransit {
+  background-image: image-url('paratransit.png');
+}
+
+.mode_ferry {
+  background-image: image-url('ferry.png');
+}
+
+.mode_helicopter {
+  background-image: image-url('helicopter.png');
+}
+
+.mode_plane {
+  background-image: image-url('plane.png');
+}
+
+.mode_rail {
+  background-image: image-url('rail.png');
+}
+
+.mode_auto {
+  background-image: image-url('auto.png');
+}
+
+.mode_taxi {
+  background-image: image-url('taxi.png');
+}
+
+.mode_streetcar {
+  background-image: image-url('streetcar.png');
+}
+
+.mode_walk {
+  background-image: image-url('walk.png');
+}
+
+.mode_bicycle {
+  background-image: image-url('bicycle.png');
+}
+
+.mode_rideshare {
+  background-image: image-url('rideshare.png');
 }

@@ -92,6 +92,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	 * @param {object} tripResponse 
 	 */
 	function processTripResponse(tripResponse) {
+		console.log(tripResponse);
 		//check if response is object
 		if(typeof tripResponse != 'object' || tripResponse === null) {
 			return;
@@ -112,6 +113,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		var resizeChartArray = [];
 		//process each trip
 		for(var i=0, tripCount=tripParts.length; i<tripCount; i++) {
+			tripParts[i] = processTripTimeRange(tripParts[i]);
 			tripParts[i] = formatTripData(tripParts[i]);
 		}
 		
@@ -157,6 +159,98 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	}
 
 	/*
+	* trip -> itineraries -> legs
+	* iterate legs to check if itinerary time range covers all known legs' time ranges
+	* iterate itineraries to check if trip time range covers all known itineraries' time ranges
+	*/
+	function processTripTimeRange(trip) {
+		if(typeof trip != 'object' || trip === null) {
+			return null;
+		}
+
+		if(! trip.itineraries instanceof Array) {
+			return trip;
+		}
+
+		var tripStartTime = parseDate(trip.start_time);
+		var tripEndTime = parseDate(trip.end_time);
+
+		trip.itineraries.forEach(function(plan) {
+			var planStartTime = parseDate(plan.start_time);
+			var planEndTime = parseDate(plan.end_time);
+			if(plan.legs instanceof Array) {
+				plan.legs.forEach(function(leg) {
+					var legStartTime = parseDate(leg.start_time);
+					var legEndTime = parseDate(leg.end_time);
+					if(!isNaN(planStartTime)) {
+						if(!isNaN(legStartTime)) {
+							if(legStartTime < planStartTime) {
+								planStartTime = legStartTime;
+							}
+						}
+						if(!isNaN(legEndTime)) {
+							if(legEndTime < planStartTime) {
+								planStartTime = legEndTime;
+							}
+						}
+					}
+
+					if(!isNaN(planEndTime)) {
+						if(!isNaN(legStartTime)) {
+							if(legStartTime > planEndTime) {
+								planEndTime = legStartTime;
+							}
+						}
+						if(!isNaN(legEndTime)) {
+							if(legEndTime > planEndTime) {
+								planEndTime = legEndTime;
+							}
+						}
+					}
+				});
+			}	
+
+			if(!isNaN(planStartTime)) {
+				plan.start_time = planStartTime.toISOString();
+			}	
+			if(!isNaN(planEndTime)) {
+				plan.end_time = planEndTime.toISOString();
+			}	
+
+
+			if(!isNaN(planStartTime)) {
+				if(isNaN(tripStartTime) || planStartTime < tripStartTime) {
+					tripStartTime = planStartTime;
+				}
+			}
+			if(!isNaN(planEndTime)) {
+				if(isNaN(tripStartTime) || planEndTime < tripStartTime) {
+					tripStartTime = planEndTime;
+				}
+			}
+
+			if(!isNaN(planStartTime)) {
+				if(isNaN(tripEndTime) || planStartTime > tripEndTime) {
+					tripEndTime = planStartTime;
+				}
+			}
+			if(!isNaN(planEndTime)) {
+				if(isNaN(tripEndTime) || planEndTime > tripEndTime) {
+					tripEndTime = planEndTime;
+				}
+			}
+		});
+		
+		if(!isNaN(tripStartTime)) {
+			trip.actual_start_time = tripStartTime.toISOString();
+		}	
+		if(!isNaN(tripEndTime)) {
+			trip.actual_end_time = tripEndTime.toISOString();
+		}
+		return trip;
+	}
+
+	/*
 	* re-format data in trip object
 	* - leg type formatting: only allow Walk, Transfer, Vehicle
 	* - legs [] is empty: then need to put itinerary data into legs array
@@ -175,16 +269,35 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		var tripStartTime = parseDate(strTripStartTime);
 		var tripEndTime = parseDate(strTripEndTime);
 
+		var actualTripStartTime = parseDate(trip.actual_start_time); //min time by iterating all legs in all itineraries
+		var actualTripEndTime = parseDate(trip.actual_end_time); //max time by iterating all legs in all itineraries
+
 		var isStartTimeInvalid = isNaN(tripStartTime);
 		var isEndTimeInvalid = isNaN(tripEndTime);
 		if(isStartTimeInvalid && isEndTimeInvalid) {
 			return;
 		} else if(isStartTimeInvalid) {  //check max_ui_duration restriction
-			tripEndTime = moment(tripEndTime).add('minutes', intervalStep).toDate();
-			tripStartTime = moment(tripEndTime).subtract('minutes', maxUIDuration).toDate();
+			if(!isNaN(actualTripEndTime)) {
+				tripEndTime = moment(actualTripEndTime).add('minutes', intervalStep).toDate();
+				tripStartTime = moment(actualTripEndTime).subtract('minutes', maxUIDuration).toDate();
+			} else {
+				tripEndTime = moment(tripEndTime).add('minutes', intervalStep).toDate();
+				tripStartTime = moment(tripEndTime).subtract('minutes', maxUIDuration).toDate();
+			}
+			if(!isNaN(actualTripStartTime) && tripStartTime > actualTripStartTime) {
+				tripStartTime = moment(actualTripStartTime).subtract('minutes', intervalStep).toDate();
+			}
 		} else if(isEndTimeInvalid) {
-			tripStartTime = moment(tripStartTime).subtract('minutes', intervalStep).toDate();
-			tripEndTime = moment(tripStartTime).add('minutes', maxUIDuration).toDate();
+			if(!isNaN(actualTripStartTime)) {
+				tripStartTime = moment(actualTripStartTime).subtract('minutes', intervalStep).toDate();
+				tripEndTime = moment(actualTripStartTime).add('minutes', maxUIDuration).toDate();
+			} else {
+				tripStartTime = moment(tripStartTime).subtract('minutes', intervalStep).toDate();
+				tripEndTime = moment(tripStartTime).add('minutes', maxUIDuration).toDate();
+			}
+			if(!isNaN(actualTripEndTime) && tripEndTime < actualTripEndTime) {
+				tripEndTime = moment(actualTripEndTime).add('minutes', intervalStep).toDate();
+			}
 		}
 		
 		if(tripEndTime <= tripStartTime) {
@@ -199,6 +312,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
 		trip.start_time =  tripStartTime.toISOString();
 		trip.end_time =  tripEndTime.toISOString();
+		console.log(trip.start_time);
+		console.log(trip.end_time);
 
 		trip.min_ui_duration = minUIDuration;
 		trip.max_ui_duration = maxUIDuration;
@@ -210,10 +325,16 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		trip.itineraries.forEach(function(plan) {
 			if(isNaN(parseDate(plan.start_time))) {
 				plan.start_time = trip.start_time;
+				plan.start_time_estimated = true;
+			} else {
+				plan.start_time_estimated = false;
 			}
 
 			if(isNaN(parseDate(plan.end_time))) {
 				plan.end_time = trip.end_time;
+				plan.end_time_estimated = true;
+			} else {
+				plan.end_time_estimated = false;
 			}
 
 			if(plan.legs instanceof Array) {
@@ -221,8 +342,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 					plan.legs.push({
 						"type": "Vehicle",
                         "description": trip.description,
-                        "start_time": trip.start_time,
-                        "end_time": trip.end_time,
+                        "start_time": plan.start_time,
+                        "end_time": plan.end_time,
                         "start_time_estimated": plan.start_time_estimated,
                         "end_time_estimated": plan.end_time_estimated
 					});
@@ -235,10 +356,12 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 					}
 					if(isNaN(parseDate(leg.start_time))) {
 						leg.start_time = trip.start_time;
+						leg.start_time_estimated = true;
 					}
 
 					if(isNaN(parseDate(leg.end_time))) {
 						leg.end_time = trip.end_time;
+						leg.end_time_estimated = true;
 					}
 				});
 			}
@@ -303,8 +426,6 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 					tripPlan,
 					strTripStartTime,
 					strTripEndTime,
-					tripPlan.start_time,
-					tripPlan.end_time,
 					isDepartAt
 				);
 			}
@@ -499,11 +620,11 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		'</select>';
 		
 		var tripHeaderTags = tripDescTag +
-				"<div class='col-xs-12 single-plan-header' style='padding: 0px;'>" +
-					"<div class='col-xs-2' style='padding: 0px;'>" +
+				"<div class='col-xs-12 single-plan-header'>" +
+					"<div class='col-xs-3 col-sm-2' style='padding: 0px;'>" +
 						(isDepartAt ? ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>") : "") +
 					"</div>" +
-					"<div class='col-xs-9 " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
+					"<div class='col-xs-7 col-sm-9 " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
 						(
 							isDepartAt ? 
 							("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>") : 
@@ -511,15 +632,15 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 						) +
 						sorterTags +
 					"</div>" +
-					"<div class='col-xs-1 select-column' style='padding: 0px;'>" +	
+					"<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px;'>" +	
 						(isDepartAt ? "" : ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>")) +
 					"</div>" +
-					"<div class='col-xs-2' style='padding: 0px;'>" +
+					"<div class='col-xs-3 col-sm-2' style='padding: 0px;'>" +
 					"</div>" +
-					"<div class='col-xs-9 " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap;'>" +
+					"<div class='col-xs-7 col-sm-9 " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap;'>" +
 					 	tickLabelTags +
 					"</div>" +
-					"<div class='col-xs-1 select-column' style='padding: 0px;'>" +	
+					"<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px;'>" +	
 					"</div>" +
 				"</div>";
 		return tripHeaderTags;
@@ -531,12 +652,10 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	 * @param {Object} tripPlan
 	 * @param {string} strTripStartTime: trip start time
 	 * @param {string} strTripEndTime: trip end time
-	 * @param {string} strPlanStartTime: trip itinerary start time
-	 * @param {string} strPlanEndTime: trip itinerary end time
 	 * @param {bool} isDepartAt: true if departing at, false if arriving at
 	 * @return {string} HTML tags of each trip plan
 	 */
-	function addTripPlanHtml(tripId, tripPlan, strTripStartTime, strTripEndTime, strPlanStartTime, strPlanEndTime, isDepartAt) {
+	function addTripPlanHtml(tripId, tripPlan, strTripStartTime, strTripEndTime, isDepartAt) {
 		if(typeof(tripPlan)!= 'object' || tripPlan === null) {
 			return "";
 		}
@@ -549,8 +668,13 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		var missingInfoArray = tripPlan.missing_information; 
 		var transfers = typeof(tripPlan.transfers) === 'number' ? tripPlan.transfers : 0;
 		var duration = tripPlan.duration;
+		var strPlanStartTime = tripPlan.start_time; 
+		var strPlanEndTime = tripPlan.end_time;
+		var isPlanStartTimeEstimated = tripPlan.start_time_estimated;
+		var isPlanEndTimeEstimated = tripPlan.end_time_estimated;
 						
-		var cssName = removeSpace(mode.toLowerCase()) + "-" + removeSpace(serviceName.toLowerCase());
+		//var cssName = removeSpace(mode.toLowerCase()) + "-" + removeSpace(serviceName.toLowerCase());
+		var cssName = removeSpace(mode.toLowerCase());
 		var modeServiceUrl = "";
 		if(typeof(contact_information) === 'object'  && contact_information != null) {
 			modeServiceUrl = contact_information.url;
@@ -567,21 +691,24 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 			" data-trip-start-time='" + strTripStartTime + "'" +
 			" data-trip-end-time='" + strTripEndTime + "'" +
 			" data-start-time='" + strPlanStartTime + "'" +
+			" data-start-time-estimated='" + isPlanStartTimeEstimated + "'" +
 			" data-end-time='" + strPlanEndTime + "'" +
+			" data-end-time-estimated='" + isPlanEndTimeEstimated + "'" +
 			" data-mode='" + mode + "'" +
 			" data-transfer='" + transfers.toString() + "'" +
 			" data-cost='" + ((typeof(cost) === 'object'  && cost != null && (typeof(cost.price) === 'number')) ? cost.price : '') + "'" +
-			" data-duration='" + (typeof(duration) === 'object'  && duration != null ? duration.sortable_duration : '') + "'";
+			" data-duration='" + (typeof(duration) === 'object'  && duration != null ? parseFloat(duration.sortable_duration)/60 : '') + "'";
 		var tripPlanTags = 
 			"<div class='col-xs-12 single-plan-review single-plan-unselected' style='padding: 0px;'" + dataTags +">" +
-				"<div class='col-xs-2 trip-plan-first-column' style='padding: 0px; height: 100%;'>" +
+				"<div class='col-xs-3 col-sm-2 trip-plan-first-column' style='padding: 0px; height: 100%;'>" +
 					"<table>" +
 						"<tbody>" +
 							"<tr>" +
 								"<td class='trip-mode-icon " + cssName + "'>" +
-									"<a href='" + modeServiceUrl + "' target='_blank'" + 
-										(typeof(modeServiceUrl) === 'string' && modeServiceUrl.trim().length > 0 ? "" : " onclick='return false'>") + //if there is no url, then make this hyperlink inactive
-									"</a>" +
+									(
+										typeof(modeServiceUrl) === 'string' && modeServiceUrl.trim().length > 0 ?
+											"<a href='" + modeServiceUrl + "' target='_blank'</a>" : "" 
+									)	+
 								"</td>" +
 								"<td class='trip-mode-cost'>" +
 									"<div class='itinerary-text'>" +
@@ -592,11 +719,11 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 						"</tbody>" +
 					"</table>" +
 				"</div>" +
-				"<div class='col-xs-9 " + 
+				"<div class='col-xs-7 col-sm-9 " + 
 					(isDepartAt ? "highlight-left-border regular-right-border" : "highlight-right-border regular-left-border") + 
 					"' style='padding: 0px; height: 100%;' id='" + tripPlanDivPrefix + tripId + "_" + planId + "'>" +
 				"</div>" +
-				"<div class='col-xs-1 select-column' style='padding: 0px; height: 100%;'>" +
+				"<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px; height: 100%;'>" +
 					(
 						isMissingInfoFound ?
 						(
@@ -999,6 +1126,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		var tags = '';
 		var sliderConfig = null;
 		if(typeof(maxDuration) === 'number' && typeof(minDuration) === 'number' && maxDuration > minDuration) {
+			minDuration = parseInt(minDuration/60 * 100 + 1)/100;
+			maxDuration = parseInt(maxDuration/60 * 100 + 1)/100;
 			tags = 
 			'<div class = "col-sm-12">' + 
 				'<label class="sr-only">Time</label>' +
@@ -1017,7 +1146,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 				values: [minDuration, maxDuration],
 				min: minDuration,
 				max: maxDuration,
-				step: 1,
+				step: 0.01,
 				range: true
 			};
 		}
@@ -1159,9 +1288,9 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		   .data(tripLegs)
 		   .enter().append("rect")
 		   .attr('class', function(d) { return "travel-type-" + d.type.toLowerCase(); })
-		   .attr("x", function(d) { return x(parseDate(d.start_time)); })
+		   .attr("x", function(d) { return d.start_time_estimated ? 0 : x(parseDate(d.start_time)); })
 		   .attr("y", y(1) - barHeight/2)
-		   .attr("width", function(d) { return x(parseDate(d.end_time)) - x(parseDate(d.start_time)); })
+		   .attr("width", function(d) { return (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time))); })
 		   .attr("height", barHeight)
 		   .on("mouseover", function(d) {
 				chartTooltipDiv.transition()        
@@ -1251,9 +1380,9 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		
 		//update chart items
 		chart.selectAll("rect")
-		   .attr("x", function(d) { return x(parseDate(d.start_time)); })
+		   .attr("x", function(d) { return d.start_time_estimated ? 0 : x(parseDate(d.start_time)); })
 		   .attr("y", y(1) - barHeight/2)
-		   .attr("width", function(d) { return x(parseDate(d.end_time)) - x(parseDate(d.start_time)); })
+		   .attr("width", function(d) { return (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time))); })
 		   .attr("height", barHeight);
 	}
 	
@@ -1286,38 +1415,55 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	}
 	
 	function processPlanFiltering(modes, transferValues, costValues, durationValues, plan){
-			var modeVisible = false;
+			var modeVisible = true;
 			if(modes instanceof Array) {
 				modeVisible = filterPlansByMode(modes, plan);
 			}
 		
-			var transferVisible = false;
+			if(!modeVisible) {
+				plan.style.display = 'none';
+				return;
+			}
+
+			var transferVisible = true;
 			if(transferValues instanceof Array && transferValues.length === 2) {
 				transferVisible = filterPlansByTransfer(transferValues[0], transferValues[1], plan);
 			}
+
+			if(!transferVisible) {
+				plan.style.display = 'none';
+				return;
+			}
 			
-			var costVisible = false;
+			var costVisible = true;
 			if(costValues instanceof Array && costValues.length === 2) {
 				costVisible = filterPlansByCost(costValues[0], costValues[1], plan);
 			}
+
+			if(!costVisible) {
+				plan.style.display = 'none';
+				return;
+			}
 			
-			var durationVisible = false;
+			var durationVisible = true;
 			if(durationValues instanceof Array && durationValues.length === 2) {
 				durationVisible = filterPlansByDuration(durationValues[0], durationValues[1], plan);
 			}
-		
-			if(modeVisible && transferVisible && costVisible && durationVisible) {
-				plan.style.display = 'block';
-				
-				var tmpTripId = plan.attributes['data-trip-id'].value;
-				var tmpPlanId = plan.attributes['data-plan-id'].value;
-				var tmpTripStartTime = parseDate(plan.attributes['data-trip-start-time'].value);
-				var tmpTripEndTime = parseDate(plan.attributes['data-trip-end-time'].value);		
-				var tmpChartDivId = tripPlanDivPrefix + tmpTripId + "_" + tmpPlanId;	
-				resizeChart(tmpChartDivId, tmpTripStartTime, tmpTripEndTime, intervalStep, barHeight);
-			} else {
+			
+			if(!durationVisible) {
 				plan.style.display = 'none';
+				return;
 			}
+
+			//passes all filtering check
+			plan.style.display = 'block';
+			
+			var tmpTripId = plan.attributes['data-trip-id'].value;
+			var tmpPlanId = plan.attributes['data-plan-id'].value;
+			var tmpTripStartTime = parseDate(plan.attributes['data-trip-start-time'].value);
+			var tmpTripEndTime = parseDate(plan.attributes['data-trip-end-time'].value);		
+			var tmpChartDivId = tripPlanDivPrefix + tmpTripId + "_" + tmpPlanId;	
+			resizeChart(tmpChartDivId, tmpTripStartTime, tmpTripEndTime, intervalStep, barHeight);
 	}
 	
 	/*
@@ -1333,7 +1479,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		}
 					
 		var mode = plan.attributes['data-mode'].value;
-		visible = (modes.indexOf(parseInt(mode)) >= 0);
+		visible = (modes.indexOf(mode) >= 0);
 		
 		return visible;
 	}
@@ -1346,13 +1492,13 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	 * @return {bool} visible
 	 */
 	function filterPlansByTransfer(minCount, maxCount, plan) {
-		var visible = false;
+		var visible =false;
 		if(typeof(minCount) != 'number' || typeof(maxCount) != 'number'  || typeof(plan) != 'object' || plan === null || ! plan.hasOwnProperty('attributes')) {
 			return visible;
 		}
 					
 		var transfer = parseInt(plan.attributes['data-transfer'].value);
-		visible = (typeof(transfer) === 'number' && transfer >= minCount && transfer <= maxCount);
+		visible = (typeof(transfer) != 'number' || isNaN(transfer)   || (transfer >= minCount && transfer <= maxCount) );
 		
 		return visible;
 	}
@@ -1365,13 +1511,13 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	 * @return {bool} visible
 	 */
 	function filterPlansByCost(minCost, maxCost, plan) {
-		var visible = false;
+		var visible =false;
 		if(typeof(minCost) != 'number' || typeof(maxCost) != 'number' || typeof(plan) != 'object' || plan === null || ! plan.hasOwnProperty('attributes')) {
 			return visible;
 		}
 					
 		var cost = parseFloat(plan.attributes['data-cost'].value);
-		visible = (typeof(cost) === 'number' && cost >= minCost && cost <= maxCost);
+		visible = (typeof(cost) != 'number' || isNaN(cost) || (cost >= minCost && cost <= maxCost));
 		
 		return visible;
 	}
@@ -1384,13 +1530,13 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	 * @return {bool} visible
 	 */
 	function filterPlansByDuration(minDuration, maxDuration, plan) {
-		var visible = false;
+		var visible =false;
 		if(typeof(minDuration) != 'number' || typeof(maxDuration) != 'number'  || typeof(plan) != 'object' || plan === null || ! plan.hasOwnProperty('attributes')) {
 			return visible;
 		}
 					
 		var duration = parseFloat(plan.attributes['data-duration'].value);
-		visible = (typeof(duration) === 'number' && duration >= minDuration && duration <= maxDuration);
+		visible = (typeof(duration) != 'number' || isNaN(duration)  || (duration >= minDuration && duration <= maxDuration) );
 		
 		return visible;
 	}
@@ -1413,11 +1559,18 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		switch(sortKey) {
 			case 'start-time':
 			case 'end-time':
-				rawValue = parseDate(rawValue);
+				if(plan.attributes['data-' + sortKey + '-estimated'] == 'true') {
+					rawValue = null;
+				} else {
+					rawValue = parseDate(rawValue);
+				}
 				break;
 			case 'duration':
-			case 'price':
+			case 'cost':
 				rawValue = parseFloat(rawValue);
+				if(isNaN(rawValue)) {
+					rawValue = null;
+				}
 				break;
 			default:
 				break;
@@ -1435,18 +1588,29 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		var planContainer = $(sortDropdown).parents('.single-trip-part');
 		var plans = planContainer.find('.single-plan-review');
 		var sortArray = [];
+		var nonSortableArray = [];
 		if(plans.length > 0) {
 			for(var i=0, planCount=plans.length; i<planCount; i++) {
-				sortArray.push({
-					itinerary: plans[i],
-					value: findSortValue(plans[i], sortKey)
-				});
+				var val = findSortValue(plans[i], sortKey);
+				if(val === null) {
+					nonSortableArray.push({
+						itinerary: plans[i],
+						value: val
+					});
+				} else {
+					sortArray.push({
+						itinerary: plans[i],
+						value: val
+					});
+				}
 			}			
 		}
 		
 		sortArray = sortArray.sort(function(sortItem1, sortItem2){
 			return (sortItem1.value - sortItem2.value);
 		});
+
+		sortArray = sortArray.concat(nonSortableArray);
 		
 		if(sortArray.length > 0) {
 			var planHeader = planContainer.find('.single-plan-header');

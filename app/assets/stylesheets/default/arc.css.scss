@@ -13,7 +13,7 @@ $nav-end-color: #A3A3A3;
 
 @media(max-width:767px){
   #logo{
-    background-image: image-url('arc/logo_sm.png');
+    background-image: image-url('arc/logo-sm.png');
   }
 
   #userDropdown .dropdown-menu>li>a {
@@ -27,7 +27,7 @@ $nav-end-color: #A3A3A3;
 
 @media(min-width:768px){
   #logo{
-    background-image: image-url('arc/logo_lg.png');
+    background-image: image-url('arc/logo-lg.png');
   }
 }
 

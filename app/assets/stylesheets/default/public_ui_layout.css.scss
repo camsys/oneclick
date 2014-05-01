@@ -2,6 +2,8 @@ $footer-height: 40px;
 
 html, body {
   height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 /* Wrapper for page content to push down footer */
@@ -37,7 +39,7 @@ html, body {
   }
 
   #logo{
-    width: 250px;
+    width: 370px;
     height: 50px;
     line-height: 50px;
     padding: 0;
@@ -50,7 +52,7 @@ html, body {
   }
 
   #logo{
-    width: 300px;
+    width: 440px;
     height: 60px;
     line-height: 60px;
     padding: 0;
