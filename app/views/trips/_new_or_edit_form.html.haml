@@ -117,7 +117,4 @@
             %label.control-label.sr-only{:for => "travellersOptions"} Select how many travellers
             %select#travellersOptions.form-control{:name => "travellers"}
   / end of trip column
-  .col-sm-5.col-xs-12
-    #cmsPlaceholder.well
-      TODO:(CMS)
-  / end of CMS column
+  = render partial: 'shared/splash'

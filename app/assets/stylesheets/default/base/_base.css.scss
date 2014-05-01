@@ -545,6 +545,12 @@ body.characteristics {
 
 }
 
+#splash iframe {
+  display: block;
+  height: 600px;
+  border: 1px solid #c0c0c0;
+}
+
 // From bootstrap. We define our own classes for visibility which use display: inline
 // instead of display: block.
 

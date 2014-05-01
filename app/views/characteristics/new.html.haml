@@ -5,10 +5,9 @@
   %li.breadcrumb-page.next-page Review
   %li.breadcrumb-page.next-page Plan
 
-= render partial: 'form', :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
+.row
+  .col-sm-7.col-xs-12
+    = render partial: 'form', :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
 
-/ end of options column
-.col-sm-5.col-xs-12
-  #cmsPlaceholder.well
-    TODO:(CMS)
-/ end of CMS column
+  / end of options column
+  = render partial: 'shared/splash'
