@@ -30,6 +30,9 @@ class Service < ActiveRecord::Base
   has_many :characteristics, through: :service_characteristics, source: :characteristic
   has_many :trip_purposes, through: :service_trip_purpose_maps, source: :trip_purpose
   has_many :coverage_areas, through: :service_coverage_maps, source: :geo_coverage
+  has_many :origins, -> { where "service_coverage_maps.rule = 'origin'" }, through: :service_coverage_maps, source: :geo_coverage
+  has_many :destinations, -> { where "service_coverage_maps.rule = 'destination'" }, through: :service_coverage_maps, source: :geo_coverage
+  has_many :residences, -> { where "service_coverage_maps.rule = 'residence'" }, through: :service_coverage_maps, source: :geo_coverage
   has_many :user_profiles, through: :user_services, source: :user_profile
 
   scope :active, -> {where(active: true)}

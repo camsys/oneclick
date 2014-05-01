@@ -179,7 +179,7 @@
             =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
           .well.white-well.text-left
             -coverage_string = ""
-            -@service.service_coverage_maps.where(rule: rule.singularize.downcase).each do |map|
+            - @service.service_coverage_maps.where(rule: rule.singularize.downcase).joins(:geo_coverage).order('value').each do |map|
               -if map.geo_coverage.coverage_type == type
                 -coverage_string += map.geo_coverage.value + ', '
             -if coverage_string == ""

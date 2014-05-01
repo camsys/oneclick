@@ -217,20 +217,16 @@ wrapper: :horizontal_form do |f|
         %h3= t(:coverage_areas)
 
     .row
-      .col-sm-6
-        -types = @service.coverage_areas.map(&:coverage_type).uniq
-      - ['origins', 'destinations', 'residences'].each do |rule| 
-        %h4= t(rule)
-        - types.each do |type|
-          %b
-            =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
-          .well.white-well.text-left
-            -coverage_string = ""
-            -@service.service_coverage_maps.where(rule: rule.singularize.downcase).each do |map|
-              -if map.geo_coverage.coverage_type == type
-                -coverage_string += map.geo_coverage.value + ', '
-            -if coverage_string == ""
-              = t(:n_a)
-            -else
-              =coverage_string.chop.chop
+      .col-sm-12
+        - types = GeoCoverage.pluck(:coverage_type).uniq
+        - [:origins, :destinations, :residences].each do |rule| 
+          %h4= t(rule)
+          - types.each do |type|
+            %b
+              =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
+            .well.white-well.text-left
+              = f.association rule,
+                  collection: GeoCoverage.where(coverage_type: type).order(:value).map{|c| [ c.value, c.id ] },
+                  label: false, as: 'check_boxes', item_wrapper_class: 'checkbox-inline'
+
 
