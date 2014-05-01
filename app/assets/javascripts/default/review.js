@@ -92,7 +92,6 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	 * @param {object} tripResponse 
 	 */
 	function processTripResponse(tripResponse) {
-		console.log(tripResponse);
 		//check if response is object
 		if(typeof tripResponse != 'object' || tripResponse === null) {
 			return;
@@ -116,8 +115,6 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 			tripParts[i] = processTripTimeRange(tripParts[i]);
 			tripParts[i] = formatTripData(tripParts[i]);
 		}
-		
-		console.log(tripParts);
 
 		tripParts.forEach(function(trip) {
 			var newTripChartArray = addTripHtml(trip);
@@ -312,9 +309,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
 		trip.start_time =  tripStartTime.toISOString();
 		trip.end_time =  tripEndTime.toISOString();
-		console.log(trip.start_time);
-		console.log(trip.end_time);
-
+		
 		trip.min_ui_duration = minUIDuration;
 		trip.max_ui_duration = maxUIDuration;
 

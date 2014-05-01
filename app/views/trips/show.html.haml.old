@@ -1,0 +1,112 @@
+.row
+  .col-sm-3
+    %h1
+      %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
+      = t(:trip_options)
+  .col-sm-9.well.trip_header
+    %div{class: (@trip.in_the_future ? 'col-sm-11' : 'col-sm-12')}
+      = render partial: 'trip_header', locals: {trip: @trip}
+    - if @trip.in_the_future
+      .col-sm-1
+        = link_to edit_user_trip_path(@traveler, @trip), :class => "btn btn-sm pull-right", :alt => t(:edit_trip), :title => t(:edit_trip) do
+          %i.fa.fa-edit
+
+- if @trip.any_parts_selected?
+  .row.selected_notices{style: 'margin-top: 19px;'}
+    - if @trip.both_parts_selected?
+      .col-sm-6
+        .alert.alert-success.fade.in
+          = content_tag :div, t(:outbound_selected_short)
+      .col-sm-6
+        - if @trip.is_return_trip
+          .alert.alert-success.fade.in
+            = content_tag :div, t(:return_selected)
+    - elsif @trip.only_outbound_selected?
+      .col-sm-12
+        .alert.alert-success.fade.in
+          = content_tag :div, t(:outbound_selected)
+    - elsif @trip.only_return_selected?
+      .col-sm-12
+        - if @trip.is_return_trip
+          .alert.alert-success.fade.in
+            = content_tag :div, t(:return_selected)
+
+- if @trip.both_parts_selected?
+  .row{style: 'margin-top: 19px;'}
+    .col-sm-12.well
+      %h2= t(:trip_planned_and_saved)
+      %p= t(:finish_trip_planning_options) + ":"
+      .row
+        .col-sm-6{style: 'margin-bottom: 9px;'}
+          =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
+            %i.fa.fa-envelope-o
+            =t(:email_trip_details)
+        .col-sm-6{style: 'margin-bottom: 9px;'}
+          -if (@trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service) or (@trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.service)
+            =link_to '#', {href: '#send_trip_by_email_to_provider', class: 'btn btn-block', data: {toggle: 'modal'}} do
+              %i.fa.fa-ticket
+              =t(:send_email_to) + " " + t(:provider)
+          -else
+            =link_to '#', {disabled: true, class: 'btn btn-block'} do
+              %i.fa.fa-ticket
+              =t(:send_email_to) + " " + t(:provider)
+      .row
+        .col-sm-6{style: 'margin-bottom: 9px;'}
+          =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: false) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
+            %i.fa.fa-search
+            =t(:view_trip_details)
+        .col-sm-6{style: 'margin-bottom: 9px;'}
+          =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
+            %i.fa.fa-print
+            =t(:print_trip_details)
+      -if @trip.outbound_part.selected_itinerary.is_bookable or @trip.return_part.selected_itinerary.is_bookable
+        %span.input-group-btn
+          %label.control-label.sr-only{:for => "fromAddressMarkerButton"} Click button to open the map and locate the from address
+          %button#fromAddressMarkerButton.btn.btn-default{"data-target" => "#bookingModal", "data-toggle" => "modal", :type => "button"}
+            %i.fa.fa-map-marker
+
+        = render partial: 'book_trip'
+
+      -if user_signed_in?
+        .row
+          .col-sm-6.col-sm-offset-3
+            =link_to user_trips_path(get_traveler), {class: 'btn btn-block'} do
+              %i.fa.fa-share-square.fa-flip-horizontal
+              =t(:view_planned_trips)
+
+.row
+  .col-sm-12
+    %div{id: 'outbound_section'}
+      .row.section_header
+        .col-sm-12
+          %a
+            %h2
+              = t(:outbound)
+      .row.itineraries_holder
+        = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
+          trip_part: @trip.outbound_part }
+      - if @trip.outbound_part.has_hidden_options?
+        .row
+          .col-sm-12#outbound_hidden_trips_notice
+            = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
+
+  - if @trip.is_return_trip
+    .row
+      .col-sm-12
+        = render partial: 'return_trip'
+
+  
+.row
+  .well.well-small.col-sm-12
+    = link_to new_user_trip_path do
+      %i{class: CsHelpers::ACTION_ICONS[:plan_a_trip]}
+      = t(:plan_a_new_trip)
+    = link_to '#', {href: '#send_trip_by_email', class: "pull-right", data: {toggle: 'modal'}} do
+      %i.fa.fa-envelope-o
+      =t(:send_by_email)
+
+= render partial: 'send_trip_by_email', locals: {trip: @trip}
+= render partial: 'send_trip_by_email_to_provider'
+
+/#itinerary_modal.modal.fade
+#itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}

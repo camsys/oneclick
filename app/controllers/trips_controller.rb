@@ -40,7 +40,7 @@ class TripsController < PlaceSearchingController
 
   end
 
-  def show
+  def show_old
     @show_hidden = params[:show_hidden]
 
     if session[:current_trip_id]
@@ -75,6 +75,16 @@ class TripsController < PlaceSearchingController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @trip }
+    end
+  end
+
+  def show
+    @trip = Trip.find(params[:id].to_i)
+    @tripResponse = TripSerializer.new(@trip)
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @tripResponse }
     end
   end
 
@@ -592,17 +602,6 @@ class TripsController < PlaceSearchingController
   end
 
   def example
-  end
-
-  def trip_plans_review
-
-    @trip = Trip.find(params[:id].to_i)
-    @tripResponse = TripSerializer.new(@trip)
-
-    respond_to do |format|
-      format.html # trip_plans_review.html.erb
-      format.json { render json: @tripResponse }
-    end
   end
 
   def book
