@@ -658,6 +658,7 @@ def create_agencies_and_agency_users
     up = UserProfile.create! user: u
     agency.users << u
     u.add_role :agency_administrator, agency
+    u.add_role :internal_contact, agency
 
     # agency agent
     u = User.create! first_name: a + ' Agent', last_name: 'Agent',

@@ -109,10 +109,9 @@ class User < ActiveRecord::Base
     !is_visitor?
   end
 
-  # # Rolify has global roles and resource-bound roles, but what we need to know here is whether
-  # # the user has the given role for *any* resource
-  # def has_role_for_any_resource? role
-  #   User.with_role(role).exists? self
-  # end
+  #List of users who can be assigned to staff for an agency or provider
+  def self.staff_assignable
+    User.where.not(id: User.with_role(:anonymous_traveler).pluck(:id))
+  end
 
 end

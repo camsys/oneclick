@@ -25,7 +25,7 @@ Oneclick::Application.configure do
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default :charset => "utf-8"
 
-  config.log_level = :debug
+  config.log_level = :info
 
   config.eager_load = true
 end

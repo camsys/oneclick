@@ -39,6 +39,7 @@ es:
   parent: "[es27]Parent[/es]"
   subagencies: "[es27]Sub-agencies[/es]"
   new_agency: "[es29]New Agency[/es]"
+  select_agency: "[es42]Select Agency[/es]"
   provider: "[es25]Provider[/es]"
   provider_profile: "[es]Provider Profile[/es]"
   providers: "[es22]Providers[es]"
@@ -67,6 +68,7 @@ es:
   run: "[es51]Run[/es]"
   users: "[es42]Users[/es]"
   agents: "[es67]Agents[/es]"
+  administrators: "[es71]Administrators[/es]"
   create_user: "[es]Create User[/es]"
   admin: '[es42]Admin[/es]'
   admin_actions: '[es]Admin[/es]'
@@ -472,7 +474,9 @@ es:
   change_role: "[es360]Change Role[/es]"
   select_users: "[es370]Select users[/es]"
   add: "[es371]Add[/es]"
+  back: "[es475]Back[/es]"
   count: "[es385]Count[/es]"
+  contact_info: "[es477]Contact Info[/es]"
   do_not_reply: "[es386]This email is sent from an email address that is not monitored. Please do not reply to this message.[/es]"
   nothing_found_sorry: "[es407]Nothing found - sorry[/es]"
   solicit_feedback: "[es428]Please give us some feedback:[/es]"

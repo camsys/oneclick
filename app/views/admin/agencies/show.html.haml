@@ -1,17 +1,133 @@
-%p
-  %b Name:
-  = @agency.name
-%p
-  %b Parent:
-  - if @agency.parent
-    = link_to @agency.parent.name, [:admin, @agency.parent]
-  - else
-    = ''
-%p
-  %b Sub-agencies:
-  - @agency.sub_agencies.each do |agency|
-    = link_to agency.name, [:admin, agency]
+.row
+  = link_to t(:back), admin_agencies_path
+.row
+  - if can? :update, @agency
+    = link_to edit_admin_agency_path(@agency), {class: 'btn btn-default action-button pull-right', role: 'button'} do
+      = icon_label(:edit)
+  - if can? :destroy, @agency
+    = simple_form_for @agency, url: admin_agency_path, method: :delete, :html => {class: "form-horizontal pull-right", id: "delete_agency_form"}  do |f|
+      = button_tag type: 'submit', class: "btn btn-default" do
+        = icon_label(:delete)
+  %h2= @agency.name
 
-= link_to 'Edit', edit_admin_agency_path(@agency)
-\|
-= link_to 'List', admin_agencies_path
+.row
+  .col-sm-6
+    .well              
+      %h3= t(:contact_info)
+      %table.table.table-condensed
+        %tr
+          %td.text-right
+            = t(:address) + ":"
+          %td.text-left
+            %b= @agency.address.to_s
+          %td.text-left
+            %b= @agency.city.to_s
+          %td.text-left
+            %b= @agency.state.to_s
+          %td.text-left
+            %b= @agency.zip.to_s
+        %tr
+          %td.text-right
+            = t(:phone)+ ":  "
+          %td.text-left{colspan: 4}
+            %b= @agency.phone.to_s
+        %tr
+          %td.text-right
+            = t(:email)+ ":  "
+          %td.text-left{colspan: 4}
+            %b= mail_to @agency.email.to_s
+        %tr
+          %td.text-right
+            = t(:url)+ ":  "
+          %td.text-left{colspan: 4}
+            - if @agency.url
+              %b= link_to @agency.url, @agency.url
+        %tr
+          %td.text-right
+            = t(:parent_agency) + ":  "
+          %td.text-left{colspan: 4}
+            %b= @agency.parent.name if @agency.parent
+  .col-sm-6
+    .well
+      %h3= t(:internal_contact)
+      %table.table.table-condensed
+        - if @contact
+          %tr
+            %td.text-right
+              = t(:name) + ": "
+            %td.text-left
+              %b= @contact.name.to_s
+          %tr
+            %td.text-right
+              = t(:title)+": "
+            %td.text-left
+              %b= @contact.title.to_s
+          %tr
+            %td.text-right
+              = t(:phone)+ ": "
+            %td.text-left
+              %b= @contact.phone.to_s
+          %tr
+            %td.text-right
+              = t(:email)+ ":  "
+            %td.text-left
+              %b= mail_to @contact.email.to_s
+        - else
+          %tr
+            %td= t(:nothing_found_sorry)
+.well
+  .row
+    .col-sm-12
+      %h3= t(:staff_actions)
+      %h4= t(:administrators)
+      %table.ALTtable.table-condensed
+        %tr
+          %th.text-left
+            = t(:name)
+          %th.text-left
+            = t(:title)
+          %th.text-left
+            = t(:phone)
+          %th.text-left
+            = t(:email)
+
+        - if @admins.count > 0
+          - @admins.each do |s|
+            %tr
+              %td.text-left
+                %b= s.name.to_s
+              %td.text-left
+                %b= s.title.to_s
+              %td.text-left
+                %b= s.phone.to_s
+              %td.text-left
+                %b= mail_to s.email.to_s
+        - else
+          %tr
+            %td= t(:nothing_found_sorry)
+      %h4= t(:agents)
+      %table.ALTtable.table-condensed
+        %tr
+          %th.text-left
+            = t(:name)
+          %th.text-left
+            = t(:title)
+          %th.text-left
+            = t(:phone)
+          %th.text-left
+            = t(:email)
+
+        - if @agents.count > 0
+          - @agents.each do |s|
+            %tr
+              %td.text-left
+                %b= s.name.to_s
+              %td.text-left
+                %b= s.title.to_s
+              %td.text-left
+                %b= s.phone.to_s
+              %td.text-left
+                %b= mail_to s.email.to_s
+        - else
+          %tr
+            %td= t(:nothing_found_sorry)

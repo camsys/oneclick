@@ -42,7 +42,7 @@ class Ability
       can [:access], :admin_feedback
 
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
-      can [:read, :edit], Agency, id: user.agency.try(:id)
+      can [:read, :update], Agency, id: user.agency.try(:id)
       can :read, Agency
       can :perform, :assist_user
       can :create, User

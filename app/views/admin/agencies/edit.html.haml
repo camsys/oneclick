@@ -1,7 +1,45 @@
 %h1= t(:edit_agency_name, name: @agency.name)
+= simple_form_for @agency, url: admin_agency_path, html: { class: 'form-horizontal' },wrapper: :horizontal_form do |f|
+  .row
+    .col-sm-6.pull-left
+      %h2
+        = f.input :name
+    .col-sm-6.pull-right
+      .row
+        .col-sm-6.pull-right
+          - if can? :update, @agency
+            = button_tag type: 'submit', class: "btn action-button pull-right" do
+              = icon_label(:apply)
+            = link_to admin_agency_path(@agency), {class: 'btn action-button pull-right', role: 'button'} do
+              = icon_label(:cancel)
 
-= render 'form'
+  
+  .row
+    .col-sm-6
+      .well
+        = f.input :address
+        = f.input :phone
+        = f.input :email
+        = f.input :url
+        = f.association :parent, collection: @agency.possible_parents, value_method: :name
+    .col-sm-6
+      .well
+        %h4= t(:internal_contact)
+        = f.input_field :internal_contact, collection: @agency.users, selected: (@contact.id if @contact) , include_blank: false
+  .well
+    %h4= t(:staff_actions)
+    = f.association :administrators, collection: User.staff_assignable
+    = f.association :agents, collection: User.staff_assignable
 
-= link_to t(:show), [:admin, @agency]
-\|
-= link_to t(:list), admin_agencies_path
+:javascript
+  $(document).ready(function() {
+    $('#users_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ provider organizations per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ provider organizations ",
+              "sInfoEmpty": "Showing 0 to 0 of 0 provider organizations ",
+              "sInfoFiltered": "(filtered from _MAX_ total provider organizations )"
+          }
+      } );
+  } );
