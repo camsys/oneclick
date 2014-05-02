@@ -1,6 +1,6 @@
 class ServiceCoverageMap < ActiveRecord::Base
 
-  attr_accessor :allow_action
+  attr_accessor :keep_record
   
   #associations
   belongs_to :service

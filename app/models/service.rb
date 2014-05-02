@@ -23,8 +23,7 @@ class Service < ActiveRecord::Base
   accepts_nested_attributes_for :fare_structures
 
   accepts_nested_attributes_for :service_coverage_maps, allow_destroy: true,
-  reject_if: proc { |attributes| ((attributes['_destroy'] == 1) && attributes['allow_action'] == 1) ||
-    (attributes['allow_action'].blank? && attributes['_destroy'].blank?)  }
+  reject_if: :check_reject_for_service_coverage_map # Also used to control record destruction.
   
   # attr_accessible :id, :name, :provider, :provider_id, :service_type, :advanced_notice_minutes, :external_id, :active
   # attr_accessible :contact, :contact_title, :phone, :url, :email
@@ -128,6 +127,19 @@ class Service < ActiveRecord::Base
   def notice_minutes_part= value
     update_attributes(advanced_notice_minutes:
       (notice_days_part * (60 * 24)) + (notice_hours_part * 60) + value.to_i)
+  end
+
+  # NOTE: also merge destroy attribute for records that exist but not marked keep
+  def check_reject_for_service_coverage_map attributes
+    keep = attributes['keep_record'].to_s == "1"
+    exists = attributes['id'].present?
+
+    if exists && !keep
+      attributes.merge!({_destroy: 1})
+      return false
+    else
+      return !keep
+    end
   end
   
 end

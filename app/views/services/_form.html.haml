@@ -223,7 +223,6 @@
 
     .row
       .col-sm-12
-        - index = 0
         - types = GeoCoverage.pluck(:coverage_type).uniq
         - [:origins, :destinations, :residences].each do |rule| 
           %h4= t(rule)
@@ -241,16 +240,12 @@
                   %input{type: "hidden",
                          value: "#{@service.send(rule).find_by(geo_coverage_id: pair[1]).id}",
                          name: input_name(f, :service_coverage_maps, :id)}
-                  %input{type: "hidden",
-                         value: "1",
-                         name: input_name(f, :service_coverage_maps, :_destroy)}
                 %span
                   %label
                     %input.checkbox.checkbox-inline{type: "checkbox",
                           checked: checked.include?(pair[1]),
                           value: "1", 
-                          name: input_name(f, :service_coverage_maps, :allow_action)}
+                          name: input_name(f, :service_coverage_maps, :keep_record)}
                   = pair[0]
                   &nbsp;
-                - index += 1
 

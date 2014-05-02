@@ -148,7 +148,7 @@ protected
                                     { destination_ids: [] },
                                     { residence_ids: [] },
                                     { service_coverage_maps_attributes:
-                                      [ :id, :rule, :geo_coverage_id, :_destroy, :allow_action ] }
+                                      [ :id, :rule, :geo_coverage_id, :_destroy, :keep_record ] }
                                     )
   end
 
