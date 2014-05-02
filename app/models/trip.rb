@@ -5,6 +5,7 @@ class Trip < ActiveRecord::Base
   belongs_to :trip_purpose
   has_many :trip_places, -> {order("trip_places.sequence ASC")}
   has_many :trip_parts, -> {order("trip_parts.sequence ASC")}
+  has_and_belongs_to_many :desired_modes, class_name: 'Mode', join_table: :trips_desired_modes, association_foreign_key: :desired_mode_id
 
   #Accessible attributes
   # attr_accessible :user_comments, :taken, :rating, :trip_purpose
@@ -57,6 +58,7 @@ class Trip < ActiveRecord::Base
     trip.creator = user
     trip.user = traveler
     trip.trip_purpose = TripPurpose.find(trip_proxy.trip_purpose_id)
+    trip.desired_modes = Mode.where('code in (?)', trip_proxy.modes)
 
     from_place = TripPlace.new.from_trip_proxy_place(trip_proxy.from_place_object, 0,
       trip_proxy.from_place, trip_proxy.map_center)
@@ -269,6 +271,10 @@ class Trip < ActiveRecord::Base
 
   def md5_hash
     Digest::MD5.hexdigest(self.id.to_s + self.user.id.to_s + self.created_at.to_s)
+  end
+
+  def eligibility_dependent?
+    desired_modes.where(elig_dependent: true).count > 0
   end
 
   private

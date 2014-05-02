@@ -1,6 +1,8 @@
 class Mode < ActiveRecord::Base
 
   has_many :itineraries
+  has_and_belongs_to_many :trips, join_table: :trips_desired_modes, foreign_key: :desired_mode_id
+
 
   # Updatable attributes
   # attr_accessible :id, :name, :active

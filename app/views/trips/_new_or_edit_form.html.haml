@@ -5,7 +5,7 @@
   %li.breadcrumb-page.next-page Plan
 .row
   .col-sm-7.col-xs-12
-    = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}  do |f|
+    = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes}  do |f|
       .col-xs-12.page-action-button-container
         /%button.btn.btn-default.pull-right.action-button{:type => "button"}Search
         = button_tag :type => 'submit', :class => "btn btn-default pull-right action-button" do
@@ -34,9 +34,9 @@
                   }
                 });
               });
-          .col-sm-12.form-group
-            %label.col-sm-3.control-label Modes
-            #modePlaceholder.col-sm-9
+
+          = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes
+
           .col-sm-12.form-group
             %label.col-sm-3.control-label{:for => "trip_purpose_id"} Trip Purpose
             .col-sm-9

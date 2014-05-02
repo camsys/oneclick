@@ -83,10 +83,10 @@ class TripPart < ActiveRecord::Base
   # before this method is called.
   def create_itineraries
     remove_existing_itineraries
-    create_fixed_route_itineraries
-    create_taxi_itineraries
-    create_paratransit_itineraries
-    create_rideshare_itineraries
+    create_fixed_route_itineraries if trip.desired_modes.include? Mode.transit
+    create_taxi_itineraries if trip.desired_modes.include? Mode.taxi
+    create_paratransit_itineraries if trip.desired_modes.include? Mode.paratransit
+    create_rideshare_itineraries if trip.desired_modes.include? Mode.rideshare
   end
 
   # TODO refactor following 4 methods

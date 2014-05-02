@@ -48,7 +48,7 @@ u.add_role :system_administrator
     { klass: TripStatus, active: 1, name: 'Errored',code: 'trip_status_errored'},
 # load the modes and internationalize their names
     { klass: Mode, active: 1, name: 'Transit', code: 'mode_transit'},
-    { klass: Mode, active: 1, name: 'Paratransit', code: 'mode_paratransit'},
+    { klass: Mode, active: 1, name: 'Paratransit', code: 'mode_paratransit', elig_dependent: true},
     { klass: Mode, active: 1, name: 'Taxi', code: 'mode_taxi'},
     { klass: Mode, active: 1, name: 'Rideshare', code: 'mode_rideshare'},
     #Create relationship statuses

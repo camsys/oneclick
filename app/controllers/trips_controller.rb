@@ -343,7 +343,7 @@ class TripsController < PlaceSearchingController
   # GET /trips/new
   # GET /trips/new.json
   def new
-    @trip_proxy = TripProxy.new()
+    @trip_proxy = TripProxy.new(modes: session[:modes_desired])
     @trip_proxy.traveler = @traveler
 
     # set the flag so we know what to do when the user submits the form
@@ -368,10 +368,20 @@ class TripsController < PlaceSearchingController
     @markers = create_trip_proxy_markers(@trip_proxy).to_json
     @places = create_place_markers(@traveler.places)
 
+    setup_modes
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @trip_proxy }
     end
+  end
+
+  def setup_modes
+    q = session[:modes_desired] ? Mode.where('code in (?)', session[:modes_desired]) : Mode.all
+    @modes = Mode.all.collect do |m|
+      [t(m.name), m.code]
+    end
+    @selected_modes = q.collect{|m| m.code}
   end
 
   # updates a trip
@@ -461,6 +471,10 @@ class TripsController < PlaceSearchingController
     # inflate a trip proxy object from the form params
     @trip_proxy = create_trip_proxy_from_form_params
 
+    session[:modes_desired] = @trip_proxy.modes
+
+    setup_modes
+
     # TODO If trip_proxy isn't valid, should go back to form right now, before this.
     if @trip_proxy.valid?
       @trip = Trip.create_from_proxy(@trip_proxy, current_or_guest_user, @traveler)
@@ -478,10 +492,8 @@ class TripsController < PlaceSearchingController
     respond_to do |format|
       if @trip
         if @trip.save
-          @trip.cache_trip_places_georaw
           @trip.reload
-          # @trip.restore_trip_places_georaw
-          if @traveler.user_profile.has_characteristics? and user_signed_in?
+          if !@trip.eligibility_dependent? || (@traveler.user_profile.has_characteristics? and user_signed_in?)
             @trip.create_itineraries
             @path = user_trip_path_for_ui_mode(@traveler, @trip)
           else
