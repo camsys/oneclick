@@ -73,7 +73,9 @@ $ ->
       suggestion: Handlebars.compile([
         '<a>{{name}}</a>'
       ].join(''))
-  
+
+  # $(".plan-a-trip .place_picker").typeahead('val', 'foobar')
+
   # Show/hide map popover when in input field
   $('#trip_proxy_from_place').on 'typeahead:opened', () ->
     show_map('trip')

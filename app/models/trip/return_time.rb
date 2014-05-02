@@ -4,7 +4,7 @@ module Trip::ReturnTime
   included do
     # For round trips. :return_trip_time is the time to start the return trip back the
     # start place
-    attr_accessor :is_round_trip, :return_trip_time, :return_arrive_depart
+    attr_accessor :is_round_trip, :return_trip_time, :return_arrive_depart, :return_trip_date
 
     # ensure that a valid return time is set if a return trip is selected
     validate :validate_return_trip_time

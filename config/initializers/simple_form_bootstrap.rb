@@ -155,6 +155,45 @@ SimpleForm.setup do |config|
     end
   end
 
+  # ==========================
+  # For plan a trip page:
+
+ config.wrappers :group, tag: 'div', class: "form-group", error_class: 'has-error',
+      defaults: { input_html: { class: 'default-class'} }  do |b|
+
+    b.use :html5
+    b.use :min_max
+    b.use :maxlength
+    b.use :placeholder
+
+    b.optional :pattern
+    b.optional :readonly
+
+    b.use :label, class: 'col-sm-3 control-label'
+
+    b.wrapper tag: :div, class: 'col-sm-9' do |component|
+      component.use :input, class: 'form-control', wrap_with: { class: "input-group" }
+      component.use :hint,  wrap_with: { tag: 'span', class: 'help-block' }
+      component.use :error, wrap_with: { tag: 'span', class: 'help-block has-error' }
+    end
+  end
+
+  config.wrappers :trip_dates, tag: 'div', class: 'col-md-6', error_class: 'has-error' do |b|
+    b.use :html5
+    b.use :placeholder
+    # b.use :label, class: 'col-sm-7 control-label'
+
+      b.use :input, class: 'form-control input-class'
+      b.use :error, wrap_with: { tag: 'span', class: 'help-block' }
+      b.use :hint,  wrap_with: { tag: 'p', class: 'help-block' }
+    # b.wrapper tag: 'div', class: 'col-md-6 wrapper-class' do |ba|
+    #   ba.use :input, class: 'form-control input-class'
+    #   ba.use :error, wrap_with: { tag: 'span', class: 'help-block' }
+    #   ba.use :hint,  wrap_with: { tag: 'p', class: 'help-block' }
+    # end
+  end
+
+
   # Wrappers for forms and inputs using the Bootstrap toolkit.
   # Check the Bootstrap docs (http://getbootstrap.com)
   # to learn about the different styles for forms and inputs,
