@@ -5,6 +5,9 @@
   - label='Going To'
   - sr_label = 'Type the to address'
 .col-sm-12.form-group
+  = f.input "#{dir}_place".to_sym
+
+.col-sm-12.form-group
   %label.col-sm-3.control-label= label
   .col-sm-9
     .input-group{style: 'position: relative;'}
