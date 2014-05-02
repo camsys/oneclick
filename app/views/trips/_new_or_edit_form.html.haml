@@ -5,6 +5,8 @@
   %li.breadcrumb-page.next-page Plan
 .row
   .col-sm-7.col-xs-12
+    - Rails.logger.info "\n#{@trip_proxy.ai}\n"
+    - Rails.logger.info "\n#{@trip_proxy.errors}\n"
     = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes}  do |f|
       .col-xs-12.page-action-button-container
         /%button.btn.btn-default.pull-right.action-button{:type => "button"}Search
@@ -43,8 +45,8 @@
               / %select#tripPurposeOptions.form-control{:name => "tripPurpose"}
               = f.input_field :trip_purpose_id, :collection =>  TripPurpose.all, :label => false, :selected => @trip_proxy.trip_purpose_id, class: "form-control", :value => :id, :label_method => lambda { |v| t(v.name)}
 
-          = render partial: 'location_input', locals: {dir: 'from'}
-          = render partial: 'location_input', locals: {dir: 'to'}
+          = render partial: 'location_input', locals: {dir: 'from', f: f}
+          = render partial: 'location_input', locals: {dir: 'to', f: f}
 
           .col-sm-12.form-group
             %label.col-sm-3.control-label{:for => "outboundOptions"} Outbound

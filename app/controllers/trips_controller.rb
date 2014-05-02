@@ -480,6 +480,7 @@ class TripsController < PlaceSearchingController
       @trip = Trip.create_from_proxy(@trip_proxy, current_or_guest_user, @traveler)
     else
       Rails.logger.info "Not valid: #{@trip_proxy.ai}"
+      Rails.logger.info "\nError render 1\n"
       flash[:notice] = t(:correct_errors_to_create_a_trip)
       render action: "new"
       return
@@ -504,11 +505,13 @@ class TripsController < PlaceSearchingController
           format.json { render json: @trip, status: :created, location: @trip }
         else
           # TODO Will this get handled correctly?
+          Rails.logger.info "\nError render 2\n"
           format.html { render action: "new", flash[:alert] => t(:correct_errors_to_create_a_trip) }
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
       else
         # TODO Will this get handled correctly?
+        Rails.logger.info "\nError render 3\n"
         format.html { render action: "new", flash[:alert] => t(:correct_errors_to_create_a_trip) }
       end
     end
