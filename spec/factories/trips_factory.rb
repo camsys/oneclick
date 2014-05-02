@@ -19,6 +19,8 @@ FactoryGirl.define do
       trip.trip_places << trip_place1
       trip.trip_places << trip_place2
       trip.trip_parts << FactoryGirl.create(:trip_part, sequence: 0, from_trip_place: trip_place1, to_trip_place: trip_place2)
+      trip.desired_modes << Mode.paratransit
+      trip.desired_modes << Mode.transit
       trip.save!
     end
 
