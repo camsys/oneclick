@@ -1,30 +1,25 @@
 .row
   .col-sm-6.pull-left
-    = link_to t(:back_to_providers), admin_providers_path
+    = link_to t(:all_providers), admin_providers_path
     %h2
       = @provider.name
-  .col-sm-6.pull-right
-    = simple_form_for @providers, url: admin_providers_path, :method => 'get', :html => {:class => "form-horizontal pull-right", :id => "provider_form"}  do |f|
-      = f.label :id, t(:select_provider)+": "
-      = f.input_field :id, collection: @providers, label: false, selected: @provider.id, :onchange => "$('#provider_form').submit();"
-    .row
-      .col-sm-6.pull-right.form-group
-        - if can? :update, @provider
-          = link_to edit_admin_provider_path(@provider), {class: 'btn action-button btn-default', role: 'button'} do
-            = icon_label(:edit)
+  .col-sm-3.pull-right.form-group
+    - if can? :update, @provider
+      = link_to edit_admin_provider_path(@provider), {class: 'btn action-button btn-default', role: 'button'} do
+        = icon_label(:edit)
 
-        - if can? :manage, Service
-          = link_to new_service_path(provider_id: @provider), {class: 'btn action-button btn-default', role: 'button'} do
-            = icon_label(:add_service)
-          
-        - if can? :destroy, @provider
-          = simple_form_for @provider, url: admin_provider_path, method: :delete, :html => {class: "form-horizontal pull-right", id: "delete_provider_form"}  do |f|
-            = button_tag type: 'submit', class: "btn action-button btn-default" do
-              = icon_label(:delete)
+    - if can? :manage, Service
+      = link_to new_service_path(provider_id: @provider), {class: 'btn action-button btn-default', role: 'button'} do
+        = icon_label(:add_service)
 
-.well              
-  .row
-    .col-sm-4
+    - if can? :destroy, @provider
+      = simple_form_for @provider, url: admin_provider_path, method: :delete, :html => {class: "form-horizontal pull-right", id: "delete_provider_form"}  do |f|
+        = button_tag type: 'submit', class: "btn action-button btn-default" do
+          = icon_label(:delete)
+
+.row
+  .col-sm-6
+    .well              
       %h4= t(:provider_contact_info)
       %table.table.table-condensed
         %tr
@@ -55,33 +50,33 @@
             - if @provider.url
               %b= link_to @provider.url, @provider.url
 
-    .col-sm-4.well
-      %h4= t(:internal_contact)
-      %table.table.table-condensed
-        - if @contact
-          %tr
-            %td.text-right
-              = t(:name) + ": "
-            %td.text-left
-              %b= @contact.name.to_s
-          %tr
-            %td.text-right
-              = t(:title)+": "
-            %td.text-left
-              %b= @contact.title.to_s
-          %tr
-            %td.text-right
-              = t(:phone)+ ": "
-            %td.text-left
-              %b= @contact.phone.to_s
-          %tr
-            %td.text-right
-              = t(:email)+ ":  "
-            %td.text-left
-              %b= mail_to @contact.email.to_s
-        - else
-          %tr
-            %td= t(:nothing_found_sorry)
+  .col-sm-6.well
+    %h4= t(:internal_contact)
+    %table.table.table-condensed
+      - if @contact
+        %tr
+          %td.text-right
+            = t(:name) + ": "
+          %td.text-left
+            %b= @contact.name.to_s
+        %tr
+          %td.text-right
+            = t(:title)+": "
+          %td.text-left
+            %b= @contact.title.to_s
+        %tr
+          %td.text-right
+            = t(:phone)+ ": "
+          %td.text-left
+            %b= @contact.phone.to_s
+        %tr
+          %td.text-right
+            = t(:email)+ ":  "
+          %td.text-left
+            %b= mail_to @contact.email.to_s
+      - else
+        %tr
+          %td= t(:none)
 .well
   .row
     .col-sm-12

@@ -1,26 +1,21 @@
 .row
   .col-sm-6.pull-left
-    = link_to t(:back_to_services), services_path
+    = link_to t(:all_services), services_path
     %h2
       =@service.name
-  .col-sm-6.pull-right
-    = simple_form_for @services, :url => service_path, :method => 'get', :html => {:class => "form-horizontal pull-right", :id => "service_form"}  do |f|
-      = f.label :id, t(:select_service)+": "
-      = f.input_field :id, :collection => @services, label: false, :selected => @service.id, :onchange => "$('#service_form').submit();"
-    .row
-      .col-sm-6.pull-right.form-group
-        - if can? :update, @service
-          = link_to edit_service_path(@service), {class: 'btn action-button btn-default', role: 'button'} do
-            = icon_label(:edit)
-        - if can? :destroy, @service
-          = simple_form_for @service, url: service_path, method: :delete, :html => {:class => "form-horizontal pull-right", :id => "delete_service_form"}  do |f|
-            -# TODO: Control presence via cancan
-            = button_tag type: 'submit', class: "btn action-button btn-default" do
-              = icon_label(:delete)
+  .col-sm-3.pull-right.form-group
+    - if can? :update, @service
+      = link_to edit_service_path(@service), {class: 'btn action-button btn-default', role: 'button'} do
+        = icon_label(:edit)
+    - if can? :destroy, @service
+      = simple_form_for @service, url: service_path, method: :delete, :html => {:class => "form-horizontal pull-right", :id => "delete_service_form"}  do |f|
+        -# TODO: Control presence via cancan
+        = button_tag type: 'submit', class: "btn action-button btn-default" do
+          = icon_label(:delete)
 
-.well
-  .row
-    .col-sm-4
+.row
+  .col-sm-6
+    .well
       %h3
         = t(:provided_by)
         = link_to @service.provider.name, admin_provider_path(@service.provider)
@@ -48,7 +43,8 @@
           = t(:time_factor).to_s + ": " + @service.time_factor.to_s
           
           
-    .col-sm-4.well
+  .col-sm-6
+    .well
       %h4= t(:internal_contact)
       %table.table.table-condensed
         - if @contact
@@ -74,8 +70,9 @@
               %b= @contact.email.to_s
         - else
           %tr
-            %td= t(:nothing_found_sorry)
-          
+            %td.text-left
+              = t(:none)
+            %td
 .row
   .col-sm-4
     .well.well2

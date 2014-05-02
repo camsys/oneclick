@@ -75,12 +75,7 @@ class Service < ActiveRecord::Base
   end
 
   def internal_contact
-    users.each do |u|
-      if u.has_role? :internal_contact, self
-        return u
-      end
-    end
-    nil
+    users.with_role( :internal_contact, self).first
   end
 
   def contact_information

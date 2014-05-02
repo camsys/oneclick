@@ -14,11 +14,8 @@
       %tr
         %td= link_to provider.name, admin_provider_path(provider)
         %td.center
-          = link_to admin_provider_services_path(provider), {class: 'btn'} do
-            %i.fa.fa-info-circle
+          = link_to admin_provider_services_path(provider) do
             = t(:services)
-
-= link_to t(:new_provider), new_admin_provider_path, {class: 'btn'}
 
 = render partial: 'shared/parameterized_datatable_javascript',
 locals: {table_id: '#admin_providers_table',

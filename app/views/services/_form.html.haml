@@ -16,12 +16,12 @@
           - if can? :update, @service
             = button_tag type: 'submit', class: "btn action-button default" do
               = icon_label(:apply)
-            = link_to (@service.new_record? ? admin_provider_path(@provider) : service_path(@service)), {class: 'btn action-button pull-right', role: 'button'} do
-              = icon_label(:cancel)
+            = link_to t(:cancel), :back, class: "btn action-button default"
 
-  .well
-    .row
-      .col-sm-4
+  .row
+    .col-sm-4
+      .well
+
         %h3
           = t(:provided_by)
           =  @service.provider.name
@@ -33,15 +33,17 @@
         = f.input :url
         = f.association :service_type,
                 collection: ServiceType.all.map{|t| [ t(t.name), t.id ] }
-      .col-sm-4
+    .col-sm-4
+      .well
         = f.input :external_id, label: t(:service_id)
         = f.input :booking_service_code
         = f.input :service_window, as: :integer
         = f.input :time_factor, as: :float
-        
-      .col-sm-4
+      
+    .col-sm-4
+      .well
         %h4= t(:internal_contact)
-        = f.input_field :internal_contact, collection: @staff, 
+        = f.input_field :internal_contact, collection: @staff, class: "form-control",
                 selected: (@contact.id if @contact) , include_blank: "None"
 
   .row

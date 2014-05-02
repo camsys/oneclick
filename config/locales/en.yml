@@ -44,6 +44,7 @@ en:
   new_agency: "New Agency"
   select_agency: "Select Agency"
   providers: "Providers"
+  all_providers: "All Providers"
   provider_profile: "Provider Profile"
   provider_orgs: "Provider Organizations"
   new_provider_org: 'New Provider Organization'
@@ -308,6 +309,7 @@ en:
   back_to_services: "Back to services"
   service: "Service"
   services: "Services"
+  all_services: "All Services"
   active: "Active"
   add_service: "Add new Service"
   select_service: "Select Service"
