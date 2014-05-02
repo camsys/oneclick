@@ -8,11 +8,16 @@
   %thead
     %tr
       %th= t(:name)
+      %th= t(:status)
       %th
   %tbody
     - @providers.each do |provider|
       %tr
         %td= link_to provider.name, admin_provider_path(provider)
+        %td
+          - if provider.active == false
+            = t(:inactive)
+
         %td.center
           = link_to admin_provider_services_path(provider) do
             = t(:services)

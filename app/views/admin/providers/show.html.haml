@@ -13,8 +13,9 @@
         = icon_label(:add_service)
 
     - if can? :destroy, @provider
+      = link_to t(:delete), admin_provider_path(@provider), method: :delete, confirm: "OK?"
       = simple_form_for @provider, url: admin_provider_path, method: :delete, :html => {class: "form-horizontal pull-right", id: "delete_provider_form"}  do |f|
-        = button_tag type: 'submit', class: "btn action-button btn-default" do
+        = button_tag type: 'submit', class: "btn action-button btn-default", confirm: "OK?" do
           = icon_label(:delete)
 
 .row

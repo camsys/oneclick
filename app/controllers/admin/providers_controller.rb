@@ -94,8 +94,8 @@ class Admin::ProvidersController < ApplicationController
   # DELETE /admin/providers/1
   # DELETE /admin/providers/1.json
   def destroy
-    @provider = Provider.find(params[:id])
-    @provider.destroy
+    @provider.active = false
+    @provider.save
 
     respond_to do |format|
       format.html { redirect_to admin_providers_url }
