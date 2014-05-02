@@ -52,27 +52,24 @@
       .on("click", function(tripLeg){
         if(typeof(tripLeg) === 'object' && tripLeg != null) {
           var planId = tripLeg.planId;
-          $.ajax({
-            url: window.location.href + '/itinerary',
-            data: {itin: planId},
-            dataType: 'html',
-            success: function(result) {
-              if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.lmap != null) {
-                CsMaps.lmap.resetMap();
-              }
-              $('#itinerary_modal').html(result); 
-              $('#itinerary_modal').modal({keyboard: false});
-
-              if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.lmap != null) {
-                CsMaps.lmap.invalidateMap();
-                CsMaps.lmap.showMap();
-              }
-            },
-            failure: function(result) {
-              console.log(result);
-              //TODO: need to show an error message
-            }
-          })
+          $.getScript(window.location.href + '/itinerary' + '?itin=' + planId)
+            .done(function() {
+              console.log('done');
+            })
+            .fail(function( jqxhr, settings, exception ) {
+              console.log(jqxhr);
+              console.log(settings);
+              console.log(exception);
+            });
+          //$.ajax({
+          //  url: window.location.href + '/itinerary',
+          //  data: {itin: planId},
+          //  dataType: 'script',
+          //  success: function() {
+          //    $('#itinerary_modal').modal('show');
+          //    console.log('done');
+          //  }
+          //})
         }
       })
   });
