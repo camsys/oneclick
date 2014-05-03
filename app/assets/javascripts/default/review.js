@@ -22,11 +22,7 @@ var waitForFinalEvent = (function () {
 *		(75, 76] -> 76
 * @param {number}
 */
-<<<<<<< HEAD
-function getRoundValue(rawValue) {
-=======
 function getRoundMaxValue(rawValue) {
->>>>>>> a42153d... css tune-up (chart tooltip; removed bootstrap-accessibility.css that put dotted outline in buttons hyperlinks;); fix review page map bounds issue; add listener in Plan button of review page that jumps to Plan page by passing selected itinerary IDs; the controller and haml for Plan page are in progress; remaining issues are put in #70609188
 	if(typeof(rawValue) != 'number') {
 		return null;
 	}
@@ -34,8 +30,6 @@ function getRoundMaxValue(rawValue) {
 	var roundValue = parseInt(rawValue);
 	return (rawValue === roundValue) ? roundValue : (roundValue + 1);
 }
-<<<<<<< HEAD
-=======
 
 /*
 * get round value 
@@ -49,7 +43,6 @@ function getRoundMinValue(rawValue) {
 
 	return parseInt(rawValue);
 }
->>>>>>> a42153d... css tune-up (chart tooltip; removed bootstrap-accessibility.css that put dotted outline in buttons hyperlinks;); fix review page map bounds issue; add listener in Plan button of review page that jumps to Plan page by passing selected itinerary IDs; the controller and haml for Plan page are in progress; remaining issues are put in #70609188
 	
 /*
  * Generate Camel case
@@ -1158,13 +1151,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		var tags = '';
 		var sliderConfig = null;
 		if(typeof(maxDuration) === 'number' && typeof(minDuration) === 'number' && maxDuration > minDuration) {
-<<<<<<< HEAD
-			minDuration = getRoundValue(minDuration/60);
-			maxDuration = getRoundValue(maxDuration/60);
-=======
 			minDuration = getRoundMinValue(minDuration/60);
 			maxDuration = getRoundMaxValue(maxDuration/60);
->>>>>>> a42153d... css tune-up (chart tooltip; removed bootstrap-accessibility.css that put dotted outline in buttons hyperlinks;); fix review page map bounds issue; add listener in Plan button of review page that jumps to Plan page by passing selected itinerary IDs; the controller and haml for Plan page are in progress; remaining issues are put in #70609188
 			tags = 
 			'<div class = "col-sm-12">' + 
 				'<label class="sr-only">Time</label>' +
