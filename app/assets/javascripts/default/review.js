@@ -15,6 +15,41 @@ var waitForFinalEvent = (function () {
   };
 })();
 
+
+/*
+* get round value 
+* e.g., 75 -> 75
+*		(75, 76] -> 76
+* @param {number}
+*/
+<<<<<<< HEAD
+function getRoundValue(rawValue) {
+=======
+function getRoundMaxValue(rawValue) {
+>>>>>>> a42153d... css tune-up (chart tooltip; removed bootstrap-accessibility.css that put dotted outline in buttons hyperlinks;); fix review page map bounds issue; add listener in Plan button of review page that jumps to Plan page by passing selected itinerary IDs; the controller and haml for Plan page are in progress; remaining issues are put in #70609188
+	if(typeof(rawValue) != 'number') {
+		return null;
+	}
+
+	var roundValue = parseInt(rawValue);
+	return (rawValue === roundValue) ? roundValue : (roundValue + 1);
+}
+<<<<<<< HEAD
+=======
+
+/*
+* get round value 
+* e.g., [75, 76) -> 75
+* @param {number}
+*/
+function getRoundMinValue(rawValue) {
+	if(typeof(rawValue) != 'number') {
+		return null;
+	}
+
+	return parseInt(rawValue);
+}
+>>>>>>> a42153d... css tune-up (chart tooltip; removed bootstrap-accessibility.css that put dotted outline in buttons hyperlinks;); fix review page map bounds issue; add listener in Plan button of review page that jumps to Plan page by passing selected itinerary IDs; the controller and haml for Plan page are in progress; remaining issues are put in #70609188
 	
 /*
  * Generate Camel case
@@ -84,8 +119,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	
 	 //chart tooltip
 	var chartTooltipDiv = d3.select("body").append("div")   
-	.attr("class", "chart-tooltip")               
-	.style("opacity", 0);
+	.attr("class", "chart-tooltip")  
+	.style("opacity", "0");
 	
 	/**
 	 * Process trip results response from service
@@ -146,12 +181,12 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		
 		//clicking Select button to change styles
 		$('.single-plan-review .single-plan-select').click( function() {
+			$(this).parents('.single-trip-part').find('.single-plan-review')
+				.removeClass('single-plan-selected')
+				.addClass('single-plan-unselected');
 			$(this).parents('.single-plan-review')
 				.removeClass('single-plan-unselected')
 				.addClass('single-plan-selected');
-			$(this).parents('.single-plan-review').siblings()
-				.removeClass('single-plan-selected')
-				.addClass('single-plan-unselected');
 		});
 	}
 
@@ -309,7 +344,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
 		trip.start_time =  tripStartTime.toISOString();
 		trip.end_time =  tripEndTime.toISOString();
-		
+
 		trip.min_ui_duration = minUIDuration;
 		trip.max_ui_duration = maxUIDuration;
 
@@ -1083,6 +1118,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		var tags = '';
 		var sliderConfig = null;
 		if(typeof(maxCost) === 'number' && typeof(minCost) === 'number' && maxCost > minCost) {
+			minCost = getRoundMinValue(minCost);
+			maxCost = getRoundMaxValue(maxCost);
 			tags = 
 			'<div class = "col-sm-12">' + 
 				'<label class="sr-only">Cost</label>' +
@@ -1121,8 +1158,13 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		var tags = '';
 		var sliderConfig = null;
 		if(typeof(maxDuration) === 'number' && typeof(minDuration) === 'number' && maxDuration > minDuration) {
-			minDuration = parseInt(minDuration/60 * 100 + 1)/100;
-			maxDuration = parseInt(maxDuration/60 * 100 + 1)/100;
+<<<<<<< HEAD
+			minDuration = getRoundValue(minDuration/60);
+			maxDuration = getRoundValue(maxDuration/60);
+=======
+			minDuration = getRoundMinValue(minDuration/60);
+			maxDuration = getRoundMaxValue(maxDuration/60);
+>>>>>>> a42153d... css tune-up (chart tooltip; removed bootstrap-accessibility.css that put dotted outline in buttons hyperlinks;); fix review page map bounds issue; add listener in Plan button of review page that jumps to Plan page by passing selected itinerary IDs; the controller and haml for Plan page are in progress; remaining issues are put in #70609188
 			tags = 
 			'<div class = "col-sm-12">' + 
 				'<label class="sr-only">Time</label>' +
@@ -1288,18 +1330,19 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		   .attr("width", function(d) { return (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time))); })
 		   .attr("height", barHeight)
 		   .on("mouseover", function(d) {
-				chartTooltipDiv.transition()        
-					.duration(200)      
-					.style("opacity", .9);
-		
-				chartTooltipDiv.html(tipText) //d.description if for each leg  
+				chartTooltipDiv
 					.style("left", getTooltipLeft(d3.event.pageX, chartTooltipDiv.node()) + "px")     
-					.style("top", getTooltipTop(d3.event.pageY, chartTooltipDiv.node()) + "px");
+					.style("top", getTooltipTop(d3.event.pageY, chartTooltipDiv.node()) + "px")
+					.style("opacity", "0.9");
+		
+				chartTooltipDiv.html(tipText); //d.description if for each leg  
+					
 				})                  
 			.on("mouseout", function(d) {       
-				chartTooltipDiv.transition()        
-					.duration(500)      
-					.style("opacity", 0);
+				chartTooltipDiv    
+					.style("left", "0px")     
+					.style("top", "0px")
+					.style("opacity", "0");
 			});
 	}
 

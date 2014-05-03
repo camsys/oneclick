@@ -35,9 +35,8 @@
     .col-md-9
       .col-xs-12.page-action-button-container
         #legendContainer.col-xs-10{style: "padding: 0px; height: 100%;"}
-        %button.btn.btn-default.pull-right.action-button Plan
+        #planButton%button.btn.btn-default.pull-right.action-button Plan
       #tripContainer.col-xs-12{style: "padding: 0px;"}
-        #tickLabelContainer.col-xs-12{style: "padding: 0px;"}
       / end of trip container
     / end of review columns
 #itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
@@ -71,5 +70,49 @@
           //  }
           //})
         }
-      })
+      });
+
+    $('#itinerary_modal').on('shown.bs.modal', function() {
+      if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.lmap != null) { 
+        CsMaps.lmap.invalidateMap(); 
+        var mapMarkers = CsMaps.lmap.LMmarkers;
+        var mapBounds = null;
+        if(mapMarkers.length > 0) {
+          mapBounds = CsMaps.lmap.calcMapBounds(mapMarkers);
+        } else {
+          mapBounds = CsMaps.lmap.LMbounds;
+        }
+
+        if(mapBounds) {
+          CsMaps.lmap.LMmap.fitBounds(mapBounds); 
+        }
+      }
+    });
+
+    //Plan button to jump to Plan page
+    $('#filterButton').on('click', function(e) {
+      var selectedPlanIds = [];
+      var tripParts = $('#tripContainer').find('.single-trip-part');
+      var selectedPlans = tripParts.find('.single-plan-selected');
+      if(tripParts.length != selectedPlans.length) {
+        alert('Please select one plan for each trip part.');
+        return;
+      }
+
+      var selectedPlanIds = [];
+      tripParts.each(function() {
+        var tmpPlanId = parseInt($(this).attributes['data-plan-id']);
+        if(typeof(tmpPlanId) === 'number' && !isNaN(tmpPlanId)) {
+          selectedPlanIds.push(tmpPlanId);
+        }
+      });
+
+      if(selectedPlanIds.length > 0) {
+        alert('Please select one plan for each trip part.');
+        return;
+      }
+
+      //jump to Plan page
+      window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );
+    }); 
   });

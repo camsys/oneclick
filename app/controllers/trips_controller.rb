@@ -88,6 +88,15 @@ class TripsController < PlaceSearchingController
     end
   end
 
+  def plan
+    @itineraries = Itinerary.where('id in (' + params[:itinids] + ')')
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @itineraries }
+    end
+  end
+
   def show_printer_friendly
     @show_hidden = params[:show_hidden]
     @print = params[:print]
