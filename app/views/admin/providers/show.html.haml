@@ -13,7 +13,6 @@
         = icon_label(:add_service)
 
     - if can? :destroy, @provider
-      = link_to t(:delete), admin_provider_path(@provider), method: :delete, confirm: "OK?"
       = simple_form_for @provider, url: admin_provider_path, method: :delete, :html => {class: "form-horizontal pull-right", id: "delete_provider_form"}  do |f|
         = button_tag type: 'submit', class: "btn action-button btn-default", confirm: "OK?" do
           = icon_label(:delete)
@@ -113,8 +112,17 @@
     .col-sm-12
       %h4= t(:services)
       = render 'services/table'
-            
-= render partial: 'shared/parameterized_datatable_javascript',
-locals: {table_id: '#admin_services_table',
-sLengthMenu: "Display _MENU_ services per page",
-sInfo: "Showing _START_ to _END_ of _TOTAL_ services"}
+
+:javascript
+  $(document).ready(function() {
+    $('#admin_services_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ agencies per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ agencies",
+              "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
+              "sInfoFiltered": "(filtered from _MAX_ total agencies)"
+          },
+          "sDom": "<'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+  } );

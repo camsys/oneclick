@@ -17,6 +17,8 @@
 //= require twitter/typeahead
 //= require moment
 //= require bootstrap-datetimepicker
+//= require dataTables/jquery.dataTables
+//= require dataTables/jquery.dataTables.bootstrap3
 //= require default/config
 //= require_tree .
 //

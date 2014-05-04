@@ -22,8 +22,16 @@
           = link_to admin_provider_services_path(provider) do
             = t(:services)
 
-= render partial: 'shared/parameterized_datatable_javascript',
-locals: {table_id: '#admin_providers_table',
-sLengthMenu: "Display _MENU_ providers per page",
-sInfo: "Showing _START_ to _END_ of _TOTAL_ providers",
-bFilter: true}
+:javascript
+  $(document).ready(function() {
+    $('#admin_providers_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ agencies per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ agencies",
+              "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
+              "sInfoFiltered": "(filtered from _MAX_ total agencies)"
+          },
+          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+  } );            
