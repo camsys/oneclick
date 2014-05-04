@@ -209,8 +209,8 @@ ActiveRecord::Schema.define(version: 20140502140512) do
     t.datetime "updated_at",    null: false
   end
 
-  add_index "rates", ["rateable_id", "rateable_type"], name: "index_rates_on_rateable_id_and_rateable_type", using: :btree
-  add_index "rates", ["rater_id"], name: "index_rates_on_rater_id", using: :btree
+  add_index "rates", ["rateable_id", "rateable_type"], :name => "index_rates_on_rateable_id_and_rateable_type"
+  add_index "rates", ["rater_id"], :name => "index_rates_on_rater_id"
 
   create_table "relationship_statuses", force: true do |t|
     t.string "name", limit: 64
@@ -235,8 +235,8 @@ ActiveRecord::Schema.define(version: 20140502140512) do
     t.datetime "updated_at",               null: false
   end
 
-  add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
-  add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
+  add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
+  add_index "roles", ["name"], :name => "index_roles_on_name"
 
   create_table "schedules", force: true do |t|
     t.integer  "service_id",                   null: false
@@ -310,7 +310,7 @@ ActiveRecord::Schema.define(version: 20140502140512) do
     t.integer "service_id", null: false
   end
 
-  add_index "services_users", ["service_id", "user_id"], name: "index_services_users_on_service_id_and_user_id", using: :btree
+  add_index "services_users", ["service_id", "user_id"], :name => "index_services_users_on_service_id_and_user_id"
 
   create_table "translations", force: true do |t|
     t.string   "key"
@@ -337,7 +337,7 @@ ActiveRecord::Schema.define(version: 20140502140512) do
     t.datetime "scheduled_time"
   end
 
-  add_index "trip_parts", ["trip_id", "sequence"], name: "index_trip_parts_on_trip_id_and_sequence", using: :btree
+  add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"
 
   create_table "trip_places", force: true do |t|
     t.integer  "trip_id"
@@ -471,9 +471,9 @@ ActiveRecord::Schema.define(version: 20140502140512) do
     t.string   "phone",                  limit: 25
   end
 
-  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token"
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "value_relationships", force: true do |t|
     t.string   "relationship", limit: 64

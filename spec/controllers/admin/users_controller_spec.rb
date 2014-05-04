@@ -73,9 +73,9 @@ describe Admin::UsersController do
           }
       }
       get 'create', params
-      # expect(assigns(:user)).to be_valid
       expect(assigns(:user)).not_to be_valid
-      expect response.status.should eq 302
+      expect(assigns(:user).errors).not_to be_empty
+      expect response.status.should eq 200
     end
   end
 end

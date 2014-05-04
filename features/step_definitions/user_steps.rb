@@ -123,13 +123,14 @@ When /^I sign in with a wrong password$/ do
 end
 
 When /^I edit my account details$/ do
+  pending
   within(:css, "#publicNav") do
     click_link "My Travel Profile"
   end
   fill_in "First name", :with => "new first name"
   fill_in "Last name", :with => "new last name"
-  fill_in "user_current_password", :with => @visitor[:password]
-  click_button "Update my profile"
+  # fill_in "user_current_password", :with => @visitor[:password]
+  click_button "Save"
 end
 
 When /^I look at the list of users$/ do
