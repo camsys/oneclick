@@ -1,33 +1,36 @@
 // TODO There is duplication between this file and trips.css
 
-.place_picker, .tt-input {
-  width: 100%;
-}
-
-.twitter-typeahead {
-  @extend .col-sm-12;
-  width: 100%;
-}
-
-.tt-dropdown-menu {
-  max-height: 20em;
-  overflow-y: scroll;
-  width: 100%;
-}
-
-.tt-suggestion.tt-is-under-cursor a {
-  cursor: pointer;
-  color: blue;
-}
-
 body.places {
-
-  #places-table {
-    cursor: pointer;
+  .place_picker, .tt-input {
+    width: 100%;
   }
 
-  .places-table-container {
-    max-height: 300px;
+  .twitter-typeahead {
+    @extend .col-sm-12;
+    width: 100%;
+  }
+
+  .tt-dropdown-menu {
+    max-height: 20em;
     overflow-y: scroll;
+    width: 100%;
   }
+
+  .tt-suggestion.tt-is-under-cursor a {
+    cursor: pointer;
+    color: blue;
+  }
+
+  body.places {
+
+    #places-table {
+      cursor: pointer;
+    }
+
+    .places-table-container {
+      max-height: 300px;
+      overflow-y: scroll;
+    }
+  }
+
 }

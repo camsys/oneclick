@@ -64,27 +64,27 @@
 }
 
 .action-button {
-  background: #eeeeee; /* Old browsers */
-  background: -moz-linear-gradient(top,  #ffffff 0%, #AFAFAF 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#AFAFAF)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* IE10+ */
-  background: linear-gradient(to bottom,  #ffffff 0%,#AFAFAF 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#AFAFAF',GradientType=0 ); /* IE6-9 */
-  min-width: 60px;
-  height: 25px;
-  border-radius: 8px;
+  // background: #eeeeee; /* Old browsers */
+  // background: -moz-linear-gradient(top,  #ffffff 0%, #AFAFAF 100%); /* FF3.6+ */
+  // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#AFAFAF)); /* Chrome,Safari4+ */
+  // background: -webkit-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* Chrome10+,Safari5.1+ */
+  // background: -o-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* Opera 11.10+ */
+  // background: -ms-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* IE10+ */
+  // background: linear-gradient(to bottom,  #ffffff 0%,#AFAFAF 100%); /* W3C */
+  // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#AFAFAF',GradientType=0 ); /* IE6-9 */
+  // min-width: 60px;
+  // height: 25px;
+  // border-radius: 8px;
   font-weight: bold;
-  padding: 2px;
-  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
-  font-size: 14px;
-  color: #333;
+  // padding: 2px;
+  // font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+  // font-size: 14px;
+  // color: #333;
 }
 
 .action-button:hover, .action-button:focus {
-  background-position: 0;
-  color: inherit;
+  // background-position: 0;
+  // color: inherit;
 }
 
 .dropdown-toggle {
