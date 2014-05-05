@@ -15,5 +15,6 @@
     = button_tag :type => 'submit', :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
       =t(:save)
   - ItineraryDecorator.decorate_collection(@itineraries.valid).each do |itinerary|
-    = render :partial => 'trip_single_plan_details', :locals => {:itinerary => ItineraryDecorator.decorate(itinerary)}
+    - Rails.logger.info itinerary.ai
+    = render :partial => 'trip_single_plan_details', :locals => {:itinerary => itinerary}
 
