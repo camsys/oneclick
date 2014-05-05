@@ -4,22 +4,23 @@ class Ability
   def initialize(user)
     user ||= User.new # guest user (not logged in)
     if user.has_role?(:admin) or user.has_role?(:system_administrator)
-      # admin users can do anything      
+      # admin users can do almost anything, so it's simpler to enumerate what they can't do
       can :manage, :all
 
       # TODO Are these 2 redundant?
       can [:see], :admin_menu
       can :see, :staff_menu
       can [:index], :admin_home
-
       can [:access], :any
       can [:access], :staff_travelers
+      can [:access], :admin_users
+      
       cannot [:access], :admin_create_traveler
       cannot [:access], :staff_travelers
-      can [:access], :admin_users
       cannot :access, :show_agency
       cannot :access, :show_provider
       cannot :travelers, Agency
+      cannot :full_info, User
       return
     end
     if User.with_role(:agency_administrator, :any).include?(user)
