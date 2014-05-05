@@ -1,45 +1,46 @@
+.row
+  .col-sm-12
+    .pull-left
+      %h1= is_assisting ? t(:assisted_user_first_name_s_trips, name: @traveler.first_name) : t(:my_places)
+    .pull-right
+      / = form_tag user_trips_path(@traveler), :id => 'time_filter_form', :method => "get", :class => 'navbar-form form-inline pull-right', :style => "margin-top:20px;" do
+      /   .input-prepend
+      /     %label.add-on{:for => 'time_filter'}= t(:filter)
+      /     = select_tag(:time_filter_type, options_for_select(trip_filters.collect{|r| [r[:value], r[:id]]}, :selected => @time_filter_type), :style => 'margin-top:0px', :id => 'time_filter')
+
 - content_for :head do
   = stylesheet_link_tag 'typeahead.js-bootstrap.css'
   = javascript_include_tag asset_path('places.js')
 
 = simple_form_for :places, url: handle_user_places_path(@traveler), html: {class: 'places'} do
   .row
-    .col-sm-12
-      %h3 Enter the Location
-  .row
-    .col-sm-12
-      = text_field_tag :from_place, '', class: 'place_picker', autocomplete: "off", placeholder: 'Type an Address, or anything Google Maps will accept', data: {foo: 'bar'}
-      = hidden_field_tag :json
+    .col-sm-6
+      .col-sm-12
+        %h3 Enter the Location
+      .col-sm-12
+        = text_field_tag :from_place, '', class: 'place_picker col-sm-12', autocomplete: "off", placeholder: 'Type an Address, or anything Google Maps will accept', data: {foo: 'bar'}
+        = hidden_field_tag :json
 
-  .row
-    .col-sm-3
-      .row
-        .col-sm-12
-          %h3 Enter a Name
-      .row
+      .col-sm-12
+        %h3 Enter a Name
+      .col-sm-12
         .col-sm-9
           = text_field_tag :place_name, '', style: 'width: 100%;'
         .col-sm-3
           = button_tag type: :submit, name: 'save', class: 'btn btn-primary pull-right' do
             Save
-      .row
-        .col-sm-12
-          %h3 My Places
-      .row
-        .col-sm-12.places-table-container
-          %table.table.table-bordered#places-table
-            - @places.each_with_index do |place, i|
-              %tr
-                %td{id: "place-#{i}", data: {address: place.raw_address, placename: place.name, json: place.to_json}}= ('A'..'Z').to_a[i] + ' ' + place.name
-      .row
-        .col-sm-6
-          = button_tag type: :submit, name: 'delete', class: 'btn btn-primary' do
-            Delete
-        .col-sm-6
-          / = button_tag type: :submit, name: 'edit', class: 'btn btn-primary pull-right' do
-          /   Edit
+      .col-sm-12
+        %h3 My Places
+      .col-sm-12.places-table-container
+        %table.table.table-bordered#places-table
+          - @places.each_with_index do |place, i|
+            %tr
+              %td{id: "place-#{i}", data: {address: place.raw_address, placename: place.name, json: place.to_json}}= ('A'..'Z').to_a[i] + ' ' + place.name
+      .col-sm-12
+        = button_tag type: :submit, name: 'delete', class: 'btn btn-primary' do
+          Delete
 
-    .col-sm-9
+    .col-sm-6
       = LeafletMap({ :mapid => 'lmap', :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height:500px;" })
 
 = yield :scripts

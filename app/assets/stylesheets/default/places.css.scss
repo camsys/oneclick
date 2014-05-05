@@ -1,7 +1,12 @@
 // TODO There is duplication between this file and trips.css
 
-.place_picker {
-  // width: 20em;
+.place_picker, .tt-input {
+  width: 100%;
+}
+
+.twitter-typeahead {
+  @extend .col-sm-12;
+  width: 100%;
 }
 
 .tt-dropdown-menu {
