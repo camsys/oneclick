@@ -594,3 +594,10 @@ body.characteristics {
 @media (min-width: $screen-lg-min) {
   @include oc-responsive-visibility('.oc-visible-lg');
 }
+
+// SimpleForm Inline Checkbox Fix
+.simple-checkbox .checkbox {
+   text-align: left;
+   width: auto;
+   float: none;
+ }

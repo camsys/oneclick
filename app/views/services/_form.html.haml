@@ -114,7 +114,9 @@
         .well.white-well.wwell1
           = f.association :accommodations,
                 collection: Accommodation.all.map{|a| [ t(a.name), a.id ] }, label: false,
-                input_html: { size: Accommodation.count }
+                as: :check_boxes, 
+                item_wrapper_tag: 'div', wrapper: :inline_checkboxes
+
   .row
     .col-sm-4
       .well.well1
@@ -206,8 +208,8 @@
         .well.white-well.wwell1
           = f.association :trip_purposes,
                 collection: TripPurpose.all.map{|p| [ t(p.name), p.id ] }, label: false,
-                input_html: { size: TripPurpose.count }
-
+                as: :check_boxes,
+                item_wrapper_tag: 'div', wrapper: :inline_checkboxes
     .col-sm-4
       .well.well1 
         %h4= t(:fare)

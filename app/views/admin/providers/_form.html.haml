@@ -35,5 +35,6 @@
 
   .well
     %h4= t(:staff_actions)
-    = f.association :staff, collection: User.staff_assignable
+    = f.association :staff, collection: User.staff_assignable, as: :check_boxes,
+         wrapper: :inline_checkboxes, label: false
                 
