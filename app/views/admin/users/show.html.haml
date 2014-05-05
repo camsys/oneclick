@@ -6,7 +6,7 @@
       =link_to t(:edit), edit_admin_user_path(@user)
   -if can? :assist, @user
     %button.action-button.pull-right
-      =link_to t(:assist), error_501_path
+      =link_to t(:assist), admin_agency_agency_assist_path(current_user.agency, @user)
   %h2=@user.name
 
 .row

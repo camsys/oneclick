@@ -21,6 +21,7 @@ class Ability
       cannot :access, :show_provider
       cannot :travelers, Agency
       cannot :full_info, User
+      cannot :assist, User # That permissions is restricted to agency staff
       return
     end
     if User.with_role(:agency_administrator, :any).include?(user)
@@ -54,6 +55,7 @@ class Ability
       can [:index, :show], Report
       can [:read, :update], User, agency_id: user.agency.try(:id)
     end
+    
     if User.with_role(:agent, :any).include?(user)
       can [:see], :staff_menu
       can [:index], :admin_home
@@ -68,35 +70,15 @@ class Ability
       can [:access], :admin_feedback
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
       can :read, Agency
-      can :create, User
-      can :manage, [Provider, Service]
-      can [:index, :show], Report
-      can [:read, :update], User, agency_id: user.agency.try(:id)
-    end
-    if User.with_role(:agent, :any).include?(user)
-      can [:see], :staff_menu
-      can [:index], :admin_home
-      can [:access], :show_agency
-      can [:access], :staff_travelers
-      can [:access], :admin_create_traveler
-      can [:access], :admin_agencies
-      can [:access], :admin_trips
-      can [:access], :admin_providers
-      can [:access], :admin_services
-      cannot [:access], :admin_reports
-      can [:access], :admin_feedback
-      can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
-      can [:update, :full_info, :assist], User do |u|
+      can [:create, :show], User #can find any user if they search, can create a user
+      can [:update, :full_info, :assist], User do |u| # agents have extra privileges for users that have approved the agency
         u.approved_agencies.include? user.try(:agency)
       end
-      can :show, User #can find any user if they search
       can [:travelers], Agency, id: user.agency.try(:id)
       can [:read], Agency
-      # can [:read, :update], User, {agency_id: user.agency.try(:id)}
       can [:index, :show], Report
-      can [:index, :show], [Provider, Service]
-      can :perform, :assist_user
-      can :create, User
+      can [:index, :show], [Provider, Service] # Read-only access to providers and services
+      #can [:read, :update], User, agency_id: user.agency.try(:id) #removing because there isn't extra information for an agent here
     end
 
     if User.with_role(:provider_staff, :any).include?(user)
