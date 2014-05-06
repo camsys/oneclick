@@ -1,33 +1,44 @@
 # TODO There's a lot of duplication between this and trips.js.coffee
 
-create_or_update_marker = (key, lat, lon, name, desc, iconStyle) ->  
-  marker = findMarkerById(key)
-  removeMarkerFromMap marker  if marker
-  marker = createMarker(key, lat, lon, iconStyle, desc, name, true)
-  addMarkerToMap marker, true
+create_or_update_marker = (map, key, lat, lon, name, desc, iconStyle) ->  
+  marker = map.findMarkerById(key)
+  map.removeMarkerFromMap marker  if marker
+  marker = map.createMarker(key, lat, lon, iconStyle, desc, name, true)
+  map.addMarkerToMap marker, true
   marker
 
-update_map = (type, e, s, d) ->
-  if s.lat==null
-    return
-  if type=='from'
-    key = 'start'
-    icon = 'startIcon'
-  else
-    key = 'stop'
-    icon = 'stopIcon'
-  removeMatchingMarkers(key);
-  marker = create_or_update_marker(key, s.lat, s.lon, s.name, s.full_address, icon);
-  setMapToBounds();
-  selectMarker(marker);
+update_map = (map, type, e, s, d) ->
+  lat = s.lat
+  lon = s.lon
+  if lat==null
+    $.ajax
+      type: 'GET'
+      url: '/place_details/' + s.id
+      async: false
+      success: (data) ->
+        lat = data.result.geometry.location.lat
+        lon = data.result.geometry.location.lng
+  key = 'start'
+  icon = 'startIcon'
+  map.removeMatchingMarkers(key);
+  marker = create_or_update_marker(map, key, lat, lon, s.name, s.full_address, icon);
+  map.setMapToBounds();
+  map.selectMarker(marker);
 
 $ ->
-  $('#places-table td').on 'click', (e) ->
+  $('#places-table tr').on 'click', (e) ->
     $('#places-table tr').removeClass('success')
-    $(e.target).closest('tr').addClass('success')
-    $('#from_place').val(e.target.dataset.address)
-    $('#json').val(e.target.dataset.json)
-    $('#place_name').val(e.target.dataset.placename)
+    tr = $(e.target).closest('tr')
+    dataset = $(tr).data()
+    tr.addClass('success')
+    $('#places_controller_places_proxy_from_place').val(dataset.address)
+    $('#places_controller_places_proxy_json').val(JSON.stringify(dataset.json))
+    $('#places_controller_places_proxy_place_name').val(dataset.placename)
+
+  $('#clear').on 'click', () ->
+    $('#places_controller_places_proxy_from_place').val('')
+    $('#places_controller_places_proxy_json').val('')
+    $('#places_controller_places_proxy_place_name').val('')
 
   places = new Bloodhound
     datumTokenizer: (d) ->
@@ -38,7 +49,7 @@ $ ->
       rateLimitWait: 600
       replace: (url, query) ->
         url = url + '&query=' + query
-        url = url + '&map_center=' + (LMmap.getCenter().lat + ',' + LMmap.getCenter().lng)
+        url = url + '&map_center=33.7550,-84.3900'
         return url
     limit: 20
     # prefetch: '../data/films/post_1960.json'
@@ -54,9 +65,9 @@ $ ->
         '<a>{{name}}</a>'
       ].join(''))
   
-  $('#from_place').on 'typeahead:selected', (e, s, d) ->
-    $('#json').val(JSON.stringify(s))
-    update_map('from', e, s, d)
-  $('#from_place').on 'typeahead:autocompleted', (e, s, d) ->
-    $('#json').val(JSON.stringify(s))
-    update_map('from', e, s, d)
+  $('#places_controller_places_proxy_from_place').on 'typeahead:selected', (e, s, d) ->
+    $('#places_controller_places_proxy_json').val(JSON.stringify(s))
+    update_map(CsMaps.placesMap, 'trip', e, s, d)
+  $('#places_controller_places_proxy_from_place').on 'typeahead:autocompleted', (e, s, d) ->
+    $('#places_controller_places_proxy_json').val(JSON.stringify(s))
+    update_map(CsMaps.placesMap, 'trip', e, s, d)

@@ -56,4 +56,9 @@ module LeafletHelper
     js << "m.LMmap.setZoom(#{options[:zoom]});" if options[:zoom].present?
     js * ("\n")
   end
+
+  def self.marker(letter)
+    "http://maps.google.com/mapfiles/marker_green#{letter}.png"
+  end
+
 end

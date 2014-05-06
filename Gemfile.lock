@@ -43,6 +43,9 @@ GEM
       erubis (~> 2.7.0)
       rack (~> 1.5.2)
       rack-test (~> 0.6.2)
+    active_attr (0.8.3)
+      activemodel (>= 3.0.2, < 4.2)
+      activesupport (>= 3.0.2, < 4.2)
     active_model_serializers (0.8.1)
       activemodel (>= 3.0)
     activemdb (0.2.2)
@@ -421,6 +424,7 @@ PLATFORMS
 DEPENDENCIES
   Indirizzo
   RedCloth
+  active_attr
   active_model_serializers
   activemdb
   activemodel

@@ -63,7 +63,12 @@
   padding-right: 0px; 
 }
 
+
+
 .action-button {
+  &:not(:last-of-type) {
+    margin-left: 5px;
+  }
   // background: #eeeeee; /* Old browsers */
   // background: -moz-linear-gradient(top,  #ffffff 0%, #AFAFAF 100%); /* FF3.6+ */
   // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#AFAFAF)); /* Chrome,Safari4+ */

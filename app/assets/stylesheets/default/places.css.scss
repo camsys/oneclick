@@ -1,13 +1,13 @@
 // TODO There is duplication between this file and trips.css
 
 body.places {
-  .place_picker, .tt-input {
-    width: 100%;
+
+  .place_picker {
+    // width: 20em;
   }
 
   .twitter-typeahead {
-    @extend .col-sm-12;
-    width: 100%;
+    display: table-cell !important;
   }
 
   .tt-dropdown-menu {
@@ -21,16 +21,13 @@ body.places {
     color: blue;
   }
 
-  body.places {
+  #places-table {
+    cursor: pointer;
+  }
 
-    #places-table {
-      cursor: pointer;
-    }
-
-    .places-table-container {
-      max-height: 300px;
-      overflow-y: scroll;
-    }
+  .places-table-container {
+    max-height: 300px;
+    overflow-y: scroll;
   }
 
 }
