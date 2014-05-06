@@ -504,6 +504,9 @@ en:
   name: "Name"
   information: "Information"
   internal_contact: "Internal Contact"
+  city: "City"
+  state: "State"
+  zip: "Zip"
 
   date:
     abbr_day_names:

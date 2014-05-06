@@ -501,6 +501,9 @@ es:
   name: "[es]Name[/es]"
   information: "[es]information[/es]"
   internal_contact: "[es]Internal Contact[/es]"
+  city: "[es]City[/es]"
+  state: "[es]State[/es]"
+  zip: "[es]Zip[/es]"
 
   # Branding
   arc:
