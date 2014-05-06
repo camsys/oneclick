@@ -229,6 +229,7 @@ en:
   print: 'Print'
   chat: 'Chat'
   e_mail: 'Email'
+  create: "Create"
   created: "Created"
   trip_was_successfully_created: 'Trip was successfully created.'
   trip_was_successfully_removed: 'Trip was successfully removed.'

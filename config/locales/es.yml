@@ -228,6 +228,7 @@ es:
   print: 'Imprimir'
   chat: 'Charlar en línea'
   e_mail: ' Correo electrónico'
+  create: "[es230]Create[/es]"
   created: "[es152]Created[/es]"
   trip_was_successfully_created: 'El viaje fue creado exitosamente.'
   trip_was_successfully_removed: 'El viaje fue eliminada afortunada. *25*'  
