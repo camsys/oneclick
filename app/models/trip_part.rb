@@ -83,10 +83,25 @@ class TripPart < ActiveRecord::Base
   # before this method is called.
   def create_itineraries
     remove_existing_itineraries
-    create_fixed_route_itineraries if trip.desired_modes.include? Mode.transit
-    create_taxi_itineraries if trip.desired_modes.include? Mode.taxi
-    create_paratransit_itineraries if trip.desired_modes.include? Mode.paratransit
-    create_rideshare_itineraries if trip.desired_modes.include? Mode.rideshare
+    timed "fixed" do
+      create_fixed_route_itineraries if trip.desired_modes.include? Mode.transit
+    end
+    timed "taxi" do
+      create_taxi_itineraries if trip.desired_modes.include? Mode.taxi
+    end
+    timed "paratransit" do
+      create_paratransit_itineraries if trip.desired_modes.include? Mode.paratransit
+    end
+    timed "rideshare" do
+      create_rideshare_itineraries if trip.desired_modes.include? Mode.rideshare
+    end
+  end
+
+  def timed label, &block
+    s = Time.now
+    yield block
+    s2 = Time.now
+    Rails.logger.info "TIMING: #{label} #{s2 - s} #{s} #{s2}"
   end
 
   # TODO refactor following 4 methods
