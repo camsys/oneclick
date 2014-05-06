@@ -14,27 +14,34 @@
 
   .row
     .col-sm-6
-      .well
-        %h4= t(:provider_contact_info)
-        = f.input :address
-        = f.input :city, label: "#{t(:city)}/#{t(:state)}/#{t(:zip)}",
-          input_html: {class: "col-sm-6 form-control"}, wrapper_html: {class: ""} do
-          = f.input_field :city, class: "col-sm-3"
-          %label.col-sm-1
-          = f.input_field :state, class: "col-sm-2"
-          = f.input_field :zip, class: "col-sm-3 pull-right"
-        = f.input :phone
-        = f.input :email
-        = f.input :url
+      .panel.panel-default
+        .panel-heading
+          %h4.panel-title= t(:provider_contact_info)
+        .panel-body
+          = f.input :address
+          = f.input :city, label: "#{t(:city)}/#{t(:state)}/#{t(:zip)}",
+            input_html: {class: "col-sm-6 form-control"}, wrapper_html: {class: ""} do
+            = f.input_field :city, class: "col-sm-3"
+            %label.col-sm-1
+            = f.input_field :state, class: "col-sm-2"
+            = f.input_field :zip, class: "col-sm-3 pull-right"
+          = f.input :phone
+          = f.input :email
+          = f.input :url
 
     .col-sm-6
-      .well
-        %h4= t(:internal_contact)
-        = f.input_field :internal_contact, collection: @provider.users, class: "form-control",
+      .panel.panel-default
+        .panel-heading
+          %h4.panel-title= t(:internal_contact)
+        .panel-body
+          = f.input_field :internal_contact, collection: @provider.users, class: "form-control",
                 selected: (@contact.id if @contact) , include_blank: "None"
 
-  .well
-    %h4= t(:staff_actions)
-    = f.association :staff, collection: User.staff_assignable, as: :check_boxes,
-         wrapper: :inline_checkboxes, label: false
+  .panel.panel-default
+    .panel-heading
+      %h4.panel-title= t(:staff_actions)
+    .panel-body
+      .scrolling-checkbox-list
+        = f.association :staff, collection: User.staff_assignable.order(:first_name), as: :check_boxes,
+                wrapper: :inline_checkboxes, label: false
                 

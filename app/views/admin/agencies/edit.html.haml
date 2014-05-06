@@ -16,30 +16,33 @@
   
   .row
     .col-sm-6
-      .well
-        = f.input :address
-        = f.input :phone
-        = f.input :email
-        = f.input :url
-        = f.association :parent, collection: @agency.possible_parents, value_method: :name
+      .panel.panel-default
+        .panel-heading
+          %h4.panel-title= t(:contact_info)
+        .panel-body
+          = f.input :address
+          = f.input :phone
+          = f.input :email
+          = f.input :url
+          = f.association :parent, collection: @agency.possible_parents, value_method: :name
     .col-sm-6
-      .well
-        %h4= t(:internal_contact)
-        = f.input_field :internal_contact, collection: @agency.users, selected: (@contact.id if @contact) , include_blank: false
-  .well
-    %h4= t(:staff_actions)
-    = f.association :administrators, collection: User.staff_assignable
-    = f.association :agents, collection: User.staff_assignable
+      .panel.panel-default
+        .panel-heading
+          %h4.panel-title= t(:internal_contact)
+        .panel-body
+          = f.input_field :internal_contact, collection: @agency.users, selected: (@contact.id if @contact) , include_blank: false, class: 'form-control'
 
-:javascript
-  $(document).ready(function() {
-    $('#users_table').dataTable( {
-          "oLanguage": {
-              "sLengthMenu": "Display _MENU_ provider organizations per page",
-              "sZeroRecords": "Nothing found - sorry",
-              "sInfo": "Showing _START_ to _END_ of _TOTAL_ provider organizations ",
-              "sInfoEmpty": "Showing 0 to 0 of 0 provider organizations ",
-              "sInfoFiltered": "(filtered from _MAX_ total provider organizations )"
-          }
-      } );
-  } );
+  .panel.panel-default
+    .panel-heading
+      %h4.panel-title= t(:staff_actions)
+    .panel-body
+      .col-sm-6
+        %h5= t(:administrators)
+        .scrolling-checkbox-list
+          = f.association :administrators, collection: User.staff_assignable.order(:first_name),
+                  as: :check_boxes, wrapper: :inline_checkboxes, label: false
+      .col-sm-6
+        %h5= t(:agents)
+        .scrolling-checkbox-list
+          = f.association :agents, collection: User.staff_assignable,
+                  as: :check_boxes, wrapper: :inline_checkboxes, label: false

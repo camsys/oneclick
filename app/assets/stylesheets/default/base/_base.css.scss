@@ -601,3 +601,10 @@ body.characteristics {
    width: auto;
    float: none;
  }
+
+ // Div class for viewports on long checkbox lists from simple_form associations.
+ .scrolling-checkbox-list {
+     height: 12em;
+     overflow: auto;
+ }
+ 

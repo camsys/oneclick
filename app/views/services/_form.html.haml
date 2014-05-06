@@ -20,78 +20,86 @@
 
   .row
     .col-sm-4
-      .well
-
-        %h3
-          = t(:provided_by)
-          =  @service.provider.name
-        - unless @service.active
-          %h3.warning
-            = t(:service_is_inactive)
-        = f.input :phone
-        = f.input :email
-        = f.input :url
-        = f.association :service_type,
-                collection: ServiceType.all.map{|t| [ t(t.name), t.id ] }
+      .panel.panel-default
+        .panel-heading
+          %h3.panel-title
+            = t(:provided_by)
+            =  @service.provider.name
+        .panel-body
+          - unless @service.active
+            %h3.warning
+              = t(:service_is_inactive)
+          = f.input :phone
+          = f.input :email
+          = f.input :url
+          = f.association :service_type,
+                  collection: ServiceType.all.map{|t| [ t(t.name), t.id ] }
     .col-sm-4
-      .well
-        = f.input :external_id, label: t(:service_id)
-        = f.input :booking_service_code
-        = f.input :service_window, as: :integer
-        = f.input :time_factor, as: :float
+      .panel.panel-default
+        .panel-heading
+        .panel-body
+          = f.input :external_id, label: t(:service_id)
+          = f.input :booking_service_code
+          = f.input :service_window, as: :integer
+          = f.input :time_factor, as: :float
       
     .col-sm-4
-      .well
-        %h4= t(:internal_contact)
-        = f.input_field :internal_contact, collection: @staff, class: "form-control",
+      .panel.panel-default
+        .panel-heading
+          %h4.panel-title= t(:internal_contact)
+        .panel-body
+          = f.input_field :internal_contact, collection: @staff, class: "form-control",
                 selected: (@contact.id if @contact) , include_blank: "None"
 
   .row
     .col-sm-4
-      .well.well2
-        %h4= t(:schedule)
-        %table.ALTtable
-          %thead
-            %tr
-              %th.text-center
-                = t('datetime.prompts.day')
-              %th.text-center
-                = t(:start_time)
-              %th.text-center
-                = t(:end_time)
-              %th.text-center
-                Clear?
-          %tbody
-            - # display each day of week, Monday 1st, Sunday last
-            - count = 0
-            - (1..7).each do |i|
-              - day_of_week = i % 7
-              - schedule = @schedules[day_of_week]
+      .panel.panel-default.well2
+        .panel-heading
+          %h4.panel-title= t(:schedule)
+        .panel-body
+          %table.ALTtable
+            %thead
               %tr
-                %td.text-center
-                  = t('date.day_names')[day_of_week]
-                %td
-                  %input.form-control.text-right{type: "text",
-                        value: "#{schedule.start_time if schedule}",
-                        name: input_name(f, :schedules, :start_time)}
-                %td
-                  %input.form-control.text-right{type: "text",
-                        value: "#{schedule.end_time if schedule}",
-                        name: "service[schedules_attributes][][end_time]"}
-                %td
-                  %input.form-control.checkbox{type: "checkbox",
-                        value: "1", name: "service[schedules_attributes][][_destroy]"}
-                - if schedule
-                  %input{type: "hidden", value: "#{schedule.id}",
-                         name: "service[schedules_attributes][][id]"}
-                - else
-                  %input{type: "hidden", value: "#{day_of_week}",
-                         name: "service[schedules_attributes][][day_of_week]"}
-                
+                %th.text-center
+                  = t('datetime.prompts.day')
+                %th.text-center
+                  = t(:start_time)
+                %th.text-center
+                  = t(:end_time)
+                %th.text-center
+                  Clear?
+            %tbody
+              - # display each day of week, Monday 1st, Sunday last
+              - count = 0
+              - (1..7).each do |i|
+                - day_of_week = i % 7
+                - schedule = @schedules[day_of_week]
+                %tr
+                  %td.text-center
+                    = t('date.day_names')[day_of_week]
+                  %td
+                    %input.form-control.text-right{type: "text",
+                          value: "#{schedule.start_time if schedule}",
+                          name: input_name(f, :schedules, :start_time)}
+                  %td
+                    %input.form-control.text-right{type: "text",
+                          value: "#{schedule.end_time if schedule}",
+                          name: "service[schedules_attributes][][end_time]"}
+                  %td
+                    %input.form-control.checkbox{type: "checkbox",
+                          value: "1", name: "service[schedules_attributes][][_destroy]"}
+                  - if schedule
+                    %input{type: "hidden", value: "#{schedule.id}",
+                           name: "service[schedules_attributes][][id]"}
+                  - else
+                    %input{type: "hidden", value: "#{day_of_week}",
+                           name: "service[schedules_attributes][][day_of_week]"}
+
     .col-sm-4
-      .well.well2
-        %h4= t(:advance_notice_required)
-        .well.white-well.wwell2
+      .panel.panel-default.well2
+        .panel-heading
+          %h4.panel-title= t(:advance_notice_required)
+        .panel-body
           - minutes_total = @service.advanced_notice_minutes
           = t(:service_notice_required) + " " ## TODO Interpolate
           %input.text-right{type: "number", min: 0, max: 30,
@@ -109,9 +117,10 @@
           = " " + t(:service_notice_str) + "."
 
     .col-sm-4
-      .well.well2
-        %h4=t(:accommodations)
-        .well.white-well.wwell1
+      .panel.panel-default.well2
+        .panel-heading
+          %h4.panel-title= t(:accommodations)
+        .panel-body
           = f.association :accommodations,
                 collection: Accommodation.all.map{|a| [ t(a.name), a.id ] }, label: false,
                 as: :check_boxes, 
@@ -119,44 +128,11 @@
 
   .row
     .col-sm-4
-      .well.well1
-        %h4= t(:eligibility)
-        = t(:eligibility_rules_descr)
-        .well.white-well.wwell1
-          %h4 Add new rules
-          %table.ALTtable
-            %thead
-              %tr
-                %th.text-center
-                  &nbsp;Add&nbsp;
-                %th.text-center
-                  Group
-                %th.text-center
-                  Rule
-            %tbody
-              - Characteristic.enabled.each do |c|
-                %tr
-                  %td.text-center
-                    %input{type: "hidden", name: input_name(f, :service_characteristics, :id)}
-                    = check_box_tag input_name(f, :service_characteristics, :active),
-                        true, false, class: "form-control checkbox"
-                    %input{type: "hidden", value: "#{c.id}",
-                        name: input_name(f, :service_characteristics, :characteristic_id)}
-                  %td.text-center
-                    = select_tag(input_name(f, :service_characteristics, :group),
-                      options_for_select((0..Characteristic.enabled.count).map{|id| ["#{id}", id]}))
-                  %td.text-center
-                    = t(c.name)
-                    - case c.datatype
-                    -   when 'bool'
-                      = " is "
-                      = select_tag(input_name(f, :service_characteristics, :value),
-                        options_for_select([['true', 'true'], ['false', 'false']]))
-                    -   when 'integer', 'date'
-                      = select_tag(input_name(f, :service_characteristics, :value_relationship_id),
-                        options_for_select(@eh.operator_select_options, 4))
-                      %input.text-right{type: "number", min: 1, max: 120,
-                        name: input_name(f, :service_characteristics, :value)}
+      .panel.panel-default.well1
+        .panel-heading
+          %h4.panel-title= t(:eligibility)
+          = t(:eligibility_rules_descr)
+        .panel-body
                     
           %h4 Modify existing rules
           %table.ALTtable
@@ -201,55 +177,112 @@
                         options_for_select(@eh.operator_select_options, map.value_relationship_id))
                       %input.text-right{type: "number", min: 1, max: 120, value: map.value,
                         name: input_name(f, :service_characteristics, :value)}
+
+          %h4 Add new rules
+          %table.ALTtable
+            %thead
+              %tr
+                %th.text-center
+                  &nbsp;Add&nbsp;
+                %th.text-center
+                  Group
+                %th.text-center
+                  Rule
+            %tbody
+              - Characteristic.enabled.each do |c|
+                %tr
+                  %td.text-center
+                    %input{type: "hidden", name: input_name(f, :service_characteristics, :id)}
+                    = check_box_tag input_name(f, :service_characteristics, :active),
+                        true, false, class: "form-control checkbox"
+                    %input{type: "hidden", value: "#{c.id}",
+                        name: input_name(f, :service_characteristics, :characteristic_id)}
+                  %td.text-center
+                    = select_tag(input_name(f, :service_characteristics, :group),
+                      options_for_select((0..Characteristic.enabled.count).map{|id| ["#{id}", id]}))
+                  %td.text-center
+                    = t(c.name)
+                    - case c.datatype
+                    -   when 'bool'
+                      = " is "
+                      = select_tag(input_name(f, :service_characteristics, :value),
+                        options_for_select([['true', 'true'], ['false', 'false']]))
+                    -   when 'integer', 'date'
+                      = select_tag(input_name(f, :service_characteristics, :value_relationship_id),
+                        options_for_select(@eh.operator_select_options, 4))
+                      %input.text-right{type: "number", min: 1, max: 120,
+                        name: input_name(f, :service_characteristics, :value)}
                   
     .col-sm-4
-      .well.well1
-        %h4= t(:trip_purposes)
-        .well.white-well.wwell1
+      .panel.panel-default.well1
+        .panel-heading
+          %h4.panel-title= t(:trip_purposes)
+        .panel-body
           = f.association :trip_purposes,
                 collection: TripPurpose.all.map{|p| [ t(p.name), p.id ] }, label: false,
                 as: :check_boxes,
                 item_wrapper_tag: 'div', wrapper: :inline_checkboxes
     .col-sm-4
-      .well.well1 
-        %h4= t(:fare)
+      .panel.panel-default.well1
+        .panel-heading
+          %h4.panel-title= t(:fare)
         = f.simple_fields_for :fare_structures do |fare|
-          .well.white-well.wwell2
+          .panel-body
             .row_fluid
               = fare.input :base, as: :currency
               = fare.input :rate, as: :currency
               = fare.input :desc, label: t(:comments), as: :text
               
-  .well
-    .row.text-center
-      .col-sm-12
-        %h3= t(:coverage_areas)
+  .panel.panel-default
+    .panel-heading
+      .row.text-center
+        .col-sm-12
+          %h3.panel-title= t(:coverage_areas)
+    .panel-body
+      .row
+        .col-sm-12
+          - types = GeoCoverage.pluck(:coverage_type).uniq
+          - [:origins, :destinations, :residences].each do |rule| 
+            .panel.panel-default
+              .panel-heading
+                %h4.panel-title= t(rule)
+              .panel-body
+                - types.each do |type|
+                  %b
+                    = type.humanize.split[0].pluralize + ' ' + t(:served_areas)
+                  .well.white-well.text-left
+                    - checked = @service.send(rule).pluck(:geo_coverage_id)
+                    - GeoCoverage.where(coverage_type: type).order(:value).map{|c| [ c.value, c.id ] }.each do |pair|
+                      %input{type: "hidden", value: pair[1],
+                             name: input_name(f, :service_coverage_maps, :geo_coverage_id)}
+                      %input{type: "hidden", value: rule.to_s.singularize,
+                             name: input_name(f, :service_coverage_maps, :rule)}
+                      - if checked.include?(pair[1])
+                        %input{type: "hidden",
+                               value: "#{@service.send(rule).find_by(geo_coverage_id: pair[1]).id}",
+                               name: input_name(f, :service_coverage_maps, :id)}
+                      %span
+                        %label
+                          %input.checkbox.checkbox-inline{type: "checkbox",
+                                checked: checked.include?(pair[1]),
+                                value: "1", 
+                                name: input_name(f, :service_coverage_maps, :keep_record)}
+                          = pair[0]
+                          &nbsp;
 
-    .row
-      .col-sm-12
-        - types = GeoCoverage.pluck(:coverage_type).uniq
-        - [:origins, :destinations, :residences].each do |rule| 
-          %h4= t(rule)
-          - types.each do |type|
-            %b
-              = type.humanize.split[0].pluralize + ' ' + t(:served_areas)
-            .well.white-well.text-left
-              - checked = @service.send(rule).pluck(:geo_coverage_id)
-              - GeoCoverage.where(coverage_type: type).order(:value).map{|c| [ c.value, c.id ] }.each do |pair|
-                %input{type: "hidden", value: pair[1],
-                       name: input_name(f, :service_coverage_maps, :geo_coverage_id)}
-                %input{type: "hidden", value: rule.to_s.singularize,
-                       name: input_name(f, :service_coverage_maps, :rule)}
-                - if checked.include?(pair[1])
-                  %input{type: "hidden",
-                         value: "#{@service.send(rule).find_by(geo_coverage_id: pair[1]).id}",
-                         name: input_name(f, :service_coverage_maps, :id)}
-                %span
-                  %label
-                    %input.checkbox.checkbox-inline{type: "checkbox",
-                          checked: checked.include?(pair[1]),
-                          value: "1", 
-                          name: input_name(f, :service_coverage_maps, :keep_record)}
-                    = pair[0]
-                    &nbsp;
 
+:javascript
+  boxes = $('.well1');
+  maxHeight = Math.max.apply(
+    Math, boxes.map(function() {
+      return $(this).height();
+  }).get());
+  boxes.height(maxHeight);
+
+  boxes = $('.well2');
+  maxHeight = Math.max.apply(
+    Math, boxes.map(function() {
+      return $(this).height();
+  }).get());
+  boxes.height(maxHeight);
+                    
