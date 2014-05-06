@@ -181,6 +181,7 @@ en:
   apply: 'Apply'
   cancel: 'Cancel'
   plan_it: 'Plan it'
+  plan: 'Plan'
   from: 'From'
   to: 'To'
   at_time: 'on'

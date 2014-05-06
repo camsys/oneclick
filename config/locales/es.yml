@@ -183,6 +183,7 @@ es:
   apply: 'Applicar'
   cancel: 'Cancelar'
   plan_it: 'Planear el viaje'
+  plan: '[es186]Planear el viaje[/es]'
   from: 'De'
   to: 'A'  
   at_time: 'en'  
