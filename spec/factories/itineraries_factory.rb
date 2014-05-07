@@ -16,7 +16,7 @@ FactoryGirl.define do
     server_status "200"
       factory :pt_itinerary do
         hidden false
-        
+        selected true
         after (:build) do |itinerary|
             itinerary.service = FactoryGirl.create(:populated_service)
             itinerary.save!
