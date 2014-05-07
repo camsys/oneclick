@@ -308,6 +308,7 @@ es:
   updated: "[es242]Updated[/es]"
 
   # new ones
+  book: "[es]Book[/es]"
   inactive: "[es]Inactive[/es]"
   service_id: "[es]Service Id[/es]"
   booking_service_code: "[es]Booking Service Code[/es]"

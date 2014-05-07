@@ -309,6 +309,7 @@ en:
 
   # new ones
   # Services
+  book: "Book"
   inactive: "Inactive"
   service_id: "Service Id"
   booking_service_code: "Booking Service Code"

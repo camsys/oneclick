@@ -100,30 +100,41 @@ def add_services_and_providers
   grocery = TripPurpose.find_by_code('grocery')
 
   providers = [
-      {name: 'BC CS Mass Transit', contact: '', external_id: "1"},
-      {name: 'City of Tamarac', contact: '', external_id: "2"},
-      {name: 'City of Wilton Manners', contact: ' ', external_id: "3"},
-      {name: 'Cooper City Community Services', contact: ' ', external_id: "4"},
-      {name: 'City of Miramar', contact: ' ', external_id: "5"},
-      {name: 'Southeast Focal Point', contact: ' ', external_id: "6"},
-      {name: 'American Cancer Society', contact: ' ', external_id: "7"},
-      {name: 'City of Sunrise', contact: ' ', external_id: "8"},
-      {name: 'Northwest Focal Point', contact: ' ', external_id: "9"},
-      {name: 'City of Lauderdale Lakes', contact: ' ', external_id: "10"}
+      {name: 'BC CS Mass Transit', contact: 'BC Contact', external_id: "1"},
+      {name: 'City of Tamarac', contact: 'Tamarac Contact', external_id: "2"},
+      {name: 'City of Wilton Manners', contact: 'WM Contact ', external_id: "3"},
+      {name: 'Cooper City Community Services', contact: 'CC Contact ', external_id: "4"},
+      {name: 'City of Miramar', contact: 'Miramar Contact ', external_id: "5"},
+      {name: 'Southeast Focal Point', contact: 'SEFP Contact ', external_id: "6"},
+      {name: 'American Cancer Society', contact: 'ACS Contact ', external_id: "7"},
+      {name: 'City of Sunrise', contact: 'Sunrise Contact ', external_id: "8"},
+      {name: 'Northwest Focal Point', contact: 'NWFP Contact ', external_id: "9"},
+      {name: 'City of Lauderdale Lakes', contact: 'LL Contact ', external_id: "10"}
 
   ]
 
   #Create providers and services with custom schedules, eligibility, and accommodations
   providers.each do |provider|
 
+    puts "Add/replace provider #{provider[:external_id]}"
 
     p = Provider.find_by_external_id(provider[:external_id])
     unless p.nil?
       next
     end
-    puts "Adding provider #{provider[:external_id]}"
+
+    contact = provider.delete(:contact)
+    (first_name, last_name) = contact.split(/ /, 2)
     p = Provider.create! provider
     p.save
+
+    puts contact.downcase.gsub(' ', '_').gsub(%r{\W}, '') + '@camsys.com'
+    u = User.create! first_name: first_name, last_name: last_name,
+        email: contact.downcase.gsub(' ', '_').gsub(%r{\W}, '') + '@camsys.com', password: 'welcome1'
+    up = UserProfile.create! user: u
+    # p.users << u
+    u.add_role :internal_contact, p
+
 
     case p.external_id
 
@@ -136,7 +147,7 @@ def add_services_and_providers
         end
         #Trip purpose requirements
         [senior, medical, cancer, grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -155,7 +166,7 @@ def add_services_and_providers
 
         #Traveler Accommodations Requirements
         [motorized_wheelchair_accessible, lift_equipped, door_to_door, driver_assistance_available, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
 
@@ -169,7 +180,7 @@ def add_services_and_providers
 
         #Trip Purpose Requirements
         [medical,grocery, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -189,7 +200,7 @@ def add_services_and_providers
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "3"   #Wilton Manors
@@ -201,7 +212,7 @@ def add_services_and_providers
         end
         #Trip Purpose Requirements
         [medical, grocery, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -219,7 +230,7 @@ def add_services_and_providers
 
         #Traveler Accommodations Provided
         [folding_wheelchair_accessible, door_to_door].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "4" #Cooper City
@@ -232,7 +243,7 @@ def add_services_and_providers
 
         #Trip Purpose Requirements
         [medical, cancer, grocery, senior].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -251,7 +262,7 @@ def add_services_and_providers
 
         #Traveler Accommodations Requirements
         [door_to_door, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "5" #City of Miramar
@@ -264,7 +275,7 @@ def add_services_and_providers
 
         #Trip Purpose Requirements
         [senior, cancer, medical, grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -283,7 +294,7 @@ def add_services_and_providers
 
         #Traveler Accommodations Requirements
         [door_to_door, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "6" # SE Focal Point
@@ -296,7 +307,7 @@ def add_services_and_providers
 
         #Trip Purpose Requirements
         [grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -315,7 +326,7 @@ def add_services_and_providers
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "7" #American Cancer Society
@@ -328,7 +339,7 @@ def add_services_and_providers
 
         #Trip Purpose Requirements
         [cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -348,7 +359,7 @@ def add_services_and_providers
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "8" #City of Sunrise
@@ -361,7 +372,7 @@ def add_services_and_providers
 
         #Trip Purpose Requirements
         [medical, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -381,7 +392,7 @@ def add_services_and_providers
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "9" #Northwest Focal Center
@@ -394,7 +405,7 @@ def add_services_and_providers
 
         #Trip Purpose Requirements
         [medical, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -413,7 +424,7 @@ def add_services_and_providers
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "10" #City of Luaderdale Lakes
@@ -426,7 +437,7 @@ def add_services_and_providers
 
         #Trip Purpose Requirements
         [grocery, general, senior, medical, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -445,7 +456,7 @@ def add_services_and_providers
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
 
@@ -457,7 +468,7 @@ def add_services_and_providers
 
         #Trip Purpose Requirements
         [grocery, general, senior, medical, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -476,7 +487,7 @@ def add_services_and_providers
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
 

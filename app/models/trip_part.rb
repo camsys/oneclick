@@ -37,13 +37,13 @@ class TripPart < ActiveRecord::Base
   # We define that an itinerary has been selected if there is exactly 1 visible valid one.
   # We might want a more explicit selection flag in the future.
   def selected?
-    itineraries.valid.visible.count == 1
+    itineraries.valid.selected.count == 1
   end
 
   # Returns the itinerary selected for this trip.  If one isn't selected, returns nil
   def selected_itinerary
     if selected?
-      return itineraries.valid.visible.first
+      return itineraries.valid.selected.first
     else
       return nil
     end

@@ -90,6 +90,16 @@ class TripsController < PlaceSearchingController
 
   def plan
     @itineraries = Itinerary.where('id in (' + params[:itinids] + ')')
+    @trip = @itineraries.first.trip_part.trip
+    @trip.itineraries.selected.each do |itin|
+      itin.selected = false
+      itin.save
+    end
+    #Mark these itineraries as selected
+    @itineraries.each do |itinerary|
+      itinerary.selected = true
+      itinerary.save
+    end
 
     respond_to do |format|
       format.html # show.html.erb

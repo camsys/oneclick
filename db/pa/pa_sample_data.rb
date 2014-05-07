@@ -23,7 +23,6 @@ def add_users_and_places
     {first_name: 'Aaron', last_name: 'Magil', email: 'amagil@camsys.com'},
     {first_name: 'Julian', last_name: 'Ray', email: 'jray@camsys.com'},
     {first_name: 'Scott', last_name: 'Meeks', email: 'smeeks@camsys.com'},
-    {first_name: 'sys', last_name: 'admin', email: 'email@camsys.com'},
     {first_name: 'Test', last_name: 'Customer', email: 'ecolane@camsys.com'}
   ]
 
@@ -103,14 +102,14 @@ def add_providers_and_services
   grocery = TripPurpose.find_by_code('grocery')
 
   providers = [
-      {name: 'Rabbit Transit',
+      {name: 'Rabbit Transit', contact: "rabbit contact",
        address: '1230 Roosevelt Ave.', city: 'York', state: 'PA', zip: '17404',
        phone: '717-846-RIDE', email: 'info@rabbittransit.org',
        url: 'http://www.rabbittransit.org/', external_id: "1"},
-      {name: 'Faith in Action Network', contact: '', external_id: "2"},
-      {name: 'American Cancer Society', contact: '', external_id: "3"},
-      {name: 'Lutheran Social Services', contact: '', external_id: "4"},
-      {name: 'York County Area Agency on Aging', contact: '', external_id:  "5"}
+      {name: 'Faith in Action Network', contact: 'test name', external_id: "2"},
+      {name: 'American Cancer Society', contact: 'acs name', external_id: "3"},
+      {name: 'Lutheran Social Services', contact: 'lss name', external_id: "4"},
+      {name: 'York County Area Agency on Aging', contact: 'temp name', external_id:  "5"}
 
   ]
 
@@ -123,9 +122,18 @@ def add_providers_and_services
       next
     end
 
-    Provider.find_by_external_id(provider[:external_id]).destroy rescue nil
+    contact = provider.delete(:contact)
+    (first_name, last_name) = contact.split(/ /, 2)
     p = Provider.create! provider
     p.save
+
+    puts contact.downcase.gsub(' ', '_').gsub(%r{\W}, '') + '@camsys.com'
+    u = User.create! first_name: first_name, last_name: last_name,
+        email: contact.downcase.gsub(' ', '_').gsub(%r{\W}, '') + '@camsys.com', password: 'welcome1'
+    up = UserProfile.create! user: u
+    # p.users << u
+    u.add_role :internal_contact, p
+
 
     case p.external_id
 
@@ -142,12 +150,12 @@ def add_providers_and_services
         Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
         #Trip purpose requirements
         [medical, cancer, general, grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Trip purpose requirements
         [general, medical, cancer, grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -165,7 +173,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
         #Shared Ride for Ages 60-64
@@ -179,7 +187,7 @@ def add_providers_and_services
         Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
         #Trip purpose requirements
         [medical, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -198,7 +206,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
         #Medical Assistance Transportation Program
@@ -212,7 +220,7 @@ def add_providers_and_services
         Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
         #Trip purpose requirements
         [medical, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -234,7 +242,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
         #ADA Complementary
@@ -248,7 +256,7 @@ def add_providers_and_services
         Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
         #Trip purpose requirements
         [medical, cancer, general, grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -266,7 +274,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
         #Service for Persons with Disabilities
@@ -281,12 +289,12 @@ def add_providers_and_services
         Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
         #Trip purpose requirements
         [medical, cancer, general, grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Trip purpose requirements
         [medical, cancer, general, grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -304,7 +312,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "2" #Faith in Action Network
@@ -317,7 +325,7 @@ def add_providers_and_services
 
         #Trip Purpose Requirements
         [medical, grocery, cancer, general].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -337,7 +345,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "3" #American Cancer Society
@@ -350,7 +358,7 @@ def add_providers_and_services
 
         #Trip Purpose Requirements
         [cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -368,7 +376,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "4" #Luthern Social Services of South Central PA
@@ -381,7 +389,7 @@ def add_providers_and_services
 
         #Trip Purpose Requirements
         [cancer, medical, general, grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -399,7 +407,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
 
       when "5" #Area Agency on Aging
@@ -412,7 +420,7 @@ def add_providers_and_services
 
         #Trip Purpose Requirements
         [cancer, medical, general, grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
         end
 
         #Add geographic restrictions
@@ -432,7 +440,7 @@ def add_providers_and_services
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+          ServiceAccommodation.create(service: service, accommodation: n)
         end
     end
   end
@@ -540,15 +548,20 @@ def add_dav
         active: 1,
         sort_order: 2)
 
-    provider = {name: 'Veterans Affairs', contact: '', external_id:  "6"}
+    provider = {name: 'Veterans Affairs', contact: 'DAV Contact', external_id:  "6"}
 
-    p = Provider.find_by_external_id("6")
-    unless p.nil?
-      return
-    end
 
+    contact = provider.delete(:contact)
+    (first_name, last_name) = contact.split(/ /, 2)
     p = Provider.create! provider
     p.save
+
+    puts contact.downcase.gsub(' ', '_').gsub(%r{\W}, '') + '@camsys.com'
+    u = User.create! first_name: first_name, last_name: last_name,
+        email: contact.downcase.gsub(' ', '_').gsub(%r{\W}, '') + '@camsys.com', password: 'welcome1'
+    up = UserProfile.create! user: u
+    # p.users << u
+    u.add_role :internal_contact, p
 
     #Create service Disabled American Vets van
     paratransit = ServiceType.find_by_code('paratransit')
@@ -562,7 +575,7 @@ def add_dav
   When scheduling appointment(s), patients must inform the scheduling clerk that they are passengers on the York Shuttle Van and request appointment(s) between 8:00 A.M. and 11:00 A.M. to accommodate the vans normal operation schedule. Once the appointment in Lebanon is scheduled the veteran needs to call 771-9218 five (5) working days prior to the appointment to make arrangements to get onto the van. We take the first 8 Veterans and can take stand by names but cannot guarantee a ride. The van driver will get the list of veteran’s names 2-3 days prior to the date and will call the veterans with a departure time. The veterans are responsible for providing their own transportation to York Clinic for departure to Lebanon.')
 
     #Trip purpose requirements
-    ServiceTripPurposeMap.create(service: service, trip_purpose: lebanon, value: 'true')
+    ServiceTripPurposeMap.create(service: service, trip_purpose: lebanon)
 
     #Add geographic restrictions
     ['York', 'Adams'].each do |z|
@@ -573,7 +586,7 @@ def add_dav
     #Traveler Accommodations Requirements
     folding_wheelchair_accessible = Accommodation.find_by_code('folding_wheelchair_accessible')
     [folding_wheelchair_accessible].each do |n|
-      ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+      ServiceAccommodation.create(service: service, accommodation: n)
     end
 
   else
@@ -615,7 +628,7 @@ def add_rabbit_general
   cancer = TripPurpose.find_by_code('cancer')
   #Trip purpose requirements
   [medical, cancer].each do |n|
-    ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+    ServiceTripPurposeMap.create(service: service, trip_purpose: n)
   end
   FareStructure.create(service: service, fare_type: 2, desc:  "Zone 1: $15.65, Zone 2: $22.00, Zone 3: $30.50, Zone 4: $44.25")
 
@@ -624,7 +637,7 @@ def add_rabbit_general
   motorized_wheelchair_accessible = Accommodation.find_by_code('motorized_wheelchair_accessible')
   curb_to_curb = Accommodation.find_by_code('curb_to_curb')
   [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-    ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+    ServiceAccommodation.create(service: service, accommodation: n)
   end
 
 end
