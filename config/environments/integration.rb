@@ -25,6 +25,7 @@ Oneclick::Application.configure do
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default :charset => "utf-8"
 
+  # Warning: Heroku uses env var LOG_LEVEL
   config.log_level = :info
 
   config.eager_load = true
