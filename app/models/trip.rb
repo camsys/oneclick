@@ -18,21 +18,16 @@ class Trip < ActiveRecord::Base
   # validate :validate_at_least_one_trip_part
 
   # Scopes
-  # Returns a set of trips that have been created between a start and end day
   scope :created_between, lambda {|from_day, to_day| where("trips.created_at > ? AND trips.created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
-  # scope :by_provider, ->(p) { where("distinct t.* from trips t join trip_parts tp on tp.trip_id=t.id " +
-  #   "join itineraries i on i.trip_part_id=tp.id " +
-  #   "join services s on s.id=i.service_id " +
-  #   "join providers p on p.id=s.provider_id") }
   scope :by_provider, ->(p) { joins(itineraries: {service: :provider}).where('providers.id=?', p).distinct }
   # .join(:services).join(:providers) }
-    # .where('providers.id=?', p)}
+  # .where('providers.id=?', p)}
 
   scope :by_agency, ->(a) { joins(user: :approved_agencies).where('agencies.id' => a) }
 
   # Returns a set of trips that are scheduled between the start and end time
   def self.scheduled_between(start_time, end_time)
-    
+
     # cant do a sorted join here as PG grumbles so doing an in-memory sort on the trips that are returned after we have performed a sub-filter on them. The reverse 
     #is because we want to order from newest to oldest
     res = joins(:trip_parts).where("sequence = ? AND trip_parts.scheduled_date >= ? AND trip_parts.scheduled_date <= ?", 0, start_time.to_date, end_time.to_date).uniq
@@ -41,13 +36,13 @@ class Trip < ActiveRecord::Base
     return res.sort_by {|x| x.trip_datetime }.reverse
 
   end
-  
+
   # Returns an array of Trips that have at least one valid itinerary but all
   # of them have been hidden by the user
   def self.rejected
     joins(:itineraries).where('server_status=200 AND hidden=true').uniq
   end
-  
+
   # Returns an array of Trips where no valid options were generated
   def self.failed
     joins(:itineraries).where('server_status <> 200').uniq
@@ -118,7 +113,7 @@ class Trip < ActiveRecord::Base
     start_time_res = in_the_future(start_time)
     # See if the trip date is on or after the end time
     end_time_res = in_the_future(end_time)
-    
+
     if start_time_res
       # the trip is on or after the start time
       if end_time_res
@@ -133,20 +128,20 @@ class Trip < ActiveRecord::Base
       return false
     end
   end
-  
+
   # Returns the date time for the outbound leg of the trip. This is synonymous with the 
   # time and date that the trip is planned for
   def trip_datetime
     trip_parts.first.trip_time
   end
-  
+
   # returns true if the trip is scheduled in advance of the current or passed in date and time.
   def in_the_future(compare_time=DateTime.current.utc)
     trip_part = trip_parts.first
     if trip_part.nil?
       return false
     end
-    
+
     return trip_part.scheduled_time > compare_time ? true : false
 
     # First check the days to see of they are equal
@@ -160,16 +155,54 @@ class Trip < ActiveRecord::Base
       return trip_part.scheduled_date > compare_time.to_date 
     end
   end
-  
+
+  def create_itineraries
+    if ENV['MULTITHREAD']
+      create_itineraries_mt
+    else
+      create_itineraries_st
+    end
+  end
+
   # Shortcut that creates itineraries for all trip parts
   # This function simply delegates to the trip parts to generate
   # their own itineraries
-  def create_itineraries
+  def create_itineraries_st
+    Rails.logger.info "Creating itineraries single-threaded"
     trip_parts.each do |trip_part|
       trip_part.create_itineraries
     end
   end
-  
+
+  def create_itineraries_mt
+    Rails.logger.info "Creating itineraries multithreaded"
+    threads = []
+    trip_parts.each do |trip_part|
+      threads << Thread.new do
+        begin
+          Rails.logger.info "#{Time.now} #{Thread.current} Starting trip part"
+          trip_part.create_itineraries
+          Rails.logger.info "#{Time.now} #{Thread.current} Back from trip part"
+        ensure
+          begin
+            if (ActiveRecord::Base.connection && ActiveRecord::Base.connection.active?)
+              Rails.logger.info "In ensure, closing connection"
+              ActiveRecord::Base.connection.close
+            end
+          rescue Exception => e
+            Rails.logger.error e
+            raise e
+          end
+        end
+      end
+    end
+    threads.each do |t|
+      Rails.logger.info "#{Time.now} Waiting on Thread #{t}"
+      t.join
+      Rails.logger.info "#{Time.now} Done on Thread #{t}"
+    end
+  end
+
   # Returns a numeric rating score for the trip
   def get_rating
     if self.rating
@@ -178,7 +211,7 @@ class Trip < ActiveRecord::Base
       return 0
     end
   end
-  
+
   # removes all trip places and trip parts from the object  
   def clean
     trip_parts.each do |part| 
@@ -188,7 +221,7 @@ class Trip < ActiveRecord::Base
     trip_places.each { |x| x.destroy}
     save
   end
-  
+
   # returns true is this trip can be edited or deleted. Note that this
   # bascially comes down to wether the planned trip is in the future or not.
   def can_modify
@@ -198,7 +231,7 @@ class Trip < ActiveRecord::Base
       return in_the_future
     end
   end
-  
+
   # Overrides the default to string method.
   def to_s
     if trip_places.count > 0
@@ -211,17 +244,17 @@ class Trip < ActiveRecord::Base
     end
     return msg
   end
-  
+
   # Returns true if this trip has a return leg, false otherwise
   def is_return_trip
     trip_parts.last.is_return_trip
   end
-  
+
   # Shortcut to identify the place where the trip leaves from
   def from_place
     trip_places.first
   end
-  
+
   # Shortcut to identify the last place the trip visits. If the trip is a round
   # trip this is the last place before heading back to the starting place
   def to_place
