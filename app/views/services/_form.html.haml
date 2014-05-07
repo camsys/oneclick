@@ -69,10 +69,9 @@
                 %th.text-center
                   Clear?
             %tbody
-              - # display each day of week, Monday 1st, Sunday last
+              - # display each day of week
               - count = 0
-              - (1..7).each do |i|
-                - day_of_week = i % 7
+              - (0..6).each do |day_of_week|
                 - schedule = @schedules[day_of_week]
                 %tr
                   %td.text-center
