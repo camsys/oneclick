@@ -11,9 +11,9 @@
   - time_field = :return_trip_time
   - other = 'outbound'
 
-%label.col-sm-3.control-label{:for => "#{dir}Options"}= label
+%label.col-md-3.control-label{:for => "#{dir}Options"}= label
 
-.col-lg-3.col-md-4
+.col-md-3
   %select.form-control{:name => "trip_proxy[#{ad}]", id: "#{dir}Options"}
     / TODO kludgy, fix
     - if dir=='outbound'
@@ -23,7 +23,7 @@
       %option{:selected => ""}= t(:departing_at)
       %option= t(:arriving_by)
 
-.col-lg-6.col-md-5.col-sm-12{:style => "padding: 0px;"}
+.col-md-6{:style => "padding: 0px;"}
 
   = f.input field, label: false, class: 'col-md-6', wrapper: :trip_dates do
     = f.input_field field, class: 'form-control col-md-6', id: "trip_proxy_#{dir}_trip_date", autocomplete: 'off'

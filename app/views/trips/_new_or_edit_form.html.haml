@@ -50,10 +50,10 @@
           = render partial: 'location_input', locals: {dir: 'from', f: f}
           = render partial: 'location_input', locals: {dir: 'to', f: f}
 
-          .col-sm-12.form-group
+          .form-group
             = render partial: 'date_time_input', locals: {dir: 'outbound', f: f}
 
-          #returnDatetimeOptions.col-sm-12.form-group
+          #returnDatetimeOptions.form-group
             = render partial: 'date_time_input', locals: {dir: 'return', f: f}
             / %label.col-sm-3.control-label{:for => "returnOptions"} Return
             / .col-lg-3.col-md-4
