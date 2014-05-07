@@ -5,8 +5,8 @@ class CharacteristicsController < TravelerAwareController
     @user_characteristics_proxy = UserCharacteristicsProxy.new(User.find(params[:user_id]))
     @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
 
-    if params['inline'] == '1'
-      @trip = Trip.find(session[:current_trip_id])
+    if params['inline'] == '1' || params[:trip_id]
+      @trip = Trip.find(session[:current_trip_id] || params[:trip_id])
       session[:current_trip_id] =  nil
       @trip.create_itineraries
       @path = user_trip_path_for_ui_mode(@traveler, @trip)
@@ -28,7 +28,7 @@ class CharacteristicsController < TravelerAwareController
   def new
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
 
-    @trip_id = session[:current_trip_id]
+    @trip_id = session[:current_trip_id] || params[:trip_id]
     @trip = Trip.find(@trip_id)
     @total_steps = (@traveler.has_disability? ? 3 : 2)
 

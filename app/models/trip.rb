@@ -232,6 +232,10 @@ class Trip < ActiveRecord::Base
     end
   end
 
+  def cant_modify_reason
+    in_the_future ? "(can modify)" : "Can't modify this trip: either the depart or arrive time is in the past."
+  end
+
   # Overrides the default to string method.
   def to_s
     if trip_places.count > 0

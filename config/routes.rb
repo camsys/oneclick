@@ -75,6 +75,7 @@ Oneclick::Application.routes.draw do
 
       # users have trips
       resources :trips, :only => [:show, :index, :new, :create, :destroy, :edit, :update] do
+        resources :characteristics, only: [:new, :update], controller: 'characteristics'
         collection do
           post  'set_traveler'
           get   'unset_traveler'

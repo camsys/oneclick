@@ -1,10 +1,4 @@
-%ol#wizards.breadcrumb
-  %li.breadcrumb-page.prev-page
-    %a{href: "#"}Trip
-  %li.breadcrumb-page.prev-page
-    %a{href: "#"}Options
-  %li.breadcrumb-page.current-page Review
-  %li.breadcrumb-page.next-page Plan
+= render partial: 'shared/trip_plan_breadcrumbs'
 - if @tripResponse.status == 0
   .row
     .col-sm-12

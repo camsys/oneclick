@@ -6,14 +6,14 @@ module ApplicationHelper
   include LocaleHelpers
   
   ICON_DICTIONARY = {
-      TripLeg::WALK => 'travelcon-walk',
-      TripLeg::TRAM => 'travelcon-subway',
-      TripLeg::SUBWAY => 'travelcon-subway',
-      TripLeg::RAIL => 'travelcon-rail',
-      TripLeg::BUS => 'travelcon-bus',
-      TripLeg::FERRY => 'travelcon-boat',
-      TripLeg::CAR => 'travelcon-car'
-      }
+    TripLeg::WALK => 'travelcon-walk',
+    TripLeg::TRAM => 'travelcon-subway',
+    TripLeg::SUBWAY => 'travelcon-subway',
+    TripLeg::RAIL => 'travelcon-rail',
+    TripLeg::BUS => 'travelcon-bus',
+    TripLeg::FERRY => 'travelcon-boat',
+    TripLeg::CAR => 'travelcon-car'
+  }
 
   # Returns the name of the logo image based on the oneclick configuration
   def get_logo
@@ -280,6 +280,10 @@ module ApplicationHelper
   # Allow controller to override what controller css class they want to use
   def controller_css_class
     controller_name
+  end
+
+  def controller_and_action
+    (controller.controller_name + controller.action_name.capitalize).underscore
   end
 
   def tel_link num

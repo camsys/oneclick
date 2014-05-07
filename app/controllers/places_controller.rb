@@ -16,7 +16,6 @@ class PlacesController < PlaceSearchingController
     # set the basic form variables
     set_form_variables
     d = @traveler.places.each_with_index.map{|p, i| PlaceDecorator.decorate(p, context: {i: i})}
-    puts d.ai
     @places = PlacesProxy.new(places: d)
 
   end

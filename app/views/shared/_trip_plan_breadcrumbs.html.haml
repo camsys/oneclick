@@ -1,0 +1,9 @@
+%ol#wizards.breadcrumb
+  - %w{trip options review plan}.each do |t|
+    - t = t.to_sym
+    %li.breadcrumb-page{class: breadcrumb_class(t)}
+      - if breadcrumb_tab_navigable(t)
+        = link_to breadcrumb_path(t) do
+          = t(t)
+      - else
+        = t(t)

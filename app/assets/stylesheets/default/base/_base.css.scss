@@ -419,13 +419,13 @@ td.left, th.left {
 }
 
 /*
- * Absolute Centering
- * Table cell approach
- * See http://codepen.io/shshaw/full/gEiDt
- */
+* Absolute Centering
+* Table cell approach
+* See http://codepen.io/shshaw/full/gEiDt
+*/
 
- .Center-Container.is-Table { display: table; }
- .is-Table .Table-Cell {
+.Center-Container.is-Table { display: table; }
+.is-Table .Table-Cell {
   display: table-cell;
   vertical-align: middle;
 }
@@ -530,11 +530,9 @@ td.left, th.left {
   background: #FFFFFF;
 }
 
-body.characteristics {
-  .radio {
-    display: inline-block;
-    margin-right: 15px;
-  }
+.inline-radio .radio {
+  display: inline-block;
+  margin-right: 15px;
 }
 
 /* Printer Friendly */
@@ -602,14 +600,13 @@ body.characteristics {
 
 // SimpleForm Inline Checkbox Fix
 .simple-checkbox .checkbox {
-   text-align: left;
-   width: auto;
-   float: none;
- }
+ text-align: left;
+ width: auto;
+ float: none;
+}
 
- // Div class for viewports on long checkbox lists from simple_form associations.
- .scrolling-checkbox-list {
-     height: 12em;
-     overflow: auto;
- }
- 
+// Div class for viewports on long checkbox lists from simple_form associations.
+.scrolling-checkbox-list {
+ height: 12em;
+ overflow: auto;
+}

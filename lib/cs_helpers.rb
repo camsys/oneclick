@@ -57,11 +57,7 @@ module CsHelpers
       ]
     end
     if options[:with_logout]
-      a << {label: t(:logout), target: destroy_user_session_path, icon: 'fa-sign-out', divider_before: true,
-        method: :delete}
-      #     = link_to , :method=>'delete' do
-      # %i.fa.fa-sign-out
-      # = t(:logout)
+      a << {label: t(:logout), target: destroy_user_session_path, icon: 'fa-sign-out', divider_before: true, method: :delete}
     end
     a
   end
@@ -162,10 +158,10 @@ module CsHelpers
     # Cache the value the first time it's gotten.
     @cached_guest_user ||= User.find(session[:guest_user_id] ||= create_guest_user.id)
 
-    rescue ActiveRecord::RecordNotFound # if session[:guest_user_id] invalid
-      session[:guest_user_id] = nil
-      guest_user
-    end
+  rescue ActiveRecord::RecordNotFound # if session[:guest_user_id] invalid
+    session[:guest_user_id] = nil
+    guest_user
+  end
 
   # TODO Unclear whether this will need to be more flexible depending on how clients want to do their domains
   # may have to vary by environment
@@ -224,7 +220,7 @@ module CsHelpers
   def get_trip_summary_title(itinerary)
 
     return if itinerary.nil?
-    
+
     mode_code = get_pseudomode_for_itinerary(itinerary)
     title = if mode_code == 'rail'
       "Rail"
@@ -334,10 +330,18 @@ module CsHelpers
     end
   end
 
-end
-
-class String
-  def to_sample_email suffix
-    downcase.gsub(/[^a-z\s]/, '').gsub(/\s/, '_') + '_' + suffix + '@camsys.com'
+  def new_user_trip_characteristic_path_for_ui_mode traveler, trip
+    unless ui_mode_kiosk?
+      new_user_trip_characteristic_path traveler, trip
+    else
+      raise "new_user_trip_characteristic_path not defined for kiosk yet"
+    end
   end
+
+  class String
+    def to_sample_email suffix
+      downcase.gsub(/[^a-z\s]/, '').gsub(/\s/, '_') + '_' + suffix + '@camsys.com'
+    end
+  end
+
 end

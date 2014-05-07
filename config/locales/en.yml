@@ -181,6 +181,9 @@ en:
   apply: 'Apply'
   cancel: 'Cancel'
   plan_it: 'Plan it'
+  trip: 'Trip'
+  options: 'Options'
+  review: 'Review'
   plan: 'Plan'
   from: 'From'
   to: 'To'
@@ -449,7 +452,6 @@ en:
   walk_distance_short: "Walk Dist"
   walking: ' walking'
   arrive: "ARRIVE: "
-  trip: "Trip: "
   est: " (est.)"
   myself: "myself"
   assisted_user_first_name_s_trips: "%{name}'s Trips"

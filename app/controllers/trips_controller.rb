@@ -1,10 +1,12 @@
 class TripsController < PlaceSearchingController
   # set the @trip variable before any actions are invoked
+  # TODO These should get changed to except:, at this point
   before_filter :get_traveler, only: [:show, :new, :email, :email_itinerary, :details, :repeat, :edit, :destroy,
-    :update, :skip, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2, :create, :show_printer_friendly]
+    :update, :skip, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2, :create,
+    :show_printer_friendly, :plan]
   before_filter :get_trip, :only => [:show, :email, :email_itinerary, :details, :repeat, :edit,
     :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2,
-    :show_printer_friendly, :example]
+    :show_printer_friendly, :example, :plan]
 
   def index
     # Filtering logic. See ApplicationHelper.trip_filters
@@ -278,20 +280,22 @@ class TripsController < PlaceSearchingController
   # User wants to edit a trip in the future
   def edit
     # make sure we can find the trip we are supposed to be updating and that it belongs to us.
-    if @trip.nil?
-      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
-      return
-    end
+    # if @trip.nil?
+    #   redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
+    #   return
+    # end
     # make sure that the trip can be modified
     unless @trip.can_modify
-      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
+      please_create = "Please <a href='%s'>start</a> a new trip." % new_user_trip_path(@traveler)
+      redirect_to(:back, :flash => { :alert => [@trip.cant_modify_reason, please_create].join(' ').html_safe })
       return
     end
 
-    # create a new trip_proxy from the current trip
-    @trip_proxy = create_trip_proxy(@trip)
-    # set the flag so we know what to do when the user submits the form
+    setup_modes
+
+    @trip_proxy = create_trip_proxy(@trip, modes: session[:modes_desired])
     @trip_proxy.mode = MODE_EDIT
+
     # Set the trip proxy Id to the PK of the trip so we can update it
     @trip_proxy.id = @trip.id
 
@@ -362,6 +366,7 @@ class TripsController < PlaceSearchingController
   # GET /trips/new
   # GET /trips/new.json
   def new
+    session[:tabs_visited] = []
     @trip_proxy = TripProxy.new(modes: session[:modes_desired])
     @trip_proxy.traveler = @traveler
 
@@ -405,6 +410,7 @@ class TripsController < PlaceSearchingController
 
   # updates a trip
   def update
+
     # make sure we can find the trip we are supposed to be updating and that it belongs to us.
     if @trip.nil?
       redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
@@ -423,6 +429,9 @@ class TripsController < PlaceSearchingController
 
     # Get the updated trip proxy from the form params
     @trip_proxy = create_trip_proxy_from_form_params
+
+    session[:modes_desired] = @trip_proxy.modes
+
     # save the id of the trip we are updating
     if @trip_proxy.valid?
       @trip_proxy.id = @trip.id
@@ -463,12 +472,12 @@ class TripsController < PlaceSearchingController
         if @trip.save
           @trip.reload
 
-          if @traveler.user_profile.has_characteristics? and user_signed_in?
+          if !@trip.eligibility_dependent?
             @trip.create_itineraries
-            @path = user_trip_path(@traveler, @trip)
+            @path = user_trip_path_for_ui_mode(@traveler, @trip)
           else
             session[:current_trip_id] = @trip.id
-            @path = new_user_characteristic_path(@traveler, inline: 1)
+            @path = new_user_trip_characteristic_path_for_ui_mode(@traveler, @trip)
           end
           format.html { redirect_to @path }
           format.json { render json: @trip, status: :created, location: @trip }
@@ -500,7 +509,7 @@ class TripsController < PlaceSearchingController
     else
       Rails.logger.info "Not valid: #{@trip_proxy.ai}"
       Rails.logger.info "\nError render 1\n"
-      flash[:notice] = t(:correct_errors_to_create_a_trip)
+      flash.now[:notice] = t(:correct_errors_to_create_a_trip)
       render action: "new"
       return
     end
@@ -513,25 +522,25 @@ class TripsController < PlaceSearchingController
       if @trip
         if @trip.save
           @trip.reload
-          if !@trip.eligibility_dependent? || (@traveler.user_profile.has_characteristics? and user_signed_in?)
+          if !@trip.eligibility_dependent?
             @trip.create_itineraries
             @path = user_trip_path_for_ui_mode(@traveler, @trip)
           else
             session[:current_trip_id] = @trip.id
-            @path = new_user_characteristic_path_for_ui_mode(@traveler, inline: 1)
+            @path = new_user_trip_characteristic_path_for_ui_mode(@traveler, @trip)
           end
           format.html { redirect_to @path }
           format.json { render json: @trip, status: :created, location: @trip }
         else
           # TODO Will this get handled correctly?
           Rails.logger.info "\nError render 2\n"
-          format.html { render action: "new", flash[:alert] => t(:correct_errors_to_create_a_trip) }
+          format.html { render action: "new", flash.now[:alert] => t(:correct_errors_to_create_a_trip) }
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
       else
         # TODO Will this get handled correctly?
         Rails.logger.info "\nError render 3\n"
-        format.html { render action: "new", flash[:alert] => t(:correct_errors_to_create_a_trip) }
+        format.html { render action: "new", flash.now[:alert] => t(:correct_errors_to_create_a_trip) }
       end
     end
   end
@@ -721,13 +730,13 @@ private
 
   # creates a trip_proxy object from a trip. Note that this does not set the
   # trip id into the proxy as only edit functions need this.
-  def create_trip_proxy(trip)
+  def create_trip_proxy(trip, attr = {})
 
     # get the trip parts for this trip
     trip_part = trip.trip_parts.first
 
     # initialize a trip proxy from this trip
-    trip_proxy = TripProxy.new
+    trip_proxy = TripProxy.new(attr)
     trip_proxy.traveler = @traveler
     trip_proxy.trip_purpose_id = trip.trip_purpose.id
 

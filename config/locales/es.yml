@@ -183,7 +183,10 @@ es:
   apply: 'Applicar'
   cancel: 'Cancelar'
   plan_it: 'Planear el viaje'
-  plan: '[es186]Planear el viaje[/es]'
+  trip: '[es]Trip[/es]'
+  options: '[es]Options[/es]'
+  review: '[es]Review[/es]'
+  plan: '[es]Plan[/es]'
   from: 'De'
   to: 'A'  
   at_time: 'en'  
@@ -449,7 +452,6 @@ es:
   on: ' en '
   walking: ' caminando'
   arrive: "ARRIVE: "
-  trip: "Viaje: "
   est: " (est.)"
   myself: "yo mismo"  
   assisted_user_first_name_s_trips: "Viajes de %{name}"

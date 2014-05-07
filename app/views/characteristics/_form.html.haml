@@ -1,6 +1,6 @@
 .row
   .col-xs-12
-    = simple_form_for @user_characteristics_proxy, :url => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :method => 'put', html: {class: 'form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_and_checkboxes, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |f|
+    = simple_form_for @user_characteristics_proxy, :url => new_user_trip_characteristic_path(@traveler, @trip), method: 'PUT', html: {class: 'form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_and_checkboxes, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |f|
       .col-xs-12.page-action-button-container
         =button_tag :type => 'submit', :class => "btn btn-default pull-right action-button" do
           =t(:plan)
@@ -9,14 +9,13 @@
         .panel-body      
           = f.error_notification
           / %form{:role => "form"}
-          .form-group
-
-          -Characteristic.active.enabled.each do |c|
-            - next if c.code=='age' # TODO kludge
-            - case c.datatype
-            - when 'bool'
-              = f.input c.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(c.note), label_method: :last, value_method: :first
-            - else
-              = f.input c.code.to_sym, label: t(c.note)
-          -Accommodation.where(:datatype => 'bool').each do |a|
-            = f.input a.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(a.note), label_method: :last, value_method: :first
+          .inline-radio
+            -Characteristic.active.enabled.each do |c|
+              - next if c.code=='age' # TODO kludge
+              - case c.datatype
+              - when 'bool'
+                = f.input c.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(c.note), label_method: :last, value_method: :first
+              - else
+                = f.input c.code.to_sym, label: t(c.note)
+            -Accommodation.where(:datatype => 'bool').each do |a|
+              = f.input a.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(a.note), label_method: :last, value_method: :first
