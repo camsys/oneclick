@@ -12,6 +12,8 @@ class Agency < ActiveRecord::Base
   has_many :cs_users, class_name: 'User', through: :cs_roles, source: :users
   has_many :agents, -> {where('roles.name=?', 'agent')}, class_name: 'User', through: :cs_roles, source: :users
   has_many :administrators, -> {where('roles.name=?', 'agency_administrator')}, class_name: 'User', through: :cs_roles, source: :users
+
+  validates :name, :presence => true
   
   def unselected_users
     User.registered - self.users

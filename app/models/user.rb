@@ -123,7 +123,7 @@ class User < ActiveRecord::Base
 
   #List of users who can be assigned to staff for an agency or provider
   def self.staff_assignable
-    User.where.not(id: User.with_role(:anonymous_traveler).pluck(:id))
+    User.where.not(id: User.with_role(:anonymous_traveler).pluck(:id)).order(first_name: :asc)
   end
 
 end
