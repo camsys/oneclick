@@ -62,16 +62,19 @@
     .col-sm-12
       %h4= @time_filter_type == "100" ? t(:no_trips_found) : t(:no_matching_trips_found)
 
-= render partial: 'shared/parameterized_datatable_javascript', locals: { table_id: '#admin_trips_table',
-  object_plural: 'trips',
-  sLengthMenu: t(:menu__object_plural_per_page, o: 'trips'),
-  sInfo: t(:showing__start__to__end__of__total__object_plural, o: 'trips'),
-  object_singular: 'trip',
-  bLengthChange: false, 
-  bSort: true,
-  bFilter: true} unless @trips.empty?
-
-
+:javascript
+  $(document).ready(function() {
+    $('#admin_trips_table').dataTable( {
+          "oLanguage": {
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ trips",
+              "sInfoEmpty": "Showing 0 to 0 of 0 trips",
+              "sInfoFiltered": "(filtered from _MAX_ total trips)"
+          },
+          "sDom": "<'row'<'col-sm-6'f>>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+  } );
+      
 :javascript
   
   // Add a listener on the asset type filter that submits the form when changed
