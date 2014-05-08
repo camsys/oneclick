@@ -11,7 +11,6 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require jquery_ujs
 //= require bootstrap
 //= require handlebars
 //= require twitter/typeahead
@@ -21,6 +20,7 @@
 //= require dataTables/jquery.dataTables.bootstrap3
 //= require default/config
 //= require_tree .
+//= require jquery_ujs
 //
 moment.fn.next15 = function() {
     var intervals = Math.floor(this.minutes() / 15);

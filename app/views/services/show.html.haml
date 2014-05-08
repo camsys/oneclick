@@ -8,10 +8,9 @@
       = link_to edit_service_path(@service), {class: 'btn action-button btn-default', role: 'button'} do
         = icon_label(:edit)
     - if can? :destroy, @service
-      = simple_form_for @service, url: service_path, method: :delete, :html => {:class => "form-horizontal pull-right", :id => "delete_service_form"}  do |f|
-        -# TODO: Control presence via cancan
-        = button_tag type: 'submit', class: "btn action-button btn-default" do
-          = icon_label(:delete)
+      = button_to t(:delete), { action: "destroy", id: @service.id }, method: :delete,
+      data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default",
+      form_class: "form-horizontal pull-right"
 
 .row
   .col-sm-6

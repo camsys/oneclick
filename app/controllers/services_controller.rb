@@ -123,7 +123,7 @@ class ServicesController < ApplicationController
     @service.save
 
     respond_to do |format|
-      format.html { redirect_to services_path }
+      format.html { redirect_to admin_provider_path @service.provider }
       format.json { head :no_content }
     end
   end
