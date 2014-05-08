@@ -41,6 +41,7 @@ class UsersController < ApplicationController
 
   def edit
     # set_traveler_id params[:id] || current_user
+    authorize! :edit, @user
     @agency_user_relationship = AgencyUserRelationship.new
     @user_relationship = UserRelationship.new
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)

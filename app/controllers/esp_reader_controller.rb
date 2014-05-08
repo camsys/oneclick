@@ -1,4 +1,5 @@
 class EspReaderController < ApplicationController
+  authorize_resource
 
   def upload
     respond_to do |format|

@@ -45,13 +45,17 @@ class Ability
       can [:access], :admin_feedback
 
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
-      can [:read, :update], Agency, id: user.agency.try(:id)
+      can :read, Agency # all agencies are viewable
+      can [:update], Agency, id: user.agency.try(:id)
+      can [:update], Agency do |a|  # edit privilege over sub agencies
+        user.agency.present? && user.agency.sub_agencies.include?(a)
+      end
       can [:update, :full_info, :assist], User do |u|
         u.approved_agencies.include? user.try(:agency)
       end
-      can :read, Agency
       can :create, User
-      can :manage, [Provider, Service]
+      can :create, Provider
+      can :read, [Provider, Service]
       can [:index, :show], Report
       can [:read, :update], User, agency_id: user.agency.try(:id)
     end
@@ -91,14 +95,15 @@ class Ability
       can [:access], :admin_feedback
 
       can [:index, :show], Report
-      can [:manage], Provider, id: user.try(:provider_id)
+      can [:read, :update, :delete], Provider, id: user.try(:provider_id)
       can [:update, :show], Service do |s|
         user.provider.services.include?(s)
       end
+      can :create, Service
     end
 
     can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
-    can [:read, :update, :full_edit], User, :id => user.id
+    can [:read, :update, :full_info], User, :id => user.id
     can :geocode, :util
   end
 

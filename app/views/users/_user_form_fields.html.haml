@@ -21,45 +21,47 @@
           = f.input :preferred_locale, label: t(:preferred_locale), :collection => Translation.available_locales, :include_blank => false
           = f.input :password, label: t(:password), :autocomplete => "off", :required => false
           = f.input :password_confirmation, label: t(:password_confirmation), :hint => t(:leave_password_blank), :required => false
-    .col-sm-6
-      .panel.panel-default#agencies
-        .panel-heading
-          %h3= t(:agencies)
-        .panel-body
-          = f.association :approved_agencies, collection: Agency.all.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes,
-                wrapper: :inline_checkboxes, label: false
-  .row
-    .col-sm-6.pull-left
-      .panel.panel-default#buddies
-        .panel-heading
-          %h3= t(:buddies)
-        .panel-body
-          = f.association :buddies, collection: User.registered, label: false, input_html: {size: 6}, as: :check_boxes
-    .col-sm-6.pull-right
-      .panel.panel-default#travelers
-        .panel-heading
-          %h3= t(:travelers)
-        .panel-body
-          = render partial: 'traveler_table', locals: {user: @user}
-
-  =simple_fields_for :user_characteristics_proxy, html: {class: 'form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_and_checkboxes, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |characteristic_form|
+    - if can? :full_info, @user
+      .col-sm-6
+        .panel.panel-default#agencies
+          .panel-heading
+            %h3= t(:agencies)
+          .panel-body
+            = f.association :approved_agencies, collection: Agency.all.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes,
+                  wrapper: :inline_checkboxes, label: false
+  - if can? :full_info, @user
     .row
       .col-sm-6.pull-left
-        .panel.panel-default
+        .panel.panel-default#buddies
           .panel-heading
-            %h3= t(:eligibility)
+            %h3= t(:buddies)
           .panel-body
-            -Characteristic.active.enabled.each do |c| 
-              - next if c.code=='age' # TODO kludge
-              - case c.datatype
-              - when 'bool'
-                = characteristic_form.input c.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(c.note), label_method: :last, value_method: :first
-              - else
-                = characteristic_form.input c.code.to_sym, label: t(c.note)
+            = f.association :buddies, collection: User.registered, label: false, input_html: {size: 6}, as: :check_boxes
       .col-sm-6.pull-right
-        .panel.panel-default
+        .panel.panel-default#travelers
           .panel-heading
-            %h3= t(:accommodations)
+            %h3= t(:travelers)
           .panel-body
-            -Accommodation.where(:datatype => 'bool').each do |a|
-              = characteristic_form.input a.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(a.note), label_method: :last, value_method: :first
+            = render partial: 'traveler_table', locals: {user: @user}
+
+    =simple_fields_for :user_characteristics_proxy, html: {class: 'form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_and_checkboxes, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |characteristic_form|
+      .row
+        .col-sm-6.pull-left
+          .panel.panel-default
+            .panel-heading
+              %h3= t(:eligibility)
+            .panel-body
+              -Characteristic.active.enabled.each do |c| 
+                - next if c.code=='age' # TODO kludge
+                - case c.datatype
+                - when 'bool'
+                  = characteristic_form.input c.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(c.note), label_method: :last, value_method: :first
+                - else
+                  = characteristic_form.input c.code.to_sym, label: t(c.note)
+        .col-sm-6.pull-right
+          .panel.panel-default
+            .panel-heading
+              %h3= t(:accommodations)
+            .panel-body
+              -Accommodation.where(:datatype => 'bool').each do |a|
+                = characteristic_form.input a.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(a.note), label_method: :last, value_method: :first

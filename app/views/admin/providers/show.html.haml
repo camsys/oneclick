@@ -8,7 +8,7 @@
       = link_to edit_admin_provider_path(@provider), {class: 'btn action-button btn-default', role: 'button'} do
         = icon_label(:edit)
 
-    - if can? :manage, Service
+    - if can? :create, Service
       = link_to new_service_path(provider_id: @provider), {class: 'btn action-button btn-default', role: 'button'} do
         = icon_label(:add_service)
 

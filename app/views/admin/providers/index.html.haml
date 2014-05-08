@@ -1,5 +1,6 @@
 .header
-  = link_to t(:new_provider), new_admin_provider_path,
+  - if can? :create, Provider
+    = link_to t(:new_provider), new_admin_provider_path,
         {class: 'btn action-button btn-default pull-right', role: 'button'}
       
   %h1= t(:providers)

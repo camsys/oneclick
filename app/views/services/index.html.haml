@@ -1,6 +1,6 @@
 .row-fluid
-  = link_to "Update Services", upload_esp_reader_index_path,
-        {class: 'btn action-button btn-default pull-right', role: 'button'}
+  - if can? :upload, EspReader
+    = link_to "Update Services", upload_esp_reader_index_path, {class: 'btn action-button btn-default pull-right', role: 'button'}
 
   %h1= t(:services)
 
