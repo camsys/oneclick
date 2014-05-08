@@ -1,6 +1,5 @@
 .header
-  %button.action-button.pull-right
-    = link_to t(:new), new_admin_agency_path
+  = link_to t(:new), new_admin_agency_path, {class: 'btn action-button btn-default pull-right', role: 'button'}
   %h1= t(:agencies)
 
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_agencies_table

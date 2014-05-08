@@ -1,6 +1,5 @@
 .row-fluid
-  %button.action-button.pull-right
-    = link_to t(:create), new_admin_user_path
+  = link_to t(:create), new_admin_user_path,{class: 'btn action-button btn-default pull-right', role: 'button'}
   %h2= t(:find_traveler)
 
 -if @found_travelers
