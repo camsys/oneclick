@@ -36,7 +36,6 @@ class Admin::UsersController < Admin::BaseController
           
           if @agency_user_relationship.save
             UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.user.email, current_user.agency).deliver
-            flash[:notice] = t(:agency_added) # is this necessary?
           end
         end
         format.html { redirect_to admin_user_path(@user)}
