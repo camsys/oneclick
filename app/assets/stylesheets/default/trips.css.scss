@@ -201,12 +201,26 @@ $period-nav-button-width: 40px;
   border: none;
 }
 
-.negative-margin-left {
-  margin-left: $period-nav-button-width * -1;
+/* in sm+ mode, one period-nav button in same container, so apply margin to sorter component that make them vertically align in containers */
+/* in xs mode, as space is so limited, not apply margin so sorter can take whatever space left in its container */
+@media(max-width:767px){
+  .sm-sorter-margin-left {
+    margin-left: 0px;
+  }
+
+  .sm-sorter-margin-right {
+    margin-right: 0px;
+  }
 }
 
-.negative-margin-right {
-  margin-right: -$period-nav-button-width * -1;
+@media(min-width:768px){
+  .sm-sorter-margin-left {
+    margin-left: $period-nav-button-width * -1;
+  }
+
+  .sm-sorter-margin-right {
+    margin-right: -$period-nav-button-width * -1;
+  }
 }
 
 .single-trip-part {
@@ -304,6 +318,10 @@ $legend-height: 20px;
   background-color: #499bea;
 }
 
+.travel-legend-wait {
+  background-color: #7f7979;
+}
+
 .travel-legend-transfer {
   background-color: #FEC800;
 }
@@ -314,6 +332,10 @@ $legend-height: 20px;
 
 .travel-type-walk {
   fill: #499bea;
+}
+
+.travel-type-wait {
+  fill: #7f7979;
 }
 
 .travel-type-transfer {

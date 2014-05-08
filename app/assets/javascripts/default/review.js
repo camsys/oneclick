@@ -641,8 +641,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		}
 		
 		var sorterTags = 
-		'<label' + (isDepartAt ? ' class="negative-margin-left"' : '') + '>Sort by: </label>' + 
-		'<select style="display: inline-block;"' + (isDepartAt ? '' : ' class="negative-margin-right"') + '>' +
+		'<label' + (isDepartAt ? ' class="sm-sorter-margin-left"' : '') + '>Sort by: </label>' + 
+		'<select style="display: inline-block;"' + (isDepartAt ? '' : ' class="sm-sorter-margin-right"') + '>' +
 			'<option value="start-time" ' + (isDepartAt ? ' selected' : '') + '>Departure Time</option>' +
 			'<option value="end-time" ' + (isDepartAt ? '' : ' selected') + '>Arrival Time</option>' +
 			'<option value="cost" >Cost</option>' +
