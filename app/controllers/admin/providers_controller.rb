@@ -131,8 +131,7 @@ class Admin::ProvidersController < ApplicationController
   end
   
   def admin_provider_params
-    params.require(:provider).permit(:name, :email, :address, :city, :state, :zip,
-                                     :url, :phone)
+    params.require(:provider).permit(:name, :email, :address, :city, :state, :zip, :url, :phone, :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email)
   end
 
   def load_provider

@@ -52,33 +52,35 @@
   .col-sm-6
     .panel.panel-default
       .panel-heading
-        %h3.panel-title= t(:internal_contact)
+        %h4.panel-title= t(:internal_contact)
       .panel-body
         %table.table.table-condensed
+          %tr
+            %td.text-right
+              = t(:name) + ": "
+            %td.text-left
+              %b= @agency.internal_contact_name
+          %tr
+            %td.text-right
+              = t(:title)+": "
+            %td.text-left
+              %b= @agency.internal_contact_title
+          %tr
+            %td.text-right
+              = t(:phone)+ ": "
+            %td.text-left
+              %b= @agency.internal_contact_phone
+          %tr
+            %td.text-right
+              = t(:email)+ ":  "
+            %td.text-left
+              %b= mail_to @agency.internal_contact_email
           - if @contact
             %tr
               %td.text-right
-                = t(:name) + ": "
+                = t(:user) + ": "
               %td.text-left
-                %b= @contact.name.to_s
-            %tr
-              %td.text-right
-                = t(:title)+": "
-              %td.text-left
-                %b= @contact.title.to_s
-            %tr
-              %td.text-right
-                = t(:phone)+ ": "
-              %td.text-left
-                %b= @contact.phone.to_s
-            %tr
-              %td.text-right
-                = t(:email)+ ":  "
-              %td.text-left
-                %b= mail_to @contact.email.to_s
-          - else
-            %tr
-              %td= t(:nothing_found_sorry)
+                %b= @contact.name
 .panel.panel-default#staff
   .panel-heading
     %h3= t(:staff_actions)

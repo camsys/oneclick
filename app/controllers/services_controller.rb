@@ -99,7 +99,7 @@ class ServicesController < ApplicationController
   # PUT /services/1.json
   def update
     @service = Service.find(params[:id])
-
+    
     respond_to do |format|
       par = service_params
 
@@ -135,6 +135,7 @@ protected
                                     :booking_service_code, :advanced_notice_minutes,
                                     :notice_days_part, :notice_hours_part, :notice_minutes_part,
                                     :service_window, :time_factor, :provider_id, :service_type_id,
+                                    :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email,
                                     { schedules_attributes:
                                       [ :day_of_week, :start_time, :end_time, :id, :_destroy ] },
                                     { service_characteristics_attributes:

@@ -50,32 +50,32 @@
         %h4.panel-title= t(:internal_contact)
       .panel-body
         %table.table.table-condensed
-        - if @contact
           %tr
             %td.text-right
               = t(:name) + ": "
             %td.text-left
-              %b= @contact.name.to_s
+              %b= @service.internal_contact_name
           %tr
             %td.text-right
               = t(:title)+": "
             %td.text-left
-              %b= @contact.title.to_s
+              %b= @service.internal_contact_title
           %tr
             %td.text-right
               = t(:phone)+ ": "
             %td.text-left
-              %b= @contact.phone.to_s
+              %b= @service.internal_contact_phone
           %tr
             %td.text-right
               = t(:email)+ ":  "
             %td.text-left
-              %b= @contact.email.to_s
-        - else
-          %tr
-            %td.text-left
-              = t(:none)
-            %td
+              %b= mail_to @service.internal_contact_email
+          - if @contact
+            %tr
+              %td.text-right
+                = t(:user) + ": "
+              %td.text-left
+                %b= @contact.name
 .row
   .col-sm-4
     .panel.panel-default.well2

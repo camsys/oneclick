@@ -30,7 +30,12 @@
         .panel-heading
           %h4.panel-title= t(:internal_contact)
         .panel-body
-          = f.input_field :internal_contact, collection: @agency.users, selected: (@contact.id if @contact) , include_blank: false, class: 'form-control'
+          = f.input :internal_contact_name
+          = f.input :internal_contact_title
+          = f.input :internal_contact_phone
+          = f.input :internal_contact_email
+          = f.input :internal_contact, collection: @agency.users, class: "form-control",
+                selected: (@contact.id if @contact) , include_blank: "None", label: t(:user)
 
   .panel.panel-default
     .panel-heading
