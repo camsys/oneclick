@@ -36,7 +36,7 @@ class Agency < ActiveRecord::Base
   end
 
   def internal_contact=(user)
-    self.internal_contact.remove_role( :internal_contact, self)
+    self.internal_contact.remove_role( :internal_contact, self) if self.internal_contact.present?
     user.add_role(:internal_contact, self)
   end
 
