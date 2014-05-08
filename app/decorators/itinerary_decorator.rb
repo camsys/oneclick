@@ -31,6 +31,12 @@ class ItineraryDecorator < Draper::Decorator
     (duration ? h.duration_to_words(duration) + " (est.)" : I18n.t(:not_available))
   end
 
+  def time_range_in_words
+
+    return format_time(start_time) + ' ' + I18n.t(:to) + ' ' + format_time(end_time) if (start_time && end_time)
+    return ''
+  end
+
   def notes
     case mode.code
     when 'mode_transit'

@@ -1,4 +1,4 @@
-.col-sm-12.well{style: "padding: 5px;"}
+.col-xs-12.well{style: "padding: 5px;"}
   %label.col-sm-12{style: "padding: 0px;"}
     = get_trip_summary_title(itinerary)
   = render :partial => 'trip_plan_summary_header', :locals => { :itinerary => itinerary }
@@ -6,7 +6,25 @@
     .col-sm-6{style: "background: white; margin-bottom: 5px; border-radius: 5px; overflow:scroll; max-height: 300px;"}
       = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
     .col-sm-6{style: "height: 300px; background: white; border-radius: 5px; padding: 0px;"}
-      = render :partial => 'map_details', :locals => { :itinerary => itinerary }
+      = render :partial => 'map_details', :locals => { :itinerary => itinerary, :mapid => ('plan_map_' + itinerary.id.to_s) }
+      :javascript
+        $(function(){
+          if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.#{'plan_map_' + itinerary.id.to_s} != null) { 
+            var mapObj = CsMaps.#{'plan_map_' + itinerary.id.to_s};
+            mapObj.invalidateMap(); 
+            var mapMarkers = mapObj.LMmarkers;
+            var mapBounds = null;
+            if(mapMarkers.length > 0) {
+              mapBounds = mapObj.calcMapBounds(mapMarkers);
+            } else {
+              mapBounds = mapObj.LMbounds;
+            }
+        
+            if(mapBounds) {
+              mapObj.LMmap.fitBounds(mapBounds); 
+            }
+          }
+        });
   - else
-    .col-sm-12{style: "height: 300px; background: white; border-radius: 5px; padding: 0px;"}
+    .col-sm-12{style: "height: 300px; background: white; border-radius: 5px;"}
       = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }

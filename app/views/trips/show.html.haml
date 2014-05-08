@@ -1,8 +1,8 @@
 %ol#wizards.breadcrumb
   %li.breadcrumb-page.prev-page
-    %a{href: "#"} Trip
+    %a{href: "#"}Trip
   %li.breadcrumb-page.prev-page
-    %a{href: "#"} Options
+    %a{href: "#"}Options
   %li.breadcrumb-page.current-page Review
   %li.breadcrumb-page.next-page Plan
 - if @tripResponse.status == 0
@@ -53,38 +53,29 @@
           var planId = tripLeg.planId;
           $.getScript(window.location.href + '/itinerary' + '?itin=' + planId)
             .done(function() {
-              console.log('done');
             })
             .fail(function( jqxhr, settings, exception ) {
               console.log(jqxhr);
               console.log(settings);
               console.log(exception);
             });
-          //$.ajax({
-          //  url: window.location.href + '/itinerary',
-          //  data: {itin: planId},
-          //  dataType: 'script',
-          //  success: function() {
-          //    $('#itinerary_modal').modal('show');
-          //    console.log('done');
-          //  }
-          //})
         }
       });
 
     $('#itinerary_modal').on('shown.bs.modal', function() {
-      if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.lmap != null) { 
-        CsMaps.lmap.invalidateMap(); 
-        var mapMarkers = CsMaps.lmap.LMmarkers;
+      if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.review_map != null) { 
+        var mapObj = CsMaps.review_map;
+        mapObj.invalidateMap(); 
+        var mapMarkers = mapObj.LMmarkers;
         var mapBounds = null;
         if(mapMarkers.length > 0) {
-          mapBounds = CsMaps.lmap.calcMapBounds(mapMarkers);
+          mapBounds = mapObj.calcMapBounds(mapMarkers);
         } else {
-          mapBounds = CsMaps.lmap.LMbounds;
+          mapBounds = mapObj.LMbounds;
         }
 
         if(mapBounds) {
-          CsMaps.lmap.LMmap.fitBounds(mapBounds); 
+          mapObj.LMmap.fitBounds(mapBounds); 
         }
       }
     });
@@ -101,20 +92,11 @@
 
       var selectedPlanIds = [];
       selectedPlans.each(function() {
-        console.log(this)
-        console.log($(this).attr('data-plan-id'))
         var tmpPlanId = parseInt($(this).attr('data-plan-id'));
-        console.log("tmpPlanId: " + tmpPlanId)
         if(typeof(tmpPlanId) === 'number' && !isNaN(tmpPlanId)) {
           selectedPlanIds.push(tmpPlanId);
         }
       });
-      console.log("after done: " + selectedPlanIds)
-      console.log("after done: " + selectedPlanIds.length)
-      //if(selectedPlanIds.length > 0) {
-      //  alert('Please select one plan for each trip part.');
-      //  return;
-      //}
 
       //jump to Plan page
       window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );

@@ -110,13 +110,15 @@ $breadcrumb-font-size: 16px;
 
 .breadcrumb-page {
   margin: 3px 0px;
-  width: 100px;
+  min-width: 100px;
   height: $breadcrumb-height;
   text-align: center;
+  padding: 0px 10px;
 }
 
 .current-page {
   background-image: image-url('active.png');
+  background-size: 100% 100%;
   font-weight: bold;
   font-size: $breadcrumb-font-size;
   color: white;
@@ -125,6 +127,7 @@ $breadcrumb-font-size: 16px;
 
 .prev-page {
   background-image: image-url('inactive.png');
+  background-size: 100% 100%;
 
   a{
     font-weight: bold;
@@ -141,6 +144,7 @@ $breadcrumb-font-size: 16px;
 
 .next-page {
   background-image: image-url('inactive.png');
+  background-size: 100% 100%;
   font-weight: bold;
   color: black;
   font-size: $breadcrumb-font-size;

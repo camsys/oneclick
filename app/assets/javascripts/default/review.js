@@ -174,13 +174,18 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		
 		//clicking Select button to change styles
 		$('.single-plan-review .single-plan-select').click( function() {
-			$(this).parents('.single-trip-part').find('.single-plan-review')
+			addClickListenerForPlanSelectButton(this);
+		});
+	}
+
+
+	function addClickListenerForPlanSelectButton(planButton) {
+		$(planButton).parents('.single-trip-part').find('.single-plan-review')
 				.removeClass('single-plan-selected')
 				.addClass('single-plan-unselected');
-			$(this).parents('.single-plan-review')
-				.removeClass('single-plan-unselected')
-				.addClass('single-plan-selected');
-		});
+		$(planButton).parents('.single-plan-review')
+			.removeClass('single-plan-unselected')
+			.addClass('single-plan-selected');
 	}
 
 	/*
@@ -530,7 +535,9 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 			var tripPlanDiv = $('#' + tripPlanChartDivId).parents('.single-plan-review');
 			if(isQuestionClear) {
 				tripPlanDiv.find('.single-plan-question').remove();
-				tripPlanDiv.find('.single-plan-select').css('visibility', '');
+				tripPlanDiv.find('.select-column').append("<button class='btn btn-default btn-xs single-plan-select action-button'>Select</button>").click( function() {
+					addClickListenerForPlanSelectButton(this);
+				});
 			} else {
 				tripPlanDiv.remove();
 			}
@@ -751,8 +758,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 						isMissingInfoFound ?
 						(
 							"<button class='btn btn-default btn-xs single-plan-question action-button' " +
-							"data-toggle='modal' data-target='#" + missInfoDivId + "'>?</button>" +
-							"<button class='btn btn-default btn-xs single-plan-select action-button' style='visibility: hidden;'>Select</button>"
+							"data-toggle='modal' data-target='#" + missInfoDivId + "'>?</button>"
 						) :
 						"<button class='btn btn-default btn-xs single-plan-select action-button'>Select</button>"
 					) +
