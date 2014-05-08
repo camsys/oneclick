@@ -15,10 +15,10 @@ class TripPlanner
     time = trip_datetime.strftime("%-I:%M%p")
     date = trip_datetime.strftime("%Y-%m-%d")
     base_url = Oneclick::Application.config.open_trip_planner
-    #url_options = "arriveBy=" + arriveBy
     url_options = "&time=" + time
     url_options += "&mode=" + mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
+    url_options += "&arriveBy=" + arriveBy.to_s
 
     url = base_url + url_options
     Rails.logger.info URI.parse(url)

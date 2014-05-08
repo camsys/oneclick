@@ -109,6 +109,8 @@ class TripPart < ActiveRecord::Base
     tp = TripPlanner.new
     arrive_by = !is_depart
     result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode)
+
+    #TODO: Save errored results to an event log
     if result
       tp.convert_itineraries(response).each do |itinerary|
         serialized_itinerary = {}
@@ -123,22 +125,21 @@ class TripPart < ActiveRecord::Base
 
         itineraries << Itinerary.new(serialized_itinerary)
       end
-    else
-      itineraries << Itinerary.new('server_status'=>response['id'], 'server_status'=>response['msg'])
     end
 
-    if mode == 'TRANSIT,WALK'
+    if mode == 'TRANSIT,WALK' and result
       check_for_long_walks(itineraries)
     end
 
     hide_duplicate_fixed_route(itineraries)
+
   end
 
   def check_for_long_walks itineraries
     long_walks = false
     itineraries.each do |itinerary|
       first_leg = itinerary.get_legs.first
-      #TODO: Perhaps make the 20 minute threshold configurable.
+      #TODO: Make the 20 minute threshold configurable.
       if first_leg.mode == 'WALK' and first_leg.duration > 1200
         long_walks = true
         itinerary.hide
