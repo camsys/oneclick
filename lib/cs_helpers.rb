@@ -338,10 +338,4 @@ module CsHelpers
     end
   end
 
-  class String
-    def to_sample_email suffix
-      downcase.gsub(/[^a-z\s]/, '').gsub(/\s/, '_') + '_' + suffix + '@camsys.com'
-    end
-  end
-
 end

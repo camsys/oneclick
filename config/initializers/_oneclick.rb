@@ -127,3 +127,10 @@ ROLES = [
 
 Oneclick::Application.config.session_timeout       = ENV['SESSION_TIMEOUT']
 Oneclick::Application.config.session_alert_timeout = ENV['SESSION_ALERT_TIMEOUT']
+
+class String
+  def to_sample_email suffix
+    downcase.gsub(/[^a-z\s]/, '').gsub(/\s/, '_') + '_' + suffix + '@camsys.com'
+  end
+end
+
