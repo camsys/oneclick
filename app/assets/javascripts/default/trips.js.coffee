@@ -110,3 +110,7 @@ $ ->
     toggle_map('trip')
   $('#toAddressMarkerButton').on 'click', ->
     toggle_map('trip')
+
+  $('.trip_proxy_modes').on 'change', (e, s, d) ->
+    console.log e
+    console.log $('.trip_proxy_modes input:checked').length

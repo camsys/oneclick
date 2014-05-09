@@ -81,6 +81,7 @@ module TripsHelper
     trips_new: :trip,
     trips_edit: :trip,
     trips_create: :trip,
+    trips_update: :trip,
     characteristics_new: :options,
     trips_show: :review,
     trips_plan: :plan,

@@ -52,5 +52,9 @@ class Poi < GeocodedAddress
       obj.county    = geo.county
     end
   end
+
+  def type_name
+    'POI_TYPE'
+  end
   
 end

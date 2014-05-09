@@ -104,4 +104,9 @@ class Place < GeocodedAddress
       return get_county_name
     end
   end
+
+  def type_name
+    'PLACES_TYPE'
+  end
+
 end

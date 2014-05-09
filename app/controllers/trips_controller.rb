@@ -286,7 +286,7 @@ class TripsController < PlaceSearchingController
     # end
     # make sure that the trip can be modified
     unless @trip.can_modify
-      please_create = "Please <a href='%s'>start</a> a new trip." % new_user_trip_path(@traveler)
+      please_create = "Please <a href='%s'>start</a> a new trip." % new_user_trip_path(@traveler) # TODO I18N
       redirect_to(:back, :flash => { :alert => [@trip.cant_modify_reason, please_create].join(' ').html_safe })
       return
     end
@@ -411,6 +411,8 @@ class TripsController < PlaceSearchingController
   # updates a trip
   def update
 
+    setup_modes
+
     # make sure we can find the trip we are supposed to be updating and that it belongs to us.
     if @trip.nil?
       redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
@@ -418,12 +420,8 @@ class TripsController < PlaceSearchingController
     end
     # make sure that the trip can be modified
     unless @trip.can_modify
-      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
-      return
-    end
-    # make sure that the trip can be modified
-    unless @trip.can_modify
-      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
+      please_create = "Please <a href='%s'>start</a> a new trip." % new_user_trip_path(@traveler) # TODO I18N
+      redirect_to(:back, :flash => { :alert => [@trip.cant_modify_reason, please_create].join(' ').html_safe })
       return
     end
 
@@ -432,21 +430,26 @@ class TripsController < PlaceSearchingController
 
     session[:modes_desired] = @trip_proxy.modes
 
-    # save the id of the trip we are updating
+    # TODO If trip_proxy isn't valid, should go back to form right now, before this.
     if @trip_proxy.valid?
-      @trip_proxy.id = @trip.id
+      updated_trip = Trip.create_from_proxy(@trip_proxy, current_or_guest_user, @traveler)
+    else
+      Rails.logger.info "Not valid: #{@trip_proxy.ai}"
+      Rails.logger.info "\nError render 1\n"
+      flash.now[:notice] = t(:correct_errors_to_create_a_trip)
+      render action: "new"
+      return
     end
+
+    # save the id of the trip we are updating
+    @trip_proxy.id = @trip.id
 
     # Create markers for the map control
     @markers = create_trip_proxy_markers(@trip_proxy).to_json
     @places = create_place_markers(@traveler.places)
 
     # see if we can continue saving this trip
-    if @trip_proxy.errors.empty?
-
-      # create a trip from the trip proxy. We need to do this first before any
-      # trip places are removed from the database
-      updated_trip = Trip.create_from_proxy(@trip_proxy, current_or_guest_user, @traveler)
+    if @trip_proxy.valid?
 
       # remove any child objects in the old trip
       @trip.clean
@@ -456,6 +459,7 @@ class TripsController < PlaceSearchingController
 
       # update the associations
       @trip.trip_purpose = updated_trip.trip_purpose
+      @trip.desired_modes = updated_trip.desired_modes
       @trip.creator = @traveler
       updated_trip.trip_places.each do |tp|
         tp.trip = @trip
@@ -482,11 +486,17 @@ class TripsController < PlaceSearchingController
           format.html { redirect_to @path }
           format.json { render json: @trip, status: :created, location: @trip }
         else
+          Rails.logger.info "\nError render 2\n"
+          Rails.logger.info "ERRORS: #{@trip.errors.ai}"
+          Rails.logger.info "PLACES: #{@trip.trip_places.ai}"
+          flash.now[:notice] = t(:correct_errors_to_create_a_trip)          
           format.html { render action: "new" }
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
       else
-        format.html { render action: "new", flash[:alert] => t(:correct_errors_to_create_a_trip) }
+        Rails.logger.info "\nError render 3\n"
+        flash.now[:notice] = t(:correct_errors_to_create_a_trip)          
+        format.html { render action: "new" }
       end
     end
 
@@ -534,12 +544,17 @@ class TripsController < PlaceSearchingController
         else
           # TODO Will this get handled correctly?
           Rails.logger.info "\nError render 2\n"
+          Rails.logger.info "ERRORS: #{@trip.errors.ai}"
+          Rails.logger.info "PLACES: #{@trip.trip_places.ai}"
+          Rails.logger.info "PLACE ERRORS: #{@trip.trip_places.collect{|tp| tp.errors}}"
           format.html { render action: "new", flash.now[:alert] => t(:correct_errors_to_create_a_trip) }
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
       else
         # TODO Will this get handled correctly?
         Rails.logger.info "\nError render 3\n"
+        Rails.logger.info "ERRORS: #{@trip.errors.ai}"
+        Rails.logger.info "PLACES: #{@trip.trip_places.ai}"
         format.html { render action: "new", flash.now[:alert] => t(:correct_errors_to_create_a_trip) }
       end
     end
@@ -728,72 +743,8 @@ private
 
   end
 
-  # creates a trip_proxy object from a trip. Note that this does not set the
-  # trip id into the proxy as only edit functions need this.
   def create_trip_proxy(trip, attr = {})
-
-    # get the trip parts for this trip
-    trip_part = trip.trip_parts.first
-
-    # initialize a trip proxy from this trip
-    trip_proxy = TripProxy.new(attr)
-    trip_proxy.traveler = @traveler
-    trip_proxy.trip_purpose_id = trip.trip_purpose.id
-
-    trip_proxy.arrive_depart = trip_part.is_depart
-    trip_datetime = trip_part.trip_time
-    trip_proxy.trip_date = trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
-    temp_time = trip_part.scheduled_time
-    trip_proxy.trip_time = trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
-    Rails.logger.info "create_trip_proxy"
-    Rails.logger.info "trip_part.scheduled_date #{trip_part.scheduled_date}"
-    Rails.logger.info "trip_part.scheduled_time #{trip_part.scheduled_time}"
-    Rails.logger.info "trip_proxy.trip_date #{trip_proxy.trip_date}"
-    Rails.logger.info "trip_proxy.trip_time #{trip_proxy.trip_time}"
-
-    # Check for return trips
-    if trip.trip_parts.count > 1
-      last_trip_part = trip.trip_parts.last
-      trip_proxy.is_round_trip = last_trip_part.is_return_trip ? "1" : "0"
-      trip_proxy.return_trip_time = last_trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
-    end
-
-    # Set the from place
-    trip_proxy.from_place = trip.trip_places.first.name
-    trip_proxy.from_raw_address = trip.trip_places.first.address
-    trip_proxy.from_lat = trip.trip_places.first.location.first
-    trip_proxy.from_lon = trip.trip_places.first.location.last
-
-    if trip.trip_places.first.poi
-      trip_proxy.from_place_selected_type = POI_TYPE
-      trip_proxy.from_place_selected = trip.trip_places.first.poi.id
-    elsif trip.trip_places.first.place
-      trip_proxy.from_place_selected_type = PLACES_TYPE
-      trip_proxy.from_place_selected = trip.trip_places.first.place.id
-    else
-      trip_proxy.from_place_selected_type = CACHED_ADDRESS_TYPE
-      trip_proxy.from_place_selected = trip.trip_places.first.id
-    end
-
-    # Set the to place
-    trip_proxy.to_place = trip.trip_places.last.name
-    trip_proxy.to_raw_address = trip.trip_places.last.address
-    trip_proxy.to_lat = trip.trip_places.last.location.first
-    trip_proxy.to_lon = trip.trip_places.last.location.last
-
-    if trip.trip_places.last.poi
-      trip_proxy.to_place_selected_type = POI_TYPE
-      trip_proxy.to_place_selected = trip.trip_places.last.poi.id
-    elsif trip.trip_places.last.place
-      trip_proxy.to_place_selected_type = PLACES_TYPE
-      trip_proxy.to_place_selected = trip.trip_places.last.place.id
-    else
-      trip_proxy.to_place_selected_type = CACHED_ADDRESS_TYPE
-      trip_proxy.to_place_selected = trip.trip_places.last.id
-    end
-
-    return trip_proxy
-
+    TripProxy.create_from_trip(trip, attr)
   end
 
 end
