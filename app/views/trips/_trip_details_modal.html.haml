@@ -3,10 +3,10 @@
     .modal-body{style: "padding: 0px;"}
       .col-sm-12.well{style: "padding: 5px;"}
         %label.col-sm-12{style: "padding: 0px;"}
-          = get_trip_summary_title(@itinerary)
+          = 'Trip Details - ' + @itinerary.trip_part.description_without_direction
         = render :partial => 'trip_plan_summary_header', :locals => { :itinerary => @itinerary }
         - if @itinerary.is_mappable
-          .col-sm-12{style: "background: white; margin-bottom: 5px; border-radius: 5px; overflow:scroll; max-height: 300px;"}
+          .col-sm-12{style: "background: white; margin-bottom: 5px; border-radius: 5px; overflow-y:auto; max-height: 300px; padding: 5px;"}
             = render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
           .col-sm-12{style: "height: 300px; background: white; border-radius: 5px; padding: 0px;"}
             = render :partial => 'map_details', :locals => { :itinerary => @itinerary, :mapid => 'review_map'}

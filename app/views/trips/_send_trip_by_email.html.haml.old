@@ -1,0 +1,23 @@
+.modal.hide.fade#send_trip_by_email
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3= t(:send_trip_by_email)
+    = simple_form_for :email, url: email_user_trip_path(@traveler, @trip), html: { class: 'form-horizontal',
+      id: 'send_by_email_form' }  do |f|
+      .modal-body
+        = f.error_notification
+        - if user_signed_in?
+          = f.input :send_email_to, label: t(:send_email_to), :required => false,
+            collection: send_trip_by_email_list(@traveler, is_assisting),
+            :input_html => { :checked => true}, :as => :check_boxes
+        - else
+          = f.input :from, label: t(:from), required: false
+        = f.input :email_addresses, label: t(:to), required: true, hint: t(:email_hint)
+        = f.input :email_comments, as: :text, label: t(:comments), required: false, input_html: {rows: 3}
+      .modal-footer
+        = button_tag type: :submit, class: 'btn btn-info' do
+          %i.fa.fa-envelope-o
+          = t(:send)
+        = link_to '#', class: "cancel_link", data: {dismiss: 'modal'} do
+          %i.fa.fa-reply
+          = t(:cancel)

@@ -44,13 +44,21 @@
   .form-group .control-label {
     text-align: right;
   }
-  
-  .tick-label-hidden-sm {
-    visibility: hidden !important;
+
+  @media(max-width:1170px){
+    .tick-label-hidden-sm-md {
+      visibility: hidden !important;
+    }
   }
 }
-@media(min-width:992px){
-  .tick-label-visible-md {
+
+
+@media(min-width:1170px){
+  .tick-label-hidden-lg {
+    visibility: hidden !important;
+  }
+
+  .tick-label-visible-lg {
     visibility: visible !important;
   }
 }
@@ -62,8 +70,6 @@
   padding-left: 0px;
   padding-right: 0px; 
 }
-
-
 
 .action-button {
   &:not(:last-of-type) {

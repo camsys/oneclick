@@ -104,7 +104,7 @@ class TripsController < PlaceSearchingController
     end
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html # plan.html.erb
       format.json { render json: @itineraries }
     end
   end

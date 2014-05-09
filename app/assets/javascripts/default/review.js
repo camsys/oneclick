@@ -71,7 +71,8 @@ function removeSpace(str) {
 }
 
 /*
- * parse data in format: %Y-%m-%d %H:%M
+ * parse date
+ * require moment.js
  * @param {string} dateStr
  * @return {Date}
  */
@@ -586,32 +587,37 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		var tripDescTag = '<label class="col-sm-12">' + tripDescription + '</label>';
 		
 		var tickLabelTags = '';
+		//display 3 labels for xs; 7 for sm & md; 10 for lg
 		if(tickLabels instanceof Array && tickLabels.length > 1) {
 			var labelCount = tickLabels.length;
 			
 			var xsShowIndexArray = [0, labelCount - 1];
-			var smShowIndexArray = [0, labelCount - 1];
+			var smShowIndexArray = [0];
+			var lgShowIndexArray = [0];
 			
 			var midIndex = parseInt(labelCount/2);
 			if(xsShowIndexArray.indexOf(midIndex) < 0) {
 				xsShowIndexArray.push(midIndex);
 			} 
 			
-			if(smShowIndexArray.indexOf(midIndex) < 0) {
-				smShowIndexArray.push(midIndex);
-			} 
-			
-			var isEvenCount = (labelCount % 2 === 0);
-			var smBase = 2;
+			var smBaseUnit = parseInt(labelCount / 7) + 1;
+			var smBase = smBaseUnit;
 			while(smBase <= labelCount -1) {
-				if(isEvenCount && smBase === (midIndex - 1)) {
-					smBase += 1;
-				}
 				if(smShowIndexArray.indexOf(smBase) <= 0) {
 					smShowIndexArray.push(smBase);
 				}
 				
-				smBase += 2;
+				smBase += smBaseUnit;
+			}
+
+			var lgBaseUnit = parseInt(labelCount / 10) + 1;
+			var lgBase = lgBaseUnit;
+			while(lgBase <= labelCount -1) {
+				if(lgShowIndexArray.indexOf(lgBase) <= 0) {
+					lgShowIndexArray.push(lgBase);
+				}
+				
+				lgBase += lgBaseUnit;
 			}
 			
 			var labelWidthPct = 1 / (labelCount - 1) * 100 + '%';
@@ -623,10 +629,14 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 				} 
 				
 				if(smShowIndexArray.indexOf(labelIndex) < 0){
-					className += ' tick-label-hidden-sm';
+					className += ' tick-label-hidden-sm-md';
 				} 
-				
-				className += ' tick-label-visible-md';
+
+				if(lgShowIndexArray.indexOf(labelIndex) < 0){
+					className += ' tick-label-hidden-lg';
+				} else {
+					className += ' tick-label-visible-lg';
+				}
 				
 				var marginTag = '';
 				if(labelIndex === 0) {
@@ -1231,7 +1241,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	 */
 	function getTickLabels(tripStartTime, tripEndTime, intervalStep) {
 		var tickLabels = [];
-		var labelFormat = d3.time.format('%H:%M %p');
+		var labelFormat = d3.time.format('%I:%M %p');
 		var ticks = d3.time.scale()
 			.domain([tripStartTime, tripEndTime])
 			.nice(d3.time.minute, intervalStep)
