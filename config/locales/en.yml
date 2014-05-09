@@ -513,6 +513,11 @@ en:
   state: "State"
   zip: "Zip"
 
+  # validation messages
+  valid_time_msg: "must be a valid time"
+  presence_msg: "can't be blank"
+  before_msg: "must be before "
+  
   date:
     abbr_day_names:
     - Sun

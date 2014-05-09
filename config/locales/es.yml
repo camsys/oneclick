@@ -510,6 +510,11 @@ es:
   state: "[es]State[/es]"
   zip: "[es]Zip[/es]"
 
+  # validation messages
+  valid_time_msg: "[es]must be a valid time[/es]"
+  presence_msg: "[es]can't be blank[/es]"
+  before_msg: "[es]must be before [/es]"
+  
   # Branding
   arc:
     logotext: ''

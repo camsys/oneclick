@@ -110,7 +110,10 @@ class ServicesController < ApplicationController
         format.html { redirect_to @service, notice: t(:service) + ' ' + t(:was_successfully_updated) } 
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html {
+          set_aux_instance_variables
+          render action: "edit"
+        }
         format.json { render json: @admin_provider.errors, status: :unprocessable_entity }
       end
     end
