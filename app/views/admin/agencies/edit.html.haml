@@ -24,7 +24,7 @@
           = f.input :phone
           = f.input :email
           = f.input :url
-          = f.association :parent, collection: @agency.possible_parents, value_method: :name
+          = f.association :parent, collection: @agency.possible_parents
     .col-sm-6
       .panel.panel-default
         .panel-heading
