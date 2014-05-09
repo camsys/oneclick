@@ -6,7 +6,7 @@ class Agency < ActiveRecord::Base
   has_many :users
   accepts_nested_attributes_for :users
   has_many :agency_user_relationships
-  has_many :customers, :class_name => 'User', :through => :agency_user_relationships, source: :user
+  has_many :customers, :class_name => 'User', :through => :agency_user_relationships, source: :user, conditions: ['agency_user_relationships.relationship_status_id = ?', RelationshipStatus.confirmed.id]
   # has_many :cs_roles, -> {where(resource_type: 'Agency')}, class_name: 'Role'
   has_many :cs_roles, -> {where(resource_type: 'Agency')}, class_name: 'Role', foreign_key: :resource_id
   has_many :cs_users, class_name: 'User', through: :cs_roles, source: :users
