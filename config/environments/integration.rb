@@ -27,6 +27,8 @@ Oneclick::Application.configure do
 
   # Warning: Heroku uses env var LOG_LEVEL
   config.log_level = :info
+  # For Heroku; see https://devcenter.heroku.com/articles/logging#writing-to-your-log
+  config.logger = Logger.new(STDOUT)
 
   config.eager_load = true
 end
