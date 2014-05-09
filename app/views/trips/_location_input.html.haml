@@ -4,11 +4,11 @@
 - elsif dir=='to'
   - label='Going To'
   - sr_label = 'Type the to address'
-= f.input "#{dir}_place".to_sym, input_html: {class: 'place_picker', autocomplete: 'off', type: "text"}, id: "trip_proxy_#{dir}_place", wrapper: :group, label: label do
-  = f.input_field "#{dir}_place".to_sym, class: 'form-control place_picker'
+= f.input "#{dir}_place".to_sym, input_html: {class: 'place_picker', autocomplete: 'off', type: "text", tabindex: 1}, id: "trip_proxy_#{dir}_place", wrapper: :group, label: label do
+  = f.input_field "#{dir}_place".to_sym, class: 'form-control place_picker', tabindex: 1
   %span.input-group-btn
     %label.control-label.sr-only{for: "#{dir}AddressMarkerButton"} Click button to open the map and locate the  address
-    %button.btn.btn-default{type: "button", id: "#{dir}AddressMarkerButton"}
+    %button.btn.btn-default{type: "button", id: "#{dir}AddressMarkerButton", tabindex: 1}
       %i.fa.fa-map-marker
 - if dir=='from'
   %div{id: "tripMapContainer", class: 'hide', style: 'position: absolute; top: 0; right:-520px; z-index: 1000;'}

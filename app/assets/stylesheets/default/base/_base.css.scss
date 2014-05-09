@@ -604,6 +604,12 @@ td.left, th.left {
  width: auto;
  float: none;
 }
+.check_boxes:focus, .radio_buttons:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset -1px -1px 1px rgba(0, 0, 0, 0.075), -1px -1px 6px rgba(76, 154, 220, 0.9);
+  box-shadow: inset -1px -1px 1px rgba(0, 0, 0, 0.075), -1px -1px 6px rgba(76, 154, 220, 0.9);
+}
 
 // Div class for viewports on long checkbox lists from simple_form associations.
 .scrolling-checkbox-list {
