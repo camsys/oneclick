@@ -14,32 +14,31 @@
                     =t(:close)
       .modal-body
         -if @trip.outbound_part.selected_itinerary.is_bookable
-          .well
-            %h4
-              ="Book your outbound trip."
-
-            .div
+          .panel.panel-default
+            .panel-header
+              %h4
+                ="Book your outbound trip."
               ="This trip is eligible for automated booking with OneClick."
-              .white-well
-                .form-horizontal
-                  .form-group
-                    .row-fluid
-                      %label.col-sm-4.col-md-4.col-lg-4.control-label
-                        ="From:"
-                      .col-sm-8.col-md-8.col-lg-8
-                        =@trip.outbound_part.from_trip_place.name
-                  .form-group
-                    .row-fluid
-                      %label.col-sm-4.col-md-4.col-lg-4.control-label
-                        ="To:"
-                      .col-sm-8.col-md-8.col-lg-8
-                        =@trip.outbound_part.to_trip_place.name
-                  .form-group
-                    .row-fluid
-                      %label.col-sm-4.col-md-4.col-lg-4.control-label
-                        = @trip.outbound_part.is_depart ? "Departing at:" : "Arriving by:"
-                      .col-sm-8.col-md-8.col-lg-8
-                        =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
+            .panel-body
+              .form-horizontal
+                .form-group
+                  .row-fluid
+                    %label.col-sm-4.col-md-4.col-lg-4.control-label
+                      ="From:"
+                    .col-sm-8.col-md-8.col-lg-8
+                      =@trip.outbound_part.from_trip_place.name
+                .form-group
+                  .row-fluid
+                    %label.col-sm-4.col-md-4.col-lg-4.control-label
+                      ="To:"
+                    .col-sm-8.col-md-8.col-lg-8
+                      =@trip.outbound_part.to_trip_place.name
+                .form-group
+                  .row-fluid
+                    %label.col-sm-4.col-md-4.col-lg-4.control-label
+                      = @trip.outbound_part.is_depart ? "Departing at:" : "Arriving by:"
+                    .col-sm-8.col-md-8.col-lg-8
+                      =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
               -if @trip.outbound_part.selected_itinerary.booking_confirmation.nil?
                 .div#book_outbound_trip
                   .row-fluid
