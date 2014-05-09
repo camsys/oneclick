@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/bluerail/twitter-bootstrap-rails-confirm.git
+  revision: 92dd750dd04f492526aca894c5ec1b321a6e25a9
+  branch: bootstrap3
+  specs:
+    twitter-bootstrap-rails-confirm (1.0.2)
+
+GIT
   remote: git://github.com/plataformatec/simple_form.git
   revision: d7306558665d38fe3a0c277ce263e99f635958de
   specs:
@@ -496,6 +503,7 @@ DEPENDENCIES
   thin
   travis
   twilio-ruby
+  twitter-bootstrap-rails-confirm!
   twitter-typeahead-rails!
   uglifier (>= 1.0.3)
   yard
