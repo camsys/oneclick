@@ -67,16 +67,34 @@ class ItinerarySerializer < ActiveModel::Serializer
 
   def legs
     legs = object.get_legs
-    legs.collect do |leg|
-      {
-        type: leg.mode,
-        description: I18n.t(:to) + ' '+ leg.end_place.name,
-        start_time: leg.start_time,
-        end_time: leg.end_time,
-        start_place: "#{leg.start_place.lat},#{leg.start_place.lon}",
-        end_place: "#{leg.end_place.lat},#{leg.end_place.lon}",
-      }
+
+    new_legs = []
+    (0..legs.count-2).each do |n|
+      leg =
+        {
+          type: legs[n].mode,
+          description: I18n.t(:to) + ' '+ legs[n].end_place.name,
+          start_time: legs[n].start_time,
+          end_time: legs[n].end_time,
+          start_place: "#{legs[n].start_place.lat},#{legs[n].start_place.lon}",
+          end_place: "#{legs[n].end_place.lat},#{legs[n].end_place.lon}",
+        }
+      new_legs << leg
+      if legs[n].end_time < legs[n+1].start_time
+        new_leg =
+          {
+            type: 'WAIT',
+            description: I18n.t(:to) + ' '+ legs[n].end_place.name,
+            start_time: legs[n].end_time,
+            end_time: legs[n+1].start_time,
+            start_place: "#{legs[n+1].start_place.lat},#{legs[n+1].start_place.lon}",
+            end_place: "#{legs[n+1].start_place.lat},#{legs[n+1].start_place.lon}",
+          }
+        new_legs << new_leg
+      end
+
     end
+    new_legs
   end
 
   def duration
