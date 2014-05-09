@@ -93,6 +93,11 @@ class ServicesController < ApplicationController
     @contact = @service.internal_contact
 
     set_aux_instance_variables
+
+    if @service.fare_structures.count < 1
+      @service.fare_structures.build
+    end
+    
   end
 
   # PUT /services/1
