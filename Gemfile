@@ -19,6 +19,8 @@ gem 'pg'
 gem 'rolify', git: 'https://github.com/EppO/rolify.git', ref: '0b00fa41224dc4e33b059cd0cd31cd42b022b03b'
 gem 'simple_form', '~> 3.1.0.rc1', github: 'plataformatec/simple_form'
 gem 'thin'
+gem 'puma'
+gem "rack-timeout"
 gem 'awesome_print'
 gem 'chronic'
 gem 'mechanize'
@@ -78,6 +80,7 @@ group :development do
   gem "letter_opener"
   gem 'yard'
   gem 'RedCloth' # Needed by yard
+  gem 'foreman'
 end
 
 group :development, :test do
