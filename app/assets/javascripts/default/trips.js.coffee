@@ -57,8 +57,8 @@ $ ->
       replace: (url, query) ->
         url = url + '&query=' + query
         # TODO This may need to get handled differently depending on whether map is shown
-        # url = url + '&map_center=' + (LMmap.getCenter().lat + ',' + LMmap.getCenter().lng)
-        url = url + '&map_center=33.7550,-84.3900'
+        url = url + '&map_center=' + (CsMaps.tripMap.LMmap.getCenter().lat + ',' + CsMaps.tripMap.LMmap.getCenter().lng)
+        # url = url + '&map_center=33.7550,-84.3900'
         return url
     limit: 20
     # prefetch: '../data/films/post_1960.json'
