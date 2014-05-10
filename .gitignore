@@ -89,3 +89,7 @@ TAGS
 *.haml#
 
 *.rb#
+
+*.scss#
+
+app/assets/stylesheets/default/.#application.css.scss

@@ -101,7 +101,6 @@ protected
       errors.add(:"#{day_of_week}start_time", I18n.t(:before_msg) + I18n.t(:end_time)) if (start_seconds > end_seconds)
 
     end
-    puts pp errors.inspect
   end
   
 end
