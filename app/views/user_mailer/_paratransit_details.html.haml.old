@@ -1,0 +1,40 @@
+
+.row
+  %ul
+    -if itinerary.cost_comments and itinerary.cost
+      %li
+        %h4
+          = t(:addl_cost_details)
+        =itinerary.cost_comments.html_safe
+
+    -if itinerary.missing_information
+      %li
+        =t(:service_intended_for)
+        -count = 0
+        -itinerary.missing_information_text.split('\n').each do |info|
+          -count += 1
+          -if itinerary.missing_information_text.split('\n').count - 1 == count
+            =info + ' and '
+          -elsif itinerary.missing_information_text.split('\n').count == count
+            =info + '.'
+          -else
+            =info + ','
+
+    -if itinerary.too_late
+      %li
+      = t(:trip_insufficient_notice_a) + itinerary.service.human_readable_advanced_notice + t(:trip_insufficient_notice_b)
+    -if itinerary.date_mismatch or itinerary.time_mismatch
+      %li
+        = t(:trip_outside_service_hours)
+
+  -if itinerary.accommodation_mismatch
+    %h4
+      =t(:trip_needs_more_accomodations)
+    %ul
+      -itinerary.missing_accommodations.split(',').each do |accommodation|
+        %li
+          =accommodation
+
+%span{style: 'font-style: italic'}
+  (Detailed directions on contacting provider and scheduling trip will be given here.)
+  / Leaving as is, because it's going to be replaced
