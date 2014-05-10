@@ -504,7 +504,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 					barHeight
 				);
 				
-				addTripStrictionUpdateButtonClickListener(tripPlan.missing_information, tripId, tripPlan.id);
+				addTripStrictionFormSubmissionListener(tripPlan.missing_information, tripId, tripPlan.id);
 			}
 		});
 		
@@ -512,24 +512,35 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	}
 	
 	/*
+	 * trip restiction form submission
 	 * add on-click listener for Update button in each trip restriction modal dialog
 	 * @param {Array} missingInfoArray
 	 * @param {number} tripId
 	 * @param {number} planId
 	 */
-	function addTripStrictionUpdateButtonClickListener(missingInfoArray, tripId, planId) {
+	function addTripStrictionFormSubmissionListener(missingInfoArray, tripId, planId) {
 		if(! missingInfoArray instanceof Array || missingInfoArray.length === 0) {
 			return;
 		}
 
 		var tripPlanChartDivId = tripPlanDivPrefix + tripId + '_' + planId;
 		var missInfoDivId = missInfoDivPrefix + tripId + '-' + planId;
-		var updateButtons = $('#' + missInfoDivId + ' .btn-primary');
-		
-		$('#' + missInfoDivId + ' .btn-primary').click(function(){
+
+		$('#' + missInfoDivId + '-form').submit(function(e){
 			var dialog = $('#' + missInfoDivId);
 			var formVals =dialog.find('.form-inline').serializeArray();
 			if(formVals.length === 0) {
+				return; 
+			}
+
+			var isEmptyValueAvailable = false;
+			formVals.forEach(function(val) {
+				if(val.value === '' || val.value === null) {
+					isEmptyValueAvailable = true;
+				}
+			});
+
+			if(isEmptyValueAvailable) {
 				return;
 			}
 			
@@ -563,6 +574,12 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 			}
 			
 			dialog.modal('hide');
+
+			e.preventDefault();
+		});
+
+		$('#' + missInfoDivId + ' .btn-primary').click(function(){
+			$('#' + missInfoDivId + '-form').submit();
 		});
 	}
 
@@ -725,7 +742,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		var contact_information = tripPlan.contact_information; 
 		var cost = tripPlan.cost;
 		var missingInfoArray = tripPlan.missing_information; 
-		var transfers = typeof(tripPlan.transfers) === 'number' ? tripPlan.transfers : 0;
+		var transfers = tripPlan.transfers;
 		var duration = tripPlan.duration;
 		var strPlanStartTime = tripPlan.start_time; 
 		var strPlanEndTime = tripPlan.end_time;
@@ -754,7 +771,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 			" data-end-time='" + strPlanEndTime + "'" +
 			" data-end-time-estimated='" + isPlanEndTimeEstimated + "'" +
 			" data-mode='" + mode + "'" +
-			" data-transfer='" + transfers.toString() + "'" +
+			" data-transfer='" + (typeof(transfers) === 'number' ? transfers.toString() : '')+ "'" +
 			" data-cost='" + ((typeof(cost) === 'object'  && cost != null && (typeof(cost.price) === 'number')) ? cost.price : '') + "'" +
 			" data-duration='" + (typeof(duration) === 'object'  && duration != null ? parseFloat(duration.sortable_duration)/60 : '') + "'";
 		var tripPlanTags = 
@@ -828,12 +845,12 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 			        '<b class="modal-title" id="' + missInfoDivId + '-title">Trip Restrictions</b>' +
 			      '</div>' +
 			      '<div class="modal-body">' +
-			      	'<form class="form-inline" role="form">' +
+			      	'<form class="form-inline" role="form" id="' + missInfoDivId + '-form">' +
 				      	questionTags + 
 			        '</form>' + 
 			      '</div>' +
 			      '<div class="modal-footer">' +
-			        '<button type="button" class="btn btn-primary action-button">Update</button>' +
+			        '<button type="submit" class="btn btn-primary action-button">Update</button>' +
 			        '<button type="button" class="btn btn-default action-button" data-dismiss="modal">Cancel</button>' +
 			      '</div>' +
 			    '</div>' +
@@ -873,17 +890,17 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 									'<input type="radio" name="' + controlName +'" ' + 
 										'value="' + infoOption.value + '" ' +
 										(infoOption.is_default ? 'checked' : '') +
-									'>' + infoOption.text + 
+									' required />' + infoOption.text + 
 								'</label>';				
 						}
 					});
 				}
 				break;
 			case 'integer':
-				answersTags += '<input type="number" class="form-control" id="' + controlName + '-number" label="false" name="' + controlName +'"/>';
+				answersTags += '<input type="number" class="form-control" id="' + controlName + '-number" label="false" name="' + controlName +'" required/>';
 				break;
 			case 'date':
-				answersTags += '<input type="text" class="form-control" id="' + controlName + '-date" label="false" name="' + controlName +'"/>' +
+				answersTags += '<input type="text" class="form-control" id="' + controlName + '-date" label="false" name="' + controlName +'" required/>' +
 									'<script type="text/javascript">' +
 										'$(function () {' +
 											'$("#' + controlName + '-date").datetimepicker({' +
@@ -894,7 +911,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 									'</script>';
 				break;
 			case 'datetime':
-				answersTags += '<input type="text" class="form-control" id="' + controlName + '-date" label="false" name="' + controlName +'"/>' +
+				answersTags += '<input type="text" class="form-control" id="' + controlName + '-date" label="false" name="' + controlName +'" required/>' +
 									'<script type="text/javascript">' +
 										'$(function () {' +
 											'$("#' + controlName + '-date").datetimepicker({' +
