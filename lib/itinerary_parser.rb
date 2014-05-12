@@ -2,6 +2,8 @@
 # Parses a YAML loaded collection of legs from the itinerary table and generates an array
 # of leg objects
 #
+# TODO This class is mis-named; should really be ItineraryLegParser
+
 class ItineraryParser
   
   def self.parse(legs)

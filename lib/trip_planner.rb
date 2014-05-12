@@ -72,7 +72,7 @@ class TripPlanner
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
       trip_itinerary['mode'] = Mode.transit
-      trip_itinerary['duration'] = itinerary['duration']
+      trip_itinerary['duration'] = itinerary['duration'].to_f/1000.0 # in seconds
       trip_itinerary['walk_time'] = itinerary['walkTime']
       trip_itinerary['transit_time'] = itinerary['transitTime']
       trip_itinerary['wait_time'] = itinerary['waitingTime']
