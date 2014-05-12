@@ -213,6 +213,7 @@ en:
   drive: 'Drive'
   rail: 'Rail'
   subway: 'Subway'
+  route: 'Route'
   transfer: {
     one: '%{count} transfer',
     other: '%{count} transfers',
