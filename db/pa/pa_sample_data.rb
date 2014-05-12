@@ -142,6 +142,7 @@ def add_providers_and_services
         #Create service Senior Shared Ride
         service = Service.create(name: 'Rabbit Shared Ride', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
         service.booking_service_code = 'ecolane'
+        service.save
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
@@ -618,6 +619,82 @@ def create_ecolane_user
 
 end
 
+def collapse_rabbit_services
+
+  provider = Provider.find_by_external_id('1')
+
+  provider.services.each do |service|
+    unless service.external_id == 'shared_ride'
+      service.active = false
+      service.save
+    end
+  end
+
+  s = Service.find_by_external_id('shared_ride')
+  unless s.nil?
+    puts 'Already created Rabbit Shared Ride'
+    return
+  end
+  paratransit = ServiceType.find_by_code('paratransit')
+  #Create service Senior Shared Ride
+  service = Service.create(name: 'Rabbit Shared Ride', provider: provider, service_type: paratransit, advanced_notice_minutes: 24*60)
+  service.external_id = "shared_ride"
+  service.booking_service_code = 'ecolane'
+  service.save
+  #Add Schedules
+  (1..5).each do |n|
+    Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
+  end
+  Schedule.create(service: service, start_seconds:7.25*3600, end_seconds: 21.75*3600, day_of_week: 6)
+  Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
+  #Trip purpose requirements
+
+  medical = TripPurpose.find_by_code('medical')
+  cancer = TripPurpose.find_by_code('cancer')
+  general = TripPurpose.find_by_code('general')
+  grocery = TripPurpose.find_by_code('grocery')
+  [medical, cancer, general, grocery].each do |n|
+    ServiceTripPurposeMap.create(service: service, trip_purpose: n)
+  end
+
+  #Add geographic restrictions
+  ['York', 'Adams'].each do |z|
+    c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+    ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+  end
+  ['York', 'Adams'].each do |z|
+    c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+    ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+  end
+
+  disabled = Characteristic.find_by_code('disabled')
+  matp = Characteristic.find_by_code('matp')
+  ada_eligible = Characteristic.find_by_code('ada_eligible')
+  age = Characteristic.find_by_code('age')
+
+  #Traveler accommodations
+  folding_wheelchair_accessible = Accommodation.find_by_code('folding_wheelchair_accessible')
+  motorized_wheelchair_accessible = Accommodation.find_by_code('motorized_wheelchair_accessible')
+  curb_to_curb = Accommodation.find_by_code('curb_to_curb')
+
+  #Traveler Characteristics Requirements
+  ServiceCharacteristic.create(service: service, characteristic: age, value: '60', value_relationship_id: 4, group: 1)
+
+  #Traveler Characteristics Requirements
+  ServiceCharacteristic.create(service: service, characteristic: matp, value: 'true', group: 2)
+
+  #Traveler Characteristics Requirements
+  ServiceCharacteristic.create(service: service, characteristic: ada_eligible, value: 'true', group: 3)
+
+  #Traveler Characteristics Requirements
+  ServiceCharacteristic.create(service: service, characteristic: disabled, value: 'true', group: 4)
+
+  #Traveler Accommodations Requirements
+  [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
+    ServiceAccommodation.create(service: service, accommodation: n)
+  end
+end
+
 ### MAIN ###
 puts 'Adding PA Sample Data'
 add_users_and_places
@@ -629,4 +706,5 @@ add_urls_to_pa
 add_cms
 add_booking_service_codes
 create_ecolane_user
+collapse_rabbit_services
 puts 'Done Adding PA Sample Data'

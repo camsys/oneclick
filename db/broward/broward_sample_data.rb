@@ -563,14 +563,9 @@ EOT
 end
 
 def create_agencies
-  ['York Area Agency on Aging',
-   'Penn-Mar Human Services',
-   'Touch A Life',
-   'York Adams Transit Authority',
-   'York Center for Independent Living',
-   'Staying Connected'].each do |a|
-    a = Agency.find_by_name(a)
-    unless a.nil?
+  ['211 Miami'].each do |a|
+    agency = Agency.find_by_name(a)
+    unless agency.nil?
       next
     end
     Agency.create! name: a
