@@ -681,7 +681,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 					marginTag = 'margin: 0px;';
 				}
 				tickLabelTags +=
-			 	'<span class="' + className + '" style="display:inline-block;width:' + labelWidthPct + ';border: none;text-align:left;' + marginTag + ';">' + tickLabel + '</span>';
+			 	'<span class="' + className + '" style="display:inline-block;' + (labelIndex < (labelCount - 1) ? ('width:' + labelWidthPct)  : '') + ';border: none;text-align:left;' + marginTag + ';">' + tickLabel + '</span>';
 				labelIndex ++;
 			});
 		}
@@ -691,7 +691,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		'<select style="display: inline-block;"' + (isDepartAt ? '' : ' class="sm-sorter-margin-right"') + '>' +
 			'<option value="start-time" ' + (isDepartAt ? ' selected' : '') + '>Departure Time</option>' +
 			'<option value="end-time" ' + (isDepartAt ? '' : ' selected') + '>Arrival Time</option>' +
-			'<option value="cost" >Cost</option>' +
+			'<option value="cost" >Fare</option>' +
 			'<option value="duration" >Travel Time</option>' +
 		'</select>';
 		
@@ -771,7 +771,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 			" data-end-time='" + strPlanEndTime + "'" +
 			" data-end-time-estimated='" + isPlanEndTimeEstimated + "'" +
 			" data-mode='" + mode + "'" +
-			" data-transfer='" + (typeof(transfers) === 'number' ? transfers.toString() : '')+ "'" +
+			" data-transfer='" + (typeof(transfers) === 'number' ? transfers.toString() : '0')+ "'" +
 			" data-cost='" + ((typeof(cost) === 'object'  && cost != null && (typeof(cost.price) === 'number')) ? cost.price : '') + "'" +
 			" data-duration='" + (typeof(duration) === 'object'  && duration != null ? parseFloat(duration.sortable_duration)/60 : '') + "'";
 		var tripPlanTags = 
@@ -880,6 +880,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		
 		var answersTags = '';
 		switch(infoType) {
+			case 'bool':
 			case 'boolean':
 				var infoOptions = missingInfo.options;
 				if(infoOptions instanceof Array && infoOptions.length > 0) {
@@ -991,8 +992,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		var filterTags = '';
 		
 		var modes = {};
-		var minTransfer = -1;
-		var maxTransfer = -1;
+		var minTransfer = 0;
+		var maxTransfer = 0;
 		var minCost = -1;
 		var maxCost = -1;
 		var minDuration = -1;
@@ -1010,14 +1011,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 				
 				//transfers
 				var transfer = parseInt(tripPlan.transfers);
-				if(transfer >= 0) {
-					if(minTransfer < 0 || transfer < minTransfer) {
-						minTransfer = transfer;
-					}
-					
-					if(minTransfer < 0 || transfer > maxTransfer) {
-						maxTransfer = transfer;
-					}
+				if(transfer >= 0 && transfer > maxTransfer) {
+					maxTransfer = transfer;
 				}
 				
 				//cost
@@ -1124,7 +1119,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	function getTransferFilterHtml(minTransfer, maxTransfer){
 		var tags = '';
 		var sliderConfig = null;
-		if(typeof(maxTransfer) === 'number' && typeof(minTransfer) === 'number' && maxTransfer > minTransfer) {
+		if(typeof(maxTransfer) === 'number' && minTransfer === 0 && maxTransfer > minTransfer) {
 			tags = 
 			'<div class = "col-sm-12">' + 
 				'<label class="sr-only">Number of transfers</label>' +
@@ -1167,8 +1162,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 			maxCost = getRoundMaxValue(maxCost);
 			tags = 
 			'<div class = "col-sm-12">' + 
-				'<label class="sr-only">Cost</label>' +
-				'<label class="col-sm-12">Cost</label>' +
+				'<label class="sr-only">Fare</label>' +
+				'<label class="col-sm-12">Fare</label>' +
 			'</div>' +
 			'<div class="col-sm-12">' +
 				'<div role="slider" id="' + costSliderId + '" aria-valuemin="' + minCost + '" aria-valuemax="' + maxCost + '">' +
