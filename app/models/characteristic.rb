@@ -22,7 +22,7 @@ class Characteristic < ActiveRecord::Base
   def for_missing_info(service)
     a = attributes
     sc = service_characteristics.where(service: service).take
-    options = a['datatype']=='bool' ? [{I18n.t(:yes_str) => true}, {I18n.t(:no_str) => false}] : nil
+    options = a['datatype']=='bool' ? [{text: I18n.t(:yes_str), value: true}, {text: I18n.t(:no_str), value: false}] : nil
     {
       'question' => I18n.t(a['note']),
       'description' => I18n.t(a['desc']),
