@@ -7,12 +7,16 @@
   %thead
     %tr
       %th= t(:name)
+      %th= t(:status)
       %th= t(:parent_agency)
       %th= t(:subagencies)
   %tbody
     - @agencies.each do |agency|
       %tr
         %td= link_to agency.name, admin_agency_path(agency)
+        %td
+          - if agency.active == false
+            = t(:inactive)
         %td
           - if agency.parent
             = link_to agency.parent.name, [:admin, agency.parent]

@@ -1,14 +1,16 @@
 .row
-  = link_to t(:back), admin_agencies_path
-.row
-  - if can? :update, @agency
-    = link_to edit_admin_agency_path(@agency), {class: 'btn btn-default action-button pull-right', role: 'button'} do
-      = icon_label(:edit)
-  - if can? :destroy, @agency
-    = simple_form_for @agency, url: admin_agency_path, method: :delete, :html => {class: "form-horizontal pull-right", id: "delete_agency_form"}  do |f|
-      = button_tag type: 'submit', class: "btn btn-default" do
-        = icon_label(:delete)
-  %h2= @agency.name
+  .col-sm-6.pull-left
+    = link_to t(:all_agencies), admin_agencies_path
+    %h2= @agency.name
+    -unless @agency.active
+      %p= t(:inactive)
+  .col-sm-3.pull-right.form-group
+    - if can? :update, @agency
+      = link_to edit_admin_agency_path(@agency), {class: 'btn action-button btn-default', role: 'button'} do
+        = icon_label(:edit)
+    - if can? :destroy, @agency
+      = button_to t(:delete), { action: "destroy", id: @agency.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: 'btn action-button btn-default', form_class: "form-horizontal pull-right"
+
 
 .row
   .col-sm-6

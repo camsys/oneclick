@@ -46,7 +46,7 @@ class Ability
 
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
       can :read, Agency # all agencies are viewable
-      can [:update], Agency, id: user.agency.try(:id)
+      can [:update, :destroy], Agency, id: user.agency.try(:id), active: true
       can [:update], Agency do |a|  # edit privilege over sub agencies
         user.agency.present? && user.agency.sub_agencies.include?(a)
       end
@@ -95,7 +95,8 @@ class Ability
       can [:access], :admin_feedback
 
       can [:index, :show], Report
-      can [:read, :update, :delete], Provider, id: user.try(:provider_id)
+      can [:read], Provider, id: user.try(:provider_id)
+      can [:update, :destroy], Provider, id: user.try(:provider_id), active: true
       can [:update, :show], Service do |s|
         user.provider.services.include?(s)
       end

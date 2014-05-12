@@ -25,6 +25,7 @@ es:
   feedback: "[es]Feedback[/es]"
   agency: "[es]Agency[/es]"
   agencies: "[es21]Agencies[es]"
+  all_agencies: "[es28]All Agencies[/es]"
   add_new_agency: "[es26]Add a new Agency[/es]"
   agency_added: "[es27]Agency added[/es]"
   specific_agency_added: "[es29]%{agency} added[/es]"
