@@ -38,6 +38,7 @@ class Admin::UsersController < Admin::BaseController
             UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.user.email, current_user.agency).deliver
           end
         end
+        flash[:notice] = t(:user_created)
         format.html { redirect_to admin_user_path(@user)}
       else # invalid user
         format.html { render action: "new"}

@@ -71,6 +71,7 @@ en:
   change_role: "Change Role"
   create_user: "Create User"
   delete_user: "Delete user"
+  user_created: "User Created"
   # Agent and Admin string
   reports: "Reports"
   report_name: "Report Name"
