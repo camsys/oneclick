@@ -85,6 +85,7 @@ function parseDate(dateStr) {
 	}
 }
 
+var missingInfoLookup;
 /*
 * TripReviewPageRenderer class: a self-contained class to render dynamic items on trip review page
 * @param {number}: intervalStep (minutes)
@@ -108,8 +109,11 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	var costSliderId = "costSlider"; //id of cost filter slider
 	var durationSliderId = "durationSlider"; //id of duration filter slider
 	
-	var tripPlanDivPrefix = "trip_plan_"; //prefix of each trip plan div
-	var missInfoDivPrefix = "tripRestriction"; //prefix of each trip restriction modal dialog
+	var tripPlanDivPrefix = "tripPlan_"; //prefix of each trip plan div
+	var missInfoDivAffix = "_restriction"; //affix of each trip restriction modal dialog
+	//trip restriction missing_info lookup
+	//format: [{trip_restriction_modal_id: {data: missing_info_array, clearCode: 0(init), 1(all pass), -1(not pass)}}]
+	missingInfoLookup = {};
 	
 	 //chart tooltip
 	var chartTooltipDiv = d3.select("body").append("div")   
@@ -396,9 +400,11 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
 			if(plan.legs instanceof Array) {
 				if(plan.legs.length === 0) {
+					var tripDescription = trip.hasOwnProperty('description_without_direction') ? trip.description_without_direction : trip.description;
+					var legDescription = toCamelCase(plan.mode_name) + ' - ' + tripDescription;
 					plan.legs.push({
 						"type": "Vehicle",
-                        "description": trip.description,
+                        "description": legDescription,
                         "start_time": plan.start_time,
                         "end_time": plan.end_time,
                         "start_time_estimated": plan.start_time_estimated,
@@ -504,7 +510,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 					barHeight
 				);
 				
-				addTripStrictionFormSubmissionListener(tripPlan.missing_information, tripId, tripPlan.id);
+				addTripStrictionFormSubmissionListener(tripPlan.missing_information, tripPlanChartId);
 			}
 		});
 		
@@ -515,18 +521,16 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	 * trip restiction form submission
 	 * add on-click listener for Update button in each trip restriction modal dialog
 	 * @param {Array} missingInfoArray
-	 * @param {number} tripId
-	 * @param {number} planId
+	 * @param {string} tripPlanChartDivId
 	 */
-	function addTripStrictionFormSubmissionListener(missingInfoArray, tripId, planId) {
+	function addTripStrictionFormSubmissionListener(missingInfoArray, tripPlanChartDivId) {
 		if(! missingInfoArray instanceof Array || missingInfoArray.length === 0) {
 			return;
 		}
 
-		var tripPlanChartDivId = tripPlanDivPrefix + tripId + '_' + planId;
-		var missInfoDivId = missInfoDivPrefix + tripId + '-' + planId;
+		var missInfoDivId = tripPlanChartDivId + missInfoDivAffix;
 
-		$('#' + missInfoDivId + '-form').submit(function(e){
+		$('#' + missInfoDivId + '_form').submit(function(e){
 			var dialog = $('#' + missInfoDivId);
 			var formVals =dialog.find('.form-inline').serializeArray();
 			if(formVals.length === 0) {
@@ -547,7 +551,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 			var vals = formVals;
 			var questionIndex = 1;
 			var isQuestionClear = true;
-			missingInfoArray.forEach(function(missingInfo) {
+			for(var i=0, infoCount=missingInfoArray.length; i<infoCount; i++) {
+				var missingInfo = missingInfoArray[i];
 				if(!isQuestionClear) {
 					return;
 				}
@@ -555,23 +560,22 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 				if(typeof(missingInfo) != 'object' || missingInfo === null || !missingInfo.hasOwnProperty('success_condition')) {
 					return;
 				}
-				var controlName = missInfoDivId + '-question-' + (questionIndex++);
+
+				var questionText = missingInfo.question;
+				var controlName = missInfoDivId + '_question_' + (questionIndex++);
 				vals.forEach(function(val) {
 					if(val.name === controlName) {
-						isQuestionClear = isQuestionClear && evalSuccessCondition(formatQuestionAnswer(missingInfo.data_type, val.value), missingInfo.success_condition)
-						return;
+						var isCurrentQuestionClear = evalSuccessCondition(formatQuestionAnswer(missingInfo.data_type, val.value), missingInfo.success_condition);
+						updateTripRestrictions(questionText, isCurrentQuestionClear); //will delete current question from infoArray after eval
+						i --;
+						infoCount --;
+
+						isQuestionClear = isQuestionClear && isCurrentQuestionClear;
 					}
 				});
-			});
-			var tripPlanDiv = $('#' + tripPlanChartDivId).parents('.single-plan-review');
-			if(isQuestionClear) {
-				tripPlanDiv.find('.single-plan-question').remove();
-				tripPlanDiv.find('.select-column').append("<button class='btn btn-default btn-xs single-plan-select action-button'>Select</button>").click( function() {
-					addClickListenerForPlanSelectButton(this);
-				});
-			} else {
-				tripPlanDiv.remove();
 			}
+			
+			applyChangesAfterTripRestrictionFormSubmission();
 			
 			dialog.modal('hide');
 
@@ -579,10 +583,74 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 		});
 
 		$('#' + missInfoDivId + ' .btn-primary').click(function(){
-			$('#' + missInfoDivId + '-form').submit();
+			$('#' + missInfoDivId + '_form').submit();
 		});
 	}
 
+	/*
+	* update all missing info data of all itineraries
+	* @param {string} questionText
+	* @param {bool} isQuestionCleared
+	*/
+	function updateTripRestrictions(questionText, isQuestionCleared) {
+		for(var tripPlanChartDivId in missingInfoLookup) {
+			var infoArray = missingInfoLookup[tripPlanChartDivId].data;
+			if(infoArray instanceof Array) {
+				var questionIndex = -1;
+				for(var i=0, infoCount=infoArray.length; i<infoCount; i++) {
+					var missInfo = infoArray[i];
+					if(typeof(missInfo) === 'object' && missInfo != null && missInfo.question === questionText) {
+						questionIndex = i;
+						break;
+					}
+				}
+
+				if(questionIndex >= 0) {
+					infoArray.splice(questionIndex, 1);
+					if(isQuestionCleared) {
+						if(infoArray.length === 0) {
+							missingInfoLookup[tripPlanChartDivId].clearCode = 2; //all pass
+						} else {
+							missingInfoLookup[tripPlanChartDivId].clearCode = 1; //partial pass
+						}
+					} else {
+						missingInfoLookup[tripPlanChartDivId].clearCode = -1; //not pass
+					}
+				}
+			}
+		}
+	}
+
+	/*
+	* apply changes: if pass all questions, then make itinerary select-able; if fail one question, then remove this itinerary; otherwise, re-render restriction dialog
+	*/
+	function applyChangesAfterTripRestrictionFormSubmission() {
+		for(var tripPlanChartDivId in missingInfoLookup) {
+			var missingInfoNode = missingInfoLookup[tripPlanChartDivId];
+			var questionClearCode = missingInfoNode.clearCode;
+			var tripPlanDiv = $('#' + tripPlanChartDivId).parents('.single-plan-review');
+			if(questionClearCode === 2) { //all pass
+				tripPlanDiv.find('.single-plan-question').remove();
+				tripPlanDiv.find('.select-column').append("<button class='btn btn-default btn-xs single-plan-select action-button'>Select</button>").click( function() {
+					addClickListenerForPlanSelectButton(this);
+				});
+			} else if(questionClearCode === -1) { //not pass
+				tripPlanDiv.remove();
+			} else if(questionClearCode === 1) { //partial pass
+				//re-render trip restriction modal dialog
+				var missInfoDivId = tripPlanChartDivId + missInfoDivAffix;
+				$('#' + missInfoDivId).html(addTripRestrictionDialogContentHtml(missingInfoNode.data, missInfoDivId));
+				addTripStrictionFormSubmissionListener(missingInfoNode.data, tripPlanChartDivId);
+			}
+		}
+	}
+
+	/*
+	* eval success condition for each question during form submission
+	* @param {string} value
+	* @param {string} successCondition
+	* @return {bool}
+	*/
 	function evalSuccessCondition(value, successCondition) {
 		try{
 			return eval(value + successCondition);
@@ -758,7 +826,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
 		//check if missing info found; if so, need to us Question button instead of Select button
 		var isMissingInfoFound = (missingInfoArray instanceof Array && missingInfoArray.length > 0);
-		var missInfoDivId = missInfoDivPrefix + tripId + "-" + planId; //id of missing info modal dialog
+		var chartDivId = tripPlanDivPrefix + tripId + "_" + planId;
+		var missInfoDivId = chartDivId + missInfoDivAffix; //id of missing info modal dialog
 		
 		//assign data values to each plan div
 		var dataTags = 
@@ -812,6 +881,10 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 			"</div>";
 		//tags for missing info div
 		if(isMissingInfoFound) {
+			missingInfoLookup[chartDivId] = {
+				data: missingInfoArray,
+				clearCode: 0 // 0-default; 1: pass; -1: not pass
+			};
 			tripPlanTags += addTripRestrictionDialogHtml(missingInfoArray, missInfoDivId);
 		}
 		
@@ -825,39 +898,46 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 	 * @return {string} html tags
 	 */
 	function addTripRestrictionDialogHtml(missingInfoArray, missInfoDivId){
-			if(! missingInfoArray instanceof Array || missingInfoArray.length === 0 || typeof(missInfoDivId) != 'string') {
-				return '';
-			}
-			
-			var questionTags = '';
-			var questionIndex = 1;
-			missingInfoArray.forEach(function(missingInfo) {
-				var controlName = missInfoDivId + '-question-' + (questionIndex++);
-				questionTags += addSingleTripRestrictionQuestion(missingInfo, controlName);
-			});
+		if(! missingInfoArray instanceof Array || missingInfoArray.length === 0 || typeof(missInfoDivId) != 'string') {
+			return '';
+		}
 
-			var missInfoTags = 
-			'<div class="modal fade" data-backdrop="static" id="' + missInfoDivId + '" tabindex="-1" role="dialog" aria-labelledby="'+ missInfoDivId + '-title" aria-hidden="true">' +
-			  '<div class="modal-dialog">' +
-			    '<div class="modal-content">' +
-			      '<div class="modal-header">' +
-			        '<button type="button" class="close" aria-hidden="true" style="color: red; opacity: 1;">?</button>' +
-			        '<b class="modal-title" id="' + missInfoDivId + '-title">Trip Restrictions</b>' +
-			      '</div>' +
-			      '<div class="modal-body">' +
-			      	'<form class="form-inline" role="form" id="' + missInfoDivId + '-form">' +
-				      	questionTags + 
-			        '</form>' + 
-			      '</div>' +
-			      '<div class="modal-footer">' +
-			        '<button type="submit" class="btn btn-primary action-button">Update</button>' +
-			        '<button type="button" class="btn btn-default action-button" data-dismiss="modal">Cancel</button>' +
-			      '</div>' +
-			    '</div>' +
-			  '</div>' +
-			'</div>';
+		var missInfoTags = 
+		'<div class="modal fade" data-backdrop="static" id="' + missInfoDivId + '" tabindex="-1" role="dialog" aria-labelledby="'+ missInfoDivId + '_title" aria-hidden="true">' +
+		  addTripRestrictionDialogContentHtml(missingInfoArray, missInfoDivId) +
+		'</div>';
 			
 		return missInfoTags;	
+	}
+
+	function addTripRestrictionDialogContentHtml(missingInfoArray, missInfoDivId){
+		var questionTags = '';
+		var questionIndex = 1;
+		missingInfoArray.forEach(function(missingInfo) {
+			var controlName = missInfoDivId + '_question_' + (questionIndex++);
+			questionTags += addSingleTripRestrictionQuestion(missingInfo, controlName);
+		});
+
+		var contentTags = 
+		  '<div class="modal-dialog">' +
+		    '<div class="modal-content">' +
+		      '<div class="modal-header">' +
+		        '<button type="button" class="close" aria-hidden="true" style="color: red; opacity: 1;">?</button>' +
+		        '<b class="modal-title" id="' + missInfoDivId + '_title">Trip Restrictions</b>' +
+		      '</div>' +
+		      '<div class="modal-body">' +
+		      	'<form class="form-inline" role="form" id="' + missInfoDivId + '_form">' +
+			      	questionTags + 
+		        '</form>' + 
+		      '</div>' +
+		      '<div class="modal-footer">' +
+		        '<button type="submit" class="btn btn-primary action-button">Update</button>' +
+		        '<button type="button" class="btn btn-default action-button" data-dismiss="modal">Cancel</button>' +
+		      '</div>' +
+		    '</div>' +
+		  '</div>';
+
+		return contentTags;
 	}
 
 	/*
@@ -898,13 +978,13 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 				}
 				break;
 			case 'integer':
-				answersTags += '<input type="number" class="form-control" id="' + controlName + '-number" label="false" name="' + controlName +'" required/>';
+				answersTags += '<input type="number" class="form-control" id="' + controlName + '_number" label="false" name="' + controlName +'" required/>';
 				break;
 			case 'date':
-				answersTags += '<input type="text" class="form-control" id="' + controlName + '-date" label="false" name="' + controlName +'" required/>' +
+				answersTags += '<input type="text" class="form-control" id="' + controlName + '_date" label="false" name="' + controlName +'" required/>' +
 									'<script type="text/javascript">' +
 										'$(function () {' +
-											'$("#' + controlName + '-date").datetimepicker({' +
+											'$("#' + controlName + '_date").datetimepicker({' +
 												'defaultDate: new Date(),' +
 												'pickTime: false ' +
 											'});' +
@@ -912,10 +992,10 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 									'</script>';
 				break;
 			case 'datetime':
-				answersTags += '<input type="text" class="form-control" id="' + controlName + '-date" label="false" name="' + controlName +'" required/>' +
+				answersTags += '<input type="text" class="form-control" id="' + controlName + '_datetime" label="false" name="' + controlName +'" required/>' +
 									'<script type="text/javascript">' +
 										'$(function () {' +
-											'$("#' + controlName + '-date").datetimepicker({' +
+											'$("#' + controlName + '_datetime").datetimepicker({' +
 												'defaultDate: new Date()'
 											'});' +
 										'});' +
