@@ -20,7 +20,7 @@ Oneclick::Application.routes.draw do
     resources :users do
       member do
         get   'profile'
-        post  'update'
+        # post  'update'
       end
 
       resources :characteristics, :only => [:new, :create, :edit, :update] do

@@ -45,7 +45,7 @@ module CsHelpers
     a = if user_signed_in?
       [
         {label: t(:plan_a_trip), target: new_user_trip_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:plan_a_trip]},
-        {label: t(:my_travel_profile), target: edit_user_path(get_traveler), locale: I18n.locale, icon: ACTION_ICONS[:travel_profile]},
+        {label: t(:my_travel_profile), target: user_path(get_traveler), locale: I18n.locale, icon: ACTION_ICONS[:travel_profile]},
         {label: t(:my_trips), target: user_trips_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_trips]},
         {label: t(:my_places), target: user_places_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_places]},
       ]
