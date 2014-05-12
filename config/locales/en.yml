@@ -209,6 +209,10 @@ en:
   trip_date: "Trip Date"
   rideshare: 'Rideshare'
   walk: 'Walk'
+  bus: 'Bus'
+  drive: 'Drive'
+  rail: 'Rail'
+  subway: 'Subway'
   transfer: {
     one: '%{count} transfer',
     other: '%{count} transfers',
@@ -285,9 +289,11 @@ en:
   returning: 'returning'
   return_after: "Return after"
   at: 'at'
+  wait_at: 'Wait at'
   fare: "Fare"
   flat_fare_unavailable: "Flat fare unavailable"
   rate: "Rate"
+
   
   # My Places form
   found_x_places: {

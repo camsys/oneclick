@@ -63,7 +63,7 @@ protected
     
     Rails.logger.debug "Parsing SUBWAY leg"
     
-    sub = SubwayLeg.new
+    sub = Leg::SubwayLeg.new
 
     sub.agency_name = leg['agencyName']
     sub.agency_id = leg['agencyId']
@@ -81,7 +81,7 @@ protected
 
     Rails.logger.debug "Parsing RAIL leg"
 
-    sub = RailLeg.new
+    sub = Leg::RailLeg.new
 
     sub.agency_name = leg['agencyName']
     sub.agency_id = leg['agencyId']
@@ -100,7 +100,7 @@ protected
 
     Rails.logger.debug "Parsing BUS leg"
     
-    bus = BusLeg.new
+    bus = Leg::BusLeg.new
 
     bus.agency_name = leg['agencyName']
     bus.agency_id = leg['agencyId']
@@ -119,7 +119,7 @@ protected
 
     Rails.logger.debug "Parsing WALK leg"
     
-    walk = WalkLeg.new    
+    walk = Leg::WalkLeg.new    
     return walk
     
   end
@@ -127,14 +127,14 @@ protected
   def self.parse_car_leg(leg)
     Rails.logger.debug "Parsing CAR leg"
 
-    car = CarLeg.new
+    car = Leg::CarLeg.new
     return car
 
   end
   
   def self.parse_place(place_part)
     
-    place = LegPlace.new
+    place = Leg::LegPlace.new
     place.name = place_part['name']
     place.lat = place_part['lat'].to_f
     place.lon = place_part['lon'].to_f

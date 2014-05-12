@@ -6,13 +6,13 @@ module ApplicationHelper
   include LocaleHelpers
   
   ICON_DICTIONARY = {
-    TripLeg::WALK => 'travelcon-walk',
-    TripLeg::TRAM => 'travelcon-subway',
-    TripLeg::SUBWAY => 'travelcon-subway',
-    TripLeg::RAIL => 'travelcon-rail',
-    TripLeg::BUS => 'travelcon-bus',
-    TripLeg::FERRY => 'travelcon-boat',
-    TripLeg::CAR => 'travelcon-car'
+    Leg::TripLeg::WALK => 'travelcon-walk',
+    Leg::TripLeg::TRAM => 'travelcon-subway',
+    Leg::TripLeg::SUBWAY => 'travelcon-subway',
+    Leg::TripLeg::RAIL => 'travelcon-rail',
+    Leg::TripLeg::BUS => 'travelcon-bus',
+    Leg::TripLeg::FERRY => 'travelcon-boat',
+    Leg::TripLeg::CAR => 'travelcon-car'
   }
 
   # Returns the name of the logo image based on the oneclick configuration

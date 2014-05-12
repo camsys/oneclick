@@ -44,7 +44,7 @@ class Itinerary < ActiveRecord::Base
   # trips that only include a WALK leg
   def is_walk
     legs = get_legs
-    return legs.size == 1 && legs.first.mode == TripLeg::WALK
+    return legs.size == 1 && legs.first.mode == Leg::TripLeg::WALK
   end
 
   # Determines whether we are using rail, bus and rail, or just bus for the transit trips

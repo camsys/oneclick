@@ -208,6 +208,10 @@ es:
   trip_date: "[es130]Trip Date[/es]"
   rideshare: 'Para Compartir el Viaje'
   walk: 'Caminar'  
+  bus: '[es211]Bus[/es]'
+  drive: '[es212]Drive[/es]'
+  rail: '[es213]Rail[/es]'
+  subway: '[es214]Subway[/es]'
   transfer: {
       one: '%{count} conección',
       other: '%{count} conecciones',
@@ -285,6 +289,7 @@ es:
   returning: '[es172]returning[/es]'
   return_after: "[es199]Return after[/es]"
   at: '[es173]at[/es]'
+  wait_at: '[es288]Wait at[/es]'
   fare: "[es198]Fare[/es]"
   flat_fare_unavailable: "[es199]Flat fare unavailable[/es]"
   rate: "[es]Rate[/es]"

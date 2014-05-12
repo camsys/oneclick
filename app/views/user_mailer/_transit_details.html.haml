@@ -13,10 +13,10 @@
       %td.itinerary_icons
         %i.transit_itinerary_icons.mode_icon_formatting{:class => get_mode_icon(leg.mode)}
       %td
-        -if leg.mode == TripLeg::WALK
+        -if leg.mode == Leg::TripLeg::WALK
           .itinerary_text
             %p= leg.mode + ' ' + t(:to) + ' ' + leg.end_place.name
-        -elsif leg.mode == TripLeg::CAR
+        -elsif leg.mode == Leg::TripLeg::CAR
           .itinerary_text
             %p= "Drive or taxi to " + ' ' + t(:to) + ' ' + leg.end_place.name
         -else
