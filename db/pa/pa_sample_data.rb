@@ -155,11 +155,11 @@ def add_providers_and_services
 
         #Add geographic restrictions
         ['York', 'Adams'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
           ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
         end
         ['York', 'Adams'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
           ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
         end
 
@@ -195,13 +195,13 @@ def add_providers_and_services
 
         #Add geographic restrictions
         ['York'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
           ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
         end
 
         #Add geographic restrictions
         ['York'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
           ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
         end
 
@@ -228,13 +228,13 @@ def add_providers_and_services
 
         #Add geographic restrictions
         ['York', 'Adams'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
           ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
         end
 
         #Add geographic restrictions
         ['York', 'Adams'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
           ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
         end
 
@@ -259,13 +259,13 @@ def add_providers_and_services
 
         #Add geographic restrictions
         ['York', 'Adams', 'Franklin', 'Fulton'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
           ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
         end
 
         #Add geographic restrictions
         ['York', 'Adams', 'Franklin', 'Fulton'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
           ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
         end
 
@@ -290,13 +290,13 @@ def add_providers_and_services
 
         #Add geographic restrictions
         ['York', 'Adams', 'Franklin', 'Fulton'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
           ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
         end
 
         #Add geographic restrictions
         ['York', 'Adams', 'Franklin', 'Fulton'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
           ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
         end
 
@@ -444,7 +444,7 @@ def add_dav
 
     #Add geographic restrictions
     ['York', 'Adams'].each do |z|
-      c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+      c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
       ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
     end
 
@@ -481,11 +481,11 @@ def add_rabbit_general
 
   #Add geographic restrictions
   ['York', 'Adams'].each do |z|
-    c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+    c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
     ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
   end
   ['York', 'Adams'].each do |z|
-    c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+    c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
     ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
   end
 
