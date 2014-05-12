@@ -140,113 +140,7 @@ def add_providers_and_services
       when "1" #Rabbit Transit
 
         #Create service Senior Shared Ride
-        service = Service.create(name: 'Senior Shared Ride', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
-        service.booking_service_code = 'ecolane'
-        #Add Schedules
-        (1..5).each do |n|
-          Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
-        end
-        Schedule.create(service: service, start_seconds:7.25*3600, end_seconds: 21.75*3600, day_of_week: 6)
-        Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
-        #Trip purpose requirements
-        [medical, cancer, general, grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
-        end
-
-        #Trip purpose requirements
-        [general, medical, cancer, grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
-        end
-
-        #Add geographic restrictions
-        ['York', 'Adams'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
-        end
-        ['York', 'Adams'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
-        end
-
-        #Traveler Characteristics Requirements
-        ServiceCharacteristic.create(service: service, characteristic: age, value: '65', value_relationship_id: 4)
-
-        #Traveler Accommodations Requirements
-        [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n)
-        end
-
-        #Shared Ride for Ages 60-64
-        service = Service.create(name: 'Shared Ride for Ages 60-64', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
-        service.booking_service_code = 'ecolane'
-        #Add Schedules
-        (1..5).each do |n|
-          Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
-        end
-        Schedule.create(service: service, start_seconds:7.25*3600, end_seconds: 21.75*3600, day_of_week: 6)
-        Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
-        #Trip purpose requirements
-        [medical, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
-        end
-
-        #Add geographic restrictions
-        ['York', 'Adams'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
-        end
-        ['York', 'Adams'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
-        end
-
-        #Traveler Characteristics Requirements
-        ServiceCharacteristic.create(service: service, characteristic: age, value: '60', value_relationship_id: 4)
-        ServiceCharacteristic.create(service: service, characteristic: age, value: '64', value_relationship_id: 6)
-
-        #Traveler Accommodations Requirements
-        [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n)
-        end
-
-        #Medical Assistance Transportation Program
-        service = Service.create(name: 'Medical Assistance Transportation Program', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
-        service.booking_service_code = 'ecolane'
-        #Add Schedules
-        (1..5).each do |n|
-          Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
-        end
-        Schedule.create(service: service, start_seconds:7.25*3600, end_seconds: 21.75*3600, day_of_week: 6)
-        Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
-        #Trip purpose requirements
-        [medical, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
-        end
-
-        #Add geographic restrictions
-        ['York', 'Adams'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
-        end
-        ['York', 'Adams'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
-        end
-        ['York', 'Adams'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'residence')
-        end
-
-        #Traveler Characteristics Requirements
-        ServiceCharacteristic.create(service: service, characteristic: matp, value: 'true')
-
-        #Traveler Accommodations Requirements
-        [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n)
-        end
-
-        #ADA Complementary
-        service = Service.create(name: 'ADA Complementary Service', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        service = Service.create(name: 'Rabbit Shared Ride', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
         service.booking_service_code = 'ecolane'
         #Add Schedules
         (1..5).each do |n|
@@ -270,45 +164,16 @@ def add_providers_and_services
         end
 
         #Traveler Characteristics Requirements
-        ServiceCharacteristic.create(service: service, characteristic: ada_eligible, value: 'true')
-
-        #Traveler Accommodations Requirements
-        [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n)
-        end
-
-        #Service for Persons with Disabilities
-        service = Service.create(name: 'Service for Persons with Disabilities', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
-        service.booking_service_code = 'ecolane'
-        #Add Schedules
-        #Add Schedules
-        (1..5).each do |n|
-          Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
-        end
-        Schedule.create(service: service, start_seconds:7.25*3600, end_seconds: 21.75*3600, day_of_week: 6)
-        Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
-        #Trip purpose requirements
-        [medical, cancer, general, grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
-        end
-
-        #Trip purpose requirements
-        [medical, cancer, general, grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
-        end
-
-        #Add geographic restrictions
-        ['York', 'Adams'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
-        end
-        ['York', 'Adams'].each do |z|
-          c = GeoCoverage.new(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
-        end
+        ServiceCharacteristic.create(service: service, characteristic: age, value: '60', value_relationship_id: 4, group: 1)
 
         #Traveler Characteristics Requirements
-        ServiceCharacteristic.create(service: service, characteristic: disabled, value: 'true')
+        ServiceCharacteristic.create(service: service, characteristic: matp, value: 'true', group: 2)
+
+        #Traveler Characteristics Requirements
+        ServiceCharacteristic.create(service: service, characteristic: ada_eligible, value: 'true', group: 3)
+
+        #Traveler Characteristics Requirements
+        ServiceCharacteristic.create(service: service, characteristic: disabled, value: 'true', group: 4)
 
         #Traveler Accommodations Requirements
         [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
