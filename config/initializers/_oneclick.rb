@@ -13,6 +13,8 @@ ENV['SESSION_ALERT_TIMEOUT'] ||= '30'
 
 Oneclick::Application.config.default_zoom = nil
 Oneclick::Application.config.max_delay_from_desired = 2.hours
+Oneclick::Application.config.duration_factor = 2.0
+Oneclick::Application.config.minimum_paratransit_duration = 2.hours
 
 case ENV['BRAND'] || 'arc'
 when 'arc'

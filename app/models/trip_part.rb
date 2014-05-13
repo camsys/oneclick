@@ -187,15 +187,57 @@ class TripPart < ActiveRecord::Base
     itineraries = eh.get_accommodating_and_eligible_services_for_traveler(self)
     itineraries = eh.get_eligible_services_for_trip(self, itineraries)
 
-    itineraries.each do |itinerary|
+    itineraries = itineraries.collect do |itinerary|
       new_itinerary = Itinerary.new(itinerary)
       fh.calculate_fare(new_itinerary)
-      self.itineraries << new_itinerary
+      new_itinerary
     end
+
+    unless itineraries.empty?
+      unless ENV['SKIP_DYNAMIC_PARATRANSIT_DURATION']
+        begin
+          tp = TripPlanner.new
+          arrive_by = !is_depart
+          result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],
+                                                      [to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, 'CAR')
+          base_duration = response['itineraries'].first['duration'] / 1000.0
+        rescue Exception => e
+          Rails.logger.error "Exception #{e} while getting trip duration."
+          base_duration = nil
+        end
+      else
+        Rails.logger.info "SKIP_DYNAMIC_PARATRANSIT_DURATION is set, skipping it"
+      end
+      Rails.logger.info "Base duration: #{base_duration} minutes"
+      itineraries.each do |i|
+        i.duration_estimated = true
+        if base_duration.nil?
+          i.duration = Oneclick::Application.config.minimum_paratransit_duration
+        else
+          i.duration =
+            [base_duration * Oneclick::Application.config.duration_factor,
+             Oneclick::Application.config.minimum_paratransit_duration].max
+        end
+        Rails.logger.info "Factored duration: #{i.duration} minutes"
+        if is_depart
+          i.start_time = trip_time
+          i.end_time = i.start_time + i.duration
+        else
+          i.end_time = trip_time
+          i.start_time = i.end_time - i.duration
+        end
+        Rails.logger.info "AFTER"
+        Rails.logger.info i.duration.ai
+        Rails.logger.info i.start_time.ai
+        Rails.logger.info i.end_time.ai
+      end
+    end
+
+    self.itineraries += itineraries
 
   end
 
- def create_rideshare_itineraries
+  def create_rideshare_itineraries
     tp = TripPlanner.new
     trip.restore_trip_places_georaw
     result, response = tp.get_rideshare_itineraries(from_trip_place, to_trip_place, trip_time)
@@ -204,7 +246,7 @@ class TripPart < ActiveRecord::Base
       self.itineraries << Itinerary.new(itinerary)
     else
       self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s,
-        'mode' => Mode.rideshare)
+                                        'mode' => Mode.rideshare)
     end
   end
 

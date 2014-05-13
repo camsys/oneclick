@@ -2,7 +2,7 @@ class ItinerarySerializer < ActiveModel::Serializer
   include CsHelpers
 
   attributes :id, :missing_information, :mode, :mode_name, :service_name, :provider_name, :contact_information,
-    :cost, :duration, :transfers, :start_time, :end_time, :legs, :service_window
+    :cost, :duration, :transfers, :start_time, :end_time, :legs, :service_window, :duration_estimated
 
   def mode
     object.mode.code rescue nil
@@ -52,7 +52,7 @@ class ItinerarySerializer < ActiveModel::Serializer
     when Mode.rideshare
       tp.is_depart ? nil : tp.trip_time
     else
-      object.start_time
+      object.end_time
     end
   end
 
