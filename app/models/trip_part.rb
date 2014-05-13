@@ -131,7 +131,10 @@ class TripPart < ActiveRecord::Base
       check_for_long_walks(itineraries)
     end
 
-    hide_duplicate_fixed_route(itineraries)
+    # Don't hide duplicate itineraries in new UI
+    # See https://www.pivotaltracker.com/story/show/71254872
+    # TODO This will probably break kiosk, will add story
+    # hide_duplicate_fixed_route(itineraries)
 
   end
 
@@ -150,6 +153,8 @@ class TripPart < ActiveRecord::Base
     end
   end
 
+  # Note not called for now.
+  # See https://www.pivotaltracker.com/story/show/71254872
   def hide_duplicate_fixed_route itineraries
     seen = {}
     itineraries.each do |i|
