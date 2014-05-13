@@ -705,6 +705,6 @@ add_rabbit_general
 add_urls_to_pa
 add_cms
 add_booking_service_codes
-create_ecolane_user
 collapse_rabbit_services
+create_ecolane_user
 puts 'Done Adding PA Sample Data'

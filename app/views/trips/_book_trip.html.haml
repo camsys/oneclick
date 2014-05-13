@@ -69,7 +69,7 @@
 
               -elsif @trip.outbound_part.selected_itinerary.booking_confirmation
                 .row-fluid
-                  ="Your trip has successfully been booked with"
+                  ="Success! Your trip has been booked."
                   %b=@trip.outbound_part.selected_itinerary.service.name
                 .row-fluid
                   ="Your estimated departure time is " + @outbound_pu_time.to_s
@@ -166,7 +166,7 @@
 :javascript
   $('#book_outbound_button').on('click', function(event) {
 
-    var text = "Requesting trip with " + "<b>#{@trip.outbound_part.selected_itinerary.service.name}</b>" + ". Please wait..."
+    var text = "Requesting trip with " + "<b>#{@trip.outbound_part.selected_itinerary.service.nil? ? 'none' : @trip.outbound_part.selected_itinerary.service.name}</b>" + ". Please wait..."
     $('#book_outbound_trip').html(text);
 
     $.ajax({
@@ -184,7 +184,7 @@
           var text = "";
           $('#book_outbound_trip').html(text);
 
-          var text1 = "Your trip has successfully been booked with <b>" + "#{@trip.outbound_part.selected_itinerary.service.name}" + '</b>.';
+          var text1 = "Your trip has successfully been booked.";
           $('#outbound_results1').html(text1);
           var text2 = "Your estimated departure time is " + result[1]['pu_time'];
           $('#outbound_results2').html(text2);
@@ -222,7 +222,7 @@
 
   $('#book_return_button').on('click', function(event) {
 
-      var text = "Requesting trip with " + "<b>#{@trip.return_part.selected_itinerary.service.name}</b>" + ". Please wait."
+      var text = "Requesting trip with " + "<b>#{@trip.return_part.selected_itinerary.service.nil? ? 'none' : @trip.return_part.selected_itinerary.service.name}</b>" + ". Please wait."
       $('#book_return_trip').html(text);
 
       $.ajax({
@@ -240,7 +240,7 @@
             var text = "";
             $('#book_return_trip').html(text);
 
-            var text1 = "Your trip has successfully been booked with <b>" + "#{@trip.return_part.selected_itinerary.service.name}" + '</b>.';
+            var text1 = "Success! Your trip has been booked.";
             $('#return_results1').html(text1);
             var text2 = "Your estimated departure time is " + result[1]['pu_time'];
             $('#return_results2').html(text2);
