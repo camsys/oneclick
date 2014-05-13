@@ -48,7 +48,7 @@ module LeafletHelper
     # add any circles
     js << "m.addCircles(#{options[:circles]});" unless options[:circles].nil?
     # add any polylines
-    js << "m.addPolylines(#{options[:polylines]});" unless options[:polylines].nil?
+    js << "m.replacePolylines(#{options[:polylines]}, false);" unless options[:polylines].nil?
     # set the map bounds
     js << "m.setMapBounds(#{MAP_BOUNDS[0][0]},#{MAP_BOUNDS[0][1]},#{MAP_BOUNDS[1][0]},#{MAP_BOUNDS[1][1]});"
     js << "m.cacheMapBounds(#{MAP_BOUNDS[0][0]},#{MAP_BOUNDS[0][1]},#{MAP_BOUNDS[1][0]},#{MAP_BOUNDS[1][1]});"
