@@ -2,12 +2,15 @@
   %label.col-sm-12{style: "padding: 0px;"}
     = itinerary.trip_part.description
   = render :partial => 'trip_plan_summary_header', :locals => { :itinerary => itinerary }
-  - if itinerary.is_mappable
+  - if not itinerary.is_mappable
+    .col-sm-12{style: "height: 300px; background: white; border-radius: 5px;"}
+      = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
+  - else
     .col-sm-6{style: "background: white; margin-bottom: 5px; border-radius: 5px; padding: 5px;"}
       = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
     .col-sm-6{style: "height: 300px; background: white; border-radius: 5px; padding: 0px;"}
-      = render :partial => 'map_details', :locals => { :itinerary => itinerary, :mapid => ('plan_map_' + itinerary.id.to_s) }
-      /= LeafletMap({:mapid => ('plan_map_' + itinerary.id.to_s), :markers => create_itinerary_markers(itinerary).to_json, :polylines => create_itinerary_polylines(itinerary.get_legs).to_json, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "well well-small", :style => "height:300px;" })
+      /= render :partial => 'map_details', :locals => { :itinerary => itinerary, :mapid => ('plan_map_' + itinerary.id.to_s) }
+      = LeafletMap({:mapid => ('plan_map_' + itinerary.id.to_s), :markers => create_itinerary_markers(itinerary).to_json, :polylines => create_itinerary_polylines(itinerary.get_legs).to_json, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "well well-small", :style => "height:300px;" })
       :javascript
         $(function(){
           if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.#{'plan_map_' + itinerary.id.to_s} != null) { 
@@ -26,6 +29,3 @@
             }
           }
         });
-  - else
-    .col-sm-12{style: "height: 300px; background: white; border-radius: 5px;"}
-      = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }

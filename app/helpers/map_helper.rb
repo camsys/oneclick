@@ -52,7 +52,7 @@ module MapHelper
       "name" => addr[:name],
       "iconClass" => icon,
       "title" =>  address,
-      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'fa-building-o', :name => addr[:name], :address => address} })
+      "description" => ApplicationController.new.render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'fa-building-o', :name => addr[:name], :address => address} })
     }
   end
 
