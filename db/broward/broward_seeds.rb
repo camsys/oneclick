@@ -33,13 +33,20 @@ include SeedsHelpers
 {klass:ServiceType,  code: 'paratransit', name: 'Paratransit', note: 'This is a general purpose paratransit service.'},
 {klass:ServiceType,  code: 'volunteer', name: 'Volunteer', note: 'This is a volunteer service'},
 {klass:ServiceType,  code: 'nemt', name: 'Non-Emergency Medical Service', note: 'This is a paratransit service only to be used for medical trips.'},
-#trip_purposes
+
+  # Modes
+ { klass: Mode, active: 1, name: 'Transit', code: 'mode_transit'},
+ { klass: Mode, active: 1, name: 'Paratransit', code: 'mode_paratransit', elig_dependent: true},
+ { klass: Mode, active: 1, name: 'Taxi', code: 'mode_taxi'},
+
+ #trip_purposes
 {klass:TripPurpose,  code: 'work', name: 'Work', note: 'Work-related trip.', active: 1, sort_order: 2},
 {klass:TripPurpose,  code: 'medical', name: 'Medical', note: 'General medical trip.', active: 1, sort_order: 2},
 {klass:TripPurpose,  code: 'cancer', name: 'Cancer Treatment', note: 'Trip to receive cancer treatment.', active: 1, sort_order: 2},
 {klass:TripPurpose,  code: 'general', name: 'General Purpose', note: 'General purpose/unspecified purpose.', active: 1, sort_order: 1},
 {klass:TripPurpose,  code: 'senior', name: 'Visit Senior Center', note: 'Trip to visit Senior Center.', active: 1, sort_order: 2},
-{klass:TripPurpose,  code: 'grocery', name: 'Grocery Trip', note: 'Grocery shopping trip.', active: 1, sort_order: 2}].each do |record|
+ {klass:TripPurpose,  code: 'grocery', name: 'Grocery Trip', note: 'Grocery shopping trip.', active: 1, sort_order: 2}
+].each do |record|
   structured_hash = structure_records_from_flat_hash record
   build_internationalized_records structured_hash
 end

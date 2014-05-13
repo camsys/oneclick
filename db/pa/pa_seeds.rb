@@ -23,6 +23,12 @@ include SeedsHelpers
  { klass: Characteristic, characteristic_type: 'personal_factor', code: 'age', name: 'Age is', note: "What is your birth year?", datatype: 'integer',
     desc: 'You must be 65 or older to use this service. Please confirm your birth year.'},
 {klass:Characteristic, characteristic_type: 'personal_factor', code: 'walk_distance', name: 'Walk distance', note: 'Are you able to comfortably walk for 5, 10, 15, 20, 25, 30 minutes?', datatype: 'disabled',desc: 'TK'},
+
+ # Modes
+ { klass: Mode, active: 1, name: 'Transit', code: 'mode_transit'},
+ { klass: Mode, active: 1, name: 'Paratransit', code: 'mode_paratransit', elig_dependent: true},
+ { klass: Mode, active: 1, name: 'Taxi', code: 'mode_taxi'},
+
 #Traveler accommodations 
 {klass:Accommodation, code: 'folding_wheelchair_accessible', name: 'Folding wheelchair accessible.', note: 'Do you need a vehicle that has space for a folding wheelchair?', datatype: 'bool'}, 
 {klass:Accommodation, code: 'motorized_wheelchair_accessible', name: 'Motorized wheelchair accessible.', note: 'Do you need a vehicle than has space for a motorized wheelchair?', datatype: 'bool'}, 
@@ -37,7 +43,8 @@ include SeedsHelpers
 {klass:TripPurpose, code: 'medical', name: 'Medical', note: 'General medical trip.', active: 1, sort_order: 2}, 
 {klass:TripPurpose, code: 'cancer', name: 'Cancer Treatment', note: 'Trip to receive cancer treatment.', active: 1, sort_order: 2}, 
 {klass:TripPurpose, code: 'general', name: 'General Purpose', note: 'General purpose/unspecified purpose.', active: 1, sort_order: 1}, 
-{klass:TripPurpose, code: 'grocery', name: 'Grocery Trip', note: 'Grocery shopping trip.', active: 1, sort_order: 2}].each do |record|
+ {klass:TripPurpose, code: 'grocery', name: 'Grocery Trip', note: 'Grocery shopping trip.', active: 1, sort_order: 2}
+].each do |record|
   structured_hash = structure_records_from_flat_hash record
   build_internationalized_records structured_hash
 end
