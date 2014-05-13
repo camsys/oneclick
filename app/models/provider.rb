@@ -30,4 +30,8 @@ class Provider < ActiveRecord::Base
     end
   end
 
+  def get_attr(attribute_sym)
+    return [attribute_sym, self.send(attribute_sym)]
+  end
+
 end

@@ -154,7 +154,7 @@ module ApplicationHelper
     return if itinerary.nil?
     
     mode_code = get_pseudomode_for_itinerary(itinerary)
-
+    #is this not a switch case?  Saves a few evaluations that way...
     partial = if mode_code.in? ['transit', 'rail', 'bus', 'railbus', 'drivetransit']
       'transit_details'
     elsif mode_code == 'paratransit'

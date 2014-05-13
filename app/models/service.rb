@@ -136,5 +136,23 @@ class Service < ActiveRecord::Base
       return !keep
     end
   end
+
+  #return an array of the contact info for a service if defined, its provider if not defined at the service, or nil where not answered at either level
+  def get_contact_info_array
+    rtn = []
+    rtn << get_attr(:name)
+    rtn << [:provided_by, self.provider.name] # Special case, as the symbol doesn't match the attribute
+    rtn << get_attr(:phone)
+    rtn << get_attr(:email)
+    rtn << get_attr(:url)
+  end
+
+  def get_attr(attribute_sym)
+    if val = self.send(attribute_sym) #call "phone" for this service.
+      return [attribute_sym, val] #return if it exists, else call it on provider
+    else
+      return self.provider.get_attr(attribute_sym)
+    end
+  end
   
 end
