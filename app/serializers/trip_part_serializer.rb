@@ -10,7 +10,16 @@ class TripPartSerializer < ActiveModel::Serializer
   end
 
   def itineraries
-    object.itineraries.valid.visible
+    itineraries = object.itineraries.valid.visible
+    return itineraries if Oneclick::Application.config.max_delay_from_desired.nil?
+    target_time = (start_time || end_time) + Oneclick::Application.config.max_delay_from_desired
+    itineraries.select do |i|
+      if object.is_depart
+        i.start_time.nil? || (i.start_time <= target_time)
+      else
+        i.end_time.nil? || (i.end_time <= target_time)
+      end
+    end
   end
 
   def round_trip trip
