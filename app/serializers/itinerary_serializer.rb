@@ -1,7 +1,7 @@
 class ItinerarySerializer < ActiveModel::Serializer
   include CsHelpers
 
-  attributes :id, :missing_information, :mode, :mode_name, :service_name, :contact_information,
+  attributes :id, :missing_information, :mode, :mode_name, :service_name, :provider_name, :contact_information,
     :cost, :duration, :transfers, :start_time, :end_time, :legs, :service_window
 
   def mode
@@ -10,6 +10,10 @@ class ItinerarySerializer < ActiveModel::Serializer
 
   def mode_name
     get_trip_summary_title(object)
+  end
+
+  def provider_name
+    object.service.provider.name rescue nil
   end
 
   def missing_information
@@ -56,13 +60,19 @@ class ItinerarySerializer < ActiveModel::Serializer
     fare = object.cost || (object.service.fare_structures.first rescue nil)
     if fare.nil?
       {price: nil, comments: 'Unknown'} # TODO I18n
-    else
-      if fare.respond_to? :base
-        {price: fare.base.to_f, comments: fare.desc}
-      else
-        {price: fare.to_f, comments: nil}
+    elsif fare.respond_to? :fare_type
+      case fare.fare_type
+      when FareStructure::FLAT
+        {price: fare.base.to_f, comments: nil}
+      when FareStructure::MILEAGE
+        {price: fare.base.to_f, comments: "+#{fare.rate}/mile"} # TODO currency
+      when FareStructure::COMPLEX
+        {price: nil, comments: fare.desc}
       end
+    else
+      {price: fare.to_f, desc: nil}
     end
+
   end
 
   def legs

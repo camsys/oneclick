@@ -9,4 +9,8 @@ class FareStructure < ActiveRecord::Base
   # 2: Complex Fares that Cannot be Calculated.  :desc will contain a short description explaining the fare structure
   # attr_accessible :service, :fare_type, :base, :rate, :desc
 
+  FLAT = 0
+  MILEAGE = 1
+  COMPLEX = 2
+
 end
