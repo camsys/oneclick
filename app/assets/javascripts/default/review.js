@@ -562,11 +562,11 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             for (var i = 0, infoCount = missingInfoArray.length; i < infoCount; i++) {
                 var missingInfo = missingInfoArray[i];
                 if (!isQuestionClear) {
-                    return;
+                    continue;
                 }
 
                 if (typeof(missingInfo) != 'object' || missingInfo === null || !missingInfo.hasOwnProperty('success_condition')) {
-                    return;
+                    continue;
                 }
 
                 var questionText = missingInfo.question;
