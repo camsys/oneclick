@@ -9,6 +9,10 @@ class TripPartSerializer < ActiveModel::Serializer
     super(TripPartDecorator.new(object), options)
   end
 
+  def itineraries
+    object.itineraries.valid.visible
+  end
+
   def round_trip trip
     trip.is_return_trip ? I18n.t(:round_trip) : I18n.t(:one_way)
   end
