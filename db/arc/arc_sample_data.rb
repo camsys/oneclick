@@ -71,10 +71,9 @@ end
 
 def add_ancillary_services
   providers = [
-    # TODO correct URLs
-    {name: 'MARTA', url: 'http://www.marta.com'},
-    {name: 'GRTA', url: 'http://www.grta.com'},
-    {name: 'CCT', url: 'http://www.cct.com'},
+    {name: 'MARTA', url: 'http://www.itsmarta.com'},
+    {name: 'GRTA', url: 'http://www.grta.org'},
+    {name: 'CCT', url: 'http://dot.cobbcountyga.gov/cct/'},
   ]
 
   s = ServiceType.where(code: 'fixed').first

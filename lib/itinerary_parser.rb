@@ -68,7 +68,14 @@ protected
     sub = Leg::SubwayLeg.new
 
     sub.agency_name = leg['agencyName']
-    sub.agency_id = leg['agencyId']
+    st = ServiceType.where(code: 'fixed').first
+    agencyId = leg['agencyId']
+    s = Service.where(external_id: agencyId, service_type: st).first
+    if s
+      sub.agency_id = s.name
+    else
+      sub.agency_id = leg['agencyId']
+    end
 
     sub.head_sign = leg['headsign']
     sub.route = leg['route']
@@ -86,7 +93,15 @@ protected
     sub = Leg::RailLeg.new
 
     sub.agency_name = leg['agencyName']
-    sub.agency_id = leg['agencyId']
+
+    st = ServiceType.where(code: 'fixed').first
+    agencyId = leg['agencyId']
+    s = Service.where(external_id: agencyId, service_type: st).first
+    if s
+      sub.agency_id = s.name
+    else
+      sub.agency_id = leg['agencyId']
+    end
 
     sub.head_sign = leg['headsign']
     sub.route = leg['route']
@@ -105,7 +120,15 @@ protected
     bus = Leg::BusLeg.new
 
     bus.agency_name = leg['agencyName']
-    bus.agency_id = leg['agencyId']
+
+    st = ServiceType.where(code: 'fixed').first
+    agencyId = leg['agencyId']
+    s = Service.where(external_id: agencyId, service_type: st).first
+    if s
+      bus.agency_id = s.name
+    else
+      bus.agency_id = leg['agencyId']
+    end
 
     bus.head_sign = leg['headsign']
     bus.route = leg['route']

@@ -695,6 +695,31 @@ def collapse_rabbit_services
   end
 end
 
+def add_ancillary_services
+
+  #Transit Service
+  #Rabbit
+  p = Provider.find_by_external_id('1')
+  s = ServiceType.where(code: 'fixed').first
+  service = Service.where(provider: p, service_type: s, external_id: '210').first_or_create
+  service.name = "Rabbit Transit"
+  service.save
+
+  #Lebanon
+  p = Provider.where(external_id: 'lebanon_transit').first_or_create
+  p.name = 'Lebanon Transit'
+  p.url ='http://dot.cobbcountyga.gov/cct/'
+  p.save
+  service = Service.where(provider: p, service_type: s, external_id: '209').first_or_create
+  service.name = "Lebanon Transit"
+  service.save
+
+  #Taxi Service
+  provider = Provider.create!({name: 'Taxi services'})
+  provider.services.create!({name: 'Taxi services', active: false,
+      service_type: ServiceType.where(code: 'taxi').first})
+end
+
 ### MAIN ###
 puts 'Adding PA Sample Data'
 add_users_and_places
@@ -707,4 +732,5 @@ add_cms
 add_booking_service_codes
 collapse_rabbit_services
 create_ecolane_user
+add_ancillary_services
 puts 'Done Adding PA Sample Data'
