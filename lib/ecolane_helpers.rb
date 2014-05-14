@@ -1,6 +1,6 @@
 require 'net/http'
 require 'openssl'
-require 'Indirizzo'
+require 'indirizzo'
 
 class EcolaneHelpers
 
