@@ -1,6 +1,6 @@
 class TripSerializer < ActiveModel::Serializer
   self.root = false
-  
+
   attributes :id, :status
   has_many :trip_parts
 
@@ -13,12 +13,12 @@ class TripSerializer < ActiveModel::Serializer
       {
         status: 0,
         status_text: e.message
-        }
-      end
+      }
     end
-
-    def status
-      1
-    end
-
   end
+
+  def status
+    1
+  end
+
+end

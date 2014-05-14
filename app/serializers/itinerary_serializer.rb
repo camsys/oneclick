@@ -3,6 +3,23 @@ class ItinerarySerializer < ActiveModel::Serializer
 
   attributes :id, :missing_information, :mode, :mode_name, :service_name, :provider_name, :contact_information,
     :cost, :duration, :transfers, :start_time, :end_time, :legs, :service_window, :duration_estimated
+  attributes :server_status, :server_message, :failed, :hidden
+  attr_accessor :debug
+
+  def initialize(object, options={})
+    super(object, options)
+    @debug = options[:debug]
+    puts "initialize: #{@debug}"
+  end
+
+  def filter(keys)
+    unless @debug
+      keys
+    else
+      keys - [:server_status, :server_message, :failed, :hidden]
+    end
+  end
+
 
   def mode
     object.mode.code rescue nil

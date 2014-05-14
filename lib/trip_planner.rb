@@ -217,10 +217,12 @@ class TripPlanner
     rescue Exception=>e
       Honeybadger.notify(
         :error_class   => "Service failure",
-        :error_message => "Service failure: rideshare: #{e.message}",
+        :error_message => "Service failure: rideshare: #{e.message}, URL was #{service_url}",
         :parameters    => {service_url: service_url, query: query}
       )
-      Rails.logger.warn e.to_s
+      Rails.logger.warn "Service failure: rideshare: #{e.message}"
+      Rails.logger.warn "URL was #{service_url}"
+      Rails.logger.warn e.backtrace.join("\n")
       return false, {'id'=>500, 'msg'=>e.to_s, 'mode' => 'rideshare'}
     end    
     if results.size > 0
