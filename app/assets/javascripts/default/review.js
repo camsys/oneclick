@@ -639,9 +639,11 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             var tripPlanDiv = $('#' + tripPlanChartDivId).parents('.single-plan-review');
             if (questionClearCode === 2) { //all pass
                 tripPlanDiv.find('.single-plan-question').remove();
-                tripPlanDiv.find('.select-column').append("<button class='btn btn-default btn-xs single-plan-select action-button'>Select</button>").click(function() {
-                    selectItineraryByClickingSelectButton(this);
-                });
+                if(tripPlanDiv.find('.single-plan-select').length === 0) {
+                    tripPlanDiv.find('.select-column').append("<button class='btn btn-default btn-xs single-plan-select action-button'>Select</button>").click(function() {
+                        selectItineraryByClickingSelectButton(this);
+                    });
+                }
             } else if (questionClearCode === -1) { //not pass
                 tripPlanDiv.remove();
             } else if (questionClearCode === 1) { //partial pass
