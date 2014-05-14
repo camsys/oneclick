@@ -362,6 +362,7 @@ en:
   trip_needs_more_accommodations: "These accommodations are not met by this service"
   service_notice_not_required: "This service does not require advanced notice to book a trip"
   no_cost_for_service:  "No cost for this service"
+  cost_details: "Cost Details"
   addl_cost_details: "Additional Cost Details"
   click_for_cost_details: 'Click for cost details'
   view_trip_details: "View trip details so that you can call the provider."
@@ -454,6 +455,7 @@ en:
   email_addresses: 'Email addresses'
   start: "START: "
   start_time: "Start Time"
+  times: "Times"
   end_time: "End Time"
   walk_time: "Walk Time"
   transit_time: "Transit Time"

@@ -360,6 +360,7 @@ es:
   trip_needs_more_accommodations: "[es360]These accommodations are not met by this service[/es]"
   service_notice_not_required: "[es240]This service does not require advanced notice to book a trip[/es]"
   no_cost_for_service:  "[es281]No cost for this service[/es]"
+  cost_details: "[es362]Cost Details[/es]"
   addl_cost_details: "[es299]Additional Cost Details[/es]"
   click_for_cost_details: '[es]Click for cost details[es]'
   view_trip_details: "[es298]View trip details so that you can call the provider.[/es]"
@@ -453,6 +454,7 @@ es:
   email_addresses: 'Correos electrónicos'
   start: "START: "
   start_time: "[es324]Start Time[/es]"
+  times: "[es456]Times[/es]"
   end_time: "[es325]End Time[/es]"
   walk_time: "es[326]Walk Time[/es]"
   transit_time: "[es327]Transit Time[/es]"
