@@ -26,6 +26,7 @@
 // $light-orange: #ff8c00;
 // $navbar-default-color: $light-orange;
 
+@import 'brand-lib';
 @import "bootstrap";
 @import "bootstrap/theme";
 
@@ -45,4 +46,5 @@
 @import "places";
 @import "typeahead.js-bootstrap";
 @import 'bootstrap-datetimepicker';
-@import ' dataTables/jquery.dataTables.bootstrap3';
+@import 'dataTables/jquery.dataTables.bootstrap3';
+@import 'brand'

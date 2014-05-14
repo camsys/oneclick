@@ -6,6 +6,17 @@ GIT
     twitter-bootstrap-rails-confirm (1.0.2)
 
 GIT
+  remote: git://github.com/camsys/sass-rails.git
+  revision: baf4f108c999da4941ce68085a9de7fac10e262f
+  tag: v4.0.3a
+  specs:
+    sass-rails (4.0.3)
+      railties (>= 4.0.0, < 5.0)
+      sass (~> 3.2.0)
+      sprockets (~> 2.8, <= 2.11.0)
+      sprockets-rails (~> 2.0)
+
+GIT
   remote: git://github.com/plataformatec/simple_form.git
   revision: 9196efd2562573aa08037034051fc8c924083e10
   specs:
@@ -109,6 +120,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.7.0)
+    columnize (0.8.9)
     coveralls (0.7.0)
       multi_json (~> 1.3)
       rest-client
@@ -132,6 +144,12 @@ GEM
     dbf (2.0.7)
       fastercsv (~> 1.5.4)
     debug_inspector (0.0.2)
+    debugger (1.6.6)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.3.2)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.3.4)
     devise (3.2.4)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -357,11 +375,6 @@ GEM
       sexp_processor (~> 4.1)
     rubyzip (1.1.3)
     sass (3.2.19)
-    sass-rails (4.0.3)
-      railties (>= 4.0.0, < 5.0)
-      sass (~> 3.2.0)
-      sprockets (~> 2.8, <= 2.11.0)
-      sprockets-rails (~> 2.0)
     sexp_processor (4.4.3)
     sextant (0.2.4)
       rails (>= 3.2)
@@ -454,6 +467,7 @@ DEPENDENCIES
   coveralls
   cucumber-rails
   database_cleaner
+  debugger
   devise
   draper
   email_spec
@@ -501,7 +515,7 @@ DEPENDENCIES
   rspec-core
   rspec-rails
   rubyzip
-  sass-rails (~> 4.0.2)
+  sass-rails!
   sextant
   simple_form (~> 3.1.0.rc1)!
   simple_token_authentication

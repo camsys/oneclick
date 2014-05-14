@@ -3,7 +3,8 @@ ruby '2.1.1'
 gem 'rails', '4.0.3'
 # See http://stackoverflow.com/questions/22391116/nomethoderror-in-pageshome-undefined-method-environment-for-nilnilclass
 gem 'sprockets', '2.11.0'
-gem 'sass-rails', '~> 4.0.2'
+# gem 'sass-rails', '~> 4.0.3'
+gem 'sass-rails', github: 'camsys/sass-rails', tag: 'v4.0.3a'
 gem 'bootstrap-sass', '~> 3.1.1.0'
 gem 'coffee-rails'
 gem 'uglifier', '>= 1.0.3'
@@ -81,6 +82,7 @@ group :development do
   gem 'yard'
   gem 'RedCloth' # Needed by yard
   gem 'foreman'
+  gem 'debugger'
 end
 
 group :development, :test do

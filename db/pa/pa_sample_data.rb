@@ -571,33 +571,10 @@ def add_urls_to_pa
   end
 end
 
-
-def add_cms
-  text = <<EOT
-<h2 style="text-align: justify;">1-Click/PA helps you find options to get from here to there, using public transit,
- door-to-door services, and specialized transportation.  Give it a try, and
- <a href="mailto://OneClick@camsys.com">tell us</a> what you think.</h2>
-EOT
-      Translation.find_or_create_by(:key => 'home-top_html').update_attributes(:value => text)
-      Translation.find_or_create_by(:key => 'home-top-logged-in_html').update_attributes(:value => text)
-      text = <<EOT
-1-Click/PA was funded by the
- <a href="http://www.fta.dot.gov/grants/13094_13528.html" target=_blank>Veterans Transportation
- Community Living Initiative</a>.
-EOT
-      Translation.find_or_create_by(:key => 'home-bottom-left_html').update_attributes(:value => text)
-      Translation.find_or_create_by(:key => 'home-bottom-left-logged-in_html').update_attributes(:value => text)
-      text = <<EOT
-<span style="float: right;">1-Click/PA is sponsored by the
-<a href="http://www.dot.state.pa.us/" target=_blank>Pennsylvania Department of Transportation</a> and the
-<a href="http://www.rabbittransit.org/" target=_blank>York Adams Transportation Authority</a>.</span>
-EOT
-      Translation.find_or_create_by(:key => 'home-bottom-right_html').update_attributes(:value => text)
-      Translation.find_or_create_by(:key => 'home-bottom-right-logged-in_html').update_attributes(:value => text)
-      text = <<EOT
-Tell us about your trip.  The more information you give us, the more options we can find!
-EOT
-      Translation.find_or_create_by(:key  => 'plan-a-trip_html').update_attributes(:value => text)
+def setup_cms
+    %w{en es}.each do |locale|
+      Translation.where(key: 'splash', locale: locale).first_or_create(value: File.open(File.join('db', 'pa', 'splash.html')).read)
+    end
 end
 
 def add_booking_service_codes
@@ -728,7 +705,7 @@ add_fares
 add_dav
 add_rabbit_general
 add_urls_to_pa
-add_cms
+setup_cms
 add_booking_service_codes
 collapse_rabbit_services
 create_ecolane_user
