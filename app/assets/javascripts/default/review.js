@@ -1307,7 +1307,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                 values: [minDuration, maxDuration],
                 min: minDuration,
                 max: maxDuration,
-                step: 0.01,
+                step: 1,
                 range: true
             };
         }
