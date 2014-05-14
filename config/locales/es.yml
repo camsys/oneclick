@@ -357,6 +357,7 @@ es:
   trip_insufficient_notice_a: "[es275]This trip must be booked '[/es]"
   trip_insufficient_notice_b: "[es294]in advance.[/es]"
   more_information_required: "[es294]More information is needed.[/es]"
+  trip_needs_more_accommodations: "[es360]These accommodations are not met by this service[/es]"
   service_notice_not_required: "[es240]This service does not require advanced notice to book a trip[/es]"
   no_cost_for_service:  "[es281]No cost for this service[/es]"
   addl_cost_details: "[es299]Additional Cost Details[/es]"

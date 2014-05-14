@@ -359,7 +359,7 @@ en:
   trip_insufficient_notice_a: "This trip must be booked "
   trip_insufficient_notice_b: " in advance."
   more_information_required: "More information is needed."
-  trip_needs_more_accomodations: "These accommodations are not met by this service"
+  trip_needs_more_accommodations: "These accommodations are not met by this service"
   service_notice_not_required: "This service does not require advanced notice to book a trip"
   no_cost_for_service:  "No cost for this service"
   addl_cost_details: "Additional Cost Details"
