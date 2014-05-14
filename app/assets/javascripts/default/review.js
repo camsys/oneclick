@@ -176,7 +176,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
         //clicking Select button to change styles
         $('.single-plan-review .single-plan-select').click(function() {
-            addClickListenerForPlanSelectButton(this);
+            selectItineraryByClickingSelectButton(this);
         });
 
         //in case there is chart layout issue
@@ -184,7 +184,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
     }
 
 
-    function addClickListenerForPlanSelectButton(planButton) {
+    function selectItineraryByClickingSelectButton(planButton) {
         $(planButton).parents('.single-trip-part').find('.single-plan-review')
             .removeClass('single-plan-selected')
             .addClass('single-plan-unselected');
@@ -640,7 +640,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             if (questionClearCode === 2) { //all pass
                 tripPlanDiv.find('.single-plan-question').remove();
                 tripPlanDiv.find('.select-column').append("<button class='btn btn-default btn-xs single-plan-select action-button'>Select</button>").click(function() {
-                    addClickListenerForPlanSelectButton(this);
+                    selectItineraryByClickingSelectButton(this);
                 });
             } else if (questionClearCode === -1) { //not pass
                 tripPlanDiv.remove();
