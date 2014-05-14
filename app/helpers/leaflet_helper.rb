@@ -7,7 +7,8 @@ module LeafletHelper
   TILE_PROVIDER = 'CLOUDMADE'
   TILE_STYLE_ID = 997
   MAP_BOUNDS = Rails.application.config.map_bounds
-
+  SCROLL_WHEEL_ZOOM = false
+  
   def LeafletMap(options)
     options_with_indifferent_access = options.with_indifferent_access
 
@@ -31,12 +32,14 @@ module LeafletHelper
     max_zoom = options[:max_zoom] ? options[:max_zoom] : MAXZOOM
     tile_provider = options[:tile_provider] ? options[:tile_provider] : TILE_PROVIDER
     tile_style_id = options[:tile_style_id] ? options[:tile_style_id] : TILE_STYLE_ID
-
+    scroll_wheel_zoom = options[:scroll_wheel_zoom] || SCROLL_WHEEL_ZOOM
+    
     mapopts = {
       :min_zoom => min_zoom,
       :max_zoom => max_zoom,
       :tile_provider => tile_provider,
-      :tile_style_id => tile_style_id
+      :tile_style_id => tile_style_id,
+      scroll_wheel_zoom: scroll_wheel_zoom
     }.to_json
 
     js << "var CsMaps = CsMaps || {};"
