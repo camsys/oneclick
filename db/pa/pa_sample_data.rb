@@ -677,7 +677,7 @@ def add_ancillary_services
   #Transit Service
   #Rabbit
   p = Provider.find_by_external_id('1')
-  s = ServiceType.where(code: 'fixed').first
+  s = ServiceType.where(code: 'transit').first
   service = Service.where(provider: p, service_type: s, external_id: '210').first_or_create
   service.name = "Rabbit Transit"
   service.save

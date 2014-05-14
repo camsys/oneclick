@@ -9,14 +9,15 @@ class TripPartSerializer < ActiveModel::Serializer
   def initialize(object, options={})
     super(TripPartDecorator.new(object), options)
     @debug = options[:debug]
-    puts "initialize: #{@debug}"
   end
 
   def itineraries
     puts "itineraries: #{@debug}"
     if @debug
+      Rails.logger.info "Returning ALL itineraries (debug)"
       return object.itineraries
     end
+    Rails.logger.info "Returning filtered itineraries (non-debug)"
     itineraries = object.itineraries.valid.visible
     return itineraries if Oneclick::Application.config.max_delay_from_desired.nil?
     target_time = (start_time || end_time) + Oneclick::Application.config.max_delay_from_desired

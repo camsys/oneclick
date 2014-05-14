@@ -68,7 +68,7 @@ protected
     sub = Leg::SubwayLeg.new
 
     sub.agency_name = leg['agencyName']
-    st = ServiceType.where(code: 'fixed').first
+    st = ServiceType.where(code: 'transit').first
     agencyId = leg['agencyId']
     s = Service.where(external_id: agencyId, service_type: st).first
     if s
@@ -94,7 +94,7 @@ protected
 
     sub.agency_name = leg['agencyName']
 
-    st = ServiceType.where(code: 'fixed').first
+    st = ServiceType.where(code: 'transit').first
     agencyId = leg['agencyId']
     s = Service.where(external_id: agencyId, service_type: st).first
     if s
@@ -121,7 +121,7 @@ protected
 
     bus.agency_name = leg['agencyName']
 
-    st = ServiceType.where(code: 'fixed').first
+    st = ServiceType.where(code: 'transit').first
     agencyId = leg['agencyId']
     s = Service.where(external_id: agencyId, service_type: st).first
     if s

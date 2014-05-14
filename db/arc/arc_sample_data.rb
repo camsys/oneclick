@@ -76,7 +76,7 @@ def add_ancillary_services
     {name: 'CCT', url: 'http://dot.cobbcountyga.gov/cct/'},
   ]
 
-  s = ServiceType.where(code: 'fixed').first
+  s = ServiceType.where(code: 'transit').first
   providers.each do |p|
     provider = Provider.create! p.reject{|k| k==:url}
     provider.services.create! p.merge(active: false, service_type: s)
