@@ -14,8 +14,8 @@
               - next if c.code=='age' # TODO kludge
               - case c.datatype
               - when 'bool'
-                = f.input c.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(c.note), label_method: :last, value_method: :first
+                = f.input c.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], [UserProfileProxy::PARAM_NOT_SET, t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(c.note), label_method: :last, value_method: :first
               - else
                 = f.input c.code.to_sym, label: t(c.note)
             -Accommodation.where(:datatype => 'bool').each do |a|
-              = f.input a.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(a.note), label_method: :last, value_method: :first
+              = f.input a.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], [UserProfileProxy::PARAM_NOT_SET, t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(a.note), label_method: :last, value_method: :first
