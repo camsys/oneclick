@@ -179,6 +179,16 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             selectItineraryByClickingSelectButton(this);
         });
 
+        //clicking ? button to pop up eligibility questions
+        $('.single-plan-review .single-plan-question').click(function() {
+            var planDiv = $(this).parents('.single-plan-review');
+            var tripPlanChartDivId = tripPlanDivPrefix + planDiv.attr('data-trip-id') + '_' + planDiv.attr('data-plan-id');
+            var missInfoDivId = tripPlanChartDivId + missInfoDivAffix;
+            var missingInfoNode = missingInfoLookup[tripPlanChartDivId];
+            addTripRestrictionDialogHtml(missingInfoNode.data, missInfoDivId);
+            addTripStrictionFormSubmissionListener(missingInfoNode.data, tripPlanChartDivId);
+        });
+
         //in case there is chart layout issue
         resizeChartsWhenDocumentWidthChanges();
     }
@@ -558,12 +568,9 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
             var vals = formVals;
             var questionIndex = 1;
-            var isQuestionClear = true;
-            for (var i = 0, infoCount = missingInfoArray.length; i < infoCount; i++) {
+            var infoCount = missingInfoArray.length;
+            for (var i = infoCount - 1; i >= 0; i--) {
                 var missingInfo = missingInfoArray[i];
-                if (!isQuestionClear) {
-                    continue;
-                }
 
                 if (typeof(missingInfo) != 'object' || missingInfo === null || !missingInfo.hasOwnProperty('success_condition')) {
                     continue;
@@ -572,13 +579,9 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                 var questionText = missingInfo.question;
                 var controlName = missInfoDivId + '_question_' + (questionIndex++);
                 vals.forEach(function(val) {
-                    if (val.name === controlName) {
+                    if (infoCount >0 && val.name === controlName) {
                         var isCurrentQuestionClear = evalSuccessCondition(formatQuestionAnswer(missingInfo.data_type, val.value), missingInfo.success_condition);
-                        updateTripRestrictions(questionText, isCurrentQuestionClear); //will delete current question from infoArray after eval
-                        i--;
-                        infoCount--;
-
-                        isQuestionClear = isQuestionClear && isCurrentQuestionClear;
+                        updateTripRestrictions(questionText, isCurrentQuestionClear, val.value); 
                     }
                 });
             }
@@ -600,29 +603,16 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
      * @param {string} questionText
      * @param {bool} isQuestionCleared
      */
-    function updateTripRestrictions(questionText, isQuestionCleared) {
+    function updateTripRestrictions(questionText, isQuestionCleared, answer) {
         for (var tripPlanChartDivId in missingInfoLookup) {
             var infoArray = missingInfoLookup[tripPlanChartDivId].data;
             if (infoArray instanceof Array) {
-                var questionIndex = -1;
                 for (var i = 0, infoCount = infoArray.length; i < infoCount; i++) {
                     var missInfo = infoArray[i];
                     if (typeof(missInfo) === 'object' && missInfo != null && missInfo.question === questionText) {
-                        questionIndex = i;
+                        missInfo.user_answer = answer;
+                        missInfo.is_eligible = isQuestionCleared;
                         break;
-                    }
-                }
-
-                if (questionIndex >= 0) {
-                    infoArray.splice(questionIndex, 1);
-                    if (isQuestionCleared) {
-                        if (infoArray.length === 0) {
-                            missingInfoLookup[tripPlanChartDivId].clearCode = 2; //all pass
-                        } else {
-                            missingInfoLookup[tripPlanChartDivId].clearCode = 1; //partial pass
-                        }
-                    } else {
-                        missingInfoLookup[tripPlanChartDivId].clearCode = -1; //not pass
                     }
                 }
             }
@@ -635,9 +625,9 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
     function applyChangesAfterTripRestrictionFormSubmission() {
         for (var tripPlanChartDivId in missingInfoLookup) {
             var missingInfoNode = missingInfoLookup[tripPlanChartDivId];
-            var questionClearCode = missingInfoNode.clearCode;
+            var questionClearCode = checkEligibility(missingInfoNode.data);
             var tripPlanDiv = $('#' + tripPlanChartDivId).parents('.single-plan-review');
-            if (questionClearCode === 2) { //all pass
+            if (questionClearCode === 1) { //all pass
                 tripPlanDiv.find('.single-plan-question').remove();
                 if(tripPlanDiv.find('.single-plan-select').length === 0) {
                     tripPlanDiv.find('.select-column').append("<button class='btn btn-default btn-xs single-plan-select action-button'>Select</button>").click(function() {
@@ -646,13 +636,56 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                 }
             } else if (questionClearCode === -1) { //not pass
                 tripPlanDiv.remove();
-            } else if (questionClearCode === 1) { //partial pass
-                //re-render trip restriction modal dialog
-                var missInfoDivId = tripPlanChartDivId + missInfoDivAffix;
-                $('#' + missInfoDivId).html(addTripRestrictionDialogContentHtml(missingInfoNode.data, missInfoDivId));
-                addTripStrictionFormSubmissionListener(missingInfoNode.data, tripPlanChartDivId);
             }
         }
+    }
+
+    function checkEligibility(missingInfoArray) {
+        var clearCode = 0;
+        if(!type(missingInfoArray) instanceof Array) {
+            clearCode = 1;
+            return clearCode;
+        }
+
+        var infoGroups = {}; //by group_id
+        missingInfoArray.forEach(function(missInfo){
+            var infoGroupId = missInfo.group_id;
+            if(!infoGroups.hasOwnProperty(infoGroupId)) {
+                infoGroups[infoGroupId] = [];
+            } 
+            infoGroups[infoGroupId].push(missInfo);
+        });
+
+        var eligible = false;
+        var notEligible = true;
+        var groupCount = 0;
+        for(var infoGroup in infoGroups) {
+            var groupEligible = true;
+            infoGroup.forEach(info) {
+                if(!groupEligible) {
+                    return;
+                }
+                groupEligible = info.is_eligible; //AND relationship within group
+            }
+
+            eligible = eligible | groupEligible; // OR relationship among group
+            notEligible = notEligible && !groupEligible;
+            groupCount ++;
+        }
+
+        if(groupCount === 0) {
+            eligible = true;
+            notEligible = false;
+        }
+
+        if(eligible) {
+            clearCode = 1;
+        }
+        if(notEligible) {
+            clearCode = -1;
+        }
+
+        return clearCode;
     }
 
     /*
@@ -891,10 +924,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         //tags for missing info div
         if (isMissingInfoFound) {
             missingInfoLookup[chartDivId] = {
-                data: missingInfoArray,
-                clearCode: 0 // 0-default; 1: pass; -1: not pass
+                data: missingInfoArray
             };
-            tripPlanTags += addTripRestrictionDialogHtml(missingInfoArray, missInfoDivId);
         }
 
         return tripPlanTags;
@@ -907,6 +938,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
      * @return {string} html tags
      */
     function addTripRestrictionDialogHtml(missingInfoArray, missInfoDivId) {
+        $('#' + missInfoDivId).remove(); //clean previous one if any
+        
         if (!missingInfoArray instanceof Array || missingInfoArray.length === 0 || typeof(missInfoDivId) != 'string') {
             return '';
         }
