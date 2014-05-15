@@ -69,10 +69,10 @@ end
 def add_providers_and_services
   disabled = Characteristic.find_by_code('disabled')
   matp = Characteristic.find_by_code('matp')
-  nemt_eligible = Characteristic.find_by_code('nemt_eligible')
+  #nemt_eligible = Characteristic.find_by_code('nemt_eligible')
   ada_eligible = Characteristic.find_by_code('ada_eligible')
   veteran = Characteristic.find_by_code('veteran')
-  low_income = Characteristic.find_by_code('low_income')
+  #low_income = Characteristic.find_by_code('low_income')
   date_of_birth = Characteristic.find_by_code('date_of_birth')
   age = Characteristic.find_by_code('age')
   walk_distance = Characteristic.find_by_code('walk_distance')
@@ -81,14 +81,14 @@ def add_providers_and_services
   folding_wheelchair_accessible = Accommodation.find_by_code('folding_wheelchair_accessible')
   motorized_wheelchair_accessible = Accommodation.find_by_code('motorized_wheelchair_accessible')
   lift_equipped = Accommodation.find_by_code('lift_equipped')
-  door_to_door = Accommodation.find_by_code('door_to_door')
+  #door_to_door = Accommodation.find_by_code('door_to_door')
   curb_to_curb = Accommodation.find_by_code('curb_to_curb')
-  driver_assistance_available = Accommodation.find_by_code('driver_assistance_available')
+  #driver_assistance_available = Accommodation.find_by_code('driver_assistance_available')
 
   #Service types
   paratransit = ServiceType.find_by_code('paratransit')
   volunteer = ServiceType.find_by_code('volunteer')
-  nemt = ServiceType.find_by_code('nemt')
+  #nemt = ServiceType.find_by_code('nemt')
 
   #trip_purposes
   work = TripPurpose.find_by_code('work')

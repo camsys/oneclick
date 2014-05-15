@@ -25,7 +25,7 @@ class Characteristic < ActiveRecord::Base
     options = a['datatype']=='bool' ? [{text: I18n.t(:yes_str), value: true}, {text: I18n.t(:no_str), value: false}] : nil
     {
       'question' => I18n.t(a['note']),
-      'description' => I18n.t(a['desc']),
+      #'description' => I18n.t(a['desc']),
       'data_type' => a['datatype'],
       # 'control_type' => '',
       'options' => options,

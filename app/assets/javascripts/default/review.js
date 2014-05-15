@@ -962,7 +962,6 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             return '';
         }
 
-        var infoShortDesc = missingInfo.description;
         var infoLongDesc = missingInfo.question;
         var infoType = missingInfo.data_type;
         var successCondition = missingInfo.success_condition;
@@ -1015,9 +1014,6 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         }
 
         return (
-            '<p">' +
-            '<span>' + infoShortDesc + '</span>' +
-            '</p>' +
             '<p">' +
             '<label class="control-label"style="margin-right: 10px;">' + infoLongDesc + '</label>' +
             answersTags +
