@@ -70,7 +70,7 @@ protected
     sub.agency_name = leg['agencyName']
     st = ServiceType.where(code: 'transit').first
     agencyId = leg['agencyId']
-    s = Service.where(external_id: agencyId, service_type: st).first
+    s = Service.where(external_id: agencyId).first
     if s
       sub.agency_id = s.name
     else
@@ -94,9 +94,9 @@ protected
 
     sub.agency_name = leg['agencyName']
 
-    st = ServiceType.where(code: 'transit').first
+
     agencyId = leg['agencyId']
-    s = Service.where(external_id: agencyId, service_type: st).first
+    s = Service.where(external_id: agencyId).first
     if s
       sub.agency_id = s.name
     else
@@ -121,9 +121,8 @@ protected
 
     bus.agency_name = leg['agencyName']
 
-    st = ServiceType.where(code: 'transit').first
     agencyId = leg['agencyId']
-    s = Service.where(external_id: agencyId, service_type: st).first
+    s = Service.where(external_id: agencyId).first
     if s
       bus.agency_id = s.name
     else
