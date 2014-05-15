@@ -215,6 +215,8 @@ es:
   drive: '[es212]Drive[/es]'
   rail: '[es213]Rail[/es]'
   subway: '[es214]Subway[/es]'
+  vehicle: '[es]Vehicle[/es]'
+  select_a_plan_each_trip_part: '[es]Please select one plan for each trip part[/es]'
   route: '[es215]Route[/es]'
   transfer: {
       one: '%{count} conección',
