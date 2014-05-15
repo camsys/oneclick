@@ -607,6 +607,7 @@ def collapse_rabbit_services
     end
   end
 
+  #Special Services Shared Ride
   s = Service.find_by_external_id('shared_ride')
   unless s.nil?
     puts 'Already created Rabbit Shared Ride'
@@ -618,6 +619,9 @@ def collapse_rabbit_services
   service.external_id = "shared_ride"
   service.booking_service_code = 'ecolane'
   service.save
+
+  FareStructure.create(service: service, fare_type: 0, base: 3.3, desc:  "Zone 1: $2.35, Zone 2: $3.30, Zone 3: $4.60, Zone 4: $6.65")
+
   #Add Schedules
   (1..5).each do |n|
     Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
@@ -670,6 +674,51 @@ def collapse_rabbit_services
   [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
     ServiceAccommodation.create(service: service, accommodation: n)
   end
+
+
+  ###General Purpose Shared Ride
+  s = Service.find_by_external_id('general_shared_ride')
+  unless s.nil?
+    puts 'Already created Rabbit Shared Ride'
+    return
+  end
+  paratransit = ServiceType.find_by_code('paratransit')
+  #Create service Senior Shared Ride
+  service = Service.create(name: 'Rabbit General Public Shared Ride', provider: provider, service_type: paratransit, advanced_notice_minutes: 24*60)
+  service.external_id = "general_shared_ride"
+  service.booking_service_code = 'ecolane'
+  service.save
+
+  FareStructure.create(service: service, fare_type: 0, base: 22, desc:  "Zone 1: $15.65, Zone 2: $22.00, Zone 3: $30.50, Zone 4: $44.25")
+
+  #Add Schedules
+  (1..5).each do |n|
+    Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
+  end
+  Schedule.create(service: service, start_seconds:7.25*3600, end_seconds: 21.75*3600, day_of_week: 6)
+  Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
+  #Trip purpose requirements
+
+  [medical, cancer, general, grocery].each do |n|
+    ServiceTripPurposeMap.create(service: service, trip_purpose: n)
+  end
+
+  #Add geographic restrictions
+  ['York', 'Adams'].each do |z|
+    c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+    ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+  end
+  ['York', 'Adams'].each do |z|
+    c = GeoCoverage.new(value: z, coverage_type: 'county_name')
+    ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+  end
+
+  #Traveler Accommodations Requirements
+  [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
+  ServiceAccommodation.create(service: service, accommodation: n)
+
+
+
 end
 
 def add_ancillary_services
