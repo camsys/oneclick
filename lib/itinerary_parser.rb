@@ -68,7 +68,6 @@ protected
     sub = Leg::SubwayLeg.new
 
     sub.agency_name = leg['agencyName']
-    st = ServiceType.where(code: 'transit').first
     agencyId = leg['agencyId']
     s = Service.where(external_id: agencyId).first
     if s
