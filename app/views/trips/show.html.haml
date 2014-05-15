@@ -71,12 +71,13 @@
       });
 
       //Plan button to jump to Plan page
+      var no_plan_alert = '#{t(:select_a_plan_each_trip_part)}';
       $('#planButton').on('click', function(e) {
         var selectedPlanIds = [];
         var tripParts = $('#tripContainer').find('.single-trip-part');
         var selectedPlans = tripParts.find('.single-plan-selected');
         if(tripParts.length != selectedPlans.length) {
-          alert('Please select one plan for each trip part.');
+          show_alert(no_plan_alert);
           return;
         }
 
