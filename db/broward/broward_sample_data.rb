@@ -534,32 +534,10 @@ def add_fares
 end
 
 
-def add_cms
-      text = <<EOT
-<h2 style="text-align: justify;">1-Click/Broward helps you find options to get from here to there, using public transit,
- door-to-door services, and specialized transportation.  Give it a try, and
- <a href="mailto://OneClick@camsys.com">tell us</a> what you think.</h2>
-EOT
-      Translation.find_or_create_by(:key => 'home-top_html').update_attributes(:value => text)
-      Translation.find_or_create_by(:key => 'home-top-logged-in_html').update_attributes(:value => text)
-      text = <<EOT
-1-Click/Broward was funded by the
- <a href="http://www.fta.dot.gov/grants/13094_13528.html" target=_blank>Veterans Transportation
- Community Living Initiative</a>.
-EOT
-      Translation.find_or_create_by(:key => 'home-bottom-left_html').update_attributes(:value => text)
-      Translation.find_or_create_by(:key => 'home-bottom-left-logged-in_html').update_attributes(:value => text)
-      text = <<EOT
-<span style="float: right;">1-Click/Broward is sponsored by
-<a href="http://211-broward.org/" target=_blank>2-1-1 Broward</a>.</span>
-EOT
-      Translation.find_or_create_by(:key => 'home-bottom-right_html').update_attributes(:value => text)
-      Translation.find_or_create_by(:key => 'home-bottom-right-logged-in_html').update_attributes(:value => text)
-      text = <<EOT
-Tell us about your trip.  The more information you give us, the more options we can find!
-EOT
-      Translation.find_or_create_by(:key  => 'plan-a-trip_html').update_attributes(:value => text)
-
+def setup_cms
+    %w{en es}.each do |locale|
+      Translation.where(key: 'splash', locale: locale).first_or_create(value: File.open(File.join('db', 'broward', 'splash_' + locale + '.html')).read)
+    end
 end
 
 def create_agencies
@@ -575,5 +553,5 @@ end
 add_users_and_places
 add_services_and_providers
 add_fares
-add_cms
+setup_cms
 create_agencies

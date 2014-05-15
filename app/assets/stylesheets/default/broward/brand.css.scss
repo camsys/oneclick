@@ -1,0 +1,27 @@
+// PA/YATA CSS file. Styles only, no variables or mixins.
+
+// TODO This should probably be done with a mixin
+@media(max-width:767px){
+  #logo {
+   background: image-url('broward/211-broward-lg.png') no-repeat center center fixed;
+   // -webkit-background-size: cover;
+   // -moz-background-size: cover;
+   // -o-background-size: cover;
+   // background-size: cover;
+ }
+}
+
+@media(min-width:768px){
+  #logo {
+   background: image-url('broward/211-broward-sm.png') no-repeat left center;
+   // -webkit-background-size: cover;
+   // -moz-background-size: cover;
+   // -o-background-size: cover;
+   // background-size: cover;
+  }
+}
+
+#splash {
+  // background-color: $splash-bg;
+  // padding: 10px;
+}
