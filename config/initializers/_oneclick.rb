@@ -111,7 +111,7 @@ ENV['SMTP_MAIL_PASSWORD'] =       "CatDogMonkey"
 Honeybadger.configure do |config|
   config.api_key = honeybadger_api_key
   # Do this if you want to send honeybadger notices from development:
-  # config.development_environments = ['test', 'cucumber']
+  config.development_environments = ['test', 'cucumber']
 end
 
 # General UI configuration settings
