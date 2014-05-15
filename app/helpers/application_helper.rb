@@ -54,7 +54,7 @@ module ApplicationHelper
     TripPurpose.all.each do |tp|
       elems << {
         :id => tp.id,
-        :value => tp
+        :value => t(tp.name)
       }
     end
     return elems
