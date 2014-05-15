@@ -642,7 +642,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
     function checkEligibility(missingInfoArray) {
         var clearCode = 0;
-        if(!type(missingInfoArray) instanceof Array) {
+        if(!missingInfoArray instanceof Array) {
             clearCode = 1;
             return clearCode;
         }
@@ -661,12 +661,12 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         var groupCount = 0;
         for(var infoGroup in infoGroups) {
             var groupEligible = true;
-            infoGroup.forEach(info) {
+            infoGroups[infoGroup].forEach(function(info) {
                 if(!groupEligible) {
                     return;
                 }
                 groupEligible = info.is_eligible; //AND relationship within group
-            }
+            });
 
             eligible = eligible | groupEligible; // OR relationship among group
             notEligible = notEligible && !groupEligible;
@@ -949,7 +949,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             addTripRestrictionDialogContentHtml(missingInfoArray, missInfoDivId) +
             '</div>';
 
-        return missInfoTags;
+        return $(document.body).append(missInfoTags);
     }
 
     function addTripRestrictionDialogContentHtml(missingInfoArray, missInfoDivId) {
@@ -1011,7 +1011,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                                 '<label class="radio-inline">' +
                                 '<input type="radio" name="' + controlName + '" ' +
                                 'value="' + infoOption.value + '" ' +
-                                (infoOption.is_default ? 'checked' : '') +
+                                (checkIfOptionSelected(infoOption.value, missingInfo.answer) ? 'checked' : '') +
                                 ' required />' + infoOption.text +
                                 '</label>';
                         }
@@ -1019,14 +1019,16 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                 }
                 break;
             case 'integer':
-                answersTags += '<input type="number" class="form-control" id="' + controlName + '_number" label="false" name="' + controlName + '" required/>';
+                answersTags += '<input type="number" class="form-control" id="' + controlName + '_number" label="false" name="' + controlName + 
+                    ' value=' + missingInfo.answer +
+                    '" required/>';
                 break;
             case 'date':
                 answersTags += '<input type="text" class="form-control" id="' + controlName + '_date" label="false" name="' + controlName + '" required/>' +
                     '<script type="text/javascript">' +
                     '$(function () {' +
                     '$("#' + controlName + '_date").datetimepicker({' +
-                    'defaultDate: new Date(),' +
+                    'defaultDate: ' + ( isNaN(parseDate(missingInfo.answer)) ?  'new Date()' : missingInfo.answer) + ',' +
                     'pickTime: false ' +
                     '});' +
                     '});' +
@@ -1037,7 +1039,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                     '<script type="text/javascript">' +
                     '$(function () {' +
                     '$("#' + controlName + '_datetime").datetimepicker({' +
-                    'defaultDate: new Date()'
+                    'defaultDate: ' + ( isNaN(parseDate(missingInfo.answer)) ?  'new Date()' : missingInfo.answer)
                 '});' +
                     '});' +
                     '</script>';
@@ -1052,6 +1054,15 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             answersTags +
             '</p>'
         );
+    }
+
+    function checkIfOptionSelected(val, answer) {
+        var isSelected = false;
+        if(!(typeof(val) === 'undefined' || val === null || typeof(val) === 'object' || typeof(answer) != 'string') && val.toString() === answer){
+            isSelected = true;
+        }
+
+        return isSelected;
     }
 
     /**
