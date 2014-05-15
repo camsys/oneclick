@@ -217,7 +217,7 @@ en:
   rail: 'Rail'
   subway: 'Subway'
   vehicle: 'Vehicle'
-  select_a_plan_each_trip_part: 'Please select one plan for each trip part'
+  select_a_plan_each_trip_part: 'Please select itinerary for each trip part'
   route: 'Route'
   transfer: {
     one: '%{count} transfer',
