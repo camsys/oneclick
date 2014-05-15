@@ -36,7 +36,7 @@
           = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes,
           input_html: { tabindex: 1 }
 
-          = f.input :trip_purpose_id, :collection =>  TripPurpose.all, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)},
+          = f.input :trip_purpose_id, :collection =>  TripPurpose.ordered_by_localized_name, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)},
           input_html: { tabindex: 1, class: 'form-control' }
 
           = render partial: 'location_input', locals: {dir: 'from', f: f}
