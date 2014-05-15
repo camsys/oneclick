@@ -109,8 +109,6 @@ module Oneclick
     if config.ui_mode=='desktop'
       config.sass.load_paths << File.expand_path("./app/assets/stylesheets/default/#{config.brand}")
     end
-    puts "LOAD_PATHS"
-    puts config.sass.load_paths
 
   end
 
