@@ -716,10 +716,10 @@ def collapse_rabbit_services
   #Traveler Accommodations Requirements
   [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
   ServiceAccommodation.create(service: service, accommodation: n)
-
-
+  end
 
 end
+
 
 def add_ancillary_services
 
@@ -743,7 +743,7 @@ def add_ancillary_services
   #Taxi Service
   provider = Provider.create!({name: 'Taxi services'})
   provider.services.create!({name: 'Taxi services', active: false,
-      service_type: ServiceType.where(code: 'taxi').first})
+     service_type: ServiceType.where(code: 'taxi').first})
 end
 
 ### MAIN ###
