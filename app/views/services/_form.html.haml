@@ -20,7 +20,7 @@
             = link_to t(:cancel), :back, class: "btn action-button default"
 
   .row
-    .col-sm-4
+    .col-sm-6
       .panel.panel-default.well0
         .panel-heading
           %h3.panel-title
@@ -35,19 +35,8 @@
           = f.input :url
           = f.association :service_type,
                   collection: ServiceType.all.map{|t| [ t(t.name), t.id ] }
-    .col-sm-4
-      .panel.panel-default.well0
-        .panel-heading
-          %h4.panel-title
-            = t(:service)
-            = t(:information)
-        .panel-body
-          = f.input :external_id, label: t(:service_id)
-          = f.input :booking_service_code
-          = f.input :service_window, as: :integer
-          = f.input :time_factor, as: :float
       
-    .col-sm-4
+    .col-sm-6
       .panel.panel-default.well0
         .panel-heading
           %h4.panel-title= t(:internal_contact)
@@ -285,6 +274,18 @@
                                 name: input_name(f, :service_coverage_maps, :keep_record)}
                           = pair[0]
                           &nbsp;
+  .row
+    .col-sm-12
+      .panel.panel-default
+        .panel-heading
+          %h4.panel-title
+            = t(:service)
+            = t(:information)
+        .panel-body
+          = f.input :external_id, label: t(:service_id), wrapper_html: {class: "col-sm-6"}
+          = f.input :booking_service_code, wrapper_html: {class: "col-sm-6"}
+          = f.input :service_window, as: :integer, wrapper_html: {class: "col-sm-6"}
+          = f.input :time_factor, as: :float, wrapper_html: {class: "col-sm-6"}
 
 
 :javascript
