@@ -1,5 +1,5 @@
 .row-fluid
-  - if can? :upload, EspReader
+  - if Oneclick::Application.config.show_update_services && can?(:upload, EspReader)
     = link_to "Update Services", upload_esp_reader_index_path, {class: 'btn action-button btn-default pull-right', role: 'button'}
 
   %h1= t(:services)

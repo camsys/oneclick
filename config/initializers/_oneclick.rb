@@ -15,6 +15,7 @@ Oneclick::Application.config.default_zoom = nil
 Oneclick::Application.config.max_delay_from_desired = 3.hours
 Oneclick::Application.config.duration_factor = 2.0
 Oneclick::Application.config.minimum_paratransit_duration = 2.hours
+Oneclick::Application.config.show_update_services = false
 
 Oneclick::Application.config.google_places_api_key = 'AIzaSyCvKyNoBzQNrBRuSRkipWye0pdj__HjrmU'
 
@@ -39,6 +40,7 @@ when 'arc'
   ENV['GOOGLE_GEOCODER_TIMEOUT']= "5"
   honeybadger_api_key = 'ba642a71'
   Oneclick::Application.config.poi_file = 'db/arc_poi_data/CommFacil_20131015.txt'
+  Oneclick::Application.config.show_update_services = true
 
 when 'broward'
   Oneclick::Application.config.ui_logo = 'broward/Broward_211_Get_Connected_get_answers.jpg'
