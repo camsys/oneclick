@@ -54,7 +54,6 @@ class Ability
         u.approved_agencies.include? user.try(:agency)
       end
       can :create, User
-      can :create, Provider
       can :read, [Provider, Service]
       can [:index, :show], Report
       can [:read, :update], User, agency_id: user.agency.try(:id)
