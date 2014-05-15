@@ -24,6 +24,7 @@ class TripPlace < GeocodedAddress
   def from_trip_proxy_place json_string, sequence, manual_entry = '', map_center = ''
     self.sequence = sequence
     j = JSON.parse(json_string) rescue {'type_name' => 'MANUAL_ENTRY'}
+    j['county'] = Oneclick::Application.config.default_county if j['county'].blank?
     case j['type_name']
     when 'PLACES_TYPE'
       self.update_attributes(
@@ -66,6 +67,7 @@ class TripPlace < GeocodedAddress
     when 'PLACES_AUTOCOMPLETE_TYPE'
       details = get_places_autocomplete_details(j['id'])
       d = cleanup_google_details(details.body['result'])
+      d['county'] = Oneclick::Application.config.default_county if d['county'].blank?
       self.update_attributes(
         address1: d['address1'],
         city: d['city'],
@@ -87,6 +89,7 @@ class TripPlace < GeocodedAddress
       # TODO Copied from above, should be refactored
       details = get_places_autocomplete_details(first_result['reference'])
       d = cleanup_google_details(details.body['result'])
+      d['county'] = Oneclick::Application.config.default_county if d['county'].blank?
       self.update_attributes(
         address1: d['address1'],
         city: d['city'],
