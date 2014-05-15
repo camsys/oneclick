@@ -16,6 +16,8 @@ Oneclick::Application.config.max_delay_from_desired = 3.hours
 Oneclick::Application.config.duration_factor = 2.0
 Oneclick::Application.config.minimum_paratransit_duration = 2.hours
 
+Oneclick::Application.config.google_places_api_key = 'AIzaSyCvKyNoBzQNrBRuSRkipWye0pdj__HjrmU'
+
 case ENV['BRAND'] || 'arc'
 when 'arc'
   Oneclick::Application.config.ui_logo = 'arc/arc-logo.png'

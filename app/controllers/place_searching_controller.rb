@@ -197,7 +197,7 @@ def search_my
     result = google_api.get('autocomplete/json') do |req|
       req.params['input']    = query
       req.params['sensor']   = false
-      req.params['key']      = 'AIzaSyCvKyNoBzQNrBRuSRkipWye0pdj__HjrmU'
+      req.params['key']      = Oneclick::Application.config.google_places_api_key
       # req.params['key']      = 'AIzaSyBHlpj9FucwX45l2qUZ3441bkqvcxR8QDM'
       req.params['location'] = map_center
       req.params['radius']   = 20_000
