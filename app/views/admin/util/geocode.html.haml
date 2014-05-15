@@ -6,9 +6,10 @@
 
 .row
   .col-sm-12
-    = simple_form_for :geocode, url: admin_geocode_path, html: { class: 'form-horizontal' }  do |f|
+    = simple_form_for :geocode, url: admin_geocode_path, html: { class: 'form-horizontal' }, method: 'GET'  do |f|
       = f.error_notification
       = f.input :address, input_html: {value: @address}
+      = f.input :map_center, input_html: {value: @map_center}
       .form-actions
         = f.submit 'Geocode', class: 'btn btn-info'
 - if @results
@@ -23,7 +24,17 @@
       - (1..@results.size).each do |i|
         %a{href: "##{i}"}= i  
       %br
+      = link_to 'Autocomplete results'
+      %br
       - @results.each_with_index do |r, i|
         = i + 1
         %pre{id: i + 1}
           = r.data.ai(plain: true)
+      %h4 Autocomplete results  
+      %pre
+        = @autocomplete_results.body.ai(plain: true)
+      %h4 Autocomplete details
+      %pre
+        - @autocomplete_details.each do |d|
+          %pre
+            = d.ai(plain: true)
