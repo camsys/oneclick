@@ -24,7 +24,6 @@
           });
         });
     #filterDiv.col-md-3.col-xs-12.hidden-xs
-      #filterContainer.col-sm-12.well{style: "padding: 0px;"}
     / end of filter column
     .col-md-9
       .col-xs-12.page-action-button-container
@@ -33,66 +32,66 @@
       #tripContainer.col-xs-12{style: "padding: 0px;"}
       / end of trip container
     / end of review columns
-#itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
-:javascript
-  $(function() {
-    var tripResponse = #{@tripResponse.to_json};
-    var pageRenderer = new TripReviewPageRenderer(30, 20);
-    pageRenderer.processTripResponse(tripResponse);
+  #itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
+  :javascript
+    $(function() {
+      var tripResponse = #{@tripResponse.to_json};
+      var pageRenderer = new TripReviewPageRenderer(30, 20);
+      pageRenderer.processTripResponse(tripResponse);
 
-    //click chart to show details in modal dialog
-    d3.selectAll("rect")
-      .on("click", function(tripLeg){
-        if(typeof(tripLeg) === 'object' && tripLeg != null) {
-          var planId = tripLeg.planId;
-          $.getScript(window.location.href + '/itinerary' + '?itin=' + planId)
-            .done(function() {
-            })
-            .fail(function( jqxhr, settings, exception ) {
-              console.log(jqxhr);
-              console.log(settings);
-              console.log(exception);
-            });
+      //click chart to show details in modal dialog
+      d3.selectAll("rect")
+        .on("click", function(tripLeg){
+          if(typeof(tripLeg) === 'object' && tripLeg != null) {
+            var planId = tripLeg.planId;
+            $.getScript(window.location.href + '/itinerary' + '?itin=' + planId)
+              .done(function() {
+              })
+              .fail(function( jqxhr, settings, exception ) {
+                console.log(jqxhr);
+                console.log(settings);
+                console.log(exception);
+              });
+          }
+        });
+
+      $('#itinerary_modal').on('shown.bs.modal', function() {
+        if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.review_map != null) { 
+          var mapObj = CsMaps.review_map;
+          mapObj.invalidateMap(); 
+          var mapMarkers = mapObj.LMmarkers;
+          var mapBounds = null;
+          if(mapMarkers.length > 0) {
+            mapBounds = mapObj.calcMapBounds(mapMarkers);
+          } else {
+            mapBounds = mapObj.LMbounds;
+          }
+
+          if(mapBounds) {
+            mapObj.LMmap.fitBounds(mapBounds); 
+          }
         }
       });
 
-    $('#itinerary_modal').on('shown.bs.modal', function() {
-      if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.review_map != null) { 
-        var mapObj = CsMaps.review_map;
-        mapObj.invalidateMap(); 
-        var mapMarkers = mapObj.LMmarkers;
-        var mapBounds = null;
-        if(mapMarkers.length > 0) {
-          mapBounds = mapObj.calcMapBounds(mapMarkers);
-        } else {
-          mapBounds = mapObj.LMbounds;
+      //Plan button to jump to Plan page
+      $('#planButton').on('click', function(e) {
+        var selectedPlanIds = [];
+        var tripParts = $('#tripContainer').find('.single-trip-part');
+        var selectedPlans = tripParts.find('.single-plan-selected');
+        if(tripParts.length != selectedPlans.length) {
+          alert('Please select one plan for each trip part.');
+          return;
         }
 
-        if(mapBounds) {
-          mapObj.LMmap.fitBounds(mapBounds); 
-        }
-      }
+        var selectedPlanIds = [];
+        selectedPlans.each(function() {
+          var tmpPlanId = parseInt($(this).attr('data-plan-id'));
+          if(typeof(tmpPlanId) === 'number' && !isNaN(tmpPlanId)) {
+            selectedPlanIds.push(tmpPlanId);
+          }
+        });
+
+        //jump to Plan page
+        window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );
+      }); 
     });
-
-    //Plan button to jump to Plan page
-    $('#planButton').on('click', function(e) {
-      var selectedPlanIds = [];
-      var tripParts = $('#tripContainer').find('.single-trip-part');
-      var selectedPlans = tripParts.find('.single-plan-selected');
-      if(tripParts.length != selectedPlans.length) {
-        alert('Please select one plan for each trip part.');
-        return;
-      }
-
-      var selectedPlanIds = [];
-      selectedPlans.each(function() {
-        var tmpPlanId = parseInt($(this).attr('data-plan-id'));
-        if(typeof(tmpPlanId) === 'number' && !isNaN(tmpPlanId)) {
-          selectedPlanIds.push(tmpPlanId);
-        }
-      });
-
-      //jump to Plan page
-      window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );
-    }); 
-  });
