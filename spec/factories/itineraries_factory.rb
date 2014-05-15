@@ -3,8 +3,8 @@
 FactoryGirl.define do
   factory :itinerary do
     duration 1
-    start_time "2013-07-08 14:59:26"
-    end_time "2013-07-08 14:59:26"
+    start_time {Time.now + 1.day}
+    end_time {Time.now + 1.day + 2.hours}
     walk_time 1
     transit_time 1
     wait_time 1
