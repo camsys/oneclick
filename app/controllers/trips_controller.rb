@@ -59,6 +59,17 @@ class TripsController < PlaceSearchingController
     @trip = Trip.find(params[:id].to_i)
     @tripResponse = TripSerializer.new(@trip, params)
 
+    # TODO This seems incredibly hacky to go to json and back for this, but...
+    @tripResponseHash = JSON.parse(@tripResponse.to_json)
+    if @tripResponseHash['status'] == 0
+      Honeybadger.notify(
+        :error_class   => "Trip serialization failure for review page",
+        :error_message => @tripResponseHash['status_text'],
+        :parameters    => @tripResponseHash
+      )
+      flash.now[:alert] = t(:error_couldnt_plan)
+    end
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @tripResponse }

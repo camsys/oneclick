@@ -1,9 +1,6 @@
 = render partial: 'shared/trip_plan_breadcrumbs'
-- if @tripResponse.status == 0
-  .row
-    .col-sm-12
-      %h4= t(:no_trips_found)
-
+- if @tripResponseHash['status'] == 0
+  - # flash handles it
 - else
   .row
     .col-xs-12.form-group.visible-xs

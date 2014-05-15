@@ -154,6 +154,7 @@ es:
   error_404_mistyped: 'Es posible que hayas escrito mal la dirección o la página puede haber cambiado.'
   error_422: 'El cambio que querías fue rechazado.'
   error_422_detail: "Tal vez trataste de cambiar algo al que no tienes acceso."
+  error_couldnt_plan: '[es157]No trip plan could be created.  This is likely due to a system error, and our staff has been notified. Please try your trip again.[/es]'
 
   # Trip History and Rating
   rating: "Clasificacion *7*"

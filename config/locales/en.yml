@@ -154,6 +154,7 @@ en:
   error_404_mistyped: 'You may have mistyped the address or the page may have moved.'
   error_422: 'The change you wanted was rejected.'
   error_422_detail: "Maybe you tried to change something you didn't have access to."
+  error_couldnt_plan: 'No trip plan could be created.  This is likely due to a system error, and our staff has been notified. Please try your trip again.'
 
   # Trip History and Rating
   rating: "Rating"
