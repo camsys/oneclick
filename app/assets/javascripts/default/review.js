@@ -103,7 +103,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
     var tripContainerId = 'tripContainer'; //id of trip container Div
     var legendContainerId = "legendContainer"; //id of legend container div
-    var filterContainerId = "filterContainer"; //id of filter container div
+    var filterContainerId = "filterDiv"; //id of filter container div
     var modeContainerId = "modeContainer"; //id of mode filter container div
     var transferSliderId = "transferSlider"; //id of transfer filter slider
     var costSliderId = "costSlider"; //id of cost filter slider
@@ -555,14 +555,21 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                 return;
             }
 
-            var isEmptyValueAvailable = false;
+            var isAllEmpty = true;
             formVals.forEach(function(val) {
-                if (val.value === '' || val.value === null) {
-                    isEmptyValueAvailable = true;
+                if(!isAllEmpty) {
+                    return;
+                }
+                if (!isUserAnswerEmpty(val.value)) {
+                    isAllEmpty = false;
                 }
             });
 
-            if (isEmptyValueAvailable) {
+            //if user provides nothing, then treat Update as Cancel button.
+            if (isAllEmpty) {
+                dialog.modal('hide');
+
+                e.preventDefault();
                 return;
             }
 
@@ -577,9 +584,9 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                 }
 
                 var questionText = missingInfo.question;
-                var controlName = missInfoDivId + '_question_' + (questionIndex++);
+                var controlName = missingInfo.controlName;
                 vals.forEach(function(val) {
-                    if (infoCount >0 && val.name === controlName) {
+                    if (infoCount >0 && val.name === controlName && !isUserAnswerEmpty(val.value)) {
                         var isCurrentQuestionClear = evalSuccessCondition(formatQuestionAnswer(missingInfo.data_type, val.value), missingInfo.success_condition);
                         updateTripRestrictions(questionText, isCurrentQuestionClear, val.value); 
                     }
@@ -596,6 +603,10 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         $('#' + missInfoDivId + ' .btn-primary').click(function() {
             $('#' + missInfoDivId + '_form').submit();
         });
+    }
+
+    function isUserAnswerEmpty(value) {
+        return (value === '' || value === null);
     }
 
     /*
@@ -656,20 +667,33 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             infoGroups[infoGroupId].push(missInfo);
         });
 
-        var eligible = false;
-        var notEligible = true;
+        var eligible = null; //false
+        var notEligible = null; //true
         var groupCount = 0;
+        var hasIncompleteGroup = false;
         for(var infoGroup in infoGroups) {
-            var groupEligible = true;
+            var groupEligible = null; //true
             infoGroups[infoGroup].forEach(function(info) {
-                if(!groupEligible) {
+                if(groupEligible === false) {
                     return;
                 }
-                groupEligible = info.is_eligible; //AND relationship within group
+                if(info.is_eligible === true || info.is_eligible === false) {
+                    groupEligible = info.is_eligible; //AND relationship within group
+                }
             });
 
-            eligible = eligible | groupEligible; // OR relationship among group
-            notEligible = notEligible && !groupEligible;
+            if(groupEligible === true || groupEligible === false ) {
+                if(eligible === null) {
+                    eligible = false;
+                }
+                if(notEligible === null) {
+                    notEligible = true;
+                }
+                eligible = eligible || groupEligible; // OR relationship among group
+                notEligible = notEligible && !groupEligible;
+            } else {
+                hasIncompleteGroup = true;
+            }
             groupCount ++;
         }
 
@@ -678,10 +702,10 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             notEligible = false;
         }
 
-        if(eligible) {
+        if(eligible === true) {
             clearCode = 1;
-        }
-        if(notEligible) {
+        } 
+        if(notEligible === true && !hasIncompleteGroup) {
             clearCode = -1;
         }
 
@@ -998,6 +1022,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         var infoLongDesc = missingInfo.question;
         var infoType = missingInfo.data_type;
         var successCondition = missingInfo.success_condition;
+        missingInfo.controlName = controlName;
 
         var answersTags = '';
         switch (infoType) {
@@ -1011,8 +1036,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                                 '<label class="radio-inline">' +
                                 '<input type="radio" name="' + controlName + '" ' +
                                 'value="' + infoOption.value + '" ' +
-                                (checkIfOptionSelected(infoOption.value, missingInfo.answer) ? 'checked' : '') +
-                                ' required />' + infoOption.text +
+                                (checkIfOptionSelected(infoOption.value, missingInfo.user_answer) ? 'checked' : '') +
+                                ' />' + infoOption.text +
                                 '</label>';
                         }
                     });
@@ -1020,26 +1045,26 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                 break;
             case 'integer':
                 answersTags += '<input type="number" class="form-control" id="' + controlName + '_number" label="false" name="' + controlName + 
-                    '" value=' + missingInfo.answer +
-                    ' required/>';
+                    '" value=' + missingInfo.user_answer +
+                    ' />';
                 break;
             case 'date':
-                answersTags += '<input type="text" class="form-control" id="' + controlName + '_date" label="false" name="' + controlName + '" required/>' +
+                answersTags += '<input type="text" class="form-control" id="' + controlName + '_date" label="false" name="' + controlName + '" />' +
                     '<script type="text/javascript">' +
                     '$(function () {' +
                     '$("#' + controlName + '_date").datetimepicker({' +
-                    'defaultDate: ' + ( isNaN(parseDate(missingInfo.answer)) ?  'new Date()' : missingInfo.answer) + ',' +
+                    'defaultDate: ' + ( isNaN(parseDate(missingInfo.user_answer)) ?  'new Date()' : missingInfo.user_answer) + ',' +
                     'pickTime: false ' +
                     '});' +
                     '});' +
                     '</script>';
                 break;
             case 'datetime':
-                answersTags += '<input type="text" class="form-control" id="' + controlName + '_datetime" label="false" name="' + controlName + '" required/>' +
+                answersTags += '<input type="text" class="form-control" id="' + controlName + '_datetime" label="false" name="' + controlName + '" />' +
                     '<script type="text/javascript">' +
                     '$(function () {' +
                     '$("#' + controlName + '_datetime").datetimepicker({' +
-                    'defaultDate: ' + ( isNaN(parseDate(missingInfo.answer)) ?  'new Date()' : missingInfo.answer)
+                    'defaultDate: ' + ( isNaN(parseDate(missingInfo.user_answer)) ?  'new Date()' : missingInfo.user_answer)
                 '});' +
                     '});' +
                     '</script>';
@@ -1225,7 +1250,12 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         }
 
         //render
-        $('#' + filterContainerId).append(filterTags);
+        if(filterTags.trim().length > 0) {
+            filterTags = '<div id="filterContainer" class="col-sm-12 well" style="padding: 0px;">' + filterTags + '</div>';
+            $('#' + filterContainerId).append(filterTags);
+        } else {
+            $('#' + filterContainerId).remove(); //if no filter available, then remove its container
+        }
 
         //enable mode checkbox event
         $('#' + modeContainerId + ' .checkbox').on('change', function() {
