@@ -19,7 +19,7 @@ class Characteristic < ActiveRecord::Base
   
   # builds a hash of details about a characteristic; is used by the javascript
   # client to knwo whether to ask the user for more info
-  def for_missing_info(service)
+  def for_missing_info(service, group)
     a = attributes
     sc = service_characteristics.where(service: service).take
     options = a['datatype']=='bool' ? [{text: I18n.t(:yes_str), value: true}, {text: I18n.t(:no_str), value: false}] : nil
@@ -30,6 +30,7 @@ class Characteristic < ActiveRecord::Base
       # 'control_type' => '',
       'options' => options,
       'success_condition' => "#{relationship_to_symbol(sc.value_relationship_id)}#{sc.value}",
+      'group_id' => group
     }
   end
 
