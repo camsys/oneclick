@@ -1020,8 +1020,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                 break;
             case 'integer':
                 answersTags += '<input type="number" class="form-control" id="' + controlName + '_number" label="false" name="' + controlName + 
-                    ' value=' + missingInfo.answer +
-                    '" required/>';
+                    '" value=' + missingInfo.answer +
+                    ' required/>';
                 break;
             case 'date':
                 answersTags += '<input type="text" class="form-control" id="' + controlName + '_date" label="false" name="' + controlName + '" required/>' +
