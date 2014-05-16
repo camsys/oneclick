@@ -122,7 +122,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
     //page document width
     //be used to detect width change -> resize charts
-    var documentWidth = $(document).width();
+    var documentWidth = $(document.body).width();
 
     /**
      * Process trip results response from service
@@ -1584,7 +1584,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
      */
     function getTooltipLeft(rawLeft, tooltipNode) {
         var divWidth = tooltipNode.clientWidth;
-        var docWidth = $(document).width();
+        var docWidth = $(document.body).width();
         var margin = 5;
         if ((rawLeft + divWidth) >= docWidth) {
             rawLeft = docWidth - divWidth - margin;
@@ -1598,7 +1598,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
      */
     function getTooltipTop(rawTop, tooltipNode) {
         var divHeight = tooltipNode.clientHeight;
-        var docHeight = $(document).height();
+        var docHeight = $(document.body).height();
         var margin = 5;
         if ((rawTop + divHeight) >= docHeight) {
             rawTop = docHeight - divHeight - margin;
@@ -1612,13 +1612,13 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
      * @param {object} plan
      */
     function resizeChartViaPlan(plan) {
-        if (typeof(plan) != 'object' || plan === null || !plan.hasOwnProperty('attributes')) {
+        if (typeof(plan) != 'object' || plan === null) {
             return;
         }
-        var tmpTripId = plan.attributes['data-trip-id'].value;
-        var tmpPlanId = plan.attributes['data-plan-id'].value;
-        var tmpTripStartTime = parseDate(plan.attributes['data-trip-start-time'].value);
-        var tmpTripEndTime = parseDate(plan.attributes['data-trip-end-time'].value);
+        var tmpTripId = plan.attr('data-trip-id');
+        var tmpPlanId = plan.attr('data-plan-id');
+        var tmpTripStartTime = parseDate(plan.attr('data-trip-start-time'));
+        var tmpTripEndTime = parseDate(plan.attr('data-trip-end-time'));
         var tmpChartDivId = tripPlanDivPrefix + tmpTripId + "_" + tmpPlanId;
         resizeChart(tmpChartDivId, tmpTripStartTime, tmpTripEndTime, intervalStep, barHeight);
     }
@@ -1627,8 +1627,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
      * resize all charts via plans
      */
     function resizeAllCharts() {
-        $('.single-plan-review').each(function(index, plan) {
-            resizeChartViaPlan(plan);
+        $('.single-plan-review').each(function() {
+            resizeChartViaPlan($(this));
         });
     }
 
@@ -1636,8 +1636,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
      * resize all charts when document width change is detected
      */
     function resizeChartsWhenDocumentWidthChanges() {
-        if ($(document).width() != documentWidth) {
-            documentWidth = $(document).width();
+        if ($(document.body).width() != documentWidth) {
+            documentWidth = $(document.body).width();
             resizeAllCharts();
         }
     }
@@ -1722,9 +1722,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         var durationValues = $('#' + durationSliderId).slider("option", "values");
 
 
-        var allPlans = d3.selectAll('.single-plan-review')[0];
-        allPlans.forEach(function(plan) {
-            processPlanFiltering(modes, transferValues, costValues, durationValues, plan);
+        $('.single-plan-review').each(function() {
+            processPlanFiltering(modes, transferValues, costValues, durationValues, $(this));
         });
     }
 
@@ -1735,7 +1734,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         }
 
         if (!modeVisible) {
-            plan.style.display = 'none';
+            plan.hide();
             return;
         }
 
@@ -1745,7 +1744,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         }
 
         if (!transferVisible) {
-            plan.style.display = 'none';
+            plan.hide();
             return;
         }
 
@@ -1755,7 +1754,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         }
 
         if (!costVisible) {
-            plan.style.display = 'none';
+            plan.hide();
             return;
         }
 
@@ -1765,12 +1764,12 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         }
 
         if (!durationVisible) {
-            plan.style.display = 'none';
+            plan.hide();
             return;
         }
 
         //passes all filtering check
-        plan.style.display = 'block';
+        plan.show();
 
         //resize single plan
         resizeChartViaPlan(plan);
@@ -1787,11 +1786,11 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
      */
     function filterPlansByMode(modes, plan) {
         var visible = false;
-        if (!modes instanceof Array || typeof(plan) != 'object' || plan === null || !plan.hasOwnProperty('attributes')) {
+        if (!modes instanceof Array || typeof(plan) != 'object' || plan === null) {
             return visible;
         }
 
-        var mode = plan.attributes['data-mode'].value;
+        var mode = plan.attr('data-mode');
         visible = (modes.indexOf(mode) >= 0);
 
         return visible;
@@ -1806,11 +1805,11 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
      */
     function filterPlansByTransfer(minCount, maxCount, plan) {
         var visible = false;
-        if (typeof(minCount) != 'number' || typeof(maxCount) != 'number' || typeof(plan) != 'object' || plan === null || !plan.hasOwnProperty('attributes')) {
+        if (typeof(minCount) != 'number' || typeof(maxCount) != 'number' || typeof(plan) != 'object' || plan === null) {
             return visible;
         }
 
-        var transfer = parseInt(plan.attributes['data-transfer'].value);
+        var transfer = parseInt(plan.attr('data-transfer'));
         visible = (typeof(transfer) != 'number' || isNaN(transfer) || (transfer >= minCount && transfer <= maxCount));
 
         return visible;
@@ -1825,11 +1824,11 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
      */
     function filterPlansByCost(minCost, maxCost, plan) {
         var visible = false;
-        if (typeof(minCost) != 'number' || typeof(maxCost) != 'number' || typeof(plan) != 'object' || plan === null || !plan.hasOwnProperty('attributes')) {
+        if (typeof(minCost) != 'number' || typeof(maxCost) != 'number' || typeof(plan) != 'object' || plan === null) {
             return visible;
         }
 
-        var cost = parseFloat(plan.attributes['data-cost'].value);
+        var cost = parseFloat(plan.attr('data-cost'));
         visible = (typeof(cost) != 'number' || isNaN(cost) || (cost >= minCost && cost <= maxCost));
 
         return visible;
@@ -1844,11 +1843,11 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
      */
     function filterPlansByDuration(minDuration, maxDuration, plan) {
         var visible = false;
-        if (typeof(minDuration) != 'number' || typeof(maxDuration) != 'number' || typeof(plan) != 'object' || plan === null || !plan.hasOwnProperty('attributes')) {
+        if (typeof(minDuration) != 'number' || typeof(maxDuration) != 'number' || typeof(plan) != 'object' || plan === null) {
             return visible;
         }
 
-        var duration = parseFloat(plan.attributes['data-duration'].value);
+        var duration = parseFloat(plan.attr('data-duration'));
         visible = (typeof(duration) != 'number' || isNaN(duration) || (duration >= minDuration && duration <= maxDuration));
 
         return visible;
