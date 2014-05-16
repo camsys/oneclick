@@ -695,6 +695,34 @@ def add_ancillary_services
      service_type: ServiceType.where(code: 'taxi').first})
 end
 
+def create_agencies_and_agency_users
+  ['PA 2-1-1'].each do |a|
+    agency = Agency.find_by_name(a)
+    unless agency.nil?
+      puts "#{a} already exists"
+      next
+    end
+    puts "Creating #{a.ai}"
+    agency = Agency.create! name: a
+
+    # agency admin
+    u = User.create! first_name: a + ' Agency Admin', last_name: 'Agency Admin',
+        email: a.downcase.gsub(/ /, '_') + '_admin@camsys.com', password: 'welcome1'
+    up = UserProfile.create! user: u
+    agency.users << u
+    u.add_role :agency_administrator, agency
+    u.add_role :internal_contact, agency
+
+    # agency agent
+    u = User.create! first_name: a + ' Agent', last_name: 'Agent',
+        email: a.downcase.gsub(/ /, '_') + '_agent@camsys.com', password: 'welcome1'
+    up = UserProfile.create! user: u
+    agency.users << u
+    u.add_role :agent, agency
+  end
+
+end
+
 ### MAIN ###
 puts 'Adding PA Sample Data'
 add_users_and_places
@@ -708,4 +736,5 @@ add_booking_service_codes
 collapse_rabbit_services
 create_ecolane_user
 add_ancillary_services
+create_agencies_and_agency_users
 puts 'Done Adding PA Sample Data'
