@@ -2,7 +2,7 @@ class ItinerarySerializer < ActiveModel::Serializer
   include CsHelpers
 
   attributes :id, :missing_information, :mode, :mode_name, :service_name, :provider_name, :contact_information,
-    :cost, :duration, :transfers, :start_time, :end_time, :legs, :service_window, :duration_estimated
+    :cost, :duration, :transfers, :start_time, :end_time, :legs, :service_window, :duration_estimated, :selected
   attributes :server_status, :server_message, :failed, :hidden
   attr_accessor :debug
 
@@ -142,6 +142,10 @@ class ItinerarySerializer < ActiveModel::Serializer
     else
       0
     end
+  end
+
+  def selected
+    object.selected
   end
 
 end
