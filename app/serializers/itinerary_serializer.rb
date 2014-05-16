@@ -9,15 +9,12 @@ class ItinerarySerializer < ActiveModel::Serializer
   def initialize(object, options={})
     super(object, options)
     @debug = options[:debug]
-    Rails.logger.info "ItinerarySerializer: initialize: #{@debug}"
   end
 
   def filter(keys)
     unless @debug
-      Rails.logger.info "ItinerarySerializer, not filtering keys"
       keys
     else
-      Rails.logger.info "ItinerarySerializer, filtering keys"
       keys - [:server_status, :server_message, :failed, :hidden]
     end
   end

@@ -13,10 +13,8 @@ class TripPartSerializer < ActiveModel::Serializer
 
   def itineraries
     if @debug
-      Rails.logger.info "Returning ALL itineraries (debug)"
       return object.itineraries
     end
-    Rails.logger.info "Returning filtered itineraries (non-debug)"
     itineraries = object.itineraries.valid.visible
     return itineraries if Oneclick::Application.config.max_offset_from_desired.nil?
     latest_time = (start_time || end_time) + Oneclick::Application.config.max_offset_from_desired

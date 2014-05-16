@@ -16,12 +16,24 @@ class Characteristic < ActiveRecord::Base
   scope :personal_factors, -> {where('characteristic_type = ?', 'personal_factor')}
   scope :programs, -> {where('characteristic_type = ?', 'program')}
   scope :enabled, -> { where.not(datatype: 'disabled') }
-  
+
   # builds a hash of details about a characteristic; is used by the javascript
   # client to knwo whether to ask the user for more info
   def for_missing_info(service, group)
     a = attributes
     sc = service_characteristics.where(service: service).take
+    value = case a['code']
+    when 'age'
+      Date.today.year - sc.value.to_i
+    else
+      sc.value
+    end
+    operator = case a['code']
+    when 'age'
+      reverse_relationship_to_symbol(sc.value_relationship_id)
+    else
+      relationship_to_symbol(sc.value_relationship_id)
+    end
     options = a['datatype']=='bool' ? [{text: I18n.t(:yes_str), value: true}, {text: I18n.t(:no_str), value: false}] : nil
     {
       'question' => I18n.t(a['note']),
@@ -29,7 +41,7 @@ class Characteristic < ActiveRecord::Base
       'data_type' => a['datatype'],
       # 'control_type' => '',
       'options' => options,
-      'success_condition' => "#{relationship_to_symbol(sc.value_relationship_id)}#{sc.value}",
+      'success_condition' => "#{operator}#{value}",
       'group_id' => group
     }
   end
