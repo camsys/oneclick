@@ -12,16 +12,15 @@
 include SeedsHelpers
 
 #Traveler characteristics
-[{klass:Characteristic,  characteristic_type: 'personal_factor', code: 'disabled', name: 'Disabled', note: 'Do you have a permanent or temporary disability?', datatype: 'bool', desc: 'TK'},
-{klass:Characteristic,  characteristic_type: 'personal_factor', code: 'no_trans', name: 'No Means of Transportation', note: 'Do you own or have access to a personal vehicle?', datatype: 'bool', desc: 'TK'},
-{klass:Characteristic,  characteristic_type: 'program', code: 'nemt_eligible', name: 'Medicaid', note: 'Are you eligible for Medicaid?', datatype: 'bool'},
-{klass:Characteristic,  characteristic_type: 'program', code: 'ada_eligible', name: 'ADA Paratransit', note: 'Are you eligible for ADA paratransit?', datatype: 'bool', desc: 'TK'},
-{klass:Characteristic,  characteristic_type: 'personal_factor', code: 'veteran', name: 'Veteran', note: 'Are you a military veteran?', datatype: 'bool', desc: 'TK'},
-{klass:Characteristic,  characteristic_type: 'personal_factor', code: 'low_income', name: 'Low income', note: "Are you low income?", datatype: 'disabled', desc: 'TK'},
-{klass:Characteristic,  characteristic_type: 'personal_factor', code: 'date_of_birth', name: 'Date of Birth', note: "What is your birth year?", datatype: 'date', desc: 'TK'},
- { klass: Characteristic, characteristic_type: 'personal_factor', code: 'age', name: 'Age is', note: "What is your birth year?", datatype: 'integer',
-    desc: 'You must be 65 or older to use this service. Please confirm your birth year.'},
-{klass:Characteristic,  characteristic_type: 'personal_factor', code: 'walk_distance', name: 'Walk distance', note: 'Are you able to comfortably walk for 5, 10, 15, 20, 25, 30 minutes?', datatype: 'disabled', desc: 'TK'},
+[{klass:Characteristic, characteristic_type: 'personal_factor', code: 'disabled', name: 'Disabled', note: 'Do you have a permanent or temporary disability?', datatype: 'bool'},
+{klass:Characteristic,  characteristic_type: 'personal_factor', code: 'no_trans', name: 'No Means of Transportation', note: 'Do you own or have access to a personal vehicle?', datatype: 'bool'},
+# {klass:Characteristic,  characteristic_type: 'program', code: 'nemt_eligible', name: 'Medicaid', note: 'Are you eligible for Medicaid?', datatype: 'bool'},
+{klass:Characteristic,  characteristic_type: 'program', code: 'ada_eligible', name: 'ADA Paratransit', note: 'Are you eligible for ADA paratransit?', datatype: 'bool'},
+# {klass:Characteristic,  characteristic_type: 'personal_factor', code: 'veteran', name: 'Veteran', note: 'Are you a military veteran?', datatype: 'bool'},
+# {klass:Characteristic,  characteristic_type: 'personal_factor', code: 'low_income', name: 'Low income', note: "Are you low income?", datatype: 'disabled'},
+{klass:Characteristic,  characteristic_type: 'personal_factor', code: 'date_of_birth', name: 'Date of Birth', note: "What is your birth year?", datatype: 'date'},
+{klass:Characteristic,  characteristic_type: 'personal_factor', code: 'age', name: 'Age is', note: "What is your birth year?", datatype: 'integer'},
+# {klass:Characteristic,  characteristic_type: 'personal_factor', code: 'walk_distance', name: 'Walk distance', note: 'Are you able to comfortably walk for 5, 10, 15, 20, 25, 30 minutes?', datatype: 'disabled'},
 #Traveler accommodations 
 {klass:Accommodation,  code: 'folding_wheelchair_accessible', name: 'Folding wheelchair accessible.', note: 'Do you need a vehicle that has space for a folding wheelchair?', datatype: 'bool'},
 {klass:Accommodation,  code: 'motorized_wheelchair_accessible', name: 'Motorized wheelchair accessible.', note: 'Do you need a vehicle than has space for a motorized wheelchair?', datatype: 'bool'},

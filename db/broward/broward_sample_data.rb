@@ -67,14 +67,16 @@ end
 def add_services_and_providers
   disabled = Characteristic.find_by_code('disabled')
   no_trans = Characteristic.find_by_code('no_trans')
-  nemt_eligible = Characteristic.find_by_code('nemt_eligible')
   ada_eligible = Characteristic.find_by_code('ada_eligible')
-  veteran = Characteristic.find_by_code('veteran')
-  low_income = Characteristic.find_by_code('low_income')
-  date_of_birth = Characteristic.find_by_code('date_of_birth')
   age = Characteristic.find_by_code('age')
-  walk_distance = Characteristic.find_by_code('walk_distance')
-
+  date_of_birth = Characteristic.find_by_code('date_of_birth')
+  
+  #Remove any unused characteristics for PA from previous loads
+  %w(nemt_eligible veteran low_income walk_distance).each do |unused|
+    if c = Characteristic.find_by_code(unused)
+      c.destroy
+    end
+  end
   #Traveler accommodations
   folding_wheelchair_accessible = Accommodation.find_by_code('folding_wheelchair_accessible')
   motorized_wheelchair_accessible = Accommodation.find_by_code('motorized_wheelchair_accessible')
