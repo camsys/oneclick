@@ -93,7 +93,7 @@ class Trip < ActiveRecord::Base
       trip_part.sequence = sequence
       trip_part.is_depart = true
       trip_part.is_return_trip = true
-      trip_part.scheduled_date = trip_date
+      trip_part.scheduled_date = Date.strptime(trip_proxy.return_trip_date, '%m/%d/%Y')
       trip_part.scheduled_time = Time.zone.parse(trip_date.year.to_s + '-' + trip_date.month.to_s + '-' + trip_date.day.to_s + ' ' + trip_proxy.return_trip_time).in_time_zone("UTC")
       trip_part.from_trip_place = to_place
       trip_part.to_trip_place = from_place

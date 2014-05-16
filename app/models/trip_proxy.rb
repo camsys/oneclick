@@ -49,6 +49,7 @@ class TripProxy < Proxy
     if trip.trip_parts.count > 1
       last_trip_part = trip.trip_parts.last
       trip_proxy.is_round_trip = last_trip_part.is_return_trip ? "1" : "0"
+      trip_proxy.return_trip_date = last_trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
       trip_proxy.return_trip_time = last_trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
     end
 
