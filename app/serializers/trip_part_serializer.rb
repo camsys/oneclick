@@ -12,7 +12,6 @@ class TripPartSerializer < ActiveModel::Serializer
   end
 
   def itineraries
-    puts "itineraries: #{@debug}"
     if @debug
       Rails.logger.info "Returning ALL itineraries (debug)"
       return object.itineraries
