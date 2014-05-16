@@ -729,6 +729,7 @@ def add_ancillary_services
   s = ServiceType.where(code: 'transit').first
   service = Service.where(provider: p, service_type: s, external_id: '210').first_or_create
   service.name = "Rabbit Transit"
+  service.active = false
   service.save
 
   #Lebanon
@@ -738,6 +739,7 @@ def add_ancillary_services
   p.save
   service = Service.where(provider: p, service_type: s, external_id: '209').first_or_create
   service.name = "Lebanon Transit"
+  service.active = false
   service.save
 
   #Taxi Service
