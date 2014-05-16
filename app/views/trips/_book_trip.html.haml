@@ -203,9 +203,10 @@
         }
         else{
           $('#outbound_results').show();
+          console.log(result);
           var text = "";
           $('#book_outbound_trip').html(text);
-          var text1 = "This trip cannot be booked oneline."
+          var text1 = "This trip cannot be booked online."
           $('#outbound_results1').html(text1);
           var text2 = result['trips'][1];
           $('#outbound_results2').html(text2);
@@ -263,9 +264,10 @@
           }
           else{
             $('#return_results').show();
+            console.log(result);
             var text = "";
             $('#book_return_trip').html(text);
-            var text1 = "This trip cannot be booked."
+            var text1 = "This trip cannot be booked online."
             $('#return_results1').html(text1);
             var text2 = result['trips'][1];
             $('#return_results2').html(text2);
