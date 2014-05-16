@@ -64,6 +64,8 @@ class EligibilityService
           end
           next
         end
+
+        # Passenger does have a value for the characteristic, so test it
         if !test_condition(passenger_characteristic.first.value, service_characteristic_map.value_relationship_id , service_characteristic_map.value)
           group_eligible = false
           break
@@ -85,6 +87,8 @@ class EligibilityService
       #Create itinerary
       if min_match_score > 0.0
         missing_information = true
+      else
+        missing_info = []
       end
       itinerary = tp.convert_paratransit_itineraries(service, min_match_score, missing_information, missing_information_text)
       # itinerary['missing_info'] = missing_info.flatten
