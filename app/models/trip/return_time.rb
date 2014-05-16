@@ -18,7 +18,7 @@ module Trip::ReturnTime
     end
 
     begin
-      return DateTime.strptime([trip_date, return_trip_time, DateTime.current.zone].join(' '), '%m/%d/%Y %H:%M %p %z')
+      return DateTime.strptime([return_trip_date, return_trip_time, DateTime.current.zone].join(' '), '%m/%d/%Y %H:%M %p %z')
     rescue Exception => e
       Rails.logger.warn "return_trip_datetime #{trip_date} #{trip_time}"
       Rails.logger.warn e.message
@@ -45,18 +45,12 @@ protected
 
   # Validation. Check that the return trip time is well formatted and after the trip time
   def validate_return_trip_time
-    if is_round_trip == "1"
-      begin
-        return_time = Time.strptime(self.return_trip_time, "%H:%M %p")
-        trip_time = Time.strptime(self.trip_time, "%H:%M %p")
-
-        if return_time <= trip_time
-          errors.add(:return_trip_time, I18n.translate(:return_trip_time_before_start))
-        end
-      rescue Exception => e
-        puts e.to_s
-        errors.add(:return_trip_time, I18n.translate(:time_wrong_format))
-      end
-     end
+    return_dt = return_trip_datetime
+    puts return_dt
+    puts trip_datetime
+    if return_dt && (return_dt <= trip_datetime)
+      errors.add(:return_trip_time, I18n.translate(:return_trip_time_before_start))
+    end
   end
+
 end
