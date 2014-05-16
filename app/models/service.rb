@@ -43,6 +43,7 @@ class Service < ActiveRecord::Base
   has_many :user_profiles, through: :user_services, source: :user_profile
 
   scope :active, -> {where(active: true)}
+  scope :paratransit, -> {joins(:service_type).where(service_types: {code: "paratransit"})}
 
   include Validations
 
