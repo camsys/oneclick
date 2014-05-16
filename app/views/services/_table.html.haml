@@ -2,18 +2,21 @@
   %thead
     %tr
       %th= t(:name)
-      %th= t(:status)
-      %th= t(:service_id)
       %th= t(:provider)
+      %th= t(:phone)
+      %th= t(:email)
+      %th= t(:service_id)
+      %th#status= t(:status)
   %tbody
     - @services.each do |service|
       %tr
         %td
           =link_to service.name, service_path(service.id)
         %td
+          =service.provider.name
+        %td= service.phone
+        %td= service.email
+        %td= service.external_id
+        %td
           - if service.active == false
             = t(:inactive)
-        %td
-          =service.external_id
-        %td
-          =service.provider.name

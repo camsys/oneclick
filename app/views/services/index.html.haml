@@ -8,7 +8,7 @@
 
 :javascript
   $(document).ready(function() {
-    $('#admin_services_table').dataTable( {
+    var oTable = $('#admin_services_table').dataTable( {
           "oLanguage": {
               "sLengthMenu": "Display _MENU_ services per page",
               "sZeroRecords": "Nothing found - sorry",
@@ -16,6 +16,19 @@
               "sInfoEmpty": "Showing 0 to 0 of 0 services",
               "sInfoFiltered": "(filtered from _MAX_ total services)"
           },
-          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l><'toggle col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
       } );
+    $("div.toggle").html('<span class="pull-right"><input type="checkbox" id="toggle">&nbsp;Show inactive services</span>');
+
+    var index = $("thead th").index($('#status'));
+
+    oTable.fnFilter('^$', index, true);
+
+    $("#toggle").click(function () {
+        var filter = '^$';
+        if ($(this).is(':checked')) {
+                var filter = '';
+        }         
+        oTable.fnFilter(filter, index, true);
+    });
   } );
