@@ -41,16 +41,46 @@ include SeedsHelpers
 {klass:ServiceType, code: 'nemt', name: 'Non-Emergency Medical Service', note: 'This is a paratransit service only to be used for medical trips.'},
 {klass: ServiceType, code: 'transit', name: 'Fixed-route Transit', note: 'This is a transit service.'},
 {klass: ServiceType, code: 'taxi', name: 'Taxi', note: 'Taxi services.'},
-
-#trip_purposes
-{klass:TripPurpose, code: 'medical', name: 'Medical', note: 'General medical trip.', active: 1, sort_order: 2}, 
-{klass:TripPurpose, code: 'cancer', name: 'Cancer Treatment', note: 'Trip to receive cancer treatment.', active: 1, sort_order: 2}, 
-{klass:TripPurpose, code: 'general', name: 'General Purpose', note: 'General purpose/unspecified purpose.', active: 1, sort_order: 1}, 
- {klass:TripPurpose, code: 'grocery', name: 'Grocery Trip', note: 'Grocery shopping trip.', active: 1, sort_order: 2}
- # {klass:TripPurpose, code: 'vamc', name: 'Visit Lebanon VA Medical Center', note: 'Visit Lebanon VA Medical Center', active: 1, sort_order: 2}
 ].each do |record|
   structured_hash = structure_records_from_flat_hash record
   build_internationalized_records structured_hash
 end
+
+#trip_purposes
+# {klass:TripPurpose, code: 'medical', name: 'Medical', note: 'General medical trip.', active: 1, sort_order: 2}, 
+# {klass:TripPurpose, code: 'cancer', name: 'Cancer Treatment', note: 'Trip to receive cancer treatment.', active: 1, sort_order: 2}, 
+# {klass:TripPurpose, code: 'general', name: 'General Purpose', note: 'General purpose/unspecified purpose.', active: 1, sort_order: 1}, 
+#  {klass:TripPurpose, code: 'grocery', name: 'Grocery Trip', note: 'Grocery shopping trip.', active: 1, sort_order: 2}
+#  # {klass:TripPurpose, code: 'vamc', name: 'Visit Lebanon VA Medical Center', note: 'Visit Lebanon VA Medical Center', active: 1, sort_order: 2}
+
+['Adult Day Care',
+'After School Program',
+'Cancer Treatment',
+'Dialysis',
+'Education',
+'General Purpose',
+'Grocery',
+'Medical',
+'Methadone',
+'Other',
+'Personal Errand',
+'Pharmacy',
+'Recreation',
+'Senior Center',
+'Senior Center Group Trip, Recreation',
+'Shopping',
+'Social Service',
+'Training/Employment',
+'Volunteer',
+'Visit Lebanon VA Medical Center',
+'Work'].each do |name|
+  record = {klass:TripPurpose, code: name.downcase.gsub(%r{[ /]}, '_'), name: name, note: name, active: 1, sort_order: 2}
+  record[:sort_order] = 1 if record[:code]=='general_purpose'
+  record[:sort_order] = 3 if record[:code]=='other'
+  structured_hash = structure_records_from_flat_hash record
+  build_internationalized_records structured_hash
+end
+
+
 
 

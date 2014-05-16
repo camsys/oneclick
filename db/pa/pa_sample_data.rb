@@ -92,13 +92,13 @@ def add_providers_and_services
 
   #trip_purposes
   work = TripPurpose.find_by_code('work')
-  training = TripPurpose.find_by_code('training')
+  training = TripPurpose.find_by_code('training_employment')
   medical = TripPurpose.find_by_code('medical')
   dialysis = TripPurpose.find_by_code('dialysis')
-  cancer = TripPurpose.find_by_code('cancer')
-  personal = TripPurpose.find_by_code('personal')
-  general = TripPurpose.find_by_code('general')
-  senior = TripPurpose.find_by_code('senior')
+  cancer = TripPurpose.find_by_code('cancer_treatment')
+  personal = TripPurpose.find_by_code('personal_errand')
+  general = TripPurpose.find_by_code('general_purpose')
+  senior = TripPurpose.find_by_code('senior_center')
   grocery = TripPurpose.find_by_code('grocery')
 
   providers = [
@@ -146,9 +146,10 @@ def add_providers_and_services
         end
 
         #Trip Purpose Requirements
-        [medical, grocery, cancer, general].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
-        end
+        # was: 
+        # [medical, grocery, cancer, general].each do |n|
+        #   ServiceTripPurposeMap.create(service: service, trip_purpose: n)
+        # end
 
         #Add geographic restrictions
         ['York'].each do |z|
@@ -210,9 +211,10 @@ def add_providers_and_services
         end
 
         #Trip Purpose Requirements
-        [cancer, medical, general, grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
-        end
+        # was: 
+        # [cancer, medical, general, grocery].each do |n|
+        #   ServiceTripPurposeMap.create(service: service, trip_purpose: n)
+        # end
 
         #Add geographic restrictions
         ['York', 'Adams', 'Franklin', 'Fulton'].each do |z|
@@ -241,9 +243,10 @@ def add_providers_and_services
         end
 
         #Trip Purpose Requirements
-        [cancer, medical, general, grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
-        end
+        # was: 
+        # [cancer, medical, general, grocery].each do |n|
+        #   ServiceTripPurposeMap.create(service: service, trip_purpose: n)
+        # end
 
         #Add geographic restrictions
         ['York', 'Adams', 'Franklin', 'Fulton'].each do |z|
@@ -353,13 +356,9 @@ def add_fares
 end
 
 def add_dav
-  if TripPurpose.find_by_name('Visit Lebanon VA Medical Center').nil?
+  if Provider.find_by_name('Veterans Affairs').nil?
 
-    lebanon = TripPurpose.create(
-        name: 'Visit Lebanon VA Medical Center',
-        note: 'Visit Lebanon VA Medical Center',
-        active: 1,
-        sort_order: 2)
+    lebanon = TripPurpose.find_by_code('visit_lebanon_va_medical_center')
 
     provider = {name: 'Veterans Affairs', contact: 'DAV Contact', external_id:  "6"}
 
@@ -438,7 +437,7 @@ def add_rabbit_general
   end
 
   medical = TripPurpose.find_by_code('medical')
-  cancer = TripPurpose.find_by_code('cancer')
+  cancer = TripPurpose.find_by_code('cancer_treatment')
   #Trip purpose requirements
   [medical, cancer].each do |n|
     ServiceTripPurposeMap.create(service: service, trip_purpose: n)
@@ -555,8 +554,8 @@ def collapse_rabbit_services
   end
 
   medical = TripPurpose.find_by_code('medical')
-  cancer = TripPurpose.find_by_code('cancer')
-  general = TripPurpose.find_by_code('general')
+  cancer = TripPurpose.find_by_code('cancer_treatment')
+  general = TripPurpose.find_by_code('general_purpose')
   grocery = TripPurpose.find_by_code('grocery')
   paratransit = ServiceType.find_by_code('paratransit')
 
@@ -590,9 +589,10 @@ def collapse_rabbit_services
     Schedule.create(service: service, start_seconds:7.25*3600, end_seconds: 21.75*3600, day_of_week: 6)
     Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
 
-    [medical, cancer, general, grocery].each do |n|
-      ServiceTripPurposeMap.create(service: service, trip_purpose: n)
-    end
+    # was:
+    # [medical, cancer, general, grocery].each do |n|
+    #   ServiceTripPurposeMap.create(service: service, trip_purpose: n)
+    # end
 
     #Add geographic restrictions
     ['York', 'Adams'].each do |z|
@@ -645,9 +645,9 @@ def collapse_rabbit_services
     Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
     #Trip purpose requirements
 
-    [medical, cancer, general, grocery].each do |n|
-      ServiceTripPurposeMap.create(service: service, trip_purpose: n)
-    end
+    # [medical, cancer, general, grocery].each do |n|
+    #   ServiceTripPurposeMap.create(service: service, trip_purpose: n)
+    # end
 
     #Add geographic restrictions
     ['York', 'Adams'].each do |z|

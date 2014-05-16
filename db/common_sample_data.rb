@@ -227,7 +227,9 @@ def populate_provider_staff
     
     # provider staff user
     u = p.users.find_or_create_by! email: p.name.to_sample_email('staff') do |pstaff|
-      pstaff.first_name = p.name + ' Provider Staff', pstaff.last_name = 'Staff', pstaff.password = pstaff.password_confirmation = 'welcome1'
+      pstaff.first_name = p.name + ' Provider Staff'
+      pstaff.last_name = 'Staff'
+      pstaff.password = pstaff.password_confirmation = 'welcome1'
       up = UserProfile.create! user: pstaff
       pstaff.add_role :provider_staff, p
     end
