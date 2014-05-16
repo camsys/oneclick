@@ -137,50 +137,6 @@ def add_providers_and_services
 
     case p.external_id
 
-      when "1" #Rabbit Transit
-
-        #Create service Senior Shared Ride
-        service = Service.create(name: 'Rabbit Shared Ride', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
-        service.booking_service_code = 'ecolane'
-        service.save
-        #Add Schedules
-        (1..5).each do |n|
-          Schedule.create(service: service, start_seconds:5.75*3600, end_seconds: 23.5*3600, day_of_week: n)
-        end
-        Schedule.create(service: service, start_seconds:7.25*3600, end_seconds: 21.75*3600, day_of_week: 6)
-        Schedule.create(service: service, start_seconds:9.25*3600, end_seconds: 18*3600, day_of_week: 0)
-        #Trip purpose requirements
-        [medical, cancer, general, grocery].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
-        end
-
-        #Add geographic restrictions
-        ['York', 'Adams'].each do |z|
-          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
-        end
-        ['York', 'Adams'].each do |z|
-          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
-        end
-
-        #Traveler Characteristics Requirements
-        ServiceCharacteristic.create(service: service, characteristic: age, value: '60', value_relationship_id: 4, group: 1)
-
-        #Traveler Characteristics Requirements
-        ServiceCharacteristic.create(service: service, characteristic: matp, value: 'true', group: 2)
-
-        #Traveler Characteristics Requirements
-        ServiceCharacteristic.create(service: service, characteristic: ada_eligible, value: 'true', group: 3)
-
-        #Traveler Characteristics Requirements
-        ServiceCharacteristic.create(service: service, characteristic: disabled, value: 'true', group: 4)
-
-        #Traveler Accommodations Requirements
-        [motorized_wheelchair_accessible, folding_wheelchair_accessible, curb_to_curb].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n)
-        end
-
       when "2" #Faith in Action Network
 
         service = Service.create(name: 'Staying Connected', provider: p, service_type: paratransit, advanced_notice_minutes: 7*24*60)
@@ -388,15 +344,6 @@ def add_fares
   service = Service.find_by_name('Area Agency on Aging')
   if service and service.fare_structures.count == 0
     FareStructure.create(service: service, fare_type: 0, base: 0.00)
-  else
-    unless service.nil?
-      puts "Fare already exists for " + service.name
-    end
-  end
-
-  service = Service.find_by_name('General Public Shared Ride')
-  if service and service.fare_structures.count == 0
-    FareStructure.create(service: service, fare_type: 2, desc:  "Zone 1: $15.65, Zone 2: $22.00, Zone 3: $30.50, Zone 4: $44.25")
   else
     unless service.nil?
       puts "Fare already exists for " + service.name
@@ -754,7 +701,7 @@ add_users_and_places
 add_providers_and_services
 add_fares
 add_dav
-add_rabbit_general
+#add_rabbit_general
 add_urls_to_pa
 setup_cms
 add_booking_service_codes
