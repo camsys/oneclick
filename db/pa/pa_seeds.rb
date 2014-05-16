@@ -47,6 +47,7 @@ include SeedsHelpers
 {klass:TripPurpose, code: 'cancer', name: 'Cancer Treatment', note: 'Trip to receive cancer treatment.', active: 1, sort_order: 2}, 
 {klass:TripPurpose, code: 'general', name: 'General Purpose', note: 'General purpose/unspecified purpose.', active: 1, sort_order: 1}, 
  {klass:TripPurpose, code: 'grocery', name: 'Grocery Trip', note: 'Grocery shopping trip.', active: 1, sort_order: 2}
+ # {klass:TripPurpose, code: 'vamc', name: 'Visit Lebanon VA Medical Center', note: 'Visit Lebanon VA Medical Center', active: 1, sort_order: 2}
 ].each do |record|
   structured_hash = structure_records_from_flat_hash record
   build_internationalized_records structured_hash
