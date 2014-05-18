@@ -35,7 +35,7 @@ class Admin::UsersController < Admin::BaseController
           @agency_user_relationship.creator = current_user.id
           
           if @agency_user_relationship.save
-            UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.user.email, current_user.agency).deliver
+            UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.agency.email || @agency_user_relationship.agency.name, current_user.agency).deliver
           end
         end
         flash[:notice] = t(:user_created)
@@ -142,7 +142,7 @@ class Admin::UsersController < Admin::BaseController
       #now that we have the relationship object, set it as active/confirmed
       rel.update_attributes(relationship_status: RelationshipStatus.confirmed)
       agency = Agency.find(id)
-      UserMailer.agency_helping_email(@user.email, agency.email, agency)
+      UserMailer.agency_helping_email(@user.email, agency.email || agency.name, agency).deliver
     end
     revoked_agencies.each do |revoked_id|
       revoked = AgencyUserRelationship.find_by(agency_id: revoked_id, user_id: @user.id)
@@ -160,6 +160,7 @@ class Admin::UsersController < Admin::BaseController
     new_buddies.each do |id|
       rel = UserRelationship.find_or_create_by!( traveler: @user, delegate: User.find(id)) do |ur|
         ur.update_attributes(relationship_status: RelationshipStatus.confirmed)
+        UserMailer.buddy_request_email(ur.traveler.email, ur.delegate.email).deliver
       end
       rel.update_attributes(relationship_status: RelationshipStatus.confirmed)
     end

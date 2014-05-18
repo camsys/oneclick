@@ -76,7 +76,7 @@ private
       #now that we have the relationship object, set it as active/confirmed
       rel.update_attributes(relationship_status: RelationshipStatus.confirmed)
       agency = Agency.find(id)
-      UserMailer.agency_helping_email(@user.email, agency.email, agency)
+      UserMailer.agency_helping_email(@user.email, agency.email || agency.name, agency).deliver
     end
     revoked_agencies.each do |revoked_id|
       revoked = AgencyUserRelationship.find_by(agency_id: revoked_id, user_id: @user.id)
@@ -94,6 +94,7 @@ private
     new_buddies.each do |id|
       rel = UserRelationship.find_or_create_by!( traveler: @user, delegate: User.find(id)) do |ur|
         ur.update_attributes(relationship_status: RelationshipStatus.confirmed)
+        UserMailer.buddy_request_email(ur.traveler.email, ur.delegate.email).deliver
       end
       rel.update_attributes(relationship_status: RelationshipStatus.confirmed)
     end
