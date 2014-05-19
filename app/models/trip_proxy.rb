@@ -34,16 +34,16 @@ class TripProxy < Proxy
     trip_proxy.traveler = @traveler
     trip_proxy.trip_purpose_id = trip.trip_purpose.id
 
-    trip_proxy.arrive_depart = trip_part.is_depart
+    trip_proxy.outbound_arrive_depart = trip_part.is_depart
     trip_datetime = trip_part.trip_time
-    trip_proxy.trip_date = trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
+    trip_proxy.outbound_trip_date = trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
     temp_time = trip_part.scheduled_time
-    trip_proxy.trip_time = trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
+    trip_proxy.outbound_trip_time = trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
     Rails.logger.info "create_trip_proxy"
     Rails.logger.info "trip_part.scheduled_date #{trip_part.scheduled_date}"
     Rails.logger.info "trip_part.scheduled_time #{trip_part.scheduled_time}"
-    Rails.logger.info "trip_proxy.trip_date #{trip_proxy.trip_date}"
-    Rails.logger.info "trip_proxy.trip_time #{trip_proxy.trip_time}"
+    Rails.logger.info "trip_proxy.outbound_trip_date #{trip_proxy.outbound_trip_date}"
+    Rails.logger.info "trip_proxy.outbound_trip_time #{trip_proxy.outbound_trip_time}"
 
     # Check for return trips
     if trip.trip_parts.count > 1
@@ -51,6 +51,7 @@ class TripProxy < Proxy
       trip_proxy.is_round_trip = last_trip_part.is_return_trip ? "1" : "0"
       trip_proxy.return_trip_date = last_trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
       trip_proxy.return_trip_time = last_trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
+      trip_proxy.return_arrive_depart = last_trip_part.is_depart
     end
 
     # Set the from place

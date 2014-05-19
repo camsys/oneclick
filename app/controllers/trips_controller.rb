@@ -275,8 +275,8 @@ class TripsController < PlaceSearchingController
     # Set the travel time/date to the default
     travel_date = default_trip_time
 
-    @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
-    @trip_proxy.trip_time = travel_date.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
+    @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
+    @trip_proxy.outbound_trip_time = travel_date.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
 
     if @trip_proxy.is_round_trip == "1"
       return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
@@ -382,7 +382,7 @@ class TripsController < PlaceSearchingController
   # GET /trips/new.json
   def new
     session[:tabs_visited] = []
-    @trip_proxy = TripProxy.new(modes: session[:modes_desired])
+    @trip_proxy = TripProxy.new(modes: session[:modes_desired], return_arrive_depart: true)
     @trip_proxy.traveler = @traveler
 
     # set the flag so we know what to do when the user submits the form
@@ -391,8 +391,8 @@ class TripsController < PlaceSearchingController
     # Set the travel time/date to the default
     travel_date = default_trip_time
 
-    @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
-    @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
+    @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
+    @trip_proxy.outbound_trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
 
     # Set the trip purpose to its default
     @trip_proxy.trip_purpose_id = TripPurpose.all.first.id
