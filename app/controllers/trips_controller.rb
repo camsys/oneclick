@@ -382,7 +382,7 @@ class TripsController < PlaceSearchingController
   # GET /trips/new.json
   def new
     session[:tabs_visited] = []
-    @trip_proxy = TripProxy.new(modes: session[:modes_desired], return_arrive_depart: true)
+    @trip_proxy = TripProxy.new(modes: session[:modes_desired], outbound_arrive_depart: false, return_arrive_depart: true) # default outbound trips to arrive-by, return trips to depart-at.
     @trip_proxy.traveler = @traveler
 
     # set the flag so we know what to do when the user submits the form
