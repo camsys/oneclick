@@ -42,7 +42,7 @@ CsLeaflet.Leaflet = {
     // TODO make this a constructor
 
     init: function(mapId, options) {
-        this.LMmap = L.map(mapId);
+        this.LMmap = L.map(mapId, { scrollWheelZoom: options.scroll_wheel_zoom });
         //alert(options.tile_provider);
         //alert(options.min_zoom);
         //alert(options.max_zoom);

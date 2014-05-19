@@ -6,13 +6,14 @@ class TripProxy < Proxy
   # Id of the trip being re-planned, edited, etc. Null if mode is NEW
   attr_accessor :id, :map_center
   attr_accessor :trip_options
-  attr_accessor :modes
 
+  include TripsSupport
   include Trip::From
   include Trip::PickupTime
   include Trip::Purpose
   include Trip::ReturnTime
   include Trip::To
+  include Trip::Modes
 
   def initialize(attrs = {})
     super
@@ -20,4 +21,84 @@ class TripProxy < Proxy
       self.send "#{k}=", v
     end
   end
+
+  # creates a trip_proxy object from a trip. Note that this does not set the
+  # trip id into the proxy as only edit functions need this.
+  def self.create_from_trip(trip, attr = {})
+
+    # get the trip parts for this trip
+    trip_part = trip.trip_parts.first
+
+    # initialize a trip proxy from this trip
+    trip_proxy = TripProxy.new(attr)
+    trip_proxy.traveler = @traveler
+    trip_proxy.trip_purpose_id = trip.trip_purpose.id
+
+    trip_proxy.arrive_depart = trip_part.is_depart
+    trip_datetime = trip_part.trip_time
+    trip_proxy.trip_date = trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
+    temp_time = trip_part.scheduled_time
+    trip_proxy.trip_time = trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
+    Rails.logger.info "create_trip_proxy"
+    Rails.logger.info "trip_part.scheduled_date #{trip_part.scheduled_date}"
+    Rails.logger.info "trip_part.scheduled_time #{trip_part.scheduled_time}"
+    Rails.logger.info "trip_proxy.trip_date #{trip_proxy.trip_date}"
+    Rails.logger.info "trip_proxy.trip_time #{trip_proxy.trip_time}"
+
+    # Check for return trips
+    if trip.trip_parts.count > 1
+      last_trip_part = trip.trip_parts.last
+      trip_proxy.is_round_trip = last_trip_part.is_return_trip ? "1" : "0"
+      trip_proxy.return_trip_date = last_trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
+      trip_proxy.return_trip_time = last_trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
+    end
+
+    # Set the from place
+    tp = trip.trip_places.first
+    trip_proxy.from_place = tp.name
+    trip_proxy.from_raw_address = tp.address
+    trip_proxy.from_lat = tp.location.first
+    trip_proxy.from_lon = tp.location.last
+
+    if tp.poi
+      trip_proxy.from_place_selected_type = POI_TYPE
+      trip_proxy.from_place_selected = tp.poi.id
+      trip_proxy.from_place_object = tp.poi.to_json(methods: :type_name)
+    elsif tp.place
+      trip_proxy.from_place_selected_type = PLACES_TYPE
+      trip_proxy.from_place_selected = tp.place.id
+      trip_proxy.from_place_object = tp.place.to_json(methods: :type_name)
+    else
+      trip_proxy.from_place_selected_type = CACHED_ADDRESS_TYPE
+      trip_proxy.from_place_selected = tp.id
+      trip_proxy.from_place_object = tp.to_json(methods: :type_name)
+    end
+    Rails.logger.info trip_proxy.from_place_object
+
+    # Set the to place
+    tp = trip.trip_places.last
+    trip_proxy.to_place = tp.name
+    trip_proxy.to_raw_address = tp.address
+    trip_proxy.to_lat = tp.location.first
+    trip_proxy.to_lon = tp.location.last
+
+    if tp.poi
+      trip_proxy.to_place_selected_type = POI_TYPE
+      trip_proxy.to_place_selected = tp.poi.id
+      trip_proxy.to_place_object = tp.poi.to_json(methods: :type_name)
+    elsif tp.place
+      trip_proxy.to_place_selected_type = PLACES_TYPE
+      trip_proxy.to_place_selected = tp.place.id
+      trip_proxy.to_place_object = tp.place.to_json(methods: :type_name)
+    else
+      trip_proxy.to_place_selected_type = CACHED_ADDRESS_TYPE
+      trip_proxy.to_place_selected = tp.id
+      trip_proxy.to_place_object = tp.to_json(methods: :type_name)
+    end
+    Rails.logger.info trip_proxy.to_place_object
+
+    return trip_proxy
+
+  end
+
 end

@@ -20,7 +20,7 @@ Oneclick::Application.routes.draw do
     resources :users do
       member do
         get   'profile'
-        post  'update'
+        # post  'update'
       end
 
       resources :characteristics, :only => [:new, :create, :edit, :update] do
@@ -75,6 +75,7 @@ Oneclick::Application.routes.draw do
 
       # users have trips
       resources :trips, :only => [:show, :index, :new, :create, :destroy, :edit, :update] do
+        resources :characteristics, only: [:new, :update], controller: 'characteristics'
         collection do
           post  'set_traveler'
           get   'unset_traveler'
@@ -268,19 +269,14 @@ Oneclick::Application.routes.draw do
       end
       resources :agencies do
         get 'travelers'
+        get "users/:id/agency_assist", to: "users#assist", as: :agency_assist
         resources 'agency_user_relationships' do
-          get   'aid_user'
           get   'agency_revoke'
         end
         get 'select_user'
-        resources :users do
-          post 'add_to_agency', on: :collection
-          put 'add_to_agency', on: :collection
-        end
         resources :trips
       end
-      resources :users do #admin users
-        get 'travelers'
+      resources :users do
         put 'update_roles', on: :member
       end
       resources :providers do

@@ -27,39 +27,9 @@
       %strong
         =format_date(@trip.trip_datetime.in_time_zone)
 
-
--@trip.trip_parts.each do |trip_part|
-
-  -if trip_part.is_return_trip?
-    -unless trip_part.itineraries.valid.visible.count == 0
-      %hr{style: "height:12px; background:#848484;"}
-      %h3="Return Trip Options"
-  -else
-    %hr{style: "height:12px; background:#848484;"}
-    %h3="Outbound Trip Options"
-
-  - ItineraryDecorator.decorate_collection(trip_part.itineraries.valid.visible).each do |itinerary|
-
-    %hr{style: "height:12px; background:#848484;"}
-    %h2
-      -if itinerary.mode.code == 'mode_paratransit'
-        =itinerary.service.name
-        %h3
-          =itinerary.service.provider.name
-      -else
-        =get_trip_summary_title(itinerary)
-
-    %hr
-
-    -unless itinerary.mode.code == 'mode_rideshare'
-      %h3
-        =t(:summary) + ":"
-      = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
-      %hr
-
-    %h3
-      =t(:details) + ":"
-    = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
+- ItineraryDecorator.decorate_collection(@trip.itineraries.selected).each do |itinerary|
+  - Rails.logger.info itinerary.ai
+  = render :partial => 'trip_single_plan_details', :locals => {:itinerary => itinerary}
 
 %hr{style: "height:12px; background:#848484;"}
 %table

@@ -1,0 +1,28 @@
+// PA/YATA CSS file. Styles only, no variables or mixins.
+$broward_green: #99cc67;
+// TODO This should probably be done with a mixin
+@media(max-width:767px){
+  #logo {
+   background: image-url('broward/Base_Broward_Logo_lg.png') no-repeat center center fixed;
+   // -webkit-background-size: cover;
+   // -moz-background-size: cover;
+   // -o-background-size: cover;
+   // background-size: cover;
+ }
+}
+
+@media(min-width:768px){
+  #logo {
+   background: image-url('broward/Base_Broward_Logo_sm.png') no-repeat left center;
+   // -webkit-background-size: cover;
+   // -moz-background-size: cover;
+   // -o-background-size: cover;
+   // background-size: cover;
+  }
+}
+
+
+// This really needs to be abstracted up.  Should create a library.
+#publicNav{
+  background: $broward_green;
+}

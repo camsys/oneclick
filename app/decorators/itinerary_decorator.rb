@@ -1,5 +1,6 @@
 class ItineraryDecorator < Draper::Decorator
   delegate_all
+  decorates_association :trip_part
 
   # Define presentation-specific methods here. Helpers are accessed through
   # `helpers` (aka `h`). You can override attributes, for example:
@@ -29,6 +30,12 @@ class ItineraryDecorator < Draper::Decorator
   def duration_in_words
     # TODO should be t(:not_available)
     (duration ? h.duration_to_words(duration) + " (est.)" : I18n.t(:not_available))
+  end
+
+  def time_range_in_words
+
+    return format_time(start_time) + ' ' + I18n.t(:to) + ' ' + format_time(end_time) if (start_time && end_time)
+    return ''
   end
 
   def notes

@@ -26,11 +26,11 @@ describe EligibilityService do
       [
           {
             "question" => I18n.t('age_note'),
-            "description" => I18n.t('age_desc'),
             "data_type" => 'integer',
             # "control_type" => 'foo',
             "options" => nil,
-            "success_condition" => '>=65'
+            "success_condition"=>"<1949",
+            "group_id" => 0
           }
         ]
       ]

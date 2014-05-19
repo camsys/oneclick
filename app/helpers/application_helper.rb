@@ -6,14 +6,14 @@ module ApplicationHelper
   include LocaleHelpers
   
   ICON_DICTIONARY = {
-      TripLeg::WALK => 'travelcon-walk',
-      TripLeg::TRAM => 'travelcon-subway',
-      TripLeg::SUBWAY => 'travelcon-subway',
-      TripLeg::RAIL => 'travelcon-rail',
-      TripLeg::BUS => 'travelcon-bus',
-      TripLeg::FERRY => 'travelcon-boat',
-      TripLeg::CAR => 'travelcon-car'
-      }
+    Leg::TripLeg::WALK => 'travelcon-walk',
+    Leg::TripLeg::TRAM => 'travelcon-subway',
+    Leg::TripLeg::SUBWAY => 'travelcon-subway',
+    Leg::TripLeg::RAIL => 'travelcon-rail',
+    Leg::TripLeg::BUS => 'travelcon-bus',
+    Leg::TripLeg::FERRY => 'travelcon-boat',
+    Leg::TripLeg::CAR => 'travelcon-car'
+  }
 
   # Returns the name of the logo image based on the oneclick configuration
   def get_logo
@@ -54,7 +54,7 @@ module ApplicationHelper
     TripPurpose.all.each do |tp|
       elems << {
         :id => tp.id,
-        :value => tp
+        :value => t(tp.name)
       }
     end
     return elems
@@ -154,7 +154,7 @@ module ApplicationHelper
     return if itinerary.nil?
     
     mode_code = get_pseudomode_for_itinerary(itinerary)
-
+    #is this not a switch case?  Saves a few evaluations that way...
     partial = if mode_code.in? ['transit', 'rail', 'bus', 'railbus', 'drivetransit']
       'transit_details'
     elsif mode_code == 'paratransit'
@@ -280,6 +280,10 @@ module ApplicationHelper
   # Allow controller to override what controller css class they want to use
   def controller_css_class
     controller_name
+  end
+
+  def controller_and_action
+    (controller.controller_name + controller.action_name.capitalize).underscore
   end
 
   def tel_link num

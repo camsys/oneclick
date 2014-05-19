@@ -3,7 +3,8 @@ ruby '2.1.1'
 gem 'rails', '4.0.3'
 # See http://stackoverflow.com/questions/22391116/nomethoderror-in-pageshome-undefined-method-environment-for-nilnilclass
 gem 'sprockets', '2.11.0'
-gem 'sass-rails', '~> 4.0.2'
+# gem 'sass-rails', '~> 4.0.3'
+gem 'sass-rails', github: 'camsys/sass-rails', tag: 'v4.0.3a'
 gem 'bootstrap-sass', '~> 3.1.1.0'
 gem 'coffee-rails'
 gem 'uglifier', '>= 1.0.3'
@@ -19,6 +20,8 @@ gem 'pg'
 gem 'rolify', git: 'https://github.com/EppO/rolify.git', ref: '0b00fa41224dc4e33b059cd0cd31cd42b022b03b'
 gem 'simple_form', '~> 3.1.0.rc1', github: 'plataformatec/simple_form'
 gem 'thin'
+gem 'puma'
+gem "rack-timeout"
 gem 'awesome_print'
 gem 'chronic'
 gem 'mechanize'
@@ -46,6 +49,8 @@ gem 'momentjs-rails', '~> 2.5.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
 gem 'active_model_serializers'
 gem 'jquery-datatables-rails'
+gem 'active_attr'
+gem 'twitter-bootstrap-rails-confirm', github: 'bluerail/twitter-bootstrap-rails-confirm', branch: 'bootstrap3'
 
 group :development do
   gem 'activerecord-postgis-adapter'
@@ -76,6 +81,8 @@ group :development do
   gem "letter_opener"
   gem 'yard'
   gem 'RedCloth' # Needed by yard
+  gem 'foreman'
+  gem 'debugger'
 end
 
 group :development, :test do

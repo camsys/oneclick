@@ -1,88 +1,52 @@
-%ol#wizards.breadcrumb
-  %li.breadcrumb-page.current-page Trip
-  %li.breadcrumb-page.next-page Options
-  %li.breadcrumb-page.next-page Review
-  %li.breadcrumb-page.next-page Plan
+= render partial: 'shared/trip_plan_breadcrumbs'
 .row
   .col-sm-7.col-xs-12
     - Rails.logger.info "\n#{@trip_proxy.ai}\n"
     - Rails.logger.info "\n#{@trip_proxy.errors}\n"
-    = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes}  do |f|
+    = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
       .col-xs-12.page-action-button-container
-        /%button.btn.btn-default.pull-right.action-button{:type => "button"}Search
-        = button_tag :type => 'submit', :class => "btn btn-default pull-right action-button" do
-          =t(:plan_it)
+
+        = button_tag :type => 'submit', :class => "btn btn-default pull-right action-button",
+          tabindex: 2 do
+          =t(:plan)
       .col-xs-12.panel.panel-default
         .panel-body
           = f.hidden_field :mode
           = f.hidden_field :from_place_object, :id => "from_place_object"
           = f.hidden_field :to_place_object, :id => "to_place_object"
           = f.hidden_field :map_center, id: "map_center"
-          / %form{:role => "form"}
 
-          #tripOptions.col-sm-12
-            %label.col-sm-3{:style => "font-weight: normal;"}
-              %input{:checked => "", :name => "trip_proxy[is_round_trip]", :type => "radio", :value => "1"}/
-              Round-trip
-            %label.col-sm-9{:style => "font-weight: normal;"}
-              %input{:name => "trip_proxy[is_round_trip]", :type => "radio", :value => "0"}/
-              One-way
-            :javascript
-              $(function () {
-                $('#tripOptions :radio').change(function() {
-                  if(this.value === '0') {
-                    $('#returnDatetimeOptions').hide();
-                  } else {
-                    $('#returnDatetimeOptions').show();
-                  }
+          #tripOptions
+            .inline-radio
+              = f.input :is_round_trip, as: :radio_buttons, label: t(:trip), collection: [[t(:round_trip), 1], [t(:one_way), 0]],
+                checked: (@trip_proxy.is_round_trip ? "1" : "0"),
+                input_html: { tabindex: 1 }
+
+              :javascript
+                $(function () {
+                  $('#tripOptions :radio').change(function() {
+                    if(this.value === '0') {
+                      $('#returnDatetimeOptions').hide();
+                    } else {
+                      $('#returnDatetimeOptions').show();
+                    }
+                  });
                 });
-              });
 
-          = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes
+          = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes,
+          input_html: { tabindex: 1 }
 
-          = f.input :trip_purpose_id, :collection =>  TripPurpose.all, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}
-
-          / %label.col-sm-3.control-label{:for => "trip_purpose_id"} Trip Purpose
-          / .col-sm-9
-          /   / %select#tripPurposeOptions.form-control{:name => "tripPurpose"}
-          /   = f.input_field :trip_purpose_id, :collection =>  TripPurpose.all, :label => false, :selected => @trip_proxy.trip_purpose_id, class: "form-control", :value => :id, :label_method => lambda { |v| t(v.name)}
+          = f.input :trip_purpose_id, :collection =>  TripPurpose.ordered_by_localized_name, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)},
+          input_html: { tabindex: 1, class: 'form-control' }
 
           = render partial: 'location_input', locals: {dir: 'from', f: f}
           = render partial: 'location_input', locals: {dir: 'to', f: f}
 
-          .col-sm-12.form-group
+          .form-group
             = render partial: 'date_time_input', locals: {dir: 'outbound', f: f}
 
-          #returnDatetimeOptions.col-sm-12.form-group
-            = render partial: 'date_time_input', locals: {dir: 'return', f: f}
-            / %label.col-sm-3.control-label{:for => "returnOptions"} Return
-            / .col-lg-3.col-md-4
-            /   %select#returnOptions.form-control{:name => "trip_proxy[return_arrive_depart]"}
-            /     %option{:selected => ""}= t(:departing_at)
-            /     %option= t(:arriving_by)
-            / .col-lg-6.col-md-5.col-sm-12{:style => "padding: 0px;"}
-            /   %label.control-label.sr-only{:for => "trip_proxy_return_trip_date"} Type or select the return date
-            /   .col-md-6
-            /     %input#trip_proxy_return_trip_date.form-control{:label => "false", :name => "trip_proxy[trip_date]", :type => "text"}/
-            /     :javascript
-            /       $(function () {
-            /         $('#trip_proxy_return_trip_date').datetimepicker({
-            /           defaultDate: new Date(),
-            /           minDate: moment(0, "HH"),
-            /           pickTime: false
-            /         });
-            /       });
-            /   .col-md-6
-            /     %label.control-label.sr-only{:for => "trip_proxy_return_trip_time"} Type or select the return time
-            /     %input#trip_proxy_return_trip_time.form-control{:label => "false", :name => "trip_proxy[return_trip_time]", :type => "text"}/
-            /     :javascript
-            /       $(function () {
-            /         $('#trip_proxy_return_trip_time').datetimepicker({
-            /           defaultDate: moment().add('hours', 1).next15(),
-            /           pickDate: false,
-            /           useSeconds: false,
-            /           minuteStepping: 15
-            /         });
-            /       });
-  / end of trip column
+          #returnDatetimeOptions{style: (@trip_proxy.is_round_trip ? '' : 'display: none;')}
+            .form-group
+              = render partial: 'date_time_input', locals: {dir: 'return', f: f}
+
   = render partial: 'shared/splash'

@@ -2,16 +2,16 @@ create_or_update_marker = (map, key, lat, lon, name, desc, iconStyle) ->
   marker = map.findMarkerById(key)
   map.removeMarkerFromMap marker  if marker
   marker = map.createMarker(key, lat, lon, iconStyle, desc, name, true)
-  map.addMarkerToMap marker, true
+  map.addMarkerToMap marker, false
   marker
 
-update_map = (map, type, e, s, d) ->
-  lat = s.lat
-  lon = s.lon
+update_map = (map, type, e, addr, d) ->
+  lat = addr.lat
+  lon = addr.lon
   if lat==null
     $.ajax
       type: 'GET'
-      url: '/place_details/' + s.id
+      url: '/place_details/' + addr.id
       async: false
       success: (data) ->
         lat = data.result.geometry.location.lat
@@ -23,10 +23,17 @@ update_map = (map, type, e, s, d) ->
     key = 'stop'
     icon = 'stopIcon'
   map.removeMatchingMarkers(key);
-  marker = create_or_update_marker(map, key, lat, lon, s.name, s.full_address, icon);
+  marker = create_or_update_marker(map, key, lat, lon, addr.name, addr.full_address, icon);
   map.setMapToBounds();
   map.selectMarker(marker);
 
+show_marker = (map, dir) ->
+  if dir=='from'
+    key = 'start'
+  else
+    key = 'stop'
+  map.selectMarkerById(key)
+        
 toggle_map = (dir) ->
   if dir=='from'
     otherdir = 'to'
@@ -57,8 +64,8 @@ $ ->
       replace: (url, query) ->
         url = url + '&query=' + query
         # TODO This may need to get handled differently depending on whether map is shown
-        # url = url + '&map_center=' + (LMmap.getCenter().lat + ',' + LMmap.getCenter().lng)
-        url = url + '&map_center=33.7550,-84.3900'
+        url = url + '&map_center=' + (CsMaps.tripMap.LMmap.getCenter().lat + ',' + CsMaps.tripMap.LMmap.getCenter().lng)
+        # url = url + '&map_center=33.7550,-84.3900'
         return url
     limit: 20
     # prefetch: '../data/films/post_1960.json'
@@ -80,24 +87,24 @@ $ ->
   $('#trip_proxy_from_place').on 'typeahead:opened', () ->
     show_map('trip')
   $('#trip_proxy_from_place').on 'focusout', () ->
-    hide_map('trip')
+    # hide_map('trip')
   $('#trip_proxy_to_place').on 'typeahead:opened', () ->
     show_map('trip')
   $('#trip_proxy_to_place').on 'focusout', () ->
-    hide_map('trip')
+    # hide_map('trip')
 
-  $('#trip_proxy_from_place').on 'typeahead:selected', (e, s, d) ->
-    $('#from_place_object').val(JSON.stringify(s))
-    update_map(CsMaps.tripMap, 'trip', e, s, d)
-  $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, s, d) ->
-    $('#from_place_object').val(JSON.stringify(s))
-    update_map(CsMaps.tripMap, 'trip', e, s, d)
-  $('#trip_proxy_to_place').on 'typeahead:selected', (e, s, d) ->
-    $('#to_place_object').val(JSON.stringify(s))
-    update_map(CsMaps.tripMap, 'trip', e, s, d)
-  $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, s, d) ->
-    $('#to_place_object').val(JSON.stringify(s))
-    update_map(CsMaps.tripMap, 'trip', e, s, d)
+  $('#trip_proxy_from_place').on 'typeahead:selected', (e, addr, d) ->
+    $('#from_place_object').val(JSON.stringify(addr))
+    update_map(CsMaps.tripMap, 'from', e, addr, d)
+  $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, addr, d) ->
+    $('#from_place_object').val(JSON.stringify(addr))
+    update_map(CsMaps.tripMap, 'from', e, addr, d)
+  $('#trip_proxy_to_place').on 'typeahead:selected', (e, addr, d) ->
+    $('#to_place_object').val(JSON.stringify(addr))
+    update_map(CsMaps.tripMap, 'to', e, addr, d)
+  $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, addr, d) ->
+    $('#to_place_object').val(JSON.stringify(addr))
+    update_map(CsMaps.tripMap, 'to', e, addr, d)
 
   # TODO This needs to be done differently.
   # Not sure why the form needs a map center on submit, it has two locations...
@@ -107,6 +114,13 @@ $ ->
     $('#map_center').val((CsMaps.tripMap.getCenter().lat + ',' + CsMaps.tripMap.getCenter().lng))
 
   $('#fromAddressMarkerButton').on 'click', ->
-    toggle_map('trip')
+    show_marker(CsMaps.tripMap, 'from')
   $('#toAddressMarkerButton').on 'click', ->
-    toggle_map('trip')
+    show_marker(CsMaps.tripMap, 'to')
+
+  $('#mapCloseButton').on 'click', ->
+    hide_map('trip')
+                        
+  $('.trip_proxy_modes').on 'change', (e, addr, d) ->
+    console.log e
+    console.log $('.trip_proxy_modes input:checked').length

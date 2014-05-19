@@ -5,8 +5,7 @@ class Admin::ProvidersController < ApplicationController
   # GET /admin/providers
   # GET /admin/providers.json
   def index
-    @providers = Provider.all
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @providers }
@@ -16,7 +15,6 @@ class Admin::ProvidersController < ApplicationController
   # GET /admin/providers/1
   # GET /admin/providers/1.json
   def show
-    @provider = Provider.find(params[:id])
     @providers = Provider.order(name: :asc).to_a
 
     # assume only one internal contact for now
@@ -34,8 +32,7 @@ class Admin::ProvidersController < ApplicationController
   # GET /admin/providers/new.json
   def new
     # before_filter
-    @provider = Provider.new
-
+    
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @provider }
@@ -61,7 +58,6 @@ class Admin::ProvidersController < ApplicationController
 
   # GET /admin/providers/1/edit
   def edit
-    @provider = Provider.find(params[:id])
     # assume only one internal contact for now
     @contact = @provider.users.with_role(:internal_contact, @provider).first
     @staff = @provider.users.with_role(:provider_staff, @provider)
@@ -70,8 +66,7 @@ class Admin::ProvidersController < ApplicationController
   # PUT /admin/providers/1
   # PUT /admin/providers/1.json
   def update
-    @provider = Provider.find(params[:id])
-
+    
     # special case because need to update rolify
     staff_ids = params[:provider][:staff_ids].reject(&:blank?) 
 
@@ -131,8 +126,7 @@ class Admin::ProvidersController < ApplicationController
   end
   
   def admin_provider_params
-    params.require(:provider).permit(:name, :email, :address, :city, :state, :zip,
-                                     :url, :phone)
+    params.require(:provider).permit(:name, :email, :address, :city, :state, :zip, :url, :phone, :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email)
   end
 
   def load_provider

@@ -51,7 +51,7 @@ class Admin::AgenciesController < ApplicationController
 
   # GET /agencies/1/edit
   def edit
-    puts @agency.id
+    
     @contact = @agency.internal_contact
     @addable_users = User.staff_assignable
     # @agency = Agency.find(params[:id])
@@ -102,7 +102,7 @@ class Admin::AgenciesController < ApplicationController
   def destroy
     puts @agency.id
     # @agency = Agency.find(params[:id])
-    @agency.destroy
+    @agency.update_attributes(active: false)
 
     respond_to do |format|
       format.html { redirect_to admin_agencies_path }
@@ -115,7 +115,7 @@ private
 
 def agency_params params
   params.require(:agency).permit(:name, :address, :phone, :email, :url,
-    :parent_id, :parent)
+    :parent_id, :parent,:internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email)
 end
 
 def load_agency

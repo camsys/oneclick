@@ -419,13 +419,13 @@ td.left, th.left {
 }
 
 /*
- * Absolute Centering
- * Table cell approach
- * See http://codepen.io/shshaw/full/gEiDt
- */
+* Absolute Centering
+* Table cell approach
+* See http://codepen.io/shshaw/full/gEiDt
+*/
 
- .Center-Container.is-Table { display: table; }
- .is-Table .Table-Cell {
+.Center-Container.is-Table { display: table; }
+.is-Table .Table-Cell {
   display: table-cell;
   vertical-align: middle;
 }
@@ -530,11 +530,9 @@ td.left, th.left {
   background: #FFFFFF;
 }
 
-body.characteristics {
-  .radio {
-    display: inline-block;
-    margin-right: 15px;
-  }
+.inline-radio .radio {
+  display: inline-block;
+  margin-right: 15px;
 }
 
 /* Printer Friendly */
@@ -549,6 +547,11 @@ body.characteristics {
   display: block;
   height: 600px;
   border: 1px solid #c0c0c0;
+}
+
+.alert {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 // From bootstrap. We define our own classes for visibility which use display: inline
@@ -593,4 +596,23 @@ body.characteristics {
 
 @media (min-width: $screen-lg-min) {
   @include oc-responsive-visibility('.oc-visible-lg');
+}
+
+// SimpleForm Inline Checkbox Fix
+.simple-checkbox .checkbox {
+ text-align: left;
+ width: auto;
+ float: none;
+}
+.check_boxes:focus, .radio_buttons:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset -1px -1px 1px rgba(0, 0, 0, 0.075), -1px -1px 6px rgba(76, 154, 220, 0.9);
+  box-shadow: inset -1px -1px 1px rgba(0, 0, 0, 0.075), -1px -1px 6px rgba(76, 154, 220, 0.9);
+}
+
+// Div class for viewports on long checkbox lists from simple_form associations.
+.scrolling-checkbox-list {
+ height: 12em;
+ overflow: auto;
 }

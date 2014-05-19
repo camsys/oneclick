@@ -1,22 +1,7 @@
 .row-fluid
-  %button.action-button.pull-right
-    = link_to t(:create_traveler), new_admin_user_path
+  = link_to t(:create), new_admin_user_path,{class: 'btn action-button btn-default pull-right', role: 'button'}
   %h2= t(:find_traveler)
 
--if @found_travelers
-  %h3= t(:matching_travelers)
-  %table.table.table-condensed.table-striped.table-bordered.table-hover#searched_travelers_table
-    %thead
-      %tr
-        %th.col-sm-4= t(:name)
-        %th.col-sm-4= t(:email)
-        %th.col-sm-4= t(:registered)
-    %tbody
-      -@found_travelers.each do |traveler|
-        %tr
-          %td.col-sm-4= traveler.name
-          %td.col-sm-4= traveler.email
-          %td.col-sm-4= traveler.created_at.to_date
 -if @pre_auth_travelers
   %h3= t(:authorized_travelers)
   %table.table.table-condensed.table-striped.table-bordered.table-hover#preauth_travelers_table
@@ -31,25 +16,20 @@
           %td.col-sm-4= link_to traveler.name, admin_user_path(traveler)
           %td.col-sm-4= traveler.email
           %td.col-sm-4= traveler.created_at.to_date
-= render partial: 'shared/parameterized_datatable_javascript', locals: { table_id: '#preauth_travelers_table',
-  sLengthMenu: "Display _MENU_ travelers per page",
-  sInfo: "Showing _START_ to _END_ of _TOTAL_ travelers",
-  object_singular: 'traveler',
-  object_plural: 'travelers',
-  bLengthChange: false, 
-  bSort: true,
-  bFilter: true}
-
-= render partial: 'shared/parameterized_datatable_javascript', locals: { table_id: '#searched_travelers_table',
-  sLengthMenu: "Display _MENU_ travelers per page",
-  sInfo: "Showing _START_ to _END_ of _TOTAL_ travelers",
-  object_singular: 'traveler',
-  object_plural: 'travelers',
-  bLengthChange: false, 
-  bSort: true,
-  bFilter: true}
-
 :javascript
+
+  $(document).ready(function() {
+    $('#preauth_travelers_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ travelers per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ travelers",
+              "sInfoEmpty": "Showing 0 to 0 of 0 travelers",
+              "sInfoFiltered": "(filtered from _MAX_ total travelers)"
+          },
+          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+  } );   
   
   // Add a listener on the asset type filter that submits the form when changed
   $('#time_filter').change(function() {

@@ -1,5 +1,6 @@
 class TranslationsController < ApplicationController
     include LocaleHelpers
+    authorize_resource
 
     def index
         @translations_proxies = []

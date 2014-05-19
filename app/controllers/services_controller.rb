@@ -5,7 +5,7 @@ class ServicesController < ApplicationController
   include ApplicationHelper
 
   def index
-    @services = Service.order(:name).to_a
+    @services = Service.paratransit.order(:name)
   end
 
   def show
@@ -93,13 +93,18 @@ class ServicesController < ApplicationController
     @contact = @service.internal_contact
 
     set_aux_instance_variables
+
+    if @service.fare_structures.count < 1
+      @service.fare_structures.build
+    end
+    
   end
 
   # PUT /services/1
   # PUT /services/1.json
   def update
     @service = Service.find(params[:id])
-
+    
     respond_to do |format|
       par = service_params
 
@@ -110,7 +115,10 @@ class ServicesController < ApplicationController
         format.html { redirect_to @service, notice: t(:service) + ' ' + t(:was_successfully_updated) } 
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html {
+          set_aux_instance_variables
+          render action: "edit"
+        }
         format.json { render json: @admin_provider.errors, status: :unprocessable_entity }
       end
     end
@@ -123,7 +131,7 @@ class ServicesController < ApplicationController
     @service.save
 
     respond_to do |format|
-      format.html { redirect_to services_path }
+      format.html { redirect_to admin_provider_path @service.provider }
       format.json { head :no_content }
     end
   end
@@ -135,6 +143,7 @@ protected
                                     :booking_service_code, :advanced_notice_minutes,
                                     :notice_days_part, :notice_hours_part, :notice_minutes_part,
                                     :service_window, :time_factor, :provider_id, :service_type_id,
+                                    :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email,
                                     { schedules_attributes:
                                       [ :day_of_week, :start_time, :end_time, :id, :_destroy ] },
                                     { service_characteristics_attributes:

@@ -15,7 +15,7 @@ class Service < ActiveRecord::Base
   has_and_belongs_to_many :users # primarily for internal contact
 
   accepts_nested_attributes_for :schedules, allow_destroy: true,
-  reject_if: proc { |attributes| attributes['start_time'].blank? || attributes['end_time'].blank? }
+  reject_if: proc { |attributes| attributes['start_time'].blank? && attributes['end_time'].blank? }
 
   accepts_nested_attributes_for :service_characteristics, allow_destroy: true,
   reject_if: proc { |attributes| attributes['active'] != 'true' }
@@ -43,6 +43,7 @@ class Service < ActiveRecord::Base
   has_many :user_profiles, through: :user_services, source: :user_profile
 
   scope :active, -> {where(active: true)}
+  scope :paratransit, -> {joins(:service_type).where(service_types: {code: "paratransit"})}
 
   include Validations
 
@@ -134,6 +135,24 @@ class Service < ActiveRecord::Base
       return false
     else
       return !keep
+    end
+  end
+
+  #return an array of the contact info for a service if defined, its provider if not defined at the service, or nil where not answered at either level
+  def get_contact_info_array
+    rtn = []
+    rtn << get_attr(:name)
+    rtn << [:provided_by, self.provider.name] # Special case, as the symbol doesn't match the attribute
+    rtn << get_attr(:phone)
+    rtn << get_attr(:email)
+    rtn << get_attr(:url)
+  end
+
+  def get_attr(attribute_sym)
+    if val = self.send(attribute_sym) #call "phone" for this service.
+      return [attribute_sym, val] #return if it exists, else call it on provider
+    else
+      return self.provider.get_attr(attribute_sym)
     end
   end
   

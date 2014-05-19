@@ -1,6 +1,24 @@
 GIT
+  remote: git://github.com/bluerail/twitter-bootstrap-rails-confirm.git
+  revision: 92dd750dd04f492526aca894c5ec1b321a6e25a9
+  branch: bootstrap3
+  specs:
+    twitter-bootstrap-rails-confirm (1.0.2)
+
+GIT
+  remote: git://github.com/camsys/sass-rails.git
+  revision: baf4f108c999da4941ce68085a9de7fac10e262f
+  tag: v4.0.3a
+  specs:
+    sass-rails (4.0.3)
+      railties (>= 4.0.0, < 5.0)
+      sass (~> 3.2.0)
+      sprockets (~> 2.8, <= 2.11.0)
+      sprockets-rails (~> 2.0)
+
+GIT
   remote: git://github.com/plataformatec/simple_form.git
-  revision: d7306558665d38fe3a0c277ce263e99f635958de
+  revision: 9196efd2562573aa08037034051fc8c924083e10
   specs:
     simple_form (3.1.0.rc1)
       actionpack (~> 4.0)
@@ -43,6 +61,9 @@ GEM
       erubis (~> 2.7.0)
       rack (~> 1.5.2)
       rack-test (~> 0.6.2)
+    active_attr (0.8.3)
+      activemodel (>= 3.0.2, < 4.2)
+      activesupport (>= 3.0.2, < 4.2)
     active_model_serializers (0.8.1)
       activemodel (>= 3.0)
     activemdb (0.2.2)
@@ -56,8 +77,9 @@ GEM
       activesupport (= 4.0.3)
       arel (~> 4.0.0)
     activerecord-deprecated_finders (1.0.3)
-    activerecord-postgis-adapter (0.6.5)
-      rgeo-activerecord (~> 0.5.0)
+    activerecord-postgis-adapter (1.1.0)
+      activerecord (~> 4.0)
+      rgeo-activerecord (~> 1.0.0)
     activesupport (4.0.3)
       i18n (~> 0.6, >= 0.6.4)
       minitest (~> 4.2)
@@ -98,28 +120,36 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.7.0)
+    columnize (0.8.9)
     coveralls (0.7.0)
       multi_json (~> 1.3)
       rest-client
       simplecov (>= 0.7)
       term-ansicolor
       thor
-    cucumber (1.3.14)
+    cucumber (1.3.15)
       builder (>= 2.1.2)
       diff-lcs (>= 1.1.3)
       gherkin (~> 2.12)
       multi_json (>= 1.7.5, < 2.0)
       multi_test (>= 0.1.1)
-    cucumber-rails (1.4.0)
-      capybara (>= 1.1.2)
-      cucumber (>= 1.2.0)
-      nokogiri (>= 1.5.0)
-      rails (>= 3.0.0)
+    cucumber-rails (1.4.1)
+      capybara (>= 1.1.2, < 3)
+      cucumber (>= 1.3.8, < 2)
+      mime-types (~> 1.16)
+      nokogiri (~> 1.5)
+      rails (>= 3, < 5)
     daemons (1.1.9)
     database_cleaner (1.2.0)
     dbf (2.0.7)
       fastercsv (~> 1.5.4)
     debug_inspector (0.0.2)
+    debugger (1.6.6)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.3.2)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.3.4)
     devise (3.2.4)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -130,6 +160,7 @@ GEM
     docile (1.1.3)
     domain_name (0.5.18)
       unf (>= 0.0.5, < 1.0.0)
+    dotenv (0.7.0)
     draper (1.3.0)
       actionpack (>= 3.0)
       activemodel (>= 3.0)
@@ -157,10 +188,13 @@ GEM
     figaro (0.7.0)
       bundler (~> 1.0)
       rails (>= 3, < 5)
-    font-awesome-rails (4.0.3.1)
+    font-awesome-rails (4.0.3.2)
       railties (>= 3.2, < 5.0)
+    foreman (0.66.0)
+      dotenv (~> 0.7.0)
+      thor (~> 0.19.1)
     formatador (0.2.4)
-    geocoder (1.2.0)
+    geocoder (1.2.1)
     gh (0.13.2)
       addressable
       backports
@@ -202,9 +236,9 @@ GEM
       tilt
     highline (1.6.21)
     hike (1.2.3)
-    hoe (3.11.0)
+    hoe (3.12.0)
       rake (>= 0.8, < 11.0)
-    honeybadger (1.11.2)
+    honeybadger (1.13.0)
       json
     hpricot (0.8.6)
     html2haml (1.0.1)
@@ -221,8 +255,7 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.1)
-    jwt (0.1.11)
-      multi_json (>= 1.5)
+    jwt (1.0.0)
     launchy (2.4.2)
       addressable (~> 2.3)
     letter_opener (1.2.0)
@@ -251,13 +284,12 @@ GEM
     minitest (4.7.5)
     momentjs-rails (2.5.1)
       railties (>= 3.1)
-    multi_json (1.9.2)
+    multi_json (1.10.0)
     multi_test (0.1.1)
     multipart-post (2.0.0)
     net-http-digest_auth (1.4)
     net-http-persistent (2.9.4)
     net-http-pipeline (1.0.1)
-    netrc (0.7.7)
     newrelic_rpm (3.8.0.218)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
@@ -270,6 +302,8 @@ GEM
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
+    puma (2.8.2)
+      rack (>= 1.1, < 2.0)
     pusher-client (0.6.0)
       json
       websocket (~> 1.0)
@@ -278,6 +312,7 @@ GEM
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
+    rack-timeout (0.0.4)
     rails (4.0.3)
       actionmailer (= 4.0.3)
       actionpack (= 4.0.3)
@@ -305,7 +340,7 @@ GEM
     rb-fchange (0.0.6)
       ffi
     rb-fsevent (0.9.4)
-    rb-inotify (0.9.3)
+    rb-inotify (0.9.4)
       ffi (>= 0.5.0)
     rb-kqueue (0.2.2)
       ffi (>= 0.5.0)
@@ -313,10 +348,9 @@ GEM
     rest-client (1.6.7)
       mime-types (>= 1.16)
     rgeo (0.3.20)
-    rgeo-activerecord (0.5.0)
-      activerecord (>= 3.0.3)
-      arel (>= 2.0.6)
-      rgeo (>= 0.3.20)
+    rgeo-activerecord (1.0.0)
+      activerecord (~> 4.0)
+      rgeo (~> 0.3.20)
     rgeo-shapefile (0.2.3)
       dbf (>= 1.7.0)
       rgeo (>= 0.3.3)
@@ -341,15 +375,10 @@ GEM
       sexp_processor (~> 4.1)
     rubyzip (1.1.3)
     sass (3.2.19)
-    sass-rails (4.0.3)
-      railties (>= 4.0.0, < 5.0)
-      sass (~> 3.2.0)
-      sprockets (~> 2.8, <= 2.11.0)
-      sprockets-rails (~> 2.0)
     sexp_processor (4.4.3)
     sextant (0.2.4)
       rails (>= 3.2)
-    simple_token_authentication (1.2.0)
+    simple_token_authentication (1.2.1)
       actionmailer (>= 3.2.6, < 5)
       activerecord (>= 3.2.6, < 5)
       devise (~> 3.2.0)
@@ -377,19 +406,18 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.3)
     tilt (1.4.1)
-    tins (1.1.0)
-    travis (1.5.0)
+    tins (1.2.0)
+    travis (1.6.10)
+      addressable (~> 2.3)
       backports
-      faraday (~> 0.8)
+      faraday (~> 0.9)
       faraday_middleware (~> 0.9)
-      gh
+      gh (~> 0.13)
       highline (~> 1.6)
       launchy (~> 2.1)
-      netrc (~> 0.7)
       pry (~> 0.9)
-      pusher-client (~> 0.3, >= 0.3.1)
-      typhoeus (~> 0.5)
-      websocket-native (~> 1.0)
+      pusher-client (~> 0.4)
+      typhoeus (~> 0.6)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -409,8 +437,7 @@ GEM
     warden (1.2.3)
       rack (>= 1.0)
     webrobots (0.1.1)
-    websocket (1.1.2)
-    websocket-native (1.0.0)
+    websocket (1.1.4)
     xpath (2.0.0)
       nokogiri (~> 1.3)
     yard (0.8.7.4)
@@ -421,6 +448,7 @@ PLATFORMS
 DEPENDENCIES
   Indirizzo
   RedCloth
+  active_attr
   active_model_serializers
   activemdb
   activemodel
@@ -439,6 +467,7 @@ DEPENDENCIES
   coveralls
   cucumber-rails
   database_cleaner
+  debugger
   devise
   draper
   email_spec
@@ -446,6 +475,7 @@ DEPENDENCIES
   faraday_middleware
   figaro
   font-awesome-rails
+  foreman
   geocoder
   growl
   guard (~> 1.8.3)
@@ -469,7 +499,9 @@ DEPENDENCIES
   newrelic_rpm
   pg
   polylines
+  puma
   quiet_assets
+  rack-timeout
   rails (= 4.0.3)
   rails-erd
   rails_12factor
@@ -483,7 +515,7 @@ DEPENDENCIES
   rspec-core
   rspec-rails
   rubyzip
-  sass-rails (~> 4.0.2)
+  sass-rails!
   sextant
   simple_form (~> 3.1.0.rc1)!
   simple_token_authentication
@@ -492,6 +524,7 @@ DEPENDENCIES
   thin
   travis
   twilio-ruby
+  twitter-bootstrap-rails-confirm!
   twitter-typeahead-rails!
   uglifier (>= 1.0.3)
   yard

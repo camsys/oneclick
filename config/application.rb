@@ -104,7 +104,11 @@ module Oneclick
 
     # See http://work.stevegrossi.com/2013/04/06/dynamic-error-pages-with-rails-3-2/
     config.exceptions_app = self.routes
-
+    config.brand = ENV['BRAND'] || 'arc'
+    config.ui_mode = ENV['UI_MODE'] || 'desktop'
+    if config.ui_mode=='desktop'
+      config.sass.load_paths << File.expand_path("./app/assets/stylesheets/default/#{config.brand}")
+    end
   end
 
 end

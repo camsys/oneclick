@@ -1,48 +1,51 @@
 .row
-  -if itinerary.cost_comments
-    %h4
-      Cost Details
-    =itinerary.cost_comments.html_safe
+  .col-sm-12
+    -if itinerary.cost_comments
+      %h4
+        = t(:cost_details)
+      =itinerary.cost_comments.html_safe
 
-  -if itinerary.missing_information
-    %h4
-      %i.fa.fa-question-circle
-      This service is intended for
-      / not sure how to handle that...
-      -count = 0
-      -itinerary.missing_information_text.split('\n').each do |info|
-        -count += 1
-        -if itinerary.missing_information_text.split('\n').count - 1 == count
-          =info + ' and '
-        -elsif itinerary.missing_information_text.split('\n').count == count
-          =info + '.'
-        -else
-          =info + ','
+    -if itinerary.missing_information
+      %h4
+        %i.fa.fa-question-circle
+        This service is intended for
+        / not sure how to handle that...
+        -count = 0
+        -itinerary.missing_information_text.split('\n').each do |info|
+          -count += 1
+          -if itinerary.missing_information_text.split('\n').count - 1 == count
+            =info + ' and '
+          -elsif itinerary.missing_information_text.split('\n').count == count
+            =info + '.'
+          -else
+            =info + ','
 
-  -if itinerary.accommodation_mismatch
-    %h4
-      %i.fa.fa-warning
-      =t(:trip_needs_more_accommodations) + ":"
-    %ul
-      -itinerary.missing_accommodations.split(',').each do |accommodation|
-        %li
-          =accommodation
-  -if itinerary.too_late
-    %h4
-      %i.fa.fa-calendar
-      = t(:trip_insufficient_notice_a) + itinerary.service.human_readable_advanced_notice + t(:trip_insufficient_notice_b)
-  -if itinerary.date_mismatch or itinerary.time_mismatch
-    %h4
-      %i.fa.fa-calendar
-      = t(:trip_outside_service_hours)
+    -if itinerary.accommodation_mismatch
+      %h4
+        %i.fa.fa-warning
+        =t(:trip_needs_more_accommodations) + ":"
+      %ul
+        -itinerary.missing_accommodations.split(',').each do |accommodation|
+          %li
+            =accommodation
+    -if itinerary.too_late
+      %h4
+        %i.fa.fa-calendar
+        = t(:trip_insufficient_notice_a) + itinerary.service.human_readable_advanced_notice + t(:trip_insufficient_notice_b)
+    -if itinerary.date_mismatch or itinerary.time_mismatch
+      %h4
+        %i.fa.fa-calendar
+        = t(:trip_outside_service_hours)
 
-  - if itinerary.service.try(:phone)
-    %h4= tel_link itinerary.service.phone
+    - if itinerary.service.try(:phone)
+      %h4= tel_link itinerary.service.phone
 
 
-  .row.hidden
-    ="SCORE: " + itinerary.match_score.to_s
-
-%span{style: 'font-style: italic'}
-  (Detailed directions on contacting provider and scheduling trip will be given here.)
-/ That text is going to get replaced, so no need to internationalize
+    .row.hidden
+      ="SCORE: " + itinerary.match_score.to_s
+- itinerary.service.get_contact_info_array.each do |a,b|
+  .row
+    .col-sm-6
+      = t(a) +":"
+    .col-sm-6
+      = sanitize_nil_to_na b

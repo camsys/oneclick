@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
+//= require twitter/bootstrap/rails/confirm
 //= require handlebars
 //= require twitter/typeahead
 //= require moment

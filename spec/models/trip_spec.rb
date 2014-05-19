@@ -221,6 +221,7 @@ describe Trip do
       "trip_time"=>"#{trip_time.strftime("%H:%M")}",
       "trip_purpose_id"=>"#{TripPurpose.first.id}",
       "is_round_trip"=>"1",
+      "return_trip_date"=>"#{tomorrow.strftime("%m/%d/%Y")}",
       "return_trip_time"=>"#{return_trip_time.strftime("%H:%M")}"
       )
 

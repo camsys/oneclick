@@ -1,31 +1,26 @@
-%h1
-  %i.fa.fa-key.fa-rotate-90
-  = t(:sign_up)
-
-- if @create_inline
+= simple_form_for resource, :as => resource_name, :url => registration_path(resource_name),
+        html: {class: 'form-horizontal' }, wrapper: :horizontal_form do |f|
   .row
-    .col-sm-12
-      = render partial: 'trips/trip_header', locals: {trip: @trip}
+    .col-sm-6.pull-left
+      %h2
+        = t(:sign_up)
+    .col-sm-6.pull-right
+      = link_to t(:cancel), :back, class: "btn action-button default pull-right"
+      = button_tag type: 'submit', class: "btn action-button default pull-right" do
+        = t(:apply)
 
-.well
-  = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
-    = f.error_notification
-    = display_base_errors resource
-    = f.input :first_name, label: t(:first_name), :autofocus => true
-    = f.input :last_name, label: t(:last_name)
-    = f.input :email, label: t(:email), :required => true
-    = f.input :password, label: t(:password), :required => true
-    = f.input :password_confirmation, :label => t(:retype_your_password), :required => true
-    = f.hidden :approved_agencies if session[:agency]
-    - if @create_inline
-      .form-actions
-        = button_tag :type => 'submit', :class => "btn btn-primary" do
-          %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-          =t(:sign_up_and_plan)
-    - else
-      .actions
-        = button_tag type: :submit, class: 'btn btn-primary controls' do
-          %i.fa.fa-edit
-          = t(:sign_up)
-        = render "devise/shared/links"
+  .row
+    .col-sm-6
+      .panel.panel-default#user_info
+        .panel-heading
+          %h3= t(:user_information)
+        .panel-body
+          = f.error_notification
+          = f.input :first_name, label: t(:first_name), :autofocus => true
+          = f.input :last_name, label: t(:last_name)
+          = f.input :email, label: t(:email), :required => true
+          = f.input :preferred_locale, label: t(:preferred_locale), selected: @default_locale,
+                :collection => Translation.available_locales, :include_blank => false
+          = f.input :password, label: t(:password), :required => true
+          = f.input :password_confirmation, :label => t(:password_confirmation), :required => true
 

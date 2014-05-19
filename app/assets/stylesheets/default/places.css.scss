@@ -1,21 +1,25 @@
 // TODO There is duplication between this file and trips.css
 
-.place_picker {
-  // width: 20em;
-}
-
-.tt-dropdown-menu {
-  max-height: 20em;
-  overflow-y: scroll;
-  width: 100%;
-}
-
-.tt-suggestion.tt-is-under-cursor a {
-  cursor: pointer;
-  color: blue;
-}
-
 body.places {
+
+  .place_picker {
+    // width: 20em;
+  }
+
+  .twitter-typeahead {
+    display: table-cell !important;
+  }
+
+  .tt-dropdown-menu {
+    max-height: 20em;
+    overflow-y: scroll;
+    width: 100%;
+  }
+
+  .tt-suggestion.tt-is-under-cursor a {
+    cursor: pointer;
+    color: blue;
+  }
 
   #places-table {
     cursor: pointer;
@@ -25,4 +29,5 @@ body.places {
     max-height: 300px;
     overflow-y: scroll;
   }
+
 }

@@ -52,7 +52,7 @@ module MapHelper
       "name" => addr[:name],
       "iconClass" => icon,
       "title" =>  address,
-      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'fa-building-o', :name => addr[:name], :address => address} })
+      "description" => ApplicationController.new.render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'fa-building-o', :name => addr[:name], :address => address} })
     }
   end
 
@@ -135,13 +135,13 @@ protected
   # Gets leaflet rendering hash for a leg based on the mode of the leg
   def get_leg_display_options(leg)
 
-    if leg.mode == TripLeg::WALK
+    if leg.mode == Leg::TripLeg::WALK
       a = {"color" => 'red', "width" => "5"}
-    elsif leg.mode == TripLeg::BUS
+    elsif leg.mode == Leg::TripLeg::BUS
       a = {"color" => 'blue', "width" => "5"}
-    elsif leg.mode == TripLeg::SUBWAY
+    elsif leg.mode == Leg::TripLeg::SUBWAY
       a = {"color" => 'green', "width" => "5"}
-    elsif leg.mode == TripLeg::CAR
+    elsif leg.mode == Leg::TripLeg::CAR
       a = {"color" => 'yellow', "width" => "5"}
     else
       a = {}

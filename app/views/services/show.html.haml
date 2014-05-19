@@ -8,96 +8,102 @@
       = link_to edit_service_path(@service), {class: 'btn action-button btn-default', role: 'button'} do
         = icon_label(:edit)
     - if can? :destroy, @service
-      = simple_form_for @service, url: service_path, method: :delete, :html => {:class => "form-horizontal pull-right", :id => "delete_service_form"}  do |f|
-        -# TODO: Control presence via cancan
-        = button_tag type: 'submit', class: "btn action-button btn-default" do
-          = icon_label(:delete)
+      = button_to t(:delete), { action: "destroy", id: @service.id }, method: :delete,
+      data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default",
+      form_class: "form-horizontal pull-right"
 
 .row
   .col-sm-6
-    .well
-      %h3
-        = t(:provided_by)
-        = link_to @service.provider.name, admin_provider_path(@service.provider)
-      -unless @service.active
-        %h3.warning
-          = t(:service_is_inactive)
-      %h4
-        =@service.phone
-      %h4
-        =@service.email
-      %h4
-        - if @service.url
-          =link_to @service.url, @service.url
-      %h5
-        -if @service.external_id
-          =t(:service_id).to_s + ": " + @service.external_id.to_s
-      %h5
-        -if @service.booking_service_code
-          =t(:booking_service_code).to_s + ": " + @service.booking_service_code.to_s
-      %h5
-        - if @service.service_window
-          = t(:service_window).to_s + ": " + @service.service_window.to_s
-      %h5
-        - if @service.time_factor
-          = t(:time_factor).to_s + ": " + @service.time_factor.to_s
-          
-          
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          = t(:provided_by)
+          = link_to @service.provider.name, admin_provider_path(@service.provider)
+      .panel-body
+        -unless @service.active
+          %h3.warning
+            = t(:service_is_inactive)
+        %h4
+          =@service.phone
+        %h4
+          =@service.email
+        %h4
+          - if @service.url
+            =link_to @service.url, @service.url
+        %h5
+          -if @service.external_id
+            =t(:service_id).to_s + ": " + @service.external_id.to_s
+        %h5
+          -if @service.booking_service_code
+            =t(:booking_service_code).to_s + ": " + @service.booking_service_code.to_s
+        %h5
+          - if @service.service_window
+            = t(:service_window).to_s + ": " + @service.service_window.to_s
+        %h5
+          - if @service.time_factor
+            = t(:time_factor).to_s + ": " + @service.time_factor.to_s
+        
+        
   .col-sm-6
-    .well
-      %h4= t(:internal_contact)
-      %table.table.table-condensed
-        - if @contact
+    .panel.panel-default
+      .panel-heading
+        %h4.panel-title= t(:internal_contact)
+      .panel-body
+        %table.table.table-condensed
           %tr
             %td.text-right
               = t(:name) + ": "
             %td.text-left
-              %b= @contact.name.to_s
+              %b= @service.internal_contact_name
           %tr
             %td.text-right
               = t(:title)+": "
             %td.text-left
-              %b= @contact.title.to_s
+              %b= @service.internal_contact_title
           %tr
             %td.text-right
               = t(:phone)+ ": "
             %td.text-left
-              %b= @contact.phone.to_s
+              %b= @service.internal_contact_phone
           %tr
             %td.text-right
               = t(:email)+ ":  "
             %td.text-left
-              %b= @contact.email.to_s
-        - else
-          %tr
-            %td.text-left
-              = t(:none)
-            %td
+              %b= mail_to @service.internal_contact_email
+          - if @contact
+            %tr
+              %td.text-right
+                = t(:user) + ": "
+              %td.text-left
+                %b= @contact.name
 .row
   .col-sm-4
-    .well.well2
-      %h4= t(:schedule)
-      %table.ALTtable
-        %tr
-          %th.text-center
-            = t('datetime.prompts.day')
-          %th.text-center
-            = t(:start_time)
-          %th.text-center
-            = t(:end_time)
-        %tbody
-          -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
-            %tr
-              %td.text-center
-                = t('date.day_names')[schedule.day_of_week]
-              %td.text-center
-                =schedule.start_string
-              %td.text-center
-                =schedule.end_string
+    .panel.panel-default.well2
+      .panel-heading
+        %h4.panel-title= t(:schedule)
+      .panel-body
+        %table.ALTtable
+          %tr
+            %th.text-center
+              = t('datetime.prompts.day')
+            %th.text-center
+              = t(:start_time)
+            %th.text-center
+              = t(:end_time)
+          %tbody
+            -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
+              %tr
+                %td.text-center
+                  = t('date.day_names')[schedule.day_of_week]
+                %td.text-center
+                  =schedule.start_string
+                %td.text-center
+                  =schedule.end_string
   .col-sm-4
-    .well.well2
-      %h4= t(:advance_notice_required)
-      .well.white-well.wwell2
+    .panel.panel-default.well2
+      .panel-heading
+        %h4.panel-title= t(:advance_notice_required)
+      .panel-body
         -if @service.advanced_notice_minutes > 0
           =t(:service_notice_required) + " " ## TODO Interpolate
           %b= duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
@@ -105,9 +111,10 @@
         -else
           =t(:service_notice_not_required) + "."
   .col-sm-4
-    .well.well2
-      %h4=t(:accommodations)
-      .well.white-well.wwell1
+    .panel.panel-default.well2
+      .panel-heading
+        %h4.panel-title= t(:accommodations)
+      .panel-body
         -if @service.accommodations.count == 0
           = t(:no_accommodations)
         -else
@@ -117,10 +124,11 @@
                 =t(accom.name)
 .row
   .col-sm-4
-    .well.well1
-      %h4= t(:eligibility)
-      = t(:eligibility_rules_descr)
-      .well.white-well.wwell1
+    .panel.panel-default.well1
+      .panel-heading
+        %h4.panel-title= t(:eligibility)
+        = t(:eligibility_rules_descr)
+      .panel-body
         - if @service.service_characteristics.count > 0
           %ul
           - groups = @service.service_characteristics.map(&:group).uniq
@@ -131,9 +139,10 @@
           = t(:no_restriction)
 
   .col-sm-4
-    .well.well1
-      %h4= t(:trip_purposes)
-      .well.white-well.wwell1
+    .panel.panel-default.well1
+      .panel-heading
+        %h4.panel-title= t(:trip_purposes)
+      .panel-body
         -if @service.trip_purposes.count == 0
           = t(:no_restriction)
         -else
@@ -143,10 +152,11 @@
                 =t(purpose.name)
 
   .col-sm-4
-    .well.well1 
-      %h4= t(:fare)
+    .panel.panel-default.well1
+      .panel-heading
+        %h4.panel-title= t(:fare)
       -@service.fare_structures.each do |fare|
-        .well.white-well.wwell2
+        .panel-body
           .row_fluid
             %b= t(:cost) + ": "
             -if fare.base
@@ -161,34 +171,42 @@
           -if fare.desc
             = fare.desc.html_safe
 
-.well
-  .row.text-center
-    .col-sm-12
-      %h3= t(:coverage_areas)
+.panel.panel-default
+  .panel-heading
+    .row.text-center
+      .col-sm-12
+        %h3.panel-title= t(:coverage_areas)
+  .panel-body
+    .row
+      .col-sm-6
+        - types = @service.coverage_areas.map(&:coverage_type).uniq
+        - ['origins', 'destinations', 'residences'].each do |rule| 
+          .panel.panel-default
+            .panel-heading
+              %h4.panel-title= t(rule)
+            .panel-body
+              - types.each do |type|
+                %b
+                  =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
+                .well.white-well.text-left
+                  -coverage_string = ""
+                  - @service.service_coverage_maps.where(rule: rule.singularize.downcase).joins(:geo_coverage).order('value').each do |map|
+                    -if map.geo_coverage.coverage_type == type
+                      -coverage_string += map.geo_coverage.value + ', '
+                  -if coverage_string == ""
+                    = t(:n_a)
+                  -else
+                    =coverage_string.chop.chop
 
-  .row
-    .col-sm-6
-      - types = @service.coverage_areas.map(&:coverage_type).uniq
-      - ['origins', 'destinations', 'residences'].each do |rule| 
-        %h4= t(rule)
-        - types.each do |type|
-          %b
-            =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
-          .well.white-well.text-left
-            -coverage_string = ""
-            - @service.service_coverage_maps.where(rule: rule.singularize.downcase).joins(:geo_coverage).order('value').each do |map|
-              -if map.geo_coverage.coverage_type == type
-                -coverage_string += map.geo_coverage.value + ', '
-            -if coverage_string == ""
-              = t(:n_a)
-            -else
-              =coverage_string.chop.chop
+      .col-sm-6.text-center
+        .panel.panel-default
+          .panel-heading
+            %h4.panel-title= t(:service_area_map)
+          .panel-body
 
-    .col-sm-6.text-center
-      %h4=t(:service_area_map)
-      .well.white-well
-
-        = LeafletMap({ :mapid => "lmap_" + "origin",  :polylines => @polylines['origin'], :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :style => "height:500px;" })
+            = LeafletMap({ :mapid => "lmap_" + "origin", :polylines => @polylines['origin'],
+            :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15,
+            :style => "height:500px;" })
 
 = yield :scripts
 

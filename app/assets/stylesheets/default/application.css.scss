@@ -10,10 +10,23 @@
  *
  */
 
+.timepicker-picker td span {
+  width: 42px !important;
+  height: 20px !important;
+  line-height: 20px !important;
+}
+
+.bootstrap-datetimepicker-widget .timepicker-hour,
+.bootstrap-datetimepicker-widget .timepicker-minute,
+.bootstrap-datetimepicker-widget .timepicker-second {
+  text-align: right;
+}
+
 // $navbar-default-bg: #312312;
 // $light-orange: #ff8c00;
 // $navbar-default-color: $light-orange;
 
+@import 'brand-lib';
 @import "bootstrap";
 @import "bootstrap/theme";
 
@@ -33,4 +46,5 @@
 @import "places";
 @import "typeahead.js-bootstrap";
 @import 'bootstrap-datetimepicker';
-@import ' dataTables/jquery.dataTables.bootstrap3';
+@import 'dataTables/jquery.dataTables.bootstrap3';
+@import 'brand'

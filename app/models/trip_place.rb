@@ -24,6 +24,7 @@ class TripPlace < GeocodedAddress
   def from_trip_proxy_place json_string, sequence, manual_entry = '', map_center = ''
     self.sequence = sequence
     j = JSON.parse(json_string) rescue {'type_name' => 'MANUAL_ENTRY'}
+    j['county'] = Oneclick::Application.config.default_county if j['county'].blank?
     case j['type_name']
     when 'PLACES_TYPE'
       self.update_attributes(
@@ -38,6 +39,18 @@ class TripPlace < GeocodedAddress
         lat: j['lat'],
         lon: j['lon'],
         raw_address: j['full_address'])
+    when 'CACHED_ADDRESS_TYPE'
+      self.update_attributes(
+        name: j['name'],
+        address1: j['address1'],
+        address2: j['address2'],
+        city: j['city'],
+        state: j['state'],
+        zip: j['zip'],
+        county: j['county'],
+        lat: j['lat'],
+        lon: j['lon'],
+        raw_address: j['raw_address'])
     when 'POI_TYPE'
       self.update_attributes(
         poi_id: j['id'],
@@ -54,6 +67,7 @@ class TripPlace < GeocodedAddress
     when 'PLACES_AUTOCOMPLETE_TYPE'
       details = get_places_autocomplete_details(j['id'])
       d = cleanup_google_details(details.body['result'])
+      d['county'] = Oneclick::Application.config.default_county if d['county'].blank?
       self.update_attributes(
         address1: d['address1'],
         city: d['city'],
@@ -75,6 +89,7 @@ class TripPlace < GeocodedAddress
       # TODO Copied from above, should be refactored
       details = get_places_autocomplete_details(first_result['reference'])
       d = cleanup_google_details(details.body['result'])
+      d['county'] = Oneclick::Application.config.default_county if d['county'].blank?
       self.update_attributes(
         address1: d['address1'],
         city: d['city'],
@@ -101,10 +116,10 @@ class TripPlace < GeocodedAddress
     return get_location
   end
   
-  def type
-    return TYPES[0] unless poi.nil?
-    return TYPES[1] unless place.nil?
-    return TYPES[2]
+  def type_name
+    return 'POI_TYPE' unless poi.nil?
+    return 'PLACE_TYPE' unless place.nil?
+    return 'CACHED_ADDRESS_TYPE'
   end
   
   # discover the address for this trip place from its

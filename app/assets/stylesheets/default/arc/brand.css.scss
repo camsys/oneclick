@@ -1,3 +1,5 @@
+// ARC CSS file. Styles only, no variables or mixins.
+
 $nav-start-color: #FAFAFA;
 $nav-end-color: #A3A3A3;
 #publicNav{
@@ -90,9 +92,4 @@ $versionLang-end-color: #3681B3;
     font-size: 12px;
     font-weight: bold;
   }
-}
-
-/*Note that format is trip-mode-{mode_name}-{service_name}*/
-.mode_transit-marta {
-  background-image: image-url('transit-marta.png');
 }

@@ -146,7 +146,7 @@ module TripsSupport
     google_api.get('details/json') do |req|
       req.params['reference'] = reference
       req.params['sensor']    = true
-      req.params['key']       = 'AIzaSyBHlpj9FucwX45l2qUZ3441bkqvcxR8QDM'
+      req.params['key']       = Oneclick::Application.config.google_places_api_key
     end
   end
 
@@ -154,7 +154,7 @@ module TripsSupport
     google_api.get('autocomplete/json') do |req|
       req.params['input']    = query
       req.params['sensor']   = false
-      req.params['key']      = 'AIzaSyBHlpj9FucwX45l2qUZ3441bkqvcxR8QDM'
+      req.params['key']      = Oneclick::Application.config.google_places_api_key
       req.params['location'] = map_center
       req.params['radius']   = 20_000
     end

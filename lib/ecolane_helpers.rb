@@ -1,6 +1,6 @@
 require 'net/http'
-require 'OpenSSL'
-require 'Indirizzo'
+require 'openssl'
+require 'indirizzo'
 
 class EcolaneHelpers
 
@@ -56,7 +56,13 @@ class EcolaneHelpers
     end
     resp_xml = Nokogiri::XML(resp.body)
     pu_time = DateTime.xmlschema(resp_xml.xpath("order").xpath("pickup").xpath("negotiated").text).strftime("%b %e, %l:%M %p")
-    do_time = DateTime.xmlschema(resp_xml.xpath("order").xpath("dropoff").xpath("negotiated").text).strftime("%b %e, %l:%M %p")
+
+    begin
+      do_time = DateTime.xmlschema(resp_xml.xpath("order").xpath("dropoff").xpath("negotiated").text).strftime("%b %e, %l:%M %p")
+    rescue
+      do_time = nil
+    end
+
     return true, {pu_time: pu_time, do_time: do_time, confirmation: confirmation}
 
   end

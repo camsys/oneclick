@@ -37,13 +37,13 @@ class TripPart < ActiveRecord::Base
   # We define that an itinerary has been selected if there is exactly 1 visible valid one.
   # We might want a more explicit selection flag in the future.
   def selected?
-    itineraries.valid.visible.count == 1
+    itineraries.valid.selected.count == 1
   end
 
   # Returns the itinerary selected for this trip.  If one isn't selected, returns nil
   def selected_itinerary
     if selected?
-      return itineraries.valid.visible.first
+      return itineraries.valid.selected.first
     else
       return nil
     end
@@ -83,10 +83,25 @@ class TripPart < ActiveRecord::Base
   # before this method is called.
   def create_itineraries
     remove_existing_itineraries
-    create_fixed_route_itineraries if trip.desired_modes.include? Mode.transit
-    create_taxi_itineraries if trip.desired_modes.include? Mode.taxi
-    create_paratransit_itineraries if trip.desired_modes.include? Mode.paratransit
-    create_rideshare_itineraries if trip.desired_modes.include? Mode.rideshare
+    timed "fixed" do
+      create_fixed_route_itineraries if trip.desired_modes.include? Mode.transit
+    end
+    timed "taxi" do
+      create_taxi_itineraries if trip.desired_modes.include? Mode.taxi
+    end
+    timed "paratransit" do
+      create_paratransit_itineraries if trip.desired_modes.include? Mode.paratransit
+    end
+    timed "rideshare" do
+      create_rideshare_itineraries if trip.desired_modes.include? Mode.rideshare
+    end
+  end
+
+  def timed label, &block
+    s = Time.now
+    yield block
+    s2 = Time.now
+    Rails.logger.info "TIMING: #{label} #{s2 - s} #{s} #{s2}"
   end
 
   # TODO refactor following 4 methods
@@ -94,6 +109,8 @@ class TripPart < ActiveRecord::Base
     tp = TripPlanner.new
     arrive_by = !is_depart
     result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode)
+
+    #TODO: Save errored results to an event log
     if result
       tp.convert_itineraries(response).each do |itinerary|
         serialized_itinerary = {}
@@ -108,22 +125,24 @@ class TripPart < ActiveRecord::Base
 
         itineraries << Itinerary.new(serialized_itinerary)
       end
-    else
-      itineraries << Itinerary.new('server_status'=>response['id'], 'server_status'=>response['msg'])
     end
 
-    if mode == 'TRANSIT,WALK'
+    if mode == 'TRANSIT,WALK' and result
       check_for_long_walks(itineraries)
     end
 
-    hide_duplicate_fixed_route(itineraries)
+    # Don't hide duplicate itineraries in new UI
+    # See https://www.pivotaltracker.com/story/show/71254872
+    # TODO This will probably break kiosk, will add story
+    # hide_duplicate_fixed_route(itineraries)
+
   end
 
   def check_for_long_walks itineraries
     long_walks = false
     itineraries.each do |itinerary|
       first_leg = itinerary.get_legs.first
-      #TODO: Perhaps make the 20 minute threshold configurable.
+      #TODO: Make the 20 minute threshold configurable.
       if first_leg.mode == 'WALK' and first_leg.duration > 1200
         long_walks = true
         itinerary.hide
@@ -134,6 +153,8 @@ class TripPart < ActiveRecord::Base
     end
   end
 
+  # Note not called for now.
+  # See https://www.pivotaltracker.com/story/show/71254872
   def hide_duplicate_fixed_route itineraries
     seen = {}
     itineraries.each do |i|
@@ -166,15 +187,57 @@ class TripPart < ActiveRecord::Base
     itineraries = eh.get_accommodating_and_eligible_services_for_traveler(self)
     itineraries = eh.get_eligible_services_for_trip(self, itineraries)
 
-    itineraries.each do |itinerary|
+    itineraries = itineraries.collect do |itinerary|
       new_itinerary = Itinerary.new(itinerary)
       fh.calculate_fare(new_itinerary)
-      self.itineraries << new_itinerary
+      new_itinerary
     end
+
+    unless itineraries.empty?
+      unless ENV['SKIP_DYNAMIC_PARATRANSIT_DURATION']
+        begin
+          tp = TripPlanner.new
+          arrive_by = !is_depart
+          result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],
+                                                      [to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, 'CAR')
+          base_duration = response['itineraries'].first['duration'] / 1000.0
+        rescue Exception => e
+          Rails.logger.error "Exception #{e} while getting trip duration."
+          base_duration = nil
+        end
+      else
+        Rails.logger.info "SKIP_DYNAMIC_PARATRANSIT_DURATION is set, skipping it"
+      end
+      Rails.logger.info "Base duration: #{base_duration} minutes"
+      itineraries.each do |i|
+        i.duration_estimated = true
+        if base_duration.nil?
+          i.duration = Oneclick::Application.config.minimum_paratransit_duration
+        else
+          i.duration =
+            [base_duration * Oneclick::Application.config.duration_factor,
+             Oneclick::Application.config.minimum_paratransit_duration].max
+        end
+        Rails.logger.info "Factored duration: #{i.duration} minutes"
+        if is_depart
+          i.start_time = trip_time
+          i.end_time = i.start_time + i.duration
+        else
+          i.end_time = trip_time
+          i.start_time = i.end_time - i.duration
+        end
+        Rails.logger.info "AFTER"
+        Rails.logger.info i.duration.ai
+        Rails.logger.info i.start_time.ai
+        Rails.logger.info i.end_time.ai
+      end
+    end
+
+    self.itineraries += itineraries
 
   end
 
- def create_rideshare_itineraries
+  def create_rideshare_itineraries
     tp = TripPlanner.new
     trip.restore_trip_places_georaw
     result, response = tp.get_rideshare_itineraries(from_trip_place, to_trip_place, trip_time)
@@ -183,7 +246,7 @@ class TripPart < ActiveRecord::Base
       self.itineraries << Itinerary.new(itinerary)
     else
       self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s,
-        'mode' => Mode.rideshare)
+                                        'mode' => Mode.rideshare)
     end
   end
 

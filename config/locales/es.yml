@@ -25,6 +25,7 @@ es:
   feedback: "[es]Feedback[/es]"
   agency: "[es]Agency[/es]"
   agencies: "[es21]Agencies[es]"
+  all_agencies: "[es28]All Agencies[/es]"
   add_new_agency: "[es26]Add a new Agency[/es]"
   agency_added: "[es27]Agency added[/es]"
   specific_agency_added: "[es29]%{agency} added[/es]"
@@ -75,6 +76,7 @@ es:
   agents: "[es67]Agents[/es]"
   administrators: "[es71]Administrators[/es]"
   create_user: "[es]Create User[/es]"
+  user_created: "[es79]User created[/es]"
   admin: '[es42]Admin[/es]'
   admin_actions: '[es]Admin[/es]'
   staff_actions: '[es]Staff[/es]'
@@ -152,6 +154,7 @@ es:
   error_404_mistyped: 'Es posible que hayas escrito mal la dirección o la página puede haber cambiado.'
   error_422: 'El cambio que querías fue rechazado.'
   error_422_detail: "Tal vez trataste de cambiar algo al que no tienes acceso."
+  error_couldnt_plan: '[es157]No trip plan could be created.  This is likely due to a system error, and our staff has been notified. Please try your trip again.[/es]'
 
   # Trip History and Rating
   rating: "Clasificacion *7*"
@@ -183,6 +186,10 @@ es:
   apply: 'Applicar'
   cancel: 'Cancelar'
   plan_it: 'Planear el viaje'
+  trip: '[es]Trip[/es]'
+  options: '[es]Options[/es]'
+  review: '[es]Review[/es]'
+  plan: '[es]Plan[/es]'
   from: 'De'
   to: 'A'  
   at_time: 'en'  
@@ -204,6 +211,13 @@ es:
   trip_date: "[es130]Trip Date[/es]"
   rideshare: 'Para Compartir el Viaje'
   walk: 'Caminar'  
+  bus: '[es211]Bus[/es]'
+  drive: '[es212]Drive[/es]'
+  rail: '[es213]Rail[/es]'
+  subway: '[es214]Subway[/es]'
+  vehicle: '[es]Vehicle[/es]'
+  select_a_plan_each_trip_part: '[es]Please select itinerary for each trip part[/es]'
+  route: '[es215]Route[/es]'
   transfer: {
       one: '%{count} conección',
       other: '%{count} conecciones',
@@ -227,6 +241,7 @@ es:
   print: 'Imprimir'
   chat: 'Charlar en línea'
   e_mail: ' Correo electrónico'
+  create: "[es230]Create[/es]"
   created: "[es152]Created[/es]"
   trip_was_successfully_created: 'El viaje fue creado exitosamente.'
   trip_was_successfully_removed: 'El viaje fue eliminada afortunada. *25*'  
@@ -280,6 +295,7 @@ es:
   returning: '[es172]returning[/es]'
   return_after: "[es199]Return after[/es]"
   at: '[es173]at[/es]'
+  wait_at: '[es288]Wait at[/es]'
   fare: "[es198]Fare[/es]"
   flat_fare_unavailable: "[es199]Flat fare unavailable[/es]"
   rate: "[es]Rate[/es]"
@@ -306,6 +322,7 @@ es:
   updated: "[es242]Updated[/es]"
 
   # new ones
+  book: "[es]Book[/es]"
   inactive: "[es]Inactive[/es]"
   service_id: "[es]Service Id[/es]"
   booking_service_code: "[es]Booking Service Code[/es]"
@@ -343,8 +360,10 @@ es:
   trip_insufficient_notice_a: "[es275]This trip must be booked '[/es]"
   trip_insufficient_notice_b: "[es294]in advance.[/es]"
   more_information_required: "[es294]More information is needed.[/es]"
+  trip_needs_more_accommodations: "[es360]These accommodations are not met by this service[/es]"
   service_notice_not_required: "[es240]This service does not require advanced notice to book a trip[/es]"
   no_cost_for_service:  "[es281]No cost for this service[/es]"
+  cost_details: "[es362]Cost Details[/es]"
   addl_cost_details: "[es299]Additional Cost Details[/es]"
   click_for_cost_details: '[es]Click for cost details[es]'
   view_trip_details: "[es298]View trip details so that you can call the provider.[/es]"
@@ -438,6 +457,7 @@ es:
   email_addresses: 'Correos electrónicos'
   start: "START: "
   start_time: "[es324]Start Time[/es]"
+  times: "[es456]Times[/es]"
   end_time: "[es325]End Time[/es]"
   walk_time: "es[326]Walk Time[/es]"
   transit_time: "[es327]Transit Time[/es]"
@@ -446,7 +466,6 @@ es:
   on: ' en '
   walking: ' caminando'
   arrive: "ARRIVE: "
-  trip: "Viaje: "
   est: " (est.)"
   myself: "yo mismo"  
   assisted_user_first_name_s_trips: "Viajes de %{name}"
@@ -501,7 +520,15 @@ es:
   name: "[es]Name[/es]"
   information: "[es]information[/es]"
   internal_contact: "[es]Internal Contact[/es]"
+  city: "[es]City[/es]"
+  state: "[es]State[/es]"
+  zip: "[es]Zip[/es]"
 
+  # validation messages
+  valid_time_msg: "[es]must be a valid time[/es]"
+  presence_msg: "[es]can't be blank[/es]"
+  before_msg: "[es]must be before [/es]"
+  
   # Branding
   arc:
     logotext: ''

@@ -226,11 +226,13 @@ def populate_provider_staff
   Provider.all.each do |p|
     
     # provider staff user
-    u = p.users.create! first_name: p.name + ' Provider Staff', last_name: 'Staff',
-      email: p.name.to_sample_email('staff'), password: 'welcome1'
-    up = UserProfile.create! user: u
-    u.add_role :provider_staff, p
-
+    u = p.users.find_or_create_by! email: p.name.to_sample_email('staff') do |pstaff|
+      pstaff.first_name = p.name + ' Provider Staff'
+      pstaff.last_name = 'Staff'
+      pstaff.password = pstaff.password_confirmation = 'welcome1'
+      up = UserProfile.create! user: pstaff
+      pstaff.add_role :provider_staff, p
+    end
   end
 end
 

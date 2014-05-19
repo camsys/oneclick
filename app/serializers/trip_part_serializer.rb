@@ -1,37 +1,35 @@
 class TripPartSerializer < ActiveModel::Serializer
   include CsHelpers
 
-  attributes :id, :description, :start_time, :end_time
+  attributes :id, :description, :description_without_direction, :start_time, :end_time
   attribute :is_depart, key: :is_depart_at
   has_many :itineraries
+  attr_accessor :debug
 
-  def description
-    # "Outbound - 40 Courtland Street NE Atlanta, GA to Atlanta VA Medical Center"
-    # Return
-    # out = trip_parts.first
-    trip = object.trip
-    "%s - %s %s %s" % [
-      direction, object.from_trip_place.name2, I18n.t(:to).downcase, 
-      object.to_trip_place.name2
-    ]
-    # s = [round_trip(trip),
-    # I18n.t(:from).downcase,
-    # trip.from_place.name,
-    # I18n.t(:to).downcase,
-    # trip.to_place.name,
-    # depart_arrive.downcase,
-    # format_date(object.trip_time),
-    # I18n.t(:at),
-    # format_time(object.trip_time),
-    # ].join ' '
+  def initialize(object, options={})
+    super(TripPartDecorator.new(object), options)
+    @debug = options[:debug]
+  end
+
+  def itineraries
+    if @debug
+      return object.itineraries
+    end
+    itineraries = object.itineraries.valid.visible
+    return itineraries if Oneclick::Application.config.max_offset_from_desired.nil?
+    latest_time = (start_time || end_time) + Oneclick::Application.config.max_offset_from_desired
+    earliest_time = (start_time || end_time) - Oneclick::Application.config.max_offset_from_desired
+    itineraries.select do |i|
+      if object.is_depart
+        i.start_time.nil? || ((i.start_time >= earliest_time) && (i.start_time <= latest_time))
+      else
+        i.end_time.nil? || ((i.end_time >= earliest_time) && (i.end_time <= latest_time))
+      end
+    end
   end
 
   def round_trip trip
     trip.is_return_trip ? I18n.t(:round_trip) : I18n.t(:one_way)
-  end
-
-  def direction
-    object.is_return_trip? ? I18n.t(:return) : I18n.t(:outbound)
   end
 
   def start_time

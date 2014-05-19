@@ -1,6 +1,6 @@
 .header
-  %button.action-button.pull-right
-    = link_to t(:new), new_admin_agency_path
+  - if can? :create, Agency
+    = link_to t(:new), new_admin_agency_path, {class: 'btn action-button btn-default pull-right', role: 'button'}
   %h1= t(:agencies)
 
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_agencies_table
@@ -9,6 +9,7 @@
       %th= t(:name)
       %th= t(:parent_agency)
       %th= t(:subagencies)
+      %th#status= t(:status)
   %tbody
     - @agencies.each do |agency|
       %tr
@@ -20,10 +21,13 @@
             = ''
         %td
           = render partial: agency.sub_agencies
+        %td
+          - if agency.active == false
+            = t(:inactive)
 
 :javascript
   $(document).ready(function() {
-    $('#admin_agencies_table').dataTable( {
+    var oTable = $('#admin_agencies_table').dataTable( {
           "oLanguage": {
               "sLengthMenu": "Display _MENU_ agencies per page",
               "sZeroRecords": "Nothing found - sorry",
@@ -31,6 +35,19 @@
               "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
               "sInfoFiltered": "(filtered from _MAX_ total agencies)"
           },
-          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l><'toggle col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
       } );
+    $("div.toggle").html('<span class="pull-right"><input type="checkbox" id="toggle">&nbsp;Show inactive agencies</span>');
+
+    var index = $("thead th").index($('#status'));
+
+    oTable.fnFilter('^$', index, true);
+
+    $("#toggle").click(function () {
+        var filter = '^$';
+        if ($(this).is(':checked')) {
+                var filter = '';
+        }         
+        oTable.fnFilter(filter, index, true);
+    });
   } );

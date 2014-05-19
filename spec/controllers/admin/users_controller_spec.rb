@@ -28,7 +28,7 @@ describe Admin::UsersController do
       end
       describe "with email param" do
         it "returns one record exactly with matching email" do
-          pending
+          pending "currently filtering lives client-side"
           u = User.last
           get :index, text: u.email
           assigns(:users).count.should eql(1)
@@ -39,7 +39,7 @@ describe Admin::UsersController do
 
   describe "create action" do
     before(:each) do
-      request.env["HTTP_REFERER"] = new_admin_agency_user_path(Agency.first.id)
+      request.env["HTTP_REFERER"] = new_admin_user_path(Agency.first.id)
     end
 
     it "should create a user with an agency_user_relationship if current_user has an agency" do

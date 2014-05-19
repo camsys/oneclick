@@ -1,7 +1,7 @@
 class Admin::UsersController < Admin::BaseController
   skip_authorization_check :only => [:create, :new]
   before_action :load_user, only: :create
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => [:agency_assist]
   load_and_authorize_resource
   
   def index
@@ -36,9 +36,9 @@ class Admin::UsersController < Admin::BaseController
           
           if @agency_user_relationship.save
             UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.user.email, current_user.agency).deliver
-            flash[:notice] = t(:agency_added) # is this necessary?
           end
         end
+        flash[:notice] = t(:user_created)
         format.html { redirect_to admin_user_path(@user)}
       else # invalid user
         format.html { render action: "new"}
@@ -83,14 +83,20 @@ class Admin::UsersController < Admin::BaseController
     end
   end
 
-  def add_to_agency
-    agency = Agency.find(params[:agency_id])
-    params[:agency][:user_ids].reject{|u| u.blank?}.each do |user_id|
-      u = User.find(user_id)
-      u.agency = agency
-      u.save
-    end
-    redirect_to admin_agency_users_path(agency)
+  # def add_to_agency # no longer applicable, iteration 5 workflow runs from the agency, not the user
+  #   agency = Agency.find(params[:agency_id])
+  #   params[:agency][:user_ids].reject{|u| u.blank?}.each do |user_id|
+  #     u = User.find(user_id)
+  #     u.agency = agency
+  #     u.save
+  #   end
+  #   redirect_to admin_agency_users_path(agency)
+  # end
+
+  def assist
+    authorize! :assist, @user
+    set_traveler_id params[:id]
+    redirect_to new_user_trip_path(params[:id])
   end
 
   def update_roles
@@ -109,12 +115,6 @@ class Admin::UsersController < Admin::BaseController
 
 
   private 
-  def agency_staff_impersonate(user_id, agency_id)
-    @agency_user_relationship = AgencyUserRelationship.find_or_create_by(user_id: user_id, agency_id: agency_id) do |aur|
-      aur.creator = current_user.id
-    end
-    set_traveler_id user_id
-  end
 
   def user_params_without_password
     params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale)

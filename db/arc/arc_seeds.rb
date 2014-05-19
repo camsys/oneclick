@@ -13,25 +13,17 @@ include SeedsHelpers
 
 #Traveler characteristics
 [
- { klass: Characteristic, characteristic_type: 'personal_factor', code: 'disabled', name: 'Is Disabled', note: 'Do you have a permanent or temporary disability?', datatype: 'bool',
-  desc: "TK"},
- { klass: Characteristic, characteristic_type: 'personal_factor', code: 'no_trans', name: 'Has No Means of Transportation', note: 'Do you own or have access to a personal vehicle?', datatype: 'bool',
-  desc: "TK"},
- { klass: Characteristic, characteristic_type: 'program', code: 'nemt_eligible', name: 'Has Medicaid', note: 'Are you eligible for Medicaid?', datatype: 'bool',
-  desc: "TK"},
- { klass: Characteristic, characteristic_type: 'program', code: 'ada_eligible', name: 'Has ADA Paratransit', note: 'Are you eligible for ADA paratransit?', datatype: 'bool',
-  desc: "TK"},
- { klass: Characteristic, characteristic_type: 'personal_factor', code: 'veteran', name: 'Is a Veteran', note: 'Are you a military veteran?', datatype: 'bool',
-  desc: "TK"},
- { klass: Characteristic, characteristic_type: 'personal_factor', code: 'low_income', name: 'Is Low income', note: "Are you low income?", datatype: 'disabled',
-  desc: "TK"},
- { klass: Characteristic, characteristic_type: 'personal_factor', code: 'date_of_birth', name: 'Year of Birth', note: "What is your birth year?", datatype: 'date',
-  desc: "TK"},
+ { klass: Characteristic, characteristic_type: 'personal_factor', code: 'disabled', name: 'Is Disabled', note: 'Do you have a permanent or temporary disability?', datatype: 'bool'},
+ { klass: Characteristic, characteristic_type: 'personal_factor', code: 'no_trans', name: 'Has No Means of Transportation', note: 'Do you own or have access to a personal vehicle?', datatype: 'bool'},
+ { klass: Characteristic, characteristic_type: 'program', code: 'nemt_eligible', name: 'Has Medicaid', note: 'Are you eligible for Medicaid?', datatype: 'bool'},
+ { klass: Characteristic, characteristic_type: 'program', code: 'ada_eligible', name: 'Has ADA Paratransit', note: 'Are you eligible for ADA paratransit?', datatype: 'bool'},
+ { klass: Characteristic, characteristic_type: 'personal_factor', code: 'veteran', name: 'Is a Veteran', note: 'Are you a military veteran?', datatype: 'bool'},
+ { klass: Characteristic, characteristic_type: 'personal_factor', code: 'low_income', name: 'Is Low income', note: "Are you low income?", datatype: 'disabled'},
+ { klass: Characteristic, characteristic_type: 'personal_factor', code: 'date_of_birth', name: 'Year of Birth', note: "What is your birth year?", datatype: 'date'},
  { klass: Characteristic, characteristic_type: 'personal_factor', code: 'age', name: 'Age is', note: "What is your birth year?", datatype: 'integer',
     desc: 'You must be 65 or older to use this service. Please confirm your birth year.'},
     # TODO The above needs interpolation
- { klass: Characteristic, characteristic_type: 'personal_factor', code: 'walk_distance', name: 'Walk distance', note: 'Are you able to comfortably walk for 5, 10, 15, 20, 25, 30 minutes?', datatype: 'disabled',
-  desc: "TK"},
+ { klass: Characteristic, characteristic_type: 'personal_factor', code: 'walk_distance', name: 'Walk distance', note: 'Are you able to comfortably walk for 5, 10, 15, 20, 25, 30 minutes?', datatype: 'disabled'},
  #Traveler accommodations 
 
  {klass: Accommodation, code: 'folding_wheelchair_accessible', name: 'Folding wheelchair accessible.', note: 'Do you need a vehicle that has space for a folding wheelchair?', datatype: 'bool'},
@@ -47,9 +39,15 @@ include SeedsHelpers
  {klass: ServiceType, code: 'paratransit', name: 'Paratransit', note: 'This is a general purpose paratransit service.'},
  {klass: ServiceType, code: 'volunteer', name: 'Volunteer', note: 'This is a volunteer service'},
  {klass: ServiceType, code: 'nemt', name: 'Non-Emergency Medical Service', note: 'This is a paratransit service only to be used for medical trips.'},
- {klass: ServiceType, code: 'fixed', name: 'Fixed-route Transit', note: 'This is a transit service.'},
+ {klass: ServiceType, code: 'transit', name: 'Fixed-route Transit', note: 'This is a transit service.'},
  {klass: ServiceType, code: 'taxi', name: 'Taxi', note: 'Taxi services.'},
  {klass: ServiceType, code: 'rideshare', name: 'Rideshare', note: 'Ride-sharing services.'},
+
+ # Modes
+ { klass: Mode, active: 1, name: 'Transit', code: 'mode_transit'},
+ { klass: Mode, active: 1, name: 'Paratransit', code: 'mode_paratransit', elig_dependent: true},
+ { klass: Mode, active: 1, name: 'Taxi', code: 'mode_taxi'},
+ { klass: Mode, active: 1, name: 'Rideshare', code: 'mode_rideshare'},
 
  #trip_purposes 
  {klass: TripPurpose, code: 'work', name: 'Work', note: 'Work-related trip.', active: 1, sort_order: 2},
@@ -60,7 +58,8 @@ include SeedsHelpers
  {klass: TripPurpose, code: 'personal', name: 'Personal Errand', note: 'Personal errand/shopping trip.', active: 1, sort_order: 2},
  {klass: TripPurpose, code: 'general', name: 'General Purpose', note: 'General purpose/unspecified purpose.', active: 1, sort_order: 1},
  {klass: TripPurpose, code: 'senior', name: 'Visit Senior Center', note: 'Trip to visit Senior Center.', active: 1, sort_order: 2},
- {klass: TripPurpose, code: 'grocery', name: 'Grocery Trip', note: 'Grocery shopping trip.', active: 1, sort_order: 2} ].each do |record|
+ {klass: TripPurpose, code: 'grocery', name: 'Grocery Trip', note: 'Grocery shopping trip.', active: 1, sort_order: 2}
+].each do |record|
   structured_hash = structure_records_from_flat_hash record
   build_internationalized_records structured_hash
 end

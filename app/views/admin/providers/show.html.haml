@@ -3,115 +3,126 @@
     = link_to t(:all_providers), admin_providers_path
     %h2
       = @provider.name
+    - unless @provider.active
+      %p= t(:inactive)
   .col-sm-3.pull-right.form-group
     - if can? :update, @provider
       = link_to edit_admin_provider_path(@provider), {class: 'btn action-button btn-default', role: 'button'} do
         = icon_label(:edit)
 
-    - if can? :manage, Service
+    - if can?(:create, Service) && can?(:update, @provider)
       = link_to new_service_path(provider_id: @provider), {class: 'btn action-button btn-default', role: 'button'} do
         = icon_label(:add_service)
 
     - if can? :destroy, @provider
-      = simple_form_for @provider, url: admin_provider_path, method: :delete, :html => {class: "form-horizontal pull-right", id: "delete_provider_form"}  do |f|
-        = button_tag type: 'submit', class: "btn action-button btn-default", confirm: "OK?" do
-          = icon_label(:delete)
+      = button_to t(:delete), { action: "destroy", id: @provider.id }, method: :delete,
+      data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default",
+      form_class: "form-horizontal pull-right"
 
 .row
   .col-sm-6
-    .well              
-      %h4= t(:provider_contact_info)
-      %table.table.table-condensed
-        %tr
-          %td.text-right
-            = t(:address) + ":"
-          %td.text-left
-            %b= @provider.address.to_s
-          %td.text-left
-            %b= @provider.city.to_s
-          %td.text-left
-            %b= @provider.state.to_s
-          %td.text-left
-            %b= @provider.zip.to_s
-        %tr
-          %td.text-right
-            = t(:phone)+ ":  "
-          %td.text-left{colspan: 4}
-            %b= @provider.phone.to_s
-        %tr
-          %td.text-right
-            = t(:email)+ ":  "
-          %td.text-left{colspan: 4}
-            %b= mail_to @provider.email.to_s
-        %tr
-          %td.text-right
-            = t(:url)+ ":  "
-          %td.text-left{colspan: 4}
-            - if @provider.url
-              %b= link_to @provider.url, @provider.url
+    .panel.panel-default
+      .panel-heading
+        %h4.panel-title= t(:provider_contact_info)
+      .panel-body              
+        %table.table.table-condensed
+          %tr
+            %td.text-right
+              = t(:address) + ":"
+            %td.text-left
+              %b= @provider.address.to_s
+            %td.text-left
+              %b= @provider.city.to_s
+            %td.text-left
+              %b= @provider.state.to_s
+            %td.text-left
+              %b= @provider.zip.to_s
+          %tr
+            %td.text-right
+              = t(:phone)+ ":  "
+            %td.text-left{colspan: 4}
+              %b= @provider.phone.to_s
+          %tr
+            %td.text-right
+              = t(:email)+ ":  "
+            %td.text-left{colspan: 4}
+              %b= mail_to @provider.email.to_s
+          %tr
+            %td.text-right
+              = t(:url)+ ":  "
+            %td.text-left{colspan: 4}
+              - if @provider.url
+                %b= link_to @provider.url, @provider.url
 
-  .col-sm-6.well
-    %h4= t(:internal_contact)
-    %table.table.table-condensed
-      - if @contact
-        %tr
-          %td.text-right
-            = t(:name) + ": "
-          %td.text-left
-            %b= @contact.name.to_s
-        %tr
-          %td.text-right
-            = t(:title)+": "
-          %td.text-left
-            %b= @contact.title.to_s
-        %tr
-          %td.text-right
-            = t(:phone)+ ": "
-          %td.text-left
-            %b= @contact.phone.to_s
-        %tr
-          %td.text-right
-            = t(:email)+ ":  "
-          %td.text-left
-            %b= mail_to @contact.email.to_s
+  .col-sm-6
+    .panel.panel-default
+      .panel-heading
+        %h4.panel-title= t(:internal_contact)
+      .panel-body
+        %table.table.table-condensed
+          %tr
+            %td.text-right
+              = t(:name) + ": "
+            %td.text-left
+              %b= @provider.internal_contact_name
+          %tr
+            %td.text-right
+              = t(:title)+": "
+            %td.text-left
+              %b= @provider.internal_contact_title
+          %tr
+            %td.text-right
+              = t(:phone)+ ": "
+            %td.text-left
+              %b= @provider.internal_contact_phone
+          %tr
+            %td.text-right
+              = t(:email)+ ":  "
+            %td.text-left
+              %b= mail_to @provider.internal_contact_email
+          - if @contact
+            %tr
+              %td.text-right
+                = t(:user) + ": "
+              %td.text-left
+                %b= link_to @contact.name, admin_user_path(@contact)
+              
+
+.panel.panel-default
+  .panel-heading
+    %h4.panel-title= t(:staff_actions)
+  .panel-body
+    %table.ALTtable.table-condensed
+      %tr
+        %th.text-left
+          = t(:name)
+        %th.text-left
+          = t(:title)
+        %th.text-left
+          = t(:phone)
+        %th.text-left
+          = t(:email)
+
+      - if @staff.count > 0
+        - @staff.each do |s|
+          %tr
+            %td.text-left
+              %b= s.name.to_s
+            %td.text-left
+              %b= s.title.to_s
+            %td.text-left
+              %b= s.phone.to_s
+            %td.text-left
+              %b= mail_to s.email.to_s
       - else
         %tr
-          %td= t(:none)
-.well
-  .row
-    .col-sm-12
-      %h4= t(:staff_actions)
-      %table.ALTtable.table-condensed
-        %tr
-          %th.text-left
-            = t(:name)
-          %th.text-left
-            = t(:title)
-          %th.text-left
-            = t(:phone)
-          %th.text-left
-            = t(:email)
+          %td= t(:nothing_found_sorry)
 
-        - if @staff.count > 0
-          - @staff.each do |s|
-            %tr
-              %td.text-left
-                %b= s.name.to_s
-              %td.text-left
-                %b= s.title.to_s
-              %td.text-left
-                %b= s.phone.to_s
-              %td.text-left
-                %b= mail_to s.email.to_s
-        - else
-          %tr
-            %td= t(:nothing_found_sorry)
-
-.well
-  .row
-    .col-sm-12
-      %h4= t(:services)
-      = render 'services/table'
+.panel.panel-default
+  .panel-heading
+    %h4.panel-title= t(:services)
+  .panel-body
+    = render 'services/table'
 
 :javascript
   $(document).ready(function() {

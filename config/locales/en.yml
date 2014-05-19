@@ -28,6 +28,7 @@ en:
   feedback: "Feedback"
   agency: "Agency"
   agencies: "Agencies"
+  all_agencies: "All Agencies"
   add_new_agency: "Add a new Agency"
   create_agency: 'Create Agency'
   add_agency: "Add Agency"
@@ -70,6 +71,7 @@ en:
   change_role: "Change Role"
   create_user: "Create User"
   delete_user: "Delete user"
+  user_created: "User Created"
   # Agent and Admin string
   reports: "Reports"
   report_name: "Report Name"
@@ -152,6 +154,7 @@ en:
   error_404_mistyped: 'You may have mistyped the address or the page may have moved.'
   error_422: 'The change you wanted was rejected.'
   error_422_detail: "Maybe you tried to change something you didn't have access to."
+  error_couldnt_plan: 'No trip plan could be created.  This is likely due to a system error, and our staff has been notified. Please try your trip again.'
 
   # Trip History and Rating
   rating: "Rating"
@@ -181,6 +184,10 @@ en:
   apply: 'Apply'
   cancel: 'Cancel'
   plan_it: 'Plan it'
+  trip: 'Trip'
+  options: 'Options'
+  review: 'Review'
+  plan: 'Plan'
   from: 'From'
   to: 'To'
   at_time: 'on'
@@ -205,6 +212,13 @@ en:
   trip_date: "Trip Date"
   rideshare: 'Rideshare'
   walk: 'Walk'
+  bus: 'Bus'
+  drive: 'Drive'
+  rail: 'Rail'
+  subway: 'Subway'
+  vehicle: 'Vehicle'
+  select_a_plan_each_trip_part: 'Please select itinerary for each trip part'
+  route: 'Route'
   transfer: {
     one: '%{count} transfer',
     other: '%{count} transfers',
@@ -228,6 +242,7 @@ en:
   print: 'Print'
   chat: 'Chat'
   e_mail: 'Email'
+  create: "Create"
   created: "Created"
   trip_was_successfully_created: 'Trip was successfully created.'
   trip_was_successfully_removed: 'Trip was successfully removed.'
@@ -280,9 +295,11 @@ en:
   returning: 'returning'
   return_after: "Return after"
   at: 'at'
+  wait_at: 'Wait at'
   fare: "Fare"
   flat_fare_unavailable: "Flat fare unavailable"
   rate: "Rate"
+
   
   # My Places form
   found_x_places: {
@@ -307,6 +324,7 @@ en:
 
   # new ones
   # Services
+  book: "Book"
   inactive: "Inactive"
   service_id: "Service Id"
   booking_service_code: "Booking Service Code"
@@ -344,9 +362,10 @@ en:
   trip_insufficient_notice_a: "This trip must be booked "
   trip_insufficient_notice_b: " in advance."
   more_information_required: "More information is needed."
-  trip_needs_more_accomodations: "These accommodations are not met by this service"
+  trip_needs_more_accommodations: "These accommodations are not met by this service"
   service_notice_not_required: "This service does not require advanced notice to book a trip"
   no_cost_for_service:  "No cost for this service"
+  cost_details: "Cost Details"
   addl_cost_details: "Additional Cost Details"
   click_for_cost_details: 'Click for cost details'
   view_trip_details: "View trip details so that you can call the provider."
@@ -439,6 +458,7 @@ en:
   email_addresses: 'Email addresses'
   start: "START: "
   start_time: "Start Time"
+  times: "Times"
   end_time: "End Time"
   walk_time: "Walk Time"
   transit_time: "Transit Time"
@@ -446,7 +466,6 @@ en:
   walk_distance_short: "Walk Dist"
   walking: ' walking'
   arrive: "ARRIVE: "
-  trip: "Trip: "
   est: " (est.)"
   myself: "myself"
   assisted_user_first_name_s_trips: "%{name}'s Trips"
@@ -504,7 +523,15 @@ en:
   name: "Name"
   information: "Information"
   internal_contact: "Internal Contact"
+  city: "City"
+  state: "State"
+  zip: "Zip"
 
+  # validation messages
+  valid_time_msg: "must be a valid time"
+  presence_msg: "can't be blank"
+  before_msg: "must be before "
+  
   date:
     abbr_day_names:
     - Sun

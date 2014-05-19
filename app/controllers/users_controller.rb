@@ -3,12 +3,15 @@ class UsersController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    authorize! :index, current_user, :message => t(:not_authorized_as_an_administrator)
+    authorize! :index, User, :message => t(:not_authorized_as_an_administrator)
     @users = User.all
   end
 
   def show
-    authorize! :show, @user, :message => t(:not_authorized_as_an_administrator)
+    authorize! :show, @user
+    @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)
+    @user_programs_proxy = UserProgramsProxy.new(@user)
+    @user_accommodations_proxy = UserAccommodationsProxy.new(@user)
     @user = User.find(params[:id])
   end
   
@@ -22,7 +25,7 @@ class UsersController < ApplicationController
       @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
       set_approved_agencies(params[:user][:approved_agency_ids])
       set_buddies(params[:user][:buddy_ids])
-      redirect_to edit_user_path(@user, locale: @user.preferred_locale), :notice => "User updated."
+      redirect_to user_path(@user, locale: @user.preferred_locale), :notice => "User updated."
     else
       redirect_to edit_user_path(@user), :alert => "Unable to update user."
     end
@@ -41,6 +44,7 @@ class UsersController < ApplicationController
 
   def edit
     # set_traveler_id params[:id] || current_user
+    authorize! :edit, @user
     @agency_user_relationship = AgencyUserRelationship.new
     @user_relationship = UserRelationship.new
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)

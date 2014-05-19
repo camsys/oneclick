@@ -1,18 +1,21 @@
-%h1
-  %i.fa.fa-signin
-  = t(:log_in)
-%h4
-.well
-  = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
-    - unless Rails.env.development? and ENV['DROPDOWN_USERS']
-      = f.input :email, :autofocus => true, :required => true, :label => t(:email)
-      = f.input :password, :required => true, :label => t(:password)
-    - else
-      = f.input :email, :autofocus => true, :required => true, :label => t(:email), collection: User.any_role.order(:email).pluck(:email)
-      = f.input :password, :required => true, :label => t(:password), input_html: {value: 'welcome1'}
-    = f.input :remember_me, :label => t(:remember_me), :as => :boolean if devise_mapping.rememberable?
-    .actions
-      = button_tag type: :submit, class: 'btn btn-primary controls' do
-        %i.fa.fa-sign-in
-        = t(:log_in)
-      = render "devise/shared/links"
+.row
+  .col-xs-12
+    .panel.panel-default
+      .panel-heading
+        %h1.panel-title= t(:log_in)
+      .panel-body
+        .row
+          .col-xs-12
+            = simple_form_for resource, as: resource_name, url: session_path(resource_name), html: {class: 'form-horizontal' }, wrapper: :horizontal_form do |f|
+              - unless Rails.env.development? and ENV['DROPDOWN_USERS']
+                = f.input :email, :autofocus => true, :required => true, :label => t(:email)
+                = f.input :password, :required => true, :label => t(:password)
+              - else
+                = f.input :email, :autofocus => true, :required => true, :label => t(:email), collection: User.any_role.order(:email).pluck(:email)
+                = f.input :password, :required => true, :label => t(:password), input_html: {value: 'welcome1'}
+              = f.input :remember_me, :label => t(:remember_me), :as => :boolean if devise_mapping.rememberable?
+              .col-sm-offset-3.col-sm-9{style: 'padding-left: 7px;'}
+                .actions
+                  = button_tag type: :submit, class: 'btn btn-default controls' do
+                    = t(:log_in)                  
+                  = render "devise/shared/links"

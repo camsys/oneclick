@@ -59,4 +59,23 @@ module EligibilityOperators
         raise Exception.new("Unknown relationship operator #{operator}")
     end
   end
+
+  def reverse_relationship_to_symbol(operator)
+    case operator
+      when 1 # general equals
+        return "!="
+      when 2 # float equals
+        return "!="
+      when 3 # greater than
+        return "<="
+      when 4 # greather than or equal
+        return "<"
+      when 5 # less than
+        return ">="
+      when 6 # less than or equal
+        return ">"
+      else
+        raise Exception.new("Unknown relationship operator #{operator}")
+    end
+  end
 end

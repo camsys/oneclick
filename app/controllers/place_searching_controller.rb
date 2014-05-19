@@ -122,7 +122,7 @@ class PlaceSearchingController < TravelerAwareController
         "type" => POI_TYPE,
         "type_name" => 'POI_TYPE',
         "description" => map_partial(no_map_partial, { :place => {:icon => 'fa-building-o', :name => poi.name,
-          :address => poi.address} }),
+                                                                  :address => poi.address} }),
         "full_address" => poi.get_address
       }
       matches <<  m.merge(poi.interesting_attributes)
@@ -134,7 +134,7 @@ class PlaceSearchingController < TravelerAwareController
     # puts "Oneclick::Application.config.google_place_search #{Oneclick::Application.config.google_place_search}"
     # case Oneclick::Application.config.google_place_search
     # when 'places'
-      places_matches = do_google_place_search(query, params[:map_center], counter, no_map_partial)
+    places_matches = do_google_place_search(query, params[:map_center], counter, no_map_partial)
     # when 'geocode'
     #   places_matches = do_google_geocode_search(query, params[:map_center])
     # else
@@ -148,7 +148,7 @@ class PlaceSearchingController < TravelerAwareController
     render :json => matches.to_json
   end
 
-def search_my
+  def search_my
     Rails.logger.info "PlaceSearchingController#search_my"
     Rails.logger.info params.ai
     # Populate the @traveler variable
@@ -197,12 +197,21 @@ def search_my
     result = google_api.get('autocomplete/json') do |req|
       req.params['input']    = query
       req.params['sensor']   = false
-      req.params['key']      = 'AIzaSyBHlpj9FucwX45l2qUZ3441bkqvcxR8QDM'
+      req.params['key']      = Oneclick::Application.config.google_places_api_key
+      # req.params['key']      = 'AIzaSyBHlpj9FucwX45l2qUZ3441bkqvcxR8QDM'
       req.params['location'] = map_center
       req.params['radius']   = 20_000
     end
-    
-    Rails.logger.info result.status
+
+    if (result.status != 200) || (result.body['status'] != 'OK')
+      msg = "Google autocomplete failed: status: #{result.status} body: #{result.body}"
+      Rails.logger.error msg
+      Honeybadger.notify(
+        :error_class   => "Google geocode failure",
+        :error_message => msg,
+        :parameters    => {result_status: result.status, body: result.body}
+      )
+    end
 
     counter -= 1
     matches = result.body['predictions'].collect do |prediction|

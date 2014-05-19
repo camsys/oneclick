@@ -7,7 +7,8 @@ module LeafletHelper
   TILE_PROVIDER = 'CLOUDMADE'
   TILE_STYLE_ID = 997
   MAP_BOUNDS = Rails.application.config.map_bounds
-
+  SCROLL_WHEEL_ZOOM = false
+  
   def LeafletMap(options)
     options_with_indifferent_access = options.with_indifferent_access
 
@@ -31,12 +32,14 @@ module LeafletHelper
     max_zoom = options[:max_zoom] ? options[:max_zoom] : MAXZOOM
     tile_provider = options[:tile_provider] ? options[:tile_provider] : TILE_PROVIDER
     tile_style_id = options[:tile_style_id] ? options[:tile_style_id] : TILE_STYLE_ID
-
+    scroll_wheel_zoom = options[:scroll_wheel_zoom] || SCROLL_WHEEL_ZOOM
+    
     mapopts = {
       :min_zoom => min_zoom,
       :max_zoom => max_zoom,
       :tile_provider => tile_provider,
-      :tile_style_id => tile_style_id
+      :tile_style_id => tile_style_id,
+      scroll_wheel_zoom: scroll_wheel_zoom
     }.to_json
 
     js << "var CsMaps = CsMaps || {};"
@@ -48,7 +51,7 @@ module LeafletHelper
     # add any circles
     js << "m.addCircles(#{options[:circles]});" unless options[:circles].nil?
     # add any polylines
-    js << "m.addPolylines(#{options[:polylines]});" unless options[:polylines].nil?
+    js << "m.replacePolylines(#{options[:polylines]}, false);" unless options[:polylines].nil?
     # set the map bounds
     js << "m.setMapBounds(#{MAP_BOUNDS[0][0]},#{MAP_BOUNDS[0][1]},#{MAP_BOUNDS[1][0]},#{MAP_BOUNDS[1][1]});"
     js << "m.cacheMapBounds(#{MAP_BOUNDS[0][0]},#{MAP_BOUNDS[0][1]},#{MAP_BOUNDS[1][0]},#{MAP_BOUNDS[1][1]});"
@@ -56,4 +59,9 @@ module LeafletHelper
     js << "m.LMmap.setZoom(#{options[:zoom]});" if options[:zoom].present?
     js * ("\n")
   end
+
+  def self.marker(letter)
+    "http://maps.google.com/mapfiles/marker_green#{letter}.png"
+  end
+
 end

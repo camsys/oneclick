@@ -2,11 +2,21 @@ class PlacesController < PlaceSearchingController
   
   # set the @traveler variable for actions that are not supported by the super class controller
   before_filter :get_traveler, :only => [:index, :edit, :create, :destroy, :update]
+
+  class PlacesProxy
+    include ActiveAttr::Model
+    attribute :from_place
+    attribute :place_name
+    attribute :json
+    attribute :places
+  end
   
   def index
     
     # set the basic form variables
     set_form_variables
+    d = @traveler.places.each_with_index.map{|p, i| PlaceDecorator.decorate(p, context: {i: i})}
+    @places = PlacesProxy.new(places: d)
 
   end
 
@@ -25,7 +35,8 @@ class PlacesController < PlaceSearchingController
 
   # not really a destroy -- just hides the place by setting active = false
   def destroy
-    j = JSON.parse(params[:json])    
+    p = params[:places_controller_places_proxy]
+    j = JSON.parse(p[:json])
     place = @traveler.places.find(j['id'])
     if place
       place.active = false
@@ -47,21 +58,21 @@ class PlacesController < PlaceSearchingController
   end
 
   def create
-
-    j = JSON.parse(params[:json])
+    p = params[:places_controller_places_proxy]
+    j = JSON.parse(p[:json])
     if j['type_name']=='PLACES_AUTOCOMPLETE_TYPE'
       Rails.logger.info "Was autocompleted, creating new"
       details = get_places_autocomplete_details(j['id'])
       d = cleanup_google_details(details.body['result'])
       Rails.logger.info d
       j = j.merge!(d).keep_if {|k, v| %w{raw_address address1 address2 city state zip lat lon county}.include? k}
-      place = Place.create!(j.merge({name: params[:place_name], user: @traveler}))
+      place = Place.create!(j.merge({name: p[:place_name], user: @traveler}))
       place.update_attribute(:raw_address, place.get_address)
     else
       Rails.logger.info "updating"
       place = Place.find(j['id'])
       j.delete 'id'
-      place.update_attributes!(j.merge({name: params[:place_name]}))
+      place.update_attributes!(j.merge({name: p[:place_name]}))
     end
 
     Rails.logger.info place.ai

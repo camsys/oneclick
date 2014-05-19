@@ -44,13 +44,21 @@
   .form-group .control-label {
     text-align: right;
   }
-  
-  .tick-label-hidden-sm {
-    visibility: hidden !important;
+
+  @media(max-width:1170px){
+    .tick-label-hidden-sm-md {
+      visibility: hidden !important;
+    }
   }
 }
-@media(min-width:992px){
-  .tick-label-visible-md {
+
+
+@media(min-width:1170px){
+  .tick-label-hidden-lg {
+    visibility: hidden !important;
+  }
+
+  .tick-label-visible-lg {
     visibility: visible !important;
   }
 }
@@ -64,27 +72,30 @@
 }
 
 .action-button {
-  background: #eeeeee; /* Old browsers */
-  background: -moz-linear-gradient(top,  #ffffff 0%, #AFAFAF 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#AFAFAF)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* IE10+ */
-  background: linear-gradient(to bottom,  #ffffff 0%,#AFAFAF 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#AFAFAF',GradientType=0 ); /* IE6-9 */
-  min-width: 60px;
-  height: 25px;
-  border-radius: 8px;
+  &:not(:last-of-type) {
+    margin-left: 5px;
+  }
+  // background: #eeeeee; /* Old browsers */
+  // background: -moz-linear-gradient(top,  #ffffff 0%, #AFAFAF 100%); /* FF3.6+ */
+  // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#AFAFAF)); /* Chrome,Safari4+ */
+  // background: -webkit-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* Chrome10+,Safari5.1+ */
+  // background: -o-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* Opera 11.10+ */
+  // background: -ms-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* IE10+ */
+  // background: linear-gradient(to bottom,  #ffffff 0%,#AFAFAF 100%); /* W3C */
+  // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#AFAFAF',GradientType=0 ); /* IE6-9 */
+  min-width: 40px;
+  // height: 25px;
+  // border-radius: 8px;
   font-weight: bold;
-  padding: 2px;
-  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
-  font-size: 14px;
-  color: #333;
+  // padding: 2px;
+  // font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+  // font-size: 14px;
+  // color: #333;
 }
 
 .action-button:hover, .action-button:focus {
-  background-position: 0;
-  color: inherit;
+  // background-position: 0;
+  // color: inherit;
 }
 
 .dropdown-toggle {
@@ -105,13 +116,15 @@ $breadcrumb-font-size: 16px;
 
 .breadcrumb-page {
   margin: 3px 0px;
-  width: 100px;
+  min-width: 100px;
   height: $breadcrumb-height;
   text-align: center;
+  padding: 0px 10px;
 }
 
 .current-page {
   background-image: image-url('active.png');
+  background-size: 100% 100%;
   font-weight: bold;
   font-size: $breadcrumb-font-size;
   color: white;
@@ -120,6 +133,7 @@ $breadcrumb-font-size: 16px;
 
 .prev-page {
   background-image: image-url('inactive.png');
+  background-size: 100% 100%;
 
   a{
     font-weight: bold;
@@ -136,6 +150,7 @@ $breadcrumb-font-size: 16px;
 
 .next-page {
   background-image: image-url('inactive.png');
+  background-size: 100% 100%;
   font-weight: bold;
   color: black;
   font-size: $breadcrumb-font-size;
@@ -192,12 +207,26 @@ $period-nav-button-width: 40px;
   border: none;
 }
 
-.negative-margin-left {
-  margin-left: $period-nav-button-width * -1;
+/* in sm+ mode, one period-nav button in same container, so apply margin to sorter component that make them vertically align in containers */
+/* in xs mode, as space is so limited, not apply margin so sorter can take whatever space left in its container */
+@media(max-width:767px){
+  .sm-sorter-margin-left {
+    margin-left: 0px;
+  }
+
+  .sm-sorter-margin-right {
+    margin-right: 0px;
+  }
 }
 
-.negative-margin-right {
-  margin-right: -$period-nav-button-width * -1;
+@media(min-width:768px){
+  .sm-sorter-margin-left {
+    margin-left: $period-nav-button-width * -1;
+  }
+
+  .sm-sorter-margin-right {
+    margin-right: -$period-nav-button-width * -1;
+  }
 }
 
 .single-trip-part {
@@ -295,6 +324,10 @@ $legend-height: 20px;
   background-color: #499bea;
 }
 
+.travel-legend-wait {
+  background-color: #7f7979;
+}
+
 .travel-legend-transfer {
   background-color: #FEC800;
 }
@@ -305,6 +338,10 @@ $legend-height: 20px;
 
 .travel-type-walk {
   fill: #499bea;
+}
+
+.travel-type-wait {
+  fill: #7f7979;
 }
 
 .travel-type-transfer {

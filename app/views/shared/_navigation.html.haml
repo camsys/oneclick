@@ -1,7 +1,7 @@
 #publicNav.navbar.navbar-default.navbar-fixed-top{:role => "navigation"}
   .container-fluid
     #navHeader
-      %a#logo.navbar-brand{:href => "/en", :style => "text-indent:-9999px;"} Logo
+      %a#logo.navbar-brand{:href => "/" + current_or_guest_user.preferred_locale, :style => "text-indent:-9999px;"} Logo
       .pull-right
         %a#help{:href => "/501"}
           %i.fa.fa-question-circle

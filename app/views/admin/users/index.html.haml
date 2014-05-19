@@ -1,5 +1,5 @@
 .header
-  = link_to t(:add_user), new_user_path,
+  = link_to t(:add_user), new_admin_user_path,
         {class: 'btn action-button btn-default pull-right', role: 'button'}
   %h1= t(:users)
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_users_table
@@ -12,7 +12,7 @@
   %tbody
     - @users.each do |user|
       %tr
-        %td= link_to user.name, error_501_path
+        %td= link_to user.name, admin_user_path(user)
         %td= user.email
         %td= user.created_at.to_date
         %td= user.roles.first.name.titleize unless user.roles.first.nil?

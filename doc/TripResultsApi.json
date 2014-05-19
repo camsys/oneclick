@@ -24,7 +24,7 @@
                         // empty array if there is none
                         {
                             "question": "String", // The question to ask the user, e.g. "Are you a military veteran?"
-                            "description": "String", // A description of information required from user, e.g. "You must be a military veteran to use this service."
+                            //"description": "String", // A description of information required from user, e.g. "You must be a military veteran to use this service." (Droped)
                             "data_type": "String", // Data type of response required.  Options determined by Eligibility Questions
                             "control_type": "String", // UNDER DISCUSSION Type of UI control, e.g., radio, checkbox, dropdown, datetimepicker, etc. Options determined by Eligibility Questions
                             "options": [ // Options available to the user for selection.

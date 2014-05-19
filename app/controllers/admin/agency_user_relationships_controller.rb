@@ -65,14 +65,7 @@ class Admin::AgencyUserRelationshipsController < Admin::BaseController
     redirect_to edit_user_path params[:id]   #edit_user_path is not user#edit, because of Devise.  Actually points to registration_controller#edit
   end
 
-
-  def aid_user
-    authorize! :assist, @user
-    agency_staff_assist_user(params[:traveler_id], params[:agency_id])
-    redirect_to new_user_trip_path(params[:traveler_id])
-  end
-
-  private
+private
   def set_view_variables
     # these calls are ajaxed so we need to remove any existing flash messages
     flash[:notice] = nil
@@ -81,21 +74,6 @@ class Admin::AgencyUserRelationshipsController < Admin::BaseController
     @user = User.find(params[:user_id])
     target = params[:agency_user_relationship][:messagesFieldName]
     @locals = {user: @user, target_name: target}
-  end
-
-
-  def set_view_variables
-    # these calls are ajaxed so we need to remove any existing flash messages
-    flash[:notice] = nil
-    flash[:alert] = nil
-    @agency_user_relationship = AgencyUserRelationship.new
-    @user = User.find(params[:user_id])
-    target = params[:agency_user_relationship][:messagesFieldName]
-    @locals = {user: @user, target_name: target}
-  end
-  def agency_staff_assist_user(user_id, agency_id)
-    @agency_user_relationship = AgencyUserRelationship.find_by(user_id: user_id, agency_id: agency_id) 
-    set_traveler_id user_id
   end
 
   # Updates the status of a delegate relationship by the current user (traveler)

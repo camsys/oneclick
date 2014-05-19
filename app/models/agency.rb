@@ -6,12 +6,15 @@ class Agency < ActiveRecord::Base
   has_many :users
   accepts_nested_attributes_for :users
   has_many :agency_user_relationships
-  has_many :customers, :class_name => 'User', :through => :agency_user_relationships, source: :user
+  has_many :approved_agency_user_relationships,-> { where(relationship_status: RelationshipStatus.confirmed) }, class_name: 'AgencyUserRelationship'
+  has_many :customers, :class_name => 'User', :through => :approved_agency_user_relationships, source: :user
   # has_many :cs_roles, -> {where(resource_type: 'Agency')}, class_name: 'Role'
   has_many :cs_roles, -> {where(resource_type: 'Agency')}, class_name: 'Role', foreign_key: :resource_id
   has_many :cs_users, class_name: 'User', through: :cs_roles, source: :users
   has_many :agents, -> {where('roles.name=?', 'agent')}, class_name: 'User', through: :cs_roles, source: :users
   has_many :administrators, -> {where('roles.name=?', 'agency_administrator')}, class_name: 'User', through: :cs_roles, source: :users
+
+  validates :name, :presence => true
   
   def unselected_users
     User.registered - self.users
@@ -34,7 +37,7 @@ class Agency < ActiveRecord::Base
   end
 
   def internal_contact=(user)
-    self.internal_contact.remove_role( :internal_contact, self)
+    self.internal_contact.remove_role( :internal_contact, self) if self.internal_contact.present?
     user.add_role(:internal_contact, self)
   end
 

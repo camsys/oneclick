@@ -4,31 +4,19 @@
 - elsif dir=='to'
   - label='Going To'
   - sr_label = 'Type the to address'
-.col-sm-12
-  = f.input "#{dir}_place".to_sym, input_html: {class: 'place_picker', autocomplete: 'off', type: "text"}, id: "trip_proxy_#{dir}_place", wrapper: :group, label: label do
-    = f.input_field "#{dir}_place".to_sym, class: 'form-control place_picker'
-    %span.input-group-btn
-      %label.control-label.sr-only{for: "#{dir}AddressMarkerButton"} Click button to open the map and locate the  address
-      %button.btn.btn-default{type: "button", id: "#{dir}AddressMarkerButton"}
-        %i.fa.fa-map-marker
-  - if dir=='from'
-    %div{id: "tripMapContainer", class: 'hide', style: 'position: absolute; top: 0; right:-520px; z-index: 1000;'}
-      .panel.panel-default
-        .panel-body
-          = LeafletMap({ :mapid => "tripMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '500px;', :style => "height: 400px; width: 500px;" })
+= f.input "#{dir}_place".to_sym, input_html: {class: 'place_picker', autocomplete: 'off', type: "text", tabindex: 1}, id: "trip_proxy_#{dir}_place", wrapper: :group, label: label do
+  = f.input_field "#{dir}_place".to_sym, class: 'form-control place_picker', tabindex: 1
+  %span.input-group-btn
+    %label.control-label.sr-only{for: "#{dir}AddressMarkerButton"} Click button to locate the address
+    %button.btn.btn-default{type: "button", id: "#{dir}AddressMarkerButton", tabindex: 1}
+      %i.fa.fa-map-marker
+- if dir=='from'
+  %div{id: "tripMapContainer", class: 'hide', style: 'position: absolute; top: 0; right:-520px; z-index: 1000;'}
+    .panel.panel-default
+      .panel-heading.clearfix
+        %button#mapCloseButton.close.pull-right{type: "button", title: "Close"}
+          %span{:"aria-hidden" => "true"} &times;
+          %span.hide Close
+      .panel-body
+        = LeafletMap({ :mapid => "tripMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '500px;', :style => "height: 400px; width: 500px;" })
 
-/ .col-sm-12.form-group
-/   %label.col-sm-3.control-label= label
-/   .col-sm-9
-/     .input-group{style: 'position: relative;'}
-/       %label.control-label.sr-only{for: "trip_proxy_#{dir}_place"}= sr_label
-/       %input.form-control.place_picker{name: "trip_proxy[#{dir}_place]", autocomplete: 'off', type: "text", id: "trip_proxy_#{dir}_place"}
-/       %span.input-group-btn
-/         %label.control-label.sr-only{for: "#{dir}AddressMarkerButton"} Click button to open the map and locate the  address
-/         %button.btn.btn-default{type: "button", id: "#{dir}AddressMarkerButton"}
-/           %i.fa.fa-map-marker
-/ - if dir=='from'
-/   %div{id: "tripMapContainer", class: 'hide', style: 'position: absolute; top: 0; right:-520px; z-index: 1000;'}
-/     .panel.panel-default
-/       .panel-body
-/         = LeafletMap({ :mapid => "tripMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '500px;', :style => "height: 400px; width: 500px;" })

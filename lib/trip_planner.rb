@@ -15,10 +15,10 @@ class TripPlanner
     time = trip_datetime.strftime("%-I:%M%p")
     date = trip_datetime.strftime("%Y-%m-%d")
     base_url = Oneclick::Application.config.open_trip_planner
-    #url_options = "arriveBy=" + arriveBy
     url_options = "&time=" + time
     url_options += "&mode=" + mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
+    url_options += "&arriveBy=" + arriveBy.to_s
 
     url = base_url + url_options
     Rails.logger.info URI.parse(url)
@@ -72,7 +72,7 @@ class TripPlanner
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
       trip_itinerary['mode'] = Mode.transit
-      trip_itinerary['duration'] = itinerary['duration']
+      trip_itinerary['duration'] = itinerary['duration'].to_f/1000.0 # in seconds
       trip_itinerary['walk_time'] = itinerary['walkTime']
       trip_itinerary['transit_time'] = itinerary['transitTime']
       trip_itinerary['wait_time'] = itinerary['waitingTime']
@@ -217,10 +217,12 @@ class TripPlanner
     rescue Exception=>e
       Honeybadger.notify(
         :error_class   => "Service failure",
-        :error_message => "Service failure: rideshare: #{e.message}",
+        :error_message => "Service failure: rideshare: #{e.message}, URL was #{service_url}",
         :parameters    => {service_url: service_url, query: query}
       )
-      Rails.logger.warn e.to_s
+      Rails.logger.warn "Service failure: rideshare: #{e.message}"
+      Rails.logger.warn "URL was #{service_url}"
+      Rails.logger.warn e.backtrace.join("\n")
       return false, {'id'=>500, 'msg'=>e.to_s, 'mode' => 'rideshare'}
     end    
     if results.size > 0
