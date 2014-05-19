@@ -7,7 +7,6 @@ env:
 branches:
   only:
     - develop
-    - release-5
 before_script:
   - pwd
   - ls -a
@@ -37,8 +36,7 @@ deploy:
   app: oneclick-arc-int
   on:
     repo: camsys/oneclick
-    # branch: develop
-    branch: release-5
+    branch: develop
 after_deploy:
   - gem install heroku
   - git branch -lavv
