@@ -27,8 +27,7 @@
           .panel-heading
             %h3= t(:agencies)
           .panel-body
-            = f.association :approved_agencies, collection: Agency.all.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes,
-                  wrapper: :inline_checkboxes, label: false
+            = f.association :approved_agencies, collection: Agency.all.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes, wrapper: :inline_checkboxes, label: false
   - if can? :full_info, @user
     .row
       .col-sm-6.pull-left
@@ -36,7 +35,7 @@
           .panel-heading
             %h3= t(:buddies)
           .panel-body
-            = f.association :buddies, collection: User.registered, label: false, input_html: {size: 6}, as: :check_boxes
+            = f.association :pending_and_confirmed_delegates, collection: User.registered, label: false, input_html: {size: 6}, as: :check_boxes
       .col-sm-6.pull-right
         .panel.panel-default#travelers
           .panel-heading

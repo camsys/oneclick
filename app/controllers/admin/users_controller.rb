@@ -76,7 +76,7 @@ class Admin::UsersController < Admin::BaseController
     if @user.update_attributes!(update_method)
       @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
       set_approved_agencies(params[:user][:approved_agency_ids])
-      set_buddies(params[:user][:buddy_ids])
+      @user.set_buddies(params[:user][:pending_and_confirmed_delegate_ids])
       redirect_to admin_user_path(@user, locale: @user.preferred_locale), :notice => "User updated."
     else
       redirect_to admin_user_path(@user), :alert => "Unable to update user."

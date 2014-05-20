@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     if @user.update_attributes!(update_method)
       @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
       set_approved_agencies(params[:user][:approved_agency_ids])
-      set_buddies(params[:user][:buddy_ids])
+      @user.set_buddies(params[:user][:pending_and_confirmed_delegate_ids])
       redirect_to user_path(@user, locale: @user.preferred_locale), :notice => "User updated."
     else
       redirect_to edit_user_path(@user), :alert => "Unable to update user."
@@ -82,22 +82,5 @@ private
       revoked = AgencyUserRelationship.find_by(agency_id: revoked_id, user_id: @user.id)
       revoked.update_attributes(relationship_status: RelationshipStatus.revoked)
     end
-  end
-
-  def set_buddies(ids)
-    new_buddy_ids = ids.reject!(&:empty?)
-    old_buddy_ids = @user.buddies.pluck(:id).map(&:to_s) #hack.  Converting to strings for comparison to params hash
-
-    new_buddies = new_buddy_ids - old_buddy_ids
-    revoked_buddies = old_buddy_ids - new_buddy_ids
-
-    new_buddies.each do |id|
-      rel = UserRelationship.find_or_create_by!( traveler: @user, delegate: User.find(id)) do |ur|
-        ur.update_attributes(relationship_status: RelationshipStatus.confirmed)
-      end
-      rel.update_attributes(relationship_status: RelationshipStatus.confirmed)
-    end
-  end
-
-  
+  end  
 end

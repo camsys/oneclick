@@ -28,17 +28,23 @@ class User < ActiveRecord::Base
   has_many :roles, :through => :user_roles # one or more user roles
   has_many :trip_parts, :through => :trips
   # relationships
-  has_many :delegate_relationships, :class_name => 'UserRelationship', :foreign_key => :user_id
   has_many :traveler_relationships, :class_name => 'UserRelationship', :foreign_key => :delegate_id
   has_many :confirmed_traveler_relationships, :class_name => 'UserRelationship', :foreign_key => :delegate_id
-  has_many :delegates, :class_name => 'User', :through => :delegate_relationships
   has_many :travelers, :class_name => 'User', :through => :traveler_relationships
   has_many :confirmed_travelers, :class_name => 'User', :through => :confirmed_traveler_relationships
+  
+  has_many :delegate_relationships, :class_name => 'UserRelationship', :foreign_key => :user_id
+  has_many :delegates, :class_name => 'User', :through => :delegate_relationships
+  has_many :pending_and_confirmed_delegates, -> { where "user_relationships.relationship_status_id = ? OR user_relationships.relationship_status_id = ?", RelationshipStatus.confirmed, RelationshipStatus.pending }, 
+    :class_name => 'User', :through => :delegate_relationships, :source => :delegate
+  has_many :confirmed_delegates, -> { where "user_relationships.relationship_status_id = ?", RelationshipStatus.confirmed }, :class_name => 'User', :through => :delegate_relationships, :source => :delegate
+  
   has_many :agency_user_relationships, foreign_key: :user_id
   accepts_nested_attributes_for :agency_user_relationships 
   has_many :approved_agencies,-> { where "agency_user_relationships.relationship_status_id = ?", RelationshipStatus.confirmed }, class_name: 'Agency', :through => :agency_user_relationships, source: :agency #Scope to only include approved relationships
   accepts_nested_attributes_for :approved_agencies
 
+  # All User Relationships, including revoked, pending, and confirmed.  #TODO Is this a dupe of delegate_relationships?
   has_many :buddy_relationships, class_name: 'UserRelationship', foreign_key: :user_id
   accepts_nested_attributes_for :buddy_relationships
   has_many :buddies, class_name: 'User', through: :buddy_relationships, source: :delegate
@@ -124,6 +130,26 @@ class User < ActiveRecord::Base
   #List of users who can be assigned to staff for an agency or provider
   def self.staff_assignable
     User.where.not(id: User.with_role(:anonymous_traveler).pluck(:id)).order(first_name: :asc)
+  end
+
+  def set_buddies ids
+    new_buddy_ids = ids.reject!(&:empty?)
+    old_buddy_ids = pending_and_confirmed_delegates.pluck(:id).map(&:to_s) #hack.  Converting to strings for comparison to params hash
+
+    new_buddies = new_buddy_ids - old_buddy_ids
+    revoked_buddies = old_buddy_ids - new_buddy_ids
+
+    # add or reset desired buddies
+    new_buddies.each do |id|
+      rel = UserRelationship.find_or_create_by!( traveler: self, delegate: User.find(id)) do |ur|
+        ur.update_attributes(relationship_status: RelationshipStatus.pending)
+      end
+      rel.update_attributes(relationship_status: RelationshipStatus.pending)
+    end
+    # remove undesired buddies
+    revoked_buddies.each do |revoked_id|
+      buddy_relationships.find_by(delegate_id: revoked_id).update_attributes(relationship_status: RelationshipStatus.revoked)
+    end
   end
 
 end
