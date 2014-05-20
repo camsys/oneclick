@@ -32,6 +32,8 @@ include SeedsHelpers
 {klass:ServiceType,  code: 'paratransit', name: 'Paratransit', note: 'This is a general purpose paratransit service.'},
 {klass:ServiceType,  code: 'volunteer', name: 'Volunteer', note: 'This is a volunteer service'},
 {klass:ServiceType,  code: 'nemt', name: 'Non-Emergency Medical Service', note: 'This is a paratransit service only to be used for medical trips.'},
+{klass: ServiceType, code: 'transit', name: 'Fixed-route Transit', note: 'This is a transit service.'},
+{klass: ServiceType, code: 'taxi', name: 'Taxi', note: 'Taxi services.'},
 
   # Modes
  { klass: Mode, active: 1, name: 'Transit', code: 'mode_transit'},

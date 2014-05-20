@@ -48,7 +48,7 @@ when 'broward'
   Oneclick::Application.config.geocoder_components = 'administrative_area:FL|country:US'
   Oneclick::Application.config.map_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
   Oneclick::Application.config.geocoder_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
-  Oneclick::Application.config.open_trip_planner = "http://otpv1-arc.camsys-apps.com:8082/otp/routers/broward/plan?"
+  Oneclick::Application.config.open_trip_planner = "http://otp-broward.camsys-apps.com:8081/otp/routers/broward/plan?"
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Miami"
   Oneclick::Application.config.name = 'OneClick'
