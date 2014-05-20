@@ -111,7 +111,9 @@ def add_services_and_providers
       {name: 'American Cancer Society', contact: 'ACS Contact ', external_id: "7"},
       {name: 'City of Sunrise', contact: 'Sunrise Contact ', external_id: "8"},
       {name: 'Northwest Focal Point', contact: 'NWFP Contact ', external_id: "9"},
-      {name: 'City of Lauderdale Lakes', contact: 'LL Contact ', external_id: "10"}
+      {name: 'City of Lauderdale Lakes', contact: 'LL Contact ', external_id: "10"},
+      {name: 'Miami-Dade Transit', contact: "MD Contact", external_id: "11"},
+      {name: 'Palm Tran', contact: "PT Contact", external_id: "12"}
 
   ]
 
@@ -131,12 +133,15 @@ def add_services_and_providers
     p.save
 
     puts contact.downcase.gsub(' ', '_').gsub(%r{\W}, '') + '@camsys.com'
-    u = User.create! first_name: first_name, last_name: last_name,
-        email: contact.downcase.gsub(' ', '_').gsub(%r{\W}, '') + '@camsys.com', password: 'welcome1'
-    up = UserProfile.create! user: u
-    # p.users << u
-    u.add_role :internal_contact, p
-
+    email = contact.downcase.gsub(' ', '_').gsub(%r{\W}, '') + '@camsys.com'
+    u = User.where(email: email).first
+    if u.nil?
+      u = User.create! first_name: first_name, last_name: last_name,
+          email: contact.downcase.gsub(' ', '_').gsub(%r{\W}, '') + '@camsys.com', password: 'welcome1'
+      up = UserProfile.create! user: u
+      # p.users << u
+      u.add_role :internal_contact, p
+    end
 
     case p.external_id
 
@@ -429,8 +434,69 @@ def add_services_and_providers
           ServiceAccommodation.create(service: service, accommodation: n)
         end
 
-    end
+      when "11"
+        #Create service
+        service = Service.create(name: 'Special Transportation Service (STS)', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        #Add Schedules
+        #Add Schedules
+        (0..6).each do |n|
+          Schedule.create(service: service, start_seconds:0, end_seconds: 24*3600-1, day_of_week: n)
+        end
 
+        #Add geographic restrictions
+        ['Dade'].each do |z|
+          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+        end
+        ['Dade'].each do |z|
+          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+        end
+
+        if service and service.fare_structures.count == 0
+          FareStructure.create(service: service, fare_type: 0, base: 3.50)
+        end
+
+        #Traveler Characteristics Requirements
+        ServiceCharacteristic.create(service: service, characteristic: ada_eligible, value: 'true')
+
+        #Traveler Accommodations Requirements
+        [lift_equipped, door_to_door, folding_wheelchair_accessible].each do |n|
+          ServiceAccommodation.create(service: service, accommodation: n)
+        end
+
+      when "12"
+        #Create service
+        service = Service.create(name: 'Palm Tran CONNECTION', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+          #Add Schedules
+          #Add Schedules
+          (1..6).each do |n|
+            Schedule.create(service: service, start_seconds:7*3600, end_seconds: 17*3600, day_of_week: n)
+          end
+          Schedule.create(service: service, start_seconds:8*3600, end_seconds: 17*3600, day_of_week: 0)
+
+          #Add geographic restrictions
+          ['Palm Beach'].each do |z|
+            c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
+            ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          end
+          ['Palm Beach'].each do |z|
+            c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
+            ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+          end
+
+          if service and service.fare_structures.count == 0
+            FareStructure.create(service: service, fare_type: 0, base: 3.50)
+          end
+
+          #Traveler Characteristics Requirements
+          ServiceCharacteristic.create(service: service, characteristic: ada_eligible, value: 'true')
+
+          #Traveler Accommodations Requirements
+          [lift_equipped, door_to_door, folding_wheelchair_accessible].each do |n|
+            ServiceAccommodation.create(service: service, accommodation: n)
+          end
+    end
   end
 end
 
@@ -531,9 +597,58 @@ def add_ancillary_services
   service.active = false
   service.save
 
-  provider = Provider.create!({name: 'Taxi services'})
-  provider.services.create!({name: 'Taxi services', active: false,
+  provider = Provider.find_or_create_by!({name: 'Taxi services'})
+  provider.services.find_or_create_by!({name: 'Taxi services', active: false,
       service_type: ServiceType.where(code: 'taxi').first})
+end
+
+def add_contact_info
+
+  #Miami Dade STS
+  p = Provider.find_by_external_id('11')
+  p.phone = "(786) 469-5000"
+  p.url = "www.miamidade.gov/transit"
+  p.save
+  service = p.services.first
+  service.url = "http://www.miamidade.gov/transit/special-transportation-overview.asp"
+  service.internal_contact_name = "Marcos Ortega"
+  service.internal_contact_email = "mo7225@miamidade.gov"
+  service.internal_contact_title = "MDT ADA Coordinator"
+  service.internal_contact_phone = ""
+
+  service.phone = "(305) 871-1111"
+  service.save
+
+  #Palm Tran Connection
+  p = Provider.find_by_external_id('12')
+  p.url = "www.palmtran.org"
+  p.save
+  service = p.services.first
+  service.url = "http://www.pbcgov.com/palmtran/information/connection.htm"
+  service.internal_contact_name = ""
+  service.internal_contact_email = ""
+  service.internal_contact_title = "Director of Palm Tran CONNECTION"
+  service.internal_contact_phone = "(561) 649-9838"
+
+  service.phone = "(561) 649-9838"
+  service.save
+
+  #Broward
+  p = Provider.find_by_external_id('1')
+  p.phone = "(954) 357-6794"
+  p.url = "www.broward.org/bct"
+  p.save
+  service = p.services.first
+  service.url = "https://www.broward.org/BCT/Pages/Paratransit.aspx"
+  service.internal_contact_name = ""
+  service.internal_contact_email = ""
+  service.internal_contact_title = "Directory of Broward County TOPS"
+  service.internal_contact_phone = "(866) 682-2258"
+
+  service.phone = "(866) 682-2258"
+  service.save
+
+
 end
 
 add_users_and_places
@@ -542,3 +657,4 @@ add_fares
 setup_cms
 create_agencies
 add_ancillary_services
+add_contact_info
