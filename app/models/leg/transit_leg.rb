@@ -20,8 +20,10 @@ module Leg
       route_name = route_short_name || route_long_name
       if head_sign and head_sign.include? route_name
         [I18n.t(mode.downcase.to_sym), head_sign, I18n.t(:to), end_place.name].join(' ')
-      else
+      elsif head_sign
         [I18n.t(mode.downcase.to_sym), I18n.t(:route), route_name, '(' + head_sign + ')', I18n.t(:to), end_place.name].join(' ')
+      else
+        [I18n.t(mode.downcase.to_sym), I18n.t(:route), route_name, "", I18n.t(:to), end_place.name].join(' ')
       end
     end
 
