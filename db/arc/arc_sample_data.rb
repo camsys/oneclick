@@ -268,7 +268,7 @@ def add_providers_and_services
 
       when "esp#3" #Jewish Family & Career Center
                    #Create service #3
-        service = Service.create(name: 'JETS Transportation Program', provider: p, service_type: volunteer, advanced_notice_minutes: 24*60)
+        service = Service.create(name: 'JETS Transportation Program', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:8.5*3600, end_seconds: 15*3600, day_of_week: n)
@@ -384,7 +384,7 @@ def add_providers_and_services
 
       when "esp#34" #I care transportation service.
                     #Create Service 55
-        service = Service.create(name: 'I Care', provider: p, service_type: volunteer, advanced_notice_minutes: 7*24*60)
+        service = Service.create(name: 'I Care', provider: p, service_type: paratransit, advanced_notice_minutes: 7*24*60)
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:8.5*3600, end_seconds: 16.5*3600, day_of_week: n)
@@ -640,7 +640,7 @@ def create_agencies_and_agency_users
 
     # agency agent
     u = User.create! first_name: a + ' Agent', last_name: 'Agent',
-      email: a.downcase.gsub(/ /, '_') + '_agent@camsys.com', password: 'welcome1'
+        email: a.downcase.gsub(/ /, '_') + '_agent@camsys.com', password: 'welcome1'
     up = UserProfile.create! user: u
     agency.users << u
     u.add_role :agent, agency

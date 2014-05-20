@@ -142,7 +142,7 @@ def add_services_and_providers
 
       when "1" #BC
                #Create service
-        service = Service.create(name: 'BC Paratransit', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        service = Service.create(name: 'TOPS', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_time:"8:00", end_time: "17:00", day_of_week: n)
@@ -429,77 +429,13 @@ def add_services_and_providers
           ServiceAccommodation.create(service: service, accommodation: n)
         end
 
-      when "10" #City of Luaderdale Lakes
-
-        service = Service.create(name: 'Senior Transport', provider: p, service_type: paratransit, advanced_notice_minutes: 3*24*60)
-        #Add Schedules
-        (1..5).each do |n|
-          Schedule.create(service: service, start_time:"8:00", end_time: "17:00", day_of_week: n)
-        end
-
-        #Trip Purpose Requirements
-        [grocery, general, senior, medical, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
-        end
-
-        #Add geographic restrictions
-        ['33063', '33068', '33067', '33073'].each do |z|
-          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'zipcode')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
-        end
-
-        ['33063', '33068', '33067', '33073'].each do |z|
-          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'zipcode')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
-        end
-
-        #Traveler Characteristics Requirements
-        ServiceCharacteristic.create(service: service, characteristic: age, value: '60', value_relationship_id: 4)
-
-        #Traveler Accommodations Requirements
-        [curb_to_curb, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n)
-        end
-
-
-        service = Service.create(name: 'Disabled Transport', provider: p, service_type: paratransit, advanced_notice_minutes: 3*24*60)
-        #Add Schedules
-        (1..5).each do |n|
-          Schedule.create(service: service, start_time:"9:00", end_time: "12:00", day_of_week: n)
-        end
-
-        #Trip Purpose Requirements
-        [grocery, general, senior, medical, cancer].each do |n|
-          ServiceTripPurposeMap.create(service: service, trip_purpose: n)
-        end
-
-        #Add geographic restrictions
-        ['33063', '33068', '33067', '33073'].each do |z|
-          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'zipcode')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
-        end
-
-        ['33063', '33068', '33067', '33073'].each do |z|
-          c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'zipcode')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
-        end
-
-        #Traveler Characteristics Requirements
-        ServiceCharacteristic.create(service: service, characteristic: disabled, value: 'true')
-
-        #Traveler Accommodations Requirements
-        [curb_to_curb, folding_wheelchair_accessible].each do |n|
-          ServiceAccommodation.create(service: service, accommodation: n)
-        end
-
-
     end
 
   end
 end
 
 def add_fares
-  service = Service.find_by_name('BC Paratransit')
+  service = Service.find_by_name('TOPS')
   if service and service.fare_structures.count == 0
     FareStructure.create(service: service, fare_type: 0, base: 3.50)
 
@@ -507,7 +443,7 @@ def add_fares
 
   service = Service.find_by_name('Social Services: Limited Transportation')
   if service and service.fare_structures.count == 0
-    FareStructure.create(service: service, fare_type: 2, desc: "Tamarac Para-transit fee is $30.00 for 3 months or 40.00 for 6 months per person for unlimited marketing and medical transportation.")
+    FareStructure.create(service: service, fare_type: 0, base: 0, desc: "Tamarac Para-transit fee is $30.00 for 3 months or 40.00 for 6 months per person for unlimited marketing and medical transportation.")
 
   end
 
@@ -523,6 +459,11 @@ def add_fares
 
   end
 
+  service = Service.find_by_name('Senior Medical Transportation')
+  if service and service.fare_structures.count == 0
+    FareStructure.create(service: service, fare_type: 0, base: 0, desc: "Free service for Senior Center members.")
+  end
+
   service = Service.find_by_name('Road to Recovery')
   if service and service.fare_structures.count == 0
     FareStructure.create(service: service, fare_type: 0, base: 0)
@@ -532,6 +473,16 @@ def add_fares
   service = Service.find_by_name('Special & Community Support Services')
   if service and service.fare_structures.count == 0
     FareStructure.create(service: service, fare_type: 0, base: 3)
+  end
+
+  service = Service.find_by_name('Senior Services Transportation')
+  if service and service.fare_structures.count == 0
+    FareStructure.create(service: service, fare_type: 0, base: 0)
+  end
+
+  service = Service.find_by_name('Senior Center')
+  if service and service.fare_structures.count == 0
+    FareStructure.create(service: service, fare_type: 0, base: 0)
   end
 end
 
@@ -548,8 +499,41 @@ def create_agencies
     unless agency.nil?
       next
     end
-    Agency.create! name: a
+    puts "Creating #{a.ai}"
+    agency = Agency.create! name: a
+
+    # agency admin
+    u = User.create! first_name: a + ' Agency Admin', last_name: 'Agency Admin',
+        email: a.downcase.gsub(/ /, '_') + '_admin@camsys.com', password: 'welcome1'
+    up = UserProfile.create! user: u
+    agency.users << u
+    u.add_role :agency_administrator, agency
+    u.add_role :internal_contact, agency
+
+    # agency agent
+    u = User.create! first_name: a + ' Agent', last_name: 'Agent',
+        email: a.downcase.gsub(/ /, '_') + '_agent@camsys.com', password: 'welcome1'
+    up = UserProfile.create! user: u
+    agency.users << u
+    u.add_role :agent, agency
   end
+end
+
+def add_ancillary_services
+  p = Provider.where(external_id: 'tri-rail').first_or_create
+  p.name = 'Tri-Rail'
+  p.url ='http://www.tri-rail.com/'
+  p.save
+
+  s = ServiceType.where(code: 'transit').first
+  service = Service.where(provider: p, service_type: s, external_id: 'tri-rail').first_or_create
+  service.name = ""
+  service.active = false
+  service.save
+
+  provider = Provider.create!({name: 'Taxi services'})
+  provider.services.create!({name: 'Taxi services', active: false,
+      service_type: ServiceType.where(code: 'taxi').first})
 end
 
 add_users_and_places
@@ -557,3 +541,4 @@ add_services_and_providers
 add_fares
 setup_cms
 create_agencies
+add_ancillary_services
