@@ -149,21 +149,4 @@ class Admin::UsersController < Admin::BaseController
       revoked.update_attributes(relationship_status: RelationshipStatus.revoked)
     end
   end
-
-  def set_buddies(ids)
-    new_buddy_ids = ids.reject!(&:empty?)
-    old_buddy_ids = @user.buddies.pluck(:id).map(&:to_s) #hack.  Converting to strings for comparison to params hash
-
-    new_buddies = new_buddy_ids - old_buddy_ids
-    revoked_buddies = old_buddy_ids - new_buddy_ids
-
-    new_buddies.each do |id|
-      rel = UserRelationship.find_or_create_by!( traveler: @user, delegate: User.find(id)) do |ur|
-        ur.update_attributes(relationship_status: RelationshipStatus.confirmed)
-      end
-      rel.update_attributes(relationship_status: RelationshipStatus.confirmed)
-    end
-  end
-
-
 end
