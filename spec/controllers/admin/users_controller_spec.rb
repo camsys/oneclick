@@ -26,14 +26,6 @@ describe Admin::UsersController do
           assigns(:users).count.should eql(37) #1 sys admin, 1 agency admin, 10 agents and 25 users
         end
       end
-      describe "with email param" do
-        it "returns one record exactly with matching email" do
-          pending "currently filtering lives client-side"
-          u = User.last
-          get :index, text: u.email
-          assigns(:users).count.should eql(1)
-        end
-      end
     end
   end
 
