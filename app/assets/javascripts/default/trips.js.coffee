@@ -2,7 +2,7 @@ create_or_update_marker = (map, key, lat, lon, name, desc, iconStyle) ->
   marker = map.findMarkerById(key)
   map.removeMarkerFromMap marker  if marker
   marker = map.createMarker(key, lat, lon, iconStyle, desc, name, true)
-  map.addMarkerToMap marker, false
+  map.addMarkerToMap marker, true
   marker
 
 update_map = (map, type, e, addr, d) ->
@@ -22,6 +22,7 @@ update_map = (map, type, e, addr, d) ->
   else
     key = 'stop'
     icon = 'stopIcon'
+
   map.removeMatchingMarkers(key);
   marker = create_or_update_marker(map, key, lat, lon, addr.name, addr.full_address, icon);
   map.setMapToBounds();
