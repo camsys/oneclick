@@ -12,12 +12,12 @@ class EspReaderController < ApplicationController
 
     esp = EspReader.new
 
-    if params[:esp_upload].nil?
+    if params[:esp_upload].nil? || params[:esp_upload][:zip].nil?
       flash[:error] = "No file selected."
       @path = upload_esp_reader_index_path
 
     else
-      result, message = esp.unpack(params[:esp_upload][:zip].tempfile.path)
+      result, message = esp.unpack(params[:esp_upload][:zip].tempfile.path, (params[:esp_upload][:csv]=='0' ? :mdb : :csvzip))
       if result
         @path = services_path
         flash[:notice] = "ESP services updated successfully."
