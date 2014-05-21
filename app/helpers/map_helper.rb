@@ -95,10 +95,6 @@ module MapHelper
     legs = itinerary.get_legs
 
     markers = []
-    place = {:name => trip.from_place.name, :lat => trip.from_place.location.first, :lon => trip.from_place.location.last, :address => trip.from_place.address}
-    markers << get_addr_marker(place, 'start', 'startIcon')
-    place = {:name => trip.to_place.name, :lat => trip.to_place.location.first, :lon => trip.to_place.location.last, :address => trip.to_place.address}
-    markers << get_addr_marker(place, 'stop', 'stopIcon')
 
     if legs
       legs.each do |leg|
@@ -107,14 +103,30 @@ module MapHelper
         markers << get_addr_marker(place, 'start_leg', 'blueIcon')
 
         place = {:name => leg.end_place.name, :lat => leg.end_place.lat, :lon => leg.end_place.lon, :address => leg.end_place.name}
-        markers << get_addr_marker(place, 'start_leg', 'blueIcon')
+        markers << get_addr_marker(place, 'end_leg', 'blueIcon')
 
       end
     end
 
+    # Add start and stop after legs to place above other markers
+    place = {:name => trip.from_place.name, :lat => trip.from_place.location.first, :lon => trip.from_place.location.last, :address => trip.from_place.address}
+
+    markers << get_start_stop_marker(place, !itinerary.is_return_trip?)
+    place = {:name => trip.to_place.name, :lat => trip.to_place.location.first, :lon => trip.to_place.location.last, :address => trip.to_place.address}
+    markers << get_start_stop_marker(place, itinerary.is_return_trip?)
+
     return markers
   end
 
+  # Returns a start or stop marker depending on boolean flag
+  def get_start_stop_marker(place, is_start)
+    if is_start
+      get_addr_marker(place, 'start', 'startIcon')
+    else
+      get_addr_marker(place, 'stop', 'stopIcon')
+    end
+  end
+      
   #Returns an array of polylines, one for each leg
   def create_itinerary_polylines(legs)
 

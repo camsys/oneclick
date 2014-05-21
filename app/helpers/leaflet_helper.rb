@@ -47,7 +47,7 @@ module LeafletHelper
     js << "m = CsMaps.#{mapid};"
     js << "m.init('#{mapid}', #{mapopts});"
     # add any markers
-    js << "m.addMarkers(#{options[:markers]});" unless options[:markers].nil?
+    js << "m.replaceMarkers(#{options[:markers]});" unless options[:markers].nil?
     # add any circles
     js << "m.addCircles(#{options[:circles]});" unless options[:circles].nil?
     # add any polylines
