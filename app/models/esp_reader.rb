@@ -1,4 +1,5 @@
 class EspReader
+  require 'zip'
 
   DELIMITER='::'
 
@@ -66,23 +67,50 @@ class EspReader
   #end add indices
   ########################
 
+  TABLES = ["tProvider", "tProviderGrid", "tService", "tServiceGrid", "tServiceCfg", "tServiceCost"]
+
   ########################
   # File Extraction
   ########################
-  def unpack_to_table(tempfilepath)
-    table = {}
-    ["tProvider", "tProviderGrid", "tService", "tServiceGrid", "tServiceCfg", "tServiceCost"].each do |t|
-      tempfile = Tempfile.new("#{t}.csv")
-      #tempfile = Tempfilenew(tempfilepath)
-      begin
-        system "mdb-export -R '||' -b raw " + tempfilepath + " #{t} | dos2unix > #{tempfile.path}"
-        table[t] = to_csv tempfile
-      ensure
-        tempfile.close
-        tempfile.unlink
+  def unpack_to_tables(tempfilepath)
+    unpack_to_csvs(tempfilepath).map do |t, file_info|
+      tempfile = file_info[0]
+      csv = to_csv tempfile
+      tempfile.close
+      tempfile.unlink
+      [t, csv]
+    end.to_h
+  end
+
+  def unpack_from_zip_to_tables(tempfilepath)
+    Zip::File.open(tempfilepath) do |zipfile|
+      zipfile.collect do |entry|
+        table_name = File.basename(entry.name, ".csv")
+        csv = to_csv(entry.get_input_stream)
+        [table_name, csv]
+      end.to_h
+    end
+  end
+
+  def unpack_to_csvs(tempfilepath)
+    TABLES.inject({}) do |m, t|
+      basename = "#{t}.csv"
+      tempfile = Tempfile.new(basename)
+      system "mdb-export -R '||' -b raw " + tempfilepath + " #{t} | dos2unix > #{tempfile.path}"
+      m[t] = [tempfile, basename]
+      m
+    end
+  end
+
+  def unpack_and_zip(tempfilepath)
+    Zip::File.open('esp-csvs.zip', Zip::File::CREATE) do |zipfile|
+      unpack_to_csvs(tempfilepath).values.each do |file_info|
+        # Two arguments:
+        # - The name of the file as it will appear in the archive
+        # - The original file, including the path to find it
+        zipfile.add(file_info[1], file_info[0])
       end
     end
-    table
   end
 
   def slurp file
@@ -111,9 +139,13 @@ class EspReader
   # This is the main function.
   # It unpacks the esp data and stores it in the OneClick format
   #########################
-  def unpack(tempfilepath)
-    entries = self.unpack_to_table(tempfilepath)
-
+  def unpack(tempfilepath, filetype)
+    case filetype
+    when :mdb
+      entries = self.unpack_to_tables(tempfilepath)
+    when :csvzip
+      entries = self.unpack_from_zip_to_tables(tempfilepath)
+    end
 
     ###########
     ## Go through each table and confirm that we have all the columns needed to build the data
@@ -225,8 +257,8 @@ class EspReader
     #['Name', 'Contact', 'ContactTitle', 'LocAddress', 'LocCity', 'LocState', 'LocZipCode', 'AreaCode1', 'Phone1', 'URL', 'Email', 'ProviderID']
 
     provider.name = esp_provider[@provider_idx["Name"]]
-    provider.contact = esp_provider[@provider_idx["Contact"]]
-    provider.contact_title = esp_provider[@provider_idx["ContactTitle"]]
+    provider.internal_contact_name = esp_provider[@provider_idx["Contact"]]
+    provider.internal_contact_title = esp_provider[@provider_idx["ContactTitle"]]
     provider.address = esp_provider[@provider_idx["LocAddress"]]
     provider.city = esp_provider[@provider_idx["LocCity"]]
     provider.state = esp_provider[@provider_idx["LocState"]]
@@ -253,8 +285,8 @@ class EspReader
       SERVICE_DICT[esp_service[@service_idx['ServiceID']]] = esp_service[@service_idx['ServiceRefID']]
       service = Service.where(external_id: esp_service[@service_idx['ServiceRefID']]).first_or_initialize
       service.name = esp_service[@service_idx['OrgName']]
-      service.contact = esp_service[@service_idx['Contact']]
-      service.contact_title = esp_service[@service_idx['ContactTitle']]
+      service.internal_contact_name = esp_service[@service_idx['Contact']]
+      service.internal_contact_title = esp_service[@service_idx['ContactTitle']]
       service.email = esp_service[@service_idx['Email']]
       service.phone = '(' + esp_service[@service_idx['AreaCode1']].to_s + ') ' + esp_service[@service_idx['Phone1']].to_s
       service.url = esp_service[@service_idx['URL']]
@@ -276,7 +308,7 @@ class EspReader
       service.fare_structures.destroy_all
       #Add Curb to Curb by default
       accommodation = Accommodation.find_by_code('curb_to_curb')
-      ServiceAccommodation.create(service: service, accommodation: accommodation, value: 'true')
+      ServiceAccommodation.create(service: service, accommodation: accommodation)
 
       #Set new schedule
       (0..6).each do |day|
@@ -300,17 +332,17 @@ class EspReader
     esp_configs.each do |config|
       service = Service.find_by_external_id(SERVICE_DICT[config[@config_idx['ServiceID']]])
       case config[@config_idx['CfgNum']].to_i
-        when 1,2
-          result, message = add_accommodation(service, config[@config_idx['Item']])
-        when 5
-          result, message = add_eligibility(service, config[@config_idx['Item']])
-        when 6 #ZipCode Restriction
-          c = GeoCoverage.find_or_create_by_value(value: config[@config_idx['Item']], coverage_type: 'zipcode')
-          ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'destination')
-          ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'origin')
-          result = true
-        else
-          result = true
+      when 1,2
+        result, message = add_accommodation(service, config[@config_idx['Item']])
+      when 5
+        result, message = add_eligibility(service, config[@config_idx['Item']])
+      when 6 #ZipCode Restriction
+        c = GeoCoverage.find_or_create_by_value(value: config[@config_idx['Item']], coverage_type: 'zipcode')
+        ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'destination')
+        ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'origin')
+        result = true
+      else
+        result = true
       end
       unless result
         return result, message
@@ -327,10 +359,10 @@ class EspReader
     esp_grids.each do |grid|
       service = Service.find_by_external_id(SERVICE_DICT[grid[@grid_idx['ServiceID']]])
       case grid[@grid_idx['Grp']].downcase
-        when 'county'
-          c = GeoCoverage.find_or_create_by_value(value: grid[@grid_idx['Item']], coverage_type: 'county_name')
-          ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'destination')
-          ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'origin')
+      when 'county'
+        c = GeoCoverage.find_or_create_by_value(value: grid[@grid_idx['Item']], coverage_type: 'county_name')
+        ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'destination')
+        ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'origin')
       end
     end
     return true, "Success"
@@ -344,13 +376,13 @@ class EspReader
       service = Service.find_by_external_id(SERVICE_DICT[config[@costs_idx['ServiceID']]])
       fare = FareStructure.find_by_service_id(service.id)
       case config[@costs_idx['CostType']].downcase
-        when 'transportation'
-          amount = config[@costs_idx['Amount']].to_f
-          if amount >= fare.base.to_f
-            fare.base = amount
-            fare.fare_type = 0
-            fare.save
-          end
+      when 'transportation'
+        amount = config[@costs_idx['Amount']].to_f
+        if amount >= fare.base.to_f
+          fare.base = amount
+          fare.fare_type = 0
+          fare.save
+        end
       end
     end
     return true, "Success"
@@ -359,28 +391,28 @@ class EspReader
   def add_accommodation(service, accommodation)
 
     case accommodation.downcase
-      when 'wheelchair lift'
-        accommodation = Accommodation.find_by_code('lift_equipped')
-      when 'wheelchair/fold'
-        accommodation = Accommodation.find_by_code('folding_wheelchair_accessible')
-      when 'wheelchair/ motor', 'wheelchair/motor'
-        accommodation = Accommodation.find_by_code('motorized_wheelchair_accessible')
-      when 'door to door'
-        accommodation = Accommodation.find_by_code('door_to_door')
-      when 'driver assistance'
-        accommodation = Accommodation.find_by_code('driver_assistance_available')
-      when 'companion allowed', 'escort allowed'
-        accommodation = Accommodation.find_by_code('companion_allowed')
-      when 'curb to curb'
-        accommodation = Accommodation.find_by_code('curb_to_curb')
-      when 'stretchers'
-        accommodation = Accommodation.find_by_code('stretcher_accessible')
-      when 'ground', 'volunteer services'
-        return true, "Success"
-      else
-        return false, "Accommodation not found:  " + accommodation.to_s + ', For service:  ' + service.name.to_s + '.'
+    when 'wheelchair lift'
+      accommodation = Accommodation.find_by_code('lift_equipped')
+    when 'wheelchair/fold'
+      accommodation = Accommodation.find_by_code('folding_wheelchair_accessible')
+    when 'wheelchair/ motor', 'wheelchair/motor'
+      accommodation = Accommodation.find_by_code('motorized_wheelchair_accessible')
+    when 'door to door'
+      accommodation = Accommodation.find_by_code('door_to_door')
+    when 'driver assistance'
+      accommodation = Accommodation.find_by_code('driver_assistance_available')
+    when 'companion allowed', 'escort allowed'
+      accommodation = Accommodation.find_by_code('companion_allowed')
+    when 'curb to curb'
+      accommodation = Accommodation.find_by_code('curb_to_curb')
+    when 'stretchers'
+      accommodation = Accommodation.find_by_code('stretcher_accessible')
+    when 'ground', 'volunteer services'
+      return true, "Success"
+    else
+      return false, "Accommodation not found:  " + accommodation.to_s + ', For service:  ' + service.name.to_s + '.'
     end
-    ServiceAccommodation.find_or_create_by(service: service, accommodation: accommodation, value: 'true')
+    ServiceAccommodation.find_or_create_by(service: service, accommodation: accommodation)
     return true, "Success"
   end
 
@@ -396,31 +428,31 @@ class EspReader
       end
 
       case rule.downcase
-        when 'disabled'
-          characteristic = Characteristic.find_by_code('disabled')
-          ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
-        when 'disabled veteran'
-          characteristic = Characteristic.find_by_code('disabled')
-          ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
-          characteristic = Characteristic.find_by_code('veteran')
-          ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
-        when 'county resident'
-          # When county resident is required.  The person must also be a resident of the county in addition to traveling within that county.
-          # The coverages were created previously.
-          service.coverage_areas.where(:coverage_type => "county_name").map(&:value).uniq.each do |county_name|
-            c = GeoCoverage.find_or_create_by_value(value: county_name, coverage_type: 'county_name')
-            ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'residence')
-          end
-        when 'military/veteran'
-          characteristic = Characteristic.find_by_code('veteran')
-          ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
-        when 'medical purposes only'
-          medical = TripPurpose.find_by_code('medical')
-          ServiceTripPurposeMap.create(service: service, trip_purpose: medical, value: 'true')
-        when 'no restrictions'
-          return true, "Success"
-        else
-          return false, "Eligibility rule not found:  " + rule.to_s + ", for Service:  " + service.name.to_s + '.'
+      when 'disabled'
+        characteristic = Characteristic.find_by_code('disabled')
+        ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
+      when 'disabled veteran'
+        characteristic = Characteristic.find_by_code('disabled')
+        ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
+        characteristic = Characteristic.find_by_code('veteran')
+        ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
+      when 'county resident'
+        # When county resident is required.  The person must also be a resident of the county in addition to traveling within that county.
+        # The coverages were created previously.
+        service.coverage_areas.where(:coverage_type => "county_name").map(&:value).uniq.each do |county_name|
+          c = GeoCoverage.find_or_create_by_value(value: county_name, coverage_type: 'county_name')
+          ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'residence')
+        end
+      when 'military/veteran'
+        characteristic = Characteristic.find_by_code('veteran')
+        ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
+      when 'medical purposes only'
+        medical = TripPurpose.find_by_code('medical')
+        ServiceTripPurposeMap.create(service: service, trip_purpose: medical)
+      when 'no restrictions'
+        return true, "Success"
+      else
+        return false, "Eligibility rule not found:  " + rule.to_s + ", for Service:  " + service.name.to_s + '.'
       end
 
     end
