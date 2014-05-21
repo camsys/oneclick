@@ -12,50 +12,7 @@ namespace :oneclick do
       f.puts "Oneclick::Application.config.version = '#{version}'"
     end
   end
-   # OBJECTID  LONGITUDE LATITUDE  FACNAME ADDRESS_1 ADDRESS_2 CITY  STATE ZIP AREACODE  PHONE FIPS  COUNTY  TYPE  METHOD
-  task convert_shp_to_csv: :environment do
-    require 'rgeo/shapefile'
-    require 'csv'
-    geocoder = OneclickGeocoder.new
-    poi_types = Set.new
-    c = 0
-    CSV.open("output.csv", "wb", {col_sep: "\t"}) do |csv|
-      csv << %w{OBJECTID  LONGITUDE LATITUDE  FACNAME ADDRESS_1 ADDRESS_2 CITY  STATE ZIP AREACODE  PHONE FIPS  COUNTY  TYPE  METHOD}
-      RGeo::Shapefile::Reader.open(ENV['SHAPEFILE']) do |shapefile|
-        input_rows = shapefile.size
-        shapefile.each do |shape|
-          # puts shape.inspect
-          begin
-            success, errors, results = geocoder.reverse_geocode(shape.geometry.y, shape.geometry.x)
-            unless success
-              puts "Geocode failed:"
-              puts errors.inspect
-              puts shape.inspect
-              sleep(10)
-              next
-            end
-            result = results[0]
-            csv << [shape['ObjectID'], shape.geometry.x, shape.geometry.y, shape['NAME'], result[:street_address],
-            nil,
-            result[:city], result[:state], result[:zip], nil, nil, shape['STCTYFIPS'], result[:county],
-            shape['FEATTYPE'], 'ArcGIS']
-            poi_types << shape['FEATTYPE']
-            # break if c >= 2
-          rescue Exception => e
-            puts "Exception: #{e}"
-            puts "Shape: #{shape.inspect}"
-          end
-          c += 1
-          puts "#{c} / #{input_rows}"
-          # sleep(rand(5))
-        end
-      end
-    end
-
-    puts poi_types.to_a.join("\n")
-
-  end
-
+   
   task extract_shp: :environment do
     require 'rgeo/shapefile'
     # require 'csv'

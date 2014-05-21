@@ -33,7 +33,6 @@ when 'arc'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.arc.camsys"
   ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey"
   ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@atlantaregional.com"
-  ENV['SHAPEFILE'] = "/Users/dedwards/Downloads/ParatransitBuffer_100812/ParatransitBuffer_100812.shp"
   ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
