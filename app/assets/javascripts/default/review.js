@@ -1075,7 +1075,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                 break;
             case 'integer':
                 answersTags += '<input type="number" class="form-control" id="' + controlName + '_number" label="false" name="' + controlName + 
-                    '" value=' + missingInfo.user_answer +
+                    '"' + (isUserAnswerEmpty(missingInfo.user_answer) ? '' : (' value=' + missingInfo.user_answer)) +
                     ' />';
                 break;
             case 'date':
