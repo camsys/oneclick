@@ -21,7 +21,8 @@ describe Admin::UsersController do
         login_as_using_find_by(email: 'admin@example.com')
       end
       describe "with no params" do
-        it "returns all users if some exist" do
+        it "returns all users except visitors if some exist" do
+          FactoryGirl.create :visitor
           get :index
           assigns(:users).count.should eql(37) #1 sys admin, 1 agency admin, 10 agents and 25 users
         end

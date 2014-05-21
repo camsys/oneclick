@@ -5,6 +5,8 @@ class Admin::UsersController < Admin::BaseController
   load_and_authorize_resource
   
   def index
+    @users = @users.without_role :anonymous_traveler
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }

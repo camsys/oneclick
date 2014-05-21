@@ -19,6 +19,9 @@ FactoryGirl.define do
     password_confirmation 'changeme'
     # required if the Devise Confirmable module is used
     # confirmed_at Time.now
+    after :create do |u|
+      u.add_role :registered_traveler
+    end
     factory :user_with_places do
       first_name 'WithPlaces'
       after(:create) do |u|
@@ -31,6 +34,15 @@ FactoryGirl.define do
       first_name 'Test2'
       last_name 'User'
       email 'example2@example.com'
+    end
+    factory :visitor do
+      first_name 'Visitor'
+      last_name 'Guest'
+      email
+      after :create do |u|
+        u.revoke :registered_traveler
+        u.add_role :anonymous_traveler
+      end
     end
     factory :spanish_user do
       first_name 'Spanish'

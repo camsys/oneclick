@@ -66,6 +66,9 @@ class User < ActiveRecord::Base
   # scope :buddyable, -> User.where.not(id: User.with_role(:anonymous_traveler).pluck(users: :id))
   scope :any_role, -> {joins(:roles)}
 
+  # find all users which do not have the role passed in.  Need uniq because user could have multiple roles, i.e. multiple rows in user_roles table
+  scope :without_role, ->(role_name) { joins(:user_roles).joins(:roles).where.not(roles: {name: role_name}).uniq }
+
   # Validations
   validates :email, :presence => true
   validates :first_name, :presence => true
@@ -120,7 +123,7 @@ class User < ActiveRecord::Base
   end
 
   def is_visitor?
-    email.include? "example.com" #TODO Run a migration on all guest users to add anonymous_traveler role, then update this method
+    role.includes
   end
 
   def is_registered?
