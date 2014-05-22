@@ -1,0 +1,34 @@
+.row
+  .col-sm-12
+    %h1
+      / %i.fa.fa-map-marker
+      Services (util only)
+      = @name
+
+.row
+  .col-sm-12
+    = simple_form_for :services, url: admin_services_path, html: { class: 'form-horizontal' }, method: 'GET', wrapper: :horizontal_form  do |f|
+      = f.error_notification
+      .form-inputs
+        = f.input :app, collection: @apps, label_method: :name, value_method: :url
+        / = f.input :map_center, input_html: {value: @map_center}
+      .form-actions
+        = f.submit 'Show', class: 'btn btn-info'
+
+- if @results
+  .row
+    .col-sm-12
+      / Jump to:  
+      / / This screen is not public, will not internationalize.
+      / - (1..@results.size).each do |i|
+      /   %a{href: "##{i}"}= i  
+      / %br
+      / = link_to 'Autocomplete results'
+      / %br
+
+      / - @results.each_with_index do |r, i|
+      /   %pre
+      /     = r.ai(plain: true)
+
+      %pre
+        = @results

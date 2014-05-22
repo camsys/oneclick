@@ -261,6 +261,7 @@ Oneclick::Application.routes.draw do
       resources :trips, :only => [:index]
       get '/geocode' => 'util#geocode'
       get '/raise' => 'util#raise'
+      get '/services' => 'util#services'
       get '/' => 'admin_home#index'
       resource :feedback
       resources 'agency_user_relationships' do
