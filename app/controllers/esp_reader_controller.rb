@@ -17,7 +17,7 @@ class EspReaderController < ApplicationController
       @path = upload_esp_reader_index_path
 
     else
-      result, message = esp.unpack(params[:esp_upload][:zip].tempfile.path, (params[:esp_upload][:csv]=='0' ? :mdb : :csvzip))
+      result, message = esp.unpack(params[:esp_upload][:zip].tempfile.path, (params[:esp_upload][:csv].first.blank? ? :mdb : :csvzip))
       if result
         @path = services_path
         flash[:notice] = "ESP services updated successfully."
