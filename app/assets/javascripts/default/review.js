@@ -631,6 +631,17 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         }
     }
 
+    function detectPlanVisibilityChange(plan) {
+        if(plan.attr('data-eligibility-visible') == '1' && plan.attr('data-filter-visible') == '1') {
+            plan.show();
+            resizeChartViaPlan(plan);
+        } else {
+            plan.hide();
+        }
+
+        resizeChartsWhenDocumentWidthChanges();
+    }
+
     /*
      * apply changes: if pass all questions, then make itinerary select-able; if fail one question, then remove this itinerary; otherwise, re-render restriction dialog
      */
@@ -640,12 +651,11 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             var questionClearCode = checkEligibility(missingInfoNode.data);
             var tripPlanDiv = $('#' + tripPlanChartDivId).parents('.single-plan-review');
             if (questionClearCode === -1) { //not pass
-                tripPlanDiv.hide();
+                 tripPlanDiv.attr('data-eligibility-visible', 0);
+                detectPlanVisibilityChange(tripPlanDiv);
             } else {
-                if(tripPlanDiv.css('display') === 'none') {
-                    tripPlanDiv.show();
-                    resizeChartViaPlan(tripPlanDiv);
-                }
+                tripPlanDiv.attr('data-eligibility-visible', 1);
+                detectPlanVisibilityChange(tripPlanDiv);
                 if (questionClearCode === 1) { //all pass
                     tripPlanDiv.find('.single-plan-question').remove();
                     if(tripPlanDiv.find('.single-plan-select').length === 0) {
@@ -918,16 +928,16 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         //check if missing info found; if so, need to us Question button instead of Select button
         var isMissingInfoFound = (missingInfoArray instanceof Array && missingInfoArray.length > 0);
         //add missing_info into page look_up
-        var is_eligible = true;
+        var eligibleCode = 0;
         if (isMissingInfoFound) {
             missingInfoLookup[chartDivId] = {
                 data: missingInfoArray
             };
-            is_eligible = checkEligibility(missingInfoArray);
+            eligibleCode = checkEligibility(missingInfoArray);
         }
 
         //if not eligible, then set as not_selectable
-        if(!is_eligible) {
+        if(eligibleCode != 1) {
             isSelected = false;
         }
 
@@ -944,9 +954,11 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             " data-mode='" + mode + "'" +
             " data-transfer='" + (typeof(transfers) === 'number' ? transfers.toString() : '0') + "'" +
             " data-cost='" + ((typeof(cost) === 'object' && cost != null && (typeof(cost.price) === 'number')) ? cost.price : '') + "'" +
-            " data-duration='" + (typeof(duration) === 'object' && duration != null ? parseFloat(duration.sortable_duration) / 60 : '') + "'";
+            " data-duration='" + (typeof(duration) === 'object' && duration != null ? parseFloat(duration.sortable_duration) / 60 : '') + "'" +
+            " data-filter-visible = 1" + 
+            " data-eligibility-visible = " + (eligibleCode != -1 ? '1' : '0');
         var tripPlanTags =
-            "<div class='col-xs-12 single-plan-review " + (isSelected ? "single-plan-selected" : "single-plan-unselected") +  "' style='padding: 0px;'" + dataTags + ">" +
+            "<div class='col-xs-12 single-plan-review " + (isSelected ? "single-plan-selected" : "single-plan-unselected") +  "' style='padding: 0px;" + (eligibleCode === -1 ? "display: none;" : "") + "'" + dataTags + ">" +
             "<div class='col-xs-3 col-sm-2 trip-plan-first-column' style='padding: 0px; height: 100%;'>" +
             "<table>" +
             "<tbody>" +
@@ -972,7 +984,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             "</div>" +
             "<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px; height: 100%;'>" +
             (
-            !is_eligible ?
+            (isMissingInfoFound && eligibleCode != 1) ?
             (
                 "<button class='btn btn-default btn-xs single-plan-question action-button' " +
                 "data-toggle='modal' data-target='#" + missInfoDivId + "'>?</button>"
@@ -1723,7 +1735,9 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
 
         $('.single-plan-review').each(function() {
-            processPlanFiltering(modes, transferValues, costValues, durationValues, $(this));
+            var plan = $(this);
+            processPlanFiltering(modes, transferValues, costValues, durationValues, plan);
+            detectPlanVisibilityChange(plan);
         });
     }
 
@@ -1734,7 +1748,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         }
 
         if (!modeVisible) {
-            plan.hide();
+            plan.attr('data-filter-visible', 0);
             return;
         }
 
@@ -1744,7 +1758,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         }
 
         if (!transferVisible) {
-            plan.hide();
+            plan.attr('data-filter-visible', 0);
             return;
         }
 
@@ -1754,7 +1768,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         }
 
         if (!costVisible) {
-            plan.hide();
+            plan.attr('data-filter-visible', 0);
             return;
         }
 
@@ -1764,18 +1778,11 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         }
 
         if (!durationVisible) {
-            plan.hide();
+            plan.attr('data-filter-visible', 0);
             return;
         }
 
-        //passes all filtering check
-        plan.show();
-
-        //resize single plan
-        resizeChartViaPlan(plan);
-
-        //if window width changes, resize all plans
-        resizeChartsWhenDocumentWidthChanges();
+        plan.attr('data-filter-visible', 1);
     }
 
     /*
