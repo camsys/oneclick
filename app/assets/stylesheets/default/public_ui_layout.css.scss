@@ -31,7 +31,7 @@ html, body {
   #main {
     padding-top: 55px;
   }
-  
+
   #publicNav .container-fluid {
     padding: 0px;
   }
@@ -41,6 +41,10 @@ html, body {
     height: 50px;
     line-height: 50px;
     padding: 0;
+  }
+
+  #help i{
+    line-height: 50px;
   }
 }
 
@@ -54,5 +58,9 @@ html, body {
     height: 60px;
     line-height: 60px;
     padding: 0;
+  }
+
+  #help i{
+    line-height: 60px;
   }
 }
