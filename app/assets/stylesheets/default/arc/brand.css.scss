@@ -10,16 +10,11 @@ $nav-end-color: #A3A3A3;
   background: -o-linear-gradient(top,  $nav-start-color 0%,$nav-end-color 100%);
   background: -ms-linear-gradient(top,  $nav-start-color 0%,$nav-end-color 100%);
   background: linear-gradient(to bottom,  $nav-start-color 0%,$nav-end-color 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$nav-start-color}', endColorstr='#{$nav-end-color}',GradientType=0 );
 }
 
 @media(max-width:767px){
   #logo{
     background-image: image-url('arc/logo-sm.png');
-  }
-
-  #userDropdown .dropdown-menu>li>a {
-    color: whitesmoke;
   }
 
   #userDropdown .dropdown-menu>li>a:hover {
@@ -38,6 +33,10 @@ $nav-end-color: #A3A3A3;
   color: #10104A;
   font-size: 1em;
   font-weight: bold;
+}
+
+#userDropdown .dropdown-menu>li>a {
+  color: #10104A;
 }
 
 #help {
