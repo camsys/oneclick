@@ -8,9 +8,6 @@
     =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn btn-default pull-right action-button', style: "margin-right: 5px;", data: {toggle: 'modal'}} do
       /%i.fa.fa-print
       =t(:print)
-    -if user_signed_in?
-      = button_tag :type => 'submit', :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
-        =t(:save)
     -ItineraryDecorator.decorate_collection(@itineraries.valid).each do |itinerary|
       -if itinerary.is_bookable?
         = button_tag :type => 'button', :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;", "data-target" => "#bookingModal", "data-toggle" => "modal" do
