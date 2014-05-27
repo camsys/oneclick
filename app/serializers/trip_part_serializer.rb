@@ -4,17 +4,20 @@ class TripPartSerializer < ActiveModel::Serializer
   attributes :id, :description, :description_without_direction, :start_time, :end_time
   attribute :is_depart, key: :is_depart_at
   has_many :itineraries
-  attr_accessor :debug
+  attr_accessor :debug, :asynch
 
   def initialize(object, options={})
     super(TripPartDecorator.new(object), options)
     @debug = options[:debug]
+    @asynch = options[:asynch]
   end
 
   def itineraries
     if @debug
       return object.itineraries
     end
+    return [] if @asynch
+    
     itineraries = object.itineraries.valid.visible
     return itineraries if Oneclick::Application.config.max_offset_from_desired.nil?
     latest_time = (start_time || end_time) + Oneclick::Application.config.max_offset_from_desired

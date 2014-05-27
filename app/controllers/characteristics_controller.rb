@@ -7,9 +7,10 @@ class CharacteristicsController < TravelerAwareController
 
     if params['inline'] == '1' || params[:trip_id]
       @trip = Trip.find(session[:current_trip_id] || params[:trip_id])
-      session[:current_trip_id] =  nil
-      @trip.create_itineraries
-      @path = user_trip_path_for_ui_mode(@traveler, @trip)
+      @path = populate_user_trip_path(@traveler, @trip, {asynch: 1})
+      # session[:current_trip_id] =  nil
+      # @trip.create_itineraries
+      # @path = user_trip_path_for_ui_mode(@traveler, @trip)
     end
 
     #if we are in the 'wizard' don't flash a notice. This logic checks to see if

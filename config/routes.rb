@@ -84,6 +84,7 @@ Oneclick::Application.routes.draw do
           get   'plan_map'
         end
         member do
+          get   'populate'
           get   'repeat'
           get   'select'
           get   'details'
@@ -110,6 +111,7 @@ Oneclick::Application.routes.draw do
 
       resources :trip_parts do
         member do
+          get 'itineraries'
           get 'unhide_all'
         end
       end

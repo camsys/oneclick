@@ -14,4 +14,25 @@ class TripPartsController < PlaceSearchingController
     redirect_to user_trip_path_for_ui_mode(@traveler, trip_part.trip)
   end
 
+  def itineraries
+    @trip_part = TripPart.find(params[:id])
+    @modes = Mode.where(code: params[:mode])
+    @trip_part.remove_existing_itineraries(@modes)
+    @itineraries = @trip_part.create_itineraries(@modes)
+    if @itineraries.each {|i| i.save }
+      respond_to do |f|
+        f.json { render json: @itineraries, root: 'itineraries', each_serializer: ItinerarySerializer }
+      end
+    else
+      respond_to do |f|
+        f.json {
+          render json:       {
+            status: 0,
+            status_text: @itineraries.collect{|i| i.errors}
+          }
+        }
+      end
+    end
+  end
+
 end

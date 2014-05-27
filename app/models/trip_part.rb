@@ -75,26 +75,33 @@ class TripPart < ActiveRecord::Base
     trip_time > now
   end
 
-  def remove_existing_itineraries
-    itineraries.destroy_all
+  def remove_existing_itineraries(modes = [])
+    if modes.empty?
+      itineraries.destroy_all
+    else
+      itineraries.where('mode_id in (?)', modes.pluck(:id)).destroy_all
+    end
   end
 
   # Generates itineraries for this trip part. Any existing itineraries should have been removed
   # before this method is called.
-  def create_itineraries
-    remove_existing_itineraries
+  def create_itineraries(modes = trip.desired_modes)
+    # remove_existing_itineraries
+    itins = []
     timed "fixed" do
-      create_fixed_route_itineraries if trip.desired_modes.include? Mode.transit
+      itins += create_fixed_route_itineraries if modes.include? Mode.transit
     end
     timed "taxi" do
-      create_taxi_itineraries if trip.desired_modes.include? Mode.taxi
+      itins += create_taxi_itineraries if modes.include? Mode.taxi
     end
     timed "paratransit" do
-      create_paratransit_itineraries if trip.desired_modes.include? Mode.paratransit
+      itins += create_paratransit_itineraries if modes.include? Mode.paratransit
     end
     timed "rideshare" do
-      create_rideshare_itineraries if trip.desired_modes.include? Mode.rideshare
+      itins += create_rideshare_itineraries if modes.include? Mode.rideshare
     end
+    self.itineraries << itins
+    itins
   end
 
   def timed label, &block
@@ -106,6 +113,7 @@ class TripPart < ActiveRecord::Base
 
   # TODO refactor following 4 methods
   def create_fixed_route_itineraries(mode="TRANSIT,WALK")
+    itins = []
     tp = TripPlanner.new
     arrive_by = !is_depart
     result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode)
@@ -123,19 +131,19 @@ class TripPart < ActiveRecord::Base
           end
         end
 
-        itineraries << Itinerary.new(serialized_itinerary)
+        itins << Itinerary.new(serialized_itinerary)
       end
     end
 
     if mode == 'TRANSIT,WALK' and result
-      check_for_long_walks(itineraries)
+      itins += check_for_long_walks(itins)
     end
 
     # Don't hide duplicate itineraries in new UI
     # See https://www.pivotaltracker.com/story/show/71254872
     # TODO This will probably break kiosk, will add story
     # hide_duplicate_fixed_route(itineraries)
-
+    itins
   end
 
   def check_for_long_walks itineraries
@@ -149,8 +157,9 @@ class TripPart < ActiveRecord::Base
       end
     end
     if long_walks
-      create_fixed_route_itineraries('CAR,TRANSIT,WALK')
+      return create_fixed_route_itineraries('CAR,TRANSIT,WALK')
     end
+    return []
   end
 
   # Note not called for now.
@@ -170,30 +179,32 @@ class TripPart < ActiveRecord::Base
   end
 
   def create_taxi_itineraries
+    itins = []
     tp = TripPlanner.new
     result, response = tp.get_taxi_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time)
     if result
       itinerary = tp.convert_taxi_itineraries(response)
       itinerary['server_message'] = itinerary['server_message'].to_yaml if itinerary['server_message'].is_a? Array
-      self.itineraries << Itinerary.new(itinerary)
+      itins << Itinerary.new(itinerary)
     else
-      self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s)
+      itins << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s)
     end
+    itins
   end
 
   def create_paratransit_itineraries
     eh = EligibilityService.new
     fh = FareHelper.new
-    itineraries = eh.get_accommodating_and_eligible_services_for_traveler(self)
-    itineraries = eh.get_eligible_services_for_trip(self, itineraries)
+    itins = eh.get_accommodating_and_eligible_services_for_traveler(self)
+    itins = eh.get_eligible_services_for_trip(self, itins)
 
-    itineraries = itineraries.collect do |itinerary|
+    itins = itins.collect do |itinerary|
       new_itinerary = Itinerary.new(itinerary)
       fh.calculate_fare(new_itinerary)
       new_itinerary
     end
 
-    unless itineraries.empty?
+    unless itins.empty?
       unless ENV['SKIP_DYNAMIC_PARATRANSIT_DURATION']
         begin
           tp = TripPlanner.new
@@ -209,7 +220,7 @@ class TripPart < ActiveRecord::Base
         Rails.logger.info "SKIP_DYNAMIC_PARATRANSIT_DURATION is set, skipping it"
       end
       Rails.logger.info "Base duration: #{base_duration} minutes"
-      itineraries.each do |i|
+      itins.each do |i|
         i.duration_estimated = true
         if base_duration.nil?
           i.duration = Oneclick::Application.config.minimum_paratransit_duration
@@ -233,21 +244,22 @@ class TripPart < ActiveRecord::Base
       end
     end
 
-    self.itineraries += itineraries
-
+    itins
   end
 
   def create_rideshare_itineraries
+    itins = []
     tp = TripPlanner.new
     trip.restore_trip_places_georaw
     result, response = tp.get_rideshare_itineraries(from_trip_place, to_trip_place, trip_time)
     if result
       itinerary = tp.convert_rideshare_itineraries(response)
-      self.itineraries << Itinerary.new(itinerary)
+      itins << Itinerary.new(itinerary)
     else
-      self.itineraries << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s,
+      itins << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s,
                                         'mode' => Mode.rideshare)
     end
+    itins
   end
 
   def max_notes_count

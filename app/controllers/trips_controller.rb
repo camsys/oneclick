@@ -3,10 +3,10 @@ class TripsController < PlaceSearchingController
   # TODO These should get changed to except:, at this point
   before_filter :get_traveler, only: [:show, :new, :email, :email_itinerary, :details, :repeat, :edit, :destroy,
     :update, :skip, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2, :create,
-    :show_printer_friendly, :plan]
+    :show_printer_friendly, :plan, :populate]
   before_filter :get_trip, :only => [:show, :email, :email_itinerary, :details, :repeat, :edit,
     :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2,
-    :show_printer_friendly, :example, :plan]
+    :show_printer_friendly, :example, :plan, :populate]
 
   def index
     # Filtering logic. See ApplicationHelper.trip_filters
@@ -515,6 +515,10 @@ class TripsController < PlaceSearchingController
       end
     end
 
+  end
+
+  def populate
+    redirect_to user_trip_path_for_ui_mode(@traveler, @trip)
   end
 
   # POST /trips
