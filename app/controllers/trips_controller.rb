@@ -57,7 +57,8 @@ class TripsController < PlaceSearchingController
 
   def show
     @trip = Trip.find(params[:id].to_i)
-    @tripResponse = TripSerializer.new(@trip, params)
+    #@tripResponse = TripSerializer.new(@trip, params) #sync-dislay: response to review page to display all itineraries at one time 
+    @tripResponse = TripSerializer.new(@trip, params.merge({asynch: true})) #async-dislay: response to review page to incrementally display itineraries
 
     # TODO This seems incredibly hacky to go to json and back for this, but...
     @tripResponseHash = JSON.parse(@tripResponse.to_json)
