@@ -17,6 +17,11 @@
   color: blue;
 }
 
+.form-group .zero-horizontal-margin {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
 /* override jQuery UI slider to not load image resource but only use bg color*/
 .ui-widget-content {
   background: white;

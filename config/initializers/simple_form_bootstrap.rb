@@ -62,6 +62,14 @@ SimpleForm.setup do |config|
     end
   end
 
+  config.wrappers :horizontal_labelless_select, tag: 'div', class: 'form-group zero-horizontal-margin', error_class: 'has-error' do |b|
+    b.use :html5
+    b.use :placeholder
+    b.use :input, class: 'form-control'
+    b.use :error, wrap_with: { tag: 'span', class: 'help-block' }
+    b.use :hint,  wrap_with: { tag: 'p', class: 'help-block' }
+  end
+
   config.wrappers :horizontal_file_input, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
     b.use :placeholder
