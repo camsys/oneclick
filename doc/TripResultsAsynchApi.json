@@ -1,0 +1,58 @@
+//Request
+// (/<locale>)/users/2/trips/2.json?asynch=true
+// or /users/2/trips/2 with Accept: header that prefers JSON response
+// or render in a template with: TripSerializer.new(@trip, {asynch: true}).to_json
+//Response
+// Items are REQUIRED unless "Opt" is indicated
+// Note the response to each /en/users/1/trip_parts/15/itineraries.json call is the same
+// as the itineraries element from the synchronous call (see TripResultsApi.json)
+{
+    "id": 8,
+    "status": 1,
+    "modes": [{
+        "mode": "mode_transit",
+        "mode_name": "Transit",
+        "urls": [
+            "/en/users/1/trip_parts/15/itineraries.json?mode=mode_transit",
+            "/en/users/1/trip_parts/16/itineraries.json?mode=mode_transit"
+        ]
+    }, {
+        "mode": "mode_paratransit",
+        "mode_name": "Paratransit",
+        "urls": [
+            "/en/users/1/trip_parts/15/itineraries.json?mode=mode_paratransit",
+            "/en/users/1/trip_parts/16/itineraries.json?mode=mode_paratransit"
+        ]
+    }, {
+        "mode": "mode_taxi",
+        "mode_name": "Taxi",
+        "urls": [
+            "/en/users/1/trip_parts/15/itineraries.json?mode=mode_taxi",
+            "/en/users/1/trip_parts/16/itineraries.json?mode=mode_taxi"
+        ]
+    }, {
+        "mode": "mode_rideshare",
+        "mode_name": "Rideshare",
+        "urls": [
+            "/en/users/1/trip_parts/15/itineraries.json?mode=mode_rideshare",
+            "/en/users/1/trip_parts/16/itineraries.json?mode=mode_rideshare"
+        ]
+    }],
+    "trip_parts": [{
+        "id": 15,
+        "description": "Outbound - Cartersville, GA to Coca Cola Plaza Atlanta, GA 30313",
+        "description_without_direction": "Cartersville, GA to Coca Cola Plaza Atlanta, GA 30313",
+        "start_time": null,
+        "end_time": "2014-06-04T15:30:00.000-04:00",
+        "is_depart_at": false,
+        "itineraries": []
+    }, {
+        "id": 16,
+        "description": "Return - Coca Cola Plaza Atlanta, GA 30313 to Cartersville, GA",
+        "description_without_direction": "Coca Cola Plaza Atlanta, GA 30313 to Cartersville, GA",
+        "start_time": "2014-06-04T17:30:00.000-04:00",
+        "end_time": null,
+        "is_depart_at": true,
+        "itineraries": []
+    }]
+}
