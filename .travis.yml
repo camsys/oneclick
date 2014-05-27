@@ -42,5 +42,6 @@ after_deploy:
   - git branch -lavv
   - pwd
   - ls
+  - heroku run rake db:migrate --app oneclick-arc-int
   - git describe
   - heroku config:set ONECLICK_APP_VERSION=`git describe` --app oneclick-arc-int
