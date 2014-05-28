@@ -36,22 +36,6 @@
       var pageRenderer = new TripReviewPageRenderer(30, 20, tripResponse);
       pageRenderer.processTripResponse();
 
-      //click chart to show details in modal dialog
-      d3.selectAll("rect")
-        .on("click", function(tripLeg){
-          if(typeof(tripLeg) === 'object' && tripLeg != null) {
-            var planId = tripLeg.planId;
-            $.getScript(window.location.href + '/itinerary' + '?itin=' + planId)
-              .done(function() {
-              })
-              .fail(function( jqxhr, settings, exception ) {
-                console.log(jqxhr);
-                console.log(settings);
-                console.log(exception);
-              });
-          }
-        });
-
       $('#itinerary_modal').on('shown.bs.modal', function() {
         if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.review_map != null) { 
           var mapObj = CsMaps.review_map;

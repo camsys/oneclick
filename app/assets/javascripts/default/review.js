@@ -65,11 +65,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
     var tripPlanDivPrefix = "tripPlan_"; //prefix of each trip plan div
     var missInfoDivAffix = "_restriction"; //affix of each trip restriction modal dialog
 
-    //chart tooltip
-    var chartTooltipDiv = d3.select("body").append("div")
-        .attr("class", "chart-tooltip")
-        .style("opacity", "0");
-
     //page document width
     //be used to detect width change -> resize charts
     var documentWidth = $(document.body).width();
@@ -139,7 +134,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         //in case there is chart layout issue
         resizeChartsWhenDocumentWidthChanges();
     }
-
+    
     function verifyTripJsonValid() {
 
         //check if response is object
@@ -184,6 +179,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
           });
     }
 
+    /*
+    * append new incoming itineraries
+    */
     function updateTripPartItineraries(tripPartId, itineraries) {
         if(!verifyTripJsonValid()) {
             return;
@@ -199,6 +197,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         }
     }
 
+    /*
+    * event listener of clicking question ? button in a specific itinerary
+    */
     function onClickSinglePlanQuestionButton(questionButton) {
         var planDiv = $(questionButton).parents('.single-plan-review');
         var tripPlanChartDivId = tripPlanDivPrefix + planDiv.attr('data-trip-id') + '_' + planDiv.attr('data-plan-id');
@@ -208,6 +209,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         addTripStrictionFormSubmissionListener(missingInfoNode.data, tripPlanChartDivId);
     }
 
+    /*
+    * event listener of clicking Select button in a specific itinerary
+    */
     function selectItineraryByClickingSelectButton(planSelectButton) {
         $(planSelectButton).parents('.single-trip-part').find('.single-plan-review')
             .removeClass('single-plan-selected')
@@ -424,16 +428,20 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
 
             if (plan.legs instanceof Array) {
                 if (plan.legs.length === 0) {
-                    var tripDescription = trip.hasOwnProperty('description_without_direction') ? trip.description_without_direction : trip.description;
+                    
+                    var legDescription = '';
                     if (plan.service_name != null) {
                         if (plan.provider_name != null) {
-                            var legDescription = toCamelCase(plan.mode_name) + ': ' + plan.service_name + ' (' + plan.provider_name + ')';
+                            legDescription = toCamelCase(plan.mode_name) + ': ' + plan.service_name + ' (' + plan.provider_name + ')';
                         } else {
-                            var legDescription = toCamelCase(plan.mode_name) + ': ' + plan.service_name;
+                            legDescription = toCamelCase(plan.mode_name) + ': ' + plan.service_name;
                         }
                     } else {
-                        var legDescription = toCamelCase(plan.mode_name);
+                        legDescription = toCamelCase(plan.mode_name);
                     }
+
+                    var tripDescription = trip.hasOwnProperty('description_without_direction') ? trip.description_without_direction : trip.description;
+                    legDescription += ' - ' + tripDescription;
                     plan.legs.push({
                         "type": "Vehicle",
                         "description": legDescription,
@@ -578,8 +586,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         }
 
 
-        //TODO: sort
-        //sortItineraryBy($('#' + tripPartDivId + " .trip-sorter")[0]);
+        //sort
+        sortItineraryBy($('#' + tripPartDivId + " .trip-sorter")[0]);
         return;
     }
 
@@ -632,6 +640,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         });
     }
 
+    /*
+    * find the value associated with question
+    */
     function findQuestionValue(name, values) {
         var targetVal = null;
         if(values instanceof Array) {
@@ -647,6 +658,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         return targetVal;
     }
 
+    /*
+    * check if user_answer is empty
+    */
     function isUserAnswerEmpty(value) {
         return (value === undefined || value === '' || value === null);
     }
@@ -726,6 +740,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         }
     }
 
+    /*
+    * given a list of eligibility questions, check if eligible or not
+    * @return {number} clearCode: 1 - eligible; -1 - not eligible; 0 - Status not change.
+    */
     function checkEligibility(missingInfoArray) {
         var clearCode = 0;
         if(!missingInfoArray instanceof Array) {
@@ -807,6 +825,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         return false;
     }
 
+
+    /*
+    * format question answer so can eval with answer correctly
+    */
     function formatQuestionAnswer(type, value) {
         switch (type) {
             case 'date':
@@ -839,7 +861,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
 
         var sorterTags =
             '<label' + (isDepartAt ? ' class="sm-sorter-margin-left"' : '') + '>Sort by: </label>' +
-            '<select style="display: inline-block;"' + (isDepartAt ? '' : ' class="trip-sorter sm-sorter-margin-right"') + '>' +
+            '<select style="display: inline-block;" class="trip-sorter' + (isDepartAt ? '"' : ' sm-sorter-margin-right"') + '>' +
             '<option value="start-time" ' + (isDepartAt ? ' selected' : '') + '>Departure Time</option>' +
             '<option value="end-time" ' + (isDepartAt ? '' : ' selected') + '>Arrival Time</option>' +
             '<option value="cost" >Fare</option>' +
@@ -873,6 +895,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         return tripHeaderTags;
     }
 
+
+    /*
+    * given labels Array, return the html tags of label elements
+    */
     function getTickLabelHtmlTags(tickLabels) {
         var tickLabelTags = '';
         //display 3 labels for xs; 7 for sm & md; 10 for lg
@@ -1177,6 +1203,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         );
     }
 
+    /*
+    * given value and user_answer check which radio option is seleted if any
+    */
     function checkIfOptionSelected(val, answer) {
         var isSelected = false;
         if(!(typeof(val) === 'undefined' || !isValidObject(val) || typeof(answer) != 'string') && val.toString() === answer){
@@ -1458,6 +1487,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         };
     }
 
+
+    /*
+    * adjust existing transfer filter slider
+    */
     function adjustTransferFilters(minTransfer, maxTransfer, filterInnerContainerId) {
         var filterObj = getTransferFilterHtml(minTransfer, maxTransfer);
         if(isValidObject(filterObj)) {
@@ -1515,6 +1548,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         };
     }
 
+    /*
+    * adjust existing cost filter slider
+    */
     function adjustCostFilters(minCost, maxCost, filterInnerContainerId) {
         var filterObj = getCostFilterHtml(minCost, maxCost);
         if(isValidObject(filterObj)) {
@@ -1574,6 +1610,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         };
     }
 
+    /*
+    * adjust existing duration filter slider
+    */
     function adjustDurationFilters(minDuration, maxDuration, filterInnerContainerId) {
         var filterObj = getDurationFilterHtml(minDuration, maxDuration);
         if(isValidObject(filterObj)) {
@@ -1694,33 +1733,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             .range([0, height]);
 
         //generate ticks
-        var ticks = xScale
-            .ticks(d3.time.minute, intervalStep);
-
-        //draw tick lines without first and last (this is styled by border)
-        if (ticks.length > 0) {
-            ticks.splice(0, 1);
-
-            if (ticks.length > 0) {
-                ticks.splice(ticks.length - 1, 1);
-            }
-        }
-
-        chart.selectAll("line")
-            .data(ticks)
-            .enter().append("line")
-            .attr("x1", function(d) {
-                return x(d);
-            })
-            .attr("x2", function(d) {
-                return x(d);
-            })
-            .attr("y1", 0)
-            .attr("y2", height);
+        drawChartTickLines(chart, xScale, x);
 
         var tipText = "";
         tripLegs.forEach(function(leg) {
-            tipText += leg.description + "<br>";
+            tipText += leg.description + "\r";
         });
 
         chart.selectAll("rect")
@@ -1737,49 +1754,24 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
                 return (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time)));
             })
             .attr("height", barHeight)
-            .on("mouseover", function(d) {
-                chartTooltipDiv
-                    .style("left", getTooltipLeft(d3.event.pageX, chartTooltipDiv.node()) + "px")
-                    .style("top", getTooltipTop(d3.event.pageY, chartTooltipDiv.node()) + "px")
-                    .style("opacity", "0.9");
-
-                chartTooltipDiv.html(tipText); //d.description if for each leg  
-
-            })
-            .on("mouseout", function(d) {
-                chartTooltipDiv
-                    .style("left", "0px")
-                    .style("top", "0px")
-                    .style("opacity", "0");
+            .attr('title', tipText)
+            .on("click", function(tripLeg){ //click chart to show details in modal dialog
+              if(typeof(tripLeg) === 'object' && tripLeg != null) {
+                var planId = tripLeg.planId;
+                $.getScript(window.location.href + '/itinerary' + '?itin=' + planId)
+                  .done(function() {
+                  })
+                  .fail(function( jqxhr, settings, exception ) {
+                    console.log(jqxhr);
+                    console.log(settings);
+                    console.log(exception);
+                  });
+              }
             });
-    }
 
-    /*
-     * get left position in px of chart tooltip
-     */
-    function getTooltipLeft(rawLeft, tooltipNode) {
-        var divWidth = tooltipNode.clientWidth;
-        var docWidth = $(document.body).width();
-        var margin = 5;
-        if ((rawLeft + divWidth) >= docWidth) {
-            rawLeft = docWidth - divWidth - margin;
-        }
-
-        return rawLeft;
-    }
-
-    /*
-     * get top position in px of chart tooltip
-     */
-    function getTooltipTop(rawTop, tooltipNode) {
-        var divHeight = tooltipNode.clientHeight;
-        var docHeight = $(document.body).height();
-        var margin = 5;
-        if ((rawTop + divHeight) >= docHeight) {
-            rawTop = docHeight - divHeight - margin;
-        }
-
-        return rawTop;
+        $("svg rect").tooltip({
+            'container': 'body'
+        });
     }
 
     /*
@@ -1817,6 +1809,40 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         }
     }
 
+     /*
+     * draw chart tick lines
+     * @param {Object}chart: d3 chart
+     * @param {Object}xScale: d3 x axis scale
+     * @param {Function}x : x-axis mapping function to calculate chart x-axis tick position based on input raw value
+     */
+    function drawChartTickLines(chart, xScale, x) {
+        //generate ticks
+        var ticks = xScale
+            .ticks(d3.time.minute, intervalStep);
+
+        //draw tick lines without first and last (this is styled by border)
+        if (ticks.length > 0) {
+            ticks.splice(0, 1);
+
+            if (ticks.length > 0) {
+                ticks.splice(ticks.length - 1, 1);
+            }
+        }
+
+        chart.selectAll("line")
+            .data(ticks)
+            .enter()
+            .insert("line", "rect")
+            .attr("x1", function(d) {
+                return x(d);
+            })
+            .attr("x2", function(d) {
+                return x(d);
+            })
+            .attr("y1", 0)
+            .attr("y2", chart.attr('height'));
+    }
+
     /**
      * Create a timeline chart
      * @param {string} chartDivId
@@ -1852,16 +1878,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             .domain([0, 2])
             .range([0, height]);
 
-        //update tick lines
-        chart.selectAll("line")
-            .attr("x1", function(d) {
-                return x(d);
-            })
-            .attr("x2", function(d) {
-                return x(d);
-            })
-            .attr("y1", 0)
-            .attr("y2", height);
+        //redraw tick lines
+        chart.selectAll("line").remove();
+        drawChartTickLines(chart, xScale, x);
 
         //update chart items
         chart.selectAll("rect")
@@ -1904,6 +1923,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         });
     }
 
+    /*
+    * given all filter values, check if a given plan is visible or not
+    * @param {Array} modes
+    * @param {Array} transferValues
+    * @param {Array} costValues
+    * @param {Array} durationValues
+    * @param {Object} plan
+    */
     function processPlanFiltering(modes, transferValues, costValues, durationValues, plan) {
         var modeVisible = true;
         if (modes instanceof Array) {
