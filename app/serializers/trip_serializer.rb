@@ -35,7 +35,10 @@ class TripSerializer < ActiveModel::Serializer
           mode_name: I18n.t(m.name),
           urls: object.trip_parts.collect do |tp|
             puts tp.ai
-            itineraries_user_trip_part_path(object.user, tp, mode: m.code, format: :json, locale: I18n.locale)
+            {
+              trip_part_id: tp.id,
+              url: itineraries_user_trip_part_path(object.user, tp, mode: m.code, format: :json, locale: I18n.locale)
+            }
           end
         }
       end

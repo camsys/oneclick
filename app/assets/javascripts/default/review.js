@@ -15,61 +15,6 @@ var waitForFinalEvent = (function() {
     };
 })();
 
-
-/*
- * get round value
- * e.g., 75 -> 75
- *    (75, 76] -> 76
- * @param {number}
- */
-function getRoundMaxValue(rawValue) {
-    if (typeof(rawValue) != 'number') {
-        return null;
-    }
-
-    var roundValue = parseInt(rawValue);
-    return (rawValue === roundValue) ? roundValue : (roundValue + 1);
-}
-
-/*
- * get round value
- * e.g., [75, 76) -> 75
- * @param {number}
- */
-function getRoundMinValue(rawValue) {
-    if (typeof(rawValue) != 'number') {
-        return null;
-    }
-
-    return parseInt(rawValue);
-}
-
-/*
- * Generate Camel case
- * @param {string} str
- * @return {string}
- */
-function toCamelCase(str) {
-    if (typeof(str) != 'string') {
-        return '';
-    }
-    return str.replace(/(?:^|\s)\w/g, function(match) {
-        return match.toUpperCase();
-    });
-}
-
-/*
- * remove spaces within a string
- * @param {string} str
- * @return {string}
- */
-function removeSpace(str) {
-    if (typeof(str) != 'string') {
-        return '';
-    }
-    return str.replace(/\s+/g, '');
-}
-
 /*
  * parse date
  * require moment.js
@@ -85,14 +30,22 @@ function parseDate(dateStr) {
     }
 }
 
-var missingInfoLookup;
 /*
  * TripReviewPageRenderer class: a self-contained class to render dynamic items on trip review page
  * @param {number}: intervalStep (minutes)
  * @param {number}: barHeight (pixel)
  * @method processTripResponse: public method to process trip results
  */
-function TripReviewPageRenderer(intervalStep, barHeight) {
+function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
+    
+    var _tripResponse = tripResponse; //trip json
+
+    var _isInitial = true; //a flag whether this is initial trip response
+
+    //trip restriction missing_info lookup
+    //format: [{trip_restriction_modal_id: {data: missing_info_array, clearCode: 0(init), 1(all pass), -1(not pass)}}]
+    var _missingInfoLookup = {};
+
     if (typeof(intervalStep) != 'number' || intervalStep < 0) {
         intervalStep = 30; //30min as default
     }
@@ -111,9 +64,6 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
     var tripPlanDivPrefix = "tripPlan_"; //prefix of each trip plan div
     var missInfoDivAffix = "_restriction"; //affix of each trip restriction modal dialog
-    //trip restriction missing_info lookup
-    //format: [{trip_restriction_modal_id: {data: missing_info_array, clearCode: 0(init), 1(all pass), -1(not pass)}}]
-    missingInfoLookup = {};
 
     //chart tooltip
     var chartTooltipDiv = d3.select("body").append("div")
@@ -126,26 +76,28 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
     /**
      * Process trip results response from service
-     * @param {object} tripResponse
      */
-    function processTripResponse(tripResponse) {
-        //check if response is object
-        if (typeof tripResponse != 'object' || tripResponse === null) {
+    function processTripResponse() {
+        if(!verifyTripJsonValid()) {
             return;
         }
 
-        //check response status
-        if (tripResponse.status === 0) {
-            console.log('something went wrong');
-            return;
+        if(_isInitial) {
+            _isInitial = false;
+
+            //dispatch requests to get itineraries
+             _tripResponse.modes.forEach(function(modeObj) {
+                if(isValidObject(modeObj) && modeObj.urls instanceof Array) {
+                    modeObj.urls.forEach(function(urlObj) {
+                        if(isValidObject(urlObj)) {
+                            asyncRequestItinerariesForMode(urlObj.url, urlObj.trip_part_id);
+                        }
+                    });
+                }
+            });
         }
 
-        var tripParts = tripResponse.trip_parts;
-        //check if trip_parts is Array
-        if (!tripParts instanceof Array) {
-            return;
-        }
-
+        var tripParts = _tripResponse.trip_parts;
         //process each trip
         for (var i = 0, tripCount = tripParts.length; i < tripCount; i++) {
             tripParts[i] = processTripTimeRange(tripParts[i]);
@@ -188,11 +140,70 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         resizeChartsWhenDocumentWidthChanges();
     }
 
+    function verifyTripJsonValid() {
+
+        //check if response is object
+        if (typeof _tripResponse != 'object' || _tripResponse === null) {
+            return false;
+        }
+
+        //check response status
+        if (_tripResponse.status === 0) {
+            console.log('something went wrong');
+            return false;
+        }
+
+        var tripParts = _tripResponse.trip_parts;
+        //check if trip_parts is Array
+        if (!tripParts instanceof Array) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /*
+    * ajax request to get list of itineraries
+    * @param {string} url
+    */
+    function asyncRequestItinerariesForMode(url, tripPartId) {
+        $.ajax({
+          url: url
+        })
+          .done(function( response ) {
+            console.log(response);
+            //update _tripResponse
+            if(isValidObject(response) && response.itineraries instanceof Array) {
+                updateTripPartItineraries(tripPartId, response.itineraries);
+                //redraw
+                processTripResponse();
+            }
+          })
+          .fail(function( response ) {
+            console.log(response);
+          });
+    }
+
+    function updateTripPartItineraries(tripPartId, itineraries) {
+        if(!verifyTripJsonValid()) {
+            return;
+        }
+
+        var tripParts = _tripResponse.trip_parts;
+        //process each trip
+        for (var i = 0, tripCount = tripParts.length; i < tripCount; i++) {
+            if(tripParts[i].id === tripPartId) {
+                tripParts[i].itineraries = tripParts[i].itineraries.concat(itineraries);
+                break;
+            }
+        }
+    }
+
     function onClickSinglePlanQuestionButton(questionButton) {
         var planDiv = $(questionButton).parents('.single-plan-review');
         var tripPlanChartDivId = tripPlanDivPrefix + planDiv.attr('data-trip-id') + '_' + planDiv.attr('data-plan-id');
         var missInfoDivId = tripPlanChartDivId + missInfoDivAffix;
-        var missingInfoNode = missingInfoLookup[tripPlanChartDivId];
+        var missingInfoNode = _missingInfoLookup[tripPlanChartDivId];
         addTripRestrictionDialogHtml(missingInfoNode.data, missInfoDivId);
         addTripStrictionFormSubmissionListener(missingInfoNode.data, tripPlanChartDivId);
     }
@@ -478,64 +489,97 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             return;
         }
 
-        var tripTags = "<div class='col-xs-12 well single-trip-part'>";
+        var tripPartDivId = "trip_part_" + tripId;
 
         var tickLabels = getTickLabels(tripStartTime, tripEndTime, intervalStep);
-        //process header
-        var tripHeaderTags = addTripHeaderHtml(trip.description, tickLabels, intervalStep, isDepartAt);
-        tripTags += tripHeaderTags;
+        if($('#' + tripPartDivId).length === 0) { //new trip part
+            var tripTags = "<div id='" + tripPartDivId + "'class='col-xs-12 well single-trip-part'>";
 
-        //process each trip plan
-        var tripPlans = trip.itineraries;
-        tripPlans = tripPlans.sort(function(itin1, itin2) {
-            if (isDepartAt) {
-                var departTime1 = parseDate(itin1.start_time);
-                var departTime2 = parseDate(itin2.start_time);
+            //process header
+            var tripHeaderTags = addTripHeaderHtml(trip.description, tickLabels, intervalStep, isDepartAt);
+            tripTags += tripHeaderTags;
 
-                return (departTime1 - departTime2);
-            } else {
-                var arrivalTime1 = parseDate(itin1.end_time);
-                var arrivalTime2 = parseDate(itin2.end_time);
+            //process each trip plan
+            var tripPlans = trip.itineraries;
+            tripPlans.forEach(function(tripPlan) {
+                if (isValidObject(tripPlan)) {
+                    tripTags += addTripPlanHtml(
+                        tripId,
+                        tripPlan,
+                        strTripStartTime,
+                        strTripEndTime,
+                        isDepartAt,
+                        tripPlan.selected
+                    );
+                }
+            });
 
-                return (arrivalTime1 - arrivalTime2);
-            }
-        });
-        tripPlans.forEach(function(tripPlan) {
-            if (typeof(tripPlan) === 'object' && tripPlan != null) {
-                tripTags += addTripPlanHtml(
-                    tripId,
-                    tripPlan,
-                    strTripStartTime,
-                    strTripEndTime,
-                    isDepartAt,
-                    tripPlan.selected
-                );
-            }
-        });
+            tripTags += "</div>";
 
-        tripTags += "</div>";
+            //render HTML
+            $('#' + tripContainerId).append(tripTags);
 
-        //render HTML
-        $('#' + tripContainerId).append(tripTags);
+            //render Chart
+            tripPlans.forEach(function(tripPlan) {
+                if (isValidObject(tripPlan)) {
+                    var tripPlanChartId = tripPlanDivPrefix + tripId + "_" + tripPlan.id;
+                    createChart(
+                        tripPlan.id,
+                        tripPlanChartId,
+                        tripPlan.legs,
+                        tripStartTime,
+                        tripEndTime,
+                        intervalStep,
+                        barHeight
+                    );
 
-        //render Chart
-        tripPlans.forEach(function(tripPlan) {
-            if (typeof(tripPlan) === 'object' && tripPlan != null) {
-                var tripPlanChartId = tripPlanDivPrefix + tripId + "_" + tripPlan.id;
-                createChart(
-                    tripPlan.id,
-                    tripPlanChartId,
-                    tripPlan.legs,
-                    tripStartTime,
-                    tripEndTime,
-                    intervalStep,
-                    barHeight
-                );
+                    addTripStrictionFormSubmissionListener(tripPlan.missing_information, tripPlanChartId);
+                }
+            });
+        } else {
+            //update tick labels
+            var tickLabelTags = getTickLabelHtmlTags(tickLabels);
+            $('#' + tripPartDivId + " .tick-labels").html(tickLabelTags);
 
-                addTripStrictionFormSubmissionListener(tripPlan.missing_information, tripPlanChartId);
-            }
-        });
+            //resize chart
+            resizeAllCharts();
 
+            //process each trip plan
+            var tripPlans = trip.itineraries;
+            tripPlans.forEach(function(tripPlan) {
+                if (isValidObject(tripPlan)) {
+                    var tripPlanChartId = tripPlanDivPrefix + tripId + "_" + tripPlan.id;
+                    if($('#' + tripPlanChartId).length === 0) { //new itinerary
+                        var itinTags = addTripPlanHtml(
+                            tripId,
+                            tripPlan,
+                            strTripStartTime,
+                            strTripEndTime,
+                            isDepartAt,
+                            tripPlan.selected
+                        );
+
+                        $('#' + tripPartDivId).append(itinTags);
+
+                         createChart(
+                            tripPlan.id,
+                            tripPlanChartId,
+                            tripPlan.legs,
+                            tripStartTime,
+                            tripEndTime,
+                            intervalStep,
+                            barHeight
+                        );
+
+                        addTripStrictionFormSubmissionListener(tripPlan.missing_information, tripPlanChartId);
+                    }
+                }
+            });
+        }
+
+
+        //TODO: sort
+        //sortItineraryBy($('#' + tripPartDivId + " .trip-sorter")[0]);
         return;
     }
 
@@ -593,7 +637,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         if(values instanceof Array) {
             for(var i=0, valCount=values.length; i<valCount; i++) {
                 var val = values[i];
-                if(typeof(val) === 'object' && val != null && val.name === name) {
+                if(isValidObject(val) && val.name === name) {
                     targetVal = val;
                     break;
                 }
@@ -613,12 +657,12 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
      * @param {string} answer
      */
     function updateTripRestrictions(questionText, answer) {
-        for (var tripPlanChartDivId in missingInfoLookup) {
-            var infoArray = missingInfoLookup[tripPlanChartDivId].data;
+        for (var tripPlanChartDivId in _missingInfoLookup) {
+            var infoArray = _missingInfoLookup[tripPlanChartDivId].data;
             if (infoArray instanceof Array) {
                 for (var i = 0, infoCount = infoArray.length; i < infoCount; i++) {
                     var missInfo = infoArray[i];
-                    if (typeof(missInfo) === 'object' && missInfo != null && missInfo.question === questionText) {
+                    if (isValidObject(missInfo) && missInfo.question === questionText) {
                         if(!isUserAnswerEmpty(answer)) {
                             missInfo.user_answer = answer;
                         } else {
@@ -631,6 +675,10 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         }
     }
 
+    /*
+    * check if a specific itinerary is visible or not; if visible, then need to resize chart
+    * @param {Object} plan: jQuery select result
+    */
     function detectPlanVisibilityChange(plan) {
         if(plan.attr('data-eligibility-visible') == '1' && plan.attr('data-filter-visible') == '1') {
             plan.show();
@@ -646,8 +694,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
      * apply changes: if pass all questions, then make itinerary select-able; if fail one question, then remove this itinerary; otherwise, re-render restriction dialog
      */
     function applyChangesAfterTripRestrictionFormSubmission() {
-        for (var tripPlanChartDivId in missingInfoLookup) {
-            var missingInfoNode = missingInfoLookup[tripPlanChartDivId];
+        for (var tripPlanChartDivId in _missingInfoLookup) {
+            var missingInfoNode = _missingInfoLookup[tripPlanChartDivId];
             var questionClearCode = checkEligibility(missingInfoNode.data);
             var tripPlanDiv = $('#' + tripPlanChartDivId).parents('.single-plan-review');
             if (questionClearCode === -1) { //not pass
@@ -787,6 +835,45 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         //trip description
         var tripDescTag = '<label class="col-sm-12">' + tripDescription + '</label>';
 
+        var tickLabelTags = getTickLabelHtmlTags(tickLabels);
+
+        var sorterTags =
+            '<label' + (isDepartAt ? ' class="sm-sorter-margin-left"' : '') + '>Sort by: </label>' +
+            '<select style="display: inline-block;"' + (isDepartAt ? '' : ' class="trip-sorter sm-sorter-margin-right"') + '>' +
+            '<option value="start-time" ' + (isDepartAt ? ' selected' : '') + '>Departure Time</option>' +
+            '<option value="end-time" ' + (isDepartAt ? '' : ' selected') + '>Arrival Time</option>' +
+            '<option value="cost" >Fare</option>' +
+            '<option value="duration" >Travel Time</option>' +
+            '</select>';
+
+        var tripHeaderTags = tripDescTag +
+            "<div class='col-xs-12 single-plan-header'>" +
+            "<div class='col-xs-3 col-sm-2' style='padding: 0px;'>" +
+            (isDepartAt ? ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>") : "") +
+            "</div>" +
+            "<div class='col-xs-7 col-sm-9 " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
+            (
+            isDepartAt ?
+            ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>") :
+            ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>")
+        ) +
+            sorterTags +
+            "</div>" +
+            "<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px;'>" +
+            (isDepartAt ? "" : ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>")) +
+            "</div>" +
+            "<div class='col-xs-3 col-sm-2' style='padding: 0px;'>" +
+            "</div>" +
+            "<div class='col-xs-7 col-sm-9 tick-labels " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap;'>" +
+            tickLabelTags +
+            "</div>" +
+            "<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px;'>" +
+            "</div>" +
+            "</div>";
+        return tripHeaderTags;
+    }
+
+    function getTickLabelHtmlTags(tickLabels) {
         var tickLabelTags = '';
         //display 3 labels for xs; 7 for sm & md; 10 for lg
         if (tickLabels instanceof Array && tickLabels.length > 1) {
@@ -851,40 +938,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             });
         }
 
-        var sorterTags =
-            '<label' + (isDepartAt ? ' class="sm-sorter-margin-left"' : '') + '>Sort by: </label>' +
-            '<select style="display: inline-block;"' + (isDepartAt ? '' : ' class="sm-sorter-margin-right"') + '>' +
-            '<option value="start-time" ' + (isDepartAt ? ' selected' : '') + '>Departure Time</option>' +
-            '<option value="end-time" ' + (isDepartAt ? '' : ' selected') + '>Arrival Time</option>' +
-            '<option value="cost" >Fare</option>' +
-            '<option value="duration" >Travel Time</option>' +
-            '</select>';
-
-        var tripHeaderTags = tripDescTag +
-            "<div class='col-xs-12 single-plan-header'>" +
-            "<div class='col-xs-3 col-sm-2' style='padding: 0px;'>" +
-            (isDepartAt ? ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>") : "") +
-            "</div>" +
-            "<div class='col-xs-7 col-sm-9 " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
-            (
-            isDepartAt ?
-            ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>") :
-            ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>")
-        ) +
-            sorterTags +
-            "</div>" +
-            "<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px;'>" +
-            (isDepartAt ? "" : ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>")) +
-            "</div>" +
-            "<div class='col-xs-3 col-sm-2' style='padding: 0px;'>" +
-            "</div>" +
-            "<div class='col-xs-7 col-sm-9 " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap;'>" +
-            tickLabelTags +
-            "</div>" +
-            "<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px;'>" +
-            "</div>" +
-            "</div>";
-        return tripHeaderTags;
+        return tickLabelTags;
     }
 
     /**
@@ -918,7 +972,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         //var cssName = removeSpace(mode.toLowerCase()) + "-" + removeSpace(serviceName.toLowerCase());
         var cssName = removeSpace(mode.toLowerCase());
         var modeServiceUrl = "";
-        if (typeof(contact_information) === 'object' && contact_information != null) {
+        if (isValidObject(contact_information)) {
             modeServiceUrl = contact_information.url;
         }
 
@@ -930,7 +984,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         //add missing_info into page look_up
         var eligibleCode = 0;
         if (isMissingInfoFound) {
-            missingInfoLookup[chartDivId] = {
+            _missingInfoLookup[chartDivId] = {
                 data: missingInfoArray
             };
             eligibleCode = checkEligibility(missingInfoArray);
@@ -953,8 +1007,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             " data-end-time-estimated='" + isPlanEndTimeEstimated + "'" +
             " data-mode='" + mode + "'" +
             " data-transfer='" + (typeof(transfers) === 'number' ? transfers.toString() : '0') + "'" +
-            " data-cost='" + ((typeof(cost) === 'object' && cost != null && (typeof(cost.price) === 'number')) ? cost.price : '') + "'" +
-            " data-duration='" + (typeof(duration) === 'object' && duration != null ? parseFloat(duration.sortable_duration) / 60 : '') + "'" +
+            " data-cost='" + ((isValidObject(cost) && (typeof(cost.price) === 'number')) ? cost.price : '') + "'" +
+            " data-duration='" + (isValidObject(duration) ? parseFloat(duration.sortable_duration) / 60 : '') + "'" +
             " data-filter-visible = 1" + 
             " data-eligibility-visible = " + (eligibleCode != -1 ? '1' : '0');
         var tripPlanTags =
@@ -971,7 +1025,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             "</td>" +
             "<td class='trip-mode-cost'>" +
             "<div class='itinerary-text'>" +
-            (typeof(cost) === 'object' && cost != null && (typeof(cost.price) === 'number') ? "$" + cost.price.toFixed(2) : '') +
+            (isValidObject(cost) && (typeof(cost.price) === 'number') ? "$" + cost.price.toFixed(2) : '') +
             "</div>" +
             "</td>" +
             "</tr>" +
@@ -1055,7 +1109,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
      * @return {string}
      */
     function addSingleTripRestrictionQuestion(missingInfo, controlName) {
-        var isMissingInfoFound = (typeof(missingInfo) === 'object' && missingInfo != null && missingInfo.hasOwnProperty('success_condition'));
+        var isMissingInfoFound = (isValidObject(missingInfo) && missingInfo.hasOwnProperty('success_condition'));
 
         if (!isMissingInfoFound) {
             return '';
@@ -1073,7 +1127,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                 var infoOptions = missingInfo.options;
                 if (infoOptions instanceof Array && infoOptions.length > 0) {
                     infoOptions.forEach(function(infoOption) {
-                        if (typeof(infoOption) === 'object' && infoOption != null) {
+                        if (isValidObject(infoOptions)) {
                             answersTags +=
                                 '<label class="radio-inline">' +
                                 '<input type="radio" name="' + controlName + '" ' +
@@ -1125,7 +1179,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
     function checkIfOptionSelected(val, answer) {
         var isSelected = false;
-        if(!(typeof(val) === 'undefined' || val === null || typeof(val) === 'object' || typeof(answer) != 'string') && val.toString() === answer){
+        if(!(typeof(val) === 'undefined' || !isValidObject(val) || typeof(answer) != 'string') && val.toString() === answer){
             isSelected = true;
         }
 
@@ -1161,7 +1215,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                     var className = "travel-legend-" + removeSpace(leg.type.toLowerCase());
                     var legendText = toCamelCase(leg.type);
 
-                    if (!legendClassNames[className]) {
+                    if ($("." + className).length === 0 &&!legendClassNames[className]) {
                         legendClassNames[className] = legendText;
                         legendTags +=
                             "<div class='travel-legend-container'>" +
@@ -1184,8 +1238,6 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
         if (!trips instanceof Array) {
             return;
         }
-
-        var filterTags = '';
 
         var modes = {};
         var minTransfer = 0;
@@ -1213,7 +1265,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
                 //cost
                 var costInfo = tripPlan.cost;
-                if (typeof(costInfo) === 'object' && costInfo != null) {
+                if (isValidObject(costInfo)) {
                     var cost = parseFloat(costInfo.price);
                     if (cost >= 0) {
                         if (minCost < 0 || cost < minCost) {
@@ -1228,7 +1280,7 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
 
                 //duration
                 var durationInfo = tripPlan.duration;
-                if (typeof(durationInfo) === 'object' && durationInfo != null) {
+                if (isValidObject(durationInfo)) {
                     var duration = parseFloat(durationInfo.sortable_duration);
                     if (duration >= 0) {
                         if (minDuration < 0 || duration < minDuration) {
@@ -1248,55 +1300,53 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             });
         });
 
-        //insert modes filter tags
-        var isFirstMode = true;
-        for (var modeId in modes) {
-            if (isFirstMode) {
-                filterTags +=
-                    '<div class = "col-sm-12">' +
-                    '<label class="sr-only">Modes</label>' +
-                    '<label class="col-sm-12">Modes</label>' +
-                    '</div>';
-                isFirstMode = false;
-            }
-
-            filterTags +=
-                '<div class="col-sm-12" id="' + modeContainerId + '">' +
-                '<div class="checkbox" style="margin:0px 0px 0px 10px;">' +
-                '<label>' +
-                '<input type="checkbox" checked=true value=' + modeId + '>' +
-                modes[modeId] +
-                '</label>' +
-                '</div>' +
-                '</div>';
-        }
-
-        var sliderConfigs = [];
-        //insert transfer fitler tags
-        var transferFilter = getTransferFilterHtml(minTransfer, maxTransfer);
-        if (typeof(transferFilter) === 'object' && transferFilter != null) {
-            filterTags += transferFilter.tags;
-            sliderConfigs['transfer'] = transferFilter.sliderConfig;
-        }
-        //insert cost fitler tags
-        var costFilter = getCostFilterHtml(minCost, maxCost);
-        if (typeof(costFilter) === 'object' && costFilter != null) {
-            filterTags += costFilter.tags;
-            sliderConfigs['cost'] = costFilter.sliderConfig;
-        }
-        //insert duration fitler tags
-        var durationFilter = getDurationFilterHtml(minDuration, maxDuration);
-        if (typeof(durationFilter) === 'object' && durationFilter != null) {
-            filterTags += durationFilter.tags;
-            sliderConfigs['duration'] = durationFilter.sliderConfig;
-        }
 
         //render
-        if(filterTags.trim().length > 0) {
-            filterTags = '<div id="filterContainer" class="col-sm-12 well" style="padding: 0px;">' + filterTags + '</div>';
-            $('#' + filterContainerId).append(filterTags);
+        var filterInnerContainerId = 'filterContainer';
+        if($('#' + filterInnerContainerId).length === 0) { //first time renderring filters
+            var filterTags = '';
+
+            //insert modes filter tags
+            filterTags += getModeFilterHtml(modes);
+
+            var sliderConfigs = [];
+            //insert transfer fitler tags
+            var transferFilter = getTransferFilterHtml(minTransfer, maxTransfer);
+            if (isValidObject(transferFilter)) {
+                filterTags += transferFilter.tags;
+                sliderConfigs['transfer'] = transferFilter.sliderConfig;
+            }
+            //insert cost fitler tags
+            var costFilter = getCostFilterHtml(minCost, maxCost);
+            if (isValidObject(costFilter)) {
+                filterTags += costFilter.tags;
+                sliderConfigs['cost'] = costFilter.sliderConfig;
+            }
+            //insert duration fitler tags
+            var durationFilter = getDurationFilterHtml(minDuration, maxDuration);
+            if (isValidObject(durationFilter)) {
+                filterTags += durationFilter.tags;
+                sliderConfigs['duration'] = durationFilter.sliderConfig;
+            }
+
+            if(filterTags.trim().length > 0) {
+                filterTags = '<div id="' + filterInnerContainerId + '" class="col-sm-12 well" style="padding: 0px;">' + filterTags + '</div>';
+                $('#' + filterContainerId).append(filterTags);
+                $('#' + filterContainerId).show();
+            } else {
+                $('#' + filterContainerId).hide(); //if no filter available, then remove its container
+            }
+
+            //enable sliders
+            for (var sliderIndex in sliderConfigs) {
+                var slider = sliderConfigs[sliderIndex];
+                addSliderTooltip(slider);
+            }
         } else {
-            $('#' + filterContainerId).remove(); //if no filter available, then remove its container
+            adjustModeFilters(modes, filterInnerContainerId);
+            adjustTransferFilters(minTransfer, maxTransfer, filterInnerContainerId);
+            adjustCostFilters(minCost, maxCost, filterInnerContainerId);
+            adjustDurationFilters(minDuration, maxDuration, filterInnerContainerId);
         }
 
         //enable mode checkbox event
@@ -1304,12 +1354,70 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             waitForFinalEvent(filterPlans, 100, 'mode change');
         });
 
-        //enable sliders
-        for (var sliderIndex in sliderConfigs) {
-            var slider = sliderConfigs[sliderIndex];
-            addSliderTooltip(slider);
+    }
+
+    /*
+     * create html tags for mode filter
+     * @param {Object}: modes
+     * @return {string} modeFilterTags
+     */
+    function getModeFilterHtml(modes) {
+        var isFirstMode = true;
+        var modeFilterTags = '';
+        for (var modeId in modes) {
+            if (isFirstMode) {
+                modeFilterTags +=
+                    '<div class = "col-sm-12">' +
+                        '<label class="sr-only">Modes</label>' +
+                        '<label class="col-sm-12">Modes</label>' +
+                    '</div>' +
+                    '<div class="col-sm-12" id="' + modeContainerId + '">';
+                isFirstMode = false;
+            }
+
+            modeFilterTags += getModeCheckboxHtml(modeId, modes[modeId]);
         }
 
+        if(!isFirstMode) {
+            modeFilterTags +=
+                '</div>';
+        }
+
+        return modeFilterTags;
+    }
+
+     /*
+     * insert mode checkbox filter
+     * @param {Object}: modes
+     * @return {string} filterInnerContainerId
+     */
+    function adjustModeFilters(modes, filterInnerContainerId) {
+
+        if($('#' + modeContainerId).length === 0 ) {
+            $('#' + filterInnerContainerId).prepend(getModeFilterHtml(modes));
+        } else {
+            for (var modeId in modes) {
+                if($('#' + modeContainerId + ' :checkbox[value=' + modeId + ']').length === 0) {
+                   $('#' + modeContainerId).append(getModeCheckboxHtml(modeId, modes[modeId]));
+                }
+            }
+        }
+    }
+
+     /*
+     * get html checkbox tag for one mode 
+     * @param {string}: modeId
+     * @return {string} modeText
+     */
+    function getModeCheckboxHtml(modeId, modeText) {
+        var modeTag = 
+            '<div class="checkbox" style="margin:0px 0px 0px 10px;">' +
+                '<label>' +
+                    '<input type="checkbox" checked=true value=' + modeId + '>' +
+                    modeText +
+                '</label>' +
+            '</div>';
+        return modeTag;
     }
 
     /*
@@ -1331,8 +1439,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                 '</div>' +
                 '</div>' +
                 '<div class="col-sm-12" style="margin-bottom: 5px;">' +
-                '<span class="pull-left">' + minTransfer.toString() + '</span>' +
-                '<span class="pull-right">' + maxTransfer.toString() + '</span>' +
+                '<span id="' + transferSliderId + '_min_val_label" class="pull-left">' + minTransfer.toString() + '</span>' +
+                '<span id="' + transferSliderId + '_max_val_label" class="pull-right">' + maxTransfer.toString() + '</span>' +
                 '</div>';
             sliderConfig = {
                 id: transferSliderId,
@@ -1348,6 +1456,23 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             tags: tags,
             sliderConfig: sliderConfig
         };
+    }
+
+    function adjustTransferFilters(minTransfer, maxTransfer, filterInnerContainerId) {
+        var filterObj = getTransferFilterHtml(minTransfer, maxTransfer);
+        if(isValidObject(filterObj)) {
+             if($('#' + transferSliderId).length === 0 ) {
+                $('#' + filterInnerContainerId).append(filterObj.tags);                
+            } else {
+                $('#' + transferSliderId).attr('aria-valuemin', minTransfer);
+                $('#' + transferSliderId).attr('aria-valuemax', maxTransfer);
+                $('#' + transferSliderId + '_min_val_label').text(minTransfer);
+                $('#' + transferSliderId + '_max_val_label').text(maxTransfer);
+            }
+            
+            addSliderTooltip(filterObj.sliderConfig);
+        }
+        
     }
 
     /*
@@ -1371,8 +1496,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                 '</div>' +
                 '</div>' +
                 '<div class="col-sm-12" style="margin-bottom: 5px;">' +
-                '<span class="pull-left">$' + minCost.toString() + '</span>' +
-                '<span class="pull-right">$' + maxCost.toString() + '</span>' +
+                '<span id="' + costSliderId + '_min_val_label" class="pull-left">$' + minCost.toString() + '</span>' +
+                '<span id="' + costSliderId + '_max_val_label" class="pull-right">$' + maxCost.toString() + '</span>' +
                 '</div>';
             sliderConfig = {
                 id: costSliderId,
@@ -1388,6 +1513,25 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             tags: tags,
             sliderConfig: sliderConfig
         };
+    }
+
+    function adjustCostFilters(minCost, maxCost, filterInnerContainerId) {
+        var filterObj = getCostFilterHtml(minCost, maxCost);
+        if(isValidObject(filterObj)) {
+             if($('#' + costSliderId).length === 0 ) {
+                $('#' + filterInnerContainerId).append(filterObj.tags);                
+            } else {
+                minCost = getRoundMinValue(minCost);
+                maxCost = getRoundMaxValue(maxCost);
+                $('#' + costSliderId).attr('aria-valuemin', minCost);
+                $('#' + costSliderId).attr('aria-valuemax', maxCost);
+                $('#' + costSliderId + '_min_val_label').text(minCost);
+                $('#' + costSliderId + '_max_val_label').text(maxCost);
+            }
+            
+            addSliderTooltip(filterObj.sliderConfig);
+        }
+        
     }
 
     /*
@@ -1411,8 +1555,8 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                 '</div>' +
                 '</div>' +
                 '<div class="col-sm-12" style="margin-bottom: 5px;">' +
-                '<span class="pull-left">' + minDuration.toString() + 'min</span>' +
-                '<span class="pull-right">' + maxDuration.toString() + 'min</span>' +
+                '<span id="' + durationSliderId + '_min_val_label" class="pull-left">' + minDuration.toString() + 'min</span>' +
+                '<span id="' + durationSliderId + '_max_val_label" class="pull-right">' + maxDuration.toString() + 'min</span>' +
                 '</div>';
             sliderConfig = {
                 id: durationSliderId,
@@ -1428,6 +1572,25 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
             tags: tags,
             sliderConfig: sliderConfig
         };
+    }
+
+    function adjustDurationFilters(minDuration, maxDuration, filterInnerContainerId) {
+        var filterObj = getDurationFilterHtml(minDuration, maxDuration);
+        if(isValidObject(filterObj)) {
+             if($('#' + durationSliderId).length === 0 ) {
+                $('#' + filterInnerContainerId).append(filterObj.tags);                
+            } else {
+                minDuration = getRoundMinValue(minDuration / 60);
+                maxDuration = getRoundMaxValue(maxDuration / 60);
+                $('#' + durationSliderId).attr('aria-valuemin', minDuration);
+                $('#' + durationSliderId).attr('aria-valuemax', maxDuration);
+                $('#' + durationSliderId + '_min_val_label').text(minDuration);
+                $('#' + durationSliderId + '_max_val_label').text(maxDuration);
+            }
+            
+            addSliderTooltip(filterObj.sliderConfig);
+        }
+        
     }
 
     /*
@@ -1946,6 +2109,69 @@ function TripReviewPageRenderer(intervalStep, barHeight) {
                 }
             });
         }
+    }
+
+    /*
+     * get round value
+     * e.g., 75 -> 75
+     *    (75, 76] -> 76
+     * @param {number}
+     */
+    function getRoundMaxValue(rawValue) {
+        if (typeof(rawValue) != 'number') {
+            return null;
+        }
+
+        var roundValue = parseInt(rawValue);
+        return (rawValue === roundValue) ? roundValue : (roundValue + 1);
+    }
+
+    /*
+     * get round value
+     * e.g., [75, 76) -> 75
+     * @param {number}
+     */
+    function getRoundMinValue(rawValue) {
+        if (typeof(rawValue) != 'number') {
+            return null;
+        }
+
+        return parseInt(rawValue);
+    }
+
+    /*
+     * Generate Camel case
+     * @param {string} str
+     * @return {string}
+     */
+    function toCamelCase(str) {
+        if (typeof(str) != 'string') {
+            return '';
+        }
+        return str.replace(/(?:^|\s)\w/g, function(match) {
+            return match.toUpperCase();
+        });
+    }
+
+    /*
+     * remove spaces within a string
+     * @param {string} str
+     * @return {string}
+     */
+    function removeSpace(str) {
+        if (typeof(str) != 'string') {
+            return '';
+        }
+        return str.replace(/\s+/g, '');
+    }
+
+    /*
+     * check a variable is a valid object (is Object type, not null)
+     * @param {object} obj
+     * @return {bool}
+     */
+    function isValidObject(obj) {
+        return typeof(obj) === 'object' && obj != null;
     }
 
     //public methods

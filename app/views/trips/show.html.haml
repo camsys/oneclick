@@ -33,8 +33,8 @@
   :javascript
     $(function() {
       var tripResponse = #{@tripResponse.to_json};
-      var pageRenderer = new TripReviewPageRenderer(30, 20);
-      pageRenderer.processTripResponse(tripResponse);
+      var pageRenderer = new TripReviewPageRenderer(30, 20, tripResponse);
+      pageRenderer.processTripResponse();
 
       //click chart to show details in modal dialog
       d3.selectAll("rect")
