@@ -1195,7 +1195,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         }
 
         return (
-            '<p">' +
+            '<p>' +
             '<label class="control-label"style="margin-right: 10px;">' + infoLongDesc + '</label>' +
             answersTags +
             '</p>'

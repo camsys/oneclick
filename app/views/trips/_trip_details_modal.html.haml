@@ -2,8 +2,10 @@
   .modal-content
     .modal-body{style: "padding: 0px;"}
       .col-sm-12.well{style: "padding: 5px;"}
-        %label.col-sm-12{style: "padding: 0px;"}
-          = "#{t(:trip_details)} - " + @itinerary.trip_part.description_without_direction
+        .col-sm-12{style: "padding: 5px 0px;"}
+          %button.btn.btn-default.pull-right.action-button{"type" => "button", "data-dismiss" => "modal"}=t(:close)
+          %b.modal-title
+            = "#{t(:trip_details)} - " + @itinerary.trip_part.description_without_direction
         = render :partial => 'trip_plan_summary_header', :locals => { :itinerary => @itinerary }
         - if @itinerary.is_mappable
           .col-sm-12{style: "background: white; margin-bottom: 5px; border-radius: 5px; overflow-y:auto; max-height: 300px; padding: 5px;"}
@@ -13,7 +15,5 @@
         - else
           .col-sm-12{style: "height: 300px; background: white; border-radius: 5px;"}
             = render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
-    .modal-footer
-      %button.btn.btn-default.action-button{"type" => "button", "data-dismiss" => "modal"}=t(:close)
 
 = yield :scripts
