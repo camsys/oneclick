@@ -457,7 +457,7 @@ es:
   email_addresses: 'Correos electrónicos'
   start: "START: "
   start_time: "[es324]Start Time[/es]"
-  times: "[es456]Times[/es]"
+  times: "[es456]Time[/es]"
   end_time: "[es325]End Time[/es]"
   walk_time: "es[326]Walk Time[/es]"
   transit_time: "[es327]Transit Time[/es]"

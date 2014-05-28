@@ -458,7 +458,7 @@ en:
   email_addresses: 'Email addresses'
   start: "START: "
   start_time: "Start Time"
-  times: "Times"
+  times: "Time"
   end_time: "End Time"
   walk_time: "Walk Time"
   transit_time: "Transit Time"
