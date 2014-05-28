@@ -166,7 +166,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
           url: url
         })
           .done(function( response ) {
-            console.log(response);
             //update _tripResponse
             if(isValidObject(response) && response.itineraries instanceof Array) {
                 updateTripPartItineraries(tripPartId, response.itineraries);
