@@ -24,11 +24,6 @@ include SeedsHelpers
     desc: 'You must be 65 or older to use this service. Please confirm your birth year.'},
 {klass:Characteristic, characteristic_type: 'personal_factor', code: 'walk_distance', name: 'Walk distance', note: 'Are you able to comfortably walk for 5, 10, 15, 20, 25, 30 minutes?', datatype: 'disabled'},
 
- # Modes
- { klass: Mode, active: 1, name: 'Transit', code: 'mode_transit'},
- { klass: Mode, active: 1, name: 'Paratransit', code: 'mode_paratransit', elig_dependent: true},
- { klass: Mode, active: 1, name: 'Taxi', code: 'mode_taxi'},
-
 #Traveler accommodations 
 {klass:Accommodation, code: 'folding_wheelchair_accessible', name: 'Folding wheelchair accessible.', note: 'Do you need a vehicle that has space for a folding wheelchair?', datatype: 'bool'}, 
 {klass:Accommodation, code: 'motorized_wheelchair_accessible', name: 'Motorized wheelchair accessible.', note: 'Do you need a vehicle than has space for a motorized wheelchair?', datatype: 'bool'}, 

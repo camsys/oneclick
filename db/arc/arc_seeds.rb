@@ -43,12 +43,6 @@ include SeedsHelpers
  {klass: ServiceType, code: 'taxi', name: 'Taxi', note: 'Taxi services.'},
  {klass: ServiceType, code: 'rideshare', name: 'Rideshare', note: 'Ride-sharing services.'},
 
- # Modes
- { klass: Mode, active: 1, name: 'Transit', code: 'mode_transit'},
- { klass: Mode, active: 1, name: 'Paratransit', code: 'mode_paratransit', elig_dependent: true},
- { klass: Mode, active: 1, name: 'Taxi', code: 'mode_taxi'},
- { klass: Mode, active: 1, name: 'Rideshare', code: 'mode_rideshare'},
-
  #trip_purposes 
  {klass: TripPurpose, code: 'work', name: 'Work', note: 'Work-related trip.', active: 1, sort_order: 2},
  {klass: TripPurpose, code: 'training', name: 'Training/Employment', note: 'Employment or training trip.', active: 1, sort_order: 2},
@@ -63,3 +57,6 @@ include SeedsHelpers
   structured_hash = structure_records_from_flat_hash record
   build_internationalized_records structured_hash
 end
+
+# Activate additional modes
+Mode.unscoped.find_by_code('mode_rideshare').update_attributes(active: 1)

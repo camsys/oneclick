@@ -35,11 +35,6 @@ include SeedsHelpers
 {klass: ServiceType, code: 'transit', name: 'Fixed-route Transit', note: 'This is a transit service.'},
 {klass: ServiceType, code: 'taxi', name: 'Taxi', note: 'Taxi services.'},
 
-  # Modes
- { klass: Mode, active: 1, name: 'Transit', code: 'mode_transit'},
- { klass: Mode, active: 1, name: 'Paratransit', code: 'mode_paratransit', elig_dependent: true},
- { klass: Mode, active: 1, name: 'Taxi', code: 'mode_taxi'},
-
  #trip_purposes
 {klass:TripPurpose,  code: 'work', name: 'Work', note: 'Work-related trip.', active: 1, sort_order: 2},
 {klass:TripPurpose,  code: 'medical', name: 'Medical', note: 'General medical trip.', active: 1, sort_order: 2},
