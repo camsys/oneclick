@@ -136,7 +136,7 @@ class TripPart < ActiveRecord::Base
     end
 
     if mode == 'TRANSIT,WALK' and result
-      itins += check_for_long_walks(itins)
+      check_for_long_walks(itins)
     end
 
     # Don't hide duplicate itineraries in new UI
@@ -157,9 +157,11 @@ class TripPart < ActiveRecord::Base
       end
     end
     if long_walks
-      return create_fixed_route_itineraries('CAR,TRANSIT,WALK')
+      #KISS N RIDE
+      create_fixed_route_itineraries('CAR,TRANSIT,WALK')
+      #PARK N RIDE
+      return create_fixed_route_itineraries("CAR_PARK,TRANSIT,WALK")
     end
-    return []
   end
 
   # Note not called for now.

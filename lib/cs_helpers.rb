@@ -203,7 +203,6 @@ module CsHelpers
   # Retuens a pseudo-mode for an itinerary. The pseudo-mode is used to determine
   # the correct icon, title, and partial for an itinerary
   def get_pseudomode_for_itinerary(itinerary)
-
     if itinerary.is_walk
       mode_code = 'walk'
     elsif itinerary.mode.code == 'mode_paratransit'
