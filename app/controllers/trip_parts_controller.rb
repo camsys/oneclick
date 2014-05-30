@@ -17,8 +17,11 @@ class TripPartsController < PlaceSearchingController
   def itineraries
     @trip_part = TripPart.find(params[:id])
     @modes = Mode.where(code: params[:mode])
-    @trip_part.remove_existing_itineraries(@modes)
-    @itineraries = @trip_part.create_itineraries(@modes)
+    params[:regen] = (params[:regen] || true).to_bool
+    if params[:regen]
+      @trip_part.remove_existing_itineraries(@modes)
+      @itineraries = @trip_part.create_itineraries(@modes)
+    end
     if @itineraries.each {|i| i.save }
       respond_to do |f|
         f.json { render json: @itineraries, root: 'itineraries', each_serializer: ItinerarySerializer }
