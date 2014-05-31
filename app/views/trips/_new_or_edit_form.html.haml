@@ -23,18 +23,34 @@
                 input_html: { tabindex: 1 }
 
               :javascript
-                $(function () {
-                  $('#tripOptions :radio').change(function() {
-                    if(this.value === '0') {
-                      $('#returnDatetimeOptions').hide();
-                    } else {
-                      $('#returnDatetimeOptions').show();
-                    }
-                  });
+                $('#tripOptions :radio').change(function() {
+                  if(this.value === '0') {
+                    $('#returnDatetimeOptions').hide();
+                  } else {
+                    $('#returnDatetimeOptions').show();
+                  }
                 });
 
-          = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes,
-          input_html: { tabindex: 1 }
+          #baseModes
+            = f.input :modes, as: :check_boxes, collection: @modes,
+            label_method: :first, value_method: :last, checked: @selected_modes,
+            input_html: { tabindex: 1 }
+
+            :javascript
+              $('#trip_proxy_modes_mode_transit').change(function() {
+                if(this.checked) {
+                  $('#transitModes').show();
+                } else {
+                  $('#transitModes').hide();
+                }
+              });
+
+          #transitModes
+            = f.input :modes, as: :check_boxes, collection: @transit_modes,
+            label_method: :first, value_method: :last, checked: @selected_modes, label: false,
+            collection_wrapper_class: 'col-md-offset-5', collection_wrapper_tag: :div,
+            input_html: { tabindex: 1 }
+
 
           = f.input :trip_purpose_id, :collection =>  TripPurpose.ordered_by_localized_name, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)},
           input_html: { tabindex: 1, class: 'form-control' }

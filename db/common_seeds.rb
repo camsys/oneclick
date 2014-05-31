@@ -40,6 +40,11 @@ u.add_role :system_administrator
 
 ### Internationalized Records ###
 
+# Transit has to be handled separate to support submodes.
+transit_hash =
+  { klass: Mode, active: 1, name: 'Transit', code: 'mode_transit', otp_mode: "TRANSIT,WALK"}
+transit_mode = build_internationalized_records(structure_records_from_flat_hash(transit_hash))
+
 [
   # load the trip statuses
     { klass: TripStatus, active: 1, name: 'New', code: 'trip_status_new'},
@@ -56,11 +61,28 @@ u.add_role :system_administrator
     { klass: RelationshipStatus, name: 'Hidden', code: 'relationship_status_hidden'},
 
  # Modes
- { klass: Mode, active: 1, name: 'Transit', code: 'mode_transit', otp_mode: "TRANSIT,WALK"},
  { klass: Mode, active: 1, name: 'Paratransit', code: 'mode_paratransit', elig_dependent: true},
  { klass: Mode, active: 1, name: 'Taxi', code: 'mode_taxi'},
  { klass: Mode, active: 0, name: 'Rideshare', code: 'mode_rideshare'},
-
+ { klass: Mode, active: 0, name: 'Bicycle', code: 'mode_bicycle', otp_mode: "BICYCLE"},
+ { klass: Mode, active: 0, name: 'Bikeshare', code: 'mode_bikeshare'},
+ { klass: Mode, active: 0, name: 'Drive', code: 'mode_car', otp_mode: "CAR"},
+ { klass: Mode, active: 0, name: 'Walk', code: 'mode_walk', otp_mode: "WALK"},
+ { klass: Mode, active: 1, name: 'Bus and Rail', code: 'mode_bus_rail', otp_mode: "TRANSIT,WALK",
+   parent_id: transit_mode.id },
+ { klass: Mode, active: 1, name: 'Bus Only', code: 'mode_bus', otp_mode: "BUSISH,WALK",
+   parent_id: transit_mode.id },
+ { klass: Mode, active: 1, name: 'Rail Only', code: 'mode_rail', otp_mode: "TRAINISH,WALK",
+   parent_id: transit_mode.id },
+ { klass: Mode, active: 0, name: 'Bike and Ride', code: 'mode_bike_park_transit',
+   otp_mode: "BICYCLE_PARK,WALK,TRANSIT", parent_id: transit_mode.id },
+ { klass: Mode, active: 0, name: 'Kiss and Ride', code: 'mode_car_transit',
+   otp_mode: "CAR,WALK,TRANSIT", parent_id: transit_mode.id },
+ { klass: Mode, active: 0, name: 'Park and Ride', code: 'mode_park_transit',
+   otp_mode: "CAR_PARK,WALK,TRANSIT", parent_id: transit_mode.id },
+ { klass: Mode, active: 0, name: 'Bicycle & Transit', code: 'mode_bike_transit',
+   otp_mode: "TRANSIT,BICYCLE", parent_id: transit_mode.id }
+ 
 ].each do |record|
   structured_hash = structure_records_from_flat_hash record
   build_internationalized_records structured_hash

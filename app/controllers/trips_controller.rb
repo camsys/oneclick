@@ -418,8 +418,13 @@ class TripsController < PlaceSearchingController
 
   def setup_modes
     q = session[:modes_desired] ? Mode.where('code in (?)', session[:modes_desired]) : Mode.all
-    @modes = Mode.all.sort{|a, b| t(a.name) <=> t(b.name)}.collect do |m|
+    @modes = Mode.top_level.where("code <> 'mode_transit'").sort{|a, b| t(a.name) <=> t(b.name)}.collect do |m|
       [t(m.name), m.code]
+    end
+    transit = Mode.transit
+    @modes << [t(transit.name), transit.code]
+    @transit_modes = transit.submodes.sort{|a, b| t(a.name) <=> t(b.name)}.collect do |t|
+      [t(t.name), t.code]
     end
     @selected_modes = q.collect{|m| m.code}
   end

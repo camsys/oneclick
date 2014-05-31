@@ -429,3 +429,8 @@ $legend-height: 20px;
 .mode_rideshare {
   background-image: image-url('rideshare.png');
 }
+
+/* Compensate for bottom margin to bring up transit submodes */
+#transitModes {
+    margin-top: -15px;
+}

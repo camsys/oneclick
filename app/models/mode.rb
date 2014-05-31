@@ -10,8 +10,10 @@ class Mode < ActiveRecord::Base
   # attr_accessible :id, :name, :active
     
   # set the default scope
-  default_scope {where('active = ? and parent_id is null', true)}
+  default_scope {where('active = ?', true)}
 
+  scope :top_level, -> { where parent_id: nil }
+  
   def self.transit
     where("code = 'mode_transit'").first
   end

@@ -33,6 +33,7 @@ module SeedsHelpers
       puts "Failed to save #{p.ai} because: #{e.message}"
       raise e
     end
+    return record
   end
 
   ## Take a flat hash and structure it, for the build_internationalized_records function
