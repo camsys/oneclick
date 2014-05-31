@@ -46,6 +46,7 @@ class Ability
 
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
       can :read, Agency # all agencies are viewable
+      can :full_read, Agency # read gives access to only contact info.  full_read offers staff, internal contact, etc.
       can [:update, :destroy], Agency, id: user.agency.try(:id), active: true
       can [:update], Agency do |a|  # edit privilege over sub agencies
         user.agency.present? && user.agency.sub_agencies.include?(a)
@@ -73,6 +74,7 @@ class Ability
       can [:access], :admin_feedback
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
       can :read, Agency
+      can :full_read, Agency # read gives access to only contact info.  full_read offers staff, internal contact, etc.
       can [:create, :show], User #can find any user if they search, can create a user
       can [:update, :full_info, :assist], User do |u| # agents have extra privileges for users that have approved the agency
         u.approved_agencies.include? user.try(:agency)
@@ -94,9 +96,9 @@ class Ability
       can [:access], :admin_feedback
 
       can [:index, :show], Report
-      can [:read], Provider, id: user.try(:provider_id)
+      can [:read, :full_read], Provider, id: user.try(:provider_id) # full read includes add'l information.  All users can read contact info
       can [:update, :destroy], Provider, id: user.try(:provider_id), active: true
-      can [:update, :show], Service do |s|
+      can [:update, :show, :full_read], Service do |s|
         user.provider.services.include?(s)
       end
       can :create, Service
@@ -105,6 +107,17 @@ class Ability
     can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
     can [:read, :update, :full_info], User, :id => user.id
     can :geocode, :util
+    can :rate, Trip do |t|
+      t.user == user || t.creator == user # allow an assisting agent to review trips while on the phone
+    end
+    can :show, Service # Will have view privileges for individual info purposes
+    can :rate, Service
+    can :show, Provider # Will have view privileges for individual info purposes
+    can :rate, Provider
+    can :show, Agency # Will have view privileges for individual info purposes
+    can :rate, Agency do |a|
+      a.id != user.agency.try(:id) # Cannot rate your own agency
+    end
   end
 
 end

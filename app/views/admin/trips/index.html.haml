@@ -45,7 +45,7 @@
             -else
               =t(:no_answer_str)
           %td.center.nowrap
-            =get_rating_icons(trip)
+            = ratings_for(trip)
           %td.center.nowrap
             =link_to '#', {href: '#user_comments_' + trip.id.to_s, class: 'btn btn-block', data: {toggle: 'modal'}} do
               %i.fa.fa-pencil

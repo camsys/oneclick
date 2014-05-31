@@ -135,7 +135,6 @@ class ServicesController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
     
 protected
   def service_params

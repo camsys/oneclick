@@ -111,6 +111,19 @@ class Admin::AgenciesController < ApplicationController
   end
 end
 
+def rate
+  @agency = Agency.find(params[:id])
+  @user =  User.find_by(id: params[:user_id]) || current_user
+  if @agency && @user
+    @rate = @agency.rate(@user, params[:ratings][:value], params[:ratings][:comments])
+  end
+  @rateable = @agency
+  
+  respond_to do |format|
+    format.js { render 'ratings/rate' }
+  end
+end
+
 private
 
 def agency_params params

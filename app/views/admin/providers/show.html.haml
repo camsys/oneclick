@@ -1,6 +1,7 @@
 .row
   .col-sm-6.pull-left
-    = link_to t(:all_providers), admin_providers_path
+    - if can? :index, Provider
+      = link_to t(:all_providers), admin_providers_path
     %h2
       = @provider.name
     - unless @provider.active
@@ -18,6 +19,11 @@
       = button_to t(:delete), { action: "destroy", id: @provider.id }, method: :delete,
       data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default",
       form_class: "form-horizontal pull-right"
+    -if can? :rate, @provider
+      %button.btn.pull-right{data: {toggle: 'modal', target: "#feedback_modal"}}
+        = t(:feedback)
+      = @provider.rating_in_stars(2)
+= render partial: "ratings/organization_feedback_modal", locals: {rateable: @provider}
 
 .row
   .col-sm-6
@@ -54,75 +60,77 @@
               - if @provider.url
                 %b= link_to @provider.url, @provider.url
 
-  .col-sm-6
-    .panel.panel-default
-      .panel-heading
-        %h4.panel-title= t(:internal_contact)
-      .panel-body
-        %table.table.table-condensed
-          %tr
-            %td.text-right
-              = t(:name) + ": "
-            %td.text-left
-              %b= @provider.internal_contact_name
-          %tr
-            %td.text-right
-              = t(:title)+": "
-            %td.text-left
-              %b= @provider.internal_contact_title
-          %tr
-            %td.text-right
-              = t(:phone)+ ": "
-            %td.text-left
-              %b= @provider.internal_contact_phone
-          %tr
-            %td.text-right
-              = t(:email)+ ":  "
-            %td.text-left
-              %b= mail_to @provider.internal_contact_email
-          - if @contact
+  - if can? :full_read, @provider
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          %h4.panel-title= t(:internal_contact)
+        .panel-body
+          %table.table.table-condensed
             %tr
               %td.text-right
-                = t(:user) + ": "
+                = t(:name) + ": "
               %td.text-left
-                %b= link_to @contact.name, admin_user_path(@contact)
+                %b= @provider.internal_contact_name
+            %tr
+              %td.text-right
+                = t(:title)+": "
+              %td.text-left
+                %b= @provider.internal_contact_title
+            %tr
+              %td.text-right
+                = t(:phone)+ ": "
+              %td.text-left
+                %b= @provider.internal_contact_phone
+            %tr
+              %td.text-right
+                = t(:email)+ ":  "
+              %td.text-left
+                %b= mail_to @provider.internal_contact_email
+            - if @contact
+              %tr
+                %td.text-right
+                  = t(:user) + ": "
+                %td.text-left
+                  %b= link_to @contact.name, admin_user_path(@contact)
               
 
-.panel.panel-default
-  .panel-heading
-    %h4.panel-title= t(:staff_actions)
-  .panel-body
-    %table.ALTtable.table-condensed
-      %tr
-        %th.text-left
-          = t(:name)
-        %th.text-left
-          = t(:title)
-        %th.text-left
-          = t(:phone)
-        %th.text-left
-          = t(:email)
-
-      - if @staff.count > 0
-        - @staff.each do |s|
-          %tr
-            %td.text-left
-              %b= s.name.to_s
-            %td.text-left
-              %b= s.title.to_s
-            %td.text-left
-              %b= s.phone.to_s
-            %td.text-left
-              %b= mail_to s.email.to_s
-      - else
+-if can? :full_read, @provider
+  .panel.panel-default
+    .panel-heading
+      %h4.panel-title= t(:staff_actions)
+    .panel-body
+      %table.ALTtable.table-condensed
         %tr
-          %td= t(:nothing_found_sorry)
+          %th.text-left
+            = t(:name)
+          %th.text-left
+            = t(:title)
+          %th.text-left
+            = t(:phone)
+          %th.text-left
+            = t(:email)
 
-.panel.panel-default
-  .panel-heading
-    %h4.panel-title= t(:services)
-  .panel-body
-    = render 'services/table'
+        - if @staff.count > 0
+          - @staff.each do |s|
+            %tr
+              %td.text-left
+                %b= s.name.to_s
+              %td.text-left
+                %b= s.title.to_s
+              %td.text-left
+                %b= s.phone.to_s
+              %td.text-left
+                %b= mail_to s.email.to_s
+        - else
+          %tr
+            %td= t(:nothing_found_sorry)
+
+  .panel.panel-default
+    .panel-heading
+      %h4.panel-title= t(:services)
+    .panel-body
+      = render 'services/table'
 
 :javascript
   $(document).ready(function() {

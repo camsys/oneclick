@@ -97,10 +97,8 @@ Oneclick::Application.routes.draw do
           get   'hide'
           get   'unhide_all'
           get   'skip'
-          post  'rate'
           post  'comments'
           post  'admin_comments'
-          get   'edit_rating'
           get   'email_feedback'
           get   'show_printer_friendly'
           get   'example'
@@ -115,18 +113,10 @@ Oneclick::Application.routes.draw do
           get 'unhide_all'
         end
       end
-
     end
 
-    #Ratings do not come under a user id
-    resources :ratings do
-      member do
-        get   'edit'
-        post  'rate'
-        post  'comments'
-      end
-    end
-
+    patch "providers/:id/rate" => 'providers#rate', as: 'rate_provider' # Effectively a shallow routing.  Not ready to go there yet.
+    patch "agencies/:id/rate" => 'agencies#rate', as: 'rate_agency' # Effectively a shallow routing.  Not ready to go there yet.
     # scope('/kiosk') do
     #   devise_for :users, as: 'kiosk', controllers: {sessions: "kiosk/sessions"}
     # end
@@ -227,10 +217,8 @@ Oneclick::Application.routes.draw do
             get   'hide'
             get   'unhide_all'
             get   'skip'
-            post  'rate'
             post  'comments'
             post  'admin_comments'
-            get   'edit_rating'
             get   'email_feedback'
             get   'show_printer_friendly'
           end
@@ -271,6 +259,7 @@ Oneclick::Application.routes.draw do
         get   'agency_revoke'
       end
       resources :agencies do
+        resources :ratings, only: :new
         get 'travelers'
         get "users/:id/agency_assist", to: "users#assist", as: :agency_assist
         resources 'agency_user_relationships' do
@@ -286,10 +275,17 @@ Oneclick::Application.routes.draw do
         resources :users
         resources :services
         resources :trips, only: [:index, :show]
+        resources :ratings, :only => :new
       end
     end#admin
-
+    
+    # gives a shallow RESTful endpoint for rating any rateable
+    resources :agencies, :trips, :providers, :services, only: [] do
+      resources :ratings, only: [:new, :create]
+    end
+    
     resources :services do
+      resources :ratings, :only => :new
       member do
         get 'view'
       end

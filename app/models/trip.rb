@@ -1,21 +1,13 @@
 class Trip < ActiveRecord::Base
+  include Rateable # mixin to handle all rating methods
   # Associations
   belongs_to :user
   belongs_to :creator, :class_name => "User", :foreign_key => "creator_id"
   belongs_to :trip_purpose
   has_many :trip_places, -> {order("trip_places.sequence ASC")}
   has_many :trip_parts, -> {order("trip_parts.sequence ASC")}
+  has_many :itineraries, :through => :trip_parts, :class_name => 'Itinerary' 
   has_and_belongs_to_many :desired_modes, class_name: 'Mode', join_table: :trips_desired_modes, association_foreign_key: :desired_mode_id
-
-  #Accessible attributes
-  # attr_accessible :user_comments, :taken, :rating, :trip_purpose
-  
-  has_many :itineraries,        :through => :trip_parts, :class_name => 'Itinerary' 
-
-  # We don't actually run these validations; sort of complicated to make it work
-  # and I don't want to deal with it right now.
-  # validate :validate_at_least_one_trip_place
-  # validate :validate_at_least_one_trip_part
 
   # Scopes
   scope :created_between, lambda {|from_day, to_day| where("trips.created_at > ? AND trips.created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
@@ -203,15 +195,6 @@ class Trip < ActiveRecord::Base
     end
   end
 
-  # Returns a numeric rating score for the trip
-  def get_rating
-    if self.rating
-      return self.rating
-    else
-      return 0
-    end
-  end
-
   # removes all trip places and trip parts from the object  
   def clean
     trip_parts.each do |part| 
@@ -304,6 +287,20 @@ class Trip < ActiveRecord::Base
 
   def only_return_selected?
     !trip_parts.first.selected? and trip_parts.last.selected?
+  end
+
+  # Returns an array of selected itineraries on a trip.  Empty array if none selected
+  def selected_itineraries
+    itineraries.where(selected: true)
+  end
+
+  def selected_services
+    # Hack.  Returns an array of AR objects, not an AR association
+    selected_itineraries.map(&:service).uniq.compact
+  end
+
+  def planned_by_agent
+    creator != user && creator.agency # NB: This will also apply to users that are buddies and happen to work for agencies
   end
 
   def md5_hash

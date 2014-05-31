@@ -1,4 +1,5 @@
 class Agency < ActiveRecord::Base
+  include Rateable # mixin to handle all rating methods
   resourcify
 
   belongs_to :parent, class_name: 'Agency'
@@ -43,6 +44,10 @@ class Agency < ActiveRecord::Base
 
   def agency_id
     id
+  end
+
+  def to_s
+    name
   end
 
 end

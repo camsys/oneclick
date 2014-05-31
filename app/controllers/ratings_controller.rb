@@ -1,72 +1,38 @@
 class RatingsController < ApplicationController
 
-  include ApplicationHelper
+  def new
+    if params[:trip_id]
+      rateable = Trip.find(params[:trip_id])
+      target = trip_ratings_path(rateable)
+    elsif params[:agency_id]
+      rateable = Agency.find(params[:agency_id])
+      target = agency_ratings_path(rateable)
+    elsif params[:service_id]
+      rateable = Service.find(params[:service_id])
+      target = service_ratings_path(rateable)
+    elsif params[:provider_id]
+      rateable = Provider.find(params[:provider_id])
+      target = provider_ratings_path(rateable)
+    end
 
-  skip_before_filter :authenticate_user!
-  skip_before_filter :set_locale
-  skip_before_filter :get_traveler
-  skip_before_filter :setup_actions
-  skip_after_filter :clear_location
+    @ratings_proxy = RatingsProxy.new(rateable)
 
-  def comments
-    @trip = Trip.find(params[:id].to_i)
-    @trip.user_comments = params['trip']['user_comments']
-    @trip.save
     respond_to do |format|
-      format.html { redirect_to(root_path, :flash => { :notice => "Thank you for providing feedback about your trip."}) }
-      format.json { head :no_content }
+      format.js { render partial: 'ratings/form', locals: {url: target} }
     end
   end
 
-  def admin_comments
-    @trip = Trip.find(params[:id].to_i)
-    @trip.user_comments = params['trip']['user_comments']
-    @trip.save
-    respond_to do |format|
-      format.html { redirect_to(admin_trips_path, :flash => { :notice => t(:comments_updated)}) }
-      format.json { head :no_content }
+  def create
+    rating_params = params[:ratings]
+    rating_params.keys.each do |k|
+      rateable_params = rating_params[k]
+      rateable = k.constantize.find(rateable_params[:id])
+      r = rateable.rate(current_user, rateable_params[:value], rateable_params[:comments]) if rateable_params[:value]
+      flash[:notice] = t(:rating_submitted_for_approval) if r.valid? # only flash on creation
     end
+
+    redirect_to :back
   end
 
-  def rate
-    @trip = Trip.find(params[:id])
-    @traveler = User.find(params[:user_id])
-    @trip.rating = params[:stars].to_i
-    @trip.save
-
-    size = params[:size] || 1
-
-    new_icon = get_rating_icons(@trip,size)
-
-    respond_to do |format|
-      format.html { redirect_to(root_path) }
-      format.js {render inline: "$('#star" + @trip.id.to_s + "_" + @trip.rating.to_s + "').closest('span').replaceWith(\"" + new_icon + "\");" }
-    end
-  end
-
-  def index
-    @trip = Trip.find(params[:id])
-    @traveler = User.find(params[:user_id])
-
-    unless @trip.md5_hash == params[:hash]
-      render text: t(:error_404), status: 404
-      return
-    end
-
-    if params[:taken] == 'true'
-      @trip.taken = true
-    elsif params[:taken] == 'false'
-      @trip.taken = false
-    else
-      @trip.taken = nil
-    end
-    @trip.save
-
-    respond_to do |format|
-      format.html
-      format.json { render json: @trip }
-    end
-
-  end
 end
 

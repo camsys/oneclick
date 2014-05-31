@@ -60,22 +60,6 @@ module ApplicationHelper
     return elems
   end
 
-  # Returns a set of rating icons as a span
-  def get_rating_icons(trip, size=1)
-    rating = trip.get_rating
-    html = "<span id='stars'>"
-    for i in 1..5
-      link = rate_rating_url(trip, :user_id => trip.user.id, :stars => i, :size => size)
-      html << "<a title='Rate " + i.to_s + " Stars' href=" + link + " style='color: black; text-decoration: none' data-method='post' data-remote='true'><i id=star" + trip.id.to_s + '_' + i.to_s + " class='fa fa-" + size.to_s
-      if i <= rating
-        html << "x fa-star'> </i></a>"
-      else
-        html << "x fa-star-o'> </i></a>"
-      end
-    end
-    html << "</span>"
-    return html.html_safe
-  end
 
   # Returns true if the current user is assisting the traveler, false if the current
   # user is the current traveler

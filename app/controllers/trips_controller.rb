@@ -658,30 +658,6 @@ class TripsController < PlaceSearchingController
     end
   end
 
-  def comments
-    @trip = Trip.find(params[:id].to_i)
-    @trip.user_comments = params['trip']['user_comments']
-    @trip.save
-
-    respond_to do |format|
-      format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => t(:comments_sent)}) }
-      format.json { head :no_content }
-    end
-  end
-
-  def admin_comments
-    @trip = Trip.find(params[:id].to_i)
-    @trip.user_comments = params['trip']['user_comments']
-    @trip.save
-    respond_to do |format|
-      format.html { redirect_to(admin_trips_path, :flash => { :notice => t(:comments_updated)}) }
-      format.json { head :no_content }
-    end
-  end
-
-  def example
-  end
-
   def book
     @itinerary = Itinerary.find(params[:itin].to_i )
     eh = EcolaneHelpers.new
@@ -690,7 +666,6 @@ class TripsController < PlaceSearchingController
     respond_to do |format|
       format.json { render json: [result, messages] }
     end
-
   end
 
 protected

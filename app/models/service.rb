@@ -1,4 +1,5 @@
 class Service < ActiveRecord::Base
+  include Rateable # mixin to handle all rating methods
   resourcify
 
   #associations
@@ -154,6 +155,10 @@ class Service < ActiveRecord::Base
     else
       return self.provider.get_attr(attribute_sym)
     end
+  end
+
+  def to_s
+    name
   end
   
 end

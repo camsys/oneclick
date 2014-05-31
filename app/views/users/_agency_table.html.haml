@@ -8,7 +8,7 @@
     - user.agency_user_relationships.each do |relationship|
       %tr
         %td
-          = relationship.agency.name
+          = link_to(relationship.agency.name, admin_agency_path(relationship.agency))
         %td
           = t(relationship.relationship_status)
         %td

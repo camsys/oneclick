@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140529160145) do
+ActiveRecord::Schema.define(version: 20140523191229) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -211,18 +211,15 @@ ActiveRecord::Schema.define(version: 20140529160145) do
     t.string  "internal_contact_email", limit: 128
   end
 
-  create_table "rates", force: true do |t|
-    t.integer  "rater_id"
+  create_table "ratings", force: true do |t|
+    t.integer  "user_id"
     t.integer  "rateable_id"
     t.string   "rateable_type"
-    t.integer  "stars",         null: false
-    t.string   "dimension"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.integer  "value",         null: false
+    t.text     "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
-
-  add_index "rates", ["rateable_id", "rateable_type"], name: "index_rates_on_rateable_id_and_rateable_type", using: :btree
-  add_index "rates", ["rater_id"], name: "index_rates_on_rater_id", using: :btree
 
   create_table "relationship_statuses", force: true do |t|
     t.string "name", limit: 64
@@ -247,8 +244,8 @@ ActiveRecord::Schema.define(version: 20140529160145) do
     t.datetime "updated_at",               null: false
   end
 
-  add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
-  add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
+  add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
+  add_index "roles", ["name"], :name => "index_roles_on_name"
 
   create_table "schedules", force: true do |t|
     t.integer  "service_id",                   null: false
@@ -326,7 +323,7 @@ ActiveRecord::Schema.define(version: 20140529160145) do
     t.integer "service_id", null: false
   end
 
-  add_index "services_users", ["service_id", "user_id"], name: "index_services_users_on_service_id_and_user_id", using: :btree
+  add_index "services_users", ["service_id", "user_id"], :name => "index_services_users_on_service_id_and_user_id"
 
   create_table "translations", force: true do |t|
     t.string   "key"
@@ -353,7 +350,7 @@ ActiveRecord::Schema.define(version: 20140529160145) do
     t.datetime "scheduled_time"
   end
 
-  add_index "trip_parts", ["trip_id", "sequence"], name: "index_trip_parts_on_trip_id_and_sequence", using: :btree
+  add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"
 
   create_table "trip_places", force: true do |t|
     t.integer  "trip_id"
@@ -394,11 +391,9 @@ ActiveRecord::Schema.define(version: 20140529160145) do
     t.integer  "user_id"
     t.integer  "trip_purpose_id"
     t.integer  "creator_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.string   "user_comments",   limit: 1000
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.boolean  "taken"
-    t.integer  "rating"
     t.date     "scheduled_date"
     t.datetime "scheduled_time"
   end
@@ -487,9 +482,9 @@ ActiveRecord::Schema.define(version: 20140529160145) do
     t.string   "phone",                  limit: 25
   end
 
-  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token"
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "value_relationships", force: true do |t|
     t.string   "relationship", limit: 64

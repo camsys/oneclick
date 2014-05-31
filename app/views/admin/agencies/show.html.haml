@@ -1,6 +1,7 @@
 .row
   .col-sm-6.pull-left
-    = link_to t(:all_agencies), admin_agencies_path
+    - if can? :index, Agency
+      = link_to t(:all_agencies), admin_agencies_path
     %h2= @agency.name
     -unless @agency.active
       %p= t(:inactive)
@@ -10,8 +11,11 @@
         = icon_label(:edit)
     - if can? :destroy, @agency
       = button_to t(:delete), { action: "destroy", id: @agency.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: 'btn action-button btn-default', form_class: "form-horizontal pull-right"
-
-
+    -if can? :rate, @agency
+      = @agency.rating_in_stars(2)
+      %button.btn.pull-right{data: {toggle: 'modal', target: "#feedback_modal", remote: new_agency_rating_path(@agency)}}
+        = t(:feedback)
+= render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
 .row
   .col-sm-6
     .panel.panel-default
@@ -51,77 +55,79 @@
               = t(:parent_agency) + ":  "
             %td.text-left{colspan: 4}
               %b= @agency.parent.name if @agency.parent
-  .col-sm-6
-    .panel.panel-default
-      .panel-heading
-        %h4.panel-title= t(:internal_contact)
-      .panel-body
-        %table.table.table-condensed
-          %tr
-            %td.text-right
-              = t(:name) + ": "
-            %td.text-left
-              %b= @agency.internal_contact_name
-          %tr
-            %td.text-right
-              = t(:title)+": "
-            %td.text-left
-              %b= @agency.internal_contact_title
-          %tr
-            %td.text-right
-              = t(:phone)+ ": "
-            %td.text-left
-              %b= @agency.internal_contact_phone
-          %tr
-            %td.text-right
-              = t(:email)+ ":  "
-            %td.text-left
-              %b= mail_to @agency.internal_contact_email
-          - if @contact
+  - if can? :full_read, @agency
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          %h4.panel-title= t(:internal_contact)
+        .panel-body
+          %table.table.table-condensed
             %tr
               %td.text-right
-                = t(:user) + ": "
+                = t(:name) + ": "
               %td.text-left
-                %b= @contact.name
-.panel.panel-default#staff
-  .panel-heading
-    %h3= t(:staff_actions)
-  .panel-body
-    %h4= t(:administrators)
-    %table.ALTtable.table-condensed#admin_table
-      %thead
-        %tr
-          %th= t(:name)
-          %th= t(:title)
-          %th= t(:phone)
-          %th= t(:email)
-      %tbody
-        - @admins.each do |s|
+                %b= @agency.internal_contact_name
+            %tr
+              %td.text-right
+                = t(:title)+": "
+              %td.text-left
+                %b= @agency.internal_contact_title
+            %tr
+              %td.text-right
+                = t(:phone)+ ": "
+              %td.text-left
+                %b= @agency.internal_contact_phone
+            %tr
+              %td.text-right
+                = t(:email)+ ":  "
+              %td.text-left
+                %b= mail_to @agency.internal_contact_email
+            - if @contact
+              %tr
+                %td.text-right
+                  = t(:user) + ": "
+                %td.text-left
+                  %b= @contact.name
+- if can? :full_read, @agency
+  .panel.panel-default#staff
+    .panel-heading
+      %h3= t(:staff_actions)
+    .panel-body
+      %h4= t(:administrators)
+      %table.ALTtable.table-condensed#admin_table
+        %thead
           %tr
-            %td= s.name.to_s
-            %td= s.title.to_s
-            %td= s.phone.to_s
-            %td= mail_to s.email.to_s
+            %th= t(:name)
+            %th= t(:title)
+            %th= t(:phone)
+            %th= t(:email)
+        %tbody
+          - @admins.each do |s|
+            %tr
+              %td= s.name.to_s
+              %td= s.title.to_s
+              %td= s.phone.to_s
+              %td= mail_to s.email.to_s
 
-    %h4= t(:agents)
-    %table.ALTtable.table-condensed#agent_table
-      %thead
-        %tr
-          %th= t(:name)
-          %th= t(:title)
-          %th= t(:phone)
-          %th= t(:email)
-      %tbody
-        - @agents.each do |s|
+      %h4= t(:agents)
+      %table.ALTtable.table-condensed#agent_table
+        %thead
           %tr
-            %td
-              = s.name.to_s
-            %td
-              = s.title.to_s
-            %td
-              = s.phone.to_s
-            %td
-              = mail_to s.email.to_s
+            %th= t(:name)
+            %th= t(:title)
+            %th= t(:phone)
+            %th= t(:email)
+        %tbody
+          - @agents.each do |s|
+            %tr
+              %td
+                = s.name.to_s
+              %td
+                = s.title.to_s
+              %td
+                = s.phone.to_s
+              %td
+                = mail_to s.email.to_s
 
 :javascript
   $(document).ready(function() {

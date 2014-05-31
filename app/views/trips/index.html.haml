@@ -10,68 +10,9 @@
           %label.add-on{:for => 'time_filter'}= t(:filter)
           = select_tag(:time_filter_type, options_for_select(trip_filters.collect{|r| [r[:value], r[:id]]}, :selected => @time_filter_type), :style => 'margin-top:0px', :id => 'time_filter')
         
-- if @trips.count > 0
-  %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable
-    %thead
-      %tr
-        %th{:style => 'width:26px'}
-        %th= t(:trip_date)
-        %th= t(:from)
-        %th= t(:to)
-        %th= t(:trip_purpose)
-        %th.center= t(:rating)
-        %th.center= t(:comments)
-        %th.center= t(:actions)
-        - if Rails.env.development?
-          %th.center= t(:max_notes)
-    %tbody{ :id => 'trips_table'}
-      - @trips.each do |trip|
-        %tr
-          - if trip.in_the_future
-            %td.center.nowrap          
-              %i.fa.fa-asterisk
-          - else
-            %td.center.nowrap          
-
-          %td.nowrap= format_date(trip.trip_datetime)
-          %td= trip.from_place.name
-          %td= trip.to_place.name
-          %td= t(trip.trip_purpose.name)
-          %td.nowrap.center= get_rating_icons(trip)
-          %td.center.no_wrap
-            =link_to '#', {href: '#user_comments_' + trip.id.to_s, class: 'btn btn-block', data: {toggle: 'modal'}} do
-              %i.fa.fa-pencil
-          - if trip.in_the_future
-            %td.center.nowrap          
-              = link_to user_trip_path(@traveler, trip), {:class => "btn btn-sm", :alt => t(:plan_trip), :title => t(:plan_trip)} do
-                %i.fa.fa-mail-forward
-              = link_to edit_user_trip_path(@traveler, trip), {:class => "btn btn-sm", :alt => t(:edit_trip), :title => t(:edit_trip)} do
-                %i.fa.fa-edit
-              = link_to user_trip_path(@traveler, trip), {:alt => t(:remove_trip), :title => t(:remove_trip), :class => "btn btn-sm btn-danger delete-button", :method => :delete, :confirm => t(:confirm_remove_trip)} do
-                %i.fa.fa-times
-          - else
-            %td.center.nowrap          
-              = link_to repeat_user_trip_path(@traveler, trip), {:alt => t(:repeat_trip), :title => t(:repeat_trip), :class => "btn btn-sm"} do
-                %i.fa.fa-rotate-right
-              -# = link_to user_trip_path(@traveler, trip), {:alt => t(:rate_trip), :title => t(:rate_trip), :class => "btn btn-sm"} do
-                -# %i.fa.fa-thumbs-up
-          - if Rails.env.development?
-            %td= "%s / %s" % [trip.outbound_part.max_notes_count, trip.return_part.max_notes_count]
-        = render partial: 'user_comments', locals: {trip: trip}
-
-- else
-  .row
-    .col-sm-12
-      %h4= @time_filter_type == "100" ? t(:no_trips_found) : t(:no_matching_trips_found)
+= render partial: "trips_display_table", locals: {trips: @trips, traveler: @traveler}
 
 = link_to(t(:plan_a_trip), new_user_trip_path(@traveler))
-
-= render partial: 'shared/parameterized_datatable_javascript', locals: { table_id: '#datatable',
-  object_plural: 'trips',
-  sLengthMenu: t(:menu__object_plural_per_page, o: 'trips'),
-  sInfo: t(:showing__start__to__end__of__total__object_plural, o: 'trips'),
-  object_singular: 'trip',
-  bLengthChange: false, bSort: true} unless @trips.empty?
 
 :javascript
   

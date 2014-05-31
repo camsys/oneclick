@@ -1,4 +1,5 @@
 class Provider < ActiveRecord::Base
+  include Rateable # mixin to handle all rating methods
   resourcify
 
   #associations
@@ -32,6 +33,10 @@ class Provider < ActiveRecord::Base
 
   def get_attr(attribute_sym)
     return [attribute_sym, self.send(attribute_sym)]
+  end
+
+  def to_s
+    name
   end
 
 end
