@@ -208,7 +208,8 @@ class TripPart < ActiveRecord::Base
 
     itins = itins.collect do |itinerary|
       new_itinerary = Itinerary.new(itinerary)
-      fh.calculate_fare(new_itinerary)
+      new_itinerary.trip_part = self
+      fh.calculate_fare(self, new_itinerary)
       new_itinerary
     end
 

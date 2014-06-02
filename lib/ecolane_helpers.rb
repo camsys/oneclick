@@ -88,6 +88,34 @@ class EcolaneHelpers
     send_request(url, 'POST', order)
   end
 
+  def query_fare(itinerary)
+    url_options =  "/api/order/" + SYSTEM_ID + "/queryfare"
+    url = BASE_URL + url_options
+    funding_options = query_funding_options(itinerary)
+    funding_xml = Nokogiri::XML(funding_options.body)
+    order =  build_order(itinerary, funding_xml)
+    order = Nokogiri::XML(order)
+    order.children.first.set_attribute('version', '2')
+    order = order.to_s
+    resp = send_request(url, 'POST', order)
+    if resp.code != "200"
+      Honeybadger.notify(
+          :error_class   => "Unable to query fare",
+          :error_message => "Service failure: fixed: resp.code not 200, #{resp.message}",
+          :parameters    => {resp_code: resp.code, resp: resp}
+      )
+      return false, {'id'=>resp.code.to_i, 'msg'=>resp.message}
+    end
+    fare = unpack_fare_response(resp, itinerary)
+    return true, fare
+  end
+
+  def unpack_fare_response (resp, itinerary)
+    resp_xml = Nokogiri::XML(resp.body)
+    client_copay = resp_xml.xpath("fare").xpath("client_copay").text
+    return client_copay.to_f/100.0
+  end
+
 
   ## GET Operations
   def fetch_customer_information(customer_id, funding=false, locations=false)
