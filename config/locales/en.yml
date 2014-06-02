@@ -162,7 +162,7 @@ en:
   filter: "Filter"
   ratings: "Ratings"
   no_ratings_yet: "No ratings approved yet"
-  rating_submitted_for_approval: "Rating submitted for approval"
+  rating_submitted_for_approval: "Your %{rateable} rating has been submitted for approval"
   submit_review: "Submit Feedback"
   feedback_comments: "Please enter any feedback you would like to share"
   feedback_rating: "Rating (1-worst, 5-best)"

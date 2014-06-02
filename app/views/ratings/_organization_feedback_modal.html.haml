@@ -3,15 +3,19 @@
     .modal-content
       .panel.panel-default
         .panel-heading
-          %button.btn.action-button.btn-default.pull-right#load_feedback
-            = t(:feedback)
-          %h3= @agency.name
+          %h3
+            = @agency.name
+            %button.btn.action-button.btn-default.pull-right#load_feedback
+              = t(:feedback)
         .panel-body
-          %dl.dl-horizontal
-            -# Run through the RatingsDecorator to get view logic, instead of Rating.rb
-            -@agency.ratings.decorate.each do |r|
-              %dt= r.rating_in_stars
-              %dd= r.comments
+          -unless rateable.ratings.empty?
+            %dl.dl-horizontal
+              - rateable.ratings.decorate.each do |r|
+                %dt.rating-value= r.rating_in_stars
+                %dd.rating-comments= r.comments 
+          -else
+            .alert
+              =t(:no_ratings_yet)
       .modal-footer
         %btn.btn.btn-default.action-button{data: {dismiss: "modal"}}= t(:close)
 -# Load in the form dynamically

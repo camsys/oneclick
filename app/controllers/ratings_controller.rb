@@ -13,9 +13,12 @@ class RatingsController < ApplicationController
     rating_params = params[:ratings]
     rating_params.keys.each do |k|
       rateable_params = rating_params[k]
-      rateable = k.constantize.find(rateable_params[:id]) # constantize converts "trip" (the string) => Trip (the Class).  Allows us to convert params hash into 
-      r = rateable.rate(current_user, rateable_params[:value], rateable_params[:comments]) if rateable_params[:value]
-      flash[:notice] = t(:rating_submitted_for_approval) if r.valid? # only flash on creation
+      rateable_class = k.constantize # constantize converts "trip" (the string) => Trip (the Class).
+      rateable = rateable_class.find(rateable_params[:id]) 
+      if rateable_params[:value]
+        r = rateable.rate(current_user, rateable_params[:value], rateable_params[:comments])
+        flash[:notice] = t(:rating_submitted_for_approval, rateable: rateable_class.name.downcase) if r.valid? # only flash on creation
+      end
     end
 
     redirect_to :back

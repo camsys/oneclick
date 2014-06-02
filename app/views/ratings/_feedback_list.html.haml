@@ -1,8 +1,0 @@
--unless rateable.ratings.empty?
-  %dl.dl-horizontal
-    - rateable.ratings.decorate.each do |r|
-      %dt.rating-value= r.rating_in_stars
-      %dd.rating-comments= r.comments 
--else
-  .alert
-    =t(:no_ratings_yet)
