@@ -32,10 +32,18 @@ else
   pid_file = 'tmp/pids/kiosk.pid'
 end
 
-guard 'puma' do
-  watch('Gemfile.lock')
-  watch(%r{^(config|lib)/.*})
-  watch('app/models/ability.rb')
+if %w{staging production qa}.include?(ENV['RAILS_ENV']) || ENV['SERVER']=='puma'
+  guard 'puma' do
+    watch('Gemfile.lock')
+    watch(%r{^(config|lib)/.*})
+    watch('app/models/ability.rb')
+  end
+else
+  guard 'rails', port: port, pid_file: pid_file do
+    watch('Gemfile.lock')
+    watch(%r{^(config|lib)/.*})
+    watch('app/models/ability.rb')
+  end
 end
 
 # , cli: '--format nested'
