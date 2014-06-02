@@ -32,7 +32,7 @@ else
   pid_file = 'tmp/pids/kiosk.pid'
 end
 
-guard 'rails', port: port, pid_file: pid_file do
+guard 'puma' do
   watch('Gemfile.lock')
   watch(%r{^(config|lib)/.*})
   watch('app/models/ability.rb')

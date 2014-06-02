@@ -64,6 +64,7 @@ group :development do
   gem 'guard-cucumber'
   gem 'guard-rails'
   gem 'guard-rspec'
+  gem 'guard-puma'
   # gem 'pry-stack_explorer'
   #gem 'pry-debugger'
   gem 'html2haml'

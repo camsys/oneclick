@@ -217,6 +217,11 @@ GEM
     guard-cucumber (1.4.1)
       cucumber (>= 1.2.0)
       guard (>= 1.1.0)
+    guard-puma (0.2.4)
+      guard (>= 1.0.1)
+      libnotify
+      puma
+      rb-inotify
     guard-rails (0.4.7)
       guard (>= 0.2.2)
     guard-rspec (3.1.0)
@@ -260,6 +265,8 @@ GEM
       addressable (~> 2.3)
     letter_opener (1.2.0)
       launchy (~> 2.2)
+    libnotify (0.8.3)
+      ffi (>= 1.0.11)
     listen (1.3.1)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
@@ -481,6 +488,7 @@ DEPENDENCIES
   guard (~> 1.8.3)
   guard-bundler
   guard-cucumber
+  guard-puma
   guard-rails
   guard-rspec
   haml-rails
