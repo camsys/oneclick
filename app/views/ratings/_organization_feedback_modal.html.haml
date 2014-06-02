@@ -1,5 +1,30 @@
 .modal.fade{id: "feedback_modal"}
   .modal-dialog.modal-lg
     .modal-content
+      .panel.panel-default
+        .panel-heading
+          %button.btn.action-button.btn-default.pull-right#load_feedback
+            = t(:feedback)
+          %h3= @agency.name
+        .panel-body
+          %dl.dl-horizontal
+            -# Run through the RatingsDecorator to get view logic, instead of Rating.rb
+            -@agency.ratings.decorate.each do |r|
+              %dt= r.rating_in_stars
+              %dd= r.comments
       .modal-footer
         %btn.btn.btn-default.action-button{data: {dismiss: "modal"}}= t(:close)
+-# Load in the form dynamically
+:javascript
+  $(document).ready(function() {
+    $("#load_feedback").on("click", function() {
+      $.ajax({
+        url: "/agencies/#{@agency.id}/ratings/new",
+        context: $(".modal-content"),
+        dataType: "html"
+      })
+      .then( function(html) {
+        $(this).html(html)
+      });
+    });
+  });

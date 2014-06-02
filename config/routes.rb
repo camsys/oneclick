@@ -259,7 +259,6 @@ Oneclick::Application.routes.draw do
         get   'agency_revoke'
       end
       resources :agencies do
-        resources :ratings, only: :new
         get 'travelers'
         get "users/:id/agency_assist", to: "users#assist", as: :agency_assist
         resources 'agency_user_relationships' do
@@ -275,7 +274,6 @@ Oneclick::Application.routes.draw do
         resources :users
         resources :services
         resources :trips, only: [:index, :show]
-        resources :ratings, :only => :new
       end
     end#admin
     
@@ -285,7 +283,6 @@ Oneclick::Application.routes.draw do
     end
     
     resources :services do
-      resources :ratings, :only => :new
       member do
         get 'view'
       end

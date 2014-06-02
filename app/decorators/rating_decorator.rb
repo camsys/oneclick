@@ -11,7 +11,7 @@ class RatingDecorator < Draper::Decorator
   #     end
   #   end
 
-   # A Copy of the logic in rateable.rb to convert value to stars
+   # A Copy of the logic in rateable.rb to convert value to stars specifically for a Rating object (rather than a Rateable object)
   def rating_in_stars(size=1)
     rating = value
     html = "<span id='stars'>"

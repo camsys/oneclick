@@ -6,15 +6,17 @@
     -unless @agency.active
       %p= t(:inactive)
   .col-sm-3.pull-right.form-group
-    - if can? :update, @agency
-      = link_to edit_admin_agency_path(@agency), {class: 'btn action-button btn-default', role: 'button'} do
-        = icon_label(:edit)
-    - if can? :destroy, @agency
-      = button_to t(:delete), { action: "destroy", id: @agency.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: 'btn action-button btn-default', form_class: "form-horizontal pull-right"
+    .row
+      - if can? :update, @agency
+        = link_to edit_admin_agency_path(@agency), {class: 'btn action-button btn-default', role: 'button'} do
+          = icon_label(:edit)
+      - if can? :destroy, @agency
+        = button_to t(:delete), { action: "destroy", id: @agency.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: 'btn action-button btn-default', form_class: "form-horizontal pull-right"
     -if can? :rate, @agency
-      = @agency.rating_in_stars(2)
-      %button.btn.pull-right{data: {toggle: 'modal', target: "#feedback_modal", remote: new_agency_rating_path(@agency)}}
-        = t(:feedback)
+      .row
+        = @agency.rating_in_stars(2)
+        %button.btn.action-button.btn-default.pull-right{data: {toggle: 'modal', target: "#feedback_modal"}}
+          = t(:feedback)
 = render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
 .row
   .col-sm-6
