@@ -13,29 +13,27 @@
         "mode": "mode_transit",
         "mode_name": "Transit",
         "urls": [
-            "/en/users/1/trip_parts/15/itineraries.json?mode=mode_transit",
-            "/en/users/1/trip_parts/16/itineraries.json?mode=mode_transit"
+            {
+                "url": "/en/users/1/trip_parts/15/itineraries.json?mode=mode_transit",
+                "trip_part_id": 15
+            },
+            {
+                "url": "/en/users/1/trip_parts/16/itineraries.json?mode=mode_transit",
+                "trip_part_id": 16
+            }
         ]
     }, {
         "mode": "mode_paratransit",
         "mode_name": "Paratransit",
         "urls": [
-            "/en/users/1/trip_parts/15/itineraries.json?mode=mode_paratransit",
-            "/en/users/1/trip_parts/16/itineraries.json?mode=mode_paratransit"
-        ]
-    }, {
-        "mode": "mode_taxi",
-        "mode_name": "Taxi",
-        "urls": [
-            "/en/users/1/trip_parts/15/itineraries.json?mode=mode_taxi",
-            "/en/users/1/trip_parts/16/itineraries.json?mode=mode_taxi"
-        ]
-    }, {
-        "mode": "mode_rideshare",
-        "mode_name": "Rideshare",
-        "urls": [
-            "/en/users/1/trip_parts/15/itineraries.json?mode=mode_rideshare",
-            "/en/users/1/trip_parts/16/itineraries.json?mode=mode_rideshare"
+            {
+                "url": "/en/users/1/trip_parts/15/itineraries.json?mode=mode_paratransit",
+                "trip_part_id": 15
+            },
+            {
+                "url": "/en/users/1/trip_parts/16/itineraries.json?mode=mode_paratransit",
+                "trip_part_id": 16
+            }
         ]
     }],
     "trip_parts": [{

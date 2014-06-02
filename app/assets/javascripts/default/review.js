@@ -77,21 +77,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             return;
         }
 
-        if(_isInitial) {
-            _isInitial = false;
-
-            //dispatch requests to get itineraries
-             _tripResponse.modes.forEach(function(modeObj) {
-                if(isValidObject(modeObj) && modeObj.urls instanceof Array) {
-                    modeObj.urls.forEach(function(urlObj) {
-                        if(isValidObject(urlObj)) {
-                            asyncRequestItinerariesForMode(urlObj.url, urlObj.trip_part_id);
-                        }
-                    });
-                }
-            });
-        }
-
         var tripParts = _tripResponse.trip_parts;
         //process each trip
         for (var i = 0, tripCount = tripParts.length; i < tripCount; i++) {
@@ -133,6 +118,22 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
 
         //in case there is chart layout issue
         resizeChartsWhenDocumentWidthChanges();
+
+        //if modes[] available then fetch itineraries of each trip_part_mode
+        if(_isInitial) {
+            _isInitial = false;
+
+            //dispatch requests to get itineraries
+             _tripResponse.modes.forEach(function(modeObj) {
+                if(isValidObject(modeObj) && modeObj.urls instanceof Array) {
+                    modeObj.urls.forEach(function(urlObj) {
+                        if(isValidObject(urlObj)) {
+                            asyncRequestItinerariesForMode(urlObj.url, urlObj.trip_part_id, modeObj.mode);
+                        }
+                    });
+                }
+            });
+        }
     }
     
     function verifyTripJsonValid() {
@@ -160,12 +161,20 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
     /*
     * ajax request to get list of itineraries
     * @param {string} url
+    * @param {number} tripPartId
+    * @param {string} mode
     */
-    function asyncRequestItinerariesForMode(url, tripPartId) {
+    function asyncRequestItinerariesForMode(url, tripPartId, mode) {
+        //insert one swimlane for this mode in this trip part
+        insertModeSwimlane(tripPartId, mode);
+
         $.ajax({
           url: url
         })
           .done(function( response ) {
+            //remove mode_swimlane
+            removeModeSwimlane(tripPartId, mode);
+
             //update _tripResponse
             if(isValidObject(response) && response.itineraries instanceof Array) {
                 updateTripPartItineraries(tripPartId, response.itineraries);
@@ -174,9 +183,101 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             }
           })
           .fail(function( response ) {
+            //remove mode_swimlane
+            removeModeSwimlane(tripPartId, mode);
+
             console.log(response);
           });
     }
+
+    function findTripPartById (tripPartId) {
+        var tripPartData = null;
+
+        var tripParts = _tripResponse.trip_parts;
+        //process each trip
+        for (var i = 0, tripCount = tripParts.length; i < tripCount; i++) {
+            if(tripParts[i].id === tripPartId) {
+                tripPartData = tripParts[i];
+                break;
+            }
+        }
+
+        return tripPartData;
+    }
+
+    /*
+    * insert one swimlane for each mode in each trip part
+    * this swimlane will be replaced by actual itinerary results
+    * @param {number} tripPartId
+    * @param {string} mode
+    */
+    function insertModeSwimlane(tripPartId, mode) {
+        var chartId = 'chart_' + tripPartId + '_' + mode;
+        if($('#' + chartId).parents('.single-plan-mode-loading').length === 0) {
+            var tripPartData = findTripPartById(tripPartId);
+            if(!isValidObject(tripPartData)) {
+                return;
+            }
+
+            var cssName = mode;
+            var isDepartAt = tripPartData.is_depart_at;
+            var dataTags = 
+                " data-trip-start-time='" + strTripStartTime + "'" +
+                " data-trip-end-time='" + strTripEndTime + "'";
+            var modeSwimlane = 
+            "<div class='col-xs-12 single-plan-reivew single-plan-unselected single-plan-mode-loading' style='padding: 0px;'" + dataTags + ">" +
+                "<div class='col-xs-3 col-sm-2 trip-plan-first-column' style='padding: 0px; height: 100%;'>" +
+                    "<table>" +
+                        "<tbody>" +
+                            "<tr>" +
+                                "<td class='trip-mode-icon " + cssName + "'>" +
+                                "</td>" +
+                                "<td class='trip-mode-cost'>" +
+                                    "<div class='itinerary-text'>" +
+                                    "</div>" +
+                                "</td>" +
+                            "</tr>" +
+                        "</tbody>" +
+                    "</table>" +
+                "</div>" +
+                "<div class='col-xs-7 col-sm-9 " +
+                (isDepartAt ? "highlight-left-border regular-right-border" : "highlight-right-border regular-left-border") +
+                " single-plan-chart-container' style='padding: 0px; height: 100%;' id='" + chartId + "'>" +
+                "</div>" +
+                "<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px; height: 100%;'>" +
+                    "<button class='btn btn-default btn-xs single-plan-question action-button'>?</button>" +
+                "</div>" +
+                "<div class='single-plan-mode-overlay'>" +
+                "</div>" +
+                "<i class='fa fa-spinner fa-spin single-plan-mode-load-spinner'>" + 
+                "</i>" +
+            "</div>";
+
+            $('#trip_part_' + tripPartId).append(modeSwimlane);
+
+            //render a basic chart with tick lines
+            createChart(
+                null,
+                chartId,
+                [],
+                parseData(tripPartData.start_time),
+                parseData(tripPartData.end_time),
+                intervalStep,
+                barHeight
+            );
+            return;
+        }
+    }    
+
+     /*
+    * remove swimlane of a specific mode in given trip part
+    * @param {number} tripPartId
+    * @param {string} mode
+    */
+    function removeModeSwimlane(tripPartId, mode) {
+         var chartId = 'chart_' + tripPartId + '_' + mode;
+        $('#' + chartId).parents('.single-plan-mode-loading').remove();
+    }    
 
     /*
     * append new incoming itineraries
@@ -872,7 +973,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             "<div class='col-xs-3 col-sm-2' style='padding: 0px;'>" +
             (isDepartAt ? ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>") : "") +
             "</div>" +
-            "<div class='col-xs-7 col-sm-9 " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
+            "<div class='col-xs-7 col-sm-9 " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " single-plan-chart-container' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
             (
             isDepartAt ?
             ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>") :
@@ -1781,11 +1882,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         if (typeof(plan) != 'object' || plan === null) {
             return;
         }
-        var tmpTripId = plan.attr('data-trip-id');
-        var tmpPlanId = plan.attr('data-plan-id');
+
         var tmpTripStartTime = parseDate(plan.attr('data-trip-start-time'));
         var tmpTripEndTime = parseDate(plan.attr('data-trip-end-time'));
-        var tmpChartDivId = tripPlanDivPrefix + tmpTripId + "_" + tmpPlanId;
+        var tmpChartDivId = $(plan).find('.single-plan-chart-container').attr('id');
         resizeChart(tmpChartDivId, tmpTripStartTime, tmpTripEndTime, intervalStep, barHeight);
     }
 
