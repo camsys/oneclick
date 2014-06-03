@@ -23,23 +23,26 @@ class TripProxy < Proxy
     @modes_desired = @modes
     # Modify modes to reflect transit 
     # Using array select with side effects
-    bus = rail = nil
-    @modes = @modes.select do |mode|
-      case mode
-      when ""
-        false
-      when Mode.bus.code
-        bus = mode
-        false
-      when Mode.rail.code
-        rail = mode
-        false
-      when Mode.transit.code
-        false
-      else
-        true
+    if (@modes)
+      bus = rail = nil
+      @modes = @modes.select do |mode|
+        case mode
+        when ""
+          false
+        when Mode.bus.code
+          bus = mode
+          false
+        when Mode.rail.code
+          rail = mode
+          false
+        when Mode.transit.code
+          false
+        else
+          true
+        end
       end
     end
+    
 
     if (bus && rail)
       @modes << Mode.transit.code
