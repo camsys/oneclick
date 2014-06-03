@@ -20,6 +20,34 @@ class TripProxy < Proxy
     attrs.each do |k, v|
       self.send "#{k}=", v
     end
+    @modes_desired = @modes
+    # Modify modes to reflect transit 
+    # Using array select with side effects
+    bus = rail = nil
+    @modes = @modes.select do |mode|
+      case mode
+      when ""
+        false
+      when Mode.bus.code
+        bus = mode
+        false
+      when Mode.rail.code
+        rail = mode
+        false
+      when Mode.transit.code
+        false
+      else
+        true
+      end
+    end
+
+    if (bus && rail)
+      @modes << Mode.transit.code
+    elsif (bus)
+      @modes << bus
+    elsif (rail)
+      @modes << rail
+    end
   end
 
   # creates a trip_proxy object from a trip. Note that this does not set the

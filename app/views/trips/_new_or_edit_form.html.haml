@@ -38,12 +38,26 @@
 
             :javascript
               $('#trip_proxy_modes_mode_transit').change(function() {
-                if(this.checked) {
+              if(this.checked) {
+                  $('#transitModes').find('input[type="checkbox"]').each(function() {
+                      this.checked = true;
+                  });
                   $('#transitModes').show();
                 } else {
                   $('#transitModes').hide();
+                  $('#transitModes').find('input[type="checkbox"]').each(function() {
+                      this.checked = false;
+                  });
                 }
               });
+              $(function() {
+              if ($('#trip_proxy_modes_mode_transit')[0].checked) {
+                $('#transitModes').show();
+              } else {
+                $('#transitModes').hide();
+              }
+              });
+
 
           #transitModes
             = f.input :modes, as: :check_boxes, collection: @transit_modes,

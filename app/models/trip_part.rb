@@ -86,20 +86,36 @@ class TripPart < ActiveRecord::Base
   # Generates itineraries for this trip part. Any existing itineraries should have been removed
   # before this method is called.
   def create_itineraries(modes = trip.desired_modes)
+    Rails.logger.info "CREATE: " + modes.collect {|m| m.code}.join(",")
     # remove_existing_itineraries
     itins = []
-    timed "fixed" do
-      itins += create_fixed_route_itineraries if modes.include? Mode.transit
+
+    modes.each do |mode|
+      case mode
+        # start with the non-OTP modes
+      when Mode.taxi
+        timed "taxi" do
+          itins += create_taxi_itineraries
+        end
+      when Mode.paratransit
+        timed "paratransit" do
+          itins += create_paratransit_itineraries
+        end
+      when Mode.rideshare
+        timed "rideshare" do
+          itins += create_rideshare_itineraries
+        end
+      else
+        # OTP modes
+        if (!mode.otp_mode.blank?)
+          # Transit modes + Bike, Drive, Walk
+          timed "fixed" do
+            itins += create_fixed_route_itineraries mode.otp_mode
+          end
+        end
+      end
     end
-    timed "taxi" do
-      itins += create_taxi_itineraries if modes.include? Mode.taxi
-    end
-    timed "paratransit" do
-      itins += create_paratransit_itineraries if modes.include? Mode.paratransit
-    end
-    timed "rideshare" do
-      itins += create_rideshare_itineraries if modes.include? Mode.rideshare
-    end
+      
     self.itineraries << itins
     itins
   end

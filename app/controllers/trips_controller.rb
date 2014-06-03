@@ -449,7 +449,7 @@ class TripsController < PlaceSearchingController
     # Get the updated trip proxy from the form params
     @trip_proxy = create_trip_proxy_from_form_params
 
-    session[:modes_desired] = @trip_proxy.modes
+    session[:modes_desired] = @trip_proxy.modes_desired
 
     # TODO If trip_proxy isn't valid, should go back to form right now, before this.
     if @trip_proxy.valid?

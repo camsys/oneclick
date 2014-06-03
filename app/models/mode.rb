@@ -30,6 +30,14 @@ class Mode < ActiveRecord::Base
     where("code = 'mode_rideshare'").first
   end
 
+  def self.bus
+    where("code = 'mode_bus'").first
+  end
+
+  def self.rail
+    where("code = 'mode_rail'").first
+  end
+   
   def to_s
     name
   end

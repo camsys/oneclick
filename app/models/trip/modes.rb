@@ -3,6 +3,7 @@ module Trip::Modes
 
   included do
     attr_accessor :modes
+    attr_accessor :modes_desired
     validate :at_least_one_mode
   end
 
