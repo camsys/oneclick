@@ -1,0 +1,70 @@
+// Caged from http://lea.verou.me/2011/08/accessible-star-rating-widget-with-pure-css/
+$hovered: gold; 
+$selected: #f70;
+.stars {
+  position: relative;
+  &:not(:checked) {
+    a {
+      position: absolute;
+      bottom:5px;
+      padding: 0 0 0 5px;
+    }
+    input {
+      // Position inputs off of the screen.
+     visibility:hidden;
+     position: absolute;
+     left:-9999px;
+     clip: rect(0,0,0,0);
+    }
+    .align-left span {
+      position: relative;
+      label:not(.string) {
+        float: right; // Rereverses the order of labels (count from 5-1 but labels appear 1-5)
+        width: 1em;
+        padding: 0 .1em;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+        font-size: 1.5em;
+        color: $gray-light;
+        &:before {
+          //Replace labels with stars
+          content: '★ ';
+        }
+      }
+      > label:hover {
+        color: $hovered;
+        ~ label {
+          // Color ratings lower than the hovered rating.  The ~ selector is the key to this.
+          color: $hovered;
+        }
+      }
+      > input:checked ~ label {
+        // any label after a checked radio
+      color: $hovered;
+      }
+    }
+    > {
+    input:checked {
+      + label:hover, ~ label:hover {
+        // any hovered label after a checked radio OR any hovered
+        color: $selected;
+        ~ label {
+          color: $selected;
+        }
+      }
+    }
+    label {
+      // any label after any checked input which is after a hovered label
+      &:hover ~ input:checked ~ label {
+        color: $hovered;
+      }
+      &:active {
+        position: relative;
+        top: 2px;
+        left: 2px;
+      }
+    }
+    }
+  }
+}

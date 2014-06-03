@@ -1,6 +1,14 @@
 class Rating < ActiveRecord::Base
+  MAXRATING = 5
 
-  MAXRATING =  5
+  def self.options
+    # [[5,5],[4,4],[3,3],[2,2],[1,1]] # Required for ratings/_form.html.haml
+    options = []
+    MAXRATING.downto(1).each do |n|
+      options << [n, "#{n}-stars"]
+    end
+    options
+  end
 
   belongs_to :user
   belongs_to :rateable, :polymorphic => true

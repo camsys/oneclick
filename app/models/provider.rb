@@ -1,10 +1,10 @@
 class Provider < ActiveRecord::Base
-  include Rateable # mixin to handle all rating methods
   resourcify
 
   #associations
   has_many :users
   has_many :services
+  has_many :ratings, through: :services
 
   has_many :cs_roles, -> {where(resource_type: 'Provider')}, class_name: 'Role',
         foreign_key: :resource_id

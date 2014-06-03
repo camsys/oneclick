@@ -10,6 +10,8 @@ class RatingsController < ApplicationController
   end
 
   def create
+    successful_ratings = []
+      
     rating_params = params[:ratings]
     rating_params.keys.each do |k|
       rateable_params = rating_params[k]
@@ -17,9 +19,12 @@ class RatingsController < ApplicationController
       rateable = rateable_class.find(rateable_params[:id]) 
       if rateable_params[:value]
         r = rateable.rate(current_user, rateable_params[:value], rateable_params[:comments])
-        flash[:notice] = t(:rating_submitted_for_approval, rateable: rateable_class.name.downcase) if r.valid? # only flash on creation
+        if r.valid?
+          successful_ratings << rateable_class.name.downcase
+        end
       end
     end
+    flash[:notice] = t(:rating_submitted_for_approval, rateable: successful_ratings.to_sentence, count: successful_ratings.count) # only flash on creation
 
     redirect_to :back
   end

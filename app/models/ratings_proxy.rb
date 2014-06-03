@@ -10,12 +10,13 @@ class RatingsProxy < Proxy
     case rateable
     when Trip
       @rateables << rateable
-      if rateable.planned_by_agent
-        @rateables << rateable.creator.agency
-      end
       rateable.selected_services.each do |s|
         @rateables << s
       end
+      if rateable.planned_by_agent
+        @rateables << rateable.creator.agency
+      end
+
     when Agency, Provider, Service
         @rateables << rateable
     end
