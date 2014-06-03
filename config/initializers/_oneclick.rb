@@ -33,7 +33,7 @@ when 'arc'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.arc.camsys"
   ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey"
   ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@atlantaregional.com"
-  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "Oneclick@camsys.com"
+  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "OneclickARC@camsys.com"
   ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
