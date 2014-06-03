@@ -252,24 +252,20 @@ $single-plan-height: 50px;
   height: $single-plan-height;
 }
 
-.single-plan-mode-overlay {
-  z-index: 99999; 
-  border: none; 
-  margin: 0px; 
-  padding: 0px; 
-  width: 100%; 
+.overlay-mask {
+  position: absolute;
+  width: 100%;
   height: 100%; 
-  top: 0px; 
-  left: 0px; 
-  opacity: 0.5; 
-  cursor: wait; 
-  position: absolute; 
-  background-color: #999;
+  background-color: whitesmoke;
+  opacity: 0.5;
+  top: 0px;
+  left: 0px;
+  zIndex: 1000;
 }
 
-.single-plan-mode-load-spinner {
-  font-size: 2em;
-  line-height: $single-plan-height;
+.overlay-mask-spinner {
+  font-size: 4em;
+  top: 100px;
   left: 50%;
   position: absolute;
 }
