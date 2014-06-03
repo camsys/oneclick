@@ -11,3 +11,15 @@ class NilClass
     return false
   end
 end
+
+class FalseClass
+  def to_bool
+    return false
+  end
+end
+
+class TrueClass
+  def to_bool
+    return true
+  end
+end

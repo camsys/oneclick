@@ -57,7 +57,7 @@ class TripsController < PlaceSearchingController
 
   def show
     @trip = Trip.find(params[:id].to_i)
-    params[:asynch] = (params[:asynch] || false).to_bool
+    params[:asynch] = (params[:asynch] || true).to_bool
     params[:regen] = (params[:regen] || false).to_bool
     if params[:regen]
       @trip.create_itineraries

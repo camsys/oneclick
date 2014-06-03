@@ -120,6 +120,8 @@ class TripPlanner
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
+      Rails.logger.warn "Service failure: taxi: #{e.message}"
+      Rails.logger.warn e.backtrace.first(5).join("\n")
       Honeybadger.notify(
         :error_class   => "Service failure",
         :error_message => "Service failure: taxi: #{e.message}",
