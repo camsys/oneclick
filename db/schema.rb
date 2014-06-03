@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140529160145) do
+ActiveRecord::Schema.define(version: 20140603172249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,12 +132,13 @@ ActiveRecord::Schema.define(version: 20140529160145) do
   end
 
   create_table "modes", force: true do |t|
-    t.string  "name",           limit: 64,                 null: false
-    t.boolean "active",                                    null: false
+    t.string  "name",               limit: 64,                 null: false
+    t.boolean "active",                                        null: false
     t.string  "code"
-    t.boolean "elig_dependent",            default: false
+    t.boolean "elig_dependent",                default: false
     t.integer "parent_id"
     t.string  "otp_mode"
+    t.integer "results_sort_order"
   end
 
   create_table "places", force: true do |t|
