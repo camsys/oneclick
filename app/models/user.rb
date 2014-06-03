@@ -147,6 +147,7 @@ class User < ActiveRecord::Base
       rel = UserRelationship.find_or_create_by!( traveler: self, delegate: User.find(id)) do |ur|
         ur.update_attributes(relationship_status: RelationshipStatus.pending)
       end
+      UserMailer.buddy_request_email(rel.delegate.email, rel.traveler.email).deliver
       rel.update_attributes(relationship_status: RelationshipStatus.pending)
     end
     # remove undesired buddies
