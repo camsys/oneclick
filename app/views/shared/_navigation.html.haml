@@ -11,24 +11,25 @@
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-    / end of navbar-header
+    / end of #navHeader
     #userMenuNavbar.collapse.navbar-collapse.navbar-right
-      %ul.nav.navbar-nav
-        - if user_signed_in?
-          %li#userDropdown.dropdown
-            %a.dropdown-toggle{"data-target" => "#", "data-toggle" => "dropdown"}
-              = "#{t(:welcome)}, #{current_user.welcome}"
-              %b.caret
-            %ul.dropdown-menu{:role => "menu"}
-              = render partial: 'menu_item', collection: traveler_actions(with_logout: true)
-        - else 
-          %li#userDropdown.dropdown
-            %a.dropdown-toggle{"data-target" => "#", "data-toggle" => "dropdown"}
-              = "#{t(:welcome)}, #{t(:visitor)}"
-              %b.caret
-            %ul.dropdown-menu{:role => "menu"}
-              = render partial: 'menu_item', collection: traveler_actions
-      / end of collapse navbar-collapse
+      .pull-right
+        %ul.nav.navbar-nav
+          - if user_signed_in?
+            %li#userDropdown.dropdown
+              %a.dropdown-toggle{"data-target" => "#", "data-toggle" => "dropdown"}
+                = "#{t(:welcome)}, #{current_user.welcome}"
+                %b.caret
+              %ul.dropdown-menu{:role => "menu"}
+                = render partial: 'menu_item', collection: traveler_actions(with_logout: true)
+          - else 
+            %li#userDropdown.dropdown
+              %a.dropdown-toggle{"data-target" => "#", "data-toggle" => "dropdown"}
+                = "#{t(:welcome)}, #{t(:visitor)}"
+                %b.caret
+              %ul.dropdown-menu{:role => "menu"}
+                = render partial: 'menu_item', collection: traveler_actions
+        / end of nav navbar-nav
       .pull-right  
         - if can? :see, :staff_menu
           %ul.nav.navbar-nav
@@ -39,4 +40,4 @@
           %ul.nav.navbar-nav
             %li.dropdown
               = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => admin_actions, :title => t(:admin_actions) }
-    / end of publicNav
+/ end of publicNav

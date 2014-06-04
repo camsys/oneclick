@@ -10,7 +10,7 @@
         .col-sm-6.pull-right
           - if can? :update, @provider
             = f.button :submit, t(:apply), class: "btn action-button default"
-            = link_to t(:cancel), :back, class: "btn action-button default"
+            = link_to t(:cancel), :back, class: "btn btn-default action-button default"
 
   .row
     .col-sm-6
