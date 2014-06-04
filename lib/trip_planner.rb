@@ -208,9 +208,8 @@ class TripPlanner
     
     agent = Mechanize.new
     agent.keep_alive=false
-    # We no longer do a timeout on getting rideshare, since we do front end asynchronously now.
-    # agent.open_timeout = MAX_REQUEST_TIMEOUT
-    # agent.read_timeout = MAX_READ_TIMEOUT    
+    agent.open_timeout = MAX_REQUEST_TIMEOUT
+    agent.read_timeout = MAX_READ_TIMEOUT    
 
 
     begin
