@@ -63,8 +63,8 @@ class UserMailer < ActionMailer::Base
     @to_email = to_email
     @from_email = from_email
     
-    # TODO localize
-    mail(to: @to_email, subject: t(:one_click_buddy_revoke_from_from_email, by: @from_email))
+    # TODO localize #TODO Is this set up backwards?  i.e. text is saying that the traveler is the delegate?
+    mail(to: @to_email, subject: t(:one_click_buddy_revoke_from_from_email, by: @from_email), from: from_email)
   end
 
   def traveler_confirmation_email(to_email, from_email)
