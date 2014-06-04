@@ -5,12 +5,11 @@
     .col-sm-6.pull-left
       %h2
         = f.input :name
-    .col-sm-6.pull-right
-      .row
-        .col-sm-6.pull-right
-          - if can? :update, @provider
-            = f.button :submit, t(:apply), class: "btn action-button default"
-            = link_to t(:cancel), :back, class: "btn btn-default action-button default"
+    .col-sm-3.pull-right
+      %h2
+        - if can? :update, @provider
+          = f.button :submit, t(:apply), class: "btn action-button default"
+          = link_to t(:cancel), :back, class: "btn btn-default action-button default pull-right"
 
   .row
     .col-sm-6

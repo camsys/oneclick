@@ -6,19 +6,20 @@
       = @provider.name
     - unless @provider.active
       %p= t(:inactive)
-  .col-sm-3.pull-right.form-group
-    - if can? :update, @provider
-      = link_to edit_admin_provider_path(@provider), {class: 'btn action-button btn-default', role: 'button'} do
-        = icon_label(:edit)
+  .col-sm-4.pull-right.form-group
+    %h2
+      - if can? :update, @provider
+        = link_to edit_admin_provider_path(@provider), {class: 'btn action-button btn-default', role: 'button'} do
+          = icon_label(:edit)
 
-    - if can?(:create, Service) && can?(:update, @provider)
-      = link_to new_service_path(provider_id: @provider), {class: 'btn action-button btn-default', role: 'button'} do
-        = icon_label(:add_service)
+      - if can?(:create, Service) && can?(:update, @provider)
+        = link_to new_service_path(provider_id: @provider), {class: 'btn action-button btn-default', role: 'button'} do
+          = icon_label(:add_service)
 
-    - if can? :destroy, @provider
-      = button_to t(:delete), { action: "destroy", id: @provider.id }, method: :delete,
-      data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default",
-      form_class: "form-horizontal pull-right"
+      - if can? :destroy, @provider
+        = button_to t(:delete), { action: "destroy", id: @provider.id }, method: :delete,
+        data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default",
+        form_class: "form-horizontal pull-right"
 .row
   .col-sm-6
     .panel.panel-default

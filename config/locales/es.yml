@@ -337,7 +337,7 @@ es:
   services: "[es]Services[/es]"
   all_services: "[es]All Services[/es]"
   active: "[es240]Active[/es]"
-  add_service: "[es]Add new Service[/es]"
+  add_service: "[es]Add Service[/es]"
   select_service: "[es276]Select Service[/es]"
   service_is_inactive: "[es219]This service is currently inactive.[/es]"
   service_contact: "[es220]Service Contact Information[/es]"

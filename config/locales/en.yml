@@ -339,7 +339,7 @@ en:
   services: "Services"
   all_services: "All Services"
   active: "Active"
-  add_service: "Add new Service"
+  add_service: "Add Service"
   select_service: "Select Service"
   service_is_inactive: "This service is currently inactive."
   service_contact: "Service Contact Information"

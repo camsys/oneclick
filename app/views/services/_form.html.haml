@@ -11,13 +11,12 @@
     .col-sm-6.pull-left
       %h2
         = f.input :name
-    .col-sm-6.pull-right
-      .row
-        .col-sm-6.pull-right
-          - if can? :update, @service
-            = button_tag type: 'submit', class: "btn action-button default" do
-              = icon_label(:apply)
-            = link_to t(:cancel), :back, class: "btn action-button default"
+    .col-sm-3.pull-right
+      %h2
+        - if can? :update, @service
+          = button_tag type: 'submit', class: "btn btn-default action-button default" do
+            = icon_label(:apply)
+          = link_to t(:cancel), :back, class: "btn btn-default action-button default pull-right"
 
   .row
     .col-sm-6

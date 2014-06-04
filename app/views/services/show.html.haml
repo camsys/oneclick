@@ -5,13 +5,14 @@
     %h2
       =@service.name
   .col-sm-3.pull-right.form-group
-    - if can? :update, @service
-      = link_to edit_service_path(@service), {class: 'btn action-button btn-default', role: 'button'} do
-        = icon_label(:edit)
-    - if can? :destroy, @service
-      = button_to t(:delete), { action: "destroy", id: @service.id }, method: :delete,
-      data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default",
-      form_class: "form-horizontal pull-right"
+    %h2
+      - if can? :update, @service
+        = link_to edit_service_path(@service), {class: 'btn action-button btn-default', role: 'button'} do
+          = icon_label(:edit)
+      - if can? :destroy, @service
+        = button_to t(:delete), { action: "destroy", id: @service.id }, method: :delete,
+        data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default",
+        form_class: "form-horizontal pull-right"
 .row
   .col-sm-6
     .panel.panel-default
