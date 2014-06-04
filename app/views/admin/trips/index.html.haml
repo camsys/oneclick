@@ -1,14 +1,13 @@
-.row
-  .col-sm-12
-    %button.action-button.pull-right
-      = link_to(t(:plan_a_trip), new_user_trip_path(@traveler))
-    %h1
-      %i.fa.fa-tags
-      = t(:trips)
-    = form_tag admin_trips_path, :id => 'time_filter_form', :method => "get", :class => 'navbar-form form-inline', :style => "margin-top:20px;" do
-      .input-prepend
-        %label.add-on{:for => 'time_filter'}= t(:filter)
-        = select_tag(:time_filter_type, options_for_select(trip_filters.collect{|r| [r[:value], r[:id]]}, :selected => @time_filter_type), :style => 'margin-top:0px', :id => 'time_filter')
+.row-fluid
+  %h1
+    %i.fa.fa-tags
+    = t(:trips)
+    = link_to(t(:plan), new_user_trip_path(@traveler),
+      class: "btn btn-default action-button pull-right" )
+= form_tag admin_trips_path, :id => 'time_filter_form', :method => "get", :class => 'navbar-form form-inline', :style => "margin-top:20px;" do
+  .input-prepend
+    %label.add-on{:for => 'time_filter'}= t(:filter)
+    = select_tag(:time_filter_type, options_for_select(trip_filters.collect{|r| [r[:value], r[:id]]}, :selected => @time_filter_type), :style => 'margin-top:0px', :id => 'time_filter')
         
 = render partial: "trips/trips_display_table", locals: {trips: @trips, traveler: @traveler}
 :javascript
