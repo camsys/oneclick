@@ -119,6 +119,7 @@ def add_providers_and_services
 
     p = Provider.find_by_external_id(provider[:external_id])
     unless p.nil?
+      puts "Provider already exists: #{p.ai}, not creating"
       next
     end
 
@@ -134,12 +135,15 @@ def add_providers_and_services
     # p.users << u
     u.add_role :internal_contact, p
 
+    puts "Created new provider: #{p.ai}"
 
     case p.external_id
 
       when "2" #Faith in Action Network
 
-        service = Service.create(name: 'Staying Connected', provider: p, service_type: paratransit, advanced_notice_minutes: 7*24*60)
+        puts "Creating service 'Staying Connected' for provider"
+        service = Service.create!(name: 'Staying Connected', provider: p, service_type: paratransit, advanced_notice_minutes: 7*24*60)
+        puts service.ai
         #Add Schedules
         (1..4).each do |n|
           Schedule.create(service: service, start_seconds:9*3600, end_seconds:16*3600, day_of_week: n)
