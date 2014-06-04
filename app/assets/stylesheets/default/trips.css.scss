@@ -35,7 +35,7 @@
   }
 }
 
-@media(max-width:767px){
+@media(max-width:$screen-xs-max){
   .form-group .control-label {
     text-align: left;
   }
@@ -45,12 +45,24 @@
   }
 }
 
-@media(min-width:768px){
+@media(max-width:$screen-sm-max){
+  .hidden-xs-sm {
+    display: none !important;
+  }
+}
+
+@media(min-width:$screen-md-min){
+  .hidden-md-lg {
+    display: none !important;
+  }
+}
+
+@media(min-width:$screen-sm-min){
   .form-group .control-label {
     text-align: right;
   }
 
-  @media(max-width:1170px){
+  @media(max-width:$screen-md-max){
     .tick-label-hidden-sm-md {
       visibility: hidden !important;
     }
@@ -58,7 +70,7 @@
 }
 
 
-@media(min-width:1170px){
+@media(min-width:$screen-lg-min){
   .tick-label-hidden-lg {
     visibility: hidden !important;
   }
@@ -88,7 +100,7 @@
   // background: -ms-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* IE10+ */
   // background: linear-gradient(to bottom,  #ffffff 0%,#AFAFAF 100%); /* W3C */
   // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#AFAFAF',GradientType=0 ); /* IE6-9 */
-  min-width: 40px;
+  min-width: 60px;
   // height: 25px;
   // border-radius: 8px;
   font-weight: bold;
@@ -214,7 +226,7 @@ $period-nav-button-width: 40px;
 
 /* in sm+ mode, one period-nav button in same container, so apply margin to sorter component that make them vertically align in containers */
 /* in xs mode, as space is so limited, not apply margin so sorter can take whatever space left in its container */
-@media(max-width:767px){
+@media(max-width:$screen-xs-max){
   .sm-sorter-margin-left {
     margin-left: 0px;
   }
@@ -224,7 +236,7 @@ $period-nav-button-width: 40px;
   }
 }
 
-@media(min-width:768px){
+@media(min-width:$screen-sm-min){
   .sm-sorter-margin-left {
     margin-left: $period-nav-button-width * -1;
   }
@@ -256,8 +268,6 @@ $single-plan-height: 50px;
   position: absolute;
   width: 100%;
   height: 100%; 
-  background-color: whitesmoke;
-  opacity: 0.5;
   top: 0px;
   left: 0px;
   zIndex: 1000;
@@ -270,13 +280,15 @@ $single-plan-height: 50px;
   position: absolute;
 }
 
-
 .single-plan-selected {
   border: 2px black solid;
 }
 
 .single-plan-unselected {
   border: 2px whitesmoke solid;
+}
+
+.trip-plan-first-column {
 }
 
 .select-column {
@@ -313,8 +325,6 @@ $single-plan-height: 50px;
 }
 
 .travel-legend-container {
-  margin-right: 5px; 
-  display: inline-block; 
 }
 
 $legend-height: 20px;
@@ -322,13 +332,12 @@ $legend-height: 20px;
   width: 35px;
   height: $legend-height;
   display: inline-block;
-  margin-right: 2px;
+  margin-right: 10px;
   border: 1px black solid;
 }
 
 .travel-legend-text {
-  float: right;
-  line-height: $legend-height
+  vertical-align: top;
 }
 
 .travel-legend-walk {
