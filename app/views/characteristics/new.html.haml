@@ -1,4 +1,14 @@
-= render partial: 'shared/trip_plan_breadcrumbs'
+.row{style: "padding: 0px;"}
+  .col-xs-8
+    = render partial: 'shared/trip_plan_breadcrumbs'
+  .col-xs-4
+    = button_tag :type => 'submit', :id => 'planTrip', :class => "btn btn-default pull-right action-button",
+      tabindex: 2 do
+      =t(:plan)
+      :javascript
+        $('#planTrip').click(function() {
+          $('form').submit();
+        });
 
 .row
   .col-sm-7.col-xs-12

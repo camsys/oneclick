@@ -1,14 +1,19 @@
-= render partial: 'shared/trip_plan_breadcrumbs'
+.col-xs-12{style: "padding: 0px;"}
+  .col-xs-8
+    = render partial: 'shared/trip_plan_breadcrumbs'
+  .col-xs-4
+    = button_tag :type => 'submit', :id => 'planTrip', :class => "btn btn-default pull-right action-button",
+      tabindex: 2 do
+      =t(:plan)
+      :javascript
+        $('#planTrip').click(function() {
+          $('#new_trip_proxy').submit();
+        });
 .row
   .col-sm-7.col-xs-12
     - Rails.logger.info "\n#{@trip_proxy.ai}\n"
     - Rails.logger.info "\n#{@trip_proxy.errors}\n"
     = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
-      .col-xs-12.page-action-button-container
-
-        = button_tag :type => 'submit', :class => "btn btn-default pull-right action-button",
-          tabindex: 2 do
-          =t(:plan)
       .col-xs-12.panel.panel-default
         .panel-body
           = f.hidden_field :mode

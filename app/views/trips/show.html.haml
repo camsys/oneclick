@@ -1,37 +1,50 @@
-= render partial: 'shared/trip_plan_breadcrumbs'
+.row{style: "padding: 0px;"}
+  .col-xs-8
+    = render partial: 'shared/trip_plan_breadcrumbs'
+  .col-xs-4
+    = button_tag :type => 'button', :id => "planBUtton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
+      =t(:plan)
 - if @tripResponseHash['status'] == 0
   - # flash handles it
 - else
   #reviewBaseContainer.row
-    .col-xs-12.form-group.visible-xs
+    .col-xs-12.form-group.hidden-md-lg
+      %button#legendButton.btn.btn-default.pull-left.action-button{style: "margin-right: 5px;"} Show Legends
       %button#filterButton.btn.btn-default.pull-left.action-button Show Filters
-      :javascript
-        $(function () {
-          //show or hide filters when click Filter button
-          $('#filterButton').on('click', function(e) {
-            e.preventDefault();
-            var $filterDiv = $('#filterDiv');
-            if($filterDiv.hasClass('hidden-xs')) {
-              $('#filterDiv').removeClass('hidden-xs');
-              $(this).text('Hide Filters');
-            } else {
-              $('#filterDiv').addClass('hidden-xs');
-              $(this).text('Show Filters');
-            }
-          });
-        });
-    #filterDiv.col-md-3.col-xs-12.hidden-xs
+    #accessoryContainer.col-md-3.col-xs-12
     / end of filter column
-    .col-md-9
-      .col-xs-12.page-action-button-container
-        #legendContainer.col-xs-10{style: "padding: 0px; height: 100%;"}
-        %button.btn.btn-default.pull-right.action-button#planButton Plan
+    .col-md-9      
       #tripContainer.col-xs-12{style: "padding: 0px;"}
       / end of trip container
     / end of review columns
   #itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
   :javascript
     $(function() {
+      //show or hide legends when click Filter button
+      $('#legendButton').on('click', function(e) {
+        e.preventDefault();
+        var $legendDiv = $('#legendDiv');
+        if($legendDiv.hasClass('hidden-xs-sm')) {
+          $('#legendDiv').removeClass('hidden-xs-sm');
+          $(this).text('Hide Legends');
+        } else {
+          $('#legendDiv').addClass('hidden-xs-sm');
+          $(this).text('Show Legends');
+        }
+      });
+
+      $('#filterButton').on('click', function(e) {
+        e.preventDefault();
+        var $filterDiv = $('#filterDiv');
+        if($filterDiv.hasClass('hidden-xs-sm')) {
+          $('#filterDiv').removeClass('hidden-xs-sm');
+          $(this).text('Hide Filters');
+        } else {
+          $('#filterDiv').addClass('hidden-xs-sm');
+          $(this).text('Show Filters');
+        }
+      });
+
       var tripResponse = #{@tripResponse.to_json};
       var pageRenderer = new TripReviewPageRenderer(30, 20, tripResponse);
       pageRenderer.processTripResponse();

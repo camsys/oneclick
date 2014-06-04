@@ -91,7 +91,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
 
     var baseContainerId = 'reviewBaseContainer'; //id of review page base container
     var tripContainerId = 'tripContainer'; //id of trip container Div
-    var legendContainerId = "legendContainer"; //id of legend container div
+    var accessoryContainerId = "accessoryContainer"; //id of accessory container div (legends, filters)
+    var legendContainerId = "legendDiv"; //id of legend container div
     var filterContainerId = "filterDiv"; //id of filter container div
     var modeContainerId = "modeContainer"; //id of mode filter container div
     var transferSliderId = "transferSlider"; //id of transfer filter slider
@@ -124,9 +125,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             addTripHtml(trip);
         });
 
-        //process legends
-        addLegendHtml(tripParts);
-
         //if modes[] available then fetch itineraries of each trip_part_mode
         if(_isInitial) {
             _isInitial = false;
@@ -141,15 +139,17 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
                     });
                 }
             });
+
+            if(_totalModeRequestCounter === 0) {
+                addLegendHtml(_tripResponse.trip_parts);
+                addFilterHtml(_tripResponse.trip_parts);
+            }
         }
 
         //add sorting dropdown change listener
         $('.single-trip-part select').on('change', function(e) {
             sortItineraryBy(e.currentTarget);
         });
-
-        //process filters
-        addFilterHtml(tripParts);
 
         //windows resize needs to update charts
         window.onresize = function(event) {
@@ -231,6 +231,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         } else {
             //hide loading mask
             $('#' + baseContainerId).overlayMask('remove');
+
+            //render legend & filter
+            addLegendHtml(_tripResponse.trip_parts);
+            addFilterHtml(_tripResponse.trip_parts);
         }
     }
 
@@ -864,7 +868,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
                 if (questionClearCode === 1) { //all pass
                     tripPlanDiv.find('.single-plan-question').remove();
                     if(tripPlanDiv.find('.single-plan-select').length === 0) {
-                        tripPlanDiv.find('.select-column').append("<button class='btn btn-default btn-xs single-plan-select action-button'>Select</button>").click(function() {
+                        tripPlanDiv.find('.select-column').append("<button class='btn btn-default single-plan-select action-button'>Select</button>").click(function() {
                             selectItineraryByClickingSelectButton(this);
                         });
                     }
@@ -874,7 +878,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
                         .addClass('single-plan-unselected'); //in case was selected
                     tripPlanDiv.find('.single-plan-select').remove();
                     if(tripPlanDiv.find('.single-plan-question').length === 0) {
-                        tripPlanDiv.find('.select-column').append("<button class='btn btn-default btn-xs single-plan-question action-button'>?</button>").click(function() {
+                        tripPlanDiv.find('.select-column').append("<button class='btn btn-default single-plan-question action-button'>?</button>").click(function() {
                             onClickSinglePlanQuestionButton(this);
                         });
                     }
@@ -1013,7 +1017,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
 
         var tripHeaderTags = tripDescTag +
             "<div class='col-xs-12 single-plan-header'>" +
-            "<div class='col-xs-3 col-sm-2' style='padding: 0px;'>" +
+            "<div class='col-xs-3 col-sm-2 trip-plan-first-column' style='padding: 0px;'>" +
             (isDepartAt ? ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>") : "") +
             "</div>" +
             "<div class='col-xs-7 col-sm-9 " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
@@ -1027,7 +1031,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             "<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px;'>" +
             (isDepartAt ? "" : ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>")) +
             "</div>" +
-            "<div class='col-xs-3 col-sm-2' style='padding: 0px;'>" +
+            "<div class='col-xs-3 col-sm-2 trip-plan-first-column' style='padding: 0px;'>" +
             "</div>" +
             "<div class='col-xs-7 col-sm-9 tick-labels " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap;'>" +
             tickLabelTags +
@@ -1209,10 +1213,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             (
             (isMissingInfoFound && eligibleCode != 1) ?
             (
-                "<button class='btn btn-default btn-xs single-plan-question action-button' " +
+                "<button class='btn btn-default single-plan-question action-button' " +
                 "data-toggle='modal' data-target='#" + missInfoDivId + "'>?</button>"
             ) :
-            "<button class='btn btn-default btn-xs single-plan-select action-button'>Select</button>"
+            "<button class='btn btn-default single-plan-select action-button'>Select</button>"
         ) +
             "</div>" +
             "</div>";
@@ -1367,7 +1371,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             return;
         }
 
-        var legendTags = '';
+        if($('#' + legendContainerId).length === 0) {
+            $('#' + accessoryContainerId).append("<div id='" + legendContainerId + "' class='well col-xs-12 hidden-xs-sm' style='padding: 5px;'></div>");
+        }
+
+        var legendTags = "";
         var legendClassNames = [];
         trips.forEach(function(trip) {
             if (typeof(trip) != 'object' || trip === null || !trip.itineraries instanceof Array) {
@@ -1409,6 +1417,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
     function addFilterHtml(trips) {
         if (!trips instanceof Array) {
             return;
+        }
+
+        if($('#' + filterContainerId).length === 0) {
+            $('#' + accessoryContainerId).append("<div id='" + filterContainerId + "' class='well col-xs-12 hidden-xs-sm' style='padding: 5px;'></div>");
         }
 
         var modes = {};
@@ -1474,49 +1486,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
 
 
         //render
-        var filterInnerContainerId = 'filterContainer';
-        if($('#' + filterInnerContainerId).length === 0) { //first time renderring filters
-            var filterTags = '';
-
-            //insert modes filter tags
-            filterTags += getModeFilterHtml(modes);
-
-            var sliderConfigs = [];
-            //insert transfer fitler tags
-            var transferFilter = getTransferFilterHtml(minTransfer, maxTransfer);
-            if (isValidObject(transferFilter)) {
-                filterTags += transferFilter.tags;
-                sliderConfigs['transfer'] = transferFilter.sliderConfig;
-            }
-            //insert cost fitler tags
-            var costFilter = getCostFilterHtml(minCost, maxCost);
-            if (isValidObject(costFilter)) {
-                filterTags += costFilter.tags;
-                sliderConfigs['cost'] = costFilter.sliderConfig;
-            }
-            //insert duration fitler tags
-            var durationFilter = getDurationFilterHtml(minDuration, maxDuration);
-            if (isValidObject(durationFilter)) {
-                filterTags += durationFilter.tags;
-                sliderConfigs['duration'] = durationFilter.sliderConfig;
-            }
-
-            if(filterTags.trim().length > 0) {
-                filterTags = '<div id="' + filterInnerContainerId + '" class="col-sm-12 well" style="padding: 0px;">' + filterTags + '</div>';
-                $('#' + filterContainerId).append(filterTags);
-            }
-
-            //enable sliders
-            for (var sliderIndex in sliderConfigs) {
-                var slider = sliderConfigs[sliderIndex];
-                addSliderTooltip(slider);
-            }
-        } else {
-            adjustModeFilters(modes, filterInnerContainerId);
-            adjustTransferFilters(minTransfer, maxTransfer, filterInnerContainerId);
-            adjustCostFilters(minCost, maxCost, filterInnerContainerId);
-            adjustDurationFilters(minDuration, maxDuration, filterInnerContainerId);
-        }
+        adjustModeFilters(modes);
+        adjustTransferFilters(minTransfer, maxTransfer);
+        adjustCostFilters(minCost, maxCost);
+        adjustDurationFilters(minDuration, maxDuration);
 
         //enable mode checkbox event
         $('#' + modeContainerId + ' .checkbox').on('change', function() {
@@ -1536,11 +1509,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         for (var modeId in modes) {
             if (isFirstMode) {
                 modeFilterTags +=
-                    '<div class = "col-sm-12">' +
+                    '<div class = "col-sm-12" style="padding: 0px;">' +
                         '<label class="sr-only">Modes</label>' +
-                        '<label class="col-sm-12">Modes</label>' +
+                        '<label>Modes</label>' +
                     '</div>' +
-                    '<div class="col-sm-12" id="' + modeContainerId + '">';
+                    '<div class="col-sm-12" style="padding: 0px;" id="' + modeContainerId + '">';
                 isFirstMode = false;
             }
 
@@ -1560,10 +1533,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
      * @param {Object}: modes
      * @return {string} filterInnerContainerId
      */
-    function adjustModeFilters(modes, filterInnerContainerId) {
+    function adjustModeFilters(modes) {
 
         if($('#' + modeContainerId).length === 0 ) {
-            $('#' + filterInnerContainerId).prepend(getModeFilterHtml(modes));
+            $('#' + filterContainerId).prepend(getModeFilterHtml(modes));
         } else {
             for (var modeId in modes) {
                 if($('#' + modeContainerId + ' :checkbox[value=' + modeId + ']').length === 0) {
@@ -1599,9 +1572,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         var sliderConfig = null;
         if (typeof(maxTransfer) === 'number' && minTransfer === 0 && maxTransfer > minTransfer) {
             tags =
-                '<div class = "col-sm-12">' +
+                '<div class = "col-sm-12" style="padding: 0px;">' +
                 '<label class="sr-only">Number of transfers</label>' +
-                '<label class="col-sm-12">Number of transfers</label>' +
+                '<label>Number of transfers</label>' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<div role="slider" id="' + transferSliderId + '" aria-valuemin="' + minTransfer + '" aria-valuemax="' + maxTransfer + '">' +
@@ -1631,11 +1604,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
     /*
     * adjust existing transfer filter slider
     */
-    function adjustTransferFilters(minTransfer, maxTransfer, filterInnerContainerId) {
+    function adjustTransferFilters(minTransfer, maxTransfer) {
         var filterObj = getTransferFilterHtml(minTransfer, maxTransfer);
         if(isValidObject(filterObj)) {
              if($('#' + transferSliderId).length === 0 ) {
-                $('#' + filterInnerContainerId).append(filterObj.tags);                
+                $('#' + filterContainerId).append(filterObj.tags);                
             } else {
                 $('#' + transferSliderId).attr('aria-valuemin', minTransfer);
                 $('#' + transferSliderId).attr('aria-valuemax', maxTransfer);
@@ -1660,9 +1633,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             minCost = getRoundMinValue(minCost);
             maxCost = getRoundMaxValue(maxCost);
             tags =
-                '<div class = "col-sm-12">' +
+                '<div class = "col-sm-12" style="padding: 0px;">' +
                 '<label class="sr-only">Fare</label>' +
-                '<label class="col-sm-12">Fare</label>' +
+                '<label>Fare</label>' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<div role="slider" id="' + costSliderId + '" aria-valuemin="' + minCost + '" aria-valuemax="' + maxCost + '">' +
@@ -1691,11 +1664,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
     /*
     * adjust existing cost filter slider
     */
-    function adjustCostFilters(minCost, maxCost, filterInnerContainerId) {
+    function adjustCostFilters(minCost, maxCost) {
         var filterObj = getCostFilterHtml(minCost, maxCost);
         if(isValidObject(filterObj)) {
              if($('#' + costSliderId).length === 0 ) {
-                $('#' + filterInnerContainerId).append(filterObj.tags);                
+                $('#' + filterContainerId).append(filterObj.tags);                
             } else {
                 minCost = getRoundMinValue(minCost);
                 maxCost = getRoundMaxValue(maxCost);
@@ -1722,9 +1695,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             minDuration = getRoundMinValue(minDuration / 60);
             maxDuration = getRoundMaxValue(maxDuration / 60);
             tags =
-                '<div class = "col-sm-12">' +
+                '<div class = "col-sm-12" style="padding: 0px;">' +
                 '<label class="sr-only">Time</label>' +
-                '<label class="col-sm-12">Time</label>' +
+                '<label>Time</label>' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<div role="slider" id="' + durationSliderId + '" aria-valuemin="' + minDuration + '" aria-valuemax="' + maxDuration + '">' +
@@ -1753,11 +1726,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
     /*
     * adjust existing duration filter slider
     */
-    function adjustDurationFilters(minDuration, maxDuration, filterInnerContainerId) {
+    function adjustDurationFilters(minDuration, maxDuration) {
         var filterObj = getDurationFilterHtml(minDuration, maxDuration);
         if(isValidObject(filterObj)) {
              if($('#' + durationSliderId).length === 0 ) {
-                $('#' + filterInnerContainerId).append(filterObj.tags);                
+                $('#' + filterContainerId).append(filterObj.tags);                
             } else {
                 minDuration = getRoundMinValue(minDuration / 60);
                 maxDuration = getRoundMaxValue(maxDuration / 60);
