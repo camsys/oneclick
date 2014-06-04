@@ -12,11 +12,6 @@
       = button_to t(:delete), { action: "destroy", id: @service.id }, method: :delete,
       data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default",
       form_class: "form-horizontal pull-right"
-    -if can? :rate, @service
-      %button.btn.pull-right{data: {toggle: 'modal', target: "#feedback_modal"}}
-        = t(:feedback)
-      = @service.rating_in_stars(2)
-= render partial: "ratings/organization_feedback_modal", locals: {rateable: @service}
 .row
   .col-sm-6
     .panel.panel-default
