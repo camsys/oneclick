@@ -112,7 +112,7 @@ $ ->
   # Maybe this is only needed if the user typed something in, did not geocode.
   # For now use the fromMap center.
   $('#new_trip_proxy').on 'submit', ->
-    $('#map_center').val((CsMaps.tripMap.getCenter().lat + ',' + CsMaps.tripMap.getCenter().lng))
+    $('#map_center').val((CsMaps.tripMap.LMmap.getCenter().lat + ',' + CsMaps.tripMap.LMmap.getCenter().lng))
 
   $('#fromAddressMarkerButton').on 'click', ->
     show_marker(CsMaps.tripMap, 'from')
