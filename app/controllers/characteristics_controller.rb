@@ -7,6 +7,7 @@ class CharacteristicsController < TravelerAwareController
 
     if params['inline'] == '1' || params[:trip_id]
       @trip = Trip.find(session[:current_trip_id] || params[:trip_id])
+      @trip.remove_itineraries
       @path = populate_user_trip_path(@traveler, @trip, {asynch: 1})
       # session[:current_trip_id] =  nil
       # @trip.create_itineraries

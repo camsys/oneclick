@@ -60,6 +60,7 @@ class TripsController < PlaceSearchingController
     params[:asynch] = (params[:asynch] || true).to_bool
     params[:regen] = (params[:regen] || false).to_bool
     if params[:regen]
+      @trip.remove_itineraries
       @trip.create_itineraries
     end
     #@tripResponse = TripSerializer.new(@trip, params) #sync-dislay: response to review page to display all itineraries at one time 
@@ -503,7 +504,6 @@ class TripsController < PlaceSearchingController
           @trip.reload
 
           if !@trip.eligibility_dependent?
-            @trip.create_itineraries
             @path = user_trip_path_for_ui_mode(@traveler, @trip)
           else
             session[:current_trip_id] = @trip.id

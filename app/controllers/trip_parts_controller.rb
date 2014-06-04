@@ -17,10 +17,17 @@ class TripPartsController < PlaceSearchingController
   def itineraries
     @trip_part = TripPart.find(params[:id])
     @modes = Mode.where(code: params[:mode])
-    params[:regen] = (params[:regen] || true).to_bool
+    params[:regen] = (params[:regen] || false).to_bool
     if params[:regen]
       @trip_part.remove_existing_itineraries(@modes)
+    end
+    @itineraries = @trip_part.itineraries.where('mode_id in (?)', @modes.pluck(:id))
+    Rails.logger.info "trip part has #{@itineraries.count} itineraries for modes #{@modes.map(&:code).join(', ')}."
+    if (@itineraries.empty?)
+      Rails.logger.info "itineraries is empty, generating itineraries."
       @itineraries = @trip_part.create_itineraries(@modes)
+    else
+      Rails.logger.info "itineraries is not empty, not generating itineraries."
     end
     if @itineraries.each {|i| i.save }
       respond_to do |f|

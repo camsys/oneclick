@@ -197,12 +197,16 @@ class Trip < ActiveRecord::Base
 
   # removes all trip places and trip parts from the object  
   def clean
-    trip_parts.each do |part| 
-      part.itineraries.each { |x| x.destroy }
-    end
+    remove_itineraries
     trip_parts.each { |x| x.destroy }
     trip_places.each { |x| x.destroy}
     save
+  end
+
+  def remove_itineraries
+    trip_parts.each do |part| 
+      part.itineraries.each { |x| x.destroy }
+    end
   end
 
   # returns true is this trip can be edited or deleted. Note that this
