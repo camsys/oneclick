@@ -1,11 +1,11 @@
 class Admin::TripsController < Admin::BaseController
-
+  check_authorization
   load_and_authorize_resource  
   
   TIME_FILTER_TYPE_SESSION_KEY = 'reports_time_filter_type'
   
   def index
-
+    authorize! :access, :admin_trips
     # Filtering logic. See ApplicationHelper.trip_filters
     if params[:time_filter_type]
       @time_filter_type = params[:time_filter_type]

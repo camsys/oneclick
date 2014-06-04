@@ -118,6 +118,8 @@ class Ability
     can :rate, Agency do |a|
       a.id != user.agency.try(:id) # Cannot rate your own agency
     end
+
+    cannot [:access], :admin_trips
   end
 
 end

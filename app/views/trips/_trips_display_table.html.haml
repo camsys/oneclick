@@ -27,9 +27,10 @@
         %td.nowrap{id: "#{tripID}Rating"}
           = trip.rating_in_stars
         %td.center.nowrap
-          - modal_name = "##{tripID}RatingModal"
-          %button.btn.btn-block{data: {toggle: 'modal', target: modal_name, remote: new_trip_rating_path(trip)}}
-            = t(:feedback)
+          - if not trip.in_the_future or Rails.env.development?
+            - modal_name = "##{tripID}RatingModal"
+            %button.btn.btn-block{data: {toggle: 'modal', target: modal_name, remote: new_trip_rating_path(trip)}}
+              = t(:feedback)
           
         - if trip.in_the_future
           %td.center.nowrap          
@@ -45,7 +46,7 @@
               %i.fa.fa-rotate-right
         - if Rails.env.development?
           %td= "%s / %s" % [trip.outbound_part.max_notes_count, trip.return_part.max_notes_count]
-      = render partial: 'trip_rating', locals: {id: trip.id}
+      = render partial: 'trips/trip_rating', locals: {id: trip.id}
 
 :javascript
   $(document).ready(function() {
