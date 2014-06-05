@@ -24,6 +24,11 @@ class Ability
       cannot :assist, User # That permissions is restricted to agency staff
       return
     end
+    if user.has_role? :feedback_administrator
+      can [:see], :admin_menu
+      can :access, :admin_feedback
+      can [:read, :approve], Rating
+    end
     if User.with_role(:agency_administrator, :any).include?(user)
       # TODO Are these 2 redundant?
       can [:see], :staff_menu

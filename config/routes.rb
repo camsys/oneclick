@@ -278,8 +278,13 @@ Oneclick::Application.routes.draw do
     end#admin
     
     # gives a shallow RESTful endpoint for rating any rateable
-    resources :agencies, :trips, :providers, :services, only: [] do
-      resources :ratings, only: [:new, :create]
+    resources :agencies, :trips, :providers, :services, shallow: true, only: [] do
+      resources :ratings, only: [:index, :new, :create]
+    end
+    resources :ratings, only: [:index] do
+      collection do
+        patch "approve"
+      end
     end
     
     resources :services do

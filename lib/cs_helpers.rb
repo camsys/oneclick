@@ -25,6 +25,7 @@ module CsHelpers
   def admin_actions
     [
       {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
+      {label: t(:feedback), target: ratings_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback}
     ]
   end
 

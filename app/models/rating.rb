@@ -1,6 +1,9 @@
 class Rating < ActiveRecord::Base
   MAXRATING = 5
 
+  scope :approved, -> { where(approved: true)}
+  scope :unapproved, -> { where(approved: false)}
+  belongs_to :rateable
   def self.options
     # [[5,5],[4,4],[3,3],[2,2],[1,1]] # Required for ratings/_form.html.haml
     options = []

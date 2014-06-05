@@ -8,9 +8,9 @@
             %button.btn.action-button.btn-default.pull-right#load_feedback
               = t(:feedback)
         .panel-body
-          -unless rateable.ratings.empty?
+          -unless rateable.ratings.approved.empty?
             %dl.dl-horizontal
-              - rateable.ratings.decorate.each do |r|
+              - rateable.ratings.approved.decorate.each do |r|
                 %dt.rating-value= r.rating_in_stars
                 %dd.rating-comments= r.comments 
           -else

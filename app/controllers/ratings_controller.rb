@@ -1,8 +1,13 @@
 class RatingsController < ApplicationController
 
   before_filter :get_rateable, only: [:new]
+  load_and_authorize_resource only: [:index]
+  
+  def index
+    authorize! :read, Rating
+  end
 
-   def new
+  def new
     @ratings_proxy = RatingsProxy.new(@rateable)
     respond_to do |format|
       format.js { render partial: 'ratings/form', locals: {url: @target} }
@@ -27,6 +32,14 @@ class RatingsController < ApplicationController
     flash[:notice] = t(:rating_submitted_for_approval, rateable: successful_ratings.to_sentence, count: successful_ratings.count) # only flash on creation
 
     redirect_to :back
+  end
+
+  def approve
+    authorize! :approve, Rating
+    @ratings = Rating.where(id: params[:ids])
+    @ratings.update_all(approved: true)
+    flash[:notice] = "Success"
+    redirect_to action: :index
   end
 
 private
