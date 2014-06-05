@@ -84,7 +84,7 @@ class TripsController < PlaceSearchingController
   end
 
   def plan
-    @itineraries = Itinerary.where( id: params[:itinids] ).order(:trip_part_id)
+    @itineraries = Itinerary.where('id in (' + params[:itinids] + ')')
     @trip = @itineraries.first.trip_part.trip
     @trip.itineraries.selected.each do |itin|
       itin.selected = false

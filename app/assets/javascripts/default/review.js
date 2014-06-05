@@ -868,7 +868,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
                 if (questionClearCode === 1) { //all pass
                     tripPlanDiv.find('.single-plan-question').remove();
                     if(tripPlanDiv.find('.single-plan-select').length === 0) {
-                        tripPlanDiv.find('.select-column').append("<button class='btn btn-default single-plan-select action-button'>Select</button>").click(function() {
+                        tripPlanDiv.find('.select-column').append("<button class='btn btn-default single-plan-select action-button select-column-button'>Select</button>").click(function() {
                             selectItineraryByClickingSelectButton(this);
                         });
                     }
@@ -878,7 +878,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
                         .addClass('single-plan-unselected'); //in case was selected
                     tripPlanDiv.find('.single-plan-select').remove();
                     if(tripPlanDiv.find('.single-plan-question').length === 0) {
-                        tripPlanDiv.find('.select-column').append("<button class='btn btn-default single-plan-question action-button'>?</button>").click(function() {
+                        tripPlanDiv.find('.select-column').append("<button class='btn btn-default single-plan-question action-button select-column-button'>?</button>").click(function() {
                             onClickSinglePlanQuestionButton(this);
                         });
                     }
@@ -1213,10 +1213,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             (
             (isMissingInfoFound && eligibleCode != 1) ?
             (
-                "<button class='btn btn-default single-plan-question action-button' " +
+                "<button class='btn btn-default single-plan-question action-button select-column-button' " +
                 "data-toggle='modal' data-target='#" + missInfoDivId + "'>?</button>"
             ) :
-            "<button class='btn btn-default single-plan-select action-button'>Select</button>"
+            "<button class='btn btn-default single-plan-select action-button select-column-button'>Select</button>"
         ) +
             "</div>" +
             "</div>";

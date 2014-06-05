@@ -292,8 +292,12 @@ $single-plan-height: 50px;
 }
 
 .select-column {
-  text-align: right;
+  text-align: center;
   line-height: $single-plan-height;
+}
+
+.select-column-button {
+  min-width: 5em !important;
 }
 
 .single-plan-select {
