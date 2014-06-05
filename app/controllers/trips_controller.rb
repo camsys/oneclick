@@ -539,7 +539,7 @@ class TripsController < PlaceSearchingController
     # inflate a trip proxy object from the form params
     @trip_proxy = create_trip_proxy_from_form_params
 
-    session[:modes_desired] = @trip_proxy.modes
+    session[:modes_desired] = @trip_proxy.modes_desired
 
     setup_modes
 
