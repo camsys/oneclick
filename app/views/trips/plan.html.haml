@@ -3,17 +3,17 @@
     = render partial: 'shared/trip_plan_breadcrumbs'
   .col-xs-4
     =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-default pull-right action-button', style: "margin-right: 5px;", data: {toggle: 'modal'}} do
-        /%i.fa.fa-envelope-o
-        =t(:email)
-      =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn btn-default pull-right action-button', style: "margin-right: 5px;", data: {toggle: 'modal'}} do
-        /%i.fa.fa-print
-        =t(:print)
-      -ItineraryDecorator.decorate_collection(@itineraries.valid).each do |itinerary|
-        -if itinerary.is_bookable?
-          = button_tag :type => 'button', :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;", "data-target" => "#bookingModal", "data-toggle" => "modal" do
-            =t(:book)
-          = render partial: 'book_trip'
-          -break
+      /%i.fa.fa-envelope-o
+      =t(:email)
+    =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn btn-default pull-right action-button', style: "margin-right: 5px;", data: {toggle: 'modal'}} do
+      /%i.fa.fa-print
+      =t(:print)
+    -ItineraryDecorator.decorate_collection(@itineraries.valid).each do |itinerary|
+      -if itinerary.is_bookable?
+        = button_tag :type => 'button', :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;", "data-target" => "#bookingModal", "data-toggle" => "modal" do
+          =t(:book)
+        = render partial: 'book_trip'
+        -break
 
 .col-xs-12{style: "padding: 0px;"}
   - ItineraryDecorator.decorate_collection(@itineraries.valid).each do |itinerary|

@@ -2,7 +2,7 @@
   .col-xs-8
     = render partial: 'shared/trip_plan_breadcrumbs'
   .col-xs-4
-    = button_tag :type => 'button', :id => "planBUtton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
+    = button_tag :type => 'button', :id => "planButton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
       =t(:plan)
 - if @tripResponseHash['status'] == 0
   - # flash handles it
