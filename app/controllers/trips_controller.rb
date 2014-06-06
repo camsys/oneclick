@@ -168,7 +168,8 @@ class TripsController < PlaceSearchingController
     UserMailer.user_trip_email(email_addresses, @trip, subject, from_email,
       params[:email][:email_comments]).deliver
     respond_to do |format|
-      format.html { redirect_to new_user_trip_path(@trip.creator), :notice => "An email was sent to #{email_addresses.to_sentence}."  }
+      format.html { redirect_to plan_user_trip_path(@trip.creator, @trip, itinids: params[:itinids]),
+        :notice => "An email was sent to #{email_addresses.to_sentence}."  }
       format.json { render json: @trip }
     end
   end
