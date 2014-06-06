@@ -166,6 +166,9 @@ en:
   rating_submitted_for_approval: 
     one: "Your %{rateable} rating has been submitted for approval"
     other: "Your %{rateable} ratings have been submitted for approval"
+  rating_update:
+    one: "The rating has been updated"
+    other: "The ratings have been updated"
   submit_review: "Submit Feedback"
   feedback_comments: "Please enter any feedback you would like to share"
   feedback_rating: "Rating (1-worst, 5-best)"
@@ -517,6 +520,8 @@ en:
   add: "Add"
   back: "Back"
   count: "Count"
+  approve: "Approve"
+  reject: "Reject"
   contact_info: "Contact Info"
   do_not_reply: "This email is sent from an email address that is not monitored. Please do not reply to this message."
   nothing_found_sorry: "Nothing found - sorry"

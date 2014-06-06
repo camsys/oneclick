@@ -1,11 +1,19 @@
 class Rating < ActiveRecord::Base
   MAXRATING = 5
+  REJECTED= "rejected"
+  PENDING= "pending"
+  APPROVED = "approved"
 
-  scope :approved, -> { where(approved: true)}
-  scope :unapproved, -> { where(approved: false)}
-  belongs_to :rateable
+
+  scope :approved, -> { where(status: Rating::APPROVED)}
+  scope :pending, -> { where(status: Rating::PENDING)}
+  scope :rejected, -> { where(status: Rating::REJECTED)}
+
+  belongs_to :user
+  belongs_to :rateable, :polymorphic => true
+  validates :value, :presence => true # What if we allow users to just enter commments/feedback.  Don't require value.  Needs schema change
+
   def self.options
-    # [[5,5],[4,4],[3,3],[2,2],[1,1]] # Required for ratings/_form.html.haml
     options = []
     MAXRATING.downto(1).each do |n|
       options << [n, "#{n}-stars"]
@@ -13,9 +21,22 @@ class Rating < ActiveRecord::Base
     options
   end
 
-  belongs_to :user
-  belongs_to :rateable, :polymorphic => true
-  validates :value, :presence => true # What if we allow users to just enter commments/feedback.  Don't require value.  Needs schema change
-  
-  # attr_accessible :rate, :dimension
+  def rateable_desc
+    if rateable.class.name.eql? "Trip"
+      "Trip"
+    else
+      rateable.to_s
+    end
+  end
+
+  def approved?
+    status == APPROVED
+  end
+  def pending?
+    status == PENDING
+  end
+  def rejected?
+    status == REJECTED
+  end
+
 end

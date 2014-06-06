@@ -166,6 +166,9 @@ es:
   rating_submitted_for_approval: 
     one: "[es167]Your %{rateable} rating has been submitted for approval[/es]"
     other: "[es168]Your %{rateable} ratings have been submitted for approval[/es]"
+  rating_update:
+    one: "[es170]The rating has been updated[/es]"
+    other: "[es171]The ratings have been updated[/es]"
   submit_review: "[es164]Submit Feedback[/es]"
   feedback_comments: "[es167]Please enter any feedback you would like to share[/es]"
   feedback_rating: "[es168]Rating (1-worst, 5-best)[/es]"
@@ -515,6 +518,8 @@ es:
   back: "[es475]Back[/es]"
   count: "[es385]Count[/es]"
   contact_info: "[es477]Contact Info[/es]"
+  approve: "[es521]Approve[/es]"
+  reject: "[es522]Reject[/es]"
   do_not_reply: "[es386]This email is sent from an email address that is not monitored. Please do not reply to this message.[/es]"
   nothing_found_sorry: "[es407]Nothing found - sorry[/es]"
   solicit_feedback: "[es428]Please give us some feedback:[/es]"

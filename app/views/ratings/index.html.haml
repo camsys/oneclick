@@ -1,13 +1,68 @@
+%h1= t(:feedback)
 = form_tag approve_ratings_path, method: :patch do
-  = submit_tag t(:submit), class: "btn action-button"
-  - @ratings.unapproved.each do |rating|
-    .row
-      %span= rating.rateable_type
-      %span= rating.rateable_id
-      = label_tag "approve[#{rating.id}]_Yes", t(:yes_str)
-      -# Do not internationalize.  That will break the label
-      = radio_button_tag "approve[#{rating.id}]", "Yes" 
-      = label_tag "approve[#{rating.id}]_No", t(:no_str)
-      -# Do not internationalize.  That will break the label
-      = radio_button_tag "approve[#{rating.id}]", "No" 
--# Put it in a datatable, parse actions
+  = submit_tag t(:submit), class: "btn action-button pull-right"
+  %table.table.table-condensed.table-striped.table-bordered.table-hover#ratings_table
+    %thead
+      %tr
+        %th= t(:username)
+        %th RATEE
+        %th.rating.hidden= t(:rating)
+        %th.rating_in_stars.nowrap= t(:rating)
+        %th= t(:comments)
+        %th= t(:approve)
+        %th= t(:reject)
+    %tbody
+      - @ratings.pending.decorate.each do |rating|
+        %tr
+          -#TODO Change this from creator.  Use person who took a trip?
+          %td= rating.user.name
+          %td= rating.rateable_desc
+          %td.hidden= rating.value
+          %td.rating_in_stars.nowrap= rating.rating_in_stars
+          %td= rating.comments
+          %td
+            = label_tag "#{rating.id}_#{Rating::APPROVED}", t(:approve), class: "sr-only"
+            -# Do not internationalize.  That will break the label.  Leave the label text itself internationalized
+            = radio_button_tag "#{rating.id}", Rating::APPROVED
+          %td
+            = label_tag "#{rating.id}_#{Rating::REJECTED}", t(:reject), class: "sr-only"
+            -# Do not internationalize.  That will break the label.  Leave the label text itself internationalized
+            = radio_button_tag "#{rating.id}", Rating::REJECTED 
+
+-# NOTES 
+-# Because DataTables messes with the DOM, forms only submit rows on the visible page.  Therefore, we override the native submit and fake it with carefully crafted AJAX
+  
+
+:javascript
+$(document).ready( function() {
+  var table = $('#ratings_table').dataTable( {
+    "aoColumnDefs": [
+      { "iDataSort": 2, "aTargets": [ 3 ] },
+      { "bSortable": false, "aTargets": [ 5,6 ] },
+      { "bSearchable": false, "aTargets": [ 5,6 ] }
+    ],
+    "oLanguage": {
+              "sLengthMenu": "Display _MENU_ ratings per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ ratings",
+              "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
+              "sInfoFiltered": "(filtered from _MAX_ total ratings)",
+    },
+    "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+  } );
+  $("form").submit(function() {
+    event.preventDefault()
+    $.ajax({
+      type: "POST",
+      url: "/ratings/approve",
+      data: {
+        "utf8":"✓", 
+        "_method":"patch",
+        "authenticity_token": $("input[name=authenticity_token]").val(),
+        "approve": $("input:checked", table.fnGetNodes()).serialize()
+      },
+      success: function() { location.reload(true) }
+    })
+  });
+} );
+  

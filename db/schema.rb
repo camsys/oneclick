@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140605153607) do
+ActiveRecord::Schema.define(version: 20140606140849) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -216,11 +216,11 @@ ActiveRecord::Schema.define(version: 20140605153607) do
     t.integer  "user_id"
     t.integer  "rateable_id"
     t.string   "rateable_type"
-    t.integer  "value",                         null: false
+    t.integer  "value",                             null: false
     t.text     "comments"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "approved",      default: false, null: false
+    t.string   "status",        default: "pending"
   end
 
   create_table "relationship_statuses", force: true do |t|

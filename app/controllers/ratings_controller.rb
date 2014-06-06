@@ -36,10 +36,16 @@ class RatingsController < ApplicationController
 
   def approve
     authorize! :approve, Rating
-    @ratings = Rating.where(id: params[:ids])
-    @ratings.update_all(approved: true)
-    flash[:notice] = "Success"
-    redirect_to action: :index
+    parsed_ratings = Rack::Utils.parse_query(params[:approve]) # data serialized for AJAX call.  Must parse from query-string
+    parsed_ratings.each do |k,v|
+      Rating.find(k).update_attributes(status: v)
+    end
+
+    flash[:notice] = t(:rating_update, count: parsed_ratings.count) 
+    respond_to do |format|
+      format.js {render nothing: true}
+      format.html {redirect_to action: :index}
+    end
   end
 
 private

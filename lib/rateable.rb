@@ -14,11 +14,11 @@ module Rateable
 
   # Average rating for rateable.  Returns 0 if unrated
   def calculate_rating
-    if self.ratings.blank? # Short circuit out if rateable is unrated
+    if self.ratings.approved.blank? # Short circuit out if rateable is unrated
       return 0
     end
-    total = self.ratings.pluck(:value).inject(:+)
-    len = self.ratings.length
+    total = self.ratings.approved.pluck(:value).inject(:+)
+    len = self.ratings.approved.length
     average = total.to_f / len # to_f so we don't get an integer result
   end
 
