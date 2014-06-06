@@ -22,7 +22,6 @@ class Ability
       cannot :travelers, Agency
       cannot :full_info, User
       cannot :assist, User # That permissions is restricted to agency staff
-      return
     end
     if user.has_role? :feedback_administrator
       can [:see], :admin_menu
