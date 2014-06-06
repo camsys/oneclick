@@ -65,3 +65,17 @@
             .panel-body
               -Accommodation.where(:datatype => 'bool').each do |a|
                 = characteristic_form.input a.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(a.note), label_method: :last, value_method: :first
+
+    .row
+      .col-sm-6
+        .panel.panel-default#booking
+          .panel-heading
+            %h3="[en]Booking Information[/en]"
+          .panel-body
+            =simple_fields_for :user_service, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |booking_form|
+              -Service.where("booking_service_code IS NOT NULL").each do |service|
+                - user_service = UserService.where(service: service, user_profile: @user.user_profile).first
+                - if user_service
+                  = booking_form.input service.id.to_s, label: service.name, input_html: { value: user_service.external_user_id}
+                - else
+                  = booking_form.input service.id.to_s, label: service.name, input_html: { value: "" }

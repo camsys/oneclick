@@ -57,3 +57,10 @@
           %h3= t(:accommodations)
         .panel-body
           = render :partial =>'users/show_characteristics_answers', :locals => { :user_characteristics => @user_accommodations_proxy, collection: Accommodation.where(:datatype => 'bool') }
+  .row
+    .col-sm-6
+      .panel.panel-default#booking
+        .panel-heading
+          %h3="[en]Booking Information[/en]"
+        .panel-body
+          = render :partial => 'users/show_booking_info', locals: { user: user }

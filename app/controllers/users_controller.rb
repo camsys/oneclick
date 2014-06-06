@@ -24,6 +24,7 @@ class UsersController < ApplicationController
     if @user.update_attributes!(update_method)
       @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
       set_approved_agencies(params[:user][:approved_agency_ids])
+      set_booking_services(@user, params[:user_service])
       @user.set_buddies(params[:user][:pending_and_confirmed_delegate_ids])
       redirect_to user_path(@user, locale: @user.preferred_locale), :notice => "User updated."
     else
@@ -82,5 +83,23 @@ private
       revoked = AgencyUserRelationship.find_by(agency_id: revoked_id, user_id: @user.id)
       revoked.update_attributes(relationship_status: RelationshipStatus.revoked)
     end
-  end  
+  end
+
+  def set_booking_services(user, services)
+    services.each do |id, user_id|
+      service = Service.find(id)
+      unless user_id == ""
+        user_service = UserService.where(user_profile: user.user_profile, service: service).first_or_initialize
+        user_service.external_user_id = user_id
+        user_service.save
+      else
+        user_services = UserService.where(user_profile: user.user_profile, service: service)
+        user_services.each do |user_service|
+          user_service.destroy
+        end
+      end
+
+    end
+  end
+
 end

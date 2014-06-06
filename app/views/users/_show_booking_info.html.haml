@@ -1,0 +1,26 @@
+.row
+  .col-sm-12
+    %table.table.table.condensed.table-striped.table-hover.table-bordered#bookingtable
+      %thead
+        %tr
+          %th= "[en] Service Name"
+          %th= "[en[ Client Id"
+      %tbody
+        - user.user_profile.user_services.each do |user_service|
+          %tr
+            %td= user_service.service.name
+            %td= user_service.external_user_id
+
+:javascript
+  $(document).ready(function() {
+    $('#bookingtable').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ services per page",
+              "sZeroRecords": "Traveler not registed to book trips with One-Click.",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ services",
+              "sInfoEmpty": "Showing 0 to 0 of 0 services",
+              "sInfoFiltered": "(filtered from _MAX_ total services)"
+          },
+          "sDom": "<'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+    } );
