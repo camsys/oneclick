@@ -16,10 +16,14 @@ class TripProxy < Proxy
   include Trip::Modes
 
   def initialize(attrs = {})
+    Rails.logger.info "\n===> Initializing trip_proxy\n"
     super
     attrs.each do |k, v|
+      Rails.logger.info "SETTING #{k}=#{v}"
       self.send "#{k}=", v
     end
+    @return_trip_date ||= @outbound_trip_date
+    @modes ||= Mode.all.collect{|m| m.code}
     @modes_desired = @modes
     # Modify modes to reflect transit 
     # Using array select with side effects

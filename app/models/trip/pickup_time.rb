@@ -28,8 +28,8 @@ module Trip::PickupTime
   def self.defaults trip
     travel_date = TripsSupport.default_trip_time
 
-    trip.trip_date = travel_date.strftime(TripsSupport::TRIP_DATE_FORMAT_STRING)
-    trip.trip_time = travel_date.strftime(TripsSupport::TRIP_TIME_FORMAT_STRING)
+    trip.outbound_trip_date = travel_date.strftime(TripsSupport::TRIP_DATE_FORMAT_STRING)
+    trip.outbound_trip_time = travel_date.strftime(TripsSupport::TRIP_TIME_FORMAT_STRING)
     trip
   end
 

@@ -1,6 +1,6 @@
 class Trip::ValidationWrapper::ReturnTime < Trip::ValidationWrapper::Base
   include Trip::ReturnTime
-  attr_accessor :trip_time
+  attr_accessor :outbound_trip_time
 
   def as_json val
     if is_round_trip != '1'
