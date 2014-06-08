@@ -319,6 +319,12 @@ $single-plan-height: 50px;
   stroke: black;
 }
 
+/* override bootstrap tooltip default styles*/
+div .tooltip-inner {
+  max-width: 40em;
+  text-align: left;
+}
+
 .axis text {
   font: 10px sans-serif;
 }

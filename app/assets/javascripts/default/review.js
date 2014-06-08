@@ -1856,7 +1856,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
 
         var tipText = "";
         tripLegs.forEach(function(leg) {
-            tipText += leg.description + "\r";
+            tipText += "<p>" + leg.description + "</p>";
         });
 
         chart.selectAll("rect")
@@ -1889,6 +1889,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             });
 
         $("svg rect").tooltip({
+            'html': true,
             'container': 'body'
         });
     }
