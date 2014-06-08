@@ -22,7 +22,7 @@ class ItineraryDecorator < Draper::Decorator
 
   def cost_in_words
     return h.number_to_currency(cost.round) + " (est)" if mode.code == 'mode_taxi'
-    return I18n.t(:click_for_cost_details) if cost.nil?
+    return I18n.t(:see_below) if cost.nil?
     return I18n.t(:not_available) if cost.nil?
     (cost != 0 ? h.number_to_currency(cost) : I18n.t(:no_cost_for_service))
   end

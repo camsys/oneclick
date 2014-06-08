@@ -9,8 +9,10 @@
 - else
   #reviewBaseContainer.row
     .col-xs-12.form-group.hidden-md-lg
-      %button#legendButton.btn.btn-default.pull-left.action-button{style: "margin-right: 5px;"} Show Legends
-      %button#filterButton.btn.btn-default.pull-left.action-button Show Filters
+      %button#legendButton.btn.btn-default.pull-left.action-button{style: "margin-right: 5px;"}
+        = t(:show_legends)
+      %button#filterButton.btn.btn-default.pull-left.action-button
+        = t(:show_filters)
     #accessoryContainer.col-md-3.col-xs-12
     / end of filter column
     .col-md-9      
@@ -20,16 +22,38 @@
   #itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
   :javascript
     $(function() {
+      //include all possible localized words to be used in javascript
+      var localeDictFinder = {
+        select_a_plan_each_trip_part: '#{t(:select_a_plan_each_trip_part)}',
+        show_legends: '#{t(:show_legends)}',
+        hide_legends: '#{t(:hide_legends)}',
+        show_filters: '#{t(:show_filters)}',
+        hide_filters: '#{t(:hide_filters)}',
+        update: '#{t(:update)}',
+        cancel: '#{t(:cancel)}',
+        select: '#{t(:select)}',
+        minute_abbr: '#{t(:minute_abbr)}',
+        sort_by: '#{t(:sort_by)}',
+        arrival_time: '#{t(:arrival_time)}',
+        departure_time: '#{t(:departure_time)}',
+        fare: '#{t(:fare)}',
+        travel_time: '#{t(:travel_time)}',
+        number_of_transfers: '#{t(:number_of_transfers)}',
+        trip_time: '#{t(:trip_time)}',
+        modes: '#{t(:modes)}',
+        trip_restrictions: '#{t(:trip_restrictions)}'
+      };
+
       //show or hide legends when click Filter button
       $('#legendButton').on('click', function(e) {
         e.preventDefault();
         var $legendDiv = $('#legendDiv');
         if($legendDiv.hasClass('hidden-xs-sm')) {
           $('#legendDiv').removeClass('hidden-xs-sm');
-          $(this).text('Hide Legends');
+          $(this).text(localeDictFinder['hide_legends']);
         } else {
           $('#legendDiv').addClass('hidden-xs-sm');
-          $(this).text('Show Legends');
+          $(this).text(localeDictFinder['show_legends']);
         }
       });
 
@@ -38,15 +62,15 @@
         var $filterDiv = $('#filterDiv');
         if($filterDiv.hasClass('hidden-xs-sm')) {
           $('#filterDiv').removeClass('hidden-xs-sm');
-          $(this).text('Hide Filters');
+          $(this).text(localeDictFinder['hide_filters']);
         } else {
           $('#filterDiv').addClass('hidden-xs-sm');
-          $(this).text('Show Filters');
+          $(this).text(localeDictFinder['show_filters']);
         }
       });
 
       var tripResponse = #{@tripResponse.to_json};
-      var pageRenderer = new TripReviewPageRenderer(30, 20, tripResponse);
+      var pageRenderer = new TripReviewPageRenderer(30, 20, tripResponse, localeDictFinder);
       pageRenderer.processTripResponse();
 
       $('#itinerary_modal').on('shown.bs.modal', function() {
@@ -68,13 +92,12 @@
       });
 
       //Plan button to jump to Plan page
-      var no_plan_alert = '#{t(:select_a_plan_each_trip_part)}';
       $('#planButton').on('click', function(e) {
         var selectedPlanIds = [];
         var tripParts = $('#tripContainer').find('.single-trip-part');
         var selectedPlans = tripParts.find('.single-plan-selected');
         if(tripParts.length != selectedPlans.length) {
-          show_alert(no_plan_alert);
+          show_alert(localeDictFinder['select_a_plan_each_trip_part']);
           return;
         }
 

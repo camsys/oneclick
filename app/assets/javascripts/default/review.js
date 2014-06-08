@@ -69,8 +69,8 @@ function parseDate(dateStr) {
  * @param {number}: barHeight (pixel)
  * @method processTripResponse: public method to process trip results
  */
-function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
-    
+function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDictFinder) {
+    localeDictFinder = isValidObject(localeDictFinder) ? localeDictFinder : {};
     var _tripResponse = tripResponse; //trip json
 
     var _isInitial = true; //a flag whether this is initial trip response
@@ -868,7 +868,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
                 if (questionClearCode === 1) { //all pass
                     tripPlanDiv.find('.single-plan-question').remove();
                     if(tripPlanDiv.find('.single-plan-select').length === 0) {
-                        tripPlanDiv.find('.select-column').append("<button class='btn btn-default single-plan-select action-button select-column-button'>Select</button>").click(function() {
+                        tripPlanDiv.find('.select-column').append("<button class='btn btn-default single-plan-select action-button select-column-button'>" + localeDictFinder['select'] + "</button>").click(function() {
                             selectItineraryByClickingSelectButton(this);
                         });
                     }
@@ -1006,37 +1006,43 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
 
         var tickLabelTags = getTickLabelHtmlTags(tickLabels);
 
+        var sorterLabelTags =   '<span>' +  localeDictFinder['sort_by'] + ': </span>';
+               
         var sorterTags =
-            '<label' + (isDepartAt ? ' class="sm-sorter-margin-left"' : '') + '>Sort by: </label>' +
-            '<select style="display: inline-block;" class="trip-sorter' + (isDepartAt ? '"' : ' sm-sorter-margin-right"') + '>' +
-            '<option value="start-time" ' + (isDepartAt ? ' selected' : '') + '>Departure Time</option>' +
-            '<option value="end-time" ' + (isDepartAt ? '' : ' selected') + '>Arrival Time</option>' +
-            '<option value="cost" >Fare</option>' +
-            '<option value="duration" >Travel Time</option>' +
+           '<select style="display: inline-block;" class="trip-sorter">' +
+            '<option value="start-time" ' + (isDepartAt ? ' selected' : '') + '>' + localeDictFinder["departure_time"] + '</option>' +
+            '<option value="end-time" ' + (isDepartAt ? '' : ' selected') + '>' + localeDictFinder["arrival_time"] + '</option>' +
+            '<option value="cost" >' + localeDictFinder['fare'] + '</option>' +
+            '<option value="duration" >' + localeDictFinder['travel_time'] + '</option>' +
             '</select>';
 
         var tripHeaderTags = tripDescTag +
             "<div class='col-xs-12 single-plan-header'>" +
+            "<div class='col-xs-12' style='padding:0px;'>" +
             "<div class='col-xs-3 col-sm-2 trip-plan-first-column' style='padding: 0px;'>" +
+            sorterLabelTags +
             (isDepartAt ? ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>") : "") +
             "</div>" +
             "<div class='col-xs-7 col-sm-9 " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
             (
-            isDepartAt ?
-            ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>") :
-            ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>")
-        ) +
-            sorterTags +
+                isDepartAt ?
+                ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>") :
+                ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>")
+            ) +
             "</div>" +
             "<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px;'>" +
             (isDepartAt ? "" : ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>")) +
             "</div>" +
+            "</div>" +
+            "<div class='col-xs-12' style='padding:0px;'>" +
             "<div class='col-xs-3 col-sm-2 trip-plan-first-column' style='padding: 0px;'>" +
+            sorterTags +
             "</div>" +
             "<div class='col-xs-7 col-sm-9 tick-labels " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap;'>" +
             tickLabelTags +
             "</div>" +
             "<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px;'>" +
+            "</div>" +
             "</div>" +
             "</div>";
         return tripHeaderTags;
@@ -1216,7 +1222,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
                 "<button class='btn btn-default single-plan-question action-button select-column-button' " +
                 "data-toggle='modal' data-target='#" + missInfoDivId + "'>?</button>"
             ) :
-            "<button class='btn btn-default single-plan-select action-button select-column-button'>Select</button>"
+            "<button class='btn btn-default single-plan-select action-button select-column-button'>" + localeDictFinder['select'] + "</button>"
         ) +
             "</div>" +
             "</div>";
@@ -1258,7 +1264,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             '<div class="modal-content">' +
             '<div class="modal-header">' +
             '<button type="button" class="close" aria-hidden="true" style="color: red; opacity: 1;">?</button>' +
-            '<b class="modal-title" id="' + missInfoDivId + '_title">Trip Restrictions</b>' +
+            '<b class="modal-title" id="' + missInfoDivId + '_title">' + localeDictFinder['trip_restrictions'] + '</b>' +
             '</div>' +
             '<div class="modal-body">' +
             '<form class="form-inline" role="form" id="' + missInfoDivId + '_form">' +
@@ -1266,8 +1272,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             '</form>' +
             '</div>' +
             '<div class="modal-footer">' +
-            '<button type="submit" class="btn btn-primary action-button">Update</button>' +
-            '<button type="button" class="btn btn-default action-button" data-dismiss="modal">Cancel</button>' +
+            '<button type="submit" class="btn btn-primary action-button">' + localeDictFinder['update'] + '</button>' +
+            '<button type="button" class="btn btn-default action-button" data-dismiss="modal">' + localeDictFinder['cancel'] + '</button>' +
             '</div>' +
             '</div>' +
             '</div>';
@@ -1510,8 +1516,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             if (isFirstMode) {
                 modeFilterTags +=
                     '<div class = "col-sm-12" style="padding: 0px;">' +
-                        '<label class="sr-only">Modes</label>' +
-                        '<label>Modes</label>' +
+                        '<label class="sr-only">' + localeDictFinder['modes'] + '</label>' +
+                        '<label>' + localeDictFinder['modes'] + '</label>' +
                     '</div>' +
                     '<div class="col-sm-12" style="padding: 0px;" id="' + modeContainerId + '">';
                 isFirstMode = false;
@@ -1573,8 +1579,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
         if (typeof(maxTransfer) === 'number' && minTransfer === 0 && maxTransfer > minTransfer) {
             tags =
                 '<div class = "col-sm-12" style="padding: 0px;">' +
-                '<label class="sr-only">Number of transfers</label>' +
-                '<label>Number of transfers</label>' +
+                '<label class="sr-only">' + localeDictFinder['number_of_transfers'] + '</label>' +
+                '<label>' + localeDictFinder['number_of_transfers'] + '</label>' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<div role="slider" id="' + transferSliderId + '" aria-valuemin="' + minTransfer + '" aria-valuemax="' + maxTransfer + '">' +
@@ -1634,8 +1640,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             maxCost = getRoundMaxValue(maxCost);
             tags =
                 '<div class = "col-sm-12" style="padding: 0px;">' +
-                '<label class="sr-only">Fare</label>' +
-                '<label>Fare</label>' +
+                '<label class="sr-only">' + localeDictFinder['fare'] + '</label>' +
+                '<label>' + localeDictFinder['fare'] + '</label>' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<div role="slider" id="' + costSliderId + '" aria-valuemin="' + minCost + '" aria-valuemax="' + maxCost + '">' +
@@ -1696,16 +1702,16 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse) {
             maxDuration = getRoundMaxValue(maxDuration / 60);
             tags =
                 '<div class = "col-sm-12" style="padding: 0px;">' +
-                '<label class="sr-only">Time</label>' +
-                '<label>Time</label>' +
+                '<label class="sr-only">' + localeDictFinder['trip_time'] + '</label>' +
+                '<label>' + localeDictFinder['trip_time'] + '</label>' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<div role="slider" id="' + durationSliderId + '" aria-valuemin="' + minDuration + '" aria-valuemax="' + maxDuration + '">' +
                 '</div>' +
                 '</div>' +
                 '<div class="col-sm-12" style="margin-bottom: 5px;">' +
-                '<span id="' + durationSliderId + '_min_val_label" class="pull-left">' + minDuration.toString() + 'min</span>' +
-                '<span id="' + durationSliderId + '_max_val_label" class="pull-right">' + maxDuration.toString() + 'min</span>' +
+                '<span id="' + durationSliderId + '_min_val_label" class="pull-left">' + minDuration.toString() +  localeDictFinder['minute_abbr'] + '</span>' +
+                '<span id="' + durationSliderId + '_max_val_label" class="pull-right">' + maxDuration.toString() +  localeDictFinder['minute_abbr'] + '</span>' +
                 '</div>';
             sliderConfig = {
                 id: durationSliderId,
