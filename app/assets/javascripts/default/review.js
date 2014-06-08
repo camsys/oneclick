@@ -29,6 +29,18 @@ function parseDate(dateStr) {
     return  moment(dateStr).toDate();
 }
 
+function formatDate(dateToFormat) {
+    if(dateToFormat instanceof Date) {
+        if(dateToFormat.getFullYear() === (new Date()).getFullYear()) {
+            return moment(dateToFormat).format("dddd, MMMM Do") //Sunday, June 8th
+        } else {
+            return moment(dateToFormat).format("dddd, MMMM Do YYYY") //Sunday, June 8th 2014
+        }
+    } 
+
+    return '';
+}
+
 /*
 * show loading mask
 */
@@ -644,6 +656,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             return;
         }
 
+
+        var tripMidTime = new Date((tripStartTime.getTime() + tripEndTime.getTime()) / 2);;
+
         var tripPartDivId = "trip_part_" + tripId;
 
         var tickLabels = getTickLabels(tripStartTime, tripEndTime, intervalStep);
@@ -651,7 +666,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             var tripTags = "<div id='" + tripPartDivId + "'class='col-xs-12 well single-trip-part'>";
 
             //process header
-            var tripHeaderTags = addTripHeaderHtml(trip.description, tickLabels, intervalStep, isDepartAt);
+            var tripHeaderTags = addTripHeaderHtml(trip.description, tickLabels, intervalStep, isDepartAt, tripMidTime);
             tripTags += tripHeaderTags;
 
             //process each trip plan
@@ -1000,13 +1015,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
      * @param {bool} isDepartAt: true if departing at, false if arriving at
      * @param {string} tripHeaderTags: html tags of the whole trip header
      */
-    function addTripHeaderHtml(tripDescription, tickLabels, intervelStep, isDepartAt) {
+    function addTripHeaderHtml(tripDescription, tickLabels, intervelStep, isDepartAt, tripMidTime) {
         //trip description
         var tripDescTag = '<label class="col-sm-12">' + tripDescription + '</label>';
 
         var tickLabelTags = getTickLabelHtmlTags(tickLabels);
 
         var sorterLabelTags =   '<span>' +  localeDictFinder['sort_by'] + ': </span>';
+        var midDateLabelTags =   '<span>' +  formatDate(tripMidTime) + '</span>';
                
         var sorterTags =
            '<select style="display: inline-block;" class="trip-sorter">' +
@@ -1029,6 +1045,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>") :
                 ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>")
             ) +
+            midDateLabelTags + 
             "</div>" +
             "<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px;'>" +
             (isDepartAt ? "" : ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>")) +

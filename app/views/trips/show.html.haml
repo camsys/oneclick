@@ -22,6 +22,9 @@
   #itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
   :javascript
     $(function() {
+      //load current locale lang into moment
+      //TODO: how to get current lang?
+
       //include all possible localized words to be used in javascript
       var localeDictFinder = {
         select_a_plan_each_trip_part: '#{t(:select_a_plan_each_trip_part)}',

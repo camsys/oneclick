@@ -22,14 +22,22 @@ class ItineraryDecorator < Draper::Decorator
 
   def cost_in_words
     return h.number_to_currency(cost.round) + " (est)" if mode.code == 'mode_taxi'
-    return I18n.t(:see_below) if cost.nil?
-    return I18n.t(:not_available) if cost.nil?
+    return I18n.t(:see_below) if cost.nil? #TODO: what is the right case for see_below?
+    return I18n.t(:not_available) if cost.nil? #TODO: what is the right case for not_available?
     (cost != 0 ? h.number_to_currency(cost) : I18n.t(:no_cost_for_service))
   end
 
   def duration_in_words
     # TODO should be t(:not_available)
     (duration ? h.duration_to_words(duration) + " (est.)" : I18n.t(:not_available))
+  end
+
+  def date_in_words
+
+    return format_date(start_time + (end_time - start_time) / 2) if (start_time && end_time)
+    return format_date(start_time) if (start_time)
+    return format_date(end_time) if (end_time)
+    return I18n.t(:not_available)
   end
 
   def time_range_in_words

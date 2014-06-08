@@ -6,7 +6,8 @@
       %tr
         %th.sr-only= t(:mode)
         %th= t(:fare)
-        %th= t(:times)
+        %th= t(:trip_date)
+        %th= t(:trip_time)
         %th= t(:walk_time)
         %th= t(:transfers)
     %tbody
@@ -14,15 +15,18 @@
         %td.itinerary_icons{:width => '20%', :style => "text-align: left;"}
           %i.transit_itinerary_icons.mode_icon_formatting.trip-mode-icon{:class =>i.mode.code}
           .sr-only= t(i.mode)
-        %td{:width => '20%'}
+        %td{:width => '15%'}
           .itinerary_text
             = i.cost_in_words
-        %td{:width => '30%'}
+        %td{:width => '15%'}
+          .itinerary_text
+            = i.date_in_words
+        %td{:width => '25%'}
           .itinerary_text
             = i.time_range_in_words
           .itinerary_text_small{:style => "line-height: normal;"}
             = i.duration_in_words
-        %td{:width => '20%'}
+        %td{:width => '15%'}
           .itinerary_text
             = i.walking_time
         %td{:width => '10%'}
