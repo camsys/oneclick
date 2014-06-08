@@ -193,6 +193,8 @@ en:
   arrive_by: 'Arrive by'
   arrive_at: 'Arrive at'
   trip_time: 'Time'
+  number_of_transfers: 'Number of Transfers'
+  modes: 'Modes'
   apply: 'Apply'
   cancel: 'Cancel'
   plan_it: 'Plan it'
@@ -200,6 +202,7 @@ en:
   options: 'Options'
   review: 'Review'
   plan: 'Plan'
+  trip_restrictions: 'Trip Restrictions'
   from: 'From'
   to: 'To'
   at_time: 'on'
@@ -208,6 +211,9 @@ en:
   trip_purposes: "Trip Purposes"
   departing_at: 'Departing At'
   arriving_by: 'Arriving By'
+  arrival_time: 'Arrival Time'
+  departure_time: 'Departure Time'
+  travel_time: 'Travel Time'
   save_and_plan_trip: "Save and plan my trip"
   trip_planned_and_saved: "Trip planned and saved"
   finish_trip_planning_options: "You can now do one or more of the following to finish your trip planning"
@@ -380,6 +386,7 @@ en:
   cost_details: "Cost Details"
   addl_cost_details: "Additional Cost Details"
   click_for_cost_details: 'Click for cost details'
+  see_below: 'See below'
   view_trip_details: "View trip details so that you can call the provider."
   email_trip_details:  "Email your trip plan."
   print_trip_details: "Print your trip plan."
@@ -426,6 +433,12 @@ en:
   not_authorized_as_an_administrator: 'Not authorized as an administrator.'
   n_a: 'n/a'
   not_available: 'Not Available'
+  show_filters: 'Show Filters'
+  show_legends: 'Show Legends'
+  hide_filters: 'Hide Filters'
+  hide_legends: 'Hide Legends'
+  minute_abbr: 'min'
+  sort_by: 'Sort by'
   less_than_1_block: "less than 1 block"
   about_2_blocks: "about 2 blocks"
   about_4_blocks: "about 4 blocks"

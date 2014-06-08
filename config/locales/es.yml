@@ -195,6 +195,8 @@ es:
   finish_trip_planning_options: "[es133]You can now do one or more of the following to finish your trip planning[/es]"
   arrive_at: 'Llegar a'
   trip_time: 'Hora'
+  number_of_transfers: '[es]Number of Transfers[/es]'
+  modes: '[es]Modes[/es]'
   apply: 'Applicar'
   cancel: 'Cancelar'
   plan_it: 'Planear el viaje'
@@ -202,6 +204,7 @@ es:
   options: '[es]Options[/es]'
   review: '[es]Review[/es]'
   plan: '[es]Plan[/es]'
+  trip_restrictions: '[es]Trip Restrictions[/es]'
   from: 'De'
   to: 'A'  
   at_time: 'en'  
@@ -210,6 +213,9 @@ es:
   trip_purposes: "[es118]Trip Purposes[/es]"
   departing_at: 'Con salida a las *3*'
   arriving_by: 'Que lleguen en *4*'
+  arrival_time: '[es]Arrival Time[/es]'
+  departure_time: '[es]Departure Time[/es]'
+  travel_time: '[es]Travel Time[/es]'
   correct_errors_to_create_a_trip: 'Por favor corrige los errores señalados para crear un viaje.'
   no_thanks_just_plan_it: "[es127]No thanks, just plan my trip[/es]"
   disability_explanation_str: "[es128]We noticed you mentioned a disability and/or difficulty walking for certain periods of time.  Would you please tell us more about which accommodations you require for your trip?[/es]"
@@ -378,6 +384,7 @@ es:
   cost_details: "[es362]Cost Details[/es]"
   addl_cost_details: "[es299]Additional Cost Details[/es]"
   click_for_cost_details: '[es]Click for cost details[es]'
+  see_below: '[es]See below[es]'
   view_trip_details: "[es298]View trip details so that you can call the provider.[/es]"
   email_trip_details:  "[es299]Email your trip plan.[/es]"
   print_trip_details: "[es299]Print your trip plan.[/es]"
@@ -423,6 +430,12 @@ es:
   not_authorized_as_an_administrator: 'No está autorizado como un administrador.'
   n_a: 'n/a'
   not_available: '[es]Not Available[/es]'
+  show_filters: '[es]Show Filters[/es]'
+  show_legends: '[es]Show Legends[/es]'
+  hide_filters: '[es]Hide Filters[/es]'
+  hide_legends: '[es]Hide Legends[/es]'
+  minute_abbr: '[es]min[/es]'
+  sort_by: '[es]Sort by[/es]'
   less_than_1_block: "a menos the 1 cuadra"
   about_2_blocks: "aproximadament 2 cuadras"
   about_4_blocks: "aproximadamente 4 cuadras"
