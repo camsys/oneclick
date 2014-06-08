@@ -86,6 +86,8 @@ class TripsController < PlaceSearchingController
   def plan
     @itineraries = Itinerary.where('id in (' + params[:itinids] + ')')
     @trip = @itineraries.first.trip_part.trip
+    @trip_parts = @trip.trip_parts
+
     @trip.itineraries.selected.each do |itin|
       itin.selected = false
       itin.save
@@ -124,10 +126,9 @@ class TripsController < PlaceSearchingController
     end
 
 
-
     respond_to do |format|
       format.html # plan.html.erb
-      format.json { render json: @itineraries }
+      format.json { render json: @trip_parts }
     end
   end
 
