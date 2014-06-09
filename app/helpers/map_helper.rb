@@ -100,10 +100,10 @@ module MapHelper
       legs.each do |leg|
 
         place = {:name => leg.start_place.name, :lat => leg.start_place.lat, :lon => leg.start_place.lon, :address => leg.start_place.name}
-        markers << get_addr_marker(place, 'start_leg', 'blueIcon')
+        markers << get_addr_marker(place, 'start_leg', 'blueMiniIcon')
 
         place = {:name => leg.end_place.name, :lat => leg.end_place.lat, :lon => leg.end_place.lon, :address => leg.end_place.name}
-        markers << get_addr_marker(place, 'end_leg', 'blueIcon')
+        markers << get_addr_marker(place, 'end_leg', 'blueMiniIcon')
 
       end
     end
