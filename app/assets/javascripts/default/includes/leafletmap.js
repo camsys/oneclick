@@ -73,8 +73,11 @@ CsLeaflet.Leaflet = {
             this.LMcurrent_popup = event.popup;
         });
 
-        //register CurrentLocationControl
+        //register CurrentLocation Control
         this.addCurrentLocationControl();
+
+        //register StreetView Control
+        this.addStreetViewControl();
     },
 
     /**
@@ -606,5 +609,24 @@ CsLeaflet.Leaflet = {
         });
         
         currentMap.addControl(currentLocataionControl);
+        currentMap.currentLocationControl = currentLocataionControl;
+    }, 
+
+    addStreetViewControl: function() {
+
+        if(!L.Control.CustomButton) {
+            this.registerCustomControl();
+        }
+
+        var currentMap = this.LMmap;
+        var streetViewControl = new L.Control.CustomButton('streetView', {
+            title: 'Display street view',
+            iconCls: 'fa fa-lg fa-google',
+            clickCallback: function() {
+                //TODO
+            }
+        });
+        
+        currentMap.addControl(streetViewControl);
     }
 }
