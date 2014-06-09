@@ -321,7 +321,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 parseDate(tripPartData.start_time),
                 parseDate(tripPartData.end_time),
                 intervalStep,
-                barHeight
+                barHeight,
+                null
             );
             return;
         }
@@ -700,7 +701,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                         tripStartTime,
                         tripEndTime,
                         intervalStep,
-                        barHeight
+                        barHeight,
+                        tripPlan.service_name
                     );
 
                     addTripStrictionFormSubmissionListener(tripPlan.missing_information, tripPlanChartId);
@@ -738,7 +740,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                             tripStartTime,
                             tripEndTime,
                             intervalStep,
-                            barHeight
+                            barHeight,
+                            tripPlan.service_name
                         );
 
                         addTripStrictionFormSubmissionListener(tripPlan.missing_information, tripPlanChartId);
@@ -1833,7 +1836,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
      * @param {number} intervalStep
      * @param {number} barHeight
      */
-    function createChart(planId, chartDivId, tripLegs, tripStartTime, tripEndTime, intervalStep, barHeight) {
+    function createChart(planId, chartDivId, tripLegs, tripStartTime, tripEndTime, intervalStep, barHeight, serviceName) {
         if (!tripStartTime instanceof Date || !tripEndTime instanceof Date || !tripLegs instanceof Array || typeof(intervalStep) != 'number' || typeof(barHeight) != 'number') {
             return;
         }
@@ -1876,6 +1879,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             tipText += "<p>" + leg.description + "</p>";
         });
 
+        //draw trip legs in rectangles
         chart.selectAll("rect")
             .data(tripLegs)
             .enter().append("rect")
@@ -1904,6 +1908,24 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                   });
               }
             });
+
+        //add service name
+        if(tripLegs.length > 0 && typeof(serviceName) === 'string' && serviceName.trim().length > 0) {
+             chart.selectAll("text")
+                .data([serviceName])
+                .enter()
+                .append("text")
+                .attr('class', 'itinerary-chart-service-name')
+                .attr("x", 
+                    (
+                        x(tripStartTime) + 
+                        x(tripEndTime)
+                    ) / 2
+                )
+                .attr("y", barHeight)
+                .attr("dy", '0.5ex')
+                .text(function(d){ return d; });
+        }
 
         $("svg rect").tooltip({
             'html': true,
@@ -2028,6 +2050,15 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 return (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time)));
             })
             .attr("height", barHeight);
+
+        chart.selectAll("text")
+            .attr("x", 
+                (
+                    x(tripStartTime) + 
+                    x(tripEndTime)
+                ) / 2
+            )
+            .attr("y", barHeight)
     }
 
     /*

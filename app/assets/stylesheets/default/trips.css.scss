@@ -319,6 +319,12 @@ $single-plan-height: 50px;
   stroke: black;
 }
 
+.itinerary-chart-service-name {
+  text-anchor: middle;
+  dominant-baseline: central;
+  font: 12px sans-serif;
+}
+
 /* override bootstrap tooltip default styles*/
 div .tooltip-inner {
   max-width: 40em;
