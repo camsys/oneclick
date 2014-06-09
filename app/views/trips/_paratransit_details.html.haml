@@ -49,3 +49,8 @@
       = t(a) +":"
     .col-sm-6
       = sanitize_nil_to_na b
+.row
+  .col-sm-6
+    = t(:rating) +":"
+  .col-sm-6
+    = itinerary.service.rating_in_stars
