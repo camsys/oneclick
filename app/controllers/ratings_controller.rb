@@ -34,6 +34,13 @@ class RatingsController < ApplicationController
     redirect_to :back
   end
 
+  def context
+    r = Rating.find(params[:id])
+    respond_to do |format|
+      format.js {render partial: "context", :formats => [:html], locals: {rateable: r.rateable} }
+    end
+  end
+
   def approve
     authorize! :approve, Rating
     parsed_ratings = Rack::Utils.parse_query(params[:approve]) # data serialized for AJAX call.  Must parse from query-string

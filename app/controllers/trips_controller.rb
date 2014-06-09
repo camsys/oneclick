@@ -85,7 +85,7 @@ class TripsController < PlaceSearchingController
 
   def plan
     @itineraries = Itinerary.where('id in (' + params[:itinids] + ')')
-    @trip = @itineraries.first.trip_part.trip
+    @trip = Trip.find(params[:id])
     @trip_parts = @trip.trip_parts
 
     @trip.itineraries.selected.each do |itin|
@@ -125,6 +125,9 @@ class TripsController < PlaceSearchingController
       end
     end
 
+    # Just before render, save off the html on the trip, so that we can access it later for ratings.
+    planned_trip_html = render_to_string partial: "selected_itineraries_details", locals: { trip: @trip, for_db: true }
+    @trip.update_attributes(planned_trip_html: planned_trip_html)
 
     respond_to do |format|
       format.html # plan.html.erb

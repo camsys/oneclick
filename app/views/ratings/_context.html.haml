@@ -1,0 +1,15 @@
+.modal-header
+  .pull-right= rateable.rating_in_stars(2)
+  %h4= rateable.to_s
+.modal-body
+  .row
+    - case rateable
+      - when Agency
+        = render partial: "admin/agencies/public_details", locals: { agency: rateable }
+      - when Service
+        = render partial: "services/public_details", locals: { service: rateable }
+      - when Trip
+        -# trip details are stored on the trip for convenience
+        = rateable.planned_trip_html.html_safe
+.modal-footer
+  %btn.btn.btn-default{data: {dismiss: "modal"}}= t(:ok)

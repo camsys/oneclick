@@ -39,4 +39,8 @@ class Rating < ActiveRecord::Base
     status == REJECTED
   end
 
+  def context
+
+  end
+
 end

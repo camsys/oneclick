@@ -169,6 +169,7 @@ en:
   rating_update:
     one: "The rating has been updated"
     other: "The ratings have been updated"
+  rating_targets: "Trip/Agency/Service"
   submit_review: "Submit Feedback"
   feedback_comments: "Please enter any feedback you would like to share"
   feedback_rating: "Rating (1-worst, 5-best)"
@@ -413,6 +414,7 @@ en:
   accommodations: "Accommodations"
   missing_accommodations: "Some accommodations unavailable."
   no_accommodations: "No accommodations provided"
+  service_provides_the_following: "This service provides the following accommodations"
   volunteer: "Volunteer Service"
   nemt: "Non-Emergency Med."
   car_service: "Car Service"

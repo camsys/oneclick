@@ -17,11 +17,7 @@
           -break
 
 .col-xs-12{style: "padding: 0px;"}
-  - @trip_parts.each do |trip_part|
-    - ItineraryDecorator.decorate_collection(trip_part.itineraries.selected.valid).each do |itinerary|
-      - Rails.logger.info itinerary.trip_part.sequence
-      - Rails.logger.info 'test'
-      = render :partial => 'trip_single_plan_details', :locals => {:itinerary => itinerary}
+  = render partial: "selected_itineraries_details", locals: { trip: @trip, for_db: false }
 
 = render partial: 'send_trip_by_email', locals: {trip: @trip}
 

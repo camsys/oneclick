@@ -40,7 +40,6 @@
     - if itinerary.service.try(:phone)
       %h4= tel_link itinerary.service.phone
 
-
     .row.hidden
       ="SCORE: " + itinerary.match_score.to_s
 - itinerary.service.get_contact_info_array.each do |a,b|
@@ -49,6 +48,19 @@
       = t(a) +":"
     .col-sm-6
       = sanitize_nil_to_na b
+.row 
+  .col-sm-6
+    = t(:accommodations)
+  .col-sm-6
+    -if itinerary.service.accommodations.count == 0
+      .row
+        .col-sm-12
+          = t(:no_accommodations)
+    -else
+      -itinerary.service.accommodations.each do |accom|
+        .row
+          .col-sm-12
+            =t(accom.name)
 .row
   .col-sm-6
     = t(:rating) +":"

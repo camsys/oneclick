@@ -1,0 +1,5 @@
+- trip.trip_parts.each do |trip_part|
+  - ItineraryDecorator.decorate_collection(trip_part.itineraries.selected.valid).each do |itinerary|
+    - Rails.logger.info itinerary.trip_part.sequence
+    - Rails.logger.info 'test'
+    = render :partial => 'trip_single_plan_details', :locals => {:itinerary => itinerary, for_db: for_db}

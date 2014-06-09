@@ -19,44 +19,7 @@
           = t(:feedback)
 = render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
 .row
-  .col-sm-6
-    .panel.panel-default
-      .panel-heading
-        %h3.panel-title= t(:contact_info)
-      .panel-body
-        %table.table.table-condensed
-          %tr
-            %td.text-right
-              = t(:address) + ":"
-            %td.text-left
-              %b= @agency.address.to_s
-            %td.text-left
-              %b= @agency.city.to_s
-            %td.text-left
-              %b= @agency.state.to_s
-            %td.text-left
-              %b= @agency.zip.to_s
-          %tr
-            %td.text-right
-              = t(:phone)+ ":  "
-            %td.text-left{colspan: 4}
-              %b= @agency.phone.to_s
-          %tr
-            %td.text-right
-              = t(:email)+ ":  "
-            %td.text-left{colspan: 4}
-              %b= mail_to @agency.email.to_s
-          %tr
-            %td.text-right
-              = t(:url)+ ":  "
-            %td.text-left{colspan: 4}
-              - if @agency.url
-                %b= link_to @agency.url, @agency.url
-          %tr
-            %td.text-right
-              = t(:parent_agency) + ":  "
-            %td.text-left{colspan: 4}
-              %b= @agency.parent.name if @agency.parent
+  = render partial: "public_details", locals: {agency: @agency}
   - if can? :full_read, @agency
     .col-sm-6
       .panel.panel-default

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140606140849) do
+ActiveRecord::Schema.define(version: 20140609185340) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -212,19 +212,8 @@ ActiveRecord::Schema.define(version: 20140606140849) do
     t.string  "internal_contact_email", limit: 128
   end
 
-  create_table "rates", force: true do |t|
-    t.integer  "rater_id"
-    t.integer  "rateable_id"
-    t.string   "rateable_type"
-    t.integer  "stars",         null: false
-    t.string   "dimension"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
   add_index "rates", ["rateable_id", "rateable_type"], :name => "index_rates_on_rateable_id_and_rateable_type"
   add_index "rates", ["rater_id"], :name => "index_rates_on_rater_id"
-
   create_table "ratings", force: true do |t|
     t.integer  "user_id"
     t.integer  "rateable_id"
@@ -402,15 +391,16 @@ ActiveRecord::Schema.define(version: 20140606140849) do
   end
 
   create_table "trips", force: true do |t|
-    t.string   "name",            limit: 64
+    t.string   "name",              limit: 64
     t.integer  "user_id"
     t.integer  "trip_purpose_id"
     t.integer  "creator_id"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.boolean  "taken"
     t.date     "scheduled_date"
     t.datetime "scheduled_time"
+    t.text     "planned_trip_html"
   end
 
   create_table "trips_desired_modes", force: true do |t|

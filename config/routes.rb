@@ -284,6 +284,7 @@ Oneclick::Application.routes.draw do
     resources :ratings, only: [:index] do
       collection do
         patch "approve"
+        get "context"
       end
     end
     

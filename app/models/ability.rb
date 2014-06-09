@@ -26,7 +26,7 @@ class Ability
     if user.has_role? :feedback_administrator
       can [:see], :admin_menu
       can :access, :admin_feedback
-      can [:read, :approve], Rating
+      can [:read, :approve, :context], Rating
     end
     if User.with_role(:agency_administrator, :any).include?(user)
       # TODO Are these 2 redundant?

@@ -14,35 +14,7 @@
         data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default",
         form_class: "form-horizontal pull-right"
 .row
-  .col-sm-6
-    .panel.panel-default
-      .panel-heading
-        %h3.panel-title
-          = t(:provided_by)
-          = link_to @service.provider.name, admin_provider_path(@service.provider)
-      .panel-body
-        -unless @service.active
-          %h3.warning
-            = t(:service_is_inactive)
-        %h4
-          =@service.phone
-        %h4
-          =@service.email
-        %h4
-          - if @service.url
-            =link_to @service.url, @service.url
-        %h5
-          -if @service.external_id
-            =t(:service_id).to_s + ": " + @service.external_id.to_s
-        %h5
-          -if @service.booking_service_code
-            =t(:booking_service_code).to_s + ": " + @service.booking_service_code.to_s
-        %h5
-          - if @service.service_window
-            = t(:service_window).to_s + ": " + @service.service_window.to_s
-        %h5
-          - if @service.time_factor
-            = t(:time_factor).to_s + ": " + @service.time_factor.to_s
+  = render partial: "public_details", locals: { service: @service}
         
   -if can? :full_read, @service      
     .col-sm-6
