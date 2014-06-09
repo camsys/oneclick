@@ -72,6 +72,9 @@ CsLeaflet.Leaflet = {
             //alert('popup opened');
             this.LMcurrent_popup = event.popup;
         });
+
+        //register CurrentLocationControl
+        this.addCurrentLocationControl();
     },
 
     /**
@@ -547,5 +550,61 @@ CsLeaflet.Leaflet = {
         // this.LMmap.setView(bounds.getCenter(), map.getBoundsZoom(bounds), true)
         this.LMmap.invalidateSize(false);
         this.LMmap.fitBounds(this.LMbounds);
+    },
+
+    /*
+     * customized map controls
+     */
+    registerCustomControl: function() {
+        L.Control.CustomButton = L.Control.extend({
+            options: {
+                position: 'topleft',
+                title: '',
+                iconCls: '',
+                clickCallback: function() {}
+            },
+            initialize: function (foo, options) {
+                L.Util.setOptions(this, options);
+            },
+            onAdd: function () {
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+
+                this.link = L.DomUtil.create('a', 'leaflet-bar-part', container);
+                L.DomUtil.create('i', this.options.iconCls, this.link);
+                this.link.href = '#';
+                this.link.title = this.options.title;
+
+                L.DomEvent.on(this.link, 'click', this._click, this);
+
+                return container;
+            },
+          
+            _click: function (e) {
+                L.DomEvent.stopPropagation(e);
+                L.DomEvent.preventDefault(e);
+                this.options.clickCallback();
+            }
+        })
+    }, 
+
+    addCurrentLocationControl: function() {
+        if (!("geolocation" in navigator)) { //if geolocation is not supported, then not display this control on map
+            return;
+        }
+
+        if(!L.Control.CustomButton) {
+            this.registerCustomControl();
+        }
+
+        var currentMap = this.LMmap;
+        var currentLocataionControl = new L.Control.CustomButton('currentLocation', {
+            title: 'Center my location',
+            iconCls: 'fa fa-lg fa-location-arrow',
+            clickCallback: function() {
+                currentMap.locate({setView: true});
+            }
+        });
+        
+        currentMap.addControl(currentLocataionControl);
     }
 }
