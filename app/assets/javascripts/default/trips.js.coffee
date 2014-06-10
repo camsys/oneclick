@@ -48,11 +48,20 @@ toggle_map = (dir) ->
 
 hide_map = (dir) ->
   $('#' + dir + "MapContainer").addClass('hide')
+  CsMaps[dir + "Map"].addressType = null
 
-show_map = (dir) ->
+show_map = (dir, addrType) ->
   $('#' + dir + "MapContainer").removeClass('hide')
   CsMaps[dir + "Map"].refresh()
+  CsMaps[dir + "Map"].addressType = addrType # assign addressType to use in updating place input field after picking location from map
 
+update_place = (placeText, type) ->
+  if type =='from'
+    placeid = 'trip_proxy_from_place'
+  else
+    placeid = 'trip_proxy_to_place'
+
+  $('#' + placeid).val(placeText)
 $ ->
 
   places = new Bloodhound
@@ -86,11 +95,11 @@ $ ->
 
   # Show/hide map popover when in input field
   $('#trip_proxy_from_place').on 'typeahead:opened', () ->
-    show_map('trip')
+    show_map('trip', 'from')
   $('#trip_proxy_from_place').on 'focusout', () ->
     # hide_map('trip')
   $('#trip_proxy_to_place').on 'typeahead:opened', () ->
-    show_map('trip')
+    show_map('trip', 'to')
   $('#trip_proxy_to_place').on 'focusout', () ->
     # hide_map('trip')
 
@@ -125,3 +134,13 @@ $ ->
   $('.trip_proxy_modes').on 'change', (e, addr, d) ->
     console.log e
     console.log $('.trip_proxy_modes input:checked').length
+
+  if CsMaps.tripMap
+    CsMaps.tripMap.LMmap.on 'placechange', (e) ->
+      addr = e.latlon
+      placeText = '(' + addr.lat + ', ' + addr.lon + ')' #TODO: need to display a real address instead of coords
+      addr.name = placeText
+      addrType = CsMaps.tripMap.addressType
+      update_map(CsMaps.tripMap, addrType, e, addr, null)
+
+      update_place(placeText, addrType)

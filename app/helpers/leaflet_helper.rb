@@ -11,7 +11,7 @@ module LeafletHelper
   SHOW_MY_LOCATION = true
   SHOW_STREET_VIEW= true
   STREET_VIEW_URL = '/streetview.html'
-  SHOW_MARKER_SELECTION = false
+  SHOW_LOCATION_SELECT = false
   
   def LeafletMap(options)
     options_with_indifferent_access = options.with_indifferent_access
@@ -40,7 +40,7 @@ module LeafletHelper
     show_my_location = options[:show_my_location] || SHOW_MY_LOCATION
     show_street_view = options[:show_street_view] || SHOW_STREET_VIEW
     street_view_url = options[:street_view_url] ? options[:street_view_url] : STREET_VIEW_URL
-    show_marker_selection = options[:show_marker_selection] || SHOW_MARKER_SELECTION
+    show_location_select = options[:show_location_select] || SHOW_LOCATION_SELECT
 
     mapopts = {
       :min_zoom => min_zoom,
@@ -51,7 +51,7 @@ module LeafletHelper
       show_my_location: show_my_location,
       show_street_view: show_street_view,
       street_view_url: street_view_url,
-      show_marker_selection: show_marker_selection
+      show_location_select: show_location_select
     }.to_json
 
     js << "var CsMaps = CsMaps || {};"

@@ -82,6 +82,11 @@ CsLeaflet.Leaflet = {
         if(options.show_street_view) {
             this.addStreetViewControl(options.street_view_url);
         }
+
+        //register LocationSelect Control
+        if(options.show_location_select) {
+            this.addLocationSelectControl();
+        }
     },
 
     /**
@@ -571,6 +576,8 @@ CsLeaflet.Leaflet = {
                 iconCls: '',
                 toggleable: false,
                 pressedCls: 'leaflet-button-pressed',
+                depressedCursorType: 'grab',
+                pressedCursorType: 'crosshair',
                 clickCallback: function() {}
             },
             initialize: function (controlId, options) {
@@ -587,8 +594,14 @@ CsLeaflet.Leaflet = {
                 this._pressed = pressed;
                 if(this._pressed) {
                     L.DomUtil.addClass(this.link, this.options.pressedCls);
+                    if(this._map) {
+                        L.DomUtil.get(this._map.getContainer().id).style.cursor = this.options.pressedCursorType || 'crosshair';
+                    }
                 } else {
                      L.DomUtil.removeClass(this.link, this.options.pressedCls);
+                     if(this._map) {
+                        L.DomUtil.get(this._map.getContainer().id).style.cursor = this.options.depressedCursorType || 'default';
+                    }
                 }
             },
             onAdd: function (map) {
@@ -670,5 +683,40 @@ CsLeaflet.Leaflet = {
         });
         
         streetViewControl.addTo(currentMap);
+    }, 
+
+    addLocationSelectControl: function() {
+
+        if(!L.Control.CustomButton) {
+            this.registerCustomControl();
+        }
+
+        var currentMap = this.LMmap;
+        var locationSelectControl = new L.Control.CustomButton('locationSelect', {
+            title: 'Select location on map',
+            iconCls: 'fa fa-lg fa-map-marker',
+            toggleable: true
+        });
+
+        //register map click event to get click coords for street view
+        var clickCounter = 0;
+        currentMap.on('click', function(e){
+            clickCounter ++;
+            setTimeout(function(){ //Leaflet triggers click in doubleclick event, using a timeout to separate them
+                if(clickCounter === 1 && locationSelectControl.getPressed()) {
+                    var latlon = {
+                        lat: e.latlng.lat,
+                        lon: e.latlng.lng
+                    }
+                    
+                    currentMap.fire('placechange', {
+                        latlon: latlon
+                    });
+                }
+                clickCounter = 0;
+            }, 200);
+        });
+        
+        locationSelectControl.addTo(currentMap);
     }
 }
