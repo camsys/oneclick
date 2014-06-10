@@ -129,7 +129,7 @@
 
 /*breadcrumbs*/
 $breadcrumb-height: 30px;
-$breadcrumb-font-size: 16px;
+$breadcrumb-font-size: 1em;
 
 .breadcrumb-page {
   margin: 3px 0px;
@@ -322,7 +322,7 @@ $single-plan-height: 50px;
 .itinerary-chart-service-name {
   text-anchor: middle;
   dominant-baseline: central;
-  font: 12px sans-serif;
+  font-size: 0.85em;
 }
 
 /* override bootstrap tooltip default styles*/
@@ -332,7 +332,7 @@ div .tooltip-inner {
 }
 
 .axis text {
-  font: 10px sans-serif;
+  font-size: 0.65em;
 }
 
 .slider-tip {
