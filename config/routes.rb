@@ -248,6 +248,7 @@ Oneclick::Application.routes.draw do
 
     namespace :admin do
       resources :reports, :only => [:index, :show]
+      post '/reports/:id' => 'reports#show'
       resources :trips, :only => [:index]
       get '/geocode' => 'util#geocode'
       get '/raise' => 'util#raise'

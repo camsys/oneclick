@@ -17,6 +17,19 @@ class Characteristic < ActiveRecord::Base
   scope :programs, -> {where('characteristic_type = ?', 'program')}
   scope :enabled, -> { where.not(datatype: 'disabled') }
 
+  # return name value pairs suitable for passing to simple_form collection
+  def self.form_collection include_all=true
+    if include_all
+      list = [[I18n.t(:all), -1]]
+    else
+      list = []
+    end
+    enabled.where(datatype: 'bool').order(name: :asc).each do |c|
+      list << [I18n.t(c.name), c.id]
+    end
+    list
+  end
+  
   # builds a hash of details about a characteristic; is used by the javascript
   # client to knwo whether to ask the user for more info
   def for_missing_info(service, group)

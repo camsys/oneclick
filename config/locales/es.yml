@@ -553,7 +553,8 @@ es:
   city: "[es]City[/es]"
   state: "[es]State[/es]"
   zip: "[es]Zip[/es]"
-
+  all: "Todos"
+  
   # validation messages
   valid_time_msg: "[es]must be a valid time[/es]"
   presence_msg: "[es]can't be blank[/es]"

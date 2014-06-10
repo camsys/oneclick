@@ -13,7 +13,8 @@ class Report < ActiveRecord::Base
     Report.all.map(&:name_and_id)
   end
 
-  # TODO This shoudl go into decorator (and previous as well, I would say)
+  # TODO New options need models.
+  # use time_filter_helper?
   def self.date_options
     [
       'All',
@@ -28,14 +29,7 @@ class Report < ActiveRecord::Base
     ]
   end
 
-  def self.traveler_types
-    ['All'] + Characteristic.all.map(&:name).sort
-  end
-
-  def self.trip_purposes
-    ['All'] + TripPurpose.all.map(&:name).sort
-  end
-
+  # TODO Probably delete this
   def self.display_types
     ['Summary Chart', 'Summary Table', 'Detailed Listing']
   end
@@ -44,4 +38,5 @@ class Report < ActiveRecord::Base
     ['Day', 'Week', 'Month', 'Traveler Type', 'Purpose', 'Rating']
   end
 
+  # TODO Add modes and accomodations
 end

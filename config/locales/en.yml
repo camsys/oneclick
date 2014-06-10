@@ -556,7 +556,8 @@ en:
   city: "City"
   state: "State"
   zip: "Zip"
-
+  all: "All"
+  
   # validation messages
   valid_time_msg: "must be a valid time"
   presence_msg: "can't be blank"
