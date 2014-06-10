@@ -98,19 +98,6 @@ class Admin::ProvidersController < ApplicationController
     end
   end
 
-  def rate
-    @provider = Provider.find(params[:id])
-    @user =  User.find_by(id: params[:user_id]) || current_user
-    if @provider && @user
-      @rate = @provider.rate(@user, params[:ratings][:value], params[:ratings][:comments])
-    end
-    @rateable = @provider
-    
-    respond_to do |format|
-      format.js { render 'ratings/rate' }
-    end
-  end
-
   private
 
   def set_staff users

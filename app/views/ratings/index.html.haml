@@ -1,6 +1,7 @@
 %h1= t(:feedback)
 = form_tag approve_ratings_path, method: :patch do
-  = submit_tag t(:submit), class: "btn action-button pull-right"
+  = link_to t(:cancel), ratings_path, class: "btn btn-default action-button pull-right"
+  = submit_tag t(:submit), class: "btn btn-default action-button pull-right"
   %table.table.table-condensed.table-striped.table-bordered.table-hover#ratings_table
     %thead
       %tr

@@ -114,9 +114,6 @@ Oneclick::Application.routes.draw do
         end
       end
     end
-
-    patch "providers/:id/rate" => 'providers#rate', as: 'rate_provider' # Effectively a shallow routing.  Not ready to go there yet.
-    patch "agencies/:id/rate" => 'agencies#rate', as: 'rate_agency' # Effectively a shallow routing.  Not ready to go there yet.
     # scope('/kiosk') do
     #   devise_for :users, as: 'kiosk', controllers: {sessions: "kiosk/sessions"}
     # end
@@ -282,7 +279,7 @@ Oneclick::Application.routes.draw do
     resources :agencies, :trips, :providers, :services, shallow: true, only: [] do
       resources :ratings, only: [:index, :new, :create]
     end
-    resources :ratings, only: [:index] do
+    resources :ratings, only: [:index, :create] do
       collection do
         patch "approve"
         get "context"

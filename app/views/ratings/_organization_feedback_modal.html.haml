@@ -1,23 +1,27 @@
 .modal.fade{id: "feedback_modal"}
   .modal-dialog.modal-lg
     .modal-content
-      .panel.panel-default
-        .panel-heading
-          %h3
-            = @agency.name
-            %button.btn.action-button.btn-default.pull-right#load_feedback
-              = t(:feedback)
-        .panel-body
-          -unless rateable.ratings.approved.empty?
-            %dl.dl-horizontal
-              - rateable.ratings.approved.decorate.each do |r|
-                %dt.rating-value= r.rating_in_stars
-                %dd.rating-comments= r.comments 
-          -else
-            .alert
-              =t(:no_ratings_yet)
-      .modal-footer
-        %btn.btn.btn-default.action-button{data: {dismiss: "modal"}}= t(:close)
+      -# If the public can read feedback...
+      - if can? :read, rateable.ratings.build
+        .panel.panel-default
+          .panel-heading
+            %h3
+              = @agency.name
+              - if can? :create, rateable.ratings.build
+                %button.btn.action-button.btn-default.pull-right#load_feedback
+                  = t(:feedback)
+          .panel-body
+            -unless rateable.ratings.approved.empty?
+              %dl.dl-horizontal
+                - rateable.ratings.approved.decorate.each do |r|
+                  %dt.rating-value= r.rating_in_stars
+                  %dd.rating-comments= r.comments 
+            -else
+              .alert
+                =t(:no_ratings_yet)
+        .modal-footer
+          %btn.btn.btn-default.action-button{data: {dismiss: "modal"}}= t(:close)
+      
 -# Load in the form dynamically
 :javascript
   $(document).ready(function() {

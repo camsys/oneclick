@@ -18,7 +18,7 @@
         r[:id]]}, :selected => @time_filter_type), :style => 'margin-top:0px',
         :id => 'time_filter')
       
-= render partial: "trips_display_table", locals: {trips: @trips, traveler: @traveler}
+= render partial: "trips_display_table", locals: {trips: @trips, traveler: @traveler, show_username: false}
 
 :javascript
   

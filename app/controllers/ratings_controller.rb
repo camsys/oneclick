@@ -5,6 +5,7 @@ class RatingsController < ApplicationController
   
   def index
     authorize! :read, Rating
+    authorize! :approve, Rating
   end
 
   def new
@@ -37,7 +38,7 @@ class RatingsController < ApplicationController
   def context
     r = Rating.find(params[:id])
     respond_to do |format|
-      format.js {render partial: "context", :formats => [:html], locals: {rateable: r.rateable} }
+      format.js {render partial: "context", :formats => [:html], locals: {r: r} }
     end
   end
 

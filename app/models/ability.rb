@@ -27,7 +27,7 @@ class Ability
     if user.has_role? :feedback_administrator
       can [:see], :admin_menu
       can :access, :admin_feedback
-      can [:read, :approve, :context], Rating
+      can [:manage], Rating # feedback admin will always be able to read feedback
     end
     if User.with_role(:agency_administrator, :any).include?(user)
       # TODO Are these 2 redundant?
@@ -109,21 +109,27 @@ class Ability
       can :create, Service
     end
 
+    ## All users have the following permissions, which logically OR with 'can' statements above
     can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
     can [:read, :update, :full_info], User, :id => user.id
     can :geocode, :util
-    can :rate, Trip do |t|
-      t.user == user || t.creator == user # allow an assisting agent to review trips while on the phone
-    end
     can :show, Service # Will have view privileges for individual info purposes
-    can :rate, Service
     can :show, Provider # Will have view privileges for individual info purposes
-    can :rate, Provider
     can :show, Agency # Will have view privileges for individual info purposes
-    can :rate, Agency do |a|
-      a.id != user.agency.try(:id) # Cannot rate your own agency
+    
+    ## Rating Logic is configurable by deployment.  
+    can :read, Rating if Oneclick::Application.config.public_read_feedback
+    if Oneclick::Application.config.public_write_feedback
+      can [:create, :update], Rating
+      cannot :create, Rating do |r| 
+        case r.rateable_type
+        when "Trip" # cannot rate trips if I did not take them or plan them for another user
+          r.rateable.user.id != user.id or r.rateable.creator.id != user.id
+        when "Agency" # cannot rate Agency if I work for that agency
+          r.rateable.id == user.agency_id
+        end
+      end
     end
-
   end
 
 end

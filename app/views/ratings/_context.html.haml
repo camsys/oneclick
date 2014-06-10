@@ -1,5 +1,6 @@
+- rateable = r.rateable
 .modal-header
-  .pull-right= rateable.rating_in_stars(2)
+  .pull-right= r.decorate.rating_in_stars(2)
   %h4= rateable.to_s
 .modal-body
   .row

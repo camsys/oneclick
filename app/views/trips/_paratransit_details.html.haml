@@ -61,8 +61,9 @@
         .row
           .col-sm-12
             =t(accom.name)
-.row
-  .col-sm-6
-    = t(:rating) +":"
-  .col-sm-6
-    = itinerary.service.rating_in_stars
+- if Oneclick::Application.config.public_read_feedback
+  .row
+    .col-sm-6
+      = t(:rating) +":"
+    .col-sm-6
+      = itinerary.service.rating_in_stars

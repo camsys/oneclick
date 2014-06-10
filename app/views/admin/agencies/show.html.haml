@@ -12,11 +12,16 @@
           = icon_label(:edit)
       - if can? :destroy, @agency
         = button_to t(:delete), { action: "destroy", id: @agency.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: 'btn action-button btn-default', form_class: "form-horizontal pull-right"
-    -if can? :rate, @agency
+    -if Oneclick::Application.config.public_write_feedback
       .row
-        = @agency.rating_in_stars(2)
-        %button.btn.action-button.btn-default.pull-right{data: {toggle: 'modal', target: "#feedback_modal"}}
-          = t(:feedback)
+        - if can? :read, @agency.ratings.build
+          = @agency.rating_in_stars(2)
+          %button.btn.action-button.btn-default.pull-right{data: {toggle: 'modal', target: "#feedback_modal"}}
+            = t(:feedback)
+        - else
+          -# if creating feedback is allowed, but reading isn't, just load the form into the modal on click
+          %button.btn.action-button.btn-default.pull-right{data: {toggle: 'modal', target: "#feedback_modal", remote: new_agency_rating_path(@agency)}}
+            = t(:feedback)
 = render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
 .row
   = render partial: "public_details", locals: {agency: @agency}
