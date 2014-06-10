@@ -8,6 +8,10 @@ module LeafletHelper
   TILE_STYLE_ID = 997
   MAP_BOUNDS = Rails.application.config.map_bounds
   SCROLL_WHEEL_ZOOM = false
+  SHOW_MY_LOCATION = true
+  SHOW_STREET_VIEW= true
+  STREET_VIEW_URL = '/streetview.html'
+  SHOW_MARKER_SELECTION = false
   
   def LeafletMap(options)
     options_with_indifferent_access = options.with_indifferent_access
@@ -33,13 +37,21 @@ module LeafletHelper
     tile_provider = options[:tile_provider] ? options[:tile_provider] : TILE_PROVIDER
     tile_style_id = options[:tile_style_id] ? options[:tile_style_id] : TILE_STYLE_ID
     scroll_wheel_zoom = options[:scroll_wheel_zoom] || SCROLL_WHEEL_ZOOM
-    
+    show_my_location = options[:show_my_location] || SHOW_MY_LOCATION
+    show_street_view = options[:show_street_view] || SHOW_STREET_VIEW
+    street_view_url = options[:street_view_url] ? options[:street_view_url] : STREET_VIEW_URL
+    show_marker_selection = options[:show_marker_selection] || SHOW_MARKER_SELECTION
+
     mapopts = {
       :min_zoom => min_zoom,
       :max_zoom => max_zoom,
       :tile_provider => tile_provider,
       :tile_style_id => tile_style_id,
-      scroll_wheel_zoom: scroll_wheel_zoom
+      scroll_wheel_zoom: scroll_wheel_zoom,
+      show_my_location: show_my_location,
+      show_street_view: show_street_view,
+      street_view_url: street_view_url,
+      show_marker_selection: show_marker_selection
     }.to_json
 
     js << "var CsMaps = CsMaps || {};"

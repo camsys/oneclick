@@ -74,10 +74,14 @@ CsLeaflet.Leaflet = {
         });
 
         //register CurrentLocation Control
-        this.addCurrentLocationControl();
+        if(options.show_my_location) {
+            this.addCurrentLocationControl();
+        }
 
         //register StreetView Control
-        this.addStreetViewControl();
+        if(options.show_street_view) {
+            this.addStreetViewControl(options.street_view_url);
+        }
     },
 
     /**
@@ -560,16 +564,34 @@ CsLeaflet.Leaflet = {
      */
     registerCustomControl: function() {
         L.Control.CustomButton = L.Control.extend({
+            _pressed: false,
             options: {
                 position: 'topleft',
                 title: '',
                 iconCls: '',
+                toggleable: false,
+                pressedCls: 'leaflet-button-pressed',
                 clickCallback: function() {}
             },
-            initialize: function (foo, options) {
+            initialize: function (controlId, options) {
+                this.id = controlId;
                 L.Util.setOptions(this, options);
             },
-            onAdd: function () {
+            getPressed: function() {
+                return this._pressed;
+            },
+            setPressed: function(pressed) {
+                if(!this.options.toggleable) {
+                    return;
+                }
+                this._pressed = pressed;
+                if(this._pressed) {
+                    L.DomUtil.addClass(this.link, this.options.pressedCls);
+                } else {
+                     L.DomUtil.removeClass(this.link, this.options.pressedCls);
+                }
+            },
+            onAdd: function (map) {
                 var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
 
                 this.link = L.DomUtil.create('a', 'leaflet-bar-part', container);
@@ -578,6 +600,12 @@ CsLeaflet.Leaflet = {
                 this.link.title = this.options.title;
 
                 L.DomEvent.on(this.link, 'click', this._click, this);
+                
+                //add current control into map
+                if(!map.customControls) {
+                    map.customControls = [];
+                }
+                map.customControls.push(this);
 
                 return container;
             },
@@ -585,6 +613,9 @@ CsLeaflet.Leaflet = {
             _click: function (e) {
                 L.DomEvent.stopPropagation(e);
                 L.DomEvent.preventDefault(e);
+                if(this.options.toggleable) {
+                    this.setPressed(!this._pressed);
+                }
                 this.options.clickCallback();
             }
         })
@@ -608,11 +639,10 @@ CsLeaflet.Leaflet = {
             }
         });
         
-        currentMap.addControl(currentLocataionControl);
-        currentMap.currentLocationControl = currentLocataionControl;
+        currentLocataionControl.addTo(currentMap);
     }, 
 
-    addStreetViewControl: function() {
+    addStreetViewControl: function(streetViewUrl) {
 
         if(!L.Control.CustomButton) {
             this.registerCustomControl();
@@ -621,12 +651,24 @@ CsLeaflet.Leaflet = {
         var currentMap = this.LMmap;
         var streetViewControl = new L.Control.CustomButton('streetView', {
             title: 'Display street view',
-            iconCls: 'fa fa-lg fa-google',
-            clickCallback: function() {
-                //TODO
-            }
+            iconCls: 'fa fa-lg leaflet-street-view-icon',
+            toggleable: true
+        });
+
+        //register map click event to get click coords for street view
+        var clickCounter = 0;
+        currentMap.on('click', function(e){
+            clickCounter ++;
+            setTimeout(function(){ //Leaflet triggers click in doubleclick event, using a timeout to separate them
+                if(clickCounter === 1 && streetViewControl.getPressed()) {
+                    var latlng = e.latlng;
+                    //redirect to street view page
+                    window.open(streetViewUrl + '?lat=' + latlng.lat + '&lng=' + latlng.lng, '_blank');
+                }
+                clickCounter = 0;
+            }, 200);
         });
         
-        currentMap.addControl(streetViewControl);
+        streetViewControl.addTo(currentMap);
     }
 }
