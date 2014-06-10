@@ -7,6 +7,9 @@ describe RatingsController do
   before (:each) do
     login_as_using_find_by(email: @admin_user.email)
   end
+  after(:all) do
+    User.delete_all
+  end
 
   describe "get INDEX'" do
     it "should be successful when logged in" do
