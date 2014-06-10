@@ -1,9 +1,4 @@
-.row
-  .col-sm-12
-    %h1
-      %i.fa.fa-bar-chart-o
-      = "#{@report.name} Report"
 
-= render 'subnav'
+= render partial: 'subnav', locals: {header: t(@report.class_name)}
 
 = render @report_view
