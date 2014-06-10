@@ -27,7 +27,7 @@
         %td.nowrap{id: "#{tripID}Rating"}
           = trip.rating_in_stars
         %td.center.nowrap
-          - if not trip.in_the_future or Rails.env.development?
+          - if (not trip.in_the_future and can? :rate, trip) or Rails.env.development?
             - modal_name = "##{tripID}RatingModal"
             %button.btn.btn-block{data: {toggle: 'modal', target: modal_name, remote: new_trip_rating_path(trip)}}
               = t(:feedback)

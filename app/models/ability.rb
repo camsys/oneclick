@@ -22,6 +22,7 @@ class Ability
       cannot :travelers, Agency
       cannot :full_info, User
       cannot :assist, User # That permissions is restricted to agency staff
+      cannot :rate, Trip # remove global permission to rate, sys admin will still be able to rate when it's their own trip
     end
     if user.has_role? :feedback_administrator
       can [:see], :admin_menu
