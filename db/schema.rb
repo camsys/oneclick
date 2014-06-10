@@ -212,8 +212,6 @@ ActiveRecord::Schema.define(version: 20140609185340) do
     t.string  "internal_contact_email", limit: 128
   end
 
-  add_index "rates", ["rateable_id", "rateable_type"], :name => "index_rates_on_rateable_id_and_rateable_type"
-  add_index "rates", ["rater_id"], :name => "index_rates_on_rater_id"
   create_table "ratings", force: true do |t|
     t.integer  "user_id"
     t.integer  "rateable_id"
