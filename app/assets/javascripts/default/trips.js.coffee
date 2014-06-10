@@ -135,7 +135,7 @@ $ ->
     console.log e
     console.log $('.trip_proxy_modes input:checked').length
 
-  if CsMaps.tripMap
+  if typeof(CsMaps) != 'undefined' and CsMaps and CsMaps.tripMap
     CsMaps.tripMap.LMmap.on 'placechange', (e) ->
       addr = e.latlon
       placeText = '(' + addr.lat + ', ' + addr.lon + ')' #TODO: need to display a real address instead of coords
