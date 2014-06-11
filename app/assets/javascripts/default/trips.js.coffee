@@ -62,6 +62,7 @@ update_place = (placeText, type) ->
     placeid = 'trip_proxy_to_place'
 
   $('#' + placeid).val(placeText)
+
 $ ->
 
   places = new Bloodhound

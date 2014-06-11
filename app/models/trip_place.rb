@@ -85,6 +85,7 @@ class TripPlace < GeocodedAddress
         self.errors.add(:base, "No results for search string")
         return self
       end
+
       first_result = result.body['predictions'].first
       # TODO Copied from above, should be refactored
       details = get_places_autocomplete_details(first_result['reference'])

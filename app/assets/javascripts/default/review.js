@@ -907,6 +907,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
 
     /*
     * given a list of eligibility questions, check if eligible or not
+    * questions are in groups: AND relationship to eval within group; OR relationship among group eligibility;
     * @return {number} clearCode: 1 - eligible; -1 - not eligible; 0 - Status not change.
     */
     function checkEligibility(missingInfoArray) {
@@ -925,12 +926,13 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             infoGroups[infoGroupId].push(missInfo);
         });
 
-        var eligible = null; //false
-        var notEligible = null; //true
+        var eligible = null; //default
+        var notEligible = null; //default
         var groupCount = 0;
         var hasIncompleteGroup = false;
         for(var infoGroup in infoGroups) {
-            var groupEligible = null; //true
+            var groupEligible = null; //default
+            var isSameGroupAllEligible = true;
             infoGroups[infoGroup].forEach(function(info) {
                 if(groupEligible === false) {
                     return;
@@ -939,10 +941,18 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 if(!isUserAnswerEmpty(info.user_answer)) {
                     infoEligible = evalSuccessCondition(formatQuestionAnswer(info.data_type, info.user_answer), info.success_condition);
                 }
-                if(infoEligible === true || infoEligible === false) {
-                    groupEligible = infoEligible; //AND relationship within group
+
+                if (infoEligible != true) {//AND relationship within group
+                    isSameGroupAllEligible = false;
+                    if(infoEligible === false) {
+                        groupEligible = infoEligible; 
+                    } 
                 }
             });
+
+            if(isSameGroupAllEligible) {
+                groupEligible = true;
+            }
 
             if(groupEligible === true || groupEligible === false ) {
                 if(eligible === null) {
@@ -1326,12 +1336,12 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 var infoOptions = missingInfo.options;
                 if (infoOptions instanceof Array && infoOptions.length > 0) {
                     infoOptions.forEach(function(infoOption) {
-                        if (isValidObject(infoOptions)) {
+                        if (isValidObject(infoOption)) {
                             answersTags +=
                                 '<label class="radio-inline">' +
                                 '<input type="radio" name="' + controlName + '" ' +
                                 'value="' + infoOption.value + '" ' +
-                                (checkIfOptionSelected(infoOption.value, missingInfo.user_answer) ? 'checked' : '') +
+                                (('value' in infoOption) && evalSuccessCondition(infoOption.value, " == " + missingInfo.user_answer) ? 'checked' : '') +
                                 ' />' + infoOption.text +
                                 '</label>';
                         }
@@ -1374,18 +1384,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             answersTags +
             '</p>'
         );
-    }
-
-    /*
-    * given value and user_answer check which radio option is seleted if any
-    */
-    function checkIfOptionSelected(val, answer) {
-        var isSelected = false;
-        if(!(typeof(val) === 'undefined' || !isValidObject(val) || typeof(answer) != 'string') && val.toString() === answer){
-            isSelected = true;
-        }
-
-        return isSelected;
     }
 
     /**
