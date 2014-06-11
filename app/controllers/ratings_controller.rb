@@ -59,7 +59,6 @@ class RatingsController < ApplicationController
 private
 
   # Get the rateable object from the params hash.  Ratings controller can be accessed through multiple rateables.  
-  # Quite a lot of coupling here, between routes.rb and the ratings_controller
   def get_rateable
     if params[:trip_id]
       @rateable = Trip.find(params[:trip_id])
@@ -70,9 +69,6 @@ private
     elsif params[:service_id]
       @rateable = Service.find(params[:service_id])
       @target = service_ratings_path(@rateable)
-    elsif params[:provider_id]
-      @rateable = Provider.find(params[:provider_id])
-      @target = provider_ratings_path(@rateable)
     end
   end
 

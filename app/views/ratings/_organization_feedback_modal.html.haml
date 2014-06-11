@@ -6,8 +6,8 @@
         .panel.panel-default
           .panel-heading
             %h3
-              = @agency.name
-              - if can? :create, rateable.ratings.build
+              = rateable.name
+              - if can? :create, rateable.ratings.build(rateable: rateable)
                 %button.btn.action-button.btn-default.pull-right#load_feedback
                   = t(:feedback)
           .panel-body
@@ -23,16 +23,17 @@
           %btn.btn.btn-default.action-button{data: {dismiss: "modal"}}= t(:close)
       
 -# Load in the form dynamically
-:javascript
-  $(document).ready(function() {
-    $("#load_feedback").on("click", function() {
-      $.ajax({
-        url: "/agencies/#{@agency.id}/ratings/new",
-        context: $(".modal-content"),
-        dataType: "html"
-      })
-      .then( function(html) {
-        $(this).html(html)
+- if can? :create, rateable.ratings.build(rateable: rateable)
+  :javascript
+    $(document).ready(function() {
+      $("#load_feedback").on("click", function() {
+        $.ajax({
+          url: "#{RateableDecorator.new(rateable).new_rateable_rating_path}",
+          context: $(".modal-content"),
+          dataType: "html"
+        })
+        .then( function(html) {
+          $(this).html(html)
+        });
       });
     });
-  });

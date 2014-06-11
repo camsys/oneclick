@@ -1,18 +1,32 @@
+- temp_rating = @service.ratings.build(rateable: @service)
 .row
   .col-sm-6.pull-left
     -if can? :index, Service
       = link_to t(:all_services), services_path
     %h2
       =@service.name
-  .col-sm-3.pull-right.form-group
-    %h2
-      - if can? :update, @service
-        = link_to edit_service_path(@service), {class: 'btn action-button btn-default', role: 'button'} do
-          = icon_label(:edit)
-      - if can? :destroy, @service
-        = button_to t(:delete), { action: "destroy", id: @service.id }, method: :delete,
-        data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default",
-        form_class: "form-horizontal pull-right"
+  .col-sm-4.pull-right.form-group
+    .row
+      .col-sm-12
+        - if can? :update, @service
+          = link_to edit_service_path(@service), {class: 'btn action-button btn-default', role: 'button'} do
+            = icon_label(:edit)
+        - if can? :destroy, @service
+          = button_to t(:delete), { action: "destroy", id: @service.id }, method: :delete,
+          data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default",
+          form_class: "form-horizontal pull-right"
+    -if Oneclick::Application.config.public_write_feedback
+      .row
+        .col-sm-12
+          - if can? :read, temp_rating
+            = @service.rating_in_stars(2)
+            %button.btn.action-button.btn-default.pull-right{data: {toggle: 'modal', target: "#feedback_modal"}}
+              = t(:feedback)
+          - else
+            -# if creating feedback is allowed, but reading isn't, just load the form into the modal on click
+            %button.btn.action-button.btn-default.pull-right{data: {toggle: 'modal', target: "#feedback_modal", remote: new_service_rating_path(@service)}}
+              = t(:feedback)
+= render partial: "ratings/organization_feedback_modal", locals: {rateable: @service}
 .row
   = render partial: "public_details", locals: { service: @service}
         

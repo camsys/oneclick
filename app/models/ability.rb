@@ -129,6 +129,7 @@ class Ability
           r.rateable.id == user.agency_id
         end
       end
+      cannot :create, Rating, rateable_type: "Provider"
     end
   end
 
