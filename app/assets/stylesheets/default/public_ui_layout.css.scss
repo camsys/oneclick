@@ -27,6 +27,14 @@ html, body {
   padding-bottom: $footer-height;
 }
 
+#logo{
+  background-position: 50% !important;
+  background-repeat: no-repeat !important;
+  background-size: 100% auto;
+  height: auto !important;
+  padding: 0;
+}
+
 @media(max-width:$screen-xs-max){
   #main {
     padding-top: 55px;
@@ -37,10 +45,8 @@ html, body {
   }
 
   #logo{
-    width: 370px;
-    height: 50px;
+    width: 350px;
     line-height: 50px;
-    padding: 0;
   }
 
   #help i{
@@ -55,9 +61,7 @@ html, body {
 
   #logo{
     width: 440px;
-    height: 60px;
     line-height: 60px;
-    padding: 0;
   }
 
   #help i{
