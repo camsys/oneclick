@@ -23,14 +23,14 @@
             %label.col-sm-3.control-label= t(:preferred_locale)
             .col-sm-9
               %p.form-control-static= user.preferred_locale
-  - if can? :full_info, user
+  - if can? :full_read, user
     .col-sm-6
       .panel.panel-default#agencies
         .panel-heading
           %h3=t(:agencies)
         .panel-body
           = render partial: 'users/agency_table', locals: { user: user }
-- if can? :full_info, user
+- if can? :full_read, user
   .row
     .col-sm-6
       .panel.panel-default#buddies

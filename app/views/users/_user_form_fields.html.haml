@@ -22,14 +22,14 @@
           = f.input :preferred_locale, label: t(:preferred_locale), :collection => Translation.available_locales, :include_blank => false
           = f.input :password, label: t(:password), :autocomplete => "off", :required => false
           = f.input :password_confirmation, label: t(:password_confirmation), :hint => t(:leave_password_blank), :required => false
-    - if can? :full_info, @user
+    - if can? :full_read, @user
       .col-sm-6
         .panel.panel-default#agencies
           .panel-heading
             %h3= t(:agencies)
           .panel-body
             = f.association :approved_agencies, collection: Agency.all.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes, wrapper: :inline_checkboxes, label: false
-  - if can? :full_info, @user
+  - if can? :full_read, @user
     .row
       .col-sm-6.pull-left
         .panel.panel-default#buddies

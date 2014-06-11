@@ -20,7 +20,7 @@ class Ability
       cannot :access, :show_agency
       cannot :access, :show_provider
       cannot :travelers, Agency
-      cannot :full_info, User
+      cannot :full_read, User
       cannot :assist, User # That permissions is restricted to agency staff
       cannot :rate, Trip # remove global permission to rate, sys admin will still be able to rate when it's their own trip
     end
@@ -56,7 +56,7 @@ class Ability
       can [:update], Agency do |a|  # edit privilege over sub agencies
         user.agency.present? && user.agency.sub_agencies.include?(a)
       end
-      can [:update, :full_info, :assist], User do |u|
+      can [:update, :full_read, :assist], User do |u|
         u.approved_agencies.include? user.try(:agency)
       end
       can :create, User
@@ -81,7 +81,7 @@ class Ability
       can :read, Agency
       can :full_read, Agency # read gives access to only contact info.  full_read offers staff, internal contact, etc.
       can [:create, :show], User #can find any user if they search, can create a user
-      can [:update, :full_info, :assist], User do |u| # agents have extra privileges for users that have approved the agency
+      can [:update, :full_read, :assist], User do |u| # agents have extra privileges for users that have approved the agency
         u.approved_agencies.include? user.try(:agency)
       end
       can [:travelers], Agency, id: user.agency.try(:id)
@@ -111,7 +111,7 @@ class Ability
 
     ## All users have the following permissions, which logically OR with 'can' statements above
     can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
-    can [:read, :update, :full_info], User, :id => user.id
+    can [:read, :update, :full_read], User, :id => user.id
     can :geocode, :util
     can :show, Service # Will have view privileges for individual info purposes
     can :show, Provider # Will have view privileges for individual info purposes
