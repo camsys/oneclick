@@ -191,10 +191,11 @@ es:
   trip_date: 'Fecha'
   depart_at: 'Salir a las'
   arrive_by: 'Llegar a las'
+  arrive_at: 'Llegar a'
+  arrive_in: '[es]Arrive in[/es]'
   save_and_plan_trip: "[es114]Save and plan my trip[/es]"
   trip_planned_and_saved: "[es132]Trip planned and saved[/es]"
   finish_trip_planning_options: "[es133]You can now do one or more of the following to finish your trip planning[/es]"
-  arrive_at: 'Llegar a'
   trip_time: 'Hora'
   number_of_transfers: '[es]Number of Transfers[/es]'
   modes: '[es]Modes[/es]'
@@ -221,7 +222,7 @@ es:
   no_thanks_just_plan_it: "[es127]No thanks, just plan my trip[/es]"
   disability_explanation_str: "[es128]We noticed you mentioned a disability and/or difficulty walking for certain periods of time.  Would you please tell us more about which accommodations you require for your trip?[/es]"
   trip_options: 'Opciones de Viaje'
-  transit_trip: 'Transit Trip'
+  transit_trip: '[es]Transit Trip[/es]'
   taxi: 'Taxi'
   transit: 'Transporte Público'
   details: 'Detalles'
@@ -232,9 +233,13 @@ es:
   walk: 'Caminar'  
   bus: '[es211]Bus[/es]'
   drive: '[es212]Drive[/es]'
+  drive_and_transit: '[es212]Drive and Transit[/es]'
   rail: '[es213]Rail[/es]'
+  rail_and_bus: '[es213]Rail and Bus[/es]'
   subway: '[es214]Subway[/es]'
   vehicle: '[es]Vehicle[/es]'
+  wait: '[es]Wait[/es]'
+  mode_transfer: '[es]Transfer[/es]'
   select_a_plan_each_trip_part: '[es]Please select itinerary for each trip part[/es]'
   route: '[es215]Route[/es]'
   transfer: {
@@ -431,12 +436,14 @@ es:
   return_selected: '[es211]Return option selected.[/es]'
   not_authorized_as_an_administrator: 'No está autorizado como un administrador.'
   n_a: 'n/a'
+  unknown: '[es]Unknown[/es]'
   not_available: '[es]Not Available[/es]'
   show_filters: '[es]Show Filters[/es]'
   show_legends: '[es]Show Legends[/es]'
   hide_filters: '[es]Hide Filters[/es]'
   hide_legends: '[es]Hide Legends[/es]'
   minute_abbr: '[es]min[/es]'
+  minutes: '[es]minutes[/es]'
   sort_by: '[es]Sort by[/es]'
   less_than_1_block: "a menos the 1 cuadra"
   about_2_blocks: "aproximadament 2 cuadras"

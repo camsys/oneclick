@@ -32,9 +32,9 @@ function parseDate(dateStr) {
 function formatDate(dateToFormat) {
     if(dateToFormat instanceof Date) {
         if(dateToFormat.getFullYear() === (new Date()).getFullYear()) {
-            return moment(dateToFormat).format("dddd, MMMM Do") //Sunday, June 8th
+            return moment(dateToFormat).format("dddd, MMMM D") //Sunday, June 8
         } else {
-            return moment(dateToFormat).format("dddd, MMMM Do YYYY") //Sunday, June 8th 2014
+            return moment(dateToFormat).format("dddd, MMMM D YYYY") //Sunday, June 8 2014
         }
     } 
 
@@ -1417,7 +1417,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                         legendTags +=
                             "<div class='travel-legend-container'>" +
                             "<div class='travel-legend " + className + "'/>" +
-                            "<span class='travel-legend-text'>" + legendText + "</span>" +
+                            "<span class='travel-legend-text'>" + (localeDictFinder[legendText.toLowerCase()] || legendText) + "</span>" +
                             "</div>";
                     }
                 });
@@ -1830,24 +1830,24 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var mode = tripPlan.mode;
         var modeName = tripPlan.mode_name;
         var serviceName = tripPlan.service_name;
-        var durationText = isValidObject(tripPlan.duration) ? parseInt(parseFloat(tripPlan.duration.sortable_duration) / 60) : 'Unknown'; //TODO: locale
+        var durationText = isValidObject(tripPlan.duration) ? parseInt(parseFloat(tripPlan.duration.sortable_duration) / 60) : localeDictFinder['unknown'];
 
         switch(mode) {
             case 'mode_transit':
-                tipText = '<p>Depart at ' + formatTime(parseDate(tripPlan.start_time)) + '</p>' +
+                tipText = '<p>' + localeDictFinder['depart_at'] + ' ' + formatTime(parseDate(tripPlan.start_time)) + '</p>' +
                             (tripPlan.legs.length > 0 ? ('<p>' + tripPlan.legs[0].description + '</p>') : '' ) +
                             (tripPlan.legs.length > 1 ? ('<p>' + tripPlan.legs[1].description + '</p>') : '' ) +
-                            '<p>Arrive in ' + durationText + ' minutes</p>';
+                            '<p>' + localeDictFinder['arrive_in'] + ' ' + durationText + ' ' + localeDictFinder['minutes'] + '</p>';
                 break;
             case 'mode_bike':
-                tipText = 'Bike ' + durationText + ' minutes'; //TODO: locale
+                tipText = localeDictFinder['bike'] + ' ' + durationText + ' ' + localeDictFinder['minutes']; 
                 break;
             case 'mode_bikeshare': 
                 tipText = (tripPlan.legs.length > 0 ? ('<p>' + tripPlan.legs[0].description + '</p>') : '' ) +
-                            '<p>Arrive in ' + durationText + ' minutes</p>';
+                            '<p>' + localeDictFinder['arrive_in'] + ' ' + durationText + ' ' + localeDictFinder['minutes'] + '</p>';
                 break;
             case 'mode_drive':
-                tipText = 'Drive ' + durationText + ' minutes'; //TODO: locale
+                tipText = localeDictFinder['drive'] + ' ' + durationText + ' ' + localeDictFinder['minutes']; //TODO: locale
                 break;
             default:
                 tipText = serviceName || modeName;
@@ -1880,9 +1880,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
 
         //planId is used in chart_onclick event
         //sent to server to get itinerary and render plan details modal
-        tripLegs.forEach(function(leg) {
-            leg.planId = planId;
-        });
+        //tripLegs.forEach(function(leg) {
+        //    leg.planId = planId;
+        //});
 
         var $chart = $('#' + chartDivId);
         if ($chart.length === 0) { //this chart div doesnt exist
@@ -1929,18 +1929,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             })
             .attr("height", barHeight)
             .attr('title', tipText)
-            .on("click", function(tripLeg){ //click chart to show details in modal dialog
-              if(typeof(tripLeg) === 'object' && tripLeg != null) {
-                var planId = tripLeg.planId;
-                $.getScript(window.location.href + '/itinerary' + '?itin=' + planId)
-                  .done(function() {
-                  })
-                  .fail(function( jqxhr, settings, exception ) {
-                    console.log(jqxhr);
-                    console.log(settings);
-                    console.log(exception);
-                  });
-              }
+            .on("click", function(){ //click to show details in modal dialog
+                showItineraryModal(planId);
             });
 
         //add service name
@@ -1958,13 +1948,32 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 )
                 .attr("y", barHeight)
                 .attr("dy", '0.5ex')
-                .text(function(d){ return d; });
+                .text(function(d){ return d; })
+                //.attr('title', tipText)
+                .on("click", function(){ //click to show details in modal dialog
+                    showItineraryModal(planId);
+                });
         }
 
         $("svg rect").tooltip({
             'html': true,
             'container': 'body'
         });
+    }
+
+    /*
+    * ajax request to get itinerary details modal dialog (rendered in back-end)
+    * @param {number} planId
+    */
+    function showItineraryModal(planId) {
+        $.getScript(window.location.href + '/itinerary' + '?itin=' + planId)
+          .done(function() {
+          })
+          .fail(function( jqxhr, settings, exception ) {
+            console.log(jqxhr);
+            console.log(settings);
+            console.log(exception);
+          });
     }
 
     /*

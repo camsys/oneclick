@@ -226,13 +226,13 @@ module CsHelpers
 
     mode_code = get_pseudomode_for_itinerary(itinerary)
     title = if mode_code == 'rail'
-      "Rail"
+      I18n.t(:rail)
     elsif mode_code == 'railbus'
-      "Rail and Bus"
+      I18n.t(:rail_and_bus)
     elsif mode_code == 'bus'
-      "Bus"
+      I18n.t(:bus)
     elsif mode_code == 'drivetransit'
-      "Drive to Transit"
+      I18n.t(:drive_and_transit)
     elsif mode_code == 'transit'
       I18n.t(:transit)
     elsif mode_code == 'paratransit'
