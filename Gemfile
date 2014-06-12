@@ -51,6 +51,7 @@ gem 'active_model_serializers'
 gem 'jquery-datatables-rails'
 gem 'active_attr'
 gem 'twitter-bootstrap-rails-confirm', github: 'bluerail/twitter-bootstrap-rails-confirm', branch: 'bootstrap3'
+gem 'whenever', require: false
 
 group :development do
   gem 'activerecord-postgis-adapter'

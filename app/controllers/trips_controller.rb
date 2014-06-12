@@ -127,7 +127,7 @@ class TripsController < PlaceSearchingController
 
     # Just before render, save off the html on the trip, so that we can access it later for ratings.
     planned_trip_html = render_to_string partial: "selected_itineraries_details", locals: { trip: @trip, for_db: true }
-    @trip.update_attributes(planned_trip_html: planned_trip_html)
+    @trip.update_attributes(planned_trip_html: planned_trip_html, needs_feedback_prompt: true)
 
     respond_to do |format|
       format.html # plan.html.erb
@@ -231,11 +231,9 @@ class TripsController < PlaceSearchingController
   def email_feedback
     Rails.logger.info "Begin email"
     @trip = Trip.find(params[:id])
-    email_address = @trip.user.email
-    from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    UserMailer.feedback_email(email_address, @trip, from_email).deliver
+    UserMailer.feedback_email(@trip).deliver
     respond_to do |format|
-      format.html { redirect_to admin_trips_path, :notice => "An email was sent to #{email_address}."  }
+      format.html { redirect_to admin_trips_path, :notice => "An email was sent to #{@trip.user.email}."  }
       format.json { render json: @trip }
     end
   end

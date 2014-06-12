@@ -28,6 +28,7 @@ class Ability
       can [:see], :admin_menu
       can :access, :admin_feedback
       can [:manage], Rating # feedback admin will always be able to read feedback
+      can :send_follow_up, Trip
     end
     if User.with_role(:agency_administrator, :any).include?(user)
       # TODO Are these 2 redundant?
@@ -63,6 +64,7 @@ class Ability
       can :read, [Provider, Service]
       can [:index, :show], Report
       can [:read, :update], User, agency_id: user.agency.try(:id)
+      can :send_follow_up, Trip
     end
     
     if User.with_role(:agent, :any).include?(user)
@@ -89,6 +91,7 @@ class Ability
       can [:index, :show], Report
       can [:index, :show], [Provider, Service] # Read-only access to providers and services
       #can [:read, :update], User, agency_id: user.agency.try(:id) #removing because there isn't extra information for an agent here
+      can :send_follow_up, Trip
     end
 
     if User.with_role(:provider_staff, :any).include?(user)
@@ -107,6 +110,7 @@ class Ability
         user.provider.services.include?(s)
       end
       can :create, Service
+      can :send_follow_up, Trip
     end
 
     ## All users have the following permissions, which logically OR with 'can' statements above

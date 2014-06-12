@@ -285,7 +285,8 @@ Oneclick::Application.routes.draw do
         get "context"
       end
     end
-    
+    get "trips/:trip_id/ratings/new_from_email" => 'ratings#new_from_email', as: :new_trip_rating_from_email
+
     resources :services do
       member do
         get 'view'

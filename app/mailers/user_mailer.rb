@@ -91,13 +91,10 @@ class UserMailer < ActionMailer::Base
     mail(to: @to_email, subject: t(:one_click_traveler_revoke_by_from_email, by: @from_email))
   end
 
-  def feedback_email(to_email, trip, from_email)
-    @to_email = to_email
-    @from_email = from_email
+  def feedback_email(trip)
     @trip = trip
-
     # TODO localize
-    mail(to: @to_email, from: @from_email, subject: "1-Click Feedback")
+    mail(to: trip.user.email, subject: t(:rate_recent))
   end
 
   def agency_helping_email(to_email, from_email, agency)

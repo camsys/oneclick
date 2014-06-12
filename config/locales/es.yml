@@ -546,7 +546,7 @@ es:
   nothing_found_sorry: "[es407]Nothing found - sorry[/es]"
   solicit_feedback: "[es428]Please give us some feedback:[/es]"
   thanks_for_responding: "[es429]Thanks for taking the time to respond.[/es]"
-  success_feedback_link: "[es430]Click HERE if you made the trip as planned, and everything worked out just fine.[/es]"
+  success_feedback_link: "[es430]Click HERE if you want to tell us about your trip.[/es]"
   no_trip_taken_feedback_link: "[es431]Click HERE if you decided not to make the trip at all.[/es]"
   more_feedback_link: "[es432]Click HERE if you want to provide more feedback, or if things didn't work out as planned.[/es]"
   search: "[es439]Search[/es]"

@@ -14,19 +14,17 @@ class Trip < ActiveRecord::Base
   scope :by_provider, ->(p) { joins(itineraries: {service: :provider}).where('providers.id=?', p).distinct }
   # .join(:services).join(:providers) }
   # .where('providers.id=?', p)}
-
   scope :by_agency, ->(a) { joins(user: :approved_agencies).where('agencies.id' => a) }
+  scope :feedbackable, -> { joins(:itineraries).where(itineraries: {selected: true}, trips: {needs_feedback_prompt: true}).uniq}
 
   # Returns a set of trips that are scheduled between the start and end time
   def self.scheduled_between(start_time, end_time)
-
     # cant do a sorted join here as PG grumbles so doing an in-memory sort on the trips that are returned after we have performed a sub-filter on them. The reverse 
     #is because we want to order from newest to oldest
     res = joins(:trip_parts).where("sequence = ? AND trip_parts.scheduled_date >= ? AND trip_parts.scheduled_date <= ?", 0, start_time.to_date, end_time.to_date).uniq
     # Now we need to filter through the results and remove any which fall outside the time range
     res = res.reject{|x| ! x.scheduled_in_range(start_time, end_time) }
     return res.sort_by {|x| x.trip_datetime }.reverse
-
   end
 
   # Returns an array of Trips that have at least one valid itinerary but all

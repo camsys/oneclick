@@ -1,7 +1,6 @@
 class RatingsController < ApplicationController
 
-  before_filter :get_rateable, only: [:new]
-  load_and_authorize_resource only: [:index]
+  before_filter :get_rateable, only: [:new, :new_from_email]
   
   def index
     authorize! :read, Rating
@@ -9,7 +8,7 @@ class RatingsController < ApplicationController
   end
 
   def new
-    @ratings_proxy = RatingsProxy.new(@rateable)
+    @ratings_proxy = RatingsProxy.new(@rateable, current_user)
     respond_to do |format|
       format.js { render partial: 'ratings/form', locals: {url: @target} }
     end
@@ -17,22 +16,43 @@ class RatingsController < ApplicationController
 
   def create
     successful_ratings = []
-      
+    rater = current_user || User.find(params[:user][:id])
     rating_params = params[:ratings]
     rating_params.keys.each do |k|
       rateable_params = rating_params[k]
-      rateable_class = k.constantize # constantize converts "trip" (the string) => Trip (the Class).
+      rateable_class = k.constantize # constantize converts "Trip" (the string) => Trip (the Class).
       rateable = rateable_class.find(rateable_params[:id]) 
       if rateable_params[:value]
-        r = rateable.rate(current_user, rateable_params[:value], rateable_params[:comments])
+        r = rateable.rate(rater, rateable_params[:value], rateable_params[:comments])
         if r.valid?
           successful_ratings << rateable_class.name.downcase
         end
       end
     end
     flash[:notice] = t(:rating_submitted_for_approval, rateable: successful_ratings.to_sentence, count: successful_ratings.count) # only flash on creation
+    if user_signed_in?
+      redirect_to user_trips_path(rater) # this behaves poorly when rating an agency.  Otherwise acts right.
+    else
+      redirect_to root_path
+    end
+  end
 
-    redirect_to :back
+  def new_from_email
+    unless @rateable.md5_hash == params[:hash] # use md5 hash matching instead of password authentication.  Allows rating without logging in
+      flash[:notice] = t(:http_404_not_found)
+      redirect_to :root
+    end
+    @taken = params[:taken]
+    
+    if @rateable.class == Trip
+      @rateable.update_attributes(taken: @taken)
+    end
+
+    @ratings_proxy = RatingsProxy.new(@rateable, @rateable.user) # rateable must be a trip here.  Guarded by the initial check (md5 hash)
+    respond_to do |format|
+      format.html 
+      format.json { render json: @rateable }
+    end
   end
 
   def context

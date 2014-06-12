@@ -89,6 +89,12 @@
 }
 
 .action-button {
+  a[href] {
+    color: black;
+    &:hover {
+      underline: none
+    }
+  }
   &:not(:last-of-type) {
     margin-left: 5px;
   }
