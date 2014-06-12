@@ -314,15 +314,16 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             $('#trip_part_' + tripPartId).append(modeSwimlane);
 
             //render a basic chart with tick lines
+            var fakeTripPlan = {
+                id: null,
+                service_name: null,
+                legs: []
+            };
             createChart(
-                null,
                 chartId,
-                [],
                 parseDate(tripPartData.start_time),
                 parseDate(tripPartData.end_time),
-                intervalStep,
-                barHeight,
-                null
+                fakeTripPlan
             );
             return;
         }
@@ -695,14 +696,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 if (isValidObject(tripPlan)) {
                     var tripPlanChartId = tripPlanDivPrefix + tripId + "_" + tripPlan.id;
                     createChart(
-                        tripPlan.id,
                         tripPlanChartId,
-                        tripPlan.legs,
                         tripStartTime,
                         tripEndTime,
-                        intervalStep,
-                        barHeight,
-                        tripPlan.service_name
+                        tripPlan
                     );
 
                     addTripStrictionFormSubmissionListener(tripPlan.missing_information, tripPlanChartId);
@@ -734,14 +731,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                         $('#' + tripPartDivId).append(itinTags);
 
                          createChart(
-                            tripPlan.id,
                             tripPlanChartId,
-                            tripPlan.legs,
                             tripStartTime,
                             tripEndTime,
-                            intervalStep,
-                            barHeight,
-                            tripPlan.service_name
+                            tripPlan
                         );
 
                         addTripStrictionFormSubmissionListener(tripPlan.missing_information, tripPlanChartId);
@@ -1824,20 +1817,66 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         return tickLabels;
     }
 
+    function formatTime(toFormatTime) {
+        return d3.time.format('%_I:%M %p')(toFormatTime);
+    }
+
+    function getHoverTipText(tripPlan) {
+        var tipText = '';
+        if(!isValidObject(tripPlan)) {
+            return tipText;
+        }
+
+        var mode = tripPlan.mode;
+        var modeName = tripPlan.mode_name;
+        var serviceName = tripPlan.service_name;
+        var durationText = isValidObject(tripPlan.duration) ? parseInt(parseFloat(tripPlan.duration.sortable_duration) / 60) : 'Unknown'; //TODO: locale
+
+        switch(mode) {
+            case 'mode_transit':
+                tipText = '<p>Depart at ' + formatTime(parseDate(tripPlan.start_time)) + '</p>' +
+                            (tripPlan.legs.length > 0 ? ('<p>' + tripPlan.legs[0].description + '</p>') : '' ) +
+                            (tripPlan.legs.length > 1 ? ('<p>' + tripPlan.legs[1].description + '</p>') : '' ) +
+                            '<p>Arrive in ' + durationText + ' minutes</p>';
+                break;
+            case 'mode_bike':
+                tipText = 'Bike ' + durationText + ' minutes'; //TODO: locale
+                break;
+            case 'mode_bikeshare': 
+                tipText = (tripPlan.legs.length > 0 ? ('<p>' + tripPlan.legs[0].description + '</p>') : '' ) +
+                            '<p>Arrive in ' + durationText + ' minutes</p>';
+                break;
+            case 'mode_drive':
+                tipText = 'Drive ' + durationText + ' minutes'; //TODO: locale
+                break;
+            default:
+                tipText = serviceName || modeName;
+                break;
+        }
+
+        return tipText;
+    }
+
     /**
      * Create a timeline chart
-     * @param {number} planId
      * @param {string} chartDivId
-     * @param {Array} tripLegs
      * @param {Date} tripStartTime
      * @param {Date} tripEndTime
-     * @param {number} intervalStep
-     * @param {number} barHeight
+     * @param {object} tripPlan
      */
-    function createChart(planId, chartDivId, tripLegs, tripStartTime, tripEndTime, intervalStep, barHeight, serviceName) {
+    function createChart(chartDivId, tripStartTime, tripEndTime, tripPlan) {
+        if(!isValidObject(tripPlan)) {
+            return;
+        }
+
+        var tripLegs = tripPlan.legs;
+        //planId, chartDivId, tripLegs, tripStartTime, tripEndTime, intervalStep, barHeight, serviceName
         if (!tripStartTime instanceof Date || !tripEndTime instanceof Date || !tripLegs instanceof Array || typeof(intervalStep) != 'number' || typeof(barHeight) != 'number') {
             return;
         }
+
+        var planId = tripPlan.id;
+        var serviceName = tripPlan.service_name;
 
         //planId is used in chart_onclick event
         //sent to server to get itinerary and render plan details modal
@@ -1872,10 +1911,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         //generate ticks
         drawChartTickLines(chart, xScale, x);
 
-        var tipText = "";
-        tripLegs.forEach(function(leg) {
-            tipText += "<p>" + leg.description + "</p>";
-        });
+        var tipText = getHoverTipText(tripPlan);
 
         //draw trip legs in rectangles
         chart.selectAll("rect")
