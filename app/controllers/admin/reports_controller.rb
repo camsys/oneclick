@@ -40,6 +40,8 @@ class Admin::ReportsController < Admin::BaseController
       # get the class instance and generate the data
       report_instance = @report.class_name.constantize.new
       @data = report_instance.get_data(current_user, params)
+      @columns = report_instance.get_columns
+      
       respond_to do |format|
         format.html
       end

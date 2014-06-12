@@ -3,7 +3,12 @@ class AbstractReport
   def initialize(attributes = {})
     #puts attributes.inspect
   end    
-    
+
+  # This will generally be overridden by subclasses
+  def get_columns
+    []
+  end
+  
 protected
 
   def get_duration(time_filter_type)

@@ -1,0 +1,17 @@
+.row
+  .col-sm-12
+    %table.table.table.condensed.table-striped.table-hover.table-bordered#datatable
+      %thead
+        %tr
+          - columns.each_with_index do |col, index|
+            %th
+              = t(col).to_s.titleize
+      %tbody
+        - trips.each do |row|
+          %tr
+            - columns.each_with_index do |col, index|
+              %td
+                = row.is_a?(Hash) ? row[col] : row.send(col)
+
+= render 'shared/simple_datatable_js'
+                

@@ -11,4 +11,28 @@ class TripDecorator < Draper::Decorator
   #     end
   #   end
 
+  def created
+    I18n.l created_at, format: :isoish
+  end
+
+  def trip_date
+    I18n.l trip_datetime, format: :isoish
+  end
+
+  def user
+    object.user.name
+  end
+
+  def creator
+    object.creator.name
+  end
+
+  def from
+    from_place.name
+  end
+
+  def to
+    to_place.name
+  end
+  
 end
