@@ -25,6 +25,35 @@
       //load current locale lang into moment
       //TODO: how to get current lang?
 
+      //update date names in localized texts for moment js lib
+      var localeLang = '#{I18n.locale}';
+      if(localeLang.toLowerCase() != 'en') { //override moment lang if not english
+        var weekdays = #{t('date.day_names')};
+        if(weekdays instanceof Array && weekdays.length > 0) {
+          moment.lang(localeLang, {
+            weekdays : weekdays
+            });
+        }
+        var weekdaysShort = #{t('date.abbr_day_names')};
+        if(weekdaysShort instanceof Array && weekdaysShort.length > 0) {
+          moment.lang(localeLang, {
+            weekdaysShort : weekdaysShort
+            });
+        }
+        var months = #{t('date.month_names')};
+        if(months instanceof Array && months.length > 0) {
+          moment.lang(localeLang, {
+            months : months
+            });
+        }
+        var monthsShort = #{t('date.abbr_month_names')};
+        if(monthsShort instanceof Array && monthsShort.length > 0) {
+          moment.lang(localeLang, {
+            monthsShort : monthsShort
+            });
+        }
+      }
+
       //include all possible localized words to be used in review.js
       var localeDictFinder = {
         select_a_plan_each_trip_part: '#{t(:select_a_plan_each_trip_part)}',
