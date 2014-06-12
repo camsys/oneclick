@@ -56,6 +56,24 @@ module MapHelper
     }
   end
 
+  # create a map marker for a leg start location
+  #
+  # addr is a hash returned from the OneClick Geocoder
+  # id is a unique identifier for the place that could be a string
+  # icon is a named icon from the leafletmap_icons.js file
+  def get_leg_start_marker(addr, id, icon)
+    address = addr[:formatted_address].nil? ? addr[:address] : addr[:formatted_address]
+    {
+      "id" => id,
+      "lat" => addr[:lat],
+      "lng" => addr[:lon],
+      "name" => addr[:name],
+      "iconClass" => icon,
+      "title" =>  addr[:name], #only diff from get_addr_marker
+      "description" => ApplicationController.new.render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'fa-building-o', :name => addr[:name], :address => address} })
+    }
+  end
+
   # create an array of map markers for a collection of Place objects
   def create_place_markers(places)
     markers = []
@@ -99,8 +117,9 @@ module MapHelper
     if legs
       legs.each do |leg|
 
-        place = {:name => leg.start_place.name, :lat => leg.start_place.lat, :lon => leg.start_place.lon, :address => leg.start_place.name}
-        markers << get_addr_marker(place, 'start_leg', 'blueMiniIcon')
+        #place = {:name => leg.start_place.name, :lat => leg.start_place.lat, :lon => leg.start_place.lon, :address => leg.start_place.name}
+        place = {:name => leg.short_description, :lat => leg.start_place.lat, :lon => leg.start_place.lon, :address => leg.start_place.name}
+        markers << get_leg_start_marker(place, 'start_leg', 'blueMiniIcon')
 
         place = {:name => leg.end_place.name, :lat => leg.end_place.lat, :lon => leg.end_place.lon, :address => leg.end_place.name}
         markers << get_addr_marker(place, 'end_leg', 'blueMiniIcon')
