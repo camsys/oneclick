@@ -9,7 +9,7 @@ class TripsDetailsReport < AbstractReport
   end
 
   def get_columns
-    [:id, :user, :creator, :from, :to, :trip_date, :created]
+    [:id, :user, :creator, :from, :to, :trip_date, :created, :trip_purpose, :modes]
   end
 
 end

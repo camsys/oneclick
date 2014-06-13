@@ -5,7 +5,7 @@
         %tr
           - columns.each_with_index do |col, index|
             %th
-              = t(col).to_s.titleize
+              = t(col)
       %tbody
         - trips.each do |row|
           %tr

@@ -34,5 +34,13 @@ class TripDecorator < Draper::Decorator
   def to
     to_place.name
   end
+
+  def trip_purpose
+    I18n.t object.trip_purpose.name
+  end
+
+  def modes
+    I18n.t(desired_modes.map{|m| m.name}).join ', '
+  end
   
 end

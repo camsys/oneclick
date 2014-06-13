@@ -15,6 +15,12 @@ class Admin::ReportsController < Admin::BaseController
   def show
 
     @generated_report = GeneratedReport.new
+    # params[:generated_report] can be nil if switching locales, redirect
+    if params[:generated_report].nil?
+      redirect_to admin_reports_path
+      return
+    end
+    
     @generated_report.report_name = params[:generated_report][:report_name]
     @report = Report.find(params[:generated_report][:report_name])
 
