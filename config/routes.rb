@@ -106,6 +106,7 @@ Oneclick::Application.routes.draw do
           get   'example'
           get   'book'
           get   'plan'
+          get   'new_rating_from_email'
         end
       end
 
@@ -295,7 +296,8 @@ Oneclick::Application.routes.draw do
         get "context"
       end
     end
-    get "trips/:trip_id/ratings/new_from_email" => 'ratings#new_from_email', as: :new_trip_rating_from_email
+    
+    post "trips/:trip_id/ratings/trip_only" => 'ratings#trip_only', as: :trip_only_rating
 
     resources :services do
       member do

@@ -1,8 +1,6 @@
 %h1
   = t(:thanks_for_the_feedback)
+%h2
   %small 
-    - if @taken.downcase.eql? "true"
-      = t(:optional_comments_descr)
-    -else
-      = "We're sorry to hear that.  yada yada."
+    = t(:optional_comments_descr)
 = render partial: "ratings/form"

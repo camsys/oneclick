@@ -1,5 +1,6 @@
 class Rating < ActiveRecord::Base
   MAXRATING = 5
+  DID_NOT_TAKE = -1
   REJECTED= "rejected"
   PENDING= "pending"
   APPROVED = "approved"

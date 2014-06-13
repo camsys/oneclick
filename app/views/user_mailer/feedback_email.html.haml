@@ -2,10 +2,10 @@
 
 %hr
 %h3
-  =link_to new_trip_rating_from_email_url(trip_id: @trip.id, :hash => @trip.md5_hash, :taken => true) do
+  =link_to new_rating_from_email_user_trip_url(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: true) do
     =t(:success_feedback_link)
 %h3
-  =link_to new_trip_rating_from_email_url(trip_id: @trip.id, :hash => @trip.md5_hash, :taken => false) do
+  =link_to new_rating_from_email_user_trip_url(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false) do
     =t(:no_trip_taken_feedback_link)
 %hr
 

@@ -2,7 +2,7 @@ class UserMailer < ActionMailer::Base
   
   # Default sender account set in application.yml
   default from: ENV["SYSTEM_SEND_FROM_ADDRESS"]
-  
+  layout "user_mailer"
   helper :application, :trips
   
   def user_trip_email(addresses, trip, subject, from, comments)

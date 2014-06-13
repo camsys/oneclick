@@ -37,22 +37,17 @@ class RatingsController < ApplicationController
     end
   end
 
-  def new_from_email
-    unless @rateable.md5_hash == params[:hash] # use md5 hash matching instead of password authentication.  Allows rating without logging in
+  def trip_only
+    @trip = Trip.find(params[:trip_id])
+    unless (@trip.md5_hash.eql? params[:trip][:hash]) || (authorize! :create, @trip.ratings.build(rateable: @trip))
       flash[:notice] = t(:http_404_not_found)
-      redirect_to :root
+      redirect_to root_path
     end
-    @taken = params[:taken]
-    
-    if @rateable.class == Trip
-      @rateable.update_attributes(taken: @taken)
-    end
+    puts "TEST"
+    @trip.rate(@trip.user, params[:rating][:value], params[:rating][:comments])
 
-    @ratings_proxy = RatingsProxy.new(@rateable, @rateable.user) # rateable must be a trip here.  Guarded by the initial check (md5 hash)
-    respond_to do |format|
-      format.html 
-      format.json { render json: @rateable }
-    end
+    flash[:notice]= t(:thanks_for_the_feedback)
+    redirect_to root_path
   end
 
   def context
