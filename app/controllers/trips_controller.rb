@@ -128,6 +128,7 @@ class TripsController < PlaceSearchingController
     # Just before render, save off the html on the trip, so that we can access it later for ratings.
     planned_trip_html = render_to_string partial: "selected_itineraries_details", locals: { trip: @trip, for_db: true }
     @trip.update_attributes(planned_trip_html: planned_trip_html, needs_feedback_prompt: true)
+    @booking_proxy = UserServiceProxy.new()
 
     respond_to do |format|
       format.html # plan.html.erb
@@ -674,10 +675,25 @@ class TripsController < PlaceSearchingController
   def book
     @itinerary = Itinerary.find(params[:itin].to_i )
     eh = EcolaneHelpers.new
-    result, messages = eh.book_itinerary(@itinerary)
+
+    outbound_part = @itinerary.trip_part
+    if outbound_part.is_bookable?
+      result, messages = eh.book_itinerary(@itinerary)
+    else
+      result = 'none'
+      messages = 'none'
+    end
+
+    return_part = @itinerary.trip_part.get_return_part
+    if return_part and return_part.is_bookable?
+      return_result, return_messages = eh.book_itinerary(return_part.selected_itinerary)
+    else
+      return_result = 'none'
+      return_messages = 'none'
+    end
 
     respond_to do |format|
-      format.json { render json: [result, messages] }
+      format.json { render json: [result.to_s, messages, return_result.to_s, return_messages] }
     end
   end
 

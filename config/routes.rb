@@ -20,6 +20,7 @@ Oneclick::Application.routes.draw do
     resources :users do
       member do
         get   'profile'
+        post  'add_booking_service'
         # post  'update'
       end
 
@@ -113,6 +114,13 @@ Oneclick::Application.routes.draw do
           get 'unhide_all'
         end
       end
+
+      resources :user_services do
+        member do
+          post 'update'
+        end
+      end
+
     end
     # scope('/kiosk') do
     #   devise_for :users, as: 'kiosk', controllers: {sessions: "kiosk/sessions"}

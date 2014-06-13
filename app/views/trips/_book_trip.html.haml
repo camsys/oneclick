@@ -1,173 +1,139 @@
-#bookingModal.modal.fade.active.col-sm-12{"aria-describedby" => "Book your trip", :role => "dialog", :tabindex => "-1"}
-  .modal-dialog
-    .modal-content
-      .modal-header
-        .row
-          .col-sm-12
-            .row
-              .col-sm-6
-                %h3.dialog-title{:STYLE => "margin:0px;vertical-align:top;"}
-                  = "Book your trip"
-              .col-sm-6
-                .pull-right{:style => "display: inline-block"}
-                  %a{class: "action-button", "data-dismiss" => "modal"}
-                    =t(:close)
-      .modal-body
-        -if @trip.outbound_part.selected_itinerary.is_bookable
-          .panel.panel-default
-            .panel-header
-              %h5
-                ="The outbound portion of your trip is eligible for automated booking."
-            .panel-body
-              .form-horizontal
-                .form-group
-                  .row-fluid
-                    %label.col-sm-4.col-md-4.col-lg-4.text-right
-                      ="From:"
-                    .col-sm-8.col-md-8.col-lg-8.text-left
-                      =@trip.outbound_part.from_trip_place.name
-                .form-group
-                  .row-fluid
-                    %label.col-sm-4.col-md-4.col-lg-4.text-right
-                      ="To:"
-                    .col-sm-8.col-md-8.col-lg-8.text-left
-                      =@trip.outbound_part.to_trip_place.name
-                .form-group
-                  .row-fluid
-                    %label.col-sm-4.col-md-4.col-lg-4.text-right
-                      = @trip.outbound_part.is_depart ? "Departing:" : "Arriving:"
-                    .col-sm-8.col-md-8.col-lg-8.text-left
-                      =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
-              -if @trip.outbound_part.selected_itinerary.booking_confirmation.nil?
-                .div#book_outbound_trip
-                  .row-fluid
-                    ="Would you like to book this trip with "
-                    %b=@trip.outbound_part.selected_itinerary.service.name
-                    ="?"
-                  .row-fluid.pull-center
-                    %button.center.btn.btn-default.pull-middle.center#book_outbound_button
-                      ="Book outbound trip"
-                .div#outbound_results{:style => "display:none;"}
-                  .row-fluid#outbound_results1
-                    =""
-                  .row-fluid#outbound_results2
-                    =""
-                  .row-fluid#outbound_results3
-                    =""
-                  .row-fluid#outbound_results4
-                    -if @trip.outbound_part.selected_itinerary.service.phone
-                      =@trip.outbound_part.selected_itinerary.service.phone
-                    -else
-                      =""
-                  .row-fluid#outbound_results5
-                    -if @trip.outbound_part.selected_itinerary.service.url
-                      %a=@trip.outbound_part.selected_itinerary.service.url
-                    -else
-                      =""
-                  .row-fluid#outbound_results6
-                    =""
+.modal-body
+  -if @trip.outbound_part.is_bookable? or (@trip.return_part and @trip.return_part.is_bookable?)
+    .panel.panel-default
+      .panel-header
+        %h5
+          -if @trip.outbound_part.is_bookable? and (@trip.return_part and @trip.return_part.is_bookable?)
+            ="Your trip is eligible for automated booking."
+          -elsif @trip.outbound_part.is_bookable?
+            ="The outbound portion of your trip is eligible for automated booking."
+          -else
+            ="The return portion of your trip is eligible for automated booking."
 
-              -elsif @trip.outbound_part.selected_itinerary.booking_confirmation
+      .panel-body
+        -if @trip.outbound_part.is_bookable?
+          .form-horizontal
+            .form-group
+              .row-fluid
+                %label.col-sm-4.col-md-4.col-lg-4.text-right
+                  ="From:"
+                .col-sm-8.col-md-8.col-lg-8.text-left
+                  =@trip.outbound_part.from_trip_place.name
+            .form-group
+              .row-fluid
+                %label.col-sm-4.col-md-4.col-lg-4.text-right
+                  ="To:"
+                .col-sm-8.col-md-8.col-lg-8.text-left
+                  =@trip.outbound_part.to_trip_place.name
+            .form-group
+              .row-fluid
+                %label.col-sm-4.col-md-4.col-lg-4.text-right
+                  = @trip.outbound_part.is_depart ? "Departing at:" : "Arriving by:"
+                .col-sm-8.col-md-8.col-lg-8.text-left
+                  =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
+            -if @trip.return_part and @trip.return_part.is_bookable?
+              .form-group
                 .row-fluid
-                  ="Your trip has been booked with "
-                  %b=@trip.outbound_part.selected_itinerary.service.name
-                .row-fluid
-                  ="Your estimated departure time is " + @outbound_pu_time.to_s
-                .row-fluid
-                  -if @outbound_do_time
-                    ="Your estimated arrival time is " + @outbound_do_time.to_s
-                  -else
-                    =""
-                .row-fluid
-                  -if @trip.outbound_part.selected_itinerary.service.phone
-                    =@trip.outbound_part.selected_itinerary.service.phone
-                  -else
-                    =""
-                .row-fluid
-                  -if @trip.outbound_part.selected_itinerary.service.url
-                    %a=@trip.outbound_part.selected_itinerary.service.url
-                  -else
-                    =""
-                .row-fluid#outbound_results6
-                  ="Confirmation #" + @trip.outbound_part.selected_itinerary.booking_confirmation
+                  %label.col-sm-4.col-md-4.col-lg-4.text-right
+                    = @trip.return_part.is_depart ? "Returning at:" : "Returning by:"
+                  .col-sm-8.col-md-8.col-lg-8.text-left
+                    =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
+        -else
+          .form-horizontal
+            .form-group
+              .row-fluid
+                %label.col-sm-4.col-md-4.col-lg-4.text-right
+                  ="From:"
+                .col-sm-8.col-md-8.col-lg-8.text-left
+                  =@trip.return_part.from_trip_place.name
+            .form-group
+              .row-fluid
+                %label.col-sm-4.col-md-4.col-lg-4.text-right
+                  ="To:"
+                .col-sm-8.col-md-8.col-lg-8.text-left
+                  =@trip.return_part.to_trip_place.name
+            .form-group
+              .row-fluid
+                %label.col-sm-4.col-md-4.col-lg-4.text-right
+                  = @trip.return_part.is_depart ? "Departing at:" : "Arriving by:"
+                .col-sm-8.col-md-8.col-lg-8.text-left
+                  =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
 
-        -if @trip.trip_parts.count > 1 and @trip.return_part.selected_itinerary.is_bookable
-          .panel.panel-default
-            .panel-header
-              %h5
-                ="The return portion of your trip is eligible for automated booking."
-            .panel-body
-              .form-horizontal
-                .form-group
-                  .row-fluid
-                    %label.col-sm-4.col-md-4.col-lg-4.text-right
-                      ="From:"
-                    .col-sm-8.col-md-8.col-lg-8.text-left
-                      =@trip.return_part.from_trip_place.name
-                .form-group
-                  .row-fluid
-                    %label.col-sm-4.col-md-4.col-lg-4.text-right
-                      ="To:"
-                    .col-sm-8.col-md-8.col-lg-8.text-left
-                      =@trip.return_part.to_trip_place.name
-                .form-group
-                  .row-fluid
-                    %label.col-sm-4.col-md-4.col-lg-4.text-right
-                      = @trip.return_part.is_depart ? "Departing:" : "Arriving:"
-                    .col-sm-8.col-md-8.col-lg-8.text-left
-                      =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
-              -if @trip.return_part.selected_itinerary.booking_confirmation.nil?
-                .div#book_return_trip
-                  .row-fluid
-                    ="Would you like to book this trip with "
-                    %b=@trip.return_part.selected_itinerary.service.name
-                    ="?"
-                  .row-fluid.pull-center
-                    %button.center.btn.btn-default.pull-middle.center#book_return_button
-                      ="Book return trip"
-                .div#return_results{:style => "display:none;"}
-                  .row-fluid#return_results1
-                    =""
-                  .row-fluid#return_results2
-                    =""
-                  .row-fluid#return_results3
-                    =""
-                  .row-fluid#return_results4
-                    -if @trip.return_part.selected_itinerary.service.phone
-                      =@trip.return_part.selected_itinerary.service.phone
-                    -else
-                      =""
-                  .row-fluid#return_results5
-                    -if @trip.return_part.selected_itinerary.service.url
-                      %a=@trip.return_part.selected_itinerary.service.url
-                    -else
-                      =""
-                  .row-fluid#return_results6
-                    =""
+        -if @trip.is_booked?
+          -if @trip.outbound_part.is_booked?
+            .row-fluid
+              ="Your outbound trip has been booked with "
+              %b=@trip.outbound_part.selected_itinerary.service.name
+            .row-fluid
+              -if @trip.outbound_part.selected_itinerary.service.phone
+                =@trip.outbound_part.selected_itinerary.service.phone
+              -else
+                =""
+            .row-fluid
+              -if @trip.outbound_part.selected_itinerary.service.url
+                %a=@trip.outbound_part.selected_itinerary.service.url
+              -else
+                =""
+            .row-fluid.text-center
+              ="Your confirmation number is"
+            .row-fluid.text-center.bold
+              =@trip.outbound_part.selected_itinerary.booking_confirmation
 
-              -elsif @trip.return_part.selected_itinerary.booking_confirmation
-                .row-fluid
-                  ="Your trip has been booked with "
-                  %b=@trip.return_part.selected_itinerary.service.name
-                .row-fluid
-                  ="Your estimated departure time is " + @return_pu_time.to_s
-                .row-fluid
-                  -if @return_do_time
-                    ="Your estimated arrival time is " + @return_do_time.to_s
-                  -else
-                    =""
-                .row-fluid
-                  -if @trip.return_part.selected_itinerary.service.phone
-                    =@trip.return_part.selected_itinerary.service.phone
-                  -else
-                    =""
-                .row-fluid
-                  -if @trip.return_part.selected_itinerary.service.url
-                    %a=@trip.return_part.selected_itinerary.service.url
-                  -else
-                    =""
-                .row-fluid#return_results6
-                  ="Confirmation #" + @trip.return_part.selected_itinerary.booking_confirmation
+          -if @trip.return_part and @trip.return_part.is_booked?
+            .row-fluid
+              ="Your return trip has been booked with "
+              %b=@trip.return_part.selected_itinerary.service.name
+            .row-fluid
+              -if @trip.return_part.selected_itinerary.service.phone
+                =@trip.return_part.selected_itinerary.service.phone
+              -else
+                =""
+            .row-fluid
+              -if @trip.return_part.selected_itinerary.service.url
+                %a=@trip.return_part.selected_itinerary.service.url
+              -else
+                =""
+            .row-fluid.text-center
+              ="Your confirmation number is"
+            .row-fluid.text-center.bold
+              =@trip.return_part.selected_itinerary.booking_confirmation
+
+        -else
+          .row-fluid
+            ="Would you like to book this trip with "
+            -if @trip.outbound_part.is_bookable?
+              %b=@trip.outbound_part.selected_itinerary.service.name
+            -else
+              %b=@trip.return_part.selected_itinerary.service.name
+            ="?"
+          .row-fluid.pull-center
+            %button.center.btn.btn-default.pull-middle.center#book_outbound_button
+              ="Book"
+          .div#outbound_results{:style => "display:none;"}
+            .row-fluid#outbound_results1
+              =""
+            .row-fluid.text-center#outbound_results2
+              =""
+            .row-fluid#outbound_results3
+              =""
+            .row-fluid#outbound_results4
+              =""
+            .row-fluid.text-center#outbound_results5
+              =""
+            .row-fluid#outbound_results6
+              =""
+
+  -elsif @trip.outbound_part.selected_itinerary.service and @trip.outbound_part.selected_itinerary.service.booking_service_code
+    = simple_form_for @booking_proxy, :remote => true, :url => add_booking_service_user_path(@traveler), :html => { :class => "form-horizontal"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }  do |f|
+      .form-inputs
+        = f.error_notification
+        = f.input :service_id, :as => :hidden, :input_html => {value: @trip.outbound_part.selected_itinerary.service.id}
+        = f.input :itinerary_id, :as => :hidden, :input_html => {value: @trip.outbound_part.selected_itinerary.id}
+        = f.input :external_user_id,label: "Rabbit Transit Client Id", label_method: :last, value_method: :first, :item_wrapper_class => "inline"
+        = f.input :dob, label: "Date of Birth", label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: 'Date of Birth is used to confirm the Client Id with Rabbit Transit.  It will not be saved.'
+      .form-actions
+        = f.button :submit, 'Submit'
+    ="If you do not have a " + @trip.outbound_part.selected_itinerary.service.name + " client id, please call " + @trip.outbound_part.selected_itinerary.service.phone + " for assistance."
 
 :javascript
   $('#book_outbound_button').on('click', function(event) {
@@ -180,114 +146,49 @@
       data: {itin: "#{@trip.outbound_part.selected_itinerary.id}"},
       success: function(result) {
         status = result['trips'][0];
-        if(status){
-          var html =  "Trip successfuly booked! <br>";
-          $('#outbound_results').show();
-          var text = "";
-          $('#book_outbound_trip').html(text);
+        return_status = result['trips'][2];
+        $('#outbound_results').show();
+        $('#book_outbound_button').hide();
 
-          var text1 = "Your trip has successfully been booked with <b>" + "#{@trip.outbound_part.selected_itinerary.service.nil? ? 'none' : @trip.outbound_part.selected_itinerary.service.name}" + "</b>."
+        if (status == "true") {
+          var text1 = "<br>Your outbound trip has successfully been booked with <b>" + "#{@trip.outbound_part.selected_itinerary.service.nil? ? 'none' : @trip.outbound_part.selected_itinerary.service.name}" + "</b>."
           $('#outbound_results1').html(text1);
-          var text2 = "Your estimated departure time is " + result['trips'][1]['pu_time'];
+          var text2 = "<br>Your outbound trip confirmation number is <br><b>" +  result['trips'][1]['confirmation'] + "</b>";
           $('#outbound_results2').html(text2);
-          arrival_text = result['trips'][1]['do_time'];
-          if (arrival_text == null){
-            var text3 = ""
-           }
-          else{
-            var text3 = "Your estimated arrival time is " + arrival_text
-          }
+          var text3 = "If you have any questions or need to make changes to this reservation, please call <b>" + "#{@trip.outbound_part.selected_itinerary.service.nil? ? 'none' : @trip.outbound_part.selected_itinerary.service.phone}" + "</b>." ;
+                                                        $('#outbound_results3').html(text3);
+        }
+        else if(status == "false") {
+          var text1 = "<br>An error occurred when attemping to book your outbound trip."
+          $('#outbound_results1').html(text1);
+          var text2 = result['trips'][1]['trips'][0];
+          $('#outbound_results2').html(text2);
+          var text3 = "To book this trip, please call <b>" + "#{@trip.outbound_part.selected_itinerary.service.nil? ? 'none' : @trip.outbound_part.selected_itinerary.service.phone}" + "</b>." ;
           $('#outbound_results3').html(text3);
-          var text6 = "Confirmation #" +  result['trips'][1]['confirmation'];
+        }
+
+        if (return_status == "true") {
+          var text4 = "<br>Your outbound trip has successfully been booked with <b>" + "#{@trip.return_part.selected_itinerary.service.nil? ? 'none' : @trip.return_part.selected_itinerary.service.name}" + "</b>."
+          $('#outbound_results4').html(text4);
+          var text5 = "<br>Your outbound trip confirmation number is <br><b>" +  result['trips'][3]['confirmation'] + "</b>";
+          $('#outbound_results5').html(text5);
+          var text6 = "If you have any questions or need to make changes to this reservation, please call <b>" + "#{@trip.return_part.selected_itinerary.service.nil? ? 'none' : @trip.return_part.selected_itinerary.service.phone}" + "</b>." ;
           $('#outbound_results6').html(text6);
         }
-        else{
-          $('#outbound_results').show();
-          console.log(result);
-          var text = "";
-          $('#book_outbound_trip').html(text);
-          var text1 = "This trip cannot be booked online."
-          $('#outbound_results1').html(text1);
-          var text2 = result['trips'][1];
-          $('#outbound_results2').html(text2);
-          var text3 = "";
-          $('#outbound_results3').html(text3);
-          var text4 = "";
+        else if(return_status == "false"){
+          var text4 = "<br>An error occurred when attemping to book your return trip."
           $('#outbound_results4').html(text4);
-          var text5 = "";
+          var text5 = result['trips'][3]['trips'][0];
           $('#outbound_results5').html(text5);
-          var text6 = "";
+          var text6 = "To book this trip, please call <b>" + "#{@trip.return_part.selected_itinerary.service.nil? ? 'none' : @trip.return_part.selected_itinerary.service.phone}" + "</b>." ;
           $('#outbound_results6').html(text6);
         }
 
       },
       error: function(){
-        $('#outbound_results1').html(result['trips'][1]);
+        $('#outbound_results1').html("error");
       }
 
     })
 
   })
-
-  $('#book_return_button').on('click', function(event) {
-
-      var text = "Requesting trip with " + "<b>#{@trip.return_part.selected_itinerary.service.nil? ? 'none' : @trip.return_part.selected_itinerary.service.name}</b>" + ". Please wait."
-      $('#book_return_trip').html(text);
-
-      $.ajax({
-        url: "/users/" + "#{@traveler.id}" + "/trips/" + "#{@trip.id}" + "/book",
-        data: {itin: "#{@trip.return_part.selected_itinerary.id}"},
-        success: function(result) {
-          status = result['trips'][0];
-          if(status){
-            var html =  "Trip successfuly booked! <br>";
-
-            html += result['trips'][1];
-            $('#return_results').show();
-            var text = "";
-            $('#book_return_trip').html(text);
-
-            var text1 = "Your trip has successfully been booked with <b>" + "#{@trip.return_part.selected_itinerary.service.nil? ? 'none' : @trip.return_part.selected_itinerary.service.name}" + "</b>."
-            $('#return_results1').html(text1);
-            var text2 = "Your estimated departure time is " + result['trips'][1]['pu_time'];
-            $('#return_results2').html(text2);
-            arrival_text = result['trips'][1]['do_time'];
-            if (arrival_text == null){
-              var text3 = ""
-             }
-            else{
-              var text3 = "Your estimated arrival time is " + arrival_text
-            }
-            $('#return_results3').html(text3);
-            var text6 = "Confirmation #" +  result['trips'][1]['confirmation'];
-            $('#return_results6').html(text6);
-          }
-          else{
-            $('#return_results').show();
-            console.log(result);
-            var text = "";
-            $('#book_return_trip').html(text);
-            var text1 = "This trip cannot be booked online."
-            $('#return_results1').html(text1);
-            var text2 = result['trips'][1];
-            $('#return_results2').html(text2);
-            var text3 = "";
-            $('#return_results3').html(text3);
-            var text4 = "";
-            $('#return_results4').html(text4);
-            var text5 = "";
-            $('#return_results5').html(text5);
-            var text6 = "";
-            $('#return_results6').html(text6);
-          }
-
-        },
-        error: function(){
-          $('#return_results1').html(result['trips'][1]);
-        }
-
-      })
-
-    })
-
-

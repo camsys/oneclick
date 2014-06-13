@@ -313,6 +313,15 @@ class Trip < ActiveRecord::Base
     desired_modes.where(elig_dependent: true).count > 0
   end
 
+  def is_booked?
+    trip_parts.each do |trip_part|
+      if trip_part.is_booked?
+        return true
+      end
+    end
+    false
+  end
+
   private
 
   def validate_at_least_one_trip_place

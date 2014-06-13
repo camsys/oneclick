@@ -79,3 +79,4 @@
                   = booking_form.input service.id.to_s, label: service.name, input_html: { value: user_service.external_user_id}
                 - else
                   = booking_form.input service.id.to_s, label: service.name, input_html: { value: "" }
+              =booking_form.input :dob, label: "Date of Birth", placeholder: "mm/dd/yyyy", hint: 'Date of Birth is used to confirm the Client Id with Rabbit Transit.  It will not be saved.'

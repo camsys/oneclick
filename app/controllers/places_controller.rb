@@ -192,7 +192,7 @@ protected
   # Creates a place proxy from a place. Assumes that if the place is not a POI it
   # came from a raw address
   def create_place_proxy(place)
-    
+
     place_proxy = PlaceProxy.new({:id => place.id, :name => place.name, :raw_address => place.address, :can_alter_location => place.can_alter_location, :lat => place.location.first, :lon => place.location.last, :home => place.home})
     if place.poi
       place_proxy.place_type_id = POI_TYPE

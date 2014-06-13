@@ -24,9 +24,13 @@ class UsersController < ApplicationController
     if @user.update_attributes!(update_method)
       @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
       set_approved_agencies(params[:user][:approved_agency_ids])
-      set_booking_services(@user, params[:user_service])
+      booking_alert = set_booking_services(@user, params[:user_service])
       @user.set_buddies(params[:user][:pending_and_confirmed_delegate_ids])
-      redirect_to user_path(@user, locale: @user.preferred_locale), :notice => "User updated."
+      if booking_alert
+        redirect_to user_path(@user, locale: @user.preferred_locale), :alert => "Invalid Client Id or Date of Birth."
+      else
+        redirect_to user_path(@user, locale: @user.preferred_locale), :notice => "User updated."
+      end
     else
       redirect_to edit_user_path(@user), :alert => "Unable to update user."
     end
@@ -53,6 +57,44 @@ class UsersController < ApplicationController
     @user_accommodations_proxy = UserAccommodationsProxy.new(@user)
   end
 
+  def add_booking_service
+    get_traveler
+    external_user_id = params['user_service_proxy']['external_user_id']
+    service = Service.find(params['user_service_proxy']['service_id'])
+    itinerary = Itinerary.find(params['user_service_proxy']['itinerary_id'])
+    errors = false
+
+    @booking_proxy = UserServiceProxy.new(external_user_id: external_user_id, service: service)
+    begin
+      dob = Date.strptime(params['user_service_proxy']['dob'], "%m/%d/%Y")
+    rescue ArgumentError
+      @booking_proxy.errors.add(:dob, "Date needs to be in mm/dd/yyyy format.")
+      errors = true
+    end
+
+    eh = EcolaneHelpers.new
+    unless eh.confirm_passenger(external_user_id, dob)
+      @booking_proxy.errors.add(:external_user_id, "Unknown Client Id or incorrect date of birth.")
+      errors = true
+    end
+
+    @trip = itinerary.trip_part.trip
+
+    unless errors
+      itinerary.is_bookable = true
+      itinerary.save
+      user_service = UserService.where(user_profile: @traveler.user_profile, service: service).first_or_initialize
+      user_service.external_user_id = external_user_id
+      user_service.save
+    end
+
+    #TODO:  Automatically add other rabbit transit services
+    respond_to do |format|
+      format.json {}
+      format.js { render "trips/update_booking" }
+    end
+
+  end
 
 private
 
@@ -86,20 +128,29 @@ private
   end
 
   def set_booking_services(user, services)
+    alert = false
+    dob = services['dob']
     services.each do |id, user_id|
-      service = Service.find(id)
-      unless user_id == ""
-        user_service = UserService.where(user_profile: user.user_profile, service: service).first_or_initialize
-        user_service.external_user_id = user_id
-        user_service.save
-      else
-        user_services = UserService.where(user_profile: user.user_profile, service: service)
-        user_services.each do |user_service|
-          user_service.destroy
+      unless id == 'dob'
+        service = Service.find(id)
+
+        eh = EcolaneHelpers.new
+        unless user_id == ""
+          unless eh.confirm_passenger(user_id, dob)
+            alert = true
+            next
+          end
+          user_service = UserService.where(user_profile: user.user_profile, service: service).first_or_initialize
+          user_service.external_user_id = user_id
+          user_service.save
+        else
+          user_services = UserService.where(user_profile: user.user_profile, service: service)
+          user_services.each do |user_service|
+            user_service.destroy
+          end
         end
       end
-
     end
+    alert
   end
-
 end

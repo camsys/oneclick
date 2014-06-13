@@ -1,0 +1,17 @@
+#bookingModal.modal.fade.active.col-sm-12{"aria-describedby" => "Book your trip", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        .row
+          .col-sm-12
+            .row
+              .col-sm-6
+                %h3.dialog-title{:STYLE => "margin:0px;vertical-align:top;"}
+                  = "Book your trip"
+              .col-sm-6
+                .pull-right{:style => "display: inline-block"}
+                  %a{class: "action-button", "data-dismiss" => "modal"}
+                    =t(:close)
+      .modal-body#bookingContent
+        = render partial: 'book_trip'
+

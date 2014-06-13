@@ -34,6 +34,22 @@ class TripPart < ActiveRecord::Base
     is_return_trip
   end
 
+  def get_return_part
+    if is_return_trip?
+      nil
+    else
+      trip.return_part
+    end
+  end
+
+  def is_bookable?
+    selected? and selected_itinerary.is_bookable?
+  end
+
+  def is_booked?
+    selected? and selected_itinerary.booking_confirmation
+  end
+
   # We define that an itinerary has been selected if there is exactly 1 visible valid one.
   # We might want a more explicit selection flag in the future.
   def selected?
