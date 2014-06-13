@@ -242,6 +242,7 @@ en:
   wait: 'Wait'
   mode_transfer: 'Transfer'
   select_a_plan_each_trip_part: 'Please select itinerary for each trip part'
+  failed_to_update_profile: 'Failed to update your user profile.'
   route: 'Route'
   transfer: {
     one: '%{count} transfer',

@@ -1,7 +1,7 @@
 class TripSerializer < ActiveModel::Serializer
   self.root = false
 
-  attributes :id, :status, :modes
+  attributes :id, :status, :modes, :user_id, :characteristics_update_url
   has_many :trip_parts
   attr_accessor :asynch
 
@@ -43,6 +43,10 @@ class TripSerializer < ActiveModel::Serializer
         }
       end
     end
+  end
+
+  def characteristics_update_url
+    "/users/#{object.user_id}/characteristics/update"
   end
 
 end

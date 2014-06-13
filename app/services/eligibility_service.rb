@@ -53,14 +53,14 @@ class EligibilityService
           if service_requirement.code == 'age'
             if service_characteristic_map.value_relationship_id == 3 or service_characteristic_map.value_relationship_id == 4
               group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or older\n'
-              group_missing_info << service_requirement.for_missing_info(service, group)
+              group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
             elsif service_characteristic_map.value_relationship_id == 5 or service_characteristic_map.value_relationship_id == 6
               group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or younger\n'
-              group_missing_info << service_requirement.for_missing_info(service, group)
+              group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
             end
           else
             group_missing_information_text += service_requirement.desc + '\n'
-            group_missing_info << service_requirement.for_missing_info(service, group)
+            group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
           end
           next
         end

@@ -777,18 +777,25 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 var questionText = missingInfo.question;
                 var controlName = missingInfo.controlName;
                 var questionVal = findQuestionValue(controlName, formVals);
-                if(questionVal != null) {//apply user_answer
-                    updateTripRestrictions(questionText, questionVal.value); 
-                } else { //remove previous user_answer
-                    updateTripRestrictions(questionText, null); 
-                }
+                var valueToApply = (questionVal != null ? questionVal.value : null)
+                updateTripRestrictions(questionText, valueToApply);
+
+                $.ajax({
+                    type: "POST",
+                    url: _tripResponse.characteristics_update_url,
+                    data: {
+                        user_answer: valueToApply,
+                        code: missingInfo.code
+                    }
+                }).fail(function() {
+                    show_alert(localeDictFinder['failed_to_update_profile']);
+                })
+
             }
 
             applyChangesAfterTripRestrictionFormSubmission();
 
             dialog.modal('hide');
-
-            //TODO: post user answers to back-end (https://www.pivotaltracker.com/story/show/71417436)
 
             e.preventDefault();
         });

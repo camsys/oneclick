@@ -241,6 +241,7 @@ es:
   wait: '[es]Wait[/es]'
   mode_transfer: '[es]Transfer[/es]'
   select_a_plan_each_trip_part: '[es]Please select itinerary for each trip part[/es]'
+  failed_to_update_profile: '[es244]Failed to update your user profile.[/es]'
   route: '[es215]Route[/es]'
   transfer: {
       one: '%{count} conección',

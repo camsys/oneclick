@@ -32,7 +32,7 @@ class Characteristic < ActiveRecord::Base
   
   # builds a hash of details about a characteristic; is used by the javascript
   # client to knwo whether to ask the user for more info
-  def for_missing_info(service, group)
+  def for_missing_info(service, group, code)
     a = attributes
     sc = service_characteristics.where(service: service).take
     value = case a['code']
@@ -55,7 +55,8 @@ class Characteristic < ActiveRecord::Base
       # 'control_type' => '',
       'options' => options,
       'success_condition' => "#{operator}#{value}",
-      'group_id' => group
+      'group_id' => group,
+      'code' => code
     }
   end
 
