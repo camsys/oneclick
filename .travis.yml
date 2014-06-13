@@ -29,29 +29,29 @@ notifications:
   email:
     - oneclickcs_github@googlegroups.com
   irc: irc.freenode.net#oneclick
-deploy:
-  - provider: heroku
-    api_key:
-      secure: F0EpkR4MF0qS6LFtK4mQo7gI6MeodybR+S+RzJjFUWDMyZ3MgHqmt0t1ueAlfB9B/6wkmZXf3P/Kt2keudwWCXK+Upyjie6XX9Or3CMNlvs/VdTFk0a7A9mJHuDJqZEnSTPp1wGDqNh+KVYfS4G2DQV+FazShimuHveAq30nfR0=
-    app: oneclick-arc-int
-    on:
-      repo: camsys/oneclick
-      branch: develop
-  # - provider: heroku
-  #   api_key:
-  #     secure: F0EpkR4MF0qS6LFtK4mQo7gI6MeodybR+S+RzJjFUWDMyZ3MgHqmt0t1ueAlfB9B/6wkmZXf3P/Kt2keudwWCXK+Upyjie6XX9Or3CMNlvs/VdTFk0a7A9mJHuDJqZEnSTPp1wGDqNh+KVYfS4G2DQV+FazShimuHveAq30nfR0=
-  #   app: oneclick-pa-int
-  #   on:
-  #     repo: camsys/oneclick
-  #     branch: develop
-after_deploy:
-  - gem install heroku
-  - git branch -lavv
-  - pwd
-  - ls
-  - heroku run rake db:migrate --app oneclick-arc-int
-  # - heroku run rake db:migrate --app oneclick-pa-int
-  # - git checkout develop
-  # - git describe
-  # - heroku config:set ONECLICK_APP_VERSION=`git describe` --app oneclick-arc-int
-  # - heroku config:set ONECLICK_APP_VERSION=`git describe` --app oneclick-pa-int
+# deploy:
+#   - provider: heroku
+#     api_key:
+#       secure: F0EpkR4MF0qS6LFtK4mQo7gI6MeodybR+S+RzJjFUWDMyZ3MgHqmt0t1ueAlfB9B/6wkmZXf3P/Kt2keudwWCXK+Upyjie6XX9Or3CMNlvs/VdTFk0a7A9mJHuDJqZEnSTPp1wGDqNh+KVYfS4G2DQV+FazShimuHveAq30nfR0=
+#     app: oneclick-arc-int
+#     on:
+#       repo: camsys/oneclick
+#       branch: develop
+#   # - provider: heroku
+#   #   api_key:
+#   #     secure: F0EpkR4MF0qS6LFtK4mQo7gI6MeodybR+S+RzJjFUWDMyZ3MgHqmt0t1ueAlfB9B/6wkmZXf3P/Kt2keudwWCXK+Upyjie6XX9Or3CMNlvs/VdTFk0a7A9mJHuDJqZEnSTPp1wGDqNh+KVYfS4G2DQV+FazShimuHveAq30nfR0=
+#   #   app: oneclick-pa-int
+#   #   on:
+#   #     repo: camsys/oneclick
+#   #     branch: develop
+# after_deploy:
+#   - gem install heroku
+#   - git branch -lavv
+#   - pwd
+#   - ls
+#   - heroku run rake db:migrate --app oneclick-arc-int
+#   # - heroku run rake db:migrate --app oneclick-pa-int
+#   # - git checkout develop
+#   # - git describe
+#   # - heroku config:set ONECLICK_APP_VERSION=`git describe` --app oneclick-arc-int
+#   # - heroku config:set ONECLICK_APP_VERSION=`git describe` --app oneclick-pa-int
