@@ -13,5 +13,6 @@
               %td
                 = row.is_a?(Hash) ? row[col] : row.send(col)
 
-= render 'shared/simple_datatable_js'
-                
+= render partial: 'shared/simple_datatable_js', 
+        locals: {filter: true, export: true, columns: columns, data: trips}
+

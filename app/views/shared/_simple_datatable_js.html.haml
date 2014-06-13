@@ -1,7 +1,35 @@
+- filter = false if local_assigns[:filter].nil?
+- export = false if local_assigns[:export].nil?
+- columns = [] if local_assigns[:columns].nil?
+
 :javascript
   $(document).ready(function() {
-  	$('#datatable').dataTable( {
-                "bFilter" : false,
-  		"sDom": "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>"
-  	} );
+    var oTable = $('#datatable').dataTable( {
+            "sDom": "#{%q[<'row'<'col-sm-6' f>>] if filter}<'row'<'col-sm-6'l><'extras col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>"
+    } );
+    if ("#{export}") {
+        $("div.extras").html('<div class="pull-right"><button class="btn btn-default action-button pull-right" id="export_all">Export All</button><button class="btn btn-default action-button pull-right" id="export_visible">Export Filtered</button></div>')
+    }
+    function exportCsv(mode) {
+     var filter = (mode == "filtered") ? "applied" : "none";
+     var data = oTable._('tr', {"filter": filter});
+     var a = document.createElement('a');
+     a.href = 'data:attachment/csv,' + "#{t(columns).join(',').titleize}%0D%0A"
+       + _.unescape(data.join('%0D%0A'));
+     a.target = '_blank';
+     a.download = mode + '_data.csv';
+     document.body.appendChild(a);
+     a.click();
+    };
+
+    $('#export_visible').click(function(e) {
+       e.preventDefault();
+       exportCsv("filtered");
+    } );
+
+    $('#export_all').click(function(e) {
+       e.preventDefault();
+       exportCsv("all");
+    } );
+
   } );
