@@ -30,7 +30,8 @@ describe EligibilityService do
             # "control_type" => 'foo',
             "options" => nil,
             "success_condition"=>"<1949",
-            "group_id" => 0
+            "group_id" => 0,
+            "code" => "age"
           }
         ]
       ]
