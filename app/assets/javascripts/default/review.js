@@ -1197,11 +1197,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 data: missingInfoArray
             };
             eligibleCode = checkEligibility(missingInfoArray);
-        }
 
-        //if not eligible, then set as not_selectable
-        if(eligibleCode != 1) {
-            isSelected = false;
+            //if not eligible, then set as not_selectable
+            if(eligibleCode != 1) {
+                isSelected = false;
+            }
         }
 
         //assign data values to each plan div
