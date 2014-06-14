@@ -63,6 +63,11 @@ update_place = (placeText, type) ->
 
   $('#' + placeid).val(placeText)
 
+process_location_from_map = (addr) -> #update map marker from selected location, and update address input field from reverse geocoded address
+  addrType = CsMaps.tripMap.addressType
+  update_map(CsMaps.tripMap, addrType, null, addr, null)
+  update_place(addr.name, addrType)
+
 $ ->
 
   places = new Bloodhound
@@ -139,9 +144,26 @@ $ ->
   if typeof(CsMaps) != 'undefined' and CsMaps and CsMaps.tripMap
     CsMaps.tripMap.LMmap.on 'placechange', (e) ->
       addr = e.latlon
-      placeText = '(' + addr.lat + ', ' + addr.lon + ')' #TODO: need to display a real address instead of coords
-      addr.name = placeText
-      addrType = CsMaps.tripMap.addressType
-      update_map(CsMaps.tripMap, addrType, e, addr, null)
+      $.ajax
+        type: 'GET'
+        async: false
+        url: '/reverse_geocode?lat=' + addr.lat + '&lon=' + addr.lon
+        success: (data) ->
+          search_results = data.place_searching 
+          if search_results instanceof Array
+            i = 0
+            result_count = search_results.length
 
-      update_place(placeText, addrType)
+            while i < result_count
+              el = search_results[i]
+              if typeof (el) is "object" and el
+                actual_results = el.place_searching
+                if actual_results instanceof Array and actual_results.length > 0
+                  addr.name = actual_results[0].formatted_address
+                  process_location_from_map(addr)
+                  break
+              i++
+          
+        failure: (error) ->
+          console.log error
+      

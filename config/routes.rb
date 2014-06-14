@@ -130,6 +130,7 @@ Oneclick::Application.routes.draw do
     # get '/kiosk_user/kiosk/users/sign_in', to: 'kiosk/sessions#create'
 
     get 'place_details/:id' => 'place_searching#details', as: 'place_details'
+    get 'reverse_geocode' => 'place_searching#reverse_geocode', as: 'reverse_geocode'
 
     namespace :kiosk do
       get '/', to: 'home#index'
