@@ -18,43 +18,44 @@
         %th= t(:send_follow_up_email)
   %tbody{ :id => 'trips_table'}
     - trips.each do |trip|
-      -tripID = "trip#{trip.id}"
-      %tr
-        - if show_username
-          %td= trip.user
-        %td.nowrap= format_date(trip.trip_datetime)
-        %td= trip.from_place.name
-        %td= trip.to_place.name
-        %td= t(trip.trip_purpose.name)
-        - if Oneclick::Application.config.public_read_feedback
-          %td.nowrap{id: "#{tripID}Rating"}
-            = trip.rating_in_stars
-        - if Oneclick::Application.config.public_write_feedback
-          %td.center.nowrap
-            - if (not trip.in_the_future and can? :create, trip.ratings.build) or Rails.env.development?
-              - modal_name = "##{tripID}RatingModal"
-              %button.btn.btn-default.action-button{data: {toggle: 'modal', target: modal_name, remote: new_trip_rating_path(trip)}}
-                = t(:feedback)
-        - if trip.in_the_future
-          %td.center.nowrap          
-            = link_to user_trip_path(traveler, trip), {:class => "btn btn-sm", :alt => t(:plan_trip), :title => t(:plan_trip)} do
-              %i.fa.fa-mail-forward
-            = link_to edit_user_trip_path(traveler, trip), {:class => "btn btn-sm", :alt => t(:edit_trip), :title => t(:edit_trip)} do
-              %i.fa.fa-edit
-            = link_to user_trip_path(traveler, trip), {:alt => t(:remove_trip), :title => t(:remove_trip), :class => "btn btn-sm btn-danger delete-button", :method => :delete, :confirm => t(:confirm_remove_trip)} do
-              %i.fa.fa-times
-        - else
-          %td.center.nowrap          
-            = link_to repeat_user_trip_path(traveler, trip), {:alt => t(:repeat_trip), :title => t(:repeat_trip), :class => "btn btn-sm"} do
-              %i.fa.fa-rotate-right
-        - if Rails.env.development?
-          %td= "%s / %s" % [trip.outbound_part.max_notes_count, trip.return_part.max_notes_count]
-        - if can? :send_follow_up, trip
-          %td
-            %btn.btn.btn-default.action-button
-              = link_to email_feedback_user_trip_path(traveler, trip) do
-                - t(:send)
-      = render partial: 'trips/trip_rating', locals: {id: trip.id}
+      -if trip.both_parts_selected?
+        -tripID = "trip#{trip.id}"
+        %tr
+          - if show_username
+            %td= trip.user
+          %td.nowrap= format_date(trip.trip_datetime)
+          %td= trip.from_place.name
+          %td= trip.to_place.name
+          %td= t(trip.trip_purpose.name)
+          - if Oneclick::Application.config.public_read_feedback
+            %td.nowrap{id: "#{tripID}Rating"}
+              = trip.rating_in_stars
+          - if Oneclick::Application.config.public_write_feedback
+            %td.center.nowrap
+              - if (not trip.in_the_future and can? :create, trip.ratings.build) or Rails.env.development?
+                - modal_name = "##{tripID}RatingModal"
+                %button.btn.btn-default.action-button{data: {toggle: 'modal', target: modal_name, remote: new_trip_rating_path(trip)}}
+                  = t(:feedback)
+          - if trip.in_the_future
+            %td.center.nowrap          
+              = link_to user_trip_path(traveler, trip), {:class => "btn btn-sm", :alt => t(:plan_trip), :title => t(:plan_trip)} do
+                %i.fa.fa-mail-forward
+              = link_to edit_user_trip_path(traveler, trip), {:class => "btn btn-sm", :alt => t(:edit_trip), :title => t(:edit_trip)} do
+                %i.fa.fa-edit
+              = link_to user_trip_path(traveler, trip), {:alt => t(:remove_trip), :title => t(:remove_trip), :class => "btn btn-sm btn-danger delete-button", :method => :delete, :confirm => t(:confirm_remove_trip)} do
+                %i.fa.fa-times
+          - else
+            %td.center.nowrap          
+              = link_to repeat_user_trip_path(traveler, trip), {:alt => t(:repeat_trip), :title => t(:repeat_trip), :class => "btn btn-sm"} do
+                %i.fa.fa-rotate-right
+          - if Rails.env.development?
+            %td= "%s / %s" % [trip.outbound_part.max_notes_count, trip.return_part.max_notes_count]
+          - if can? :send_follow_up, trip
+            %td
+              %btn.btn.btn-default.action-button
+                = link_to email_feedback_user_trip_path(traveler, trip) do
+                  - t(:send)
+        = render partial: 'trips/trip_rating', locals: {id: trip.id}
 
 :javascript
   $(document).ready(function() {
