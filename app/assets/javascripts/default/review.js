@@ -1400,7 +1400,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         }
 
         var legendTags = "";
-        var legendClassNames = [];
+        var legendClassNameIndex = {};
+        var legendNames = [];
         trips.forEach(function(trip) {
             if (typeof(trip) != 'object' || trip === null || !trip.itineraries instanceof Array) {
                 return;
@@ -1419,18 +1420,30 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                     var className = "travel-legend-" + removeSpace(leg.type.toLowerCase());
                     var legendText = toCamelCase(leg.type);
 
-                    if ($("." + className).length === 0 && !legendClassNames[className]) {
-                        legendClassNames[className] = legendText;
-                        legendTags +=
-                            "<div class='travel-legend-container'>" +
-                            "<div class='travel-legend " + className + "'/>" +
-                            "<span class='travel-legend-text'>" + (localeDictFinder[legendText.toLowerCase()] || legendText) + "</span>" +
-                            "</div>";
+                    if ($("." + className).length === 0 && !legendClassNameIndex[className]) {
+                        legendClassNameIndex[className] = legendText;
+                        legendNames.push({
+                            cls: className,
+                            name: legendText
+                        });
+                        
                     }
                 });
             });
         });
-
+        
+        legendNames = legendNames.sort(function(sortItem1, sortItem2) {
+            if (sortItem1.name < sortItem2.name) return -1;
+            if (sortItem1.name > sortItem2.name) return 1;
+            return 0;
+        });
+        legendNames.forEach(function(el) {
+            legendTags +=
+                "<div class='travel-legend-container'>" +
+                "<div class='travel-legend " + el.cls + "'/>" +
+                "<span class='travel-legend-text'>" + (localeDictFinder[el.name.toLowerCase()] || el.name) + "</span>" +
+                "</div>";
+        });
         $('#' + legendContainerId).append(legendTags);
     }
 
