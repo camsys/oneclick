@@ -526,7 +526,7 @@ DEPENDENCIES
   rgeo-shapefile
   rolify!
   rspec-core
-  rspec-rails
+  rspec-rails (~> 2.99)
   rubyzip
   sass-rails!
   sextant

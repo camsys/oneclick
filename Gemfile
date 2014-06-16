@@ -92,7 +92,7 @@ end
   
 group :test do
   gem 'rspec-core'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 2.99'
   gem 'capybara'
   gem 'cucumber-rails', :require=>false
   gem 'database_cleaner'
