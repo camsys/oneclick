@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140616000308) do
+ActiveRecord::Schema.define(version: 20140616154335) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -140,6 +140,7 @@ ActiveRecord::Schema.define(version: 20140616000308) do
     t.integer "parent_id"
     t.string  "otp_mode"
     t.integer "results_sort_order"
+    t.string  "logo_url"
   end
 
   create_table "places", force: true do |t|
@@ -211,6 +212,7 @@ ActiveRecord::Schema.define(version: 20140616000308) do
     t.string  "internal_contact_title"
     t.string  "internal_contact_phone"
     t.string  "internal_contact_email", limit: 128
+    t.string  "logo_url"
   end
 
   create_table "ratings", force: true do |t|
@@ -319,6 +321,7 @@ ActiveRecord::Schema.define(version: 20140616000308) do
     t.string   "internal_contact_email"
     t.string   "internal_contact_title"
     t.string   "internal_contact_phone"
+    t.string   "logo_url"
     t.spatial  "origin",                       limit: {:srid=>0, :type=>"geometry"}
     t.spatial  "destination",                  limit: {:srid=>0, :type=>"geometry"}
     t.spatial  "residence",                    limit: {:srid=>0, :type=>"geometry"}

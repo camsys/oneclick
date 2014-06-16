@@ -71,7 +71,8 @@ end
 
 def add_ancillary_services
   providers = [
-    {name: 'MARTA', url: 'http://www.itsmarta.com'},
+    {name: 'MARTA', url: 'http://www.itsmarta.com',
+      logo_url: 'arc/MARTA.png'},
     {name: 'GRTA', url: 'http://www.grta.org'},
     {name: 'CCT', url: 'http://dot.cobbcountyga.gov/cct/'},
   ]
@@ -97,7 +98,8 @@ def add_providers_and_services
       {name: 'Jewish Family & Career Services', contact: 'Gary Miller', external_id: "esp#3"},
       {name: 'Cobb Senior Services', contact: 'Pam Breeden', external_id: "esp#20"},
       {name: 'Rockdale County Senior Services', contact: 'Jackie Lunsford', external_id: "esp#8"},
-      {name: 'Cobb Community Transit (CCT)', contact: 'Gary Blackledge', external_id: "esp#15"},
+      {name: 'Cobb Community Transit (CCT)', contact: 'Gary Blackledge', external_id: "esp#15",
+        logo_url: 'arc/cct_40x40.png'},
       {name: 'Transportation Services', contact: 'Nell Childers', external_id: "esp#22"},
       {name: 'Volunteer Transportation Service', contact: 'T.J. McGiffert', external_id: "esp#34"}
   ]
@@ -160,7 +162,8 @@ def add_providers_and_services
 
       when "esp#1" #LIFESPAN Resources
                    #Create service
-        service = Service.create(name: 'Volunteer Transportation from', provider: p, service_type: volunteer, advanced_notice_minutes: 14*24*60)
+        service = Service.create(name: 'Volunteer Transportation from', provider: p, service_type: volunteer, 
+          advanced_notice_minutes: 14*24*60, logo_url: 'sample/sample-logo-b.png')
         #Add Schedules
         (2..3).each do |n|
           Schedule.create(service: service, start_seconds:9*3600, end_seconds: 16.5*3600, day_of_week: n)

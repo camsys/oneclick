@@ -138,6 +138,18 @@
     .panel-body
       = render 'services/table'
 
+  .row
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          / %h4.panel-title= t(:other_information)
+          %h4.panel-title Other Information
+        .panel-body
+          %table.table
+            %tr
+              %td Logo URL:
+              %td= @provider.logo_url || '(None)'
+
 :javascript
   $(document).ready(function() {
     $('#admin_services_table').dataTable( {
