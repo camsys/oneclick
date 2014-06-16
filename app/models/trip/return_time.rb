@@ -7,6 +7,8 @@ module Trip::ReturnTime
     attr_accessor :is_round_trip, :return_trip_time, :return_arrive_depart, :return_trip_date
 
     # ensure that a valid return time is set if a return trip is selected
+    validate :validate_date
+    validate :validate_time
     validate :validate_return_trip_time
   end
 
@@ -52,4 +54,25 @@ protected
     end
   end
 
+  def validate_date
+    return true if is_round_trip != "1" # if a trip is planned for one-way, the date for the return has to be valid
+    begin
+      # if the parse fails it will return nil and the to_date will throw an exception
+      d = Date.strptime(return_trip_date, '%m/%d/%Y')
+    rescue Exception => e
+      puts e
+      errors.add(:return_trip_date, I18n.translate(:date_wrong_format))
+    end
+  end
+
+  # Validation. Check that the trip time is well formatted and can be coerced into a time
+  def validate_time
+    return true if is_round_trip != "1" # if a trip is planned for one-way, the time for the return has to be valid
+    begin
+      time = Time.strptime(return_trip_time, "%H:%M %p")
+    rescue Exception => e
+      puts e
+      errors.add(:return_trip_time, I18n.translate(:time_wrong_format))
+    end
+  end
 end
