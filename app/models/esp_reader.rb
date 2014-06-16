@@ -380,6 +380,7 @@ class EspReader
         amount = config[@costs_idx['Amount']].to_f
         cost_unit = config[@costs_idx['CostUnit']].downcase.tr(" ", "")
         case cost_unit
+          when 'roundtrip'
             amount = amount/2.0
           when "mile"
             next #TODO Create mileage-based fare
