@@ -232,8 +232,8 @@ class EspReader
     end
 
     #Add Fares
-    esp_configs.shift
-    result, message = create_or_update_fares(esp_configs)
+    esp_costs.shift
+    result, message = create_or_update_fares(esp_costs)
     unless result
       return result, message
     end
@@ -378,7 +378,13 @@ class EspReader
       case config[@costs_idx['CostType']].downcase
       when 'transportation'
         amount = config[@costs_idx['Amount']].to_f
-        if amount >= fare.base.to_f
+        cost_unit = config[@costs_idx['CostUnit']].downcase.tr(" ", "")
+        case cost_unit
+            amount = amount/2.0
+          when "mile"
+            next #TODO Create mileage-based fare
+        end
+        if fare.base.nil? or amount >= fare.base.to_f
           fare.base = amount
           fare.fare_type = 0
           fare.save
