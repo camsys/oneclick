@@ -10,16 +10,9 @@ class GeoCoverage < ActiveRecord::Base
   def polygon_contains?(lon, lat)
     factory = RGeo::Geographic.simple_mercator_factory
     point = factory.point(lon.to_f, lat.to_f)
-    return self.polygon.contains?(point)
-  end
 
-  def polygon_to_array
-    geometry = []
-    #Boundary.first.polygon.exterior_ring.points.each do |point|
-    Boundary.find(4).geom.first.exterior_ring.points.each do |point|
-      geometry << [point.y, point.x]
-    end
-    geometry
+    self.boundary.geom.contains? point
+
   end
 
 end

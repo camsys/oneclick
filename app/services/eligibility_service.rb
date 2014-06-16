@@ -208,82 +208,67 @@ class EligibilityService
 
   def eligible_by_location(trip_part, itineraries)
 
+    factory = RGeo::Geographic.simple_mercator_factory
+
     eligible_itineraries  = []
     itineraries.each do |itinerary|
       service = itinerary['service']
 
       #Match Residence
-      coverages = service.service_coverage_maps.where(rule: 'residence').map {|c| c.geo_coverage.value.delete(' ').downcase}
-      if trip_part.trip.user.home
-        county_name = trip_part.trip.user.home.county_name || ""
-        zipcode = trip_part.trip.user.home.zipcode
-      else
-        county_name = ""
-        zipcode = ""
-      end
-      unless (coverages.count == 0) or (zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
-        next
-      end
-
-      #Todo: If the user does not list his home, then this itinerary is thrown out.  Instead, we should show the itinerary
-      #but warn that we don't know the user's home address.
-      coverages = service.service_coverage_maps.where(rule: 'residence').type_polygon
-      if !coverages.empty? and trip_part.user.home.nil?
-        next
-      end
-      within = coverages.empty?
-      coverages.each do |coverage|
-        if coverage.geo_coverage.polygon_contains?(trip_part.user.home.lon, trip_part.user.home.lat)
-          within = true
-          break
+      if service.residence?
+        if trip_part.user.home.nil?
+          next
         end
-      end
+        point = factory.point(trip_part.user.home.lon.to_f, trip_part.user.home.lat.to_f)
+        unless service.residence.contains? point
+          next
+        end
 
-      unless within
-        next
+      else
+        coverages = service.service_coverage_maps.where(rule: 'residence').map {|c| c.geo_coverage.value.delete(' ').downcase}
+        if trip_part.trip.user.home
+          county_name = trip_part.trip.user.home.county_name || ""
+          zipcode = trip_part.trip.user.home.zipcode
+        else
+          county_name = ""
+          zipcode = ""
+        end
+        unless (coverages.count == 0) or (zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
+          next
+        end
       end
 
       #Match Origin
-      coverages = service.service_coverage_maps.where(rule: 'origin').map {|c| c.geo_coverage.value.delete(' ').downcase}
-      county_name = trip_part.from_trip_place.county_name || ""
-      unless (coverages.count == 0) or (trip_part.from_trip_place.zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
-        next
-      end
-
-      coverages = service.service_coverage_maps.where(rule: 'origin').type_polygon
-      within = coverages.empty?
-      coverages.each do |coverage|
-        if coverage.geo_coverage.polygon_contains?(trip_part.from_trip_place.lon, trip_part.from_trip_place.lat)
-          within = true
-          break
+      #if the service has a polygon boundary, it supercedes the attributes
+      if service.origin?
+        point = factory.point(trip_part.from_trip_place.lon.to_f, trip_part.from_trip_place.lat.to_f)
+        unless service.origin.contains? point
+          next
         end
-      end
-
-      unless within
-        next
+      else
+        coverages = service.service_coverage_maps.where(rule: 'origin').map {|c| c.geo_coverage.value.delete(' ').downcase}
+        county_name = trip_part.from_trip_place.county_name || ""
+        unless (coverages.count == 0) or (trip_part.from_trip_place.zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
+          next
+        end
       end
 
       #Match Destination
-      county_name = trip_part.to_trip_place.county_name || ""
-      coverages = service.service_coverage_maps.where(rule: 'destination').map {|c| c.geo_coverage.value.delete(' ').downcase}
-      unless (coverages.count == 0) or (trip_part.to_trip_place.zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
-        next
-      end
-
-      coverages = service.service_coverage_maps.where(rule: 'destination').type_polygon
-      within = coverages.empty?
-      coverages.each do |coverage|
-        if coverage.geo_coverage.polygon_contains?(trip_part.to_trip_place.lon, trip_part.to_trip_place.lat)
-          within = true
-          break
+      if service.destination?
+        point = factory.point(trip_part.to_trip_place.lon.to_f, trip_part.to_trip_place.lat.to_f)
+        unless service.destination.contains? point
+          next
+        end
+      else
+        county_name = trip_part.to_trip_place.county_name || ""
+        coverages = service.service_coverage_maps.where(rule: 'destination').map {|c| c.geo_coverage.value.delete(' ').downcase}
+        unless (coverages.count == 0) or (trip_part.to_trip_place.zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
+          next
         end
       end
 
-      unless within
-        next
-      end
-
       eligible_itineraries << itinerary
+
     end
     eligible_itineraries
   end

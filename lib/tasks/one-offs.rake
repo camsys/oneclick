@@ -12,7 +12,7 @@ namespace :oneclick do
       end
 
       Boundary.all.each do |b|
-        gc = GeoCoverage.new(value: b.agency, coverage_type: 'polygon', boundary: b)
+        gc = GeoCoverage.new(value: b.agency, coverage_type: 'polygon', polygon: b)
         case b.agency
           when "Cobb Community Transit (CCT)"
             service = Service.find_by_external_id("54104859570670229999")
