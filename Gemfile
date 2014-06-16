@@ -51,10 +51,12 @@ gem 'active_model_serializers'
 gem 'jquery-datatables-rails'
 gem 'active_attr'
 gem 'twitter-bootstrap-rails-confirm', github: 'bluerail/twitter-bootstrap-rails-confirm', branch: 'bootstrap3'
+gem 'activerecord-postgis-adapter'
+gem 'rgeo-activerecord'
+gem 'rgeo'
+gem 'rgeo-shapefile'
 
 group :development do
-  gem 'activerecord-postgis-adapter'
-  gem 'rgeo-activerecord'
   # gem 'ffi-geos'
   #gem 'mysql2'
   gem 'better_errors'
@@ -77,8 +79,6 @@ group :development do
   gem 'rails-erd'
   gem 'growl'
   gem 'travis'
-  gem 'rgeo'
-  gem 'rgeo-shapefile'
   gem "letter_opener"
   gem 'yard'
   gem 'RedCloth' # Needed by yard
