@@ -604,7 +604,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                     var tripDescription = trip.hasOwnProperty('description_without_direction') ? trip.description_without_direction : trip.description;
                     legDescription += ' - ' + tripDescription;
                     plan.legs.push({
-                        "type": "Vehicle",
+                        "type": getLegTypeFromPlanMode(plan.mode),
                         "description": legDescription,
                         "start_time": plan.start_time,
                         "end_time": plan.end_time,
@@ -614,10 +614,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 }
 
                 plan.legs.forEach(function(leg) {
-                    leg.type = typeof(leg.type) === 'string' ? toCamelCase(leg.type.toLowerCase()) : 'Unknown';
-                    if (['Walk', 'Transfer', 'Wait'].indexOf(leg.type) < 0) {
-                        leg.type = 'Vehicle';
+                    if(!(typeof(leg.type) === 'string' && leg.type.trim().length > 0)) {
+                        leg.type = 'unknown';
                     }
+
                     if (isNaN(parseDate(leg.start_time))) {
                         leg.start_time = trip.start_time;
                         leg.start_time_estimated = true;
@@ -1862,6 +1862,46 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         }
 
         return tipText;
+    }
+
+    function getLegTypeFromPlanMode(mode) {
+        var legType = '';
+        switch (mode) {
+            case 'mode_transit':
+                legType = 'transit';
+                break;
+            case 'mode_subway':
+                legType = 'subway';
+                break;
+            case 'mode_bus':
+                legType = 'bus';
+                break;
+            case 'mode_bike':
+                legType = 'bike';
+                break;
+            case 'mode_bikeshare':
+                legType = 'bikeshare';
+                break;
+            case 'mode_drive':
+                legType = 'drive';
+                break;
+            case 'mode_rideshare':
+                legType = 'rideshare';
+                break;
+            case 'mode_paratransit':
+                legType = 'paratransit';
+                break;
+            case 'mode_walk':
+                legType = 'walk';
+                break;
+            case 'mode_taxi':
+                legType = 'taxi';
+                break;
+            default:
+                break;
+        }
+
+        return legType;
     }
 
     /**

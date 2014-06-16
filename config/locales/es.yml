@@ -235,6 +235,8 @@ es:
   walk: 'Caminar'  
   bus: '[es211]Bus[/es]'
   drive: '[es212]Drive[/es]'
+  bike: '[es]Bike[/es]'
+  bikeshare: '[es]Bikeshare[/es]'
   drive_and_transit: '[es212]Drive and Transit[/es]'
   rail: '[es213]Rail[/es]'
   rail_and_bus: '[es213]Rail and Bus[/es]'

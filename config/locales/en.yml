@@ -236,6 +236,8 @@ en:
   walk: 'Walk'
   bus: 'Bus'
   drive: 'Drive'
+  bike: 'Bike'
+  bikeshare: 'Bikeshare'
   drive_and_transit: 'Drive and Transit'
   rail: 'Rail'
   rail_and_bus: 'Rail and Bus'

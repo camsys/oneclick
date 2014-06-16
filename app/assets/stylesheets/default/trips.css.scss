@@ -378,6 +378,46 @@ $legend-height: 20px;
   background-color: #FF9900;
 }
 
+.travel-legend-transit {
+  background-color: #7f7979;
+}
+
+.travel-legend-subway {
+  background-color: #F7BD9C;
+}
+
+.travel-legend-bus {
+  background-color: #1AB940;
+}
+
+.travel-legend-taxi {
+  background-color: #FEEA00;
+}
+
+.travel-legend-bike {
+  background-color: #611CF3;
+}
+
+.travel-legend-bikeshare {
+  background-color: #A61CF3;
+}
+
+.travel-legend-drive {
+  background-color: #808CB4;
+}
+
+.travel-legend-rideshare {
+  background-color: #F55416;
+}
+
+.travel-legend-paratransit {
+  background-color: #FF9900;
+}
+
+.travel-legend-unknown {
+  background-color: #C0C0C0;
+}
+
 .travel-type-walk {
   fill: #499bea;
 }
@@ -392,6 +432,46 @@ $legend-height: 20px;
 
 .travel-type-vehicle {
   fill: #FF9900;
+}
+
+.travel-type-transit {
+  fill: #499bea;
+}
+
+.travel-type-subway {
+  fill: #F7BD9C;
+}
+
+.travel-type-bus {
+  fill: #1AB940;
+}
+
+.travel-type-taxi {
+  fill: #FEEA00;
+}
+
+.travel-type-bike {
+  fill: #611CF3;
+}
+
+.travel-type-bikeshare {
+  fill: #A61CF3;
+}
+
+.travel-type-drive {
+  fill: #808CB4;
+}
+
+.travel-type-rideshare {
+  fill: #F55416;
+}
+
+.travel-type-paratransit {
+  fill: #FF9900;
+}
+
+.travel-type-unknown {
+  fill: #C0C0C0;
 }
 
 /*styles for trip mode service*/
