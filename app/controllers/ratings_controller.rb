@@ -5,6 +5,7 @@ class RatingsController < ApplicationController
   def index
     authorize! :read, Rating
     authorize! :approve, Rating
+    @ratings = Rating.all
   end
 
   def new
