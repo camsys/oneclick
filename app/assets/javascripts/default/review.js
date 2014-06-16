@@ -1178,12 +1178,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var isPlanStartTimeEstimated = tripPlan.start_time_estimated;
         var isPlanEndTimeEstimated = tripPlan.end_time_estimated;
         var logoUrl = tripPlan.logo_url;
-        console.log("logoUrl: " + logoUrl)
         var iconStyle = "background-image: url(" + logoUrl + ");"
-        console.log("iconStyle: " + iconStyle)
 
-        //var cssName = removeSpace(mode.toLowerCase()) + "-" + removeSpace(serviceName.toLowerCase());
-        var cssName = removeSpace(mode.toLowerCase());
         var modeServiceUrl = "";
         if (isValidObject(contact_information)) {
             modeServiceUrl = contact_information.url;
@@ -1260,9 +1256,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         ) +
             "</div>" +
             "</div>";
-
-        console.log("tripPlanTags")
-        console.log(tripPlanTags)
 
         return tripPlanTags;
     }
