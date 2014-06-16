@@ -24,7 +24,7 @@ if ENV['HEROKU']
               username:            parsed_url.user,
               password:            parsed_url.password
           }
-          establish_connection(config)
+          ActiveRecord::Base.establish_connection(config)
         end
       end
     end
