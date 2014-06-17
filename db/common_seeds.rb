@@ -17,16 +17,16 @@ end
 
 #Create reports and internationalize their names
 [
-  {name: 'Trips Created', description: 'Displays a chart showing the number of trips created each day.', view_name: 'generic_report', class_name: 'TripsCreatedByDayReport', active: 1},
-  {name: 'Trips Scheduled', description: 'Displays a chart showing the number of trips scheduled for each day.', view_name: 'generic_report', class_name: 'TripsScheduledByDayReport', active: 1},
-  {name: 'Failed Trips', description: 'Displays a report describing the trips that failed.', view_name: 'trips_report', class_name: 'InvalidTripsReport', active: 1},
-  {name: 'Rejected Trips', description: 'Displays a report showing trips that were rejected by a user.', view_name: 'trips_report', class_name: 'RejectedTripsReport', active: 1},
+  {name: 'Trips Created', description: 'Displays a chart showing the number of trips created each day.', view_name: 'generic_report', class_name: 'TripsCreatedByDayReport', active: true},
+  {name: 'Trips Scheduled', description: 'Displays a chart showing the number of trips scheduled for each day.', view_name: 'generic_report', class_name: 'TripsScheduledByDayReport', active: true},
+  {name: 'Failed Trips', description: 'Displays a report describing the trips that failed.', view_name: 'trips_report', class_name: 'InvalidTripsReport', active: true},
+  {name: 'Rejected Trips', description: 'Displays a report showing trips that were rejected by a user.', view_name: 'trips_report', class_name: 'RejectedTripsReport', active: true},
   {name: 'Trips Planned', description: 'Trips planned with various breakdowns.',
-   view_name: 'breakdown_report', class_name: 'TripsBreakdownReport', active: 1},
+   view_name: 'breakdown_report', class_name: 'TripsBreakdownReport', active: true},
   {name: 'Trips Details', description: 'Details of all trips.',
-   view_name: 'trips_details_report', class_name: 'TripsDetailsReport', active: 1}
+   view_name: 'trips_details_report', class_name: 'TripsDetailsReport', active: true}
 ].each do |rep|
-  Report.create!(rep)
+  Report.find_or_create_by!(rep)
   Translation.find_or_create_by!(key: rep[:class_name], locale: :en,
                                  value: rep[:name] + " Report")
   Translation.find_or_create_by!(key: rep[:class_name], locale: :es,
@@ -174,6 +174,34 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     logo_url: 'bicycle.png',
   },
 
+ { klass: DateOption, name: 'All', code: 'date_option_all',
+   start_date: 'beginning of time', end_date: 'end of time',
+ },
+ { klass: DateOption, name: 'Past', code: 'date_option_past',
+   start_date: 'beginning of time', end_date: 'now',
+ },
+ { klass: DateOption, name: 'Future', code: 'date_option_future',
+   start_date: 'now', end_date: 'end of time',
+ },
+ { klass: DateOption, name: 'Last 7 Days', code: 'date_option_last_7_days',
+   start_date: '7 days ago', end_date: 'now',
+ },
+ { klass: DateOption, name: 'Next 7 Days', code: 'date_option_next_7_days',
+   start_date: 'now', end_date: '7 days from now',
+ },
+ { klass: DateOption, name: 'Last 30 Days', code: 'date_option_last_30_days',
+   start_date: '30 days ago', end_date: 'now',
+ },
+ { klass: DateOption, name: 'Next 30 Days', code: 'date_option_next_30_days',
+   start_date: 'now', end_date: '30 days from now',
+ },
+ { klass: DateOption, name: 'Last Month', code: 'date_option_last_month',
+   start_date: 'last month', end_date: 'last month',
+ },
+ { klass: DateOption, name: 'Next Month', code: 'date_option_next_month',
+   start_date: 'next month', end_date: 'next month',
+ },
+ 
 ].each do |record|
   structured_hash = structure_records_from_flat_hash record
   build_internationalized_records structured_hash

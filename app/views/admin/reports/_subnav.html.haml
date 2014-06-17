@@ -18,7 +18,7 @@
           .col-sm-2
             = f.input :report_name, collection: Report.names_and_ids, include_blank: false, label: t(:report_name)
           .col-sm-2
-            = f.input :date_range, collection: Report.date_options, include_blank: false, label: t(:date_range)
+            = f.input :date_range, collection: DateOption.form_collection(false), include_blank: false, label: t(:date_range)
           .col-sm-2
             = f.input :trip_purpose, collection: TripPurpose.form_collection, include_blank: false, label: t(:trip_purpose)
           .col-sm-2

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140616154335) do
+ActiveRecord::Schema.define(version: 20140616211553) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,15 @@ ActiveRecord::Schema.define(version: 20140616154335) do
   create_table "coverage_areas", force: true do |t|
     t.integer "service_id", null: false
     t.boolean "active",     null: false
+  end
+
+  create_table "date_options", force: true do |t|
+    t.string   "name"
+    t.string   "code"
+    t.string   "start_date"
+    t.string   "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "fare_structures", force: true do |t|
@@ -335,10 +344,10 @@ ActiveRecord::Schema.define(version: 20140616154335) do
     t.string   "internal_contact_email"
     t.string   "internal_contact_title"
     t.string   "internal_contact_phone"
-    t.string   "logo_url"
     t.spatial  "origin",                       limit: {:srid=>0, :type=>"geometry"}
     t.spatial  "destination",                  limit: {:srid=>0, :type=>"geometry"}
     t.spatial  "residence",                    limit: {:srid=>0, :type=>"geometry"}
+    t.string   "logo_url"
   end
 
   create_table "services_users", id: false, force: true do |t|

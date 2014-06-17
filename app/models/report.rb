@@ -13,22 +13,6 @@ class Report < ActiveRecord::Base
     Report.all.map(&:name_and_id)
   end
 
-  # TODO New options need models.
-  # use time_filter_helper?
-  def self.date_options
-    [
-      'All',
-      'Past Trips',
-      'Future Trips',
-      'Last 7 Days',
-      'Next 7 Days',
-      'Last 30 Days',
-      'Next 30 Days',
-      'Last Month',
-      'Custom'
-    ]
-  end
-
   # TODO Probably delete this
   def self.display_types
     ['Summary Chart', 'Summary Table', 'Detailed Listing']
