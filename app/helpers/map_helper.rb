@@ -170,6 +170,8 @@ protected
       a = {"className" => 'map-tripleg-unknown'}
     else
       a = {"className" => 'map-tripleg-' + leg.mode.downcase}
+    end
+    
     return a
   end
 
