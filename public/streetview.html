@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Street View</title>
     <style>
-      html, body, #pano {
+      html, body, #gsv {
         height: 100%;
         margin: 0px;
         padding: 0px
@@ -27,11 +27,27 @@
           return params;
       };
 
-      function initialize() {
-        var url = window.location.href;
-        var queryString = url.substring( url.indexOf('?') + 1 );
-        var urlParams = parseQueryString(queryString);
-        var poi = new google.maps.LatLng(urlParams.lat,urlParams.lng);
+      var checkGSVExist = function(lat, lon, callbackFn) {
+        var streetViewService = new google.maps.StreetViewService();
+        var STREETVIEW_MAX_DISTANCE = 100;
+        var latLng = new google.maps.LatLng(lat, lon);
+        streetViewService.getPanoramaByLocation(latLng, STREETVIEW_MAX_DISTANCE, function (streetViewPanoramaData, status) {
+            console.log(streetViewPanoramaData);
+            if (status === google.maps.StreetViewStatus.OK) {
+                // ok
+                if(callbackFn && typeof(callbackFn) === 'function') {
+                  callbackFn();
+                }
+            } else {
+                // no street view available in this range, or some error occurred
+                //TODO: how to alert user with proper localized text
+                //alert('Street view is not available for this location.');
+            }
+        });
+      };
+
+      var showGSV = function(lat, lon) {
+        var poi = new google.maps.LatLng(lat, lon);
         var panoramaOptions = {
           position: poi,
           pov: {
@@ -39,14 +55,28 @@
             pitch: 10
           }
         };
-        var panorama = new  google.maps.StreetViewPanorama(document.getElementById('pano'),panoramaOptions);
-        map.setStreetView(panorama);
+        var panorama = new  google.maps.StreetViewPanorama(document.getElementById('gsv'),panoramaOptions);
+      };
+
+      function initialize() {
+        var url = window.location.href;
+        var queryString = url.substring( url.indexOf('?') + 1 );
+        var urlParams = parseQueryString(queryString);
+        var lat = parseFloat(urlParams.lat);
+        var lon = parseFloat(urlParams.lng);
+
+        //checkGSVExist(lat, lon, function(){ #first check if street view is available.
+        //  showGSV(lat, lon);
+        //})
+
+        showGSV(lat, lon);
+        
       }
 
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
   </head>
   <body>
-    <div id="pano"></div>
+    <div id="gsv"></div>
   </body>
 </html>
