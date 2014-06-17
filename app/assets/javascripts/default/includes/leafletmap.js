@@ -584,26 +584,42 @@ CsLeaflet.Leaflet = {
                 this.id = controlId;
                 L.Util.setOptions(this, options);
             },
+            getToggleable: function() {
+                return this.options.toggleable;
+            },
             getPressed: function() {
                 return this._pressed;
             },
             setPressed: function(pressed) {
-                if(!this.options.toggleable) {
+                if(!this.getToggleable()) {
                     return;
                 }
                 this._pressed = pressed;
+                var map = this._map;
                 if(this._pressed) {
                     L.DomUtil.addClass(this.link, this.options.pressedCls);
-                    if(this._map) {
-                        L.DomUtil.get(this._map.getContainer().id).style.cursor = this.options.pressedCursorType || 'crosshair';
+                    if(map) {
+                        //depress other controls
+                        var customControls = map.customControls;
+                        if(customControls instanceof Array) {
+                            var currentIndex = customControls.indexOf(this);
+                            customControls.forEach( function(ctrl) {
+                                if(currentIndex != customControls.indexOf(ctrl)) {
+                                    ctrl.setPressed(false);
+                                }
+                            });
+                        }
+
+                        L.DomUtil.get(map.getContainer().id).style.cursor = this.options.pressedCursorType || 'crosshair';
                     }
                 } else {
                      L.DomUtil.removeClass(this.link, this.options.pressedCls);
-                     if(this._map) {
-                        L.DomUtil.get(this._map.getContainer().id).style.cursor = this.options.depressedCursorType || 'default';
+                     if(map) {
+                        L.DomUtil.get(map.getContainer().id).style.cursor = this.options.depressedCursorType || 'default';
                     }
                 }
             },
+
             onAdd: function (map) {
                 var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
 
@@ -675,6 +691,7 @@ CsLeaflet.Leaflet = {
             setTimeout(function(){ //Leaflet triggers click in doubleclick event, using a timeout to separate them
                 if(clickCounter === 1 && streetViewControl.getPressed()) {
                     var latlng = e.latlng;
+
                     //redirect to street view page
                     window.open(streetViewUrl + '?lat=' + latlng.lat + '&lng=' + latlng.lng, '_blank');
                 }
