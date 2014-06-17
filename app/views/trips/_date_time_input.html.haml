@@ -22,12 +22,6 @@
         defaultDate: new Date(),
         minDate: moment(0, "HH"),
         pickTime: false
-      }).on('dp.change', function() {
-        var other = $('#trip_proxy_#{other}_trip_date').data("DateTimePicker");
-        var thisone = $('#trip_proxy_#{dir}_trip_date').data("DateTimePicker").getDate();
-        if (other.getDate() < thisone) {
-          other.setDate(thisone);
-        }
       });
     });
 
