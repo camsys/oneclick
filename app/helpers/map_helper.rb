@@ -166,18 +166,10 @@ protected
   # Gets leaflet rendering hash for a leg based on the mode of the leg
   def get_leg_display_options(leg)
 
-    if leg.mode == Leg::TripLeg::WALK
-      a = {"color" => 'red', "width" => "5"}
-    elsif leg.mode == Leg::TripLeg::BUS
-      a = {"color" => 'blue', "width" => "5"}
-    elsif leg.mode == Leg::TripLeg::SUBWAY
-      a = {"color" => 'green', "width" => "5"}
-    elsif leg.mode == Leg::TripLeg::CAR
-      a = {"color" => 'yellow', "width" => "5"}
+    if leg.mode.nil?
+      a = {"className" => 'map-tripleg-unknown'}
     else
-      a = {}
-    end
-
+      a = {"className" => 'map-tripleg-' + leg.mode.downcase}
     return a
   end
 

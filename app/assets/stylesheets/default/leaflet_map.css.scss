@@ -7,3 +7,75 @@
 	width: 16px;
 	height: 24px;
 }
+
+/*trip leg polyline styles for each mode*/
+
+.map-tripleg-walk {
+  stroke: #499bea;
+  stroke-width: 5;
+}
+
+.map-tripleg-wait {
+  stroke: #7f7979;
+  stroke-width: 5;
+}
+
+.map-tripleg-transfer {
+  stroke: #FEC800;
+  stroke-width: 5;
+}
+
+.map-tripleg-vehicle {
+  stroke: #FF9900;
+  stroke-width: 5;
+}
+
+.map-tripleg-transit {
+  stroke: #499bea;
+  stroke-width: 5;
+}
+
+.map-tripleg-subway {
+  stroke: #F7BD9C;
+  stroke-width: 5;
+}
+
+.map-tripleg-bus {
+  stroke: #1AB940;
+  stroke-width: 5;
+}
+
+.map-tripleg-taxi {
+  stroke: #FEEA00;
+  stroke-width: 5;
+}
+
+.map-tripleg-bike {
+  stroke: #611CF3;
+  stroke-width: 5;
+}
+
+.map-tripleg-bikeshare {
+  stroke: #A61CF3;
+  stroke-width: 5;
+}
+
+.map-tripleg-drive {
+  stroke: #808CB4;
+  stroke-width: 5;
+}
+
+.map-tripleg-rideshare {
+  stroke: #F55416;
+  stroke-width: 5;
+}
+
+.map-tripleg-paratransit {
+  stroke: #FF9900;
+  stroke-width: 5;
+}
+
+.map-tripleg-unknown {
+  stroke: #C0C0C0;
+  stroke-width: 5;
+}
