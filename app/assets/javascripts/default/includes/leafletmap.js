@@ -42,7 +42,11 @@ CsLeaflet.Leaflet = {
     // TODO make this a constructor
 
     init: function(mapId, options) {
-        this.LMmap = L.map(mapId, { scrollWheelZoom: options.scroll_wheel_zoom });
+        var localizedTooltips = options.map_control_tooltips || {};
+        this.LMmap = L.map(mapId, { zoomControl: false, scrollWheelZoom: options.scroll_wheel_zoom });
+        //explicitly add zoom control to display localized tooltip
+        new L.Control.Zoom({ zoomInTitle: localizedTooltips.zoom_in, zoomOutTitle: localizedTooltips.zoom_out }).addTo(this.LMmap);
+
         //alert(options.tile_provider);
         //alert(options.min_zoom);
         //alert(options.max_zoom);
@@ -75,17 +79,17 @@ CsLeaflet.Leaflet = {
 
         //register CurrentLocation Control
         if(options.show_my_location) {
-            this.addCurrentLocationControl();
+            this.addCurrentLocationControl(localizedTooltips.my_location);
         }
 
         //register StreetView Control
         if(options.show_street_view) {
-            this.addStreetViewControl(options.street_view_url);
+            this.addStreetViewControl(options.street_view_url, localizedTooltips.display_street_view);
         }
 
         //register LocationSelect Control
         if(options.show_location_select) {
-            this.addLocationSelectControl();
+            this.addLocationSelectControl(localizedTooltips.select_location_on_map);
         }
     },
 
@@ -650,7 +654,7 @@ CsLeaflet.Leaflet = {
         })
     }, 
 
-    addCurrentLocationControl: function() {
+    addCurrentLocationControl: function(tooltipText) {
         if (!("geolocation" in navigator)) { //if geolocation is not supported, then not display this control on map
             return;
         }
@@ -661,7 +665,7 @@ CsLeaflet.Leaflet = {
 
         var currentMap = this.LMmap;
         var currentLocataionControl = new L.Control.CustomButton('currentLocation', {
-            title: 'Center my location',
+            title: tooltipText,
             iconCls: 'fa fa-lg fa-location-arrow',
             clickCallback: function() {
                 currentMap.locate({setView: true});
@@ -671,7 +675,7 @@ CsLeaflet.Leaflet = {
         currentLocataionControl.addTo(currentMap);
     }, 
 
-    addStreetViewControl: function(streetViewUrl) {
+    addStreetViewControl: function(streetViewUrl, tooltipText) {
 
         if(!L.Control.CustomButton) {
             this.registerCustomControl();
@@ -679,7 +683,7 @@ CsLeaflet.Leaflet = {
 
         var currentMap = this.LMmap;
         var streetViewControl = new L.Control.CustomButton('streetView', {
-            title: 'Display street view',
+            title: tooltipText,
             iconCls: 'fa fa-lg leaflet-street-view-icon',
             toggleable: true
         });
@@ -702,7 +706,7 @@ CsLeaflet.Leaflet = {
         streetViewControl.addTo(currentMap);
     }, 
 
-    addLocationSelectControl: function() {
+    addLocationSelectControl: function(tooltipText) {
 
         if(!L.Control.CustomButton) {
             this.registerCustomControl();
@@ -710,7 +714,7 @@ CsLeaflet.Leaflet = {
 
         var currentMap = this.LMmap;
         var locationSelectControl = new L.Control.CustomButton('locationSelect', {
-            title: 'Select location on map',
+            title: tooltipText,
             iconCls: 'fa fa-lg fa-map-marker',
             toggleable: true
         });

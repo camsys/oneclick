@@ -51,7 +51,14 @@ module LeafletHelper
       show_my_location: show_my_location,
       show_street_view: show_street_view,
       street_view_url: street_view_url,
-      show_location_select: show_location_select
+      show_location_select: show_location_select,
+      map_control_tooltips: {
+        zoom_in: I18n.t(:zoom_in),
+        zoom_out: I18n.t(:zoom_out),
+        my_location: I18n.t(:center_my_location),
+        display_street_view: I18n.t(:display_street_view),
+        select_location_on_map: I18n.t(:select_location_on_map)
+      }
     }.to_json
 
     js << "var CsMaps = CsMaps || {};"

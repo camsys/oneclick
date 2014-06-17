@@ -329,7 +329,13 @@ en:
   flat_fare_unavailable: "Flat fare unavailable"
   rate: "Rate"
 
-  
+  #map
+  zoom_in: 'Zoom in'
+  zoom_out: 'Zoom out'
+  center_my_location: 'Center my location'
+  display_street_view: 'Display street view'
+  select_location_on_map: 'Select location on map'
+
   # My Places form
   found_x_places: {
     one:    'Found %{count} place in your address book.',

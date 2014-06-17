@@ -329,6 +329,13 @@ es:
   flat_fare_unavailable: "[es199]Flat fare unavailable[/es]"
   rate: "[es]Rate[/es]"
 
+  #map
+  zoom_in: '[es]Zoom in[/es]'
+  zoom_out: '[es]Zoom out[/es]'
+  center_my_location: '[es]Center my location[/es]'
+  display_street_view: '[es]Display street view[/es]'
+  select_location_on_map: '[es]Select location on map[/es]'
+
   # My Places form
   found_x_places: {
     one:    'Encontrados %{count} sitios en la libreta de direcciones. *13*',
