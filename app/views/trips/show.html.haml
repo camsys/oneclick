@@ -26,9 +26,6 @@
   #itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
   :javascript
     $(function() {
-      //load current locale lang into moment
-      //TODO: how to get current lang?
-
       //update date names in localized texts for moment js lib
       var localeLang = '#{I18n.locale}';
       if(localeLang.toLowerCase() != 'en') { //override moment lang if not english
