@@ -148,7 +148,8 @@ class TripPart < ActiveRecord::Base
     itins = []
     tp = TripPlanner.new
     arrive_by = !is_depart
-    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode)
+    wheelchair = trip.user.requires_wheelchair_access?.to_s
+    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair)
 
     #TODO: Save errored results to an event log
     if result

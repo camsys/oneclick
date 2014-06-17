@@ -104,6 +104,21 @@ class User < ActiveRecord::Base
     disability_status.count > 0 and disability_status.first.value == 'true'
   end
 
+  def requires_wheelchair_access?
+    folding_accommodation = Accommodation.where(code: 'folding_wheelchair_accessible').first
+    motorized_accommodation = Accommodation.where(code: 'motorized_wheelchair_accessible').first
+
+    needs_folding = user_profile.user_accommodations.where(accommodation: folding_accommodation, value: "true").first
+    needs_motorized = user_profile.user_accommodations.where(accommodation: motorized_accommodation, value: "true").first
+
+    if needs_folding or needs_motorized
+      return true
+    else
+      return false
+    end
+
+  end
+
   def home
     self.places.find_by_home(true)
   end

@@ -9,7 +9,7 @@ class TripPlanner
   
   include ServiceAdapters::RideshareAdapter
 
-  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK")
+  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false")
 
     #Parameters
     time = trip_datetime.strftime("%-I:%M%p")
@@ -18,6 +18,7 @@ class TripPlanner
     url_options = "&time=" + time
     url_options += "&mode=" + mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
+    url_options += "&wheelchair=" + wheelchair
     url_options += "&arriveBy=" + arriveBy.to_s
 
     url = base_url + url_options
