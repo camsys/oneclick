@@ -730,7 +730,6 @@ class TripsController < PlaceSearchingController
     @trip.save
 
     unless taken
-      puts @trip.ai
       render 'ratings/untaken_trip'
     else
       @ratings_proxy = RatingsProxy.new(@trip, @trip.user) # rateable must be a trip here.  Guarded by the initial check (md5 hash)

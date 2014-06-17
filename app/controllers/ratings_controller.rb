@@ -44,7 +44,6 @@ class RatingsController < ApplicationController
       flash[:notice] = t(:http_404_not_found)
       redirect_to root_path
     end
-    puts "TEST"
     @trip.rate(@trip.user, params[:rating][:value], params[:rating][:comments])
 
     flash[:notice]= t(:thanks_for_the_feedback)

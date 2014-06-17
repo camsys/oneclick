@@ -40,7 +40,6 @@ class Admin::AgenciesController < ApplicationController
   # GET /agencies/new
   # GET /agencies/new.json
   def new
-    puts @agency.id
     # @agency = Agency.new
 
     respond_to do |format|
@@ -60,7 +59,6 @@ class Admin::AgenciesController < ApplicationController
   # POST /agencies
   # POST /agencies.json
   def create
-    puts @agency.id
     params[:agency][:parent] = Agency.find(params[:agency].delete :parent_id) rescue nil
     # @agency = Agency.new(params[:agency])
 
@@ -100,7 +98,6 @@ class Admin::AgenciesController < ApplicationController
   # DELETE /agencies/1
   # DELETE /agencies/1.json
   def destroy
-    puts @agency.id
     # @agency = Agency.find(params[:id])
     @agency.update_attributes(active: false)
 
