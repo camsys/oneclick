@@ -576,7 +576,7 @@ CsLeaflet.Leaflet = {
                 iconCls: '',
                 toggleable: false,
                 pressedCls: 'leaflet-button-pressed',
-                depressedCursorType: 'grab',
+                depressedCursorType: 'move',
                 pressedCursorType: 'crosshair',
                 clickCallback: function() {}
             },
