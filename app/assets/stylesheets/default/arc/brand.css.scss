@@ -1,4 +1,9 @@
 // ARC CSS file. Styles only, no variables or mixins.
+body {
+  font-family: Verdana;
+  font-size: 14pt;
+}
+
 $nav-start-color: #FAFAFA;
 $nav-end-color: #A3A3A3;
 #publicNav{
