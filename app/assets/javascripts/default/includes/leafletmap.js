@@ -11,6 +11,9 @@ if (typeof Object.create !== 'function') {
 var CsLeaflet = CsLeaflet || {};
 
 CsLeaflet.Leaflet = {
+    //options
+    _options: null, 
+
     // Leaflet map rendering functions
 
 
@@ -43,10 +46,10 @@ CsLeaflet.Leaflet = {
     // TODO make this a constructor
 
     init: function(mapId, options) {
-        var localizedTooltips = options.map_control_tooltips || {};
+        this._options = options;
+
         this.LMmap = L.map(mapId, { zoomControl: false, scrollWheelZoom: options.scroll_wheel_zoom, zoomAnimation: options.zoom_animation});
-        //explicitly add zoom control to display localized tooltip
-        new L.Control.Zoom({ zoomInTitle: localizedTooltips.zoom_in, zoomOutTitle: localizedTooltips.zoom_out }).addTo(this.LMmap);
+        this.addZoomControl();
 
         //alert(options.tile_provider);
         //alert(options.min_zoom);
@@ -72,26 +75,24 @@ CsLeaflet.Leaflet = {
                 styleId: options.tile_style_id
             }).addTo(this.LMmap);
         }
-        // install a popup listener
-        this.LMmap.on('popupopen', function(event) {
-            //alert('popup opened');
-            this.LMcurrent_popup = event.popup;
-        });
 
         //register CurrentLocation Control
         if(options.show_my_location) {
-            this.addCurrentLocationControl(localizedTooltips.my_location);
+            this.addCurrentLocationControl();
         }
 
         //register StreetView Control
         if(options.show_street_view) {
-            this.addStreetViewControl(options.street_view_url, localizedTooltips.display_street_view);
+            this.addStreetViewControl();
         }
 
         //register LocationSelect Control
         if(options.show_location_select) {
-            this.addLocationSelectControl(localizedTooltips.select_location_on_map);
+            this.addLocationSelectControl();
         }
+
+        this.registerMapClickEvent();
+        this.registerPopupOpenEvent();
     },
 
     /**
@@ -612,6 +613,17 @@ CsLeaflet.Leaflet = {
         this.LMmap.fitBounds(this.LMbounds);
     },
 
+    getMapControlTooltips: function() {
+        var options = this._options ? this._options : {};
+        return options.map_control_tooltips || {};
+    },
+
+    addZoomControl: function() {
+        var tooltips = this.getMapControlTooltips();
+        //explicitly add zoom control to display localized tooltip
+        new L.Control.Zoom({ zoomInTitle: tooltips.zoom_in, zoomOutTitle: tooltips.zoom_out }).addTo(this.LMmap);
+    },
+
     /*
      * customized map controls
      */
@@ -698,7 +710,7 @@ CsLeaflet.Leaflet = {
         })
     }, 
 
-    addCurrentLocationControl: function(tooltipText) {
+    addCurrentLocationControl: function() {
         if (!("geolocation" in navigator)) { //if geolocation is not supported, then not display this control on map
             return;
         }
@@ -707,9 +719,10 @@ CsLeaflet.Leaflet = {
             this.registerCustomControl();
         }
 
+        var tooltips = this.getMapControlTooltips();
         var currentMap = this.LMmap;
         var currentLocataionControl = new L.Control.CustomButton('currentLocation', {
-            title: tooltipText,
+            title: tooltips.my_location,
             iconCls: 'fa fa-lg fa-location-arrow',
             clickCallback: function() {
                 currentMap.locate({setView: true});
@@ -719,69 +732,98 @@ CsLeaflet.Leaflet = {
         currentLocataionControl.addTo(currentMap);
     }, 
 
-    addStreetViewControl: function(streetViewUrl, tooltipText) {
+    addStreetViewControl: function() {
 
         if(!L.Control.CustomButton) {
             this.registerCustomControl();
         }
 
+        var tooltips = this.getMapControlTooltips();
         var currentMap = this.LMmap;
         var streetViewControl = new L.Control.CustomButton('streetView', {
-            title: tooltipText,
+            title: tooltips.display_street_view,
             iconCls: 'fa fa-lg leaflet-street-view-icon',
             toggleable: true
-        });
-
-        //register map click event to get click coords for street view
-        var clickCounter = 0;
-        currentMap.on('click', function(e){
-            clickCounter ++;
-            setTimeout(function(){ //Leaflet triggers click in doubleclick event, using a timeout to separate them
-                if(clickCounter === 1 && streetViewControl.getPressed()) {
-                    var latlng = e.latlng;
-
-                    //redirect to street view page
-                    window.open(streetViewUrl + '?lat=' + latlng.lat + '&lng=' + latlng.lng, '_blank');
-                }
-                clickCounter = 0;
-            }, 200);
         });
         
         streetViewControl.addTo(currentMap);
     }, 
 
-    addLocationSelectControl: function(tooltipText) {
+    //oepn a new street view page
+    openStreetView: function(latlng) {
+        var options = this._options ? this._options : {};
+        var streetViewUrl = options.street_view_url || '';
+        var latlng = latlng || {};
+        //redirect to street view page
+        window.open(streetViewUrl + '?lat=' + latlng.lat + '&lng=' + latlng.lng, '_blank');
+    },
+
+    addLocationSelectControl: function() {
 
         if(!L.Control.CustomButton) {
             this.registerCustomControl();
         }
 
+        var tooltips = this.getMapControlTooltips();
         var currentMap = this.LMmap;
         var locationSelectControl = new L.Control.CustomButton('locationSelect', {
-            title: tooltipText,
+            title: tooltips.select_location_on_map,
             iconCls: 'fa fa-lg fa-map-marker',
             toggleable: true
         });
 
-        //register map click event to get click coords for street view
+        locationSelectControl.addTo(currentMap);
+    },
+
+    executeActiveCustomControl: function(latlng) {
+        var currentMap = this.LMmap;
+        var customControls =  currentMap.customControls;
+        var scope = this;
+        if(customControls instanceof Array) {
+             customControls.forEach( function(ctrl) {
+                if(ctrl.getToggleable() && ctrl.getPressed()) {
+                    switch(ctrl.id) {
+                        case 'streetView':
+                            scope.openStreetView(latlng);
+                            break;
+                        case 'locationSelect':
+                            currentMap.fire('placechange', {
+                                latlng: latlng
+                            });
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });       
+        }
+    },
+
+    registerMapClickEvent: function() {
+        var scope = this;
+        var currentMap = scope.LMmap;
         var clickCounter = 0;
         currentMap.on('click', function(e){
             clickCounter ++;
             setTimeout(function(){ //Leaflet triggers click in doubleclick event, using a timeout to separate them
-                if(clickCounter === 1 && locationSelectControl.getPressed()) {
-                    var latlon = {
-                        lat: e.latlng.lat,
-                        lon: e.latlng.lng
-                    }
-                    
-                    currentMap.fire('placechange', {
-                        latlon: latlon
-                    });
+                if(clickCounter === 1) {     
+                    scope.executeActiveCustomControl(e.latlng);
                 }
                 clickCounter = 0;
             }, 200);
         });
-        
-        locationSelectControl.addTo(currentMap);
+    },
+
+    registerPopupOpenEvent: function() {
+        var scope = this;
+        // install a popup listener
+        scope.LMmap.on('popupopen', function(e) {
+            //alert('popup opened');
+            scope.LMcurrent_popup = e.popup;
+
+            scope.executeActiveCustomControl(e.popup.getLatLng());
+        });
     }
+
+
 }

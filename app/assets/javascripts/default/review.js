@@ -222,14 +222,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             url: url
         })
             .done(function(response) {
-                _totalModeRequestCounter--;
-                checkLoadingMask();
                 //update _tripResponse
                 if (isValidObject(response) && response.itineraries instanceof Array) {
                     updateTripPartItineraries(tripPartId, response.itineraries);
                     //redraw
                     processTripResponse();
                 }
+                _totalModeRequestCounter--;
+                checkLoadingMask();
             })
             .fail(function(response) {
                 _totalModeRequestCounter--;

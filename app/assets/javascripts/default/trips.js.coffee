@@ -155,7 +155,10 @@ $ ->
 
   if typeof(CsMaps) != 'undefined' and CsMaps and CsMaps.tripMap
     CsMaps.tripMap.LMmap.on 'placechange', (e) ->
-      addr = e.latlon
+      latlng = (if e.latlng then e.latlng else {})
+      addr =
+        lat: latlng.lat
+        lon: latlng.lng
       $.ajax
         type: 'GET'
         url: '/reverse_geocode?lat=' + addr.lat + '&lon=' + addr.lon
