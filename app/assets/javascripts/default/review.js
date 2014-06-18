@@ -105,7 +105,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
     var tripContainerId = 'tripContainer'; //id of trip container Div
     var accessoryContainerId = "accessoryContainer"; //id of accessory container div (legends, filters)
     var legendContainerId = "legendDiv"; //id of legend container div
+    var legendButtonId = 'legendButton'; //id of Show/Hide Legend button
     var filterContainerId = "filterDiv"; //id of filter container div
+    var filterButtonId = 'filterButton'; //id of Show/Hide Filter button
     var modeContainerId = "modeContainer"; //id of mode filter container div
     var transferSliderId = "transferSlider"; //id of transfer filter slider
     var costSliderId = "costSlider"; //id of cost filter slider
@@ -244,9 +246,12 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             //hide loading mask
             $('#' + baseContainerId).overlayMask('remove');
 
+            //check if no itineraries in any trip part
+            checkIfNoItineraries(_tripResponse.trip_parts);
             //render legend & filter
             addLegendHtml(_tripResponse.trip_parts);
             addFilterHtml(_tripResponse.trip_parts);
+
         }
     }
 
@@ -1387,16 +1392,33 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
     }
 
     /**
+     * check if no itineraries in any trip part; if so, render a message to alert user
+     */
+    function checkIfNoItineraries (trips) {
+        if (!trips instanceof Array) {
+            return;
+        }
+
+        trips.forEach(function(trip) {
+            if (!isValidObject(trip)) {
+                return;
+            }
+            var tripPlans = trip.itineraries;
+            if(!trip.itineraries instanceof Array || tripPlans.length === 0) {
+                var tripPartDivId = "trip_part_" + trip.id;
+                var noItineraryTags = '<div class="col-xs-12 alert alert-danger trip-part-no-itinerary-alert">' + localeDictFinder['no_itineraries_found'] + '</div>';
+                $('#' + tripPartDivId).append(noItineraryTags);
+            }
+        });
+    }
+
+    /**
      * Html of legends
      * @param {Array} trips
      */
     function addLegendHtml(trips) {
         if (!trips instanceof Array) {
             return;
-        }
-
-        if ($('#' + legendContainerId).length === 0) {
-            $('#' + accessoryContainerId).append("<div id='" + legendContainerId + "' class='well col-xs-12 hidden-xs-sm' style='padding: 5px;'></div>");
         }
 
         var legendTags = "";
@@ -1437,14 +1459,22 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             if (sortItem1.name > sortItem2.name) return 1;
             return 0;
         });
-        legendNames.forEach(function(el) {
-            legendTags +=
-                "<div class='travel-legend-container'>" +
-                "<div class='travel-legend " + el.cls + "'/>" +
-                "<span class='travel-legend-text'>" + (localeDictFinder[el.name.toLowerCase()] || el.name) + "</span>" +
-                "</div>";
-        });
-        $('#' + legendContainerId).append(legendTags);
+
+        if(legendNames.length > 0) { //only show legend container when legend(s) are available
+             if ($('#' + legendContainerId).length === 0) {
+                $('#' + accessoryContainerId).append("<div id='" + legendContainerId + "' class='well col-xs-12 hidden-xs-sm' style='padding: 5px;'></div>");
+            }
+            legendNames.forEach(function(el) {
+                legendTags +=
+                    "<div class='travel-legend-container'>" +
+                    "<div class='travel-legend " + el.cls + "'/>" +
+                    "<span class='travel-legend-text'>" + (localeDictFinder[el.name.toLowerCase()] || el.name) + "</span>" +
+                    "</div>";
+            });
+            $('#' + legendContainerId).append(legendTags);
+        } else { //remove Show/Hide legend button
+            $('#' + legendButtonId).remove();
+        }   
     }
 
     /*
@@ -1454,10 +1484,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
     function addFilterHtml(trips) {
         if (!trips instanceof Array) {
             return;
-        }
-
-        if ($('#' + filterContainerId).length === 0) {
-            $('#' + accessoryContainerId).append("<div id='" + filterContainerId + "' class='well col-xs-12 hidden-xs-sm' style='padding: 5px;'></div>");
         }
 
         var modes = {};
@@ -1520,19 +1546,27 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 }
             });
         });
+        
+        var filterAvailable = (modes.length > 0 || (maxTransfer > minTransfer) || (maxCost > minCost) || (maxDuration > minDuration));
 
+        if(filterAvailable) {
+            if ($('#' + filterContainerId).length === 0) {
+                $('#' + accessoryContainerId).append("<div id='" + filterContainerId + "' class='well col-xs-12 hidden-xs-sm' style='padding: 5px;'></div>");
+            }
 
-        //render
-        adjustModeFilters(modes);
-        adjustTransferFilters(minTransfer, maxTransfer);
-        adjustCostFilters(minCost, maxCost);
-        adjustDurationFilters(minDuration, maxDuration);
+            //render
+            adjustModeFilters(modes);
+            adjustTransferFilters(minTransfer, maxTransfer);
+            adjustCostFilters(minCost, maxCost);
+            adjustDurationFilters(minDuration, maxDuration);
 
-        //enable mode checkbox event
-        $('#' + modeContainerId + ' .checkbox').on('change', function() {
-            waitForFinalEvent(filterPlans, 100, 'mode change');
-        });
-
+            //enable mode checkbox event
+            $('#' + modeContainerId + ' .checkbox').on('change', function() {
+                waitForFinalEvent(filterPlans, 100, 'mode change');
+            });
+        } else {
+            $('#' + filterButtonId).remove();
+        }
     }
 
     /*
