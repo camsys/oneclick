@@ -160,5 +160,39 @@ class Service < ActiveRecord::Base
   def to_s
     name
   end
+
+  def wkt_to_array(rule = 'origin')
+    myArray = []
+    case rule
+      when 'origin'
+        geometry = self.origin
+      when 'destination'
+        geometry = self.destination
+      when 'residence'
+        geometry = self.residence
+    end
+    if geometry
+      geometry.each do |polygon|
+        polygon_array = []
+        ring_array  = []
+        polygon.exterior_ring.points.each do |point|
+          ring_array << [point.y, point.x]
+        end
+        polygon_array << ring_array
+
+        polygon.interior_rings.each do |ring|
+          ring_array = []
+          ring.points.each do |point|
+            ring_array << [point.y, point.x]
+          end
+          polygon_array << ring_array
+        end
+        myArray << polygon_array
+      end
+    end
+    myArray.first
+  end
+
+
   
 end

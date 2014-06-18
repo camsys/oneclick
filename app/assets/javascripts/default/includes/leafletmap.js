@@ -21,6 +21,7 @@ CsLeaflet.Leaflet = {
     LMmarkers: new Array(),
     LMcircles: new Array(),
     LMpolylines: new Array(),
+    LMmultipolygons: new Array(),
     LMmap: null,
     LMbounds: null,
     LMcacheBounds: null,
@@ -128,6 +129,12 @@ CsLeaflet.Leaflet = {
         for (var i = 0; i < this.LMpolylines.length; i++) {
             this.LMmap.addLayer(this.LMpolylines[i]);
         }
+
+        // Add the MultiPolygons to the map
+        for (var i = 0; i < this.LMmultipolygons.length; i++) {
+            this.LMmap.addLayer(this.LMmultipolygons[i]);
+        }
+
         var mapBounds;
         if (this.LMmarkers.length > 0) {
             mapBounds = this.calcMapBounds(this.LMmarkers);
@@ -332,6 +339,23 @@ CsLeaflet.Leaflet = {
         }
     },
 
+
+    /*
+     *
+     */
+    addMultipolygons: function(arr) {
+        for (var i = 0; i < arr.length; i++) {
+            var obj = arr[i];
+            var id = obj.id;
+            var geom = obj.geom;
+            var options = {};
+            if (obj.options) {
+                options = obj.options;
+            }
+            this.addMultipolygon(geom, options);
+        }
+    },
+
     /*
      *
      */
@@ -459,6 +483,26 @@ CsLeaflet.Leaflet = {
 
         // Add this circle to the list of circles
         this.LMcircles.push(circle);
+    },
+
+    /*
+     *
+     */
+    addMultipolygon: function(arr, options) {
+        var multilatlngs = new Array();
+        for (var i = 0; i < arr.length; i++) {
+            var latlngs = new Array();
+            for (var j = 0; j < arr[i].length; j++ ){
+              var pnt = arr[i][j];
+              var ll = new L.LatLng(pnt[0], pnt[1]);
+              latlngs.push(ll);
+            }
+            multilatlngs.push(latlngs);
+        }
+        var mpgon = L.multiPolygon(multilatlngs, options);
+
+        // Add this multipolygon to the list of multipolygons
+        this.LMmultipolygons.push(mpgon);
     },
 
     /*

@@ -11,12 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140616154335) do
+ActiveRecord::Schema.define(version: 20140618165216) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
-  enable_extension "postgis_topology"
 
   create_table "accommodations", force: true do |t|
     t.string  "name",                  limit: 64,                 null: false
@@ -52,6 +51,11 @@ ActiveRecord::Schema.define(version: 20140616154335) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "creator",                            null: false
+  end
+
+  create_table "boundaries", primary_key: "gid", force: true do |t|
+    t.string  "agency", limit: 254
+    t.spatial "geom",   limit: {:srid=>0, :type=>"multi_polygon"}
   end
 
   create_table "characteristics", force: true do |t|
@@ -216,19 +220,6 @@ ActiveRecord::Schema.define(version: 20140616154335) do
     t.string  "logo_url"
   end
 
-  create_table "rates", force: true do |t|
-    t.integer  "rater_id"
-    t.integer  "rateable_id"
-    t.string   "rateable_type"
-    t.integer  "stars",         null: false
-    t.string   "dimension"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  add_index "rates", ["rateable_id", "rateable_type"], :name => "index_rates_on_rateable_id_and_rateable_type"
-  add_index "rates", ["rater_id"], :name => "index_rates_on_rater_id"
-
   create_table "ratings", force: true do |t|
     t.integer  "user_id"
     t.integer  "rateable_id"
@@ -339,6 +330,9 @@ ActiveRecord::Schema.define(version: 20140616154335) do
     t.spatial  "origin",                       limit: {:srid=>0, :type=>"geometry"}
     t.spatial  "destination",                  limit: {:srid=>0, :type=>"geometry"}
     t.spatial  "residence",                    limit: {:srid=>0, :type=>"geometry"}
+    t.text     "origin_json"
+    t.text     "destination_json"
+    t.text     "residence_json"
   end
 
   create_table "services_users", id: false, force: true do |t|
@@ -515,6 +509,13 @@ ActiveRecord::Schema.define(version: 20140616154335) do
     t.string   "relationship", limit: 64
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+  end
+
+  create_table "zipcodes", primary_key: "gid", force: true do |t|
+    t.string  "zipcode", limit: 5
+    t.string  "name",    limit: 35
+    t.string  "state",   limit: 2
+    t.spatial "geom",    limit: {:srid=>0, :type=>"multi_polygon"}
   end
 
 end
