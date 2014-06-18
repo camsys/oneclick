@@ -99,7 +99,6 @@ $ ->
     limit: 20,
     displayKey: "name"
     source: places.ttAdapter()
-    hint: false
     templates:
       suggestion: Handlebars.compile([
         '<a>{{name}}</a>'
@@ -159,7 +158,6 @@ $ ->
       addr = e.latlon
       $.ajax
         type: 'GET'
-        async: false
         url: '/reverse_geocode?lat=' + addr.lat + '&lon=' + addr.lon
         success: (data) ->
           search_results = data.place_searching 
