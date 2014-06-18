@@ -116,7 +116,10 @@ class Ability
     ## All users have the following permissions, which logically OR with 'can' statements above
     can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
     can [:read, :update, :full_info, :add_booking_service], User, :id => user.id
-    can [:read, :update, :full_read], User, :id => user.id
+    can [:read, :update, :full_read, :find_by_email], User, :id => user.id
+    can :manage, UserRelationship do |ur|
+      ur.delegate.eql? user or ur.traveler.eql? user
+    end
     can :geocode, :util
     can :show, Service # Will have view privileges for individual info purposes
     can :show, Provider # Will have view privileges for individual info purposes

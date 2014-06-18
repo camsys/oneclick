@@ -14,4 +14,18 @@ module RelationshipsHelper
   def hidable
     relationship_status_id == RelationshipStatus::REVOKED || relationship_status_id == RelationshipStatus::DENIED
   end
+
+  # Test whether the requested action is legal on this relationship
+  def permissible_action?(target_status)
+    case target_status.to_i
+    when RelationshipStatus::CONFIRMED
+      self.acceptable
+    when RelationshipStatus::REVOKED
+      self.revokable
+    when RelationshipStatus::DENIED
+      self.declinable
+    else
+      false
+    end
+  end
 end

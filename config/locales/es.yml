@@ -120,12 +120,14 @@ es:
   authorized_travelers: "[es]Authorized Travelers[/es]"
   add_user: "[es81]Add User[/es]"
   send_buddy_request: 'Enviar solicitud de amigo'
-  add_new_buddy:  "[es82]Add a new buddy[/es]"
+  add_new_buddy:  "[es82]Add[/es]"
   buddys_email_address: "Correo electrónico del amigo"
   accept: 'Aceptar'
   decline: 'Rechazar'
   assist: 'Asistir'
   assisted_by: '[es]Assisted By[/es]'
+  i_can_assist: "[es128]I Can Assist[/es]"
+  can_assist_me: "[es129]Can Assist Me[/es]"
   retract: 'Retraer'  
   revoke: 'Revocar'
   visitor: 'Visitante *12*'
@@ -487,6 +489,7 @@ es:
   you_ve_already_asked_them_to_be_a_buddy: "Ya le has solicitado ser amigo."
   my_buddies: "[es331]%{owner} Buddies[/es]"
   not_any_buddies: "[es332]You don't have any buddies.[/es]"
+  please_save_buddies: "[es492]Please save your changes to request this buddy[/es]"
   no_buddies: "[es307]You don't have any travelers that have asked you to be their travel buddy.[/es]"
   address_is_required: "Se require una dirección"
   all_trips: "Todos los viajes *22*"
@@ -592,6 +595,13 @@ es:
   state: "[es]State[/es]"
   zip: "[es]Zip[/es]"
   all: "Todos"
+  relationship_status:
+    relationship_status_requested: "[es599]Requested[/es]"
+    relationship_status_pending: "[es600]Pending[/es]"
+    relationship_status_confirmed: "[es601]Confirmed[/es]"
+    relationship_status_denied: "[es602]Denied[/es]"
+    relationship_status_revoked: "[es603]Revoked[/es]"
+    relationship_status_hidden: "[es604]Hidden[/es]"
   
   # validation messages
   valid_time_msg: "[es]must be a valid time[/es]"

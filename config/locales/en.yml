@@ -121,12 +121,14 @@ en:
   authorized_travelers: "Authorized Travelers"
   add_user: "Add User"
   send_buddy_request: 'Send buddy request'
-  add_new_buddy:  "Add a new buddy"
+  add_new_buddy:  "Add"
   buddys_email_address: "Buddy's email address"
   accept: 'Accept'
   decline: 'Decline'
   assist: 'Assist'
   assisted_by: 'Assisted By'
+  i_can_assist: "I Can Assist"
+  can_assist_me: "Can Assist Me"
   revoke: 'Revoke'
   retract: 'Retract'
   visitor: 'Visitor'
@@ -490,6 +492,7 @@ en:
   my_buddies: "%{owner} buddies"
   not_any_buddies: "You don't have any buddies."
   no_buddies: "You don't have any travelers that have asked you to be their travel buddy."
+  please_save_buddies: "Please save your changes to request this buddy"
   address_is_required: "Address is required"
   all_trips: "All trips"
   trips_coming_up: "Trips coming up"
@@ -594,6 +597,13 @@ en:
   state: "State"
   zip: "Zip"
   all: "All"
+  relationship_status:
+    relationship_status_requested: "Requested"
+    relationship_status_pending: "Pending"
+    relationship_status_confirmed: "Confirmed"
+    relationship_status_denied: "Denied"
+    relationship_status_revoked: "Revoked"
+    relationship_status_hidden: "Hidden"
   
   # validation messages
   valid_time_msg: "must be a valid time"

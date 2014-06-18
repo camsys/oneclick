@@ -144,29 +144,36 @@ class User < ActiveRecord::Base
     !is_visitor?
   end
 
+# Union to get unique users with any relationship to current user
+  def related_users
+    delegates | travelers
+  end
+
+  def can_assist_target?(user)
+    self.travelers.include? user
+  end
+
+  def can_be_assisted_by_target?(user)
+    self.confirmed_delegates.include? user
+  end
+
   #List of users who can be assigned to staff for an agency or provider
   def self.staff_assignable
     User.where.not(id: User.with_role(:anonymous_traveler).pluck(:id)).order(first_name: :asc)
   end
 
-  def set_buddies ids
-    new_buddy_ids = ids.reject!(&:empty?)
-    old_buddy_ids = pending_and_confirmed_delegates.pluck(:id).map(&:to_s) #hack.  Converting to strings for comparison to params hash
-
-    new_buddies = new_buddy_ids - old_buddy_ids
-    revoked_buddies = old_buddy_ids - new_buddy_ids
-
-    # add or reset desired buddies
-    new_buddies.each do |id|
-      rel = UserRelationship.find_or_create_by!( traveler: self, delegate: User.find(id)) do |ur|
-        ur.update_attributes(relationship_status: RelationshipStatus.pending)
-      end
-      UserMailer.buddy_request_email(rel.delegate.email, rel.traveler.email).deliver
-      rel.update_attributes(relationship_status: RelationshipStatus.pending)
+  def update_relationships id_hash
+    id_hash.each do |rel_id, rel_status|
+      UserRelationship.find(rel_id).update_attributes(relationship_status_id: rel_status)
     end
-    # remove undesired buddies
-    revoked_buddies.each do |revoked_id|
-      buddy_relationships.find_by(delegate_id: revoked_id).update_attributes(relationship_status: RelationshipStatus.revoked)
+  end
+
+  def add_buddies emails
+    unless emails.nil?
+      emails.each do |email|
+        rel = UserRelationship.create(user_id: self.id, delegate_id: User.find_by(email: email).id, relationship_status_id: RelationshipStatus::PENDING)
+        UserMailer.buddy_request_email(rel.delegate.email, rel.traveler.email).deliver
+      end
     end
   end
 

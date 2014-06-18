@@ -15,10 +15,11 @@ Oneclick::Application.routes.draw do
 
     devise_for :users, controllers: {registrations: "registrations", sessions: "sessions"}
 
-
+    get "user_relationships/:id/check/" => "user_relationships#check_update", as: :check_update_user_relationship # need to support client-side logic with server-side vaildations
     # everything comes under a user id
     resources :users do
       member do
+        get   'find_by_email'
         get   'profile'
         post  'add_booking_service'
         # post  'update'
@@ -127,7 +128,6 @@ Oneclick::Application.routes.draw do
           post 'update'
         end
       end
-
     end
     # scope('/kiosk') do
     #   devise_for :users, as: 'kiosk', controllers: {sessions: "kiosk/sessions"}

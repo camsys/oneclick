@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource except: :edit
   before_filter :authenticate_user!
 
   def index
@@ -25,7 +25,8 @@ class UsersController < ApplicationController
       @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
       set_approved_agencies(params[:user][:approved_agency_ids])
       booking_alert = set_booking_services(@user, params[:user_service])
-      @user.set_buddies(params[:user][:pending_and_confirmed_delegate_ids])
+      @user.update_relationships(params[:user][:relationship])
+      @user.add_buddies(params[:new_buddies])
       if booking_alert
         redirect_to user_path(@user, locale: @user.preferred_locale), :alert => "Invalid Client Id or Date of Birth."
       else
@@ -49,12 +50,8 @@ class UsersController < ApplicationController
 
   def edit
     # set_traveler_id params[:id] || current_user
+    @user = User.includes(:traveler_relationships, :delegate_relationships).find(params[:id])
     authorize! :edit, @user
-    @agency_user_relationship = AgencyUserRelationship.new
-    @user_relationship = UserRelationship.new
-    @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)
-    @user_programs_proxy = UserProgramsProxy.new(@user)
-    @user_accommodations_proxy = UserAccommodationsProxy.new(@user)
   end
 
   def add_booking_service
@@ -93,7 +90,28 @@ class UsersController < ApplicationController
       format.json {}
       format.js { render "trips/update_booking" }
     end
+  end
 
+  def find_by_email
+    user = User.find_by(email: params[:email])
+    traveler = User.find(params[:id])
+    if user.nil?
+      success = false
+      msg = t(:no_user_with_email_address, email: params[:email])
+    elsif user.eql? current_user
+      success = false
+      msg = t(:you_can_t_be_your_own_buddy)
+    elsif traveler.buddies.include? user
+      success = false
+      msg = t(:you_ve_already_asked_them_to_be_a_buddy)
+    else 
+      success = true
+      msg = t(:please_save_buddies)
+      output = user.email
+    end
+    respond_to do |format|
+      format.js { render json: {output: output, msg: msg, success: success} }
+    end
   end
 
 private
