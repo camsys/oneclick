@@ -44,7 +44,7 @@ CsLeaflet.Leaflet = {
 
     init: function(mapId, options) {
         var localizedTooltips = options.map_control_tooltips || {};
-        this.LMmap = L.map(mapId, { zoomControl: false, scrollWheelZoom: options.scroll_wheel_zoom });
+        this.LMmap = L.map(mapId, { zoomControl: false, scrollWheelZoom: options.scroll_wheel_zoom, zoomAnimation: options.zoom_animation});
         //explicitly add zoom control to display localized tooltip
         new L.Control.Zoom({ zoomInTitle: localizedTooltips.zoom_in, zoomOutTitle: localizedTooltips.zoom_out }).addTo(this.LMmap);
 

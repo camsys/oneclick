@@ -12,6 +12,7 @@ module LeafletHelper
   SHOW_STREET_VIEW= true
   STREET_VIEW_URL = '/streetview.html'
   SHOW_LOCATION_SELECT = false
+  ZOOM_ANIMATION = false #default as false; true sometimes freezes map;
   
   def LeafletMap(options)
     options_with_indifferent_access = options.with_indifferent_access
@@ -41,6 +42,7 @@ module LeafletHelper
     show_street_view = options[:show_street_view] || SHOW_STREET_VIEW
     street_view_url = options[:street_view_url] ? options[:street_view_url] : STREET_VIEW_URL
     show_location_select = options[:show_location_select] || SHOW_LOCATION_SELECT
+    zoom_animation = options[:zoom_animation] || ZOOM_ANIMATION
 
     mapopts = {
       :min_zoom => min_zoom,
@@ -48,6 +50,7 @@ module LeafletHelper
       :tile_provider => tile_provider,
       :tile_style_id => tile_style_id,
       scroll_wheel_zoom: scroll_wheel_zoom,
+      zoom_animation: zoom_animation,
       show_my_location: show_my_location,
       show_street_view: show_street_view,
       street_view_url: street_view_url,
