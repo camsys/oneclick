@@ -17,23 +17,34 @@ class ServicesController < ApplicationController
     @service = Service.find(params[:id])
     @contact = @service.internal_contact
     
-    polylines = {}
+    polylines = []
+
     ['origin', 'destination', 'residence'].each do |rule|
-      coverages = @service.service_coverage_maps.where(rule: rule).type_polygon.first
-      polylines[rule] = []
-      if coverages
-        geometry = Boundary.find(3).geom
-        polylines[rule] << {
-          "id" => 0,
-          "geom" => geometry,
-          "options" =>  {"color" => 'red', "width" => "5"}
+      case rule
+        when 'origin'
+          geometry = @service.origin
+          color = 'green'
+          id = 0
+        when 'destination'
+          geometry = @service.destination
+          color = 'red'
+          id = 1
+        when 'residence'
+          geometry = @service.residence
+          color = 'blue'
+          id = 2
+      end
+
+      unless geometry.nil?
+        polylines << {
+           "id" => id,
+           "geom" => @service.wkt_to_array(rule),
+           "options" =>  {"color" => color, "width" => "2"}
         }
       end
     end
-    @polylines = {}
-    @polylines['origin'] = polylines['origin'].to_json || nil
-    @polylines['destination'] = polylines['destination'].to_json || nil
-    @polylines['residence'] = polylines['residence'].to_json || nil
+
+    @polylines = polylines.to_json || nil
 
     @eh = EligibilityService.new
     respond_to do |format|
