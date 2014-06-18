@@ -28,6 +28,10 @@ namespace :oneclick do
       end
     end
 
+    task :add_manual_boundaries => :environment do
+
+    end
+
 
   end
 end
