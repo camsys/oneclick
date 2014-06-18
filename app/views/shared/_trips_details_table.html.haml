@@ -10,7 +10,7 @@
         - trips.each do |row|
           %tr
             - columns.each_with_index do |col, index|
-              %td
+              %td.nowrap
                 = row.is_a?(Hash) ? row[col] : row.send(col)
 
 = render partial: 'shared/simple_datatable_js', 

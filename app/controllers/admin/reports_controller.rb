@@ -20,9 +20,7 @@ class Admin::ReportsController < Admin::BaseController
       return
     end
     
-    report_params = params[:generated_report]
-    @generated_report = GeneratedReport.new(report_params)
-    # @generated_report.report_name = report_params[:report_name]
+    @generated_report = GeneratedReport.new(params[:generated_report])
     @report = Report.find(@generated_report.report_name)
 
     # TODO clean up or get rid of this
@@ -41,17 +39,13 @@ class Admin::ReportsController < Admin::BaseController
     session[TIME_FILTER_TYPE_SESSION_KEY] = @time_filter_type
     params[:time_filter_type] = @time_filter_type
 
-    # Set date_range value and store in session
-    @generated_report.date_range ||= session[:date_range] || DateOption.first.id
-    session[:date_range] = @generated_report.date_range
-
     if @report
                     
       # set up the report view
       @report_view = @report.view_name
       # get the class instance and generate the data
       report_instance = @report.class_name.constantize.new
-      @data = report_instance.get_data(current_user, report_params)
+      @data = report_instance.get_data(current_user, @generated_report)
       @columns = report_instance.get_columns
       
       respond_to do |format|
