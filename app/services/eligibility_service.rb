@@ -216,7 +216,7 @@ class EligibilityService
 
       #Match Residence
       if service.residence?
-        if trip_part.user.home.nil?
+        if trip_part.trip.user.home.nil?
           next
         end
         point = factory.point(trip_part.user.home.lon.to_f, trip_part.user.home.lat.to_f)
