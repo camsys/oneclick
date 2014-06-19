@@ -13,7 +13,7 @@
     %tbody
       %tr
         %td.itinerary_icons{:width => '20%', :style => "text-align: left;"}
-          %i.transit_itinerary_icons.mode_icon_formatting.trip-mode-icon{:class =>i.mode.code}
+          %i.transit_itinerary_icons.mode_icon_formatting.trip-mode-icon{:style => 'background-image: url(' + logo_url_helper(i) + ');'}
           .sr-only= t(i.mode)
         %td{:width => '15%'}
           .itinerary_text
