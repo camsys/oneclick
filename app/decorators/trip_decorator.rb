@@ -96,10 +96,13 @@ class TripDecorator < Draper::Decorator
   end
   
   def outbound_selected_short
-    h.get_trip_summary_name(outbound_part.itineraries.first)
+    get_trip_summary(outbound_part.itineraries.first)
   end
   
   def return_selected
+    if is_return_trip
+      get_trip_summary(return_part.itineraries.first)
+    end
   end
   
   def status
@@ -117,6 +120,47 @@ class TripDecorator < Draper::Decorator
 
   def modes
     I18n.t(desired_modes.map{|m| m.name}).join ', '
+  end
+
+  def get_trip_summary itinerary
+    h.get_trip_summary_name(itinerary)
+
+    summary = ''
+    if itinerary.is_walk
+      itinerary.get_legs.each do |leg|
+        summary += "#{I18n.t(leg.mode.downcase)} #{I18n.t(:to)} #{leg.end_place.name};"
+      end
+    else
+      case itinerary.mode.code
+      when 'mode_transit', 'mode_bus', 'mode_rail'
+        itinerary.get_legs.each do |leg|
+          case leg.mode
+          when Leg::TripLeg::WALK
+            summary += "#{I18n.t(leg.mode.downcase)}"
+          when Leg::TripLeg::CAR
+            summary += "#{I18n.t(:drive)}/#{I18n.t(:taxi)}"
+          else
+            summary += "#{leg.agency_id} #{I18n.t(leg.mode.downcase)} #{leg.route}"
+          end
+          summary += " #{I18n.t(:to)} #{leg.end_place.name};"
+        end
+      when 'mode_paratransit'
+        itinerary.service.get_contact_info_array.each do |a,b|
+          summary += "#{I18n.t(:paratransit)} #{I18n.t(a)}: #{sanitize_nil_to_na b}"
+        end
+      when 'mode_taxi'
+        YAML.load(itinerary.server_message).each do |business|
+          summary += "#{I18n.t(:taxi)} #{business['name']}: #{business['phone']};"
+        end
+      when 'mode_rideshare'
+        YAML.load(itinerary.server_message).each do |business|
+          summary += "#{I18n.t(:rideshare)} #{business['name']}: #{business['phone']};"
+        end
+      else
+        summary += "#{I18n.t(:unknown)} #{I18n.t(:mode)}"
+      end
+    end
+    summary
   end
   
 end
