@@ -1901,7 +1901,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                     '<p>' + localeDictFinder['arrive_in'] + ' ' + durationText + ' ' + localeDictFinder['minutes'] + '</p>';
                 break;
             case 'mode_drive':
-                tipText = localeDictFinder['drive'] + ' ' + durationText + ' ' + localeDictFinder['minutes']; //TODO: locale
+            case 'mode_car':
+                tipText = localeDictFinder['drive'] + ' ' + durationText + ' ' + localeDictFinder['minutes'];
                 break;
             default:
                 tipText = serviceName || modeName;
@@ -1912,43 +1913,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
     }
 
     function getLegTypeFromPlanMode(mode) {
-        var legType = '';
-        switch (mode) {
-            case 'mode_transit':
-                legType = 'transit';
-                break;
-            case 'mode_subway':
-                legType = 'subway';
-                break;
-            case 'mode_bus':
-                legType = 'bus';
-                break;
-            case 'mode_bike':
-                legType = 'bike';
-                break;
-            case 'mode_bikeshare':
-                legType = 'bikeshare';
-                break;
-            case 'mode_drive':
-                legType = 'drive';
-                break;
-            case 'mode_rideshare':
-                legType = 'rideshare';
-                break;
-            case 'mode_paratransit':
-                legType = 'paratransit';
-                break;
-            case 'mode_walk':
-                legType = 'walk';
-                break;
-            case 'mode_taxi':
-                legType = 'taxi';
-                break;
-            default:
-                break;
-        }
-
-        return legType;
+        //if mode starts with 'mode_', then leg type is the text after 'mode_'
+        return typeof(mode) != 'string' ?  '' : ( mode.indexOf('mode_') >= 0 ? mode.substr( mode.indexOf('mode_') + 5) : mode);
     }
 
     /**
