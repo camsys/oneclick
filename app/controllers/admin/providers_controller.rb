@@ -91,7 +91,7 @@ class Admin::ProvidersController < ApplicationController
   def destroy
     @provider.active = false
     @provider.save
-
+    @provider.services.update_all(active: false)
     respond_to do |format|
       format.html { redirect_to admin_providers_url }
       format.json { head :no_content }
