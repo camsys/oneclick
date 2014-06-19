@@ -137,7 +137,7 @@ class User < ActiveRecord::Base
   end
 
   def is_visitor?
-    role.includes
+    has_role? :anonymous_traveler
   end
 
   def is_registered?
