@@ -323,6 +323,24 @@ class Trip < ActiveRecord::Base
     false
   end
 
+  def next_part trip_part
+    return nil if trip_parts.count==1
+    i = trip_parts.find_index {|tp| tp==trip_part}
+    raise "Trip part is not part of this trip" if i.nil?
+    i += 1
+    return nil if i==trip_parts.count
+    trip_parts[i]
+  end
+
+  def prev_part trip_part
+    return nil if trip_parts.count==1
+    i = trip_parts.find_index {|tp| tp==trip_part}
+    raise "Trip part is not part of this trip" if i.nil?
+    i -= 1
+    return nil if i<0
+    trip_parts[i]
+  end
+
   private
 
   def validate_at_least_one_trip_place

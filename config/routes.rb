@@ -112,6 +112,7 @@ Oneclick::Application.routes.draw do
 
       resources :trip_parts do
         member do
+          get 'reschedule'
           get 'itineraries'
           get 'unhide_all'
         end

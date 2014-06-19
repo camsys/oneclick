@@ -45,4 +45,21 @@ class TripPartsController < PlaceSearchingController
     end
   end
 
+  def reschedule
+    @trip_part = TripPart.find(params[:id])
+    begin
+      raise "minutes must be specified" unless params[:minutes]
+      @trip_part.reschedule(params[:minutes])
+      render json: {
+        status: 200,
+        trip_part_time: @trip_part.scheduled_time.iso8601
+        }, status: 200
+    rescue Exception => e
+      render json: {
+          status: 409,
+          message: e.message
+        }, status: 409
+    end
+  end
+
 end

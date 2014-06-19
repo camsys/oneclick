@@ -308,4 +308,33 @@ class TripPart < ActiveRecord::Base
     itineraries.valid.visible.map(&:notes_count).max
   end
 
+  def reschedule minutes
+    new_time = scheduled_time + (minutes.to_i).minutes
+=begin
+if only trip part, is okay
+if advancing, just make sure doesn't equal or get later than next part's time
+if subtracting, just make sure doesn't get equal to or earlier than previous part's time
+=end
+    unless new_time_before_next_part(new_time) && new_time_after_prev_part(new_time)
+      raise "Cannot change trip part time, after/before adjacent trip part"
+    end
+    update_attribute(:scheduled_time, new_time)
+    trip.update_attribute(:scheduled_time, new_time)
+    # only do this is we successfully changed the time
+    remove_existing_itineraries
+  end
+
+  def new_time_before_next_part new_time
+    return true if trip.trip_parts.count==1
+    return true if sequence==(trip.trip_parts.count-1)
+    trip.next_part(self).scheduled_time
+    return new_time < trip.next_part(self).scheduled_time
+  end
+
+  def new_time_after_prev_part new_time
+    return true if trip.trip_parts.count==1
+    return true if sequence==0
+    return new_time > trip.prev_part(self).scheduled_time
+  end
+
 end
