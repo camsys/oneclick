@@ -6,8 +6,11 @@
           .col-sm-12
             .row
               .col-sm-6
-                %h3.dialog-title{:STYLE => "margin:0px;vertical-align:top;"}
-                  = "Book your trip"
+                %h3.dialog-title#bookingTitle{:STYLE => "margin:0px;vertical-align:top;"}
+                  -if @trip.is_booked?
+                    = "Trip Booked!"
+                  -else
+                    = "Book your trip"
               .col-sm-6
                 .pull-right{:style => "display: inline-block"}
                   %a{class: "action-button", "data-dismiss" => "modal"}

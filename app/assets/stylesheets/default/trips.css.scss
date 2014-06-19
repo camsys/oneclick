@@ -512,3 +512,18 @@ $legend-height: 20px;
   text-align: center;
   width: 100%;
 }
+
+#bookingContent{
+  .form-group{
+    margin-bottom: 0;
+  }
+
+  .panel-body{
+    font-size: large;
+  }
+
+  .confirmation{
+    font-size: x-large;
+    font-weight: bold;
+  }
+}
