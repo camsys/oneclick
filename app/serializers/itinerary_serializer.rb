@@ -1,7 +1,5 @@
 class ItinerarySerializer < ActiveModel::Serializer
   include CsHelpers
-  # include ActionController::Base.helpers.asset_path("logo.jpg", type: :image)
-  include ActionController
 
   attributes :id, :missing_information, :mode, :mode_name, :service_name, :provider_name, :contact_information,
     :cost, :duration, :transfers, :start_time, :end_time, :legs, :service_window, :duration_estimated, :selected
@@ -35,13 +33,7 @@ class ItinerarySerializer < ActiveModel::Serializer
   end
 
   def logo_url
-    Base.helpers.asset_path(if object.service && object.service.logo_url
-      object.service.logo_url
-    elsif object.service && object.service.provider && object.service.provider.logo_url
-      object.service.provider.logo_url
-    else
-      object.mode.logo_url
-    end)
+    logo_url_helper(object)
   end
 
   def missing_information

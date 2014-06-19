@@ -1,4 +1,6 @@
 module CsHelpers
+  # include ActionController::Base.helpers.asset_path("logo.jpg", type: :image)
+  include ActionController
 
   ACTION_ICONS = {
     :plan_a_trip => 'fa fa-share-square',
@@ -339,6 +341,16 @@ module CsHelpers
     else
       raise "new_user_trip_characteristic_path not defined for kiosk yet"
     end
+  end
+
+  def logo_url_helper itinerary
+    Base.helpers.asset_path(if itinerary.service && itinerary.service.logo_url
+      itinerary.service.logo_url
+    elsif itinerary.service && itinerary.service.provider && itinerary.service.provider.logo_url
+      itinerary.service.provider.logo_url
+    else
+      itinerary.mode.logo_url
+    end)
   end
 
 end
