@@ -139,6 +139,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             addTripHtml(trip);
         });
 
+        
         //if modes[] available then fetch itineraries of each trip_part_mode
         if (_isInitial) {
             _isInitial = false;
@@ -155,35 +156,49 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             });
 
             if (_totalModeRequestCounter === 0) {
-                addLegendHtml(_tripResponse.trip_parts);
-                addFilterHtml(_tripResponse.trip_parts);
+                executeWhenDataReady();
             }
         }
 
-        //add sorting dropdown change listener
-        $('.single-trip-part select').on('change', function(e) {
-            sortItineraryBy(e.currentTarget);
-        });
-
-        //windows resize needs to update charts
-        window.onresize = function(event) {
-            waitForFinalEvent(function() {
-                resizeChartsWhenDocumentWidthChanges();
-            }, 100, 'window resize');
-        };
-
-        //clicking Select button to change styles
-        $('.single-plan-review .single-plan-select').click(function() {
-            selectItineraryByClickingSelectButton(this);
-        });
-
-        //clicking ? button to pop up eligibility questions
-        $('.single-plan-review .single-plan-question').click(function() {
-            onClickSinglePlanQuestionButton(this);
-        });
-
         //in case there is chart layout issue
         resizeChartsWhenDocumentWidthChanges();
+    }
+
+    /**
+     * -30 was clicked, then refresh associated trip part plans
+     */
+    function executePrevPeriodQuery(tripPartId) {
+        $.ajax({
+            url: window.location.href + '/trip_parts/' + tripPartId + '/reschedule.json?minutes=-' + intervalStep
+        })
+        .done(function(response) {
+            if(response.status === 200) { //valid response, then refresh page
+                window.location.reload();
+            } else {
+                show_alert(response.message);
+            }
+        })
+        .fail(function(response) {
+            console.log(response);
+            show_alert(localeDictFinder['something_went_wrong']);
+        });
+    }
+
+    function executeNextPeriodQuery(tripPartId) {
+        $.ajax({
+            url: window.location.href + '/trip_parts/' + tripPartId + '/reschedule.json?minutes=' + intervalStep
+        })
+        .done(function(response) {
+           if(response.status === 200) { //valid response, then refresh page
+                window.location.reload();
+            } else {
+                show_alert(response.message);
+            }
+        })
+        .fail(function(response) {
+            console.log(response);
+            show_alert(localeDictFinder['something_went_wrong']);
+        });
     }
 
     function verifyTripJsonValid() {
@@ -238,6 +253,55 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             });
     }
 
+    /**
+     * execute a list of things when data is fianlly ready, i.e., async loading is finished
+     */
+    function executeWhenDataReady() {
+        //register event listener for -30 | +30 nav buttons
+        $('.next-period').on('click', function() {
+            var tripPartObj = $(this).parents('.single-trip-part');
+            if(tripPartObj.length > 0) {
+                var tripPartId = tripPartObj.attr('data-trip-id');
+                executeNextPeriodQuery(tripPartId);
+            }
+        });
+         $('.prev-period').on('click', function() {
+            var tripPartObj = $(this).parents('.single-trip-part');
+            if(tripPartObj.length > 0) {
+                var tripPartId = tripPartObj.attr('data-trip-id');
+                executePrevPeriodQuery(tripPartId);
+            }
+        });
+
+        //add sorting dropdown change listener
+        $('.single-trip-part select').on('change', function(e) {
+            sortItineraryBy(e.currentTarget);
+        });
+
+        //windows resize needs to update charts
+        window.onresize = function(event) {
+            waitForFinalEvent(function() {
+                resizeChartsWhenDocumentWidthChanges();
+            }, 100, 'window resize');
+        };
+
+        //clicking Select button to change styles
+        $('.single-plan-review .single-plan-select').click(function() {
+            selectItineraryByClickingSelectButton(this);
+        });
+
+        //clicking ? button to pop up eligibility questions
+        $('.single-plan-review .single-plan-question').click(function() {
+            onClickSinglePlanQuestionButton(this);
+        });
+
+         //check if no itineraries in any trip part
+        checkIfNoItineraries(_tripResponse.trip_parts);
+        //render legend & filter
+        addLegendHtml(_tripResponse.trip_parts);
+        addFilterHtml(_tripResponse.trip_parts);
+    }
+
     function checkLoadingMask() {
         if (_totalModeRequestCounter > 0) {
             //show loading mask
@@ -246,11 +310,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             //hide loading mask
             $('#' + baseContainerId).overlayMask('remove');
 
-            //check if no itineraries in any trip part
-            checkIfNoItineraries(_tripResponse.trip_parts);
-            //render legend & filter
-            addLegendHtml(_tripResponse.trip_parts);
-            addFilterHtml(_tripResponse.trip_parts);
+            executeWhenDataReady();
 
         }
     }
@@ -670,7 +730,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
 
         var tickLabels = getTickLabels(tripStartTime, tripEndTime, intervalStep);
         if ($('#' + tripPartDivId).length === 0) { //new trip part
-            var tripTags = "<div id='" + tripPartDivId + "'class='col-xs-12 well single-trip-part'>";
+            var tripTags = "<div id='" + tripPartDivId + "'class='col-xs-12 well single-trip-part' data-trip-id='" + tripId + "'>";
 
             //process header
             var tripHeaderTags = addTripHeaderHtml(trip.description, tickLabels, intervalStep, isDepartAt, tripMidTime);

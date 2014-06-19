@@ -108,11 +108,15 @@ Oneclick::Application.routes.draw do
           get   'plan'
           get   'new_rating_from_email'
         end
+        resources :trip_parts do
+          member do
+            get 'reschedule'
+          end
+        end
       end
 
       resources :trip_parts do
         member do
-          get 'reschedule'
           get 'itineraries'
           get 'unhide_all'
         end
