@@ -299,6 +299,8 @@ class TripsController < PlaceSearchingController
     @markers = create_trip_proxy_markers(@trip_proxy).to_json
     @places = create_place_markers(@traveler.places)
 
+    setup_modes
+
     respond_to do |format|
       format.html { render :action => 'edit'}
     end

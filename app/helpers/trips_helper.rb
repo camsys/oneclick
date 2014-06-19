@@ -85,6 +85,7 @@ module TripsHelper
     characteristics_new: :options,
     trips_show: :review,
     trips_plan: :plan,
+    trips_repeat: :trip,
     )
 
   TABS_TO_ACTIONS = ACTIONS_TO_TABS.invert
