@@ -414,6 +414,10 @@ $legend-height: 20px;
   background-color: #808CB4;
 }
 
+.travel-legend-car {
+  background-color: #808CB4;
+}
+
 .travel-legend-rideshare {
   background-color: #F55416;
 }
@@ -467,6 +471,10 @@ $legend-height: 20px;
 }
 
 .travel-type-drive {
+  fill: #808CB4;
+}
+
+.travel-type-car {
   fill: #808CB4;
 }
 
