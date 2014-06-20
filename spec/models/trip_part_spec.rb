@@ -16,9 +16,6 @@ describe TripPart do
         trip_part1.trip.trip_parts.destroy_all
         trip_part1.trip.trip_parts << trip_part1
         trip_part1.trip.trip_parts << trip_part2
-        puts "SEQUENCING"
-        puts trip_part1.sequence
-        puts trip_part2.sequence
         trip_part1.scheduled_date.should eq t.to_date
         trip_part1.scheduled_time.should eq t
       end
