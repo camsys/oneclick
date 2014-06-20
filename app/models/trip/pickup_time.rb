@@ -52,7 +52,7 @@ protected
   def validate_date
     begin
       # if the parse fails it will return nil and the to_date will throw an exception
-      d = Chronic.parse(@outbound_trip_date).to_date
+      d = Date.strptime(@outbound_trip_date, '%m/%d/%Y')
     rescue Exception => e
       puts e
       errors.add(:outbound_trip_date, I18n.translate(:date_wrong_format))
