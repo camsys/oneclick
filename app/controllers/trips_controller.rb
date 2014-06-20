@@ -100,40 +100,58 @@ class TripsController < PlaceSearchingController
       itinerary.save
     end
 
-    #if this trip has been booked, get booking information
-    if @trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.booking_confirmation
-
-      eh = EcolaneHelpers.new
-      result, message = eh.get_trip_info(@trip.outbound_part.selected_itinerary)
-      if result
-        @outbound_pu_time = message[:pu_time]
-        @outbound_do_time = message[:do_time]
-      else
-        @outbound_pu_time = "not yet assigned."
-        @outbound_do_time = "not yet assigned."
-      end
+    #check if each trip part has a valid selected itinerary
+    #if not, should show alert message
+    @is_plan_valid = true
+    @trip.trip_parts.each do |trip_part|  
+      @is_plan_valid = trip_part.itineraries.selected.valid.count == 1
+      break if !@is_plan_valid  
     end
 
-    if @trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.booking_confirmation
-      eh = EcolaneHelpers.new
-      result, message = eh.get_trip_info(@trip.return_part.selected_itinerary)
-      if result
-        @return_pu_time = message[:pu_time]
-        @return_do_time = message[:do_time]
-      else
-        @return_pu_time = "not yet assigned."
-        @return_do_time = "not yet assigned."
+    if @is_plan_valid
+      #if this trip has been booked, get booking information
+      if @trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.booking_confirmation
+
+        eh = EcolaneHelpers.new
+        result, message = eh.get_trip_info(@trip.outbound_part.selected_itinerary)
+        if result
+          @outbound_pu_time = message[:pu_time]
+          @outbound_do_time = message[:do_time]
+        else
+          @outbound_pu_time = "not yet assigned."
+          @outbound_do_time = "not yet assigned."
+        end
       end
-    end
 
-    # Just before render, save off the html on the trip, so that we can access it later for ratings.
-    planned_trip_html = render_to_string partial: "selected_itineraries_details", locals: { trip: @trip, for_db: true }
-    @trip.update_attributes(planned_trip_html: planned_trip_html, needs_feedback_prompt: true)
-    @booking_proxy = UserServiceProxy.new()
+      if @trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.booking_confirmation
+        eh = EcolaneHelpers.new
+        result, message = eh.get_trip_info(@trip.return_part.selected_itinerary)
+        if result
+          @return_pu_time = message[:pu_time]
+          @return_do_time = message[:do_time]
+        else
+          @return_pu_time = "not yet assigned."
+          @return_do_time = "not yet assigned."
+        end
+      end
 
-    respond_to do |format|
-      format.html # plan.html.erb
-      format.json { render json: @trip_parts }
+      # Just before render, save off the html on the trip, so that we can access it later for ratings.
+      planned_trip_html = render_to_string partial: "selected_itineraries_details", locals: { trip: @trip, for_db: true }
+      @trip.update_attributes(planned_trip_html: planned_trip_html, needs_feedback_prompt: true)
+      @booking_proxy = UserServiceProxy.new()
+
+      respond_to do |format|
+        format.html # plan.html.erb
+        format.json { render json: @trip_parts }
+      end
+    else
+      @tripHash = JSON.parse(@trip.to_json)
+      Honeybadger.notify(
+        :error_class   => "Some selected itineraries not available for Plan page",
+        :error_message => "Supposedly each trip part should have one and only valid selected itinerary, however, this is not the case. Check parameters about trip data.",
+        :parameters    => @tripHash
+      )
+      flash.now[:alert] = t(:error_couldnt_plan)
     end
   end
 
