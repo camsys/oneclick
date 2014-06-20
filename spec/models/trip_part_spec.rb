@@ -22,29 +22,29 @@ describe TripPart do
       end
 
       it 'with a string' do
-        trip_part1.trip.scheduled_time.should == t
+        trip_part1.trip.scheduled_time.to_datetime.should eq t.to_datetime
         trip_part1.reschedule("-30")
         trip_part1.reload
-        trip_part1.scheduled_time.should == (t - 30.minutes)
-        trip.scheduled_time.should == (t - 30.minutes)
+        trip_part1.scheduled_time.to_datetime.should eq (t - 30.minutes).to_datetime
+        trip.scheduled_time.to_datetime.should eq (t - 30.minutes).to_datetime
       end
 
       it 'with a int' do
         trip_part1.reschedule(-30)
         trip_part1.reload
-        trip_part1.scheduled_time.should == (t - 30.minutes)
+        trip_part1.scheduled_time.to_datetime.should eq (t - 30.minutes).to_datetime
       end
 
       it 'forward with a string' do
         trip_part1.reschedule("+30")
         trip_part1.reload
-        trip_part1.scheduled_time.should == (t + 30.minutes)
+        trip_part1.scheduled_time.to_datetime.should eq (t + 30.minutes).to_datetime
       end
 
       it 'forward with a int' do
         trip_part1.reschedule(+30)
         trip_part1.reload
-        trip_part1.scheduled_time.should == (t + 30.minutes)
+        trip_part1.scheduled_time.to_datetime.should eq (t + 30.minutes).to_datetime
       end
     end
 
@@ -53,10 +53,10 @@ describe TripPart do
         trip_part1.trip.trip_parts.destroy_all
         trip_part1.trip.trip_parts << trip_part1
         trip_part1.trip.trip_parts << trip_part2
-        trip_part1.scheduled_date.should == t.to_date
-        trip_part1.scheduled_time.should == t
-        trip_part1.trip.trip_parts.count.should == 2
-        trip_part1.trip.trip_parts.first.should == trip_part1
+        trip_part1.scheduled_date.to_datetime.should eq t.to_date.to_datetime
+        trip_part1.scheduled_time.to_datetime.should eq t.to_datetime
+        trip_part1.trip.trip_parts.count.should eq 2
+        trip_part1.trip.trip_parts.first.should eq trip_part1
       end
 
       it 'forward' do
@@ -81,34 +81,34 @@ describe TripPart do
       before(:each) do
         trip_part1.trip.trip_parts.destroy_all
         trip_part1.trip.trip_parts << trip_part1
-        trip_part1.scheduled_date.should == t.to_date
-        trip_part1.scheduled_time.should == t
+        trip_part1.scheduled_date.to_datetime.should eq t.to_date.to_datetime
+        trip_part1.scheduled_time.to_datetime.should eq t.to_datetime
       end
 
       it 'with a string' do
-        trip_part1.trip.scheduled_time.should == t
+        trip_part1.trip.scheduled_time.to_datetime.should eq t.to_datetime
         trip_part1.reschedule("-30")
         trip_part1.reload
-        trip_part1.scheduled_time.should == (t - 30.minutes)
-        trip.scheduled_time.should == (t - 30.minutes)
+        trip_part1.scheduled_time.to_datetime.should eq (t - 30.minutes).to_datetime
+        trip.scheduled_time.to_datetime.should eq (t - 30.minutes).to_datetime
       end
 
       it 'with a int' do
         trip_part1.reschedule(-30)
         trip_part1.reload
-        trip_part1.scheduled_time.should == (t - 30.minutes)
+        trip_part1.scheduled_time.to_datetime.should eq (t - 30.minutes).to_datetime
       end
 
       it 'forward with a string' do
         trip_part1.reschedule("+30")
         trip_part1.reload
-        trip_part1.scheduled_time.should == (t + 30.minutes)
+        trip_part1.scheduled_time.to_datetime.should eq (t + 30.minutes).to_datetime
       end
 
       it 'forward with a int' do
         trip_part1.reschedule(+30)
         trip_part1.reload
-        trip_part1.scheduled_time.should == (t + 30.minutes)
+        trip_part1.scheduled_time.to_datetime.should eq (t + 30.minutes).to_datetime
       end
     end
 
