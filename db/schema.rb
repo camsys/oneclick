@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140616211553) do
+ActiveRecord::Schema.define(version: 20140620202206) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,13 @@ ActiveRecord::Schema.define(version: 20140616211553) do
     t.string  "characteristic_type",   limit: 128
     t.string  "desc",                              default: ""
     t.integer "sequence",                          default: 0
+  end
+
+  create_table "counties", force: true do |t|
+    t.integer "gid"
+    t.string  "name"
+    t.string  "state"
+    t.spatial "geom",  limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "coverage_areas", force: true do |t|
@@ -331,10 +338,10 @@ ActiveRecord::Schema.define(version: 20140616211553) do
     t.string   "internal_contact_email"
     t.string   "internal_contact_title"
     t.string   "internal_contact_phone"
+    t.string   "logo_url"
     t.spatial  "origin",                       limit: {:srid=>0, :type=>"geometry"}
     t.spatial  "destination",                  limit: {:srid=>0, :type=>"geometry"}
     t.spatial  "residence",                    limit: {:srid=>0, :type=>"geometry"}
-    t.string   "logo_url"
   end
 
   create_table "services_users", id: false, force: true do |t|
@@ -511,6 +518,14 @@ ActiveRecord::Schema.define(version: 20140616211553) do
     t.string   "relationship", limit: 64
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+  end
+
+  create_table "zipcodes", force: true do |t|
+    t.integer "gid"
+    t.string  "zipcode"
+    t.string  "name"
+    t.string  "state"
+    t.spatial "geom",    limit: {:srid=>0, :type=>"geometry"}
   end
 
 end

@@ -66,7 +66,7 @@ class ServicesController < ApplicationController
     set_aux_instance_variables
 
     @service.fare_structures.build
-    
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @admin_provider }
@@ -81,9 +81,10 @@ class ServicesController < ApplicationController
 
     @provider = Provider.find(params[:provider_id])
     @service.provider = @provider    
-    
+
     respond_to do |format|
       if @service.save
+        @service.build_polygons
         format.html { redirect_to [:admin, @provider], notice: 'Service was successfully added.' } #TODO Internationalize
         format.json { render json: @service, status: :created, location: @service }
       else
@@ -91,7 +92,7 @@ class ServicesController < ApplicationController
         set_aux_instance_variables
 
         @service.fare_structures.build
-        
+
         format.html { render action: "new" }
         format.json { render json: @service.errors, status: :unprocessable_entity }
       end
@@ -122,6 +123,7 @@ class ServicesController < ApplicationController
       if @service.update_attributes(service_params)
         # internal_contact is a special case
         @service.internal_contact = User.find_by_id(params[:service][:internal_contact])
+        @service.build_polygons
 
         format.html { redirect_to @service, notice: t(:service) + ' ' + t(:was_successfully_updated) } 
         format.json { head :no_content }
@@ -181,6 +183,8 @@ protected
     
     @staff = User.with_role(:provider_staff, @service.provider)
     @eh = EligibilityService.new
+    @service.build_polygons
+
   end
   
 end

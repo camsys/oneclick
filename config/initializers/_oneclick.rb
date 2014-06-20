@@ -44,6 +44,7 @@ when 'arc'
   Oneclick::Application.config.default_county = ''
   Oneclick::Application.config.public_read_feedback = true
   Oneclick::Application.config.public_write_feedback = true
+  Oneclick::Application.config.state = 'GA'
 
 when 'broward'
   Oneclick::Application.config.ui_logo = 'broward/Broward_211_Get_Connected_get_answers.jpg'
@@ -67,6 +68,7 @@ when 'broward'
   Oneclick::Application.config.default_county = 'Broward'
   Oneclick::Application.config.public_read_feedback = false
   Oneclick::Application.config.public_write_feedback = true
+  Oneclick::Application.config.state = 'FL'
 
 when 'pa'
   Oneclick::Application.config.ui_logo = 'pa/penndotLogo.jpg'
@@ -92,11 +94,13 @@ when 'pa'
   Oneclick::Application.config.default_county = 'York'
   Oneclick::Application.config.public_read_feedback = false
   Oneclick::Application.config.public_write_feedback = true
+  Oneclick::Application.config.state = 'PA'
 
   ##Ecolane Variables
   Oneclick::Application.config.ecolane_system_id = "ococtest"
   Oneclick::Application.config.ecolane_x_ecolane_token = ENV['X_ECOLANE_TOKEN']
   Oneclick::Application.config.ecolane_base_url = "https://rabbit-test.ecolane.com"
+
 
 end
 
