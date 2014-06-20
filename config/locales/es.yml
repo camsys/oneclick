@@ -260,6 +260,7 @@ es:
   mode_transfer: '[es]Transfer[/es]'
   select_a_plan_each_trip_part: '[es]Please select itinerary for each trip part[/es]'
   no_itineraries_found: '[es]No itineraries were found[/es]'
+  service_error: '[es258]There was an error planning your trip. Please try again.[/es]'
   failed_to_update_profile: '[es244]Failed to update your user profile.[/es]'
   route: '[es215]Route[/es]'
   transfer: {

@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20140621211528) do
     t.boolean "active",                           default: true,  null: false
     t.string  "code"
     t.integer "sequence",                         default: 0
+    t.boolean "ask_early",                        default: true
   end
 
   create_table "agencies", force: true do |t|
@@ -70,6 +71,7 @@ ActiveRecord::Schema.define(version: 20140621211528) do
     t.string  "characteristic_type",   limit: 128
     t.string  "desc",                              default: ""
     t.integer "sequence",                          default: 0
+    t.boolean "ask_early",                         default: true
   end
 
   create_table "counties", force: true do |t|

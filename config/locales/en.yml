@@ -261,6 +261,7 @@ en:
   mode_transfer: 'Transfer'
   select_a_plan_each_trip_part: 'Please select itinerary for each trip part'
   no_itineraries_found: 'No itineraries were found'
+  service_error: 'There was an error planning your trip. Please try again.'
   failed_to_update_profile: 'Failed to update your user profile.'
   route: 'Route'
   transfer: {
