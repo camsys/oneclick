@@ -2,32 +2,34 @@
   = link_to t(:create), new_admin_user_path,
         {class: 'btn action-button btn-default pull-right', role: 'button'}
   %h1= t(:users)
-%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_users_table
+%table.table.table-condensed.table-striped.table-bordered.table-hover#admin_users_table
   %thead
     %tr
       %th= t(:username)
       %th= t(:email)
       %th= t(:registered)
-      %th= t(:role)
+      %th= t(:roles)
   %tbody
-    - @users.each do |user|
-      %tr
-        %td= link_to user.name, admin_user_path(user)
-        %td= user.email
-        %td= user.created_at.to_date
-        %td= user.roles.first.name.titleize unless user.roles.first.nil?
-        = render partial: user, locals: {agency: @agency} if @agency
-
 :javascript
   $(document).ready(function() {
     $('#admin_users_table').dataTable( {
-          "oLanguage": {
-              "sLengthMenu": "Display _MENU_ users per page",
+      "processing": true,
+      "bServerSide": true,
+      "sAjaxSource": "users",
+      "oLanguage": {
+              "sLengthMenu": "Display _MENU_ travelers per page",
               "sZeroRecords": "Nothing found - sorry",
-              "sInfo": "Showing _START_ to _END_ of _TOTAL_ users",
-              "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
-              "sInfoFiltered": "(filtered from _MAX_ total users)",
-          },
-          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
-      } );
-  } );
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ travelers",
+              "sInfoEmpty": "Showing 0 to 0 of 0 travelers",
+              "sInfoFiltered": "(filtered from _MAX_ total travelers)"
+      },
+      "bAutoWidth": false,
+      "aoColumns": [
+        {"sWidth": "30%"},
+        {"sWidth": "30%"},
+        {"sWidth": "15%"},
+        {"sWidth": "35%"},
+      ],
+      "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+    });
+  });

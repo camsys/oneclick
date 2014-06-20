@@ -559,6 +559,7 @@ es:
   in_str: "[es358]In[/es]"
   out_str: "[es359]Out[/es]"
   role: "[es368]Role[/es]"
+  roles: "[es562]Roles[/es]"
   change_role: "[es360]Change Role[/es]"
   select_users: "[es370]Select users[/es]"
   add: "[es371]Add[/es]"

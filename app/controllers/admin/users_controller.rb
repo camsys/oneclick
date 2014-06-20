@@ -5,11 +5,11 @@ class Admin::UsersController < Admin::BaseController
   load_and_authorize_resource
   
   def index
-    @users = @users.without_role :anonymous_traveler
+    # @users = @users.without_role :anonymous_traveler # This filter is moved into UsersDatatable
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @users }
+      format.json { render json: UsersDatatable.new(view_context) }
     end
   end
 

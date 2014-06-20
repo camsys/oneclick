@@ -561,6 +561,7 @@ en:
   in_str: "In"
   out_str: "Out"
   role: "Role"
+  roles: "Roles"
   change_role: "Change Role"
   select_users: "Select users"
   add: "Add"
