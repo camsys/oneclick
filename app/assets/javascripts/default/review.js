@@ -2092,6 +2092,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 console.log(jqxhr);
                 console.log(settings);
                 console.log(exception);
+                show_alert(localeDictFinder['something_went_wrong']);
             });
     }
 
