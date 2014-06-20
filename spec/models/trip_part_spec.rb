@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe TripPart do
+  Timecop.freeze
   t = Time.now + 1.days
   let(:trip) {FactoryGirl.create(:trip, scheduled_date: t, scheduled_time: t)}
   let(:trip_part1) {FactoryGirl.create(:trip_part, scheduled_date: t, scheduled_time: t, trip: trip, sequence: 0)}

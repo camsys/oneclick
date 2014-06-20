@@ -100,5 +100,6 @@ group :test do
   gem 'launchy'
   gem 'coveralls', require: false
   gem 'simplecov', require: false
+  gem 'timecop'
 end
 
