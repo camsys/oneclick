@@ -1,9 +1,9 @@
 - if dir=='from'
-  - label='Leaving From'
-  - sr_label = 'Type the from address'
+  - label=t(:leaving_from)
+  - sr_label = t(:type_from_address)
 - elsif dir=='to'
-  - label='Going To'
-  - sr_label = 'Type the to address'
+  - label=t(:going_to)
+  - sr_label = t(:type_to_address)
 = f.input "#{dir}_place".to_sym, input_html: {class: 'place_picker', autocomplete: 'off', type: "text", tabindex: 1}, id: "trip_proxy_#{dir}_place", wrapper: :group, label: label do
   = f.input_field "#{dir}_place".to_sym, class: 'form-control place_picker', tabindex: 1
   %span.input-group-btn
