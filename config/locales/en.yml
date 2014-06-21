@@ -184,7 +184,7 @@ en:
   plan_trip: "Continue planning this trip"
   max_notes: 'Max notes'
 
-  
+
   # Trip planning
   enter_address: 'Enter address'
   location: "Location"
@@ -220,6 +220,10 @@ en:
   to_datetime: 'Date'
   at_time: 'on'
   arrive_depart: 'Arrive/Depart'
+  leaving_from: 'Leaving From'
+  type_from_address: 'Type the from address'
+  going_to: 'Going To'
+  type_to_address: 'Type the to address'
   trip_purpose: 'Purpose'
   trip_purposes: "Trip Purposes"
   departing_at: 'Departing At'

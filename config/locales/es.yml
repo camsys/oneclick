@@ -221,7 +221,11 @@ es:
   in_arrive_or_depart: '[es]Arrive Depart[/es]'
   to_datetime: '[es]Date[/es]'
   at_time: 'en'  
-  arrive_depart: 'Llegada/Salida *1*'
+  arrive_depart: 'Llegada/Salida *1*'  
+  leaving_from: '[es]Leaving From[/es]'
+  type_from_address: '[es]Type the from address[/es]'
+  going_to: '[es]Going To[/es]'
+  type_to_address: '[es]Type the to address[/es]'
   trip_purpose: 'Proposito *2*'
   trip_purposes: "[es118]Trip Purposes[/es]"
   departing_at: 'Con salida a las *3*'
