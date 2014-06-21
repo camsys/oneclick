@@ -25,6 +25,16 @@ describe TripPart do
         trip_part1.trip.scheduled_time.to_datetime.should eq t.to_datetime
         trip_part1.reschedule("-30")
         trip_part1.reload
+        puts "trip_part1.scheduled_time class: #{trip_part1.scheduled_time.class}"
+        puts "t calc class:                    #{(t - 30.minutes).class}"
+        puts "trip_part1.scheduled_time.to_datetime class: #{trip_part1.scheduled_time.to_datetime.class}"
+        puts "t calc.to_datetime class:                    #{(t - 30.minutes).to_datetime.class}"
+        puts "scheduled_time to_f #{trip_part1.scheduled_time.to_f}"
+        puts "t to_f              #{(t - 30.minutes).to_f}"
+        puts "scheduled_time to_datetime to_f #{trip_part1.scheduled_time.to_datetime.to_f}"
+        puts "t to_datetime to_f              #{(t - 30.minutes).to_datetime.to_f}"
+        puts "scheduled_time == t.calc?             #{trip_part1.scheduled_time == (t - 30.minutes)}"
+        puts "scheduled_time == t.calc w/ datetime? #{trip_part1.scheduled_time.to_datetime == (t - 30.minutes).to_datetime}"
         trip_part1.scheduled_time.to_datetime.should eq (t - 30.minutes).to_datetime
         trip.scheduled_time.to_datetime.should eq (t - 30.minutes).to_datetime
       end
