@@ -83,6 +83,7 @@ class TripDecorator < Draper::Decorator
   end
   
   def accommodations
+    
   end
   
   def outbound_itinerary_count
@@ -96,12 +97,12 @@ class TripDecorator < Draper::Decorator
   end
   
   def outbound_selected_short
-    get_trip_summary(outbound_part.itineraries.first)
+    get_trip_summary(outbound_part.selected_itinerary) if outbound_part.selected_itinerary
   end
   
   def return_selected
     if is_return_trip
-      get_trip_summary(return_part.itineraries.first)
+      get_trip_summary(return_part.selected_itinerary) if return_part.selected_itinerary
     end
   end
   
