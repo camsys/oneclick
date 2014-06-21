@@ -18,10 +18,19 @@
   / The <script> for datepicker
   :javascript
     $(function () {
-      $('#trip_proxy_#{dir}_trip_date').datetimepicker({
+      var dateField = $('#trip_proxy_#{dir}_trip_date');
+      var dateFormat = 'MM/DD/YYYY';
+      dateField.datetimepicker({
         defaultDate: new Date(),
         minDate: moment(0, "HH"),
-        pickTime: false
+        pickTime: false,
+        language: '#{I18n.locale}' 
+      });
+
+      dateField.on('focusout',function (e) {
+        if(!moment(dateField.val(), dateFormat).isValid()) {
+          dateField.data("DateTimePicker").setDate(dateField.data("DateTimePicker").date);
+        }
       });
     });
 
@@ -31,10 +40,19 @@
   / The <script> for timepicker
   :javascript
     $(function () {
-      $('#trip_proxy_#{dir}_trip_time').datetimepicker({
+      var timeField = $('#trip_proxy_#{dir}_trip_time');
+      var timeFormat = 'h:mm A';
+      timeField.datetimepicker({
         defaultDate: moment().next15(),
         pickDate: false,
         useSeconds: false,
-        minuteStepping: 15
+        minuteStepping: 15,
+        language: '#{I18n.locale}'
+      });
+
+      timeField.on('focusout',function (e) {
+        if(!moment(timeField.val(), timeFormat).isValid()) {
+          timeField.data("DateTimePicker").setDate(timeField.data("DateTimePicker").date);
+        }
       });
     });
