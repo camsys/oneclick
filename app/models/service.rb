@@ -215,17 +215,17 @@ class Service < ActiveRecord::Base
     state = Oneclick::Application.config.state
     case scm.geo_coverage.coverage_type
       when 'county_name'
-        county = County.where(name: scm.geo_coverage.value, state: state)
-        if county
+        county = County.where("lower(name) =? AND state=?", scm.geo_coverage.value.downcase, state)
+        if county.length > 0
           return county.first.geom
         end
       when 'zipcode'
         zipcode = Zipcode.where(zipcode: scm.geo_coverage.value, state: state)
-        if zipcode
+        if zipcode.length > 0
           return zipcode.first.geom
         end
       when 'polygon'
-        return scm.geo_coverage.polygon.geom
+        return scm.geo_coverage.geom
     end
     nil
   end

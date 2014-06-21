@@ -238,6 +238,12 @@ class EspReader
       return result, message
     end
 
+    #Add custom polygons for each service and generate the polygons.
+    Service.all.each do |service|
+      add_paratransit_buffer(service)
+      service.build_polygons
+    end
+
     return true, "Success!"
 
   end
@@ -468,6 +474,34 @@ class EspReader
 
   #End create OneClick Records from ESP
   ######################
+  def add_paratransit_buffer(service)
+    case service.external_id
+      when "45245457217490721111" #MARTA Paratransit
+        service.service_coverage_maps.destroy_all
+        b = Boundary.find_by_agency('Metropolitan Atlanta Rapid Transit Authority')
+        gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'origin')
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'destination')
+      when "65980602734372809999" #CATS Paratransit
+        service.service_coverage_maps.destroy_all
+        b = Boundary.find_by_agency('Cherokee Area Transportation System (CATS)')
+        gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'origin')
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'destination')
+      when "77900779520510731111" #Gwinnett Paratransit
+        service.service_coverage_maps.destroy_all
+        b = Boundary.find_by_agency('Gwinnett County Transit (GCT)')
+        gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'origin')
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'destination')
+      when "Need CCT Paratransit Service Id" #CCT Paratransit
+        service.service_coverage_maps.destroy_all
+        b = Boundary.find_by_agency('Cobb Community Transit (CCT)')
+        gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'origin')
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'destination')
 
+    end
+  end
 
 end

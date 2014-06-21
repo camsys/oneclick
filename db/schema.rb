@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140620202206) do
+ActiveRecord::Schema.define(version: 20140621211528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,12 @@ ActiveRecord::Schema.define(version: 20140620202206) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "creator",                            null: false
+  end
+
+  create_table "boundaries", force: true do |t|
+    t.integer "gid"
+    t.string  "agency"
+    t.spatial "geom",   limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "characteristics", force: true do |t|
@@ -97,9 +103,10 @@ ActiveRecord::Schema.define(version: 20140620202206) do
   end
 
   create_table "geo_coverages", force: true do |t|
-    t.string "value"
-    t.string "coverage_type", limit: 128
-    t.string "polygon"
+    t.string  "value"
+    t.string  "coverage_type", limit: 128
+    t.string  "polygon"
+    t.spatial "geom",          limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "itineraries", force: true do |t|
