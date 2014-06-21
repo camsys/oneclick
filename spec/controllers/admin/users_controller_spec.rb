@@ -24,7 +24,7 @@ describe Admin::UsersController do
         it "returns all users except visitors if some exist" do
           FactoryGirl.create :visitor
           get :index
-          assigns(:users).count.should eql(37) #1 sys admin, 1 agency admin, 10 agents and 25 users
+          assigns(:users).count.should eql(38) #1 sys admin, 1 agency admin, 10 agents and 25 users, +1 unknown
         end
       end
     end
