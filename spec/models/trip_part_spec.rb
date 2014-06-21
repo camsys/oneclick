@@ -35,6 +35,7 @@ describe TripPart do
         puts "t to_datetime to_f              #{(t - 30.minutes).to_datetime.to_f}"
         puts "scheduled_time == t.calc?             #{trip_part1.scheduled_time == (t - 30.minutes)}"
         puts "scheduled_time == t.calc w/ datetime? #{trip_part1.scheduled_time.to_datetime == (t - 30.minutes).to_datetime}"
+        puts "scheduled_time == t.calc w/ datetime to_f? #{trip_part1.scheduled_time.to_datetime.to_f == (t - 30.minutes).to_datetime.to_f}"
         trip_part1.scheduled_time.to_datetime.should eq (t - 30.minutes).to_datetime
         trip.scheduled_time.to_datetime.should eq (t - 30.minutes).to_datetime
       end
