@@ -2,9 +2,9 @@ module RatingsHelper
   # Convert numeric values into HTML for display
   def to_stars(value, size, noblanks = false)
     if value.eql? Rating::DID_NOT_TAKE
-      return "<span id='stars'>#{t(:untaken_trip)}</span>".html_safe
+      return "<span class='stars'>#{t(:untaken_trip)}</span>".html_safe
     end
-    html = "<span id='stars'>"
+    html = "<span class='stars'>"
     for i in 1..5
       if i <= value
         html << "<i class='x fa fa-star fa-#{size}x'> </i>"

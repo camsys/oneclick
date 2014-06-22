@@ -37,7 +37,7 @@ module Rateable
   # Do not confuse with RatingDecorator#rating_in_stars which performs equivalent action for Rating model (which is not a Rateable model)
   def rating_in_stars(size=1)
     rating = get_avg_rating
-    html = "<span id='stars'>"
+    html = "<span class='stars'>"
     for i in 1..5
       if i <= rating
         html << "<i class='x fa fa-star fa-#{size}x'> </i>"
