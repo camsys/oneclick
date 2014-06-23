@@ -97,7 +97,7 @@
   }
   &:not(:last-of-type) {
     margin-left: 5px;
-  }
+  } 
   // background: #eeeeee; /* Old browsers */
   // background: -moz-linear-gradient(top,  #ffffff 0%, #AFAFAF 100%); /* FF3.6+ */
   // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#AFAFAF)); /* Chrome,Safari4+ */
@@ -119,6 +119,10 @@
 .action-button:hover, .action-button:focus {
   // background-position: 0;
   // color: inherit;
+}
+
+#noOptionButton {
+    margin-right: 5px;
 }
 
 .dropdown-toggle {

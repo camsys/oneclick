@@ -4,10 +4,10 @@
   .col-xs-4
     = button_tag :type => 'button', :id => "planButton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
       =t(:plan)
+    = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "pull-right btn btn-default action-button pull-right", id: "noOptionButton" do
+      = t(:feedback)
+    
 .row
-  .col-xs-12
-    = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "pull-right" do
-      = t(:no_good_options)
 - if @tripResponseHash['status'] == 0
   - # flash handles it
 - else
