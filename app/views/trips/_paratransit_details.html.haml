@@ -66,4 +66,4 @@
     .col-sm-6
       = t(:rating) +":"
     .col-sm-6
-      = itinerary.service.rating_in_stars
+      = RateableDecorator.decorate(itinerary.service).rating_in_stars
