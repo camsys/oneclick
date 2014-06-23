@@ -553,6 +553,7 @@ es:
   unsure_str: "[es299]Unsure[/es]"
   not_sure_str: "[es352]Not sure[/es]"
   ok: "Ok"
+  done: "[es556]Done[/es]"
   cancel: "Cancelar"
   edit: "Editar *30*"
   delete: "Borrar *31*"

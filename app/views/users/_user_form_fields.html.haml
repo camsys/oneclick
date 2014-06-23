@@ -54,6 +54,10 @@
               .modal-dialog.modal-lg
                 .modal-content
                   .modal-header
+                    .row
+                      .col-sm-12
+                        %btn.btn.action-button.pull-right{data:{dismiss: 'modal'}}
+                          = t(:ok)
                   .modal-body
                     .modal-flash
                     .panel.panel-default
@@ -62,10 +66,8 @@
                       .panel-body
                         .row
                           .col-sm-12
-                            = label_tag :email, t(:email), class: "col-sm-3"
-                            = text_field_tag :email,nil, class: "col-sm-9"
-                        .row
-                          .col-sm-12
+                            = label_tag :email, t(:email)
+                            = text_field_tag :email,nil
                             %btn.btn.btn-default.action-button#search= t(:add_new_buddy)
 
 

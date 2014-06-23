@@ -555,6 +555,7 @@ en:
   not_sure_str: "Not sure"
   unsure_str: "Unsure"
   ok: "Ok"
+  done: "Done"
   cancel: "Cancel"
   edit: "Edit"
   delete: "Delete"
