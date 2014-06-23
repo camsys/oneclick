@@ -20,7 +20,7 @@
         -if Oneclick::Application.config.public_write_feedback
           - if can? :read, temp_rating
             .pull-right
-              = @provider.rating_in_stars
+              = RateableDecorator.new(@provider).rating_in_stars
               %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal"}}
                 = t(:feedback)
           = render partial: "ratings/organization_feedback_modal", locals: {rateable: @provider}
