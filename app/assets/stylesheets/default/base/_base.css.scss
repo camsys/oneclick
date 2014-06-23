@@ -632,6 +632,6 @@ td.left, th.left {
 
 //color seeting for action buttons
 .action-button {
-  background-image: none;
-  background-color: #ff9900;
+  @extend .btn-primary;
+  text-shadow: none;
 }

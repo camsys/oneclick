@@ -1,5 +1,4 @@
 // PA/YATA CSS file. Styles only, no variables or mixins.
-$broward_green: #99cc67;
 // TODO This should probably be done with a mixin
 @media(max-width:$screen-xs-max){
   #logo {
@@ -25,10 +24,4 @@ $broward_green: #99cc67;
 // This really needs to be abstracted up.  Should create a library.
 #publicNav{
   background: $broward_green;
-}
-
-//color seeting for action buttons
-.action-button {
-  background-image: none;
-  background-color: #ff9900;
 }
