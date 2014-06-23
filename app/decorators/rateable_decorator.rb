@@ -12,4 +12,9 @@ class RateableDecorator < Draper::Decorator
     #can't rate providers
     end
   end
+
+  # Do not confuse with RatingDecorator#rating_in_stars which performs equivalent action for Rating model (which is not a Rateable model)
+  def rating_in_stars(size=1)
+    h.to_stars(object.get_avg_rating, size)
+  end
 end
