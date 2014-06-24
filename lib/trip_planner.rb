@@ -95,13 +95,6 @@ class TripPlanner
       end
       agency_id = itinerary['legs'].detect{|l| !l['agencyId'].blank?}['agencyId'] rescue nil
       if agency_id
-        Rails.logger.info "\n CONNECTION INFO"
-        Rails.logger.info ActiveRecord::Base.connection.class
-        Rails.logger.info ActiveRecord::Base.connection
-        Rails.logger.info ActiveRecord::Base.connection.ai
-        Rails.logger.info ActiveRecord::Base.connection.raw_connection
-        Rails.logger.info ActiveRecord::Base.connection.raw_connection.ai
-        Rails.logger.info "\n END CONNECTION INFO"
         s = Service.where(name: agency_id).first
         if s
           trip_itinerary['service'] = s

@@ -17,6 +17,9 @@ Oneclick::Application.config.duration_factor = 2.0
 Oneclick::Application.config.minimum_paratransit_duration = 2.hours
 Oneclick::Application.config.show_update_services = false
 
+Oneclick::Application.config.max_ui_duration = 2.hours
+Oneclick::Application.config.min_ui_duration = 1.hours
+
 Oneclick::Application.config.google_places_api_key = 'AIzaSyCvKyNoBzQNrBRuSRkipWye0pdj__HjrmU'
 
 case ENV['BRAND'] || 'arc'
