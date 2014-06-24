@@ -13,8 +13,10 @@ ENV['SESSION_ALERT_TIMEOUT'] ||= '30'
 
 Oneclick::Application.config.default_zoom = nil
 Oneclick::Application.config.max_offset_from_desired = 3.hours
-Oneclick::Application.config.duration_factor = 2.0
+Oneclick::Application.config.paratransit_duration_factor = 2.0
 Oneclick::Application.config.minimum_paratransit_duration = 2.hours
+Oneclick::Application.config.rideshare_duration_factor = 1.5
+Oneclick::Application.config.minimum_rideshare_duration = (1.5).hours
 Oneclick::Application.config.show_update_services = false
 
 Oneclick::Application.config.max_ui_duration = 2.hours

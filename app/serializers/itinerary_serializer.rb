@@ -57,8 +57,6 @@ class ItinerarySerializer < ActiveModel::Serializer
     case object.mode
     when Mode.taxi
       tp.is_depart ? tp.trip_time : (tp.trip_time - object.duration.seconds)
-    when Mode.rideshare
-      tp.is_depart ? tp.trip_time : nil
     else
       object.start_time
     end
@@ -69,8 +67,6 @@ class ItinerarySerializer < ActiveModel::Serializer
     case object.mode
     when Mode.taxi
       tp.is_depart ? (tp.trip_time + object.duration.seconds) : tp.trip_time
-    when Mode.rideshare
-      tp.is_depart ? nil : tp.trip_time
     else
       object.end_time
     end
@@ -128,7 +124,7 @@ class ItinerarySerializer < ActiveModel::Serializer
       # TODO I18n
       # omitting for now per discussion w/ Xudong
       # external_duration: , #": "String Opt", // (seconds) Textural description of duration, for display to users
-      sortable_duration: object.duration, #": "Number Opt", // (seconds) For filtering purposes, not display
+      sortable_duration: object.duration || (object.end_time - object.start_time), #": "Number Opt", // (seconds) For filtering purposes, not display
       total_walk_time: object.walk_time, #": "Number Opt", // (seconds)
       total_walk_dist: object.walk_distance, #": "Number Opt", // (feet?)
       total_transit_time: object.transit_time, #": "Number Opt", // (seconds)

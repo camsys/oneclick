@@ -249,11 +249,8 @@ class TripPart < ActiveRecord::Base
     unless itins.empty?
       unless ENV['SKIP_DYNAMIC_PARATRANSIT_DURATION']
         begin
-          tp = TripPlanner.new
-          arrive_by = !is_depart
-          result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],
-                                                      [to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, 'CAR')
-          base_duration = response['itineraries'].first['duration'] / 1000.0
+          base_duration = TripPlanner.new.get_drive_time(!is_depart, trip_time, from_trip_place.location.first,
+            from_trip_place.location.last, to_trip_place.location.first, to_trip_place.location.last)
         rescue Exception => e
           Rails.logger.error "Exception #{e} while getting trip duration."
           base_duration = nil
@@ -263,29 +260,9 @@ class TripPart < ActiveRecord::Base
       end
       Rails.logger.info "Base duration: #{base_duration} minutes"
       itins.each do |i|
-        i.duration_estimated = true
-        if base_duration.nil?
-          i.duration = Oneclick::Application.config.minimum_paratransit_duration
-        else
-          i.duration =
-            [base_duration * Oneclick::Application.config.duration_factor,
-             Oneclick::Application.config.minimum_paratransit_duration].max
-        end
-        Rails.logger.info "Factored duration: #{i.duration} minutes"
-        if is_depart
-          i.start_time = trip_time
-          i.end_time = i.start_time + i.duration
-        else
-          i.end_time = trip_time
-          i.start_time = i.end_time - i.duration
-        end
-        Rails.logger.info "AFTER"
-        Rails.logger.info i.duration.ai
-        Rails.logger.info i.start_time.ai
-        Rails.logger.info i.end_time.ai
+        i.estimate_duration(base_duration, Oneclick::Application.config.minimum_paratransit_duration, Oneclick::Application.config.minimum_paratransit_duration, trip_time, is_depart)
       end
     end
-
     itins
   end
 
@@ -296,7 +273,20 @@ class TripPart < ActiveRecord::Base
     result, response = tp.get_rideshare_itineraries(from_trip_place, to_trip_place, trip_time)
     if result
       itinerary = tp.convert_rideshare_itineraries(response)
-      itins << Itinerary.new(itinerary)
+      unless ENV['SKIP_DYNAMIC_RIDESHARE_DURATION']
+        begin
+          base_duration = TripPlanner.new.get_drive_time(!is_depart, trip_time, from_trip_place.location.first,
+            from_trip_place.location.last, to_trip_place.location.first, to_trip_place.location.last)
+        rescue Exception => e
+          Rails.logger.error "Exception #{e} while getting trip duration."
+          base_duration = nil
+        end
+      else
+        Rails.logger.info "SKIP_DYNAMIC_RIDESHARE_DURATION is set, skipping it"
+      end
+      i = Itinerary.new(itinerary)
+      i.estimate_duration(base_duration, Oneclick::Application.config.minimum_rideshare_duration, Oneclick::Application.config.rideshare_duration_factor, trip_time, is_depart)
+      itins << i
     else
       itins << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s,
                                         'mode' => Mode.rideshare)

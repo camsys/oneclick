@@ -129,6 +129,29 @@ class Itinerary < ActiveRecord::Base
     service.name rescue nil
   end
 
+  def estimate_duration base_duration, minimum_duration, duration_factor, trip_time, is_depart
+    self.duration_estimated = true
+    if base_duration.nil?
+      duration = minimum_duration
+    else
+      duration =
+        [base_duration * duration_factor,
+         minimum_duration].max
+    end
+    Rails.logger.info "Factored duration: #{duration} minutes"
+    if is_depart
+      self.start_time = trip_time
+      self.end_time = start_time + duration
+    else
+      self.end_time = trip_time
+      self.start_time = end_time - duration
+    end
+    Rails.logger.info "AFTER"
+    Rails.logger.info duration.ai
+    Rails.logger.info start_time.ai
+    Rails.logger.info end_time.ai
+  end
+
   protected
 
   # Set resonable defaults for a new itinerary
