@@ -11,6 +11,11 @@ class TripDecorator < Draper::Decorator
   #     end
   #   end
 
+  def initialize object, options
+    super
+    @elig_svc = EligibilityService.new
+  end
+  
   def created
     I18n.l created_at, format: :isoish
   end
@@ -80,10 +85,11 @@ class TripDecorator < Draper::Decorator
   end
   
   def eligibility
+    get_eligibility(outbound_part.selected_itinerary, object.user.user_profile)
   end
   
   def accommodations
-    
+    get_accomodations(outbound_part.selected_itinerary)
   end
   
   def outbound_itinerary_count
@@ -124,8 +130,6 @@ class TripDecorator < Draper::Decorator
   end
 
   def get_trip_summary itinerary
-    h.get_trip_summary_name(itinerary)
-
     summary = ''
     if itinerary.is_walk
       itinerary.get_legs.each do |leg|
@@ -147,7 +151,7 @@ class TripDecorator < Draper::Decorator
         end
       when 'mode_paratransit'
         itinerary.service.get_contact_info_array.each do |a,b|
-          summary += "#{I18n.t(:paratransit)} #{I18n.t(a)}: #{sanitize_nil_to_na b}"
+          summary += "#{I18n.t(:paratransit)} #{I18n.t(a)}: #{h.sanitize_nil_to_na b};"
         end
       when 'mode_taxi'
         YAML.load(itinerary.server_message).each do |business|
@@ -163,5 +167,37 @@ class TripDecorator < Draper::Decorator
     end
     summary
   end
+
+  def get_accomodations itinerary
+    result = ''
+    if itinerary && itinerary.service
+      itinerary.service.accommodations.each do |a|
+        result += I18n.t(a.name) + ';'
+      end
+    end
+    result
+  end
+
+  def get_eligibility(itinerary, user_profile)
+    result = ''
+    if itinerary && itinerary.service
+      groups = itinerary.service.service_characteristics.pluck(:group).uniq rescue []
+      groups.each do |group|
+        itinerary.service.service_characteristics.where(group: group).each do |map|
+          requirement = map.characteristic
+          user_characteristic = UserCharacteristic.where(user_profile_id: user_profile.id,
+                                                         characteristic_id: requirement.id)
+          if user_characteristic.count > 0 &&
+              @elig_svc.test_condition(user_characteristic.first.value,
+                             map.value_relationship_id,
+                             map.value)
+            result += @elig_svc.translate_service_characteristic_map(map) + ';'
+          end
+        end
+      end
+    end
+    result
+  end
   
 end
+
