@@ -28,7 +28,6 @@ class ItineraryDecorator < Draper::Decorator
   end
 
   def duration_in_words
-    # TODO should be t(:not_available)
     (duration ? h.duration_to_words(duration) + " (est.)" : I18n.t(:not_available))
   end
 
