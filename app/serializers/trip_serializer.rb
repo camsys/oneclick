@@ -2,6 +2,7 @@ class TripSerializer < ActiveModel::Serializer
   self.root = false
 
   attributes :id, :status, :modes, :user_id, :characteristics_update_url
+  attributes :max_ui_duration, :min_ui_duration
   has_many :trip_parts
   attr_accessor :asynch
 
@@ -46,6 +47,14 @@ class TripSerializer < ActiveModel::Serializer
 
   def characteristics_update_url
     "/users/#{object.user_id}/characteristics/update"
+  end
+
+  def max_ui_duration
+    (options[:max_ui_duration] || Oneclick::Application.config.max_ui_duration).to_i
+  end
+
+  def min_ui_duration
+    (options[:min_ui_duration] || Oneclick::Application.config.min_ui_duration).to_i
   end
 
 end
