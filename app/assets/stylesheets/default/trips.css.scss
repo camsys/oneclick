@@ -1,3 +1,7 @@
+.form-control {
+  //font-size: $base-font-size;
+}
+
 .place_picker {
   // width: 20em;
 }
@@ -94,22 +98,8 @@ tr .action-button {
   &:not(:last-of-type) {
     margin-left: 5px;
   } 
-  // background: #eeeeee; /* Old browsers */
-  // background: -moz-linear-gradient(top,  #ffffff 0%, #AFAFAF 100%); /* FF3.6+ */
-  // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#AFAFAF)); /* Chrome,Safari4+ */
-  // background: -webkit-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* Chrome10+,Safari5.1+ */
-  // background: -o-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* Opera 11.10+ */
-  // background: -ms-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* IE10+ */
-  // background: linear-gradient(to bottom,  #ffffff 0%,#AFAFAF 100%); /* W3C */
-  // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#AFAFAF',GradientType=0 ); /* IE6-9 */
   min-width: 9em;
-  // height: 25px;
-  // border-radius: 8px;
   font-weight: bold;
-  // padding: 2px;
-  // font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
-  // font-size: 14px;
-  // color: #333;
 }
 
 .action-button:hover, .action-button:focus {
@@ -125,8 +115,11 @@ tr .action-button {
   cursor: pointer;
 }
 
-.dropdown-menu a {
-  cursor: pointer;
+.dropdown-menu {
+  //font-size: $base-font-size;
+  a {
+    cursor: pointer;
+  }
 }
 
 .btn .fa-map-marker {
@@ -135,7 +128,6 @@ tr .action-button {
 
 /*breadcrumbs*/
 $breadcrumb-height: 30px;
-$breadcrumb-font-size: 1em;
 
 .breadcrumb-page {
   margin: 3px 0px;
@@ -149,7 +141,6 @@ $breadcrumb-font-size: 1em;
   background-image: image-url('active.png');
   background-size: 100% 100%;
   font-weight: bold;
-  font-size: $breadcrumb-font-size;
   color: white;
   line-height: $breadcrumb-height;
 }
@@ -161,7 +152,6 @@ $breadcrumb-font-size: 1em;
   a{
     font-weight: bold;
     color: black;
-    font-size: $breadcrumb-font-size;
     line-height: $breadcrumb-height;
   }
 
@@ -176,7 +166,6 @@ $breadcrumb-font-size: 1em;
   background-size: 100% 100%;
   font-weight: bold;
   color: black;
-  font-size: $breadcrumb-font-size;
   line-height: $breadcrumb-height;
 }
 

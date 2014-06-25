@@ -1,9 +1,4 @@
 // ARC CSS file. Styles only, no variables or mixins.
-body {
-  font-family: Verdana;
-  font-size: 14pt;
-}
-
 $nav-start-color: #FAFAFA;
 $nav-end-color: #A3A3A3;
 #publicNav{
@@ -35,7 +30,7 @@ $nav-end-color: #A3A3A3;
 #userDropdown .dropdown-toggle{
   background-color: transparent;
   color: #10104A;
-  font-size: 1em;
+  //font-size: 1em;
   font-weight: bold;
 }
 
@@ -68,8 +63,8 @@ $feedback-end-color: #CCA23D;
 
   a{
     color: black;
-    font-size: 12px;
-    font-weight: bold;
+    //font-size: 12px;
+    //font-weight: bold;
   }
 }
 
@@ -84,15 +79,15 @@ $versionLang-end-color: #3681B3;
   background: -ms-linear-gradient(top,  $versionLang-start-color 0%,$versionLang-end-color 100%);
   background: linear-gradient(to bottom,  $versionLang-start-color 0%,$versionLang-end-color 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$versionLang-start-color}', endColorstr='$versionLang-end-color',GradientType=0 );
-  height: 20px;
+  //height: 20px;
   color: #FEC800;
-  font-size: 12px;
-  font-weight: bold;
-  padding-top: 3px;
+  //font-size: 12px;
+  //font-weight: bold;
+  //padding-top: 3px;
 
   a {
     color: #FEC800;
-    font-size: 12px;
-    font-weight: bold;
+    //font-size: 12px;
+    //font-weight: bold;
   }
 }
