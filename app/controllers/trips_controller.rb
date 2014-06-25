@@ -568,13 +568,12 @@ class TripsController < PlaceSearchingController
 
     setup_modes
 
-    # TODO If trip_proxy isn't valid, should go back to form right now, before this.
     if @trip_proxy.valid?
       @trip = Trip.create_from_proxy(@trip_proxy, current_or_guest_user, @traveler)
     else
       Rails.logger.info "Not valid: #{@trip_proxy.ai}"
       Rails.logger.info "\nError render 1\n"
-      flash.now[:notice] = t(:correct_errors_to_create_a_trip)
+      flash.now[:alert] = t(:correct_errors_to_create_a_trip)
       render action: "new"
       return
     end
@@ -585,7 +584,7 @@ class TripsController < PlaceSearchingController
 
     respond_to do |format|
       if @trip
-        if @trip.save
+        if @trip.errors.empty? && @trip.save
           @trip.reload
           if !@trip.eligibility_dependent?
             @trip.create_itineraries
@@ -602,7 +601,9 @@ class TripsController < PlaceSearchingController
           Rails.logger.info "ERRORS: #{@trip.errors.ai}"
           Rails.logger.info "PLACES: #{@trip.trip_places.ai}"
           Rails.logger.info "PLACE ERRORS: #{@trip.trip_places.collect{|tp| tp.errors}}"
-          format.html { render action: "new", flash.now[:alert] => t(:correct_errors_to_create_a_trip) }
+          @trip_proxy.errors = @trip.errors
+          flash.now[:alert] = t(:correct_errors_to_create_a_trip)
+          format.html { render action: "new" }
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
       else
@@ -610,7 +611,8 @@ class TripsController < PlaceSearchingController
         Rails.logger.info "\nError render 3\n"
         Rails.logger.info "ERRORS: #{@trip.errors.ai}"
         Rails.logger.info "PLACES: #{@trip.trip_places.ai}"
-        format.html { render action: "new", flash.now[:alert] => t(:correct_errors_to_create_a_trip) }
+        flash.now[:alert] = t(:correct_errors_to_create_a_trip)
+        format.html { render action: "new" }
       end
     end
   end
