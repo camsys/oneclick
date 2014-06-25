@@ -297,11 +297,22 @@ $single-plan-height: 50px;
 }
 
 .trip-plan-first-column {
+  width: 20%;
+  display: inline-block;
+}
+
+
+.trip-plan-main-column {
+  width: 65%;
+  display: inline-block;
 }
 
 .select-column {
   text-align: center;
   line-height: $single-plan-height;
+  width: 15%;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .select-column-button {

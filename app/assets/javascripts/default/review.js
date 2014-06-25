@@ -300,6 +300,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         //render legend & filter
         addLegendHtml(_tripResponse.trip_parts);
         addFilterHtml(_tripResponse.trip_parts);
+
+        resizePlanColumns(); 
+        resizeAllCharts();
     }
 
     function checkLoadingMask() {
@@ -352,7 +355,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 " data-trip-end-time='" + tripPartData.end_time + "'";
             var modeSwimlane =
                 "<div class='col-xs-12 single-plan-review single-plan-unselected single-plan-mode-loading' style='padding: 0px;'" + dataTags + ">" +
-                "<div class='col-xs-3 col-sm-2 trip-plan-first-column' style='padding: 0px; height: 100%;'>" +
+                "<div class='trip-plan-first-column' style='padding: 0px; height: 100%;'>" +
                 "<table>" +
                 "<tbody>" +
                 "<tr>" +
@@ -366,11 +369,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 "</tbody>" +
                 "</table>" +
                 "</div>" +
-                "<div class='col-xs-7 col-sm-9 " +
+                "<div class='" +
                 (isDepartAt ? "highlight-left-border regular-right-border" : "highlight-right-border regular-left-border") +
-                " single-plan-chart-container' style='padding: 0px; height: 100%;' id='" + chartId + "'>" +
+                " single-plan-chart-container trip-plan-main-column' style='padding: 0px; height: 100%;' id='" + chartId + "'>" +
                 "</div>" +
-                "<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px; height: 100%;'>" +
+                "<div class='select-column' style='padding: 0px; height: 100%;'>" +
                 "</div>" +
                 "<i class='fa fa-spinner fa-spin single-plan-mode-load-spinner'>" +
                 "</i>" +
@@ -1108,11 +1111,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var tripHeaderTags = tripDescTag +
             "<div class='col-xs-12 single-plan-header'>" +
             "<div class='col-xs-12' style='padding:0px;'>" +
-            "<div class='col-xs-3 col-sm-2 trip-plan-first-column' style='padding: 0px;'>" +
+            "<div class='trip-plan-first-column' style='padding: 0px;'>" +
             sorterLabelTags +
             (isDepartAt ? ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>") : "") +
             "</div>" +
-            "<div class='col-xs-7 col-sm-9 " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
+            "<div class='" + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
             (
             isDepartAt ?
             ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>") :
@@ -1120,18 +1123,18 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         ) +
             midDateLabelTags +
             "</div>" +
-            "<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px;'>" +
+            "<div class='select-column' style='padding: 0px;'>" +
             (isDepartAt ? "" : ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>")) +
             "</div>" +
             "</div>" +
             "<div class='col-xs-12' style='padding:0px;'>" +
-            "<div class='col-xs-3 col-sm-2 trip-plan-first-column' style='padding: 0px;'>" +
+            "<div class='trip-plan-first-column' style='padding: 0px;'>" +
             sorterTags +
             "</div>" +
-            "<div class='col-xs-7 col-sm-9 tick-labels " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + "' style='padding: 0px;white-space: nowrap;'>" +
+            "<div class='tick-labels " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap;'>" +
             tickLabelTags +
             "</div>" +
-            "<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px;'>" +
+            "<div class='select-column' style='padding: 0px;'>" +
             "</div>" +
             "</div>" +
             "</div>";
@@ -1282,7 +1285,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             " data-eligibility-visible = " + (eligibleCode != -1 ? '1' : '0');
         var tripPlanTags =
             "<div class='col-xs-12 single-plan-review " + (isSelected ? "single-plan-selected" : "single-plan-unselected") + "' style='padding: 0px;" + (eligibleCode === -1 ? "display: none;" : "") + "'" + dataTags + ">" +
-            "<div class='col-xs-3 col-sm-2 trip-plan-first-column' style='padding: 0px; height: 100%;'>" +
+            "<div class='trip-plan-first-column' style='padding: 0px; height: 100%;'>" +
             "<table>" +
             "<tbody>" +
             "<tr>" +
@@ -1301,11 +1304,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             "</tbody>" +
             "</table>" +
             "</div>" +
-            "<div class='col-xs-7 col-sm-9 " +
+            "<div class='" +
             (isDepartAt ? "highlight-left-border regular-right-border" : "highlight-right-border regular-left-border") +
-            " single-plan-chart-container' style='padding: 0px; height: 100%;' id='" + tripPlanDivPrefix + tripId + "_" + planId + "'>" +
+            " single-plan-chart-container trip-plan-main-column' style='padding: 0px; height: 100%;' id='" + tripPlanDivPrefix + tripId + "_" + planId + "'>" +
             "</div>" +
-            "<div class='col-xs-2 col-sm-1 select-column' style='padding: 0px; height: 100%;'>" +
+            "<div class='select-column' style='padding: 0px; height: 100%;'>" +
             (
             (isMissingInfoFound && eligibleCode != 1) ?
             (
@@ -2120,8 +2123,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
      */
     function resizeChartsWhenDocumentWidthChanges() {
         if ($(document.body).width() != documentWidth) {
-            documentWidth = $(document.body).width();
+            resizePlanColumns();
             resizeAllCharts();
+            documentWidth = $(document.body).width();
         }
     }
 
@@ -2157,6 +2161,42 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             })
             .attr("y1", 0)
             .attr("y2", chart.attr('height'));
+    }
+
+    function resizePlanColumns() {
+        var planWidth = $('.single-plan-review').outerWidth();
+        if(planWidth > 0) {
+            var extraWidthForFirstLastColumn = 10;
+            var minMainColumnWidthPct = 30;
+
+            var sorterWidth = $('.trip-sorter').outerWidth();
+            var firstColumnWidth = sorterWidth + extraWidthForFirstLastColumn;
+
+            var selectButtonWidth = $('.single-plan-review .single-plan-select').outerWidth();
+            var questionButtonWidth = $('.single-plan-review .single-plan-question').outerWidth();
+            var lastColumnWidth = (Math.max(selectButtonWidth, questionButtonWidth) + extraWidthForFirstLastColumn);
+
+            var mainColumnWidth = planWidth - firstColumnWidth - lastColumnWidth;
+
+            var firstColumnWidthPct = firstColumnWidth/planWidth * 100;
+            var lastColumnWidthPct = lastColumnWidth/planWidth * 100;
+            var mainColumnWidthPct = mainColumnWidth/planWidth * 100;
+
+            if(mainColumnWidthPct < minMainColumnWidthPct) {
+                firstColumnWidthPct -= (minMainColumnWidthPct - mainColumnWidthPct)/2;
+                lastColumnWidthPct -= (minMainColumnWidthPct - mainColumnWidthPct)/2;
+                mainColumnWidthPct = minMainColumnWidthPct;
+            }
+            if($(document.body).width() > documentWidth) {
+                $('.trip-plan-first-column').css('width', firstColumnWidthPct + '%');
+                $('.select-column').css('width', lastColumnWidthPct + '%');
+                $('.trip-plan-main-column').css('width', mainColumnWidthPct + '%');
+            } else {
+                $('.trip-plan-main-column').css('width', mainColumnWidthPct + '%');
+                $('.trip-plan-first-column').css('width', firstColumnWidthPct + '%');
+                $('.select-column').css('width', lastColumnWidthPct+ '%');
+            }
+        }
     }
 
     /**
