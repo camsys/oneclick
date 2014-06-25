@@ -463,6 +463,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
 
         var rawTripStartTime = parseDate(trip.start_time); //original start time selected by user
         var rawTripEndTime = parseDate(trip.end_time); //original end time selected by user
+        var is_depart_at = trip.is_depart_at;
         var isStartTimeInvalid = isNaN(rawTripStartTime);
         var isEndTimeInvalid = isNaN(rawTripEndTime);
 
@@ -510,19 +511,13 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
 
             if (!isNaN(planStartTime)) {
                 plan.start_time = planStartTime.toISOString();
-                if (!isStartTimeInvalid && planStartTime < rawTripStartTime) {
-                    is_valid = false;
-                }
-                if (!isEndTimeInvalid && planStartTime >= rawTripEndTime) {
+                if (is_depart_at && !isStartTimeInvalid && planStartTime < rawTripStartTime) {
                     is_valid = false;
                 }
             }
             if (!isNaN(planEndTime)) {
                 plan.end_time = planEndTime.toISOString();
-                if (!isStartTimeInvalid && planEndTime <= rawTripStartTime) {
-                    is_valid = false;
-                }
-                if (!isEndTimeInvalid && planEndTime > rawTripEndTime) {
+                if (!is_depart_at && !isEndTimeInvalid && planEndTime > rawTripEndTime) {
                     is_valid = false;
                 }
             }
@@ -1279,7 +1274,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             " data-start-time-estimated='" + isPlanStartTimeEstimated + "'" +
             " data-end-time='" + strPlanEndTime + "'" +
             " data-end-time-estimated='" + isPlanEndTimeEstimated + "'" +
-            " data-mode='" + mode + "'" +
+            " data-mode='" + modeName + "'" +
             " data-transfer='" + (typeof(transfers) === 'number' ? transfers.toString() : '0') + "'" +
             " data-cost='" + ((isValidObject(cost) && (typeof(cost.price) === 'number')) ? cost.price : '') + "'" +
             " data-duration='" + (isValidObject(duration) ? parseFloat(duration.sortable_duration) / 60 : '') + "'" +
@@ -1546,7 +1541,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             return;
         }
 
-        var modes = {};
+        var modes = [];
         var minTransfer = 0;
         var maxTransfer = 0;
         var minCost = -1;
@@ -1601,8 +1596,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 }
 
                 //modes
-                if (!modes.hasOwnProperty(tripPlan.mode)) {
-                    modes[tripPlan.mode] = toCamelCase(tripPlan.mode_name);
+                var modeName = tripPlan.mode_name;
+                if (modes.indexOf(modeName) < 0) {
+                    modes.push(modeName);
                 }
             });
         });
@@ -1637,7 +1633,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
     function getModeFilterHtml(modes) {
         var isFirstMode = true;
         var modeFilterTags = '';
-        for (var modeId in modes) {
+        modes.forEach(function(mode) {
             if (isFirstMode) {
                 modeFilterTags +=
                     '<div class = "col-sm-12" style="padding: 0px;">' +
@@ -1648,8 +1644,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 isFirstMode = false;
             }
 
-            modeFilterTags += getModeCheckboxHtml(modeId, modes[modeId]);
-        }
+            modeFilterTags += getModeCheckboxHtml(mode);
+        });
 
         if (!isFirstMode) {
             modeFilterTags +=
@@ -1669,25 +1665,24 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         if ($('#' + modeContainerId).length === 0) {
             $('#' + filterContainerId).prepend(getModeFilterHtml(modes));
         } else {
-            for (var modeId in modes) {
+            modes.forEach(function(mode){
                 if ($('#' + modeContainerId + ' :checkbox[value=' + modeId + ']').length === 0) {
-                    $('#' + modeContainerId).append(getModeCheckboxHtml(modeId, modes[modeId]));
+                    $('#' + modeContainerId).append(getModeCheckboxHtml(mode));
                 }
-            }
+            });
         }
     }
 
     /*
      * get html checkbox tag for one mode
-     * @param {string}: modeId
-     * @return {string} modeText
+     * @param {string}: mode
      */
-    function getModeCheckboxHtml(modeId, modeText) {
+    function getModeCheckboxHtml(mode) {
         var modeTag =
             '<div class="checkbox" style="margin:0px 0px 0px 10px;">' +
             '<label>' +
-            '<input type="checkbox" checked=true value=' + modeId + '>' +
-            modeText +
+            '<input type="checkbox" checked=true value="' + mode + '">' +
+            mode +
             '</label>' +
             '</div>';
         return modeTag;
