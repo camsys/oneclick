@@ -80,6 +80,7 @@ en:
   display_type: "Display Type"
   summary_type: "Summary Type"
   run: "Run"
+  export: 'Export'
   admin: 'Admin'
   admin_actions: 'Admin'
   staff_actions: 'Staff'
@@ -212,13 +213,13 @@ en:
   from: 'From'
   from_lat: 'From Lat'
   from_lon: 'From Lon'
-  out_arrive_or_depart: 'Arrive Depart'
-  from_datetime: 'Date'
+  out_arrive_or_depart: 'Outbound Arrive Depart'
+  out_datetime: 'Outbound Date'
   to: 'To'
   to_lat: 'To Lat'
   to_lon: 'To Lon'
-  in_arrive_or_depart: 'Arrive Depart'
-  to_datetime: 'Date'
+  in_arrive_or_depart: 'Inbound Arrive Depart'
+  in_datetime: 'Inbound Date'
   at_time: 'on'
   arrive_depart: 'Arrive/Depart'
   leaving_from: 'Leaving From'

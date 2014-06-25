@@ -72,6 +72,7 @@ es:
   display_type: "[es49]Display Type[/es]"
   summary_type: "[es50]Summary Type[/es]"
   run: "[es51]Run[/es]"
+  export: "[es]Export[/es]"
   users: "[es42]Users[/es]"
   agents: "[es67]Agents[/es]"
   administrators: "[es71]Administrators[/es]"
@@ -214,13 +215,13 @@ es:
   from: 'De'
   from_lat: '[es]From Lat[/es]'
   from_lon: '[es]From Lon[/es]'
-  out_arrive_or_depart: '[es]Arrive Depart[/es]'
-  from_datetime: '[es]Date[/es]'
+  out_arrive_or_depart: '[es]Outbound Arrive Depart[/es]'
+  out_datetime: '[es]Outbound Date[/es]'
   to: 'A'  
   to_lat: '[es]To Lat[/es]'
   to_lon: '[es]To Lon[/es]'
-  in_arrive_or_depart: '[es]Arrive Depart[/es]'
-  to_datetime: '[es]Date[/es]'
+  in_arrive_or_depart: '[es]Inbound Arrive Depart[/es]'
+  in_datetime: '[es]Inbound Date[/es]'
   at_time: 'en'  
   arrive_depart: 'Llegada/Salida *1*'  
   leaving_from: '[es]Leaving From[/es]'

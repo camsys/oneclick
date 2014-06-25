@@ -14,8 +14,8 @@ class TripsDetailsReport < AbstractReport
 
   def get_columns
     [:id, :user, :assisted_by, :modes,
-     :from, :from_lat, :from_lon, :out_arrive_or_depart, :from_datetime,
-     :to, :to_lat, :to_lon, :in_arrive_or_depart, :to_datetime, :round_trip,
+     :leaving_from, :from_lat, :from_lon, :out_arrive_or_depart, :out_datetime,
+     :going_to, :to_lat, :to_lon, :in_arrive_or_depart, :in_datetime, :round_trip,
      :eligibility, :accommodations, :outbound_itinerary_count, :return_itinerary_count,
      :status, :device, :location, :trip_purpose, :outbound_selected_short, :return_selected,]
   end

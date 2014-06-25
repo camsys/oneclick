@@ -36,11 +36,11 @@ class TripDecorator < Draper::Decorator
     object.creator.name
   end
 
-  def from
+  def leaving_from
     from_place.name
   end
 
-  def to
+  def going_to
     to_place.name
   end
 
@@ -56,7 +56,7 @@ class TripDecorator < Draper::Decorator
     outbound_part.is_depart ? I18n.t(:departing_at) : I18n.t(:arriving_by)
   end
   
-  def from_datetime
+  def out_datetime
     I18n.l outbound_part.scheduled_time, format: :isoish
   end
   
@@ -74,7 +74,7 @@ class TripDecorator < Draper::Decorator
     end
   end
   
-  def to_datetime
+  def in_datetime
     if is_return_trip
       I18n.l return_part.scheduled_time, format: :isoish
     end

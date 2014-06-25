@@ -8,6 +8,9 @@
         = header
     .col-sm-6
       %h2
+        = button_tag id: 'export',
+                class: "#{@url_for_csv ? '' : 'disabled '}btn btn-default action-button controls pull-right" do
+          =t (:export)
         = button_tag type: :submit, class: 'btn btn-default action-button controls pull-right' do
           =t (:run)
 
@@ -19,14 +22,26 @@
             = f.input :report_name, collection: Report.names_and_ids, include_blank: false, label: t(:report_name)
           .col-sm-2
             = f.input :date_range, collection: DateOption.form_collection(false), include_blank: false, label: t(:date_range)
-          .col-sm-2
-            = f.input :trip_purpose, collection: TripPurpose.form_collection, include_blank: false, label: t(:trip_purpose)
-          .col-sm-2
-            = f.input :traveler_type, collection: Characteristic.form_collection, include_blank: false, label: t(:traveler_type)
-          .col-sm-2
-            = f.input :summary_type, collection: Report.summary_types, include_blank: false, label: t(:summary_type)
+          -# .col-sm-2
+          -#   = f.input :trip_purpose, collection: TripPurpose.form_collection, include_blank: false, label: t(:trip_purpose)
+          -# .col-sm-2
+          -#   = f.input :traveler_type, collection: Characteristic.form_collection, include_blank: false, label: t(:traveler_type)
+          -# .col-sm-2
+          -#   = f.input :summary_type, collection: Report.summary_types, include_blank: false, label: t(:summary_type)
 
 :javascript
   $('#generated_report_report_name').on('change', function(event) {
     $('#report_form').attr('action', "#{admin_reports_path(locale: params[:locale])}/" + this.value)
-  })
+  });
+  function exportCsv(mode) {
+   var a = document.createElement('a');
+   a.href = "#{@url_for_csv}"
+   a.target = '_blank';
+   document.body.appendChild(a);
+   a.click();
+  };
+
+  $('#export').click(function(e) {
+     e.preventDefault();
+     exportCsv("all");
+  } );

@@ -10,9 +10,6 @@
     var oTable = $('#datatable').dataTable( {
             "sDom": "#{%q[<'row'<'col-sm-6' f>>] if filter}<'row'<'col-sm-6'l><'extras col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>"
     } );
-    if ("#{export}") {
-        $("div.extras").html('<div class="pull-right"><button class="btn btn-default action-button pull-right" id="export_all">Export</button></div>')
-    }
     function exportCsv(mode) {
      var a = document.createElement('a');
      a.href = "#{@url_for_csv}"

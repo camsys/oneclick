@@ -51,15 +51,25 @@ class Admin::ReportsController < Admin::BaseController
       
       respond_to do |format|
         format.html
-        format.csv { render text: get_csv(@columns, @data) }
+        format.csv { send_data get_csv(@columns, @data) }
       end
     end
 
   end
 
   def get_csv(columns, data)
+    # Excel is stupid if the first two characters of a csv file are "ID". Necessary to
+    # escape it. https://support.microsoft.com/kb/215591/EN-US
     CSV.generate do |csv|
-      csv << I18n.t(columns)
+      xlated_columns = I18n.t(@columns)
+      if xlated_columns[0].start_with? "ID"
+        headers = Array.new(xlated_columns)
+        headers[0] = "'" + headers[0]
+      else
+        headers = xlated_columns
+      end
+
+      csv << headers
       data.each do |row|
         csv << columns.map {|col| row.send(col) }
       end
