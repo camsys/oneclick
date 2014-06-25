@@ -47,12 +47,23 @@ class Admin::ReportsController < Admin::BaseController
       report_instance = @report.class_name.constantize.new
       @data = report_instance.get_data(current_user, @generated_report)
       @columns = report_instance.get_columns
+      @url_for_csv = url_for only_path: true, format: :csv, params: params
       
       respond_to do |format|
         format.html
+        format.csv { render text: get_csv(@columns, @data) }
       end
     end
 
   end
 
+  def get_csv(columns, data)
+    CSV.generate do |csv|
+      csv << I18n.t(columns)
+      data.each do |row|
+        csv << columns.map {|col| row.send(col) }
+      end
+    end
+  end
+  
 end

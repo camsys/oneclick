@@ -17,12 +17,12 @@ end
 
 #Create reports and internationalize their names
 [
-  {name: 'Trips Created', description: 'Displays a chart showing the number of trips created each day.', view_name: 'generic_report', class_name: 'TripsCreatedByDayReport', active: true},
-  {name: 'Trips Scheduled', description: 'Displays a chart showing the number of trips scheduled for each day.', view_name: 'generic_report', class_name: 'TripsScheduledByDayReport', active: true},
-  {name: 'Failed Trips', description: 'Displays a report describing the trips that failed.', view_name: 'trips_report', class_name: 'InvalidTripsReport', active: true},
-  {name: 'Rejected Trips', description: 'Displays a report showing trips that were rejected by a user.', view_name: 'trips_report', class_name: 'RejectedTripsReport', active: true},
+  {name: 'Trips Created', description: 'Displays a chart showing the number of trips created each day.', view_name: 'generic_report', class_name: 'TripsCreatedByDayReport', active: false},
+  {name: 'Trips Scheduled', description: 'Displays a chart showing the number of trips scheduled for each day.', view_name: 'generic_report', class_name: 'TripsScheduledByDayReport', active: false},
+  {name: 'Failed Trips', description: 'Displays a report describing the trips that failed.', view_name: 'trips_report', class_name: 'InvalidTripsReport', active: false},
+  {name: 'Rejected Trips', description: 'Displays a report showing trips that were rejected by a user.', view_name: 'trips_report', class_name: 'RejectedTripsReport', active: false},
   {name: 'Trips Planned', description: 'Trips planned with various breakdowns.',
-   view_name: 'breakdown_report', class_name: 'TripsBreakdownReport', active: true},
+   view_name: 'breakdown_report', class_name: 'TripsBreakdownReport', active: false},
   {name: 'Trips Details', description: 'Details of all trips.',
    view_name: 'trips_details_report', class_name: 'TripsDetailsReport', active: true}
 ].each do |rep|

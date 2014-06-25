@@ -11,7 +11,7 @@ class TripDecorator < Draper::Decorator
   #     end
   #   end
 
-  def initialize object, options
+  def initialize object, options={}
     super
     @elig_svc = EligibilityService.new
   end
