@@ -14,6 +14,9 @@
       .col-sm-12
         - if can? :destroy, @provider
           = button_to t(:delete), { action: "destroy", id: @provider.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default", form_class: "form-horizontal pull-right"
+          - if can?(:create, Service) && can?(:update, @provider)
+            = link_to new_service_path(provider_id: @provider), {class: 'btn action-button btn-default pull-right', role: 'button'} do
+              = icon_label(:add_service)
         - if can? :update, @provider
           = link_to edit_admin_provider_path(@provider), {class: 'btn action-button btn-default pull-right', role: 'button'} do
             = icon_label(:edit)
