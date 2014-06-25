@@ -565,17 +565,16 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         return trip;
     }
 
-    /*
-     * re-format data in trip object
-     * - leg type formatting: only allow Walk, Transfer, Vehicle
-     * - legs [] is empty: then need to put itinerary data into legs array
-     * - start_time or end_time: if null then use trip's start_time or end_time
+    /**
+     * adjust trip part's time range when itineraries are responded 
+     * only applicable if we deal with UI display window for each trip part
+     * default min ui duration is 1hr
+     * default max ui duration is 2hrs
+     * not being used
+     * @param {object} trip
+     * @return {bool}: if false, then something wrong with time range, should not render this trip
      */
-    function formatTripData(trip) {
-        if (typeof trip != 'object' || trip === null) {
-            return null;
-        }
-
+    function adjustTripTimeRangeWithUIDipslayWindow(trip) {
         var strTripStartTime = trip.start_time;
         var strTripEndTime = trip.end_time;
         var minUIDuration = typeof(trip.min_ui_duration) === 'number' ? trip.min_ui_duration : 60; //default 1 hr
@@ -588,16 +587,16 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var actualTripEndTime = parseDate(trip.actual_end_time); //max time by iterating all legs in all itineraries
 
         if (!isNaN(actualTripStartTime) && !isNaN(actualTripEndTime)) {
-            var actualTimeRange = (actualTripEndTime - actualTripStartTime) / (1000 * 60);
-            if (actualTimeRange > maxUIDuration) {
-                maxUIDuration = actualTimeRange;
-            }
+           var actualTimeRange = (actualTripEndTime - actualTripStartTime) / (1000 * 60);
+           if (actualTimeRange > maxUIDuration) {
+               maxUIDuration = actualTimeRange;
+           }
         }
 
         var isStartTimeInvalid = isNaN(tripStartTime);
         var isEndTimeInvalid = isNaN(tripEndTime);
         if (isStartTimeInvalid && isEndTimeInvalid) {
-            return;
+            return false;
         } else if (isStartTimeInvalid) { //check max_ui_duration restriction
             tripEndTime = moment(tripEndTime).toDate();
 
@@ -616,13 +615,13 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         }
 
         if (tripEndTime <= tripStartTime) {
-            return null;
+           return false;
         }
 
         var timeRangeMins = (tripEndTime - tripStartTime) / (1000 * 60);
         if (timeRangeMins < minUIDuration) { //check min_ui_duration restriction
-            tripStartTime = moment(tripStartTime).subtract('minutes', (minUIDuration - timeRangeMins) / 2).toDate();
-            tripEndTime = moment(tripEndTime).add('minutes', (minUIDuration - timeRangeMins) / 2).toDate();
+           tripStartTime = moment(tripStartTime).subtract('minutes', (minUIDuration - timeRangeMins) / 2).toDate();
+           tripEndTime = moment(tripEndTime).add('minutes', (minUIDuration - timeRangeMins) / 2).toDate();
         }
 
         trip.start_time = tripStartTime.toISOString();
@@ -630,6 +629,76 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
 
         trip.min_ui_duration = minUIDuration;
         trip.max_ui_duration = maxUIDuration;
+
+        return true;
+    }
+
+    /**
+     * adjust trip part's time range when itineraries are responded 
+     * @param {object} trip
+     * @return {bool}: if false, then something wrong with time range, should not render this trip
+     */
+    function adjustTripTimeRangeWithoutUIDipslayWindow(trip) {
+        var strTripStartTime = trip.start_time;
+        var strTripEndTime = trip.end_time;
+
+        var tripStartTime = parseDate(strTripStartTime);
+        var tripEndTime = parseDate(strTripEndTime);
+
+        var actualTripStartTime = parseDate(trip.actual_start_time); //min time by iterating all legs in all itineraries
+        var actualTripEndTime = parseDate(trip.actual_end_time); //max time by iterating all legs in all itineraries
+
+        var actualTimeRange = 1 * 60; //1hr as default
+        if (!isNaN(actualTripStartTime) && !isNaN(actualTripEndTime)) {
+           actualTimeRange = (actualTripEndTime - actualTripStartTime) / (1000 * 60);
+        }
+
+        var is_depart_at = trip.is_depart_at;
+         var isStartTimeInvalid = isNaN(tripStartTime);
+        var isEndTimeInvalid = isNaN(tripEndTime);
+        if (isStartTimeInvalid && isEndTimeInvalid) {
+            return false;
+        } else if (is_depart_at || isEndTimeInvalid) {
+            tripStartTime = moment(tripStartTime).toDate();
+            tripEndTime = moment(tripStartTime).add('minutes', actualTimeRange).toDate();
+
+            if (!isNaN(actualTripEndTime) && tripEndTime < actualTripEndTime) {
+                tripEndTime = moment(actualTripEndTime).add('minutes', intervalStep).toDate();
+            }
+        } else if (!is_depart_at || isStartTimeInvalid){            
+            tripEndTime = moment(tripEndTime).toDate();
+
+            tripStartTime = moment(tripEndTime).subtract('minutes', actualTimeRange).toDate();
+
+            if (!isNaN(actualTripStartTime) && tripStartTime > actualTripStartTime) {
+                tripStartTime = moment(actualTripStartTime).subtract('minutes', intervalStep).toDate();
+            }           
+        }
+
+        if (tripEndTime <= tripStartTime) {
+           return false;
+        }
+
+        trip.start_time = tripStartTime.toISOString();
+        trip.end_time = tripEndTime.toISOString();
+
+        return true;
+    }
+
+    /*
+     * re-format data in trip object
+     * - leg type formatting: only allow Walk, Transfer, Vehicle
+     * - legs [] is empty: then need to put itinerary data into legs array
+     * - start_time or end_time: if null then use trip's start_time or end_time
+     */
+    function formatTripData(trip) {
+        if (typeof trip != 'object' || trip === null) {
+            return null;
+        }
+
+        if(!adjustTripTimeRangeWithoutUIDipslayWindow(trip)) {
+            return null;
+        }
 
         if (!trip.itineraries instanceof Array) {
             return trip;
@@ -2166,15 +2235,17 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
     function resizePlanColumns() {
         var planWidth = $('.single-plan-review').outerWidth();
         if(planWidth > 0) {
-            var extraWidthForFirstLastColumn = 10;
-            var minMainColumnWidthPct = 30;
+            var extraWidthForFirstColumn = 40; //px; first column width will be at minimum width of the sorter + extra_width
+            var extraWidthForLastColumn = 20; //px; first column width will be width of the select button + extra_width
+            var minMainColumnWidthPct = 30; //percentage; 
+            var minFirstColumnWidth = 100; //px; min width of first column
 
             var sorterWidth = $('.trip-sorter').outerWidth();
-            var firstColumnWidth = sorterWidth + extraWidthForFirstLastColumn;
+            var firstColumnWidth = Math.max(minFirstColumnWidth, sorterWidth + extraWidthForFirstColumn);
 
             var selectButtonWidth = $('.single-plan-review .single-plan-select').outerWidth();
             var questionButtonWidth = $('.single-plan-review .single-plan-question').outerWidth();
-            var lastColumnWidth = (Math.max(selectButtonWidth, questionButtonWidth) + extraWidthForFirstLastColumn);
+            var lastColumnWidth = (Math.max(selectButtonWidth, questionButtonWidth) + extraWidthForLastColumn);
 
             var mainColumnWidth = planWidth - firstColumnWidth - lastColumnWidth;
 
