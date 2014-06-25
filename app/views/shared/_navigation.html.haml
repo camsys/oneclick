@@ -2,7 +2,7 @@
   .container-fluid
     #navHeader
       .col-xs-5{:style => 'padding:0px;'}
-        %a#logo.navbar-brand.img-responsive{:href => root_url, :style => "text-indent:-9999px;"} Logo
+        %a#logo.navbar-brand.img-responsive{:href => root_url(locale: I18n.locale), :style => "text-indent:-9999px;"} Logo
       .pull-right
         %a#help{:href => "/501"}
           %i.fa.fa-question-circle

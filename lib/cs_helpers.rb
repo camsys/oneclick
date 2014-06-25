@@ -51,7 +51,7 @@ module CsHelpers
     a = if user_signed_in?
       [
         {label: t(:plan_a_trip), target: new_user_trip_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:plan_a_trip]},
-        {label: t(:my_travel_profile), target: user_path(get_traveler), locale: I18n.locale, icon: ACTION_ICONS[:travel_profile]},
+        {label: t(:my_travel_profile), target: user_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:travel_profile]},
         {label: t(:my_trips), target: user_trips_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_trips]},
         {label: t(:my_places), target: user_places_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_places]},
       ]
@@ -281,7 +281,7 @@ module CsHelpers
 
   def user_trip_path_for_ui_mode traveler, trip
     unless ui_mode_kiosk?
-      user_trip_path traveler, trip
+      user_trip_path traveler, trip, locale: I18n.locale
     else
       kiosk_user_trip_path traveler, trip
     end
@@ -337,7 +337,7 @@ module CsHelpers
 
   def new_user_trip_characteristic_path_for_ui_mode traveler, trip
     unless ui_mode_kiosk?
-      new_user_trip_characteristic_path traveler, trip
+      new_user_trip_characteristic_path traveler, trip, locale: I18n.locale
     else
       raise "new_user_trip_characteristic_path not defined for kiosk yet"
     end

@@ -1,10 +1,11 @@
 = simple_form_for @ratings_proxy, url: ratings_path, input_html: {class: "form-horizontal"} do |f|
   .modal-header
     .row
-      %btn.btn.btn-default.action-button.pull-right{data: {dismiss: "modal"}}= t(:cancel)
-      = f.submit t(:apply), class: "btn action-button btn-default pull-right"
-      = simple_fields_for @ratings_proxy.rater do |rater|
-        = rater.input :id, as: :hidden
+      .col-sm-12
+        %btn.btn.action-button.pull-right{data: {dismiss: "modal"}}= t(:cancel)
+        = f.submit t(:apply), class: "btn action-button pull-right"
+        = simple_fields_for @ratings_proxy.rater do |rater|
+          = rater.input :id, as: :hidden
   - @ratings_proxy.rateables.each do |rateable|
     = simple_fields_for :ratings, rateable.ratings.build, index: rateable.class.name do |ratings_form|
       .panel.panel-default

@@ -53,7 +53,7 @@
             %td= "%s / %s" % [trip.outbound_part.max_notes_count, trip.return_part.max_notes_count]
           - if can? :send_follow_up, trip
             %td
-              = link_to email_feedback_user_trip_path(traveler, trip), class: "btn btn btn-default action-button" do
+              = link_to email_feedback_user_trip_path(traveler, trip, locale: I18n.locale), class: "btn btn btn-default action-button" do
                 - t(:send)
         = render partial: 'trips/trip_rating', locals: {id: trip.id}
 

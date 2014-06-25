@@ -192,7 +192,7 @@ class TripsController < PlaceSearchingController
     UserMailer.user_trip_email(email_addresses, @trip, subject, from_email,
       params[:email][:email_comments]).deliver
     respond_to do |format|
-      format.html { redirect_to plan_user_trip_path(@trip.creator, @trip, itinids: params[:itinids]),
+      format.html { redirect_to plan_user_trip_path(@trip.creator, @trip, itinids: params[:itinids], locale: I18n.locale),
         :notice => "An email was sent to #{email_addresses.to_sentence}."  }
       format.json { render json: @trip }
     end
@@ -224,7 +224,7 @@ class TripsController < PlaceSearchingController
     subject = Oneclick::Application.config.name + ' Trip Request'
     UserMailer.provider_trip_email(emails, @trip, subject, from_email, comments).deliver
     respond_to do |format|
-      format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{provider.name}."  }
+      format.html { redirect_to user_trip_url(@trip.creator, @trip, locale: I18n.locale), :notice => "An email was sent to #{provider.name}."  }
       format.json { render json: @trip }
     end
   end
@@ -243,7 +243,7 @@ class TripsController < PlaceSearchingController
     UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, subject, from_email,
       params[:email][:email_comments]).deliver
     respond_to do |format|
-      format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
+      format.html { redirect_to user_trip_url(@trip.creator, @trip, locale: I18n.locale), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
       format.json { render json: @trip }
     end
   end
@@ -253,7 +253,7 @@ class TripsController < PlaceSearchingController
     @trip = Trip.find(params[:id])
     UserMailer.feedback_email(@trip).deliver
     respond_to do |format|
-      format.html { redirect_to admin_trips_path, :notice => "An email was sent to #{@trip.user.email}."  }
+      format.html { redirect_to admin_trips_path, :notice => "An email was sent to #{@trip.user.email}.", locale: I18n.locale  }
       format.json { render json: @trip }
     end
   end
@@ -293,7 +293,7 @@ class TripsController < PlaceSearchingController
   def repeat
     # make sure we can find the trip we are supposed to be repeating and that it belongs to us.
     if @trip.nil?
-      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
+      redirect_to(user_trips_url(locale: I18n.locale), :flash => { :alert => t(:error_404) })
       return
     end
 
@@ -362,7 +362,7 @@ class TripsController < PlaceSearchingController
     # set the @traveler variable
     get_traveler
 
-    redirect_to root_path, :alert => t(:assisting_turned_off)
+    redirect_to root_path(locale: I18n.locale), :alert => t(:assisting_turned_off)
 
   end
 

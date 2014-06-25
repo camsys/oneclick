@@ -28,8 +28,6 @@ class ApplicationController < ActionController::Base
   def set_locale
     if params[:locale]
        I18n.locale = params[:locale]
-    else
-      I18n.locale = current_or_guest_user.preferred_locale
     end
   end
 
@@ -53,6 +51,11 @@ class ApplicationController < ActionController::Base
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+  end
+
+  def redirect_to(options = {}, response_status = {})
+    options[:locale] = I18n.locale if options.is_a? Hash
+    super(options, response_status)
   end
 
   protected

@@ -5,7 +5,7 @@
     = t(:did_not_take_feedback_prompt)
 .row
   .col-sm-12
-    =simple_form_for @trip, url: trip_only_rating_path(@trip), method: "post" do |f|
+    =simple_form_for @trip, url: trip_only_rating_path(@trip, I18n.locale), method: "post" do |f|
       .row
         .col-sm-12
           %btn.btn.btn-default.action-button.pull-right

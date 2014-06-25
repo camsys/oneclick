@@ -14,7 +14,7 @@ class CharacteristicsController < TravelerAwareController
     if params['inline'] == '1' || params[:trip_id]
       @trip = Trip.find(session[:current_trip_id] || params[:trip_id])
       @trip.remove_itineraries
-      @path = populate_user_trip_path(@traveler, @trip, {asynch: 1})
+      @path = populate_user_trip_path(@traveler, @trip, {asynch: 1}, locale: I18n.locale )
     end
 
     # We assume the update is from the review page if it's ajax
@@ -24,7 +24,7 @@ class CharacteristicsController < TravelerAwareController
     end
 
     respond_to do |format|
-      format.html { redirect_to @path }
+      format.html { redirect_to @path}
       format.js { render "characteristics/update_form" }
     end
   end
