@@ -42,6 +42,7 @@
             });
         }
         var months = #{t('date.month_names')};
+        console.log(months);
         if(months instanceof Array && months.length > 0) {
           moment.lang(localeLang, {
             months : months

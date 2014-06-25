@@ -621,6 +621,7 @@ en:
     - Fri
     - Sat
     abbr_month_names:
+    - 
     - Jan
     - Feb
     - Mar
@@ -648,6 +649,7 @@ en:
       oneclick_long: ! '%A, %B %-d %Y'
       oneclick_short: ! '%A, %B %-d'
     month_names:
+    - 
     - January
     - February
     - March
