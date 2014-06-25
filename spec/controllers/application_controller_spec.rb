@@ -31,15 +31,16 @@ describe ApplicationController do
   end
 
   describe 'users preferred locale' do
-    it "should use the users default if not set in the url" do
+    it "should use the previous locale if not set in the url" do
       @user = FactoryGirl.create(:user)
       expect(@user.preferred_locale).to eq('en')
+      sign_in @user
+      get :index
       @user.update_attribute :preferred_locale, 'es'
       @user.reload
       expect(@user.preferred_locale).to eq('es')
-      sign_in @user
       get :index
-      expect(I18n.locale).to eq(:es)
+      expect(I18n.locale).to eq(:en)
     end
 
   end
