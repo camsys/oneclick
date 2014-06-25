@@ -25,4 +25,15 @@ class UserRelationshipProxy
     @can_assist_me = UserRelationship.find_by(traveler: @me, delegate: @you)
   end
 
+  def active?
+    rtn = false
+    if @i_can_assist
+      rtn ||= @i_can_assist.active?
+    end
+    if @can_assist_me
+      rtn ||= @can_assist_me.active?
+    end
+    rtn
+  end
+
 end

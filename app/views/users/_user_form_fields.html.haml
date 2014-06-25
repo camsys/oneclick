@@ -38,9 +38,10 @@
           .panel-heading
             %h3= t(:buddies)
           .panel-body
+            .table-flash
             %btn.btn.btn-default.action-button.pull-right{data: {toggle: 'modal', target: '#add_user'}}
               = t(:add)
-            %table.table.table.condensed.table-striped.table-hover.table-bordered#table
+            %table.table.table.condensed.table-striped.table-hover.table-bordered#buddies_table
               %thead
                 %th= t(:buddy)
                 %th= t(:email)
@@ -56,8 +57,10 @@
                   .modal-header
                     .row
                       .col-sm-12
-                        %btn.btn.action-button.pull-right{data:{dismiss: 'modal'}}
-                          = t(:ok)
+                        %btn.btn.action-button.pull-right#search
+                          = t(:apply)
+                        %btn.btn.action-button.pull-right{data: {dismiss: 'modal'}}
+                          = t(:cancel)
                   .modal-body
                     .modal-flash
                     .panel.panel-default
@@ -68,7 +71,6 @@
                           .col-sm-12
                             = label_tag :email, t(:email)
                             = text_field_tag :email,nil
-                            %btn.btn.btn-default.action-button#search= t(:add_new_buddy)
 
 
   - if can? :full_read, @user
@@ -110,14 +112,21 @@
               =booking_form.input :dob, label: "Date of Birth", placeholder: "mm/dd/yyyy", hint: 'Date of Birth is used to confirm the Client Id with Rabbit Transit.  It will not be saved.'
 :javascript
   $(document).ready(function() {
-    $('#table').dataTable( {
+    $('#buddies_table').dataTable( {
           "oLanguage": {
-              "sLengthMenu": "Display _MENU_ buddies per page",
-              "sZeroRecords": "Nothing found - sorry",
-              "sInfo": "Showing _START_ to _END_ of _TOTAL_ buddies",
-              "sInfoEmpty": "Showing 0 to 0 of 0 buddies",
-              "sInfoFiltered": "(filtered from _MAX_ total buddies)"
+            "sLengthMenu": "Display _MENU_ buddies per page",
+            "sZeroRecords": "Nothing found - sorry",
+            "sInfo": "Showing _START_ to _END_ of _TOTAL_ buddies",
+            "sInfoEmpty": "Showing 0 to 0 of 0 buddies",
+            "sInfoFiltered": "(filtered from _MAX_ total buddies)"
           },
+          "bAutoWidth": false,
+          "aoColumns": [
+            {"sWidth": "30%"},
+            {"sWidth": "30%"},
+            {"sWidth": "20%"},
+            {"sWidth": "20%"},
+          ],
           "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
       } );
       $("#search").on("click", function() {
@@ -126,10 +135,19 @@
           data: {email: $("#email").val()},
           dataType: "json",
           success: function(data) {
-            console.log(data);
             if (data["success"]) {
-              $("div.modal-flash").html(data["msg"]).addClass("alert alert-success fade-in");
+              $(".modal").modal("toggle");
+              $("div.table-flash").html(data["msg"]).addClass("alert alert-success fade-in");
               $(".new_buddies select").append("<option selected value=" + data["output"] + ">"+ data["output"] + "</option>")
+              //find row
+              var row = $("td.email:contains('" + data["row"][1] +"')").parent();
+              // Update if exists.  Add if not
+              if (row.length) {
+                $("#buddies_table").dataTable().fnUpdate( data["row"], row[0]);
+              }
+              else {
+                $( "#buddies_table" ).dataTable().fnAddData(data["row"]);
+              }
             } else {
               $("div.modal-flash").html(data["msg"]).addClass("alert alert-success fade-in");
             }
@@ -144,7 +162,7 @@
           if (data["success"]){
             $("#user_relationship_" + data["rel_id"]).children("option[value=" + data["status_id"] +"]").prop("selected", true);}
             $("td[data-rel=" + data["rel_id"] + "]").children("button").remove();
-            $("td[data-rel=" + data["rel_id"] + "]").append("<p>Update Pending...</p>");
+            $("td[data-rel=" + data["rel_id"] + "]").append("<p>Update Pending...</p>"); // Needs i18n
         }
       })
     });

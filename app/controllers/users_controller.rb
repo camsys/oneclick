@@ -95,22 +95,29 @@ class UsersController < ApplicationController
   def find_by_email
     user = User.find_by(email: params[:email])
     traveler = User.find(params[:id])
+    
     if user.nil?
       success = false
-      msg = t(:no_user_with_email_address, email: params[:email])
-    elsif user.eql? current_user
+      msg = h t(:no_user_with_email_address, email: params[:email]) # did you know that this was an XSS vector?  OOPS
+    elsif user.eql? traveler
       success = false
       msg = t(:you_can_t_be_your_own_buddy)
-    elsif traveler.buddies.include? user
+    elsif traveler.pending_and_confirmed_delegates.include? user
       success = false
       msg = t(:you_ve_already_asked_them_to_be_a_buddy)
     else 
       success = true
-      msg = t(:please_save_buddies)
+      msg = t(:please_save_buddies, name: user.first_name)
       output = user.email
+      row = [
+              user.name, 
+              user.email, 
+              I18n.t('relationship_status.relationship_status_pending'), 
+              UserRelationshipDecorator.decorate(UserRelationship.find_by(traveler: user, delegate: traveler)).buttons 
+            ]
     end
     respond_to do |format|
-      format.js { render json: {output: output, msg: msg, success: success} }
+      format.js { render json: {output: output, msg: msg, success: success, user_id: user.try(:id), row: row} }
     end
   end
 

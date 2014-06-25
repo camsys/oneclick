@@ -15,6 +15,10 @@ module RelationshipsHelper
     relationship_status_id == RelationshipStatus::REVOKED || relationship_status_id == RelationshipStatus::DENIED
   end
 
+  def active?
+    relationship_status_id != RelationshipStatus::DENIED && relationship_status_id != RelationshipStatus::REVOKED && relationship_status_id != RelationshipStatus::HIDDEN 
+  end
+
   # Test whether the requested action is legal on this relationship
   def permissible_action?(target_status)
     case target_status.to_i

@@ -37,7 +37,7 @@
         .panel-heading
           %h3= t(:buddies)
         .panel-body
-          %table.table.table.condensed.table-striped.table-hover.table-bordered#table
+          %table.table.table.condensed.table-striped.table-hover.table-bordered#buddies_table
             %thead
               %th= t(:buddy)
               %th= t(:email)
@@ -72,3 +72,23 @@
           %h3="[en]Booking Information[/en]"
         .panel-body
           = render :partial => 'users/show_booking_info', locals: { user: user }
+:javascript
+  $(document).ready(function() {
+    $('#buddies_table').dataTable( {
+          "oLanguage": {
+            "sLengthMenu": "Display _MENU_ buddies per page",
+            "sZeroRecords": "Nothing found - sorry",
+            "sInfo": "Showing _START_ to _END_ of _TOTAL_ buddies",
+            "sInfoEmpty": "Showing 0 to 0 of 0 buddies",
+            "sInfoFiltered": "(filtered from _MAX_ total buddies)"
+          },
+          "bAutoWidth": false,
+          "aoColumns": [
+            {"sWidth": "30%"},
+            {"sWidth": "30%"},
+            {"sWidth": "20%"},
+            {"sWidth": "20%"},
+          ],
+          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+    });

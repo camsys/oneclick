@@ -87,7 +87,9 @@
   padding-left: 0px;
   padding-right: 0px; 
 }
-
+tr .action-button {
+  margin: 0 0 0 5px;
+}
 .action-button{
   &:not(:last-of-type) {
     margin-left: 5px;

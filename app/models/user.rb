@@ -163,15 +163,19 @@ class User < ActiveRecord::Base
   end
 
   def update_relationships id_hash
-    id_hash.each do |rel_id, rel_status|
-      UserRelationship.find(rel_id).update_attributes(relationship_status_id: rel_status)
+    if id_hash
+      id_hash.each do |rel_id, rel_status|
+        UserRelationship.find(rel_id).update_attributes(relationship_status_id: rel_status)
+      end
     end
   end
 
   def add_buddies emails
     unless emails.nil?
       emails.each do |email|
-        rel = UserRelationship.create(user_id: self.id, delegate_id: User.find_by(email: email).id, relationship_status_id: RelationshipStatus::PENDING)
+        rel = UserRelationship.find_or_create_by(user_id: self.id, delegate_id: User.find_by(email: email).id) do |ur|
+          ur.relationship_status_id = RelationshipStatus::PENDING
+        end
         UserMailer.buddy_request_email(rel.delegate.email, rel.traveler.email).deliver
       end
     end

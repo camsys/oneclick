@@ -120,7 +120,6 @@ es:
   authorized_travelers: "[es]Authorized Travelers[/es]"
   add_user: "[es81]Add User[/es]"
   send_buddy_request: 'Enviar solicitud de amigo'
-  add_new_buddy:  "[es82]Add[/es]"
   buddys_email_address: "Correo electrónico del amigo"
   accept: 'Aceptar'
   decline: 'Rechazar'
@@ -489,7 +488,7 @@ es:
   you_ve_already_asked_them_to_be_a_buddy: "Ya le has solicitado ser amigo."
   my_buddies: "[es331]%{owner} Buddies[/es]"
   not_any_buddies: "[es332]You don't have any buddies.[/es]"
-  please_save_buddies: "[es492]Please save your changes to request this buddy[/es]"
+  please_save_buddies: "[es492]Please save your changes to ask %{name} to be your buddy.[/es]"
   no_buddies: "[es307]You don't have any travelers that have asked you to be their travel buddy.[/es]"
   address_is_required: "Se require una dirección"
   all_trips: "Todos los viajes *22*"

@@ -1,14 +1,17 @@
 - urpd = UserRelationshipProxyDecorator.decorate(urp)
-%tr
-  %td= urpd.name
-  %td= urpd.email
-  %td{data: {rel: urp.can_assist_me.try(:id)}}
-    = urpd.can_assist_me
-    - if urp.can_assist_me
-      .hidden
-        = select_tag "user[relationship][#{urp.can_assist_me.id}]", options_for_select(RelationshipStatus.statuses, urp.can_assist_me.relationship_status.id)
-  %td{data: {rel: urp.i_can_assist.try(:id)}}
-    = urpd.i_can_assist
-    - if urp.i_can_assist
-      .hidden
-        = select_tag "user[relationship]#{urp.i_can_assist.id}", options_for_select(RelationshipStatus.statuses, urp.i_can_assist.relationship_status.id)
+- if urp.active?
+  %tr
+    %td= urpd.name
+    %td.email= urpd.email
+    %td{data: {rel: urp.can_assist_me.try(:id)}}
+      = urpd.can_assist_me
+      - if urp.can_assist_me
+        .relationship_status{class: ("hidden" unless ENV['SHOWALL'])}
+          = select_tag "user[relationship][#{urp.can_assist_me.id}]", options_for_select(RelationshipStatus.statuses, urp.can_assist_me.relationship_status.id)
+          = urp.can_assist_me.status
+    %td{data: {rel: urp.i_can_assist.try(:id)}}
+      = urpd.i_can_assist
+      - if urp.i_can_assist
+        .relationship_status{class: ("hidden" unless ENV['SHOWALL'])}
+          = select_tag "user[relationship][#{urp.i_can_assist.id}]", options_for_select(RelationshipStatus.statuses, urp.i_can_assist.relationship_status.id)
+          = urp.i_can_assist.status
