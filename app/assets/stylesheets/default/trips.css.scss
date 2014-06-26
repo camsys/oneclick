@@ -207,6 +207,7 @@ $period-nav-button-width: 40px;
   text-align: center;
   color: black;
   border: none;
+  font-size: small;
 }
 
 .next-period {
@@ -217,6 +218,7 @@ $period-nav-button-width: 40px;
   text-align: center;
   color: black;
   border: none;
+  font-size: small;
 }
 
 /* in sm+ mode, one period-nav button in same container, so apply margin to sorter component that make them vertically align in containers */
