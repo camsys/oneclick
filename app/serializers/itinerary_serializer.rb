@@ -93,7 +93,7 @@ class ItinerarySerializer < ActiveModel::Serializer
         {price: nil, comments: I18n.t(:see_details_for_cost), estimated: true, price_formatted: '*'}
       end
     else
-      price_formatted = number_to_currency(fare)
+      price_formatted = number_to_currency(fare) || '*'
       comments = ''
       fare = fare.to_f
       case object.mode
