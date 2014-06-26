@@ -421,8 +421,11 @@ es:
   no_cost_for_service:  "[es281]No cost for this service[/es]"
   cost_details: "[es362]Cost Details[/es]"
   addl_cost_details: "[es299]Additional Cost Details[/es]"
-  click_for_cost_details: '[es]Click for cost details[es]'
-  see_below: '[es]See below[es]'
+  click_for_cost_details: '[es423]Click for cost details[es]'
+  click_for_details: '[es424]Click for details[/es]'
+  see_details_for_cost: '[es424]See details for cost[/es]'
+  cost_estimated: '[es425]Cost estimated[/es]'
+  see_below: '[es426]See below[es]'
   view_trip_details: "[es298]View trip details so that you can call the provider.[/es]"
   email_trip_details:  "[es299]Email your trip plan.[/es]"
   print_trip_details: "[es299]Print your trip plan.[/es]"

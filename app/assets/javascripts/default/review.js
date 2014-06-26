@@ -139,7 +139,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             addTripHtml(trip);
         });
 
-        
+
         //if modes[] available then fetch itineraries of each trip_part_mode
         if (_isInitial) {
             _isInitial = false;
@@ -171,34 +171,34 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         $.ajax({
             url: window.location.href + '/trip_parts/' + tripPartId + '/reschedule.json?minutes=-' + intervalStep
         })
-        .done(function(response) {
-            if(response.status === 200) { //valid response, then refresh page
-                window.location.reload();
-            } else {
-                show_alert(response.message);
-            }
-        })
-        .fail(function(response) {
-            console.log(response);
-            show_alert(localeDictFinder['something_went_wrong']);
-        });
+            .done(function(response) {
+                if (response.status === 200) { //valid response, then refresh page
+                    window.location.reload();
+                } else {
+                    show_alert(response.message);
+                }
+            })
+            .fail(function(response) {
+                console.log(response);
+                show_alert(localeDictFinder['something_went_wrong']);
+            });
     }
 
     function executeNextPeriodQuery(tripPartId) {
         $.ajax({
             url: window.location.href + '/trip_parts/' + tripPartId + '/reschedule.json?minutes=' + intervalStep
         })
-        .done(function(response) {
-           if(response.status === 200) { //valid response, then refresh page
-                window.location.reload();
-            } else {
-                show_alert(response.message);
-            }
-        })
-        .fail(function(response) {
-            console.log(response);
-            show_alert(localeDictFinder['something_went_wrong']);
-        });
+            .done(function(response) {
+                if (response.status === 200) { //valid response, then refresh page
+                    window.location.reload();
+                } else {
+                    show_alert(response.message);
+                }
+            })
+            .fail(function(response) {
+                console.log(response);
+                show_alert(localeDictFinder['something_went_wrong']);
+            });
     }
 
     function verifyTripJsonValid() {
@@ -260,14 +260,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         //register event listener for -30 | +30 nav buttons
         $('.next-period').on('click', function() {
             var tripPartObj = $(this).parents('.single-trip-part');
-            if(tripPartObj.length > 0) {
+            if (tripPartObj.length > 0) {
                 var tripPartId = tripPartObj.attr('data-trip-id');
                 executeNextPeriodQuery(tripPartId);
             }
         });
-         $('.prev-period').on('click', function() {
+        $('.prev-period').on('click', function() {
             var tripPartObj = $(this).parents('.single-trip-part');
-            if(tripPartObj.length > 0) {
+            if (tripPartObj.length > 0) {
                 var tripPartId = tripPartObj.attr('data-trip-id');
                 executePrevPeriodQuery(tripPartId);
             }
@@ -295,13 +295,13 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             onClickSinglePlanQuestionButton(this);
         });
 
-         //check if no itineraries in any trip part
+        //check if no itineraries in any trip part
         checkIfNoItineraries(_tripResponse.trip_parts);
         //render legend & filter
         addLegendHtml(_tripResponse.trip_parts);
         addFilterHtml(_tripResponse.trip_parts);
 
-        resizePlanColumns(); 
+        resizePlanColumns();
         resizeAllCharts();
     }
 
@@ -566,7 +566,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
     }
 
     /**
-     * adjust trip part's time range when itineraries are responded 
+     * adjust trip part's time range when itineraries are responded
      * only applicable if we deal with UI display window for each trip part
      * default min ui duration is 1hr
      * default max ui duration is 2hrs
@@ -587,10 +587,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var actualTripEndTime = parseDate(trip.actual_end_time); //max time by iterating all legs in all itineraries
 
         if (!isNaN(actualTripStartTime) && !isNaN(actualTripEndTime)) {
-           var actualTimeRange = (actualTripEndTime - actualTripStartTime) / (1000 * 60);
-           if (actualTimeRange > maxUIDuration) {
-               maxUIDuration = actualTimeRange;
-           }
+            var actualTimeRange = (actualTripEndTime - actualTripStartTime) / (1000 * 60);
+            if (actualTimeRange > maxUIDuration) {
+                maxUIDuration = actualTimeRange;
+            }
         }
 
         var isStartTimeInvalid = isNaN(tripStartTime);
@@ -615,13 +615,13 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         }
 
         if (tripEndTime <= tripStartTime) {
-           return false;
+            return false;
         }
 
         var timeRangeMins = (tripEndTime - tripStartTime) / (1000 * 60);
         if (timeRangeMins < minUIDuration) { //check min_ui_duration restriction
-           tripStartTime = moment(tripStartTime).subtract('minutes', (minUIDuration - timeRangeMins) / 2).toDate();
-           tripEndTime = moment(tripEndTime).add('minutes', (minUIDuration - timeRangeMins) / 2).toDate();
+            tripStartTime = moment(tripStartTime).subtract('minutes', (minUIDuration - timeRangeMins) / 2).toDate();
+            tripEndTime = moment(tripEndTime).add('minutes', (minUIDuration - timeRangeMins) / 2).toDate();
         }
 
         trip.start_time = tripStartTime.toISOString();
@@ -634,7 +634,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
     }
 
     /**
-     * adjust trip part's time range when itineraries are responded 
+     * adjust trip part's time range when itineraries are responded
      * @param {object} trip
      * @return {bool}: if false, then something wrong with time range, should not render this trip
      */
@@ -650,11 +650,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
 
         var actualTimeRange = 1 * 60; //1hr as default
         if (!isNaN(actualTripStartTime) && !isNaN(actualTripEndTime)) {
-           actualTimeRange = (actualTripEndTime - actualTripStartTime) / (1000 * 60);
+            actualTimeRange = (actualTripEndTime - actualTripStartTime) / (1000 * 60);
         }
 
         var is_depart_at = trip.is_depart_at;
-         var isStartTimeInvalid = isNaN(tripStartTime);
+        var isStartTimeInvalid = isNaN(tripStartTime);
         var isEndTimeInvalid = isNaN(tripEndTime);
         if (isStartTimeInvalid && isEndTimeInvalid) {
             return false;
@@ -665,18 +665,18 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             if (!isNaN(actualTripEndTime) && tripEndTime < actualTripEndTime) {
                 tripEndTime = moment(actualTripEndTime).add('minutes', intervalStep).toDate();
             }
-        } else if (!is_depart_at || isStartTimeInvalid){            
+        } else if (!is_depart_at || isStartTimeInvalid) {
             tripEndTime = moment(tripEndTime).toDate();
 
             tripStartTime = moment(tripEndTime).subtract('minutes', actualTimeRange).toDate();
 
             if (!isNaN(actualTripStartTime) && tripStartTime > actualTripStartTime) {
                 tripStartTime = moment(actualTripStartTime).subtract('minutes', intervalStep).toDate();
-            }           
+            }
         }
 
         if (tripEndTime <= tripStartTime) {
-           return false;
+            return false;
         }
 
         trip.start_time = tripStartTime.toISOString();
@@ -696,7 +696,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             return null;
         }
 
-        if(!adjustTripTimeRangeWithoutUIDipslayWindow(trip)) {
+        if (!adjustTripTimeRangeWithoutUIDipslayWindow(trip)) {
             return null;
         }
 
@@ -746,7 +746,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 }
 
                 plan.legs.forEach(function(leg) {
-                    if(!(typeof(leg.type) === 'string' && leg.type.trim().length > 0)) {
+                    if (!(typeof(leg.type) === 'string' && leg.type.trim().length > 0)) {
                         leg.type = 'unknown';
                     }
 
@@ -1369,8 +1369,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         ) +
             "</td>" +
             "<td class='trip-mode-cost'>" +
-            "<div class='itinerary-text'>" +
-            (isValidObject(cost) && (typeof(cost.price) === 'number') ? "$" + cost.price.toFixed(2) : '') +
+            "<div class='itinerary-text' title='" + cost.comments + "'>" +
+            (isValidObject(cost) ? cost.price_formatted : '') +
             "</div>" +
             "</td>" +
             "</tr>" +
@@ -1525,7 +1525,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
     /**
      * check if no itineraries in any trip part; if so, render a message to alert user
      */
-    function checkIfNoItineraries (trips) {
+    function checkIfNoItineraries(trips) {
         if (!trips instanceof Array) {
             return;
         }
@@ -1535,7 +1535,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 return;
             }
             var tripPlans = trip.itineraries;
-            if(!trip.itineraries instanceof Array || tripPlans.length === 0) {
+            if (!trip.itineraries instanceof Array || tripPlans.length === 0) {
                 var tripPartDivId = "trip_part_" + trip.id;
                 var noItineraryTags = '<div class="col-xs-12 alert alert-danger trip-part-no-itinerary-alert">' + localeDictFinder['no_itineraries_found'] + '</div>';
                 $('#' + tripPartDivId).append(noItineraryTags);
@@ -1579,20 +1579,20 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                             cls: className,
                             name: legendText
                         });
-                        
+
                     }
                 });
             });
         });
-        
+
         legendNames = legendNames.sort(function(sortItem1, sortItem2) {
             if (sortItem1.name < sortItem2.name) return -1;
             if (sortItem1.name > sortItem2.name) return 1;
             return 0;
         });
 
-        if(legendNames.length > 0) { //only show legend container when legend(s) are available
-             if ($('#' + legendContainerId).length === 0) {
+        if (legendNames.length > 0) { //only show legend container when legend(s) are available
+            if ($('#' + legendContainerId).length === 0) {
                 $('#' + accessoryContainerId).append("<div id='" + legendContainerId + "' class='well col-xs-12 hidden-xs-sm' style='padding: 5px;'></div>");
             }
             legendNames.forEach(function(el) {
@@ -1605,7 +1605,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             $('#' + legendContainerId).append(legendTags);
         } else { //remove Show/Hide legend button
             $('#' + legendButtonId).remove();
-        }   
+        }
     }
 
     /*
@@ -1678,10 +1678,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 }
             });
         });
-        
+
         var filterAvailable = (modes.length > 0 || (maxTransfer > minTransfer) || (maxCost > minCost) || (maxDuration > minDuration));
 
-        if(filterAvailable) {
+        if (filterAvailable) {
             if ($('#' + filterContainerId).length === 0) {
                 $('#' + accessoryContainerId).append("<div id='" + filterContainerId + "' class='well col-xs-12 hidden-xs-sm' style='padding: 5px;'></div>");
             }
@@ -1741,7 +1741,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         if ($('#' + modeContainerId).length === 0) {
             $('#' + filterContainerId).prepend(getModeFilterHtml(modes));
         } else {
-            modes.forEach(function(mode){
+            modes.forEach(function(mode) {
                 if ($('#' + modeContainerId + ' :checkbox[value=' + modeId + ']').length === 0) {
                     $('#' + modeContainerId).append(getModeCheckboxHtml(mode));
                 }
@@ -2040,12 +2040,13 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 break;
         }
 
+        tipText += '<p>' + localeDictFinder['click_for_details'] + '</p>'
         return tipText;
     }
 
     function getLegTypeFromPlanMode(mode) {
         //if mode starts with 'mode_', then leg type is the text after 'mode_'
-        return typeof(mode) != 'string' ?  '' : ( mode.indexOf('mode_') >= 0 ? mode.substr( mode.indexOf('mode_') + 5) : mode);
+        return typeof(mode) != 'string' ? '' : (mode.indexOf('mode_') >= 0 ? mode.substr(mode.indexOf('mode_') + 5) : mode);
     }
 
     /**
@@ -2238,7 +2239,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
 
     function resizePlanColumns() {
         var planWidth = $('.single-plan-review').outerWidth();
-        if(planWidth > 0) {
+        if (planWidth > 0) {
             var extraWidthForFirstColumn = 40; //px; first column width will be at minimum width of the sorter + extra_width
             var extraWidthForLastColumn = 20; //px; first column width will be width of the select button + extra_width
             var minMainColumnWidthPct = 30; //percentage; 
@@ -2253,23 +2254,23 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
 
             var mainColumnWidth = planWidth - firstColumnWidth - lastColumnWidth;
 
-            var firstColumnWidthPct = firstColumnWidth/planWidth * 100;
-            var lastColumnWidthPct = lastColumnWidth/planWidth * 100;
-            var mainColumnWidthPct = mainColumnWidth/planWidth * 100;
+            var firstColumnWidthPct = firstColumnWidth / planWidth * 100;
+            var lastColumnWidthPct = lastColumnWidth / planWidth * 100;
+            var mainColumnWidthPct = mainColumnWidth / planWidth * 100;
 
-            if(mainColumnWidthPct < minMainColumnWidthPct) {
-                firstColumnWidthPct -= (minMainColumnWidthPct - mainColumnWidthPct)/2;
-                lastColumnWidthPct -= (minMainColumnWidthPct - mainColumnWidthPct)/2;
+            if (mainColumnWidthPct < minMainColumnWidthPct) {
+                firstColumnWidthPct -= (minMainColumnWidthPct - mainColumnWidthPct) / 2;
+                lastColumnWidthPct -= (minMainColumnWidthPct - mainColumnWidthPct) / 2;
                 mainColumnWidthPct = minMainColumnWidthPct;
             }
-            if($(document.body).width() > documentWidth) {
+            if ($(document.body).width() > documentWidth) {
                 $('.trip-plan-first-column').css('width', firstColumnWidthPct + '%');
                 $('.select-column').css('width', lastColumnWidthPct + '%');
                 $('.trip-plan-main-column').css('width', mainColumnWidthPct + '%');
             } else {
                 $('.trip-plan-main-column').css('width', mainColumnWidthPct + '%');
                 $('.trip-plan-first-column').css('width', firstColumnWidthPct + '%');
-                $('.select-column').css('width', lastColumnWidthPct+ '%');
+                $('.select-column').css('width', lastColumnWidthPct + '%');
             }
         }
     }

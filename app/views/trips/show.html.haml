@@ -95,7 +95,8 @@
         minute_abbr: '#{t(:minute_abbr)}',
         unknown: '#{t(:unknown)}',
         no_itineraries_found: '#{t(:no_itineraries_found)}',
-        something_went_wrong: '#{t(:something_went_wrong)}'
+        something_went_wrong: '#{t(:something_went_wrong)}',
+        click_for_details: '#{t(:click_for_details)}'        
       };
 
       //show or hide legends when click Filter button
@@ -167,3 +168,5 @@
         window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );
       }); 
     });
+
+    $('#tripContainer').tooltip({selector: '.trip-mode-cost div'})

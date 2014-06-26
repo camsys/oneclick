@@ -423,6 +423,9 @@ en:
   cost_details: "Cost Details"
   addl_cost_details: "Additional Cost Details"
   click_for_cost_details: 'Click for cost details'
+  click_for_details: 'Click for details'
+  see_details_for_cost: 'See details for cost'
+  cost_estimated: 'Cost estimated'
   see_below: 'See below'
   view_trip_details: "View trip details so that you can call the provider."
   email_trip_details:  "Email your trip plan."
