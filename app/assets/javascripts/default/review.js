@@ -842,9 +842,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             var tickLabelTags = getTickLabelHtmlTags(tickLabels);
             $('#' + tripPartDivId + " .tick-labels").html(tickLabelTags);
 
-            //resize chart
-            resizeAllCharts();
-
             //process each trip plan
             var tripPlans = trip.itineraries;
             tripPlans.forEach(function(tripPlan) {
@@ -870,9 +867,16 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                         );
 
                         addTripStrictionFormSubmissionListener(tripPlan.missing_information, tripPlanChartId);
+                    } else {
+                        var $plan = $('#' + tripPlanChartId).parents('.single-plan-review');
+                        $plan.attr('data-trip-start-time', strTripStartTime);   
+                        $plan.attr('data-trip-end-time', strTripEndTime);   
                     }
                 }
             });
+
+            //resize chart
+            resizeAllCharts();
         }
 
 
