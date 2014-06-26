@@ -26,6 +26,8 @@
 // $light-orange: #ff8c00;
 // $navbar-default-color: $light-orange;
 
+$grid-float-breakpoint: 992px; //screen-md-min
+
 @import 'brand-lib';
 @import "bootstrap";
 @import "bootstrap/theme";
