@@ -22,6 +22,10 @@ class ItinerarySerializer < ActiveModel::Serializer
 
 
   def mode
+    # TODO This walk special case should really be done in the itinerary itself
+    if object.is_walk
+      return Mode.walk.code
+    end
     object.mode.code rescue nil
   end
 
