@@ -1,5 +1,6 @@
 class ItinerarySerializer < ActiveModel::Serializer
   include CsHelpers
+  include ApplicationHelper
   include ActionView::Helpers::NumberHelper
 
   attributes :id, :missing_information, :mode, :mode_name, :service_name, :provider_name, :contact_information,
@@ -142,15 +143,17 @@ class ItinerarySerializer < ActiveModel::Serializer
   end
 
   def duration
+    sortable_duration = object.duration || (object.end_time - object.start_time)
     {
       # TODO I18n
       # omitting for now per discussion w/ Xudong
       # external_duration: , #": "String Opt", // (seconds) Textural description of duration, for display to users
-      sortable_duration: object.duration || (object.end_time - object.start_time), #": "Number Opt", // (seconds) For filtering purposes, not display
+      sortable_duration:  sortable_duration, #": "Number Opt", // (seconds) For filtering purposes, not display
       total_walk_time: object.walk_time, #": "Number Opt", // (seconds)
       total_walk_dist: object.walk_distance, #": "Number Opt", // (feet?)
       total_transit_time: object.transit_time, #": "Number Opt", // (seconds)
       total_wait_time: object.wait_time, #": "Number Opt", // (seconds)
+      duration_in_words: (sortable_duration ? duration_to_words(sortable_duration) : I18n.t(:not_available))
     }
   end
 

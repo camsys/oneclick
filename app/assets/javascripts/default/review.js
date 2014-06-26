@@ -2015,7 +2015,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var mode = tripPlan.mode;
         var modeName = tripPlan.mode_name;
         var serviceName = tripPlan.service_name;
-        var durationText = isValidObject(tripPlan.duration) ? parseInt(parseFloat(tripPlan.duration.sortable_duration) / 60) : localeDictFinder['unknown'];
+        var durationText = isValidObject(tripPlan.duration) ? tripPlan.duration.duration_in_words : localeDictFinder['unknown'];
 
         switch (mode) {
             case 'mode_transit':
