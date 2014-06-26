@@ -14,36 +14,44 @@ class Mode < ActiveRecord::Base
 
   scope :top_level, -> { where parent_id: nil }
 
-  Mode.all.each do |mode|
-    method_name = (mode.code.split(/_/, 2).last + '?').to_sym
-    define_method(method_name) do
+  Mode.unscoped.load.each do |mode|
+    instance_method_name = (mode.code.split(/_/, 2).last + '?').to_sym
+    class_method_name = mode.code.split(/_/, 2).last.to_sym
+    define_method(instance_method_name) do
       code==mode.code
+    end
+    define_singleton_method(class_method_name) do
+      unscoped.where(code: mode.code).first
     end
   end
 
-  def self.transit
-    where("code = 'mode_transit'").first
-  end
+  # def self.transit
+  #   unscoped.where("code = 'mode_transit'").first
+  # end
 
-  def self.paratransit
-    where("code = 'mode_paratransit'").first
-  end
+  # def self.paratransit
+  #   unscoped.where("code = 'mode_paratransit'").first
+  # end
 
-  def self.taxi
-    where("code = 'mode_taxi'").first
-  end
+  # def self.taxi
+  #   unscoped.where("code = 'mode_taxi'").first
+  # end
 
-  def self.rideshare
-    where("code = 'mode_rideshare'").first
-  end
+  # def self.rideshare
+  #   unscoped.where("code = 'mode_rideshare'").first
+  # end
 
-  def self.bus
-    where("code = 'mode_bus'").first
-  end
+  # def self.bus
+  #   unscoped.where("code = 'mode_bus'").first
+  # end
 
-  def self.rail
-    where("code = 'mode_rail'").first
-  end
+  # def self.rail
+  #   unscoped.where("code = 'mode_rail'").first
+  # end
+   
+  # def self.walk
+  #   unscoped.where("code = 'mode_walk'").first
+  # end
    
   def to_s
     name
