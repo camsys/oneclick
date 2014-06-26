@@ -54,7 +54,8 @@
                 }
               });
               $(function() {
-              if ($('#trip_proxy_modes_mode_transit')[0].checked) {
+              // If any submodes are checked, show, otherwise hide
+              if ($('#transitModes input:checked').length != 0) {
                 $('#transitModes').show();
               } else {
                 $('#transitModes').hide();

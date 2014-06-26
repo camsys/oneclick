@@ -101,6 +101,7 @@ en:
   last_name: 'Last name'
   email: 'Email'
   preferred_locale: "Preferred Language"
+  preferred_modes: "Preferred Modes"
   address: "Address"
   remember_me: 'Remember me'
   password: 'Password'

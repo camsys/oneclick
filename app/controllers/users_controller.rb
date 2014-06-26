@@ -21,7 +21,7 @@ class UsersController < ApplicationController
     
     # Getting around devise- since password can't be blank, don't try to update it if they didn't pass it
     update_method = params[:password].blank? ? user_params_without_password : user_params_with_password
-    if @user.update_attributes!(update_method)
+    if @user.update_attributes(update_method)
       @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
       set_approved_agencies(params[:user][:approved_agency_ids])
       booking_alert = set_booking_services(@user, params[:user_service])
@@ -124,11 +124,11 @@ class UsersController < ApplicationController
 private
 
   def user_params_without_password
-    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale)
+    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :preferred_mode_ids => [])
   end
 
   def user_params_with_password
-    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation)
+    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation, :preferred_mode_ids => [])
   end
 
   def set_approved_agencies(ids)

@@ -447,18 +447,6 @@ class TripsController < PlaceSearchingController
     end
   end
 
-  def setup_modes
-    q = session[:modes_desired] ? Mode.where('code in (?)', session[:modes_desired]) : Mode.all
-    @modes = Mode.top_level.where("code <> 'mode_transit'").sort{|a, b| t(a.name) <=> t(b.name)}.collect do |m|
-      [t(m.name), m.code]
-    end
-    transit = Mode.transit
-    @modes << [t(transit.name), transit.code]
-    @transit_modes = transit.submodes.sort{|a, b| t(a.name) <=> t(b.name)}.collect do |t|
-      [t(t.name), t.code]
-    end
-    @selected_modes = q.collect{|m| m.code}
-  end
 
   # updates a trip
   def update
@@ -803,13 +791,18 @@ private
     trip_proxy.traveler = @traveler
 
     Rails.logger.debug trip_proxy.inspect
-
     return trip_proxy
-
   end
 
   def create_trip_proxy(trip, attr = {})
     TripProxy.create_from_trip(trip, attr)
+  end
+
+  def setup_modes
+    mode_hash = Mode.setup_modes(session[:modes_desired])
+    @modes = mode_hash[:modes]
+    @transit_modes = mode_hash[:transit_modes]
+    @selected_modes = mode_hash[:selected_modes]
   end
 
 end

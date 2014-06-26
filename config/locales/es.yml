@@ -100,6 +100,7 @@ es:
   last_name: 'Apellido'
   email: 'Correo electrónico'
   preferred_locale: "[es]Preferred Language[/es]"
+  preferred_modes: "[es]Preferred Modes[/es]"
   address: "[es47]Address[/es]"
   remember_me: 'Acuérdate de mí *5*'  
   password: 'Contraseña'

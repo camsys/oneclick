@@ -75,7 +75,7 @@ class Admin::UsersController < Admin::BaseController
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user) #we inflate a new proxy every time, but it's transient, just holds a bunch of characteristics
     
     update_method = params[:password].blank? ? user_params_without_password : user_params_with_password
-    if @user.update_attributes!(update_method)
+    if @user.update_attributes(update_method)
       @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
       set_approved_agencies(params[:user][:approved_agency_ids])
       @user.update_relationships(params[:user][:relationship])
@@ -147,11 +147,11 @@ class Admin::UsersController < Admin::BaseController
   private 
 
   def user_params_without_password
-    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale)
+    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :preferred_mode_ids => [])
   end
 
   def user_params_with_password
-    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation)
+    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation, :preferred_mode_ids => [])
   end
 
   def load_user

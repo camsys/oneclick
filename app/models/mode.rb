@@ -56,6 +56,32 @@ class Mode < ActiveRecord::Base
   # def self.walk
   #   unscoped.where("code = 'mode_walk'").first
   # end
+
+  def self.transit_submodes
+    if not transit
+      none
+    else
+      transit.submodes
+    end
+  end
+
+  def self.setup_modes(session_mode_codes)
+    q = session_mode_codes ? Mode.where('code in (?)', session_mode_codes) : Mode.all
+    non_transit_modes = Mode.top_level.where("code <> 'mode_transit'").sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.collect do |m|
+      [I18n.t(m.name).html_safe, m.code]
+    end
+    transit = Mode.transit
+    non_transit_modes << [I18n.t(transit.name).html_safe, transit.code]
+    transit_modes = transit_submodes.sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.collect do |t|
+      [I18n.t(t.name).html_safe, t.code]
+    end
+    selected_modes = q.collect{|m| m.code}
+    return {modes: non_transit_modes, transit_modes: transit_modes, selected_modes: selected_modes}
+  end
+
+  def top_level?
+    parent.blank?
+  end
    
   def to_s
     name

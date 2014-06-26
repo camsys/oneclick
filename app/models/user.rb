@@ -21,6 +21,7 @@ class User < ActiveRecord::Base
   has_many :trip_places, :through => :trips
   has_one  :user_profile            # 1 user profile
   has_many :user_mode_preferences   # 0 or more user mode preferences
+  has_many :preferred_modes, through: :user_mode_preferences, class_name: 'Mode', source: :mode
   has_many :user_roles
   has_many :roles, :through => :user_roles # one or more user roles
   has_many :trip_parts, :through => :trips

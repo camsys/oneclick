@@ -110,6 +110,22 @@
                 - else
                   = booking_form.input service.id.to_s, label: service.name, input_html: { value: "" }
               =booking_form.input :dob, label: "Date of Birth", placeholder: "mm/dd/yyyy", hint: 'Date of Birth is used to confirm the Client Id with Rabbit Transit.  It will not be saved.'
+      .col-sm-6
+        .panel.panel-default#preferred_modes
+          .panel-heading
+            %h3= t(:preferred_modes)
+          .panel-body
+            - Mode.top_level.sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.each do |m|
+              .row
+                .col-sm-12
+                  = check_box_tag "user[preferred_mode_ids][#{m.id}]", m.id, @user.preferred_modes.include?(m), name: "user[preferred_mode_ids][]"
+                  = label_tag "user[preferred_mode_ids][#{m.id}]", t(m.name)
+                  - m.submodes.each do |sm|
+                    .row
+                      .col-sm-12.col-sm-push-1
+                        = check_box_tag "user[preferred_mode_ids][#{sm.id}]", sm.id, @user.preferred_modes.include?(sm), name: "user[preferred_mode_ids][]"
+                        = label_tag "user[preferred_mode_ids][#{sm.id}]", t(sm.name)
+
 :javascript
   $(document).ready(function() {
     $('#buddies_table').dataTable( {
@@ -165,5 +181,9 @@
             $("td[data-rel=" + data["rel_id"] + "]").append("<p>Update Pending...</p>"); // Needs i18n
         }
       })
+    });
+    $("#preferred_modes input").change(function() {
+      var checked = $(this).prop("checked")
+      $(this).parent().find("input").prop("checked", checked);
     });
   });
