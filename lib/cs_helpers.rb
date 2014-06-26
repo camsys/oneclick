@@ -348,7 +348,9 @@ module CsHelpers
       itinerary.service.logo_url
     elsif itinerary.service && itinerary.service.provider && itinerary.service.provider.logo_url
       itinerary.service.provider.logo_url
-    else
+    elsif itinerary.is_walk
+      Mode.walk.logo_url
+    else 
       itinerary.mode.logo_url
     end)
   end
