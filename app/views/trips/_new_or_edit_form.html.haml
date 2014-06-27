@@ -54,12 +54,20 @@
                 }
               });
               $(function() {
-              // If any submodes are checked, show, otherwise hide
+              // onload, if any submodes are checked, show, otherwise hide
               if ($('#transitModes input:checked').length != 0) {
                 $('#transitModes').show();
               } else {
                 $('#transitModes').hide();
               }
+              $('#transitModes input').change( function() {
+                if ($('#transitModes input:checked').length == 0) {
+                  $("#trip_proxy_modes_mode_transit").trigger("click");
+                }
+                if ($('#transitModes input:checked').length == $('#transitModes input[type=checkbox]').length) {
+                  $("#trip_proxy_modes_mode_transit").trigger("click");
+                }
+              });
               });
 
 
