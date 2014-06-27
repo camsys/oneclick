@@ -121,6 +121,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def assist
+    # Confirm buddies
+    ur = UserRelationship.find_by(user_id: params[:buddy_id], delegate_id: @user)
+    if ur && ur.confirmed
+      set_traveler_id params[:buddy_id]
+      redirect_to new_user_trip_path(params[:buddy_id])
+    else
+      redirect_to user_path(@user), alert: t(:unauthorized)
+    end
+    
+  end
+
 private
 
   def user_params_without_password

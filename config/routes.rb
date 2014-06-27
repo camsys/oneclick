@@ -23,6 +23,7 @@ Oneclick::Application.routes.draw do
         get   'profile'
         post  'add_booking_service'
         # post  'update'
+        get   '/assist/:buddy_id', to: 'users#assist', as: :assist
       end
 
       resources :characteristics, :only => [:new, :create, :edit, :update] do

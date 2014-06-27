@@ -26,4 +26,14 @@ def buttons
     end
   end
 
+  def assist_btn
+    if object && object.confirmed
+      link_to(I18n.t(:assist),
+              assist_user_path(id: object.delegate_id, buddy_id: object.user_id),
+              {class: "btn btn-default action-button"})
+    else
+      status
+    end
+  end
+  
 end

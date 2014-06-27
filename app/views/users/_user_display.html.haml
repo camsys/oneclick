@@ -51,7 +51,7 @@
                   %td= urp.you.name
                   %td= urp.you.email
                   %td= UserRelationshipDecorator.decorate(urp.can_assist_me).status
-                  %td= UserRelationshipDecorator.decorate(urp.i_can_assist).status
+                  %td= UserRelationshipDecorator.decorate(urp.i_can_assist).assist_btn
   .row
     .col-sm-6
       .panel.panel-default#eligibility

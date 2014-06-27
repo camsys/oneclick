@@ -2,6 +2,9 @@ module RelationshipsHelper
   def revokable
     relationship_status_id == RelationshipStatus::CONFIRMED
   end
+  def confirmed
+    relationship_status_id == RelationshipStatus::CONFIRMED
+  end
   def retractable
     relationship_status_id == RelationshipStatus::REQUESTED || relationship_status_id == RelationshipStatus::PENDING
   end

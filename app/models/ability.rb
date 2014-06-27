@@ -117,6 +117,7 @@ class Ability
     can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
     can [:read, :update, :full_info, :add_booking_service], User, :id => user.id
     can [:read, :update, :full_read, :find_by_email], User, :id => user.id
+    can [:read, :update, :full_read, :assist], User, :id => user.id
     can :manage, UserRelationship do |ur|
       ur.delegate.eql? user or ur.traveler.eql? user
     end
