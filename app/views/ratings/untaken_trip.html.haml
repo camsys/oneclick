@@ -5,14 +5,14 @@
     = t(:did_not_take_feedback_prompt)
 .row
   .col-sm-12
-    =simple_form_for @trip, url: trip_only_rating_path(@trip, I18n.locale), method: "post" do |f|
+    =simple_form_for @trip, url: trip_only_rating_path(@trip), method: "post" do |f|
       .row
-        .col-sm-12
-          %btn.btn.btn-default.action-button.pull-right
-            = link_to root_path do
+        .col-sm-12.pull-right
+          .pull-right
+            = f.submit t(:apply), class: "btn action-button"
+            = link_to root_path, class: "btn action-button" do
               = t(:cancel)
-          = f.submit t(:apply), class: "btn action-button btn-default pull-right"
-          = f.input :hash, as: :hidden, input_html: { :value => @trip.md5_hash }
+            = f.input :hash, as: :hidden, input_html: { :value => @trip.md5_hash }
       = simple_fields_for @trip.ratings.build do |ratings_form|
         = ratings_form.input :value, as: :hidden, :input_html => { :value => Rating::DID_NOT_TAKE}
         = ratings_form.input :comments
