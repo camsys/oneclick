@@ -24,11 +24,13 @@ class UserRelationshipProxyDecorator < Draper::Decorator
 
   def can_assist_me
     rel = object.can_assist_me
-    urd = UserRelationshipDecorator.decorate(rel)
-    if rel.revokable
-      urd.buttons
-    else
-      urd.status
+    unless rel.nil?
+      urd = UserRelationshipDecorator.decorate(rel)
+      if urd.revokable
+        urd.buttons
+      else
+        urd.status
+      end
     end
   end
 
