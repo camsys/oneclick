@@ -7,6 +7,7 @@ class SessionsController < Devise::SessionsController
     if current_user.preferred_modes.present?
       session[:modes_desired] = current_user.preferred_modes.pluck(:code)
     end
+    I18n.locale = current_user.preferred_locale
     respond_with resource, :location => after_sign_in_path_for(resource)
   end
 end
