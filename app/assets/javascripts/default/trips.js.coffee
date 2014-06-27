@@ -150,8 +150,6 @@ $ ->
     hide_map('trip')
                         
   $('.trip_proxy_modes').on 'change', (e, addr, d) ->
-    console.log e
-    console.log $('.trip_proxy_modes input:checked').length
 
   if typeof(CsMaps) != 'undefined' and CsMaps and CsMaps.tripMap
     CsMaps.tripMap.LMmap.on 'placechange', (e) ->
