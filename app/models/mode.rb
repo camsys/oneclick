@@ -14,15 +14,19 @@ class Mode < ActiveRecord::Base
 
   scope :top_level, -> { where parent_id: nil }
 
-  Mode.unscoped.load.each do |mode|
-    instance_method_name = (mode.code.split(/_/, 2).last + '?').to_sym
-    class_method_name = mode.code.split(/_/, 2).last.to_sym
-    define_method(instance_method_name) do
-      code==mode.code
+  begin
+    Mode.unscoped.load.each do |mode|
+      instance_method_name = (mode.code.split(/_/, 2).last + '?').to_sym
+      class_method_name = mode.code.split(/_/, 2).last.to_sym
+      define_method(instance_method_name) do
+        code==mode.code
+      end
+      define_singleton_method(class_method_name) do
+        unscoped.where(code: mode.code).first
+      end
     end
-    define_singleton_method(class_method_name) do
-      unscoped.where(code: mode.code).first
-    end
+  rescue Exception => e
+    Rails.logger.info "Could not create Mode methods (normal during db ops)."    
   end
 
   # def self.transit

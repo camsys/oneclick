@@ -162,7 +162,7 @@ def add_providers_and_services
 
       when "esp#1" #LIFESPAN Resources
                    #Create service
-        service = Service.create(name: 'Volunteer Transportation from', provider: p, service_type: volunteer, 
+        service = Service.create!(name: 'Volunteer Transportation from', provider: p, service_type: volunteer, 
           advanced_notice_minutes: 14*24*60, logo_url: 'sample/sample-logo-b.png')
         #Add Schedules
         (2..3).each do |n|
@@ -192,7 +192,7 @@ def add_providers_and_services
 
       when "esp#6" #Fayette Senior Services
                    #Create service #8
-        service = Service.create(name: 'Fayette Senior Services', provider: p, service_type: nemt, advanced_notice_minutes: 24*60)
+        service = Service.create!(name: 'Fayette Senior Services', provider: p, service_type: nemt, advanced_notice_minutes: 24*60)
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:8.5*3600, end_seconds: 17*3600, day_of_week: n)
@@ -219,7 +219,7 @@ def add_providers_and_services
 
       when "esp#7" #Fulton County office of Aging
                    #Create service #12
-        service = Service.create(name: 'Medical Transportation by', provider: p, service_type: nemt, advanced_notice_minutes: 28*24*60)
+        service = Service.create!(name: 'Medical Transportation by', provider: p, service_type: nemt, advanced_notice_minutes: 28*24*60)
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:8.5*3600, end_seconds: 17*3600, day_of_week: n)
@@ -245,7 +245,7 @@ def add_providers_and_services
         end
 
         #Create service #11 DARTS
-        service = Service.create(name: 'Dial-a-Ride for Seniors (DARTS)', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        service = Service.create!(name: 'Dial-a-Ride for Seniors (DARTS)', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:8.5*3600, end_seconds: 16.5*3600, day_of_week: n)
@@ -271,7 +271,7 @@ def add_providers_and_services
 
       when "esp#3" #Jewish Family & Career Center
                    #Create service #3
-        service = Service.create(name: 'JETS Transportation Program', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        service = Service.create!(name: 'JETS Transportation Program', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:8.5*3600, end_seconds: 15*3600, day_of_week: n)
@@ -300,7 +300,7 @@ def add_providers_and_services
 
       when "esp#20" #Cobb Senior Services
                     #Create service #36
-        service = Service.create(name: 'Cobb Senior Services', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        service = Service.create!(name: 'Cobb Senior Services', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:8*3600, end_seconds: 14*3600, day_of_week: n)
@@ -327,7 +327,7 @@ def add_providers_and_services
 
       when "esp#15" #Cobb Community Transit
                     #Create service #29
-        service = Service.create(name: 'CCT Paratransit', provider: p, service_type: paratransit, advanced_notice_minutes: 7*24*60)
+        service = Service.create!(name: 'CCT Paratransit', provider: p, service_type: paratransit, advanced_notice_minutes: 7*24*60)
         #Add Schedules
         (1..6).each do |n|
           Schedule.create(service: service, start_seconds:9*3600, end_seconds: 17*3600, day_of_week: n)
@@ -360,7 +360,7 @@ def add_providers_and_services
 
       when "esp#22" #Mountain Area Transportation Services
                     #Create service #41
-        service = Service.create(name: 'Cherokee Area', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
+        service = Service.create!(name: 'Cherokee Area', provider: p, service_type: paratransit, advanced_notice_minutes: 24*60)
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:8.5*3600, end_seconds: 17*3600, day_of_week: n)
@@ -387,7 +387,7 @@ def add_providers_and_services
 
       when "esp#34" #I care transportation service.
                     #Create Service 55
-        service = Service.create(name: 'I Care', provider: p, service_type: paratransit, advanced_notice_minutes: 7*24*60)
+        service = Service.create!(name: 'I Care', provider: p, service_type: paratransit, advanced_notice_minutes: 7*24*60)
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:8.5*3600, end_seconds: 16.5*3600, day_of_week: n)
@@ -420,7 +420,7 @@ def add_providers_and_services
 
       when "esp#8" #Rockdale County Senior Services
                    #Create Service 15
-        service = Service.create(name: 'Rockdale County Senior Services', provider: p, service_type: paratransit, advanced_notice_minutes: 7*24*60)
+        service = Service.create!(name: 'Rockdale County Senior Services', provider: p, service_type: paratransit, advanced_notice_minutes: 7*24*60)
         #Add Schedules
         (1..5).each do |n|
           Schedule.create(service: service, start_seconds:7.5*3600, end_seconds: 11*3600, day_of_week: n)
