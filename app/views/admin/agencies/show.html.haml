@@ -3,30 +3,28 @@
   .row
     .col-sm-12
       = link_to t(:all_agencies), admin_agencies_path
-.row
+.row.info-header
   .col-sm-5
     %h2= @agency.name
     -unless @agency.active
       %p= t(:inactive)
-  .col-sm-7.form-group
-    .row
-      .col-sm-12
-        - if can? :destroy, @agency
-          = button_to t(:delete), { action: "destroy", id: @agency.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default", form_class: "form-horizontal pull-right"
-        - if can? :update, @agency
-          = link_to edit_admin_agency_path(@agency), {class: 'btn action-button btn-default pull-right', role: 'button'} do
-            = icon_label(:edit)
-        -if Oneclick::Application.config.public_write_feedback
-          - if can? :read, temp_rating
-            .pull-right
-              = RateableDecorator.decorate(@agency).rating_in_stars
-              %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal"}}
-                = t(:feedback)
-          - else
-            -# if creating feedback is allowed, but reading isn't, just load the form into the modal on click
-            %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal", remote: new_agency_rating_path(@agency)}}
-              = t(:feedback)
-          = render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
+  .col-sm-7.btns
+    - if can? :destroy, @agency
+      = button_to t(:delete), { action: "destroy", id: @agency.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: "btn action-button", form_class: "form-horizontal pull-right"
+    - if can? :update, @agency
+      = link_to edit_admin_agency_path(@agency), {class: 'btn action-button pull-right', role: 'button'} do
+        = icon_label(:edit)
+    -if Oneclick::Application.config.public_write_feedback
+      - if can? :read, temp_rating
+        .pull-right
+          = RateableDecorator.decorate(@agency).rating_in_stars
+          %button.btn.action-button{data: {toggle: 'modal', target: "#feedback_modal"}}
+            = t(:feedback)
+      - else
+        -# if creating feedback is allowed, but reading isn't, just load the form into the modal on click
+        %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal", remote: new_agency_rating_path(@agency)}}
+          = t(:feedback)
+      = render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
 .row
   = render partial: "public_details", locals: {agency: @agency}
   - if can? :full_read, @agency

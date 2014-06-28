@@ -3,30 +3,27 @@
   .row
     .col-sm-12
       = link_to t(:all_providers), admin_providers_path
-.row
+.row.info-header
   .col-sm-5
-    %h2
-      = @provider.name
+    %h1= @provider.name
     - unless @provider.active
       %p= t(:inactive)
-  .col-sm-7.form-group
-    .row
-      .col-sm-12
-        - if can? :destroy, @provider
-          = button_to t(:delete), { action: "destroy", id: @provider.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default", form_class: "form-horizontal pull-right"
-          - if can?(:create, Service) && can?(:update, @provider)
-            = link_to new_service_path(provider_id: @provider), {class: 'btn action-button btn-default pull-right', role: 'button'} do
-              = icon_label(:add_service)
-        - if can? :update, @provider
-          = link_to edit_admin_provider_path(@provider), {class: 'btn action-button btn-default pull-right', role: 'button'} do
-            = icon_label(:edit)
-        -if Oneclick::Application.config.public_write_feedback
-          - if can? :read, temp_rating
-            .pull-right
-              = RateableDecorator.new(@provider).rating_in_stars
-              %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal"}}
-                = t(:feedback)
-          = render partial: "ratings/organization_feedback_modal", locals: {rateable: @provider}
+  .col-sm-7.btns
+    - if can? :destroy, @provider
+      = button_to t(:delete), { action: "destroy", id: @provider.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: "btn action-button", form_class: "form-horizontal pull-right"
+      - if can?(:create, Service) && can?(:update, @provider)
+        = link_to new_service_path(provider_id: @provider), {class: 'btn action-button pull-right', role: 'button'} do
+          = icon_label(:add_service)
+    - if can? :update, @provider
+      = link_to edit_admin_provider_path(@provider), {class: 'btn action-button pull-right', role: 'button'} do
+        = icon_label(:edit)
+    -if Oneclick::Application.config.public_write_feedback
+      - if can? :read, temp_rating
+        .pull-right
+          = RateableDecorator.new(@provider).rating_in_stars
+          %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal"}}
+            = t(:feedback)
+      = render partial: "ratings/organization_feedback_modal", locals: {rateable: @provider}
 .row
   .col-sm-6
     .panel.panel-default

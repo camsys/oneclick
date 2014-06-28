@@ -14,10 +14,10 @@
           .row
             .col-xs-12
               .form-group
-                .col-sm-9.col-sm-offset-3
-                  = button_tag type: :submit, name: 'delete', class: 'btn btn-default action-button pull-right' do
+                .col-xs-12
+                  = button_tag type: :submit, name: 'delete', class: 'btn action-button pull-right' do
                     = t(:delete)
-                  = button_tag name: 'clear', id: 'clear', type: 'button', class: 'btn btn-default action-button pull-right' do
+                  = button_tag name: 'clear', id: 'clear', type: 'button', class: 'btn action-button pull-right' do
                     = t(:clear)
                   = button_tag type: :submit, name: 'save', class: 'btn btn-default action-button pull-right' do
                     = t(:save)

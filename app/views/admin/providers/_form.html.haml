@@ -1,15 +1,14 @@
 = simple_form_for [:admin, @provider], html: { class: 'form-horizontal'},
         wrapper: :horizontal_form do |f|
   = f.error_notification
-  .row
-    .col-sm-6.pull-left
-      %h2
+  .row.info-header
+    .col-sm-6
+      %h1
         = f.input :name
-    .col-sm-3.pull-right
-      %h2
-        - if can? :update, @provider
-          = f.button :submit, t(:apply), class: "btn action-button"
-          = link_to t(:cancel), :back, class: "btn btn-default action-button pull-right"
+    .col-sm-6.btns
+      - if can? :update, @provider
+        = link_to t(:cancel), :back, class: "btn action-button pull-right"
+        = f.button :submit, t(:apply), class: "btn action-button pull-right"
 
   .row
     .col-sm-6

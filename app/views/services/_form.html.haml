@@ -7,16 +7,15 @@
     
   = f.error_notification
 
-  .row
-    .col-sm-6.pull-left
+  .row.info-header
+    .col-sm-6
       %h2
         = f.input :name
-    .col-sm-3.pull-right
-      %h2
-        - if can? :update, @service
-          = button_tag type: 'submit', class: "btn btn-default action-button" do
-            = icon_label(:apply)
-          = link_to t(:cancel), :back, class: "btn btn-default action-button pull-right"
+    .col-sm-6.btns
+      - if can? :update, @service
+        = link_to t(:cancel), :back, class: "btn btn-default action-button default pull-right"
+        = button_tag type: 'submit', class: "btn btn-default action-button default pull-right" do
+          = icon_label(:apply)
 
   .row
     .col-sm-6

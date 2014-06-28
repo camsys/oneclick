@@ -1,16 +1,18 @@
 = simple_form_for @agency, url: admin_agency_path, html: { class: 'form-horizontal' },wrapper: :horizontal_form do |f|
-  .row
-    .col-sm-6.pull-left
-      %h2
+  .row.info-header
+    .col-sm-6
+      %h1
         = f.input :name
-    .col-sm-3.pull-right
-      %h2
-        - if can? :update, @agency
-          = button_tag type: 'submit', class: "btn btn-default action-button" do
+    .col-sm-6.btns
+      - if can? :update, @agency
+        = link_to admin_agency_path(@agency), class: 'btn action-button pull-right' do
             = icon_label(:apply)
           = link_to admin_agency_path(@agency),
                 {class: 'btn btn-default action-button pull-right', role: 'button'} do
             = icon_label(:cancel)
+          = icon_label(:cancel)
+        = button_tag type: 'submit', class: "btn action-button pull-right" do
+          = icon_label(:apply)
   
   .row
     .col-sm-6

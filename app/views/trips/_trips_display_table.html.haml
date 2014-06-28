@@ -12,7 +12,7 @@
       - if Oneclick::Application.config.public_write_feedback
         %th.center.nowrap= t(:feedback)
       %th.center= t(:actions)
-      - if Rails.env.development?
+      - if ENV['SHOWALL']
         %th.center= t(:max_notes)
       - if can? :send_follow_up, Trip
         %th= t(:send_follow_up_email)
@@ -49,10 +49,10 @@
             %td.center.nowrap          
               = link_to repeat_user_trip_path(traveler, trip), {:alt => t(:repeat_trip), :title => t(:repeat_trip), :class => "btn btn-sm"} do
                 %i.fa.fa-rotate-right
-          - if Rails.env.development?
+          - if ENV['SHOWALL']
             %td= "%s / %s" % [trip.outbound_part.max_notes_count, trip.return_part.max_notes_count]
           - if can? :send_follow_up, trip
-            %td
+            %td.center
               = link_to email_feedback_user_trip_path(traveler, trip, locale: I18n.locale), class: "btn btn btn-default action-button" do
                 - t(:send)
         = render partial: 'trips/trip_rating', locals: {id: trip.id}
