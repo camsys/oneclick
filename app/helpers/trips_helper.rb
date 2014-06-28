@@ -127,4 +127,27 @@ module TripsHelper
     end
   end
 
+  def filter_itineraries_by_max_offset_time(itineraries, is_depart, trip_time)
+    max_offset_from_desired = Oneclick::Application.config.max_offset_from_desired
+    return itineraries if max_offset_from_desired.nil?
+    
+    earliest_time = is_depart ? trip_time : nil
+    latest_time = is_depart ? nil : trip_time
+    if is_depart
+      latest_time = earliest_time + max_offset_from_desired
+    else
+      earliest_time = latest_time - max_offset_from_desired
+    end
+
+    itineraries = itineraries.select do |i|
+      if is_depart
+        i.start_time.nil? || ((earliest_time && i.start_time >= earliest_time) && (latest_time && i.start_time < latest_time))
+      else
+        i.end_time.nil? || ((earliest_time && i.end_time > earliest_time) && (latest_time && i.end_time <= latest_time))
+      end
+    end
+
+    return itineraries
+  end
+  
 end
