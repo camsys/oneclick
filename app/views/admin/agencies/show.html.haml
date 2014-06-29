@@ -5,7 +5,7 @@
       = link_to t(:all_agencies), admin_agencies_path
 .row.info-header
   .col-sm-5
-    %h2= @agency.name
+    %h1= @agency.name
     -unless @agency.active
       %p= t(:inactive)
   .col-sm-7.btns
@@ -31,7 +31,7 @@
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h4.panel-title= t(:internal_contact)
+          %h2.panel-title= t(:internal_contact)
         .panel-body
           %table.table.table-condensed
             %tr
@@ -63,9 +63,9 @@
 - if can? :full_read, @agency
   .panel.panel-default#staff
     .panel-heading
-      %h3= t(:staff_actions)
+      %h2.panel-title= t(:staff_actions)
     .panel-body
-      %h4= t(:administrators)
+      %h3= t(:administrators)
       %table.ALTtable.table-condensed#admin_table
         %thead
           %tr
@@ -81,7 +81,7 @@
               %td= s.phone.to_s
               %td= mail_to s.email.to_s
 
-      %h4= t(:agents)
+      %h3= t(:agents)
       %table.ALTtable.table-condensed#agent_table
         %thead
           %tr

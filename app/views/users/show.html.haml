@@ -1,6 +1,6 @@
 .row.info-header
   .col-sm-6
-    %h2=@user.name
+    %h1=@user.name
   .col-sm-6.btns
     -if can? :edit, @user
       =link_to t(:edit), edit_user_path(@user), {class: 'btn action-button btn-default pull-right', role: 'button'}
