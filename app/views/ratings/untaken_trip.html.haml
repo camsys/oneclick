@@ -9,8 +9,8 @@
       .row
         .col-sm-12.pull-right
           .pull-right
-            = f.submit t(:apply), class: "btn action-button"
-            = link_to root_path, class: "btn action-button" do
+            = f.submit t(:apply), class: "btn btn-default action-button"
+            = link_to root_path, class: "btn btn-default action-button" do
               = t(:cancel)
             = f.input :hash, as: :hidden, input_html: { :value => @trip.md5_hash }
       = simple_fields_for @trip.ratings.build do |ratings_form|

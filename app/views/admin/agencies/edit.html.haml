@@ -6,7 +6,7 @@
     .col-sm-3.pull-right
       %h2
         - if can? :update, @agency
-          = button_tag type: 'submit', class: "btn action-button btn-default" do
+          = button_tag type: 'submit', class: "btn btn-default action-button" do
             = icon_label(:apply)
           = link_to admin_agency_path(@agency),
                 {class: 'btn btn-default action-button pull-right', role: 'button'} do

@@ -6,9 +6,9 @@
         = t(:sign_up)
     .col-sm-3.pull-right
       %h2
-        = link_to t(:cancel), :back, class: "btn btn-default action-button default"
-        = button_tag type: 'submit', class: "btn btn-default action-button default pull-right" do
+        = button_tag type: 'submit', class: "btn btn-default action-button pull-right" do
           = t(:apply)
+        = link_to t(:cancel), :back, class: "btn btn-default action-button"
 
   .row
     .col-sm-6

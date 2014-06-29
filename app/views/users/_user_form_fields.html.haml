@@ -5,9 +5,9 @@
         = current_user != @user ? "#{@user.name}'s #{t(:travel_profile)}" : t(:travel_profile)
     .col-sm-3.pull-right
       %h2
-        = button_tag type: 'submit', class: "btn btn-default action-button default" do
+        = button_tag type: 'submit', class: "btn btn-default action-button" do
           = icon_label(:apply)
-        = link_to t(:cancel), :back, class: "btn btn-default action-button default pull-right"
+        = link_to t(:cancel), :back, class: "btn btn-default action-button pull-right"
 
     
   .row
