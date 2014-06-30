@@ -514,7 +514,7 @@ class EspReader
         gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
         ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'origin')
         ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'destination')
-      when "Need CCT Paratransit Service Id" #CCT Paratransit
+      when "57874876269921009999" #CCT Paratransit
         service.service_coverage_maps.destroy_all
         b = Boundary.find_by_agency('Cobb Community Transit (CCT)')
         gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
