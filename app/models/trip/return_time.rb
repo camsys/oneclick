@@ -55,6 +55,20 @@ module Trip::ReturnTime
 
 protected
 
+  # TODO duplication, this shoud be factored out of here and pickup_time.rb
+  # Validation. Ensure that the user is planning a trip for the future.
+  def datetime_cannot_be_before_now
+    return true if return_trip_datetime.nil?
+    if return_trip_datetime < Date.today
+      errors.add(:return_trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
+      return false
+    elsif return_trip_datetime < Time.current
+      errors.add(:return_trip_time, I18n.translate(:trips_cannot_be_entered_for_times))
+      return false
+    end
+    true
+  end
+
   # Validation. Check that the return trip time is well formatted and after the trip time
   def validate_return_trip_time
     return_dt = return_trip_datetime
