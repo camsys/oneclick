@@ -10,18 +10,6 @@
  *
  */
 
-.timepicker-picker td span {
-  width: 42px !important;
-  height: 20px !important;
-  line-height: 20px !important;
-}
-
-.bootstrap-datetimepicker-widget .timepicker-hour,
-.bootstrap-datetimepicker-widget .timepicker-minute,
-.bootstrap-datetimepicker-widget .timepicker-second {
-  text-align: right;
-}
-
 // $navbar-default-bg: #312312;
 // $light-orange: #ff8c00;
 // $navbar-default-color: $light-orange;
@@ -51,4 +39,5 @@ $grid-float-breakpoint: 992px; //screen-md-min
 @import "ratings";
 @import 'bootstrap-datetimepicker';
 @import 'dataTables/jquery.dataTables.bootstrap3';
-@import 'brand'
+@import 'ui_lib_override';
+@import 'brand';
