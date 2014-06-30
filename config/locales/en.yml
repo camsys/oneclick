@@ -538,7 +538,7 @@ en:
   arrive: "ARRIVE: "
   est: " (est.)"
   myself: "myself"
-  assisted_user_first_name_s_trips: "%{name}'s Trips"
+  assisted_user_first_name_s_places: "%{name}'s Places"
   trip_options_information_from_from: "Trip options information from %{from}"
   create_account: "Create an account to save your information."
   stop_assisting: "Stop assisting"

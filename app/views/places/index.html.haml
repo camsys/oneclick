@@ -1,6 +1,6 @@
 .row
   .col-xs-12
-    %h1= is_assisting ? t(:assisted_user_first_name_s_trips, name: @traveler.first_name) : t(:my_places)
+    %h1= is_assisting ? t(:assisted_user_first_name_s_places, name: @traveler.first_name) : t(:my_places)
 
 - content_for :head do
   = # stylesheet_link_tag 'typeahead.js-bootstrap.css'

@@ -539,7 +539,7 @@ es:
   arrive: "ARRIVE: "
   est: " (est.)"
   myself: "yo mismo"  
-  assisted_user_first_name_s_trips: "Viajes de %{name}"
+  assisted_user_first_name_s_places: "Lugares de %{name}"
   trip_options_information_from_from: "Información de opciones de viaje de #{@from}"
   create_account: "[es9] Create an account to save your information [\es]"
   stop_assisting: "Detener la asistencia"
