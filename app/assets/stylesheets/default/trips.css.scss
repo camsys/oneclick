@@ -22,19 +22,6 @@
   margin-right: 0px !important;
 }
 
-/* override jQuery UI slider to not load image resource but only use bg color*/
-.ui-widget-content {
-  background: white;
-}
-.ui-widget-header {
-  background: #ccc;
-}
-.ui-slider {
-  .ui-state-default {
-    background: #e6e6e6;
-  }
-}
-
 @media(max-width:$screen-xs-max){
   .form-group .control-label {
     text-align: left;
