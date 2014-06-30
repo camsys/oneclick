@@ -1,28 +1,6 @@
-.row
-  .col-sm-12
-    .pull-left
-      %h2
-        %i.fa.fa-tags
-        = is_assisting ? t(:assisted_user_first_name_s_trips, name: @traveler.first_name) : t(:my_trips)
-    .pull-right
-      %h2
-        = link_to(t(:plan), new_user_trip_path(@traveler),
-          {class: 'btn action-button btn-default', role: 'button'})
-.row
-  .col-sm-12
-    = form_tag user_trips_path(@traveler), :id => 'time_filter_form', :method => "get",
-      :class => 'navbar-form form-inline', :style => "margin-top:20px;" do
-      .input-prepend
-        %label.add-on{:for => 'time_filter'}= t(:filter)
-        = select_tag(:time_filter_type, options_for_select(trip_filters.collect{|r| [r[:value],
-        r[:id]]}, :selected => @time_filter_type), :style => 'margin-top:0px',
-        :id => 'time_filter')
-      
-= render partial: "trips_display_table", locals: {trips: @trips, traveler: @traveler}
-
-:javascript
-  
-  // Add a listener on the asset type filter that submits the form when changed
-  $('#time_filter').change(function() {
-    $('#time_filter_form').submit();
-  });
+.row.info-header
+  .col-sm-6
+    %h1= t(:my_trips)
+  .col-sm-6.btns
+    =link_to t(:plan), root_path, {class: 'btn action-button btn-default pull-right', role: 'button'}
+= render partial: "trips_display_table", locals: {trips: @trips, traveler: @traveler, show_username: false}

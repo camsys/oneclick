@@ -27,7 +27,15 @@ html, body {
   padding-bottom: $footer-height;
 }
 
-@media(max-width:$screen-xs-max){
+#logo{
+  background-position: 50% !important;
+  background-repeat: no-repeat !important;
+  background-size: 100% auto;
+  height: auto !important;
+  padding: 0;
+}
+
+@media(max-width:$screen-sm-max){
   #main {
     padding-top: 55px;
   }
@@ -37,10 +45,8 @@ html, body {
   }
 
   #logo{
-    width: 370px;
-    height: 50px;
+    width: 350px;
     line-height: 50px;
-    padding: 0;
   }
 
   #help i{
@@ -48,16 +54,14 @@ html, body {
   }
 }
 
-@media(min-width:$screen-sm-min){
+@media(min-width:$screen-md-min){
   #main {
     padding-top: 65px;
   }
 
   #logo{
     width: 440px;
-    height: 60px;
     line-height: 60px;
-    padding: 0;
   }
 
   #help i{

@@ -15,17 +15,21 @@ Oneclick::Application.routes.draw do
 
     devise_for :users, controllers: {registrations: "registrations", sessions: "sessions"}
 
-
+    get "user_relationships/:id/check/" => "user_relationships#check_update", as: :check_update_user_relationship # need to support client-side logic with server-side vaildations
     # everything comes under a user id
     resources :users do
       member do
+        get   'find_by_email'
         get   'profile'
+        post  'add_booking_service'
         # post  'update'
+        get   '/assist/:buddy_id', to: 'users#assist', as: :assist
       end
 
       resources :characteristics, :only => [:new, :create, :edit, :update] do
         collection do
           get 'header'
+          post 'update'
         end
         member do
           put 'set'
@@ -104,6 +108,12 @@ Oneclick::Application.routes.draw do
           get   'example'
           get   'book'
           get   'plan'
+          get   'new_rating_from_email'
+        end
+        resources :trip_parts do
+          member do
+            get 'reschedule'
+          end
         end
       end
 
@@ -113,10 +123,13 @@ Oneclick::Application.routes.draw do
           get 'unhide_all'
         end
       end
-    end
 
-    patch "providers/:id/rate" => 'providers#rate', as: 'rate_provider' # Effectively a shallow routing.  Not ready to go there yet.
-    patch "agencies/:id/rate" => 'agencies#rate', as: 'rate_agency' # Effectively a shallow routing.  Not ready to go there yet.
+      resources :user_services do
+        member do
+          post 'update'
+        end
+      end
+    end
     # scope('/kiosk') do
     #   devise_for :users, as: 'kiosk', controllers: {sessions: "kiosk/sessions"}
     # end
@@ -124,6 +137,7 @@ Oneclick::Application.routes.draw do
     # get '/kiosk_user/kiosk/users/sign_in', to: 'kiosk/sessions#create'
 
     get 'place_details/:id' => 'place_searching#details', as: 'place_details'
+    get 'reverse_geocode' => 'place_searching#reverse_geocode', as: 'reverse_geocode'
 
     namespace :kiosk do
       get '/', to: 'home#index'
@@ -248,6 +262,7 @@ Oneclick::Application.routes.draw do
 
     namespace :admin do
       resources :reports, :only => [:index, :show]
+      post '/reports/:id' => 'reports#show'
       resources :trips, :only => [:index]
       get '/geocode' => 'util#geocode'
       get '/raise' => 'util#raise'
@@ -269,6 +284,7 @@ Oneclick::Application.routes.draw do
       end
       resources :users do
         put 'update_roles', on: :member
+        get 'find_by_email'
       end
       resources :providers do
         resources :users
@@ -278,10 +294,18 @@ Oneclick::Application.routes.draw do
     end#admin
     
     # gives a shallow RESTful endpoint for rating any rateable
-    resources :agencies, :trips, :providers, :services, only: [] do
-      resources :ratings, only: [:new, :create]
+    resources :agencies, :trips, :services, shallow: true, only: [] do
+      resources :ratings, only: [:index, :new, :create]
+    end
+    resources :ratings, only: [:index, :create] do
+      collection do
+        patch "approve"
+        get "context"
+      end
     end
     
+    post "trips/:trip_id/ratings/trip_only" => 'ratings#trip_only', as: :trip_only_rating
+
     resources :services do
       member do
         get 'view'

@@ -80,6 +80,7 @@ en:
   display_type: "Display Type"
   summary_type: "Summary Type"
   run: "Run"
+  export: 'Export'
   admin: 'Admin'
   admin_actions: 'Admin'
   staff_actions: 'Staff'
@@ -100,6 +101,7 @@ en:
   last_name: 'Last name'
   email: 'Email'
   preferred_locale: "Preferred Language"
+  preferred_modes: "Preferred Modes"
   address: "Address"
   remember_me: 'Remember me'
   password: 'Password'
@@ -121,11 +123,13 @@ en:
   authorized_travelers: "Authorized Travelers"
   add_user: "Add User"
   send_buddy_request: 'Send buddy request'
-  add_new_buddy:  "Add a new buddy"
   buddys_email_address: "Buddy's email address"
   accept: 'Accept'
   decline: 'Decline'
   assist: 'Assist'
+  assisted_by: 'Assisted By'
+  i_can_assist: "I Can Assist"
+  can_assist_me: "Can Assist Me"
   revoke: 'Revoke'
   retract: 'Retract'
   visitor: 'Visitor'
@@ -155,7 +159,7 @@ en:
   error_422: 'The change you wanted was rejected.'
   error_422_detail: "Maybe you tried to change something you didn't have access to."
   error_couldnt_plan: 'No trip plan could be created.  This is likely due to a system error, and our staff has been notified. Please try your trip again.'
-
+  
   # Trip History and Rating
   rating: "Rating"
   actions: "Actions"
@@ -166,9 +170,15 @@ en:
   rating_submitted_for_approval: 
     one: "Your %{rateable} rating has been submitted for approval"
     other: "Your %{rateable} ratings have been submitted for approval"
+  rating_update:
+    one: "The rating has been updated"
+    other: "The ratings have been updated"
+  rating_targets: "Trip/Agency/Service"
   submit_review: "Submit Feedback"
+  did_not_take_feedback_prompt: "We're sorry to hear you didn't take your trip.  Can you tell us what went wrong?"
   feedback_comments: "Please enter any feedback you would like to share"
   feedback_rating: "Rating (1-worst, 5-best)"
+  untaken_trip: "Untaken trip"
   edit_trip: "Edit this trip"
   repeat_trip: "Repeat this trip."
   remove_trip: "Remove this trip"
@@ -177,7 +187,7 @@ en:
   plan_trip: "Continue planning this trip"
   max_notes: 'Max notes'
 
-  
+
   # Trip planning
   enter_address: 'Enter address'
   location: "Location"
@@ -189,7 +199,10 @@ en:
   depart_at: 'Depart at'
   arrive_by: 'Arrive by'
   arrive_at: 'Arrive at'
+  arrive_in: 'Arrive in'
   trip_time: 'Time'
+  number_of_transfers: 'Number of Transfers'
+  modes: 'Modes'
   apply: 'Apply'
   cancel: 'Cancel'
   plan_it: 'Plan it'
@@ -197,14 +210,30 @@ en:
   options: 'Options'
   review: 'Review'
   plan: 'Plan'
+  trip_restrictions: 'Trip Restrictions'
   from: 'From'
+  from_lat: 'From Lat'
+  from_lon: 'From Lon'
+  out_arrive_or_depart: 'Outbound Arrive Depart'
+  out_datetime: 'Outbound Date'
   to: 'To'
+  to_lat: 'To Lat'
+  to_lon: 'To Lon'
+  in_arrive_or_depart: 'Inbound Arrive Depart'
+  in_datetime: 'Inbound Date'
   at_time: 'on'
   arrive_depart: 'Arrive/Depart'
+  leaving_from: 'Leaving From'
+  type_from_address: 'Type the from address'
+  going_to: 'Going To'
+  type_to_address: 'Type the to address'
   trip_purpose: 'Purpose'
   trip_purposes: "Trip Purposes"
   departing_at: 'Departing At'
   arriving_by: 'Arriving By'
+  arrival_time: 'Arrival Time'
+  departure_time: 'Departure Time'
+  travel_time: 'Travel Time'
   save_and_plan_trip: "Save and plan my trip"
   trip_planned_and_saved: "Trip planned and saved"
   finish_trip_planning_options: "You can now do one or more of the following to finish your trip planning"
@@ -223,10 +252,19 @@ en:
   walk: 'Walk'
   bus: 'Bus'
   drive: 'Drive'
+  bike: 'Bike'
+  bikeshare: 'Bikeshare'
+  drive_and_transit: 'Drive and Transit'
   rail: 'Rail'
+  rail_and_bus: 'Rail and Bus'
   subway: 'Subway'
   vehicle: 'Vehicle'
+  wait: 'Wait'
+  mode_transfer: 'Transfer'
   select_a_plan_each_trip_part: 'Please select itinerary for each trip part'
+  no_itineraries_found: 'No itineraries were found'
+  service_error: 'There was an error planning your trip. Please try again.'
+  failed_to_update_profile: 'Failed to update your user profile.'
   route: 'Route'
   transfer: {
     one: '%{count} transfer',
@@ -237,11 +275,14 @@ en:
   remove: 'Remove'
   reload: 'Reload'
   return: 'Return'
+  return_itinerary_count: 'Return Itinerary Count'
   outbound: 'Outbound'
+  outbound_itinerary_count: 'Outbound Itinerary Count'
   paratransit: 'Paratransit'
   mode: 'Mode'
   direction_short: "Dir"
   status: "Status"
+  device: 'Device'
   hidden: "Hidden"
   duration: 'Duration'
   walking: 'Walking'
@@ -309,7 +350,13 @@ en:
   flat_fare_unavailable: "Flat fare unavailable"
   rate: "Rate"
 
-  
+  #map
+  zoom_in: 'Zoom in'
+  zoom_out: 'Zoom out'
+  center_my_location: 'Center my location'
+  display_street_view: 'Display street view'
+  select_location_on_map: 'Select location on map'
+
   # My Places form
   found_x_places: {
     one:    'Found %{count} place in your address book.',
@@ -377,6 +424,10 @@ en:
   cost_details: "Cost Details"
   addl_cost_details: "Additional Cost Details"
   click_for_cost_details: 'Click for cost details'
+  click_for_details: 'Click for details'
+  see_details_for_cost: 'See details for cost'
+  cost_estimated: 'Cost estimated'
+  see_below: 'See below'
   view_trip_details: "View trip details so that you can call the provider."
   email_trip_details:  "Email your trip plan."
   print_trip_details: "Print your trip plan."
@@ -403,6 +454,7 @@ en:
   accommodations: "Accommodations"
   missing_accommodations: "Some accommodations unavailable."
   no_accommodations: "No accommodations provided"
+  service_provides_the_following: "This service provides the following accommodations"
   volunteer: "Volunteer Service"
   nemt: "Non-Emergency Med."
   car_service: "Car Service"
@@ -422,7 +474,15 @@ en:
   return_selected: 'Return option selected.'
   not_authorized_as_an_administrator: 'Not authorized as an administrator.'
   n_a: 'n/a'
+  unknown: 'unknown'
   not_available: 'Not Available'
+  show_filters: 'Show Filters'
+  show_legends: 'Show Legends'
+  hide_filters: 'Hide Filters'
+  hide_legends: 'Hide Legends'
+  minute_abbr: 'min'
+  minutes: 'minutes'
+  sort_by: 'Sort by'
   less_than_1_block: "less than 1 block"
   about_2_blocks: "about 2 blocks"
   about_4_blocks: "about 4 blocks"
@@ -437,6 +497,7 @@ en:
   my_buddies: "%{owner} buddies"
   not_any_buddies: "You don't have any buddies."
   no_buddies: "You don't have any travelers that have asked you to be their travel buddy."
+  please_save_buddies: "Please save your changes to ask %{name} to be your buddy."
   address_is_required: "Address is required"
   all_trips: "All trips"
   trips_coming_up: "Trips coming up"
@@ -477,7 +538,7 @@ en:
   arrive: "ARRIVE: "
   est: " (est.)"
   myself: "myself"
-  assisted_user_first_name_s_trips: "%{name}'s Trips"
+  assisted_user_first_name_s_places: "%{name}'s Places"
   trip_options_information_from_from: "Trip options information from %{from}"
   create_account: "Create an account to save your information."
   stop_assisting: "Stop assisting"
@@ -499,6 +560,7 @@ en:
   not_sure_str: "Not sure"
   unsure_str: "Unsure"
   ok: "Ok"
+  done: "Done"
   cancel: "Cancel"
   edit: "Edit"
   delete: "Delete"
@@ -512,17 +574,21 @@ en:
   in_str: "In"
   out_str: "Out"
   role: "Role"
+  roles: "Roles"
   change_role: "Change Role"
   select_users: "Select users"
   add: "Add"
   back: "Back"
   count: "Count"
+  approve: "Approve"
+  reject: "Reject"
   contact_info: "Contact Info"
   do_not_reply: "This email is sent from an email address that is not monitored. Please do not reply to this message."
   nothing_found_sorry: "Nothing found - sorry"
+  no_good_options: "There are no good options here."
   solicit_feedback: "Please give us some feedback:"
   thanks_for_responding: "Thanks for taking the time to respond."
-  success_feedback_link: "Click HERE if you made the trip as planned, and everything worked out just fine."
+  success_feedback_link: "Click HERE if you want to tell us about your trip."
   no_trip_taken_feedback_link: "Click HERE if you decided not to make the trip at all."
   more_feedback_link: "Click HERE if you want to provide more feedback, or if things didn't work out as planned."
   search: "Search"
@@ -536,7 +602,15 @@ en:
   city: "City"
   state: "State"
   zip: "Zip"
-
+  all: "All"
+  relationship_status:
+    relationship_status_requested: "Requested"
+    relationship_status_pending: "Pending"
+    relationship_status_confirmed: "Confirmed"
+    relationship_status_denied: "Denied"
+    relationship_status_revoked: "Revoked"
+    relationship_status_hidden: "Hidden"
+  
   # validation messages
   valid_time_msg: "must be a valid time"
   presence_msg: "can't be blank"
@@ -552,7 +626,7 @@ en:
     - Fri
     - Sat
     abbr_month_names:
-    -
+    - 
     - Jan
     - Feb
     - Mar
@@ -580,7 +654,7 @@ en:
       oneclick_long: ! '%A, %B %-d %Y'
       oneclick_short: ! '%A, %B %-d'
     month_names:
-    -
+    - 
     - January
     - February
     - March
@@ -603,6 +677,7 @@ en:
       default: ! '%a, %d %b %Y %I:%M:%S %p %Z'
       long: ! '%B %d, %Y %I:%M %p'
       short: ! '%d %b %I:%M %p'
+      isoish: ! '%Y-%m-%d %I:%M %p'
       oneclick_short: ! '%-I:%M %p'
     pm: pm
   datetime:

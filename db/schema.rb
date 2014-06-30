@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140605153607) do
+ActiveRecord::Schema.define(version: 20140621211528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20140605153607) do
     t.boolean "active",                           default: true,  null: false
     t.string  "code"
     t.integer "sequence",                         default: 0
+    t.boolean "ask_early",                        default: true
   end
 
   create_table "agencies", force: true do |t|
@@ -53,6 +54,12 @@ ActiveRecord::Schema.define(version: 20140605153607) do
     t.integer  "creator",                            null: false
   end
 
+  create_table "boundaries", force: true do |t|
+    t.integer "gid"
+    t.string  "agency"
+    t.spatial "geom",   limit: {:srid=>0, :type=>"geometry"}
+  end
+
   create_table "characteristics", force: true do |t|
     t.string  "name",                  limit: 64
     t.string  "note",                                              null: false
@@ -63,11 +70,28 @@ ActiveRecord::Schema.define(version: 20140605153607) do
     t.string  "characteristic_type",   limit: 128
     t.string  "desc",                              default: ""
     t.integer "sequence",                          default: 0
+    t.boolean "ask_early",                         default: true
+  end
+
+  create_table "counties", force: true do |t|
+    t.integer "gid"
+    t.string  "name"
+    t.string  "state"
+    t.spatial "geom",  limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "coverage_areas", force: true do |t|
     t.integer "service_id", null: false
     t.boolean "active",     null: false
+  end
+
+  create_table "date_options", force: true do |t|
+    t.string   "name"
+    t.string   "code"
+    t.string   "start_date"
+    t.string   "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "fare_structures", force: true do |t|
@@ -80,9 +104,10 @@ ActiveRecord::Schema.define(version: 20140605153607) do
   end
 
   create_table "geo_coverages", force: true do |t|
-    t.string "value"
-    t.string "coverage_type", limit: 128
-    t.string "polygon"
+    t.string  "value"
+    t.string  "coverage_type", limit: 128
+    t.string  "polygon"
+    t.spatial "geom",          limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "itineraries", force: true do |t|
@@ -140,6 +165,7 @@ ActiveRecord::Schema.define(version: 20140605153607) do
     t.integer "parent_id"
     t.string  "otp_mode"
     t.integer "results_sort_order"
+    t.string  "logo_url"
   end
 
   create_table "places", force: true do |t|
@@ -211,17 +237,18 @@ ActiveRecord::Schema.define(version: 20140605153607) do
     t.string  "internal_contact_title"
     t.string  "internal_contact_phone"
     t.string  "internal_contact_email", limit: 128
+    t.string  "logo_url"
   end
 
   create_table "ratings", force: true do |t|
     t.integer  "user_id"
     t.integer  "rateable_id"
     t.string   "rateable_type"
-    t.integer  "value",                         null: false
+    t.integer  "value",                             null: false
     t.text     "comments"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "approved",      default: false, null: false
+    t.string   "status",        default: "pending"
   end
 
   create_table "relationship_statuses", force: true do |t|
@@ -297,17 +324,17 @@ ActiveRecord::Schema.define(version: 20140605153607) do
   end
 
   create_table "services", force: true do |t|
-    t.string   "name",                         limit: 64,                 null: false
-    t.integer  "provider_id",                                             null: false
-    t.integer  "service_type_id",                                         null: false
-    t.integer  "advanced_notice_minutes",                 default: 0,     null: false
-    t.boolean  "volunteer_drivers_used",                  default: false, null: false
-    t.boolean  "accepting_new_clients",                   default: true,  null: false
-    t.boolean  "wait_list_in_effect",                     default: false, null: false
-    t.boolean  "requires_prior_authorization",            default: false, null: false
-    t.boolean  "active",                                  default: true,  null: false
-    t.datetime "created_at",                                              null: false
-    t.datetime "updated_at",                                              null: false
+    t.string   "name",                         limit: 64,                                            null: false
+    t.integer  "provider_id",                                                                        null: false
+    t.integer  "service_type_id",                                                                    null: false
+    t.integer  "advanced_notice_minutes",                                            default: 0,     null: false
+    t.boolean  "volunteer_drivers_used",                                             default: false, null: false
+    t.boolean  "accepting_new_clients",                                              default: true,  null: false
+    t.boolean  "wait_list_in_effect",                                                default: false, null: false
+    t.boolean  "requires_prior_authorization",                                       default: false, null: false
+    t.boolean  "active",                                                             default: true,  null: false
+    t.datetime "created_at",                                                                         null: false
+    t.datetime "updated_at",                                                                         null: false
     t.string   "email"
     t.string   "external_id",                  limit: 25
     t.string   "phone",                        limit: 25
@@ -319,6 +346,10 @@ ActiveRecord::Schema.define(version: 20140605153607) do
     t.string   "internal_contact_email"
     t.string   "internal_contact_title"
     t.string   "internal_contact_phone"
+    t.string   "logo_url"
+    t.spatial  "origin",                       limit: {:srid=>0, :type=>"geometry"}
+    t.spatial  "destination",                  limit: {:srid=>0, :type=>"geometry"}
+    t.spatial  "residence",                    limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "services_users", id: false, force: true do |t|
@@ -390,15 +421,17 @@ ActiveRecord::Schema.define(version: 20140605153607) do
   end
 
   create_table "trips", force: true do |t|
-    t.string   "name",            limit: 64
+    t.string   "name",                  limit: 64
     t.integer  "user_id"
     t.integer  "trip_purpose_id"
     t.integer  "creator_id"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.boolean  "taken"
     t.date     "scheduled_date"
     t.datetime "scheduled_time"
+    t.text     "planned_trip_html"
+    t.boolean  "needs_feedback_prompt"
   end
 
   create_table "trips_desired_modes", force: true do |t|
@@ -493,6 +526,14 @@ ActiveRecord::Schema.define(version: 20140605153607) do
     t.string   "relationship", limit: 64
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+  end
+
+  create_table "zipcodes", force: true do |t|
+    t.integer "gid"
+    t.string  "zipcode"
+    t.string  "name"
+    t.string  "state"
+    t.spatial "geom",    limit: {:srid=>0, :type=>"geometry"}
   end
 
 end

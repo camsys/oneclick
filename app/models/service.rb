@@ -160,5 +160,108 @@ class Service < ActiveRecord::Base
   def to_s
     name
   end
+
+  def build_polygons
+
+    #clear old polygons
+    self.origin = nil
+    self.destination = nil
+    self.residence = nil
+
+    ['origin', 'destination', 'residence'].each do |rule|
+      scms = self.service_coverage_maps.where(rule: rule)
+      scms.each do |scm|
+        polygon = polygon_from_attribute(scm)
+        if polygon.nil?
+          next
+        end
+        case rule
+          when 'origin'
+            if self.origin
+              merged = self.origin.union(polygon)
+              self.origin = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
+              self.save
+            else
+              self.origin = polygon
+              self.save
+            end
+          when 'destination'
+            if self.destination
+              merged = self.destination.union(polygon)
+              self.destination = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
+              self.save
+            else
+              self.destination = polygon
+              self.save
+            end
+          when 'residence'
+            if self.residence
+              merged = self.residence.union(polygon)
+              self.residence = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
+              self.save
+            else
+              self.residence = polygon
+              self.save
+            end
+        end
+      end
+    end
+    self.save
+
+  end
+
+  def polygon_from_attribute scm
+    #RGeo::Feature.cast(merged, :type => york.geom.geometry_type)
+    state = Oneclick::Application.config.state
+    case scm.geo_coverage.coverage_type
+      when 'county_name'
+        county = County.where("lower(name) =? AND state=?", scm.geo_coverage.value.downcase, state)
+        if county.length > 0
+          return county.first.geom
+        end
+      when 'zipcode'
+        zipcode = Zipcode.where(zipcode: scm.geo_coverage.value, state: state)
+        if zipcode.length > 0
+          return zipcode.first.geom
+        end
+      when 'polygon'
+        return scm.geo_coverage.geom
+    end
+    nil
+  end
+
+  def wkt_to_array(rule = 'origin')
+    myArray = []
+    case rule
+      when 'origin'
+        geometry = self.origin
+      when 'destination'
+        geometry = self.destination
+      when 'residence'
+        geometry = self.residence
+    end
+    if geometry
+      geometry.each do |polygon|
+        polygon_array = []
+        ring_array  = []
+        polygon.exterior_ring.points.each do |point|
+          ring_array << [point.y, point.x]
+        end
+        polygon_array << ring_array
+
+        polygon.interior_rings.each do |ring|
+          ring_array = []
+          ring.points.each do |point|
+            ring_array << [point.y, point.x]
+          end
+          polygon_array << ring_array
+        end
+        myArray << polygon_array
+      end
+    end
+    myArray.first
+  end
+
+
   
 end

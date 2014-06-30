@@ -1,48 +1,31 @@
-.row
-  .col-sm-6.pull-left
-    -if can? :index, Service
+- temp_rating = @service.ratings.build(rateable: @service)
+-if can? :index, Service
+  .row
+    .col-sm-12
       = link_to t(:all_services), services_path
+.row.info-header
+  .col-sm-5
     %h2
       =@service.name
-  .col-sm-3.pull-right.form-group
-    %h2
-      - if can? :update, @service
-        = link_to edit_service_path(@service), {class: 'btn action-button btn-default', role: 'button'} do
-          = icon_label(:edit)
-      - if can? :destroy, @service
-        = button_to t(:delete), { action: "destroy", id: @service.id }, method: :delete,
-        data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default",
-        form_class: "form-horizontal pull-right"
+  .col-sm-7.btns
+    - if can? :destroy, @service
+      = button_to t(:delete), { action: "destroy", id: @service.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default", form_class: "form-horizontal pull-right"
+    - if can? :update, @service
+      = link_to edit_service_path(@service), {class: 'btn action-button btn-default pull-right', role: 'button'} do
+        = icon_label(:edit)
+    -if Oneclick::Application.config.public_write_feedback
+      - if can? :read, temp_rating
+        .pull-right
+          = RateableDecorator.decorate(@service).rating_in_stars
+          %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal"}}
+            = t(:feedback)
+      - else
+        -# if creating feedback is allowed, but reading isn't, just load the form into the modal on click
+        %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal", remote: new_service_rating_path(@service)}}
+          = t(:feedback)
+      = render partial: "ratings/organization_feedback_modal", locals: {rateable: @service}
 .row
-  .col-sm-6
-    .panel.panel-default
-      .panel-heading
-        %h3.panel-title
-          = t(:provided_by)
-          = link_to @service.provider.name, admin_provider_path(@service.provider)
-      .panel-body
-        -unless @service.active
-          %h3.warning
-            = t(:service_is_inactive)
-        %h4
-          =@service.phone
-        %h4
-          =@service.email
-        %h4
-          - if @service.url
-            =link_to @service.url, @service.url
-        %h5
-          -if @service.external_id
-            =t(:service_id).to_s + ": " + @service.external_id.to_s
-        %h5
-          -if @service.booking_service_code
-            =t(:booking_service_code).to_s + ": " + @service.booking_service_code.to_s
-        %h5
-          - if @service.service_window
-            = t(:service_window).to_s + ": " + @service.service_window.to_s
-        %h5
-          - if @service.time_factor
-            = t(:time_factor).to_s + ": " + @service.time_factor.to_s
+  = render partial: "public_details", locals: { service: @service}
         
   -if can? :full_read, @service      
     .col-sm-6
@@ -206,7 +189,7 @@
               %h4.panel-title= t(:service_area_map)
             .panel-body
 
-              = LeafletMap({ :mapid => "lmap_" + "origin", :polylines => @polylines['origin'],
+              = LeafletMap({ :mapid => "lmap_" + "origin", :multipolygons => @polylines,
               :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15,
               :style => "height:500px;" })
 

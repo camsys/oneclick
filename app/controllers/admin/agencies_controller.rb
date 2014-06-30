@@ -40,7 +40,6 @@ class Admin::AgenciesController < ApplicationController
   # GET /agencies/new
   # GET /agencies/new.json
   def new
-    puts @agency.id
     # @agency = Agency.new
 
     respond_to do |format|
@@ -60,7 +59,6 @@ class Admin::AgenciesController < ApplicationController
   # POST /agencies
   # POST /agencies.json
   def create
-    puts @agency.id
     params[:agency][:parent] = Agency.find(params[:agency].delete :parent_id) rescue nil
     # @agency = Agency.new(params[:agency])
 
@@ -100,7 +98,6 @@ class Admin::AgenciesController < ApplicationController
   # DELETE /agencies/1
   # DELETE /agencies/1.json
   def destroy
-    puts @agency.id
     # @agency = Agency.find(params[:id])
     @agency.update_attributes(active: false)
 
@@ -108,19 +105,6 @@ class Admin::AgenciesController < ApplicationController
       format.html { redirect_to admin_agencies_path }
       format.json { head :no_content }
     end
-  end
-end
-
-def rate
-  @agency = Agency.find(params[:id])
-  @user =  User.find_by(id: params[:user_id]) || current_user
-  if @agency && @user
-    @rate = @agency.rate(@user, params[:ratings][:value], params[:ratings][:comments])
-  end
-  @rateable = @agency
-  
-  respond_to do |format|
-    format.js { render 'ratings/rate' }
   end
 end
 

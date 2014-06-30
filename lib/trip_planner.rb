@@ -9,7 +9,7 @@ class TripPlanner
   
   include ServiceAdapters::RideshareAdapter
 
-  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK")
+  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false")
 
     #Parameters
     time = trip_datetime.strftime("%-I:%M%p")
@@ -18,6 +18,7 @@ class TripPlanner
     url_options = "&time=" + time
     url_options += "&mode=" + mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
+    url_options += "&wheelchair=" + wheelchair
     url_options += "&arriveBy=" + arriveBy.to_s
 
     url = base_url + url_options
@@ -72,7 +73,7 @@ class TripPlanner
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
       trip_itinerary['mode'] = Mode.transit
-      trip_itinerary['duration'] = itinerary['duration'].to_f/1000.0 # in seconds
+      trip_itinerary['duration'] = itinerary['duration'].to_f # in seconds
       trip_itinerary['walk_time'] = itinerary['walkTime']
       trip_itinerary['transit_time'] = itinerary['transitTime']
       trip_itinerary['wait_time'] = itinerary['waitingTime']
@@ -247,6 +248,13 @@ class TripPlanner
       'service' => itinerary['service'],
       'match_score' => 1.1
     }
+  end
+
+  def get_drive_time arrive_by, trip_time, from_lat, from_lon, to_lat, to_lon
+    tp = TripPlanner.new
+    result, response = get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],
+                                                [to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, 'CAR')
+    response['itineraries'].first['duration']
   end
 
 end

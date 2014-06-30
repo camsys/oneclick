@@ -8,6 +8,11 @@ module LeafletHelper
   TILE_STYLE_ID = 997
   MAP_BOUNDS = Rails.application.config.map_bounds
   SCROLL_WHEEL_ZOOM = false
+  SHOW_MY_LOCATION = true
+  SHOW_STREET_VIEW= true
+  STREET_VIEW_URL = '/streetview.html'
+  SHOW_LOCATION_SELECT = false
+  ZOOM_ANIMATION = false #default as false; true sometimes freezes map;
   
   def LeafletMap(options)
     options_with_indifferent_access = options.with_indifferent_access
@@ -33,13 +38,30 @@ module LeafletHelper
     tile_provider = options[:tile_provider] ? options[:tile_provider] : TILE_PROVIDER
     tile_style_id = options[:tile_style_id] ? options[:tile_style_id] : TILE_STYLE_ID
     scroll_wheel_zoom = options[:scroll_wheel_zoom] || SCROLL_WHEEL_ZOOM
-    
+    show_my_location = options[:show_my_location] || SHOW_MY_LOCATION
+    show_street_view = options[:show_street_view] || SHOW_STREET_VIEW
+    street_view_url = options[:street_view_url] ? options[:street_view_url] : STREET_VIEW_URL
+    show_location_select = options[:show_location_select] || SHOW_LOCATION_SELECT
+    zoom_animation = options[:zoom_animation] || ZOOM_ANIMATION
+
     mapopts = {
       :min_zoom => min_zoom,
       :max_zoom => max_zoom,
       :tile_provider => tile_provider,
       :tile_style_id => tile_style_id,
-      scroll_wheel_zoom: scroll_wheel_zoom
+      scroll_wheel_zoom: scroll_wheel_zoom,
+      zoom_animation: zoom_animation,
+      show_my_location: show_my_location,
+      show_street_view: show_street_view,
+      street_view_url: street_view_url,
+      show_location_select: show_location_select,
+      map_control_tooltips: {
+        zoom_in: I18n.t(:zoom_in),
+        zoom_out: I18n.t(:zoom_out),
+        my_location: I18n.t(:center_my_location),
+        display_street_view: I18n.t(:display_street_view),
+        select_location_on_map: I18n.t(:select_location_on_map)
+      }
     }.to_json
 
     js << "var CsMaps = CsMaps || {};"
@@ -52,6 +74,8 @@ module LeafletHelper
     js << "m.addCircles(#{options[:circles]});" unless options[:circles].nil?
     # add any polylines
     js << "m.replacePolylines(#{options[:polylines]}, false);" unless options[:polylines].nil?
+    # add any multipolygons
+    js << "m.addMultipolygons(#{options[:multipolygons]}, false);" unless options[:multipolygons].nil?
     # set the map bounds
     js << "m.setMapBounds(#{MAP_BOUNDS[0][0]},#{MAP_BOUNDS[0][1]},#{MAP_BOUNDS[1][0]},#{MAP_BOUNDS[1][1]});"
     js << "m.cacheMapBounds(#{MAP_BOUNDS[0][0]},#{MAP_BOUNDS[0][1]},#{MAP_BOUNDS[1][0]},#{MAP_BOUNDS[1][1]});"

@@ -34,6 +34,22 @@ class TripPart < ActiveRecord::Base
     is_return_trip
   end
 
+  def get_return_part
+    if is_return_trip?
+      nil
+    else
+      trip.return_part
+    end
+  end
+
+  def is_bookable?
+    selected? and selected_itinerary.is_bookable?
+  end
+
+  def is_booked?
+    selected? and selected_itinerary.booking_confirmation
+  end
+
   # We define that an itinerary has been selected if there is exactly 1 visible valid one.
   # We might want a more explicit selection flag in the future.
   def selected?
@@ -132,7 +148,8 @@ class TripPart < ActiveRecord::Base
     itins = []
     tp = TripPlanner.new
     arrive_by = !is_depart
-    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode)
+    wheelchair = trip.user.requires_wheelchair_access?.to_s
+    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair)
 
     #TODO: Save errored results to an event log
     if result
@@ -232,11 +249,8 @@ class TripPart < ActiveRecord::Base
     unless itins.empty?
       unless ENV['SKIP_DYNAMIC_PARATRANSIT_DURATION']
         begin
-          tp = TripPlanner.new
-          arrive_by = !is_depart
-          result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],
-                                                      [to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, 'CAR')
-          base_duration = response['itineraries'].first['duration'] / 1000.0
+          base_duration = TripPlanner.new.get_drive_time(!is_depart, trip_time, from_trip_place.location.first,
+            from_trip_place.location.last, to_trip_place.location.first, to_trip_place.location.last)
         rescue Exception => e
           Rails.logger.error "Exception #{e} while getting trip duration."
           base_duration = nil
@@ -246,29 +260,9 @@ class TripPart < ActiveRecord::Base
       end
       Rails.logger.info "Base duration: #{base_duration} minutes"
       itins.each do |i|
-        i.duration_estimated = true
-        if base_duration.nil?
-          i.duration = Oneclick::Application.config.minimum_paratransit_duration
-        else
-          i.duration =
-            [base_duration * Oneclick::Application.config.duration_factor,
-             Oneclick::Application.config.minimum_paratransit_duration].max
-        end
-        Rails.logger.info "Factored duration: #{i.duration} minutes"
-        if is_depart
-          i.start_time = trip_time
-          i.end_time = i.start_time + i.duration
-        else
-          i.end_time = trip_time
-          i.start_time = i.end_time - i.duration
-        end
-        Rails.logger.info "AFTER"
-        Rails.logger.info i.duration.ai
-        Rails.logger.info i.start_time.ai
-        Rails.logger.info i.end_time.ai
+        i.estimate_duration(base_duration, Oneclick::Application.config.minimum_paratransit_duration, Oneclick::Application.config.minimum_paratransit_duration, trip_time, is_depart)
       end
     end
-
     itins
   end
 
@@ -279,7 +273,20 @@ class TripPart < ActiveRecord::Base
     result, response = tp.get_rideshare_itineraries(from_trip_place, to_trip_place, trip_time)
     if result
       itinerary = tp.convert_rideshare_itineraries(response)
-      itins << Itinerary.new(itinerary)
+      unless ENV['SKIP_DYNAMIC_RIDESHARE_DURATION']
+        begin
+          base_duration = TripPlanner.new.get_drive_time(!is_depart, trip_time, from_trip_place.location.first,
+            from_trip_place.location.last, to_trip_place.location.first, to_trip_place.location.last)
+        rescue Exception => e
+          Rails.logger.error "Exception #{e} while getting trip duration."
+          base_duration = nil
+        end
+      else
+        Rails.logger.info "SKIP_DYNAMIC_RIDESHARE_DURATION is set, skipping it"
+      end
+      i = Itinerary.new(itinerary)
+      i.estimate_duration(base_duration, Oneclick::Application.config.minimum_rideshare_duration, Oneclick::Application.config.rideshare_duration_factor, trip_time, is_depart)
+      itins << i
     else
       itins << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s,
                                         'mode' => Mode.rideshare)
@@ -289,6 +296,35 @@ class TripPart < ActiveRecord::Base
 
   def max_notes_count
     itineraries.valid.visible.map(&:notes_count).max
+  end
+
+  def reschedule minutes
+    new_time = scheduled_time + (minutes.to_i).minutes
+=begin
+if only trip part, is okay
+if advancing, just make sure doesn't equal or get later than next part's time
+if subtracting, just make sure doesn't get equal to or earlier than previous part's time
+=end
+    unless new_time_before_next_part(new_time) && new_time_after_prev_part(new_time)
+      raise "Cannot change trip part time, after/before adjacent trip part"
+    end
+    update_attribute(:scheduled_time, new_time)
+    trip.update_attribute(:scheduled_time, new_time)
+    # only do this is we successfully changed the time
+    remove_existing_itineraries
+  end
+
+  def new_time_before_next_part new_time
+    return true if trip.trip_parts.count==1
+    return true if sequence==(trip.trip_parts.count-1)
+    trip.next_part(self).scheduled_time
+    return new_time < trip.next_part(self).scheduled_time
+  end
+
+  def new_time_after_prev_part new_time
+    return true if trip.trip_parts.count==1
+    return true if sequence==0
+    return new_time > trip.prev_part(self).scheduled_time
   end
 
 end

@@ -14,19 +14,18 @@ class Trip < ActiveRecord::Base
   scope :by_provider, ->(p) { joins(itineraries: {service: :provider}).where('providers.id=?', p).distinct }
   # .join(:services).join(:providers) }
   # .where('providers.id=?', p)}
-
   scope :by_agency, ->(a) { joins(user: :approved_agencies).where('agencies.id' => a) }
+  scope :feedbackable, -> { includes(:itineraries).where(itineraries: {selected: true}, trips: {needs_feedback_prompt: true}).uniq}
+  scope :scheduled_before, lambda {|to_day| where("trips.scheduled_time < ?", to_day) }
 
   # Returns a set of trips that are scheduled between the start and end time
   def self.scheduled_between(start_time, end_time)
-
     # cant do a sorted join here as PG grumbles so doing an in-memory sort on the trips that are returned after we have performed a sub-filter on them. The reverse 
     #is because we want to order from newest to oldest
     res = joins(:trip_parts).where("sequence = ? AND trip_parts.scheduled_date >= ? AND trip_parts.scheduled_date <= ?", 0, start_time.to_date, end_time.to_date).uniq
     # Now we need to filter through the results and remove any which fall outside the time range
     res = res.reject{|x| ! x.scheduled_in_range(start_time, end_time) }
     return res.sort_by {|x| x.trip_datetime }.reverse
-
   end
 
   # Returns an array of Trips that have at least one valid itinerary but all
@@ -51,7 +50,10 @@ class Trip < ActiveRecord::Base
       trip_proxy.from_place, trip_proxy.map_center)
     to_place = TripPlace.new.from_trip_proxy_place(trip_proxy.to_place_object, 1,
       trip_proxy.to_place, trip_proxy.map_center)
-
+    # bubble up any errors finding places
+    trip.errors.add(:from_place, from_place.errors[:base].first) unless from_place.errors[:base].empty?
+    trip.errors.add(:to_place, to_place.errors[:base].first) unless to_place.errors[:base].empty?
+    
     trip.trip_places << from_place
     trip.trip_places << to_place
 
@@ -313,6 +315,33 @@ class Trip < ActiveRecord::Base
 
   def eligibility_dependent?
     desired_modes.where(elig_dependent: true).count > 0
+  end
+
+  def is_booked?
+    trip_parts.each do |trip_part|
+      if trip_part.is_booked?
+        return true
+      end
+    end
+    false
+  end
+
+  def next_part trip_part
+    return nil if trip_parts.count==1
+    i = trip_parts.find_index {|tp| tp==trip_part}
+    raise "Trip part is not part of this trip" if i.nil?
+    i += 1
+    return nil if i==trip_parts.count
+    trip_parts[i]
+  end
+
+  def prev_part trip_part
+    return nil if trip_parts.count==1
+    i = trip_parts.find_index {|tp| tp==trip_part}
+    raise "Trip part is not part of this trip" if i.nil?
+    i -= 1
+    return nil if i<0
+    trip_parts[i]
   end
 
   private

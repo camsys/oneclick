@@ -77,5 +77,12 @@ namespace :oneclick do
     u.add_role :admin
   end
 
+  task build_polygons: :environment do
+    Service.all.each do |service|
+      puts 'Buliding shape for ' + service.name.to_s
+      service.build_polygons
+    end
+  end
+
 
 end

@@ -10,9 +10,6 @@ class User < ActiveRecord::Base
   # devise configuration
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
-  # Needed to Rate Trips
-  ajaxful_rater
-
   # Updatable attributes
   # attr_accessible :email, :password, :password_confirmation, :remember_me
   # attr_accessible :first_name, :last_name, :prefix, :suffix, :nickname
@@ -24,6 +21,7 @@ class User < ActiveRecord::Base
   has_many :trip_places, :through => :trips
   has_one  :user_profile            # 1 user profile
   has_many :user_mode_preferences   # 0 or more user mode preferences
+  has_many :preferred_modes, through: :user_mode_preferences, class_name: 'Mode', source: :mode
   has_many :user_roles
   has_many :roles, :through => :user_roles # one or more user roles
   has_many :trip_parts, :through => :trips
@@ -60,6 +58,8 @@ class User < ActiveRecord::Base
   belongs_to :agency
   belongs_to :provider
   has_and_belongs_to_many :services
+
+  has_many :ratings # ratings created by the user, not ratings of the user
 
   scope :confirmed, -> {where('relationship_status_id = ?', RelationshipStatus::CONFIRMED)}
   scope :registered, -> {with_role(:registered_traveler)}
@@ -105,6 +105,21 @@ class User < ActiveRecord::Base
     disability_status.count > 0 and disability_status.first.value == 'true'
   end
 
+  def requires_wheelchair_access?
+    folding_accommodation = Accommodation.where(code: 'folding_wheelchair_accessible').first
+    motorized_accommodation = Accommodation.where(code: 'motorized_wheelchair_accessible').first
+
+    needs_folding = user_profile.user_accommodations.where(accommodation: folding_accommodation, value: "true").first
+    needs_motorized = user_profile.user_accommodations.where(accommodation: motorized_accommodation, value: "true").first
+
+    if needs_folding or needs_motorized
+      return true
+    else
+      return false
+    end
+
+  end
+
   def home
     self.places.find_by_home(true)
   end
@@ -123,11 +138,24 @@ class User < ActiveRecord::Base
   end
 
   def is_visitor?
-    role.includes
+    has_role? :anonymous_traveler
   end
 
   def is_registered?
     !is_visitor?
+  end
+
+# Union to get unique users with any relationship to current user
+  def related_users
+    delegates | travelers
+  end
+
+  def can_assist_target?(user)
+    self.travelers.include? user
+  end
+
+  def can_be_assisted_by_target?(user)
+    self.confirmed_delegates.include? user
   end
 
   #List of users who can be assigned to staff for an agency or provider
@@ -135,24 +163,22 @@ class User < ActiveRecord::Base
     User.where.not(id: User.with_role(:anonymous_traveler).pluck(:id)).order(first_name: :asc)
   end
 
-  def set_buddies ids
-    new_buddy_ids = ids.reject!(&:empty?)
-    old_buddy_ids = pending_and_confirmed_delegates.pluck(:id).map(&:to_s) #hack.  Converting to strings for comparison to params hash
-
-    new_buddies = new_buddy_ids - old_buddy_ids
-    revoked_buddies = old_buddy_ids - new_buddy_ids
-
-    # add or reset desired buddies
-    new_buddies.each do |id|
-      rel = UserRelationship.find_or_create_by!( traveler: self, delegate: User.find(id)) do |ur|
-        ur.update_attributes(relationship_status: RelationshipStatus.pending)
+  def update_relationships id_hash
+    if id_hash
+      id_hash.each do |rel_id, rel_status|
+        UserRelationship.find(rel_id).update_attributes(relationship_status_id: rel_status)
       end
-      UserMailer.buddy_request_email(rel.delegate.email, rel.traveler.email).deliver
-      rel.update_attributes(relationship_status: RelationshipStatus.pending)
     end
-    # remove undesired buddies
-    revoked_buddies.each do |revoked_id|
-      buddy_relationships.find_by(delegate_id: revoked_id).update_attributes(relationship_status: RelationshipStatus.revoked)
+  end
+
+  def add_buddies emails
+    unless emails.nil?
+      emails.each do |email|
+        rel = UserRelationship.find_or_create_by(user_id: self.id, delegate_id: User.find_by(email: email).id) do |ur|
+          ur.relationship_status_id = RelationshipStatus::PENDING
+        end
+        UserMailer.buddy_request_email(rel.delegate.email, rel.traveler.email).deliver
+      end
     end
   end
 

@@ -51,7 +51,7 @@ after_deploy:
   - ls
   - heroku run rake db:migrate --app oneclick-arc-int
   - heroku run rake db:migrate --app oneclick-pa-int
-  - git checkout develop
-  - git describe
-  - heroku config:set ONECLICK_APP_VERSION=`git describe` --app oneclick-arc-int
-  - heroku config:set ONECLICK_APP_VERSION=`git describe` --app oneclick-pa-int
+  # - git checkout develop
+  # - git describe
+  # - heroku config:set ONECLICK_APP_VERSION=`git describe` --app oneclick-arc-int
+  # - heroku config:set ONECLICK_APP_VERSION=`git describe` --app oneclick-pa-int

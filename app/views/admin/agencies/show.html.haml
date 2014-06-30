@@ -1,67 +1,37 @@
-.row
-  .col-sm-6.pull-left
-    - if can? :index, Agency
+- temp_rating = @agency.ratings.build(rateable: @agency)
+- if can? :index, Agency
+  .row
+    .col-sm-12
       = link_to t(:all_agencies), admin_agencies_path
-    %h2= @agency.name
+.row.info-header
+  .col-sm-5
+    %h1= @agency.name
     -unless @agency.active
       %p= t(:inactive)
-  .col-sm-3.pull-right.form-group
-    .row
-      - if can? :update, @agency
-        = link_to edit_admin_agency_path(@agency), {class: 'btn action-button btn-default', role: 'button'} do
-          = icon_label(:edit)
-      - if can? :destroy, @agency
-        = button_to t(:delete), { action: "destroy", id: @agency.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: 'btn action-button btn-default', form_class: "form-horizontal pull-right"
-    -if can? :rate, @agency
-      .row
-        = @agency.rating_in_stars(2)
-        %button.btn.action-button.btn-default.pull-right{data: {toggle: 'modal', target: "#feedback_modal"}}
+  .col-sm-7.btns
+    - if can? :destroy, @agency
+      = button_to t(:delete), { action: "destroy", id: @agency.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: "btn action-button", form_class: "form-horizontal pull-right"
+    - if can? :update, @agency
+      = link_to edit_admin_agency_path(@agency), {class: 'btn action-button pull-right', role: 'button'} do
+        = icon_label(:edit)
+    -if Oneclick::Application.config.public_write_feedback
+      - if can? :read, temp_rating
+        .pull-right
+          = RateableDecorator.decorate(@agency).rating_in_stars
+          %button.btn.action-button{data: {toggle: 'modal', target: "#feedback_modal"}}
+            = t(:feedback)
+      - else
+        -# if creating feedback is allowed, but reading isn't, just load the form into the modal on click
+        %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal", remote: new_agency_rating_path(@agency)}}
           = t(:feedback)
-= render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
+      = render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
 .row
-  .col-sm-6
-    .panel.panel-default
-      .panel-heading
-        %h3.panel-title= t(:contact_info)
-      .panel-body
-        %table.table.table-condensed
-          %tr
-            %td.text-right
-              = t(:address) + ":"
-            %td.text-left
-              %b= @agency.address.to_s
-            %td.text-left
-              %b= @agency.city.to_s
-            %td.text-left
-              %b= @agency.state.to_s
-            %td.text-left
-              %b= @agency.zip.to_s
-          %tr
-            %td.text-right
-              = t(:phone)+ ":  "
-            %td.text-left{colspan: 4}
-              %b= @agency.phone.to_s
-          %tr
-            %td.text-right
-              = t(:email)+ ":  "
-            %td.text-left{colspan: 4}
-              %b= mail_to @agency.email.to_s
-          %tr
-            %td.text-right
-              = t(:url)+ ":  "
-            %td.text-left{colspan: 4}
-              - if @agency.url
-                %b= link_to @agency.url, @agency.url
-          %tr
-            %td.text-right
-              = t(:parent_agency) + ":  "
-            %td.text-left{colspan: 4}
-              %b= @agency.parent.name if @agency.parent
+  = render partial: "public_details", locals: {agency: @agency}
   - if can? :full_read, @agency
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h4.panel-title= t(:internal_contact)
+          %h2.panel-title= t(:internal_contact)
         .panel-body
           %table.table.table-condensed
             %tr
@@ -93,9 +63,9 @@
 - if can? :full_read, @agency
   .panel.panel-default#staff
     .panel-heading
-      %h3= t(:staff_actions)
+      %h2.panel-title= t(:staff_actions)
     .panel-body
-      %h4= t(:administrators)
+      %h3= t(:administrators)
       %table.ALTtable.table-condensed#admin_table
         %thead
           %tr
@@ -111,7 +81,7 @@
               %td= s.phone.to_s
               %td= mail_to s.email.to_s
 
-      %h4= t(:agents)
+      %h3= t(:agents)
       %table.ALTtable.table-condensed#agent_table
         %thead
           %tr

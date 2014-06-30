@@ -13,9 +13,14 @@ ENV['SESSION_ALERT_TIMEOUT'] ||= '30'
 
 Oneclick::Application.config.default_zoom = nil
 Oneclick::Application.config.max_offset_from_desired = 3.hours
-Oneclick::Application.config.duration_factor = 2.0
+Oneclick::Application.config.paratransit_duration_factor = 2.0
 Oneclick::Application.config.minimum_paratransit_duration = 2.hours
+Oneclick::Application.config.rideshare_duration_factor = 1.5
+Oneclick::Application.config.minimum_rideshare_duration = (1.5).hours
 Oneclick::Application.config.show_update_services = false
+
+Oneclick::Application.config.max_ui_duration = 2.hours
+Oneclick::Application.config.min_ui_duration = 1.hours
 
 Oneclick::Application.config.google_places_api_key = 'AIzaSyCvKyNoBzQNrBRuSRkipWye0pdj__HjrmU'
 
@@ -42,6 +47,9 @@ when 'arc'
   Oneclick::Application.config.poi_file = 'db/arc_poi_data/CommFacil_20131015.txt'
   Oneclick::Application.config.show_update_services = true
   Oneclick::Application.config.default_county = ''
+  Oneclick::Application.config.public_read_feedback = true
+  Oneclick::Application.config.public_write_feedback = true
+  Oneclick::Application.config.state = 'GA'
 
 when 'broward'
   Oneclick::Application.config.ui_logo = 'broward/Broward_211_Get_Connected_get_answers.jpg'
@@ -63,6 +71,9 @@ when 'broward'
   honeybadger_api_key = '789c7911'
   Oneclick::Application.config.poi_file = 'db/broward_poi_data/broward-poi-from-arcgis.csv'
   Oneclick::Application.config.default_county = 'Broward'
+  Oneclick::Application.config.public_read_feedback = false
+  Oneclick::Application.config.public_write_feedback = true
+  Oneclick::Application.config.state = 'FL'
 
 when 'pa'
   Oneclick::Application.config.ui_logo = 'pa/penndotLogo.jpg'
@@ -86,11 +97,15 @@ when 'pa'
   honeybadger_api_key = 'f49faffa'
   Oneclick::Application.config.poi_file = 'db/pa/pa-poi-from-arcgis.csv'
   Oneclick::Application.config.default_county = 'York'
+  Oneclick::Application.config.public_read_feedback = false
+  Oneclick::Application.config.public_write_feedback = true
+  Oneclick::Application.config.state = 'PA'
 
   ##Ecolane Variables
   Oneclick::Application.config.ecolane_system_id = "ococtest"
   Oneclick::Application.config.ecolane_x_ecolane_token = ENV['X_ECOLANE_TOKEN']
   Oneclick::Application.config.ecolane_base_url = "https://rabbit-test.ecolane.com"
+
 
 end
 

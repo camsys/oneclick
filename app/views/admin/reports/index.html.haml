@@ -1,7 +1,2 @@
-.row
-  .col-sm-12
-    %h1
-      %i.fa.fa-bar-chart-o
-      = t(:reports)
 
-= render 'subnav'
+= render partial: 'subnav', locals: {header: t(:reports)}

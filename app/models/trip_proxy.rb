@@ -74,11 +74,6 @@ class TripProxy < Proxy
     trip_proxy.outbound_trip_date = trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
     temp_time = trip_part.scheduled_time
     trip_proxy.outbound_trip_time = trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
-    Rails.logger.info "create_trip_proxy"
-    Rails.logger.info "trip_part.scheduled_date #{trip_part.scheduled_date}"
-    Rails.logger.info "trip_part.scheduled_time #{trip_part.scheduled_time}"
-    Rails.logger.info "trip_proxy.outbound_trip_date #{trip_proxy.outbound_trip_date}"
-    Rails.logger.info "trip_proxy.outbound_trip_time #{trip_proxy.outbound_trip_time}"
 
     # Check for return trips
     if trip.trip_parts.count > 1
@@ -109,7 +104,6 @@ class TripProxy < Proxy
       trip_proxy.from_place_selected = tp.id
       trip_proxy.from_place_object = tp.to_json(methods: :type_name)
     end
-    Rails.logger.info trip_proxy.from_place_object
 
     # Set the to place
     tp = trip.trip_places.last
@@ -131,7 +125,6 @@ class TripProxy < Proxy
       trip_proxy.to_place_selected = tp.id
       trip_proxy.to_place_object = tp.to_json(methods: :type_name)
     end
-    Rails.logger.info trip_proxy.to_place_object
 
     return trip_proxy
 

@@ -1,25 +1,29 @@
-.row
-  .col-sm-6.pull-left
-    - if can? :index, Provider
+- temp_rating = @provider.ratings.build(rateable: @provider)
+- if can? :index, Provider
+  .row
+    .col-sm-12
       = link_to t(:all_providers), admin_providers_path
-    %h2
-      = @provider.name
+.row.info-header
+  .col-sm-5
+    %h1= @provider.name
     - unless @provider.active
       %p= t(:inactive)
-  .col-sm-4.pull-right.form-group
-    %h2
-      - if can? :update, @provider
-        = link_to edit_admin_provider_path(@provider), {class: 'btn action-button btn-default', role: 'button'} do
-          = icon_label(:edit)
-
+  .col-sm-7.btns
+    - if can? :destroy, @provider
+      = button_to t(:delete), { action: "destroy", id: @provider.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: "btn action-button", form_class: "form-horizontal pull-right"
       - if can?(:create, Service) && can?(:update, @provider)
-        = link_to new_service_path(provider_id: @provider), {class: 'btn action-button btn-default', role: 'button'} do
+        = link_to new_service_path(provider_id: @provider), {class: 'btn action-button pull-right', role: 'button'} do
           = icon_label(:add_service)
-
-      - if can? :destroy, @provider
-        = button_to t(:delete), { action: "destroy", id: @provider.id }, method: :delete,
-        data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default",
-        form_class: "form-horizontal pull-right"
+    - if can? :update, @provider
+      = link_to edit_admin_provider_path(@provider), {class: 'btn action-button pull-right', role: 'button'} do
+        = icon_label(:edit)
+    -if Oneclick::Application.config.public_write_feedback
+      - if can? :read, temp_rating
+        .pull-right
+          = RateableDecorator.new(@provider).rating_in_stars
+          %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal"}}
+            = t(:feedback)
+      = render partial: "ratings/organization_feedback_modal", locals: {rateable: @provider}
 .row
   .col-sm-6
     .panel.panel-default
@@ -127,15 +131,27 @@
     .panel-body
       = render 'services/table'
 
+  .row
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          / %h4.panel-title= t(:other_information)
+          %h4.panel-title Other Information
+        .panel-body
+          %table.table
+            %tr
+              %td Logo URL:
+              %td= @provider.logo_url || '(None)'
+
 :javascript
   $(document).ready(function() {
     $('#admin_services_table').dataTable( {
           "oLanguage": {
-              "sLengthMenu": "Display _MENU_ agencies per page",
+              "sLengthMenu": "Display _MENU_ services per page",
               "sZeroRecords": "Nothing found - sorry",
-              "sInfo": "Showing _START_ to _END_ of _TOTAL_ agencies",
-              "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
-              "sInfoFiltered": "(filtered from _MAX_ total agencies)"
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ services",
+              "sInfoEmpty": "Showing 0 to 0 of 0 services",
+              "sInfoFiltered": "(filtered from _MAX_ total services)"
           },
           "sDom": "<'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
       } );

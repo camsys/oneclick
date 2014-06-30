@@ -64,6 +64,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
+    Timecop.return
   end
 
   config.after(:each) do

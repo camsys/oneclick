@@ -1,6 +1,5 @@
 .row-fluid
   %h1
-    %i.fa.fa-tags
     = t(:trips)
     = link_to(t(:plan), new_user_trip_path(@traveler),
       class: "btn btn-default action-button pull-right" )
@@ -9,7 +8,7 @@
     %label.add-on{:for => 'time_filter'}= t(:filter)
     = select_tag(:time_filter_type, options_for_select(trip_filters.collect{|r| [r[:value], r[:id]]}, :selected => @time_filter_type), :style => 'margin-top:0px', :id => 'time_filter')
         
-= render partial: "trips/trips_display_table", locals: {trips: @trips, traveler: @traveler}
+= render partial: "trips/trips_display_table", locals: {trips: @trips, traveler: @traveler, show_username: true}
 :javascript
   $(document).ready(function() {
     $('#admin_trips_table').dataTable( {

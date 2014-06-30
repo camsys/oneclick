@@ -140,6 +140,7 @@ class EspReader
   # It unpacks the esp data and stores it in the OneClick format
   #########################
   def unpack(tempfilepath, filetype)
+    Rails.logger.info "EspReader: unpack"
     case filetype
     when :mdb
       entries = self.unpack_to_tables(tempfilepath)
@@ -151,6 +152,7 @@ class EspReader
     ## Go through each table and confirm that we have all the columns needed to build the data
     ###########
 
+    Rails.logger.info "EspReader: check columns"
     #Confirm tProvider has necessary columns
     @esp_providers = entries['tProvider']
     #Find the indices of the important columns
@@ -204,6 +206,7 @@ class EspReader
     #Create the entries
     #########
 
+    Rails.logger.info "EspReader: create entries"
     esp_services.shift #deletes header row
     services = create_or_update_services(esp_services)
     #deactive services that are not included in the list
@@ -215,6 +218,7 @@ class EspReader
       end
     end
 
+    Rails.logger.info "EspReader: add county coverage rules"
     #Add County Coverage Rules
     #from tServiceGrid
     esp_grids.shift
@@ -223,6 +227,7 @@ class EspReader
       return result, message
     end
 
+    Rails.logger.info "EspReader: add eligibility"
     #Add Eligibility
     #from tServiceCfg
     esp_configs.shift
@@ -231,14 +236,29 @@ class EspReader
       return result, message
     end
 
+    Rails.logger.info "EspReader: add fares"
     #Add Fares
-    esp_configs.shift
-    result, message = create_or_update_fares(esp_configs)
+    esp_costs.shift
+    result, message = create_or_update_fares(esp_costs)
     unless result
       return result, message
     end
 
-    return true, "Success!"
+    Rails.logger.info "EspReader: add polygons"
+    message = nil
+    #Add custom polygons for each service and generate the polygons.
+    messages = []
+    Service.all.each do |service|
+      begin
+        add_paratransit_buffer(service)
+        service.build_polygons
+      rescue Exception => e
+        messages << e.message
+      end
+    end
+    message = messages.join("; ") unless messages.empty?
+
+    return true, message
 
   end
 
@@ -337,9 +357,11 @@ class EspReader
       when 5
         result, message = add_eligibility(service, config[@config_idx['Item']])
       when 6 #ZipCode Restriction
-        c = GeoCoverage.find_or_create_by_value(value: config[@config_idx['Item']], coverage_type: 'zipcode')
-        ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'destination')
-        ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'origin')
+        c = GeoCoverage.find_or_create_by(value: config[@config_idx['Item']]) do |gc|
+          gc.coverage_type = 'zipcode'
+        end
+        ServiceCoverageMap.find_or_create_by(service: service, geo_coverage: c, rule: 'destination')
+        ServiceCoverageMap.find_or_create_by(service: service, geo_coverage: c, rule: 'origin')
         result = true
       else
         result = true
@@ -360,9 +382,11 @@ class EspReader
       service = Service.find_by_external_id(SERVICE_DICT[grid[@grid_idx['ServiceID']]])
       case grid[@grid_idx['Grp']].downcase
       when 'county'
-        c = GeoCoverage.find_or_create_by_value(value: grid[@grid_idx['Item']], coverage_type: 'county_name')
-        ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'destination')
-        ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'origin')
+        c = GeoCoverage.find_or_create_by(value: grid[@grid_idx['Item']]) do |gc|
+          gc.coverage_type = 'county_name'
+        end
+        ServiceCoverageMap.find_or_create_by(service: service, geo_coverage: c, rule: 'destination')
+        ServiceCoverageMap.find_or_create_by(service: service, geo_coverage: c, rule: 'origin')
       end
     end
     return true, "Success"
@@ -378,7 +402,14 @@ class EspReader
       case config[@costs_idx['CostType']].downcase
       when 'transportation'
         amount = config[@costs_idx['Amount']].to_f
-        if amount >= fare.base.to_f
+        cost_unit = config[@costs_idx['CostUnit']].downcase.tr(" ", "")
+        case cost_unit
+          when 'roundtrip'
+            amount = amount/2.0
+          when "mile"
+            next #TODO Create mileage-based fare
+        end
+        if fare.base.nil? or amount >= fare.base.to_f
           fare.base = amount
           fare.fare_type = 0
           fare.save
@@ -440,8 +471,10 @@ class EspReader
         # When county resident is required.  The person must also be a resident of the county in addition to traveling within that county.
         # The coverages were created previously.
         service.coverage_areas.where(:coverage_type => "county_name").map(&:value).uniq.each do |county_name|
-          c = GeoCoverage.find_or_create_by_value(value: county_name, coverage_type: 'county_name')
-          ServiceCoverageMap.find_or_create_by_service_id_and_geo_coverage_id_and_rule(service_id: service.id, geo_coverage_id: c.id, rule: 'residence')
+          c = GeoCoverage.find_or_create_by(value: county_name) do |gc|
+            gc.coverage_type = 'county_name'
+          end
+          ServiceCoverageMap.find_or_create_by(service: service, geo_coverage: c, rule: 'residence')
         end
       when 'military/veteran'
         characteristic = Characteristic.find_by_code('veteran')
@@ -461,6 +494,34 @@ class EspReader
 
   #End create OneClick Records from ESP
   ######################
+  def add_paratransit_buffer(service)
+    case service.external_id
+      when "45245457217490721111" #MARTA Paratransit
+        service.service_coverage_maps.destroy_all
+        b = Boundary.find_by_agency('Metropolitan Atlanta Rapid Transit Authority')
+        gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'origin')
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'destination')
+      when "65980602734372809999" #CATS Paratransit
+        service.service_coverage_maps.destroy_all
+        b = Boundary.find_by_agency('Cherokee Area Transportation System (CATS)')
+        gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'origin')
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'destination')
+      when "77900779520510731111" #Gwinnett Paratransit
+        service.service_coverage_maps.destroy_all
+        b = Boundary.find_by_agency('Gwinnett County Transit (GCT)')
+        gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'origin')
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'destination')
+      when "57874876269921009999" #CCT Paratransit
+        service.service_coverage_maps.destroy_all
+        b = Boundary.find_by_agency('Cobb Community Transit (CCT)')
+        gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'origin')
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'destination')
 
+    end
+  end
 
 end

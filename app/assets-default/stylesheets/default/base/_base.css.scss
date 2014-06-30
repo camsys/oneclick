@@ -129,7 +129,7 @@ a:hover#help {
 
 .mode_title {
   font-weight: bold;
-  font-size: 1.5em;
+  //font-size: 1.5em;
 }
 
 #details-title {
@@ -173,11 +173,10 @@ a:hover#help {
 }
 
 .itinerary_text_small{
-  font-size: 1em;
+  //font-size: 1em;
   line-height: 0px;
   text-align: left;
   vertical-align: top;
-  color: #0088cc;
   padding: 0px;
 }
 
@@ -196,7 +195,7 @@ a:hover#help {
 }
 
 .trip_basic_text{
-  font-size: 1.5em;
+  //font-size: 1.5em;
   color: #0088cc;
   font-weight: bold;
   display: inline;
@@ -204,7 +203,7 @@ a:hover#help {
 }
 
 .trip_prepositions{
-  font-size: 1em;
+  //font-size: 1em;
   display: inline;
   font-weight: bold;
 
@@ -274,7 +273,7 @@ a:hover#help {
 }
 
 .trip_summary_text {
-  font-size: 2em;
+  //font-size: 2em;
 }
 
 .trip_summary_header .row {
@@ -345,7 +344,7 @@ a:hover#help {
 
 .form-horizontal input + .help-block {
   margin-top: 1px;
-  font-size: 0.85em;
+  //font-size: 0.85em;
   color: #777777;
 }
 
@@ -452,7 +451,7 @@ td.left, th.left {
     min-height: 0;
   }
   line-height: normal;
-  font-size: 18px;
+  //font-size: 18px;
   font-weight: normal;
   margin: 0;
   .place_name {
@@ -553,6 +552,37 @@ td.left, th.left {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.action-button {
+  @extend .btn-primary;
+  text-shadow: none;
+}
+
+// Styling for the application header (not navbar, this is where the action-buttons live)
+.info-header {
+  & h1, h2, h3, h4, h5 { 
+      margin-bottom: 0;
+  }
+  .btns {
+    margin-top: $line-height-computed;
+    margin-bottom: 6px;
+  }
+}
+
+// Admin Pages
+.stars{
+  vertical-align: middle;
+  padding-right: 5px;
+  padding-left:  5px;
+  .fa-2x {
+    font-size: 1.5em;
+    margin-top: 3px;
+  }
+  + .btn {
+    margin-left: -5px;
+  }
+} 
+
 
 // From bootstrap. We define our own classes for visibility which use display: inline
 // instead of display: block.

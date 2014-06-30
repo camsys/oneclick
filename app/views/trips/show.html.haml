@@ -4,13 +4,19 @@
   .col-xs-4
     = button_tag :type => 'button', :id => "planButton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
       =t(:plan)
+    = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "pull-right btn btn-default action-button pull-right", id: "noOptionButton" do
+      = t(:feedback)
+    
+.row
 - if @tripResponseHash['status'] == 0
   - # flash handles it
 - else
   #reviewBaseContainer.row
     .col-xs-12.form-group.hidden-md-lg
-      %button#legendButton.btn.btn-default.pull-left.action-button{style: "margin-right: 5px;"} Show Legends
-      %button#filterButton.btn.btn-default.pull-left.action-button Show Filters
+      %button#legendButton.btn.btn-default.pull-left.action-button{style: "margin-right: 5px;"}
+        = t(:show_legends)
+      %button#filterButton.btn.btn-default.pull-left.action-button
+        = t(:show_filters)
     #accessoryContainer.col-md-3.col-xs-12
     / end of filter column
     .col-md-9      
@@ -20,16 +26,89 @@
   #itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
   :javascript
     $(function() {
+      //update date names in localized texts for moment js lib
+      var localeLang = '#{I18n.locale}';
+      if(localeLang.toLowerCase() != 'en') { //override moment lang if not english
+        var weekdays = #{t('date.day_names')};
+        if(weekdays instanceof Array && weekdays.length > 0) {
+          moment.lang(localeLang, {
+            weekdays : weekdays
+            });
+        }
+        var weekdaysShort = #{t('date.abbr_day_names')};
+        if(weekdaysShort instanceof Array && weekdaysShort.length > 0) {
+          moment.lang(localeLang, {
+            weekdaysShort : weekdaysShort
+            });
+        }
+        var months = #{t('date.month_names')[1...13]};
+        if(months instanceof Array && months.length > 0) {
+          moment.lang(localeLang, {
+            months : months
+            });
+        }
+        var monthsShort = #{t('date.abbr_month_names')[1...13]};
+        if(monthsShort instanceof Array && monthsShort.length > 0) {
+          moment.lang(localeLang, {
+            monthsShort : monthsShort
+            });
+        }
+      }
+
+      //include all possible localized words to be used in review.js
+      var localeDictFinder = {
+        failed_to_update_profile: '#{t(:failed_to_update_profile)}',
+        select_a_plan_each_trip_part: '#{t(:select_a_plan_each_trip_part)}',
+        show_legends: '#{t(:show_legends)}',
+        hide_legends: '#{t(:hide_legends)}',
+        show_filters: '#{t(:show_filters)}',
+        hide_filters: '#{t(:hide_filters)}',
+        update: '#{t(:update)}',
+        cancel: '#{t(:cancel)}',
+        select: '#{t(:select)}',
+        sort_by: '#{t(:sort_by)}',
+        travel_time: '#{t(:travel_time)}',
+        trip_time: '#{t(:trip_time)}',
+        arrival_time: '#{t(:arrival_time)}',
+        departure_time: '#{t(:departure_time)}',
+        depart_at: '#{t(:depart_at)}',
+        arrive_in: '#{t(:arrive_in)}',
+        fare: '#{t(:fare)}',
+        number_of_transfers: '#{t(:number_of_transfers)}',
+        modes: '#{t(:modes)}',
+        walk: '#{t(:walk)}',
+        wait: '#{t(:wait)}',
+        car: '#{t(:drive)}',
+        transfer: '#{t(:mode_transfer)}',
+        vehicle: '#{t(:vehicle)}',
+        rideshare: '#{t(:rideshare)}',
+        paratransit: '#{t(:paratransit)}',
+        taxi: '#{t(:taxi)}',
+        transit: '#{t(:transit)}',
+        subway: '#{t(:subway)}',
+        bus: '#{t(:bus)}',
+        bike: '#{t(:bike)}',
+        bikeshare: '#{t(:bikeshare)}',
+        drive: '#{t(:drive)}',
+        trip_restrictions: '#{t(:trip_restrictions)}',
+        minutes: '#{t(:minutes)}',
+        minute_abbr: '#{t(:minute_abbr)}',
+        unknown: '#{t(:unknown)}',
+        no_itineraries_found: '#{t(:no_itineraries_found)}',
+        something_went_wrong: '#{t(:something_went_wrong)}',
+        click_for_details: '#{t(:click_for_details)}'        
+      };
+
       //show or hide legends when click Filter button
       $('#legendButton').on('click', function(e) {
         e.preventDefault();
         var $legendDiv = $('#legendDiv');
         if($legendDiv.hasClass('hidden-xs-sm')) {
           $('#legendDiv').removeClass('hidden-xs-sm');
-          $(this).text('Hide Legends');
+          $(this).text(localeDictFinder['hide_legends']);
         } else {
           $('#legendDiv').addClass('hidden-xs-sm');
-          $(this).text('Show Legends');
+          $(this).text(localeDictFinder['show_legends']);
         }
       });
 
@@ -38,15 +117,15 @@
         var $filterDiv = $('#filterDiv');
         if($filterDiv.hasClass('hidden-xs-sm')) {
           $('#filterDiv').removeClass('hidden-xs-sm');
-          $(this).text('Hide Filters');
+          $(this).text(localeDictFinder['hide_filters']);
         } else {
           $('#filterDiv').addClass('hidden-xs-sm');
-          $(this).text('Show Filters');
+          $(this).text(localeDictFinder['show_filters']);
         }
       });
 
       var tripResponse = #{@tripResponse.to_json};
-      var pageRenderer = new TripReviewPageRenderer(30, 20, tripResponse);
+      var pageRenderer = new TripReviewPageRenderer(30, 20, tripResponse, localeDictFinder);
       pageRenderer.processTripResponse();
 
       $('#itinerary_modal').on('shown.bs.modal', function() {
@@ -68,13 +147,12 @@
       });
 
       //Plan button to jump to Plan page
-      var no_plan_alert = '#{t(:select_a_plan_each_trip_part)}';
       $('#planButton').on('click', function(e) {
         var selectedPlanIds = [];
         var tripParts = $('#tripContainer').find('.single-trip-part');
         var selectedPlans = tripParts.find('.single-plan-selected');
         if(tripParts.length != selectedPlans.length) {
-          show_alert(no_plan_alert);
+          show_alert(localeDictFinder['select_a_plan_each_trip_part']);
           return;
         }
 
@@ -90,3 +168,5 @@
         window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );
       }); 
     });
+
+    $('#tripContainer').tooltip({selector: '.trip-mode-cost div'})

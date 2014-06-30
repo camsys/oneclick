@@ -65,20 +65,7 @@ class TripPlace < GeocodedAddress
         lon: j['lon'],
         raw_address: j['full_address'])
     when 'PLACES_AUTOCOMPLETE_TYPE'
-      details = get_places_autocomplete_details(j['id'])
-      d = cleanup_google_details(details.body['result'])
-      d['county'] = Oneclick::Application.config.default_county if d['county'].blank?
-      self.update_attributes(
-        address1: d['address1'],
-        city: d['city'],
-        state: d['state'],
-        zip: d['zip'],
-        county: d['county'],
-        lat: d['lat'],
-        lon: d['lon'],
-        raw_address: j['address'],
-        result_types: d['result_types']
-        )
+      update_address_attributes_from_google(j['id'], j['address'])
     when 'MANUAL_ENTRY'
       result = google_place_search(manual_entry, map_center)
       if result.body['status'] == 'ZERO_RESULTS'
@@ -86,27 +73,34 @@ class TripPlace < GeocodedAddress
         return self
       end
       first_result = result.body['predictions'].first
-      # TODO Copied from above, should be refactored
-      details = get_places_autocomplete_details(first_result['reference'])
-      d = cleanup_google_details(details.body['result'])
-      d['county'] = Oneclick::Application.config.default_county if d['county'].blank?
-      self.update_attributes(
-        address1: d['address1'],
-        city: d['city'],
-        state: d['state'],
-        zip: d['zip'],
-        county: d['county'],
-        lat: d['lat'],
-        lon: d['lon'],
-        raw_address: first_result['description'],
-        result_types: d['result_types']
-        )
+
+      update_address_attributes_from_google(first_result['reference'], first_result['description'])
     else
       raise "TripPlace.new_from_trip_proxy_place doesn't know how to handle type '#{j['type_name']}'"
     end
     self
   end
 
+  def update_address_attributes_from_google(reference, raw_address)
+    details = get_places_autocomplete_details(reference)
+    d = cleanup_google_details(details.body['result'])
+    d['county'] = Oneclick::Application.config.default_county if d['county'].blank?
+    d['state'] = Oneclick::Application.config.state if d['state'].blank?
+    d['address1'] = d['neighborhood'] if d['address1'].blank?
+    d['address1'] = details.body['result']['name'] if d['address1'].blank?
+    
+    self.update_attributes(address1: d['address1'],
+                           city: d['city'],
+                           state: d['state'],
+                           zip: d['zip'],
+                           county: d['county'],
+                           lat: d['lat'],
+                           lon: d['lon'],
+                           raw_address: raw_address,
+                           result_types: d['result_types'])
+  end
+  
+    
   # discover the location for this trip place from
   # its relationships
   def location

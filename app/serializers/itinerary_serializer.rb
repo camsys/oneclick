@@ -1,9 +1,11 @@
 class ItinerarySerializer < ActiveModel::Serializer
   include CsHelpers
+  include ApplicationHelper
+  include ActionView::Helpers::NumberHelper
 
   attributes :id, :missing_information, :mode, :mode_name, :service_name, :provider_name, :contact_information,
     :cost, :duration, :transfers, :start_time, :end_time, :legs, :service_window, :duration_estimated, :selected
-  attributes :server_status, :server_message, :failed, :hidden
+  attributes :server_status, :server_message, :failed, :hidden, :logo_url
   attr_accessor :debug
 
   def initialize(object, options={})
@@ -21,6 +23,10 @@ class ItinerarySerializer < ActiveModel::Serializer
 
 
   def mode
+    # TODO This walk special case should really be done in the itinerary itself
+    if object.is_walk
+      return Mode.walk.code
+    end
     object.mode.code rescue nil
   end
 
@@ -30,6 +36,10 @@ class ItinerarySerializer < ActiveModel::Serializer
 
   def provider_name
     object.service.provider.name rescue nil
+  end
+
+  def logo_url
+    logo_url_helper(object)
   end
 
   def missing_information
@@ -53,8 +63,6 @@ class ItinerarySerializer < ActiveModel::Serializer
     case object.mode
     when Mode.taxi
       tp.is_depart ? tp.trip_time : (tp.trip_time - object.duration.seconds)
-    when Mode.rideshare
-      tp.is_depart ? tp.trip_time : nil
     else
       object.start_time
     end
@@ -65,28 +73,43 @@ class ItinerarySerializer < ActiveModel::Serializer
     case object.mode
     when Mode.taxi
       tp.is_depart ? (tp.trip_time + object.duration.seconds) : tp.trip_time
-    when Mode.rideshare
-      tp.is_depart ? nil : tp.trip_time
     else
       object.end_time
     end
   end
 
   def cost
+    estimated = false
     fare = object.cost || (object.service.fare_structures.first rescue nil)
-    if fare.nil?
-      {price: nil, comments: 'Unknown'} # TODO I18n
-    elsif fare.respond_to? :fare_type
+    # if fare.nil?
+    #   {price: nil, comments: 'Unknown', price_formatted: '?'} # TODO I18n
+    if fare.respond_to? :fare_type
       case fare.fare_type
       when FareStructure::FLAT
-        {price: fare.base.to_f, comments: nil}
+        {price: fare.base.to_f, comments: '', estimated: false, price_formatted: number_to_currency(fare.base)}
       when FareStructure::MILEAGE
-        {price: fare.base.to_f, comments: "+#{fare.rate}/mile"} # TODO currency
+        {price: fare.base.to_f, comments: "+#{number_to_currency(fare.rate)}/mile - " + I18n.t(:cost_estimated), estimated: true,
+         price_formatted: number_to_currency(fare.base.ceil) + '*'}
       when FareStructure::COMPLEX
-        {price: nil, comments: fare.desc}
+        {price: nil, comments: I18n.t(:see_details_for_cost), estimated: true, price_formatted: '*'}
       end
     else
-      {price: fare.to_f, desc: nil}
+      price_formatted = number_to_currency(fare) || '*'
+      comments = ''
+      fare = fare.to_f
+      case object.mode
+      when Mode.taxi
+        fare = fare.ceil
+        estimated = true
+        price_formatted = number_to_currency(fare) + '*'
+        comments = I18n.t(:cost_estimated)
+      when Mode.rideshare
+        fare = nil
+        estimated = true
+        price_formatted = '*'
+        comments = I18n.t(:see_details_for_cost)
+      end
+      {price: fare, comments: comments, price_formatted: price_formatted, estimated: estimated}
     end
 
   end
@@ -120,15 +143,17 @@ class ItinerarySerializer < ActiveModel::Serializer
   end
 
   def duration
+    sortable_duration = object.duration || (object.end_time - object.start_time)
     {
       # TODO I18n
       # omitting for now per discussion w/ Xudong
       # external_duration: , #": "String Opt", // (seconds) Textural description of duration, for display to users
-      sortable_duration: object.duration, #": "Number Opt", // (seconds) For filtering purposes, not display
+      sortable_duration:  sortable_duration, #": "Number Opt", // (seconds) For filtering purposes, not display
       total_walk_time: object.walk_time, #": "Number Opt", // (seconds)
       total_walk_dist: object.walk_distance, #": "Number Opt", // (feet?)
       total_transit_time: object.transit_time, #": "Number Opt", // (seconds)
       total_wait_time: object.wait_time, #": "Number Opt", // (seconds)
+      duration_in_words: (sortable_duration ? duration_to_words(sortable_duration) : I18n.t(:not_available))
     }
   end
 

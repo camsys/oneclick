@@ -1,4 +1,6 @@
 module CsHelpers
+  # include ActionController::Base.helpers.asset_path("logo.jpg", type: :image)
+  include ActionController
 
   ACTION_ICONS = {
     :plan_a_trip => 'fa fa-share-square',
@@ -23,9 +25,13 @@ module CsHelpers
   }
 
   def admin_actions
-    [
-      {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
+    a = [
+      {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users}
     ]
+    if Oneclick::Application.config.public_write_feedback
+      a.push({label: t(:feedback), target: ratings_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback}) 
+    end
+    a
   end
 
   def staff_actions
@@ -45,7 +51,7 @@ module CsHelpers
     a = if user_signed_in?
       [
         {label: t(:plan_a_trip), target: new_user_trip_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:plan_a_trip]},
-        {label: t(:my_travel_profile), target: user_path(get_traveler), locale: I18n.locale, icon: ACTION_ICONS[:travel_profile]},
+        {label: t(:my_travel_profile), target: user_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:travel_profile]},
         {label: t(:my_trips), target: user_trips_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_trips]},
         {label: t(:my_places), target: user_places_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_places]},
       ]
@@ -222,13 +228,13 @@ module CsHelpers
 
     mode_code = get_pseudomode_for_itinerary(itinerary)
     title = if mode_code == 'rail'
-      "Rail"
+      I18n.t(:rail)
     elsif mode_code == 'railbus'
-      "Rail and Bus"
+      I18n.t(:rail_and_bus)
     elsif mode_code == 'bus'
-      "Bus"
+      I18n.t(:bus)
     elsif mode_code == 'drivetransit'
-      "Drive to Transit"
+      I18n.t(:drive_and_transit)
     elsif mode_code == 'transit'
       I18n.t(:transit)
     elsif mode_code == 'paratransit'
@@ -275,7 +281,7 @@ module CsHelpers
 
   def user_trip_path_for_ui_mode traveler, trip
     unless ui_mode_kiosk?
-      user_trip_path traveler, trip
+      user_trip_path traveler, trip, locale: I18n.locale
     else
       kiosk_user_trip_path traveler, trip
     end
@@ -331,10 +337,22 @@ module CsHelpers
 
   def new_user_trip_characteristic_path_for_ui_mode traveler, trip
     unless ui_mode_kiosk?
-      new_user_trip_characteristic_path traveler, trip
+      new_user_trip_characteristic_path traveler, trip, locale: I18n.locale
     else
       raise "new_user_trip_characteristic_path not defined for kiosk yet"
     end
+  end
+
+  def logo_url_helper itinerary
+    Base.helpers.asset_path(if itinerary.service && itinerary.service.logo_url
+      itinerary.service.logo_url
+    elsif itinerary.service && itinerary.service.provider && itinerary.service.provider.logo_url
+      itinerary.service.provider.logo_url
+    elsif itinerary.is_walk
+      Mode.walk.logo_url
+    else 
+      itinerary.mode.logo_url
+    end)
   end
 
 end

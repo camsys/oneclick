@@ -50,15 +50,17 @@ gem 'handlebars_assets'
 gem 'simple_token_authentication'
 gem 'Indirizzo'
 gem 'momentjs-rails', '~> 2.5.0'
-gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
+gem 'bootstrap3-datetimepicker-rails', '= 3.0.0.0'
 gem 'active_model_serializers'
 gem 'jquery-datatables-rails'
 gem 'active_attr'
 gem 'twitter-bootstrap-rails-confirm', github: 'bluerail/twitter-bootstrap-rails-confirm', branch: 'bootstrap3'
+gem 'activerecord-postgis-adapter', '= 1.1.0'
+gem 'rgeo-activerecord'
+gem 'rgeo'
+gem 'rgeo-shapefile'
 
 group :development do
-  gem 'activerecord-postgis-adapter'
-  gem 'rgeo-activerecord'
   # gem 'ffi-geos'
   #gem 'mysql2'
   gem 'better_errors'
@@ -81,8 +83,6 @@ group :development do
   gem 'rails-erd'
   gem 'growl'
   gem 'travis'
-  gem 'rgeo'
-  gem 'rgeo-shapefile'
   gem "letter_opener"
   gem 'yard'
   gem 'RedCloth' # Needed by yard
@@ -95,7 +95,7 @@ group :development, :test do
 end
   
 group :test do
-  gem 'rspec-core'
+  gem 'rspec-core', '~> 2.14.0'
   gem 'rspec-rails'
   gem 'capybara'
   gem 'cucumber-rails', :require=>false
@@ -104,5 +104,6 @@ group :test do
   gem 'launchy'
   gem 'coveralls', require: false
   gem 'simplecov', require: false
+  gem 'timecop'
 end
 

@@ -87,32 +87,24 @@
   padding-left: 0px;
   padding-right: 0px; 
 }
-
-.action-button {
+.action-button{
   &:not(:last-of-type) {
     margin-left: 5px;
+  } 
+  &.pull-right {
+    margin-left: 5px;
   }
-  // background: #eeeeee; /* Old browsers */
-  // background: -moz-linear-gradient(top,  #ffffff 0%, #AFAFAF 100%); /* FF3.6+ */
-  // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#AFAFAF)); /* Chrome,Safari4+ */
-  // background: -webkit-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* Chrome10+,Safari5.1+ */
-  // background: -o-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* Opera 11.10+ */
-  // background: -ms-linear-gradient(top,  #ffffff 0%,#AFAFAF 100%); /* IE10+ */
-  // background: linear-gradient(to bottom,  #ffffff 0%,#AFAFAF 100%); /* W3C */
-  // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#AFAFAF',GradientType=0 ); /* IE6-9 */
   min-width: 9em;
-  // height: 25px;
-  // border-radius: 8px;
   font-weight: bold;
-  // padding: 2px;
-  // font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
-  // font-size: 14px;
-  // color: #333;
 }
 
 .action-button:hover, .action-button:focus {
   // background-position: 0;
   // color: inherit;
+}
+
+#noOptionButton {
+    margin-right: 5px;
 }
 
 .dropdown-toggle {
@@ -128,9 +120,6 @@
 }
 
 /*breadcrumbs*/
-$breadcrumb-height: 30px;
-$breadcrumb-font-size: 16px;
-
 .breadcrumb-page {
   margin: 3px 0px;
   min-width: 100px;
@@ -143,7 +132,6 @@ $breadcrumb-font-size: 16px;
   background-image: image-url('active.png');
   background-size: 100% 100%;
   font-weight: bold;
-  font-size: $breadcrumb-font-size;
   color: white;
   line-height: $breadcrumb-height;
 }
@@ -155,7 +143,6 @@ $breadcrumb-font-size: 16px;
   a{
     font-weight: bold;
     color: black;
-    font-size: $breadcrumb-font-size;
     line-height: $breadcrumb-height;
   }
 
@@ -170,7 +157,6 @@ $breadcrumb-font-size: 16px;
   background-size: 100% 100%;
   font-weight: bold;
   color: black;
-  font-size: $breadcrumb-font-size;
   line-height: $breadcrumb-height;
 }
 
@@ -212,6 +198,7 @@ $period-nav-button-width: 40px;
   text-align: center;
   color: black;
   border: none;
+  font-size: small;
 }
 
 .next-period {
@@ -222,6 +209,7 @@ $period-nav-button-width: 40px;
   text-align: center;
   color: black;
   border: none;
+  font-size: small;
 }
 
 /* in sm+ mode, one period-nav button in same container, so apply margin to sorter component that make them vertically align in containers */
@@ -256,12 +244,15 @@ $period-nav-button-width: 40px;
   padding: 2px;
 }
 
-$single-plan-height: 50px;
 .single-plan-review{
   background-color: white;
   border-radius: 5px;
   border: 2px whitesmoke solid;
   height: $single-plan-height;
+}
+
+.trip-part-no-itinerary-alert {
+  text-align: center;
 }
 
 .overlay-mask {
@@ -289,11 +280,22 @@ $single-plan-height: 50px;
 }
 
 .trip-plan-first-column {
+  width: 20%;
+  display: inline-block;
+}
+
+
+.trip-plan-main-column {
+  width: 65%;
+  display: inline-block;
 }
 
 .select-column {
   text-align: center;
   line-height: $single-plan-height;
+  width: 15%;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .select-column-button {
@@ -319,8 +321,20 @@ $single-plan-height: 50px;
   stroke: black;
 }
 
+.itinerary-chart-service-name {
+  text-anchor: middle;
+  dominant-baseline: central;
+  font-size: 0.85em;
+}
+
+/* override bootstrap tooltip default styles*/
+div .tooltip-inner {
+  max-width: 40em;
+  text-align: left;
+}
+
 .axis text {
-  font: 10px sans-serif;
+  font-size: 0.65em;
 }
 
 .slider-tip {
@@ -345,7 +359,7 @@ $legend-height: 20px;
 }
 
 .travel-legend-walk {
-  background-color: #499bea;
+  background-color: #763188;
 }
 
 .travel-legend-wait {
@@ -360,8 +374,56 @@ $legend-height: 20px;
   background-color: #FF9900;
 }
 
+.travel-legend-transit {
+  background-color: #7f7979;
+}
+
+.travel-legend-subway {
+  background-color: #499bea;
+}
+
+.travel-legend-bus {
+  background-color: #1AB940;
+}
+
+.travel-legend-taxi {
+  background-color: #FEEA00;
+}
+
+.travel-legend-bike {
+  background-color: #611CF3;
+}
+
+.travel-legend-bikeshare {
+  background-color: #A61CF3;
+}
+
+.travel-legend-drive {
+  background-color: #808CB4;
+}
+
+.travel-legend-car {
+  background-color: #808CB4;
+}
+
+.travel-legend-car {
+  background-color: #808CB4;
+}
+
+.travel-legend-rideshare {
+  background-color: #F55416;
+}
+
+.travel-legend-paratransit {
+  background-color: #FF9900;
+}
+
+.travel-legend-unknown {
+  background-color: #C0C0C0;
+}
+
 .travel-type-walk {
-  fill: #499bea;
+  fill: #763188;
 }
 
 .travel-type-wait {
@@ -374,6 +436,54 @@ $legend-height: 20px;
 
 .travel-type-vehicle {
   fill: #FF9900;
+}
+
+.travel-type-transit {
+  fill: #499bea;
+}
+
+.travel-type-subway {
+  fill: #499bea;
+}
+
+.travel-type-bus {
+  fill: #1AB940;
+}
+
+.travel-type-taxi {
+  fill: #FEEA00;
+}
+
+.travel-type-bike {
+  fill: #611CF3;
+}
+
+.travel-type-bikeshare {
+  fill: #A61CF3;
+}
+
+.travel-type-drive {
+  fill: #808CB4;
+}
+
+.travel-type-car {
+  fill: #808CB4;
+}
+
+.travel-type-car {
+  fill: #808CB4;
+}
+
+.travel-type-rideshare {
+  fill: #F55416;
+}
+
+.travel-type-paratransit {
+  fill: #FF9900;
+}
+
+.travel-type-unknown {
+  fill: #C0C0C0;
 }
 
 /*styles for trip mode service*/
@@ -395,55 +505,17 @@ $legend-height: 20px;
   width: 100%;
 }
 
-.mode_transit {
-  background-image: image-url('transit.png');
-}
+#bookingContent{
+  .form-group{
+    margin-bottom: 0;
+  }
 
-.mode_paratransit {
-  background-image: image-url('paratransit.png');
-}
+  .panel-body{
+    font-size: large;
+  }
 
-.mode_ferry {
-  background-image: image-url('ferry.png');
-}
-
-.mode_helicopter {
-  background-image: image-url('helicopter.png');
-}
-
-.mode_plane {
-  background-image: image-url('plane.png');
-}
-
-.mode_rail {
-  background-image: image-url('rail.png');
-}
-
-.mode_auto {
-  background-image: image-url('auto.png');
-}
-
-.mode_taxi {
-  background-image: image-url('taxi.png');
-}
-
-.mode_streetcar {
-  background-image: image-url('streetcar.png');
-}
-
-.mode_walk {
-  background-image: image-url('walk.png');
-}
-
-.mode_bicycle {
-  background-image: image-url('bicycle.png');
-}
-
-.mode_rideshare {
-  background-image: image-url('rideshare.png');
-}
-
-/* Compensate for bottom margin to bring up transit submodes */
-#transitModes {
-    margin-top: -15px;
+  .confirmation{
+    font-size: x-large;
+    font-weight: bold;
+  }
 }

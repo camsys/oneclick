@@ -3,9 +3,10 @@
 # Allows us to treat rating trips and organizations the same
 class RatingsProxy < Proxy
   # include ActiveModel::Model
-  attr_reader :rateables
+  attr_reader :rateables, :rater
       
-  def initialize(rateable)
+  def initialize(rateable, rater)
+    @rater = rater
     @rateables = []
     case rateable
     when Trip
@@ -20,7 +21,7 @@ class RatingsProxy < Proxy
     when Agency, Provider, Service
         @rateables << rateable
     end
-    super
+    super()
   end
 
 end

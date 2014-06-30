@@ -17,7 +17,7 @@ var redIcon = new baseIcon({
     iconUrl: 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png'
 });
 var blueIcon = new baseIcon({
-    iconUrl: 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/blue-dot.png'
+    iconUrl: 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/blue-dot.pngg'
 });
 var purpleIcon = new baseIcon({
     iconUrl: 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/purple-dot.png'
@@ -232,3 +232,14 @@ var placeCandidateS = new baseRouteIcon({
 var placeCandidateT = new baseRouteIcon({
     iconUrl: 'http://maps.google.com/mapfiles/marker_yellowT.png'
 });
+
+var baseMiniIcon = L.Icon.extend({
+    options: {
+        iconSize: [7, 7],
+        iconAnchor: [3, 7],
+        popupAnchor: [0, -5]
+    }
+});
+var blueMiniIcon = new baseMiniIcon({
+    iconUrl: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle_blue.png'
+})

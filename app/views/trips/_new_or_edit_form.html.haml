@@ -1,4 +1,4 @@
-.col-xs-12{style: "padding: 0px;"}
+.row{style: "padding: 0px;"}
   .col-xs-8
     = render partial: 'shared/trip_plan_breadcrumbs'
   .col-xs-4
@@ -11,9 +11,7 @@
         });
 .row
   .col-sm-7.col-xs-12
-    - Rails.logger.info "\n#{@trip_proxy.ai}\n"
-    - Rails.logger.info "\n#{@trip_proxy.errors}\n"
-    = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path : user_trip_path, :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
+    = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path(locale: I18n.locale) : user_trip_path(locale: I18n.locale), :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
       .col-xs-12.panel.panel-default
         .panel-body
           = f.hidden_field :mode
@@ -38,7 +36,7 @@
 
           #baseModes
             = f.input :modes, as: :check_boxes, collection: @modes,
-            label_method: :first, value_method: :last, checked: @selected_modes,
+            label_method: :first, value_method: :last, checked: @selected_modes, label: t(:modes),
             input_html: { tabindex: 1 }
 
             :javascript
@@ -56,22 +54,31 @@
                 }
               });
               $(function() {
-              if ($('#trip_proxy_modes_mode_transit')[0].checked) {
+              // onload, if any submodes are checked, show, otherwise hide
+              if ($('#transitModes input:checked').length != 0) {
                 $('#transitModes').show();
               } else {
                 $('#transitModes').hide();
               }
+              $('#transitModes input').change( function() {
+                if ($('#transitModes input:checked').length == 0) {
+                  $("#trip_proxy_modes_mode_transit").trigger("click");
+                }
+                if ($('#transitModes input:checked').length == $('#transitModes input[type=checkbox]').length) {
+                  $("#trip_proxy_modes_mode_transit").trigger("click");
+                }
+              });
               });
 
 
           #transitModes
             = f.input :modes, as: :check_boxes, collection: @transit_modes,
-            label_method: :first, value_method: :last, checked: @selected_modes, label: false,
-            collection_wrapper_class: 'col-md-offset-5', collection_wrapper_tag: :div,
+            label_method: :first, value_method: :last, checked: @selected_modes, label: '',
+            collection_wrapper_class: 'col-xs-offset-1', collection_wrapper_tag: :div,
             input_html: { tabindex: 1 }
 
 
-          = f.input :trip_purpose_id, :collection =>  TripPurpose.ordered_by_localized_name, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)},
+          = f.input :trip_purpose_id, :collection =>  TripPurpose.ordered_by_localized_name, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes),
           input_html: { tabindex: 1, class: 'form-control' }
 
           = render partial: 'location_input', locals: {dir: 'from', f: f}

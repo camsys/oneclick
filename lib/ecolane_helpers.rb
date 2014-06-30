@@ -24,7 +24,14 @@ class EcolaneHelpers
 
   def unpack_booking_response (resp, itinerary)
     resp_xml = Nokogiri::XML(resp.body)
-    status = resp_xml.xpath("status").attribute('result').value
+    status = resp_xml.xpath("status")
+
+    unless status.count == 0
+      status = status.attribute('result').value
+    else
+      return false, "Server error."
+    end
+
     messages = []
     case status
       when "failure"
@@ -118,6 +125,10 @@ class EcolaneHelpers
 
 
   ## GET Operations
+  def verify_client_id(client_id, dob)
+    search_for_customers([['customer_number', client_id], ['date_of_birth', dob]])
+  end
+
   def fetch_customer_information(customer_id, funding=false, locations=false)
     url_options = "/api/customer/" + SYSTEM_ID + '/'
     url_options += customer_id.to_s
@@ -150,6 +161,10 @@ class EcolaneHelpers
     send_request(url)
   end
 
+  def confirm_passenger(customer_number, dob)
+      return true
+  end
+
   def check_customer_validity(customer_id, service=nil)
     url_options = "/api/customer/" + SYSTEM_ID + '/'
     url_options += customer_id.to_s
@@ -175,7 +190,6 @@ class EcolaneHelpers
     url = BASE_URL + url_options
     send_request(url)
   end
-
 
   ## Building hash objects that become XML nodes
   def build_order(itinerary, funding_xml=nil)
@@ -239,6 +253,7 @@ class EcolaneHelpers
 
       req.add_field 'X-ECOLANE-TOKEN', X_ECOLANE_TOKEN
       req.add_field 'Content-Type', 'text/xml'
+
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE

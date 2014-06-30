@@ -14,11 +14,11 @@ module Rateable
 
   # Average rating for rateable.  Returns 0 if unrated
   def calculate_rating
-    if self.ratings.blank? # Short circuit out if rateable is unrated
+    if self.ratings.approved.blank? # Short circuit out if rateable is unrated
       return 0
     end
-    total = self.ratings.pluck(:value).inject(:+)
-    len = self.ratings.length
+    total = self.ratings.approved.pluck(:value).inject(:+)
+    len = self.ratings.approved.length
     average = total.to_f / len # to_f so we don't get an integer result
   end
 
@@ -32,21 +32,4 @@ module Rateable
     rate.save
     rate
   end
-
-  # Sue me, I know it's mixing presentation logic and model logic.  
-  # Do not confuse with RatingDecorator#rating_in_stars which performs equivalent action for Rating model (which is not a Rateable model)
-  def rating_in_stars(size=1)
-    rating = get_avg_rating
-    html = "<span id='stars'>"
-    for i in 1..5
-      if i <= rating
-        html << "<i class='x fa fa-star fa-#{size}x'> </i>"
-      else
-        html << "<i class='x fa fa-star-o fa-#{size}x'> </i>"
-      end
-    end
-    html << "</span>"
-    return html.html_safe
-  end
-
 end

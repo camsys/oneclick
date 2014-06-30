@@ -48,10 +48,32 @@ toggle_map = (dir) ->
 
 hide_map = (dir) ->
   $('#' + dir + "MapContainer").addClass('hide')
+  CsMaps[dir + "Map"].addressType = null
 
-show_map = (dir) ->
+show_map = (dir, addrType) ->
   $('#' + dir + "MapContainer").removeClass('hide')
   CsMaps[dir + "Map"].refresh()
+  CsMaps[dir + "Map"].addressType = addrType # assign addressType to use in updating place input field after picking location from map
+
+# !important: these two flags are used to not show hint options when select a place from map
+# only show options after place input got focused
+show_from_typeahead_hint = true 
+show_to_typeahead_hint = true
+
+update_place = (placeText, type) ->
+  if type =='from'
+    placeid = 'trip_proxy_from_place'
+    show_from_typeahead_hint = false
+  else
+    placeid = 'trip_proxy_to_place'
+    show_to_typeahead_hint = false
+
+  $('#' + placeid).typeahead('val', placeText)
+
+process_location_from_map = (addr) -> #update map marker from selected location, and update address input field from reverse geocoded address
+  addrType = CsMaps.tripMap.addressType
+  update_map(CsMaps.tripMap, addrType, null, addr, null)
+  update_place(addr.name, addrType)
 
 $ ->
 
@@ -86,20 +108,25 @@ $ ->
 
   # Show/hide map popover when in input field
   $('#trip_proxy_from_place').on 'typeahead:opened', () ->
-    show_map('trip')
-  $('#trip_proxy_from_place').on 'focusout', () ->
-    # hide_map('trip')
+    show_map('trip', 'from')
+    if not show_from_typeahead_hint
+      $('#trip_proxy_from_place').typeahead('close')
   $('#trip_proxy_to_place').on 'typeahead:opened', () ->
-    show_map('trip')
-  $('#trip_proxy_to_place').on 'focusout', () ->
-    # hide_map('trip')
+    show_map('trip', 'to')
+    if not show_to_typeahead_hint
+      $('#trip_proxy_to_place').typeahead('close')
 
+  $('#trip_proxy_from_place').on 'focusin', () ->
+    show_from_typeahead_hint = true
   $('#trip_proxy_from_place').on 'typeahead:selected', (e, addr, d) ->
     $('#from_place_object').val(JSON.stringify(addr))
     update_map(CsMaps.tripMap, 'from', e, addr, d)
   $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, addr, d) ->
     $('#from_place_object').val(JSON.stringify(addr))
     update_map(CsMaps.tripMap, 'from', e, addr, d)
+
+  $('#trip_proxy_to_place').on 'focusin', () ->
+    show_to_typeahead_hint = true
   $('#trip_proxy_to_place').on 'typeahead:selected', (e, addr, d) ->
     $('#to_place_object').val(JSON.stringify(addr))
     update_map(CsMaps.tripMap, 'to', e, addr, d)
@@ -115,13 +142,40 @@ $ ->
     $('#map_center').val((CsMaps.tripMap.LMmap.getCenter().lat + ',' + CsMaps.tripMap.LMmap.getCenter().lng))
 
   $('#fromAddressMarkerButton').on 'click', ->
-    show_marker(CsMaps.tripMap, 'from')
+    show_map('trip', 'from')
   $('#toAddressMarkerButton').on 'click', ->
-    show_marker(CsMaps.tripMap, 'to')
+    show_map('trip', 'to')
 
   $('#mapCloseButton').on 'click', ->
     hide_map('trip')
                         
   $('.trip_proxy_modes').on 'change', (e, addr, d) ->
-    console.log e
-    console.log $('.trip_proxy_modes input:checked').length
+
+  if typeof(CsMaps) != 'undefined' and CsMaps and CsMaps.tripMap
+    CsMaps.tripMap.LMmap.on 'placechange', (e) ->
+      latlng = (if e.latlng then e.latlng else {})
+      addr =
+        lat: latlng.lat
+        lon: latlng.lng
+      $.ajax
+        type: 'GET'
+        url: '/reverse_geocode?lat=' + addr.lat + '&lon=' + addr.lon
+        success: (data) ->
+          search_results = data.place_searching 
+          if search_results instanceof Array
+            i = 0
+            result_count = search_results.length
+
+            while i < result_count
+              el = search_results[i]
+              if typeof (el) is "object" and el
+                actual_results = el.place_searching
+                if actual_results instanceof Array and actual_results.length > 0
+                  addr.name = actual_results[0].formatted_address
+                  process_location_from_map(addr)
+                  break
+              i++
+          
+        failure: (error) ->
+          console.log error
+      

@@ -7,6 +7,6 @@ class UserService < ActiveRecord::Base
   belongs_to :service
 
   #disabled
-  #external_traveler_id
+  #external_user_id
 
 end

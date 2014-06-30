@@ -1,6 +1,6 @@
 class UserRelationshipsController < ApplicationController
   
-  before_filter :set_view_variables #clear out the flash messages, set @user
+  before_filter :set_view_variables, except: [:check_update] #clear out the flash messages, set @user
   
   # A traveler creates a new delegate (buddy) request
   def create
@@ -36,7 +36,20 @@ class UserRelationshipsController < ApplicationController
     respond_to do |format|
       format.js {render "shared/update_user_relationship_tables", locals: @locals}
     end
-       
+  end
+
+  def check_update
+    ur = UserRelationship.find(params[:id])
+    authorize! :update, ur
+    respond_to do |format|
+      format.js {render json: {rel_id: params[:id], success: ur.permissible_action?(params[:status]), status_id: params[:status]} }
+    end
+  end
+
+  def update
+    respond_to do |format|
+      format.js {render (UserRelationship.find(params[:id]).update_attributes(relationship_status: params[:relationship_status_id])).to_json}
+    end
   end
 
   # A traveler hides a buddy request.

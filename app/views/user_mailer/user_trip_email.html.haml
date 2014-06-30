@@ -31,7 +31,7 @@
 
 - ItineraryDecorator.decorate_collection(@trip.itineraries.selected).each do |itinerary|
   - Rails.logger.info itinerary.ai
-  = render :partial => 'trip_single_plan_details', :locals => {:itinerary => itinerary}
+  = render :partial => 'trip_single_plan_details', :locals => {:itinerary => itinerary, :for_db => false}
 
 %hr{style: "height:12px; background:#848484;"}
 %table

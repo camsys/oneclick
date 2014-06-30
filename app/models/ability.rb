@@ -20,9 +20,15 @@ class Ability
       cannot :access, :show_agency
       cannot :access, :show_provider
       cannot :travelers, Agency
-      cannot :full_info, User
+      # cannot :full_read, User
       cannot :assist, User # That permissions is restricted to agency staff
-      return
+      cannot :rate, Trip # remove global permission to rate, sys admin will still be able to rate when it's their own trip
+    end
+    if user.has_role? :feedback_administrator
+      can [:see], :admin_menu
+      can :access, :admin_feedback
+      can [:manage], Rating # feedback admin will always be able to read feedback
+      can :send_follow_up, Trip
     end
     if User.with_role(:agency_administrator, :any).include?(user)
       # TODO Are these 2 redundant?
@@ -51,13 +57,14 @@ class Ability
       can [:update], Agency do |a|  # edit privilege over sub agencies
         user.agency.present? && user.agency.sub_agencies.include?(a)
       end
-      can [:update, :full_info, :assist], User do |u|
+      can [:update, :full_read, :assist], User do |u|
         u.approved_agencies.include? user.try(:agency)
       end
       can :create, User
       can :read, [Provider, Service]
       can [:index, :show], Report
       can [:read, :update], User, agency_id: user.agency.try(:id)
+      can :send_follow_up, Trip
     end
     
     if User.with_role(:agent, :any).include?(user)
@@ -76,7 +83,7 @@ class Ability
       can :read, Agency
       can :full_read, Agency # read gives access to only contact info.  full_read offers staff, internal contact, etc.
       can [:create, :show], User #can find any user if they search, can create a user
-      can [:update, :full_info, :assist], User do |u| # agents have extra privileges for users that have approved the agency
+      can [:update, :full_read, :assist], User do |u| # agents have extra privileges for users that have approved the agency
         u.approved_agencies.include? user.try(:agency)
       end
       can [:travelers], Agency, id: user.agency.try(:id)
@@ -84,6 +91,7 @@ class Ability
       can [:index, :show], Report
       can [:index, :show], [Provider, Service] # Read-only access to providers and services
       #can [:read, :update], User, agency_id: user.agency.try(:id) #removing because there isn't extra information for an agent here
+      can :send_follow_up, Trip
     end
 
     if User.with_role(:provider_staff, :any).include?(user)
@@ -102,23 +110,36 @@ class Ability
         user.provider.services.include?(s)
       end
       can :create, Service
+      can :send_follow_up, Trip
     end
 
+    ## All users have the following permissions, which logically OR with 'can' statements above
     can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
-    can [:read, :update, :full_info], User, :id => user.id
+    can [:read, :update, :full_info, :add_booking_service], User, :id => user.id
+    can [:read, :update, :full_read, :find_by_email], User, :id => user.id
+    can [:read, :update, :full_read, :assist], User, :id => user.id
+    can :manage, UserRelationship do |ur|
+      ur.delegate.eql? user or ur.traveler.eql? user
+    end
     can :geocode, :util
-    can :rate, Trip do |t|
-      t.user == user || t.creator == user # allow an assisting agent to review trips while on the phone
-    end
     can :show, Service # Will have view privileges for individual info purposes
-    can :rate, Service
     can :show, Provider # Will have view privileges for individual info purposes
-    can :rate, Provider
     can :show, Agency # Will have view privileges for individual info purposes
-    can :rate, Agency do |a|
-      a.id != user.agency.try(:id) # Cannot rate your own agency
+    
+    ## Rating Logic is configurable by deployment.  
+    can :read, Rating if Oneclick::Application.config.public_read_feedback
+    if Oneclick::Application.config.public_write_feedback
+      can [:create, :update], Rating
+      cannot :create, Rating do |r| 
+        case r.rateable_type
+        when "Trip" # cannot rate trips if I did not take them or plan them for another user
+          r.rateable.user.id != user.id or r.rateable.creator.id != user.id
+        when "Agency" # cannot rate Agency if I work for that agency
+          r.rateable.id == user.agency_id
+        end
+      end
+      cannot :create, Rating, rateable_type: "Provider"
     end
-
   end
 
 end

@@ -63,6 +63,27 @@ def add_users_and_places
   end
 end
 
+def add_ancillary_services
+
+  providers = [
+      {name: 'Rabbit Transit', contact: "rabbit contact",
+       address: '1230 Roosevelt Ave.', city: 'York', state: 'PA', zip: '17404',
+       phone: '717-846-RIDE', email: 'info@rabbittransit.org',
+       url: 'http://www.rabbittransit.org/', external_id: "1",
+       logo_url: 'pa/rabbittransit_40x40.png'},
+  ]
+
+  s = ServiceType.where(code: 'transit').first
+  providers.each do |p|
+    provider = Provider.create! p.reject{|k| k==:url}
+    provider.services.create! p.merge(active: false, service_type: s)
+  end
+  provider = Provider.create!({name: 'Taxi services'})
+  provider.services.create!({name: 'Taxi services', active: false,
+    service_type: ServiceType.where(code: 'taxi').first})
+end
+
+
 ##### Eligibility Seeds #####
 
 #Traveler characteristics
@@ -105,7 +126,8 @@ def add_providers_and_services
       {name: 'Rabbit Transit', contact: "rabbit contact",
        address: '1230 Roosevelt Ave.', city: 'York', state: 'PA', zip: '17404',
        phone: '717-846-RIDE', email: 'info@rabbittransit.org',
-       url: 'http://www.rabbittransit.org/', external_id: "1"},
+       url: 'http://www.rabbittransit.org/', external_id: "1",
+       logo_url: 'pa/rabbittransit_40x40.png'},
       {name: 'Faith in Action Network', contact: 'test name', external_id: "2"},
       {name: 'American Cancer Society', contact: 'acs name', external_id: "3"},
       {name: 'Lutheran Social Services', contact: 'lss name', external_id: "4"},
@@ -142,7 +164,8 @@ def add_providers_and_services
       when "2" #Faith in Action Network
 
         puts "Creating service 'Staying Connected' for provider"
-        service = Service.create!(name: 'Staying Connected', provider: p, service_type: paratransit, advanced_notice_minutes: 7*24*60)
+        service = Service.create!(name: 'Staying Connected', provider: p, service_type: paratransit, advanced_notice_minutes: 7*24*60,
+          logo_url: 'sample/sample-logo-a.png')
         #Add Schedules
         (1..4).each do |n|
           Schedule.create(service: service, start_seconds:9*3600, end_seconds:16*3600, day_of_week: n)

@@ -191,6 +191,12 @@ class PlaceSearchingController < TravelerAwareController
     render json: result.body
   end
 
+  def reverse_geocode
+    g = OneclickGeocoder.new
+    result = g.reverse_geocode(params[:lat], params[:lon])
+    render json: result
+  end
+
   protected
 
   def do_google_place_search query, map_center, counter, no_map_partial

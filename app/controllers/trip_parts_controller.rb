@@ -1,5 +1,6 @@
 class TripPartsController < PlaceSearchingController
   include TripsSupport
+  include TripsHelper
 
   before_filter :get_traveler
   before_filter :get_trip
@@ -29,6 +30,9 @@ class TripPartsController < PlaceSearchingController
     else
       Rails.logger.info "itineraries is not empty, not generating itineraries."
     end
+
+    @itineraries = filter_itineraries_by_max_offset_time(@itineraries, @trip_part.is_depart, @trip_part.trip_time)
+
     if @itineraries.each {|i| i.save }
       respond_to do |f|
         f.json { render json: @itineraries, root: 'itineraries', each_serializer: ItinerarySerializer }
@@ -42,6 +46,23 @@ class TripPartsController < PlaceSearchingController
           }
         }
       end
+    end
+  end
+
+  def reschedule
+    @trip_part = TripPart.find(params[:id])
+    begin
+      raise "minutes must be specified" unless params[:minutes]
+      @trip_part.reschedule(params[:minutes])
+      render json: {
+        status: 200,
+        trip_part_time: @trip_part.scheduled_time.iso8601
+        }, status: 200
+    rescue Exception => e
+      render json: {
+          status: 409,
+          message: e.message
+        }, status: 409
     end
   end
 
