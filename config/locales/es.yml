@@ -426,6 +426,7 @@ es:
   click_for_details: '[es424]Click for details[/es]'
   see_details_for_cost: '[es424]See details for cost[/es]'
   cost_estimated: '[es425]Cost estimated[/es]'
+  no_charge: '[es]No charge[/es]'
   see_below: '[es426]See below[es]'
   view_trip_details: "[es298]View trip details so that you can call the provider.[/es]"
   email_trip_details:  "[es299]Email your trip plan.[/es]"

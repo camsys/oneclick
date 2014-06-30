@@ -427,6 +427,7 @@ en:
   click_for_details: 'Click for details'
   see_details_for_cost: 'See details for cost'
   cost_estimated: 'Cost estimated'
+  no_charge: 'No charge'
   see_below: 'See below'
   view_trip_details: "View trip details so that you can call the provider."
   email_trip_details:  "Email your trip plan."
