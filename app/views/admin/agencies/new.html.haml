@@ -1,5 +1,11 @@
-%h1 New agency
+.row.info-header
+  .col-sm-6
+    %h1= t(:create_agency)
+  .col-sm-6.btns
+    = link_to admin_agencies_path, class: 'btn action-button pull-right' do
+      = t(:cancel)
+    = button_tag type: 'submit', class: "btn action-button pull-right" do
+      = t(:apply)
+
 
 = render 'form'
-
-= link_to 'Back', admin_agencies_path

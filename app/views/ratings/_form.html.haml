@@ -2,8 +2,8 @@
   .modal-header
     .row
       .col-sm-12
-        %btn.btn.action-button.pull-right{data: {dismiss: "modal"}}= t(:cancel)
         = f.submit t(:apply), class: "btn action-button pull-right"
+        %btn.btn.action-button.pull-right{data: {dismiss: "modal"}}= t(:cancel)
         = simple_fields_for @ratings_proxy.rater do |rater|
           = rater.input :id, as: :hidden
   - @ratings_proxy.rateables.each do |rateable|

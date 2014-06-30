@@ -1,20 +1,18 @@
 = simple_form_for resource, :as => resource_name, :url => registration_path(resource_name),
         html: {class: 'form-horizontal' }, wrapper: :horizontal_form do |f|
-  .row
-    .col-sm-6.pull-left
-      %h2
-        = t(:sign_up)
-    .col-sm-3.pull-right
-      %h2
-        = link_to t(:cancel), :back, class: "btn btn-default action-button default"
-        = button_tag type: 'submit', class: "btn btn-default action-button default pull-right" do
-          = t(:apply)
+  .row.info-header
+    .col-sm-6
+      %h1= t(:sign_up)
+    .col-sm-6.btns
+      = link_to t(:cancel), :back, class: "btn action-button pull-right"
+      = button_tag type: 'submit', class: "btn action-button pull-right" do
+        = t(:apply)
 
   .row
     .col-sm-6
       .panel.panel-default#user_info
         .panel-heading
-          %h3= t(:user_information)
+          %h3.panel-title= t(:user_information)
         .panel-body
           = f.error_notification
           = f.input :first_name, label: t(:first_name), :autofocus => true
@@ -24,4 +22,3 @@
                 :collection => Translation.available_locales, :include_blank => false
           = f.input :password, label: t(:password), :required => true
           = f.input :password_confirmation, :label => t(:password_confirmation), :required => true
-

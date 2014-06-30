@@ -1,20 +1,18 @@
 =simple_form_for @user, :html => { :class => "form-horizontal"}, method: 'post', wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }, :include_blank => false  do |f|
-  .row
-    .col-sm-6.pull-left
-      %h2
+  .row.info-header
+    .col-sm-6
+      %h1
         = current_user != @user ? "#{@user.name}'s #{t(:travel_profile)}" : t(:travel_profile)
-    .col-sm-3.pull-right
-      %h2
-        = button_tag type: 'submit', class: "btn btn-default action-button default" do
-          = icon_label(:apply)
-        = link_to t(:cancel), :back, class: "btn btn-default action-button default pull-right"
+    .col-sm-6.btns
+      = link_to t(:cancel), :back, class: "btn action-button pull-right"
+      = f.button :submit, t(:apply), class: "btn action-button pull-right"
 
     
   .row
     .col-sm-6
       .panel.panel-default#user_info
         .panel-heading
-          %h3= t(:user_information)
+          %h2.panel-title= t(:user_information)
         .panel-body
           = f.input :first_name, label: t(:first_name), :autofocus => true, :required => true
           = f.input :last_name, label: t(:last_name), :required => true

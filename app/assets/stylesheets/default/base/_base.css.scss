@@ -553,16 +553,33 @@ td.left, th.left {
   margin-bottom: 10px;
 }
 
+.action-button {
+  @extend .btn-primary;
+  text-shadow: none;
+}
+
+// Styling for the application header (not navbar, this is where the action-buttons live)
+.info-header {
+  & h1, h2, h3, h4, h5 { 
+      margin-bottom: 0;
+  }
+  .btns {
+    margin-top: $line-height-computed;
+    margin-bottom: 6px;
+  }
+}
+
 // Admin Pages
 .stars{
-  padding: 12px 6px 12px 6px;
+  vertical-align: middle;
+  padding-right: 5px;
+  padding-left:  5px;
   .fa-2x {
     font-size: 1.5em;
     margin-top: 3px;
   }
   + .btn {
     margin-left: -5px;
-    margin-right: 5px;
   }
 } 
 
@@ -628,10 +645,4 @@ td.left, th.left {
 .scrolling-checkbox-list {
  height: 12em;
  overflow: auto;
-}
-
-//color seeting for action buttons
-.action-button {
-  @extend .btn-primary;
-  text-shadow: none;
 }

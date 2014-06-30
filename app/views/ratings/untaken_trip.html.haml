@@ -1,18 +1,18 @@
-%h1
-  = t(:thanks_for_the_feedback)
-%h2
-  %small 
-    = t(:did_not_take_feedback_prompt)
-.row
-  .col-sm-12
-    =simple_form_for @trip, url: trip_only_rating_path(@trip), method: "post" do |f|
-      .row
-        .col-sm-12.pull-right
-          .pull-right
-            = f.submit t(:apply), class: "btn action-button"
-            = link_to root_path, class: "btn action-button" do
-              = t(:cancel)
-            = f.input :hash, as: :hidden, input_html: { :value => @trip.md5_hash }
+=simple_form_for @trip, url: trip_only_rating_path(@trip), method: "post" do |f|
+  .row.info-header
+    .col-sm-6
+      %h1
+        = t(:thanks_for_the_feedback)
+      %small 
+        = t(:did_not_take_feedback_prompt)
+    .col-sm-6.btns
+      = link_to root_path, class: "btn pull-right action-button" do
+        = t(:cancel)
+      = f.submit t(:apply), class: "btn pull-right action-button"
+
+  .row
+    .col-sm-12
+      = f.input :hash, as: :hidden, input_html: { :value => @trip.md5_hash }
       = simple_fields_for @trip.ratings.build do |ratings_form|
         = ratings_form.input :value, as: :hidden, :input_html => { :value => Rating::DID_NOT_TAKE}
         = ratings_form.input :comments

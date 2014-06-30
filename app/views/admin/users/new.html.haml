@@ -1,17 +1,24 @@
-%h1
-  %i.fa.fa-key.fa-rotate-90
-  = t(:create)
-%h4
-.well
-  = simple_form_for [:admin, @user], :html => {:class => 'form-horizontal' } do |f|
-    = f.error_notification
-    = display_base_errors @user
-    = f.input :first_name, label: t(:first_name), :autofocus => true
-    = f.input :last_name, label: t(:last_name)
-    = f.input :email, label: t(:email), :required => true
-    = f.input :password
-    = f.input :password_confirmation
-    .actions
-      = button_tag type: :submit, class: 'btn btn-primary controls' do
-        %i.fa.fa-edit
-        = t(:create_traveler)
+= simple_form_for [:admin, @user], html: {class: 'form-horizontal' }, wrapper: :horizontal_form do |f|
+  .row.info-header
+    .col-sm-6
+      %h1= t(:create)
+    .col-sm-6.btns
+      = link_to t(:cancel), :back, class: "btn action-button pull-right"
+      = button_tag type: :submit, class: 'btn action-button pull-right' do
+        = t(:apply)
+  .row
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          %h2.panel-title= t(:user_information)
+        .panel-body
+          = f.error_notification
+          = display_base_errors @user
+          = f.input :first_name, label: t(:first_name), :autofocus => true
+          = f.input :last_name, label: t(:last_name)
+          = f.input :email, label: t(:email), :required => true
+          = f.input :preferred_locale, label: t(:preferred_locale), selected: @default_locale,
+                :collection => Translation.available_locales, :include_blank => false
+          = f.input :password
+          = f.input :password_confirmation
+          

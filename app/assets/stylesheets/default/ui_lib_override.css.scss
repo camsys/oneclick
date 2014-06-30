@@ -1,0 +1,27 @@
+/* override bootstrap-datetimepicker styles */
+.timepicker-picker td span {
+  width: 42px !important;
+  height: 20px !important;
+  line-height: 20px !important;
+}
+.bootstrap-datetimepicker-widget {
+	width: auto;
+}
+.bootstrap-datetimepicker-widget .timepicker-hour,
+.bootstrap-datetimepicker-widget .timepicker-minute,
+.bootstrap-datetimepicker-widget .timepicker-second {
+  text-align: right;
+}
+
+/* override jQuery UI slider to not load image resource but only use bg color */
+.ui-widget-content {
+  background: white;
+}
+.ui-widget-header {
+  background: #ccc;
+}
+.ui-slider {
+  .ui-state-default {
+    background: #e6e6e6;
+  }
+}
