@@ -100,6 +100,7 @@ Oneclick::Application.routes.draw do
           post  'email2'
           get   'hide'
           get   'unhide_all'
+          get   'unselect_all'
           get   'skip'
           post  'comments'
           post  'admin_comments'
@@ -121,6 +122,7 @@ Oneclick::Application.routes.draw do
         member do
           get 'itineraries'
           get 'unhide_all'
+          get 'unselect_all'
         end
       end
 
@@ -230,6 +232,7 @@ Oneclick::Application.routes.draw do
             post  'email2'
             get   'hide'
             get   'unhide_all'
+            get   'unselect_all'
             get   'skip'
             post  'comments'
             post  'admin_comments'
@@ -241,6 +244,7 @@ Oneclick::Application.routes.draw do
         resources :trip_parts do
           member do
             get 'unhide_all'
+            get 'unselect_all'
           end
         end
 
