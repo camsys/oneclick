@@ -13,7 +13,7 @@
                     = "Book your trip"
               .col-sm-6
                 .pull-right{:style => "display: inline-block"}
-                  %a{class: "action-button", "data-dismiss" => "modal"}
+                  %button{class: "btn action-button", "data-dismiss" => "modal"}
                     =t(:close)
       .modal-body#bookingContent
         = render partial: 'book_trip'
