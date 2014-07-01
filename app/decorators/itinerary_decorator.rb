@@ -22,26 +22,33 @@ class ItineraryDecorator < Draper::Decorator
   end
 
   def cost_in_words
-    Rails.logger.info get_itinerary_cost(object)
     get_itinerary_cost(object)[:cost_in_words]
   end
 
   def duration_in_words
-    (duration ? h.duration_to_words(duration) + " (est.)" : I18n.t(:not_available))
+    (duration ? h.duration_to_words(duration) + " (est.)" : '')
   end
 
   def date_in_words
-
-    return format_date(start_time + (end_time - start_time) / 2) if (start_time && end_time)
-    return format_date(start_time) if (start_time)
-    return format_date(end_time) if (end_time)
+    itinerary_start_time = get_itinerary_start_time(object)
+    itinerary_end_time = get_itinerary_end_time(object)
+    return format_date(itinerary_start_time + (itinerary_end_time - itinerary_start_time) / 2) if (itinerary_start_time && itinerary_end_time)
+    return format_date(itinerary_start_time) if (itinerary_start_time)
+    return format_date(itinerary_end_time) if (itinerary_end_time)
     return I18n.t(:not_available)
   end
 
   def time_range_in_words
-
-    return format_time(start_time) + ' ' + I18n.t(:to) + ' ' + format_time(end_time) if (start_time && end_time)
-    return ''
+    case mode.code
+    when 'mode_taxi'
+      itinerary_start_time =get_itinerary_start_time(object)
+      itinerary_end_time = get_itinerary_end_time(object)
+      return format_time(itinerary_start_time) + ' ' + I18n.t(:to) + ' ' + format_time(itinerary_end_time) if (itinerary_start_time && itinerary_end_time)
+      return I18n.t(:not_available)
+    else
+      return format_time(start_time) + ' ' + I18n.t(:to) + ' ' + format_time(end_time) if (start_time && end_time)
+      return I18n.t(:not_available)
+    end
   end
 
   def notes

@@ -59,23 +59,11 @@ class ItinerarySerializer < ActiveModel::Serializer
   end
 
   def start_time
-    tp = object.trip_part
-    case object.mode
-    when Mode.taxi
-      tp.is_depart ? tp.trip_time : (tp.trip_time - object.duration.seconds)
-    else
-      object.start_time
-    end
+    get_itinerary_start_time(object)
   end
 
   def end_time
-    tp = object.trip_part
-    case object.mode
-    when Mode.taxi
-      tp.is_depart ? (tp.trip_time + object.duration.seconds) : tp.trip_time
-    else
-      object.end_time
-    end
+    get_itinerary_end_time(object)
   end
 
   def cost

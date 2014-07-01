@@ -423,4 +423,24 @@ module CsHelpers
     return {price: fare, comments: comments, price_formatted: price_formatted, estimated: estimated, cost_in_words: cost_in_words}
   end
 
+  def get_itinerary_start_time itinerary
+    tp = itinerary.trip_part
+    case itinerary.mode
+    when Mode.taxi
+      tp.is_depart ? tp.trip_time : (tp.trip_time - itinerary.duration.seconds)
+    else
+      itinerary.start_time
+    end
+  end
+
+  def get_itinerary_end_time itinerary
+    tp = itinerary.trip_part
+    case itinerary.mode
+    when Mode.taxi
+      tp.is_depart ? (tp.trip_time + itinerary.duration.seconds) : tp.trip_time
+    else
+      itinerary.end_time
+    end
+  end
+
 end
