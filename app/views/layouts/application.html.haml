@@ -43,10 +43,7 @@
             - else
               %span#versionInfo= "#{t(:version)} #{Rails.application.config.version}"
           .pull-right
-            -# Don't localize next 2 strings
-            = link_using_locale('English', 'en')
-            |
-            = link_using_locale('En Español', 'es')
+            = links_to_each_locale
     / end of footer
 
     = yield :footer

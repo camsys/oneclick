@@ -226,6 +226,16 @@ module ApplicationHelper
     end
   end
 
+  def links_to_each_locale
+    links = ""
+    I18n.available_locales.each do |l|
+      links << link_using_locale(I18n.t("locales.#{l}"), l)
+      links << " | "
+    end
+    
+    links.html_safe
+  end
+
   def link_using_locale link_text, locale
     path = session[:location] || request.fullpath
     parts = path.split('/', 3)
