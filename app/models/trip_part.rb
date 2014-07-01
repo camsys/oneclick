@@ -183,6 +183,7 @@ class TripPart < ActiveRecord::Base
   end
 
   def check_for_long_walks itineraries
+
     filtered = []
     long_walks = false
     itineraries.each do |itinerary|
@@ -196,10 +197,16 @@ class TripPart < ActiveRecord::Base
       end
     end
     if long_walks
+
       #KISS N RIDE
-      filtered += create_fixed_route_itineraries("CAR,TRANSIT,WALK")
+      if Mode.car_transit.active? and !(self.trip.desired_modes.include? Mode.car_transit) #is this mode active and not explicitly requested?
+        filtered += create_fixed_route_itineraries("CAR,TRANSIT,WALK")
+      end
+
       #PARK N RIDE
-      filtered += create_fixed_route_itineraries("CAR_PARK,TRANSIT,WALK")
+      if Mode.park_transit.active? and !(self.trip.desired_modes.include? Mode.park_transit) #is this mode active and not explicitly requested?
+        filtered += create_fixed_route_itineraries("CAR_PARK,TRANSIT,WALK")
+      end
     end
 
     filtered

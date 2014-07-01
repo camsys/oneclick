@@ -103,6 +103,8 @@ when 'pa'
   Oneclick::Application.config.public_write_feedback = true
   Oneclick::Application.config.state = 'PA'
 
+  Oneclick::Application.config.max_walk_seconds = 3600
+
   ##Ecolane Variables
   Oneclick::Application.config.ecolane_system_id = "ococtest"
   Oneclick::Application.config.ecolane_x_ecolane_token = ENV['X_ECOLANE_TOKEN']
