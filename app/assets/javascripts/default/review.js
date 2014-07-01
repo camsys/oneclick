@@ -435,6 +435,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var missInfoDivId = tripPlanChartDivId + missInfoDivAffix;
         var missingInfoNode = _missingInfoLookup[tripPlanChartDivId];
         addTripRestrictionDialogHtml(missingInfoNode.data, missInfoDivId);
+        addTripStrictionFormValidatiaonListener(missInfoDivId);
         addTripStrictionFormSubmissionListener(missingInfoNode.data, tripPlanChartDivId);
     }
 
@@ -883,6 +884,29 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         //sort
         sortItineraryBy($('#' + tripPartDivId + " .trip-sorter")[0]);
         return;
+    }
+
+    /*
+     * trip restiction form validation
+     * @param {string} tripPlanChartDivId
+     */
+    function addTripStrictionFormValidatiaonListener(missInfoDivId) {
+        $('#' + missInfoDivId + ' input[data-eligibility-code=age]').on('focus', function() {
+            if($(this).siblings('.help-block').length === 0) {
+                var helpMsg = localeDictFinder['four_digit_year'] + ' ' + $(this).attr('min') + '-' + $(this).attr('max'); 
+                $(this).after('<span class="help-block with-errors">' + helpMsg + '</span>');
+            }
+        });
+        $('#' + missInfoDivId + ' input[data-eligibility-code=age]').on('focusout', function() {
+            var val = parseInt($(this).val());
+            if(val > parseInt($(this).attr('max')) || val < parseInt($(this).attr('min'))) {
+                $(this).val(null);
+                $(this).parent('div').addClass('has-error');
+            } else {
+                $(this).parent('div').removeClass('has-error');
+                $(this).siblings('.help-block').remove();
+            }
+        });
     }
 
     /*
@@ -1463,6 +1487,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var infoLongDesc = missingInfo.question;
         var infoType = missingInfo.data_type;
         var successCondition = missingInfo.success_condition;
+        var code = missingInfo.code;
         missingInfo.controlName = controlName;
 
         var answersTags = '';
@@ -1487,6 +1512,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             case 'integer':
                 answersTags += '<input type="number" class="form-control" id="' + controlName + '_number" label="false" name="' + controlName +
                     '"' + (isUserAnswerEmpty(missingInfo.user_answer) ? '' : (' value=' + missingInfo.user_answer)) +
+                    (code === 'age' ? ' min="1900" max="' + new Date().getFullYear() + '" data-eligibility-code="age"': '') +
                     ' />';
                 break;
             case 'date':
@@ -1515,10 +1541,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         }
 
         return (
-            '<p>' +
+            '<div>' +
             '<label class="control-label"style="margin-right: 10px;">' + infoLongDesc + '</label>' +
             answersTags +
-            '</p>'
+            '</div>'
         );
     }
 

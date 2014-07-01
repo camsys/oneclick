@@ -349,6 +349,7 @@ en:
   fare: "Fare"
   flat_fare_unavailable: "Flat fare unavailable"
   rate: "Rate"
+  four_digit_year: 'year in four-digit'
 
   #map
   zoom_in: 'Zoom in'
