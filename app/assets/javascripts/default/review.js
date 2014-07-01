@@ -2096,12 +2096,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var planId = tripPlan.id;
         var serviceName = tripPlan.service_name;
 
-        //planId is used in chart_onclick event
-        //sent to server to get itinerary and render plan details modal
-        //tripLegs.forEach(function(leg) {
-        //    leg.planId = planId;
-        //});
-
         var $chart = $('#' + chartDivId);
         if ($chart.length === 0) { //this chart div doesnt exist
             return;
@@ -2167,7 +2161,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 .text(function(d) {
                     return d;
                 })
-            //.attr('title', tipText)
+            .attr('title', tipText)
             .on("click", function() { //click to show details in modal dialog
                 showItineraryModal(planId);
             });
