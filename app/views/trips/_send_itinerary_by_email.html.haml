@@ -18,9 +18,9 @@
       = f.input :email_addresses, label: 'Additional email addresses', required: false
       = f.input :email_comments, as: :text, label: 'Comments', required: false, input_html: {rows: 3}
     .modal-footer
-      = button_tag class: 'btn', data: {dismiss: 'modal'} do
-        %i.fa.fa-reply
-        = t(:cancel)
       = button_tag type: :submit, class: 'pull-right btn btn-info' do
         %i.fa.fa-envelope-o
         = t(:send)
+      = button_tag class: 'btn', data: {dismiss: 'modal'} do
+        %i.fa.fa-reply
+        = t(:cancel)

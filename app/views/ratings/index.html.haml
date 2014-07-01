@@ -2,9 +2,9 @@
   .col-sm-6
     %h1= t(:feedback)
   .col-sm-6.btns
+    = submit_tag t(:apply), class: "btn btn-default action-button pull-right"
     = form_tag approve_ratings_path, method: :patch do
       = link_to t(:cancel), ratings_path, class: "btn btn-default action-button pull-right"
-    = submit_tag t(:apply), class: "btn btn-default action-button pull-right"
 .row
   .col-sm-12
     %table.table.table-condensed.table-striped.table-bordered.table-hover#ratings_table
