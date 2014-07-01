@@ -168,8 +168,11 @@ class TripPart < ActiveRecord::Base
       end
     end
 
+    #Filter impractical routes
     if mode == 'TRANSIT,WALK' and result
-      itins += check_for_long_walks(itins)
+      itins = check_for_long_walks(itins)
+    elsif (mode == 'CAR,TRANSIT,WALK' or mode == 'CAR_PARK,TRANSIT,WALK') and result
+      itins = check_for_short_drives(itins)
     end
 
     # Don't hide duplicate itineraries in new UI
@@ -180,27 +183,38 @@ class TripPart < ActiveRecord::Base
   end
 
   def check_for_long_walks itineraries
+    filtered = []
     long_walks = false
     itineraries.each do |itinerary|
       first_leg = itinerary.get_legs.first
       #TODO: Make the 20 minute threshold configurable.
-      if first_leg.mode == 'WALK' and first_leg.duration > 1200
+      if first_leg.mode == 'WALK' and first_leg.duration > Oneclick::Application.config.max_walk_seconds
         long_walks = true
         itinerary.hide
+      else
+        filtered << itinerary
       end
     end
     if long_walks
-      itins = []
-
       #KISS N RIDE
-      itins += create_fixed_route_itineraries('CAR,TRANSIT,WALK')
-
+      filtered += create_fixed_route_itineraries("CAR,TRANSIT,WALK")
       #PARK N RIDE
-      itins += create_fixed_route_itineraries("CAR_PARK,TRANSIT,WALK")
-
-      return itins
+      filtered += create_fixed_route_itineraries("CAR_PARK,TRANSIT,WALK")
     end
-    return []
+
+    filtered
+  end
+
+  def check_for_short_drives itineraries
+    filtered = []
+    itineraries.each do |itinerary|
+      first_leg = itinerary.get_legs.first
+      unless first_leg.mode == 'CAR' and first_leg.duration < Oneclick::Application.config.min_drive_seconds
+        filtered << itinerary
+      end
+    end
+
+    filtered
   end
 
   # Note not called for now.

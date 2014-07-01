@@ -18,6 +18,8 @@ Oneclick::Application.config.minimum_paratransit_duration = 2.hours
 Oneclick::Application.config.rideshare_duration_factor = 1.5
 Oneclick::Application.config.minimum_rideshare_duration = (1.5).hours
 Oneclick::Application.config.show_update_services = false
+Oneclick::Application.config.min_drive_seconds = 180
+Oneclick::Application.config.max_walk_seconds = 1200
 
 Oneclick::Application.config.max_ui_duration = 2.hours
 Oneclick::Application.config.min_ui_duration = 1.hours
