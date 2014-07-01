@@ -46,3 +46,6 @@ include SeedsHelpers
   structured_hash = structure_records_from_flat_hash record
   build_internationalized_records structured_hash
 end
+
+#Activate Additional Modes
+Mode.unscoped.find_by_code('mode_car_transit').update_attributes(active: 1) #KissNRide

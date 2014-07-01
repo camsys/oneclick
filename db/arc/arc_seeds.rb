@@ -60,3 +60,4 @@ end
 
 # Activate additional modes
 Mode.unscoped.find_by_code('mode_rideshare').update_attributes(active: 1)
+Mode.unscoped.find_by_code('mode_car_transit').update_attributes(active: 1) #KissNRide
