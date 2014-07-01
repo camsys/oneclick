@@ -2022,25 +2022,25 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 tipText = '<p>' + localeDictFinder['depart_at'] + ' ' + formatTime(parseDate(tripPlan.start_time)) + '</p>' +
                     (tripPlan.legs.length > 0 ? ('<p>' + tripPlan.legs[0].description + '</p>') : '') +
                     (tripPlan.legs.length > 1 ? ('<p>' + tripPlan.legs[1].description + '</p>') : '') +
-                    '<p>' + localeDictFinder['arrive_in'] + ' ' + durationText + ' ' + localeDictFinder['minutes'] + '</p>';
+                    '<p>' + localeDictFinder['arrive_in'] + ' ' + durationText + '</p>';
                 break;
             case 'mode_bicycle':
-                tipText = localeDictFinder['bicycle'] + ' ' + durationText + ' ' + localeDictFinder['minutes'];
+                tipText = '<p>' + localeDictFinder['bicycle'] + ' ' + durationText +  '</p>';
                 break;
             case 'mode_bikeshare':
                 tipText = (tripPlan.legs.length > 0 ? ('<p>' + tripPlan.legs[0].description + '</p>') : '') +
-                    '<p>' + localeDictFinder['arrive_in'] + ' ' + durationText + ' ' + localeDictFinder['minutes'] + '</p>';
+                    '<p>' + localeDictFinder['arrive_in'] + ' ' + durationText + '</p>';
                 break;
             case 'mode_drive':
             case 'mode_car':
-                tipText = localeDictFinder['drive'] + ' ' + durationText + ' ' + localeDictFinder['minutes'];
+                tipText = '<p>' + localeDictFinder['drive'] + ' ' + durationText + '</p>';
                 break;
             default:
-                tipText = serviceName || modeName;
+                tipText = '<p>' + serviceName || modeName + '</p>';
                 break;
         }
 
-        tipText += '<p>' + localeDictFinder['click_for_details'] + '</p>'
+        tipText += '<p>' + localeDictFinder['click_for_details'] + '</p>';
         return tipText;
     }
 
