@@ -36,7 +36,7 @@ describe ItineraryDecorator do
       it "does the correct thing when passed nil" do
         I18n.locale = :en
         object.duration = nil
-        expect(decorator.duration_in_words).to eq 'Not Available'
+        expect(decorator.duration_in_words).to eq ''
       end
       it "gives Book Ahead notes in days when > 24 hours" do
         I18n.locale = :en
