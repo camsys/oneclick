@@ -1,7 +1,8 @@
 Oneclick::Application.routes.draw do
   get '/configuration' => 'configuration#configuration'
 
-  scope "(:locale)" do
+  scope "(:locale)", locale: available_locales do
+  # scope "(:locale)", locale: /en|es/ do
 
     if Oneclick::Application.config.ui_mode == 'kiosk'
       root to: redirect('/kiosk')

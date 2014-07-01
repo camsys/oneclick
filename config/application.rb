@@ -98,11 +98,12 @@ module Oneclick
     if config.ui_mode=='desktop'
       config.assets.paths << File.join(Rails.root, 'app', 'assets-default')
       config.assets.precompile += %w(
-        default/arc.css
-        default/pa.css
-        default/broward.css
-        default/tadaaapickr.en.js
-        default/typeahead.js-bootstrap.css
+        application.css
+        arc.css
+        pa.css
+        broward.css
+        tadaaapickr.en.js
+        typeahead.js-bootstrap.css
       )
     else # config.ui_mode=='kiosk'
       config.assets.paths << File.join(Rails.root, 'app', 'assets-kiosk')
@@ -125,9 +126,9 @@ module Oneclick
     config.exceptions_app = self.routes
     config.brand = ENV['BRAND'] || 'arc'
     if config.ui_mode=='desktop'
-      config.sass.load_paths << File.expand_path("./app/assets/stylesheets/default/#{config.brand}")
+      config.sass.load_paths << File.expand_path("./app/assets-default/stylesheets/#{config.brand}")
     else # config.ui_mode=='kiosk'
-      config.sass.load_paths << File.expand_path("./app/assets/stylesheets/kiosk/#{config.brand}")
+      config.sass.load_paths << File.expand_path("./app/assets-kiosk/stylesheets/#{config.brand}")
     end
   end
 
@@ -135,3 +136,8 @@ end
 
 
 puts Rails.application.config.assets.paths.ai
+
+def available_locales
+  s = '(' + I18n.available_locales.join('|') + ')'
+  %r{#{s}}
+end

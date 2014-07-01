@@ -19,7 +19,6 @@
 //= require bootstrap-datetimepicker
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap3
-//= require default/config
 //= require_tree .
 //
 moment.fn.next15 = function() {
