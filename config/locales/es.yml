@@ -614,6 +614,10 @@ es:
   valid_time_msg: "[es]must be a valid time[/es]"
   presence_msg: "[es]can't be blank[/es]"
   before_msg: "[es]must be before [/es]"
+
+  locales: # Add to this block for every locale that is added
+    en: "English"
+    es: "Española"
   
   # Branding
   arc:

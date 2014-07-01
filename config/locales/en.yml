@@ -691,6 +691,9 @@ en:
       year: Year
   unauthorized:
     default: 'You are not authorized to access that page.'
+  locales:
+    en: "English"
+    es: "En Español"
 
   # Branding
   arc:

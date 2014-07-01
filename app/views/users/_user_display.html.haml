@@ -22,7 +22,7 @@
           .form-group
             %label.col-sm-3.control-label= t(:preferred_locale)
             .col-sm-9
-              %p.form-control-static= user.preferred_locale
+              %p.form-control-static= I18n.t("locales.#{user.preferred_locale}")
   - if can? :full_read, user
     .col-sm-6
       .panel.panel-default#agencies

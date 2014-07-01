@@ -6,6 +6,6 @@ class Translation < ActiveRecord::Base
     validates :locale, presence: true
 
     def self.available_locales
-       Translation.uniq.pluck(:locale)
+       I18n.available_locales
      end
 end
