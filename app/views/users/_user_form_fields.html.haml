@@ -4,8 +4,8 @@
       %h1
         = current_user != @user ? "#{@user.name}'s #{t(:travel_profile)}" : t(:travel_profile)
     .col-sm-6.btns
-      = link_to t(:cancel), :back, class: "btn action-button pull-right"
       = f.button :submit, t(:apply), class: "btn action-button pull-right"
+      = link_to t(:cancel), :back, class: "btn action-button pull-right"
 
     
   .row

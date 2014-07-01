@@ -109,6 +109,10 @@ class ItinerarySerializer < ActiveModel::Serializer
         price_formatted = '*'
         comments = I18n.t(:see_details_for_cost)
       end
+
+      if !estimated and fare == 0
+        price_formatted = I18n.t(:no_charge)
+      end
       {price: fare, comments: comments, price_formatted: price_formatted, estimated: estimated}
     end
 

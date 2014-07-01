@@ -636,7 +636,7 @@ CsLeaflet.Leaflet = {
                 iconCls: '',
                 toggleable: false,
                 pressedCls: 'leaflet-button-pressed',
-                depressedCursorType: 'move',
+                depressedCursorType: '',
                 pressedCursorType: 'crosshair',
                 clickCallback: function() {}
             },
@@ -675,7 +675,7 @@ CsLeaflet.Leaflet = {
                 } else {
                      L.DomUtil.removeClass(this.link, this.options.pressedCls);
                      if(map) {
-                        L.DomUtil.get(map.getContainer().id).style.cursor = this.options.depressedCursorType || 'default';
+                        L.DomUtil.get(map.getContainer().id).style.cursor = this.options.depressedCursorType || '';
                     }
                 }
             },

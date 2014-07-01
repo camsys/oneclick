@@ -26,13 +26,11 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    if params[:locale]
-       I18n.locale = params[:locale]
-    end
+    I18n.locale = params[:locale] || I18n.default_locale
   end
 
-  def default_url_options(options={})
-    { :locale => ((I18n.locale == I18n.default_locale) ? nil : I18n.locale) }
+  def default_url_options(options={}) # This overrides/extends
+    { locale: I18n.locale }
   end
 
   def clear_location

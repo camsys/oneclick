@@ -41,41 +41,32 @@
 
             :javascript
               $('#trip_proxy_modes_mode_transit').change(function() {
-              if(this.checked) {
-                  $('#transitModes').find('input[type="checkbox"]').each(function() {
+                if(this.checked) {
+                  $('#transitModes input[type="checkbox"]').each(function() {
                       this.checked = true;
                   });
-                  $('#transitModes').show();
                 } else {
-                  $('#transitModes').hide();
-                  $('#transitModes').find('input[type="checkbox"]').each(function() {
+                  $('#transitModes input[type="checkbox"]').each(function() {
                       this.checked = false;
                   });
                 }
               });
-              $(function() {
-              // onload, if any submodes are checked, show, otherwise hide
-              if ($('#transitModes input:checked').length != 0) {
-                $('#transitModes').show();
-              } else {
-                $('#transitModes').hide();
-              }
-              $('#transitModes input').change( function() {
-                if ($('#transitModes input:checked').length == 0) {
-                  $("#trip_proxy_modes_mode_transit").trigger("click");
-                }
-                if ($('#transitModes input:checked').length == $('#transitModes input[type=checkbox]').length) {
-                  $("#trip_proxy_modes_mode_transit").trigger("click");
-                }
-              });
-              });
-
 
           #transitModes
             = f.input :modes, as: :check_boxes, collection: @transit_modes,
             label_method: :first, value_method: :last, checked: @selected_modes, label: '',
             collection_wrapper_class: 'col-xs-offset-1', collection_wrapper_tag: :div,
             input_html: { tabindex: 1 }
+
+            :javascript
+              $('#transitModes input[type="checkbox"]').change( function() {
+                var checkedCount = $('#transitModes input:checked').length;
+                if (checkedCount === 0) {
+                  $("#trip_proxy_modes_mode_transit").prop('checked', false);
+                } else {
+                  $("#trip_proxy_modes_mode_transit").prop('checked', true);
+                }
+              });
 
 
           = f.input :trip_purpose_id, :collection =>  TripPurpose.ordered_by_localized_name, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes),
