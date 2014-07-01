@@ -2024,8 +2024,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                     (tripPlan.legs.length > 1 ? ('<p>' + tripPlan.legs[1].description + '</p>') : '') +
                     '<p>' + localeDictFinder['arrive_in'] + ' ' + durationText + ' ' + localeDictFinder['minutes'] + '</p>';
                 break;
-            case 'mode_bike':
-                tipText = localeDictFinder['bike'] + ' ' + durationText + ' ' + localeDictFinder['minutes'];
+            case 'mode_bicycle':
+                tipText = localeDictFinder['bicycle'] + ' ' + durationText + ' ' + localeDictFinder['minutes'];
                 break;
             case 'mode_bikeshare':
                 tipText = (tripPlan.legs.length > 0 ? ('<p>' + tripPlan.legs[0].description + '</p>') : '') +
