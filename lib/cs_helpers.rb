@@ -238,7 +238,7 @@ module CsHelpers
     elsif mode_code == 'transit'
       I18n.t(:transit)
     elsif mode_code == 'paratransit'
-      I18n.t(:specialized_services)      
+      I18n.t(:mode_paratransit_name)      
     elsif mode_code == 'volunteer'
       I18n.t(:volunteer)
     elsif mode_code == 'non-emergency medical service'
