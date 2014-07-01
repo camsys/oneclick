@@ -21,10 +21,43 @@ class ItineraryDecorator < Draper::Decorator
   end
 
   def cost_in_words
-    return h.number_to_currency(cost.round) + " (est)" if mode.code == 'mode_taxi'
-    return I18n.t(:see_below) if cost.nil? #TODO: what is the right case for see_below?
-    return I18n.t(:not_available) if cost.nil? #TODO: what is the right case for not_available?
-    (cost != 0 ? h.number_to_currency(cost) : I18n.t(:no_cost_for_service))
+    estimated = false
+    fare = object.cost || (object.service.fare_structures.first rescue nil)
+    # if fare.nil?
+    #   {price: nil, comments: 'Unknown', price_formatted: '?'} # TODO I18n
+    price_formatted = ''
+    if fare.respond_to? :fare_type
+      case fare.fare_type
+      when FareStructure::FLAT
+        price_formatted = h.number_to_currency(fare.base)
+      when FareStructure::MILEAGE
+        estimated = true
+        price_formatted = h.number_to_currency(fare.base.ceil) + + I18n.t(:est)
+      when FareStructure::COMPLEX
+        estimated = true
+        price_formatted = I18n.t(:see_below)
+      end
+    else
+      price_formatted = h.number_to_currency(fare) || I18n.t(:not_available)
+      fare = fare.to_f
+      case object.mode
+      when Mode.walk
+      when Mode.bicycle
+      when Mode.bikeshare
+        price_formatted = I18n.t(:no_charge)
+      when Mode.taxi
+        price_formatted = h.number_to_currency(fare.ceil) + I18n.t(:est)
+      when Mode.rideshare
+        estimated = true
+        price_formatted = I18n.t(:see_below)
+      end
+
+      if !estimated and fare == 0
+        price_formatted = I18n.t(:no_charge)
+      end
+    end
+
+    return price_formatted
   end
 
   def duration_in_words
