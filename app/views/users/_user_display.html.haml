@@ -69,7 +69,7 @@
     .col-sm-6
       .panel.panel-default#booking
         .panel-heading
-          %h2.panel-title="[en]Booking Information[/en]"
+          %h2.panel-title=t(:booking_information)
         .panel-body
           = render :partial => 'users/show_booking_info', locals: { user: user }
     .col-sm-6

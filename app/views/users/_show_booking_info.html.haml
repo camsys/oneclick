@@ -3,8 +3,8 @@
     %table.table.table.condensed.table-striped.table-hover.table-bordered#bookingtable
       %thead
         %tr
-          %th= "[en] Service Name"
-          %th= "[en[ Client Id"
+          %th= t(:service_name)
+          %th= t(:client_id)
       %tbody
         - user.user_profile.user_services.each do |user_service|
           %tr

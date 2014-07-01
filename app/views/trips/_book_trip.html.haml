@@ -4,13 +4,13 @@
       .panel-header
         %h5#headerMessage
           -if @trip.is_booked?
-            ="Your trip has been booked."
+            =t(:trip_booked_2)
           -elsif @trip.outbound_part.is_bookable? and (@trip.return_part and @trip.return_part.is_bookable?)
-            ="Your trip is eligible for automated booking."
+            =t(:trip_is_eligible)
           -elsif @trip.outbound_part.is_bookable?
-            ="The outbound portion of your trip is eligible for automated booking."
+            =t(:outbound_is_eligible)
           -else
-            ="The return portion of your trip is eligible for automated booking."
+            =t(:return_is_eligible)
 
       .panel-body
         -if @trip.outbound_part.is_bookable?
@@ -18,32 +18,32 @@
             .form-group
               .row-fluid
                 %label.col-sm-4.col-md-4.col-lg-4.text-right
-                  ="From:"
+                  =t(:from) + ":"
                 .col-sm-8.col-md-8.col-lg-8.text-left
                   =@trip.outbound_part.from_trip_place.name
             .form-group
               .row-fluid
                 %label.col-sm-4.col-md-4.col-lg-4.text-right
-                  ="To:"
+                  =t(:to) + ":"
                 .col-sm-8.col-md-8.col-lg-8.text-left
                   =@trip.outbound_part.to_trip_place.name
             .form-group
               .row-fluid
                 %label.col-sm-4.col-md-4.col-lg-4.text-right
-                  = @trip.outbound_part.is_depart ? "Departing at:" : "Arriving by:"
+                  = @trip.outbound_part.is_depart ? t(:departing_at) + ":" : t(:arriving_by) + ":"
                 .col-sm-8.col-md-8.col-lg-8.text-left
                   =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
             -if @trip.return_part and @trip.return_part.is_bookable?
               .form-group
                 .row-fluid
                   %label.col-sm-4.col-md-4.col-lg-4.text-right
-                    = @trip.return_part.is_depart ? "Returning at:" : "Returning by:"
+                    = @trip.return_part.is_depart ? t(:returning_at) + ":" : t(:returning_by) + ":"
                   .col-sm-8.col-md-8.col-lg-8.text-left
                     =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
             .form-group
               .row-fluid
                 %label.col-sm-4.col-md-4.col-lg-4.text-right
-                  = "Provided by:"
+                  = t(:provided_by)
                 .col-sm-8.col-md-8.col-lg-8.text-left
                   = "Rabbit Shared Ride"
 
@@ -52,42 +52,42 @@
             .form-group
               .row-fluid
                 %label.col-sm-4.col-md-4.col-lg-4.text-right
-                  ="From:"
+                  =t(:from)
                 .col-sm-8.col-md-8.col-lg-8.text-left
                   =@trip.return_part.from_trip_place.name
             .form-group
               .row-fluid
                 %label.col-sm-4.col-md-4.col-lg-4.text-right
-                  ="To:"
+                  =t(:to)
                 .col-sm-8.col-md-8.col-lg-8.text-left
                   =@trip.return_part.to_trip_place.name
             .form-group
               .row-fluid
                 %label.col-sm-4.col-md-4.col-lg-4.text-right
-                  = @trip.return_part.is_depart ? "Departing at:" : "Arriving by:"
+                  = @trip.return_part.is_depart ? t(:departing_at) + ":" : t(:arriving_by) + ":"
                 .col-sm-8.col-md-8.col-lg-8.text-left
                   =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
             .form-group
               .row-fluid
                 %label.col-sm-4.col-md-4.col-lg-4.text-right
-                  = "Provided by:"
+                  = t(:provided_by)
                 .col-sm-8.col-md-8.col-lg-8.text-left
                   = "Rabbit Shared Ride"
 
         -if @trip.is_booked?
           .confirmation
             -if @trip.outbound_part.is_booked? and @trip.return_part.is_booked?
-              = "Confirmation #'s: " + @trip.outbound_part.selected_itinerary.booking_confirmation + ", " + @trip.outbound_part.selected_itinerary.booking_confirmation + "."
+              = t(:confirmation) + " #'s: " + @trip.outbound_part.selected_itinerary.booking_confirmation + ", " + @trip.outbound_part.selected_itinerary.booking_confirmation + "."
             -elsif @trip.outbound_part.is_booked?
-              = "Confirmation #: " + @trip.outbound_part.selected_itinerary.booking_confirmation + "."
+              = t(:confirmation) + " #: " + @trip.outbound_part.selected_itinerary.booking_confirmation + "."
             -elsif @trip.return_part.is_booked?
-              = "Confirmation #: " + @trip.return_part.selected_itinerary.booking_confirmation + "."
+              = t(:confirmation) + " #: " + @trip.return_part.selected_itinerary.booking_confirmation + "."
           .row-fluid
-            = "For more more information, call " + Service.find_by_external_id("shared_ride").phone.to_s + "."
+            = t(:more_info_call) + Service.find_by_external_id("shared_ride").phone.to_s + "."
 
         -else
           .row-fluid#bookingQuestion
-            ="Would you like to book this trip with "
+            =t(:book_a_trip) + " "
             -if @trip.outbound_part.is_bookable?
               %b=@trip.outbound_part.selected_itinerary.service.name
             -else
@@ -95,7 +95,7 @@
             ="?"
           .row-fluid.pull-center.text-center#bookButton
             %button.center.btn.btn-default.pull-middle.center#book_outbound_button
-              ="Book"
+              =t(:book)
           .div#outbound_results
             .confirmation.row-fluid#outbound_results1
               =""
@@ -116,18 +116,18 @@
         = f.error_notification
         = f.input :service_id, :as => :hidden, :input_html => {value: @trip.outbound_part.selected_itinerary.service.id}
         = f.input :itinerary_id, :as => :hidden, :input_html => {value: @trip.outbound_part.selected_itinerary.id}
-        = f.input :external_user_id,label: "Rabbit Transit Client Id", label_method: :last, value_method: :first, :item_wrapper_class => "inline"
-        = f.input :dob, label: "Date of Birth", label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: 'Date of Birth is used to confirm the Client Id with Rabbit Transit.  It will not be saved.'
+        = f.input :external_user_id,label: "Rabbit Transit " + t(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
+        = f.input :dob, label: t(:dob), label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: t(:dob_notice)
       .form-actions
-        = f.button :submit, 'Submit'
+        = f.button :submit, t(:submit)
     -if @trip.outbound_part.selected_itinerary.service.phone
-      ="If you do not have a " + @trip.outbound_part.selected_itinerary.service.name + " client id, please call " + @trip.outbound_part.selected_itinerary.service.phone + " for assistance."
+      =t(:if_no_client_id) + " " + @trip.outbound_part.selected_itinerary.service.phone + " " + t(:for_assistance) + "."
     -else
-      ="If you do not have a client id, please contact " + @trip.outbound_part.selected_itinerary.service.name + "."
+      =t(:if_no_client_id) + " " + @trip.outbound_part.selected_itinerary.service.name + "."
 :javascript
   $('#book_outbound_button').on('click', function(event) {
 
-    var text = "<br>Please wait..."
+    var text = "<br>" + "#{t(:please_wait)}" + "..."
     $('#bookButton').html(text);
 
     $.ajax({
@@ -138,13 +138,13 @@
         return_status = result['trips'][2];
         $('#outbound_results').show();
         $('#bookButton').hide();
-        $('#bookingTitle').html("Trip Booked!");
-        $('#headerMessage').html("Your trip has been booked.");
+        $('#bookingTitle').html("#{t(:trip_booked)}");
+        $('#headerMessage').html("#{t(:trip_booked_2)}");
         $('#bookingQuestion').html("");
 
         //Show the confirmations on success
         if (status == "true" && return_status == "true") {
-          var text1 = "Confirmation #'s: ";
+          var text1 = "#{t(:confirmation)}" + " #'s: ";
           text1 += result['trips'][1]['confirmation'] + ', ' + result['trips'][3]['confirmation'] + '.';
           $('#outbound_results1').html(text1);
         }
@@ -161,20 +161,20 @@
 
         //Show the error messages on failures.
         if (status == "false") {
-          var text2 = "<br>An error occurred when attemping to book your outbound trip."
+          var text2 = "<br>" + "#{t(:outbound_error_occurred)}"
           $('#outbound_results2').html(text2);
           var text3 = result['trips'][1]['trips'][0];
           $('#outbound_results3').html(text3);
         }
 
         if (return_status == "false") {
-          var text4 = "<br>An error occurred when attemping to book your return trip."
+          var text4 = "<br>" + "#{t(:return_error_occurred)}"
           $('#outbound_results4').html(text4);
           var text5 = result['trips'][3]['trips'][0];
           $('#outbound_results5').html(text5);
         }
 
-        var text6 = "<br>For more more information, call " + "#{Service.find_by_external_id("shared_ride").phone}"+ "."
+        var text6 = "<br>" + "#{t(:more_info_call)}" + "#{Service.find_by_external_id("shared_ride").phone}"+ "."
         console.log(text6);
         $('#outbound_results6').html(text6);
 

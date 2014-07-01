@@ -98,7 +98,7 @@
       .col-sm-6
         .panel.panel-default#booking
           .panel-heading
-            %h3="[en]Booking Information[/en]"
+            %h3=t(:booking_information)
           .panel-body
             =simple_fields_for :user_service, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |booking_form|
               -Service.where("booking_service_code IS NOT NULL").each do |service|
@@ -107,7 +107,7 @@
                   = booking_form.input service.id.to_s, label: service.name, input_html: { value: user_service.external_user_id}
                 - else
                   = booking_form.input service.id.to_s, label: service.name, input_html: { value: "" }
-              =booking_form.input :dob, label: "Date of Birth", placeholder: "mm/dd/yyyy", hint: 'Date of Birth is used to confirm the Client Id with Rabbit Transit.  It will not be saved.'
+              =booking_form.input :dob, label: t(:dob), placeholder: "mm/dd/yyyy", hint: t(:dob_notice)
       .col-sm-6
         .panel.panel-default#preferred_modes
           .panel-heading

@@ -381,6 +381,26 @@ en:
 
   # new ones
   # Services
+  outbound_error_occurred: "An error occurred when attemping to book your outbound trip."
+  return_error_occurred: "An error occurred when attemping to book your return trip."
+  please_wait: "Please wait"
+  book_a_trip: "Would you like to book this trip with"
+  more_info_call: "For more more information, call"
+  confirmation: 'confirmation'
+  returning_by: 'returning by'
+  for_assitance: "for assistance"
+  if_no_client_id: "If you do not have a client id, please call"
+  outbound_is_eligible: "The outbound portion of your trip is eligible for automated booking."
+  return_is_eligible: "The return portion of your trip is eligible for automated booking."
+  trip_is_eligible: "Your trip is eligible for automated booking."
+  trip_booked_2: "Your trip has been booked."
+  book_your_trip: "Book your trip"
+  trip_booked: "Trip Booked!"
+  dob: "Date of Birth"
+  dob_notice: 'Date of Birth is used to confirm the Client Id with Rabbit Transit.  It will not be saved.'
+  booking_information: "Booking Information"
+  service_name: "Service Name"
+  client_id: "Client Id"
   book: "Book"
   inactive: "Inactive"
   service_id: "Service Id"
