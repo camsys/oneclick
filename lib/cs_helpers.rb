@@ -1,4 +1,5 @@
 module CsHelpers
+  include ActionView::Helpers::NumberHelper
   # include ActionController::Base.helpers.asset_path("logo.jpg", type: :image)
   include ActionController
 
@@ -361,6 +362,65 @@ module CsHelpers
     else 
       itinerary.mode.logo_url
     end)
+  end
+
+  def get_itinerary_cost itinerary
+    estimated = false
+    fare = itinerary.cost || (itinerary.service.fare_structures.first rescue nil)
+    price_formatted = ''
+    cost_in_words = ''
+    comments = ''
+    if fare.respond_to? :fare_type
+      case fare.fare_type
+      when FareStructure::FLAT
+        fare = fare.base.to_f
+        price_formatted = number_to_currency(fare)
+        cost_in_words = price_formatted
+      when FareStructure::MILEAGE
+        fare = fare.base.to_f
+        estimated = true
+        price_formatted = number_to_currency(fare.ceil) + '*'
+        comments = "+#{number_to_currency(fare.rate)}/mile - " + I18n.t(:cost_estimated)
+        cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
+      when FareStructure::COMPLEX
+        fare = nil
+        estimated = true
+        price_formatted = '*'
+        comments = I18n.t(:see_details_for_cost)
+        cost_in_words = I18n.t(:see_below)
+      end
+    else
+      price_formatted = number_to_currency(fare) || '*'
+      cost_in_words = number_to_currency(fare) || I18n.t(:not_available)
+      fare = fare.to_f
+      case itinerary.mode
+      when Mode.walk
+      when Mode.bicycle
+      when Mode.bikeshare
+        price_formatted = I18n.t(:no_charge)
+        cost_in_words = price_formatted
+      when Mode.taxi
+        fare = fare.ceil
+        estimated = true
+        price_formatted = number_to_currency(fare) + '*'
+        comments = I18n.t(:cost_estimated)
+        cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
+      when Mode.rideshare
+        fare = nil
+        estimated = true
+        price_formatted = '*'
+        comments = I18n.t(:see_details_for_cost)
+        cost_in_words = I18n.t(:see_below)
+      end
+
+      if !estimated and fare == 0
+        price_formatted = I18n.t(:no_charge)
+        cost_in_words = price_formatted
+      end
+
+    end
+
+    return {price: fare, comments: comments, price_formatted: price_formatted, estimated: estimated, cost_in_words: cost_in_words}
   end
 
 end

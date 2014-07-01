@@ -79,43 +79,7 @@ class ItinerarySerializer < ActiveModel::Serializer
   end
 
   def cost
-    estimated = false
-    fare = object.cost || (object.service.fare_structures.first rescue nil)
-    # if fare.nil?
-    #   {price: nil, comments: 'Unknown', price_formatted: '?'} # TODO I18n
-    if fare.respond_to? :fare_type
-      case fare.fare_type
-      when FareStructure::FLAT
-        {price: fare.base.to_f, comments: '', estimated: false, price_formatted: number_to_currency(fare.base)}
-      when FareStructure::MILEAGE
-        {price: fare.base.to_f, comments: "+#{number_to_currency(fare.rate)}/mile - " + I18n.t(:cost_estimated), estimated: true,
-         price_formatted: number_to_currency(fare.base.ceil) + '*'}
-      when FareStructure::COMPLEX
-        {price: nil, comments: I18n.t(:see_details_for_cost), estimated: true, price_formatted: '*'}
-      end
-    else
-      price_formatted = number_to_currency(fare) || '*'
-      comments = ''
-      fare = fare.to_f
-      case object.mode
-      when Mode.taxi
-        fare = fare.ceil
-        estimated = true
-        price_formatted = number_to_currency(fare) + '*'
-        comments = I18n.t(:cost_estimated)
-      when Mode.rideshare
-        fare = nil
-        estimated = true
-        price_formatted = '*'
-        comments = I18n.t(:see_details_for_cost)
-      end
-
-      if !estimated and fare == 0
-        price_formatted = I18n.t(:no_charge)
-      end
-      {price: fare, comments: comments, price_formatted: price_formatted, estimated: estimated}
-    end
-
+    get_itinerary_cost(object)
   end
 
   def legs
