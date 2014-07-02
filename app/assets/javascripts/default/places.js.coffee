@@ -31,6 +31,7 @@ $ ->
     tr = $(e.target).closest('tr')
     dataset = $(tr).data()
     tr.addClass('success')
+    $('#places_controller_places_proxy_id').val(dataset.id)
     $('#places_controller_places_proxy_from_place').val(dataset.address)
     $('#places_controller_places_proxy_json').val(JSON.stringify(dataset.json))
     $('#places_controller_places_proxy_place_name').val(dataset.placename)
@@ -39,6 +40,7 @@ $ ->
   $('#clear').on 'click', () ->
     $('#save').addClass('disabled')
     $('#places-table tr').removeClass('success')
+    $('#places_controller_places_proxy_id').val('')
     $('#places_controller_places_proxy_from_place').val('')
     $('#places_controller_places_proxy_json').val('')
     $('#places_controller_places_proxy_place_name').val('')

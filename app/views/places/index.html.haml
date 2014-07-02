@@ -23,6 +23,7 @@
                     = t(:save)
           .row
             .col-xs-12
+              = f.hidden_field :id
               = f.input :from_place, label: t(:location),
               input_html: {class: 'form-control', autocomplete: 'off', type: "text"},
               wrapper: :group do
