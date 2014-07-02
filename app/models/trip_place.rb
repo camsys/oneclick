@@ -87,7 +87,9 @@ class TripPlace < GeocodedAddress
     d['county'] = Oneclick::Application.config.default_county if d['county'].blank?
     d['state'] = Oneclick::Application.config.state if d['state'].blank?
     d['address1'] = d['neighborhood'] if d['address1'].blank?
-    d['address1'] = details.body['result']['name'] if d['address1'].blank?
+    if d['address1'].blank? && details.body['result']['name'] != d['city']
+      d['address1'] = details.body['result']['name'] 
+    end
     
     self.update_attributes(address1: d['address1'],
                            city: d['city'],
