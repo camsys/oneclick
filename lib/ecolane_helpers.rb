@@ -4,12 +4,18 @@ require 'indirizzo'
 
 class EcolaneHelpers
 
-  SYSTEM_ID = Oneclick::Application.config.ecolane_system_id
-  X_ECOLANE_TOKEN = Oneclick::Application.config.ecolane_x_ecolane_token
-  BASE_URL = Oneclick::Application.config.ecolane_base_url
+  begin
+    SYSTEM_ID = Oneclick::Application.config.ecolane_system_id
+    X_ECOLANE_TOKEN = Oneclick::Application.config.ecolane_x_ecolane_token
+    BASE_URL = Oneclick::Application.config.ecolane_base_url
+  rescue NoMethodError
+    SYSTEM_ID = nil
+    X_ECOLANE_TOKEN = nil
+    BASE_URL = nil
+  end
 
 
-  ## Post/Put Operations
+    ## Post/Put Operations
   def book_itinerary(itinerary)
     funding_options = query_funding_options(itinerary)
     funding_xml = Nokogiri::XML(funding_options.body)

@@ -7,9 +7,10 @@
           %th= t(:client_id)
       %tbody
         - user.user_profile.user_services.each do |user_service|
-          %tr
-            %td= user_service.service.name
-            %td= user_service.external_user_id
+          -if user_service.service.active
+            %tr
+              %td= user_service.service.name
+              %td= user_service.external_user_id
 
 :javascript
   $(document).ready(function() {
