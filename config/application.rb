@@ -117,6 +117,12 @@ module Oneclick
 end
 
 def oneclick_available_locales
-  s = '(' + I18n.available_locales.join('|') + ')'
-  %r{#{s}}
+  begin
+    s = '(' + I18n.available_locales.join('|') + ')'
+    %r{#{s}}
+  rescue Exception => e
+    Rails.logger.info "Exception #{e.message} during oneclick_available_locales"
+    puts "Exception #{e.message} during oneclick_available_locales"
+    %r{en}
+  end
 end
