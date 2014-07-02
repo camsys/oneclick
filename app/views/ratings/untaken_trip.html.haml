@@ -6,9 +6,9 @@
       %small 
         = t(:did_not_take_feedback_prompt)
     .col-sm-6.btns
-      = f.submit t(:apply), class: "btn pull-right action-button"
       = link_to root_path, class: "btn pull-right action-button" do
         = t(:cancel)
+      = f.submit t(:apply), class: "btn pull-right action-button"
 
   .row
     .col-sm-12

@@ -5,10 +5,9 @@
       %h1
         = current_user != @user ? "#{@user.name}'s #{t(:travel_profile)}" : t(:travel_profile)
     .col-sm-6.btns
-      = f.button :submit, t(:apply), class: "btn action-button pull-right"
       = link_to t(:cancel), :back, class: "btn action-button pull-right"
+      = f.button :submit, t(:apply), class: "btn action-button pull-right"
 
-    
   .row
     .col-sm-6
       .panel.panel-default#user_info
@@ -56,10 +55,10 @@
                   .modal-header
                     .row
                       .col-sm-12
-                        %btn.btn.action-button.pull-right#search
-                          = t(:apply)
                         %btn.btn.action-button.pull-right{data: {dismiss: 'modal'}}
                           = t(:cancel)
+                        %btn.btn.action-button.pull-right#search
+                          = t(:apply)
                   .modal-body
                     .modal-flash
                     .panel.panel-default
