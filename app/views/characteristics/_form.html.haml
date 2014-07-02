@@ -1,6 +1,6 @@
 .row
   .col-xs-12
-    = simple_form_for @user_characteristics_proxy, :url => new_user_trip_characteristic_path(@traveler, @trip, locale: I18n.locale), method: 'PUT', html: {class: 'user-characteristics form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_and_checkboxes, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |f|
+    = simple_form_for @user_characteristics_proxy, :url => new_user_trip_characteristic_path(@traveler, @trip, locale: I18n.locale), method: 'PUT', html: {class: 'user-characteristics form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_button_groups, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |f|
 
       .col-xs-12.panel.panel-default
         .panel-body      
@@ -14,3 +14,7 @@
             -Accommodation.where(:datatype => 'bool').each do |a|
               - next unless a.ask_early
               = render partial: 'characteristic_item', locals: {item: a, f:f}
+        :javascript
+          $('.user-characteristics .btn-group').attr('data-toggle', 'buttons');
+          $('.user-characteristics .btn-group label').addClass('btn btn-default');
+          $('.user-characteristics .btn-group input:checked').parent('label').addClass('active');
