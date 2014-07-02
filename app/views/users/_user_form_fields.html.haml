@@ -24,7 +24,7 @@
       .col-sm-6
         .panel.panel-default#agencies
           .panel-heading
-            %h3= t(:agencies)
+            %h2.panel-title= t(:agencies)
           .panel-body
             = f.association :approved_agencies, collection: Agency.all.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes, wrapper: :inline_checkboxes, label: false
   - if can? :full_read, @user  
@@ -34,7 +34,7 @@
       .col-sm-12
         .panel.panel-default
           .panel-heading
-            %h3= t(:buddies)
+            %h2.panel-title= t(:buddies)
           .panel-body
             .table-flash
             %btn.btn.btn-default.action-button.pull-right{data: {toggle: 'modal', target: '#add_user'}}
@@ -63,7 +63,7 @@
                     .modal-flash
                     .panel.panel-default
                       .panel-heading
-                        %h3= t(:find_traveler)
+                        %h2.panel-title= t(:find_traveler)
                       .panel-body
                         .row
                           .col-sm-12
@@ -77,7 +77,7 @@
         .col-sm-6.pull-left
           .panel.panel-default
             .panel-heading
-              %h3= t(:eligibility)
+              %h2.panel-title= t(:eligibility)
             .panel-body
               -Characteristic.active.enabled.each do |c| 
                 - next if c.code=='age' # TODO kludge
@@ -89,7 +89,7 @@
         .col-sm-6.pull-right
           .panel.panel-default
             .panel-heading
-              %h3= t(:accommodations)
+              %h2.panel-title= t(:accommodations)
             .panel-body
               -Accommodation.where(:datatype => 'bool').each do |a|
                 = characteristic_form.input a.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(a.note), label_method: :last, value_method: :first
@@ -98,7 +98,7 @@
       .col-sm-6
         .panel.panel-default#booking
           .panel-heading
-            %h3=t(:booking_information)
+            %h2.panel-title=t(:booking_information)
           .panel-body
             =simple_fields_for :user_service, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |booking_form|
               -Service.where("booking_service_code IS NOT NULL").each do |service|
@@ -111,7 +111,7 @@
       .col-sm-6
         .panel.panel-default#preferred_modes
           .panel-heading
-            %h3= t(:preferred_modes)
+            %h2.panel-title= t(:preferred_modes)
           .panel-body
             - Mode.top_level.sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.each do |m|
               .row
