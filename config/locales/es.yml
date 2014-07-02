@@ -776,6 +776,8 @@ es:
             password:
               blank: "no puede estar en blanco"
               confirmation: "no coincide con la confirmación"
+            password_confirmation:
+              confirmation: "no coincide con la confirmación"
             current_password:
               blank: "no puede estar en blanco"
   activemodel:

@@ -18,10 +18,13 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     @user_characteristics_proxy = UserCharacteristicsProxy.new(User.find(@user)) #we inflate a new proxy every time, but it's transient, just holds a bunch of characteristics
-    
-    # Getting around devise- since password can't be blank, don't try to update it if they didn't pass it
-    update_method = params[:password].blank? ? user_params_without_password : user_params_with_password
-    if @user.update_attributes(update_method)
+
+    # prep for password validation in @user.update by removing the keys if neither one is set.  Otherwise, we want to catch with password validation in User.rb
+    if params[:user][:password].blank? and params[:user][:password_confirmation].blank?
+      params[:user].except! :password, :password_confirmation
+    end
+
+    if @user.update(user_params_with_password) # .update is a Devise method, not the standard update_attributes from Rails
       @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
       set_approved_agencies(params[:user][:approved_agency_ids])
       booking_alert = set_booking_services(@user, params[:user_service])
@@ -30,10 +33,13 @@ class UsersController < ApplicationController
       if booking_alert
         redirect_to user_path(@user, locale: @user.preferred_locale), :alert => "Invalid Client Id or Date of Birth."
       else
+        if params[:user][:password].eql? params[:user][:password_confirmation] # They have updated their password, so log them back in, otherwise they will fail authentication
+          sign_in @user, :bypass => true
+        end
         redirect_to user_path(@user, locale: @user.preferred_locale), :notice => "User updated."
       end
     else
-      redirect_to edit_user_path(@user), :alert => "Unable to update user."
+      render 'edit', :alert => "Unable to update user."
     end
   end
     
@@ -134,10 +140,6 @@ class UsersController < ApplicationController
   end
 
 private
-
-  def user_params_without_password
-    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :preferred_mode_ids => [])
-  end
 
   def user_params_with_password
     params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation, :preferred_mode_ids => [])

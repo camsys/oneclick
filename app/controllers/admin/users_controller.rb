@@ -74,15 +74,25 @@ class Admin::UsersController < Admin::BaseController
   def update
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user) #we inflate a new proxy every time, but it's transient, just holds a bunch of characteristics
     
-    update_method = params[:password].blank? ? user_params_without_password : user_params_with_password
-    if @user.update_attributes(update_method)
+    
+    # prep for password validation in @user.update by removing the keys if neither one is set.  Otherwise, we want to catch with password validation in User.rb
+    if params[:user][:password].blank? and params[:user][:password_confirmation].blank?
+      params[:user].except! :password, :password_confirmation
+    end
+
+    if @user.update(user_params_with_password) # .update is a Devise method, not the standard update_attributes from Rails
       @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
       set_approved_agencies(params[:user][:approved_agency_ids])
+      booking_alert = set_booking_services(@user, params[:user_service])
       @user.update_relationships(params[:user][:relationship])
       @user.add_buddies(params[:new_buddies])
-      redirect_to admin_user_path(@user, locale: @user.preferred_locale), :notice => "User updated."
+      if booking_alert
+        redirect_to admin_user_path(@user), :alert => "Invalid Client Id or Date of Birth."
+      else
+        redirect_to admin_user_path(@user, locale: current_user.preferred_locale), :notice => "User updated."
+      end
     else
-      redirect_to admin_user_path(@user), :alert => "Unable to update user."
+      render 'edit', :alert => "Unable to update user."
     end
   end
 
@@ -146,10 +156,6 @@ class Admin::UsersController < Admin::BaseController
 
   private 
 
-  def user_params_without_password
-    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :preferred_mode_ids => [])
-  end
-
   def user_params_with_password
     params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation, :preferred_mode_ids => [])
   end
@@ -178,5 +184,32 @@ class Admin::UsersController < Admin::BaseController
       revoked = AgencyUserRelationship.find_by(agency_id: revoked_id, user_id: @user.id)
       revoked.update_attributes(relationship_status: RelationshipStatus.revoked)
     end
+  end
+  
+  def set_booking_services(user, services)
+    alert = false
+    dob = services['dob']
+    services.each do |id, user_id|
+      unless id == 'dob'
+        service = Service.find(id)
+
+        eh = EcolaneHelpers.new
+        unless user_id == ""
+          unless eh.confirm_passenger(user_id, dob)
+            alert = true
+            next
+          end
+          user_service = UserService.where(user_profile: user.user_profile, service: service).first_or_initialize
+          user_service.external_user_id = user_id
+          user_service.save
+        else
+          user_services = UserService.where(user_profile: user.user_profile, service: service)
+          user_services.each do |user_service|
+            user_service.destroy
+          end
+        end
+      end
+    end
+    alert
   end
 end
