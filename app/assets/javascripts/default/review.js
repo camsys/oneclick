@@ -897,14 +897,22 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 $(this).after('<span class="help-block with-errors">' + helpMsg + '</span>');
             }
         });
+
         $('#' + missInfoDivId + ' input[data-eligibility-code=age]').on('focusout', function() {
-            var val = parseInt($(this).val());
-            if(val > parseInt($(this).attr('max')) || val < parseInt($(this).attr('min'))) {
+            var rawVal = $(this).val();
+            var val = parseInt(rawVal);
+            var min = parseInt($(this).attr('min'));
+            var max = parseInt($(this).attr('max'));
+            var isValid = !isNaN(val) &&
+                (isNaN(min) || val >= min) &&
+                (isNaN(max) || val <= max);
+
+            
+            if(!isValid) {
                 $(this).val(null);
                 $(this).parent('div').addClass('has-error');
             } else {
                 $(this).parent('div').removeClass('has-error');
-                $(this).siblings('.help-block').remove();
             }
         });
     }
