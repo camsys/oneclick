@@ -116,4 +116,7 @@ module Oneclick
 
 end
 
-
+def oneclick_available_locales
+  s = '(' + I18n.available_locales.join('|') + ')'
+  %r{#{s}}
+end
