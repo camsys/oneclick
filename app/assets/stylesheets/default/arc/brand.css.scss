@@ -91,3 +91,13 @@ $versionLang-end-color: #3681B3;
     //font-weight: bold;
   }
 }
+
+.characteristics-option-button {
+  @extend .btn-default;
+  text-shadow: none;
+}
+
+.characteristics-option-button.active{
+  color: white;
+  background-color: black;
+}

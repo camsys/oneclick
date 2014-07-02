@@ -13,7 +13,7 @@ include SeedsHelpers
 
 #Traveler characteristics
 [
- { klass: Characteristic, characteristic_type: 'personal_factor', code: 'disabled', name: 'Is Disabled', note: 'Do you have a permanent or temporary disability?', datatype: 'bool', logo_url: 'arc/characteristics/disabled.png'},
+ { klass: Characteristic, characteristic_type: 'personal_factor', code: 'disabled', name: 'Is Disabled', note: 'Do you have a permanent or temporary disability?', datatype: 'bool'},
  { klass: Characteristic, characteristic_type: 'personal_factor', code: 'no_trans', name: 'Has No Means of Transportation', note: 'Do you own or have access to a personal vehicle?', datatype: 'bool'},
  { klass: Characteristic, characteristic_type: 'program', code: 'nemt_eligible', name: 'Has Medicaid', note: 'Are you eligible for Medicaid?', datatype: 'bool'},
  { klass: Characteristic, characteristic_type: 'program', code: 'ada_eligible', name: 'Has ADA Paratransit', note: 'Are you eligible for ADA paratransit?', datatype: 'bool'},
@@ -26,7 +26,7 @@ include SeedsHelpers
  { klass: Characteristic, characteristic_type: 'personal_factor', code: 'walk_distance', name: 'Walk distance', note: 'Are you able to comfortably walk for 5, 10, 15, 20, 25, 30 minutes?', datatype: 'disabled'},
  #Traveler accommodations 
 
- {klass: Accommodation, code: 'folding_wheelchair_accessible', name: 'Folding wheelchair accessible.', note: 'Do you need a vehicle that has space for a folding wheelchair?', datatype: 'bool', logo_url: 'arc/characteristics/folding_wheelchair_accessible.png'},
+ {klass: Accommodation, code: 'folding_wheelchair_accessible', name: 'Folding wheelchair accessible.', note: 'Do you need a vehicle that has space for a folding wheelchair?', datatype: 'bool'},
  {klass: Accommodation, code: 'motorized_wheelchair_accessible', name: 'Motorized wheelchair accessible.', note: 'Do you need a vehicle than has space for a motorized wheelchair?', datatype: 'bool'},
  {klass: Accommodation, code: 'lift_equipped', name: 'Wheelchair lift equipped vehicle.', note: 'Do you need a vehicle with a lift?', datatype: 'bool'},
  {klass: Accommodation, code: 'door_to_door', name: 'Door-to-door', note: 'Do you need assistance getting to your front door?', datatype: 'bool'},
