@@ -1,15 +1,17 @@
 .modal.fade{id: "feedback_modal"}
   .modal-dialog.modal-lg
     .modal-content
-      -# If the public can read feedback...
-      - if can? :read, rateable.ratings.build
+      .modal-header.clearfix
+        %btn.btn.btn-default.action-button.pull-right{data: {dismiss: "modal"}}= t(:close)
+        -# If the public can read feedback...
+        - if can? :create, rateable.ratings.build(rateable: rateable)
+          %button.btn.action-button.btn-default.pull-right#load_feedback
+            = t(:feedback)
+      .modal-body
         .panel.panel-default
           .panel-heading
             %h3
               = rateable.name
-              - if can? :create, rateable.ratings.build(rateable: rateable)
-                %button.btn.action-button.btn-default.pull-right#load_feedback
-                  = t(:feedback)
           .panel-body
             -unless rateable.ratings.approved.empty?
               %dl.dl-horizontal
@@ -19,8 +21,6 @@
             -else
               .alert
                 =t(:no_ratings_yet)
-        .modal-footer
-          %btn.btn.btn-default.action-button{data: {dismiss: "modal"}}= t(:close)
       
 -# Load in the form dynamically
 - if can? :create, rateable.ratings.build(rateable: rateable)

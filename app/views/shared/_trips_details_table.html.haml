@@ -11,7 +11,7 @@
           %tr
             - columns.each_with_index do |col, index|
               %td.nowrap
-                = row.is_a?(Hash) ? row[col] : row.send(col)
+                = row.is_a?(Hash) ? row[col].to_s : row.send(col).to_s
 
 = render partial: 'shared/simple_datatable_js', 
         locals: {filter: true, export: true, columns: columns, data: trips}

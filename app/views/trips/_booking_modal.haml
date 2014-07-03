@@ -8,9 +8,9 @@
               .col-sm-6
                 %h3.dialog-title#bookingTitle{:STYLE => "margin:0px;vertical-align:top;"}
                   -if @trip.is_booked?
-                    = "Trip Booked!"
+                    = t(:trip_booked)
                   -else
-                    = "Book your trip"
+                    = t(:book_your_trip)
               .col-sm-6
                 .pull-right{:style => "display: inline-block"}
                   %button{class: "btn action-button", "data-dismiss" => "modal"}

@@ -4,12 +4,18 @@ require 'indirizzo'
 
 class EcolaneHelpers
 
-  SYSTEM_ID = Oneclick::Application.config.ecolane_system_id
-  X_ECOLANE_TOKEN = Oneclick::Application.config.ecolane_x_ecolane_token
-  BASE_URL = Oneclick::Application.config.ecolane_base_url
+  begin
+    SYSTEM_ID = Oneclick::Application.config.ecolane_system_id
+    X_ECOLANE_TOKEN = Oneclick::Application.config.ecolane_x_ecolane_token
+    BASE_URL = Oneclick::Application.config.ecolane_base_url
+  rescue NoMethodError
+    SYSTEM_ID = nil
+    X_ECOLANE_TOKEN = nil
+    BASE_URL = nil
+  end
 
 
-  ## Post/Put Operations
+    ## Post/Put Operations
   def book_itinerary(itinerary)
     funding_options = query_funding_options(itinerary)
     funding_xml = Nokogiri::XML(funding_options.body)
@@ -151,18 +157,43 @@ class EcolaneHelpers
     resp.body
   end
 
-  def search_for_customers(terms = {}, type = 'exact')
-    url_options = "/api/customer/" + SYSTEM_ID + '/search?type='
-    url_options += type
+  def search_for_customers(terms = {})
+    url_options = "/api/customer/" + SYSTEM_ID + '/search?'
     terms.each do |term|
-      url_options += '&' + term[0].to_s + '=' + term[1].to_s
+      url_options += "&" + term[0].to_s + '=' + term[1].to_s
     end
+
     url = BASE_URL + url_options
-    send_request(url)
+
+    resp = send_request(url)
   end
 
-  def confirm_passenger(customer_number, dob)
-      return true
+  def unpack_validation_response (resp)
+    resp_xml = Nokogiri::XML(resp.body)
+
+    status = resp_xml.xpath("status")
+    #On success, status = []
+    unless status.empty?
+      if status.attribute("result").value == "failure"
+        return false, "Unable to validate Client Id"
+      end
+    end
+
+    if resp_xml.xpath("search_results").xpath("customer").count == 1
+      return true, "Success!"
+    else
+      return false, "Invalid Date of Birth or Client Id."
+    end
+
+  end
+
+  def validate_passenger(customer_number, dob)
+    iso_dob = iso8601ify(dob)
+    if iso_dob.nil?
+      return false
+    end
+    resp = search_for_customers({"customer_number" => customer_number, "date_of_birth" => iso_dob.to_s})
+    return unpack_validation_response(resp)[0]
   end
 
   def check_customer_validity(customer_id, service=nil)
@@ -172,6 +203,7 @@ class EcolaneHelpers
     unless service.nil?
       url_options += "?service=" + service.to_s
     end
+
     url = BASE_URL + url_options
     send_request(url)
   end
@@ -242,13 +274,12 @@ class EcolaneHelpers
   def send_request(url, type='GET', message=nil)
     begin
       uri = URI.parse(url)
-
       case type.downcase
         when 'post'
           req = Net::HTTP::Post.new(uri.path)
           req.body = message
         else
-          req = Net::HTTP::Get.new(uri.path)
+          req = Net::HTTP::Get.new(uri)
       end
 
       req.add_field 'X-ECOLANE-TOKEN', X_ECOLANE_TOKEN
@@ -274,6 +305,22 @@ class EcolaneHelpers
   ## Utility functions:
   def get_customer_id(itinerary)
     itinerary.trip_part.trip.user.user_profile.user_services.where(service: itinerary.service).first.external_user_id
+  end
+
+  def iso8601ify(dob)
+
+    dob = dob.split('/')
+    unless dob.count == 3
+      return nil
+    end
+
+    begin
+      dob = Date.parse(dob[1] + '/' + dob[0] + '/' + dob[2]).strftime("%Y/%m/%d")
+    rescue  ArgumentError
+      return nil
+    end
+
+    Date.iso8601(dob.delete('/'))
   end
 
 

@@ -97,14 +97,14 @@ module Oneclick
 
     if config.ui_mode=='desktop'
       config.assets.paths << File.join(Rails.root, 'app', 'assets-default')
-      config.assets.precompile += %w(
+    config.assets.precompile += %w(
         application.css
         arc.css
         pa.css
         broward.css
         tadaaapickr.en.js
         typeahead.js-bootstrap.css
-      )
+    )
     else # config.ui_mode=='kiosk'
       config.assets.paths << File.join(Rails.root, 'app', 'assets-kiosk')
       config.assets.precompile += %w(
@@ -125,6 +125,7 @@ module Oneclick
     # See http://work.stevegrossi.com/2013/04/06/dynamic-error-pages-with-rails-3-2/
     config.exceptions_app = self.routes
     config.brand = ENV['BRAND'] || 'arc'
+    config.ui_mode = ENV['UI_MODE'] || 'desktop'
     if config.ui_mode=='desktop'
       config.sass.load_paths << File.expand_path("./app/assets-default/stylesheets/#{config.brand}")
     else # config.ui_mode=='kiosk'
@@ -134,10 +135,14 @@ module Oneclick
 
 end
 
-
-puts Rails.application.config.assets.paths.ai
-
-def available_locales
-  s = '(' + I18n.available_locales.join('|') + ')'
-  %r{#{s}}
+def oneclick_available_locales
+  begin
+    s = '(' + I18n.available_locales.join('|') + ')'
+    %r{#{s}}
+  rescue Exception => e
+    Rails.logger.info "Exception #{e.message} during oneclick_available_locales"
+    puts "Exception #{e.message} during oneclick_available_locales"
+    %r{en}
+  end
 end
+

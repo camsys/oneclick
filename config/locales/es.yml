@@ -349,6 +349,7 @@ es:
   fare: "[es198]Fare[/es]"
   flat_fare_unavailable: "[es199]Flat fare unavailable[/es]"
   rate: "[es]Rate[/es]"
+  four_digit_year: '[es]year in four-digit[/es]'
 
   #map
   zoom_in: '[es]Zoom in[/es]'
@@ -379,6 +380,27 @@ es:
   updated: "[es242]Updated[/es]"
 
   # new ones
+  traveler_not_registered: "[es]Traveler not registered to book trips with One-Click."
+  outbound_error_occurred: "[es]An error occurred when attempting to book your outbound trip."
+  return_error_occurred: "[es]An error occurred when attempting to book your return trip."
+  please_wait: "[es]Please wait."
+  book_a_trip: "[es]Would you like to book this trip with"
+  more_info_call: "[es]For more more information, call"
+  confirmation: '[es]confirmation'
+  returning_by: '[es]returning by'
+  for_assitance: "[es]for assistance"
+  if_no_client_id: "[es]If you do not have a client id, please call"
+  outbound_is_eligible: "[es]The outbound portion of your trip is eligible for automated booking."
+  return_is_eligible: "[es]The return portion of your trip is eligible for automated booking."
+  trip_is_eligible: "[es]Your trip is eligible for automated booking."
+  trip_booked_2: "[es]Your trip has been booked.[/es]"
+  book_your_trip: "[es]Book your trip[/es]"
+  trip_booked: "[es]Trip Booked![/es]"
+  dob: "[es]Date of Birth[/es]"
+  dob_notice: '[es]Date of Birth is used to confirm the Client Id with Rabbit Transit.  It will not be saved.[/es]'
+  booking_information: "[es]Booking Information[/es]"
+  service_name: "[es]Service Name[/es]"
+  client_id: "[es]Client Id[/es]"
   book: "[es]Book[/es]"
   inactive: "[es]Inactive[/es]"
   service_id: "[es]Service Id[/es]"
@@ -754,6 +776,8 @@ es:
               invalid: "no es válido"
             password:
               blank: "no puede estar en blanco"
+              confirmation: "no coincide con la confirmación"
+            password_confirmation:
               confirmation: "no coincide con la confirmación"
             current_password:
               blank: "no puede estar en blanco"

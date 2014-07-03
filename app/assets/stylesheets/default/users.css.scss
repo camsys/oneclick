@@ -1,0 +1,22 @@
+@media screen and (max-width: 360px) {
+  #agencies {
+    .updated {
+      display: none;
+    }    
+  }
+  #buddies {
+    .dataTables_filter input {
+        width: 11em;
+    }
+    .email {
+      display: none;
+    }
+    .action-button {
+      min-width: 0;
+    }
+  }
+  .action-button {
+    margin-left: 0;
+    margin-right: 5px;
+  }
+}

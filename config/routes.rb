@@ -1,8 +1,7 @@
 Oneclick::Application.routes.draw do
   get '/configuration' => 'configuration#configuration'
 
-  scope "(:locale)", locale: available_locales do
-  # scope "(:locale)", locale: /en|es/ do
+  scope "(:locale)", locale: oneclick_available_locales do
 
     if Oneclick::Application.config.ui_mode == 'kiosk'
       root to: redirect('/kiosk')
@@ -101,7 +100,6 @@ Oneclick::Application.routes.draw do
           post  'email2'
           get   'hide'
           get   'unhide_all'
-          get   'unselect_all'
           get   'skip'
           post  'comments'
           post  'admin_comments'
@@ -123,7 +121,6 @@ Oneclick::Application.routes.draw do
         member do
           get 'itineraries'
           get 'unhide_all'
-          get 'unselect_all'
         end
       end
 
@@ -233,7 +230,6 @@ Oneclick::Application.routes.draw do
             post  'email2'
             get   'hide'
             get   'unhide_all'
-            get   'unselect_all'
             get   'skip'
             post  'comments'
             post  'admin_comments'
@@ -245,7 +241,6 @@ Oneclick::Application.routes.draw do
         resources :trip_parts do
           member do
             get 'unhide_all'
-            get 'unselect_all'
           end
         end
 

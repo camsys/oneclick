@@ -9,6 +9,7 @@ class PlacesController < PlaceSearchingController
     attribute :place_name
     attribute :json
     attribute :places
+    attribute :id
   end
   
   def index
@@ -59,22 +60,36 @@ class PlacesController < PlaceSearchingController
 
   def create
     p = params[:places_controller_places_proxy]
-    j = JSON.parse(p[:json])
-    if j['type_name']=='PLACES_AUTOCOMPLETE_TYPE'
-      Rails.logger.info "Was autocompleted, creating new"
-      details = get_places_autocomplete_details(j['id'])
-      d = cleanup_google_details(details.body['result'])
-      Rails.logger.info d
-      j = j.merge!(d).keep_if {|k, v| %w{raw_address address1 address2 city state zip lat lon county}.include? k}
-      place = Place.create!(j.merge({name: p[:place_name], user: @traveler}))
-      place.update_attribute(:raw_address, place.get_address)
+    # if the address wasn't geocoded, just take whatever the traveler entered
+    if p[:json].blank?
+      Rails.logger.info "Not geocoded"
+      place = Place.create!({name: p[:place_name], user: @traveler, raw_address: p[:from_place]})
     else
-      Rails.logger.info "updating"
-      place = Place.find(j['id'])
-      j.delete 'id'
-      place.update_attributes!(j.merge({name: p[:place_name]}))
-    end
+      j = JSON.parse(p[:json])
+      if j['type_name']=='PLACES_AUTOCOMPLETE_TYPE'
+        Rails.logger.info "Was autocompleted, create or update as needed"
+        details = get_places_autocomplete_details(j['id'])
+        d = cleanup_google_details(details.body['result'])
+        Rails.logger.info d
 
+        place = Place.find_by_id(p[:id])
+        j = j.merge!(d).keep_if {|k, v| %w{raw_address address1 address2 city state zip lat lon county}.include? k}
+        j = j.merge({name: p[:place_name], user: @traveler})
+        if place.nil?
+          place = Place.create!(j)
+        else
+          place.update_attributes(j)
+        end
+        
+        place.update_attributes(raw_address: place.get_address)
+      else
+        Rails.logger.info "updating"
+        place = Place.find(j['id'])
+        j.delete 'id'
+        place.update_attributes!(j.merge({name: p[:place_name], raw_address: p[:from_place]}))
+      end
+    end
+    
     Rails.logger.info place.ai
 
     # # inflate a place proxy object from the form params

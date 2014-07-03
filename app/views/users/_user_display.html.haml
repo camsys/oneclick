@@ -37,10 +37,10 @@
         .panel-heading
           %h2.panel-title= t(:buddies)
         .panel-body
-          %table.table.table.condensed.table-striped.table-hover.table-bordered#buddies_table
+          %table.table.table.condensed.table-striped.table-hover.table-bordered.table-responsive#buddies_table
             %thead
               %th= t(:buddy)
-              %th= t(:email)
+              %th.email= t(:email)
               %th= t(:can_assist_me)
               %th= t(:i_can_assist)
             %tbody
@@ -49,7 +49,7 @@
                 %tr
                   - urp = UserRelationshipProxy.new(@user, ou)
                   %td= urp.you.name
-                  %td= urp.you.email
+                  %td.email= urp.you.email
                   %td= UserRelationshipDecorator.decorate(urp.can_assist_me).status
                   %td= UserRelationshipDecorator.decorate(urp.i_can_assist).assist_btn
   .row
@@ -69,7 +69,7 @@
     .col-sm-6
       .panel.panel-default#booking
         .panel-heading
-          %h2.panel-title="[en]Booking Information[/en]"
+          %h2.panel-title=t(:booking_information)
         .panel-body
           = render :partial => 'users/show_booking_info', locals: { user: user }
     .col-sm-6
@@ -98,13 +98,6 @@
             "sInfoEmpty": "Showing 0 to 0 of 0 buddies",
             "sInfoFiltered": "(filtered from _MAX_ total buddies)"
           },
-          "bAutoWidth": false,
-          "aoColumns": [
-            {"sWidth": "30%"},
-            {"sWidth": "30%"},
-            {"sWidth": "20%"},
-            {"sWidth": "20%"},
-          ],
           "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
       } );
     });

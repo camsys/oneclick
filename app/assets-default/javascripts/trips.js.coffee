@@ -134,6 +134,10 @@ $ ->
     $('#to_place_object').val(JSON.stringify(addr))
     update_map(CsMaps.tripMap, 'to', e, addr, d)
 
+  $('.plan-a-trip input, .plan-a-trip select').on 'focusin', () ->
+    if $(this).parents('.trip_proxy_from_place, .trip_proxy_to_place').length == 0
+      hide_map('trip')
+
   # TODO This needs to be done differently.
   # Not sure why the form needs a map center on submit, it has two locations...
   # Maybe this is only needed if the user typed something in, did not geocode.
