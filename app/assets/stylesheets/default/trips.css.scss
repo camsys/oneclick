@@ -315,9 +315,13 @@ $period-nav-button-width: 40px;
 }
 
 /* override bootstrap tooltip default styles*/
-div .tooltip-inner {
+body .tooltip-inner {
   max-width: 40em;
   text-align: left;
+}
+body .tooltip.in {
+  opacity: 1;
+  filter: alpha(opacity=100);
 }
 
 .axis text {
