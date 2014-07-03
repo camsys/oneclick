@@ -1,5 +1,13 @@
-#buddies_table {
-  @media screen and (max-width: 360px) {
+@media screen and (max-width: 360px) {
+  #agencies {
+    .updated {
+      display: none;
+    }    
+  }
+  #buddies {
+    .dataTables_filter input {
+        width: 11em;
+    }
     .email {
       display: none;
     }

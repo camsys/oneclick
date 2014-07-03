@@ -3,7 +3,7 @@
     %tr
       %th= t(:agency)
       %th= t(:status)
-      %th= t(:updated)
+      %th.updated= t(:updated)
   %tbody
     - user.agency_user_relationships.each do |relationship|
       %tr
@@ -11,7 +11,7 @@
           = link_to(relationship.agency.name, admin_agency_path(relationship.agency))
         %td
           = t(relationship.relationship_status)
-        %td
+        %td.updated
           = distance_of_time_in_words_to_now(relationship.updated_at).to_s + " " + t(:ago)
 
 :javascript
