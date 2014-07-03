@@ -112,8 +112,11 @@ class Itinerary < ActiveRecord::Base
   end
 
   def hide_others
+    Rails.logger.info "hide_others"
     trip_part.itineraries.valid.each do |i|
+      Rails.logger.info i.ai
       next if i==self
+      Rails.logger.info "HIDING"
       i.hidden = true
       i.save
     end

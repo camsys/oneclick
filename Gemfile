@@ -5,7 +5,11 @@ gem 'rails', '4.0.3'
 gem 'sprockets', '2.11.0'
 # gem 'sass-rails', '~> 4.0.3'
 gem 'sass-rails', github: 'camsys/sass-rails', tag: 'v4.0.3a'
-gem 'bootstrap-sass', '~> 3.1.1.0'
+unless ENV['UI_MODE']=='kiosk'
+  gem 'bootstrap-sass', '~> 3.1.1.0'
+else
+  gem 'bootstrap-sass', '~> 2.3.2.0'
+end
 gem 'coffee-rails'
 gem 'uglifier', '>= 1.0.3'
 gem 'bootstrap-combobox'

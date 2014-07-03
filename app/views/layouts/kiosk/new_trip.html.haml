@@ -36,6 +36,8 @@
 
         .row-fluid
           #trip_form.span12
+            - Rails.logger.info "\nTRIP_PROXY in new_trip"
+            - Rails.logger.info "\n#{@trip_proxy.ai}\n"
             = simple_form_for @trip_proxy, as: :trip_proxy, url: current_step_url, html: {class: "no-bottom-margin js-trip-wizard-form js-#{current_step.dasherize}-wizard-step"}, remote: true do |f|
               = render template: "kiosk/new_trip/#{current_step.pluralize}/show", locals: { f: f }
 

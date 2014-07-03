@@ -86,7 +86,7 @@ class PlaceSearchingController < TravelerAwareController
         "lon" => place.location.last,
         "address" => place.address,
         "full_address" => place.address,
-        "description" => map_partial(no_map_partial, { :place => {:icon => 'fa-building-o', :name => place.name, :address => place.address} })
+        "description" => map_partial(no_map_partial, { :place => {:icon => MapHelper::BUILDING_ICON, :name => place.name, :address => place.address} })
       }
       matches <<  m.merge(place.interesting_attributes)
       counter += 1
@@ -121,7 +121,7 @@ class PlaceSearchingController < TravelerAwareController
         "index" => counter,
         "type" => POI_TYPE,
         "type_name" => 'POI_TYPE',
-        "description" => map_partial(no_map_partial, { :place => {:icon => 'fa-building-o', :name => poi.name,
+        "description" => map_partial(no_map_partial, { :place => {:icon => MapHelper::BUILDING_ICON, :name => poi.name,
                                                                   :address => poi.address} }),
         "full_address" => poi.get_address
       }
@@ -177,7 +177,7 @@ class PlaceSearchingController < TravelerAwareController
         "lon" => place.location.last,
         "address" => place.address,
         "full_address" => place.address,
-        "description" => map_partial(no_map_partial, { :place => {:icon => 'fa-building-o', :name => place.name, :address => place.address} })
+        "description" => map_partial(no_map_partial, { :place => {:icon => MapHelper::BUILDING_ICON, :name => place.name, :address => place.address} })
       }
       counter += 1
     end
@@ -267,7 +267,7 @@ class PlaceSearchingController < TravelerAwareController
 
   def map_partial no_map_partial = true, locals = {}
     unless no_map_partial
-      render_to_string(:partial => "/shared/map_popup", :locals => locals)
+      render_to_string(:partial => MapHelper::POPUP_PARTIAL, :locals => locals)
     else
       '(not rendered)'
     end

@@ -672,11 +672,15 @@ class TripsController < PlaceSearchingController
     redirect_to user_trip_path_for_ui_mode(@traveler, @trip)
   end
 
+  def unselect_all
+    @trip.itineraries.selected.each do |i|
+      i.update_attribute :selected, false
+    end
+  end
+
   def select
-    # hides all other itineraries for this trip part
-    Rails.logger.info params.inspect
-    itinerary = @trip.itineraries.valid.find(params[:itin])
-    itinerary.hide_others
+    itinerary = Itinerary.find(params[:itin])
+    itinerary.update_attribute :selected, true
     respond_to do |format|
       format.html { redirect_to(user_trip_path_for_ui_mode(@traveler, @trip)) }
       format.json { head :no_content }

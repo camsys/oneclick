@@ -75,12 +75,12 @@
         .span2
           %p
             Trip Selected
-            - if @trip.outbound_part.has_hidden_options?
+            - if @trip.outbound_part.has_selected?
               = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
         %div.span10
           %div{id: 'outbound_section'}
             .row-fluid.itineraries_holder
-              = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
+              = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(selected_only: true),
                 trip_part: @trip.outbound_part }
 
       - if @trip.is_return_trip
@@ -88,7 +88,7 @@
           .span2
             %p
               Return Selected
-              - if @trip.return_part.has_hidden_options?
+              - if @trip.return_part.has_selected?
                 = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.return_part}
           %div.span10
             = render partial: 'return_trip'
@@ -120,7 +120,7 @@
       - if @trip.only_outbound_selected?
         %p
           Trip Selected
-          - if @trip.outbound_part.has_hidden_options?
+          - if @trip.outbound_part.has_selected?
             = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
       - else
         %p
@@ -129,10 +129,10 @@
     %div.span10.card-view-resize
       %div{id: 'outbound_section'}
         .row-fluid.itineraries_holder
-          = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
+          = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(),
             trip_part: @trip.outbound_part }
         / HIDDEN OPTIONS
-        / - if @trip.outbound_part.has_hidden_options?
+        / - if @trip.outbound_part.has_selected?
         /   .row-fluid
         /     .span6#outbound_hidden_trips_notice
         /       = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
@@ -147,7 +147,7 @@
         %p
           - if @trip.only_return_selected?
             Return Selected
-            - if @trip.return_part.has_hidden_options?
+            - if @trip.return_part.has_selected?
               = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.return_part}
           - else
             = t(:return)

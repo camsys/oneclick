@@ -167,4 +167,18 @@ SimpleForm.setup do |config|
 
   # Defines which i18n scope will be used in Simple Form.
   # config.i18n_scope = 'simple_form'
+
+  config.wrappers :append, :tag => 'div', :class => "control-group", :error_class => 'error' do |b|
+    b.use :html5
+    b.use :placeholder
+    b.use :label
+    b.wrapper :tag => 'div', :class => 'controls' do |input|
+      input.wrapper :tag => 'div', :class => 'input-append' do |append|
+        append.use :input
+      end
+      input.use :hint,  :wrap_with => { :tag => 'span', :class => 'help-block' }
+      input.use :error, :wrap_with => { :tag => 'span', :class => 'help-inline' }
+    end
+  end
+  
 end

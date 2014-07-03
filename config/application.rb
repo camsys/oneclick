@@ -91,26 +91,46 @@ module Oneclick
     # For heroku; see http://blog.nathanhumbert.com/2012/01/rails-32-on-heroku-tip.html
     config.assets.initialize_on_precompile = false
 
+    config.ui_mode = ENV['UI_MODE'] || 'desktop'
+
+    # config.assets.precompile = ['foo']
+
+    if config.ui_mode=='desktop'
+      config.assets.paths << File.join(Rails.root, 'app', 'assets-default')
     config.assets.precompile += %w(
-      kiosk/_base.css
-      kiosk/style.css
-      kiosk/pa.css
-      default/arc.css
-      default/pa.css
-      default/broward.css
-      default/tadaaapickr.en.js
-      default/typeahead.js-bootstrap.css
+        application.css
+        arc.css
+        pa.css
+        broward.css
+        tadaaapickr.en.js
+        typeahead.js-bootstrap.css
+        users.css
     )
+    else # config.ui_mode=='kiosk'
+      config.assets.paths << File.join(Rails.root, 'app', 'assets-kiosk')
+      config.assets.precompile += %w(
+        application.css
+        _base.css
+        style.css
+        pa.css
+        ext/fontawesome-ext-webfont.eot
+        ext/fontawesome-ext-webfont.svg
+        ext/fontawesome-ext-webfont.ttf
+        ext/fontawesome-ext-webfont.woff      
+      )
+    end
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.4'
+    config.assets.version = '1.5'
 
     # See http://work.stevegrossi.com/2013/04/06/dynamic-error-pages-with-rails-3-2/
     config.exceptions_app = self.routes
     config.brand = ENV['BRAND'] || 'arc'
     config.ui_mode = ENV['UI_MODE'] || 'desktop'
     if config.ui_mode=='desktop'
-      config.sass.load_paths << File.expand_path("./app/assets/stylesheets/default/#{config.brand}")
+      config.sass.load_paths << File.expand_path("./app/assets-default/stylesheets/#{config.brand}")
+    else # config.ui_mode=='kiosk'
+      config.sass.load_paths << File.expand_path("./app/assets-kiosk/stylesheets/#{config.brand}")
     end
   end
 
@@ -126,3 +146,4 @@ def oneclick_available_locales
     %r{en}
   end
 end
+

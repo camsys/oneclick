@@ -5,6 +5,18 @@ class TripPartsController < PlaceSearchingController
   before_filter :get_traveler
   before_filter :get_trip
 
+  def unselect_all
+    trip_part = TripPart.find(params[:id])
+    Rails.logger.info trip_part.ai
+    trip_part.itineraries.selected.each do |i|
+      Rails.logger.info i.ai
+      i.update_attribute :selected, false
+      Rails.logger.info i.ai
+    end
+    Rails.logger.info ""
+    redirect_to user_trip_path_for_ui_mode(@traveler, trip_part.trip)
+  end
+
   # Unhides all the hidden itineraries for a trip part
   def unhide_all
     trip_part = TripPart.find(params[:id])
