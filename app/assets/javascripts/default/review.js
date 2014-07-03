@@ -909,7 +909,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
 
             
             if(!isValid) {
-                $(this).val(null);
                 $(this).parent('div').addClass('has-error');
             } else {
                 $(this).parent('div').removeClass('has-error');
@@ -931,6 +930,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var missInfoDivId = tripPlanChartDivId + missInfoDivAffix;
 
         $('#' + missInfoDivId + '_form').submit(function(e) {
+            if($('#' + missInfoDivId + ' form .has-error').length > 0) {
+                return false;
+            }
             var dialog = $('#' + missInfoDivId);
             var formVals = dialog.find('form').serializeArray();
 
@@ -2176,6 +2178,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         }
 
         $("svg rect").tooltip({
+            'html': true,
+            'container': 'body'
+        });
+
+        $("svg text").tooltip({
             'html': true,
             'container': 'body'
         });
