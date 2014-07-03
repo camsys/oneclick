@@ -157,11 +157,10 @@ class EcolaneHelpers
     resp.body
   end
 
-  def search_for_customers(terms = {}, type = 'exact')
-    url_options = "/api/customer/" + SYSTEM_ID + '/search?type='
-    url_options += type
+  def search_for_customers(terms = {})
+    url_options = "/api/customer/" + SYSTEM_ID + '/search?'
     terms.each do |term|
-      url_options += '&' + term[0].to_s + '=' + term[1].to_s
+      url_options += term[0].to_s + '=' + term[1].to_s
     end
     url = BASE_URL + url_options
     send_request(url)
@@ -178,7 +177,9 @@ class EcolaneHelpers
     unless service.nil?
       url_options += "?service=" + service.to_s
     end
+
     url = BASE_URL + url_options
+    puts url
     send_request(url)
   end
 
@@ -259,6 +260,17 @@ class EcolaneHelpers
 
       req.add_field 'X-ECOLANE-TOKEN', X_ECOLANE_TOKEN
       req.add_field 'Content-Type', 'text/xml'
+
+      #req.delete('accept')
+      #req.delete('accept-encoding')
+      #req.delete('user-agent')
+      #req.delete('content-type')
+
+      #req.each_header do |name, value|
+      #  puts name
+      #  puts value
+      #  puts '========'
+      #end
 
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
