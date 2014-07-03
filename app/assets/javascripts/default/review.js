@@ -891,7 +891,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
      * @param {string} tripPlanChartDivId
      */
     function addTripStrictionFormValidatiaonListener(missInfoDivId) {
-        $('#' + missInfoDivId + ' input[data-eligibility-code=age]').on('focus', function() {
+        $('#' + missInfoDivId + ' input[data-eligibility-code=age]').on('focusin', function() {
             if($(this).siblings('.help-block').length === 0) {
                 var helpMsg = localeDictFinder['four_digit_year'] + ' ' + $(this).attr('min') + '-' + $(this).attr('max'); 
                 $(this).after('<span class="help-block with-errors">' + helpMsg + '</span>');
@@ -2177,12 +2177,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             });
         }
 
-        $("svg rect").tooltip({
-            'html': true,
-            'container': 'body'
-        });
-
-        $("svg text").tooltip({
+        $("svg rect, svg text").tooltip({
             'html': true,
             'container': 'body'
         });
