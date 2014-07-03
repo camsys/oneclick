@@ -496,7 +496,7 @@ en:
   return_selected: 'Return option selected.'
   not_authorized_as_an_administrator: 'Not authorized as an administrator.'
   n_a: 'n/a'
-  unknown: 'unknown'
+  unknown: 'Unknown'
   not_available: 'Not Available'
   show_filters: 'Show Filters'
   show_legends: 'Show Legends'
