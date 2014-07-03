@@ -1774,7 +1774,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
      */
     function adjustModeFilters(modes) {
         modes.sort();
-        
+
         if ($('#' + modeContainerId).length === 0) {
             $('#' + filterContainerId).prepend(getModeFilterHtml(modes));
         } else {
@@ -2073,7 +2073,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 tipText = '<p>' + localeDictFinder['drive'] + ' ' + durationText + '</p>';
                 break;
             default:
-                tipText = '<p>' + serviceName || modeName + '</p>';
+                tipText = '<p>' + (serviceName || modeName) + '</p>';
                 break;
         }
 
