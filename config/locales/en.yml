@@ -381,8 +381,9 @@ en:
 
   # new ones
   # Services
-  outbound_error_occurred: "An error occurred when attemping to book your outbound trip."
-  return_error_occurred: "An error occurred when attemping to book your return trip."
+  traveler_not_registered: "Traveler not registered to book trips with One-Click."
+  outbound_error_occurred: "An error occurred when attempting to book your outbound trip."
+  return_error_occurred: "An error occurred when attempting to book your return trip."
   please_wait: "Please wait"
   book_a_trip: "Would you like to book this trip with"
   more_info_call: "For more more information, call"

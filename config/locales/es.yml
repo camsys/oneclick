@@ -380,8 +380,9 @@ es:
   updated: "[es242]Updated[/es]"
 
   # new ones
-  outbound_error_occurred: "[es]An error occurred when attemping to book your outbound trip."
-  return_error_occurred: "[es]An error occurred when attemping to book your return trip."
+  traveler_not_registered: "[es]Traveler not registered to book trips with One-Click."
+  outbound_error_occurred: "[es]An error occurred when attempting to book your outbound trip."
+  return_error_occurred: "[es]An error occurred when attempting to book your return trip."
   please_wait: "[es]Please wait."
   book_a_trip: "[es]Would you like to book this trip with"
   more_info_call: "[es]For more more information, call"
