@@ -1,4 +1,12 @@
 #buddies_table {
+  @media screen and (max-width: 360px) {
+    .email {
+      display: none;
+    }
+    .action-button {
+      min-width: 0;
+    }
+  }
   .action-button {
     margin-left: 0;
     margin-right: 5px;
