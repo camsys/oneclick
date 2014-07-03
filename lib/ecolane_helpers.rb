@@ -160,14 +160,40 @@ class EcolaneHelpers
   def search_for_customers(terms = {})
     url_options = "/api/customer/" + SYSTEM_ID + '/search?'
     terms.each do |term|
-      url_options += term[0].to_s + '=' + term[1].to_s
+      url_options += "&" + term[0].to_s + '=' + term[1].to_s
     end
+
     url = BASE_URL + url_options
-    send_request(url)
+
+    resp = send_request(url)
   end
 
-  def confirm_passenger(customer_number, dob)
-      return true
+  def unpack_validation_response (resp)
+    resp_xml = Nokogiri::XML(resp.body)
+
+    status = resp_xml.xpath("status")
+    #On success, status = []
+    unless status.empty?
+      if status.attribute("result").value == "failure"
+        return false, "Unable to validate Client Id"
+      end
+    end
+
+    if resp_xml.xpath("search_results").xpath("customer").count == 1
+      return true, "Success!"
+    else
+      return false, "Invalid Date of Birth or Client Id."
+    end
+
+  end
+
+  def validate_passenger(customer_number, dob)
+    iso_dob = iso8601ify(dob)
+    if iso_dob.nil?
+      return false
+    end
+    resp = search_for_customers({"customer_number" => customer_number, "date_of_birth" => iso_dob.to_s})
+    return unpack_validation_response(resp)[0]
   end
 
   def check_customer_validity(customer_id, service=nil)
@@ -179,7 +205,6 @@ class EcolaneHelpers
     end
 
     url = BASE_URL + url_options
-    puts url
     send_request(url)
   end
 
@@ -249,28 +274,16 @@ class EcolaneHelpers
   def send_request(url, type='GET', message=nil)
     begin
       uri = URI.parse(url)
-
       case type.downcase
         when 'post'
           req = Net::HTTP::Post.new(uri.path)
           req.body = message
         else
-          req = Net::HTTP::Get.new(uri.path)
+          req = Net::HTTP::Get.new(uri)
       end
 
       req.add_field 'X-ECOLANE-TOKEN', X_ECOLANE_TOKEN
       req.add_field 'Content-Type', 'text/xml'
-
-      #req.delete('accept')
-      #req.delete('accept-encoding')
-      #req.delete('user-agent')
-      #req.delete('content-type')
-
-      #req.each_header do |name, value|
-      #  puts name
-      #  puts value
-      #  puts '========'
-      #end
 
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
@@ -292,6 +305,22 @@ class EcolaneHelpers
   ## Utility functions:
   def get_customer_id(itinerary)
     itinerary.trip_part.trip.user.user_profile.user_services.where(service: itinerary.service).first.external_user_id
+  end
+
+  def iso8601ify(dob)
+
+    dob = dob.split('/')
+    unless dob.count == 3
+      return nil
+    end
+
+    begin
+      dob = Date.parse(dob[1] + '/' + dob[0] + '/' + dob[2]).strftime("%Y/%m/%d")
+    rescue  ArgumentError
+      return nil
+    end
+
+    Date.iso8601(dob.delete('/'))
   end
 
 

@@ -69,19 +69,22 @@ class UsersController < ApplicationController
 
     @booking_proxy = UserServiceProxy.new(external_user_id: external_user_id, service: service)
     begin
-      dob = Date.strptime(params['user_service_proxy']['dob'], "%m/%d/%Y")
+      Date.strptime(params['user_service_proxy']['dob'], "%m/%d/%Y")
+      dob = params['user_service_proxy']['dob']
     rescue ArgumentError
       @booking_proxy.errors.add(:dob, "Date needs to be in mm/dd/yyyy format.")
       errors = true
     end
 
-    eh = EcolaneHelpers.new
-    unless eh.confirm_passenger(external_user_id, dob)
-      @booking_proxy.errors.add(:external_user_id, "Unknown Client Id or incorrect date of birth.")
-      errors = true
-    end
-
     @trip = itinerary.trip_part.trip
+
+    unless errors
+      eh = EcolaneHelpers.new
+      unless eh.validate_passenger(external_user_id, dob)
+        @booking_proxy.errors.add(:external_user_id, "Unknown Client Id or incorrect date of birth.")
+        errors = true
+      end
+    end
 
     unless errors
       itinerary.is_bookable = true
@@ -167,19 +170,27 @@ private
   end
 
   def set_booking_services(user, services)
+
     alert = false
     dob = services['dob']
     services.each do |id, user_id|
+
       unless id == 'dob'
         service = Service.find(id)
 
+        user_service = UserService.where(user_profile: user.user_profile, service: service).first_or_initialize
+        #only validate on a change
+        if user_service.external_user_id == user_id
+          next
+        end
+
         eh = EcolaneHelpers.new
         unless user_id == ""
-          unless eh.confirm_passenger(user_id, dob)
+          unless eh.validate_passenger(user_id, dob)
             alert = true
             next
           end
-          user_service = UserService.where(user_profile: user.user_profile, service: service).first_or_initialize
+          #user_service = UserService.where(user_profile: user.user_profile, service: service).first_or_initialize
           user_service.external_user_id = user_id
           user_service.save
         else
