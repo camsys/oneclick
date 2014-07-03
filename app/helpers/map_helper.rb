@@ -3,11 +3,9 @@ module MapHelper
   ALPHABET = ('A'..'Z').to_a
 
   unless ENV['UI_MODE']=='kiosk'
-    puts "using B3 popup"
     POPUP_PARTIAL = "/shared/map_popup"
     BUILDING_ICON = 'fa-building-o'
   else
-    puts "using B2 popup"
     POPUP_PARTIAL = "/shared/map_popup_b2"
     BUILDING_ICON = 'icon-building'
   end

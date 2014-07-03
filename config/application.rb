@@ -104,6 +104,7 @@ module Oneclick
         broward.css
         tadaaapickr.en.js
         typeahead.js-bootstrap.css
+        users.css
     )
     else # config.ui_mode=='kiosk'
       config.assets.paths << File.join(Rails.root, 'app', 'assets-kiosk')
