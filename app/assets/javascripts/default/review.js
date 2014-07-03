@@ -1773,7 +1773,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
      * @return {string} filterInnerContainerId
      */
     function adjustModeFilters(modes) {
-
+        modes.sort();
+        
         if ($('#' + modeContainerId).length === 0) {
             $('#' + filterContainerId).prepend(getModeFilterHtml(modes));
         } else {
