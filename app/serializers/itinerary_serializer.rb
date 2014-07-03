@@ -99,7 +99,7 @@ class ItinerarySerializer < ActiveModel::Serializer
   end
 
   def duration
-    sortable_duration = object.duration || (object.end_time - object.start_time)
+    sortable_duration = object.duration || (end_time - start_time) if start_time && end_time
     {
       # TODO I18n
       # omitting for now per discussion w/ Xudong
