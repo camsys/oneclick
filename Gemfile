@@ -7,8 +7,10 @@ gem 'sprockets', '2.11.0'
 gem 'sass-rails', github: 'camsys/sass-rails', tag: 'v4.0.3a'
 unless ENV['UI_MODE']=='kiosk'
   gem 'bootstrap-sass', '~> 3.1.1.0'
+  gem 'simple_form', '~> 3.1.0.rc1', github: 'plataformatec/simple_form'
 else
   gem 'bootstrap-sass', '~> 2.3.2.0'
+  gem 'simple_form', '3.0.1'
 end
 gem 'coffee-rails'
 gem 'uglifier', '>= 1.0.3'
@@ -22,7 +24,6 @@ gem 'haml-rails'
 gem 'pg'
 # See https://github.com/EppO/rolify/issues/221
 gem 'rolify', git: 'https://github.com/EppO/rolify.git', ref: '0b00fa41224dc4e33b059cd0cd31cd42b022b03b'
-gem 'simple_form', '~> 3.1.0.rc1', github: 'plataformatec/simple_form'
 gem 'thin'
 gem 'puma'
 gem "rack-timeout"
