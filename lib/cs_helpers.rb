@@ -22,7 +22,7 @@ module CsHelpers
     :services => 'icon-bus-sign',
     :users => 'fa fa-group',
     :feedback => 'fa fa-thumbs-o-up',
-
+    :stop_assisting => 'fa fa-compass'
   }
 
   def admin_actions
@@ -52,9 +52,10 @@ module CsHelpers
     a = if user_signed_in?
       [
         {label: t(:plan_a_trip), target: new_user_trip_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:plan_a_trip]},
-        {label: t(:my_travel_profile), target: user_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:travel_profile]},
-        {label: t(:my_trips), target: user_trips_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_trips]},
-        {label: t(:my_places), target: user_places_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_places]},
+        {label: t(:travel_profile), target: user_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:travel_profile]},
+        {label: t(:trips), target: user_trips_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_trips]},
+        {label: t(:places), target: user_places_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_places]},
+        {label: t(:stop_assisting), target: unset_traveler_user_trips_path(current_user), icon: ACTION_ICONS[:stop_assisting], test: get_traveler != current_or_guest_user}
       ]
     else
       [
