@@ -7,9 +7,8 @@
       %th= t(:from)
       %th= t(:to)
       %th= t(:trip_purpose)
-      - if Oneclick::Application.config.public_read_feedback
+      - if Rating.feedback_on?
         %th.center= t(:rating)
-      - if Oneclick::Application.config.public_write_feedback
         %th.center.nowrap= t(:feedback)
       %th.center= t(:actions)
       - if ENV['SHOWALL']
@@ -28,15 +27,15 @@
           %td= trip.from_place.name
           %td= trip.to_place.name
           %td= t(trip.trip_purpose.name)
-          - if Oneclick::Application.config.public_read_feedback
+          - if Rating.feedback_on?
             %td.nowrap{id: "#{tripID}Rating"}
               = trip.rating_in_stars
-          - if Oneclick::Application.config.public_write_feedback
             %td.center.nowrap
-              - if (not trip.in_the_future and can? :create, trip.ratings.build) or Rails.env.development?
-                - modal_name = "##{tripID}RatingModal"
-                %button.btn.btn-default.action-button{data: {toggle: 'modal', target: modal_name, remote: new_trip_rating_path(trip)}}
-                  = t(:feedback)
+              - if can? :create, trip.ratings.build
+                - if (not trip.in_the_future and can? :create, trip.ratings.build) or Rails.env.development?
+                  - modal_name = "##{tripID}RatingModal"
+                  %button.btn.btn-default.action-button{data: {toggle: 'modal', target: modal_name, remote: new_trip_rating_path(trip)}}
+                    = t(:feedback)
           - if trip.in_the_future
             %td.center.nowrap          
               = link_to user_trip_path(traveler, trip), {:class => "btn btn-sm", :alt => t(:plan_trip), :title => t(:plan_trip)} do

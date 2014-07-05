@@ -61,7 +61,7 @@
         .row
           .col-sm-12
             =t(accom.name)
-- if Oneclick::Application.config.public_read_feedback
+- if can? :read, itinerary.service.ratings.build
   .row
     .col-sm-6
       = t(:rating) +":"

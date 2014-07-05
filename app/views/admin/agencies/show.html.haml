@@ -1,4 +1,4 @@
-- temp_rating = @agency.ratings.build(rateable: @agency)
+- temp_rating = @agency.ratings.build(user: @traveler)
 - if can? :index, Agency
   .row
     .col-sm-12
@@ -14,15 +14,15 @@
     - if can? :update, @agency
       = link_to edit_admin_agency_path(@agency), {class: 'btn action-button pull-right', role: 'button'} do
         = icon_label(:edit)
-    -if Oneclick::Application.config.public_write_feedback
+    -if Rating.feedback_on?
       - if can? :read, temp_rating
         .pull-right
           = RateableDecorator.decorate(@agency).rating_in_stars
           %button.btn.action-button{data: {toggle: 'modal', target: "#feedback_modal"}}
             = t(:feedback)
-      - else
+      - elsif Rating.tripless_feedback?
         -# if creating feedback is allowed, but reading isn't, just load the form into the modal on click
-        %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal", remote: new_agency_rating_path(@agency)}}
+        %button.btn.action-button.btn-default.pull-right{data: {toggle: 'modal', target: "#feedback_modal", remote: new_agency_rating_path(@agency)}}
           = t(:feedback)
       = render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
 .row

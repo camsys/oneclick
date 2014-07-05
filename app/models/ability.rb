@@ -7,14 +7,6 @@ class Ability
       # admin users can do almost anything, so it's simpler to enumerate what they can't do
       can :manage, :all
 
-      # TODO Are these 2 redundant?
-      can [:see], :admin_menu
-      can :see, :staff_menu
-      can [:index], :admin_home
-      can [:access], :any
-      can [:access], :staff_travelers
-      can [:access], :admin_users
-      
       cannot [:access], :admin_create_traveler
       cannot [:access], :staff_travelers
       cannot :access, :show_agency
@@ -65,6 +57,7 @@ class Ability
       can [:index, :show], Report
       can [:read, :update], User, agency_id: user.agency.try(:id)
       can :send_follow_up, Trip
+      
     end
     
     if User.with_role(:agent, :any).include?(user)
@@ -126,52 +119,41 @@ class Ability
     can :show, Provider # Will have view privileges for individual info purposes
     can :show, Agency # Will have view privileges for individual info purposes
     
-    ## Rating Logic is configurable by deployment.  
-    can :read, Rating if Oneclick::Application.config.public_read_feedback
-    if Oneclick::Application.config.public_write_feedback
-      can [:create, :update], Rating
-      cannot :create, Rating do |r| 
-        case r.rateable_type
-        when "Trip" # cannot rate trips if I did not take them or plan them for another user
-          r.rateable.user.id != user.id or r.rateable.creator.id != user.id
-        when "Agency" # cannot rate Agency if I work for that agency
-          r.rateable.id == user.agency_id
+###### RATING LOGIC (configurable by deployment)  ##################
+# TODO: This is a branding opportunity.  It would be fantastic if we could find a way to clean this up
+    if Rating.feedback_on?
+      can :read, Rating do |r|
+        if user.has_role? :agent # read only for own agency or don't read at all
+          Rating.agent_read_feedback? and r.rateable == user.agency
+        end
+        if user.has_role? :agency_administrator # always read for own agency
+          r.rateable == user.agency
+        end
+        if user.has_role? :provider_staff # read only for own provider or don't read at all
+          Rating.provider_read_feedback? and r.rateable == user.provider
+        end
+        if user.has_role? :registered_traveler
+          case r.rateable_type
+          when "Trip"
+            r.user.id == user.id
+          when "Agency", "Service", "Provider"
+            Rating.traveler_read_all_organization_feedback? || (r.user.id == user.id)
+          end
         end
       end
-      cannot :create, Rating, rateable_type: "Provider"
+
+      can :create, Rating do |r|
+        case r.rateable_type
+        when "Trip"
+          true
+        when "Agency", "Service"
+          Rating.tripless_feedback?
+        end
+      end
+      # nobody can rate a provider directly.  All ratings come through its services
+      cannot :create, Rating, rateable_type: "Provider" 
     end
+####################################################################
   end
 
 end
-
-# :admin_find_traveler
-# :admin_create_traveler
-# :admin_trips
-# :admin_agencies
-# :admin_users
-# :admin_providers
-# :admin_services
-# :admin_reports
-
-    # Define abilities for the passed in user here. For example:
-    #
-    #   user ||= User.new # guest user (not logged in)
-    #   if user.admin?
-    #     can :manage, :all
-    #   else
-    #     can :read, :all
-    #   end
-    #
-    # The first argument to `can` is the action you are giving the user permission to do.
-    # If you pass :manage it will apply to every action. Other common actions here are
-    # :read, :create, :update and :destroy.
-    #
-    # The second argument is the resource the user can perform the action on. If you pass
-    # :all it will apply to every resource. Otherwise pass a Ruby class of the resource.
-    #
-    # The third argument is an optional hash of conditions to further filter the objects.
-    # For example, here the user can only update published articles.
-    #
-    #   can :update, Article, :published => true
-    #
-    # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities

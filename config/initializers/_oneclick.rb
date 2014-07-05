@@ -46,12 +46,15 @@ when 'arc'
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
   ENV['GOOGLE_GEOCODER_TIMEOUT']= "5"
+  Oneclick::Application.config.enable_feedback = true
+  Oneclick::Application.config.traveler_read_all_organization_feedback = true
+  Oneclick::Application.config.agent_read_feedback = true
+  Oneclick::Application.config.provider_read_all_feedback = true
+  Oneclick::Application.config.tripless_feedback = false
   honeybadger_api_key = 'ba642a71'
   Oneclick::Application.config.poi_file = 'db/arc_poi_data/CommFacil_20131015.txt'
   Oneclick::Application.config.show_update_services = true
   Oneclick::Application.config.default_county = ''
-  Oneclick::Application.config.public_read_feedback = true
-  Oneclick::Application.config.public_write_feedback = true
   Oneclick::Application.config.state = 'GA'
 
 when 'broward'
@@ -72,11 +75,14 @@ when 'broward'
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
   ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
+  Oneclick::Application.config.enable_feedback = true
+  Oneclick::Application.config.traveler_read_all_organization_feedback = false
+  Oneclick::Application.config.agent_read_feedback = false
+  Oneclick::Application.config.provider_read_all_feedback = false
+  Oneclick::Application.config.tripless_feedback = false
   honeybadger_api_key = '789c7911'
   Oneclick::Application.config.poi_file = 'db/broward_poi_data/broward-poi-from-arcgis.csv'
   Oneclick::Application.config.default_county = 'Broward'
-  Oneclick::Application.config.public_read_feedback = false
-  Oneclick::Application.config.public_write_feedback = true
   Oneclick::Application.config.state = 'FL'
 
 when 'pa'
@@ -99,11 +105,14 @@ when 'pa'
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
   ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
+  Oneclick::Application.config.enable_feedback = true
+  Oneclick::Application.config.traveler_read_all_organization_feedback = false
+  Oneclick::Application.config.agent_read_feedback = false
+  Oneclick::Application.config.provider_read_all_feedback = false
+  Oneclick::Application.config.tripless_feedback = false
   honeybadger_api_key = 'f49faffa'
   Oneclick::Application.config.poi_file = 'db/pa/pa-poi-from-arcgis.csv'
   Oneclick::Application.config.default_county = 'York'
-  Oneclick::Application.config.public_read_feedback = false
-  Oneclick::Application.config.public_write_feedback = true
   Oneclick::Application.config.state = 'PA'
 
   Oneclick::Application.config.max_walk_seconds = 3600
@@ -134,11 +143,14 @@ when 'jta'
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
   ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
+  Oneclick::Application.config.enable_feedback = true
+  Oneclick::Application.config.traveler_read_all_organization_feedback = true
+  Oneclick::Application.config.agent_read_feedback = true
+  Oneclick::Application.config.provider_read_all_feedback = true
+  Oneclick::Application.config.tripless_feedback = false
   honeybadger_api_key = 'f49faffa'
   Oneclick::Application.config.poi_file = 'db/pa/pa-poi-from-arcgis.csv' # TODO
   Oneclick::Application.config.default_county = 'Duval'
-  Oneclick::Application.config.public_read_feedback = false # TODO
-  Oneclick::Application.config.public_write_feedback = true # TODO
   Oneclick::Application.config.state = 'FL'
 
   Oneclick::Application.config.max_walk_seconds = 3600

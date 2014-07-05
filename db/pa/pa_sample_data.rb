@@ -60,6 +60,7 @@ def add_users_and_places
       ump.save!
     end
     u.add_role :registered_traveler    
+    u.remove
   end
 end
 

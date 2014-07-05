@@ -1,4 +1,4 @@
-- temp_rating = @provider.ratings.build(rateable: @provider)
+- temp_rating = @provider.services.first.ratings.build(user: @traveler)
 - if can? :index, Provider
   .row
     .col-sm-12
@@ -17,7 +17,7 @@
     - if can? :update, @provider
       = link_to edit_admin_provider_path(@provider), {class: 'btn action-button pull-right', role: 'button'} do
         = icon_label(:edit)
-    -if Oneclick::Application.config.public_write_feedback
+    -if Rating.feedback_on?
       - if can? :read, temp_rating
         .pull-right
           = RateableDecorator.new(@provider).rating_in_stars

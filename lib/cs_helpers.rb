@@ -29,7 +29,7 @@ module CsHelpers
     a = [
       {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users}
     ]
-    if Oneclick::Application.config.public_write_feedback
+    if Rating.feedback_on?
       a.push({label: t(:feedback), target: ratings_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback}) 
     end
     a
