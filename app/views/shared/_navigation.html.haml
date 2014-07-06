@@ -1,8 +1,7 @@
 #publicNav.navbar.navbar-default.navbar-fixed-top{:role => "navigation"}
   .container-fluid
     #navHeader
-      .col-xs-5{:style => 'padding:0px;'}
-        %a#logo.navbar-brand.img-responsive{:href => root_url(locale: I18n.locale), :style => "text-indent:-9999px;"} Logo
+      %a#logo.navbar-brand.img-responsive{:href => root_url(locale: I18n.locale), :style => "text-indent:-9999px;"} Logo
       .pull-right
         %a#help{:href => "/501"}
           %i.fa.fa-question-circle
@@ -42,3 +41,9 @@
             %li.dropdown
               = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => admin_actions, :title => t(:admin_actions) }
 / end of publicNav
+:javascript
+  $(function () {
+    $('#publicNav').mutate('height', function(el) {
+      $('#main').css('padding-top', ($(el).height() + 10) + 'px');
+    });
+  });

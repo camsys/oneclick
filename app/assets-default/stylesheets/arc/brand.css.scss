@@ -11,7 +11,7 @@ $nav-end-color: #A3A3A3;
   background: linear-gradient(to bottom,  $nav-start-color 0%,$nav-end-color 100%);
 }
 
-@media(max-width:$screen-xs-max){
+@media(max-width:$screen-sm-max){
   #logo{
     background-image: image-url('arc/logo-sm.png');
   }
@@ -21,7 +21,7 @@ $nav-end-color: #A3A3A3;
   }
 }
 
-@media(min-width:$screen-sm-min){
+@media(min-width:$screen-md-min){
   #logo{
     background-image: image-url('arc/logo-lg.png');
   }
