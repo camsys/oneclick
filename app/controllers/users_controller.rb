@@ -89,9 +89,12 @@ class UsersController < ApplicationController
     unless errors
       itinerary.is_bookable = true
       itinerary.save
-      user_service = UserService.where(user_profile: @traveler.user_profile, service: service).first_or_initialize
-      user_service.external_user_id = external_user_id
-      user_service.save
+      #Todo: This will need to be updated when more services are able to book.
+      Service.where(booking_service_code: 'ecolane').each do |booking_service|
+        user_service = UserService.where(user_profile: @traveler.user_profile, service: booking_service).first_or_initialize
+        user_service.external_user_id = external_user_id
+        user_service.save
+      end
     end
 
     #TODO:  Automatically add other rabbit transit services

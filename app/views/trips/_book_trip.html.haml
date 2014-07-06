@@ -37,7 +37,7 @@
               .form-group
                 .row-fluid
                   %label.col-sm-4.col-md-4.col-lg-4.text-right
-                    = @trip.return_part.is_depart ? t(:returning_at) + ":" : t(:returning_by) + ":"
+                    = @trip.return_part.is_depart ? t(:cap_returning_at) + ":" : t(:returning_by) + ":"
                   .col-sm-8.col-md-8.col-lg-8.text-left
                     =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
             .form-group

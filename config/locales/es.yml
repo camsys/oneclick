@@ -380,6 +380,7 @@ es:
   updated: "[es242]Updated[/es]"
 
   # new ones
+  cap_returning_at: "[es]Returning at"
   traveler_not_registered: "[es]Traveler not registered to book trips with One-Click."
   outbound_error_occurred: "[es]An error occurred when attempting to book your outbound trip."
   return_error_occurred: "[es]An error occurred when attempting to book your return trip."
@@ -387,7 +388,7 @@ es:
   book_a_trip: "[es]Would you like to book this trip with"
   more_info_call: "[es]For more more information, call"
   confirmation: '[es]confirmation'
-  returning_by: '[es]returning by'
+  returning_by: '[es]Returning by'
   for_assitance: "[es]for assistance"
   if_no_client_id: "[es]If you do not have a client id, please call"
   outbound_is_eligible: "[es]The outbound portion of your trip is eligible for automated booking."

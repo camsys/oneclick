@@ -15,10 +15,15 @@ class EcolaneHelpers
   end
 
 
-    ## Post/Put Operations
+  ## Post/Put Operations
   def book_itinerary(itinerary)
+
     funding_options = query_funding_options(itinerary)
-    funding_xml = Nokogiri::XML(funding_options.body)
+    begin
+      funding_xml = Nokogiri::XML(funding_options.body)
+    rescue
+      return false, "Booking error."
+    end
     resp  = request_booking(itinerary, funding_xml)
     result, messages = unpack_booking_response(resp, itinerary)
     if result
@@ -29,9 +34,12 @@ class EcolaneHelpers
   end
 
   def unpack_booking_response (resp, itinerary)
-    resp_xml = Nokogiri::XML(resp.body)
+    begin
+      resp_xml = Nokogiri::XML(resp.body)
+    rescue
+      return false, "Booking error."
+    end
     status = resp_xml.xpath("status")
-
     unless status.count == 0
       status = status.attribute('result').value
     else
@@ -239,11 +247,19 @@ class EcolaneHelpers
   end
 
   def build_funding_hash(itinerary, funding_xml)
+
     purpose = itinerary.trip_part.trip.trip_purpose.code
-    #TODO: Pickup here by matching the tripPurpose
-    funding_source  =  funding_xml.xpath("funding_options").xpath("option").first.xpath("funding_source").text
-    purpose  = funding_xml.xpath("funding_options").xpath("option").first.xpath("purpose").text
-    {funding_source: funding_source, purpose: purpose}
+
+    funding_xml.xpath("funding_options").xpath("option").each do |options|
+      ecolane_purpose = options.xpath("purpose").text
+      if purpose == ecolane_purpose.downcase.gsub(%r{[ /]}, '_')
+        funding_source = options.xpath("funding_source").text
+        return {funding_source: funding_source, purpose: ecolane_purpose}
+      end
+    end
+
+    {funding_source: nil, purpose: nil}
+
   end
 
   def build_pu_hash(itinerary)

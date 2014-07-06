@@ -381,6 +381,7 @@ en:
 
   # new ones
   # Services
+  cap_returning_at: "Returning at"
   traveler_not_registered: "Traveler not registered to book trips with One-Click."
   outbound_error_occurred: "An error occurred when attempting to book your outbound trip."
   return_error_occurred: "An error occurred when attempting to book your return trip."
@@ -388,7 +389,7 @@ en:
   book_a_trip: "Would you like to book this trip with"
   more_info_call: "For more more information, call"
   confirmation: 'confirmation'
-  returning_by: 'returning by'
+  returning_by: 'Returning by'
   for_assitance: "for assistance"
   if_no_client_id: "If you do not have a client id, please call"
   outbound_is_eligible: "The outbound portion of your trip is eligible for automated booking."
