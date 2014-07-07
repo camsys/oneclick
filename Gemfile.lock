@@ -6,6 +6,14 @@ GIT
     twitter-bootstrap-rails-confirm (1.0.2)
 
 GIT
+  remote: git://github.com/camsys/bootstrap-sass.git
+  revision: 
+  tag: ~> 3.1.1.0
+  specs:
+    bootstrap-sass (3.2.0.0)
+      sass (~> 3.2)
+
+GIT
   remote: git://github.com/camsys/sass-rails.git
   revision: baf4f108c999da4941ce68085a9de7fac10e262f
   tag: v4.0.3a
@@ -15,6 +23,14 @@ GIT
       sass (~> 3.2.0)
       sprockets (~> 2.8, <= 2.11.0)
       sprockets-rails (~> 2.0)
+
+GIT
+  remote: git://github.com/plataformatec/simple_form.git
+  revision: 01ccfcebd45b8de0a6846d0f33b9daf74673dcc1
+  specs:
+    simple_form (3.1.0.rc1)
+      actionpack (~> 4.0)
+      activemodel (~> 4.0)
 
 GIT
   remote: git://github.com/svenfuchs/i18n-active_record.git
@@ -90,8 +106,6 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bootstrap-combobox (1.2.6)
-    bootstrap-sass (2.3.2.2)
-      sass (~> 3.2)
     bootstrap3-datetimepicker-rails (3.0.0)
       momentjs-rails (~> 2.5.0)
     builder (3.1.4)
@@ -380,9 +394,6 @@ GEM
     sexp_processor (4.4.3)
     sextant (0.2.4)
       rails (>= 3.2)
-    simple_form (3.0.1)
-      actionpack (>= 4.0.0, < 4.1)
-      activemodel (>= 4.0.0, < 4.1)
     simple_token_authentication (1.5.0)
       actionmailer (>= 3.2.6, < 5)
       activerecord (>= 3.2.6, < 5)
@@ -464,7 +475,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap-combobox
-  bootstrap-sass (~> 2.3.2.0)
+  bootstrap-sass!
   bootstrap3-datetimepicker-rails (= 3.0.0.0)
   cancan
   capybara
@@ -495,7 +506,7 @@ DEPENDENCIES
   honeybadger
   html2haml
   i18n-active_record!
-  jquery-datatables-rails
+  jquery-datatables-rails (~> 2.1.10.0.2)
   jquery-rails
   launchy
   letter_opener
@@ -524,7 +535,7 @@ DEPENDENCIES
   rubyzip
   sass-rails!
   sextant
-  simple_form (= 3.0.1)
+  simple_form (~> 3.1.0.rc1)!
   simple_token_authentication
   simplecov
   sprockets (= 2.11.0)

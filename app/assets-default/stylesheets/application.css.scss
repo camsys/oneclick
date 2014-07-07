@@ -14,7 +14,7 @@
 // $light-orange: #ff8c00;
 // $navbar-default-color: $light-orange;
 
-$grid-float-breakpoint: 992px; //screen-md-min
+//$grid-float-breakpoint: 992px; //screen-md-min
 
 @import 'brand-lib';
 @import "bootstrap";
@@ -39,6 +39,6 @@ $grid-float-breakpoint: 992px; //screen-md-min
 @import "typeahead.js-bootstrap";
 @import "ratings";
 @import 'bootstrap-datetimepicker';
-@import 'dataTables/jquery.dataTables.bootstrap3';
+@import 'dataTables/bootstrap/3/jquery.dataTables.bootstrap';
 @import 'ui_lib_override';
 @import 'brand';
