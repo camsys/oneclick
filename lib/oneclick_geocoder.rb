@@ -1,4 +1,5 @@
 require 'cs_helpers'
+require 'indirizzo'
 
 #
 # Centralizes all the geocoding logic we need
@@ -76,11 +77,19 @@ protected
     i = 0
     res.each do |alt|
       if is_valid(alt.types)
+        street_address = alt.street_address
+        formatted_address = alt.formatted_address
+        parsable_address = Indirizzo::Address.new(formatted_address)
+        unless parsable_address.nil?
+          street_address = parsable_address.number + ' ' + parsable_address.street.first.titleize
+          formatted_address = street_address + ', ' + alt.city + ', ' + alt.state_code + ' ' + alt.postal_code
+        end
+         
         @results << {
           :id => i,
-          :name => alt.formatted_address.split(",")[0],
-          :formatted_address => sanitize_formatted_address(alt.formatted_address),
-          :street_address => alt.street_address,
+          :name => formatted_address.split(",")[0],
+          :formatted_address => sanitize_formatted_address(formatted_address),
+          :street_address => street_address,
           :city => alt.city,
           :state => alt.state_code,
           :zip => alt.postal_code,
