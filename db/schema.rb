@@ -16,7 +16,6 @@ ActiveRecord::Schema.define(version: 20140630171820) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
-  enable_extension "postgis_topology"
 
   create_table "accommodations", force: true do |t|
     t.string  "name",                  limit: 64,                 null: false
@@ -349,10 +348,10 @@ ActiveRecord::Schema.define(version: 20140630171820) do
     t.string   "internal_contact_email"
     t.string   "internal_contact_title"
     t.string   "internal_contact_phone"
-    t.string   "logo_url"
     t.spatial  "origin",                       limit: {:srid=>0, :type=>"geometry"}
     t.spatial  "destination",                  limit: {:srid=>0, :type=>"geometry"}
     t.spatial  "residence",                    limit: {:srid=>0, :type=>"geometry"}
+    t.string   "logo_url"
   end
 
   create_table "services_users", id: false, force: true do |t|
