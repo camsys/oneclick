@@ -967,7 +967,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
 
             dialog.modal('hide');
 
-            e.preventDefault();
+            e.preventDefault ? e.preventDefault() : e.returnValue = false;
         });
 
         $('#' + missInfoDivId + ' .btn-primary').click(function() {

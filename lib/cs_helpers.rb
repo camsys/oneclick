@@ -381,6 +381,9 @@ module CsHelpers
         comments = I18n.t(:see_details_for_cost)
         cost_in_words = I18n.t(:see_below)
       end
+    elsif [Mode.walk, Mode.bicycle, Mode.bikeshare].include? itinerary.mode
+      price_formatted = I18n.t(:no_charge)
+      cost_in_words = price_formatted
     elsif fare.nil?
       estimated = true
       price_formatted = '*'
@@ -391,11 +394,6 @@ module CsHelpers
       cost_in_words = number_to_currency(fare) || I18n.t(:not_available)
       fare = fare.to_f
       case itinerary.mode
-      when Mode.walk
-      when Mode.bicycle
-      when Mode.bikeshare
-        price_formatted = I18n.t(:no_charge)
-        cost_in_words = price_formatted
       when Mode.taxi
         fare = fare.ceil
         estimated = true
