@@ -389,7 +389,7 @@ es:
   more_info_call: "[es]For more more information, call"
   confirmation: '[es]confirmation'
   returning_by: '[es]Returning by'
-  for_assitance: "[es]for assistance"
+  for_assistance: "[es]for assistance"
   if_no_client_id: "[es]If you do not have a client id, please call"
   outbound_is_eligible: "[es]The outbound portion of your trip is eligible for automated booking."
   return_is_eligible: "[es]The return portion of your trip is eligible for automated booking."
