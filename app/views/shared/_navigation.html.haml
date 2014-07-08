@@ -43,6 +43,7 @@
 / end of publicNav
 :javascript
   $(function () {
+    $('#main').css('padding-top', ($('#publicNav').height() + 10) + 'px');
     $('#publicNav').mutate('height', function(el) {
       $('#main').css('padding-top', ($(el).height() + 10) + 'px');
     });
