@@ -2072,6 +2072,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             case 'mode_car':
                 tipText = '<p>' + localeDictFinder['drive'] + ' ' + durationText + '</p>';
                 break;
+            case 'mode_walk':
+                tipText = '<p>' + localeDictFinder['walk'] + ' ' + durationText + '</p>';
+                break;
             default:
                 tipText = '<p>' + (serviceName || modeName) + '</p>';
                 break;
