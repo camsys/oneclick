@@ -158,9 +158,15 @@ class TripDecorator < Draper::Decorator
           summary += "#{I18n.t(:taxi)} #{business['name']}: #{business['phone']};"
         end
       when 'mode_rideshare'
-        YAML.load(itinerary.server_message).each do |business|
-          summary += "#{I18n.t(:rideshare)} #{business['name']}: #{business['phone']};"
+        if itinerary.server_message
+          YAML.load(itinerary.server_message).each do |business|
+            summary += "#{I18n.t(:rideshare)} #{business['name']}: #{business['phone']};"
+          end
+        else
+          # TODO: this should be generalized here and in _rideshare_details.html.haml
+          summary += 'Georgia Commute Options'
         end
+        
       else
         summary += "#{I18n.t(:unknown)} #{I18n.t(:mode)}"
       end
