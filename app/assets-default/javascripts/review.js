@@ -1607,7 +1607,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                     }
 
                     var className = "travel-legend-" + removeSpace(leg.type.toLowerCase());
-                    var legendText = toCamelCase(leg.type);
+                    var legendText = (localeDictFinder[leg.type.toLowerCase()] ||  toCamelCase(leg.type));
 
                     if ($("." + className).length === 0 && !legendClassNameIndex[className]) {
                         legendClassNameIndex[className] = legendText;
@@ -1635,7 +1635,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 legendTags +=
                     "<div class='travel-legend-container'>" +
                     "<div class='travel-legend " + el.cls + "'/>" +
-                    "<span class='travel-legend-text'>" + (localeDictFinder[el.name.toLowerCase()] || el.name) + "</span>" +
+                    "<span class='travel-legend-text'>" + el.name + "</span>" +
                     "</div>";
             });
             $('#' + legendContainerId).append(legendTags);
