@@ -72,16 +72,12 @@ class PlacesController < PlaceSearchingController
         d = cleanup_google_details(details.body['result'])
         Rails.logger.info d
 
-        place = Place.find_by_id(p[:id])
-        j = j.merge!(d).keep_if {|k, v| %w{raw_address address1 address2 city state zip lat lon county}.include? k}
-        j = j.merge({name: p[:place_name], user: @traveler})
-        if place.nil?
-          place = Place.create!(j)
-        else
-          place.update_attributes(j)
-        end
+        j = j.merge!(d)
+
+        place = create_or_update_place p[:id], j, p[:place_name]
         
-        place.update_attributes(raw_address: place.get_address)
+      elsif j['type_name']=='POI_TYPE'
+        place = create_or_update_place p[:id], j, p[:place_name]
       else
         Rails.logger.info "updating"
         place = Place.find(j['id'])
@@ -186,6 +182,19 @@ class PlacesController < PlaceSearchingController
 
 protected
 
+  def create_or_update_place(id, attr, name)
+    attr.keep_if {|k, v| %w{raw_address address1 address2 city state zip lat lon county}.include? k}
+    place = Place.find_by_id(id)
+    attr = attr.merge({name: name, user: @traveler})
+    if place.nil?
+      place = Place.create!(attr)
+    else
+      place.update_attributes(attr)
+    end
+    place.update_attributes(raw_address: place.get_address)
+    place
+  end
+  
   def get_indexed_marker_icon(index, type)
     if type == "0"
       return 'startCandidate' + ALPHABET[index]
