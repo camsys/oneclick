@@ -195,7 +195,7 @@ class Admin::UsersController < Admin::BaseController
 
         eh = EcolaneHelpers.new
         unless user_id == ""
-          unless eh.confirm_passenger(user_id, dob)
+          unless eh.validate_passenger(user_id, dob)
             alert = true
             next
           end

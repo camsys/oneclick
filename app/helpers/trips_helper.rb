@@ -28,18 +28,17 @@ module TripsHelper
     trip_part.is_depart ? t(:departing_at) : t(:arriving_by)
   end
 
-  def outbound_itineraries show_hidden
-    itineraries(show_hidden, @trip.trip_parts.first)
+  def outbound_itineraries options = {selected_only: false}
+    itineraries(@trip.trip_parts.first, options)
   end
 
-  def return_itineraries show_hidden
-    itineraries(show_hidden, @trip.trip_parts.last)
+  def return_itineraries options = {selected_only: false}
+    itineraries(@trip.trip_parts.last, options)
   end
 
-  def itineraries show_hidden, trip_part
-    # (show_hidden.nil? ? trip_part.valid_itineraries.with_mode : trip_part.itineraries.with_mode).order('match_score')
-    t = trip_part.itineraries.valid
-    (show_hidden.nil? ? t.visible : t).order('match_score')
+  def itineraries trip_part, options = {selected_only: false}
+    t = trip_part.itineraries.valid.visible
+    (options[:selected_only] ? t.selected : t).order('match_score')
   end
 
   def itinerary_thumbnail_class itinerary

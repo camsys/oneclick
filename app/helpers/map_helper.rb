@@ -2,6 +2,14 @@ module MapHelper
 
   ALPHABET = ('A'..'Z').to_a
 
+  unless ENV['UI_MODE']=='kiosk'
+    POPUP_PARTIAL = "/shared/map_popup"
+    BUILDING_ICON = 'fa-building-o'
+  else
+    POPUP_PARTIAL = "/shared/map_popup_b2"
+    BUILDING_ICON = 'icon-building'
+  end
+
   # Returns a formatted string for displaying a map marker image that includes a A,B,C, etc. designator.
   #
   # index is a positive integer x, x >= 0 that corresponds to the index of the object in
@@ -34,7 +42,7 @@ module MapHelper
       "name" => place.name,
       "iconClass" => icon,
       "title" => place.address,
-      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'fa-building-o', :name => place.name, :address => place.address} })
+      "description" => render_to_string(:partial => POPUP_PARTIAL, :locals => { :place => {:icon => BUILDING_ICON, :name => place.name, :address => place.address} })
     }
   end
 
@@ -52,7 +60,7 @@ module MapHelper
       "name" => addr[:name],
       "iconClass" => icon,
       "title" =>  address,
-      "description" => ApplicationController.new.render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'fa-building-o', :name => addr[:name], :address => address} })
+      "description" => ApplicationController.new.render_to_string(:partial => POPUP_PARTIAL, :locals => { :place => {:icon => BUILDING_ICON, :name => addr[:name], :address => address} })
     }
   end
 
@@ -145,7 +153,7 @@ module MapHelper
       get_addr_marker(place, 'stop', 'stopIcon')
     end
   end
-      
+
   #Returns an array of polylines, one for each leg
   def create_itinerary_polylines(legs)
 
@@ -161,7 +169,7 @@ module MapHelper
     return polylines
   end
 
-protected
+  protected
 
   # Gets leaflet rendering hash for a leg based on the mode of the leg
   def get_leg_display_options(leg)

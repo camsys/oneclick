@@ -381,6 +381,11 @@ module CsHelpers
         comments = I18n.t(:see_details_for_cost)
         cost_in_words = I18n.t(:see_below)
       end
+    elsif fare.nil?
+      estimated = true
+      price_formatted = '*'
+      comments = I18n.t(:see_details_for_cost)
+      cost_in_words = I18n.t(:unknown)
     else
       price_formatted = number_to_currency(fare) || '*'
       cost_in_words = number_to_currency(fare) || I18n.t(:not_available)

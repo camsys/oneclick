@@ -22,10 +22,10 @@ class UserCharacteristicsProxy < UserProfileProxy
       map = UserCharacteristic.where(characteristic: characteristic, user_profile: user.user_profile).first
     else #if the code is an accommodation instead of a characteristic
       characteristic = Accommodation.enabled.active.where(code: code).first
-      map = UserAccommodation.where(accommodation: characteristic, user_profile: user.user_profile).first
       if characteristic.nil?
         return super
       end
+      map = UserAccommodation.where(accommodation: characteristic, user_profile: user.user_profile).first
     end
 
     # if the user has an existing characteristics stored we return it.

@@ -1,0 +1,70 @@
+$footer-height: 40px;
+
+html, body {
+  height: 100%;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height plus any margins */
+  margin: 0 auto  $footer-height * -1;
+  position: relative;
+}
+
+#footer {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: $footer-height;
+}
+
+#main {
+  width: 100%;
+  padding-bottom: $footer-height;
+}
+
+#logo{
+  background-position: 50% !important;
+  background-repeat: no-repeat !important;
+  //background-size: 100% auto;
+  height: auto !important;
+  padding: 0;
+}
+
+@media(max-width:$screen-sm-max){
+  #main {
+    padding-top: 55px;
+  }
+
+  #publicNav .container-fluid {
+    padding: 0px;
+  }
+
+  #logo{
+    width: 370px;
+    line-height: 50px;
+  }
+
+  #help i{
+    line-height: 50px;
+  }
+}
+
+@media(min-width:$screen-md-min){
+  #main {
+    padding-top: 65px;
+  }
+
+  #logo{
+    width: 440px;
+    line-height: 60px;
+  }
+
+  #help i{
+    line-height: 60px;
+  }
+}

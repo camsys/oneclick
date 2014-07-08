@@ -117,7 +117,7 @@ class TripPlanner
     task = 'fare'
     fare_options = "&origin=" + to[0].to_s + ',' + to[1].to_s + "&destination=" + from[0].to_s + ',' + from[1].to_s
     url = base_url + task + api_key + entity + fare_options
-    Rails.logger.debug "TripPlanner#get_taxi_itineraries: url: #{url}"
+    Rails.logger.info "TripPlanner#get_taxi_itineraries-fare: url: #{url}"
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
@@ -146,7 +146,7 @@ class TripPlanner
     #Get providers
     task = 'businesses'
     url = base_url + task + api_key + entity
-    Rails.logger.info "TripPlanner#get_taxi_itineraries: url: #{url}"
+    Rails.logger.info "TripPlanner#get_taxi_itineraries-business: url: #{url}"
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e

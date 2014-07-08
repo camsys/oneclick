@@ -9,7 +9,7 @@
         = format_time(itinerary.start_time.in_time_zone)
 
   -itinerary.get_legs.each do |leg|
-    -if leg.mode == TripLeg::WALK
+    -if leg.mode == Leg::TripLeg::WALK
       .itinerary_text
         %p
           %li

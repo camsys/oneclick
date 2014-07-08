@@ -651,6 +651,22 @@ def create_agencies_and_agency_users
 
 end
 
+def add_logo_to_characteristics
+  puts 'Adding sample logos for characteristics'
+  disabled_char = Characteristic.where(code: 'disabled').first
+  unless disabled_char.nil?
+    disabled_char.update_attribute(:logo_url, 'arc/characteristics/disabled.png')
+  end
+end
+
+def add_logo_to_accommodations
+  puts 'Adding sample logos for accommodations'
+  wheelchair_accom = Accommodation.where(code: 'folding_wheelchair_accessible').first
+  unless wheelchair_accom.nil?
+    wheelchair_accom.update_attribute(:logo_url, 'arc/characteristics/folding_wheelchair_accessible.png')
+  end
+end
+
 ### MAIN ###
 puts 'Adding ARC Sample Data'
 add_users_and_places
@@ -661,4 +677,6 @@ add_esp_ids
 #add_companion
 setup_cms
 create_agencies_and_agency_users
+add_logo_to_characteristics
+add_logo_to_accommodations
 puts 'Done Adding ARC Sample Data'

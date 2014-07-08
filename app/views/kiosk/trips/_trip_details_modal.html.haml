@@ -57,8 +57,8 @@
   $('body').on('shown', '#map_tab_link', function() {
     $('#lmap').css('height', '576px');
     //alert("invalidating map");
-    invalidateMap();
-    showMap();
+    CsMaps.lmap.invalidateMap();
+    CsMaps.lmap.showMap();
   });
 
   $('#email_itinerary').click(function(){

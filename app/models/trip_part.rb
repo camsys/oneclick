@@ -50,10 +50,12 @@ class TripPart < ActiveRecord::Base
     selected? and selected_itinerary.booking_confirmation
   end
 
-  # We define that an itinerary has been selected if there is exactly 1 visible valid one.
-  # We might want a more explicit selection flag in the future.
+  def has_selected?
+    selected?
+  end
+
   def selected?
-    itineraries.valid.selected.count == 1
+    itineraries.valid.selected.count > 0
   end
 
   # Returns the itinerary selected for this trip.  If one isn't selected, returns nil

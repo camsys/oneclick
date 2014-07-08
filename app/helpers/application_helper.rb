@@ -164,7 +164,9 @@ module ApplicationHelper
   # Returns the correct localized title for a trip itinerary
   def get_trip_summary_icon(itinerary)
     return if itinerary.nil?
-    
+
+    fa_prefix = ui_mode_kiosk? ? 'icon' : 'fa'
+
     mode_code = get_pseudomode_for_itinerary(itinerary)
     icon_name = if mode_code == 'rail'
       'icon-bus-sign'
@@ -175,19 +177,19 @@ module ApplicationHelper
     elsif mode_code == 'transit'
       'icon-bus-sign'
     elsif mode_code == 'paratransit'
-      'fa-truck'
+      "#{fa_prefix}-truck"
     elsif mode_code == 'volunteer'
-      'fa-truck'
+      "#{fa_prefix}-truck"
     elsif mode_code == 'nemt'
-      'fa-truck'
+      "#{fa_prefix}-truck"
     elsif mode_code == 'non-emergency medical service'
-      'fa-truck'
+      "#{fa_prefix}-truck"
     elsif mode_code == 'livery'
       'icon-taxi-sign'
     elsif mode_code == 'taxi'
       'icon-taxi-sign'      
     elsif mode_code == 'rideshare'
-      'fa-group'      
+      "#{fa_prefix}-group"
     elsif mode_code == 'walk'
       'icon-accessibility-sign'
     elsif mode_code == 'drivetransit'

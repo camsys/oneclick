@@ -5,10 +5,9 @@
       %h1
         = current_user != @user ? "#{@user.name}'s #{t(:travel_profile)}" : t(:travel_profile)
     .col-sm-6.btns
-      = f.button :submit, t(:apply), class: "btn action-button pull-right"
       = link_to t(:cancel), :back, class: "btn action-button pull-right"
+      = f.button :submit, t(:apply), class: "btn action-button pull-right"
 
-    
   .row
     .col-sm-6
       .panel.panel-default#user_info
@@ -33,7 +32,7 @@
       = select_tag "new_buddies", "", multiple: true, as: :hidden
     .row
       .col-sm-12
-        .panel.panel-default
+        .panel.panel-default#buddies
           .panel-heading
             %h2.panel-title= t(:buddies)
           .panel-body
@@ -43,7 +42,7 @@
             %table.table.table.condensed.table-striped.table-hover.table-bordered#buddies_table
               %thead
                 %th= t(:buddy)
-                %th= t(:email)
+                %th.email= t(:email)
                 %th= t(:can_assist_me)
                 %th= t(:i_can_assist)
               %tbody
@@ -56,10 +55,10 @@
                   .modal-header
                     .row
                       .col-sm-12
-                        %btn.btn.action-button.pull-right#search
-                          = t(:apply)
                         %btn.btn.action-button.pull-right{data: {dismiss: 'modal'}}
                           = t(:cancel)
+                        %btn.btn.action-button.pull-right#search
+                          = t(:apply)
                   .modal-body
                     .modal-flash
                     .panel.panel-default
@@ -102,7 +101,7 @@
             %h2.panel-title=t(:booking_information)
           .panel-body
             =simple_fields_for :user_service, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |booking_form|
-              -Service.where("booking_service_code IS NOT NULL").each do |service|
+              -Service.active.where("booking_service_code IS NOT NULL").each do |service|
                 - user_service = UserService.where(service: service, user_profile: @user.user_profile).first
                 - if user_service
                   = booking_form.input service.id.to_s, label: service.name, input_html: { value: user_service.external_user_id}

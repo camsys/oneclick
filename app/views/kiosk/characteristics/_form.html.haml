@@ -31,19 +31,19 @@
                     %td
                       = f.radio_button characteristic.code.to_sym, "na"
                       = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure', :value => "na"
-                - Characteristic.personal_factors.where(:datatype => 'disabled').each do |characteristic|
-                  %tr
-                    %td
-                      = f.label characteristic.note + " (not yet available)", :class => 'disabled'
-                    %td
-                      = f.radio_button characteristic.code.to_sym, true, :disabled => true
-                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes disabled', :value => true, disabled: true
-                    %td
-                      = f.radio_button characteristic.code.to_sym, false, :disabled => true
-                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no disabled', :value => false, disabled: true
-                    %td
-                      = f.radio_button characteristic.code.to_sym, "na", :disabled => true
-                      = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure disabled', :value => "na", disabled: true
+                / - Characteristic.personal_factors.where(:datatype => 'disabled').each do |characteristic|
+                /   %tr
+                /     %td
+                /       = f.label characteristic.note + " (not yet available)", :class => 'disabled'
+                /     %td
+                /       = f.radio_button characteristic.code.to_sym, true, :disabled => true
+                /       = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes disabled', :value => true, disabled: true
+                /     %td
+                /       = f.radio_button characteristic.code.to_sym, false, :disabled => true
+                /       = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'no disabled', :value => false, disabled: true
+                /     %td
+                /       = f.radio_button characteristic.code.to_sym, "na", :disabled => true
+                /       = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'unsure disabled', :value => "na", disabled: true
 
 
         / -Characteristic.personal_factors.where(:datatype => 'disabled').each do |characteristic|

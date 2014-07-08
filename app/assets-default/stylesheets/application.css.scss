@@ -1,0 +1,44 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ */
+
+// $navbar-default-bg: #312312;
+// $light-orange: #ff8c00;
+// $navbar-default-color: $light-orange;
+
+//$grid-float-breakpoint: 992px; //screen-md-min
+
+@import 'brand-lib';
+@import "bootstrap";
+@import "bootstrap/theme";
+
+// @import "includes/bootstrap-accessibility";
+@import "includes/jquery.timepicker";
+@import "includes/jquery-ui-1.10.4.slider.smoothness.min";
+@import "tadaaapickr";
+@import "bootstrap-combobox";
+@import "font-awesome";
+@import "font-awesome-ext";
+@import "travelcons";
+@import "bootstrap_datatable";
+@import "base/_base";
+@import "base/home";
+@import "public_ui_layout";
+@import "leaflet_map";
+@import "trips";
+@import "places";
+@import "users";
+@import "typeahead.js-bootstrap";
+@import "ratings";
+@import 'bootstrap-datetimepicker';
+@import 'dataTables/bootstrap/3/jquery.dataTables.bootstrap';
+@import 'ui_lib_override';
+@import 'brand';
