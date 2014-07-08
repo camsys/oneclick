@@ -60,6 +60,7 @@ gem 'activerecord-postgis-adapter', '= 1.1.0'
 gem 'rgeo-activerecord'
 gem 'rgeo'
 gem 'rgeo-shapefile'
+gem 'leaflet-rails', github: 'camsys/leaflet-rails'
 
 group :development do
   # gem 'ffi-geos'

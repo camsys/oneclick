@@ -14,6 +14,12 @@ GIT
       sass (~> 3.2)
 
 GIT
+  remote: git://github.com/camsys/leaflet-rails.git
+  revision: e1b7912a34c2b0565adc2f119b0e2f809d67c5dd
+  specs:
+    leaflet-rails (0.7.3)
+
+GIT
   remote: git://github.com/camsys/sass-rails.git
   revision: baf4f108c999da4941ce68085a9de7fac10e262f
   tag: v4.0.3a
@@ -509,6 +515,7 @@ DEPENDENCIES
   jquery-datatables-rails (~> 2.1.10.0.2)
   jquery-rails
   launchy
+  leaflet-rails!
   letter_opener
   listen
   lorem-ipsum-me

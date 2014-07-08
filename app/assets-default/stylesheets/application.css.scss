@@ -16,6 +16,12 @@
 
 //$grid-float-breakpoint: 992px; //screen-md-min
 
+
+/*
+  *= require leaflet
+  *= require_self
+  */
+
 @import 'brand-lib';
 @import "bootstrap";
 @import "bootstrap/theme";

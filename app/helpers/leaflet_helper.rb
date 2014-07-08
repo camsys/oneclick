@@ -12,7 +12,7 @@ module LeafletHelper
   SHOW_STREET_VIEW= true
   STREET_VIEW_URL = '/streetview.html'
   SHOW_LOCATION_SELECT = false
-  ZOOM_ANIMATION = false #default as false; true sometimes freezes map;
+  ZOOM_ANIMATION = true
   
   def LeafletMap(options)
     options_with_indifferent_access = options.with_indifferent_access
