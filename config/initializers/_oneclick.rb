@@ -28,6 +28,7 @@ Oneclick::Application.config.google_places_api_key = 'AIzaSyCvKyNoBzQNrBRuSRkipW
 
 case ENV['BRAND'] || 'arc'
 when 'arc'
+  Oneclick::Application.config.host = 'oneclick-arc.camsys-apps.com'
   Oneclick::Application.config.ui_logo = 'arc/arc-logo.png'
   Oneclick::Application.config.geocoder_components = 'administrative_area:GA|country:US'
   Oneclick::Application.config.map_bounds = [[33.457797,-84.754028], [34.090199,-83.921814]]
@@ -54,6 +55,7 @@ when 'arc'
   Oneclick::Application.config.state = 'GA'
 
 when 'broward'
+  Oneclick::Application.config.host = 'oneclick-broward.camsys-apps.com'
   Oneclick::Application.config.ui_logo = 'broward/Broward_211_Get_Connected_get_answers.jpg'
   Oneclick::Application.config.geocoder_components = 'administrative_area:FL|country:US'
   Oneclick::Application.config.map_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
@@ -78,6 +80,7 @@ when 'broward'
   Oneclick::Application.config.state = 'FL'
 
 when 'pa'
+  Oneclick::Application.config.host = 'oneclick-pa.camsys-apps.com'
   Oneclick::Application.config.ui_logo = 'pa/penndotLogo.jpg'
   Oneclick::Application.config.geocoder_components = 'administrative_area:PA|country:US'
   # TODO Do we maybe need different bounds for kiosk vs. default?
