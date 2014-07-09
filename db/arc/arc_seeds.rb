@@ -31,7 +31,7 @@ include SeedsHelpers
  {klass: Accommodation, code: 'motorized_wheelchair_accessible', name: 'Motorized wheelchair accessible.', note: 'Do you need a vehicle than has space for a motorized wheelchair?', datatype: 'bool',
  	logo_url: 'arc/characteristics/motorized_wheelchair_accessible.png'},
  {klass: Accommodation, code: 'lift_equipped', name: 'Wheelchair lift equipped vehicle.', note: 'Do you need a vehicle with a lift?', datatype: 'bool',
- 	logo_url: 'arc/characteristics/lift_equipped.png')},
+ 	logo_url: 'arc/characteristics/lift_equipped.png'},
  {klass: Accommodation, code: 'door_to_door', name: 'Door-to-door', note: 'Do you need assistance getting to your front door?', datatype: 'bool',
  	logo_url: 'arc/characteristics/door_to_door.png'},
  {klass: Accommodation, code: 'curb_to_curb', name: 'Curb-to-curb', note: 'Do you need delivery to the curb in front of your home?', datatype: 'bool',
