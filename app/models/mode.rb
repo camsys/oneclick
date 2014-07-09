@@ -67,12 +67,13 @@ class Mode < ActiveRecord::Base
 
   def self.setup_modes(session_mode_codes)
     q = session_mode_codes ? Mode.where('code in (?)', session_mode_codes) : Mode.all
-    non_transit_modes = Mode.top_level.where("code <> 'mode_transit'").sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.collect do |m|
+    non_transit_modes = Mode.top_level.where("code <> 'mode_transit'").where(visible: true)
+      .sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.collect do |m|
       [I18n.t(m.name).html_safe, m.code]
     end
     transit = Mode.transit
     non_transit_modes << [I18n.t(transit.name).html_safe, transit.code]
-    transit_modes = transit_submodes.sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.collect do |t|
+    transit_modes = transit_submodes.where(visible: true).sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.collect do |t|
       [I18n.t(t.name).html_safe, t.code]
     end
     selected_modes = q.collect{|m| m.code}

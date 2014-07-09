@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140630171820) do
+ActiveRecord::Schema.define(version: 20140708201004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -168,6 +168,7 @@ ActiveRecord::Schema.define(version: 20140630171820) do
     t.string  "otp_mode"
     t.integer "results_sort_order"
     t.string  "logo_url"
+    t.boolean "visible",                       default: false
   end
 
   create_table "places", force: true do |t|
