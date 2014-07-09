@@ -53,33 +53,4 @@
           timeField.data("DateTimePicker").setValue(timeField.data("DateTimePicker").date);
         }
       });
-
-      $('#trip_proxy_#{dir}_trip_date, #trip_proxy_#{dir}_trip_time').on('dp.change', function() {
-        var otherDateData = $('#trip_proxy_#{other}_trip_date').data('DateTimePicker');
-        var otherTimeData = $('#trip_proxy_#{other}_trip_time').data('DateTimePicker');
-        var thisDateData = $('#trip_proxy_#{dir}_trip_date').data('DateTimePicker');
-        var thisTimeData = $('#trip_proxy_#{dir}_trip_time').data('DateTimePicker');
-
-        var otherDateStr = otherDateData.date.format(otherDateData.format);
-        var otherTimeStr = otherTimeData.date.format(otherTimeData.format);
-        var thisDateStr = thisDateData.date.format(thisDateData.format);
-        var thisTimeStr = thisTimeData.date.format(thisTimeData.format);
-
-        var otherDateTime = moment(otherDateStr + ' ' + otherTimeStr);
-        var thisDateTime = moment(thisDateStr + ' ' + thisTimeStr);
-
-        var isReturn = '#{dir}' === 'return';
-        var isChanged = false;
-        if (isReturn && (thisDateTime <= otherDateTime) ) {
-          otherDateTime = thisDateTime.subtract(2, 'hours');
-          isChanged = true;
-        } else if (!isReturn && (thisDateTime >= otherDateTime)) {
-          otherDateTime = thisDateTime.add(2, 'hours');
-          isChanged = true;
-        }
-        if(isChanged) {
-          otherDateData.setValue(otherDateTime.toDate());
-          otherTimeData.setValue(otherDateTime.toDate());
-        }
-      })
     });
