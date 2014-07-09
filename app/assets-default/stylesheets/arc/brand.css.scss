@@ -1,15 +1,4 @@
 // ARC CSS file. Styles only, no variables or mixins definitions.
-$nav-start-color: #FAFAFA;
-$nav-end-color: #A3A3A3;
-#publicNav{
-  background: $nav-start-color;
-  background: -moz-linear-gradient(top,  $nav-start-color 0%, $nav-end-color 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$nav-start-color), color-stop(100%,$nav-end-color));
-  background: -webkit-linear-gradient(top,  $nav-start-color 0%,$nav-end-color 100%);
-  background: -o-linear-gradient(top,  $nav-start-color 0%,$nav-end-color 100%);
-  background: -ms-linear-gradient(top,  $nav-start-color 0%,$nav-end-color 100%);
-  background: linear-gradient(to bottom,  $nav-start-color 0%,$nav-end-color 100%);
-}
 
 @media(max-width:$screen-sm-max){
   #logo{
@@ -30,7 +19,6 @@ $nav-end-color: #A3A3A3;
 #userDropdown .dropdown-toggle{
   background-color: transparent;
   color: #10104A;
-  //font-size: 1em;
   font-weight: bold;
 }
 
@@ -46,49 +34,6 @@ $nav-end-color: #A3A3A3;
 
   i:hover {
     color: #000000;
-  }
-}
-
-$feedback-start-color: #F8F02A;
-$feedback-end-color: #CCA23D;
-#feedback {
-  background: $feedback-start-color;
-  background: -moz-linear-gradient(top,  $feedback-start-color 0%, $feedback-end-color 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$feedback-start-color), color-stop(100%,$feedback-end-color));
-  background: -webkit-linear-gradient(top,  $feedback-start-color 0%,$feedback-end-color 100%);
-  background: -o-linear-gradient(top,  $feedback-start-color 0%,$feedback-end-color 100%);
-  background: -ms-linear-gradient(top,  $feedback-start-color 0%,$feedback-end-color 100%);
-  background: linear-gradient(to bottom,  $feedback-start-color 0%,$feedback-end-color 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$feedback-start-color}', endColorstr='#{$feedback-end-color}',GradientType=0 );
-
-  a{
-    color: black;
-    //font-size: 12px;
-    //font-weight: bold;
-  }
-}
-
-$versionLang-start-color: #7DCCE6;
-$versionLang-end-color: #3681B3;
-#versionLang {
-  background: $versionLang-start-color;
-  background: -moz-linear-gradient(top,  $versionLang-start-color 0%, $versionLang-end-color 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$versionLang-start-color), color-stop(100%,$versionLang-end-color));
-  background: -webkit-linear-gradient(top,  $versionLang-start-color 0%,$versionLang-end-color 100%);
-  background: -o-linear-gradient(top,  $versionLang-start-color 0%,$versionLang-end-color 100%);
-  background: -ms-linear-gradient(top,  $versionLang-start-color 0%,$versionLang-end-color 100%);
-  background: linear-gradient(to bottom,  $versionLang-start-color 0%,$versionLang-end-color 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$versionLang-start-color}', endColorstr='$versionLang-end-color',GradientType=0 );
-  //height: 20px;
-  color: #FEC800;
-  //font-size: 12px;
-  //font-weight: bold;
-  //padding-top: 3px;
-
-  a {
-    color: #FEC800;
-    //font-size: 12px;
-    //font-weight: bold;
   }
 }
 

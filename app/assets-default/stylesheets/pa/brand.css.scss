@@ -1,27 +1,13 @@
 // PA/YATA CSS file. Styles only, no variables or mixins definitions.
 
-// TODO This should probably be done with a mixin
-@media(max-width:767px){
+@media(max-width:$screen-sm-max){
   #logo {
-   background: image-url('pa/FindMyRidePA_Logo_sm.jpg') no-repeat center center fixed;
-   // -webkit-background-size: cover;
-   // -moz-background-size: cover;
-   // -o-background-size: cover;
-   // background-size: cover;
+   background-image: image-url('pa/logo-sm.jpg');
  }
 }
 
-@media(min-width:768px){
+@media(min-width:$screen-md-min){
   #logo {
-   background: image-url('pa/FindMyRidePA_Logo_lg.jpg') no-repeat left center;
-   // -webkit-background-size: cover;
-   // -moz-background-size: cover;
-   // -o-background-size: cover;
-   // background-size: cover;
+   background-image: image-url('pa/logo-lg.jpg');
   }
-}
-
-#splash {
-  // background-color: $splash-bg;
-  // padding: 10px;
 }

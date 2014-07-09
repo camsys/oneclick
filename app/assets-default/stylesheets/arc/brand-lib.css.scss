@@ -1,13 +1,13 @@
 // ARC brand-lib. Variables and mixins definitions only. No styles.
 
-// For example:
-//$dropdown-bg: #666666;
-$btn-primary-bg: #efa521; // Controls appearance of action-button as well as btn-primary classes
+$is-header-gradient-based: true;
+$is-version-footer-gradient-based: true;
+$is-feedback-footer-gradient-based: true;
+
+$btn-primary-bg: #efa521; 
 $btn-primary-color: #333;
 
-//application base font styles
 $font-family-base: Verdana; 
 $font-size-base: 14pt;
 
 $breadcrumb-height: 40px; 
-$single-plan-height: 50px; //the height of each itinerary container

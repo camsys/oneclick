@@ -27,6 +27,29 @@ html, body {
   padding-bottom: $footer-height;
 }
 
+#publicNav{
+  @include header-background;
+}
+
+#feedback{
+  @include footer-feedback-background;
+
+  color: $footer-feedback-text-color;
+
+  a {
+    color: $footer-feedback-hyperlink-text-color;
+  }
+}
+
+#versionLang {
+  @include footer-version-background;
+  color: $footer-version-text-color;
+
+  a {
+    color: $footer-version-hyperlink-text-color;
+  }
+}
+
 #logo{
   background-position:0% 50% !important;
   background-repeat: no-repeat !important;

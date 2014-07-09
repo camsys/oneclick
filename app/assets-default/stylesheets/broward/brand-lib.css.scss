@@ -1,20 +1,7 @@
 // Broward brand-lib. Variables and mixins definitions only. No styles.
 
-// For example:
-//$dropdown-bg: #666666;
-
-// $btn-default-bg: #087436;
-// $btn-default-color: #eee;
-// $btn-default-border: lighten($btn-default-bg, 5%);
-$broward_green: #99cc67;
-$btn-primary-bg: $broward_green;
+$btn-primary-bg:#99cc67;
 $btn-primary-color: #333;
-$splash-bg: lighten(#1059a0, 50%);
+
+$header-background-color: #99cc67;
 $font-family-sans-serif: "lucida grande","lucida sans unicode",tahoma,verdana,arial,sans-serif;
-
-//application base font styles
-$font-family-base: "Helvetica Neue", Helvetica, Arial, sans-serif;
-$font-size-base: 14px;
-
-$breadcrumb-height: 30px; 
-$single-plan-height: 50px; //the height of each itinerary container
