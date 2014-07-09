@@ -55,7 +55,7 @@ module CsHelpers
         {label: t(:travel_profile), target: user_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:travel_profile]},
         {label: t(:trips), target: user_trips_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_trips]},
         {label: t(:places), target: user_places_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_places]},
-        {label: t(:stop_assisting), target: unset_traveler_user_trips_path(current_user), icon: ACTION_ICONS[:stop_assisting], test: get_traveler != current_or_guest_user}
+        {label: t(:stop_assisting), target: unset_traveler_user_trips_path(get_traveler), icon: ACTION_ICONS[:stop_assisting], test: get_traveler != current_or_guest_user}
       ]
     else
       [
@@ -178,11 +178,11 @@ module CsHelpers
   end
 
   def assisting?
-    session.include? :assisting
+    session.include? TRAVELER_USER_SESSION_KEY
   end
 
   def assisted_user
-    @assisted_user ||= User.find_by_id(session[:assisting])
+    @assisted_user ||= User.find_by_id(session[TRAVELER_USER_SESSION_KEY])
   end
 
   def format_exception e

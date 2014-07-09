@@ -1,7 +1,6 @@
 class PlacesController < PlaceSearchingController
   
-  # set the @traveler variable for actions that are not supported by the super class controller
-  before_filter :get_traveler, :only => [:index, :edit, :create, :destroy, :update]
+  load_and_authorize_resource only: [:new, :create, :show, :index, :update, :edit]
 
   class PlacesProxy
     include ActiveAttr::Model

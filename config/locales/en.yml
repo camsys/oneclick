@@ -567,6 +567,7 @@ en:
   create_account: "Create an account to save your information."
   stop_assisting: "Stop assisting"
   assisting_turned_off: "Assisting has been turned off."
+  assisting_turned_on: "Assisting has been turned on."
   new_esp_successfully_uploaded: "New ESP File Successfully Uploaded"
   thanks_for_the_feedback: "Thank you for your feedback!"
   optional_comments_descr: "If you would like to provide optional comments or a rating for your trip, you can do so below."

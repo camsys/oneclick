@@ -11,6 +11,9 @@ class ApplicationController < ActionController::Base
   before_filter :get_traveler
   before_filter :set_locale
   before_filter :setup_actions
+  before_action do |controller|
+    @current_ability ||= Ability.new(get_traveler)
+  end
   after_filter :clear_location
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -38,11 +41,13 @@ class ApplicationController < ActionController::Base
   end
 
   def start_assisting user
-    session[:assisting] = user.id
+    set_traveler_id user.id
+    @current_ability = nil
   end
 
   def stop_assisting
-    session.delete :assisting
+    session.delete TRAVELER_USER_SESSION_KEY
+    @current_ability = nil
   end
 
   def set_no_cache

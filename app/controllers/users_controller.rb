@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  load_and_authorize_resource except: :edit
   before_filter :authenticate_user!
+  load_and_authorize_resource except: [:edit, :assist]
 
   def index
     authorize! :index, User, :message => t(:not_authorized_as_an_administrator)
@@ -8,7 +8,6 @@ class UsersController < ApplicationController
   end
 
   def show
-    authorize! :show, @user
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)
     @user_programs_proxy = UserProgramsProxy.new(@user)
     @user_accommodations_proxy = UserAccommodationsProxy.new(@user)
@@ -16,7 +15,6 @@ class UsersController < ApplicationController
   end
   
   def update
-    @user = User.find(params[:id])
     @user_characteristics_proxy = UserCharacteristicsProxy.new(User.find(@user)) #we inflate a new proxy every time, but it's transient, just holds a bunch of characteristics
 
     # prep for password validation in @user.update by removing the keys if neither one is set.  Otherwise, we want to catch with password validation in User.rb
@@ -33,7 +31,7 @@ class UsersController < ApplicationController
       if booking_alert
         redirect_to user_path(@user, locale: @user.preferred_locale), :alert => "Invalid Client Id or Date of Birth."
       else
-        if params[:user][:password].eql? params[:user][:password_confirmation] # They have updated their password, so log them back in, otherwise they will fail authentication
+        if params[:user][:password] and params[:user][:password].eql? params[:user][:password_confirmation] # They have updated their password, so log them back in, otherwise they will fail authentication
           sign_in @user, :bypass => true
         end
         redirect_to user_path(@user, locale: @user.preferred_locale), :notice => "User updated."
@@ -135,14 +133,14 @@ class UsersController < ApplicationController
 
   def assist
     # Confirm buddies
-    ur = UserRelationship.find_by(user_id: params[:buddy_id], delegate_id: @user)
-    if ur && ur.confirmed
-      set_traveler_id params[:buddy_id]
-      redirect_to new_user_trip_path(params[:buddy_id])
-    else
-      redirect_to user_path(@user), alert: t(:unauthorized)
-    end
+    @user = User.find(params[:id])
+    authorize! :assist, User.find(params[:buddy_id])
     
+    if UserRelationship.find_by(user_id: params[:buddy_id], delegate_id: @user)
+      set_traveler_id params[:buddy_id]
+      flash[:notice] = t(:assisting_turned_on)
+      redirect_to new_user_trip_path(params[:buddy_id])
+    end
   end
 
 private

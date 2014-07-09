@@ -57,7 +57,7 @@ class Ability
       can [:update], Agency do |a|  # edit privilege over sub agencies
         user.agency.present? && user.agency.sub_agencies.include?(a)
       end
-      can [:update, :full_read, :assist], User do |u|
+      can [:full_read, :assist], User do |u|
         u.approved_agencies.include? user.try(:agency)
       end
       can :create, User
@@ -83,14 +83,13 @@ class Ability
       can :read, Agency
       can :full_read, Agency # read gives access to only contact info.  full_read offers staff, internal contact, etc.
       can [:create, :show], User #can find any user if they search, can create a user
-      can [:update, :full_read, :assist], User do |u| # agents have extra privileges for users that have approved the agency
+      can [:full_read, :assist], User do |u| # agents have extra privileges for users that have approved the agency
         u.approved_agencies.include? user.try(:agency)
       end
       can [:travelers], Agency, id: user.agency.try(:id)
       can [:read], Agency
       can [:index, :show], Report
       can [:index, :show], [Provider, Service] # Read-only access to providers and services
-      #can [:read, :update], User, agency_id: user.agency.try(:id) #removing because there isn't extra information for an agent here
       can :send_follow_up, Trip
     end
 
@@ -115,8 +114,10 @@ class Ability
 
     ## All users have the following permissions, which logically OR with 'can' statements above
     can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
-    can [:read, :update, :full_read, :add_booking_service, :full_read, :find_by_email], User, :id => user.id
-    can [:assist], User, :id => user.id
+    can [:read, :full_read, :update, :add_booking_service, :find_by_email], User, :id => user.id
+    can [:assist], User do |traveler|
+      user.confirmed_travelers.include? traveler
+    end
     can :manage, UserRelationship do |ur|
       ur.delegate.eql? user or ur.traveler.eql? user
     end
