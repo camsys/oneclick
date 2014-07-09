@@ -359,9 +359,11 @@ module CsHelpers
   def get_itinerary_cost itinerary
     estimated = false
     fare = itinerary.cost || (itinerary.service.fare_structures.first rescue nil)
-    price_formatted = ''
+    price_formatted = nil
     cost_in_words = ''
     comments = ''
+    Rails.logger.info 'mode is '
+    Rails.logger.info itinerary.mode
     if fare.respond_to? :fare_type
       case fare.fare_type
       when FareStructure::FLAT
@@ -381,25 +383,28 @@ module CsHelpers
         comments = I18n.t(:see_details_for_cost)
         cost_in_words = I18n.t(:see_below)
       end
-    elsif [Mode.walk, Mode.bicycle, Mode.bikeshare].include? itinerary.mode
-      price_formatted = I18n.t(:no_charge)
-      cost_in_words = price_formatted
-    elsif fare.nil?
-      estimated = true
-      price_formatted = '*'
-      comments = I18n.t(:see_details_for_cost)
-      cost_in_words = I18n.t(:unknown)
     else
-      price_formatted = number_to_currency(fare) || '*'
-      cost_in_words = number_to_currency(fare) || I18n.t(:not_available)
-      fare = fare.to_f
+      if itinerary.is_walk #TODO: walk currently is put in transit category
+        fare = 0
+        price_formatted = I18n.t(:no_charge)
+        cost_in_words = price_formatted
+      end
+
       case itinerary.mode
+      when Mode.walk
+      when Mode.bicycle
+      when Mode.bikeshare
+        fare = 0
+        price_formatted = I18n.t(:no_charge)
+        cost_in_words = price_formatted
       when Mode.taxi
-        fare = fare.ceil
-        estimated = true
-        price_formatted = number_to_currency(fare) + '*'
-        comments = I18n.t(:cost_estimated)
-        cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
+        unless fare.nil?
+          fare = fare.ceil
+          estimated = true
+          price_formatted = number_to_currency(fare) + '*'
+          comments = I18n.t(:cost_estimated)
+          cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
+        end
       when Mode.rideshare
         fare = nil
         estimated = true
@@ -407,12 +412,24 @@ module CsHelpers
         comments = I18n.t(:see_details_for_cost)
         cost_in_words = I18n.t(:see_below)
       end
-
-      if !estimated and fare == 0
-        price_formatted = I18n.t(:no_charge)
-        cost_in_words = price_formatted
+    end
+   
+    if price_formatted.nil?
+      unless fare.nil?
+        fare = fare.to_f
+        if fare == 0
+          price_formatted = I18n.t(:no_charge)
+          cost_in_words = price_formatted
+        else
+          price_formatted = number_to_currency(fare)
+          cost_in_words = number_to_currency(fare)
+        end
+      else
+        estimated = true
+        price_formatted = '*'
+        comments = I18n.t(:see_details_for_cost)
+        cost_in_words = I18n.t(:unknown)
       end
-
     end
 
     return {price: fare, comments: comments, price_formatted: price_formatted, estimated: estimated, cost_in_words: cost_in_words}
