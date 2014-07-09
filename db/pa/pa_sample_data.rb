@@ -544,7 +544,7 @@ def add_urls_to_pa
 end
 
 def setup_cms
-    %w{en es}.each do |locale|
+    I18n.available_locales.each do |locale|
       Translation.where(key: 'splash', locale: locale).first_or_create(value: File.open(File.join('db', 'pa', 'splash.html')).read)
     end
 end

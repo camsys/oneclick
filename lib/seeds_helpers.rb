@@ -17,11 +17,14 @@ module SeedsHelpers
       record[:code] = p[:code]
       p[:xlate].each do |k,v|
         translation_fkey = "#{p[:code]}_#{k}"
-        Translation.find_or_create_by!(key: translation_fkey, locale: "en") do |t|
-          t.value = v
-        end
-        Translation.find_or_create_by!(key: translation_fkey, locale: "es") do |t|
-          t.value = "[es]#{v}[/es]"
+        I18n.available_locales.each do |locale|
+          Translation.find_or_create_by!(key: translation_fkey, locale: "es") do |t|
+            if locale.eql? :en
+              t.value = v
+            else
+              t.value = "[#{locale}]#{v}[/#{locale}]"
+            end
+          end
         end
         record[k] = translation_fkey
       end

@@ -554,7 +554,7 @@ end
 
 
 def setup_cms
-    %w{en es}.each do |locale|
+    I18n.available_locales.each do |locale|
       Translation.where(key: 'splash', locale: locale).first_or_create(value: File.open(File.join('db', 'broward', 'splash_' + locale + '.html')).read)
     end
 end
