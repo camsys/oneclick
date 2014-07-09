@@ -111,6 +111,35 @@ when 'pa'
   Oneclick::Application.config.ecolane_base_url = "https://rabbit-test.ecolane.com"
 
 
+when 'jta'
+  Oneclick::Application.config.host = 'oneclick-jta.camsys-apps.com'
+  Oneclick::Application.config.ui_logo = 'jta/TransPortalLogo-original.jpg'
+  Oneclick::Application.config.geocoder_components = 'administrative_area:FL|country:US'
+  # TODO Do we maybe need different bounds for kiosk vs. default?
+  Oneclick::Application.config.map_bounds      = [[30.0668986565,-82.0920740215],[30.5909384888,-81.319458582]]
+  Oneclick::Application.config.geocoder_bounds = [[30.0668986565,-82.0920740215],[30.5909384888,-81.319458582]]
+  Oneclick::Application.config.default_zoom = 12
+  Oneclick::Application.config.open_trip_planner = "http://otpv1-jta.camsys-apps.com:8080/otp/routers/jta/plan?"
+  Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
+  Oneclick::Application.config.taxi_fare_finder_api_city = "Jacksonville-FL"
+  Oneclick::Application.config.name = '1-Click/JTA'
+  ENV['SMTP_MAIL_USER_NAME'] = "oneclick.pa.camsys" # TODO
+  ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey" # TODO
+  ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@rabbittransit.org" # TODO
+  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "Oneclick@Camsys.com" # TODO
+  ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
+  ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
+  ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
+  ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
+  honeybadger_api_key = 'f49faffa'
+  Oneclick::Application.config.poi_file = 'db/pa/pa-poi-from-arcgis.csv' # TODO
+  Oneclick::Application.config.default_county = 'Duval'
+  Oneclick::Application.config.public_read_feedback = false # TODO
+  Oneclick::Application.config.public_write_feedback = true # TODO
+  Oneclick::Application.config.state = 'FL'
+
+  Oneclick::Application.config.max_walk_seconds = 3600
+
 end
 
 case Oneclick::Application.config.ui_mode

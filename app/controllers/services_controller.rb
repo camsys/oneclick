@@ -160,7 +160,7 @@ protected
                                       [ :day_of_week, :start_time, :end_time, :id, :_destroy ] },
                                     { service_characteristics_attributes:
                                       [ :id, :active, :characteristic_id, :group, :value,
-                                        :value_relationship_id, :_destroy ] },
+                                        :rel_code, :_destroy ] },
                                     { accommodation_ids: [] },
                                     { trip_purpose_ids: [] },
                                     { fare_structures_attributes:

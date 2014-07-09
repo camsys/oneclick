@@ -265,7 +265,7 @@ def add_services_and_providers
         end
 
         #Traveler Characteristics Requirements
-        ServiceCharacteristic.create(service: service, characteristic: age, value: '60', value_relationship_id: 4)
+        ServiceCharacteristic.create(service: service, characteristic: age, value: '60', rel_code: 4)
 
         #Traveler Accommodations Requirements
         [door_to_door, folding_wheelchair_accessible].each do |n|
@@ -297,7 +297,7 @@ def add_services_and_providers
         end
 
         #Traveler Characteristics Requirements
-        ServiceCharacteristic.create(service: service, characteristic: age, value: '60', value_relationship_id: 4)
+        ServiceCharacteristic.create(service: service, characteristic: age, value: '60', rel_code: 4)
 
         #Traveler Accommodations Requirements
         [door_to_door, folding_wheelchair_accessible].each do |n|
@@ -329,7 +329,7 @@ def add_services_and_providers
         end
 
         #Traveler Characteristics Requirements
-        ServiceCharacteristic.create(service: service, characteristic: age, value: '60', value_relationship_id: 4)
+        ServiceCharacteristic.create(service: service, characteristic: age, value: '60', rel_code: 4)
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible].each do |n|
@@ -395,7 +395,7 @@ def add_services_and_providers
 
         #Traveler Characteristics Requirements
         ServiceCharacteristic.create(service: service, characteristic: no_trans, value: 'false')
-        ServiceCharacteristic.create(service: service, characteristic: age, value: '62', value_relationship_id: 4)
+        ServiceCharacteristic.create(service: service, characteristic: age, value: '62', rel_code: 4)
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible].each do |n|
@@ -427,7 +427,7 @@ def add_services_and_providers
         end
 
         #Traveler Characteristics Requirements
-        ServiceCharacteristic.create(service: service, characteristic: age, value: '60', value_relationship_id: 4)
+        ServiceCharacteristic.create(service: service, characteristic: age, value: '60', rel_code: 4)
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible].each do |n|

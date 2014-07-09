@@ -454,7 +454,7 @@ class EspReader
     rules.each do |rule|
       if rule[0..2].downcase == 'age'
         characteristic = Characteristic.find_by_code('age')
-        ServiceCharacteristic.create(service: service, characteristic: characteristic, value: rule.gsub(/[^0-9]/, ''), value_relationship_id: 4, group: group)
+        ServiceCharacteristic.create(service: service, characteristic: characteristic, value: rule.gsub(/[^0-9]/, ''), rel_code: 4, group: group)
         next
       end
 
