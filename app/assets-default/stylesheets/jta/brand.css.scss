@@ -1,9 +1,9 @@
-// PA/YATA CSS file. Styles only, no variables or mixins.
+// JTA CSS file. Styles only, no variables or mixins.
 
 // TODO This should probably be done with a mixin
 @media(max-width:767px){
   #logo {
-   background: image-url('pa/FindMyRidePA_Logo_sm.jpg') no-repeat center center fixed;
+   background: image-url('jta/TransPortalLogo-50px.jpg') no-repeat left center fixed;
    // -webkit-background-size: cover;
    // -moz-background-size: cover;
    // -o-background-size: cover;
@@ -13,7 +13,8 @@
 
 @media(min-width:768px){
   #logo {
-   background: image-url('pa/FindMyRidePA_Logo_lg.jpg') no-repeat left center;
+   background: image-url('jta/TransPortalLogo-50px.jpg') no-repeat left center;
+   background-position: 4% !important;
    // -webkit-background-size: cover;
    // -moz-background-size: cover;
    // -o-background-size: cover;

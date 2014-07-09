@@ -735,6 +735,11 @@ en:
     logotext: ''
     site_title: 'Broward 1-Click'
     site_description: 'Broward 1-Click Application'
+  jta:
+    home: 'JTA 1-Click Home'
+    logotext: ''
+    site_title: 'JTA 1-Click'
+    site_description: 'JTA 1-Click Application'
   simple_form:
     labels:
       defaults:
