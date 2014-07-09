@@ -3,28 +3,4 @@
     = t(:trips)
     = link_to(t(:plan), new_user_trip_path(@traveler),
       class: "btn btn-default action-button pull-right" )
-= form_tag admin_trips_path, :id => 'time_filter_form', :method => "get", :class => 'navbar-form form-inline', :style => "margin-top:20px;" do
-  .input-prepend
-    %label.add-on{:for => 'time_filter'}= t(:filter)
-    = select_tag(:time_filter_type, options_for_select(trip_filters.collect{|r| [r[:value], r[:id]]}, :selected => @time_filter_type), :style => 'margin-top:0px', :id => 'time_filter')
-        
 = render partial: "trips/trips_display_table", locals: {trips: @trips, traveler: @traveler, show_username: true}
-:javascript
-  $(document).ready(function() {
-    $('#admin_trips_table').dataTable( {
-          "oLanguage": {
-              "sZeroRecords": "Nothing found - sorry",
-              "sInfo": "Showing _START_ to _END_ of _TOTAL_ trips",
-              "sInfoEmpty": "Showing 0 to 0 of 0 trips",
-              "sInfoFiltered": "(filtered from _MAX_ total trips)"
-          },
-          "sDom": "<'row'<'col-sm-6'f>>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
-      } );
-  } );
-      
-:javascript
-  
-  // Add a listener on the asset type filter that submits the form when changed
-  $('#time_filter').change(function() {
-    $('#time_filter_form').submit();
-  });
