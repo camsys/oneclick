@@ -651,39 +651,6 @@ def create_agencies_and_agency_users
 
 end
 
-def add_logo_to_characteristics
-  puts 'Adding sample logos for characteristics'
-  #TODO - to add if sample logos are available
-end
-
-def add_logo_to_accommodations
-  puts 'Adding sample logos for accommodations'
-  folding_wheelchair_accom = Accommodation.where(code: 'folding_wheelchair_accessible').first
-  unless folding_wheelchair_accom.nil?
-    folding_wheelchair_accom.update_attribute(:logo_url, 'arc/characteristics/folding_wheelchair_accessible.png')
-  end
-
-  moto_wheelchair_accom = Accommodation.where(code: 'motorized_wheelchair_accessible').first
-  unless moto_wheelchair_accom.nil?
-    moto_wheelchair_accom.update_attribute(:logo_url, 'arc/characteristics/motorized_wheelchair_accessible.png')
-  end
-
-  door2door_accom = Accommodation.where(code: 'door_to_door').first
-  unless door2door_accom.nil?
-    door2door_accom.update_attribute(:logo_url, 'arc/characteristics/door_to_door.png')
-  end
-
-  curb2curb_accom = Accommodation.where(code: 'curb_to_curb').first
-  unless curb2curb_accom.nil?
-    curb2curb_accom.update_attribute(:logo_url, 'arc/characteristics/curb_to_curb.png')
-  end
-
-  lift_equip_accom = Accommodation.where(code: 'lift_equipped').first
-  unless lift_equip_accom.nil?
-    lift_equip_accom.update_attribute(:logo_url, 'arc/characteristics/lift_equipped.png')
-  end
-end
-
 ### MAIN ###
 puts 'Adding ARC Sample Data'
 add_users_and_places
@@ -694,6 +661,4 @@ add_esp_ids
 #add_companion
 setup_cms
 create_agencies_and_agency_users
-add_logo_to_characteristics
-add_logo_to_accommodations
 puts 'Done Adding ARC Sample Data'
