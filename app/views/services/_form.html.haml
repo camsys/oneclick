@@ -176,8 +176,8 @@
                       = select_tag(input_name(f, :service_characteristics, :value),
                         options_for_select([['true', 'true'], ['false', 'false']], map.value))
                     -   when 'integer', 'date'
-                      = select_tag(input_name(f, :service_characteristics, :value_relationship_id),
-                        options_for_select(@eh.operator_select_options, map.value_relationship_id))
+                      = select_tag(input_name(f, :service_characteristics, :rel_code),
+                        options_for_select(@eh.operator_select_options, map.rel_code))
                       %input.text-right{type: "number", min: 1, max: 120, value: map.value,
                         name: input_name(f, :service_characteristics, :value)}
 
@@ -211,7 +211,7 @@
                       = select_tag(input_name(f, :service_characteristics, :value),
                         options_for_select([['true', 'true'], ['false', 'false']]))
                     -   when 'integer', 'date'
-                      = select_tag(input_name(f, :service_characteristics, :value_relationship_id),
+                      = select_tag(input_name(f, :service_characteristics, :rel_code),
                         options_for_select(@eh.operator_select_options, 4))
                       %input.text-right{type: "number", min: 1, max: 120,
                         name: input_name(f, :service_characteristics, :value)}

@@ -51,10 +51,10 @@ class EligibilityService
         if passenger_characteristic.count == 0 #This passenger characteristic is not listed
           group_match_score += 0.25
           if service_requirement.code == 'age'
-            if service_characteristic_map.value_relationship_id == 3 or service_characteristic_map.value_relationship_id == 4
+            if service_characteristic_map.rel_code == 3 or service_characteristic_map.rel_code == 4
               group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or older\n'
               group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
-            elsif service_characteristic_map.value_relationship_id == 5 or service_characteristic_map.value_relationship_id == 6
+            elsif service_characteristic_map.rel_code == 5 or service_characteristic_map.rel_code == 6
               group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or younger\n'
               group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
             end
@@ -66,7 +66,7 @@ class EligibilityService
         end
 
         # Passenger does have a value for the characteristic, so test it
-        if !test_condition(passenger_characteristic.first.value, service_characteristic_map.value_relationship_id , service_characteristic_map.value)
+        if !test_condition(passenger_characteristic.first.value, service_characteristic_map.rel_code , service_characteristic_map.value)
           group_eligible = false
           break
         end
@@ -348,7 +348,7 @@ class EligibilityService
       ((map.value == 'true') ? '' : 'Not ') + I18n.t(map.characteristic.name)
     when 'integer'
       I18n.t(map.characteristic.name) +
-        ' ' + relationship_to_words(map.value_relationship_id) +
+        ' ' + relationship_to_words(map.rel_code) +
         ' ' + map.value.to_s
     else
       I18n.t(map.characteristic.name)

@@ -32,6 +32,6 @@ FactoryGirl.define do
   factory :over_65, class: 'ServiceCharacteristic' do
     association :characteristic, factory: :age_characteristic
     value 65
-    value_relationship_id 4
+    rel_code 4
   end
 end

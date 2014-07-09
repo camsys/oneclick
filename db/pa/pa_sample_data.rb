@@ -190,7 +190,7 @@ def add_providers_and_services
         end
 
         #Traveler Characteristics Requirements
-        ServiceCharacteristic.create(service: service,characteristic: age, value: '60', value_relationship_id: 4)
+        ServiceCharacteristic.create(service: service,characteristic: age, value: '60', rel_code: 4)
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible].each do |n|
@@ -287,7 +287,7 @@ def add_providers_and_services
         end
 
         #Traveler Characteristics Required
-        ServiceCharacteristic.create(service: service, characteristic: age, value: '60', value_relationship_id: 4)
+        ServiceCharacteristic.create(service: service, characteristic: age, value: '60', rel_code: 4)
 
         #Traveler Accommodations Requirements
         [curb_to_curb, folding_wheelchair_accessible].each do |n|
@@ -631,7 +631,7 @@ def collapse_rabbit_services
     end
 
     #Traveler Characteristics Requirements
-    ServiceCharacteristic.create(service: service, characteristic: age, value: '60', value_relationship_id: 4, group: 1)
+    ServiceCharacteristic.create(service: service, characteristic: age, value: '60', rel_code: 4, group: 1)
 
     #Traveler Characteristics Requirements
     ServiceCharacteristic.create(service: service, characteristic: matp, value: 'true', group: 2)

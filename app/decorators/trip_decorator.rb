@@ -195,7 +195,7 @@ class TripDecorator < Draper::Decorator
                                                          characteristic_id: requirement.id)
           if user_characteristic.count > 0 &&
               @elig_svc.test_condition(user_characteristic.first.value,
-                             map.value_relationship_id,
+                             map.rel_code,
                              map.value)
             result += @elig_svc.translate_service_characteristic_map(map) + ';'
           end

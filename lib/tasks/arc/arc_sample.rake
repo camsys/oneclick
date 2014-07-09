@@ -174,7 +174,7 @@ namespace :oneclick do
             end
 
             #Traveler Characteristics Requirements
-            ServiceCharacteristic.create(service: service, characteristic: age, value: '60', value_relationship_id: 4)
+            ServiceCharacteristic.create(service: service, characteristic: age, value: '60', rel_code: 4)
 
             #Traveler Accommodations Requirements
             [door_to_door, curb_to_curb, driver_assistance_available, motorized_wheelchair_accessible, lift_equipped].each do |n|
@@ -200,7 +200,7 @@ namespace :oneclick do
             end
 
             #Traveler Characteristics Requirements
-            ServiceCharacteristic.create(service: service, characteristic: age, value: '60', value_relationship_id: 4)
+            ServiceCharacteristic.create(service: service, characteristic: age, value: '60', rel_code: 4)
             ServiceCharacteristic.create(service: service, characteristic: no_trans, value: 'false')
 
             #Traveler Accommodations Provided
@@ -226,7 +226,7 @@ namespace :oneclick do
             end
 
             #Traveler Characteristics Requirements
-            ServiceCharacteristic.create(service: service, characteristic: age, value: '55', value_relationship_id: 4)
+            ServiceCharacteristic.create(service: service, characteristic: age, value: '55', rel_code: 4)
 
             #Traveler Accommodations Provided
             [folding_wheelchair_accessible, driver_assistance_available, door_to_door, curb_to_curb, lift_equipped].each do |n|
@@ -282,7 +282,7 @@ namespace :oneclick do
             end
 
             #Traveler Characteristics Requirements
-            ServiceCharacteristic.create(service: service, characteristic: age, value: '60', value_relationship_id: 4)
+            ServiceCharacteristic.create(service: service, characteristic: age, value: '60', rel_code: 4)
 
             #Traveler Accommodations Requirements
             [door_to_door, curb_to_curb, driver_assistance_available, folding_wheelchair_accessible, motorized_wheelchair_accessible, lift_equipped].each do |n|
@@ -375,7 +375,7 @@ namespace :oneclick do
 
             #Traveler Characteristics Requirements
             ServiceCharacteristic.create(service: service, characteristic: disabled, value: 'true')
-            ServiceCharacteristic.create(service: service, characteristic: age, value: '55', value_relationship_id: 4)
+            ServiceCharacteristic.create(service: service, characteristic: age, value: '55', rel_code: 4)
 
             #Traveler Accommodations Requirements
             [curb_to_curb].each do |n|
@@ -407,7 +407,7 @@ namespace :oneclick do
             end
 
             #Traveler Characteristics Requirements
-            ServiceCharacteristic.create(service: service, characteristic: age, value: '60', value_relationship_id: 4)
+            ServiceCharacteristic.create(service: service, characteristic: age, value: '60', rel_code: 4)
 
             #Traveler Accommodations Requirements
             [curb_to_curb, door_to_door, driver_assistance_available, folding_wheelchair_accessible, motorized_wheelchair_accessible, lift_equipped].each do |n|

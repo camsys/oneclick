@@ -304,7 +304,7 @@ ActiveRecord::Schema.define(version: 20140708201004) do
     t.string  "value",                 limit: 64,                 null: false
     t.boolean "requires_verification",            default: false, null: false
     t.boolean "active",                           default: true,  null: false
-    t.integer "value_relationship_id",            default: 1,     null: false
+    t.integer "rel_code",                         default: 1,     null: false
     t.integer "group",                            default: 0,     null: false
   end
 
@@ -315,10 +315,10 @@ ActiveRecord::Schema.define(version: 20140708201004) do
   end
 
   create_table "service_trip_purpose_maps", force: true do |t|
-    t.integer "service_id",                           null: false
-    t.integer "trip_purpose_id",                      null: false
-    t.boolean "active",                default: true, null: false
-    t.integer "value_relationship_id"
+    t.integer "service_id",                     null: false
+    t.integer "trip_purpose_id",                null: false
+    t.boolean "active",          default: true, null: false
+    t.integer "rel_code"
   end
 
   create_table "service_types", force: true do |t|

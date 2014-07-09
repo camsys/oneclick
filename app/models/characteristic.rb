@@ -43,9 +43,9 @@ class Characteristic < ActiveRecord::Base
     end
     operator = case a['code']
     when 'age'
-      reverse_relationship_to_symbol(sc.value_relationship_id)
+      reverse_relationship_to_symbol(sc.rel_code)
     else
-      relationship_to_symbol(sc.value_relationship_id)
+      relationship_to_symbol(sc.rel_code)
     end
     options = a['datatype']=='bool' ? [{text: I18n.t(:yes_str), value: true}, {text: I18n.t(:no_str), value: false}] : nil
     {
