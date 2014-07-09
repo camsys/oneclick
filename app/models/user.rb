@@ -120,6 +120,12 @@ class User < ActiveRecord::Base
 
   end
 
+  def has_vehicle?
+    has_trans = Characteristic.find_by(code: 'no_trans')
+    status = self.user_profile.user_characteristics.where(characteristic: has_trans)
+    status.count > 0 and status.first.value == 'true'
+  end
+  
   def home
     self.places.find_by_home(true)
   end

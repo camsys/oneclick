@@ -28,7 +28,7 @@ class TripProxy < Proxy
     # Modify modes to reflect transit 
     # Using array select with side effects
     if (@modes)
-      bus = rail = nil
+      bus = rail = bike = drive = nil
       @modes = @modes.select do |mode|
         case mode
         when ""
@@ -41,6 +41,12 @@ class TripProxy < Proxy
           false
         when Mode.transit.code
           false
+        when Mode.bicycle.code
+          bike = mode
+          true
+        when Mode.car.code
+          drive = mode
+          true
         else
           true
         end
@@ -50,6 +56,8 @@ class TripProxy < Proxy
 
     if (bus && rail)
       @modes << Mode.transit.code
+      @modes << Mode.bike_park_transit.code if bike
+      @modes << Mode.park_transit.code if drive
     elsif (bus)
       @modes << bus
     elsif (rail)

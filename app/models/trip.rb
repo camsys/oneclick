@@ -44,8 +44,12 @@ class Trip < ActiveRecord::Base
     trip.creator = user
     trip.user = traveler
     trip.trip_purpose = TripPurpose.find(trip_proxy.trip_purpose_id)
-    trip.desired_modes = Mode.where('code in (?)', trip_proxy.modes)
+    trip.desired_modes = Mode.where(code: trip_proxy.modes)
 
+    if traveler.has_vehicle? and trip.desired_modes.include?(Mode.transit)
+      trip.desired_modes << Mode.park_transit
+    end
+    
     from_place = TripPlace.new.from_trip_proxy_place(trip_proxy.from_place_object, 0,
       trip_proxy.from_place, trip_proxy.map_center)
     to_place = TripPlace.new.from_trip_proxy_place(trip_proxy.to_place_object, 1,

@@ -48,7 +48,8 @@ u.add_role :system_administrator
 
 # Transit has to be handled separate to support submodes.
 transit_hash =
-  { klass: Mode, active: 1, name: 'Transit', code: 'mode_transit', otp_mode: "TRANSIT,WALK", logo_url: 'transit.png',}
+  { klass: Mode, active: 1, name: 'Transit', code: 'mode_transit', otp_mode: "TRANSIT,WALK",
+    logo_url: 'transit.png', visible: true,}
 transit_mode = build_internationalized_records(structure_records_from_flat_hash(transit_hash))
 
 [
@@ -74,6 +75,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     code: 'mode_paratransit',
     elig_dependent: true,
     logo_url: 'paratransit.png',
+    visible: true
   },
   {
     klass: Mode,
@@ -81,6 +83,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'Taxi',
     code: 'mode_taxi',
     logo_url: 'taxi.png',
+    visible: true
   },
   {
     klass: Mode,
@@ -127,6 +130,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     otp_mode: "BUSISH,WALK",
     parent_id: transit_mode.id,
     logo_url: 'transit.png',
+    visible: true
   },
   {
     klass: Mode,
@@ -136,6 +140,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     otp_mode: "TRAINISH,WALK",
     parent_id: transit_mode.id,
     logo_url: 'rail.png',
+    visible: true
   },
   {
     klass: Mode,

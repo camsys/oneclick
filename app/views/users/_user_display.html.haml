@@ -77,12 +77,12 @@
         .panel-heading
           %h2.panel-title= t(:preferred_modes)
         .panel-body
-          - Mode.top_level.sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.each do |m|
+          - Mode.top_level.where(visible: true).sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.each do |m|
             .row
               .col-sm-12
                 = check_box_tag "user[preferred_mode_ids][#{m.id}]", m.id, @user.preferred_modes.include?(m), name: "user[preferred_mode_ids][]", disabled: true
                 = label_tag "user[preferred_mode_ids][#{m.id}]", t(m.name)
-                - m.submodes.each do |sm|
+                - m.submodes.where(visible: true).each do |sm|
                   .row
                     .col-sm-12.col-sm-push-1
                       = check_box_tag "user[preferred_mode_ids][#{sm.id}]", sm.id, @user.preferred_modes.include?(sm), name: "user[preferred_mode_ids][]", disabled: true
