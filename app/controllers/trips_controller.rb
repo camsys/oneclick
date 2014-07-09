@@ -225,7 +225,7 @@ class TripsController < PlaceSearchingController
     @trip = Trip.find(params[:id])
     UserMailer.feedback_email(@trip).deliver
     respond_to do |format|
-      format.html { redirect_to admin_trips_path, :notice => "An email was sent to #{@trip.user.email}.", locale: I18n.locale  }
+      format.html { redirect_to admin_agency_trips_path(current_user.agency), :notice => "An email was sent to #{@trip.user.email}.", locale: I18n.locale  }
       format.json { render json: @trip }
     end
   end
