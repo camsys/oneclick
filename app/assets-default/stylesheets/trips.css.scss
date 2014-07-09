@@ -361,15 +361,11 @@ $legend-height: 20px;
   background-color: #FEC800;
 }
 
-.travel-legend-vehicle {
-  background-color: #FF9900;
-}
-
-.travel-legend-transit {
-  background-color: #7f7979;
-}
-
 .travel-legend-subway {
+  background-color: #409090;
+}
+
+.travel-legend-rail {
   background-color: #499bea;
 }
 
@@ -390,10 +386,6 @@ $legend-height: 20px;
 }
 
 .travel-legend-drive {
-  background-color: #808CB4;
-}
-
-.travel-legend-car {
   background-color: #808CB4;
 }
 
@@ -425,15 +417,11 @@ $legend-height: 20px;
   fill: #FEC800;
 }
 
-.travel-type-vehicle {
-  fill: #FF9900;
-}
-
-.travel-type-transit {
-  fill: #499bea;
-}
-
 .travel-type-subway {
+  fill: #409090;
+}
+
+.travel-type-rail {
   fill: #499bea;
 }
 
@@ -454,10 +442,6 @@ $legend-height: 20px;
 }
 
 .travel-type-drive {
-  fill: #808CB4;
-}
-
-.travel-type-car {
   fill: #808CB4;
 }
 

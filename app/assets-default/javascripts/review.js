@@ -1606,8 +1606,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                         return;
                     }
 
-                    var className = "travel-legend-" + removeSpace(leg.type.toLowerCase());
-                    var legendText = (localeDictFinder[leg.type.toLowerCase()] ||  toCamelCase(leg.type));
+                    var legType = leg.type.toLowerCase();
+                    var className = "travel-legend-" + removeSpace(legType);
+                    var legendText = (localeDictFinder[legType] ||  toCamelCase(legType));
 
                     if ($("." + className).length === 0 && !legendClassNameIndex[className]) {
                         legendClassNameIndex[className] = legendText;
