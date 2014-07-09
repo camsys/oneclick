@@ -27,7 +27,7 @@ Oneclick::Application.configure do
     when 'broward'
       config.action_mailer.default_url_options = { :host => 'oneclick-broward.camsys-apps.com' }
     when 'jta'
-      config.action_mailer.default_url_options = { :host => Oneclick::Application.config.host }
+      config.action_mailer.default_url_options = { :host => 'oneclick-jta.camsys-apps.com' }
   end
 
   config.action_mailer.delivery_method = :smtp
