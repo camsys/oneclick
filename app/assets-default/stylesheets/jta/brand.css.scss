@@ -1,28 +1,5 @@
-// JTA CSS file. Styles only, no variables or mixins.
+// JTA CSS file. Styles only, no variables or mixins definitions.
 
-// TODO This should probably be done with a mixin
-@media(max-width:767px){
-  #logo {
-   background: image-url('jta/TransPortalLogo-50px.jpg') no-repeat left center fixed;
-   // -webkit-background-size: cover;
-   // -moz-background-size: cover;
-   // -o-background-size: cover;
-   // background-size: cover;
- }
-}
-
-@media(min-width:768px){
-  #logo {
-   background: image-url('jta/TransPortalLogo-50px.jpg') no-repeat left center;
-   background-position: 4% !important;
-   // -webkit-background-size: cover;
-   // -moz-background-size: cover;
-   // -o-background-size: cover;
-   // background-size: cover;
-  }
-}
-
-#splash {
-  // background-color: $splash-bg;
-  // padding: 10px;
+#logo {
+  background-image: image-url('jta/logo.jpg');
 }
