@@ -58,8 +58,8 @@ $(document).ready( function() {
       $("#rateable_modal .modal-content").html(data);
     });
   });
-  $("form").submit(function() {
-    event.preventDefault()
+  $("input[type='submit']").click(function( event ) {
+    event.preventDefault();
     $.ajax({
       type: "POST",
       url: "/ratings/approve",
