@@ -9,6 +9,8 @@ class Characteristic < ActiveRecord::Base
   has_many :service_characteristics
   has_many :services, through: :service_characteristics
 
+  belongs_to :linked_characteristic, class_name: 'Characteristic'
+  
   # set the default scope
   default_scope {where('characteristics.active = ?', true)}
   scope :active, -> {where(active: true)}
@@ -16,6 +18,8 @@ class Characteristic < ActiveRecord::Base
   scope :personal_factors, -> {where('characteristic_type = ?', 'personal_factor')}
   scope :programs, -> {where('characteristic_type = ?', 'program')}
   scope :enabled, -> { where.not(datatype: 'disabled') }
+  scope :for_traveler, -> { where(for_traveler: true) }
+  scope :for_service, -> { where(for_service: true) }
 
   # return name value pairs suitable for passing to simple_form collection
   def self.form_collection include_all=true
