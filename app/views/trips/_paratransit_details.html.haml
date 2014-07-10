@@ -5,7 +5,7 @@
         = t(:cost_details)
       =itinerary.cost_comments.html_safe
 
-    -if itinerary.missing_information
+    -if itinerary.missing_information and itinerary.missing_information_text.split('\n').count > 0
       %h4
         %i.fa.fa-question-circle
         This service is intended for
