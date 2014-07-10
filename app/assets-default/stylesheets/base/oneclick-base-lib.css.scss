@@ -40,8 +40,8 @@ $version-gradient-end-color: #3681B3 !default; //only used when $is-header-gradi
   	@include set-background( $is-footer-version-gradient-based, $version-background-color, $version-gradient-start-color, $version-gradient-end-color);
 }
 
-$footer-version-text-color: #FEC800 default;
-$footer-version-hyperlink-text-color: #FEC800 default;
+$footer-version-text-color: #FEC800 !default;
+$footer-version-hyperlink-text-color: #FEC800 !default;
 
 //footer feedback
 $is-footer-feedback-gradient-based: false !default;
@@ -53,11 +53,11 @@ $feedback-gradient-end-color: #CCA23D !default; //only used when $is-header-grad
   	@include set-background( $is-footer-feedback-gradient-based, $feedback-background-color, $feedback-gradient-start-color, $feedback-gradient-end-color);
 }
 
-$footer-feedback-text-color: black default;
-$footer-feedback-hyperlink-text-color: black default;
+$footer-feedback-text-color: black !default;
+$footer-feedback-hyperlink-text-color: black !default;
 
 //application breadcrumb
-$breadcrumb-height: 30px;
+$breadcrumb-height: 30px !default;
 
 //trip planning review page trip itinerary chart
-$single-plan-height: 50px; //the height of each itinerary chart container
+$single-plan-height: 50px !default; //the height of each itinerary chart container
