@@ -1,7 +1,7 @@
 class LinkCharacteristics2 < ActiveRecord::Migration
   def change
-    rename_column :service_characteristics, :rel_code, :rel_code
-    rename_column :service_trip_purpose_maps, :rel_code, :rel_code    
+    rename_column :service_characteristics,   :value_relationship_id, :rel_code
+    rename_column :service_trip_purpose_maps, :value_relationship_id, :rel_code    
     reversible do |dir|
       dir.up do
         age = Characteristic.where(code: 'age').first
