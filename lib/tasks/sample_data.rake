@@ -21,4 +21,9 @@ namespace :oneclick do
     puts 'Finished running sample data common to all providers.'
 
   end
+
+  desc "Update Attributes Per Installation."
+  task :update_attributes => :environment do
+    require File.join(Rails.root, 'db', Oneclick::Application.config.brand + '/update_attributes.rb')
+  end
 end
