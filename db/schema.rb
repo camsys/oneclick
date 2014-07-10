@@ -315,9 +315,9 @@ ActiveRecord::Schema.define(version: 20140708201004) do
   end
 
   create_table "service_trip_purpose_maps", force: true do |t|
-    t.integer "service_id",                           null: false
-    t.integer "trip_purpose_id",                      null: false
-    t.boolean "active",                default: true, null: false
+    t.integer "service_id",                     null: false
+    t.integer "trip_purpose_id",                null: false
+    t.boolean "active",          default: true, null: false
     t.integer "rel_code"
   end
 
@@ -350,10 +350,10 @@ ActiveRecord::Schema.define(version: 20140708201004) do
     t.string   "internal_contact_email"
     t.string   "internal_contact_title"
     t.string   "internal_contact_phone"
+    t.string   "logo_url"
     t.spatial  "origin",                       limit: {:srid=>0, :type=>"geometry"}
     t.spatial  "destination",                  limit: {:srid=>0, :type=>"geometry"}
     t.spatial  "residence",                    limit: {:srid=>0, :type=>"geometry"}
-    t.string   "logo_url"
   end
 
   create_table "services_users", id: false, force: true do |t|
