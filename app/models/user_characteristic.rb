@@ -1,4 +1,5 @@
 class UserCharacteristic < ActiveRecord::Base
+  include EligibilityOperators
 
   #associations
   belongs_to :user_profile

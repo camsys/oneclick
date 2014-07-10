@@ -28,30 +28,41 @@ class EligibilityService
       is_eligible = true
       min_match_score = 0
     end
+    Rails.logger.info "\nservice: #{service.name rescue service.ai}"
     groups.each do |group|
       group_missing_information_text = ''
       group_missing_info = []
       group_match_score = 0
       group_eligible = true
       service_characteristic_maps = service.service_characteristics.where(group: group)
+      Rails.logger.info "=== start group ==="
       
       service_characteristic_maps.each do |service_characteristic_map|
         service_requirement = service_characteristic_map.characteristic
-        if service_requirement.code == 'age'
-          if trip_part
-            age_date = trip_part.trip_time
-          else
-            age_date = Time.now
-          end
+        # if service_requirement.code == 'age'
+        #   if trip_part
+        #     age_date = trip_part.trip_time
+        #   else
+        #     age_date = Time.now
+        #   end
 
-          update_age(user_profile, age_date)
-        end
+        #   update_age(user_profile, age_date)
+        # end
 
-        passenger_characteristic = UserCharacteristic.where(user_profile_id: user_profile.id, characteristic_id: service_requirement.id)
+        passenger_characteristic = user_profile.user_characteristics.where(
+          characteristic: service_requirement.linked_characteristic || service_requirement)
+
+        Rails.logger.info "service_characteristic: #{service_characteristic_map.ai}"
+        Rails.logger.info "service_requirement: #{service_requirement.ai}"
+        Rails.logger.info "passenger_characteristic: #{passenger_characteristic.ai}"
+
         if passenger_characteristic.count == 0 #This passenger characteristic is not listed
+          Rails.logger.info "not listed"
           group_match_score += 0.25
+          group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
+          Rails.logger.info "group_missing_info is now #{group_missing_info.ai}"
           if service_requirement.code == 'age'
-            if service_characteristic_map.rel_code == 3 or service_characteristic_map.rel_code == 4
+            if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE
               group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or older\n'
               group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
             elsif service_characteristic_map.rel_code == 5 or service_characteristic_map.rel_code == 6
@@ -66,13 +77,17 @@ class EligibilityService
         end
 
         # Passenger does have a value for the characteristic, so test it
-        if !test_condition(passenger_characteristic.first.value, service_characteristic_map.rel_code , service_characteristic_map.value)
+        Rails.logger.info "testing"
+        unless passenger_characteristic.meets_requirement(service_characteristic_map)
+          Rails.logger.info "doesn't meet requirement, group_eligible false and breaking"
           group_eligible = false
           break
         end
+        Rails.logger.info "meets requirement"
       end  # service_characteristic_maps.each do
 
       if group_eligible
+        Rails.logger.info "group is eligible"
         is_eligible = true
         if group_match_score < min_match_score
           missing_information_text = group_missing_information_text
@@ -96,8 +111,10 @@ class EligibilityService
 
     case return_with
     when :itinerary
+      Rails.logger.info "For service #{service.name rescue nil}, returning #{itinerary.ai}"
       return itinerary    
     when :missing_info
+      Rails.logger.info "For service #{service.name rescue nil}, returning #{missing_info.flatten.ai}"
       return missing_info.flatten
     end
   end
@@ -182,11 +199,17 @@ class EligibilityService
   end
 
   def get_eligible_services_for_trip(trip_part, itineraries)
+    Rails.logger.info "get_eligible_services_for_trip, starting count: #{itineraries.count}"
     itineraries = eligible_by_location(trip_part, itineraries)
+    Rails.logger.info "get_eligible_services_for_trip, after location: #{itineraries.count}"
     itineraries = eligible_by_service_time(trip_part, itineraries)
+    Rails.logger.info "get_eligible_services_for_trip, after service time: #{itineraries.count}"
     itineraries = eligible_by_advanced_notice(trip_part, itineraries)
+    Rails.logger.info "get_eligible_services_for_trip, after advance notice: #{itineraries.count}"
     itineraries = eligible_by_trip_purpose(trip_part, itineraries)
+    Rails.logger.info "get_eligible_services_for_trip, after trip purpose: #{itineraries.count}"
     itineraries = find_bookable_itineraries(trip_part, itineraries)
+    Rails.logger.info "get_eligible_services_for_trip, after bookable: #{itineraries.count}"
     itineraries
   end
 
@@ -214,13 +237,17 @@ class EligibilityService
     itineraries.each do |itinerary|
       service = itinerary['service']
 
+      Rails.logger.info "eligible_by_location for service #{service.name rescue nil}"
       #Match Residence
       if service.residence?
+        Rails.logger.info "has residence"
         if trip_part.trip.user.home.nil?
+          Rails.logger.info "user does not have residence"
           next
         end
         point = factory.point(trip_part.user.home.lon.to_f, trip_part.user.home.lat.to_f)
         unless service.residence.contains? point
+          Rails.logger.info "!service.residence.contains? point"
           next
         end
 
