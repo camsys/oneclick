@@ -22,7 +22,7 @@
 
 //header background
 $is-header-gradient-based: false !default;
-$header-background-color: whitesmoke !default; ////only used when $is-header-gradient-based is false
+$header-background-color: white !default; ////only used when $is-header-gradient-based is false
 $header-gradient-start-color: #FAFAFA !default; //only used when $is-header-gradient-based is true
 $header-gradient-end-color: #A3A3A3 !default; //only used when $is-header-gradient-based is true
 
@@ -32,7 +32,7 @@ $header-gradient-end-color: #A3A3A3 !default; //only used when $is-header-gradie
 
 //footer version
 $is-footer-version-gradient-based: false !default;
-$version-background-color: whitesmoke !default; ////only used when $is-header-gradient-based is false
+$version-background-color: white !default; ////only used when $is-header-gradient-based is false
 $version-gradient-start-color: #7DCCE6 !default; //only used when $is-header-gradient-based is true
 $version-gradient-end-color: #3681B3 !default; //only used when $is-header-gradient-based is true
 
@@ -45,7 +45,7 @@ $footer-version-hyperlink-text-color: #FEC800 default;
 
 //footer feedback
 $is-footer-feedback-gradient-based: false !default;
-$feedback-background-color: whitesmoke !default; ////only used when $is-header-gradient-based is false
+$feedback-background-color: white !default; ////only used when $is-header-gradient-based is false
 $feedback-gradient-start-color: #F8F02A !default; //only used when $is-header-gradient-based is true
 $feedback-gradient-end-color: #CCA23D !default; //only used when $is-header-gradient-based is true
 
