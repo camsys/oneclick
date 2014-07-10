@@ -26,6 +26,8 @@ Oneclick::Application.config.min_ui_duration = 1.hours
 
 Oneclick::Application.config.google_places_api_key = 'AIzaSyCvKyNoBzQNrBRuSRkipWye0pdj__HjrmU'
 
+I18n.available_locales = [:en, :es] # default
+
 case ENV['BRAND'] || 'arc'
 when 'arc'
   Oneclick::Application.config.host = 'oneclick-arc.camsys-apps.com'
@@ -84,6 +86,7 @@ when 'broward'
   Oneclick::Application.config.poi_file = 'db/broward_poi_data/broward-poi-from-arcgis.csv'
   Oneclick::Application.config.default_county = 'Broward'
   Oneclick::Application.config.state = 'FL'
+  I18n.available_locales = [:en, :es, :ht]
 
 when 'pa'
   Oneclick::Application.config.host = 'oneclick-pa.camsys-apps.com'

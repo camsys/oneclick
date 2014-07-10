@@ -33,7 +33,7 @@ end
   report.update_attributes(active: is_active)
   Translation.find_or_create_by!(key: rep[:class_name], locale: :en,
                                  value: rep[:name] + " Report")
-  I18n.available_locales.reject!{|x| x == :en}.each do |l|
+  I18n.available_locales.reject{|x| x == :en}.each do |l|
     Translation.find_or_create_by!(key: rep[:class_name], locale: l, value: "[#{l}]#{rep[:name]} Report[/#{l}]")
   end
 end
