@@ -1,2 +1,0 @@
-%h3
-  = t(:link_to_georgia_commute_options, url: link_to('Georgia Commute Options', rideshare_external_link(itinerary), target: '_new'), count: itinerary.ride_count).html_safe

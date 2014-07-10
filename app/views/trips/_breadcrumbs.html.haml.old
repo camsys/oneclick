@@ -1,5 +1,0 @@
-%ol#wizards.breadcrumb
-  %li.breadcrumb-page.current-page Trip
-  %li.breadcrumb-page.next-page Options
-  %li.breadcrumb-page.next-page Review
-  %li.breadcrumb-page.next-page Plan

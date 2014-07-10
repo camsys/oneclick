@@ -1,8 +1,0 @@
-%table
-  -YAML.load(itinerary.server_message).each do |business|
-    %tr
-      %td
-        %b
-          =business['name'] + ":  "
-      %td
-        =business['phone']
