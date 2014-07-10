@@ -47,6 +47,13 @@ class Itinerary < ActiveRecord::Base
     return legs.size == 1 && legs.first.mode == Leg::TripLeg::WALK
   end
 
+  # returns true if this itinerary is a bicycle-only trip. These are a special case of Transit
+  # trips that only include a BICYCLE leg
+  def is_bicycle
+    legs = get_legs
+    return legs.size == 1 && legs.first.mode == Leg::TripLeg::BICYCLE
+  end
+
   # Determines whether we are using rail, bus and rail, or just bus for the transit trips
   def transit_type
     unless mode.code == 'mode_transit'

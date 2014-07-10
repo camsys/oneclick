@@ -385,7 +385,7 @@ module CsHelpers
         cost_in_words = I18n.t(:see_below)
       end
     else
-      if itinerary.is_walk #TODO: walk currently is put in transit category
+      if itinerary.is_walk or itinerary.is_bicycle #TODO: walk, bicycle currently are put in transit category
         fare = 0
         price_formatted = I18n.t(:no_charge)
         cost_in_words = price_formatted

@@ -12,6 +12,7 @@ module Leg
     BUS     = 'BUS'
     FERRY   = 'FERRY'
     CAR     = 'CAR'
+    BICYLE  = 'BICYCLE'
 
     # Type of mode
     attr_accessor :mode
