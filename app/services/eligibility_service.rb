@@ -2,7 +2,7 @@ class EligibilityService
   include EligibilityOperators
 
   def get_eligible_services_for_traveler(user_profile, trip_part=nil, return_with=:itinerary)
-    all_services = Service.active
+    all_services = Service.paratransit.active
     eligible_itineraries = []
     all_services.each do |service|
       itinerary = get_service_itinerary(service, user_profile, trip_part, return_with)
