@@ -2,7 +2,7 @@
   .modal-header
     .row
       .col-sm-12
-        %btn.btn.action-button.pull-right{data: {dismiss: "modal"}}= t(:cancel)
+        %btn.btn.action-button.pull-right#hide_feedback{data: {dismiss: "modal"}}= t(:cancel)
         = f.submit t(:apply), class: "btn action-button pull-right"
         = simple_fields_for @ratings_proxy.rater do |rater|
           = rater.input :id, as: :hidden
@@ -27,5 +27,9 @@
   $(document).ready(function() {
     $("a.clear").on("click", function() {
       $(this).closest(".stars").find("input:checked").prop("checked", false);
+    });
+    $("#hide_feedback").on("click", function() {
+      $("#ratings").show();
+      $("#give_feedback").hide();
     });
   });
