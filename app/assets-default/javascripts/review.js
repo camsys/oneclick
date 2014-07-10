@@ -2074,10 +2074,12 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 tipText = '<p>' + localeDictFinder['drive'] + ' ' + durationText + '</p>';
                 break;
             case 'mode_walk':
-                tipText = '<p>' + localeDictFinder['walk'] + ' ' + durationText + '</p>';
+                tipText = '<p>' + localeDictFinder['walk'] + ' ' + durationText;
                 if(isValidObject(tripPlan.duration) && typeof(tripPlan.duration.total_walk_dist) === 'number') {
                     tipText += ' (' + (tripPlan.duration.total_walk_dist / 5280).toFixed(2) + ' ' +  localeDictFinder['miles'].toLowerCase() + ')';
                 }
+
+                tipText += '</p>';
                 break;
             default:
                 tipText = '<p>' + (serviceName || modeName) + '</p>';
