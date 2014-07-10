@@ -184,35 +184,61 @@ $ ->
           console.log error
 
   validateDateTimes = (isReturn) ->
-    thisDir = (if isReturn then "return" else "outbound")
-    otherDir = (if isReturn then "outbound" else "return")
-    otherDateData = $("#trip_proxy_" + otherDir + "_trip_date").data("DateTimePicker")
-    otherTimeData = $("#trip_proxy_" + otherDir + "_trip_time").data("DateTimePicker")
-    thisDateData = $("#trip_proxy_" + thisDir + "_trip_date").data("DateTimePicker")
-    thisTimeData = $("#trip_proxy_" + thisDir + "_trip_time").data("DateTimePicker")
-    otherDateStr = otherDateData.date.format(otherDateData.format)
-    otherTimeStr = otherTimeData.date.format(otherTimeData.format)
-    thisDateStr = thisDateData.date.format(thisDateData.format)
-    thisTimeStr = thisTimeData.date.format(thisTimeData.format)
-    otherDateTime = moment(otherDateStr + " " + otherTimeStr)
-    thisDateTime = moment(thisDateStr + " " + thisTimeStr)
-    isChanged = false
-    if isReturn and (thisDateTime <= otherDateTime)
-      otherDateTime = thisDateTime.subtract(2, "hours")
-      isChanged = true
-    else if not isReturn and (thisDateTime >= otherDateTime)
-      otherDateTime = thisDateTime.add(2, "hours")
-      isChanged = true
-    if isChanged
-      otherDateData.setValue otherDateTime.toDate()
-      otherTimeData.setValue otherDateTime.toDate()
+    outboundDateData = $("#trip_proxy_outbound_trip_date").data("DateTimePicker")
+    outboundTimeData = $("#trip_proxy_outbound_trip_time").data("DateTimePicker")
+    returnDateData = $("#trip_proxy_return_trip_date").data("DateTimePicker")
+    returnTimeData = $("#trip_proxy_return_trip_time").data("DateTimePicker")
+
+    outboundDateStr = outboundDateData.date.format(outboundDateData.format)
+    outboundTimeStr = outboundTimeData.date.format(outboundTimeData.format)
+    returnDateStr = returnDateData.date.format(returnDateData.format)
+    returnTimeStr = returnTimeData.date.format(returnTimeData.format)
+
+    outboundDateTime = moment(outboundDateStr + " " + outboundTimeStr)
+    returnDateTime = moment(returnDateStr + " " + returnTimeStr)
+    minOutboundDateTime = moment().next15()
+
+    isOutboundChanged = false
+    isReturnChanged = false
+
+    if outboundDateTime < minOutboundDateTime
+      outboundDateTime = minOutboundDateTime
+      isOutboundChanged = true
+    
+    if returnDateTime <= outboundDateTime
+      if isOutboundChanged
+        returnDateTime = outboundDateTime.add(2, "hours")
+        isReturnChanged = true
+      else if isReturn
+        outboundDateTime = (if returnDateTime.subtract(2, "hours") < minOutboundDateTime then minOutboundDateTime else returnDateTime.subtract(2, "hours"))
+        isOutboundChanged = true
+      else 
+        returnDateTime = outboundDateTime.add(2, "hours")
+        isReturnChanged = true
+
+    if isReturnChanged
+      returnDateData.setValue returnDateTime.toDate()
+      returnTimeData.setValue returnDateTime.toDate()
+    if isOutboundChanged
+      outboundDateData.setValue outboundDateTime.toDate()
+      outboundTimeData.setValue outboundDateTime.toDate()
     return
+
   $('#trip_proxy_outbound_trip_date, #trip_proxy_outbound_trip_time').on "dp.change", ->
     validateDateTimes false
     return
   $('#trip_proxy_return_trip_date, #trip_proxy_return_trip_time').on "dp.change", ->
     validateDateTimes true
     return
+  $('#trip_proxy_outbound_trip_date, #trip_proxy_outbound_trip_time').on "focusout", ->
+    validateDateTimes false
+    return
+  $('#trip_proxy_return_trip_date, #trip_proxy_return_trip_time').on "focusout", ->
+    validateDateTimes true
+    return
 
-  #validateDateTimes false #after page loaded, adjust return date-time based on outbound date-time
+  $('.plan_a_trip').on 'load', ->
+    validateDateTimes false
+
+  return
       
