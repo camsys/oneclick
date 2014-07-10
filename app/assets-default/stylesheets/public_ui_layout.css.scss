@@ -33,21 +33,10 @@ html, body {
 
 #feedback{
   @include footer-feedback-background;
-
-  color: $footer-feedback-text-color;
-
-  a {
-    color: $footer-feedback-hyperlink-text-color;
-  }
 }
 
 #versionLang {
   @include footer-version-background;
-  color: $footer-version-text-color;
-
-  a {
-    color: $footer-version-hyperlink-text-color;
-  }
 }
 
 #logo{
