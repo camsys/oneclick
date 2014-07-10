@@ -10,7 +10,7 @@
     = simple_fields_for :ratings, rateable.ratings.build, index: rateable.class.name do |ratings_form|
       .panel.panel-default
         .panel-heading
-          %h3= rateable.to_s
+          %h3.panel-title= rateable.to_s
         .panel-body
           -# the ratings_radio wrapper uses an inline span rather than a block div, so wrap it in a .row to keep from breaking
           .stars
