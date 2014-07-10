@@ -25,43 +25,15 @@
     .col-xs-12
       = simple_form_for @user_characteristics_proxy, :url => new_user_trip_characteristic_path(@traveler, @trip, locale: I18n.locale), method: 'PUT', html: {class: 'user-characteristics form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_and_checkboxes, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |f|
 
-<<<<<<< HEAD
         .col-xs-12.panel.panel-default
           .panel-body      
             = f.error_notification
             / %form{:role => "form"}
             .inline-radio
-              -Characteristic.active.enabled.each do |c|
+              -Characteristic.active.enabled.for_traveler.each do |c|
                 - next if c.code=='age' # TODO kludge
                 - next unless c.ask_early
                 = render partial: 'characteristic_item', locals: {item: c, f: f}
               -Accommodation.where(:datatype => 'bool').each do |a|
                 - next unless a.ask_early
                 = render partial: 'characteristic_item', locals: {item: a, f:f}
-||||||| merged common ancestors
-      .col-xs-12.panel.panel-default
-        .panel-body      
-          = f.error_notification
-          / %form{:role => "form"}
-          .inline-radio
-            -Characteristic.active.enabled.for_traveler.each do |c|
-              - next if c.code=='age' # TODO kludge
-              - next unless c.ask_early
-                = render partial: 'characteristic_item', locals: {item: c, f: f}
-            -Accommodation.where(:datatype => 'bool').each do |a|
-              - next unless a.ask_early
-                = render partial: 'characteristic_item', locals: {item: a, f:f}
-=======
-      .col-xs-12.panel.panel-default
-        .panel-body      
-          = f.error_notification
-          / %form{:role => "form"}
-          .inline-radio
-            -Characteristic.active.enabled.for_traveler.each do |c|
-              - next if c.code=='age' # TODO kludge
-              - next unless c.ask_early
-              = render partial: 'characteristic_item', locals: {item: c, f: f}
-            -Accommodation.where(:datatype => 'bool').each do |a|
-              - next unless a.ask_early
-              = render partial: 'characteristic_item', locals: {item: a, f:f}
->>>>>>> Fix how we do age/dob characteristics so that it is sane;
