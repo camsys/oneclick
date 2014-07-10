@@ -2075,6 +2075,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 break;
             case 'mode_walk':
                 tipText = '<p>' + localeDictFinder['walk'] + ' ' + durationText + '</p>';
+                if(isValidObject(tripPlan.duration) && typeof(tripPlan.duration.total_walk_dist) === 'number') {
+                    tipText += ' (' + (tripPlan.duration.total_walk_dist / 5280).toFixed(2) + ' ' +  localeDictFinder['miles'].toLowerCase() + ')';
+                }
                 break;
             default:
                 tipText = '<p>' + (serviceName || modeName) + '</p>';
