@@ -196,13 +196,13 @@ $ ->
 
     outboundDateTime = moment(outboundDateStr + " " + outboundTimeStr)
     returnDateTime = moment(returnDateStr + " " + returnTimeStr)
-    minOutboundDateTime = moment().next15()
+    minOutboundDateTime = moment()
 
     isOutboundChanged = false
     isReturnChanged = false
 
     if outboundDateTime < minOutboundDateTime
-      outboundDateTime = minOutboundDateTime
+      outboundDateTime = minOutboundDateTime.next15()
       isOutboundChanged = true
     
     if returnDateTime <= outboundDateTime
@@ -210,7 +210,7 @@ $ ->
         returnDateTime = outboundDateTime.add(2, "hours")
         isReturnChanged = true
       else if isReturn
-        outboundDateTime = (if returnDateTime.subtract(2, "hours") < minOutboundDateTime then minOutboundDateTime else returnDateTime.subtract(2, "hours"))
+        outboundDateTime = (if returnDateTime.subtract(2, "hours") < minOutboundDateTime then minOutboundDateTime.next15() else returnDateTime.subtract(2, "hours"))
         isOutboundChanged = true
       else 
         returnDateTime = outboundDateTime.add(2, "hours")
