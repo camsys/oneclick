@@ -66,3 +66,18 @@ end
 # Activate additional modes
 Mode.unscoped.find_by(code: 'mode_rideshare').update_attributes(active: 1, visible: true)
 Mode.unscoped.find_by(code: 'mode_car_transit').update_attributes(active: 1, visible: false) #KissNRide
+
+# update ARC mode logos
+Mode.unscoped.find_by(code: 'mode_rideshare').update_attributes(logo_url: 'arc/modes/rideshare.png')
+Mode.unscoped.find_by(code: 'mode_park_transit').update_attributes(logo_url: 'arc/modes/transit.png')
+Mode.unscoped.find_by(code: 'mode_car_transit').update_attributes(logo_url: 'arc/modes/transit.png')
+Mode.unscoped.find_by(code: 'mode_rail').update_attributes(logo_url: 'arc/modes/rail.png')
+Mode.unscoped.find_by(code: 'mode_bus').update_attributes(logo_url: 'arc/modes/bus.png')
+Mode.unscoped.find_by(code: 'mode_walk').update_attributes(logo_url: 'arc/modes/walk.png')
+Mode.unscoped.find_by(code: 'mode_car').update_attributes(logo_url: 'arc/modes/auto.png')
+Mode.unscoped.find_by(code: 'mode_bikeshare').update_attributes(logo_url: 'arc/modes/bicycle.png')
+Mode.unscoped.find_by(code: 'mode_bicycle').update_attributes(logo_url: 'arc/modes/bicycle.png')
+Mode.unscoped.find_by(code: 'mode_bike_transit').update_attributes(logo_url: 'arc/modes/bicycle.png')
+Mode.unscoped.find_by(code: 'mode_bike_park_transit').update_attributes(logo_url: 'arc/modes/bicycle.png')
+Mode.unscoped.find_by(code: 'mode_taxi').update_attributes(logo_url: 'arc/modes/taxi.png')
+Mode.unscoped.find_by(code: 'mode_paratransit').update_attributes(logo_url: 'arc/modes/paratransit.png')

@@ -73,8 +73,10 @@ def add_ancillary_services
   providers = [
     {name: 'MARTA', url: 'http://www.itsmarta.com',
       logo_url: 'arc/MARTA.png'},
-    {name: 'GRTA', url: 'http://www.grta.org'},
-    {name: 'CCT', url: 'http://dot.cobbcountyga.gov/cct/'},
+    {name: 'GRTA', url: 'http://www.grta.org',
+      logo_url: 'arc/GRTA.png'},
+    {name: 'CCT', url: 'http://dot.cobbcountyga.gov/cct/',
+      logo_url: 'arc/CCT.png'},
   ]
 
   s = ServiceType.where(code: 'transit').first
