@@ -1,7 +1,8 @@
-%table.center{:cellpadding=>10}
+%table.center
   -YAML.load(itinerary.server_message).each do |business|
     %tr
-      %td.itinerary_text
-        %h4=business['name'] + ":  "
-      %td.itinerary_text
-        %h4=business['phone']
+      %td
+        %b
+          =business['name'] + ":  "
+      %td
+        =business['phone']
