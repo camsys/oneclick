@@ -505,6 +505,7 @@ es:
   minute_abbr: '[es]min[/es]'
   minutes: '[es]minutes[/es]'
   sort_by: '[es]Sort by[/es]'
+  miles: '[es]miles[/es]'
   less_than_1_block: "a menos the 1 cuadra"
   about_2_blocks: "aproximadament 2 cuadras"
   about_4_blocks: "aproximadamente 4 cuadras"

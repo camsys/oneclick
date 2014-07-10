@@ -507,6 +507,7 @@ en:
   minute_abbr: 'min'
   minutes: 'minutes'
   sort_by: 'Sort by'
+  miles: 'miles'
   less_than_1_block: "less than 1 block"
   about_2_blocks: "about 2 blocks"
   about_4_blocks: "about 4 blocks"
