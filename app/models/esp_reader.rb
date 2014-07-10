@@ -468,14 +468,15 @@ class EspReader
         characteristic = Characteristic.find_by_code('veteran')
         ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
       when 'county resident'
+        next
         # When county resident is required.  The person must also be a resident of the county in addition to traveling within that county.
         # The coverages were created previously.
-        service.coverage_areas.where(:coverage_type => "county_name").map(&:value).uniq.each do |county_name|
-          c = GeoCoverage.find_or_create_by(value: county_name) do |gc|
-            gc.coverage_type = 'county_name'
-          end
-          ServiceCoverageMap.find_or_create_by(service: service, geo_coverage: c, rule: 'residence')
-        end
+        #service.coverage_areas.where(:coverage_type => "county_name").map(&:value).uniq.each do |county_name|
+        #  c = GeoCoverage.find_or_create_by(value: county_name) do |gc|
+        #    gc.coverage_type = 'county_name'
+        #  end
+        #  ServiceCoverageMap.find_or_create_by(service: service, geo_coverage: c, rule: 'residence')
+        #end
       when 'military/veteran'
         characteristic = Characteristic.find_by_code('veteran')
         ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
