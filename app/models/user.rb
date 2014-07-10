@@ -101,6 +101,7 @@ class User < ActiveRecord::Base
 
   def has_disability?
     disabled = Characteristic.find_by_code('disabled')
+    return false if disabled.nil?
     disability_status = self.user_profile.user_characteristics.where(characteristic_id: disabled.id)
     disability_status.count > 0 and disability_status.first.value == 'true'
   end
@@ -122,6 +123,7 @@ class User < ActiveRecord::Base
 
   def has_vehicle?
     has_trans = Characteristic.find_by(code: 'no_trans')
+    return false if has_trans.nil?
     status = self.user_profile.user_characteristics.where(characteristic: has_trans)
     status.count > 0 and status.first.value == 'true'
   end
