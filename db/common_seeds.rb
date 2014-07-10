@@ -26,7 +26,11 @@ end
   {name: 'Trips Details', description: 'Details of all trips.',
    view_name: 'trips_details_report', class_name: 'TripsDetailsReport', active: true}
 ].each do |rep|
-  Report.find_or_create_by!(rep)
+  # Need to correctly handle updating active state; match everything except that.
+  is_active = rep[:active]
+  rep.delete :active
+  report = Report.find_or_create_by!(rep)
+  report.update_attributes(active: is_active)
   Translation.find_or_create_by!(key: rep[:class_name], locale: :en,
                                  value: rep[:name] + " Report")
   I18n.available_locales.reject!{|x| x == :en}.each do |l|
