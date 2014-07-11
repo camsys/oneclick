@@ -22,11 +22,11 @@
   *= require_self
   */
 
+@import 'base/oneclick-base-lib';
+@import 'brand-lib';
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "bootstrap/theme";
-@import 'base/oneclick-base-lib';
-@import 'brand-lib';
 
 // @import "includes/bootstrap-accessibility";
 @import "includes/jquery.timepicker";
