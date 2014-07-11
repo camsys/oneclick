@@ -719,7 +719,7 @@ en:
   locales:
     en: "English"
     es: "En Español"
-
+    ht: "Creole"
   # Branding
   arc:
     home: 'ARC 1-Click Home'
