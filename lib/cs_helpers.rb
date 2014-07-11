@@ -363,8 +363,8 @@ module CsHelpers
     price_formatted = nil
     cost_in_words = ''
     comments = ''
-    Rails.logger.info 'mode is '
-    Rails.logger.info itinerary.mode
+    Rails.logger.info 'fare is '
+    Rails.logger.info fare
     if fare.respond_to? :fare_type
       case fare.fare_type
       when FareStructure::FLAT
@@ -386,32 +386,27 @@ module CsHelpers
       end
     else
       if itinerary.is_walk or itinerary.is_bicycle #TODO: walk, bicycle currently are put in transit category
+        Rails.logger.info 'is walk or bicycle, so no charge'
         fare = 0
         price_formatted = I18n.t(:no_charge)
         cost_in_words = price_formatted
-      end
-
-      case itinerary.mode
-      when Mode.walk
-      when Mode.bicycle
-      when Mode.bikeshare
-        fare = 0
-        price_formatted = I18n.t(:no_charge)
-        cost_in_words = price_formatted
-      when Mode.taxi
-        unless fare.nil?
-          fare = fare.ceil
+      else
+        case itinerary.mode
+        when Mode.taxi
+          unless fare.nil?
+            fare = fare.ceil
+            estimated = true
+            price_formatted = number_to_currency(fare) + '*'
+            comments = I18n.t(:cost_estimated)
+            cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
+          end
+        when Mode.rideshare
+          fare = nil
           estimated = true
-          price_formatted = number_to_currency(fare) + '*'
-          comments = I18n.t(:cost_estimated)
-          cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
+          price_formatted = '*'
+          comments = I18n.t(:see_details_for_cost)
+          cost_in_words = I18n.t(:see_below)
         end
-      when Mode.rideshare
-        fare = nil
-        estimated = true
-        price_formatted = '*'
-        comments = I18n.t(:see_details_for_cost)
-        cost_in_words = I18n.t(:see_below)
       end
     end
    
@@ -419,6 +414,7 @@ module CsHelpers
       unless fare.nil?
         fare = fare.to_f
         if fare == 0
+          Rails.logger.info 'no charge as fare is 0'
           price_formatted = I18n.t(:no_charge)
           cost_in_words = price_formatted
         else
