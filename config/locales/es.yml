@@ -644,10 +644,11 @@ es:
   presence_msg: "[es]can't be blank[/es]"
   before_msg: "[es]must be before [/es]"
 
-  locales: # Add to this block for every locale that is added
+  locales:
     en: "English"
-    es: "Española"
-  
+    es: "En Español"
+    ht: "Creole"
+    
   # Branding
   arc:
     logotext: ''

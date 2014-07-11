@@ -222,8 +222,12 @@ module ApplicationHelper
       begin
         I18n.translate(key, options.merge({raise: true}))
       rescue Exception => e
-        Rails.logger.info "key: #{key} not found: #{e.inspect}"
-        # Note we swallow the exception
+        Rails.logger.warn "key: #{key} not found: #{e.inspect}"
+        begin
+          I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale}))
+        rescue Exception => e
+          "Key not found: #{key}" # No need to internationalize this.  Should only hit if a non-existant key is called
+        end
       end
     end
   end
