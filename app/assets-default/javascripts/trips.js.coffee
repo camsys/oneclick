@@ -75,6 +75,47 @@ process_location_from_map = (addr) -> #update map marker from selected location,
   update_map(CsMaps.tripMap, addrType, null, addr, null)
   update_place(addr.name, addrType)
 
+validateDateTimes = (isReturn) ->
+  outboundDateData = $("#trip_proxy_outbound_trip_date").data("DateTimePicker")
+  outboundTimeData = $("#trip_proxy_outbound_trip_time").data("DateTimePicker")
+  returnDateData = $("#trip_proxy_return_trip_date").data("DateTimePicker")
+  returnTimeData = $("#trip_proxy_return_trip_time").data("DateTimePicker")
+
+  outboundDateStr = outboundDateData.date.format(outboundDateData.format)
+  outboundTimeStr = outboundTimeData.date.format(outboundTimeData.format)
+  returnDateStr = returnDateData.date.format(returnDateData.format)
+  returnTimeStr = returnTimeData.date.format(returnTimeData.format)
+
+  outboundDateTime = moment(outboundDateStr + " " + outboundTimeStr)
+  returnDateTime = moment(returnDateStr + " " + returnTimeStr)
+  minOutboundDateTime = moment()
+
+  isOutboundChanged = false
+  isReturnChanged = false
+
+  if outboundDateTime < minOutboundDateTime
+    outboundDateTime = minOutboundDateTime.next15()
+    isOutboundChanged = true
+  
+  if returnDateTime <= outboundDateTime
+    if isOutboundChanged
+      returnDateTime = outboundDateTime.add(2, "hours")
+      isReturnChanged = true
+    else if isReturn
+      outboundDateTime = (if returnDateTime.subtract(2, "hours") < minOutboundDateTime then minOutboundDateTime.next15() else returnDateTime.subtract(2, "hours"))
+      isOutboundChanged = true
+    else 
+      returnDateTime = outboundDateTime.add(2, "hours")
+      isReturnChanged = true
+
+  if isReturnChanged
+    returnDateData.setValue returnDateTime.toDate()
+    returnTimeData.setValue returnDateTime.toDate()
+  if isOutboundChanged
+    outboundDateData.setValue outboundDateTime.toDate()
+    outboundTimeData.setValue outboundDateTime.toDate()
+  return
+
 $ ->
 
   places = new Bloodhound
@@ -183,47 +224,6 @@ $ ->
         failure: (error) ->
           console.log error
 
-  validateDateTimes = (isReturn) ->
-    outboundDateData = $("#trip_proxy_outbound_trip_date").data("DateTimePicker")
-    outboundTimeData = $("#trip_proxy_outbound_trip_time").data("DateTimePicker")
-    returnDateData = $("#trip_proxy_return_trip_date").data("DateTimePicker")
-    returnTimeData = $("#trip_proxy_return_trip_time").data("DateTimePicker")
-
-    outboundDateStr = outboundDateData.date.format(outboundDateData.format)
-    outboundTimeStr = outboundTimeData.date.format(outboundTimeData.format)
-    returnDateStr = returnDateData.date.format(returnDateData.format)
-    returnTimeStr = returnTimeData.date.format(returnTimeData.format)
-
-    outboundDateTime = moment(outboundDateStr + " " + outboundTimeStr)
-    returnDateTime = moment(returnDateStr + " " + returnTimeStr)
-    minOutboundDateTime = moment()
-
-    isOutboundChanged = false
-    isReturnChanged = false
-
-    if outboundDateTime < minOutboundDateTime
-      outboundDateTime = minOutboundDateTime.next15()
-      isOutboundChanged = true
-    
-    if returnDateTime <= outboundDateTime
-      if isOutboundChanged
-        returnDateTime = outboundDateTime.add(2, "hours")
-        isReturnChanged = true
-      else if isReturn
-        outboundDateTime = (if returnDateTime.subtract(2, "hours") < minOutboundDateTime then minOutboundDateTime.next15() else returnDateTime.subtract(2, "hours"))
-        isOutboundChanged = true
-      else 
-        returnDateTime = outboundDateTime.add(2, "hours")
-        isReturnChanged = true
-
-    if isReturnChanged
-      returnDateData.setValue returnDateTime.toDate()
-      returnTimeData.setValue returnDateTime.toDate()
-    if isOutboundChanged
-      outboundDateData.setValue outboundDateTime.toDate()
-      outboundTimeData.setValue outboundDateTime.toDate()
-    return
-
   $('#trip_proxy_outbound_trip_date, #trip_proxy_outbound_trip_time').on "dp.change", ->
     validateDateTimes false
     return
@@ -237,7 +237,8 @@ $ ->
     validateDateTimes true
     return
 
-  validateDateTimes false #when page load, validate outbound and return times
+  if $('.plan-a-trip').length > 0
+    validateDateTimes false #when page load, validate outbound and return times
 
   return
       
