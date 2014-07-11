@@ -363,20 +363,27 @@ module CsHelpers
     price_formatted = nil
     cost_in_words = ''
     comments = ''
-    Rails.logger.info 'fare is '
-    Rails.logger.info fare
+ 
     if fare.respond_to? :fare_type
       case fare.fare_type
       when FareStructure::FLAT
-        fare = fare.base.to_f
-        price_formatted = number_to_currency(fare)
-        cost_in_words = price_formatted
+        if fare.base
+          fare = fare.base.to_f
+          price_formatted = number_to_currency(fare)
+          cost_in_words = price_formatted
+        else
+          fare = nil
+        end
       when FareStructure::MILEAGE
-        fare = fare.base.to_f
-        estimated = true
-        price_formatted = number_to_currency(fare.ceil) + '*'
-        comments = "+#{number_to_currency(fare.rate)}/mile - " + I18n.t(:cost_estimated)
-        cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
+        if fare.base
+          estimated = true
+          comments = "+#{number_to_currency(fare.rate)}/mile - " + I18n.t(:cost_estimated)
+          fare = fare.base.to_f
+          price_formatted = number_to_currency(fare.ceil) + '*'
+          cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
+        else
+          fare = nil
+        end
       when FareStructure::COMPLEX
         fare = nil
         estimated = true
@@ -393,12 +400,12 @@ module CsHelpers
       else
         case itinerary.mode
         when Mode.taxi
-          unless fare.nil?
+          if fare
             fare = fare.ceil
             estimated = true
             price_formatted = number_to_currency(fare) + '*'
             comments = I18n.t(:cost_estimated)
-            cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
+            cost_in_words = number_to_currency(fare) + I18n.t(:est)
           end
         when Mode.rideshare
           fare = nil
