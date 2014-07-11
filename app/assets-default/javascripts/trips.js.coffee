@@ -237,7 +237,8 @@ $ ->
     validateDateTimes true
     return
 
-  validateDateTimes false #when page load, validate outbound and return times
+  $('.plan_a_trip').on 'load', ->
+    validateDateTimes false
 
   return
       
