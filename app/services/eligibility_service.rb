@@ -59,7 +59,6 @@ class EligibilityService
         if passenger_characteristic.count == 0 #This passenger characteristic is not listed
           Rails.logger.info "not listed"
           group_match_score += 0.25
-          group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
           Rails.logger.info "group_missing_info is now #{group_missing_info.ai}"
           if service_requirement.code == 'age'
             if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE

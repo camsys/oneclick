@@ -166,7 +166,6 @@ class TripDecorator < Draper::Decorator
           # TODO: this should be generalized here and in _rideshare_details.html.haml
           summary += 'Georgia Commute Options'
         end
-        
       else
         summary += "#{I18n.t(:unknown)} #{I18n.t(:mode)}"
       end
@@ -194,9 +193,7 @@ class TripDecorator < Draper::Decorator
           user_characteristic = UserCharacteristic.where(user_profile_id: user_profile.id,
                                                          characteristic_id: requirement.id)
           if user_characteristic.count > 0 &&
-              @elig_svc.test_condition(user_characteristic.first.value,
-                             map.rel_code,
-                             map.value)
+            user_characteristic.first.meets_requirement(map)
             result += @elig_svc.translate_service_characteristic_map(map) + ';'
           end
         end

@@ -29,7 +29,7 @@ describe EligibilityService do
             "data_type" => 'integer',
             # "control_type" => 'foo',
             "options" => nil,
-            "success_condition"=>"<=1949",
+            "success_condition"=>"<1949",
             "group_id" => 0,
             "code" => "age"
           }

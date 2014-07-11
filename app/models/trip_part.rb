@@ -283,7 +283,7 @@ class TripPart < ActiveRecord::Base
       end
       Rails.logger.info "Base duration: #{base_duration} minutes"
       itins.each do |i|
-        i.estimate_duration(base_duration, Oneclick::Application.config.minimum_paratransit_duration, Oneclick::Application.config.minimum_paratransit_duration, trip_time, is_depart)
+        i.estimate_duration(base_duration, Oneclick::Application.config.minimum_paratransit_duration, Oneclick::Application.config.paratransit_duration_factor, trip_time, is_depart)
       end
     end
     itins

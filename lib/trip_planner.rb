@@ -252,8 +252,8 @@ class TripPlanner
 
   def get_drive_time arrive_by, trip_time, from_lat, from_lon, to_lat, to_lon
     tp = TripPlanner.new
-    result, response = get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],
-                                                [to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, 'CAR')
+    result, response = get_fixed_itineraries([from_lat, from_lon],
+                                                [to_lat, to_lon], trip_time, arrive_by.to_s, 'CAR')
     response['itineraries'].first['duration']
   end
 
