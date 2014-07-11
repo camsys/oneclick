@@ -63,17 +63,21 @@ ActiveRecord::Schema.define(version: 20140708201004) do
   end
 
   create_table "characteristics", force: true do |t|
-    t.string  "name",                  limit: 64
-    t.string  "note",                                              null: false
-    t.string  "datatype",              limit: 25,                  null: false
-    t.boolean "requires_verification",             default: false, null: false
-    t.boolean "active",                            default: true,  null: false
+    t.string  "name",                     limit: 64
+    t.string  "note",                                                 null: false
+    t.string  "datatype",                 limit: 25,                  null: false
+    t.boolean "requires_verification",                default: false, null: false
+    t.boolean "active",                               default: true,  null: false
     t.string  "code"
-    t.string  "characteristic_type",   limit: 128
-    t.string  "desc",                              default: ""
-    t.integer "sequence",                          default: 0
-    t.boolean "ask_early",                         default: true
+    t.string  "characteristic_type",      limit: 128
+    t.string  "desc",                                 default: ""
+    t.integer "sequence",                             default: 0
+    t.boolean "ask_early",                            default: true
     t.string  "logo_url"
+    t.boolean "for_service",                          default: true
+    t.boolean "for_traveler",                         default: true
+    t.integer "linked_characteristic_id"
+    t.string  "link_handler"
   end
 
   create_table "counties", force: true do |t|
