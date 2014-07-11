@@ -58,8 +58,7 @@ $(document).ready( function() {
       $("#rateable_modal .modal-content").html(data);
     });
   });
-  $("input[type='submit']").click(function( event ) {
-    event.preventDefault();
+  $("form").submit(function( event ) {
     $.ajax({
       type: "POST",
       url: "/ratings/approve",
@@ -71,6 +70,7 @@ $(document).ready( function() {
       },
       success: function() { location.reload(true) }
     })
+    event.preventDefault();
   });
   var table = $('#ratings_table').dataTable( {
     "aaSorting": [[ 7, "desc" ]],
