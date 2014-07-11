@@ -47,36 +47,38 @@ html, body {
   padding: 0;
 }
 
-@media(max-width:$screen-sm-max){
-  #main {
+
+#main {
+  @media(max-width:$screen-sm-max){
     padding-top: 55px;
   }
-
-  #publicNav .container-fluid {
-    padding: 0px;
-  }
-
-  #logo{
-    width: 370px;
-    line-height: 50px;
-  }
-
-  #help i{
-    line-height: 50px;
+  @media(min-width:$screen-md-min){
+    padding-top: 65px;
   }
 }
 
-@media(min-width:$screen-md-min){
-  #main {
-    padding-top: 65px;
+#publicNav .container-fluid {
+  @media(max-width:$screen-sm-max){
+    padding: 0px;
   }
+}
 
-  #logo{
+#logo{
+  @media(max-width:$screen-sm-max){
+    width: 370px;
+    line-height: 50px;
+  }
+  @media(min-width:$screen-md-min){
     width: 440px;
     line-height: 60px;
   }
+}
 
-  #help i{
+#help i{
+  @media(max-width:$screen-sm-max){
+    line-height: 50px;
+  }
+  @media(min-width:$screen-md-min){
     line-height: 60px;
   }
 }

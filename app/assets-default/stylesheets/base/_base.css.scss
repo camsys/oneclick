@@ -53,6 +53,9 @@ h6 { font-size: 12px; line-height: 20px; }
 #main {
   padding-top: 60px;
   padding-bottom: 80px;
+  @media (max-width: 767px ) {
+    padding-top: 0;
+  }
 }
 
 .dialog-title-bar {
@@ -292,48 +295,43 @@ a:hover#help {
 // Media queries for the show trips view
 .trip_summary_icon {
   font-size: 4em;
-}
-// Large desktop
-@media (min-width: 1200px) {
-  .trip_summary_icon {
-    font-size: 5em;
+  // Large desktop
+  @media (min-width: 1200px) {
+      font-size: 5em;
   }
-}
-@media (min-width: 768px) and (max-width: 979px) {
-  .trip_summary_icon {
-    font-size: 4em;
+  @media (min-width: 768px) and (max-width: 979px) {
+      font-size: 4em;
   }
-}
-@media (max-width: 767px ) {
-  .trip_summary_icon {
+  @media (max-width: 767px ) {
     font-size: 6em;
     width: 100% !important;
     float: none;
     margin-left: auto;
     margin-right: auto;
   }
-  .trip_summary_text {
-    text-align: center !important;
-  }
-  .trip_summary_title {
-    text-align: center !important;
-  }
-  #main {
-    padding-top: 0;
-  }
-}
-@media (max-width: 480px ) {
-  .trip_summary_icon {
+  @media (max-width: 480px ) {
     font-size: 6em;
     width: 100% !important;
     float: none;
     margin-left: auto;
     margin-right: auto;
   }
-  .trip_summary_text {
+}
+
+.trip_summary_text {
+  @media (max-width: 767px ) {
     text-align: center !important;
   }
-  .trip_summary_title {
+  @media (max-width: 480px ) {
+    text-align: center !important;
+  }
+}
+    
+.trip_summary_title {
+  @media (max-width: 767px ) {
+    text-align: center !important;
+  }
+  @media (max-width: 480px ) {
     text-align: center !important;
   }
 }
