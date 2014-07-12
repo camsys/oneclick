@@ -349,7 +349,10 @@ es:
   fare: "[es198]Fare[/es]"
   flat_fare_unavailable: "[es199]Flat fare unavailable[/es]"
   rate: "[es]Rate[/es]"
-  four_digit_year: '[es]year in four-digit[/es]'
+  four_digit_year: '[es]Year must be four digits[/es]'
+  cannot_change_time_to_past: '[es]Cannot change trip part time to a past time[/es]'
+  cannot_change_time_to_after_next_trip_part: "[es]Cannot change trip part time to be after next trip part[/es]"
+  cannot_change_time_to_before_prev_trip_part: "[es]Cannot change trip part time to be before previous trip part[/es]"
 
   #map
   zoom_in: '[es]Zoom in[/es]'

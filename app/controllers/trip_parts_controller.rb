@@ -63,6 +63,7 @@ class TripPartsController < PlaceSearchingController
 
   def reschedule
     @trip_part = TripPart.find(params[:id])
+
     begin
       raise "minutes must be specified" unless params[:minutes]
       @trip_part.reschedule(params[:minutes])

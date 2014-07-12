@@ -323,14 +323,21 @@ class TripPart < ActiveRecord::Base
 
   def reschedule minutes
     new_time = scheduled_time + (minutes.to_i).minutes
+
+    if new_time < DateTime.current.utc
+      raise I18n.t(:cannot_change_time_to_past)
+    end
 =begin
 if only trip part, is okay
 if advancing, just make sure doesn't equal or get later than next part's time
 if subtracting, just make sure doesn't get equal to or earlier than previous part's time
 =end
-    unless new_time_before_next_part(new_time) && new_time_after_prev_part(new_time)
-      raise "Cannot change trip part time, after/before adjacent trip part"
+    if not new_time_before_next_part(new_time)
+      raise I18n.t(:cannot_change_time_to_after_next_trip_part)
+    elsif not new_time_after_prev_part(new_time)
+      raise I18n.t(:cannot_change_time_to_before_prev_trip_part)
     end
+
     update_attribute(:scheduled_time, new_time)
     trip.update_attribute(:scheduled_time, new_time)
     # only do this is we successfully changed the time

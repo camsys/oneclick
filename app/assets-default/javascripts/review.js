@@ -165,39 +165,26 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
     }
 
     /**
-     * -30 was clicked, then refresh associated trip part plans
+     * -30 | +30 was clicked, then refresh associated trip part plans
      */
-    function executePrevPeriodQuery(tripPartId) {
+    function executePeriodChangeQuery(tripPartId, isNext) {
         $.ajax({
-            url: window.location.href + '/trip_parts/' + tripPartId + '/reschedule.json?minutes=-' + intervalStep
+            url: window.location.href + '/trip_parts/' + tripPartId + '/reschedule.json?minutes=' + (isNext ? '' : '-') + intervalStep
         })
             .done(function(response) {
                 if (response.status === 200) { //valid response, then refresh page
                     window.location.reload();
                 } else {
-                    show_alert(response.message);
+                    show_alert(response.responseJSON.message);
                 }
             })
             .fail(function(response) {
-                console.log(response);
-                show_alert(localeDictFinder['something_went_wrong']);
-            });
-    }
-
-    function executeNextPeriodQuery(tripPartId) {
-        $.ajax({
-            url: window.location.href + '/trip_parts/' + tripPartId + '/reschedule.json?minutes=' + intervalStep
-        })
-            .done(function(response) {
-                if (response.status === 200) { //valid response, then refresh page
-                    window.location.reload();
+                if(response.status === 409) {
+                    show_alert(response.responseJSON.message);
                 } else {
-                    show_alert(response.message);
+                    console.log(response);
+                    show_alert(localeDictFinder['something_went_wrong']);
                 }
-            })
-            .fail(function(response) {
-                console.log(response);
-                show_alert(localeDictFinder['something_went_wrong']);
             });
     }
 
@@ -262,14 +249,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             var tripPartObj = $(this).parents('.single-trip-part');
             if (tripPartObj.length > 0) {
                 var tripPartId = tripPartObj.attr('data-trip-id');
-                executeNextPeriodQuery(tripPartId);
+                executePeriodChangeQuery(tripPartId, true);
             }
         });
         $('.prev-period').on('click', function() {
             var tripPartObj = $(this).parents('.single-trip-part');
             if (tripPartObj.length > 0) {
                 var tripPartId = tripPartObj.attr('data-trip-id');
-                executePrevPeriodQuery(tripPartId);
+                executePeriodChangeQuery(tripPartId, false);
             }
         });
 
