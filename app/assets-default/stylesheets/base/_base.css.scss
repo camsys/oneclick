@@ -2,6 +2,86 @@ html, body {
   height: 100%;
 }
 
+$footer-height: 40px;
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height plus any margins */
+  margin: 0 auto  $footer-height * -1;
+  position: relative;
+}
+
+#footer {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: $footer-height;
+}
+
+#main {
+  width: 100%;
+  padding-bottom: $footer-height;
+}
+
+#publicNav{
+  @include header-background;
+}
+
+#feedback{
+  @include footer-feedback-background;
+}
+
+#versionLang {
+  @include footer-version-background;
+}
+
+#logo{
+  background-position:left center !important;
+  background-repeat: no-repeat !important;
+  height: auto !important;
+  padding: 0;
+}
+
+
+#main {
+  @media(max-width:$screen-sm-max){
+    padding-top: 60px;
+  }
+  @media(min-width:$screen-md-min){
+    padding-top: 70px;
+  }
+}
+
+#publicNav .container-fluid {
+  @media(max-width:$screen-sm-max){
+    padding: 0px;
+  }
+}
+
+#logo{
+  @media(max-width:$screen-sm-max){
+    width: 370px;
+    line-height: 50px;
+  }
+  @media(min-width:$screen-md-min){
+    width: 440px;
+    line-height: 60px;
+  }
+}
+
+#help i{
+  @media(max-width:$screen-sm-max){
+    line-height: 50px;
+  }
+  @media(min-width:$screen-md-min){
+    line-height: 60px;
+  }
+}
+
 // These are the bootstrap original sizes
 // h1 { font-size: 36px; line-height: 40px; }
 // h2 { font-size: 30px; line-height: 40px; }
@@ -32,30 +112,6 @@ h6 { font-size: 12px; line-height: 20px; }
 
 .modal a {
   cursor: pointer;  
-}
-
-#publicnav h2 {
-  margin: 0 5px;
-  line-height: normal;
-  display: inline;
-}
-
-/* Wrapper for page content to push down footer */
-#wrap {
-  min-height: 100%;
-  height: auto !important;
-  height: 100%;
-  /* Negative indent footer by it's height plus any margins */
-  //margin: 0 auto -80px;
-  position: relative;
-}
-
-#main {
-  padding-top: 60px;
-  padding-bottom: 80px;
-  @media (max-width: 767px ) {
-    padding-top: 0;
-  }
 }
 
 .dialog-title-bar {
@@ -106,29 +162,10 @@ h6 { font-size: 12px; line-height: 20px; }
   border-bottom-right-radius: 5px;
 }
 
-#help {
-  i {
-    font-size: 40px;
-    color: #777777;
-  }
-  i:hover {
-    color: #000000;
-  }
-}
-
 a:hover#help {
   text-decoration: none;
 }
 
-
-/* Set the fixed height of the footer here */
-#push,
-#footer {
-  height: 80px; // include any margins, etc
-  position: absolute;
-  width: 100%;
-  bottom: 0px;
-}
 
 .mode_title {
   font-weight: bold;
@@ -273,10 +310,6 @@ a:hover#help {
 }
 
 .itinerary-item {
-}
-
-.trip_summary_text {
-  //font-size: 2em;
 }
 
 .trip_summary_header .row {
@@ -495,38 +528,6 @@ td.left, th.left {
   background: #FFFFFF;
 }
 
-.white-well{
-  background: #FFFFFF;
-}
-
-.warning{
-  color: red;
-}
-
-.service-picker{
-  vertical-position: bottom;
-}
-
-.ALTtable{
-  width:100%;
-  border-collapse:collapse;
-}
-.ALTtable td{
-  padding:7px; border:1px solid;
-}
-/* provide some minimal visual accomodation for IE8 and below */
-.ALTtable tr{
-  background: #FFFFFF;
-}
-/*  Define the background color for all the ODD background rows  */
-.ALTtable tr:nth-child(odd){
-  background: whitesmoke;
-}
-/*  Define the background color for all the EVEN background rows  */
-.ALTtable tr:nth-child(even){
-  background: #FFFFFF;
-}
-
 .inline-radio .radio {
   display: inline-block;
   margin-right: 15px;
@@ -534,7 +535,7 @@ td.left, th.left {
 
 /* Printer Friendly */
 @media print {
-  #publicnav,#footer,#help{
+  #publicNav,#footer,#help{
     display: none;
   }
 
