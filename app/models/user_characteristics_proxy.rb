@@ -3,6 +3,8 @@
 # can be updated in a single form.
 class UserCharacteristicsProxy < UserProfileProxy
 
+  MIN_YEAR = 1900
+  
   def initialize(user = nil)
     super(user)
   end
@@ -40,8 +42,10 @@ class UserCharacteristicsProxy < UserProfileProxy
   end
 
   def update_maps(new_settings)
-    update_maps_characteristics(new_settings)
-    update_maps_accommodations(new_settings)
+    valid = true
+    valid &= update_maps_characteristics(new_settings)
+    valid &= update_maps_accommodations(new_settings)
+    valid
   end
 
   # Update the user characteristics based on the form params
@@ -49,6 +53,7 @@ class UserCharacteristicsProxy < UserProfileProxy
     Rails.logger.debug "UserCharacteristicsProxy.update_maps()"
     Rails.logger.debug new_settings.inspect
 
+    valid = true
     # Put everything in a big transaction
     UserCharacteristic.transaction do
       # Loop through the list of characteristics that could be set. This appraoch ensures we are only updating
@@ -68,6 +73,16 @@ class UserCharacteristicsProxy < UserProfileProxy
 
           Rails.logger.debug new_value.nil? ? "NULL" : new_value
 
+          # Check for date failing to parse or out of range
+          this_year = DateTime.now.year
+          if not params.empty? and characteristic.datatype == 'date' and
+              (new_value.nil? or (new_value.year < MIN_YEAR) or (new_value.year > this_year))
+            errors.add(characteristic.code.to_sym,
+                       I18n.t(:four_digit_year) + " #{MIN_YEAR} - #{this_year}")
+            valid = false
+            next
+          end
+          
           # See if this characteristic already exists in the database for this user
           user_characteristic = UserCharacteristic.where("characteristic_id = ? AND user_profile_id = ?", characteristic.id, user.user_profile.id).first
           if user_characteristic
@@ -91,7 +106,7 @@ class UserCharacteristicsProxy < UserProfileProxy
       end
 
     end
-
+    valid
   end
 
   # Update the user accommodation based on the form params
@@ -145,7 +160,8 @@ class UserCharacteristicsProxy < UserProfileProxy
         end
       end
       
-    end    
+    end
+    true
   end
 
 end

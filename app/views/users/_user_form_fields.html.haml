@@ -79,7 +79,7 @@
             .panel-heading
               %h2.panel-title= t(:eligibility)
             .panel-body
-              -Characteristic.active.enabled.each do |c| 
+              - Characteristic.active.enabled.each do |c| 
                 - next if c.code=='age' # TODO kludge
                 - case c.datatype
                 - when 'bool'
