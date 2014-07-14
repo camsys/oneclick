@@ -22,11 +22,16 @@
   margin-right: 0px !important;
 }
 
-@media(max-width:$screen-xs-max){
-  .form-group .control-label {
+.form-group .control-label {
+  @media(max-width:$screen-xs-max){
     text-align: left;
   }
-  
+  @media(min-width:$screen-sm-min){
+    ext-align: right;
+  }
+}
+
+@media(max-width:$screen-xs-max){
   .tick-label-hidden-xs {
     visibility: hidden !important;
   }
@@ -44,18 +49,11 @@
   }
 }
 
-@media(min-width:$screen-sm-min){
-  .form-group .control-label {
-    text-align: right;
-  }
-
-  @media(max-width:$screen-md-max){
-    .tick-label-hidden-sm-md {
-      visibility: hidden !important;
-    }
+@media(min-width:$screen-sm-min) and (max-width:$screen-md-max){
+  .tick-label-hidden-sm-md {
+    visibility: hidden !important;
   }
 }
-
 
 @media(min-width:$screen-lg-min){
   .tick-label-hidden-lg {
@@ -73,25 +71,6 @@
   margin-bottom: 10px;
   padding-left: 0px;
   padding-right: 0px; 
-}
-.action-button{
-  &:not(:last-of-type) {
-    margin-left: 5px;
-  } 
-  &.pull-right {
-    margin-left: 5px;
-  }
-  min-width: 9em;
-  font-weight: bold;
-}
-
-.action-button:hover, .action-button:focus {
-  // background-position: 0;
-  // color: inherit;
-}
-
-#noOptionButton {
-    margin-right: 5px;
 }
 
 .dropdown-toggle {
@@ -201,22 +180,22 @@ $period-nav-button-width: 40px;
 
 /* in sm+ mode, one period-nav button in same container, so apply margin to sorter component that make them vertically align in containers */
 /* in xs mode, as space is so limited, not apply margin so sorter can take whatever space left in its container */
-@media(max-width:$screen-xs-max){
-  .sm-sorter-margin-left {
+.sm-sorter-margin-left {
+  @media(max-width:$screen-xs-max){
     margin-left: 0px;
   }
 
-  .sm-sorter-margin-right {
-    margin-right: 0px;
+  @media(min-width:$screen-sm-min){
+    margin-left: $period-nav-button-width * -1;
   }
 }
 
-@media(min-width:$screen-sm-min){
-  .sm-sorter-margin-left {
-    margin-left: $period-nav-button-width * -1;
+.sm-sorter-margin-right {
+  @media(max-width:$screen-xs-max){
+     margin-right: 0px;
   }
 
-  .sm-sorter-margin-right {
+  @media(min-width:$screen-sm-min){
     margin-right: -$period-nav-button-width * -1;
   }
 }

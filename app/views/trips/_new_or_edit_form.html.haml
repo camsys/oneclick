@@ -2,12 +2,14 @@
   .hidden-xs.col-sm-8
     = render partial: 'shared/trip_plan_breadcrumbs'
   .col-sm-4
-    = button_tag :type => 'submit', :id => 'planTrip', :class => "btn btn-default pull-right action-button",
+    = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
       tabindex: 2 do
       =t(:plan)
       :javascript
-        $('#planTrip').click(function() {
-          $('.plan-a-trip').submit();
+        $(function() {
+          $('button[name=planTrip]').click(function() {
+            $('.plan-a-trip').submit();
+          });
         });
 .row
   .col-sm-7.col-xs-12
@@ -81,5 +83,8 @@
           #returnDatetimeOptions{style: (@trip_proxy.is_round_trip ? '' : 'display: none;')}
             .form-group
               = render partial: 'date_time_input', locals: {dir: 'return', f: f}
-
+  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px;"}
+    = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
+      tabindex: 2 do
+      =t(:plan)
   = render partial: 'shared/splash'

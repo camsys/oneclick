@@ -4,9 +4,9 @@
   .hidden-xs.col-sm-8
     = render partial: 'shared/trip_plan_breadcrumbs'
   .col-sm-4
-    = button_tag :type => 'button', :id => "planButton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
+    = button_tag :type => 'button', :name => "planButton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
       =t(:plan)
-    = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "pull-right btn btn-default action-button pull-right", id: "noOptionButton" do
+    = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "pull-right btn btn-default action-button pull-right", style: "margin-right: 5px;" do
       = t(:feedback)
     
 .row
@@ -24,7 +24,12 @@
     .col-md-9      
       #tripContainer.col-xs-12{style: "padding: 0px;"}
       / end of trip container
-    / end of review columns
+  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px;"}
+    = button_tag :type => 'button', :name => "planButton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
+      =t(:plan)
+    = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "pull-right btn btn-default action-button pull-right", style: "margin-right: 5px;" do
+      = t(:feedback)
+  / end of review columns
   #itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
   :javascript
     $(function() {
@@ -151,7 +156,7 @@
       });
 
       //Plan button to jump to Plan page
-      $('#planButton').on('click', function(e) {
+      $('button[name=planButton]').on('click', function(e) {
         var selectedPlanIds = [];
         var tripParts = $('#tripContainer').find('.single-trip-part');
         var selectedPlans = tripParts.find('.single-plan-selected');
