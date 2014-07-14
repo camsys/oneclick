@@ -3,9 +3,9 @@
     = render partial: 'shared/trip_plan_breadcrumbs'
 - else
   .row{style: "padding: 0px;"}
-    .col-xs-8
+    .hidden-xs.col-sm-8
       = render partial: 'shared/trip_plan_breadcrumbs'
-    .col-xs-4
+    .col-sm-4
       = link_to '#', {href: '#send_trip_by_email', class: 'btn btn-default pull-right action-button', style: "margin-right: 5px;", data: {toggle: 'modal'}} do
         /%i.fa.fa-envelope-o
         = t(:email)

@@ -1,9 +1,9 @@
 - content_for :head do
   = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"
 .row{style: "padding: 0px;"}
-  .col-xs-8
+  .hidden-xs.col-sm-8
     = render partial: 'shared/trip_plan_breadcrumbs'
-  .col-xs-4
+  .col-sm-4
     = button_tag :type => 'button', :id => "planButton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
       =t(:plan)
     = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "pull-right btn btn-default action-button pull-right", id: "noOptionButton" do
