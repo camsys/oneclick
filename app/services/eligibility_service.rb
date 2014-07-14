@@ -50,13 +50,13 @@ class EligibilityService
         # end
 
         passenger_characteristic = user_profile.user_characteristics.where(
-          characteristic: service_requirement.linked_characteristic || service_requirement)
+          characteristic: service_requirement.linked_characteristic || service_requirement).first
 
         Rails.logger.info "service_characteristic: #{service_characteristic_map.ai}"
         Rails.logger.info "service_requirement: #{service_requirement.ai}"
         Rails.logger.info "passenger_characteristic: #{passenger_characteristic.ai}"
 
-        if passenger_characteristic.count == 0 #This passenger characteristic is not listed
+        unless passenger_characteristic #This passenger characteristic is not listed
           Rails.logger.info "not listed"
           group_match_score += 0.25
           Rails.logger.info "group_missing_info is now #{group_missing_info.ai}"
