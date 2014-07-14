@@ -1,6 +1,47 @@
 // 1-Click default lib. list all 1-Click specific configurable variables and mixins definitions only. No styles.
 // this doesn't include bootstrap variables or mixins
 
+/**
+ *configurable variables
+**/
+
+//header
+$is-header-gradient-based: false !default;
+$header-background-color: white !default; ////only used when $is-header-gradient-based is false
+$header-gradient-start-color: #FAFAFA !default; //only used when $is-header-gradient-based is true
+$header-gradient-end-color: #A3A3A3 !default; //only used when $is-header-gradient-based is true
+
+//footer
+$footer-height: 40px;
+//footer: version row
+$is-footer-version-gradient-based: false !default;
+$version-background-color: white !default; ////only used when $is-header-gradient-based is false
+$version-gradient-start-color: #7DCCE6 !default; //only used when $is-header-gradient-based is true
+$version-gradient-end-color: #3681B3 !default; //only used when $is-header-gradient-based is true
+
+//footer: feedback row
+$is-footer-feedback-gradient-based: false !default;
+$feedback-background-color: white !default; ////only used when $is-header-gradient-based is false
+$feedback-gradient-start-color: #F8F02A !default; //only used when $is-header-gradient-based is true
+$feedback-gradient-end-color: #CCA23D !default; //only used when $is-header-gradient-based is true
+
+//application fonts
+$font-size-base: 12pt !default; //desktop
+$font-family-base: Verdana !default; //desktop
+$font-size-tablet: 12pt !default;
+$font-family-tablet: Verdana !default;
+$font-size-phone: 10pt !default;
+$font-family-phone: Verdana !default;
+
+//application breadcrumb
+$breadcrumb-height: 30px !default;
+
+//trip planning review page trip itinerary chart
+$single-plan-height: 50px !default; //the height of each itinerary chart container
+
+/**
+ *mixins
+**/
 @mixin set-background(
 	$is-gradient,
 	$bg-color,
@@ -19,40 +60,14 @@
   	}
 }
 
-
-//header background
-$is-header-gradient-based: false !default;
-$header-background-color: white !default; ////only used when $is-header-gradient-based is false
-$header-gradient-start-color: #FAFAFA !default; //only used when $is-header-gradient-based is true
-$header-gradient-end-color: #A3A3A3 !default; //only used when $is-header-gradient-based is true
-
 @mixin header-background() {
   	@include set-background( $is-header-gradient-based, $header-background-color, $header-gradient-start-color, $header-gradient-end-color);
 }
-
-//footer version
-$is-footer-version-gradient-based: false !default;
-$version-background-color: white !default; ////only used when $is-header-gradient-based is false
-$version-gradient-start-color: #7DCCE6 !default; //only used when $is-header-gradient-based is true
-$version-gradient-end-color: #3681B3 !default; //only used when $is-header-gradient-based is true
 
 @mixin footer-version-background() {
   	@include set-background( $is-footer-version-gradient-based, $version-background-color, $version-gradient-start-color, $version-gradient-end-color);
 }
 
-//footer feedback
-$is-footer-feedback-gradient-based: false !default;
-$feedback-background-color: white !default; ////only used when $is-header-gradient-based is false
-$feedback-gradient-start-color: #F8F02A !default; //only used when $is-header-gradient-based is true
-$feedback-gradient-end-color: #CCA23D !default; //only used when $is-header-gradient-based is true
-
 @mixin footer-feedback-background() {
   	@include set-background( $is-footer-feedback-gradient-based, $feedback-background-color, $feedback-gradient-start-color, $feedback-gradient-end-color);
 }
-
-
-//application breadcrumb
-$breadcrumb-height: 30px !default;
-
-//trip planning review page trip itinerary chart
-$single-plan-height: 50px !default; //the height of each itinerary chart container

@@ -1,8 +1,17 @@
-html, body {
+html, body{
   height: 100%;
 }
 
-$footer-height: 40px;
+body, .btn, .form-control, .dropdown-menu{
+  @media(max-width:$screen-xs-max){
+    font-size: $font-size-phone;
+    font-family: $font-family-phone;
+  }
+  @media(min-width:$screen-sm-min) and (max-width:$screen-sm-max){
+    font-size: $font-size-tablet;
+    font-family: $font-family-tablet;
+  }
+}
 
 /* Wrapper for page content to push down footer */
 #wrap {
@@ -44,8 +53,16 @@ $footer-height: 40px;
   background-repeat: no-repeat !important;
   height: auto !important;
   padding: 0;
-}
 
+  @media(max-width:$screen-sm-max){
+    width: 370px;
+    line-height: 50px;
+  }
+  @media(min-width:$screen-md-min){
+    width: 440px;
+    line-height: 60px;
+  }
+}
 
 #main {
   @media(max-width:$screen-sm-max){
@@ -59,17 +76,6 @@ $footer-height: 40px;
 #publicNav .container-fluid {
   @media(max-width:$screen-sm-max){
     padding: 0px;
-  }
-}
-
-#logo{
-  @media(max-width:$screen-sm-max){
-    width: 370px;
-    line-height: 50px;
-  }
-  @media(min-width:$screen-md-min){
-    width: 440px;
-    line-height: 60px;
   }
 }
 
