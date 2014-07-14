@@ -72,7 +72,7 @@
 
 
   - if can? :full_read, @user
-    =simple_fields_for :user_characteristics_proxy, html: {class: 'form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_and_checkboxes, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |characteristic_form|
+    = simple_fields_for @user_characteristics_proxy, html: {class: 'form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_and_checkboxes, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |characteristic_form|
       .row
         .col-sm-6.pull-left
           .panel.panel-default
@@ -81,6 +81,7 @@
             .panel-body
               - Characteristic.active.enabled.each do |c| 
                 - next if c.code=='age' # TODO kludge
+                - next unless c.ask_early
                 - case c.datatype
                 - when 'bool'
                   = characteristic_form.input c.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(c.note), label_method: :last, value_method: :first
