@@ -89,7 +89,7 @@ class UserProfileProxy < Proxy
       elsif type == 'integer' # All other cases, just pass value (numbers and dates are already internationalized)
         ret = user_characteristic.value
       elsif type == 'date'
-        ret = Chronic.parse(user_characteristic.value).to_s
+        ret = Chronic.parse(user_characteristic.value).year.to_s
       end
 
       return ret

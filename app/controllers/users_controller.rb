@@ -22,8 +22,8 @@ class UsersController < ApplicationController
       params[:user].except! :password, :password_confirmation
     end
 
-    if @user.update(user_params_with_password) # .update is a Devise method, not the standard update_attributes from Rails
-      @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
+    if @user.update(user_params_with_password) and # .update is a Devise method, not the standard update_attributes from Rails
+        @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
       set_approved_agencies(params[:user][:approved_agency_ids])
       booking_alert = set_booking_services(@user, params[:user_service])
       @user.update_relationships(params[:user][:relationship])
@@ -37,7 +37,13 @@ class UsersController < ApplicationController
         redirect_to user_path(@user, locale: @user.preferred_locale), :notice => "User updated."
       end
     else
-      render 'edit', :alert => "Unable to update user."
+      # if @user_characteristics_proxy has errors,
+      # add base error to user to generate alert at top of form
+      if @user_characteristics_proxy.errors.size > 0
+        @user.errors.add(:base, '')
+      end
+      
+      render 'edit'
     end
   end
     
@@ -56,6 +62,7 @@ class UsersController < ApplicationController
     # set_traveler_id params[:id] || current_user
     @user = User.includes(:traveler_relationships, :delegate_relationships).find(params[:id])
     authorize! :edit, @user
+    @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)
   end
 
   def add_booking_service
