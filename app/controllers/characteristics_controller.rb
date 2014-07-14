@@ -9,24 +9,31 @@ class CharacteristicsController < TravelerAwareController
     input_values = normalize_input_values(params)
 
     @user_characteristics_proxy = UserCharacteristicsProxy.new(User.find(params[:user_id]))
-    @user_characteristics_proxy.update_maps(input_values)
+    if @user_characteristics_proxy.update_maps(input_values)
 
-    if params['inline'] == '1' || params[:trip_id]
-      @trip = Trip.find(session[:current_trip_id] || params[:trip_id])
-      @trip.remove_itineraries
-      @path = populate_user_trip_path(@traveler, @trip, {asynch: 1}, locale: I18n.locale )
-    end
+      if params['inline'] == '1' || params[:trip_id]
+        @trip = Trip.find(session[:current_trip_id] || params[:trip_id])
+        @trip.remove_itineraries
+        @path = populate_user_trip_path(@traveler, @trip, {asynch: 1}, locale: I18n.locale )
+      end
 
-    # We assume the update is from the review page if it's ajax
-    if request.xhr?
-      render nothing: true, status: 200
-      return
-    end
+      # We assume the update is from the review page if it's ajax
+      if request.xhr?
+        render nothing: true, status: 200
+        return
+      end
 
-    respond_to do |format|
-      format.html { redirect_to @path}
-      format.js { render "characteristics/update_form" }
+      respond_to do |format|
+        format.html { redirect_to @path}
+        format.js { render "characteristics/update_form" }
+      end
+    else
+      @trip_id = session[:current_trip_id] || params[:trip_id]
+      @trip = Trip.find(@trip_id)
+      @total_steps = (@traveler.has_disability? ? 3 : 2)
+      render action: :new 
     end
+    
   end
 
   def normalize_input_values params

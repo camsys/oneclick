@@ -82,6 +82,7 @@ module TripsHelper
     trips_create: :trip,
     trips_update: :trip,
     characteristics_new: :options,
+    characteristics_update: :options, # if rerendering new due to validation failure
     trips_show: :review,
     trips_plan: :plan,
     trips_repeat: :trip,

@@ -84,6 +84,7 @@ class UserAccommodationsProxy < UserProfileProxy
       end
       
     end    
+    true
   end
 
 end
