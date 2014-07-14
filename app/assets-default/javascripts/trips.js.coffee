@@ -1,3 +1,7 @@
+# detect touch device
+is_touch_device = ->
+  return 'ontouchstart' in window or navigator.MaxTouchPoints > 0 or navigator.msMaxTouchPoints > 0
+
 create_or_update_marker = (map, key, lat, lon, name, desc, iconStyle) ->  
   marker = map.findMarkerById(key)
   map.removeMarkerFromMap marker  if marker
@@ -70,10 +74,9 @@ update_place = (placeText, type) ->
 
   $('#' + placeid).typeahead('val', placeText)
 
-process_location_from_map = (addr) -> #update map marker from selected location, and update address input field from reverse geocoded address
-  addrType = CsMaps.tripMap.addressType
-  update_map(CsMaps.tripMap, addrType, null, addr, null)
-  update_place(addr.name, addrType)
+process_location_from_map = (addr, dir) -> #update map marker from selected location, and update address input field from reverse geocoded address
+  update_map(CsMaps.tripMap, dir, null, addr, null)
+  update_place(addr.name, dir)
 
 validateDateTimes = (isReturn) ->
   outboundDateData = $("#trip_proxy_outbound_trip_date").data("DateTimePicker")
@@ -116,6 +119,56 @@ validateDateTimes = (isReturn) ->
     outboundTimeData.setValue outboundDateTime.toDate()
   return
 
+get_my_location = (dir) ->
+  if window.navigator.geolocation
+    process_location = (position) ->
+      reverse_geocode position.coords.latitude, position.coords.longitude, dir
+      return
+
+    process_error = (error) ->
+      warning_msg = ""
+      switch error.code
+        when error.PERMISSION_DENIED
+          warning_msg = "User denied the request for Geolocation."
+        when error.POSITION_UNAVAILABLE
+          warning_msg = "Location information is unavailable."
+        when error.TIMEOUT
+          warning_msg = "The request to get user location timed out."
+        else
+          warning_msg = "An unknown error occurred."
+      show_alert warning_msg
+      return
+
+    window.navigator.geolocation.getCurrentPosition process_location, process_error
+  else
+    show_alert "Geolocation is not supported by this browser."
+  return
+
+reverse_geocode = (lat, lon, dir) ->
+  $.ajax
+    type: 'GET'
+    url: '/reverse_geocode?lat=' + lat + '&lon=' + lon
+    success: (data) ->
+      search_results = data.place_searching 
+      if search_results instanceof Array
+        i = 0
+        result_count = search_results.length
+
+        while i < result_count
+          el = search_results[i]
+          if typeof (el) is "object" and el
+            actual_results = el.place_searching
+            if actual_results instanceof Array and actual_results.length > 0
+              addr =
+                lat: lat
+                lon: lon
+                name: actual_results[0].formatted_address
+              process_location_from_map(addr, dir)
+              break
+          i++
+    failure: (error) ->
+      console.log error
+
 $ ->
 
   places = new Bloodhound
@@ -149,11 +202,13 @@ $ ->
 
   # Show/hide map popover when in input field
   $('#trip_proxy_from_place').on 'typeahead:opened', () ->
-    show_map('trip', 'from')
+    if $('#fromAddressMarkerButton').css('display') != 'none'
+      show_map 'trip', 'from'
     if not show_from_typeahead_hint
       $('#trip_proxy_from_place').typeahead('close')
   $('#trip_proxy_to_place').on 'typeahead:opened', () ->
-    show_map('trip', 'to')
+    if $('#toAddressMarkerButton').css('display') != 'none'
+      show_map 'trip', 'to'
     if not show_to_typeahead_hint
       $('#trip_proxy_to_place').typeahead('close')
 
@@ -161,23 +216,23 @@ $ ->
     show_from_typeahead_hint = true
   $('#trip_proxy_from_place').on 'typeahead:selected', (e, addr, d) ->
     $('#from_place_object').val(JSON.stringify(addr))
-    update_map(CsMaps.tripMap, 'from', e, addr, d)
+    update_map CsMaps.tripMap, 'from', e, addr, d
   $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, addr, d) ->
     $('#from_place_object').val(JSON.stringify(addr))
-    update_map(CsMaps.tripMap, 'from', e, addr, d)
+    update_map CsMaps.tripMap, 'from', e, addr, d
 
   $('#trip_proxy_to_place').on 'focusin', () ->
     show_to_typeahead_hint = true
   $('#trip_proxy_to_place').on 'typeahead:selected', (e, addr, d) ->
     $('#to_place_object').val(JSON.stringify(addr))
-    update_map(CsMaps.tripMap, 'to', e, addr, d)
+    update_map CsMaps.tripMap, 'to', e, addr, d
   $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, addr, d) ->
     $('#to_place_object').val(JSON.stringify(addr))
-    update_map(CsMaps.tripMap, 'to', e, addr, d)
+    update_map CsMaps.tripMap, 'to', e, addr, d
 
   $('.plan-a-trip input, .plan-a-trip select').on 'focusin', () ->
     if $(this).parents('.trip_proxy_from_place, .trip_proxy_to_place').length == 0
-      hide_map('trip')
+      hide_map 'trip'
 
   # TODO This needs to be done differently.
   # Not sure why the form needs a map center on submit, it has two locations...
@@ -187,42 +242,23 @@ $ ->
     $('#map_center').val((CsMaps.tripMap.LMmap.getCenter().lat + ',' + CsMaps.tripMap.LMmap.getCenter().lng))
 
   $('#fromAddressMarkerButton').on 'click', ->
-    show_map('trip', 'from')
+    show_map 'trip', 'from'
   $('#toAddressMarkerButton').on 'click', ->
-    show_map('trip', 'to')
+    show_map 'trip', 'to'
+  $('#fromCenterMyLocation').on 'click', ->
+    get_my_location 'from'
+  $('#toCenterMyLocation').on 'click', ->
+    get_my_location 'to'
 
   $('#mapCloseButton').on 'click', ->
-    hide_map('trip')
+    hide_map 'trip'
                         
   $('.trip_proxy_modes').on 'change', (e, addr, d) ->
 
   if typeof(CsMaps) != 'undefined' and CsMaps and CsMaps.tripMap
     CsMaps.tripMap.LMmap.on 'placechange', (e) ->
       latlng = (if e.latlng then e.latlng else {})
-      addr =
-        lat: latlng.lat
-        lon: latlng.lng
-      $.ajax
-        type: 'GET'
-        url: '/reverse_geocode?lat=' + addr.lat + '&lon=' + addr.lon
-        success: (data) ->
-          search_results = data.place_searching 
-          if search_results instanceof Array
-            i = 0
-            result_count = search_results.length
-
-            while i < result_count
-              el = search_results[i]
-              if typeof (el) is "object" and el
-                actual_results = el.place_searching
-                if actual_results instanceof Array and actual_results.length > 0
-                  addr.name = actual_results[0].formatted_address
-                  process_location_from_map(addr)
-                  break
-              i++
-          
-        failure: (error) ->
-          console.log error
+      reverse_geocode(latlng.lat, latlng.lng, CsMaps.tripMap.addressType)
 
   $('#trip_proxy_outbound_trip_date, #trip_proxy_outbound_trip_time').on "dp.change", ->
     validateDateTimes false
@@ -239,6 +275,9 @@ $ ->
 
   if $('.plan-a-trip').length > 0
     validateDateTimes false #when page load, validate outbound and return times
+
+  if is_touch_device
+    $('#trip_proxy_outbound_trip_date, #trip_proxy_outbound_trip_time, #trip_proxy_return_trip_date, #trip_proxy_return_trip_time').attr('readonly', true)
 
   return
       
