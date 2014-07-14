@@ -152,7 +152,7 @@ when 'jta'
   Oneclick::Application.config.provider_read_all_feedback = true
   Oneclick::Application.config.tripless_feedback = false
   honeybadger_api_key = 'f49faffa'
-  Oneclick::Application.config.poi_file = 'db/pa/pa-poi-from-arcgis.csv' # TODO
+  Oneclick::Application.config.poi_file = 'db/jta/locations.csv'
   Oneclick::Application.config.default_county = 'Duval'
   Oneclick::Application.config.state = 'FL'
 
