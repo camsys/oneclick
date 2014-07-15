@@ -1,7 +1,7 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
+  def initialize(user, assisted_user=nil)
     user ||= User.new # guest user (not logged in)
     if user.has_role?(:admin) or user.has_role?(:system_administrator)
       # admin users can do almost anything, so it's simpler to enumerate what they can't do
@@ -57,6 +57,8 @@ class Ability
       can [:index, :show], Report
       can [:read, :update], User, agency_id: user.agency.try(:id)
       can :send_follow_up, Trip
+
+      user_permissions(assisted_user) if assisted_user
       
     end
     
@@ -84,6 +86,8 @@ class Ability
       can [:index, :show], Report
       can [:index, :show], [Provider, Service] # Read-only access to providers and services
       can :send_follow_up, Trip
+
+      user_permissions(assisted_user) if assisted_user
     end
 
     if User.with_role(:provider_staff, :any).include?(user)
@@ -106,18 +110,8 @@ class Ability
     end
 
     ## All users have the following permissions, which logically OR with 'can' statements above
-    can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
-    can [:read, :full_read, :update, :add_booking_service, :find_by_email], User, :id => user.id
-    can [:assist], User do |traveler|
-      user.confirmed_travelers.include? traveler
-    end
-    can :manage, UserRelationship do |ur|
-      ur.delegate.eql? user or ur.traveler.eql? user
-    end
-    can :geocode, :util
-    can :show, Service # Will have view privileges for individual info purposes
-    can :show, Provider # Will have view privileges for individual info purposes
-    can :show, Agency # Will have view privileges for individual info purposes
+    user_permissions(user)
+    user_permissions(assisted_user) if assisted_user
     
 ###### RATING LOGIC (configurable by deployment)  ##################
 # TODO: This is a branding opportunity.  It would be fantastic if we could find a way to clean this up
@@ -154,6 +148,21 @@ class Ability
       cannot :create, Rating, rateable_type: "Provider" 
     end
 ####################################################################
+  end
+
+  def user_permissions(user)
+    can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
+    can [:read, :full_read, :update, :add_booking_service, :find_by_email], User, :id => user.id
+    can [:assist], User do |traveler|
+      user.confirmed_travelers.include? traveler
+    end
+    can :manage, UserRelationship do |ur|
+      ur.delegate.eql? user or ur.traveler.eql? user
+    end
+    can :geocode, :util
+    can :show, Service # Will have view privileges for individual info purposes
+    can :show, Provider # Will have view privileges for individual info purposes
+    can :show, Agency # Will have view privileges for individual info purposes
   end
 
 end
