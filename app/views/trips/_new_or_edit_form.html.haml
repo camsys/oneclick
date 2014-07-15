@@ -88,3 +88,41 @@
       tabindex: 2 do
       =t(:plan)
   = render partial: 'shared/splash'
+:javascript
+  $(function() {
+    $('.plan-a-trip').on('submit',function() {
+      var hiddenFromPlaceData = $('#from_place_object').val();
+      var fromPlaceAddr = $('#trip_proxy_from_place').val();
+      var isResetHiddenFromPlace = true;
+      try {
+        var hiddenFromPlaceJson = JSON.parse(hiddenFromPlaceData);
+        if(hiddenFromPlaceJson.address === fromPlaceAddr) {
+          isResetHiddenFromPlace = false;
+        }
+      }
+      catch(e) {
+        //hiddenFromPlaceData non-parsable to json
+      }
+      if(isResetHiddenFromPlace) {
+        $('#from_place_object').val('');
+      }
+
+      var hiddenToPlaceData = $('#to_place_object').val();
+      var toPlaceAddr = $('#trip_proxy_to_place').val();
+      var isResetHiddenToPlace = true;
+      try {
+        var hiddenToPlaceJson = JSON.parse(hiddenToPlaceData);
+        if(hiddenToPlaceJson.address === toPlaceAddr) {
+          isResetHiddenToPlace = false;
+        }
+      }
+      catch(e) {
+        //hiddenToPlaceData non-parsable to json
+      }
+      if(isResetHiddenToPlace) {
+        $('#to_place_object').val('');
+      }
+
+      return true;
+    });
+  });
