@@ -21,34 +21,20 @@
     = f.input_field time_field, class: 'form-control col-md-6', id: "trip_proxy_#{dir}_trip_time", autocomplete: 'off', tabindex: 1 
   / The <script> for date&time picker
   :javascript
-    var dateField = $('#trip_proxy_#{dir}_trip_date');
-    var dateFormat = 'MM/DD/YYYY';
-    dateField.datetimepicker({
+    $('#trip_proxy_#{dir}_trip_date').datetimepicker({
       defaultDate: new Date(),
       minDate: moment(0, "HH"),
       pickTime: false,
+      format: 'MM/DD/YYYY',
       language: '#{I18n.locale}' 
     });
 
-    dateField.on('focusout',function (e) {
-      var newDate = moment(dateField.val(), dateFormat);
-      if(!newDate.isValid() || newDate < dateField.data('DateTimePicker').options.minDate) {
-        dateField.data("DateTimePicker").setValue(dateField.data("DateTimePicker").date);
-      }
-    });
-
-    var timeField = $('#trip_proxy_#{dir}_trip_time');
-    var timeFormat = 'h:mm A';
-    timeField.datetimepicker({
+    $('#trip_proxy_#{dir}_trip_time').datetimepicker({
       defaultDate: moment().next15(),
       pickDate: false,
       useSeconds: false,
       minuteStepping: 15,
+      format: 'h:mm A',
       language: '#{I18n.locale}'
     });
 
-    timeField.on('focusout',function (e) {
-      if(!moment(timeField.val(), timeFormat).isValid()) {
-        timeField.data("DateTimePicker").setValue(timeField.data("DateTimePicker").date);
-      }
-    });

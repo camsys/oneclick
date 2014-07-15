@@ -76,36 +76,52 @@ process_location_from_map = (addr) -> #update map marker from selected location,
   update_place(addr.name, addrType)
 
 validateDateTimes = (isReturn) ->
-  outboundDateData = $("#trip_proxy_outbound_trip_date").data("DateTimePicker")
-  outboundTimeData = $("#trip_proxy_outbound_trip_time").data("DateTimePicker")
-  returnDateData = $("#trip_proxy_return_trip_date").data("DateTimePicker")
-  returnTimeData = $("#trip_proxy_return_trip_time").data("DateTimePicker")
+  outboundDateField = $("#trip_proxy_outbound_trip_date")
+  outboundTimeField = $("#trip_proxy_outbound_trip_time")
+  returnDateField = $("#trip_proxy_return_trip_date")
+  returnTimeField = $("#trip_proxy_return_trip_time")
+  outboundDateData = outboundDateField.data("DateTimePicker")
+  outboundTimeData = outboundTimeField.data("DateTimePicker")
+  returnDateData = returnDateField.data("DateTimePicker")
+  returnTimeData = returnTimeField.data("DateTimePicker")
 
-  outboundDateStr = outboundDateData.date.format(outboundDateData.format)
-  outboundTimeStr = outboundTimeData.date.format(outboundTimeData.format)
-  returnDateStr = returnDateData.date.format(returnDateData.format)
-  returnTimeStr = returnTimeData.date.format(returnTimeData.format)
+  if !moment(outboundDateField.val(), outboundDateData.format).isValid()
+    outboundDateData.setValue(outboundDateData.date)
+  if !moment(outboundTimeField.val(), outboundTimeData.format).isValid()
+    outboundTimeData.setValue(outboundTimeData.date)
+  if !moment(returnDateField.val(), returnDateData.format).isValid()
+    returnDateData.setValue(returnDateData.date)
+  if !moment(returnTimeField.val(), returnTimeData.format).isValid()
+    returnTimeData.setValue(returnTimeData.date)
 
-  outboundDateTime = moment(outboundDateStr + " " + outboundTimeStr)
-  returnDateTime = moment(returnDateStr + " " + returnTimeStr)
+  outboundDateTime = moment(outboundDateField.val() + " " + outboundTimeField.val(), outboundDateData.format + " " + outboundTimeData.format)
+  returnDateTime = moment(returnDateField.val() + " " + returnTimeField.val(), returnDateData.format + " " + returnTimeData.format)
+  outboundDateTimeInvalid =  !outboundDateTime.isValid()
+  returnDateTimeInvalid = !returnDateTime.isValid()
   minOutboundDateTime = moment()
 
   isOutboundChanged = false
   isReturnChanged = false
 
-  if outboundDateTime < minOutboundDateTime
-    outboundDateTime = minOutboundDateTime.next15()
+  if outboundDateTimeInvalid or outboundDateTime < minOutboundDateTime
+    outboundDateTime = minOutboundDateTime.clone().next15()
     isOutboundChanged = true
+
   
-  if returnDateTime <= outboundDateTime
-    if isOutboundChanged
-      returnDateTime = outboundDateTime.add(2, "hours")
+  if returnDateTimeInvalid or returnDateTime <= outboundDateTime
+    if returnDateTimeInvalid or isOutboundChanged
+      returnDateTime = outboundDateTime.clone().add(2, "hours")
       isReturnChanged = true
     else if isReturn
-      outboundDateTime = (if returnDateTime.subtract(2, "hours") < minOutboundDateTime then minOutboundDateTime.next15() else returnDateTime.subtract(2, "hours"))
+      if returnDateTime.clone().subtract(2, "hours") <= minOutboundDateTime
+        outboundDateTime = minOutboundDateTime.clone().next15()
+        returnDateTime = outboundDateTime.clone().add(2, "hours")
+        isReturnChanged = true
+      else
+        outboundDateTime = returnDateTime.clone().subtract(2, "hours")
       isOutboundChanged = true
     else 
-      returnDateTime = outboundDateTime.add(2, "hours")
+      returnDateTime = outboundDateTime.clone().add(2, "hours")
       isReturnChanged = true
 
   if isReturnChanged
@@ -230,10 +246,16 @@ $ ->
   $('#trip_proxy_return_trip_date, #trip_proxy_return_trip_time').on "dp.change", ->
     validateDateTimes true
     return
-  $('#trip_proxy_outbound_trip_date, #trip_proxy_outbound_trip_time').on "focusout", ->
+  $('#trip_proxy_outbound_trip_date').on "focusout", ->
     validateDateTimes false
     return
-  $('#trip_proxy_return_trip_date, #trip_proxy_return_trip_time').on "focusout", ->
+  $('#trip_proxy_outbound_trip_time').on "focusout", ->
+    validateDateTimes false
+    return
+  $('#trip_proxy_return_trip_date').on "focusout", ->
+    validateDateTimes true
+    return
+  $('#trip_proxy_return_trip_time').on "focusout", ->
     validateDateTimes true
     return
 
