@@ -245,7 +245,7 @@
       .row
         .col-sm-12
           - types = GeoCoverage.pluck(:coverage_type).uniq
-          - [:origins, :destinations, :residences].each do |rule| 
+          - ['endpoints', 'coverages'].each do |rule|
             .panel.panel-default
               .panel-heading
                 %h4.panel-title= t(rule)
@@ -258,7 +258,7 @@
                     - GeoCoverage.where(coverage_type: type).order(:value).map{|c| [ c.value, c.id ] }.each do |pair|
                       %input{type: "hidden", value: pair[1],
                              name: input_name(f, :service_coverage_maps, :geo_coverage_id)}
-                      %input{type: "hidden", value: rule.to_s.singularize,
+                      %input{type: "hidden", value: rule.to_s.singularize + '_area',
                              name: input_name(f, :service_coverage_maps, :rule)}
                       - if checked.include?(pair[1])
                         %input{type: "hidden",

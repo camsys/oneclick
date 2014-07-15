@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140708201004) do
+ActiveRecord::Schema.define(version: 20140715172938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -355,8 +355,8 @@ ActiveRecord::Schema.define(version: 20140708201004) do
     t.string   "internal_contact_title"
     t.string   "internal_contact_phone"
     t.string   "logo_url"
-    t.spatial  "origin",                       limit: {:srid=>0, :type=>"geometry"}
-    t.spatial  "destination",                  limit: {:srid=>0, :type=>"geometry"}
+    t.spatial  "endpoint_area",                limit: {:srid=>0, :type=>"geometry"}
+    t.spatial  "coverage_area",                limit: {:srid=>0, :type=>"geometry"}
     t.spatial  "residence",                    limit: {:srid=>0, :type=>"geometry"}
   end
 

@@ -360,8 +360,8 @@ class EspReader
         c = GeoCoverage.find_or_create_by(value: config[@config_idx['Item']]) do |gc|
           gc.coverage_type = 'zipcode'
         end
-        ServiceCoverageMap.find_or_create_by(service: service, geo_coverage: c, rule: 'destination')
-        ServiceCoverageMap.find_or_create_by(service: service, geo_coverage: c, rule: 'origin')
+        ServiceCoverageMap.find_or_create_by(service: service, geo_coverage: c, rule: 'coverage_area')
+        ServiceCoverageMap.find_or_create_by(service: service, geo_coverage: c, rule: 'endpoint_area')
         result = true
       else
         result = true
@@ -385,8 +385,8 @@ class EspReader
         c = GeoCoverage.find_or_create_by(value: grid[@grid_idx['Item']]) do |gc|
           gc.coverage_type = 'county_name'
         end
-        ServiceCoverageMap.find_or_create_by(service: service, geo_coverage: c, rule: 'destination')
-        ServiceCoverageMap.find_or_create_by(service: service, geo_coverage: c, rule: 'origin')
+        ServiceCoverageMap.find_or_create_by(service: service, geo_coverage: c, rule: 'coverage_area')
+        ServiceCoverageMap.find_or_create_by(service: service, geo_coverage: c, rule: 'endpoint_area')
       end
     end
     return true, "Success"
@@ -500,26 +500,26 @@ class EspReader
         service.service_coverage_maps.destroy_all
         b = Boundary.find_by_agency('Metropolitan Atlanta Rapid Transit Authority')
         gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
-        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'origin')
-        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'destination')
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'endpoint_area')
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'coverage_area')
       when "65980602734372809999" #CATS Paratransit
         service.service_coverage_maps.destroy_all
         b = Boundary.find_by_agency('Cherokee Area Transportation System (CATS)')
         gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
-        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'origin')
-        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'destination')
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'endpoint_area')
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'coverage_area')
       when "77900779520510731111" #Gwinnett Paratransit
         service.service_coverage_maps.destroy_all
         b = Boundary.find_by_agency('Gwinnett County Transit (GCT)')
         gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
-        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'origin')
-        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'destination')
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'endpoint_area')
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'coverage_area')
       when "57874876269921009999" #CCT Paratransit
         service.service_coverage_maps.destroy_all
         b = Boundary.find_by_agency('Cobb Community Transit (CCT)')
         gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
-        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'origin')
-        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'destination')
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'endpoint_area')
+        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'coverage_area')
 
     end
   end

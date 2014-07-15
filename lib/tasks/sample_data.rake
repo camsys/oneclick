@@ -26,4 +26,24 @@ namespace :oneclick do
   task :update_attributes => :environment do
     require File.join(Rails.root, 'db', Oneclick::Application.config.brand + '/update_attributes.rb')
   end
+
+  desc "Update Origin/Destination to Endpoints/Coverages"
+  task :create_endpoints_and_coverages => :environment do
+    ServiceCoverageMap.all.each do |scm|
+      case scm.rule
+      when 'origin'
+        scm.rule = 'endpoint_area'
+      when  'destination'
+        scm.rule = 'coverage_area'
+      end
+      scm.save
+    end
+
+    Service.all.each do  |service|
+      service.build_polygons
+    end
+
+  end
+
+
 end

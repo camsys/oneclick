@@ -380,6 +380,10 @@ es:
   updated: "[es242]Updated[/es]"
 
   # new ones
+  endpoint_area: "[es]Coverage Area"
+  coverage_area: "[es]Endpoint Area"
+  endpoints: "[es]Endpoints"
+  coverages: "[es]Coverages"
   cap_returning_at: "[es]Returning at"
   traveler_not_registered: "[es]Traveler not registered to book trips with One-Click."
   outbound_error_occurred: "[es]An error occurred when attempting to book your outbound trip."
