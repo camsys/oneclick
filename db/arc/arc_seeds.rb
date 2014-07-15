@@ -76,6 +76,7 @@ Mode.unscoped.find_by(code: 'mode_bike_transit').update_attributes(logo_url: 'ar
 Mode.unscoped.find_by(code: 'mode_bike_park_transit').update_attributes(logo_url: 'arc/modes/bicycle.png')
 Mode.unscoped.find_by(code: 'mode_taxi').update_attributes(logo_url: 'arc/modes/taxi.png')
 Mode.unscoped.find_by(code: 'mode_paratransit').update_attributes(logo_url: 'arc/modes/paratransit.png')
+Mode.unscoped.find_by(code: 'mode_transit').update_attributes(logo_url: 'arc/modes/transit.png')
 
 #update accommodation logos
 Accommodation.unscoped.find_by(code: 'folding_wheelchair_accessible').update_attributes(logo_url: 'arc/accommodations/folding_wheelchair_accessible.png')
