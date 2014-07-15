@@ -42,8 +42,23 @@
                 %i.fa.fa-mail-forward
               = link_to edit_user_trip_path(traveler, trip), {:class => "btn btn-sm", :alt => t(:edit_trip), :title => t(:edit_trip)} do
                 %i.fa.fa-edit
-              = link_to user_trip_path(traveler, trip), {:alt => t(:remove_trip), :title => t(:remove_trip), :class => "btn btn-sm btn-danger delete-button", :method => :delete, :confirm => t(:confirm_remove_trip)} do
+              = button_tag :type => 'button', "data-target" => "#deleteTripConfirmDialog", "data-toggle" => "modal", :alt => t(:remove_trip), :title => t(:remove_trip), :class => "btn btn-sm btn-danger delete-button" do
                 %i.fa.fa-times
+              #deleteTripConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_trip), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+                .modal-dialog
+                  .modal-content
+                    .modal-header
+                      %button.close{"data-dismiss" => 'modal'}X
+                      .modal-title{:style => "text-align:left;"}
+                        %b
+                          = t(:one_click_trip_planner)
+                    .modal-body{:style => "text-align:left;"}
+                      = t(:confirm_remove_trip)
+                    .modal-footer
+                      = button_tag class: 'btn btn-default action-button', data: {dismiss: 'modal'} do
+                        = t(:cancel)
+                      = link_to user_trip_path(traveler, trip), {:class => "btn btn-primary action-button", :method => :delete} do
+                        = t(:ok)
           - else
             %td.center.nowrap          
               = link_to repeat_user_trip_path(traveler, trip), {:alt => t(:repeat_trip), :title => t(:repeat_trip), :class => "btn btn-sm"} do
