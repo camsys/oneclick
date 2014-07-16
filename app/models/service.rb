@@ -245,7 +245,7 @@ class Service < ActiveRecord::Base
         myArray << polygon_array
       end
     end
-    myArray.first
+    myArray
   end
 
 

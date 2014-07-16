@@ -490,17 +490,22 @@ CsLeaflet.Leaflet = {
      *
      */
     addMultipolygon: function(arr, options) {
-        var multilatlngs = new Array();
+
+        var multiPolygon = new Array();
         for (var i = 0; i < arr.length; i++) {
-            var latlngs = new Array();
-            for (var j = 0; j < arr[i].length; j++ ){
-              var pnt = arr[i][j];
-              var ll = new L.LatLng(pnt[0], pnt[1]);
-              latlngs.push(ll);
+            var polygon = new Array();
+            for (var j = 0; j < arr[i].length; j++){
+                var ring = new Array();
+                for(var k = 0; k < arr[i][j].length; k++){
+                    var pnt = arr[i][j][k];
+                    var ll = new L.LatLng(pnt[0], pnt[1]);
+                    ring.push(ll);
+                }
+                polygon.push(ring);
             }
-            multilatlngs.push(latlngs);
+            multiPolygon.push(polygon);
         }
-        var mpgon = L.multiPolygon(multilatlngs, options);
+        var mpgon = L.multiPolygon(multiPolygon, options);
 
         // Add this multipolygon to the list of multipolygons
         this.LMmultipolygons.push(mpgon);
