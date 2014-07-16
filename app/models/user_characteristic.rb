@@ -15,7 +15,7 @@ class UserCharacteristic < ActiveRecord::Base
     end
 
     # only other thing we currently handle is comparing dob (date) to age (int)
-    if c.datatype=='date' and rc.datatype=='int'
+    if c.datatype=='date' and rc.datatype=='integer'
       return test_condition(Time.now - Time.parse(self.value), requirement.rel_code, requirement.value.to_i.years)
     end
 
