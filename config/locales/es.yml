@@ -405,7 +405,7 @@ es:
   book_your_trip: "[es]Book your trip[/es]"
   trip_booked: "[es]Trip Booked![/es]"
   dob: "[es]Date of Birth[/es]"
-  dob_notice: '[es]Date of Birth is used to confirm the Client Id with Rabbit Transit.  It will not be saved.[/es]'
+  dob_notice: '[es]Date of Birth may be used to confirm the Client Id with a service.  It will not be saved.[/es]'
   booking_information: "[es]Booking Information[/es]"
   service_name: "[es]Service Name[/es]"
   client_id: "[es]Client Id[/es]"

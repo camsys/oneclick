@@ -399,7 +399,7 @@ ht:
   book_your_trip: "[ht]Book your trip[/ht]"
   trip_booked: "[ht]Trip Booked![/ht]"
   dob: "[ht]Date of Birth[/ht]"
-  dob_notice: '[ht]Date of Birth is used to confirm the Client Id with Rabbit Transit.  It will not be saved.[/ht]'
+  dob_notice: '[ht]Date of Birth may be used to confirm the Client Id with a service.  It will not be saved.[/ht]'
   booking_information: "[ht]Booking Information[/ht]"
   service_name: "[ht]Service Name[/ht]"
   client_id: "[ht]Client Id[/ht]"

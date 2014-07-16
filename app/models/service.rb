@@ -43,6 +43,7 @@ class Service < ActiveRecord::Base
 
   scope :active, -> {where(active: true)}
   scope :paratransit, -> {joins(:service_type).where(service_types: {code: "paratransit"})}
+  scope :bookable, -> {where.not(booking_service_code: nil).where.not(booking_service_code: '')}
 
   include Validations
 
