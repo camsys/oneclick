@@ -215,6 +215,11 @@ def populate_provider_staff
   end
 end
 
+def add_faq
+  Translation.where(key: 'faq', locale: 'en').first_or_create(value: File.open(File.join('db', '1-Click-FAQ.html')).read)
+end
+
 load_pois
 #generate_trips
 populate_provider_staff
+add_faq
