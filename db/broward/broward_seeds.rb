@@ -51,6 +51,9 @@ end
 Mode.unscoped.find_by_code('mode_car_transit').update_attributes(active: 1) #KissNRide
 
 # update linked characteristics
+age = Characteristic.unscoped.find_by(code: 'age')
+dob = Characteristic.unscoped.find_by(code: 'date_of_birth')
+
 dob.update_attributes!(for_service: false, linked_characteristic: age,
                        link_handler: 'AgeCharacteristicHandler') rescue puts "dob.update_attributes! failed"
 
