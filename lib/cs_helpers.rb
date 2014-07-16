@@ -459,4 +459,11 @@ module CsHelpers
     end
   end
 
+  def unselect_all_user_trip_part_path_for_ui_mode traveler, trip_part
+    # unless ui_mode_kiosk?
+      unselect_all_user_trip_part_path traveler, trip_part
+    # else
+    #   unselect_all_kiosk_user_trip_part_path traveler, trip_part
+    # end
+  end
 end
