@@ -213,6 +213,11 @@ class Service < ActiveRecord::Base
         if zipcode.length > 0
           return zipcode.first.geom
         end
+      when 'city'
+        city = City.where("lower(name) =? AND state=?", scm.geo_coverage.value.downcase, state)
+        if city.length > 0
+          return city.first.geom
+        end
       when 'polygon'
         return scm.geo_coverage.geom
     end

@@ -48,5 +48,39 @@ namespace :oneclick do
 
   end
 
+  desc "Add Cities"
+  task :add_cities => :environment do
+    cities = []
+    case Oneclick::Application.config.brand
+
+      when 'broward'
+        cities = ["Cooper City",
+                  "Lauderdale Lakes",
+                  "Miramar",
+                  "Sunrise",
+                  "Davie",
+                  "Tamarac",
+                  "Wilton Manors",
+                  "Pompano Beach",
+                  "Margate",
+                  "Coral Springs",
+                  "Coconut Creek",
+                  "North Lauderdale",
+                  "Lauderhill",
+                  "Parkland",
+                  "Miami",
+                  "Fort Lauderdale",
+                  "Miami Beach",
+                  "Boca Raton"]
+
+    end
+
+    cities.each do |city|
+      puts city
+      GeoCoverage.where(value: city, coverage_type: 'city').first_or_create
+    end
+
+end
+
 
 end
