@@ -27,7 +27,7 @@
       %ul
         -itinerary.missing_accommodations.split(',').each do |accommodation|
           %li
-            =accommodation
+            = t(accommodation)
     -if itinerary.too_late
       %h4
         %i.fa.fa-calendar
