@@ -461,12 +461,12 @@ class EspReader
       case rule.downcase
       when 'disabled'
         characteristic = Characteristic.find_by_code('disabled')
-        ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
+        ServiceCharacteristic.create(service: service, characteristic: characteristic, value: "true", group: group)
       when 'disabled veteran'
         characteristic = Characteristic.find_by_code('disabled')
-        ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
+        ServiceCharacteristic.create(service: service, characteristic: characteristic, value: "true", group: group)
         characteristic = Characteristic.find_by_code('veteran')
-        ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
+        ServiceCharacteristic.create(service: service, characteristic: characteristic, value: "true", group: group)
       when 'county resident'
         next
         # When county resident is required.  The person must also be a resident of the county in addition to traveling within that county.
@@ -479,7 +479,7 @@ class EspReader
         #end
       when 'military/veteran'
         characteristic = Characteristic.find_by_code('veteran')
-        ServiceCharacteristic.create(service: service, characteristic: characteristic, value: true, group: group)
+        ServiceCharacteristic.create(service: service, characteristic: characteristic, value: "true", group: group)
       when 'medical purposes only'
         medical = TripPurpose.find_by_code('medical')
         ServiceTripPurposeMap.create(service: service, trip_purpose: medical)
