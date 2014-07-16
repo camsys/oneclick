@@ -91,11 +91,20 @@ Accommodation.unscoped.find_by(code: 'door_to_door').update_attributes(logo_url:
 Accommodation.unscoped.find_by(code: 'curb_to_curb').update_attributes(logo_url: 'arc/accommodations/curb_to_curb.png')
 Accommodation.unscoped.find_by(code: 'driver_assistance_available').update_attributes(logo_url: 'arc/accommodations/driver_assistance_available.png')
 
+#update certain characteristics
+age = Characteristic.unscoped.find_by(code: 'age')
+dob = Characteristic.unscoped.find_by(code: 'date_of_birth')
 
 #update characteristics logos
 Characteristic.unscoped.find_by(code: 'disabled').update_attributes(logo_url: 'arc/characteristics/disabled.png')
 Characteristic.unscoped.find_by(code: 'no_trans').update_attributes(logo_url: 'arc/characteristics/no_trans.png')
 Characteristic.unscoped.find_by(code: 'nemt_eligible').update_attributes(logo_url: 'arc/characteristics/nemt_eligible.png')
 Characteristic.unscoped.find_by(code: 'veteran').update_attributes(logo_url: 'arc/characteristics/veteran.png')
-Characteristic.unscoped.find_by(code: 'date_of_birth').update_attributes(logo_url: 'arc/characteristics/date_of_birth.png')
-Characteristic.unscoped.find_by(code: 'age').update_attributes(logo_url: 'arc/characteristics/date_of_birth.png')
+
+dob.update_attributes!(for_service: false, linked_characteristic: age,
+                       link_handler: 'AgeCharacteristicHandler',
+                       logo_url: 'arc/characteristics/date_of_birth.png') rescue puts "dob.update_attributes! failed"
+
+age.update_attributes!(for_traveler: false, linked_characteristic: dob,
+                       link_handler: 'AgeCharacteristicHandler',
+                       logo_url: 'arc/characteristics/date_of_birth.png') rescue Rails.logger.warn "age.update_attributes failed!"

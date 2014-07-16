@@ -76,6 +76,9 @@ end
   build_internationalized_records structured_hash
 end
 
+# update linked characteristics
+dob.update_attributes!(for_service: false, linked_characteristic: age,
+                       link_handler: 'AgeCharacteristicHandler') rescue puts "dob.update_attributes! failed"
 
-
-
+age.update_attributes!(for_traveler: false, linked_characteristic: dob,
+                       link_handler: 'AgeCharacteristicHandler') rescue Rails.logger.warn "age.update_attributes failed!"
