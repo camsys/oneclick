@@ -384,6 +384,10 @@ en:
 
   # new ones
   # Services
+  endpoint_area: "Coverage Area"
+  coverage_area: "Endpoint Area"
+  endpoints: "Endpoint Area"
+  coverages: "Coverage Area"
   cap_returning_at: "Returning at"
   traveler_not_registered: "Traveler not registered to book trips with One-Click."
   outbound_error_occurred: "An error occurred when attempting to book your outbound trip."

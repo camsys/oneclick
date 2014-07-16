@@ -61,7 +61,7 @@
         .row
           .col-sm-12
             =t(accom.name)
-- if can? :read, itinerary.service.ratings.build
+- if can? :read, itinerary.service.ratings.build(user: @traveler)
   .row
     .col-sm-6
       = t(:rating) +":"

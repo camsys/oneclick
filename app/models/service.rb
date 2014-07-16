@@ -35,11 +35,9 @@ class Service < ActiveRecord::Base
   has_many :trip_purposes, through: :service_trip_purpose_maps, source: :trip_purpose
   has_many :coverage_areas, through: :service_coverage_maps, source: :geo_coverage
 
-  has_many :origins, -> { where rule: 'origin' }, class_name: "ServiceCoverageMap"
+  has_many :endpoints, -> { where rule: 'endpoint_area' }, class_name: "ServiceCoverageMap"
   
-  has_many :destinations, -> { where rule: 'destination' }, class_name: "ServiceCoverageMap"
-    
-  has_many :residences, -> { where rule: 'residence' }, class_name: "ServiceCoverageMap"
+  has_many :coverages, -> { where rule: 'coverage_area' }, class_name: "ServiceCoverageMap"
     
   has_many :user_profiles, through: :user_services, source: :user_profile
 
@@ -164,11 +162,10 @@ class Service < ActiveRecord::Base
   def build_polygons
 
     #clear old polygons
-    self.origin = nil
-    self.destination = nil
-    self.residence = nil
+    self.endpoint_area = nil
+    self.coverage_area = nil
 
-    ['origin', 'destination', 'residence'].each do |rule|
+    ['endpoint_area', 'coverage_area'].each do |rule|
       scms = self.service_coverage_maps.where(rule: rule)
       scms.each do |scm|
         polygon = polygon_from_attribute(scm)
@@ -176,31 +173,22 @@ class Service < ActiveRecord::Base
           next
         end
         case rule
-          when 'origin'
-            if self.origin
-              merged = self.origin.union(polygon)
-              self.origin = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
+          when 'endpoint_area'
+            if self.endpoint_area
+              merged = self.endpoint_area.union(polygon)
+              self.endpoint_area = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
               self.save
             else
-              self.origin = polygon
+              self.endpoint_area = polygon
               self.save
             end
-          when 'destination'
-            if self.destination
-              merged = self.destination.union(polygon)
-              self.destination = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
+          when 'coverage_area'
+            if self.coverage_area
+              merged = self.coverage_area.union(polygon)
+              self.coverage_area = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
               self.save
             else
-              self.destination = polygon
-              self.save
-            end
-          when 'residence'
-            if self.residence
-              merged = self.residence.union(polygon)
-              self.residence = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
-              self.save
-            else
-              self.residence = polygon
+              self.coverage_area= polygon
               self.save
             end
         end
@@ -230,15 +218,13 @@ class Service < ActiveRecord::Base
     nil
   end
 
-  def wkt_to_array(rule = 'origin')
+  def wkt_to_array(rule = 'endpoint_area')
     myArray = []
     case rule
-      when 'origin'
-        geometry = self.origin
-      when 'destination'
-        geometry = self.destination
-      when 'residence'
-        geometry = self.residence
+      when 'endpoint_area'
+        geometry = self.endpoint_area
+      when 'coverage_area'
+        geometry = self.coverage_area
     end
     if geometry
       geometry.each do |polygon|

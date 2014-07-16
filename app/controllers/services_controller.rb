@@ -19,20 +19,16 @@ class ServicesController < ApplicationController
     
     polylines = []
 
-    ['origin', 'destination', 'residence'].each do |rule|
+    ['coverage_area', 'endpoint_area'].each do |rule|
       case rule
-        when 'origin'
-          geometry = @service.origin
-          color = 'green'
-          id = 0
-        when 'destination'
-          geometry = @service.destination
+        when 'coverage_area'
+          geometry = @service.coverage_area
           color = 'red'
           id = 1
-        when 'residence'
-          geometry = @service.residence
-          color = 'blue'
-          id = 2
+        when 'endpoint_area'
+          geometry = @service.endpoint_area
+          color = 'green'
+          id = 0
       end
 
       unless geometry.nil?
@@ -119,7 +115,6 @@ class ServicesController < ApplicationController
     
     respond_to do |format|
       par = service_params
-
       if @service.update_attributes(service_params)
         # internal_contact is a special case
         @service.internal_contact = User.find_by_id(params[:service][:internal_contact])
@@ -165,9 +160,6 @@ protected
                                     { trip_purpose_ids: [] },
                                     { fare_structures_attributes:
                                       [ :id, :base, :rate, :desc ] },
-                                    { origin_ids: [] },
-                                    { destination_ids: [] },
-                                    { residence_ids: [] },
                                     { service_coverage_maps_attributes:
                                       [ :id, :rule, :geo_coverage_id, :_destroy, :keep_record ] }
                                     )
