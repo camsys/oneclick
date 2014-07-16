@@ -43,7 +43,7 @@ when 'arc'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.arc.camsys"
   ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey"
   ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@atlantaregional.com"
-  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "OneclickARC@camsys.com"
+  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
   ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
@@ -72,7 +72,7 @@ when 'broward'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.broward.camsys"
   ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey"
   ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@browardmpo.org"
-  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "oneclick@Camsys.com"
+  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
   ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
@@ -103,7 +103,7 @@ when 'pa'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.pa.camsys"
   ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey"
   ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@rabbittransit.org"
-  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "Oneclick@Camsys.com"
+  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
   ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
@@ -141,7 +141,7 @@ when 'jta'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.pa.camsys" # TODO
   ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey" # TODO
   ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@rabbittransit.org" # TODO
-  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "Oneclick@Camsys.com" # TODO
+  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
   ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"

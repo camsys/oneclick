@@ -207,7 +207,7 @@ namespace :oneclick do
         text = <<EOT
 <h2 style="text-align: justify;">1-Click/ARC helps you find options to get from here to there, using public transit,
  door-to-door services, and specialized transportation.  Give it a try, and
- <a href="mailto://OneClick@camsys.com">tell us</a> what you think.</h2>
+ <a href="mailto://1-Click@camsys.com">tell us</a> what you think.</h2>
 EOT
         site.snippets.create! identifier: 'home-top-logged-in', label: 'home-top-logged-in', content: text
         site.snippets.create! identifier: 'home-top', label: 'home-top', content: text
@@ -233,7 +233,7 @@ EOT
         text = <<EOT
 <h2 style="text-align: justify;">1-Click/PA helps you find options to get from here to there, using public transit,
  door-to-door services, and specialized transportation.  Give it a try, and
- <a href="mailto://OneClick@camsys.com">tell us</a> what you think.</h2>
+ <a href="mailto://1-Click@camsys.com">tell us</a> what you think.</h2>
 EOT
         site.snippets.create! identifier: 'home-top-logged-in', label: 'home-top-logged-in', content: text
         site.snippets.create! identifier: 'home-top', label: 'home-top', content: text
@@ -260,7 +260,7 @@ EOT
         text = <<EOT
 <h2 style="text-align: justify;">1-Click/Broward helps you find options to get from here to there, using public transit,
  door-to-door services, and specialized transportation.  Give it a try, and
- <a href="mailto://OneClick@camsys.com">tell us</a> what you think.</h2>
+ <a href="mailto://1-Click@camsys.com">tell us</a> what you think.</h2>
 EOT
         site.snippets.create! identifier: 'home-top-logged-in', label: 'home-top-logged-in', content: text
         site.snippets.create! identifier: 'home-top', label: 'home-top', content: text
