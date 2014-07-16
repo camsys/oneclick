@@ -90,6 +90,7 @@ Accommodation.unscoped.find_by(code: 'lift_equipped').update_attributes(logo_url
 Accommodation.unscoped.find_by(code: 'door_to_door').update_attributes(logo_url: 'arc/accommodations/door_to_door.png')
 Accommodation.unscoped.find_by(code: 'curb_to_curb').update_attributes(logo_url: 'arc/accommodations/curb_to_curb.png')
 Accommodation.unscoped.find_by(code: 'driver_assistance_available').update_attributes(logo_url: 'arc/accommodations/driver_assistance_available.png')
+Accommodation.unscoped.find_by(code: 'stretcher_accessible').update_attributes(logo_url: 'arc/accommodations/stretcher_accessible.png')
 
 #update certain characteristics
 age = Characteristic.unscoped.find_by(code: 'age')
@@ -100,6 +101,7 @@ Characteristic.unscoped.find_by(code: 'disabled').update_attributes(logo_url: 'a
 Characteristic.unscoped.find_by(code: 'no_trans').update_attributes(logo_url: 'arc/characteristics/no_trans.png')
 Characteristic.unscoped.find_by(code: 'nemt_eligible').update_attributes(logo_url: 'arc/characteristics/nemt_eligible.png')
 Characteristic.unscoped.find_by(code: 'veteran').update_attributes(logo_url: 'arc/characteristics/veteran.png')
+Characteristic.unscoped.find_by(code: 'ada_eligible').update_attributes(logo_url: 'arc/characteristics/ada_eligible.png')
 
 dob.update_attributes!(for_service: false, linked_characteristic: age,
                        link_handler: 'AgeCharacteristicHandler',
