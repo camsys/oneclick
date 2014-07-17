@@ -68,8 +68,7 @@ $(document).ready( function() {
         "authenticity_token": $("input[name=authenticity_token]").val(),
         "approve": $("input:checked", table.fnGetNodes()).serialize()
       },
-      // This can't just be a reload or we hit issues with the reload
-      success: function() { window.location = window.location }
+      success: function() { location.reload(true) }
     })
     event.preventDefault();
   });
