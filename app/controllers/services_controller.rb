@@ -175,7 +175,6 @@ protected
     
     @staff = User.with_role(:provider_staff, @service.provider)
     @eh = EligibilityService.new
-    @service.build_polygons
 
   end
   
