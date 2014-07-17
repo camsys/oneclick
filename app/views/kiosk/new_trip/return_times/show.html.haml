@@ -12,6 +12,7 @@
       %a#no{:href => "#", :name => "yesno", :value => "no"} No
 
 #timepicker-two.kiosk-timepicker{ :data => {:index => 7}}
+  = f.hidden_field :return_trip_date
   = f.input :is_round_trip, :label => false, :wrapper_html => {:class => 'controls controls-row'} do
     %div(style="visibility: hidden; height: 0")
       = f.input_field :is_round_trip, :as => :boolean, :inline_label => "Return after", :class => "hidden"

@@ -83,7 +83,7 @@ protected
     return true if is_round_trip != "1" # if a trip is planned for one-way, the date for the return has to be valid
     begin
       # if the parse fails it will return nil and the to_date will throw an exception
-      d = d = Date.strptime(@return_trip_date, '%m/%d/%Y')
+      d = Date.strptime(@return_trip_date, '%m/%d/%Y')
     rescue Exception => e
       puts e
       errors.add(:return_trip_date, I18n.translate(:date_wrong_format))
