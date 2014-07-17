@@ -64,7 +64,7 @@ class RatingsController < ApplicationController
       Rating.find(k).update_attributes(status: v)
     end
 
-    flash[:notice] = t(:rating_update, count: parsed_ratings.count) 
+    flash[:notice] = t(:rating_update, count: parsed_ratings.count) if parsed_ratings.count != 0
     respond_to do |format|
       format.js {render nothing: true}
       format.html {redirect_to action: :index}
