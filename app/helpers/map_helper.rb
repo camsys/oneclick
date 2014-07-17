@@ -175,9 +175,9 @@ module MapHelper
   def get_leg_display_options(leg)
 
     if leg.mode.nil?
-      a = {"className" => 'map-tripleg-unknown'}
+      a = {"className" => 'map-tripleg map-tripleg-unknown'}
     else
-      a = {"className" => 'map-tripleg-' + leg.mode.downcase}
+      a = {"className" => 'map-tripleg map-tripleg-' + leg.mode.downcase}
     end
     
     return a

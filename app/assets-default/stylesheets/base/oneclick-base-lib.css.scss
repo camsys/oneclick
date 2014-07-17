@@ -56,3 +56,17 @@ $breadcrumb-height: 30px !default;
 
 //trip planning review page trip itinerary chart
 $single-plan-height: 50px !default; //the height of each itinerary chart container
+
+//colors for trip legs
+$trip-leg-bus: #00C000;
+$trip-leg-drive: #E45034;
+$trip-leg-rideshare: #92D692;
+$trip-leg-paratransit: #FFCE81;
+$trip-leg-subway: #0F75BC;
+$trip-leg-taxi: #FFD700;
+$trip-leg-wait: #C0C0C0;
+$trip-leg-walk: #C000C0;
+$trip-leg-rail: #5D8794;
+$trip-leg-bicycle: #611CF3;
+$trip-leg-bikeshare: #AEF31C;
+$trip-leg-unknown: #494D43; //unrecognized leg type or mode
