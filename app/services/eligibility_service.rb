@@ -242,7 +242,6 @@ class EligibilityService
       destination_point = factory.point(trip_part.to_trip_place.lon.to_f, trip_part.to_trip_place.lat.to_f)
 
       #Match Endpoint Area
-      #if the service has a polygon boundary, it supercedes the attributes
       if service.endpoint_area?
          unless service.endpoint_area.contains? origin_point or service.endpoint_area.contains? destination_point
           next
