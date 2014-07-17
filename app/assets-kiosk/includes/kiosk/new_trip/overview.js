@@ -52,6 +52,7 @@ jQuery(function($) {
         // clean up the data
         // default trip time is only used by the wizard. It does not end up getting stored.
         delete trip_data.default_return_trip_time;
+        delete trip_data.default_return_trip_date;
 
         // same with whether or not the user chose to use the current location.
         // only the user's current location's data ends up getting stored.
