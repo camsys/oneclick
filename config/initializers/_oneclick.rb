@@ -40,7 +40,7 @@ when 'arc'
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Atlanta"
   Oneclick::Application.config.enable_rideshare = true
-  Oneclick::Application.config.name = 'ARC OneClick'
+  Oneclick::Application.config.name = 'ARC 1-Click'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.arc.camsys"
   ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey"
   ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@atlantaregional.com"
@@ -70,7 +70,7 @@ when 'broward'
   Oneclick::Application.config.transit_respects_ada = false
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Miami"
-  Oneclick::Application.config.name = 'OneClick'
+  Oneclick::Application.config.name = '1-Click'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.broward.camsys"
   ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey"
   ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@browardmpo.org"
