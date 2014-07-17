@@ -19,7 +19,7 @@ class UserCharacteristic < ActiveRecord::Base
       return test_condition(Time.now - Time.parse(self.value), requirement.rel_code, requirement.value.to_i.years)
     end
 
-    raise "Don't know how to test char to req: #{self.ai} to #{requirement.ai}"
+    raise "Don't know how to test char to req: #{self.ai} to #{requirement.ai} as #{c.datatype} == #{rc.datatype}"
 
   end
 
