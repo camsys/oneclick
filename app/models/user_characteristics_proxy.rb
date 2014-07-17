@@ -89,7 +89,7 @@ class UserCharacteristicsProxy < UserProfileProxy
             # it does so lets update it.
 
             # if the value is non null we update otherwise we remove the current setting
-            if new_value.nil?
+            if new_value.blank?
               Rails.logger.debug "Removing existing characteristic"
               user_characteristic.destroy
             else
