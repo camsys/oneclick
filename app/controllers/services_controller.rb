@@ -112,7 +112,7 @@ class ServicesController < ApplicationController
   # PUT /services/1.json
   def update
     @service = Service.find(params[:id])
-    
+
     respond_to do |format|
       par = service_params
       if @service.update_attributes(service_params)

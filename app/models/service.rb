@@ -165,7 +165,7 @@ class Service < ActiveRecord::Base
     #clear old polygons
     self.endpoint_area = nil
     self.coverage_area = nil
-
+    Rails.logger.info  "Building Polygon for Service/Id: #{self.name} / #{self.id}"
     ['endpoint_area', 'coverage_area'].each do |rule|
       scms = self.service_coverage_maps.where(rule: rule)
       scms.each do |scm|
@@ -175,27 +175,29 @@ class Service < ActiveRecord::Base
         end
         case rule
           when 'endpoint_area'
+            Rails.logger.info  "Updating Endpoint Area"
             if self.endpoint_area
               merged = self.endpoint_area.union(polygon)
               self.endpoint_area = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
-              self.save
+              self.save!
             else
               self.endpoint_area = polygon
-              self.save
+              self.save!
             end
           when 'coverage_area'
+            Rails.logger.info  "Updating Coverage Area"
             if self.coverage_area
               merged = self.coverage_area.union(polygon)
               self.coverage_area = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
-              self.save
+              self.save!
             else
               self.coverage_area= polygon
-              self.save
+              self.save!
             end
         end
       end
     end
-    self.save
+    self.save!
 
   end
 
