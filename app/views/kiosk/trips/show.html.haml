@@ -129,7 +129,7 @@
     %div.span10.card-view-resize
       %div{id: 'outbound_section'}
         .row-fluid.itineraries_holder
-          = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(),
+          = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(selected_only: @trip.outbound_part.has_selected?),
             trip_part: @trip.outbound_part }
         / HIDDEN OPTIONS
         / - if @trip.outbound_part.has_selected?
