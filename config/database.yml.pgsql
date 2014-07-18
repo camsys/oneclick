@@ -13,7 +13,7 @@
 # gem 'pg'
 #
 development:
-  adapter: postgresql
+  adapter: postgis
   encoding: unicode
   database: oneclick_development
   pool: 5
@@ -40,7 +40,7 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test: &test
-  adapter: postgresql
+  adapter: postgis
   encoding: unicode
   database: oneclick_test
   pool: 5
@@ -49,7 +49,7 @@ test: &test
   template: template0
 
 production:
-  adapter: postgresql
+  adapter: postgis
   encoding: unicode
   database: oneclick_production
   pool: 5
