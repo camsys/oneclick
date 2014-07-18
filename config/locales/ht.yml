@@ -406,6 +406,7 @@ ht:
   book: "[ht]Book[/ht]"
   inactive: "[ht]Inactive[/ht]"
   service_id: "[ht]Service Id[/ht]"
+  service_type: "[ht]Service Type[/ht]"
   booking_service_code: "[ht]Booking Service Code[/ht]"
   back_to_services: "[ht]Back to services[/ht]"
   service: "[ht]Service[/ht]"
