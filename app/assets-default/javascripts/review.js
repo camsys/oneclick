@@ -1026,6 +1026,15 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         resizeChartsWhenDocumentWidthChanges();
     }
 
+    function getSelectButtonHtml() {
+        var tags = 
+            ("<button class='btn btn-default single-plan-select action-button select-column-button'>" + 
+                "<span class='hidden-xs'>" + localeDictFinder['select'] + "</span>" +
+                "<span class='visible-xs'>&#10004;</span>" +
+            "</button>");
+        return tags;
+    }
+
     /*
      * apply changes: if pass all questions, then make itinerary select-able; if fail one question, then remove this itinerary; otherwise, re-render restriction dialog
      */
@@ -1043,7 +1052,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 if (questionClearCode === 1) { //all pass
                     tripPlanDiv.find('.single-plan-question').remove();
                     if (tripPlanDiv.find('.single-plan-select').length === 0) {
-                        tripPlanDiv.find('.select-column').append("<button class='btn btn-default single-plan-select action-button select-column-button'>" + localeDictFinder['select'] + "</button>").click(function() {
+                        tripPlanDiv.find('.select-column').append(getSelectButtonHtml()).click(function() {
                             selectItineraryByClickingSelectButton(this);
                         });
                     }
@@ -1417,7 +1426,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 "<button class='btn btn-default single-plan-question action-button select-column-button' " +
                 "data-toggle='modal' data-target='#" + missInfoDivId + "'>?</button>"
             ) :
-            "<button class='btn btn-default single-plan-select action-button select-column-button'>" + localeDictFinder['select'] + "</button>"
+            getSelectButtonHtml()
         ) +
             "</div>" +
             "</div>";
@@ -2275,10 +2284,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
     function resizePlanColumns() {
         var planWidth = $('.single-plan-review').outerWidth();
         if (planWidth > 0) {
-            var extraWidthForFirstColumn = 40; //px; first column width will be at minimum width of the sorter + extra_width
-            var extraWidthForLastColumn = 20; //px; first column width will be width of the select button + extra_width
-            var minMainColumnWidthPct = 30; //percentage; 
-            var minFirstColumnWidth = 100; //px; min width of first column
+            var extraWidthForFirstColumn = 10; //px; first column width will be at minimum width of the sorter + extra_width
+            var extraWidthForLastColumn = 10; //px; first column width will be width of the select button + extra_width
+            var minMainColumnWidthPct = 50; //percentage; 
+            var minFirstColumnWidth = 50; //px; min width of first column
 
             var sorterWidth = $('.trip-sorter').outerWidth();
             var firstColumnWidth = Math.max(minFirstColumnWidth, sorterWidth + extraWidthForFirstColumn);
