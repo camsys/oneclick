@@ -1027,11 +1027,12 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
     }
 
     function getSelectButtonHtml() {
-        return 
+        var tags = 
             ("<button class='btn btn-default single-plan-select action-button select-column-button'>" + 
                 "<span class='hidden-xs'>" + localeDictFinder['select'] + "</span>" +
                 "<span class='visible-xs'>&#10004;</span>" +
             "</button>");
+        return tags;
     }
 
     /*
