@@ -73,12 +73,6 @@ body, .btn, .form-control, .dropdown-menu{
   }
 }
 
-#publicNav .container-fluid {
-  @media(max-width:$screen-sm-max){
-    padding: 0px;
-  }
-}
-
 #help i{
   @media(max-width:$screen-sm-max){
     line-height: 50px;

@@ -1205,25 +1205,33 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var tripHeaderTags = tripDescTag +
             "<div class='col-xs-12 single-plan-header'>" +
             "<div class='col-xs-12' style='padding:0px;'>" +
-            "<div class='trip-plan-first-column' style='padding: 0px;'>" +
+            "<div class='trip-plan-first-column' style='padding: 0px; vertical-align: bottom; position: relative;'>" +
             sorterLabelTags +
-            (isDepartAt ? ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>") : "") +
+            (isDepartAt ? ("<button class='btn btn-xs pull-right prev-period' style='position: absolute; bottom: 0px; right: 0px;'> -" + intervelStep + "</button>") : "") +
             "</div>" +
-            "<div class='" + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
+            "<div class='" + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap; text-align: center; vertical-align: bottom;'>" +
             (
             isDepartAt ?
             ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>") :
             ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>")
         ) +
-            midDateLabelTags +
             "</div>" +
-            "<div class='select-column' style='padding: 0px;'>" +
+            "<div class='select-column' style='padding: 0px; vertical-align: bottom;'>" +
             (isDepartAt ? "" : ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>")) +
             "</div>" +
             "</div>" +
             "<div class='col-xs-12' style='padding:0px;'>" +
             "<div class='trip-plan-first-column' style='padding: 0px;'>" +
             sorterTags +
+            "</div>" +
+            "<div class='" + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
+            midDateLabelTags +
+            "</div>" +
+            "<div class='select-column' style='padding: 0px;'>" +
+            "</div>" +
+            "</div>" +
+            "<div class='col-xs-12' style='padding:0px;'>" +
+            "<div class='trip-plan-first-column' style='padding: 0px;'>" +
             "</div>" +
             "<div class='tick-labels " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap;'>" +
             tickLabelTags +
