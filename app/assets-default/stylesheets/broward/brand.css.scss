@@ -1,4 +1,6 @@
-// PA/YATA CSS file. Styles only, no variables or mixins definitions.
+// Broward CSS file. Styles only, no variables or mixins definitions.
+//= depend_on_asset "broward/logo-sm.png"
+//= depend_on_asset "broward/logo-lg.png"
 
 @media(max-width:$screen-sm-max){
   #logo {

@@ -1,4 +1,7 @@
 // JTA CSS file. Styles only, no variables or mixins definitions.
+//= depend_on_asset "jta/logo-sm.png"
+//= depend_on_asset "jta/logo-lg.png"
+
 
 @media(max-width:$screen-sm-max){
   #logo{
