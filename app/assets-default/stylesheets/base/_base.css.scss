@@ -561,7 +561,12 @@ td.left, th.left {
   &.pull-right {
     margin-left: 5px;
   }
-  min-width: 9em;
+  @media (max-width: $screen-xs-max) {
+    min-width: 6em;
+  }
+  @media (min-width: $screen-sm-min) {
+    min-width: 9em;
+  }
   font-weight: bold;
 }
 

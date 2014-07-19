@@ -22,7 +22,7 @@
   .col-xs-12{style: "padding: 0px;"}
     = render partial: "selected_itineraries_details", locals: { trip: @trip, for_db: false }
   
-  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px;"}
+  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
     = link_to '#', {href: '#send_trip_by_email', class: 'btn btn-default pull-right action-button', style: "margin-right: 5px;", data: {toggle: 'modal'}} do
       /%i.fa.fa-envelope-o
       = t(:email)

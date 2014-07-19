@@ -462,11 +462,15 @@ $legend-height: 20px;
   height: $single-plan-height;
   float: left;
   background-position: center;
+  @media(max-width:$screen-xs-max){
+    display: none !important;
+  }
 
   a {
     display: block;
     height: $single-plan-height;
   }
+
 }
 
 .trip-mode-cost {

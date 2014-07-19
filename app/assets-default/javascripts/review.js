@@ -343,7 +343,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             var modeSwimlane =
                 "<div class='col-xs-12 single-plan-review single-plan-unselected single-plan-mode-loading' style='padding: 0px;'" + dataTags + ">" +
                 "<div class='trip-plan-first-column' style='padding: 0px; height: 100%;'>" +
-                "<table>" +
+                "<table style='width: 100%;'>" +
                 "<tbody>" +
                 "<tr>" +
                 "<td class='trip-mode-icon " + cssName + "'>" +
@@ -1214,29 +1214,22 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var tripHeaderTags = tripDescTag +
             "<div class='col-xs-12 single-plan-header'>" +
             "<div class='col-xs-12' style='padding:0px;'>" +
-            "<div class='trip-plan-first-column' style='padding: 0px; vertical-align: bottom; position: relative;'>" +
-            sorterLabelTags +
-            (isDepartAt ? ("<button class='btn btn-xs pull-right prev-period' style='position: absolute; bottom: 0px; right: 0px;'> -" + intervelStep + "</button>") : "") +
-            "</div>" +
-            "<div class='" + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap; text-align: center; vertical-align: bottom;'>" +
-            (
-            isDepartAt ?
-            ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>") :
-            ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>")
-        ) +
-            "</div>" +
-            "<div class='select-column' style='padding: 0px; vertical-align: bottom;'>" +
-            (isDepartAt ? "" : ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>")) +
-            "</div>" +
+            sorterLabelTags + sorterTags +           
             "</div>" +
             "<div class='col-xs-12' style='padding:0px;'>" +
-            "<div class='trip-plan-first-column' style='padding: 0px;'>" +
-            sorterTags +
+             "<div class='trip-plan-first-column' style='padding: 0px; vertical-align: top;'>" +
+            (isDepartAt ? ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>") : "") +
             "</div>" +
             "<div class='" + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
+            (
+                isDepartAt ?
+                ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>") :
+                ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>")
+            ) +
             midDateLabelTags +
             "</div>" +
             "<div class='select-column' style='padding: 0px;'>" +
+            (isDepartAt ? "" : ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>")) +
             "</div>" +
             "</div>" +
             "<div class='col-xs-12' style='padding:0px;'>" +
@@ -1397,7 +1390,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var tripPlanTags =
             "<div class='col-xs-12 single-plan-review " + (isSelected ? "single-plan-selected" : "single-plan-unselected") + "' style='padding: 0px;" + (eligibleCode === -1 ? "display: none;" : "") + "'" + dataTags + ">" +
             "<div class='trip-plan-first-column' style='padding: 0px; height: 100%;'>" +
-            "<table>" +
+            "<table style='width: 100%;'>" +
             "<tbody>" +
             "<tr>" +
             "<td class='trip-mode-icon' style='" + iconStyle + "'>" +
@@ -2284,13 +2277,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
     function resizePlanColumns() {
         var planWidth = $('.single-plan-review').outerWidth();
         if (planWidth > 0) {
-            var extraWidthForFirstColumn = 10; //px; first column width will be at minimum width of the sorter + extra_width
             var extraWidthForLastColumn = 10; //px; first column width will be width of the select button + extra_width
             var minMainColumnWidthPct = 50; //percentage; 
             var minFirstColumnWidth = 50; //px; min width of first column
 
-            var sorterWidth = $('.trip-sorter').outerWidth();
-            var firstColumnWidth = Math.max(minFirstColumnWidth, sorterWidth + extraWidthForFirstColumn);
+            var firstColumnWidth = Math.max.apply( null, $('.trip-plan-first-column table').map( function () {
+                    return $( this ).outerWidth( true );
+                }).get() 
+            );
 
             var selectButtonWidth = $('.single-plan-review .single-plan-select').outerWidth();
             var questionButtonWidth = $('.single-plan-review .single-plan-question').outerWidth();

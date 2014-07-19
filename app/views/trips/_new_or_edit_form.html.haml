@@ -83,7 +83,7 @@
           #returnDatetimeOptions{style: (@trip_proxy.is_round_trip ? '' : 'display: none;')}
             .form-group
               = render partial: 'date_time_input', locals: {dir: 'return', f: f}
-  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px;"}
+  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
     = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
       tabindex: 2 do
       =t(:plan)

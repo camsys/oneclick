@@ -17,7 +17,7 @@
     = render partial: 'form', :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
 
   / end of options column
-  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px;"}
+  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
     = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
       tabindex: 2 do
       =t(:plan)
