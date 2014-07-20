@@ -1,10 +1,8 @@
-jQuery(function($) {
-    if (!$('.js-trip-wizard-form').hasClass('js-pickup-time-wizard-step')) return;
-
+function setupDatePickerForKiosk (field) {
     $('#trip-date')
         .datepicker()
         .on("dateChange", function(e) {
-            $('#trip_proxy_outbound_trip_date').val(Date.format(e.date, "mm/dd/yyyy"));
+            $(field).val(Date.format(e.date, "mm/dd/yyyy"));
         }).data('calendar')
         .setStartDate(new Date);
 
@@ -19,8 +17,15 @@ jQuery(function($) {
         $('th.month.next').click();
     });
 
-    NewTrip.timepickerInit('#trip_proxy_outbound_trip_time', '#timepicker-one');
     $('#trip-date').data('calendar').mbShow();
+}
+
+jQuery(function($) {
+    if (!$('.js-trip-wizard-form').hasClass('js-pickup-time-wizard-step')) return;
+
+    setupDatePickerForKiosk('#trip_proxy_outbound_trip_date');
+
+    NewTrip.timepickerInit('#trip_proxy_outbound_trip_time', '#timepicker-one');
     // $('.combobox').combobox({ force_match: false });
 
     function toggleArriveDepart(currentValue) {

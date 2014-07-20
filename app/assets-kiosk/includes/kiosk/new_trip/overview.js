@@ -32,6 +32,8 @@ jQuery(function($) {
     leftResults.find('.date').html(trip.outbound_trip_date);
     leftResults.find('.time').html(trip.outbound_trip_time);
     leftResults.find('.return').html(trip.return_trip_time);
+    
+    if (trip.return_trip_date) leftResults.find('.return-date').html(trip.return_trip_date);
 
     if (trip.trip_purpose) leftResults.find('.reason').html(trip.trip_purpose_name);
     if (!trip.return_trip_time) $('.return').prev('h5').hide();

@@ -1,6 +1,3 @@
-= f.hidden_field :outbound_trip_time
-
-/ TODO: RETURN TRIP IN 1 or 2 SECTIONS
 #return-yesno.js-hide-nav-button(data-index=0)
   %span#return-trip.row-fluid
     .span8.offset2
@@ -11,8 +8,13 @@
       %a#yes.js-progress-sequence{:href => "#", :name => "yesno", :value => "yes"} Yes
       %a#no{:href => "#", :name => "yesno", :value => "no"} No
 
+%div{:data => {:index => 1}}
+  = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
+    #date-arrow-prev.prev.month.disabled
+    #trip-date= f.input_field :return_trip_date, :as => :string, :label => false
+    #date-arrow-next.next.month
+
 #timepicker-two.kiosk-timepicker{ :data => {:index => 7}}
-  = f.hidden_field :return_trip_date
   = f.input :is_round_trip, :label => false, :wrapper_html => {:class => 'controls controls-row'} do
     %div(style="visibility: hidden; height: 0")
       = f.input_field :is_round_trip, :as => :boolean, :inline_label => "Return after", :class => "hidden"
@@ -60,3 +62,5 @@
           %li.notime
           %li.ampm am
           %li.ampm pm
+
+= f.hidden_field :outbound_trip_time
