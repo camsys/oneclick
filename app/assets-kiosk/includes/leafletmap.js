@@ -74,6 +74,10 @@ CsLeaflet.Leaflet = {
             //alert('popup opened');
             this.LMcurrent_popup = event.popup;
         });
+
+        this.LMmap.on('load', function () {
+            this.loaded = true;
+        });
     },
 
     /**
