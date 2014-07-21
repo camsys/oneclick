@@ -1370,7 +1370,6 @@ div.trip_proxy_trip_purpose_id{
 	}
 }
 
-
 .detail-footer{
 	position: absolute;
 	bottom:0;
@@ -1386,9 +1385,11 @@ div.trip_proxy_trip_purpose_id{
 		text-align: center;
 		padding-top: 70px;
 		display: block;
+		text-decoration:none;
 
 		&:active{
 			background-color: $gray3;
+			//color: $blue;
 		}
 
 	}
