@@ -23,9 +23,9 @@ function setupDatePickerForKiosk (field) {
 jQuery(function($) {
     if (!$('.js-trip-wizard-form').hasClass('js-pickup-time-wizard-step')) return;
 
+    NewTrip.timepickerInit('#trip_proxy_outbound_trip_time', '#timepicker-one');
     setupDatePickerForKiosk('#trip_proxy_outbound_trip_date');
 
-    NewTrip.timepickerInit('#trip_proxy_outbound_trip_time', '#timepicker-one');
     // $('.combobox').combobox({ force_match: false });
 
     function toggleArriveDepart(currentValue) {
