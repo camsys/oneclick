@@ -409,6 +409,7 @@ en:
   book: "Book"
   inactive: "Inactive"
   service_id: "Service Id"
+  service_type: "Service Type"
   booking_service_code: "Booking Service Code"
   back_to_services: "Back to services"
   service: "Service"

@@ -1,5 +1,5 @@
 .row-fluid.itineraries_holder
-  = render :partial => 'trip_itineraries', :locals => {:itineraries => return_itineraries(show_hidden: @show_hidden),
+  = render :partial => 'trip_itineraries', :locals => {:itineraries => return_itineraries(selected_only: @trip.return_part.has_selected?),
     trip_part: @trip.return_part }
 - if @trip.both_parts_selected?
 - else

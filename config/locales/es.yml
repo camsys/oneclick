@@ -408,6 +408,7 @@ es:
   book: "[es]Book[/es]"
   inactive: "[es]Inactive[/es]"
   service_id: "[es]Service Id[/es]"
+  service_type: "[es]Service Type[/es]"
   booking_service_code: "[es]Booking Service Code[/es]"
   back_to_services: "[es]Back to services[/es]"
   service: "[es]Service[/es]"
