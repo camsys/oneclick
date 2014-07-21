@@ -56,12 +56,6 @@ $footer-height: 40px;
   }
 }
 
-#publicNav .container-fluid {
-  @media(max-width:$screen-sm-max){
-    padding: 0px;
-  }
-}
-
 #logo{
   @media(max-width:$screen-sm-max){
     width: 370px;
