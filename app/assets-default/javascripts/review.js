@@ -2083,7 +2083,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 break;
         }
 
-        tipText += '<p>' + localeDictFinder['click_for_details'] + '</p>';
+        tipText += '<p>' + localeDictFinder['dblclick_for_details'] + '</p>';
         return tipText;
     }
 
@@ -2158,7 +2158,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             })
             .attr("height", barHeight)
             .attr('title', tipText)
-            .on("click", function() { //click to show details in modal dialog
+            .on("dblclick", function() { //click to show details in modal dialog
                 showItineraryModal(planId);
             });
 
@@ -2179,7 +2179,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                     return d;
                 })
             .attr('title', tipText)
-            .on("click", function() { //click to show details in modal dialog
+            .on("dblclick", function() { //click to show details in modal dialog
                 showItineraryModal(planId);
             });
         }
