@@ -258,6 +258,7 @@ en:
   rail: 'Rail'
   rail_and_bus: 'Rail and Bus'
   subway: 'Subway'
+  tram: 'Tram'
   vehicle: 'Vehicle'
   wait: 'Wait'
   mode_transfer: 'Transfer'

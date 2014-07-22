@@ -258,6 +258,7 @@ ht:
   rail: '[ht]Rail[/ht]'
   rail_and_bus: '[ht]Rail and Bus[/ht]'
   subway: '[ht]Subway[/ht]'
+  tram: '[ht]Tram[/ht]'
   vehicle: '[ht]Vehicle[/ht]'
   wait: '[ht]Wait[/ht]'
   mode_transfer: '[ht]Transfer[/ht]'

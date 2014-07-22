@@ -257,6 +257,7 @@ es:
   rail: '[es213]Rail[/es]'
   rail_and_bus: '[es213]Rail and Bus[/es]'
   subway: '[es214]Subway[/es]'
+  tram: '[es]Tram[/es]'
   vehicle: '[es]Vehicle[/es]'
   wait: '[es]Wait[/es]'
   mode_transfer: '[es]Transfer[/es]'

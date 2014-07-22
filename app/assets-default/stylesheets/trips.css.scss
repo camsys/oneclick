@@ -361,6 +361,10 @@ $legend-height: 20px;
   background-color: $trip-leg-subway;
 }
 
+.travel-legend-tram {
+  background-color: $trip-leg-tram;
+}
+
 .travel-legend-rail {
   background-color: $trip-leg-rail;
 }
@@ -411,6 +415,10 @@ $legend-height: 20px;
 
 .travel-type-subway {
   fill: $trip-leg-subway;
+}
+
+.travel-type-tram {
+  fill: $trip-leg-tram;
 }
 
 .travel-type-rail {
