@@ -47,7 +47,8 @@
     Twilio.Device.disconnectAll();
 
     // close the window anyway after a half second. Allows the window to
-    // still be closed even if the call never connected.    setTimeout(function () {
+    // still be closed even if the call never connected.
+    setTimeout(function () {
       if (window.cocoa) window.cocoa.closeTelWindow();
     }, 500);
   }
