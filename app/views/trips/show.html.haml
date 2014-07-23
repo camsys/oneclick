@@ -1,12 +1,12 @@
 - content_for :head do
   = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"
 .row{style: "padding: 0px;"}
-  .col-xs-8
+  .hidden-xs.col-sm-8
     = render partial: 'shared/trip_plan_breadcrumbs'
-  .col-xs-4
-    = button_tag :type => 'button', :id => "planButton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
+  .col-sm-4
+    = button_tag :type => 'button', :name => "planButton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
       =t(:plan)
-    = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "pull-right btn btn-default action-button pull-right", id: "noOptionButton" do
+    = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "pull-right btn btn-default action-button pull-right", style: "margin-right: 5px;" do
       = t(:feedback)
     
 .row
@@ -15,16 +15,28 @@
 - else
   #reviewBaseContainer.row
     .col-xs-12.form-group.hidden-md-lg
-      %button#legendButton.btn.btn-default.pull-left.action-button{style: "margin-right: 5px;"}
-        = t(:show_legends)
-      %button#filterButton.btn.btn-default.pull-left.action-button
-        = t(:show_filters)
+      %label.mobile-checkbox{for: 'legendCheckbox', style: 'margin-right: 5px;'}
+        %input.mobile-input-checkbox{type:'checkbox',id:'legendCheckbox',"aria-labelledby"=>"legendCheckbox-label", "aria-describedby"=>"legendCheckbox-description"}
+        .mobile-checkbox__checkmark
+        %span{id:'legendCheckbox-label'}
+        = t(:legends)
+      %label.mobile-checkbox{for: 'filterCheckbox'}
+        %input.mobile-input-checkbox{type:'checkbox',id:'filterCheckbox',"aria-labelledby"=>"filterCheckbox-label", "aria-describedby"=>"filterCheckbox-description"}
+        .mobile-checkbox__checkmark
+        %span{id:'filterCheckbox-label'}
+        = t(:filters)
+
     #accessoryContainer.col-md-3.col-xs-12
     / end of filter column
     .col-md-9      
       #tripContainer.col-xs-12{style: "padding: 0px;"}
       / end of trip container
-    / end of review columns
+  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px;padding: 0px;"}
+    = button_tag :type => 'button', :name => "planButton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
+      =t(:plan)
+    = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "pull-right btn btn-default action-button pull-right", style: "margin-right: 5px;" do
+      = t(:feedback)
+  / end of review columns
   #itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
   :javascript
     $(function() {
@@ -61,10 +73,6 @@
       var localeDictFinder = {
         failed_to_update_profile: '#{t(:failed_to_update_profile)}',
         select_a_plan_each_trip_part: '#{t(:select_a_plan_each_trip_part)}',
-        show_legends: '#{t(:show_legends)}',
-        hide_legends: '#{t(:hide_legends)}',
-        show_filters: '#{t(:show_filters)}',
-        hide_filters: '#{t(:hide_filters)}',
         update: '#{t(:update)}',
         cancel: '#{t(:cancel)}',
         select: '#{t(:select)}',
@@ -99,34 +107,31 @@
         unknown: '#{t(:unknown)}',
         no_itineraries_found: '#{t(:no_itineraries_found)}',
         something_went_wrong: '#{t(:something_went_wrong)}',
-        click_for_details: '#{t(:click_for_details)}',
+        dblclick_for_details: '#{t(:dblclick_for_details)}',
         four_digit_year: '#{t(:four_digit_year)}',
         miles: '#{t(:miles)}'                
       };
 
-      //show or hide legends when click Filter button
-      $('#legendButton').on('click', function(e) {
-        e.preventDefault();
+      //show or hide legends
+      $('#legendCheckbox').on('change', function(e) {
         var $legendDiv = $('#legendDiv');
         if($legendDiv.hasClass('hidden-xs-sm')) {
           $('#legendDiv').removeClass('hidden-xs-sm');
-          $(this).text(localeDictFinder['hide_legends']);
         } else {
           $('#legendDiv').addClass('hidden-xs-sm');
-          $(this).text(localeDictFinder['show_legends']);
         }
+        e.preventDefault();
       });
 
-      $('#filterButton').on('click', function(e) {
-        e.preventDefault();
+      //show or hide filters
+      $('#filterCheckbox').on('change', function(e) {
         var $filterDiv = $('#filterDiv');
         if($filterDiv.hasClass('hidden-xs-sm')) {
           $('#filterDiv').removeClass('hidden-xs-sm');
-          $(this).text(localeDictFinder['hide_filters']);
         } else {
           $('#filterDiv').addClass('hidden-xs-sm');
-          $(this).text(localeDictFinder['show_filters']);
         }
+        e.preventDefault();
       });
 
       var tripResponse = #{@tripResponse.to_json};
@@ -134,6 +139,7 @@
       pageRenderer.processTripResponse();
 
       $('#itinerary_modal').on('shown.bs.modal', function() {
+        $('.tooltip').hide();
         if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.review_map != null) { 
           var mapObj = CsMaps.review_map;
           mapObj.invalidateMap(); 
@@ -152,7 +158,7 @@
       });
 
       //Plan button to jump to Plan page
-      $('#planButton').on('click', function(e) {
+      $('button[name=planButton]').on('click', function(e) {
         var selectedPlanIds = [];
         var tripParts = $('#tripContainer').find('.single-trip-part');
         var selectedPlans = tripParts.find('.single-plan-selected');
