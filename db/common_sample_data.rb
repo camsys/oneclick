@@ -4,7 +4,7 @@ require 'lorem-ipsum'
 text = <<EOT
 <h2 style="text-align: justify;">1-Click helps you find options to get from here to there, using public transit,
  door-to-door services, and specialized transportation.  Give it a try, and
- <a href="mailto://OneClick@camsys.com">tell us</a> what you think.</h2>
+ <a href="mailto://1-Click@camsys.com">tell us</a> what you think.</h2>
 EOT
 Translation.find_or_create_by!(:key =>'home-top_html', :locale => :en) do |t|
  t.value = text
@@ -215,6 +215,11 @@ def populate_provider_staff
   end
 end
 
+def add_faq
+  Translation.where(key: 'faq', locale: 'en').first_or_create(value: File.open(File.join('db', '1-Click-FAQ.html')).read)
+end
+
 load_pois
 #generate_trips
 populate_provider_staff
+add_faq

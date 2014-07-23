@@ -7,7 +7,7 @@ module ApplicationHelper
   
   ICON_DICTIONARY = {
     Leg::TripLeg::WALK => 'travelcon-walk',
-    Leg::TripLeg::TRAM => 'travelcon-subway',
+    Leg::TripLeg::TRAM => 'travelcon-tram',
     Leg::TripLeg::SUBWAY => 'travelcon-subway',
     Leg::TripLeg::RAIL => 'travelcon-rail',
     Leg::TripLeg::BUS => 'travelcon-bus',

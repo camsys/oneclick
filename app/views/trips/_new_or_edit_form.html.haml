@@ -91,7 +91,7 @@
       var isResetHiddenFromPlace = true;
       try {
         var hiddenFromPlaceJson = JSON.parse(hiddenFromPlaceData);
-        if(hiddenFromPlaceJson.address === fromPlaceAddr) {
+        if(hiddenFromPlaceJson.address === fromPlaceAddr || hiddenFromPlaceJson.name === fromPlaceAddr) {
           isResetHiddenFromPlace = false;
         }
       }
@@ -107,7 +107,7 @@
       var isResetHiddenToPlace = true;
       try {
         var hiddenToPlaceJson = JSON.parse(hiddenToPlaceData);
-        if(hiddenToPlaceJson.address === toPlaceAddr) {
+        if(hiddenToPlaceJson.address === toPlaceAddr || hiddenToPlaceJson.name === toPlaceAddr) {
           isResetHiddenToPlace = false;
         }
       }

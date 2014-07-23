@@ -4,7 +4,7 @@ class GeoCoverage < ActiveRecord::Base
   has_many :service_coverage_maps
   has_many :services, through: :service_coverage_maps
 
-  #coverage_type: zipcode, county_name, polygon
+  #coverage_type: zipcode, county_name, polygon, city
   # attr_accessible :coverage_type, :value, :polygon
 
   def polygon_contains?(lon, lat)

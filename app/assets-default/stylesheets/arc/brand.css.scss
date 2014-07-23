@@ -1,4 +1,6 @@
 // ARC CSS file. Styles only, no variables or mixins definitions.
+//= depend_on_asset "arc/logo-sm.png"
+//= depend_on_asset "arc/logo-lg.png"
 
 @media(max-width:$screen-sm-max){
   #logo{
@@ -28,7 +30,6 @@
 
 #help {
   i{
-    font-size: 40px;
     color: #444;
   }
 

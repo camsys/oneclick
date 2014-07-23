@@ -13,7 +13,7 @@
         /%i.fa.fa-print
         = t(:print)
       -ItineraryDecorator.decorate_collection(@itineraries.valid).each do |itinerary|
-        -if itinerary.service.booking_service_code and user_signed_in?
+        -if not itinerary.service.booking_service_code.blank? and user_signed_in?
           = button_tag :type => 'button', :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;", "data-target" => "#bookingModal", "data-toggle" => "modal" do
             =t(:book)
           = render partial: 'booking_modal'

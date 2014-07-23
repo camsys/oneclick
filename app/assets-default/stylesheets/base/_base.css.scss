@@ -56,12 +56,6 @@ $footer-height: 40px;
   }
 }
 
-#publicNav .container-fluid {
-  @media(max-width:$screen-sm-max){
-    padding: 0px;
-  }
-}
-
 #logo{
   @media(max-width:$screen-sm-max){
     width: 370px;
@@ -80,6 +74,7 @@ $footer-height: 40px;
   @media(min-width:$screen-md-min){
     line-height: 60px;
   }
+  font-size: 40px;
 }
 
 // These are the bootstrap original sizes

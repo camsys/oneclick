@@ -36,14 +36,15 @@ when 'arc'
   Oneclick::Application.config.map_bounds = [[33.457797,-84.754028], [34.090199,-83.921814]]
   Oneclick::Application.config.geocoder_bounds = [[33.737147,-84.406634], [33.764125,-84.370361]]  
   Oneclick::Application.config.open_trip_planner = "http://otpv1-arc.camsys-apps.com:8080/otp/routers/atl/plan?"
+  Oneclick::Application.config.transit_respects_ada = false
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Atlanta"
   Oneclick::Application.config.enable_rideshare = true
-  Oneclick::Application.config.name = 'ARC OneClick'
+  Oneclick::Application.config.name = 'ARC 1-Click'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.arc.camsys"
   ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey"
   ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@atlantaregional.com"
-  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "OneclickARC@camsys.com"
+  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
   ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
@@ -66,13 +67,14 @@ when 'broward'
   Oneclick::Application.config.map_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
   Oneclick::Application.config.geocoder_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
   Oneclick::Application.config.open_trip_planner = "http://otp-broward.camsys-apps.com:8081/otp/routers/broward/plan?"
+  Oneclick::Application.config.transit_respects_ada = false
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Miami"
-  Oneclick::Application.config.name = 'OneClick'
+  Oneclick::Application.config.name = '1-Click'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.broward.camsys"
   ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey"
   ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@browardmpo.org"
-  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "oneclick@Camsys.com"
+  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
   ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
@@ -97,13 +99,14 @@ when 'pa'
   Oneclick::Application.config.geocoder_bounds = [[40.0262999543423,  -76.56372070312499], [39.87970800405549, -76.90189361572266]]
   Oneclick::Application.config.default_zoom = 12
   Oneclick::Application.config.open_trip_planner = "http://otpv1-arc.camsys-apps.com:8081/otp/routers/pa/plan?"
+  Oneclick::Application.config.transit_respects_ada = false
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Harrisburg-PA"
   Oneclick::Application.config.name = '1-Click/PA'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.pa.camsys"
   ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey"
   ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@rabbittransit.org"
-  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "Oneclick@Camsys.com"
+  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
   ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
@@ -135,13 +138,14 @@ when 'jta'
   Oneclick::Application.config.geocoder_bounds = [[30.0668986565,-82.0920740215],[30.5909384888,-81.319458582]]
   Oneclick::Application.config.default_zoom = 12
   Oneclick::Application.config.open_trip_planner = "http://otpv1-jta.camsys-apps.com:8080/otp/routers/jta/plan?"
+  Oneclick::Application.config.transit_respects_ada = false
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
   Oneclick::Application.config.taxi_fare_finder_api_city = "Jacksonville-FL"
   Oneclick::Application.config.name = '1-Click/JTA'
   ENV['SMTP_MAIL_USER_NAME'] = "oneclick.pa.camsys" # TODO
   ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey" # TODO
   ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@rabbittransit.org" # TODO
-  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "Oneclick@Camsys.com" # TODO
+  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
   ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
   ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
   ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
@@ -151,8 +155,8 @@ when 'jta'
   Oneclick::Application.config.agent_read_feedback = true
   Oneclick::Application.config.provider_read_all_feedback = true
   Oneclick::Application.config.tripless_feedback = false
-  honeybadger_api_key = 'f49faffa'
-  Oneclick::Application.config.poi_file = 'db/pa/pa-poi-from-arcgis.csv' # TODO
+  honeybadger_api_key = '0447225c'
+  Oneclick::Application.config.poi_file = 'db/jta/locations.csv'
   Oneclick::Application.config.default_county = 'Duval'
   Oneclick::Application.config.state = 'FL'
 
