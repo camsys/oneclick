@@ -1,8 +1,17 @@
-html, body {
+html, body{
   height: 100%;
 }
 
-$footer-height: 40px;
+body, .btn, .form-control, .dropdown-menu{
+  @media(max-width:$screen-xs-max){
+    font-size: $font-size-phone;
+    font-family: $font-family-phone;
+  }
+  @media(min-width:$screen-sm-min) and (max-width:$screen-sm-max){
+    font-size: $font-size-tablet;
+    font-family: $font-family-tablet;
+  }
+}
 
 /* Wrapper for page content to push down footer */
 #wrap {
@@ -44,25 +53,7 @@ $footer-height: 40px;
   background-repeat: no-repeat !important;
   height: auto !important;
   padding: 0;
-}
 
-
-#main {
-  @media(max-width:$screen-sm-max){
-    padding-top: 60px;
-  }
-  @media(min-width:$screen-md-min){
-    padding-top: 70px;
-  }
-}
-
-#publicNav .container-fluid {
-  @media(max-width:$screen-sm-max){
-    padding: 0px;
-  }
-}
-
-#logo{
   @media(max-width:$screen-sm-max){
     width: 370px;
     line-height: 50px;
@@ -73,6 +64,15 @@ $footer-height: 40px;
   }
 }
 
+#main {
+  @media(max-width:$screen-sm-max){
+    padding-top: 60px;
+  }
+  @media(min-width:$screen-md-min){
+    padding-top: 70px;
+  }
+}
+
 #help i{
   @media(max-width:$screen-sm-max){
     line-height: 50px;
@@ -80,6 +80,7 @@ $footer-height: 40px;
   @media(min-width:$screen-md-min){
     line-height: 60px;
   }
+  font-size: 40px;
 }
 
 // These are the bootstrap original sizes
@@ -555,6 +556,19 @@ td.left, th.left {
 .action-button {
   @extend .btn-primary;
   text-shadow: none;
+  &:not(:last-of-type) {
+    margin-left: 5px;
+  } 
+  &.pull-right {
+    margin-left: 5px;
+  }
+  @media (max-width: $screen-xs-max) {
+    min-width: 6em;
+  }
+  @media (min-width: $screen-sm-min) {
+    min-width: 9em;
+  }
+  font-weight: bold;
 }
 
 // Styling for the application header (not navbar, this is where the action-buttons live)

@@ -1,13 +1,15 @@
 .row{style: "padding: 0px;"}
-  .col-xs-8
+  .hidden-xs.col-sm-8
     = render partial: 'shared/trip_plan_breadcrumbs'
-  .col-xs-4
-    = button_tag :type => 'submit', :id => 'planTrip', :class => "btn btn-default pull-right action-button",
+  .col-sm-4
+    = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
       tabindex: 2 do
       =t(:plan)
       :javascript
-        $('#planTrip').click(function() {
-          $('.plan-a-trip').submit();
+        $(function() {
+          $('button[name=planTrip]').click(function() {
+            $('.plan-a-trip').submit();
+          });
         });
 .row
   .col-sm-7.col-xs-12
@@ -81,7 +83,10 @@
           #returnDatetimeOptions{style: (@trip_proxy.is_round_trip ? '' : 'display: none;')}
             .form-group
               = render partial: 'date_time_input', locals: {dir: 'return', f: f}
-
+  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
+    = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
+      tabindex: 2 do
+      =t(:plan)
   = render partial: 'shared/splash'
 :javascript
   $(function() {
@@ -91,7 +96,7 @@
       var isResetHiddenFromPlace = true;
       try {
         var hiddenFromPlaceJson = JSON.parse(hiddenFromPlaceData);
-        if(hiddenFromPlaceJson.address === fromPlaceAddr) {
+        if(hiddenFromPlaceJson.address === fromPlaceAddr || hiddenFromPlaceJson.name === fromPlaceAddr) {
           isResetHiddenFromPlace = false;
         }
       }
@@ -107,7 +112,7 @@
       var isResetHiddenToPlace = true;
       try {
         var hiddenToPlaceJson = JSON.parse(hiddenToPlaceData);
-        if(hiddenToPlaceJson.address === toPlaceAddr) {
+        if(hiddenToPlaceJson.address === toPlaceAddr || hiddenToPlaceJson.name === toPlaceAddr) {
           isResetHiddenToPlace = false;
         }
       }

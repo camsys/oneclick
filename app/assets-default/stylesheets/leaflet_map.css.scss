@@ -10,72 +10,61 @@
 
 /*trip leg polyline styles for each mode*/
 
-.map-tripleg-walk {
-  stroke: #763188;
+.map-tripleg {
   stroke-opacity: 0.8;
+}
+.map-tripleg-walk {
+  stroke: $trip-leg-walk;
 }
 
 .map-tripleg-wait {
-  stroke: #7f7979;
-  stroke-opacity: 0.8;
-}
-
-.map-tripleg-transfer {
-  stroke: #FEC800;
-  stroke-opacity: 0.8;
+  stroke: $trip-leg-wait;
 }
 
 .map-tripleg-subway {
-  stroke: #409090;
-  stroke-opacity: 0.8;
+  stroke: $trip-leg-subway;
+}
+
+.map-tripleg-tram{
+  stroke: $trip-leg-tram;
 }
 
 .map-tripleg-rail {
-  stroke: #499bea;
-  stroke-opacity: 0.8;
+  stroke: $trip-leg-rail;
 }
 
 .map-tripleg-bus {
-  stroke: #1AB940;
-  stroke-opacity: 0.8;
+  stroke: $trip-leg-bus;
 }
 
 .map-tripleg-taxi {
-  stroke: #FEEA00;
-  stroke-opacity: 0.8;
+  stroke: $trip-leg-taxi;
 }
 
 .map-tripleg-bike {
-  stroke: #611CF3;
-  stroke-opacity: 0.8;
+  stroke: $trip-leg-bicycle;
 }
 
 .map-tripleg-bikeshare {
-  stroke: #A61CF3;
-  stroke-opacity: 0.8;
+  stroke: $trip-leg-bikeshare;
 }
 
 .map-tripleg-drive {
-  stroke: #808CB4;
-  stroke-opacity: 0.8;
+  stroke: $trip-leg-drive;
 }
 
 .map-tripleg-car {
-  stroke: #808CB4;
-  stroke-opacity: 0.8;
+  stroke: $trip-leg-drive;
 }
 
 .map-tripleg-rideshare {
-  stroke: #F55416;
-  stroke-opacity: 0.8;
+  stroke: $trip-leg-rideshare;
 }
 
 .map-tripleg-paratransit {
-  stroke: #FF9900;
-  stroke-opacity: 0.8;
+  stroke: $trip-leg-paratransit;
 }
 
 .map-tripleg-unknown {
-  stroke: #C0C0C0;
-  stroke-opacity: 0.8;
+  stroke: $trip-leg-unknown;
 }
