@@ -12,6 +12,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20140718194941) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
@@ -77,13 +78,6 @@ ActiveRecord::Schema.define(version: 20140718194941) do
     t.boolean "for_traveler",                         default: true
     t.integer "linked_characteristic_id"
     t.string  "link_handler"
-  end
-
-  create_table "cities", primary_key: "gid", force: true do |t|
-    t.string  "geoid", limit: 7
-    t.string  "name",  limit: 100
-    t.string  "state", limit: 2
-    t.spatial "geom",  limit: {:srid=>0, :type=>"multi_polygon"}
   end
 
   create_table "counties", force: true do |t|
