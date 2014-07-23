@@ -258,6 +258,7 @@ en:
   rail: 'Rail'
   rail_and_bus: 'Rail and Bus'
   subway: 'Subway'
+  tram: 'Tram'
   vehicle: 'Vehicle'
   wait: 'Wait'
   mode_transfer: 'Transfer'
@@ -384,6 +385,10 @@ en:
 
   # new ones
   # Services
+  endpoint_area: "Coverage Area"
+  coverage_area: "Endpoint Area"
+  endpoints: "Endpoint Area"
+  coverages: "Coverage Area"
   cap_returning_at: "Returning at"
   traveler_not_registered: "Traveler not registered to book trips with One-Click."
   outbound_error_occurred: "An error occurred when attempting to book your outbound trip."
@@ -402,7 +407,7 @@ en:
   book_your_trip: "Book your trip"
   trip_booked: "Trip Booked!"
   dob: "Date of Birth"
-  dob_notice: 'Date of Birth is used to confirm the Client Id with Rabbit Transit.  It will not be saved.'
+  dob_notice: 'Date of Birth may be used to confirm the Client Id with a service.  It will not be saved.'
   booking_information: "Booking Information"
   service_name: "Service Name"
   client_id: "Client Id"
@@ -452,6 +457,7 @@ en:
   addl_cost_details: "Additional Cost Details"
   click_for_cost_details: 'Click for cost details'
   click_for_details: 'Click for details'
+  dblclick_for_details: 'Double click or tap for details'
   see_details_for_cost: 'See details for cost'
   cost_estimated: 'Cost estimated'
   no_charge: 'No charge'
@@ -504,10 +510,8 @@ en:
   n_a: 'n/a'
   unknown: 'Unknown'
   not_available: 'Not Available'
-  show_filters: 'Show Filters'
-  show_legends: 'Show Legends'
-  hide_filters: 'Hide Filters'
-  hide_legends: 'Hide Legends'
+  filters: 'Filters'
+  legends: 'Legends'
   minute_abbr: 'min'
   minutes: 'minutes'
   sort_by: 'Sort by'

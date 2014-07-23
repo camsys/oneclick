@@ -28,6 +28,7 @@ class UserProfileProxy < Proxy
       if params.length == 1
         # it is a datestring, not a rails date form field.
         date_str = params.values.first
+        return '' if date_str.blank?
         date_str = if (y,m,d = date_str.split('-')).length < 3
           "1-1-#{date_str}"
         else
@@ -89,7 +90,8 @@ class UserProfileProxy < Proxy
       elsif type == 'integer' # All other cases, just pass value (numbers and dates are already internationalized)
         ret = user_characteristic.value
       elsif type == 'date'
-        ret = Chronic.parse(user_characteristic.value).year.to_s
+        date = Chronic.parse(user_characteristic.value)
+        ret = date.nil? ? :no_answer_str : date.year.to_s
       end
 
       return ret

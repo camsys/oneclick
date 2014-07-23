@@ -180,13 +180,13 @@ def add_providers_and_services
         #Add geographic restrictions
         ['York'].each do |z|
           c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
         end
 
         #Add geographic restrictions
         ['York'].each do |z|
           c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'coverage_area')
         end
 
         #Traveler Characteristics Requirements
@@ -213,13 +213,13 @@ def add_providers_and_services
         #Add geographic restrictions
         ['York', 'Adams'].each do |z|
           c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
         end
 
         #Add geographic restrictions
         ['York', 'Adams'].each do |z|
           c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'coverage_area')
         end
 
 
@@ -245,13 +245,13 @@ def add_providers_and_services
         #Add geographic restrictions
         ['York', 'Adams', 'Franklin', 'Fulton'].each do |z|
           c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
         end
 
         #Add geographic restrictions
         ['York', 'Adams', 'Franklin', 'Fulton'].each do |z|
           c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'coverage_area')
         end
 
 
@@ -277,13 +277,13 @@ def add_providers_and_services
         #Add geographic restrictions
         ['York', 'Adams', 'Franklin', 'Fulton'].each do |z|
           c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
         end
 
         #Add geographic restrictions
         ['York', 'Adams', 'Franklin', 'Fulton'].each do |z|
           c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'coverage_area')
         end
 
         #Traveler Characteristics Required
@@ -418,7 +418,7 @@ def add_dav
     #Add geographic restrictions
     ['York', 'Adams'].each do |z|
       c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-      ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+      ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
     end
 
     #Traveler Accommodations Requirements
@@ -455,11 +455,11 @@ def add_rabbit_general
   #Add geographic restrictions
   ['York', 'Adams'].each do |z|
     c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-    ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+    ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
   end
   ['York', 'Adams'].each do |z|
     c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-    ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+    ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'coverage_area')
   end
 
   medical = TripPurpose.find_by_code('medical')
@@ -623,11 +623,11 @@ def collapse_rabbit_services
     #Add geographic restrictions
     ['York', 'Adams'].each do |z|
       c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-      ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+      ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
     end
     ['York', 'Adams'].each do |z|
       c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-      ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+      ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'coverage_area')
     end
 
     #Traveler Characteristics Requirements
@@ -678,11 +678,11 @@ def collapse_rabbit_services
     #Add geographic restrictions
     ['York', 'Adams'].each do |z|
       c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-      ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+      ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
     end
     ['York', 'Adams'].each do |z|
       c = GeoCoverage.find_or_create_by(value: z, coverage_type: 'county_name')
-      ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+      ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'coverage_area')
     end
 
     #Traveler Accommodations Requirements
