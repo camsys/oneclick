@@ -100,6 +100,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def content
+  end
+  
   private
 
   # called (once) when the user logs in, insert any code your application needs

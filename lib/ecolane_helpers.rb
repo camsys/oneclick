@@ -238,6 +238,7 @@ class EcolaneHelpers
   end
 
   def build_order_hash(itinerary, funding_xml=nil)
+
     #TODO: Pull Passengers from itinerary
     order = {customer_id: get_customer_id(itinerary), assistant: false, companions: 0, children: 0, other_passengers: 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
     if funding_xml
@@ -247,35 +248,40 @@ class EcolaneHelpers
   end
 
   def build_funding_hash(itinerary, funding_xml)
-
     purpose = itinerary.trip_part.trip.trip_purpose.code
-
+    other_funding = nil
     funding_xml.xpath("funding_options").xpath("option").each do |options|
+
       ecolane_purpose = options.xpath("purpose").text
+
+      if ecolane_purpose.downcase.gsub(%r{[ /]}, '_') == 'other'
+        other_funding = funding_source = options.xpath("funding_source").text
+      end
+
       if purpose == ecolane_purpose.downcase.gsub(%r{[ /]}, '_')
+
         funding_source = options.xpath("funding_source").text
         return {funding_source: funding_source, purpose: ecolane_purpose}
       end
     end
-
-    {funding_source: nil, purpose: nil}
+     return {funding_source: other_funding, purpose: 'other'}
 
   end
 
   def build_pu_hash(itinerary)
     if itinerary.trip_part.is_depart
-      pu_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: test_build_location_hash(itinerary.trip_part.from_trip_place)}
+      pu_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(itinerary.trip_part.from_trip_place)}
     else
-      pu_hash = {location: test_build_location_hash(itinerary.trip_part.from_trip_place)}
+      pu_hash = {location: build_location_hash(itinerary.trip_part.from_trip_place)}
     end
     pu_hash
   end
 
   def build_do_hash(itinerary) #temp funciton
     if itinerary.trip_part.is_depart
-      do_hash = {location: test2_build_location_hash(itinerary.trip_part.to_trip_place)}
+      do_hash = {location: build_location_hash(itinerary.trip_part.to_trip_place)}
     else
-      do_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: test2_build_location_hash(itinerary.trip_part.to_trip_place)}
+      do_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(itinerary.trip_part.to_trip_place)}
     end
     do_hash
   end

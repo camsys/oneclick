@@ -12,7 +12,7 @@
       %h2
         = f.input :name
     .col-sm-6.btns
-      - if can? :update, @service
+      - if can? :update, @service or can? :create, @service
         = link_to t(:cancel), :back, class: "btn btn-default action-button default pull-right"
         = button_tag type: 'submit', class: "btn btn-default action-button default pull-right" do
           = icon_label(:apply)
@@ -245,7 +245,7 @@
       .row
         .col-sm-12
           - types = GeoCoverage.pluck(:coverage_type).uniq
-          - [:origins, :destinations, :residences].each do |rule| 
+          - ['endpoints', 'coverages'].each do |rule|
             .panel.panel-default
               .panel-heading
                 %h4.panel-title= t(rule)
@@ -258,7 +258,7 @@
                     - GeoCoverage.where(coverage_type: type).order(:value).map{|c| [ c.value, c.id ] }.each do |pair|
                       %input{type: "hidden", value: pair[1],
                              name: input_name(f, :service_coverage_maps, :geo_coverage_id)}
-                      %input{type: "hidden", value: rule.to_s.singularize,
+                      %input{type: "hidden", value: rule.to_s.singularize + '_area',
                              name: input_name(f, :service_coverage_maps, :rule)}
                       - if checked.include?(pair[1])
                         %input{type: "hidden",
