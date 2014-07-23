@@ -35,6 +35,7 @@ en:
   agency_profile: "Agency Profile"
   edit_agency_name: 'Edit %{name}'
   update_agency: "Update Agency"
+  remove_agency: "Remove Agency"
   agency_added: "Agency added"
   specific_agency_added: "%{agency} added"
   user_created_and_added_to_agency: "User %{user} created and added to agency %{agency}"
@@ -53,6 +54,7 @@ en:
   provider_orgs: "Provider Organizations"
   new_provider_org: 'New Provider Organization'
   new_provider: "New Provider"
+  remove_provider: "Remove Provider"
   org_type: "Org type"
   new_organization: "New Organization"
   editing_orgs: "Editing organization"
@@ -379,7 +381,7 @@ en:
   place_added:      '%{place_name} has been added to your address book.'
   error_updating_addresses:   'An error occured while updating your address book.'
   address_book_updated: 'Your address book has been updated.'
-  confirm_remove_place: 'Are you sure you want to remove %{place_name} from your address book?'
+  confirm_remove_message: 'Are you sure you want to remove ' # followed by entity name
   profile_updated: "Your profile was updated."
   updated: "Updated"
 
@@ -422,6 +424,7 @@ en:
   all_services: "All Services"
   active: "Active"
   add_service: "Add Service"
+  remove_service: "Remove Service"
   select_service: "Select Service"
   service_is_inactive: "This service is currently inactive."
   service_contact: "Service Contact Information"

@@ -35,6 +35,7 @@ ht:
   agency_profile: "[ht]Agency Profile[/ht]"
   edit_agency_name: '[ht]Edit %{name}[/ht]'
   update_agency: "[ht]Update Agency[/ht]"
+  remove_agency: "[ht]Remove Agency[/ht]"
   agency_added: "[ht]Agency added[/ht]"
   specific_agency_added: "[ht]%{agency} added[/ht]"
   user_created_and_added_to_agency: "[ht]User %{user} created and added to agency %{agency}[/ht]"
@@ -53,6 +54,7 @@ ht:
   provider_orgs: "[ht]Provider Organizations[/ht]"
   new_provider_org: '[ht]New Provider Organization[/ht]'
   new_provider: "[ht]New Provider[/ht]"
+  remove_provider: "[ht]Remove Provider[/ht]"
   org_type: "[ht]Org type[/ht]"
   new_organization: "[ht]New Organization[/ht]"
   editing_orgs: "[ht]Editing organization[/ht]"
@@ -376,7 +378,7 @@ ht:
   place_added:      '%{place_name} has been added to your address book.[/ht]'
   error_updating_addresses:   'An error occured while updating your address book.[/ht]'
   address_book_updated: '[ht]Your address book has been updated.[/ht]'
-  confirm_remove_place: '[ht]Are you sure you want to remove %{place_name} from your address book?[/ht]'
+  confirm_remove_message: '[ht]Are you sure you want to remove [/ht]'
   profile_updated: "[ht]Your profile was updated.[/ht]"
   updated: "[ht]Updated[/ht]"
 
@@ -415,6 +417,7 @@ ht:
   all_services: "[ht]All Services[/ht]"
   active: "[ht]Active[/ht]"
   add_service: "[ht]Add Service[/ht]"
+  remove_service: "[ht]Remove Service[/ht]"
   select_service: "[ht]Select Service[/ht]"
   service_is_inactive: "[ht]This service is currently inactive.[/ht]"
   service_contact: "[ht]Service Contact Information[/ht]"
