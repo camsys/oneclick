@@ -11,7 +11,7 @@
   - itinerary.get_legs.each do |leg|
     %tr
       %td.itinerary_icons
-        %i.transit_itinerary_icons.mode_icon_formatting{:class => get_mode_icon(leg.mode)}
+        %i.transit_itinerary_icons.mode_icon_formatting.trip-mode-icon{:style => "background-image:url(" + get_mode_icon(leg.mode) + ");"}
       %td
         -if leg.mode == Leg::TripLeg::WALK
           .itinerary_text

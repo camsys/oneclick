@@ -1586,7 +1586,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         }
 
         var legendTags = "";
-        var legendClassNameIndex = {};
+        var legendNameIndex = {};
         var legendNames = [];
         trips.forEach(function(trip) {
             if (typeof(trip) != 'object' || trip === null || !trip.itineraries instanceof Array) {
@@ -1607,8 +1607,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                     var className = "travel-legend-" + removeSpace(legType);
                     var legendText = (localeDictFinder[legType] ||  toCamelCase(legType));
 
-                    if ($("." + className).length === 0 && !legendClassNameIndex[className]) {
-                        legendClassNameIndex[className] = legendText;
+                    if ($("." + className).length === 0 && !legendNameIndex[legendText]) {
+                        legendNameIndex[legendText] = legendText;
                         legendNames.push({
                             cls: className,
                             name: legendText
