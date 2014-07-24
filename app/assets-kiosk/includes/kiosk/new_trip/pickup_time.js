@@ -1,10 +1,12 @@
-function setupDatePickerForKiosk (field) {
+function setupDatePickerForKiosk (field, startDate) {
+    if (!startDate) startDate = new Date;
+
     $('#trip-date')
         .datepicker()
         .on("dateChange", function(e) {
             $(field).val(Date.format(e.date, "mm/dd/yyyy"));
         }).data('calendar')
-        .setStartDate(new Date);
+        .setStartDate(startDate);
 
     //CLick Tadaaapicker buttons(now hidden) when you click the outside buttons.
     var datePrev = $('#date-arrow-prev');

@@ -1,8 +1,6 @@
 jQuery(function($) {
     if (!$('.js-trip-wizard-form').hasClass('js-return-time-wizard-step')) return;
 
-    NewTrip.timepickerInit('#trip_proxy_return_trip_time', '#timepicker-two');
-
     var noReturnTripHandler = function() {
         // Register that we do not want a return trip
         $('#trip_proxy_is_round_trip').prop('checked', false);
@@ -29,7 +27,9 @@ jQuery(function($) {
         $('.js-trip-wizard-form').find('#trip_proxy_return_trip_date').val(NewTrip.read().default_return_trip_date);
     }
 
-    setupDatePickerForKiosk('#trip_proxy_return_trip_date');
+    NewTrip.timepickerInit('#trip_proxy_return_trip_time', '#timepicker-two');
+    setupDatePickerForKiosk('#trip_proxy_return_trip_date', new Date(NewTrip.read().default_return_trip_date));
+
     $('#return-trip a#no').on('click', noReturnTripHandler);
 
     $('#return-trip a#yes').on('click', function() {
