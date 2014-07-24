@@ -1,6 +1,6 @@
 # detect touch device
 is_touch_device = ->
-  return "onTouchStart" of window or navigator.MaxTouchPoints > 0 or navigator.msMaxTouchPoints > 0
+  return "ontouchstart" of window or navigator.MaxTouchPoints > 0 or navigator.msMaxTouchPoints > 0
 
 create_or_update_marker = (map, key, lat, lon, name, desc, iconStyle) ->  
   marker = map.findMarkerById(key)
