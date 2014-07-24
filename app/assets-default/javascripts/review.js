@@ -1460,17 +1460,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             '<div class="modal-dialog">' +
             '<div class="modal-content">' +
             '<div class="modal-header">' +
-            '<button type="button" class="close" aria-hidden="true" style="color: red; opacity: 1;">?</button>' +
+            '<button type="button" class="btn btn-default action-button pull-right" data-dismiss="modal">' + localeDictFinder['cancel'] + '</button>' +
+            '<button type="submit" class="btn btn-primary action-button pull-right">' + localeDictFinder['update'] + '</button>' +
             '<b class="modal-title" id="' + missInfoDivId + '_title">' + localeDictFinder['trip_restrictions'] + '</b>' +
             '</div>' +
             '<div class="modal-body">' +
             '<form class="form-inline" role="form" id="' + missInfoDivId + '_form">' +
             questionTags +
             '</form>' +
-            '</div>' +
-            '<div class="modal-footer">' +
-            '<button type="submit" class="btn btn-primary action-button">' + localeDictFinder['update'] + '</button>' +
-            '<button type="button" class="btn btn-default action-button" data-dismiss="modal">' + localeDictFinder['cancel'] + '</button>' +
             '</div>' +
             '</div>' +
             '</div>';
