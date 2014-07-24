@@ -1,6 +1,6 @@
 # detect touch device
 is_touch_device = ->
-  return 'ontouchstart' in window or navigator.MaxTouchPoints > 0 or navigator.msMaxTouchPoints > 0
+  return "onTouchStart" of window or navigator.MaxTouchPoints > 0 or navigator.msMaxTouchPoints > 0
 
 create_or_update_marker = (map, key, lat, lon, name, desc, iconStyle) ->  
   marker = map.findMarkerById(key)
@@ -298,7 +298,7 @@ $ ->
   if $('.plan-a-trip').length > 0
     validateDateTimes false #when page load, validate outbound and return times
 
-  if is_touch_device
+  if is_touch_device()
     $('#trip_proxy_outbound_trip_date, #trip_proxy_outbound_trip_time, #trip_proxy_return_trip_date, #trip_proxy_return_trip_time').attr('readonly', true)
 
   return
