@@ -31,6 +31,15 @@ GIT
       sprockets-rails (~> 2.0)
 
 GIT
+  remote: git://github.com/camsys/twitter-typeahead-rails.git
+  revision: b9e407f9a4224f0840b60a523a2df42eeca7dfe7
+  specs:
+    twitter-typeahead-rails (0.10.2)
+      actionpack (>= 3.1)
+      jquery-rails
+      railties (>= 3.1)
+
+GIT
   remote: git://github.com/plataformatec/simple_form.git
   revision: 01ccfcebd45b8de0a6846d0f33b9daf74673dcc1
   specs:
@@ -51,15 +60,6 @@ GIT
   ref: 0b00fa41224dc4e33b059cd0cd31cd42b022b03b
   specs:
     rolify (3.4.0)
-
-GIT
-  remote: https://github.com/Qureana/twitter-typeahead-rails
-  revision: cb6c90502956a2b4a206e7a14dad4f00d3930ee3
-  specs:
-    twitter-typeahead-rails (0.10.1)
-      actionpack (>= 3.1)
-      jquery-rails
-      railties (>= 3.1)
 
 GEM
   remote: https://rubygems.org/
