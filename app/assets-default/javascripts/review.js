@@ -2156,11 +2156,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             .attr("width", function(d) {
                 return (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time)));
             })
-            .attr("height", barHeight)
-            .attr('title', tipText)
-            .on("dblclick", function() { //click to show details in modal dialog
-                showItineraryModal(planId);
-            });
+            .attr("height", barHeight);
 
         //add service name
         if (tripLegs.length > 0 && typeof(serviceName) === 'string' && serviceName.trim().length > 0) {
@@ -2177,12 +2173,25 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 .attr("dy", '0.5ex')
                 .text(function(d) {
                     return d;
-                })
+                });
+        }
+
+        //register events
+        chart.selectAll('rect, text')
             .attr('title', tipText)
             .on("dblclick", function() { //click to show details in modal dialog
                 showItineraryModal(planId);
+            })
+            .on("touchstart",function(){ //for mobile
+                var t2 = event.timeStamp;
+                var t1 = $(this).data('lastTouch') || t2;
+                var dt = t2 - t1;
+                var fingers = event.touches.length;
+                $(this).data('lastTouch', t2);
+                if (!dt || dt > 500 || fingers > 1) return; // not double-tap
+                showItineraryModal(planId);
+                event.preventDefault ? event.preventDefault() : event.returnValue = false;
             });
-        }
 
         $("svg rect, svg text").tooltip({
             'html': true,
