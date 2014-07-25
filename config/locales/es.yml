@@ -35,6 +35,7 @@ es:
   agency_profile: "[es]Agency Profile[/es]"
   edit_agency_name: '[es]Edit %{name}[/es]'
   update_agency: "[es]Update Agency[/es]"
+  remove_agency: "[es]Remove Agency[/es]"
   my_agencies: "[es27]My Agencies[/es]"
   not_any_agencies: "[es28]You haven't approved any agencies to help you[/es]"
   no_agency_selected: "[es37]You must enter any agency you want to assist you.[/es]"
@@ -46,6 +47,7 @@ es:
   select_agency: "[es42]Select Agency[/es]"
   provider: "[es25]Provider[/es]"
   new_provider: "[es]New Provider[/es]"
+  remove_provider: "[es]Remove Provider[/es]"
   all_providers: "[es]All Providers[/es]"
   provider_profile: "[es]Provider Profile[/es]"
   providers: "[es22]Providers[es]"
@@ -379,7 +381,7 @@ es:
   place_added:      '%{place_name} ha sido agregado a tu libreta de direcciones. *19*'
   error_updating_addresses:   'Si produjo un error al acutalizar la libreta de direcciones. *20*'
   address_book_updated: 'Su libreta de direcciones se ha acualizado. *21*'
-  confirm_remove_place: 'Esta seguro que desea eliminar %{place_name} de su libreta de direcciones? *22*'
+  confirm_remove_message: 'Esta seguro que desea eliminar '
   profile_updated: "Su perfil ha sido actualizado. *37*"
   updated: "[es242]Updated[/es]"
 
@@ -421,6 +423,7 @@ es:
   all_services: "[es]All Services[/es]"
   active: "[es240]Active[/es]"
   add_service: "[es]Add Service[/es]"
+  remove_service: "[es]Remove Service[/es]"
   select_service: "[es276]Select Service[/es]"
   service_is_inactive: "[es219]This service is currently inactive.[/es]"
   service_contact: "[es220]Service Contact Information[/es]"

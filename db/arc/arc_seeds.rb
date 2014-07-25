@@ -72,7 +72,7 @@ Mode.unscoped.find_by(code: 'mode_rideshare').update_attributes(logo_url: 'arc/m
 Mode.unscoped.find_by(code: 'mode_park_transit').update_attributes(logo_url: 'arc/modes/transit.png')
 Mode.unscoped.find_by(code: 'mode_car_transit').update_attributes(logo_url: 'arc/modes/transit.png')
 Mode.unscoped.find_by(code: 'mode_rail').update_attributes(logo_url: 'arc/modes/rail.png')
-Mode.unscoped.find_by(code: 'mode_bus').update_attributes(logo_url: 'arc/modes/bus.png')
+Mode.unscoped.find_by(code: 'mode_bus').update_attributes(logo_url: 'arc/modes/transit.png')
 Mode.unscoped.find_by(code: 'mode_walk').update_attributes(logo_url: 'arc/modes/walk.png')
 Mode.unscoped.find_by(code: 'mode_car').update_attributes(logo_url: 'arc/modes/auto.png')
 Mode.unscoped.find_by(code: 'mode_bikeshare').update_attributes(logo_url: 'arc/modes/bicycle.png')

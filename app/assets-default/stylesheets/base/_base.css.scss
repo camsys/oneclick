@@ -38,6 +38,11 @@ body, .btn, .form-control, .dropdown-menu{
 
 #publicNav{
   @include header-background;
+  .container-fluid {
+    @media(max-width:$screen-sm-max){
+      padding: 0px;
+    }
+  }
 }
 
 #feedback{

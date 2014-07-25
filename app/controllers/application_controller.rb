@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   before_filter :setup_actions
   before_action do |controller|
-    @current_ability ||= Ability.new(current_user, assisting? ? get_traveler : nil)
+    @current_ability ||= Ability.new(get_traveler)
   end
   after_filter :clear_location
 
