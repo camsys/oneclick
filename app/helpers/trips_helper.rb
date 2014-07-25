@@ -66,6 +66,7 @@ module TripsHelper
     end
   end
 
+  #this is used in send_itinerary_by_email.html.haml (possibly deprecated)
   def send_trip_by_email_list traveler, is_assisting
     list = []
     list << ["Traveler: " + traveler.email + " (" + traveler.name + ")", traveler.email] if is_assisting
@@ -74,6 +75,18 @@ module TripsHelper
     end
     list << ['Me: '+  current_user.email, current_user.email]
     list
+  end
+
+  # this is used in send_trip_by_email.html.haml
+  # using comma to separate related email addresses
+  def get_traveller_related_emails traveler, is_assisting
+    list = []
+    list << traveler.email if is_assisting
+    current_user.buddies.confirmed.each do |buddy|
+      list << buddy.email
+    end
+    list << current_user.email
+    list.join(",")
   end
 
   ACTIONS_TO_TABS = HashWithIndifferentAccess.new(

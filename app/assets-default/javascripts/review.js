@@ -1460,17 +1460,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             '<div class="modal-dialog">' +
             '<div class="modal-content">' +
             '<div class="modal-header">' +
-            '<button type="button" class="close" aria-hidden="true" style="color: red; opacity: 1;">?</button>' +
+            '<button type="button" class="btn btn-default action-button pull-right" data-dismiss="modal">' + localeDictFinder['cancel'] + '</button>' +
+            '<button type="submit" class="btn btn-primary action-button pull-right">' + localeDictFinder['update'] + '</button>' +
             '<b class="modal-title" id="' + missInfoDivId + '_title">' + localeDictFinder['trip_restrictions'] + '</b>' +
             '</div>' +
             '<div class="modal-body">' +
             '<form class="form-inline" role="form" id="' + missInfoDivId + '_form">' +
             questionTags +
             '</form>' +
-            '</div>' +
-            '<div class="modal-footer">' +
-            '<button type="submit" class="btn btn-primary action-button">' + localeDictFinder['update'] + '</button>' +
-            '<button type="button" class="btn btn-default action-button" data-dismiss="modal">' + localeDictFinder['cancel'] + '</button>' +
             '</div>' +
             '</div>' +
             '</div>';
@@ -1586,7 +1583,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         }
 
         var legendTags = "";
-        var legendClassNameIndex = {};
+        var legendNameIndex = {};
         var legendNames = [];
         trips.forEach(function(trip) {
             if (typeof(trip) != 'object' || trip === null || !trip.itineraries instanceof Array) {
@@ -1607,8 +1604,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                     var className = "travel-legend-" + removeSpace(legType);
                     var legendText = (localeDictFinder[legType] ||  toCamelCase(legType));
 
-                    if ($("." + className).length === 0 && !legendClassNameIndex[className]) {
-                        legendClassNameIndex[className] = legendText;
+                    if ($("." + className).length === 0 && !legendNameIndex[legendText]) {
+                        legendNameIndex[legendText] = legendText;
                         legendNames.push({
                             cls: className,
                             name: legendText
@@ -2156,11 +2153,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             .attr("width", function(d) {
                 return (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time)));
             })
-            .attr("height", barHeight)
-            .attr('title', tipText)
-            .on("dblclick", function() { //click to show details in modal dialog
-                showItineraryModal(planId);
-            });
+            .attr("height", barHeight);
 
         //add service name
         if (tripLegs.length > 0 && typeof(serviceName) === 'string' && serviceName.trim().length > 0) {
@@ -2177,12 +2170,25 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 .attr("dy", '0.5ex')
                 .text(function(d) {
                     return d;
-                })
+                });
+        }
+
+        //register events
+        chart.selectAll('rect, text')
             .attr('title', tipText)
             .on("dblclick", function() { //click to show details in modal dialog
                 showItineraryModal(planId);
+            })
+            .on("touchstart",function(){ //for mobile
+                var t2 = event.timeStamp;
+                var t1 = $(this).data('lastTouch') || t2;
+                var dt = t2 - t1;
+                var fingers = event.touches.length;
+                $(this).data('lastTouch', t2);
+                if (!dt || dt > 500 || fingers > 1) return; // not double-tap
+                showItineraryModal(planId);
+                event.preventDefault ? event.preventDefault() : event.returnValue = false;
             });
-        }
 
         $("svg rect, svg text").tooltip({
             'html': true,
