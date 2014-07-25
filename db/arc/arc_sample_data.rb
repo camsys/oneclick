@@ -178,11 +178,11 @@ def add_providers_and_services
         #Add geographic restrictions
         ['30327', '30342', '30319', '30326', '30305', '30324', '30309', '30306', '30363'].each do |z|
           c = GeoCoverage.find_by(value: z, coverage_type: 'zipcode')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
         end
         ['30327', '30342', '30319', '30326', '30305', '30324', '30309', '30306', '30363'].each do |z|
           c = GeoCoverage.find_by(value: z, coverage_type: 'zipcode')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'coverage_area')
         end
 
 
@@ -208,7 +208,7 @@ def add_providers_and_services
         #Add geographic restrictions
         ['Fayette'].each do |z|
           c = GeoCoverage.find_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
         end
 
         #Traveler Characteristics Requirements
@@ -234,7 +234,7 @@ def add_providers_and_services
         #Add geographic restrictions
         ['Fulton'].each do |z|
           c = GeoCoverage.find_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
         end
 
         #Traveler Characteristics Requirements
@@ -260,7 +260,7 @@ def add_providers_and_services
         #Add geographic restrictions
         ['Fulton'].each do |z|
           c = GeoCoverage.find_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
         end
 
         #Traveler Characteristics Requirements
@@ -287,12 +287,12 @@ def add_providers_and_services
         #Add geographic restrictions
         ['30305', '30306', '30308', '30309', '30319', '30324', '30326', '30327', '30328' ,'30329', '30338', '30339', '30340', '30341' ,'30342', '30345', '30063', '30067', '30068', '30084', '30356', '30350', '30060', '30030', '30033', '30084', '30075', '30076', '30022', '30092', '30080'].each do |z|
           c = GeoCoverage.find_by(value: z, coverage_type: 'zipcode')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
         end
 
         ['30305', '30306', '30308', '30309', '30319', '30324', '30326', '30327', '30328' ,'30329', '30338', '30339', '30340', '30341' ,'30342', '30345', '30063', '30067', '30068', '30084', '30356', '30350', '30060', '30030', '30033', '30084', '30075', '30076', '30022', '30092', '30080'].each do |z|
           c = GeoCoverage.find_by(value: z, coverage_type: 'zipcode')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'coverage_area')
         end
 
         #Traveler Accommodations Requirements
@@ -316,7 +316,7 @@ def add_providers_and_services
         #Add geographic restrictions
         ['Cobb'].each do |z|
           c = GeoCoverage.find_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
         end
 
         #Traveler Characteristics Requirements
@@ -344,12 +344,12 @@ def add_providers_and_services
         #Add geographic restrictions
         ['Cobb'].each do |z|
           c = GeoCoverage.find_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
         end
 
         ['Cobb'].each do |z|
           c = GeoCoverage.find_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'coverage_area')
         end
 
         #Traveler Characteristics Requirements
@@ -376,7 +376,7 @@ def add_providers_and_services
         #Add geographic restrictions
         ['Cherokee'].each do |z|
           c = GeoCoverage.find_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
         end
 
         #Traveler Characteristics Requirements
@@ -403,12 +403,12 @@ def add_providers_and_services
         #Add geographic restrictions
         ['DeKalb'].each do |z|
           c = GeoCoverage.find_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
         end
 
         ['DeKalb'].each do |z|
           c = GeoCoverage.find_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'coverage_area')
         end
 
         #Traveler Characteristics Requirements
@@ -436,12 +436,12 @@ def add_providers_and_services
         #Add geographic restrictions
         ['Rockdale'].each do |z|
           c = GeoCoverage.find_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'origin')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'endpoint_area')
         end
 
         ['Rockdale'].each do |z|
           c = GeoCoverage.find_by(value: z, coverage_type: 'county_name')
-          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'destination')
+          ServiceCoverageMap.create(service: service, geo_coverage: c, rule: 'coverage_area')
         end
 
         #Traveler Characteristics Requirements

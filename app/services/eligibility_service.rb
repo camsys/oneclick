@@ -237,62 +237,23 @@ class EligibilityService
       service = itinerary['service']
 
       Rails.logger.info "eligible_by_location for service #{service.name rescue nil}"
-      #Match Residence
-      if service.residence?
-        Rails.logger.info "has residence"
-        if trip_part.trip.user.home.nil?
-          Rails.logger.info "user does not have residence"
-          next
-        end
-        point = factory.point(trip_part.user.home.lon.to_f, trip_part.user.home.lat.to_f)
-        unless service.residence.contains? point
-          Rails.logger.info "!service.residence.contains? point"
-          next
-        end
 
-      else
-        coverages = service.service_coverage_maps.where(rule: 'residence').map {|c| c.geo_coverage.value.delete(' ').downcase}
-        if trip_part.trip.user.home
-          county_name = trip_part.trip.user.home.county_name || ""
-          zipcode = trip_part.trip.user.home.zipcode
-        else
-          county_name = ""
-          zipcode = ""
-        end
-        unless (coverages.count == 0) or (zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
+      origin_point = factory.point(trip_part.from_trip_place.lon.to_f, trip_part.from_trip_place.lat.to_f)
+      destination_point = factory.point(trip_part.to_trip_place.lon.to_f, trip_part.to_trip_place.lat.to_f)
+
+      #Match Endpoint Area
+      if service.endpoint_area?
+         unless service.endpoint_area.contains? origin_point or service.endpoint_area.contains? destination_point
           next
         end
       end
 
-      #Match Origin
-      #if the service has a polygon boundary, it supercedes the attributes
-      if service.origin?
-        point = factory.point(trip_part.from_trip_place.lon.to_f, trip_part.from_trip_place.lat.to_f)
-        unless service.origin.contains? point
-          next
-        end
-      else
-        coverages = service.service_coverage_maps.where(rule: 'origin').map {|c| c.geo_coverage.value.delete(' ').downcase}
-        county_name = trip_part.from_trip_place.county_name || ""
-        unless (coverages.count == 0) or (trip_part.from_trip_place.zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
+      #Match Coverage Area
+      if service.coverage_area?
+        unless service.coverage_area.contains? origin_point and service.coverage_area.contains? destination_point
           next
         end
       end
-
-      #Match Destination
-      if service.destination?
-        point = factory.point(trip_part.to_trip_place.lon.to_f, trip_part.to_trip_place.lat.to_f)
-        unless service.destination.contains? point
-          next
-        end
-      else
-        county_name = trip_part.to_trip_place.county_name || ""
-        coverages = service.service_coverage_maps.where(rule: 'destination').map {|c| c.geo_coverage.value.delete(' ').downcase}
-        unless (coverages.count == 0) or (trip_part.to_trip_place.zipcode.in? coverages) or (county_name.delete(' ').downcase.in? coverages)
-          next
-        end
-      end
-
       eligible_itineraries << itinerary
 
     end

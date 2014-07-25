@@ -41,6 +41,8 @@ protected
       obj = parse_bus_leg(leg)
     elsif leg['mode'] == 'SUBWAY'
       obj = parse_subway_leg(leg)
+    elsif leg['mode'] == 'TRAM'
+      obj = parse_tram_leg(leg)
     elsif leg['mode'] == 'RAIL'
       obj = parse_rail_leg(leg)
     end
@@ -83,6 +85,29 @@ protected
     sub.route_long_name = leg['routeLongName']
     
     return sub    
+  end
+
+  def self.parse_tram_leg(leg)
+    Rails.logger.debug "Parsing TRAM leg"
+
+    sub = Leg::TramLeg.new
+
+    sub.agency_name = leg['agencyName']
+    agencyId = leg['agencyId']
+    s = Service.where(external_id: agencyId).first
+    if s
+      sub.agency_id = s.name
+    else
+      sub.agency_id = leg['agencyId']
+    end
+
+    sub.head_sign = leg['headsign']
+    sub.route = leg['route']
+    sub.route_id = leg['routeId']
+    sub.route_short_name = leg['routeShortName']
+    sub.route_long_name = leg['routeLongName']
+
+    return sub
   end
 
   def self.parse_rail_leg(leg)

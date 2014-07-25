@@ -139,7 +139,6 @@ h5{
 				color: $gray5;
 				text-decoration: none;
 			}
-
 		}
 	}
 
@@ -157,8 +156,6 @@ h5{
 			width:66px;
 			border: 2px solid $gray4;
 			background: $white image-url("kiosk/arrow.png") no-repeat center;
-
-
 		}
 		span{
 			//Pulling from .nav > li > a // TO DO: find a way of extending this, make it a variable.
@@ -174,7 +171,6 @@ h5{
 			margin-left: 80px;
 			border-bottom: 1px solid $gray2;
 			width: 50px;
-
 		}
 	}
 }
@@ -229,9 +225,7 @@ a{
 			&:hover, &:focus{
 				background-color: $gray2;
 			}
-
 		}
-
 
 		&.active{
 			a{
@@ -240,7 +234,6 @@ a{
 			}
 		}
 	}
-
 }
 
 .label, .badge{
@@ -321,22 +314,7 @@ a{
 
 	.attract-header{
 		height: 73px;
-		padding:0px 45px;
-		border-bottom:1px solid $gray3;
-
-        .oneclick{
-			@extend .oneclick-logo;
-			height:47px;
-			width: 205px;
-			margin-top:13px;
-
-        }
-        .penndot{
-			@extend .penndot-logo;
-			height:47px;
-			width: 205px;
-			margin-top:13px;
-        }
+		// border-bottom:1px solid $gray3;
     }
     .attract-main{
     	cursor:pointer;
@@ -460,7 +438,6 @@ a{
 			height: 8px;
 			margin: 5px;
 		}
-
 	}
 
 	a {
@@ -507,10 +484,7 @@ a{
 				height: 140px;
 				padding-top:56px;
 			}
-
 		}
-
-
 	}
 }
 
@@ -518,7 +492,6 @@ a{
 // hidden input
 div.trip_proxy_trip_purpose_id{
 	display:none !important;
-	//border:1px solid red;
 
 	label, input{
 		display:none !important;
@@ -526,27 +499,43 @@ div.trip_proxy_trip_purpose_id{
 }
 
 //list view
+$purposeVPadding:0px;
+$purposeHPadding: 30px;
+
 .purpose{
 	position:absolute;
 	top:0;
 	margin-top:80px;
 	li{
 		z-index: 0;
-		padding:24px 30px;
+		padding:0px 30px 0px;
 		list-style-type: none;
-		font-size: 21px;
-		font-weight:700;
+		font-size: 20px;
+		font-weight:600;
 		border-top:1px solid $gray3;
+		width:50%;
+		float:left;
+		display: table;
+		height:56px;
+
+		span{
+			display:table-cell;
+			vertical-align: middle;
+		}
+		&:nth-child(odd){border-right:1px solid $gray3;}
 		&:last-child{
 			border-bottom: 1px solid $gray3;
 		}
 		&:active{
 			background: $gray2;
 		}
+		&:nth-last-child(2){
+			border-bottom: 1px solid $gray3;
+		}
 
 		&.selected{
 			z-index: 200;
-			background: $white image-url("kiosk/checkmark.png") no-repeat center right;
+			background: $white;// image-url("kiosk/checkmark.png") no-repeat center right;
 			// box-shadow: 0px 4px 10px rgba(0,0,0,0.2),
 			// 	0px 8px 24px rgba(0,0,0,0.04),
 			// 	inset 0 0 0 2px $gray4,
@@ -554,11 +543,15 @@ div.trip_proxy_trip_purpose_id{
 			// 	inset 0 0 0 7px $blue;
 			// margin: -6px;
 			@extend %selected;
-			padding: 30px 36px;
+			margin:0px !important;
+			// padding-top: $purposeVPadding + 6px;
+			// padding-bottom:$purposeVPadding + 6px;
+			// padding-left:$purposeHPadding + 6px;
+			// padding-right:$purposeHPadding + 6px;
 		}
 
 		&.selected + li{
-			border-top:1px solid $blue;
+			// border-top:1px solid $blue;
 		}
 
 		a{
@@ -710,10 +703,6 @@ div.trip_proxy_trip_purpose_id{
 	}
 }
 
-//NEXT STEP BUTTON
-//TO DO: Place in a bottom footer
-
-
 .inputs{
 	margin:0px !important;
 
@@ -732,9 +721,6 @@ div.trip_proxy_trip_purpose_id{
 			border: 0px solid white;
 			box-shadow: 0px 2px 3px -1px rgba($black, 0.16);
 			margin-right:-20px!important;
-			//background-color: rgba(255,255,255,.88);
-			//margin-left:-20px !important;
-			//webkit-tap-highlight-color:rgba(0,0,0,0);
 			background: $white image-url("kiosk/icon-address.png") no-repeat 60px 44px;
 			padding-left: 100px;
 			font-family: $kioskfonts;
@@ -1024,9 +1010,7 @@ div.trip_proxy_trip_purpose_id{
 		float:left;
 		thead{
 			tr{
-				th{
-
-				}
+				th{}
 			}
 		}
 		tbody{
@@ -1049,8 +1033,6 @@ div.trip_proxy_trip_purpose_id{
 					label.disabled{
 						font-style: italic;
 					}
-
-
 
 					input[type="radio"]{
 						display: none;
@@ -1097,7 +1079,6 @@ div.trip_proxy_trip_purpose_id{
 			}
 		}
 	}
-
 }
 
 
@@ -1136,7 +1117,6 @@ div.trip_proxy_trip_purpose_id{
 	-ms-transform: rotate(-90deg);
 	-o-transform: rotate(-90deg);
 	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-
 }
 
 %rotate90{
@@ -1197,9 +1177,7 @@ div.trip_proxy_trip_purpose_id{
 	}
 }
 
-
 // DETAIL VIEW -- to replace the modal view.
-// TO DO - Animate the slide in of the DETAIL VIEW
 .detail-view, #itinerary_modal{
 	position: fixed;
 	height:100%;
@@ -1426,18 +1404,11 @@ input#txtDate{
 	left: 59px;
 	position: absolute;
 	@extend %card-btn;
-	//float:right;
-	//@extend %flip;
 }
 #date-arrow-next{
 	@extend #date-arrow-prev;
-	//height: 90px;
-	//width: 90px;
-	//top: 140px;
 	left: 724px;
-	//position: absolute;
 	//@extend %card-btn;
-	//float:right;
 	@extend %flip;
 }
 
@@ -1470,7 +1441,6 @@ input#txtDate{
 						&.next{
 							// @extend %card-btn;
 							// @extend %flip;
-							// height: 84px;
 							display:hidden;
 						}
 					}
@@ -1511,9 +1481,7 @@ input#txtDate{
 							background-image:none;
 							border:0px solid $black;
 						}
-						&:active{
-
-						}
+						&:active{}
 					}
 				}
 			}
@@ -1557,8 +1525,6 @@ label.time{
     @extend input#txtDate;
   }
 }
-
-
 
 #trip-time, #return-trip-time {
 	label{
@@ -1615,7 +1581,6 @@ input#trip_proxy_return_trip_time.string.optional{
 		height:6px;
 		width:6px;
 		margin:5px auto;
-
 	}
 }
 
@@ -1955,7 +1920,6 @@ $animationTime: 300ms;
 			p{
 				font-size: 21px;
 				color: $gray3;
-
 			}
 			a{
 				font-size: 21px;
@@ -1992,7 +1956,6 @@ $animationTime: 300ms;
 				background-color: lighten($red, 30%);
 				color: darken($red, 40%);
 			}
-
 		}
 
 		label{
@@ -2083,22 +2046,18 @@ body.sessions.new, body.registrations.new{
 	.input-container{
 		padding-top:85px;
 	}
-	.info{
-		//margin-top: 20px;
-	}
+	.info{}
 
 	.span8login{
 		width: 68.31197%;
 		margin-left: 0;
 
 		.span12login{
-			//width: 68.11197%;
 			margin-right:0;
 			padding-right:2.5641%;
 			margin-left:0;
 			padding-left:2.5641%;
 		}
-
 	}
 
 	div.control-group{
@@ -2125,7 +2084,6 @@ body.sessions.new, body.registrations.new{
 				background-color: lighten($red, 30%);
 				color: darken($red, 40%);
 			}
-
 		}
 
 		label{
@@ -2280,8 +2238,6 @@ body.sessions.new, body.registrations.new{
 		height:inherit;
 	}
 
-
-
 	.close-overview{
 		position: fixed;
 		bottom:0;
@@ -2298,15 +2254,8 @@ body.sessions.new, body.registrations.new{
 			font-size:21px;
 			text-transform: uppercase;
 			font-weight: 600;
-
-
-
-
 		}
-
 	}
-
-
 }
 
 .actionbutton{
@@ -2358,18 +2307,13 @@ body.sessions.new, body.registrations.new{
 			background-color: $blue;
 
 			&.select{
-				// background-color: $green;
-				// border-right:1px solid $white;
 				border-left:1px solid $white;
 				border-right:3px solid $white;
 			}
 			&.details{
-				// background-color: $blue;
 				border-right:2px solid $white;
 			}
-			&.hide{
-				// background-color: $red;
-			}
+			&.hide{}
 		}
 	}
 }
@@ -2406,7 +2350,6 @@ body.sessions.new, body.registrations.new{
 		margin-bottom: 1px;
 	}
 
-
 	hr{
 		border-top:1px solid black;
 		margin-top: 10px;
@@ -2438,12 +2381,8 @@ body.sessions.new, body.registrations.new{
 				float:left;
 			}
 		}
-
 	}
 }
-
-
-
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) {
@@ -2473,7 +2412,6 @@ body.sessions.new, body.registrations.new{
 			}
 		}
 	}
-
 }
 
 @media (min-width: 1200px){

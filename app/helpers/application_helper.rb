@@ -5,14 +5,25 @@ module ApplicationHelper
   include CsHelpers
   include LocaleHelpers
   
-  ICON_DICTIONARY = {
+  KIOSK_ICON_DICTIONARY = {
     Leg::TripLeg::WALK => 'travelcon-walk',
     Leg::TripLeg::TRAM => 'travelcon-subway',
     Leg::TripLeg::SUBWAY => 'travelcon-subway',
     Leg::TripLeg::RAIL => 'travelcon-rail',
     Leg::TripLeg::BUS => 'travelcon-bus',
     Leg::TripLeg::FERRY => 'travelcon-boat',
-    Leg::TripLeg::CAR => 'travelcon-car'
+    Leg::TripLeg::CAR => 'travelcon-car',
+    Leg::TripLeg::BICYCLE => 'travelcon-bicycle'
+  }
+
+  ICON_DICTIONARY = {
+    Leg::TripLeg::WALK => Mode.walk.logo_url,
+    Leg::TripLeg::TRAM => Mode.rail.logo_url,
+    Leg::TripLeg::SUBWAY => Mode.rail.logo_url,
+    Leg::TripLeg::RAIL => Mode.rail.logo_url,
+    Leg::TripLeg::BUS => Mode.bus.logo_url,
+    Leg::TripLeg::CAR => Mode.car.logo_url,
+    Leg::TripLeg::BICYCLE => Mode.bicycle.logo_url
   }
 
   # Returns the name of the logo image based on the oneclick configuration
@@ -22,8 +33,12 @@ module ApplicationHelper
 
   # Returns a mode-specific icon
   def get_mode_icon(mode)
-    ICON_DICTIONARY.default = 'travelcon-bus'
-    ICON_DICTIONARY[mode]
+    if ENV['UI_MODE']=='kiosk'
+      KIOSK_ICON_DICTIONARY.default = 'travelcon-bus'
+      KIOSK_ICON_DICTIONARY[mode]
+    else
+      Base.helpers.asset_path(ICON_DICTIONARY[mode])
+    end
   end
 
   # Formats a line in the itinerary

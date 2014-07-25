@@ -17,7 +17,7 @@
           =link_to service.url, service.url
       %h5
         -if service.service_type and service.service_type.name
-          =t(:service_type).to_s + ": " + t(service.service_type.name)
+          =t(:service_type).to_s + ": " + t(service.service_type.name.downcase.to_sym)
       %h5
         -if service.external_id
           =t(:service_id).to_s + ": " + service.external_id.to_s

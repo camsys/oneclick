@@ -19,6 +19,10 @@ class GeocodedAddress < ActiveRecord::Base
     return county
   end
 
+  def get_city
+    return city
+  end
+
   def get_address(format = 1)
     case format
     when 2
