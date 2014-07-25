@@ -28,6 +28,8 @@ jQuery(function($) {
     }
 
     NewTrip.timepickerInit('#trip_proxy_return_trip_time', '#timepicker-two');
+    setupDatePickerForKiosk('#trip_proxy_return_trip_date', new Date(NewTrip.read().default_return_trip_date));
+
     $('#return-trip a#no').on('click', noReturnTripHandler);
 
     $('#return-trip a#yes').on('click', function() {
