@@ -195,6 +195,7 @@
 
         if (hasErrors) {
             NewTrip.showError(error);
+            $('.next-step-btn').removeClass('stop');
         } else {
             NewTrip.hideError();
             NewTrip.update(data.trip);
