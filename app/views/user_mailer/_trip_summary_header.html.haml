@@ -1,0 +1,47 @@
+.row
+  .col-sm-12
+    %table.table
+      %ul
+        -if itinerary.is_walk
+          %h4
+            %li
+              = distance_to_words(itinerary.walk_distance)
+            %li
+              = duration_to_words(itinerary.walk_time)
+        - else
+
+          -if itinerary.duration
+            %li
+              = duration_to_words(itinerary.duration) + " " + t(:est)
+
+          -if itinerary.cost
+            -if itinerary.mode.code == 'mode_taxi'
+              %li
+                = number_to_currency(itinerary.cost.round) + " " + t(:est)
+            -else
+              -unless itinerary.cost == 0
+                %li
+                  = number_to_currency(itinerary.cost)
+
+              -else
+                %li
+                  = t(:no_cost_for_service)
+          -else
+            -if itinerary.cost_comments
+              %li
+                = itinerary.cost_comments.html_safe
+          -if itinerary.transfers
+            %li
+              = I18n.translate(:transfer, count: itinerary.transfers)
+          -if itinerary.start_time
+            %li
+              = t(:depart_at) + ' ' + format_time(itinerary.start_time.in_time_zone)
+          -if itinerary.end_time
+            %li
+              = t(:arrive_at) + ' ' + format_time(itinerary.end_time.in_time_zone)
+          -if itinerary.walk_time
+            %li
+              = duration_to_words(itinerary.walk_time) + t(:walking)
+          -if itinerary.mode.code =='mode_rideshare'
+            %li
+              = t(:possible_rideshares1, count: itinerary.ride_count) + ' ' + t(:possible_rideshares2)
