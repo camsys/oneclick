@@ -1,4 +1,7 @@
 class UserMailer < ActionMailer::Base
+  add_template_helper(ServicesHelper)
+  add_template_helper(MapHelper)
+  add_template_helper(LeafletHelper)
   
   # Default sender account set in application.yml
   default from: ENV["SYSTEM_SEND_FROM_ADDRESS"]
