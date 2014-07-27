@@ -1282,7 +1282,8 @@ $purposeHPadding: 30px;
 		.tabbable{
 			@extend .dob-breadcrumb;
 
-			visibility: visible;
+
+			body & {visibility: visible;}
 
 			ul{
 				&.nav-tabs{
