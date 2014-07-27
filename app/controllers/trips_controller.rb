@@ -159,7 +159,7 @@ class TripsController < PlaceSearchingController
     Rails.logger.info email_addresses.inspect
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
     if from_email == ""
-    from_email = Oneclick::Application.config.name
+      from_email = Oneclick::Application.config.name
     end
     subject = Oneclick::Application.config.name + ' Trip Itinerary'
     UserMailer.user_trip_email(email_addresses, @trip, subject, from_email,

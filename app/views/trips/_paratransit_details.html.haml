@@ -42,28 +42,28 @@
 
     .row.hidden
       ="SCORE: " + itinerary.match_score.to_s
-- itinerary.service.get_contact_info_array.each do |a,b|
-  .row
-    .col-sm-6
-      = t(a) +":"
-    .col-sm-6
-      = sanitize_nil_to_na b
-.row 
-  .col-sm-6
-    = t(:accommodations) + ':'
-  .col-sm-6
-    -if itinerary.service.accommodations.count == 0
-      .row
-        .col-sm-12
-          = t(:no_accommodations)
-    -else
-      -itinerary.service.accommodations.each do |accom|
-        .row
-          .col-sm-12
-            =t(accom.name)
-- if can? :read, itinerary.service.ratings.build(user: @traveler)
-  .row
-    .col-sm-6
-      = t(:rating) +":"
-    .col-sm-6
-      = RateableDecorator.decorate(itinerary.service).rating_in_stars
+%table{:style=>'width: 100%;'}
+  - itinerary.service.get_contact_info_array.each do |a,b|
+    %tr
+      %td{:style=>'width: 50%'}
+        = t(a) +":"
+      %td
+        = sanitize_nil_to_na b
+%table{:style => "width: 100%;"}
+  %tr
+    %td{:style => "width: 50%;"}
+      = t(:accommodations) + ':'
+    %td
+      -if itinerary.service.accommodations.count == 0
+        = t(:no_accommodations)
+      -else
+        -itinerary.service.accommodations.each do |accom|
+          =t(accom.name)
+          %br
+- if @current_ability and can? :read, itinerary.service.ratings.build(user: @traveler)
+  %table{:style => "width: 100%;"}
+    %tr
+      %td{:style => "width: 50%;"}
+        = t(:rating) +":"
+      %td
+        = RateableDecorator.decorate(itinerary.service).rating_in_stars
