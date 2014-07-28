@@ -17,7 +17,7 @@ class UserRelationshipsController < ApplicationController
       @delegate_relationship.relationship_status = RelationshipStatus.requested
       # TODO: All emails should be sent from a worker thread not here!
       if @delegate_relationship.save
-        UserMailer.buddy_request_email(@delegate_relationship.delegate.email, @delegate_relationship.traveler.email).deliver
+        UserMailer.buddy_request_email(@delegate_relationship.delegate.email, @delegate_relationship.traveler).deliver
         @delegate_relationship.relationship_status = RelationshipStatus.pending
         @delegate_relationship.save
         flash[:notice] = t(:buddy_request_sent)

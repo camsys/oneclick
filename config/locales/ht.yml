@@ -126,6 +126,12 @@ ht:
   add_user: "[ht]Add User[/ht]"
   send_buddy_request: '[ht]Send buddy request[/ht]'
   buddys_email_address: "[ht]Buddy's email address[/ht]"
+  buddy_request_email_intro: '[ht]Traveler %{name} has requested your help to plan their trips as using %{site_title}.[/ht]' # DON'T translate words in %{...}
+  buddy_request_email_step_0: '[ht]To accept the request:[/ht]'
+  buddy_request_email_step_1: '[ht]1 - Log into[/ht]'
+  buddy_request_email_step_2: '[ht]2 - Display your Traveler Profile (Welcome Menu -> Travel Profile)[/ht]'
+  buddy_request_email_step_3: '[ht]3 - Edit your profile[/ht]'
+  buddy_request_email_step_4: '[ht]4 - In the Buddies section "Accept" the request from %{name}[/ht]'
   accept: '[ht]Accept[/ht]'
   decline: '[ht]Decline[/ht]'
   assist: '[ht]Assist[/ht]'

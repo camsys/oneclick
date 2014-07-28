@@ -125,6 +125,12 @@ es:
   add_user: "[es81]Add User[/es]"
   send_buddy_request: 'Enviar solicitud de amigo'
   buddys_email_address: "Correo electrónico del amigo"
+  buddy_request_email_intro: '[es]Traveler %{name} has requested your help to plan their trips as using %{site_title}.[/es]' # DON'T translate words in %{...}
+  buddy_request_email_step_0: '[es]To accept the request:[/es]'
+  buddy_request_email_step_1: '[es]1 - Log into[/es]'
+  buddy_request_email_step_2: '[es]2 - Display your Traveler Profile (Welcome Menu -> Travel Profile)[/es]'
+  buddy_request_email_step_3: '[es]3 - Edit your profile[/es]'
+  buddy_request_email_step_4: '[es]4 - In the Buddies section "Accept" the request from %{name}[/es]'
   accept: 'Aceptar'
   decline: 'Rechazar'
   assist: 'Asistir'
