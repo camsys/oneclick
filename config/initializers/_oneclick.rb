@@ -127,6 +127,7 @@ when 'pa'
   Oneclick::Application.config.ecolane_system_id = "ococtest"
   Oneclick::Application.config.ecolane_x_ecolane_token = ENV['X_ECOLANE_TOKEN']
   Oneclick::Application.config.ecolane_base_url = "https://rabbit-test.ecolane.com"
+  I18n.available_locales = [:en]
 
 
 when 'jta'

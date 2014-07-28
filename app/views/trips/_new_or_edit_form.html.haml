@@ -4,7 +4,7 @@
   .col-xs-4
     = button_tag :type => 'submit', :id => 'planTrip', :class => "btn btn-default pull-right action-button",
       tabindex: 2 do
-      =t(:plan)
+      =t(:next)
       :javascript
         $('#planTrip').click(function() {
           $('.plan-a-trip').submit();

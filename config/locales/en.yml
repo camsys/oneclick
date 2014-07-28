@@ -385,6 +385,7 @@ en:
 
   # new ones
   # Services
+  next: 'Plan'
   endpoint_area: "Coverage Area"
   coverage_area: "Endpoint Area"
   endpoints: "Endpoint Area"
@@ -739,6 +740,28 @@ en:
     logotext: ''
     site_title: '1-Click/PA'
     site_description: '1-Click/PA Application'
+
+    out_arrive_or_depart: 'Departing Arrive Depart'
+    out_datetime: 'Departing Date'
+    outbound: 'Departing'
+    outbound_itinerary_count: 'Departing Itinerary Count'
+    outbound_error_occurred: "An error occurred when attempting to book your departing trip."
+    return_error_occurred: "An error occurred when attempting to book your return trip."
+
+    outbound_is_eligible: "The departing portion of your trip is eligible for automated booking."
+    return_is_eligible: "The return portion of your trip is eligible for automated booking."
+
+    outbound_trip_options: "Departing Trip Options"
+    outbound_selected: 'Departing option selected, now select your return option.'
+    outbound_selected_short: 'Departing option selected.'
+    return: 'Returning'
+    return_itinerary_count: 'Returning Itinerary Count'
+
+    return_trip_options: "Returning Trip Options"
+    return_selected: 'Returning option selected.'
+
+    next: 'Next >>'
+
   broward:
     home: '1-Click Broward Home'
     logotext: ''
