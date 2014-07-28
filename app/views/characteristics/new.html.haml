@@ -1,13 +1,15 @@
 .row{style: "padding: 0px;"}
-  .col-xs-8
+  .hidden-xs.col-sm-8
     = render partial: 'shared/trip_plan_breadcrumbs'
-  .col-xs-4
-    = button_tag :type => 'submit', :id => 'planTrip', :class => "btn btn-default pull-right action-button",
+  .col-sm-4
+    = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
       tabindex: 2 do
       =t(:plan)
       :javascript
-        $('#planTrip').click(function() {
-          $('.user-characteristics').submit();
+        $(function() {
+          $('button[name=planTrip]').click(function() {
+            $('.user-characteristics').submit();
+          });
         });
 
 .row
@@ -15,4 +17,8 @@
     = render partial: 'form', :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
 
   / end of options column
+  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
+    = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
+      tabindex: 2 do
+      =t(:plan)
   = render partial: 'shared/splash'

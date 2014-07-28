@@ -16,12 +16,12 @@ namespace :oneclick do
         case b.agency
           when "Cobb Community Transit (CCT)"
             service = Service.find_by_external_id("54104859570670229999")
-            ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'origin')
-            ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'destination')
+            ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'endpoint_area')
+            ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'coverage_area')
           when "Cherokee Area Transportation System (CATS)"
             service = Service.find_by_external_id("32138199527497131111")
-            ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'origin')
-            ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'destination')
+            ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'endpoint_area')
+            ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'coverage_area')
           #when "Gwinnett County Transit (GCT)"
           #when "Metropolitan Atlanta Rapid Transit Authority"
         end

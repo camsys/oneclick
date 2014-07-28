@@ -35,6 +35,7 @@ ht:
   agency_profile: "[ht]Agency Profile[/ht]"
   edit_agency_name: '[ht]Edit %{name}[/ht]'
   update_agency: "[ht]Update Agency[/ht]"
+  remove_agency: "[ht]Remove Agency[/ht]"
   agency_added: "[ht]Agency added[/ht]"
   specific_agency_added: "[ht]%{agency} added[/ht]"
   user_created_and_added_to_agency: "[ht]User %{user} created and added to agency %{agency}[/ht]"
@@ -53,6 +54,7 @@ ht:
   provider_orgs: "[ht]Provider Organizations[/ht]"
   new_provider_org: '[ht]New Provider Organization[/ht]'
   new_provider: "[ht]New Provider[/ht]"
+  remove_provider: "[ht]Remove Provider[/ht]"
   org_type: "[ht]Org type[/ht]"
   new_organization: "[ht]New Organization[/ht]"
   editing_orgs: "[ht]Editing organization[/ht]"
@@ -258,6 +260,7 @@ ht:
   rail: '[ht]Rail[/ht]'
   rail_and_bus: '[ht]Rail and Bus[/ht]'
   subway: '[ht]Subway[/ht]'
+  tram: '[ht]Tram[/ht]'
   vehicle: '[ht]Vehicle[/ht]'
   wait: '[ht]Wait[/ht]'
   mode_transfer: '[ht]Transfer[/ht]'
@@ -375,7 +378,7 @@ ht:
   place_added:      '%{place_name} has been added to your address book.[/ht]'
   error_updating_addresses:   'An error occured while updating your address book.[/ht]'
   address_book_updated: '[ht]Your address book has been updated.[/ht]'
-  confirm_remove_place: '[ht]Are you sure you want to remove %{place_name} from your address book?[/ht]'
+  confirm_remove_message: '[ht]Are you sure you want to remove [/ht]'
   profile_updated: "[ht]Your profile was updated.[/ht]"
   updated: "[ht]Updated[/ht]"
 
@@ -399,7 +402,7 @@ ht:
   book_your_trip: "[ht]Book your trip[/ht]"
   trip_booked: "[ht]Trip Booked![/ht]"
   dob: "[ht]Date of Birth[/ht]"
-  dob_notice: '[ht]Date of Birth is used to confirm the Client Id with Rabbit Transit.  It will not be saved.[/ht]'
+  dob_notice: '[ht]Date of Birth may be used to confirm the Client Id with a service.  It will not be saved.[/ht]'
   booking_information: "[ht]Booking Information[/ht]"
   service_name: "[ht]Service Name[/ht]"
   client_id: "[ht]Client Id[/ht]"
@@ -414,6 +417,7 @@ ht:
   all_services: "[ht]All Services[/ht]"
   active: "[ht]Active[/ht]"
   add_service: "[ht]Add Service[/ht]"
+  remove_service: "[ht]Remove Service[/ht]"
   select_service: "[ht]Select Service[/ht]"
   service_is_inactive: "[ht]This service is currently inactive.[/ht]"
   service_contact: "[ht]Service Contact Information[/ht]"
@@ -449,6 +453,7 @@ ht:
   addl_cost_details: "[ht]Additional Cost Details[/ht]"
   click_for_cost_details: '[ht]Click for cost details[/ht]'
   click_for_details: '[ht]Click for details[/ht]'
+  dblclick_for_details: '[ht]Double click or tap for details[/ht]'
   see_details_for_cost: '[ht]See details for cost[/ht]'
   cost_estimated: '[ht]Cost estimated[/ht]'
   no_charge: '[ht]No charge[/ht]'
@@ -501,10 +506,8 @@ ht:
   n_a: '[ht]n/a[/ht]'
   unknown: '[ht]Unknown[/ht]'
   not_available: '[ht]Not Available[/ht]'
-  show_filters: '[ht]Show Filters[/ht]'
-  show_legends: '[ht]Show Legends[/ht]'
-  hide_filters: '[ht]Hide Filters[/ht]'
-  hide_legends: '[ht]Hide Legends[/ht]'
+  filters: '[ht]Filters[/ht]'
+  legends: '[ht]Legends[/ht]'
   minute_abbr: '[ht]min[/ht]'
   minutes: '[ht]minutes[/ht]'
   sort_by: '[ht]Sort by[/ht]'

@@ -10,7 +10,20 @@
       %p= t(:inactive)
   .col-sm-7.btns
     - if can? :destroy, @agency
-      = button_to t(:delete), { action: "destroy", id: @agency.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: "btn action-button", form_class: "form-horizontal pull-right"
+      = button_tag :type => 'button', "data-target" => "#deleteAgencyConfirmDialog", "data-toggle" => "modal", :class => "btn action-button pull-right" do
+        = t(:delete)
+      #deleteAgencyConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_agency), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
+                = t(:cancel)
+              = button_to t(:ok), { action: "destroy", id: @agency.id }, method: :delete, class: "btn btn-primary action-button pull-right"
+              .modal-title{:style => "text-align:left;"}
+                %b
+                  = t(:site_title) 
+            .modal-body{:style => "text-align:left;"}
+              = t(:confirm_remove_message) + @agency.name + " ?"
     - if can? :update, @agency
       = link_to edit_admin_agency_path(@agency), {class: 'btn action-button pull-right', role: 'button'} do
         = icon_label(:edit)
@@ -107,19 +120,19 @@
           "oLanguage": {
               "sLengthMenu": "Display _MENU_ agents per page",
               "sZeroRecords": "Nothing found - sorry",
-              "sInfo": "Showing _START_ to _END_ of _TOTAL_ agencies",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ agents",
               "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
-              "sInfoFiltered": "(filtered from _MAX_ total agencies)"
+              "sInfoFiltered": "(filtered from _MAX_ total agents)"
           },
           "sDom": "<'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
       } );
     $('#admin_table').dataTable( {
           "oLanguage": {
-              "sLengthMenu": "Display _MENU_ agents per page",
+              "sLengthMenu": "Display _MENU_ administrators per page",
               "sZeroRecords": "Nothing found - sorry",
-              "sInfo": "Showing _START_ to _END_ of _TOTAL_ agencies",
-              "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
-              "sInfoFiltered": "(filtered from _MAX_ total agencies)"
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ administrators",
+              "sInfoEmpty": "Showing 0 to 0 of 0 administrators",
+              "sInfoFiltered": "(filtered from _MAX_ total administrators)"
           },
           "sDom": "<'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
       } );

@@ -1,4 +1,4 @@
-- temp_rating = @provider.services.first.ratings.build(user: @traveler)
+- temp_rating = @provider.services.first.ratings.build(user: @traveler) rescue nil
 - if can? :index, Provider
   .row
     .col-sm-12
@@ -10,14 +10,27 @@
       %p= t(:inactive)
   .col-sm-7.btns
     - if can? :destroy, @provider
-      = button_to t(:delete), { action: "destroy", id: @provider.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: "btn action-button", form_class: "form-horizontal pull-right"
+      = button_tag :type => 'button', "data-target" => "#deleteProviderConfirmDialog", "data-toggle" => "modal", :class => "btn action-button pull-right" do
+        = t(:delete)
+      #deleteProviderConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_provider), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
+                = t(:cancel)
+              = button_to t(:ok), { action: "destroy", id: @provider.id }, method: :delete, class: "btn btn-primary action-button pull-right"
+              .modal-title{:style => "text-align:left;"}
+                %b
+                  = t(:site_title) 
+            .modal-body{:style => "text-align:left;"}
+              = t(:confirm_remove_message) + @provider.name + " ?"
       - if can?(:create, Service) && can?(:update, @provider)
         = link_to new_service_path(provider_id: @provider), {class: 'btn action-button pull-right', role: 'button'} do
           = icon_label(:add_service)
     - if can? :update, @provider
       = link_to edit_admin_provider_path(@provider), {class: 'btn action-button pull-right', role: 'button'} do
         = icon_label(:edit)
-    -if Rating.feedback_on?
+    -if temp_rating && Rating.feedback_on?
       - if can? :read, temp_rating
         .pull-right
           = RateableDecorator.new(@provider).rating_in_stars

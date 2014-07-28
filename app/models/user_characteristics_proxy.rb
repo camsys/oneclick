@@ -75,7 +75,7 @@ class UserCharacteristicsProxy < UserProfileProxy
 
           # Check for date failing to parse or out of range
           this_year = DateTime.now.year
-          if not params.empty? and characteristic.datatype == 'date' and
+          if characteristic.datatype == 'date' and (new_value != '') and
               (new_value.nil? or (new_value.year < MIN_YEAR) or (new_value.year > this_year))
             errors.add(characteristic.code.to_sym,
                        I18n.t(:four_digit_year) + " #{MIN_YEAR} - #{this_year}")
@@ -89,7 +89,7 @@ class UserCharacteristicsProxy < UserProfileProxy
             # it does so lets update it.
 
             # if the value is non null we update otherwise we remove the current setting
-            if new_value.nil?
+            if new_value.blank?
               Rails.logger.debug "Removing existing characteristic"
               user_characteristic.destroy
             else
