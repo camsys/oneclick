@@ -346,7 +346,7 @@ module CsHelpers
   end
 
   def logo_url_helper itinerary
-    Base.helpers.asset_path(if itinerary.service && itinerary.service.logo_url
+    root_url({locale:''}) + Base.helpers.asset_path(if itinerary.service && itinerary.service.logo_url
       itinerary.service.logo_url
     elsif itinerary.service && itinerary.service.provider && itinerary.service.provider.logo_url
       itinerary.service.provider.logo_url

@@ -32,7 +32,7 @@ module ApplicationHelper
   end
 
   def get_logo_path
-    return Base.helpers.asset_path(get_logo)
+    return root_url + Base.helpers.asset_path(get_logo)
   end
 
   # Returns a mode-specific icon
@@ -41,7 +41,7 @@ module ApplicationHelper
       KIOSK_ICON_DICTIONARY.default = 'travelcon-bus'
       KIOSK_ICON_DICTIONARY[mode]
     else
-      Base.helpers.asset_path(ICON_DICTIONARY[mode])
+      root_url({locale:''}) + Base.helpers.asset_path(ICON_DICTIONARY[mode])
     end
   end
 
