@@ -282,17 +282,13 @@ $ ->
   $('#trip_proxy_return_trip_date, #trip_proxy_return_trip_time').on "dp.change", ->
     validateDateTimes true
     return
-  $('#trip_proxy_outbound_trip_date').on "focusout", ->
+  $('#trip_proxy_outbound_trip_date, #trip_proxy_outbound_trip_time').on "focusout", ->
     validateDateTimes false
+    $(this).data('DateTimePicker').hide()
     return
-  $('#trip_proxy_outbound_trip_time').on "focusout", ->
-    validateDateTimes false
-    return
-  $('#trip_proxy_return_trip_date').on "focusout", ->
+  $('#trip_proxy_return_trip_date, #trip_proxy_return_trip_time').on "focusout", ->
     validateDateTimes true
-    return
-  $('#trip_proxy_return_trip_time').on "focusout", ->
-    validateDateTimes true
+    $(this).data('DateTimePicker').hide()
     return
 
   if $('.plan-a-trip').length > 0
