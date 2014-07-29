@@ -42,10 +42,10 @@ jQuery(function($) {
         setTimeout(function() {
             function focus () { $('input#trip_proxy_from_place').focus() }
 
-            if (CsMaps.lmap.LMmap.loaded) {
+            if (NewTrip.loaded) {
               focus();
             } else {
-              CsMaps.lmap.LMmap.on('load', focus);
+              $(window).load(focus);
             }
         }, 0);
     });
