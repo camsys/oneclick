@@ -127,6 +127,7 @@ when 'pa'
   Oneclick::Application.config.ecolane_system_id = "ococtest"
   Oneclick::Application.config.ecolane_x_ecolane_token = ENV['X_ECOLANE_TOKEN']
   Oneclick::Application.config.ecolane_base_url = "https://rabbit-test.ecolane.com"
+  I18n.available_locales = [:en]
 
 
 when 'jta'
@@ -161,6 +162,39 @@ when 'jta'
   Oneclick::Application.config.state = 'FL'
 
   Oneclick::Application.config.max_walk_seconds = 3600
+
+  when 'ieuw'
+    Oneclick::Application.config.host = 'oneclick-ieuw.camsys-apps.com'
+    Oneclick::Application.config.ui_logo = 'ieuw/logo-full.png'
+    Oneclick::Application.config.geocoder_components = 'administrative_area:CA|country:US'
+    # TODO Do we maybe need different bounds for kiosk vs. default?
+    Oneclick::Application.config.map_bounds      = [[32.342841,-118.941422],[36.844461,-113.755875]]
+    Oneclick::Application.config.geocoder_bounds = [[32.342841,-118.941422],[36.844461,-113.755875]]
+    Oneclick::Application.config.default_zoom = 12
+    Oneclick::Application.config.open_trip_planner = "http://otp-ieuw.camsys-apps.com:8080/otp/routers/jta/plan?"
+    Oneclick::Application.config.transit_respects_ada = false
+    Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
+    Oneclick::Application.config.taxi_fare_finder_api_city = "Rancho-Cucamonga-CA"
+    Oneclick::Application.config.name = '1-Click/IEUW'
+    ENV['SMTP_MAIL_USER_NAME'] = "oneclick.ieuw.camsys" # TODO
+    ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey" # TODO
+    ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@ieuw.org" # TODO
+    ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
+    ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
+    ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
+    ENV['GOOGLE_GEOCODER_CHANNEL']=  "IEUW_ONECLICK"
+    ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
+    Oneclick::Application.config.enable_feedback = true
+    Oneclick::Application.config.traveler_read_all_organization_feedback = true
+    Oneclick::Application.config.agent_read_feedback = true
+    Oneclick::Application.config.provider_read_all_feedback = true
+    Oneclick::Application.config.tripless_feedback = false
+    honeybadger_api_key = '0447225c'
+    Oneclick::Application.config.poi_file = 'db/ieuw/locations.csv'
+    Oneclick::Application.config.default_county = 'San Bernandino'
+    Oneclick::Application.config.state = 'CA'
+
+    Oneclick::Application.config.max_walk_seconds = 3600
 
 end
 

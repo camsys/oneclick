@@ -72,10 +72,15 @@ class Mode < ActiveRecord::Base
       [I18n.t(m.name).html_safe, m.code]
     end
     transit = Mode.transit
-    non_transit_modes << [I18n.t(transit.name).html_safe, transit.code]
-    transit_modes = transit_submodes.where(visible: true).sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.collect do |t|
-      [I18n.t(t.name).html_safe, t.code]
+    if transit.visible
+      non_transit_modes << [I18n.t(transit.name).html_safe, transit.code]
+      transit_modes = transit_submodes.where(visible: true).sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.collect do |t|
+        [I18n.t(t.name).html_safe, t.code]
+      end
+    else
+      transit_modes = []
     end
+    
     selected_modes = q.collect{|m| m.code}
     return {modes: non_transit_modes, transit_modes: transit_modes, selected_modes: selected_modes}
   end

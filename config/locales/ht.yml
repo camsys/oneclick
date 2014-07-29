@@ -392,6 +392,7 @@ ht:
 
   # new ones
   # Services
+  next: '[ht]Plan'
   cap_returning_at: "[ht]Returning at[/ht]"
   traveler_not_registered: "[ht]Traveler not registered to book trips with One-Click.[/ht]"
   outbound_error_occurred: "[ht]An error occurred when attempting to book your outbound trip.[/ht]"

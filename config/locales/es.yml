@@ -394,6 +394,7 @@ es:
   updated: "[es242]Updated[/es]"
 
   # new ones
+  next: '[es]Plan'
   endpoint_area: "[es]Coverage Area"
   coverage_area: "[es]Endpoint Area"
   endpoints: "[es]Endpoints"
