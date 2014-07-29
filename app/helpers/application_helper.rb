@@ -45,6 +45,25 @@ module ApplicationHelper
     end
   end
 
+  # Returns a service-specific icon
+  def get_service_icon(agency_id, mode)
+    # search name first, then search external_id
+    # this is because leg.agency_id is pre-processed in itinerary_parser  
+    # in which agency_id was not original agency_id from GTFS 
+    # but instead it's identified service name...
+    s = Service.where(name: agency_id).first
+    if s
+      return root_url({locale:''}) + Base.helpers.asset_path(s.logo_url)
+    else
+      s = Service.where(external_id: agency_id).first
+      if s
+        return root_url({locale:''}) + Base.helpers.asset_path(s.logo_url)
+      end
+    end
+
+    return get_mode_icon(mode)
+  end
+
   # Formats a line in the itinerary
   def format_email_itinerary_item(&block)
 
