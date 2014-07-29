@@ -314,22 +314,7 @@ a{
 
 	.attract-header{
 		height: 73px;
-		padding:0px 45px;
-		border-bottom:1px solid $gray3;
-
-        .oneclick{
-			@extend .oneclick-logo;
-			height:47px;
-			width: 205px;
-			margin-top:13px;
-
-        }
-        .penndot{
-			@extend .penndot-logo;
-			height:47px;
-			width: 205px;
-			margin-top:13px;
-        }
+		// border-bottom:1px solid $gray3;
     }
     .attract-main{
     	cursor:pointer;

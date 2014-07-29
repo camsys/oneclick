@@ -63,7 +63,7 @@
   var typeahead_min_chars = +"#{Rails.application.config.ui_typeahead_min_chars}"
   var typeahead_list_length = +"#{Rails.application.config.ui_typeahead_list_length}"
   var geocoder_min_chars = +"#{Rails.application.config.ui_min_geocode_chars}"
-  var delete_message = "#{t(:confirm_remove_place)}"
+  var delete_message = "#{t(:confirm_remove_message)}"
   
   // Hide the name editing div on page load
   $(document).ready(function(){
@@ -115,7 +115,7 @@
     if ($('#delete_button').attr('disabled')) {
       return false;
     }
-    var message = delete_message.replace("%{place_name}", "'" + $('#delete_place_name').val() + "'"); 
+    var message = delete_message + $('#delete_place_name').val() + " ?"; 
     window.oneclickConfirmBox(message, function(result) {
       if (result) {
         $('#delete_form').submit();

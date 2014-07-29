@@ -343,7 +343,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             var modeSwimlane =
                 "<div class='col-xs-12 single-plan-review single-plan-unselected single-plan-mode-loading' style='padding: 0px;'" + dataTags + ">" +
                 "<div class='trip-plan-first-column' style='padding: 0px; height: 100%;'>" +
-                "<table>" +
+                "<table style='width: 100%;'>" +
                 "<tbody>" +
                 "<tr>" +
                 "<td class='trip-mode-icon " + cssName + "'>" +
@@ -1026,6 +1026,15 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         resizeChartsWhenDocumentWidthChanges();
     }
 
+    function getSelectButtonHtml() {
+        var tags = 
+            ("<button class='btn btn-default single-plan-select action-button select-column-button'>" + 
+                "<span class='hidden-xs'>" + localeDictFinder['select'] + "</span>" +
+                "<span class='visible-xs'>&#10004;</span>" +
+            "</button>");
+        return tags;
+    }
+
     /*
      * apply changes: if pass all questions, then make itinerary select-able; if fail one question, then remove this itinerary; otherwise, re-render restriction dialog
      */
@@ -1043,7 +1052,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 if (questionClearCode === 1) { //all pass
                     tripPlanDiv.find('.single-plan-question').remove();
                     if (tripPlanDiv.find('.single-plan-select').length === 0) {
-                        tripPlanDiv.find('.select-column').append("<button class='btn btn-default single-plan-select action-button select-column-button'>" + localeDictFinder['select'] + "</button>").click(function() {
+                        tripPlanDiv.find('.select-column').append(getSelectButtonHtml()).click(function() {
                             selectItineraryByClickingSelectButton(this);
                         });
                     }
@@ -1205,16 +1214,18 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var tripHeaderTags = tripDescTag +
             "<div class='col-xs-12 single-plan-header'>" +
             "<div class='col-xs-12' style='padding:0px;'>" +
-            "<div class='trip-plan-first-column' style='padding: 0px;'>" +
-            sorterLabelTags +
+            sorterLabelTags + sorterTags +           
+            "</div>" +
+            "<div class='col-xs-12' style='padding:0px;'>" +
+             "<div class='trip-plan-first-column' style='padding: 0px; vertical-align: top;'>" +
             (isDepartAt ? ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>") : "") +
             "</div>" +
             "<div class='" + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
             (
-            isDepartAt ?
-            ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>") :
-            ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>")
-        ) +
+                isDepartAt ?
+                ("<button class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>") :
+                ("<button class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>")
+            ) +
             midDateLabelTags +
             "</div>" +
             "<div class='select-column' style='padding: 0px;'>" +
@@ -1223,7 +1234,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             "</div>" +
             "<div class='col-xs-12' style='padding:0px;'>" +
             "<div class='trip-plan-first-column' style='padding: 0px;'>" +
-            sorterTags +
             "</div>" +
             "<div class='tick-labels " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap;'>" +
             tickLabelTags +
@@ -1380,7 +1390,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var tripPlanTags =
             "<div class='col-xs-12 single-plan-review " + (isSelected ? "single-plan-selected" : "single-plan-unselected") + "' style='padding: 0px;" + (eligibleCode === -1 ? "display: none;" : "") + "'" + dataTags + ">" +
             "<div class='trip-plan-first-column' style='padding: 0px; height: 100%;'>" +
-            "<table>" +
+            "<table style='width: 100%;'>" +
             "<tbody>" +
             "<tr>" +
             "<td class='trip-mode-icon' style='" + iconStyle + "'>" +
@@ -1409,7 +1419,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 "<button class='btn btn-default single-plan-question action-button select-column-button' " +
                 "data-toggle='modal' data-target='#" + missInfoDivId + "'>?</button>"
             ) :
-            "<button class='btn btn-default single-plan-select action-button select-column-button'>" + localeDictFinder['select'] + "</button>"
+            getSelectButtonHtml()
         ) +
             "</div>" +
             "</div>";
@@ -1450,17 +1460,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             '<div class="modal-dialog">' +
             '<div class="modal-content">' +
             '<div class="modal-header">' +
-            '<button type="button" class="close" aria-hidden="true" style="color: red; opacity: 1;">?</button>' +
+            '<button type="button" class="btn btn-default action-button pull-right" data-dismiss="modal">' + localeDictFinder['cancel'] + '</button>' +
+            '<button type="submit" class="btn btn-primary action-button pull-right">' + localeDictFinder['update'] + '</button>' +
             '<b class="modal-title" id="' + missInfoDivId + '_title">' + localeDictFinder['trip_restrictions'] + '</b>' +
             '</div>' +
             '<div class="modal-body">' +
             '<form class="form-inline" role="form" id="' + missInfoDivId + '_form">' +
             questionTags +
             '</form>' +
-            '</div>' +
-            '<div class="modal-footer">' +
-            '<button type="submit" class="btn btn-primary action-button">' + localeDictFinder['update'] + '</button>' +
-            '<button type="button" class="btn btn-default action-button" data-dismiss="modal">' + localeDictFinder['cancel'] + '</button>' +
             '</div>' +
             '</div>' +
             '</div>';
@@ -1576,7 +1583,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         }
 
         var legendTags = "";
-        var legendClassNameIndex = {};
+        var legendNameIndex = {};
         var legendNames = [];
         trips.forEach(function(trip) {
             if (typeof(trip) != 'object' || trip === null || !trip.itineraries instanceof Array) {
@@ -1597,8 +1604,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                     var className = "travel-legend-" + removeSpace(legType);
                     var legendText = (localeDictFinder[legType] ||  toCamelCase(legType));
 
-                    if ($("." + className).length === 0 && !legendClassNameIndex[className]) {
-                        legendClassNameIndex[className] = legendText;
+                    if ($("." + className).length === 0 && !legendNameIndex[legendText]) {
+                        legendNameIndex[legendText] = legendText;
                         legendNames.push({
                             cls: className,
                             name: legendText
@@ -2073,7 +2080,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 break;
         }
 
-        tipText += '<p>' + localeDictFinder['click_for_details'] + '</p>';
+        tipText += '<p>' + localeDictFinder['dblclick_for_details'] + '</p>';
         return tipText;
     }
 
@@ -2146,11 +2153,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             .attr("width", function(d) {
                 return (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time)));
             })
-            .attr("height", barHeight)
-            .attr('title', tipText)
-            .on("click", function() { //click to show details in modal dialog
-                showItineraryModal(planId);
-            });
+            .attr("height", barHeight);
 
         //add service name
         if (tripLegs.length > 0 && typeof(serviceName) === 'string' && serviceName.trim().length > 0) {
@@ -2167,12 +2170,25 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 .attr("dy", '0.5ex')
                 .text(function(d) {
                     return d;
-                })
-            .attr('title', tipText)
-            .on("click", function() { //click to show details in modal dialog
-                showItineraryModal(planId);
-            });
+                });
         }
+
+        //register events
+        chart.selectAll('rect, text')
+            .attr('title', tipText)
+            .on("dblclick", function() { //click to show details in modal dialog
+                showItineraryModal(planId);
+            })
+            .on("touchstart",function(){ //for mobile
+                var t2 = event.timeStamp;
+                var t1 = $(this).data('lastTouch') || t2;
+                var dt = t2 - t1;
+                var fingers = event.touches.length;
+                $(this).data('lastTouch', t2);
+                if (!dt || dt > 500 || fingers > 1) return; // not double-tap
+                showItineraryModal(planId);
+                event.preventDefault ? event.preventDefault() : event.returnValue = false;
+            });
 
         $("svg rect, svg text").tooltip({
             'html': true,
@@ -2267,13 +2283,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
     function resizePlanColumns() {
         var planWidth = $('.single-plan-review').outerWidth();
         if (planWidth > 0) {
-            var extraWidthForFirstColumn = 40; //px; first column width will be at minimum width of the sorter + extra_width
-            var extraWidthForLastColumn = 20; //px; first column width will be width of the select button + extra_width
-            var minMainColumnWidthPct = 30; //percentage; 
-            var minFirstColumnWidth = 100; //px; min width of first column
+            var extraWidthForLastColumn = 10; //px; first column width will be width of the select button + extra_width
+            var minMainColumnWidthPct = 50; //percentage; 
+            var minFirstColumnWidth = 50; //px; min width of first column
 
-            var sorterWidth = $('.trip-sorter').outerWidth();
-            var firstColumnWidth = Math.max(minFirstColumnWidth, sorterWidth + extraWidthForFirstColumn);
+            var firstColumnWidth = Math.max.apply( null, $('.trip-plan-first-column table').map( function () {
+                    return $( this ).outerWidth( true );
+                }).get() 
+            );
 
             var selectButtonWidth = $('.single-plan-review .single-plan-select').outerWidth();
             var questionButtonWidth = $('.single-plan-review .single-plan-question').outerWidth();

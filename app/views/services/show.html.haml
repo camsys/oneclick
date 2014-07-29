@@ -9,7 +9,20 @@
       =@service.name
   .col-sm-7.btns
     - if can? :destroy, @service
-      = button_to t(:delete), { action: "destroy", id: @service.id }, method: :delete, data: { confirm: t(:confirm_msg) }, class: "btn action-button btn-default", form_class: "form-horizontal pull-right"
+      = button_tag :type => 'button', "data-target" => "#deleteServiceConfirmDialog", "data-toggle" => "modal", :class => "btn action-button pull-right" do
+        = t(:delete)
+      #deleteServiceConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_service), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
+                = t(:cancel)
+              = button_to t(:ok), { action: "destroy", id: @service.id }, method: :delete, class: "btn btn-primary action-button pull-right"
+              .modal-title{:style => "text-align:left;"}
+                %b
+                  = t(:site_title) 
+            .modal-body{:style => "text-align:left;"}
+              = t(:confirm_remove_message) + @service.name + " ?"
     - if can? :update, @service
       = link_to edit_service_path(@service), {class: 'btn action-button btn-default pull-right', role: 'button'} do
         = icon_label(:edit)
@@ -165,7 +178,7 @@
       .row
         .col-sm-6
           - types = @service.coverage_areas.map(&:coverage_type).uniq
-          - ['origins', 'destinations', 'residences'].each do |rule| 
+          - ['endpoints', 'coverages'].each do |rule|
             .panel.panel-default
               .panel-heading
                 %h4.panel-title= t(rule)
@@ -175,7 +188,7 @@
                     =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
                   .well.white-well.text-left
                     -coverage_string = ""
-                    - @service.service_coverage_maps.where(rule: rule.singularize.downcase).joins(:geo_coverage).order('value').each do |map|
+                    - @service.service_coverage_maps.where(rule: rule.singularize.downcase+'_area').joins(:geo_coverage).order('value').each do |map|
                       -if map.geo_coverage.coverage_type == type
                         -coverage_string += map.geo_coverage.value + ', '
                     -if coverage_string == ""
@@ -189,7 +202,7 @@
               %h4.panel-title= t(:service_area_map)
             .panel-body
 
-              = LeafletMap({ :mapid => "lmap_" + "origin", :multipolygons => @polylines,
+              = LeafletMap({ :mapid => "lmap_" + "endpoint_area", :multipolygons => @polylines,
               :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15,
               :style => "height:500px;" })
 

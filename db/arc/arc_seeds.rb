@@ -26,11 +26,16 @@ include SeedsHelpers
  { klass: Characteristic, characteristic_type: 'personal_factor', code: 'walk_distance', name: 'Walk distance', note: 'Are you able to comfortably walk for 5, 10, 15, 20, 25, 30 minutes?', datatype: 'disabled'},
  #Traveler accommodations 
 
- {klass: Accommodation, code: 'folding_wheelchair_accessible', name: 'Folding wheelchair accessible.', note: 'Do you need a vehicle that has space for a folding wheelchair?', datatype: 'bool'},
- {klass: Accommodation, code: 'motorized_wheelchair_accessible', name: 'Motorized wheelchair accessible.', note: 'Do you need a vehicle than has space for a motorized wheelchair?', datatype: 'bool'},
- {klass: Accommodation, code: 'lift_equipped', name: 'Wheelchair lift equipped vehicle.', note: 'Do you need a vehicle with a lift?', datatype: 'bool'},
- {klass: Accommodation, code: 'door_to_door', name: 'Door-to-door', note: 'Do you need assistance getting to your front door?', datatype: 'bool'},
- {klass: Accommodation, code: 'curb_to_curb', name: 'Curb-to-curb', note: 'Do you need delivery to the curb in front of your home?', datatype: 'bool'},
+ {klass: Accommodation, code: 'folding_wheelchair_accessible', name: 'Folding wheelchair accessible.', note: 'Do you need a vehicle that has space for a folding wheelchair?', datatype: 'bool',
+ 	logo_url: 'arc/accommodations/folding_wheelchair_accessible.png'},
+ {klass: Accommodation, code: 'motorized_wheelchair_accessible', name: 'Motorized wheelchair accessible.', note: 'Do you need a vehicle than has space for a motorized wheelchair?', datatype: 'bool',
+ 	logo_url: 'arc/accommodations/motorized_wheelchair_accessible.png'},
+ {klass: Accommodation, code: 'lift_equipped', name: 'Wheelchair lift equipped vehicle.', note: 'Do you need a vehicle with a lift?', datatype: 'bool',
+ 	logo_url: 'arc/accommodations/lift_equipped.png'},
+ {klass: Accommodation, code: 'door_to_door', name: 'Door-to-door', note: 'Do you need assistance getting to your front door?', datatype: 'bool',
+ 	logo_url: 'arc/accommodations/door_to_door.png'},
+ {klass: Accommodation, code: 'curb_to_curb', name: 'Curb-to-curb', note: 'Do you need delivery to the curb in front of your home?', datatype: 'bool',
+ 	logo_url: 'arc/accommodations/curb_to_curb.png'},
  {klass: Accommodation, code: 'driver_assistance_available', name: 'Driver assistance available.', note: 'Do you need personal assistance from the driver?', datatype: 'bool', ask_early: false},
  {klass: Accommodation, code: 'stretcher_accessible', name: 'Stretcher accessible.', note: 'Do you need a vehicle that can accommodate a stretcher?', datatype: 'bool'},
  {klass: Accommodation, code: 'companion_allowed', name: 'Traveler Companion Permitted', note: 'Do you travel with a companion?', datatype: 'bool', ask_early: false},
@@ -67,7 +72,7 @@ Mode.unscoped.find_by(code: 'mode_rideshare').update_attributes(logo_url: 'arc/m
 Mode.unscoped.find_by(code: 'mode_park_transit').update_attributes(logo_url: 'arc/modes/transit.png')
 Mode.unscoped.find_by(code: 'mode_car_transit').update_attributes(logo_url: 'arc/modes/transit.png')
 Mode.unscoped.find_by(code: 'mode_rail').update_attributes(logo_url: 'arc/modes/rail.png')
-Mode.unscoped.find_by(code: 'mode_bus').update_attributes(logo_url: 'arc/modes/bus.png')
+Mode.unscoped.find_by(code: 'mode_bus').update_attributes(logo_url: 'arc/modes/transit.png')
 Mode.unscoped.find_by(code: 'mode_walk').update_attributes(logo_url: 'arc/modes/walk.png')
 Mode.unscoped.find_by(code: 'mode_car').update_attributes(logo_url: 'arc/modes/auto.png')
 Mode.unscoped.find_by(code: 'mode_bikeshare').update_attributes(logo_url: 'arc/modes/bicycle.png')
@@ -85,12 +90,23 @@ Accommodation.unscoped.find_by(code: 'lift_equipped').update_attributes(logo_url
 Accommodation.unscoped.find_by(code: 'door_to_door').update_attributes(logo_url: 'arc/accommodations/door_to_door.png')
 Accommodation.unscoped.find_by(code: 'curb_to_curb').update_attributes(logo_url: 'arc/accommodations/curb_to_curb.png')
 Accommodation.unscoped.find_by(code: 'driver_assistance_available').update_attributes(logo_url: 'arc/accommodations/driver_assistance_available.png')
+Accommodation.unscoped.find_by(code: 'stretcher_accessible').update_attributes(logo_url: 'arc/accommodations/stretcher_accessible.png')
 
+#update certain characteristics
+age = Characteristic.unscoped.find_by(code: 'age')
+dob = Characteristic.unscoped.find_by(code: 'date_of_birth')
 
 #update characteristics logos
 Characteristic.unscoped.find_by(code: 'disabled').update_attributes(logo_url: 'arc/characteristics/disabled.png')
 Characteristic.unscoped.find_by(code: 'no_trans').update_attributes(logo_url: 'arc/characteristics/no_trans.png')
 Characteristic.unscoped.find_by(code: 'nemt_eligible').update_attributes(logo_url: 'arc/characteristics/nemt_eligible.png')
 Characteristic.unscoped.find_by(code: 'veteran').update_attributes(logo_url: 'arc/characteristics/veteran.png')
-Characteristic.unscoped.find_by(code: 'date_of_birth').update_attributes(logo_url: 'arc/characteristics/date_of_birth.png')
-Characteristic.unscoped.find_by(code: 'age').update_attributes(logo_url: 'arc/characteristics/date_of_birth.png')
+Characteristic.unscoped.find_by(code: 'ada_eligible').update_attributes(logo_url: 'arc/characteristics/ada_eligible.png')
+
+dob.update_attributes!(for_service: false, linked_characteristic: age,
+                       link_handler: 'AgeCharacteristicHandler',
+                       logo_url: 'arc/characteristics/date_of_birth.png') rescue puts "dob.update_attributes! failed"
+
+age.update_attributes!(for_traveler: false, linked_characteristic: dob,
+                       link_handler: 'AgeCharacteristicHandler',
+                       logo_url: 'arc/characteristics/date_of_birth.png') rescue Rails.logger.warn "age.update_attributes failed!"

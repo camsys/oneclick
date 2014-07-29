@@ -22,11 +22,16 @@
   margin-right: 0px !important;
 }
 
-@media(max-width:$screen-xs-max){
-  .form-group .control-label {
+.form-group .control-label {
+  @media(max-width:$screen-xs-max){
     text-align: left;
   }
-  
+  @media(min-width:$screen-sm-min){
+    ext-align: right;
+  }
+}
+
+@media(max-width:$screen-xs-max){
   .tick-label-hidden-xs {
     visibility: hidden !important;
   }
@@ -44,18 +49,11 @@
   }
 }
 
-@media(min-width:$screen-sm-min){
-  .form-group .control-label {
-    text-align: right;
-  }
-
-  @media(max-width:$screen-md-max){
-    .tick-label-hidden-sm-md {
-      visibility: hidden !important;
-    }
+@media(min-width:$screen-sm-min) and (max-width:$screen-md-max){
+  .tick-label-hidden-sm-md {
+    visibility: hidden !important;
   }
 }
-
 
 @media(min-width:$screen-lg-min){
   .tick-label-hidden-lg {
@@ -73,25 +71,6 @@
   margin-bottom: 10px;
   padding-left: 0px;
   padding-right: 0px; 
-}
-.action-button{
-  &:not(:last-of-type) {
-    margin-left: 5px;
-  } 
-  &.pull-right {
-    margin-left: 5px;
-  }
-  min-width: 9em;
-  font-weight: bold;
-}
-
-.action-button:hover, .action-button:focus {
-  // background-position: 0;
-  // color: inherit;
-}
-
-#noOptionButton {
-    margin-right: 5px;
 }
 
 .dropdown-toggle {
@@ -201,22 +180,22 @@ $period-nav-button-width: 40px;
 
 /* in sm+ mode, one period-nav button in same container, so apply margin to sorter component that make them vertically align in containers */
 /* in xs mode, as space is so limited, not apply margin so sorter can take whatever space left in its container */
-@media(max-width:$screen-xs-max){
-  .sm-sorter-margin-left {
+.sm-sorter-margin-left {
+  @media(max-width:$screen-xs-max){
     margin-left: 0px;
   }
 
-  .sm-sorter-margin-right {
-    margin-right: 0px;
+  @media(min-width:$screen-sm-min){
+    margin-left: $period-nav-button-width * -1;
   }
 }
 
-@media(min-width:$screen-sm-min){
-  .sm-sorter-margin-left {
-    margin-left: $period-nav-button-width * -1;
+.sm-sorter-margin-right {
+  @media(max-width:$screen-xs-max){
+     margin-right: 0px;
   }
 
-  .sm-sorter-margin-right {
+  @media(min-width:$screen-sm-min){
     margin-right: -$period-nav-button-width * -1;
   }
 }
@@ -267,26 +246,41 @@ $period-nav-button-width: 40px;
 }
 
 .trip-plan-first-column {
-  width: 20%;
+  @media(max-width:$screen-xs-max){
+    width: 15%;
+  }
+  @media(min-width:$screen-sm-min){
+    width: 20%;
+  }
   display: inline-block;
 }
 
 
 .trip-plan-main-column {
-  width: 65%;
+  @media(max-width:$screen-xs-max){
+    width: 75%;
+  }
+  @media(min-width:$screen-sm-min){
+    width: 70%;
+  }
   display: inline-block;
 }
 
 .select-column {
   text-align: center;
   line-height: $single-plan-height;
-  width: 15%;
+  width: 10%;
   display: inline-block;
   vertical-align: top;
 }
 
 .select-column-button {
-  min-width: 5em !important;
+  @media(max-width:$screen-xs-max){
+    min-width: 3em !important;
+  }
+  @media(min-width:$screen-sm-min){
+    min-width: 5em !important;
+  }
 }
 
 .single-plan-select {
@@ -350,115 +344,115 @@ $legend-height: 20px;
 }
 
 .travel-legend-walk {
-  background-color: #763188;
+  background-color: $trip-leg-walk;
 }
 
 .travel-legend-wait {
-  background-color: #7f7979;
-}
-
-.travel-legend-transfer {
-  background-color: #FEC800;
+  background-color: $trip-leg-wait;
 }
 
 .travel-legend-subway {
-  background-color: #409090;
+  background-color: $trip-leg-subway;
+}
+
+.travel-legend-tram {
+  background-color: $trip-leg-tram;
 }
 
 .travel-legend-rail {
-  background-color: #499bea;
+  background-color: $trip-leg-rail;
 }
 
 .travel-legend-bus {
-  background-color: #1AB940;
+  background-color: $trip-leg-bus;
 }
 
 .travel-legend-taxi {
-  background-color: #FEEA00;
+  background-color: $trip-leg-taxi;
 }
 
 .travel-legend-bike {
-  background-color: #611CF3;
+  background-color: $trip-leg-bicycle;
 }
 
 .travel-legend-bikeshare {
-  background-color: #A61CF3;
+  background-color: $trip-leg-bikeshare;
 }
 
 .travel-legend-drive {
-  background-color: #808CB4;
+  background-color: $trip-leg-drive;
 }
 
 .travel-legend-car {
-  background-color: #808CB4;
+  background-color: $trip-leg-drive;
 }
 
 .travel-legend-rideshare {
-  background-color: #F55416;
+  background-color: $trip-leg-rideshare;
 }
 
 .travel-legend-paratransit {
-  background-color: #FF9900;
+  background-color: $trip-leg-paratransit;
 }
 
 .travel-legend-unknown {
-  background-color: #C0C0C0;
+  background-color: $trip-leg-unknown;
 }
 
 .travel-type-walk {
-  fill: #763188;
+  fill: $trip-leg-walk;
 }
 
 .travel-type-wait {
-  fill: #7f7979;
-}
-
-.travel-type-transfer {
-  fill: #FEC800;
+  fill: $trip-leg-wait;
 }
 
 .travel-type-subway {
-  fill: #409090;
+  fill: $trip-leg-subway;
+}
+
+.travel-type-tram {
+  fill: $trip-leg-tram;
 }
 
 .travel-type-rail {
-  fill: #499bea;
+  fill: $trip-leg-rail;
 }
 
 .travel-type-bus {
-  fill: #1AB940;
+  fill: $trip-leg-bus;
 }
 
 .travel-type-taxi {
-  fill: #FEEA00;
+  fill: $trip-leg-taxi;
 }
 
 .travel-type-bike {
-  fill: #611CF3;
+  fill: $trip-leg-bicycle;
 }
 
 .travel-type-bikeshare {
-  fill: #A61CF3;
+  fill: $trip-leg-bikeshare;
 }
 
 .travel-type-drive {
-  fill: #808CB4;
+  fill: $trip-leg-drive;
 }
 
 .travel-type-car {
-  fill: #808CB4;
+  fill: $trip-leg-drive;
 }
 
 .travel-type-rideshare {
-  fill: #F55416;
+  fill: $trip-leg-rideshare;
 }
 
 .travel-type-paratransit {
-  fill: #FF9900;
+  fill: $trip-leg-paratransit;
 }
 
 .travel-type-unknown {
-  fill: #C0C0C0;
+  fill: $trip-leg-unknown;
 }
 
 /*styles for trip mode service*/
@@ -472,6 +466,12 @@ $legend-height: 20px;
   a {
     display: block;
     height: $single-plan-height;
+  }
+}
+
+.single-plan-review .trip-mode-icon {
+  @media(max-width:$screen-xs-max){
+    display: none !important;
   }
 }
 
@@ -501,4 +501,8 @@ $legend-height: 20px;
   height: 50px;
   float: left;
   background-position: center;
+}
+
+#baseModes .trip_proxy_modes {
+  margin-bottom: 0px;
 }

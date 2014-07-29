@@ -35,6 +35,7 @@ es:
   agency_profile: "[es]Agency Profile[/es]"
   edit_agency_name: '[es]Edit %{name}[/es]'
   update_agency: "[es]Update Agency[/es]"
+  remove_agency: "[es]Remove Agency[/es]"
   my_agencies: "[es27]My Agencies[/es]"
   not_any_agencies: "[es28]You haven't approved any agencies to help you[/es]"
   no_agency_selected: "[es37]You must enter any agency you want to assist you.[/es]"
@@ -46,6 +47,7 @@ es:
   select_agency: "[es42]Select Agency[/es]"
   provider: "[es25]Provider[/es]"
   new_provider: "[es]New Provider[/es]"
+  remove_provider: "[es]Remove Provider[/es]"
   all_providers: "[es]All Providers[/es]"
   provider_profile: "[es]Provider Profile[/es]"
   providers: "[es22]Providers[es]"
@@ -257,6 +259,7 @@ es:
   rail: '[es213]Rail[/es]'
   rail_and_bus: '[es213]Rail and Bus[/es]'
   subway: '[es214]Subway[/es]'
+  tram: '[es]Tram[/es]'
   vehicle: '[es]Vehicle[/es]'
   wait: '[es]Wait[/es]'
   mode_transfer: '[es]Transfer[/es]'
@@ -378,11 +381,15 @@ es:
   place_added:      '%{place_name} ha sido agregado a tu libreta de direcciones. *19*'
   error_updating_addresses:   'Si produjo un error al acutalizar la libreta de direcciones. *20*'
   address_book_updated: 'Su libreta de direcciones se ha acualizado. *21*'
-  confirm_remove_place: 'Esta seguro que desea eliminar %{place_name} de su libreta de direcciones? *22*'
+  confirm_remove_message: 'Esta seguro que desea eliminar '
   profile_updated: "Su perfil ha sido actualizado. *37*"
   updated: "[es242]Updated[/es]"
 
   # new ones
+  endpoint_area: "[es]Coverage Area"
+  coverage_area: "[es]Endpoint Area"
+  endpoints: "[es]Endpoints"
+  coverages: "[es]Coverages"
   cap_returning_at: "[es]Returning at"
   traveler_not_registered: "[es]Traveler not registered to book trips with One-Click."
   outbound_error_occurred: "[es]An error occurred when attempting to book your outbound trip."
@@ -401,7 +408,7 @@ es:
   book_your_trip: "[es]Book your trip[/es]"
   trip_booked: "[es]Trip Booked![/es]"
   dob: "[es]Date of Birth[/es]"
-  dob_notice: '[es]Date of Birth is used to confirm the Client Id with Rabbit Transit.  It will not be saved.[/es]'
+  dob_notice: '[es]Date of Birth may be used to confirm the Client Id with a service.  It will not be saved.[/es]'
   booking_information: "[es]Booking Information[/es]"
   service_name: "[es]Service Name[/es]"
   client_id: "[es]Client Id[/es]"
@@ -416,6 +423,7 @@ es:
   all_services: "[es]All Services[/es]"
   active: "[es240]Active[/es]"
   add_service: "[es]Add Service[/es]"
+  remove_service: "[es]Remove Service[/es]"
   select_service: "[es276]Select Service[/es]"
   service_is_inactive: "[es219]This service is currently inactive.[/es]"
   service_contact: "[es220]Service Contact Information[/es]"
@@ -451,6 +459,7 @@ es:
   addl_cost_details: "[es299]Additional Cost Details[/es]"
   click_for_cost_details: '[es423]Click for cost details[es]'
   click_for_details: '[es424]Click for details[/es]'
+  dblclick_for_details: '[es]Double click or tap for details[/es]'
   see_details_for_cost: '[es424]See details for cost[/es]'
   cost_estimated: '[es425]Cost estimated[/es]'
   no_charge: '[es]No charge[/es]'
@@ -502,10 +511,8 @@ es:
   n_a: 'n/a'
   unknown: '[es]Unknown[/es]'
   not_available: '[es]Not Available[/es]'
-  show_filters: '[es]Show Filters[/es]'
-  show_legends: '[es]Show Legends[/es]'
-  hide_filters: '[es]Hide Filters[/es]'
-  hide_legends: '[es]Hide Legends[/es]'
+  filters: '[es]Filters[/es]'
+  legends: '[es]Legends[/es]'
   minute_abbr: '[es]min[/es]'
   minutes: '[es]minutes[/es]'
   sort_by: '[es]Sort by[/es]'

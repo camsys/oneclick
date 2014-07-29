@@ -48,17 +48,15 @@
                 .modal-dialog
                   .modal-content
                     .modal-header
-                      %button.close{"data-dismiss" => 'modal'}X
+                      = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
+                        = t(:cancel)
+                      = link_to user_trip_path(traveler, trip), {:class => "btn btn-primary action-button pull-right", :method => :delete} do
+                        = t(:ok)
                       .modal-title{:style => "text-align:left;"}
                         %b
-                          = t(:one_click_trip_planner)
+                          = t(:site_title) 
                     .modal-body{:style => "text-align:left;"}
                       = t(:confirm_remove_trip)
-                    .modal-footer
-                      = button_tag class: 'btn btn-default action-button', data: {dismiss: 'modal'} do
-                        = t(:cancel)
-                      = link_to user_trip_path(traveler, trip), {:class => "btn btn-primary action-button", :method => :delete} do
-                        = t(:ok)
           - else
             %td.center.nowrap          
               = link_to repeat_user_trip_path(traveler, trip), {:alt => t(:repeat_trip), :title => t(:repeat_trip), :class => "btn btn-sm"} do

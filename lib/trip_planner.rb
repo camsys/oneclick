@@ -95,7 +95,7 @@ class TripPlanner
       end
       agency_id = itinerary['legs'].detect{|l| !l['agencyId'].blank?}['agencyId'] rescue nil
       if agency_id
-        s = Service.where(name: agency_id).first
+        s = Service.where(external_id: agency_id).first
         if s
           trip_itinerary['service'] = s
         end
