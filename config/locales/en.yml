@@ -88,6 +88,7 @@ en:
   staff_actions: 'Staff'
   send_by_email: 'Send by email'
   email_sent_to: 'An email was sent to %{email_sent_to}'
+  no_email_found: 'No email was found'
   send_itinerary_by_email: "Send itinerary by email"
   send_trip_by_email: "Send trip plan by email"
   send_follow_up_email: "Send Follow-up Email"

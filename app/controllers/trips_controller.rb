@@ -229,8 +229,12 @@ class TripsController < PlaceSearchingController
     if @trip.user.email
       Rails.logger.info "Begin email"
       UserMailer.feedback_email(@trip).deliver
+      notice_text = t(:email_sent_to).sub('%{email_sent_to}', @trip.user.email)
+    else
+      Rails.logger.info "no email found"
+      notice_text = t(:no_email_found)
     end
-    notice_text = t(:email_sent_to).sub('%{email_sent_to}', @trip.user.email)
+    
     if current_user.agency
       respond_to do |format|
         format.html { redirect_to admin_agency_trips_path(current_user.agency), :notice => notice_text, locale: I18n.locale  }
@@ -239,6 +243,11 @@ class TripsController < PlaceSearchingController
     elsif current_user.provider
       respond_to do |format|
         format.html { redirect_to admin_provider_trips_path(current_user.provider), :notice => notice_text, locale: I18n.locale  }
+        format.json { render json: @trip }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to admin_trips_path, :notice => notice_text, locale: I18n.locale  }
         format.json { render json: @trip }
       end
     end

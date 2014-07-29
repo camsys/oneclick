@@ -85,6 +85,7 @@ es:
   staff_actions: '[es]Staff[/es]'
   send_by_email: 'Enviar por correo electrónico'
   email_sent_to: '[es]An email was sent to %{email_sent_to}[/es]'
+  no_email_found: '[es]No email was found[/es]'
   send_itinerary_by_email: "[es32]Send itinerary by email[/es]"
   send_trip_by_email: "[es29]Send trip plan by email[/es]"
   send_follow_up_email: "[es29]Send Follow-up Email[/es]"

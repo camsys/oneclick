@@ -88,6 +88,7 @@ ht:
   staff_actions: '[ht]Staff[/ht]'
   send_by_email: '[ht]Send by email[/ht]'
   email_sent_to: '[ht]An email was sent to %{email_sent_to}[/ht]'
+  no_email_found: '[ht]No email was found[/ht]'
   send_itinerary_by_email: "[ht]Send itinerary by email[/ht]"
   send_trip_by_email: "[ht]Send trip plan by email[/ht]"
   send_follow_up_email: "[ht]Send Follow-up Email[/ht]"
