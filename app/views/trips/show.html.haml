@@ -5,7 +5,7 @@
     = render partial: 'shared/trip_plan_breadcrumbs'
   .col-sm-4
     = button_tag :type => 'button', :name => "planButton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
-      =t(:plan)
+      =t(:next)
     = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "pull-right btn btn-default action-button pull-right", style: "margin-right: 5px;" do
       = t(:feedback)
     

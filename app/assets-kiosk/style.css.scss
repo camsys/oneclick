@@ -1352,7 +1352,6 @@ $purposeHPadding: 30px;
 	}
 }
 
-
 .detail-footer{
 	position: absolute;
 	bottom:0;
@@ -1368,9 +1367,11 @@ $purposeHPadding: 30px;
 		text-align: center;
 		padding-top: 70px;
 		display: block;
+		text-decoration:none;
 
 		&:active{
 			background-color: $gray3;
+			//color: $blue;
 		}
 
 	}

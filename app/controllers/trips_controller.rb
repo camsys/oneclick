@@ -159,14 +159,15 @@ class TripsController < PlaceSearchingController
     Rails.logger.info email_addresses.inspect
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
     if from_email == ""
-    from_email = Oneclick::Application.config.name
+      from_email = Oneclick::Application.config.name
     end
     subject = Oneclick::Application.config.name + ' Trip Itinerary'
     UserMailer.user_trip_email(email_addresses, @trip, subject, from_email,
       params[:email][:email_comments]).deliver
+    notice_text = t(:email_sent_to).sub('%{email_sent_to}', email_addresses.to_sentence)
     respond_to do |format|
       format.html { redirect_to plan_user_trip_path(@trip.creator, @trip, itinids: params[:itinids], locale: I18n.locale),
-        :notice => "An email was sent to #{email_addresses.to_sentence}."  }
+        :notice => notice_text  }
       format.json { render json: @trip }
     end
   end
@@ -196,8 +197,9 @@ class TripsController < PlaceSearchingController
     end
     subject = Oneclick::Application.config.name + ' Trip Request'
     UserMailer.provider_trip_email(emails, @trip, subject, from_email, comments).deliver
+    notice_text = t(:email_sent_to).sub('%{email_sent_to}', provider.name)
     respond_to do |format|
-      format.html { redirect_to user_trip_url(@trip.creator, @trip, locale: I18n.locale), :notice => "An email was sent to #{provider.name}."  }
+      format.html { redirect_to user_trip_url(@trip.creator, @trip, locale: I18n.locale), :notice => notice_text  }
       format.json { render json: @trip }
     end
   end
@@ -215,19 +217,39 @@ class TripsController < PlaceSearchingController
     subject = Oneclick::Application.config.name + ' Trip Itinerary'
     UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, subject, from_email,
       params[:email][:email_comments]).deliver
+    notice_text = t(:email_sent_to).sub('%{email_sent_to}', email_addresses.join(', '))
     respond_to do |format|
-      format.html { redirect_to user_trip_url(@trip.creator, @trip, locale: I18n.locale), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
+      format.html { redirect_to user_trip_url(@trip.creator, @trip, locale: I18n.locale), :notice => notice_text  }
       format.json { render json: @trip }
     end
   end
 
   def email_feedback
-    Rails.logger.info "Begin email"
     @trip = Trip.find(params[:id])
-    UserMailer.feedback_email(@trip).deliver
-    respond_to do |format|
-      format.html { redirect_to admin_agency_trips_path(current_user.agency), :notice => "An email was sent to #{@trip.user.email}.", locale: I18n.locale  }
-      format.json { render json: @trip }
+    if @trip.user.email
+      Rails.logger.info "Begin email"
+      UserMailer.feedback_email(@trip).deliver
+      notice_text = t(:email_sent_to).sub('%{email_sent_to}', @trip.user.email)
+    else
+      Rails.logger.info "no email found"
+      notice_text = t(:no_email_found)
+    end
+    
+    if current_user.agency
+      respond_to do |format|
+        format.html { redirect_to admin_agency_trips_path(current_user.agency), :notice => notice_text, locale: I18n.locale  }
+        format.json { render json: @trip }
+      end
+    elsif current_user.provider
+      respond_to do |format|
+        format.html { redirect_to admin_provider_trips_path(current_user.provider), :notice => notice_text, locale: I18n.locale  }
+        format.json { render json: @trip }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to admin_trips_path, :notice => notice_text, locale: I18n.locale  }
+        format.json { render json: @trip }
+      end
     end
   end
 
