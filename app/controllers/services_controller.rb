@@ -5,7 +5,7 @@ class ServicesController < ApplicationController
   include ApplicationHelper
 
   def index
-    @services = Service.paratransit.order(:name)
+    @services = Service.order(:name)
   end
 
   def show

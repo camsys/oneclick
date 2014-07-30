@@ -87,6 +87,8 @@ ht:
   admin_actions: '[ht]Admin[/ht]'
   staff_actions: '[ht]Staff[/ht]'
   send_by_email: '[ht]Send by email[/ht]'
+  email_sent_to: '[ht]An email was sent to %{email_sent_to}[/ht]'
+  no_email_found: '[ht]No email was found[/ht]'
   send_itinerary_by_email: "[ht]Send itinerary by email[/ht]"
   send_trip_by_email: "[ht]Send trip plan by email[/ht]"
   send_follow_up_email: "[ht]Send Follow-up Email[/ht]"
@@ -126,6 +128,12 @@ ht:
   add_user: "[ht]Add User[/ht]"
   send_buddy_request: '[ht]Send buddy request[/ht]'
   buddys_email_address: "[ht]Buddy's email address[/ht]"
+  buddy_request_email_intro: '[ht]Traveler %{name} has requested your help to plan their trips as using %{site_title}.[/ht]' # DON'T translate words in %{...}
+  buddy_request_email_step_0: '[ht]To accept the request:[/ht]'
+  buddy_request_email_step_1: '[ht]1 - Log into[/ht]'
+  buddy_request_email_step_2: '[ht]2 - Display your Traveler Profile (Welcome Menu -> Travel Profile)[/ht]'
+  buddy_request_email_step_3: '[ht]3 - Edit your profile[/ht]'
+  buddy_request_email_step_4: '[ht]4 - In the Buddies section "Accept" the request from %{name}[/ht]'
   accept: '[ht]Accept[/ht]'
   decline: '[ht]Decline[/ht]'
   assist: '[ht]Assist[/ht]'
@@ -384,6 +392,7 @@ ht:
 
   # new ones
   # Services
+  next: '[ht]Plan'
   cap_returning_at: "[ht]Returning at[/ht]"
   traveler_not_registered: "[ht]Traveler not registered to book trips with One-Click.[/ht]"
   outbound_error_occurred: "[ht]An error occurred when attempting to book your outbound trip.[/ht]"
