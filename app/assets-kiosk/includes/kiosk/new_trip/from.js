@@ -37,9 +37,16 @@ jQuery(function($) {
     $('#current-location a#yes').on('click', useCurrentLocationHandler);
     $('#current-location a#no').on('click', function() {
         $('#trip_proxy_use_current_location').val('no');
+
         // poor man's nextTick.
         setTimeout(function() {
-            $('input#trip_proxy_from_place').focus();
+            function focus () { $('input#trip_proxy_from_place').focus() }
+
+            if (NewTrip.loaded) {
+              focus();
+            } else {
+              $(window).load(focus);
+            }
         }, 0);
     });
 

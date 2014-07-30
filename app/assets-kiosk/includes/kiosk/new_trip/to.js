@@ -37,6 +37,14 @@ jQuery(function ($) {
     }
   });
 
-  if ($('input#trip_proxy_to_place').val() == '')
-    $('input#trip_proxy_to_place').focus();
+  function focus () {
+    if ($('input#trip_proxy_to_place').val() == '')
+      $('input#trip_proxy_to_place').focus();
+  }
+
+  if (NewTrip.loaded) {
+    focus();
+  } else {
+    $(window).load(focus);
+  }
 });

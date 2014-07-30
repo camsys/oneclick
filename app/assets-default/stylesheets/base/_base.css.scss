@@ -544,7 +544,10 @@ td.left, th.left {
   #publicNav,#footer,#help{
     display: none;
   }
-
+  #main {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
 }
 
 #splash iframe {
