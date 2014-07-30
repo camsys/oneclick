@@ -1,9 +1,8 @@
 class UserMailer < ActionMailer::Base
-  
   # Default sender account set in application.yml
   default from: ENV["SYSTEM_SEND_FROM_ADDRESS"]
   layout "user_mailer"
-  helper :application, :trips
+  helper :application, :trips, :services, :users
   
   def user_trip_email(addresses, trip, subject, from, comments)
     @trip = trip
@@ -52,11 +51,11 @@ class UserMailer < ActionMailer::Base
     mail(to: addresses, subject: subject, from: @from)
   end
 
-  def buddy_request_email(to_email, from_email)
+  def buddy_request_email(to_email, from_traveler)
     @to_email = to_email
-    @from_email = from_email
-    
-    mail(to: @to_email, subject: t(:one_click_buddy_request_from_from_email, from: from_email))
+    @from_email = from_traveler.email
+    @traveler = from_traveler
+    mail(to: @to_email, subject: t(:one_click_buddy_request_from_from_email, from: @from_email))
   end
 
   def buddy_revoke_email(to_email, from_email)
