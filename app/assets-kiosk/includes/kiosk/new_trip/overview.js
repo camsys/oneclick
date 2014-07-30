@@ -32,8 +32,10 @@ jQuery(function($) {
     leftResults.find('.date').html(trip.outbound_trip_date);
     leftResults.find('.time').html(trip.outbound_trip_time);
     leftResults.find('.return').html(trip.return_trip_time);
+    
+    if (trip.return_trip_date) leftResults.find('.return-date').html(trip.return_trip_date);
 
-    if (trip.trip_purpose) leftResults.find('.reason').html(trip.trip_purpose.name);
+    if (trip.trip_purpose) leftResults.find('.reason').html(trip.trip_purpose_name);
     if (!trip.return_trip_time) $('.return').prev('h5').hide();
     if (trip.arrive_depart === 'Arriving By') $('.time').prev('h5').text('Arrival Time');
 
@@ -52,12 +54,16 @@ jQuery(function($) {
         // clean up the data
         // default trip time is only used by the wizard. It does not end up getting stored.
         delete trip_data.default_return_trip_time;
+        delete trip_data.default_return_trip_date;
 
         // same with whether or not the user chose to use the current location.
         // only the user's current location's data ends up getting stored.
         // we keep track of their choice so that the back button can behave properly during
         // the course of the wizard.
         delete trip_data.use_current_location;
+
+        // also delete the translated purpose name
+        delete trip_data.trip_purpose_name
 
         // this is the final step. Instead of POSTing the form, let's get
         // the trip object from localStorage and post all of the params from that.
