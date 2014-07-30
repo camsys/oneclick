@@ -21,6 +21,8 @@ en:
   places: 'Places'
   type: "Type"
   my_home_chkbox_label: "This is my home"
+  more_about_this_initiative: 'More About This Initiative'
+  send_your_feedback: 'Send your Feedback'
 
   # Agent View strings
   find_traveler: "Find Traveler"

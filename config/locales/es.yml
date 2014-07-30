@@ -18,6 +18,8 @@ es:
   places: 'Lugares *11*'
   type: "[es18]Type[/es]"
   my_home_chkbox_label: "[es17]This is my home[/es]"
+  more_about_this_initiative: '[es]More About This Initiative[/es]'
+  send_your_feedback: '[es]Send your Feedback[/es]'
   
   # Agent View strings
   find_traveler: "Encontrar al Viajero"
