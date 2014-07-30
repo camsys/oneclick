@@ -65,7 +65,7 @@ class RatingsController < ApplicationController
     @trip.rate(@trip.user, params[:rating][:value], params[:rating][:comments])
 
     flash[:notice]= t(:thanks_for_the_feedback)
-    redirect_to root_path
+    redirect_to user_trip_path_for_ui_mode(@traveler, @trip)
   end
 
   def context

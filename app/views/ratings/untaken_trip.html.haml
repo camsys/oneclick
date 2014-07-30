@@ -6,7 +6,7 @@
       %small 
         = t(:did_not_take_feedback_prompt)
     .col-sm-6.btns
-      = link_to root_path, class: "btn pull-right action-button" do
+      = link_to user_trip_path_for_ui_mode(@traveler, @trip), class: "btn pull-right action-button" do
         = t(:cancel)
       = f.submit t(:apply), class: "btn pull-right action-button"
 
