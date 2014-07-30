@@ -45,6 +45,10 @@ body, .btn, .form-control, .dropdown-menu{
   }
 }
 
+.panel-title > a {
+  color: $link-color;
+}
+
 #feedback{
   @include footer-feedback-background;
 }
