@@ -84,6 +84,8 @@ es:
   admin_actions: '[es]Admin[/es]'
   staff_actions: '[es]Staff[/es]'
   send_by_email: 'Enviar por correo electrónico'
+  email_sent_to: '[es]An email was sent to %{email_sent_to}[/es]'
+  no_email_found: '[es]No email was found[/es]'
   send_itinerary_by_email: "[es32]Send itinerary by email[/es]"
   send_trip_by_email: "[es29]Send trip plan by email[/es]"
   send_follow_up_email: "[es29]Send Follow-up Email[/es]"
@@ -125,6 +127,12 @@ es:
   add_user: "[es81]Add User[/es]"
   send_buddy_request: 'Enviar solicitud de amigo'
   buddys_email_address: "Correo electrónico del amigo"
+  buddy_request_email_intro: '[es]Traveler %{name} has requested your help to plan their trips as using %{site_title}.[/es]' # DON'T translate words in %{...}
+  buddy_request_email_step_0: '[es]To accept the request:[/es]'
+  buddy_request_email_step_1: '[es]1 - Log into[/es]'
+  buddy_request_email_step_2: '[es]2 - Display your Traveler Profile (Welcome Menu -> Travel Profile)[/es]'
+  buddy_request_email_step_3: '[es]3 - Edit your profile[/es]'
+  buddy_request_email_step_4: '[es]4 - In the Buddies section "Accept" the request from %{name}[/es]'
   accept: 'Aceptar'
   decline: 'Rechazar'
   assist: 'Asistir'
@@ -386,6 +394,7 @@ es:
   updated: "[es242]Updated[/es]"
 
   # new ones
+  next: '[es]Plan'
   endpoint_area: "[es]Coverage Area"
   coverage_area: "[es]Endpoint Area"
   endpoints: "[es]Endpoints"

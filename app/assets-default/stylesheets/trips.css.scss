@@ -305,7 +305,6 @@ $period-nav-button-width: 40px;
 .itinerary-chart-service-name {
   text-anchor: middle;
   dominant-baseline: central;
-  font-size: 0.85em;
 }
 
 /* override bootstrap tooltip default styles*/
@@ -316,10 +315,6 @@ body .tooltip-inner {
 body .tooltip.in {
   opacity: 1;
   filter: alpha(opacity=100);
-}
-
-.axis text {
-  font-size: 0.65em;
 }
 
 .slider-tip {

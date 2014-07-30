@@ -31,14 +31,37 @@ module ApplicationHelper
     return Oneclick::Application.config.ui_logo
   end
 
+  def get_logo_path
+    return root_url + Base.helpers.asset_path(get_logo)
+  end
+
   # Returns a mode-specific icon
   def get_mode_icon(mode)
     if ENV['UI_MODE']=='kiosk'
       KIOSK_ICON_DICTIONARY.default = 'travelcon-bus'
       KIOSK_ICON_DICTIONARY[mode]
     else
-      Base.helpers.asset_path(ICON_DICTIONARY[mode])
+      root_url({locale:''}) + Base.helpers.asset_path(ICON_DICTIONARY[mode])
     end
+  end
+
+  # Returns a service-specific icon
+  def get_service_icon(agency_id, mode)
+    # search name first, then search external_id
+    # this is because leg.agency_id is pre-processed in itinerary_parser  
+    # in which agency_id was not original agency_id from GTFS 
+    # but instead it's identified service name...
+    s = Service.where(name: agency_id).first
+    if s
+      return root_url({locale:''}) + Base.helpers.asset_path(s.logo_url)
+    else
+      s = Service.where(external_id: agency_id).first
+      if s
+        return root_url({locale:''}) + Base.helpers.asset_path(s.logo_url)
+      end
+    end
+
+    return get_mode_icon(mode)
   end
 
   # Formats a line in the itinerary

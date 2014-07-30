@@ -346,7 +346,7 @@ module CsHelpers
   end
 
   def logo_url_helper itinerary
-    Base.helpers.asset_path(if itinerary.service && itinerary.service.logo_url
+    root_url({locale:''}) + Base.helpers.asset_path(if itinerary.service && itinerary.service.logo_url
       itinerary.service.logo_url
     elsif itinerary.service && itinerary.service.provider && itinerary.service.provider.logo_url
       itinerary.service.provider.logo_url
@@ -367,7 +367,13 @@ module CsHelpers
     if fare.respond_to? :fare_type
       case fare.fare_type
       when FareStructure::FLAT
-        if fare.base
+        if fare.base and fare.rate
+          estimated = true
+          comments = "+#{number_to_currency(fare.rate)}/mile - " + I18n.t(:cost_estimated)
+          fare = fare.base.to_f
+          price_formatted = number_to_currency(fare.ceil) + '*'
+          cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
+        elsif fare.base
           fare = fare.base.to_f
           price_formatted = number_to_currency(fare)
           cost_in_words = price_formatted

@@ -35,9 +35,13 @@ private
 
   def fetch_users
     users = User.order("#{sort_column} #{sort_direction}").limit(per_page).offset(page)
+    if sort_column == 'roles.name'
+      users = users.includes(:roles)
+    end
     if params[:sSearch].present?
       users = users.includes(:roles).where("UPPER(first_name) like :search or UPPER(email) like :search or UPPER(roles.name) like :search", search: "%#{params[:sSearch].upcase}%").references(:roles)
     end
+
     puts users.to_sql
     users.without_role(:anonymous_traveler)
   end
@@ -51,7 +55,7 @@ private
   end
 
   def sort_column
-    columns = %w[users.first_name users.email users.created_at]
+    columns = %w[users.first_name users.email users.created_at roles.name]
     columns[params[:iSortCol_0].to_i]
   end
 
