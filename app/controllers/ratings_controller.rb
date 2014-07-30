@@ -19,10 +19,14 @@ class RatingsController < ApplicationController
     successful_ratings = []
     rater = current_user || User.find(params[:user][:id])
     rating_params = params[:ratings]
+    first_rateable = nil
     rating_params.keys.each do |k|
       rateable_params = rating_params[k]
       rateable_class = k.constantize # constantize converts "Trip" (the string) => Trip (the Class).
       rateable = rateable_class.find(rateable_params[:id]) 
+      if first_rateable.nil?
+        first_rateable = rateable
+      end
       if rateable_params[:value]
         r = rateable.rate(rater, rateable_params[:value], rateable_params[:comments])
         if r.valid?
@@ -32,7 +36,21 @@ class RatingsController < ApplicationController
     end
     flash[:notice] = t(:rating_submitted_for_approval, rateable: successful_ratings.to_sentence, count: successful_ratings.count) # only flash on creation
     if user_signed_in?
-      redirect_to user_trips_path(rater) # this behaves poorly when rating an agency.  Otherwise acts right.
+      if rating_params.count == 1 #only one rateable object, can assume it's either Service or Agency
+        case first_rateable
+        when Service
+          redirect_to service_path(first_rateable)
+          return
+        when Agency
+          redirect_to admin_agency_path(first_rateable)
+          return
+        end
+      end
+
+      # otherwise, assume it's from Trip rating
+      # this behaves poorly when an admin was rating a trip under Staff menu (i.e., not your own trips)
+      # but on the other hand, does it make sense to rate somebody else's trip?
+      redirect_to user_trips_path(rater) 
     else
       redirect_to root_path
     end
