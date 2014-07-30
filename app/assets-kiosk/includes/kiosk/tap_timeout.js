@@ -1,3 +1,19 @@
+window.TapTimeout = {
+    paused: false,
+
+    pause: function () {
+        this.reset();
+        this.paused = true;
+        return "Paused Timeout.";
+    },
+
+    unpause: function () {
+        this.paused = false;
+        this.reset();
+        return "Unpaused Timeout.";
+    }
+}
+
 jQuery(function($) {
     var secondsToAlert = $('meta[name="session_timeout"]').attr('content'),
         secondsToReset = $('meta[name="session_alert_timeout"]').attr('content'),
@@ -6,6 +22,8 @@ jQuery(function($) {
     if ($tapTimeoutOverlay.length < 1) return;
 
     function triggerAlert() {
+        if (TapTimeout.paused) return reset();
+
         var counter = secondsToReset;
         resetTimeout = setTimeout(triggerReset, secondsToReset * 1000);
 
@@ -20,6 +38,8 @@ jQuery(function($) {
     }
 
     function triggerReset() {
+        if (TapTimeout.paused) return reset();
+
         if (window.cocoa)
             window.cocoa.closeKeyboard();
 
@@ -30,17 +50,19 @@ jQuery(function($) {
         clearTimeout(alertTimeout);
         clearTimeout(resetTimeout);
         clearInterval(timerInterval);
+        if (TapTimeout.paused) return;
         alertTimeout = setTimeout(triggerAlert, secondsToAlert * 1000);
     }
 
-    timeout = setTimeout();
+    function reset () {
+        start();
+        $tapTimeoutOverlay.addClass('hidden');
+    }
 
     if (window.location.pathname != '/kiosk') {
-        $(document).on('click', function() {
-            start();
-            $tapTimeoutOverlay.addClass('hidden');
-        });
-
+        $(document).on('click', reset);
         start();
     }
+
+    window.TapTimeout.reset = reset;
 });
