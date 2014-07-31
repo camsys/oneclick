@@ -195,7 +195,7 @@ ht:
   repeat_trip: "[ht]Repeat this trip.[/ht]"
   remove_trip: "[ht]Remove this trip[/ht]"
   rate_trip: "[ht]Rate this trip[/ht]"
-  rate_recent: "[ht]Rate your recent trip[/ht]"
+  rate_recent: "[ht]Feedback on your recent trip[/ht]"
   plan_trip: "[ht]Continue planning this trip[/ht]"
   max_notes: '[ht]Max notes[/ht]'
 
@@ -628,9 +628,13 @@ ht:
   nothing_found_sorry: "[ht]Nothing found - sorry[/ht]"
   no_good_options: "[ht]There are no good options here.[/ht]"
   solicit_feedback: "[ht]Please give us some feedback:[/ht]"
+  thanks_for_feedback: '[ht]Thanks in advance for your feedback![/ht]'
+  follow_up_email_template: '[ht]On %{trip_created_date}, you used %{product_name} to plan a trip for %{trip_date} from %{trip_from_address} to %{trip_to_address}[/ht]'
   thanks_for_responding: "[ht]Thanks for taking the time to respond.[/ht]"
-  success_feedback_link: "[ht]Click HERE if you want to tell us about your trip.[/ht]"
-  no_trip_taken_feedback_link: "[ht]Click HERE if you decided not to make the trip at all.[/ht]"
+  success_feedback_link: "[ht] to provide feedback on your trip[/ht]"
+  no_trip_taken_feedback_link: "[ht]If you decided NOT to make this trip,[/ht]"
+  please_click: "[ht]Please click[/ht]"
+  here: '[ht]here[/ht]'
   more_feedback_link: "[ht]Click HERE if you want to provide more feedback, or if things didn't work out as planned.[/ht]"
   search: "[ht]Search[/ht]"
   aid_user: "[ht]Aid User[/ht]"

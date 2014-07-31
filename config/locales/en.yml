@@ -195,7 +195,7 @@ en:
   repeat_trip: "Repeat this trip."
   remove_trip: "Remove this trip"
   rate_trip: "Rate this trip"
-  rate_recent: "Rate your recent trip"
+  rate_recent: "Feedback on your recent trip"
   plan_trip: "Continue planning this trip"
   max_notes: 'Max notes'
 
@@ -634,10 +634,14 @@ en:
   do_not_reply: "This email is sent from an email address that is not monitored. Please do not reply to this message."
   nothing_found_sorry: "Nothing found - sorry"
   no_good_options: "There are no good options here."
+  thanks_for_feedback: 'Thanks in advance for your feedback!'
+  follow_up_email_template: 'On %{trip_created_date}, you used %{product_name} to plan a trip for %{trip_date} from %{trip_from_address} to %{trip_to_address}'
   solicit_feedback: "Please give us some feedback:"
   thanks_for_responding: "Thanks for taking the time to respond."
-  success_feedback_link: "Click HERE if you want to tell us about your trip."
-  no_trip_taken_feedback_link: "Click HERE if you decided not to make the trip at all."
+  success_feedback_link: " to provide feedback on your trip"
+  no_trip_taken_feedback_link: "If you decided NOT to make this trip,"
+  please_click: "Please click"
+  here: 'here'
   more_feedback_link: "Click HERE if you want to provide more feedback, or if things didn't work out as planned."
   search: "Search"
   aid_user: "Aid User"
