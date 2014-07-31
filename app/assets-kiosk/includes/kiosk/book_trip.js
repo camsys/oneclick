@@ -10,52 +10,40 @@ jQuery(function ($) {
       url: "/users/" + data.traveler + "/trips/" + data.trip + "/book",
       data: {itin: data.itin},
       success: function(result) {
-        debugger;
-        // status = result['trips'][0];
-        // return_status = result['trips'][2];
-        // $('#outbound_results').show();
-        // $('#bookButton').hide();
-        // $('#bookingTitle').html("#{t(:trip_booked)}");
-        // $('#headerMessage').html("#{t(:trip_booked_2)}");
-        // $('#bookingQuestion').html("");
+        var status       = result.trips[0]
+          , returnStatus = result.trips[2]
+          , successMessage       = false
+          , outboundErrorMessage = false
+          , returnErrorMessage   = false;
 
-        // //Show the confirmations on success
-        // if (status == "true" && return_status == "true") {
-        //   var text1 = "#{t(:confirmation)}" + " #'s: ";
-        //   text1 += result['trips'][1]['confirmation'] + ', ' + result['trips'][3]['confirmation'] + '.';
-        //   $('#outbound_results1').html(text1);
-        // }
-        // else if(status == "true") {
-        //   var text1 = "Confirmation #: ";
-        //   text1 += result['trips'][1]['confirmation'] + '.'
-        //   $('#outbound_results1').html(text1);
-        // }
-        // else if(return_status == "true"){
-        //   var text1 = "Confirmation #: ";
-        //   text1 += result['trips'][3]['confirmation'] + '.'
-        //   $('#outbound_results1').html(text1);
-        // }
+        $('.ecolane-booking-results').show();
 
-        // //Show the error messages on failures.
-        // if (status == "false") {
-        //   var text2 = "<br>" + "#{t(:outbound_error_occurred)}"
-        //   $('#outbound_results2').html(text2);
-        //   var text3 = result['trips'][1]['trips'][0];
-        //   $('#outbound_results3').html(text3);
-        // }
+        // Show the confirmations on success
+        if (status == 'true' && returnStatus == 'true')
+          successMessage = ' #\'s: ' + result.trips[1].confirmation + ', ' + result.trips[3].confirmation + '.';
+        else if (status == 'true')
+          successMessage = ' #: ' + result.trips[1].confirmation + '.';
+        else if (returnStatus == 'true')
+          successMessage = ' #: ' + result.trips[3].confirmation + '.';
 
-        // if (return_status == "false") {
-        //   var text4 = "<br>" + "#{t(:return_error_occurred)}"
-        //   $('#outbound_results4').html(text4);
-        //   var text5 = result['trips'][3]['trips'][0];
-        //   $('#outbound_results5').html(text5);
-        // }
+        // Show the error messages on failures.
+        if (status == 'false')
+          outboundErrorMessage = result.trips[1].trips[0];
 
-        // console.log(text6);
-        // $('#outbound_results6').html(text6);
+        if (returnStatus == 'false')
+          returnErrorMessage = result.trips[3].trips[0];
+
+        if (successMessage)
+          $('.ecolane-booking-results .success').show().find('.numbers').html(successMessage);
+
+        if (outboundErrorMessage)
+          $('.outbound-error').show().find('.message').html(outboundErrorMessage);
+
+        if (returnErrorMessage)
+          $('.return-error').show().find('.message').html(returnErrorMessage);
       },
-      error: function(){
-        $('#outbound_results1').html("error");
+      error: function() {
+        $('.outbound-error').show().html('error');
       }
     })
   })

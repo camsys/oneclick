@@ -43,7 +43,18 @@
           - ItineraryDecorator.decorate_collection(outbound_itineraries(selected_only: true)).each do |itinerary|
             - if not itinerary.service.booking_service_code.blank? and user_signed_in?
               .row-fluid
-                .span12= link_to t(:book), '#book-ecolane', {class: 'btn btn-block', data: {trip: @trip.id, traveler: @traveler.id, itin: itinerary.id}}
+                .span12
+                  = link_to t(:book), '#book-ecolane', {class: 'btn btn-block', data: {trip: @trip.id, traveler: @traveler.id, itin: itinerary.id}}
+                  .ecolane-booking-results.hide
+                    .success.hide
+                      = t(:confirmation)
+                      %span.numbers
+                    .outbound-error.hide
+                      = t(:outbound_error_occurred)
+                      %span.message
+                    .return-error.hide
+                      = t(:return_error_occurred)
+                      %span.message
               - break
 
           .row-fluid
