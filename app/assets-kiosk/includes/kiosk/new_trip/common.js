@@ -1,6 +1,8 @@
 (function() {
     window.NewTrip = {};
 
+    NewTrip.loaded = false;
+
     NewTrip.write = function(trip) {
         console.log('NewTrip.write: ' + JSON.stringify(trip));
         return localStorage.setItem('trip', JSON.stringify(trip));
