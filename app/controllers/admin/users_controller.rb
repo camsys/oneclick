@@ -132,7 +132,7 @@ class Admin::UsersController < Admin::BaseController
     traveler = User.find(params[:user_id])
     if user.nil?
       success = false
-      msg = h t(:no_user_with_email_address, email: params[:email]) # did you know that this was an XSS vector?  OOPS
+      msg = I18n.t(:no_user_with_email_address, email: params[:email]) # did you know that this was an XSS vector?  OOPS
     elsif user.eql? traveler
       success = false
       msg = t(:you_can_t_be_your_own_buddy)
