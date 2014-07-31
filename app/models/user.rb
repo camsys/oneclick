@@ -185,7 +185,7 @@ class User < ActiveRecord::Base
         rel = UserRelationship.find_or_create_by(user_id: self.id, delegate_id: User.find_by(email: email).id) do |ur|
           ur.relationship_status_id = RelationshipStatus::PENDING
         end
-        UserMailer.buddy_request_email(rel.delegate.email, rel.traveler.email).deliver
+        UserMailer.buddy_request_email(rel.delegate.email, rel.traveler).deliver
       end
     end
   end

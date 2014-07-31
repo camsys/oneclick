@@ -1,10 +1,10 @@
 - i = itinerary
 - Rails.logger.info i.ai
 .row.col-sm-12{style: "background: white; margin: 0px 0px 5px 0px; border-radius: 5px;"}
-  %table{style: "width: 100%"}
+  %table{style: "width: 100%; text-align: center;"}
     %thead
       %tr
-        %th.sr-only= t(:mode)
+        %th.sr-only{:style => "text-align: left;"}= t(:mode)
         %th= t(:fare)
         %th= t(:trip_date)
         %th= t(:trip_time)
@@ -12,8 +12,8 @@
         %th= t(:transfers)
     %tbody
       %tr
-        %td.itinerary_icons{:width => '20%', :style => "text-align: left;"}
-          %i.transit_itinerary_icons.mode_icon_formatting.trip-mode-icon{:style => 'background-image: url(' + logo_url_helper(i) + ');'}
+        %td{:width => '20%', :style => "text-align: left;"}
+          %img{:src => logo_url_helper(i)}
           .sr-only= t(i.mode)
         %td{:width => '15%'}
           .itinerary_text
@@ -32,3 +32,4 @@
         %td{:width => '10%'}
           .itinerary_text
             = i.transfers_in_words
+
