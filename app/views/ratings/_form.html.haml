@@ -20,7 +20,7 @@
               %span.pull-left
                 = ratings_form.collection_radio_buttons( :value, Rating.options, :first, :last, boolean_style: nil, item_wrapper_tag: nil)
               %a.clear= t(:clear)
-          = ratings_form.input :comments, placeholder: t(:feedback_comments)
+          = ratings_form.input :comments, , label: t(:comments), placeholder: t(:feedback_comments)
           = ratings_form.input :id, as: :hidden, :input_html => { :value => rateable.id }
 -# Add in clear functionality for the clear button.
 :javascript

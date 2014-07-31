@@ -15,4 +15,4 @@
       = f.input :hash, as: :hidden, input_html: { :value => @trip.md5_hash }
       = simple_fields_for @trip.ratings.build do |ratings_form|
         = ratings_form.input :value, as: :hidden, :input_html => { :value => Rating::DID_NOT_TAKE}
-        = ratings_form.input :comments
+        = ratings_form.input :comments, label: t(:comments)
