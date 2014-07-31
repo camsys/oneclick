@@ -43,6 +43,7 @@ function ajax_submit_form_handler(form_id) {
 };
 
 function ajax_render_action(url, method) {
+    debugger;
     $.ajax({
         type: method,
         url: url,

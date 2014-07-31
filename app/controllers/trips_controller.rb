@@ -615,6 +615,7 @@ class TripsController < PlaceSearchingController
 
   # Called when the user displays an itinerary details in the modal popup
   def itinerary
+    @trip = Trip.last
     @itinerary = @trip.itineraries.valid.find(params[:itin])
     @legs = @itinerary.get_legs
     if @itinerary.is_mappable

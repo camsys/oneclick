@@ -211,6 +211,13 @@
 #itinerary_modal.hide.fade
 
 :javascript
+
+  $('.show-email-provider-modal').on('click', function (e) {
+    e.preventDefault();
+    $('#itinerary_modal').html("#{escape_javascript(render 'email_provider_modal')}");
+    $('#itinerary_modal').modal({show: true, keyboard: false});
+  });
+
   //$('#main').css('overflow', 'scroll');
   $('a.details').on('click', function(){
     $('.navbar').css('z-index', 0);
