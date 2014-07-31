@@ -10,33 +10,33 @@
         %p
           =t(:close)
     .detail-section.span8plus
-        %h3= t(:send_request_to_provider)
-        -if @trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service
-          -@service = @trip.outbound_part.selected_itinerary.service
-        -elsif @trip.return_part.selected_itinerary
-          -@service = @trip.return_part.selected_itinerary.service
+      %h3= t(:send_request_to_provider)
+      - if @trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service
+        - @service = @trip.outbound_part.selected_itinerary.service
+      - elsif @trip.return_part.selected_itinerary
+        - @service = @trip.return_part.selected_itinerary.service
 
-        -if (@trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service) or (@trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.service)
-          = simple_form_for :email, url: email_provider_user_trip_path(@traveler, @trip), html: { class: 'form-horizontal',
-            id: 'send_by_email_to_provider_form' }  do |f|
-            = f.error_notification
-            - if user_signed_in?
-              - if assisting?
-                = f.input :send_to_traveler, as: :boolean, label: t(:send_to_traveler)
-            - else
-              = f.input :from, label: t(:from), required: false
-            = f.input :provider, label: t(:provider_name), required: false, disabled: true, :input_html => { :value => @service.provider.name }
-            = f.input :service, label: t(:service), required: false, disabled: true, :input_html => { :value => @service.name }
-            = f.input :email_addresses, label: t(:email), required: false, disabled: true, :input_html => { :value => @service.provider.email}
-            = f.input :comments, as: :text, label: t(:comments), required: false, input_html: {rows: 3}
-            = f.input :copy_self, as: :boolean
-            .modal-footer
-              = button_tag type: :submit, class: 'btn btn-info' do
-                %i.fa.fa-envelope-o
-                = t(:send)
-              = link_to '#', :class => "cancel_provider_link" do
-                %i.fa.fa-reply
-                = t(:cancel)
+      - if (@trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service) or (@trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.service)
+        = simple_form_for :email, url: email_provider_user_trip_path(@traveler, @trip), html: { class: 'form-horizontal',
+          id: 'send_by_email_to_provider_form' }  do |f|
+          = f.error_notification
+          - if user_signed_in?
+            - if assisting?
+              = f.input :send_to_traveler, as: :boolean, label: t(:send_to_traveler)
+          - else
+            = f.input :from, label: t(:from), required: false
+          -# = f.input :provider, label: t(:provider_name), required: false, disabled: true, :input_html => { :value => @service.provider.name }
+          -# = f.input :service, label: t(:service), required: false, disabled: true, :input_html => { :value => @service.name }
+          -# = f.input :email_addresses, label: t(:email), required: false, disabled: true, :input_html => { :value => @service.provider.email}
+          = f.input :comments, as: :text, label: t(:comments), required: false, input_html: {rows: 3}
+          -# = f.input :copy_self, as: :boolean
+          .modal-footer
+            = button_tag type: :submit, class: 'btn btn-info' do
+              %i.fa.fa-envelope-o
+              = t(:send)
+            = link_to '#', :class => "cancel_provider_link" do
+              %i.fa.fa-reply
+              = t(:cancel)
 
 :javascript
   $('#send_by_email_to_provider_form').on('submit', function() {

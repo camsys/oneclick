@@ -111,8 +111,7 @@
                 Print your trip plan
           .row-fluid
             .span12
-              =link_to '#', {href: '#send_trip_by_email_to_provider', class: 'btn btn-block', data: {toggle: 'modal'}} do
-                Email provider
+              = link_to 'Email provider', '#show-email-provider-modal', class: 'btn btn-block'
           .row-fluid
             .span12
               = link_to kiosk_user_new_trip_start_path(current_or_guest_user), {class: 'btn btn-block'} do
@@ -211,8 +210,7 @@
 #itinerary_modal.hide.fade
 
 :javascript
-
-  $('.show-email-provider-modal').on('click', function (e) {
+  $('a[href="#show-email-provider-modal"]').on('click', function (e) {
     e.preventDefault();
     $('#itinerary_modal').html("#{escape_javascript(render 'email_provider_modal')}");
     $('#itinerary_modal').modal({show: true, keyboard: false});
