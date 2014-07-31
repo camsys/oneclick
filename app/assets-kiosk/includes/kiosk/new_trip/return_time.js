@@ -12,8 +12,8 @@ jQuery(function($) {
         $('.js-trip-wizard-form').submit();
     }
 
-    console.log('return_time.js ' + NewTrip.read().outbound_trip_time)
     $('.js-trip-wizard-form').find('#trip_proxy_outbound_trip_time').val(NewTrip.read().outbound_trip_time);
+    $('.js-trip-wizard-form').find('#trip_proxy_outbound_trip_date').val(NewTrip.read().outbound_trip_date);
 
     if (NewTrip.read().return_trip_time) {
         $('.js-trip-wizard-form').find('#trip_proxy_return_trip_time').val(NewTrip.read().return_trip_time);
