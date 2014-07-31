@@ -1332,6 +1332,13 @@ $purposeHPadding: 30px;
 				color: $gray6;
 			}
 		}
+		.itinerary_text p{
+			line-height:1.3em;
+		}
+		.itinerary_text_small {
+			//optically, this matches the margins in bus directions.
+			padding-bottom: 26px;
+		}
 		.detail-content{
 			.directions{
 				ul{
