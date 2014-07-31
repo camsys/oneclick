@@ -158,14 +158,9 @@
         .card-prev
       %div.span10.card-view-resize
         = render partial: 'return_trip'
-      - if @trip.only_return_selected?
-      - else
+      - unless @trip.only_return_selected?
         .span1
           .next-btn
-
-
-= render partial: 'send_trip_by_email', locals: {trip: @trip}
-= render partial: 'send_trip_by_email_to_provider'
 
 .results-footer.responsive-mbp
   .trip-overview.pull-left.span4
@@ -227,12 +222,6 @@
   $('.close-btn').on('click', function(){
     $('#overview-modal').addClass('hide');
   });
-
-
-  $('#email_itinerary2').on('ajax:success', function (event, data, status, xhr) {
-    $('#send_trip_by_email_to_provider #email_email_addresses').val(data['email'])
-    $('#send_trip_by_email_to_provider').modal('show')
-  })
 
   //CG DP EDIT
   if($('div.results-view').hasClass('timeOut')){
