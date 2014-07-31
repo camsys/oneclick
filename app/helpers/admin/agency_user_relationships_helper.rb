@@ -1,0 +1,2 @@
+module Admin::AgencyUserRelationshipsHelper
+end

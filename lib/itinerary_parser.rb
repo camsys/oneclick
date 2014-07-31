@@ -2,6 +2,8 @@
 # Parses a YAML loaded collection of legs from the itinerary table and generates an array
 # of leg objects
 #
+# TODO This class is mis-named; should really be ItineraryLegParser
+
 class ItineraryParser
   
   def self.parse(legs)
@@ -33,10 +35,14 @@ protected
     
     if leg['mode'] == 'WALK'
       obj = parse_walk_leg(leg)
+    elsif leg['mode'] ==  'CAR'
+      obj = parse_car_leg(leg)
     elsif leg['mode'] == 'BUS'
       obj = parse_bus_leg(leg)
     elsif leg['mode'] == 'SUBWAY'
       obj = parse_subway_leg(leg)
+    elsif leg['mode'] == 'TRAM'
+      obj = parse_tram_leg(leg)
     elsif leg['mode'] == 'RAIL'
       obj = parse_rail_leg(leg)
     end
@@ -61,10 +67,16 @@ protected
     
     Rails.logger.debug "Parsing SUBWAY leg"
     
-    sub = SubwayLeg.new
+    sub = Leg::SubwayLeg.new
 
     sub.agency_name = leg['agencyName']
-    sub.agency_id = leg['agencyId']
+    agencyId = leg['agencyId']
+    s = Service.where(external_id: agencyId).first
+    if s
+      sub.agency_id = s.name
+    else
+      sub.agency_id = leg['agencyId']
+    end
 
     sub.head_sign = leg['headsign']
     sub.route = leg['route']
@@ -75,14 +87,45 @@ protected
     return sub    
   end
 
+  def self.parse_tram_leg(leg)
+    Rails.logger.debug "Parsing TRAM leg"
+
+    sub = Leg::TramLeg.new
+
+    sub.agency_name = leg['agencyName']
+    agencyId = leg['agencyId']
+    s = Service.where(external_id: agencyId).first
+    if s
+      sub.agency_id = s.name
+    else
+      sub.agency_id = leg['agencyId']
+    end
+
+    sub.head_sign = leg['headsign']
+    sub.route = leg['route']
+    sub.route_id = leg['routeId']
+    sub.route_short_name = leg['routeShortName']
+    sub.route_long_name = leg['routeLongName']
+
+    return sub
+  end
+
   def self.parse_rail_leg(leg)
 
     Rails.logger.debug "Parsing RAIL leg"
 
-    sub = RailLeg.new
+    sub = Leg::RailLeg.new
 
     sub.agency_name = leg['agencyName']
-    sub.agency_id = leg['agencyId']
+
+
+    agencyId = leg['agencyId']
+    s = Service.where(external_id: agencyId).first
+    if s
+      sub.agency_id = s.name
+    else
+      sub.agency_id = leg['agencyId']
+    end
 
     sub.head_sign = leg['headsign']
     sub.route = leg['route']
@@ -98,10 +141,17 @@ protected
 
     Rails.logger.debug "Parsing BUS leg"
     
-    bus = BusLeg.new
+    bus = Leg::BusLeg.new
 
     bus.agency_name = leg['agencyName']
-    bus.agency_id = leg['agencyId']
+
+    agencyId = leg['agencyId']
+    s = Service.where(external_id: agencyId).first
+    if s
+      bus.agency_id = s.name
+    else
+      bus.agency_id = leg['agencyId']
+    end
 
     bus.head_sign = leg['headsign']
     bus.route = leg['route']
@@ -117,14 +167,22 @@ protected
 
     Rails.logger.debug "Parsing WALK leg"
     
-    walk = WalkLeg.new    
+    walk = Leg::WalkLeg.new    
     return walk
     
+  end
+
+  def self.parse_car_leg(leg)
+    Rails.logger.debug "Parsing CAR leg"
+
+    car = Leg::CarLeg.new
+    return car
+
   end
   
   def self.parse_place(place_part)
     
-    place = LegPlace.new
+    place = Leg::LegPlace.new
     place.name = place_part['name']
     place.lat = place_part['lat'].to_f
     place.lon = place_part['lon'].to_f

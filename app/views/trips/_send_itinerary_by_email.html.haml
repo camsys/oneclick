@@ -1,9 +1,9 @@
 .modal.hide.fade{id: "send_itinerary_by_email_" + itinerary.id.to_s}
   .modal-header
     %a.close{"data-dismiss" => "modal"} ×
-    %h3 Send itinerary by email
-  = simple_form_for :email, url: email_itinerary_user_trip_path(@traveler, @trip, itinerary: itinerary), html: { class: 'form-horizontal',
-    id: 'send_itinerary_by_email_form_' + itinerary.id.to_s }, data: {dismiss: 'modal'}  do |f|
+    %h3= t(:send_itinerary_by_email)
+  = simple_form_for :email, url: email_itinerary_user_trip_path(@traveler, @trip, itinerary: itinerary, locale: I18n.locale), html: { class: 'form-horizontal',
+    id: 'send_itinerary_by_email_form_' + itinerary.id.to_s }  do |f|
     .modal-body
       = f.error_notification
       - if user_signed_in?
@@ -18,9 +18,9 @@
       = f.input :email_addresses, label: 'Additional email addresses', required: false
       = f.input :email_comments, as: :text, label: 'Comments', required: false, input_html: {rows: 3}
     .modal-footer
-      = button_tag class: 'btn', data: {dismiss: 'modal'} do
-        %i.icon.icon-reply
-        = t(:cancel)
       = button_tag type: :submit, class: 'pull-right btn btn-info' do
-        %i.icon-envelope
+        %i.fa.fa-envelope-o
         = t(:send)
+      = button_tag class: 'btn', data: {dismiss: 'modal'} do
+        %i.fa.fa-reply
+        = t(:cancel)

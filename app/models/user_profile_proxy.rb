@@ -16,8 +16,6 @@ class UserProfileProxy < Proxy
     return 1
   end
 
-protected
-
   # Convert the params into a typed value for the database. For most types the params list is a single hash {"x" = "y"}. For
   # date fields the hash for Jan 8 2001 looks like  {"date_of_birth(2i)"=>"1", "date_of_birth(3i)"=>"8", "date_of_birth(1i)"=>"2001"}
   def convert_value(characteristic, params)
@@ -30,8 +28,9 @@ protected
       if params.length == 1
         # it is a datestring, not a rails date form field.
         date_str = params.values.first
+        return '' if date_str.blank?
         date_str = if (y,m,d = date_str.split('-')).length < 3
-          nil
+          "1-1-#{date_str}"
         else
           "#{d}-#{m}-#{y}"
         end
@@ -69,10 +68,34 @@ protected
     elsif type == 'integer'
       ret = user_characteristic.nil? ? 0 : user_characteristic.value.to_i
     elsif type == 'date'
-      ret = user_characteristic.nil? ? nil : Chronic.parse(user_characteristic.value)
+
+      # TODO We probably need a separate datatype for age
+      #Note, Chronic.parse returns nil for value = "false"
+      ret = (user_characteristic.nil? || Chronic.parse(user_characteristic.value).nil?) ? nil : Chronic.parse(user_characteristic.value).year
     end
 
     return ret
+  end
+
+  # coerce value into a localized description based on the data type
+  # returns a string if it can be displayed as stored (dates and numbers)
+  # returns a symbol if it needs to be localied
+  def coerce_value_to_string(characteristic, user_characteristic)
+    if user_characteristic.nil? 
+      return :no_answer_str
+    else
+      type = characteristic.datatype
+      if type == 'bool' # column is saved as a varchar "true"/"false", convert to symbol representing "yes"/"no"
+        ret = (user_characteristic.value == "true") ? :yes_str : :no_str 
+      elsif type == 'integer' # All other cases, just pass value (numbers and dates are already internationalized)
+        ret = user_characteristic.value
+      elsif type == 'date'
+        date = Chronic.parse(user_characteristic.value)
+        ret = date.nil? ? :no_answer_str : date.year.to_s
+      end
+
+      return ret
+    end
   end
 
 end

@@ -1,30 +1,18 @@
-.modal.hide.fade#send_trip_by_email
-  .modal-header
-    %a.close{"data-dismiss" => "modal"} ×
-    %h3 Send trip plan by email
-    = simple_form_for :email, url: email_user_trip_path(@traveler, @trip), html: { class: 'form-horizontal',
-      id: 'send_by_email_form' }, data: {dismiss: 'modal'}  do |f|
-      .modal-body
-        = f.error_notification
-        - if user_signed_in?
-          = f.input :send_email_to, label: t(:send_email_to), :required => false,
-            collection: send_trip_by_email_list(@traveler, is_assisting),
-            :input_html => { :checked => true}, :as => :check_boxes
-        - else
-          = f.input :from, label: t(:from), required: false
-        = f.input :email_addresses, label: t(:to), required: true, hint: "Use commas to separate multiple emails."
-        = f.input :email_comments, as: :text, label: 'Comments', required: false, input_html: {rows: 3}
-      .modal-footer
-        = button_tag type: :submit, class: 'btn btn-info' do
-          %i.icon-envelope
-          = t(:send)
-        = link_to '#', :class => "cancel_link" do
-          %i.icon.icon-reply
-          = t(:cancel)
-:javascript
-  $('#send_by_email_form').on('submit', function() {
-    $('#send_trip_by_email').modal('hide')
-  })
-  $('.cancel_link').on('click', function() {
-    $('#send_trip_by_email').modal('hide')  
-  })
+#send_trip_by_email.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
+  .modal-dialog
+    .modal-content
+      = simple_form_for :email, url: email_user_trip_path(@traveler, @trip, itinids: params[:itinids], locale: I18n.locale), html: { id: 'send_by_email_form' }  do |f|
+        .modal-header
+          %button{"type" => "button", "class" => "btn btn-default action-button pull-right", "data-dismiss" => "modal"}= t(:cancel)
+          = button_tag type: :submit, class: 'btn btn-primary action-button pull-right' do
+            = t(:send)
+          %h3.modal-title= t(:send_trip_by_email)
+        .modal-body
+          = f.error_notification
+          - if user_signed_in?
+            = f.input :email_addresses, label: t(:to), required: true, hint: t(:email_hint), :input_html => { :value => get_traveller_related_emails(@traveler, is_assisting)}
+          - else
+            = f.input :from, label: t(:from), required: false
+            = f.input :email_addresses, label: t(:to), required: true, hint: t(:email_hint)
+          = f.input :email_comments, as: :text, label: t(:comments), required: false, input_html: {rows: 3}
+

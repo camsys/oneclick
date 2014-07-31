@@ -1,31 +1,10 @@
 #program_form
+  = f.error_notification
+  = render partial: 'programs/eligibility_alert', locals: {inline: false}
+  %h4
+    = t(:do_you_participate)
 
-  .row-fluid
-    .span12
-      = simple_form_for @user_programs_proxy, :url => path, :html => { :class => "form-horizontal" }, :method => 'put', :remote => not(inline)  do |f|
-        = f.error_notification
-        = render partial: 'programs/eligibility_alert', locals: {inline: inline}
-        %h4
-          = t(:do_you_participate)
-
-        -TravelerCharacteristic.programs.where(:datatype => 'bool').each do |characteristic|
-          = f.input characteristic.code.to_sym, collection: [[true, 'Yes'], [false, 'No'], ['na', 'Not sure']], :required => false, as: :radio_buttons, label: characteristic.name, label_method: :last, value_method: :first, :item_wrapper_class => "inline"
-        -TravelerCharacteristic.programs.where(:datatype => 'disabled').each do |characteristic|
-          = f.input characteristic.code.to_sym, collection: [[true, 'Yes'], [false, 'No'], ['na', 'Not sure']], :required => false, as: :radio_buttons, label: characteristic.name + " (not yet available)", label_method: :last, value_method: :first, :item_wrapper_class => "inline", disabled: true
-
-        - if inline
-          = button_tag :type => 'submit', :class => "btn btn-primary controls" do
-            - if @traveler.has_disability?
-              %i.icon.icon-arrow-right
-              Next step
-            - else
-              %i.icon.icon-arrow-right
-              Save and plan my trip
-            / = t(:save)
-        - else
-          = button_tag type: :submit, class: 'btn btn-primary controls' do
-            %i.icon.icon-ok
-            = t(:update)
-        = link_to :back, :class => "cancel_link" do
-          %i.icon.icon-reply
-          = t(:cancel)
+  -Characteristic.programs.where(:datatype => 'bool').each do |characteristic|
+    = f.input characteristic.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:no_answer_str)]], :required => false, as: :radio_buttons, label: t(characteristic.name), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
+  -Characteristic.programs.where(:datatype => 'disabled').each do |characteristic|
+    = f.input characteristic.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:no_answer_str)]], :required => false, as: :radio_buttons, label: t(characteristic.name) + " (not yet available)", label_method: :last, value_method: :first, :item_wrapper_class => "inline", disabled: true

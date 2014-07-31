@@ -1,14 +1,27 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
+  sequence :email do |n|
+    "email#{n}@factory.com"
+  end
+  sequence :agency_admin_email do |n|
+    "email#{n}@agency.com"
+  end
+  sequence :agent_email do |n|
+    "agent#{n}@agency.com"
+  end
+
   factory :user do
     first_name 'Test'
     last_name 'User'
-    email 'example@example.com'
+    email
     password 'changeme'
     password_confirmation 'changeme'
     # required if the Devise Confirmable module is used
     # confirmed_at Time.now
+    after :create do |u|
+      u.add_role :registered_traveler
+    end
     factory :user_with_places do
       first_name 'WithPlaces'
       after(:create) do |u|
@@ -22,14 +35,53 @@ FactoryGirl.define do
       last_name 'User'
       email 'example2@example.com'
     end
+    factory :visitor do
+      first_name 'Visitor'
+      last_name 'Guest'
+      email
+      after :create do |u|
+        u.revoke :registered_traveler
+        u.add_role :anonymous_traveler
+      end
+    end
+    factory :spanish_user do
+      first_name 'Spanish'
+      last_name 'user'
+      preferred_locale 'es'
+    end
     factory :admin do
-    first_name 'Admin'
-    last_name 'User'
+      first_name 'System'
+      last_name 'admin'
       email 'admin@example.com'
       after(:create) do |u|
-        u.add_role 'admin'
+        u.add_role :system_administrator
         u.save
       end
+    end
+    factory :agency_admin do
+      first_name 'Agency'
+      last_name 'Administrator'
+      email { generate(:agency_admin_email) }
+      after(:create) do |u|
+        u.agency { |a| a.association(:arc_mobility_mgmt_agency) }
+        u.add_role :agency_administrator
+        u.save!
+      end
+    end
+    factory :agency_agent do
+      first_name 'Agency'
+      last_name 'Agent'
+      email { generate(:agent_email) }
+      after(:create) do |u|
+        u.agency FactoryGirl.create :arc_mobility_mgmt_agency
+        u.add_role :agent
+        u.save!
+      end
+    end
+    factory :service_contact do
+      first_name 'Service'
+      last_name 'Contact'
+      email { generate(:email) }
     end
   end
 end

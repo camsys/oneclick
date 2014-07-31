@@ -1,0 +1,8 @@
+.form-horizontal
+  - collection.each do |c|
+    - next if c.code=='age' # TODO kludge
+    - next unless c.ask_early
+    .form-group
+      %label.col-sm-7.control-label= t(c.note)
+      .col-sm-5
+        %p.form-control-static= human_readable(user_characteristics.get_answer_description(c.code))

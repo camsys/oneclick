@@ -1,29 +1,34 @@
 - Rails.logger.debug "table_id is #{table_id}"
+- # define reaonable defaults
+= table_id = "#datatable" if table_id.nil?
 - # object_singular (not used yet)
 - # object_plural
-- # bLengthChange
-- # sLengthMenu
-- # sInfo
-- # bSort
+- bLengthChange = true if bLengthChange.nil?
+- sLengthMenu = "Display _MENU_ per page" if sLengthMenu.nil?
+- sInfo = "Showing _START_ to _END_ of _TOTAL_" if sInfo.nil?
+- bSort = true if bSort.nil?
+- bFilter = false if bFilter.nil?
+
 :javascript
   
   $(document).ready(function() {
   	$('#{table_id}').dataTable( {
-  		"bFilter" : false,
+  		"bFilter" : #{bFilter},
   		"bSort" : #{bSort},
-  		"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+  		"sDom": '<f><l>rtip',
   		"sPaginationType": "bootstrap",
       "bLengthChange": #{bLengthChange},
   		"oLanguage": {
-  			"sLengthMenu": "#{sLengthMenu}",
-        "sInfo": "#{sInfo}"
+                        "sLengthMenu": "#{sLengthMenu}",
+                        "sInfo": "#{sInfo}",
+                        "sZeroRecords": "#{t(:nothing_found_sorry)}"
   		}
   	} );
   } );
 
 
   $.extend( true, $.fn.dataTable.defaults, {
-  	"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+  	"sDom": "<row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
   	"sPaginationType": "bootstrap",
   	"oLanguage": {
   		"sLengthMenu": "#{sLengthMenu}"

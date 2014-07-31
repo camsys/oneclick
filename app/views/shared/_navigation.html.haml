@@ -1,55 +1,53 @@
-.navbar.navbar-fixed-top#publicnav
-  %nav.navbar-inner
-    .container-fluid
-      = link_to root_path, :class => 'brand', :style => "padding:0px;margin-left:0px;margin-top:5px;" do
-        = image_tag get_logo, :style => "height:30px;"
-        = t(:one_click_trip_planner) 
-      
+#publicNav.navbar.navbar-default.navbar-fixed-top{:role => "navigation"}
+  .container-fluid
+    #navHeader
+      %a#logo.navbar-brand.img-responsive{:href => root_url(locale: I18n.locale), :style => "text-indent:-9999px;"} Logo
       .pull-right
-        = link_to error_501_path, id: 'help' do
-          %i.icon.icon-question-sign
-      .pull-right      
-        -#<!-- .btn-navbar is used as the toggle for collapsed navbar content -->
-        %a.btn.btn-navbar{data: { toggle: "collapse",  target: ".nav-collapse"}}
-          %span.icon-bar
-          %span.icon-bar
-          %span.icon-bar
-        -#<!-- Everything you want hidden at @navbarCollapseWidth or less, place within here -->
-        .nav-collapse.collapse
-          %ul.nav
-            - if user_signed_in?
-              %li.dropdown
-                %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}
-                  %i.icon.icon-user
-                  = "#{t(:welcome)}, #{current_user.welcome}"
-                  %b.caret
-                %ul.dropdown-menu{role: 'menu'}
-                  = render partial: 'menu_item', collection: actions(with_logout: true)
-                  / %li
-                  /   = link_to destroy_user_session_path, :method=>'delete' do
-                  /     %i.icon.icon-signout
-                  /     = t(:logout)
-                  - if current_user.has_role? :admin
-                    %li.divider.text-left
-                    %li
-                      = link_to admin_path do
-                        %i.icon.icon-wrench
-                        = t(:admin)
-            - else
-              %li.dropdown
-                %a.dropdown-toggle{data: {toggle: 'dropdown', target: '#'}}
-                  %i.icon.icon-user
-                  = "#{t(:welcome)}, #{t(:visitor)}"
-                  %b.caret
-                %ul.dropdown-menu{role: 'menu'}
-                  = render partial: 'menu_item', collection: actions
-                  / %li
-                  /   = link_to new_user_session_path do
-                  /     %i.icon.icon-key
-                  /     = t(:log_in) 
-                  / %li.divider.text-edit
-                  / %li
-                  /   = link_to new_user_registration_path do
-                  /     %i.icon.icon-edit
-                  /     = t(:create_an_account) 
-  
+        %a#help{:href => root_url(locale: I18n.locale) + "/content/faq"}
+          %i.fa.fa-question-circle
+          %span.sr-only Help
+      %button.navbar-toggle{"data-target" => "#userMenuNavbar", "data-toggle" => "collapse", :type => "button"}
+        %span.sr-only User menu
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+    / end of #navHeader
+    #userMenuNavbar.collapse.navbar-collapse.navbar-right
+      .pull-right
+        %ul.nav.navbar-nav
+          - if user_signed_in?
+            %li#userDropdown.dropdown
+              %a.dropdown-toggle{"data-target" => "#", "data-toggle" => "dropdown"}
+                - unless is_assisting
+                  = "#{t(:welcome)}, #{get_traveler.welcome}"
+                - else
+                  = t(:assisting_assisted_user_email, assisted_user: @traveler.name)
+                %b.caret
+              %ul.dropdown-menu{:role => "menu"}
+                = render partial: 'menu_item', collection: traveler_actions(with_logout: true)
+          - else 
+            %li#userDropdown.dropdown
+              %a.dropdown-toggle{"data-target" => "#", "data-toggle" => "dropdown"}
+                = "#{t(:welcome)}, #{t(:visitor)}"
+                %b.caret
+              %ul.dropdown-menu{:role => "menu"}
+                = render partial: 'menu_item', collection: traveler_actions
+        / end of nav navbar-nav
+      .pull-right  
+        - if can? :see, :staff_menu
+          %ul.nav.navbar-nav
+            %li.dropdown
+              = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => staff_actions, :title => t(:staff_actions) }
+      .pull-right
+        - if can? :see, :admin_menu
+          %ul.nav.navbar-nav
+            %li.dropdown
+              = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => admin_actions, :title => t(:admin_actions) }
+/ end of publicNav
+:javascript
+  $(function () {
+    $('#main').css('padding-top', ($('#publicNav').height() + 10) + 'px');
+    $('#publicNav').mutate('height', function(el) {
+      $('#main').css('padding-top', ($(el).height() + 10) + 'px');
+    });
+  });

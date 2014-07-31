@@ -1,0 +1,15 @@
+= simple_form_for([:admin, @agency]) do |f|
+  = f.error_notification
+
+  .row.info-header
+    .col-sm-6
+      %h1= t(:create_agency)
+    .col-sm-6.btns
+      = link_to admin_agencies_path, class: 'btn action-button pull-right' do
+        = t(:cancel)
+      = button_tag type: 'submit', class: "btn action-button pull-right" do
+        = t(:apply)
+
+  .form-inputs
+    = f.input :name, label: t(:name)
+    = f.association :parent, collection: @agency.possible_parents, label: t(:parent)

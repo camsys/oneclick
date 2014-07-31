@@ -1,0 +1,139 @@
+- temp_rating = @agency.ratings.build(user: @traveler)
+- if can? :index, Agency
+  .row
+    .col-sm-12
+      = link_to t(:all_agencies), admin_agencies_path
+.row.info-header
+  .col-sm-5
+    %h1= @agency.name
+    -unless @agency.active
+      %p= t(:inactive)
+  .col-sm-7.btns
+    - if can? :destroy, @agency
+      = button_tag :type => 'button', "data-target" => "#deleteAgencyConfirmDialog", "data-toggle" => "modal", :class => "btn action-button pull-right" do
+        = t(:delete)
+      #deleteAgencyConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_agency), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
+                = t(:cancel)
+              = button_to t(:ok), { action: "destroy", id: @agency.id }, method: :delete, class: "btn btn-primary action-button pull-right"
+              .modal-title{:style => "text-align:left;"}
+                %b
+                  = t(:site_title) 
+            .modal-body{:style => "text-align:left;"}
+              = t(:confirm_remove_message) + @agency.name + " ?"
+    - if can? :update, @agency
+      = link_to edit_admin_agency_path(@agency), {class: 'btn action-button pull-right', role: 'button'} do
+        = icon_label(:edit)
+    -if Rating.feedback_on?
+      - if can? :read, temp_rating
+        .pull-right
+          = RateableDecorator.decorate(@agency).rating_in_stars
+          %button.btn.action-button{data: {toggle: 'modal', target: "#feedback_modal"}}
+            = t(:feedback)
+      - elsif Rating.tripless_feedback?
+        -# if creating feedback is allowed, but reading isn't, just load the form into the modal on click
+        %button.btn.action-button.btn-default.pull-right{data: {toggle: 'modal', target: "#feedback_modal", remote: new_agency_rating_path(@agency)}}
+          = t(:feedback)
+      = render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
+.row
+  = render partial: "public_details", locals: {agency: @agency}
+  - if can? :full_read, @agency
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          %h2.panel-title= t(:internal_contact)
+        .panel-body
+          %table.table.table-condensed
+            %tr
+              %td.text-right
+                = t(:name) + ": "
+              %td.text-left
+                %b= @agency.internal_contact_name
+            %tr
+              %td.text-right
+                = t(:title)+": "
+              %td.text-left
+                %b= @agency.internal_contact_title
+            %tr
+              %td.text-right
+                = t(:phone)+ ": "
+              %td.text-left
+                %b= @agency.internal_contact_phone
+            %tr
+              %td.text-right
+                = t(:email)+ ":  "
+              %td.text-left
+                %b= mail_to @agency.internal_contact_email
+            - if @contact
+              %tr
+                %td.text-right
+                  = t(:user) + ": "
+                %td.text-left
+                  %b= @contact.name
+- if can? :full_read, @agency
+  .panel.panel-default#staff
+    .panel-heading
+      %h2.panel-title= t(:staff_actions)
+    .panel-body
+      %h3= t(:administrators)
+      %table.ALTtable.table-condensed#admin_table
+        %thead
+          %tr
+            %th= t(:name)
+            %th= t(:title)
+            %th= t(:phone)
+            %th= t(:email)
+        %tbody
+          - @admins.each do |s|
+            %tr
+              %td= s.name.to_s
+              %td= s.title.to_s
+              %td= s.phone.to_s
+              %td= mail_to s.email.to_s
+
+      %h3= t(:agents)
+      %table.ALTtable.table-condensed#agent_table
+        %thead
+          %tr
+            %th= t(:name)
+            %th= t(:title)
+            %th= t(:phone)
+            %th= t(:email)
+        %tbody
+          - @agents.each do |s|
+            %tr
+              %td
+                = s.name.to_s
+              %td
+                = s.title.to_s
+              %td
+                = s.phone.to_s
+              %td
+                = mail_to s.email.to_s
+
+:javascript
+  $(document).ready(function() {
+    $('#agent_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ agents per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ agents",
+              "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
+              "sInfoFiltered": "(filtered from _MAX_ total agents)"
+          },
+          "sDom": "<'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+    $('#admin_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ administrators per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ administrators",
+              "sInfoEmpty": "Showing 0 to 0 of 0 administrators",
+              "sInfoFiltered": "(filtered from _MAX_ total administrators)"
+          },
+          "sDom": "<'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+  } );

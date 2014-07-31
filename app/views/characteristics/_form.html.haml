@@ -1,36 +1,39 @@
-#eligibility_form
+- is_arc = Oneclick::Application.config.brand == 'arc'
+- if is_arc
+  .row
+    .col-xs-12
+      = simple_form_for @user_characteristics_proxy, :url => new_user_trip_characteristic_path(@traveler, @trip, locale: I18n.locale), method: 'PUT', html: {class: 'user-characteristics form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_button_groups, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |f|
 
-  .row-fluid
-    .span12
-      = simple_form_for @user_characteristics_proxy, :url => path, :method => 'put', :remote => not(inline)  do |f|
-        = f.error_notification
-        = render partial: 'characteristics/eligibility_alert', locals: {inline: inline}
-        -TravelerCharacteristic.personal_factors.where(:datatype => 'bool').each do |characteristic|
-          = f.input characteristic.code.to_sym, collection: [[true, 'Yes'], [false, 'No'], ['na', 'Not sure']], :required => false, as: :radio_buttons, label: characteristic.note, label_method: :last, value_method: :first, :item_wrapper_class => "inline"
-        -TravelerCharacteristic.personal_factors.where(:datatype => 'disabled').each do |characteristic|
-          = f.input characteristic.code.to_sym, collection: [[true, 'Yes'], [false, 'No'], ['na', 'Not sure']], :required => false, as: :radio_buttons, label: characteristic.note + " (not yet available)", label_method: :last, value_method: :first, :item_wrapper_class => "inline", disabled: true
-        = f.input :date_of_birth, :as => :date, :start_year => Date.today.year - 12, :end_year => 1900, :required => false, :prompt => %w[t(:month) t(:day) t(:year)], :input_html => {:style => "width:auto;"}
+        .col-xs-12.panel.panel-default
+          .panel-body      
+            = f.error_notification
+            / %form{:role => "form"}
+            .inline-radio
+              -Characteristic.active.enabled.each do |c|
+                - next if c.code=='age' # TODO kludge
+                - next unless c.ask_early
+                = render partial: 'characteristic_item', locals: {item: c, f: f}
+              -Accommodation.where(:datatype => 'bool').each do |a|
+                - next unless a.ask_early
+                = render partial: 'characteristic_item', locals: {item: a, f:f}
+          :javascript
+            $('.user-characteristics .btn-group').attr('data-toggle', 'buttons');
+            $('.user-characteristics .btn-group label').addClass('btn characteristics-option-button');
+            $('.user-characteristics .btn-group input:checked').parent('label').addClass('active');
+- else
+  .row
+    .col-xs-12
+      = simple_form_for @user_characteristics_proxy, :url => new_user_trip_characteristic_path(@traveler, @trip, locale: I18n.locale), method: 'PUT', html: {class: 'user-characteristics form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_and_checkboxes, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |f|
 
-        - if inline
-          = button_tag :type => 'submit', :class => "btn btn-primary" do
-            %i.icon.icon-arrow-right
-            Next step
-            / = t(:save)
-        - else
-          = button_tag type: :submit, class: 'btn btn-primary controls' do
-            %i.icon.icon-ok
-            = t(:update)
-        = link_to :back, :class => "cancel_link" do
-          %i.icon.icon-reply
-          = t(:cancel)
-:javascript
-  $('input[name="user_characteristics_proxy[disabled]"]:radio').on('change', function(event) {
-    $.ajax({
-      url: 'header',
-      data: {state: event.currentTarget.id},
-      success: function(result) {
-        $('#characteristics_header').html(result)
-      }
-    })
-    
-  })
+        .col-xs-12.panel.panel-default
+          .panel-body      
+            = f.error_notification
+            / %form{:role => "form"}
+            .inline-radio
+              -Characteristic.active.enabled.for_traveler.each do |c|
+                - next if c.code=='age' # TODO kludge
+                - next unless c.ask_early
+                = render partial: 'characteristic_item', locals: {item: c, f: f}
+              -Accommodation.where(:datatype => 'bool').each do |a|
+                - next unless a.ask_early
+                = render partial: 'characteristic_item', locals: {item: a, f:f}

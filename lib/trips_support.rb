@@ -30,6 +30,7 @@ module TripsSupport
   PLACES_TYPE = "3"
   RAW_ADDRESS_TYPE = "4"
   PLACES_AUTOCOMPLETE_TYPE = '5'
+  KIOSK_LOCATION_TYPE = '6'
 
   # Set the default travel time/date to x mins from now
   def default_trip_time
@@ -51,6 +52,146 @@ module TripsSupport
     end
   end
 
+  # Get the selected place for this trip-end based on the type of place
+  # selected and the data for that place
+  def get_preselected_place(place_type, place_id, is_from = false)
+    case place_type
+    when POI_TYPE
+      # the user selected a POI using the type-ahead function
+      poi = Poi.find(place_id)
+      return {
+        :poi_id => poi.id,
+        :name => poi.name,
+        :formatted_address => poi.address,
+        :lat => poi.location.first,
+        :lon => poi.location.last
+      }
+    when CACHED_ADDRESS_TYPE
+      # the user selected an address from the trip-places table using the type-ahead function
+      trip_place = @traveler.trip_places.find(place_id)
+      return {
+        :name => trip_place.raw_address,
+        :lat => trip_place.lat,
+        :lon => trip_place.lon,
+        :formatted_address => trip_place.raw,
+        :street_address => trip_place.address1,
+        :city => trip_place.city,
+        :state => trip_place.state,
+        :zip => trip_place.zip,
+        :county => trip_place.county,
+        :raw => trip_place.raw
+      }
+    when PLACES_TYPE
+      # the user selected a place using the places drop-down
+      place = @traveler.places.find(place_id)
+      return {
+        :place_id => place.id,
+        :name => place.name,
+        :formatted_address => place.address,
+        :lat => place.location.first,
+        :lon => place.location.last
+      }
+    when RAW_ADDRESS_TYPE
+      # the user entered a raw address and possibly selected an alternate from the list of possible
+      # addresses
+
+      # if is_from
+      #   #puts place_id
+      #   #puts get_cached_addresses(CACHED_FROM_ADDRESSES_KEY).ai
+      #   place = get_cached_addresses(CACHED_FROM_ADDRESSES_KEY)[place_id.to_i]
+      # else
+      #   place = get_cached_addresses(CACHED_TO_ADDRESSES_KEY)[place_id.to_i]
+      # end
+      Rails.logger.info "in get_preselected_place"
+      Rails.logger.info "#{is_from} #{place.ai}"
+      return {
+        :name => place[:name],
+        :lat => place[:lat],
+        :lon => place[:lon],
+        :formatted_address => place[:formatted_address],
+        :street_address => place[:street_address],
+        :city => place[:city],
+        :state => place[:state],
+        :zip => place[:zip],
+        :county => place[:county],
+        :raw => place[:raw]
+      }
+    when PLACES_AUTOCOMPLETE_TYPE
+      result = get_places_autocomplete_details(place_id)
+      place = result.body['result']
+      # puts "====== PLACES_AUTOCOMPLETE_TYPE ======"
+      # puts place
+      {
+        place_id:          false,
+        name:              place['formatted_address'],
+        formatted_address: place['formatted_address'],
+        lat:               place['geometry']['location']['lat'],
+        lon:               place['geometry']['location']['lng'],
+      }
+    when KIOSK_LOCATION_TYPE
+      place = KioskLocation.find(place_id)
+
+      {
+        name:              place[:name],
+        formatted_address: place[:addr],
+        lat:               place[:lat],
+        lon:               place[:lon]
+      }
+    else
+      raise "unhandled place type: #{place_type}"
+    end
+  end
+
+  def get_places_autocomplete_details reference
+    google_api.get('details/json') do |req|
+      req.params['reference'] = reference
+      req.params['sensor']    = true
+      req.params['key']       = Oneclick::Application.config.google_places_api_key
+    end
+  end
+
+  def google_place_search query, map_center
+    google_api.get('autocomplete/json') do |req|
+      req.params['input']    = query
+      req.params['sensor']   = false
+      req.params['key']      = Oneclick::Application.config.google_places_api_key
+      req.params['location'] = map_center
+      req.params['radius']   = 20_000
+    end
+  end
+
+  def google_api
+    connection = Faraday.new('https://maps.googleapis.com/maps/api/place') do |conn|
+      # conn.response :mashify
+      conn.response :json
+      conn.adapter Faraday.default_adapter
+    end
+  end
+
+  # This expects to be passed the result component, e.g. g.body['result']
+  def cleanup_google_details detail_result
+    components = detail_result['address_components']
+    r = components.inject({}) do |m, c|
+      m[determining_type(c['types'])] = c['short_name']
+      m
+    end
+    r['address1'] = [r['street_number'], r['route']].join(' ')
+    r['city'] = r['locality']
+    r['zip'] = r['postal_code']
+    r['county'] = r['administrative_area_level_2'].gsub(%r{ County$}, '') if r['administrative_area_level_2']
+    r['state'] = r['administrative_area_level_1']
+    r['lat'] = detail_result['geometry']['location']['lat']
+    r['lon'] = detail_result['geometry']['location']['lng']
+    r['result_types'] = (detail_result['types'] || []).join('|')
+    r
+  end
+
   extend self
+
+  private
+
+  def determining_type a
+    (a.reject {|t| t=='political'}).first
+  end
 end
 

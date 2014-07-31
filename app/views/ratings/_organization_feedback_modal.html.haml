@@ -1,0 +1,44 @@
+.modal.fade{id: "feedback_modal"}
+  .modal-dialog.modal-lg
+    .modal-content#ratings
+      .modal-header.clearfix
+        %btn.btn.btn-default.action-button.pull-right{data: {dismiss: "modal"}}= t(:close)
+        -# If users can enter feedback without a trip...
+        - if can? :create, rateable.ratings.build
+          %button.btn.action-button.btn-default.pull-right#load_feedback
+            = t(:feedback)
+      .modal-body
+        .panel.panel-default
+          .panel-heading
+            %h3.panel-title
+              = rateable.name
+          .panel-body
+            - ratings = rateable.ratings.approved.select() { |r| can? :read, r }
+            - unless ratings.empty?
+              %dl.dl-horizontal
+                - ratings.each do |r|
+                  - decorated_rating = r.decorate
+                  %dt.rating-value= decorated_rating.rating_in_stars
+                  %dd.rating-comments= decorated_rating.comments 
+            -else
+              .alert
+                =t(:no_ratings_yet)
+    .modal-content#give_feedback
+                
+-# Load in the form dynamically
+- if can? :create, rateable.ratings.build
+  :javascript
+    $(document).ready(function() {
+      $("#load_feedback").on("click", function() {
+        $("#ratings").hide();
+        $("#give_feedback").show();
+        $.ajax({
+          url: "#{RateableDecorator.new(rateable).new_rateable_rating_path}",
+          context: $("#give_feedback"),
+          dataType: "html"
+        })
+        .then( function(html) {
+          $(this).html(html)
+        });
+      });
+    });

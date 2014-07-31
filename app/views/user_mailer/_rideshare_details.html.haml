@@ -1,2 +1,14 @@
-%h3
-  = t(:link_to_georgia_commute_options, url: link_to('Georgia Commute Options', rideshare_external_link(itinerary), target: '_new'), count: itinerary.ride_count).html_safe
+%table.center{:cellpadding=>10}
+  %tr
+    %td
+      .center
+        = t(:link_to_georgia_commute_options, url: link_to('Georgia Commute Options', rideshare_external_link(itinerary),
+        target: '_new'), count: itinerary.ride_count).html_safe  
+
+/ %table.center{:cellpadding=>10}
+/   -YAML.load(itinerary.server_message).each do |business|
+/     %tr
+/       %td.itinerary_icons
+/         %h4=business['name'] + ":  "
+/       %td.itinerary_text
+/         %h4=business['phone']

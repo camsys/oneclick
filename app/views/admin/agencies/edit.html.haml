@@ -1,0 +1,49 @@
+= simple_form_for @agency, url: admin_agency_path, html: { class: 'form-horizontal' },wrapper: :horizontal_form do |f|
+  .row.info-header
+    .col-sm-6
+      %h1
+        = f.input :name
+    .col-sm-6.btns
+      - if can? :update, @agency
+        = link_to admin_agency_path(@agency), class: 'btn btn-default action-button pull-right', role: 'button' do
+          = icon_label(:cancel)
+        = button_tag type: 'submit', class: "btn action-button pull-right" do
+          = icon_label(:apply)
+  
+  .row
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          %h4.panel-title= t(:contact_info)
+        .panel-body
+          = f.input :address
+          = f.input :phone
+          = f.input :email
+          = f.input :url
+          = f.association :parent, collection: @agency.possible_parents
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          %h4.panel-title= t(:internal_contact)
+        .panel-body
+          = f.input :internal_contact_name
+          = f.input :internal_contact_title
+          = f.input :internal_contact_phone
+          = f.input :internal_contact_email
+          = f.input :internal_contact, collection: @agency.users, class: "form-control",
+                selected: (@contact.id if @contact) , include_blank: "None", label: t(:user)
+
+  .panel.panel-default
+    .panel-heading
+      %h4.panel-title= t(:staff_actions)
+    .panel-body
+      .col-sm-6
+        %h5= t(:administrators)
+        .scrolling-checkbox-list
+          = f.association :administrators, collection: User.staff_assignable.order(:first_name),
+                  as: :check_boxes, wrapper: :inline_checkboxes, label: false
+      .col-sm-6
+        %h5= t(:agents)
+        .scrolling-checkbox-list
+          = f.association :agents, collection: User.staff_assignable,
+                  as: :check_boxes, wrapper: :inline_checkboxes, label: false

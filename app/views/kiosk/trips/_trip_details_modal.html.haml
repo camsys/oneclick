@@ -2,28 +2,28 @@
 .detail-container.container-fluid
   .row-fluid
     .close-section.span4
-      .left-content.pull-right  
-        %h5 Cost
-        %p 
+      .left-content.pull-right
+        %h5 Fare
+        %p
           = @itinerary.cost_in_words
         %h5 Estimated travel time
-        %p 
+        %p
           = @itinerary.duration_in_words
         %h5 Transfers
-        %p 
+        %p
           = @itinerary.transfers_in_words
         %h5 Walking time
-        %p 
+        %p
           = @itinerary.walking_time
 
-      
+
       %a.close-btn-container{"data-dismiss" => "modal"}
         .close-btn
         %p
           =t(:close)
     .detail-section.span8plus
       .detail-header
-        %i.icon.icon-5x{:class => get_trip_summary_icon(@itinerary)}
+        %i.fa.fa-5x{:class => get_trip_summary_icon(@itinerary)}
         %h1
           = @itinerary.service.full_name
       .detail-main
@@ -35,18 +35,18 @@
               - if @itinerary.is_mappable
                 %li
                   = link_to "Map", "#map_tab", :id => 'map_tab_link', :data => {:toggle => "tab"}
-            
+
             .tab-content.row-fluid
               #details_tab.tab-pane.active
                 = render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
               - if @itinerary.is_mappable
                 #map_tab.tab-pane
                   = render :partial => 'map_details', :locals => { :itinerary => @itinerary }
-        
+
         .detail-footer
-          .print-me
-            =t(:print)
-        / %li 
+          %a.print-me{href: kiosk_print_itinerary_url(@itinerary, protocol: 'print')}
+            %span= t(:print)
+        / %li
         /   =t(:chat)
         / %li{:id => "email_itinerary"}
         /   =link_to '#', {href: '#send_itinerary_by_email_' + @itinerary.id.to_s, class: "btn-info", data: {toggle: 'modal'}} do
@@ -57,8 +57,8 @@
   $('body').on('shown', '#map_tab_link', function() {
     $('#lmap').css('height', '576px');
     //alert("invalidating map");
-    invalidateMap();
-    showMap();
+    CsMaps.lmap.invalidateMap();
+    CsMaps.lmap.showMap();
   });
 
   $('#email_itinerary').click(function(){

@@ -5,7 +5,7 @@ class Kiosk::NewTrip::OverviewsController < Kiosk::NewTrip::BaseController
     @trip_proxy = create_trip_proxy_from_form_params
 
     if @trip_proxy.valid?
-      @trip = create_trip(@trip_proxy)
+      @trip = Trip.create_from_proxy(@trip_proxy, current_or_guest_user, @traveler)
     else
       raise @trip_proxy.errors.as_json.inspect
     end

@@ -1,5 +1,7 @@
 class ItineraryDecorator < Draper::Decorator
+  include Draper::LazyHelpers
   delegate_all
+  decorates_association :trip_part
 
   # Define presentation-specific methods here. Helpers are accessed through
   # `helpers` (aka `h`). You can override attributes, for example:
@@ -20,26 +22,44 @@ class ItineraryDecorator < Draper::Decorator
   end
 
   def cost_in_words
-    return h.number_to_currency(cost.round) + " (est)" if mode.name.downcase == 'taxi'
-    return 'Click for cost details' if cost.nil?
-    return 'Not available' if cost.nil?
-    (cost != 0 ? h.number_to_currency(cost) : "No cost for this service.")
+    get_itinerary_cost(object)[:cost_in_words]
   end
 
   def duration_in_words
-    # TODO should be t(:not_available)
-    (duration ? h.duration_to_words(duration) + " (est.)" : 'Not available')
+    (duration ? h.duration_to_words(duration) + " (est.)" : '')
+  end
+
+  def date_in_words
+    itinerary_start_time = get_itinerary_start_time(object)
+    itinerary_end_time = get_itinerary_end_time(object)
+    return format_date(itinerary_start_time + (itinerary_end_time - itinerary_start_time) / 2) if (itinerary_start_time && itinerary_end_time)
+    return format_date(itinerary_start_time) if (itinerary_start_time)
+    return format_date(itinerary_end_time) if (itinerary_end_time)
+    return I18n.t(:not_available)
+  end
+
+  def time_range_in_words
+    case mode.code
+    when 'mode_taxi'
+      itinerary_start_time =get_itinerary_start_time(object)
+      itinerary_end_time = get_itinerary_end_time(object)
+      return format_time(itinerary_start_time) + ' ' + I18n.t(:to) + ' ' + format_time(itinerary_end_time) if (itinerary_start_time && itinerary_end_time)
+      return I18n.t(:not_available)
+    else
+      return format_time(start_time) + ' ' + I18n.t(:to) + ' ' + format_time(end_time) if (start_time && end_time)
+      return I18n.t(:not_available)
+    end
   end
 
   def notes
-    case mode.name
-    when 'Transit'
-      'No'
-    when 'Taxi'
-      'Yes'
-    when 'Paratransit'
+    case mode.code
+    when 'mode_transit'
+      I18n.t(:no_str)
+    when 'mode_taxi'
+      I18n.t(:yes_str)
+    when 'mode_paratransit'
       h.duration_to_words(service.advanced_notice_minutes*60, suppress_minutes: true, days_only: true)
-    when 'Rideshare'
+    when 'mode_rideshare'
       h.t(:possible_rideshares, count: ride_count) + ' ' + h.t(:view_details)
     else
       'None'
@@ -47,13 +67,13 @@ class ItineraryDecorator < Draper::Decorator
   end
 
   def notes_label
-    case mode.name
-    when 'Rideshare'
-      'Note'
-    when 'Transit', 'Taxi', 'Paratransit'
-      'Book ahead'
+    case mode.code
+    when 'mode_rideshare'
+      I18n.t(:note)
+    when 'mode_transit', 'mode_taxi', 'mode_paratransit'
+      I18n.t(:book_ahead)
     else
-      'Note'
+      I18n.t(:note)
     end
   end
 
@@ -62,7 +82,7 @@ class ItineraryDecorator < Draper::Decorator
   end
 
   def transfers_in_words
-    transfers || 'n/a'
+    transfers || I18n.t(:none)
     # I18n.translate(:transfer, count: i.transfers)
   end
 

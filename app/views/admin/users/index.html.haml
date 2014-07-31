@@ -1,0 +1,35 @@
+.header
+  = link_to t(:create), new_admin_user_path,
+        {class: 'btn action-button btn-default pull-right', role: 'button'}
+  %h1= t(:users)
+%table.table.table-condensed.table-striped.table-bordered.table-hover#admin_users_table
+  %thead
+    %tr
+      %th= t(:username)
+      %th= t(:email)
+      %th= t(:registered)
+      %th= t(:roles)
+  %tbody
+:javascript
+  $(document).ready(function() {
+    $('#admin_users_table').dataTable( {
+      "processing": true,
+      "bServerSide": true,
+      "sAjaxSource": "users",
+      "oLanguage": {
+              "sLengthMenu": "Display _MENU_ travelers per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ travelers",
+              "sInfoEmpty": "Showing 0 to 0 of 0 travelers",
+              "sInfoFiltered": "(filtered from _MAX_ total travelers)"
+      },
+      "bAutoWidth": false,
+      "aoColumns": [
+        {"sWidth": "30%"},
+        {"sWidth": "30%"},
+        {"sWidth": "15%"},
+        {"sWidth": "35%"},
+      ],
+      "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+    });
+  });

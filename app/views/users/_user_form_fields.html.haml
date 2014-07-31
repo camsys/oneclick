@@ -1,0 +1,188 @@
+=simple_form_for @user, :html => { :class => "form-horizontal"}, method: 'post', wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }, :include_blank => false  do |f|
+  = f.error_notification
+  .row.info-header
+    .col-sm-6
+      %h1
+        = current_user != @user ? "#{@user.name}'s #{t(:travel_profile)}" : t(:travel_profile)
+    .col-sm-6.btns
+      = link_to t(:cancel), :back, class: "btn action-button pull-right"
+      = f.button :submit, t(:apply), class: "btn action-button pull-right"
+
+  .row
+    .col-sm-6
+      .panel.panel-default#user_info
+        .panel-heading
+          %h2.panel-title= t(:user_information)
+        .panel-body
+          = f.input :first_name, label: t(:first_name), :autofocus => true, :required => true
+          = f.input :last_name, label: t(:last_name), :required => true
+          = f.input :email, label: t(:email), :required => true
+          = f.input :preferred_locale, label: t(:preferred_locale), :collection => Translation.available_locales, :include_blank => false, label_method: lambda {|pl| I18n.t("locales.#{pl}")}
+          = f.input :password, label: t(:password), :autocomplete => "off", :required => false
+          = f.input :password_confirmation, label: t(:password_confirmation), :hint => t(:leave_password_blank), :required => false
+    - if can? :full_read, @user
+      .col-sm-6
+        .panel.panel-default#agencies
+          .panel-heading
+            %h2.panel-title= t(:agencies)
+          .panel-body
+            = f.association :approved_agencies, collection: Agency.all.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes, wrapper: :inline_checkboxes, label: false
+  - if can? :full_read, @user  
+    .new_buddies.hidden
+      = select_tag "new_buddies", "", multiple: true, as: :hidden
+    .row
+      .col-sm-12
+        .panel.panel-default#buddies
+          .panel-heading
+            %h2.panel-title= t(:buddies)
+          .panel-body
+            .table-flash
+            %btn.btn.btn-default.action-button.pull-right{data: {toggle: 'modal', target: '#add_user'}}
+              = t(:add)
+            %table.table.table.condensed.table-striped.table-hover.table-bordered#buddies_table
+              %thead
+                %th= t(:buddy)
+                %th.email= t(:email)
+                %th= t(:can_assist_me)
+                %th= t(:i_can_assist)
+              %tbody
+                -# initial load from user record
+                - @user.related_users.each do |ou|
+                  = render partial: 'users/buddy_traveler_row', locals: {urp: UserRelationshipProxy.new(@user, ou)}
+            .modal.fade#add_user
+              .modal-dialog.modal-lg
+                .modal-content
+                  .modal-header
+                    .row
+                      .col-sm-12
+                        %btn.btn.action-button.pull-right{data: {dismiss: 'modal'}}
+                          = t(:cancel)
+                        %btn.btn.action-button.pull-right#search
+                          = t(:apply)
+                  .modal-body
+                    .modal-flash
+                    .panel.panel-default
+                      .panel-heading
+                        %h2.panel-title= t(:find_traveler)
+                      .panel-body
+                        .row
+                          .col-sm-12
+                            = label_tag :email, t(:email)
+                            = text_field_tag :email,nil
+
+
+  - if can? :full_read, @user
+    = simple_fields_for @user_characteristics_proxy, html: {class: 'form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_and_checkboxes, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |characteristic_form|
+      .row
+        .col-sm-6.pull-left
+          .panel.panel-default
+            .panel-heading
+              %h2.panel-title= t(:eligibility)
+            .panel-body
+              - Characteristic.active.enabled.each do |c| 
+                - next if c.code=='age' # TODO kludge
+                - next unless c.ask_early
+                - case c.datatype
+                - when 'bool'
+                  = characteristic_form.input c.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(c.note), label_method: :last, value_method: :first
+                - else
+                  = characteristic_form.input c.code.to_sym, label: t(c.note)
+        .col-sm-6.pull-right
+          .panel.panel-default
+            .panel-heading
+              %h2.panel-title= t(:accommodations)
+            .panel-body
+              -Accommodation.where(:datatype => 'bool').each do |a|
+                = characteristic_form.input a.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(a.note), label_method: :last, value_method: :first
+
+    .row
+      .col-sm-6
+        .panel.panel-default#booking
+          .panel-heading
+            %h2.panel-title=t(:booking_information)
+          .panel-body
+            =simple_fields_for :user_service, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |booking_form|
+              -Service.active.bookable.each do |service|
+                - user_service = UserService.where(service: service, user_profile: @user.user_profile).first
+                - if user_service
+                  = booking_form.input service.id.to_s, label: service.name, input_html: { value: user_service.external_user_id}
+                - else
+                  = booking_form.input service.id.to_s, label: service.name, input_html: { value: "" }
+              =booking_form.input :dob, label: t(:dob), placeholder: "mm/dd/yyyy", hint: t(:dob_notice)
+      .col-sm-6
+        .panel.panel-default#preferred_modes
+          .panel-heading
+            %h2.panel-title= t(:preferred_modes)
+          .panel-body
+            - Mode.top_level.where(visible: true).sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.each do |m|
+              .row
+                .col-sm-12
+                  = check_box_tag "user[preferred_mode_ids][#{m.id}]", m.id, @user.preferred_modes.include?(m), name: "user[preferred_mode_ids][]"
+                  = label_tag "user[preferred_mode_ids][#{m.id}]", t(m.name)
+                  - m.submodes.where(visible: true).each do |sm|
+                    .row
+                      .col-sm-12.col-sm-push-1
+                        = check_box_tag "user[preferred_mode_ids][#{sm.id}]", sm.id, @user.preferred_modes.include?(sm), name: "user[preferred_mode_ids][]"
+                        = label_tag "user[preferred_mode_ids][#{sm.id}]", t(sm.name)
+
+:javascript
+  $(document).ready(function() {
+    $('#buddies_table').dataTable( {
+          "oLanguage": {
+            "sLengthMenu": "Display _MENU_ buddies per page",
+            "sZeroRecords": "Nothing found - sorry",
+            "sInfo": "Showing _START_ to _END_ of _TOTAL_ buddies",
+            "sInfoEmpty": "Showing 0 to 0 of 0 buddies",
+            "sInfoFiltered": "(filtered from _MAX_ total buddies)"
+          },
+          "bAutoWidth": false,
+          "aoColumns": [
+            {"sWidth": "30%"},
+            {"sWidth": "30%"},
+            {"sWidth": "20%"},
+            {"sWidth": "20%"},
+          ],
+          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+      $("#search").on("click", function() {
+        $.ajax({
+          url: "find_by_email",
+          data: {email: $("#email").val()},
+          dataType: "json",
+          success: function(data) {
+            if (data["success"]) {
+              $(".modal").modal("toggle");
+              $("div.table-flash").html(data["msg"]).addClass("alert alert-success fade-in");
+              $(".new_buddies select").append("<option selected value=" + data["output"] + ">"+ data["output"] + "</option>")
+              //find row
+              var row = $("td.email:contains('" + data["row"][1] +"')").parent();
+              // Update if exists.  Add if not
+              if (row.length) {
+                $("#buddies_table").dataTable().fnUpdate( data["row"], row[0]);
+              }
+              else {
+                $( "#buddies_table" ).dataTable().fnAddData(data["row"]);
+              }
+            } else {
+              $("div.modal-flash").html(data["msg"]).addClass("alert alert-success fade-in");
+            }
+          }
+        });
+      });
+    $("td button.action-button").on("click", function() {
+      $.ajax({
+        url: $(this).data("source"),
+        dataType: "json",
+        success: function(data) {
+          if (data["success"]){
+            $("#user_relationship_" + data["rel_id"]).children("option[value=" + data["status_id"] +"]").prop("selected", true);}
+            $("td[data-rel=" + data["rel_id"] + "]").children("button").remove();
+            $("td[data-rel=" + data["rel_id"] + "]").append("<p>Update Pending...</p>"); // Needs i18n
+        }
+      })
+    });
+    $("#preferred_modes input").change(function() {
+      var checked = $(this).prop("checked")
+      $(this).parent().find("input").prop("checked", checked);
+    });
+  });

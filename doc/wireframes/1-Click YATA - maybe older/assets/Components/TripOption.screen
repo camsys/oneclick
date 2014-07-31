@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Panel" id="1" x="287" y="213" width="300" height="200" measuredWidth="300" measuredHeight="200" border="solid-rounded"/>
+  <widgets xsi:type="model:Icon" id="7" x="480" y="380" width="24" height="25" measuredWidth="24" measuredHeight="25" icon="assets/ticket (custom)"/>
+  <widgets xsi:type="model:Icon" id="8" x="520" y="380" width="24" height="25" measuredWidth="24" measuredHeight="25" icon="assets/zoom-in (custom)"/>
+  <widgets xsi:type="model:Icon" id="9" x="557" y="380" width="24" height="25" measuredWidth="24" measuredHeight="25" icon="assets/remove (large)"/>
+  <widgets xsi:type="model:Icon" id="10" x="304" y="232" width="49" height="49" measuredWidth="49" measuredHeight="49" foreground="#0000ff" icon="train (large)"/>
+  <widgets xsi:type="model:Label" id="11" x="361" y="234" text="Travel Mode" measuredWidth="169" measuredHeight="46" foreground="#0000ff">
+    <font size="28px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Text" id="13" x="361" y="280" text="Time: XX Minutes&#xA;Cost: $XX.XX&#xA;Other Information" measuredWidth="158" measuredHeight="84">
+    <font size="20px"/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

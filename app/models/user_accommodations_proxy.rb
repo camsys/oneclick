@@ -13,15 +13,23 @@ class UserAccommodationsProxy < UserProfileProxy
   def method_missing(code, *args)
 
     # See if the code exists in the accommodation database
-    accommodation = TravelerAccommodation.find_by_code(code)
+    accommodation = Accommodation.find_by_code(code)
     if accommodation.nil?
       return super      
     end
         
-    map = UserTravelerAccommodationsMap.where("accommodation_id = ? AND user_profile_id = ?", accommodation.id, user.user_profile.id).first
+    map = UserAccommodation.where("accommodation_id = ? AND user_profile_id = ?", accommodation.id, user.user_profile.id).first
     # if the user has an existing accommodation stored we return it.
     return coerce_value(accommodation, map)
 
+  end
+
+  # Returns a symbol if it needs to be run through I18n or a string if it can be displayed as is
+  def get_answer_description(code)
+    accommodation = Accommodation.find_by_code(code)
+    map = UserAccommodation.where("accommodation_id = ? AND user_profile_id = ?", accommodation.id, user.user_profile.id).first
+    # if the user has an existing accommodation stored we return it.
+    return coerce_value_to_string(accommodation, map)
   end
 
   # Update the user accommodation based on the form params
@@ -32,11 +40,11 @@ class UserAccommodationsProxy < UserProfileProxy
     
     
     # Put everything in a big transaction
-    UserTravelerAccommodationsMap.transaction do
+    UserAccommodation.transaction do
       
       # Loop through the list of accommodation that could be set. This appraoch ensures we are only updating
       # active accommodation
-      TravelerAccommodation.all.each do |accommodation|
+      Accommodation.all.each do |accommodation|
         
         Rails.logger.debug accommodation.inspect
         
@@ -54,7 +62,7 @@ class UserAccommodationsProxy < UserProfileProxy
           Rails.logger.debug new_value.nil? ? "NULL" : new_value
           
           # See if this accommodation already exists in the database for this user
-          user_accommodation = UserTravelerAccommodationsMap.where("accommodation_id = ? AND user_profile_id = ?", accommodation.id, user.user_profile.id).first
+          user_accommodation = UserAccommodation.where("accommodation_id = ? AND user_profile_id = ?", accommodation.id, user.user_profile.id).first
           if user_accommodation
             # it does so lets update it. 
             
@@ -70,12 +78,13 @@ class UserAccommodationsProxy < UserProfileProxy
           else
             # we need to create a new one
             Rails.logger.debug "Creating new accommodation"
-            UserTravelerAccommodationsMap.create(:accommodation_id => accommodation.id, :user_profile_id => user.user_profile.id, :value => new_value) unless new_value.nil?
+            UserAccommodation.create(:accommodation_id => accommodation.id, :user_profile_id => user.user_profile.id, :value => new_value) unless new_value.nil?
           end
         end
       end
       
     end    
+    true
   end
 
 end

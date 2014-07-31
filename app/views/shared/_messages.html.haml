@@ -1,6 +1,14 @@
+- Rails.logger.info flash.ai
 - flash.each do |name, msg|
   - next if name.to_s =~ /^local_/
   - if msg.is_a?(String)
-    %div{:class => "alert alert-#{name == :notice ? "success" : "error"} fade in"}
+    - alert_class = case name
+    - when :success, :info, :warning, :danger
+      - "alert-#{name}"
+    - when :notice
+      - "alert-success"
+    - else
+      - "alert-danger"
+    %div{:class => "alert #{alert_class} fade in"}
       %a.close{"data-dismiss" => "alert"} ×
       = content_tag :div, msg, :id => "flash_#{name}"

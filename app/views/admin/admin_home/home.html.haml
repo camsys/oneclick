@@ -1,0 +1,7 @@
+.row
+  .col-sm-3.col-sm-offset-3
+    %h2.center Traveler Services
+    = render partial: 'shared/actions_menu', locals: {actions: @actions}
+  .col-sm-3
+    %h2 Agent Services
+    = render partial: 'shared/actions_menu', locals: {actions: @admin_actions}

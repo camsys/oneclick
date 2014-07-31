@@ -1,26 +1,32 @@
 source 'https://rubygems.org'
-ruby '1.9.3'
-gem 'rails', '3.2.14'
-
-group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'uglifier', '>= 1.0.3'
-  gem 'bootstrap-combobox', '= 1.2.1'
-  # gem 'bootstrap-combobox', '= 1.2.3', path: '/Users/denishaskin/constantorbit/workspace/bootstrap-combobox'
+ruby '2.1.1'
+gem 'rails', '4.0.3'
+# See http://stackoverflow.com/questions/22391116/nomethoderror-in-pageshome-undefined-method-environment-for-nilnilclass
+gem 'sprockets', '2.11.0'
+# gem 'sass-rails', '~> 4.0.3'
+gem 'sass-rails', github: 'camsys/sass-rails', tag: 'v4.0.3a'
+unless ENV['UI_MODE']=='kiosk'
+  gem 'bootstrap-sass', github: 'camsys/bootstrap-sass', tag: '~> 3.1.1.0'
+  gem 'simple_form', '~> 3.1.0.rc1', github: 'plataformatec/simple_form'
+else
+  gem 'bootstrap-sass', '~> 2.3.2.0'
+  gem 'simple_form', '3.0.1'
 end
-
+gem 'coffee-rails'
+gem 'uglifier', '>= 1.0.3'
+gem 'bootstrap-combobox'
 gem 'jquery-rails'
-gem 'bootstrap-sass', '= 2.3.2.2'
 gem 'cancan'
-gem 'devise', '~> 3.1.0'
+gem 'devise'
 gem 'figaro'
 gem 'geocoder'
 gem 'haml-rails'
 gem 'pg'
-gem 'rolify'
-gem 'simple_form'
+# See https://github.com/EppO/rolify/issues/221
+gem 'rolify', git: 'https://github.com/EppO/rolify.git', ref: '0b00fa41224dc4e33b059cd0cd31cd42b022b03b'
 gem 'thin'
+gem 'puma'
+gem "rack-timeout"
 gem 'awesome_print'
 gem 'chronic'
 gem 'mechanize'
@@ -29,25 +35,44 @@ gem 'newrelic_rpm'
 gem 'polylines'
 gem 'activemdb'
 gem 'ajaxful_rating', '>= 3.0.0.beta7'
-gem 'comfortable_mexican_sofa'
+ gem 'i18n-active_record',
+      :git => 'git://github.com/svenfuchs/i18n-active_record.git',
+      :require => 'i18n/active_record'
 gem 'honeybadger'
 gem 'draper'
 gem 'rubyzip'
+gem 'lorem-ipsum-me'
 gem 'faraday_middleware'
 gem 'twilio-ruby'
+gem 'rails_12factor', group: [:integration, :production, :qa, :staging]
+gem 'font-awesome-rails'
+gem 'twitter-typeahead-rails', github: 'camsys/twitter-typeahead-rails'
+gem 'handlebars_assets'
+gem 'simple_token_authentication'
+gem 'Indirizzo'
+gem 'momentjs-rails', '~> 2.5.0'
+gem 'bootstrap3-datetimepicker-rails', '= 3.0.0.0'
+gem 'active_model_serializers'
+gem 'jquery-datatables-rails', '~> 2.1.10.0.2'
+gem 'active_attr'
+gem 'twitter-bootstrap-rails-confirm', github: 'bluerail/twitter-bootstrap-rails-confirm', branch: 'bootstrap3'
+gem 'activerecord-postgis-adapter', '= 1.1.0'
+gem 'rgeo-activerecord'
+gem 'rgeo'
+gem 'rgeo-shapefile'
+gem 'leaflet-rails', github: 'camsys/leaflet-rails'
 
 group :development do
-  gem 'activerecord-postgis-adapter'
-  gem 'rgeo-activerecord'
-  #gem 'ffi-geos'
+  # gem 'ffi-geos'
   #gem 'mysql2'
   gem 'better_errors'
-  gem 'binding_of_caller', :platforms=>[:mri_19, :rbx]
+  gem 'binding_of_caller'
   gem 'guard', '~> 1.8.3'
   gem 'guard-bundler'
   gem 'guard-cucumber'
   gem 'guard-rails'
   gem 'guard-rspec'
+  gem 'guard-puma'
   # gem 'pry-stack_explorer'
   #gem 'pry-debugger'
   gem 'html2haml'
@@ -60,13 +85,19 @@ group :development do
   gem 'rails-erd'
   gem 'growl'
   gem 'travis'
-  gem 'rgeo'
-  gem 'rgeo-shapefile'
   gem "letter_opener"
+  gem 'yard'
+  gem 'RedCloth' # Needed by yard
+  gem 'foreman'
+  gem 'debugger'
 end
-group :test do
+
+group :development, :test do
   gem 'factory_girl_rails'
-  gem 'rspec-core'
+end
+  
+group :test do
+  gem 'rspec-core', '~> 2.14.0'
   gem 'rspec-rails'
   gem 'capybara'
   gem 'cucumber-rails', :require=>false
@@ -75,4 +106,6 @@ group :test do
   gem 'launchy'
   gem 'coveralls', require: false
   gem 'simplecov', require: false
+  gem 'timecop'
 end
+

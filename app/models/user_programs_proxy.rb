@@ -14,15 +14,23 @@ class UserProgramsProxy < UserProfileProxy
   def method_missing(code, *args)
 
     # See if the code exists in the characteristics database
-    characteristic = TravelerCharacteristic.programs.find_by_code(code)
+    characteristic = Characteristic.programs.find_by_code(code)
     if characteristic.nil?
       return super      
     end
         
-    map = UserTravelerCharacteristicsMap.where("characteristic_id = ? AND user_profile_id = ?", characteristic.id, user.user_profile.id).first
+    map = UserCharacteristic.where("characteristic_id = ? AND user_profile_id = ?", characteristic.id, user.user_profile.id).first
     # if the user has an existing characteristics stored we return it.
     return coerce_value(characteristic, map)
 
+  end
+
+  # Returns a symbol if it needs to be run through I18n or a string if it can be displayed as is
+  def get_answer_description(code)
+    characteristic = Characteristic.programs.find_by_code(code)
+    map = UserCharacteristic.where("characteristic_id = ? AND user_profile_id = ?", characteristic.id, user.user_profile.id).first
+    # if the user has an existing accommodation stored we return it.
+    return coerce_value_to_string(characteristic, map)
   end
 
   # Update the user characteristics based on the form params
@@ -33,11 +41,11 @@ class UserProgramsProxy < UserProfileProxy
     
     
     # Put everything in a big transaction
-    UserTravelerCharacteristicsMap.transaction do
+    UserCharacteristic.transaction do
       
       # Loop through the list of characteristics that could be set. This appraoch ensures we are only updating
       # active characteristics
-      TravelerCharacteristic.programs.each do |characteristic|
+      Characteristic.programs.each do |characteristic|
         
         Rails.logger.debug characteristic.inspect
         
@@ -55,7 +63,7 @@ class UserProgramsProxy < UserProfileProxy
           Rails.logger.debug new_value.nil? ? "NULL" : new_value
           
           # See if this characteristic already exists in the database for this user
-          user_characteristic = UserTravelerCharacteristicsMap.where("characteristic_id = ? AND user_profile_id = ?", characteristic.id, user.user_profile.id).first
+          user_characteristic = UserCharacteristic.where("characteristic_id = ? AND user_profile_id = ?", characteristic.id, user.user_profile.id).first
           if user_characteristic
             # it does so lets update it. 
             
@@ -71,7 +79,7 @@ class UserProgramsProxy < UserProfileProxy
           else
             # we need to create a new one
             Rails.logger.debug "Creating new characteristic"
-            UserTravelerCharacteristicsMap.create(:characteristic_id => characteristic.id, :user_profile_id => user.user_profile.id, :value => new_value) unless new_value.nil?
+            UserCharacteristic.create(:characteristic_id => characteristic.id, :user_profile_id => user.user_profile.id, :value => new_value) unless new_value.nil?
           end
         end
       end

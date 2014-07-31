@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Panel" id="1" x="264" y="359" width="300" height="75" measuredWidth="300" measuredHeight="75"/>
+  <widgets xsi:type="model:Label" id="2" x="339" y="370" width="225" text="Plan a Trip" measuredWidth="225" measuredHeight="53">
+    <font size="32px" bold="false"/>
+  </widgets>
+  <widgets xsi:type="model:Icon" id="3" x="265" y="363" width="79" height="70" measuredWidth="79" measuredHeight="70" icon="assets/share-sign (large)"/>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

@@ -6,8 +6,12 @@ class RelationshipStatus < ActiveRecord::Base
   DENIED = 4
   REVOKED = 5
   HIDDEN = 6
+
+  def self.statuses
+    [REQUESTED, PENDING, CONFIRMED, DENIED, REVOKED, HIDDEN]
+  end
   
-  attr_accessible :id, :name
+  # attr_accessible :id, :name
    
   def self.requested
     find(REQUESTED)
@@ -26,6 +30,10 @@ class RelationshipStatus < ActiveRecord::Base
   end
   def self.hidden
     find(HIDDEN)
+  end
+
+  def human_readable
+    I18n.t("relationship_status.#{code}")
   end
   
   def to_s

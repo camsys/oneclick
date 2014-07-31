@@ -1,0 +1,42 @@
+%h1
+  = link_to @agency.name, [:admin, @agency] if @agency
+  
+%h2= t(:find_traveler)
+.well.well-sm#filters
+  =form_tag({controller: "admin/agency_user_relationships", action: "index"}, method: 'get', :class => "form-inline") do
+    =label_tag :text, t(:search)
+    =text_field_tag :text, params[:text]
+    =submit_tag 'Go!', name: nil, :class => "btn btn-primary"
+%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_users_table
+  %thead
+    %tr
+      %th= t(:name)
+      %th= t(:email)
+      %th= t(:registered)
+      %th
+  %tbody
+    - @users.each do |traveler|
+      %tr
+        -if can_be_impersonated_by_current_user(traveler)
+          %td= link_to traveler.name, edit_admin_agency_traveler_path(@agency.id,traveler.id)
+        -else
+          %td= traveler.name
+        %td= traveler.email
+        %td= traveler.created_at.to_date
+        %td.center
+          - unless traveler.is_visitor? || current_user.agency.nil?
+            = link_to t(:plan_a_trip), (admin_agency_traveler_aid_user_path(@agency, traveler.id) rescue ''), :class => "btn btn-success"
+        = render partial: traveler, locals: {agency: @agency} if @agency
+
+:javascript
+  $(document).ready(function() {
+    $('#admin_agencies_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ agencies per page",
+              "sZeroRecords": t(:Nothing_found),
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ agencies",
+              "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
+              "sInfoFiltered": "(filtered from _MAX_ total agencies)"
+          }
+      } );
+  } );

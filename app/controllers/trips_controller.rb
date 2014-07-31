@@ -1,37 +1,13 @@
 class TripsController < PlaceSearchingController
   # set the @trip variable before any actions are invoked
-  before_filter :get_traveler, only: [:show, :new, :email, :email_itinerary, :details, :repeat, :edit, :destroy,
-    :update, :skip, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2, :create, :show_printer_friendly]
   before_filter :get_trip, :only => [:show, :email, :email_itinerary, :details, :repeat, :edit,
-    :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2, :show_printer_friendly]
+    :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2,
+    :show_printer_friendly, :example, :plan, :populate]
+  load_and_authorize_resource only: [:new, :create, :show, :index, :update, :edit]
 
   def index
-    # Filtering logic. See ApplicationHelper.trip_filters
-    if params[:time_filter_type]
-      @time_filter_type = params[:time_filter_type]
-    else
-      @time_filter_type = session[TIME_FILTER_TYPE_SESSION_KEY]
-    end
-    # if it is still not set use the default
-    if @time_filter_type.nil?
-      # default is to use the first time period filter in the TimeFilterHelper class
-      @time_filter_type = "100"
-    end
-    # store it in the session
-    session[TIME_FILTER_TYPE_SESSION_KEY] = @time_filter_type
 
-    # If the filter is at least 100 is must be a time filter, otherwise it will be a TripPurpose
-    if @time_filter_type.to_i >= 100
-      actual_filter = @time_filter_type.to_i - 100
-      # get the duration for this time filter
-      duration = TimeFilterHelper.time_filter_as_duration(actual_filter)
-      @trips = @traveler.trips.scheduled_between(duration.first, duration.last)
-    else
-      # the filter is a trip purpose
-      # Okay to leave as UTC since we're just sorting by it?
-      @trips = @traveler.trips.where('trip_purpose_id = ?', @time_filter_type).sort_by {|x| x.trip_datetime }.reverse
-    end
-
+    @trips = User.find(params[:user_id]).trips
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @trips }
@@ -39,7 +15,7 @@ class TripsController < PlaceSearchingController
 
   end
 
-  def show
+  def show_old
     @show_hidden = params[:show_hidden]
 
     if session[:current_trip_id]
@@ -52,9 +28,109 @@ class TripsController < PlaceSearchingController
     end
   end
 
+  def show
+    @trip = Trip.find(params[:id].to_i)
+    params[:asynch] = (params[:asynch] || true).to_bool
+    params[:regen] = (params[:regen] || false).to_bool
+    if params[:regen]
+      @trip.remove_itineraries
+      @trip.create_itineraries
+    end
+    #@tripResponse = TripSerializer.new(@trip, params) #sync-dislay: response to review page to display all itineraries at one time 
+    @tripResponse = TripSerializer.new(@trip, params) #async-dislay: response to review page to incrementally display itineraries
+
+    # TODO This seems incredibly hacky to go to json and back for this, but...
+    @tripResponseHash = JSON.parse(@tripResponse.to_json)
+    if @tripResponseHash['status'] == 0
+      Honeybadger.notify(
+        :error_class   => "Trip serialization failure for review page",
+        :error_message => @tripResponseHash['status_text'],
+        :parameters    => @tripResponseHash
+      )
+      flash.now[:alert] = t(:error_couldnt_plan)
+    end
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @tripResponse }
+    end
+  end
+
+  def plan
+    @itineraries = Itinerary.where('id in (' + params[:itinids] + ')')
+    @trip = Trip.find(params[:id])
+    @trip_parts = @trip.trip_parts
+
+    @trip.itineraries.selected.each do |itin|
+      itin.selected = false
+      itin.save
+    end
+
+    #Mark these itineraries as selected
+    @itineraries.each do |itinerary|
+      itinerary.selected = true
+      itinerary.save
+    end
+
+    #check if each trip part has a valid selected itinerary
+    #if not, should show alert message
+    @is_plan_valid = true
+    @trip.trip_parts.each do |trip_part|  
+      @is_plan_valid = trip_part.itineraries.selected.valid.count == 1
+      break if !@is_plan_valid  
+    end
+
+    if @is_plan_valid
+      #if this trip has been booked, get booking information
+      if @trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.booking_confirmation
+
+        eh = EcolaneHelpers.new
+        result, message = eh.get_trip_info(@trip.outbound_part.selected_itinerary)
+        if result
+          @outbound_pu_time = message[:pu_time]
+          @outbound_do_time = message[:do_time]
+        else
+          @outbound_pu_time = "not yet assigned."
+          @outbound_do_time = "not yet assigned."
+        end
+      end
+
+      if @trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.booking_confirmation
+        eh = EcolaneHelpers.new
+        result, message = eh.get_trip_info(@trip.return_part.selected_itinerary)
+        if result
+          @return_pu_time = message[:pu_time]
+          @return_do_time = message[:do_time]
+        else
+          @return_pu_time = "not yet assigned."
+          @return_do_time = "not yet assigned."
+        end
+      end
+
+      # Just before render, save off the html on the trip, so that we can access it later for ratings.
+      planned_trip_html = render_to_string partial: "selected_itineraries_details", locals: { trip: @trip, for_db: true }
+      @trip.update_attributes(planned_trip_html: planned_trip_html, needs_feedback_prompt: true)
+      @booking_proxy = UserServiceProxy.new()
+
+      respond_to do |format|
+        format.html # plan.html.erb
+        format.json { render json: @trip_parts }
+      end
+    else
+      @tripHash = JSON.parse(@trip.to_json)
+      Honeybadger.notify(
+        :error_class   => "Some selected itineraries not available for Plan page",
+        :error_message => "Supposedly each trip part should have one and only valid selected itinerary, however, this is not the case. Check parameters about trip data.",
+        :parameters    => @tripHash
+      )
+      flash.now[:alert] = t(:error_couldnt_plan)
+    end
+  end
+
   def show_printer_friendly
     @show_hidden = params[:show_hidden]
     @print = params[:print]
+    @hide_timeout = true
 
     if session[:current_trip_id]
       session[:current_trip_id] = nil
@@ -71,7 +147,7 @@ class TripsController < PlaceSearchingController
   def email
     Rails.logger.info "Begin email"
     email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
-    if user_signed_in?
+    if user_signed_in? and params[:email][:send_email_to]
       params[:email][:send_email_to].each do |email|
         unless email == ""
           email_addresses << email
@@ -79,16 +155,19 @@ class TripsController < PlaceSearchingController
       end
     end
 
+    email_addresses = email_addresses.uniq
     Rails.logger.info email_addresses.inspect
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
     if from_email == ""
-    from_email = Oneclick::Application.config.name
+      from_email = Oneclick::Application.config.name
     end
     subject = Oneclick::Application.config.name + ' Trip Itinerary'
     UserMailer.user_trip_email(email_addresses, @trip, subject, from_email,
       params[:email][:email_comments]).deliver
+    notice_text = t(:email_sent_to).sub('%{email_sent_to}', email_addresses.to_sentence)
     respond_to do |format|
-      format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.to_sentence}."  }
+      format.html { redirect_to plan_user_trip_path(@trip.creator, @trip, itinids: params[:itinids], locale: I18n.locale),
+        :notice => notice_text  }
       format.json { render json: @trip }
     end
   end
@@ -118,8 +197,9 @@ class TripsController < PlaceSearchingController
     end
     subject = Oneclick::Application.config.name + ' Trip Request'
     UserMailer.provider_trip_email(emails, @trip, subject, from_email, comments).deliver
+    notice_text = t(:email_sent_to).sub('%{email_sent_to}', provider.name)
     respond_to do |format|
-      format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{provider.name}."  }
+      format.html { redirect_to user_trip_url(@trip.creator, @trip, locale: I18n.locale), :notice => notice_text  }
       format.json { render json: @trip }
     end
   end
@@ -137,21 +217,39 @@ class TripsController < PlaceSearchingController
     subject = Oneclick::Application.config.name + ' Trip Itinerary'
     UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, subject, from_email,
       params[:email][:email_comments]).deliver
+    notice_text = t(:email_sent_to).sub('%{email_sent_to}', email_addresses.join(', '))
     respond_to do |format|
-      format.html { redirect_to user_trip_url(@trip.creator, @trip), :notice => "An email was sent to #{email_addresses.join(', ')}."  }
+      format.html { redirect_to user_trip_url(@trip.creator, @trip, locale: I18n.locale), :notice => notice_text  }
       format.json { render json: @trip }
     end
   end
 
   def email_feedback
-    Rails.logger.info "Begin email"
     @trip = Trip.find(params[:id])
-    email_address = @trip.user.email
-    from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    UserMailer.feedback_email(email_address, @trip, from_email).deliver
-    respond_to do |format|
-      format.html { redirect_to admin_trips_path, :notice => "An email was sent to #{email_address}."  }
-      format.json { render json: @trip }
+    if @trip.user.email
+      Rails.logger.info "Begin email"
+      UserMailer.feedback_email(@trip).deliver
+      notice_text = t(:email_sent_to).sub('%{email_sent_to}', @trip.user.email)
+    else
+      Rails.logger.info "no email found"
+      notice_text = t(:no_email_found)
+    end
+    
+    if current_user.agency
+      respond_to do |format|
+        format.html { redirect_to admin_agency_trips_path(current_user.agency), :notice => notice_text, locale: I18n.locale  }
+        format.json { render json: @trip }
+      end
+    elsif current_user.provider
+      respond_to do |format|
+        format.html { redirect_to admin_provider_trips_path(current_user.provider), :notice => notice_text, locale: I18n.locale  }
+        format.json { render json: @trip }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to admin_trips_path, :notice => notice_text, locale: I18n.locale  }
+        format.json { render json: @trip }
+      end
     end
   end
 
@@ -190,7 +288,7 @@ class TripsController < PlaceSearchingController
   def repeat
     # make sure we can find the trip we are supposed to be repeating and that it belongs to us.
     if @trip.nil?
-      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
+      redirect_to(user_trips_url(locale: I18n.locale), :flash => { :alert => t(:error_404) })
       return
     end
 
@@ -202,8 +300,8 @@ class TripsController < PlaceSearchingController
     # Set the travel time/date to the default
     travel_date = default_trip_time
 
-    @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
-    @trip_proxy.trip_time = travel_date.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
+    @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
+    @trip_proxy.outbound_trip_time = travel_date.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
 
     if @trip_proxy.is_round_trip == "1"
       return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
@@ -214,6 +312,8 @@ class TripsController < PlaceSearchingController
     @markers = create_trip_proxy_markers(@trip_proxy).to_json
     @places = create_place_markers(@traveler.places)
 
+    setup_modes
+
     respond_to do |format|
       format.html { render :action => 'edit'}
     end
@@ -222,20 +322,22 @@ class TripsController < PlaceSearchingController
   # User wants to edit a trip in the future
   def edit
     # make sure we can find the trip we are supposed to be updating and that it belongs to us.
-    if @trip.nil?
-      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
-      return
-    end
+    # if @trip.nil?
+    #   redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
+    #   return
+    # end
     # make sure that the trip can be modified
     unless @trip.can_modify
-      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
+      please_create = "Please <a href='%s'>start</a> a new trip." % new_user_trip_path(@traveler) # TODO I18N
+      redirect_to(:back, :flash => { :alert => [@trip.cant_modify_reason, please_create].join(' ').html_safe })
       return
     end
 
-    # create a new trip_proxy from the current trip
-    @trip_proxy = create_trip_proxy(@trip)
-    # set the flag so we know what to do when the user submits the form
+    setup_modes
+
+    @trip_proxy = create_trip_proxy(@trip, modes: session[:modes_desired])
     @trip_proxy.mode = MODE_EDIT
+
     # Set the trip proxy Id to the PK of the trip so we can update it
     @trip_proxy.id = @trip.id
 
@@ -251,11 +353,11 @@ class TripsController < PlaceSearchingController
   def unset_traveler
 
     # set or update the traveler session key with the id of the traveler
-    set_traveler_id(nil)
+    stop_assisting
     # set the @traveler variable
     get_traveler
 
-    redirect_to root_path, :alert => t(:assisting_turned_off)
+    redirect_to root_path(locale: I18n.locale), :alert => t(:assisting_turned_off)
 
   end
 
@@ -306,8 +408,8 @@ class TripsController < PlaceSearchingController
   # GET /trips/new
   # GET /trips/new.json
   def new
-
-    @trip_proxy = TripProxy.new()
+    session[:tabs_visited] = []
+    @trip_proxy = TripProxy.new(modes: session[:modes_desired], outbound_arrive_depart: false, return_arrive_depart: true) # default outbound trips to arrive-by, return trips to depart-at.
     @trip_proxy.traveler = @traveler
 
     # set the flag so we know what to do when the user submits the form
@@ -316,8 +418,8 @@ class TripsController < PlaceSearchingController
     # Set the travel time/date to the default
     travel_date = default_trip_time
 
-    @trip_proxy.trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
-    @trip_proxy.trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
+    @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
+    @trip_proxy.outbound_trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
 
     # Set the trip purpose to its default
     @trip_proxy.trip_purpose_id = TripPurpose.all.first.id
@@ -332,14 +434,20 @@ class TripsController < PlaceSearchingController
     @markers = create_trip_proxy_markers(@trip_proxy).to_json
     @places = create_place_markers(@traveler.places)
 
+    setup_modes
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @trip_proxy }
     end
   end
 
+
   # updates a trip
   def update
+
+    setup_modes
+
     # make sure we can find the trip we are supposed to be updating and that it belongs to us.
     if @trip.nil?
       redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
@@ -347,17 +455,27 @@ class TripsController < PlaceSearchingController
     end
     # make sure that the trip can be modified
     unless @trip.can_modify
-      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
-      return
-    end
-    # make sure that the trip can be modified
-    unless @trip.can_modify
-      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
+      please_create = "Please <a href='%s'>start</a> a new trip." % new_user_trip_path(@traveler) # TODO I18N
+      redirect_to(:back, :flash => { :alert => [@trip.cant_modify_reason, please_create].join(' ').html_safe })
       return
     end
 
     # Get the updated trip proxy from the form params
     @trip_proxy = create_trip_proxy_from_form_params
+
+    session[:modes_desired] = @trip_proxy.modes_desired
+
+    # TODO If trip_proxy isn't valid, should go back to form right now, before this.
+    if @trip_proxy.valid?
+      updated_trip = Trip.create_from_proxy(@trip_proxy, current_or_guest_user, @traveler)
+    else
+      Rails.logger.info "Not valid: #{@trip_proxy.ai}"
+      Rails.logger.info "\nError render 1\n"
+      flash.now[:notice] = t(:correct_errors_to_create_a_trip)
+      render action: "new"
+      return
+    end
+
     # save the id of the trip we are updating
     @trip_proxy.id = @trip.id
 
@@ -366,11 +484,7 @@ class TripsController < PlaceSearchingController
     @places = create_place_markers(@traveler.places)
 
     # see if we can continue saving this trip
-    if @trip_proxy.errors.empty?
-
-      # create a trip from the trip proxy. We need to do this first before any
-      # trip places are removed from the database
-      updated_trip = create_trip(@trip_proxy)
+    if @trip_proxy.valid?
 
       # remove any child objects in the old trip
       @trip.clean
@@ -380,6 +494,7 @@ class TripsController < PlaceSearchingController
 
       # update the associations
       @trip.trip_purpose = updated_trip.trip_purpose
+      @trip.desired_modes = updated_trip.desired_modes
       @trip.creator = @traveler
       updated_trip.trip_places.each do |tp|
         tp.trip = @trip
@@ -396,24 +511,33 @@ class TripsController < PlaceSearchingController
         if @trip.save
           @trip.reload
 
-          if @traveler.user_profile.has_characteristics? and user_signed_in?
-            @trip.create_itineraries
-            @path = user_trip_path(@traveler, @trip)
+          if !@trip.eligibility_dependent?
+            @path = user_trip_path_for_ui_mode(@traveler, @trip)
           else
             session[:current_trip_id] = @trip.id
-            @path = new_user_characteristic_path(@traveler, inline: 1)
+            @path = new_user_trip_characteristic_path_for_ui_mode(@traveler, @trip)
           end
           format.html { redirect_to @path }
           format.json { render json: @trip, status: :created, location: @trip }
         else
+          Rails.logger.info "\nError render 2\n"
+          Rails.logger.info "ERRORS: #{@trip.errors.ai}"
+          Rails.logger.info "PLACES: #{@trip.trip_places.ai}"
+          flash.now[:notice] = t(:correct_errors_to_create_a_trip)          
           format.html { render action: "new" }
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
       else
-        format.html { render action: "new", flash[:alert] => t(:correct_errors_to_create_a_trip) }
+        Rails.logger.info "\nError render 3\n"
+        flash.now[:notice] = t(:correct_errors_to_create_a_trip)          
+        format.html { render action: "new" }
       end
     end
 
+  end
+
+  def populate
+    redirect_to user_trip_path_for_ui_mode(@traveler, @trip)
   end
 
   # POST /trips
@@ -423,11 +547,18 @@ class TripsController < PlaceSearchingController
     # inflate a trip proxy object from the form params
     @trip_proxy = create_trip_proxy_from_form_params
 
-    Rails.logger.info "TripsController#create"
-    Rails.logger.info "@trip_proxy #{@trip_proxy.ai}"
-    Rails.logger.info "valid? #{@trip_proxy.valid?}"
+    session[:modes_desired] = @trip_proxy.modes_desired
+
+    setup_modes
+
     if @trip_proxy.valid?
-      @trip = create_trip(@trip_proxy)
+      @trip = Trip.create_from_proxy(@trip_proxy, current_or_guest_user, @traveler)
+    else
+      Rails.logger.info "Not valid: #{@trip_proxy.ai}"
+      Rails.logger.info "\nError render 1\n"
+      flash.now[:alert] = t(:correct_errors_to_create_a_trip)
+      render action: "new"
+      return
     end
 
     # Create markers for the map control
@@ -436,27 +567,35 @@ class TripsController < PlaceSearchingController
 
     respond_to do |format|
       if @trip
-        if @trip.save
-          @trip.cache_trip_places_georaw
+        if @trip.errors.empty? && @trip.save
           @trip.reload
-          # @trip.restore_trip_places_georaw
-          if @traveler.user_profile.has_characteristics? and user_signed_in?
+          if !@trip.eligibility_dependent?
             @trip.create_itineraries
             @path = user_trip_path_for_ui_mode(@traveler, @trip)
           else
             session[:current_trip_id] = @trip.id
-            @path = new_user_characteristic_path_for_ui_mode(@traveler, inline: 1)
+            @path = new_user_trip_characteristic_path_for_ui_mode(@traveler, @trip)
           end
           format.html { redirect_to @path }
           format.json { render json: @trip, status: :created, location: @trip }
         else
           # TODO Will this get handled correctly?
+          Rails.logger.info "\nError render 2\n"
+          Rails.logger.info "ERRORS: #{@trip.errors.ai}"
+          Rails.logger.info "PLACES: #{@trip.trip_places.ai}"
+          Rails.logger.info "PLACE ERRORS: #{@trip.trip_places.collect{|tp| tp.errors}}"
+          @trip_proxy.errors = @trip.errors
+          flash.now[:alert] = t(:correct_errors_to_create_a_trip)
           format.html { render action: "new" }
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
       else
         # TODO Will this get handled correctly?
-        format.html { render action: "new", flash[:alert] => t(:correct_errors_to_create_a_trip) }
+        Rails.logger.info "\nError render 3\n"
+        Rails.logger.info "ERRORS: #{@trip.errors.ai}"
+        Rails.logger.info "PLACES: #{@trip.trip_places.ai}"
+        flash.now[:alert] = t(:correct_errors_to_create_a_trip)
+        format.html { render action: "new" }
       end
     end
   end
@@ -528,40 +667,72 @@ class TripsController < PlaceSearchingController
     redirect_to user_trip_path_for_ui_mode(@traveler, @trip)
   end
 
+  def unselect_all
+    @trip.itineraries.selected.each do |i|
+      i.update_attribute :selected, false
+    end
+  end
+
   def select
-    # hides all other itineraries for this trip part
-    Rails.logger.info params.inspect
-    itinerary = @trip.itineraries.valid.find(params[:itin])
-    itinerary.hide_others
+    itinerary = Itinerary.find(params[:itin])
+    itinerary.update_attribute :selected, true
     respond_to do |format|
       format.html { redirect_to(user_trip_path_for_ui_mode(@traveler, @trip)) }
       format.json { head :no_content }
     end
   end
 
-  def comments
-    @trip = Trip.find(params[:id].to_i)
-    @trip.user_comments = params['trip']['user_comments']
-    @trip.save
+  def book
+    @itinerary = Itinerary.find(params[:itin].to_i )
+    eh = EcolaneHelpers.new
+
+    outbound_part = @itinerary.trip_part
+    if outbound_part.is_bookable?
+      result, messages = eh.book_itinerary(@itinerary)
+    else
+      result = 'none'
+      messages = 'none'
+    end
+
+    return_part = @itinerary.trip_part.get_return_part
+    if return_part and return_part.is_bookable?
+      return_result, return_messages = eh.book_itinerary(return_part.selected_itinerary)
+    else
+      return_result = 'none'
+      return_messages = 'none'
+    end
 
     respond_to do |format|
-      format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => t(:comments_sent)}) }
-      format.json { head :no_content }
+      format.json { render json: [result.to_s, messages, return_result.to_s, return_messages] }
     end
   end
 
-  def admin_comments
-    @trip = Trip.find(params[:id].to_i)
-    @trip.user_comments = params['trip']['user_comments']
+  def new_rating_from_email
+    @trip = Trip.find(params[:id])
+    unless ((@trip.md5_hash.eql? params[:hash]) || (authorize! :create, @trip.ratings.build(rateable: @trip)))
+      flash[:notice] = t(:http_404_not_found)
+      redirect_to :root
+    end
+    
+    taken = true.to_s.eql? params[:taken] # convert to a boolean for future use (ruby isn't falsy enough for me here)
+    @trip.taken = taken
     @trip.save
-    respond_to do |format|
-      format.html { redirect_to(admin_trips_path, :flash => { :notice => t(:comments_updated)}) }
-      format.json { head :no_content }
+
+    unless taken
+      render 'ratings/untaken_trip'
+    else
+      @ratings_proxy = RatingsProxy.new(@trip, @trip.user) # rateable must be a trip here.  Guarded by the initial check (md5 hash)
+      render 'ratings/new_from_email'
     end
   end
-
 protected
 
+  
+  # Set the default travel time/date to x mins from now
+  def default_trip_time
+    return Time.now.in_time_zone.next_interval(DEFAULT_TRIP_TIME_AHEAD_MINS.minutes)    
+  end
+  
   # Safely set the @trip variable taking into account trip ownership
   def get_trip
     # limit trips to trips accessible by the user unless an admin
@@ -614,318 +785,23 @@ private
 
   # creates a trip_proxy object from form parameters
   def create_trip_proxy_from_form_params
+
     trip_proxy = TripProxy.new(params[:trip_proxy])
     trip_proxy.traveler = @traveler
 
     Rails.logger.debug trip_proxy.inspect
-
     return trip_proxy
-
   end
 
-  # creates a trip_proxy object from a trip. Note that this does not set the
-  # trip id into the proxy as only edit functions need this.
-  def create_trip_proxy(trip)
-
-    # get the trip parts for this trip
-    trip_part = trip.trip_parts.first
-
-    # initialize a trip proxy from this trip
-    trip_proxy = TripProxy.new
-    trip_proxy.traveler = @traveler
-    trip_proxy.trip_purpose_id = trip.trip_purpose.id
-
-    trip_proxy.arrive_depart = trip_part.is_depart
-    trip_datetime = trip_part.trip_time
-    trip_proxy.trip_date = trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
-    trip_proxy.trip_time = trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
-    Rails.logger.info "create_trip_proxy"
-    Rails.logger.info "trip_part.scheduled_date #{trip_part.scheduled_date}"
-    Rails.logger.info "trip_part.scheduled_time #{trip_part.scheduled_time}"
-    Rails.logger.info "trip_proxy.trip_date #{trip_proxy.trip_date}"
-    Rails.logger.info "trip_proxy.trip_time #{trip_proxy.trip_time}"
-
-    # Check for return trips
-    if trip.trip_parts.count > 1
-      last_trip_part = trip.trip_parts.last
-      trip_proxy.is_round_trip = last_trip_part.is_return_trip ? "1" : "0"
-      trip_proxy.return_trip_time = last_trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
-    end
-
-    # Set the from place
-    trip_proxy.from_place = trip.trip_places.first.name
-    trip_proxy.from_raw_address = trip.trip_places.first.address
-    trip_proxy.from_lat = trip.trip_places.first.location.first
-    trip_proxy.from_lon = trip.trip_places.first.location.last
-
-    if trip.trip_places.first.poi
-      trip_proxy.from_place_selected_type = POI_TYPE
-      trip_proxy.from_place_selected = trip.trip_places.first.poi.id
-    elsif trip.trip_places.first.place
-      trip_proxy.from_place_selected_type = PLACES_TYPE
-      trip_proxy.from_place_selected = trip.trip_places.first.place.id
-    else
-      trip_proxy.from_place_selected_type = CACHED_ADDRESS_TYPE
-      trip_proxy.from_place_selected = trip.trip_places.first.id
-    end
-
-    # Set the to place
-    trip_proxy.to_place = trip.trip_places.last.name
-    trip_proxy.to_raw_address = trip.trip_places.last.address
-    trip_proxy.to_lat = trip.trip_places.last.location.first
-    trip_proxy.to_lon = trip.trip_places.last.location.last
-
-    if trip.trip_places.last.poi
-      trip_proxy.to_place_selected_type = POI_TYPE
-      trip_proxy.to_place_selected = trip.trip_places.last.poi.id
-    elsif trip.trip_places.last.place
-      trip_proxy.to_place_selected_type = PLACES_TYPE
-      trip_proxy.to_place_selected = trip.trip_places.last.place.id
-    else
-      trip_proxy.to_place_selected_type = CACHED_ADDRESS_TYPE
-      trip_proxy.to_place_selected = trip.trip_places.last.id
-    end
-
-    return trip_proxy
-
+  def create_trip_proxy(trip, attr = {})
+    TripProxy.create_from_trip(trip, attr)
   end
 
-  # Creates a trip object from a trip proxy
-  def create_trip(trip_proxy)
-
-    trip = Trip.new()
-    trip.creator = current_or_guest_user
-    trip.user = @traveler
-    trip.trip_purpose = TripPurpose.find(trip_proxy.trip_purpose_id)
-
-    # get the start for this trip
-    from_place = TripPlace.new()
-    from_place.sequence = 0
-    place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected, true)
-    if place[:poi_id]
-      from_place.poi = Poi.find(place[:poi_id])
-    elsif place[:place_id]
-      from_place.place = @traveler.places.find(place[:place_id])
-    else
-      from_place.raw_address = place[:formatted_address]
-      from_place.address1 = place[:street_address]
-      from_place.city = place[:city]
-      from_place.state = place[:state]
-      from_place.zip = place[:zip]
-      from_place.county = place[:county]
-      from_place.lat = place[:lat]
-      from_place.lon = place[:lon]
-      from_place.raw = place[:raw]
-    end
-
-    #If from_is_home, set the from place as home.
-    unless trip_proxy.from_is_home.to_i == 0
-      unless place[:place_id]
-        new_place = Place.new
-        new_place.user = @traveler
-        new_place.creator = current_user
-        new_place.raw_address = from_place.raw_address
-        new_place.name = 'My Home'
-        new_place.address1 = from_place.address1
-        new_place.address2 = from_place.address2
-        new_place.city = from_place.city
-        new_place.state = from_place.state
-        new_place.zip = from_place.zip
-        new_place.county = from_place.county
-        new_place.lat = from_place.lat
-        new_place.lon = from_place.lon
-        new_place.active = true
-        from_place.place = new_place
-
-        @traveler.clear_home
-        new_place.home = true
-        new_place.save
-      else
-
-        @traveler.clear_home
-        from_place.place.home = true
-        from_place.place.save
-      end
-    end
-
-    # get the end for this trip
-    to_place = TripPlace.new()
-    to_place.sequence = 1
-    place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected, false)
-    if place[:poi_id]
-      to_place.poi = Poi.find(place[:poi_id])
-    elsif place[:place_id]
-      to_place.place = @traveler.places.find(place[:place_id])
-    else
-      to_place.raw_address = place[:formatted_address]
-      to_place.address1 = place[:street_address]
-      to_place.city = place[:city]
-      to_place.state = place[:state]
-      to_place.zip = place[:zip]
-      to_place.county = place[:county]
-      to_place.lat = place[:lat]
-      to_place.lon = place[:lon]
-      to_place.raw = place[:raw]
-    end
-
-
-    #If to_is_home, set the to place as home.
-    unless trip_proxy.to_is_home.to_i == 0
-      unless place[:place_id]
-        new_place = Place.new
-        new_place.user = @traveler
-        new_place.creator = current_user
-        new_place.raw_address = to_place.raw_address
-        new_place.name = 'My Home'
-        new_place.address1 = to_place.address1
-        new_place.address2 = to_place.address2
-        new_place.city = to_place.city
-        new_place.state = to_place.state
-        new_place.zip = to_place.zip
-        new_place.county = to_place.county
-        new_place.lat = to_place.lat
-        new_place.lon = to_place.lon
-        new_place.active = true
-        to_place.place = new_place
-
-        @traveler.clear_home
-        new_place.home = true
-        new_place.save
-      else
-
-        @traveler.clear_home
-        to_place.place.home = true
-        to_place.place.save
-      end
-    end
-
-
-    # add the places to the trip
-    trip.trip_places << from_place
-    trip.trip_places << to_place
-
-    # Create the trip parts. For now we only have at most two but there could be more
-    # in later versions
-
-    # set the sequence counter for when we have multiple trip parts
-    sequence = 0
-
-    trip_date = Date.strptime(trip_proxy.trip_date, '%m/%d/%Y')
-
-    # Create the outbound trip part
-    trip_part = TripPart.new
-    trip_part.trip = trip
-    trip_part.sequence = sequence
-    trip_part.is_depart = trip_proxy.arrive_depart == t(:departing_at) ? true : false
-    trip_part.scheduled_date = trip_date
-    trip_part.scheduled_time = Time.zone.parse(trip_proxy.trip_time)
-    Rails.logger.info "create_trip"
-    Rails.logger.info "trip_date #{trip_date}"
-    Rails.logger.info "trip_part.scheduled_date #{trip_part.scheduled_date}"
-    Rails.logger.info "trip_proxy.trip_time #{trip_proxy.trip_time}"
-    Rails.logger.info "trip_part.scheduled_time #{trip_part.scheduled_time}"
-    trip_part.from_trip_place = from_place
-    trip_part.to_trip_place = to_place
-
-    trip.trip_parts << trip_part
-
-    # create the round trip if needed
-    if trip_proxy.is_round_trip == "1"
-      sequence += 1
-      trip_part = TripPart.new
-      trip_part.trip = trip
-      trip_part.sequence = sequence
-      # the return trip is always a depart at
-      trip_part.is_depart = true
-      # the return trip time is the arrival time plus
-      trip_part.is_return_trip = true
-      trip_part.scheduled_date = trip_date
-      trip_part.scheduled_time = Time.zone.parse(trip_proxy.return_trip_time)
-      trip_part.from_trip_place = to_place
-      trip_part.to_trip_place = from_place
-
-      trip.trip_parts << trip_part
-    end
-
-    return trip
+  def setup_modes
+    mode_hash = Mode.setup_modes(session[:modes_desired])
+    @modes = mode_hash[:modes]
+    @transit_modes = mode_hash[:transit_modes]
+    @selected_modes = mode_hash[:selected_modes]
   end
 
-  # Get the selected place for this trip-end based on the type of place
-  # selected and the data for that place
-  def get_preselected_place(place_type, place_id, is_from = false)
-    case place_type
-    when POI_TYPE
-      # the user selected a POI using the type-ahead function
-      poi = Poi.find(place_id)
-      return {
-        :poi_id => poi.id,
-        :name => poi.name,
-        :formatted_address => poi.address,
-        :lat => poi.location.first,
-        :lon => poi.location.last
-        }
-    when CACHED_ADDRESS_TYPE
-      # the user selected an address from the trip-places table using the type-ahead function
-      trip_place = @traveler.trip_places.find(place_id)
-      return {
-        :name => trip_place.raw_address,
-        :lat => trip_place.lat,
-        :lon => trip_place.lon,
-        :formatted_address => trip_place.raw,
-        :street_address => trip_place.address1,
-        :city => trip_place.city,
-        :state => trip_place.state,
-        :zip => trip_place.zip,
-        :county => trip_place.county,
-        :raw => trip_place.raw
-        }
-    when PLACES_TYPE
-      # the user selected a place using the places drop-down
-      place = @traveler.places.find(place_id)
-      return {
-        :place_id => place.id,
-        :name => place.name,
-        :formatted_address => place.address,
-        :lat => place.location.first,
-        :lon => place.location.last
-        }
-    when RAW_ADDRESS_TYPE
-      # the user entered a raw address and possibly selected an alternate from the list of possible
-      # addresses
-      if is_from
-        #puts place_id
-        #puts get_cached_addresses(CACHED_FROM_ADDRESSES_KEY).ai
-        place = get_cached_addresses(CACHED_FROM_ADDRESSES_KEY)[place_id.to_i]
-      else
-        place = get_cached_addresses(CACHED_TO_ADDRESSES_KEY)[place_id.to_i]
-      end
-      Rails.logger.debug "in get_preselected_place"
-      Rails.logger.debug "#{is_from} #{place.ai}"
-      return {
-        :name => place[:name],
-        :lat => place[:lat],
-        :lon => place[:lon],
-        :formatted_address => place[:formatted_address],
-        :street_address => place[:street_address],
-        :city => place[:city],
-        :state => place[:state],
-        :zip => place[:zip],
-        :county => place[:county],
-        :raw => place[:raw]
-        }
-    when PLACES_AUTOCOMPLETE_TYPE
-      result = get_places_autocomplete_details(place_id)
-      place = result.body['result']
-
-      {
-        place_id:          false,
-        name:              place['formatted_address'],
-        formatted_address: place['formatted_address'],
-        lat:               place['geometry']['location']['lat'],
-        lon:               place['geometry']['location']['lng'],
-      }
-    else
-      return {}
-    end
-  end
 end

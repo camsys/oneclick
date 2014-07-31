@@ -1,0 +1,22 @@
+@font-face{
+    font-family:'travel-icons';
+    src: font-url('travelcons.eot');
+    src: font-url('travelcons.eot') format('embedded-opentype'),
+         font-url('travelcons.woff') format('woff'),
+         font-url('travelcons.ttf') format('truetype');
+    font-weight:normal;font-style:normal;}
+.travelcon-subway:before,
+.travelcon-walk:before,
+.travelcon-bus:before,
+.travelcon-rail:before,
+.travelcon-car:before,
+.travelcon-tram:before,
+.travelcon-boat:before{font-family:'travel-icons';font-style:normal;font-weight:normal;}
+.travelcon-subway:before{content:"r";}
+.travelcon-walk:before{content:":";}
+.travelcon-bus:before{content:"b";}
+.travelcon-rail:before{content:">";}
+.travelcon-boat:before{content:"P";}
+.travelcon-car:before{content:"x"}
+.travelcon-tram:before{content:"r"}
+

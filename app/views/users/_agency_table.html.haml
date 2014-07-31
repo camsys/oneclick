@@ -1,0 +1,29 @@
+%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#agencies_table
+  %thead
+    %tr
+      %th= t(:agency)
+      %th= t(:status)
+      %th.updated= t(:updated)
+  %tbody
+    - user.agency_user_relationships.each do |relationship|
+      %tr
+        %td
+          = link_to(relationship.agency.name, admin_agency_path(relationship.agency))
+        %td
+          = t(relationship.relationship_status)
+        %td.updated
+          = distance_of_time_in_words_to_now(relationship.updated_at).to_s + " " + t(:ago)
+
+:javascript
+  $(document).ready(function() {
+    $('#agencies_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ agencies per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ agencies",
+              "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
+              "sInfoFiltered": "(filtered from _MAX_ total agencies)"
+          },
+          "sDom": "<'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+  } );

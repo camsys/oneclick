@@ -1,0 +1,39 @@
+- if !@is_plan_valid
+  .row{style: "padding: 0px;"}
+    = render partial: 'shared/trip_plan_breadcrumbs'
+- else
+  .row{style: "padding: 0px;"}
+    .hidden-xs.col-sm-8
+      = render partial: 'shared/trip_plan_breadcrumbs'
+    .col-sm-4
+      = link_to '#', {href: '#send_trip_by_email', class: 'btn btn-default pull-right action-button', style: "margin-right: 5px;", data: {toggle: 'modal'}} do
+        /%i.fa.fa-envelope-o
+        = t(:email)
+      = link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn btn-default pull-right action-button', style: "margin-right: 5px;", data: {toggle: 'modal'}} do
+        /%i.fa.fa-print
+        = t(:print)
+      -ItineraryDecorator.decorate_collection(@itineraries.valid).each do |itinerary|
+        -if not itinerary.service.booking_service_code.blank? and user_signed_in?
+          = button_tag :type => 'button', :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;", "data-target" => "#bookingModal", "data-toggle" => "modal" do
+            =t(:book)
+          = render partial: 'booking_modal'
+          -break
+
+  .col-xs-12{style: "padding: 0px;"}
+    = render partial: "selected_itineraries_details", locals: { trip: @trip, for_db: false }
+  
+  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
+    = link_to '#', {href: '#send_trip_by_email', class: 'btn btn-default pull-right action-button', style: "margin-right: 5px;", data: {toggle: 'modal'}} do
+      /%i.fa.fa-envelope-o
+      = t(:email)
+    = link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn btn-default pull-right action-button', style: "margin-right: 5px;", data: {toggle: 'modal'}} do
+      /%i.fa.fa-print
+      = t(:print)
+    -ItineraryDecorator.decorate_collection(@itineraries.valid).each do |itinerary|
+      -if itinerary.service.booking_service_code and user_signed_in?
+        = button_tag :type => 'button', :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;", "data-target" => "#bookingModal", "data-toggle" => "modal" do
+          =t(:book)
+        = render partial: 'booking_modal'
+        -break
+  = render partial: 'send_trip_by_email', locals: {trip: @trip}
+

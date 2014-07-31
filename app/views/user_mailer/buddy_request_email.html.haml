@@ -1,3 +1,18 @@
-#TODO
+/=cms_snippet_content('buddy_request_email')
+- user_name = get_user_name(@traveler) 
+%h3
+  = t(:buddy_request_email_intro).sub('%{name}', user_name).sub('%{site_title}', t(:site_title))
 
-Buddy request email
+%hr
+
+%h4
+  = t(:buddy_request_email_step_0) 
+%h4
+  = t(:buddy_request_email_step_1)
+  = link_to t(:site_title), root_url, {target: '_new'}
+%h4
+  = t(:buddy_request_email_step_2)
+%h4
+  = t(:buddy_request_email_step_3)
+%h4
+  = t(:buddy_request_email_step_4).sub('%{name}', user_name)

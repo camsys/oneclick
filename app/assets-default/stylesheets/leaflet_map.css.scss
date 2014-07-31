@@ -1,0 +1,70 @@
+.leaflet-button-pressed{
+  background-color: grey !important; 
+}
+
+.leaflet-street-view-icon {
+	background-image: image-url('street_view.png');
+	width: 16px;
+	height: 24px;
+}
+
+/*trip leg polyline styles for each mode*/
+
+.map-tripleg {
+  stroke-opacity: 0.8;
+}
+.map-tripleg-walk {
+  stroke: $trip-leg-walk;
+}
+
+.map-tripleg-wait {
+  stroke: $trip-leg-wait;
+}
+
+.map-tripleg-subway {
+  stroke: $trip-leg-subway;
+}
+
+.map-tripleg-tram{
+  stroke: $trip-leg-tram;
+}
+
+.map-tripleg-rail {
+  stroke: $trip-leg-rail;
+}
+
+.map-tripleg-bus {
+  stroke: $trip-leg-bus;
+}
+
+.map-tripleg-taxi {
+  stroke: $trip-leg-taxi;
+}
+
+.map-tripleg-bike {
+  stroke: $trip-leg-bicycle;
+}
+
+.map-tripleg-bikeshare {
+  stroke: $trip-leg-bikeshare;
+}
+
+.map-tripleg-drive {
+  stroke: $trip-leg-drive;
+}
+
+.map-tripleg-car {
+  stroke: $trip-leg-drive;
+}
+
+.map-tripleg-rideshare {
+  stroke: $trip-leg-rideshare;
+}
+
+.map-tripleg-paratransit {
+  stroke: $trip-leg-paratransit;
+}
+
+.map-tripleg-unknown {
+  stroke: $trip-leg-unknown;
+}

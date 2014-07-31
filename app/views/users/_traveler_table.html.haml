@@ -1,0 +1,31 @@
+.row
+  .col-sm-12
+    %table.table.table.condensed.table-striped.table-hover.table-bordered#travelersdatatable
+      %thead
+        %tr
+          %th= t(:buddy)            
+          %th= t(:email)
+          %th= t(:status)
+          %th= t(:updated)
+      %tbody
+        - user.traveler_relationships.each do |relationship|
+          %tr
+            %td= relationship.traveler.name
+            %td= relationship.traveler.email
+            %td= t(relationship.relationship_status)
+            %td= distance_of_time_in_words_to_now(relationship.updated_at) +" " + t(:ago)
+
+
+:javascript
+  $(document).ready(function() {
+    $('#travelersdatatable').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ travelers per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ travelers",
+              "sInfoEmpty": "Showing 0 to 0 of 0 travelers",
+              "sInfoFiltered": "(filtered from _MAX_ total travelers)"
+          },
+          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+  } );    

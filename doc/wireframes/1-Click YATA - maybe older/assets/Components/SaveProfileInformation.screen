@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Panel" id="1" x="224" y="264" width="585" height="361" measuredWidth="585" measuredHeight="361"/>
+  <widgets xsi:type="model:Text" id="2" x="240" y="280" width="553" height="57" text="We can save this information about you, so you never have to enter it again." measuredWidth="553" measuredHeight="57">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Icon" id="5" x="705" y="564" width="48" height="50" measuredWidth="48" measuredHeight="50" icon="assets/twitter-sign (large)"/>
+  <widgets xsi:type="model:Icon" id="6" x="657" y="564" width="48" height="50" measuredWidth="48" measuredHeight="50" icon="assets/facebook-sign (large)"/>
+  <widgets xsi:type="model:Icon" id="7" x="753" y="564" width="48" height="50" measuredWidth="48" measuredHeight="50" icon="assets/google-plus-sign (large)"/>
+  <widgets xsi:type="model:Label" id="9" x="250" y="339" text="User Name" measuredWidth="101" measuredHeight="36" textAlignment="Right">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="11" x="298" y="381" text="Email" measuredWidth="52" measuredHeight="36" textAlignment="Right">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="12" x="352" y="339" width="298" text="ftraveler" measuredWidth="298" measuredHeight="36">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="13" x="352" y="381" width="298" text="fred_the_traveler@gmail.com" measuredWidth="298" measuredHeight="36">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="14" x="352" y="473" width="129" text="Fred" measuredWidth="129" measuredHeight="36">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="15" x="488" y="473" width="162" text="Traveler" measuredWidth="162" measuredHeight="36">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="16" x="250" y="473" text="Your Name" measuredWidth="103" measuredHeight="36" textAlignment="Right">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="17" x="352" y="516" width="212" text="914-123-4567" measuredWidth="212" measuredHeight="36">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="19" x="290" y="516" text="Phone" measuredWidth="60" measuredHeight="36" textAlignment="Right">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="21" x="505" y="573" text="Or, Log in with..." measuredWidth="144" measuredHeight="36" textAlignment="Right">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="22" x="640" y="516" text="Create Account" measuredWidth="153" measuredHeight="38" state="selected">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="24" x="262" y="422" text="Password" measuredWidth="87" measuredHeight="36" textAlignment="Right">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="25" x="354" y="422" width="298" text="**********************" measuredWidth="298" measuredHeight="36">
+    <font size="20px"/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

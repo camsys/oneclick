@@ -1,14 +1,22 @@
-%h1
-  %i.icon-signin
-  = t(:log_in)
-%h4
-.well
-  = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
-    = f.input :email, :autofocus => true, :required => true, :label => t(:email)
-    = f.input :password, :required => true, :label => t(:password)
-    = f.input :remember_me, :label => t(:remember_me), :as => :boolean if devise_mapping.rememberable?
-    .actions
-      = button_tag type: :submit, class: 'btn btn-primary controls' do
-        %i.icon.icon-signin
-        = t(:log_in)
+= simple_form_for resource, as: resource_name, url: session_path(resource_name), html: {class: 'form-horizontal' }, wrapper: :horizontal_form do |f|
+  .row.info-header
+    .col-sm-6
+      %h1= t(:log_in)
+    .col-sm-6.btns
+      = button_tag type: :submit, class: 'btn action-button pull-right' do
+        = t(:log_in)                  
       = render "devise/shared/links"
+
+  .row
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          %h1.panel-title= t(:user_information)
+        .panel-body
+          - unless Rails.env.development? and ENV['DROPDOWN_USERS']
+            = f.input :email, :autofocus => true, :required => true, :label => t(:email)
+            = f.input :password, :required => true, :label => t(:password)
+          - else
+            = f.input :email, :autofocus => true, :required => true, :label => t(:email), collection: User.any_role.order(:email).pluck(:email)
+            = f.input :password, :required => true, :label => t(:password), input_html: {value: 'welcome1'}
+          = f.input :remember_me, :label => t(:remember_me), :as => :boolean if devise_mapping.rememberable?

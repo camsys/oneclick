@@ -1,7 +1,7 @@
 %table
   %tr
     %td.itinerary_icons
-      %i.icon-play.mode_icon_formatting{:class => 'start_icon'}
+      %i.fa.fa-play.mode_icon_formatting{:class => 'start_icon'}
     %td
       .itinerary_text
         %p= t(:start) + itinerary.trip_part.from_trip_place.name
@@ -11,21 +11,25 @@
   - itinerary.get_legs.each do |leg|
     %tr
       %td.itinerary_icons
-        %i.transit_itinerary_icons.mode_icon_formatting{:class => get_mode_icon(leg.mode)}
+        - if leg.respond_to? :agency_id and not leg.agency_id.nil?
+          %img{:src => get_service_icon(leg.agency_id, leg.mode)}
+        - else
+          %img{:src => get_mode_icon(leg.mode)}
       %td
-        -if leg.mode == TripLeg::WALK
+        -if leg.mode == Leg::TripLeg::WALK
           .itinerary_text
             %p= leg.mode + ' ' + t(:to) + ' ' + leg.end_place.name
-          .itinerary_text_small
-            =duration_to_words(leg.duration)
+        -elsif leg.mode == Leg::TripLeg::CAR
+          .itinerary_text
+            %p= "Drive or taxi to " + ' ' + t(:to) + ' ' + leg.end_place.name
         -else
           .itinerary_text
             %p= leg.agency_id + ' ' + leg.mode + ' ' + leg.route + ' ' + t(:to) + ' ' + leg.end_place.name
-          .itinerary_text_small
-            = format_time(leg.start_time) + ' ' + t(:to) + ' ' + format_time(leg.end_time)
+        .itinerary_text_small
+          = format_time(leg.start_time) + ' ' + t(:to) + ' ' + format_time(leg.end_time)
   %tr
     %td.itinerary_icons
-      %i.icon-stop.mode_icon_formatting{:class => 'end_icon'}
+      %i.fa.fa-stop.mode_icon_formatting{:class => 'end_icon'}
     %td
       .itinerary_text
         %p= t(:arrive) + itinerary.trip_part.to_trip_place.name

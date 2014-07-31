@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe ItineraryDecorator do
+  before(:each) do
+    FactoryGirl.create :mode_paratransit
+  end
   let(:decorator) { ItineraryDecorator.new(object) }
   let(:object) { Itinerary.create duration: 60*60 }
   describe "duration_in_words" do
@@ -33,19 +36,19 @@ describe ItineraryDecorator do
       it "does the correct thing when passed nil" do
         I18n.locale = :en
         object.duration = nil
-        expect(decorator.duration_in_words).to eq 'Not available'
+        expect(decorator.duration_in_words).to eq ''
       end
       it "gives Book Ahead notes in days when > 24 hours" do
         I18n.locale = :en
         service = Service.new advanced_notice_minutes: 60*24 + 60
-        object.mode = Mode::PARATRANSIT
+        object.mode = Mode.paratransit
         object.service = service
         expect(decorator.notes).to eq '1 day'
       end
       it "gives Book Ahead notes in days when > 24 hours (more than 1 day)" do
         I18n.locale = :en
         service = Service.new advanced_notice_minutes: 60*24*3
-        object.mode = Mode::PARATRANSIT
+        object.mode = Mode.paratransit
         object.service = service
         expect(decorator.notes).to eq '3 days'
       end

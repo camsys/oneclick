@@ -14,28 +14,99 @@ en:
   create_an_account: 'Create an Account'
   travel_profile: 'Travel Profile'
   my_travel_profile: 'My Travel Profile'
+  my_travelers: "My Travelers"
   my_trips: 'My Trips'
   my_places: 'My Places'
+  place: "Place"
   places: 'Places'
-  
+  type: "Type"
+  my_home_chkbox_label: "This is my home"
+
   # Agent View strings
   find_traveler: "Find Traveler"
   create_traveler: "Create Traveler"
-  agents_agencies: "Agents Agencies"
+  feedback: "Feedback"
+  agency: "Agency"
+  agencies: "Agencies"
+  all_agencies: "All Agencies"
+  add_new_agency: "Add a new Agency"
+  create_agency: 'Create Agency'
+  add_agency: "Add Agency"
+  agency_profile: "Agency Profile"
+  edit_agency_name: 'Edit %{name}'
+  update_agency: "Update Agency"
+  remove_agency: "Remove Agency"
+  agency_added: "Agency added"
+  specific_agency_added: "%{agency} added"
+  user_created_and_added_to_agency: "User %{user} created and added to agency %{agency}"
+  my_agencies: "My Agencies"
+  not_any_agencies: "You haven't approved any agencies to help you"
+  no_agency_selected: "You must enter any agencies you want to assist you."
+  agency_now_assisting: "%{agency} now assisting"
+  parent_agency: "Parent Agency"
+  parent: "Parent"
+  subagencies: "Sub-agencies"
+  new_agency: "New Agency"
+  select_agency: "Select Agency"
+  providers: "Providers"
+  all_providers: "All Providers"
+  provider_profile: "Provider Profile"
+  provider_orgs: "Provider Organizations"
+  new_provider_org: 'New Provider Organization'
+  new_provider: "New Provider"
+  remove_provider: "Remove Provider"
+  org_type: "Org type"
+  new_organization: "New Organization"
+  editing_orgs: "Editing organization"
+  listing_orgs: "Listing Organizations"
+  provider_name: "Provider name"
+  provider: "Provider"
+  provider_contact_info: "Provider Contact Information"
+  provided_by: "Provided by"
+  select_provider: "Select Provider"
+  back_to_providers: "Back to providers"
+  users: "Users"
+  agents: "Agents"
+  administrators: "Administrators"
+  agents_agencies: "Agencies, Providers, Users"
+  confirm_msg: "Are you sure?"
+  change_role: "Change Role"
+  create_user: "Create User"
+  delete_user: "Delete user"
+  user_created: "User Created"
   # Agent and Admin string
   reports: "Reports"
+  report_name: "Report Name"
+  date_range: "Date Range"
+  traveler_type: "Traveler Type"
+  display_type: "Display Type"
+  summary_type: "Summary Type"
+  run: "Run"
+  export: 'Export'
   admin: 'Admin'
+  admin_actions: 'Admin'
+  staff_actions: 'Staff'
   send_by_email: 'Send by email'
-  
+  email_sent_to: 'An email was sent to %{email_sent_to}'
+  no_email_found: 'No email was found'
+  send_itinerary_by_email: "Send itinerary by email"
+  send_trip_by_email: "Send trip plan by email"
+  send_follow_up_email: "Send Follow-up Email"
+
   # Registration, sign in, profile
+  about_you: 'About You'
   version: 'Version'
   home: 'en no-brand Home'
   log_in: 'Log in'
   sign_up: 'Sign up'
-  welcome: 'Welcome'  
+  sign_up_and_plan: "Sign up and plan my trip"
+  welcome: 'Welcome'
   first_name: 'First name'
   last_name: 'Last name'
-  email: 'Email address'
+  email: 'Email'
+  preferred_locale: "Preferred Language"
+  preferred_modes: "Preferred Modes"
+  address: "Address"
   remember_me: 'Remember me'
   password: 'Password'
   password_confirmation: 'Password confirmation'
@@ -45,85 +116,185 @@ en:
   logout: 'Logout'
   edit_account: 'Edit account'
   update_my_profile: 'Update my profile'
-  current_password_hint: "Enter your current password to confirm your changes."  
+  current_password_hint: "Enter your current password to confirm your changes."
   leave_password_blank: "Leave both blank if you don't want to change your password."
   my_information: 'My information'
+  user_information: 'User Info'
   buddies: 'Buddies'
   travelers: 'Travelers'
   traveler: 'Traveler'
+  matching_travelers: "Matching Travelers"
+  authorized_travelers: "Authorized Travelers"
+  add_user: "Add User"
   send_buddy_request: 'Send buddy request'
   buddys_email_address: "Buddy's email address"
+  buddy_request_email_intro: 'Traveler %{name} has requested your help to plan their trips as using %{site_title}.' # DON'T translate words in %{...}
+  buddy_request_email_step_0: 'To accept the request:'
+  buddy_request_email_step_1: '1 - Log into'
+  buddy_request_email_step_2: '2 - Display your Traveler Profile (Welcome Menu -> Travel Profile)'
+  buddy_request_email_step_3: '3 - Edit your profile'
+  buddy_request_email_step_4: '4 - In the Buddies section "Accept" the request from %{name}'
   accept: 'Accept'
   decline: 'Decline'
   assist: 'Assist'
+  assisted_by: 'Assisted By'
+  i_can_assist: "I Can Assist"
+  can_assist_me: "Can Assist Me"
   revoke: 'Revoke'
   retract: 'Retract'
   visitor: 'Visitor'
+  include_visitors: "Include Visitors"
+  questions: "Questions"
   invalid_dob: 'Invalid date of birth'
+  plan_with_you_in_mind: "We'd like to plan a trip with your needs in mind."
   to_see_best_options: 'Would you tell us more about yourself?'
+  follow_up_questions: 'A Few Follow-up Questions'
+  follow_up_question_descr: 'Given your responses, we have one last page of follow-up questions. Answer all questions you are comfortable providing an answer for. If you do not wish to answer a question, select "Unsure". <br><br> Tap "Next Step" when you have finished with these questions.'
+  next_step: "Next Step"
+  step_one_of: "Step 1 of"
   skip_this_step: 'Skip this step'
   buddy_request_sent: "Buddy request sent"
   no_buddy_email_address: "You must enter the email address for your buddy"
+  register: "Register"
+  registered: "Registered"
+  have_an_account_question: "Have an Account?"
   no_user_with_email_address: "We can't find a registered user with '%{email}' as their email address."
   something_went_wrong: "Ooops! Something went wrong. We were unable to process that request. Please try again."
   request_processed: "Your request has been processed."
-      
+
   spanish: 'En Español'
   error_not_implemented: "We're sorry, but this functionality has not yet been implemented."
   error_404: "The page you were looking for doesn't exist."
   error_404_mistyped: 'You may have mistyped the address or the page may have moved.'
   error_422: 'The change you wanted was rejected.'
   error_422_detail: "Maybe you tried to change something you didn't have access to."
+  error_couldnt_plan: 'No trip plan could be created.  This is likely due to a system error, and our staff has been notified. Please try your trip again.'
   
   # Trip History and Rating
   rating: "Rating"
   actions: "Actions"
   filter: "Filter"
+  ratings: "Ratings"
+  no_rating: "No Rating"
+  no_ratings_yet: "No ratings approved yet"
+  rating_submitted_for_approval: 
+    one: "Your %{rateable} rating has been submitted for approval"
+    other: "Your %{rateable} ratings have been submitted for approval"
+  rating_update:
+    one: "The rating has been updated"
+    other: "The ratings have been updated"
+  rating_targets: "Trip/Agency/Service"
+  submit_review: "Submit Feedback"
+  did_not_take_feedback_prompt: "We're sorry to hear you didn't take your trip.  Can you tell us what went wrong?"
+  feedback_comments: "Please enter any feedback you would like to share"
+  feedback_rating: "Rating (1-worst, 5-best)"
+  untaken_trip: "Untaken trip"
   edit_trip: "Edit this trip"
   repeat_trip: "Repeat this trip."
   remove_trip: "Remove this trip"
   rate_trip: "Rate this trip"
+  rate_recent: "Rate your recent trip"
   plan_trip: "Continue planning this trip"
-  
+  max_notes: 'Max notes'
+
+
   # Trip planning
   enter_address: 'Enter address'
-  enter_to: 'Tap here to enter a destination location'
-  enter_from: 'Tap here to enter a starting location'
+  location: "Location"
+  enter_to: 'Tap to enter a destination location'
+  enter_from: 'Tap to enter a starting location'
   select_or_enter_address: 'Select or enter address'
   select: 'Select'
   trip_date: 'Date'
   depart_at: 'Depart at'
   arrive_by: 'Arrive by'
   arrive_at: 'Arrive at'
+  arrive_in: 'Arrive in'
   trip_time: 'Time'
+  number_of_transfers: 'Number of Transfers'
+  modes: 'Modes'
+  apply: 'Apply'
   cancel: 'Cancel'
   plan_it: 'Plan it'
+  trip: 'Trip'
+  options: 'Options'
+  review: 'Review'
+  plan: 'Plan'
+  trip_restrictions: 'Trip Restrictions'
   from: 'From'
+  from_lat: 'From Lat'
+  from_lon: 'From Lon'
+  out_arrive_or_depart: 'Outbound Arrive Depart'
+  out_datetime: 'Outbound Date'
   to: 'To'
+  to_lat: 'To Lat'
+  to_lon: 'To Lon'
+  in_arrive_or_depart: 'Inbound Arrive Depart'
+  in_datetime: 'Inbound Date'
   at_time: 'on'
   arrive_depart: 'Arrive/Depart'
+  leaving_from: 'Leaving From'
+  type_from_address: 'Type the from address'
+  going_to: 'Going To'
+  type_to_address: 'Type the to address'
   trip_purpose: 'Purpose'
+  trip_purposes: "Trip Purposes"
   departing_at: 'Departing At'
-  arriving_by: 'Arriving By'  
+  arriving_by: 'Arriving By'
+  arrival_time: 'Arrival Time'
+  departure_time: 'Departure Time'
+  travel_time: 'Travel Time'
+  save_and_plan_trip: "Save and plan my trip"
+  trip_planned_and_saved: "Trip planned and saved"
+  finish_trip_planning_options: "You can now do one or more of the following to finish your trip planning"
   correct_errors_to_create_a_trip: 'Please correct the errors below to create a trip.'
+  no_thanks_just_plan_it: "No thanks, just plan my trip"
+  disability_explanation_str: "We noticed you mentioned a disability and/or difficulty walking for certain periods of time.  Would you please tell us more about which accommodations you require for your trip?"
   trip_options: 'Trip Options'
   transit_trip: 'Transit Trip'
   taxi: 'Taxi'
   transit: 'Transit'
   details: 'Details'
+  summary: "Summary"
+  trip_details: "Trip Details"
+  trip_date: "Trip Date"
   rideshare: 'Rideshare'
   walk: 'Walk'
+  bus: 'Bus'
+  drive: 'Drive'
+  bike: 'Bike'
+  bikeshare: 'Bikeshare'
+  drive_and_transit: 'Drive and Transit'
+  rail: 'Rail'
+  rail_and_bus: 'Rail and Bus'
+  subway: 'Subway'
+  tram: 'Tram'
+  vehicle: 'Vehicle'
+  wait: 'Wait'
+  mode_transfer: 'Transfer'
+  select_a_plan_each_trip_part: 'Please select itinerary for each trip part'
+  no_itineraries_found: 'No itineraries were found'
+  service_error: 'There was an error planning your trip. Please try again.'
+  failed_to_update_profile: 'Failed to update your user profile.'
+  route: 'Route'
   transfer: {
     one: '%{count} transfer',
     other: '%{count} transfers',
   }
+  transfers: "Transfers"
   view: 'View'
   remove: 'Remove'
   reload: 'Reload'
   return: 'Return'
+  return_itinerary_count: 'Return Itinerary Count'
   outbound: 'Outbound'
+  outbound_itinerary_count: 'Outbound Itinerary Count'
   paratransit: 'Paratransit'
   mode: 'Mode'
+  direction_short: "Dir"
+  status: "Status"
+  device: 'Device'
+  hidden: "Hidden"
   duration: 'Duration'
   walking: 'Walking'
   depart: 'Depart'
@@ -132,9 +303,12 @@ en:
   print: 'Print'
   chat: 'Chat'
   e_mail: 'Email'
+  create: "Create"
+  created: "Created"
   trip_was_successfully_created: 'Trip was successfully created.'
   trip_was_successfully_removed: 'Trip was successfully removed.'
   trip_created_no_valid_options: "Trip created, but no valid trip options could be found."
+  was_successfully_updated: 'was successfully updated.'
   hour: {
     one: '%{count} h',
     other: '%{count} h',
@@ -158,7 +332,7 @@ en:
   time_wrong_format: "Time must be in hh:mm am/pm format."
   trips_cannot_be_entered_for_days: "Trips cannot be entered for days earlier than today."
   trips_cannot_be_entered_for_times: "Trips cannot be entered for past times."
-  return_trip_time_before_start: "Trips cannot return before they are started."
+  return_trip_time_before_start: "A return trip must begin after the departing trip."
   link_to_georgia_commute_options: {
     one:   'Visit %{url} to view 1 possible rideshare.',
     other: 'Visit %{url} to view %{count} possible rideshares.',
@@ -180,7 +354,23 @@ en:
   one_way: 'One-way trip'
   returning_at: 'returning at'
   returning: 'returning'
+  return_after: "Return after"
   at: 'at'
+  wait_at: 'Wait at'
+  fare: "Fare"
+  flat_fare_unavailable: "Flat fare unavailable"
+  rate: "Rate"
+  four_digit_year: 'Year must be four digits'
+  cannot_change_time_to_past: 'Cannot change trip part time to a past time'
+  cannot_change_time_to_after_next_trip_part: "Cannot change trip part time to be after next trip part"
+  cannot_change_time_to_before_prev_trip_part: "Cannot change trip part time to be before previous trip part"
+
+  #map
+  zoom_in: 'Zoom in'
+  zoom_out: 'Zoom out'
+  center_my_location: 'Center my location'
+  display_street_view: 'Display street view'
+  select_location_on_map: 'Select location on map'
 
   # My Places form
   found_x_places: {
@@ -199,17 +389,101 @@ en:
   place_added:      '%{place_name} has been added to your address book.'
   error_updating_addresses:   'An error occured while updating your address book.'
   address_book_updated: 'Your address book has been updated.'
-  confirm_remove_place: 'Are you sure you want to remove %{place_name} from your address book?'
+  confirm_remove_message: 'Are you sure you want to remove ' # followed by entity name
   profile_updated: "Your profile was updated."
+  updated: "Updated"
 
   # new ones
+  # Services
+  next: 'Plan'
+  endpoint_area: "Coverage Area"
+  coverage_area: "Endpoint Area"
+  endpoints: "Endpoint Area"
+  coverages: "Coverage Area"
+  cap_returning_at: "Returning at"
+  traveler_not_registered: "Traveler not registered to book trips with One-Click."
+  outbound_error_occurred: "An error occurred when attempting to book your outbound trip."
+  return_error_occurred: "An error occurred when attempting to book your return trip."
+  please_wait: "Please wait"
+  book_a_trip: "Would you like to book this trip with"
+  more_info_call: "For more more information, call"
+  confirmation: 'confirmation'
+  returning_by: 'Returning by'
+  for_assistance: "for assistance"
+  if_no_client_id: "If you do not have a client id, please call"
+  outbound_is_eligible: "The outbound portion of your trip is eligible for automated booking."
+  return_is_eligible: "The return portion of your trip is eligible for automated booking."
+  trip_is_eligible: "Your trip is eligible for automated booking."
+  trip_booked_2: "Your trip has been booked."
+  book_your_trip: "Book your trip"
+  trip_booked: "Trip Booked!"
+  dob: "Date of Birth"
+  dob_notice: 'Date of Birth may be used to confirm the Client Id with a service.  It will not be saved.'
+  booking_information: "Booking Information"
+  service_name: "Service Name"
+  client_id: "Client Id"
+  book: "Book"
+  inactive: "Inactive"
+  service_id: "Service Id"
+  service_type: "Service Type"
+  booking_service_code: "Booking Service Code"
+  back_to_services: "Back to services"
+  service: "Service"
+  services: "Services"
+  all_services: "All Services"
+  active: "Active"
+  add_service: "Add Service"
+  remove_service: "Remove Service"
+  select_service: "Select Service"
+  service_is_inactive: "This service is currently inactive."
+  service_contact: "Service Contact Information"
   specialized_services: "Specialized Services"
   view_services: "View Services"
+  origins: "Origins"
+  destinations: "Destinations"
+  residences: "Residences"
+  no_restriction: "No restriction"
+  contact: "Contact"
+  title: "Title"
+  phone: "Phone"
+  url: "URL"
   close: "Close"
   name: "Name"
   send: "Send"
+  schedule: "Schedule"
+  book_ahead: 'Book Ahead'
+  note: "Note"
+  advance_notice_required: "Advance Notice Required"
+  service_notice_required: "This service requires"
+  service_notice_str: "of advance notice to book a trip"
+  service_intended_for: "This service is intended for "
+  trip_not_possible_as_schedule: "This trip is not possible as scheduled."
+  trip_outside_service_hours: "This trip occurs outside the normal hours for this service."
+  trip_insufficient_notice_a: "This trip must be booked "
+  trip_insufficient_notice_b: " in advance."
+  more_information_required: "More information is needed."
+  trip_needs_more_accommodations: "These accommodations are not met by this service"
+  service_notice_not_required: "This service does not require advanced notice to book a trip"
+  no_cost_for_service:  "No cost for this service"
+  cost_details: "Cost Details"
+  addl_cost_details: "Additional Cost Details"
+  click_for_cost_details: 'Click for cost details'
+  click_for_details: 'Click for details'
+  dblclick_for_details: 'Double click or tap for details'
+  see_details_for_cost: 'See details for cost'
+  cost_estimated: 'Cost estimated'
+  no_charge: 'No charge'
+  see_below: 'See below'
+  view_trip_details: "View trip details so that you can call the provider."
+  email_trip_details:  "Email your trip plan."
+  print_trip_details: "Print your trip plan."
+  view_planned_trips: "I'm done, just show me all my planned trips."
+  coverage_areas: "Coverage Areas"
+  served_areas: "served"
+  service_area_map: "Service Area Map"
   trip_request_from: "Trip request from "
   send_email_to: "Send email to"
+  email_hint: "Use commas to separate multiple emails."
   additional_emails: "Additional emails"
   taken: "Trip Taken?"
   please_tell_us: "Please tell us about your recent trip."
@@ -222,10 +496,15 @@ en:
   do_you_participate:  "Do you currently participate in any of these programs?"
   programs:  "Programs"
   eligibility: "Eligibility"
+  eligibility_rules_descr: "If ANY of the following rules are satsified, the traveler may be eligible to use this service."
   accommodations: "Accommodations"
+  missing_accommodations: "Some accommodations unavailable."
+  no_accommodations: "No accommodations provided"
+  service_provides_the_following: "This service provides the following accommodations"
   volunteer: "Volunteer Service"
   nemt: "Non-Emergency Med."
   car_service: "Car Service"
+  buddy: "Buddy"
   buddy_request_sent: "Buddy request sent!"
   buddy_removed: "Buddy removed."
   http_404_not_found: "404 Not Found"
@@ -234,18 +513,36 @@ en:
   arc_oneclick_trip_itinerary: "ARC OneClick Trip Itinerary"
   an_email_was_sent_to_email_addresses_join: "An email was sent to %{addresses}."
   unable_to_remove_itinerary: 'Unable to remove itinerary.'
+  return_trip_options: "Return Trip Options"
+  outbound_trip_options: "Outbound Trip Options"
   outbound_selected: 'Outbound option selected, now select your return option.'
   outbound_selected_short: 'Outbound option selected.'
   return_selected: 'Return option selected.'
   not_authorized_as_an_administrator: 'Not authorized as an administrator.'
   n_a: 'n/a'
+  unknown: 'Unknown'
+  not_available: 'Not Available'
+  filters: 'Filters'
+  legends: 'Legends'
+  minute_abbr: 'min'
+  minutes: 'minutes'
+  sort_by: 'Sort by'
+  miles: 'miles'
   less_than_1_block: "less than 1 block"
   about_2_blocks: "about 2 blocks"
   about_4_blocks: "about 4 blocks"
   twof_miles: "%.2f miles"
-  one_click_buddy_request_from_from_email: "1-Click buddy request from %{from_email}"
+  one_click_buddy_request_from_from_email: "1-Click buddy request from %{from}"
+  one_click_buddy_revoke_from_from_email: "1-Click buddy revoked by %{by}"
+  one_click_traveler_confirmation_from_from_email: "1-Click buddy confirmation by %{by}"
+  one_click_traveler_decline_by_from_email: '1-Click traveler request declined by %{by}'
+  one_click_traveler_revoke_by_from_email: '1-Click traveler revoked by %{by}'
   you_can_t_be_your_own_buddy: "You can't be your own buddy."
   you_ve_already_asked_them_to_be_a_buddy: "You've already asked them to be a buddy."
+  my_buddies: "%{owner} buddies"
+  not_any_buddies: "You don't have any buddies."
+  no_buddies: "You don't have any travelers that have asked you to be their travel buddy."
+  please_save_buddies: "Please save your changes to ask %{name} to be your buddy."
   address_is_required: "Address is required"
   all_trips: "All trips"
   trips_coming_up: "Trips coming up"
@@ -271,29 +568,99 @@ en:
   }
 
   send_to_traveler: 'Send to traveler'
+  send_request_to_provider: "Send request to the provider"
   from_address: 'From address'
   email_addresses: 'Email addresses'
   start: "START: "
+  start_time: "Start Time"
+  times: "Time"
+  end_time: "End Time"
+  walk_time: "Walk Time"
+  transit_time: "Transit Time"
+  wait_time: "Wait Time"
+  walk_distance_short: "Walk Dist"
   walking: ' walking'
   arrive: "ARRIVE: "
-  trip: "Trip: "
   est: " (est.)"
   myself: "myself"
-  assisted_user_first_name_s_trips: "%{name}'s Trips"
+  assisted_user_first_name_s_places: "%{name}'s Places"
   trip_options_information_from_from: "Trip options information from %{from}"
   create_account: "Create an account to save your information."
-  stop_assisting: "Stop assisting"  
+  stop_assisting: "Stop assisting"
   assisting_turned_off: "Assisting has been turned off."
+  assisting_turned_on: "Assisting has been turned on."
+  new_esp_successfully_uploaded: "New ESP File Successfully Uploaded"
+  thanks_for_the_feedback: "Thank you for your feedback!"
+  optional_comments_descr: "If you would like to provide optional comments or a rating for your trip, you can do so below."
 
   # General Messages
-  undo: Undo
+  hello: "Hello"
+  id: "ID"
+  user: "User"
+  username: "Username"
+  undo: "Undo"
+  creator: "Creator"
   yes_str: "Yes"
   no_str:  "No"
+  no_answer_str: "Not answered"
+  not_sure_str: "Not sure"
+  unsure_str: "Unsure"
   ok: "Ok"
+  done: "Done"
   cancel: "Cancel"
   edit: "Edit"
   delete: "Delete"
   save: "Save"
+  apply: "Apply"
+  and: "and"
+  new: "New"
+  clear: "Clear"
+  itinerary: "Itinerary"
+  itineraries: "Itineraries"
+  in_str: "In"
+  out_str: "Out"
+  role: "Role"
+  roles: "Roles"
+  change_role: "Change Role"
+  select_users: "Select users"
+  add: "Add"
+  back: "Back"
+  count: "Count"
+  approve: "Approve"
+  reject: "Reject"
+  contact_info: "Contact Info"
+  do_not_reply: "This email is sent from an email address that is not monitored. Please do not reply to this message."
+  nothing_found_sorry: "Nothing found - sorry"
+  no_good_options: "There are no good options here."
+  solicit_feedback: "Please give us some feedback:"
+  thanks_for_responding: "Thanks for taking the time to respond."
+  success_feedback_link: "Click HERE if you want to tell us about your trip."
+  no_trip_taken_feedback_link: "Click HERE if you decided not to make the trip at all."
+  more_feedback_link: "Click HERE if you want to provide more feedback, or if things didn't work out as planned."
+  search: "Search"
+  aid_user: "Aid User"
+  none: "None"
+  show: "Show"
+  list: "List"
+  name: "Name"
+  information: "Information"
+  internal_contact: "Internal Contact"
+  city: "City"
+  state: "State"
+  zip: "Zip"
+  all: "All"
+  relationship_status:
+    relationship_status_requested: "Requested"
+    relationship_status_pending: "Pending"
+    relationship_status_confirmed: "Confirmed"
+    relationship_status_denied: "Denied"
+    relationship_status_revoked: "Revoked"
+    relationship_status_hidden: "Hidden"
+  
+  # validation messages
+  valid_time_msg: "must be a valid time"
+  presence_msg: "can't be blank"
+  before_msg: "must be before "
   
   date:
     abbr_day_names:
@@ -305,7 +672,7 @@ en:
     - Fri
     - Sat
     abbr_month_names:
-    -
+    - 
     - Jan
     - Feb
     - Mar
@@ -333,7 +700,7 @@ en:
       oneclick_long: ! '%A, %B %-d %Y'
       oneclick_short: ! '%A, %B %-d'
     month_names:
-    -
+    - 
     - January
     - February
     - March
@@ -356,6 +723,7 @@ en:
       default: ! '%a, %d %b %Y %I:%M:%S %p %Z'
       long: ! '%B %d, %Y %I:%M %p'
       short: ! '%d %b %I:%M %p'
+      isoish: ! '%Y-%m-%d %I:%M %p'
       oneclick_short: ! '%-I:%M %p'
     pm: pm
   datetime:
@@ -365,8 +733,13 @@ en:
       minute: Minute
       month: Month
       second: Seconds
-      year: Year          
-
+      year: Year
+  unauthorized:
+    default: 'You are not authorized to access that page.'
+  locales:
+    en: "English"
+    es: "En Español"
+    ht: "Creole"
   # Branding
   arc:
     home: 'ARC 1-Click Home'
@@ -378,11 +751,38 @@ en:
     logotext: ''
     site_title: '1-Click/PA'
     site_description: '1-Click/PA Application'
+
+    out_arrive_or_depart: 'Departing Arrive Depart'
+    out_datetime: 'Departing Date'
+    outbound: 'Departing'
+    outbound_itinerary_count: 'Departing Itinerary Count'
+    outbound_error_occurred: "An error occurred when attempting to book your departing trip."
+    return_error_occurred: "An error occurred when attempting to book your return trip."
+
+    outbound_is_eligible: "The departing portion of your trip is eligible for automated booking."
+    return_is_eligible: "The return portion of your trip is eligible for automated booking."
+
+    outbound_trip_options: "Departing Trip Options"
+    outbound_selected: 'Departing option selected, now select your return option.'
+    outbound_selected_short: 'Departing option selected.'
+    return: 'Returning'
+    return_itinerary_count: 'Returning Itinerary Count'
+
+    return_trip_options: "Returning Trip Options"
+    return_selected: 'Returning option selected.'
+
+    next: 'Next >>'
+
   broward:
     home: '1-Click Broward Home'
     logotext: ''
     site_title: 'Broward 1-Click'
     site_description: 'Broward 1-Click Application'
+  jta:
+    home: 'JTA 1-Click Home'
+    logotext: ''
+    site_title: 'JTA 1-Click'
+    site_description: 'JTA 1-Click Application'
   simple_form:
     labels:
       defaults:

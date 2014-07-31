@@ -1,0 +1,14 @@
+%ul.thumbnails
+  - actions.each do |action|
+    - next if action[:not_on_homepage]
+    - next unless show_action(action)
+    .row
+      %li
+        %a.col-sm-12.thumbnail.btn.actionbutton{alt: action[:label], title: action[:label], href: action[:target]}
+          .row
+            .col-sm-3
+              %i.center{class: action[:icon], alt: action[:label], style: 'font-size: 3em;'}
+            .col-sm-9.actionlabel.Center-Container.is-Table
+              .Table-Cell
+                .Center-Block
+                  = action[:label]

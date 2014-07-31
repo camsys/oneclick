@@ -1,7 +1,7 @@
 %table
   %tr
     %td.itinerary_icons
-      %i.icon-play.mode_icon_formatting{:class => 'start_icon'}
+      %i.fa.fa-play.mode_icon_formatting{:class => 'start_icon'}
     %td
       .itinerary_text
         %p= t(:start) + itinerary.trip_part.from_trip_place.name
@@ -11,7 +11,7 @@
   -itinerary.get_legs.each do |leg|
     %tr
       %td.itinerary_icons
-        %i.transit_itinerary_icons.mode_icon_formatting{:class => get_mode_icon(leg.mode)}
+        %img{:src => get_mode_icon(leg.mode)}
       %td
         .itinerary_text
           %p= leg.mode + ' ' + t(:to) + ' ' + leg.end_place.name
@@ -19,7 +19,7 @@
           =duration_to_words(leg.duration)
   %tr
     %td.itinerary_icons
-      %i.icon-stop.mode_icon_formatting{:class => 'end_icon'}
+      %i.fa.fa-stop.mode_icon_formatting{:class => 'end_icon'}
     %td
       .itinerary_text
         %p= t(:arrive) + itinerary.trip_part.to_trip_place.name

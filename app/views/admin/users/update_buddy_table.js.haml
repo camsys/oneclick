@@ -1,0 +1,8 @@
+remove_messages();
+#{selectorify(target_name)}.html("#{escape_javascript(render 'shared/messages')}");
+$('#buddy_table').html("#{escape_javascript(render 'buddy_table')}");
+$('#traveler_table').html("#{escape_javascript(render 'traveler_table')}");
+$('#agencies_table').html("#{escape_javascript(render 'agency_table')}");
+$("a[data-id='2']").text("#{t(:buddies) + ' (' + current_user.delegates.count.to_s + ')'}");
+$("a[data-id='3']").text("#{t(:travelers) + ' (' + current_user.travelers.count.to_s + ')'}");
+$("a[data-id='7']").text("#{t(:agencies) + ' (' + current_user.approved_agencies.count.to_s + ')'}");

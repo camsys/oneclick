@@ -1,0 +1,22 @@
+%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_services_table
+  %thead
+    %tr
+      %th= t(:name)
+      %th= t(:provider)
+      %th= t(:phone)
+      %th= t(:email)
+      %th= t(:service_id)
+      %th#status= t(:status)
+  %tbody
+    - @services.each do |service|
+      %tr
+        %td
+          =link_to service.name, service_path(service.id)
+        %td
+          =service.provider.name
+        %td= service.phone
+        %td= service.email
+        %td= service.external_id
+        %td
+          - if service.active == false
+            = t(:inactive)

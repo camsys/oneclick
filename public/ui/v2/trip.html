@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+		<meta content='1-Click Application' name='description'> </meta>
+
+		<title>Trip</title>
+		
+		<!-- Bootstrap core CSS -->
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		<link href="bootstrap-accesibility/css/bootstrap-accessibility.css" rel="stylesheet">
+		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+		<link href="datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="stylesheets/arc.css" media="all" rel="stylesheet" />
+		
+		<!-- Dependent JS Libs-->
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	</head>
+	<body>
+		<div id="wrap">
+			<div class="navbar navbar-default navbar-fixed-top" role="navigation" id='publicNav'>	
+				<div class="container-fluid">
+					<div class='.navbar-header'>
+						<a class="navbar-brand" href="/en" id="logo" style="text-indent:-9999px;">Logo</a>
+						<div class='pull-right'>
+							<a href="/501" id="help">
+								<i class='fa fa-question-circle'></i>
+								<span class="sr-only">Help</span>
+							</a>
+						</div>
+						<button type="button" class="navbar-toggle" data-target='#userMenuNavbar' data-toggle='collapse'>
+							<span class="sr-only">User menu</span>
+							 <span class="icon-bar"></span>
+							 <span class="icon-bar"></span>
+						 </button>
+					</div><!--end of navbar-header-->
+					<div class='collapse navbar-collapse navbar-right' id="userMenuNavbar">
+						<ul class='nav navbar-nav'>
+							<li class='dropdown' id='userDropdown'>
+								<a class='dropdown-toggle' data-target='#' data-toggle='dropdown'>
+									Welcome, Guest
+									<b class='caret'></b>
+								</a>
+								<ul class='dropdown-menu' role='menu'>
+									<li>
+										<a href="/users/sign_in">
+										Log In
+										</a>
+									</li>
+									<li>
+										<a href="/users/sign_up">
+										Create An Account
+										</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div><!--end of collapse navbar-collapse-->
+				</div>
+			</div><!--end of publicNav-->
+			
+			<div id="main" role="main" class="container">
+				<ol class="breadcrumb" id="wizards">
+				  <li class="current-page">Trip</li>
+				  <li class="next-page">Options</li>
+				  <li class="next-page">Review</li>
+				  <li class="next-page">Plan</li>
+				</ol>
+							
+				<div class='row'>
+					<div class='col-sm-7 col-xs-12'>
+						<div class="col-xs-12 form-group">
+							<button type="button" class="btn btn-default pull-right action-button">Search</button>
+						</div>
+						<div class='col-xs-12 well'>
+							<form role="form">
+								<div class="col-sm-12 form-group" id="tripOptions">
+									<label class="col-sm-3" style="font-weight: normal;">
+									  <input type="radio" name="tripOptions" value="roundTrip" checked> Round-trip
+									</label>
+									<label class="col-sm-9" style="font-weight: normal;">
+									  <input type="radio" name="tripOptions" value="oneWay"> One-way
+									</label>
+									<script type="text/javascript">
+										$(function () {
+											$('#tripOptions :radio').change(function() {
+												console.log('change');
+												if(this.value === 'oneWay') {
+													$('#returnDatetimeOptions').hide();
+												} else {
+													$('#returnDatetimeOptions').show();
+												}
+											});
+										});
+									</script>
+								</div>
+								<div class="col-sm-12 form-group">
+									<label class="col-sm-3 control-label">Modes</label>
+									<div class="col-sm-9" id="modePlaceholder">
+										
+									</div>
+								</div>
+								<div class="col-sm-12 form-group">
+									<label class="col-sm-3 control-label" for="tripPurposeOptions">Trip Purpose</label>
+									<div class="col-sm-9">
+										<select name="tripPurpose" class="form-control" id="tripPurposeOptions">
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-12 form-group">
+									<label class="col-sm-3 control-label">Leaving From</label>
+									<div class="col-sm-9">
+										<div class="input-group">
+											<label class="control-label sr-only" for="fromAddress">Type the from address</label>
+											<input type="text" name="fromAddress" class="form-control" id="fromAddress">
+											<span class="input-group-btn">
+												<label class="control-label sr-only" for="fromAddressMarkerButton">Click button to open the map and locate the from address</label>
+												<button type="button" class="btn btn-default" data-toggle="modal" data-target="#mapModal" id="fromAddressMarkerButton"><i class='fa fa-map-marker'></i></button>
+												<div class="modal fade col-sm-12" id="mapModal" tabindex="-1" role="dialog" aria-describedby="map to select location">
+												  <div class="modal-dialog">
+													<div class="modal-content">
+													  <div class="modal-body">
+														<div id="lmap" class="map" style="height:500px;"></div>
+													  </div>
+													</div>
+												  </div>
+												</div>
+											</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 form-group">
+									<label class="col-sm-3 control-label">Going To</label>
+									<div class="col-sm-9">
+										<div class="input-group">
+											<label class="control-label sr-only" for="toAddress">Type the to address</label>
+											<input type="text" name="toAddress" id="toAddress" class="form-control">
+											<span class="input-group-btn">
+												<label class="control-label sr-only" for="toAddressMarkerButton">Click button to open the map and locate the to address</label>
+												<button type="button" class="btn btn-default" data-toggle="modal" data-target="#mapModal" id="toAddressMarkerButton"><i class='fa fa-map-marker'></i></button>
+											</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 form-group">
+									<label class="col-sm-3 control-label" for="outboundOptions">Outbound</label>
+									<div class="col-lg-3 col-md-4">
+										<select name="outboundOptions" id="outboundOptions" class="form-control">
+										  <option>Departing At</option>
+										  <option selected>Arriving At</option>
+										</select>
+									</div>
+									<div class="col-lg-6 col-md-5 col-sm-12" style="padding: 0px;">
+										<div class="col-md-6 controls" id="outbound-trip-date">
+											<label class="control-label sr-only" for="trip_proxy_outbound_trip_date">Type or select the outbound date</label>
+											<input type="text" class="form-control" id="trip_proxy_outbound_trip_date" label="false" name="trip_proxy[trip_date]"/>
+											<script type="text/javascript">
+												$(function () {
+													$('#trip_proxy_outbound_trip_date').datetimepicker({
+														defaultDate: new Date(),
+														pickTime: false
+													});
+												});
+											</script>
+										</div>
+										<div class="col-md-6">
+											<label class="control-label sr-only" for="trip_proxy_outbound_trip_time">Type or select the outbound time</label>
+											<input type="text" class="form-control" id="trip_proxy_outbound_trip_time" label="false" name="trip_proxy[trip_time]"/>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 form-group" id="returnDatetimeOptions">
+									<label class="col-sm-3 control-label" for="returnOptions">Return</label>
+									<div class="col-lg-3 col-md-4">
+										<select name="returnOptions" id="returnOptions" class="form-control">
+										  <option selected>Departing At</option>
+										  <option>Arriving At</option>
+										</select>
+									</div>
+									<div class="col-lg-6 col-md-5 col-sm-12" style="padding: 0px;">
+										<label class="control-label sr-only" for="trip_proxy_return_trip_date">Type or select the return date</label>
+										<div class="col-md-6">
+											<input type="text" class="form-control" id="trip_proxy_return_trip_date" label="false" name="trip_proxy[trip_date]"/>
+											<script type="text/javascript">
+												$(function () {
+													$('#trip_proxy_return_trip_date').datetimepicker({
+														defaultDate: new Date(),
+														pickTime: false
+													});
+												});
+											</script>
+										</div>
+										<div class="col-md-6">
+											<label class="control-label sr-only" for="trip_proxy_return_trip_time">Type or select the return time</label>
+											<input type="text" class="form-control" id="trip_proxy_return_trip_time" label="false" name="trip_proxy[trip_time]"/>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div><!--end of trip column-->
+					<div class='col-sm-5 col-xs-12'>
+						<div class='well' id="cmsPlaceholder">
+							TODO:(CMS)
+						</div>
+					</div><!--end of CMS column-->
+					
+				</div>
+				
+			</div><!--end of main-->
+			
+			<div id='footer'>
+			<div id='feedback' class="col-xs-12">
+				<div class='pull-left'>
+					<a href="http://www.fta.dot.gov/grants/13094_13528.html" target="_blank">More About This Initiative</a>
+				</div>
+				<div class='pull-right'>
+					<a href="mailto://1-Click@camsys.com">Send your Feedback</a>
+				</div>
+			</div>
+			<div id='versionLang' class="col-xs-12">
+				<div class='pull-left'>
+					<span id="versionInfo">Version</span>
+				</div>
+				<div class='pull-right'>
+					English
+					|
+					<a href="/es">En Espa�ol</a>
+				</div>
+			</div>
+		</div><!--end of footer-->
+		</div><!--end of wrap-->
+		
+		<!-- Dependent JS Libs-->
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="bootstrap-accesibility/js/bootstrap-accessibility.min.js"></script>
+		<script src="datetimepicker/moment.js"></script>
+		<script src="datetimepicker/bootstrap-datetimepicker.js"></script>
+	</body>
+</html>

@@ -1,7 +1,10 @@
 FactoryGirl.define do
-
+  
   factory :trip_purpose do
-    name 'Trip purpose #1'
+    sequence(:name) {|n| "Trip purpose #{n}"}
+    sequence(:code) do |n|
+      "PURPOSE#{n}"
+    end
   end
 
 end

@@ -1,7 +1,6 @@
 class HomeController < TravelerAwareController
 
   def index
-    render 'shared/home'
+    redirect_to new_user_trip_path(@traveler)
   end
-
 end

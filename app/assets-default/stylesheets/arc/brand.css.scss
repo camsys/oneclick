@@ -1,0 +1,61 @@
+// ARC CSS file. Styles only, no variables or mixins definitions.
+//= depend_on_asset "arc/logo-sm.png"
+//= depend_on_asset "arc/logo-lg.png"
+
+@media(max-width:$screen-sm-max){
+  #logo{
+    background-image: image-url('arc/logo-sm.png');
+  }
+
+  #userDropdown .dropdown-menu>li>a:hover {
+    color: #FEC800;
+  }
+}
+
+@media(min-width:$screen-md-min){
+  #logo{
+    background-image: image-url('arc/logo-lg.png');
+  }
+}
+
+#userDropdown .dropdown-toggle{
+  background-color: transparent;
+  color: #10104A;
+  font-weight: bold;
+}
+
+#userDropdown .dropdown-menu>li>a {
+  color: #10104A;
+}
+
+#help {
+  i{
+    color: #444;
+  }
+
+  i:hover {
+    color: #000000;
+  }
+}
+
+#feedback a {
+  color: black;
+}
+
+#versionLang {
+  color: #FEC800;
+
+  a {
+    color: #FEC800;
+  }
+}
+
+.characteristics-option-button {
+  @extend .btn-default;
+  text-shadow: none;
+}
+
+.characteristics-option-button.active{
+  color: white;
+  background-color: black;
+}

@@ -1,16 +1,16 @@
-.row-fluid
-  .span12
+.row
+  .col-sm-12
     %table.table.table.condensed.table-striped.table-hover.table-bordered#datatable
       %thead
         %tr
-          %th.left Id
-          %th.left User
-          %th.left Creator
-          %th.left From
-          %th.left To
-          %th.center Trip Date/Time
-          %th.center Created At          
-          %th.center Actions
+          %th.left= t(:id)
+          %th.left= t(:user)
+          %th.left= t(:creator)
+          %th.left= t(:from)
+          %th.left= t(:to)
+          %th.center= t(:trip_date)
+          %th.center= t(:created)
+          %th.center= t(:actions)
       %tbody
         - trips.each do |trip|
           %tr
@@ -24,11 +24,11 @@
             %td.center.nowrap
               = format_date_time(trip.created_at)
             %td.center.nowrap
-              = link_to user_trip_path(current_user, trip, :show_hidden => 1), {class: "btn btn-mini btn-success text-center"} do
-                %i.icon-share-sign
-                = "Itinerary"
-              = link_to details_user_trip_path(current_user, trip), {class: "btn btn-mini btn-info text-center"} do
-                %i.icon-exclamation-sign
-                = "Details"
+              = link_to user_trip_path(current_user, trip, :show_hidden => 1), {class: "btn btn-xs btn-success text-center"} do
+                %i.fa.fa-share-sign
+                = t(:itinerary)
+              = link_to details_user_trip_path(current_user, trip), {class: "btn btn-xs btn-info text-center"} do
+                %i.fa.fa-exclamation-sign
+                = t(:details)
 
-= render 'shared/datatable_javascript'
+= render 'shared/simple_datatable_js'

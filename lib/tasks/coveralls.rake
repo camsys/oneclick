@@ -4,6 +4,6 @@ if %w{development test}.include? Rails.env
   namespace :oneclick do
     # task :test_with_coveralls => ['oneclick:spec', :cucumber, 'coveralls:push']
     task :all_tests => [:spec, :cucumber]
-    task :test_with_coveralls => [:spec, :cucumber, 'coveralls:push']
+    task :test_with_coveralls => [:spec, 'cucumber:desktop', 'coveralls:push']
   end
 end

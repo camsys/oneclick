@@ -1,137 +1,183 @@
-.row-fluid
-  .span3
-    %h1
-      %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-      = t(:trip_options)
-  .span9.well.trip_header
-    %div{class: (@trip.in_the_future ? 'span11' : 'span12')}
-      = render partial: 'trip_header', locals: {trip: @trip}
-    - if @trip.in_the_future
-      .span1
-        = link_to edit_user_trip_path(@traveler, @trip), :class => "btn btn-small pull-right", :alt => t(:edit_trip), :title => t(:edit_trip) do
-          %i.icon-edit
+- content_for :head do
+  = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"
+.row{style: "padding: 0px;"}
+  .hidden-xs.col-sm-8
+    = render partial: 'shared/trip_plan_breadcrumbs'
+  .col-sm-4
+    = button_tag :type => 'button', :name => "planButton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
+      =t(:next)
+    = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "pull-right btn btn-default action-button pull-right", style: "margin-right: 5px;" do
+      = t(:feedback)
+    
+.row
+- if @tripResponseHash['status'] == 0
+  - # flash handles it
+- else
+  #reviewBaseContainer.row
+    .col-xs-12.form-group.hidden-md-lg
+      %label.mobile-checkbox{for: 'legendCheckbox', style: 'margin-right: 5px;'}
+        %input.mobile-input-checkbox{type:'checkbox',id:'legendCheckbox',"aria-labelledby"=>"legendCheckbox-label", "aria-describedby"=>"legendCheckbox-description"}
+        .mobile-checkbox__checkmark
+        %span{id:'legendCheckbox-label'}
+        = t(:legends)
+      %label.mobile-checkbox{for: 'filterCheckbox'}
+        %input.mobile-input-checkbox{type:'checkbox',id:'filterCheckbox',"aria-labelledby"=>"filterCheckbox-label", "aria-describedby"=>"filterCheckbox-description"}
+        .mobile-checkbox__checkmark
+        %span{id:'filterCheckbox-label'}
+        = t(:filters)
 
-- if @trip.any_parts_selected?
-  .row-fluid.selected_notices{style: 'margin-top: 19px;'}
-    - if @trip.both_parts_selected?
-      .span6
-        .alert.alert-success.fade.in
-          = content_tag :div, t(:outbound_selected_short)
-      .span6
-        - if @trip.is_return_trip
-          .alert.alert-success.fade.in
-            = content_tag :div, t(:return_selected)
-    - elsif @trip.only_outbound_selected?
-      .span12
-        .alert.alert-success.fade.in
-          = content_tag :div, t(:outbound_selected)
-    - elsif @trip.only_return_selected?
-      .span12
-        - if @trip.is_return_trip
-          .alert.alert-success.fade.in
-            = content_tag :div, t(:return_selected)
+    #accessoryContainer.col-md-3.col-xs-12
+    / end of filter column
+    .col-md-9      
+      #tripContainer.col-xs-12{style: "padding: 0px;"}
+      / end of trip container
+  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px;padding: 0px;"}
+    = button_tag :type => 'button', :name => "planButton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
+      =t(:plan)
+    = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "pull-right btn btn-default action-button pull-right", style: "margin-right: 5px;" do
+      = t(:feedback)
+  / end of review columns
+  #itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
+  :javascript
+    $(function() {
+      //update date names in localized texts for moment js lib
+      var localeLang = '#{I18n.locale}';
+      if(localeLang.toLowerCase() != 'en') { //override moment lang if not english
+        var weekdays = #{t('date.day_names')};
+        if(weekdays instanceof Array && weekdays.length > 0) {
+          moment.lang(localeLang, {
+            weekdays : weekdays
+            });
+        }
+        var weekdaysShort = #{t('date.abbr_day_names')};
+        if(weekdaysShort instanceof Array && weekdaysShort.length > 0) {
+          moment.lang(localeLang, {
+            weekdaysShort : weekdaysShort
+            });
+        }
+        var months = #{t('date.month_names')[1...13]};
+        if(months instanceof Array && months.length > 0) {
+          moment.lang(localeLang, {
+            months : months
+            });
+        }
+        var monthsShort = #{t('date.abbr_month_names')[1...13]};
+        if(monthsShort instanceof Array && monthsShort.length > 0) {
+          moment.lang(localeLang, {
+            monthsShort : monthsShort
+            });
+        }
+      }
 
-- if @trip.both_parts_selected?
-  .row-fluid{style: 'margin-top: 19px;'}
-    .span12.well
-      %h2 Trip planned and saved.
-      %p You can now do one or more of the following to finish your trip planning:
-      .row-fluid
-        .span6{style: 'margin-bottom: 9px;'}
-          =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
-            %i.icon-envelope
-            =t(:e_mail) + " your trip plan."
-        .span6{style: 'margin-bottom: 9px;'}
-          -if (@trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service) or (@trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.service)
-            =link_to '#', {href: '#send_trip_by_email_to_provider', class: 'btn btn-block', data: {toggle: 'modal'}} do
-              %i.icon-ticket
-              Email a booking request to the provider.
-          -else
-            =link_to '#', {disabled: true, class: 'btn btn-block'} do
-              %i.icon-ticket
-              Email a booking request to the provider.
-      .row-fluid
-        .span6{style: 'margin-bottom: 9px;'}
-          =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: false) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
-            %i.icon-search
-            View trip details so that you can call the provider.
-        .span6{style: 'margin-bottom: 9px;'}
-          =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
-            %i.icon-print
-            Print your trip plan.
-      -if user_signed_in?
-        .row-fluid
-          .span6.offset3
-            =link_to user_trips_path(get_traveler), {class: 'btn btn-block'} do
-              %i.icon-share-alt.icon-flip-horizontal
-              I'm done, just show me all my planned trips.
+      //include all possible localized words to be used in review.js
+      var localeDictFinder = {
+        failed_to_update_profile: '#{t(:failed_to_update_profile)}',
+        select_a_plan_each_trip_part: '#{t(:select_a_plan_each_trip_part)}',
+        update: '#{t(:update)}',
+        cancel: '#{t(:cancel)}',
+        select: '#{t(:select)}',
+        sort_by: '#{t(:sort_by)}',
+        travel_time: '#{t(:travel_time)}',
+        trip_time: '#{t(:trip_time)}',
+        arrival_time: '#{t(:arrival_time)}',
+        departure_time: '#{t(:departure_time)}',
+        depart_at: '#{t(:depart_at)}',
+        arrive_in: '#{t(:arrive_in)}',
+        fare: '#{t(:fare)}',
+        number_of_transfers: '#{t(:number_of_transfers)}',
+        modes: '#{t(:modes)}',
+        walk: '#{t(:mode_walk_name)}',
+        rideshare: '#{t(:mode_rideshare_name)}',
+        paratransit: '#{t(:mode_paratransit_name)}',
+        taxi: '#{t(:mode_taxi_name)}',
+        transit: '#{t(:mode_transit_name)}',
+        bus: '#{t(:mode_bus_name)}',
+        bikeshare: '#{t(:mode_bikeshare_name)}',
+        subway: '#{t(:mode_rail_name)}',
+        tram: '#{t(:mode_rail_name)}',
+        rail: '#{t(:mode_rail_name)}',
+        bicycle: '#{t(:mode_bicycle_name)}',
+        drive: '#{t(:mode_car_name)}',
+        car: '#{t(:mode_car_name)}',
+        wait: '#{t(:wait)}',
+        transfer: '#{t(:transfer)}',
+        trip_restrictions: '#{t(:trip_restrictions)}',
+        minutes: '#{t(:minutes)}',
+        minute_abbr: '#{t(:minute_abbr)}',
+        unknown: '#{t(:unknown)}',
+        no_itineraries_found: '#{t(:no_itineraries_found)}',
+        something_went_wrong: '#{t(:something_went_wrong)}',
+        dblclick_for_details: '#{t(:dblclick_for_details)}',
+        four_digit_year: '#{t(:four_digit_year)}',
+        miles: '#{t(:miles)}'                
+      };
 
-
-
-.row-fluid
-  .span12
-    %div{id: 'outbound_section'}
-      .row-fluid.section_header
-        .span12
-          %a
-            %h2
-              = t(:outbound)
-      .row-fluid.itineraries_holder
-        = render :partial => 'trip_itineraries', :locals => {:itineraries => outbound_itineraries(@show_hidden),
-          trip_part: @trip.outbound_part }
-      - if @trip.outbound_part.has_hidden_options?
-        .row-fluid
-          .span12#outbound_hidden_trips_notice
-            = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
-
-  - if @trip.is_return_trip
-    .row-fluid
-      .span12
-        = render partial: 'return_trip'
-
-  
-.row-fluid
-  .well.well-small.span12
-    = link_to new_user_trip_path do
-      %i{class: CsHelpers::ACTION_ICONS[:plan_a_trip]}
-      = t(:plan_a_new_trip)
-    = link_to '#', {href: '#send_trip_by_email', class: "pull-right", data: {toggle: 'modal'}} do
-      %i.icon-envelope
-      =t(:send_by_email)
-
-    = render partial: 'send_trip_by_email', locals: {trip: @trip}
-    = render partial: 'send_trip_by_email_to_provider'
-
-
-#itinerary_modal.modal.hide.fade
-
-:javascript
-  $('#email_itinerary2').on('ajax:success', function (event, data, status, xhr) {
-    $('#send_trip_by_email_to_provider #email_email_addresses').val(data['email'])
-    $('#send_trip_by_email_to_provider').modal('show')
-  })
-
-  /**
-   * Adds 0 left margin to the first thumbnail on each row that don't get it via CSS rules.
-   * Recall the function when the floating of the elements changed.
-   */
-  function fixThumbnailMargins() {
-      $('.itineraries_holder .thumbnails').each(function () {
-          var $thumbnails = $(this).children(),
-              previousOffsetLeft = $thumbnails.first().offset().left;
-          $thumbnails.removeClass('first-in-row');
-          $thumbnails.first().addClass('first-in-row');
-          $thumbnails.each(function () {
-              var $thumbnail = $(this),
-                  offsetLeft = $thumbnail.offset().left;
-              if (offsetLeft < previousOffsetLeft) {
-                  $thumbnail.addClass('first-in-row');
-              }
-              previousOffsetLeft = offsetLeft;
-          });
+      //show or hide legends
+      $('#legendCheckbox').on('change', function(e) {
+        var $legendDiv = $('#legendDiv');
+        if($legendDiv.hasClass('hidden-xs-sm')) {
+          $('#legendDiv').removeClass('hidden-xs-sm');
+        } else {
+          $('#legendDiv').addClass('hidden-xs-sm');
+        }
+        e.preventDefault();
       });
-  }
 
-  // Fix the margins when potentally the floating changed
-  $(window).resize(fixThumbnailMargins);
-  fixThumbnailMargins();
+      //show or hide filters
+      $('#filterCheckbox').on('change', function(e) {
+        var $filterDiv = $('#filterDiv');
+        if($filterDiv.hasClass('hidden-xs-sm')) {
+          $('#filterDiv').removeClass('hidden-xs-sm');
+        } else {
+          $('#filterDiv').addClass('hidden-xs-sm');
+        }
+        e.preventDefault();
+      });
+
+      var tripResponse = #{@tripResponse.to_json};
+      var pageRenderer = new TripReviewPageRenderer(30, 20, tripResponse, localeDictFinder);
+      pageRenderer.processTripResponse();
+
+      $('#itinerary_modal').on('shown.bs.modal', function() {
+        $('.tooltip').hide();
+        if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.review_map != null) { 
+          var mapObj = CsMaps.review_map;
+          mapObj.invalidateMap(); 
+          var mapMarkers = mapObj.LMmarkers;
+          var mapBounds = null;
+          if(mapMarkers.length > 0) {
+            mapBounds = mapObj.calcMapBounds(mapMarkers);
+          } else {
+            mapBounds = mapObj.LMbounds;
+          }
+
+          if(mapBounds) {
+            mapObj.LMmap.fitBounds(mapBounds); 
+          }
+        }
+      });
+
+      //Plan button to jump to Plan page
+      $('button[name=planButton]').on('click', function(e) {
+        var selectedPlanIds = [];
+        var tripParts = $('#tripContainer').find('.single-trip-part');
+        var selectedPlans = tripParts.find('.single-plan-selected');
+        if(tripParts.length != selectedPlans.length) {
+          show_alert(localeDictFinder['select_a_plan_each_trip_part']);
+          return;
+        }
+
+        var selectedPlanIds = [];
+        selectedPlans.each(function() {
+          var tmpPlanId = parseInt($(this).attr('data-plan-id'));
+          if(typeof(tmpPlanId) === 'number' && !isNaN(tmpPlanId)) {
+            selectedPlanIds.push(tmpPlanId);
+          }
+        });
+
+        //jump to Plan page
+        window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );
+      }); 
+    });
+
+    $('#tripContainer').tooltip({selector: '.trip-mode-cost div'})

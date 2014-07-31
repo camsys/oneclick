@@ -26,7 +26,7 @@ describe OneclickGeocoder do
     status = o_geocoder.geocode 'a fake address'
     status.should be_true
     result = o_geocoder.results
-    result.first.should include({:id=>0, :name=>"1 Main St", :formatted_address=>"1 Main St, Atlanta, GA", 
+    result.first.should include({:id=>0, :name=>"1 Main St", :formatted_address=>"1 Main St, Atlanta, GA 99999", 
       :street_address=>"1 Main St", :city=>"Atlanta", :county => "Fulton", :state=>"GA", :zip=>"99999", :lat=>1.0, :lon=>2.0})
   end
   it "is usable returning two values" do
@@ -34,7 +34,7 @@ describe OneclickGeocoder do
     o_geocoder = OneclickGeocoder.new
     status, g_errors, result = o_geocoder.geocode 'a fake address'
     status.should be_true    
-    result.first.should include({:id=>0, :name=>"1 Main St", :formatted_address=>"1 Main St, Atlanta, GA",
+    result.first.should include({:id=>0, :name=>"1 Main St", :formatted_address=>"1 Main St, Atlanta, GA 99999",
       :street_address=>"1 Main St", :city=>"Atlanta", :county => "Fulton", :state=>"GA", :zip=>"99999", :lat=>1.0, :lon=>2.0})
   end
 end

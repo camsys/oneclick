@@ -1,3 +1,23 @@
-= simple_form_for :esp_upload, :url => esp_reader_index_path, :method => 'post'  do |f|
-  =f.file_field :zip
-  =f.submit
+.row
+  .col-sm-6.pull-left
+    %h2 ESP File Upload
+.row
+  .col-sm-6.pull-left
+    =link_to t(:back_to_services), services_path
+
+.row
+  .col-sm-6
+    .panel.panel-default
+      .panel-body
+        .row
+          .col-sm-12
+            ="Upload a formatted MDB file exported from ESP, or the CSV exported from that, packaged as a zip file."
+        .row
+          .col-sm-12
+
+            = simple_form_for :esp_upload, :url => esp_reader_index_path, :method => 'post', :html => { :class => "form-horizontal"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean } do |f|
+              .form-inputs
+                =f.input :csv, label: 'CSV?', as: :check_boxes, collection: [['Yes', 1]]
+                =f.input :zip, as: :file, label: 'File'
+              .form-actions
+                = f.button :submit, 'Save ESP upload'

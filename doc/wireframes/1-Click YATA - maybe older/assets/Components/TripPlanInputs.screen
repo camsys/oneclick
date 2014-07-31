@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Window" id="2" x="294" y="240" width="467" height="337" text="About Your Trip" measuredWidth="467" measuredHeight="337"/>
+  <widgets xsi:type="model:Combo" id="3" x="380" y="276" width="231" text="My Home" measuredWidth="231" measuredHeight="33">
+    <font size="19px"/>
+  </widgets>
+  <widgets xsi:type="model:DateField" id="4" x="386" y="373" width="161" text="8/4/2013" measuredWidth="161" measuredHeight="23"/>
+  <widgets xsi:type="model:Spinner" id="5" x="384" y="404" text="12" measuredWidth="46" measuredHeight="36">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Spinner" id="6" x="434" y="404" text="30" measuredWidth="46" measuredHeight="36">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="7" x="479" y="399" height="51" text="(o) AM&#xA;( ) PM" measuredWidth="48" measuredHeight="51" selection="0" border="false" alpha="0" rowHeight="20">
+    <font size="12px"/>
+    <items x="0" y="2" width="48" height="22" text="(o) AM"/>
+    <items x="0" y="24" width="48" height="22" text="( ) PM"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="8" x="352" y="482" text="[x] Service Animal&#xA;[ ] Personal Care Aide&#xA;[ ] Family Member" measuredWidth="128" measuredHeight="70" alpha="0">
+    <font/>
+    <items x="0" y="2" width="128" height="22" text="[x] Service Animal"/>
+    <items x="0" y="24" width="128" height="22" text="[ ] Personal Care Aide"/>
+    <items x="0" y="46" width="128" height="22" text="[ ] Family Member"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="9" x="325" y="275" text="From" measuredWidth="51" measuredHeight="36" textAlignment="Right">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Combo" id="10" x="383" y="324" width="231" text="Physical Therapy" measuredWidth="231" measuredHeight="33">
+    <font size="19px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="11" x="349" y="323" text="To" measuredWidth="27" measuredHeight="36" textAlignment="Right">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="12" x="330" y="364" text="Date" measuredWidth="46" measuredHeight="36" textAlignment="Right">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="13" x="330" y="403" text="Time" measuredWidth="47" measuredHeight="36" textAlignment="Right">
+    <font size="20px"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="14" x="513" y="482" text="[x] One Way Trip&#xA;[ ] Round Trip&#xA;[ ] Many Stops" measuredWidth="101" measuredHeight="70" alpha="0">
+    <font/>
+    <items x="0" y="2" width="101" height="22" text="[x] One Way Trip"/>
+    <items x="0" y="24" width="101" height="22" text="[ ] Round Trip"/>
+    <items x="0" y="46" width="101" height="22" text="[ ] Many Stops"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="15" x="352" y="455" text="Traveling With..." measuredWidth="115" measuredHeight="29">
+    <font size="16px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="16" x="513" y="449" measuredWidth="5" measuredHeight="29">
+    <font size="16px"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="17" x="656" y="527" text="Plan Trip" measuredWidth="95" measuredHeight="35" state="selected" link="../../AnonymousTripPlan%20Step%202.screen">
+    <font size="19px"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="18" x="624" y="276" text="Here &amp; Now!" measuredWidth="129" measuredHeight="35">
+    <font size="19px"/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

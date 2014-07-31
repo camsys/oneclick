@@ -9,22 +9,21 @@ class TripPlanner
   
   include ServiceAdapters::RideshareAdapter
 
-  def get_fixed_itineraries(from, to, trip_datetime, arriveBy)
+  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false")
 
     #Parameters
-    time = trip_datetime.in_time_zone.strftime("%-I:%M%p")
-    date = trip_datetime.in_time_zone.strftime("%Y-%m-%d")
-    mode = 'TRANSIT,WALK'
-
+    time = trip_datetime.strftime("%-I:%M%p")
+    date = trip_datetime.strftime("%Y-%m-%d")
     base_url = Oneclick::Application.config.open_trip_planner
-    url_options = "/opentripplanner-api-webapp/ws/plan?"
-    url_options += "arriveBy=" + arriveBy + "&time=" + time
+    url_options = "&time=" + time
     url_options += "&mode=" + mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
-    url = base_url + url_options
+    url_options += "&wheelchair=" + wheelchair
+    url_options += "&arriveBy=" + arriveBy.to_s
 
-    Rails.logger.debug URI.parse(url)
-    
+    url = base_url + url_options
+    Rails.logger.info URI.parse(url)
+    t = Time.now
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
       Rails.logger.info(resp.inspect)
@@ -48,7 +47,7 @@ class TripPlanner
 
     data = resp.body
     result = JSON.parse(data)
-    if result.has_key? 'error'
+    if result.has_key? 'error' and not result['error'].nil?
       Honeybadger.notify(
         :error_class   => "Service failure",
         :error_message => "Service failure: fixed: result has error: #{result['error']}",
@@ -74,17 +73,33 @@ class TripPlanner
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
       trip_itinerary['mode'] = Mode.transit
-      trip_itinerary['duration'] = itinerary['duration'].to_f/1000
+      trip_itinerary['duration'] = itinerary['duration'].to_f # in seconds
       trip_itinerary['walk_time'] = itinerary['walkTime']
       trip_itinerary['transit_time'] = itinerary['transitTime']
       trip_itinerary['wait_time'] = itinerary['waitingTime']
-      trip_itinerary['start_time'] = Time.at((itinerary['startTime']).to_f/1000)
-      trip_itinerary['end_time'] = Time.at((itinerary['endTime']).to_f/1000)
+      trip_itinerary['start_time'] = Time.at((itinerary['startTime']).to_f/1000).in_time_zone("UTC")
+      trip_itinerary['end_time'] = Time.at((itinerary['endTime']).to_f/1000).in_time_zone("UTC")
       trip_itinerary['transfers'] = fixup_transfers_count(itinerary['transfers'])
       trip_itinerary['walk_distance'] = itinerary['walkDistance']
-      trip_itinerary['legs'] = itinerary['legs']
+      trip_itinerary['legs'] = itinerary['legs'].to_yaml
       trip_itinerary['server_status'] = 200
       trip_itinerary['match_score'] = match_score
+      begin
+        #TODO: Need better documentaiton of OTP Fare Object to make this more generic
+        # trip_itinerary['cost'] = itinerary['fare'].first[1]['regular']['cents'].to_f/100.0
+        trip_itinerary['cost'] = itinerary['fare']['fare']['regular']['cents'].to_f/100.0
+      rescue Exception => e
+        Rails.logger.error e
+        Rails.logger.error itinerary['fare'].ai
+        #do nothing, leave the cost element blank
+      end
+      agency_id = itinerary['legs'].detect{|l| !l['agencyId'].blank?}['agencyId'] rescue nil
+      if agency_id
+        s = Service.where(external_id: agency_id).first
+        if s
+          trip_itinerary['service'] = s
+        end
+      end
       match_score += match_score_incr
       trip_itinerary
     end
@@ -102,10 +117,12 @@ class TripPlanner
     task = 'fare'
     fare_options = "&origin=" + to[0].to_s + ',' + to[1].to_s + "&destination=" + from[0].to_s + ',' + from[1].to_s
     url = base_url + task + api_key + entity + fare_options
-    Rails.logger.debug "TripPlanner#get_taxi_itineraries: url: #{url}"
+    Rails.logger.info "TripPlanner#get_taxi_itineraries-fare: url: #{url}"
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
+      Rails.logger.warn "Service failure: taxi: #{e.message}"
+      Rails.logger.warn e.backtrace.first(5).join("\n")
       Honeybadger.notify(
         :error_class   => "Service failure",
         :error_message => "Service failure: taxi: #{e.message}",
@@ -129,7 +146,7 @@ class TripPlanner
     #Get providers
     task = 'businesses'
     url = base_url + task + api_key + entity
-    Rails.logger.debug "TripPlanner#get_taxi_itineraries: url: #{url}"
+    Rails.logger.info "TripPlanner#get_taxi_itineraries-business: url: #{url}"
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
@@ -164,8 +181,9 @@ class TripPlanner
     trip_itinerary['walk_distance'] = 0
     trip_itinerary['cost'] = itinerary[0]['total_fare']
     trip_itinerary['server_status'] = 200
-    trip_itinerary['server_message'] = itinerary[1]['businesses']
+    trip_itinerary['server_message'] = itinerary[1]['businesses'].to_yaml
     trip_itinerary['match_score'] = 1.2
+    trip_itinerary['service'] = (ServiceType.where(code: 'taxi').first.services.first rescue nil)
     trip_itinerary
   end
 
@@ -185,13 +203,16 @@ class TripPlanner
   end
 
   def get_rideshare_itineraries(from, to, trip_datetime)
+
+    t = Time.now
     query = create_rideshare_query(from, to, trip_datetime)
     
     agent = Mechanize.new
     agent.keep_alive=false
     agent.open_timeout = MAX_REQUEST_TIMEOUT
     agent.read_timeout = MAX_READ_TIMEOUT    
-    
+
+
     begin
       page = agent.post(service_url, query)
       doc = Nokogiri::HTML(page.body)
@@ -199,17 +220,20 @@ class TripPlanner
     rescue Exception=>e
       Honeybadger.notify(
         :error_class   => "Service failure",
-        :error_message => "Service failure: rideshare: #{e.message}",
+        :error_message => "Service failure: rideshare: #{e.message}, URL was #{service_url}",
         :parameters    => {service_url: service_url, query: query}
       )
-      Rails.logger.warn e.to_s
-      return false, {'id'=>500, 'msg'=>e.to_s}
+      Rails.logger.warn "Service failure: rideshare: #{e.message}"
+      Rails.logger.warn "URL was #{service_url}"
+      Rails.logger.warn e.backtrace.join("\n")
+      return false, {'id'=>500, 'msg'=>e.to_s, 'mode' => 'rideshare'}
     end    
     if results.size > 0
       summary = doc.css('.summary').text
       Rails.logger.debug "Summary: #{summary}"
       count = %r{(\d+) total result}.match(summary)[1]
-      return true, {'mode' => 'rideshare', 'status' => 200, 'count' => count, 'query' => query}
+      return true, {'mode' => 'rideshare', 'status' => 200, 'count' => count, 'query' => query,
+        'service' => (ServiceType.where(code: 'rideshare').first.services.first rescue nil)}
     else
       return false, {'mode' => 'rideshare', 'status' => 404, 'count' => results.size}
     end
@@ -221,9 +245,16 @@ class TripPlanner
       'ride_count' => itinerary['count'],
       'server_status' => itinerary['status'],
       'external_info' => YAML.dump(itinerary['query']),
+      'service' => itinerary['service'],
       'match_score' => 1.1
-
     }
+  end
+
+  def get_drive_time arrive_by, trip_time, from_lat, from_lon, to_lat, to_lon
+    tp = TripPlanner.new
+    result, response = get_fixed_itineraries([from_lat, from_lon],
+                                                [to_lat, to_lon], trip_time, arrive_by.to_s, 'CAR')
+    response['itineraries'].first['duration']
   end
 
 end

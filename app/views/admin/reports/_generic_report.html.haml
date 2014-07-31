@@ -1,22 +1,23 @@
-.row-fluid
-  .span12
+.row
+  .col-sm-12
     #chart.well.well-small
 
-.row-fluid
-  .span12
+.row
+  .col-sm-12
     %table.table.table.condensed.table-striped.table-hover.table-bordered#datatable
       %thead
         %tr
           %td Date
-          %td Count
+          %td= t(:count)
       %tbody
         - @data.each_value do |row|
           %tr
             %td= row.key
             %td= row.count              
 
-= render 'shared/datatable_javascript'
+= render 'shared/simple_datatable_js'
 
+= javascript_include_tag "https://www.google.com/jsapi"
 %script{:type => "text/javascript"}
   google.load('visualization', '1.0', {'packages':['corechart']});
   google.setOnLoadCallback(draw_chart);

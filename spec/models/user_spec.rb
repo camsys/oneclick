@@ -131,7 +131,7 @@ describe User do
       buddy_email = 'buddy@example.com'
       mock_message = double()
       mock_message.should_receive(:deliver)
-      UserMailer.should_receive(:buddy_request_email).with(buddy_email, @u.email).and_return mock_message
+      UserMailer.should_receive(:buddy_request_email).with(buddy_email, @u).and_return mock_message
       @u.add_buddy buddy_email
       @u.buddies.size.should eq 0
       @u.buddy_relationships.size.should eq 1
@@ -148,7 +148,7 @@ describe User do
       buddy_email = 'example2@example.com'
       mock_message = double()
       mock_message.should_receive(:deliver)
-      UserMailer.should_receive(:buddy_request_email).with("example2@example.com", @u.email).and_return mock_message
+      UserMailer.should_receive(:buddy_request_email).with("example2@example.com", @u).and_return mock_message
       @u2 = FactoryGirl.create(:user2)
       @u2.pending_buddy_requests.size.should eq 0
       @u2.travelers.size.should eq 0
@@ -170,6 +170,25 @@ describe User do
   
   describe 'travelers' do
     
+  end
+
+  let(:user) {FactoryGirl.create(:user)}
+  let(:agency_organization1) { FactoryGirl.create(:arc_agency)}
+  let(:provider_organization1) { FactoryGirl.create(:provider)}
+  
+  it 'should be valid for a user to belong to a provider and an agency' do
+    user.agency = agency_organization1
+    user.provider = provider_organization1
+    user.save!
+    user.should be_valid
+  end
+  
+  it 'should not be valid to assign provider as agency for a user' do
+    expect{user.update_attribute(:agency, provider_organization1)}.to raise_error(ActiveRecord::AssociationTypeMismatch)
+  end
+  
+  it 'should not be valid to assign agency as provider for a user' do
+    expect{user.update_attribute(:provider, agency_organization1)}.to raise_error(ActiveRecord::AssociationTypeMismatch)
   end
   
 end

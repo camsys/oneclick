@@ -52,17 +52,23 @@ RSpec.configure do |config|
   config.order = "random"
   
   config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation, {except: %w{traveler_characteristics traveler_accommodations
-      service_types trip_purposes providers services schedules service_trip_purpose_maps
-      service_traveler_characteristics_maps
-      service_traveler_accommodations_maps
-      user_traveler_accommodations_maps
-      user_traveler_characteristics_maps
-      }}
+    DatabaseCleaner.strategy = :transaction
+    # DatabaseCleaner.strategy = :truncation, {except: %w{traveler_characteristics traveler_accommodations
+    #   service_types trip_purposes providers services schedules service_trip_purpose_maps
+    #   service_characteristics
+    #   service_accommodations
+    #   user_accommodations
+    #   user_characteristics
+    #   }}
     DatabaseCleaner.start
   end
 
   config.before(:each) do
+    Timecop.return
+  end
+
+  config.after(:each) do
+    I18n.locale = :en
   end
 
   config.after(:suite) do

@@ -1,9 +1,4 @@
-.row-fluid
-  .span12
-    %h1
-      %i.icon.icon-bar-chart
-      = @report.name
 
-= render 'subnav'
+= render partial: 'subnav', locals: {header: t(@report.class_name)}
 
 = render @report_view

@@ -1,10 +1,24 @@
-.row-fluid
-  .span12
-    %h1
-      %i.icon.icon-info-sign
-      %span#characteristics_header
-        = render partial: 'header', locals: {total_steps: @total_steps}
+.row{style: "padding: 0px;"}
+  .hidden-xs.col-sm-8
+    = render partial: 'shared/trip_plan_breadcrumbs'
+  .col-sm-4
+    = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
+      tabindex: 2 do
+      =t(:next)
+      :javascript
+        $(function() {
+          $('button[name=planTrip]').click(function() {
+            $('.user-characteristics').submit();
+          });
+        });
 
-.row-fluid
-  .well
-    = render partial: 'characteristics/form',  :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
+.row
+  .col-sm-7.col-xs-12
+    = render partial: 'form', :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
+
+  / end of options column
+  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
+    = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
+      tabindex: 2 do
+      =t(:plan)
+  = render partial: 'shared/splash'

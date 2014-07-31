@@ -1,0 +1,51 @@
+.header
+  - if can? :create, Provider
+    = link_to t(:create), new_admin_provider_path,
+        {class: 'btn action-button btn-default pull-right', role: 'button'}
+      
+  %h1= t(:providers)
+
+%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_providers_table
+  %thead
+    %tr
+      %th= t(:name)
+      %th#status= t(:status)
+      %th
+  %tbody
+    - @providers.each do |provider|
+      %tr
+        %td= link_to provider.name, admin_provider_path(provider)
+        %td
+          - if provider.active == false
+            = t(:inactive)
+
+        %td.center
+          = link_to admin_provider_services_path(provider) do
+            = t(:services)
+
+:javascript
+  $(document).ready(function() {
+    var oTable = $('#admin_providers_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ providers per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ providers",
+              "sInfoEmpty": "Showing 0 to 0 of 0 providers",
+              "sInfoFiltered": "(filtered from _MAX_ total providers)"
+          },
+          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l><'toggle col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+    $("div.toggle").html('<span class="pull-right"><input type="checkbox" id="toggle">&nbsp;Show inactive providers</span>');
+
+    var index = $("thead th").index($('#status'));
+
+    oTable.fnFilter('^$', index, true);
+
+    $("#toggle").click(function () {
+        var filter = '^$';
+        if ($(this).is(':checked')) {
+                var filter = '';
+        }         
+        oTable.fnFilter(filter, index, true);
+    });
+  } );            

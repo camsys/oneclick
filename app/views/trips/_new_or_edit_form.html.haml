@@ -1,82 +1,128 @@
-.row-fluid
-  .span12
-    %h1
-      %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-      = t(:plan_a_trip)
-      
--if @trip_proxy.errors.any?
-  .row-fluid
-    .span12
-      %h4
-        %div{:class => "alert alert-error"}
-          %a.close{"data-dismiss" => "alert"} ×
-          %div= t(:correct_errors_to_create_a_trip)
+.row{style: "padding: 0px;"}
+  .hidden-xs.col-sm-8
+    = render partial: 'shared/trip_plan_breadcrumbs'
+  .col-sm-4
+    = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
+      tabindex: 2 do
+      =t(:next)
+      :javascript
+        $(function() {
+          $('button[name=planTrip]').click(function() {
+            $('.plan-a-trip').submit();
+          });
+        });
+.row
+  .col-sm-7.col-xs-12
+    = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path(locale: I18n.locale) : user_trip_path(locale: I18n.locale), :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
+      .col-xs-12.panel.panel-default
+        .panel-body
+          = f.hidden_field :mode
+          = f.hidden_field :from_place_object, :id => "from_place_object"
+          = f.hidden_field :to_place_object, :id => "to_place_object"
+          = f.hidden_field :map_center, id: "map_center"
+
+          #tripOptions
+            .inline-radio
+              = f.input :is_round_trip, as: :radio_buttons, label: t(:trip), collection: [[t(:round_trip), 1], [t(:one_way), 0]],
+                checked: (@trip_proxy.is_round_trip ? "1" : "0"),
+                input_html: { tabindex: 1 }
+
+              :javascript
+                $('#tripOptions :radio').change(function() {
+                  if(this.value === '0') {
+                    $('#returnDatetimeOptions').hide();
+                  } else {
+                    $('#returnDatetimeOptions').show();
+                  }
+                });
+
+          #baseModes
+            = f.input :modes, as: :check_boxes, collection: @modes,
+            label_method: :first, value_method: :last, checked: @selected_modes, label: t(:modes),
+            input_html: { tabindex: 1 }
+
+            :javascript
+              $('#trip_proxy_modes_mode_transit').change(function() {
+                if(this.checked) {
+                  $('#transitModes input[type="checkbox"]').each(function() {
+                      this.checked = true;
+                  });
+                } else {
+                  $('#transitModes input[type="checkbox"]').each(function() {
+                      this.checked = false;
+                  });
+                }
+              });
+
+          #transitModes
+            = f.input :modes, as: :check_boxes, collection: @transit_modes,
+            label_method: :first, value_method: :last, checked: @selected_modes, label: '',
+            collection_wrapper_class: 'col-xs-offset-1', collection_wrapper_tag: :div,
+            input_html: { tabindex: 1 }
+
+            :javascript
+              $('#transitModes input[type="checkbox"]').change( function() {
+                var checkedCount = $('#transitModes input:checked').length;
+                if (checkedCount === 0) {
+                  $("#trip_proxy_modes_mode_transit").prop('checked', false);
+                } else {
+                  $("#trip_proxy_modes_mode_transit").prop('checked', true);
+                }
+              });
 
 
-.row-fluid{:style => "margin-top:20px;"}
-  %div{class: (cms_snippet_content('plan-a-trip').empty? ? 'span12' : 'span9')}  
-    .row-fluid.well.well-small
-      #trip_form.span12
-        = link_to "#" do      
-          %i.icon.icon-map-marker.icon-2x.pull-right#map-icon
-        = render 'trip_form'
-      #trip_map.span6
-        = render 'trip_map'  
-  - unless cms_snippet_content('plan-a-trip').empty?
-    .span3= cms_snippet_content('plan-a-trip')
+          = f.input :trip_purpose_id, :collection =>  TripPurpose.ordered_by_localized_name, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes),
+          input_html: { tabindex: 1, class: 'form-control' }
 
+          = render partial: 'location_input', locals: {dir: 'from', f: f}
+          = render partial: 'location_input', locals: {dir: 'to', f: f}
+
+          .form-group
+            = render partial: 'date_time_input', locals: {dir: 'outbound', f: f}
+
+          #returnDatetimeOptions{style: (@trip_proxy.is_round_trip ? '' : 'display: none;')}
+            .form-group
+              = render partial: 'date_time_input', locals: {dir: 'return', f: f}
+  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
+    = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
+      tabindex: 2 do
+      =t(:plan)
+  = render partial: 'shared/splash'
 :javascript
-  // UI variables
-  var trip_map_key = "trip_map_key";
-
-  // Document Ready
-  $(document).ready(function(){
-    // open or close the map on load based on last state
-    var trip_map_open = get_ui_key_value(trip_map_key, 0);
-    //alert(trip_map_key + ' = ' + trip_map_open);
-    if (trip_map_open == 1) {
-      open_map();
-    } else {
-      close_map();
-    }
-
-    // install event handlers
-    $('#map-icon').click(function(){
-      var trip_map_open = get_ui_key_value(trip_map_key, 0);
-      //alert(trip_map_key + ' = ' + trip_map_open);
-      if (trip_map_open == 1) {
-        // user is closing the map
-        close_map();
-      } else {
-        // user is opening the map
-        open_map();
+  $(function() {
+    $('.plan-a-trip').on('submit',function() {
+      var hiddenFromPlaceData = $('#from_place_object').val();
+      var fromPlaceAddr = $('#trip_proxy_from_place').val();
+      var isResetHiddenFromPlace = true;
+      try {
+        var hiddenFromPlaceJson = JSON.parse(hiddenFromPlaceData);
+        if(hiddenFromPlaceJson.address === fromPlaceAddr || hiddenFromPlaceJson.name === fromPlaceAddr) {
+          isResetHiddenFromPlace = false;
+        }
       }
-    }); 
-    
+      catch(e) {
+        //hiddenFromPlaceData non-parsable to json
+      }
+      if(isResetHiddenFromPlace) {
+        $('#from_place_object').val('');
+      }
+
+      var hiddenToPlaceData = $('#to_place_object').val();
+      var toPlaceAddr = $('#trip_proxy_to_place').val();
+      var isResetHiddenToPlace = true;
+      try {
+        var hiddenToPlaceJson = JSON.parse(hiddenToPlaceData);
+        if(hiddenToPlaceJson.address === toPlaceAddr || hiddenToPlaceJson.name === toPlaceAddr) {
+          isResetHiddenToPlace = false;
+        }
+      }
+      catch(e) {
+        //hiddenToPlaceData non-parsable to json
+      }
+      if(isResetHiddenToPlace) {
+        $('#to_place_object').val('');
+      }
+
+      return true;
+    });
   });
- 
-  function open_map() {
-    //alert('opening map');
-    $('#trip_form').removeClass('span12');
-    $('#trip_form').addClass('span6');
-    $('#trip_map').show();
-    invalidateMap();
-    $('#map-icon').removeClass('icon-map-marker');
-    $('#map-icon').addClass('icon-play');
-    // make sure no popups are currently being shown or they will get messed up
-    closePopup();
-    // refresh the map display
-    setMapToBounds();
-    set_ui_key_value(trip_map_key, 1);
-  };
-  
-  function close_map() {
-    //alert('closing map');
-    $('#trip_form').removeClass('span6');
-    $('#trip_form').addClass('span12');
-    $('#trip_map').hide();
-    $('#map-icon').removeClass('icon-play');
-    $('#map-icon').addClass('icon-map-marker');
-    set_ui_key_value(trip_map_key, 0);
-  };
-   

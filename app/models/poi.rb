@@ -6,11 +6,17 @@ class Poi < GeocodedAddress
   #after_validation :reverse_geocode
   
   # Updatable attributes
-  attr_accessible :name
+  # attr_accessible :name
 
   # set the default scope
-  default_scope order('pois.name')
-  
+  default_scope {order('pois.name')}
+
+  def self.get_by_query_str(query_str, limit)
+    rel = Poi.arel_table[:name].matches(query_str)
+    pois = Poi.where(rel).limit(limit)
+    pois
+  end
+
   def to_s
     name
   end
@@ -45,6 +51,10 @@ class Poi < GeocodedAddress
       obj.state     = geo.state_code
       obj.county    = geo.county
     end
+  end
+
+  def type_name
+    'POI_TYPE'
   end
   
 end

@@ -1,0 +1,6 @@
+.row-fluid
+  %h3= t(:agencies)
+= simple_form_for user, :html => { :class => "form-horizontal col-sm-6"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }, :include_blank => false  do |f|
+  = f.association :agency_user_relationships, input_html: {size: Agency.count}, collection: Agency.all, label: t(:agencies)
+.col-sm-6
+    = render partial: 'devise/registrations/agency_table', locals: { user: user }

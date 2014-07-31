@@ -2,6 +2,14 @@ module MapHelper
 
   ALPHABET = ('A'..'Z').to_a
 
+  unless ENV['UI_MODE']=='kiosk'
+    POPUP_PARTIAL = "/shared/map_popup"
+    BUILDING_ICON = 'fa-building-o'
+  else
+    POPUP_PARTIAL = "/shared/map_popup_b2"
+    BUILDING_ICON = 'icon-building'
+  end
+
   # Returns a formatted string for displaying a map marker image that includes a A,B,C, etc. designator.
   #
   # index is a positive integer x, x >= 0 that corresponds to the index of the object in
@@ -34,7 +42,7 @@ module MapHelper
       "name" => place.name,
       "iconClass" => icon,
       "title" => place.address,
-      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => place.name, :address => place.address} })
+      "description" => render_to_string(:partial => POPUP_PARTIAL, :locals => { :place => {:icon => BUILDING_ICON, :name => place.name, :address => place.address} })
     }
   end
 
@@ -52,7 +60,25 @@ module MapHelper
       "name" => addr[:name],
       "iconClass" => icon,
       "title" =>  address,
-      "description" => render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'icon-building', :name => addr[:name], :address => address} })
+      "description" => ApplicationController.new.render_to_string(:partial => POPUP_PARTIAL, :locals => { :place => {:icon => BUILDING_ICON, :name => addr[:name], :address => address} })
+    }
+  end
+
+  # create a map marker for a leg start location
+  #
+  # addr is a hash returned from the OneClick Geocoder
+  # id is a unique identifier for the place that could be a string
+  # icon is a named icon from the leafletmap_icons.js file
+  def get_leg_start_marker(addr, id, icon)
+    address = addr[:formatted_address].nil? ? addr[:address] : addr[:formatted_address]
+    {
+      "id" => id,
+      "lat" => addr[:lat],
+      "lng" => addr[:lon],
+      "name" => addr[:name],
+      "iconClass" => icon,
+      "title" =>  addr[:name], #only diff from get_addr_marker
+      "description" => ApplicationController.new.render_to_string(:partial => "/shared/map_popup", :locals => { :place => {:icon => 'fa-building-o', :name => addr[:name], :address => address} })
     }
   end
 
@@ -95,24 +121,37 @@ module MapHelper
     legs = itinerary.get_legs
 
     markers = []
-    place = {:name => trip.from_place.name, :lat => trip.from_place.location.first, :lon => trip.from_place.location.last, :address => trip.from_place.address}
-    markers << get_addr_marker(place, 'start', 'startIcon')
-    place = {:name => trip.to_place.name, :lat => trip.to_place.location.first, :lon => trip.to_place.location.last, :address => trip.to_place.address}
-    markers << get_addr_marker(place, 'stop', 'stopIcon')
 
     if legs
       legs.each do |leg|
 
-        place = {:name => leg.start_place.name, :lat => leg.start_place.lat, :lon => leg.start_place.lon, :address => leg.start_place.name}
-        markers << get_addr_marker(place, 'start_leg', 'blueIcon')
+        #place = {:name => leg.start_place.name, :lat => leg.start_place.lat, :lon => leg.start_place.lon, :address => leg.start_place.name}
+        place = {:name => leg.short_description, :lat => leg.start_place.lat, :lon => leg.start_place.lon, :address => leg.start_place.name}
+        markers << get_leg_start_marker(place, 'start_leg', 'blueMiniIcon')
 
         place = {:name => leg.end_place.name, :lat => leg.end_place.lat, :lon => leg.end_place.lon, :address => leg.end_place.name}
-        markers << get_addr_marker(place, 'start_leg', 'blueIcon')
+        markers << get_addr_marker(place, 'end_leg', 'blueMiniIcon')
 
       end
     end
 
+    # Add start and stop after legs to place above other markers
+    place = {:name => trip.from_place.name, :lat => trip.from_place.location.first, :lon => trip.from_place.location.last, :address => trip.from_place.address}
+
+    markers << get_start_stop_marker(place, !itinerary.is_return_trip?)
+    place = {:name => trip.to_place.name, :lat => trip.to_place.location.first, :lon => trip.to_place.location.last, :address => trip.to_place.address}
+    markers << get_start_stop_marker(place, itinerary.is_return_trip?)
+
     return markers
+  end
+
+  # Returns a start or stop marker depending on boolean flag
+  def get_start_stop_marker(place, is_start)
+    if is_start
+      get_addr_marker(place, 'start', 'startIcon')
+    else
+      get_addr_marker(place, 'stop', 'stopIcon')
+    end
   end
 
   #Returns an array of polylines, one for each leg
@@ -130,21 +169,17 @@ module MapHelper
     return polylines
   end
 
-protected
+  protected
 
   # Gets leaflet rendering hash for a leg based on the mode of the leg
   def get_leg_display_options(leg)
 
-    if leg.mode == TripLeg::WALK
-      a = {"color" => 'red', "width" => "5"}
-    elsif leg.mode == TripLeg::BUS
-      a = {"color" => 'blue', "width" => "5"}
-    elsif leg.mode == TripLeg::SUBWAY
-      a = {"color" => 'green', "width" => "5"}
+    if leg.mode.nil?
+      a = {"className" => 'map-tripleg map-tripleg-unknown'}
     else
-      a = {}
+      a = {"className" => 'map-tripleg map-tripleg-' + leg.mode.downcase}
     end
-
+    
     return a
   end
 

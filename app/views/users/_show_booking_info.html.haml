@@ -1,0 +1,27 @@
+.row
+  .col-sm-12
+    %table.table.table.condensed.table-striped.table-hover.table-bordered#bookingtable
+      %thead
+        %tr
+          %th= t(:service_name)
+          %th= t(:client_id)
+      %tbody
+        - user.user_profile.user_services.each do |user_service|
+          -if user_service.service.active
+            %tr
+              %td= user_service.service.name
+              %td= user_service.external_user_id
+
+:javascript
+  $(document).ready(function() {
+    $('#bookingtable').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ services per page",
+              "sZeroRecords": "#{t(:traveler_not_registered)}",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ services",
+              "sInfoEmpty": "Showing 0 to 0 of 0 services",
+              "sInfoFiltered": "(filtered from _MAX_ total services)"
+          },
+          "sDom": "<'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+    } );

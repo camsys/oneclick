@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Converted from Font Awesome. Glyph: f09c -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2048" height="2048" xml:space="preserve">
+<g transform="translate(192, 1664) scale(1, -1)">
+	<path id="unlock" d="M704 160q0 6 -15 57t-35 115.5t-20 65.5q32 16 51 47t19 67q0 53 -37.5 90.5t-90.5 37.5t-90.5 -37.5t-37.5 -90.5q0 -36 19 -66.5t51 -47.5q0 -2 -20 -66t-35 -115t-15 -57q0 -13 9.5 -22.5t22.5 -9.5h192q13 0 22.5 9.5t9.5 22.5zM1664 960v-256q0 -26 -19 -45t-45 -19 h-64q-26 0 -45 19t-19 45v256q0 106 -75 181t-181 75t-181 -75t-75 -181v-192h96q40 0 68 -28t28 -68v-576q0 -40 -28 -68t-68 -28h-960q-40 0 -68 28t-28 68v576q0 40 28 68t68 28h672v192q0 185 131.5 316.5t316.5 131.5t316.5 -131.5t131.5 -316.5z" />
+</g>
+</svg>	

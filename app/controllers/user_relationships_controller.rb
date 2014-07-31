@@ -1,6 +1,6 @@
 class UserRelationshipsController < ApplicationController
   
-  before_filter :set_view_variables
+  before_filter :set_view_variables, except: [:check_update] #clear out the flash messages, set @user
   
   # A traveler creates a new delegate (buddy) request
   def create
@@ -12,12 +12,12 @@ class UserRelationshipsController < ApplicationController
     if delegate
       # add the relationship to the DB with a pending status
       @delegate_relationship = UserRelationship.new
-      @delegate_relationship.traveler = current_user
+      @delegate_relationship.traveler = @user
       @delegate_relationship.delegate = delegate
       @delegate_relationship.relationship_status = RelationshipStatus.requested
       # TODO: All emails should be sent from a worker thread not here!
       if @delegate_relationship.save
-        UserMailer.buddy_request_email(@delegate_relationship.delegate.email, @delegate_relationship.traveler.email).deliver
+        UserMailer.buddy_request_email(@delegate_relationship.delegate.email, @delegate_relationship.traveler).deliver
         @delegate_relationship.relationship_status = RelationshipStatus.pending
         @delegate_relationship.save
         flash[:notice] = t(:buddy_request_sent)
@@ -34,17 +34,30 @@ class UserRelationshipsController < ApplicationController
     end
 
     respond_to do |format|
-      format.js {render "update_buddy_table"}
+      format.js {render "shared/update_user_relationship_tables", locals: @locals}
     end
-       
+  end
+
+  def check_update
+    ur = UserRelationship.find(params[:id])
+    authorize! :update, ur
+    respond_to do |format|
+      format.js {render json: {rel_id: params[:id], success: ur.permissible_action?(params[:status]), status_id: params[:status]} }
+    end
+  end
+
+  def update
+    respond_to do |format|
+      format.js {render (UserRelationship.find(params[:id]).update_attributes(relationship_status: params[:relationship_status_id])).to_json}
+    end
   end
 
   # A traveler hides a buddy request.
   def traveler_hide
     
-    update_delegate_relationship(current_user, params[:id], RelationshipStatus.hidden)
+    update_delegate_relationship(@user, params[:id], RelationshipStatus.hidden)
     respond_to do |format|
-      format.js {render "update_buddy_table"}
+      format.js {render "shared/update_user_relationship_tables", locals: @locals}
     end
         
   end
@@ -52,9 +65,9 @@ class UserRelationshipsController < ApplicationController
   # A traveler is retracting an unconfirmed request.
   def traveler_retract
 
-    update_delegate_relationship(current_user, params[:id], RelationshipStatus.hidden)
+    update_delegate_relationship(@user, params[:id], RelationshipStatus.hidden)
     respond_to do |format|
-      format.js {render "update_buddy_table"}
+      format.js {render "shared/update_user_relationship_tables", locals: @locals}
     end
 
   end
@@ -62,9 +75,9 @@ class UserRelationshipsController < ApplicationController
   # A traveler revokes a confirmed request
   def traveler_revoke
 
-    update_delegate_relationship(current_user, params[:id], RelationshipStatus.revoked)
+    update_delegate_relationship(@user, params[:id], RelationshipStatus.revoked)
     respond_to do |format|
-      format.js {render "update_buddy_table"}
+      format.js {render "shared/update_user_relationship_tables", locals: @locals}
     end
            
   end
@@ -72,9 +85,9 @@ class UserRelationshipsController < ApplicationController
   # A delegate (buddy) accepts an request
   def delegate_accept
     
-    update_traveler_relationship(current_user, params[:id], RelationshipStatus.confirmed, 1)
+    update_traveler_relationship(@user, params[:id], RelationshipStatus.confirmed, 1)
     respond_to do |format|
-      format.js {render "update_traveler_table"}
+      format.js {render "shared/update_user_relationship_tables", locals: @locals}
     end
             
   end
@@ -82,9 +95,9 @@ class UserRelationshipsController < ApplicationController
   # A delegate declines a request
   def delegate_decline
 
-    update_traveler_relationship(current_user, params[:id], RelationshipStatus.denied, 2)
+    update_traveler_relationship(@user, params[:id], RelationshipStatus.denied, 2)
     respond_to do |format|
-      format.js {render "update_traveler_table"}
+      format.js {render "shared/update_user_relationship_tables", locals: @locals}
     end
     
   end
@@ -92,9 +105,9 @@ class UserRelationshipsController < ApplicationController
   # A delegate revokes the ability to perform funcitons on behalf of a traveler
   def delegate_revoke
 
-    update_traveler_relationship(current_user, params[:id], RelationshipStatus.revoked, 3)
+    update_traveler_relationship(@user, params[:id], RelationshipStatus.revoked, 3)
     respond_to do |format|
-      format.js {render "update_traveler_table"}
+      format.js {render "shared/update_user_relationship_tables", locals: @locals}
     end
     
   end
@@ -106,6 +119,8 @@ private
     flash[:notice] = nil
     flash[:alert] = nil
     @user_relationship = UserRelationship.new
+    @user = User.find(params[:user_id])
+    @locals = {user: @user, target_name: params[:user_relationship][:messagesFieldName]} #messages field is hardcoded in the view
   end
   
   # Updates the status of a delegate relationship by the current user (traveler)

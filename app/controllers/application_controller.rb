@@ -2,13 +2,18 @@ class ApplicationController < ActionController::Base
   include CsHelpers
   include LocaleHelpers
 
+  # acts_as_token_authentication_handler_for User
+
   # include the helper method in any controller which needs to know about guest users
   helper_method :current_or_guest_user
 
   protect_from_forgery
-  before_filter :set_locale
   before_filter :get_traveler
+  before_filter :set_locale
   before_filter :setup_actions
+  before_action do |controller|
+    @current_ability ||= Ability.new(get_traveler)
+  end
   after_filter :clear_location
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -27,8 +32,8 @@ class ApplicationController < ActionController::Base
     I18n.locale = params[:locale] || I18n.default_locale
   end
 
-  def default_url_options(options={})
-    { :locale => ((I18n.locale == I18n.default_locale) ? nil : I18n.locale) }
+  def default_url_options(options={}) # This overrides/extends
+    { locale: I18n.locale }
   end
 
   def clear_location
@@ -36,17 +41,24 @@ class ApplicationController < ActionController::Base
   end
 
   def start_assisting user
-    session[:assisting] = user.id
+    set_traveler_id user.id
+    @current_ability = nil
   end
 
   def stop_assisting
-    session.delete :assisting
+    session.delete TRAVELER_USER_SESSION_KEY
+    @current_ability = nil
   end
 
   def set_no_cache
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+  end
+
+  def redirect_to(options = {}, response_status = {})
+    options[:locale] = I18n.locale if options.is_a? Hash
+    super(options, response_status)
   end
 
   protected
@@ -57,7 +69,7 @@ class ApplicationController < ActionController::Base
 
 
   def setup_actions
-    @actions = actions
+    @actions = traveler_actions
   end
 
   # Update the session variable
@@ -66,17 +78,31 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
+    if session[:agency]
+      return new_user_registration_path(locale: current_or_guest_user.preferred_locale)
+    end
     if session[:inline]
       get_traveler
+      unless Trip.where(id: session[:current_trip_id]).exists?
+        session[:current_trip_id] =  nil
+        return new_user_trip_path(current_or_guest_user, locale: current_or_guest_user.preferred_locale)
+      end
       @trip = Trip.find(session[:current_trip_id])
       session[:current_trip_id] =  nil
       @trip.create_itineraries
       user_trip_path(@traveler, @trip)
     else
-      new_user_trip_path(current_or_guest_user)
+      if ui_mode_kiosk?
+        new_user_trip_path(current_or_guest_user)
+      else
+        root_path(locale: current_or_guest_user.preferred_locale)
+      end
     end
   end
 
+  def content
+  end
+  
   private
 
   # called (once) when the user logs in, insert any code your application needs
@@ -98,6 +124,7 @@ class ApplicationController < ActionController::Base
     u.password = random_string
     u.email = "guest_#{random_string}@example.com"
     u.save!(:validate => false)
+    u.add_role :anonymous_traveler
     session[:guest_user_id] = u.id
     u
   end

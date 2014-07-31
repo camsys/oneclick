@@ -1,28 +1,40 @@
-.row-fluid
-  .span12
+.row
+  .col-sm-12
     %h1
-      %i.icon.icon-map-marker
+      %i.fa.fa-map-marker
       Geocode (util only)
 
-.row-fluid
-  .span12
-    = simple_form_for :geocode, url: admin_geocode_path, html: { class: 'form-horizontal' }  do |f|
+.row
+  .col-sm-12
+    = simple_form_for :geocode, url: admin_geocode_path, html: { class: 'form-horizontal' }, method: 'GET'  do |f|
       = f.error_notification
       = f.input :address, input_html: {value: @address}
+      = f.input :map_center, input_html: {value: @map_center}
       .form-actions
         = f.submit 'Geocode', class: 'btn btn-info'
 - if @results
-  .row-fluid
-    .span12
+  .row
+    .col-sm-12
       Included types: 
       = OneclickGeocoder::INCLUDED_TYPES
-  .row-fluid
-    .span12
-      Jump to: 
+  .row
+    .col-sm-12
+      Jump to:  
+      / This screen is not public, will not internationalize.
       - (1..@results.size).each do |i|
-        %a{href: "##{i}"}= i
+        %a{href: "##{i}"}= i  
+      %br
+      = link_to 'Autocomplete results'
       %br
       - @results.each_with_index do |r, i|
         = i + 1
         %pre{id: i + 1}
           = r.data.ai(plain: true)
+      %h4 Autocomplete results  
+      %pre
+        = @autocomplete_results.body.ai(plain: true)
+      %h4 Autocomplete details
+      %pre
+        - @autocomplete_details.each do |d|
+          %pre
+            = d.ai(plain: true)

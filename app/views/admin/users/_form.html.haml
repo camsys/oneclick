@@ -1,0 +1,47 @@
+%h1
+  %i.fa.fa-key.fa-rotate-90
+  = t(:sign_up)
+
+- if @create_inline
+  .row
+    .col-sm-12
+      = render partial: 'trips/trip_header', locals: {trip: @trip}
+
+.well
+  = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
+    = f.error_notification
+    = display_base_errors resource
+
+    - if @create_inline
+      .alert.alert-info.alert-block
+        .row
+          .col-sm-12
+            %p
+              =cms_snippet_content('registration-reasoning')
+            / = t(:to_see_best_options)
+        .row
+          .col-sm-12
+            %a.btn.btn-success{:alt => 'alt words', :title => 'title here', :href => skip_user_trip_path(@traveler, @trip.id)}
+              %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
+              =t(:no_thanks_just_plan_it)
+
+    - Rails.logger.debug "In view, I18n: #{I18n.locale}"
+    - Rails.logger.debug t(:first_name)
+    = f.input :first_name, label: t(:first_name), :autofocus => true
+    = f.input :last_name, label: t(:last_name)
+    = f.input :email, label: t(:email), :required => true
+    = f.input :password, label: t(:password), :required => true
+    = f.input :password_confirmation, :label => t(:retype_your_password), :required => true
+    = f.hidden :approved_agencies if session[:agency]
+    - if @create_inline
+      .form-actions
+        = button_tag :type => 'submit', :class => "btn btn-primary" do
+          %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
+          =t(:sign_up_and_plan)
+    - else
+      .actions
+        = button_tag type: :submit, class: 'btn btn-primary controls' do
+          %i.fa.fa-edit
+          = t(:sign_up)
+        = render "devise/shared/links"
+

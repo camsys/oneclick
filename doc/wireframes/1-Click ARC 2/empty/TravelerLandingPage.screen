@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" id="1" measuredWidth="960" measuredHeight="700">
+    <screen xsi:type="model:Screen" href="assets/Components/BasedScreenLoggedInTitleOnly.screen#/"/>
+    <overrides>
+      <widgets ref="/@widgets.0/@instance/@widgets.5" link="AgentLandingPage.screen"/>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Master" id="3" x="318" y="272" measuredWidth="300" measuredHeight="75">
+    <screen xsi:type="model:Screen" href="assets/Components/MainButton.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Master" id="4" x="318" y="449" measuredWidth="300" measuredHeight="75" link="MyTrips.screen">
+    <screen xsi:type="model:Screen" href="assets/Components/MainButton.screen#/"/>
+    <overrides>
+      <widgets ref="2" text="My Trips"/>
+      <widgets ref="3">
+        <attributes key="icon" value="assets/reply (custom)"/>
+      </widgets>
+      <widgets ref="1" link="MyTrips.screen"/>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Master" id="5" x="318" y="360" measuredWidth="300" measuredHeight="75">
+    <screen xsi:type="model:Screen" href="assets/Components/MainButton.screen#/"/>
+    <overrides>
+      <widgets ref="2" text="Travel Profile"/>
+      <widgets ref="3">
+        <attributes key="icon" value="assets/cogs (custom)"/>
+      </widgets>
+    </overrides>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

@@ -1,5 +1,5 @@
 - unless @comments.blank?
-  %h3 Comments
+  %h3= t(:comments)
   %p= @comments
 
 %h3= t(:trip_options_information_from_from, from: @from)
@@ -7,7 +7,7 @@
 %hr
 
 %h2
-  -if @itinerary.mode.name.downcase == 'paratransit'
+  -if @itinerary.mode.code == 'mode_paratransit'
     =@itinerary.service.name
     %h3
       =@itinerary.service.provider.name
@@ -40,15 +40,15 @@
 
 
 
--unless @itinerary.mode.name.downcase == 'rideshare'
+-unless @itinerary.mode.code == 'mode_rideshare'
   %hr
   %h3
-    Summary:
+    =t(:summary) + ":"
   = render :partial => 'trip_summary_header', :locals => { :itinerary => @itinerary }
 
 %hr
 %h3
-  Details:
+  =t(:details) +":"
 
 = render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
 
@@ -59,7 +59,7 @@
     %tr
       %td="Thank you for using " + Oneclick::Application.config.name + " Software."
     %tr
-      %td This email is automatically sent by the OneClick system. Please do not reply to this email.
+      %td= t(:do_not_reply)
     %tr
       %td="Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of " + Oneclick::Application.config.name
  
