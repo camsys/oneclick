@@ -15,10 +15,9 @@
 .row
   .col-sm-7.col-xs-12
     = render partial: 'form', :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
-
-  / end of options column
-  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
-    = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
-      tabindex: 2 do
-      =t(:plan)
+    / end of options column
+    .col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
+      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
+        tabindex: 2 do
+        =t(:plan)
   = render partial: 'shared/splash'

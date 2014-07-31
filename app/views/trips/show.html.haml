@@ -31,7 +31,7 @@
     .col-md-9      
       #tripContainer.col-xs-12{style: "padding: 0px;"}
       / end of trip container
-  .visible-xs-block.col-xs-12{style: "margin-bottom: 5px;padding: 0px;"}
+  .col-xs-12{style: "margin-bottom: 5px;padding: 0px;"}
     = button_tag :type => 'button', :name => "planButton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
       =t(:plan)
     = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "pull-right btn btn-default action-button pull-right", style: "margin-right: 5px;" do
