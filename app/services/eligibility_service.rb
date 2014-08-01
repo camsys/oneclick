@@ -56,7 +56,8 @@ class EligibilityService
         Rails.logger.info "service_requirement: #{service_requirement.ai}"
         Rails.logger.info "passenger_characteristic: #{passenger_characteristic.ai}"
 
-        unless passenger_characteristic #This passenger characteristic is not listed
+        #This passenger characteristic is not listed
+        unless passenger_characteristic and not(passenger_characteristic.value.blank?)
           Rails.logger.info "not listed"
           group_match_score += 0.25
           Rails.logger.info "group_missing_info is now #{group_missing_info.ai}"

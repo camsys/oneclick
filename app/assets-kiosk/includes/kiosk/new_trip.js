@@ -112,3 +112,7 @@ jQuery(function($) {
 
     $('.js-trip-wizard-form').on('ajax:complete', NewTrip.stepCompleteHandler);
 });
+
+jQuery(window).load(function () {
+    NewTrip.loaded = true;
+});
