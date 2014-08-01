@@ -17,6 +17,7 @@
         %th= t(:send_follow_up_email)
   %tbody{ :id => 'trips_table'}
     - trips = RateableDecorator.decorate_collection(trips)
+    - rateable_trip_ids = []
     - trips.each do |trip|
       -if trip.both_parts_selected?
         -tripID = "trip#{trip.id}"
@@ -33,6 +34,7 @@
             %td.center.nowrap
               - if can? :create, trip.ratings.build
                 - if (not trip.in_the_future and can? :create, trip.ratings.build) or Rails.env.development?
+                  - rateable_trip_ids << trip.id
                   - modal_name = "##{tripID}RatingModal"
                   %button.btn.btn-default.action-button{data: {toggle: 'modal', target: modal_name, remote: new_trip_rating_path(trip)}}
                     = t(:feedback)
@@ -67,7 +69,8 @@
             %td.center
               = link_to email_feedback_user_trip_path(traveler, trip, locale: I18n.locale), class: "btn btn btn-default action-button" do
                 - t(:send)
-        = render partial: 'trips/trip_rating', locals: {id: trip.id}
+- rateable_trip_ids.each do |rateable_trip_id|
+  = render partial: 'trips/trip_rating', locals: {id: rateable_trip_id}
 
 :javascript
   $(document).ready(function() {
