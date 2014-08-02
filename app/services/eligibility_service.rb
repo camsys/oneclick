@@ -243,15 +243,15 @@ class EligibilityService
       destination_point = factory.point(trip_part.to_trip_place.lon.to_f, trip_part.to_trip_place.lat.to_f)
 
       #Match Endpoint Area
-      if service.endpoint_area?
-         unless service.endpoint_area.contains? origin_point or service.endpoint_area.contains? destination_point
+      unless service.endpoint_area_geom.nil?
+         unless service.endpoint_area_geom.geom.contains? origin_point or service.endpoint_area_geom.geom.contains? destination_point
           next
         end
       end
 
       #Match Coverage Area
-      if service.coverage_area?
-        unless service.coverage_area.contains? origin_point and service.coverage_area.contains? destination_point
+      unless service.coverage_area_geom.nil?
+        unless service.coverage_area_geom.geom.contains? origin_point and service.coverage_area_geom.geom.contains? destination_point
           next
         end
       end
