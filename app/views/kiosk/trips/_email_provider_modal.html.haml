@@ -4,11 +4,10 @@
     .close-section.span4
       .left-content.pull-right
 
-
       %a.close-btn-container{"data-dismiss" => "modal"}
         .close-btn
-        %p
-          =t(:close)
+        %p= t(:close)
+
     .detail-section.span8plus
       %h3= t(:send_request_to_provider)
       - if @trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service
@@ -33,9 +32,18 @@
 :javascript
   $('#itinerary_modal').appendTo('body');
 
-  $('#send_by_email_to_provider_form').on('ajax:success', function() {
-    $('#itinerary_modal').modal('hide');
-  });
+  $('#send_by_email_to_provider_form')
+    .on('ajax:success', function () {
+      $('#itinerary_modal').modal('hide');
+    })
+    .on('focus', 'textarea', function () {
+      if (window.cocoa)
+          window.cocoa.openKeyboard();
+    })
+    .on('blur', 'textarea', function () {
+      if (window.cocoa)
+          window.cocoa.closeKeyboard();
+    });
 
   $('.cancel_provider_link').on('click', function() {
     $('#itinerary_modal').modal('hide');
