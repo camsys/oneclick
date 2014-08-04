@@ -695,6 +695,7 @@ class TripsController < PlaceSearchingController
     end
 
     return_part = @itinerary.trip_part.get_return_part
+
     if return_part and return_part.is_bookable?
       return_result, return_messages = eh.book_itinerary(return_part.selected_itinerary)
     else
