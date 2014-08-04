@@ -241,7 +241,7 @@ class Service < ActiveRecord::Base
         geometry = self.coverage_area_geom
     end
     if geometry
-      geometry.each do |polygon|
+      geometry.geom.each do |polygon|
         polygon_array = []
         ring_array  = []
         polygon.exterior_ring.points.each do |point|
