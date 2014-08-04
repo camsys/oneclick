@@ -1,16 +1,1 @@
 // Broward CSS file. Styles only, no variables or mixins definitions.
-//= depend_on_asset "broward/logo-sm.png"
-//= depend_on_asset "broward/logo-lg.png"
-
-@media(max-width:$screen-sm-max){
-  #logo {
-   background-image: image-url('broward/logo-sm.png');
- }
-}
-
-@media(min-width:$screen-md-min){
-  #logo {
-   background-image: image-url('broward/logo-lg.png');
-   width: 530px;
-  }
-}

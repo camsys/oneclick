@@ -31,7 +31,7 @@ I18n.available_locales = [:en, :es] # default
 case ENV['BRAND'] || 'arc'
 when 'arc'
   Oneclick::Application.config.host = 'oneclick-arc.camsys-apps.com'
-  Oneclick::Application.config.ui_logo = 'arc/logo-sm.png'
+  Oneclick::Application.config.ui_logo = 'arc/logo.png'
   Oneclick::Application.config.geocoder_components = 'administrative_area:GA|country:US'
   Oneclick::Application.config.map_bounds = [[33.457797,-84.754028], [34.090199,-83.921814]]
   Oneclick::Application.config.geocoder_bounds = [[33.737147,-84.406634], [33.764125,-84.370361]]  
@@ -62,7 +62,7 @@ when 'arc'
 
 when 'broward'
   Oneclick::Application.config.host = 'oneclick-broward.camsys-apps.com'
-  Oneclick::Application.config.ui_logo = 'broward/logo-sm.jpg'
+  Oneclick::Application.config.ui_logo = 'broward/logo.png'
   Oneclick::Application.config.geocoder_components = 'administrative_area:FL|country:US'
   Oneclick::Application.config.map_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
   Oneclick::Application.config.geocoder_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
@@ -92,7 +92,7 @@ when 'broward'
 
 when 'pa'
   Oneclick::Application.config.host = 'oneclick-pa.camsys-apps.com'
-  Oneclick::Application.config.ui_logo = 'pa/logo-sm.jpg'
+  Oneclick::Application.config.ui_logo = 'pa/logo.png'
   Oneclick::Application.config.geocoder_components = 'administrative_area:PA|country:US'
   # TODO Do we maybe need different bounds for kiosk vs. default?
   Oneclick::Application.config.map_bounds      = [[40.0262999543423,  -76.56372070312499], [39.87970800405549, -76.90189361572266]]
@@ -132,7 +132,7 @@ when 'pa'
 
 when 'jta'
   Oneclick::Application.config.host = 'oneclick-jta.camsys-apps.com'
-  Oneclick::Application.config.ui_logo = 'jta/logo-sm.jpg'
+  Oneclick::Application.config.ui_logo = 'jta/logo.png'
   Oneclick::Application.config.geocoder_components = 'administrative_area:FL|country:US'
   # TODO Do we maybe need different bounds for kiosk vs. default?
   Oneclick::Application.config.map_bounds      = [[30.0668986565,-82.0920740215],[30.5909384888,-81.319458582]]
@@ -165,7 +165,7 @@ when 'jta'
 
   when 'ieuw'
     Oneclick::Application.config.host = 'oneclick-ieuw.camsys-apps.com'
-    Oneclick::Application.config.ui_logo = 'ieuw/logo-full.png'
+    Oneclick::Application.config.ui_logo = 'ieuw/logo.png'
     Oneclick::Application.config.geocoder_components = 'administrative_area:CA|country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
     Oneclick::Application.config.map_bounds      = [[32.342841,-118.941422],[36.844461,-113.755875]]

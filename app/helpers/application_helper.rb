@@ -32,7 +32,7 @@ module ApplicationHelper
   end
 
   def get_logo_path
-    return root_url + Base.helpers.asset_path(get_logo)
+    return root_url({locale: ''}) + Base.helpers.asset_path(get_logo)
   end
 
   # Returns a mode-specific icon
