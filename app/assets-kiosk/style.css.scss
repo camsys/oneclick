@@ -663,6 +663,14 @@ $purposeHPadding: 30px;
 		margin:1px 1px 10px 1px;
 		width:99%;
 
+		&.stop {
+			background-color: $gray4;
+			border: none;
+			color: rgba($white, .5);
+			outline: 1px solid darken($gray4, 10%);
+			pointer-events: none;
+		}
+
 		&:active{
 			background-color: lighten($blue, 10%);
 			border-top:1px solid lighten($blue, 15%);
@@ -2442,4 +2450,10 @@ body.sessions.new, body.registrations.new{
 //hide depart dropdown in tripform view
 .trip_proxy_outbound_arrive_depart {
   display: none;
+}
+
+.ecolane-booking-results {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 15px;
 }

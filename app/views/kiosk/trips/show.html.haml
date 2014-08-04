@@ -37,6 +37,11 @@
           /       View trip details to call the provider.
           .row-fluid
             .span12
+              = link_to kiosk_user_new_trip_start_path(current_or_guest_user), {class: 'btn btn-block'} do
+                = t(:plan_a_new_trip)
+
+          .row-fluid
+            .span12
               = link_to show_printer_friendly_kiosk_user_trip_url(@traveler,@trip, print: true, protocol: 'print'), class: 'btn btn-block', data: {toggle: 'modal'} do
                 Print your trip plan
 
@@ -56,11 +61,6 @@
                       = t(:return_error_occurred)
                       %span.message
               - break
-
-          .row-fluid
-            .span12
-              = link_to kiosk_user_new_trip_start_path(current_or_guest_user), {class: 'btn btn-block'} do
-                = t(:plan_a_new_trip)
 
 - else
   .row-fluid.results-view.js-trip-itineraries-slides

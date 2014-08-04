@@ -1,7 +1,10 @@
 jQuery(function ($) {
   $('a[href="#book-ecolane"]').on('click', function(e) {
     e.preventDefault();
+    if ($(this).hasClass('stop')) return true;
     var data = $(this).data();
+
+    $(this).addClass('stop');
 
     var text = "<br>" + "#{t(:please_wait)}" + "..."
     $('#bookButton').html(text);
