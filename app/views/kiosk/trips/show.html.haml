@@ -35,9 +35,10 @@
           /   .span12
           /     =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: false) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
           /       View trip details to call the provider.
-          .row-fluid
-            .span12
-              = link_to 'Email provider', '#show-email-provider-modal', class: 'btn btn-block'
+          - if user_signed_in?
+            .row-fluid
+              .span12
+                = link_to 'Email provider', '#show-email-provider-modal', class: 'btn btn-block'
 
           .row-fluid
             .span12
