@@ -10,7 +10,8 @@
   %ul.purpose.span8.offset2
     - TripPurpose.all.each do |purpose|
       %li{:name => purpose.id}
-        = I18n.t(purpose.name)
+        %span
+          = I18n.t(purpose.name)
 
     / TODO: Add class of selected to li to show state
 

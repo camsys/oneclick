@@ -123,6 +123,7 @@ Oneclick::Application.routes.draw do
         member do
           get 'itineraries'
           get 'unhide_all'
+          get 'unselect_all'
         end
       end
 

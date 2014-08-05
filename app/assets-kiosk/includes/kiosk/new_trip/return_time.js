@@ -21,11 +21,18 @@ jQuery(function($) {
         $('.js-trip-wizard-form').find('#trip_proxy_return_trip_time').val(NewTrip.read().default_return_trip_time);
     }
 
+    if (NewTrip.read().return_trip_date) {
+        $('.js-trip-wizard-form').find('#trip_proxy_return_trip_date').val(NewTrip.read().return_trip_date);
+    } else if (NewTrip.read().default_return_trip_date) {
+        $('.js-trip-wizard-form').find('#trip_proxy_return_trip_date').val(NewTrip.read().default_return_trip_date);
+    }
+
     NewTrip.timepickerInit('#trip_proxy_return_trip_time', '#timepicker-two');
+    setupDatePickerForKiosk('#trip_proxy_return_trip_date', new Date(NewTrip.read().default_return_trip_date));
+
     $('#return-trip a#no').on('click', noReturnTripHandler);
 
     $('#return-trip a#yes').on('click', function() {
-
         // Register that we * do * want a return trip
         $('#trip_proxy_is_round_trip').prop('checked', true);
     });

@@ -31,8 +31,8 @@
         .dialog-footer.corner-bottom
           .row-fluid
             .span12{:style => 'margin-bottom:0;'}
-              =link_to select_kiosk_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "select", :alt => get_alt_button_text(itinerary, 'select'), :title => get_alt_button_text(itinerary, 'select')} do
-                =t(:select)
+              = link_to select_kiosk_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "select", :alt => get_alt_button_text(itinerary, 'select'), :title => get_alt_button_text(itinerary, 'select')} do
+                = t(:select)
               =link_to itinerary_kiosk_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "details", :remote => true, :alt => get_alt_button_text(itinerary, 'view'), :title => get_alt_button_text(itinerary, 'view') } do
                 =t(:details)
               / =link_to hide_user_trip_path(@traveler, @trip, :itinerary => itinerary), {:class => "hide", :alt => get_alt_button_text(itinerary, 'remove'), :title => get_alt_button_text(itinerary, 'remove') } do
