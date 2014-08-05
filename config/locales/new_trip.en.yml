@@ -54,13 +54,19 @@ en:
           If "yes", you will be prompted to enter a return time (that is, a
           time to be picked up at your destination) in the next step.
 
-      - heading: Tell Us When You'll Be Ready To Return
+      - heading: Tell Us What Day You'll Be Ready To Return
+        paragraph: |
+          Choose the date you will be leaving your destination location, to
+          return back to your starting location.  <br><br>Tap "Next Step" when
+          you have selected the correct date to leave your destination.
+
+      - heading: Tell Us What Time You'll Be Ready To Return
         paragraph: |
           Choose the time you will be leaving your destination location, to
           return back to your starting location. A time 2 hours from the
-          departure time you chose has already been selected for you.
-          <br><br> Tap "Next Step" when you have selected the correct time to
-          leave your destination.
+          departure time you chose has already been selected for you. <br><br>
+          Tap "Next Step" when you have selected the correct time to leave your
+          destination.
 
     overview:
       - heading: This Is What You Told Us
