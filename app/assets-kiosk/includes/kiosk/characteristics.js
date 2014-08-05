@@ -270,7 +270,7 @@ characteristicsView.indexChangeHandler = function () {
 
       case characteristicsView.states.PROGRAMS:
         if (!window.new_user_characteristics_proxy_submitted) {
-          console.log('submitting');
+          $('.next-step-btn').addClass('stop');
           $('.new_user_characteristics_proxy').submit();
         }
 
