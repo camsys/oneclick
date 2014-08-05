@@ -69,6 +69,7 @@
     $('.next-footer-container').removeClass('hidden');
     $('.next-step-btn').on('click', function(){
       if (!window.new_user_programs_proxy_submitted) {
+        $('.next-step-btn').addClass('stop');
         $('*[id*=new_user_programs_proxy]').submit();
       }
 
