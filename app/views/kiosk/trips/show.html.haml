@@ -35,6 +35,11 @@
           /   .span12
           /     =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: false) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
           /       View trip details to call the provider.
+          - if user_signed_in?
+            .row-fluid
+              .span12
+                = link_to 'Email provider', '#show-email-provider-modal', class: 'btn btn-block'
+
           .row-fluid
             .span12
               = link_to kiosk_user_new_trip_start_path(current_or_guest_user), {class: 'btn btn-block'} do
@@ -42,8 +47,7 @@
 
           .row-fluid
             .span12
-              = link_to show_printer_friendly_kiosk_user_trip_url(@traveler,@trip, print: true, protocol: 'print'), class: 'btn btn-block', data: {toggle: 'modal'} do
-                Print your trip plan
+              = link_to 'Print your trip plan', show_printer_friendly_kiosk_user_trip_url(@traveler, @trip, print: true, protocol: 'print'), class: 'btn btn-block'
 
           - ItineraryDecorator.decorate_collection(outbound_itineraries(selected_only: true)).each do |itinerary|
             - if not itinerary.service.booking_service_code.blank? and user_signed_in?
@@ -103,14 +107,9 @@
         .card-prev
       %div.span10.card-view-resize
         = render partial: 'return_trip'
-      - if @trip.only_return_selected?
-      - else
+      - unless @trip.only_return_selected?
         .span1
           .next-btn
-
-
-    = render partial: 'send_trip_by_email', locals: {trip: @trip}
-    = render partial: 'send_trip_by_email_to_provider'
 
 .results-footer.responsive-mbp
   .trip-overview.pull-left.span4
@@ -155,6 +154,12 @@
 #itinerary_modal.hide.fade
 
 :javascript
+  $('a[href="#show-email-provider-modal"]').on('click', function (e) {
+    e.preventDefault();
+    $('#itinerary_modal').html("#{escape_javascript(render 'email_provider_modal')}");
+    $('#itinerary_modal').modal({show: true, keyboard: false});
+  });
+
   //$('#main').css('overflow', 'scroll');
   $('a.details').on('click', function(){
     $('.navbar').css('z-index', 0);
@@ -166,12 +171,6 @@
   $('.close-btn').on('click', function(){
     $('#overview-modal').addClass('hide');
   });
-
-
-  $('#email_itinerary2').on('ajax:success', function (event, data, status, xhr) {
-    $('#send_trip_by_email_to_provider #email_email_addresses').val(data['email'])
-    $('#send_trip_by_email_to_provider').modal('show')
-  })
 
   //CG DP EDIT
   if($('div.results-view').hasClass('timeOut')){
