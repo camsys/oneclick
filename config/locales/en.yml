@@ -783,6 +783,11 @@ en:
     logotext: ''
     site_title: 'JTA 1-Click'
     site_description: 'JTA 1-Click Application'
+  ieuw:
+    home: 'VetLink Home'
+    logotext: ''
+    site_title: 'VetLink'
+    site_description: 'VetLink 1-Click Application'
   simple_form:
     labels:
       defaults:
