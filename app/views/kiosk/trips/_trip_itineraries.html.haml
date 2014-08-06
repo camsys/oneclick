@@ -10,7 +10,7 @@
                 - if itinerary.hidden
                   %i.fa.fa-2x.fa-thumbs-down.pull-right
               %h3
-                = get_trip_summary_title(itinerary)     
+                = get_trip_summary_title(itinerary)
                   
         .dialog-content{class: dialog_content_class(trip_part)}
           = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary}
