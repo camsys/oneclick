@@ -168,10 +168,10 @@ when 'jta'
     Oneclick::Application.config.ui_logo = 'ieuw/logo.png'
     Oneclick::Application.config.geocoder_components = 'administrative_area:CA|country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
-    Oneclick::Application.config.map_bounds      = [[32.342841,-118.941422],[36.844461,-113.755875]]
-    Oneclick::Application.config.geocoder_bounds = [[32.342841,-118.941422],[36.844461,-113.755875]]
+    Oneclick::Application.config.map_bounds      = [[33.163,-117.874],[36.053,-114.033]]
+    Oneclick::Application.config.geocoder_bounds = [[33.163,-117.874],[36.063,-114.033]]
     Oneclick::Application.config.default_zoom = 12
-    Oneclick::Application.config.open_trip_planner = "http://otp-ieuw.camsys-apps.com:8080/otp/routers/jta/plan?"
+    Oneclick::Application.config.open_trip_planner = "http://otp-ieuw.camsys-apps.com:8080/otp/routers/ieuw/plan?"
     Oneclick::Application.config.transit_respects_ada = false
     Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
     Oneclick::Application.config.taxi_fare_finder_api_city = "Rancho-Cucamonga-CA"
@@ -190,7 +190,7 @@ when 'jta'
     Oneclick::Application.config.provider_read_all_feedback = true
     Oneclick::Application.config.tripless_feedback = false
     honeybadger_api_key = '0447225c'
-    Oneclick::Application.config.poi_file = 'db/ieuw/locations.csv'
+    Oneclick::Application.config.poi_file = 'db/ieuw/Combined.txt'
     Oneclick::Application.config.default_county = 'San Bernandino'
     Oneclick::Application.config.state = 'CA'
 

@@ -1,1 +1,16 @@
 // IEUW CSS file. Styles only, no variables or mixins definitions.
+//= depend_on_asset "ieuw/logo.png"
+
+
+@media(max-width:$screen-sm-max){
+  #logo{
+    background-image: image-url('ieuw/logo.png');
+  }
+}
+
+@media(min-width:$screen-md-min){
+  #logo{
+    background-image: image-url('ieuw/logo.png');
+  }
+}
+
