@@ -17,15 +17,15 @@
 
           -if itinerary.missing_information
             .row-fluid
-              %i.fa.fa-question-circle
+              %i.icon.icon-question-circle
               More information is needed.
           -if itinerary.accommodation_mismatch
             .row-fluid
-              %i.fa.fa-warning
+              %i.icon.icon-warning
               Some accommodations unavailable.
           -if itinerary.date_mismatch or itinerary.time_mismatch or itinerary.too_late
             .row-fluid
-              %i.fa.fa-calendar
+              %i.icon.icon-calendar
               This trip is not possible as scheduled.
 
         .dialog-footer.corner-bottom
