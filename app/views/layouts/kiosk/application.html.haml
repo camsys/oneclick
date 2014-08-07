@@ -26,6 +26,10 @@
 
       = csrf_meta_tags
       = yield(:head)
+
+      :javascript
+        addrConfig.setCurrentMachineNameInField('#{request.headers['HTTP_X_CLIENT_HOSTNAME']}' || 'machine1');
+
   %body{:class => "kiosk #{controller_css_class} #{action_name}"}
     / layouts/kiosk/application.html.haml
     - unless @hide_timeout

@@ -1,11 +1,6 @@
 jQuery(function($) {
     if (!$('.js-trip-wizard-form').hasClass('js-from-wizard-step')) return;
 
-    // ***************
-    // Currently hard-coding this in place -- synchrotron will be doing this in the future!!!!
-    // ***************
-    addrConfig.setCurrentMachineNameInField("machine1");
-
     var useCurrentLocationHandler = function() {
         // Show the google map and re-calculate size. Have to do removeClass('hidden') before reset to ensure
         // that leaflet code knows the size of the map, so it can calculate size correctly.
