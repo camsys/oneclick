@@ -197,6 +197,12 @@
 
         if (hasErrors) {
             NewTrip.showError(error);
+            if ($(this).attr('action').match('timestamp='))
+                $(this).attr('action', $(this).attr('action').replace(/timestamp=[0-9]+/, 'timestamp=' + Date.now()));
+            else
+                $(this).attr('action', $(this).attr('action') + '?timestamp=' + Date.now());
+
+            $('.next-step-btn').removeClass('stop');
         } else {
             NewTrip.hideError();
             NewTrip.update(data.trip);
