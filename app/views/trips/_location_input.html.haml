@@ -4,20 +4,20 @@
 - elsif dir=='to'
   - label=t(:going_to)
   - sr_label = t(:type_to_address)
-= f.input "#{dir}_place".to_sym, input_html: {class: 'place_picker', autocomplete: 'off', type: "text", tabindex: 1}, id: "trip_proxy_#{dir}_place", wrapper: :group, label: label do
-  = f.input_field "#{dir}_place".to_sym, class: 'form-control place_picker', tabindex: 1
+= f.input "#{dir}_place".to_sym, input_html: {class: 'place_picker', autocomplete: 'off', type: "text", tabindex: 0}, id: "trip_proxy_#{dir}_place", wrapper: :group, label: label do
+  = f.input_field "#{dir}_place".to_sym, class: 'form-control place_picker', tabindex: 0
   %span.input-group-btn
     %label.control-label.sr-only.hidden-md.hidden-lg{for: "#{dir}CenterMyLocation"} Click button to center my location
-    %button.btn.btn-default.hidden-md.hidden-lg{type: "button", id: "#{dir}CenterMyLocation", tabindex: 1}
+    %button.btn.btn-default.hidden-md.hidden-lg{type: "button", id: "#{dir}CenterMyLocation", tabindex: '-1'}
       %i.fa.fa-location-arrow
     %label.control-label.sr-only.hidden-xs.hidden-sm{for: "#{dir}AddressMarkerButton"} Click button to locate the address
-    %button.btn.btn-default.hidden-xs.hidden-sm{type: "button", id: "#{dir}AddressMarkerButton", tabindex: 1}
+    %button.btn.btn-default.hidden-xs.hidden-sm{type: "button", id: "#{dir}AddressMarkerButton", tabindex: '-1'}
       %i.fa.fa-map-marker
 - if dir=='from'
-  .hidden-xs.hidden-sm{id: "tripMapContainer", class: 'hide', style: 'position: absolute; top: 0; right:-520px; z-index: 1000;'}
+  .hidden-xs.hidden-sm{id: "tripMapContainer", 'aria-hidden' => 'true', class: 'hide', style: 'position: absolute; top: 0; right:-520px; z-index: 1000;'}
     .panel.panel-default
       .panel-heading.clearfix
-        %button#mapCloseButton.close.pull-right{type: "button", title: t(:close)}
+        %button#mapCloseButton.close.pull-right{type: "button", title: t(:close), tabindex: '-1'}
           %span{:"aria-hidden" => "true"} &times;
           %span.hide Close
       .panel-body
