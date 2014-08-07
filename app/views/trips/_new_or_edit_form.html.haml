@@ -88,6 +88,8 @@
         tabindex: 2 do
         =t(:next)
   = render partial: 'shared/splash'
+  -if @show_booking
+    = render partial: 'booking_signup'
 :javascript
   $(function() {
     $('.plan-a-trip').on('submit',function() {

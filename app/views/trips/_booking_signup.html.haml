@@ -1,0 +1,23 @@
+#bookingSignupModal.modal.fade.active.col-sm-12{"aria-describedby" => "Book your trip", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        .row
+          .col-sm-12
+            .row
+              .col-sm-6
+                %h3.dialog-title#bookingSignupTitle{:STYLE => "margin:0px;vertical-align:top;"}
+                  =t(:initial_booking_title)
+              .col-sm-6
+                .pull-right{:style => "display: inline-block"}
+                  %button#initialCloseButton{class: "btn action-button", "data-dismiss" => "modal"}
+                    =t(:initial_booking_close)
+      .modal-body#bookingSignupContent
+        = render partial: 'booking_signup_body'
+
+:javascript
+  $(window).load(function(){
+      if("#{not @traveler.can_book?}"){
+        $('#bookingSignupModal').modal('show');
+      }
+  });

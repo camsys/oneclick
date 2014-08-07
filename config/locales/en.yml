@@ -4,6 +4,7 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  initial_booking_title: 'Register to book online.'
   one_click_trip_planner: '1-Click Trip Planner'
   # Actions
   plan_a_trip: 'Plan a Trip'
@@ -776,6 +777,11 @@ en:
 
     return_trip_options: "Returning Trip Options"
     return_selected: 'Returning option selected.'
+
+    initial_booking_title: 'Book with FindMyRidePA'
+    initial_booking_message: 'If you know your Rabbit Transit Client Id, you can use FindMyRidePA to book trips with Rabbit Transit Shared Ride.'
+    initial_booking_close: "No Thanks"
+    booking_link_success: "Success!  You can now book trips with Rabbit Transit Shared Ride."
 
     next: 'Next >>'
 

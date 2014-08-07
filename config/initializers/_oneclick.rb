@@ -21,6 +21,8 @@ Oneclick::Application.config.show_update_services = false
 Oneclick::Application.config.min_drive_seconds = 180
 Oneclick::Application.config.max_walk_seconds = 1200
 
+Oneclick::Application.config.initial_signup_question = false
+
 Oneclick::Application.config.max_ui_duration = 2.hours
 Oneclick::Application.config.min_ui_duration = 1.hours
 
@@ -130,6 +132,9 @@ when 'pa'
   Oneclick::Application.config.ecolane_x_ecolane_token = ENV['X_ECOLANE_TOKEN']
   Oneclick::Application.config.ecolane_base_url = "https://rabbit-test.ecolane.com"
   I18n.available_locales = [:en]
+
+  #for PA, we ask a follow up question after a person creates an account
+  Oneclick::Application.config.initial_signup_question = true
 
 
 when 'jta'

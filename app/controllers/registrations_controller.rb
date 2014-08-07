@@ -26,7 +26,9 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     #puts ">>>>> IN CREATE"
     session[:location] = new_user_registration_path
-
+    if Oneclick::Application.config.initial_signup_question
+      session[:first_login] = true
+    end
     build_resource(sign_up_params)
     puts "RESOURCE: #{resource.ai}"
     #puts "RESOURCE OBJ"

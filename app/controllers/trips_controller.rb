@@ -434,6 +434,12 @@ class TripsController < PlaceSearchingController
     @markers = create_trip_proxy_markers(@trip_proxy).to_json
     @places = create_place_markers(@traveler.places)
 
+    if session[:first_login] == true
+      session[:first_login] = nil
+      @show_booking = true
+      @booking_proxy = UserServiceProxy.new()
+    end
+
     setup_modes
 
     respond_to do |format|

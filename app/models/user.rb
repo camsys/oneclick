@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   # Updatable attributes
   # attr_accessible :email, :password, :password_confirmation, :remember_me
   # attr_accessible :first_name, :last_name, :prefix, :suffix, :nickname
-  # attr_accessible :role_ids 
+  # attr_accessible :role_ids
 
   # Associations
   has_many :places, -> {where active: true} # 0 or more places, only active places are available
@@ -152,6 +152,14 @@ class User < ActiveRecord::Base
   def is_registered?
     !is_visitor?
   end
+
+  def can_book?
+    unless self.user_profile.services.empty?
+      return true
+    end
+    false
+  end
+
 
 # Union to get unique users with any relationship to current user
   def related_users
