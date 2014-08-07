@@ -203,7 +203,7 @@ when 'ieuw'
 
   Oneclick::Application.config.max_walk_seconds = 3600
 
-  Oneclick::Application.config.time_zone = 'Pacific Time (US & Canada)'
+  Oneclick::Application.config.time_zone = 'Eastern Time (US & Canada)'
 
 end
 
