@@ -1,16 +1,24 @@
-%h4=t(:hello) +"  On " + format_date(@trip.created_at.in_time_zone) + " you used the 1-Click Trip Planner to plan a trip for " + format_date(@trip.trip_parts.first.trip_time.in_time_zone) + ",  #{t(:from)} " + @trip.from_place.name + " " + t(:to) +" " + @trip.to_place.name + ". " + t(:solicit_feedback)
+- product_name = t(:site_title)
 
 %hr
-%h3
-  =link_to new_rating_from_email_user_trip_url(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: true) do
-    =t(:success_feedback_link)
-%h3
-  =link_to new_rating_from_email_user_trip_url(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false) do
-    =t(:no_trip_taken_feedback_link)
+=t(:follow_up_email_template).sub('%{trip_created_date}', format_date(@trip.created_at.in_time_zone)).sub('%{product_name}', product_name).sub('%{trip_date}', format_date(@trip.trip_parts.first.trip_time.in_time_zone)).sub('%{trip_from_address}', @trip.from_place.name).sub('%{trip_to_address}', @trip.to_place.name)
+%br
+%br
+=t(:please_click)
+=link_to new_rating_from_email_user_trip_url(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: true) do
+  =t(:here)
+=t(:success_feedback_link)  
+%br
+=t(:no_trip_taken_feedback_link)
+=t(:please_click)
+=link_to new_rating_from_email_user_trip_url(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false) do
+  =t(:here)
+
+%br
+%br
+= t(:thanks_for_feedback)
+
 %hr
-
-%h4= t(:thanks_for_responding)
-
 %table
   %tbody
     %tr

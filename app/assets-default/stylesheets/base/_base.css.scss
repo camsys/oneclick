@@ -38,11 +38,10 @@ body, .btn, .form-control, .dropdown-menu{
 
 #publicNav{
   @include header-background;
-  .container-fluid {
-    @media(max-width:$screen-sm-max){
-      padding: 0px;
-    }
-  }
+}
+
+.panel-title > a {
+  color: $link-color;
 }
 
 #feedback{
@@ -54,19 +53,8 @@ body, .btn, .form-control, .dropdown-menu{
 }
 
 #logo{
-  background-position:left center !important;
-  background-repeat: no-repeat !important;
-  height: auto !important;
-  padding: 0;
-
-  @media(max-width:$screen-sm-max){
-    width: 370px;
-    line-height: 50px;
-  }
-  @media(min-width:$screen-md-min){
-    width: 440px;
-    line-height: 60px;
-  }
+  max-height: 60px !important;
+  cursor: pointer;
 }
 
 #main {

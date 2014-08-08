@@ -1,20 +1,8 @@
 // ARC CSS file. Styles only, no variables or mixins definitions.
-//= depend_on_asset "arc/logo-sm.png"
-//= depend_on_asset "arc/logo-lg.png"
 
 @media(max-width:$screen-sm-max){
-  #logo{
-    background-image: image-url('arc/logo-sm.png');
-  }
-
   #userDropdown .dropdown-menu>li>a:hover {
     color: #FEC800;
-  }
-}
-
-@media(min-width:$screen-md-min){
-  #logo{
-    background-image: image-url('arc/logo-lg.png');
   }
 }
 

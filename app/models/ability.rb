@@ -70,7 +70,6 @@ class Ability
       can [:access], :admin_trips
       can [:access], :admin_providers
       can [:access], :admin_services
-      cannot [:access], :admin_reports
       can [:access], :admin_feedback
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
       can :read, Agency

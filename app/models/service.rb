@@ -39,6 +39,10 @@ class Service < ActiveRecord::Base
   
   has_many :coverages, -> { where rule: 'coverage_area' }, class_name: "ServiceCoverageMap"
     
+  belongs_to :endpoint_area_geom, class_name: 'GeoCoverage'
+  belongs_to :coverage_area_geom, class_name: 'GeoCoverage'
+  belongs_to :residence_area_geom, class_name: 'GeoCoverage'
+
   has_many :user_profiles, through: :user_services, source: :user_profile
 
   scope :active, -> {where(active: true)}
@@ -163,8 +167,8 @@ class Service < ActiveRecord::Base
   def build_polygons
 
     #clear old polygons
-    self.endpoint_area = nil
-    self.coverage_area = nil
+    self.endpoint_area_geom = nil
+    self.coverage_area_geom = nil
     Rails.logger.info  "Building Polygon for Service/Id: #{self.name} / #{self.id}"
     ['endpoint_area', 'coverage_area'].each do |rule|
       scms = self.service_coverage_maps.where(rule: rule)
@@ -173,32 +177,34 @@ class Service < ActiveRecord::Base
         if polygon.nil?
           next
         end
+        Rails.logger.info "polygon is #{polygon.ai}"
         case rule
           when 'endpoint_area'
             Rails.logger.info  "Updating Endpoint Area"
-            if self.endpoint_area
-              merged = self.endpoint_area.union(polygon)
-              self.endpoint_area = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
-              self.save!
+            if self.endpoint_area_geom
+              merged = self.endpoint_area_geom.geom.union(polygon)
+              self.endpoint_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
+              self.endpoint_area_geom.save!
             else
-              self.endpoint_area = polygon
+              gc = GeoCoverage.create! coverage_type: 'endpoint_area', geom: polygon
+              self.endpoint_area_geom = gc
               self.save!
             end
           when 'coverage_area'
             Rails.logger.info  "Updating Coverage Area"
-            if self.coverage_area
-              merged = self.coverage_area.union(polygon)
-              self.coverage_area = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
-              self.save!
+            if self.coverage_area_geom
+              merged = self.coverage_area_geom.geom.union(polygon)
+              self.coverage_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
+              self.coverage_area_geom.save!
             else
-              self.coverage_area= polygon
+              gc = GeoCoverage.create! coverage_type: 'coverage_area', geom: polygon
+              self.coverage_area_geom = gc
               self.save!
             end
         end
       end
     end
     self.save!
-
   end
 
   def polygon_from_attribute scm
@@ -230,12 +236,12 @@ class Service < ActiveRecord::Base
     myArray = []
     case rule
       when 'endpoint_area'
-        geometry = self.endpoint_area
+        geometry = self.endpoint_area_geom
       when 'coverage_area'
-        geometry = self.coverage_area
+        geometry = self.coverage_area_geom
     end
     if geometry
-      geometry.each do |polygon|
+      geometry.geom.each do |polygon|
         polygon_array = []
         ring_array  = []
         polygon.exterior_ring.points.each do |point|

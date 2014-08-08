@@ -18,6 +18,8 @@ es:
   places: 'Lugares *11*'
   type: "[es18]Type[/es]"
   my_home_chkbox_label: "[es17]This is my home[/es]"
+  more_about_this_initiative: '[es]More About This Initiative[/es]'
+  send_your_feedback: '[es]Send your Feedback[/es]'
   
   # Agent View strings
   find_traveler: "Encontrar al Viajero"
@@ -193,7 +195,7 @@ es:
   repeat_trip: "Repita este viaje *41*."
   remove_trip: "Eliminar este viaje *42*"
   rate_trip: "Valorar este viaje *43*"
-  rate_recent: "[es118]Rate your recent trip[/es]"
+  rate_recent: "[es118]Feedback on your recent trip[/es]"
   plan_trip: "Continuar la planificación de este viaje *44*"
   max_notes: '[es133]Max notes[/es]'
 
@@ -631,9 +633,13 @@ es:
   do_not_reply: "[es386]This email is sent from an email address that is not monitored. Please do not reply to this message.[/es]"
   nothing_found_sorry: "[es407]Nothing found - sorry[/es]"
   solicit_feedback: "[es428]Please give us some feedback:[/es]"
+  thanks_for_feedback: '[es]Thanks in advance for your feedback![/es]'
+  follow_up_email_template: '[es]On %{trip_created_date}, you used %{product_name} to plan a trip for %{trip_date} from %{trip_from_address} to %{trip_to_address}[/es]'
   thanks_for_responding: "[es429]Thanks for taking the time to respond.[/es]"
-  success_feedback_link: "[es430]Click HERE if you want to tell us about your trip.[/es]"
-  no_trip_taken_feedback_link: "[es431]Click HERE if you decided not to make the trip at all.[/es]"
+  success_feedback_link: "[es] to provide feedback on your trip[/es]"
+  no_trip_taken_feedback_link: "[es]If you decided NOT to make this trip,[/es]"
+  please_click: "[es]Please click[/es]"
+  here: '[es]here[/es]'
   more_feedback_link: "[es432]Click HERE if you want to provide more feedback, or if things didn't work out as planned.[/es]"
   search: "[es439]Search[/es]"
   aid_user: "[es440]Aid User[/es]"

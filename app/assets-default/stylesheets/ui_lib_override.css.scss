@@ -25,3 +25,8 @@
     background: #e6e6e6;
   }
 }
+
+/* override bootstrap .img-responsive width on IE as setting width:100% stretch image all page wide */
+.img-responsive {
+  width: auto \9;
+}

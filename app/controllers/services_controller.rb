@@ -22,11 +22,11 @@ class ServicesController < ApplicationController
     ['coverage_area', 'endpoint_area'].each do |rule|
       case rule
         when 'coverage_area'
-          geometry = @service.coverage_area
+          geometry = @service.coverage_area_geom.try(:geom)
           color = 'red'
           id = 1
         when 'endpoint_area'
-          geometry = @service.endpoint_area
+          geometry = @service.endpoint_area_geom.try(:geom)
           color = 'green'
           id = 0
       end
