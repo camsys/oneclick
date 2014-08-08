@@ -403,7 +403,7 @@ en:
   coverage_area: "Endpoint Area"
   endpoints: "Endpoint Area"
   coverages: "Coverage Area"
-  cap_returning_at: "Returning at"
+  cap_returning_at: "Returning At"
   traveler_not_registered: "Traveler not registered to book trips with One-Click."
   outbound_error_occurred: "An error occurred when attempting to book your outbound trip."
   return_error_occurred: "An error occurred when attempting to book your return trip."
