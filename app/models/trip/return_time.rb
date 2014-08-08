@@ -20,22 +20,12 @@ module Trip::ReturnTime
   # Returns the return trip date and time as a DateTime class. If the round-trip is not defined
   # we return nil
   def return_trip_datetime
-    if is_round_trip != "1"
-      return nil
-    end
+    return nil if is_round_trip != "1"
+    parse_time_and_fields('return_trip')
+  end
 
-    begin
-      unless return_trip_date.nil?      
-        return Chronic.parse([return_trip_date, return_trip_time].join(' '))
-      else
-        return Chronic.parse(return_trip_time)
-      end
-      # return DateTime.strptime([return_trip_date, return_trip_time, DateTime.current.zone].join(' '), '%m/%d/%Y %H:%M %p %z')
-    rescue Exception => e
-      Rails.logger.warn "return_trip_datetime #{trip_date} #{trip_time}"
-      Rails.logger.warn e.message
-      return nil
-    end
+  def outbound_trip_datetime
+    parse_time_and_fields('outbound_trip')
   end
 
   def self.defaults trip
@@ -71,10 +61,7 @@ protected
 
   # Validation. Check that the return trip time is well formatted and after the trip time
   def validate_return_trip_time
-    return_dt = return_trip_datetime
-    ott = outbound_trip_time.respond_to?(:to_datetime) ? outbound_trip_time : Chronic.parse(outbound_trip_time)
-    ott = defined?(trip_datetime).nil? ? ott : trip_datetime
-    if return_dt && (return_dt <= ott)
+    if return_trip_datetime && (return_trip_datetime <= outbound_trip_datetime)
       errors.add(:return_trip_time, I18n.translate(:return_trip_time_before_start))
     end
   end
@@ -98,6 +85,24 @@ protected
     rescue Exception => e
       puts e
       errors.add(:return_trip_time, I18n.translate(:time_wrong_format))
+    end
+  end
+
+  def parse_time_and_fields prefix
+    date_field = "#{prefix}_date"
+    time_field = "#{prefix}_time"
+
+    begin
+      unless send(date_field).nil?
+        return Chronic.parse([send(date_field), send(time_field)].join(' '))
+      else
+        return Chronic.parse(send(time_field))
+      end
+      # return DateTime.strptime([send(date_field), send(time_field), DateTime.current.zone].join(' '), '%m/%d/%Y %H:%M %p %z')
+    rescue Exception => e
+      Rails.logger.warn "#{prefix}_datetime #{trip_date} #{trip_time}"
+      Rails.logger.warn e.message
+      return nil
     end
   end
 end
