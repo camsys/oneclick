@@ -4,7 +4,7 @@
       .modal-header.clearfix
         %btn.btn.btn-default.action-button.pull-right{data: {dismiss: "modal"}}= t(:close)
         -# If users can enter feedback without a trip...
-        - if can? :create, rateable.ratings.build
+        - if not rateable.is_a? Provider and can? :create, rateable.ratings.build
           %button.btn.action-button.btn-default.pull-right#load_feedback
             = t(:feedback)
       .modal-body
