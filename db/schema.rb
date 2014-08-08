@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140728193340) do
+ActiveRecord::Schema.define(version: 20140810190020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -447,6 +447,7 @@ ActiveRecord::Schema.define(version: 20140728193340) do
     t.datetime "scheduled_time"
     t.text     "planned_trip_html"
     t.boolean  "needs_feedback_prompt"
+    t.text     "debug_info"
   end
 
   create_table "trips_desired_modes", force: true do |t|

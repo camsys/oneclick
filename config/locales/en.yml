@@ -763,8 +763,8 @@ en:
     out_datetime: 'Departing Date'
     outbound: 'Departing'
     outbound_itinerary_count: 'Departing Itinerary Count'
-    outbound_error_occurred: "An error occurred when attempting to book your departing trip."
-    return_error_occurred: "An error occurred when attempting to book your return trip."
+    outbound_error_occurred: "Sorry, we were unable to book your departing trip."
+    return_error_occurred: "Sorry, we were unable to book your return trip."
 
     outbound_is_eligible: "The departing portion of your trip is eligible for automated booking."
     return_is_eligible: "The return portion of your trip is eligible for automated booking."

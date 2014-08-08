@@ -18,25 +18,25 @@ class EcolaneHelpers
   ## Post/Put Operations
   def book_itinerary(itinerary)
 
-    funding_options = query_funding_options(itinerary)
+
     begin
+      funding_options = query_funding_options(itinerary)
       funding_xml = Nokogiri::XML(funding_options.body)
     rescue
+      Rails.logger.debug "Booking error #003"
       return false, "Booking error."
     end
     resp  = request_booking(itinerary, funding_xml)
-    result, messages = unpack_booking_response(resp, itinerary)
-    if result
-      return get_trip_info(itinerary)
-    else
-      return result, messages
-    end
+
+    return unpack_booking_response(resp, itinerary)
+
   end
 
   def unpack_booking_response (resp, itinerary)
     begin
       resp_xml = Nokogiri::XML(resp.body)
     rescue
+      Rails.logger.debug "Booking error #004"
       return false, "Booking error."
     end
     status = resp_xml.xpath("status")
@@ -46,23 +46,38 @@ class EcolaneHelpers
       return false, "Server error."
     end
 
-    messages = []
+    messages = ""
     case status
       when "failure"
-        resp_xml.xpath("status").xpath("error").each do |error|
-          messages << error.xpath("message").text
+        begin
+          resp_xml.xpath("status").xpath("error").each do |error|
+            messages << error.xpath("message").text
+            messages << " "
+          end
+        rescue
+          Rails.logger.debug "Booking error #001"
+          return false, "Unknown response #001"
         end
+        Rails.logger.debug "Booking error #005"
+        Rails.logger.debug messages
         return false, messages
 
       when "success"
-        confirmation = resp_xml.xpath("status").xpath("success").attribute('resource_id').value
-        messages << "Trip#" + confirmation.to_s + " successfully booked."
-        itinerary.booking_confirmation = confirmation
-        itinerary.save
+
+        begin
+          confirmation = resp_xml.xpath("status").xpath("success").attribute('resource_id').value
+          messages << confirmation.to_s
+          itinerary.booking_confirmation = confirmation
+          itinerary.save
+        rescue
+          Rails.logger.debug "Booking error #002"
+          return false, "Unknown response #002"
+        end
+
         return true, messages
     end
 
-    return false, ["Unknown response."]
+    return false, "Unknown response."
   end
 
   def get_trip_info(itinerary)
