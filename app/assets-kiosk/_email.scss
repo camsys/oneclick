@@ -1,0 +1,127 @@
+.dark-modal {
+	position: absolute;
+	width: 100%;
+	overflow-y: hidden;
+	//padding-left: 
+	// padding-left: 22.35627%;
+	$textarea-height: 341px;
+
+
+	// TO DO: work with Camsys to nest the login container so it looks good at all sizes.
+	&.container-fluid{
+		background-image: image-url("kiosk/bg_black.png");
+	}
+	.dark-modal-container{
+		display: inline-block;
+		margin-top: 48px;
+		width:790px;
+		padding-left: 22.35627%;
+
+		h1{
+			font-weight: 800;
+			margin-top: 30px;
+			font-size: 72px;
+			color: $white;
+			text-transform: uppercase;
+			margin-bottom:38px;
+		}
+		label{
+			display:none;
+		}
+		input{
+			width: 100%;
+			//width:790px;
+			border-radius:0;
+		}
+	}
+	div.control-group{
+		position:relative;
+		height:84px;
+		width: 100%;
+		margin-bottom: 0;
+
+		&.error{
+			&:before{
+				content: image-url("kiosk/icon-error.png");
+				position:absolute;
+				top: 24px;
+				left: -50px;
+			}
+			input:focus + label, input.hasValue + label{
+				color: desaturate($red, 60%);
+			}
+			input{
+				background-color: lighten($red, 30%);
+				color: darken($red, 40%);
+			}
+		}
+
+		//FIX FOR THEIR CODE
+		div.controls{
+			margin-left:0;
+		}
+
+		div.controls input:focus + label, div.controls input.hasValue + label{
+			margin-top: 18px;
+		}
+		div.controls input,
+		textarea{
+			font-family: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
+			position: absolute;
+			// height: 100%;
+			//width: 100%;
+			width:790px;
+			border-radius: 0;
+			padding-left: 15px;
+			font-size: 32px;
+			padding-top: 24px;
+		}
+		textarea {
+			height: $textarea-height;
+			line-height: 1.2;
+		}
+	}
+
+	.dark-modal-buttons{
+		margin-top: $textarea-height - 71px;
+	}
+
+	button.login-btn{
+		float:left;
+		font-family: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
+		border: 4px solid $blue;
+		background-color: rgba($blue, 0.3);
+		text-align: center;
+		padding: 35px 0 33px;
+		font-size: 32px;
+		font-weight: 700;
+		color: $white;
+		text-decoration: none;
+		margin: 4px 0 0 287px;
+		width:320px;
+
+		&:active{
+			margin: -1px 0 0 281px;
+			padding: 40px 6px 38px;
+			width:332px;
+		}
+	}
+
+	.cancel-container{
+		float:right;
+		padding-right: 205px;
+		padding-top: 42px;
+		a.cancel-btn{
+			text-decoration: none;
+			border-bottom: 1px solid $gray4;
+			color: $gray4;
+			text-align: right;
+			font-size: 21px;
+			text-transform: uppercase;
+			font-weight: 600;
+			letter-spacing:2px;
+		}
+	}
+}
+
+/*# sourceMappingURL=style.css.map */

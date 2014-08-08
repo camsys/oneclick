@@ -1921,6 +1921,11 @@ $animationTime: 300ms;
 	}
 }
 
+/* 
+** =====================================================================
+**   OLD LOGIN DESIGN
+** ===================================================================== 
+*/
 .login-container{
 	position: absolute;
 	width: 100%;
@@ -2461,3 +2466,5 @@ body.sessions.new, body.registrations.new{
   margin: 20px 0;
   font-size: 15px;
 }
+
+@import "email";
