@@ -23,9 +23,9 @@
           =t(:close)
     .detail-section.span8plus
       .detail-header
-        %i.fa.fa-5x{:class => get_trip_summary_icon(@itinerary)}
+        -# %i.fa.fa-2x{:class => get_trip_summary_icon(@itinerary)}
         %h1
-          = @itinerary.service.full_name
+          = @itinerary.service.full_name.presence || get_trip_summary_title(@itinerary)
       .detail-main
         .thumbnail
           .tabbable

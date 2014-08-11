@@ -26,6 +26,10 @@
 
       = csrf_meta_tags
       = yield(:head)
+
+      :javascript
+        addrConfig.setCurrentMachineNameInField('#{request.headers['HTTP_X_CLIENT_HOSTNAME']}' || 'machine1');
+
   %body{:class => "kiosk #{controller_css_class} #{action_name}"}
     / layouts/kiosk/application.html.haml
     - unless @hide_timeout
@@ -34,7 +38,7 @@
     .container-fluid
       #main{:role => "main"}
         .container-fluid
-          = render 'shared/assisting'
+          = render 'kiosk/shared/assisting'
           #messages= render 'shared/messages'
           - if content_for? :layout_template
             = yield(:layout_template)

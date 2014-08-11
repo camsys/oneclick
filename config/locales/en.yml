@@ -571,7 +571,7 @@ en:
   }
 
   send_to_traveler: 'Send to traveler'
-  send_request_to_provider: "Send request to the provider"
+  send_request_to_provider: "Send Email"
   from_address: 'From address'
   email_addresses: 'Email addresses'
   start: "START: "

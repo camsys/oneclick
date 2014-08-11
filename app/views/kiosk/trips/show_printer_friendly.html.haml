@@ -1,72 +1,59 @@
-
 = image_tag get_logo, :style => "margin-top:50px;"
-.title-desc
-  = t(:one_click_trip_planner)
+.title-desc= t(:one_click_trip_planner)
 
 %hr
 
 %table#printer-friendly
   %tr
-    %h4
-      = t(:from) + ':  '
+    %h4= t(:from) + ':  '
   %tr
-    %p
-      =@trip.from_place.name
+    %p= @trip.from_place.name
   %tr
-    %h4
-      =t(:to) + ':  '
+    %h4= t(:to) + ':  '
   %tr
-    %p
-      =@trip.to_place.name
+    %p= @trip.to_place.name
   %tr
-    %h4
-      =t(:at_time) + ':  '
+    %h4= t(:at_time) + ':  '
   %tr
-    %p
-      =format_date(@trip.trip_datetime.in_time_zone)
+    %p= format_date(@trip.trip_datetime.in_time_zone)
 
-
--@trip.trip_parts.each do |trip_part|
-
-  -if trip_part.is_return_trip?
-    -unless trip_part.itineraries.valid.visible.count == 0
+- @trip.trip_parts.each do |trip_part|
+  .trip-part-section
+    - if trip_part.is_return_trip?
+      - unless trip_part.itineraries.valid.visible.count == 0
+        %hr
+        %h4="Return Trip Options"
+    - else
       %hr
-      %h4="Return Trip Options"
-  -else
-    %hr
-    %h4="Outbound Trip Options"
+      %h4="Outbound Trip Options"
 
-  - ItineraryDecorator.decorate_collection(trip_part.itineraries.valid.visible).each do |itinerary|
+    - ItineraryDecorator.decorate_collection(itineraries(trip_part, selected_only: true)).each do |itinerary|
+      .itinerary-section
+        - if itinerary.mode.name.downcase == 'paratransit'
+          %p= itinerary.service.name
+          %p= itinerary.service.provider.name
+        - else
+          %p= get_trip_summary_title(itinerary)
 
-    
-    -if itinerary.mode.name.downcase == 'paratransit'
-      %p
-        =itinerary.service.name
-      %p
-        =itinerary.service.provider.name
-    -else
-      %p
-        =get_trip_summary_title(itinerary)
-    %hr
+        %hr
 
-    -unless itinerary.mode.name.downcase == 'rideshare'
-      %h4
-        Summary:
-      = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
-      %hr
+        - unless itinerary.mode.name.downcase == 'rideshare'
+          %h4 Summary:
+          = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
+          %hr
 
-    %h4
-      Details:
-    .details
-      = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
+        %h4 Details:
+        .details
+          = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
 
 %hr{style: "height:12px; background:#848484;"}
+
 %table
   %tbody
     %tr
-      %td="Thank you for using " + Oneclick::Application.config.name + " Software."
+      %td= "Thank you for using #{Oneclick::Application.config.name} Software."
     %tr
-      %td="Provided by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of " + Oneclick::Application.config.name
+      %td= "Provided by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of " + Oneclick::Application.config.name
 
 :javascript
   $(document).ready(function() {
