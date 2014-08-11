@@ -1,16 +1,17 @@
-.row{style: "padding: 0px;"}
-  .hidden-xs.col-sm-8
-    = render partial: 'shared/trip_plan_breadcrumbs'
-  .col-sm-4
-    = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
-      tabindex: 2 do
-      =t(:next)
-      :javascript
-        $(function() {
-          $('button[name=planTrip]').click(function() {
-            $('.user-characteristics').submit();
+.row
+  .col-sm-7
+    .hidden-xs.col-sm-8
+      = render partial: 'shared/trip_plan_breadcrumbs'
+    .col-sm-4{style: "padding: 0px;"}
+      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
+        tabindex: 2 do
+        =t(:next)
+        :javascript
+          $(function() {
+            $('button[name=planTrip]').click(function() {
+              $('.user-characteristics').submit();
+            });
           });
-        });
 
 .row
   .col-sm-7.col-xs-12
