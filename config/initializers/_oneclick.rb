@@ -196,7 +196,7 @@ when 'ieuw'
   Oneclick::Application.config.agent_read_feedback = true
   Oneclick::Application.config.provider_read_all_feedback = true
   Oneclick::Application.config.tripless_feedback = false
-  honeybadger_api_key = '0447225c'
+  honeybadger_api_key = '8640caf4'
   Oneclick::Application.config.poi_file = 'db/ieuw/Combined.txt'
   Oneclick::Application.config.default_county = 'San Bernandino'
   Oneclick::Application.config.state = 'CA'
