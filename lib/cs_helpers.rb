@@ -363,7 +363,6 @@ module CsHelpers
     price_formatted = nil
     cost_in_words = ''
     comments = ''
- 
     if fare.respond_to? :fare_type
       case fare.fare_type
       when FareStructure::FLAT
