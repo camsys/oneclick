@@ -20,7 +20,7 @@
                 -Accommodation.where(:datatype => 'bool').each do |accommodation|
                   %tr
                     %td
-                      = f.label accommodation.note
+                      = f.label t(accommodation.note)
                     %td
                       = f.radio_button accommodation.code.to_sym, true
                       = f.label accommodation.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
@@ -49,6 +49,7 @@
   $(document).ready(function(){
     $('.next-footer-container').removeClass('hidden');
     $('.next-step-btn').on('click', function(){
+      $('.next-step-btn').addClass('stop');
       $('*[id*=new_user_accommodations_proxy]').submit();
     });
   });

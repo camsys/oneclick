@@ -36,9 +36,9 @@ class TripPart < ActiveRecord::Base
 
   def get_return_part
     if is_return_trip?
-      nil
-    else
       trip.return_part
+    else
+      nil
     end
   end
 

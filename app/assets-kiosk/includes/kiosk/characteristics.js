@@ -26,6 +26,7 @@ window.characteristicsView = {
   },
   dob: {
     counter: 0,
+    total: 1,
     states: {
       MONTH: 1,
       DAY: 2,
@@ -81,7 +82,7 @@ characteristicsView.init = function () {
     characteristicsView.indexCounter = 2;
     characteristicsView.dobView = true;
     characteristicsView.dob.init();
-    characteristicsView.dob.counter = 3;
+    characteristicsView.dob.counter = characteristicsView.dob.total;
     characteristicsView.backBtnHandler();
   }
 
@@ -102,7 +103,7 @@ characteristicsView.init = function () {
 characteristicsView.nextBtnHandler = function () {
   //if we're on the last dob form item, switch dobview flag to adv to next
   //characteristic form item
-  if (characteristicsView.dob.counter >= characteristicsView.dob.states.DAY) {
+  if (characteristicsView.dob.counter >= characteristicsView.dob.states.YEAR) {
     characteristicsView.dobView = false;
   }
 
@@ -269,7 +270,7 @@ characteristicsView.indexChangeHandler = function () {
 
       case characteristicsView.states.PROGRAMS:
         if (!window.new_user_characteristics_proxy_submitted) {
-          console.log('submitting');
+          $('.next-step-btn').addClass('stop');
           $('.new_user_characteristics_proxy').submit();
         }
 

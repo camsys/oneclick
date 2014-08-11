@@ -6,14 +6,8 @@ class Kiosk::CallController < ApplicationController
   end
 
   def show
-    # Find these values at twilio.com/user/account
-    account_sid = 'AC8ce255eb06b3f705093906a659782983'
-    auth_token = 'aa3b2c0dbfa4f028ffa2e7dd414cef95'
-
-    # This application sid will play a Welcome Message.
-    demo_app_sid = 'AP09ed565cff2c9960e91463cf78fc5201'
-    capability = Twilio::Util::Capability.new account_sid, auth_token
-    capability.allow_client_outgoing demo_app_sid
+    capability = Twilio::Util::Capability.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
+    capability.allow_client_outgoing ENV['TWILIO_APP_ID']
     @token = capability.generate(10000)
     @number = params[:id]
     render :show
