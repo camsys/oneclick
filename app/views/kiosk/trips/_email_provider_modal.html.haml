@@ -1,0 +1,57 @@
+/ .detail-view.invisible
+.dark-modal.container-fluid
+  .row-fluid
+    / .close-section.span4
+    /   .left-content.pull-right
+
+    /   %a.close-btn-container{"data-dismiss" => "modal"}
+    /     .close-btn
+    /     %p= t(:close)
+
+    .dark-modal-container
+      %h1= t(:send_request_to_provider)
+      - if @trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service
+        - @service = @trip.outbound_part.selected_itinerary.service
+      - elsif @trip.return_part.selected_itinerary
+        - @service = @trip.return_part.selected_itinerary.service
+
+      - if (@trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service) or (@trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.service)
+        = simple_form_for :email, url: email_provider_user_trip_path(@traveler, @trip), remote: true, html: { class: 'form-horizontal',
+          id: 'send_by_email_to_provider_form' }  do |f|
+          = f.error_notification
+          = f.input :comments, as: :text, label: t(:comments), required: false, input_html: {rows: 3}
+
+    .dark-modal-buttons
+      = button_tag type: :submit, class: 'login-btn' do
+        %i.fa.fa-envelope-o
+        = t(:send)
+      .cancel-container
+        = link_to '#', :class => "cancel_provider_link cancel-btn" do
+          %i.fa.fa-reply
+          = t(:cancel)
+
+:javascript
+  $('#itinerary_modal').appendTo('body');
+
+  $('#send_by_email_to_provider_form')
+    .on('ajax:success', function () {
+      $('#itinerary_modal').modal('hide');
+    })
+    .on('focus', 'textarea', function () {
+      if (window.cocoa)
+          window.cocoa.openKeyboard();
+    })
+    .on('blur', 'textarea', function () {
+      if (window.cocoa)
+          window.cocoa.closeKeyboard();
+    });
+
+  $('.cancel_provider_link').on('click', function() {
+    $('#itinerary_modal').modal('hide');
+  });
+
+  $('.login-btn').on('click', function () {
+    $('#send_by_email_to_provider_form').submit();
+  });
+
+= yield :scripts

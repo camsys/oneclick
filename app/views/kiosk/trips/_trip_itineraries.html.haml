@@ -10,29 +10,29 @@
                 - if itinerary.hidden
                   %i.fa.fa-2x.fa-thumbs-down.pull-right
               %h3
-                = get_trip_summary_title(itinerary)     
+                = get_trip_summary_title(itinerary)
                   
         .dialog-content{class: dialog_content_class(trip_part)}
           = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary}
 
           -if itinerary.missing_information
             .row-fluid
-              %i.fa.fa-question-circle
+              %i.icon.icon-question-circle
               More information is needed.
           -if itinerary.accommodation_mismatch
             .row-fluid
-              %i.fa.fa-warning
+              %i.icon.icon-warning
               Some accommodations unavailable.
           -if itinerary.date_mismatch or itinerary.time_mismatch or itinerary.too_late
             .row-fluid
-              %i.fa.fa-calendar
+              %i.icon.icon-calendar
               This trip is not possible as scheduled.
 
         .dialog-footer.corner-bottom
           .row-fluid
             .span12{:style => 'margin-bottom:0;'}
-              =link_to select_kiosk_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "select", :alt => get_alt_button_text(itinerary, 'select'), :title => get_alt_button_text(itinerary, 'select')} do
-                =t(:select)
+              = link_to select_kiosk_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "select", :alt => get_alt_button_text(itinerary, 'select'), :title => get_alt_button_text(itinerary, 'select')} do
+                = t(:select)
               =link_to itinerary_kiosk_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "details", :remote => true, :alt => get_alt_button_text(itinerary, 'view'), :title => get_alt_button_text(itinerary, 'view') } do
                 =t(:details)
               / =link_to hide_user_trip_path(@traveler, @trip, :itinerary => itinerary), {:class => "hide", :alt => get_alt_button_text(itinerary, 'remove'), :title => get_alt_button_text(itinerary, 'remove') } do

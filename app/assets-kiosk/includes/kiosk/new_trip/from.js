@@ -1,11 +1,6 @@
 jQuery(function($) {
     if (!$('.js-trip-wizard-form').hasClass('js-from-wizard-step')) return;
 
-    // ***************
-    // Currently hard-coding this in place -- synchrotron will be doing this in the future!!!!
-    // ***************
-    addrConfig.setCurrentMachineNameInField("machine1");
-
     var useCurrentLocationHandler = function() {
         // Show the google map and re-calculate size. Have to do removeClass('hidden') before reset to ensure
         // that leaflet code knows the size of the map, so it can calculate size correctly.
@@ -37,9 +32,16 @@ jQuery(function($) {
     $('#current-location a#yes').on('click', useCurrentLocationHandler);
     $('#current-location a#no').on('click', function() {
         $('#trip_proxy_use_current_location').val('no');
+
         // poor man's nextTick.
         setTimeout(function() {
-            $('input#trip_proxy_from_place').focus();
+            function focus () { $('input#trip_proxy_from_place').focus() }
+
+            if (NewTrip.loaded) {
+              focus();
+            } else {
+              $(window).load(focus);
+            }
         }, 0);
     });
 

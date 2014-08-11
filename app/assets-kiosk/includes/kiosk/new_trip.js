@@ -59,9 +59,10 @@ function viewSequence($) {
 
     $(document).on('click', '.js-progress-sequence', progress);
 
-    $(document).on('click', '.next-step-btn', function() {
+    $(document).on('click', '.next-step-btn:not(.stop)', function() {
         if (els.filter('.current').is(els.last())) {
             $('.js-trip-wizard-form').submit();
+            $(this).addClass('stop');
         } else {
             progress();
         }
@@ -110,4 +111,8 @@ jQuery(function($) {
     });
 
     $('.js-trip-wizard-form').on('ajax:complete', NewTrip.stepCompleteHandler);
+});
+
+jQuery(window).load(function () {
+    NewTrip.loaded = true;
 });

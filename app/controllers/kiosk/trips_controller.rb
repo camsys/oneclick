@@ -2,6 +2,12 @@ module Kiosk
   class TripsController < ::TripsController
     include Behavior
 
+    skip_load_and_authorize_resource
+
+    def self.inherited cls
+      cls.instance_variable_set(:@_cancan_skipper, cancan_skipper)
+    end
+
     def show
       if params[:back]
         session[:current_trip_id] = @trip.id
