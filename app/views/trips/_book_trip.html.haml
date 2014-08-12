@@ -2,7 +2,7 @@
   -if @trip.outbound_part.is_bookable? or (@trip.return_part and @trip.return_part.is_bookable?)
     .panel.panel-default
       .panel-header
-        %h5#headerMessage
+        %span#headerMessage
           -if @trip.is_booked?
             =t(:trip_booked_2)
           -elsif @trip.outbound_part.is_bookable? and (@trip.return_part and @trip.return_part.is_bookable?)
@@ -14,65 +14,53 @@
 
       .panel-body
         -if @trip.outbound_part.is_bookable?
-          .form-horizontal
-            .form-group
-              .row-fluid
-                %label.col-sm-4.col-md-4.col-lg-4.text-right
-                  =t(:from) + ":"
-                .col-sm-8.col-md-8.col-lg-8.text-left
-                  =@trip.outbound_part.from_trip_place.name
-            .form-group
-              .row-fluid
-                %label.col-sm-4.col-md-4.col-lg-4.text-right
-                  =t(:to) + ":"
-                .col-sm-8.col-md-8.col-lg-8.text-left
-                  =@trip.outbound_part.to_trip_place.name
-            .form-group
-              .row-fluid
-                %label.col-sm-4.col-md-4.col-lg-4.text-right
-                  = @trip.outbound_part.is_depart ? t(:departing_at) + ":" : t(:arriving_by) + ":"
-                .col-sm-8.col-md-8.col-lg-8.text-left
-                  =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
-            -if @trip.return_part and @trip.return_part.is_bookable?
-              .form-group
-                .row-fluid
-                  %label.col-sm-4.col-md-4.col-lg-4.text-right
-                    = @trip.return_part.is_depart ? t(:cap_returning_at) + ":" : t(:returning_by) + ":"
-                  .col-sm-8.col-md-8.col-lg-8.text-left
-                    =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
-            .form-group
-              .row-fluid
-                %label.col-sm-4.col-md-4.col-lg-4.text-right
-                  = t(:provided_by)
-                .col-sm-8.col-md-8.col-lg-8.text-left
-                  = "Rabbit Shared Ride"
-
+          .row
+            %label.col-sm-4.text-right
+              =t(:from) + ":"
+            .col-sm-8.text-left
+              =@trip.outbound_part.from_trip_place.name
+          .row
+            %label.col-sm-4.text-right
+              =t(:to) + ":"
+            .col-sm-8.text-left
+              =@trip.outbound_part.to_trip_place.name
+          .row
+            %label.col-sm-4.text-right
+              = @trip.outbound_part.is_depart ? t(:departing_at) + ":" : t(:arriving_by) + ":"
+            .col-sm-8.text-left
+              =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
+        -if @trip.return_part and @trip.return_part.is_bookable?
+          .row
+            %label.col-sm-4.text-right
+              = @trip.return_part.is_depart ? t(:cap_returning_at) + ":" : t(:returning_by) + ":"
+            .col-sm-8.text-left
+              =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
+          .row
+            %label.col-sm-4.text-right
+              = 'Provided By:'
+            .col-sm-8.text-left
+              = "Rabbit Shared Ride"
         -else
-          .form-horizontal
-            .form-group
-              .row-fluid
-                %label.col-sm-4.col-md-4.col-lg-4.text-right
-                  =t(:from)
-                .col-sm-8.col-md-8.col-lg-8.text-left
-                  =@trip.return_part.from_trip_place.name
-            .form-group
-              .row-fluid
-                %label.col-sm-4.col-md-4.col-lg-4.text-right
-                  =t(:to)
-                .col-sm-8.col-md-8.col-lg-8.text-left
-                  =@trip.return_part.to_trip_place.name
-            .form-group
-              .row-fluid
-                %label.col-sm-4.col-md-4.col-lg-4.text-right
-                  = @trip.return_part.is_depart ? t(:departing_at) + ":" : t(:arriving_by) + ":"
-                .col-sm-8.col-md-8.col-lg-8.text-left
-                  =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
-            .form-group
-              .row-fluid
-                %label.col-sm-4.col-md-4.col-lg-4.text-right
-                  = t(:provided_by)
-                .col-sm-8.col-md-8.col-lg-8.text-left
-                  = "Rabbit Shared Ride"
+          .row
+            %label.col-sm-4.text-right
+              =t(:from)
+            .col-sm-8.text-left
+              =@trip.return_part.from_trip_place.name
+          .row
+            %label.col-sm-4.text-right
+              =t(:to)
+            .col-sm-8.text-left
+              =@trip.return_part.to_trip_place.name
+          .row
+            %label.col-sm-4.text-right
+              = @trip.return_part.is_depart ? t(:departing_at) + ":" : t(:arriving_by) + ":"
+            .col-sm-8.text-left
+              =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
+          .row
+            %label.col-sm-4.text-right
+              = 'Provided By:'
+            .col-sm-8.text-left
+              = "Rabbit Shared Ride"
 
         -if @trip.is_booked?
           -if @trip.outbound_part.is_booked? and @trip.return_part.is_booked?
@@ -91,39 +79,31 @@
             =t(:more_info_call) + " " + "Rabbit Transit at " + Service.find_by_external_id("shared_ride").phone.to_s + "."
 
         -else
-          .row-fluid#bookingQuestion
-            =t(:book_a_trip) + " "
-            -if @trip.outbound_part.is_bookable?
-              %b=@trip.outbound_part.selected_itinerary.service.name
-            -else
-              %b=@trip.return_part.selected_itinerary.service.name
-            ="?"
-          .row-fluid.pull-center.text-center#bookButton
-            %button.center#book_button_btn
-              =t(:book)
           .div#results
             .confirmation.row-fluid#results1
               =""
             .row-fluid#results2
               =""
-            .row-fluid.h3#results3
+            .row-fluid#results3
               =""
 
   -elsif @trip.outbound_part.selected_itinerary.service and @trip.outbound_part.selected_itinerary.service.booking_service_code
-    = simple_form_for @booking_proxy, :remote => true, :url => add_booking_service_user_path(@traveler), :html => { :class => "form-horizontal"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }  do |f|
+    = simple_form_for @booking_proxy, :remote => true, :url => add_booking_service_user_path(@traveler), :html => { :id => 'book_form', :class => "form-horizontal"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }  do |f|
       .form-inputs
         = f.error_notification
         = f.input :service_id, :as => :hidden, :input_html => {value: @trip.outbound_part.selected_itinerary.service.id}
         = f.input :itinerary_id, :as => :hidden, :input_html => {value: @trip.outbound_part.selected_itinerary.id}
         = f.input :external_user_id,label: "Rabbit Transit " + t(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
         = f.input :dob, label: t(:dob), label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: t(:dob_notice)
-      .form-actions
-        = f.button :submit, t(:submit)
     -if @trip.outbound_part.selected_itinerary.service.phone
       =t(:if_no_client_id) + " " + @trip.outbound_part.selected_itinerary.service.phone + " " + t(:for_assistance) + "."
     -else
       =t(:if_no_client_id) + " " + @trip.outbound_part.selected_itinerary.service.name + "."
 :javascript
+  $('#book_submit_btn').on('click', function(event) {
+    event.stopPropagation();
+    $('#book_form').submit();
+  }
   $('#book_button_btn').on('click', function(event) {
     event.stopPropagation();
 

@@ -96,7 +96,7 @@ when 'broward'
 
 when 'pa'
   Oneclick::Application.config.host = 'oneclick-pa.camsys-apps.com'
-  Oneclick::Application.config.ui_logo = 'pa/logo.png'
+  Oneclick::Application.config.ui_logo = 'pa/logo.jpg'
   Oneclick::Application.config.geocoder_components = 'administrative_area:PA|country:US'
   # TODO Do we maybe need different bounds for kiosk vs. default?
   Oneclick::Application.config.map_bounds      = [[40.0262999543423,  -76.56372070312499], [39.87970800405549, -76.90189361572266]]
