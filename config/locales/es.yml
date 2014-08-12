@@ -471,6 +471,7 @@ es:
   click_for_cost_details: '[es423]Click for cost details[es]'
   click_for_details: '[es424]Click for details[/es]'
   dblclick_for_details: '[es]Double click or tap for details[/es]'
+  press_enter_for_details: '[es]Press ENTER key for details[/es]'
   see_details_for_cost: '[es424]See details for cost[/es]'
   cost_estimated: '[es425]Cost estimated[/es]'
   no_charge: '[es]No charge[/es]'
