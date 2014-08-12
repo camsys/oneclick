@@ -63,28 +63,29 @@
               = "Rabbit Shared Ride"
 
         -if @trip.is_booked?
-          -if @trip.outbound_part.is_booked? and @trip.return_part.is_booked?
-            .confirmation.row-fluid
-              = "Confirmation #'s: " + @trip.outbound_part.selected_itinerary.booking_confirmation + ", " + @trip.outbound_part.selected_itinerary.booking_confirmation
-            = "Your trip has been booked.  You will be contacted by Rabbit Transit to confirm this trip."
-          -elsif @trip.outbound_part.is_booked?
-            .confirmation.row-fluid
-              = "Confirmation #: " + @trip.outbound_part.selected_itinerary.booking_confirmation
-            = "The departing portion of your trip has been booked.  You will be contacted by Rabbit Transit to confirm this trip."
-          -elsif @trip.return_part.is_booked?
-            .confirmation.row-fluid
-              = "Confirmation #: " + @trip.return_part.selected_itinerary.booking_confirmation
-            = "The returning portion of your trip has been booked.  You will be contacted by Rabbit Transit to confirm this trip."
-          .row-fluid.confirmation
-            =t(:more_info_call) + " " + "Rabbit Transit at " + Service.find_by_external_id("shared_ride").phone.to_s + "."
+          .row
+            -if @trip.outbound_part.is_booked? and @trip.return_part.is_booked?
+              .confirmation
+                = "Confirmation #'s: " + @trip.outbound_part.selected_itinerary.booking_confirmation + ", " + @trip.outbound_part.selected_itinerary.booking_confirmation
+              = "Your trip has been booked.  You will be contacted by Rabbit Transit to confirm this trip."
+            -elsif @trip.outbound_part.is_booked?
+              .confirmation
+                = "Confirmation #: " + @trip.outbound_part.selected_itinerary.booking_confirmation
+              = "The departing portion of your trip has been booked.  You will be contacted by Rabbit Transit to confirm this trip."
+            -elsif @trip.return_part.is_booked?
+              .confirmation
+                = "Confirmation #: " + @trip.return_part.selected_itinerary.booking_confirmation
+              = "The returning portion of your trip has been booked.  You will be contacted by Rabbit Transit to confirm this trip."
+            .confirmation
+              =t(:more_info_call) + " " + "Rabbit Transit at " + Service.find_by_external_id("shared_ride").phone.to_s + "."
 
         -else
-          .div#results
-            .confirmation.row-fluid#results1
+          .row#results
+            .confirmation#results1
               =""
-            .row-fluid#results2
+            .confirmation#results2
               =""
-            .row-fluid#results3
+            .confirmation#results3
               =""
 
   -elsif @trip.outbound_part.selected_itinerary.service and @trip.outbound_part.selected_itinerary.service.booking_service_code
@@ -104,12 +105,9 @@
     event.stopPropagation();
     $('#book_form').submit();
   });
-  $('#book_button_btn').on('click', function(event) {
+  $('#bookButton').on('click', function(event) {
     event.stopPropagation();
-
-    var text = "<br>" + "#{t(:please_wait)}" + "..."
-    $('#bookButton').html(text);
-
+    $('#bookButton').addClass('disabled');
     $.ajax({
       url: "/users/" + "#{@traveler.id}" + "/trips/" + "#{@trip.id}" + "/book",
       data: {itin: "#{@trip.outbound_part.selected_itinerary.id}"},
@@ -145,7 +143,7 @@
           var confirmation_message = "Your trip has been succesfully booked.  You will be contacted by Rabbit Transit to confirm this trip."
         }
         // Case 4: False True
-        if (outbound_status == "false" && return_status == "true") {
+        else if (outbound_status == "false" && return_status == "true") {
           var confirmation_numbers = "Confirmation #: ";
           confirmation_numbers += result['trips'][3];
           var confirmation_message = "The returning portion of your trip was succesfully booked.  However, the departing portion of your trip could not be booked at this time."
@@ -161,7 +159,7 @@
           var confirmation_message = "Your trip could not be booked at this time."
         }
         // Case 7: None True
-        if (outbound_status == "none" && return_status == "true") {
+        else if (outbound_status == "none" && return_status == "true") {
           var confirmation_numbers = "Confirmation #: ";
           confirmation_numbers += result['trips'][3];
           var confirmation_message = "Your trip has been succesfully booked.  You will be contacted by Rabbit Transit to confirm this trip."
@@ -175,18 +173,18 @@
         $('#results1').html(confirmation_numbers);
         $('#results2').html(confirmation_message)
 
-        contact_message = "<br>" + "#{t(:more_info_call)}" + " " + "Rabbit Transit at " + "#{Service.find_by_external_id("shared_ride").phone}"+ "."
+        contact_message = "#{t(:more_info_call)}" + " " + "Rabbit Transit at " + "#{Service.find_by_external_id("shared_ride").phone}"+ "."
         $('#results3').html(contact_message);
 
 
       },
       error: function(){
 
-        $('#bookButton').html("");
+        $('#bookButton').hide();
         var confirmation_message = "Your trip could not be booked at this time."
         $('#results2').html(confirmation_message)
 
-        contact_message = "<br>" + "#{t(:more_info_call)}" + " " + "Rabbit Transit at " + "#{Service.find_by_external_id("shared_ride").phone}"+ "."
+        contact_message = "#{t(:more_info_call)}" + " " + "Rabbit Transit at " + "#{Service.find_by_external_id("shared_ride").phone}"+ "."
         $('#results3').html(contact_message);
       }
 
