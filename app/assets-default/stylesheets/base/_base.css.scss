@@ -40,6 +40,10 @@ body, .btn, .form-control, .dropdown-menu{
   @include header-background;
 }
 
+#navHeader a {
+  display: inline-block;
+}
+
 .panel-title > a {
   color: $link-color;
 }

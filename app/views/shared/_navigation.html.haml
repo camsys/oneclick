@@ -12,8 +12,7 @@
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-    / end of #navHeader
-    #userMenuNavbar.collapse.navbar-collapse.navbar-right
+      #userMenuNavbar.collapse.navbar-collapse.navbar-right
       .pull-right
         %ul.nav.navbar-nav
           - if user_signed_in?
@@ -44,6 +43,7 @@
           %ul.nav.navbar-nav
             %li.dropdown
               = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => admin_actions, :title => t(:admin_actions) }
+    / end of #navHeader
 / end of publicNav
 :javascript
   $(function () {
