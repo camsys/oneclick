@@ -29,17 +29,17 @@
               = @trip.outbound_part.is_depart ? t(:departing_at) + ":" : t(:arriving_by) + ":"
             .col-sm-8.text-left
               =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
-        -if @trip.return_part and @trip.return_part.is_bookable?
-          .row
-            %label.col-sm-4.text-right
-              = @trip.return_part.is_depart ? t(:cap_returning_at) + ":" : t(:returning_by) + ":"
-            .col-sm-8.text-left
-              =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
-          .row
-            %label.col-sm-4.text-right
-              = 'Provided By:'
-            .col-sm-8.text-left
-              = "Rabbit Shared Ride"
+          -if @trip.return_part and @trip.return_part.is_bookable?
+            .row
+              %label.col-sm-4.text-right
+                = @trip.return_part.is_depart ? t(:cap_returning_at) + ":" : t(:returning_by) + ":"
+              .col-sm-8.text-left
+                =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
+            .row
+              %label.col-sm-4.text-right
+                = 'Provided By:'
+              .col-sm-8.text-left
+                = "Rabbit Shared Ride"
         -else
           .row
             %label.col-sm-4.text-right
