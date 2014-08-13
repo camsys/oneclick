@@ -290,6 +290,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
 
         resizePlanColumns();
         resizeAllCharts();
+
+        $("svg, .trip-mode-cost").tooltip({
+            'html': true,
+            'container': 'body'
+        });
     }
 
     function checkLoadingMask() {
@@ -1327,8 +1332,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 "<a href='" + modeServiceUrl + "' target='_blank'</a>" : ""
             ) +
             "</td>" +
-            "<td tabindex=0 class='trip-mode-cost'>" +
-            "<div class='itinerary-text' aria-label='" + costAriaLabel + "' title='" + costTooltip + "'>" +
+            "<td tabindex=0 class='trip-mode-cost' aria-label='" + costAriaLabel + "' title='" + costTooltip + "'>" +
+            "<div class='itinerary-text'>" +
                 costDisplay +
             "</div>" +
             "</td>" +
@@ -1974,7 +1979,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
 
         var lineWrapStartSymbol = '<p>';
         var lineWrapEndSymbol = '</p>';
-        var tipToShowDetailsDialog = localeDictFinder['dblclick_for_details'];
+        var tipToShowDetailsDialog = localeDictFinder['press_enter_or_dblclick_for_details'];
         if(isTextOnly) {
             lineWrapStartSymbol = '';
             lineWrapEndSymbol = '';
@@ -2057,6 +2062,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         }
 
         var tipTextOnly = getHoverTipText(tripPlan, true);
+        var tipHtml = getHoverTipText(tripPlan, false);
 
         var width = $chart.width();
         var height = $chart.height();
@@ -2066,12 +2072,26 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             .attr('tabindex', '0')
             .attr('role', 'chart')
             .attr('aria-label', tipTextOnly)
+            .attr('title', tipHtml)
             .attr('width', width)
             .attr('height', height)
             .on("keyup", function() { //click to show details in modal dialog
                 if(d3.event.keyCode === 13) {
                     showItineraryModal(planId);
                 }
+            })
+            .on("dblclick", function() { //click to show details in modal dialog
+                showItineraryModal(planId);
+            })
+            .on("touchstart", function() { //for mobile
+                var t2 = event.timeStamp;
+                var t1 = $(this).data('lastTouch') || t2;
+                var dt = t2 - t1;
+                var fingers = event.touches.length;
+                $(this).data('lastTouch', t2);
+                if (!dt || dt > 500 || fingers > 1) return; // not double-tap
+                showItineraryModal(planId);
+                event.preventDefault ? event.preventDefault() : event.returnValue = false;
             });
 
         //create d3 time scale 
@@ -2121,29 +2141,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                     return d;
                 });
         }
-
-        //register events
-        var tipHtml = getHoverTipText(tripPlan, false);
-        chart.selectAll('rect, text')
-            .attr('title', tipHtml)
-            .on("dblclick", function() { //click to show details in modal dialog
-                showItineraryModal(planId);
-            })
-            .on("touchstart", function() { //for mobile
-                var t2 = event.timeStamp;
-                var t1 = $(this).data('lastTouch') || t2;
-                var dt = t2 - t1;
-                var fingers = event.touches.length;
-                $(this).data('lastTouch', t2);
-                if (!dt || dt > 500 || fingers > 1) return; // not double-tap
-                showItineraryModal(planId);
-                event.preventDefault ? event.preventDefault() : event.returnValue = false;
-            });
-
-        $("svg rect, svg text").tooltip({
-            'html': true,
-            'container': 'body'
-        });
     }
 
     /*
