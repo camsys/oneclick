@@ -80,6 +80,13 @@ ActiveRecord::Schema.define(version: 20140810190020) do
     t.string  "link_handler"
   end
 
+  create_table "cities", primary_key: "gid", force: true do |t|
+    t.string  "geoid", limit: 7
+    t.string  "name",  limit: 100
+    t.string  "state", limit: 2
+    t.spatial "geom",  limit: {:srid=>0, :type=>"multi_polygon"}
+  end
+
   create_table "counties", force: true do |t|
     t.integer "gid"
     t.string  "name"

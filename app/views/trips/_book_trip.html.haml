@@ -67,17 +67,20 @@
             -if @trip.outbound_part.is_booked? and @trip.return_part.is_booked?
               .confirmation
                 = "Confirmation #'s: " + @trip.outbound_part.selected_itinerary.booking_confirmation + ", " + @trip.outbound_part.selected_itinerary.booking_confirmation
+                -phone_number = @trip.outbound_part.selected_itinerary.service.phone.to_s
               = "Your trip has been booked.  You will be contacted by Rabbit Transit to confirm this trip."
             -elsif @trip.outbound_part.is_booked?
               .confirmation
                 = "Confirmation #: " + @trip.outbound_part.selected_itinerary.booking_confirmation
+                -phone_number = @trip.outbound_part.selected_itinerary.service.phone.to_s
               = "The departing portion of your trip has been booked.  You will be contacted by Rabbit Transit to confirm this trip."
             -elsif @trip.return_part.is_booked?
               .confirmation
                 = "Confirmation #: " + @trip.return_part.selected_itinerary.booking_confirmation
+                -phone_number = @trip.return_part.selected_itinerary.service.phone.to_s
               = "The returning portion of your trip has been booked.  You will be contacted by Rabbit Transit to confirm this trip."
             .confirmation
-              =t(:more_info_call) + " " + "Rabbit Transit at " + Service.find_by_external_id("shared_ride").phone.to_s + "."
+              =t(:more_info_call) + " " + "Rabbit Transit at " + phone_number + "."
 
         -else
           .row#results
@@ -173,7 +176,7 @@
         $('#results1').html(confirmation_numbers);
         $('#results2').html(confirmation_message)
 
-        contact_message = "#{t(:more_info_call)}" + " " + "Rabbit Transit at " + "#{Service.find_by_external_id("shared_ride").phone}"+ "."
+        contact_message = "#{t(:more_info_call)}" + " " + "Rabbit Transit at " + result['trips'][4] + "."
         $('#results3').html(contact_message);
 
 
@@ -184,7 +187,7 @@
         var confirmation_message = "Your trip could not be booked at this time."
         $('#results2').html(confirmation_message)
 
-        contact_message = "#{t(:more_info_call)}" + " " + "Rabbit Transit at " + "#{Service.find_by_external_id("shared_ride").phone}"+ "."
+        contact_message = "#{t(:more_info_call)}" + " " + "Rabbit Transit at " + result['trips'][4] + "."
         $('#results3').html(contact_message);
       }
 
