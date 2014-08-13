@@ -31,6 +31,15 @@ GIT
       sprockets-rails (~> 2.0)
 
 GIT
+  remote: git://github.com/camsys/simple_form.git
+  revision: 35b40134c1683eb309d31819fe883e0beb5b8408
+  branch: cs-3.0
+  specs:
+    simple_form (3.1.0.rc2)
+      actionpack (~> 4.0)
+      activemodel (~> 4.0)
+
+GIT
   remote: git://github.com/camsys/twitter-typeahead-rails.git
   revision: b9e407f9a4224f0840b60a523a2df42eeca7dfe7
   specs:
@@ -38,14 +47,6 @@ GIT
       actionpack (>= 3.1)
       jquery-rails
       railties (>= 3.1)
-
-GIT
-  remote: git://github.com/plataformatec/simple_form.git
-  revision: c3bc4af79df2f3f51500a38d8a84aa682f9ad009
-  specs:
-    simple_form (3.1.0.rc2)
-      actionpack (~> 4.0)
-      activemodel (~> 4.0)
 
 GIT
   remote: git://github.com/svenfuchs/i18n-active_record.git
