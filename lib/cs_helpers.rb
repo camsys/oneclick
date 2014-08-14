@@ -359,10 +359,11 @@ module CsHelpers
 
   def get_itinerary_cost itinerary
     estimated = false
-    fare = itinerary.cost || (itinerary.service.fare_structures.first rescue nil)
+    fare =  (itinerary.service.fare_structures.first rescue nil) || itinerary.cost
     price_formatted = nil
     cost_in_words = ''
     comments = ''
+
     if fare.respond_to? :fare_type
       case fare.fare_type
       when FareStructure::FLAT
