@@ -682,7 +682,7 @@ class TripsController < PlaceSearchingController
     end
 
     return_part = @itinerary.trip_part.get_return_part
-    if return_part and return_part.is_bookable?
+    if @trip.trip_parts.count > 1 and return_part.is_bookable?
       if contact_number.empty?
         return_itinerary = return_part.selected_itinerary
         contact_number = return_itinerary.service.phone
