@@ -12,8 +12,8 @@
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-    #userMenuNavbar.navbar-collapse.collapse
-      %ul.nav.navbar-nav.navbar-right
+    #userMenuNavbar.collapse.navbar-collapse.navbar-right
+      %ul.nav.navbar-nav
         - if can? :see, :admin_menu
           %li.dropdown
             = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => admin_actions, :title => t(:admin_actions) }
