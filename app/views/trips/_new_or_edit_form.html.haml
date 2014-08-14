@@ -3,7 +3,7 @@
     .hidden-xs.col-sm-8
       = render partial: 'shared/trip_plan_breadcrumbs'
     .col-sm-4{style: "padding: 0px;"}
-      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button" do
+      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button", tabindex: '-1' do
         =t(:next)
         :javascript
           $(function() {

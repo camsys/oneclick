@@ -18,6 +18,7 @@
                 = render partial: 'characteristic_item', locals: {item: a, f:f}
           :javascript
             $('.user-characteristics .btn-group').attr('data-toggle', 'buttons');
+            $('.user-characteristics .btn-group label').attr('xtabindex', '0');
             $('.user-characteristics .btn-group label').addClass('btn characteristics-option-button');
             $('.user-characteristics .btn-group input:checked').parent('label').addClass('active');
 - else

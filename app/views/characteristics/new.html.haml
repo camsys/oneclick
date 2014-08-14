@@ -3,8 +3,7 @@
     .hidden-xs.col-sm-8
       = render partial: 'shared/trip_plan_breadcrumbs'
     .col-sm-4{style: "padding: 0px;"}
-      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
-        tabindex: 2 do
+      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button" do
         =t(:next)
         :javascript
           $(function() {
@@ -18,7 +17,6 @@
     = render partial: 'form', :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
     / end of options column
     .col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
-      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
-        tabindex: 2 do
+      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button" do
         =t(:next)
   = render partial: 'shared/splash'
