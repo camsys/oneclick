@@ -15,12 +15,13 @@
             .col-xs-12
               .form-group
                 .col-xs-12
-                  = button_tag type: :submit, name: 'delete', class: 'btn action-button pull-right' do
-                    = t(:delete)
-                  = button_tag name: 'clear', id: 'clear', type: 'button', class: 'btn action-button pull-right' do
-                    = t(:clear)
-                  = button_tag type: :submit, name: 'save', id: 'save', class: 'btn btn-default action-button pull-right disabled' do
-                    = t(:save)
+                  .pull-right
+                    = button_tag type: :submit, name: 'save', id: 'save', disabled: 'disabled', class: 'btn action-button disabled' do
+                      = t(:save)
+                    = button_tag type: :submit, name: 'delete', class: 'btn action-button' do
+                      = t(:delete)
+                    = button_tag name: 'clear', id: 'clear', type: 'button', class: 'btn action-button' do
+                      = t(:clear)
           .row
             .col-xs-12
               = f.hidden_field :id

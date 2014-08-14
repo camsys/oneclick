@@ -3,9 +3,10 @@
     #navHeader
       %a.navbar-brand{:href => root_url, :style => 'padding: 0px;'}
         %img.img-responsive.pull-left{:id => 'logo', :src => "#{get_logo_path}", :alt => "logo"}
-      %a#help.pull-right{:href => root_url + "/content/faq"}
-        %i.fa.fa-question-circle
-        %span.sr-only Help
+      .pull-right
+        %a#help{:href => root_url + "/content/faq"}
+          %i.fa.fa-question-circle
+          %span.sr-only Help
       %button.navbar-toggle{"data-target" => "#userMenuNavbar", "data-toggle" => "collapse", :type => "button"}
         %span.sr-only User menu
         %span.icon-bar
