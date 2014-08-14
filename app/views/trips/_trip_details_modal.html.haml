@@ -1,4 +1,4 @@
-.modal-dialog.modal-lg
+.modal-dialog.modal-lg{"data-itinerary-id" => @itinerary.id}
   .modal-content
     .modal-body{style: "padding: 0px;"}
       .col-sm-12.well{style: "padding: 5px;"}
@@ -15,5 +15,6 @@
         - else
           .col-sm-12{style: "background: white; border-radius: 5px; overflow-y:auto; max-height: 300px;"}
             = render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
+}
 
 = yield :scripts

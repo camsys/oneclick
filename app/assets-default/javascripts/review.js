@@ -708,9 +708,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             return;
         }
 
-
-        var tripMidTime = new Date((tripStartTime.getTime() + tripEndTime.getTime()) / 2);;
-
         var tripPartDivId = "trip_part_" + tripId;
 
         var tickLabels = getTickLabels(tripStartTime, tripEndTime, intervalStep);
@@ -718,7 +715,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             var tripTags = "<div id='" + tripPartDivId + "'class='col-xs-12 well single-trip-part' data-trip-id='" + tripId + "'>";
 
             //process header
-            var tripHeaderTags = addTripHeaderHtml(trip.description, tickLabels, intervalStep, isDepartAt, tripMidTime);
+            var tripHeaderTags = addTripHeaderHtml(trip.description, tickLabels, intervalStep, isDepartAt, tripStartTime, tripEndTime);
             tripTags += tripHeaderTags;
 
             //process each trip plan
@@ -1122,16 +1119,23 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
      * @param {number} intervelStep
      * @param {Array} tickLabels
      * @param {bool} isDepartAt: true if departing at, false if arriving at
+     * @param {datetime} tripStartTime: trip part start time
+     * @param {datetime} tripEndTime: trip part end time
      * @param {string} tripHeaderTags: html tags of the whole trip header
      */
-    function addTripHeaderHtml(tripDescription, tickLabels, intervelStep, isDepartAt, tripMidTime) {
+    function addTripHeaderHtml(tripDescription, tickLabels, intervelStep, isDepartAt, tripStartTime, tripEndTime) {
+        var tripDatetimeDescritpion = isDepartAt ? 
+            localeDictFinder['departing_at'] + ' ' + formatDate(tripStartTime) + ' ' + formatTime(tripStartTime) : 
+            localeDictFinder['arriving_by'] + ' ' + formatDate(tripEndTime)  + ' ' + formatTime(tripEndTime);
+        var headerAriaLabel = tripDescription + "; " + tripDatetimeDescritpion; 
         //trip description
-        var tripDescTag = '<div tabindex=0 class="col-sm-12"><label>' + tripDescription + '</label></div>';
+        var tripDescTag = "<div tabindex=0 aria-label='" + headerAriaLabel + "'  class='col-sm-12'><label>" + tripDescription + "</label></div>";
 
         var tickLabelTags = getTickLabelHtmlTags(tickLabels);
 
         var sorterLabelTags = '<span tabindex=0 >' + localeDictFinder['sort_by'] + ': </span>';
-        var midDateLabelTags = '<span tabindex=0 >' + formatDate(tripMidTime) + '</span>';
+        var tripMidTime = new Date((tripStartTime.getTime() + tripEndTime.getTime()) / 2);
+        var midDateLabelTags = '<span>' + formatDate(tripMidTime) + '</span>';
 
         var sorterTags =
             '<select tabindex=0 style="display: inline-block;" class="trip-sorter">' +
@@ -1165,7 +1169,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             "<div class='col-xs-12' style='padding:0px;'>" +
             "<div class='trip-plan-first-column' style='padding: 0px;'>" +
             "</div>" +
-            "<div tabindex=0 class='tick-labels " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap;'>" +
+            "<div class='tick-labels " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap;'>" +
             tickLabelTags +
             "</div>" +
             "<div class='select-column' style='padding: 0px;'>" +
@@ -1320,19 +1324,20 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var costTooltip = cost.comments;
         var costDisplay = (isValidObject(cost) ? cost.price_formatted : '');
         var costAriaLabel = costDisplay + ' ' + costTooltip;
+        var isServiceAvailable = typeof(modeServiceUrl) === 'string' && modeServiceUrl.trim().length > 0;
         var tripPlanTags =
             "<div class='col-xs-12 single-plan-review " + (isSelected ? "single-plan-selected" : "single-plan-unselected") + "' style='padding: 0px;" + (eligibleCode === -1 ? "display: none;" : "") + "'" + dataTags + ">" +
             "<div class='trip-plan-first-column' style='padding: 0px; height: 100%;'>" +
             "<table style='width: 100%;'>" +
             "<tbody>" +
             "<tr>" +
-            "<td tabindex=0 class='trip-mode-icon' aria-label='" + modeName + "' style='" + iconStyle + "'>" +
+            "<td " + (isServiceAvailable ? "" : "tabindex='0'") + "class='trip-mode-icon' aria-label='" + modeName + "' style='" + iconStyle + "'>" +
             (
-                typeof(modeServiceUrl) === 'string' && modeServiceUrl.trim().length > 0 ?
-                "<a href='" + modeServiceUrl + "' target='_blank'</a>" : ""
+                isServiceAvailable ?
+                "<a aria-label='" + modeName + " " + serviceName + "' href='" + modeServiceUrl + "' target='_blank'</a>" : ""
             ) +
             "</td>" +
-            "<td tabindex=0 class='trip-mode-cost' aria-label='" + costAriaLabel + "' title='" + costTooltip + "'>" +
+            "<td tabindex='0' class='trip-mode-cost' aria-label='" + costAriaLabel + "' title='" + costTooltip + "'>" +
             "<div class='itinerary-text'>" +
                 costDisplay +
             "</div>" +
@@ -1979,11 +1984,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
 
         var lineWrapStartSymbol = '<p>';
         var lineWrapEndSymbol = '</p>';
-        var tipToShowDetailsDialog = localeDictFinder['press_enter_or_dblclick_for_details'];
+        var tipToShowDetailsDialog = localeDictFinder['press_space_or_dblclick_for_details'];
         if(isTextOnly) {
             lineWrapStartSymbol = '';
             lineWrapEndSymbol = '';
-            tipToShowDetailsDialog = localeDictFinder['press_enter_for_details'];
+            tipToShowDetailsDialog = localeDictFinder['press_space_for_details'];
         }
 
         var lineWrapper = function(rawLine) {
@@ -2076,7 +2081,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             .attr('width', width)
             .attr('height', height)
             .on("keyup", function() { //click to show details in modal dialog
-                if(d3.event.keyCode === 13) {
+                if(d3.event.keyCode === 32) {
                     showItineraryModal(planId);
                 }
             })

@@ -22,7 +22,7 @@
             = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => staff_actions, :title => t(:staff_actions) }
         - if user_signed_in?
           %li#userDropdown.dropdown
-            %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true'}
+            %a.dropdown-toggle{"href" => "#", "data-target" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true'}
               %i.fa.fa-user
               - unless is_assisting
                 = "#{t(:welcome)}, #{get_traveler.welcome}"
@@ -33,7 +33,7 @@
               = render partial: 'menu_item', collection: traveler_actions(with_logout: true)
         - else 
           %li#userDropdown.dropdown
-            %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true'}
+            %a.dropdown-toggle{"href" => "#", "data-target" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true'}
               %i.fa.fa-user
               = "#{t(:welcome)}, #{t(:visitor)}"
               %b.caret
@@ -46,5 +46,12 @@
     $('#main').css('padding-top', ($('#publicNav').height() + 10) + 'px');
     $('#publicNav').mutate('height', function(el) {
       $('#main').css('padding-top', ($(el).height() + 10) + 'px');
+    });
+
+    $('body').delegate('a', 'keypress', function(e) {
+      if (e.which == 32) {
+          $(this)[0].click();
+          e.preventDefault();
+      }
     });
   });

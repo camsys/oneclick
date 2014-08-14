@@ -4,10 +4,11 @@
   .hidden-xs.col-sm-8
     = render partial: 'shared/trip_plan_breadcrumbs'
   .col-sm-4
-    = button_tag :type => 'button', :name => "planButton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
-      =t(:next)
-    = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "pull-right btn btn-default action-button pull-right", style: "margin-right: 5px;" do
-      = t(:feedback)
+    .pull-right
+      = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right: 5px;" do
+        = t(:feedback)
+      = button_tag :type => 'button', :name => "planButton", :class => "btn action-button", :style => "margin-right: 5px;" do
+        =t(:next)
     
 .row
 - if @tripResponseHash['status'] == 0
@@ -32,10 +33,11 @@
       #tripContainer.col-xs-12{style: "padding: 0px;"}
       / end of trip container
   .col-xs-12{style: "margin-bottom: 5px;padding: 0px;"}
-    = button_tag :type => 'button', :name => "planButton", :class => "btn btn-default pull-right action-button", :style => "margin-right: 5px;" do
-      =t(:next)
-    = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "pull-right btn btn-default action-button pull-right", style: "margin-right: 5px;" do
-      = t(:feedback)
+    .pull-right
+      = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right: 5px;" do
+        = t(:feedback)
+      = button_tag :type => 'button', :name => "planButton", :class => "btn action-button", :style => "margin-right: 5px;" do
+        =t(:next)
   / end of review columns
   #itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
   :javascript
@@ -83,6 +85,8 @@
         departure_time: '#{t(:departure_time)}',
         depart_at: '#{t(:depart_at)}',
         arrive_in: '#{t(:arrive_in)}',
+        departing_at: '#{t(:departing_at)}',
+        arriving_by: '#{t(:arriving_by)}',
         fare: '#{t(:fare)}',
         number_of_transfers: '#{t(:number_of_transfers)}',
         modes: '#{t(:modes)}',
@@ -107,8 +111,8 @@
         unknown: '#{t(:unknown)}',
         no_itineraries_found: '#{t(:no_itineraries_found)}',
         something_went_wrong: '#{t(:something_went_wrong)}',
-        press_enter_or_dblclick_for_details: '#{t(:press_enter_or_dblclick_for_details)}',
-        press_enter_for_details: '#{t(:press_enter_for_details)}',
+        press_space_or_dblclick_for_details: '#{t(:press_space_or_dblclick_for_details)}',
+        press_space_for_details: '#{t(:press_space_for_details)}',
         four_digit_year: '#{t(:four_digit_year)}',
         miles: '#{t(:miles)}'                
       };
@@ -156,6 +160,11 @@
             mapObj.LMmap.fitBounds(mapBounds); 
           }
         }
+      });
+
+      $('#itinerary_modal').on('hidden.bs.modal', function() {
+        var itinId = $(this).find('.modal-dialog').attr('data-itinerary-id');
+        $('.single-plan-review[data-plan-id=' + itinId + ']').find('svg').focus();
       });
 
       //Plan button to jump to Plan page
