@@ -286,6 +286,14 @@ class Trip < ActiveRecord::Base
     trip_parts.last
   end
 
+  def get_return_part
+    if trip_parts.count > 1
+      trip_parts.last
+    else
+      nil
+    end
+  end
+
   def both_parts_selected?
     trip_parts.first.selected? and trip_parts.last.selected?
   end

@@ -87,6 +87,9 @@
             .confirmation
               =t(:more_info_call) + " " + "Rabbit Transit at " + phone_number + "."
         -else
+          .row-fluid.pull-center.text-center#bookButton
+            %button.center#book_button_btn
+              =t(:book)
           .row#results
             .confirmation#results1
               =""
@@ -95,18 +98,22 @@
             .confirmation#results3
               =""
 
-  -elsif @trip.outbound_part.selected_itinerary.service and @trip.outbound_part.selected_itinerary.service.booking_service_code
+  -elsif (@trip.outbound_part.selected_itinerary.service and @trip.outbound_part.selected_itinerary.service.booking_service_code) or (@trip.return_part.selected_itinerary.service and @trip.return_part.selected_itinerary.service.booking_service_code)
+    -selected_itinerary = @trip.outbound_part.selected_itinerary || @trip.return_part.selected_itinerary
     = simple_form_for @booking_proxy, :remote => true, :url => add_booking_service_user_path(@traveler), :html => { :id => 'book_form', :class => "form-horizontal"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }  do |f|
       .form-inputs
         = f.error_notification
-        = f.input :service_id, :as => :hidden, :input_html => {value: @trip.outbound_part.selected_itinerary.service.id}
-        = f.input :itinerary_id, :as => :hidden, :input_html => {value: @trip.outbound_part.selected_itinerary.id}
+        = f.input :service_id, :as => :hidden, :input_html => {value: selected_itinerary.service.id}
+        = f.input :itinerary_id, :as => :hidden, :input_html => {value: selected_itinerary.id}
         = f.input :external_user_id,label: "Rabbit Transit " + t(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
         = f.input :dob, label: t(:dob), label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: t(:dob_notice)
-    -if @trip.outbound_part.selected_itinerary.service.phone
-      =t(:if_no_client_id) + " " + @trip.outbound_part.selected_itinerary.service.phone + " " + t(:for_assistance) + "."
+      .form-actions
+        = f.button :submit, t(:submit)
+
+    -if selected_itinerary.service.phone
+      =t(:if_no_client_id) + " " + selected_itinerary.service.phone + " " + t(:for_assistance) + "."
     -else
-      =t(:if_no_client_id) + " " + @trip.outbound_part.selected_itinerary.service.name + "."
+      =t(:if_no_client_id) + " " + selected_itinerary.service.name + "."
 :javascript
   $('#book_submit_btn').on('click', function(event) {
     event.stopPropagation();
@@ -114,6 +121,9 @@
   });
   $('#bookButton').on('click', function(event) {
     event.stopPropagation();
+    var text = "<br>" + "#{t(:please_wait)}" + "..."
+    $('#bookButton').html(text);
+
     $('#bookButton').addClass('disabled');
     $.ajax({
       url: "/users/" + "#{@traveler.id}" + "/trips/" + "#{@trip.id}" + "/book",

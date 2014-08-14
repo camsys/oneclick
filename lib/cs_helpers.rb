@@ -359,7 +359,7 @@ module CsHelpers
 
   def get_itinerary_cost itinerary
     estimated = false
-    fare =  (itinerary.service.fare_structures.first rescue nil) || itinerary.cost
+    fare =  itinerary.cost || (itinerary.service.fare_structures.first rescue nil)
     price_formatted = nil
     cost_in_words = ''
     comments = ''
