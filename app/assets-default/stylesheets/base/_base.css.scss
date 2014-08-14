@@ -57,7 +57,12 @@ body, .btn, .form-control, .dropdown-menu{
 }
 
 #logo{
-  max-height: 60px !important;
+  @media(max-width:$screen-sm-max){
+    max-height: 50px;
+  }
+  @media(min-width:$screen-md-min){
+    max-height: 60px;
+  }
   cursor: pointer;
 }
 

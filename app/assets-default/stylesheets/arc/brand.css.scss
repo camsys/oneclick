@@ -1,21 +1,4 @@
 // ARC CSS file. Styles only, no variables or mixins definitions.
-
-@media(max-width:$screen-sm-max){
-  #userDropdown .dropdown-menu>li>a:hover {
-    color: #FEC800;
-  }
-}
-
-#userDropdown .dropdown-toggle{
-  background-color: transparent;
-  color: #10104A;
-  font-weight: bold;
-}
-
-#userDropdown .dropdown-menu>li>a {
-  color: #10104A;
-}
-
 #help {
   i{
     color: #444;

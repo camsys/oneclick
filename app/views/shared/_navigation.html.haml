@@ -1,48 +1,44 @@
 #publicNav.navbar.navbar-default.navbar-fixed-top{:role => "navigation"}
-  .container-fluid
-    #navHeader{:style => 'margin-left: -15px;'}
-      %a{:href => root_url}
+  .container{:style => 'width:100%;'}
+    #navHeader
+      %a.navbar-brand{:href => root_url, :style => 'padding: 0px;'}
         %img.img-responsive.pull-left{:id => 'logo', :src => "#{get_logo_path}", :alt => "logo"}
-      .pull-right
-        %a#help{:href => root_url + "/content/faq"}
-          %i.fa.fa-question-circle
-          %span.sr-only Help
+      %a#help.pull-right{:href => root_url + "/content/faq"}
+        %i.fa.fa-question-circle
+        %span.sr-only Help
       %button.navbar-toggle{"data-target" => "#userMenuNavbar", "data-toggle" => "collapse", :type => "button"}
         %span.sr-only User menu
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-      #userMenuNavbar.collapse.navbar-collapse.navbar-right
-      .pull-right
-        %ul.nav.navbar-nav
-          - if user_signed_in?
-            %li#userDropdown.dropdown
-              %a.dropdown-toggle{"data-target" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true', tabindex: '0'}
-                - unless is_assisting
-                  = "#{t(:welcome)}, #{get_traveler.welcome}"
-                - else
-                  = t(:assisting_assisted_user_email, assisted_user: @traveler.name)
-                %b.caret
-              %ul.dropdown-menu{:role => "menu"}
-                = render partial: 'menu_item', collection: traveler_actions(with_logout: true)
-          - else 
-            %li#userDropdown.dropdown
-              %a.dropdown-toggle{"data-target" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true', tabindex: '0'}
-                = "#{t(:welcome)}, #{t(:visitor)}"
-                %b.caret
-              %ul.dropdown-menu{:role => "menu"}
-                = render partial: 'menu_item', collection: traveler_actions
-        / end of nav navbar-nav
-      .pull-right  
-        - if can? :see, :staff_menu
-          %ul.nav.navbar-nav
-            %li.dropdown
-              = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => staff_actions, :title => t(:staff_actions) }
-      .pull-right
+    #userMenuNavbar.navbar-collapse.collapse
+      %ul.nav.navbar-nav.navbar-right
         - if can? :see, :admin_menu
-          %ul.nav.navbar-nav
-            %li.dropdown
-              = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => admin_actions, :title => t(:admin_actions) }
+          %li.dropdown
+            = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => admin_actions, :title => t(:admin_actions) }
+        / end of nav navbar-nav
+        - if can? :see, :staff_menu
+          %li.dropdown
+            = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => staff_actions, :title => t(:staff_actions) }
+        - if user_signed_in?
+          %li#userDropdown.dropdown
+            %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true'}
+              %i.fa.fa-user
+              - unless is_assisting
+                = "#{t(:welcome)}, #{get_traveler.welcome}"
+              - else
+                = t(:assisting_assisted_user_email, assisted_user: @traveler.name)
+              %b.caret
+            %ul.dropdown-menu{:role => "menu"}
+              = render partial: 'menu_item', collection: traveler_actions(with_logout: true)
+        - else 
+          %li#userDropdown.dropdown
+            %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true'}
+              %i.fa.fa-user
+              = "#{t(:welcome)}, #{t(:visitor)}"
+              %b.caret
+            %ul.dropdown-menu{:role => "menu"}
+              = render partial: 'menu_item', collection: traveler_actions
     / end of #navHeader
 / end of publicNav
 :javascript
