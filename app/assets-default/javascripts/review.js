@@ -1127,13 +1127,13 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var tripDatetimeDescritpion = isDepartAt ? 
             localeDictFinder['departing_at'] + ' ' + formatDate(tripStartTime) + ' ' + formatTime(tripStartTime) : 
             localeDictFinder['arriving_by'] + ' ' + formatDate(tripEndTime)  + ' ' + formatTime(tripEndTime);
-        var headerAriaLabel = tripDescription + "; " + tripDatetimeDescritpion; 
+        //var headerAriaLabel = tripDescription + "; " + tripDatetimeDescritpion; 
         //trip description
-        var tripDescTag = "<div tabindex=0 aria-label='" + headerAriaLabel + "'  class='col-sm-12'><label>" + tripDescription + "</label></div>";
+        var tripDescTag = "<div class='col-sm-12'><label>" + tripDescription + "</label></div>";
 
         var tickLabelTags = getTickLabelHtmlTags(tickLabels);
 
-        var sorterLabelTags = '<span tabindex=0 >' + localeDictFinder['sort_by'] + ': </span>';
+        var sorterLabelTags = '<span>' + localeDictFinder['sort_by'] + ': </span>';
         var tripMidTime = new Date((tripStartTime.getTime() + tripEndTime.getTime()) / 2);
         var midDateLabelTags = '<span>' + formatDate(tripMidTime) + '</span>';
 
@@ -1681,7 +1681,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         modes.forEach(function(mode) {
             if (isFirstMode) {
                 modeFilterTags +=
-                    '<div tabindex=0 class = "col-sm-12" style="padding: 0px;">' +
+                    '<div class = "col-sm-12" style="padding: 0px;">' +
                     '<div class = "col-sm-12" style="padding: 0px;">' +
                     '<label>' + localeDictFinder['modes'] + '</label>' +
                     '</div>' +
@@ -1744,7 +1744,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var sliderConfig = null;
         if (typeof(maxTransfer) === 'number' && minTransfer === 0 && maxTransfer > minTransfer) {
             tags =
-                '<div tabindex=0 class = "col-sm-12" style="padding: 0px;">' +
+                '<div class = "col-sm-12" style="padding: 0px;">' +
                 '<div class = "col-sm-12" style="padding: 0px;">' +
                 '<label>' + localeDictFinder['number_of_transfers'] + '</label>' +
                 '</div>' +
@@ -1805,7 +1805,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             minCost = getRoundMinValue(minCost);
             maxCost = getRoundMaxValue(maxCost);
             tags =
-                '<div tabindex=0 class = "col-sm-12" style="padding: 0px;">' +
+                '<div class = "col-sm-12" style="padding: 0px;">' +
                 '<div class = "col-sm-12" style="padding: 0px;">' +
                 '<label>' + localeDictFinder['fare'] + '</label>' +
                 '</div>' +
@@ -1867,7 +1867,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             minDuration = getRoundMinValue(minDuration / 60);
             maxDuration = getRoundMaxValue(maxDuration / 60);
             tags =
-                '<div tabindex=0 class = "col-sm-12" style="padding: 0px;">' +
+                '<div class = "col-sm-12" style="padding: 0px;">' +
                 '<div class = "col-sm-12" style="padding: 0px;">' +
                 '<label>' + localeDictFinder['trip_time'] + '</label>' +
                 '</div>' +

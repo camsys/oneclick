@@ -8,18 +8,18 @@
           - case item.datatype
             - when 'bool'
               .form-group.string.optional
-                .string.optional.col-sm-7.control-label{for: item.code, tabindex: '0'}= t(item.note)
+                .string.optional.col-sm-7.control-label{for: item.code}= t(item.note)
                 .col-sm-5
                   .char-group
-                    .btn-group.characteristic{data: {attribute: item.code}}
+                    .btn-group.characteristic{tabindex: '0', data: {attribute: item.code}}
                       - [['true', t(:yes_str)], ['false', t(:no_str)], [UserProfileProxy::PARAM_NOT_SET, t(:not_sure_str)]].each do |v, s|
                         %button.btn.characteristics-option-button{type: 'button', value: v, class: active_button(f, item, v), title: t(item.note)}= s
                     = f.input_field item.code.to_sym, as: :hidden, id: item.code
             - else
-              = f.input item.code.to_sym, label: t(item.note), input_html: {tabindex: '0'}
+              = f.input item.code.to_sym, label: t(item.note)
 - else
   - case item.datatype
     - when 'bool'
-      = f.input item.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], [UserProfileProxy::PARAM_NOT_SET, t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(item.note), label_method: :last, value_method: :first, input_html: {tabindex: '0'}
+      = f.input item.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], [UserProfileProxy::PARAM_NOT_SET, t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(item.note), label_method: :last, value_method: :first
     - else
-      = f.input item.code.to_sym, label: t(item.note), input_html: {tabindex: '0'}
+      = f.input item.code.to_sym, label: t(item.note)
