@@ -17,7 +17,7 @@
                 - next unless a.ask_early
                 = render partial: 'characteristic_item', locals: {item: a, f:f}
           :javascript
-            $('.user-characteristics .btn-group').on('click',
+            $('.user-characteristics .char-group').on('click',
               function(e) {
                 $(e.currentTarget).find('.btn').removeClass('active');
                 $(e.target).addClass('active');

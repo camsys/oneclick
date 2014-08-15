@@ -10,10 +10,11 @@
               .form-group.string.optional
                 .string.optional.col-sm-7.control-label{for: item.code, tabindex: '0'}= t(item.note)
                 .col-sm-5
-                  .btn-group.characteristic{data: {attribute: item.code}}
-                    - [['true', t(:yes_str)], ['false', t(:no_str)], [UserProfileProxy::PARAM_NOT_SET, t(:not_sure_str)]].each do |v, s|
-                      %button.btn.btn-default{type: 'button', value: v, class: active_button(f, item, v), title: t(item.note)}= s
-                    = f.input item.code.to_sym, as: :hidden, input_html: {id: item.code}
+                  .char-group
+                    .btn-group.characteristic{data: {attribute: item.code}}
+                      - [['true', t(:yes_str)], ['false', t(:no_str)], [UserProfileProxy::PARAM_NOT_SET, t(:not_sure_str)]].each do |v, s|
+                        %button.btn.characteristics-option-button{type: 'button', value: v, class: active_button(f, item, v), title: t(item.note)}= s
+                    = f.input_field item.code.to_sym, as: :hidden, id: item.code
             - else
               = f.input item.code.to_sym, label: t(item.note), input_html: {tabindex: '0'}
 - else
