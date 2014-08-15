@@ -4,13 +4,6 @@
       .modal-header
         = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
           = t(:cancel)
-        -if not @trip.is_booked? and (@trip.outbound_part.is_bookable? or (@trip.return_part and @trip.return_part.is_bookable?))
-          #bookButton.pull-right
-            = button_tag id: 'book_button_btn', class: 'btn action-button' do
-              = t(:book)
-        -elsif @trip.outbound_part.selected_itinerary.service and @trip.outbound_part.selected_itinerary.service.booking_service_code
-          = button_tag id: 'book_submit_btn', class: 'btn action-button pull-right' do
-            = t(:submit)
         .modal-title{:style => "text-align:left;"}
           %b
             -if @trip.is_booked?

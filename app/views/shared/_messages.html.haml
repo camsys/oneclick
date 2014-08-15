@@ -9,6 +9,6 @@
       - "alert-success"
     - else
       - "alert-danger"
-    %div{:class => "alert #{alert_class} fade in"}
+    %div{role: 'alert', aria: {live: 'assertive'}, :class => "alert #{alert_class} fade in"}
       %a.close{"data-dismiss" => "alert"} ×
       = content_tag :div, msg, :id => "flash_#{name}"

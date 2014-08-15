@@ -29,17 +29,17 @@
               = @trip.outbound_part.is_depart ? t(:departing_at) + ":" : t(:arriving_by) + ":"
             .col-sm-8.text-left
               =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
-        -if @trip.return_part and @trip.return_part.is_bookable?
-          .row
-            %label.col-sm-4.text-right
-              = @trip.return_part.is_depart ? t(:cap_returning_at) + ":" : t(:returning_by) + ":"
-            .col-sm-8.text-left
-              =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
-          .row
-            %label.col-sm-4.text-right
-              = 'Provided By:'
-            .col-sm-8.text-left
-              = "Rabbit Shared Ride"
+          -if @trip.trip_parts.count > 1 and @trip.return_part.is_bookable?
+            .row
+              %label.col-sm-4.text-right
+                = @trip.return_part.is_depart ? t(:cap_returning_at) + ":" : t(:returning_by) + ":"
+              .col-sm-8.text-left
+                =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
+            .row
+              %label.col-sm-4.text-right
+                = 'Provided By:'
+              .col-sm-8.text-left
+                = "Rabbit Shared Ride"
         -else
           .row
             %label.col-sm-4.text-right
@@ -63,53 +63,68 @@
               = "Rabbit Shared Ride"
 
         -if @trip.is_booked?
-          -if @trip.outbound_part.is_booked? and @trip.return_part.is_booked?
-            .confirmation.row-fluid
-              = "Confirmation #'s: " + @trip.outbound_part.selected_itinerary.booking_confirmation + ", " + @trip.outbound_part.selected_itinerary.booking_confirmation
-            = "Your trip has been booked.  You will be contacted by Rabbit Transit to confirm this trip."
-          -elsif @trip.outbound_part.is_booked?
-            .confirmation.row-fluid
-              = "Confirmation #: " + @trip.outbound_part.selected_itinerary.booking_confirmation
-            = "The departing portion of your trip has been booked.  You will be contacted by Rabbit Transit to confirm this trip."
-          -elsif @trip.return_part.is_booked?
-            .confirmation.row-fluid
-              = "Confirmation #: " + @trip.return_part.selected_itinerary.booking_confirmation
-            = "The returning portion of your trip has been booked.  You will be contacted by Rabbit Transit to confirm this trip."
-          .row-fluid.confirmation
-            =t(:more_info_call) + " " + "Rabbit Transit at " + Service.find_by_external_id("shared_ride").phone.to_s + "."
-
+          .row
+            -if @trip.outbound_part.is_booked? and @trip.trip_parts.count > 1 and @trip.return_part.is_booked?
+              .confirmation
+                = "Confirmation #'s': " + @trip.outbound_part.selected_itinerary.booking_confirmation + ", " + @trip.outbound_part.selected_itinerary.booking_confirmation
+                -phone_number = @trip.outbound_part.selected_itinerary.service.phone.to_s
+              = "Your trip has been booked.  You will be contacted by Rabbit Transit to confirm this trip."
+            -elsif @trip.outbound_part.is_booked? and (@trip.trip_parts.count > 1)
+              .confirmation
+                = "Confirmation #: " + @trip.outbound_part.selected_itinerary.booking_confirmation
+                -phone_number = @trip.outbound_part.selected_itinerary.service.phone.to_s
+              = "The departing portion of your trip has been booked.  You will be contacted by Rabbit Transit to confirm this trip."
+            -elsif @trip.return_part.is_booked? and (@trip.trip_parts.count > 1)
+              .confirmation
+                = "Confirmation #: " + @trip.return_part.selected_itinerary.booking_confirmation
+                -phone_number = @trip.return_part.selected_itinerary.service.phone.to_s
+              = "The returning portion of your trip has been booked.  You will be contacted by Rabbit Transit to confirm this trip."
+            -elsif @trip.outbound_part.is_booked?
+              .confirmation
+                = "Confirmation #': " + @trip.outbound_part.selected_itinerary.booking_confirmation
+                -phone_number = @trip.outbound_part.selected_itinerary.service.phone.to_s
+              = "Your trip has been booked.  You will be contacted by Rabbit Transit to confirm this trip."
+            .confirmation
+              =t(:more_info_call) + " " + "Rabbit Transit at " + phone_number + "."
         -else
-          .div#results
-            .confirmation.row-fluid#results1
+          .row-fluid.pull-center.text-center#bookButton
+            %button.center#book_button_btn
+              =t(:book)
+          .row#results
+            .confirmation#results1
               =""
-            .row-fluid#results2
+            .confirmation#results2
               =""
-            .row-fluid#results3
+            .confirmation#results3
               =""
 
-  -elsif @trip.outbound_part.selected_itinerary.service and @trip.outbound_part.selected_itinerary.service.booking_service_code
+  -elsif (@trip.outbound_part.selected_itinerary.service and @trip.outbound_part.selected_itinerary.service.booking_service_code) or (@trip.return_part.selected_itinerary.service and @trip.return_part.selected_itinerary.service.booking_service_code)
+    -selected_itinerary = @trip.outbound_part.selected_itinerary || @trip.return_part.selected_itinerary
     = simple_form_for @booking_proxy, :remote => true, :url => add_booking_service_user_path(@traveler), :html => { :id => 'book_form', :class => "form-horizontal"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }  do |f|
       .form-inputs
         = f.error_notification
-        = f.input :service_id, :as => :hidden, :input_html => {value: @trip.outbound_part.selected_itinerary.service.id}
-        = f.input :itinerary_id, :as => :hidden, :input_html => {value: @trip.outbound_part.selected_itinerary.id}
+        = f.input :service_id, :as => :hidden, :input_html => {value: selected_itinerary.service.id}
+        = f.input :itinerary_id, :as => :hidden, :input_html => {value: selected_itinerary.id}
         = f.input :external_user_id,label: "Rabbit Transit " + t(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
         = f.input :dob, label: t(:dob), label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: t(:dob_notice)
-    -if @trip.outbound_part.selected_itinerary.service.phone
-      =t(:if_no_client_id) + " " + @trip.outbound_part.selected_itinerary.service.phone + " " + t(:for_assistance) + "."
+      .form-actions
+        = f.button :submit, t(:submit)
+
+    -if selected_itinerary.service.phone
+      =t(:if_no_client_id) + " " + selected_itinerary.service.phone + " " + t(:for_assistance) + "."
     -else
-      =t(:if_no_client_id) + " " + @trip.outbound_part.selected_itinerary.service.name + "."
+      =t(:if_no_client_id) + " " + selected_itinerary.service.name + "."
 :javascript
   $('#book_submit_btn').on('click', function(event) {
     event.stopPropagation();
     $('#book_form').submit();
-  }
-  $('#book_button_btn').on('click', function(event) {
+  });
+  $('#bookButton').on('click', function(event) {
     event.stopPropagation();
-
     var text = "<br>" + "#{t(:please_wait)}" + "..."
     $('#bookButton').html(text);
 
+    $('#bookButton').addClass('disabled');
     $.ajax({
       url: "/users/" + "#{@traveler.id}" + "/trips/" + "#{@trip.id}" + "/book",
       data: {itin: "#{@trip.outbound_part.selected_itinerary.id}"},
@@ -145,7 +160,7 @@
           var confirmation_message = "Your trip has been succesfully booked.  You will be contacted by Rabbit Transit to confirm this trip."
         }
         // Case 4: False True
-        if (outbound_status == "false" && return_status == "true") {
+        else if (outbound_status == "false" && return_status == "true") {
           var confirmation_numbers = "Confirmation #: ";
           confirmation_numbers += result['trips'][3];
           var confirmation_message = "The returning portion of your trip was succesfully booked.  However, the departing portion of your trip could not be booked at this time."
@@ -161,7 +176,7 @@
           var confirmation_message = "Your trip could not be booked at this time."
         }
         // Case 7: None True
-        if (outbound_status == "none" && return_status == "true") {
+        else if (outbound_status == "none" && return_status == "true") {
           var confirmation_numbers = "Confirmation #: ";
           confirmation_numbers += result['trips'][3];
           var confirmation_message = "Your trip has been succesfully booked.  You will be contacted by Rabbit Transit to confirm this trip."
@@ -175,18 +190,18 @@
         $('#results1').html(confirmation_numbers);
         $('#results2').html(confirmation_message)
 
-        contact_message = "<br>" + "#{t(:more_info_call)}" + " " + "Rabbit Transit at " + "#{Service.find_by_external_id("shared_ride").phone}"+ "."
+        contact_message = "#{t(:more_info_call)}" + " " + "Rabbit Transit at " + result['trips'][4] + "."
         $('#results3').html(contact_message);
 
 
       },
       error: function(){
 
-        $('#bookButton').html("");
+        $('#bookButton').hide();
         var confirmation_message = "Your trip could not be booked at this time."
         $('#results2').html(confirmation_message)
 
-        contact_message = "<br>" + "#{t(:more_info_call)}" + " " + "Rabbit Transit at " + "#{Service.find_by_external_id("shared_ride").phone}"+ "."
+        contact_message = "#{t(:more_info_call)}" + " " + "Rabbit Transit at " + result['trips'][4] + "."
         $('#results3').html(contact_message);
       }
 

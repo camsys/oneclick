@@ -3,9 +3,10 @@
     .col-sm-6
       %h1= t(:log_in)
     .col-sm-6.btns
-      = button_tag type: :submit, class: 'btn action-button pull-right' do
-        = t(:log_in)                  
-      = render "devise/shared/links"
+      .pull-right
+        = button_tag type: :submit, class: 'btn action-button' do
+          = t(:log_in)                  
+        = render "devise/shared/links"
 
   .row
     .col-sm-6

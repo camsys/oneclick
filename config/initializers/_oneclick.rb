@@ -20,6 +20,7 @@ Oneclick::Application.config.minimum_rideshare_duration = (1.5).hours
 Oneclick::Application.config.show_update_services = false
 Oneclick::Application.config.min_drive_seconds = 180
 Oneclick::Application.config.max_walk_seconds = 1200
+Oneclick::Application.config.allows_booking = false
 
 Oneclick::Application.config.initial_signup_question = false
 
@@ -135,6 +136,7 @@ when 'pa'
 
   #for PA, we ask a follow up question after a person creates an account
   Oneclick::Application.config.initial_signup_question = true
+  Oneclick::Application.config.allows_booking = true
 
 
 when 'jta'

@@ -480,12 +480,7 @@ $legend-height: 20px;
     margin-bottom: 0;
   }
 
-  .panel-body{
-    font-size: large;
-  }
-
   .confirmation{
-    font-size: x-large;
     font-weight: bold;
   }
 }
@@ -496,6 +491,15 @@ $legend-height: 20px;
   height: 50px;
   float: left;
   background-position: center;
+}
+
+.user-characteristics {
+  .control-label {
+    font-weight: bold;
+  }
+  button.active {
+    
+  }
 }
 
 #baseModes .trip_proxy_modes {
