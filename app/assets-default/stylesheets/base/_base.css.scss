@@ -2,6 +2,10 @@ html, body{
   height: 100%;
 }
 
+// :focus {
+//   outline: thin dotted #666666 !important;
+// }
+
 body, .btn, .form-control, .dropdown-menu{
   @media(max-width:$screen-xs-max){
     font-size: $font-size-phone;
