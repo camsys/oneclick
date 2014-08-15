@@ -7,10 +7,10 @@ GIT
 
 GIT
   remote: git://github.com/camsys/bootstrap-sass.git
-  revision: b284fe7d11fc93c9709073addeed10c4e393487f
-  tag: 3.2.0.CS.1
+  revision: f6d2eb50b70a5cf29219bf3ec7bdf86f8f9a6e64
+  tag: 3.2.0.CS.2
   specs:
-    bootstrap-sass (3.2.0.CS.1)
+    bootstrap-sass (3.2.0.CS.2)
       sass (~> 3.2)
 
 GIT
