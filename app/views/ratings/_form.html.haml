@@ -2,8 +2,9 @@
   .modal-header
     .row
       .col-sm-12
-        %btn.btn.action-button.pull-right#hide_feedback{data: {dismiss: "modal"}}= t(:cancel)
-        = f.submit t(:apply), class: "btn action-button pull-right"
+        .pull-right
+          = f.submit t(:apply), class: "btn action-button"
+          %button.btn.action-button#hide_feedback{data: {dismiss: "modal"}}= t(:cancel)
         = simple_fields_for @ratings_proxy.rater do |rater|
           = rater.input :id, as: :hidden
   - @ratings_proxy.rateables.each do |rateable|
@@ -19,7 +20,7 @@
             .align-left.clearfix
               %span.pull-left
                 = ratings_form.collection_radio_buttons( :value, Rating.options, :first, :last, boolean_style: nil, item_wrapper_tag: nil)
-              %a.clear= t(:clear)
+              %a.clear{:href=>'#'}= t(:clear)
           = ratings_form.input :comments, label: t(:comments), placeholder: t(:feedback_comments)
           = ratings_form.input :id, as: :hidden, :input_html => { :value => rateable.id }
 -# Add in clear functionality for the clear button.
