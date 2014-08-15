@@ -38,7 +38,7 @@
                 = radio_button_tag "#{rating.id}", Rating::REJECTED 
               %td
                 =l(rating.created_at, :format => :short)
-#rateable_modal.modal.fade
+#rateable_modal.modal.fade{:role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
   .modal-dialog.modal-lg
     .modal-content
       
