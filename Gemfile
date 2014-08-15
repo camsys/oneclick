@@ -6,7 +6,7 @@ gem 'sprockets', '2.11.0'
 # gem 'sass-rails', '~> 4.0.3'
 gem 'sass-rails', github: 'camsys/sass-rails', tag: 'v4.0.3a'
 unless ENV['UI_MODE']=='kiosk'
-  gem 'bootstrap-sass', github: 'camsys/bootstrap-sass', tag: '~> 3.1.1.0'
+  gem 'bootstrap-sass', github: 'camsys/bootstrap-sass', tag: '3.2.0.CS.1'
   gem 'simple_form', '~> 3.1.0.rc1', github: 'camsys/simple_form', branch: 'cs-3.0'
 else
   gem 'bootstrap-sass', '~> 2.3.2.0'
