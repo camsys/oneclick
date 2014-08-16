@@ -106,7 +106,7 @@ class Ability
 
     ## All users have the following permissions, which logically OR with 'can' statements above
     can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
-    can [:read, :full_read, :update, :add_booking_service, :find_by_email], User, :id => user.id
+    can [:read, :full_read, :update, :add_booking_service, :initial_booking, :find_by_email], User, :id => user.id
     can [:assist], User do |traveler|
       user.confirmed_travelers.include? traveler
     end

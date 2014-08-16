@@ -688,6 +688,12 @@ es:
     logotext: ''
     site_title: 'JTA 1-Click'
     site_description: 'Aplicación JTA 1-Click'
+  ieuw:
+    home: 'VetLink Home'
+    logotext: ''
+    site_title: 'VetLink'
+    site_description: 'VetLink 1-Click Application'
+
   simple_form:
     labels:
       defaults:

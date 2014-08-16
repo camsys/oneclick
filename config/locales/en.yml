@@ -4,6 +4,7 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  initial_booking_title: 'Register to book online.'
   one_click_trip_planner: '1-Click Trip Planner'
   # Actions
   plan_a_trip: 'Plan a Trip'
@@ -402,7 +403,7 @@ en:
   coverage_area: "Endpoint Area"
   endpoints: "Endpoint Area"
   coverages: "Coverage Area"
-  cap_returning_at: "Returning at"
+  cap_returning_at: "Returning At"
   traveler_not_registered: "Traveler not registered to book trips with One-Click."
   outbound_error_occurred: "An error occurred when attempting to book your outbound trip."
   return_error_occurred: "An error occurred when attempting to book your return trip."
@@ -762,8 +763,8 @@ en:
     out_datetime: 'Departing Date'
     outbound: 'Departing'
     outbound_itinerary_count: 'Departing Itinerary Count'
-    outbound_error_occurred: "An error occurred when attempting to book your departing trip."
-    return_error_occurred: "An error occurred when attempting to book your return trip."
+    outbound_error_occurred: "Sorry, we were unable to book your departing trip."
+    return_error_occurred: "Sorry, we were unable to book your return trip."
 
     outbound_is_eligible: "The departing portion of your trip is eligible for automated booking."
     return_is_eligible: "The return portion of your trip is eligible for automated booking."
@@ -777,6 +778,11 @@ en:
     return_trip_options: "Returning Trip Options"
     return_selected: 'Returning option selected.'
 
+    initial_booking_title: 'Book with FindMyRidePA'
+    initial_booking_message: 'If you know your Rabbit Transit Client Id, you can use FindMyRidePA to book trips with Rabbit Transit Shared Ride.'
+    initial_booking_close: "No Thanks"
+    booking_link_success: "Success!  You can now book trips with Rabbit Transit Shared Ride."
+
     next: 'Next >>'
 
   broward:
@@ -789,6 +795,11 @@ en:
     logotext: ''
     site_title: 'JTA 1-Click'
     site_description: 'JTA 1-Click Application'
+  ieuw:
+    home: 'VetLink Home'
+    logotext: ''
+    site_title: 'VetLink'
+    site_description: 'VetLink 1-Click Application'
   simple_form:
     labels:
       defaults:

@@ -21,10 +21,14 @@ Oneclick::Application.config.show_update_services = false
 Oneclick::Application.config.min_drive_seconds = 180
 Oneclick::Application.config.max_walk_seconds = 1200
 
+Oneclick::Application.config.initial_signup_question = false
+
 Oneclick::Application.config.max_ui_duration = 2.hours
 Oneclick::Application.config.min_ui_duration = 1.hours
 
 Oneclick::Application.config.google_places_api_key = 'AIzaSyCvKyNoBzQNrBRuSRkipWye0pdj__HjrmU'
+
+Oneclick::Application.config.time_zone = 'Eastern Time (US & Canada)'
 
 I18n.available_locales = [:en, :es] # default
 
@@ -34,7 +38,7 @@ when 'arc'
   Oneclick::Application.config.ui_logo = 'arc/logo.png'
   Oneclick::Application.config.geocoder_components = 'administrative_area:GA|country:US'
   Oneclick::Application.config.map_bounds = [[33.457797,-84.754028], [34.090199,-83.921814]]
-  Oneclick::Application.config.geocoder_bounds = [[33.737147,-84.406634], [33.764125,-84.370361]]  
+  Oneclick::Application.config.geocoder_bounds = [[33.737147,-84.406634], [33.764125,-84.370361]]
   Oneclick::Application.config.open_trip_planner = "http://otpv1-arc.camsys-apps.com:8080/otp/routers/atl/plan?"
   Oneclick::Application.config.transit_respects_ada = false
   Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
@@ -92,7 +96,7 @@ when 'broward'
 
 when 'pa'
   Oneclick::Application.config.host = 'oneclick-pa.camsys-apps.com'
-  Oneclick::Application.config.ui_logo = 'pa/logo.png'
+  Oneclick::Application.config.ui_logo = 'pa/logo.jpg'
   Oneclick::Application.config.geocoder_components = 'administrative_area:PA|country:US'
   # TODO Do we maybe need different bounds for kiosk vs. default?
   Oneclick::Application.config.map_bounds      = [[40.0262999543423,  -76.56372070312499], [39.87970800405549, -76.90189361572266]]
@@ -129,6 +133,9 @@ when 'pa'
   Oneclick::Application.config.ecolane_base_url = "https://rabbit-test.ecolane.com"
   I18n.available_locales = [:en]
 
+  #for PA, we ask a follow up question after a person creates an account
+  Oneclick::Application.config.initial_signup_question = true
+
 
 when 'jta'
   Oneclick::Application.config.host = 'oneclick-jta.camsys-apps.com'
@@ -163,38 +170,40 @@ when 'jta'
 
   Oneclick::Application.config.max_walk_seconds = 3600
 
-  when 'ieuw'
-    Oneclick::Application.config.host = 'oneclick-ieuw.camsys-apps.com'
-    Oneclick::Application.config.ui_logo = 'ieuw/logo.png'
-    Oneclick::Application.config.geocoder_components = 'administrative_area:CA|country:US'
-    # TODO Do we maybe need different bounds for kiosk vs. default?
-    Oneclick::Application.config.map_bounds      = [[32.342841,-118.941422],[36.844461,-113.755875]]
-    Oneclick::Application.config.geocoder_bounds = [[32.342841,-118.941422],[36.844461,-113.755875]]
-    Oneclick::Application.config.default_zoom = 12
-    Oneclick::Application.config.open_trip_planner = "http://otp-ieuw.camsys-apps.com:8080/otp/routers/jta/plan?"
-    Oneclick::Application.config.transit_respects_ada = false
-    Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
-    Oneclick::Application.config.taxi_fare_finder_api_city = "Rancho-Cucamonga-CA"
-    Oneclick::Application.config.name = '1-Click/IEUW'
-    ENV['SMTP_MAIL_USER_NAME'] = "oneclick.ieuw.camsys" # TODO
-    ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey" # TODO
-    ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@ieuw.org" # TODO
-    ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
-    ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
-    ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
-    ENV['GOOGLE_GEOCODER_CHANNEL']=  "IEUW_ONECLICK"
-    ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
-    Oneclick::Application.config.enable_feedback = true
-    Oneclick::Application.config.traveler_read_all_organization_feedback = true
-    Oneclick::Application.config.agent_read_feedback = true
-    Oneclick::Application.config.provider_read_all_feedback = true
-    Oneclick::Application.config.tripless_feedback = false
-    honeybadger_api_key = '0447225c'
-    Oneclick::Application.config.poi_file = 'db/ieuw/locations.csv'
-    Oneclick::Application.config.default_county = 'San Bernandino'
-    Oneclick::Application.config.state = 'CA'
+when 'ieuw'
+  Oneclick::Application.config.host = 'oneclick-ieuw.camsys-apps.com'
+  Oneclick::Application.config.ui_logo = 'ieuw/logo.png'
+  Oneclick::Application.config.geocoder_components = 'administrative_area:CA|country:US'
+  # TODO Do we maybe need different bounds for kiosk vs. default?
+  Oneclick::Application.config.map_bounds      = [[33.163,-117.874],[36.053,-114.033]]
+  Oneclick::Application.config.geocoder_bounds = [[33.163,-117.874],[36.063,-114.033]]
+  Oneclick::Application.config.default_zoom = 12
+  Oneclick::Application.config.open_trip_planner = "http://otp-ieuw.camsys-apps.com:8080/otp/routers/ieuw/plan?"
+  Oneclick::Application.config.transit_respects_ada = false
+  Oneclick::Application.config.taxi_fare_finder_api_key = "SIefr5akieS5"
+  Oneclick::Application.config.taxi_fare_finder_api_city = "Rancho-Cucamonga-CA"
+  Oneclick::Application.config.name = '1-Click/IEUW'
+  ENV['SMTP_MAIL_USER_NAME'] = "oneclick.ieuw.camsys" # TODO
+  ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey" # TODO
+  ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@ieuw.org" # TODO
+  ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
+  ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
+  ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
+  ENV['GOOGLE_GEOCODER_CHANNEL']=  "IEUW_ONECLICK"
+  ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
+  Oneclick::Application.config.enable_feedback = true
+  Oneclick::Application.config.traveler_read_all_organization_feedback = true
+  Oneclick::Application.config.agent_read_feedback = true
+  Oneclick::Application.config.provider_read_all_feedback = true
+  Oneclick::Application.config.tripless_feedback = false
+  honeybadger_api_key = '8640caf4'
+  Oneclick::Application.config.poi_file = 'db/ieuw/Combined.txt'
+  Oneclick::Application.config.default_county = 'San Bernandino'
+  Oneclick::Application.config.state = 'CA'
 
-    Oneclick::Application.config.max_walk_seconds = 3600
+  Oneclick::Application.config.max_walk_seconds = 3600
+
+  Oneclick::Application.config.time_zone = 'Pacific Time (US & Canada)'
 
 end
 
@@ -258,4 +267,3 @@ class String
     downcase.gsub(/[^a-z\s]/, '').gsub(/\s/, '_') + '_' + suffix + '@camsys.com'
   end
 end
-
