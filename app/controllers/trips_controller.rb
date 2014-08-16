@@ -2,7 +2,7 @@ class TripsController < PlaceSearchingController
   # set the @trip variable before any actions are invoked
   before_filter :get_trip, :only => [:show, :email, :email_itinerary, :details, :repeat, :edit,
     :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2,
-    :show_printer_friendly, :example, :plan, :populate]
+    :show_printer_friendly, :example, :plan, :populate, :book]
   load_and_authorize_resource only: [:new, :create, :show, :index, :update, :edit]
 
   def index
@@ -81,32 +81,6 @@ class TripsController < PlaceSearchingController
     end
 
     if @is_plan_valid
-      #if this trip has been booked, get booking information
-      if @trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.booking_confirmation
-
-        eh = EcolaneHelpers.new
-        result, message = eh.get_trip_info(@trip.outbound_part.selected_itinerary)
-        if result
-          @outbound_pu_time = message[:pu_time]
-          @outbound_do_time = message[:do_time]
-        else
-          @outbound_pu_time = "not yet assigned."
-          @outbound_do_time = "not yet assigned."
-        end
-      end
-
-      if @trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.booking_confirmation
-        eh = EcolaneHelpers.new
-        result, message = eh.get_trip_info(@trip.return_part.selected_itinerary)
-        if result
-          @return_pu_time = message[:pu_time]
-          @return_do_time = message[:do_time]
-        else
-          @return_pu_time = "not yet assigned."
-          @return_do_time = "not yet assigned."
-        end
-      end
-
       # Just before render, save off the html on the trip, so that we can access it later for ratings.
       planned_trip_html = render_to_string partial: "selected_itineraries_details", locals: { trip: @trip, for_db: true }
       @trip.update_attributes(planned_trip_html: planned_trip_html, needs_feedback_prompt: true)
@@ -434,6 +408,12 @@ class TripsController < PlaceSearchingController
     @markers = create_trip_proxy_markers(@trip_proxy).to_json
     @places = create_place_markers(@traveler.places)
 
+    if session[:first_login] == true
+      session[:first_login] = nil
+      @show_booking = true
+      @booking_proxy = UserServiceProxy.new()
+    end
+
     setup_modes
 
     respond_to do |format|
@@ -688,23 +668,31 @@ class TripsController < PlaceSearchingController
 
     outbound_part = @itinerary.trip_part
     if outbound_part.is_bookable?
-      result, messages = eh.book_itinerary(@itinerary)
+      outbound_result, outbound_message = eh.book_itinerary(@itinerary)
+      unless outbound_result
+        @trip.debug_info = @trip.debug_info.to_s + "[Outbound Booking Error: " + outbound_message.to_s + "]"
+        @trip.save
+      end
     else
-      result = 'none'
-      messages = 'none'
+      outbound_result = 'none'
+      outbound_message = 'none'
     end
 
     return_part = @itinerary.trip_part.get_return_part
 
     if return_part and return_part.is_bookable?
-      return_result, return_messages = eh.book_itinerary(return_part.selected_itinerary)
+      return_result, return_message = eh.book_itinerary(return_part.selected_itinerary)
+      unless return_result
+        @trip.debug_info = @trip.debug_info.to_s + "[Return Booking Error: " + return_message.to_s + "]"
+        @trip.save
+      end
     else
       return_result = 'none'
-      return_messages = 'none'
+      return_message = 'none'
     end
 
     respond_to do |format|
-      format.json { render json: [result.to_s, messages, return_result.to_s, return_messages] }
+      format.json { render json: [outbound_result.to_s, outbound_message, return_result.to_s, return_message] }
     end
   end
 

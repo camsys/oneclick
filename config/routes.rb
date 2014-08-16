@@ -23,6 +23,7 @@ Oneclick::Application.routes.draw do
       member do
         get   'find_by_email'
         get   'profile'
+        post  'initial_booking'
         post  'add_booking_service'
         # post  'update'
         get   '/assist/:buddy_id', to: 'users#assist', as: :assist

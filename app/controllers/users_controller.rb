@@ -65,6 +65,53 @@ class UsersController < ApplicationController
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)
   end
 
+
+  def initial_booking
+    #TODO: This is not DRY, It reuses a lot of what is in add_booking_service
+    get_traveler
+    external_user_id = params['user_service_proxy']['external_user_id']
+    service = Service.find(params['user_service_proxy']['service_id'])
+    @errors = false
+
+    @booking_proxy = UserServiceProxy.new(external_user_id: external_user_id, service: service)
+
+    #Check that the formatting is correct
+    begin
+      Date.strptime(params['user_service_proxy']['dob'], "%m/%d/%Y")
+      dob = params['user_service_proxy']['dob']
+    rescue ArgumentError
+      @booking_proxy.errors.add(:dob, "Date needs to be in mm/dd/yyyy format.")
+      @errors = true
+    end
+
+    #If the formatting is correct, check to see if this is a valid user
+    unless @errors
+      eh = EcolaneHelpers.new
+      unless eh.validate_passenger(external_user_id, dob)
+        @booking_proxy.errors.add(:external_user_id, "Unknown Client Id or incorrect date of birth.")
+        @errors = true
+      end
+    end
+
+    #If everything checks out, create a link between the OneClick user and the Booking Service
+    unless @errors
+      #Todo: This will need to be updated when more services are able to book.
+      Service.where(booking_service_code: 'ecolane').each do |booking_service|
+        user_service = UserService.where(user_profile: @traveler.user_profile, service: booking_service).first_or_initialize
+        user_service.external_user_id = external_user_id
+        user_service.save
+      end
+    end
+
+    @trip = Trip.last
+    respond_to do |format|
+      format.json {}
+      format.js { render "trips/update_initial_booking" }
+    end
+
+  end
+
+
   def add_booking_service
     get_traveler
     external_user_id = params['user_service_proxy']['external_user_id']
@@ -102,7 +149,6 @@ class UsersController < ApplicationController
       end
     end
 
-    #TODO:  Automatically add other rabbit transit services
     respond_to do |format|
       format.json {}
       format.js { render "trips/update_booking" }

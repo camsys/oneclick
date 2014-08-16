@@ -2,19 +2,21 @@
   .modal-dialog
     .modal-content
       .modal-header
-        .row
-          .col-sm-12
-            .row
-              .col-sm-6
-                %h3.dialog-title#bookingTitle{:STYLE => "margin:0px;vertical-align:top;"}
-                  -if @trip.is_booked?
-                    = t(:trip_booked)
-                  -else
-                    = t(:book_your_trip)
-              .col-sm-6
-                .pull-right{:style => "display: inline-block"}
-                  %button{class: "btn action-button", "data-dismiss" => "modal"}
-                    =t(:close)
+        = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
+          = t(:cancel)
+        -if not @trip.is_booked? and (@trip.outbound_part.is_bookable? or (@trip.return_part and @trip.return_part.is_bookable?))
+          #bookButton.pull-right
+            = button_tag id: 'book_button_btn', class: 'btn action-button' do
+              = t(:book)
+        -elsif @trip.outbound_part.selected_itinerary.service and @trip.outbound_part.selected_itinerary.service.booking_service_code
+          = button_tag id: 'book_submit_btn', class: 'btn action-button pull-right' do
+            = t(:submit)
+        .modal-title{:style => "text-align:left;"}
+          %b
+            -if @trip.is_booked?
+              = t(:trip_booked)
+            -else
+              = t(:book_your_trip)
       .modal-body#bookingContent
         = render partial: 'book_trip'
 
