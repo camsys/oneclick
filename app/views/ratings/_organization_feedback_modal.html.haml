@@ -2,7 +2,7 @@
   .modal-dialog.modal-lg
     .modal-content#ratings
       .modal-header.clearfix
-        %btn.btn.btn-default.action-button.pull-right{data: {dismiss: "modal"}}= t(:close)
+        %button.btn.btn-default.action-button.pull-right{data: {dismiss: "modal"}}= t(:close)
         -# If users can enter feedback without a trip...
         - if not rateable.is_a? Provider and can? :create, rateable.ratings.build
           %button.btn.action-button.btn-default.pull-right#load_feedback
@@ -29,7 +29,7 @@
 - if can? :create, rateable.ratings.build
   :javascript
     $(document).ready(function() {
-      $("#load_feedback").on("click", function() {
+      $("#load_feedback").on("click", function(e) {
         $("#ratings").hide();
         $("#give_feedback").show();
         $.ajax({
@@ -41,4 +41,5 @@
           $(this).html(html)
         });
       });
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
     });

@@ -37,7 +37,7 @@
             %h2.panel-title= t(:buddies)
           .panel-body
             .table-flash
-            %btn.btn.btn-default.action-button.pull-right{data: {toggle: 'modal', target: '#add_user'}}
+            %button#add_buddy_btn.btn.action-button.pull-right{data: {toggle: 'modal', target: '#add_user'}}
               = t(:add)
             %table.table.table.condensed.table-striped.table-hover.table-bordered#buddies_table
               %thead
@@ -56,9 +56,9 @@
                     .row
                       .col-sm-12
                         .pull-right
-                          %btn.btn.action-button#search
+                          %button.btn.action-button#search
                             = t(:apply)
-                          %btn.btn.action-button{data: {dismiss: 'modal'}}
+                          %button.btn.action-button{data: {dismiss: 'modal'}}
                             = t(:cancel)
                   .modal-body
                     .modal-flash
@@ -145,7 +145,11 @@
           ],
           "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
       } );
-      $("#search").on("click", function() {
+      $("#add_buddy_btn").on("click", function(e) {
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+      });
+      $("#search").on("click", function(e) {
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
         $.ajax({
           url: "find_by_email",
           data: {email: $("#email").val()},
@@ -170,7 +174,9 @@
           }
         });
       });
-    $("td button.action-button").on("click", function() {
+    $("td button.action-button").on("click", function(e) {
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
+
       $.ajax({
         url: $(this).data("source"),
         dataType: "json",
@@ -180,7 +186,7 @@
             $("td[data-rel=" + data["rel_id"] + "]").children("button").remove();
             $("td[data-rel=" + data["rel_id"] + "]").append("<p>Update Pending...</p>"); // Needs i18n
         }
-      })
+      });
     });
     $("#preferred_modes input").change(function() {
       var checked = $(this).prop("checked")

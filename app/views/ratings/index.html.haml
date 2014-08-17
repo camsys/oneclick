@@ -24,7 +24,7 @@
               -#TODO Change this from creator.  Use person who took a trip?
               %td= rating.user.name
               %td.center
-                %btn.btn.action-button.inspect_rateable{data: {id: rating.id, toggle:"modal", target: '#rateable_modal'}}= rating.rateable_desc
+                %button.btn.action-button.inspect_rateable{data: {id: rating.id, toggle:"modal", target: '#rateable_modal'}}= rating.rateable_desc
               %td.hidden= rating.value
               %td.rating_in_stars.nowrap= rating.rating_in_stars
               %td= rating.comments
@@ -45,7 +45,7 @@
 -# Because DataTables messes with the DOM, forms only submit rows on the visible page.  Therefore, we override the native submit and fake it with carefully crafted AJAX
 :javascript
 $(document).ready( function() {
-  $("btn.inspect_rateable").on("click", function() {
+  $("button.inspect_rateable").on("click", function(e) {
     $.ajax({
       type: "GET",
       url: "ratings/context",
@@ -57,6 +57,8 @@ $(document).ready( function() {
     .done(function(data) {
       $("#rateable_modal .modal-content").html(data);
     });
+
+    e.preventDefault ? e.preventDefault() : e.returnValue = false;
   });
   $("form").submit(function( event ) {
     $.ajax({
