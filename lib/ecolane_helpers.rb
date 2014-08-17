@@ -17,8 +17,6 @@ class EcolaneHelpers
 
   ## Post/Put Operations
   def book_itinerary(itinerary)
-
-
     begin
       funding_options = query_funding_options(itinerary)
       funding_xml = Nokogiri::XML(funding_options.body)
@@ -315,6 +313,8 @@ class EcolaneHelpers
         when 'post'
           req = Net::HTTP::Post.new(uri.path)
           req.body = message
+        when 'delete'
+          req = Net::HTTP::Delete.new(uri.path)
         else
           req = Net::HTTP::Get.new(uri)
       end
@@ -342,6 +342,13 @@ class EcolaneHelpers
   ## Utility functions:
   def get_customer_id(itinerary)
     itinerary.trip_part.trip.user.user_profile.user_services.where(service: itinerary.service).first.external_user_id
+  end
+
+  def cancel(trip_id)
+    url_options = "/api/order/" + SYSTEM_ID + '/'
+    url_options += trip_id.to_s
+    url = BASE_URL + url_options
+    send_request(url, 'DELETE')
   end
 
   def iso8601ify(dob)
