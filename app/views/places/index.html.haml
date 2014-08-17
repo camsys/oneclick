@@ -16,7 +16,7 @@
               .form-group
                 .col-xs-12
                   .pull-right
-                    = button_tag type: :submit, name: 'save', id: 'save', class: 'btn action-button disabled' do
+                    = button_tag type: :submit, disabled: 'true', name: 'save', id: 'save', class: 'btn action-button' do
                       = t(:save)
                     = button_tag type: :submit, name: 'delete', class: 'btn action-button' do
                       = t(:delete)

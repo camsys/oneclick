@@ -34,7 +34,7 @@ $ ->
     $('#places_controller_places_proxy_from_place').val(dataset.address)
     $('#places_controller_places_proxy_json').val(JSON.stringify(dataset.json))
     $('#places_controller_places_proxy_place_name').val(dataset.placename)
-    $('#save').removeClass('disabled')
+    $('#save').removeAttr('disabled')
   $('#places-table tr').on 'keyup', (e) ->
     if e.which == 32
       select_place $(e.target).closest('tr')
@@ -42,7 +42,7 @@ $ ->
     select_place $(e.target).closest('tr')
 
   $('#clear').on 'click', () ->
-    $('#save').addClass('disabled')
+    $('#save').attr('disabled', 'true')
     $('#places-table tr').removeClass('success')
     $('#places_controller_places_proxy_id').val('')
     $('#places_controller_places_proxy_from_place').val('')
@@ -51,9 +51,9 @@ $ ->
 
   $('#places_controller_places_proxy_from_place').on 'input', () ->
     if $.trim($(this).val()).length > 0
-      $('#save').removeClass('disabled')
+      $('#save').removeAttr('disabled')
     else  
-      $('#save').addClass('disabled')
+      $('#save').attr('disabled', 'true')
         
   places = new Bloodhound
     datumTokenizer: (d) ->
