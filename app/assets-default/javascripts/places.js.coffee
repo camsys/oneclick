@@ -34,6 +34,7 @@ $ ->
     $('#places_controller_places_proxy_from_place').val(dataset.address)
     $('#places_controller_places_proxy_json').val(JSON.stringify(dataset.json))
     $('#places_controller_places_proxy_place_name').val(dataset.placename)
+    $('#places_controller_places_proxy_from_place').data().ttTypeahead.input.query = dataset.address
     $('#save').removeAttr('disabled')
   $('#places-table tr').on 'keyup', (e) ->
     if e.which == 32
