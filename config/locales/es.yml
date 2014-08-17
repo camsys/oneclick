@@ -472,6 +472,7 @@ es:
   click_for_details: '[es424]Click for details[/es]'
   press_space_or_dblclick_for_details: '[es]Press SPACE bar or double click/tap for details[/es]'
   press_space_for_details: '[es]Press SPACE bar for details[/es]'
+  press_space_or_click_to_select: '[es]Press SPACE bar or click to select[/es]'
   see_details_for_cost: '[es424]See details for cost[/es]'
   cost_estimated: '[es425]Cost estimated[/es]'
   no_charge: '[es]No charge[/es]'

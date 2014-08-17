@@ -26,16 +26,20 @@ update_map = (map, type, e, s, d) ->
   map.selectMarker(marker);
 
 $ ->
-  $('#places-table tr').on 'click', (e) ->
+  select_place = (selected_tr) ->
     $('#places-table tr').removeClass('success')
-    tr = $(e.target).closest('tr')
-    dataset = $(tr).data()
-    tr.addClass('success')
+    dataset = $(selected_tr).data()
+    selected_tr.addClass('success')
     $('#places_controller_places_proxy_id').val(dataset.id)
     $('#places_controller_places_proxy_from_place').val(dataset.address)
     $('#places_controller_places_proxy_json').val(JSON.stringify(dataset.json))
     $('#places_controller_places_proxy_place_name').val(dataset.placename)
     $('#save').removeClass('disabled')
+  $('#places-table tr').on 'keyup', (e) ->
+    if e.which == 32
+      select_place $(e.target).closest('tr')
+  $('#places-table tr').on 'click', (e) ->
+    select_place $(e.target).closest('tr')
 
   $('#clear').on 'click', () ->
     $('#save').addClass('disabled')

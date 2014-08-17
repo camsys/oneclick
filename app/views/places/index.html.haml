@@ -41,9 +41,14 @@
                   %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#places-table
                     %tbody
                       - @places.places.each_with_index do |place, i|
-                        %tr{id: "place-#{i}", data: {address: place.raw_address, placename: place.name, json: place.to_json, id: place.id}}
-                          %td{style: 'text-align: center;'}= image_tag place.icon
+                        %tr{id: "place-#{i}", tabindex: 0, title: t(:press_space_or_click_to_select), role: 'button', data: {address: place.raw_address, placename: place.name, json: place.to_json, id: place.id}}
+                          %td{style: 'text-align: center; width: 10%;'}= image_tag place.icon
                           %td= place.name
+                  :javascript
+                    $("#places-table tr").tooltip({
+                      'html': true,
+                      'container': 'body'
+                    });
 
               / %td{id: "place-#{i}", data: {address: place.raw_address, placename: place.name, json: place.to_json}}= ('A'..'Z').to_a[i] + ' ' + place.name
 

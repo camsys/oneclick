@@ -466,6 +466,7 @@ ht:
   click_for_details: '[ht]Click for details[/ht]'
   press_space_or_dblclick_for_details: '[ht]Press SPACE bar or double click/tap for details[/ht]'
   press_space_for_details: '[ht]Press SPACE bar for details[/ht]'
+  press_space_or_click_to_select: '[ht]Press SPACE bar or click to select[/ht]'
   see_details_for_cost: '[ht]See details for cost[/ht]'
   cost_estimated: '[ht]Cost estimated[/ht]'
   no_charge: '[ht]No charge[/ht]'

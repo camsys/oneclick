@@ -21,7 +21,7 @@
     - trips.each do |trip|
       -if trip.both_parts_selected?
         -tripID = "trip#{trip.id}"
-        %tr{:tabindex => '0'}
+        %tr
           - if show_username
             %td= trip.user
           %td.nowrap= format_date(trip.trip_datetime)
