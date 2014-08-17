@@ -115,11 +115,8 @@
     -else
       =t(:if_no_client_id) + " " + selected_itinerary.service.name + "."
 :javascript
-  $('#book_submit_btn').on('click', function(event) {
-    event.stopPropagation();
-    $('#book_form').submit();
-  });
-  $('#bookButton').on('click', function(event) {
+  $('#book_button_btn').unbind('click');
+  $('#book_button_btn').on('click', function(event) {
     event.stopPropagation();
     var text = "<br>" + "#{t(:please_wait)}" + "..."
     $('#bookButton').html(text);
