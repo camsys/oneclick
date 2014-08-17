@@ -50,10 +50,16 @@
 
 %table
   %tbody
-    %tr
-      %td= "Thank you for using #{Oneclick::Application.config.name} Software."
-    %tr
-      %td= "Provided by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of " + Oneclick::Application.config.name
+    - if Oneclick::Application.config.brand == 'pa'
+      %tr
+        %td Thank you for using FindMyRidePA. 
+      %tr
+        %td For more information, call 1-844-PA4-RIDE or visit FindMyRidePA.com
+    - else
+      %tr
+        %td= "Thank you for using #{Oneclick::Application.config.name} Software."
+      %tr
+        %td= "Provided by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of " + Oneclick::Application.config.name
 
 :javascript
   $(document).ready(function() {

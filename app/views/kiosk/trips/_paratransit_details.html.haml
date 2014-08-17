@@ -2,7 +2,7 @@
   -if itinerary.cost_comments
     %h4
       Cost Details
-    =itinerary.cost_comments.html_safe
+    = itinerary.cost_comments.html_safe
 
   -if itinerary.missing_information
     %h4
@@ -36,13 +36,13 @@
       %i.icon.icon-calendar
       = t(:trip_outside_service_hours)
 
-  - if itinerary.service.try(:phone)
-    %h4= tel_link itinerary.service.phone
+  %h4
+    - if itinerary.service.try(:phone)
+      = raw "Please call #{tel_link itinerary.service.phone} "
+    - if itinerary.service.try(:email) && itinerary.service.try(:phone)
+      = raw "or email #{mail_to itinerary.service.try(:email)} "
+    - elsif itinerary.service.try(:email)
+      = raw "Please email #{mail_to itinerary.service.try(:email)} "
+    for more information.
 
-
-  .row-fluid.hidden
-    ="SCORE: " + itinerary.match_score.to_s
-
-%span{style: 'font-style: italic'}
-  (Detailed directions on contacting provider and scheduling trip will be given here.)
-/ That text is going to get replaced, so no need to internationalize
+  .row-fluid.hidden= "SCORE: " + itinerary.match_score.to_s

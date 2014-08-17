@@ -302,8 +302,12 @@ class EcolaneHelpers
   end
 
   def build_location_hash(place)
-    parsable_address = Indirizzo::Address.new(place.address1)
-    {street_number: parsable_address.number, street:parsable_address.street.first, city: place.city, state: place.state, zip: place.zip}
+    street_number, street = if place.address1.present?
+      parsable_address = Indirizzo::Address.new(place.address1)
+      [parsable_address.number, parsable_address.street.first]
+    end
+
+    {street_number: street_number, street: street, city: place.city, state: place.state, zip: place.zip}
   end
 
 
