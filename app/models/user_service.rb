@@ -8,5 +8,6 @@ class UserService < ActiveRecord::Base
 
   #disabled
   #external_user_id
+  #customer_id  //Temporary customer id used by Ecolane
 
 end

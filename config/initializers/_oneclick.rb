@@ -131,7 +131,7 @@ when 'pa'
   ##Ecolane Variables
   Oneclick::Application.config.ecolane_system_id = "ococtest"
   Oneclick::Application.config.ecolane_x_ecolane_token = ENV['X_ECOLANE_TOKEN']
-  Oneclick::Application.config.ecolane_base_url = "https://rabbit-test.ecolane.com"
+  Oneclick::Application.config.ecolane_base_url = "https://apiserver.ecolane.com"
   I18n.available_locales = [:en]
 
   #for PA, we ask a follow up question after a person creates an account
