@@ -23,11 +23,11 @@ jQuery(function ($) {
 
         // Show the confirmations on success
         if (status == 'true' && returnStatus == 'true')
-          successMessage = ' #\'s: ' + result.trips[1] + ', ' + result.trips[3] + '.';
+          successMessage = 's: ' + result.trips[1] + ', ' + result.trips[3] + '.';
         else if (status == 'true')
-          successMessage = ' #: ' + result.trips[1] + '.';
+          successMessage = ': ' + result.trips[1] + '.';
         else if (returnStatus == 'true')
-          successMessage = ' #: ' + result.trips[3] + '.';
+          successMessage = ': ' + result.trips[3] + '.';
 
         // Show the error messages on failures.
         if (status == 'false')

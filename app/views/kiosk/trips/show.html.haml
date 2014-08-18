@@ -56,8 +56,8 @@
                   = link_to t(:book), '#book-ecolane', {class: 'btn btn-block', data: {trip: @trip.id, traveler: @traveler.id, itin: itinerary.id}}
                   .ecolane-booking-results.hide
                     .success.hide
-                      = t(:confirmation)
-                      %span.numbers
+                      Booking successful. Your confirmation code
+                      %span.numbers>
                     .outbound-error.hide
                       = t(:outbound_error_occurred)
                       %span.message
