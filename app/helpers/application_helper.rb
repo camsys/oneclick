@@ -229,7 +229,7 @@ module ApplicationHelper
     elsif mode_code == 'rideshare'
       "#{fa_prefix}-group"
     elsif mode_code == 'walk'
-      'icon-accessibility-sign'
+      'icon-walking-sign'
     elsif mode_code == 'drivetransit'
       'icon-bus-sign'
     end
