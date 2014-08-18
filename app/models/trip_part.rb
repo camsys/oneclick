@@ -48,7 +48,11 @@ class TripPart < ActiveRecord::Base
   end
 
   def is_booked?
-    selected? and selected_itinerary.booking_confirmation
+    if self.itineraries.where.not(booking_confirmation: nil).count > 0
+      true
+    else
+      false
+    end
   end
 
   def has_selected?

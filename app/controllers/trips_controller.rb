@@ -721,6 +721,47 @@ class TripsController < PlaceSearchingController
       render 'ratings/new_from_email'
     end
   end
+
+  def cancel
+    trip = Trip.find(params[:id].to_i)
+
+    eh = EcolaneHelpers.new
+    service_number = ""
+    service_name = ""
+    failure_service_number = ""
+    failure_service_name = ""
+
+    failure = false
+    trip.trip_parts.each do |tp|
+      booked_itineraries = tp.itineraries.where.not(booking_confirmation: nil)
+      booked_itineraries.each do |booked_itinerary|
+        res = eh.cancel(booked_itinerary.booking_confirmation)
+        service_number = booked_itinerary.service.phone || ""
+        service_name = booked_itinerary.service.name || ""
+        if res
+          booked_itinerary.booking_confirmation = nil
+          booked_itinerary.save
+        else
+          failure = true
+          failure_service_number = booked_itinerary.service.phone || ""
+          failure_service_name = booked_itinerary.service.name || ""
+        end
+      end
+    end
+
+    if failure
+      message = t(:cancel_booking_failure, name: failure_service_name, number: failure_service_number)
+    else
+      message = t(:cancel_booking_success, name: service_name, number: service_number)
+    end
+
+    respond_to do |format|
+      format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => message}) }
+      format.json { head :no_content }
+    end
+  end
+
+
 protected
 
   

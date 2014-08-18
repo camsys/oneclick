@@ -4,6 +4,9 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  cancel_booking: "Cancel Booking"
+  cancel_booking_success: "Your trip has been canceled. If you need further assistance, please contact %{name} at %{number}."
+  cancel_booking_failure: "Your trip could not be canceled. Please contact %{name} at %{number} for further assistance."
   initial_booking_title: 'Register to book online.'
   one_click_trip_planner: '1-Click Trip Planner'
   # Actions
@@ -195,6 +198,7 @@ en:
   edit_trip: "Edit this trip"
   repeat_trip: "Repeat this trip."
   remove_trip: "Remove this trip"
+  cancel_trip: "Cancel this trip booking"
   rate_trip: "Rate this trip"
   rate_recent: "Feedback on your recent trip"
   plan_trip: "Continue planning this trip"
@@ -349,6 +353,7 @@ en:
   view_details1: "View details"
   view_details2: "for more."
   confirm_remove_trip: 'Are you sure you want to remove this trip?'
+  confirm_cancel_trip: 'Are you sure you want to cancel this trip booking?'
   no_trips_found: 'You have no trips.'
   no_matching_trips_found: 'You have no matching trips.'
   hide: 'Hide'
