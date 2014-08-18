@@ -172,23 +172,3 @@
   $('.close-btn').on('click', function(){
     $('#overview-modal').addClass('hide');
   });
-
-  //CG DP EDIT
-  if($('div.results-view').hasClass('timeOut')){
-    var activityTimeout = setTimeout(resetApp, 60000);
-  }
-
-  function resetActive(){
-    clearTimeout(activityTimeout);
-    activityTimeout = setTimeout(resetApp, 60000);
-  }
-
-  function resetApp(){
-    window.location.href = "/";
-  }
-
-  $(document).bind('mousemove', function(){
-    if($('div.results-view').hasClass('timeOut')){
-      resetActive();
-    }
-  });
