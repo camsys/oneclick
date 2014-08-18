@@ -17,8 +17,6 @@ class EcolaneHelpers
 
   ## Post/Put Operations
   def book_itinerary(itinerary)
-
-
     begin
       funding_options = query_funding_options(itinerary)
       funding_xml = Nokogiri::XML(funding_options.body)
@@ -26,13 +24,13 @@ class EcolaneHelpers
       Rails.logger.debug "Booking error #003"
       return false, "Booking error."
     end
-    resp  = request_booking(itinerary, funding_xml)
+
+    resp = request_booking(itinerary, funding_xml)
 
     return unpack_booking_response(resp, itinerary)
-
   end
 
-  def unpack_booking_response (resp, itinerary)
+  def unpack_booking_response(resp, itinerary)
     begin
       resp_xml = Nokogiri::XML(resp.body)
     rescue
