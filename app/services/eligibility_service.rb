@@ -60,12 +60,11 @@ class EligibilityService
         unless passenger_characteristic and not(passenger_characteristic.value.blank?)
           Rails.logger.info "not listed"
           group_match_score += 0.25
-          Rails.logger.info "group_missing_info is now #{group_missing_info.ai}"
           if service_requirement.code == 'age'
             if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE
               group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or older\n'
               group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
-            elsif service_characteristic_map.rel_code == 5 or service_characteristic_map.rel_code == 6
+            elsif service_characteristic_map.rel_code == LT or service_characteristic_map.rel_code == LE
               group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or younger\n'
               group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
             end
@@ -73,16 +72,32 @@ class EligibilityService
             group_missing_information_text += service_requirement.desc + '\n'
             group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
           end
+          Rails.logger.info "group_missing_info is now #{group_missing_info.ai}"
           next
         end
 
         # Passenger does have a value for the characteristic, so test it
         Rails.logger.info "testing"
-        unless passenger_characteristic.meets_requirement(service_characteristic_map)
-          Rails.logger.info "doesn't meet requirement, group_eligible false and breaking"
-          group_eligible = false
-          break
+        begin
+          unless passenger_characteristic.meets_requirement(service_characteristic_map)
+            Rails.logger.info "doesn't meet requirement, group_eligible false and breaking"
+            group_eligible = false
+            break
+          end
+        rescue StandardError
+          Rails.logger.info "meets requirements raised StandardError"
+          group_match_score += 0.25
+          if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE
+            group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or older\n'
+            group_missing_info << service_requirement.for_missing_info(service, group, 'dob')
+          elsif service_characteristic_map.rel_code == LT or service_characteristic_map.rel_code == LE
+            group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or younger\n'
+            group_missing_info << service_requirement.for_missing_info(service, group, 'dob')
+          end
+          Rails.logger.info "group_missing_info is now #{group_missing_info.ai}"
+          next
         end
+        
         Rails.logger.info "meets requirement"
       end  # service_characteristic_maps.each do
 

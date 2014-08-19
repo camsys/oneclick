@@ -29,8 +29,10 @@ class UserProfileProxy < Proxy
         # it is a datestring, not a rails date form field.
         date_str = params.values.first
         return '' if date_str.blank?
+        # If just year is specified, create date for end of year to allow correctly
+        # identifying cases where date of birth has to be queried for.
         date_str = if (y,m,d = date_str.split('-')).length < 3
-          "1-1-#{date_str}"
+          "12-31-#{date_str}"
         else
           "#{d}-#{m}-#{y}"
         end

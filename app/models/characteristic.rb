@@ -39,18 +39,29 @@ class Characteristic < ActiveRecord::Base
   def for_missing_info(service, group, code)
     a = attributes
     sc = service_characteristics.where(service: service).take
-    value = case a['code']
+    value = case code
     when 'age'
       Date.today.year - sc.value.to_i
-    else
+     when 'dob'
+       Date.today - sc.value.to_i.years         
+     else
       sc.value
     end
-    operator = case a['code']
-    when 'age'
+    operator = case code
+    when 'age', 'dob'
       reverse_relationship_to_symbol(sc.rel_code)
     else
       relationship_to_symbol(sc.rel_code)
     end
+    success_condition = "#{operator}#{value}"
+    if code == 'dob'
+      a['datatype'] = 'date'
+      a['note'] = :ask_for_birth_date
+      code = 'age'
+      operator + '=' unless operator.include?('=')
+      success_condition = "#{operator}parseDate('#{value}')"
+    end
+
     options = a['datatype']=='bool' ? [{text: I18n.t(:yes_str), value: true}, {text: I18n.t(:no_str), value: false}] : nil
     {
       'question' => I18n.t(a['note']),
@@ -58,7 +69,7 @@ class Characteristic < ActiveRecord::Base
       'data_type' => a['datatype'],
       # 'control_type' => '',
       'options' => options,
-      'success_condition' => "#{operator}#{value}",
+      'success_condition' => success_condition,
       'group_id' => group,
       'code' => code
     }
