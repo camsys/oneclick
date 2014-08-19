@@ -58,12 +58,10 @@
                     .success.hide
                       Booking successful. Your confirmation code
                       %span.numbers>
-                    .outbound-error.hide
-                      = t(:outbound_error_occurred)
-                      %span.message
-                    .return-error.hide
-                      = t(:return_error_occurred)
-                      %span.message
+                    .error-message.hide
+                      Booking could not be completed. Call 
+                      = link_to '1-844-PA4-RIDE', 'tel://+18447247433'
+                      for assistance.
               - break
 
 - else
