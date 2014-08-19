@@ -42,8 +42,7 @@
 
           .row-fluid
             .span12
-              = link_to kiosk_user_new_trip_start_path(current_or_guest_user), {class: 'btn btn-block'} do
-                = t(:plan_a_new_trip)
+              = link_to 'I\'m Finished', kiosk_reset_path, class: 'btn btn-block'
 
           .row-fluid
             .span12
