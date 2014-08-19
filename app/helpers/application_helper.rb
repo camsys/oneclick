@@ -324,11 +324,13 @@ module ApplicationHelper
     (controller.controller_name + controller.action_name.capitalize).underscore
   end
 
-  def tel_link num
-    if num =~ /([0-9]{3})-([0-9]{3})-([0-9]{4})/
-      link_to num, "tel://+1#{$1}#{$2}#{$3}"
+  def tel_link text_num
+    real_num = text_num.downcase.tr('a-z','22233344455566677778889')
+
+    if real_num =~ /([0-9]{3})-([0-9]{3})-([0-9]{4})/
+      link_to text_num, "tel://+1#{$1}#{$2}#{$3}"
     else
-      num
+      text_num
     end
   end
 end
