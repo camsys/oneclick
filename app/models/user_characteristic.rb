@@ -20,7 +20,7 @@ class UserCharacteristic < ActiveRecord::Base
       age = Time.now - Time.parse(self.value)
       required = requirement.value.to_i.years
       Rails.logger.info "age: #{ActionController::Base.helpers.distance_of_time_in_words(age)}, req: #{ActionController::Base.helpers.distance_of_time_in_words(required)}, diff: #{ActionController::Base.helpers.distance_of_time_in_words(age - required)}"
-      raise "Ask for birth date" if (required - age) < 1.year
+      raise "Ask for age" if (required - age).abs < 1.year
       return test_condition(age, requirement.rel_code, required)
     end
 

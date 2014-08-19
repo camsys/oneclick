@@ -12,6 +12,11 @@ describe EligibilityService do
   end
 
   it "generates the missing information structure" do
+    options_for_bool = [
+       { text: I18n.t(:yes_str), value: true },
+       { text: I18n.t(:no_str), value: false }
+    ]                    
+
     trip = FactoryGirl.create(:trip, trip_purpose: TripPurpose.find_by_name('Medical'))
     planned_trip_part = trip.trip_parts.first
 
@@ -25,24 +30,18 @@ describe EligibilityService do
       [],
       [
           {
-            "question" => I18n.t('age_note'),
-            "data_type" => 'integer',
+            "question" => I18n.t(:ask_age, age: '65'),
+            "data_type" => 'bool',
             # "control_type" => 'foo',
-            "options" => nil,
-            "success_condition"=>"<1949",
+            "options" => options_for_bool,
+            "success_condition"=>"== true",
             "group_id" => 0,
-            "code" => "age"
+            "code" => "age",
+            "year" => 1949
           }
         ]
       ]
 
-    # just keeping this around for when we have a bool test
-    options_for_bool = [
-      {
-        I18n.t(:yes_str) => true,
-        I18n.t(:no_str) => false,
-      }
-    ]                    
   end
 
 end

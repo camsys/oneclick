@@ -864,6 +864,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 var valueToApply = (questionVal != null ? questionVal.value : null)
                 updateTripRestrictions(questionText, valueToApply);
 
+		if (missingInfo.code === 'age') {
+		    valueToApply = missingInfo.year;
+		}
                 $.ajax({
                     type: "POST",
                     url: _tripResponse.characteristics_update_url,

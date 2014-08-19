@@ -594,6 +594,7 @@ es:
   stop_assisting: "Detener la asistencia"
   assisting_turned_off: "[es10]Assisting has been turned off.[/es]"
   assisting_turned_on: "[es572]Assisting has been turned on.[/es]"
+  ask_age: "[es]Are you age %{age} or older?[/es]"
 
   # General Messages
   hello: "Hola"

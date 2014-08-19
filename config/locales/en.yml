@@ -597,7 +597,8 @@ en:
   new_esp_successfully_uploaded: "New ESP File Successfully Uploaded"
   thanks_for_the_feedback: "Thank you for your feedback!"
   optional_comments_descr: "If you would like to provide optional comments or a rating for your trip, you can do so below."
-
+  ask_age: "Are you age %{age} or older?"
+  
   # General Messages
   hello: "Hello"
   id: "ID"

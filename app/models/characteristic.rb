@@ -37,41 +37,40 @@ class Characteristic < ActiveRecord::Base
   # builds a hash of details about a characteristic; is used by the javascript
   # client to knwo whether to ask the user for more info
   def for_missing_info(service, group, code)
+    age = ''
     a = attributes
     sc = service_characteristics.where(service: service).take
     value = case code
     when 'age'
       Date.today.year - sc.value.to_i
-     when 'dob'
-       Date.today - sc.value.to_i.years         
-     else
+    else
       sc.value
     end
     operator = case code
-    when 'age', 'dob'
+    when 'age'
       reverse_relationship_to_symbol(sc.rel_code)
     else
       relationship_to_symbol(sc.rel_code)
     end
     success_condition = "#{operator}#{value}"
-    if code == 'dob'
-      a['datatype'] = 'date'
-      a['note'] = :ask_for_birth_date
-      code = 'age'
-      operator + '=' unless operator.include?('=')
-      success_condition = "#{operator}parseDate('#{value}')"
+    if code == 'age'
+      a['datatype'] = 'bool'
+      age = sc.value.to_s
+      a['note'] = :ask_age
+      success_condition = '== true'
     end
-
+    
     options = a['datatype']=='bool' ? [{text: I18n.t(:yes_str), value: true}, {text: I18n.t(:no_str), value: false}] : nil
     {
-      'question' => I18n.t(a['note']),
+      'question' => I18n.t(a['note'], age: age),
       #'description' => I18n.t(a['desc']),
       'data_type' => a['datatype'],
       # 'control_type' => '',
       'options' => options,
       'success_condition' => success_condition,
       'group_id' => group,
-      'code' => code
+      'code' => code,
+      'year' => value
     }
   end
 
