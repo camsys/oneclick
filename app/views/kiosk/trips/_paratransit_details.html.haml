@@ -37,11 +37,11 @@
       = t(:trip_outside_service_hours)
 
   %h4
-    - if itinerary.service.try(:phone)
+    - if itinerary.service.try(:phone).present?
       = raw "Please call #{tel_link itinerary.service.phone} "
-    - if itinerary.service.try(:email) && itinerary.service.try(:phone)
+    - if itinerary.service.try(:email).present? && itinerary.service.try(:phone).present?
       = raw "or email #{mail_to itinerary.service.try(:email)} "
-    - elsif itinerary.service.try(:email)
+    - elsif itinerary.service.try(:email).present?
       = raw "Please email #{mail_to itinerary.service.try(:email)} "
     for more information.
 

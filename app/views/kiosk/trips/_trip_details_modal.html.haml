@@ -8,7 +8,7 @@
           = @itinerary.cost_in_words
         %h5 Estimated travel time
         %p
-          = @itinerary.duration_in_words
+          = @itinerary.duration_in_words.presence || 'Unknown'
         %h5 Transfers
         %p
           = @itinerary.transfers_in_words
