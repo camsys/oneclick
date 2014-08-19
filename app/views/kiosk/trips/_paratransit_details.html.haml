@@ -1,7 +1,6 @@
 .row-fluid
-  -if itinerary.cost_comments
-    %h4
-      Cost Details
+  - if itinerary.cost_comments
+    %h4 Cost Details:
     = itinerary.cost_comments.html_safe
 
   - if itinerary.missing_information
@@ -9,15 +8,15 @@
       %i.icon.icon-question-sign
       This service is intended for
       / not sure how to handle that...
-      -count = 0
-      -itinerary.missing_information_text.split('\n').each do |info|
-        -count += 1
-        -if itinerary.missing_information_text.split('\n').count - 1 == count
-          =info + ' and '
-        -elsif itinerary.missing_information_text.split('\n').count == count
-          =info + '.'
-        -else
-          =info + ','
+      - count = 0
+      - itinerary.missing_information_text.split('\n').each do |info|
+        - count += 1
+        - if itinerary.missing_information_text.split('\n').count - 1 == count
+          = info + ' and '
+        - elsif itinerary.missing_information_text.split('\n').count == count
+          = info + '.'
+        - else
+          = info + ','
 
   -if itinerary.accommodation_mismatch
     %h4
@@ -43,6 +42,7 @@
       = raw "or email #{mail_to itinerary.service.try(:email)} "
     - elsif itinerary.service.try(:email).present?
       = raw "Please email #{mail_to itinerary.service.try(:email)} "
-    for more information.
+    - if itinerary.service.try(:email).present? || itinerary.service.try(:phone).present?
+      for more information.
 
   .row-fluid.hidden= "SCORE: " + itinerary.match_score.to_s
