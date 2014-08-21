@@ -49,16 +49,17 @@
                 -# initial load from user record
                 - @user.related_users.each do |ou|
                   = render partial: 'users/buddy_traveler_row', locals: {urp: UserRelationshipProxy.new(@user, ou)}
-            .modal.fade#add_user
+            #add_user.modal.fade{:role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
               .modal-dialog.modal-lg
                 .modal-content
                   .modal-header
                     .row
                       .col-sm-12
-                        %btn.btn.action-button.pull-right{data: {dismiss: 'modal'}}
-                          = t(:cancel)
-                        %btn.btn.action-button.pull-right#search
-                          = t(:apply)
+                        .pull-right
+                          %btn.btn.action-button#search
+                            = t(:apply)
+                          %btn.btn.action-button{data: {dismiss: 'modal'}}
+                            = t(:cancel)
                   .modal-body
                     .modal-flash
                     .panel.panel-default

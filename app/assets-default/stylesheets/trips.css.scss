@@ -493,6 +493,15 @@ $legend-height: 20px;
   background-position: center;
 }
 
+.user-characteristics {
+  .control-label {
+    font-weight: bold;
+  }
+  button.active {
+    
+  }
+}
+
 #baseModes .trip_proxy_modes {
   margin-bottom: 0px;
 }

@@ -17,9 +17,16 @@
                 - next unless a.ask_early
                 = render partial: 'characteristic_item', locals: {item: a, f:f}
           :javascript
-            $('.user-characteristics .btn-group').attr('data-toggle', 'buttons');
-            $('.user-characteristics .btn-group label').addClass('btn characteristics-option-button');
-            $('.user-characteristics .btn-group input:checked').parent('label').addClass('active');
+            $('.user-characteristics .char-group').on('click',
+              function(e) {
+                $(e.currentTarget).find('.btn').removeClass('active');
+                $(e.target).addClass('active');
+                console.log($(e.target).val());
+                console.log($(e.currentTarget).find('input'));
+                $(e.currentTarget).find('input').val($(e.target).val());
+              }
+            );
+
 - else
   .row
     .col-xs-12

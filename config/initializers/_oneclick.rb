@@ -20,6 +20,7 @@ Oneclick::Application.config.minimum_rideshare_duration = (1.5).hours
 Oneclick::Application.config.show_update_services = false
 Oneclick::Application.config.min_drive_seconds = 180
 Oneclick::Application.config.max_walk_seconds = 1200
+Oneclick::Application.config.allows_booking = false
 
 Oneclick::Application.config.initial_signup_question = false
 
@@ -128,13 +129,14 @@ when 'pa'
   Oneclick::Application.config.max_walk_seconds = 3600
 
   ##Ecolane Variables
-  Oneclick::Application.config.ecolane_system_id = "ococtest"
+  Oneclick::Application.config.ecolane_system_id = ENV['ECOLANE_SYSTEM_ID']
   Oneclick::Application.config.ecolane_x_ecolane_token = ENV['X_ECOLANE_TOKEN']
-  Oneclick::Application.config.ecolane_base_url = "https://rabbit-test.ecolane.com"
+  Oneclick::Application.config.ecolane_base_url = "https://apiserver.ecolane.com"
   I18n.available_locales = [:en]
 
   #for PA, we ask a follow up question after a person creates an account
   Oneclick::Application.config.initial_signup_question = true
+  Oneclick::Application.config.allows_booking = true
 
 
 when 'jta'

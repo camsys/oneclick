@@ -3,8 +3,7 @@
     .hidden-xs.col-sm-8
       = render partial: 'shared/trip_plan_breadcrumbs'
     .col-sm-4{style: "padding: 0px;"}
-      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
-        tabindex: 2 do
+      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button" do
         =t(:next)
         :javascript
           $(function() {
@@ -23,10 +22,11 @@
           = f.hidden_field :map_center, id: "map_center"
 
           #tripOptions
-            .inline-radio
-              = f.input :is_round_trip, as: :radio_buttons, label: t(:trip), collection: [[t(:round_trip), 1], [t(:one_way), 0]],
-                checked: (@trip_proxy.is_round_trip ? "1" : "0"),
-                input_html: { tabindex: 1 }
+            = field_set_tag do
+              %legend.sr-only Trip type
+              .inline-radio
+                = f.input :is_round_trip, as: :radio_buttons, label: t(:trip), collection: [[t(:round_trip), 1], [t(:one_way), 0]],
+                  checked: (@trip_proxy.is_round_trip ? "1" : "0")
 
               :javascript
                 $('#tripOptions :radio').change(function() {
@@ -37,10 +37,11 @@
                   }
                 });
 
-          #baseModes
-            = f.input :modes, as: :check_boxes, collection: @modes,
-            label_method: :first, value_method: :last, checked: @selected_modes, label: t(:modes),
-            input_html: { tabindex: 1 }
+          = field_set_tag do
+            %legend.sr-only Modes
+            #baseModes
+              = f.input :modes, as: :check_boxes, collection: @modes,
+              label_method: :first, value_method: :last, checked: @selected_modes, label: t(:modes)
 
             :javascript
               $('#trip_proxy_modes_mode_transit').change(function() {
@@ -58,8 +59,7 @@
           #transitModes
             = f.input :modes, as: :check_boxes, collection: @transit_modes,
             label_method: :first, value_method: :last, checked: @selected_modes, label: '',
-            collection_wrapper_class: 'col-xs-offset-1', collection_wrapper_tag: :div,
-            input_html: { tabindex: 1 }
+            collection_wrapper_class: 'col-xs-offset-1', collection_wrapper_tag: :div
 
             :javascript
               $('#transitModes input[type="checkbox"]').change( function() {
@@ -73,7 +73,7 @@
 
 
           = f.input :trip_purpose_id, :collection =>  TripPurpose.ordered_by_localized_name, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes),
-          input_html: { tabindex: 1, class: 'form-control' }
+          input_html: { class: 'form-control' }
 
           = render partial: 'location_input', locals: {dir: 'from', f: f}
           = render partial: 'location_input', locals: {dir: 'to', f: f}
@@ -84,9 +84,16 @@
           #returnDatetimeOptions{style: (@trip_proxy.is_round_trip ? '' : 'display: none;')}
             .form-group
               = render partial: 'date_time_input', locals: {dir: 'return', f: f}
+          .hidden-xs.hidden-sm{id: "tripMapContainer", 'aria-hidden' => 'true', class: 'hide', style: 'position: absolute; top: 0; right:-520px; z-index: 1000;'}
+            .panel.panel-default
+              .panel-heading.clearfix
+                %button#mapCloseButton.close.pull-right{type: "button", title: t(:close)}
+                  %span{:"aria-hidden" => "true"} &times;
+                  %span.hide Close
+              .panel-body
+                = LeafletMap({ :mapid => "tripMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '500px;', :style => "height: 400px; width: 500px;", :show_location_select => true })
     .col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
-      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button",
-        tabindex: 2 do
+      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button" do
         =t(:next)
   = render partial: 'shared/splash'
   -if @show_booking

@@ -663,12 +663,16 @@ class TripsController < PlaceSearchingController
   end
 
   def book
-    @itinerary = Itinerary.find(params[:itin].to_i )
+    @itinerary = Itinerary.find(params[:itin].to_i)
     eh = EcolaneHelpers.new
 
     outbound_part = @itinerary.trip_part
+    contact_number = ""
     if outbound_part.is_bookable?
+
+      outbound_itinerary = @itinerary
       outbound_result, outbound_message = eh.book_itinerary(@itinerary)
+      contact_number = outbound_itinerary.service.phone || ""
       unless outbound_result
         @trip.debug_info = @trip.debug_info.to_s + "[Outbound Booking Error: " + outbound_message.to_s + "]"
         @trip.save
@@ -679,8 +683,11 @@ class TripsController < PlaceSearchingController
     end
 
     return_part = @itinerary.trip_part.get_return_part
-
     if return_part and return_part.is_bookable?
+      if contact_number.empty?
+        return_itinerary = return_part.selected_itinerary
+        contact_number = return_itinerary.service.phone || ""
+      end
       return_result, return_message = eh.book_itinerary(return_part.selected_itinerary)
       unless return_result
         @trip.debug_info = @trip.debug_info.to_s + "[Return Booking Error: " + return_message.to_s + "]"
@@ -692,7 +699,7 @@ class TripsController < PlaceSearchingController
     end
 
     respond_to do |format|
-      format.json { render json: [outbound_result.to_s, outbound_message, return_result.to_s, return_message] }
+      format.json { render json: [outbound_result.to_s, outbound_message, return_result.to_s, return_message, contact_number] }
     end
   end
 
