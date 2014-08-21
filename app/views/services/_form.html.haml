@@ -244,7 +244,7 @@
     .panel-body
       .row
         .col-sm-12
-          - types = GeoCoverage.pluck(:coverage_type).uniq
+          - types = GeoCoverage.not_endpoint.not_coverage.pluck(:coverage_type).uniq
           - ['endpoints', 'coverages'].each do |rule|
             .panel.panel-default
               .panel-heading

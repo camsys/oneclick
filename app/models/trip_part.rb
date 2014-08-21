@@ -35,15 +35,16 @@ class TripPart < ActiveRecord::Base
   end
 
   def get_return_part
-    if is_return_trip?
-      trip.return_part
-    else
-      nil
-    end
+    return self.trip.get_return_part
   end
 
   def is_bookable?
-    selected? and selected_itinerary.is_bookable?
+    unless selected?
+      return false
+    end
+
+    return selected_itinerary.is_bookable?
+
   end
 
   def is_booked?

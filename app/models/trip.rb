@@ -280,8 +280,18 @@ class Trip < ActiveRecord::Base
   end
 
   # TOOD This needs to change when/if we have multi-leg trips
+  #This Logic breaks with 1-way trips. trips_parts.last = trip_parts.first.
+  #It is causing issues with the booking confirmations.
   def return_part
     trip_parts.last
+  end
+
+  def get_return_part
+    if trip_parts.count > 1
+      trip_parts.last
+    else
+      nil
+    end
   end
 
   def both_parts_selected?

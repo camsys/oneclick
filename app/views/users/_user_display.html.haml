@@ -1,6 +1,6 @@
 
 .row
-  .col-sm-6
+  .col-sm-6{"tabindex" => "0"}
     .panel.panel-default#user_info
       / Everybody can see this
       .panel-heading
@@ -24,7 +24,7 @@
             .col-sm-9
               %p.form-control-static= I18n.t("locales.#{user.preferred_locale}")
   - if can? :full_read, user
-    .col-sm-6
+    .col-sm-6{"tabindex" => "0"}
       .panel.panel-default#agencies
         .panel-heading
           %h2.panel-title=t(:agencies)
@@ -32,7 +32,7 @@
           = render partial: 'users/agency_table', locals: { user: user }
 - if can? :full_read, user
   .row
-    .col-sm-12
+    .col-sm-12{"tabindex" => "0"}
       .panel.panel-default#buddies
         .panel-heading
           %h2.panel-title= t(:buddies)
@@ -46,33 +46,33 @@
             %tbody
               -# initial load from user record
               - @user.related_users.each do |ou|
-                %tr
+                %tr{"tabindex" => "0"}
                   - urp = UserRelationshipProxy.new(@user, ou)
                   %td= urp.you.name
                   %td.email= urp.you.email
                   %td= UserRelationshipDecorator.decorate(urp.can_assist_me).status
                   %td= UserRelationshipDecorator.decorate(urp.i_can_assist).assist_btn
   .row
-    .col-sm-6
+    .col-sm-6{"tabindex" => "0"}
       .panel.panel-default#eligibility
         .panel-heading
           %h2.panel-title= t(:eligibility)
         .panel-body
           = render :partial =>'users/show_characteristics_answers', :locals => { :user_characteristics => @user_characteristics_proxy, collection: Characteristic.active.enabled }
-    .col-sm-6
+    .col-sm-6{"tabindex" => "0"}
       .panel.panel-default#accommodations
         .panel-heading
           %h2.panel-title= t(:accommodations)
         .panel-body
           = render :partial =>'users/show_characteristics_answers', :locals => { :user_characteristics => @user_accommodations_proxy, collection: Accommodation.where(:datatype => 'bool') }
   .row
-    .col-sm-6
+    .col-sm-6{"tabindex" => "0"}
       .panel.panel-default#booking
         .panel-heading
           %h2.panel-title=t(:booking_information)
         .panel-body
           = render :partial => 'users/show_booking_info', locals: { user: user }
-    .col-sm-6
+    .col-sm-6{"tabindex" => "0"}
       .panel.panel-default#preferred_modes
         .panel-heading
           %h2.panel-title= t(:preferred_modes)
