@@ -4,6 +4,7 @@ require 'indirizzo'
 
 class EcolaneHelpers
 
+
   begin
     SYSTEM_ID = Oneclick::Application.config.ecolane_system_id
     X_ECOLANE_TOKEN = Oneclick::Application.config.ecolane_x_ecolane_token
@@ -15,10 +16,31 @@ class EcolaneHelpers
   end
 
 
+
+  def get_ecolane_customer_id(customer_number)
+
+    resp = search_for_customers(terms = {customer_number: customer_number})
+    resp_xml = Nokogiri::XML(resp.body)
+
+    status = resp_xml.xpath("status")
+    #On success, status = []
+    unless status.empty?
+      if status.attribute("result").value == "failure"
+        return nil
+      end
+    end
+
+    if resp_xml.xpath("search_results").xpath("customer").count == 1
+      ecolane_customer_id = resp_xml.xpath("search_results").xpath("customer").first.attribute("id").value
+      return ecolane_customer_id
+    else
+      return nil
+    end
+
+  end
+
   ## Post/Put Operations
   def book_itinerary(itinerary)
-
-
     begin
       funding_options = query_funding_options(itinerary)
       funding_xml = Nokogiri::XML(funding_options.body)
@@ -191,6 +213,8 @@ class EcolaneHelpers
     resp = send_request(url)
   end
 
+
+
   def unpack_validation_response (resp)
     resp_xml = Nokogiri::XML(resp.body)
 
@@ -309,12 +333,15 @@ class EcolaneHelpers
 
   ## Send the Requests
   def send_request(url, type='GET', message=nil)
+
     begin
       uri = URI.parse(url)
       case type.downcase
         when 'post'
           req = Net::HTTP::Post.new(uri.path)
           req.body = message
+        when 'delete'
+          req = Net::HTTP::Delete.new(uri.path)
         else
           req = Net::HTTP::Get.new(uri)
       end
@@ -340,8 +367,21 @@ class EcolaneHelpers
 
 
   ## Utility functions:
+  #Ecolane has two unique identifiers customer_number and customer_id.
   def get_customer_id(itinerary)
-    itinerary.trip_part.trip.user.user_profile.user_services.where(service: itinerary.service).first.external_user_id
+    user_service = itinerary.trip_part.trip.user.user_profile.user_services.where(service: itinerary.service).first
+    if (Time.now - user_service.updated_at > 300) or user_service.customer_id.nil?
+      user_service.customer_id = get_ecolane_customer_id(user_service.external_user_id)
+      user_service.save
+    end
+    return user_service.customer_id
+  end
+
+  def cancel(trip_id)
+    url_options = "/api/order/" + SYSTEM_ID + '/'
+    url_options += trip_id.to_s
+    url = BASE_URL + url_options
+    send_request(url, 'DELETE')
   end
 
   def iso8601ify(dob)
