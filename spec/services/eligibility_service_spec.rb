@@ -6,44 +6,67 @@ describe EligibilityService do
 
   before(:each) do
     @user_profile = FactoryGirl.create(:user_profile)
+    # These services needed to be created so they get applied to the itinerary
     @service1 = FactoryGirl.create(:populated_service)
     @service2 = FactoryGirl.create(:populated_service)
     @restricted_service = FactoryGirl.create(:restricted_service)
+    @options_for_bool = [
+      {
+        text: I18n.t(:yes_str), value: true
+      },
+      {
+        text: I18n.t(:no_str), value: false
+      }
+    ]
   end
 
   it "generates the missing information structure" do
     trip = FactoryGirl.create(:trip, trip_purpose: TripPurpose.find_by_name('Medical'))
     planned_trip_part = trip.trip_parts.first
 
-    itineraries = eh.get_eligible_services_for_traveler(@user_profile, nil, :itinerary)
     missing_info = eh.get_eligible_services_for_traveler(@user_profile, nil, :missing_info)
-    expect(itineraries.size).to eq 3
-    s = itineraries.last
-    s['missing_information_text'].should eq "persons 65 years or older\\n"
     missing_info.should eq [
       [],
       [],
       [
-          {
-            "question" => I18n.t('age_note'),
-            "data_type" => 'integer',
-            # "control_type" => 'foo',
-            "options" => nil,
-            "success_condition"=>"<1949",
-            "group_id" => 0,
-            "code" => "age"
-          }
-        ]
+        {
+          "question" => I18n.t('age_note'),
+          "data_type" => 'integer',
+          "options" => nil,
+          "success_condition"=>"<1949",
+          "group_id" => 0,
+          "code" => "age"
+        },
+        {
+          "question"=>
+          "translation missing: en.The traveler is temporarily or permanently disabled",
+          "data_type" => "bool",
+          "options" => @options_for_bool,
+          "success_condition" => "==t",
+          "group_id" => 1,
+          "code"=>"disabled"
+        },
+        {
+          "question" => "translation missing: en.The traveler is a veteran",
+          "data_type" => "bool",
+          "options" => @options_for_bool,
+          "success_condition" => "==t",
+          "group_id" => 1,
+          "code" => "veteran"
+        }
       ]
+    ]
+  end
 
-    # just keeping this around for when we have a bool test
-    options_for_bool = [
-      {
-        I18n.t(:yes_str) => true,
-        I18n.t(:no_str) => false,
-      }
-    ]                    
+  it "generates the missing information string" do
+    trip = FactoryGirl.create(:trip, trip_purpose: TripPurpose.find_by_name('Medical'))
+    planned_trip_part = trip.trip_parts.first
+
+    itineraries = eh.get_eligible_services_for_traveler(@user_profile, nil, :itinerary)
+    expect(itineraries.size).to eq 3
+    s = itineraries.last
+    service = s['service']
+    s['missing_information_text'].should eq "persons 65 years or older or persons with a disability, and military veterans"
   end
 
 end
-
