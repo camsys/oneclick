@@ -39,9 +39,9 @@
     - if itinerary.service.try(:phone).present?
       = raw "Please call #{tel_link itinerary.service.phone} "
     - if itinerary.service.try(:email).present? && itinerary.service.try(:phone).present?
-      = raw "or email #{mail_to itinerary.service.try(:email)} "
+      = raw "or email #{itinerary.service.try(:email)} "
     - elsif itinerary.service.try(:email).present?
-      = raw "Please email #{mail_to itinerary.service.try(:email)} "
+      = raw "Please email #{itinerary.service.try(:email)} "
     - if itinerary.service.try(:email).present? || itinerary.service.try(:phone).present?
       for more information.
 
