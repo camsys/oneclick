@@ -103,10 +103,32 @@ class EcolaneHelpers
 
   end
 
+  def get_trip_status(trip_id)
+    resp = fetch_single_order(trip_id)
+    begin
+      resp_code = resp.code
+    rescue
+      return nil
+    end
+    unless resp_code == "200"
+      return nil
+    end
+    resp_xml = Nokogiri::XML(resp.body)
+    resp_xml.xpath("order").xpath("status").text
+  end
+
+
   def unpack_fetch_single (resp, confirmation)
-    unless resp.code == "200"
+    begin
+      resp_code = resp.code
+    rescue
+      return false, "500"
+    end
+
+    unless resp_code == "200"
       return false, resp.message
     end
+
     resp_xml = Nokogiri::XML(resp.body)
     pu_time = DateTime.xmlschema(resp_xml.xpath("order").xpath("pickup").xpath("negotiated").text).strftime("%b %e, %l:%M %p")
 
@@ -142,6 +164,7 @@ class EcolaneHelpers
   end
 
   def query_fare(itinerary)
+
     url_options =  "/api/order/" + SYSTEM_ID + "/queryfare"
     url = BASE_URL + url_options
     funding_options = query_funding_options(itinerary)
@@ -151,13 +174,20 @@ class EcolaneHelpers
     order.children.first.set_attribute('version', '2')
     order = order.to_s
     resp = send_request(url, 'POST', order)
-    if resp.code != "200"
+
+    begin
+      resp_code = resp.code
+    rescue
+      return false, "500"
+    end
+
+    if resp_code != "200"
       Honeybadger.notify(
           :error_class   => "Unable to query fare",
           :error_message => "Service failure: fixed: resp.code not 200, #{resp.message}",
-          :parameters    => {resp_code: resp.code, resp: resp}
+          :parameters    => {resp_code: resp_code, resp: resp}
       )
-      return false, {'id'=>resp.code.to_i, 'msg'=>resp.message}
+      return false, {'id'=>resp_code.to_i, 'msg'=>resp.message}
     end
     fare = unpack_fare_response(resp, itinerary)
     return true, fare
@@ -333,6 +363,7 @@ class EcolaneHelpers
   ## Send the Requests
   def send_request(url, type='GET', message=nil)
 
+    url.sub! " ", "%20"
     begin
       uri = URI.parse(url)
       case type.downcase
@@ -376,11 +407,33 @@ class EcolaneHelpers
     return user_service.customer_id
   end
 
-  def cancel(trip_id)
+  def cancel(trip_conf)
     url_options = "/api/order/" + SYSTEM_ID + '/'
-    url_options += trip_id.to_s
+    url_options += trip_conf.to_s
+
     url = BASE_URL + url_options
-    send_request(url, 'DELETE')
+
+    resp = send_request(url, 'DELETE')
+    begin
+      resp_code = resp.code
+    rescue
+      return false
+    end
+    if resp_code == "200"
+      Rails.logger.debug "Trip " + trip_conf.to_s + " canceled."
+      #The trip was successfully canceled
+      return true
+    elsif get_trip_status(trip_conf) == 'canceled'
+      Rails.logger.debug "Trip " + trip_conf.to_s + " already canceled."
+
+      #The trip was not successfully deleted, because it was already canceled
+      return true
+    else
+      Rails.logger.debug "Trip " + trip_conf.to_s + " cannot be canceled."
+      #The trip is not canceled
+      return false
+    end
+
   end
 
   def iso8601ify(dob)
