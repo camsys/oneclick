@@ -124,6 +124,18 @@ h5{
 	border-right: 1px solid $gray3;
 	height:128px;
 
+	&.start-over-icon {
+		border-right: none;
+		.arrow .arrow-btn {
+			background-image: image-url('start-over.png');
+		}
+
+		.arrow span {
+			width: 102px;
+			margin-left: 55px;
+		}
+	}
+
 	&:active{
 		background-color: $gray1;
 
