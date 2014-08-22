@@ -312,10 +312,10 @@ a{
 	background-color: $white;
 	width:100%;
 
-	.attract-header{
+	.attract-header {
 		height: 73px;
-		// border-bottom:1px solid $gray3;
-    }
+		border-bottom:1px solid $gray3;
+   	}
     .attract-main{
     	cursor:pointer;
     	height:438px;
@@ -2468,3 +2468,23 @@ body.sessions.new, body.registrations.new{
 }
 
 @import "email";
+
+.penndot > .call-for-assistance {
+	padding: 25px 6px;
+}
+
+.call-for-assistance a {
+  position: relative;
+  &:hover { text-decoration: none }
+
+	&:before {
+		background-image: url(/assets/phone.png);
+		display: block;
+		width: 31px;
+		height: 38px;
+		content: " ";
+		position: absolute;
+		left: -43px;
+		top: -8px;
+	}
+}

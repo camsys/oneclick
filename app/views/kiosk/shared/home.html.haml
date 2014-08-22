@@ -2,6 +2,7 @@
   .attract-header
     .oneclick.pull-left
     .penndot.pull-right
+      .call-for-assistance= link_to 'Call for assistance', 'tel://+18447247433', class: 'nav-a'
   - @actions.each do |action|
     %a.attract-main.row-fluid{alt: action[:label], href: action[:target]}
       .title Tap anywhere to begin
