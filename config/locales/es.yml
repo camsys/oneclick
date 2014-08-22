@@ -694,6 +694,7 @@ es:
     logotext: ''
     site_title: 'VetLink'
     site_description: 'VetLink 1-Click Application'
+    next: '[es]Next[/es]'
 
   simple_form:
     labels:

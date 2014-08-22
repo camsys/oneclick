@@ -806,6 +806,7 @@ en:
     logotext: ''
     site_title: 'VetLink'
     site_description: 'VetLink 1-Click Application'
+    next: 'Next'
   simple_form:
     labels:
       defaults:
