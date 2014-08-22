@@ -4,6 +4,10 @@
 # TODO may want to eventually split these out into separate files
 
 ht:
+  public_comments: "Public Comments"
+  private_comments: "Private Comments"
+  public_comments_message: "Leave comments for travelers about this service."
+  private_comments_message: "Leave comments for agents about this service."
   one_click_trip_planner: '[ht]1-Click Trip Planner[/ht]'
   # Actions
   plan_a_trip: '[ht]Plan a Trip[/ht]'

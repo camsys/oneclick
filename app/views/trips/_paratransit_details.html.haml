@@ -1,5 +1,7 @@
 .row
   .col-sm-12
+    -if itinerary.service.public_comments
+      =itinerary.service.public_comments.html_safe
     -if itinerary.cost_comments
       %h4
         = t(:cost_details)

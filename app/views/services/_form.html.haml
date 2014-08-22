@@ -235,43 +235,64 @@
               = fare.input :base, as: :currency
               = fare.input :rate, as: :currency
               = fare.input :desc, label: t(:comments), as: :text
-              
-  .panel.panel-default
-    .panel-heading
-      .row.text-center
-        .col-sm-12
-          %h3.panel-title= t(:coverage_areas)
-    .panel-body
-      .row
-        .col-sm-12
-          - types = GeoCoverage.not_endpoint.not_coverage.pluck(:coverage_type).uniq
-          - ['endpoints', 'coverages'].each do |rule|
-            .panel.panel-default
-              .panel-heading
-                %h4.panel-title= t(rule)
-              .panel-body
-                - types.each do |type|
-                  %b
-                    = type.humanize.split[0].pluralize + ' ' + t(:served_areas)
-                  .well.white-well.text-left
-                    - checked = @service.send(rule).pluck(:geo_coverage_id)
-                    - GeoCoverage.where(coverage_type: type).order(:value).map{|c| [ c.value, c.id ] }.each do |pair|
-                      %input{type: "hidden", value: pair[1],
-                             name: input_name(f, :service_coverage_maps, :geo_coverage_id)}
-                      %input{type: "hidden", value: rule.to_s.singularize + '_area',
-                             name: input_name(f, :service_coverage_maps, :rule)}
-                      - if checked.include?(pair[1])
-                        %input{type: "hidden",
-                               value: "#{@service.send(rule).find_by(geo_coverage_id: pair[1]).id}",
-                               name: input_name(f, :service_coverage_maps, :id)}
-                      %span
-                        %label
-                          %input.checkbox.checkbox-inline{type: "checkbox",
-                                checked: checked.include?(pair[1]),
-                                value: "1", 
-                                name: input_name(f, :service_coverage_maps, :keep_record)}
-                          = pair[0]
-                          &nbsp;
+  .row
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          .row
+            .col-sm-12
+              %h4.panel-title= t(:public_comments)
+        .panel-body
+          =t(:public_comments_message)
+          = f.input :public_comments, :input_html => {:rows => 10}, :label => false
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          .row
+            .col-sm-12
+              %h4.panel-title=t(:private_comments)
+        .panel-body
+          =t(:private_comments_message)
+          = f.input :private_comments, :input_html => {:rows => 10, :size => 50}, :label => false
+
+  .row
+    .col-sm-12
+      .panel.panel-default
+        .panel-heading
+          .row.text-center
+            .col-sm-12
+              %h3.panel-title= t(:coverage_areas)
+        .panel-body
+          .row
+            .col-sm-12
+              - types = GeoCoverage.not_endpoint.not_coverage.pluck(:coverage_type).uniq
+              - ['endpoints', 'coverages'].each do |rule|
+                .panel.panel-default
+                  .panel-heading
+                    %h4.panel-title= t(rule)
+                  .panel-body
+                    - types.each do |type|
+                      %b
+                        = type.humanize.split[0].pluralize + ' ' + t(:served_areas)
+                      .well.white-well.text-left
+                        - checked = @service.send(rule).pluck(:geo_coverage_id)
+                        - GeoCoverage.where(coverage_type: type).order(:value).map{|c| [ c.value, c.id ] }.each do |pair|
+                          %input{type: "hidden", value: pair[1],
+                                 name: input_name(f, :service_coverage_maps, :geo_coverage_id)}
+                          %input{type: "hidden", value: rule.to_s.singularize + '_area',
+                                 name: input_name(f, :service_coverage_maps, :rule)}
+                          - if checked.include?(pair[1])
+                            %input{type: "hidden",
+                                   value: "#{@service.send(rule).find_by(geo_coverage_id: pair[1]).id}",
+                                   name: input_name(f, :service_coverage_maps, :id)}
+                          %span
+                            %label
+                              %input.checkbox.checkbox-inline{type: "checkbox",
+                                    checked: checked.include?(pair[1]),
+                                    value: "1",
+                                    name: input_name(f, :service_coverage_maps, :keep_record)}
+                              = pair[0]
+                              &nbsp;
   .row
     .col-sm-12
       .panel.panel-default

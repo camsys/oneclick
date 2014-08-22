@@ -146,7 +146,7 @@ class ServicesController < ApplicationController
     
 protected
   def service_params
-    params.require(:service).permit(:name, :phone, :email, :url, :external_id,
+    params.require(:service).permit(:name, :phone, :email, :url, :external_id, :public_comments, :private_comments,
                                     :booking_service_code, :advanced_notice_minutes,
                                     :notice_days_part, :notice_hours_part, :notice_minutes_part,
                                     :service_window, :time_factor, :provider_id, :service_type_id,

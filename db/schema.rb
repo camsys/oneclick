@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140819194120) do
+ActiveRecord::Schema.define(version: 20140825174700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -365,6 +365,8 @@ ActiveRecord::Schema.define(version: 20140819194120) do
     t.integer  "endpoint_area_geom_id"
     t.integer  "coverage_area_geom_id"
     t.integer  "residence_area_geom_id"
+    t.text     "public_comments"
+    t.text     "private_comments"
   end
 
   create_table "services_users", id: false, force: true do |t|

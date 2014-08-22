@@ -4,6 +4,10 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  public_comments: "Public Comments"
+  private_comments: "Private Comments"
+  public_comments_message: "Leave comments for travelers about this service."
+  private_comments_message: "Leave comments for agents about this service."
   initial_booking_title: 'Register to book online.'
   one_click_trip_planner: '1-Click Trip Planner'
   # Actions

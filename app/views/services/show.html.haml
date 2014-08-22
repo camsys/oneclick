@@ -169,42 +169,64 @@
             -if fare.desc
               = fare.desc.html_safe
 
-  .panel.panel-default
-    .panel-heading
-      .row.text-center
-        .col-sm-12
-          %h3.panel-title= t(:coverage_areas)
-    .panel-body
-      .row
-        .col-sm-6
-          - types = @service.coverage_areas.map(&:coverage_type).uniq
-          - ['endpoints', 'coverages'].each do |rule|
-            .panel.panel-default
-              .panel-heading
-                %h4.panel-title= t(rule)
-              .panel-body
-                - types.each do |type|
-                  %b
-                    =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
-                  .well.white-well.text-left
-                    -coverage_string = ""
-                    - @service.service_coverage_maps.where(rule: rule.singularize.downcase+'_area').joins(:geo_coverage).order('value').each do |map|
-                      -if map.geo_coverage.coverage_type == type
-                        -coverage_string += map.geo_coverage.value + ', '
-                    -if coverage_string == ""
-                      = t(:n_a)
-                    -else
-                      =coverage_string.chop.chop
+  .row
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          .row.text
+            .col-sm-12
+              %h3.panel-title= t(:public_comments)
+        .panel-body
+          -if @service.public_comments
+            =@service.public_comments.html_safe
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          .row.text
+            .col-sm-12
+              %h3.panel-title= t(:private_comments)
+        .panel-body
+          -if @service.private_comments
+            =@service.private_comments.html_safe
 
-        .col-sm-6.text-center
-          .panel.panel-default
-            .panel-heading
-              %h4.panel-title= t(:service_area_map)
-            .panel-body
+  .row
+    .col-sm-12
+      .panel.panel-default
+        .panel-heading
+          .row.text-center
+            .col-sm-12
+              %h3.panel-title= t(:coverage_areas)
+        .panel-body
+          .row
+            .col-sm-6
+              - types = @service.coverage_areas.map(&:coverage_type).uniq
+              - ['endpoints', 'coverages'].each do |rule|
+                .panel.panel-default
+                  .panel-heading
+                    %h4.panel-title= t(rule)
+                  .panel-body
+                    - types.each do |type|
+                      %b
+                        =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
+                      .well.white-well.text-left
+                        -coverage_string = ""
+                        - @service.service_coverage_maps.where(rule: rule.singularize.downcase+'_area').joins(:geo_coverage).order('value').each do |map|
+                          -if map.geo_coverage.coverage_type == type
+                            -coverage_string += map.geo_coverage.value + ', '
+                        -if coverage_string == ""
+                          = t(:n_a)
+                        -else
+                          =coverage_string.chop.chop
 
-              = LeafletMap({ :mapid => "lmap_" + "endpoint_area", :multipolygons => @polylines,
-              :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15,
-              :style => "height:500px;" })
+            .col-sm-6.text-center
+              .panel.panel-default
+                .panel-heading
+                  %h4.panel-title= t(:service_area_map)
+                .panel-body
+
+                  = LeafletMap({ :mapid => "lmap_" + "endpoint_area", :multipolygons => @polylines,
+                  :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15,
+                  :style => "height:500px;" })
 
 = yield :scripts
 
