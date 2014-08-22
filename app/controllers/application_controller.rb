@@ -17,7 +17,11 @@ class ApplicationController < ActionController::Base
   after_filter :clear_location
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_path, :alert => exception.message
+    if current_user.nil?
+      redirect_to new_user_session_path + '?redirect_to=' + request.original_url, :alert => exception.message
+    else
+      redirect_to root_path, :alert => exception.message
+    end
   end
 
   def current_traveler
