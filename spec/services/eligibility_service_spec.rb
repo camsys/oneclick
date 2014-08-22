@@ -20,6 +20,12 @@ describe EligibilityService do
     ]
   end
 
+
+# Group1 Disabled
+# Group1 Red Hair
+# Group2 Age > 50 
+# is (Disabled And Red Hair) or (Age > 50)
+
   it "generates the missing information structure" do
     trip = FactoryGirl.create(:trip, trip_purpose: TripPurpose.find_by_name('Medical'))
     planned_trip_part = trip.trip_parts.first

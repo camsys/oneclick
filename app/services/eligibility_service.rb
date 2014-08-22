@@ -29,7 +29,7 @@ class EligibilityService
       is_eligible = true
       min_match_score = 0
     end
-    Rails.logger.info "\nservice: #{service.name rescue service.ai}"
+    Rails.logger.info "\nservice: #{service.name rescue service.ai}, groups count: #{groups.count}"
     groups.each do |group|
       group_missing_information_text_list = []
       group_missing_information_text = ''
@@ -38,13 +38,13 @@ class EligibilityService
       group_eligible = true
       service_characteristic_maps = service.service_characteristics.where(group: group)
       Rails.logger.info "\n=== start group ==="
-      
+
       service_characteristic_maps.each do |service_characteristic_map|
         Rails.logger.info "Starting service_characteristic_map #{service_characteristic_map.ai}"
         service_requirement = service_characteristic_map.characteristic
 
         passenger_characteristic = user_profile.user_characteristics.where(
-          characteristic: service_requirement.linked_characteristic || service_requirement).first
+        characteristic: service_requirement.linked_characteristic || service_requirement).first
 
         Rails.logger.info "service_characteristic: #{service_characteristic_map.ai}"
         Rails.logger.info "service_requirement: #{service_requirement.ai}"
@@ -106,26 +106,27 @@ class EligibilityService
         Rails.logger.info "group_match_score #{group_match_score}"
         Rails.logger.info "min_match_score #{min_match_score}"
         # if group_match_score <= min_match_score
-          Rails.logger.info "setting missing_information_text & new min_match_score"
-          missing_information_text_list << group_missing_information_text
-          min_match_score = group_match_score
+        Rails.logger.info "setting missing_information_text & new min_match_score"
+        missing_information_text_list << group_missing_information_text
+        min_match_score = [min_match_score, group_match_score].min
         # end
         missing_info << group_missing_info
       end
 
     end # groups.each do
 
-      missing_information_text = case missing_information_text_list.size
-      when 0
-        ''
-      when 1
-        missing_information_text_list.first
-      when 2
-        missing_information_text_list.join(' or ')
-      else
-        [missing_information_text_list[0..-2].join(', '), missing_information_text_list[-1]].join(' or ')
-      end
+    missing_information_text = case missing_information_text_list.size
+    when 0
+      ''
+    when 1
+      missing_information_text_list.first
+    when 2
+      missing_information_text_list.join(' or ')
+    else
+      [missing_information_text_list[0..-2].join(', '), missing_information_text_list[-1]].join(' or ')
+    end
 
+    Rails.logger.info "is_eligible: #{is_eligible} min_match_score: #{min_match_score}"
 
     if is_eligible
       #Create itinerary
@@ -141,7 +142,7 @@ class EligibilityService
     case return_with
     when :itinerary
       Rails.logger.info "For service #{service.name rescue nil}, returning #{itinerary.ai}"
-      return itinerary    
+      return itinerary
     when :missing_info
       Rails.logger.info "For service #{service.name rescue nil}, returning #{missing_info.flatten.ai}"
       return missing_info.flatten
@@ -210,7 +211,7 @@ class EligibilityService
   def get_accommodating_and_eligible_services_for_traveler(trip_part=nil)
 
     user_profile = trip_part.trip.user.user_profile unless trip_part.nil?
-    
+
     if user_profile.nil? #TODO:  Need to update to handle anonymous users.  This currently only works with user logged in.
       return []
     end
@@ -273,7 +274,7 @@ class EligibilityService
 
       #Match Endpoint Area
       unless service.endpoint_area_geom.nil?
-         unless service.endpoint_area_geom.geom.contains? origin_point or service.endpoint_area_geom.geom.contains? destination_point
+        unless service.endpoint_area_geom.geom.contains? origin_point or service.endpoint_area_geom.geom.contains? destination_point
           next
         end
       end
