@@ -326,7 +326,6 @@ a{
 
 	.attract-header {
 		height: 73px;
-		border-bottom:1px solid $gray3;
    	}
     .attract-main{
     	cursor:pointer;
@@ -2490,7 +2489,7 @@ body.sessions.new, body.registrations.new{
   &:hover { text-decoration: none }
 
 	&:before {
-		background-image: url(/assets/phone.png);
+		background-image: image-url("phone.png");
 		display: block;
 		width: 31px;
 		height: 38px;
