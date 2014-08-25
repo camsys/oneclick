@@ -35,15 +35,14 @@
           /   .span12
           /     =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: false) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
           /       View trip details to call the provider.
-          - if user_signed_in?
+          - if false # user_signed_in?
             .row-fluid
               .span12
                 = link_to 'Email provider', '#show-email-provider-modal', class: 'btn btn-block'
 
           .row-fluid
             .span12
-              = link_to kiosk_user_new_trip_start_path(current_or_guest_user), {class: 'btn btn-block'} do
-                = t(:plan_a_new_trip)
+              = link_to 'I\'m Finished', kiosk_reset_path, class: 'btn btn-block'
 
           .row-fluid
             .span12
@@ -159,10 +158,7 @@
     $('#itinerary_modal').modal({show: true, keyboard: false});
   });
 
-  //$('#main').css('overflow', 'scroll');
-  $('a.details').on('click', function(){
-    $('.navbar').css('z-index', 0);
-  });
+  $('.navbar').css('z-index', 0);
 
   $('.trip-overview').on('click', function(){
     $('#overview-modal').removeClass('hide');
