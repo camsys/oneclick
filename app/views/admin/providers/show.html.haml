@@ -148,6 +148,26 @@
     .col-sm-6
       .panel.panel-default
         .panel-heading
+          .row.text
+            .col-sm-12
+              %h3.panel-title= t(:public_comments)
+        .panel-body
+          -if @provider.public_comments
+            =@provider.public_comments.html_safe
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          .row.text
+            .col-sm-12
+              %h3.panel-title= t(:private_comments)
+        .panel-body
+          -if @provider.private_comments
+            =@provider.private_comments.html_safe
+
+  .row
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
           / %h4.panel-title= t(:other_information)
           %h4.panel-title Other Information
         .panel-body

@@ -39,11 +39,32 @@
           = f.input :internal_contact, collection: @provider.users, class: "form-control",
                 selected: (@contact.id if @contact) , include_blank: "None", label: t(:user)
 
-  .panel.panel-default
-    .panel-heading
-      %h4.panel-title= t(:staff_actions)
-    .panel-body
-      .scrolling-checkbox-list
-        = f.association :staff, collection: User.staff_assignable.order(:first_name), as: :check_boxes,
-                wrapper: :inline_checkboxes, label: false
-                
+  .row
+    .panel.panel-default
+      .panel-heading
+        %h4.panel-title= t(:staff_actions)
+      .panel-body
+        .scrolling-checkbox-list
+          = f.association :staff, collection: User.staff_assignable.order(:first_name), as: :check_boxes,
+                  wrapper: :inline_checkboxes, label: false
+
+
+  .row
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          .row
+            .col-sm-12
+              %h4.panel-title= t(:public_comments)
+        .panel-body
+          =t(:public_comments_message)
+          = f.input :public_comments, :input_html => {:rows => 10}, :label => false
+    .col-sm-6
+      .panel.panel-default
+        .panel-heading
+          .row
+            .col-sm-12
+              %h4.panel-title=t(:private_comments)
+        .panel-body
+          =t(:private_comments_message)
+          = f.input :private_comments, :input_html => {:rows => 10}, :label => false
