@@ -12,7 +12,7 @@
     %tr
       %td.itinerary_icons
         - if leg.respond_to? :agency_id and not leg.agency_id.nil?
-          %img{:src => get_service_icon(leg.agency_id, leg.mode)}
+          %img{:src => get_service_provider_icon(leg.agency_id, leg.mode)}
         - else
           %img{:src => get_mode_icon(leg.mode)}
       %td
