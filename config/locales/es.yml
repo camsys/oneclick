@@ -654,6 +654,8 @@ es:
   state: "[es]State[/es]"
   zip: "[es]Zip[/es]"
   all: "Todos"
+  system_usage: "[es]System Usage[/es]"
+
   relationship_status:
     relationship_status_requested: "[es599]Requested[/es]"
     relationship_status_pending: "[es600]Pending[/es]"

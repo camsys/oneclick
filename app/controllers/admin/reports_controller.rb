@@ -4,10 +4,12 @@ class Admin::ReportsController < Admin::BaseController
   load_and_authorize_resource  
   
   TIME_FILTER_TYPE_SESSION_KEY = 'reports_time_filter_type'
-  
+  DATE_OPTION_SESSION_KEY = 'date_range'
+
   def index
     @reports = Report.all
     @generated_report = GeneratedReport.new({})
+    @generated_report.date_range = session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
   end
 
   # renders a report page. Actual details depends on the id parameter passed
@@ -38,6 +40,9 @@ class Admin::ReportsController < Admin::BaseController
     # store it in the session
     session[TIME_FILTER_TYPE_SESSION_KEY] = @time_filter_type
     params[:time_filter_type] = @time_filter_type
+
+    @generated_report.date_range ||= session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
+    session[DATE_OPTION_SESSION_KEY] = @generated_report.date_range
 
     if @report
                     

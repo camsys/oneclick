@@ -662,6 +662,8 @@ en:
   state: "State"
   zip: "Zip"
   all: "All"
+  system_usage: "System Usage"
+  
   relationship_status:
     relationship_status_requested: "Requested"
     relationship_status_pending: "Pending"
