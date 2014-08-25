@@ -19,21 +19,6 @@ Oneclick::Application.configure do
 
   config.active_support.deprecation = :notify
 
-  case ENV['BRAND'] || 'arc'
-    when 'arc'
-      config.action_mailer.default_url_options = { :host => 'oneclick-arc.camsys-apps.com' }
-    when 'pa'
-      config.action_mailer.default_url_options = { :host => 'oneclick-pa.camsys-apps.com' }
-    when 'broward'
-      config.action_mailer.default_url_options = { :host => 'oneclick-broward.camsys-apps.com' }
-    when 'jta'
-      config.action_mailer.default_url_options = { :host => 'oneclick-jta.camsys-apps.com' }
-    when 'ieuw'
-      config.action_mailer.default_url_options = { :host => 'oneclick-ieuw.camsys-apps.com' }
-    else
-      raise "Brand #{ENV['BRAND']} not handled"
-  end
-
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
