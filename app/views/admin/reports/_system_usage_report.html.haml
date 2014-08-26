@@ -1,6 +1,27 @@
 .row
   .col-sm-12
-    .panel.panel-default
-      .panel-heading
-        %h2.panel-title=t(:system_usage)
-      .panel-body
+    = render partial: 'stats_panel',
+             locals: {title: 'User Statistics',
+                      key_type: 'locale',
+                      cols: @report_instance.user_cols}
+    = render partial: 'stats_panel',
+             locals: {title: 'Trip Statistics',
+                      key_type: 'mode',
+                      cols: @report_instance.trip_cols}
+    = render partial: 'stats_panel',
+             locals: {title: 'Rating Statistics',
+                      key_type: 'none',
+                      cols: @report_instance.rating_cols}
+    %table.table.table.condensed.table-striped.table-hover.table-bordered
+      %thead
+        %tr
+          %th Resource
+          %th Count
+      %tbody
+        - names = @report_instance.totals_class_names
+        - names.zip(@columns).each do |name, col|
+          %tr
+            %td
+              = name.titleize
+            %td
+              = @data[col]

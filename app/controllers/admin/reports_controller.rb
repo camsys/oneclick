@@ -49,9 +49,9 @@ class Admin::ReportsController < Admin::BaseController
       # set up the report view
       @report_view = @report.view_name
       # get the class instance and generate the data
-      report_instance = @report.class_name.constantize.new
-      @data = report_instance.get_data(current_user, @generated_report)
-      @columns = report_instance.get_columns
+      @report_instance = @report.class_name.constantize.new
+      @data = @report_instance.get_data(current_user, @generated_report)
+      @columns = @report_instance.get_columns
       @url_for_csv = url_for only_path: true, format: :csv, params: params
       
       respond_to do |format|

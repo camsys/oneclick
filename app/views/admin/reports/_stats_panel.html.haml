@@ -1,0 +1,29 @@
+.panel.panel-default
+  .panel-heading
+    %h3.panel-title
+      = title
+  .panel-body
+    %table.table.table.condensed.table-striped.table-hover.table-bordered
+      %thead
+        %tr
+          - cols.each do |col|
+            %th
+              = col.to_s.titleize
+      %tbody
+        %tr
+          - cols.each do |col|
+            %td
+              - if @data[col].is_a?(Hash)
+                - strings = []
+                - @data[col].each do |key, value|
+                  - case key_type
+                  - when 'locale'
+                    - key_name = t(key, scope: :locales)
+                  - when 'mode'
+                    - key_name = t("#{Mode.unscoped.find(key).code}_name")
+                  - else
+                    - key_name = t(key)
+                  - strings << "#{key_name}: #{value}"
+                = strings.join(', ')
+              - else
+                = @data[col]
