@@ -26,4 +26,4 @@
                   - strings << "#{key_name}: #{value}"
                 = strings.join(', ')
               - else
-                = @data[col].is_a?(Fixnum) ? @data[col] : @data[col].round(2) 
+                = @data[col].nil? || @data[col].is_a?(Fixnum) ? @data[col] : @data[col].round(2) 

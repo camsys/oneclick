@@ -45,7 +45,7 @@ class SystemUsageReport
     @trip_cols.each do |col|
       data[col] = case col
       when :total_trips
-        Trip.where(scheduled_date: date_range).count
+        Trip.where(scheduled_time: date_range).count
       when :total_itineraries_generated
         Itinerary.where(start_time: date_range).count
       when :total_itineraries_selected
