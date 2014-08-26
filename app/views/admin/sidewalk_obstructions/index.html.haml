@@ -1,0 +1,85 @@
+= form_tag approve_admin_sidewalk_obstructions_path, method: :patch do
+  .row.info-header
+    .col-sm-6
+      %h1= t(:sidewalk_obstructions)
+    .col-sm-6.btns
+      .pull-right
+        = submit_tag t(:apply), class: "btn action-button"
+        = link_to t(:cancel), admin_sidewalk_obstructions_path, class: "btn action-button"
+  .row
+    .col-sm-12
+      %table.table.table-condensed.table-striped.table-bordered.table-hover#sidewalk_feedbacks_table
+        %thead
+          %tr
+            %th= t(:username)
+            %th= t(:comments)
+            %th= t(:remove_by)
+            %th= t(:approve)
+            %th= t(:reject)
+            %th= t(:delete)
+            %th= t(:created)
+            %th
+        %tbody
+          - @sidewalk_obstructions.each do |feedback|
+            %tr
+              %td= feedback.user.name
+              %td= feedback.comment
+              %td
+                - unless feedback.removed_at.nil?
+                  =l(feedback.removed_at, :format => :short)
+              %td
+                = label_tag "#{feedback.id}_#{SidewalkObstruction::APPROVED}", t(:approve), class: "sr-only"
+                = radio_button_tag "#{feedback.id}", SidewalkObstruction::APPROVED
+              %td
+                = label_tag "#{feedback.id}_#{SidewalkObstruction::REJECTED}", t(:reject), class: "sr-only"
+                = radio_button_tag "#{feedback.id}", SidewalkObstruction::REJECTED 
+              %td
+                = label_tag "#{feedback.id}_#{SidewalkObstruction::DELETED}", t(:delete), class: "sr-only"
+                = radio_button_tag "#{feedback.id}", SidewalkObstruction::DELETED 
+              %td
+                =l(feedback.created_at, :format => :short)
+              %td.center
+                - if feedback.lat and feedback.lon
+                  = link_to Rails.application.config.street_view_url + '?lat=' + feedback.lat.to_s + '&lng=' + feedback.lon.to_s, class: 'btn action-button', target: '_blank', role: 'button' do
+                    = t(:street_view)
+
+:javascript
+$(document).ready( function() {
+  $("form").submit(function( event ) {
+    $.ajax({
+      type: "POST",
+      url: "/admin/sidewalk_obstructions/approve",
+      data: {
+        "utf8":"✓", 
+        "_method":"patch",
+        "authenticity_token": $("input[name=authenticity_token]").val(),
+        "approve": $("input:checked", table.fnGetNodes()).serialize()
+      },
+      // This can't just be a reload or we hit issues with the reload
+      success: function() { window.location = window.location }
+    });
+    event.preventDefault();
+  });
+  var table = $('#sidewalk_feedbacks_table').dataTable( {
+    "aaSorting": [[ 6, "desc" ]],
+    "aoColumnDefs": [
+      { "bSortable": false, "aTargets": [ 3,4,5 ] },
+      { "bSearchable": false, "aTargets": [ 3,4,5 ] }
+    ],
+    "oLanguage": {
+              "sLengthMenu": "Display _MENU_ items per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ items",
+              "sInfoEmpty": "Showing 0 to 0 of 0 items",
+              "sInfoFiltered": "(filtered from _MAX_ total items)"
+    },
+    "bAutoWidth": false,
+    "aoColumnDefs": [
+      { "sWidth": "10%", "aTargets": [ 0 ] },
+      { "sWidth": "40%", "aTargets": [ 1 ] },
+      { "sWidth": "5%", "aTargets": [ 3, 4, 5 ] }
+    ],
+    "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+  } );
+});
+  

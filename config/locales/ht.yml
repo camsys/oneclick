@@ -98,6 +98,10 @@ ht:
   send_itinerary_by_email: "[ht]Send itinerary by email[/ht]"
   send_trip_by_email: "[ht]Send trip plan by email[/ht]"
   send_follow_up_email: "[ht]Send Follow-up Email[/ht]"
+  sidewalk_obstructions: "[ht]Sidewalk Obstructions[/ht]"
+  sidewalk_obstructions_update:
+    one: "[ht]The sidewalk obstruction has been updated[/ht]"
+    other: "[ht]The sidewalk obstructions have been updated[/ht]"
 
   # Registration, sign in, profile
   about_you: '[ht]About You[/ht]'
@@ -373,7 +377,10 @@ ht:
   zoom_out: '[ht]Zoom out[/ht]'
   center_my_location: '[ht]Center my location[/ht]'
   display_street_view: '[ht]Display street view[/ht]'
+  street_view: '[ht]Street view[/ht]'
   select_location_on_map: '[ht]Select location on map[/ht]'
+  add_sidewalk_feedback_on_map: '[ht]Submit sidewalk obstruction feedback[/ht]'
+  remove_by: '[ht]Remove by[/ht]'
 
   # My Places form
   found_x_places: {

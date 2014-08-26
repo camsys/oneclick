@@ -22,6 +22,7 @@ module CsHelpers
     :services => 'icon-bus-sign',
     :users => 'fa fa-group',
     :feedback => 'fa fa-thumbs-o-up',
+    :sidewalk_obstructions => 'fa fa-comment',
     :stop_assisting => 'fa fa-compass'
   }
 
@@ -31,6 +32,9 @@ module CsHelpers
     ]
     if Rating.feedback_on?
       a.push({label: t(:feedback), target: ratings_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback}) 
+    end
+    if SidewalkObstruction.sidewalk_obstruction_on?
+      a.push({label: t(:sidewalk_obstructions), target: admin_sidewalk_obstructions_path, icon: ACTION_ICONS[:sidewalk_obstructions], access: :admin_sidewalk_obstruction}) 
     end
     a
   end

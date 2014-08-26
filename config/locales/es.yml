@@ -94,7 +94,11 @@ es:
   no_email_found: '[es]No email was found[/es]'
   send_itinerary_by_email: "[es32]Send itinerary by email[/es]"
   send_trip_by_email: "[es29]Send trip plan by email[/es]"
-  send_follow_up_email: "[es29]Send Follow-up Email[/es]"
+  send_follow_up_email: "[es29]Send Follow-up Email[/es]"  
+  sidewalk_obstructions: "[es]Sidewalk Obstructions[/es]"
+  sidewalk_obstructions_update:
+    one: "[es]The sidewalk obstruction has been updated[/es]"
+    other: "[es]The sidewalk obstructions have been updated[/es]"
 
   # Registration, sign in, profile
   about_you: '[es32]About You[/es]' # Not translated
@@ -376,7 +380,10 @@ es:
   zoom_out: '[es]Zoom out[/es]'
   center_my_location: '[es]Center my location[/es]'
   display_street_view: '[es]Display street view[/es]'
+  street_view: '[es]Street view[/es]'
   select_location_on_map: '[es]Select location on map[/es]'
+  add_sidewalk_feedback_on_map: '[es]Submit sidewalk obstruction feedback[/es]'
+  remove_by: '[es]Remove by[/es]'
 
   # My Places form
   found_x_places: {

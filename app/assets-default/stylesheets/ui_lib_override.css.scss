@@ -30,3 +30,16 @@
 .img-responsive {
   width: auto \9;
 }
+
+/* override leaflet-container to pick up application font settings */
+.leaflet-container {
+  @media(max-width:$screen-xs-max){
+    font: $font-size-phone $font-family-phone !important;
+  }
+  @media(min-width:$screen-sm-min) and (max-width:$screen-sm-max){
+    font: $font-size-tablet $font-family-tablet !important;
+  }
+  @media(min-width:$screen-md-min){
+    font: $font-size-base $font-family-base !important;
+  }
+}

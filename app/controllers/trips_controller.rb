@@ -600,6 +600,7 @@ class TripsController < PlaceSearchingController
     if @itinerary.is_mappable
       @markers = create_itinerary_markers(@itinerary).to_json
       @polylines = create_itinerary_polylines(@legs).to_json
+      @sidewalk_feedback_markers = create_itinerary_sidewalk_feedback_markers(@legs).to_json
     end
 
     #Rails.logger.debug @itinerary.inspect

@@ -22,6 +22,10 @@ Oneclick::Application.config.min_drive_seconds = 180
 Oneclick::Application.config.max_walk_seconds = 1200
 Oneclick::Application.config.allows_booking = false
 
+Oneclick::Application.config.street_view_url = '/streetview.html'
+Oneclick::Application.config.enable_sidewalk_obstruction = true
+Oneclick::Application.config.sidewalk_feedback_query_buffer = 0.0001 #lat/lon degree
+
 Oneclick::Application.config.initial_signup_question = false
 
 Oneclick::Application.config.max_ui_duration = 2.hours

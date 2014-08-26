@@ -154,6 +154,68 @@ module MapHelper
     end
   end
 
+  #Returns an array of sidewalk_feedback_markers
+  def create_itinerary_sidewalk_feedback_markers(legs)
+
+    markers = []
+    min_lat = min_lon = max_lat = max_lon = nil
+    legs.each_with_index do |leg, index|
+      if leg.mode == Leg::TripLeg::WALK
+        leg.geometry.each_with_index do |latlon, index|
+          lat = latlon[0]
+          lon = latlon[1]
+          min_lat = (min_lat.nil? or min_lat > lat) ? lat : min_lat
+          min_lon = (min_lon.nil? or min_lon > lon) ? lon : min_lon
+          max_lat = (max_lat.nil? or max_lat < lat) ? lat : max_lat
+          max_lon = (max_lon.nil? or max_lon < lon) ? lon : max_lon
+
+        end
+      end
+    end
+
+    unless min_lat.nil?
+      buffer = Oneclick::Application.config.sidewalk_feedback_query_buffer
+      min_lat -= buffer#assign buffer
+      max_lat += buffer
+      min_lon -= buffer
+      max_lon += buffer
+      query_str = "(status = '%APPROVED_STATUS%'" #status valid?
+      is_admin = (current_user and (current_user.has_role?(:admin) or current_user.has_role?(:system_administrator)))
+      if is_admin #user permission
+        query_str += " or status = '%PENDING_STATUS%') "
+      else
+        query_str += " or (status = '%PENDING_STATUS%' and user_id = %USER_ID%)) "
+      end
+
+      query_str += " and (removed_at IS NULL or removed_at >= CURRENT_TIMESTAMP)" #removed?
+      query_str += " and (lat >= %MIN_LAT% and lat <= %MAX_LAT% and lon >= %MIN_LON% and lon <= %MAX_LON%)" #in bbox?
+
+      query_str = query_str.
+        sub('%APPROVED_STATUS%', SidewalkObstruction::APPROVED).
+        sub('%PENDING_STATUS%', SidewalkObstruction::PENDING).
+        sub('%USER_ID%', current_or_guest_user.id.to_s).
+        sub('%MIN_LAT%', min_lat.to_s).
+        sub('%MIN_LON%', min_lon.to_s).
+        sub('%MAX_LAT%', max_lat.to_s).
+        sub('%MAX_LON%', max_lon.to_s)
+
+      Rails.logger.info query_str
+      feedbacks = SidewalkObstruction.where(query_str)
+
+      feedbacks.each do |f|
+        markers << {
+          data: f,
+          allowed_actions: {
+            is_approvable: (f.pending? and is_admin),
+            is_deletable: (is_admin or current_or_guest_user.id == f.user.id)
+          } 
+        }
+      end
+    end
+
+    return markers
+  end
+
   #Returns an array of polylines, one for each leg
   def create_itinerary_polylines(legs)
 

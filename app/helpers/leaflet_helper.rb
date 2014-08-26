@@ -10,8 +10,12 @@ module LeafletHelper
   SCROLL_WHEEL_ZOOM = false
   SHOW_MY_LOCATION = true
   SHOW_STREET_VIEW= true
-  STREET_VIEW_URL = '/streetview.html'
+  STREET_VIEW_URL = Rails.application.config.street_view_url
   SHOW_LOCATION_SELECT = false
+  SHOW_SIDEWALK_FEEDBACK= true
+  SIDEWALK_MARKER_ICON = 'sidewalkFeedbackIcon'
+  MIN_SIDEWALK_ZOOM = 14
+
   ZOOM_ANIMATION = true
   
   def LeafletMap(options)
@@ -43,6 +47,29 @@ module LeafletHelper
     street_view_url = options[:street_view_url] ? options[:street_view_url] : STREET_VIEW_URL
     show_location_select = options[:show_location_select] || SHOW_LOCATION_SELECT
     zoom_animation = options[:zoom_animation] || ZOOM_ANIMATION
+    show_sidewalk_feedback = (options[:show_sidewalk_feedback] || SHOW_SIDEWALK_FEEDBACK) if SidewalkObstruction.sidewalk_obstruction_on?
+
+    if show_sidewalk_feedback
+      sidewalk_feedback_options = {
+        submit_feedback_url: user_sidewalk_obstructions_path,
+        approve_feedback_url: approve_user_sidewalk_obstructions_path,
+        reject_feedback_url: reject_user_sidewalk_obstructions_path,
+        delete_feedback_url: delete_user_sidewalk_obstructions_path,
+        locale_text: {
+          approve: I18n.t(:approve),
+          reject: I18n.t(:reject),
+          delete: I18n.t(:delete),
+          submit: I18n.t(:submit),
+          cancel: I18n.t(:cancel),
+          remove_by: I18n.t(:remove_by),
+          comments: I18n.t(:comments)
+        },
+        icon_class: SIDEWALK_MARKER_ICON,
+        min_visible_zoom: MIN_SIDEWALK_ZOOM
+      }
+    else
+      sidewalk_feedback_options = {}
+    end
 
     mapopts = {
       :min_zoom => min_zoom,
@@ -55,12 +82,15 @@ module LeafletHelper
       show_street_view: show_street_view,
       street_view_url: street_view_url,
       show_location_select: show_location_select,
+      show_sidewalk_feedback: show_sidewalk_feedback,
+      sidewalk_feedback_options: sidewalk_feedback_options,
       map_control_tooltips: {
         zoom_in: I18n.t(:zoom_in),
         zoom_out: I18n.t(:zoom_out),
         my_location: I18n.t(:center_my_location),
         display_street_view: I18n.t(:display_street_view),
-        select_location_on_map: I18n.t(:select_location_on_map)
+        select_location_on_map: I18n.t(:select_location_on_map),
+        add_sidewalk_feedback_on_map: I18n.t(:add_sidewalk_feedback_on_map)
       }
     }.to_json
 
@@ -70,6 +100,8 @@ module LeafletHelper
     js << "m.init('#{mapid}', #{mapopts});"
     # add any markers
     js << "m.replaceMarkers(#{options[:markers]});" unless options[:markers].nil?
+    # add any sidewalk_feedback markers
+    js << "m.replaceSidewalkFeedbackMarkers(#{options[:sidewalk_feedback_markers]});" unless options[:sidewalk_feedback_markers].nil? if show_sidewalk_feedback
     # add any circles
     js << "m.addCircles(#{options[:circles]});" unless options[:circles].nil?
     # add any polylines

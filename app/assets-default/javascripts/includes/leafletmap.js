@@ -30,6 +30,8 @@ CsLeaflet.Leaflet = {
     LMcacheBounds: null,
     LMcurrent_popup: null,
 
+    LMsidewalk_feedback_tool: null,
+
     OPENSTREETMAP_URL: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     OPENSTREETMAP_ATTRIB: 'Map data © OpenStreetMap contributors',
 
@@ -37,6 +39,11 @@ CsLeaflet.Leaflet = {
     CLOUDMADE_ATTRIB: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
         '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
         'Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+
+    STREET_VIEW: 'streetView',
+    CURRENT_LOCATION: 'currentLocation',
+    LOCATION_SELECT: 'locationSelect',
+    SIDEWALK_FEEDBACK: 'sidewalkFeedback',
 
     /*
      * Must be called first. Pass the Id of the div containing the map and any options
@@ -89,6 +96,15 @@ CsLeaflet.Leaflet = {
         //register LocationSelect Control
         if(options.show_location_select) {
             this.addLocationSelectControl();
+        }
+
+        //register FeedbackInput Control
+        if(options.show_sidewalk_feedback) {
+            if(CsLeaflet.SidewalkFeedbackTool) {
+                var sidewalkFeedbackTool = Object.create(CsLeaflet.SidewalkFeedbackTool);
+                sidewalkFeedbackTool.init(this, options.sidewalk_feedback_options);
+                this.LMsidewalk_feedback_tool = sidewalkFeedbackTool;
+            }
         }
 
         this.registerMapClickEvent();
@@ -164,6 +180,19 @@ CsLeaflet.Leaflet = {
             // Add the markers to the map
             for (var i = 0; i < this.LMmarkers.length; i++) {
                 this.LMmap.addLayer(this.LMmarkers[i]);
+            }
+        }
+    },
+
+    replaceSidewalkFeedbackMarkers: function(arr, updateMap) {
+        var sidewalk_feedback_tool = this.LMsidewalk_feedback_tool;
+        if(sidewalk_feedback_tool) {
+            sidewalk_feedback_tool.removeSidewalkFeedbackMarkers();
+            sidewalk_feedback_tool.addSidewalkFeedbackMarkers(arr);
+            if (updateMap) {
+                this.showMap();
+            } else {
+                this.LMmap.addLayer(sidewalk_feedback_tool.LMsidewalk_feedback_layergroup);
             }
         }
     },
@@ -418,14 +447,14 @@ CsLeaflet.Leaflet = {
      * Creates a single marker and returns it. If the iconClass is set
      * then the iconClass must be defined in the page
      */
-    createMarker: function(id, lat, lng, iconClass, popupText, name, open) {
+    createMarker: function(id, lat, lng, iconClass, popupText, name, open, options) {
         //alert(id + "," + lat + "," + lng + "," + popupText + "," + title + "," + open);
+        if(!options || typeof options != 'object') {
+            options = {};
+        }
 
-        var options = {};
         if (name) {
-            options = {
-                "title": name
-            };
+            options.title = name;
         }
         var latlng = new L.LatLng(lat, lng);
         var marker = L.marker(latlng, options);
@@ -635,22 +664,42 @@ CsLeaflet.Leaflet = {
     registerCustomControl: function() {
         L.Control.CustomButton = L.Control.extend({
             _pressed: false,
+            _button: null,
             options: {
                 position: 'topleft',
                 title: '',
                 iconCls: '',
                 toggleable: false,
+                ignorePopupWhenClick: false, //if clicks at a marker with a popup, whether continue finishing control_click_event
                 pressedCls: 'leaflet-button-pressed',
                 depressedCursorType: '',
                 pressedCursorType: 'crosshair',
+                disabled: false,
+                disabledCls: 'leaflet-disabled',
                 clickCallback: function() {}
             },
             initialize: function (controlId, options) {
                 this.id = controlId;
                 L.Util.setOptions(this, options);
             },
+            checkIfIgnorePopupWhenClick: function() {
+                return this.options.ignorePopupWhenClick;
+            },
             getToggleable: function() {
                 return this.options.toggleable;
+            },
+            getDisabled: function() {
+                return this._disabled === true || false;
+            },
+            setDisabled: function(disabled) {
+                disabled = disabled === true || false;
+                this._disabled = disabled;
+                var button = this._button || {};
+                if(disabled) {
+                    L.DomUtil.addClass(button, this.options.disabledCls);
+                } else {
+                    L.DomUtil.removeClass(button, this.options.disabledCls);
+                }
             },
             getPressed: function() {
                 return this._pressed;
@@ -658,11 +707,11 @@ CsLeaflet.Leaflet = {
             setPressed: function(pressed) {
                 if(!this.getToggleable()) {
                     return;
-    }
+                }
                 this._pressed = pressed;
                 var map = this._map;
                 if(this._pressed) {
-                    L.DomUtil.addClass(this.link, this.options.pressedCls);
+                    L.DomUtil.addClass(this._button, this.options.pressedCls);
                     if(map) {
                         //depress other controls
                         var customControls = map.customControls;
@@ -678,7 +727,7 @@ CsLeaflet.Leaflet = {
                         L.DomUtil.get(map.getContainer().id).style.cursor = this.options.pressedCursorType || 'crosshair';
                     }
                 } else {
-                     L.DomUtil.removeClass(this.link, this.options.pressedCls);
+                     L.DomUtil.removeClass(this._button, this.options.pressedCls);
                      if(map) {
                         L.DomUtil.get(map.getContainer().id).style.cursor = this.options.depressedCursorType || '';
                     }
@@ -688,13 +737,15 @@ CsLeaflet.Leaflet = {
             onAdd: function (map) {
                 var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
 
-                this.link = L.DomUtil.create('a', 'leaflet-bar-part', container);
-                L.DomUtil.create('i', this.options.iconCls, this.link);
-                this.link.href = '#';
-                this.link.title = this.options.title;
+                this._button = L.DomUtil.create('a', 'leaflet-bar-part', container);
+                L.DomUtil.create('i', this.options.iconCls, this._button);
+                this._button.href = '#';
+                this._button.title = this.options.title;
 
-                L.DomEvent.on(this.link, 'click', this._click, this);
-                
+                L.DomEvent.on(this._button, 'click', this._click, this);
+
+                this.setDisabled(this.options.disabled);
+
                 //add current control into map
                 if(!map.customControls) {
                     map.customControls = [];
@@ -707,10 +758,12 @@ CsLeaflet.Leaflet = {
             _click: function (e) {
                 L.DomEvent.stopPropagation(e);
                 L.DomEvent.preventDefault(e);
-                if(this.options.toggleable) {
-                    this.setPressed(!this._pressed);
+                if(!this.getDisabled()) {
+                    if(this.options.toggleable) {
+                        this.setPressed(!this._pressed);
+                    }
+                    this.options.clickCallback();
                 }
-                this.options.clickCallback();
             }
         })
     }, 
@@ -726,7 +779,7 @@ CsLeaflet.Leaflet = {
 
         var tooltips = this.getMapControlTooltips();
         var currentMap = this.LMmap;
-        var currentLocataionControl = new L.Control.CustomButton('currentLocation', {
+        var currentLocataionControl = new L.Control.CustomButton(this.CURRENT_LOCATION, {
             title: tooltips.my_location,
             iconCls: 'fa fa-lg fa-location-arrow',
             clickCallback: function() {
@@ -745,10 +798,11 @@ CsLeaflet.Leaflet = {
 
         var tooltips = this.getMapControlTooltips();
         var currentMap = this.LMmap;
-        var streetViewControl = new L.Control.CustomButton('streetView', {
+        var streetViewControl = new L.Control.CustomButton(this.STREET_VIEW, {
             title: tooltips.display_street_view,
             iconCls: 'fa fa-lg leaflet-street-view-icon',
-            toggleable: true
+            toggleable: true,
+            ignorePopupWhenClick: true
         });
         
         streetViewControl.addTo(currentMap);
@@ -771,7 +825,7 @@ CsLeaflet.Leaflet = {
 
         var tooltips = this.getMapControlTooltips();
         var currentMap = this.LMmap;
-        var locationSelectControl = new L.Control.CustomButton('locationSelect', {
+        var locationSelectControl = new L.Control.CustomButton(this.LOCATION_SELECT, {
             title: tooltips.select_location_on_map,
             iconCls: 'fa fa-lg fa-map-marker',
             toggleable: true
@@ -780,27 +834,43 @@ CsLeaflet.Leaflet = {
         locationSelectControl.addTo(currentMap);
     },
 
+    getActiveCustomControl: function() {
+        var currentMap = this.LMmap;
+        var customControls =  currentMap.customControls;
+        if(customControls instanceof Array) {
+            for(var i=0, ctrlCount=customControls.length; i<ctrlCount; i++) {
+                var ctrl = customControls[i];
+                if(ctrl.getToggleable() && ctrl.getPressed()) {
+                    return ctrl;
+                }
+            }
+        }
+
+        return null;
+    },
+
     executeActiveCustomControl: function(latlng) {
         var currentMap = this.LMmap;
         var customControls =  currentMap.customControls;
-        var scope = this;
-        if(customControls instanceof Array) {
-             customControls.forEach( function(ctrl) {
-                if(ctrl.getToggleable() && ctrl.getPressed()) {
-                    switch(ctrl.id) {
-                        case 'streetView':
-                            scope.openStreetView(latlng);
-                            break;
-                        case 'locationSelect':
-                            currentMap.fire('placechange', {
-                                latlng: latlng
-                            });
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            });       
+        var activeControl = this.getActiveCustomControl();
+        if(activeControl){
+            switch(activeControl.id) {
+                case this.STREET_VIEW:
+                    this.openStreetView(latlng);
+                    break;
+                case this.LOCATION_SELECT:
+                    currentMap.fire('placechange', {
+                        latlng: latlng
+                    });
+                    break;
+                case this.SIDEWALK_FEEDBACK:
+                    currentMap.fire('newsidewalkfeedback', {
+                        latlng: latlng
+                    });
+                    break;
+                default:
+                    break;
+            }
         }
     },
 
@@ -823,10 +893,14 @@ CsLeaflet.Leaflet = {
         var scope = this;
         // install a popup listener
         scope.LMmap.on('popupopen', function(e) {
+
             //alert('popup opened');
             scope.LMcurrent_popup = e.popup;
 
-            scope.executeActiveCustomControl(e.popup.getLatLng());
+            var activeControl = scope.getActiveCustomControl();
+            if(activeControl && activeControl.checkIfIgnorePopupWhenClick()) {
+                scope.executeActiveCustomControl(e.popup.getLatLng());
+            }
         });
     }
 

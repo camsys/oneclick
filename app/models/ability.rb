@@ -20,6 +20,7 @@ class Ability
       can [:see], :admin_menu
       can :access, :admin_feedback
       can [:manage], Rating # feedback admin will always be able to read feedback
+      can [:manage], SidewalkObstruction # feedback admin will always be able to read sidwalk feedback
       can :send_follow_up, Trip
     end
     if User.with_role(:agency_administrator, :any).include?(user)

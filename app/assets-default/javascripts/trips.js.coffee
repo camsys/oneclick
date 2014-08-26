@@ -5,7 +5,7 @@ is_touch_device = ->
 create_or_update_marker = (map, key, lat, lon, name, desc, iconStyle) ->  
   marker = map.findMarkerById(key)
   map.removeMarkerFromMap marker  if marker
-  marker = map.createMarker(key, lat, lon, iconStyle, desc, name, true)
+  marker = map.createMarker(key, lat, lon, iconStyle, desc, name, false)
   map.addMarkerToMap marker, true
   marker
 

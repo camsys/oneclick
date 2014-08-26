@@ -39,6 +39,14 @@ Oneclick::Application.routes.draw do
         end
       end
 
+      resources :sidewalk_obstructions, :only => [:create, :update] do
+        collection do
+          post "approve"
+          post "reject"
+          post "delete"
+        end
+      end
+
       resources :programs, :only => [:new, :create, :edit, :update] do
         member do
           put 'set'
@@ -273,6 +281,11 @@ Oneclick::Application.routes.draw do
       get '/services' => 'util#services'
       get '/' => 'admin_home#index'
       resource :feedback
+      resources :sidewalk_obstructions, :only => [:index] do
+        collection do
+          patch "approve"
+        end
+      end
       resources 'agency_user_relationships' do
         get   'aid_user'
         get   'agency_revoke'
