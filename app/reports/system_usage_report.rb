@@ -60,9 +60,9 @@ class SystemUsageReport
     @rating_cols.each do |col|
       data[col] = case col
       when :total_ratings
-        Rating.where(status: "approved").count
+        Rating.where(status: "approved", updated_at: date_range).count
       when :average_rating
-        Rating.where(status: "approved").average(:value)
+        Rating.where(status: "approved", updated_at: date_range).average(:value)
       end
     end
     
