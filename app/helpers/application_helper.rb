@@ -52,11 +52,14 @@ module ApplicationHelper
     # in which agency_id was not original agency_id from GTFS 
     # but instead it's identified service name...
     s = Service.where(name: agency_id).first || 
-      Provider.where(name: agency_id).first ||
-      Service.where(external_id: agency_id).first || 
-      Provider.where(external_id: agency_id).first
-    if s and s.logo_url
-      return root_url({locale:''}) + Base.helpers.asset_path(s.logo_url)
+      Service.where(external_id: agency_id).first
+
+    if s 
+      if s.logo_url
+        return root_url({locale:''}) + Base.helpers.asset_path(s.logo_url)
+      elsif s.provider and s.provider.logo_url
+        return root_url({locale:''}) + Base.helpers.asset_path(s.provider.logo_url)
+      end
     else
       return get_mode_icon(mode)
     end
