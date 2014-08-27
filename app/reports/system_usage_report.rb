@@ -55,7 +55,7 @@ class SystemUsageReport
       when :total_itineraries_selected
         Itinerary.where(selected: true, start_time: date_range).count
       when :bookings
-        Itinerary.where.not(booking_confirmation: nil).count
+        Itinerary.where(start_time: date_range).where.not(booking_confirmation: nil).count
       when :generated_itineraries_by_mode
         Itinerary.where(start_time: date_range).group(:mode_id).count(:mode_id)
       when :selected_itineraries_by_mode
