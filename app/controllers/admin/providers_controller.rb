@@ -74,6 +74,8 @@ class Admin::ProvidersController < ApplicationController
       if @provider.update_attributes(admin_provider_params)
         # internal_contact is a special case
         @provider.internal_contact = User.find_by_id(params[:provider][:internal_contact])
+        @provider.logo = params[:provider][:logo]
+        @provider.save!
 
         set_staff(staff_ids)
         

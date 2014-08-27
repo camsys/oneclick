@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140826133940) do
+ActiveRecord::Schema.define(version: 20140827143151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -245,9 +245,11 @@ ActiveRecord::Schema.define(version: 20140826133940) do
     t.string  "internal_contact_title"
     t.string  "internal_contact_phone"
     t.string  "internal_contact_email", limit: 128
-    t.string  "logo_url"
+    t.string  "old_logo_url"
     t.text    "private_comments"
     t.text    "public_comments"
+    t.string  "icon"
+    t.string  "logo"
   end
 
   create_table "ratings", force: true do |t|
@@ -362,6 +364,7 @@ ActiveRecord::Schema.define(version: 20140826133940) do
     t.integer  "residence_area_geom_id"
     t.text     "public_comments"
     t.text     "private_comments"
+    t.string   "logo"
   end
 
   create_table "services_users", id: false, force: true do |t|

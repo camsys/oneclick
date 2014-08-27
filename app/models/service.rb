@@ -57,6 +57,8 @@ class Service < ActiveRecord::Base
   validates :provider, presence: true
   validates :service_type, presence: true
 
+  mount_uploader :logo, ServiceLogoUploader
+
   def human_readable_advanced_notice
     if self.advanced_notice_minutes < (24*60)
       hours = self.advanced_notice_minutes/60.round
@@ -169,7 +171,7 @@ class Service < ActiveRecord::Base
     #clear old polygons
     self.endpoint_area_geom = nil
     self.coverage_area_geom = nil
-    Rails.logger.info  "Building Polygon for Service/Id: #{self.name} / #{self.id}"
+    #Rails.logger.info  "Building Polygon for Service/Id: #{self.name} / #{self.id}"
     ['endpoint_area', 'coverage_area'].each do |rule|
       scms = self.service_coverage_maps.where(rule: rule)
       scms.each do |scm|
@@ -177,10 +179,10 @@ class Service < ActiveRecord::Base
         if polygon.nil?
           next
         end
-        Rails.logger.info "polygon is #{polygon.ai}"
+        #Rails.logger.info "polygon is #{polygon.ai}"
         case rule
           when 'endpoint_area'
-            Rails.logger.info  "Updating Endpoint Area"
+            #Rails.logger.info  "Updating Endpoint Area"
             if self.endpoint_area_geom
               merged = self.endpoint_area_geom.geom.union(polygon)
               self.endpoint_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
@@ -191,7 +193,7 @@ class Service < ActiveRecord::Base
               self.save!
             end
           when 'coverage_area'
-            Rails.logger.info  "Updating Coverage Area"
+            #Rails.logger.info  "Updating Coverage Area"
             if self.coverage_area_geom
               merged = self.coverage_area_geom.geom.union(polygon)
               self.coverage_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)

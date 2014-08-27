@@ -119,6 +119,10 @@ class ServicesController < ApplicationController
         # internal_contact is a special case
         @service.internal_contact = User.find_by_id(params[:service][:internal_contact])
         @service.build_polygons
+        if params[:service][:logo]
+          @service.logo = params[:service][:logo] 
+          @service.save!
+        end
 
         format.html { redirect_to @service, notice: t(:service) + ' ' + t(:was_successfully_updated) } 
         format.json { head :no_content }

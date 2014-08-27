@@ -68,7 +68,7 @@ en:
   listing_orgs: "Listing Organizations"
   provider_name: "Provider name"
   provider: "Provider"
-  provider_contact_info: "Provider Contact Information"
+  provider_info: "Provider Information"
   provided_by: "Provided by"
   select_provider: "Select Provider"
   back_to_providers: "Back to providers"
@@ -409,6 +409,7 @@ en:
 
   # new ones
   # Services
+  logo: 'Logo'
   next: 'Plan'
   endpoint_area: "Coverage Area"
   coverage_area: "Endpoint Area"

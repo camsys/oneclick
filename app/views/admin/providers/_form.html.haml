@@ -1,4 +1,4 @@
-= simple_form_for [:admin, @provider], html: { class: 'form-horizontal'},
+= simple_form_for [:admin, @provider], html: { class: 'form-horizontal', multipart: true},
         wrapper: :horizontal_form do |f|
   = f.error_notification
   .row.info-header
@@ -14,8 +14,9 @@
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h4.panel-title= t(:provider_contact_info)
+          %h4.panel-title= t(:provider_info)
         .panel-body
+          = f.input :logo, :as => :file
           = f.input :address
           = f.input :city, label: "#{t(:city)}/#{t(:state)}/#{t(:zip)}",
             input_html: {class: "col-sm-6 form-control"}, wrapper_html: {class: ""} do

@@ -1,6 +1,10 @@
+require 'carrierwave/orm/activerecord'
+
 class Provider < ActiveRecord::Base
   include Rateable
   resourcify
+
+  mount_uploader :logo, ProviderLogoUploader
 
   #associations
   has_many :users

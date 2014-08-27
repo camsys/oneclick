@@ -41,9 +41,15 @@
   .col-sm-6
     .panel.panel-default
       .panel-heading
-        %h4.panel-title= t(:provider_contact_info)
+        %h4.panel-title
+          = t(:provider_info)
       .panel-body              
         %table.table.table-condensed
+          %tr
+            %td.text-right
+              = t(:logo)
+            %td.center
+              %img{src: @provider.logo_url}
           %tr
             %td.text-right
               = t(:address) + ":"

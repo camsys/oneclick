@@ -69,8 +69,7 @@ def add_ancillary_services
       {name: 'Rabbit Transit', contact: "rabbit contact",
        address: '1230 Roosevelt Ave.', city: 'York', state: 'PA', zip: '17404',
        phone: '717-846-RIDE', email: 'info@rabbittransit.org',
-       url: 'http://www.rabbittransit.org/', external_id: "1",
-       logo_url: 'pa/rabbittransit_40x40.png'},
+       url: 'http://www.rabbittransit.org/', external_id: "1"},
   ]
 
   s = ServiceType.where(code: 'transit').first
@@ -126,8 +125,7 @@ def add_providers_and_services
       {name: 'Rabbit Transit', contact: "rabbit contact",
        address: '1230 Roosevelt Ave.', city: 'York', state: 'PA', zip: '17404',
        phone: '717-846-RIDE', email: 'info@rabbittransit.org',
-       url: 'http://www.rabbittransit.org/', external_id: "1",
-       logo_url: 'pa/rabbittransit_40x40.png'},
+       url: 'http://www.rabbittransit.org/', external_id: "1"},
       {name: 'Faith in Action Network', contact: 'test name', external_id: "2"},
       {name: 'American Cancer Society', contact: 'acs name', external_id: "3"},
       {name: 'Lutheran Social Services', contact: 'lss name', external_id: "4"},
@@ -148,7 +146,6 @@ def add_providers_and_services
     contact = provider.delete(:contact)
     (first_name, last_name) = contact.split(/ /, 2)
     p = Provider.create! provider
-    p.save
 
     puts contact.downcase.gsub(' ', '_').gsub(%r{\W}, '') + '@camsys.com'
     u = User.create! first_name: first_name, last_name: last_name,
@@ -164,8 +161,7 @@ def add_providers_and_services
       when "2" #Faith in Action Network
 
         puts "Creating service 'Staying Connected' for provider"
-        service = Service.create!(name: 'Staying Connected', provider: p, service_type: paratransit, advanced_notice_minutes: 7*24*60,
-          logo_url: 'sample/sample-logo-a.png')
+        service = Service.create!(name: 'Staying Connected', provider: p, service_type: paratransit, advanced_notice_minutes: 7*24*60)
         #Add Schedules
         (1..4).each do |n|
           Schedule.create(service: service, start_seconds:9*3600, end_seconds:16*3600, day_of_week: n)

@@ -66,7 +66,7 @@ es:
   org_type: "[es33]Org type[/es]"
   new_organization: "[es35]New Organization[/es]"
   provider_name: "[es23]Provider name[/es]"
-  provider_contact_info: "[es24]Provider Contact Information[/es]"
+  provider_info: "[es24]Provider Information[/es]"
   provided_by: "[es24]Provided by[/es]"
   agents_agencies: "Agencias Agentes"
   confirm_msg: "[es40]Are you sure?[/es]"
@@ -407,7 +407,8 @@ es:
   updated: "[es242]Updated[/es]"
 
   # new ones
-  next: '[es]Plan'
+  logo: '[es]Logo[/es]'
+  next: '[es]Plan[/es]'
   endpoint_area: "[es]Coverage Area"
   coverage_area: "[es]Endpoint Area"
   endpoints: "[es]Endpoints"

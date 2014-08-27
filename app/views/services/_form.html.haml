@@ -1,6 +1,6 @@
 = simple_form_for @service,
         url: @service.id.nil? ? services_path(provider_id: @provider) : service_path,
-        method: @service.id.nil? ? 'post' : 'put', html: { class: 'form-horizontal' },
+        method: @service.id.nil? ? 'post' : 'put', html: { class: 'form-horizontal', multipart: true },
         wrapper: :horizontal_form do |f|
   - if @service.new_record?
     = f.hidden_field :provider, value: @provider.id
@@ -28,6 +28,7 @@
           - unless @service.active
             %h3.warning
               = t(:service_is_inactive)
+          = f.input :logo, :as => :file
           = f.input :phone
           = f.input :email
           = f.input :url

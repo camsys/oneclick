@@ -61,6 +61,7 @@ gem 'rgeo-activerecord'
 gem 'rgeo'
 gem 'rgeo-shapefile'
 gem 'leaflet-rails', github: 'camsys/leaflet-rails'
+gem 'carrierwave'
 
 group :development do
   # gem 'ffi-geos'

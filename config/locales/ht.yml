@@ -67,7 +67,7 @@ ht:
   listing_orgs: "[ht]Listing Organizations[/ht]"
   provider_name: "[ht]Provider name[/ht]"
   provider: "[ht]Provider[/ht]"
-  provider_contact_info: "[ht]Provider Contact Information[/ht]"
+  provider_info: "[ht]Provider Information[/ht]"
   provided_by: "[ht]Provided by[/ht]"
   select_provider: "[ht]Select Provider[/ht]"
   back_to_providers: "[ht]Back to providers[/ht]"
@@ -405,7 +405,8 @@ ht:
 
   # new ones
   # Services
-  next: '[ht]Plan'
+  logo: '[ht]Logo[/ht]'
+  next: '[ht]Plan[/ht]'
   cap_returning_at: "[ht]Returning at[/ht]"
   traveler_not_registered: "[ht]Traveler not registered to book trips with One-Click.[/ht]"
   outbound_error_occurred: "[ht]An error occurred when attempting to book your outbound trip.[/ht]"
