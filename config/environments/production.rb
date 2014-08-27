@@ -28,6 +28,10 @@ Oneclick::Application.configure do
       config.action_mailer.default_url_options = { :host => 'oneclick-broward.camsys-apps.com' }
     when 'jta'
       config.action_mailer.default_url_options = { :host => 'oneclick-jta.camsys-apps.com' }
+    when 'ieuw'
+      config.action_mailer.default_url_options = { :host => 'oneclick-ieuw.camsys-apps.com' }
+    else
+      raise "Brand #{ENV['BRAND']} not handled"
   end
 
   config.action_mailer.delivery_method = :smtp

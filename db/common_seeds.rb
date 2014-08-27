@@ -24,7 +24,10 @@ end
   {name: 'Trips Planned', description: 'Trips planned with various breakdowns.',
    view_name: 'breakdown_report', class_name: 'TripsBreakdownReport', active: false},
   {name: 'Trips Details', description: 'Details of all trips.',
-   view_name: 'trips_details_report', class_name: 'TripsDetailsReport', active: true}
+   view_name: 'trips_details_report', class_name: 'TripsDetailsReport', active: true},
+  {name: 'System Usage', description: 'Overall system usage statistics.',
+   view_name: 'system_usage_report', class_name: 'SystemUsageReport', active: true}
+
 ].each do |rep|
   # Need to correctly handle updating active state; match everything except that.
   is_active = rep[:active]
