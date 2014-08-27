@@ -11,6 +11,10 @@ class SystemUsageReport
     @user_cols = [:total_users, :active_users, :total_logins_by_active_users, :totals_by_locale]
     @trip_cols = [:total_trips, :total_itineraries_generated, :total_itineraries_selected,
                   :generated_itineraries_by_mode, :selected_itineraries_by_mode]
+    if Oneclick::Application.config.allows_booking
+      @trip_cols.insert(3, :bookings)
+    end
+    
     @rating_cols = [:total_ratings, :average_rating]
   end    
 
@@ -50,6 +54,8 @@ class SystemUsageReport
         Itinerary.where(start_time: date_range).count
       when :total_itineraries_selected
         Itinerary.where(selected: true, start_time: date_range).count
+      when :bookings
+        Itinerary.where.not(booking_confirmation: nil).count
       when :generated_itineraries_by_mode
         Itinerary.where(start_time: date_range).group(:mode_id).count(:mode_id)
       when :selected_itineraries_by_mode
