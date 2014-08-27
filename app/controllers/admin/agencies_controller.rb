@@ -112,7 +112,7 @@ private
 
 def agency_params params
   params.require(:agency).permit(:name, :address, :phone, :email, :url,
-    :parent_id, :parent,:internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email)
+    :parent_id, :parent,:internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email, :public_comments, :private_comments)
 end
 
 def load_agency

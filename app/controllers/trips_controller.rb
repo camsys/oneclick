@@ -80,6 +80,12 @@ class TripsController < PlaceSearchingController
       break if !@is_plan_valid  
     end
 
+    if assisting?
+      @assisting_agency = current_user.agency || nil
+    else
+      @assisting_agency = nil
+    end
+
     if @is_plan_valid
       # Just before render, save off the html on the trip, so that we can access it later for ratings.
       planned_trip_html = render_to_string partial: "selected_itineraries_details", locals: { trip: @trip, for_db: true }
@@ -208,7 +214,7 @@ class TripsController < PlaceSearchingController
       Rails.logger.info "no email found"
       notice_text = t(:no_email_found)
     end
-    
+
     if current_user.agency
       respond_to do |format|
         format.html { redirect_to admin_agency_trips_path(current_user.agency), :notice => notice_text, locale: I18n.locale  }

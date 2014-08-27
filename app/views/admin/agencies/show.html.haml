@@ -114,6 +114,26 @@
               %td
                 = mail_to s.email.to_s
 
+.row
+  .col-sm-6
+    .panel.panel-default
+      .panel-heading
+        .row.text
+          .col-sm-12
+            %h3.panel-title= t(:public_comments)
+      .panel-body
+        -if @agency.public_comments
+          =@agency.public_comments.html_safe
+  .col-sm-6
+    .panel.panel-default
+      .panel-heading
+        .row.text
+          .col-sm-12
+            %h3.panel-title= t(:private_comments)
+      .panel-body
+        -if @agency.private_comments
+          =@agency.private_comments.html_safe
+
 :javascript
   $(document).ready(function() {
     $('#agent_table').dataTable( {

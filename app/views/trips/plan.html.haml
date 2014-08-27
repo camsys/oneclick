@@ -20,6 +20,15 @@
           /%i.fa.fa-envelope-o
           = t(:email)
 
+  - if @assisting_agency
+    .col-xs-12.well{style: "padding: 5px;"}
+      .col-sm-12{style: "padding: 0px;"}
+        =t(:trip_planned_assistance)
+        %b=@assisting_agency.name
+      -unless @assisting_agency.public_comments.empty?
+        .col-sm-12{style: "background: white; border-radius: 5px;"}
+          =@assisting_agency.public_comments.html_safe
+
   .col-xs-12{style: "padding: 0px;"}
     = render partial: "selected_itineraries_details", locals: { trip: @trip, for_db: false }
   

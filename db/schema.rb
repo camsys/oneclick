@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(version: 20140827143151) do
     t.string  "internal_contact_phone"
     t.string  "internal_contact_email", limit: 128
     t.boolean "active",                             default: true, null: false
+    t.text    "private_comments"
+    t.text    "public_comments"
   end
 
   create_table "agency_user_relationships", force: true do |t|

@@ -4,6 +4,7 @@
 # TODO may want to eventually split these out into separate files
 
 ht:
+  trip_planned_assistance: "Trip planned with assistance from "
   public_comments: "Public Comments"
   private_comments: "Private Comments"
   public_comments_message: "Leave comments for travelers about this service."
