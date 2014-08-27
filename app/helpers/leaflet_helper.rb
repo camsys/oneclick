@@ -51,10 +51,10 @@ module LeafletHelper
 
     if show_sidewalk_feedback
       sidewalk_feedback_options = {
-        submit_feedback_url: user_sidewalk_obstructions_path,
-        approve_feedback_url: approve_user_sidewalk_obstructions_path,
-        reject_feedback_url: reject_user_sidewalk_obstructions_path,
-        delete_feedback_url: delete_user_sidewalk_obstructions_path,
+        submit_feedback_url: user_sidewalk_obstructions_path({:user_id => current_or_guest_user.id}),
+        approve_feedback_url: approve_user_sidewalk_obstructions_path({:user_id => current_or_guest_user.id}),
+        reject_feedback_url: reject_user_sidewalk_obstructions_path({:user_id => current_or_guest_user.id}),
+        delete_feedback_url: delete_user_sidewalk_obstructions_path({:user_id => current_or_guest_user.id}),
         locale_text: {
           approve: I18n.t(:approve),
           reject: I18n.t(:reject),
