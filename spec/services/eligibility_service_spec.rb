@@ -32,31 +32,9 @@ describe EligibilityService do
       [],
       [],
       [
-        {
-          "question" => I18n.t('age_note'),
-          "data_type" => 'integer',
-          "options" => nil,
-          "success_condition"=>"<1949",
-          "group_id" => 0,
-          "code" => "age"
-        },
-        {
-          "question"=>
-          "translation missing: en.The traveler is temporarily or permanently disabled",
-          "data_type" => "bool",
-          "options" => @options_for_bool,
-          "success_condition" => "==t",
-          "group_id" => 1,
-          "code"=>"disabled"
-        },
-        {
-          "question" => "translation missing: en.The traveler is a veteran",
-          "data_type" => "bool",
-          "options" => @options_for_bool,
-          "success_condition" => "==t",
-          "group_id" => 1,
-          "code" => "veteran"
-        }
+        {"question"=>"Are you age 65 or older?", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"== true", "group_id"=>0, "code"=>"age", "year"=>1949},
+        {"question"=>"translation missing: en.The traveler is temporarily or permanently disabled", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"==t", "group_id"=>1, "code"=>"disabled", "year"=>"t"},
+        {"question"=>"translation missing: en.The traveler is a veteran", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"==t", "group_id"=>1, "code"=>"veteran", "year"=>"t"}
       ]
     ]
   end
