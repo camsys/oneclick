@@ -520,8 +520,8 @@ ActiveRecord::Schema.define(version: 20140827143151) do
     t.string   "external_user_id",                                 null: false
     t.boolean  "disabled",         default: false,                 null: false
     t.string   "customer_id"
-    t.datetime "updated_at",       default: '2014-08-26 14:30:52', null: false
-    t.datetime "created_at",       default: '2014-08-26 14:30:52', null: false
+    t.datetime "updated_at",       default: '2014-08-25 17:39:02', null: false
+    t.datetime "created_at",       default: '2014-08-25 17:39:02', null: false
   end
 
   create_table "users", force: true do |t|

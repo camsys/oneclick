@@ -84,6 +84,10 @@ class TripDecorator < Draper::Decorator
     is_return_trip ? I18n.t(:yes_str) : I18n.t(:no_str)
   end
   
+  def booked
+    is_booked? ? I18n.t(:yes_str) : I18n.t(:no_str)
+  end
+
   def eligibility
     get_eligibility(outbound_part.selected_itinerary, object.user.user_profile)
   end
@@ -136,7 +140,19 @@ class TripDecorator < Draper::Decorator
         summary += "#{I18n.t(leg.mode.downcase)} #{I18n.t(:to)} #{leg.end_place.name};"
       end
     else
-      case itinerary.mode.code
+      if itinerary.mode.nil?
+        code = 'skip'
+        if itinerary.server_status == 500
+          summary += itinerary.server_message
+        elsif !itinerary.mode_id.nil?
+          mode = Mode.unscoped.find(itinerary.mode_id)
+          code = mode.code unless mode.nil?
+        end
+      else
+        code = itinerary.mode.code
+      end
+      
+      case code
       when 'mode_transit', 'mode_bus', 'mode_rail'
         itinerary.get_legs.each do |leg|
           case leg.mode
@@ -166,6 +182,8 @@ class TripDecorator < Draper::Decorator
           # TODO: this should be generalized here and in _rideshare_details.html.haml
           summary += 'Georgia Commute Options'
         end
+      when 'skip'
+        # do nothing
       else
         summary += "#{I18n.t(:unknown)} #{I18n.t(:mode)}"
       end

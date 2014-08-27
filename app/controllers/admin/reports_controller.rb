@@ -4,10 +4,12 @@ class Admin::ReportsController < Admin::BaseController
   load_and_authorize_resource  
   
   TIME_FILTER_TYPE_SESSION_KEY = 'reports_time_filter_type'
-  
+  DATE_OPTION_SESSION_KEY = 'date_range'
+
   def index
     @reports = Report.all
     @generated_report = GeneratedReport.new({})
+    @generated_report.date_range = session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
   end
 
   # renders a report page. Actual details depends on the id parameter passed
@@ -39,14 +41,17 @@ class Admin::ReportsController < Admin::BaseController
     session[TIME_FILTER_TYPE_SESSION_KEY] = @time_filter_type
     params[:time_filter_type] = @time_filter_type
 
+    @generated_report.date_range ||= session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
+    session[DATE_OPTION_SESSION_KEY] = @generated_report.date_range
+
     if @report
                     
       # set up the report view
       @report_view = @report.view_name
       # get the class instance and generate the data
-      report_instance = @report.class_name.constantize.new
-      @data = report_instance.get_data(current_user, @generated_report)
-      @columns = report_instance.get_columns
+      @report_instance = @report.class_name.constantize.new
+      @data = @report_instance.get_data(current_user, @generated_report)
+      @columns = @report_instance.get_columns
       @url_for_csv = url_for only_path: true, format: :csv, params: params
       
       respond_to do |format|

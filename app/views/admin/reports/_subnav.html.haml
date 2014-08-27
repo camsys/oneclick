@@ -1,18 +1,17 @@
 = simple_form_for @generated_report,
         url: admin_report_path(Report.all.first.id, locale: params[:locale]),
         html: { method: 'post', id: 'report_form', class: 'form-horizontal' }  do |f|
-  .row
+  .row.info-header
     .col-sm-6
       %h2
         %i.fa.fa-bar-chart-o
         = header
-    .col-sm-6
-      %h2
-        = button_tag id: 'export',
-                class: "#{@url_for_csv ? '' : 'disabled '}btn btn-default action-button controls pull-right" do
-          =t (:export)
-        = button_tag type: :submit, class: 'btn btn-default action-button controls pull-right' do
-          =t (:run)
+    .col-sm-6.btns
+      = button_tag id: 'export',
+              class: "#{@url_for_csv ? '' : 'disabled '}btn btn-default action-button controls pull-right" do
+        =t (:export)
+      = button_tag type: :submit, class: 'btn btn-default action-button controls pull-right' do
+        =t (:run)
 
   .row
     .col-sm-12

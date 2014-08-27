@@ -1,5 +1,7 @@
 class DateOption < ActiveRecord::Base
 
+  DEFAULT = 'date_option_all'
+
   # return name value pairs suitable for passing to simple_form collection
   def self.form_collection include_all=true
     if include_all

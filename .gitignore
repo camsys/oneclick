@@ -93,3 +93,5 @@ TAGS
 *.scss#
 
 app/assets/stylesheets/default/.#application.css.scss
+
+app/reports/.#system_usage_report.rb

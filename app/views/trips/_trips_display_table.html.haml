@@ -10,6 +10,11 @@
       - if Rating.feedback_on?
         %th.center= t(:rating)
         %th.center.nowrap= t(:feedback)
+      -if Oneclick::Application.config.allows_booking
+        %th.center
+          = t(:cancel_booking)
+        %th.center
+          = "Trip Confirmation Numbers"
       %th.center= t(:actions)
       - if ENV['SHOWALL']
         %th.center= t(:max_notes)
@@ -18,6 +23,7 @@
   %tbody{ :id => 'trips_table'}
     - trips = RateableDecorator.decorate_collection(trips)
     - rateable_trip_ids = []
+    - bookeable_trip_ids = []
     - trips.each do |trip|
       -if trip.both_parts_selected?
         -tripID = "trip#{trip.id}"
@@ -38,27 +44,51 @@
                   - modal_name = "##{tripID}RatingModal"
                   %button.btn.btn-default.action-button{data: {toggle: 'modal', target: modal_name, remote: new_trip_rating_path(trip)}}
                     = t(:feedback)
+          -if Oneclick::Application.config.allows_booking
+            %td.center
+              -if trip.is_booked? and trip.in_the_future
+                = button_tag :type => 'button', "data-target" => "#cancelTripConfirmDialog", "data-toggle" => "modal", :alt => t(:cancel_trip), :title => t(:cancel_trip), :class => "btn action-button btn-danger delete-button" do
+                  = t(:cancel)
+                #cancelTripConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:cancel_trip), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+                  .modal-dialog
+                    .modal-content
+                      .modal-header
+                        = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
+                          = t(:cancel)
+                        = link_to cancel_user_trip_path(traveler, trip), {:class => "btn btn-primary action-button pull-right", :method => :post} do
+                          = t(:ok)
+                        .modal-title{:style => "text-align:left;"}
+                          %b
+                            = t(:site_title)
+                      .modal-body{:style => "text-align:left;"}
+                        = t(:confirm_cancel_trip)
+            %td.center
+              - trip.trip_parts.each do |tp|
+                - tp.itineraries.where.not(booking_confirmation: nil).each do |itinerary|
+                  =itinerary.booking_confirmation
+
           - if trip.in_the_future
             %td.center.nowrap          
               = link_to user_trip_path(traveler, trip), {:class => "btn btn-sm", :alt => t(:plan_trip), :title => t(:plan_trip)} do
                 %i.fa.fa-mail-forward
               = link_to edit_user_trip_path(traveler, trip), {:class => "btn btn-sm", :alt => t(:edit_trip), :title => t(:edit_trip)} do
                 %i.fa.fa-edit
-              = button_tag :type => 'button', "data-target" => "#deleteTripConfirmDialog", "data-toggle" => "modal", :alt => t(:remove_trip), :title => t(:remove_trip), :class => "btn btn-sm btn-danger delete-button" do
-                %i.fa.fa-times
-              #deleteTripConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_trip), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
-                .modal-dialog
-                  .modal-content
-                    .modal-header
-                      = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
-                        = t(:cancel)
-                      = link_to user_trip_path(traveler, trip), {:class => "btn btn-primary action-button pull-right", :method => :delete} do
-                        = t(:ok)
-                      .modal-title{:style => "text-align:left;"}
-                        %b
-                          = t(:site_title) 
-                    .modal-body{:style => "text-align:left;"}
-                      = t(:confirm_remove_trip)
+              -if not trip.is_booked?
+                = button_tag :type => 'button', "data-target" => "#deleteTripConfirmDialog", "data-toggle" => "modal", :alt => t(:remove_trip), :title => t(:remove_trip), :class => "btn btn-sm btn-danger delete-button" do
+                  %i.fa.fa-times
+                #deleteTripConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_trip), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+                  .modal-dialog
+                    .modal-content
+                      .modal-header
+                        = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
+                          = t(:cancel)
+                        = link_to user_trip_path(traveler, trip), {:class => "btn btn-primary action-button pull-right", :method => :delete} do
+                          = t(:ok)
+                        .modal-title{:style => "text-align:left;"}
+                          %b
+                            = t(:site_title)
+                      .modal-body{:style => "text-align:left;"}
+                        = t(:confirm_remove_trip)
           - else
             %td.center.nowrap          
               = link_to repeat_user_trip_path(traveler, trip), {:alt => t(:repeat_trip), :title => t(:repeat_trip), :class => "btn btn-sm"} do

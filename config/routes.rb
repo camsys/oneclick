@@ -120,6 +120,7 @@ Oneclick::Application.routes.draw do
           get   'book'
           get   'plan'
           get   'new_rating_from_email'
+          post  'cancel'
         end
         resources :trip_parts do
           member do

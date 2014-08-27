@@ -6,6 +6,7 @@ FactoryGirl.define do
     name 'Veteran'
     note 'The traveler is a veteran'
     datatype 'bool'
+    desc 'military veterans'
   end
 
   factory :ada_characteristic, class: 'Characteristic' do
@@ -37,6 +38,7 @@ FactoryGirl.define do
     name 'Disabled'
     note 'The traveler is temporarily or permanently disabled'
     datatype 'bool'
+    desc 'persons with a disability'
   end
 
   factory :nemt_characteristic, class: 'Characteristic' do
