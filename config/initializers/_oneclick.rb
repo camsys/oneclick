@@ -33,8 +33,6 @@ Oneclick::Application.config.min_ui_duration = 1.hours
 
 Oneclick::Application.config.google_places_api_key = 'AIzaSyCvKyNoBzQNrBRuSRkipWye0pdj__HjrmU'
 
-Oneclick::Application.config.time_zone = 'Eastern Time (US & Canada)'
-
 I18n.available_locales = [:en, :es] # default
 
 case ENV['BRAND'] || 'arc'
@@ -208,8 +206,6 @@ when 'ieuw'
   Oneclick::Application.config.state = 'CA'
 
   Oneclick::Application.config.max_walk_seconds = 3600
-
-  Oneclick::Application.config.time_zone = 'Pacific Time (US & Canada)'
 
 end
 
