@@ -250,6 +250,7 @@ ActiveRecord::Schema.define(version: 20140828150520) do
     t.string  "old_logo_url"
     t.text    "private_comments"
     t.text    "public_comments"
+    t.string  "icon"
     t.string  "logo"
   end
 
@@ -359,7 +360,7 @@ ActiveRecord::Schema.define(version: 20140828150520) do
     t.string   "internal_contact_email"
     t.string   "internal_contact_title"
     t.string   "internal_contact_phone"
-    t.string   "old_logo_url"
+    t.string   "logo_url"
     t.integer  "endpoint_area_geom_id"
     t.integer  "coverage_area_geom_id"
     t.integer  "residence_area_geom_id"
@@ -519,8 +520,8 @@ ActiveRecord::Schema.define(version: 20140828150520) do
     t.string   "external_user_id",                                 null: false
     t.boolean  "disabled",         default: false,                 null: false
     t.string   "customer_id"
-    t.datetime "updated_at",       default: '2014-08-25 17:39:02', null: false
-    t.datetime "created_at",       default: '2014-08-25 17:39:02', null: false
+    t.datetime "updated_at",       default: '2014-08-26 14:30:52', null: false
+    t.datetime "created_at",       default: '2014-08-26 14:30:52', null: false
   end
 
   create_table "users", force: true do |t|
@@ -569,9 +570,10 @@ ActiveRecord::Schema.define(version: 20140828150520) do
   end
 
   create_table "walking_speeds", force: true do |t|
-    t.string   "code",       null: false
-    t.string   "name",       null: false
-    t.float    "value",      null: false
+    t.string   "code",                       null: false
+    t.string   "name",                       null: false
+    t.float    "value",                      null: false
+    t.boolean  "is_default", default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
