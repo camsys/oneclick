@@ -566,11 +566,9 @@ td.left, th.left {
   @extend .btn-primary;
   text-shadow: none;
   &:not(:last-of-type) {
-    margin-left: 5px;
+    margin-right: 5px;
   } 
-  &.pull-right {
-    margin-left: 5px;
-  }
+
   @media (max-width: $screen-xs-max) {
     min-width: 6em;
   }
