@@ -57,6 +57,8 @@ class User < ActiveRecord::Base
 
   belongs_to :agency
   belongs_to :provider
+  belongs_to :walking_speed
+  belongs_to :walking_maximum_distance
   has_and_belongs_to_many :services
 
   has_many :ratings # ratings created by the user, not ratings of the user

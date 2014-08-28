@@ -12,4 +12,20 @@ module UsersHelper
   	return I18n.t(:unknown)
   end
 
+  def get_selected_walking_speed_id(user)
+    return user.walking_speed_id if user.walking_speed_id
+    default_speed = WalkingSpeed.where(is_default: true).first
+    unless default_speed.nil?
+      return default_speed.id
+    end
+  end
+
+  def get_selected_walking_max_distance_id(user)
+    return user.walking_maximum_distance_id if user.walking_maximum_distance_id
+    default_dist = WalkingMaximumDistance.where(is_default: true).first
+    unless default_dist.nil?
+      return default_dist.id
+    end
+  end
+
 end

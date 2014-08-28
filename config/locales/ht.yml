@@ -81,6 +81,8 @@ ht:
   create_user: "[ht]Create User[/ht]"
   delete_user: "[ht]Delete user[/ht]"
   user_created: "[ht]User Created[/ht]"
+  walking_speed: '[ht]Walking Speed[/ht]'
+  walking_maximum_distance: '[ht]Walking Maximum Distance[/ht]'
   # Agent and Admin string
   reports: "[ht]Reports[/ht]"
   report_name: "[ht]Report Name[/ht]"

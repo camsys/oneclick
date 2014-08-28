@@ -85,6 +85,8 @@ en:
   create_user: "Create User"
   delete_user: "Delete user"
   user_created: "User Created"
+  walking_speed: 'Walking Speed'
+  walking_maximum_distance: 'Walking Maximum Distance'
   # Agent and Admin string
   reports: "Reports"
   report_name: "Report Name"

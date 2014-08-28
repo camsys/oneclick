@@ -26,6 +26,8 @@ class Admin::UsersController < Admin::BaseController
     @user.email = usr[:email]
     @user.password = usr[:password]
     @user.password_confirmation = usr[:password_confirmation]
+    @user.walking_speed_id = usr[:walking_speed_id]
+    @user.walking_maximum_distance_id = usr[:walking_maximum_distance_id]
 
     respond_to do |format|
       if @user.save
@@ -158,7 +160,7 @@ class Admin::UsersController < Admin::BaseController
   private 
 
   def user_params_with_password
-    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation, :preferred_mode_ids => [])
+    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation, :walking_speed_id, :walking_maximum_distance_id, :preferred_mode_ids => [])
   end
 
   def load_user
