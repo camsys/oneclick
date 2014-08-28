@@ -105,7 +105,7 @@ class RegistrationsController < Devise::RegistrationsController
     end
     devise_parameter_sanitizer.for(:account_update) do |u|
       u.permit(:first_name, :last_name,
-        :email, :password, :password_confirmation, :approved_agencies, :preferred_locale, :current_password, :walking_speed_id, , :walking_maximum_distance_id)
+        :email, :password, :password_confirmation, :approved_agencies, :preferred_locale, :current_password, :walking_speed_id, :walking_maximum_distance_id)
     end
   end
 
