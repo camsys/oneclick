@@ -670,7 +670,7 @@ class TripsController < PlaceSearchingController
   end
 
   def book
-    @itinerary = Itinerary.find(params[:itin].to_i )
+    @itinerary = Itinerary.find(params[:itin].to_i)
     eh = EcolaneHelpers.new
 
     outbound_part = @itinerary.trip_part

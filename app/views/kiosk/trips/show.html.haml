@@ -35,15 +35,14 @@
           /   .span12
           /     =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: false) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
           /       View trip details to call the provider.
-          - if user_signed_in?
+          - if false # user_signed_in?
             .row-fluid
               .span12
                 = link_to 'Email provider', '#show-email-provider-modal', class: 'btn btn-block'
 
           .row-fluid
             .span12
-              = link_to kiosk_user_new_trip_start_path(current_or_guest_user), {class: 'btn btn-block'} do
-                = t(:plan_a_new_trip)
+              = link_to 'I\'m Finished', kiosk_reset_path, class: 'btn btn-block'
 
           .row-fluid
             .span12
@@ -56,14 +55,12 @@
                   = link_to t(:book), '#book-ecolane', {class: 'btn btn-block', data: {trip: @trip.id, traveler: @traveler.id, itin: itinerary.id}}
                   .ecolane-booking-results.hide
                     .success.hide
-                      = t(:confirmation)
-                      %span.numbers
-                    .outbound-error.hide
-                      = t(:outbound_error_occurred)
-                      %span.message
-                    .return-error.hide
-                      = t(:return_error_occurred)
-                      %span.message
+                      Booking successful. Your confirmation code
+                      %span.numbers>
+                    .error-message.hide
+                      Booking could not be completed. Call 
+                      = link_to '1-844-PA4-RIDE', 'tel://+18447247433'
+                      for assistance.
               - break
 
 - else
@@ -161,34 +158,11 @@
     $('#itinerary_modal').modal({show: true, keyboard: false});
   });
 
-  //$('#main').css('overflow', 'scroll');
-  $('a.details').on('click', function(){
-    $('.navbar').css('z-index', 0);
-  });
+  $('.navbar').css('z-index', 0);
 
   $('.trip-overview').on('click', function(){
     $('#overview-modal').removeClass('hide');
   });
   $('.close-btn').on('click', function(){
     $('#overview-modal').addClass('hide');
-  });
-
-  //CG DP EDIT
-  if($('div.results-view').hasClass('timeOut')){
-    var activityTimeout = setTimeout(resetApp, 60000);
-  }
-
-  function resetActive(){
-    clearTimeout(activityTimeout);
-    activityTimeout = setTimeout(resetApp, 60000);
-  }
-
-  function resetApp(){
-    window.location.href = "/";
-  }
-
-  $(document).bind('mousemove', function(){
-    if($('div.results-view').hasClass('timeOut')){
-      resetActive();
-    }
   });
