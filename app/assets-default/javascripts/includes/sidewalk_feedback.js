@@ -48,7 +48,12 @@ CsLeaflet.SidewalkFeedbackTool = {
     createSidewalkFeedbackMarker: function(lat, lng, dataOptions) {
         var csMap = this._csMap || {};
         var options = this._options || {};
-        var marker = csMap.createMarker(null, lat, lng, options.icon_class, null, null, false, dataOptions);
+        var marker_name = null;
+        if(dataOptions && typeof dataOptions === 'object') {
+            var feedbackData = dataOptions.feedbackData || {};
+            marker_name = feedbackData.comment;
+        }
+        var marker = csMap.createMarker(null, lat, lng, options.icon_class, null, marker_name, false, dataOptions);
         this.LMsidewalk_feedback_layergroup.addLayer(marker);
 
         return marker;

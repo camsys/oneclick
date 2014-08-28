@@ -245,6 +245,7 @@ var blueMiniIcon = new baseMiniIcon({
 })
 
 //icon for sidewalk obstruction feedback
-var sidewalkFeedbackIcon = new baseIcon({
-    iconUrl: 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png'
+var sidewalkFeedbackIcon = new L.icon({
+    iconUrl: '/init-assets/map/warning.png',
+    iconSize: [16, 16]
 });
