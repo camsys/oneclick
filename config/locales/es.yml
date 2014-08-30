@@ -299,8 +299,10 @@ es:
   reload: 'Recargar'
   return: 'Retornar'
   return_itinerary_count: '[es]Return Itinerary Count[/es]'
+  return_itinerary_modes: '[es]Return Itinerary Modes[/es]'
   outbound: '[es120]Outbound[/es]'
   outbound_itinerary_count: '[es]Outbound Itinerary Count[/es]'
+  outbound_itinerary_modes: '[es]Outbound Itinerary Modes[/es]'
   paratransit: 'Transporte Público para Discapacitados'
   mode: 'Medio de Transporte'
   direction_short: "[es147]Dir[/es]"

@@ -305,8 +305,10 @@ en:
   reload: 'Reload'
   return: 'Return'
   return_itinerary_count: 'Return Itinerary Count'
+  return_itinerary_modes: 'Return Itinerary Modes'
   outbound: 'Outbound'
   outbound_itinerary_count: 'Outbound Itinerary Count'
+  outbound_itinerary_modes: 'Outbound Itinerary Modes'
   paratransit: 'Paratransit'
   mode: 'Mode'
   direction_short: "Dir"
