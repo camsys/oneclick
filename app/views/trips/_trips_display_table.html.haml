@@ -80,9 +80,9 @@
                   .modal-dialog
                     .modal-content
                       .modal-header
-                        = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
+                        = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
                           = t(:cancel)
-                        = link_to user_trip_path(traveler, trip), {:class => "btn btn-primary action-button pull-right", :method => :delete} do
+                        = link_to user_trip_path(traveler, trip), {:style => 'margin-right: 5px;', :class => "btn action-button pull-right", :method => :delete} do
                           = t(:ok)
                         .modal-title{:style => "text-align:left;"}
                           %b

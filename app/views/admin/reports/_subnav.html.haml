@@ -7,11 +7,12 @@
         %i.fa.fa-bar-chart-o
         = header
     .col-sm-6.btns
-      = button_tag id: 'export',
-              class: "#{@url_for_csv ? '' : 'disabled '}btn btn-default action-button controls pull-right" do
-        =t (:export)
-      = button_tag type: :submit, class: 'btn btn-default action-button controls pull-right' do
-        =t (:run)
+      .pull-right
+        = button_tag type: :submit, class: 'btn action-button controls' do
+          =t (:run)
+        = button_tag id: 'export',
+                class: "#{@url_for_csv ? '' : 'disabled '}btn action-button controls" do
+          =t (:export)
 
   .row
     .col-sm-12

@@ -2,11 +2,12 @@
   .modal-dialog.modal-lg
     .modal-content#ratings
       .modal-header.clearfix
-        %button.btn.btn-default.action-button.pull-right{data: {dismiss: "modal"}}= t(:close)
-        -# If users can enter feedback without a trip...
-        - if not rateable.is_a? Provider and can? :create, rateable.ratings.build
-          %button.btn.action-button.btn-default.pull-right#load_feedback
-            = t(:feedback)
+        .pull-right
+          -# If users can enter feedback without a trip...
+          - if not rateable.is_a? Provider and can? :create, rateable.ratings.build
+            %button.btn.action-button#load_feedback
+              = t(:feedback)
+          %button.btn.action-button{data: {dismiss: "modal"}}= t(:close)
       .modal-body
         .panel.panel-default
           .panel-heading

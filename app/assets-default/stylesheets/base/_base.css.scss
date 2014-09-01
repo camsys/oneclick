@@ -565,9 +565,6 @@ td.left, th.left {
 .action-button {
   @extend .btn-primary;
   text-shadow: none;
-  &:not(:last-of-type) {
-    margin-right: 5px;
-  } 
 
   @media (max-width: $screen-xs-max) {
     min-width: 6em;
@@ -581,6 +578,9 @@ td.left, th.left {
 .map-action-button {
   @extend .action-button;
   min-width: 3em;
+  &:not(:last-of-type) {
+    margin-right: 5px;
+  } 
 }
 
 // Styling for the application header (not navbar, this is where the action-buttons live)

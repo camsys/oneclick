@@ -7,8 +7,9 @@
         = f.input :name
     .col-sm-6.btns
       - if can? :update, @provider
-        = link_to t(:cancel), :back, class: "btn action-button pull-right"
-        = f.button :submit, t(:apply), class: "btn action-button pull-right"
+        .pull-right
+          = f.button :submit, t(:apply), class: "btn action-button"
+          = link_to t(:cancel), :back, class: "btn action-button"
 
   .row
     .col-sm-6
@@ -16,7 +17,7 @@
         .panel-heading
           %h4.panel-title= t(:provider_info)
         .panel-body
-          = f.input :logo, :as => :file
+          = f.input :logo, label: t(:logo) + ' (' + Oneclick::Application.config.provider_logo_format_list.join(',') + ')', :as => :file
           = f.input :address
           = f.input :city, label: "#{t(:city)}/#{t(:state)}/#{t(:zip)}",
             input_html: {class: "col-sm-6 form-control"}, wrapper_html: {class: ""} do

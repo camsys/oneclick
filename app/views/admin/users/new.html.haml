@@ -3,9 +3,10 @@
     .col-sm-6
       %h1= t(:create)
     .col-sm-6.btns
-      = link_to t(:cancel), :back, class: "btn action-button pull-right"
-      = button_tag type: :submit, class: 'btn action-button pull-right' do
-        = t(:apply)
+      .pull-right
+        = button_tag type: :submit, class: 'btn action-button' do
+          = t(:apply)
+        = link_to t(:cancel), :back, class: "btn action-button"
   .row
     .col-sm-6
       .panel.panel-default

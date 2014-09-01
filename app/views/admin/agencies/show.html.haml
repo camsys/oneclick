@@ -9,35 +9,35 @@
     -unless @agency.active
       %p= t(:inactive)
   .col-sm-7.btns
-    - if can? :destroy, @agency
-      = button_tag :type => 'button', "data-target" => "#deleteAgencyConfirmDialog", "data-toggle" => "modal", :class => "btn action-button pull-right" do
-        = t(:delete)
-      #deleteAgencyConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_agency), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
-        .modal-dialog
-          .modal-content
-            .modal-header
-              = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
-                = t(:cancel)
-              = button_to t(:ok), { action: "destroy", id: @agency.id }, method: :delete, class: "btn btn-primary action-button pull-right"
-              .modal-title{:style => "text-align:left;"}
-                %b
-                  = t(:site_title) 
-            .modal-body{:style => "text-align:left;"}
-              = t(:confirm_remove_message) + @agency.name + " ?"
-    - if can? :update, @agency
-      = link_to edit_admin_agency_path(@agency), {class: 'btn action-button pull-right', role: 'button'} do
-        = icon_label(:edit)
-    -if Rating.feedback_on?
-      - if can? :read, temp_rating
-        .pull-right
+    .pull-right
+      -if Rating.feedback_on?
+        - if can? :read, temp_rating
           = RateableDecorator.decorate(@agency).rating_in_stars
           %button.btn.action-button{data: {toggle: 'modal', target: "#feedback_modal"}}
             = t(:feedback)
-      - elsif Rating.tripless_feedback?
-        -# if creating feedback is allowed, but reading isn't, just load the form into the modal on click
-        %button.btn.action-button.btn-default.pull-right{data: {toggle: 'modal', target: "#feedback_modal", remote: new_agency_rating_path(@agency)}}
-          = t(:feedback)
-      = render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
+        - elsif Rating.tripless_feedback?
+          -# if creating feedback is allowed, but reading isn't, just load the form into the modal on click
+          %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal", remote: new_agency_rating_path(@agency)}}
+            = t(:feedback)
+        = render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
+      - if can? :destroy, @agency
+        = button_tag :type => 'button', "data-target" => "#deleteAgencyConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
+          = t(:delete)
+        #deleteAgencyConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_agency), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+          .modal-dialog
+            .modal-content
+              .modal-header
+                = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
+                  = t(:cancel)
+                = button_to t(:ok), { action: "destroy", id: @agency.id }, method: :delete, style: "margin-right: 5px;", class: "btn action-button pull-right"
+                .modal-title{:style => "text-align:left;"}
+                  %b
+                    = t(:site_title) 
+              .modal-body{:style => "text-align:left;"}
+                = t(:confirm_remove_message) + @agency.name + " ?"
+      - if can? :update, @agency
+        = link_to edit_admin_agency_path(@agency), {class: 'btn action-button', role: 'button'} do
+          = icon_label(:edit)
 .row
   = render partial: "public_details", locals: {agency: @agency}
   - if can? :full_read, @agency

@@ -3,8 +3,9 @@
     .col-sm-6
       %h1= t(:feedback)
     .col-sm-6.btns
-      = link_to t(:cancel), ratings_path, class: "btn action-button pull-right"
-      = submit_tag t(:apply), class: "btn action-button pull-right"
+      .pull-right
+        = submit_tag t(:apply), class: "btn action-button"
+        = link_to t(:cancel), ratings_path, class: "btn action-button"
   .row
     .col-sm-12
       %table.table.table-condensed.table-striped.table-bordered.table-hover#ratings_table

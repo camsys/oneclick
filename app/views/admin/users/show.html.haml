@@ -1,9 +1,10 @@
 / TODO Requires a decomposition into partials for reuse.  This code should work across the admin and public-facing UI.
 / Note the use of form-horizontal throughout on <divs>.  Just hijacking bootstrap styling.  Needs to be fixed.  Also, could use simpleform's wrappers api to centralize
 .header
-  -if can? :edit, @user
-    =link_to t(:edit), edit_admin_user_path(@user), {class: 'btn action-button btn-default pull-right', role: 'button'}
-  -if can? :assist, @user
-    =link_to t(:assist), admin_agency_agency_assist_path(current_user.agency, @user), {class: 'btn action-button btn-default pull-right', role: 'button'}
+  .pull-right
+    -if can? :assist, @user
+      =link_to t(:assist), admin_agency_agency_assist_path(current_user.agency, @user), {class: 'btn action-button', role: 'button'}
+    -if can? :edit, @user
+      =link_to t(:edit), edit_admin_user_path(@user), {class: 'btn action-button', role: 'button'}
   %h2=@user.name
 =render partial: 'users/user_display', locals: {user: @user}

@@ -108,7 +108,7 @@ CsLeaflet.SidewalkFeedbackTool = {
         var tooltips = csMap.getMapControlTooltips();
         var currentMap = csMap.LMmap;
         var feedbackInputControl = new L.Control.CustomButton(csMap.SIDEWALK_FEEDBACK, {
-            title: tooltips.feedback_input_on_map,
+            title: tooltips.add_sidewalk_feedback_on_map,
             iconCls: 'fa fa-lg fa-comment',
             toggleable: true
         });
