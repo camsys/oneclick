@@ -412,11 +412,17 @@ es:
 
   # new ones
   logo: '[es]Logo[/es]'
+  logo_format_alert: '[es]Only following logo image formats are supported: %{logo_formats}[/es]'
   next: '[es]Plan[/es]'
   endpoint_area: "[es]Coverage Area"
   coverage_area: "[es]Endpoint Area"
   endpoints: "[es]Endpoints"
   coverages: "[es]Coverages"
+  coverage_area_edit_instruction: "[es]You can either upload a shapefile or select served areas below[/es]"
+  upload_shapefile: "[es]Upload a zipped shapefile (*.zip)[/es]"
+  upload_zip_alert: "[es]Please upload a zipped shapefile (*.zip)[/es]"
+  geometry_defined_by_shapefile: "[es]Geometry is defined by user uploaded shapefile[/es]"
+  no_polygon_geometry_parsed: "[es]No polygon geometry was parsed from uploaded file for %{area_type}[/es]"
   cap_returning_at: "[es]Returning at"
   traveler_not_registered: "[es]Traveler not registered to book trips with One-Click."
   outbound_error_occurred: "[es]An error occurred when attempting to book your outbound trip."

@@ -390,6 +390,8 @@ en:
   display_street_view: 'Display street view'
   street_view: 'Street view'
   select_location_on_map: 'Select location on map'
+  add_sidewalk_feedback_on_map: 'Submit sidewalk obstruction feedback'
+  remove_by: 'Remove by'
 
   # My Places form
   found_x_places: {
@@ -415,11 +417,17 @@ en:
   # new ones
   # Services
   logo: 'Logo'
+  logo_format_alert: 'Only following logo image formats are supported: %{logo_formats}'
   next: 'Plan'
   endpoint_area: "Coverage Area"
   coverage_area: "Endpoint Area"
   endpoints: "Endpoint Area"
   coverages: "Coverage Area"
+  coverage_area_edit_instruction: "You can either upload a shapefile or select served areas below"
+  upload_shapefile: "Upload a zipped shapefile (*.zip)"
+  upload_zip_alert: "Please upload a zipped shapefile (*.zip)"
+  geometry_defined_by_shapefile: "Geometry is defined by user uploaded shapefile"
+  no_polygon_geometry_parsed: "No polygon geometry was parsed from uploaded file for %{area_type}"
   cap_returning_at: "Returning At"
   traveler_not_registered: "Traveler not registered to book trips with One-Click."
   outbound_error_occurred: "An error occurred when attempting to book your outbound trip."

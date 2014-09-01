@@ -1,11 +1,11 @@
 class Admin::ProvidersController < ApplicationController
   before_filter :load_provider, only: [:create]
   load_and_authorize_resource
-  
+
   # GET /admin/providers
   # GET /admin/providers.json
   def index
-    
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @providers }
@@ -21,7 +21,7 @@ class Admin::ProvidersController < ApplicationController
     @contact = @provider.users.with_role(:internal_contact, @provider).first
     @staff = @provider.users.with_role(:provider_staff, @provider)
     @services = @provider.services
-    
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @provider }
@@ -32,7 +32,7 @@ class Admin::ProvidersController < ApplicationController
   # GET /admin/providers/new.json
   def new
     # before_filter
-    
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @provider }
@@ -66,20 +66,30 @@ class Admin::ProvidersController < ApplicationController
   # PUT /admin/providers/1
   # PUT /admin/providers/1.json
   def update
-    
+
     # special case because need to update rolify
-    staff_ids = params[:provider][:staff_ids].reject(&:blank?) 
+    staff_ids = params[:provider][:staff_ids].reject(&:blank?)
 
     respond_to do |format|
       if @provider.update_attributes(admin_provider_params)
         # internal_contact is a special case
         @provider.internal_contact = User.find_by_id(params[:provider][:internal_contact])
-        @provider.logo = params[:provider][:logo]
-        @provider.save!
+
+        if params[:provider][:logo]
+          @provider.logo = params[:provider][:logo]
+          logo_save_failure = @provider.save! rescue nil
+          if logo_save_failure.nil?
+            logo_format_alert_msg = t(:logo_format_alert).sub '%{logo_formats}', Oneclick::Application.config.provider_logo_format_list.join(',')
+          end
+        end
 
         set_staff(staff_ids)
-        
-        format.html { redirect_to [:admin, @provider], notice: 'Provider was successfully updated.' } #TODO Internationalize
+
+        unless logo_format_alert_msg.nil?
+          format.html { redirect_to [:admin, @provider], alert: logo_format_alert_msg }
+        else
+          format.html { redirect_to [:admin, @provider], notice: t(:provider) + ' ' + t(:was_successfully_updated) } #TODO Internationalize
+        end
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -117,7 +127,7 @@ class Admin::ProvidersController < ApplicationController
       user_to_add.update_attributes(provider: @provider)
       @provider.users << user_to_add
     end
-    
+
     users_to_remove.each do |u|
       user_to_remove = User.find(u)
       user_to_remove.remove_role(:provider_staff, @provider)
@@ -126,7 +136,7 @@ class Admin::ProvidersController < ApplicationController
       end
     end
   end
-  
+
   def admin_provider_params
     params.require(:provider).permit(:name, :email, :address, :city, :state, :zip, :url, :phone, :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email, :public_comments, :private_comments)
   end
@@ -134,5 +144,5 @@ class Admin::ProvidersController < ApplicationController
   def load_provider
     @provider = Provider.new(admin_provider_params)
   end
-  
+
 end

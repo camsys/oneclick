@@ -35,6 +35,9 @@ Oneclick::Application.config.google_places_api_key = 'AIzaSyCvKyNoBzQNrBRuSRkipW
 
 I18n.available_locales = [:en, :es] # default
 
+Oneclick::Application.config.service_logo_format_list = %w(jpg jpeg gif png)
+Oneclick::Application.config.provider_logo_format_list = %w(jpg jpeg gif png)
+
 case ENV['BRAND'] || 'arc'
 when 'arc'
   Oneclick::Application.config.host = 'oneclick-arc.camsys-apps.com'

@@ -409,6 +409,7 @@ ht:
   # new ones
   # Services
   logo: '[ht]Logo[/ht]'
+  logo_format_alert: '[ht]Only following logo image formats are supported: %{logo_formats}[/ht]'
   next: '[ht]Plan[/ht]'
   cap_returning_at: "[ht]Returning at[/ht]"
   traveler_not_registered: "[ht]Traveler not registered to book trips with One-Click.[/ht]"
@@ -492,6 +493,11 @@ ht:
   view_planned_trips: "[ht]I'm done, just show me all my planned trips.[/ht]"
   coverage_areas: "[ht]Coverage Areas[/ht]"
   served_areas: "[ht]served[/ht]"
+  coverage_area_edit_instruction: "[ht]You can either upload a shapefile or select served areas below[/ht]"
+  upload_shapefile: "[ht]Upload a zipped shapefile (*.zip)[/ht]"
+  upload_zip_alert: "[ht]Please upload a zipped shapefile (*.zip)[/ht]"
+  geometry_defined_by_shapefile: "[ht]Geometry is defined by user uploaded shapefile[/ht]"
+  no_polygon_geometry_parsed: "[ht]No polygon geometry was parsed from uploaded file for %{area_type}[/ht]"
   service_area_map: "[ht]Service Area Map[/ht]"
   trip_request_from: "[ht]Trip request from [/ht]"
   send_email_to: "[ht]Send email to[/ht]"

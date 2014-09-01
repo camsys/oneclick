@@ -13,9 +13,10 @@
         = f.input :name
     .col-sm-6.btns
       - if can? :update, @service or can? :create, @service
-        = link_to t(:cancel), :back, class: "btn btn-default action-button default pull-right"
-        = button_tag type: 'submit', class: "btn btn-default action-button default pull-right" do
-          = icon_label(:apply)
+        .pull-right
+          = button_tag type: 'submit', class: "btn action-button" do
+            = icon_label(:apply)
+          = link_to t(:cancel), :back, class: "btn action-button"
 
   .row
     .col-sm-6
@@ -28,7 +29,7 @@
           - unless @service.active
             %h3.warning
               = t(:service_is_inactive)
-          = f.input :logo, :as => :file
+          = f.input :logo, label: t(:logo) + ' (' + Oneclick::Application.config.service_logo_format_list.join(',') + ')',  :as => :file
           = f.input :phone
           = f.input :email
           = f.input :url
@@ -272,6 +273,8 @@
                   .panel-heading
                     %h4.panel-title= t(rule)
                   .panel-body
+                    %label=t(:coverage_area_edit_instruction)
+                    = f.input rule+'_shapefile', :label => t(:upload_shapefile),:as => :file
                     - types.each do |type|
                       %b
                         = type.humanize.split[0].pluralize + ' ' + t(:served_areas)

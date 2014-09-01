@@ -8,35 +8,35 @@
     %h2
       =@service.name
   .col-sm-7.btns
-    - if can? :destroy, @service
-      = button_tag :type => 'button', "data-target" => "#deleteServiceConfirmDialog", "data-toggle" => "modal", :class => "btn action-button pull-right" do
-        = t(:delete)
-      #deleteServiceConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_service), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
-        .modal-dialog
-          .modal-content
-            .modal-header
-              = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
-                = t(:cancel)
-              = button_to t(:ok), { action: "destroy", id: @service.id }, method: :delete, class: "btn btn-primary action-button pull-right"
-              .modal-title{:style => "text-align:left;"}
-                %b
-                  = t(:site_title) 
-            .modal-body{:style => "text-align:left;"}
-              = t(:confirm_remove_message) + @service.name + " ?"
-    - if can? :update, @service
-      = link_to edit_service_path(@service), {class: 'btn action-button btn-default pull-right', role: 'button'} do
-        = icon_label(:edit)
-    -if Rating.feedback_on?
-      - if can? :read, temp_rating
-        .pull-right
+    .pull-right
+      -if Rating.feedback_on?
+        - if can? :read, temp_rating
           = RateableDecorator.decorate(@service).rating_in_stars
-          %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal"}}
+          %button.btn.action-button{data: {toggle: 'modal', target: "#feedback_modal"}}
             = t(:feedback)
-      - elsif Rating.tripless_feedback?
-        -# if creating feedback is allowed, but reading isn't, just load the form into the modal on click
-        %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal", remote: new_service_rating_path(@service)}}
-          = t(:feedback)
-      = render partial: "ratings/organization_feedback_modal", locals: {rateable: @service}
+        - elsif Rating.tripless_feedback?
+          -# if creating feedback is allowed, but reading isn't, just load the form into the modal on click
+          %button.btn.action-button{data: {toggle: 'modal', target: "#feedback_modal", remote: new_service_rating_path(@service)}}
+            = t(:feedback)
+        = render partial: "ratings/organization_feedback_modal", locals: {rateable: @service}
+      - if can? :destroy, @service
+        = button_tag :type => 'button', "data-target" => "#deleteServiceConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
+          = t(:delete)
+        #deleteServiceConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_service), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+          .modal-dialog
+            .modal-content
+              .modal-header
+                = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
+                  = t(:cancel)
+                = button_to t(:ok), { action: "destroy", id: @service.id }, method: :delete,  style: "margin-right: 5px;", class: "btn action-button pull-right"
+                .modal-title{:style => "text-align:left;"}
+                  %b
+                    = t(:site_title) 
+              .modal-body{:style => "text-align:left;"}
+                = t(:confirm_remove_message) + @service.name + " ?"
+      - if can? :update, @service
+        = link_to edit_service_path(@service), {class: 'btn action-button', role: 'button'} do
+          = icon_label(:edit)
 .row
   = render partial: "public_details", locals: { service: @service}
         
@@ -205,18 +205,23 @@
                   .panel-heading
                     %h4.panel-title= t(rule)
                   .panel-body
-                    - types.each do |type|
-                      %b
-                        =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
-                      .well.white-well.text-left
-                        -coverage_string = ""
-                        - @service.service_coverage_maps.where(rule: rule.singularize.downcase+'_area').joins(:geo_coverage).order('value').each do |map|
-                          -if map.geo_coverage.coverage_type == type
-                            -coverage_string += map.geo_coverage.value + ', '
-                        -if coverage_string == ""
-                          = t(:n_a)
-                        -else
-                          =coverage_string.chop.chop
+                    - if rule == 'endpoints' and @service.service_coverage_maps.where(rule: 'endpoint_area').count == 0 and not @service.endpoint_area_geom.nil?
+                      =t(:geometry_defined_by_shapefile)
+                    - elsif rule == 'coverages' and @service.service_coverage_maps.where(rule: 'coverage_area').count == 0 and not @service.coverage_area_geom.nil?
+                      =t(:geometry_defined_by_shapefile)
+                    - else
+                      - types.each do |type|
+                        %b
+                          =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
+                        .well.white-well.text-left
+                          -coverage_string = ""
+                          - @service.service_coverage_maps.where(rule: rule.singularize.downcase+'_area').joins(:geo_coverage).order('value').each do |map|
+                            -if map.geo_coverage.coverage_type == type
+                              -coverage_string += map.geo_coverage.value + ', '
+                          -if coverage_string == ""
+                            = t(:n_a)
+                          -else
+                            =coverage_string.chop.chop
 
             .col-sm-6.text-center
               .panel.panel-default

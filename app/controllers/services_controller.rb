@@ -1,7 +1,7 @@
 class ServicesController < ApplicationController
   before_filter :load_service, only: [:create]
   load_and_authorize_resource
-  
+
   include ApplicationHelper
 
   def index
@@ -16,7 +16,7 @@ class ServicesController < ApplicationController
 
     @service = Service.find(params[:id])
     @contact = @service.internal_contact
-    
+
     polylines = []
 
     ['coverage_area', 'endpoint_area'].each do |rule|
@@ -76,7 +76,7 @@ class ServicesController < ApplicationController
     # @service = Service.new(service_params)
 
     @provider = Provider.find(params[:provider_id])
-    @service.provider = @provider    
+    @service.provider = @provider
 
     respond_to do |format|
       if @service.save
@@ -105,26 +105,52 @@ class ServicesController < ApplicationController
     if @service.fare_structures.count < 1
       @service.fare_structures.build
     end
-    
+
   end
 
   # PUT /services/1
   # PUT /services/1.json
   def update
     @service = Service.find(params[:id])
-
     respond_to do |format|
       par = service_params
+
       if @service.update_attributes(service_params)
         # internal_contact is a special case
         @service.internal_contact = User.find_by_id(params[:service][:internal_contact])
-        @service.build_polygons
-        if params[:service][:logo]
-          @service.logo = params[:service][:logo] 
-          @service.save!
+
+        temp_endpoints_shapefile = params[:service][:endpoints_shapefile]
+        temp_coverages_shapefile = params[:service][:coverages_shapefile]
+        unless temp_endpoints_shapefile.nil?
+          if temp_endpoints_shapefile.content_type.include?('zip')
+            temp_endpoints_shapefile_path = temp_endpoints_shapefile.tempfile.path
+          else
+            zip_alert_msg = t(:upload_zip_alert)
+          end
+        end
+        unless temp_coverages_shapefile.nil?
+          if temp_coverages_shapefile.content_type.include?('zip')
+            temp_coverages_shapefile_path = temp_coverages_shapefile.tempfile.path
+          else
+            zip_alert_msg = t(:upload_zip_alert)
+          end
         end
 
-        format.html { redirect_to @service, notice: t(:service) + ' ' + t(:was_successfully_updated) } 
+        polygon_alert_msg = @service.build_polygons(temp_endpoints_shapefile_path, temp_coverages_shapefile_path)
+        if params[:service][:logo]
+          @service.logo = params[:service][:logo]
+          logo_save_failure = @service.save! rescue nil
+          if logo_save_failure.nil?
+            logo_format_alert_msg = t(:logo_format_alert).sub '%{logo_formats}', Oneclick::Application.config.service_logo_format_list.join(',')
+          end
+        end
+
+        alert_msgs = [zip_alert_msg, polygon_alert_msg, logo_format_alert].delete_if {|x| x == nil}
+        if alert_msgs.count > 0
+          format.html { redirect_to @service, alert: alert_msgs.join('; ') }
+        else
+          format.html { redirect_to @service, notice: t(:service) + ' ' + t(:was_successfully_updated) }
+        end
         format.json { head :no_content }
       else
         format.html {
@@ -147,7 +173,7 @@ class ServicesController < ApplicationController
       format.json { head :no_content }
     end
   end
-    
+
 protected
   def service_params
     params.require(:service).permit(:name, :phone, :email, :url, :external_id, :public_comments, :private_comments,
@@ -176,10 +202,10 @@ protected
   def set_aux_instance_variables
     @schedules = []
     @service.schedules.each {|s| @schedules[s.day_of_week] = s}
-    
+
     @staff = User.with_role(:provider_staff, @service.provider)
     @eh = EligibilityService.new
 
   end
-  
+
 end

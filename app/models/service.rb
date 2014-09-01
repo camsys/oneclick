@@ -1,4 +1,6 @@
 class Service < ActiveRecord::Base
+  require 'zip'
+  require 'rgeo/shapefile'
   include Rateable # mixin to handle all rating methods
   resourcify
 
@@ -166,47 +168,122 @@ class Service < ActiveRecord::Base
     name
   end
 
-  def build_polygons
+  def get_shapefile_first_geometry(shapefile_path)
+    unless shapefile_path.nil?
+      begin
+        Zip::File.open(shapefile_path) do |zip_file|
+          zip_shp = zip_file.glob('*.shp').first
+          unless zip_shp.nil?
+            file_name = zip_shp.name.sub '.shp', ''
+            shp_name = nil
+            Dir.mktmpdir do |dir|
+              shp_name = "#{dir}/" + zip_shp.name
+              zip_file.each do |entry|
+                if entry.name.include?(file_name)
+                  entry.extract("#{dir}/" + entry.name)
+                end
+              end
 
-    #clear old polygons
-    self.endpoint_area_geom = nil
-    self.coverage_area_geom = nil
-    #Rails.logger.info  "Building Polygon for Service/Id: #{self.name} / #{self.id}"
-    ['endpoint_area', 'coverage_area'].each do |rule|
-      scms = self.service_coverage_maps.where(rule: rule)
-      scms.each do |scm|
-        polygon = polygon_from_attribute(scm)
-        if polygon.nil?
-          next
+              RGeo::Shapefile::Reader.open(shp_name, { :assume_inner_follows_outer => true }) do |shapefile|
+                shapefile.each do |shape|
+                  if not shape.geometry.nil? and shape.geometry.geometry_type.to_s.downcase.include?('polygon') #only return first polygon
+                    return shape.geometry
+                  end
+                end
+              end
+            end
+          end
         end
-        #Rails.logger.info "polygon is #{polygon.ai}"
-        case rule
-          when 'endpoint_area'
-            #Rails.logger.info  "Updating Endpoint Area"
-            if self.endpoint_area_geom
-              merged = self.endpoint_area_geom.geom.union(polygon)
-              self.endpoint_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
-              self.endpoint_area_geom.save!
-            else
-              gc = GeoCoverage.create! coverage_type: 'endpoint_area', geom: polygon
-              self.endpoint_area_geom = gc
-              self.save!
-            end
-          when 'coverage_area'
-            #Rails.logger.info  "Updating Coverage Area"
-            if self.coverage_area_geom
-              merged = self.coverage_area_geom.geom.union(polygon)
-              self.coverage_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
-              self.coverage_area_geom.save!
-            else
-              gc = GeoCoverage.create! coverage_type: 'coverage_area', geom: polygon
-              self.coverage_area_geom = gc
-              self.save!
-            end
+      rescue Exception => msg
+        Rails.logger.info msg
+      end
+    end
+
+    return nil
+  end
+
+  def save_new_coverage_area_from_shp(rule, geom)
+    gc = GeoCoverage.create! coverage_type: rule, geom: geom
+    case rule
+    when 'endpoint_area'
+      self.endpoint_area_geom = gc
+    when 'coverage_area'
+      self.coverage_area_geom = gc
+    end
+    self.save!
+  end
+
+  def update_coverage_map(rule)
+    scms = self.service_coverage_maps.where(rule: rule)
+    scms.each do |scm|
+      polygon = polygon_from_attribute(scm)
+      if polygon.nil?
+        next
+      end
+      #Rails.logger.info "polygon is #{polygon.ai}"
+      case rule
+      when 'endpoint_area'
+        #Rails.logger.info  "Updating Endpoint Area"
+        if self.endpoint_area_geom
+          merged = self.endpoint_area_geom.geom.union(polygon)
+          self.endpoint_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
+          self.endpoint_area_geom.save!
+        else
+          gc = GeoCoverage.create! coverage_type: 'endpoint_area', geom: polygon
+          self.endpoint_area_geom = gc
+          self.save!
+        end
+      when 'coverage_area'
+        #Rails.logger.info  "Updating Coverage Area"
+        if self.coverage_area_geom
+          merged = self.coverage_area_geom.geom.union(polygon)
+          self.coverage_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
+          self.coverage_area_geom.save!
+        else
+          gc = GeoCoverage.create! coverage_type: 'coverage_area', geom: polygon
+          self.coverage_area_geom = gc
+          self.save!
         end
       end
     end
-    self.save!
+    self.save!  
+  end
+
+  def build_polygons(temp_endpoints_shapefile_path = nil, temp_coverages_shapefile_path = nil)
+
+    #endpoint area
+    endpoint_rule = 'endpoint_area'
+    endpoint_area_geom = get_shapefile_first_geometry(temp_endpoints_shapefile_path)
+    unless endpoint_area_geom.nil?
+      self.service_coverage_maps.where(rule: endpoint_rule).destroy_all
+      save_new_coverage_area_from_shp(endpoint_rule, endpoint_area_geom)
+    else
+      unless temp_endpoints_shapefile_path.nil?
+        alert_msg = t(:no_polygon_geometry_parsed).sub '%{area_type}', t(endpoint_rule)
+      end
+      if self.service_coverage_maps.where(rule: endpoint_rule).count > 0
+        self.endpoint_area_geom = nil
+      end
+      update_coverage_map(endpoint_rule)
+    end
+
+    #coverage area
+    coverage_rule = 'coverage_area'
+    coverage_area_geom = get_shapefile_first_geometry(temp_coverages_shapefile_path)
+    unless coverage_area_geom.nil?
+      self.service_coverage_maps.where(rule: coverage_rule).destroy_all
+      save_new_coverage_area_from_shp(coverage_rule, coverage_area_geom)
+    else
+      unless temp_coverages_shapefile_path.nil?
+        alert_msg = t(:no_polygon_geometry_parsed).sub '%{area_type}', t(coverage_rule)
+      end
+      if self.service_coverage_maps.where(rule: coverage_rule).count > 0
+        self.coverage_area_geom = nil
+      end
+      update_coverage_map(coverage_rule)
+    end
+
+    return alert_msg
   end
 
   def polygon_from_attribute scm

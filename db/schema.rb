@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140828150520) do
+ActiveRecord::Schema.define(version: 20140831223721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,6 +118,8 @@ ActiveRecord::Schema.define(version: 20140828150520) do
     t.string  "polygon"
     t.spatial "geom",          limit: {:srid=>0, :type=>"geometry"}
   end
+
+  add_index "geo_coverages", ["geom"], :name => "index_geo_coverages_on_geom", :spatial => true
 
   create_table "itineraries", force: true do |t|
     t.integer  "trip_part_id"
@@ -573,9 +575,13 @@ ActiveRecord::Schema.define(version: 20140828150520) do
     t.string   "code",                       null: false
     t.string   "name",                       null: false
     t.float    "value",                      null: false
+<<<<<<< HEAD
     t.boolean  "is_default", default: false
+=======
+>>>>>>> [fixes#74336366] admin able to upload zipped shapefile to update service endpoint, coverage areas
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_default", default: false
   end
 
   create_table "zipcodes", force: true do |t|
