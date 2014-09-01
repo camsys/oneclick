@@ -22,7 +22,7 @@
         = f.input :comments, as: :text, label: t(:comments), required: false, input_html: {rows: 3}
         = f.input :copy_self, as: :boolean
         .modal-footer
-          = button_tag type: :submit, class: 'btn btn-info' do
+          = button_tag type: :submit, class: 'btn action-button' do
             %i.fa.fa-envelope-o
             = t(:send)
           = link_to '#', :class => "cancel_provider_link" do

@@ -36,7 +36,7 @@ class TripsController < PlaceSearchingController
       @trip.remove_itineraries
       @trip.create_itineraries
     end
-    #@tripResponse = TripSerializer.new(@trip, params) #sync-dislay: response to review page to display all itineraries at one time 
+    #@tripResponse = TripSerializer.new(@trip, params) #sync-dislay: response to review page to display all itineraries at one time
     @tripResponse = TripSerializer.new(@trip, params) #async-dislay: response to review page to incrementally display itineraries
 
     # TODO This seems incredibly hacky to go to json and back for this, but...
@@ -75,9 +75,9 @@ class TripsController < PlaceSearchingController
     #check if each trip part has a valid selected itinerary
     #if not, should show alert message
     @is_plan_valid = true
-    @trip.trip_parts.each do |trip_part|  
+    @trip.trip_parts.each do |trip_part|
       @is_plan_valid = trip_part.itineraries.selected.valid.count == 1
-      break if !@is_plan_valid  
+      break if !@is_plan_valid
     end
 
     if assisting?
@@ -416,7 +416,7 @@ class TripsController < PlaceSearchingController
 
     if session[:first_login] == true
       session[:first_login] = nil
-      @show_booking = true
+      @show_booking = true #TODO: what if there is no bookable service available?
       @booking_proxy = UserServiceProxy.new()
     end
 
@@ -509,13 +509,13 @@ class TripsController < PlaceSearchingController
           Rails.logger.info "\nError render 2\n"
           Rails.logger.info "ERRORS: #{@trip.errors.ai}"
           Rails.logger.info "PLACES: #{@trip.trip_places.ai}"
-          flash.now[:notice] = t(:correct_errors_to_create_a_trip)          
+          flash.now[:notice] = t(:correct_errors_to_create_a_trip)
           format.html { render action: "new" }
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
       else
         Rails.logger.info "\nError render 3\n"
-        flash.now[:notice] = t(:correct_errors_to_create_a_trip)          
+        flash.now[:notice] = t(:correct_errors_to_create_a_trip)
         format.html { render action: "new" }
       end
     end
@@ -716,7 +716,7 @@ class TripsController < PlaceSearchingController
       flash[:notice] = t(:http_404_not_found)
       redirect_to :root
     end
-    
+
     taken = true.to_s.eql? params[:taken] # convert to a boolean for future use (ruby isn't falsy enough for me here)
     @trip.taken = taken
     @trip.save
@@ -771,12 +771,12 @@ class TripsController < PlaceSearchingController
 
 protected
 
-  
+
   # Set the default travel time/date to x mins from now
   def default_trip_time
-    return Time.now.in_time_zone.next_interval(DEFAULT_TRIP_TIME_AHEAD_MINS.minutes)    
+    return Time.now.in_time_zone.next_interval(DEFAULT_TRIP_TIME_AHEAD_MINS.minutes)
   end
-  
+
   # Safely set the @trip variable taking into account trip ownership
   def get_trip
     # limit trips to trips accessible by the user unless an admin

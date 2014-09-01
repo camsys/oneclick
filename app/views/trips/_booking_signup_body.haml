@@ -2,7 +2,7 @@
   .div
     =t(:booking_link_success)
   .div
-    .btn.btn-success.text-center#bookingSuccessButton
+    .btn.action-button.text-center#bookingSuccessButton
       =t(:next)
   :javascript
     $('#initialCloseButton').hide();
@@ -19,5 +19,5 @@
       = f.input :external_user_id,label: "Rabbit Transit " + t(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
       = f.input :dob, label: t(:dob), label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: t(:dob_notice)
     .form-actions
-      = f.button :submit, t(:submit)
+      = f.button :submit, t(:submit), class: "btn action-button"
 

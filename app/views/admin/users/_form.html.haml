@@ -35,12 +35,12 @@
     = f.hidden :approved_agencies if session[:agency]
     - if @create_inline
       .form-actions
-        = button_tag :type => 'submit', :class => "btn btn-primary" do
+        = button_tag :type => 'submit', :class => "btn action-button" do
           %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
           =t(:sign_up_and_plan)
     - else
       .actions
-        = button_tag type: :submit, class: 'btn btn-primary controls' do
+        = button_tag type: :submit, class: 'btn action-button controls' do
           %i.fa.fa-edit
           = t(:sign_up)
         = render "devise/shared/links"

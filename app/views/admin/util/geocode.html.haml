@@ -11,18 +11,18 @@
       = f.input :address, input_html: {value: @address}
       = f.input :map_center, input_html: {value: @map_center}
       .form-actions
-        = f.submit 'Geocode', class: 'btn btn-info'
+        = f.submit 'Geocode', class: 'btn action-button'
 - if @results
   .row
     .col-sm-12
-      Included types: 
+      Included types:
       = OneclickGeocoder::INCLUDED_TYPES
   .row
     .col-sm-12
-      Jump to:  
+      Jump to:
       / This screen is not public, will not internationalize.
       - (1..@results.size).each do |i|
-        %a{href: "##{i}"}= i  
+        %a{href: "##{i}"}= i
       %br
       = link_to 'Autocomplete results'
       %br
@@ -30,7 +30,7 @@
         = i + 1
         %pre{id: i + 1}
           = r.data.ai(plain: true)
-      %h4 Autocomplete results  
+      %h4 Autocomplete results
       %pre
         = @autocomplete_results.body.ai(plain: true)
       %h4 Autocomplete details

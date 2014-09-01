@@ -1,12 +1,12 @@
 %h1
   = link_to @agency.name, [:admin, @agency] if @agency
-  
+
 %h2= t(:find_traveler)
 .well.well-sm#filters
   =form_tag({controller: "admin/agency_user_relationships", action: "index"}, method: 'get', :class => "form-inline") do
     =label_tag :text, t(:search)
     =text_field_tag :text, params[:text]
-    =submit_tag 'Go!', name: nil, :class => "btn btn-primary"
+    =submit_tag t(:submit), name: nil, :class => "btn action-button"
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_users_table
   %thead
     %tr
@@ -25,7 +25,7 @@
         %td= traveler.created_at.to_date
         %td.center
           - unless traveler.is_visitor? || current_user.agency.nil?
-            = link_to t(:plan_a_trip), (admin_agency_traveler_aid_user_path(@agency, traveler.id) rescue ''), :class => "btn btn-success"
+            = link_to t(:plan_a_trip), (admin_agency_traveler_aid_user_path(@agency, traveler.id) rescue ''), :class => "btn action-button"
         = render partial: traveler, locals: {agency: @agency} if @agency
 
 :javascript
