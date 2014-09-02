@@ -579,10 +579,6 @@ ActiveRecord::Schema.define(version: 20140831223721) do
     t.string   "code",                       null: false
     t.string   "name",                       null: false
     t.float    "value",                      null: false
-<<<<<<< HEAD
-    t.boolean  "is_default", default: false
-=======
->>>>>>> [fixes#74336366] admin able to upload zipped shapefile to update service endpoint, coverage areas
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "is_default", default: false
