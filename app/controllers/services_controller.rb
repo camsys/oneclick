@@ -53,8 +53,23 @@ class ServicesController < ApplicationController
   # GET /services/new
   def new
     @service = Service.new
+
     # Have to specify a provider to create a service for
     @provider = Provider.find(params[:provider_id])
+
+    #Set Default Values
+    @service.phone = @provider.phone
+    @service.email = @provider.email
+    @service.url = @provider.url
+
+    @service.internal_contact_name = @provider.internal_contact_name
+    @service.internal_contact_title = @provider.internal_contact_title
+    @service.internal_contact_phone = @provider.internal_contact_phone
+    @service.internal_contact_email = @provider.internal_contact_email
+    @contact = @provider.users.with_role(:internal_contact, @provider).first
+    if @contact
+      @service.users << @contact
+    end
 
     # TODO: handle bogus provider
     @service.provider = @provider
@@ -77,6 +92,8 @@ class ServicesController < ApplicationController
 
     @provider = Provider.find(params[:provider_id])
     @service.provider = @provider
+    @service.internal_contact = User.find_by_id(params[:service][:internal_contact])
+
 
     respond_to do |format|
       if @service.save
@@ -86,7 +103,7 @@ class ServicesController < ApplicationController
       else
 
         set_aux_instance_variables
-
+        @contact = @provider.users.with_role(:internal_contact, @provider).first
         @service.fare_structures.build
 
         format.html { render action: "new" }
