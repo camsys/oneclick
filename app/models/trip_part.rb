@@ -156,7 +156,17 @@ class TripPart < ActiveRecord::Base
     tp = TripPlanner.new
     arrive_by = !is_depart
     wheelchair = (trip.user.requires_wheelchair_access? and Oneclick::Application.config.transit_respects_ada).to_s
-    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair)
+
+    walk_speed = 3.0
+    max_walk_distance = 2.0
+    if trip.user.walking_speed
+      walk_speed = trip.user.walking_speed.value
+    end
+    if trip.user.walking_maximum_distance
+      max_walk_distance = trip.user.walking_maximum_distance.value
+    end
+
+    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance)
 
     #TODO: Save errored results to an event log
     if result

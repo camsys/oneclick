@@ -82,13 +82,6 @@ ActiveRecord::Schema.define(version: 20140831223721) do
     t.string  "link_handler"
   end
 
-  create_table "cities", primary_key: "gid", force: true do |t|
-    t.string  "geoid", limit: 7
-    t.string  "name",  limit: 100
-    t.string  "state", limit: 2
-    t.spatial "geom",  limit: {:srid=>0, :type=>"multi_polygon"}
-  end
-
   create_table "counties", force: true do |t|
     t.integer "gid"
     t.string  "name"
@@ -256,8 +249,10 @@ ActiveRecord::Schema.define(version: 20140831223721) do
     t.string  "internal_contact_title"
     t.string  "internal_contact_phone"
     t.string  "internal_contact_email", limit: 128
+    t.string  "old_logo_url"
     t.text    "private_comments"
     t.text    "public_comments"
+    t.string  "icon"
     t.string  "logo"
   end
 
@@ -367,6 +362,7 @@ ActiveRecord::Schema.define(version: 20140831223721) do
     t.string   "internal_contact_email"
     t.string   "internal_contact_title"
     t.string   "internal_contact_phone"
+    t.string   "logo_url"
     t.integer  "endpoint_area_geom_id"
     t.integer  "coverage_area_geom_id"
     t.integer  "residence_area_geom_id"
@@ -579,9 +575,9 @@ ActiveRecord::Schema.define(version: 20140831223721) do
     t.string   "code",                       null: false
     t.string   "name",                       null: false
     t.float    "value",                      null: false
+    t.boolean  "is_default", default: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_default", default: false
   end
 
   create_table "zipcodes", force: true do |t|

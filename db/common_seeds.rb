@@ -219,3 +219,16 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
   structured_hash = structure_records_from_flat_hash record
   build_internationalized_records structured_hash
 end
+
+WalkingSpeed.where(code: 'slow', name: 'Slow', value: 2).first_or_create!
+WalkingSpeed.where(code: 'average', name: 'Average', value: 3, is_default: true).first_or_create!
+WalkingSpeed.where(code: 'fast', name: 'Fast', value: 4).first_or_create!
+
+WalkingMaximumDistance.where(value: 0.25).first_or_create!
+WalkingMaximumDistance.where(value: 0.5).first_or_create!
+WalkingMaximumDistance.where(value: 0.75).first_or_create!
+WalkingMaximumDistance.where(value: 1).first_or_create!
+WalkingMaximumDistance.where(value: 1.5).first_or_create!
+WalkingMaximumDistance.where(value: 2, is_default: true).first_or_create!
+WalkingMaximumDistance.where(value: 3).first_or_create!
+WalkingMaximumDistance.where(value: 4).first_or_create!
