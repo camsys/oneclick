@@ -216,7 +216,7 @@ Oneclick::Application.configure do
     raise "Brand '#{config.brand}' not supported"
   end
 
-  if config.action_mailer.default_url_options.nil?
+  if Rails.application.routes.default_url_options[:host].nil?
     host = case Rails.env
     when 'production'
       config.host
@@ -230,7 +230,7 @@ Oneclick::Application.configure do
     else
       raise "Unhandled Rails.env #{Rails.env}"
     end
-    config.action_mailer.default_url_options = { host: host }
+    Rails.application.routes.default_url_options[:host] = host
   end
 
   case config.ui_mode
