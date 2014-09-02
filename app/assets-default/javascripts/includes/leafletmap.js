@@ -12,7 +12,7 @@ var CsLeaflet = CsLeaflet || {};
 
 CsLeaflet.Leaflet = {
     //options
-    _options: null, 
+    _options: null,
 
     // Leaflet map rendering functions
 
@@ -62,8 +62,8 @@ CsLeaflet.Leaflet = {
         //alert(options.min_zoom);
         //alert(options.max_zoom);
         if (options.tile_provider == 'OPENSTREETMAP') {
-            var mapUrl = OPENSTREETMAP_URL;
-            var mapAttrib = OPENSTREETMAP_ATTRIB;
+            var mapUrl = this.OPENSTREETMAP_URL;
+            var mapAttrib = this.OPENSTREETMAP_ATTRIB;
             L.tileLayer(mapUrl, {
                 minZoom: options.min_zoom,
                 maxZoom: options.max_zoom,
@@ -73,8 +73,8 @@ CsLeaflet.Leaflet = {
             var googleLayer = new L.Google('ROADMAP');
             this.LMmap.addLayer(googleLayer);
         } else {
-            var mapUrl = CLOUDMADE_URL;
-            var mapAttrib = CLOUDMADE_ATTRIB;
+            var mapUrl = this.CLOUDMADE_URL;
+            var mapAttrib = this.CLOUDMADE_ATTRIB;
             L.tileLayer(mapUrl, {
                 minZoom: options.min_zoom,
                 maxZoom: options.max_zoom,
@@ -754,7 +754,7 @@ CsLeaflet.Leaflet = {
 
                 return container;
             },
-          
+
             _click: function (e) {
                 L.DomEvent.stopPropagation(e);
                 L.DomEvent.preventDefault(e);
@@ -766,7 +766,7 @@ CsLeaflet.Leaflet = {
                 }
             }
         })
-    }, 
+    },
 
     addCurrentLocationControl: function() {
         if (!("geolocation" in navigator)) { //if geolocation is not supported, then not display this control on map
@@ -786,9 +786,9 @@ CsLeaflet.Leaflet = {
                 currentMap.locate({setView: true});
             }
         });
-        
+
         currentLocataionControl.addTo(currentMap);
-    }, 
+    },
 
     addStreetViewControl: function() {
 
@@ -804,9 +804,9 @@ CsLeaflet.Leaflet = {
             toggleable: true,
             ignorePopupWhenClick: true
         });
-        
+
         streetViewControl.addTo(currentMap);
-    }, 
+    },
 
     //oepn a new street view page
     openStreetView: function(latlng) {
@@ -881,7 +881,7 @@ CsLeaflet.Leaflet = {
         currentMap.on('click', function(e){
             clickCounter ++;
             setTimeout(function(){ //Leaflet triggers click in doubleclick event, using a timeout to separate them
-                if(clickCounter === 1) {     
+                if(clickCounter === 1) {
                     scope.executeActiveCustomControl(e.latlng);
                 }
                 clickCounter = 0;
