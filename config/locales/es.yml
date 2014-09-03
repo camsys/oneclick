@@ -597,6 +597,13 @@ es:
   assisting_turned_off: "[es10]Assisting has been turned off.[/es]"
   assisting_turned_on: "[es572]Assisting has been turned on.[/es]"
 
+  # UI Modes
+  ui_mode: '[es]UI Mode[/es]'
+  desktop: '[es]Desktop[/es]'
+  kiosk: '[es]Kiosk[/es]'
+  tablet: '[es]Tablet[/es]'
+  user_agent: 'user-agent'
+
   # General Messages
   hello: "Hola"
   id: "[es370]ID[/es]"

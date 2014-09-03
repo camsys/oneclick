@@ -21,6 +21,9 @@ class Kiosk::NewTrip::BaseController < Kiosk::TripsController
     @trip_proxy = model.new(params[:trip_proxy])
     @trip_proxy.valid?
 
+    @trip_proxy.user_agent = request.user_agent
+    @trip_proxy.ui_mode = :kiosk
+
     render_response
   end
 

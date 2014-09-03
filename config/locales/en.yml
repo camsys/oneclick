@@ -605,6 +605,13 @@ en:
   thanks_for_the_feedback: "Thank you for your feedback!"
   optional_comments_descr: "If you would like to provide optional comments or a rating for your trip, you can do so below."
 
+  # UI Modes
+  ui_mode: 'UI Mode'
+  desktop: 'Desktop'
+  kiosk: 'Kiosk'
+  tablet: 'Tablet'
+  user_agent: 'user-agent'
+  
   # General Messages
   hello: "Hello"
   id: "ID"

@@ -16,7 +16,7 @@
               - if @data[col].is_a?(Hash)
                 - strings = []
                 - @data[col].each do |key, value|
-                  - case key_type
+                  - case key_types[col] || default_key_type
                   - when 'locale'
                     - key_name = t(key, scope: :locales)
                   - when 'mode'
