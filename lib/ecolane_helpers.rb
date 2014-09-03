@@ -4,7 +4,6 @@ require 'indirizzo'
 
 class EcolaneHelpers
 
-
   begin
     SYSTEM_ID = Oneclick::Application.config.ecolane_system_id
     X_ECOLANE_TOKEN = Oneclick::Application.config.ecolane_x_ecolane_token
@@ -15,10 +14,7 @@ class EcolaneHelpers
     BASE_URL = nil
   end
 
-
-
   def get_ecolane_customer_id(customer_number)
-
     resp = search_for_customers(terms = {customer_number: customer_number})
     resp_xml = Nokogiri::XML(resp.body)
 
@@ -36,7 +32,6 @@ class EcolaneHelpers
     else
       return nil
     end
-
   end
 
   ## Post/Put Operations
@@ -48,13 +43,13 @@ class EcolaneHelpers
       Rails.logger.debug "Booking error #003"
       return false, "Booking error."
     end
-    resp  = request_booking(itinerary, funding_xml)
+
+    resp = request_booking(itinerary, funding_xml)
 
     return unpack_booking_response(resp, itinerary)
-
   end
 
-  def unpack_booking_response (resp, itinerary)
+  def unpack_booking_response(resp, itinerary)
     begin
       resp_xml = Nokogiri::XML(resp.body)
     rescue
@@ -356,8 +351,12 @@ class EcolaneHelpers
   end
 
   def build_location_hash(place)
-    parsable_address = Indirizzo::Address.new(place.address1)
-    {street_number: parsable_address.number, street:parsable_address.street.first, city: place.city, state: place.state, zip: place.zip}
+    street_number, street = if place.address1.present?
+      parsable_address = Indirizzo::Address.new(place.address1)
+      [parsable_address.number, parsable_address.street.first]
+    end
+
+    {street_number: street_number, street: street, city: place.city, state: place.state, zip: place.zip}
   end
 
 

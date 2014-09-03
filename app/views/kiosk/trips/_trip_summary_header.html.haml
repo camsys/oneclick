@@ -2,7 +2,7 @@
 .row-fluid.trip_summary_header
   .span12
     = render partial: 'itinerary_item', locals: {object: i.service.full_name.presence || get_trip_summary_title(i), label: t(:name)}
-    = render partial: 'itinerary_item', locals: {object: i.duration_in_words, label: t(:duration)}
+    = render partial: 'itinerary_item', locals: {object: i.duration_in_words.presence || 'Unknown', label: t(:duration)}
     = render partial: 'itinerary_item', locals: {object: i.cost_in_words, label: t(:cost)}
     / = render partial: 'itinerary_item', locals: {object: i.walking_time, label: t(:walk_time)}
     / = render partial: 'itinerary_item', locals: {object: i.transfers_in_words, label: t(:transfers)}

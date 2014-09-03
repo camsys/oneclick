@@ -120,9 +120,21 @@ h5{
 }
 
 //BACK BUTTON
-.back-button{
+.back-button, .start-over-button {
 	border-right: 1px solid $gray3;
 	height:128px;
+
+	&.start-over-icon {
+		border-right: none;
+		.arrow .arrow-btn {
+			background-image: image-url('start-over.png');
+		}
+
+		.arrow span {
+			width: 102px;
+			margin-left: 55px;
+		}
+	}
 
 	&:active{
 		background-color: $gray1;
@@ -312,10 +324,9 @@ a{
 	background-color: $white;
 	width:100%;
 
-	.attract-header{
+	.attract-header {
 		height: 73px;
-		// border-bottom:1px solid $gray3;
-    }
+   	}
     .attract-main{
     	cursor:pointer;
     	height:438px;
@@ -2468,3 +2479,23 @@ body.sessions.new, body.registrations.new{
 }
 
 @import "email";
+
+.penndot > .call-for-assistance {
+	padding: 25px 6px;
+}
+
+.call-for-assistance a {
+  position: relative;
+  &:hover { text-decoration: none }
+
+	&:before {
+		background-image: image-url("phone.png");
+		display: block;
+		width: 31px;
+		height: 38px;
+		content: " ";
+		position: absolute;
+		left: -43px;
+		top: -8px;
+	}
+}

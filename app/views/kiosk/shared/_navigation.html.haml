@@ -5,22 +5,19 @@
         .arrow-btn
         %span Back
 
-    %a.btn.btn-navbar{data: { toggle: "collapse",  target: ".nav-collapse"}}
+    %a.start-over-button.start-over-icon.pull-left{href: kiosk_reset_url}
+      .arrow
+        .arrow-btn
+        %span Start Over
+
+    %a.btn.btn-navbar{data: { toggle: 'collapse',  target: '.nav-collapse'}}
       %span.icon-bar
       %span.icon-bar
       %span.icon-bar
         -#<!-- Everything you want hidden at @navbarCollapseWidth or less, place within here -->
+
     .nav-collapse.collapse.pull-right
       %ul.nav.pull-right
         - if user_signed_in?
-          %li
-            = link_to destroy_kiosk_user_session_path do
-              = t(:logout)
-          /%li
-          /  = link_to ("Help"), error_501_path
-        - else
-          / %li
-          /   = link_to new_user_session_path do
-          /     = t(:log_in)
-          /%li
-          /  = link_to ("Help"), error_501_path
+          %li= link_to t(:logout), destroy_kiosk_user_session_path
+        %li.call-for-assistance= link_to 'Call for assistance', 'tel://+18447247433'
