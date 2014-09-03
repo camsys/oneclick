@@ -216,6 +216,8 @@ Oneclick::Application.configure do
     raise "Brand '#{config.brand}' not supported"
   end
 
+  Rails.logger.info "Rails.application.routes.default_url_options before:"
+  Rails.logger.info Rails.application.routes.default_url_options.ai
   if Rails.application.routes.default_url_options[:host].nil?
     host = case Rails.env
     when 'production'
@@ -232,6 +234,8 @@ Oneclick::Application.configure do
     end
     Rails.application.routes.default_url_options[:host] = host
   end
+  Rails.logger.info "Rails.application.routes.default_url_options after:"
+  Rails.logger.info Rails.application.routes.default_url_options.ai
 
   case config.ui_mode
   when 'desktop'
