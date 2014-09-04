@@ -12,6 +12,7 @@ else
   gem 'bootstrap-sass', '~> 2.3.2.0'
   gem 'simple_form', '3.0.1'
 end
+gem 'fog'
 gem 'coffee-rails'
 gem 'uglifier', '>= 1.0.3'
 gem 'bootstrap-combobox'

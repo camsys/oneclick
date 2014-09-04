@@ -157,6 +157,7 @@ class ServicesController < ApplicationController
         if params[:service][:logo]
           @service.logo = params[:service][:logo]
           logo_save_failure = @service.save! rescue nil
+
           if logo_save_failure.nil?
             logo_format_alert_msg = t(:logo_format_alert).sub '%{logo_formats}', Oneclick::Application.config.service_logo_format_list.join(',')
           end
