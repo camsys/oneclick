@@ -99,11 +99,33 @@ class TripDecorator < Draper::Decorator
   def outbound_itinerary_count
     outbound_part.itineraries.count
   end
-  
+
+  def outbound_itinerary_modes
+    strings = []
+    outbound_part.itineraries.group(:mode_id).count(:id).each do |key, val|
+      key_name = key.nil? ? I18n.t(:walk) : I18n.t("#{Mode.unscoped.find(key).code}_name")
+#      key_name = I18n.t("#{Mode.unscoped.find(key).code}_name")
+      strings << "#{key_name}: #{val}"
+    end
+    strings.join(', ')
+  end
+
   def return_itinerary_count
     if is_return_trip
       return_part.itineraries.count
     end
+  end
+
+  def return_itinerary_modes
+    strings = []
+    if is_return_trip
+      return_part.itineraries.group(:mode_id).count(:id).each do |key, val|
+        key_name = key.nil? ? I18n.t(:walk) : I18n.t("#{Mode.unscoped.find(key).code}_name")
+#        key_name = I18n.t("#{Mode.unscoped.find(key).code}_name")
+        strings << "#{key_name}: #{val}"
+      end
+    end
+    strings.join(', ')
   end
   
   def outbound_selected_short
@@ -136,7 +158,7 @@ class TripDecorator < Draper::Decorator
   def get_trip_summary itinerary
     summary = ''
     if itinerary.is_walk
-      itinerary.get_legs.each do |leg|
+      itinerary.get_legs(false).each do |leg|
         summary += "#{I18n.t(leg.mode.downcase)} #{I18n.t(:to)} #{leg.end_place.name};"
       end
     else
@@ -154,7 +176,7 @@ class TripDecorator < Draper::Decorator
       
       case code
       when 'mode_transit', 'mode_bus', 'mode_rail'
-        itinerary.get_legs.each do |leg|
+        itinerary.get_legs(false).each do |leg|
           case leg.mode
           when Leg::TripLeg::WALK
             summary += "#{I18n.t(leg.mode.downcase)}"
