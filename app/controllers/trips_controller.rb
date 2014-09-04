@@ -57,19 +57,23 @@ class TripsController < PlaceSearchingController
   end
 
   def plan
-    @itineraries = Itinerary.where('id in (' + params[:itinids] + ')')
     @trip = Trip.find(params[:id])
     @trip_parts = @trip.trip_parts
 
-    @trip.itineraries.selected.each do |itin|
-      itin.selected = false
-      itin.save
-    end
+    unless params[:itinids].nil?
+      @itineraries = Itinerary.where('id in (' + params[:itinids] + ')')
+      @trip.itineraries.selected.each do |itin|
+        itin.selected = false
+        itin.save
+      end
 
-    #Mark these itineraries as selected
-    @itineraries.each do |itinerary|
-      itinerary.selected = true
-      itinerary.save
+      #Mark these itineraries as selected
+      @itineraries.each do |itinerary|
+        itinerary.selected = true
+        itinerary.save
+      end
+    else
+      @itineraries = @trip.itineraries.selected
     end
 
     #check if each trip part has a valid selected itinerary
