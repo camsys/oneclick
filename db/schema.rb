@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140819194120) do
+ActiveRecord::Schema.define(version: 20140902144803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -448,6 +448,8 @@ ActiveRecord::Schema.define(version: 20140819194120) do
     t.text     "planned_trip_html"
     t.boolean  "needs_feedback_prompt"
     t.text     "debug_info"
+    t.string   "user_agent"
+    t.string   "ui_mode"
   end
 
   create_table "trips_desired_modes", force: true do |t|

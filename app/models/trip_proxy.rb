@@ -7,6 +7,8 @@ class TripProxy < Proxy
   attr_accessor :id, :map_center
   attr_accessor :trip_options
 
+  attr_accessor :user_agent, :ui_mode
+  
   include TripsSupport
   include Trip::From
   include Trip::PickupTime
@@ -137,6 +139,9 @@ class TripProxy < Proxy
       trip_proxy.to_place_object = tp.to_json(methods: :type_name)
     end
 
+    trip_proxy.user_agent = trip.user_agent
+    trip_proxy.ui_mode = trip.ui_mode
+    
     return trip_proxy
 
   end

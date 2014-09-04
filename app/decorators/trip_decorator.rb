@@ -84,6 +84,10 @@ class TripDecorator < Draper::Decorator
     is_return_trip ? I18n.t(:yes_str) : I18n.t(:no_str)
   end
   
+  def booked
+    is_booked? ? I18n.t(:yes_str) : I18n.t(:no_str)
+  end
+
   def eligibility
     get_eligibility(outbound_part.selected_itinerary, object.user.user_profile)
   end

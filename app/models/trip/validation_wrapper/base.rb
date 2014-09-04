@@ -4,6 +4,8 @@ class Trip::ValidationWrapper::Base
   include ActiveModel::Validations
   include ActiveModel::Conversion
 
+  attr_accessor :user_agent, :ui_mode
+
   def initialize(params={})
     Rails.logger.info "\nTrip::ValidationWrapper::Base#initialize"
     params.each do |attr, value|
