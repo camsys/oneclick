@@ -4,7 +4,7 @@ module ApplicationHelper
 
   include CsHelpers
   include LocaleHelpers
-  
+
   KIOSK_ICON_DICTIONARY = {
     Leg::TripLeg::WALK => 'travelcon-walk',
     Leg::TripLeg::TRAM => 'travelcon-subway',
@@ -48,20 +48,31 @@ module ApplicationHelper
   # Returns a service-specific icon
   def get_service_provider_icon(agency_id, mode)
     # search name first, then search external_id
-    # this is because leg.agency_id is pre-processed in itinerary_parser  
-    # in which agency_id was not original agency_id from GTFS 
+    # this is because leg.agency_id is pre-processed in itinerary_parser
+    # in which agency_id was not original agency_id from GTFS
     # but instead it's identified service name...
-    s = Service.where(name: agency_id).first || 
+    s = Service.where(name: agency_id).first ||
       Service.where(external_id: agency_id).first
 
-    if s 
+    if s
       if s.logo_url
-        return root_url({locale:''}) + Base.helpers.asset_path(s.logo_url)
+        return get_service_provider_icon_url(s.logo_url)
       elsif s.provider and s.provider.logo_url
-        return root_url({locale:''}) + Base.helpers.asset_path(s.provider.logo_url)
+        return get_service_provider_icon_url(s.provider.logo_url)
       end
+    end
+
+    return get_mode_icon(mode)
+  end
+
+  # logos are stored in local file system under dev environment
+  # stored in AWS s3 under other environments
+  def get_service_provider_icon_url(raw_logo_url)
+    case ENV["RAILS_ENV"]
+    when 'production', 'qa', 'integration'
+      return raw_logo_url
     else
-      return get_mode_icon(mode)
+      return root_url({locale:''}) + Base.helpers.asset_path(raw_logo_url)
     end
   end
 
@@ -175,7 +186,7 @@ module ApplicationHelper
   def get_trip_partial(itinerary)
 
     return if itinerary.nil?
-    
+
     mode_code = get_pseudomode_for_itinerary(itinerary)
     #is this not a switch case?  Saves a few evaluations that way...
     partial = if mode_code.in? ['transit', 'rail', 'bus', 'railbus', 'drivetransit']
@@ -226,7 +237,7 @@ module ApplicationHelper
     elsif mode_code == 'livery'
       'icon-taxi-sign'
     elsif mode_code == 'taxi'
-      'icon-taxi-sign'      
+      'icon-taxi-sign'
     elsif mode_code == 'rideshare'
       "#{fa_prefix}-group"
     elsif mode_code == 'walk'
@@ -277,7 +288,7 @@ module ApplicationHelper
       links << link_using_locale(I18n.t("locales.#{l}"), l)
       links << " | "
     end
-    
+
     links.html_safe
   end
 

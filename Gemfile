@@ -97,7 +97,7 @@ end
 group :development, :test do
   gem 'factory_girl_rails'
 end
-  
+
 group :test do
   gem 'rspec-core', '~> 2.14.0'
   gem 'rspec-rails'
