@@ -5,11 +5,11 @@
         = f.input :name
     .col-sm-6.btns
       - if can? :update, @agency
-          .pull-right
-            = button_tag type: 'submit', class: "btn action-button" do
-              = icon_label(:apply)
-            = link_to admin_agency_path(@agency), class: 'btn action-button', role: 'button' do
-              = icon_label(:cancel)
+        .pull-right
+          = button_tag type: 'submit', class: "btn action-button" do
+            = icon_label(:apply)
+          = link_to admin_agency_path(@agency), class: 'btn action-button', role: 'button' do
+            = icon_label(:cancel)
   
   .row
     .col-sm-6

@@ -19,6 +19,16 @@
             %label.col-sm-3.control-label= t(:email)
             .col-sm-9
               %p.form-control-static= user.email
+          -unless user.phone.empty?
+            .form-group
+              %label.col-sm-3.control-label= t(:phone)
+              .col-sm-9
+                %p.form-control-static= user.phone
+          -unless user.title.empty?
+            .form-group
+              %label.col-sm-3.control-label= t(:title)
+              .col-sm-9
+                %p.form-control-static= user.title
           .form-group
             %label.col-sm-3.control-label= t(:preferred_locale)
             .col-sm-9
