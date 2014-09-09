@@ -1,5 +1,6 @@
 class EspReader
   require 'zip'
+  include ActionView::Helpers::NumberHelper
 
   DELIMITER='::'
 
@@ -12,7 +13,7 @@ class EspReader
   ########################
   def assign_provider_indices
     @provider_idx = {}
-    ['Name', 'Contact', 'ContactTitle', 'LocAddress', 'LocCity', 'LocState', 'LocZipCode', 'AreaCode1', 'Phone1', 'URL', 'Email', 'ProviderID'].each do |column_name|
+    ['Name', 'Contact', 'ContactTitle', 'LocAddress', 'LocCity', 'LocState', 'LocZipCode', 'AreaCode1', 'Phone1', 'URL', 'Email', 'ProviderID', 'Comments'].each do |column_name|
       @provider_idx[column_name] = @esp_providers.first.index(column_name)
       if @provider_idx[column_name].nil?
         return false, 'Missing column ' + column_name + ' from tProvider table.'
@@ -23,7 +24,7 @@ class EspReader
 
   def assign_service_indices(services)
     @service_idx = {}
-    ['ServiceID', 'ServiceRefID', 'OrgName', 'Contact', 'ContactTitle', 'Email', 'AreaCode1', 'Phone1', 'URL', 'ProviderID', 'CostComments', 'TimeSun1'].each do |column_name|
+    ['ServiceID', 'ServiceRefID', 'OrgName', 'Contact', 'ContactTitle', 'Email', 'AreaCode1', 'Phone1', 'URL', 'ProviderID', 'CostComments', 'TimeSun1', 'Comments', 'LocalComments'].each do |column_name|
       @service_idx[column_name] = services.first.index(column_name)
       if @service_idx[column_name].nil?
         return false, 'Missing column ' + column_name + ' from tService table.'
@@ -236,10 +237,24 @@ class EspReader
       return result, message
     end
 
+    Rails.logger.info "EspReader: create restrictions narrative"
+    #Create restrictions narrative
+    result, message = create_or_update_restrictions(esp_configs)
+    unless result
+      return result, message
+    end
+
     Rails.logger.info "EspReader: add fares"
     #Add Fares
     esp_costs.shift
     result, message = create_or_update_fares(esp_costs)
+    unless result
+      return result, message
+    end
+
+    Rails.logger.info "EspReader: create fare table"
+    #Add Fare Table
+    result, message = create_fare_table(esp_costs)
     unless result
       return result, message
     end
@@ -286,6 +301,7 @@ class EspReader
     provider.phone = '(' + esp_provider[@provider_idx["AreaCode1"]].to_s + ') ' + esp_provider[@provider_idx["Phone1"]].to_s
     provider.url = esp_provider[@provider_idx["URL"]]
     provider.email = esp_provider[@provider_idx["Email"]]
+    provider.private_comments = esp_provider[@provider_idx["Comments"]]
     provider.save
 
     if create #assign service to the new provider
@@ -310,6 +326,8 @@ class EspReader
       service.email = esp_service[@service_idx['Email']]
       service.phone = '(' + esp_service[@service_idx['AreaCode1']].to_s + ') ' + esp_service[@service_idx['Phone1']].to_s
       service.url = esp_service[@service_idx['URL']]
+      service.public_comments = esp_service[@service_idx['Comments']]
+      service.private_comments = esp_service[@service_idx['LocalComments']]
 
       service.service_type = ServiceType.find_by_code('paratransit')
       service.advanced_notice_minutes = 0  #TODO: Need to get this from ESP
@@ -374,6 +392,27 @@ class EspReader
     return true, "Success"
   end
 
+  def create_or_update_restrictions esp_configs
+    service_comments_hash = {}
+    #['ServiceID', 'CfgNum', 'Item']
+    esp_configs.each do |config|
+      service = Service.find_by_external_id(SERVICE_DICT[config[@config_idx['ServiceID']]])
+      case config[@config_idx['CfgNum']].to_i
+        when 4
+          service_comments_hash[service.id] = (service_comments_hash[service.id] || "Restrictions<br><ul>") + "<li>" + config[@config_idx['Item']].to_s + "</li>"
+      end
+
+    end
+
+    service_comments_hash.each do |key, item|
+      service = Service.find(key)
+      service.public_comments = item + "</ul>" + (service.public_comments || "")
+      service.save
+    end
+
+    return true, "Success"
+  end
+
   def create_or_update_coverages esp_grids
 
     #['ServiceID', 'Grp', 'Item']
@@ -407,7 +446,9 @@ class EspReader
           when 'roundtrip'
             amount = amount/2.0
           when "mile"
-            next #TODO Create mileage-based fare
+            fare.rate = amount
+            fare.save
+            next
         end
         if fare.base.nil? or amount >= fare.base.to_f
           fare.base = amount
@@ -418,6 +459,32 @@ class EspReader
     end
     return true, "Success"
   end
+
+  def create_fare_table esp_configs
+
+    #['ServiceID', 'CostType', 'Amount', 'CostUnit']
+
+    service_comments_hash = {}
+
+    esp_configs.each do |config|
+      service = Service.find_by_external_id(SERVICE_DICT[config[@costs_idx['ServiceID']]])
+      service_comments_hash[service.id] = (service_comments_hash[service.id] || "<table class='ALTtable'><tr><th>Cost Type</th><th>Amount</th><th>Cost Unit</th></tr>") +
+          "<tr><td>" + config[@costs_idx['CostType']] +
+          "</td><td>" + number_to_currency(config[@costs_idx['Amount']].to_f).to_s +
+          "</td><td>" +  config[@costs_idx['CostUnit']] + "</td></tr>"
+    end
+
+    service_comments_hash.each do |key, item|
+      service = Service.find(key)
+      fare_structure = service.fare_structures.first #should only be one
+      fare_structure.desc = item + "</table><br>" + (fare_structure.desc || "")
+      fare_structure.save
+      puts item
+    end
+
+    return true, "Success"
+  end
+
 
   def add_accommodation(service, accommodation)
 

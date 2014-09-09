@@ -156,14 +156,14 @@
         -@service.fare_structures.each do |fare|
           .panel-body
             .row_fluid
-              %b= t(:cost) + ": "
+              %b= t(:base_rate) + ": "
               -if fare.base
                 = number_to_currency(fare.base.to_f).to_s
               -else
                 = t(:flat_fare_unavailable) + "."
             .row_fluid
               - if fare.rate
-                %b= t(:rate) + ": "
+                %b= t(:mileage_rate) + ": "
                 = number_to_currency(fare.rate.to_f).to_s
             %b= t(:comments) + ":  "
             -if fare.desc

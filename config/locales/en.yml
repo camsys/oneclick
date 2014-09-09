@@ -4,6 +4,8 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  base_rate: "Base Fare"
+  mileage_rate: "Mileage Rate"
   cancel_booking: "Cancel Booking"
   cancel_booking_success: "Your trip has been canceled. If you need further assistance, please contact %{name} at %{number}."
   cancel_booking_failure: "Your trip could not be canceled. Please contact %{name} at %{number} for further assistance."

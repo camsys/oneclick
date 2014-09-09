@@ -4,6 +4,8 @@
 # TODO may want to eventually split these out into separate files
 
 ht:
+  base_rate: "Base Fare"
+  mileage_rate: "Mileage Rate"
   trip_planned_assistance: "Trip planned with assistance from "
   public_comments: "Public Comments"
   private_comments: "Private Comments"

@@ -234,8 +234,8 @@
         = f.simple_fields_for :fare_structures do |fare|
           .panel-body
             .row_fluid
-              = fare.input :base, as: :currency
-              = fare.input :rate, as: :currency
+              = fare.input :base, label: t(:base_rate), as: :currency
+              = fare.input :rate, label: t(:mileage_rate), as: :currency
               = fare.input :desc, label: t(:comments), as: :text
   .row
     .col-sm-6
