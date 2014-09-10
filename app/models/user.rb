@@ -25,6 +25,8 @@ class User < ActiveRecord::Base
   has_many :user_roles
   has_many :roles, :through => :user_roles # one or more user roles
   has_many :trip_parts, :through => :trips
+  has_many :traveler_notes
+
   # relationships
   has_many :traveler_relationships, :class_name => 'UserRelationship', :foreign_key => :delegate_id
   has_many :confirmed_traveler_relationships, :class_name => 'UserRelationship', :foreign_key => :delegate_id

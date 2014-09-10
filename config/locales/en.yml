@@ -4,6 +4,8 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  only_agency_can_see: "Only %{agency} staff can see this note."
+  traveler_notes: "Traveler Notes"
   base_rate: "Base Fare"
   mileage_rate: "Mileage Rate"
   cancel_booking: "Cancel Booking"

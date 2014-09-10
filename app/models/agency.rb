@@ -14,6 +14,7 @@ class Agency < ActiveRecord::Base
   has_many :cs_users, class_name: 'User', through: :cs_roles, source: :users
   has_many :agents, -> {where('roles.name=?', 'agent')}, class_name: 'User', through: :cs_roles, source: :users
   has_many :administrators, -> {where('roles.name=?', 'agency_administrator')}, class_name: 'User', through: :cs_roles, source: :users
+  has_many :traveler_notes
 
   validates :name, :presence => true
   

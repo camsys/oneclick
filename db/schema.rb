@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140831223721) do
+ActiveRecord::Schema.define(version: 20140910152145) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -252,6 +252,7 @@ ActiveRecord::Schema.define(version: 20140831223721) do
     t.string  "old_logo_url"
     t.text    "private_comments"
     t.text    "public_comments"
+    t.string  "icon"
     t.string  "logo"
   end
 
@@ -361,7 +362,7 @@ ActiveRecord::Schema.define(version: 20140831223721) do
     t.string   "internal_contact_email"
     t.string   "internal_contact_title"
     t.string   "internal_contact_phone"
-    t.string   "old_logo_url"
+    t.string   "logo_url"
     t.integer  "endpoint_area_geom_id"
     t.integer  "coverage_area_geom_id"
     t.integer  "residence_area_geom_id"
@@ -398,6 +399,12 @@ ActiveRecord::Schema.define(version: 20140831223721) do
     t.text     "value"
     t.boolean  "is_html",        default: false
     t.boolean  "complete",       default: false
+  end
+
+  create_table "traveler_notes", force: true do |t|
+    t.integer "user_id"
+    t.integer "agency_id"
+    t.text    "note"
   end
 
   create_table "trip_parts", force: true do |t|
@@ -521,8 +528,8 @@ ActiveRecord::Schema.define(version: 20140831223721) do
     t.string   "external_user_id",                                 null: false
     t.boolean  "disabled",         default: false,                 null: false
     t.string   "customer_id"
-    t.datetime "updated_at",       default: '2014-08-21 15:20:43', null: false
-    t.datetime "created_at",       default: '2014-08-21 15:20:43', null: false
+    t.datetime "updated_at",       default: '2014-08-26 14:30:52', null: false
+    t.datetime "created_at",       default: '2014-08-26 14:30:52', null: false
   end
 
   create_table "users", force: true do |t|
@@ -574,9 +581,9 @@ ActiveRecord::Schema.define(version: 20140831223721) do
     t.string   "code",                       null: false
     t.string   "name",                       null: false
     t.float    "value",                      null: false
+    t.boolean  "is_default", default: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_default", default: false
   end
 
   create_table "zipcodes", force: true do |t|

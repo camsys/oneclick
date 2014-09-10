@@ -54,6 +54,17 @@
           %h2.panel-title=t(:agencies)
         .panel-body
           = render partial: 'users/agency_table', locals: { user: user }
+
+- if current_user.has_role?(:agent) or current_user.has_role?(:agency_administrator)
+  .row
+    .col-sm-12
+      .panel.panel-default
+        .panel-heading
+          %h2.panel-title=t(:traveler_notes)
+        .panel-body
+          -TravelerNote.where(user: @user, agency: current_user.agency).each do |note|
+            =note.note
+
 - if can? :full_read, user
   .row
     .col-sm-12

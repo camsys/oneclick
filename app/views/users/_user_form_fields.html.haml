@@ -33,7 +33,20 @@
             %h2.panel-title= t(:agencies)
           .panel-body
             = f.association :approved_agencies, collection: Agency.all.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes, wrapper: :inline_checkboxes, label: false
-  - if can? :full_read, @user  
+
+  - if current_user.has_role?(:agent) or current_user.has_role?(:agency_administrator)
+    .row
+      .col-sm-12
+        .panel.panel-default
+          .panel-heading
+            %h2.panel-title=t(:traveler_notes)
+          .panel-body
+            -traveler_note = TravelerNote.where(user: @user, agency: current_user.agency).first_or_create
+            =simple_fields_for traveler_note, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |note_form|
+              =note_form.input :note, :input_html => {:cols => 20}, :label => false
+            =t(:only_agency_can_see, :agency => current_user.agency.name)
+
+  - if can? :full_read, @user
     .new_buddies.hidden
       = select_tag "new_buddies", "", multiple: true, as: :hidden
     .row

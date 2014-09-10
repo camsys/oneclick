@@ -93,6 +93,14 @@ class Admin::UsersController < Admin::BaseController
       else
         redirect_to admin_user_path(@user, locale: current_user.preferred_locale), :notice => "User updated."
       end
+
+      #Add Traveler Notes
+      if current_user.agency
+        note = TravelerNote.where(user: @user, agency: current_user.agency).first_or_create
+        note.note = params[:traveler_note][:note]
+        note.save
+      end
+
     else
       render 'edit', :alert => "Unable to update user."
     end
