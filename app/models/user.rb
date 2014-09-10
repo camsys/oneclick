@@ -162,8 +162,15 @@ class User < ActiveRecord::Base
     false
   end
 
+  def is_staff? #If this user has any role beyond traveler, then return true
+    if self.roles.where.not(name: ["registered_traveler", "anonymous_traveler"]).count > 0
+      return true
+    else
+      return false
+    end
+  end
 
-# Union to get unique users with any relationship to current user
+  # Union to get unique users with any relationship to current user
   def related_users
     delegates | travelers
   end

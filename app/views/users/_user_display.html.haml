@@ -19,12 +19,12 @@
             %label.col-sm-3.control-label= t(:email)
             .col-sm-9
               %p.form-control-static= user.email
-          -unless user.phone.empty?
+          -if user.phone
             .form-group
               %label.col-sm-3.control-label= t(:phone)
               .col-sm-9
                 %p.form-control-static= user.phone
-          -unless user.title.empty?
+          -if user.title
             .form-group
               %label.col-sm-3.control-label= t(:title)
               .col-sm-9
