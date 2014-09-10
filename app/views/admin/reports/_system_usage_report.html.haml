@@ -2,15 +2,18 @@
   .col-sm-12
     = render partial: 'stats_panel',
              locals: {title: 'User Statistics',
-                      key_type: 'locale',
+                      default_key_type: 'locale',
+                      key_types: {},
                       cols: @report_instance.user_cols}
     = render partial: 'stats_panel',
              locals: {title: 'Trip Statistics',
-                      key_type: 'mode',
+                      default_key_type: 'mode',
+                      key_types: {trips_by_ui_mode: 'none'},
                       cols: @report_instance.trip_cols}
     = render partial: 'stats_panel',
              locals: {title: 'Rating Statistics',
-                      key_type: 'none',
+                      default_key_type: 'none',
+                      key_types: {},
                       cols: @report_instance.rating_cols}
     %table.table.table.condensed.table-striped.table-hover.table-bordered
       %thead

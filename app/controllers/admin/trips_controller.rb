@@ -12,7 +12,7 @@ class Admin::TripsController < Admin::BaseController
     elsif params[:agency_id]
       @trips = Trip.by_agency(params[:agency_id])
     else
-      @trips = Trip.all
+      @trips = Trip.includes(:user, :trip_places, :trip_purpose, :trip_parts)
     end
 
     respond_to do |format|

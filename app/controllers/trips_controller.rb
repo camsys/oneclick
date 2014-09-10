@@ -5,6 +5,8 @@ class TripsController < PlaceSearchingController
     :show_printer_friendly, :example, :plan, :populate, :book]
   load_and_authorize_resource only: [:new, :create, :show, :index, :update, :edit]
 
+  before_action :detect_ui_mode
+
   def index
 
     @trips = User.find(params[:user_id]).trips
@@ -408,6 +410,9 @@ class TripsController < PlaceSearchingController
     # Set the trip purpose to its default
     @trip_proxy.trip_purpose_id = TripPurpose.all.first.id
 
+    @trip_proxy.user_agent = request.user_agent
+    @trip_proxy.ui_mode = @ui_mode
+    
     # default to a round trip. The default return trip time is set the the default trip time plus
     # a configurable interval
     return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
@@ -452,6 +457,9 @@ class TripsController < PlaceSearchingController
 
     # Get the updated trip proxy from the form params
     @trip_proxy = create_trip_proxy_from_form_params
+
+    @trip_proxy.user_agent = request.user_agent
+    @trip_proxy.ui_mode = @ui_mode
 
     session[:modes_desired] = @trip_proxy.modes_desired
 
@@ -536,6 +544,9 @@ class TripsController < PlaceSearchingController
 
     # inflate a trip proxy object from the form params
     @trip_proxy = create_trip_proxy_from_form_params
+
+    @trip_proxy.user_agent = request.user_agent
+    @trip_proxy.ui_mode = @ui_mode
 
     session[:modes_desired] = @trip_proxy.modes_desired
 
@@ -674,7 +685,7 @@ class TripsController < PlaceSearchingController
   end
 
   def book
-    @itinerary = Itinerary.find(params[:itin].to_i )
+    @itinerary = Itinerary.find(params[:itin].to_i)
     eh = EcolaneHelpers.new
 
     outbound_part = @itinerary.trip_part
@@ -852,4 +863,17 @@ private
     @selected_modes = mode_hash[:selected_modes]
   end
 
+  def detect_ui_mode
+    case request.user_agent
+    when /iPad/i
+      @ui_mode = :tablet
+    when /phone/i, /mobile/i
+      @ui_mode = :phone
+    when /Android/i
+      @ui_mode = :tablet
+    else
+      @ui_mode = :desktop
+    end
+  end
+    
 end

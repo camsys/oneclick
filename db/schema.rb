@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140910152145) do
+ActiveRecord::Schema.define(version: 20140819194120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,13 @@ ActiveRecord::Schema.define(version: 20140910152145) do
     t.boolean "for_traveler",                         default: true
     t.integer "linked_characteristic_id"
     t.string  "link_handler"
+  end
+
+  create_table "cities", primary_key: "gid", force: true do |t|
+    t.string  "geoid", limit: 7
+    t.string  "name",  limit: 100
+    t.string  "state", limit: 2
+    t.spatial "geom",  limit: {:srid=>0, :type=>"multi_polygon"}
   end
 
   create_table "counties", force: true do |t|
@@ -469,6 +476,8 @@ ActiveRecord::Schema.define(version: 20140910152145) do
     t.text     "planned_trip_html"
     t.boolean  "needs_feedback_prompt"
     t.text     "debug_info"
+    t.string   "user_agent"
+    t.string   "ui_mode"
   end
 
   create_table "trips_desired_modes", force: true do |t|

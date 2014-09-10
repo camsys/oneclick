@@ -61,6 +61,9 @@ class Trip < ActiveRecord::Base
     trip.trip_places << from_place
     trip.trip_places << to_place
 
+    trip.user_agent = trip_proxy.user_agent
+    trip.ui_mode = trip_proxy.ui_mode
+    
     # set the sequence counter for when we have multiple trip parts
     sequence = 0
 

@@ -28,3 +28,13 @@ src: image-url('ext/fontawesome-ext-webfont.eot?#iefix') format('embedded-openty
 .icon-opera:before{content:"\f213";}
 .icon-safari:before{content:"\f214";}
 .icon-rss-sign:before{content:"\f215";}
+
+.icon-walking-sign {
+  background-image: image-url("walking.svg");
+  width: 46px;
+  height: 46px;
+  background-size: 23px;
+  background-repeat: no-repeat;
+  margin: 0 auto;
+  background-position: top center;
+}

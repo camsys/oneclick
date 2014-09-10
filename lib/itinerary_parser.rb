@@ -6,14 +6,14 @@
 
 class ItineraryParser
   
-  def self.parse(legs)
+  def self.parse(legs, include_geometry = true)
     
     Rails.logger.debug "Parsing Itinerary Legs"
     
     itin = []
     
     legs.each do |leg|
-      leg_itin = parse_leg(leg)
+      leg_itin = parse_leg(leg, include_geometry)
       
       Rails.logger.debug leg_itin.inspect
       
@@ -26,7 +26,7 @@ class ItineraryParser
   
 protected
 
-  def self.parse_leg(leg)
+  def self.parse_leg(leg, include_geometry = true)
     
     return if leg.blank?
     
@@ -57,7 +57,7 @@ protected
       obj.start_place = parse_place(leg['from'])
       obj.end_place = parse_place(leg['to'])  
 
-      obj.geometry = parse_geometry(leg['legGeometry'])
+      obj.geometry = parse_geometry(leg['legGeometry']) if include_geometry
     end
     
     return obj
