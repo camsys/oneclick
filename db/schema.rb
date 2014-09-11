@@ -82,13 +82,6 @@ ActiveRecord::Schema.define(version: 20140910152145) do
     t.string  "link_handler"
   end
 
-  create_table "cities", primary_key: "gid", force: true do |t|
-    t.string  "geoid", limit: 7
-    t.string  "name",  limit: 100
-    t.string  "state", limit: 2
-    t.spatial "geom",  limit: {:srid=>0, :type=>"multi_polygon"}
-  end
-
   create_table "counties", force: true do |t|
     t.integer "gid"
     t.string  "name"
@@ -587,10 +580,9 @@ ActiveRecord::Schema.define(version: 20140910152145) do
   end
 
   create_table "walking_speeds", force: true do |t|
-    t.string   "code",                       null: false
-    t.string   "name",                       null: false
-    t.float    "value",                      null: false
-    t.boolean  "is_default", default: false
+    t.string   "code",       null: false
+    t.string   "name",       null: false
+    t.float    "value",      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
