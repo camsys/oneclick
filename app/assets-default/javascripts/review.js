@@ -79,15 +79,19 @@ function formatDate(dateToFormat) {
  * TripReviewPageRenderer class: a self-contained class to render dynamic items on trip review page
  * @param {number}: intervalStep (minutes)
  * @param {number}: barHeight (pixel)
+ * @param {Object}: tripResponse
+ * @param {Object}: filterConfigs, each item specifies default min/max filter value
+ * @param {Object}: localeDictFinder, a hash of localized texts
  * @method processTripResponse: public method to process trip results
  */
-function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDictFinder) {
+function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterConfigs, localeDictFinder) {
     localeDictFinder = isValidObject(localeDictFinder) ? localeDictFinder : {};
+    filterConfigs = isValidObject(filterConfigs) ? filterConfigs : {};
     var _tripResponse = tripResponse; //trip json
 
     var _isInitial = true; //a flag whether this is initial trip response
-    var _totalModeRequestCounter = 0; //a counter that keeps track of all itinerary requests for each mode_trip_part; 
-    // when _totalModeRequestCounter > 0, then show loading mask; when 0, hide; 
+    var _totalModeRequestCounter = 0; //a counter that keeps track of all itinerary requests for each mode_trip_part;
+    // when _totalModeRequestCounter > 0, then show loading mask; when 0, hide;
 
     //trip restriction missing_info lookup
     //format: [{trip_restriction_modal_id: {data: missing_info_array, clearCode: 0(init), 1(all pass), -1(not pass)}}]
@@ -1127,10 +1131,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
      * @param {string} tripHeaderTags: html tags of the whole trip header
      */
     function addTripHeaderHtml(tripDescription, tickLabels, intervelStep, isDepartAt, tripStartTime, tripEndTime) {
-        var tripDatetimeDescritpion = isDepartAt ? 
-            localeDictFinder['departing_at'] + ' ' + formatDate(tripStartTime) + ' ' + formatTime(tripStartTime) : 
+        var tripDatetimeDescritpion = isDepartAt ?
+            localeDictFinder['departing_at'] + ' ' + formatDate(tripStartTime) + ' ' + formatTime(tripStartTime) :
             localeDictFinder['arriving_by'] + ' ' + formatDate(tripEndTime)  + ' ' + formatTime(tripEndTime);
-        //var headerAriaLabel = tripDescription + "; " + tripDatetimeDescritpion; 
+        //var headerAriaLabel = tripDescription + "; " + tripDatetimeDescritpion;
         //trip description
         var tripDescTag = "<div class='col-sm-12'><label>" + tripDescription + "</label></div>";
 
@@ -1793,6 +1797,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             }
 
             addSliderTooltip(filterObj.sliderConfig);
+            $('#' + transferSliderId).slider('values', [
+                getDefaultMinFilterValue(minTransfer, filterConfigs.default_min_transfers),
+                getDefaultMaxFilterValue(maxTransfer, filterConfigs.default_max_transfers)
+            ]);
         }
 
     }
@@ -1855,6 +1863,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             }
 
             addSliderTooltip(filterObj.sliderConfig);
+            $('#' + costSliderId).slider('values', [
+                getDefaultMinFilterValue(minCost, filterConfigs.default_min_fare),
+                getDefaultMaxFilterValue(maxCost, filterConfigs.default_max_fare)
+            ]);
         }
 
     }
@@ -1905,11 +1917,12 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
     function adjustDurationFilters(minDuration, maxDuration) {
         var filterObj = getDurationFilterHtml(minDuration, maxDuration);
         if (isValidObject(filterObj)) {
+            minDuration = getRoundMinValue(minDuration / 60);
+            maxDuration = getRoundMaxValue(maxDuration / 60);
+
             if ($('#' + durationSliderId).length === 0) {
                 $('#' + filterContainerId).append(filterObj.tags);
             } else {
-                minDuration = getRoundMinValue(minDuration / 60);
-                maxDuration = getRoundMaxValue(maxDuration / 60);
                 $('#' + durationSliderId).attr('aria-valuemin', minDuration);
                 $('#' + durationSliderId).attr('aria-valuemax', maxDuration);
                 $('#' + durationSliderId + '_min_val_label').text(minDuration + 'min');
@@ -1917,8 +1930,30 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
             }
 
             addSliderTooltip(filterObj.sliderConfig);
+            $('#' + durationSliderId).slider('values', [
+                getDefaultMinFilterValue(minDuration, filterConfigs.default_min_duration),
+                getDefaultMaxFilterValue(maxDuration, filterConfigs.default_max_duration)
+            ]);
         }
 
+    }
+
+    function getDefaultMinFilterValue(actualMin, configMin) {
+        var min = getRoundMinValue(actualMin);
+        if(typeof(configMin) === 'number' && configMin > actualMin) {
+            min = configMin;
+        }
+
+        return min;
+    }
+
+    function getDefaultMaxFilterValue(actualMax, configMax) {
+        var max = getRoundMaxValue(actualMax);
+        if(typeof(configMax) === 'number' && configMax < actualMax) {
+            max = configMax;
+        }
+
+        return max;
     }
 
     /*
@@ -1933,7 +1968,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var sliderId = "#" + slider.id;
         $(sliderId).slider(slider);
 
-        $(sliderId).on('slide', function(event, ui) {
+        $(sliderId).on('slidechange', function(event, ui) {
             var minVal = ui.values[0];
             var maxVal = ui.values[1];
             $(sliderId + ' .ui-slider-handle:first').append('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + minVal + '</div></div>');
@@ -2103,7 +2138,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
                 event.preventDefault ? event.preventDefault() : event.returnValue = false;
             });
 
-        //create d3 time scale 
+        //create d3 time scale
         var xScale = d3.time.scale()
             .domain([tripStartTime, tripEndTime])
             .nice(d3.time.minute, intervalStep);
@@ -2240,7 +2275,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var planWidth = $('.single-plan-review').outerWidth();
         if (planWidth > 0) {
             var extraWidthForLastColumn = 10; //px; first column width will be width of the select button + extra_width
-            var minMainColumnWidthPct = 50; //percentage; 
+            var minMainColumnWidthPct = 50; //percentage;
             var minFirstColumnWidth = 50; //px; min width of first column
 
             var firstColumnWidth = Math.max.apply(null, $('.trip-plan-first-column table').map(function() {
@@ -2298,7 +2333,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, localeDic
         var chart = d3.select(svgSelector)
             .attr('width', width);
 
-        //create d3 time scale 
+        //create d3 time scale
         var xScale = d3.time.scale()
             .domain([tripStartTime, tripEndTime])
             .nice(d3.time.minute, intervalStep);

@@ -10,7 +10,13 @@ Oneclick::Application.configure do
   ENV['SESSION_ALERT_TIMEOUT'] ||= '30'
 
   config.default_zoom = nil
-  config.max_offset_from_desired = 3.hours
+  config.max_offset_from_desired = nil
+  config.default_min_duration = 0 #minutes
+  config.default_max_duration = 120 #minutes
+  config.default_min_transfers = 0
+  config.default_max_transfers = 2
+  config.default_min_fare = 0
+  config.default_max_fare = 50
   config.paratransit_duration_factor = 2.0
   config.minimum_paratransit_duration = 2.hours
   config.rideshare_duration_factor = 1.5
