@@ -101,7 +101,7 @@ validateDateTimes = (isReturn) ->
   returnDateTime = moment(returnDateField.val() + " " + returnTimeField.val(), returnDateData.format + " " + returnTimeData.format)
   outboundDateTimeInvalid =  !outboundDateTime.isValid()
   returnDateTimeInvalid = !returnDateTime.isValid()
-  minOutboundDateTime = moment()
+  minOutboundDateTime = moment().add(2, "hours")
 
   isOutboundChanged = false
   isReturnChanged = false
