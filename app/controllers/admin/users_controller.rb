@@ -75,8 +75,7 @@ class Admin::UsersController < Admin::BaseController
 
   def update
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user) #we inflate a new proxy every time, but it's transient, just holds a bunch of characteristics
-    
-    
+
     # prep for password validation in @user.update by removing the keys if neither one is set.  Otherwise, we want to catch with password validation in User.rb
     if params[:user][:password].blank? and params[:user][:password_confirmation].blank?
       params[:user].except! :password, :password_confirmation
@@ -94,12 +93,6 @@ class Admin::UsersController < Admin::BaseController
         redirect_to admin_user_path(@user, locale: current_user.preferred_locale), :notice => "User updated."
       end
 
-      #Add Traveler Notes
-      if current_user.agency
-        note = TravelerNote.where(user: @user, agency: current_user.agency).first_or_create
-        note.note = params[:traveler_note][:note]
-        note.save
-      end
 
     else
       render 'edit', :alert => "Unable to update user."

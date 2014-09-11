@@ -55,7 +55,7 @@
         .panel-body
           = render partial: 'users/agency_table', locals: { user: user }
 
-- if current_user.has_role?(:agent) or current_user.has_role?(:agency_administrator)
+- if current_user.agency
   .row
     .col-sm-12
       .panel.panel-default

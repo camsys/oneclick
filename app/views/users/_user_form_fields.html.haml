@@ -34,7 +34,7 @@
           .panel-body
             = f.association :approved_agencies, collection: Agency.all.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes, wrapper: :inline_checkboxes, label: false
 
-  - if current_user.has_role?(:agent) or current_user.has_role?(:agency_administrator)
+  - if current_user.agency
     .row
       .col-sm-12
         .panel.panel-default
