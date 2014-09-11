@@ -102,11 +102,7 @@ class TripDecorator < Draper::Decorator
 
   def outbound_itinerary_modes
     strings = []
-    outbound_part.itineraries.group(:mode_id).count(:id).each do |key, val|
-      key_name = key.nil? ? I18n.t(:walk) : I18n.t("#{Mode.unscoped.find(key).code}_name")
-#      key_name = I18n.t("#{Mode.unscoped.find(key).code}_name")
-      strings << "#{key_name}: #{val}"
-    end
+    itinerary_modes outbound_part, strings
     strings.join(', ')
   end
 
@@ -118,14 +114,16 @@ class TripDecorator < Draper::Decorator
 
   def return_itinerary_modes
     strings = []
-    if is_return_trip
-      return_part.itineraries.group(:mode_id).count(:id).each do |key, val|
-        key_name = key.nil? ? I18n.t(:walk) : I18n.t("#{Mode.unscoped.find(key).code}_name")
-#        key_name = I18n.t("#{Mode.unscoped.find(key).code}_name")
-        strings << "#{key_name}: #{val}"
-      end
-    end
+    itinerary_modes(return_part, strings) if is_return_trip
     strings.join(', ')
+  end
+
+  def itinerary_modes part, strings
+    part.itineraries.group(:mode_id).count.each do |key, val|
+      key ||= Mode.walk.id
+      key_name = I18n.t("#{Mode.unscoped.find(key).code}_name")
+      strings << "#{key_name}: #{val}"
+    end
   end
   
   def outbound_selected_short

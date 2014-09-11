@@ -49,11 +49,11 @@ class Admin::ReportsController < Admin::BaseController
       # set up the report view
       @report_view = @report.view_name
       # get the class instance and generate the data
-      @report_instance = @report.class_name.constantize.new
+      @report_instance = @report.class_name.constantize.new(view_context)
       @data = @report_instance.get_data(current_user, @generated_report)
       @columns = @report_instance.get_columns
       @url_for_csv = url_for only_path: true, format: :csv, params: params
-      
+
       respond_to do |format|
         format.html
         format.csv { send_data get_csv(@columns, @data) }
@@ -76,8 +76,20 @@ class Admin::ReportsController < Admin::BaseController
 
       csv << headers
       data.each do |row|
+        row = row.decorate
         csv << columns.map {|col| row.send(col) }
       end
+    end
+  end
+
+  def trips_datatable
+    Rails.logger.info @date_option
+    respond_to do |format|
+      format.json do
+        date_option = DateOption.find(session[DATE_OPTION_SESSION_KEY])
+        render json: TripsDatatable.new(view_context, {dates: date_option})
+      end
+      
     end
   end
   

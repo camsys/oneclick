@@ -6,11 +6,11 @@
           - columns.each_with_index do |col, index|
             %th
               = t(col)
-      %tbody
+      %tbody.nowrap
         - trips.each do |row|
           %tr
             - columns.each_with_index do |col, index|
-              %td.nowrap
+              %td
                 = row.is_a?(Hash) ? row[col].to_s : row.send(col).to_s
 
 = render partial: 'shared/simple_datatable_js', 

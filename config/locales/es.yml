@@ -814,7 +814,7 @@ es:
       default: ! '%A, %d de %B de %Y %H:%M:%S %z'
       long: ! '%d de %B de %Y %H:%M'
       short: ! '%d de %b %H:%M'
-      isoish: ! '%Y-%m-%d %I:%M %p'
+      isoish: ! '%Y-%m-%d %l:%M %p'
       oneclick_short: ! '%-I:%M %p'
     pm: pm    
   datetime:
