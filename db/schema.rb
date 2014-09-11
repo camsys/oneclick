@@ -583,6 +583,7 @@ ActiveRecord::Schema.define(version: 20140910152145) do
     t.string   "code",       null: false
     t.string   "name",       null: false
     t.float    "value",      null: false
+    t.boolean  "is_default", default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
