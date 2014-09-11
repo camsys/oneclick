@@ -10,6 +10,7 @@ class TripsDetailsReport < AbstractReport
 
     Trip.includes(:user, :creator, :trip_places, :trip_purpose, :desired_modes, :trip_parts)
       .where(trip_parts: {scheduled_time: date_option.get_date_range})
+      .order('trip_parts.sequence')
       .references(:user, :creator, :trip_places, :trip_purpose, :desired_modes, :trip_parts)
       .decorate
   end
