@@ -118,7 +118,7 @@ h6 { font-size: 12px; line-height: 20px; }
 }
 
 .modal a {
-  cursor: pointer;  
+  cursor: pointer;
 }
 
 .dialog-title-bar {
@@ -293,7 +293,7 @@ a:hover#help {
   .home_menu_item {
     @extend .center;
     @extend .col-sm-3;
-  }  
+  }
 
 }
 
@@ -301,11 +301,11 @@ a:hover#help {
   .home_menu_item {
     @extend .col-sm-offset-6;
     @extend .col-sm-6;
-  }  
+  }
   .admin_menu {
     .home_menu_item {
       @extend .col-sm-6;
-    }  
+    }
   }
 }
 
@@ -366,7 +366,7 @@ a:hover#help {
     text-align: center !important;
   }
 }
-    
+
 .trip_summary_title {
   @media (max-width: 767px ) {
     text-align: center !important;
@@ -566,6 +566,10 @@ td.left, th.left {
   @extend .btn-primary;
   text-shadow: none;
 
+  &:not(:last-of-type) {
+    margin-right: 5px;
+  }
+
   @media (max-width: $screen-xs-max) {
     min-width: 6em;
   }
@@ -578,14 +582,11 @@ td.left, th.left {
 .map-action-button {
   @extend .action-button;
   min-width: 3em;
-  &:not(:last-of-type) {
-    margin-right: 5px;
-  } 
 }
 
 // Styling for the application header (not navbar, this is where the action-buttons live)
 .info-header {
-  & h1, h2, h3, h4, h5 { 
+  & h1, h2, h3, h4, h5 {
       margin-bottom: 0;
   }
   .btns {
@@ -606,7 +607,7 @@ td.left, th.left {
   + .btn {
     margin-left: -5px;
   }
-} 
+}
 
 
 // From bootstrap. We define our own classes for visibility which use display: inline
