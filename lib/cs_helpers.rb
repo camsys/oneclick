@@ -31,10 +31,10 @@ module CsHelpers
       {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users}
     ]
     if Rating.feedback_on?
-      a.push({label: t(:feedback), target: ratings_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback}) 
+      a.push({label: t(:feedback), target: ratings_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback})
     end
     if SidewalkObstruction.sidewalk_obstruction_on?
-      a.push({label: t(:sidewalk_obstructions), target: admin_sidewalk_obstructions_path, icon: ACTION_ICONS[:sidewalk_obstructions], access: :admin_sidewalk_obstruction}) 
+      a.push({label: t(:sidewalk_obstructions), target: admin_sidewalk_obstructions_path, icon: ACTION_ICONS[:sidewalk_obstructions], access: :admin_sidewalk_obstruction})
     end
     a
   end
@@ -49,7 +49,7 @@ module CsHelpers
       {label: t(:providers), target: admin_providers_path, icon: ACTION_ICONS[:providers], access: :admin_providers},
       {label: t(:services), target: services_path, icon: ACTION_ICONS[:services], access: :admin_services},
       {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports], access: :admin_reports}
-    ]  
+    ]
   end
 
   def traveler_actions options = {}
@@ -224,7 +224,7 @@ module CsHelpers
     else
       mode_code = itinerary.mode.code.gsub(/^mode_/, '') rescue 'UNKNOWN'
     end
-    return mode_code    
+    return mode_code
   end
 
   # Returns the correct localized title for a trip itinerary
@@ -244,7 +244,7 @@ module CsHelpers
     elsif mode_code == 'transit'
       I18n.t(:transit)
     elsif mode_code == 'paratransit'
-      I18n.t(:mode_paratransit_name)      
+      I18n.t(:mode_paratransit_name)
     elsif mode_code == 'volunteer'
       I18n.t(:volunteer)
     elsif mode_code == 'non-emergency medical service'
@@ -254,7 +254,7 @@ module CsHelpers
     elsif mode_code == 'livery'
       I18n.t(:car_service)
     elsif mode_code == 'taxi'
-      I18n.t(:taxi)      
+      I18n.t(:taxi)
     elsif mode_code == 'rideshare'
       I18n.t(:rideshare)
     elsif mode_code == 'walk'
@@ -349,16 +349,35 @@ module CsHelpers
     end
   end
 
+  # first check if itinerary service or provider has customized logo
+  # then check if it's a walk itinerary, to show walk logo
+  # last, just get itineary mode logo
   def logo_url_helper itinerary
-    root_url({locale:''}) + Base.helpers.asset_path(if itinerary.service && itinerary.service.logo_url
-      itinerary.service.logo_url
-    elsif itinerary.service && itinerary.service.provider && itinerary.service.provider.logo_url
-      itinerary.service.provider.logo_url
-    elsif itinerary.is_walk
+    s = itinerary.service
+    if s
+      if s.logo_url
+        return get_service_provider_icon_url(s.logo_url)
+      elsif s.provider and s.provider.logo_url
+        return get_service_provider_icon_url(s.provider.logo_url)
+      end
+    end
+
+    return root_url({locale:''}) + Base.helpers.asset_path(if itinerary.is_walk
       Mode.walk.logo_url
-    else 
+    else
       itinerary.mode.logo_url
     end)
+  end
+
+  # logos are stored in local file system under dev environment
+  # stored in AWS s3 under other environments
+  def get_service_provider_icon_url(raw_logo_url)
+    case ENV["RAILS_ENV"]
+    when 'production', 'qa', 'integration'
+      return raw_logo_url
+    else
+      return root_url({locale:''}) + Base.helpers.asset_path(raw_logo_url)
+    end
   end
 
   def get_itinerary_cost itinerary
@@ -426,7 +445,7 @@ module CsHelpers
         end
       end
     end
-   
+
     if price_formatted.nil?
       unless fare.nil?
         fare = fare.to_f

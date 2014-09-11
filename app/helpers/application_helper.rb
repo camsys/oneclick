@@ -65,17 +65,6 @@ module ApplicationHelper
     return get_mode_icon(mode)
   end
 
-  # logos are stored in local file system under dev environment
-  # stored in AWS s3 under other environments
-  def get_service_provider_icon_url(raw_logo_url)
-    case ENV["RAILS_ENV"]
-    when 'production', 'qa', 'integration'
-      return raw_logo_url
-    else
-      return root_url({locale:''}) + Base.helpers.asset_path(raw_logo_url)
-    end
-  end
-
   # Formats a line in the itinerary
   def format_email_itinerary_item(&block)
 
