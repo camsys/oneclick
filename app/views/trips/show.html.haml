@@ -9,7 +9,7 @@
         = t(:feedback)
       = button_tag :type => 'button', :name => "planButton", :class => "btn action-button" do
         =t(:next)
-    
+
 .row
 - if @tripResponseHash['status'] == 0
   - # flash handles it
@@ -29,7 +29,7 @@
 
     #accessoryContainer.col-md-3.col-xs-12
     / end of filter column
-    .col-md-9      
+    .col-md-9
       #tripContainer.col-xs-12{style: "padding: 0px;"}
       / end of trip container
   .col-xs-12{style: "margin-bottom: 5px;padding: 0px;"}
@@ -42,6 +42,16 @@
   #itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
   :javascript
     $(function() {
+      //default configured min&max values for filters
+      var filterConfigs = {
+        default_min_duration: #{Oneclick::Application.config.default_min_duration},
+        default_max_duration: #{Oneclick::Application.config.default_max_duration},
+        default_min_transfers: #{Oneclick::Application.config.default_min_transfers},
+        default_max_transfers: #{Oneclick::Application.config.default_max_transfers},
+        default_min_fare: #{Oneclick::Application.config.default_min_fare},
+        default_max_fare: #{Oneclick::Application.config.default_max_fare}
+      };
+
       //update date names in localized texts for moment js lib
       var localeLang = '#{I18n.locale}';
       if(localeLang.toLowerCase() != 'en') { //override moment lang if not english
@@ -114,7 +124,7 @@
         press_space_or_dblclick_for_details: '#{t(:press_space_or_dblclick_for_details)}',
         press_space_for_details: '#{t(:press_space_for_details)}',
         four_digit_year: '#{t(:four_digit_year)}',
-        miles: '#{t(:miles)}'                
+        miles: '#{t(:miles)}'
       };
 
       //show or hide legends
@@ -140,14 +150,14 @@
       });
 
       var tripResponse = #{@tripResponse.to_json};
-      var pageRenderer = new TripReviewPageRenderer(30, 20, tripResponse, localeDictFinder);
+      var pageRenderer = new TripReviewPageRenderer(30, 20, tripResponse, filterConfigs, localeDictFinder);
       pageRenderer.processTripResponse();
 
       $('#itinerary_modal').on('shown.bs.modal', function() {
         $('.tooltip').hide();
-        if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.review_map != null) { 
+        if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.review_map != null) {
           var mapObj = CsMaps.review_map;
-          mapObj.invalidateMap(); 
+          mapObj.invalidateMap();
           var mapMarkers = mapObj.LMmarkers;
           var mapBounds = null;
           if(mapMarkers.length > 0) {
@@ -157,7 +167,7 @@
           }
 
           if(mapBounds) {
-            mapObj.LMmap.fitBounds(mapBounds); 
+            mapObj.LMmap.fitBounds(mapBounds);
           }
         }
       });
@@ -187,7 +197,7 @@
 
         //jump to Plan page
         window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );
-      }); 
+      });
     });
 
     $('#tripContainer').tooltip({selector: '.trip-mode-cost div'})
