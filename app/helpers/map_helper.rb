@@ -160,7 +160,7 @@ module MapHelper
     markers = []
     min_lat = min_lon = max_lat = max_lon = nil
     legs.each_with_index do |leg, index|
-      if leg.mode == Leg::TripLeg::WALK
+      if leg.mode == Leg::TripLeg::WALK and not leg.geometry.nil?
         leg.geometry.each_with_index do |latlon, index|
           lat = latlon[0]
           lon = latlon[1]
@@ -208,7 +208,7 @@ module MapHelper
           allowed_actions: {
             is_approvable: (f.pending? and is_admin),
             is_deletable: (is_admin or current_or_guest_user.id == f.user.id)
-          } 
+          }
         }
       end
     end
@@ -223,7 +223,7 @@ module MapHelper
     legs.each_with_index do |leg, index|
       polylines << {
         "id" => index,
-        "geom" => leg.geometry,
+        "geom" => leg.geometry || [],
         "options" => get_leg_display_options(leg)
       }
     end
@@ -241,7 +241,7 @@ module MapHelper
     else
       a = {"className" => 'map-tripleg map-tripleg-' + leg.mode.downcase}
     end
-    
+
     return a
   end
 
