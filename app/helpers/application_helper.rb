@@ -282,27 +282,17 @@ module ApplicationHelper
   end
 
   def links_to_each_locale(show_translations = false)
-    links = ""
+    links = []
     I18n.available_locales.each do |l|
-      if I18n.locale == :tags
-        link_text = l
-      else
-        link_text = I18n.t("locales.#{l}")
-      end
-      if l == :tags
-        if show_translations
-          links << link_using_locale(Oneclick::Application::config.translation_tag_locale_text, :tags)
-        else
-          next
-        end
-      else
-        links << link_using_locale(link_text, l)
-      end
-
-      links << " | "
+      links << link_using_locale(I18n.t("locales.#{l}"), l)
+    end
+    if show_translations
+      links << link_using_locale(Oneclick::Application::config.translation_tag_locale_text, :tags)
     end
 
-    links.html_safe
+    return '' if links.size <= 1
+    
+    links.join(' | ').html_safe
   end
 
   def link_using_locale link_text, locale

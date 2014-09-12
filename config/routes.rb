@@ -16,7 +16,7 @@ Oneclick::Application.routes.draw do
     devise_for :users, controllers: {registrations: "registrations", sessions: "sessions"}
 
     resources :content
-
+    
     get "user_relationships/:id/check/" => "user_relationships#check_update", as: :check_update_user_relationship # need to support client-side logic with server-side vaildations
     # everything comes under a user id
     resources :users do
@@ -311,8 +311,9 @@ Oneclick::Application.routes.draw do
         resources :services
         resources :trips, only: [:index, :show]
       end
+      resources :translations
     end#admin
-
+    
     # gives a shallow RESTful endpoint for rating any rateable
     resources :agencies, :trips, :services, shallow: true, only: [] do
       resources :ratings, only: [:index, :new, :create]
@@ -323,7 +324,7 @@ Oneclick::Application.routes.draw do
         get "context"
       end
     end
-
+    
     post "trips/:trip_id/ratings/trip_only" => 'ratings#trip_only', as: :trip_only_rating
 
     resources :services do
@@ -348,8 +349,6 @@ Oneclick::Application.routes.draw do
     get '/501' => 'errors#error_501', as: 'error_501'
 
   end
-
-  resources :translations
 
   unless Oneclick::Application.config.ui_mode == 'kiosk'
     # get '*not_found' => 'errors#handle404'

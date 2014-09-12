@@ -138,7 +138,7 @@ end
 
 def oneclick_available_locales
   begin
-    s = '(' + I18n.available_locales.join('|') + ')'
+    s = '(' + (I18n.available_locales + ['tags']).join('|') + ')'
     %r{#{s}}
   rescue Exception => e
     Rails.logger.info "Exception #{e.message} during oneclick_available_locales"

@@ -1,5 +1,13 @@
 require 'lorem-ipsum'
 
+class Hash
+  def each_with_parents(parents=[], &blk)
+    each do |k, v|
+      Hash === v ? v.each_with_parents(parents + [k], &blk) : blk.call([parents + [k], v])
+    end
+  end
+end
+
 #encoding: utf-8
 namespace :oneclick do
   task :seed_data => :environment do
@@ -160,5 +168,9 @@ namespace :oneclick do
     puts "POI Loading Rake Task Finished"
   end
   #THIS IS THE END
+
+  task load_locales: :environment do
+    I18n::Utility.load_locale ENV['INPUT']
+  end
 
 end

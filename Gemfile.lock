@@ -14,6 +14,13 @@ GIT
       sass (~> 3.2)
 
 GIT
+  remote: git://github.com/camsys/i18n-active_record.git
+  revision: 90c714d50ced924c49c996bc8249c7973945ab73
+  specs:
+    i18n-active_record (0.1.0)
+      i18n (>= 0.5.0)
+
+GIT
   remote: git://github.com/camsys/leaflet-rails.git
   revision: e1b7912a34c2b0565adc2f119b0e2f809d67c5dd
   specs:
@@ -47,13 +54,6 @@ GIT
       actionpack (>= 3.1)
       jquery-rails
       railties (>= 3.1)
-
-GIT
-  remote: git://github.com/svenfuchs/i18n-active_record.git
-  revision: 2d9a22b6a4e5d809782cdbfa65b14d9e47aa27fc
-  specs:
-    i18n-active_record (0.0.2)
-      i18n (>= 0.5.0)
 
 GIT
   remote: https://github.com/EppO/rolify.git
@@ -551,7 +551,7 @@ DEPENDENCIES
   handlebars_assets
   honeybadger
   html2haml
-  i18n-active_record!
+  i18n-active_record (= 0.1.0)!
   jquery-datatables-rails (~> 2.1.10.0.2)
   jquery-rails
   launchy

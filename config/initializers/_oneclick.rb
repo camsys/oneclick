@@ -298,7 +298,7 @@ Oneclick::Application.configure do
   # See https://github.com/mojombo/chronic#time-zones
   Chronic.time_class = Time.zone
 
-  I18n.available_locales << :tags # when this locale is enabled, display translation_tags instead of translated text
+  # I18n.available_locales << :tags # when this locale is enabled, display translation_tags instead of translated text
   config.translation_tag_locale_text = 'Tags'
 end
 

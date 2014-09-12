@@ -1,0 +1,38 @@
+.header
+  = link_to new_admin_translation_path, :class => "btn action-button pull-right" do
+    %i.fa.fa-plus
+    Add Key
+  %h1 Content Translations
+  %p Note: All content translations can be entered as HTML
+
+%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#translations_table
+  %thead
+    %tr
+      %th= t(:key)
+      - @locales.each do |locale|
+        %th= locale
+  %tbody
+    - @translations_proxies.each do |tp|
+      %tr
+        %td= tp.key
+        - @locales.each do |locale|
+          - t = tp.translations.find{|t| t.locale==locale.to_s}
+          %td
+            - if (t && t.value)
+              = link_to t.value.truncate(30), edit_admin_translation_path(t)
+            - else
+              = link_to t(:add), new_admin_translation_path(key: tp.key, key_locale: locale.to_s), class: 'btn action-button'
+
+:javascript
+  $(document).ready(function() {
+    var oTable = $('#translations_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ translations per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ translations",
+              "sInfoEmpty": "Showing 0 to 0 of 0 translations",
+              "sInfoFiltered": "(filtered from _MAX_ total translations)"
+          },
+          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l><'toggle col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+    });

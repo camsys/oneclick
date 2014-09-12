@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140912133815) do
+ActiveRecord::Schema.define(version: 20140912165545) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -399,6 +399,7 @@ ActiveRecord::Schema.define(version: 20140912133815) do
     t.text     "value"
     t.boolean  "is_html",        default: false
     t.boolean  "complete",       default: false
+    t.boolean  "is_list",        default: false
   end
 
   create_table "traveler_notes", force: true do |t|
@@ -581,9 +582,9 @@ ActiveRecord::Schema.define(version: 20140912133815) do
   end
 
   create_table "walking_speeds", force: true do |t|
-    t.string   "code",       null: false
-    t.string   "name",       null: false
-    t.float    "value",      null: false
+    t.string   "code",                       null: false
+    t.string   "name",                       null: false
+    t.float    "value",                      null: false
     t.boolean  "is_default", default: false
     t.datetime "created_at"
     t.datetime "updated_at"

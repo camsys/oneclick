@@ -23,12 +23,14 @@ module CsHelpers
     :users => 'fa fa-group',
     :feedback => 'fa fa-thumbs-o-up',
     :sidewalk_obstructions => 'fa fa-comment',
-    :stop_assisting => 'fa fa-compass'
+    :stop_assisting => 'fa fa-compass',
+    :translations => 'fa fa-language',
   }
 
   def admin_actions
     a = [
-      {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users}
+      {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
+      {label: t(:translations), target: admin_translations_path, icon: ACTION_ICONS[:translations], access: :admin_translations},
     ]
     if Rating.feedback_on?
       a.push({label: t(:feedback), target: ratings_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback})

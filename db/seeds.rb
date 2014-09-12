@@ -12,3 +12,8 @@ KioskLocation.create!([
   {"name"=>"pd-1700-sla-17042", "addr"=>"Lebanon VA Medical Center 1700 South Lincoln Avenue, Lebanon, PA, 17042", "lat"=>40.311569, "lon"=>-76.406464, "address_type"=>6},
   {"name"=>"penndot-kiosk-lab-1", "addr"=>"Lebanon VA Medical Center 1700 South Lincoln Avenue, Lebanon, PA, 17042", "lat"=>40.311569, "lon"=>-76.406464, "address_type"=>6}
 ])
+
+Dir.glob('config/locales/moved-to-db/*').each do |file|
+  puts "Loading locale file #{file}"
+  I18n::Utility.load_locale file
+end

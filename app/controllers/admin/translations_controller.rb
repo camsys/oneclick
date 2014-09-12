@@ -1,25 +1,26 @@
-class TranslationsController < ApplicationController
+class Admin::TranslationsController < Admin::BaseController
     include LocaleHelpers
     authorize_resource
 
     def index
-        @translations_proxies = []
-        translation_keys = Translation.uniq.pluck(:key).sort ## Get list of unique keys
-        translation_keys.each do |k|
-            @translations_proxies << TranslationProxy.new(key: k, translations: Translation.where("key = ?", k))    ## Build proxies with key mapping to its locales
-        end
-        render 'index' 
+      @locales = I18n.available_locales      
+      @translations_proxies = []
+      translation_keys = Translation.uniq.pluck(:key).sort{|a, b| a.downcase <=> b.downcase} ## Get list of unique keys
+      translation_keys.each do |k|
+          @translations_proxies << TranslationProxy.new(key: k, translations: Translation.where("key = ?", k))    ## Build proxies with key mapping to its locales
+      end
+      render 'index' 
     end
 
     def new
-        @translation = Translation.new(key: params[:key] || nil, locale: params[:locale] || nil)
+        @translation = Translation.new(key: params[:key] || nil, locale: params[:key_locale] || nil)
     end
 
     def create
         @translation = Translation.new(trans_params)
         if @translation.save
             flash[:success] = "Translation Successfully Saved"
-            redirect_to translations_path
+            redirect_to admin_translations_path
         else
             render 'new'
         end
@@ -33,7 +34,7 @@ class TranslationsController < ApplicationController
         @translation = Translation.find_by_id params[:id]
         if @translation.update_attributes trans_params
             flash[:success] = "Translation Successfully Updated"
-            redirect_to translations_path
+            redirect_to admin_translations_path
         else
             render 'edit'
         end
@@ -42,7 +43,7 @@ class TranslationsController < ApplicationController
     def destroy
         Translation.find(params[:id]).destroy
         flash[:success] = "Translation Removed"
-        redirect_to translations_path
+        redirect_to admin_translations_path
     end
 
     private
