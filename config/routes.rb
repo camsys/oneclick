@@ -304,6 +304,7 @@ Oneclick::Application.routes.draw do
       resources :users do
         put 'update_roles', on: :member
         get 'find_by_email'
+        post 'undelete'
       end
       resources :providers do
         resources :users

@@ -216,4 +216,8 @@ class User < ActiveRecord::Base
   def active_for_authentication?
     super && !deleted_at
   end  
+
+  def undelete
+    update_attribute(:deleted_at, nil)
+  end
 end

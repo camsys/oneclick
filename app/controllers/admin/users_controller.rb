@@ -108,6 +108,15 @@ class Admin::UsersController < Admin::BaseController
     end
   end
 
+  def undelete
+    user = User.find(params[:user_id])
+    user.undelete
+    respond_to do |format|
+      format.html { redirect_to admin_user_path(user) }
+      format.json { head :no_content }
+    end
+  end
+  
   # def add_to_agency # no longer applicable, iteration 5 workflow runs from the agency, not the user
   #   agency = Agency.find(params[:agency_id])
   #   params[:agency][:user_ids].reject{|u| u.blank?}.each do |user_id|

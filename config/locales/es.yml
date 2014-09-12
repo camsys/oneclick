@@ -651,6 +651,7 @@ es:
   cancel: "Cancelar"
   edit: "Editar *30*"
   delete: "Borrar *31*"
+  undelete: "[es]Undelete[/es]"
   save: "Guardar *32*"
   apply: "[es457]Apply[/es]"
   and: "[es305]and[/es]"
