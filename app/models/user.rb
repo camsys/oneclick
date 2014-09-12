@@ -209,4 +209,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def soft_delete
+    update_attribute(:deleted_at, Time.current)
+  end
+
+  def active_for_authentication?
+    super && !deleted_at
+  end  
 end

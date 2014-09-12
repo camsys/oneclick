@@ -93,6 +93,7 @@ es:
   administrators: "[es71]Administrators[/es]"
   create_user: "[es]Create User[/es]"
   user_created: "[es79]User created[/es]"
+  user_deleted: "[es79]User deleted[/es]"
   admin: '[es42]Admin[/es]'
   admin_actions: '[es]Admin[/es]'
   staff_actions: '[es]Staff[/es]'
