@@ -228,6 +228,9 @@ class EcolaneHelpers
   end
 
   def search_for_customers(terms = {})
+    Rails.logger.info 'Ecolane'
+    Rails.logger.info SYSTEM_ID
+    Rails.logger.info X_ECOLANE_TOKEN
     url_options = "/api/customer/" + SYSTEM_ID + '/search?'
     terms.each do |term|
       url_options += "&" + term[0].to_s + '=' + term[1].to_s

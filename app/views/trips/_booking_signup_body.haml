@@ -1,23 +1,33 @@
--if @traveler.can_book?
-  .div
-    =t(:booking_link_success)
-  .div
-    .btn.action-button.text-center#bookingSuccessButton
-      =t(:next)
-  :javascript
-    $('#initialCloseButton').hide();
-    $('#bookingSuccessButton').on('click', function(event) {
-      $('#bookingSignupModal').modal('hide');
-    });
--else
-  =t(:initial_booking_message)
+.modal-dialog
+  .modal-content
+    .modal-header
+      .pull-right
+        -if @traveler.can_book?
+          %button.btn.action-button#bookingSuccessButton
+            =t(:next)
+          :javascript
+            $('#initialCloseButton').hide();
+            $('#bookingSuccessButton').on('click', function(event) {
+              $('#bookingSignupModal').modal('hide');
+            });
+        -else
+          = button_tag id: 'bookingSubmitButton', type: :submit, class: 'btn action-button' do
+            = t(:submit)
+          :javascript
+            $('#bookingSubmitButton').on('click', function(event) {
+              $('#bookingSignupModal form').submit();
+            });
+          %button{"type" => "button", "class" => "btn action-button", "data-dismiss" => "modal"}= t(:initial_booking_close)
+      %h3.modal-title=t(:initial_booking_title)
+    .modal-body#bookingSignupContent
+      -if @traveler.can_book?
+        =t(:booking_link_success)
+      -else
+        =t(:initial_booking_message)
 
-  = simple_form_for @booking_proxy, :remote => true, :url => initial_booking_user_path(@traveler), :html => { :class => "form-horizontal"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }  do |f|
-    .form-inputs
-      = f.error_notification
-      = f.input :service_id, :as => :hidden, :input_html => {value: Service.where(booking_service_code: 'ecolane').first.id}
-      = f.input :external_user_id,label: "Rabbit Transit " + t(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
-      = f.input :dob, label: t(:dob), label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: t(:dob_notice)
-    .form-actions
-      = f.button :submit, t(:submit), class: "btn action-button"
-
+        = simple_form_for @booking_proxy, :remote => true, :url => initial_booking_user_path(@traveler), :html => { :class => "form-horizontal"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }  do |f|
+          .form-inputs
+            = f.error_notification
+            = f.input :service_id, :as => :hidden, :input_html => {value: Service.where(booking_service_code: 'ecolane').first.id}
+            = f.input :external_user_id,label: "Rabbit Transit " + t(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
+            = f.input :dob, label: t(:dob), label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: t(:dob_notice)
