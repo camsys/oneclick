@@ -9,11 +9,12 @@
       %th= t(:email)
       %th= t(:registered)
       %th= t(:roles)
+      %th#status= t(:status)
   %tbody
 :javascript
   $(document).ready(function() {
-    $('#admin_users_table').dataTable( {
-      "processing": true,
+    var oTable = $('#admin_users_table').dataTable( {
+      "bProcessing": true,
       "bServerSide": true,
       "sAjaxSource": "users",
       "oLanguage": {
@@ -25,11 +26,19 @@
       },
       "bAutoWidth": false,
       "aoColumns": [
-        {"sWidth": "30%"},
+        {"sWidth": "20%"},
         {"sWidth": "30%"},
         {"sWidth": "15%"},
-        {"sWidth": "35%"},
+        {"sWidth": "25%"},
+        {"sWidth": "10%"},
       ],
-      "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l><'toggle col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      "fnServerParams": function (data) {
+        data.push({name: "bIncludeDeleted", value: $("#toggle").is(':checked')});
+      }
+    });
+    $("div.toggle").html('<span class="pull-right"><input type="checkbox" id="toggle">&nbsp;Show deleted users</span>');
+    $("#toggle").click(function () {
+        oTable.fnDraw();
     });
   });

@@ -24,7 +24,8 @@ private
         link_to(user.name, admin_user_path(user, locale: I18n.locale)),
         user.email,
         user.created_at.to_date,
-        user.roles.collect(&:human_readable_name).to_sentence
+        user.roles.collect(&:human_readable_name).to_sentence,
+        user.deleted_at ? I18n.t(:user_deleted) : ''
       ]
     end
   end
@@ -35,6 +36,7 @@ private
 
   def fetch_users
     users = User.order("#{sort_column} #{sort_direction}").limit(per_page).offset(page)
+    users = users.where(deleted_at: nil) unless params[:bIncludeDeleted] == 'true'
     if sort_column == 'roles.name'
       users = users.includes(:roles)
     end
@@ -42,7 +44,7 @@ private
       users = users.includes(:roles).where("UPPER(first_name) like :search or UPPER(email) like :search or UPPER(roles.name) like :search", search: "%#{params[:sSearch].upcase}%").references(:roles)
     end
 
-    puts users.to_sql
+    # puts users.to_sql
     users.without_role(:anonymous_traveler)
   end
 
