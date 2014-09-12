@@ -891,7 +891,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             e.preventDefault ? e.preventDefault() : e.returnValue = false;
         });
 
-        $('#' + missInfoDivId + ' .btn-primary').click(function() {
+        $('#' + missInfoDivId + ' button[type=submit]').click(function() {
             $('#' + missInfoDivId + '_form').submit();
         });
     }
@@ -1405,8 +1405,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             '<div class="modal-dialog">' +
             '<div class="modal-content">' +
             '<div class="modal-header">' +
-            '<button role="button" type="button" class="btn btn-default action-button pull-right" data-dismiss="modal">' + localeDictFinder['cancel'] + '</button>' +
-            '<button role="button" type="submit" class="btn btn-primary action-button pull-right">' + localeDictFinder['update'] + '</button>' +
+            '<div class="pull-right">' +
+            '<button role="button" type="submit" class="btn action-button">' + localeDictFinder['update'] + '</button>' +
+            '<button role="button" type="button" class="btn action-button" data-dismiss="modal">' + localeDictFinder['cancel'] + '</button>' +
+            '</div>' +
             '<b class="modal-title" id="' + missInfoDivId + '_title">' + localeDictFinder['trip_restrictions'] + '</b>' +
             '</div>' +
             '<div class="modal-body">' +
