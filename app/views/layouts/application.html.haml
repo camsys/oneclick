@@ -40,7 +40,7 @@
             - else
               %span#versionInfo= "#{t(:version)} #{Rails.application.config.version}"
           .pull-right
-            = links_to_each_locale
+            = links_to_each_locale(can? :manage, :admin_translations)
     / end of footer
 
     = yield :footer

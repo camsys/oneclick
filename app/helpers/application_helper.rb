@@ -258,23 +258,41 @@ module ApplicationHelper
     begin
       I18n.translate(branded_key, options.merge({raise: true}))
     rescue Exception => e
-      begin
-        I18n.translate(key, options.merge({raise: true}))
-      rescue Exception => e
-        Rails.logger.warn "key: #{key} not found: #{e.inspect}"
+      if I18n.locale == :tags
+        key
+      else
         begin
-          I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale}))
+          I18n.translate(key, options.merge({raise: true}))
         rescue Exception => e
-          "Key not found: #{key}" # No need to internationalize this.  Should only hit if a non-existant key is called
+          Rails.logger.warn "key: #{key} not found: #{e.inspect}"
+          begin
+            I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale}))
+          rescue Exception => e
+            "Key not found: #{key}" # No need to internationalize this.  Should only hit if a non-existant key is called
+          end
         end
       end
     end
   end
 
-  def links_to_each_locale
+  def links_to_each_locale(show_translations = false)
     links = ""
     I18n.available_locales.each do |l|
-      links << link_using_locale(I18n.t("locales.#{l}"), l)
+      if I18n.locale == :tags
+        link_text = l
+      else
+        link_text = I18n.t("locales.#{l}")
+      end
+      if l == :tags
+        if show_translations
+          links << link_using_locale(Oneclick::Application::config.translation_tag_locale_text, :tags)
+        else
+          next
+        end
+      else
+        links << link_using_locale(link_text, l)
+      end
+
       links << " | "
     end
 
