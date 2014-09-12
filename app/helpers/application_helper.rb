@@ -255,12 +255,10 @@ module ApplicationHelper
 
   def t(key, options={})
     branded_key = [brand, key].join('.')
-    begin
-      I18n.translate(branded_key, options.merge({raise: true}))
-    rescue Exception => e
-      if I18n.locale == :tags
-        key
-      else
+    if I18n.locale != :tags
+      begin
+        I18n.translate(branded_key, options.merge({raise: true}))
+      rescue Exception => e
         begin
           I18n.translate(key, options.merge({raise: true}))
         rescue Exception => e
@@ -272,6 +270,14 @@ module ApplicationHelper
           end
         end
       end
+    else
+      begin
+        I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale}))
+      rescue Exception => e
+        return key
+      end
+
+      return branded_key
     end
   end
 
