@@ -63,6 +63,7 @@ gem 'rgeo-activerecord'
 gem 'rgeo'
 gem 'rgeo-shapefile'
 gem 'leaflet-rails', github: 'camsys/leaflet-rails'
+gem 'mini_magick'
 gem 'carrierwave'
 
 group :development do

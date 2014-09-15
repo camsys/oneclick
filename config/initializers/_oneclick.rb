@@ -42,7 +42,9 @@ Oneclick::Application.configure do
   I18n.available_locales = [:en, :es] # default
 
   config.service_logo_format_list = %w(jpg jpeg gif png)
+  config.service_logo_dimensions = [40, 40]
   config.provider_logo_format_list = %w(jpg jpeg gif png)
+  config.provider_logo_dimensions = [40, 40]
 
   case ENV['BRAND'] || 'arc'
   when 'arc'

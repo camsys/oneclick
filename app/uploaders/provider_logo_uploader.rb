@@ -4,7 +4,7 @@ class ProviderLogoUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
-  # include CarrierWave::MiniMagick
+  include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
 
@@ -31,6 +31,7 @@ class ProviderLogoUploader < CarrierWave::Uploader::Base
   # end
 
   # Process files as they are uploaded:
+  process :resize_to_fit => Oneclick::Application.config.provider_logo_dimensions || [40, 40]
   # process :scale => [200, 300]
   #
   # def scale(width, height)
