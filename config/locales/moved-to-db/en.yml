@@ -194,7 +194,7 @@ en:
   error_422: 'The change you wanted was rejected.'
   error_422_detail: "Maybe you tried to change something you didn't have access to."
   error_couldnt_plan: 'No trip plan could be created.  This is likely due to a system error, and our staff has been notified. Please try your trip again.'
-  
+
   # Trip History and Rating
   rating: "Rating"
   actions: "Actions"
@@ -202,7 +202,7 @@ en:
   ratings: "Ratings"
   no_rating: "No Rating"
   no_ratings_yet: "No ratings approved yet"
-  rating_submitted_for_approval: 
+  rating_submitted_for_approval:
     one: "Your %{rateable} rating has been submitted for approval"
     other: "Your %{rateable} ratings have been submitted for approval"
   rating_update:
@@ -429,6 +429,8 @@ en:
   # new ones
   # Services
   logo: 'Logo'
+  remove_logo: 'Remove Logo'
+  upload_logo: 'Upload Logo'
   logo_format_alert: 'Only following logo image formats are supported: %{logo_formats}'
   next: 'Plan'
   endpoint_area: "Coverage Area"
@@ -643,9 +645,9 @@ en:
   kiosk: 'Kiosk'
   tablet: 'Tablet'
   user_agent: 'user-agent'
-  
+
   ask_age: "Are you age %{age} or older?"
-  
+
   # General Messages
   hello: "Hello"
   id: "ID"
@@ -708,7 +710,7 @@ en:
   zip: "Zip"
   all: "All"
   system_usage: "System Usage"
-  
+
   relationship_status:
     relationship_status_requested: "Requested"
     relationship_status_pending: "Pending"
@@ -716,12 +718,12 @@ en:
     relationship_status_denied: "Denied"
     relationship_status_revoked: "Revoked"
     relationship_status_hidden: "Hidden"
-  
+
   # validation messages
   valid_time_msg: "must be a valid time"
   presence_msg: "can't be blank"
   before_msg: "must be before "
-  
+
   date:
     abbr_day_names:
     - Sun
@@ -732,7 +734,7 @@ en:
     - Fri
     - Sat
     abbr_month_names:
-    - 
+    -
     - Jan
     - Feb
     - Mar
@@ -760,7 +762,7 @@ en:
       oneclick_long: ! '%A, %B %-d %Y'
       oneclick_short: ! '%A, %B %-d'
     month_names:
-    - 
+    -
     - January
     - February
     - March

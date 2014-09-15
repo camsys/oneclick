@@ -29,7 +29,7 @@ es:
   my_home_chkbox_label: "[es17]This is my home[/es]"
   more_about_this_initiative: '[es]More About This Initiative[/es]'
   send_your_feedback: '[es]Send your Feedback[/es]'
-  
+
   # Agent View strings
   find_traveler: "Encontrar al Viajero"
   create_traveler: "Crear un Viajero"
@@ -105,7 +105,7 @@ es:
   no_email_found: '[es]No email was found[/es]'
   send_itinerary_by_email: "[es32]Send itinerary by email[/es]"
   send_trip_by_email: "[es29]Send trip plan by email[/es]"
-  send_follow_up_email: "[es29]Send Follow-up Email[/es]"  
+  send_follow_up_email: "[es29]Send Follow-up Email[/es]"
   sidewalk_obstructions: "[es]Sidewalk Obstructions[/es]"
   sidewalk_obstructions_update:
     one: "[es]The sidewalk obstruction has been updated[/es]"
@@ -127,7 +127,7 @@ es:
   preferred_locale: "[es]Preferred Language[/es]"
   preferred_modes: "[es]Preferred Modes[/es]"
   address: "[es47]Address[/es]"
-  remember_me: 'Acuérdate de mí *5*'  
+  remember_me: 'Acuérdate de mí *5*'
   password: 'Contraseña'
   password_confirmation: 'Confirme la contraseña'
   current_password: 'Contraseña actual'
@@ -136,7 +136,7 @@ es:
   logout: 'Salir'
   edit_account: 'Editar la cuenta'
   update_my_profile: 'Actualizar mi perfil'
-  current_password_hint: "Introduce tu contraseña actual para guardar los cambios."  
+  current_password_hint: "Introduce tu contraseña actual para guardar los cambios."
   leave_password_blank: "Deja ambas casillas en blanco si no quieres cambiar tu contraseña."
   my_information: 'Mi información'
   user_information: '[es104]User Info[/es]'
@@ -160,7 +160,7 @@ es:
   assisted_by: '[es]Assisted By[/es]'
   i_can_assist: "[es128]I Can Assist[/es]"
   can_assist_me: "[es129]Can Assist Me[/es]"
-  retract: 'Retraer'  
+  retract: 'Retraer'
   revoke: 'Revocar'
   visitor: 'Visitante *12*'
   include_visitors: "[es]Include Visitors[/es]"
@@ -198,7 +198,7 @@ es:
   ratings: "[es]Ratings[/es]"
   no_rating: "[es164]No Rating[/es]"
   no_ratings_yet: "[es164]No ratings approved yet[/es]"
-  rating_submitted_for_approval: 
+  rating_submitted_for_approval:
     one: "[es167]Your %{rateable} rating has been submitted for approval[/es]"
     other: "[es168]Your %{rateable} ratings have been submitted for approval[/es]"
   rating_update:
@@ -249,13 +249,13 @@ es:
   from_lon: '[es]From Lon[/es]'
   out_arrive_or_depart: '[es]Outbound Arrive Depart[/es]'
   out_datetime: '[es]Outbound Date[/es]'
-  to: 'A'  
+  to: 'A'
   to_lat: '[es]To Lat[/es]'
   to_lon: '[es]To Lon[/es]'
   in_arrive_or_depart: '[es]Inbound Arrive Depart[/es]'
   in_datetime: '[es]Inbound Date[/es]'
-  at_time: 'en'  
-  arrive_depart: 'Llegada/Salida *1*'  
+  at_time: 'en'
+  arrive_depart: 'Llegada/Salida *1*'
   leaving_from: '[es]Leaving From[/es]'
   type_from_address: '[es]Type the from address[/es]'
   going_to: '[es]Going To[/es]'
@@ -279,7 +279,7 @@ es:
   trip_details: "[es129]Trip Details[/es]"
   trip_date: "[es130]Trip Date[/es]"
   rideshare: 'Para Compartir el Viaje'
-  walk: 'Caminar'  
+  walk: 'Caminar'
   bus: '[es211]Bus[/es]'
   drive: '[es212]Drive[/es]'
   bike: '[es]Bike[/es]'
@@ -329,7 +329,7 @@ es:
   created: "[es152]Created[/es]"
   created_at: "[es]Created At[/es]"
   trip_was_successfully_created: 'El viaje fue creado exitosamente.'
-  trip_was_successfully_removed: 'El viaje fue eliminada afortunada. *25*'  
+  trip_was_successfully_removed: 'El viaje fue eliminada afortunada. *25*'
   trip_created_no_valid_options: "El viaje fue creado, pero no se encontraron opciones válidas de viaje."
   was_successfully_updated: '[es]was successfully updated.[/es]'
   hour: {
@@ -356,7 +356,7 @@ es:
   trips_cannot_be_entered_for_days: "No se pueden introducir viajes para días anteriores."
   trips_cannot_be_entered_for_times: " No se pueden introducir viajes para horas pasadas."
   return_trip_time_before_start: "[es3]Trips cannot return before they are started.[/es]"
-  
+
   link_to_georgia_commute_options: {
     one:   'Visita %{url} para ver 1 opción para compartir el viaje en vehículo.',
     other: 'Visita %{url} para ver %{count} opciones para compartir el viaje en vehículo.',
@@ -403,15 +403,15 @@ es:
   found_x_places: {
     one:    'Encontrados %{count} sitios en la libreta de direcciones. *13*',
     other:  'Encontrados %{count} lugar en su libreta de direcciones. *13*'
-  }  
+  }
   found_x_matches: {
     one:    'Se encontro %{count} coincudencia de lugar. *18*',
     other:  'Se encontraron %{count} lugares coincidentes. *18*',
-  }  
+  }
   place_name:       'Topónimo *27*'
   enter_address_or_place:    'Introduzca una direccion o un nombre de un lugar... *14*'
   new_name:         'Introduzca un nuevo mobre para este luga *15*'
-  nothing_found:    'No he encontrado nada en esa direccion. Por favor, intentelo de nuevo. *17*'  
+  nothing_found:    'No he encontrado nada en esa direccion. Por favor, intentelo de nuevo. *17*'
   update:           'Actualizar *16*'
   place_added:      '%{place_name} ha sido agregado a tu libreta de direcciones. *19*'
   error_updating_addresses:   'Si produjo un error al acutalizar la libreta de direcciones. *20*'
@@ -422,6 +422,8 @@ es:
 
   # new ones
   logo: '[es]Logo[/es]'
+  remove_logo: '[es]Remove Logo[/es]'
+  upload_logo: '[es]Upload Logo[/es]'
   logo_format_alert: '[es]Only following logo image formats are supported: %{logo_formats}[/es]'
   next: '[es]Plan[/es]'
   endpoint_area: "[es]Coverage Area"
@@ -533,7 +535,7 @@ es:
   eligibility: "[es]Eligibility[/es]"
   eligibility_rules_descr: "[es246]If ANY of the following rules are satsified, the traveler may be eligible to use this service.[/es]"
   age_is: "[es247]Age is[/es]"
-  accommodations: "[es5]Accommodations[/es]"  
+  accommodations: "[es5]Accommodations[/es]"
   missing_accommodations: "[es315]Some accommodations unavailable.[/es]"
   no_accommodations: "[es247]No accommodations provided[/es]"
   service_provides_the_following: "[es414]This service provides the following accommodations[/es]"
@@ -581,7 +583,7 @@ es:
   no_buddies: "[es307]You don't have any travelers that have asked you to be their travel buddy.[/es]"
   address_is_required: "Se require una dirección"
   all_trips: "Todos los viajes *22*"
-  trips_coming_up: "Excursiones viene *23*"  
+  trips_coming_up: "Excursiones viene *23*"
   last_30_days: "Últimos 30 días"
   last_7_days: "Últimos 7 días"
   last_month: "El mes pasado"
@@ -621,7 +623,7 @@ es:
   walking: ' caminando'
   arrive: "ARRIVE: "
   est: " (est.)"
-  myself: "yo mismo"  
+  myself: "yo mismo"
   assisted_user_first_name_s_places: "Lugares de %{name}"
   trip_options_information_from_from: "Información de opciones de viaje de #{@from}"
   create_account: "[es9] Create an account to save your information [\es]"
@@ -707,7 +709,7 @@ es:
     relationship_status_denied: "[es602]Denied[/es]"
     relationship_status_revoked: "[es603]Revoked[/es]"
     relationship_status_hidden: "[es604]Hidden[/es]"
-  
+
   # validation messages
   valid_time_msg: "[es]must be a valid time[/es]"
   presence_msg: "[es]can't be blank[/es]"
@@ -717,7 +719,7 @@ es:
     en: "English"
     es: "En Español"
     ht: "Creole"
-    
+
   # Branding
   arc:
     logotext: ''
@@ -757,7 +759,7 @@ es:
       user:
          first_name: 'Nombre'
 
-  
+
   date:
     abbr_day_names:
     - Dom
@@ -768,7 +770,7 @@ es:
     - Vie
     - Sáb
     abbr_month_names:
-    - 
+    -
     - Ene
     - Feb
     - Mar
@@ -794,9 +796,9 @@ es:
       long: ! '%d de %B de %Y'
       short: ! '%d de %b'
       oneclick_long: ! '%A, %B %-d %Y'
-      oneclick_short: ! '%A, %B %-d'      
+      oneclick_short: ! '%A, %B %-d'
     month_names:
-    - 
+    -
     - Enero
     - Febrero
     - Marzo
@@ -821,7 +823,7 @@ es:
       short: ! '%d de %b %H:%M'
       isoish: ! '%Y-%m-%d %l:%M %p'
       oneclick_short: ! '%-I:%M %p'
-    pm: pm    
+    pm: pm
   datetime:
     distance_in_words:
       about_x_hours:
@@ -849,7 +851,7 @@ es:
       year: Año
   unauthorized:
     default: '[es570]You are not authorized to access that page.[/es]'
-          
+
   activerecord:
     errors:
       models:
