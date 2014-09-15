@@ -1,1 +1,1 @@
-Oneclick::Application.config.version = '0.6.7'
+Oneclick::Application.config.version = '0.7.0-rc.1'
