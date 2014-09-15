@@ -170,7 +170,10 @@ namespace :oneclick do
   #THIS IS THE END
 
   task load_locales: :environment do
-    I18n::Utility.load_locale ENV['INPUT']
+    Dir.glob('config/locales/moved-to-db/*').each do |file|
+      puts "Loading locale file #{file}"
+      I18n::Utility.load_locale file
+    end
   end
 
 end
