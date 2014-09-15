@@ -1,6 +1,8 @@
 class AddLogoEditTranslations < ActiveRecord::Migration
   def change
-  	I18n.available_locales.each do |l|
+  	Translation.where(:key => 'remove_logo').destroy_all
+  	Translation.where(:key => 'upload_logo').destroy_all
+  	%w(en es ht).each do |l|
   	  locale = l.to_s
   	  if locale == 'en'
 	  	locale_start = ''
