@@ -163,6 +163,7 @@ class ServicesController < ApplicationController
         end
 
         alert_msgs = [zip_alert_msg, polygon_alert_msg].delete_if {|x| x == nil}
+
         if alert_msgs.count > 0
           format.html { redirect_to @service, alert: alert_msgs.join('; ') }
         else
