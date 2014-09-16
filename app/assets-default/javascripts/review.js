@@ -186,7 +186,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 if (response.status === 409) {
                     show_alert(response.responseJSON.message);
                 } else {
-                    console.log(response);
+                    //console.log(response);
                     show_alert(localeDictFinder['something_went_wrong']);
                 }
             });
@@ -201,7 +201,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         //check response status
         if (_tripResponse.status === 0) {
-            console.log('something went wrong');
+            //console.log('something went wrong');
             return false;
         }
 
@@ -240,7 +240,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             .fail(function(response) {
                 _totalModeRequestCounter--;
                 checkLoadingMask();
-                console.log(response);
+                //console.log(response);
             });
     }
 
@@ -1094,7 +1094,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         try {
             return eval(value + successCondition);
         } catch (evalError) {
-            console.log(evalError);
+            //console.log(evalError);
         }
 
         return false;
@@ -2197,9 +2197,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         $.getScript(window.location.href + '/itinerary' + '?itin=' + planId)
             .done(function() {})
             .fail(function(jqxhr, settings, exception) {
-                console.log(jqxhr);
-                console.log(settings);
-                console.log(exception);
+                //console.log(jqxhr);
+                //console.log(settings);
+                //console.log(exception);
                 show_alert(localeDictFinder['something_went_wrong']);
             });
     }

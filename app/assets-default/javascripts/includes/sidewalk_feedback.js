@@ -199,7 +199,7 @@ CsLeaflet.SidewalkFeedbackTool = {
         var feedbackUtil = this;
 
         $('.new-sidewalk-feedback-popup').on('click', '.map-action-button', function(e) {
-        	e.preventDefault ? e.preventDefault() : e.returnValue = false;
+            e.preventDefault ? e.preventDefault() : e.returnValue = false;
 
         	var buttonAction = $(this).attr('action');
         	switch(buttonAction) {
@@ -282,10 +282,10 @@ CsLeaflet.SidewalkFeedbackTool = {
           type: "POST",
           url: options.submit_feedback_url,
           data: feedbackData,
-          success: function(result) {
+          dataType: 'json'
+        }).done(function(result) {
             result = result || {};
             if(result.success) {
-                console.log('submit succeed');
                 marker.options.feedbackData = result.feedback_data;
                 var popupText = feedbackUtil.getPopupTextForExistingFeedback(result.feedback_data, result.feedback_allow_actions);
                 marker.bindPopup(popupText, {
@@ -296,8 +296,7 @@ CsLeaflet.SidewalkFeedbackTool = {
             } else {
                 show_alert(result.error_msg);
             }
-          }
-        });
+          });
     },
 
     cancelNewFeedback: function(map, marker) {
@@ -317,7 +316,6 @@ CsLeaflet.SidewalkFeedbackTool = {
           success: function(result) {
             result = result || {};
             if(result.success) {
-                console.log('approve succeed');
                 marker.options.feedbackData = result.feedback_data;
                 var popupText = feedbackUtil.getPopupTextForExistingFeedback(result.feedback_data, result.feedback_allow_actions);
                 marker.bindPopup(popupText, {
@@ -345,7 +343,6 @@ CsLeaflet.SidewalkFeedbackTool = {
           success: function(result) {
             result = result || {};
             if(result.success) {
-                console.log('reject succeed');
                 feedbackUtil.removeMarker(marker);
             } else {
                 show_alert(result.error_msg);
@@ -367,7 +364,6 @@ CsLeaflet.SidewalkFeedbackTool = {
           success: function(result) {
             result = result || {};
             if(result.success) {
-                console.log('delete succeed');
                 feedbackUtil.removeMarker(marker);
             } else {
                 show_alert(result.error_msg);

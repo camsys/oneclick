@@ -5,7 +5,7 @@
       = simple_form_for @user_characteristics_proxy, :url => new_user_trip_characteristic_path(@traveler, @trip, locale: I18n.locale), method: 'PUT', html: {class: 'user-characteristics form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_button_groups, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |f|
 
         .col-xs-12.panel.panel-default
-          .panel-body      
+          .panel-body
             = f.error_notification
             / %form{:role => "form"}
             .inline-radio
@@ -21,9 +21,9 @@
               function(e) {
                 $(e.currentTarget).find('.btn').removeClass('active');
                 $(e.target).addClass('active');
-                console.log($(e.target).val());
-                console.log($(e.currentTarget).find('input'));
                 $(e.currentTarget).find('input').val($(e.target).val());
+                //console.log($(e.target).val());
+                //console.log($(e.currentTarget).find('input'));
               }
             );
 
@@ -33,7 +33,7 @@
       = simple_form_for @user_characteristics_proxy, :url => new_user_trip_characteristic_path(@traveler, @trip, locale: I18n.locale), method: 'PUT', html: {class: 'user-characteristics form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_and_checkboxes, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |f|
 
         .col-xs-12.panel.panel-default
-          .panel-body      
+          .panel-body
             = f.error_notification
             / %form{:role => "form"}
             .inline-radio
