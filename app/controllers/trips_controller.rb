@@ -63,6 +63,7 @@ class TripsController < PlaceSearchingController
     @trip_parts = @trip.trip_parts
 
     unless params[:itinids].nil?
+      @is_review = false
       @itineraries = Itinerary.where('id in (' + params[:itinids] + ')')
       @trip.itineraries.selected.each do |itin|
         itin.selected = false
@@ -75,6 +76,7 @@ class TripsController < PlaceSearchingController
         itinerary.save
       end
     else
+      @is_review = true
       @itineraries = @trip.itineraries.selected
     end
 
@@ -368,8 +370,8 @@ class TripsController < PlaceSearchingController
       redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
       return
     end
-    # make sure that the trip can be modified
-    unless @trip.can_modify
+    # make sure that booked and future trip cannot be deleted
+    if @trip.is_booked? and @trip.can_modify
       redirect_to(user_url, :flash => { :alert => t(:error_404) })
       return
     end
@@ -412,7 +414,7 @@ class TripsController < PlaceSearchingController
 
     @trip_proxy.user_agent = request.user_agent
     @trip_proxy.ui_mode = @ui_mode
-    
+
     # default to a round trip. The default return trip time is set the the default trip time plus
     # a configurable interval
     return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
@@ -796,9 +798,14 @@ protected
   def get_trip
     # limit trips to trips accessible by the user unless an admin
     Rails.logger.info "get_trip, traveler is #{@traveler}"
-    if @traveler.has_role? :admin
+    if can? :manage, :all
       Rails.logger.info "get_trip, traveler is admin"
-      @trip = Trip.find(params[:id])
+      begin
+        @trip = Trip.find(params[:id])
+      rescue => ex
+        Rails.logger.info "get_trip: #{ex.message}"
+        @trip = nil
+      end
     else
       begin
         @trip = @traveler.trips.find(params[:id])
@@ -875,5 +882,5 @@ private
       @ui_mode = :desktop
     end
   end
-    
+
 end

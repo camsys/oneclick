@@ -1,5 +1,5 @@
 class Admin::SidewalkObstructionsController < ApplicationController
-  
+
   def index
     authorize! :read, SidewalkObstruction
     authorize! :approve, SidewalkObstruction
@@ -21,7 +21,7 @@ class Admin::SidewalkObstructionsController < ApplicationController
   end
 
   private
-  
+
   def update_feedback_status(feedback_id, status)
     feedback = SidewalkObstruction.where(id: feedback_id).first
     unless feedback.nil?
@@ -53,7 +53,7 @@ class Admin::SidewalkObstructionsController < ApplicationController
       return {
         success: false,
         error_msg: I18n.t(:something_went_wrong)
-      } 
+      }
     end
   end
 
@@ -61,11 +61,11 @@ class Admin::SidewalkObstructionsController < ApplicationController
     return {
       is_approvable: (feedback.pending? and is_admin?),
       is_deletable: (is_admin? or current_or_guest_user.id == feedback.user.id)
-    } 
+    }
   end
 
   def is_admin?
-    current_user and (current_user.has_role?(:admin) or current_user.has_role?(:system_administrator))
+    can? :manage, :all
   end
 
 end

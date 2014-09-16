@@ -1,5 +1,5 @@
 class SidewalkObstructionsController < ApplicationController
-  
+
   def create
     feedback = SidewalkObstruction.new
     feedback.user = current_or_guest_user
@@ -7,7 +7,7 @@ class SidewalkObstructionsController < ApplicationController
     feedback.lon = params[:lon]
     feedback.removed_at = Date.strptime(params[:removed_at], '%m/%d/%Y') rescue nil
     feedback.comment = params[:comment]
-    
+
     is_success = feedback.save rescue nil
     unless is_success.nil?
       respond_to do |format|
@@ -17,7 +17,7 @@ class SidewalkObstructionsController < ApplicationController
           feedback_allow_actions: get_feedback_allow_actions(feedback)
         }}
       end
-    else 
+    else
       respond_to do |format|
         format.json { render json: {
           success: false,
@@ -25,30 +25,30 @@ class SidewalkObstructionsController < ApplicationController
         }}
       end
     end
-      
+
   end
 
   def approve
     respond_to do |format|
-      format.json { render json: update_feedback_status(params[:id], SidewalkObstruction::APPROVED) } 
+      format.json { render json: update_feedback_status(params[:id], SidewalkObstruction::APPROVED) }
     end
   end
 
   def reject
     respond_to do |format|
-      format.json { render json: update_feedback_status(params[:id], SidewalkObstruction::REJECTED) } 
+      format.json { render json: update_feedback_status(params[:id], SidewalkObstruction::REJECTED) }
     end
   end
 
   def delete
     respond_to do |format|
-      format.json { render json: update_feedback_status(params[:id], SidewalkObstruction::DELETED) } 
+      format.json { render json: update_feedback_status(params[:id], SidewalkObstruction::DELETED) }
     end
-      
+
   end
 
   private
-  
+
   def update_feedback_status(feedback_id, status)
     feedback = SidewalkObstruction.where(id: feedback_id).first
     unless feedback.nil?
@@ -80,7 +80,7 @@ class SidewalkObstructionsController < ApplicationController
       return {
         success: false,
         error_msg: I18n.t(:something_went_wrong)
-      } 
+      }
     end
   end
 
@@ -88,11 +88,11 @@ class SidewalkObstructionsController < ApplicationController
     return {
       is_approvable: (feedback.pending? and is_admin?),
       is_deletable: (is_admin? or current_or_guest_user.id == feedback.user.id)
-    } 
+    }
   end
 
   def is_admin?
-    current_user and (current_user.has_role?(:admin) or current_user.has_role?(:system_administrator))
+    can? :manage, :all
   end
 
 end

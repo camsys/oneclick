@@ -139,7 +139,7 @@ module CsHelpers
   end
 
   def is_admin?
-    current_user and (current_user.has_role?(:admin) or current_user.has_role?('System Administrator'))
+    can? :manage, :all
   end
 
   # Sets the #traveler class variable

@@ -180,7 +180,7 @@ module MapHelper
       min_lon -= buffer
       max_lon += buffer
       query_str = "(status = '%APPROVED_STATUS%'" #status valid?
-      is_admin = (current_user and (current_user.has_role?(:admin) or current_user.has_role?(:system_administrator)))
+      is_admin = can? :manage, :all
       if is_admin #user permission
         query_str += " or status = '%PENDING_STATUS%') "
       else
