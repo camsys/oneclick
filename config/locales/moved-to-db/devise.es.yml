@@ -19,7 +19,7 @@ es:
       invalid: 'Correo o contraseña inválidos.'
       invalid_token: 'Ficha de autenticación invalida.'
       timeout: 'Tu sesión ha expirado, por favor ingresa nuevamente para continuar.'
-      inactive: 'Tu cuenta aún no ha sido activada.'
+      inactive: 'Tu cuenta no está activa.'
     sessions:
       signed_in: 'Ingreso exitoso.'
       signed_out: 'Has salido del sistema.'
