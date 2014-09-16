@@ -17,7 +17,7 @@ module LeafletHelper
   MIN_SIDEWALK_ZOOM = 14
 
   ZOOM_ANIMATION = true
-  
+
   def LeafletMap(options)
     options_with_indifferent_access = options.with_indifferent_access
 
@@ -48,6 +48,9 @@ module LeafletHelper
     show_location_select = options[:show_location_select] || SHOW_LOCATION_SELECT
     zoom_animation = options[:zoom_animation] || ZOOM_ANIMATION
     show_sidewalk_feedback = (options[:show_sidewalk_feedback] || SHOW_SIDEWALK_FEEDBACK) if SidewalkObstruction.sidewalk_obstruction_on?
+    if current_user.nil? #only for signed user
+      show_sidewalk_feedback = false
+    end
 
     if show_sidewalk_feedback
       sidewalk_feedback_options = {
