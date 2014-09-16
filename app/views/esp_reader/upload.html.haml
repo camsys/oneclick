@@ -21,3 +21,14 @@
                 =f.input :zip, as: :file, label: 'File'
               .form-actions
                 = f.button :submit, 'Save ESP upload', class: "btn action-button"
+.row
+  .col-sm-6
+    .panel.panel-default
+      .panel-body
+        .row
+          .col-sm-12
+            ="Build the polygons based on the latest ESP Update."
+        .row
+          .col-sm-12
+            = link_to build_polygons_esp_reader_index_path, {class: 'btn action-button', role: 'button'} do
+              = "Build Polygons"

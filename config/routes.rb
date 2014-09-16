@@ -337,6 +337,7 @@ Oneclick::Application.routes.draw do
       collection do
         get 'upload'
         get 'confirm'
+        get 'build_polygons'
         post 'update'
       end
     end
