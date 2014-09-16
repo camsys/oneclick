@@ -54,10 +54,11 @@
                   .modal-dialog
                     .modal-content
                       .modal-header
-                        = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
-                          = t(:cancel)
-                        = link_to cancel_user_trip_path(traveler, trip), {:class => "btn action-button pull-right", :method => :post} do
-                          = t(:ok)
+                        .pull-right
+                          = link_to cancel_user_trip_path(traveler, trip), {:class => "btn action-button", :method => :post} do
+                            = t(:ok)
+                          = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
+                            = t(:cancel)
                         .modal-title{:style => "text-align:left;"}
                           %b
                             = t(:site_title)
@@ -80,10 +81,11 @@
                 .modal-dialog
                   .modal-content
                     .modal-header
-                      = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
-                        = t(:cancel)
-                      = link_to user_trip_path(traveler, trip), {:style => 'margin-right: 5px;', :class => "btn action-button pull-right", :method => :delete} do
-                        = t(:ok)
+                      .pull-right
+                        = link_to user_trip_path(traveler, trip), {:style => 'margin-right: 5px;', :class => "btn action-button", :method => :delete} do
+                          = t(:ok)
+                        = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
+                          = t(:cancel)
                       .modal-title{:style => "text-align:left;"}
                         %b
                           = t(:site_title)
