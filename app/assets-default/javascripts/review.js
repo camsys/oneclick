@@ -2116,6 +2116,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             .append('svg')
             .attr('class', 'chart')
             .attr('tabindex', '0')
+            .attr('focusable', 'true')
             .attr('role', 'chart')
             .attr('aria-label', tipTextOnly)
             .attr('title', tipHtml)
