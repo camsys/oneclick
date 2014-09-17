@@ -274,10 +274,10 @@ module ApplicationHelper
       begin
         I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale}))
       rescue Exception => e
-        return key.to_s
+        return '[' + key.to_s + ']'
       end
 
-      return branded_key.to_s
+      return '[' + branded_key.to_s + ']'
     end
   end
 

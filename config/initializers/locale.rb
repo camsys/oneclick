@@ -10,7 +10,7 @@ module I18n
     def call(exception, locale, key, options)
       if exception.is_a?(MissingTranslation)
       	if I18n.locale == :tags
-          key.to_s
+          '[' + key.to_s + ']'
         else
           super
         end
