@@ -259,9 +259,7 @@ class EspReader
       return result, message
     end
 
-    message = messages.join("; ") unless messages.empty?
-
-    return true, message
+    return true, ""
 
   end
 
