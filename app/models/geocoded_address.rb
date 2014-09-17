@@ -32,7 +32,6 @@ class GeocodedAddress < ActiveRecord::Base
       [state, zip].join(' ')].reject{|s| s.blank?}.join(', ')      
     else
       # when 1
-      Rails.logger.info "'#{address1}', '#{address2}'"
       # a1, [a2, ]city, state zip
       [[address1, address2].reject{|a| a.blank?}.join(', '),
       city,
