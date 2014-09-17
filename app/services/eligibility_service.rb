@@ -85,10 +85,10 @@ class EligibilityService
           group_match_score += 0.25
           if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE
             group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or older\n'
-            group_missing_info << service_requirement.for_missing_info(service, group, 'dob')
+            group_missing_info << service_requirement.for_missing_info(service, group, 'age')
           elsif service_characteristic_map.rel_code == LT or service_characteristic_map.rel_code == LE
             group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or younger\n'
-            group_missing_info << service_requirement.for_missing_info(service, group, 'dob')
+            group_missing_info << service_requirement.for_missing_info(service, group, 'age')
           end
           Rails.logger.info "group_missing_info is now #{group_missing_info.ai}"
           next
