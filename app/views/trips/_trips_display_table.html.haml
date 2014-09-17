@@ -75,9 +75,9 @@
               - if trip.in_the_future
                 = link_to edit_user_trip_path(traveler, trip), {:class => "btn btn-sm", :alt => t(:edit_trip), :title => t(:edit_trip)} do
                   %i.fa.fa-edit
-              = button_tag :type => 'button', "data-target" => "#deleteTripConfirmDialog", "data-toggle" => "modal", :alt => t(:remove_trip), :title => t(:remove_trip), :class => "btn btn-sm btn-danger delete-button" do
+              = button_tag :type => 'button', "data-target" => "#deleteTrip" + trip.id.to_s + "ConfirmDialog", "data-toggle" => "modal", :alt => t(:remove_trip), :title => t(:remove_trip), :class => "btn btn-sm btn-danger delete-button" do
                 %i.fa.fa-times
-              #deleteTripConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_trip), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+              .modal.fade.col-sm-12{:id => "deleteTrip#{trip.id}ConfirmDialog", "aria-describedby" => t(:remove_trip), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
                 .modal-dialog
                   .modal-content
                     .modal-header
