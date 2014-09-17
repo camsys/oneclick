@@ -47,7 +47,7 @@ module TripsSupport
       end
     else
       begin
-        @trip_place = @traveler.places.find(place_id)
+        @trip_place = @traveler.trip_places.find(place_id)
       rescue => ex
         Rails.logger.debug ex.message
         @trip_place = nil
