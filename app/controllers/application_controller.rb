@@ -18,7 +18,12 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do |exception|
     if current_user.nil?
-      redirect_to new_user_session_path + '?redirect_to=' + request.original_url, :alert => exception.message
+      if I18n.locale == :tags
+        # non-admin users trying to access tags page will be redirected to trip planning page in default locale
+        redirect_to root_path(locale: I18n.default_locale)
+      else
+        redirect_to new_user_session_path + '?redirect_to=' + request.original_url, :alert => exception.message
+      end
     else
       redirect_to root_path, :alert => exception.message
     end

@@ -15,6 +15,10 @@ class Ability
       # cannot :full_read, User
       cannot :assist, User # That permissions is restricted to agency staff
       cannot :rate, Trip # remove global permission to rate, sys admin will still be able to rate when it's their own trip
+    else
+      if I18n.locale == :tags
+        return # no access to tags pages for non-admin users
+      end
     end
     if user.has_role? :feedback_administrator
       can [:see], :admin_menu
