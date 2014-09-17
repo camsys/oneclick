@@ -29,7 +29,6 @@ class EligibilityService
       is_eligible = true
       min_match_score = 0
     end
-    Rails.logger.info "\nservice: #{service.name rescue service.ai}, groups count: #{groups.count}"
     groups.each do |group|
       group_missing_information_text_list = []
       group_missing_information_text = ''
@@ -37,22 +36,15 @@ class EligibilityService
       group_match_score = 0
       group_eligible = true
       service_characteristic_maps = service.service_characteristics.where(group: group)
-      Rails.logger.info "\n=== start group ==="
 
       service_characteristic_maps.each do |service_characteristic_map|
-        Rails.logger.info "Starting service_characteristic_map #{service_characteristic_map.ai}"
         service_requirement = service_characteristic_map.characteristic
 
         passenger_characteristic = user_profile.user_characteristics.where(
         characteristic: service_requirement.linked_characteristic || service_requirement).first
 
-        Rails.logger.info "service_characteristic: #{service_characteristic_map.ai}"
-        Rails.logger.info "service_requirement: #{service_requirement.ai}"
-        Rails.logger.info "passenger_characteristic: #{passenger_characteristic.ai}"
-
         #This passenger characteristic is not listed
         unless passenger_characteristic and not(passenger_characteristic.value.blank?)
-          Rails.logger.info "not listed"
           group_match_score += 0.25
           if service_requirement.code == 'age'
             if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE
@@ -66,22 +58,16 @@ class EligibilityService
             group_missing_information_text_list << service_requirement.desc
             group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
           end
-          Rails.logger.info "group_missing_information_text_list is now #{group_missing_information_text_list.ai}"
-          Rails.logger.info "group_missing_information_text is now #{group_missing_information_text.ai}"
-          Rails.logger.info "group_missing_info is now #{group_missing_info.ai}"
           next
         end
 
         # Passenger does have a value for the characteristic, so test it
-        Rails.logger.info "testing"
         begin
           unless passenger_characteristic.meets_requirement(service_characteristic_map)
-            Rails.logger.info "doesn't meet requirement, group_eligible false and breaking"
             group_eligible = false
             break
           end
         rescue StandardError
-          Rails.logger.info "meets requirements raised StandardError"
           group_match_score += 0.25
           if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE
             group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or older\n'
@@ -90,14 +76,10 @@ class EligibilityService
             group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or younger\n'
             group_missing_info << service_requirement.for_missing_info(service, group, 'age')
           end
-          Rails.logger.info "group_missing_info is now #{group_missing_info.ai}"
           next
         end
-        Rails.logger.info "meets requirement"
       end  # service_characteristic_maps.each do
 
-      Rails.logger.info "out of service_characteristic_maps loop"
-      Rails.logger.info "group_missing_information_text_list: #{group_missing_information_text_list.ai}"
       group_missing_information_text = case group_missing_information_text_list.size
       when 0
         ''
@@ -110,12 +92,8 @@ class EligibilityService
       end
 
       if group_eligible
-        Rails.logger.info "group is eligible"
         is_eligible = true
-        Rails.logger.info "group_match_score #{group_match_score}"
-        Rails.logger.info "min_match_score #{min_match_score}"
         # if group_match_score <= min_match_score
-        Rails.logger.info "setting missing_information_text & new min_match_score"
         missing_information_text_list << group_missing_information_text
         min_match_score = [min_match_score, group_match_score].min
         # end
@@ -135,8 +113,6 @@ class EligibilityService
       [missing_information_text_list[0..-2].join(', '), missing_information_text_list[-1]].join(' or ')
     end
 
-    Rails.logger.info "is_eligible: #{is_eligible} min_match_score: #{min_match_score}"
-
     if is_eligible
       #Create itinerary
       if min_match_score > 0.0
@@ -150,10 +126,8 @@ class EligibilityService
 
     case return_with
     when :itinerary
-      Rails.logger.info "For service #{service.name rescue nil}, returning #{itinerary.ai}"
       return itinerary
     when :missing_info
-      Rails.logger.info "For service #{service.name rescue nil}, returning #{missing_info.flatten.ai}"
       return missing_info.flatten
     end
   end
