@@ -23,7 +23,7 @@ class TripPurpose < ActiveRecord::Base
     end
     list
   end
-  
+
   def to_s
     name
   end
