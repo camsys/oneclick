@@ -233,17 +233,21 @@ $ ->
   $('#trip_proxy_from_place').on 'typeahead:selected', (e, addr, d) ->
     $('#from_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'from', e, addr, d
-    $('#trip_proxy_to_place').focus();
+    $('#trip_proxy_to_place').focus()
+    $('#trip_proxy_to_place').trigger('touchstart')
   $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, addr, d) ->
     $('#from_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'from', e, addr, d
 
+  $('#trip_proxy_to_place, #trip_proxy_outbound_arrive_depart').on 'touchstart', () ->
+    $(this).focus()
   $('#trip_proxy_to_place').on 'focusin', () ->
     show_to_typeahead_hint = true
   $('#trip_proxy_to_place').on 'typeahead:selected', (e, addr, d) ->
     $('#to_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'to', e, addr, d
-    $('#trip_proxy_outbound_arrive_depart').focus();
+    $('#trip_proxy_outbound_arrive_depart').focus()
+    $('#trip_proxy_outbound_arrive_depart').trigger('touchstart')
   $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, addr, d) ->
     $('#to_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'to', e, addr, d
