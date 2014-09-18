@@ -288,6 +288,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         //check if no itineraries in any trip part
         checkIfNoItineraries(_tripResponse.trip_parts);
+
+        registerChartContainerEvents();
+
         //render legend & filter
         addLegendHtml(_tripResponse.trip_parts);
         addFilterHtml(_tripResponse.trip_parts);
@@ -295,7 +298,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         resizePlanColumns();
         resizeAllCharts();
 
-        $("svg, .trip-mode-cost").tooltip({
+        $(".single-plan-chart-container, .trip-mode-cost").tooltip({
             'html': true,
             'container': 'body'
         });
@@ -327,6 +330,35 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         }
 
         return tripPartData;
+    }
+
+    /*
+     * bring up plan details dialog in respond to chart container events (press SPACE bar, double click, and mobile double-tap)
+     */
+    function registerChartContainerEvents() {
+        $('.single-trip-part').on("keyup", ".single-plan-chart-container", function(e) { //click to show details in modal dialog
+            var planId = $(this).parent('.single-plan-review').data('plan-id');
+            if(e.keyCode === 32) {
+                showItineraryModal(planId);
+            }
+        });
+
+        $('.single-trip-part').on("dblclick", ".single-plan-chart-container", function() { //click to show details in modal dialog
+            var planId = $(this).parent('.single-plan-review').data('plan-id');
+            showItineraryModal(planId);
+        });
+
+        $('.single-trip-part').on("touchstart", ".single-plan-chart-container", function() { //for mobile
+            var planId = $(this).parent('.single-plan-review').data('plan-id');
+            var t2 = event.timeStamp;
+            var t1 = $(this).data('lastTouch') || t2;
+            var dt = t2 - t1;
+            var fingers = event.touches.length;
+            $(this).data('lastTouch', t2);
+            if (!dt || dt > 500 || fingers > 1) return; // not double-tap
+            showItineraryModal(planId);
+            event.preventDefault ? event.preventDefault() : event.returnValue = false;
+        });
     }
 
     /*
@@ -1332,6 +1364,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var costDisplay = (isValidObject(cost) ? cost.price_formatted : '');
         var costAriaLabel = costDisplay + ' ' + costTooltip;
         var isServiceAvailable = typeof(modeServiceUrl) === 'string' && modeServiceUrl.trim().length > 0;
+        var tipTextOnly = getHoverTipText(tripPlan, true);
+        var tipHtml = getHoverTipText(tripPlan, false);
         var tripPlanTags =
             "<div class='col-xs-12 single-plan-review " + (isSelected ? "single-plan-selected" : "single-plan-unselected") + "' style='padding: 0px;" + (eligibleCode === -1 ? "display: none;" : "") + "'" + dataTags + ">" +
             "<div class='trip-plan-first-column' style='padding: 0px; height: 100%;'>" +
@@ -1353,7 +1387,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "</tbody>" +
             "</table>" +
             "</div>" +
-            "<div class='" +
+            "<div tabindex='0' aria-label='" + tipTextOnly + "' title='" + tipHtml + "' class='" +
             (isDepartAt ? "highlight-left-border regular-right-border" : "highlight-right-border regular-left-border") +
             " single-plan-chart-container trip-plan-main-column' style='padding: 0px; height: 100%;' id='" + tripPlanDivPrefix + tripId + "_" + planId + "'>" +
             "</div>" +
@@ -2107,39 +2141,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             return;
         }
 
-        var tipTextOnly = getHoverTipText(tripPlan, true);
-        var tipHtml = getHoverTipText(tripPlan, false);
-
         var width = $chart.width();
         var height = $chart.height();
         var chart = d3.select('#' + chartDivId)
             .append('svg')
             .attr('class', 'chart')
-            .attr('tabindex', '0')
-            .attr('focusable', 'true')
             .attr('role', 'chart')
-            .attr('aria-label', tipTextOnly)
-            .attr('title', tipHtml)
             .attr('width', width)
-            .attr('height', height)
-            .on("keyup", function() { //click to show details in modal dialog
-                if(d3.event.keyCode === 32) {
-                    showItineraryModal(planId);
-                }
-            })
-            .on("dblclick", function() { //click to show details in modal dialog
-                showItineraryModal(planId);
-            })
-            .on("touchstart", function() { //for mobile
-                var t2 = event.timeStamp;
-                var t1 = $(this).data('lastTouch') || t2;
-                var dt = t2 - t1;
-                var fingers = event.touches.length;
-                $(this).data('lastTouch', t2);
-                if (!dt || dt > 500 || fingers > 1) return; // not double-tap
-                showItineraryModal(planId);
-                event.preventDefault ? event.preventDefault() : event.returnValue = false;
-            });
+            .attr('height', height);
 
         //create d3 time scale
         var xScale = d3.time.scale()
