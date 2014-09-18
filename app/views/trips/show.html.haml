@@ -174,7 +174,7 @@
 
       $('#itinerary_modal').on('hidden.bs.modal', function() {
         var itinId = $(this).find('.modal-dialog').attr('data-itinerary-id');
-        $('.single-plan-review[data-plan-id=' + itinId + ']').focus();
+        $('.single-plan-review[data-plan-id=' + itinId + '] .single-plan-chart-container').focus();
       });
 
       //Plan button to jump to Plan page

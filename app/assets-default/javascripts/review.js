@@ -349,15 +349,18 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         });
 
         $('.single-trip-part').on("touchstart", ".single-plan-chart-container", function() { //for mobile
-            var planId = $(this).parent('.single-plan-review').data('plan-id');
-            var t2 = event.timeStamp;
-            var t1 = $(this).data('lastTouch') || t2;
-            var dt = t2 - t1;
-            var fingers = event.touches.length;
-            $(this).data('lastTouch', t2);
-            if (!dt || dt > 500 || fingers > 1) return; // not double-tap
-            showItineraryModal(planId);
-            event.preventDefault ? event.preventDefault() : event.returnValue = false;
+            $(this).focus();
+            if(event) {
+                var planId = $(this).parent('.single-plan-review').data('plan-id');
+                var t2 = event.timeStamp;
+                var t1 = $(this).data('lastTouch') || t2;
+                var dt = t2 - t1;
+                var fingers = event.touches.length;
+                $(this).data('lastTouch', t2);
+                if (!dt || dt > 500 || fingers > 1) return; // not double-tap
+                showItineraryModal(planId);
+                event.preventDefault ? event.preventDefault() : event.returnValue = false;
+            }
         });
     }
 
@@ -1177,7 +1180,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var midDateLabelTags = '<span>' + formatDate(tripMidTime) + '</span>';
 
         var sorterTags =
-            '<select tabindex=0 style="display: inline-block;" class="trip-sorter">' +
+            '<select style="display: inline-block;" class="trip-sorter">' +
             '<option value="start-time" ' + (isDepartAt ? ' selected' : '') + '>' + localeDictFinder["departure_time"] + '</option>' +
             '<option value="end-time" ' + (isDepartAt ? '' : ' selected') + '>' + localeDictFinder["arrival_time"] + '</option>' +
             '<option value="cost" >' + localeDictFinder['fare'] + '</option>' +
