@@ -32,6 +32,13 @@ if ENV['HEROKU']
   end
 end
 
+if ENV['GC_PROFILER_ENABLE']
+  puts "+-----------------------+"
+  puts "| ENABLING GC::Profiler |"
+  puts "+-----------------------+"
+  GC::Profiler.enable
+end
+
 module Oneclick
   class Application < Rails::Application
 
