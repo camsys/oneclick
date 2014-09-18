@@ -791,7 +791,7 @@ protected
 
   # Set the default travel time/date to x mins from now
   def default_trip_time
-    return Time.now.in_time_zone.next_interval(DEFAULT_TRIP_TIME_AHEAD_MINS.minutes)
+    return (Time.now + Oneclick::Application.config.default_trip_head_mins.minutes).in_time_zone.next_interval(DEFAULT_TRIP_TIME_AHEAD_MINS.minutes)
   end
 
   # Safely set the @trip variable taking into account trip ownership
