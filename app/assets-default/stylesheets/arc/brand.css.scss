@@ -1,25 +1,4 @@
 // ARC CSS file. Styles only, no variables or mixins definitions.
-#help {
-  i{
-    color: #444;
-  }
-
-  i:hover {
-    color: #000000;
-  }
-}
-
-#feedback a {
-  color: black;
-}
-
-#versionLang {
-  color: #FEC800;
-
-  a {
-    color: #FEC800;
-  }
-}
 
 .characteristics-option-button {
   @extend .btn-default;

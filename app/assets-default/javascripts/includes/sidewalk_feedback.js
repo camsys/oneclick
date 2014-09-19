@@ -7,19 +7,20 @@ var CsLeaflet = CsLeaflet || {};
 CsLeaflet.SidewalkFeedbackTool = {
 
     //options
-    _options: null, 
+    _options: null,
 
     _csMap: null,
 
     _button: null,
 
-    LMsidewalk_feedback_layergroup: new L.layerGroup(), 
+    LMsidewalk_feedback_layergroup: new L.layerGroup(),
 
     init: function(csMap, options) {
     	this._csMap = csMap || {};
     	this._options = options || {};
 
     	this.addFeedbackInputControl();
+        this.registerCustomPopupEventsOnMap();
     	this.registerSidewalkFeedbackEventsOnMap();
 
         this.registerMapZoomEvent();
@@ -88,8 +89,6 @@ CsLeaflet.SidewalkFeedbackTool = {
                 className: 'sidewalk-feedback-popup'
             });
 
-            feedbackUtil.registerSidewalkFeedbackPopupButtonEvents(marker);
-
             // Add this marker to the list of markers
             feedbackUtil.LMsidewalk_feedback_layergroup.addLayer(marker);
         }
@@ -126,7 +125,7 @@ CsLeaflet.SidewalkFeedbackTool = {
             "<button class='btn map-action-button' action='submit'>" + locale_text.submit + "</button>" +
             "<button class='btn map-action-button' action='cancel' >" + locale_text.cancel + "</button>" +
             "</div></div>" +
-            "<div class='row'>" + 
+            "<div class='row'>" +
             "<input name='lat' type='hidden' value=" + lat + ">" +
             "<input name='lon' type='hidden' value=" + lng + ">" +
             "<div class='col-sm-12' style='padding:0px;'><label class='control-label'>" + locale_text.comments + "</label><textarea class='form-control' name='comment'></textarea></div>" +
@@ -142,21 +141,36 @@ CsLeaflet.SidewalkFeedbackTool = {
     	return "<div class='well'>" +
             "<div class='row'><div class='pull-right'>" +
             (
-                allowActions.is_approvable ? 
+                allowActions.is_approvable ?
                 (
-                    "<button class='btn map-action-button' action='approve'>" + locale_text.approve + "</button>" + 
+                    "<button class='btn map-action-button' action='approve'>" + locale_text.approve + "</button>" +
                     "<button class='btn map-action-button' action='reject'>" + locale_text.reject + "</button>"
                 ) : ""
             ) +
             (allowActions.is_deletable ? "<button class='btn map-action-button' action='delete'>" + locale_text.delete + "</button>": "") +
             "</div></div>" +
-            "<div class='row'>" + 
+            "<div class='row'>" +
             "<div><label>" + locale_text.comments + "</label><div><span class='col-sm-12'>" + feedbackData.comment + "</span></div></div>" +
             (
-                feedbackData.removed_at ? 
+                feedbackData.removed_at ?
                 ("<div><label>" + locale_text.remove_by + "</label><div><span class='col-sm-12'>" + moment(feedbackData.removed_at).format('MM/DD/YYYY') + "</span></div></div>" ) : ""
             ) +
             "</div></div>";
+    },
+
+    registerCustomPopupEventsOnMap: function() {
+        var csMap = this._csMap;
+        var currentMap = csMap.LMmap;
+        var feedbackUtil = this;
+        currentMap.on('popupopen', function(e) {
+          var popupClsName = e.popup.options.className;
+          var marker = e.popup._source;
+          if (popupClsName === 'sidewalk-feedback-popup') {
+            feedbackUtil.registerSidewalkFeedbackPopupButtonEvents(marker);
+          } else if (popupClsName === 'new-sidewalk-feedback-popup') {
+            feedbackUtil.registerNewSidewalkFeedbackPopupButtonEvents(marker);
+          }
+        });
     },
 
     registerSidewalkFeedbackEventsOnMap: function() {
@@ -174,8 +188,6 @@ CsLeaflet.SidewalkFeedbackTool = {
                 closeOnClick: false,
                 className: 'new-sidewalk-feedback-popup'
             }).openPopup();
-
-            feedbackUtil.registerNewSidewalkFeedbackPopupButtonEvents(marker);
         });
     },
 
@@ -187,7 +199,7 @@ CsLeaflet.SidewalkFeedbackTool = {
         var feedbackUtil = this;
 
         $('.new-sidewalk-feedback-popup').on('click', '.map-action-button', function(e) {
-        	e.preventDefault ? e.preventDefault() : e.returnValue = false;
+            e.preventDefault ? e.preventDefault() : e.returnValue = false;
 
         	var buttonAction = $(this).attr('action');
         	switch(buttonAction) {
@@ -270,10 +282,10 @@ CsLeaflet.SidewalkFeedbackTool = {
           type: "POST",
           url: options.submit_feedback_url,
           data: feedbackData,
-          success: function(result) { 
+          dataType: 'json'
+        }).done(function(result) {
             result = result || {};
             if(result.success) {
-                console.log('submit succeed');
                 marker.options.feedbackData = result.feedback_data;
                 var popupText = feedbackUtil.getPopupTextForExistingFeedback(result.feedback_data, result.feedback_allow_actions);
                 marker.bindPopup(popupText, {
@@ -281,13 +293,10 @@ CsLeaflet.SidewalkFeedbackTool = {
                     closeButton: false,
                     className: 'sidewalk-feedback-popup'
                 }).openPopup();
-
-                feedbackUtil.registerSidewalkFeedbackPopupButtonEvents(marker);
             } else {
                 show_alert(result.error_msg);
             }
-          }
-        });
+          });
     },
 
     cancelNewFeedback: function(map, marker) {
@@ -304,10 +313,9 @@ CsLeaflet.SidewalkFeedbackTool = {
             "id": marker.options.feedbackData.id
           },
           // This can't just be a reload or we hit issues with the reload
-          success: function(result) { 
+          success: function(result) {
             result = result || {};
             if(result.success) {
-                console.log('approve succeed');
                 marker.options.feedbackData = result.feedback_data;
                 var popupText = feedbackUtil.getPopupTextForExistingFeedback(result.feedback_data, result.feedback_allow_actions);
                 marker.bindPopup(popupText, {
@@ -315,8 +323,6 @@ CsLeaflet.SidewalkFeedbackTool = {
                     closeButton: false,
                     className: 'sidewalk-feedback-popup'
                 }).openPopup();
-
-                feedbackUtil.registerSidewalkFeedbackPopupButtonEvents(marker);
             } else {
                 show_alert(result.error_msg);
             }
@@ -334,10 +340,9 @@ CsLeaflet.SidewalkFeedbackTool = {
             "id": marker.options.feedbackData.id
           },
           // This can't just be a reload or we hit issues with the reload
-          success: function(result) { 
+          success: function(result) {
             result = result || {};
             if(result.success) {
-                console.log('reject succeed');
                 feedbackUtil.removeMarker(marker);
             } else {
                 show_alert(result.error_msg);
@@ -356,10 +361,9 @@ CsLeaflet.SidewalkFeedbackTool = {
             "id": marker.options.feedbackData.id
           },
           // This can't just be a reload or we hit issues with the reload
-          success: function(result) { 
+          success: function(result) {
             result = result || {};
             if(result.success) {
-                console.log('delete succeed');
                 feedbackUtil.removeMarker(marker);
             } else {
                 show_alert(result.error_msg);

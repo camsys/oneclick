@@ -1,4 +1,4 @@
-- label= t(dir).titleize
+- label= t(dir)
 - ad = "#{dir}_arrive_depart"
 - field = "#{dir}_trip_date".to_sym
 - time_field = "#{dir}_trip_time".to_sym
@@ -27,7 +27,7 @@
       minDate: moment(0, "HH"),
       pickTime: false,
       format: 'MM/DD/YYYY',
-      language: '#{I18n.locale}' 
+      language: '#{I18n.locale}'
     });
 
     $('#trip_proxy_#{dir}_trip_time').datetimepicker({

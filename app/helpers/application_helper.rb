@@ -167,7 +167,12 @@ module ApplicationHelper
   end
 
   def format_date_time(datetime)
-    return l datetime, :format => :long unless datetime.nil?
+    is_in_tags = I18n.locale == :tags # tags locale cause trouble in datetime localization, here, using default_locale to localize
+    I18n.locale = I18n.default_locale if is_in_tags
+    formatted_date_time = l datetime, :format => :long unless datetime.nil?
+    I18n.locale = :tags if is_in_tags
+
+    formatted_date_time || ""
   end
 
   # TODO These next 2 methods are very similar to methods in CsHelper,should possible be consolidated
@@ -274,10 +279,10 @@ module ApplicationHelper
       begin
         I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale}))
       rescue Exception => e
-        return key
+        return '[' + key.to_s + ']'
       end
 
-      return branded_key
+      return '[' + branded_key.to_s + ']'
     end
   end
 
@@ -291,20 +296,22 @@ module ApplicationHelper
     end
 
     return '' if links.size <= 1
-    
+
     links.join(' | ').html_safe
   end
 
   def link_using_locale link_text, locale
     path = session[:location] || request.fullpath
     parts = path.split('/', 3)
+
     current_locale = I18n.available_locales.detect do |l|
       parts[1] == l.to_s
     end
-    parts.delete_at(1) if current_locale
+    parts.delete_at(1) if current_locale or I18n.locale == :tags
     parts = parts.join('/')
     parts = '' if parts=='/'
     newpath = "/#{locale}#{parts}"
+
     if (newpath == path) or
       (newpath == "/#{I18n.locale}#{path}") or
       (newpath == "/#{I18n.locale}")

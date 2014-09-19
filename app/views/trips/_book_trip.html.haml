@@ -17,7 +17,7 @@
               $('#bookingModal form').submit();
             });
         = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
-          = t(:cancel)
+          = t(:close)
       .modal-title{:style => "text-align:left;"}
         %b
           -if @trip.is_booked?

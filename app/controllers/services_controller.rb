@@ -156,14 +156,14 @@ class ServicesController < ApplicationController
         polygon_alert_msg = @service.build_polygons(temp_endpoints_shapefile_path, temp_coverages_shapefile_path)
         if params[:service][:logo]
           @service.logo = params[:service][:logo]
-          logo_save_failure = @service.save! rescue nil
-
-          if logo_save_failure.nil?
-            logo_format_alert_msg = t(:logo_format_alert).sub '%{logo_formats}', Oneclick::Application.config.service_logo_format_list.join(',')
-          end
+          @service.save
+        elsif params[:service][:remove_logo] == '1' #confirm to delete it
+          @service.remove_logo!
+          @service.save
         end
 
-        alert_msgs = [zip_alert_msg, polygon_alert_msg, logo_format_alert_msg].delete_if {|x| x == nil}
+        alert_msgs = [zip_alert_msg, polygon_alert_msg].delete_if {|x| x == nil}
+
         if alert_msgs.count > 0
           format.html { redirect_to @service, alert: alert_msgs.join('; ') }
         else

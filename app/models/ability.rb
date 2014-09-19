@@ -15,6 +15,10 @@ class Ability
       # cannot :full_read, User
       cannot :assist, User # That permissions is restricted to agency staff
       cannot :rate, Trip # remove global permission to rate, sys admin will still be able to rate when it's their own trip
+    else
+      if I18n.locale == :tags
+        return # no access to tags pages for non-admin users
+      end
     end
     if user.has_role? :feedback_administrator
       can [:see], :admin_menu
@@ -58,9 +62,9 @@ class Ability
       can [:index, :show], Report
       can [:read, :update], User, agency_id: user.agency.try(:id)
       can :send_follow_up, Trip
-      
+
     end
-    
+
     if User.with_role(:agent, :any).include?(user)
       can [:see], :staff_menu
       can [:index], :admin_home
@@ -106,7 +110,7 @@ class Ability
     end
 
     ## All users have the following permissions, which logically OR with 'can' statements above
-    can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
+    can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id
     can [:read, :full_read, :update, :add_booking_service, :initial_booking, :find_by_email], User, :id => user.id
     can [:assist], User do |traveler|
       user.confirmed_travelers.include? traveler
@@ -118,7 +122,7 @@ class Ability
     can :show, Service # Will have view privileges for individual info purposes
     can :show, Provider # Will have view privileges for individual info purposes
     can :show, Agency # Will have view privileges for individual info purposes
-    
+
 ###### RATING LOGIC (configurable by deployment)  ##################
 # TODO: This is a branding opportunity.  It would be fantastic if we could find a way to clean this up
     if Rating.feedback_on?
@@ -151,7 +155,7 @@ class Ability
         end
       end
       # nobody can rate a provider directly.  All ratings come through its services
-      cannot :create, Rating, rateable_type: "Provider" 
+      cannot :create, Rating, rateable_type: "Provider"
     end
 ####################################################################
   end

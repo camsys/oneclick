@@ -27,7 +27,7 @@ class Service < ActiveRecord::Base
 
   accepts_nested_attributes_for :service_coverage_maps, allow_destroy: true,
   reject_if: :check_reject_for_service_coverage_map # Also used to control record destruction.
-  
+
   # attr_accessible :id, :name, :provider, :provider_id, :service_type, :advanced_notice_minutes, :external_id, :active
   # attr_accessible :contact, :contact_title, :phone, :url, :email
   # attr_accessible: booking_service_code
@@ -38,9 +38,9 @@ class Service < ActiveRecord::Base
   has_many :coverage_areas, through: :service_coverage_maps, source: :geo_coverage
 
   has_many :endpoints, -> { where rule: 'endpoint_area' }, class_name: "ServiceCoverageMap"
-  
+
   has_many :coverages, -> { where rule: 'coverage_area' }, class_name: "ServiceCoverageMap"
-    
+
   belongs_to :endpoint_area_geom, class_name: 'GeoCoverage'
   belongs_to :coverage_area_geom, class_name: 'GeoCoverage'
   belongs_to :residence_area_geom, class_name: 'GeoCoverage'
@@ -108,7 +108,7 @@ class Service < ActiveRecord::Base
   def notice_days_part
     advanced_notice_minutes / (60 * 24)
   end
-  
+
   def notice_days_part= value
     update_attributes(advanced_notice_minutes:
                       (value.to_i * (60 * 24)) + (notice_hours_part * 60) + notice_minutes_part)
@@ -122,7 +122,7 @@ class Service < ActiveRecord::Base
     update_attributes(advanced_notice_minutes:
       (notice_days_part * (60 * 24)) + (value.to_i * 60) + notice_minutes_part)
   end
-  
+
 
   def notice_minutes_part
     advanced_notice_minutes % 60
@@ -172,15 +172,18 @@ class Service < ActiveRecord::Base
     unless shapefile_path.nil?
       begin
         Zip::File.open(shapefile_path) do |zip_file|
-          zip_shp = zip_file.glob('*.shp').first
+          zip_shp = zip_file.glob('**/*.shp').first
           unless zip_shp.nil?
-            file_name = zip_shp.name.sub '.shp', ''
+            zip_shp_paths = zip_shp.name.split('/')
+            file_name = zip_shp_paths[zip_shp_paths.length - 1].sub '.shp', ''
             shp_name = nil
             Dir.mktmpdir do |dir|
-              shp_name = "#{dir}/" + zip_shp.name
+              shp_name = "#{dir}/" + file_name + '.shp'
               zip_file.each do |entry|
-                if entry.name.include?(file_name)
-                  entry.extract("#{dir}/" + entry.name)
+                entry_names = entry.name.split('/')
+                entry_name = entry_names[entry_names.length - 1]
+                if entry_name.include?(file_name)
+                  entry.extract("#{dir}/" + entry_name)
                 end
               end
 
@@ -195,6 +198,7 @@ class Service < ActiveRecord::Base
           end
         end
       rescue Exception => msg
+        Rails.logger.info 'shapefile parse error'
         Rails.logger.info msg
       end
     end
@@ -246,7 +250,7 @@ class Service < ActiveRecord::Base
         end
       end
     end
-    self.save!  
+    self.save!
   end
 
   def build_polygons(temp_endpoints_shapefile_path = nil, temp_coverages_shapefile_path = nil)
@@ -259,7 +263,7 @@ class Service < ActiveRecord::Base
       save_new_coverage_area_from_shp(endpoint_rule, endpoint_area_geom)
     else
       unless temp_endpoints_shapefile_path.nil?
-        alert_msg = t(:no_polygon_geometry_parsed).sub '%{area_type}', t(endpoint_rule)
+        alert_msg = I18n.t(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', I18n.t(endpoint_rule).to_s
       end
       if self.service_coverage_maps.where(rule: endpoint_rule).count > 0
         self.endpoint_area_geom = nil
@@ -275,7 +279,7 @@ class Service < ActiveRecord::Base
       save_new_coverage_area_from_shp(coverage_rule, coverage_area_geom)
     else
       unless temp_coverages_shapefile_path.nil?
-        alert_msg = t(:no_polygon_geometry_parsed).sub '%{area_type}', t(coverage_rule)
+        alert_msg = I18n.t(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', I18n.t(coverage_rule).to_s
       end
       if self.service_coverage_maps.where(rule: coverage_rule).count > 0
         self.coverage_area_geom = nil
@@ -283,7 +287,7 @@ class Service < ActiveRecord::Base
       update_coverage_map(coverage_rule)
     end
 
-    return alert_msg
+    alert_msg
   end
 
   def polygon_from_attribute scm
@@ -342,5 +346,5 @@ class Service < ActiveRecord::Base
   end
 
 
-  
+
 end

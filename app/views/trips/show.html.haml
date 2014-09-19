@@ -54,7 +54,7 @@
 
       //update date names in localized texts for moment js lib
       var localeLang = '#{I18n.locale}';
-      if(localeLang.toLowerCase() != 'en') { //override moment lang if not english
+      if(localeLang.toLowerCase() != 'en' && localeLang.toLowerCase() != 'tags') { //override moment lang if not english
         var weekdays = #{t('date.day_names')};
         if(weekdays instanceof Array && weekdays.length > 0) {
           moment.lang(localeLang, {
@@ -174,7 +174,11 @@
 
       $('#itinerary_modal').on('hidden.bs.modal', function() {
         var itinId = $(this).find('.modal-dialog').attr('data-itinerary-id');
-        $('.single-plan-review[data-plan-id=' + itinId + ']').find('svg').focus();
+        var $chartContainer = $('.single-plan-review[data-plan-id=' + itinId + '] .single-plan-chart-container');
+        $chartContainer.focus();
+        $('html, body').animate({
+            scrollTop: ($chartContainer.offset().top - 100)
+        }, 500);
       });
 
       //Plan button to jump to Plan page

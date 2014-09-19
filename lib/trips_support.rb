@@ -37,11 +37,34 @@ module TripsSupport
     Time.now.in_time_zone.next_interval(DEFAULT_TRIP_TIME_AHEAD_MINS.minutes)
   end
 
+  def get_trip_place(place_id)
+    if can? :manage, :all
+      begin
+        @trip_place = TripPlace.find(place_id)
+      rescue => ex
+        Rails.logger.debug ex.message
+        @trip_place = nil
+      end
+    else
+      begin
+        @trip_place = @traveler.trip_places.find(place_id)
+      rescue => ex
+        Rails.logger.debug ex.message
+        @trip_place = nil
+      end
+    end
+  end
+
   # Safely set the @trip variable taking into account trip ownership
   def get_trip
     # limit trips to trips accessible by the user unless an admin
-    if @traveler.has_role? :admin
-      @trip = Trip.find(params[:id])
+    if can? :manage, :all
+      begin
+        @trip = Trip.find(params[:id])
+      rescue => ex
+        Rails.logger.debug ex.message
+        @trip = nil
+      end
     else
       begin
         @trip = @traveler.trips.find(params[:id])
@@ -68,7 +91,7 @@ module TripsSupport
       }
     when CACHED_ADDRESS_TYPE
       # the user selected an address from the trip-places table using the type-ahead function
-      trip_place = @traveler.trip_places.find(place_id)
+      trip_place = get_trip_place(place_id)
       return {
         :name => trip_place.raw_address,
         :lat => trip_place.lat,
@@ -83,13 +106,13 @@ module TripsSupport
       }
     when PLACES_TYPE
       # the user selected a place using the places drop-down
-      place = @traveler.places.find(place_id)
+      trip_place = get_trip_place(place_id)
       return {
-        :place_id => place.id,
-        :name => place.name,
-        :formatted_address => place.address,
-        :lat => place.location.first,
-        :lon => place.location.last
+        :place_id => trip_place.id,
+        :name => trip_place.name,
+        :formatted_address => trip_place.address,
+        :lat => trip_place.location.first,
+        :lon => trip_place.location.last
       }
     when RAW_ADDRESS_TYPE
       # the user entered a raw address and possibly selected an alternate from the list of possible

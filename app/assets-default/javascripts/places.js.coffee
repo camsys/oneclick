@@ -65,7 +65,7 @@ $ ->
       rateLimitWait: 600
       replace: (url, query) ->
         url = url + '&query=' + query
-        url = url + '&map_center=33.7550,-84.3900'
+        url = url + '&map_center=' + (CsMaps.placesMap.LMmap.getCenter().lat + ',' + CsMaps.placesMap.LMmap.getCenter().lng)
         return url
     limit: 20
     # prefetch: '../data/films/post_1960.json'

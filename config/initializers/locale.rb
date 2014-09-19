@@ -10,7 +10,7 @@ module I18n
     def call(exception, locale, key, options)
       if exception.is_a?(MissingTranslation)
       	if I18n.locale == :tags
-          key
+          '[' + key.to_s + ']'
         else
           super
         end
@@ -27,7 +27,7 @@ module I18n
       y.each_with_parents do |parents, v|
         locale = parents.shift
         if v.is_a? Array
-          Translation.create(key: parents.join('.'), locale: locale, value: v.join(','), is_list: true).id.nil? ? failed += 1 : success += 1        
+          Translation.create(key: parents.join('.'), locale: locale, value: v.join(','), is_list: true).id.nil? ? failed += 1 : success += 1
         else
           Translation.create(key: parents.join('.'), locale: locale, value: v).id.nil? ? failed += 1 : success += 1
         end

@@ -77,19 +77,15 @@ class Admin::ProvidersController < ApplicationController
 
         if params[:provider][:logo]
           @provider.logo = params[:provider][:logo]
-          logo_save_failure = @provider.save! rescue nil
-          if logo_save_failure.nil?
-            logo_format_alert_msg = t(:logo_format_alert).sub '%{logo_formats}', Oneclick::Application.config.provider_logo_format_list.join(',')
-          end
+          @provider.save
+        elsif params[:provider][:remove_logo] == '1' #confirm to delete it
+          @provider.remove_logo!
+          @provider.save
         end
 
         set_staff(staff_ids)
 
-        unless logo_format_alert_msg.nil?
-          format.html { redirect_to [:admin, @provider], alert: logo_format_alert_msg }
-        else
-          format.html { redirect_to [:admin, @provider], notice: t(:provider) + ' ' + t(:was_successfully_updated) } #TODO Internationalize
-        end
+        format.html { redirect_to [:admin, @provider], notice: t(:provider) + ' ' + t(:was_successfully_updated) }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

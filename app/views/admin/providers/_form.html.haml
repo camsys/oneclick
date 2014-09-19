@@ -17,7 +17,10 @@
         .panel-heading
           %h4.panel-title= t(:provider_info)
         .panel-body
-          = f.input :logo, label: t(:logo) + ' (' + Oneclick::Application.config.provider_logo_format_list.join(',') + ')', :as => :file
+          -unless @provider.logo_url.nil?
+            %img{src: @provider.logo_url, style: "display: block; margin-right: auto; margin-left: auto;"}
+            = f.input :remove_logo, label: t(:remove_logo), :as => :boolean, input_html: {checked: false}
+          = f.input :logo, label: t(:upload_logo) + ' (' + Oneclick::Application.config.provider_logo_format_list.join(',') + ')', :as => :file
           = f.input :address
           = f.input :city, label: "#{t(:city)}/#{t(:state)}/#{t(:zip)}",
             input_html: {class: "col-sm-6 form-control"}, wrapper_html: {class: ""} do
@@ -49,8 +52,6 @@
         .scrolling-checkbox-list
           = f.association :staff, collection: User.staff_assignable.order(:first_name), as: :check_boxes,
                   wrapper: :inline_checkboxes, label: false
-
-
   .row
     .col-sm-6
       .panel.panel-default

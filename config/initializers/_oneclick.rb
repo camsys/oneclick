@@ -42,7 +42,9 @@ Oneclick::Application.configure do
   I18n.available_locales = [:en, :es] # default
 
   config.service_logo_format_list = %w(jpg jpeg gif png)
+  config.service_logo_dimensions = [40, 40]
   config.provider_logo_format_list = %w(jpg jpeg gif png)
+  config.provider_logo_dimensions = [40, 40]
 
   case ENV['BRAND'] || 'arc'
   when 'arc'
@@ -278,8 +280,10 @@ Oneclick::Application.configure do
   if ENV['UI_MODE'] == 'kiosk'
     config.trip_time_ahead_mins = 30
   else
-    config.trip_time_ahead_mins = 15      # minutes ahead of now to default the start time to for new trips
+    config.trip_time_ahead_mins = 15     #interval: This is not used as the default trip ahead time.  It is used as the interval (which is actually ignored by the front-end)
   end
+
+  config.default_trip_head_mins = 120    #How many minutes into the future should the default outbound trip time be? (It is rounded to the next 15 min interval)
 
   # Note that as of 2014-06-04, at least, these timeouts are only used by rideshare.
   config.remote_read_timeout_seconds = 10    # seconds to wait before timing out reading a page through a web request

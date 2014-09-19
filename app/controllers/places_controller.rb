@@ -1,5 +1,5 @@
 class PlacesController < PlaceSearchingController
-  
+
   load_and_authorize_resource only: [:new, :create, :show, :index, :update, :edit]
 
   class PlacesProxy
@@ -10,9 +10,9 @@ class PlacesController < PlaceSearchingController
     attribute :places
     attribute :id
   end
-  
+
   def index
-    
+
     # set the basic form variables
     set_form_variables
     d = @traveler.places.each_with_index.map{|p, i| PlaceDecorator.decorate(p, context: {i: i})}
@@ -26,11 +26,11 @@ class PlacesController < PlaceSearchingController
     @place_proxy = create_place_proxy(place)
     @places = @traveler.places
     @markers = generate_map_markers(@places)
-    
+
     respond_to do |format|
       format.html {render "index"}
     end
-        
+
   end
 
   # not really a destroy -- just hides the place by setting active = false
@@ -51,7 +51,7 @@ class PlacesController < PlaceSearchingController
     set_form_variables
 
     respond_to do |format|
-      format.html { redirect_to(user_places_path(@traveler)) } 
+      format.html { redirect_to(user_places_path(@traveler)) }
       format.json { head :no_content }
       format.js {render "update_form_and_map"}
     end
@@ -74,7 +74,7 @@ class PlacesController < PlaceSearchingController
         j = j.merge!(d)
 
         place = create_or_update_place p[:id], j, p[:place_name]
-        
+
       elsif j['type_name']=='POI_TYPE'
         place = create_or_update_place p[:id], j, p[:place_name]
       else
@@ -84,12 +84,12 @@ class PlacesController < PlaceSearchingController
         place.update_attributes!(j.merge({name: p[:place_name], raw_address: p[:from_place]}))
       end
     end
-    
+
     Rails.logger.info place.ai
 
     # # inflate a place proxy object from the form params
     # @place_proxy = PlaceProxy.new(params[:place_proxy])
-       
+
     # if @place_proxy.valid?
     #   place = create_place(@place_proxy)
     # end
@@ -100,7 +100,7 @@ class PlacesController < PlaceSearchingController
     respond_to do |format|
       if place
         if place.save
-          format.html { redirect_to user_places_path(@traveler), :notice => t(:address_book_updated)  }          
+          format.html { redirect_to user_places_path(@traveler), :notice => t(:address_book_updated)  }
           format.json { render :json => place, :status => :created, :location => place }
         else
           format.html { render action: "index" }
@@ -111,7 +111,7 @@ class PlacesController < PlaceSearchingController
       end
     end
   end
-  
+
   def handle
     if params[:save]
       create
@@ -126,7 +126,7 @@ class PlacesController < PlaceSearchingController
     # get the place being updated
     place = @traveler.places.find(params[:id])
     Rails.logger.debug place.inspect
-    
+
     # get a place proxy from the place
     @place_proxy = create_place_proxy(place)
     Rails.logger.debug @place_proxy.inspect
@@ -138,7 +138,7 @@ class PlacesController < PlaceSearchingController
 
     # set the basic form variables
     set_form_variables
- 
+
     # make sure the place proxy validates
     if @place_proxy.valid?
       # if the place location can be modified we simply create a copy of the place with the same id
@@ -158,14 +158,14 @@ class PlacesController < PlaceSearchingController
       Rails.logger.debug place.inspect
       valid = true
     else
-      valid = false    
+      valid = false
     end
-    
+
     respond_to do |format|
       if valid
         if place.save
           place.reload
-          format.html { redirect_to user_places_path(@traveler), :notice => t(:address_book_updated)  }          
+          format.html { redirect_to user_places_path(@traveler), :notice => t(:address_book_updated)  }
           format.json { render json: place, status: :updated, location: place }
         else
           format.html { render action: "index" }
@@ -174,7 +174,7 @@ class PlacesController < PlaceSearchingController
       else
         format.html { render action: "index" }
         format.json { render json: @place_proxy.errors, status: :unprocessable_entity }
-      end    
+      end
     end
   end
 
@@ -193,7 +193,7 @@ protected
     place.update_attributes(raw_address: place.get_address)
     place
   end
-  
+
   def get_indexed_marker_icon(index, type)
     if type == "0"
       return 'startCandidate' + ALPHABET[index]
@@ -207,7 +207,7 @@ protected
   def set_form_variables
     @places = @traveler.places
     if @place_proxy.nil?
-      @place_proxy = PlaceProxy.new 
+      @place_proxy = PlaceProxy.new
     end
     @markers = generate_map_markers(@places)
   end
@@ -223,12 +223,12 @@ protected
     else
       place_proxy.place_type_id = RAW_ADDRESS_TYPE
     end
-    
+
     return place_proxy
-    
+
   end
 
-  # Creates a place from a proxy.   
+  # Creates a place from a proxy.
   def create_place(place_proxy)
 
     if place_proxy.place_type_id == POI_TYPE
@@ -239,7 +239,7 @@ protected
         place.user = @traveler
         place.creator = current_user
         place.poi = poi
-        place.name = place_proxy.name      
+        place.name = place_proxy.name
         place.active = true
         # Check to see if the POI has been reverse geocoded
         if poi.address.blank?
@@ -254,7 +254,7 @@ protected
         place.user = @traveler
         place.creator = current_user
         place.raw_address = trip_place.raw_address
-        place.name = place_proxy.name 
+        place.name = place_proxy.name
         place.address1 = trip_place.address1
         place.address2 = trip_place.address2
         place.city = trip_place.city
@@ -272,7 +272,7 @@ protected
       place = Place.new
       place.user = @traveler
       place.creator = current_user
-      place.name = place_proxy.name 
+      place.name = place_proxy.name
       place.active = true
       if addr
         place.raw_address = addr[:formatted_address]
@@ -287,7 +287,7 @@ protected
         place.raw_address = place_proxy.raw_address
         place.lat = place_proxy.lat
         place.lon = place_proxy.lon
-      end    
+      end
     end
     if place_proxy.home.to_i == 0
       place.home = false
@@ -296,9 +296,9 @@ protected
       place.home = true
     end
 
-    return place    
+    return place
   end
-  
+
   #
   # generate an array of map markers for use with the leaflet plugin
   #

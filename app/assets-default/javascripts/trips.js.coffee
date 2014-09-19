@@ -2,7 +2,7 @@
 is_touch_device = ->
   return "ontouchstart" of window or navigator.MaxTouchPoints > 0 or navigator.msMaxTouchPoints > 0
 
-create_or_update_marker = (map, key, lat, lon, name, desc, iconStyle) ->  
+create_or_update_marker = (map, key, lat, lon, name, desc, iconStyle) ->
   marker = map.findMarkerById(key)
   map.removeMarkerFromMap marker  if marker
   marker = map.createMarker(key, lat, lon, iconStyle, desc, name, false)
@@ -38,12 +38,12 @@ show_marker = (map, dir) ->
   else
     key = 'stop'
   map.selectMarkerById(key)
-        
+
 toggle_map = (dir) ->
   if dir=='from'
     otherdir = 'to'
   else
-    otherdir = 'from'  
+    otherdir = 'from'
   c = '#' + dir + "MapContainer"
   $(c).toggleClass('hide')
   CsMaps[dir + "Map"].refresh()
@@ -61,7 +61,7 @@ show_map = (dir, addrType) ->
 
 # !important: these two flags are used to not show hint options when select a place from map
 # only show options after place input got focused
-show_from_typeahead_hint = true 
+show_from_typeahead_hint = true
 show_to_typeahead_hint = true
 
 update_place = (placeText, type) ->
@@ -101,7 +101,7 @@ validateDateTimes = (isReturn) ->
   returnDateTime = moment(returnDateField.val() + " " + returnTimeField.val(), returnDateData.format + " " + returnTimeData.format)
   outboundDateTimeInvalid =  !outboundDateTime.isValid()
   returnDateTimeInvalid = !returnDateTime.isValid()
-  minOutboundDateTime = moment().add(2, "hours")
+  minOutboundDateTime = moment()
 
   isOutboundChanged = false
   isReturnChanged = false
@@ -110,7 +110,7 @@ validateDateTimes = (isReturn) ->
     outboundDateTime = minOutboundDateTime.clone().next15()
     isOutboundChanged = true
 
-  
+
   if returnDateTimeInvalid or returnDateTime <= outboundDateTime
     if returnDateTimeInvalid or isOutboundChanged
       returnDateTime = outboundDateTime.clone().add(2, "hours")
@@ -123,7 +123,7 @@ validateDateTimes = (isReturn) ->
       else
         outboundDateTime = returnDateTime.clone().subtract(2, "hours")
       isOutboundChanged = true
-    else 
+    else
       returnDateTime = outboundDateTime.clone().add(2, "hours")
       isReturnChanged = true
 
@@ -165,7 +165,7 @@ reverse_geocode = (lat, lon, dir) ->
     type: 'GET'
     url: '/reverse_geocode?lat=' + lat + '&lon=' + lon
     success: (data) ->
-      search_results = data.place_searching 
+      search_results = data.place_searching
       if search_results instanceof Array
         i = 0
         result_count = search_results.length
@@ -233,15 +233,21 @@ $ ->
   $('#trip_proxy_from_place').on 'typeahead:selected', (e, addr, d) ->
     $('#from_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'from', e, addr, d
+    $('#trip_proxy_to_place').focus()
+    $('#trip_proxy_to_place').trigger('touchstart')
   $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, addr, d) ->
     $('#from_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'from', e, addr, d
 
+  $('#trip_proxy_to_place, #trip_proxy_outbound_arrive_depart').on 'touchstart', () ->
+    $(this).focus()
   $('#trip_proxy_to_place').on 'focusin', () ->
     show_to_typeahead_hint = true
   $('#trip_proxy_to_place').on 'typeahead:selected', (e, addr, d) ->
     $('#to_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'to', e, addr, d
+    $('#trip_proxy_outbound_arrive_depart').focus()
+    $('#trip_proxy_outbound_arrive_depart').trigger('touchstart')
   $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, addr, d) ->
     $('#to_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'to', e, addr, d
@@ -268,7 +274,7 @@ $ ->
 
   $('#mapCloseButton').on 'click', ->
     hide_map 'trip'
-                        
+
   $('.trip_proxy_modes').on 'change', (e, addr, d) ->
 
   if typeof(CsMaps) != 'undefined' and CsMaps and CsMaps.tripMap
@@ -298,4 +304,4 @@ $ ->
     $('#trip_proxy_outbound_trip_date, #trip_proxy_outbound_trip_time, #trip_proxy_return_trip_date, #trip_proxy_return_trip_time').attr('readonly', true)
 
   return
-      
+

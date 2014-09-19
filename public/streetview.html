@@ -14,16 +14,16 @@
     <script>
       var parseQueryString = function( queryString ) {
           var params = {}, queries, temp, i, l;
-       
+
           // Split into key/value pairs
           queries = queryString.split("&");
-       
+
           // Convert the array of strings into an object
           for ( i = 0, l = queries.length; i < l; i++ ) {
               temp = queries[i].split('=');
               params[temp[0]] = temp[1];
           }
-       
+
           return params;
       };
 
@@ -32,7 +32,6 @@
         var STREETVIEW_MAX_DISTANCE = 100;
         var latLng = new google.maps.LatLng(lat, lon);
         streetViewService.getPanoramaByLocation(latLng, STREETVIEW_MAX_DISTANCE, function (streetViewPanoramaData, status) {
-            console.log(streetViewPanoramaData);
             if (status === google.maps.StreetViewStatus.OK) {
                 // ok
                 if(callbackFn && typeof(callbackFn) === 'function') {
@@ -70,7 +69,7 @@
         //})
 
         showGSV(lat, lon);
-        
+
       }
 
       google.maps.event.addDomListener(window, 'load', initialize);

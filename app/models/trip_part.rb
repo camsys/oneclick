@@ -181,7 +181,11 @@ class TripPart < ActiveRecord::Base
           end
         end
 
-        itins << Itinerary.new(serialized_itinerary)
+        #Temporary Fix to Hide Long Walk Distances
+        unless serialized_itinerary['walk_distance'].to_f > (max_walk_distance.to_f*1609.34)
+          itins << Itinerary.new(serialized_itinerary)
+        end
+
       end
     end
 

@@ -189,7 +189,7 @@ ht:
   error_422: '[ht]The change you wanted was rejected.[/ht]'
   error_422_detail: "[ht]Maybe you tried to change something you didn't have access to.[/ht]"
   error_couldnt_plan: '[ht]No trip plan could be created.  This is likely due to a system error, and our staff has been notified. Please try your trip again.[/ht]'
-  
+
   # Trip History and Rating
   rating: "[ht]Rating[/ht]"
   actions: "[ht]Actions[/ht]"
@@ -197,7 +197,7 @@ ht:
   ratings: "[ht]Ratings[/ht]"
   no_rating: "[ht]No Rating[/ht]"
   no_ratings_yet: "[ht]No ratings approved yet[/ht]"
-  rating_submitted_for_approval: 
+  rating_submitted_for_approval:
     one: "[ht]Your %{rateable} rating has been submitted for approval[/ht]"
     other: "[ht]Your %{rateable} ratings have been submitted for approval[/ht]"
   rating_update:
@@ -416,6 +416,8 @@ ht:
   # new ones
   # Services
   logo: '[ht]Logo[/ht]'
+  remove_logo: '[ht]Remove Logo[/ht]'
+  upload_logo: '[/ht]Upload Logo[/ht]'
   logo_format_alert: '[ht]Only following logo image formats are supported: %{logo_formats}[/ht]'
   next: '[ht]Plan[/ht]'
   cap_returning_at: "[ht]Returning at[/ht]"
@@ -685,12 +687,12 @@ ht:
     relationship_status_denied: "[ht]Denied[/ht]"
     relationship_status_revoked: "[ht]Revoked[/ht]"
     relationship_status_hidden: "[ht]Hidden[/ht]"
-  
+
   # validation messages
   valid_time_msg: "[ht]must be a valid time[/ht]"
   presence_msg: "[ht]can't be blank[/ht]"
   before_msg: "[ht]must be before [/ht]"
-  
+
   date:
     abbr_day_names:
     - Sun
@@ -701,7 +703,7 @@ ht:
     - Fri
     - Sat
     abbr_month_names:
-    - 
+    -
     - Jan
     - Feb
     - Mar
@@ -729,7 +731,7 @@ ht:
       oneclick_long: ! '%A, %B %-d %Y'
       oneclick_short: ! '%A, %B %-d'
     month_names:
-    - 
+    -
     - January
     - February
     - March
