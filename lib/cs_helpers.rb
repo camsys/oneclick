@@ -202,15 +202,22 @@ module CsHelpers
     if date.nil?
       return ""
     end
+
+    is_in_tags = I18n.locale == :tags # tags locale cause trouble in datetime localization, here, using default_locale to localize
+    I18n.locale = I18n.default_locale if is_in_tags
     if date.year == Date.today.year
-      return I18n.l date.to_date, :format => :oneclick_short unless date.nil?
+      return I18n.l date.to_date, :format => :oneclick_short
     else
       return I18n.l date.to_date, :format => :oneclick_long unless date.nil?
     end
+    I18n.locale = :tags if is_in_tags
   end
 
   def format_time(time)
+    is_in_tags = I18n.locale == :tags # tags locale cause trouble in datetime localization, here, using default_locale to localize
+    I18n.locale = I18n.default_locale if is_in_tags
     return I18n.l time, :format => :oneclick_short unless time.nil?
+    I18n.locale = :tags if is_in_tags
   end
 
 

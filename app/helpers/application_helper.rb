@@ -167,7 +167,10 @@ module ApplicationHelper
   end
 
   def format_date_time(datetime)
+    is_in_tags = I18n.locale == :tags # tags locale cause trouble in datetime localization, here, using default_locale to localize
+    I18n.locale = I18n.default_locale if is_in_tags
     return l datetime, :format => :long unless datetime.nil?
+    I18n.locale = :tags if is_in_tags
   end
 
   # TODO These next 2 methods are very similar to methods in CsHelper,should possible be consolidated
