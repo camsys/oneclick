@@ -59,6 +59,8 @@ class TripsController < PlaceSearchingController
   end
 
   def plan
+    Rails.logger.info 'locallllllll'
+    Rails.logger.info I18n.locale
     @trip = Trip.find(params[:id])
     @trip_parts = @trip.trip_parts
 
