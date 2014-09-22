@@ -76,7 +76,6 @@ class Admin::AgenciesController < ApplicationController
   # PUT /agencies/1
   # PUT /agencies/1.json
   def update
-    Rails.logger.info params[:agency]
     internal_contact_id = params[:agency][:internal_contact] # as this isn't an attribute, have to pull it before Strong Params
     agent_ids = params[:agency][:agent_ids].split(',').reject(&:blank?) #again, special case because need to update rolify
     admin_ids = params[:agency][:administrator_ids].reject(&:blank?) #again, special case because need to update rolify

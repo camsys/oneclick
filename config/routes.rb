@@ -326,6 +326,7 @@ Oneclick::Application.routes.draw do
       end
     end
 
+    get "plan_a_trip" => 'trips#plan_a_trip'
     post "trips/:trip_id/ratings/trip_only" => 'ratings#trip_only', as: :trip_only_rating
 
     resources :services do

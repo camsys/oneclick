@@ -458,7 +458,7 @@ class TripsController < PlaceSearchingController
     end
 
     # Get the updated trip proxy from the form params
-    @trip_proxy = create_trip_proxy_from_form_params
+    @trip_proxy = create_trip_proxy_from_form_params(params)
 
     @trip_proxy.user_agent = request.user_agent
     @trip_proxy.ui_mode = @ui_mode
@@ -545,62 +545,16 @@ class TripsController < PlaceSearchingController
   def create
 
     # inflate a trip proxy object from the form params
-    @trip_proxy = create_trip_proxy_from_form_params
+    @trip_proxy = create_trip_proxy_from_form_params(params)
+    launch_trip_planning(@trip_proxy)
 
-    @trip_proxy.user_agent = request.user_agent
-    @trip_proxy.ui_mode = @ui_mode
+  end
 
-    session[:modes_desired] = @trip_proxy.modes_desired
+  def plan_a_trip
+    params["trip_proxy"]["modes"] = params["trip_proxy"]["modes"].split(',')
 
-    setup_modes
-
-    if @trip_proxy.valid?
-      @trip = Trip.create_from_proxy(@trip_proxy, current_or_guest_user, @traveler)
-    else
-      Rails.logger.info "Not valid: #{@trip_proxy.ai}"
-      Rails.logger.info "\nError render 1\n"
-      flash.now[:alert] = t(:correct_errors_to_create_a_trip)
-      render action: "new"
-      return
-    end
-
-    # Create markers for the map control
-    @markers = create_trip_proxy_markers(@trip_proxy).to_json
-    @places = create_place_markers(@traveler.places)
-
-    respond_to do |format|
-      if @trip
-        if @trip.errors.empty? && @trip.save
-          @trip.reload
-          if !@trip.eligibility_dependent?
-            @trip.create_itineraries
-            @path = user_trip_path_for_ui_mode(@traveler, @trip)
-          else
-            session[:current_trip_id] = @trip.id
-            @path = new_user_trip_characteristic_path_for_ui_mode(@traveler, @trip)
-          end
-          format.html { redirect_to @path }
-          format.json { render json: @trip, status: :created, location: @trip }
-        else
-          # TODO Will this get handled correctly?
-          Rails.logger.info "\nError render 2\n"
-          Rails.logger.info "ERRORS: #{@trip.errors.ai}"
-          Rails.logger.info "PLACES: #{@trip.trip_places.ai}"
-          Rails.logger.info "PLACE ERRORS: #{@trip.trip_places.collect{|tp| tp.errors}}"
-          @trip_proxy.errors = @trip.errors
-          flash.now[:alert] = t(:correct_errors_to_create_a_trip)
-          format.html { render action: "new" }
-          format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
-        end
-      else
-        # TODO Will this get handled correctly?
-        Rails.logger.info "\nError render 3\n"
-        Rails.logger.info "ERRORS: #{@trip.errors.ai}"
-        Rails.logger.info "PLACES: #{@trip.trip_places.ai}"
-        flash.now[:alert] = t(:correct_errors_to_create_a_trip)
-        format.html { render action: "new" }
-      end
-    end
+    @trip_proxy = create_trip_proxy_from_form_params(params)
+    launch_trip_planning(@trip_proxy)
   end
 
   def skip
@@ -788,6 +742,62 @@ class TripsController < PlaceSearchingController
 
 protected
 
+ def launch_trip_planning(trip_proxy)
+    trip_proxy.user_agent = request.user_agent
+    trip_proxy.ui_mode = @ui_mode
+
+    session[:modes_desired] = trip_proxy.modes_desired
+
+    setup_modes
+
+    if trip_proxy.valid?
+      @trip = Trip.create_from_proxy(trip_proxy, current_or_guest_user, @traveler)
+    else
+      Rails.logger.info "Not valid: #{@trip_proxy.ai}"
+      Rails.logger.info "\nError render 1\n"
+      flash.now[:alert] = t(:correct_errors_to_create_a_trip)
+      render action: "new"
+      return
+    end
+
+    # Create markers for the map control
+    @markers = create_trip_proxy_markers(trip_proxy).to_json
+    @places = create_place_markers(@traveler.places)
+
+    respond_to do |format|
+      if @trip
+        if @trip.errors.empty? && @trip.save
+          @trip.reload
+          if !@trip.eligibility_dependent?
+            @trip.create_itineraries
+            @path = user_trip_path_for_ui_mode(@traveler, @trip)
+          else
+            session[:current_trip_id] = @trip.id
+            @path = new_user_trip_characteristic_path_for_ui_mode(@traveler, @trip)
+          end
+          format.html { redirect_to @path }
+          format.json { render json: @trip, status: :created, location: @trip }
+        else
+          # TODO Will this get handled correctly?
+          Rails.logger.info "\nError render 2\n"
+          Rails.logger.info "ERRORS: #{@trip.errors.ai}"
+          Rails.logger.info "PLACES: #{@trip.trip_places.ai}"
+          Rails.logger.info "PLACE ERRORS: #{@trip.trip_places.collect{|tp| tp.errors}}"
+          trip_proxy.errors = @trip.errors
+          flash.now[:alert] = t(:correct_errors_to_create_a_trip)
+          format.html { render action: "new" }
+          format.json { render json: trip_proxy.errors, status: :unprocessable_entity }
+        end
+      else
+        # TODO Will this get handled correctly?
+        Rails.logger.info "\nError render 3\n"
+        Rails.logger.info "ERRORS: #{@trip.errors.ai}"
+        Rails.logger.info "PLACES: #{@trip.trip_places.ai}"
+        flash.now[:alert] = t(:correct_errors_to_create_a_trip)
+        format.html { render action: "new" }
+      end
+    end
+  end
 
   # Set the default travel time/date to x mins from now
   #TODO: Make this an ENV
@@ -851,8 +861,8 @@ protected
 private
 
   # creates a trip_proxy object from form parameters
-  def create_trip_proxy_from_form_params
-
+  def create_trip_proxy_from_form_params(params)
+    Rails.logger.info params[:trip_proxy]
     trip_proxy = TripProxy.new(params[:trip_proxy])
     trip_proxy.traveler = @traveler
 
