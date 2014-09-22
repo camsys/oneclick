@@ -50,7 +50,7 @@ class Admin::AgenciesController < ApplicationController
 
   # GET /agencies/1/edit
   def edit
-    
+
     @contact = @agency.internal_contact
     @addable_users = User.staff_assignable
     # @agency = Agency.find(params[:id])
@@ -111,7 +111,7 @@ end
 private
 
 def agency_params params
-  params.require(:agency).permit(:name, :address, :phone, :email, :url,
+  params.require(:agency).permit(:name, :address, :city, :state, :zip, :phone, :email, :url,
     :parent_id, :parent,:internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email, :public_comments, :private_comments)
 end
 
@@ -138,7 +138,7 @@ def set_agents (users)
     user_to_add.update_attributes(agency: @agency) #NOTE this will overwrite existing associations
     @agency.users << user_to_add
   end
-  
+
   users_to_remove.each do |u|
     user_to_remove = User.find(u)
     user_to_remove.remove_role(:agent, @agency)
@@ -161,7 +161,7 @@ def set_admins (users)
     user_to_add.update_attributes(agency: @agency) #NOTE this will overwrite existing associations
     @agency.users << user_to_add
   end
-  
+
   users_to_remove.each do |u|
     user_to_remove = User.find(u)
     user_to_remove.remove_role(:agency_administrator, @agency)

@@ -10,7 +10,7 @@
             = icon_label(:apply)
           = link_to admin_agency_path(@agency), class: 'btn action-button', role: 'button' do
             = icon_label(:cancel)
-  
+
   .row
     .col-sm-6
       .panel.panel-default
@@ -18,6 +18,12 @@
           %h4.panel-title= t(:contact_info)
         .panel-body
           = f.input :address
+          = f.input :city, label: "#{t(:city)}/#{t(:state)}/#{t(:zip)}",
+            input_html: {class: "col-sm-6 form-control"}, wrapper_html: {class: ""} do
+            = f.input_field :city, class: "col-sm-3"
+            %label.col-sm-1
+            = f.input_field :state, class: "col-sm-2"
+            = f.input_field :zip, class: "col-sm-3 pull-right"
           = f.input :phone
           = f.input :email
           = f.input :url
