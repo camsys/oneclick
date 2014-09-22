@@ -76,9 +76,9 @@ class Admin::AgenciesController < ApplicationController
   # PUT /agencies/1
   # PUT /agencies/1.json
   def update
-
+    Rails.logger.info params[:agency]
     internal_contact_id = params[:agency][:internal_contact] # as this isn't an attribute, have to pull it before Strong Params
-    agent_ids = params[:agency][:agent_ids].reject(&:blank?) #again, special case because need to update rolify
+    agent_ids = params[:agency][:agent_ids].split(',').reject(&:blank?) #again, special case because need to update rolify
     admin_ids = params[:agency][:administrator_ids].reject(&:blank?) #again, special case because need to update rolify
 
     respond_to do |format|
@@ -104,6 +104,31 @@ class Admin::AgenciesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to admin_agencies_path }
       format.json { head :no_content }
+    end
+  end
+
+  def find_agent_by_email
+    user = User.staff_assignable.where("lower(email) = ?", params[:email].downcase).first #case insensitive
+    agency = Agency.find(params[:agency_id])
+
+    if user.nil?
+      success = false
+      msg = I18n.t(:no_user_with_email_address, email: params[:email]) # did you know that this was an XSS vector?  OOPS
+    elsif agency.agents.where(id: user.id).length != 0
+      success = false
+      msg = t(:you_ve_already_added_this_agent)
+    else
+      success = true
+      msg = t(:please_save_agents, name: user.name)
+      output = user.id
+      row = [
+              user.id,
+              user.name,
+              user.email
+            ]
+    end
+    respond_to do |format|
+      format.js { render json: {output: output, msg: msg, success: success, user_id: user.try(:id), row: row} }
     end
   end
 end

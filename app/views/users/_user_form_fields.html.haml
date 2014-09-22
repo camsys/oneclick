@@ -98,7 +98,7 @@
             .panel-heading
               %h2.panel-title= t(:eligibility)
             .panel-body
-              - Characteristic.active.enabled.each do |c| 
+              - Characteristic.active.enabled.each do |c|
                 - next if c.code=='age' # TODO kludge
                 - next unless c.ask_early
                 - case c.datatype
@@ -161,7 +161,7 @@
             {"sWidth": "20%"},
             {"sWidth": "20%"},
           ],
-          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>"
       } );
       $("#add_buddy_btn").on("click", function(e) {
         e.preventDefault ? e.preventDefault() : e.returnValue = false;
@@ -191,6 +191,12 @@
             }
           }
         });
+      });
+      $('#email').on('keypress', function(e){
+        if(e.keyCode == 13) {
+          e.preventDefault ? e.preventDefault() : e.returnValue = false;
+          $('#search').click();
+        }
       });
     $("td button.action-button").on("click", function(e) {
       e.preventDefault ? e.preventDefault() : e.returnValue = false;

@@ -3,7 +3,7 @@ class Admin::UsersController < Admin::BaseController
   before_action :load_user, only: :create
   before_filter :authenticate_user!, :except => [:agency_assist]
   load_and_authorize_resource
-  
+
   def index
     # @users = @users.without_role :anonymous_traveler # This filter is moved into UsersDatatable
 
@@ -37,7 +37,7 @@ class Admin::UsersController < Admin::BaseController
           @agency_user_relationship.user = @user # @user should have been guarded above by @user.valid?, assume it exists
           @agency_user_relationship.agency = current_user.agency
           @agency_user_relationship.creator = current_user.id
-          
+
           if @agency_user_relationship.save
             UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.user.email, current_user.agency).deliver
           end
@@ -49,7 +49,7 @@ class Admin::UsersController < Admin::BaseController
       end
     end
   end
-          
+
   def show
     session[:location] = edit_user_registration_path
     @agency_user_relationship = AgencyUserRelationship.new
@@ -116,7 +116,7 @@ class Admin::UsersController < Admin::BaseController
       format.json { head :no_content }
     end
   end
-  
+
   # def add_to_agency # no longer applicable, iteration 5 workflow runs from the agency, not the user
   #   agency = Agency.find(params[:agency_id])
   #   params[:agency][:user_ids].reject{|u| u.blank?}.each do |user_id|
@@ -148,8 +148,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def find_by_email
-    #user = User.find_by(email: params[:email])
-    user = User.find(:first, :conditions => ["lower(email) = ?", params[:email].downcase]) #case insensitive
+    user = User.where("lower(email) = ?", params[:email].downcase).first #case insensitive
     traveler = User.find(params[:user_id])
     if user.nil?
       success = false
@@ -160,15 +159,15 @@ class Admin::UsersController < Admin::BaseController
     elsif traveler.pending_and_confirmed_delegates.include? user
       success = false
       msg = t(:you_ve_already_asked_them_to_be_a_buddy)
-    else 
+    else
       success = true
       msg = t(:please_save_buddies, name: user.first_name)
       output = user.email
       row = [
               user.name,
-              user.email, 
-              I18n.t('relationship_status.relationship_status_pending'), 
-              UserRelationshipDecorator.decorate(UserRelationship.find_by(traveler: user, delegate: traveler)).buttons 
+              user.email,
+              I18n.t('relationship_status.relationship_status_pending'),
+              UserRelationshipDecorator.decorate(UserRelationship.find_by(traveler: user, delegate: traveler)).buttons
             ]
     end
     respond_to do |format|
@@ -176,7 +175,7 @@ class Admin::UsersController < Admin::BaseController
     end
   end
 
-  private 
+  private
 
   def user_params_with_password
     params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation, :walking_speed_id, :walking_maximum_distance_id, :preferred_mode_ids => [])
@@ -207,7 +206,7 @@ class Admin::UsersController < Admin::BaseController
       revoked.update_attributes(relationship_status: RelationshipStatus.revoked)
     end
   end
-  
+
   def set_booking_services(user, services)
     alert = false
     dob = services['dob']
