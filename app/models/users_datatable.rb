@@ -1,12 +1,13 @@
 # caged from http://railscasts.com/episodes/340-datatables
 class UsersDatatable
+  include TranslationTagHelper
   include Rails.application.routes.url_helpers
   delegate :params, :h, :link_to, to: :@view
-  
+
   def initialize(view)
     @view = view
   end
-  
+
   def as_json(options = {})
     {
       sEcho: params[:sEcho].to_i, # note this must be .to_i for security reasons
@@ -25,7 +26,7 @@ private
         user.email,
         user.created_at.to_date,
         user.roles.collect(&:human_readable_name).to_sentence,
-        user.deleted_at ? I18n.t(:user_deleted) : ''
+        user.deleted_at ? translate_w_tag_as_default(:user_deleted) : ''
       ]
     end
   end

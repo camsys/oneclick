@@ -1,4 +1,5 @@
 class WalkingSpeed < ActiveRecord::Base
+  	include TranslationTagHelper
 	has_many :users
 
 	SLOW = 'slow'
@@ -8,11 +9,11 @@ class WalkingSpeed < ActiveRecord::Base
 	def label
 		case code
 		when SLOW
-			I18n.t(code) + ' (<=' + value.to_s + ' mph)'
+			translate_w_tag_as_default(code) + ' (<=' + value.to_s + ' mph)'
 		when AVERAGE
-			I18n.t(code) + ' (=' + value.to_s + ' mph)'
+			translate_w_tag_as_default(code) + ' (=' + value.to_s + ' mph)'
 		when FAST
-			I18n.t(code) + ' (>=' + value.to_s + ' mph)'
+			translate_w_tag_as_default(code) + ' (>=' + value.to_s + ' mph)'
 		end
 	end
 end
