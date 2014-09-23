@@ -108,14 +108,10 @@ class Admin::AgenciesController < ApplicationController
 
   def find_agent_by_email
     user = User.staff_assignable.where("lower(email) = ?", params[:email].downcase).first #case insensitive
-    agency = Agency.find(params[:agency_id])
 
     if user.nil?
       success = false
       msg = I18n.t(:no_agent_with_email_address, email: params[:email]) # did you know that this was an XSS vector?  OOPS
-    elsif agency.agents.where(id: user.id).length != 0
-      success = false
-      msg = t(:you_ve_already_added_this_agent)
     else
       success = true
       msg = t(:please_save_agents, name: user.name)
