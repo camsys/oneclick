@@ -38,7 +38,7 @@
                 });
 
           = field_set_tag do
-            %legend.sr-only t(:modes)
+            %legend.sr-only Modes
             #baseModes
               = f.input :modes, as: :check_boxes, collection: @modes,
               label_method: :first, value_method: :last, checked: @selected_modes, label: t(:modes)

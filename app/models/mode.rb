@@ -1,4 +1,5 @@
 class Mode < ActiveRecord::Base
+
   has_many :itineraries
   has_and_belongs_to_many :trips, join_table: :trips_desired_modes, foreign_key: :desired_mode_id
 
@@ -7,7 +8,7 @@ class Mode < ActiveRecord::Base
 
   # Updatable attributes
   # attr_accessible :id, :name, :active
-
+    
   # set the default scope
   default_scope {where(active: true)}
 
@@ -25,7 +26,7 @@ class Mode < ActiveRecord::Base
       end
     end
   rescue Exception => e
-    Rails.logger.info "Could not create Mode methods (normal during db ops)."
+    Rails.logger.info "Could not create Mode methods (normal during db ops)."    
   end
 
   # def self.transit
@@ -51,7 +52,7 @@ class Mode < ActiveRecord::Base
   # def self.rail
   #   unscoped.where("code = 'mode_rail'").first
   # end
-
+   
   # def self.walk
   #   unscoped.where("code = 'mode_walk'").first
   # end
@@ -68,7 +69,7 @@ class Mode < ActiveRecord::Base
     q = session_mode_codes ? Mode.where('code in (?)', session_mode_codes) : Mode.all
     non_transit_modes = Mode.top_level.where("code <> 'mode_transit'").where(visible: true)
       .sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.collect do |m|
-      [I18n.translate(m.name).html_safe, m.code]
+      [I18n.t(m.name).html_safe, m.code]
     end
     transit = Mode.transit
     if transit.visible
@@ -79,7 +80,7 @@ class Mode < ActiveRecord::Base
     else
       transit_modes = []
     end
-
+    
     selected_modes = q.collect{|m| m.code}
     return {modes: non_transit_modes, transit_modes: transit_modes, selected_modes: selected_modes}
   end
@@ -87,7 +88,7 @@ class Mode < ActiveRecord::Base
   def top_level?
     parent.blank?
   end
-
+   
   def to_s
     name
   end
