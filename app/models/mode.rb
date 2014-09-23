@@ -8,7 +8,7 @@ class Mode < ActiveRecord::Base
 
   # Updatable attributes
   # attr_accessible :id, :name, :active
-    
+
   # set the default scope
   default_scope {where(active: true)}
 
@@ -26,7 +26,7 @@ class Mode < ActiveRecord::Base
       end
     end
   rescue Exception => e
-    Rails.logger.info "Could not create Mode methods (normal during db ops)."    
+    Rails.logger.info "Could not create Mode methods (normal during db ops)."
   end
 
   # def self.transit
@@ -52,7 +52,7 @@ class Mode < ActiveRecord::Base
   # def self.rail
   #   unscoped.where("code = 'mode_rail'").first
   # end
-   
+
   # def self.walk
   #   unscoped.where("code = 'mode_walk'").first
   # end
@@ -66,6 +66,10 @@ class Mode < ActiveRecord::Base
   end
 
   def self.setup_modes(session_mode_codes)
+    Rails.logger.info 'I18n locale in mode.rb:'
+    Rails.logger.info I18n.locale
+    Rails.logger.info I18n.t(:mode_bus)
+    Rails.logger.info I18n.translate(:mode_bus, default: '[mode_bus]')
     q = session_mode_codes ? Mode.where('code in (?)', session_mode_codes) : Mode.all
     non_transit_modes = Mode.top_level.where("code <> 'mode_transit'").where(visible: true)
       .sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.collect do |m|
@@ -80,7 +84,7 @@ class Mode < ActiveRecord::Base
     else
       transit_modes = []
     end
-    
+
     selected_modes = q.collect{|m| m.code}
     return {modes: non_transit_modes, transit_modes: transit_modes, selected_modes: selected_modes}
   end
@@ -88,7 +92,7 @@ class Mode < ActiveRecord::Base
   def top_level?
     parent.blank?
   end
-   
+
   def to_s
     name
   end

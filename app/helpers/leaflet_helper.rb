@@ -52,6 +52,10 @@ module LeafletHelper
       show_sidewalk_feedback = false
     end
 
+    Rails.logger.info 'I18n locale in leaflet_helper:'
+    Rails.logger.info I18n.locale
+    Rails.logger.info I18n.t(:approve)
+    Rails.logger.info I18n.translate(:approve, default: '[approve]')
     if show_sidewalk_feedback
       sidewalk_feedback_options = {
         submit_feedback_url: user_sidewalk_obstructions_path({:user_id => current_or_guest_user.id}),
