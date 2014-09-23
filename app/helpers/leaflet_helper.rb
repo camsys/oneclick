@@ -1,4 +1,5 @@
 module LeafletHelper
+  include TranslationTagHelper
 
   # Defaults
   MAPID = "map"
@@ -59,13 +60,13 @@ module LeafletHelper
         reject_feedback_url: reject_user_sidewalk_obstructions_path({:user_id => current_or_guest_user.id}),
         delete_feedback_url: delete_user_sidewalk_obstructions_path({:user_id => current_or_guest_user.id}),
         locale_text: {
-          approve: I18n.t(:approve),
-          reject: I18n.t(:reject),
-          delete: I18n.t(:delete),
-          submit: I18n.t(:submit),
-          cancel: I18n.t(:cancel),
-          remove_by: I18n.t(:remove_by),
-          comments: I18n.t(:comments)
+          approve: translate_w_tag_as_default(:approve),
+          reject: translate_w_tag_as_default(:reject),
+          delete: translate_w_tag_as_default(:delete),
+          submit: translate_w_tag_as_default(:submit),
+          cancel: translate_w_tag_as_default(:cancel),
+          remove_by: translate_w_tag_as_default(:remove_by),
+          comments: translate_w_tag_as_default(:comments)
         },
         icon_class: SIDEWALK_MARKER_ICON,
         min_visible_zoom: MIN_SIDEWALK_ZOOM
@@ -88,12 +89,12 @@ module LeafletHelper
       show_sidewalk_feedback: show_sidewalk_feedback,
       sidewalk_feedback_options: sidewalk_feedback_options,
       map_control_tooltips: {
-        zoom_in: I18n.t(:zoom_in),
-        zoom_out: I18n.t(:zoom_out),
-        my_location: I18n.t(:center_my_location),
-        display_street_view: I18n.t(:display_street_view),
-        select_location_on_map: I18n.t(:select_location_on_map),
-        add_sidewalk_feedback_on_map: I18n.t(:add_sidewalk_feedback_on_map)
+        zoom_in: translate_w_tag_as_default(:zoom_in),
+        zoom_out: translate_w_tag_as_default(:zoom_out),
+        my_location: translate_w_tag_as_default(:center_my_location),
+        display_street_view: translate_w_tag_as_default(:display_street_view),
+        select_location_on_map: translate_w_tag_as_default(:select_location_on_map),
+        add_sidewalk_feedback_on_map: translate_w_tag_as_default(:add_sidewalk_feedback_on_map)
       }
     }.to_json
 

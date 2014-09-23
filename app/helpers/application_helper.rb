@@ -4,6 +4,7 @@ module ApplicationHelper
 
   include CsHelpers
   include LocaleHelpers
+  include TranslationTagHelper
 
   KIOSK_ICON_DICTIONARY = {
     Leg::TripLeg::WALK => 'travelcon-walk',
@@ -153,7 +154,7 @@ module ApplicationHelper
     end
 
     if time_in_seconds < 60
-      time_string = I18n.translate(:less_than_one_minute)
+      time_string = translate_w_tag_as_default(:less_than_one_minute)
     end
 
     time_string
