@@ -122,7 +122,7 @@ CsLeaflet.SidewalkFeedbackTool = {
         var locale_text = options.locale_text || {};
         return "<div class='well'>" +
             "<div class='row'><div class='pull-right'>" +
-            "<button class='btn action-button map-action-button' action='submit'>" + locale_text.submit + "</button>" +
+            "<button class='btn action-button map-action-button' style='margin-right: 5px;' action='submit'>" + locale_text.submit + "</button>" +
             "<button class='btn action-button map-action-button' action='cancel' >" + locale_text.cancel + "</button>" +
             "</div></div>" +
             "<div class='row'>" +
@@ -143,8 +143,8 @@ CsLeaflet.SidewalkFeedbackTool = {
             (
                 allowActions.is_approvable ?
                 (
-                    "<button class='btn action-button map-action-button' action='approve'>" + locale_text.approve + "</button>" +
-                    "<button class='btn action-button map-action-button' action='reject'>" + locale_text.reject + "</button>"
+                    "<button class='btn action-button style='margin-right: 5px;' map-action-button' action='approve'>" + locale_text.approve + "</button>" +
+                    "<button class='btn action-button style='margin-right: 5px;' map-action-button' action='reject'>" + locale_text.reject + "</button>"
                 ) : ""
             ) +
             (allowActions.is_deletable ? "<button class='btn action-button map-action-button' action='delete'>" + locale_text.delete + "</button>": "") +

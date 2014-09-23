@@ -1443,7 +1443,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             '<div class="modal-content">' +
             '<div class="modal-header">' +
             '<div class="pull-right">' +
-            '<button role="button" type="submit" class="btn action-button">' + localeDictFinder['update'] + '</button>' +
+            '<button role="button" type="submit" style="margin-right: 5px;" class="btn action-button">' + localeDictFinder['update'] + '</button>' +
             '<button role="button" type="button" class="btn action-button" data-dismiss="modal">' + localeDictFinder['cancel'] + '</button>' +
             '</div>' +
             '<b class="modal-title" id="' + missInfoDivId + '_title">' + localeDictFinder['trip_restrictions'] + '</b>' +
