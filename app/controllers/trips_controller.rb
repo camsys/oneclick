@@ -427,7 +427,7 @@ class TripsController < PlaceSearchingController
 
     if session[:first_login] == true
       session[:first_login] = nil
-      @show_booking = true #TODO: what if there is no bookable service available?
+      @show_booking = true
       @booking_proxy = UserServiceProxy.new()
     end
 

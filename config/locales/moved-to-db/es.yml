@@ -35,7 +35,12 @@ es:
   create_traveler: "Crear un Viajero"
   feedback: "[es]Feedback[/es]"
   agency: "[es]Agency[/es]"
-  agencies: "[es21]Agencies[es]"
+  agency_was_successfully_created: '[es]Agency was successfully created.[/es]'
+  find_agent: '[es]Find Agent[/es]'
+  no_agent_with_email_address: "[es]We can't find an agent with '%{email}' as their email address.[/es]"
+  you_ve_already_added_this_agent: '[es]You have already added this agent.[/es]'
+  please_save_agents: '[es]Please save agents.[/es]'
+  agencies: "[es21]Agencies[/es]"
   all_agencies: "[es28]All Agencies[/es]"
   add_new_agency: "[es26]Add a new Agency[/es]"
   agency_added: "[es27]Agency added[/es]"

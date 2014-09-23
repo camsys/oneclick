@@ -42,6 +42,11 @@ en:
   create_traveler: "Create Traveler"
   feedback: "Feedback"
   agency: "Agency"
+  agency_was_successfully_created: 'Agency was successfully created.'
+  find_agent: 'Find Agent'
+  no_agent_with_email_address: "We can't find an agent with '%{email}' as their email address."
+  you_ve_already_added_this_agent: 'You have already added this agent.'
+  please_save_agents: 'Please save agents.'
   agencies: "Agencies"
   all_agencies: "All Agencies"
   add_new_agency: "Add a new Agency"
