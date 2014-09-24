@@ -1,14 +1,14 @@
 class TripProxy < Proxy
   # User object for the traveler
   attr_accessor :traveler
-  # Type of operation. Defined in TripController. One of NEW, EDIT, REPEAT
+  # Type of operation. Defined in TripSupport. One of MODE_NEW, MODE_EDIT, MODE_REPEAT
   attr_accessor :mode
   # Id of the trip being re-planned, edited, etc. Null if mode is NEW
   attr_accessor :id, :map_center
   attr_accessor :trip_options
 
   attr_accessor :user_agent, :ui_mode
-  
+
   include TripsSupport
   include Trip::From
   include Trip::PickupTime
@@ -27,7 +27,7 @@ class TripProxy < Proxy
     @return_trip_date ||= @outbound_trip_date
     @modes ||= Mode.all.collect{|m| m.code}
     @modes_desired = @modes
-    # Modify modes to reflect transit 
+    # Modify modes to reflect transit
     # Using array select with side effects
     if (@modes)
       # if bus or rail are not visible, then ignore invisible modes for
@@ -141,7 +141,7 @@ class TripProxy < Proxy
 
     trip_proxy.user_agent = trip.user_agent
     trip_proxy.ui_mode = trip.ui_mode
-    
+
     return trip_proxy
 
   end
