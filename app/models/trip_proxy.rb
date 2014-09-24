@@ -22,7 +22,9 @@ class TripProxy < Proxy
     super
     attrs.each do |k, v|
       Rails.logger.info "SETTING #{k}=#{v}"
-      self.send "#{k}=", v
+      if self.respond_to? k
+        self.send "#{k}=", v
+      end
     end
     @return_trip_date ||= @outbound_trip_date
     @modes ||= Mode.all.collect{|m| m.code}

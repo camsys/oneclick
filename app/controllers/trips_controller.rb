@@ -458,7 +458,7 @@ class TripsController < PlaceSearchingController
     end
 
     # Get the updated trip proxy from the form params
-    @trip_proxy = create_trip_proxy_from_form_params(params)
+    @trip_proxy = create_trip_proxy_from_form_params(params[:trip_proxy])
 
     @trip_proxy.user_agent = request.user_agent
     @trip_proxy.ui_mode = @ui_mode
@@ -545,13 +545,25 @@ class TripsController < PlaceSearchingController
   def create
 
     # inflate a trip proxy object from the form params
-    @trip_proxy = create_trip_proxy_from_form_params(params)
+    @trip_proxy = create_trip_proxy_from_form_params(params[:trip_proxy])
     launch_trip_planning(@trip_proxy)
 
   end
 
+  # GET
   def plan_a_trip
-    params["trip_proxy"]["modes"] = params["trip_proxy"]["modes"].split(',')
+    params['mode'] = 1 # is always MODE_NEW (creating a new trip)
+    params["modes"] = params["modes"].split(',')
+
+    purpose = TripPurpose.where(code: params["purpose"]).first
+
+    if purpose.nil?
+      purpose = TripPurpose.where(code: TripPurpose::DEFAULT_PURPOSE_CODE).first
+    end
+
+    unless purpose.nil?
+      params['trip_purpose_id'] = purpose.id
+    end
 
     @trip_proxy = create_trip_proxy_from_form_params(params)
     launch_trip_planning(@trip_proxy)
@@ -861,9 +873,8 @@ protected
 private
 
   # creates a trip_proxy object from form parameters
-  def create_trip_proxy_from_form_params(params)
-    Rails.logger.info params[:trip_proxy]
-    trip_proxy = TripProxy.new(params[:trip_proxy])
+  def create_trip_proxy_from_form_params(trip_proxy_params)
+    trip_proxy = TripProxy.new(trip_proxy_params)
     trip_proxy.traveler = @traveler
 
     Rails.logger.debug trip_proxy.inspect

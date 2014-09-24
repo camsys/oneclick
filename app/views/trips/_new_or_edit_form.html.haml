@@ -13,7 +13,7 @@
           });
 .row
   .col-sm-7.col-xs-12
-    = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path(locale: I18n.locale) : user_trip_path(locale: I18n.locale), :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
+    = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path(:user_id => current_or_guest_user.id) : user_trip_path(:user_id => current_or_guest_user.id), :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
       .col-xs-12.panel.panel-default
         .panel-body
           = f.hidden_field :mode

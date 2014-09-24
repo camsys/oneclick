@@ -14,7 +14,7 @@ module TripsHelper
     else
       'trip_summary_header'
     end
-  end  
+  end
 
   def rideshare_external_link itinerary
     service_url + '?' + YAML.load(itinerary.external_info).to_query
@@ -94,6 +94,7 @@ module TripsHelper
     trips_edit: :trip,
     trips_create: :trip,
     trips_update: :trip,
+    trips_plan_a_trip: :trip,
     characteristics_new: :options,
     characteristics_update: :options, # if rerendering new due to validation failure
     trips_show: :review,
@@ -143,7 +144,7 @@ module TripsHelper
   def filter_itineraries_by_max_offset_time(itineraries, is_depart, trip_time)
     max_offset_from_desired = Oneclick::Application.config.max_offset_from_desired
     return itineraries if max_offset_from_desired.nil?
-    
+
     earliest_time = is_depart ? trip_time : nil
     latest_time = is_depart ? nil : trip_time
     if is_depart
@@ -162,5 +163,5 @@ module TripsHelper
 
     return itineraries
   end
-  
+
 end
