@@ -60,9 +60,8 @@ module LeafletHelper
       Rails.logger.info 'change default_locale as :tags'
       I18n.default_locale = :tags
       Rails.logger.info ':approve without default value'
-      Rails.logger.info I18n.t(:approve)
-      Rails.logger.info ':approve with default value as [approve]'
-      Rails.logger.info I18n.translate(:approve, default: '[approve]')
+      Rails.logger.info I18n.translate(:approve)
+      Rails.logger.info ':approve with default value as [approve] is' + I18n.translate(:approve, locale: :tags, default: '[approve]')
 
       Rails.logger.info 'change default_locale as :es'
       I18n.default_locale = :es
