@@ -52,32 +52,6 @@ module LeafletHelper
       show_sidewalk_feedback = false
     end
 
-    Rails.logger.info 'I18n locale in leaflet_helper:'
-    if I18n.locale == :tags
-      Rails.logger.info 'this is tags locale for :approve'
-      current_default_locale = I18n.default_locale
-
-      Rails.logger.info 'change default_locale as :tags'
-      I18n.default_locale = :tags
-      Rails.logger.info ':approve without default value'
-      Rails.logger.info I18n.translate(:approve)
-      Rails.logger.info ':approve with default value as [approve] is' + I18n.translate(:approve, locale: :tags, default: '[approve]')
-
-      Rails.logger.info 'change default_locale as :es'
-      I18n.default_locale = :es
-      Rails.logger.info ':approve without default value'
-      Rails.logger.info I18n.t(:approve)
-      Rails.logger.info ':approve with default value as [es]approve[/es]'
-      Rails.logger.info I18n.translate(:approve, default: '[es]approve[/es]')
-
-      Rails.logger.info 'restore previous default_locale'
-      I18n.default_locale = current_default_locale
-      Rails.logger.info ':approve without default value'
-      Rails.logger.info I18n.t(:approve)
-      Rails.logger.info ':approve with default value as [en]approve[/en]'
-      Rails.logger.info I18n.translate(:approve, default: '[en]approve[/en]')
-    end
-
     if show_sidewalk_feedback
       sidewalk_feedback_options = {
         submit_feedback_url: user_sidewalk_obstructions_path({:user_id => current_or_guest_user.id}),

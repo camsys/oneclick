@@ -66,10 +66,6 @@ class Mode < ActiveRecord::Base
   end
 
   def self.setup_modes(session_mode_codes)
-    Rails.logger.info 'I18n locale in mode.rb:'
-    Rails.logger.info I18n.locale
-    Rails.logger.info I18n.t(:mode_transit_name)
-    Rails.logger.info I18n.translate(:mode_transit_name, default: '[mode_transit_name]')
     q = session_mode_codes ? Mode.where('code in (?)', session_mode_codes) : Mode.all
     non_transit_modes = Mode.top_level.where("code <> 'mode_transit'").where(visible: true)
       .sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.collect do |m|
