@@ -313,6 +313,7 @@ Oneclick::Application.routes.draw do
         resources :trips, only: [:index, :show]
       end
       resources :translations
+      resources :oneclick_configurations
     end#admin
 
     # gives a shallow RESTful endpoint for rating any rateable
