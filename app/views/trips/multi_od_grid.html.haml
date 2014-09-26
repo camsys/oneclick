@@ -1,0 +1,21 @@
+.row{style: "padding: 0px;"}
+  .hidden-xs.col-sm-8
+    = render partial: 'shared/trip_plan_breadcrumbs'
+  .col-sm-4
+    .pull-right
+      = button_tag :type => 'button', :name => "planButton", :class => "btn action-button" do
+        =t(:next)
+
+.row
+  .col-sm-12
+    = t(:select_cell_view_itinerary_details)
+  .table-responsive
+    %table.table-condensed
+      - @multi_od_trip.trips.each do |trip|
+        %tr
+          %td
+            = trip.id
+          %td
+            = trip.trip_places.first.name
+          %td
+            = trip.trip_places.last.name

@@ -97,6 +97,7 @@ Oneclick::Application.routes.draw do
           get   'search'
           post  'geocode'
           get   'plan_map'
+          get   'create_multi_od'
         end
         member do
           get   'populate'
@@ -121,6 +122,7 @@ Oneclick::Application.routes.draw do
           get   'plan'
           get   'new_rating_from_email'
           post  'cancel'
+          get   'multi_od_grid'
         end
         resources :trip_parts do
           member do

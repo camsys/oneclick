@@ -91,12 +91,14 @@ module TripsHelper
 
   ACTIONS_TO_TABS = HashWithIndifferentAccess.new(
     trips_new: :trip,
+    trips_create_multi_od: :trip,
     trips_edit: :trip,
     trips_create: :trip,
     trips_update: :trip,
     trips_plan_a_trip: :trip,
     characteristics_new: :options,
     characteristics_update: :options, # if rerendering new due to validation failure
+    trips_multi_od_grid: :grid,
     trips_show: :review,
     trips_plan: :plan,
     trips_repeat: :trip,
@@ -104,7 +106,7 @@ module TripsHelper
 
   TABS_TO_ACTIONS = ACTIONS_TO_TABS.invert
 
-  TABS = [:trip, :options, :review, :plan]
+  TABS = [:trip, :options, :grid, :review, :plan]
 
   def visited_tabs
     TABS.slice(0, TABS.index(ACTIONS_TO_TABS[controller_and_action]))
@@ -132,6 +134,8 @@ module TripsHelper
       edit_user_trip_path(@traveler, @trip)
     when :options
       new_user_trip_characteristic_path(@traveler, @trip)
+    when :grid
+      multi_od_grid_user_trip_path(@traveler, @trip)
     when :review
       user_trip_path(@traveler, @trip)
     when :plan

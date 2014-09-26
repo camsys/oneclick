@@ -58,6 +58,62 @@ class TripsController < PlaceSearchingController
     end
   end
 
+  # showing plan_a_trip page for multi-od
+  # agent only
+  def create_multi_od
+    authorize! :see, :staff_menu
+
+    session[:is_multi_od] = true
+    new_trip
+  end
+
+  # showing a grid summary of each O-D trip for multi-OD trip planning
+  # agent only
+  def multi_od_grid
+    authorize! :see, :staff_menu
+
+    @trip = Trip.find(params[:id]) # base trip
+    @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
+    if @multi_od_trip.trips.length == 0
+      origin_places = @multi_od_trip.origin_places.split(';')
+      dest_places = @multi_od_trip.dest_places.split(';')
+
+      trip_proxy = create_trip_proxy(@trip)
+      origin_places.each do |origin_place|
+        dest_places.each do |dest_place|
+          origin_obj = JSON.parse(origin_place)
+          dest_obj = JSON.parse(dest_place)
+
+          trip_proxy.from_place = origin_obj["name"]
+          trip_proxy.to_place = dest_obj["name"]
+          if origin_obj["is_full"] == true
+            trip_proxy.from_place_object = origin_obj["data"]
+          else
+            trip_proxy.from_place_object = nil
+          end
+
+          if dest_obj["is_full"] == true
+            trip_proxy.to_place_object = dest_obj["data"]
+          else
+            trip_proxy.to_place_object = nil
+          end
+
+          new_trip = Trip.create_from_proxy(trip_proxy, current_or_guest_user, @traveler)
+          if new_trip && new_trip.errors.empty? && new_trip.save
+            new_trip.create_itineraries
+            @multi_od_trip.trips << new_trip
+          end
+        end
+      end
+
+      @multi_od_trip.save
+    end
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
   def plan
     @trip = Trip.find(params[:id])
     @trip_parts = @trip.trip_parts
@@ -396,47 +452,9 @@ class TripsController < PlaceSearchingController
   # GET /trips/new
   # GET /trips/new.json
   def new
-    session[:tabs_visited] = []
-    @trip_proxy = TripProxy.new(modes: session[:modes_desired], outbound_arrive_depart: false, return_arrive_depart: true) # default outbound trips to arrive-by, return trips to depart-at.
-    @trip_proxy.traveler = @traveler
+    session[:is_multi_od] = false
 
-    # set the flag so we know what to do when the user submits the form
-    @trip_proxy.mode = MODE_NEW
-
-    # Set the travel time/date to the default
-    travel_date = default_trip_time
-
-    @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
-    @trip_proxy.outbound_trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
-
-    # Set the trip purpose to its default
-    @trip_proxy.trip_purpose_id = TripPurpose.all.first.id
-
-    @trip_proxy.user_agent = request.user_agent
-    @trip_proxy.ui_mode = @ui_mode
-
-    # default to a round trip. The default return trip time is set the the default trip time plus
-    # a configurable interval
-    return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
-    @trip_proxy.is_round_trip = "1"
-    @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
-
-    # Create markers for the map control
-    @markers = create_trip_proxy_markers(@trip_proxy).to_json
-    @places = create_place_markers(@traveler.places)
-
-    if session[:first_login] == true
-      session[:first_login] = nil
-      @show_booking = true
-      @booking_proxy = UserServiceProxy.new()
-    end
-
-    setup_modes
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @trip_proxy }
-    end
+    new_trip
   end
 
 
@@ -543,8 +561,17 @@ class TripsController < PlaceSearchingController
   # POST /trips
   # POST /trips.json
   def create
-
     # inflate a trip proxy object from the form params
+    if session[:is_multi_od]
+      multi_od_trip = MultiOriginDestTrip.new(
+        :user => current_user,
+        :origin_places => params[:trip_proxy][:multi_origin_places],
+        :dest_places => params[:trip_proxy][:multi_dest_places]
+      )
+      multi_od_trip.save
+      session[:multi_od_trip_id] = multi_od_trip.id
+    end
+
     @trip_proxy = create_trip_proxy_from_form_params(params[:trip_proxy])
     launch_trip_planning(@trip_proxy)
 
@@ -753,6 +780,49 @@ class TripsController < PlaceSearchingController
 
 
 protected
+  def new_trip
+    session[:tabs_visited] = []
+    @trip_proxy = TripProxy.new(modes: session[:modes_desired], outbound_arrive_depart: false, return_arrive_depart: true) # default outbound trips to arrive-by, return trips to depart-at.
+    @trip_proxy.traveler = @traveler
+
+    # set the flag so we know what to do when the user submits the form
+    @trip_proxy.mode = MODE_NEW
+
+    # Set the travel time/date to the default
+    travel_date = default_trip_time
+
+    @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
+    @trip_proxy.outbound_trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
+
+    # Set the trip purpose to its default
+    @trip_proxy.trip_purpose_id = TripPurpose.all.first.id
+
+    @trip_proxy.user_agent = request.user_agent
+    @trip_proxy.ui_mode = @ui_mode
+
+    # default to a round trip. The default return trip time is set the the default trip time plus
+    # a configurable interval
+    return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
+    @trip_proxy.is_round_trip = "1"
+    @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
+
+    # Create markers for the map control
+    @markers = create_trip_proxy_markers(@trip_proxy).to_json
+    @places = create_place_markers(@traveler.places)
+
+    if session[:first_login] == true
+      session[:first_login] = nil
+      @show_booking = true
+      @booking_proxy = UserServiceProxy.new()
+    end
+
+    setup_modes
+
+    respond_to do |format|
+      format.html { render action: "new" }# new.html.erb
+      format.json { render json: @trip_proxy }
+    end
+  end
 
  def launch_trip_planning(trip_proxy)
     trip_proxy.user_agent = request.user_agent
@@ -762,9 +832,7 @@ protected
 
     setup_modes
 
-    if trip_proxy.valid?
-      @trip = Trip.create_from_proxy(trip_proxy, current_or_guest_user, @traveler)
-    else
+    unless trip_proxy.valid?
       Rails.logger.info "Not valid: #{@trip_proxy.ai}"
       Rails.logger.info "\nError render 1\n"
       flash.now[:alert] = t(:correct_errors_to_create_a_trip)
@@ -773,16 +841,21 @@ protected
     end
 
     # Create markers for the map control
-    @markers = create_trip_proxy_markers(trip_proxy).to_json
-    @places = create_place_markers(@traveler.places)
+    #@markers = create_trip_proxy_markers(trip_proxy).to_json
+    #@places = create_place_markers(@traveler.places)
 
     respond_to do |format|
+      @trip = Trip.create_from_proxy(trip_proxy, current_or_guest_user, @traveler)
       if @trip
         if @trip.errors.empty? && @trip.save
           @trip.reload
           if !@trip.eligibility_dependent?
-            @trip.create_itineraries
-            @path = user_trip_path_for_ui_mode(@traveler, @trip)
+            if session[:is_multi_od] == true
+              @path = multi_od_grid_user_trip_path(@traveler, @trip)
+            else
+              @trip.create_itineraries
+              @path = user_trip_path_for_ui_mode(@traveler, @trip)
+            end
           else
             session[:current_trip_id] = @trip.id
             @path = new_user_trip_characteristic_path_for_ui_mode(@traveler, @trip)
@@ -882,7 +955,14 @@ private
   end
 
   def create_trip_proxy(trip, attr = {})
-    TripProxy.create_from_trip(trip, attr)
+    trip_proxy = TripProxy.create_from_trip(trip, attr)
+    if !session[:multi_od_trip_id].nil?
+      multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
+      trip_proxy.multi_origin_places = multi_od_trip.origin_places
+      trip_proxy.multi_dest_places = multi_od_trip.dest_places
+    end
+
+    trip_proxy
   end
 
   def setup_modes

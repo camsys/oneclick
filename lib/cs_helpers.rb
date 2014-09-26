@@ -25,6 +25,7 @@ module CsHelpers
     :sidewalk_obstructions => 'fa fa-comment',
     :stop_assisting => 'fa fa-compass',
     :translations => 'fa fa-language',
+    :multi_od_trip => 'fa fa-table'
   }
 
   def admin_actions
@@ -50,7 +51,8 @@ module CsHelpers
       {label: t(:agencies), target: admin_agencies_path, icon: ACTION_ICONS[:agents_agencies], access: :admin_agencies},
       {label: t(:providers), target: admin_providers_path, icon: ACTION_ICONS[:providers], access: :admin_providers},
       {label: t(:services), target: services_path, icon: ACTION_ICONS[:services], access: :admin_services},
-      {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports], access: :admin_reports}
+      {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports], access: :admin_reports},
+      {label: t(:multi_od_trip), target: create_multi_od_user_trips_path(current_user), icon: ACTION_ICONS[:multi_od_trip], see: :staff_menu}
     ]
   end
 

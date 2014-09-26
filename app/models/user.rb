@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   # Associations
   has_many :places, -> {where active: true} # 0 or more places, only active places are available
   has_many :trips                   # 0 or more trips
+  has_many :multi_o_d_trips
   has_many :trip_places, :through => :trips
   has_one  :user_profile            # 1 user profile
   has_many :user_mode_preferences   # 0 or more user mode preferences
@@ -32,15 +33,15 @@ class User < ActiveRecord::Base
   has_many :confirmed_traveler_relationships, :class_name => 'UserRelationship', :foreign_key => :delegate_id
   has_many :travelers, :class_name => 'User', :through => :traveler_relationships
   has_many :confirmed_travelers, :class_name => 'User', :through => :confirmed_traveler_relationships
-  
+
   has_many :delegate_relationships, :class_name => 'UserRelationship', :foreign_key => :user_id
   has_many :delegates, :class_name => 'User', :through => :delegate_relationships
-  has_many :pending_and_confirmed_delegates, -> { where "user_relationships.relationship_status_id = ? OR user_relationships.relationship_status_id = ?", RelationshipStatus.confirmed, RelationshipStatus.pending }, 
+  has_many :pending_and_confirmed_delegates, -> { where "user_relationships.relationship_status_id = ? OR user_relationships.relationship_status_id = ?", RelationshipStatus.confirmed, RelationshipStatus.pending },
     :class_name => 'User', :through => :delegate_relationships, :source => :delegate
   has_many :confirmed_delegates, -> { where "user_relationships.relationship_status_id = ?", RelationshipStatus.confirmed }, :class_name => 'User', :through => :delegate_relationships, :source => :delegate
-  
+
   has_many :agency_user_relationships, foreign_key: :user_id
-  accepts_nested_attributes_for :agency_user_relationships 
+  accepts_nested_attributes_for :agency_user_relationships
   has_many :approved_agencies,-> { where "agency_user_relationships.relationship_status_id = ?", RelationshipStatus.confirmed }, class_name: 'Agency', :through => :agency_user_relationships, source: :agency #Scope to only include approved relationships
   accepts_nested_attributes_for :approved_agencies
 
@@ -52,7 +53,7 @@ class User < ActiveRecord::Base
   has_many :user_characteristics, through: :user_profile
   accepts_nested_attributes_for :user_characteristics
   has_many :characteristics, through: :user_characteristics
-  
+
   has_many :user_accommodations, through: :user_profile
   accepts_nested_attributes_for :user_accommodations
   has_many :accommodations, through: :user_accommodations
@@ -77,7 +78,7 @@ class User < ActiveRecord::Base
   validates :email, :presence => true
   validates :first_name, :presence => true
   validates :last_name, :presence => true
-  
+
   before_create :make_user_profile
 
   def make_user_profile
@@ -87,7 +88,7 @@ class User < ActiveRecord::Base
   def to_s
     name
   end
-    
+
   def name
     elems = []
     elems << prefix unless prefix.blank?
@@ -131,7 +132,7 @@ class User < ActiveRecord::Base
     status = self.user_profile.user_characteristics.where(characteristic: has_trans)
     status.count > 0 and status.first.value == 'true'
   end
-  
+
   def home
     self.places.find_by_home(true)
   end
@@ -215,7 +216,7 @@ class User < ActiveRecord::Base
 
   def active_for_authentication?
     super && !deleted_at
-  end  
+  end
 
   def undelete
     update_attribute(:deleted_at, nil)

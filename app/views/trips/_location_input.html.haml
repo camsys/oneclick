@@ -1,9 +1,12 @@
+- multi_places = []
 - if dir=='from'
   - label=t(:leaving_from)
   - sr_label = t(:type_from_address)
+  - multi_places = @trip_proxy.multi_origin_places.split(';') unless @trip_proxy.multi_origin_places.nil?
 - elsif dir=='to'
   - label=t(:going_to)
   - sr_label = t(:type_to_address)
+  - multi_places = @trip_proxy.multi_dest_places.split(';')  unless @trip_proxy.multi_dest_places.nil?
 = f.input "#{dir}_place".to_sym, input_html: {class: 'place_picker', autocomplete: 'off', type: "text", tabindex: 0}, id: "trip_proxy_#{dir}_place", wrapper: :group, label: label do
   = f.input_field "#{dir}_place".to_sym, class: 'form-control place_picker', tabindex: 0
   %span.input-group-btn
@@ -13,4 +16,16 @@
     %label.control-label.sr-only.hidden-xs.hidden-sm{for: "#{dir}AddressMarkerButton"} Click button to locate the address
     %button.btn.btn-default.hidden-xs.hidden-sm{type: "button", id: "#{dir}AddressMarkerButton", tabindex: '-1'}
       %i.fa.fa-map-marker
+-if session[:is_multi_od] == true
+  .table-responsive
+    %table.table.table-condensed.place-container{id: "#{dir}_places"}
+      - multi_places.each do |place|
+        %tr
+          %td.address-data{style: 'display:none;'}
+            = place
+          %td
+            = JSON.parse(place)["name"]
+          %td.center.nowrap
+            %button.btn.btn-sm.btn-danger.delete-button
+              %i.fa.fa-times
 

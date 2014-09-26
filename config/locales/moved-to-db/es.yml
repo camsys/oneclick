@@ -115,6 +115,7 @@ es:
   sidewalk_obstructions_update:
     one: "[es]The sidewalk obstruction has been updated[/es]"
     other: "[es]The sidewalk obstructions have been updated[/es]"
+  multi_od_trip: '[es]Multiple Origin-Destination Trip[/es]'
 
   # Registration, sign in, profile
   about_you: '[es32]About You[/es]' # Not translated
@@ -246,8 +247,10 @@ es:
   plan_it: 'Planear el viaje'
   trip: '[es]Trip[/es]'
   options: '[es]Options[/es]'
+  grid: '[es]Grid[/es]'
   review: '[es]Review[/es]'
   plan: '[es]Plan[/es]'
+  select_cell_view_itinerary_details: '[es]Select the grid cell to view trip itinerary details[/es]'
   trip_restrictions: '[es]Trip Restrictions[/es]'
   from: 'De'
   from_lat: '[es]From Lat[/es]'

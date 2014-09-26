@@ -28,6 +28,9 @@ module Trip::From
     # addresses as they could be different from the name for POIS and places
     attr_accessor :from_raw_address
 
+    # multi_origin places
+    attr_accessor :multi_origin_places
+
     # Basic validations. Just checking that the form is complete
     validates :from_place, :presence => true
 

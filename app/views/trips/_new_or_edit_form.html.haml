@@ -20,6 +20,8 @@
           = f.hidden_field :from_place_object, :id => "from_place_object"
           = f.hidden_field :to_place_object, :id => "to_place_object"
           = f.hidden_field :map_center, id: "map_center"
+          = f.hidden_field :multi_origin_places, id: "multi_origin_places"
+          = f.hidden_field :multi_dest_places, id: "multi_dest_places"
 
           #tripOptions
             = field_set_tag do
@@ -133,6 +135,19 @@
       if(isResetHiddenToPlace) {
         $('#to_place_object').val('');
       }
+
+      //parse multi-od places
+      var multi_origin_places = [];
+      $('#from_places td.address-data').each(function(){
+        multi_origin_places.push($(this).text());
+      });
+      $('#multi_origin_places').val(multi_origin_places.join(';'));
+
+      var multi_dest_places = [];
+      $('#to_places td.address-data').each(function(){
+        multi_dest_places.push($(this).text());
+      });
+      $('#multi_dest_places').val(multi_dest_places.join(';'));
 
       return true;
     });

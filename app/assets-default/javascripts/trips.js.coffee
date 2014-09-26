@@ -73,6 +73,22 @@ update_place = (placeText, type) ->
     show_to_typeahead_hint = false
 
   $('#' + placeid).typeahead('val', placeText)
+  add_multi_od_places(type, placeText)
+
+add_multi_od_places = (dir, addr_text, addr_data) ->
+  addr_data = addr_data || {}
+  is_addr_full_object = !$.isEmptyObject(addr_data) # whether this is just a address name or full address object
+  addr_obj = {
+    data: addr_data,
+    name: addr_text,
+    is_full: false
+  }
+  new_place_row_tags = "<tr>" +
+    "<td class='address-data' style='display:none;'>" + JSON.stringify(addr_obj) + "</td>" +
+    "<td>" + addr_text + "</td>" +
+    "<td class='center nowrap'><button class='btn btn-sm btn-danger delete-button'><i class='fa fa-times'></i></button></td>" +
+    "</tr>"
+  $('#' + dir + '_places').append new_place_row_tags
 
 process_location_from_map = (addr, dir) -> #update map marker from selected location, and update address input field from reverse geocoded address
   update_map(CsMaps.tripMap, dir, null, addr, null)
@@ -232,6 +248,7 @@ $ ->
     show_from_typeahead_hint = true
   $('#trip_proxy_from_place').on 'typeahead:selected', (e, addr, d) ->
     $('#from_place_object').val(JSON.stringify(addr))
+    add_multi_od_places('from', addr.name, addr)
     update_map CsMaps.tripMap, 'from', e, addr, d
     $('#trip_proxy_to_place').focus()
     $('#trip_proxy_to_place').trigger('touchstart')
@@ -245,6 +262,7 @@ $ ->
     show_to_typeahead_hint = true
   $('#trip_proxy_to_place').on 'typeahead:selected', (e, addr, d) ->
     $('#to_place_object').val(JSON.stringify(addr))
+    add_multi_od_places('to', addr.name, addr)
     update_map CsMaps.tripMap, 'to', e, addr, d
     $('#trip_proxy_outbound_arrive_depart').focus()
     $('#trip_proxy_outbound_arrive_depart').trigger('touchstart')
@@ -302,6 +320,12 @@ $ ->
 
   if is_touch_device()
     $('#trip_proxy_outbound_trip_date, #trip_proxy_outbound_trip_time, #trip_proxy_return_trip_date, #trip_proxy_return_trip_time').attr('readonly', true)
+
+  $('.place-container').on "click", ".delete-button", (e) ->
+    tr = $(this).closest('tr')
+    tr.fadeOut 400, ->
+        tr.remove()
+    return false
 
   return
 

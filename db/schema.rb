@@ -196,6 +196,14 @@ ActiveRecord::Schema.define(version: 201409261201524) do
     t.datetime "updated_at"
   end
 
+  create_table "multi_origin_dest_trips", force: true do |t|
+    t.integer  "user_id",       null: false
+    t.text     "origin_places", null: false
+    t.text     "dest_places",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "places", force: true do |t|
     t.integer  "user_id",                                null: false
     t.integer  "creator_id"

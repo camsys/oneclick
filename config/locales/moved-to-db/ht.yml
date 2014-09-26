@@ -117,6 +117,7 @@ ht:
   sidewalk_obstructions_update:
     one: "[ht]The sidewalk obstruction has been updated[/ht]"
     other: "[ht]The sidewalk obstructions have been updated[/ht]"
+  multi_od_trip: '[ht]Multiple Origin-Destination Trip[/ht]'
 
   # Registration, sign in, profile
   about_you: '[ht]About You[/ht]'
@@ -244,7 +245,9 @@ ht:
   trip: '[ht]Trip[/ht]'
   options: '[ht]Options[/ht]'
   review: '[ht]Review[/ht]'
+  grid: '[ht]Grid[/ht]'
   plan: '[ht]Plan[/ht]'
+  select_cell_view_itinerary_details: '[ht]Select the grid cell to view trip itinerary details[/ht]'
   trip_restrictions: '[ht]Trip Restrictions[/ht]'
   from: '[ht]From[/ht]'
   from_lat: '[ht]From Lat[/ht]'
