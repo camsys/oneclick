@@ -19,3 +19,6 @@
             = trip.trip_places.first.name
           %td
             = trip.trip_places.last.name
+          %td.center
+            = link_to user_trip_path(@traveler, trip ) do
+              =t(:details)

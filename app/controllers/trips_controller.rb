@@ -64,6 +64,8 @@ class TripsController < PlaceSearchingController
     authorize! :see, :staff_menu
 
     session[:is_multi_od] = true
+    session[:multi_od_trip_id] = nil
+    session[:multi_od_trip_edited] = false
     new_trip
   end
 
@@ -74,7 +76,8 @@ class TripsController < PlaceSearchingController
 
     @trip = Trip.find(params[:id]) # base trip
     @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
-    if @multi_od_trip.trips.length == 0
+    if @multi_od_trip.trips.length == 0 || session[:multi_od_trip_edited] == true
+      @multi_od_trip.trips = []
       origin_places = @multi_od_trip.origin_places.split(';')
       dest_places = @multi_od_trip.dest_places.split(';')
 
@@ -100,7 +103,7 @@ class TripsController < PlaceSearchingController
 
           new_trip = Trip.create_from_proxy(trip_proxy, current_or_guest_user, @traveler)
           if new_trip && new_trip.errors.empty? && new_trip.save
-            new_trip.create_itineraries
+            #new_trip.create_itineraries
             @multi_od_trip.trips << new_trip
           end
         end
@@ -109,6 +112,7 @@ class TripsController < PlaceSearchingController
       @multi_od_trip.save
     end
 
+    session[:multi_od_trip_edited] = nil
     respond_to do |format|
       format.html
     end
@@ -365,6 +369,7 @@ class TripsController < PlaceSearchingController
 
   # User wants to edit a trip in the future
   def edit
+    Rails.logger.info 'edit multi_od? ' + session[:is_multi_od].to_s
     # make sure we can find the trip we are supposed to be updating and that it belongs to us.
     # if @trip.nil?
     #   redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
@@ -453,6 +458,8 @@ class TripsController < PlaceSearchingController
   # GET /trips/new.json
   def new
     session[:is_multi_od] = false
+    session[:multi_od_trip_id] = nil
+    session[:multi_od_trip_edited] = false
 
     new_trip
   end
@@ -498,8 +505,8 @@ class TripsController < PlaceSearchingController
     @trip_proxy.id = @trip.id
 
     # Create markers for the map control
-    @markers = create_trip_proxy_markers(@trip_proxy).to_json
-    @places = create_place_markers(@traveler.places)
+    #@markers = create_trip_proxy_markers(@trip_proxy).to_json
+    #@places = create_place_markers(@traveler.places)
 
     # see if we can continue saving this trip
     if @trip_proxy.valid?
@@ -524,13 +531,26 @@ class TripsController < PlaceSearchingController
       end
     end
 
+    if !session[:multi_od_trip_id].nil?
+      session[:multi_od_trip_edited] = true
+      multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
+      multi_od_trip.user = current_user
+      multi_od_trip.origin_places = params[:trip_proxy][:multi_origin_places]
+      multi_od_trip.dest_places = params[:trip_proxy][:multi_dest_places]
+      multi_od_trip.save
+    end
+
     respond_to do |format|
       if updated_trip # only created if the form validated and there are no geocoding errors
         if @trip.save
           @trip.reload
 
           if !@trip.eligibility_dependent?
-            @path = user_trip_path_for_ui_mode(@traveler, @trip)
+            if session[:is_multi_od] == true
+              @path = multi_od_grid_user_trip_path(@traveler, @trip)
+            else
+              @path = user_trip_path_for_ui_mode(@traveler, @trip)
+            end
           else
             session[:current_trip_id] = @trip.id
             @path = new_user_trip_characteristic_path_for_ui_mode(@traveler, @trip)
@@ -562,7 +582,8 @@ class TripsController < PlaceSearchingController
   # POST /trips.json
   def create
     # inflate a trip proxy object from the form params
-    if session[:is_multi_od]
+    Rails.logger.info 'create multi_od? ' + session[:is_multi_od].to_s
+    if session[:is_multi_od] == true
       multi_od_trip = MultiOriginDestTrip.new(
         :user => current_user,
         :origin_places => params[:trip_proxy][:multi_origin_places],
@@ -850,6 +871,7 @@ protected
         if @trip.errors.empty? && @trip.save
           @trip.reload
           if !@trip.eligibility_dependent?
+            Rails.logger.info 'trip_planning multi_od? ' + session[:is_multi_od].to_s
             if session[:is_multi_od] == true
               @path = multi_od_grid_user_trip_path(@traveler, @trip)
             else
