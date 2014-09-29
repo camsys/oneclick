@@ -295,6 +295,7 @@ en:
   walk: 'Walk'
   bus: 'Bus'
   drive: 'Drive'
+  drive_or_taxi: 'Drive or taxi'
   bike: 'Bike'
   bikeshare: 'Bikeshare'
   drive_and_transit: 'Drive and Transit'

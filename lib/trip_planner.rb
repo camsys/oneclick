@@ -30,7 +30,7 @@ class TripPlanner
     t = Time.now
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
-      Rails.logger.info(resp.inspect)
+      Rails.logger.info(resp.ai)
     rescue Exception=>e
       Honeybadger.notify(
         :error_class   => "Service failure",

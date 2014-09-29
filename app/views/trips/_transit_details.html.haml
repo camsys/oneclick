@@ -2,7 +2,7 @@
   %tr
     %td.itinerary_icons
       %i.fa.fa-play.mode_icon_formatting{:class => 'start_icon'}
-    %td
+    %td.itin_text_container
       .itinerary_text
         %p= t(:start) + itinerary.trip_part.from_trip_place.name
       .itinerary_text_small
@@ -15,22 +15,15 @@
           %img{:src => get_service_provider_icon(leg.agency_id, leg.mode)}
         - else
           %img{:src => get_mode_icon(leg.mode)}
-      %td
-        -if leg.mode == Leg::TripLeg::WALK
-          .itinerary_text
-            %p= leg.mode + ' ' + t(:to) + ' ' + leg.end_place.name
-        -elsif leg.mode == Leg::TripLeg::CAR
-          .itinerary_text
-            %p= "Drive or taxi to " + ' ' + t(:to) + ' ' + leg.end_place.name
-        -else
-          .itinerary_text
-            %p= leg.agency_id + ' ' + leg.mode + ' ' + leg.route + ' ' + t(:to) + ' ' + leg.end_place.name
+      %td.itin_text_container
+        .itinerary_text
+          %p= leg.short_description
         .itinerary_text_small
           = format_time(leg.start_time) + ' ' + t(:to) + ' ' + format_time(leg.end_time)
   %tr
     %td.itinerary_icons
       %i.fa.fa-stop.mode_icon_formatting{:class => 'end_icon'}
-    %td
+    %td.itin_text_container
       .itinerary_text
         %p= t(:arrive) + itinerary.trip_part.to_trip_place.name
       .itinerary_text_small

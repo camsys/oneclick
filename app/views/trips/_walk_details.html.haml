@@ -2,7 +2,7 @@
   %tr
     %td.itinerary_icons
       %i.fa.fa-play.mode_icon_formatting{:class => 'start_icon'}
-    %td
+    %td.itin_text_container
       .itinerary_text
         %p= t(:start) + itinerary.trip_part.from_trip_place.name
       .itinerary_text_small
@@ -12,15 +12,15 @@
     %tr
       %td.itinerary_icons
         %img{:src => get_mode_icon(leg.mode)}
-      %td
+      %td.itin_text_container
         .itinerary_text
-          %p= leg.mode + ' ' + t(:to) + ' ' + leg.end_place.name
+          %p= leg.short_description
         .itinerary_text_small
           =duration_to_words(leg.duration)
   %tr
     %td.itinerary_icons
       %i.fa.fa-stop.mode_icon_formatting{:class => 'end_icon'}
-    %td
+    %td.itin_text_container
       .itinerary_text
         %p= t(:arrive) + itinerary.trip_part.to_trip_place.name
       .itinerary_text_small

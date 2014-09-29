@@ -8,6 +8,22 @@ class Hash
   end
 end
 
+def traverse(obj, parents=[], &blk)
+  case obj
+  when Hash
+    obj.each do |k, v|
+      blk.call(v, parents + [k]) if v.is_a? Hash
+      traverse(v, parents + [k], &blk)
+    end
+    # when Array
+    #   obj.each do |v|
+    #     traverse(v, parents, &blk)
+    #   end
+  else
+    blk.call(obj, parents)
+  end
+end
+
 #encoding: utf-8
 namespace :oneclick do
   task :seed_data => :environment do
@@ -20,7 +36,7 @@ namespace :oneclick do
       f.puts "Oneclick::Application.config.version = '#{version}'"
     end
   end
-   
+
   task extract_shp: :environment do
     require 'rgeo/shapefile'
     # require 'csv'
@@ -95,7 +111,7 @@ namespace :oneclick do
   task load_pois: :environment do
     require 'csv'
     filename  = Oneclick::Application.config.poi_file
-        # FILENAME = File.join(Rails.root, 'db', 'arc_poi_data', 'CommFacil_20131015.txt')
+    # FILENAME = File.join(Rails.root, 'db', 'arc_poi_data', 'CommFacil_20131015.txt')
 
     puts
     puts "Loading POI and POI TYPES from file '#{filename}'"
@@ -131,8 +147,8 @@ namespace :oneclick do
 
           #If we have already created this POI, don't create it again.
           if Poi.exists?(name: row[3], poi_type: poi_type, city: row[6])
-          puts "Possible duplicate: #{row}"
-          count_possible_existing += 1
+            puts "Possible duplicate: #{row}"
+            count_possible_existing += 1
             # next
           end
           p = Poi.new
@@ -176,4 +192,54 @@ namespace :oneclick do
     end
   end
 
+  def wrap s, p, c
+    "[#{p}#{c}]#{s}[#{p}]"
+  end
+
+  def quote s
+    q = (s =~ /\"/ ? '\'' : '"')
+    "#{q}#{s}#{q}"
+  end
+
+  task rewrite_locale: :environment do
+    raise "INFILE= must be defined" unless ENV['INFILE']
+    y = YAML.load_file(ENV['INFILE'])
+    p = ENV['PREFIX']
+    raise "PREFIX= must be defined" unless p
+    c = 0
+    traverse( y ) do |v, parents|
+      indent = ' ' * (parents.size-1) * 2
+      case v
+      when Hash
+        if parents.size==1
+          puts "#{indent}#{p}:"
+        else
+          puts "#{indent}#{parents.last}:"
+        end
+      when Array
+        puts "#{indent}#{parents.last}:"
+        v.each do |l|
+          puts "#{indent}- #{quote(wrap(l, p, c))}"
+        end
+      when String
+        q = (v =~ /\"/ ? '\'' : '"')
+        puts "#{indent}#{parents.last}: #{quote(wrap(v, p, c))}"
+      else
+        raise "Don't know how to handle #{v.inspect}"
+      end
+      c += 1
+    end
+
+    # y.each_with_parents do |parents, v|
+    #   locale = parents.shift
+    #   if v.is_a? Array
+    #     puts "ARRAY"
+    #     puts
+    #     Translation.create(key: parents.join('.'), locale: locale, value: v.join(','), is_list: true).id.nil? ? failed += 1 : success += 1
+    #   else
+    #     Translation.create(key: parents.join('.'), locale: locale, value: v).id.nil? ? failed += 1 : success += 1
+    #   end
+    # end
+    # puts "Read #{success+failed} keys, #{success} successful, #{failed} failed, #{skipped} skipped"
+  end
 end
