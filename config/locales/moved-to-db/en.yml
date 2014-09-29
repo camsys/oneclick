@@ -253,7 +253,6 @@ en:
   grid: 'Grid'
   review: 'Review'
   plan: 'Plan'
-  select_cell_view_itinerary_details: 'Select the grid cell to view trip itinerary details'
   trip_restrictions: 'Trip Restrictions'
   from: 'From'
   from_lat: 'From Lat'

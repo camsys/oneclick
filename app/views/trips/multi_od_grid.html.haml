@@ -10,9 +10,6 @@
         =t(:next)
 
 .row#gridBaseContainer
-  .col-sm-12
-    %p
-      = t(:select_cell_view_itinerary_details)
   .col-sm-12.table-responsive
     %table.table-condensed.table-bordered
       %tr
@@ -28,7 +25,7 @@
             - match_trip_id = nil
             - @multi_od_trip.trips.each do |trip|
               - match_trip_id = trip.id if trip.trip_places.first.name == o and trip.trip_places.last.name == d
-            %td{"data-trip-id" => match_trip_id}
+            %td{"data-trip-id" => match_trip_id, "style" => 'vertical-align: top;'}
               .trip-summary
               .col-sm-12{style:'text-align:center;'}
                 = link_to user_trip_path(@traveler, id: match_trip_id ), class: 'btn action-button' do
@@ -57,4 +54,4 @@
         console.log(response);
       });
     })
-  } )
+  } );

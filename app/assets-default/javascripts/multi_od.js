@@ -210,12 +210,13 @@ function MultiODGridPageRenderer(tripResponse, localeDictFinder) {
     }
 
     function checkLoadingMask() {
+        var tdSelector = '#' + baseContainerId + ' table td[data-trip-id=' + _tripResponse.id + ']';
         if (_totalModeRequestCounter > 0) {
             //show loading mask
-            $('#' + baseContainerId).overlayMask();
+            $(tdSelector).overlayMask();
         } else {
             //hide loading mask
-            $('#' + baseContainerId).overlayMask('remove');
+            $(tdSelector).overlayMask('remove');
 
             executeWhenDataReady();
 

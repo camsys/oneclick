@@ -247,7 +247,6 @@ ht:
   review: '[ht]Review[/ht]'
   grid: '[ht]Grid[/ht]'
   plan: '[ht]Plan[/ht]'
-  select_cell_view_itinerary_details: '[ht]Select the grid cell to view trip itinerary details[/ht]'
   trip_restrictions: '[ht]Trip Restrictions[/ht]'
   from: '[ht]From[/ht]'
   from_lat: '[ht]From Lat[/ht]'
