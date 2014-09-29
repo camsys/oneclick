@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925182157) do
+ActiveRecord::Schema.define(version: 201409261201524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,13 +80,6 @@ ActiveRecord::Schema.define(version: 20140925182157) do
     t.boolean "for_traveler",                         default: true
     t.integer "linked_characteristic_id"
     t.string  "link_handler"
-  end
-
-  create_table "cities", primary_key: "gid", force: true do |t|
-    t.string  "geoid", limit: 7
-    t.string  "name",  limit: 100
-    t.string  "state", limit: 2
-    t.spatial "geom",  limit: {:srid=>0, :type=>"multi_polygon"}
   end
 
   create_table "counties", force: true do |t|
@@ -185,6 +178,14 @@ ActiveRecord::Schema.define(version: 20140925182157) do
     t.integer "results_sort_order"
     t.string  "logo_url"
     t.boolean "visible",                       default: false
+  end
+
+  create_table "multi_origin_dest_trips", force: true do |t|
+    t.integer  "user_id",       null: false
+    t.text     "origin_places", null: false
+    t.text     "dest_places",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "oneclick_configurations", force: true do |t|
@@ -473,12 +474,12 @@ ActiveRecord::Schema.define(version: 20140925182157) do
   end
 
   create_table "trips", force: true do |t|
-    t.string   "name",                  limit: 64
+    t.string   "name",                      limit: 64
     t.integer  "user_id"
     t.integer  "trip_purpose_id"
     t.integer  "creator_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.boolean  "taken"
     t.date     "scheduled_date"
     t.datetime "scheduled_time"
@@ -487,6 +488,7 @@ ActiveRecord::Schema.define(version: 20140925182157) do
     t.text     "debug_info"
     t.string   "user_agent"
     t.string   "ui_mode"
+    t.integer  "multi_origin_dest_trip_id"
   end
 
   create_table "trips_desired_modes", force: true do |t|
