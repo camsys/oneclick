@@ -29,6 +29,9 @@ notifications:
   email:
     - oneclickcs_github@googlegroups.com
   irc: irc.freenode.net#oneclick
+  slack:
+    rooms:
+      - camsys:pWffJOAiVBnp4cDSXt9getDB#1click
 deploy:
   - provider: heroku
     api_key:
