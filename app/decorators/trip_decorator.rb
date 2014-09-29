@@ -215,7 +215,7 @@ class TripDecorator < Draper::Decorator
     result = ''
     if itinerary && itinerary.service
       itinerary.service.accommodations.each do |a|
-        result += I18n.t(a.name) + ';'
+        result += "#{I18n.t(a.name)};"
       end
     end
     result
@@ -232,7 +232,7 @@ class TripDecorator < Draper::Decorator
                                                          characteristic_id: requirement.id)
           if user_characteristic.count > 0 &&
             user_characteristic.first.meets_requirement(map)
-            result += @elig_svc.translate_service_characteristic_map(map) + ';'
+            result += "#{@elig_svc.translate_service_characteristic_map(map)};"
           end
         end
       end
