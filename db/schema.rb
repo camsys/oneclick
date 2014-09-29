@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 201409261201524) do
+ActiveRecord::Schema.define(version: 20140926204615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,14 +192,6 @@ ActiveRecord::Schema.define(version: 201409261201524) do
     t.string   "code"
     t.text     "value"
     t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "multi_origin_dest_trips", force: true do |t|
-    t.integer  "user_id",       null: false
-    t.text     "origin_places", null: false
-    t.text     "dest_places",   null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
