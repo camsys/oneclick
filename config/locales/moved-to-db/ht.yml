@@ -305,6 +305,7 @@ ht:
   service_error: '[ht]There was an error planning your trip. Please try again.[/ht]'
   failed_to_update_profile: '[ht]Failed to update your user profile.[/ht]'
   route: '[ht]Route[/ht]'
+  routes: '[ht]Routes[/ht]'
   transfer: {
     one: '[ht]%{count} transfer',
     other: '[ht]%{count} transfers',

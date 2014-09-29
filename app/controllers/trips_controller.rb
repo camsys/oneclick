@@ -31,26 +31,7 @@ class TripsController < PlaceSearchingController
   end
 
   def show
-    @trip = Trip.find(params[:id].to_i)
-    params[:asynch] = (params[:asynch] || true).to_bool
-    params[:regen] = (params[:regen] || false).to_bool
-    if params[:regen]
-      @trip.remove_itineraries
-      @trip.create_itineraries
-    end
-    #@tripResponse = TripSerializer.new(@trip, params) #sync-dislay: response to review page to display all itineraries at one time
-    @tripResponse = TripSerializer.new(@trip, params) #async-dislay: response to review page to incrementally display itineraries
-
-    # TODO This seems incredibly hacky to go to json and back for this, but...
-    @tripResponseHash = JSON.parse(@tripResponse.to_json)
-    if @tripResponseHash['status'] == 0
-      Honeybadger.notify(
-        :error_class   => "Trip serialization failure for review page",
-        :error_message => @tripResponseHash['status_text'],
-        :parameters    => @tripResponseHash
-      )
-      flash.now[:alert] = t(:error_couldnt_plan)
-    end
+    trip_serialization(params)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -66,7 +47,12 @@ class TripsController < PlaceSearchingController
     session[:is_multi_od] = true
     session[:multi_od_trip_id] = nil
     session[:multi_od_trip_edited] = false
+
     new_trip
+
+    if session[:is_multi_od] == true
+      @selectedd_modes = [Mode.transit].concat(Mode.transit.submodes).collect{|m| m.code}
+    end
   end
 
   # showing a grid summary of each O-D trip for multi-OD trip planning
@@ -76,45 +62,69 @@ class TripsController < PlaceSearchingController
 
     @trip = Trip.find(params[:id]) # base trip
     @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
-    if @multi_od_trip.trips.length == 0 || session[:multi_od_trip_edited] == true
-      @multi_od_trip.trips = []
+    unless @multi_od_trip.nil?
       origin_places = @multi_od_trip.origin_places.split(';')
       dest_places = @multi_od_trip.dest_places.split(';')
 
-      trip_proxy = create_trip_proxy(@trip)
-      origin_places.each do |origin_place|
-        dest_places.each do |dest_place|
+      if @multi_od_trip.trips.length == 0 || session[:multi_od_trip_edited] == true
+        @multi_od_trip.trips = []
+
+        trip_proxy = create_trip_proxy(@trip, modes: session[:modes_desired])
+
+        origin_places.each do |origin_place|
           origin_obj = JSON.parse(origin_place)
-          dest_obj = JSON.parse(dest_place)
+          dest_places.each do |dest_place|
+            dest_obj = JSON.parse(dest_place)
 
-          trip_proxy.from_place = origin_obj["name"]
-          trip_proxy.to_place = dest_obj["name"]
-          if origin_obj["is_full"] == true
-            trip_proxy.from_place_object = origin_obj["data"]
-          else
-            trip_proxy.from_place_object = nil
-          end
+            trip_proxy.from_place = origin_obj["name"]
+            trip_proxy.to_place = dest_obj["name"]
+            if origin_obj["is_full"] == true
+              trip_proxy.from_place_object = origin_obj["data"]
+            else
+              trip_proxy.from_place_object = nil
+            end
 
-          if dest_obj["is_full"] == true
-            trip_proxy.to_place_object = dest_obj["data"]
-          else
-            trip_proxy.to_place_object = nil
-          end
+            if dest_obj["is_full"] == true
+              trip_proxy.to_place_object = dest_obj["data"]
+            else
+              trip_proxy.to_place_object = nil
+            end
 
-          new_trip = Trip.create_from_proxy(trip_proxy, current_or_guest_user, @traveler)
-          if new_trip && new_trip.errors.empty? && new_trip.save
-            #new_trip.create_itineraries
-            @multi_od_trip.trips << new_trip
+            new_trip = Trip.create_from_proxy(trip_proxy, current_or_guest_user, @traveler)
+            if new_trip && new_trip.errors.empty? && new_trip.save
+              #new_trip.create_itineraries
+              @multi_od_trip.trips << new_trip
+            end
           end
         end
+
+        @multi_od_trip.save
       end
 
-      @multi_od_trip.save
+      @origin_place_names = []
+      @dest_place_names = []
+      @multi_od_trip.trips.each do |trip|
+        @origin_place_names << trip.trip_places.first.name
+        @dest_place_names << trip.trip_places.last.name
+      end
+
+      session[:multi_od_trip_edited] = false
+      Rails.logger.info @origin_place_names
+      Rails.logger.info @dest_place_names
+    else
+      flash.now[:alert] = I18n.t(:something_went_wrong)
     end
 
-    session[:multi_od_trip_edited] = nil
     respond_to do |format|
       format.html
+    end
+  end
+
+  def serialize_trip
+    trip_serialization(params)
+
+    respond_to do |f|
+      f.json { render json: @tripResponse }
     end
   end
 
@@ -934,6 +944,29 @@ protected
       end
     end
     Rails.logger.info "get_trip, returning, @trip is #{@trip}"
+  end
+
+  def trip_serialization(params)
+    @trip = Trip.find(params[:id].to_i)
+    params[:asynch] = (params[:asynch] || true).to_bool
+    params[:regen] = (params[:regen] || false).to_bool
+    if params[:regen] or session[:multi_od_trip_edited] == true
+      @trip.remove_itineraries
+      @trip.create_itineraries
+    end
+    #@tripResponse = TripSerializer.new(@trip, params) #sync-dislay: response to review page to display all itineraries at one time
+    @tripResponse = TripSerializer.new(@trip, params) #async-dislay: response to review page to incrementally display itineraries
+
+    # TODO This seems incredibly hacky to go to json and back for this, but...
+    @tripResponseHash = JSON.parse(@tripResponse.to_json)
+    if @tripResponseHash['status'] == 0
+      Honeybadger.notify(
+        :error_class   => "Trip serialization failure for review page",
+        :error_message => @tripResponseHash['status_text'],
+        :parameters    => @tripResponseHash
+      )
+      flash.now[:alert] = t(:error_couldnt_plan)
+    end
   end
 
   # Create an array of map markers suitable for the Leaflet plugin. If the trip proxy is from an existing trip we will

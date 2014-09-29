@@ -123,6 +123,7 @@ Oneclick::Application.routes.draw do
           get   'new_rating_from_email'
           post  'cancel'
           get   'multi_od_grid'
+          get   'serialize_trip'
         end
         resources :trip_parts do
           member do

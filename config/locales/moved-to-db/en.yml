@@ -311,6 +311,7 @@ en:
   service_error: 'There was an error planning your trip. Please try again.'
   failed_to_update_profile: 'Failed to update your user profile.'
   route: 'Route'
+  routes: 'Routes'
   transfer: {
     one: '%{count} transfer',
     other: '%{count} transfers',

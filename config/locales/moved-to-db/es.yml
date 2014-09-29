@@ -305,6 +305,7 @@ es:
   service_error: '[es258]There was an error planning your trip. Please try again.[/es]'
   failed_to_update_profile: '[es244]Failed to update your user profile.[/es]'
   route: '[es215]Route[/es]'
+  routes: '[es]Routes[/es]'
   transfer: {
       one: '%{count} conección',
       other: '%{count} conecciones',
