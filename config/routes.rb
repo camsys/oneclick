@@ -124,7 +124,6 @@ Oneclick::Application.routes.draw do
           post  'cancel'
           get   'multi_od_grid'
           get   'serialize_trip'
-          get   'itinerary_map'
           get   'print_itinerary_map'
         end
         resources :trip_parts do
@@ -332,6 +331,11 @@ Oneclick::Application.routes.draw do
       end
     end
 
+    resources :trips do
+      member do
+        get 'itinerary_map'
+      end
+    end
     get "plan_a_trip" => 'trips#plan_a_trip'
     post "trips/:trip_id/ratings/trip_only" => 'ratings#trip_only', as: :trip_only_rating
 

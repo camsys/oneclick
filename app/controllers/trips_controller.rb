@@ -674,6 +674,7 @@ class TripsController < PlaceSearchingController
   end
 
   def itinerary_map
+    @trip = Trip.find(params[:id])
     @itinerary = @trip.itineraries.valid.find(params[:itin])
 
     if @itinerary.is_mappable
@@ -690,10 +691,23 @@ class TripsController < PlaceSearchingController
   end
 
   def print_itinerary_map
+    require 'capybara'
+    require 'capybara/dsl'
     require 'capybara/poltergeist'
+
+    Capybara.run_server = false
+    Capybara.current_driver = :poltergeist
+    Capybara.javascript_driver = :poltergeist
+    Capybara.app_host = root_url(locale: '')
+
+    Capybara.register_driver :poltergeist do |app|
+      Capybara::Poltergeist::Driver.new(app, {:phantomjs => 'phantomjs'})
+    end
+
     browser = Capybara::Session.new :poltergeist
     itin_id = params[:itin]
-    print_url = root_url(locale: '') + itinerary_map_user_trip_path + '?itin=' + itin_id.to_s
+    print_url = itinerary_map_trip_path + '?itin=' + itin_id.to_s
+
     begin
       browser.visit print_url
     rescue
@@ -704,12 +718,12 @@ class TripsController < PlaceSearchingController
     browser.driver.render tempfile.path
     #browser.driver.render tempfile.path, :width => 500, :height => 300, :left => 0, :top => 0
 
-    image = MiniMagick::Image.read tempfile
+    #image = MiniMagick::Image.read tempfile
     #image.crop "500x300+0+0"
-    FileUtils.cp(image.path, "image.png")
+    #FileUtils.cp(image.path, "image.png")
 
     respond_to do |format|
-      format.json { render json: {path: image.path.to_s} }
+      format.json { render json: {path: tempfile.path.to_s} }
     end
   end
 
