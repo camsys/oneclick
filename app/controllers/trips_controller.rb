@@ -51,7 +51,12 @@ class TripsController < PlaceSearchingController
     new_trip
 
     if session[:is_multi_od] == true
-      @selectedd_modes = [Mode.transit].concat(Mode.transit.submodes).collect{|m| m.code}
+      @selected_modes = [Mode.transit].concat(Mode.transit.submodes).collect{|m| m.code}
+    end
+
+    respond_to do |format|
+      format.html { render action: "new" }# new.html.erb
+      format.json { render json: @trip_proxy }
     end
   end
 
@@ -472,6 +477,11 @@ class TripsController < PlaceSearchingController
     session[:multi_od_trip_edited] = false
 
     new_trip
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @trip_proxy }
+    end
   end
 
 
@@ -848,11 +858,6 @@ protected
     end
 
     setup_modes
-
-    respond_to do |format|
-      format.html { render action: "new" }# new.html.erb
-      format.json { render json: @trip_proxy }
-    end
   end
 
  def launch_trip_planning(trip_proxy)
