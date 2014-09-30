@@ -4,8 +4,8 @@
   $(function(){
     $('#publicNav').css('display', 'none');
     $('#footer').css('display', 'none');
-    $('#main').css('padding-top', '0px');
-    $('#main').css('padding-bottom', '0px');
+    $('.leaflet-control-container').css('display', 'none');
+    $('#main').css('padding', '0px');
     if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.#{'itin_' + @itinerary.id.to_s} != null) {
       var mapObj = CsMaps.#{'itin_' + @itinerary.id.to_s};
       mapObj.invalidateMap();

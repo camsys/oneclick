@@ -709,7 +709,7 @@ class TripsController < PlaceSearchingController
     print_url = itinerary_map_trip_path + '?itin=' + itin_id.to_s
 
     begin
-      browser.visit print_url
+      browser.visit 'http://oneclick-arc-int.camsys-apps.com/en/trips/23/itinerary_map?itin=678'
     rescue
       browser.visit print_url
     end
@@ -718,9 +718,9 @@ class TripsController < PlaceSearchingController
     browser.driver.render tempfile.path
     #browser.driver.render tempfile.path, :width => 500, :height => 300, :left => 0, :top => 0
 
-    #image = MiniMagick::Image.read tempfile
-    #image.crop "500x300+0+0"
-    #FileUtils.cp(image.path, "image.png")
+    image = MiniMagick::Image.read tempfile
+    image.crop "500x300+0+0"
+    FileUtils.cp(image.path, "image.png")
 
     respond_to do |format|
       format.json { render json: {path: tempfile.path.to_s} }
