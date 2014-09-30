@@ -3,7 +3,7 @@
 
 :javascript
   $(window).load(function(){
-      if("#{not @traveler.can_book?}"){
+      if("#{(not @traveler.can_book?) and @first_time}" == "true"){
         $('#bookingSignupModal').modal('show');
       }
   });

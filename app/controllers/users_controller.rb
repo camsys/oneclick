@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!
+  #before_filter :authenticate_user!
   load_and_authorize_resource except: [:edit, :assist]
 
   def index
@@ -40,7 +40,6 @@ class UsersController < ApplicationController
       if current_user.agency
         note = TravelerNote.where(user: @user, agency: current_user.agency).first_or_create
         note.note = params[:traveler_note][:note]
-        puts note.note
         note.save
       end
 
@@ -96,7 +95,8 @@ class UsersController < ApplicationController
     #If the formatting is correct, check to see if this is a valid user
     unless @errors
       eh = EcolaneHelpers.new
-      unless eh.validate_passenger(external_user_id, dob)
+      result, first_name, last_name = eh.validate_passenger(external_user_id, dob)
+      unless result
         @booking_proxy.errors.add(:external_user_id, "Unknown Client Id or incorrect date of birth.")
         @errors = true
       end
@@ -105,6 +105,9 @@ class UsersController < ApplicationController
     #If everything checks out, create a link between the OneClick user and the Booking Service
     unless @errors
       #Todo: This will need to be updated when more services are able to book.
+      if @traveler.is_visitor?
+        @traveler = get_ecolane_traveler(external_user_id, dob, first_name, last_name)
+      end
       Service.where(booking_service_code: 'ecolane').each do |booking_service|
         user_service = UserService.where(user_profile: @traveler.user_profile, service: booking_service).first_or_initialize
         user_service.external_user_id = external_user_id
@@ -112,12 +115,36 @@ class UsersController < ApplicationController
       end
     end
 
+    #redirect_to new_user_trip_path(@traveler)
+    #return
+
     @trip = Trip.last
     respond_to do |format|
       format.json {}
       format.js { render "trips/update_initial_booking" }
     end
 
+  end
+
+  def get_ecolane_traveler(external_user_id, dob, first_name, last_name)
+
+    user_service = UserService.where(external_user_id: external_user_id).order('created_at').last
+    if user_service
+      u = user_service.user_profile.user
+    else
+      u = User.where(email: external_user_id + '@sample.com').first_or_create
+      u.first_name = first_name
+      u.last_name = last_name
+      u.password = dob
+      u.password_confirmation = dob
+      up = UserProfile.new
+      up.user = u
+      up.save!
+      result = u.save
+    end
+
+    sign_in u, :bypass => true
+    u
   end
 
 
@@ -141,7 +168,7 @@ class UsersController < ApplicationController
 
     unless errors
       eh = EcolaneHelpers.new
-      unless eh.validate_passenger(external_user_id, dob)
+      unless eh.validate_passenger(external_user_id, dob)[0]
         @booking_proxy.errors.add(:external_user_id, "Unknown Client Id or incorrect date of birth.")
         errors = true
       end
@@ -251,7 +278,7 @@ private
 
         eh = EcolaneHelpers.new
         unless user_id == ""
-          unless eh.validate_passenger(user_id, dob)
+          unless eh.validate_passenger(user_id, dob)[0]
             alert = true
             next
           end

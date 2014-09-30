@@ -846,7 +846,7 @@ en:
     initial_booking_message: 'If you know your Rabbit Transit Client Id, you can use FindMyRidePA to book trips with Rabbit Transit Shared Ride.'
     initial_booking_close: "No Thanks"
     booking_link_success: "Success!  You can now book trips with Rabbit Transit Shared Ride."
-
+    ecolane_login_button: "Rabbit Login"
     next: 'Next >>'
 
   broward:

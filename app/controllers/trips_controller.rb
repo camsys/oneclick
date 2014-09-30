@@ -480,6 +480,42 @@ class TripsController < PlaceSearchingController
 
     new_trip
 
+    # Set the travel time/date to the default
+    travel_date = default_trip_time
+
+    @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
+    @trip_proxy.outbound_trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
+
+    # Set the trip purpose to its default
+    @trip_proxy.trip_purpose_id = TripPurpose.all.first.id
+
+    @trip_proxy.user_agent = request.user_agent
+    @trip_proxy.ui_mode = @ui_mode
+
+    # default to a round trip. The default return trip time is set the the default trip time plus
+    # a configurable interval
+    return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
+    @trip_proxy.is_round_trip = "1"
+    @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
+
+    # Create markers for the map control
+    @markers = create_trip_proxy_markers(@trip_proxy).to_json
+    @places = create_place_markers(@traveler.places)
+
+    if session[:first_login] == true
+      @first_time = true
+    else
+      @first_time = false
+    end
+    session[:first_login] = nil
+
+
+    if Oneclick::Application.config.allows_booking and not @traveler.can_book?
+      @show_booking = true
+      @booking_proxy = UserServiceProxy.new()
+    end
+    setup_modes
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @trip_proxy }
@@ -910,6 +946,10 @@ protected
     session[:modes_desired] = trip_proxy.modes_desired
 
     setup_modes
+    if Oneclick::Application.config.allows_booking and not @traveler.can_book?
+      @show_booking = true
+      @booking_proxy = UserServiceProxy.new()
+    end
 
     unless trip_proxy.valid?
       Rails.logger.info "Not valid: #{@trip_proxy.ai}"
@@ -944,6 +984,7 @@ protected
           format.json { render json: @trip, status: :created, location: @trip }
         else
           # TODO Will this get handled correctly?
+
           Rails.logger.info "\nError render 2\n"
           Rails.logger.info "ERRORS: #{@trip.errors.ai}"
           Rails.logger.info "PLACES: #{@trip.trip_places.ai}"

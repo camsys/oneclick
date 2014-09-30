@@ -8,9 +8,9 @@ class SessionsController < Devise::SessionsController
     end
     redirect_to_path = params[:user][:redirect_to] rescue nil #TOOD: should check if URI valid?
     unless redirect_to_path.nil?
-    	redirect_to redirect_to_path.to_s
+      redirect_to redirect_to_path.to_s
     else
-    	respond_with resource, :location => after_sign_in_path_for(resource)
+      respond_with resource, :location => after_sign_in_path_for(resource)
     end
   end
 end
