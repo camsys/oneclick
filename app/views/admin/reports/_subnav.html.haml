@@ -18,18 +18,72 @@
     .col-sm-12
       .panel.panel-default
         .panel-body
-          .col-sm-2
-            = f.input :report_name, collection: Report.names_and_ids, include_blank: false, label: t(:report_name)
-          .col-sm-2
-            = f.input :date_range, collection: DateOption.form_collection(false), include_blank: false, label: t(:date_range)
+          .row
+            .col-sm-2
+              = f.input :report_name, collection: Report.names_and_ids, include_blank: false,
+                  label: t(:report_name)
+            .col-sm-2
+              = f.input :date_range, collection: DateOption.form_collection(false),
+                  include_blank: false, label: t(:date_range)
+
+          .row#custom_dates
+            .col-md-1
+            .col-md-4
+              = f.input :from_date, label: false, class: 'col-md-2', wrapper: :trip_dates do
+                = f.input_field :from_date, class: 'form-control col-md-2',
+                id: "from_trip_date", autocomplete: 'off'
+              = f.input :to_date, label: false, class: 'col-md-2', wrapper: :trip_dates do
+                = f.input_field :to_date, class: 'form-control col-md-2',
+                id: "to_trip_date", autocomplete: 'off'
+
           -# .col-sm-2
           -#   = f.input :trip_purpose, collection: TripPurpose.form_collection, include_blank: false, label: t(:trip_purpose)
           -# .col-sm-2
           -#   = f.input :traveler_type, collection: Characteristic.form_collection, include_blank: false, label: t(:traveler_type)
           -# .col-sm-2
-          -#   = f.input :summary_type, collection: Report.summary_types, include_blank: false, label: t(:summary_type)
+            -#   = f.input :summary_type, collection: Report.summary_types, include_blank: false, label: t(:summary_type)
+          
 
 :javascript
+  if ($('#generated_report_date_range')[0].selectedOptions[0].text != 'Custom...') {
+    $('#custom_dates').hide();
+  }
+  
+  $('#generated_report_date_range').change(function() {
+    if(this.selectedOptions[0].text === 'Custom...') {
+      $('#custom_dates').show();
+    } else {
+      $('#custom_dates').hide();
+    }
+  });
+
+  $('#from_trip_date').datetimepicker({
+      defaultDate: new Date(),
+      minDate: '#{@min_trip_date}',
+      pickTime: false,
+      format: 'MM/DD/YYYY',
+      language: '#{I18n.locale}' 
+    });
+  $('#to_trip_date').datetimepicker({
+      defaultDate: new Date(),
+      minDate: '#{@min_trip_date}',
+      pickTime: false,
+      format: 'MM/DD/YYYY',
+      language: '#{I18n.locale}' 
+    });
+
+  $('#from_trip_date').change(function() {
+    if (Date.parse(this.value) > Date.parse($('#to_trip_date')[0].value)) {
+      $('#to_trip_date').data("DateTimePicker").setDate(this.value);
+    }
+  });
+  
+  $('#to_trip_date').change(function() {
+    if (Date.parse(this.value) < Date.parse($('#from_trip_date')[0].value)) {
+      $('#from_trip_date').data("DateTimePicker").setDate(this.value);
+    }
+  });
+
   $('#generated_report_report_name').on('change', function(event) {
     $('#report_form').attr('action', "#{admin_reports_path(locale: params[:locale])}/" + this.value)
   });

@@ -10,6 +10,7 @@ class Admin::ReportsController < Admin::BaseController
     @reports = Report.all
     @generated_report = GeneratedReport.new({})
     @generated_report.date_range = session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
+    @min_trip_date = Trip.minimum(:scheduled_time)
   end
 
   # renders a report page. Actual details depends on the id parameter passed

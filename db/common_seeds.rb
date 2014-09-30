@@ -216,6 +216,8 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
  { klass: DateOption, name: 'Next Month', code: 'date_option_next_month',
    start_date: 'next month', end_date: 'next month',
  },
+ { klass: DateOption, name: 'Custom...', code: 'date_option_custom',
+ },
  
 ].each do |record|
   structured_hash = structure_records_from_flat_hash record
