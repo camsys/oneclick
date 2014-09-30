@@ -1,9 +1,9 @@
 class TripsController < PlaceSearchingController
   # set the @trip variable before any actions are invoked
-  before_filter :get_trip, :only => [:show, :email, :email_itinerary, :details, :repeat, :edit,
+  before_filter :get_trip, :only => [:show, :email, :email_itinerary, :details, :repeat, :edit, :multi_od_grid,
     :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2,
-    :show_printer_friendly, :example, :plan, :populate, :book]
-  load_and_authorize_resource only: [:new, :create, :show, :index, :update, :edit]
+    :show_printer_friendly, :example, :plan, :populate, :book, :itinerary_map, :print_itinerary_map]
+  load_and_authorize_resource only: [:new, :create_multi_od, :create, :show, :index, :update, :edit]
 
   before_action :detect_ui_mode
 
@@ -191,6 +191,7 @@ class TripsController < PlaceSearchingController
   end
 
   def show_printer_friendly
+    @print_map = true
     @show_hidden = params[:show_hidden]
     @print = params[:print]
     @hide_timeout = true
@@ -208,6 +209,7 @@ class TripsController < PlaceSearchingController
   end
 
   def email
+    @print_map = true
     Rails.logger.info "Begin email"
     email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
     if user_signed_in? and params[:email][:send_email_to]
@@ -671,6 +673,46 @@ class TripsController < PlaceSearchingController
 
   end
 
+  def itinerary_map
+    @itinerary = @trip.itineraries.valid.find(params[:itin])
+
+    if @itinerary.is_mappable
+      @legs = @itinerary.get_legs
+      @markers = create_itinerary_markers(@itinerary).to_json
+      @polylines = create_itinerary_polylines(@legs).to_json
+      @sidewalk_feedback_markers = create_itinerary_sidewalk_feedback_markers(@legs).to_json
+    end
+
+    @itinerary = ItineraryDecorator.decorate(@itinerary)
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def print_itinerary_map
+    require 'capybara/poltergeist'
+    browser = Capybara::Session.new :poltergeist
+    itin_id = params[:itin]
+    print_url = root_url(locale: '') + itinerary_map_user_trip_path + '?itin=' + itin_id.to_s
+    begin
+      browser.visit print_url
+    rescue
+      browser.visit print_url
+    end
+
+    tempfile = Tempfile.new(['photograph','.png'])
+    browser.driver.render tempfile.path
+    #browser.driver.render tempfile.path, :width => 500, :height => 300, :left => 0, :top => 0
+
+    image = MiniMagick::Image.read tempfile
+    #image.crop "500x300+0+0"
+    FileUtils.cp(image.path, "image.png")
+
+    respond_to do |format|
+      format.json { render json: {path: image.path.to_s} }
+    end
+  end
+
   # called when the user wants to hide an option. Invoked via
   # an ajax call
   def hide
@@ -818,7 +860,6 @@ class TripsController < PlaceSearchingController
       format.json { head :no_content }
     end
   end
-
 
 protected
   def new_trip

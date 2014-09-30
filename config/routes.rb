@@ -124,6 +124,8 @@ Oneclick::Application.routes.draw do
           post  'cancel'
           get   'multi_od_grid'
           get   'serialize_trip'
+          get   'itinerary_map'
+          get   'print_itinerary_map'
         end
         resources :trip_parts do
           member do

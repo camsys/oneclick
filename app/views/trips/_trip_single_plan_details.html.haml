@@ -10,22 +10,37 @@
       = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
     .col-sm-6{style: "height: 300px; background: white; border-radius: 5px; padding: 0px;"}
       /= render :partial => 'map_details', :locals => { :itinerary => itinerary, :mapid => ('plan_map_' + itinerary.id.to_s) }
-      = LeafletMap({:mapid => ('plan_map_' + itinerary.id.to_s), :markers => create_itinerary_markers(itinerary).to_json, :polylines => create_itinerary_polylines(itinerary.get_legs).to_json, :sidewalk_feedback_markers => create_itinerary_sidewalk_feedback_markers(itinerary.get_legs).to_json, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "well well-small", :style => "height:300px;" })
-      :javascript
-        $(function(){
-          if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.#{'plan_map_' + itinerary.id.to_s} != null) {
-            var mapObj = CsMaps.#{'plan_map_' + itinerary.id.to_s};
-            mapObj.invalidateMap();
-            var mapMarkers = mapObj.LMmarkers;
-            var mapBounds = null;
-            if(mapMarkers.length > 0) {
-              mapBounds = mapObj.calcMapBounds(mapMarkers);
-            } else {
-              mapBounds = mapObj.LMbounds;
-            }
+      - if defined? @print_map and @print_map == true
+        - print_map_url = print_itinerary_map_user_trip_path + '?itin=' + itinerary.id.to_s
+        :javascript
+          $(function(){
+            $.ajax({
+              url: '#{print_map_url}'
+            })
+            .done(function(resp) {
+              console.log(resp);
+            })
+            .fail(function(resp) {
+              console.log(resp);
+            });
+          });
+      - else
+        = LeafletMap({:mapid => ('plan_map_' + itinerary.id.to_s), :markers => create_itinerary_markers(itinerary).to_json, :polylines => create_itinerary_polylines(itinerary.get_legs).to_json, :sidewalk_feedback_markers => create_itinerary_sidewalk_feedback_markers(itinerary.get_legs).to_json, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "well well-small", :style => "height:300px;" })
+        :javascript
+          $(function(){
+            if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.#{'plan_map_' + itinerary.id.to_s} != null) {
+              var mapObj = CsMaps.#{'plan_map_' + itinerary.id.to_s};
+              mapObj.invalidateMap();
+              var mapMarkers = mapObj.LMmarkers;
+              var mapBounds = null;
+              if(mapMarkers.length > 0) {
+                mapBounds = mapObj.calcMapBounds(mapMarkers);
+              } else {
+                mapBounds = mapObj.LMbounds;
+              }
 
-            if(mapBounds) {
-              mapObj.LMmap.fitBounds(mapBounds);
+              if(mapBounds) {
+                mapObj.LMmap.fitBounds(mapBounds);
+              }
             }
-          }
-        });
+          });
