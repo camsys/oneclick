@@ -2,12 +2,8 @@
 - @multi_od_trip.trips.each do |trip|
   - trip_summary_configs << {id: trip.id, url: serialize_trip_user_trip_path(@traveler, trip)}
 .row{style: "padding: 0px;"}
-  .hidden-xs.col-sm-8
+  .hidden-xs.col-sm-12
     = render partial: 'shared/trip_plan_breadcrumbs'
-  .col-sm-4
-    .pull-right
-      = button_tag :type => 'button', :name => "planButton", :class => "btn action-button" do
-        =t(:next)
 
 .row#gridBaseContainer
   .col-sm-12.table-responsive
