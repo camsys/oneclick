@@ -36,7 +36,7 @@ module ApplicationHelper
   end
 
   def get_logo_text
-    return Oneclick::Application.config.ui_logo.gsub(/(\/logo.)(png|jpg)/, '').split('').join(' ')
+    return Oneclick::Application.config.logo_text
   end
 
   # Returns a mode-specific icon
