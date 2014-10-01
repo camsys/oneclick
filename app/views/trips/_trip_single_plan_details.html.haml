@@ -25,7 +25,7 @@
             });
           });
       - else
-        = LeafletMap({:mapid => ('plan_map_' + itinerary.id.to_s), :markers => create_itinerary_markers(itinerary).to_json, :polylines => create_itinerary_polylines(itinerary.get_legs).to_json, :sidewalk_feedback_markers => create_itinerary_sidewalk_feedback_markers(itinerary.get_legs).to_json, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "well well-small", :style => "height:300px;" })
+        = LeafletMap({:mapid => ('plan_map_' + itinerary.id.to_s), :markers => create_itinerary_markers(itinerary).to_json, :polylines => create_itinerary_polylines(legs).to_json, :sidewalk_feedback_markers => create_itinerary_sidewalk_feedback_markers(legs).to_json, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "well well-small", :style => "height:300px;" })
         :javascript
           $(function(){
             if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.#{'plan_map_' + itinerary.id.to_s} != null) {
