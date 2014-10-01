@@ -1,4 +1,4 @@
-.col-xs-12.well{tabindex: '0', style: "padding: 5px;"}
+.col-xs-12.well{tabindex: '0', style: "padding: 5px;", role: 'complementary', aria: {label: 'Trip Details'}}
   %label.col-sm-12{style: "padding: 0px;"}
     = itinerary.trip_part.description
   = render :partial => 'trip_plan_summary_header', :locals => { :itinerary => itinerary }
@@ -8,7 +8,7 @@
   - else
     .col-sm-6{style: "background: white; margin-bottom: 5px; border-radius: 5px; padding: 5px;"}
       = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
-    .col-sm-6{style: "height: 300px; background: white; border-radius: 5px; padding: 0px;"}
+    .col-sm-6{style: "height: 300px; background: white; border-radius: 5px; padding: 0px;", aria: {hidden: 'true'}}
       /= render :partial => 'map_details', :locals => { :itinerary => itinerary, :mapid => ('plan_map_' + itinerary.id.to_s) }
       - if defined? @print_map and @print_map == true
         - print_map_url = print_itinerary_map_user_trip_path + '?itin=' + itinerary.id.to_s

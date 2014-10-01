@@ -1,7 +1,7 @@
 - content_for :head do
   = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"
-.row{style: "padding: 0px;"}
-  .hidden-xs.col-sm-8
+.row
+  .hidden-xs.col-sm-8{style: "padding: 0px;", :role => "navigation", :aria => {:label => 'Breadcrumbs'}}
     = render partial: 'shared/trip_plan_breadcrumbs'
   .col-sm-4
     .pull-right
@@ -27,10 +27,10 @@
         %span{id:'filterCheckbox-label'}
         = t(:filters)
 
-    #accessoryContainer.col-md-3.col-xs-12
+    #accessoryContainer.col-md-3.col-xs-12{role: 'complementary', aria: {label: 'Legend'}}
     / end of filter column
     .col-md-9
-      #tripContainer.col-xs-12{style: "padding: 0px;"}
+      #tripContainer.col-xs-12{style: "padding: 0px;", :role => "main", :aria => {:label => 'Review Your Trip'}}
       / end of trip container
   .col-xs-12{style: "margin-bottom: 5px;padding: 0px;"}
     .pull-right

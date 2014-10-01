@@ -13,8 +13,7 @@
     %tbody
       %tr
         %td.itinerary_icons{:width => '20%', :style => "text-align: left;"}
-          %img{:src => logo_url_helper(i)}
-          .sr-only= t(i.mode)
+          %img{:src => logo_url_helper(i), alt: "#{t(i.mode)} icon"}
         %td{:width => '15%'}
           .itinerary_text
             = i.cost_in_words
