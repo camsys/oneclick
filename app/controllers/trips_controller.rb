@@ -690,41 +690,29 @@ class TripsController < PlaceSearchingController
     end
   end
 
+  # TODO: clean up code after local testing works
   def print_itinerary_map
-    require 'capybara'
-    require 'capybara/dsl'
     require 'capybara/poltergeist'
+    require 'base64'
 
-    Capybara.run_server = false
-    Capybara.current_driver = :poltergeist
-    Capybara.javascript_driver = :poltergeist
-    Capybara.app_host = root_url(locale: '')
-
-    Capybara.register_driver :poltergeist do |app|
-      Capybara::Poltergeist::Driver.new(app, {:phantomjs => 'phantomjs'})
-    end
-
-    browser = Capybara::Session.new :poltergeist
     itin_id = params[:itin]
-    print_url = itinerary_map_trip_path + '?itin=' + itin_id.to_s
 
-    begin
-      browser.visit 'http://oneclick-arc-int.camsys-apps.com/en/trips/23/itinerary_map?itin=678'
-    rescue
-      browser.visit print_url
-    end
+    print_url = root_url(locale:'') + itinerary_map_trip_path + '?itin=' + itin_id.to_s
 
-    tempfile = Tempfile.new(['photograph','.png'])
+    #new_thread = Thread.new do ## putting section below in a new thread will work, but cant join to main thread
+    browser = Capybara::Session.new :poltergeist
+
+    browser.visit print_url
+
+    tempfile = Tempfile.new(['itinerary_map','.jpeg'])
     browser.driver.render tempfile.path
-    #browser.driver.render tempfile.path, :width => 500, :height => 300, :left => 0, :top => 0
 
     image = MiniMagick::Image.read tempfile
-    image.crop "500x300+0+0"
-    FileUtils.cp(image.path, "image.png")
+    image.crop "500x300+0+0" # only get itinerary map
+    FileUtils.cp(image.path, 'map.jpeg') #only for local testing; will encode the file and send the code back
 
-    respond_to do |format|
-      format.json { render json: {path: tempfile.path.to_s} }
-    end
+    #ActiveRecord::Base.connection.close
+    #end
   end
 
   # called when the user wants to hide an option. Invoked via
