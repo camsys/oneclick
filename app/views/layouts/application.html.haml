@@ -16,12 +16,12 @@
     / application.html.haml
     #wrap
       = render 'shared/navigation'
-      #main.container{:role => "main"}
+      #main.container
         #messages
           = render 'shared/messages'
         = yield
 
-      #footer
+      #footer{:role => "contentinfo", :aria => {:label => 'Footer'}}
         #feedback.col-xs-12
           .pull-left
             %a{:href => "http://www.fta.dot.gov/grants/13094_13528.html", :target => "_blank"}

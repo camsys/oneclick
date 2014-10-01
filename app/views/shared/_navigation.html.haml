@@ -2,7 +2,7 @@
   .container{:style => 'width:100%;'}
     #navHeader
       %a.navbar-brand{:href => root_url, :style => 'padding: 0px;'}
-        %img.img-responsive.pull-left{:id => 'logo', :src => "#{get_logo_path}", :alt => "logo"}
+        %img.img-responsive.pull-left{:id => 'logo', :src => "#{get_logo_path}", :alt => "#{get_logo_text} logo"}
       .pull-right
         %a#help{:href => root_url + "/content/faq"}
           %i.fa.fa-question-circle
