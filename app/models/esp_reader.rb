@@ -287,8 +287,9 @@ class EspReader
     provider.phone = '(' + esp_provider[@provider_idx["AreaCode1"]].to_s + ') ' + esp_provider[@provider_idx["Phone1"]].to_s
     provider.url = esp_provider[@provider_idx["URL"]]
     provider.email = esp_provider[@provider_idx["Email"]]
-    provider.private_comments = esp_provider[@provider_idx["Comments"]]
     provider.save
+
+    provider.private_comments.create! comment: esp_provider[@provider_idx["Comments"]], locale: 'en'
 
     if create #assign service to the new provider
       service.provider = provider
@@ -312,8 +313,6 @@ class EspReader
       service.email = esp_service[@service_idx['Email']]
       service.phone = '(' + esp_service[@service_idx['AreaCode1']].to_s + ') ' + esp_service[@service_idx['Phone1']].to_s
       service.url = esp_service[@service_idx['URL']]
-      service.public_comments = esp_service[@service_idx['Comments']]
-      service.private_comments = esp_service[@service_idx['LocalComments']]
 
       service.service_type = ServiceType.find_by_code('paratransit')
       service.advanced_notice_minutes = 0  #TODO: Need to get this from ESP
@@ -322,6 +321,8 @@ class EspReader
 
       create_or_update_provider(esp_provider, service, service.provider.nil?)
       service.save
+      service.public_comments.create! comment: esp_service[@service_idx['Comments']], locale: 'en'
+      service.private_comments.create! comment: esp_service[@service_idx['LocalComments']], locale: 'en'
 
       #Clean up this service
       service.schedules.destroy_all
@@ -392,8 +393,14 @@ class EspReader
 
     service_comments_hash.each do |key, item|
       service = Service.find(key)
-      service.public_comments = item + "</ul>" + (service.public_comments || "")
-      service.save
+      c = service.public_comments.first
+      if c.nil?
+        service.public_comments.create! comment: item + "</ul>", locale: 'en'
+      else
+        c.update_attributes comment: item + "</ul>" + c.comment.to_s
+      end
+      # service.public_comments.create! comment: item + "</ul>" + (service.public_comments || ""), locale: 'en'
+      # service.save
     end
 
     return true, "Success"

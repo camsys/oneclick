@@ -2,6 +2,7 @@ require 'carrierwave/orm/activerecord'
 
 class Provider < ActiveRecord::Base
   include Rateable
+  include Commentable
   resourcify
 
   mount_uploader :logo, ProviderLogoUploader

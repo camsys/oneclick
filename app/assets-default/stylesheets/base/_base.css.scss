@@ -539,6 +539,15 @@ td.left, th.left {
   background: #FFFFFF;
 }
 
+.show .comments dd {
+  margin-bottom: 1em;
+}
+
+#itinerary_modal .well.comments, .trips.plan  .well.comments {
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
 .inline-radio .radio {
   display: inline-block;
   margin-right: 15px;

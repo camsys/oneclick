@@ -19,9 +19,9 @@
       .col-sm-12{style: "padding: 0px;"}
         =t(:trip_planned_assistance)
         %b=@assisting_agency.name
-      -unless @assisting_agency.public_comments.empty?
+      -unless @assisting_agency.public_comments.for_locale.blank?
         .col-sm-12{style: "background: white; border-radius: 5px;"}
-          =@assisting_agency.public_comments.html_safe
+          =@assisting_agency.public_comments.for_locale.html_safe
   .col-sm-12
     = render partial: 'shared/page_comments', locals: {key: :plan_header_comment}
   .col-xs-12{style: "padding: 0px;", role: 'main'}

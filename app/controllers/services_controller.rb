@@ -1,4 +1,5 @@
 class ServicesController < ApplicationController
+  include Admin::CommentsHelper
   before_filter :load_service, only: [:create]
   load_and_authorize_resource
 
@@ -122,6 +123,7 @@ class ServicesController < ApplicationController
     if @service.fare_structures.count < 1
       @service.fare_structures.build
     end
+    setup_comments(@service)
 
   end
 
@@ -194,7 +196,7 @@ class ServicesController < ApplicationController
 
 protected
   def service_params
-    params.require(:service).permit(:name, :phone, :email, :url, :external_id, :public_comments, :private_comments,
+    params.require(:service).permit(:name, :phone, :email, :url, :external_id, :public_comments_old, :private_comments_old,
                                     :booking_service_code, :advanced_notice_minutes,
                                     :notice_days_part, :notice_hours_part, :notice_minutes_part,
                                     :service_window, :time_factor, :provider_id, :service_type_id,
@@ -209,7 +211,10 @@ protected
                                     { fare_structures_attributes:
                                       [ :id, :base, :rate, :desc ] },
                                     { service_coverage_maps_attributes:
-                                      [ :id, :rule, :geo_coverage_id, :_destroy, :keep_record ] }
+                                      [ :id, :rule, :geo_coverage_id, :_destroy, :keep_record ] },
+                                    comments_attributes: COMMENT_ATTRIBUTES,
+                                    public_comments_attributes: COMMENT_ATTRIBUTES,
+                                    private_comments_attributes: COMMENT_ATTRIBUTES,                                      
                                     )
   end
 

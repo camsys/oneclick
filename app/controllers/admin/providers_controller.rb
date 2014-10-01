@@ -1,4 +1,5 @@
 class Admin::ProvidersController < ApplicationController
+  include Admin::CommentsHelper
   before_filter :load_provider, only: [:create]
   load_and_authorize_resource
 
@@ -61,6 +62,7 @@ class Admin::ProvidersController < ApplicationController
     # assume only one internal contact for now
     @contact = @provider.users.with_role(:internal_contact, @provider).first
     @staff = @provider.users.with_role(:provider_staff, @provider)
+    setup_comments(@provider)
   end
 
   # PUT /admin/providers/1
@@ -134,7 +136,13 @@ class Admin::ProvidersController < ApplicationController
   end
 
   def admin_provider_params
-    params.require(:provider).permit(:name, :email, :address, :city, :state, :zip, :url, :phone, :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email, :public_comments, :private_comments)
+    params.require(:provider).permit(:name, :email, :address, :city, :state, :zip, :url, :phone,
+      :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email,
+      :public_comments_old, :private_comments_old,
+      comments_attributes: COMMENT_ATTRIBUTES,
+      public_comments_attributes: COMMENT_ATTRIBUTES,
+      private_comments_attributes: COMMENT_ATTRIBUTES,
+      )
   end
 
   def load_provider

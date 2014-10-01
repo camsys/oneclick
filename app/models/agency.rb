@@ -1,11 +1,12 @@
 class Agency < ActiveRecord::Base
   include Rateable # mixin to handle all rating methods
+  include Commentable
+
   resourcify
 
   belongs_to :parent, class_name: 'Agency'
   has_many :sub_agencies, -> {order('name')}, class_name: 'Agency', foreign_key: :parent_id
   has_many :users
-  accepts_nested_attributes_for :users
   has_many :agency_user_relationships
   has_many :approved_agency_user_relationships,-> { where(relationship_status: RelationshipStatus.confirmed) }, class_name: 'AgencyUserRelationship'
   has_many :customers, :class_name => 'User', :through => :approved_agency_user_relationships, source: :user
@@ -15,6 +16,8 @@ class Agency < ActiveRecord::Base
   has_many :agents, -> {where('roles.name=?', 'agent')}, class_name: 'User', through: :cs_roles, source: :users
   has_many :administrators, -> {where('roles.name=?', 'agency_administrator')}, class_name: 'User', through: :cs_roles, source: :users
   has_many :traveler_notes
+
+  accepts_nested_attributes_for :users
 
   validates :name, :presence => true
   

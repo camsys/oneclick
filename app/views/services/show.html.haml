@@ -169,25 +169,7 @@
             -if fare.desc
               = fare.desc.html_safe
 
-  .row
-    .col-sm-6
-      .panel.panel-default
-        .panel-heading
-          .row.text
-            .col-sm-12
-              %h3.panel-title= t(:public_comments)
-        .panel-body
-          -if @service.public_comments
-            =@service.public_comments.html_safe
-    .col-sm-6
-      .panel.panel-default
-        .panel-heading
-          .row.text
-            .col-sm-12
-              %h3.panel-title= t(:private_comments)
-        .panel-body
-          -if @service.private_comments
-            =@service.private_comments.html_safe
+  = render partial: 'admin/shared/show_comments', locals: {commentable: @service}
 
   .row
     .col-sm-12

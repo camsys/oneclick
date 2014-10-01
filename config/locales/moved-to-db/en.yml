@@ -16,6 +16,9 @@ en:
   private_comments: "Private Comments"
   public_comments_message: "Leave comments for travelers about this service."
   private_comments_message: "Leave comments for agents about this service."
+  comment: 'Comment'
+  comments: 'Comments'
+  no_comments: 'No comments'
   initial_booking_title: 'Register to book online.'
   one_click_trip_planner: '1-Click Trip Planner'
   # Actions

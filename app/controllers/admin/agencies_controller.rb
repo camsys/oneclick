@@ -1,4 +1,6 @@
 class Admin::AgenciesController < ApplicationController
+  include Admin::CommentsHelper
+
   before_filter :load_agency, only: [:create]
   load_and_authorize_resource except: [:travelers]
   load_and_authorize_resource :id_param => :agency_id,  only: :travelers #TODO implies a refactor needed
@@ -54,6 +56,7 @@ class Admin::AgenciesController < ApplicationController
     @contact = @agency.internal_contact
     @addable_users = User.staff_assignable
     # @agency = Agency.find(params[:id])
+    setup_comments(@agency)
   end
 
   # POST /agencies
@@ -80,6 +83,17 @@ class Admin::AgenciesController < ApplicationController
     agent_ids = params[:agency][:agent_ids].split(',').reject(&:blank?) #again, special case because need to update rolify
     admin_ids = params[:agency][:administrator_ids].reject(&:blank?) #again, special case because need to update rolify
 
+    # TODO This is a little hacky for the moment; might switch to front-end javascript but let's just do this for now.
+    [:public_comments_attributes, :private_comments_attributes].each do |t|
+      params[:agency][t].each do |k, v|
+        # k is the (artificial) index, v is the hash with the form values
+        if v[:comment].blank? && v.include?(:id)
+          v[:_destroy] = 1
+        end
+      end
+    end
+
+    Rails.logger.info "After params, is\n#{agency_params(params).ai}"
     respond_to do |format|
       if @agency.update_attributes!(agency_params(params))
         set_internal_contact(internal_contact_id) unless internal_contact_id.blank?
@@ -132,7 +146,12 @@ private
 
 def agency_params params
   params.require(:agency).permit(:name, :address, :city, :state, :zip, :phone, :email, :url,
-    :parent_id, :parent,:internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email, :public_comments, :private_comments)
+    :parent_id, :parent,:internal_contact_name, :internal_contact_title, :internal_contact_phone,
+    :internal_contact_email,
+    comments_attributes: COMMENT_ATTRIBUTES,
+    public_comments_attributes: COMMENT_ATTRIBUTES,
+    private_comments_attributes: COMMENT_ATTRIBUTES,
+    )
 end
 
 def load_agency

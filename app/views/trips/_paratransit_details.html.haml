@@ -1,11 +1,15 @@
 .row
   .col-sm-12
-    -if itinerary.service.provider and itinerary.service.provider.public_comments
+    -if itinerary.service.provider and itinerary.service.provider.public_comments.for_locale
       .row
-        =itinerary.service.provider.public_comments.html_safe
-    -if itinerary.service.public_comments
+        .col-sm-12
+          .well.well-sm.comments
+            =itinerary.service.provider.public_comments.for_locale.comment.html_safe
+    -if itinerary.service.public_comments.for_locale
       .row
-        =itinerary.service.public_comments.html_safe
+        .col-sm-12
+          .well.well-sm
+            =itinerary.service.public_comments.for_locale.comment.html_safe
     -if itinerary.cost_comments
       %h4
         = t(:cost_details)
