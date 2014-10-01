@@ -11,7 +11,7 @@
   -itinerary.get_legs.each do |leg|
     %tr
       %td.itinerary_icons
-        %img{:src => get_mode_icon(leg.mode)}
+        %img{:src => get_mode_icon(leg.mode), alt: "#{leg.mode.downcase} Mode Icon"}
       %td
         .itinerary_text
           %p= leg.mode + ' ' + t(:to) + ' ' + leg.end_place.name
