@@ -14,6 +14,8 @@
 - if @tripResponseHash['status'] == 0
   - # flash handles it
 - else
+  .col-sm-12
+    = render partial: 'shared/page_comments', locals: {key: :review_header_comment}
   #reviewBaseContainer.row
     .col-xs-12.form-group.hidden-md-lg
       %label.mobile-checkbox{for: 'legendCheckbox', style: 'margin-right: 5px;'}
@@ -38,6 +40,8 @@
         = t(:feedback)
       = button_tag :type => 'button', :name => "planButton", :class => "btn action-button" do
         =t(:next)
+  .col-sm-12
+    = render partial: 'shared/page_comments', locals: {key: :review_footer_comment}
   / end of review columns
   #itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
   :javascript

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141001205018) do
+ActiveRecord::Schema.define(version: 20141002171358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,8 +45,8 @@ ActiveRecord::Schema.define(version: 20141001205018) do
     t.string  "internal_contact_phone"
     t.string  "internal_contact_email", limit: 128
     t.boolean "active",                             default: true, null: false
-    t.text    "private_comments"
-    t.text    "public_comments"
+    t.text    "private_comments_old"
+    t.text    "public_comments_old"
   end
 
   create_table "agency_user_relationships", force: true do |t|
@@ -80,6 +80,16 @@ ActiveRecord::Schema.define(version: 20141001205018) do
     t.boolean "for_traveler",                         default: true
     t.integer "linked_characteristic_id"
     t.string  "link_handler"
+  end
+
+  create_table "comments", force: true do |t|
+    t.text     "comment"
+    t.string   "locale"
+    t.string   "visibility",       default: "public"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "counties", force: true do |t|
@@ -266,8 +276,8 @@ ActiveRecord::Schema.define(version: 20141001205018) do
     t.string  "internal_contact_phone"
     t.string  "internal_contact_email", limit: 128
     t.string  "old_logo_url"
-    t.text    "private_comments"
-    t.text    "public_comments"
+    t.text    "private_comments_old"
+    t.text    "public_comments_old"
     t.string  "icon"
     t.string  "logo"
   end
@@ -382,8 +392,8 @@ ActiveRecord::Schema.define(version: 20141001205018) do
     t.integer  "endpoint_area_geom_id"
     t.integer  "coverage_area_geom_id"
     t.integer  "residence_area_geom_id"
-    t.text     "public_comments"
-    t.text     "private_comments"
+    t.text     "public_comments_old"
+    t.text     "private_comments_old"
     t.string   "logo"
   end
 

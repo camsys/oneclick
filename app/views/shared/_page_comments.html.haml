@@ -1,0 +1,3 @@
+- if defined? key and !Translation.where(key: key).first.nil? and (I18n.locale == :tags or !Translation.where(key: key, locale: I18n.locale).first.nil?)
+  %p
+    =t(key)

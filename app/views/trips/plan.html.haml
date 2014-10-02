@@ -22,12 +22,15 @@
       -unless @assisting_agency.public_comments.empty?
         .col-sm-12{style: "background: white; border-radius: 5px;"}
           =@assisting_agency.public_comments.html_safe
-
+  .col-sm-12
+    = render partial: 'shared/page_comments', locals: {key: :plan_header_comment}
   .col-xs-12{style: "padding: 0px;", role: 'main'}
     = render partial: "selected_itineraries_details", locals: { trip: @trip, for_db: false }
 
   .col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
     .pull-right
       = render partial: 'plan_page_buttons'
+  .col-sm-12
+    = render partial: 'shared/page_comments', locals: {key: :plan_footer_comment}
   = render partial: 'send_trip_by_email', locals: {trip: @trip}
 
