@@ -45,8 +45,8 @@ ActiveRecord::Schema.define(version: 20141002171358) do
     t.string  "internal_contact_phone"
     t.string  "internal_contact_email", limit: 128
     t.boolean "active",                             default: true, null: false
-    t.text    "private_comments_old"
-    t.text    "public_comments_old"
+    t.text    "private_comments"
+    t.text    "public_comments"
   end
 
   create_table "agency_user_relationships", force: true do |t|
@@ -276,8 +276,8 @@ ActiveRecord::Schema.define(version: 20141002171358) do
     t.string  "internal_contact_phone"
     t.string  "internal_contact_email", limit: 128
     t.string  "old_logo_url"
-    t.text    "private_comments_old"
-    t.text    "public_comments_old"
+    t.text    "private_comments"
+    t.text    "public_comments"
     t.string  "icon"
     t.string  "logo"
   end
@@ -392,8 +392,8 @@ ActiveRecord::Schema.define(version: 20141002171358) do
     t.integer  "endpoint_area_geom_id"
     t.integer  "coverage_area_geom_id"
     t.integer  "residence_area_geom_id"
-    t.text     "public_comments_old"
-    t.text     "private_comments_old"
+    t.text     "public_comments"
+    t.text     "private_comments"
     t.string   "logo"
   end
 
