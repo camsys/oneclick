@@ -21,7 +21,7 @@ class SystemUsageReport
   def get_data(current_user, report)
     date_option = DateOption.find(report.date_range)
     date_option ||= DateOption.find_by(code: DateOption::DEFAULT)
-    date_range = date_option.get_date_range
+    date_range = date_option.get_date_range(report.from_date, report.to_date)
 
     data = Hash.new
 

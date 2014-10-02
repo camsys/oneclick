@@ -8,13 +8,7 @@ class TripsDetailsReport < AbstractReport
     date_option = DateOption.find(report.date_range)
     date_option ||= DateOption.find_by(code: DateOption::DEFAULT)
 
-    if (date_option.code == 'date_option_custom') then
-      starting = Chronic.parse(report.from_date).beginning_of_day
-      ending = Chronic.parse(report.to_date).end_of_day
-      date_range = starting..ending
-    else
-      date_range = date_option.get_date_range
-    end
+    date_range = date_option.get_date_range(report.from_date, report.to_date)
     
     Trip.includes(:user, :creator, :trip_places, :trip_purpose, :desired_modes, :trip_parts)
       .where(trip_parts: {scheduled_time: date_range})

@@ -44,7 +44,7 @@ class TripsDatatable < AjaxDatatablesRails::Base
 
   def get_data(current_user, report)
     options[:dates] = DateOption.find(report.date_range)
-    get_raw_records
+    get_raw_records report.from_date, report.to_date
   end
 
   private
@@ -61,9 +61,12 @@ class TripsDatatable < AjaxDatatablesRails::Base
     end
   end
 
-  def get_raw_records
+  def get_raw_records from_date=nil, to_date=nil
+    from_date ||= options[:from_date]
+    to_date ||= options[:to_date]
+    
     Trip.includes(:user, :creator, :trip_places, :trip_purpose, :desired_modes, :trip_parts)
-      .where(trip_parts: {scheduled_time: options[:dates].get_date_range})
+      .where(trip_parts: {scheduled_time: options[:dates].get_date_range(from_date, to_date)})
       .order('trip_places.sequence').order('trip_parts.sequence')
       .references(:user, :creator, :trip_places, :trip_purpose, :desired_modes, :trip_parts)
   end

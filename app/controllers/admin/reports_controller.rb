@@ -5,6 +5,8 @@ class Admin::ReportsController < Admin::BaseController
   
   TIME_FILTER_TYPE_SESSION_KEY = 'reports_time_filter_type'
   DATE_OPTION_SESSION_KEY = 'date_range'
+  DATE_OPTION_FROM_KEY = 'from_date'
+  DATE_OPTION_TO_KEY = 'to_date'
 
   def index
     @reports = Report.all
@@ -44,7 +46,9 @@ class Admin::ReportsController < Admin::BaseController
 
     @generated_report.date_range ||= session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
     session[DATE_OPTION_SESSION_KEY] = @generated_report.date_range
-
+    session[DATE_OPTION_FROM_KEY] = @generated_report.from_date
+    session[DATE_OPTION_TO_KEY] = @generated_report.to_date
+    
     if @report
                     
       # set up the report view
@@ -84,13 +88,14 @@ class Admin::ReportsController < Admin::BaseController
   end
 
   def trips_datatable
-    Rails.logger.info @date_option
     respond_to do |format|
       format.json do
         date_option = DateOption.find(session[DATE_OPTION_SESSION_KEY])
-        render json: TripsDatatable.new(view_context, {dates: date_option})
+        from_date = session[DATE_OPTION_FROM_KEY]
+        to_date = session[DATE_OPTION_TO_KEY]
+
+        render json: TripsDatatable.new(view_context, {dates: date_option, from_date: from_date, to_date: to_date})
       end
-      
     end
   end
   
