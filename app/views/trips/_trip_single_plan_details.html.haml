@@ -1,5 +1,5 @@
-.col-xs-12.well{tabindex: '0', style: "padding: 5px;", role: 'complementary', aria: {label: 'Trip Details'}}
-  %label.col-sm-12{style: "padding: 0px;"}
+.col-xs-12.well{tabindex: '0', style: "padding: 5px;"}
+  %h4.col-sm-12{style: "padding: 0px;"}
     = itinerary.trip_part.description
   = render :partial => 'trip_plan_summary_header', :locals => { :itinerary => itinerary }
   - if (not itinerary.is_mappable) || for_db

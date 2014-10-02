@@ -997,7 +997,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
     function getSelectButtonHtml() {
         var tags =
-            ("<button role='button' class='btn btn-default single-plan-select action-button select-column-button'>" +
+            ("<button role='button' class='btn btn-default single-plan-select action-button select-column-button' aria-label='Select this option.'>" +
                 "<span class='hidden-xs'>" + localeDictFinder['select'] + "</span>" +
                 "<span class='visible-xs'>&#10004;</span>" +
                 "</button>");
@@ -1171,13 +1171,13 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             localeDictFinder['arriving_by'] + ' ' + formatDate(tripEndTime)  + ' ' + formatTime(tripEndTime);
         //var headerAriaLabel = tripDescription + "; " + tripDatetimeDescritpion;
         //trip description
-        var tripDescTag = "<div class='col-sm-12'><label>" + tripDescription + "</label></div>";
+        var tripDescTag = "<div class='col-sm-12'><h4 style='margin-top:5px;'>" + tripDescription + "</h4></div>";
 
         var tickLabelTags = getTickLabelHtmlTags(tickLabels);
 
-        var sorterLabelTags = '<span>' + localeDictFinder['sort_by'] + ': </span>';
+        var sorterLabelTags = "<span style='margin-left:15px;'>" + localeDictFinder['sort_by'] + ': </span>';
         var tripMidTime = new Date((tripStartTime.getTime() + tripEndTime.getTime()) / 2);
-        var midDateLabelTags = '<span>' + formatDate(tripMidTime) + '</span>';
+        var midDateLabelTags = "<span>" + formatDate(tripMidTime) + '</span>';
 
         var sorterTags =
             '<select style="display: inline-block;" class="trip-sorter">' +
@@ -1208,7 +1208,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             (isDepartAt ? "" : ("<button role='button' class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>")) +
             "</div>" +
             "</div>" +
-            "<div class='col-xs-12' style='padding:0px;'>" +
+            "<div class='col-xs-12' style='padding:0px;' aria-hidden='true'>" +
             "<div class='trip-plan-first-column' style='padding: 0px;'>" +
             "</div>" +
             "<div class='tick-labels " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap;'>" +
@@ -1609,7 +1609,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         if (legendNames.length > 0) { //only show legend container when legend(s) are available
             if ($('#' + legendContainerId).length === 0) {
-                $('#' + accessoryContainerId).append("<div id='" + legendContainerId + "' class='well col-xs-12 hidden-xs-sm' style='padding: 5px;'></div>");
+                $('#' + accessoryContainerId).append("<div id='" + legendContainerId + "' class='well col-xs-12 hidden-xs-sm' style='padding: 5px;'><h3 style='margin-top:0;'>Legend</h3></div>");
             }
             legendNames.forEach(function(el) {
                 legendTags +=
@@ -1728,6 +1728,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         modes.forEach(function(mode) {
             if (isFirstMode) {
                 modeFilterTags +=
+                    '<h3 style="margin-top:0;">Filters</h3>' +
                     '<div class = "col-sm-12" style="padding: 0px;">' +
                     '<div class = "col-sm-12" style="padding: 0px;">' +
                     '<label>' + localeDictFinder['modes'] + '</label>' +
