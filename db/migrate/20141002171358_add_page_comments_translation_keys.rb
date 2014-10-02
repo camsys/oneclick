@@ -12,7 +12,7 @@ class AddPageCommentsTranslationKeys < ActiveRecord::Migration
   	locales.each do |l|
   	  page_comment_keys.each do |key|
   	  	if Translation.where(key: key, locale: l.to_s).first.nil?
-  	  	  Translation.create!(key: key, locale: l.to_s, value '')
+  	  	  Translation.create!(key: key, locale: l.to_s, value: '')
   	  	end
   	  end
 	end
