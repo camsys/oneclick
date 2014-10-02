@@ -15,16 +15,16 @@ include SeedsHelpers
 [
  { klass: Characteristic, characteristic_type: 'personal_factor', code: 'disabled', name: 'Is Disabled', note: 'Do you have a permanent or temporary disability?', datatype: 'bool'},
  { klass: Characteristic, characteristic_type: 'personal_factor', code: 'no_trans', name: 'Has No Means of Transportation', note: 'Do you own or have access to a personal vehicle?', datatype: 'bool'},
- { klass: Characteristic, characteristic_type: 'program', code: 'nemt_eligible', name: 'Has Medicaid', note: 'Are you eligible for Medicaid?', datatype: 'bool'},
+ { klass: Characteristic, characteristic_type: 'program', code: 'nemt_eligible', name: 'Has Medicaid', note: 'Are you eligible for Medicaid?', datatype: 'bool', ask_early: false},
  { klass: Characteristic, characteristic_type: 'program', code: 'ada_eligible', name: 'Has ADA Paratransit', note: 'Are you eligible for ADA paratransit?', datatype: 'bool'},
- { klass: Characteristic, characteristic_type: 'personal_factor', code: 'veteran', name: 'Is a Veteran', note: 'Are you a military veteran?', datatype: 'bool', ask_early: false},
+ { klass: Characteristic, characteristic_type: 'personal_factor', code: 'veteran', name: 'Is a Veteran', note: 'Are you a military veteran?', datatype: 'bool'},
  { klass: Characteristic, characteristic_type: 'personal_factor', code: 'low_income', name: 'Is Low income', note: "Are you low income?", datatype: 'disabled'},
  { klass: Characteristic, characteristic_type: 'personal_factor', code: 'date_of_birth', name: 'Year of Birth', note: "What is your birth year?", datatype: 'date'},
  { klass: Characteristic, characteristic_type: 'personal_factor', code: 'age', name: 'Age is', note: "What is your birth year?", datatype: 'integer',
     desc: 'You must be 65 or older to use this service. Please confirm your birth year.'},
     # TODO The above needs interpolation
  { klass: Characteristic, characteristic_type: 'personal_factor', code: 'walk_distance', name: 'Walk distance', note: 'Are you able to comfortably walk for 5, 10, 15, 20, 25, 30 minutes?', datatype: 'disabled'},
- #Traveler accommodations 
+ #Traveler accommodations
 
  {klass: Accommodation, code: 'folding_wheelchair_accessible', name: 'Folding wheelchair accessible.', note: 'Do you need a vehicle that has space for a folding wheelchair?', datatype: 'bool',
  	logo_url: 'arc/accommodations/folding_wheelchair_accessible.png'},
@@ -48,7 +48,7 @@ include SeedsHelpers
  {klass: ServiceType, code: 'taxi', name: 'Taxi', note: 'Taxi services.'},
  {klass: ServiceType, code: 'rideshare', name: 'Rideshare', note: 'Ride-sharing services.'},
 
- #trip_purposes 
+ #trip_purposes
  {klass: TripPurpose, code: 'work', name: 'Work', note: 'Work-related trip.', active: 1, sort_order: 2},
  {klass: TripPurpose, code: 'training', name: 'Training/Employment', note: 'Employment or training trip.', active: 1, sort_order: 2},
  {klass: TripPurpose, code: 'medical', name: 'Medical', note: 'General medical trip.', active: 1, sort_order: 2},

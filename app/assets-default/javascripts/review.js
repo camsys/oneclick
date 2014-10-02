@@ -2183,8 +2183,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             })
             .attr("height", barHeight);
 
-        //add service name
-        if (tripLegs.length > 0 && typeof(serviceName) === 'string' && serviceName.trim().length > 0) {
+        // add service name
+        // except for transit
+        if (tripPlan.mode != 'mode_transit' && tripLegs.length > 0 && typeof(serviceName) === 'string' && serviceName.trim().length > 0) {
             chart.selectAll("text")
                 .data([serviceName])
                 .enter()

@@ -229,6 +229,17 @@ en:
   plan_trip: "Continue planning this trip"
   max_notes: 'Max notes'
 
+  # Page comments
+  trip_header_comment: ''
+  trip_footer_comment: ''
+  options_header_comment: ''
+  options_footer_comment: ''
+  grid_header_comment: ''
+  grid_footer_comment: ''
+  review_header_comment: ''
+  review_footer_comment: ''
+  plan_header_comment: ''
+  plan_footer_comment: ''
 
   # Trip planning
   enter_address: 'Enter address'

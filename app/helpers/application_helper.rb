@@ -35,6 +35,10 @@ module ApplicationHelper
     return root_url({locale: ''}) + Base.helpers.asset_path(get_logo)
   end
 
+  def get_logo_text
+    return Oneclick::Application.config.logo_text
+  end
+
   # Returns a mode-specific icon
   def get_mode_icon(mode)
     if ENV['UI_MODE']=='kiosk'

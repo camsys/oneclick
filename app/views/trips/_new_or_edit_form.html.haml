@@ -1,6 +1,6 @@
 .row
   .col-sm-7
-    .hidden-xs.col-sm-8
+    .hidden-xs.col-sm-8{:role => "navigation", :aria => {:label => 'Breadcrumbs'}}
       = render partial: 'shared/trip_plan_breadcrumbs'
     .col-sm-4{style: "padding: 0px;"}
       = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button pull-right" do
@@ -20,9 +20,11 @@
                 $('#bookingSignupModal').modal('show');
               });
             });
-
 .row
   .col-sm-7.col-xs-12
+    .col-sm-12
+      = render partial: 'shared/page_comments', locals: {key: :trip_header_comment}
+    .col-sm-12{:role => "main", :aria => {:label => 'Trip Form'}}
     = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path(:user_id => @traveler.id) : user_trip_path(:user_id => @traveler.id), :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
       .col-xs-12.panel.panel-default
         .panel-body
@@ -37,8 +39,7 @@
             = field_set_tag do
               %legend.sr-only Trip type
               .inline-radio
-                = f.input :is_round_trip, as: :radio_buttons, label: t(:trip), collection: [[t(:round_trip), 1], [t(:one_way), 0]],
-                  checked: (@trip_proxy.is_round_trip ? "1" : "0")
+                = f.input :is_round_trip, as: :radio_buttons, label: t(:trip), collection: [[t(:round_trip), 1], [t(:one_way), 0]], checked: (@trip_proxy.is_round_trip ? "1" : "0"), label_html: {"aria-hidden" => "true"}
 
               :javascript
                 $('#tripOptions :radio').change(function() {
@@ -52,8 +53,7 @@
           = field_set_tag do
             %legend.sr-only Modes
             #baseModes
-              = f.input :modes, as: :check_boxes, collection: @modes,
-              label_method: :first, value_method: :last, checked: @selected_modes, label: t(:modes)
+              = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes, label: t(:modes), label_html: {"aria-hidden" => "true"}
 
             :javascript
               $('#trip_proxy_modes_mode_transit').change(function() {
@@ -69,9 +69,7 @@
               });
 
           #transitModes
-            = f.input :modes, as: :check_boxes, collection: @transit_modes,
-            label_method: :first, value_method: :last, checked: @selected_modes, label: '',
-            collection_wrapper_class: 'col-xs-offset-1', collection_wrapper_tag: :div
+            = f.input :modes, as: :check_boxes, collection: @transit_modes, label_method: :first, value_method: :last, checked: @selected_modes, label: '', collection_wrapper_class: 'col-xs-offset-1', collection_wrapper_tag: :div
 
             :javascript
               $('#transitModes input[type="checkbox"]').change( function() {
@@ -111,8 +109,10 @@
       -if @show_booking
         = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button pull-right" do
           =t(:ecolane_login_button)
-  = render partial: 'shared/splash'
-
+    .col-sm-12
+      = render partial: 'shared/page_comments', locals: {key: :trip_footer_comment}
+  %div{:role => "complementary"}
+    = render partial: 'shared/splash'
   -if @show_booking
     = render partial: 'booking_signup'
 :javascript

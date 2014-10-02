@@ -6,6 +6,8 @@
     = render partial: 'shared/trip_plan_breadcrumbs'
 
 .row#gridBaseContainer
+  .col-sm-12
+    = render partial: 'shared/page_comments', locals: {key: :grid_header_comment}
   .col-sm-12.table-responsive
     %table.table-condensed.table-bordered
       %tr
@@ -26,6 +28,8 @@
               .col-sm-12{style:'text-align:center;'}
                 = link_to user_trip_path(@traveler, id: match_trip_id ), class: 'btn action-button' do
                   =t(:details)
+  .col-sm-12
+    = render partial: 'shared/page_comments', locals: {key: :grid_footer_comment}
 
 :javascript
   $(document).ready(function() {
