@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   include ActiveModel::Validations
-
+  extend LocaleHelpers
+  
   # enable roles for this model
   rolify
 
@@ -81,6 +82,10 @@ class User < ActiveRecord::Base
 
   before_create :make_user_profile
 
+  def self.agent_form_collection include_all=true
+    form_collection_from_relation include_all, any_role.where(roles: {name: 'agent'}), false
+  end
+  
   def make_user_profile
     create_user_profile
   end

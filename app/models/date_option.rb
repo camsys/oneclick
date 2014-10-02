@@ -1,18 +1,11 @@
 class DateOption < ActiveRecord::Base
-
+  extend LocaleHelpers
+  
   DEFAULT = 'date_option_all'
 
   # return name value pairs suitable for passing to simple_form collection
   def self.form_collection include_all=true
-    if include_all
-      list = [[I18n.t(:all), -1]]
-    else
-      list = []
-    end
-    all.each do |o|
-      list << [I18n.t(o.name), o.id]
-    end
-    list
+    form_collection_from_relation include_all, all
   end
   
   def get_date_range from_date, to_date

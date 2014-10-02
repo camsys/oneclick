@@ -1,7 +1,7 @@
 class Agency < ActiveRecord::Base
   include Rateable # mixin to handle all rating methods
   include Commentable
-
+  extend LocaleHelpers
   resourcify
 
   belongs_to :parent, class_name: 'Agency'
@@ -21,6 +21,10 @@ class Agency < ActiveRecord::Base
 
   validates :name, :presence => true
   
+  def self.form_collection include_all=true
+    form_collection_from_relation include_all, all, false
+  end
+
   def unselected_users
     User.registered - self.users
   end
