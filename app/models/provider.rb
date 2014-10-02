@@ -3,6 +3,7 @@ require 'carrierwave/orm/activerecord'
 class Provider < ActiveRecord::Base
   include Rateable
   include Commentable
+  extend LocaleHelpers
   resourcify
 
   mount_uploader :logo, ProviderLogoUploader
@@ -20,6 +21,10 @@ class Provider < ActiveRecord::Base
   include Validations
   before_validation :check_url_protocol
   validates :name, presence: true, length: { maximum: Provider.columns_hash['name'].limit }
+
+  def self.form_collection include_all=true
+    form_collection_from_relation include_all, all, false
+  end
   
   def internal_contact
     users.with_role( :internal_contact, self).first

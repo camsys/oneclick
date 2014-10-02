@@ -32,6 +32,9 @@
             .col-sm-2
               = f.input :agent_id, collection: User.agent_form_collection,
                   include_blank: false, label: t(:agents)
+            .col-sm-2
+              = f.input :provider_id, collection: Provider.form_collection,
+                  include_blank: false, label: t(:providers)
 
           .row#custom_dates
             .col-md-1
