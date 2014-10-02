@@ -5,6 +5,9 @@ class Trip < ActiveRecord::Base
   belongs_to :creator, :class_name => "User", :foreign_key => "creator_id"
   belongs_to :trip_purpose
   belongs_to :multi_origin_dest_trip
+  belongs_to :agency
+  belongs_to :outbound_provider, class_name: "Provider", foreign_key: "outbound_provider_id"
+  belongs_to :return_provider, class_name: "Provider", foreign_key: "return_provider_id"
   has_many :trip_places, -> {order("trip_places.sequence ASC")}
   has_many :trip_parts, -> {order("trip_parts.sequence ASC")}
   has_many :itineraries, :through => :trip_parts, :class_name => 'Itinerary'
