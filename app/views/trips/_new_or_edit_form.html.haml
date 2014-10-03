@@ -24,16 +24,17 @@
   .col-sm-7.col-xs-12
     .col-sm-12
       = render partial: 'shared/page_comments', locals: {key: :trip_header_comment}
-    .col-sm-12{:role => "main", :aria => {:label => 'Trip Form'}}
-      = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path(:user_id => @traveler.id) : user_trip_path(:user_id => @traveler.id), :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
-        .col-xs-12.panel.panel-default
-          .panel-body
-            = f.hidden_field :mode
-            = f.hidden_field :from_place_object, :id => "from_place_object"
-            = f.hidden_field :to_place_object, :id => "to_place_object"
-            = f.hidden_field :map_center, id: "map_center"
-            = f.hidden_field :multi_origin_places, id: "multi_origin_places"
-            = f.hidden_field :multi_dest_places, id: "multi_dest_places"
+    .col-sm-12.panel.panel-default{:role => "main", :aria => {:label => 'Trip Form'}, :style => 'padding: 0px;'}
+      .panel-heading
+        .panel-title=t(:trip_parameters)
+      .panel-body
+        = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path(:user_id => @traveler.id) : user_trip_path(:user_id => @traveler.id), :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
+          = f.hidden_field :mode
+          = f.hidden_field :from_place_object, :id => "from_place_object"
+          = f.hidden_field :to_place_object, :id => "to_place_object"
+          = f.hidden_field :map_center, id: "map_center"
+          = f.hidden_field :multi_origin_places, id: "multi_origin_places"
+          = f.hidden_field :multi_dest_places, id: "multi_dest_places"
 
             #tripOptions
               = field_set_tag do
@@ -88,6 +89,7 @@
             = render partial: 'location_input', locals: {dir: 'to', f: f}
 
             .form-group
+<<<<<<< HEAD
               = render partial: 'date_time_input', locals: {dir: 'outbound', f: f}
 
             #returnDatetimeOptions{style: (@trip_proxy.is_round_trip ? '' : 'display: none;')}
@@ -107,9 +109,26 @@
         -if @show_booking
           = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button pull-right" do
             =t(:ecolane_login_button)
+=======
+              = render partial: 'date_time_input', locals: {dir: 'return', f: f}
+          .hidden-xs.hidden-sm{id: "tripMapContainer", 'aria-hidden' => 'true', class: 'hide', style: 'position: absolute; top: 0; right:-520px; z-index: 1000;'}
+            .panel.panel-default
+              .panel-heading.clearfix
+                %button#mapCloseButton.close.pull-right{type: "button", title: t(:close)}
+                  %span{:"aria-hidden" => "true"} &times;
+                  %span.hide Close
+              .panel-body
+                = LeafletMap({ :mapid => "tripMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '500px;', :style => "height: 400px; width: 500px;", :show_location_select => true })
+        .col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
+          = button_tag :type => 'submit', :name => 'planTrip', :class => "btn pull-right action-button" do
+            =t(:next)
+          -if @show_booking
+            = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button pull-right" do
+              =t(:ecolane_login_button)
+>>>>>>> [fixes#79035592] all panels should have title bar; split filters into each section, eg. mode, transfer, etc
     .col-sm-12
       = render partial: 'shared/page_comments', locals: {key: :trip_footer_comment}
-  %div{:role => "complementary"}
+  .col-sm-5.col-xs-12{:role => "complementary"}
     = render partial: 'shared/splash'
   -if @show_booking
     = render partial: 'booking_signup'

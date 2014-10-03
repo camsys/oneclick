@@ -1,5 +1,6 @@
-.col-sm-5.col-xs-12
-  .panel#splash
-    .panel-default
-      = t(:splash).html_safe rescue ''
+.panel.panel-default#splash{style: 'padding:0px;'}
+  .panel-heading
+    .panel-title=t(:splash_title)
+  .panel-body
+    = t(:splash).html_safe rescue ''
 / end of CMS column

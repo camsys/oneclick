@@ -1609,7 +1609,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         if (legendNames.length > 0) { //only show legend container when legend(s) are available
             if ($('#' + legendContainerId).length === 0) {
-                $('#' + accessoryContainerId).append("<div id='" + legendContainerId + "' class='well col-xs-12 hidden-xs-sm' style='padding: 5px;'><h3 style='margin-top:0;'>Legend</h3></div>");
+                var legendPanelTags =
+                    "<div id='" + legendContainerId + "' class='panel panel-default col-xs-12 hidden-xs-sm' style='padding: 0px;'>" +
+                    "<div class='panel-heading'>" + localeDictFinder["legend"] + "</div>" +
+                    "<div class='panel-body'></div>";
+                $('#' + accessoryContainerId).append(legendPanelTags);
             }
             legendNames.forEach(function(el) {
                 legendTags +=
@@ -1618,7 +1622,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                     "<span class='travel-legend-text'>" + el.name + "</span>" +
                     "</div>";
             });
-            $('#' + legendContainerId).append(legendTags);
+            $('#' + legendContainerId + ' .panel-body').append(legendTags);
         } else { //remove Show/Hide legend button
             $('#' + legendButtonId).remove();
         }
@@ -1699,7 +1703,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         if (filterAvailable) {
             if ($('#' + filterContainerId).length === 0) {
-                $('#' + accessoryContainerId).append("<div id='" + filterContainerId + "' class='well col-xs-12 hidden-xs-sm' style='padding: 5px;'></div>");
+                $('#' + accessoryContainerId).append("<div id='" + filterContainerId + "' class='col-xs-12 hidden-xs-sm' style='padding: 0px;'></div>");
             }
 
             //render
@@ -1728,12 +1732,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         modes.forEach(function(mode) {
             if (isFirstMode) {
                 modeFilterTags +=
-                    '<h3 style="margin-top:0;">Filters</h3>' +
-                    '<div class = "col-sm-12" style="padding: 0px;">' +
-                    '<div class = "col-sm-12" style="padding: 0px;">' +
+                    '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
+                    '<div class = "panel-heading">' +
                     '<label>' + localeDictFinder['modes'] + '</label>' +
                     '</div>' +
-                    '<div class="col-sm-12" style="padding: 0px;" id="' + modeContainerId + '">';
+                    '<div class="panel-body"id="' + modeContainerId + '">';
                 isFirstMode = false;
             }
 
@@ -1792,18 +1795,17 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var sliderConfig = null;
         if (typeof(maxTransfer) === 'number' && minTransfer === 0 && maxTransfer > minTransfer) {
             tags =
-                '<div class = "col-sm-12" style="padding: 0px;">' +
-                '<div class = "col-sm-12" style="padding: 0px;">' +
+                '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
+                '<div class = "panel-heading">' +
                 '<label>' + localeDictFinder['number_of_transfers'] + '</label>' +
                 '</div>' +
-                '<div class="col-sm-12">' +
+                '<div class="panel-body">' +
                 '<div role="slider" id="' + transferSliderId + '" aria-valuemin="' + minTransfer + '" aria-valuemax="' + maxTransfer + '">' +
                 '</div>' +
-                '</div>' +
-                '<div class="col-sm-12" style="margin-bottom: 5px;">' +
+                '<div class="col-sm-12">' +
                 '<span id="' + transferSliderId + '_min_val_label" class="pull-left">' + minTransfer.toString() + '</span>' +
                 '<span id="' + transferSliderId + '_max_val_label" class="pull-right">' + maxTransfer.toString() + '</span>' +
-                '</div></div>';
+                '</div></div></div>';
             sliderConfig = {
                 id: transferSliderId,
                 values: [minTransfer, maxTransfer],
@@ -1857,18 +1859,17 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             minCost = getRoundMinValue(minCost);
             maxCost = getRoundMaxValue(maxCost);
             tags =
-                '<div class = "col-sm-12" style="padding: 0px;">' +
-                '<div class = "col-sm-12" style="padding: 0px;">' +
+                '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
+                '<div class = "panel-heading">' +
                 '<label>' + localeDictFinder['fare'] + '</label>' +
                 '</div>' +
-                '<div class="col-sm-12">' +
+                '<div class="panel-body">' +
                 '<div role="slider" id="' + costSliderId + '" aria-valuemin="' + minCost + '" aria-valuemax="' + maxCost + '">' +
                 '</div>' +
-                '</div>' +
-                '<div class="col-sm-12" style="margin-bottom: 5px;">' +
+                '<div class="col-sm-12">' +
                 '<span id="' + costSliderId + '_min_val_label" class="pull-left">$' + minCost.toString() + '</span>' +
                 '<span id="' + costSliderId + '_max_val_label" class="pull-right">$' + maxCost.toString() + '</span>' +
-                '</div></div>';
+                '</div></div></div>';
             sliderConfig = {
                 id: costSliderId,
                 values: [minCost, maxCost],
@@ -1923,18 +1924,17 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             minDuration = getRoundMinValue(minDuration / 60);
             maxDuration = getRoundMaxValue(maxDuration / 60);
             tags =
-                '<div class = "col-sm-12" style="padding: 0px;">' +
-                '<div class = "col-sm-12" style="padding: 0px;">' +
+                '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
+                '<div class = "panel-heading">' +
                 '<label>' + localeDictFinder['trip_time'] + '</label>' +
                 '</div>' +
-                '<div class="col-sm-12">' +
+                '<div class="panel-body">' +
                 '<div role="slider" id="' + durationSliderId + '" aria-valuemin="' + minDuration + '" aria-valuemax="' + maxDuration + '">' +
                 '</div>' +
-                '</div>' +
-                '<div class="col-sm-12" style="margin-bottom: 5px;">' +
+                '<div class="col-sm-12">' +
                 '<span id="' + durationSliderId + '_min_val_label" class="pull-left">' + minDuration.toString() + localeDictFinder['minute_abbr'] + '</span>' +
                 '<span id="' + durationSliderId + '_max_val_label" class="pull-right">' + maxDuration.toString() + localeDictFinder['minute_abbr'] + '</span>' +
-                '</div></div>';
+                '</div></div></div>';
             sliderConfig = {
                 id: durationSliderId,
                 values: [minDuration, maxDuration],
