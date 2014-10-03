@@ -44,6 +44,8 @@ class TripsDatatable < AjaxDatatablesRails::Base
 
   def get_data(current_user, report)
     options[:dates] = DateOption.find(report.date_range)
+    options[:agent_id] = report.agent_id
+    
     get_raw_records report.from_date, report.to_date
   end
 
@@ -64,11 +66,14 @@ class TripsDatatable < AjaxDatatablesRails::Base
   def get_raw_records from_date=nil, to_date=nil
     from_date ||= options[:from_date]
     to_date ||= options[:to_date]
+    agent_id = (options[:agent_id] && (options[:agent_id] != '-1')) ? options[:agent_id] : false
     
-    Trip.includes(:user, :creator, :trip_places, :trip_purpose, :desired_modes, :trip_parts)
+    records = Trip.includes(:user, :creator, :trip_places, :trip_purpose, :desired_modes, :trip_parts)
       .where(trip_parts: {scheduled_time: options[:dates].get_date_range(from_date, to_date)})
       .order('trip_places.sequence').order('trip_parts.sequence')
       .references(:user, :creator, :trip_places, :trip_purpose, :desired_modes, :trip_parts)
+    records = records.where(creator_id: agent_id) if agent_id
+    records
   end
 
   # ==== Insert 'presenter'-like methods below if necessary

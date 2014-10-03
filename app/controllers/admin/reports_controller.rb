@@ -7,7 +7,10 @@ class Admin::ReportsController < Admin::BaseController
   DATE_OPTION_SESSION_KEY = 'date_range'
   DATE_OPTION_FROM_KEY = 'from_date'
   DATE_OPTION_TO_KEY = 'to_date'
-
+  AGENCY_OPTION_KEY = 'agency'
+  AGENT_OPTION_KEY = 'agent'
+  PROVIDER_OPTION_KEY = 'provider'
+  
   def index
     @reports = Report.all
     @generated_report = GeneratedReport.new({})
@@ -28,26 +31,14 @@ class Admin::ReportsController < Admin::BaseController
     @generated_report = GeneratedReport.new(params[:generated_report])
     @report = Report.find(@generated_report.report_name)
 
-    # TODO clean up or get rid of this
-    # Filtering logic. See ApplicationHelper.trip_filters
-    if params[:time_filter_type]
-      @time_filter_type = params[:time_filter_type]
-    else
-      @time_filter_type = session[TIME_FILTER_TYPE_SESSION_KEY]
-    end
-    # if it is still not set use the default
-    if @time_filter_type.nil?
-      # default is to use the first time period filter in the TimeFilterHelper class
-      @time_filter_type = "0"
-    end
-    # store it in the session
-    session[TIME_FILTER_TYPE_SESSION_KEY] = @time_filter_type
-    params[:time_filter_type] = @time_filter_type
-
+    # Store filter settings in session for ajax calls.
     @generated_report.date_range ||= session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
     session[DATE_OPTION_SESSION_KEY] = @generated_report.date_range
     session[DATE_OPTION_FROM_KEY] = @generated_report.from_date
     session[DATE_OPTION_TO_KEY] = @generated_report.to_date
+    session[AGENCY_OPTION_KEY] = @generated_report.agency_id
+    session[AGENT_OPTION_KEY] = @generated_report.agent_id
+    session[PROVIDER_OPTION_KEY] = @generated_report.provider_id
     
     if @report
                     
@@ -94,7 +85,12 @@ class Admin::ReportsController < Admin::BaseController
         from_date = session[DATE_OPTION_FROM_KEY]
         to_date = session[DATE_OPTION_TO_KEY]
 
-        render json: TripsDatatable.new(view_context, {dates: date_option, from_date: from_date, to_date: to_date})
+        render json: TripsDatatable.new(view_context,
+                                        { dates: date_option,
+                                          from_date: from_date,
+                                          to_date: to_date,
+                                          agent_id: session[AGENT_OPTION_KEY],
+                                        })
       end
     end
   end
