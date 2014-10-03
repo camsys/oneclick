@@ -16,12 +16,12 @@
   .col-sm-7.col-xs-12
     .col-sm-12
       = render partial: 'shared/page_comments', locals: {key: :options_header_comment}
-    .col-sm-12{role: 'main', aria: {label: 'User Characteristics Form'}}
-    = render partial: 'form', :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
-    / end of options column
-    .col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
-      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn pull-right action-button" do
-        =t(:next)
+    .col-sm-12{role: 'main', aria: {label: 'Eligibility and Accommodation Form'}}
+      = render partial: 'form', :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
+      / end of options column
+      .col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
+        = button_tag :type => 'submit', :name => 'planTrip', :class => "btn pull-right action-button" do
+          =t(:next)
     .col-sm-12
       = render partial: 'shared/page_comments', locals: {key: :options_footer_comment}
   %div{:role => "complementary"}

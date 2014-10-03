@@ -25,90 +25,88 @@
     .col-sm-12
       = render partial: 'shared/page_comments', locals: {key: :trip_header_comment}
     .col-sm-12{:role => "main", :aria => {:label => 'Trip Form'}}
-    = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path(:user_id => @traveler.id) : user_trip_path(:user_id => @traveler.id), :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
-      .col-xs-12.panel.panel-default
-        .panel-body
-          = f.hidden_field :mode
-          = f.hidden_field :from_place_object, :id => "from_place_object"
-          = f.hidden_field :to_place_object, :id => "to_place_object"
-          = f.hidden_field :map_center, id: "map_center"
-          = f.hidden_field :multi_origin_places, id: "multi_origin_places"
-          = f.hidden_field :multi_dest_places, id: "multi_dest_places"
+      = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path(:user_id => @traveler.id) : user_trip_path(:user_id => @traveler.id), :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
+        .col-xs-12.panel.panel-default
+          .panel-body
+            = f.hidden_field :mode
+            = f.hidden_field :from_place_object, :id => "from_place_object"
+            = f.hidden_field :to_place_object, :id => "to_place_object"
+            = f.hidden_field :map_center, id: "map_center"
+            = f.hidden_field :multi_origin_places, id: "multi_origin_places"
+            = f.hidden_field :multi_dest_places, id: "multi_dest_places"
 
-          #tripOptions
+            #tripOptions
+              = field_set_tag do
+                .inline-radio
+                  = f.input :is_round_trip, as: :radio_buttons, label: t(:trip), collection: [[t(:round_trip), 1], [t(:one_way), 0]], checked: (@trip_proxy.is_round_trip ? "1" : "0")
+
+                :javascript
+                  $('#tripOptions :radio').change(function() {
+                    if(this.value === '0') {
+                      $('#returnDatetimeOptions').hide();
+                    } else {
+                      $('#returnDatetimeOptions').show();
+                    }
+                  });
+
             = field_set_tag do
-              %legend.sr-only Trip type
-              .inline-radio
-                = f.input :is_round_trip, as: :radio_buttons, label: t(:trip), collection: [[t(:round_trip), 1], [t(:one_way), 0]], checked: (@trip_proxy.is_round_trip ? "1" : "0"), label_html: {"aria-hidden" => "true"}
+              #baseModes
+                = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes, label: t(:modes)
 
               :javascript
-                $('#tripOptions :radio').change(function() {
-                  if(this.value === '0') {
-                    $('#returnDatetimeOptions').hide();
+                $('#trip_proxy_modes_mode_transit').change(function() {
+                  if(this.checked) {
+                    $('#transitModes input[type="checkbox"]').each(function() {
+                        this.checked = true;
+                    });
                   } else {
-                    $('#returnDatetimeOptions').show();
+                    $('#transitModes input[type="checkbox"]').each(function() {
+                        this.checked = false;
+                    });
                   }
                 });
 
-          = field_set_tag do
-            %legend.sr-only Modes
-            #baseModes
-              = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes, label: t(:modes), label_html: {"aria-hidden" => "true"}
+              #transitModes
+                = f.input :modes, as: :check_boxes, collection: @transit_modes, label_method: :first, value_method: :last, checked: @selected_modes, label: '', collection_wrapper_class: 'col-xs-offset-1', collection_wrapper_tag: :div
 
-            :javascript
-              $('#trip_proxy_modes_mode_transit').change(function() {
-                if(this.checked) {
-                  $('#transitModes input[type="checkbox"]').each(function() {
-                      this.checked = true;
+                :javascript
+                  $('#transitModes input[type="checkbox"]').change( function() {
+                    var checkedCount = $('#transitModes input:checked').length;
+                    if (checkedCount === 0) {
+                      $("#trip_proxy_modes_mode_transit").prop('checked', false);
+                    } else {
+                      $("#trip_proxy_modes_mode_transit").prop('checked', true);
+                    }
                   });
-                } else {
-                  $('#transitModes input[type="checkbox"]').each(function() {
-                      this.checked = false;
-                  });
-                }
-              });
 
-            #transitModes
-              = f.input :modes, as: :check_boxes, collection: @transit_modes, label_method: :first, value_method: :last, checked: @selected_modes, label: '', collection_wrapper_class: 'col-xs-offset-1', collection_wrapper_tag: :div
+            -if I18n.locale == :tags
+              = f.input :trip_purpose_id, :collection =>  TripPurpose.all, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes),input_html: { class: 'form-control' }
+            -else
+              = f.input :trip_purpose_id, :collection =>  TripPurpose.ordered_by_localized_name, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes),input_html: { class: 'form-control' }
 
-              :javascript
-                $('#transitModes input[type="checkbox"]').change( function() {
-                  var checkedCount = $('#transitModes input:checked').length;
-                  if (checkedCount === 0) {
-                    $("#trip_proxy_modes_mode_transit").prop('checked', false);
-                  } else {
-                    $("#trip_proxy_modes_mode_transit").prop('checked', true);
-                  }
-                });
+            = render partial: 'location_input', locals: {dir: 'from', f: f}
+            = render partial: 'location_input', locals: {dir: 'to', f: f}
 
-          -if I18n.locale == :tags
-            = f.input :trip_purpose_id, :collection =>  TripPurpose.all, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes),input_html: { class: 'form-control' }
-          -else
-            = f.input :trip_purpose_id, :collection =>  TripPurpose.ordered_by_localized_name, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes),input_html: { class: 'form-control' }
-
-          = render partial: 'location_input', locals: {dir: 'from', f: f}
-          = render partial: 'location_input', locals: {dir: 'to', f: f}
-
-          .form-group
-            = render partial: 'date_time_input', locals: {dir: 'outbound', f: f}
-
-          #returnDatetimeOptions{style: (@trip_proxy.is_round_trip ? '' : 'display: none;')}
             .form-group
-              = render partial: 'date_time_input', locals: {dir: 'return', f: f}
-          .hidden-xs.hidden-sm{id: "tripMapContainer", 'aria-hidden' => 'true', class: 'hide', style: 'position: absolute; top: 0; right:-520px; z-index: 1000;'}
-            .panel.panel-default
-              .panel-heading.clearfix
-                %button#mapCloseButton.close.pull-right{type: "button", title: t(:close)}
-                  %span{:"aria-hidden" => "true"} &times;
-                  %span.hide Close
-              .panel-body
-                = LeafletMap({ :mapid => "tripMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '500px;', :style => "height: 400px; width: 500px;", :show_location_select => true })
-    .col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
-      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn pull-right action-button" do
-        =t(:next)
-      -if @show_booking
-        = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button pull-right" do
-          =t(:ecolane_login_button)
+              = render partial: 'date_time_input', locals: {dir: 'outbound', f: f}
+
+            #returnDatetimeOptions{style: (@trip_proxy.is_round_trip ? '' : 'display: none;')}
+              .form-group
+                = render partial: 'date_time_input', locals: {dir: 'return', f: f}
+            .hidden-xs.hidden-sm{id: "tripMapContainer", 'aria-hidden' => 'true', class: 'hide', style: 'position: absolute; top: 0; right:-520px; z-index: 1000;'}
+              .panel.panel-default
+                .panel-heading.clearfix
+                  %button#mapCloseButton.close.pull-right{type: "button", title: t(:close)}
+                    %span{:"aria-hidden" => "true"} &times;
+                    %span.hide Close
+                .panel-body
+                  = LeafletMap({ :mapid => "tripMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '500px;', :style => "height: 400px; width: 500px;", :show_location_select => true })
+      .col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
+        = button_tag :type => 'submit', :name => 'planTrip', :class => "btn pull-right action-button" do
+          =t(:next)
+        -if @show_booking
+          = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button pull-right" do
+            =t(:ecolane_login_button)
     .col-sm-12
       = render partial: 'shared/page_comments', locals: {key: :trip_footer_comment}
   %div{:role => "complementary"}
