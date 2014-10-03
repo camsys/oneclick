@@ -8,7 +8,7 @@ class GeneratedReport
         :traveler_type, :trip_purpose, :display_type, :summary_type
 
   def initialize(hash)
-    hash.each {|k,v| public_send("#{k}=",v)}
+    hash.each {|k,v| public_send("#{k}=", (v == "-1") ? false : v)}
   end
   
   def persisted?
