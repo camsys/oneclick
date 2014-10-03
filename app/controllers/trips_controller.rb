@@ -579,6 +579,8 @@ class TripsController < PlaceSearchingController
       @trip.trip_purpose = updated_trip.trip_purpose
       @trip.desired_modes = updated_trip.desired_modes
       @trip.creator = @traveler
+      @trip.agency = @traveler.agency
+      
       updated_trip.trip_places.each do |tp|
         tp.trip = @trip
         @trip.trip_places << tp

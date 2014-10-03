@@ -89,6 +89,7 @@ class Admin::ReportsController < Admin::BaseController
                                         { dates: date_option,
                                           from_date: from_date,
                                           to_date: to_date,
+                                          agency_id: session[AGENCY_OPTION_KEY],
                                           agent_id: session[AGENT_OPTION_KEY],
                                         })
       end

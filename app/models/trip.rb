@@ -46,6 +46,7 @@ class Trip < ActiveRecord::Base
   def self.create_from_proxy trip_proxy, user, traveler
     trip = Trip.new()
     trip.creator = user
+    trip.agency = user.agency
     trip.user = traveler
     trip.trip_purpose = TripPurpose.find(trip_proxy.trip_purpose_id)
     trip.desired_modes = Mode.where(code: trip_proxy.modes)

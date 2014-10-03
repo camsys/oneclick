@@ -9,7 +9,7 @@ class TripsDatatable < AjaxDatatablesRails::Base
     # list columns inside the Array in string dot notation.
     # Example: 'users.email'
     if @sortable_columns.nil?
-      @sortable_columns = ['trips.id', 'trips.created_at', 'users.first_name',
+      @sortable_columns = ['trips.id', 'trips.created_at', 'users.first_name', 'agencies.name',
                            '', 'modes.name', 'trips.ui_mode',
                            '', '', '', '', '', '', '', '', '',
                            '', '', '', '', '', '', '', '', '',
@@ -30,7 +30,7 @@ class TripsDatatable < AjaxDatatablesRails::Base
 
   # These methods match the common reports_controller interface
   def get_columns
-    cols = [:id, :created, :user, :assisted_by, :modes, :ui_mode,
+    cols = [:id, :created, :user, :agency, :assisted_by, :modes, :ui_mode,
             :leaving_from, :from_lat, :from_lon, :out_arrive_or_depart, :out_datetime,
             :going_to, :to_lat, :to_lon, :in_arrive_or_depart, :in_datetime,
             :round_trip, :eligibility, :accommodations, :outbound_itinerary_modes, :return_itinerary_modes,
@@ -57,7 +57,7 @@ class TripsDatatable < AjaxDatatablesRails::Base
       record = record.decorate
       result = []
       cols.each do |col|
-        result << record.send(col)
+        result << record.send(col).to_s
       end
       result
     end
@@ -66,12 +66,14 @@ class TripsDatatable < AjaxDatatablesRails::Base
   def get_raw_records from_date=nil, to_date=nil
     from_date ||= options[:from_date]
     to_date ||= options[:to_date]
+    agency_id = (options[:agency_id] && (options[:agency_id] != '-1')) ? options[:agency_id] : false
     agent_id = (options[:agent_id] && (options[:agent_id] != '-1')) ? options[:agent_id] : false
     
-    records = Trip.includes(:user, :creator, :trip_places, :trip_purpose, :desired_modes, :trip_parts)
+    records = Trip.includes(:user, :agency, :creator, :trip_places, :trip_purpose, :desired_modes, :trip_parts)
       .where(trip_parts: {scheduled_time: options[:dates].get_date_range(from_date, to_date)})
       .order('trip_places.sequence').order('trip_parts.sequence')
-      .references(:user, :creator, :trip_places, :trip_purpose, :desired_modes, :trip_parts)
+      .references(:user, :agency, :creator, :trip_places, :trip_purpose, :desired_modes, :trip_parts)
+    records = records.where(agency_id: agency_id) if agency_id
     records = records.where(creator_id: agent_id) if agent_id
     records
   end
