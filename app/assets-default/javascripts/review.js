@@ -298,6 +298,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         resizePlanColumns();
         resizeAllCharts();
 
+        $('.ui-slider-handle').empty();
+
         $(".single-plan-chart-container, .trip-mode-cost").tooltip({
             'html': true,
             'container': 'body'
