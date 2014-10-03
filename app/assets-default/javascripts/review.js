@@ -1611,7 +1611,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             if ($('#' + legendContainerId).length === 0) {
                 var legendPanelTags =
                     "<div id='" + legendContainerId + "' class='panel panel-default col-xs-12 hidden-xs-sm' style='padding: 0px;'>" +
-                    "<div class='panel-heading'>" + localeDictFinder["legend"] + "</div>" +
+                    "<div class='panel-heading'><div class='panel-title'>" + localeDictFinder["legend"] + "</div></div>" +
                     "<div class='panel-body'></div>";
                 $('#' + accessoryContainerId).append(legendPanelTags);
             }
@@ -1734,7 +1734,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 modeFilterTags +=
                     '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                     '<div class = "panel-heading">' +
-                    '<label>' + localeDictFinder['modes'] + '</label>' +
+                    '<div class="panel-title">' + localeDictFinder['modes'] + '</div>' +
                     '</div>' +
                     '<div class="panel-body"id="' + modeContainerId + '">';
                 isFirstMode = false;
@@ -1797,7 +1797,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<label>' + localeDictFinder['number_of_transfers'] + '</label>' +
+                '<div class="panel-title">' + localeDictFinder['number_of_transfers'] + '</div>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div role="slider" id="' + transferSliderId + '" aria-valuemin="' + minTransfer + '" aria-valuemax="' + maxTransfer + '">' +
@@ -1861,7 +1861,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<label>' + localeDictFinder['fare'] + '</label>' +
+                '<div class="panel-title">' + localeDictFinder['fare'] + '</div>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div role="slider" id="' + costSliderId + '" aria-valuemin="' + minCost + '" aria-valuemax="' + maxCost + '">' +
@@ -1926,7 +1926,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<label>' + localeDictFinder['trip_time'] + '</label>' +
+                '<div class="panel-title">' + localeDictFinder['trip_time'] + '</div>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div role="slider" id="' + durationSliderId + '" aria-valuemin="' + minDuration + '" aria-valuemax="' + maxDuration + '">' +
