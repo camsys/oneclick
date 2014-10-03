@@ -48,8 +48,7 @@ class SystemUsageReport
 
     trip_base = Trip.where(scheduled_time: date_range)
     trip_base = trip_base.where(agency_id: report.agency_id) if report.agency_id
-    trip_base = trip_base.where(creator_id: report.agent_id) if report.agent_id
-    trip_base = trip_base.where(creator_id: report.agent_id) if report.agent_id
+    trip_base = trip_base.where(creator_id: report.agent_id).where.not(user_id: report.agent_id) if report.agent_id
     trip_base = trip_base.where("outbound_provider_id = ? OR return_provider_id = ?",
                                 report.provider_id, report.provider_id) if report.provider_id
 
