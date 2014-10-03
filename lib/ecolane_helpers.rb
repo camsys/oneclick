@@ -364,6 +364,9 @@ class EcolaneHelpers
   def send_request(url, type='GET', message=nil)
 
     url.sub! " ", "%20"
+
+    Rails.logger.info(url)
+
     begin
       uri = URI.parse(url)
       case type.downcase

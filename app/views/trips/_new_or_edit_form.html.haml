@@ -1,11 +1,11 @@
 .row
   .col-sm-7
-    .hidden-xs.col-sm-8{:role => "navigation", :aria => {:label => 'Breadcrumbs'}}
+    .hidden-xs.col-sm-7{:role => "navigation", :aria => {:label => 'Breadcrumbs'}}
       = render partial: 'shared/trip_plan_breadcrumbs'
-    .col-sm-4{style: "padding: 0px;"}
+    .col-sm-5{style: "padding: 0px;"}
       .pull-right
         -if @show_booking
-          = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button" do
+          = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;"  do
             =t(:ecolane_login_button)
             :javascript
               $(function() {
@@ -107,7 +107,7 @@
       .col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
         .pull-right
           -if @show_booking
-            = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button" do
+            = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;" do
               =t(:ecolane_login_button)
           = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
             =t(:next)

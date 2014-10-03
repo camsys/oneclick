@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => :initial_booking
   load_and_authorize_resource except: [:edit, :assist]
 
   def index
@@ -132,7 +132,7 @@ class UsersController < ApplicationController
     if user_service
       u = user_service.user_profile.user
     else
-      u = User.where(email: external_user_id + '@sample.com').first_or_create
+      u = User.where(email: external_user_id + '@example.com').first_or_create
       u.first_name = first_name
       u.last_name = last_name
       u.password = dob
