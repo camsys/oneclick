@@ -161,6 +161,14 @@ class TripsController < PlaceSearchingController
     @trip.trip_parts.each do |trip_part|
       @is_plan_valid = trip_part.itineraries.selected.valid.count == 1
       break if !@is_plan_valid
+      service = trip_part.itineraries.selected.valid.first.service
+      if service
+        if trip_part.is_return_trip?
+          @trip.return_provider_id = service.provider.id
+        else
+          @trip.outbound_provider_id = service.provider.id
+        end
+      end
     end
 
     if assisting?

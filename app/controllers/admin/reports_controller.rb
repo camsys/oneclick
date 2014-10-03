@@ -91,6 +91,7 @@ class Admin::ReportsController < Admin::BaseController
                                           to_date: to_date,
                                           agency_id: session[AGENCY_OPTION_KEY],
                                           agent_id: session[AGENT_OPTION_KEY],
+                                          provider_id: session[PROVIDER_OPTION_KEY],
                                         })
       end
     end

@@ -23,7 +23,7 @@ class Provider < ActiveRecord::Base
   validates :name, presence: true, length: { maximum: Provider.columns_hash['name'].limit }
 
   def self.form_collection include_all=true
-    form_collection_from_relation include_all, all, false
+    form_collection_from_relation include_all, order(:name), false
   end
   
   def internal_contact

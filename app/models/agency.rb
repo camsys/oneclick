@@ -22,7 +22,7 @@ class Agency < ActiveRecord::Base
   validates :name, :presence => true
   
   def self.form_collection include_all=true
-    form_collection_from_relation include_all, all, false
+    form_collection_from_relation include_all, order(:name), false
   end
 
   def unselected_users
