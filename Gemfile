@@ -65,7 +65,7 @@ gem 'rgeo-shapefile'
 gem 'leaflet-rails', github: 'camsys/leaflet-rails'
 gem 'mini_magick'
 gem 'carrierwave'
-gem 'poltergeist'
+#gem 'poltergeist' #TODO map_print screen capture
 
 group :development do
   # gem 'ffi-geos'

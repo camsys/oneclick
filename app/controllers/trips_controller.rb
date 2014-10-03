@@ -727,25 +727,25 @@ class TripsController < PlaceSearchingController
   end
 
   # TODO: clean up code after local testing works
+  # TODO: comment out as map_print is deferred
   def print_itinerary_map
-    require 'capybara/poltergeist'
-    require 'base64'
+    #require 'capybara/poltergeist'
 
-    itin_id = params[:itin]
+    #itin_id = params[:itin]
 
-    print_url = root_url(locale:'') + itinerary_map_trip_path + '?itin=' + itin_id.to_s
+    #print_url = root_url(locale:'') + itinerary_map_trip_path + '?itin=' + itin_id.to_s
 
     #new_thread = Thread.new do ## putting section below in a new thread will work, but cant join to main thread
-    browser = Capybara::Session.new :poltergeist
+    #  browser = Capybara::Session.new :poltergeist
 
-    browser.visit print_url
+    #  browser.visit print_url
 
-    tempfile = Tempfile.new(['itinerary_map','.jpeg'])
-    browser.driver.render tempfile.path
+    #  tempfile = Tempfile.new(['itinerary_map','.jpeg'])
+    #  browser.driver.render tempfile.path
 
-    image = MiniMagick::Image.read tempfile
-    image.crop "500x300+0+0" # only get itinerary map
-    FileUtils.cp(image.path, 'map.jpeg') #only for local testing; will encode the file and send the code back
+    #  image = MiniMagick::Image.read tempfile
+    #  image.crop "500x300+0+0" # only get itinerary map
+    #  FileUtils.cp(image.path, 'map.jpeg') #only for local testing; will encode the file and send the code back
 
     #ActiveRecord::Base.connection.close
     #end
