@@ -75,7 +75,7 @@ class TripsDatatable < AjaxDatatablesRails::Base
       .order('trip_places.sequence').order('trip_parts.sequence')
       .references(:user, :agency, :creator, :trip_places, :trip_purpose, :desired_modes, :trip_parts)
     records = records.where(agency_id: agency_id) if agency_id
-    records = records.where(creator_id: agent_id) if agent_id
+    records = records.where(creator_id: agent_id).where.not(user_id: agent_id) if agent_id
     records = records.where("outbound_provider_id = ? OR return_provider_id = ?",
                             provider_id, provider_id) if provider_id
     records
