@@ -1,6 +1,6 @@
-module Admin::CommentsHelper
+COMMENT_ATTRIBUTES = [:comment, :locale, :visibility, :id, :_destroy]
 
-  COMMENT_ATTRIBUTES = [:comment, :locale, :visibility, :id, :_destroy]
+module Admin::CommentsHelper
 
   def setup_comments commentable
     %w{public private}.each do |visibility|
