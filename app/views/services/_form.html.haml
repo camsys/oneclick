@@ -67,7 +67,7 @@
                 %th.text-center
                   = t(:end_time)
                 %th.text-center
-                  Clear?
+                  = t(:clear_?)
             %tbody
               - # display each day of week
               - count = 0
@@ -123,6 +123,42 @@
               name: "service[notice_minutes_part]"}
           %b minutes
           = " " + t(:service_notice_str) + "."
+          - # booking cut off time editing
+          %table.ALTtable
+            %thead
+              %tr
+                %th.text-center
+                  = t('datetime.prompts.day')
+                %th.text-center
+                  = t(:cut_off_time)
+                %th.text-center
+                  = t(:clear_?)
+            %tbody
+              - # display each day of week
+              - count = 0
+              - (0..6).each do |day_of_week|
+                - cut_off_time = @cut_off_times[day_of_week]
+                - cut_off_time_error = @service.errors.messages["booking_cut_off_times.#{day_of_week}cut_off_time".to_sym]
+                %tr
+                  %td.text-center{class: "#{cut_off_time_error ? 'has-error' : ''}" }
+                    %label.control-label
+                      = t('date.day_names')[day_of_week]
+                  %td{class: "#{cut_off_time_error ? 'has-error' : ''}" }
+                    %input.form-control.text-right{type: "text",
+                          value: "#{cut_off_time.cut_off_time if cut_off_time}",
+                          name: "service[booking_cut_off_times_attributes][][cut_off_time]"}
+                    - if cut_off_time_error
+                      %span.help-block<
+                        = cut_off_time_error.first
+                  %td
+                    %input.form-control.checkbox{type: "checkbox",
+                          value: "1", name: "service[booking_cut_off_times_attributes][][_destroy]"}
+                  - if cut_off_time && cut_off_time.id
+                    %input{type: "hidden", value: "#{cut_off_time.id}",
+                           name: "service[booking_cut_off_times_attributes][][id]"}
+                  - else
+                    %input{type: "hidden", value: "#{day_of_week}",
+                           name: "service[booking_cut_off_times_attributes][][day_of_week]"}
 
     .col-sm-4
       .panel.panel-default.well2

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141002200453) do
+ActiveRecord::Schema.define(version: 20141003193215) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,15 @@ ActiveRecord::Schema.define(version: 20141002200453) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "creator",                            null: false
+  end
+
+  create_table "booking_cut_off_times", force: true do |t|
+    t.integer  "service_id",                     null: false
+    t.integer  "day_of_week",                    null: false
+    t.boolean  "active",          default: true, null: false
+    t.integer  "cut_off_seconds",                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "boundaries", force: true do |t|

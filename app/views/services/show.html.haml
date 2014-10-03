@@ -31,7 +31,7 @@
                 = button_to t(:ok), { action: "destroy", id: @service.id }, method: :delete,  style: "margin-right: 5px;", class: "btn action-button pull-right"
                 .modal-title{:style => "text-align:left;"}
                   %b
-                    = t(:site_title) 
+                    = t(:site_title)
               .modal-body{:style => "text-align:left;"}
                 = t(:confirm_remove_message) + @service.name + " ?"
       - if can? :update, @service
@@ -39,8 +39,8 @@
           = icon_label(:edit)
 .row
   = render partial: "public_details", locals: { service: @service}
-        
-  -if can? :full_read, @service      
+
+  -if can? :full_read, @service
     .col-sm-6
       .panel.panel-default
         .panel-heading
@@ -108,6 +108,20 @@
             =" " + t(:service_notice_str) + "."
           -else
             =t(:service_notice_not_required) + "."
+          - # booking cut off times
+          %table.ALTtable
+            %tr
+              %th.text-center
+                = t('datetime.prompts.day')
+              %th.text-center
+                = t(:cut_off_time)
+            %tbody
+              -@service.booking_cut_off_times.order(:day_of_week, :cut_off_seconds).each do |cut_off_time|
+                %tr
+                  %td.text-center
+                    = t('date.day_names')[cut_off_time.day_of_week]
+                  %td.text-center
+                    =cut_off_time.cut_off_time_string
     .col-sm-4
       .panel.panel-default.well2
         .panel-heading

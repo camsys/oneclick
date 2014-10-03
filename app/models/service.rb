@@ -3,7 +3,7 @@ class Service < ActiveRecord::Base
   require 'rgeo/shapefile'
   include Rateable # mixin to handle all rating methods
   include Commentable
-  
+
   resourcify
 
   #associations
@@ -11,6 +11,7 @@ class Service < ActiveRecord::Base
   belongs_to :service_type
   has_many :fare_structures
   has_many :schedules
+  has_many :booking_cut_off_times
   has_many :service_accommodations
   has_many :service_characteristics
   has_many :service_trip_purpose_maps
@@ -21,6 +22,9 @@ class Service < ActiveRecord::Base
 
   accepts_nested_attributes_for :schedules, allow_destroy: true,
   reject_if: proc { |attributes| attributes['start_time'].blank? && attributes['end_time'].blank? }
+
+  accepts_nested_attributes_for :booking_cut_off_times, allow_destroy: true,
+  reject_if: proc { |attributes| attributes['cut_off_time'].blank? }
 
   accepts_nested_attributes_for :service_characteristics, allow_destroy: true,
   reject_if: proc { |attributes| attributes['active'] != 'true' }

@@ -203,6 +203,8 @@ protected
                                     :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email,
                                     { schedules_attributes:
                                       [ :day_of_week, :start_time, :end_time, :id, :_destroy ] },
+                                    { booking_cut_off_times_attributes:
+                                      [ :day_of_week, :cut_off_time, :id, :_destroy ] },
                                     { service_characteristics_attributes:
                                       [ :id, :active, :characteristic_id, :group, :value,
                                         :rel_code, :_destroy ] },
@@ -214,7 +216,7 @@ protected
                                       [ :id, :rule, :geo_coverage_id, :_destroy, :keep_record ] },
                                     comments_attributes: COMMENT_ATTRIBUTES,
                                     public_comments_attributes: COMMENT_ATTRIBUTES,
-                                    private_comments_attributes: COMMENT_ATTRIBUTES,                                      
+                                    private_comments_attributes: COMMENT_ATTRIBUTES,
                                     )
   end
 
@@ -225,6 +227,9 @@ protected
   def set_aux_instance_variables
     @schedules = []
     @service.schedules.each {|s| @schedules[s.day_of_week] = s}
+
+    @cut_off_times = []
+    @service.booking_cut_off_times.each {|s| @cut_off_times[s.day_of_week] = s}
 
     @staff = User.with_role(:provider_staff, @service.provider)
     @eh = EligibilityService.new
