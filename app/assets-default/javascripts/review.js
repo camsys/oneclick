@@ -1194,18 +1194,18 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "</div>" +
             "<div class='col-xs-12' style='padding:0px;'>" +
             "<div class='trip-plan-first-column' style='padding: 0px; vertical-align: top;'>" +
-            (isDepartAt ? ("<button role='button' class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>") : "") +
+            (isDepartAt ? ("<button role='button' class='btn btn-xs pull-right prev-period' aria-label='Move trip time back 30 minutes.'> -" + intervelStep + "</button>") : "") +
             "</div>" +
             "<div class='" + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
             (
                 isDepartAt ?
-                ("<button role='button' class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>") :
-                ("<button role='button' class='btn btn-xs pull-right prev-period'> -" + intervelStep + "</button>")
+                ("<button role='button' class='btn btn-xs pull-left next-period' aria-label='Move trip time forward 30 minutes.'> +" + intervelStep + "</button>") :
+                ("<button role='button' class='btn btn-xs pull-right prev-period' aria-label='Move trip time back 30 minutes.'> -" + intervelStep + "</button>")
             ) +
             midDateLabelTags +
             "</div>" +
             "<div class='select-column' style='padding: 0px;'>" +
-            (isDepartAt ? "" : ("<button role='button' class='btn btn-xs pull-left next-period'> +" + intervelStep + "</button>")) +
+            (isDepartAt ? "" : ("<button role='button' class='btn btn-xs pull-left next-period' aria-label='Move trip time forward 30 minutes.'> +" + intervelStep + "</button>")) +
             "</div>" +
             "</div>" +
             "<div class='col-xs-12' style='padding:0px;' aria-hidden='true'>" +
