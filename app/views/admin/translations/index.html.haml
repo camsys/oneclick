@@ -18,10 +18,11 @@
         - @locales.each do |locale|
           - t = tp.translations.find{|t| t.locale==locale.to_s}
           %td
-            - if (t && t.value)
+            - if (t && t.value && !t.value.blank?)
               = link_to t.value.truncate(30), edit_admin_translation_path(t)
             - else
-              = link_to t(:add), new_admin_translation_path(key: tp.key, key_locale: locale.to_s), class: 'btn action-button'
+              - path = (t && t.value && t.value.blank?) ? edit_admin_translation_path(t) : new_admin_translation_path(key: tp.key, key_locale: locale.to_s)
+              = link_to t(:add), path, class: 'btn action-button'
 
 :javascript
   $(document).ready(function() {
