@@ -217,7 +217,7 @@ class EligibilityService
     Rails.logger.info "get_eligible_services_for_trip, after location: #{itineraries.count}"
     itineraries = eligible_by_service_time(trip_part, itineraries)
     Rails.logger.info "get_eligible_services_for_trip, after service time: #{itineraries.count}"
-    itineraries = eligible_by_advanced_notice(trip_part, itineraries)
+    itineraries = eligible_by_advanced_notice_and_booking_cut_off_time(trip_part, itineraries)
     Rails.logger.info "get_eligible_services_for_trip, after advance notice: #{itineraries.count}"
     itineraries = eligible_by_trip_purpose(trip_part, itineraries)
     Rails.logger.info "get_eligible_services_for_trip, after trip purpose: #{itineraries.count}"
@@ -295,41 +295,77 @@ class EligibilityService
 
   def eligible_by_service_time(trip_part, itineraries)
     #TODO: This does not handle services with 24 hour operations well.
+    eligible_itineraries = []
     wday = trip_part.trip_time.wday
     itineraries.each do |itinerary|
       service = itinerary['service']
-      schedules = Schedule.where(day_of_week: wday, service_id: service.id)
-      if schedules.count == 0
-        itinerary['match_score'] += 1
-        itinerary['date_mismatch'] = true
-      end
-      schedules.each do |schedule|
-        # puts "%-30s %-30s %s" % [Time.zone, planned_trip.trip_datetime, planned_trip.trip_datetime.seconds_since_midnight]
-        # puts "%-30s %-30s %s" % [Time.zone, schedule.start_time, schedule.start_time.seconds_since_midnight]
-        # puts "%-30s %-30s %s" % [Time.zone, schedule.end_time, schedule.end_time.seconds_since_midnight]
-        unless trip_part.trip_time.seconds_since_midnight.between?(schedule.start_seconds,schedule.end_seconds)
+      Rails.logger.info service.name
+      unless service.nil?
+        schedule = Schedule.where(day_of_week: wday, service_id: service.id).first
+        if schedule.nil?
           itinerary['match_score'] += 1
-          itinerary['time_mismatch'] = true
+          itinerary['date_mismatch'] = true
+          Rails.logger.info 'date mismatch'
+        else
+          # puts "%-30s %-30s %s" % [Time.zone, planned_trip.trip_datetime, planned_trip.trip_datetime.seconds_since_midnight]
+          # puts "%-30s %-30s %s" % [Time.zone, schedule.start_time, schedule.start_time.seconds_since_midnight]
+          # puts "%-30s %-30s %s" % [Time.zone, schedule.end_time, schedule.end_time.seconds_since_midnight]
+          unless trip_part.trip_time.seconds_since_midnight.between?(schedule.start_seconds,schedule.end_seconds)
+            itinerary['match_score'] += 1
+            itinerary['time_mismatch'] = true
+            Rails.logger.info 'time mismatch'
+          end
         end
+      end
+
+      if itinerary['date_mismatch'] != true and itinerary['time_mismatch'] != true
+        eligible_itineraries << itinerary
       end
     end
 
-    itineraries
+    eligible_itineraries
 
   end
 
-  def eligible_by_advanced_notice(trip_part, itineraries)
-    advanced_notice = (trip_part.trip_time.to_time - trip_part.created_at)/60
-
+  def eligible_by_advanced_notice_and_booking_cut_off_time(trip_part, itineraries)
+    eligible_itineraries = []
     itineraries.each do |itinerary|
-      notice_required = itinerary['service'].advanced_notice_minutes
-      if notice_required > advanced_notice
-        itinerary['match_score'] += 0.01
-        itinerary['too_late'] = true
+      service = itinerary['service']
+      unless service.nil?
+        # get advanced notice days
+        notice_days = 0
+        notice_mins = service.advanced_notice_minutes
+        unless notice_mins.blank?
+          notice_days = notice_mins /(24*60).round
+        end
+
+        trip_created_wday = trip_part.created_at.wday
+
+        # check if after booking_cut_off_time
+        days_after_cut_off_time = 0
+        booking_cut_off_time = service.booking_cut_off_times.where(day_of_week: trip_created_wday, service_id: service.id).first
+        unless booking_cut_off_time.nil?
+          cut_off_seconds = booking_cut_off_time.cut_off_seconds
+          trip_created_seconds = Time.parse(trip_part.created_at).seconds_since_midnight
+
+          if trip_created_seconds > cut_off_seconds
+            days_after_cut_off_time = 1
+          end
+        end
+
+        # compare if scheduled trip time is earlier than earliest allowable trip start time
+        if trip_part.trip_time < ((trip_part.created_at + notice_days + days_after_cut_off_time).midnight)
+          itinerary['match_score'] += 0.01
+          itinerary['too_late'] = true
+        end
+      end
+
+      if itinerary['too_late'] != true
+        eligible_itineraries << itinerary
       end
     end
 
-    itineraries
+    eligible_itineraries
 
   end
 
@@ -339,7 +375,7 @@ class EligibilityService
     translated = group.map do |m|
       translate_service_characteristic_map m
     end
-  
+
     translated.join " AND "
   end
 
@@ -355,5 +391,5 @@ class EligibilityService
       I18n.t(map.characteristic.name)
     end
   end
-  
+
 end

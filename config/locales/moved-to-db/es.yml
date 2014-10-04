@@ -504,6 +504,8 @@ es:
   schedule: "[es236]Schedule[/es]"
   book_ahead: '[es]Book Ahead[/es]'
   note: "[es]Note[/es]"
+  cut_off_time: '[es]Cut Off Time[/es]'
+  clear_?: '[es]Clear?[/es]'
   advance_notice_required: "[es237]Advance Notice Required[/es]"
   service_notice_required: "[es238]This service requires[/es]"
   service_notice_str: "[es239]of advance notice to book a trip[/es]"

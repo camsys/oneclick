@@ -160,6 +160,10 @@ module ApplicationHelper
       time_string = I18n.translate(:less_than_one_minute)
     end
 
+    if options[:days_only]
+      time_string = I18n.translate(:day, count: hours/24.round)
+    end
+
     time_string
   end
 

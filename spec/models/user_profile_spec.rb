@@ -40,6 +40,7 @@ describe UserProfile do
         end
 
         it "has eligible services for traveler but not trip" do
+          pending "todo"
           # THIS TEST IS NOT VALID YET
           Time.zone = tz
           eh = EligibilityService.new

@@ -113,15 +113,16 @@
           %input.text-right{type: "number", min: 0, max: 30,
               value: minutes_total / (60 * 24),
               name: "service[notice_days_part]"}
-          %b days,
-          %input.text-right{type: "number", min: 0, max: 23,
-              value: (minutes_total / 60) % 24,
-              name: "service[notice_hours_part]"}
-          %b hours,
-          %input.text-right{type: "number", min: 0, max: 59,
-              value: minutes_total % 60,
-              name: "service[notice_minutes_part]"}
-          %b minutes
+          %b days
+          - # currently only use advanced_notice_days, may change back to days/hours/minutes
+          /%input.text-right{type: "number", min: 0, max: 23,
+          /    value: (minutes_total / 60) % 24,
+          /    name: "service[notice_hours_part]"}
+          /%b hours,
+          /%input.text-right{type: "number", min: 0, max: 59,
+          /    value: minutes_total % 60,
+          /    name: "service[notice_minutes_part]"}
+          /%b minutes
           = " " + t(:service_notice_str) + "."
           - # booking cut off time editing
           %table.ALTtable

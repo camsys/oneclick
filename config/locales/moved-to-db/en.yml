@@ -523,6 +523,8 @@ en:
   schedule: "Schedule"
   book_ahead: 'Book Ahead'
   note: "Note"
+  cut_off_time: 'Cut Off Time'
+  clear_?: 'Clear?'
   advance_notice_required: "Advance Notice Required"
   service_notice_required: "This service requires"
   service_notice_str: "of advance notice to book a trip"

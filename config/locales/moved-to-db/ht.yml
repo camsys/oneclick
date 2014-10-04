@@ -487,6 +487,8 @@ ht:
   schedule: "[ht]Schedule[/ht]"
   book_ahead: '[ht]Book Ahead[/ht]'
   note: "[ht]Note[/ht]"
+  cut_off_time: '[ht]Cut Off Time[/ht]'
+  clear_?: '[ht]Clear?[/ht]'
   advance_notice_required: "[ht]Advance Notice Required[/ht]"
   service_notice_required: "[ht]This service requires[/ht]"
   service_notice_str: "[ht]of advance notice to book a trip[/ht]"
