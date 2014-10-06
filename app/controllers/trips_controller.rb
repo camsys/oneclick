@@ -3,7 +3,7 @@ class TripsController < PlaceSearchingController
   before_filter :get_trip, :only => [:show, :email, :email_itinerary, :details, :repeat, :edit, :multi_od_grid,
     :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2,
     :show_printer_friendly, :example, :plan, :populate, :book, :itinerary_map, :print_itinerary_map]
-  load_and_authorize_resource only: [:new, :create_multi_od, :create, :show, :index, :update, :edit]
+  load_and_authorize_resource only: [:new, :create, :show, :index, :update, :edit]
 
   before_action :detect_ui_mode
 
@@ -42,7 +42,7 @@ class TripsController < PlaceSearchingController
   # showing plan_a_trip page for multi-od
   # agent only
   def create_multi_od
-    authorize! :see, :staff_menu
+    authorize! :manage, MultiOriginDestTrip
 
     session[:is_multi_od] = true
     session[:multi_od_trip_id] = nil
@@ -63,7 +63,7 @@ class TripsController < PlaceSearchingController
   # showing a grid summary of each O-D trip for multi-OD trip planning
   # agent only
   def multi_od_grid
-    authorize! :see, :staff_menu
+    authorize! :manage, MultiOriginDestTrip
 
     @trip = Trip.find(params[:id]) # base trip
     @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
@@ -588,7 +588,7 @@ class TripsController < PlaceSearchingController
       @trip.desired_modes = updated_trip.desired_modes
       @trip.creator = @traveler
       @trip.agency = @traveler.agency
-      
+
       updated_trip.trip_places.each do |tp|
         tp.trip = @trip
         @trip.trip_places << tp
