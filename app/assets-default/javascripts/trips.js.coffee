@@ -76,6 +76,8 @@ update_place = (placeText, type) ->
   add_multi_od_places(type, placeText)
 
 add_multi_od_places = (dir, addr_text, addr_data) ->
+  if $('#' + dir + '_places').length == 0
+    return
   addr_data = addr_data || {}
   is_addr_full_object = !$.isEmptyObject(addr_data) # whether this is just a address name or full address object
   addr_obj = {
