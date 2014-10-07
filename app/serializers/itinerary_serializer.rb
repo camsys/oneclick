@@ -2,6 +2,7 @@ class ItinerarySerializer < ActiveModel::Serializer
   include CsHelpers
   include ApplicationHelper
   include ActionView::Helpers::NumberHelper
+  include ActionView::Helpers::JavaScriptHelper
 
   attributes :id, :missing_information, :mode, :mode_name, :service_name, :provider_name, :contact_information,
     :cost, :duration, :transfers, :start_time, :end_time, :legs, :service_window, :duration_estimated, :selected
@@ -87,7 +88,7 @@ class ItinerarySerializer < ActiveModel::Serializer
       end
       m <<        {
         type: leg.mode,
-        description: lescape_javascript(eg.short_description),
+        description: escape_javascript(leg.short_description),
         start_time: leg.start_time.iso8601,
         end_time: leg.end_time.iso8601,
         start_place: "#{leg.start_place.lat},#{leg.start_place.lon}",
