@@ -227,6 +227,20 @@ es:
   plan_trip: "Continuar la planificación de este viaje *44*"
   max_notes: '[es133]Max notes[/es]'
 
+  # Page comments
+  trip_header_comment: ''
+  trip_footer_comment: ''
+  multi_od_trip_header_comment: ''
+  multi_od_trip_footer_comment: ''
+  options_header_comment: ''
+  options_footer_comment: ''
+  grid_header_comment: ''
+  grid_footer_comment: ''
+  review_header_comment: ''
+  review_footer_comment: ''
+  plan_header_comment: ''
+  plan_footer_comment: ''
+
   # Trip planning
   enter_address: 'Introduce la dirección'
   location: "[es106]Location[/es]"

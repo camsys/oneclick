@@ -24,7 +24,8 @@
 .row
   .col-sm-7.col-xs-12
     .col-sm-12
-      = render partial: 'shared/page_comments', locals: {key: :trip_header_comment}
+      - header_comment_key = session[:is_multi_od] ? :multi_od_trip_header_comment : :trip_header_comment
+      = render partial: 'shared/page_comments', locals: {key: header_comment_key}
     .col-sm-12.panel.panel-default{:role => "main", :aria => {:label => 'Trip Form'}, :style => 'padding:0px;'}
       .panel-heading
         .panel-title=t(:trip_parameters)
@@ -111,7 +112,8 @@
         = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
           =t(:next)
     .col-sm-12
-      = render partial: 'shared/page_comments', locals: {key: :trip_footer_comment}
+      - footer_comment_key = session[:is_multi_od] ? :multi_od_trip_footer_comment : :trip_footer_comment
+      = render partial: 'shared/page_comments', locals: {key: footer_comment_key}
   .col-sm-5.col-xs-12{:role => "complementary", aria: {label: "Splash text"}}
     = render partial: 'shared/splash'
   -if @show_booking

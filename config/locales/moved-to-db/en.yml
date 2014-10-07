@@ -235,6 +235,8 @@ en:
   # Page comments
   trip_header_comment: ''
   trip_footer_comment: ''
+  multi_od_trip_header_comment: ''
+  multi_od_trip_footer_comment: ''
   options_header_comment: ''
   options_footer_comment: ''
   grid_header_comment: ''
