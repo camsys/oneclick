@@ -72,6 +72,9 @@ class Admin::ProvidersController < ApplicationController
     # special case because need to update rolify
     staff_ids = params[:provider][:staff_ids].reject(&:blank?)
 
+    # TODO This is a little hacky for the moment; might switch to front-end javascript but let's just do this for now.
+    fixup_comments_attributes_for_delete :provider
+
     respond_to do |format|
       if @provider.update_attributes(admin_provider_params)
         # internal_contact is a special case

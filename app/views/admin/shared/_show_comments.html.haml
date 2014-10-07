@@ -15,7 +15,7 @@
                 %dt= [t("locales.#{comment.locale}"), t(:comment)].join(' ')
                 %dd= comment.comment
           - else
-            %p= commentable.public_comments.where(locale: I18n.locale).first.comment rescue t(:no_comments)
+            %p= commentable.public_comments.where(locale: I18n.locale).first.comment.html_safe rescue t(:no_comments)
 
   - if can? :full_read, commentable
     .col-sm-6

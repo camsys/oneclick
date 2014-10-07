@@ -11,4 +11,15 @@ module Admin::CommentsHelper
     end
   end
 
+  def fixup_comments_attributes_for_delete commentable
+    [:public_comments_attributes, :private_comments_attributes].each do |t|
+      params[commentable][t].each do |k, v|
+        # k is the (artificial) index, v is the hash with the form values
+        if v[:comment].blank? && v.include?(:id)
+          v[:_destroy] = 1
+        end
+      end
+    end
+  end
+
 end
