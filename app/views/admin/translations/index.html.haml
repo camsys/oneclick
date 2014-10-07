@@ -1,28 +1,31 @@
-.header
-  = link_to new_admin_translation_path, :class => "btn action-button pull-right" do
-    %i.fa.fa-plus
-    Add Key
-  %h1 Content Translations
-  %p Note: All content translations can be entered as HTML
-
-%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#translations_table
-  %thead
-    %tr
-      %th= t(:key)
-      - @locales.each do |locale|
-        %th= locale
-  %tbody
-    - @translations_proxies.each do |tp|
-      %tr
-        %td= tp.key
-        - @locales.each do |locale|
-          - t = tp.translations.find{|t| t.locale==locale.to_s}
-          %td
-            - if (t && t.value && !t.value.blank?)
-              = link_to t.value.truncate(30), edit_admin_translation_path(t)
-            - else
-              - path = (t && t.value && t.value.blank?) ? edit_admin_translation_path(t) : new_admin_translation_path(key: tp.key, key_locale: locale.to_s)
-              = link_to t(:add), path, class: 'btn action-button'
+.panel.panel-default{style: 'padding: 0px;'}
+  .panel-heading
+    .panel-title
+      .btns.pull-right
+        = link_to new_admin_translation_path, :class => "btn action-button" do
+          Add Key
+      %h1
+        Content Translations
+  .panel-body
+    %p Note: All content translations can be entered as HTML
+    %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#translations_table
+      %thead
+        %tr
+          %th= t(:key)
+          - @locales.each do |locale|
+            %th= locale
+      %tbody
+        - @translations_proxies.each do |tp|
+          %tr
+            %td= tp.key
+            - @locales.each do |locale|
+              - t = tp.translations.find{|t| t.locale==locale.to_s}
+              %td
+                - if (t && t.value && !t.value.blank?)
+                  = link_to t.value.truncate(30), edit_admin_translation_path(t)
+                - else
+                  - path = (t && t.value && t.value.blank?) ? edit_admin_translation_path(t) : new_admin_translation_path(key: tp.key, key_locale: locale.to_s)
+                  = link_to t(:add), path, class: 'btn action-button'
 
 :javascript
   $(document).ready(function() {
