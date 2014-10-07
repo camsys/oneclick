@@ -1,74 +1,74 @@
-.row
-  .col-xs-12
-    %h1= t(:places)
-
 - content_for :head do
   = # stylesheet_link_tag 'typeahead.js-bootstrap.css'
   = # javascript_include_tag asset_path('places.js')
-
-= simple_form_for @places, url: handle_user_places_path(@traveler), html: {class: 'form-horizontal places'}, wrapper: :horizontal_form do |f|
-  .row
-    .col-sm-6
-      .panel.panel-default
-        .panel-body
-          .row
-            .col-xs-12
-              .form-group
+.panel.panel-default{style: 'padding: 0px;'}
+  .panel-heading
+    .panel-title
+      %h1= t(:places)
+  .panel-body
+    = simple_form_for @places, url: handle_user_places_path(@traveler), html: {class: 'form-horizontal places'}, wrapper: :horizontal_form do |f|
+      .row
+        .col-sm-6
+          .panel.panel-default
+            .panel-body
+              .row
                 .col-xs-12
-                  .pull-right
-                    = button_tag type: :submit, disabled: 'true', name: 'save', id: 'save', class: 'btn action-button' do
-                      = t(:save)
-                    = button_tag type: :submit, name: 'delete', class: 'btn action-button' do
-                      = t(:delete)
-                    = button_tag name: 'clear', id: 'clear', type: 'button', class: 'btn action-button' do
-                      = t(:clear)
-          .row
-            .col-xs-12
-              = f.hidden_field :id
-              = f.input :from_place, label: t(:location),
-              input_html: {class: 'form-control', autocomplete: 'off', type: "text"},
-              wrapper: :group do
-                = f.input_field :from_place, class: 'form-control place_picker'
-                %span.input-group-btn
-                  .btn.btn-default{disabled: 'disabled'}
-                    %i.fa.fa-map-marker
-              = f.hidden_field :json
-              = f.input :place_name, style: 'width: 100%;', label: t(:name)
+                  .form-group
+                    .col-xs-12
+                      .pull-right
+                        = button_tag type: :submit, disabled: 'true', name: 'save', id: 'save', class: 'btn action-button' do
+                          = t(:save)
+                        = button_tag type: :submit, name: 'delete', class: 'btn action-button' do
+                          = t(:delete)
+                        = button_tag name: 'clear', id: 'clear', type: 'button', class: 'btn action-button' do
+                          = t(:clear)
+              .row
+                .col-xs-12
+                  = f.hidden_field :id
+                  = f.input :from_place, label: t(:location),
+                  input_html: {class: 'form-control', autocomplete: 'off', type: "text"},
+                  wrapper: :group do
+                    = f.input_field :from_place, class: 'form-control place_picker'
+                    %span.input-group-btn
+                      .btn.btn-default{disabled: 'disabled'}
+                        %i.fa.fa-map-marker
+                  = f.hidden_field :json
+                  = f.input :place_name, style: 'width: 100%;', label: t(:name)
 
-              .form-group
-                %label.col-sm-3.control-label= t(:my_places)
-                .col-sm-9
-                  %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#places-table
-                    %tbody
-                      - @places.places.each_with_index do |place, i|
-                        %tr{id: "place-#{i}", tabindex: 0, title: t(:press_space_or_click_to_select), role: 'button', data: {address: place.raw_address, placename: place.name, json: place.to_json, id: place.id}}
-                          %td{style: 'text-align: center; width: 10%;'}= image_tag place.icon
-                          %td= place.name
-                  :javascript
-                    $("#places-table tr").tooltip({
-                      'html': true,
-                      'container': 'body'
-                    });
+                  .form-group
+                    %label.col-sm-3.control-label= t(:my_places)
+                    .col-sm-9
+                      %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#places-table
+                        %tbody
+                          - @places.places.each_with_index do |place, i|
+                            %tr{id: "place-#{i}", tabindex: 0, title: t(:press_space_or_click_to_select), role: 'button', data: {address: place.raw_address, placename: place.name, json: place.to_json, id: place.id}}
+                              %td{style: 'text-align: center; width: 10%;'}= image_tag place.icon
+                              %td= place.name
+                      :javascript
+                        $("#places-table tr").tooltip({
+                          'html': true,
+                          'container': 'body'
+                        });
 
-              / %td{id: "place-#{i}", data: {address: place.raw_address, placename: place.name, json: place.to_json}}= ('A'..'Z').to_a[i] + ' ' + place.name
+                  / %td{id: "place-#{i}", data: {address: place.raw_address, placename: place.name, json: place.to_json}}= ('A'..'Z').to_a[i] + ' ' + place.name
 
-              / .scrolling-checkbox-list
-              / = f.association :administrators, collection: User.staff_assignable.order(:first_name),
-              /         as: :check_boxes, wrapper: :inline_checkboxes, label: false
-              / = f.input :places, collection: @places.places, as: :check_boxes, wrapper: :inline_checkboxes do
-              /   .scrolling-checkbox-list
-              /   = f.collection_check_boxes :places
-        / .col-xs-3
-        /   My Places
-        / .col-xs-9.places-table-container
-        /   %table.table.table-bordered#places-table
-        /     - @places.places.each_with_index do |place, i|
-        /       %tr
-        /         %td{id: "place-#{i}", data: {address: place.raw_address, placename: place.name, json: place.to_json}}= ('A'..'Z').to_a[i] + ' ' + place.name
+                  / .scrolling-checkbox-list
+                  / = f.association :administrators, collection: User.staff_assignable.order(:first_name),
+                  /         as: :check_boxes, wrapper: :inline_checkboxes, label: false
+                  / = f.input :places, collection: @places.places, as: :check_boxes, wrapper: :inline_checkboxes do
+                  /   .scrolling-checkbox-list
+                  /   = f.collection_check_boxes :places
+            / .col-xs-3
+            /   My Places
+            / .col-xs-9.places-table-container
+            /   %table.table.table-bordered#places-table
+            /     - @places.places.each_with_index do |place, i|
+            /       %tr
+            /         %td{id: "place-#{i}", data: {address: place.raw_address, placename: place.name, json: place.to_json}}= ('A'..'Z').to_a[i] + ' ' + place.name
 
-    .col-sm-6
-      .panel.panel-default
-        .panel-body
-          = LeafletMap({ :mapid => 'placesMap', :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height:500px;" })
+        .col-sm-6
+          .panel.panel-default
+            .panel-body
+              = LeafletMap({ :mapid => 'placesMap', :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height:500px;" })
 
 = yield :scripts

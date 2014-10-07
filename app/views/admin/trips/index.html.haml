@@ -1,6 +1,8 @@
-.row-fluid
-  %h1
-    = t(:trips)
-    = link_to(t(:plan), new_user_trip_path(@traveler),
-      class: "btn btn-default action-button pull-right" )
-= render partial: "trips/trips_display_table", locals: {trips: @trips, traveler: @traveler, show_username: true}
+.panel.panel-default{style: 'padding: 0px;'}
+  .panel-heading
+    .panel-title
+      .btns.pull-right
+        = link_to(t(:plan), new_user_trip_path(@traveler),class: "btn action-button" )
+      %h1= t(:trips)
+  .panel-body
+    = render partial: "trips/trips_display_table", locals: {trips: @trips, traveler: @traveler, show_username: true}

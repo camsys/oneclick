@@ -1,29 +1,32 @@
-.header
-  - if can? :create, Agency
-    = link_to t(:create), new_admin_agency_path, {class: 'btn action-button pull-right', role: 'button'}
-  %h1= t(:agencies)
-
-%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_agencies_table
-  %thead
-    %tr
-      %th= t(:name)
-      %th= t(:parent_agency)
-      %th= t(:subagencies)
-      %th#status= t(:status)
-  %tbody
-    - @agencies.each do |agency|
-      %tr
-        %td= link_to agency.name, admin_agency_path(agency)
-        %td
-          - if agency.parent
-            = link_to agency.parent.name, [:admin, agency.parent]
-          - else
-            = ''
-        %td
-          = render partial: agency.sub_agencies
-        %td
-          - if agency.active == false
-            = t(:inactive)
+.panel.panel-default{style: 'padding: 0px;'}
+  .panel-heading
+    .panel-title
+      .btns.pull-right
+        - if can? :create, Agency
+          = link_to t(:create), new_admin_agency_path, {class: 'btn action-button', role: 'button'}
+      %h1= t(:agencies)
+  .panel-body
+    %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_agencies_table
+      %thead
+        %tr
+          %th= t(:name)
+          %th= t(:parent_agency)
+          %th= t(:subagencies)
+          %th#status= t(:status)
+      %tbody
+        - @agencies.each do |agency|
+          %tr
+            %td= link_to agency.name, admin_agency_path(agency)
+            %td
+              - if agency.parent
+                = link_to agency.parent.name, [:admin, agency.parent]
+              - else
+                = ''
+            %td
+              = render partial: agency.sub_agencies
+            %td
+              - if agency.active == false
+                = t(:inactive)
 
 :javascript
   $(document).ready(function() {
@@ -47,7 +50,7 @@
         var filter = '^$';
         if ($(this).is(':checked')) {
                 var filter = '';
-        }         
+        }
         oTable.fnFilter(filter, index, true);
     });
   } );

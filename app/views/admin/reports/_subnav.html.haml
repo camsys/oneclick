@@ -2,63 +2,59 @@
 = simple_form_for @generated_report,
         url: admin_report_path(Report.all.first.id, locale: params[:locale]),
         html: { method: 'post', id: 'report_form', class: 'form-horizontal' }  do |f|
-  .row.info-header
-    .col-sm-6
-      %h2
-        %i.fa.fa-bar-chart-o
-        = header
-    .col-sm-6.btns
-      .pull-right
-        = button_tag type: :submit, class: 'btn action-button controls' do
-          =t (:run)
-        = button_tag id: 'export',
-                class: "#{@url_for_csv ? '' : 'disabled '}btn action-button controls" do
-          =t (:export)
+  .panel.panel-default{style: 'padding: 0px;'}
+    .panel-heading
+      .panel-title
+        .btns.pull-right
+          = button_tag type: :submit, class: 'btn action-button controls' do
+            =t(:run)
+          = button_tag id: 'export',
+                  class: "#{@url_for_csv ? '' : 'disabled '}btn action-button controls" do
+            =t(:export)
+        %h1
+          = header
+    .panel-body
+      .col-sm-12
+        .row
+          .col-sm-2
+            = f.input :report_name, collection: Report.names_and_ids, include_blank: false,
+                label: t(:report_name)
+          .col-sm-2
+            = f.input :date_range, collection: DateOption.form_collection(false),
+                include_blank: false, label: t(:date_range)
+          .col-sm-2
+            = f.input :agency_id, collection: Agency.form_collection,
+                include_blank: false, label: t(:agencies)
+          .col-sm-2
+            = f.input :agent_id, collection: User.agent_form_collection,
+                include_blank: false, label: t(:agents)
+          .col-sm-2
+            = f.input :provider_id, collection: Provider.form_collection,
+                include_blank: false, label: t(:providers)
 
-  .row
-    .col-sm-12
-      .panel.panel-default
-        .panel-body
-          .row
-            .col-sm-2
-              = f.input :report_name, collection: Report.names_and_ids, include_blank: false,
-                  label: t(:report_name)
-            .col-sm-2
-              = f.input :date_range, collection: DateOption.form_collection(false),
-                  include_blank: false, label: t(:date_range)
-            .col-sm-2
-              = f.input :agency_id, collection: Agency.form_collection,
-                  include_blank: false, label: t(:agencies)
-            .col-sm-2
-              = f.input :agent_id, collection: User.agent_form_collection,
-                  include_blank: false, label: t(:agents)
-            .col-sm-2
-              = f.input :provider_id, collection: Provider.form_collection,
-                  include_blank: false, label: t(:providers)
+        .row#custom_dates
+          .col-md-1
+          .col-md-4
+            = f.input :from_date, label: false, class: 'col-md-2', wrapper: :trip_dates do
+              = f.input_field :from_date, class: 'form-control col-md-2',
+              id: "from_trip_date", autocomplete: 'off'
+            = f.input :to_date, label: false, class: 'col-md-2', wrapper: :trip_dates do
+              = f.input_field :to_date, class: 'form-control col-md-2',
+              id: "to_trip_date", autocomplete: 'off'
 
-          .row#custom_dates
-            .col-md-1
-            .col-md-4
-              = f.input :from_date, label: false, class: 'col-md-2', wrapper: :trip_dates do
-                = f.input_field :from_date, class: 'form-control col-md-2',
-                id: "from_trip_date", autocomplete: 'off'
-              = f.input :to_date, label: false, class: 'col-md-2', wrapper: :trip_dates do
-                = f.input_field :to_date, class: 'form-control col-md-2',
-                id: "to_trip_date", autocomplete: 'off'
+        -# .col-sm-2
+        -#   = f.input :trip_purpose, collection: TripPurpose.form_collection, include_blank: false, label: t(:trip_purpose)
+        -# .col-sm-2
+        -#   = f.input :traveler_type, collection: Characteristic.form_collection, include_blank: false, label: t(:traveler_type)
+        -# .col-sm-2
+          -#   = f.input :summary_type, collection: Report.summary_types, include_blank: false, label: t(:summary_type)
 
-          -# .col-sm-2
-          -#   = f.input :trip_purpose, collection: TripPurpose.form_collection, include_blank: false, label: t(:trip_purpose)
-          -# .col-sm-2
-          -#   = f.input :traveler_type, collection: Characteristic.form_collection, include_blank: false, label: t(:traveler_type)
-          -# .col-sm-2
-            -#   = f.input :summary_type, collection: Report.summary_types, include_blank: false, label: t(:summary_type)
-          
 
 :javascript
   if ($('#generated_report_date_range')[0].selectedOptions[0].text != 'Custom...') {
     $('#custom_dates').hide();
   }
-  
+
   $('#generated_report_date_range').change(function() {
     if(this.selectedOptions[0].text === 'Custom...') {
       $('#custom_dates').show();
@@ -72,14 +68,14 @@
       minDate: '#{@min_trip_date}',
       pickTime: false,
       format: 'MM/DD/YYYY',
-      language: '#{I18n.locale}' 
+      language: '#{I18n.locale}'
     });
   $('#to_trip_date').datetimepicker({
       defaultDate: new Date(),
       minDate: '#{@min_trip_date}',
       pickTime: false,
       format: 'MM/DD/YYYY',
-      language: '#{I18n.locale}' 
+      language: '#{I18n.locale}'
     });
 
   $('#from_trip_date').change(function() {
@@ -87,7 +83,7 @@
       $('#to_trip_date').data("DateTimePicker").setDate(this.value);
     }
   });
-  
+
   $('#to_trip_date').change(function() {
     if (Date.parse(this.value) < Date.parse($('#from_trip_date')[0].value)) {
       $('#from_trip_date').data("DateTimePicker").setDate(this.value);

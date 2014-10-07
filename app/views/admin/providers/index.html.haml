@@ -1,27 +1,28 @@
-.header
-  - if can? :create, Provider
-    = link_to t(:create), new_admin_provider_path,
-        {class: 'btn action-button btn-default pull-right', role: 'button'}
-      
-  %h1= t(:providers)
+.panel.panel-default{style: 'padding: 0px;'}
+  .panel-heading
+    .panel-title
+      .btns.pull-right
+        - if can? :create, Provider
+          = link_to t(:create), new_admin_provider_path, {class: 'btn action-button', role: 'button'}
+      %h1= t(:providers)
+  .panel-body
+    %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_providers_table
+      %thead
+        %tr
+          %th= t(:name)
+          %th#status= t(:status)
+          %th
+      %tbody
+        - @providers.each do |provider|
+          %tr
+            %td= link_to provider.name, admin_provider_path(provider)
+            %td
+              - if provider.active == false
+                = t(:inactive)
 
-%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_providers_table
-  %thead
-    %tr
-      %th= t(:name)
-      %th#status= t(:status)
-      %th
-  %tbody
-    - @providers.each do |provider|
-      %tr
-        %td= link_to provider.name, admin_provider_path(provider)
-        %td
-          - if provider.active == false
-            = t(:inactive)
-
-        %td.center
-          = link_to admin_provider_services_path(provider) do
-            = t(:services)
+            %td.center
+              = link_to admin_provider_services_path(provider) do
+                = t(:services)
 
 :javascript
   $(document).ready(function() {
@@ -45,7 +46,7 @@
         var filter = '^$';
         if ($(this).is(':checked')) {
                 var filter = '';
-        }         
+        }
         oTable.fnFilter(filter, index, true);
     });
-  } );            
+  } );
