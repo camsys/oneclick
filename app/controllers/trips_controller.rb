@@ -1120,6 +1120,7 @@ private
   end
 
   def setup_modes
+    Rails.logger.info "TripsController#setup_modes"
     mode_hash = Mode.setup_modes(session[:modes_desired])
     @modes = mode_hash[:modes]
     @transit_modes = mode_hash[:transit_modes]

@@ -8,13 +8,23 @@ end
 module I18n
   class MissingTranslationExceptionHandler < ExceptionHandler # affect I18n.t()
     def call(exception, locale, key, options)
+      Rails.logger.info "I18n::MissingTranslationExceptionHandler#call"
+      Rails.logger.info "exception #{exception.ai}"
+      Rails.logger.info "locale #{locale.ai}"
+      Rails.logger.info "key #{key.ai}"
+      Rails.logger.info "options #{options.ai}"
+      Rails.logger.info "------"
       if exception.is_a?(MissingTranslation)
+        Rails.logger.info "exception.is_a? MissingTranslation"
       	if I18n.locale == :tags
+          Rails.logger.info "locale is tags, returning wrapped key"
           '[' + key.to_s + ']'
         else
+          Rails.logger.info "locale is NOT tags, calling super"
           super
         end
       else
+        Rails.logger.info "exception was something else, calling super"
         super
       end
     end
