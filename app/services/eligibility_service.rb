@@ -318,7 +318,7 @@ class EligibilityService
         end
       end
 
-      if itinerary['date_mismatch'] != true and itinerary['time_mismatch'] != true
+      if itinerary['time_mismatch'] != true
         eligible_itineraries << itinerary
       end
     end
