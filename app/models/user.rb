@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   include ActiveModel::Validations
   extend LocaleHelpers
-  
+
   # enable roles for this model
   rolify
 
@@ -87,7 +87,7 @@ class User < ActiveRecord::Base
                                   any_role.where(roles: {name: 'agent'}).order(:first_name),
                                   false)
   end
-  
+
   def make_user_profile
     create_user_profile
   end
@@ -195,7 +195,7 @@ class User < ActiveRecord::Base
 
   #List of users who can be assigned to staff for an agency or provider
   def self.staff_assignable
-    User.where.not(id: User.with_role(:anonymous_traveler).pluck(:id)).order(first_name: :asc)
+    User.without_role(:anonymous_traveler).where(deleted_at: nil).order(first_name: :asc)
   end
 
   def update_relationships id_hash

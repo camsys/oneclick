@@ -2,16 +2,18 @@
 class UsersDatatable
   include Rails.application.routes.url_helpers
   delegate :params, :h, :link_to, to: :@view
-  
+
   def initialize(view)
     @view = view
   end
-  
+
   def as_json(options = {})
-    {
+    total_count = User.without_role(:anonymous_traveler).where(deleted_at: nil).count
+
+    json = {
       sEcho: params[:sEcho].to_i, # note this must be .to_i for security reasons
-      iTotalRecords: User.without_role(:anonymous_traveler).count,
-      iTotalDisplayRecords: User.without_role(:anonymous_traveler).count,
+      iTotalRecords: total_count,
+      iTotalDisplayRecords: total_count,
       aaData: data
     }
   end
