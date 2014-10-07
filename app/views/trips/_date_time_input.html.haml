@@ -4,7 +4,8 @@
 - time_field = "#{dir}_trip_time".to_sym
 - other = (dir == "outbound") ? 'return' : 'outbound'
 
-%label.col-md-3.control-label
+%label.sr-only{for: "trip_proxy_#{dir}_arrive_depart"}= "#{dir} trip. arriving by/departing at"
+%label.col-md-3.control-label{:aria => {:hidden => "true"}}
   = label
 
 .col-md-3
