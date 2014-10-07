@@ -32,4 +32,7 @@ Oneclick::Application.configure do
   # ActionMailer Config
   config.log_level = :debug
   config.eager_load = false
+
+  config.i18n.fallbacks = false
+  
 end
