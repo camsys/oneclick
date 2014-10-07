@@ -346,7 +346,7 @@ class EligibilityService
         booking_cut_off_time = service.booking_cut_off_times.where(day_of_week: trip_created_wday, service_id: service.id).first
         unless booking_cut_off_time.nil?
           cut_off_seconds = booking_cut_off_time.cut_off_seconds
-          trip_created_seconds = Time.parse(trip_part.created_at).seconds_since_midnight
+          trip_created_seconds = trip_part.created_at.seconds_since_midnight
 
           if trip_created_seconds > cut_off_seconds
             days_after_cut_off_time = 1
