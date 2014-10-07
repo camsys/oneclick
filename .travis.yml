@@ -6,7 +6,7 @@ env:
     secure: "jUJl8lJRBaROaPmLz64q20IvlN/eNwFjMcHRm4SgGMCcLf3eyIWqRsq5GQ9kKBL+QBfaSFdoEnaUN2/tq7dtu9zNOJNpMcHegY/nvQs3q3LIPCfG00GSAO/DBjLKQVVFOZzCjNuqesvWYPsBoAg8NHe1fUciZ67u0JMuLfitcWg="
 branches:
   only:
-    - develop
+    - v0.8
 before_script:
   - pwd
   - ls -a
@@ -39,21 +39,21 @@ deploy:
     app: oneclick-arc-int
     on:
       repo: camsys/oneclick
-      branch: develop
+      branch: v0.8
   - provider: heroku
     api_key:
       secure: F0EpkR4MF0qS6LFtK4mQo7gI6MeodybR+S+RzJjFUWDMyZ3MgHqmt0t1ueAlfB9B/6wkmZXf3P/Kt2keudwWCXK+Upyjie6XX9Or3CMNlvs/VdTFk0a7A9mJHuDJqZEnSTPp1wGDqNh+KVYfS4G2DQV+FazShimuHveAq30nfR0=
     app: oneclick-pa-int
     on:
       repo: camsys/oneclick
-      branch: develop
+      branch: v0.8
   - provider: heroku
     api_key:
       secure: F0EpkR4MF0qS6LFtK4mQo7gI6MeodybR+S+RzJjFUWDMyZ3MgHqmt0t1ueAlfB9B/6wkmZXf3P/Kt2keudwWCXK+Upyjie6XX9Or3CMNlvs/VdTFk0a7A9mJHuDJqZEnSTPp1wGDqNh+KVYfS4G2DQV+FazShimuHveAq30nfR0=
     app: oneclick-ieuw-int
     on:
       repo: camsys/oneclick
-      branch: develop
+      branch: v0.8
       # can't deploy to kiosk fro this build, Gemfiles are different
   # - provider: heroku
   #   api_key:
