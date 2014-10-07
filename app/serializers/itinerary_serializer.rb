@@ -78,7 +78,7 @@ class ItinerarySerializer < ActiveModel::Serializer
       if !last_leg.nil? && (leg.start_time > (last_leg.end_time + 1.second))
         m <<        {
           type: 'WAIT',
-          description: I18n.t(:wait_at) + ' '+ last_leg.end_place.name,
+          description: escape_javascript(I18n.t(:wait_at) + ' '+ last_leg.end_place.name),
           start_time: (last_leg.end_time + 1.second).iso8601,
           end_time: (leg.start_time - 1.second).iso8601,
           start_place: "#{last_leg.end_place.lat},#{last_leg.end_place.lon}",
@@ -87,7 +87,7 @@ class ItinerarySerializer < ActiveModel::Serializer
       end
       m <<        {
         type: leg.mode,
-        description: leg.short_description,
+        description: lescape_javascript(eg.short_description),
         start_time: leg.start_time.iso8601,
         end_time: leg.end_time.iso8601,
         start_place: "#{leg.start_place.lat},#{leg.start_place.lon}",
