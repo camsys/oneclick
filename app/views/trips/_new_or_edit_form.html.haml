@@ -123,6 +123,10 @@
     $('.plan-a-trip').on('submit',function() {
       var hiddenFromPlaceData = $('#from_place_object').val();
       var fromPlaceAddr = $('#trip_proxy_from_place').val();
+      if(fromPlaceAddr.length === 0) {
+        fromPlaceAddr = $('#trip_proxy_from_place').attr('last-multi-od-value') || '';
+        $('#trip_proxy_from_place').val(fromPlaceAddr);
+      }
       var isResetHiddenFromPlace = true;
       try {
         var hiddenFromPlaceJson = JSON.parse(hiddenFromPlaceData);
@@ -139,6 +143,10 @@
 
       var hiddenToPlaceData = $('#to_place_object').val();
       var toPlaceAddr = $('#trip_proxy_to_place').val();
+      if(toPlaceAddr.length === 0) {
+        toPlaceAddr = $('#trip_proxy_to_place').attr('last-multi-od-value') || '';
+        $('#trip_proxy_to_place').val(toPlaceAddr);
+      }
       var isResetHiddenToPlace = true;
       try {
         var hiddenToPlaceJson = JSON.parse(hiddenToPlaceData);
