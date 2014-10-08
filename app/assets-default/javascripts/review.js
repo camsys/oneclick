@@ -782,6 +782,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             //render Chart
             tripPlans.forEach(function(tripPlan) {
                 if (isValidObject(tripPlan)) {
+                    appendItineraryTooltip(tripId, tripPlan);
+
                     var tripPlanChartId = tripPlanDivPrefix + tripId + "_" + tripPlan.id;
                     createChart(
                         tripPlanChartId,
@@ -815,6 +817,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
                         $('#' + tripPartDivId).append(itinTags);
 
+                        appendItineraryTooltip(tripId, tripPlan);
+
                         createChart(
                             tripPlanChartId,
                             tripStartTime,
@@ -839,6 +843,20 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         //sort
         sortItineraryBy($('#' + tripPartDivId + " .trip-sorter")[0]);
         return;
+    }
+
+    /*
+     * attach text-only itinerary description as aria-label; attach html-version itinerary description as tooltip
+     * @param {string} tripId
+     * @param {object} tripPlan: itinerary object
+     */
+    function appendItineraryTooltip(tripId, tripPlan) {
+        var tipTextOnly = getHoverTipText(tripPlan, true);
+        var tipHtml = getHoverTipText(tripPlan, false);
+
+        var chartDivId = '#'+tripPlanDivPrefix + tripId + "_" + tripPlan.id;
+        $(chartDivId).attr('data-original-title', tipHtml);
+        $(chartDivId).attr('aria-label', tipTextOnly);
     }
 
     /*
@@ -1369,8 +1387,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var costDisplay = (isValidObject(cost) ? cost.price_formatted : '');
         var costAriaLabel = costDisplay + ' ' + costTooltip;
         var isServiceAvailable = typeof(modeServiceUrl) === 'string' && modeServiceUrl.trim().length > 0;
-        var tipTextOnly = getHoverTipText(tripPlan, true);
-        var tipHtml = getHoverTipText(tripPlan, false);
+
         var tripPlanTags =
             "<div class='col-xs-12 single-plan-review " + (isSelected ? "single-plan-selected" : "single-plan-unselected") + "' style='padding: 0px;" + (eligibleCode === -1 ? "display: none;" : "") + "'" + dataTags + ">" +
             "<div class='trip-plan-first-column' style='padding: 0px; height: 100%;'>" +
@@ -1392,7 +1409,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "</tbody>" +
             "</table>" +
             "</div>" +
-            "<div tabindex='0' aria-label='" + tipTextOnly + "' title='" + tipHtml + "' class='" +
+            "<div tabindex='0' class='" +
             (isDepartAt ? "highlight-left-border regular-right-border" : "highlight-right-border regular-left-border") +
             " single-plan-chart-container trip-plan-main-column' style='padding: 0px; height: 100%;' id='" + tripPlanDivPrefix + tripId + "_" + planId + "'>" +
             "</div>" +
