@@ -354,7 +354,7 @@ class EligibilityService
         end
 
         # compare if scheduled trip time is earlier than earliest allowable trip start time
-        if trip_part.trip_time < ((trip_part.created_at + notice_days + days_after_cut_off_time).midnight)
+        if trip_part.trip_time < ((trip_part.created_at + (notice_days + days_after_cut_off_time).days).midnight)
           itinerary['match_score'] += 0.01
           itinerary['too_late'] = true
         end
