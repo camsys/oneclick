@@ -346,6 +346,7 @@ en:
   outbound_itinerary_count: 'Outbound Itinerary Count'
   outbound_itinerary_modes: 'Outbound Itinerary Modes'
   paratransit: 'Paratransit'
+  trip_dir: 'Trip'
   mode: 'Mode'
   direction_short: "Dir"
   status: "Status"

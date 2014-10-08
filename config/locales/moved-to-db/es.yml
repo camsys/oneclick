@@ -340,6 +340,7 @@ es:
   outbound_itinerary_count: '[es]Outbound Itinerary Count[/es]'
   outbound_itinerary_modes: '[es]Outbound Itinerary Modes[/es]'
   paratransit: 'Transporte Público para Discapacitados'
+  trip_dir: '[es]Trip[/es]'
   mode: 'Medio de Transporte'
   direction_short: "[es147]Dir[/es]"
   status: "[es148]Status[/es]"

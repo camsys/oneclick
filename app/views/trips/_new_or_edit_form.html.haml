@@ -41,7 +41,7 @@
           #tripOptions
             = field_set_tag do
               .inline-radio
-                = f.input :is_round_trip, as: :radio_buttons, label: t(:trip), collection: [[t(:round_trip), 1], [t(:one_way), 0]], checked: (@trip_proxy.is_round_trip ? "1" : "0")
+                = f.input :is_round_trip, as: :radio_buttons, label: t(:trip_dir), collection: [[t(:round_trip), 1], [t(:one_way), 0]], checked: (@trip_proxy.is_round_trip ? "1" : "0")
 
               :javascript
                 $('#tripOptions :radio').change(function() {
