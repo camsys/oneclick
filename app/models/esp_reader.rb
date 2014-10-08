@@ -277,7 +277,7 @@ class EspReader
     #tProvider Column Names
     #['Name', 'Contact', 'ContactTitle', 'LocAddress', 'LocCity', 'LocState', 'LocZipCode', 'AreaCode1', 'Phone1', 'URL', 'Email', 'ProviderID']
 
-    provider.name = esp_provider[@provider_idx["Name"]]
+    provider.name = esp_provider[@provider_idx["Name"]][0,128]
     provider.internal_contact_name = esp_provider[@provider_idx["Contact"]]
     provider.internal_contact_title = esp_provider[@provider_idx["ContactTitle"]]
     provider.address = esp_provider[@provider_idx["LocAddress"]]
@@ -307,7 +307,7 @@ class EspReader
 
       SERVICE_DICT[esp_service[@service_idx['ServiceID']]] = esp_service[@service_idx['ServiceRefID']]
       service = Service.where(external_id: esp_service[@service_idx['ServiceRefID']]).first_or_initialize
-      service.name = esp_service[@service_idx['OrgName']]
+      service.name = esp_service[@service_idx['OrgName']][0,128]
       service.internal_contact_name = esp_service[@service_idx['Contact']]
       service.internal_contact_title = esp_service[@service_idx['ContactTitle']]
       service.email = esp_service[@service_idx['Email']]

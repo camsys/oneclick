@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141003193215) do
+ActiveRecord::Schema.define(version: 20141007233344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20141003193215) do
   end
 
   create_table "agencies", force: true do |t|
-    t.string  "name",                   limit: 64
+    t.text    "name"
     t.string  "address",                limit: 100
     t.string  "city",                   limit: 100
     t.string  "state",                  limit: 64
@@ -270,7 +270,7 @@ ActiveRecord::Schema.define(version: 20141003193215) do
   end
 
   create_table "providers", force: true do |t|
-    t.string  "name",                   limit: 64,                 null: false
+    t.text    "name",                                              null: false
     t.string  "external_id",            limit: 25
     t.boolean "active",                             default: true, null: false
     t.string  "email"
@@ -375,7 +375,7 @@ ActiveRecord::Schema.define(version: 20141003193215) do
   end
 
   create_table "services", force: true do |t|
-    t.string   "name",                         limit: 64,                  null: false
+    t.text     "name",                                                     null: false
     t.integer  "provider_id",                                              null: false
     t.integer  "service_type_id",                                          null: false
     t.integer  "advanced_notice_minutes",                  default: 0,     null: false
