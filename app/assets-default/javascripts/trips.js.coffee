@@ -91,8 +91,11 @@ add_multi_od_places = (dir, addr_text, addr_data) ->
     "<td class='center nowrap'><button class='btn btn-sm btn-danger delete-button'><i class='fa fa-times'></i></button></td>" +
     "</tr>"
   $('#' + dir + '_places').append new_place_row_tags
-  $('#trip_proxy_' + dir + '_place').val('')
   $('#trip_proxy_' + dir + '_place').attr('last-multi-od-value', addr_text)
+  setTimeout (->
+    $('#trip_proxy_' + dir + '_place').val('')
+    return
+  ), 100
 
   return
 
@@ -255,8 +258,9 @@ $ ->
   $('#trip_proxy_from_place').on 'typeahead:selected', (e, addr, d) ->
     $('#from_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'from', e, addr, d
-    $('#trip_proxy_to_place').focus()
-    $('#trip_proxy_to_place').trigger('touchstart')
+    if $('#from_places').length == 0
+      $('#trip_proxy_to_place').focus()
+      $('#trip_proxy_to_place').trigger('touchstart')
     add_multi_od_places('from', addr.name, addr)
   $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, addr, d) ->
     $('#from_place_object').val(JSON.stringify(addr))
@@ -269,8 +273,9 @@ $ ->
   $('#trip_proxy_to_place').on 'typeahead:selected', (e, addr, d) ->
     $('#to_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'to', e, addr, d
-    $('#trip_proxy_outbound_arrive_depart').focus()
-    $('#trip_proxy_outbound_arrive_depart').trigger('touchstart')
+    if $('#to_places').length == 0
+      $('#trip_proxy_outbound_arrive_depart').focus()
+      $('#trip_proxy_outbound_arrive_depart').trigger('touchstart')
     add_multi_od_places('to', addr.name, addr)
   $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, addr, d) ->
     $('#to_place_object').val(JSON.stringify(addr))
