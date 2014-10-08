@@ -41,17 +41,17 @@
           #tripOptions
             %fieldset
               .form-group.radio_buttons.optional.trip_proxy_is_round_trip
-                %legend.col-sm-3.radio_buttons.optional.control-label#is_round_trip_label Trip
+                %legend.col-sm-3.radio_buttons.optional.control-label#is_round_trip_label #{t(:trip_dir)}
                 .col-sm-9#is_round_trip_inputs
                   %input.radio_buttons.optional#trip_proxy_is_round_trip_1{name: "trip_proxy[is_round_trip]", type: "radio", value: 1, checked: (@trip_proxy.is_round_trip ? "checked" : nil)}
-                  %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_1"} Round Trip
+                  %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_1"} #{t(:round_trip)}
 
                   %input.radio_buttons.optional#trip_proxy_is_round_trip_0{name: "trip_proxy[is_round_trip]", type: "radio", value: 0, checked: (@trip_proxy.is_round_trip ? nil : "checked")}
-                  %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_0"} One-Way Trip
+                  %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_0"} #{t(:one_way)}
 
             = field_set_tag do
               / .inline-radio
-              /   = f.input :is_round_trip, as: :radio_buttons, label: t(:trip), collection: [[t(:round_trip), 1], [t(:one_way), 0]], checked: (@trip_proxy.is_round_trip ? "1" : "0")
+              /   = f.input :is_round_trip, as: :radio_buttons, label: t(:trip_dir), collection: [[t(:round_trip), 1], [t(:one_way), 0]], checked: (@trip_proxy.is_round_trip ? "1" : "0")
 
               :javascript
                 $('#tripOptions :radio').change(function() {
