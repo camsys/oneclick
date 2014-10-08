@@ -513,3 +513,18 @@ $legend-height: 20px;
 .grid-summary-item {
   padding-left: 10px;
 }
+
+#is_round_trip_label {
+  font-weight: bold;
+  font-size: 13pt;
+  border-bottom: 0;
+}
+
+#is_round_trip_inputs {
+  margin-top: 6px;
+}
+
+#is_round_trip_inputs > label {
+  margin: 0 15px 0 3px;
+  font-weight: inherit;
+}

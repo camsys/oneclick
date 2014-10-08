@@ -41,8 +41,8 @@
           #tripOptions
             %fieldset
               .form-group.radio_buttons.optional.trip_proxy_is_round_trip
-                %label.col-sm-3.radio_buttons.optional.control-label#is_round_trip_label Trip
-                .col-sm-9
+                %legend.col-sm-3.radio_buttons.optional.control-label#is_round_trip_label Trip
+                .col-sm-9#is_round_trip_inputs
                   %input.radio_buttons.optional#trip_proxy_is_round_trip_1{name: "trip_proxy[is_round_trip]", type: "radio", value: 1, checked: (@trip_proxy.is_round_trip ? "checked" : nil)}
                   %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_1"} Round Trip
 
