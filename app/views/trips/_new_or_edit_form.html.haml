@@ -39,9 +39,19 @@
           = f.hidden_field :multi_dest_places, id: "multi_dest_places"
 
           #tripOptions
+            %fieldset
+              .form-group.radio_buttons.optional.trip_proxy_is_round_trip
+                %label.col-sm-3.radio_buttons.optional.control-label#is_round_trip_label Trip
+                .col-sm-9
+                  %input.radio_buttons.optional#trip_proxy_is_round_trip_1{name: "trip_proxy[is_round_trip]", type: "radio", value: 1, checked: (@trip_proxy.is_round_trip ? "checked" : nil)}
+                  %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_1"} Round Trip
+
+                  %input.radio_buttons.optional#trip_proxy_is_round_trip_0{name: "trip_proxy[is_round_trip]", type: "radio", value: 0, checked: (@trip_proxy.is_round_trip ? nil : "checked")}
+                  %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_0"} One-Way Trip
+
             = field_set_tag do
-              .inline-radio
-                = f.input :is_round_trip, as: :radio_buttons, label: t(:trip_dir), collection: [[t(:round_trip), 1], [t(:one_way), 0]], checked: (@trip_proxy.is_round_trip ? "1" : "0")
+              / .inline-radio
+              /   = f.input :is_round_trip, as: :radio_buttons, label: t(:trip), collection: [[t(:round_trip), 1], [t(:one_way), 0]], checked: (@trip_proxy.is_round_trip ? "1" : "0")
 
               :javascript
                 $('#tripOptions :radio').change(function() {
