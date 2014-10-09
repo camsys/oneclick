@@ -520,11 +520,15 @@ $legend-height: 20px;
   border-bottom: 0;
 }
 
-#is_round_trip_inputs, #modes_inputs {
+#is_round_trip_inputs, 
+#modes_inputs,
+#eligibility_questions {
   margin-top: 6px;
 }
 
-#is_round_trip_inputs > label, #modes_inputs > div > label {
+#is_round_trip_inputs > label,
+#modes_inputs > div > label,
+#eligibility_questions > label {
   margin: 0 15px 0 3px;
   font-weight: inherit;
 }
