@@ -2,15 +2,17 @@
   = f.error_notification
 
   .row.info-header
-    .col-sm-6
-      %h1= t(:create_agency)
-    .col-sm-6.btns
-      .pull-right
+    .col-sm-12
+      .btns.pull-right
         = button_tag type: 'submit', class: "btn action-button" do
           = t(:apply)
         = link_to admin_agencies_path, class: 'btn action-button' do
           = t(:cancel)
-
-  .form-inputs
-    = f.input :name, label: t(:name)
-    = f.association :parent, collection: @agency.possible_parents, label: t(:parent)
+      %h1= t(:create_agency)
+  .panel.panel-default{style: 'padding: 0px;'}
+    .panel-heading
+      %span.panel-title= t(:agency_info)
+    .panel-body
+      .form-inputs
+        = f.input :name, label: t(:name)
+        = f.association :parent, collection: @agency.possible_parents, label: t(:parent)

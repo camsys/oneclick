@@ -1,11 +1,12 @@
 .row
   .col-sm-12
     = link_to t(:all_providers), admin_providers_path
-%br
+.row.info-header
+  .col-sm-12
+    %h1= t(:services)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
-    .panel-title
-      %h1= t(:services)
+    %span.panel-title= t(:services)
   .panel-body
     %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_services_table
       %thead

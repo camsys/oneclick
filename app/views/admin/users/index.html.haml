@@ -1,9 +1,11 @@
+.row.info-header
+  .col-sm-12
+    .btns.pull-right
+      = link_to t(:create), new_admin_user_path, {class: 'btn action-button', role: 'button'}
+    %h1= t(:users)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
-    .panel-title
-      .btns.pull-right
-        = link_to t(:create), new_admin_user_path, {class: 'btn action-button', role: 'button'}
-      %h1= t(:users)
+    %span.panel-title= t(:users)
   .panel-body
     %table.table.table-condensed.table-striped.table-bordered.table-hover#admin_users_table
       %thead

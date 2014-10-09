@@ -1,11 +1,14 @@
+.row.info-header
+  .col-sm-12
+    .btns.pull-right
+      = link_to new_admin_translation_path, :class => "btn action-button" do
+        Add Key
+    %h1
+      Content Translations
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
-    .panel-title
-      .btns.pull-right
-        = link_to new_admin_translation_path, :class => "btn action-button" do
-          Add Key
-      %h1
-        Content Translations
+    %span.panel-title
+      Content Translations
   .panel-body
     %p Note: All content translations can be entered as HTML
     %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#translations_table

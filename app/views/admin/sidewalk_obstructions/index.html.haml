@@ -1,11 +1,13 @@
 = form_tag approve_admin_sidewalk_obstructions_path, method: :patch do
+  .row.info-header
+    .col-sm-12
+      .btns.pull-right
+        = submit_tag t(:apply), class: "btn action-button"
+        = link_to t(:cancel), admin_sidewalk_obstructions_path, class: "btn action-button"
+      %h1= t(:sidewalk_obstructions)
   .panel.panel-default{style: 'padding: 0px;'}
     .panel-heading
-      .panel-title
-        .btns.pull-right
-          = submit_tag t(:apply), class: "btn action-button"
-          = link_to t(:cancel), admin_sidewalk_obstructions_path, class: "btn action-button"
-        %h1= t(:sidewalk_obstructions)
+      %span.panel-title= t(:sidewalk_obstructions)
     .panel-body
       %table.table.table-condensed.table-striped.table-bordered.table-hover#sidewalk_feedbacks_table
         %thead

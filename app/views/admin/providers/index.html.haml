@@ -1,10 +1,12 @@
+.row.info-header
+  .col-sm-12
+    .btns.pull-right
+      - if can? :create, Provider
+        = link_to t(:create), new_admin_provider_path, {class: 'btn action-button', role: 'button'}
+    %h1= t(:providers)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
-    .panel-title
-      .btns.pull-right
-        - if can? :create, Provider
-          = link_to t(:create), new_admin_provider_path, {class: 'btn action-button', role: 'button'}
-      %h1= t(:providers)
+    %span.panel-title= t(:providers)
   .panel-body
     %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_providers_table
       %thead

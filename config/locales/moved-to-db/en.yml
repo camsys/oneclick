@@ -70,6 +70,7 @@ en:
   parent: "Parent"
   subagencies: "Sub-agencies"
   new_agency: "New Agency"
+  agency_info: "Agency Information"
   select_agency: "Select Agency"
   providers: "Providers"
   all_providers: "All Providers"

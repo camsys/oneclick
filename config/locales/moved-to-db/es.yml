@@ -63,6 +63,7 @@ es:
   parent: "[es27]Parent[/es]"
   subagencies: "[es27]Sub-agencies[/es]"
   new_agency: "[es29]New Agency[/es]"
+  agency_info: "[es]Agency Information[/es]"
   select_agency: "[es42]Select Agency[/es]"
   provider: "[es25]Provider[/es]"
   new_provider: "[es]New Provider[/es]"

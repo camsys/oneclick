@@ -66,6 +66,7 @@ ht:
   parent: "[ht]Parent[/ht]"
   subagencies: "[ht]Sub-agencies[/ht]"
   new_agency: "[ht]New Agency[/ht]"
+  agency_info: "[ht]Agency Information[/ht]"
   select_agency: "[ht]Select Agency[/ht]"
   providers: "[ht]Providers[/ht]"
   all_providers: "[ht]All Providers[/ht]"

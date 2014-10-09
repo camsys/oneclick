@@ -1,10 +1,12 @@
+.row.info-header
+  .col-sm-12
+    .btns.pull-right
+      - if Oneclick::Application.config.show_update_services && can?(:upload, EspReader)
+        = link_to "Update Services", upload_esp_reader_index_path, {class: 'btn action-button', role: 'button'}
+    %h1= t(:services)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
-    .panel-title
-      .btns.pull-right
-        - if Oneclick::Application.config.show_update_services && can?(:upload, EspReader)
-          = link_to "Update Services", upload_esp_reader_index_path, {class: 'btn action-button', role: 'button'}
-      %h1= t(:services)
+    %span.panel-title= t(:services)
   .panel-body
     = render 'table'
 

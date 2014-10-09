@@ -1,10 +1,12 @@
+.row.info-header
+  .col-sm-12
+    .btns.pull-right
+      - if can? :create, Agency
+        = link_to t(:create), new_admin_agency_path, {class: 'btn action-button', role: 'button'}
+    %h1= t(:agencies)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
-    .panel-title
-      .btns.pull-right
-        - if can? :create, Agency
-          = link_to t(:create), new_admin_agency_path, {class: 'btn action-button', role: 'button'}
-      %h1= t(:agencies)
+    %span.panel-title= t(:agencies)
   .panel-body
     %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_agencies_table
       %thead
