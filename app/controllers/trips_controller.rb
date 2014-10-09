@@ -638,29 +638,44 @@ class TripsController < PlaceSearchingController
 
     session[:tabs_visited] = []
 
-    params['mode'] = 2 # is always MODE_NEW (creating a new trip)
+    params['mode'] = 2
     params["modes"] = params["modes"].split(',')
-    if params['is_round_trip'] == '0' or params['is_round_trip'] == 'false'
-      params['return_arrive_depart'] = nil
-      params['return_trip_date'] = nil
-      params['return_trip_time'] = nil
-    end
 
     purpose = TripPurpose.where(code: params["purpose"]).first
-
     if purpose.nil?
       purpose = TripPurpose.where(code: TripPurpose::DEFAULT_PURPOSE_CODE).first
     end
-
     unless purpose.nil?
       params['trip_purpose_id'] = purpose.id
     end
 
     @trip_proxy = create_trip_proxy_from_form_params(params)
-    @trip_proxy.traveler = @traveler
 
+    @trip_proxy.is_round_trip = true
+    if params['is_round_trip'] == '0' or params['is_round_trip'] == 'false'
+      @trip_proxy.is_round_trip = false
+    end
+
+    @trip_proxy.traveler = @traveler
     @trip_proxy.user_agent = request.user_agent
     @trip_proxy.ui_mode = @ui_mode
+
+    travel_date = default_trip_time
+    if @trip_proxy.outbound_trip_date.nil?
+      @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
+    end
+    if @trip_proxy.outbound_trip_time.nil?
+      @trip_proxy.outbound_trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
+    end
+
+    # The default return trip time is set the the default trip time plus a configurable interval
+    return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
+    if @trip_proxy.return_trip_date.nil?
+      @trip_proxy.return_trip_date = return_trip_time.strftime(TRIP_DATE_FORMAT_STRING)
+    end
+    if @trip_proxy.return_trip_time.nil?
+      @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
+    end
 
     # Create markers for the map control
     @markers = create_trip_proxy_markers(@trip_proxy).to_json
@@ -934,6 +949,7 @@ protected
     # a configurable interval
     return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
     @trip_proxy.is_round_trip = "1"
+    @trip_proxy.return_trip_date = return_trip_time.strftime(TRIP_DATE_FORMAT_STRING)
     @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
 
     # Create markers for the map control
