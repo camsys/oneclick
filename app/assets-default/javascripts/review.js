@@ -116,6 +116,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
     var transferSliderId = "transferSlider"; //id of transfer filter slider
     var costSliderId = "costSlider"; //id of cost filter slider
     var durationSliderId = "durationSlider"; //id of duration filter slider
+    var walkDistSliderId = "walkDistSlider"; //id of walk distance filter slider
 
     var tripPlanDivPrefix = "tripPlan_"; //prefix of each trip plan div
     var missInfoDivAffix = "_restriction"; //affix of each trip restriction modal dialog
@@ -1205,6 +1206,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             '<option value="end-time" ' + (isDepartAt ? '' : ' selected') + '>' + localeDictFinder["arrival_time"] + '</option>' +
             '<option value="cost" >' + localeDictFinder['fare'] + '</option>' +
             '<option value="duration" >' + localeDictFinder['travel_time'] + '</option>' +
+            '<option value="walk-dist" >' + localeDictFinder['walk_dist'] + '</option>' +
             '</select>';
 
         var tripHeaderTags = tripDescTag +
@@ -1381,6 +1383,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             " data-transfer='" + (typeof(transfers) === 'number' ? transfers.toString() : '0') + "'" +
             " data-cost='" + ((isValidObject(cost) && (typeof(cost.price) === 'number')) ? cost.price : '') + "'" +
             " data-duration='" + (isValidObject(duration) ? parseFloat(duration.sortable_duration) / 60 : '') + "'" +
+            " data-walk-dist='" + (isValidObject(duration) ? parseInt(duration.total_walk_dist)/5280: '') + "'" +
             " data-filter-visible = 1" +
             " data-eligibility-visible = " + (eligibleCode != -1 ? '1' : '0');
         var costTooltip = cost.comments;
@@ -1663,6 +1666,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var maxCost = -1;
         var minDuration = -1;
         var maxDuration = -1;
+        var minWalkDist = 0;
+        var maxWalkDist = 0;
 
         trips.forEach(function(trip) {
             if (typeof(trip) != 'object' || trip === null || !trip.itineraries instanceof Array) {
@@ -1708,6 +1713,17 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                             maxDuration = duration;
                         }
                     }
+
+                    var walkDist = parseInt(durationInfo.total_walk_dist);
+                    if (walkDist >= 0) {
+                        if (minWalkDist < 0 || walkDist < minWalkDist) {
+                            minWalkDist = walkDist;
+                        }
+
+                        if (maxWalkDist < 0 || walkDist > maxWalkDist) {
+                            maxWalkDist = walkDist;
+                        }
+                    }
                 }
 
                 //modes
@@ -1718,7 +1734,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             });
         });
 
-        var filterAvailable = (modes.length > 0 || (maxTransfer > minTransfer) || (maxCost > minCost) || (maxDuration > minDuration));
+        var filterAvailable = (modes.length > 0 ||
+            (maxTransfer > minTransfer) ||
+            (maxCost > minCost) ||
+            (maxDuration > minDuration) ||
+            (maxWalkDist > minWalkDist));
 
         if (filterAvailable) {
             if ($('#' + filterContainerId).length === 0) {
@@ -1730,6 +1750,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             adjustTransferFilters(minTransfer, maxTransfer);
             adjustCostFilters(minCost, maxCost);
             adjustDurationFilters(minDuration, maxDuration);
+            adjustWalkDistFilters(minWalkDist, maxWalkDist);
 
             //enable mode checkbox event
             $('#' + modeContainerId + ' .checkbox').on('change', function() {
@@ -1984,8 +2005,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             } else {
                 $('#' + durationSliderId).attr('aria-valuemin', minDuration);
                 $('#' + durationSliderId).attr('aria-valuemax', maxDuration);
-                $('#' + durationSliderId + '_min_val_label').text(minDuration + 'min');
-                $('#' + durationSliderId + '_max_val_label').text(maxDuration + 'min');
+                $('#' + durationSliderId + '_min_val_label').text(minDuration + localeDictFinder['minute_abbr'] );
+                $('#' + durationSliderId + '_max_val_label').text(maxDuration + localeDictFinder['minute_abbr'] );
             }
 
             addSliderTooltip(filterObj.sliderConfig);
@@ -1997,6 +2018,86 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
     }
 
+     /*
+     * create html tags for walk distance filter
+     * @param {number}: minWalkDist
+     * @param {number}: maxWalkDist
+     */
+    function getWalkDistFilterHtml(minWalkDist, maxWalkDist) {
+        var tags = '';
+        var sliderConfig = null;
+        if (typeof(maxWalkDist) === 'number' && typeof(minWalkDist) === 'number' && maxWalkDist > minWalkDist) {
+            minWalkDist = Math.round(minWalkDist/5280 * 100 - 0.5) / 100;
+            maxWalkDist = Math.round(maxWalkDist/5280 * 100 + 0.5) / 100;
+            tags =
+                '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
+                '<div class = "panel-heading">' +
+                '<h2 class="panel-title">' + localeDictFinder['walk_dist'] + '</h2>' +
+                '</div>' +
+                '<div class="panel-body">' +
+                '<div role="slider" id="' + walkDistSliderId + '" aria-valuemin="' + minWalkDist + '" aria-valuemax="' + maxWalkDist + '">' +
+                '</div>' +
+                '<div class="col-sm-12">' +
+                '<span id="' + walkDistSliderId + '_min_val_label" class="pull-left">' + minWalkDist.toString() + localeDictFinder['miles'] + '</span>' +
+                '<span id="' + walkDistSliderId + '_max_val_label" class="pull-right">' + maxWalkDist.toString() + localeDictFinder['miles'] + '</span>' +
+                '</div></div></div>';
+            sliderConfig = {
+                id: walkDistSliderId,
+                values: [minWalkDist, maxWalkDist],
+                min: minWalkDist,
+                max: maxWalkDist,
+                step: 0.01,
+                range: true
+            };
+        }
+
+        return {
+            tags: tags,
+            sliderConfig: sliderConfig
+        };
+    }
+
+    /*
+     * adjust existing walk_distance filter slider
+     */
+    function adjustWalkDistFilters(minWalkDist, maxWalkDist) {
+        var filterObj = getWalkDistFilterHtml(minWalkDist, maxWalkDist);
+        if (isValidObject(filterObj)) {
+            minWalkDist = Math.round(minWalkDist/5280 * 100 - 0.5) / 100;
+            maxWalkDist = Math.round(maxWalkDist/5280 * 100 + 0.5) / 100;
+
+            if ($('#' + walkDistSliderId).length === 0) {
+                $('#' + filterContainerId).append(filterObj.tags);
+            } else {
+                $('#' + walkDistSliderId).attr('aria-valuemin', minWalkDist);
+                $('#' + walkDistSliderId).attr('aria-valuemax', maxWalkDist);
+                $('#' + walkDistSliderId + '_min_val_label').text(minWalkDist + localeDictFinder['miles'] );
+                $('#' + walkDistSliderId + '_max_val_label').text(maxWalkDist + localeDictFinder['miles'] );
+            }
+
+            addSliderTooltip(filterObj.sliderConfig);
+            var slider_min = minWalkDist;
+            var default_min = filterConfigs.default_min_walk_dist;
+            if(typeof(default_min) === 'number' && default_min > slider_min) {
+                slider_min = default_min;
+            }
+
+            var slider_max = maxWalkDist;
+            var default_max = filterConfigs.default_max_walk_dist;
+            if(typeof(default_max) === 'number' && default_max < slider_max) {
+                slider_max = default_max;
+            }
+
+            $('#' + walkDistSliderId).slider('values', [
+                getDefaultMinFilterValue(minWalkDist, slider_min),
+                getDefaultMaxFilterValue(maxWalkDist, slider_max)
+            ]);
+        }
+
+    }
+
+
+    // Note: actualMin is parseInt & min_round-ed
     function getDefaultMinFilterValue(actualMin, configMin) {
         var min = getRoundMinValue(actualMin);
         if(typeof(configMin) === 'number' && configMin > actualMin) {
@@ -2006,6 +2107,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         return min;
     }
 
+    // Note: actualMax is parseInt & max_round-ed
     function getDefaultMaxFilterValue(actualMax, configMax) {
         var max = getRoundMaxValue(actualMax);
         if(typeof(configMax) === 'number' && configMax < actualMax) {
@@ -2424,10 +2526,12 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         var durationValues = $('#' + durationSliderId).slider("option", "values");
 
+        var walkDistValues = $('#' + walkDistSliderId).slider("option", "values");
+
 
         $('.single-plan-review').each(function() {
             var plan = $(this);
-            processPlanFiltering(modes, transferValues, costValues, durationValues, plan);
+            processPlanFiltering(modes, transferValues, costValues, durationValues, walkDistValues, plan);
             detectPlanVisibilityChange(plan);
         });
     }
@@ -2440,7 +2544,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {Array} durationValues
      * @param {Object} plan
      */
-    function processPlanFiltering(modes, transferValues, costValues, durationValues, plan) {
+    function processPlanFiltering(modes, transferValues, costValues, durationValues, walkDistValues, plan) {
         var modeVisible = true;
         if (modes instanceof Array) {
             modeVisible = filterPlansByMode(modes, plan);
@@ -2477,6 +2581,16 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         }
 
         if (!durationVisible) {
+            plan.attr('data-filter-visible', 0);
+            return;
+        }
+
+         var walkDistVisible = true;
+        if (walkDistValues instanceof Array && walkDistValues.length === 2) {
+            walkDistVisible = filterPlansByWalkDist(walkDistValues[0], walkDistValues[1], plan);
+        }
+
+        if (!walkDistVisible) {
             plan.attr('data-filter-visible', 0);
             return;
         }
@@ -2560,6 +2674,25 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
     }
 
     /*
+     * Filter trip plans by total walk dist
+     * @param {number} minWalkDist
+     * @param {number} maxWalkDist
+     * @param {object} plan
+     * @return {bool} visible
+     */
+    function filterPlansByWalkDist(minWalkDist, maxWalkDist, plan) {
+        var visible = false;
+        if (typeof(minWalkDist) != 'number' || typeof(maxWalkDist) != 'number' || typeof(plan) != 'object' || plan === null) {
+            return visible;
+        }
+
+        var walkDist = parseFloat(plan.attr('data-walk-dist'));
+        visible = (typeof(walkDist) != 'number' || isNaN(walkDist) || (walkDist >= minWalkDist && walkDist <= maxWalkDist));
+
+        return visible;
+    }
+
+    /*
      * based on given sortKey, get the value from itinerary container
      * @param {object/dom} plan
      * @param {string} sortKey
@@ -2584,6 +2717,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 }
                 break;
             case 'duration':
+            case 'walk-dist':
             case 'cost':
                 rawValue = parseFloat(rawValue);
                 if (isNaN(rawValue)) {

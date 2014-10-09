@@ -88,6 +88,7 @@ es:
   delete_user: "[es41]Delete user[/es]"
   walking_speed: '[es]Walking Speed[/es]'
   walking_maximum_distance: '[es]Walking Maximum Distance[/es]'
+  walk_distance: '[es]Walk Distance[/es]'
   # Agent and Admin string
   reports: "Reportes"
   report_name: "[es46]Report Name[/es]"

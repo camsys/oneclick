@@ -101,6 +101,7 @@ en:
   user_deleted: "User Deleted"
   walking_speed: 'Walking Speed'
   walking_maximum_distance: 'Walking Maximum Distance'
+  walk_distance: 'Walk Distance'
   # Agent and Admin string
   reports: "Reports"
   report_name: "Report Name"

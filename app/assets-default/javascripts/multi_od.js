@@ -191,9 +191,31 @@ function MultiODGridPageRenderer(tripResponse, localeDictFinder) {
             var minDuration = filterValues.duration[0];
             var maxDuration = filterValues.duration[1];
             if(maxDuration > minDuration) {
-                summary += '<br><span class="grid-summary-item">' +  getRoundMinValue(minDuration) + ' - ' + getRoundMaxValue(maxDuration) + ' ' + localeDictFinder["minutes"] + '</span>';
+                summary += '<br><span class="grid-summary-item">' +
+                    getRoundMinValue(minDuration) + ' - ' +
+                    getRoundMaxValue(maxDuration) + ' ' +
+                    localeDictFinder["minutes"] +
+                '</span>';
             } else {
-                summary += '<br><span class="grid-summary-item">' +  minDuration.toFixed(2) + ' ' + localeDictFinder["minutes"] + '</span>';
+                summary += '<br><span class="grid-summary-item">' +
+                    minDuration.toFixed(2) + ' ' + localeDictFinder["minutes"] +
+                '</span>';
+            }
+
+            var minWalkDist = filterValues.walkDist[0];
+            var maxWalkDist = filterValues.walkDist[1];
+            if(maxWalkDist > minWalkDist) {
+                summary += '<br><span class="grid-summary-item">' +
+                    localeDictFinder["walk"] + ' ' +
+                    Math.round(minWalkDist/5280 * 100 -0.5)/100 + ' - ' +
+                    Math.round(maxWalkDist/5280 * 100 + 0.5)/100 + ' ' +
+                    localeDictFinder["miles"] +
+                '</span>';
+            } else {
+                summary += '<br><span class="grid-summary-item">' +
+                    localeDictFinder["walk"] + ' ' +
+                    (minWalkDist/5280).toFixed(3) + ' ' + localeDictFinder["miles"] +
+                '</span>';
             }
 
             var minCost = filterValues.cost[0];
@@ -578,12 +600,14 @@ function MultiODGridPageRenderer(tripResponse, localeDictFinder) {
      */
     function getTripPartFilterValues(trip) {
         var modes = [];
-        var minTransfer = 0;
-        var maxTransfer = 0;
+        var minTransfer = -1;
+        var maxTransfer = -1;
         var minCost = -1;
         var maxCost = -1;
         var minDuration = -1;
         var maxDuration = -1;
+        var minWalkDist = -1;
+        var maxWalkDist = -1;
 
         if (typeof(trip) != 'object' || trip === null || !trip.itineraries instanceof Array) {
             return;
@@ -596,8 +620,13 @@ function MultiODGridPageRenderer(tripResponse, localeDictFinder) {
 
             //transfers
             var transfer = parseInt(tripPlan.transfers);
-            if (transfer >= 0 && transfer > maxTransfer) {
-                maxTransfer = transfer;
+            if (transfer >= 0) {
+                if (minTransfer < 0 || transfer < minTransfer) {
+                    minTransfer = transfer;
+                }
+                if (maxTransfer < 0 || transfer > maxTransfer) {
+                    maxTransfer = transfer;
+                }
             }
 
             //cost
@@ -628,6 +657,17 @@ function MultiODGridPageRenderer(tripResponse, localeDictFinder) {
                         maxDuration = duration;
                     }
                 }
+
+                var walkDist = parseInt(durationInfo.total_walk_dist);
+                if (walkDist >= 0) {
+                    if (minWalkDist < 0 || walkDist < minWalkDist) {
+                        minWalkDist = walkDist;
+                    }
+
+                    if (maxWalkDist < 0 || walkDist > maxWalkDist) {
+                        maxWalkDist = walkDist;
+                    }
+                }
             }
 
             //modes
@@ -637,13 +677,17 @@ function MultiODGridPageRenderer(tripResponse, localeDictFinder) {
             }
         });
 
-        var filterAvailable = (modes.length > 0 || (maxTransfer > minTransfer) || (maxCost > minCost) || (maxDuration > minDuration));
-
+        var filterAvailable = (modes.length > 0 ||
+            (maxTransfer > minTransfer) ||
+            (maxCost > minCost) ||
+            (maxDuration > minDuration) ||
+            (maxWalkDist > minWalkDist));
         return {
             isAvailable: filterAvailable,
             modes: modes,
             transfer: [minTransfer, maxTransfer],
             duration: [minDuration, maxDuration],
+            walkDist: [minWalkDist, maxWalkDist],
             cost: [minCost, maxCost]
         }
     }

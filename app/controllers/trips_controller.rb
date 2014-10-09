@@ -33,6 +33,11 @@ class TripsController < PlaceSearchingController
   def show
     trip_serialization(params)
 
+    max_walk_dist =  @traveler.walking_maximum_distance || WalkingMaximumDistance.where(is_default:true).first
+    unless max_walk_dist.nil?
+      @max_walk_dist_value = max_walk_dist.value
+    end
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @tripResponse }

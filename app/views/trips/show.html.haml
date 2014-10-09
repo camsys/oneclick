@@ -48,12 +48,14 @@
     $(function() {
       //default configured min&max values for filters
       var filterConfigs = {
-        default_min_duration: #{Oneclick::Application.config.default_min_duration},
-        default_max_duration: #{Oneclick::Application.config.default_max_duration},
-        default_min_transfers: #{Oneclick::Application.config.default_min_transfers},
-        default_max_transfers: #{Oneclick::Application.config.default_max_transfers},
-        default_min_fare: #{Oneclick::Application.config.default_min_fare},
-        default_max_fare: #{Oneclick::Application.config.default_max_fare}
+        default_min_duration: #{Oneclick::Application.config.default_min_duration || ''},
+        default_max_duration: #{Oneclick::Application.config.default_max_duration || ''},
+        default_min_transfers: #{Oneclick::Application.config.default_min_transfers || ''},
+        default_max_transfers: #{Oneclick::Application.config.default_max_transfers || ''},
+        default_min_fare: #{Oneclick::Application.config.default_min_fare || ''},
+        default_max_fare: #{Oneclick::Application.config.default_max_fare || ''},
+        default_min_walk_dist: 0,
+        default_max_walk_dist: #{@max_walk_dist_value || ''}
       };
 
       //update date names in localized texts for moment js lib
@@ -129,7 +131,8 @@
         press_space_for_details: '#{t(:press_space_for_details)}',
         four_digit_year: '#{t(:four_digit_year)}',
         miles: '#{t(:miles)}',
-        legend: '#{t(:legend)}'
+        legend: '#{t(:legend)}',
+        walk_dist: '#{t(:walk_distance)}'
       };
 
       //show or hide legends

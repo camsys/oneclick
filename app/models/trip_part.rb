@@ -138,7 +138,7 @@ class TripPart < ActiveRecord::Base
         end
       end
     end
-      
+
     self.itineraries << itins
     itins
   end
@@ -157,8 +157,10 @@ class TripPart < ActiveRecord::Base
     arrive_by = !is_depart
     wheelchair = (trip.user.requires_wheelchair_access? and Oneclick::Application.config.transit_respects_ada).to_s
 
-    walk_speed = 3.0
-    max_walk_distance = 2.0
+    default_walk_speed = WalkingSpeed.where(is_default:true).first
+    default_walk_max_dist = WalkingMaximumDistance.where(is_default:true).first
+    walk_speed = default_walk_speed ? default_walk_speed.value : 3
+    max_walk_distance = default_walk_max_dist ? default_walk_max_dist.value : 2
     if trip.user.walking_speed
       walk_speed = trip.user.walking_speed.value
     end
@@ -181,10 +183,7 @@ class TripPart < ActiveRecord::Base
           end
         end
 
-        #Temporary Fix to Hide Long Walk Distances
-        unless serialized_itinerary['walk_distance'].to_f > (max_walk_distance.to_f*1609.34)
-          itins << Itinerary.new(serialized_itinerary)
-        end
+        itins << Itinerary.new(serialized_itinerary)
 
       end
     end
