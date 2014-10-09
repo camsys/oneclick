@@ -488,42 +488,6 @@ class TripsController < PlaceSearchingController
 
     new_trip
 
-    # Set the travel time/date to the default
-    travel_date = default_trip_time
-
-    @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
-    @trip_proxy.outbound_trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
-
-    # Set the trip purpose to its default
-    @trip_proxy.trip_purpose_id = TripPurpose.all.first.id
-
-    @trip_proxy.user_agent = request.user_agent
-    @trip_proxy.ui_mode = @ui_mode
-
-    # default to a round trip. The default return trip time is set the the default trip time plus
-    # a configurable interval
-    return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
-    @trip_proxy.is_round_trip = "1"
-    @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
-
-    # Create markers for the map control
-    @markers = create_trip_proxy_markers(@trip_proxy).to_json
-    @places = create_place_markers(@traveler.places)
-
-    if session[:first_login] == true
-      @first_time = true
-    else
-      @first_time = false
-    end
-    session[:first_login] = nil
-
-
-    if Oneclick::Application.config.allows_booking and not @traveler.can_book?
-      @show_booking = true
-      @booking_proxy = UserServiceProxy.new()
-    end
-    setup_modes
-
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @trip_proxy }
@@ -668,8 +632,19 @@ class TripsController < PlaceSearchingController
 
   # GET
   def plan_a_trip
-    params['mode'] = 1 # is always MODE_NEW (creating a new trip)
+    session[:is_multi_od] = false
+    session[:multi_od_trip_id] = nil
+    session[:multi_od_trip_edited] = false
+
+    session[:tabs_visited] = []
+
+    params['mode'] = 2 # is always MODE_NEW (creating a new trip)
     params["modes"] = params["modes"].split(',')
+    if params['is_round_trip'] == '0' or params['is_round_trip'] == 'false'
+      params['return_arrive_depart'] = nil
+      params['return_trip_date'] = nil
+      params['return_trip_time'] = nil
+    end
 
     purpose = TripPurpose.where(code: params["purpose"]).first
 
@@ -682,7 +657,34 @@ class TripsController < PlaceSearchingController
     end
 
     @trip_proxy = create_trip_proxy_from_form_params(params)
-    launch_trip_planning(@trip_proxy)
+    @trip_proxy.traveler = @traveler
+
+    @trip_proxy.user_agent = request.user_agent
+    @trip_proxy.ui_mode = @ui_mode
+
+    # Create markers for the map control
+    @markers = create_trip_proxy_markers(@trip_proxy).to_json
+    @places = create_place_markers(@traveler.places)
+
+    if session[:first_login] == true
+      @first_time = true
+    else
+      @first_time = false
+    end
+    session[:first_login] = nil
+
+    if Oneclick::Application.config.allows_booking and not @traveler.can_book?
+      @show_booking = true
+      @booking_proxy = UserServiceProxy.new()
+    end
+
+    session[:modes_desired] = @trip_proxy.modes_desired
+    setup_modes
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @trip_proxy }
+    end
   end
 
   def skip
@@ -916,16 +918,14 @@ protected
     @trip_proxy.traveler = @traveler
 
     # set the flag so we know what to do when the user submits the form
-    @trip_proxy.mode = MODE_NEW
-
-    # Set the travel time/date to the default
     travel_date = default_trip_time
 
     @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
     @trip_proxy.outbound_trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
 
     # Set the trip purpose to its default
-    @trip_proxy.trip_purpose_id = TripPurpose.all.first.id
+    default_purpose = TripPurpose.where(code: TripPurpose::DEFAULT_PURPOSE_CODE).first
+    @trip_proxy.trip_purpose_id = !default_purpose.nil? ? default_purpose.id : TripPurpose.all.first.id
 
     @trip_proxy.user_agent = request.user_agent
     @trip_proxy.ui_mode = @ui_mode
@@ -941,11 +941,17 @@ protected
     @places = create_place_markers(@traveler.places)
 
     if session[:first_login] == true
-      session[:first_login] = nil
+      @first_time = true
+    else
+      @first_time = false
+    end
+    session[:first_login] = nil
+
+
+    if Oneclick::Application.config.allows_booking and not @traveler.can_book?
       @show_booking = true
       @booking_proxy = UserServiceProxy.new()
     end
-
     setup_modes
   end
 
