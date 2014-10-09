@@ -265,6 +265,7 @@ $ ->
   $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, addr, d) ->
     $('#from_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'from', e, addr, d
+    add_multi_od_places('from', addr.name, addr)
 
   $('#trip_proxy_to_place, #trip_proxy_outbound_arrive_depart').on 'touchstart', () ->
     $(this).focus()
@@ -280,6 +281,7 @@ $ ->
   $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, addr, d) ->
     $('#to_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'to', e, addr, d
+    add_multi_od_places('to', addr.name, addr)
 
   $('.plan-a-trip input, .plan-a-trip select').on 'focusin', () ->
     if $(this).parents('.trip_proxy_from_place, .trip_proxy_to_place').length == 0
