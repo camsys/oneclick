@@ -38,10 +38,10 @@
           = f.hidden_field :multi_origin_places, id: "multi_origin_places"
           = f.hidden_field :multi_dest_places, id: "multi_dest_places"
 
-          #tripOptions
-            %fieldset
+          %fieldset
+            #tripOptions
               .form-group.radio_buttons.optional.trip_proxy_is_round_trip
-                %legend.col-sm-3.radio_buttons.optional.control-label#is_round_trip_label #{t(:trip_dir)}
+                %legend.col-sm-3.radio_buttons.optional.control-label#legend_label #{t(:trip_dir)}
                 .col-sm-9#is_round_trip_inputs
                   %input.radio_buttons.optional#trip_proxy_is_round_trip_1{name: "trip_proxy[is_round_trip]", type: "radio", value: 1, checked: (@trip_proxy.is_round_trip ? "checked" : nil)}
                   %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_1"} #{t(:round_trip)}
@@ -62,9 +62,19 @@
                   }
                 });
 
-          = field_set_tag do
+          %fieldset
             #baseModes
-              = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes, label: t(:modes)
+              .form-group.check_boxes.optional.trip_proxy_modes
+                %legend.col-sm-3.check_boxes.optional.control-label#legend_label #{t(:modes)}
+                .col-sm-9#modes_inputs
+                  - @modes.each do |mode|
+                    %div
+                      %input.check_boxes.optional{id: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes][]", type: "checkbox", value: "#{mode[1]}", checked: (@selected_modes.include?(mode[1]) ? "checked" : nil)}
+                      %label.check_boxes.optional{for: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes]"} #{mode[0]}
+                      %br
+
+            = field_set_tag do
+              / = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes, label: t(:modes)
 
             :javascript
               $('#trip_proxy_modes_mode_transit').change(function() {

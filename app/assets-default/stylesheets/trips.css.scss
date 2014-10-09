@@ -514,17 +514,21 @@ $legend-height: 20px;
   padding-left: 10px;
 }
 
-#is_round_trip_label {
+#legend_label {
   font-weight: bold;
-  font-size: 13pt;
+  font-size: 12pt;
   border-bottom: 0;
 }
 
-#is_round_trip_inputs {
+#is_round_trip_inputs, #modes_inputs {
   margin-top: 6px;
 }
 
-#is_round_trip_inputs > label {
+#is_round_trip_inputs > label, #modes_inputs > div > label {
   margin: 0 15px 0 3px;
   font-weight: inherit;
+}
+
+#modes_inputs > div {
+  margin-bottom: 7px;
 }
