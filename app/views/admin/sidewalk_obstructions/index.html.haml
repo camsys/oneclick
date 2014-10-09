@@ -25,9 +25,9 @@
             %tr
               %td= feedback.user.name
               %td= feedback.comment
-              %td
+              %td.nowrap
                 - unless feedback.removed_at.nil?
-                  =l(feedback.removed_at, :format => :short)
+                  =format_date_time(feedback.removed_at)
               %td
                 = label_tag "#{feedback.id}_#{SidewalkObstruction::APPROVED}", t(:approve), class: "sr-only"
                 = radio_button_tag "#{feedback.id}", SidewalkObstruction::APPROVED
@@ -37,8 +37,7 @@
               %td
                 = label_tag "#{feedback.id}_#{SidewalkObstruction::DELETED}", t(:delete), class: "sr-only"
                 = radio_button_tag "#{feedback.id}", SidewalkObstruction::DELETED
-              %td
-                =l(feedback.created_at, :format => :short)
+              %td.nowrap= format_date_time(feedback.created_at)
               %td.center
                 - if feedback.lat and feedback.lon
                   = link_to Rails.application.config.street_view_url + '?lat=' + feedback.lat.to_s + '&lng=' + feedback.lon.to_s, class: 'btn action-button', target: '_blank', role: 'button' do

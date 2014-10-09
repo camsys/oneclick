@@ -38,8 +38,7 @@
                 = label_tag "#{rating.id}_#{Rating::REJECTED}", t(:reject), class: "sr-only"
                 -# Do not internationalize.  That will break the label.  Leave the label text itself internationalized
                 = radio_button_tag "#{rating.id}", Rating::REJECTED
-              %td
-                =l(rating.created_at, :format => :short)
+              %td.nowrap= format_date_time(rating.created_at)
 #rateable_modal.modal.fade{:role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
   .modal-dialog.modal-lg
     .modal-content
