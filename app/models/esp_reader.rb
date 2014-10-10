@@ -289,7 +289,7 @@ class EspReader
     provider.email = esp_provider[@provider_idx["Email"]]
     provider.save
 
-    provider.private_comments.destroy_all
+    provider.private_comments.where(locale: 'en').destroy_all
     provider.private_comments.create!(comment: fixup_comments(esp_provider[@provider_idx["Comments"]]), locale: 'en') if esp_provider[@provider_idx["Comments"]]
 
     if create #assign service to the new provider
@@ -330,8 +330,8 @@ class EspReader
       service.service_characteristics.destroy_all
       service.service_trip_purpose_maps.destroy_all
       service.fare_structures.destroy_all
-      service.public_comments.destroy_all
-      service.private_comments.destroy_all
+      service.public_comments.where(locale: 'en').destroy_all
+      service.private_comments.where(locale: 'en').destroy_all
 
       service.public_comments.create!(comment: fixup_comments(esp_service[@service_idx['Comments']]), locale: 'en') if esp_service[@service_idx['Comments']]
       service.private_comments.create!(comment: fixup_comments(esp_service[@service_idx['LocalComments']]), locale: 'en') if esp_service[@service_idx['LocalComments']]
@@ -408,7 +408,7 @@ class EspReader
 
     service_comments_hash.each do |key, item|
       service = Service.find(key)
-      c = service.public_comments.first
+      c = service.public_comments.where(locale: 'en').first
       Rails.logger.info "for sch #{key} item #{item} c is #{c.ai}"
       if c.nil?
         service.public_comments.create! comment: item + "</ul>", locale: 'en'
