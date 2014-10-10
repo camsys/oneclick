@@ -21,17 +21,18 @@
   - case item.datatype
     - when 'bool'
       %fieldset
-        .form-group.radio_buttons.optional{class: "user_characteristics_proxy_#{item.code}"}
-          %legend.col-sm-7.radio_buttons.optional.control-label#legend_label{name: "user_characteristics_proxy[#{item.code}]", for: "#{item.code}_label"} #{t(item.note)}
+        .form-group.radio_buttons.optional#input_container{class: "user_characteristics_proxy_#{item.code}"}
+          %legend.col-sm-7.radio_buttons.optional.control-label{id: "#{item.code}_label"} #{t(item.note)}
           .col-sm-5#eligibility_questions
-            %input.radio_buttons.optional{id: "user_characteristics_proxy_#{item.code}_true", name: "user_characteristics_proxy[#{item.code}]", type: "radio", value: "true"}
+            %input.radio_buttons.optional{id: "user_characteristics_proxy_#{item.code}_true", name: "user_characteristics_proxy[#{item.code}]", type: "radio", value: "true", checked: ((@traveler.user_characteristics.where(characteristic_id: item.id).empty?) ? nil : (@traveler.user_characteristics.where(characteristic_id: item.id).first.value == "true" ? "checked" : nil)) }
             %label{for: "user_characteristics_proxy_#{item.code}_true", name: "user_characteristics_proxy[#{item.code}]"} #{t(:yes_str)}
             
-            %input.radio_buttons.optional{id: "user_characteristics_proxy_#{item.code}_false", name: "user_characteristics_proxy[#{item.code}]", type: "radio", value: "false"}
+            %input.radio_buttons.optional{id: "user_characteristics_proxy_#{item.code}_false", name: "user_characteristics_proxy[#{item.code}]", type: "radio", value: "false", checked: (@traveler.user_characteristics.where(characteristic_id: item.id).empty?) ? nil : (@traveler.user_characteristics.where(characteristic_id: item.id).first.value == "false" ? "checked" : nil)}
             %label{for: "user_characteristics_proxy_#{item.code}_false", name: "user_characteristics_proxy[#{item.code}]"} #{t(:no_str)}
 
-            %input.radio_buttons.optional{id: "user_characteristics_proxy_#{item.code}_na", name: "user_characteristics_proxy[#{item.code}]", type: "radio", value: "na"}
-            %label{for: "user_characteristics_proxy_#{item.code}_na", name: "user_characteristics_proxy[#{item.code}]"} #{t(:not_sure_str)}  
+            %input.radio_buttons.optional{id: "user_characteristics_proxy_#{item.code}_na", name: "user_characteristics_proxy[#{item.code}]", type: "radio", value: "na", checked: (@traveler.user_characteristics.where(characteristic_id: item.id).empty? ? "checked" : nil) }
+            %label{for: "user_characteristics_proxy_#{item.code}_na", name: "user_characteristics_proxy[#{item.code}]"} #{t(:not_sure_str)}
+
       / = f.input item.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], [UserProfileProxy::PARAM_NOT_SET, t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(item.note), label_method: :last, value_method: :first
     - else
       = f.input item.code.to_sym, label: t(item.note)

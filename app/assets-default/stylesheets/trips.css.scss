@@ -514,7 +514,8 @@ $legend-height: 20px;
   padding-left: 10px;
 }
 
-#legend_label {
+#legend_label,
+#input_container > legend {
   font-weight: bold;
   font-size: 12pt;
   border-bottom: 0;
