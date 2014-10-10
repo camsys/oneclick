@@ -6,7 +6,7 @@
     %h1=t(:places)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
-    %span.panel-title= t(:places)
+    %h2.panel-title= t(:places)
   .panel-body
     = simple_form_for @places, url: handle_user_places_path(@traveler), html: {class: 'form-horizontal places'}, wrapper: :horizontal_form do |f|
       .row

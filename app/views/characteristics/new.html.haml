@@ -18,7 +18,7 @@
       = render partial: 'shared/page_comments', locals: {key: :options_header_comment}
     .col-sm-12.panel.panel-default{:role => "main", :aria => {:label => 'Eligibility and Accommodation Form'}, :style => 'padding: 0px;'}
       .panel-heading
-        .panel-title=t(:eligibility_accommodation_questions)
+        %h2.panel-title=t(:eligibility_accommodation_questions)
       .panel-body
         = render partial: 'form', :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
         / end of options column

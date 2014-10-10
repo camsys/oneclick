@@ -28,7 +28,7 @@
       = render partial: 'shared/page_comments', locals: {key: header_comment_key}
     .col-sm-12.panel.panel-default{:role => "main", :aria => {:label => 'Trip Form'}, :style => 'padding:0px;'}
       .panel-heading
-        .panel-title=t(:trip_parameters)
+        %h2.panel-title=t(:trip_parameters)
       .panel-body
         = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path(:user_id => @traveler.id) : user_trip_path(:user_id => @traveler.id), :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
           = f.hidden_field :mode

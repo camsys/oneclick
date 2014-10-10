@@ -6,7 +6,7 @@
         html: { method: 'post', id: 'report_form', class: 'form-horizontal' }  do |f|
   .panel.panel-default{style: 'padding: 0px;'}
     .panel-heading
-      .panel-title
+      %h2.panel-title
         .btns.pull-right
           = button_tag type: :submit, class: 'btn action-button controls' do
             =t(:run)
