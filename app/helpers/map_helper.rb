@@ -93,8 +93,7 @@ module MapHelper
 
   # Create an array of map markers for a trip proxy. If the trip proxy is from an existing trip we will
   # have start and stop markers
-  def create_trip_proxy_markers(trip_proxy, is_multi_od = false)
-    is_multi_od = session[:is_multi_od]
+  def create_trip_proxy_markers(trip_proxy, is_multi_od)
     markers = []
     if is_multi_od != true
       if trip_proxy.from_place_selected

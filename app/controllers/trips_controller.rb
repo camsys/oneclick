@@ -387,7 +387,7 @@ class TripsController < PlaceSearchingController
     end
 
     # Create markers for the map control
-    @markers = create_trip_proxy_markers(@trip_proxy).to_json
+    @markers = create_trip_proxy_markers(@trip_proxy, session[:is_multi_od]).to_json
     @places = create_place_markers(@traveler.places)
 
     setup_modes
@@ -421,7 +421,7 @@ class TripsController < PlaceSearchingController
     @trip_proxy.id = @trip.id
 
     # Create markers for the map control
-    @markers = create_trip_proxy_markers(@trip_proxy).to_json
+    @markers = create_trip_proxy_markers(@trip_proxy, session[:is_multi_od]).to_json
     @places = create_place_markers(@traveler.places)
 
     respond_to do |format|
@@ -540,7 +540,7 @@ class TripsController < PlaceSearchingController
     @trip_proxy.id = @trip.id
 
     # Create markers for the map control
-    #@markers = create_trip_proxy_markers(@trip_proxy).to_json
+    #@markers = create_trip_proxy_markers(@trip_proxy, session[:is_multi_od]).to_json
     #@places = create_place_markers(@traveler.places)
 
     # see if we can continue saving this trip
@@ -683,7 +683,7 @@ class TripsController < PlaceSearchingController
     end
 
     # Create markers for the map control
-    @markers = create_trip_proxy_markers(@trip_proxy).to_json
+    @markers = create_trip_proxy_markers(@trip_proxy, session[:is_multi_od]).to_json
     @places = create_place_markers(@traveler.places)
 
     if session[:first_login] == true
@@ -958,7 +958,7 @@ protected
     @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
 
     # Create markers for the map control
-    @markers = create_trip_proxy_markers(@trip_proxy).to_json
+    @markers = create_trip_proxy_markers(@trip_proxy, session[:is_multi_od]).to_json
     @places = create_place_markers(@traveler.places)
 
     if session[:first_login] == true
@@ -997,7 +997,7 @@ protected
     end
 
     # Create markers for the map control
-    #@markers = create_trip_proxy_markers(trip_proxy).to_json
+    #@markers = create_trip_proxy_markers(trip_proxy, session[:is_multi_od]).to_json
     #@places = create_place_markers(@traveler.places)
 
     respond_to do |format|
