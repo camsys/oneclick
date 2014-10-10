@@ -52,7 +52,7 @@ class SystemUsageReport
     trip_base = trip_base.where("outbound_provider_id = ? OR return_provider_id = ?",
                                 report.provider_id, report.provider_id) if report.provider_id
 
-    itinerary_base = Itinerary.where(start_time: date_range)
+    itinerary_base = Itinerary.valid.visible.where(start_time: date_range)
     itinerary_base = itinerary_base.joins(:service)
       .where(services: {provider_id: report.provider_id}) if report.provider_id
     
