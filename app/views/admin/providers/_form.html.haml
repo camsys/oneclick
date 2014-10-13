@@ -45,13 +45,138 @@
                 selected: (@contact.id if @contact) , include_blank: "None", label: t(:user)
 
   .row
-    .panel.panel-default
-      .panel-heading
-        %h4.panel-title= t(:staff_actions)
-      .panel-body
-        .scrolling-checkbox-list
-          = f.association :staff, collection: User.staff_assignable.order(:first_name), as: :check_boxes,
-                  wrapper: :inline_checkboxes, label: false
+    .col-sm-12
+      .panel.panel-default
+        .panel-heading
+          %h4.panel-title= t(:staff_actions)
+        .panel-body
+          %input{:name => "provider[staff_ids]", :type => 'hidden'}
+          .row
+            .col-sm-12
+              %button#add_staff_btn.btn.action-button.pull-right{data: {toggle: 'modal', target: '#add_staff'}}
+                = t(:add)
+              %table.table.table.condensed.table-striped.table-hover.table-bordered#staffs_table
+                %thead
+                  %th= t(:id)
+                  %th= t(:name)
+                  %th.email= t(:email)
+                  %th
+                %tbody
+                  -# initial load from user record
+                  - @staff.each do |s|
+                    %tr
+                      %td= s.id
+                      %td= s.name
+                      %td= s.email
+                      %td
+                        %button.btn.btn-sm.btn-danger.delete-button
+                          %i.fa.fa-times
+              #add_staff.modal.fade{:role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+                .modal-dialog.modal-lg
+                  .modal-content
+                    .modal-header
+                      .row
+                        .col-sm-12
+                          .pull-right
+                            %button.btn.action-button#search
+                              = t(:apply)
+                            %button.btn.action-button{data: {dismiss: 'modal'}}
+                              = t(:cancel)
+                    .modal-body
+                      .modal-flash
+                      .panel.panel-default
+                        .panel-heading
+                          %h2.panel-title= t(:find_staff)
+                        .panel-body
+                          .row
+                            .col-sm-12
+                              = label_tag :email, t(:email)
+                              = text_field_tag :email,nil
+
 
   = render partial: 'admin/shared/edit_comments', locals: {f: f, commentable: @provider}
 
+:javascript
+  $(document).ready(function() {
+    $('#staffs_table').dataTable( {
+        "oLanguage": {
+          "sLengthMenu": "Display _MENU_ staffs per page",
+          "sZeroRecords": "Nothing found - sorry",
+          "sInfo": "Showing _START_ to _END_ of _TOTAL_ staffs",
+          "sInfoEmpty": "Showing 0 to 0 of 0 staffs",
+          "sInfoFiltered": "(filtered from _MAX_ total staffs)"
+        },
+        "columnDefs": [
+            {
+                "targets": [ 0 ],
+                "visible": false
+            },
+            {
+                "targets": [ 3 ],
+                "searchable": false
+            }
+        ],
+        "bAutoWidth": true,
+        "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>"
+    } );
+    $("#add_staff_btn").on("click", function(e) {
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
+    });
+
+    var updateAgentIds = function() {
+      var allRows = $( "#staffs_table" ).DataTable().rows().data();
+      var staffIds = [];
+      for(var i=0; i<allRows.length; i++) {
+        staffIds.push(allRows[i][0]);
+      }
+
+      $('input[name="provider[staff_ids]"]').val(staffIds.toString());
+    };
+    updateAgentIds();
+    $("#search").on("click", function(e) {
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
+      $.ajax({
+        url: "find_staff_by_email",
+        data: {email: $("#email").val()},
+        dataType: "json",
+        success: function(data) {
+          if (data["success"]) {
+            $(".modal").modal("toggle");
+            $("div.staff-flash").html(data["msg"]).addClass("alert alert-success fade-in");
+            $(".new_staffs select").append("<option selected value=" + data["output"] + ">"+ data["output"] + "</option>")
+
+            var dataRow = data["row"];
+            dataRow.push('<button class="btn btn-sm btn-danger delete-button"><i class="fa fa-times"></i></button>');
+            $( "#staffs_table" ).DataTable().row(":contains('" + data["row"][2] +"')").remove().draw(false);
+            $( "#staffs_table" ).DataTable().row.add(dataRow).draw();
+            updateAgentIds();
+          } else {
+            $("div.modal-flash").html(data["msg"]).addClass("alert alert-success fade-in");
+          }
+        }
+      });
+    });
+    $('#staffs_table tbody').on( 'click', 'tr', function () {
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+        }
+        else {
+            $('#staffs_table').DataTable().$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+    } );
+    $('#staffs_table').on('click', '.delete-button', function (e) {
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+        var selectedRows = $('#staffs_table').DataTable().row('.selected');
+        if(selectedRows.length > 0) {
+          selectedRows.remove().draw( false );
+          updateAgentIds();
+        }
+    } );
+    $('#email').on('keypress', function(e){
+      if(e.keyCode == 13) {
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+        $('#search').click();
+      }
+    });
+  });

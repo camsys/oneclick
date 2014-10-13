@@ -70,7 +70,7 @@ class Admin::ProvidersController < ApplicationController
   def update
 
     # special case because need to update rolify
-    staff_ids = params[:provider][:staff_ids].reject(&:blank?)
+    staff_ids = params[:provider][:staff_ids].split(',').reject(&:blank?)
 
     # TODO This is a little hacky for the moment; might switch to front-end javascript but let's just do this for now.
     fixup_comments_attributes_for_delete :provider
@@ -108,6 +108,27 @@ class Admin::ProvidersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to admin_providers_url }
       format.json { head :no_content }
+    end
+  end
+
+  def find_staff_by_email
+    user = User.staff_assignable.where("lower(email) = ?", params[:email].downcase).first #case insensitive
+
+    if user.nil?
+      success = false
+      msg = I18n.t(:no_staff_with_email_address, email: params[:email]) # did you know that this was an XSS vector?  OOPS
+    else
+      success = true
+      msg = t(:please_save_staffs, name: user.name)
+      output = user.id
+      row = [
+              user.id,
+              user.name,
+              user.email
+            ]
+    end
+    respond_to do |format|
+      format.js { render json: {output: output, msg: msg, success: success, user_id: user.try(:id), row: row} }
     end
   end
 

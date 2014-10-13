@@ -82,6 +82,9 @@ ht:
   provider_name: "[ht]Provider name[/ht]"
   provider: "[ht]Provider[/ht]"
   provider_info: "[ht]Provider Information[/ht]"
+  find_staff: '[ht]Find Staff[/ht]'
+  no_staff_with_email_address: "[ht]We can't find an staff with '%{email}' as their email address.[/ht]"
+  please_save_staffs: '[ht]Please save staffs.[/ht]'
   provided_by: "[ht]Provided by[/ht]"
   select_provider: "[ht]Select Provider[/ht]"
   back_to_providers: "[ht]Back to providers[/ht]"

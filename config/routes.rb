@@ -312,6 +312,7 @@ Oneclick::Application.routes.draw do
         post 'undelete'
       end
       resources :providers do
+        get   'find_staff_by_email'
         resources :users
         resources :services
         resources :trips, only: [:index, :show]

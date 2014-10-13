@@ -91,6 +91,9 @@ en:
   back_to_providers: "Back to providers"
   users: "Users"
   agents: "Agents"
+  find_staff: 'Find Staff'
+  no_staff_with_email_address: "We can't find an staff with '%{email}' as their email address."
+  please_save_staffs: 'Please save staffs.'
   administrators: "Administrators"
   agents_agencies: "Agencies, Providers, Users"
   confirm_msg: "Are you sure?"
