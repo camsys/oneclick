@@ -30,4 +30,4 @@
   .col-sm-12
     = render partial: 'shared/page_comments', locals: {key: :plan_footer_comment}
   = render partial: 'send_trip_by_email', locals: {trip: @trip}
-
+  / = render partial: 'prepare_print_maps', locals: {trip: @trip}

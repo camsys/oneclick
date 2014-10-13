@@ -368,5 +368,37 @@ $ ->
       tr.remove()
     return false
 
-  return
-
+  if ($('body.trips.show_printer_friendly').length > 0)
+    console.log "Running show_printer_friendly"
+    $('#prepare_print_maps').modal('show')
+    user_id = $('meta[name="user_id"]').attr('content')
+    trip_id = $('meta[name="trip_id"]').attr('content')
+    itinerary_ids = $('meta[name="itinerary_ids"]').attr('content')
+    locale = $('meta[name="locale"]').attr('content')
+    $.ajax
+      type: 'GET'
+      url: '/users/' + user_id + '/trips/' + trip_id + '/itineraries/' + itinerary_ids + '/request_create_map'
+    timer = setInterval (->
+      progress = $('#prepare_print_maps .progress-bar').attr('aria-valuenow')
+      if (progress=="100")
+        $('#prepare_print_maps').modal('hide')
+        clearInterval(timer)    
+        window.print()
+      $.ajax
+        type: 'GET'
+        url: '/users/' + user_id + '/trips/' + trip_id + '/itineraries/' + itinerary_ids + '/map_status'
+        async: false
+        success: (data) ->
+          total = data['itineraries'].length
+          done = data['itineraries'].filter (i) ->
+            i['has_map']==true
+          for i in done
+            $('#print_map_' + i.id).html('<img src="' + i.url + '">')
+          percent = if (done.length > 0)
+            done.length/total*100
+          else
+            20
+          $('#prepare_print_maps .progress-bar').css('width', percent + '%')
+          $('#prepare_print_maps .progress-bar').html(percent + '%')
+          $('#prepare_print_maps .progress-bar').attr('aria-valuenow', percent)
+      ), 1000

@@ -215,7 +215,12 @@ class TripsController < PlaceSearchingController
 
     respond_to do |format|
       format.html {
-        render :show_printer_friendly_failed if @trip.nil?
+        if @trip.nil?
+          render :show_printer_friendly_failed 
+        else
+          @hide_navbar = true
+          render
+        end
       }
       format.json { render json: @trip }
     end
@@ -761,31 +766,6 @@ class TripsController < PlaceSearchingController
     respond_to do |format|
       format.html
     end
-  end
-
-  # TODO: clean up code after local testing works
-  # TODO: comment out as map_print is deferred
-  def print_itinerary_map
-    #require 'capybara/poltergeist'
-
-    #itin_id = params[:itin]
-
-    #print_url = root_url(locale:'') + itinerary_map_trip_path + '?itin=' + itin_id.to_s
-
-    #new_thread = Thread.new do ## putting section below in a new thread will work, but cant join to main thread
-    #  browser = Capybara::Session.new :poltergeist
-
-    #  browser.visit print_url
-
-    #  tempfile = Tempfile.new(['itinerary_map','.jpeg'])
-    #  browser.driver.render tempfile.path
-
-    #  image = MiniMagick::Image.read tempfile
-    #  image.crop "500x300+0+0" # only get itinerary map
-    #  FileUtils.cp(image.path, 'map.jpeg') #only for local testing; will encode the file and send the code back
-
-    #ActiveRecord::Base.connection.close
-    #end
   end
 
   # called when the user wants to hide an option. Invoked via

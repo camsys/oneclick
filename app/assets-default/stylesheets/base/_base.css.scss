@@ -215,6 +215,7 @@ a:hover#help {
 
 .itin_text_container {
   padding-left: 5px;
+  padding-top: 10px;
 }
 
 .itinerary_text {
@@ -225,7 +226,7 @@ a:hover#help {
 
 .itinerary_text_small{
   //font-size: 1em;
-  line-height: 0px;
+  // line-height: 0px;
   text-align: left;
   vertical-align: top;
   padding: 0px;
@@ -561,6 +562,16 @@ td.left, th.left {
   #main {
     padding-top: 0px;
     padding-bottom: 0px;
+  }
+}
+
+.print_map {
+  background: white;
+  border-radius: 5px;
+  padding: 5px;
+  img {
+    display: block;
+    margin: auto;
   }
 }
 

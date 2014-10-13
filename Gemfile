@@ -65,7 +65,8 @@ gem 'rgeo-shapefile'
 gem 'leaflet-rails', github: 'camsys/leaflet-rails'
 gem 'mini_magick'
 gem 'carrierwave'
-#gem 'poltergeist' #TODO map_print screen capture
+gem 'poltergeist'
+gem 'sidekiq'
 
 group :development do
   # gem 'ffi-geos'
@@ -95,6 +96,8 @@ group :development do
   gem 'RedCloth' # Needed by yard
   gem 'foreman'
   gem 'debugger'
+  # For sidekiq monitoring
+  gem 'sinatra', :require => nil
 end
 
 group :development, :test do

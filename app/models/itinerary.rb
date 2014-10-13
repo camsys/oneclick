@@ -1,5 +1,9 @@
+require 'carrierwave/orm/activerecord'
+
 class Itinerary < ActiveRecord::Base
   include CsHelpers
+
+  mount_uploader :map_image, BaseUploader
 
   # Callbacks
   after_initialize :set_defaults

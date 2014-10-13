@@ -1,0 +1,25 @@
+#map_container{style: "width: 483px; height: 300px"}
+  %div{style: "width: 483px;height: 300px; background: white; border-radius: 5px; padding: 0px;"}
+    = LeafletMap({:mapid => ('itin_' + @itinerary.id.to_s), :markers => @markers, :polylines => @polylines, :sidewalk_feedback_markers => @sidewalk_feedback_markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "well well-small", :style => "height:100%;" })
+:javascript
+  $(function(){
+    $('#publicNav').css('display', 'none');
+    $('#footer').css('display', 'none');
+    $('.leaflet-control-container').css('display', 'none');
+    $('#main').css('padding', '0px');
+    if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.#{'itin_' + @itinerary.id.to_s} != null) {
+      var mapObj = CsMaps.#{'itin_' + @itinerary.id.to_s};
+      mapObj.invalidateMap();
+      var mapMarkers = mapObj.LMmarkers;
+      var mapBounds = null;
+      if(mapMarkers.length > 0) {
+        mapBounds = mapObj.calcMapBounds(mapMarkers);
+      } else {
+        mapBounds = mapObj.LMbounds;
+      }
+
+      if(mapBounds) {
+        mapObj.LMmap.fitBounds(mapBounds);
+      }
+    }
+  });
