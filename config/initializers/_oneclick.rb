@@ -252,7 +252,7 @@ Oneclick::Application.configure do
     config.agent_read_feedback = true
     config.provider_read_all_feedback = true
     config.tripless_feedback = false
-    honeybadger_api_key = '0447225c'
+    honeybadger_api_key = 'c23d4c30'
     #config.poi_file = 'db/jta/locations.csv'
     config.default_county = 'Suffolk'
     config.state = 'MA'
