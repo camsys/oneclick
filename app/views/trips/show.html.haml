@@ -1,14 +1,14 @@
 - content_for :head do
   = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"
 .row
-  .hidden-xs.col-sm-8{style: "padding: 0px;", :role => "navigation", :aria => {:label => 'Breadcrumbs'}}
-    = render partial: 'shared/trip_plan_breadcrumbs'
-  .col-sm-4
+  .col-sm-12
     .pull-right
       = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button" do
         = t(:feedback)
       = button_tag :type => 'button', :name => "planButton", :class => "btn action-button" do
         =t(:next)
+    .hidden-xs{style: "padding: 0px;", :role => "navigation", :aria => {:label => 'Breadcrumbs'}}
+      = render partial: 'shared/trip_plan_breadcrumbs'
 
 .row
 - if @tripResponseHash['status'] == 0

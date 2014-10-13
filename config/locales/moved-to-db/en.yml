@@ -271,6 +271,7 @@ en:
   grid: 'Grid'
   review: 'Review'
   plan: 'Plan'
+  trip_summaries: 'Trip Summaries'
   trip_restrictions: 'Trip Restrictions'
   trip_parameters: 'Trip Parameters'
   eligibility_accommodation_questions: 'Eligibility/Accommodation Questions'
@@ -427,6 +428,7 @@ en:
   cannot_change_time_to_before_prev_trip_part: "Cannot change trip part time to be before previous trip part"
 
   #map
+  map: 'Map'
   zoom_in: 'Zoom in'
   zoom_out: 'Zoom out'
   center_my_location: 'Center my location'

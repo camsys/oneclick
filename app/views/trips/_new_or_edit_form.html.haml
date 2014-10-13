@@ -1,26 +1,25 @@
 .row
   .col-sm-7
-    .hidden-xs.col-sm-7{:role => "navigation", :aria => {:label => 'Breadcrumbs'}}
-      = render partial: 'shared/trip_plan_breadcrumbs'
-    .col-sm-5{style: "padding: 0px;"}
-      .pull-right
-        -if @show_booking
-          = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;"  do
-            =t(:ecolane_login_button)
-            :javascript
-              $(function() {
-                $('button[name=ecolaneSignin]').click(function() {
-                  $('#bookingSignupModal').modal('show');
-                });
-              });
-        = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
-          =t(:next)
+    .pull-right
+      -if @show_booking
+        = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;"  do
+          =t(:ecolane_login_button)
           :javascript
             $(function() {
-              $('button[name=planTrip]').click(function() {
-                $('.plan-a-trip').submit();
+              $('button[name=ecolaneSignin]').click(function() {
+                $('#bookingSignupModal').modal('show');
               });
             });
+      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
+        =t(:next)
+        :javascript
+          $(function() {
+            $('button[name=planTrip]').click(function() {
+              $('.plan-a-trip').submit();
+            });
+          });
+    .hidden-xs{:role => "navigation", :aria => {:label => 'Breadcrumbs'}}
+      = render partial: 'shared/trip_plan_breadcrumbs'
 .row
   .col-sm-7.col-xs-12
     .col-sm-12
@@ -119,9 +118,11 @@
           .hidden-xs.hidden-sm{id: "tripMapContainer", 'aria-hidden' => 'true', class: 'hide', style: 'position: absolute; top: 0; right:-520px; z-index: 1000;'}
             .panel.panel-default{style:'padding:0px;'}
               .panel-heading.clearfix
-                %button#mapCloseButton.close.pull-right{type: "button", title: t(:close)}
-                  %span{"aria-hidden" => "true"} &times;
-                  %span.hide Close
+                .panel-title
+                  %button#mapCloseButton.close.pull-right{type: "button", title: t(:close)}
+                    %span{:"aria-hidden" => "true"} &times;
+                    %span.hide Close
+                  =t(:map)
               .panel-body
                 = LeafletMap({ :mapid => "tripMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '500px;', :style => "height: 400px; width: 500px;", :show_location_select => true })
     .col-sm-12{style: "margin-bottom: 5px; padding: 0px;"}

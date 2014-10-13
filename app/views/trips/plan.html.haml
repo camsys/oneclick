@@ -3,15 +3,14 @@
     .row{style: "padding: 0px;", :role => "navigation", :aria => {:label => 'Breadcrumbs'}}
       = render partial: 'shared/trip_plan_breadcrumbs'
 - else
-  .row{style: "padding: 0px;"}
-    - unless @is_review
-      .hidden-xs.col-sm-8{:role => "navigation", :aria => {:label => 'Breadcrumbs'}}
-        = render partial: 'shared/trip_plan_breadcrumbs'
-      .col-sm-4
+  .row
+    .col-sm-12
+      - unless @is_review
         .pull-right
           = render partial: 'plan_page_buttons'
-    - else
-      .col-sm-12
+        .hidden-xs{:role => "navigation", :aria => {:label => 'Breadcrumbs'}}
+          = render partial: 'shared/trip_plan_breadcrumbs'
+      - else
         .pull-right
           = render partial: 'plan_page_buttons'
   - if @assisting_agency

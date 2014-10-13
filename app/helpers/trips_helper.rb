@@ -119,6 +119,8 @@ module TripsHelper
   def breadcrumb_class tab
     if tab==active_tab
       'current-page'
+    elsif TABS.index(tab) < TABS.index(active_tab)
+      'btn-primary prev-page'
     else
       'next-page'
     end

@@ -1,35 +1,39 @@
 - trip_summary_configs = []
 - @multi_od_trip.trips.each do |trip|
   - trip_summary_configs << {id: trip.id, url: serialize_trip_user_trip_path(@traveler, trip)}
-.row{style: "padding: 0px;"}
-  .hidden-xs.col-sm-12
+.row
+  .col-sm-12.hidden-xs
     = render partial: 'shared/trip_plan_breadcrumbs'
-
-.row#gridBaseContainer
-  .col-sm-12
-    = render partial: 'shared/page_comments', locals: {key: :grid_header_comment}
-  .col-sm-12.table-responsive
-    %table.table-condensed.table-bordered
-      %tr
-        %td
-        - @dest_place_names.uniq.each do |d|
-          %td
-            =d
-      - @origin_place_names.uniq.each do |o|
-        %tr
-          %td
-            =o
-          - @dest_place_names.uniq.each do |d|
-            - match_trip_id = nil
-            - @multi_od_trip.trips.each do |trip|
-              - match_trip_id = trip.id if trip.trip_places.first.name == o and trip.trip_places.last.name == d
-            %td{"data-trip-id" => match_trip_id, "style" => 'vertical-align: top;'}
-              .trip-summary
-              .col-sm-12{style:'text-align:center;'}
-                = link_to user_trip_path(@traveler, id: match_trip_id ), class: 'btn action-button' do
-                  =t(:details)
-  .col-sm-12
-    = render partial: 'shared/page_comments', locals: {key: :grid_footer_comment}
+.panel.panel-default
+  .panel-heading
+    %h2.panel-title
+      = t(:trip_summaries)
+  .panel-body
+    .row#gridBaseContainer
+      .col-sm-12
+        = render partial: 'shared/page_comments', locals: {key: :grid_header_comment}
+      .col-sm-12.table-responsive
+        %table.table-condensed.table-bordered
+          %tr
+            %td
+            - @dest_place_names.uniq.each do |d|
+              %td
+                =d
+          - @origin_place_names.uniq.each do |o|
+            %tr
+              %td
+                =o
+              - @dest_place_names.uniq.each do |d|
+                - match_trip_id = nil
+                - @multi_od_trip.trips.each do |trip|
+                  - match_trip_id = trip.id if trip.trip_places.first.name == o and trip.trip_places.last.name == d
+                %td{"data-trip-id" => match_trip_id, "style" => 'vertical-align: top;'}
+                  .trip-summary
+                  .col-sm-12{style:'text-align:center;'}
+                    = link_to user_trip_path(@traveler, id: match_trip_id ), class: 'btn action-button' do
+                      =t(:details)
+      .col-sm-12
+        = render partial: 'shared/page_comments', locals: {key: :grid_footer_comment}
 
 :javascript
   $(document).ready(function() {

@@ -265,6 +265,7 @@ ht:
   review: '[ht]Review[/ht]'
   grid: '[ht]Grid[/ht]'
   plan: '[ht]Plan[/ht]'
+  trip_summaries: '[ht]Trip Summaries[/ht]'
   trip_restrictions: '[ht]Trip Restrictions[/ht]'
   trip_parameters: '[ht]Trip Parameters[/ht]'
   eligibility_accommodation_questions: '[ht]Eligibility/Accommodation Questions[/ht]'
@@ -413,6 +414,7 @@ ht:
   four_digit_year: '[ht]year in four-digit[/ht]'
 
   #map
+  map: '[ht]Map[/ht]'
   zoom_in: '[ht]Zoom in[/ht]'
   zoom_out: '[ht]Zoom out[/ht]'
   center_my_location: '[ht]Center my location[/ht]'

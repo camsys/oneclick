@@ -214,6 +214,7 @@ module ApplicationHelper
   end
 
   # Returns the correct localized title for a trip itinerary
+  # NOTE: this function is not being actively used as we now use client-uploaded icons
   def get_trip_summary_icon(itinerary)
     return if itinerary.nil?
 

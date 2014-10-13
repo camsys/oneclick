@@ -85,59 +85,6 @@
   color: #499bea;
 }
 
-/*breadcrumbs*/
-.breadcrumb-page {
-  margin: 3px 0px;
-  min-width: 100px;
-  height: $breadcrumb-height;
-  text-align: center;
-  padding: 0px 10px;
-}
-
-.current-page {
-  background-image: image-url('active.png');
-  background-size: 100% 100%;
-  font-weight: bold;
-  color: white;
-  line-height: $breadcrumb-height;
-}
-
-.prev-page {
-  background-image: image-url('inactive.png');
-  background-size: 100% 100%;
-
-  a{
-    font-weight: bold;
-    color: black;
-    line-height: $breadcrumb-height;
-  }
-
-  a:hover {
-    text-decoration: none;
-    cursor: pointer;
-  }
-}
-
-.next-page {
-  background-image: image-url('inactive.png');
-  background-size: 100% 100%;
-  font-weight: bold;
-  color: black;
-  line-height: $breadcrumb-height;
-}
-
-#wizards{
-  padding: 0px;
-  margin-bottom: 5px;
-  background-color: transparent;
-}
-
-#wizards>li+li:before{
-  visibility: hidden;
-  padding: 0px;
-  content: '';
-}
-
 /*highlight vertical line style(either left or right side of each chart)*/
 .highlight-left-border {
   border-left: 2px black solid;
