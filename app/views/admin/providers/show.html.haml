@@ -2,7 +2,7 @@
 - if can? :index, Provider
   .row
     .col-sm-12
-      = link_to t(:all_providers), admin_providers_path
+      = link_to t(:all_providers), admin_providers_path, class: 'btn btn-primary btn-arrow-left'
 .row.info-header
   .col-sm-5
     %h1= @provider.name
@@ -28,7 +28,7 @@
                 = button_to t(:ok), { action: "destroy", id: @provider.id }, method: :delete, style: "margin-right: 5px;", class: "btn action-button pull-right"
                 .modal-title{:style => "text-align:left;"}
                   %b
-                    = t(:site_title) 
+                    = t(:site_title)
               .modal-body{:style => "text-align:left;"}
                 = t(:confirm_remove_message) + @provider.name + " ?"
         - if can?(:create, Service) && can?(:update, @provider)
@@ -43,7 +43,7 @@
       .panel-heading
         %h4.panel-title
           = t(:provider_info)
-      .panel-body              
+      .panel-body
         %table.table.table-condensed
           %tr
             %td.text-right
@@ -111,7 +111,7 @@
                   = t(:user) + ": "
                 %td.text-left
                   %b= link_to @contact.name, admin_user_path(@contact)
-              
+
 
 -if can? :full_read, @provider
   .panel.panel-default
@@ -151,7 +151,7 @@
       = render 'services/table'
 
   = render partial: 'admin/shared/show_comments', locals: {commentable: @provider}
-  
+
   .row
     .col-sm-6
       .panel.panel-default

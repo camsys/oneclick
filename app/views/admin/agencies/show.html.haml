@@ -2,7 +2,7 @@
 - if can? :index, Agency
   .row
     .col-sm-12
-      = link_to t(:all_agencies), admin_agencies_path
+      = link_to t(:all_agencies), admin_agencies_path, class: 'btn btn-primary btn-arrow-left'
 .row.info-header
   .col-sm-5
     %h1= @agency.name
@@ -32,7 +32,7 @@
                 = button_to t(:ok), { action: "destroy", id: @agency.id }, method: :delete, style: "margin-right: 5px;", class: "btn action-button pull-right"
                 .modal-title{:style => "text-align:left;"}
                   %b
-                    = t(:site_title) 
+                    = t(:site_title)
               .modal-body{:style => "text-align:left;"}
                 = t(:confirm_remove_message) + @agency.name + " ?"
       - if can? :update, @agency
