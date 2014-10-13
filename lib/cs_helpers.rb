@@ -19,7 +19,7 @@ module CsHelpers
     :providers => 'fa fa-umbrella',
     :reports => 'fa fa-bar-chart-o',
     :trips => 'fa fa-tags',
-    :services => 'icon-bus-sign',
+    :services => 'fa fa-bus',
     :users => 'fa fa-group',
     :feedback => 'fa fa-thumbs-o-up',
     :sidewalk_obstructions => 'fa fa-comment',
