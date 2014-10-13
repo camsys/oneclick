@@ -1,5 +1,6 @@
 class Characteristic < ActiveRecord::Base
   include EligibilityOperators
+  include EligibilityHelpers
 
   # attr_accessible :id, :code, :name, :note, :datatype, :active, :characteristic_type, :desc, :sequence
 
