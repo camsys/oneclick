@@ -3,7 +3,7 @@ class TripsController < PlaceSearchingController
   before_filter :get_trip, :only => [:show, :email, :email_itinerary, :details, :repeat, :edit, :multi_od_grid,
     :destroy, :update, :itinerary, :hide, :unhide_all, :select, :email_itinerary2_values, :email2,
     :show_printer_friendly, :example, :plan, :populate, :book, :itinerary_map, :print_itinerary_map]
-  load_and_authorize_resource only: [:new, :create_multi_od, :create, :show, :index, :update, :edit]
+  load_and_authorize_resource only: [:new, :create, :show, :index, :update, :edit]
 
   before_action :detect_ui_mode
 
@@ -33,6 +33,11 @@ class TripsController < PlaceSearchingController
   def show
     trip_serialization(params)
 
+    max_walk_dist =  @traveler.walking_maximum_distance || WalkingMaximumDistance.where(is_default:true).first
+    unless max_walk_dist.nil?
+      @max_walk_dist_value = max_walk_dist.value
+    end
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @tripResponse }
@@ -42,7 +47,7 @@ class TripsController < PlaceSearchingController
   # showing plan_a_trip page for multi-od
   # agent only
   def create_multi_od
-    authorize! :see, :staff_menu
+    authorize! :manage, MultiOriginDestTrip
 
     session[:is_multi_od] = true
     session[:multi_od_trip_id] = nil
@@ -63,7 +68,7 @@ class TripsController < PlaceSearchingController
   # showing a grid summary of each O-D trip for multi-OD trip planning
   # agent only
   def multi_od_grid
-    authorize! :see, :staff_menu
+    authorize! :manage, MultiOriginDestTrip
 
     @trip = Trip.find(params[:id]) # base trip
     @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
@@ -382,7 +387,7 @@ class TripsController < PlaceSearchingController
     end
 
     # Create markers for the map control
-    @markers = create_trip_proxy_markers(@trip_proxy).to_json
+    @markers = create_trip_proxy_markers(@trip_proxy, session[:is_multi_od]).to_json
     @places = create_place_markers(@traveler.places)
 
     setup_modes
@@ -416,7 +421,7 @@ class TripsController < PlaceSearchingController
     @trip_proxy.id = @trip.id
 
     # Create markers for the map control
-    @markers = create_trip_proxy_markers(@trip_proxy).to_json
+    @markers = create_trip_proxy_markers(@trip_proxy, session[:is_multi_od]).to_json
     @places = create_place_markers(@traveler.places)
 
     respond_to do |format|
@@ -488,42 +493,6 @@ class TripsController < PlaceSearchingController
 
     new_trip
 
-    # Set the travel time/date to the default
-    travel_date = default_trip_time
-
-    @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
-    @trip_proxy.outbound_trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
-
-    # Set the trip purpose to its default
-    @trip_proxy.trip_purpose_id = TripPurpose.all.first.id
-
-    @trip_proxy.user_agent = request.user_agent
-    @trip_proxy.ui_mode = @ui_mode
-
-    # default to a round trip. The default return trip time is set the the default trip time plus
-    # a configurable interval
-    return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
-    @trip_proxy.is_round_trip = "1"
-    @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
-
-    # Create markers for the map control
-    @markers = create_trip_proxy_markers(@trip_proxy).to_json
-    @places = create_place_markers(@traveler.places)
-
-    if session[:first_login] == true
-      @first_time = true
-    else
-      @first_time = false
-    end
-    session[:first_login] = nil
-
-
-    if Oneclick::Application.config.allows_booking and not @traveler.can_book?
-      @show_booking = true
-      @booking_proxy = UserServiceProxy.new()
-    end
-    setup_modes
-
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @trip_proxy }
@@ -571,7 +540,7 @@ class TripsController < PlaceSearchingController
     @trip_proxy.id = @trip.id
 
     # Create markers for the map control
-    #@markers = create_trip_proxy_markers(@trip_proxy).to_json
+    #@markers = create_trip_proxy_markers(@trip_proxy, session[:is_multi_od]).to_json
     #@places = create_place_markers(@traveler.places)
 
     # see if we can continue saving this trip
@@ -588,7 +557,7 @@ class TripsController < PlaceSearchingController
       @trip.desired_modes = updated_trip.desired_modes
       @trip.creator = @traveler
       @trip.agency = @traveler.agency
-      
+
       updated_trip.trip_places.each do |tp|
         tp.trip = @trip
         @trip.trip_places << tp
@@ -668,21 +637,74 @@ class TripsController < PlaceSearchingController
 
   # GET
   def plan_a_trip
-    params['mode'] = 1 # is always MODE_NEW (creating a new trip)
+    session[:is_multi_od] = false
+    session[:multi_od_trip_id] = nil
+    session[:multi_od_trip_edited] = false
+
+    session[:tabs_visited] = []
+
+    params['mode'] = 2
     params["modes"] = params["modes"].split(',')
 
     purpose = TripPurpose.where(code: params["purpose"]).first
-
     if purpose.nil?
       purpose = TripPurpose.where(code: TripPurpose::DEFAULT_PURPOSE_CODE).first
     end
-
     unless purpose.nil?
       params['trip_purpose_id'] = purpose.id
     end
 
     @trip_proxy = create_trip_proxy_from_form_params(params)
-    launch_trip_planning(@trip_proxy)
+
+    @trip_proxy.is_round_trip = true
+    if params['is_round_trip'] == '0' or params['is_round_trip'] == 'false'
+      @trip_proxy.is_round_trip = false
+    end
+
+    @trip_proxy.traveler = @traveler
+    @trip_proxy.user_agent = request.user_agent
+    @trip_proxy.ui_mode = @ui_mode
+
+    travel_date = default_trip_time
+    if @trip_proxy.outbound_trip_date.nil?
+      @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
+    end
+    if @trip_proxy.outbound_trip_time.nil?
+      @trip_proxy.outbound_trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
+    end
+
+    # The default return trip time is set the the default trip time plus a configurable interval
+    return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
+    if @trip_proxy.return_trip_date.nil?
+      @trip_proxy.return_trip_date = return_trip_time.strftime(TRIP_DATE_FORMAT_STRING)
+    end
+    if @trip_proxy.return_trip_time.nil?
+      @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
+    end
+
+    # Create markers for the map control
+    @markers = create_trip_proxy_markers(@trip_proxy, session[:is_multi_od]).to_json
+    @places = create_place_markers(@traveler.places)
+
+    if session[:first_login] == true
+      @first_time = true
+    else
+      @first_time = false
+    end
+    session[:first_login] = nil
+
+    if Oneclick::Application.config.allows_booking and not @traveler.can_book?
+      @show_booking = true
+      @booking_proxy = UserServiceProxy.new()
+    end
+
+    session[:modes_desired] = @trip_proxy.modes_desired
+    setup_modes
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @trip_proxy }
+    end
   end
 
   def skip
@@ -916,16 +938,14 @@ protected
     @trip_proxy.traveler = @traveler
 
     # set the flag so we know what to do when the user submits the form
-    @trip_proxy.mode = MODE_NEW
-
-    # Set the travel time/date to the default
     travel_date = default_trip_time
 
     @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
     @trip_proxy.outbound_trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
 
     # Set the trip purpose to its default
-    @trip_proxy.trip_purpose_id = TripPurpose.all.first.id
+    default_purpose = TripPurpose.where(code: TripPurpose::DEFAULT_PURPOSE_CODE).first
+    @trip_proxy.trip_purpose_id = !default_purpose.nil? ? default_purpose.id : TripPurpose.all.first.id
 
     @trip_proxy.user_agent = request.user_agent
     @trip_proxy.ui_mode = @ui_mode
@@ -934,18 +954,25 @@ protected
     # a configurable interval
     return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
     @trip_proxy.is_round_trip = "1"
+    @trip_proxy.return_trip_date = return_trip_time.strftime(TRIP_DATE_FORMAT_STRING)
     @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
 
     # Create markers for the map control
-    @markers = create_trip_proxy_markers(@trip_proxy).to_json
+    @markers = create_trip_proxy_markers(@trip_proxy, session[:is_multi_od]).to_json
     @places = create_place_markers(@traveler.places)
 
     if session[:first_login] == true
-      session[:first_login] = nil
+      @first_time = true
+    else
+      @first_time = false
+    end
+    session[:first_login] = nil
+
+
+    if Oneclick::Application.config.allows_booking and not @traveler.can_book?
       @show_booking = true
       @booking_proxy = UserServiceProxy.new()
     end
-
     setup_modes
   end
 
@@ -970,7 +997,7 @@ protected
     end
 
     # Create markers for the map control
-    #@markers = create_trip_proxy_markers(trip_proxy).to_json
+    #@markers = create_trip_proxy_markers(trip_proxy, session[:is_multi_od]).to_json
     #@places = create_place_markers(@traveler.places)
 
     respond_to do |format|

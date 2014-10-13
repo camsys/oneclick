@@ -63,6 +63,7 @@ es:
   parent: "[es27]Parent[/es]"
   subagencies: "[es27]Sub-agencies[/es]"
   new_agency: "[es29]New Agency[/es]"
+  agency_info: "[es]Agency Information[/es]"
   select_agency: "[es42]Select Agency[/es]"
   provider: "[es25]Provider[/es]"
   new_provider: "[es]New Provider[/es]"
@@ -87,6 +88,7 @@ es:
   delete_user: "[es41]Delete user[/es]"
   walking_speed: '[es]Walking Speed[/es]'
   walking_maximum_distance: '[es]Walking Maximum Distance[/es]'
+  walk_distance: '[es]Walk Distance[/es]'
   # Agent and Admin string
   reports: "Reportes"
   report_name: "[es46]Report Name[/es]"
@@ -227,6 +229,20 @@ es:
   plan_trip: "Continuar la planificación de este viaje *44*"
   max_notes: '[es133]Max notes[/es]'
 
+  # Page comments
+  trip_header_comment: ''
+  trip_footer_comment: ''
+  multi_od_trip_header_comment: ''
+  multi_od_trip_footer_comment: ''
+  options_header_comment: ''
+  options_footer_comment: ''
+  grid_header_comment: ''
+  grid_footer_comment: ''
+  review_header_comment: ''
+  review_footer_comment: ''
+  plan_header_comment: ''
+  plan_footer_comment: ''
+
   # Trip planning
   enter_address: 'Introduce la dirección'
   location: "[es106]Location[/es]"
@@ -326,6 +342,7 @@ es:
   outbound_itinerary_count: '[es]Outbound Itinerary Count[/es]'
   outbound_itinerary_modes: '[es]Outbound Itinerary Modes[/es]'
   paratransit: 'Transporte Público para Discapacitados'
+  trip_dir: '[es]Trip[/es]'
   mode: 'Medio de Transporte'
   direction_short: "[es147]Dir[/es]"
   status: "[es148]Status[/es]"

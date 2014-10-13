@@ -318,7 +318,7 @@ class EligibilityService
         end
       end
 
-      if itinerary['date_mismatch'] != true and itinerary['time_mismatch'] != true
+      if itinerary['time_mismatch'] != true
         eligible_itineraries << itinerary
       end
     end
@@ -346,7 +346,7 @@ class EligibilityService
         booking_cut_off_time = service.booking_cut_off_times.where(day_of_week: trip_created_wday, service_id: service.id).first
         unless booking_cut_off_time.nil?
           cut_off_seconds = booking_cut_off_time.cut_off_seconds
-          trip_created_seconds = Time.parse(trip_part.created_at).seconds_since_midnight
+          trip_created_seconds = trip_part.created_at.seconds_since_midnight
 
           if trip_created_seconds > cut_off_seconds
             days_after_cut_off_time = 1
@@ -354,7 +354,7 @@ class EligibilityService
         end
 
         # compare if scheduled trip time is earlier than earliest allowable trip start time
-        if trip_part.trip_time < ((trip_part.created_at + notice_days + days_after_cut_off_time).midnight)
+        if trip_part.trip_time < ((trip_part.created_at + (notice_days + days_after_cut_off_time).days).midnight)
           itinerary['match_score'] += 0.01
           itinerary['too_late'] = true
         end

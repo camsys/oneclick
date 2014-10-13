@@ -1,13 +1,14 @@
 = form_tag approve_admin_sidewalk_obstructions_path, method: :patch do
   .row.info-header
-    .col-sm-6
-      %h1= t(:sidewalk_obstructions)
-    .col-sm-6.btns
-      .pull-right
+    .col-sm-12
+      .btns.pull-right
         = submit_tag t(:apply), class: "btn action-button"
         = link_to t(:cancel), admin_sidewalk_obstructions_path, class: "btn action-button"
-  .row
-    .col-sm-12
+      %h1= t(:sidewalk_obstructions)
+  .panel.panel-default{style: 'padding: 0px;'}
+    .panel-heading
+      %h2.panel-title= t(:sidewalk_obstructions)
+    .panel-body
       %table.table.table-condensed.table-striped.table-bordered.table-hover#sidewalk_feedbacks_table
         %thead
           %tr
@@ -24,20 +25,19 @@
             %tr
               %td= feedback.user.name
               %td= feedback.comment
-              %td
+              %td.nowrap
                 - unless feedback.removed_at.nil?
-                  =l(feedback.removed_at, :format => :short)
+                  =format_date_time(feedback.removed_at)
               %td
                 = label_tag "#{feedback.id}_#{SidewalkObstruction::APPROVED}", t(:approve), class: "sr-only"
                 = radio_button_tag "#{feedback.id}", SidewalkObstruction::APPROVED
               %td
                 = label_tag "#{feedback.id}_#{SidewalkObstruction::REJECTED}", t(:reject), class: "sr-only"
-                = radio_button_tag "#{feedback.id}", SidewalkObstruction::REJECTED 
+                = radio_button_tag "#{feedback.id}", SidewalkObstruction::REJECTED
               %td
                 = label_tag "#{feedback.id}_#{SidewalkObstruction::DELETED}", t(:delete), class: "sr-only"
-                = radio_button_tag "#{feedback.id}", SidewalkObstruction::DELETED 
-              %td
-                =l(feedback.created_at, :format => :short)
+                = radio_button_tag "#{feedback.id}", SidewalkObstruction::DELETED
+              %td.nowrap= format_date_time(feedback.created_at)
               %td.center
                 - if feedback.lat and feedback.lon
                   = link_to Rails.application.config.street_view_url + '?lat=' + feedback.lat.to_s + '&lng=' + feedback.lon.to_s, class: 'btn action-button', target: '_blank', role: 'button' do
@@ -50,7 +50,7 @@ $(document).ready( function() {
       type: "POST",
       url: "/admin/sidewalk_obstructions/approve",
       data: {
-        "utf8":"✓", 
+        "utf8":"✓",
         "_method":"patch",
         "authenticity_token": $("input[name=authenticity_token]").val(),
         "approve": $("input:checked", table.fnGetNodes()).serialize()
@@ -82,4 +82,3 @@ $(document).ready( function() {
     "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
   } );
 });
-  

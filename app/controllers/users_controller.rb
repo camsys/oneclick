@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     @user_accommodations_proxy = UserAccommodationsProxy.new(@user)
     @user = User.find(params[:id])
   end
-  
+
   def update
     @user_characteristics_proxy = UserCharacteristicsProxy.new(User.find(@user)) #we inflate a new proxy every time, but it's transient, just holds a bunch of characteristics
 
@@ -50,11 +50,11 @@ class UsersController < ApplicationController
       if @user_characteristics_proxy.errors.size > 0
         @user.errors.add(:base, '')
       end
-      
+
       render 'edit'
     end
   end
-    
+
   def destroy
     authorize! :destroy, @user, :message => t(:not_authorized_as_an_administrator)
     user = User.find(params[:id])
@@ -194,9 +194,9 @@ class UsersController < ApplicationController
 
   def find_by_email
     #user = User.find_by(email: params[:email])
-    user = User.find(:first, :conditions => ["lower(email) = ?", params[:email].downcase]) #case insensitive
+    user = User.staff_assignable.find(:first, :conditions => ["lower(email) = ?", params[:email].downcase]) #case insensitive
     traveler = User.find(params[:id])
-    
+
     if user.nil?
       success = false
       msg = I18n.t(:no_user_with_email_address, email: ERB::Util.html_escape(params[:email])) # did you know that this was an XSS vector?  OOPS
@@ -206,15 +206,15 @@ class UsersController < ApplicationController
     elsif traveler.pending_and_confirmed_delegates.include? user
       success = false
       msg = t(:you_ve_already_asked_them_to_be_a_buddy)
-    else 
+    else
       success = true
       msg = t(:please_save_buddies, name: user.first_name)
       output = user.email
       row = [
-              user.name, 
-              user.email, 
-              I18n.t('relationship_status.relationship_status_pending'), 
-              UserRelationshipDecorator.decorate(UserRelationship.find_by(traveler: user, delegate: traveler)).buttons 
+              user.name,
+              user.email,
+              I18n.t('relationship_status.relationship_status_pending'),
+              UserRelationshipDecorator.decorate(UserRelationship.find_by(traveler: user, delegate: traveler)).buttons
             ]
     end
     respond_to do |format|
@@ -226,7 +226,7 @@ class UsersController < ApplicationController
     # Confirm buddies
     @user = User.find(params[:id])
     authorize! :assist, User.find(params[:buddy_id])
-    
+
     if UserRelationship.find_by(user_id: params[:buddy_id], delegate_id: @user)
       set_traveler_id params[:buddy_id]
       flash[:notice] = t(:assisting_turned_on)

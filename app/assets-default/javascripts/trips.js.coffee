@@ -2,14 +2,17 @@
 is_touch_device = ->
   return "ontouchstart" of window or navigator.MaxTouchPoints > 0 or navigator.msMaxTouchPoints > 0
 
-create_or_update_marker = (map, key, lat, lon, name, desc, iconStyle) ->
+remove_marker = (map, key) ->
   marker = map.findMarkerById(key)
   map.removeMarkerFromMap marker  if marker
+
+create_or_update_marker = (map, key, lat, lon, name, desc, iconStyle) ->
+  remove_marker(map, key)
   marker = map.createMarker(key, lat, lon, iconStyle, desc, name, false)
   map.addMarkerToMap marker, true
   marker
 
-update_map = (map, type, e, addr, d) ->
+update_map = (map, dir, e, addr, d) ->
   lat = addr.lat
   lon = addr.lon
   if lat==null
@@ -20,17 +23,25 @@ update_map = (map, type, e, addr, d) ->
       success: (data) ->
         lat = data.result.geometry.location.lat
         lon = data.result.geometry.location.lng
-  if type=='from'
+  if dir =='from'
     key = 'start'
     icon = 'startIcon'
   else
     key = 'stop'
     icon = 'stopIcon'
 
+  # for multi_od, in order to use different marker key to display all places on map
+  if $('#' + dir + '_places').length > 0
+    place_counter = get_current_multi_od_place_counter(dir)
+    key += (++place_counter)
+
   map.removeMatchingMarkers(key);
   marker = create_or_update_marker(map, key, lat, lon, addr.name, addr.full_address, icon);
   map.setMapToBounds();
   map.selectMarker(marker);
+  addr.lat = lat
+  addr.lon = lon
+  add_multi_od_places(dir, addr.name, addr)
 
 show_marker = (map, dir) ->
   if dir=='from'
@@ -64,7 +75,7 @@ show_map = (dir, addrType) ->
 show_from_typeahead_hint = true
 show_to_typeahead_hint = true
 
-update_place = (placeText, type) ->
+update_place = (placeText, type, addr) ->
   if type =='from'
     placeid = 'trip_proxy_from_place'
     show_from_typeahead_hint = false
@@ -73,26 +84,54 @@ update_place = (placeText, type) ->
     show_to_typeahead_hint = false
 
   $('#' + placeid).typeahead('val', placeText)
-  add_multi_od_places(type, placeText)
+
+get_current_multi_od_place_counter = (dir) ->
+  place_counter = parseInt($('#' + dir + '_places').attr('place-counter'))
+  if isNaN(place_counter) or typeof(place_counter) != 'number'
+     place_counter = 0
+
+  place_counter
 
 add_multi_od_places = (dir, addr_text, addr_data) ->
+  if $('#' + dir + '_places').length == 0
+    return
   addr_data = addr_data || {}
   is_addr_full_object = !$.isEmptyObject(addr_data) # whether this is just a address name or full address object
   addr_obj = {
     data: addr_data,
     name: addr_text,
+    address: addr_text,
+    lat: addr_data.lat,
+    lon: addr_data.lon,
     is_full: false
   }
-  new_place_row_tags = "<tr>" +
+
+  current_place_counter = get_current_multi_od_place_counter(dir)
+  new_place_counter = ++current_place_counter
+  if dir=='from'
+    key = 'start'
+  else
+    key = 'stop'
+  place_marker_key = key + new_place_counter
+  new_place_row_tags = "<tr place-marker-key='" + place_marker_key + "'>" +
     "<td class='address-data' style='display:none;'>" + JSON.stringify(addr_obj) + "</td>" +
     "<td>" + addr_text + "</td>" +
     "<td class='center nowrap'><button class='btn btn-sm btn-danger delete-button'><i class='fa fa-times'></i></button></td>" +
     "</tr>"
   $('#' + dir + '_places').append new_place_row_tags
 
+  $('#' + dir + '_places').attr('place-counter', new_place_counter)
+  $('#trip_proxy_' + dir + '_place').attr('last-multi-od-value', addr_text)
+  setTimeout (->
+    $('#trip_proxy_' + dir + '_place').val('')
+    return
+  ), 100
+
+  return
+
 process_location_from_map = (addr, dir) -> #update map marker from selected location, and update address input field from reverse geocoded address
   update_map(CsMaps.tripMap, dir, null, addr, null)
-  update_place(addr.name, dir)
+  update_place(addr.name, dir, addr)
 
 validateDateTimes = (isReturn) ->
   outboundDateField = $("#trip_proxy_outbound_trip_date")
@@ -248,10 +287,10 @@ $ ->
     show_from_typeahead_hint = true
   $('#trip_proxy_from_place').on 'typeahead:selected', (e, addr, d) ->
     $('#from_place_object').val(JSON.stringify(addr))
-    add_multi_od_places('from', addr.name, addr)
     update_map CsMaps.tripMap, 'from', e, addr, d
-    $('#trip_proxy_to_place').focus()
-    $('#trip_proxy_to_place').trigger('touchstart')
+    if $('#from_places').length == 0
+      $('#trip_proxy_to_place').focus()
+      $('#trip_proxy_to_place').trigger('touchstart')
   $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, addr, d) ->
     $('#from_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'from', e, addr, d
@@ -262,10 +301,10 @@ $ ->
     show_to_typeahead_hint = true
   $('#trip_proxy_to_place').on 'typeahead:selected', (e, addr, d) ->
     $('#to_place_object').val(JSON.stringify(addr))
-    add_multi_od_places('to', addr.name, addr)
     update_map CsMaps.tripMap, 'to', e, addr, d
-    $('#trip_proxy_outbound_arrive_depart').focus()
-    $('#trip_proxy_outbound_arrive_depart').trigger('touchstart')
+    if $('#to_places').length == 0
+      $('#trip_proxy_outbound_arrive_depart').focus()
+      $('#trip_proxy_outbound_arrive_depart').trigger('touchstart')
   $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, addr, d) ->
     $('#to_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'to', e, addr, d
@@ -324,7 +363,9 @@ $ ->
   $('.place-container').on "click", ".delete-button", (e) ->
     tr = $(this).closest('tr')
     tr.fadeOut 400, ->
-        tr.remove()
+      key = $(tr).attr('place-marker-key')
+      remove_marker(CsMaps.tripMap, key)
+      tr.remove()
     return false
 
   return

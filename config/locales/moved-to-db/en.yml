@@ -70,6 +70,7 @@ en:
   parent: "Parent"
   subagencies: "Sub-agencies"
   new_agency: "New Agency"
+  agency_info: "Agency Information"
   select_agency: "Select Agency"
   providers: "Providers"
   all_providers: "All Providers"
@@ -100,6 +101,7 @@ en:
   user_deleted: "User Deleted"
   walking_speed: 'Walking Speed'
   walking_maximum_distance: 'Walking Maximum Distance'
+  walk_distance: 'Walk Distance'
   # Agent and Admin string
   reports: "Reports"
   report_name: "Report Name"
@@ -235,6 +237,8 @@ en:
   # Page comments
   trip_header_comment: ''
   trip_footer_comment: ''
+  multi_od_trip_header_comment: ''
+  multi_od_trip_footer_comment: ''
   options_header_comment: ''
   options_footer_comment: ''
   grid_header_comment: ''
@@ -344,6 +348,7 @@ en:
   outbound_itinerary_count: 'Outbound Itinerary Count'
   outbound_itinerary_modes: 'Outbound Itinerary Modes'
   paratransit: 'Paratransit'
+  trip_dir: 'Trip'
   mode: 'Mode'
   direction_short: "Dir"
   status: "Status"

@@ -1,13 +1,14 @@
 = form_tag approve_ratings_path, method: :patch do
   .row.info-header
-    .col-sm-6
-      %h1= t(:feedback)
-    .col-sm-6.btns
-      .pull-right
+    .col-sm-12
+      .btns.pull-right
         = submit_tag t(:apply), class: "btn action-button"
         = link_to t(:cancel), ratings_path, class: "btn action-button"
-  .row
-    .col-sm-12
+      %h1= t(:feedback)
+  .panel.panel-default{style: 'padding: 0px;'}
+    .panel-heading
+      %h2.panel-title= t(:feedback)
+    .panel-body
       %table.table.table-condensed.table-striped.table-bordered.table-hover#ratings_table
         %thead
           %tr
@@ -36,13 +37,12 @@
               %td
                 = label_tag "#{rating.id}_#{Rating::REJECTED}", t(:reject), class: "sr-only"
                 -# Do not internationalize.  That will break the label.  Leave the label text itself internationalized
-                = radio_button_tag "#{rating.id}", Rating::REJECTED 
-              %td
-                =l(rating.created_at, :format => :short)
+                = radio_button_tag "#{rating.id}", Rating::REJECTED
+              %td.nowrap= format_date_time(rating.created_at)
 #rateable_modal.modal.fade{:role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
   .modal-dialog.modal-lg
     .modal-content
-      
+
 -# Because DataTables messes with the DOM, forms only submit rows on the visible page.  Therefore, we override the native submit and fake it with carefully crafted AJAX
 :javascript
 $(document).ready( function() {
@@ -66,7 +66,7 @@ $(document).ready( function() {
       type: "POST",
       url: "/ratings/approve",
       data: {
-        "utf8":"✓", 
+        "utf8":"✓",
         "_method":"patch",
         "authenticity_token": $("input[name=authenticity_token]").val(),
         "approve": $("input:checked", table.fnGetNodes()).serialize()
@@ -99,4 +99,3 @@ $(document).ready( function() {
     "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
   } );
 });
-  

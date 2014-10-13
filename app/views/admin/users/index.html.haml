@@ -1,16 +1,21 @@
-.header
-  = link_to t(:create), new_admin_user_path,
-        {class: 'btn action-button pull-right', role: 'button'}
-  %h1= t(:users)
-%table.table.table-condensed.table-striped.table-bordered.table-hover#admin_users_table
-  %thead
-    %tr
-      %th= t(:username)
-      %th= t(:email)
-      %th= t(:registered)
-      %th= t(:roles)
-      %th#status= t(:status)
-  %tbody
+.row.info-header
+  .col-sm-12
+    .btns.pull-right
+      = link_to t(:create), new_admin_user_path, {class: 'btn action-button', role: 'button'}
+    %h1= t(:users)
+.panel.panel-default{style: 'padding: 0px;'}
+  .panel-heading
+    %h2.panel-title= t(:users)
+  .panel-body
+    %table.table.table-condensed.table-striped.table-bordered.table-hover#admin_users_table
+      %thead
+        %tr
+          %th= t(:username)
+          %th= t(:email)
+          %th= t(:registered)
+          %th= t(:roles)
+          %th#status= t(:status)
+      %tbody
 :javascript
   $(document).ready(function() {
     var oTable = $('#admin_users_table').dataTable( {

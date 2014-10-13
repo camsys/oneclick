@@ -22,7 +22,7 @@ Oneclick::Application.configure do
   # config.assets.digest = true
   # # config.assets.debug
 
-  # config.i18n.fallbacks
+  config.i18n.fallbacks = false
 
   config.active_support.deprecation = :log
 

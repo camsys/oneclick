@@ -84,14 +84,7 @@ class Admin::AgenciesController < ApplicationController
     admin_ids = params[:agency][:administrator_ids].reject(&:blank?) #again, special case because need to update rolify
 
     # TODO This is a little hacky for the moment; might switch to front-end javascript but let's just do this for now.
-    [:public_comments_attributes, :private_comments_attributes].each do |t|
-      params[:agency][t].each do |k, v|
-        # k is the (artificial) index, v is the hash with the form values
-        if v[:comment].blank? && v.include?(:id)
-          v[:_destroy] = 1
-        end
-      end
-    end
+    fixup_comments_attributes_for_delete :agency
 
     Rails.logger.info "After params, is\n#{agency_params(params).ai}"
     respond_to do |format|

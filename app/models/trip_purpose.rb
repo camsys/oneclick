@@ -1,5 +1,5 @@
 class TripPurpose < ActiveRecord::Base
-  DEFAULT_PURPOSE_CODE = 'general_purpose'
+  DEFAULT_PURPOSE_CODE = 'general'
 
   has_many :service_trip_purpose_maps
 

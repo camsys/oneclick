@@ -93,23 +93,41 @@ module MapHelper
 
   # Create an array of map markers for a trip proxy. If the trip proxy is from an existing trip we will
   # have start and stop markers
-  def create_trip_proxy_markers(trip_proxy)
-
+  def create_trip_proxy_markers(trip_proxy, is_multi_od)
     markers = []
-    if trip_proxy.from_place_selected
-      place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected, true)
-    else
-      place = {:name => trip_proxy.from_place, :lat => trip_proxy.from_lat, :lon => trip_proxy.from_lon, :formatted_address => trip_proxy.from_raw_address}
-    end
-    markers << get_addr_marker(place, 'start', 'startIcon')
+    if is_multi_od != true
+      if trip_proxy.from_place_selected
+        place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected, true)
+      else
+        place = {:name => trip_proxy.from_place, :lat => trip_proxy.from_lat, :lon => trip_proxy.from_lon, :formatted_address => trip_proxy.from_raw_address}
+      end
+      markers << get_addr_marker(place, 'start', 'startIcon')
 
-    if trip_proxy.to_place_selected
-      place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected, false)
-    else
-      place = {:name => trip_proxy.to_place, :lat => trip_proxy.to_lat, :lon => trip_proxy.to_lon, :formatted_address => trip_proxy.to_raw_address}
-    end
+      if trip_proxy.to_place_selected
+        place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected, false)
+      else
+        place = {:name => trip_proxy.to_place, :lat => trip_proxy.to_lat, :lon => trip_proxy.to_lon, :formatted_address => trip_proxy.to_raw_address}
+      end
 
-    markers << get_addr_marker(place, 'stop', 'stopIcon')
+      markers << get_addr_marker(place, 'stop', 'stopIcon')
+    else
+      multi_origin_places = []
+      multi_origin_places = trip_proxy.multi_origin_places.split(';') unless trip_proxy.multi_origin_places.nil?
+
+      multi_origin_places.each_with_index do |raw_place, index|
+        place = JSON.parse(raw_place).symbolize_keys
+        markers << get_addr_marker(place, 'start'+ (index+1).to_s, 'startIcon')
+      end
+
+      multi_dest_places = []
+      multi_dest_places = trip_proxy.multi_dest_places.split(';') unless trip_proxy.multi_dest_places.nil?
+
+      multi_dest_places.each_with_index do |raw_place, index|
+        place = JSON.parse(raw_place).symbolize_keys
+        markers << get_addr_marker(place, 'stop'+ (index+1).to_s, 'stopIcon')
+      end
+
+    end
 
     return markers
   end

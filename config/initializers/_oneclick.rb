@@ -225,7 +225,42 @@ Oneclick::Application.configure do
 
     config.time_zone = 'Pacific Time (US & Canada)'
 
-  else
+  when 'ma'
+    config.host = 'oneclick-ma.camsys-apps.com'
+    config.ui_logo = 'ma/logo.png'
+    config.logo_text = "1-Click"
+    config.geocoder_components = 'administrative_area:MA|country:US'
+    # TODO Do we maybe need different bounds for kiosk vs. default?
+    config.map_bounds      = [[40.664559, -74.104039],[43.244470, -69.148697]]
+    config.geocoder_bounds = [[40.664559, -74.104039],[43.244470, -69.148697]]
+    config.default_zoom = 12
+    config.open_trip_planner = "http://otp-extra.camsys-apps.com:8082/otp/routers/default/plan?"
+    config.transit_respects_ada = false
+    config.taxi_fare_finder_api_key = "SIefr5akieS5"
+    config.taxi_fare_finder_api_city = "Boston"
+    config.name = '1-Click/JTA'
+    ENV['SMTP_MAIL_USER_NAME'] = "oneclick.ma.camsys" # TODO
+    ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey" # TODO
+    ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@1-click.org" # TODO
+    ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
+    ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
+    ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
+    ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
+    ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
+    config.enable_feedback = true
+    config.traveler_read_all_organization_feedback = true
+    config.agent_read_feedback = true
+    config.provider_read_all_feedback = true
+    config.tripless_feedback = false
+    honeybadger_api_key = '0447225c'
+    #config.poi_file = 'db/jta/locations.csv'
+    config.default_county = 'Suffolk'
+    config.state = 'MA'
+
+    config.max_walk_seconds = 3600
+
+
+    else
     raise "Brand '#{config.brand}' not supported"
   end
 

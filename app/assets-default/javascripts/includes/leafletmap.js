@@ -324,16 +324,20 @@ CsLeaflet.Leaflet = {
     // Removes a marker from the map and removes it from the cache
     // if it is stored there
     removeMarkerFromMap: function(marker) {
+        match_marker = null;
         markers = new Array();
         for (var i = 0; i < this.LMmarkers.length; i++) {
-            if (marker == this.LMmarkers[i]) {
+            if (marker.id == this.LMmarkers[i].id) {
+                match_marker = this.LMmarkers[i];
                 continue;
             } else {
                 markers.push(this.LMmarkers[i]);
             }
         }
         this.LMmarkers = markers;
-        this.LMmap.removeLayer(marker);
+        if(match_marker) {
+            this.LMmap.removeLayer(match_marker);
+        }
     },
 
     // Removes markers with an id matching the input string

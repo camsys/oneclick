@@ -130,6 +130,10 @@ class ServicesController < ApplicationController
   # PUT /services/1
   # PUT /services/1.json
   def update
+
+    # TODO This is a little hacky for the moment; might switch to front-end javascript but let's just do this for now.
+    fixup_comments_attributes_for_delete :service
+
     @service = Service.find(params[:id])
     respond_to do |format|
       par = service_params

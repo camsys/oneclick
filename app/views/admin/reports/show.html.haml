@@ -1,4 +1,7 @@
-
 = render partial: 'subnav', locals: {header: t(@report.class_name)}
 
-= render @report_view
+.panel.panel-default{style: 'padding: 0px;'}
+  .panel-heading
+    %h2.panel-title= t(@report.class_name)
+  .panel-body
+    = render @report_view

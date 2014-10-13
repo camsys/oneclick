@@ -35,18 +35,22 @@
               %p.form-control-static= I18n.t("locales.#{user.preferred_locale}")
           - if user.walking_speed_id
             - user_walk_speed = WalkingSpeed.where(id:user.walking_speed_id).first
-            - if user_walk_speed
-              .form-group
-                %label.col-sm-3.control-label= t(:walking_speed)
-                .col-sm-9
-                  %p.form-control-static= user_walk_speed.label
+          - else
+            - user_walk_speed = WalkingSpeed.where(is_default:true).first
+          - if user_walk_speed
+            .form-group
+              %label.col-sm-3.control-label= t(:walking_speed)
+              .col-sm-9
+                %p.form-control-static= user_walk_speed.label
           - if user.walking_maximum_distance_id
             - user_walk_max_dist = WalkingMaximumDistance.where(id:user.walking_maximum_distance_id).first
-            - if user_walk_max_dist
-              .form-group
-                %label.col-sm-3.control-label= t(:walking_maximum_distance)
-                .col-sm-9
-                  %p.form-control-static= user_walk_max_dist.label
+          - else
+            - user_walk_max_dist = WalkingMaximumDistance.where(is_default:true).first
+          - if user_walk_max_dist
+            .form-group
+              %label.col-sm-3.control-label= t(:walking_maximum_distance)
+              .col-sm-9
+                %p.form-control-static= user_walk_max_dist.label
   - if can? :full_read, user
     .col-sm-6
       .panel.panel-default#agencies

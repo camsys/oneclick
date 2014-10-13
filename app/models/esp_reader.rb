@@ -277,7 +277,7 @@ class EspReader
     #tProvider Column Names
     #['Name', 'Contact', 'ContactTitle', 'LocAddress', 'LocCity', 'LocState', 'LocZipCode', 'AreaCode1', 'Phone1', 'URL', 'Email', 'ProviderID']
 
-    provider.name = esp_provider[@provider_idx["Name"]]
+    provider.name = esp_provider[@provider_idx["Name"]][0,128]
     provider.internal_contact_name = esp_provider[@provider_idx["Contact"]]
     provider.internal_contact_title = esp_provider[@provider_idx["ContactTitle"]]
     provider.address = esp_provider[@provider_idx["LocAddress"]]
@@ -289,7 +289,8 @@ class EspReader
     provider.email = esp_provider[@provider_idx["Email"]]
     provider.save
 
-    provider.private_comments.create! comment: esp_provider[@provider_idx["Comments"]], locale: 'en'
+    provider.private_comments.where(locale: 'en').destroy_all
+    provider.private_comments.create!(comment: fixup_comments(esp_provider[@provider_idx["Comments"]]), locale: 'en') if esp_provider[@provider_idx["Comments"]]
 
     if create #assign service to the new provider
       service.provider = provider
@@ -307,7 +308,7 @@ class EspReader
 
       SERVICE_DICT[esp_service[@service_idx['ServiceID']]] = esp_service[@service_idx['ServiceRefID']]
       service = Service.where(external_id: esp_service[@service_idx['ServiceRefID']]).first_or_initialize
-      service.name = esp_service[@service_idx['OrgName']]
+      service.name = esp_service[@service_idx['OrgName']][0,128]
       service.internal_contact_name = esp_service[@service_idx['Contact']]
       service.internal_contact_title = esp_service[@service_idx['ContactTitle']]
       service.email = esp_service[@service_idx['Email']]
@@ -321,8 +322,6 @@ class EspReader
 
       create_or_update_provider(esp_provider, service, service.provider.nil?)
       service.save
-      service.public_comments.create! comment: esp_service[@service_idx['Comments']], locale: 'en'
-      service.private_comments.create! comment: esp_service[@service_idx['LocalComments']], locale: 'en'
 
       #Clean up this service
       service.schedules.destroy_all
@@ -331,6 +330,12 @@ class EspReader
       service.service_characteristics.destroy_all
       service.service_trip_purpose_maps.destroy_all
       service.fare_structures.destroy_all
+      service.public_comments.where(locale: 'en').destroy_all
+      service.private_comments.where(locale: 'en').destroy_all
+
+      service.public_comments.create!(comment: fixup_comments(esp_service[@service_idx['Comments']]), locale: 'en') if esp_service[@service_idx['Comments']]
+      service.private_comments.create!(comment: fixup_comments(esp_service[@service_idx['LocalComments']]), locale: 'en') if esp_service[@service_idx['LocalComments']]
+
       #Add Curb to Curb by default
       accommodation = Accommodation.find_by_code('curb_to_curb')
       ServiceAccommodation.create(service: service, accommodation: accommodation)
@@ -349,6 +354,13 @@ class EspReader
     end
 
     services
+  end
+
+  def fixup_comments comments
+    return nil if comments.nil?
+    comments.split(%r{\n+}).collect do |c|
+      "<p>#{c}</p>"
+    end.join
   end
 
   def create_or_update_eligibility esp_configs
@@ -386,18 +398,26 @@ class EspReader
       service = Service.find_by_external_id(SERVICE_DICT[config[@config_idx['ServiceID']]])
       case config[@config_idx['CfgNum']].to_i
         when 4
-          service_comments_hash[service.id] = (service_comments_hash[service.id] || "Restrictions<br><ul>") + "<li>" + config[@config_idx['Item']].to_s + "</li>"
+          service_comments_hash[service.id] = (service_comments_hash[service.id] || "<p>Restrictions</p><ul>") + "<li>" + config[@config_idx['Item']].to_s + "</li>"
       end
 
     end
 
+    Rails.logger.info "service_comments_hash:"
+    Rails.logger.info service_comments_hash.ai
+
     service_comments_hash.each do |key, item|
       service = Service.find(key)
-      c = service.public_comments.first
+      c = service.public_comments.where(locale: 'en').first
+      Rails.logger.info "for sch #{key} item #{item} c is #{c.ai}"
       if c.nil?
         service.public_comments.create! comment: item + "</ul>", locale: 'en'
       else
         c.update_attributes comment: item + "</ul>" + c.comment.to_s
+      end
+      Rails.logger.info "after processing:"
+      service.public_comments.each do |c|
+        Rails.logger.info c.ai
       end
       # service.public_comments.create! comment: item + "</ul>" + (service.public_comments || ""), locale: 'en'
       # service.save

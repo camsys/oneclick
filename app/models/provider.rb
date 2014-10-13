@@ -20,7 +20,7 @@ class Provider < ActiveRecord::Base
   
   include Validations
   before_validation :check_url_protocol
-  validates :name, presence: true, length: { maximum: Provider.columns_hash['name'].limit }
+  validates :name, presence: true, length: { maximum: 128 }
 
   def self.form_collection include_all=true
     form_collection_from_relation include_all, order(:name), false

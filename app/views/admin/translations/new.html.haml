@@ -1,12 +1,25 @@
-%h1 Define A Translation
+.row.info-header
+	.col-sm-12
+		.btns.pull-right
+			= button_tag id:'create_translation', type: 'submit', class: "btn action-button" do
+				= t(:create_translation)
+			= link_to t(:cancel), admin_translations_path, { class: "btn action-button" }
+		%h1 Define A Translation
 
-#translations_form
-    .row
-        .col-sm-12
-            = simple_form_for [:admin, @translation], html: { class: 'form-horizontal' }, wrapper: :horizontal_form do |t|
-                = t.input :key
-                = t.input :locale, collection: I18n.available_locales, include_blank: false
-                = t.input :is_list
-                = t.input :value, input_html: {rows: 10}
-                = t.submit t(:create_translation), { class: "btn action-button" }
-                = link_to t(:cancel), admin_translations_path
+.panel.panel-default{style: 'padding: 0px;'}
+	.panel-heading
+		%h2.panel-title
+			Translation Parameters
+	.panel-body
+		#translations_form
+			.row
+				.col-sm-12
+					= simple_form_for [:admin, @translation], html: { class: 'form-horizontal' }, wrapper: :horizontal_form do |t|
+						= t.input :key
+						= t.input :locale, collection: I18n.available_locales, include_blank: false
+						= t.input :is_list
+						= t.input :value, input_html: {rows: 10}
+:javascript
+	$('#create_translation').on('click', function(){
+		$('#translations_form form').submit();
+	});

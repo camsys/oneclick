@@ -76,6 +76,7 @@ class Ability
       can [:access], :admin_providers
       can [:access], :admin_services
       can [:access], :admin_feedback
+      can [:access, :manage], MultiOriginDestTrip
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
       can :read, Agency
       can :full_read, Agency # read gives access to only contact info.  full_read offers staff, internal contact, etc.

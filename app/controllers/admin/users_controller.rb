@@ -148,7 +148,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def find_by_email
-    user = User.where("lower(email) = ?", params[:email].downcase).first #case insensitive
+    user = User.staff_assignable.where("lower(email) = ?", params[:email].downcase).first #case insensitive
     traveler = User.find(params[:user_id])
     if user.nil?
       success = false
