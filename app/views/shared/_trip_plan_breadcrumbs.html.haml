@@ -1,11 +1,12 @@
-%ol{style: 'padding: 0px;'}
-  - breadcrumbs = %w{trip options review plan}
-  - breadcrumbs = %w{trip options grid review plan} if session[:is_multi_od] == true
-  - breadcrumbs.each do |t|
-    - t = t.to_sym
-    %li.btn.btn-default.btn-arrow-right{class: breadcrumb_class(t)}<
-      - if breadcrumb_tab_navigable(t)
-        = link_to breadcrumb_path(t) do
+.hidden-xs{:role => "navigation", :aria => {:label => 'Breadcrumbs'}}
+  %ol{style: 'padding: 0px;'}
+    - breadcrumbs = %w{trip options review plan}
+    - breadcrumbs = %w{trip options grid review plan} if session[:is_multi_od] == true
+    - breadcrumbs.each do |t|
+      - t = t.to_sym
+      %li.btn.btn-default.btn-arrow-right{class: breadcrumb_class(t)}<
+        - if breadcrumb_tab_navigable(t)
+          = link_to breadcrumb_path(t) do
+            = t(t)
+        - else
           = t(t)
-      - else
-        = t(t)

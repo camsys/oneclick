@@ -1,15 +1,13 @@
 - if !@is_plan_valid
   - unless @is_review
-    .row{style: "padding: 0px;", :role => "navigation", :aria => {:label => 'Breadcrumbs'}}
-      = render partial: 'shared/trip_plan_breadcrumbs'
+    = render partial: 'shared/trip_plan_breadcrumbs'
 - else
   .row
     .col-sm-12
       - unless @is_review
         .pull-right
           = render partial: 'plan_page_buttons'
-        .hidden-xs{:role => "navigation", :aria => {:label => 'Breadcrumbs'}}
-          = render partial: 'shared/trip_plan_breadcrumbs'
+        = render partial: 'shared/trip_plan_breadcrumbs'
       - else
         .pull-right{style: "padding-bottom: 10px;"}
           = render partial: 'plan_page_buttons'

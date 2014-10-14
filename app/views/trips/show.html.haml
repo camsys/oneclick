@@ -7,8 +7,7 @@
         = t(:feedback)
       = button_tag :type => 'button', :name => "planButton", :class => "btn action-button" do
         =t(:next)
-    .hidden-xs{style: "padding: 0px;", :role => "navigation", :aria => {:label => 'Breadcrumbs'}}
-      = render partial: 'shared/trip_plan_breadcrumbs'
+    = render partial: 'shared/trip_plan_breadcrumbs'
 
 .row
 - if @tripResponseHash['status'] == 0

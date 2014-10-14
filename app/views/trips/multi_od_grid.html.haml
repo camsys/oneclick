@@ -2,7 +2,7 @@
 - @multi_od_trip.trips.each do |trip|
   - trip_summary_configs << {id: trip.id, url: serialize_trip_user_trip_path(@traveler, trip)}
 .row
-  .col-sm-12.hidden-xs
+  .col-sm-12
     = render partial: 'shared/trip_plan_breadcrumbs'
 .panel.panel-default
   .panel-heading
