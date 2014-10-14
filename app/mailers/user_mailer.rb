@@ -9,7 +9,7 @@ class UserMailer < ActionMailer::Base
     @from = from
     @comments = comments
 
-    mail(to: addresses, subject: subject, from: @from)
+    mail(to: addresses, subject: subject, from: @from, reply_to: @from)
   end
 
   def provider_trip_email(emails, trip, subject, from, comments)
