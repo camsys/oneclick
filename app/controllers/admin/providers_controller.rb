@@ -124,6 +124,8 @@ class Admin::ProvidersController < ApplicationController
       row = [
               user.id,
               user.name,
+              user.title,
+              user.phone,
               user.email
             ]
     end

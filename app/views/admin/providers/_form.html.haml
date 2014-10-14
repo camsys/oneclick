@@ -59,18 +59,23 @@
                 %thead
                   %th= t(:id)
                   %th= t(:name)
+                  %th= t(:title)
+                  %th= t(:phone)
                   %th.email= t(:email)
                   %th
                 %tbody
                   -# initial load from user record
-                  - @staff.each do |s|
-                    %tr
-                      %td= s.id
-                      %td= s.name
-                      %td= s.email
-                      %td
-                        %button.btn.btn-sm.btn-danger.delete-button
-                          %i.fa.fa-times
+                  - unless @staff.nil?
+                    - @staff.each do |s|
+                      %tr
+                        %td= s.id.to_s
+                        %td= s.name.to_s
+                        %td= s.title.to_s
+                        %td= s.phone.to_s
+                        %td= mail_to s.email.to_s
+                        %td
+                          %button.btn.btn-sm.btn-danger.delete-button
+                            %i.fa.fa-times
               #add_staff.modal.fade{:role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
                 .modal-dialog.modal-lg
                   .modal-content
@@ -112,7 +117,7 @@
                 "visible": false
             },
             {
-                "targets": [ 3 ],
+                "targets": [ 5 ],
                 "searchable": false
             }
         ],

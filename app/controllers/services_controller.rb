@@ -77,6 +77,8 @@ class ServicesController < ApplicationController
 
     set_aux_instance_variables
 
+    set_up_default_schedules
+
     @service.fare_structures.build
 
     respond_to do |format|
@@ -104,6 +106,7 @@ class ServicesController < ApplicationController
       else
 
         set_aux_instance_variables
+        set_up_default_schedules
         @contact = @provider.users.with_role(:internal_contact, @provider).first
         @service.fare_structures.build
 
@@ -238,6 +241,18 @@ protected
     @staff = User.with_role(:provider_staff, @service.provider)
     @eh = EligibilityService.new
 
+  end
+
+  # when create a new service, default schedule is 24 * 7
+  def set_up_default_schedules
+    (0..6).each do |day_of_week|
+      @schedules[day_of_week] = Schedule.new({
+        day_of_week: day_of_week,
+        start_seconds: 0,
+        end_seconds: 24 * 60 * 60 -1,
+        service_id: @service.id
+        })
+    end
   end
 
 end
