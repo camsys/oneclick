@@ -3,7 +3,7 @@
 .row
   .col-sm-12
     .pull-right
-      = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button" do
+      = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;" do
         = t(:feedback)
       = button_tag :type => 'button', :name => "planButton", :class => "btn action-button" do
         =t(:next)
@@ -36,7 +36,7 @@
       / end of trip container
   .col-xs-12{style: "margin-bottom: 5px;padding: 0px;"}
     .pull-right
-      = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button" do
+      = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;" do
         = t(:feedback)
       = button_tag :type => 'button', :name => "planButton", :class => "btn action-button" do
         =t(:next)

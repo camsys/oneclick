@@ -4,7 +4,7 @@
       =t(:book)
     = render partial: 'booking_modal'
     - break
-= link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn action-button', data: {toggle: 'modal'}, style: "margin-right:0;"} do
+= link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn action-button', data: {toggle: 'modal'}} do
   /%i.fa.fa-print
   = t(:print)
 = link_to '#', {href: '#send_trip_by_email', class: 'btn action-button', data: {toggle: 'modal'}} do
