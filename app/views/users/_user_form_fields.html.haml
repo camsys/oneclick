@@ -22,7 +22,7 @@
             = f.input :email, label: t(:email), :required => true
             = f.input :phone, label: t(:phone), :required => false
             = f.input :preferred_locale, label: t(:preferred_locale), :collection => Translation.available_locales, :include_blank => false, label_method: lambda {|pl| I18n.t("locales.#{pl}")}
-            = f.input :password, label: t(:password), :autocomplete => "off", :required => false
+            = f.input :password, label: t(:password), :autocomplete => "off", :required => false, label_html: {"aria-label" => "Password. Leave this as well as the password confirmation blank if you do not want to change your password."}
             = f.input :password_confirmation, label: t(:password_confirmation), :hint => t(:leave_password_blank), :required => false
             = f.input :walking_speed_id, :collection =>  WalkingSpeed.all, :selected => get_selected_walking_speed_id(@user), :value => :id, :label_method => lambda { |v| v.label}, label: t(:walking_speed), input_html: { class: 'form-control' }
             = f.input :walking_maximum_distance_id, :collection =>  WalkingMaximumDistance.all, :selected => get_selected_walking_max_distance_id(@user), :value => :id, :label_method => lambda { |v| v.label}, label: t(:walking_maximum_distance), input_html: { class: 'form-control' }
@@ -104,7 +104,18 @@
                   - next unless c.ask_early
                   - case c.datatype
                   - when 'bool'
-                    = characteristic_form.input c.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(c.note), label_method: :last, value_method: :first
+                    %fieldset
+                      .form-group.radio_buttons.optional#input_container{class: "user_characteristics_proxy_#{c.code}"}
+                        %legend.col-sm-7.radio_buttons.optional.control-label{id: "#{c.code}_label"} #{t(c.note)}
+                        .col-sm-5#eligibility_questions
+                          %input.radio_buttons.optional{id: "user_characteristics_proxy_#{c.code}_true", name: "user_characteristics_proxy[#{c.code}]", type: "radio", value: "true", checked: c.true_false_checked?(@traveler, "true") }
+                          %label{for: "user_characteristics_proxy_#{c.code}_true", name: "user_characteristics_proxy[#{c.code}]"} #{t(:yes_str)}
+                          
+                          %input.radio_buttons.optional{id: "user_characteristics_proxy_#{c.code}_false", name: "user_characteristics_proxy[#{c.code}]", type: "radio", value: "false", checked: c.true_false_checked?(@traveler, "false") }
+                          %label{for: "user_characteristics_proxy_#{c.code}_false", name: "user_characteristics_proxy[#{c.code}]"} #{t(:no_str)}
+
+                          %input.radio_buttons.optional{id: "user_characteristics_proxy_#{c.code}_na", name: "user_characteristics_proxy[#{c.code}]", type: "radio", value: "na", checked: c.na_checked?(@traveler) }
+                          %label{for: "user_characteristics_proxy_#{c.code}_na", name: "user_characteristics_proxy[#{c.code}]"} #{t(:not_sure_str)}
                   - else
                     = characteristic_form.input c.code.to_sym, label: t(c.note)
           .col-sm-6.pull-right
@@ -113,7 +124,18 @@
                 %h2.panel-title= t(:accommodations)
               .panel-body
                 -Accommodation.where(:datatype => 'bool').each do |a|
-                  = characteristic_form.input a.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], ['na', t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(a.note), label_method: :last, value_method: :first
+                  %fieldset
+                    .form-group.radio_buttons.optional#input_container{class: "user_characteristics_proxy_#{a.code}"}
+                      %legend.col-sm-7.radio_buttons.optional.control-label{id: "#{a.code}_label"} #{t(a.note)}
+                      .col-sm-5#eligibility_questions
+                        %input.radio_buttons.optional{id: "user_characteristics_proxy_#{a.code}_true", name: "user_characteristics_proxy[#{a.code}]", type: "radio", value: "true", checked: a.true_false_checked?(@traveler, "true") }
+                        %label{for: "user_characteristics_proxy_#{a.code}_true", name: "user_characteristics_proxy[#{a.code}]"} #{t(:yes_str)}
+                        
+                        %input.radio_buttons.optional{id: "user_characteristics_proxy_#{a.code}_false", name: "user_characteristics_proxy[#{a.code}]", type: "radio", value: "false", checked: a.true_false_checked?(@traveler, "false") }
+                        %label{for: "user_characteristics_proxy_#{a.code}_false", name: "user_characteristics_proxy[#{a.code}]"} #{t(:no_str)}
+
+                        %input.radio_buttons.optional{id: "user_characteristics_proxy_#{a.code}_na", name: "user_characteristics_proxy[#{a.code}]", type: "radio", value: "na", checked: a.na_checked?(@traveler) }
+                        %label{for: "user_characteristics_proxy_#{a.code}_na", name: "user_characteristics_proxy[#{a.code}]"} #{t(:not_sure_str)}
 
       .row
         .col-sm-6
@@ -147,6 +169,7 @@
 
 :javascript
   $(document).ready(function() {
+    $('#user_password_confirmation').siblings(1).attr('aria-hidden', 'true');
     $('#buddies_table').dataTable( {
           "oLanguage": {
             "sLengthMenu": "Display _MENU_ buddies per page",
