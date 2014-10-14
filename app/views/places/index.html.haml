@@ -11,7 +11,7 @@
     = simple_form_for @places, url: handle_user_places_path(@traveler), html: {class: 'form-horizontal places'}, wrapper: :horizontal_form do |f|
       .row
         .col-sm-6
-          .panel.panel-default
+          .panel.panel-default{role: "main", aria: {label: "Places Form"}}
             .panel-body
               .row
                 .col-xs-12
@@ -32,19 +32,19 @@
                   wrapper: :group do
                     = f.input_field :from_place, class: 'form-control place_picker'
                     %span.input-group-btn
-                      .btn.btn-default{disabled: 'disabled'}
+                      .btn.btn-default{disabled: 'disabled', aria: {hidden: "true"}}
                         %i.fa.fa-map-marker
                   = f.hidden_field :json
                   = f.input :place_name, style: 'width: 100%;', label: t(:name)
 
                   .form-group
-                    %label.col-sm-3.control-label= t(:my_places)
+                    %label.col-sm-3.control-label{aria: {label: "#{t(:my_places)}. Press Space Bar to select"}}= t(:my_places)
                     .col-sm-9
                       %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#places-table
                         %tbody
                           - @places.places.each_with_index do |place, i|
                             %tr{id: "place-#{i}", tabindex: 0, title: t(:press_space_or_click_to_select), role: 'button', data: {address: place.raw_address, placename: place.name, json: place.to_json, id: place.id}}
-                              %td{style: 'text-align: center; width: 10%;'}= image_tag place.icon
+                              %td{style: 'text-align: center; width: 10%;', aria: {hidden: "true"}}= image_tag place.icon
                               %td= place.name
                       :javascript
                         $("#places-table tr").tooltip({
@@ -69,7 +69,7 @@
             /         %td{id: "place-#{i}", data: {address: place.raw_address, placename: place.name, json: place.to_json}}= ('A'..'Z').to_a[i] + ' ' + place.name
 
         .col-sm-6
-          .panel.panel-default
+          .panel.panel-default{aria: {hidden: "true"}}
             .panel-body
               = LeafletMap({ :mapid => 'placesMap', :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height:500px;" })
 
