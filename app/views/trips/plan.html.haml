@@ -11,7 +11,7 @@
         .hidden-xs{:role => "navigation", :aria => {:label => 'Breadcrumbs'}}
           = render partial: 'shared/trip_plan_breadcrumbs'
       - else
-        .pull-right
+        .pull-right{style: "padding-bottom: 10px;"}
           = render partial: 'plan_page_buttons'
   - if @assisting_agency
     .col-xs-12.well{style: "padding: 5px;"}
