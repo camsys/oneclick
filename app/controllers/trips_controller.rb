@@ -644,7 +644,12 @@ class TripsController < PlaceSearchingController
     session[:tabs_visited] = []
 
     params['mode'] = 2
-    params["modes"] = params["modes"].split(',')
+    unless params["modes"].nil?
+      params["modes"] = params["modes"].split(',')
+      if params["modes"].length == 0
+        params["modes"] = nil
+      end
+    end
 
     purpose = TripPurpose.where(code: params["purpose"]).first
     if purpose.nil?
