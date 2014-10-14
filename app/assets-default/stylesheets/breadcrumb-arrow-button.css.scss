@@ -2,15 +2,10 @@
 .btn-arrow-left {
     height: 34px;
     position: relative;
-    padding-left: 18px;
-    padding-right: 18px;
+    padding-left: 16px;
+    padding-right: 16px;
 }
-.btn-arrow-right {
-    padding-left: 36px;
-}
-.btn-arrow-left {
-    padding-right: 36px;
-}
+
 .btn-arrow-right:before,
 .btn-arrow-right:after,
 .btn-arrow-left:before,
@@ -59,6 +54,23 @@
 .btn-arrow-right:before,
 .btn-arrow-left:after { /* hide arrow tails background */
     background-color: white;
+}
+
+.btn-single-arrow-left {
+    @extend .btn-arrow-left;
+    padding-right: 2px;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+}
+.btn-single-arrow-right {
+    @extend .btn-arrow-right;
+    padding-left: 2px;
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+}
+
+.btn-single-arrow-left:after, .btn-single-arrow-right:before {
+    content:none !important;
 }
 
 .prev-page{

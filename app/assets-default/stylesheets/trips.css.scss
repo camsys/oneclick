@@ -103,27 +103,6 @@
 }
 
 $period-nav-button-width: 40px;
-.prev-period {
-  width: $period-nav-button-width;
-  height: 20px;
-  background-image: image-url('prevPeriod.png');
-  background-color: transparent;
-  text-align: center;
-  color: black;
-  border: none;
-  font-size: small;
-}
-
-.next-period {
-  width: $period-nav-button-width;
-  height: 20px;
-  background-image: image-url('nextPeriod.png');
-  background-color: transparent;
-  text-align: center;
-  color: black;
-  border: none;
-  font-size: small;
-}
 
 /* in sm+ mode, one period-nav button in same container, so apply margin to sorter component that make them vertically align in containers */
 /* in xs mode, as space is so limited, not apply margin so sorter can take whatever space left in its container */
@@ -468,7 +447,7 @@ $legend-height: 20px;
   border-bottom: 0;
 }
 
-#is_round_trip_inputs, 
+#is_round_trip_inputs,
 #modes_inputs,
 #eligibility_questions {
   margin-top: 6px;

@@ -2,7 +2,7 @@
 - if can? :index, Agency
   .row
     .col-sm-12
-      = link_to t(:all_agencies), admin_agencies_path, class: 'btn btn-primary btn-arrow-left'
+      = link_to t(:all_agencies), admin_agencies_path, class: 'btn btn-primary btn-arrow-left', style: 'font-weight: normal'
 .row.info-header
   .col-sm-5
     %h1= @agency.name
