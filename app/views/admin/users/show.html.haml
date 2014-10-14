@@ -1,7 +1,7 @@
 / TODO Requires a decomposition into partials for reuse.  This code should work across the admin and public-facing UI.
 / Note the use of form-horizontal throughout on <divs>.  Just hijacking bootstrap styling.  Needs to be fixed.  Also, could use simpleform's wrappers api to centralize
 .header
-  .pull-right
+  .pull-right{style: 'padding-bottom:10px;'}
     - if can? :assist, @user
       = link_to t(:assist), admin_agency_agency_assist_path(current_user.agency, @user),
         {class: 'btn action-button', role: 'button'}

@@ -1,7 +1,7 @@
 .row.info-header
   .col-sm-6
     %h1=@user.name
-  .col-sm-6.btns
+  .col-sm-6.btns{style: 'padding-bottom:4px;'}
     -if can? :edit, @user
       =link_to t(:edit), edit_user_path(@user), {class: 'btn action-button pull-right', role: 'button'}
 =render partial: 'user_display', locals: {user: @user}
