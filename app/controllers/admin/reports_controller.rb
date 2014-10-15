@@ -62,7 +62,8 @@ class Admin::ReportsController < Admin::BaseController
       respond_to do |format|
         format.html
         format.csv do
-          send_data get_csv(@columns,  @report_instance.get_data(current_user, @generated_report))
+          send_data get_csv(@columns,  @report_instance.get_data(current_user, @generated_report)),
+                filename: "#{I18n.t(@report.class_name).parameterize.underscore}.csv", type: :text
         end
       end
     end
@@ -108,7 +109,9 @@ class Admin::ReportsController < Admin::BaseController
                                      agent_id: session[AGENT_OPTION_KEY],
                                      provider_id: session[PROVIDER_OPTION_KEY],
                                    })
-        # prevent cookie overflow
+        # Sessions are currently stored in a cookie with a 4KB limit.
+        # Rather than saving all of params[:columns] and blowing that limit
+        # just save the searchable_columns.
         cols = {}
         table.searchable_columns.each_with_index do |col, index|
           cols["#{index}"] = params[:columns]["#{index}"]
