@@ -426,6 +426,7 @@ ht:
   select_location_on_map: '[ht]Select location on map[/ht]'
   add_sidewalk_feedback_on_map: '[ht]Submit sidewalk obstruction feedback[/ht]'
   remove_by: '[ht]Remove by[/ht]'
+  preparing_maps: '[ht]Preparing maps...[/ht]'
 
   # My Places form
   found_x_places: {

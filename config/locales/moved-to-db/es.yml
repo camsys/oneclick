@@ -434,6 +434,7 @@ es:
   select_location_on_map: '[es]Select location on map[/es]'
   add_sidewalk_feedback_on_map: '[es]Submit sidewalk obstruction feedback[/es]'
   remove_by: '[es]Remove by[/es]'
+  preparing_maps: '[es]Preparing maps...[/es]'
 
   # My Places form
   found_x_places: {

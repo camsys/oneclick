@@ -4,11 +4,16 @@
       = simple_form_for :email, url: email_user_trip_path(@traveler, @trip, itinids: params[:itinids], locale: I18n.locale), html: { id: 'send_by_email_form' }  do |f|
         .modal-header
           .pull-right
-            = button_tag type: :submit, class: 'btn action-button' do
+            = button_tag type: :submit, class: 'btn action-button', disabled: 'disabled', id: 'send_email_button' do
               = t(:send)
             %button{"type" => "button", "class" => "btn action-button", "data-dismiss" => "modal"}= t(:cancel)
           %h3.modal-title= t(:send_trip_by_email)
         .modal-body
+          #prepare_print_maps
+            =t(:preparing_maps)
+            .progress
+              .progress-bar.active{role: "progressbar", aria: {valuenow: "0", valuemin: "0", valuemax: "100"}, style: "width: 0%"}
+                0%
           = f.error_notification
           - if user_signed_in?
             = f.input :email_addresses, label: t(:to), required: true, hint: t(:email_hint), :input_html => { :value => get_traveller_related_emails(@traveler, is_assisting)}

@@ -440,6 +440,7 @@ en:
   select_location_on_map: 'Select location on map'
   add_sidewalk_feedback_on_map: 'Submit sidewalk obstruction feedback'
   remove_by: 'Remove by'
+  preparing_maps: 'Preparing maps...'
 
   # My Places form
   found_x_places: {
