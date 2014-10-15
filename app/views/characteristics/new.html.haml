@@ -1,5 +1,11 @@
+- is_splash_available = whether_show_tranlatation_item?(:options_page_splash)
+- non_splash_css = 'col-sm-12'
+- splash_css = ''
+- if is_splash_available
+  - non_splash_css = 'col-sm-7 col-xs-12'
+  - splash_css = 'col-sm-5 col-xs-12'
 .row
-  .col-sm-7
+  %div{class: non_splash_css}
     .pull-right
       = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
         =t(:next)
@@ -12,12 +18,6 @@
     = render partial: 'shared/trip_plan_breadcrumbs'
 
 .row
-  - is_splash_available = whether_show_tranlatation_item?(:options_page_splash)
-  - non_splash_css = 'col-sm-12'
-  - splash_css = ''
-  - if is_splash_available
-    - non_splash_css = 'col-sm-7 col-xs-12'
-    - splash_css = 'col-sm-5 col-xs-12'
   %div{class: non_splash_css}
     .col-sm-12
       = render partial: 'shared/page_comments', locals: {key: :options_header_comment}

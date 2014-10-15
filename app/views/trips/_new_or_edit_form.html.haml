@@ -1,5 +1,11 @@
+- is_splash_available = whether_show_tranlatation_item?(:splash)
+- non_splash_css = 'col-sm-12'
+- splash_css = ''
+- if is_splash_available
+  - non_splash_css = 'col-sm-7 col-xs-12'
+  - splash_css = 'col-sm-5 col-xs-12'
 .row
-  .col-sm-7
+  %div{class: non_splash_css}
     .pull-right
       -if @show_booking
         = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;"  do
