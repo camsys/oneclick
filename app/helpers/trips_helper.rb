@@ -120,7 +120,7 @@ module TripsHelper
     if tab==active_tab
       'current-page'
     elsif TABS.index(tab) < TABS.index(active_tab)
-      'btn-primary prev-page'
+      'action-button prev-page'
     else
       'next-page'
     end

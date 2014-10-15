@@ -1,5 +1,6 @@
 .btn-arrow-right,
 .btn-arrow-left {
+    min-width: 40px !important;
     height: 34px;
     position: relative;
     padding-left: 16px;
@@ -83,22 +84,22 @@
 
 .prev-page{
     a {
-        color: white;
+        color: $btn-primary-color;
         font-weight: bold;
         text-decoration: none;
     }
 }
 
 .current-page, .current-page:hover {
-    background-color: red;
+    background-color: $breadcrum-current-step-bg-color;
     cursor: default;
-    color: white;
+    color: $breadcrum-current-step-font-color;
     font-weight: bold;
 }
 
 .next-page,  .next-page:hover{
-    background-color: white;
+    background-color: $breadcrum-next-step-bg-color;
     cursor: default;
-    color: black;
+    color: $breadcrum-next-step-font-color;
     font-weight: bold;
 }
