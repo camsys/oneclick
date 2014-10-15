@@ -277,6 +277,8 @@ es:
   trip_parameters: '[es]Trip Parameters[/es]'
   eligibility_accommodation_questions: '[es]Eligibility/Accommodation Questions[/es]'
   splash_title: '[es]Splash[/es]'
+  options_page_splash: ''
+  options_page_splash_title: '[es]Splash[/es]'
   from: 'De'
   from_lat: '[es]From Lat[/es]'
   from_lon: '[es]From Lon[/es]'

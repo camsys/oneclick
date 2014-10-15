@@ -1,6 +1,11 @@
-.panel.panel-default#splash{style: 'padding:0px;'}
-  .panel-heading
-    %h2.panel-title=t(:splash_title)
-  .panel-body
-    = t(:splash).html_safe rescue ''
+- splash_key = splash_key || :splash
+- title_key = title_key || :splash_title
+- splash_div_class = splash_div_class || ''
+- if whether_show_tranlatation_item?(splash_key)
+  %div{:class => splash_div_class, :role => "complementary", aria: {label: "Splash text"}}
+    .panel.panel-default#splash{style: 'padding:0px;'}
+      .panel-heading
+        %h2.panel-title=t(title_key)
+      .panel-body
+        = t(splash_key).html_safe rescue ''
 / end of CMS column

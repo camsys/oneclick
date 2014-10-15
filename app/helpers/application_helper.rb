@@ -364,4 +364,13 @@ module ApplicationHelper
       text_num
     end
   end
+
+  # non-tag locale: the key must be defined, and content is not blank
+  # tag locale: key must be defined
+  def whether_show_tranlatation_item? key
+    defined? key and
+    !Translation.where(key: key).first.nil? and
+    (I18n.locale == :tags or !Translation.where(key: key, locale: I18n.locale).first.nil?) and
+    !I18n.t(key).blank?
+  end
 end

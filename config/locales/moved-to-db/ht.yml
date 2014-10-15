@@ -273,6 +273,8 @@ ht:
   trip_parameters: '[ht]Trip Parameters[/ht]'
   eligibility_accommodation_questions: '[ht]Eligibility/Accommodation Questions[/ht]'
   splash_title: '[ht]Splash[/ht]'
+  options_page_splash: ''
+  options_page_splash_title: '[ht]Splash[/ht]'
   from: '[ht]From[/ht]'
   from_lat: '[ht]From Lat[/ht]'
   from_lon: '[ht]From Lon[/ht]'
