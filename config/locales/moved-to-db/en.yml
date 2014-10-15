@@ -346,7 +346,6 @@ en:
   transfers: "Transfers"
   view: 'View'
   remove: 'Remove'
-  removed: 'Removed'
   reload: 'Reload'
   return: 'Return'
   return_itinerary_count: 'Return Itinerary Count'
@@ -729,8 +728,6 @@ en:
   count: "Count"
   approve: "Approve"
   reject: "Reject"
-  approved: "Approved"
-  rejected: "Rejected"
   contact_info: "Contact Info"
   do_not_reply: "This email is sent from an email address that is not monitored. Please do not reply to this message."
   nothing_found_sorry: "Nothing found - sorry"

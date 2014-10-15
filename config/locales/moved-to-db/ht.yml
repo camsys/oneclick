@@ -339,7 +339,6 @@ ht:
   transfers: "[ht]Transfers[/ht]"
   view: '[ht]View[/ht]'
   remove: '[ht]Remove[/ht]'
-  removed: '[ht]Removed[/ht]'
   reload: '[ht]Reload[/ht]'
   return: '[ht]Return[/ht]'
   return_itinerary_count: '[ht]Return Itinerary Count[/ht]'
@@ -699,8 +698,6 @@ ht:
   count: "[ht]Count[/ht]"
   approve: "[ht]Approve[/ht]"
   reject: "[ht]Reject[/ht]"
-  approved: "[ht]Approved[/ht]"
-  rejected: "[ht]Rejected[/ht]"
   contact_info: "[ht]Contact Info[/ht]"
   do_not_reply: "[ht]This email is sent from an email address that is not monitored. Please do not reply to this message.[/ht]"
   nothing_found_sorry: "[ht]Nothing found - sorry[/ht]"

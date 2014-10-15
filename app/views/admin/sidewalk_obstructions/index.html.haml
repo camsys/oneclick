@@ -27,22 +27,14 @@
               %td= feedback.comment
               %td.nowrap
                 - unless feedback.removed_at.nil?
-                  - if feedback.removed_at < Time.now
-                    = t(:removed)
-                  - else
-                    =format_date_time(feedback.removed_at)
+                  =format_date_time(feedback.removed_at)
               %td
-                - if feedback.approved?
-                  = t(:approved)
-                - elsif feedback.pending_and_active?
-                  = label_tag "#{feedback.id}_#{SidewalkObstruction::APPROVED}", t(:approve), class: "sr-only"
-                  = radio_button_tag "#{feedback.id}", SidewalkObstruction::APPROVED
+                = label_tag "#{feedback.id}_#{SidewalkObstruction::APPROVED}", t(:approve), class: "sr-only"
+                = radio_button_tag "#{feedback.id}", SidewalkObstruction::APPROVED, feedback.approved?
+
               %td
-                - if feedback.rejected?
-                  = t(:rejected)
-                - elsif feedback.pending_and_active?
-                  = label_tag "#{feedback.id}_#{SidewalkObstruction::REJECTED}", t(:reject), class: "sr-only"
-                  = radio_button_tag "#{feedback.id}", SidewalkObstruction::REJECTED
+                = label_tag "#{feedback.id}_#{SidewalkObstruction::REJECTED}", t(:reject), class: "sr-only"
+                = radio_button_tag "#{feedback.id}", SidewalkObstruction::REJECTED, feedback.rejected?
               %td
                 = label_tag "#{feedback.id}_#{SidewalkObstruction::DELETED}", t(:delete), class: "sr-only"
                 = radio_button_tag "#{feedback.id}", SidewalkObstruction::DELETED
@@ -65,7 +57,9 @@ $(document).ready( function() {
         "approve": $("input:checked", table.fnGetNodes()).serialize()
       },
       // This can't just be a reload or we hit issues with the reload
-      success: function() { window.location = window.location }
+      success: function() {
+        window.location = window.location
+      }
     });
     event.preventDefault();
   });
