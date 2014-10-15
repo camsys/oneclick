@@ -10,9 +10,10 @@
         .btns.pull-right
           = button_tag type: :submit, class: 'btn action-button controls' do
             =t(:run)
-          = button_tag id: 'export',
+          - if @report && @report.exportable  
+            = button_tag id: 'export',
                   class: "#{@url_for_csv ? '' : 'disabled '}btn action-button controls" do
-            =t(:export)
+              =t(:export)
         %span
           = t(:reports)
     .panel-body
