@@ -9,6 +9,7 @@ class PrintMapWorker
     tempfile = Tempfile.new(['itinerary_map','.png'])
 
     session.visit(print_url)
+    sleep 2
     session.driver.render(tempfile.path, selector: '#map_container')
 
     i = Itinerary.find(itinerary_id)

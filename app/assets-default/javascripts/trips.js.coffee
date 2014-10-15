@@ -401,7 +401,6 @@ $ ->
     return false
 
   if ($('body.trips.show_printer_friendly').length > 0)
-    console.log "Running show_printer_friendly"
     $('#prepare_print_maps').modal('show')
     generate_maps(
       ->
@@ -410,7 +409,6 @@ $ ->
       )
 
   $('#send_trip_by_email').on "shown.bs.modal", ->
-    console.log 'shown'
     generate_maps(
       ->
         $('#prepare_print_maps').hide()
