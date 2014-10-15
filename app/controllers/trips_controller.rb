@@ -216,7 +216,7 @@ class TripsController < PlaceSearchingController
     respond_to do |format|
       format.html {
         if @trip.nil?
-          render :show_printer_friendly_failed 
+          render :show_printer_friendly_failed
         else
           @hide_navbar = true
           render
@@ -654,6 +654,10 @@ class TripsController < PlaceSearchingController
       if params["modes"].length == 0
         params["modes"] = nil
       end
+    end
+
+    if params['return_arrive_depart'].nil?
+      params['return_arrive_depart'] = true
     end
 
     purpose = TripPurpose.where(code: params["purpose"]).first
