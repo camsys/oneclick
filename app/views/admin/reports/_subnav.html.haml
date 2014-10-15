@@ -54,12 +54,16 @@
 
 
 :javascript
-  if ($('#generated_report_date_range')[0].selectedOptions[0].text != 'Custom...') {
-    $('#custom_dates').hide();
-  }
+  $(document).ready(function() {
+    // Note: the selectedOptions collection is not support in ie9 or ie10
+    var select = $('#generated_report_date_range')[0];
+    if (select.options[select.selectedIndex].text != 'Custom...') {
+      $('#custom_dates').hide();
+    }
+  });
 
   $('#generated_report_date_range').change(function() {
-    if(this.selectedOptions[0].text === 'Custom...') {
+    if(this.options[this.selectedIndex].text === 'Custom...') {
       $('#custom_dates').show();
     } else {
       $('#custom_dates').hide();
