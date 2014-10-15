@@ -406,7 +406,7 @@ $ ->
     generate_maps(
       ->
         $('#prepare_print_maps').modal('hide')
-        window.print()
+        setTimeout (-> window.print()), 2000
       )
 
   $('#send_trip_by_email').on "shown.bs.modal", ->
