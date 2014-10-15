@@ -338,6 +338,7 @@ es:
   transfers: "[es160]Transfers[/es]"
   view: 'Mostrar'
   remove: 'Eliminar'
+  removed: '[es]Removed[/es]'
   reload: 'Recargar'
   return: 'Retornar'
   return_itinerary_count: '[es]Return Itinerary Count[/es]'
@@ -716,6 +717,8 @@ es:
   contact_info: "[es477]Contact Info[/es]"
   approve: "[es521]Approve[/es]"
   reject: "[es522]Reject[/es]"
+  approved: "[es]Approved[/es]"
+  rejected: "[es]Rejected[/es]"
   no_good_options: "[es545]There are no good options here.[/es]"
   do_not_reply: "[es386]This email is sent from an email address that is not monitored. Please do not reply to this message.[/es]"
   nothing_found_sorry: "[es407]Nothing found - sorry[/es]"

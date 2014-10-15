@@ -3,7 +3,7 @@ class Admin::SidewalkObstructionsController < ApplicationController
   def index
     authorize! :read, SidewalkObstruction
     authorize! :approve, SidewalkObstruction
-    @sidewalk_obstructions = SidewalkObstruction.pending.all
+    @sidewalk_obstructions = SidewalkObstruction.all
   end
 
   def approve

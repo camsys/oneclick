@@ -27,13 +27,22 @@
               %td= feedback.comment
               %td.nowrap
                 - unless feedback.removed_at.nil?
-                  =format_date_time(feedback.removed_at)
+                  - if feedback.removed_at < Time.now
+                    = t(:removed)
+                  - else
+                    =format_date_time(feedback.removed_at)
               %td
-                = label_tag "#{feedback.id}_#{SidewalkObstruction::APPROVED}", t(:approve), class: "sr-only"
-                = radio_button_tag "#{feedback.id}", SidewalkObstruction::APPROVED
+                - if feedback.approved?
+                  = t(:approved)
+                - elsif feedback.pending_and_active?
+                  = label_tag "#{feedback.id}_#{SidewalkObstruction::APPROVED}", t(:approve), class: "sr-only"
+                  = radio_button_tag "#{feedback.id}", SidewalkObstruction::APPROVED
               %td
-                = label_tag "#{feedback.id}_#{SidewalkObstruction::REJECTED}", t(:reject), class: "sr-only"
-                = radio_button_tag "#{feedback.id}", SidewalkObstruction::REJECTED
+                - if feedback.rejected?
+                  = t(:rejected)
+                - elsif feedback.pending_and_active?
+                  = label_tag "#{feedback.id}_#{SidewalkObstruction::REJECTED}", t(:reject), class: "sr-only"
+                  = radio_button_tag "#{feedback.id}", SidewalkObstruction::REJECTED
               %td
                 = label_tag "#{feedback.id}_#{SidewalkObstruction::DELETED}", t(:delete), class: "sr-only"
                 = radio_button_tag "#{feedback.id}", SidewalkObstruction::DELETED

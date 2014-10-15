@@ -5,7 +5,7 @@ class SidewalkObstructionsController < ApplicationController
     feedback.user = current_or_guest_user
     feedback.lat = params[:lat]
     feedback.lon = params[:lon]
-    feedback.removed_at = Date.strptime(params[:removed_at], '%m/%d/%Y') rescue nil
+    feedback.removed_at = Date.strptime(params[:removed_at], '%m/%d/%Y').end_of_day rescue nil
     feedback.comment = params[:comment]
 
     is_success = feedback.save rescue nil

@@ -1,5 +1,5 @@
 class SidewalkObstruction < ActiveRecord::Base
-  
+
   REJECTED= "rejected"
   PENDING= "pending"
   APPROVED = "approved"
@@ -12,7 +12,7 @@ class SidewalkObstruction < ActiveRecord::Base
   scope :deleted, -> { where(status: SidewalkObstruction::DELETED)}
 
   belongs_to :user
-  
+
   def approved?
     status == APPROVED
   end
@@ -24,6 +24,9 @@ class SidewalkObstruction < ActiveRecord::Base
   end
   def deleted?
     status == DELETED
+  end
+  def pending_and_active?
+    status == PENDING and (removed_at.nil? or removed_at > Time.now)
   end
 
   def self.sidewalk_obstruction_on?
