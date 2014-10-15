@@ -10,6 +10,10 @@ class Admin::ReportsController < Admin::BaseController
   AGENCY_OPTION_KEY = 'agency'
   AGENT_OPTION_KEY = 'agent'
   PROVIDER_OPTION_KEY = 'provider'
+  ORDER_PARAMS_KEY = 'order'
+  COLUMNS_PARAMS_KEY = 'columns'
+  START_PARAMS_KEY = 'start'
+  LENGTH_PARAMS_KEY = 'length'
   
   def index
     @reports = Report.all
@@ -41,18 +45,25 @@ class Admin::ReportsController < Admin::BaseController
     session[PROVIDER_OPTION_KEY] = @generated_report.provider_id
     
     if @report
-                    
+
+      params[:order] = session[ORDER_PARAMS_KEY]
+      params[:columns] = session[COLUMNS_PARAMS_KEY]
+      params[:start] = session[START_PARAMS_KEY]
+      params[:length] = session[LENGTH_PARAMS_KEY]
+      
       # set up the report view
       @report_view = @report.view_name
       # get the class instance and generate the data
       @report_instance = @report.class_name.constantize.new(view_context)
-      @data = @report_instance.get_data(current_user, @generated_report)
+      @data = @report_instance.get_data(current_user, @generated_report) unless @report_instance.paged
       @columns = @report_instance.get_columns
       @url_for_csv = url_for only_path: true, format: :csv, params: params
 
       respond_to do |format|
         format.html
-        format.csv { send_data get_csv(@columns, @data) }
+        format.csv do
+          send_data get_csv(@columns,  @report_instance.get_data(current_user, @generated_report))
+        end
       end
     end
 
@@ -85,14 +96,26 @@ class Admin::ReportsController < Admin::BaseController
         from_date = session[DATE_OPTION_FROM_KEY]
         to_date = session[DATE_OPTION_TO_KEY]
 
-        render json: TripsDatatable.new(view_context,
-                                        { dates: date_option,
-                                          from_date: from_date,
-                                          to_date: to_date,
-                                          agency_id: session[AGENCY_OPTION_KEY],
-                                          agent_id: session[AGENT_OPTION_KEY],
-                                          provider_id: session[PROVIDER_OPTION_KEY],
-                                        })
+        session[ORDER_PARAMS_KEY] = params[:order]
+        session[START_PARAMS_KEY] = params[:start]
+        session[LENGTH_PARAMS_KEY] = params[:length]
+
+        table = TripsDatatable.new(view_context,
+                                   { dates: date_option,
+                                     from_date: from_date,
+                                     to_date: to_date,
+                                     agency_id: session[AGENCY_OPTION_KEY],
+                                     agent_id: session[AGENT_OPTION_KEY],
+                                     provider_id: session[PROVIDER_OPTION_KEY],
+                                   })
+        # prevent cookie overflow
+        cols = {}
+        table.searchable_columns.each_with_index do |col, index|
+          cols["#{index}"] = params[:columns]["#{index}"]
+        end
+        session[COLUMNS_PARAMS_KEY] = cols
+        
+        render json: table
       end
     end
   end

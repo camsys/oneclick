@@ -1,4 +1,4 @@
-class SystemUsageReport
+class SystemUsageReport < AbstractReport
 
   attr_reader :totals_class_names, :totals_cols, :user_cols, :trip_cols, :rating_cols
   

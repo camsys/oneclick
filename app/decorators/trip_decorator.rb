@@ -25,15 +25,15 @@ class TripDecorator < Draper::Decorator
   end
 
   def user
-    object.user.name
+    object.user.name if object.user
   end
 
   def assisted_by
-    (object.user == object.creator) ? '' : object.creator.name
+    (object.user == object.creator) ? '' : creator
   end
   
   def creator
-    object.creator.name
+    object.creator.name if object.creator
   end
 
   def leaving_from
@@ -146,11 +146,11 @@ class TripDecorator < Draper::Decorator
   end
   
   def trip_purpose
-    I18n.t object.trip_purpose.name
+    I18n.t object.trip_purpose.name if object.trip_purpose
   end
 
   def modes
-    I18n.t(desired_modes.map{|m| m.name}).join ', '
+    I18n.t(desired_modes.map{|m| m.name}).join ', ' if desired_modes
   end
 
   def get_trip_summary itinerary
@@ -186,9 +186,12 @@ class TripDecorator < Draper::Decorator
           summary += " #{I18n.t(:to)} #{leg.end_place.name};"
         end
       when 'mode_paratransit'
-        itinerary.service.get_contact_info_array.each do |a,b|
-          summary += "#{I18n.t(:paratransit)} #{I18n.t(a)}: #{h.sanitize_nil_to_na b};"
+        if itinerary.service
+          itinerary.service.get_contact_info_array.each do |a,b|
+            summary += "#{I18n.t(:paratransit)} #{I18n.t(a)}: #{h.sanitize_nil_to_na b};"
+          end
         end
+        
       when 'mode_taxi'
         YAML.load(itinerary.server_message).each do |business|
           summary += "#{I18n.t(:taxi)} #{business['name']}: #{business['phone']};"

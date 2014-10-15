@@ -45,10 +45,16 @@ class TripsDatatable < AjaxDatatablesRails::Base
   def get_data(current_user, report)
     options[:dates] = DateOption.find(report.date_range)
     options[:agent_id] = report.agent_id
+    options[:from_date] = report.from_date
+    options[:to_date] = report.to_date
     
-    get_raw_records report.from_date, report.to_date
+    fetch_records
   end
 
+  def paged
+    true
+  end
+  
   private
 
   def data

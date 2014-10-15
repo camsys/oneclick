@@ -316,6 +316,7 @@ ActiveRecord::Schema.define(version: 20141013202152) do
     t.boolean  "active"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.boolean  "exportable",              default: false
   end
 
   create_table "roles", force: true do |t|
