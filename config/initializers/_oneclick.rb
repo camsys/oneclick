@@ -60,14 +60,14 @@ Oneclick::Application.configure do
     config.taxi_fare_finder_api_city = "Atlanta"
     config.enable_rideshare = true
     config.name = 'ARC 1-Click'
-    ENV['SMTP_MAIL_USER_NAME'] = "oneclick.arc.camsys"
-    ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey"
-    ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@atlantaregional.com"
-    ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
-    ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
-    ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
-    ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
-    ENV['GOOGLE_GEOCODER_TIMEOUT']= "5"
+    ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.arc.camsys"
+    ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey"
+    ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@atlantaregional.com"
+    ENV['SEND_FEEDBACK_TO_ADDRESS'] ||= "1-Click@camsys.com"
+    ENV['GOOGLE_GEOCODER_ACCOUNT'] ||=  "gme-cambridgesystematics"
+    ENV['GOOGLE_GEOCODER_KEY'] ||=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
+    ENV['GOOGLE_GEOCODER_CHANNEL'] ||=  "ARC_ONECLICK"
+    ENV['GOOGLE_GEOCODER_TIMEOUT'] ||= "5"
     config.enable_feedback = true
     config.traveler_read_all_organization_feedback = true
     config.agent_read_feedback = true
@@ -91,14 +91,14 @@ Oneclick::Application.configure do
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Miami"
     config.name = '1-Click'
-    ENV['SMTP_MAIL_USER_NAME'] = "oneclick.broward.camsys"
-    ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey"
-    ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@browardmpo.org"
-    ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
-    ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
-    ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
-    ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
-    ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
+    ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.broward.camsys"
+    ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey"
+    ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@browardmpo.org"
+    ENV['SEND_FEEDBACK_TO_ADDRESS'] ||= "1-Click@camsys.com"
+    ENV['GOOGLE_GEOCODER_ACCOUNT'] ||=  "gme-cambridgesystematics"
+    ENV['GOOGLE_GEOCODER_KEY'] ||=   "dXP8tsyrLYECMWGxgs5LA9Li0MU="
+    ENV['GOOGLE_GEOCODER_CHANNEL'] ||=  "ARC_ONECLICK"
+    ENV['GOOGLE_GEOCODER_TIMEOUT'] ||=  "5"
     config.enable_feedback = true
     config.traveler_read_all_organization_feedback = false
     config.agent_read_feedback = false
@@ -124,14 +124,14 @@ Oneclick::Application.configure do
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Harrisburg-PA"
     config.name = '1-Click/PA'
-    ENV['SMTP_MAIL_USER_NAME'] = "oneclick.pa.camsys"
-    ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey"
-    ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@rabbittransit.org"
-    ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
-    ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
-    ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
-    ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
-    ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
+    ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.pa.camsys"
+    ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey"
+    ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@rabbittransit.org"
+    ENV['SEND_FEEDBACK_TO_ADDRESS'] ||= "1-Click@camsys.com"
+    ENV['GOOGLE_GEOCODER_ACCOUNT'] ||=  "gme-cambridgesystematics"
+    ENV['GOOGLE_GEOCODER_KEY'] ||=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
+    ENV['GOOGLE_GEOCODER_CHANNEL'] ||=  "ARC_ONECLICK"
+    ENV['GOOGLE_GEOCODER_TIMEOUT'] ||=  "5"
     config.enable_feedback = true
     config.traveler_read_all_organization_feedback = false
     config.agent_read_feedback = false
@@ -169,14 +169,14 @@ Oneclick::Application.configure do
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Jacksonville-FL"
     config.name = '1-Click/JTA'
-    ENV['SMTP_MAIL_USER_NAME'] = "oneclick.pa.camsys" # TODO
-    ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey" # TODO
-    ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@rabbittransit.org" # TODO
-    ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
-    ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
-    ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
-    ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
-    ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
+    ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.pa.camsys" # TODO
+    ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey" # TODO
+    ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@rabbittransit.org" # TODO
+    ENV['SEND_FEEDBACK_TO_ADDRESS'] ||= "1-Click@camsys.com"
+    ENV['GOOGLE_GEOCODER_ACCOUNT'] ||=   "gme-cambridgesystematics"
+    ENV['GOOGLE_GEOCODER_KEY'] ||=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
+    ENV['GOOGLE_GEOCODER_CHANNEL'] ||=  "ARC_ONECLICK"
+    ENV['GOOGLE_GEOCODER_TIMEOUT'] ||=  "5"
     config.enable_feedback = true
     config.traveler_read_all_organization_feedback = true
     config.agent_read_feedback = true
@@ -203,14 +203,14 @@ Oneclick::Application.configure do
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Rancho-Cucamonga-CA"
     config.name = '1-Click/IEUW'
-    ENV['SMTP_MAIL_USER_NAME'] = "oneclick.ieuw.camsys" # TODO
-    ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey" # TODO
-    ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@ieuw.org" # TODO
-    ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
-    ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
-    ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
-    ENV['GOOGLE_GEOCODER_CHANNEL']=  "IEUW_ONECLICK"
-    ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
+    ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.ieuw.camsys" # TODO
+    ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey" # TODO
+    ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@ieuw.org" # TODO
+    ENV['SEND_FEEDBACK_TO_ADDRESS'] ||= "1-Click@camsys.com"
+    ENV['GOOGLE_GEOCODER_ACCOUNT'] ||=  "gme-cambridgesystematics"
+    ENV['GOOGLE_GEOCODER_KEY'] ||=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
+    ENV['GOOGLE_GEOCODER_CHANNEL'] ||=  "IEUW_ONECLICK"
+    ENV['GOOGLE_GEOCODER_TIMEOUT'] ||=  "5"
     config.enable_feedback = true
     config.traveler_read_all_organization_feedback = true
     config.agent_read_feedback = true
@@ -239,14 +239,14 @@ Oneclick::Application.configure do
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Boston"
     config.name = '1-Click/JTA'
-    ENV['SMTP_MAIL_USER_NAME'] = "oneclick.ma.camsys" # TODO
-    ENV['SMTP_MAIL_PASSWORD'] = "CatDogMonkey" # TODO
-    ENV['SYSTEM_SEND_FROM_ADDRESS'] = "donotreply@1-click.org" # TODO
-    ENV['SEND_FEEDBACK_TO_ADDRESS'] = "1-Click@camsys.com"
-    ENV['GOOGLE_GEOCODER_ACCOUNT']=  "gme-cambridgesystematics"
-    ENV['GOOGLE_GEOCODER_KEY']=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
-    ENV['GOOGLE_GEOCODER_CHANNEL']=  "ARC_ONECLICK"
-    ENV['GOOGLE_GEOCODER_TIMEOUT']=  "5"
+    ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.ma.camsys" # TODO
+    ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey" # TODO
+    ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@1-click.org" # TODO
+    ENV['SEND_FEEDBACK_TO_ADDRESS'] ||= "1-Click@camsys.com"
+    ENV['GOOGLE_GEOCODER_ACCOUNT'] ||=  "gme-cambridgesystematics"
+    ENV['GOOGLE_GEOCODER_KEY'] ||=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
+    ENV['GOOGLE_GEOCODER_CHANNEL'] ||=  "ARC_ONECLICK"
+    ENV['GOOGLE_GEOCODER_TIMEOUT'] ||=  "5"
     config.enable_feedback = true
     config.traveler_read_all_organization_feedback = true
     config.agent_read_feedback = true
@@ -295,11 +295,11 @@ Oneclick::Application.configure do
   end
 
   # # SMTP Mail Sender Account
-  ENV['SMTP_MAIL_ADDR'] =           "smtp.gmail.com"
-  ENV['SMTP_MAIL_PORT'] =           "587"
-  ENV['SMTP_MAIL_DOMAIN'] =         "gmail.com"
-  ENV['SMTP_MAIL_USER_NAME'] =      "oneclick.arc.camsys"
-  ENV['SMTP_MAIL_PASSWORD'] =       "CatDogMonkey"
+  ENV['SMTP_MAIL_ADDR'] ||=           "smtp.gmail.com"
+  ENV['SMTP_MAIL_PORT'] ||=           "587"
+  ENV['SMTP_MAIL_DOMAIN'] ||=         "gmail.com"
+  ENV['SMTP_MAIL_USER_NAME'] ||=      "oneclick.broward.camsys"
+  ENV['SMTP_MAIL_PASSWORD'] ||=       "CatDogMonkey"
 
   Honeybadger.configure do |config|
     config.api_key = honeybadger_api_key
