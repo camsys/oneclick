@@ -8,6 +8,10 @@ class AbstractReport
   def get_columns
     []
   end
+
+  def paged
+    false
+  end
   
 protected
 
