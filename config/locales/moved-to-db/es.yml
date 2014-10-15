@@ -358,6 +358,8 @@ es:
   depart: 'Salida'
   arrive: 'Llegada'
   cost: 'Costo'
+  plus: '[es]plus[/es]'
+  unknown_cost: '[es]unknown cost[/es]'
   print: 'Imprimir'
   chat: 'Charlar en línea'
   e_mail: ' Correo electrónico'

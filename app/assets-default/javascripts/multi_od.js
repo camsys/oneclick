@@ -220,10 +220,23 @@ function MultiODGridPageRenderer(tripResponse, localeDictFinder) {
 
             var minCost = filterValues.cost[0];
             var maxCost = filterValues.cost[1];
+            var costEstimatedInfo = filterValues.costEstimatedInfo;
+            var minCostEstStr = '';
+            var maxCostEstStr = '';
+            var estCostCounterStr = '';
+            if(costEstimatedInfo.minCostEstimated) {
+                minCostEstStr = '*';
+            }
+            if(costEstimatedInfo.maxCostEstimated) {
+                maxCostEstStr = '*';
+            }
+            if(costEstimatedInfo.unknownCostCounter > 0) {
+                estCostCounterStr = '(' + localeDictFinder['plus'] + ' ' + costEstimatedInfo.unknownCostCounter + ' ' + localeDictFinder['unknown_cost'] + ')';
+            }
             if(maxCost > minCost) {
-                summary += '<br><span class="grid-summary-item">$' +  getRoundMinValue(minCost) + ' - $' + getRoundMaxValue(maxCost) + '</span>';
+                summary += '<br><span class="grid-summary-item">$' +  minCost.toFixed(2) + minCostEstStr + ' - $' + maxCost.toFixed(2) + maxCostEstStr + ' ' + estCostCounterStr +  '</span>';
             } else {
-                summary += '<br><span class="grid-summary-item">$' +  minCost.toFixed(2) + '</span>';
+                summary += '<br><span class="grid-summary-item">$' +  minCost.toFixed(2) + minCostEstStr + ' ' + estCostCounterStr + '</span>';
             }
 
         }
@@ -595,7 +608,7 @@ function MultiODGridPageRenderer(tripResponse, localeDictFinder) {
     }
 
     /*
-     * get filters (Mode, duration, cost, No of transfer)
+     * get filter values (duration, walking distance, cost, No of transfer)
      * @param {object} trip
      */
     function getTripPartFilterValues(trip) {
@@ -604,6 +617,9 @@ function MultiODGridPageRenderer(tripResponse, localeDictFinder) {
         var maxTransfer = -1;
         var minCost = -1;
         var maxCost = -1;
+        var unknownCostCounter = 0;
+        var minCostEstimated = false;
+        var maxCostEstimated = false;
         var minDuration = -1;
         var maxDuration = -1;
         var minWalkDist = -1;
@@ -633,14 +649,19 @@ function MultiODGridPageRenderer(tripResponse, localeDictFinder) {
             var costInfo = tripPlan.cost;
             if (isValidObject(costInfo)) {
                 var cost = parseFloat(costInfo.price);
+                var isCostEstimated = costInfo.estimated;
                 if (cost >= 0) {
                     if (minCost < 0 || cost < minCost) {
                         minCost = cost;
+                        minCostEstimated = isCostEstimated;
                     }
 
                     if (maxCost < 0 || cost > maxCost) {
                         maxCost = cost;
+                        maxCostEstimated = isCostEstimated;
                     }
+                } else if (isCostEstimated) {
+                    unknownCostCounter ++;
                 }
             }
 
@@ -680,6 +701,8 @@ function MultiODGridPageRenderer(tripResponse, localeDictFinder) {
         var filterAvailable = (modes.length > 0 ||
             (maxTransfer > minTransfer) ||
             (maxCost > minCost) ||
+            minCostEstimated != maxCostEstimated ||
+            unknownCostCounter > 0 ||
             (maxDuration > minDuration) ||
             (maxWalkDist > minWalkDist));
         return {
@@ -688,7 +711,12 @@ function MultiODGridPageRenderer(tripResponse, localeDictFinder) {
             transfer: [minTransfer, maxTransfer],
             duration: [minDuration, maxDuration],
             walkDist: [minWalkDist, maxWalkDist],
-            cost: [minCost, maxCost]
+            cost: [minCost, maxCost],
+            costEstimatedInfo: {
+                minCostEstimated: minCostEstimated,
+                maxCostEstimated: maxCostEstimated,
+                unknownCostCounter: unknownCostCounter
+            }
         }
     }
 

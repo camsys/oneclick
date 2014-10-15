@@ -364,6 +364,8 @@ en:
   depart: 'Depart'
   arrive: 'Arrive'
   cost: 'Cost'
+  plus: 'plus'
+  unknown_cost: 'unknown cost'
   print: 'Print'
   chat: 'Chat'
   e_mail: 'Email'

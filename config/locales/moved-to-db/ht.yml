@@ -355,6 +355,8 @@ ht:
   depart: '[ht]Depart[/ht]'
   arrive: '[ht]Arrive[/ht]'
   cost: '[ht]Cost[/ht]'
+  plus: '[ht]plus[/ht]'
+  unknown_cost: '[ht]unknown cost[/ht]'
   print: '[ht]Print[/ht]'
   chat: '[ht]Chat[/ht]'
   e_mail: '[ht]Email[/ht]'
