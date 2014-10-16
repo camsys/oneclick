@@ -563,6 +563,11 @@ td.left, th.left {
     padding-top: 0px;
     padding-bottom: 0px;
   }
+
+  // not print href url
+  a[href]:after {
+    content: none !important;
+  }
 }
 
 .print_map {
