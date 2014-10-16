@@ -7,7 +7,7 @@
   .panel.panel-default{style: 'padding: 0px;'}
     .panel-heading
       %h2.panel-title
-        .btns.pull-right
+        .btns.pull-right{style: 'margin-top:-4px;'}
           = button_tag type: :submit, class: 'btn action-button controls' do
             =t(:run)
           - if @report && @report.exportable  
