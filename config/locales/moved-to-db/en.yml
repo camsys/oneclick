@@ -878,9 +878,9 @@ en:
     return_selected: 'Returning option selected.'
 
     initial_booking_title: 'Book with FindMyRidePA'
-    initial_booking_message: 'If you know your Shared Ride Client Id, you can use FindMyRidePA to book trips with Rabbit Transit Shared Ride.'
+    initial_booking_message: 'If you know your Shared Ride Client Id, you can use FindMyRidePA to book trips with Shared Ride.'
     initial_booking_close: "No Thanks"
-    booking_link_success: "Success!  You can now book trips with Rabbit Transit Shared Ride."
+    booking_link_success: "Success!  You can now book trips with Shared Ride."
     ecolane_login_button: "Shared Ride Login"
     next: 'Next >>'
 
