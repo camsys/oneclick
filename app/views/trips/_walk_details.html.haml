@@ -16,7 +16,7 @@
         .itinerary_text
           = leg.short_description
         .itinerary_text_small
-          =duration_to_words(leg.duration)
+          =[duration_to_words(leg.duration), exact_distance_to_words(leg.distance)].join(', ')
   %tr
     %td.itinerary_icons
       %i.fa.fa-stop.mode_icon_formatting{:class => 'end_icon'}

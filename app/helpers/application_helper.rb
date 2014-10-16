@@ -1,6 +1,7 @@
 module ApplicationHelper
 
   METERS_TO_MILES = 0.000621371192
+  MILE_TO_FEET = 5280
 
   include CsHelpers
   include LocaleHelpers
@@ -115,6 +116,22 @@ module ApplicationHelper
     else
       return false
     end
+  end
+
+  def exact_distance_to_words(dist_in_feet)
+    return '' unless dist_in_feet
+
+    # convert the meters to miles
+    miles = dist_in_feet / MILE_TO_FEET
+    if miles < 0.001
+      dist_str = [miles.round(4).to_s, I18n.t(:miles)].join(' ')
+    elsif miles < 0.01
+      dist_str = [miles.round(3).to_s, I18n.t(:miles)].join(' ')
+    else
+      dist_str = [miles.round(2).to_s, I18n.t(:miles)].join(' ')
+    end
+
+    dist_str
   end
 
   def distance_to_words(dist_in_meters)
