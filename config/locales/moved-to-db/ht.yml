@@ -122,6 +122,7 @@ ht:
   send_trip_by_email: "[ht]Send trip plan by email[/ht]"
   send_follow_up_email: "[ht]Send Follow-up Email[/ht]"
   sidewalk_obstructions: "[ht]Sidewalk Obstructions[/ht]"
+  remove_sidewalk_obstructions: "[ht]Remove sidewalk obstructions[/ht]"
   sidewalk_obstructions_update:
     one: "[ht]The sidewalk obstruction has been updated[/ht]"
     other: "[ht]The sidewalk obstructions have been updated[/ht]"

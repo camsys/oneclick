@@ -14,7 +14,8 @@ class CharacteristicsController < TravelerAwareController
       if params['inline'] == '1' || params[:trip_id]
         @trip = Trip.find(session[:current_trip_id] || params[:trip_id])
         if session[:is_multi_od] == true
-          @path = multi_od_grid_user_trip_path(@traveler, @trip)
+          @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id] || params[:multi_od_trip_id])
+          @path = user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
         else
           @trip.remove_itineraries
           @path = populate_user_trip_path(@traveler, @trip, {asynch: 1}, locale: I18n.locale )

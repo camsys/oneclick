@@ -127,6 +127,7 @@ en:
   send_trip_by_email: "Send trip plan by email"
   send_follow_up_email: "Send Follow-up Email"
   sidewalk_obstructions: "Sidewalk Obstructions"
+  remove_sidewalk_obstructions: "Remove sidewalk obstructions"
   sidewalk_obstructions_update:
     one: "The sidewalk obstruction has been updated"
     other: "The sidewalk obstructions have been updated"

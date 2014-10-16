@@ -134,7 +134,8 @@ module TripsHelper
     when :options
       new_user_trip_characteristic_path(@traveler, @trip)
     when :grid
-      multi_od_grid_user_trip_path(@traveler, @trip)
+      @multi_od_trip = @multi_od_trip || MultiOriginDestTrip.find(session[:multi_od_trip_id] || param[:multi_od_trip_id])
+      user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
     when :review
       user_trip_path(@traveler, @trip)
     when :plan

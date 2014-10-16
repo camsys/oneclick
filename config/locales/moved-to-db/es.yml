@@ -120,6 +120,7 @@ es:
   send_trip_by_email: "[es29]Send trip plan by email[/es]"
   send_follow_up_email: "[es29]Send Follow-up Email[/es]"
   sidewalk_obstructions: "[es]Sidewalk Obstructions[/es]"
+  remove_sidewalk_obstructions: "[es]Remove sidewalk obstructions[/es]"
   sidewalk_obstructions_update:
     one: "[es]The sidewalk obstruction has been updated[/es]"
     other: "[es]The sidewalk obstructions have been updated[/es]"

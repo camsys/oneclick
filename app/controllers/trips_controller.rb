@@ -56,7 +56,7 @@ class TripsController < PlaceSearchingController
     new_trip
 
     if session[:is_multi_od] == true
-      @selected_modes = [Mode.transit].concat(Mode.transit.submodes).collect{|m| m.code}
+      @selected_modes = [Mode.transit].concat(Mode.transit.submodes).collect{|m| m.code}.uniq
     end
 
     respond_to do |format|
@@ -68,10 +68,13 @@ class TripsController < PlaceSearchingController
   # showing a grid summary of each O-D trip for multi-OD trip planning
   # agent only
   def multi_od_grid
+    session[:is_multi_od] = true
     authorize! :manage, MultiOriginDestTrip
 
-    @trip = Trip.find(params[:id]) # base trip
+    @trip = Trip.find(params[:trip_id]) # base trip
+    session[:multi_od_trip_id] = session[:multi_od_trip_id] || params[:multi_od_trip_id]
     @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
+
     unless @multi_od_trip.nil?
       origin_places = @multi_od_trip.origin_places.split(';')
       dest_places = @multi_od_trip.dest_places.split(';')
@@ -573,13 +576,14 @@ class TripsController < PlaceSearchingController
       end
     end
 
+    session[:multi_od_trip_id] = session[:multi_od_trip_id] || params[:multi_od_trip_id]
     if !session[:multi_od_trip_id].nil?
       session[:multi_od_trip_edited] = true
-      multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
-      multi_od_trip.user = current_user
-      multi_od_trip.origin_places = params[:trip_proxy][:multi_origin_places]
-      multi_od_trip.dest_places = params[:trip_proxy][:multi_dest_places]
-      multi_od_trip.save
+      @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
+      @multi_od_trip.user = current_user
+      @multi_od_trip.origin_places = params[:trip_proxy][:multi_origin_places]
+      @multi_od_trip.dest_places = params[:trip_proxy][:multi_dest_places]
+      @multi_od_trip.save
     end
 
     respond_to do |format|
@@ -589,7 +593,7 @@ class TripsController < PlaceSearchingController
 
           if !@trip.eligibility_dependent?
             if session[:is_multi_od] == true
-              @path = multi_od_grid_user_trip_path(@traveler, @trip)
+              @path = user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
             else
               @path = user_trip_path_for_ui_mode(@traveler, @trip)
             end
@@ -997,7 +1001,9 @@ protected
           if !@trip.eligibility_dependent?
             Rails.logger.info 'trip_planning multi_od? ' + session[:is_multi_od].to_s
             if session[:is_multi_od] == true
-              @path = multi_od_grid_user_trip_path(@traveler, @trip)
+              session[:multi_od_trip_id] = session[:multi_od_trip_id] || params[:multi_od_trip_id]
+              @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
+              @path = user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
             else
               @trip.create_itineraries
               @path = user_trip_path_for_ui_mode(@traveler, @trip)
@@ -1114,7 +1120,6 @@ protected
   end
 
 private
-
   # creates a trip_proxy object from form parameters
   def create_trip_proxy_from_form_params(trip_proxy_params)
     trip_proxy = TripProxy.new(trip_proxy_params)

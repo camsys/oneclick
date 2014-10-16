@@ -90,6 +90,7 @@ Oneclick::Application.routes.draw do
 
       # users have trips
       resources :trips, :only => [:show, :index, :new, :create, :destroy, :edit, :update] do
+        get 'multi_od_grid/:multi_od_trip_id' => 'trips#multi_od_grid', as: 'multi_od_grid'
         resources :characteristics, only: [:new, :update], controller: 'characteristics'
         collection do
           post  'set_traveler'
@@ -122,7 +123,6 @@ Oneclick::Application.routes.draw do
           get   'plan'
           get   'new_rating_from_email'
           post  'cancel'
-          get   'multi_od_grid'
           get   'serialize_trip'
         end
         resources :itineraries do
@@ -158,6 +158,7 @@ Oneclick::Application.routes.draw do
     # end
 
     # get '/kiosk_user/kiosk/users/sign_in', to: 'kiosk/sessions#create'
+
 
     get 'place_details/:id' => 'place_searching#details', as: 'place_details'
     get 'reverse_geocode' => 'place_searching#reverse_geocode', as: 'reverse_geocode'
