@@ -56,7 +56,7 @@ class TripsController < PlaceSearchingController
     new_trip
 
     if session[:is_multi_od] == true
-      @selected_modes = [Mode.transit].concat(Mode.transit.submodes).collect{|m| m.code}.uniq
+      @selected_modes = Mode.all_transit_modes.concat(Mode.transit.submodes).collect{|m| m.code}.uniq
     end
 
     respond_to do |format|

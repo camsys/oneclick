@@ -57,6 +57,10 @@ class Mode < ActiveRecord::Base
   #   unscoped.where("code = 'mode_walk'").first
   # end
 
+  def self.all_transit_modes
+    [Mode.transit, Mode.bus, Mode.rail]
+  end
+
   def self.transit_submodes
     if not transit
       none
