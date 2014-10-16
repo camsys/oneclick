@@ -34,3 +34,24 @@ moment.fn.next15 = function() {
     this.seconds(0);
     return this;
 }
+
+function checkAriaLabel(input){
+    if (input.attr('disabled') == 'disabled' || input.hasClass('disabled')){
+        input.children().attr('aria-label', 'disabled. ');
+    } else {
+        input.children().removeAttr('aria-label');
+    }
+}
+
+function toggleAriaLabel(input) {
+    input.attrchange({
+      trackValues: false,
+      callback: function(e) {
+        if ($(this).attr('disabled') == undefined) {
+          $(this).children().removeAttr('aria-label');
+        } else {
+          $(this).children().attr('aria-label', 'disabled. ');
+        }
+      }
+    });
+}
