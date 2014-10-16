@@ -5,6 +5,19 @@
         = submit_tag t(:apply), class: "btn action-button"
         = link_to t(:cancel), admin_sidewalk_obstructions_path, class: "btn action-button"
       %h1= t(:sidewalk_obstructions)
+    #deleteSidewalkObstructionConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_sidewalk_obstructions), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+      .modal-dialog
+        .modal-content
+          .modal-header
+            = button_tag class: 'btn action-button pull-right', action: 'cancel_delete', data: {dismiss: 'modal'} do
+              = t(:cancel)
+            = button_tag class: 'btn action-button pull-right', action: 'confirm_delete', data: {dismiss: 'modal'} do
+              = t(:ok)
+            .modal-title{:style => "text-align:left;"}
+              %b
+                = t(:site_title)
+          .modal-body{:style => "text-align:left;"}
+            = t(:confirm_remove_message) + t(:sidewalk_obstructions).downcase + " ?"
   .panel.panel-default{style: 'padding: 0px;'}
     .panel-heading
       %h2.panel-title= t(:sidewalk_obstructions)
@@ -46,7 +59,7 @@
 
 :javascript
 $(document).ready( function() {
-  $("form").submit(function( event ) {
+  var submitChanges = function() {
     $.ajax({
       type: "POST",
       url: "/admin/sidewalk_obstructions/approve",
@@ -61,8 +74,25 @@ $(document).ready( function() {
         window.location = window.location
       }
     });
+  };
+  $("form").submit(function( event ) {
     event.preventDefault();
+    if($("input:checked[value=deleted]").length > 0) {
+      $('#deleteSidewalkObstructionConfirmDialog').modal('show');
+    } else {
+      submitChanges();
+    }
   });
+
+  $('#deleteSidewalkObstructionConfirmDialog button[action=confirm_delete]').on('click', function(){
+    submitChanges();
+  });
+
+  $('#deleteSidewalkObstructionConfirmDialog button[action=cancel_delete]').on('click', function(){
+    $("input:checked[value=deleted]").each(function(){$(this).removeAttr('checked');})
+    submitChanges();
+  });
+
   var table = $('#sidewalk_feedbacks_table').dataTable( {
     "aaSorting": [[ 6, "desc" ]],
     "aoColumnDefs": [

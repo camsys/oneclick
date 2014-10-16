@@ -10,6 +10,7 @@ class SidewalkObstruction < ActiveRecord::Base
   scope :pending, -> { where(status: SidewalkObstruction::PENDING)}
   scope :rejected, -> { where(status: SidewalkObstruction::REJECTED)}
   scope :deleted, -> { where(status: SidewalkObstruction::DELETED)}
+  scope :non_deleted, -> { where.not(status: SidewalkObstruction::DELETED)}
 
   belongs_to :user
 
