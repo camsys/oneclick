@@ -82,9 +82,6 @@ module TripsHelper
   def get_traveller_related_emails traveler, is_assisting
     list = []
     list << traveler.email if is_assisting
-    current_user.buddies.confirmed.each do |buddy|
-      list << buddy.email
-    end
     list << current_user.email
     list.join(",")
   end
