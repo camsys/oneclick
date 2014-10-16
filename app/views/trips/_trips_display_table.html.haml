@@ -20,7 +20,7 @@
         %th.center= t(:max_notes)
       - if can? :send_follow_up, Trip
         %th= t(:send_follow_up_email)
-      %th
+      %th= t(:trip_details)
   %tbody{ :id => 'trips_table'}
     - trips = RateableDecorator.decorate_collection(trips)
     - rateable_trip_ids = []
