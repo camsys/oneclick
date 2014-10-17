@@ -1,8 +1,7 @@
 - temp_rating = @agency.ratings.build(user: @traveler)
 - if can? :index, Agency
-  .row
-    .col-sm-12
-      = link_to t(:all_agencies), admin_agencies_path, class: 'btn action-button btn-arrow-left'
+  .col-sm-12
+    = link_to t(:all_agencies), admin_agencies_path, class: 'btn action-button btn-arrow-left'
 .row.info-header
   .col-sm-5
     %h1= @agency.name
@@ -21,7 +20,7 @@
             = t(:feedback)
         = render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
       - if can? :destroy, @agency
-        = button_tag :type => 'button', "data-target" => "#deleteAgencyConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
+        = button_tag :type => 'button', "data-target" => "#deleteAgencyConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
           = t(:delete)
         #deleteAgencyConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_agency), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
           .modal-dialog
