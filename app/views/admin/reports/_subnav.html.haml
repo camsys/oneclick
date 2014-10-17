@@ -1,5 +1,12 @@
 .row.info-header
   .col-sm-12
+    .btns.pull-right
+      = button_tag type: :submit, class: 'btn action-button controls' do
+        =t(:run)
+      - if @report && @report.exportable  
+        = button_tag id: 'export',
+              class: "#{@url_for_csv ? '' : 'disabled '}btn action-button controls" do
+          =t(:export)
     %h1= header
 = simple_form_for @generated_report,
         url: admin_report_path(Report.all.first.id, locale: params[:locale]),
@@ -7,13 +14,6 @@
   .panel.panel-default{style: 'padding: 0px;'}
     .panel-heading
       %h2.panel-title
-        .btns.pull-right{style: 'margin-top:-4px;'}
-          = button_tag type: :submit, class: 'btn action-button controls' do
-            =t(:run)
-          - if @report && @report.exportable  
-            = button_tag id: 'export',
-                  class: "#{@url_for_csv ? '' : 'disabled '}btn action-button controls" do
-              =t(:export)
         %span
           = t(:reports)
     .panel-body
