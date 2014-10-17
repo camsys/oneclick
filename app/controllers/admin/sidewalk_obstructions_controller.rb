@@ -3,7 +3,7 @@ class Admin::SidewalkObstructionsController < ApplicationController
   def index
     authorize! :read, SidewalkObstruction
     authorize! :approve, SidewalkObstruction
-    @sidewalk_obstructions = SidewalkObstruction.non_deleted
+    @sidewalk_obstructions = SidewalkObstruction.non_deleted.where('removed_at IS NULL or removed_at >= ?', Time.now)
   end
 
   def approve
