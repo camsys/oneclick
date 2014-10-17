@@ -1,7 +1,7 @@
 .row.info-header
 	.col-sm-12
 		.btns.pull-right
-			= button_tag id:'create_translation', type: 'submit', class: "btn action-button" do
+			= button_tag id:'create_translation', type: 'submit', class: "btn action-button", style: "margin-right:5px;" do
 				= t(:create_translation)
 			= link_to t(:cancel), admin_translations_path, { class: "btn action-button" }
 		%h1 Define A Translation
