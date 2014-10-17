@@ -116,6 +116,7 @@
           .panel-heading
             %h2.panel-title= t(:preferred_modes)
           .panel-body
+            %legend.sr-only= t(:preferred_modes)
             - Mode.top_level.where(visible: true).sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.each do |m|
               .row
                 .col-sm-12

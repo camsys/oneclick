@@ -32,7 +32,14 @@
             .panel-heading
               %h2.panel-title= t(:agencies)
             .panel-body
-              = f.association :approved_agencies, collection: Agency.all.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes, wrapper: :inline_checkboxes, label: false
+              / %label.sr-only{aria: {label: "#{t(:agencies)}"}}
+              / - Agency.all.order(:name).each do |agency|
+              /   %div
+              /     %input.check_boxes.optional{id: "user_approved_agency_ids_#{agency.id}", name: "user[approved_agency_ids][]", type: "checkbox", size: 10, value: "#{agency.id}"}
+              /     %label.check_boxes.optional{for: "user_approved_agency_ids_#{agency.id}", name: "user[approved_agency_ids]"} #{agency}
+              /     %br
+
+              = f.association :approved_agencies, collection: Agency.all.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes, wrapper: :inline_checkboxes, label: t(:agencies), label_html: {class: 'sr-only'}
 
     - if current_user.agency
       .row
@@ -156,6 +163,7 @@
             .panel-heading
               %h2.panel-title= t(:preferred_modes)
             .panel-body
+              %legend.sr-only= t(:preferred_modes)
               - Mode.top_level.where(visible: true).sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.each do |m|
                 .row
                   .col-sm-12
