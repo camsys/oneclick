@@ -15,4 +15,18 @@ class RatingDecorator < Draper::Decorator
   def rating_in_stars(size=1)
     h.to_stars(value, size)
   end
+
+  # For Ratings Report
+  def username
+    user.name
+  end
+
+  def created
+    I18n.l created_at, format: :isoish
+  end
+
+  def rating_targets
+    rateable_desc
+  end
+  
 end

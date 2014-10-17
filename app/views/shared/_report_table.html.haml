@@ -1,0 +1,18 @@
+.row
+  .col-sm-12
+    %table.table.table.condensed.table-striped.table-hover.table-bordered#datatable
+      %thead
+        %tr
+          - columns.each_with_index do |col, index|
+            %th
+              = t(col)
+      %tbody.nowrap
+        - rows.each do |row|
+          %tr
+            - columns.each_with_index do |col, index|
+              %td
+                = row.is_a?(Hash) ? row[col].to_s : row.send(col).to_s
+
+= render partial: 'shared/simple_datatable_js', 
+        locals: {filter: true, export: true, columns: columns, data: rows}
+

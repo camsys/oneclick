@@ -27,8 +27,10 @@ end
    view_name: 'trips_details_report', class_name: 'TripsDetailsReport', active: true},
   {name: 'System Usage', description: 'Overall system usage statistics.',
    view_name: 'system_usage_report', class_name: 'SystemUsageReport', active: true},
-  {name: 'Trips Details (paged)', description: 'Details of all trips.',
-   view_name: 'paged_trips_details_report', class_name: 'TripsDatatable', active: true}
+  {name: 'Trips Details', description: 'Details of all trips.', exportable: true,
+   view_name: 'paged_trips_details_report', class_name: 'TripsDatatable', active: true},
+  {name: 'Feedback', description: 'List of all ratings.', exportable: true,
+   view_name: 'ratings_report', class_name: 'RatingsReport', active: true}
 
 ].each do |rep|
   # Need to correctly handle updating active state; match everything except that.
