@@ -1,11 +1,13 @@
 .row
   .col-sm-12
-    -if itinerary.service.provider and itinerary.service.provider.public_comments.for_locale
-      .row
-        .col-sm-12
-          .well.well-sm.comments
-            =itinerary.service.provider.public_comments.for_locale.comment.html_safe
-    -if itinerary.service.public_comments.for_locale
+    -if itinerary.service.provider
+      - provider_public_comments = itinerary.service.provider.public_comments.for_locale
+      - if provider_public_comments && !provider_public_comments.comment.blank?
+        .row
+          .col-sm-12
+            .well.well-sm.comments
+              =provider_public_comments.comment.html_safe
+    -if itinerary.service.public_comments.for_locale and !itinerary.service.public_comments.for_locale.comment.blank?
       .row
         .col-sm-12
           .well.well-sm
