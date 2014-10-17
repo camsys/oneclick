@@ -124,7 +124,7 @@ Oneclick::Application.configure do
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Harrisburg-PA"
     config.name = '1-Click/PA'
-    ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.pa.camsys"
+    ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.arc.camsys"
     ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey"
     ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@rabbittransit.org"
     ENV['SEND_FEEDBACK_TO_ADDRESS'] ||= "1-Click@camsys.com"
@@ -169,7 +169,7 @@ Oneclick::Application.configure do
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Jacksonville-FL"
     config.name = '1-Click/JTA'
-    ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.pa.camsys" # TODO
+    ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.arc.camsys" # TODO
     ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey" # TODO
     ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@rabbittransit.org" # TODO
     ENV['SEND_FEEDBACK_TO_ADDRESS'] ||= "1-Click@camsys.com"
@@ -203,7 +203,7 @@ Oneclick::Application.configure do
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Rancho-Cucamonga-CA"
     config.name = '1-Click/IEUW'
-    ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.ieuw.camsys" # TODO
+    ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.arc.camsys" # TODO
     ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey" # TODO
     ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@ieuw.org" # TODO
     ENV['SEND_FEEDBACK_TO_ADDRESS'] ||= "1-Click@camsys.com"
@@ -239,7 +239,7 @@ Oneclick::Application.configure do
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Boston"
     config.name = '1-Click/JTA'
-    ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.ma.camsys" # TODO
+    ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.arc.camsys" # TODO
     ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey" # TODO
     ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@1-click.org" # TODO
     ENV['SEND_FEEDBACK_TO_ADDRESS'] ||= "1-Click@camsys.com"
