@@ -196,7 +196,7 @@ module MapHelper
       if @user.nil?
         is_admin = can? :manage, :all
       else
-        current_or_guest_user = @user
+        @traveler = @user
         is_admin = @user.has_role?(:admin) or @user.has_role?(:system_administrator)
       end
 
@@ -212,7 +212,7 @@ module MapHelper
       query_str = query_str.
         sub('%APPROVED_STATUS%', SidewalkObstruction::APPROVED).
         sub('%PENDING_STATUS%', SidewalkObstruction::PENDING).
-        sub('%USER_ID%', current_or_guest_user.id.to_s).
+        sub('%USER_ID%', @traveler.id.to_s).
         sub('%LEG_START_TIME%', leg.start_time.to_s(:db)).
         sub('%MIN_LAT%', min_lat.to_s).
         sub('%MIN_LON%', min_lon.to_s).
