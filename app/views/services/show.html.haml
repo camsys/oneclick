@@ -1,8 +1,7 @@
 - temp_rating = @service.ratings.build(user: @traveler)
 -if can? :index, Service
-  .row
-    .col-sm-12
-      = link_to t(:all_services), services_path, class: 'btn action-button btn-arrow-left'
+  .col-sm-12
+    = link_to t(:all_services), services_path, class: 'btn action-button btn-arrow-left'
 .row.info-header
   .col-sm-5
     %h2
@@ -20,7 +19,7 @@
             = t(:feedback)
         = render partial: "ratings/organization_feedback_modal", locals: {rateable: @service}
       - if can? :destroy, @service
-        = button_tag :type => 'button', "data-target" => "#deleteServiceConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
+        = button_tag :type => 'button', "data-target" => "#deleteServiceConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
           = t(:delete)
         #deleteServiceConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_service), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
           .modal-dialog

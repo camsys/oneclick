@@ -14,7 +14,7 @@
     .col-sm-6.btns
       - if can? :update, @service or can? :create, @service
         .pull-right
-          = button_tag type: 'submit', class: "btn action-button" do
+          = button_tag type: 'submit', class: "btn action-button", style: "margin-right:5px;" do
             = icon_label(:apply)
           = link_to t(:cancel), :back, class: "btn action-button"
 
