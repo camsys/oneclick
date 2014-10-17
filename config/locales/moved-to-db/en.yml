@@ -212,6 +212,7 @@ en:
 
   # Trip History and Rating
   rating: "Rating"
+  rating_in_stars: "Rating"
   actions: "Actions"
   filter: "Filter"
   ratings: "Ratings"

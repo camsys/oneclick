@@ -208,6 +208,7 @@ es:
 
   # Trip History and Rating
   rating: "Clasificacion *7*"
+  rating_in_stars: "Clasificacion *7*"
   actions: "Acciones *8*"
   filter: "Filtrar *9*"
   ratings: "[es]Ratings[/es]"
