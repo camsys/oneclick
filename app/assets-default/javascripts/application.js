@@ -45,7 +45,7 @@ function checkAriaLabel(input){
 
 function toggleAriaLabel(input) {
     input.attrchange({
-      trackValues: false,
+      trackValues: true,
       callback: function(e) {
         if ($(this).attr('disabled') == undefined) {
           $(this).children().removeAttr('aria-label');
@@ -55,3 +55,17 @@ function toggleAriaLabel(input) {
       }
     });
 }
+
+function toggleAriaLabelPrevNext(input) {
+    input.attrchange({
+      trackValues: true,
+      callback: function(e) {
+        if (e.newValue.indexOf("disabled") > -1) {
+            $(this).children().attr('aria-label', 'disabled. ');
+        } else {
+            $(this).children().removeAttr('aria-label');
+        }
+      }
+    });    
+}
+

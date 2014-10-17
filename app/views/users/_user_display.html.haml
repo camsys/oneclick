@@ -140,10 +140,24 @@
           },
           "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
       } );
-    var prev_button = $('.prev');
-    var next_button = $('.next');
-    checkAriaLabel(prev_button);
-    toggleAriaLabel(prev_button); 
-    checkAriaLabel(next_button);
-    toggleAriaLabel(next_button);  
+    var agencies_table_prev = $("#agencies_table_paginate .prev");
+    var agencies_table_next = $("#agencies_table_paginate .next");
+    checkAriaLabel(agencies_table_prev);
+    checkAriaLabel(agencies_table_next);
+    toggleAriaLabelPrevNext(agencies_table_prev);
+    toggleAriaLabelPrevNext(agencies_table_next);
+
+    var buddies_table_prev = $("#buddies_table_paginate .prev");
+    var buddies_table_next = $("#buddies_table_paginate .next");
+    checkAriaLabel(buddies_table_prev);
+    checkAriaLabel(buddies_table_next);
+    toggleAriaLabelPrevNext(buddies_table_prev);
+    toggleAriaLabelPrevNext(buddies_table_next);
+
+    var booking_table_prev = $("#bookingtable_paginate .prev");
+    var booking_table_next = $("#bookingtable_paginate .next");
+    checkAriaLabel(booking_table_prev);
+    checkAriaLabel(booking_table_next);
+    toggleAriaLabelPrevNext(booking_table_prev);
+    toggleAriaLabelPrevNext(booking_table_next);
     });
