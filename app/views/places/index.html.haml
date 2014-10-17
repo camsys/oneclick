@@ -21,7 +21,7 @@
                         = button_tag type: :submit, disabled: 'true', name: 'save', id: 'save', class: 'btn action-button' do
                           %legend.sr-only
                           = t(:save)
-                        = button_tag type: :submit, name: 'delete', class: 'btn action-button' do
+                        = button_tag type: :submit, id: 'delete_place', name: 'delete', class: 'btn action-button' do
                           %legend.sr-only
                           = t(:delete)
                         = button_tag name: 'clear', id: 'clear', type: 'button', class: 'btn action-button' do
@@ -91,3 +91,13 @@
               = LeafletMap({ :mapid => 'placesMap', :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height:500px;" })
 
 = yield :scripts
+
+:javascript
+  $(function() {
+    $('#delete_place').click(function(e) {
+      e.preventDefault();
+      if ($('#delete_place').attr('disabled') || $('#places_controller_places_proxy_id').val() == '') {
+        return false;
+      }
+    });
+  });
