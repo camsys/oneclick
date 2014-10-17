@@ -18,8 +18,22 @@
       %td.itin_text_container
         .itinerary_text
           = leg.short_description
+          - if leg.mode == Leg::TripLeg::WALK
+            - sidewalk_obstructions = query_sidewalk_feedback_near_one_walk_leg(leg)
+            - if sidewalk_obstructions.length > 0
+              %br
+              = t(:sidewalk_obstructions) + ':'
+              %br
+              %div{style:'padding-left: 10px;'}
+                - sidewalk_obstructions.each do |f|
+                  = f.comment
+                  - unless f.removed_at.nil?
+                    = ', ' + t(:removed_at).downcase + ' ' + format_date(f.removed_at)
+                  %br
         .itinerary_text_small
           = format_time(leg.start_time) + ' ' + t(:to) + ' ' + format_time(leg.end_time)
+          - if leg.mode == Leg::TripLeg::WALK
+            = ', ' + exact_distance_to_words(leg.distance)
   %tr
     %td.itinerary_icons
       %i.fa.fa-stop.mode_icon_formatting{:class => 'end_icon'}

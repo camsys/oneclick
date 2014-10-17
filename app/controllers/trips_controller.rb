@@ -249,7 +249,7 @@ class TripsController < PlaceSearchingController
     end
     subject = Oneclick::Application.config.name + ' Trip Itinerary'
     UserMailer.user_trip_email(email_addresses, @trip, subject, from_email,
-      params[:email][:email_comments]).deliver
+      params[:email][:email_comments], @traveler).deliver
     notice_text = t(:email_sent_to).sub('%{email_sent_to}', email_addresses.to_sentence)
     respond_to do |format|
       format.html { redirect_to plan_user_trip_path(@trip.creator, @trip, itinids: params[:itinids], locale: I18n.locale),
@@ -302,7 +302,7 @@ class TripsController < PlaceSearchingController
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
     subject = Oneclick::Application.config.name + ' Trip Itinerary'
     UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, subject, from_email,
-      params[:email][:email_comments]).deliver
+      params[:email][:email_comments], @traveler).deliver
     notice_text = t(:email_sent_to).sub('%{email_sent_to}', email_addresses.join(', '))
     respond_to do |format|
       format.html { redirect_to user_trip_url(@trip.creator, @trip, locale: I18n.locale), :notice => notice_text  }
