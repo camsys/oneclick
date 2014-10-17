@@ -39,7 +39,7 @@
               /     %label.check_boxes.optional{for: "user_approved_agency_ids_#{agency.id}", name: "user[approved_agency_ids]"} #{agency}
               /     %br
 
-              = f.association :approved_agencies, collection: Agency.all.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes, wrapper: :inline_checkboxes, label: t(:agencies), label_html: {class: 'sr-only'}
+              = f.association :approved_agencies, collection: Agency.active.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes, wrapper: :inline_checkboxes, label: t(:agencies), label_html: {class: 'sr-only'}
 
     - if current_user.agency
       .row
@@ -117,7 +117,7 @@
                         .col-sm-5#eligibility_questions
                           %input.radio_buttons.optional{id: "user_characteristics_proxy_#{c.code}_true", name: "user_characteristics_proxy[#{c.code}]", type: "radio", value: "true", checked: c.true_false_checked?(@traveler, "true") }
                           %label{for: "user_characteristics_proxy_#{c.code}_true", name: "user_characteristics_proxy[#{c.code}]"} #{t(:yes_str)}
-                          
+
                           %input.radio_buttons.optional{id: "user_characteristics_proxy_#{c.code}_false", name: "user_characteristics_proxy[#{c.code}]", type: "radio", value: "false", checked: c.true_false_checked?(@traveler, "false") }
                           %label{for: "user_characteristics_proxy_#{c.code}_false", name: "user_characteristics_proxy[#{c.code}]"} #{t(:no_str)}
 
@@ -137,7 +137,7 @@
                       .col-sm-5#eligibility_questions
                         %input.radio_buttons.optional{id: "user_characteristics_proxy_#{a.code}_true", name: "user_characteristics_proxy[#{a.code}]", type: "radio", value: "true", checked: a.true_false_checked?(@traveler, "true") }
                         %label{for: "user_characteristics_proxy_#{a.code}_true", name: "user_characteristics_proxy[#{a.code}]"} #{t(:yes_str)}
-                        
+
                         %input.radio_buttons.optional{id: "user_characteristics_proxy_#{a.code}_false", name: "user_characteristics_proxy[#{a.code}]", type: "radio", value: "false", checked: a.true_false_checked?(@traveler, "false") }
                         %label{for: "user_characteristics_proxy_#{a.code}_false", name: "user_characteristics_proxy[#{a.code}]"} #{t(:no_str)}
 
