@@ -140,7 +140,10 @@
           },
           "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
       } );
-    var buttons = $('.prev, .next');
-    checkAriaLabel(buttons);
-    toggleAriaLabel(buttons); 
+    var prev_button = $('.prev');
+    var next_button = $('.next');
+    checkAriaLabel(prev_button);
+    toggleAriaLabel(prev_button); 
+    checkAriaLabel(next_button);
+    toggleAriaLabel(next_button);  
     });

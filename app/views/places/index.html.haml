@@ -51,9 +51,17 @@
                               %td= place.name
                       :javascript
                         $(document).ready(function(){
+                          var save_button = $('#save');
+                          var delete_button = $("button[name='delete']");
+                          var clear_button = $('#clear');
                           var buttons = $("#save, button[name='delete'], #clear");
-                          checkAriaLabel(buttons);
-                          toggleAriaLabel(buttons);
+
+                          checkAriaLabel(save_button);
+                          toggleAriaLabel(save_button);
+                          checkAriaLabel(delete_button);
+                          toggleAriaLabel(delete_button);
+                          checkAriaLabel(clear_button);
+                          toggleAriaLabel(clear_button);
                         });
 
                         $("#places-table tr").tooltip({
