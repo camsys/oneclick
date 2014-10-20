@@ -235,6 +235,7 @@
                   Rule
             %tbody
               - Characteristic.enabled.each do |c|
+                - next unless c.for_service == true
                 %tr
                   %td.text-center
                     %input{type: "hidden", name: input_name(f, :service_characteristics, :id)}

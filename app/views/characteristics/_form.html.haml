@@ -7,7 +7,7 @@
         / %form{:role => "form"}
         .inline-radio
           -Characteristic.active.enabled.each do |c|
-            - next if c.code=='age' # TODO kludge
+            - next unless c.for_traveler == true
             - next unless c.ask_early
             = render partial: 'characteristic_item', locals: {item: c, f: f}
           -Accommodation.where(:datatype => 'bool').each do |a|
