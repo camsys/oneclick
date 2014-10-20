@@ -13,17 +13,18 @@ class TripPlace < GeocodedAddress
   belongs_to :trip    # everyone trip place must belong to a trip
   belongs_to :place   # optional
   belongs_to :poi     # optional
-  
+
   # Updatable attributes
   # attr_accessible :sequence, :raw_address
   attr_accessor :raw
-  
+
   # set the default scope
   default_scope {order('sequence ASC')}
 
   def from_trip_proxy_place json_string, sequence, manual_entry = '', map_center = ''
     self.sequence = sequence
     j = JSON.parse(json_string) rescue {'type_name' => 'MANUAL_ENTRY'}
+    j['type_name'] = j['type_name'] || 'MANUAL_ENTRY'
     j['county'] = Oneclick::Application.config.default_county if j['county'].blank?
     case j['type_name']
     when 'PLACES_TYPE'
@@ -88,9 +89,9 @@ class TripPlace < GeocodedAddress
     d['state'] = Oneclick::Application.config.state if d['state'].blank?
     d['address1'] = d['neighborhood'] if d['address1'].blank?
     if d['address1'].blank? && details.body['result']['name'] != d['city']
-      d['address1'] = details.body['result']['name'] 
+      d['address1'] = details.body['result']['name']
     end
-    
+
     self.update_attributes(address1: d['address1'],
                            city: d['city'],
                            state: d['state'],
@@ -101,8 +102,8 @@ class TripPlace < GeocodedAddress
                            raw_address: raw_address,
                            result_types: d['result_types'])
   end
-  
-    
+
+
   # discover the location for this trip place from
   # its relationships
   def location
@@ -111,22 +112,22 @@ class TripPlace < GeocodedAddress
     # return place.location unless place.nil?
     return get_location
   end
-  
+
   def type_name
     return 'POI_TYPE' unless poi.nil?
     return 'PLACE_TYPE' unless place.nil?
     return 'CACHED_ADDRESS_TYPE'
   end
-  
+
   # discover the address for this trip place from its
   # relationships
   def address
     return poi.address unless poi.nil?
     return place.address unless place.nil?
     addr = get_address
-    return addr.blank? ? raw_address : addr    
+    return addr.blank? ? raw_address : addr
   end
-  
+
   def name
     n = read_attribute(:name)
     n.blank? ? to_s : n
@@ -136,20 +137,20 @@ class TripPlace < GeocodedAddress
     n = read_attribute(:name)
     n.blank? ? get_address(2) : n
   end
-    
+
   def county_name
     return poi.county_name unless poi.nil?
     return place.county_name unless place.nil?
-    return get_county_name     
+    return get_county_name
   end
-  
+
   # discover the default string value for this trip place from
   # its relationships
   def to_s
     return poi.to_s unless poi.nil?
     return place.to_s unless place.nil?
     addr = get_address
-    return addr.blank? ? raw_address : addr    
+    return addr.blank? ? raw_address : addr
   end
 
   # discover the zipcode for this trip place from
@@ -157,9 +158,9 @@ class TripPlace < GeocodedAddress
   def zipcode
     return poi.zip unless poi.nil?
     return place.zip unless place.nil?
-    return get_zipcode      
+    return get_zipcode
   end
-  
+
   def cache_georaw
     Rails.logger.debug "TripPlace writing to cache with TripPlace.raw.#{id}"
     Rails.cache.write("TripPlace.raw.#{id}", raw, :expires_in => Rails.application.config.address_cache_expire_seconds)

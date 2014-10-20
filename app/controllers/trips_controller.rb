@@ -83,7 +83,7 @@ class TripsController < PlaceSearchingController
         @multi_od_trip.trips = []
 
         trip_proxy = create_trip_proxy(@trip, modes: session[:modes_desired])
-
+        trip_proxy.traveler = @traveler
         origin_places.each do |origin_place|
           origin_obj = JSON.parse(origin_place)
           dest_places.each do |dest_place|
@@ -92,13 +92,13 @@ class TripsController < PlaceSearchingController
             trip_proxy.from_place = origin_obj["name"]
             trip_proxy.to_place = dest_obj["name"]
             if origin_obj["is_full"] == true
-              trip_proxy.from_place_object = origin_obj["data"]
+              trip_proxy.from_place_object = origin_obj["data"].to_json
             else
               trip_proxy.from_place_object = nil
             end
 
             if dest_obj["is_full"] == true
-              trip_proxy.to_place_object = dest_obj["data"]
+              trip_proxy.to_place_object = dest_obj["data"].to_json
             else
               trip_proxy.to_place_object = nil
             end
@@ -122,8 +122,6 @@ class TripsController < PlaceSearchingController
       end
 
       session[:multi_od_trip_edited] = false
-      Rails.logger.info @origin_place_names
-      Rails.logger.info @dest_place_names
     else
       flash.now[:alert] = I18n.t(:something_went_wrong)
     end
@@ -994,7 +992,9 @@ protected
     #@places = create_place_markers(@traveler.places)
 
     respond_to do |format|
+      Rails.logger.info trip_proxy.to_json
       @trip = Trip.create_from_proxy(trip_proxy, current_or_guest_user, @traveler)
+      Rails.logger.info @trip.trip_places.first.name
       if @trip
         if @trip.errors.empty? && @trip.save
           @trip.reload
