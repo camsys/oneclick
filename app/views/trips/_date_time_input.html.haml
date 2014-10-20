@@ -5,12 +5,18 @@
 - other = (dir == "outbound") ? 'return' : 'outbound'
 
 %label.sr-only{for: "trip_proxy_#{dir}_arrive_depart"}= "#{dir} trip. arriving by/departing at"
-%label.col-md-3.control-label{:aria => {:hidden => "true"}}
+%label.col-md-3.control-label{id: "#{dir}_label", :aria => {:hidden => "true"}}
   = label
 
 .col-md-3
   -# Note that the collection assumes that the departing_at option evaluates as true in the proxy.  This should mirror trip_part.is_depart behavior
   = f.input ad, wrapper: :horizontal_labelless_select, collection: [[t(:arriving_by), false], [t(:departing_at), true]], include_blank: false, label_method: :first, value_method: :last
+  - if dir=='outbound' && translation_exists?("outbound_help")
+    :javascript
+      addHelperTooltip('#outbound_label', "#{t(:outbound_help)}");
+  - elsif dir=='return' && translation_exists?("return_help")
+    :javascript
+      addHelperTooltip('#return_label', "#{t(:return_help)}");
 
 .col-md-6{:style => "padding: 0px;"}
 

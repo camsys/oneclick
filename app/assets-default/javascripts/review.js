@@ -1633,9 +1633,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             if ($('#' + legendContainerId).length === 0) {
                 var legendPanelTags =
                     "<div id='" + legendContainerId + "' class='panel panel-default col-xs-12 hidden-xs-sm' style='padding: 0px;'>" +
-                    "<div class='panel-heading'><h2 class='panel-title'>" + localeDictFinder["legend"] + "</h2></div>" +
+                    "<div class='panel-heading'><h2 class='panel-title legend-label'>" + localeDictFinder['legend'] + "</h2></div>" +
                     "<div class='panel-body'></div>";
                 $('#' + accessoryContainerId).append(legendPanelTags);
+                (localeDictFinder["legend_help"].indexOf('not found') > -1 || localeDictFinder["legend_help"] == '') ? ('') : (addHelperTooltip('.legend-label', localeDictFinder["legend_help"]))
+                $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body' });
             }
             legendNames.forEach(function(el) {
                 legendTags +=
@@ -1772,14 +1774,13 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         modes.forEach(function(mode) {
             if (isFirstMode) {
                 modeFilterTags +=
-                    '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
-                    '<div class = "panel-heading">' +
-                    '<h2 class="panel-title">' + localeDictFinder['modes'] + '</h2>' +
-                    '</div>' +
-                    '<div class="panel-body"id="' + modeContainerId + '">';
+                    "<div class = 'col-sm-12 panel panel-default' style='padding: 0px;'>" +
+                    "<div class = 'panel-heading'>" +
+                    "<h2 class='panel-title modes-label'>" + localeDictFinder['modes'] + "</h2>" +
+                    "</div>" +
+                    "<div class='panel-body' id='" + modeContainerId + "'>";
                 isFirstMode = false;
             }
-
             modeFilterTags += getModeCheckboxHtml(mode);
         });
 
@@ -1808,6 +1809,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 }
             });
         }
+        (localeDictFinder["modes_help"].indexOf('not found') > -1 || localeDictFinder["modes_help"] == '') ? ('') : (addHelperTooltip('.modes-label', localeDictFinder["modes_help"]))
+        $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body' });
     }
 
     /*
@@ -1837,7 +1840,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<h2 class="panel-title">' + localeDictFinder['number_of_transfers'] + '</h2>' +
+                '<h2 class="panel-title num-transfers-label">' + localeDictFinder['number_of_transfers'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div role="slider" id="' + transferSliderId + '" aria-valuemin="' + minTransfer + '" aria-valuemax="' + maxTransfer + '">' +
@@ -1884,6 +1887,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 getDefaultMaxFilterValue(maxTransfer, filterConfigs.default_max_transfers)
             ]);
         }
+        (localeDictFinder["number_of_transfers_help"].indexOf('not found') > -1 || localeDictFinder["number_of_transfers_help"] == '') ? ('') : (addHelperTooltip('.num-transfers-label', localeDictFinder["number_of_transfers_help"]))
+        $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body' });
 
     }
 
@@ -1901,7 +1906,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<h2 class="panel-title">' + localeDictFinder['fare'] + '</h2>' +
+                '<h2 class="panel-title fare-label">' + localeDictFinder['fare'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div role="slider" id="' + costSliderId + '" aria-valuemin="' + minCost + '" aria-valuemax="' + maxCost + '">' +
@@ -1949,6 +1954,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 getDefaultMaxFilterValue(maxCost, filterConfigs.default_max_fare)
             ]);
         }
+        (localeDictFinder["fare_help"].indexOf('not found') > -1 || localeDictFinder["fare_help"] == '') ? ('') : (addHelperTooltip('.fare-label', localeDictFinder["fare_help"]))
+        $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body' });
 
     }
 
@@ -1966,7 +1973,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<h2 class="panel-title">' + localeDictFinder['trip_time'] + '</h2>' +
+                '<h2 class="panel-title trip-time-label">' + localeDictFinder['trip_time'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div role="slider" id="' + durationSliderId + '" aria-valuemin="' + minDuration + '" aria-valuemax="' + maxDuration + '">' +
@@ -2015,6 +2022,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 getDefaultMaxFilterValue(maxDuration, filterConfigs.default_max_duration)
             ]);
         }
+        (localeDictFinder["trip_time_help"].indexOf('not found') > -1 || localeDictFinder["trip_time_help"] == '') ? ('') : (addHelperTooltip('.trip-time-label', localeDictFinder["trip_time_help"]))
+        $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body' });
 
     }
 
@@ -2032,7 +2041,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<h2 class="panel-title">' + localeDictFinder['walk_dist'] + '</h2>' +
+                '<h2 class="panel-title walk-dist-label">' + localeDictFinder['walk_dist'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div role="slider" id="' + walkDistSliderId + '" aria-valuemin="' + minWalkDist + '" aria-valuemax="' + maxWalkDist + '">' +
@@ -2093,6 +2102,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 getDefaultMaxFilterValue(maxWalkDist, slider_max)
             ]);
         }
+        (localeDictFinder["walk_dist_help"].indexOf('not found') > -1 || localeDictFinder["walk_dist_help"] == '') ? ('') : (addHelperTooltip('.walk-dist-label', localeDictFinder["walk_dist_help"]))
+        $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body' });
 
     }
 

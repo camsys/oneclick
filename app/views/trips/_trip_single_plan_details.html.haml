@@ -1,7 +1,12 @@
 - map_type ||= 'dynamic'
 .col-xs-12.well{style: "padding: 5px;"}
-  .col-sm-12{style: "padding: 0px;"}
-    %h4= itinerary.trip_part.description
+  .col-sm-12
+    %h4
+      = itinerary.trip_part.description
+      - if translation_exists?('trip_review_help')
+        %i.fa.fa-question-circle.fa-2x.pull-right.label-help{style: "margin-top:-10px;", title: t(:trip_review_help), aria: {label: t(:trip_review_help)}}
+        :javascript
+          $(".label-help").tooltip({'html': true, 'container': 'body'});
   = render :partial => 'trip_plan_summary_header', :locals => { :itinerary => itinerary }
   - if (not itinerary.is_mappable) || for_db
     .col-sm-12{style: "background: white; border-radius: 5px;"}

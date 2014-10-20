@@ -38,7 +38,10 @@
       = render partial: 'shared/page_comments', locals: {key: header_comment_key}
     .col-sm-12.panel.panel-default{:role => "main", :aria => {:label => 'Trip Form'}, :style => 'padding:0px;'}
       .panel-heading
-        %h2.panel-title=t(:trip_parameters)
+        %h2.panel-title
+          =t(:trip_parameters)
+          - if translation_exists?("trip_parameters_help")
+            %i.fa.fa-question-circle.fa-2x.pull-right.label-help{style: "margin-top:-4px;", title: t(:trip_parameters_help), aria: {label: t(:trip_parameters_help)}}
       .panel-body
         = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path(:user_id => @traveler.id) : user_trip_path(:user_id => @traveler.id), :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
           = f.hidden_field :mode
@@ -51,7 +54,10 @@
           %fieldset
             #tripOptions
               .form-group.radio_buttons.optional.trip_proxy_is_round_trip
-                %legend.col-sm-3.radio_buttons.optional.control-label#legend_label #{t(:trip_dir)}
+                %legend.col-sm-3.radio_buttons.optional.control-label#legend_label
+                  =t(:trip_dir)
+                  - if translation_exists?("trip_dir_help")
+                    %i.fa.fa-question-circle.pull-right.label-help{style: "margin-top:-4px;", title: t(:trip_dir_help), aria: {label: t(:trip_dir_help)}}
                 .col-sm-9#is_round_trip_inputs
                   %input.radio_buttons.optional#trip_proxy_is_round_trip_1{name: "trip_proxy[is_round_trip]", type: "radio", value: 1, checked: (@trip_proxy.is_round_trip ? "checked" : nil)}
                   %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_1"} #{t(:round_trip)}
@@ -75,7 +81,10 @@
           %fieldset
             #baseModes
               .form-group.check_boxes.optional.trip_proxy_modes
-                %legend.col-sm-3.check_boxes.optional.control-label#legend_label #{t(:modes)}
+                %legend.col-sm-3.check_boxes.optional.control-label#legend_label
+                  =t(:modes)
+                  - if translation_exists?("modes_help")
+                    %i.fa.fa-question-circle.pull-right.label-help{style: "margin-top:-4px;", title: t(:modes_help), aria: {label: t(:modes_help)}}
                 .col-sm-9#modes_inputs
                   - @modes.each do |mode|
                     %div
@@ -114,8 +123,14 @@
 
           -if I18n.locale == :tags
             = f.input :trip_purpose_id, :collection =>  TripPurpose.all, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes),input_html: { class: 'form-control' }
+            - if translation_exists?("trip_purposes_help")
+              :javascript
+                addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
           -else
             = f.input :trip_purpose_id, :collection =>  TripPurpose.ordered_by_localized_name, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes),input_html: { class: 'form-control' }
+            - if translation_exists?("trip_purposes_help")
+              :javascript
+                addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
 
           = render partial: 'location_input', locals: {dir: 'from', f: f}
           = render partial: 'location_input', locals: {dir: 'to', f: f}
@@ -208,4 +223,7 @@
 
       return true;
     });
+
+    $(".label-help").tooltip({'html': true, 'container': 'body'});
+
   });

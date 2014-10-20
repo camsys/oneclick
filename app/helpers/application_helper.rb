@@ -390,4 +390,14 @@ module ApplicationHelper
     (I18n.locale == :tags or !Translation.where(key: key, locale: I18n.locale).first.nil?) and
     !I18n.t(key).blank?
   end
+
+  def translation_exists?(key_str)
+    if I18n.t(key_str).to_s.include?("translation missing")
+      return false
+    elsif I18n.t(key_str).to_s.blank?
+      return false
+    else
+      return true
+    end
+  end
 end

@@ -11,6 +11,12 @@
   - multi_places = @trip_proxy.multi_dest_places.split(';')  unless @trip_proxy.multi_dest_places.nil?
 = f.input "#{dir}_place".to_sym, input_html: {class: 'place_picker', autocomplete: 'off', type: "text", tabindex: 0}, id: "trip_proxy_#{dir}_place", wrapper: :group, label: label, "aria-hidden" => 'true' do
   = f.input_field "#{dir}_place".to_sym, class: 'form-control place_picker', tabindex: 0, "aria-autocomplete" => 'inline'
+  - if dir=='from' && translation_exists?("leaving_from_help")
+    :javascript
+      addHelperTooltip('#from_place_label', "#{t(:leaving_from_help)}");
+  - elsif dir=='to' && translation_exists?("going_to_help")
+    :javascript
+      addHelperTooltip('#to_place_label', "#{t(:going_to_help)}");
   %span.input-group-btn
     %button.btn.btn-default.hidden-xs.hidden-sm{type: "button", id: "#{dir}AddressMarkerButton", tabindex: '-1', aria: {label: "Click to locate the address"}}
       %i.fa.fa-map-marker
