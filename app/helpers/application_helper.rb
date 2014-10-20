@@ -226,6 +226,8 @@ module ApplicationHelper
       'rideshare_details'
     elsif mode_code == 'walk'
       'walk_details'
+    elsif mode_code == 'car'
+      'car_details'
     end
     return partial
   end
@@ -264,6 +266,8 @@ module ApplicationHelper
       'icon-walking-sign'
     elsif mode_code == 'drivetransit'
       'icon-bus-sign'
+    elsif mode_code == 'car'
+      'auto'
     end
     return icon_name
   end

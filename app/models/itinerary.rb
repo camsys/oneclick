@@ -51,6 +51,13 @@ class Itinerary < ActiveRecord::Base
     return legs.size == 1 && legs.first.mode == Leg::TripLeg::WALK
   end
 
+  # return true if this itinerary is a car-only trip. These are a special case of transit
+  # trips that only include a CAR leg
+  def is_car
+    legs = get_legs(false)
+    return legs.size ==1 && legs.first.mode == Leg::TripLeg::CAR
+  end
+
   # returns true if this itinerary is a bicycle-only trip. These are a special case of Transit
   # trips that only include a BICYCLE leg
   def is_bicycle

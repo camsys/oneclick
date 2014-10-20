@@ -232,6 +232,8 @@ module CsHelpers
   def get_pseudomode_for_itinerary(itinerary)
     if itinerary.is_walk
       mode_code = 'walk'
+    elsif itinerary.is_car
+      mode_code = 'car'
     elsif itinerary.mode.code == 'mode_paratransit'
       mode_code = itinerary.service.service_type.code.downcase
     elsif itinerary.mode.code == 'mode_transit'
@@ -274,6 +276,8 @@ module CsHelpers
       I18n.t(:rideshare)
     elsif mode_code == 'walk'
       I18n.t(:walk)
+    elsif mode_code == 'car'
+      I18n.t(:drive)
     end
     return title
   end
@@ -377,11 +381,15 @@ module CsHelpers
       end
     end
 
-    return root_url({locale:''}) + Base.helpers.asset_path(if itinerary.is_walk
-      Mode.walk.logo_url
+    if itinerary.is_walk
+      asset_path = Mode.walk.logo_url
+    elsif itinerary.is_car
+      asset_path = Mode.car.logo_url
     else
-      itinerary.mode.logo_url
-    end)
+      asset_path = itinerary.mode.logo_url
+    end
+
+    return root_url({locale:''}) + Base.helpers.asset_path(asset_path)
   end
 
   # logos are stored in local file system under dev environment

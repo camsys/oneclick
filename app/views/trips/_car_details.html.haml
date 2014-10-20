@@ -1,0 +1,38 @@
+%table
+  %tr
+    %td.itinerary_icons
+      %i.fa.fa-play.mode_icon_formatting{:class => 'start_icon'}
+    %td.itin_text_container
+      .itinerary_text
+        = t(:start) + itinerary.trip_part.from_trip_place.name
+      .itinerary_text_small
+        = format_time(itinerary.start_time.in_time_zone)
+
+  -itinerary.get_legs.each do |leg|
+    %tr
+      %td.itinerary_icons
+        %img{:src => get_mode_icon(leg.mode), alt: "#{leg.mode.downcase} Mode Icon"}
+      %td.itin_text_container
+        .itinerary_text
+          = leg.short_description
+          - sidewalk_obstructions = query_sidewalk_feedback_near_one_walk_leg(leg)
+          - if sidewalk_obstructions.length > 0
+            %br
+            = t(:sidewalk_obstructions) + ':'
+            %br
+            %div{style:'padding-left: 10px;'}
+              - sidewalk_obstructions.each do |f|
+                = f.comment
+                - unless f.removed_at.nil?
+                  = ', ' + t(:removed_at).downcase + ' ' + format_date(f.removed_at)
+                %br
+        .itinerary_text_small
+          =[duration_to_words(leg.duration), exact_distance_to_words(leg.distance)].join(', ')
+  %tr
+    %td.itinerary_icons
+      %i.fa.fa-stop.mode_icon_formatting{:class => 'end_icon'}
+    %td.itin_text_container
+      .itinerary_text
+        = t(:arrive) + itinerary.trip_part.to_trip_place.name
+      .itinerary_text_small
+        = format_time(itinerary.end_time.in_time_zone)
