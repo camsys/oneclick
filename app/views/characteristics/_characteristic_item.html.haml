@@ -22,7 +22,11 @@
     - when 'bool'
       %fieldset
         .form-group.radio_buttons.optional#input_container{class: "user_characteristics_proxy_#{item.code}"}
-          %legend.col-sm-7.radio_buttons.optional.control-label{id: "#{item.code}_label"} #{t(item.note)}
+          %legend.col-sm-7.radio_buttons.optional.control-label{id: "#{item.code}_label"}
+            = t(item.note)
+            = add_tooltip("#{item.code}_help")
+            :javascript
+              $('.inline-radio .label-help').removeClass('fa-2x');
           .col-sm-5#eligibility_questions
             %input.radio_buttons.optional{id: "user_characteristics_proxy_#{item.code}_true", name: "user_characteristics_proxy[#{item.code}]", type: "radio", value: "true", checked: item.true_false_checked?(@traveler, "true") }
             %label{for: "user_characteristics_proxy_#{item.code}_true", name: "user_characteristics_proxy[#{item.code}]"} #{t(:yes_str)}
