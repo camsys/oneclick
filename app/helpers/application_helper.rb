@@ -400,4 +400,15 @@ module ApplicationHelper
       return true
     end
   end
+
+  def add_tooltip(key)
+    if translation_exists?(key)
+      html = '<i class="fa fa-question-circle fa-2x pull-right label-help" style="margin-top:-4px;" title data-original-title="'
+      html << t(key.to_sym)
+      html << '" aria-label="'
+      html << t(key.to_sym)
+      html << '"></i>'
+      return html.html_safe
+    end
+  end
 end

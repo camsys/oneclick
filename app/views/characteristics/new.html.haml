@@ -25,8 +25,7 @@
       .panel-heading
         %h2.panel-title
           =t(:eligibility_accommodation_questions)
-          - if translation_exists?("eligibility_accommodation_questions_help")
-            %i.fa.fa-question-circle.fa-2x.pull-right.label-help{style: "margin-top:-4px;", title: t(:eligibility_accommodation_questions_help), aria: {label: t(:eligibility_accommodation_questions_help)}}
+          = add_tooltip("eligibility_accommodation_questions_help")
       .panel-body
         = render partial: 'form', :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
         / end of options column

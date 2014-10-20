@@ -40,8 +40,7 @@
       .panel-heading
         %h2.panel-title
           =t(:trip_parameters)
-          - if translation_exists?("trip_parameters_help")
-            %i.fa.fa-question-circle.fa-2x.pull-right.label-help{style: "margin-top:-4px;", title: t(:trip_parameters_help), aria: {label: t(:trip_parameters_help)}}
+          = add_tooltip("trip_parameters_help")
       .panel-body
         = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path(:user_id => @traveler.id) : user_trip_path(:user_id => @traveler.id), :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
           = f.hidden_field :mode
@@ -56,8 +55,7 @@
               .form-group.radio_buttons.optional.trip_proxy_is_round_trip
                 %legend.col-sm-3.radio_buttons.optional.control-label#legend_label
                   =t(:trip_dir)
-                  - if translation_exists?("trip_dir_help")
-                    %i.fa.fa-question-circle.pull-right.label-help{style: "margin-top:-4px;", title: t(:trip_dir_help), aria: {label: t(:trip_dir_help)}}
+                  = add_tooltip("trip_dir_help")
                 .col-sm-9#is_round_trip_inputs
                   %input.radio_buttons.optional#trip_proxy_is_round_trip_1{name: "trip_proxy[is_round_trip]", type: "radio", value: 1, checked: (@trip_proxy.is_round_trip ? "checked" : nil)}
                   %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_1"} #{t(:round_trip)}
@@ -83,8 +81,7 @@
               .form-group.check_boxes.optional.trip_proxy_modes
                 %legend.col-sm-3.check_boxes.optional.control-label#legend_label
                   =t(:modes)
-                  - if translation_exists?("modes_help")
-                    %i.fa.fa-question-circle.pull-right.label-help{style: "margin-top:-4px;", title: t(:modes_help), aria: {label: t(:modes_help)}}
+                  = add_tooltip("modes_help")
                 .col-sm-9#modes_inputs
                   - @modes.each do |mode|
                     %div
@@ -225,5 +222,6 @@
     });
 
     $(".label-help").tooltip({'html': true, 'container': 'body'});
+    $('#legend_label .label-help').removeClass('fa-2x');
 
   });

@@ -1636,8 +1636,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                     "<div class='panel-heading'><h2 class='panel-title legend-label'>" + localeDictFinder['legend'] + "</h2></div>" +
                     "<div class='panel-body'></div>";
                 $('#' + accessoryContainerId).append(legendPanelTags);
-                (localeDictFinder["legend_help"].indexOf('not found') > -1 || localeDictFinder["legend_help"] == '') ? ('') : (addHelperTooltip('.legend-label', localeDictFinder["legend_help"]))
-                $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body' });
+                addReviewTooltip("legend_help", ".legend-label");
             }
             legendNames.forEach(function(el) {
                 legendTags +=
@@ -1809,8 +1808,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 }
             });
         }
-        (localeDictFinder["modes_help"].indexOf('not found') > -1 || localeDictFinder["modes_help"] == '') ? ('') : (addHelperTooltip('.modes-label', localeDictFinder["modes_help"]))
-        $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body' });
+        addReviewTooltip("modes_help", ".modes-label");
     }
 
     /*
@@ -1887,9 +1885,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 getDefaultMaxFilterValue(maxTransfer, filterConfigs.default_max_transfers)
             ]);
         }
-        (localeDictFinder["number_of_transfers_help"].indexOf('not found') > -1 || localeDictFinder["number_of_transfers_help"] == '') ? ('') : (addHelperTooltip('.num-transfers-label', localeDictFinder["number_of_transfers_help"]))
-        $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body' });
-
+        addReviewTooltip("number_of_transfers_help", ".num-transfers-label");
     }
 
     /*
@@ -1954,9 +1950,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 getDefaultMaxFilterValue(maxCost, filterConfigs.default_max_fare)
             ]);
         }
-        (localeDictFinder["fare_help"].indexOf('not found') > -1 || localeDictFinder["fare_help"] == '') ? ('') : (addHelperTooltip('.fare-label', localeDictFinder["fare_help"]))
-        $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body' });
-
+        addReviewTooltip("fare_help", ".fare-label");
     }
 
     /*
@@ -2022,9 +2016,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 getDefaultMaxFilterValue(maxDuration, filterConfigs.default_max_duration)
             ]);
         }
-        (localeDictFinder["trip_time_help"].indexOf('not found') > -1 || localeDictFinder["trip_time_help"] == '') ? ('') : (addHelperTooltip('.trip-time-label', localeDictFinder["trip_time_help"]))
-        $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body' });
-
+        addReviewTooltip("trip_time_help", ".trip-time-label");
     }
 
      /*
@@ -2102,9 +2094,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 getDefaultMaxFilterValue(maxWalkDist, slider_max)
             ]);
         }
-        (localeDictFinder["walk_dist_help"].indexOf('not found') > -1 || localeDictFinder["walk_dist_help"] == '') ? ('') : (addHelperTooltip('.walk-dist-label', localeDictFinder["walk_dist_help"]))
-        $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body' });
-
+        addReviewTooltip("walk_dist_help", ".walk-dist-label");
     }
 
 
@@ -2853,6 +2843,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      */
     function isValidObject(obj) {
         return typeof(obj) === 'object' && obj != null;
+    }
+
+    function addReviewTooltip(key, label) {
+        (localeDictFinder[key].indexOf('not found') > -1 || localeDictFinder[key] == '') ? ('') : (addHelperTooltip(label, localeDictFinder[key]))
+        $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body' });
     }
 
     //public methods
