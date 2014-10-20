@@ -22,6 +22,11 @@
 //= require leaflet
 //= require_tree .
 //
+
+$(document).ready(function(){
+  $(".label-help").tooltip({'html': true, 'container': 'body'});
+});
+
 moment.fn.next15 = function() {
     var intervals = Math.floor(this.minutes() / 15);
     if (this.minutes() % 15 != 0)

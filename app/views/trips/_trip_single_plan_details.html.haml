@@ -5,7 +5,7 @@
       = itinerary.trip_part.description
       = add_tooltip("trip_review_help")
       :javascript
-        $(".label-help").tooltip({'html': true, 'container': 'body'}).css('margin-top', '-10px');
+        $(".label-help").css('margin-top', '-10px');
   = render :partial => 'trip_plan_summary_header', :locals => { :itinerary => itinerary }
   - if (not itinerary.is_mappable) || for_db
     .col-sm-12{style: "background: white; border-radius: 5px;"}

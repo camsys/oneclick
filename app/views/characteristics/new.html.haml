@@ -37,7 +37,3 @@
   - if is_splash_available
     = render partial: 'shared/splash', locals: {splash_key: :options_page_splash, title_key: :options_page_splash_title, splash_div_class: splash_css}
 
-:javascript
-  $(function(){
-    $(".label-help").tooltip({'html': true, 'container': 'body'});
-  });
