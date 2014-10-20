@@ -14,7 +14,9 @@
       .col-sm-6
         .panel.panel-default#user_info
           .panel-heading
-            %h2.panel-title= t(:user_information)
+            %h2.panel-title
+              = t(:user_information)
+              = add_tooltip("user_information_help")
           .panel-body
             = f.input :first_name, label: t(:first_name), :autofocus => true, :required => true
             = f.input :last_name, label: t(:last_name), :required => true
@@ -30,7 +32,9 @@
         .col-sm-6
           .panel.panel-default#agencies
             .panel-heading
-              %h2.panel-title= t(:agencies)
+              %h2.panel-title
+                = t(:agencies)
+                = add_tooltip("agencies_help")
             .panel-body
               / %label.sr-only{aria: {label: "#{t(:agencies)}"}}
               / - Agency.all.order(:name).each do |agency|
@@ -46,7 +50,9 @@
         .col-sm-12
           .panel.panel-default
             .panel-heading
-              %h2.panel-title=t(:traveler_notes)
+              %h2.panel-title
+                =t(:traveler_notes)
+                = add_tooltip("traveler_notes_help")
             .panel-body
               -traveler_note = TravelerNote.where(user: @user, agency: current_user.agency).first_or_create
               =simple_fields_for traveler_note, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |note_form|
@@ -60,7 +66,9 @@
         .col-sm-12
           .panel.panel-default#buddies
             .panel-heading
-              %h2.panel-title= t(:buddies)
+              %h2.panel-title
+                = t(:buddies)
+                = add_tooltip("buddies_help")
             .panel-body
               .table-flash
               %button#add_buddy_btn.btn.action-button.pull-right{data: {toggle: 'modal', target: '#add_user'}}
@@ -90,7 +98,9 @@
                       .modal-flash
                       .panel.panel-default
                         .panel-heading
-                          %h2.panel-title= t(:find_traveler)
+                          %h2.panel-title
+                            = t(:find_traveler)
+                            = add_tooltip("find_traveler_help")
                         .panel-body
                           .row
                             .col-sm-12
@@ -104,7 +114,9 @@
           .col-sm-6.pull-left
             .panel.panel-default
               .panel-heading
-                %h2.panel-title= t(:eligibility)
+                %h2.panel-title
+                  = t(:eligibility)
+                  = add_tooltip("eligibility_help")
               .panel-body
                 - Characteristic.active.enabled.each do |c|
                   - next if c.code=='age' # TODO kludge
@@ -128,7 +140,9 @@
           .col-sm-6.pull-right
             .panel.panel-default
               .panel-heading
-                %h2.panel-title= t(:accommodations)
+                %h2.panel-title
+                  = t(:accommodations)
+                  = add_tooltip("accommodations_help")
               .panel-body
                 -Accommodation.where(:datatype => 'bool').each do |a|
                   %fieldset
@@ -148,7 +162,9 @@
         .col-sm-6
           .panel.panel-default#booking
             .panel-heading
-              %h2.panel-title=t(:booking_information)
+              %h2.panel-title
+                =t(:booking_information)
+                = add_tooltip("booking_information_help")
             .panel-body
               =simple_fields_for :user_service, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |booking_form|
                 -Service.active.bookable.each do |service|
@@ -161,7 +177,9 @@
         .col-sm-6
           .panel.panel-default#preferred_modes
             .panel-heading
-              %h2.panel-title= t(:preferred_modes)
+              %h2.panel-title
+                = t(:preferred_modes)
+                = add_tooltip("preferred_modes_help")
             .panel-body
               %legend.sr-only= t(:preferred_modes)
               - Mode.top_level.where(visible: true).sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.each do |m|
