@@ -40,12 +40,14 @@ class Characteristic < ActiveRecord::Base
     age = ''
     a = attributes
     sc = service_characteristics.where(service: service).take
-    value = case code
-    when 'age'
-      Date.today.year - sc.value.to_i
-    else
-      sc.value
-    end
+    #value = case code
+    #when 'age'
+    #  Date.today.year - sc.value.to_i
+    #else
+    #  sc.value
+    #end
+    value = sc.value
+
     operator = case code
     when 'age'
       reverse_relationship_to_symbol(sc.rel_code)

@@ -41,7 +41,7 @@ class EligibilityService
         service_requirement = service_characteristic_map.characteristic
 
         passenger_characteristic = user_profile.user_characteristics.where(
-        characteristic: service_requirement.linked_characteristic || service_requirement).first
+        characteristic: service_requirement || service_requirement.linked_characteristic).first
 
         #This passenger characteristic is not listed
         unless passenger_characteristic and not(passenger_characteristic.value.blank?)
