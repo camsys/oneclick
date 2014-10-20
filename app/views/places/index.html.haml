@@ -41,7 +41,7 @@
                   = f.input :place_name, style: 'width: 100%;', label: t(:name)
 
                   .form-group
-                    %label.col-sm-3.control-label{aria: {label: "#{t(:my_places)}. Press Space Bar to select"}}= t(:my_places)
+                    %label.col-sm-3.control-label{aria: {label: "#{t(:my_places)}. #{t(:press_space_or_click_to_select)}"}}= t(:my_places)
                     .col-sm-9
                       %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#places-table
                         %tbody
