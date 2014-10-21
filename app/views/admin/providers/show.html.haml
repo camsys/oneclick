@@ -43,6 +43,7 @@
       .panel-heading
         %h4.panel-title
           = t(:provider_info)
+          = add_tooltip("provider_info_help")
       .panel-body
         %table.table.table-condensed
           %tr
@@ -82,7 +83,9 @@
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h4.panel-title= t(:internal_contact)
+          %h4.panel-title
+            = t(:internal_contact)
+            = add_tooltip("internal_contact_help")
         .panel-body
           %table.table.table-condensed
             %tr
@@ -116,7 +119,9 @@
 -if can? :full_read, @provider
   .panel.panel-default
     .panel-heading
-      %h4.panel-title= t(:staff_actions)
+      %h4.panel-title
+        = t(:staff_actions)
+        = add_tooltip("staff_actions_help")
     .panel-body
       %table.ALTtable.table-condensed
         %tr
@@ -146,7 +151,9 @@
 
   .panel.panel-default
     .panel-heading
-      %h4.panel-title= t(:services)
+      %h4.panel-title
+        = t(:services)
+        = add_tooltip("services_help")
     .panel-body
       = render 'services/table'
 
@@ -157,7 +164,9 @@
       .panel.panel-default
         .panel-heading
           / %h4.panel-title= t(:other_information)
-          %h4.panel-title Other Information
+          %h4.panel-title
+            Other Information
+            = add_tooltip("other_information_help")
         .panel-body
           %table.table
             %tr
