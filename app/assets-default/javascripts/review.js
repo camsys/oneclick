@@ -924,9 +924,13 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 var valueToApply = (questionVal != null ? questionVal.value : null)
                 updateTripRestrictions(questionText, valueToApply);
 
-		if (missingInfo.code === 'age') {
-		    valueToApply = missingInfo.year;
-		}
+        		if (missingInfo.code === 'age') {
+        		    new_age = parseInt(missingInfo.year);
+                    if(!isNaN(new_age) && valueToApply === 'false') {
+                        new_age -= 1;
+                        valueToApply = new_age;
+                    }
+        		}
                 $.ajax({
                     type: "POST",
                     url: _tripResponse.characteristics_update_url,

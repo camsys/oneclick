@@ -90,7 +90,10 @@ class UserCharacteristicsProxy < UserProfileProxy
           if characteristic.datatype == 'date' and (new_value != '') and
             !linked_characteristic.nil? and linked_characteristic.code == 'age'
             new_age = this_year - new_value.year
-            new_age -= 1 if DateTime.now < new_value + new_age.years
+            date_str = params.values.first
+            if !date_str.blank? and date_str.split('-').length >= 3
+              new_age -= 1 if DateTime.now < new_value + new_age.years
+            end
             update_user_characteristic_value(linked_characteristic.id, user.user_profile.id, new_age)
           end
         end
