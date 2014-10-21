@@ -6,7 +6,9 @@
     %h1= t(:services)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
-    %h2.panel-title= t(:services)
+    %h2.panel-title
+      = t(:services)
+      = add_tooltip("services_help")
   .panel-body
     = render 'table'
 

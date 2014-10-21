@@ -43,7 +43,9 @@
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h4.panel-title= t(:internal_contact)
+          %h4.panel-title
+            = t(:internal_contact)
+            = add_tooltip("internal_contact_help")
         .panel-body
           %table.table.table-condensed
             %tr
@@ -77,7 +79,9 @@
     .col-sm-4
       .panel.panel-default.well2
         .panel-heading
-          %h4.panel-title= t(:schedule)
+          %h4.panel-title
+            = t(:schedule)
+            = add_tooltip("schedule_help")
         .panel-body
           %table.ALTtable
             %tr
@@ -99,7 +103,9 @@
     .col-sm-4
       .panel.panel-default.well2
         .panel-heading
-          %h4.panel-title= t(:advance_notice_required)
+          %h4.panel-title
+            = t(:advance_notice_required)
+            = add_tooltip("advance_notice_required_help")
         .panel-body
           -if @service.advanced_notice_minutes > 0
             =t(:service_notice_required) + " " ## TODO Interpolate
@@ -124,7 +130,9 @@
     .col-sm-4
       .panel.panel-default.well2
         .panel-heading
-          %h4.panel-title= t(:accommodations)
+          %h4.panel-title
+            = t(:accommodations)
+            = add_tooltip("accommodations_help")
         .panel-body
           -if @service.accommodations.count == 0
             = t(:no_accommodations)
@@ -137,7 +145,9 @@
     .col-sm-4
       .panel.panel-default.well1
         .panel-heading
-          %h4.panel-title= t(:eligibility)
+          %h4.panel-title
+            = t(:eligibility)
+            = add_tooltip("eligibility_help")
           = t(:eligibility_rules_descr)
         .panel-body
           - if @service.service_characteristics.count > 0
@@ -152,7 +162,9 @@
     .col-sm-4
       .panel.panel-default.well1
         .panel-heading
-          %h4.panel-title= t(:trip_purposes)
+          %h4.panel-title
+            = t(:trip_purposes)
+            = add_tooltip("trip_purposes_help")
         .panel-body
           -if @service.trip_purposes.count == 0
             = t(:no_restriction)
@@ -165,7 +177,9 @@
     .col-sm-4
       .panel.panel-default.well1
         .panel-heading
-          %h4.panel-title= t(:fare)
+          %h4.panel-title
+            = t(:fare)
+            = add_tooltip("fare_help")
         -@service.fare_structures.each do |fare|
           .panel-body
             .row_fluid
@@ -190,7 +204,9 @@
         .panel-heading
           .row.text-center
             .col-sm-12
-              %h3.panel-title= t(:coverage_areas)
+              %h3.panel-title
+                = t(:coverage_areas)
+                = add_tooltip("coverage_areas_help")
         .panel-body
           .row
             .col-sm-6
@@ -198,7 +214,9 @@
               - ['endpoints', 'coverages'].each do |rule|
                 .panel.panel-default
                   .panel-heading
-                    %h4.panel-title= t(rule)
+                    %h4.panel-title
+                      = t(rule)
+                      = add_tooltip("#{rule}_help")
                   .panel-body
                     - if rule == 'endpoints' and @service.service_coverage_maps.where(rule: 'endpoint_area').count == 0 and not @service.endpoint_area_geom.nil?
                       =t(:geometry_defined_by_shapefile)
@@ -221,7 +239,9 @@
             .col-sm-6.text-center
               .panel.panel-default
                 .panel-heading
-                  %h4.panel-title= t(:service_area_map)
+                  %h4.panel-title
+                    = t(:service_area_map)
+                    = add_tooltip("service_area_map_help")
                 .panel-body
 
                   = LeafletMap({ :mapid => "lmap_" + "endpoint_area", :multipolygons => @polylines,
