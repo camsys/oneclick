@@ -33,7 +33,7 @@ class Admin::ProvidersController < ApplicationController
   # GET /admin/providers/new.json
   def new
     # before_filter
-
+    setup_comments(@provider)
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @provider }

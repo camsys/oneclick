@@ -43,7 +43,7 @@ class Admin::AgenciesController < ApplicationController
   # GET /agencies/new.json
   def new
     # @agency = Agency.new
-
+    setup_comments(@agency)
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @agency }
