@@ -2,6 +2,8 @@
 
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
-    %h2.panel-title= t(@report.class_name)
+    %h2.panel-title
+      = t(@report.class_name)
+      = add_tooltip("#{@report.class_name}_help")
   .panel-body
     = render @report_view
