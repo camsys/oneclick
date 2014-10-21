@@ -20,7 +20,9 @@
             = t(:confirm_remove_message) + t(:sidewalk_obstructions).downcase + " ?"
   .panel.panel-default{style: 'padding: 0px;'}
     .panel-heading
-      %h2.panel-title= t(:sidewalk_obstructions)
+      %h2.panel-title
+        = t(:sidewalk_obstructions)
+        = add_tooltip("sidewalk_obstructions_help")
     .panel-body
       %table.table.table-condensed.table-striped.table-bordered.table-hover#sidewalk_feedbacks_table
         %thead
