@@ -2,7 +2,9 @@
   .col-sm-6
     .panel.panel-default
       .panel-heading
-        %h4.panel-title= t(:public_comments)
+        %h4.panel-title
+          = t(:public_comments)
+          = add_tooltip("public_comments_help")
       .panel-body
         =t(:public_comments_message)
         - commentable.public_comments.sort!{|a, b| a.locale <=> b.locale}
@@ -13,7 +15,9 @@
   .col-sm-6
     .panel.panel-default
       .panel-heading
-        %h4.panel-title= t(:private_comments)
+        %h4.panel-title
+          = t(:private_comments)
+          = add_tooltip("private_comments_help")
       .panel-body
         =t(:private_comments_message)
         - commentable.private_comments.sort!{|a, b| a.locale <=> b.locale}
