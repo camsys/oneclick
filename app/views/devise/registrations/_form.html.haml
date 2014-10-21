@@ -17,7 +17,7 @@
             = t(:user_information)
             = add_tooltip("user_information_help")
         .panel-body
-          = f.error_notification
+          = f.error_notification message: print_messages(f)
           = f.input :first_name, label: t(:first_name), :autofocus => true
           = f.input :last_name, label: t(:last_name)
           = f.input :email, label: t(:email), :required => true
