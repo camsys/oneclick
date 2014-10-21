@@ -11,8 +11,17 @@
       %h1= t(:create_agency)
   .panel.panel-default{style: 'padding: 0px;'}
     .panel-heading
-      %h2.panel-title= t(:agency_info)
+      %h2.panel-title
+        = t(:agency_info)
+        = add_tooltip("agency_info_help")
     .panel-body
       .form-inputs
         = f.input :name, label: t(:name)
+        - if translation_exists?("name_help")
+          :javascript
+            addHelperTooltip('#name_label', "#{t(:name_help)}");
+
         = f.association :parent, collection: @agency.possible_parents, label: t(:parent)
+        - if translation_exists?("agency_parent_help")
+          :javascript
+            addHelperTooltip('#parent_id_label', "#{t(:agency_parent_help)}");

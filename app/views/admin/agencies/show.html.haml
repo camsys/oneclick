@@ -43,7 +43,9 @@
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h2.panel-title= t(:internal_contact)
+          %h2.panel-title
+            = t(:internal_contact)
+            = add_tooltip("internal_contact_help")
         .panel-body
           %table.table.table-condensed
             %tr
@@ -75,7 +77,9 @@
 - if can? :full_read, @agency
   .panel.panel-default#staff
     .panel-heading
-      %h2.panel-title= t(:staff_actions)
+      %h2.panel-title
+        = t(:staff_actions)
+        = add_tooltip("staff_actions_help")
     .panel-body
       %h3= t(:administrators)
       %table.ALTtable.table-condensed#admin_table
