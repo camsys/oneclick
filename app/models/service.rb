@@ -54,7 +54,7 @@ class Service < ActiveRecord::Base
   has_many :user_profiles, through: :user_services, source: :user_profile
 
   scope :active, -> {where(active: true)}
-  scope :paratransit, -> {joins(:service_type).where(service_types: {code: "paratransit"})}
+  scope :paratransit, -> {joins(:service_type).where("service_types.code IN (?,?,?)", "paratransit", "volunteer", "nemt")}
   scope :bookable, -> {where.not(booking_service_code: nil).where.not(booking_service_code: '')}
 
   include Validations
