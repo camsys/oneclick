@@ -13,7 +13,9 @@
     .col-sm-6
       .panel.panel-default#user_info{role: "main", aria: {label: "Sign Up Form"}}
         .panel-heading
-          %h3.panel-title= t(:user_information)
+          %h3.panel-title
+            = t(:user_information)
+            = add_tooltip("user_information_help")
         .panel-body
           = f.error_notification
           = f.input :first_name, label: t(:first_name), :autofocus => true

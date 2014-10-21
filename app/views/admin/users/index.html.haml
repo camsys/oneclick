@@ -5,7 +5,9 @@
     %h1= t(:users)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
-    %h2.panel-title= t(:users)
+    %h2.panel-title
+      = t(:users)
+      = add_tooltip("users_help")
   .panel-body
     %table.table.table-condensed.table-striped.table-bordered.table-hover#admin_users_table
       %thead

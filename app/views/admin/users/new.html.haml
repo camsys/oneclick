@@ -11,7 +11,9 @@
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h2.panel-title= t(:user_information)
+          %h2.panel-title
+            = t(:user_information)
+            = add_tooltip("user_information_help")
         .panel-body
           = f.error_notification
           = display_base_errors @user
