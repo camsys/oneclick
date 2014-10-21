@@ -7,7 +7,7 @@
         {class: 'btn action-button', role: 'button'}
     - if can?(:destroy, @user) && !@user.deleted_at
       = button_tag type: 'button', "data-target" => "#deleteUserConfirmDialog",
-        "data-toggle" => "modal", class: "btn action-button", style: "margin-right: 5px;" do
+        "data-toggle" => "modal", class: "btn action-button" do
         = t(:delete)
       #deleteUserConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_service),
         role: "dialog", "aria-hidden" => 'true', tabindex: "-1"}
