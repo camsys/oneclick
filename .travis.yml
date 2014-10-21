@@ -2,37 +2,38 @@ env:
   matrix:
   - ENV_FROM_APPLICATION_YML=true
   global:
-    # This is HEROKU_API_KEY=<Denis' API key>    
-    secure: "jUJl8lJRBaROaPmLz64q20IvlN/eNwFjMcHRm4SgGMCcLf3eyIWqRsq5GQ9kKBL+QBfaSFdoEnaUN2/tq7dtu9zNOJNpMcHegY/nvQs3q3LIPCfG00GSAO/DBjLKQVVFOZzCjNuqesvWYPsBoAg8NHe1fUciZ67u0JMuLfitcWg="
+    secure:
 branches:
   only:
-    - develop
+  - develop
 before_script:
-  - pwd
-  - ls -a
-  - mv config/database.yml.travis config/database.yml
-  - git config user.email "denis+camsys@constantorbit.com"
-  - git config user.name "Denis Haskin"
+- pwd
+- ls -a
+- mv config/database.yml.travis config/database.yml
+- git config user.email "denis+camsys@constantorbit.com"
+- git config user.name "Denis Haskin"
 after_script:
-  - pwd
-  - ls -a
-  - git describe
+- pwd
+- ls -a
+- git describe
 rvm:
-  - 2.1.1
+- 2.1.1
 language: ruby
 cache: bundler
-bundler_args: --without development
+bundler_args: "--without development"
 script:
-  - bundle exec /usr/bin/env RAILS_ENV=test rake db:drop db:create db:reset
-  - bundle exec /usr/bin/env UI_MODE=desktop RAILS_ENV=test COVERALLS_NOISY=true rake oneclick:test_with_coveralls
+- bundle exec /usr/bin/env RAILS_ENV=test rake db:drop db:create db:reset
+- bundle exec /usr/bin/env UI_MODE=desktop RAILS_ENV=test COVERALLS_NOISY=true rake
+  oneclick:test_with_coveralls
 notifications:
   email:
-    - oneclickcs_github@googlegroups.com
+  - oneclickcs_github@googlegroups.com
   irc: irc.freenode.net#oneclick
   slack:
     rooms:
-      - camsys:pWffJOAiVBnp4cDSXt9getDB#1click
+    - camsys:pWffJOAiVBnp4cDSXt9getDB#1click
 deploy:
+  matrix:
   - provider: heroku
     api_key:
       secure: F0EpkR4MF0qS6LFtK4mQo7gI6MeodybR+S+RzJjFUWDMyZ3MgHqmt0t1ueAlfB9B/6wkmZXf3P/Kt2keudwWCXK+Upyjie6XX9Or3CMNlvs/VdTFk0a7A9mJHuDJqZEnSTPp1wGDqNh+KVYfS4G2DQV+FazShimuHveAq30nfR0=
@@ -54,25 +55,13 @@ deploy:
     on:
       repo: camsys/oneclick
       branch: develop
-      # can't deploy to kiosk fro this build, Gemfiles are different
-  # - provider: heroku
-  #   api_key:
-  #     secure: F0EpkR4MF0qS6LFtK4mQo7gI6MeodybR+S+RzJjFUWDMyZ3MgHqmt0t1ueAlfB9B/6wkmZXf3P/Kt2keudwWCXK+Upyjie6XX9Or3CMNlvs/VdTFk0a7A9mJHuDJqZEnSTPp1wGDqNh+KVYfS4G2DQV+FazShimuHveAq30nfR0=
-  #   app: oneclick-kiosk-int
-  #   on:
-  #     repo: camsys/oneclick
-  #     branch: develop
-  #   test
+  api_key:
+    secure: T+mKqCqC0e4RqjbcxjPLLX6O1OSOoQ056l2fucWuFUng+iv0fn/rPTnZaoMnkP7Ca84gpFeOR1mm7z5z0N6EHRXZILGE4WIokQfxuVkd3kcAnm+j7C3O3AYW2cSENxPRnECxfq2/Q1m2ttGw7jsRqrLawBUYYiIcZDRb7d/J+QI=
 after_deploy:
-  - gem install heroku
-  - git branch -lavv
-  - pwd
-  - ls
-  # Note do not run migrate on oneclick-kiosk-int; we point it to oneclick-pa-int's database
-  - heroku run rake db:migrate --app oneclick-arc-int
-  - heroku run rake db:migrate --app oneclick-pa-int
-  - heroku run rake db:migrate --app oneclick-ieuw-int
-  # - git checkout develop
-  # - git describe
-  # - heroku config:set ONECLICK_APP_VERSION=`git describe` --app oneclick-arc-int
-  # - heroku config:set ONECLICK_APP_VERSION=`git describe` --app oneclick-pa-int
+- gem install heroku
+- git branch -lavv
+- pwd
+- ls
+- heroku run rake db:migrate --app oneclick-arc-int
+- heroku run rake db:migrate --app oneclick-pa-int
+- heroku run rake db:migrate --app oneclick-ieuw-int
