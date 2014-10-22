@@ -66,7 +66,7 @@ class RatingsReport < AbstractReport
   end
 
   def get_columns
-    [:id, :username, :created, :rating_targets, :rating_in_stars, :comments, :status]
+    [:id, :username, :created, :rating_targets, :rating, :comments, :status]
   end
 
 end
