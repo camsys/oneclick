@@ -18,7 +18,7 @@ class RatingDecorator < Draper::Decorator
 
   ## For Ratings Report
   # Text only rating
-  def rating(noblanks = false)
+  def rating(noblanks = true)
     if value.eql? Rating::DID_NOT_TAKE
       return I18n.t(:untaken_trip)
     end

@@ -33,7 +33,8 @@ class RatingsReport < AbstractReport
         trips = trips.where(trips: {creator_id: report.agent_id})
           .where.not(trips: {user_id: report.agent_id})
         # Brute force find corresponding agency_id
-        agency = Agency.all.find{|a| a.agents.find{|agent| agent.id == report.agent_id}}
+        agency = Agency.all.find{|a| a.agents.find{|agent| agent.id == report.agent_id.to_i}}
+
         agent_agency_id = agency.id if agency
         if (agency_id && agent_agency_id && (agency_id != agent_agency_id))
           agency_id = nil
@@ -45,7 +46,7 @@ class RatingsReport < AbstractReport
       end
 
       if agency_id
-        agencies = agencies.where(rateable_id: report.agency_id)
+        agencies = agencies.where(rateable_id: agency_id)
       end
       
       if report.provider_id
