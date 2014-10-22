@@ -2,7 +2,7 @@
   .row-fluid
     .span12
       = simple_form_for @user_accommodations_proxy, :url => path, :method => 'put', :remote => not(inline)  do |f|
-        = f.error_notification
+        = f.error_notification message: print_messages(f)
 
         %div{ :data => {:index => 0}}
           .input-header

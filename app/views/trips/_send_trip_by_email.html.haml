@@ -14,7 +14,7 @@
             .progress
               .progress-bar.active{role: "progressbar", aria: {valuenow: "0", valuemin: "0", valuemax: "100"}, style: "width: 0%"}
                 0%
-          = f.error_notification
+          = f.error_notification message: print_messages(f)
           - if user_signed_in?
             = f.input :email_addresses, label: t(:to), required: true, hint: t(:email_hint), :input_html => { :value => get_traveller_related_emails(@traveler, is_assisting)}
           - else

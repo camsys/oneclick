@@ -1,5 +1,5 @@
 =simple_form_for @user, :html => { :class => "form-horizontal"}, method: 'post', wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }, :include_blank => false  do |f|
-  = f.error_notification
+  = f.error_notification message: print_messages(f)
   %div{role: "main", aria: {label: "Travel Profile"}}
     .row.info-header
       .col-sm-6

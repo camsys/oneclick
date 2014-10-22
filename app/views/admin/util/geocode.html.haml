@@ -7,7 +7,7 @@
 .row
   .col-sm-12
     = simple_form_for :geocode, url: admin_geocode_path, html: { class: 'form-horizontal' }, method: 'GET'  do |f|
-      = f.error_notification
+      = f.error_notification message: print_messages(f)
       = f.input :address, input_html: {value: @address}
       = f.input :map_center, input_html: {value: @map_center}
       .form-actions

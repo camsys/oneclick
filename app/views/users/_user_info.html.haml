@@ -1,5 +1,5 @@
 = simple_form_for(user, :url => registration_path(user), :html => { :class => "form-horizontal"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f|
-  = f.error_notification
+  = f.error_notification message: print_messages(f)
   = display_base_errors user
   = f.input :first_name, label: t(:first_name), :autofocus => true, :required => true
   = f.input :last_name, label: t(:last_name), :required => true

@@ -1,6 +1,6 @@
 = simple_form_for [:admin, @provider], html: { class: 'form-horizontal', multipart: true},
         wrapper: :horizontal_form do |f|
-  = f.error_notification
+  = f.error_notification message: print_messages(f)
   .row.info-header
     .col-sm-6
       %h1

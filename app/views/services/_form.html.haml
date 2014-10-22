@@ -5,7 +5,7 @@
   - if @service.new_record?
     = f.hidden_field :provider, value: @provider.id
 
-  = f.error_notification
+  = f.error_notification message: print_messages(f)
 
   .row.info-header
     .col-sm-6

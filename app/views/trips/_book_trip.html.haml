@@ -125,7 +125,7 @@
         -selected_itinerary = @trip.outbound_part.selected_itinerary || @trip.return_part.selected_itinerary
         = simple_form_for @booking_proxy, :remote => true, :url => add_booking_service_user_path(@traveler), :html => { :id => 'book_form', :class => "form-horizontal"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }  do |f|
           .form-inputs
-            = f.error_notification
+            = f.error_notification message: print_messages(f)
             = f.input :service_id, :as => :hidden, :input_html => {value: selected_itinerary.service.id}
             = f.input :itinerary_id, :as => :hidden, :input_html => {value: selected_itinerary.id}
             = f.input :external_user_id,label: "Shared Ride " + t(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"

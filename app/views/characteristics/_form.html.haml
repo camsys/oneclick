@@ -3,7 +3,7 @@
   .row
     .col-xs-12
       = simple_form_for @user_characteristics_proxy, :url => new_user_trip_characteristic_path(@traveler, @trip, locale: I18n.locale), method: 'PUT', html: {class: 'user-characteristics form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_button_groups, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |f|
-        = f.error_notification
+        = f.error_notification message: print_messages(f)
         / %form{:role => "form"}
         .inline-radio
           -Characteristic.active.enabled.each do |c|
@@ -28,7 +28,7 @@
   .row
     .col-xs-12
       = simple_form_for @user_characteristics_proxy, :url => new_user_trip_characteristic_path(@traveler, @trip, locale: I18n.locale), method: 'PUT', html: {class: 'user-characteristics form-horizontal'}, wrapper: :h_opts_form, wrapper_mappings: {check_boxes: :h_opts_radio_and_checkboxes, radio_buttons: :h_opts_radio_and_checkboxes, file: :h_opts_file_input, boolean: :h_opts_boolean }  do |f|
-        = f.error_notification
+        = f.error_notification message: print_messages(f)
         / %form{:role => "form"}
         .inline-radio
           -Characteristic.active.enabled.for_traveler.each do |c|
