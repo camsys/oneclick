@@ -6,6 +6,9 @@
           %button.btn.btn-default.pull-right.action-button{"type" => "button", "data-dismiss" => "modal"}=t(:close)
           %b.modal-title
             = "#{t(:trip_details)} - " + @itinerary.trip_part.description_without_direction
+            = add_tooltip("trip_details_help")
+            :javascript
+              $(".modal-title .label-help").tooltip({'html': true, 'container': 'body'}).removeClass('fa-2x pull-right');
         = render :partial => 'trip_plan_summary_header', :locals => { :itinerary => @itinerary }
         - if @itinerary.is_mappable
           .col-sm-12{style: "background: white; margin-bottom: 5px; border-radius: 5px; overflow-y:auto; max-height: 300px; padding: 5px;"}
