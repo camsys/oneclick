@@ -7,7 +7,7 @@
 =t(:please_click)
 =link_to new_rating_from_email_user_trip_url(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: true) do
   =t(:here)
-=t(:success_feedback_link)  
+=t(:success_feedback_link)
 %br
 =t(:no_trip_taken_feedback_link)
 =t(:please_click)
@@ -24,4 +24,4 @@
     %tr
       %td= t(:do_not_reply)
     %tr
-      %td= "Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of " + Oneclick::Application.config.name
+      %td= t(:email_footer).to_s.sub('%{application_name}', Oneclick::Application.config.name)

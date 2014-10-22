@@ -114,6 +114,8 @@ es:
   create_translation: '[es100]Create Translation[/es]'
   key: '[es100]Key[/es]'
   send_by_email: 'Enviar por correo electrónico'
+  email_footer: '[es]Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of %{application_name}[/es]'
+  email_thank_you: '[es]Thank you for using  %{application_name} Software.[/es]'
   email_sent_to: '[es]An email was sent to %{email_sent_to}[/es]'
   no_email_found: '[es]No email was found[/es]'
   send_itinerary_by_email: "[es32]Send itinerary by email[/es]"
