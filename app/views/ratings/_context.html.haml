@@ -6,6 +6,7 @@
   .modal-title
     .pull-right= r.decorate.rating_in_stars(2)
     = rateable.to_s
+    = add_tooltip("#{rateable.to_s}_help")
   .row
     - case rateable
       - when Agency
