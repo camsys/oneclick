@@ -70,17 +70,22 @@ class UserCharacteristicsProxy < UserProfileProxy
           # get the new value for this characteristic based on the data type
           new_value = convert_value(characteristic, params)
 
-          Rails.logger.debug new_value.nil? ? "NULL" : new_value
-
           # Check for date failing to parse or out of range
           this_year = DateTime.now.year
 
-          if characteristic.datatype == 'date' and (new_value != '') and
-              (new_value.nil? or (new_value.year < MIN_YEAR) or (new_value.year > this_year))
-            errors.add(characteristic.code.to_sym,
-                       I18n.t(:four_digit_year) + " #{MIN_YEAR} - #{this_year}")
-            valid = false
-            next
+          if characteristic.datatype == 'date' and (new_value != '')
+            if(new_value.nil? or (new_value.year < MIN_YEAR) or (new_value.year > this_year))
+              errors.add(characteristic.code.to_sym,
+                         I18n.t(:four_digit_year) + " #{MIN_YEAR} - #{this_year}")
+              valid = false
+              next
+            else
+              new_year = new_value.year
+              date_str = params.values.first
+              if !date_str.blank? and date_str.split('-').length < 3
+                new_value = date_str
+              end
+            end
           end
 
           update_user_characteristic_value(characteristic.id, user.user_profile.id, new_value)
@@ -89,11 +94,8 @@ class UserCharacteristicsProxy < UserProfileProxy
           linked_characteristic = characteristic.linked_characteristic
           if characteristic.datatype == 'date' and (new_value != '') and
             !linked_characteristic.nil? and linked_characteristic.code == 'age'
-            new_age = this_year - new_value.year
-            date_str = params.values.first
-            if !date_str.blank? and date_str.split('-').length >= 3
-              new_age -= 1 if DateTime.now < new_value + new_age.years
-            end
+            new_age = this_year - new_year
+
             update_user_characteristic_value(linked_characteristic.id, user.user_profile.id, new_age)
           end
         end
