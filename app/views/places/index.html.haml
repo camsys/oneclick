@@ -97,7 +97,6 @@
 :javascript
   $(function() {
     $('#delete_place').click(function(e) {
-      e.preventDefault();
       if ($('#delete_place').attr('disabled') || $('#places_controller_places_proxy_id').val() == '') {
         return false;
       }
