@@ -389,6 +389,7 @@ class TripsController < PlaceSearchingController
 
     if @trip_proxy.is_round_trip == "1"
       return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
+      @trip_proxy.return_trip_date = return_trip_time.strftime(TRIP_DATE_FORMAT_STRING)
       @trip_proxy.return_trip_time = return_trip_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
     end
 
