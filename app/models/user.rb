@@ -82,9 +82,10 @@ class User < ActiveRecord::Base
 
   before_create :make_user_profile
 
-  def self.agent_form_collection include_all=true
+  def self.agent_form_collection include_all=true, agency=:any
     form_collection_from_relation(include_all,
-                                  any_role.where(roles: {name: 'agent'}).order(:first_name),
+                                  # any_role.where(roles: {name: 'agent'}).order(:first_name),
+                                  with_role(:agent, agency).order(:first_name),
                                   false)
   end
 

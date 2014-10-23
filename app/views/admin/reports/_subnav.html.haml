@@ -26,13 +26,15 @@
             = f.input :date_range, collection: DateOption.form_collection(false),
                 include_blank: false, label: t(:date_range)
           .col-sm-2
-            = f.input :agency_id, collection: Agency.form_collection,
+            = f.input :agency_id,
+                collection: Agency.form_collection(@agency_all, @agency_id),
                 include_blank: false, label: t(:agencies)
           .col-sm-2
-            = f.input :agent_id, collection: User.agent_form_collection,
+            = f.input :agent_id, collection: User.agent_form_collection(true, @agency),
                 include_blank: false, label: t(:agents)
           .col-sm-2
-            = f.input :provider_id, collection: Provider.form_collection,
+            = f.input :provider_id,
+                collection: Provider.form_collection(@provider_all, @provider_id),
                 include_blank: false, label: t(:providers)
 
         .row#custom_dates

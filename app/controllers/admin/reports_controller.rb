@@ -20,6 +20,8 @@ class Admin::ReportsController < Admin::BaseController
     @generated_report = GeneratedReport.new({})
     @generated_report.date_range = session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
     @min_trip_date = Trip.minimum(:scheduled_time)
+
+    set_user_based_constraints
   end
 
   # renders a report page. Actual details depends on the id parameter passed
@@ -37,6 +39,7 @@ class Admin::ReportsController < Admin::BaseController
 
     # Store filter settings in session for ajax calls.
     @generated_report.date_range ||= session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
+    @min_trip_date = Trip.minimum(:scheduled_time)
     session[DATE_OPTION_SESSION_KEY] = @generated_report.date_range
     session[DATE_OPTION_FROM_KEY] = @generated_report.from_date
     session[DATE_OPTION_TO_KEY] = @generated_report.to_date
@@ -58,6 +61,8 @@ class Admin::ReportsController < Admin::BaseController
       @data = @report_instance.get_data(current_user, @generated_report) unless @report_instance.paged
       @columns = @report_instance.get_columns
       @url_for_csv = url_for only_path: true, format: :csv, params: params
+
+      set_user_based_constraints
 
       respond_to do |format|
         format.html
@@ -120,6 +125,28 @@ class Admin::ReportsController < Admin::BaseController
         
         render json: table
       end
+    end
+  end
+
+  def set_user_based_constraints
+    @agency = :any
+    @agency_all = true
+    @agency_id = false
+    @provider_all = true
+    @provider_id = false
+    
+    Agency.with_role(:agency_administrator, current_user).each do |a|
+      @agency = a
+      @agency_id = a.id
+      @agency_all = false
+      @provider_id = -1
+    end
+    
+    Provider.with_role(:provider_staff, current_user).each do |p|
+      @agency = nil
+      @agency_id = -1
+      @provider_all = false
+      @provider_id = p.id
     end
   end
   
