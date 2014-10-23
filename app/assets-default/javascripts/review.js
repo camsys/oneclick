@@ -140,8 +140,17 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tripParts[i] = formatTripData(tripParts[i]);
         }
 
+        var tripPartIndex = 0;
         tripParts.forEach(function(trip) {
-            addTripHtml(trip);
+            var inlineHelperKey = '';
+            if (tripPartIndex === 0) { //outbound
+                inlineHelperKey = 'trip_outbound_help';
+            } else if (tripPartIndex === tripParts.length - 1) { //return
+                inlineHelperKey = 'trip_return_help';
+            }
+            addTripHtml(trip, inlineHelperKey);
+
+            tripPartIndex ++;
         });
 
 
@@ -305,6 +314,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             'html': true,
             'container': 'body'
         });
+
+        $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body' });
     }
 
     function checkLoadingMask() {
@@ -730,7 +741,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * Given each trip part, render to UI
      * @param {object} trip
      */
-    function addTripHtml(trip) {
+    function addTripHtml(trip, inlineHelperKey) {
         //check if trip is object
         if (typeof trip != 'object' || trip === null) {
             return;
@@ -757,7 +768,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             var tripTags = "<div id='" + tripPartDivId + "'class='col-xs-12 well single-trip-part' data-trip-id='" + tripId + "'>";
 
             //process header
-            var tripHeaderTags = addTripHeaderHtml(trip.description, tickLabels, intervalStep, isDepartAt, tripStartTime, tripEndTime);
+            var tripHeaderTags = addTripHeaderHtml(trip.description, tickLabels, intervalStep, isDepartAt, tripStartTime, tripEndTime, inlineHelperKey);
             tripTags += tripHeaderTags;
 
             //process each trip plan
@@ -1190,13 +1201,13 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {datetime} tripEndTime: trip part end time
      * @param {string} tripHeaderTags: html tags of the whole trip header
      */
-    function addTripHeaderHtml(tripDescription, tickLabels, intervelStep, isDepartAt, tripStartTime, tripEndTime) {
+    function addTripHeaderHtml(tripDescription, tickLabels, intervelStep, isDepartAt, tripStartTime, tripEndTime, inlineHelperKey) {
         var tripDatetimeDescritpion = isDepartAt ?
             localeDictFinder['departing_at'] + ' ' + formatDate(tripStartTime) + ' ' + formatTime(tripStartTime) :
             localeDictFinder['arriving_by'] + ' ' + formatDate(tripEndTime)  + ' ' + formatTime(tripEndTime);
         //var headerAriaLabel = tripDescription + "; " + tripDatetimeDescritpion;
         //trip description
-        var tripDescTag = "<div class='col-sm-12'><h4 style='margin-top:5px;'>" + tripDescription + "</h4></div>";
+        var tripDescTag = "<div class='panel-heading'><h2 class='panel-title'>" + addReviewTooltip(inlineHelperKey) + tripDescription + "</h2></div>";
 
         var tickLabelTags = getTickLabelHtmlTags(tickLabels);
 
@@ -1637,10 +1648,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             if ($('#' + legendContainerId).length === 0) {
                 var legendPanelTags =
                     "<div id='" + legendContainerId + "' class='panel panel-default col-xs-12 hidden-xs-sm' style='padding: 0px;'>" +
-                    "<div class='panel-heading'><h2 class='panel-title legend-label'>" + localeDictFinder['legend'] + "</h2></div>" +
+                    "<div class='panel-heading'><h2 class='panel-title legend-label'>" + addReviewTooltip("legend_help")+ localeDictFinder['legend'] + "</h2></div>" +
                     "<div class='panel-body'></div>";
                 $('#' + accessoryContainerId).append(legendPanelTags);
-                addReviewTooltip("legend_help", ".legend-label");
             }
             legendNames.forEach(function(el) {
                 legendTags +=
@@ -1779,7 +1789,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 modeFilterTags +=
                     "<div class = 'col-sm-12 panel panel-default' style='padding: 0px;'>" +
                     "<div class = 'panel-heading'>" +
-                    "<h2 class='panel-title modes-label'>" + localeDictFinder['modes'] + "</h2>" +
+                    "<h2 class='panel-title modes-label'>" + addReviewTooltip("modes_help") +  localeDictFinder['modes'] + "</h2>" +
                     "</div>" +
                     "<div class='panel-body' id='" + modeContainerId + "'>";
                 isFirstMode = false;
@@ -1812,7 +1822,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 }
             });
         }
-        addReviewTooltip("modes_help", ".modes-label");
     }
 
     /*
@@ -1842,7 +1851,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<h2 class="panel-title num-transfers-label">' + localeDictFinder['number_of_transfers'] + '</h2>' +
+                '<h2 class="panel-title num-transfers-label">' + addReviewTooltip("number_of_transfers_help") + localeDictFinder['number_of_transfers'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div role="slider" id="' + transferSliderId + '" aria-valuemin="' + minTransfer + '" aria-valuemax="' + maxTransfer + '">' +
@@ -1889,7 +1898,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 getDefaultMaxFilterValue(maxTransfer, filterConfigs.default_max_transfers)
             ]);
         }
-        addReviewTooltip("number_of_transfers_help", ".num-transfers-label");
     }
 
     /*
@@ -1906,7 +1914,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<h2 class="panel-title fare-label">' + localeDictFinder['fare'] + '</h2>' +
+                '<h2 class="panel-title fare-label">' + addReviewTooltip("fare_help") + localeDictFinder['fare'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div role="slider" id="' + costSliderId + '" aria-valuemin="' + minCost + '" aria-valuemax="' + maxCost + '">' +
@@ -1954,7 +1962,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 getDefaultMaxFilterValue(maxCost, filterConfigs.default_max_fare)
             ]);
         }
-        addReviewTooltip("fare_help", ".fare-label");
     }
 
     /*
@@ -1971,7 +1978,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<h2 class="panel-title trip-time-label">' + localeDictFinder['trip_time'] + '</h2>' +
+                '<h2 class="panel-title trip-time-label">' + addReviewTooltip("trip_time_help") + localeDictFinder['trip_time'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div role="slider" id="' + durationSliderId + '" aria-valuemin="' + minDuration + '" aria-valuemax="' + maxDuration + '">' +
@@ -2020,7 +2027,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 getDefaultMaxFilterValue(maxDuration, filterConfigs.default_max_duration)
             ]);
         }
-        addReviewTooltip("trip_time_help", ".trip-time-label");
     }
 
      /*
@@ -2037,7 +2043,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<h2 class="panel-title walk-dist-label">' + localeDictFinder['walk_dist'] + '</h2>' +
+                '<h2 class="panel-title walk-dist-label">' + addReviewTooltip("walk_dist_help") + localeDictFinder['walk_dist'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div role="slider" id="' + walkDistSliderId + '" aria-valuemin="' + minWalkDist + '" aria-valuemax="' + maxWalkDist + '">' +
@@ -2098,7 +2104,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 getDefaultMaxFilterValue(maxWalkDist, slider_max)
             ]);
         }
-        addReviewTooltip("walk_dist_help", ".walk-dist-label");
     }
 
 
@@ -2849,9 +2854,18 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         return typeof(obj) === 'object' && obj != null;
     }
 
-    function addReviewTooltip(key, label) {
-        (localeDictFinder[key].indexOf('not found') > -1 || localeDictFinder[key] == '') ? ('') : (addHelperTooltip(label, localeDictFinder[key]))
-        $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body' });
+    function addInlineHelperTooltip(text) {
+        if(typeof(text) != 'string' || text.trim().length === 0) {
+            return '';
+        }
+
+        return '<i class="fa fa-question-circle fa-2x pull-right label-help"' +
+            'style="margin-top:-4px;" data-original-title="' + text +
+            '" aria-label="' + text + '"></i>';
+    }
+
+    function addReviewTooltip(key) {
+        return (localeDictFinder[key].indexOf('not found') > -1 || localeDictFinder[key] == '') ? ('') : (addInlineHelperTooltip(localeDictFinder[key]));
     }
 
     //public methods
