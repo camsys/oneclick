@@ -8,7 +8,11 @@
           - case item.datatype
             - when 'bool'
               .form-group.string.optional
-                .string.optional.col-sm-7.control-label{for: item.code}= t(item.note)
+                .string.optional.col-sm-7.control-label{for: item.code}
+                  = t(item.note)
+                  = add_tooltip("#{item.code}_help")
+                  :javascript
+                    $('.inline-radio .label-help').removeClass('fa-2x');
                 .col-sm-5
                   .char-group
                     .btn-group.characteristic{data: {attribute: item.code}}
@@ -17,6 +21,9 @@
                     = f.input_field item.code.to_sym, as: :hidden, id: item.code
             - else
               = f.input item.code.to_sym, label: t(item.note)
+              - if translation_exists?("#{item.code}_help")
+                :javascript
+                  addHelperTooltip("##{item.code}_label", "#{t(:date_of_birth_help)}");
 - else
   - case item.datatype
     - when 'bool'
@@ -40,3 +47,7 @@
       / = f.input item.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], [UserProfileProxy::PARAM_NOT_SET, t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(item.note), label_method: :last, value_method: :first
     - else
       = f.input item.code.to_sym, label: t(item.note)
+      - if translation_exists?("#{item.code}_help")
+        :javascript
+          addHelperTooltip("##{item.code}_label", "#{t(:date_of_birth_help)}");
+
