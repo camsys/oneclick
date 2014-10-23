@@ -134,6 +134,8 @@ class Admin::ReportsController < Admin::BaseController
     @agency_id = false
     @provider_all = true
     @provider_id = false
+
+    return if current_user.has_role? :system_administrator
     
     Agency.with_role(:agency_administrator, current_user).each do |a|
       @agency = a
@@ -143,8 +145,8 @@ class Admin::ReportsController < Admin::BaseController
     end
     
     Provider.with_role(:provider_staff, current_user).each do |p|
-      @agency = nil
-      @agency_id = -1
+      @agency = nil if @agency == :any
+      @agency_id = -1 unless @agency_id
       @provider_all = false
       @provider_id = p.id
     end
