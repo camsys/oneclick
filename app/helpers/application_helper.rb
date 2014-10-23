@@ -118,11 +118,11 @@ module ApplicationHelper
     end
   end
 
-  def exact_distance_to_words(dist_in_feet)
-    return '' unless dist_in_feet
+  def exact_distance_to_words(dist_in_meters)
+    return '' unless dist_in_meters
 
     # convert the meters to miles
-    miles = dist_in_feet / MILE_TO_FEET
+    miles = dist_in_meters * METERS_TO_MILES
     if miles < 0.001
       dist_str = [miles.round(4).to_s, I18n.t(:miles)].join(' ')
     elsif miles < 0.01
