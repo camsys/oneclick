@@ -50,6 +50,8 @@ en:
   no_agent_with_email_address: "We can't find an agent with '%{email}' as their email address."
   you_ve_already_added_this_agent: 'You have already added this agent.'
   please_save_agents: 'Please save agents.'
+  already_an_agency_agent: 'This user has already been added as an agent for an agency.'
+  already_a_provider_staff: 'This user has already been added as a staff for a provider.'
   agencies: "Agencies"
   all_agencies: "All Agencies"
   add_new_agency: "Add a new Agency"

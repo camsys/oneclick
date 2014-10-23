@@ -119,6 +119,9 @@ class Admin::AgenciesController < ApplicationController
     if user.nil?
       success = false
       msg = I18n.t(:no_agent_with_email_address, email: params[:email]) # did you know that this was an XSS vector?  OOPS
+    elsif !user.agency.nil?
+      success = false
+      msg = I18n.t(:already_an_agency_agent)
     else
       success = true
       msg = t(:please_save_agents, name: user.name)

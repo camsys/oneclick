@@ -46,6 +46,8 @@ ht:
   no_agent_with_email_address: "[ht]We can't find an agent with '%{email}' as their email address.[/ht]"
   you_ve_already_added_this_agent: '[ht]You have already added this agent.[/ht]'
   please_save_agents: '[ht]Please save agents.[/ht]'
+  already_an_agency_agent: '[ht]This user has already been added as an agent for an agency.[/ht]'
+  already_a_provider_staff: '[ht]This user has already been added as a staff for a provider.[/ht]'
   agencies: "[ht]Agencies[/ht]"
   all_agencies: "[ht]All Agencies[/ht]"
   add_new_agency: "[ht]Add a new Agency[/ht]"

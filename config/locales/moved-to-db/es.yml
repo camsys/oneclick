@@ -43,6 +43,8 @@ es:
   no_agent_with_email_address: "[es]We can't find an agent with '%{email}' as their email address.[/es]"
   you_ve_already_added_this_agent: '[es]You have already added this agent.[/es]'
   please_save_agents: '[es]Please save agents.[/es]'
+  already_an_agency_agent: '[es]This user has already been added as an agent for an agency.[/es]'
+  already_a_provider_staff: '[es]This user has already been added as a staff for a provider.[/es]'
   agencies: "[es21]Agencies[/es]"
   all_agencies: "[es28]All Agencies[/es]"
   add_new_agency: "[es26]Add a new Agency[/es]"
