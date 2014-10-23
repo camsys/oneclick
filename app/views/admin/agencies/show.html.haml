@@ -37,9 +37,10 @@
       - if can? :update, @agency
         = link_to edit_admin_agency_path(@agency), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
+- is_own_agency = (can? :full_read, @agency) && !current_user.nil? && !current_user.agency.nil? && @agency.id == current_user.agency.id
 .row
   = render partial: "public_details", locals: {agency: @agency}
-  - if can? :full_read, @agency
+  - if is_own_agency
     .col-sm-6
       .panel.panel-default
         .panel-heading
@@ -74,7 +75,7 @@
                   = t(:user) + ": "
                 %td.text-left
                   %b= @contact.name
-- if can? :full_read, @agency
+- if is_own_agency
   .panel.panel-default#staff
     .panel-heading
       %h2.panel-title
