@@ -5,10 +5,10 @@
       %th= t(:status)
       %th.updated= t(:updated)
   %tbody
-    - if current_user and !current_user.agency.nil?
+    - if user and !user.agency.nil?
       %tr
         %td
-          = link_to(current_user.agency.name, admin_agency_path(current_user.agency))
+          = link_to(user.agency.name, admin_agency_path(user.agency))
         %td
           = t(RelationshipStatus.confirmed)
         %td.updated
