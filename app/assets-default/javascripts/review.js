@@ -125,6 +125,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
     //be used to detect width change -> resize charts
     var documentWidth = $(document.body).width();
 
+    var METERS_TO_MILES = 0.000621371192;
+
     /**
      * Process trip results response from service
      */
@@ -1398,7 +1400,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             " data-transfer='" + (typeof(transfers) === 'number' ? transfers.toString() : '0') + "'" +
             " data-cost='" + ((isValidObject(cost) && (typeof(cost.price) === 'number')) ? cost.price : '') + "'" +
             " data-duration='" + (isValidObject(duration) ? parseFloat(duration.sortable_duration) / 60 : '') + "'" +
-            " data-walk-dist='" + (isValidObject(duration) ? parseInt(duration.total_walk_dist)/5280: '') + "'" +
+            " data-walk-dist='" + (isValidObject(duration) ? parseInt(duration.total_walk_dist) * METERS_TO_MILES: '') + "'" +
             " data-filter-visible = 1" +
             " data-eligibility-visible = " + (eligibleCode != -1 ? '1' : '0');
         var costTooltip = cost.comments;
@@ -2038,8 +2040,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var tags = '';
         var sliderConfig = null;
         if (typeof(maxWalkDist) === 'number' && typeof(minWalkDist) === 'number' && maxWalkDist > minWalkDist) {
-            minWalkDist = Math.round(minWalkDist/5280 * 100 - 0.5) / 100;
-            maxWalkDist = Math.round(maxWalkDist/5280 * 100 + 0.5) / 100;
+            minWalkDist = Math.round(minWalkDist * METERS_TO_MILES * 100 - 0.5) / 100;
+            maxWalkDist = Math.round(maxWalkDist * METERS_TO_MILES * 100 + 0.5) / 100;
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
@@ -2074,8 +2076,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
     function adjustWalkDistFilters(minWalkDist, maxWalkDist) {
         var filterObj = getWalkDistFilterHtml(minWalkDist, maxWalkDist);
         if (isValidObject(filterObj)) {
-            minWalkDist = Math.round(minWalkDist/5280 * 100 - 0.5) / 100;
-            maxWalkDist = Math.round(maxWalkDist/5280 * 100 + 0.5) / 100;
+            minWalkDist = Math.round(minWalkDist * METERS_TO_MILES * 100 - 0.5) / 100;
+            maxWalkDist = Math.round(maxWalkDist * METERS_TO_MILES * 100 + 0.5) / 100;
 
             if ($('#' + walkDistSliderId).length === 0) {
                 $('#' + filterContainerId).append(filterObj.tags);
@@ -2231,7 +2233,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             case 'mode_walk':
                 tipText = localeDictFinder['walk'] + ' ' + durationText;
                 if (isValidObject(tripPlan.duration) && typeof(tripPlan.duration.total_walk_dist) === 'number') {
-                    tipText += ' (' + (tripPlan.duration.total_walk_dist / 5280).toFixed(2) + ' ' + localeDictFinder['miles'].toLowerCase() + ')';
+                    tipText += ' (' + (tripPlan.duration.total_walk_dist * METERS_TO_MILES).toFixed(2) + ' ' + localeDictFinder['miles'].toLowerCase() + ')';
                 }
 
                 tipText = lineWrapper(tipText);

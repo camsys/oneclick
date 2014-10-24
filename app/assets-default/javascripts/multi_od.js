@@ -66,6 +66,8 @@ function MultiODGridPageRenderer(tripResponse, localeDictFinder) {
     //be used to detect width change -> resize charts
     var documentWidth = $(document.body).width();
 
+    var METERS_TO_MILES = 0.000621371192;
+
     var baseContainerId = 'gridBaseContainer'; //id of review page base container
     /**
      * Process trip results response from service
@@ -207,14 +209,14 @@ function MultiODGridPageRenderer(tripResponse, localeDictFinder) {
             if(maxWalkDist > minWalkDist) {
                 summary += '<br><span class="grid-summary-item">' +
                     localeDictFinder["walk"] + ' ' +
-                    Math.round(minWalkDist/5280 * 100 -0.5)/100 + ' - ' +
-                    Math.round(maxWalkDist/5280 * 100 + 0.5)/100 + ' ' +
+                    Math.round(minWalkDist * METERS_TO_MILES * 100 -0.5)/100 + ' - ' +
+                    Math.round(maxWalkDist * METERS_TO_MILES * 100 + 0.5)/100 + ' ' +
                     localeDictFinder["miles"] +
                 '</span>';
             } else {
                 summary += '<br><span class="grid-summary-item">' +
                     localeDictFinder["walk"] + ' ' +
-                    (minWalkDist/5280).toFixed(3) + ' ' + localeDictFinder["miles"] +
+                    (minWalkDist * METERS_TO_MILES).toFixed(3) + ' ' + localeDictFinder["miles"] +
                 '</span>';
             }
 
