@@ -1,3 +1,4 @@
+- can_view_private = can_view_private || false
 .row.comments
   .col-sm-6
     .panel.panel-default
@@ -19,7 +20,7 @@
           - else
             %p= commentable.public_comments.where(locale: I18n.locale).first.comment.html_safe rescue t(:no_comments)
 
-  - if can? :full_read, commentable
+  - if (can? :full_read, commentable) && can_view_private == true
     .col-sm-6
       .panel.panel-default
         .panel-heading

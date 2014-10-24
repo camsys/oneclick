@@ -118,7 +118,7 @@
               %td
                 = mail_to s.email.to_s
 
-= render partial: 'admin/shared/show_comments', locals: {commentable: @agency}
+= render partial: 'admin/shared/show_comments', locals: {commentable: @agency, can_view_private: can_manage_agency}
 
 :javascript
   $(document).ready(function() {

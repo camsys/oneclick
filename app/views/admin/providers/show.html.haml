@@ -1,4 +1,5 @@
 - temp_rating = @provider.services.first.ratings.build(user: @traveler) rescue nil
+- can_manage_provider =(can? :manage, :all) || ((can? :full_read, @provider) && !current_user.nil? && !current_user.provider.nil? && @provider.id == current_user.provider.id)
 - if can? :index, Provider
   .row
     .col-sm-12
@@ -16,7 +17,7 @@
           %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal"}}
             = t(:feedback)
       = render partial: "ratings/organization_feedback_modal", locals: {rateable: @provider}
-      - if can? :destroy, @provider
+      - if can_manage_provider && (can? :destroy, @provider)
         = button_tag :type => 'button', "data-target" => "#deleteProviderConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
           = t(:delete)
         #deleteProviderConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_provider), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
@@ -31,10 +32,10 @@
                     = t(:site_title)
               .modal-body{:style => "text-align:left;"}
                 = t(:confirm_remove_message) + @provider.name + " ?"
-        - if can?(:create, Service) && can?(:update, @provider)
+        - if can_manage_provider && can?(:create, Service) && can?(:update, @provider)
           = link_to new_service_path(provider_id: @provider), {class: 'btn action-button', role: 'button'} do
             = icon_label(:add_service)
-      - if can? :update, @provider
+      - if can_manage_provider && (can? :update, @provider)
         = link_to edit_admin_provider_path(@provider), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
 .row
@@ -79,7 +80,7 @@
               - if @provider.url
                 %b= link_to @provider.url, @provider.url
 
-  - if can? :full_read, @provider
+  - if can_manage_provider
     .col-sm-6
       .panel.panel-default
         .panel-heading
@@ -116,7 +117,7 @@
                   %b= link_to @contact.name, admin_user_path(@contact)
 
 
--if can? :full_read, @provider
+-if can_manage_provider
   .panel.panel-default
     .panel-heading
       %h4.panel-title
@@ -157,7 +158,7 @@
     .panel-body
       = render 'services/table'
 
-  = render partial: 'admin/shared/show_comments', locals: {commentable: @provider}
+  = render partial: 'admin/shared/show_comments', locals: {commentable: @provider, can_view_private: can_manage_provider}
 
   .row
     .col-sm-6
