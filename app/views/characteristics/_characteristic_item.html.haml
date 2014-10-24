@@ -8,7 +8,7 @@
           - case item.datatype
             - when 'bool'
               .form-group.string.optional
-                .string.optional.col-sm-7.control-label{for: item.code}
+                .string.optional.col-sm-7.control-label{id: "#{item.code}_label", for: item.code}
                   = t(item.note)
                   = add_tooltip("#{item.code}_help")
                   :javascript
