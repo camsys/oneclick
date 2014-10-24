@@ -74,7 +74,7 @@ Oneclick::Application.configure do
     config.provider_read_all_feedback = true
     config.tripless_feedback = false
     honeybadger_api_key = 'ba642a71'
-    config.poi_file = 'db/arc_poi_data/CommFacil_20131015.txt'
+    config.poi_file = 'db/arc_poi_data/combined.csv'
     config.show_update_services = true
     config.default_county = ''
     config.state = 'GA'
