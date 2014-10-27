@@ -50,6 +50,8 @@ en:
   no_agent_with_email_address: "We can't find an agent with '%{email}' as their email address."
   you_ve_already_added_this_agent: 'You have already added this agent.'
   please_save_agents: 'Please save agents.'
+  already_an_agency_agent: 'This user has already been added as an agent for an agency.'
+  already_a_provider_staff: 'This user has already been added as a staff for a provider.'
   agencies: "Agencies"
   all_agencies: "All Agencies"
   add_new_agency: "Add a new Agency"
@@ -121,12 +123,15 @@ en:
   create_translation: 'Create Translation'
   key: 'Key'
   send_by_email: 'Send by email'
+  email_footer: 'Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of %{application_name}'
+  email_thank_you: 'Thank you for using  %{application_name} Software.'
   email_sent_to: 'An email was sent to %{email_sent_to}'
   no_email_found: 'No email was found'
   send_itinerary_by_email: "Send itinerary by email"
   send_trip_by_email: "Send trip plan by email"
   send_follow_up_email: "Send Follow-up Email"
   sidewalk_obstructions: "Sidewalk Obstructions"
+  remove_sidewalk_obstructions: "Remove sidewalk obstructions"
   sidewalk_obstructions_update:
     one: "The sidewalk obstruction has been updated"
     other: "The sidewalk obstructions have been updated"
@@ -280,6 +285,8 @@ en:
   trip_parameters: 'Trip Parameters'
   eligibility_accommodation_questions: 'Eligibility/Accommodation Questions'
   splash_title: 'Splash'
+  options_page_splash: ''
+  options_page_splash_title: 'Splash'
   from: 'From'
   from_lat: 'From Lat'
   from_lon: 'From Lon'
@@ -364,6 +371,8 @@ en:
   depart: 'Depart'
   arrive: 'Arrive'
   cost: 'Cost'
+  plus: 'plus'
+  unknown_cost: 'unknown cost'
   print: 'Print'
   chat: 'Chat'
   e_mail: 'Email'
@@ -610,6 +619,11 @@ en:
   not_available: 'Not Available'
   filters: 'Filters'
   legends: 'Legends'
+  modes_filter: 'Modes'
+  fare_filter: 'Fare'
+  number_of_transfers_filter: 'Number of Transfers'
+  trip_time_filter: 'Time'
+  walk_distance_filter: 'Walking Distance'
   legend: 'Legend'
   minute_abbr: 'min'
   minutes: 'minutes'
@@ -875,10 +889,10 @@ en:
     return_selected: 'Returning option selected.'
 
     initial_booking_title: 'Book with FindMyRidePA'
-    initial_booking_message: 'If you know your Rabbit Transit Client Id, you can use FindMyRidePA to book trips with Rabbit Transit Shared Ride.'
+    initial_booking_message: 'If you know your Shared Ride Client Id, you can use FindMyRidePA to book trips with Shared Ride.'
     initial_booking_close: "No Thanks"
-    booking_link_success: "Success!  You can now book trips with Rabbit Transit Shared Ride."
-    ecolane_login_button: "Rabbit Login"
+    booking_link_success: "Success!  You can now book trips with Shared Ride."
+    ecolane_login_button: "Shared Ride Login"
     next: 'Next >>'
 
   broward:

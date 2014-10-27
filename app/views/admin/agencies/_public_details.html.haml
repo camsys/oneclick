@@ -1,7 +1,9 @@
 .col-sm-6
   .panel.panel-default
     .panel-heading
-      %h2.panel-title= t(:contact_info)
+      %h2.panel-title
+        = t(:contact_info)
+        = add_tooltip("contact_info_help")
     .panel-body
       %table.table.table-condensed
         %tr
@@ -24,12 +26,13 @@
           %td.text-right
             = t(:email)+ ":  "
           %td.text-left{colspan: 4}
-            %b= mail_to agency.email.to_s
+            - unless agency.email.blank?
+              %b= mail_to agency.email.to_s
         %tr
           %td.text-right
             = t(:url)+ ":  "
           %td.text-left{colspan: 4}
-            - if agency.url
+            - unless agency.url.blank?
               %b= link_to agency.url, agency.url
         %tr
           %td.text-right

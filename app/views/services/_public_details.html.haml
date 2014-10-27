@@ -4,6 +4,7 @@
       %span.panel-title
         = t(:provided_by)
         = link_to service.provider.name, admin_provider_path(service.provider)
+        = add_tooltip("provided_by_help")
     .panel-body
       -unless service.active
         %p.warning

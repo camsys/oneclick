@@ -33,7 +33,7 @@ class Admin::ProvidersController < ApplicationController
   # GET /admin/providers/new.json
   def new
     # before_filter
-
+    setup_comments(@provider)
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @provider }
@@ -117,6 +117,9 @@ class Admin::ProvidersController < ApplicationController
     if user.nil?
       success = false
       msg = I18n.t(:no_staff_with_email_address, email: params[:email]) # did you know that this was an XSS vector?  OOPS
+    elsif !user.provider.nil?
+      success = false
+      msg = I18n.t(:already_a_provider_staff)
     else
       success = true
       msg = t(:please_save_staffs, name: user.name)

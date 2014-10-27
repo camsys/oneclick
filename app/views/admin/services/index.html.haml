@@ -1,12 +1,14 @@
 .row
   .col-sm-12
-    = link_to t(:all_providers), admin_providers_path, class: 'btn btn-primary btn-arrow-left', style: 'font-weight: normal'
+    = link_to t(:all_providers), admin_providers_path, class: 'btn action-button btn-arrow-left'
 .row.info-header
   .col-sm-12
     %h1= t(:services)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
-    %h2.panel-title= t(:services)
+    %h2.panel-title
+      = t(:services)
+      = add_tooltip("services_help")
   .panel-body
     %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_services_table
       %thead

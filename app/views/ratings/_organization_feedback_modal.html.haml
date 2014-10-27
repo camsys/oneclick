@@ -13,6 +13,7 @@
           .panel-heading
             %h2.panel-title
               = rateable.name
+              = add_tooltip("#{rateable.name}_help")
           .panel-body
             - ratings = rateable.ratings.approved.select() { |r| can? :read, r }
             - unless ratings.empty?

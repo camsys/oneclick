@@ -1,5 +1,5 @@
 =simple_form_for @user, :html => { :class => "form-horizontal"}, method: 'post', wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }, :include_blank => false  do |f|
-  = f.error_notification
+  = f.error_notification message: print_messages(f)
   %div{role: "main", aria: {label: "Travel Profile"}}
     .row.info-header
       .col-sm-6
@@ -14,32 +14,81 @@
       .col-sm-6
         .panel.panel-default#user_info
           .panel-heading
-            %h2.panel-title= t(:user_information)
+            %h2.panel-title
+              = t(:user_information)
+              = add_tooltip("user_information_help")
           .panel-body
             = f.input :first_name, label: t(:first_name), :autofocus => true, :required => true
+            - if translation_exists?("first_name_help")
+              :javascript
+                addHelperTooltip('#first_name_label', "#{t(:first_name_help)}");
+
             = f.input :last_name, label: t(:last_name), :required => true
+            - if translation_exists?("last_name_help")
+              :javascript
+                addHelperTooltip('#last_name_label', "#{t(:last_name_help)}");
+
             = f.input :title, label: t(:title), :required => false
+            - if translation_exists?("title_help")
+              :javascript
+                addHelperTooltip('#title_label', "#{t(:title_help)}");
+
             = f.input :email, label: t(:email), :required => true
+            - if translation_exists?("email_help")
+              :javascript
+                addHelperTooltip('#email_label', "#{t(:email_help)}");
+
             = f.input :phone, label: t(:phone), :required => false
+            - if translation_exists?("phone_help")
+              :javascript
+                addHelperTooltip('#phone_label', "#{t(:phone_help)}");
+
             = f.input :preferred_locale, label: t(:preferred_locale), :collection => Translation.available_locales, :include_blank => false, label_method: lambda {|pl| I18n.t("locales.#{pl}")}
+            - if translation_exists?("preferred_locale_help")
+              :javascript
+                addHelperTooltip('#preferred_locale_label', "#{t(:preferred_locale_help)}");
+
             = f.input :password, label: t(:password), :autocomplete => "off", :required => false, label_html: {"aria-label" => "Password. Leave this as well as the password confirmation blank if you do not want to change your password."}
+            - if translation_exists?("password_help")
+              :javascript
+                addHelperTooltip('#password_label', "#{t(:password_help)}");
+
             = f.input :password_confirmation, label: t(:password_confirmation), :hint => t(:leave_password_blank), :required => false
             = f.input :walking_speed_id, :collection =>  WalkingSpeed.all, :selected => get_selected_walking_speed_id(@user), :value => :id, :label_method => lambda { |v| v.label}, label: t(:walking_speed), input_html: { class: 'form-control' }
+            - if translation_exists?("walking_speed_help")
+              :javascript
+                addHelperTooltip('#walking_speed_id_label', "#{t(:walking_speed_help)}");
+
             = f.input :walking_maximum_distance_id, :collection =>  WalkingMaximumDistance.all, :selected => get_selected_walking_max_distance_id(@user), :value => :id, :label_method => lambda { |v| v.label}, label: t(:walking_maximum_distance), input_html: { class: 'form-control' }
+            - if translation_exists?("walking_maximum_distance_help")
+              :javascript
+                addHelperTooltip('#walking_maximum_distance_id_label', "#{t(:walking_maximum_distance_help)}");
+
       - if can? :full_read, @user
         .col-sm-6
           .panel.panel-default#agencies
             .panel-heading
-              %h2.panel-title= t(:agencies)
+              %h2.panel-title
+                = t(:agencies)
+                = add_tooltip("agencies_help")
             .panel-body
-              = f.association :approved_agencies, collection: Agency.all.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes, wrapper: :inline_checkboxes, label: false
+              / %label.sr-only{aria: {label: "#{t(:agencies)}"}}
+              / - Agency.all.order(:name).each do |agency|
+              /   %div
+              /     %input.check_boxes.optional{id: "user_approved_agency_ids_#{agency.id}", name: "user[approved_agency_ids][]", type: "checkbox", size: 10, value: "#{agency.id}"}
+              /     %label.check_boxes.optional{for: "user_approved_agency_ids_#{agency.id}", name: "user[approved_agency_ids]"} #{agency}
+              /     %br
+
+              = f.association :approved_agencies, collection: Agency.active.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes, wrapper: :inline_checkboxes, label: t(:agencies), label_html: {class: 'sr-only'}
 
     - if current_user.agency
       .row
         .col-sm-12
           .panel.panel-default
             .panel-heading
-              %h2.panel-title=t(:traveler_notes)
+              %h2.panel-title
+                =t(:traveler_notes)
+                = add_tooltip("traveler_notes_help")
             .panel-body
               -traveler_note = TravelerNote.where(user: @user, agency: current_user.agency).first_or_create
               =simple_fields_for traveler_note, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |note_form|
@@ -53,7 +102,9 @@
         .col-sm-12
           .panel.panel-default#buddies
             .panel-heading
-              %h2.panel-title= t(:buddies)
+              %h2.panel-title
+                = t(:buddies)
+                = add_tooltip("buddies_help")
             .panel-body
               .table-flash
               %button#add_buddy_btn.btn.action-button.pull-right{data: {toggle: 'modal', target: '#add_user'}}
@@ -83,7 +134,9 @@
                       .modal-flash
                       .panel.panel-default
                         .panel-heading
-                          %h2.panel-title= t(:find_traveler)
+                          %h2.panel-title
+                            = t(:find_traveler)
+                            = add_tooltip("find_traveler_help")
                         .panel-body
                           .row
                             .col-sm-12
@@ -97,7 +150,9 @@
           .col-sm-6.pull-left
             .panel.panel-default
               .panel-heading
-                %h2.panel-title= t(:eligibility)
+                %h2.panel-title
+                  = t(:eligibility)
+                  = add_tooltip("eligibility_help")
               .panel-body
                 - Characteristic.active.enabled.each do |c|
                   - next if c.code=='age' # TODO kludge
@@ -106,11 +161,15 @@
                   - when 'bool'
                     %fieldset
                       .form-group.radio_buttons.optional#input_container{class: "user_characteristics_proxy_#{c.code}"}
-                        %legend.col-sm-7.radio_buttons.optional.control-label{id: "#{c.code}_label"} #{t(c.note)}
+                        %legend.col-sm-7.radio_buttons.optional.control-label{id: "#{c.code}_label"}
+                          = t(c.note)
+                          = add_tooltip("#{c.code}_help")
+                          :javascript
+                            $('#input_container .label-help').removeClass('fa-2x');
                         .col-sm-5#eligibility_questions
                           %input.radio_buttons.optional{id: "user_characteristics_proxy_#{c.code}_true", name: "user_characteristics_proxy[#{c.code}]", type: "radio", value: "true", checked: c.true_false_checked?(@traveler, "true") }
                           %label{for: "user_characteristics_proxy_#{c.code}_true", name: "user_characteristics_proxy[#{c.code}]"} #{t(:yes_str)}
-                          
+
                           %input.radio_buttons.optional{id: "user_characteristics_proxy_#{c.code}_false", name: "user_characteristics_proxy[#{c.code}]", type: "radio", value: "false", checked: c.true_false_checked?(@traveler, "false") }
                           %label{for: "user_characteristics_proxy_#{c.code}_false", name: "user_characteristics_proxy[#{c.code}]"} #{t(:no_str)}
 
@@ -121,16 +180,22 @@
           .col-sm-6.pull-right
             .panel.panel-default
               .panel-heading
-                %h2.panel-title= t(:accommodations)
+                %h2.panel-title
+                  = t(:accommodations)
+                  = add_tooltip("accommodations_help")
               .panel-body
                 -Accommodation.where(:datatype => 'bool').each do |a|
                   %fieldset
                     .form-group.radio_buttons.optional#input_container{class: "user_characteristics_proxy_#{a.code}"}
-                      %legend.col-sm-7.radio_buttons.optional.control-label{id: "#{a.code}_label"} #{t(a.note)}
+                      %legend.col-sm-7.radio_buttons.optional.control-label{id: "#{a.code}_label"}
+                        = t(a.note)
+                        = add_tooltip("#{a.code}_help")
+                        :javascript
+                          $('#input_container .label-help').removeClass('fa-2x');
                       .col-sm-5#eligibility_questions
                         %input.radio_buttons.optional{id: "user_characteristics_proxy_#{a.code}_true", name: "user_characteristics_proxy[#{a.code}]", type: "radio", value: "true", checked: a.true_false_checked?(@traveler, "true") }
                         %label{for: "user_characteristics_proxy_#{a.code}_true", name: "user_characteristics_proxy[#{a.code}]"} #{t(:yes_str)}
-                        
+
                         %input.radio_buttons.optional{id: "user_characteristics_proxy_#{a.code}_false", name: "user_characteristics_proxy[#{a.code}]", type: "radio", value: "false", checked: a.true_false_checked?(@traveler, "false") }
                         %label{for: "user_characteristics_proxy_#{a.code}_false", name: "user_characteristics_proxy[#{a.code}]"} #{t(:no_str)}
 
@@ -141,7 +206,9 @@
         .col-sm-6
           .panel.panel-default#booking
             .panel-heading
-              %h2.panel-title=t(:booking_information)
+              %h2.panel-title
+                =t(:booking_information)
+                = add_tooltip("booking_information_help")
             .panel-body
               =simple_fields_for :user_service, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |booking_form|
                 -Service.active.bookable.each do |service|
@@ -151,11 +218,17 @@
                   - else
                     = booking_form.input service.id.to_s, label: service.name, input_html: { value: "" }
                 =booking_form.input :dob, label: t(:dob), placeholder: "mm/dd/yyyy", hint: t(:dob_notice)
+                - if translation_exists?("dob_help")
+                  :javascript
+                    addHelperTooltip('#dob_label', "#{t(:dob_help)}");
         .col-sm-6
           .panel.panel-default#preferred_modes
             .panel-heading
-              %h2.panel-title= t(:preferred_modes)
+              %h2.panel-title
+                = t(:preferred_modes)
+                = add_tooltip("preferred_modes_help")
             .panel-body
+              %legend.sr-only= t(:preferred_modes)
               - Mode.top_level.where(visible: true).sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.each do |m|
                 .row
                   .col-sm-12

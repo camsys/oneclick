@@ -28,7 +28,7 @@
 
         = simple_form_for @booking_proxy, :remote => true, :url => initial_booking_user_path(@traveler), :html => { :class => "form-horizontal"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }  do |f|
           .form-inputs
-            = f.error_notification
+            = f.error_notification message: print_messages(f)
             = f.input :service_id, :as => :hidden, :input_html => {value: Service.where(booking_service_code: 'ecolane').first.id}
             = f.input :external_user_id,label: "Rabbit Transit " + t(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
             = f.input :dob, label: t(:dob), label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: t(:dob_notice)

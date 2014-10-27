@@ -22,6 +22,11 @@
 //= require leaflet
 //= require_tree .
 //
+
+$(document).ready(function(){
+  $(".label-help").tooltip({'html': true, 'container': 'body'});
+});
+
 moment.fn.next15 = function() {
     var intervals = Math.floor(this.minutes() / 15);
     if (this.minutes() % 15 != 0)
@@ -34,3 +39,42 @@ moment.fn.next15 = function() {
     this.seconds(0);
     return this;
 }
+
+function checkAriaLabel(input){
+    if (input.attr('disabled') == 'disabled' || input.hasClass('disabled')){
+        input.children().attr('aria-label', 'disabled. ');
+    } else {
+        input.children().removeAttr('aria-label');
+    }
+}
+
+function toggleAriaLabel(input) {
+    input.attrchange({
+      trackValues: true,
+      callback: function(e) {
+        if ($(this).attr('disabled') == undefined) {
+          $(this).children().removeAttr('aria-label');
+        } else {
+          $(this).children().attr('aria-label', 'disabled. ');
+        }
+      }
+    });
+}
+
+function toggleAriaLabelPrevNext(input) {
+    input.attrchange({
+      trackValues: true,
+      callback: function(e) {
+        if (e.newValue.indexOf("disabled") > -1) {
+            $(this).children().attr('aria-label', 'disabled. ');
+        } else {
+            $(this).children().removeAttr('aria-label');
+        }
+      }
+    });    
+}
+
+function addHelperTooltip(label_id, tooltip_str) {
+  $(label_id).prepend("<i class='fa fa-question-circle pull-right label-help' style='margin-top:-4px;' title data-original-title='" + tooltip_str + "' aria-label='" + tooltip_str + "'></i>");
+}
+

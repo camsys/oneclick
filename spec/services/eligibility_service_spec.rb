@@ -15,14 +15,14 @@ describe EligibilityService do
 
 # Group1 Disabled
 # Group1 Red Hair
-# Group2 Age > 50 
+# Group2 Age > 50
 # is (Disabled And Red Hair) or (Age > 50)
 
   it "generates the missing information structure" do
     options_for_bool = [
        { text: I18n.t(:yes_str), value: true },
        { text: I18n.t(:no_str), value: false }
-    ]                    
+    ]
 
     trip = FactoryGirl.create(:trip, trip_purpose: TripPurpose.find_by_name('Medical'))
     planned_trip_part = trip.trip_parts.first
@@ -32,7 +32,7 @@ describe EligibilityService do
       [],
       [],
       [
-        {"question"=>"Are you age 65 or older?", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"== true", "group_id"=>0, "code"=>"age", "year"=>1949},
+        {"question"=>"Are you age 65 or older?", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"== true", "group_id"=>0, "code"=>"age", "year"=>"65"},
         {"question"=>"translation missing: en.The traveler is temporarily or permanently disabled", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"==t", "group_id"=>1, "code"=>"disabled", "year"=>"t"},
         {"question"=>"translation missing: en.The traveler is a veteran", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"==t", "group_id"=>1, "code"=>"veteran", "year"=>"t"}
       ]

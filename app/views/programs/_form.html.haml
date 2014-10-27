@@ -1,5 +1,5 @@
 #program_form
-  = f.error_notification
+  = f.error_notification message: print_messages(f)
   = render partial: 'programs/eligibility_alert', locals: {inline: false}
   %h4
     = t(:do_you_participate)

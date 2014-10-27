@@ -1,5 +1,11 @@
+- is_splash_available = whether_show_tranlatation_item?(:splash)
+- non_splash_css = 'col-sm-12'
+- splash_css = ''
+- if is_splash_available
+  - non_splash_css = 'col-sm-7 col-xs-12'
+  - splash_css = 'col-sm-5 col-xs-12'
 .row
-  .col-sm-7
+  %div{class: non_splash_css}
     .pull-right
       -if @show_booking
         = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;"  do
@@ -20,13 +26,21 @@
           });
     = render partial: 'shared/trip_plan_breadcrumbs'
 .row
-  .col-sm-7.col-xs-12
+  - is_splash_available = whether_show_tranlatation_item?(:splash)
+  - non_splash_css = 'col-sm-12'
+  - splash_css = ''
+  - if is_splash_available
+    - non_splash_css = 'col-sm-7 col-xs-12'
+    - splash_css = 'col-sm-5 col-xs-12'
+  %div{class: non_splash_css}
     .col-sm-12
       - header_comment_key = session[:is_multi_od] ? :multi_od_trip_header_comment : :trip_header_comment
       = render partial: 'shared/page_comments', locals: {key: header_comment_key}
     .col-sm-12.panel.panel-default{:role => "main", :aria => {:label => 'Trip Form'}, :style => 'padding:0px;'}
       .panel-heading
-        %h2.panel-title=t(:trip_parameters)
+        %h2.panel-title
+          =t(:trip_parameters)
+          = add_tooltip("trip_parameters_help")
       .panel-body
         = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path(:user_id => @traveler.id) : user_trip_path(:user_id => @traveler.id), :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
           = f.hidden_field :mode
@@ -39,7 +53,9 @@
           %fieldset
             #tripOptions
               .form-group.radio_buttons.optional.trip_proxy_is_round_trip
-                %legend.col-sm-3.radio_buttons.optional.control-label#legend_label #{t(:trip_dir)}
+                %legend.col-sm-3.radio_buttons.optional.control-label#legend_label
+                  =t(:trip_dir)
+                  = add_tooltip("trip_dir_help")
                 .col-sm-9#is_round_trip_inputs
                   %input.radio_buttons.optional#trip_proxy_is_round_trip_1{name: "trip_proxy[is_round_trip]", type: "radio", value: 1, checked: (@trip_proxy.is_round_trip ? "checked" : nil)}
                   %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_1"} #{t(:round_trip)}
@@ -63,7 +79,9 @@
           %fieldset
             #baseModes
               .form-group.check_boxes.optional.trip_proxy_modes
-                %legend.col-sm-3.check_boxes.optional.control-label#legend_label #{t(:modes)}
+                %legend.col-sm-3.check_boxes.optional.control-label#legend_label
+                  =t(:modes)
+                  = add_tooltip("modes_help")
                 .col-sm-9#modes_inputs
                   - @modes.each do |mode|
                     %div
@@ -102,8 +120,14 @@
 
           -if I18n.locale == :tags
             = f.input :trip_purpose_id, :collection =>  TripPurpose.all, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes),input_html: { class: 'form-control' }
+            - if translation_exists?("trip_purposes_help")
+              :javascript
+                addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
           -else
             = f.input :trip_purpose_id, :collection =>  TripPurpose.ordered_by_localized_name, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes),input_html: { class: 'form-control' }
+            - if translation_exists?("trip_purposes_help")
+              :javascript
+                addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
 
           = render partial: 'location_input', locals: {dir: 'from', f: f}
           = render partial: 'location_input', locals: {dir: 'to', f: f}
@@ -122,6 +146,9 @@
                     %span{:"aria-hidden" => "true"} &times;
                     %span.hide Close
                   =t(:map)
+                  = add_tooltip("map_help")
+                  :javascript
+                    $('#tripMapContainer .label-help').removeClass('pull-right fa-2x');
               .panel-body
                 = LeafletMap({ :mapid => "tripMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '500px;', :style => "height: 400px; width: 500px;", :show_location_select => true })
     .col-sm-12{style: "margin-bottom: 5px; padding: 0px;"}
@@ -134,8 +161,8 @@
     .col-sm-12
       - footer_comment_key = session[:is_multi_od] ? :multi_od_trip_footer_comment : :trip_footer_comment
       = render partial: 'shared/page_comments', locals: {key: footer_comment_key}
-  .col-sm-5.col-xs-12{:role => "complementary", aria: {label: "Splash text"}}
-    = render partial: 'shared/splash'
+  - if is_splash_available
+    = render partial: 'shared/splash', locals: {splash_key: :splash, title_key: :splash_title, splash_div_class: splash_css}
   -if @show_booking
     = render partial: 'booking_signup'
 :javascript
@@ -196,4 +223,7 @@
 
       return true;
     });
+
+    $('#legend_label .label-help').removeClass('fa-2x');
+
   });

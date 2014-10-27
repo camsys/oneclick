@@ -19,9 +19,11 @@ CsLeaflet.SidewalkFeedbackTool = {
     	this._csMap = csMap || {};
     	this._options = options || {};
 
-    	this.addFeedbackInputControl();
-        this.registerCustomPopupEventsOnMap();
-    	this.registerSidewalkFeedbackEventsOnMap();
+        if(this._options.editing_enabled) {
+    	   this.addFeedbackInputControl();
+            this.registerCustomPopupEventsOnMap();
+    	   this.registerSidewalkFeedbackEventsOnMap();
+        }
 
         this.registerMapZoomEvent();
     },
@@ -31,15 +33,17 @@ CsLeaflet.SidewalkFeedbackTool = {
         var currentMap = csMap.LMmap || {};
         var options = this._options || {};
         var feedbackUtil = this;
-        var button = this._button || {};
+        var button = this._button;
         if(typeof options.min_visible_zoom === 'number') {
             currentMap.on('zoomend', function(){
                 var zoom = currentMap.getZoom();
                 if(zoom < options.min_visible_zoom) {
-                    button.setDisabled(true);
+                    if (button)
+                        button.setDisabled(true);
                     currentMap.removeLayer(feedbackUtil.LMsidewalk_feedback_layergroup);
                 } else {
-                    button.setDisabled(false);
+                    if (button)
+                        button.setDisabled(false);
                     currentMap.addLayer(feedbackUtil.LMsidewalk_feedback_layergroup);
                 }
             });
@@ -143,8 +147,8 @@ CsLeaflet.SidewalkFeedbackTool = {
             (
                 allowActions.is_approvable ?
                 (
-                    "<button class='btn action-button style='margin-right: 5px;' map-action-button' action='approve'>" + locale_text.approve + "</button>" +
-                    "<button class='btn action-button style='margin-right: 5px;' map-action-button' action='reject'>" + locale_text.reject + "</button>"
+                    "<button class='btn action-button map-action-button' style='margin-right: 5px;' action='approve'>" + locale_text.approve + "</button>" +
+                    "<button class='btn action-button map-action-button' style='margin-right: 5px;' action='reject'>" + locale_text.reject + "</button>"
                 ) : ""
             ) +
             (allowActions.is_deletable ? "<button class='btn action-button map-action-button' action='delete'>" + locale_text.delete + "</button>": "") +

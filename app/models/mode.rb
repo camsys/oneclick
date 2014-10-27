@@ -57,6 +57,10 @@ class Mode < ActiveRecord::Base
   #   unscoped.where("code = 'mode_walk'").first
   # end
 
+  def self.all_transit_modes
+    [Mode.transit, Mode.bus, Mode.rail]
+  end
+
   def self.transit_submodes
     if not transit
       none
@@ -66,7 +70,6 @@ class Mode < ActiveRecord::Base
   end
 
   def self.setup_modes(session_mode_codes)
-    Rails.logger.info "Mode.setup_modes"
     q = session_mode_codes ? Mode.where('code in (?)', session_mode_codes) : Mode.all
     non_transit_modes = Mode.top_level.where("code <> 'mode_transit'").where(visible: true)
       .sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.collect do |m|
@@ -83,9 +86,7 @@ class Mode < ActiveRecord::Base
     end
 
     selected_modes = q.collect{|m| m.code}
-    s =  {modes: non_transit_modes, transit_modes: transit_modes, selected_modes: selected_modes}
-    Rails.logger.info "Mode.setup_modes is returning #{s.ai}"
-    return s
+    {modes: non_transit_modes, transit_modes: transit_modes, selected_modes: selected_modes}
   end
 
   def top_level?

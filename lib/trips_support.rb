@@ -106,7 +106,7 @@ module TripsSupport
       }
     when PLACES_TYPE
       # the user selected a place using the places drop-down
-      trip_place = get_trip_place(place_id)
+      trip_place = @traveler.places.find(place_id)
       return {
         :place_id => trip_place.id,
         :name => trip_place.name,

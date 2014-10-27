@@ -20,6 +20,8 @@ class Admin::ReportsController < Admin::BaseController
     @generated_report = GeneratedReport.new({})
     @generated_report.date_range = session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
     @min_trip_date = Trip.minimum(:scheduled_time)
+
+    set_user_based_constraints
   end
 
   # renders a report page. Actual details depends on the id parameter passed
@@ -37,6 +39,7 @@ class Admin::ReportsController < Admin::BaseController
 
     # Store filter settings in session for ajax calls.
     @generated_report.date_range ||= session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
+    @min_trip_date = Trip.minimum(:scheduled_time)
     session[DATE_OPTION_SESSION_KEY] = @generated_report.date_range
     session[DATE_OPTION_FROM_KEY] = @generated_report.from_date
     session[DATE_OPTION_TO_KEY] = @generated_report.to_date
@@ -59,10 +62,13 @@ class Admin::ReportsController < Admin::BaseController
       @columns = @report_instance.get_columns
       @url_for_csv = url_for only_path: true, format: :csv, params: params
 
+      set_user_based_constraints
+
       respond_to do |format|
         format.html
         format.csv do
-          send_data get_csv(@columns,  @report_instance.get_data(current_user, @generated_report))
+          send_data get_csv(@columns,  @report_instance.get_data(current_user, @generated_report)),
+                filename: "#{I18n.t(@report.class_name).parameterize.underscore}.csv", type: :text
         end
       end
     end
@@ -108,7 +114,9 @@ class Admin::ReportsController < Admin::BaseController
                                      agent_id: session[AGENT_OPTION_KEY],
                                      provider_id: session[PROVIDER_OPTION_KEY],
                                    })
-        # prevent cookie overflow
+        # Sessions are currently stored in a cookie with a 4KB limit.
+        # Rather than saving all of params[:columns] and blowing that limit
+        # just save the searchable_columns.
         cols = {}
         table.searchable_columns.each_with_index do |col, index|
           cols["#{index}"] = params[:columns]["#{index}"]
@@ -117,6 +125,30 @@ class Admin::ReportsController < Admin::BaseController
         
         render json: table
       end
+    end
+  end
+
+  def set_user_based_constraints
+    @agency = :any
+    @agency_all = true
+    @agency_id = false
+    @provider_all = true
+    @provider_id = false
+
+    return if current_user.has_role? :system_administrator
+    
+    Agency.with_role(:agency_administrator, current_user).each do |a|
+      @agency = a
+      @agency_id = a.id
+      @agency_all = false
+      @provider_id = -1
+    end
+    
+    Provider.with_role(:provider_staff, current_user).each do |p|
+      @agency = nil if @agency == :any
+      @agency_id = -1 unless @agency_id
+      @provider_all = false
+      @provider_id = p.id
     end
   end
   

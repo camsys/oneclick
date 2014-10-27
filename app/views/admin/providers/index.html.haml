@@ -6,7 +6,9 @@
     %h1= t(:providers)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
-    %h2.panel-title= t(:providers)
+    %h2.panel-title
+      = t(:providers)
+      = add_tooltip("providers_help")
   .panel-body
     %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_providers_table
       %thead

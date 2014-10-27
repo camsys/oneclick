@@ -36,6 +36,13 @@ $font-family-phone: Verdana !default;
 //trip planning review page trip itinerary chart
 $single-plan-height: 50px !default; //the height of each itinerary chart container
 
+//breadcrumb button colors
+//previous-step is same as action-button styles
+$breadcrum-current-step-bg-color: red;
+$breadcrum-current-step-font-color: white;
+$breadcrum-next-step-bg-color: white;
+$breadcrum-next-step-font-color: black;
+
 /**
  *mixins
 **/

@@ -1,8 +1,8 @@
 - temp_rating = @service.ratings.build(user: @traveler)
+- can_manage_provider =(can? :manage, :all) || ((can? :full_read, @service) && !current_user.nil? && !@service.provider.nil? && !current_user.provider.nil? && @service.provider.id == current_user.provider.id)
 -if can? :index, Service
-  .row
-    .col-sm-12
-      = link_to t(:all_services), services_path, class: 'btn btn-primary btn-arrow-left', style: 'font-weight: normal'
+  .col-sm-12
+    = link_to t(:all_services), services_path, class: 'btn action-button btn-arrow-left'
 .row.info-header
   .col-sm-5
     %h2
@@ -19,8 +19,8 @@
           %button.btn.action-button{data: {toggle: 'modal', target: "#feedback_modal", remote: new_service_rating_path(@service)}}
             = t(:feedback)
         = render partial: "ratings/organization_feedback_modal", locals: {rateable: @service}
-      - if can? :destroy, @service
-        = button_tag :type => 'button', "data-target" => "#deleteServiceConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
+      - if can_manage_provider and (can? :destroy, @service)
+        = button_tag :type => 'button', "data-target" => "#deleteServiceConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
           = t(:delete)
         #deleteServiceConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_service), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
           .modal-dialog
@@ -34,17 +34,19 @@
                     = t(:site_title)
               .modal-body{:style => "text-align:left;"}
                 = t(:confirm_remove_message) + @service.name + " ?"
-      - if can? :update, @service
+      - if can_manage_provider and (can? :update, @service)
         = link_to edit_service_path(@service), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
 .row
   = render partial: "public_details", locals: { service: @service}
 
-  -if can? :full_read, @service
+  -if can_manage_provider
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h4.panel-title= t(:internal_contact)
+          %h4.panel-title
+            = t(:internal_contact)
+            = add_tooltip("internal_contact_help")
         .panel-body
           %table.table.table-condensed
             %tr
@@ -73,12 +75,14 @@
                   = t(:user) + ": "
                 %td.text-left
                   %b= @contact.name
--if can? :full_read, @service
+-if can_manage_provider
   .row
     .col-sm-4
       .panel.panel-default.well2
         .panel-heading
-          %h4.panel-title= t(:schedule)
+          %h4.panel-title
+            = t(:schedule)
+            = add_tooltip("schedule_help")
         .panel-body
           %table.ALTtable
             %tr
@@ -100,7 +104,9 @@
     .col-sm-4
       .panel.panel-default.well2
         .panel-heading
-          %h4.panel-title= t(:advance_notice_required)
+          %h4.panel-title
+            = t(:advance_notice_required)
+            = add_tooltip("advance_notice_required_help")
         .panel-body
           -if @service.advanced_notice_minutes > 0
             =t(:service_notice_required) + " " ## TODO Interpolate
@@ -125,7 +131,9 @@
     .col-sm-4
       .panel.panel-default.well2
         .panel-heading
-          %h4.panel-title= t(:accommodations)
+          %h4.panel-title
+            = t(:accommodations)
+            = add_tooltip("accommodations_help")
         .panel-body
           -if @service.accommodations.count == 0
             = t(:no_accommodations)
@@ -138,7 +146,9 @@
     .col-sm-4
       .panel.panel-default.well1
         .panel-heading
-          %h4.panel-title= t(:eligibility)
+          %h4.panel-title
+            = t(:eligibility)
+            = add_tooltip("eligibility_help")
           = t(:eligibility_rules_descr)
         .panel-body
           - if @service.service_characteristics.count > 0
@@ -153,7 +163,9 @@
     .col-sm-4
       .panel.panel-default.well1
         .panel-heading
-          %h4.panel-title= t(:trip_purposes)
+          %h4.panel-title
+            = t(:trip_purposes)
+            = add_tooltip("trip_purposes_help")
         .panel-body
           -if @service.trip_purposes.count == 0
             = t(:no_restriction)
@@ -166,7 +178,9 @@
     .col-sm-4
       .panel.panel-default.well1
         .panel-heading
-          %h4.panel-title= t(:fare)
+          %h4.panel-title
+            = t(:fare)
+            = add_tooltip("fare_help")
         -@service.fare_structures.each do |fare|
           .panel-body
             .row_fluid
@@ -183,7 +197,7 @@
             -if fare.desc
               = fare.desc.html_safe
 
-  = render partial: 'admin/shared/show_comments', locals: {commentable: @service}
+  = render partial: 'admin/shared/show_comments', locals: {commentable: @service, can_view_private: can_manage_provider}
 
   .row
     .col-sm-12
@@ -191,7 +205,9 @@
         .panel-heading
           .row.text-center
             .col-sm-12
-              %h3.panel-title= t(:coverage_areas)
+              %h3.panel-title
+                = t(:coverage_areas)
+                = add_tooltip("coverage_areas_help")
         .panel-body
           .row
             .col-sm-6
@@ -199,7 +215,9 @@
               - ['endpoints', 'coverages'].each do |rule|
                 .panel.panel-default
                   .panel-heading
-                    %h4.panel-title= t(rule)
+                    %h4.panel-title
+                      = t(rule)
+                      = add_tooltip("#{rule}_help")
                   .panel-body
                     - if rule == 'endpoints' and @service.service_coverage_maps.where(rule: 'endpoint_area').count == 0 and not @service.endpoint_area_geom.nil?
                       =t(:geometry_defined_by_shapefile)
@@ -222,7 +240,9 @@
             .col-sm-6.text-center
               .panel.panel-default
                 .panel-heading
-                  %h4.panel-title= t(:service_area_map)
+                  %h4.panel-title
+                    = t(:service_area_map)
+                    = add_tooltip("service_area_map_help")
                 .panel-body
 
                   = LeafletMap({ :mapid => "lmap_" + "endpoint_area", :multipolygons => @polylines,

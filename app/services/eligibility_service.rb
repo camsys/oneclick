@@ -41,7 +41,7 @@ class EligibilityService
         service_requirement = service_characteristic_map.characteristic
 
         passenger_characteristic = user_profile.user_characteristics.where(
-        characteristic: service_requirement.linked_characteristic || service_requirement).first
+        characteristic: service_requirement || service_requirement.linked_characteristic).first
 
         #This passenger characteristic is not listed
         unless passenger_characteristic and not(passenger_characteristic.value.blank?)
@@ -61,22 +61,41 @@ class EligibilityService
           next
         end
 
+        is_age_by_yob = false # whether age is calculated based on year_of_birth, also, if age == service_char.value
+                              # in this case, we dont know whether eligible or not
+        if service_requirement.code == 'age' and !service_characteristic_map.value.blank? and passenger_characteristic and passenger_characteristic.characteristic.code == 'age' and !passenger_characteristic.value.blank? and service_characteristic_map.value == passenger_characteristic.value
+          dob_passenger_char = user_profile.user_characteristics.where( characteristic: passenger_characteristic.characteristic.linked_characteristic).first
+          if !dob_passenger_char.value.blank? and dob_passenger_char.value.to_s.split('-').length <3
+            is_age_by_yob =  true
+            group_match_score += 0.25
+            if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE
+              group_missing_information_text_list << 'persons ' + service_characteristic_map.value.to_s + ' years or older'
+              group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
+            elsif service_characteristic_map.rel_code == LT or service_characteristic_map.rel_code == LE
+              group_missing_information_text_list << 'persons ' + service_characteristic_map.value.to_s + ' years or younger'
+              group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
+            end
+          end
+        end
+
         # Passenger does have a value for the characteristic, so test it
-        begin
-          unless passenger_characteristic.meets_requirement(service_characteristic_map)
-            group_eligible = false
-            break
+        unless is_age_by_yob
+          begin
+            unless passenger_characteristic.meets_requirement(service_characteristic_map)
+              group_eligible = false
+              break
+            end
+          rescue StandardError
+            group_match_score += 0.25
+            if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE
+              group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or older\n'
+              group_missing_info << service_requirement.for_missing_info(service, group, 'age')
+            elsif service_characteristic_map.rel_code == LT or service_characteristic_map.rel_code == LE
+              group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or younger\n'
+              group_missing_info << service_requirement.for_missing_info(service, group, 'age')
+            end
+            next
           end
-        rescue StandardError
-          group_match_score += 0.25
-          if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE
-            group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or older\n'
-            group_missing_info << service_requirement.for_missing_info(service, group, 'age')
-          elsif service_characteristic_map.rel_code == LT or service_characteristic_map.rel_code == LE
-            group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or younger\n'
-            group_missing_info << service_requirement.for_missing_info(service, group, 'age')
-          end
-          next
         end
       end  # service_characteristic_maps.each do
 

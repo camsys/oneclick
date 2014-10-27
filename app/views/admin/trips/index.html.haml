@@ -5,6 +5,8 @@
     %h1=t(:trips)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
-    %h2.panel-title= t(:trips)
+    %h2.panel-title
+      = t(:trips)
+      = add_tooltip("trips_help")
   .panel-body
     = render partial: "trips/trips_display_table", locals: {trips: @trips, traveler: @traveler, show_username: true}

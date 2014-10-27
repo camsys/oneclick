@@ -23,8 +23,7 @@ gem 'figaro'
 gem 'geocoder'
 gem 'haml-rails'
 gem 'pg'
-# See https://github.com/EppO/rolify/issues/221
-gem 'rolify', git: 'https://github.com/EppO/rolify.git', ref: '0b00fa41224dc4e33b059cd0cd31cd42b022b03b'
+gem 'rolify'
 gem 'thin'
 gem 'puma'
 gem "rack-timeout"

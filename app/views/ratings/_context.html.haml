@@ -1,11 +1,12 @@
 - rateable = r.rateable
 .modal-header
   .row
-    %button.btn.action-button.pull-right{data: {dismiss: "modal"}}= t(:ok)
-.modal-body
+    %button.btn.action-button.pull-right{style: "margin-right:10px;", data: {dismiss: "modal"}}= t(:ok)
+.modal-body{style: "margin:0 10px 0 10px;"}
   .modal-title
     .pull-right= r.decorate.rating_in_stars(2)
     = rateable.to_s
+    = add_tooltip("#{rateable.to_s}_help")
   .row
     - case rateable
       - when Agency

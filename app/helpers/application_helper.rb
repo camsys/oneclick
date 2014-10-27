@@ -1,6 +1,7 @@
 module ApplicationHelper
 
   METERS_TO_MILES = 0.000621371192
+  MILE_TO_FEET = 5280
 
   include CsHelpers
   include LocaleHelpers
@@ -117,6 +118,22 @@ module ApplicationHelper
     end
   end
 
+  def exact_distance_to_words(dist_in_meters)
+    return '' unless dist_in_meters
+
+    # convert the meters to miles
+    miles = dist_in_meters * METERS_TO_MILES
+    if miles < 0.001
+      dist_str = [miles.round(4).to_s, I18n.t(:miles)].join(' ')
+    elsif miles < 0.01
+      dist_str = [miles.round(3).to_s, I18n.t(:miles)].join(' ')
+    else
+      dist_str = [miles.round(2).to_s, I18n.t(:miles)].join(' ')
+    end
+
+    dist_str
+  end
+
   def distance_to_words(dist_in_meters)
     return t(:n_a) unless dist_in_meters
 
@@ -209,6 +226,8 @@ module ApplicationHelper
       'rideshare_details'
     elsif mode_code == 'walk'
       'walk_details'
+    elsif mode_code == 'car'
+      'car_details'
     end
     return partial
   end
@@ -247,6 +266,8 @@ module ApplicationHelper
       'icon-walking-sign'
     elsif mode_code == 'drivetransit'
       'icon-bus-sign'
+    elsif mode_code == 'car'
+      'auto'
     end
     return icon_name
   end
@@ -364,4 +385,42 @@ module ApplicationHelper
       text_num
     end
   end
+
+  # non-tag locale: the key must be defined, and content is not blank
+  # tag locale: key must be defined
+  def whether_show_tranlatation_item? key
+    defined? key and
+    !Translation.where(key: key).first.nil? and
+    (I18n.locale == :tags or !Translation.where(key: key, locale: I18n.locale).first.nil?) and
+    !I18n.t(key).blank?
+  end
+
+  def translation_exists?(key_str)
+    if I18n.t(key_str).to_s.include?("translation missing")
+      return false
+    elsif I18n.t(key_str).to_s.blank?
+      return false
+    else
+      return true
+    end
+  end
+
+  def add_tooltip(key)
+    if translation_exists?(key)
+      html = '<i class="fa fa-question-circle fa-2x pull-right label-help" style="margin-top:-4px;" title data-original-title="'
+      html << t(key.to_sym)
+      html << '" aria-label="'
+      html << t(key.to_sym)
+      html << '"></i>'
+      return html.html_safe
+    end
+  end
+
+  def print_messages(obj)
+    html = '<strong>Please correct the problems below:</strong></br>'
+    line_break = '</br>'.html_safe
+    obj.object.nil? ? '' : html << obj.object.errors.full_messages.uniq.join(". #{line_break}")
+    return html.html_safe
+  end
+
 end

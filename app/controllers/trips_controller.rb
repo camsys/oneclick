@@ -56,7 +56,7 @@ class TripsController < PlaceSearchingController
     new_trip
 
     if session[:is_multi_od] == true
-      @selected_modes = [Mode.transit].concat(Mode.transit.submodes).collect{|m| m.code}
+      @selected_modes = Mode.all_transit_modes.concat(Mode.transit.submodes).collect{|m| m.code}.uniq
     end
 
     respond_to do |format|
@@ -68,10 +68,13 @@ class TripsController < PlaceSearchingController
   # showing a grid summary of each O-D trip for multi-OD trip planning
   # agent only
   def multi_od_grid
+    session[:is_multi_od] = true
     authorize! :manage, MultiOriginDestTrip
 
-    @trip = Trip.find(params[:id]) # base trip
+    @trip = Trip.find(params[:trip_id]) # base trip
+    session[:multi_od_trip_id] = session[:multi_od_trip_id] || params[:multi_od_trip_id]
     @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
+
     unless @multi_od_trip.nil?
       origin_places = @multi_od_trip.origin_places.split(';')
       dest_places = @multi_od_trip.dest_places.split(';')
@@ -80,7 +83,7 @@ class TripsController < PlaceSearchingController
         @multi_od_trip.trips = []
 
         trip_proxy = create_trip_proxy(@trip, modes: session[:modes_desired])
-
+        trip_proxy.traveler = @traveler
         origin_places.each do |origin_place|
           origin_obj = JSON.parse(origin_place)
           dest_places.each do |dest_place|
@@ -89,13 +92,13 @@ class TripsController < PlaceSearchingController
             trip_proxy.from_place = origin_obj["name"]
             trip_proxy.to_place = dest_obj["name"]
             if origin_obj["is_full"] == true
-              trip_proxy.from_place_object = origin_obj["data"]
+              trip_proxy.from_place_object = origin_obj["data"].to_json
             else
               trip_proxy.from_place_object = nil
             end
 
             if dest_obj["is_full"] == true
-              trip_proxy.to_place_object = dest_obj["data"]
+              trip_proxy.to_place_object = dest_obj["data"].to_json
             else
               trip_proxy.to_place_object = nil
             end
@@ -119,8 +122,6 @@ class TripsController < PlaceSearchingController
       end
 
       session[:multi_od_trip_edited] = false
-      Rails.logger.info @origin_place_names
-      Rails.logger.info @dest_place_names
     else
       flash.now[:alert] = I18n.t(:something_went_wrong)
     end
@@ -216,7 +217,7 @@ class TripsController < PlaceSearchingController
     respond_to do |format|
       format.html {
         if @trip.nil?
-          render :show_printer_friendly_failed 
+          render :show_printer_friendly_failed
         else
           @hide_navbar = true
           render
@@ -246,7 +247,7 @@ class TripsController < PlaceSearchingController
     end
     subject = Oneclick::Application.config.name + ' Trip Itinerary'
     UserMailer.user_trip_email(email_addresses, @trip, subject, from_email,
-      params[:email][:email_comments]).deliver
+      params[:email][:email_comments], @traveler).deliver
     notice_text = t(:email_sent_to).sub('%{email_sent_to}', email_addresses.to_sentence)
     respond_to do |format|
       format.html { redirect_to plan_user_trip_path(@trip.creator, @trip, itinids: params[:itinids], locale: I18n.locale),
@@ -299,7 +300,7 @@ class TripsController < PlaceSearchingController
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
     subject = Oneclick::Application.config.name + ' Trip Itinerary'
     UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, subject, from_email,
-      params[:email][:email_comments]).deliver
+      params[:email][:email_comments], @traveler).deliver
     notice_text = t(:email_sent_to).sub('%{email_sent_to}', email_addresses.join(', '))
     respond_to do |format|
       format.html { redirect_to user_trip_url(@trip.creator, @trip, locale: I18n.locale), :notice => notice_text  }
@@ -388,6 +389,7 @@ class TripsController < PlaceSearchingController
 
     if @trip_proxy.is_round_trip == "1"
       return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
+      @trip_proxy.return_trip_date = return_trip_time.strftime(TRIP_DATE_FORMAT_STRING)
       @trip_proxy.return_trip_time = return_trip_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
     end
 
@@ -573,13 +575,14 @@ class TripsController < PlaceSearchingController
       end
     end
 
+    session[:multi_od_trip_id] = session[:multi_od_trip_id] || params[:multi_od_trip_id]
     if !session[:multi_od_trip_id].nil?
       session[:multi_od_trip_edited] = true
-      multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
-      multi_od_trip.user = current_user
-      multi_od_trip.origin_places = params[:trip_proxy][:multi_origin_places]
-      multi_od_trip.dest_places = params[:trip_proxy][:multi_dest_places]
-      multi_od_trip.save
+      @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
+      @multi_od_trip.user = current_user
+      @multi_od_trip.origin_places = params[:trip_proxy][:multi_origin_places]
+      @multi_od_trip.dest_places = params[:trip_proxy][:multi_dest_places]
+      @multi_od_trip.save
     end
 
     respond_to do |format|
@@ -589,7 +592,7 @@ class TripsController < PlaceSearchingController
 
           if !@trip.eligibility_dependent?
             if session[:is_multi_od] == true
-              @path = multi_od_grid_user_trip_path(@traveler, @trip)
+              @path = user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
             else
               @path = user_trip_path_for_ui_mode(@traveler, @trip)
             end
@@ -654,6 +657,10 @@ class TripsController < PlaceSearchingController
       if params["modes"].length == 0
         params["modes"] = nil
       end
+    end
+
+    if params['return_arrive_depart'].nil?
+      params['return_arrive_depart'] = true
     end
 
     purpose = TripPurpose.where(code: params["purpose"]).first
@@ -986,14 +993,18 @@ protected
     #@places = create_place_markers(@traveler.places)
 
     respond_to do |format|
+      Rails.logger.info trip_proxy.to_json
       @trip = Trip.create_from_proxy(trip_proxy, current_or_guest_user, @traveler)
+      Rails.logger.info @trip.trip_places.first.name
       if @trip
         if @trip.errors.empty? && @trip.save
           @trip.reload
           if !@trip.eligibility_dependent?
             Rails.logger.info 'trip_planning multi_od? ' + session[:is_multi_od].to_s
             if session[:is_multi_od] == true
-              @path = multi_od_grid_user_trip_path(@traveler, @trip)
+              session[:multi_od_trip_id] = session[:multi_od_trip_id] || params[:multi_od_trip_id]
+              @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
+              @path = user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
             else
               @trip.create_itineraries
               @path = user_trip_path_for_ui_mode(@traveler, @trip)
@@ -1110,7 +1121,6 @@ protected
   end
 
 private
-
   # creates a trip_proxy object from form parameters
   def create_trip_proxy_from_form_params(trip_proxy_params)
     trip_proxy = TripProxy.new(trip_proxy_params)

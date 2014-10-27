@@ -1,7 +1,11 @@
 - map_type ||= 'dynamic'
 .col-xs-12.well{style: "padding: 5px;"}
-  .col-sm-12{style: "padding: 0px;"}
-    %h4= itinerary.trip_part.description
+  .col-sm-12
+    %h4
+      = itinerary.trip_part.description
+      = add_tooltip("trip_review_help")
+      :javascript
+        $(".label-help").css('margin-top', '-10px');
   = render :partial => 'trip_plan_summary_header', :locals => { :itinerary => itinerary }
   - if (not itinerary.is_mappable) || for_db
     .col-sm-12{style: "background: white; border-radius: 5px;"}

@@ -9,7 +9,7 @@
 
 .well
   = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
-    = f.error_notification
+    = f.error_notification message: print_messages(f)
     = display_base_errors resource
 
     - if @create_inline

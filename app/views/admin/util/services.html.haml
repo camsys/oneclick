@@ -8,7 +8,7 @@
 .row
   .col-sm-12
     = simple_form_for :services, url: admin_services_path, html: { class: 'form-horizontal' }, method: 'GET', wrapper: :horizontal_form  do |f|
-      = f.error_notification
+      = f.error_notification message: print_messages(f)
       .form-inputs
         = f.input :app, collection: @apps, label_method: :name, value_method: :url
         / = f.input :map_center, input_html: {value: @map_center}

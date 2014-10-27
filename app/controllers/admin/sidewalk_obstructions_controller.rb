@@ -3,10 +3,11 @@ class Admin::SidewalkObstructionsController < ApplicationController
   def index
     authorize! :read, SidewalkObstruction
     authorize! :approve, SidewalkObstruction
-    @sidewalk_obstructions = SidewalkObstruction.pending.all
+    @sidewalk_obstructions = SidewalkObstruction.non_deleted.where('removed_at IS NULL or removed_at >= ?', Time.now)
   end
 
   def approve
+    Rails.logger.info params[:approve]
     authorize! :approve, SidewalkObstruction
     parsed_feedbacks = Rack::Utils.parse_query(params[:approve]) # data serialized for AJAX call.  Must parse from query-string
     parsed_feedbacks.each do |k,v|

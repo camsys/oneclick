@@ -82,9 +82,6 @@ module TripsHelper
   def get_traveller_related_emails traveler, is_assisting
     list = []
     list << traveler.email if is_assisting
-    current_user.buddies.confirmed.each do |buddy|
-      list << buddy.email
-    end
     list << current_user.email
     list.join(",")
   end
@@ -120,7 +117,7 @@ module TripsHelper
     if tab==active_tab
       'current-page'
     elsif TABS.index(tab) < TABS.index(active_tab)
-      'btn-primary prev-page'
+      'action-button prev-page'
     else
       'next-page'
     end
@@ -137,7 +134,8 @@ module TripsHelper
     when :options
       new_user_trip_characteristic_path(@traveler, @trip)
     when :grid
-      multi_od_grid_user_trip_path(@traveler, @trip)
+      @multi_od_trip = @multi_od_trip || MultiOriginDestTrip.find(session[:multi_od_trip_id] || param[:multi_od_trip_id])
+      user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
     when :review
       user_trip_path(@traveler, @trip)
     when :plan

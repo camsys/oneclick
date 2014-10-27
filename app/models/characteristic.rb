@@ -11,11 +11,10 @@ class Characteristic < ActiveRecord::Base
   has_many :services, through: :service_characteristics
 
   belongs_to :linked_characteristic, class_name: 'Characteristic'
-  
+
   # set the default scope
   default_scope {where('characteristics.active = ?', true)}
   scope :active, -> {where(active: true)}
-  scope :enabled, -> {where('datatype != ?', 'disabled')}
   scope :personal_factors, -> {where('characteristic_type = ?', 'personal_factor')}
   scope :programs, -> {where('characteristic_type = ?', 'program')}
   scope :enabled, -> { where.not(datatype: 'disabled') }
@@ -34,19 +33,21 @@ class Characteristic < ActiveRecord::Base
     end
     list
   end
-  
+
   # builds a hash of details about a characteristic; is used by the javascript
   # client to knwo whether to ask the user for more info
   def for_missing_info(service, group, code)
     age = ''
     a = attributes
     sc = service_characteristics.where(service: service).take
-    value = case code
-    when 'age'
-      Date.today.year - sc.value.to_i
-    else
-      sc.value
-    end
+    #value = case code
+    #when 'age'
+    #  Date.today.year - sc.value.to_i
+    #else
+    #  sc.value
+    #end
+    value = sc.value
+
     operator = case code
     when 'age'
       reverse_relationship_to_symbol(sc.rel_code)
@@ -60,7 +61,7 @@ class Characteristic < ActiveRecord::Base
       a['note'] = :ask_age
       success_condition = '== true'
     end
-    
+
     options = a['datatype']=='bool' ? [{text: I18n.t(:yes_str), value: true}, {text: I18n.t(:no_str), value: false}] : nil
     {
       'question' => I18n.t(a['note'], age: age),

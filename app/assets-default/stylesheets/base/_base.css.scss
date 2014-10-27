@@ -563,6 +563,11 @@ td.left, th.left {
     padding-top: 0px;
     padding-bottom: 0px;
   }
+
+  // not print href url
+  a[href]:after {
+    content: none !important;
+  }
 }
 
 .print_map {
@@ -629,6 +634,14 @@ td.left, th.left {
   }
   + .btn {
     margin-left: -5px;
+  }
+}
+
+button[data-target='#deleteUserConfirmDialog'] {
+  margin-right: 5px;
+
+  @media screen and (max-width:1600px) and (max-height:900px) {
+    margin-right: 0;
   }
 }
 

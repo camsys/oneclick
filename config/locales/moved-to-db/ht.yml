@@ -46,6 +46,8 @@ ht:
   no_agent_with_email_address: "[ht]We can't find an agent with '%{email}' as their email address.[/ht]"
   you_ve_already_added_this_agent: '[ht]You have already added this agent.[/ht]'
   please_save_agents: '[ht]Please save agents.[/ht]'
+  already_an_agency_agent: '[ht]This user has already been added as an agent for an agency.[/ht]'
+  already_a_provider_staff: '[ht]This user has already been added as a staff for a provider.[/ht]'
   agencies: "[ht]Agencies[/ht]"
   all_agencies: "[ht]All Agencies[/ht]"
   add_new_agency: "[ht]Add a new Agency[/ht]"
@@ -116,12 +118,15 @@ ht:
   create_translation: '[ht100]Create Translation[/ht]'
   key: '[ht]Key[/ht]'
   send_by_email: '[ht]Send by email[/ht]'
+  email_footer: '[ht]Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of %{application_name}[/ht]'
+  email_thank_you: '[ht]Thank you for using  %{application_name} Software.[/ht]'
   email_sent_to: '[ht]An email was sent to %{email_sent_to}[/ht]'
   no_email_found: '[ht]No email was found[/ht]'
   send_itinerary_by_email: "[ht]Send itinerary by email[/ht]"
   send_trip_by_email: "[ht]Send trip plan by email[/ht]"
   send_follow_up_email: "[ht]Send Follow-up Email[/ht]"
   sidewalk_obstructions: "[ht]Sidewalk Obstructions[/ht]"
+  remove_sidewalk_obstructions: "[ht]Remove sidewalk obstructions[/ht]"
   sidewalk_obstructions_update:
     one: "[ht]The sidewalk obstruction has been updated[/ht]"
     other: "[ht]The sidewalk obstructions have been updated[/ht]"
@@ -273,6 +278,8 @@ ht:
   trip_parameters: '[ht]Trip Parameters[/ht]'
   eligibility_accommodation_questions: '[ht]Eligibility/Accommodation Questions[/ht]'
   splash_title: '[ht]Splash[/ht]'
+  options_page_splash: ''
+  options_page_splash_title: '[ht]Splash[/ht]'
   from: '[ht]From[/ht]'
   from_lat: '[ht]From Lat[/ht]'
   from_lon: '[ht]From Lon[/ht]'
@@ -354,6 +361,8 @@ ht:
   depart: '[ht]Depart[/ht]'
   arrive: '[ht]Arrive[/ht]'
   cost: '[ht]Cost[/ht]'
+  plus: '[ht]plus[/ht]'
+  unknown_cost: '[ht]unknown cost[/ht]'
   print: '[ht]Print[/ht]'
   chat: '[ht]Chat[/ht]'
   e_mail: '[ht]Email[/ht]'
@@ -588,6 +597,11 @@ ht:
   unknown: '[ht]Unknown[/ht]'
   not_available: '[ht]Not Available[/ht]'
   filters: '[ht]Filters[/ht]'
+  modes_filter: '[ht]Modes[/ht]'
+  fare_filter: '[ht]Fare[/ht]'
+  number_of_transfers_filter: '[ht]Number of Transfers[/ht]'
+  trip_time_filter: '[ht]Time[/ht]'
+  walk_distance_filter: '[ht]Walking Distance[/ht]'
   legends: '[ht]Legends[/ht]'
   legend: '[ht]Legend[/ht]'
   minute_abbr: '[ht]min[/ht]'

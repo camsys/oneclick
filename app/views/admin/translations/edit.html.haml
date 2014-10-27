@@ -1,7 +1,7 @@
 .row.info-header
 	.col-sm-12
 		.btns.pull-right
-			= button_tag id:'save_translation', type: 'submit', class: "btn action-button" do
+			= button_tag id:'save_translation', type: 'submit', class: "btn action-button", style: "margin-right:5px;" do
 				= t(:save)
 			= link_to t(:cancel), admin_translations_path, { class: "btn action-button" }
 		%h1 Edit A Translation
@@ -10,6 +10,7 @@
 	.panel-heading
 		%h2.panel-title
 			Translation Parameters
+			= add_tooltip("translation_parameters_help")
 	.panel-body
 		#translations_form
 			.row

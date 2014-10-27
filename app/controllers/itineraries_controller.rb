@@ -19,8 +19,6 @@ class ItinerariesController < ApplicationController
   end
 
   def create_map
-    Rails.logger.info "create_map"
-    Rails.logger.info request.headers.ai
     @trip = Trip.find(params[:trip_id])
     @itinerary = @trip.itineraries.valid.find(params[:id])
     @legs = @itinerary.get_legs

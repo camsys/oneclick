@@ -97,13 +97,16 @@ add_multi_od_places = (dir, addr_text, addr_data) ->
     return
   addr_data = addr_data || {}
   is_addr_full_object = !$.isEmptyObject(addr_data) # whether this is just a address name or full address object
+  addr_name = addr_text
+  if is_addr_full_object
+    addr_text = addr_data.full_address || addr_data.address || addr_text
   addr_obj = {
     data: addr_data,
-    name: addr_text,
+    name: addr_name,
     address: addr_text,
     lat: addr_data.lat,
     lon: addr_data.lon,
-    is_full: false
+    is_full: is_addr_full_object
   }
 
   current_place_counter = get_current_multi_od_place_counter(dir)
@@ -115,13 +118,13 @@ add_multi_od_places = (dir, addr_text, addr_data) ->
   place_marker_key = key + new_place_counter
   new_place_row_tags = "<tr place-marker-key='" + place_marker_key + "'>" +
     "<td class='address-data' style='display:none;'>" + JSON.stringify(addr_obj) + "</td>" +
-    "<td>" + addr_text + "</td>" +
+    "<td>" + addr_name + "</td>" +
     "<td class='center nowrap'><button class='btn btn-sm btn-danger delete-button'><i class='fa fa-times'></i></button></td>" +
     "</tr>"
   $('#' + dir + '_places').append new_place_row_tags
 
   $('#' + dir + '_places').attr('place-counter', new_place_counter)
-  $('#trip_proxy_' + dir + '_place').attr('last-multi-od-value', addr_text)
+  $('#trip_proxy_' + dir + '_place').attr('last-multi-od-value', addr_name)
   setTimeout (->
     $('#trip_proxy_' + dir + '_place').val('')
     return
@@ -251,7 +254,7 @@ generate_maps = (after) ->
   timer = setInterval (->
     progress = $('#prepare_print_maps .progress-bar').attr('aria-valuenow')
     if (progress=="100")
-      clearInterval(timer)    
+      clearInterval(timer)
       after()
     $.ajax
       type: 'GET'
@@ -401,7 +404,6 @@ $ ->
     return false
 
   if ($('body.trips.show_printer_friendly').length > 0)
-    console.log "Running show_printer_friendly"
     $('#prepare_print_maps').modal('show')
     generate_maps(
       ->
@@ -410,9 +412,8 @@ $ ->
       )
 
   $('#send_trip_by_email').on "shown.bs.modal", ->
-    console.log 'shown'
     generate_maps(
       ->
         $('#prepare_print_maps').hide()
-        $('#send_email_button').prop('disabled', false) 
+        $('#send_email_button').prop('disabled', false)
     )

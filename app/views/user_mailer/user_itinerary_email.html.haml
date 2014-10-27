@@ -57,10 +57,10 @@
 %table
   %tbody
     %tr
-      %td="Thank you for using " + Oneclick::Application.config.name + " Software."
+      %td=t(:email_thank_you).to_s.sub('%{application_name}', Oneclick::Application.config.name)
     %tr
-      %td= t(:do_not_reply)
+      %td=t(:do_not_reply)
     %tr
-      %td="Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of " + Oneclick::Application.config.name
- 
-  
+      %td=t(:email_footer).to_s.sub('%{application_name}', Oneclick::Application.config.name)
+
+

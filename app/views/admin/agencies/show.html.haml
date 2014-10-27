@@ -1,8 +1,8 @@
 - temp_rating = @agency.ratings.build(user: @traveler)
+- can_manage_agency =(can? :manage, :all) || ((can? :full_read, @agency) && !current_user.nil? && !current_user.agency.nil? && @agency.id == current_user.agency.id)
 - if can? :index, Agency
-  .row
-    .col-sm-12
-      = link_to t(:all_agencies), admin_agencies_path, class: 'btn btn-primary btn-arrow-left', style: 'font-weight: normal'
+  .col-sm-12
+    = link_to t(:all_agencies), admin_agencies_path, class: 'btn action-button btn-arrow-left'
 .row.info-header
   .col-sm-5
     %h1= @agency.name
@@ -20,8 +20,8 @@
           %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal", remote: new_agency_rating_path(@agency)}}
             = t(:feedback)
         = render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
-      - if can? :destroy, @agency
-        = button_tag :type => 'button', "data-target" => "#deleteAgencyConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
+      - if can_manage_agency and can? :destroy, @agency
+        = button_tag :type => 'button', "data-target" => "#deleteAgencyConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
           = t(:delete)
         #deleteAgencyConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_agency), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
           .modal-dialog
@@ -35,16 +35,18 @@
                     = t(:site_title)
               .modal-body{:style => "text-align:left;"}
                 = t(:confirm_remove_message) + @agency.name + " ?"
-      - if can? :update, @agency
+      - if can_manage_agency and can? :update, @agency
         = link_to edit_admin_agency_path(@agency), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
 .row
   = render partial: "public_details", locals: {agency: @agency}
-  - if can? :full_read, @agency
+  - if can_manage_agency
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h2.panel-title= t(:internal_contact)
+          %h2.panel-title
+            = t(:internal_contact)
+            = add_tooltip("internal_contact_help")
         .panel-body
           %table.table.table-condensed
             %tr
@@ -73,10 +75,12 @@
                   = t(:user) + ": "
                 %td.text-left
                   %b= @contact.name
-- if can? :full_read, @agency
+- if can_manage_agency
   .panel.panel-default#staff
     .panel-heading
-      %h2.panel-title= t(:staff_actions)
+      %h2.panel-title
+        = t(:staff_actions)
+        = add_tooltip("staff_actions_help")
     .panel-body
       %h3= t(:administrators)
       %table.ALTtable.table-condensed#admin_table
@@ -114,7 +118,7 @@
               %td
                 = mail_to s.email.to_s
 
-= render partial: 'admin/shared/show_comments', locals: {commentable: @agency}
+= render partial: 'admin/shared/show_comments', locals: {commentable: @agency, can_view_private: can_manage_agency}
 
 :javascript
   $(document).ready(function() {

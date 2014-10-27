@@ -467,3 +467,12 @@ $legend-height: 20px;
 .panel {
   margin-bottom: 10px;
 }
+
+th.rotate {
+  white-space: nowrap;
+  -moz-transform: rotate(-90.0deg);  /* FF3.5+ */
+  -ms-transform: rotate(-90.0deg);  /* IE9+ */
+  -o-transform: rotate(-90.0deg);  /* Opera 10.5 */
+  -webkit-transform: rotate(-90.0deg);  /* Safari 3.1+, Chrome */
+  transform: rotate(-90.0deg);  /* Standard */
+}

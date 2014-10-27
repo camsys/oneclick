@@ -131,7 +131,7 @@ namespace :oneclick do
 
     File.open(filename) do |f|
 
-      CSV.foreach(f, {:col_sep => "\t", :headers => true}) do |row|
+      CSV.foreach(f, {:col_sep => ",", :headers => true}) do |row|
 
         poi_type_name = row[13]
         if poi_type_name.blank?
@@ -149,12 +149,12 @@ namespace :oneclick do
           if Poi.exists?(name: row[3], poi_type: poi_type, city: row[6])
             puts "Possible duplicate: #{row}"
             count_possible_existing += 1
-            # next
+            next
           end
           p = Poi.new
           p.poi_type = poi_type
-          p.lon = row[1]
-          p.lat = row[2]
+          p.lon = row[2]
+          p.lat = row[1]
           p.name = row[3]
           p.address1 = row[4]
           p.address2 = row[5]
@@ -185,6 +185,7 @@ namespace :oneclick do
   end
   #THIS IS THE END
 
+  desc "Load database translations from config/locales/moved-to-db/*.yml files (idempotent)"
   task load_locales: :environment do
     Dir.glob('config/locales/moved-to-db/*').each do |file|
       puts "Loading locale file #{file}"

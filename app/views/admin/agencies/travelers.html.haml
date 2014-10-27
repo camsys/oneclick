@@ -7,7 +7,9 @@
 -if @pre_auth_travelers
   .panel.panel-default{style: 'padding: 0px;'}
     .panel-heading
-      %h2.panel-title= t(:authorized_travelers)
+      %h2.panel-title
+        = t(:authorized_travelers)
+        = add_tooltip("authorized_travelers_help")
     .panel-body
       %table.table.table-condensed.table-striped.table-bordered.table-hover#preauth_travelers_table
         %thead

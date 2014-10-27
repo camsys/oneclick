@@ -81,6 +81,8 @@ class ServicesController < ApplicationController
 
     @service.fare_structures.build
 
+    setup_comments(@service)
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @admin_provider }

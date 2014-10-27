@@ -59,7 +59,7 @@ class Ability
       end
       can :create, User
       can :read, [Provider, Service]
-      can [:index, :show], Report
+      can [:index, :show, :trips_datatable], Report
       can [:read, :update], User, agency_id: user.agency.try(:id)
       can :send_follow_up, Trip
 
@@ -100,7 +100,7 @@ class Ability
       can [:access], :admin_reports
       can [:access], :admin_feedback
 
-      can [:index, :show], Report
+      can [:index, :show, :trips_datatable], Report
       can [:read, :full_read], Provider, id: user.try(:provider_id) # full read includes add'l information.  All users can read contact info
       can [:update, :destroy], Provider, id: user.try(:provider_id), active: true
       can [:update, :show, :full_read], Service do |s|

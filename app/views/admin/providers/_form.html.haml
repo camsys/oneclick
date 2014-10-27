@@ -1,6 +1,6 @@
 = simple_form_for [:admin, @provider], html: { class: 'form-horizontal', multipart: true},
         wrapper: :horizontal_form do |f|
-  = f.error_notification
+  = f.error_notification message: print_messages(f)
   .row.info-header
     .col-sm-6
       %h1
@@ -15,7 +15,9 @@
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h4.panel-title= t(:provider_info)
+          %h4.panel-title
+            = t(:provider_info)
+            = add_tooltip("provider_info_help")
         .panel-body
           -unless @provider.logo_url.nil?
             %img{src: @provider.logo_url, style: "display: block; margin-right: auto; margin-left: auto;"}
@@ -35,7 +37,9 @@
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h4.panel-title= t(:internal_contact)
+          %h4.panel-title
+            = t(:internal_contact)
+            = add_tooltip("internal_contact_help")
         .panel-body
           = f.input :internal_contact_name
           = f.input :internal_contact_title
@@ -48,7 +52,9 @@
     .col-sm-12
       .panel.panel-default
         .panel-heading
-          %h4.panel-title= t(:staff_actions)
+          %h4.panel-title
+            = t(:staff_actions)
+            = add_tooltip("staff_actions_help")
         .panel-body
           %input{:name => "provider[staff_ids]", :type => 'hidden'}
           .row
@@ -91,7 +97,9 @@
                       .modal-flash
                       .panel.panel-default
                         .panel-heading
-                          %h2.panel-title= t(:find_staff)
+                          %h2.panel-title
+                            = t(:find_staff)
+                            = add_tooltip("find_staff_help")
                         .panel-body
                           .row
                             .col-sm-12

@@ -4,16 +4,18 @@
       %h1= t(:create)
     .col-sm-6.btns
       .pull-right
-        = button_tag type: :submit, class: 'btn action-button' do
+        = button_tag type: :submit, class: 'btn action-button', style: 'margin-right:5px;' do
           = t(:apply)
         = link_to t(:cancel), :back, class: "btn action-button"
   .row
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h2.panel-title= t(:user_information)
+          %h2.panel-title
+            = t(:user_information)
+            = add_tooltip("user_information_help")
         .panel-body
-          = f.error_notification
+          = f.error_notification message: print_messages(f)
           = display_base_errors @user
           = f.input :first_name, label: t(:first_name), :autofocus => true
           = f.input :last_name, label: t(:last_name)

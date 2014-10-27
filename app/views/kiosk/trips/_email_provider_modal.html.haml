@@ -18,7 +18,7 @@
       - if (@trip.outbound_part.selected_itinerary and @trip.outbound_part.selected_itinerary.service) or (@trip.return_part.selected_itinerary and @trip.return_part.selected_itinerary.service)
         = simple_form_for :email, url: email_provider_user_trip_path(@traveler, @trip), remote: true, html: { class: 'form-horizontal',
           id: 'send_by_email_to_provider_form' }  do |f|
-          = f.error_notification
+          = f.error_notification message: print_messages(f)
           = f.input :comments, as: :text, label: t(:comments), required: false, input_html: {rows: 3}
 
     .dark-modal-buttons

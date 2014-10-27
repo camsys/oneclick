@@ -19,10 +19,14 @@ class Agency < ActiveRecord::Base
 
   accepts_nested_attributes_for :users
 
+  scope :active, -> { where(active: true)}
+
   validates :name, :presence => true
-  
-  def self.form_collection include_all=true
-    form_collection_from_relation include_all, order(:name), false
+
+  def self.form_collection include_all=true, agency_id=false
+    relation = agency_id ? where(id: agency_id).order(:name) : order(:name)
+
+    form_collection_from_relation include_all, relation, false, true
   end
 
   def unselected_users

@@ -1,21 +1,21 @@
-.row.info-header
-  .col-sm-12
-    %h1= header
 = simple_form_for @generated_report,
         url: admin_report_path(Report.all.first.id, locale: params[:locale]),
         html: { method: 'post', id: 'report_form', class: 'form-horizontal' }  do |f|
+  .row.info-header
+    .col-sm-12
+      .btns.pull-right
+        = button_tag type: :submit, class: 'btn action-button controls' do
+          =t(:run)
+        - if @report && @report.exportable  
+          = button_tag id: 'export', class: "#{@url_for_csv ? '' : 'disabled '}btn action-button controls" do
+            =t(:export)
+      %h1= header
   .panel.panel-default{style: 'padding: 0px;'}
     .panel-heading
       %h2.panel-title
-        .btns.pull-right
-          = button_tag type: :submit, class: 'btn action-button controls' do
-            =t(:run)
-          - if @report && @report.exportable  
-            = button_tag id: 'export',
-                  class: "#{@url_for_csv ? '' : 'disabled '}btn action-button controls" do
-              =t(:export)
         %span
           = t(:reports)
+          = add_tooltip("reports_help")
     .panel-body
       .row
         .col-sm-12
@@ -26,13 +26,15 @@
             = f.input :date_range, collection: DateOption.form_collection(false),
                 include_blank: false, label: t(:date_range)
           .col-sm-2
-            = f.input :agency_id, collection: Agency.form_collection,
+            = f.input :agency_id,
+                collection: Agency.form_collection(@agency_all, @agency_id),
                 include_blank: false, label: t(:agencies)
           .col-sm-2
-            = f.input :agent_id, collection: User.agent_form_collection,
+            = f.input :agent_id, collection: User.agent_form_collection(true, @agency),
                 include_blank: false, label: t(:agents)
           .col-sm-2
-            = f.input :provider_id, collection: Provider.form_collection,
+            = f.input :provider_id,
+                collection: Provider.form_collection(@provider_all, @provider_id),
                 include_blank: false, label: t(:providers)
 
         .row#custom_dates
@@ -54,12 +56,16 @@
 
 
 :javascript
-  if ($('#generated_report_date_range')[0].selectedOptions[0].text != 'Custom...') {
-    $('#custom_dates').hide();
-  }
+  $(document).ready(function() {
+    // Note: the selectedOptions collection is not support in ie9 or ie10
+    var select = $('#generated_report_date_range')[0];
+    if (select.options[select.selectedIndex].text != 'Custom...') {
+      $('#custom_dates').hide();
+    }
+  });
 
   $('#generated_report_date_range').change(function() {
-    if(this.selectedOptions[0].text === 'Custom...') {
+    if(this.options[this.selectedIndex].text === 'Custom...') {
       $('#custom_dates').show();
     } else {
       $('#custom_dates').hide();

@@ -2,12 +2,13 @@ class UserMailer < ActionMailer::Base
   # Default sender account set in application.yml
   default from: ENV["SYSTEM_SEND_FROM_ADDRESS"]
   layout "user_mailer"
-  helper :application, :trips, :services, :users
-  
-  def user_trip_email(addresses, trip, subject, from, comments)
+  helper :application, :trips, :services, :users, :map
+
+  def user_trip_email(addresses, trip, subject, from, comments, current_user = nil)
     @trip = trip
     @from = from
     @comments = comments
+    @user = current_user
 
     mail(to: addresses, subject: subject, from: @from, reply_to: @from)
   end
@@ -41,12 +42,13 @@ class UserMailer < ActionMailer::Base
     mail(to: addresses, subject: subject, from: @from)
   end
 
-  def user_itinerary_email(addresses, trip, itinerary, subject, from, comments)
+  def user_itinerary_email(addresses, trip, itinerary, subject, from, comments, current_user = nil)
     @trip = trip
     @from = from
     @itinerary = itinerary
     @legs = @itinerary.get_legs
     @comments = comments
+    @user = current_user
 
     mail(to: addresses, subject: subject, from: @from)
   end
@@ -61,7 +63,7 @@ class UserMailer < ActionMailer::Base
   def buddy_revoke_email(to_email, from_email)
     @to_email = to_email
     @from_email = from_email
-    
+
     # TODO localize
     mail(to: @to_email, subject: t(:one_click_buddy_revoke_from_from_email, by: @from_email))
   end
@@ -69,7 +71,7 @@ class UserMailer < ActionMailer::Base
   def traveler_confirmation_email(to_email, from_email)
     @to_email = to_email
     @from_email = from_email
-    
+
     # TODO localize
     mail(to: @to_email, subject: t(:one_click_traveler_confirmation_from_from_email, by: @from_email))
   end
@@ -77,7 +79,7 @@ class UserMailer < ActionMailer::Base
   def traveler_decline_email(to_email, from_email)
     @to_email = to_email
     @from_email = from_email
-    
+
     # TODO localize
     mail(to: @to_email, subject: t(:one_click_traveler_decline_by_from_email, by: @from_email))
   end
@@ -85,7 +87,7 @@ class UserMailer < ActionMailer::Base
   def traveler_revoke_email(to_email, from_email)
     @to_email = to_email
     @from_email = from_email
-    
+
     # TODO localize
     mail(to: @to_email, subject: t(:one_click_traveler_revoke_by_from_email, by: @from_email))
   end

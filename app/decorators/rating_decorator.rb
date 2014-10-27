@@ -16,7 +16,25 @@ class RatingDecorator < Draper::Decorator
     h.to_stars(value, size)
   end
 
-  # For Ratings Report
+  ## For Ratings Report
+  # Text only rating
+  def rating(noblanks = true)
+    if value.eql? Rating::DID_NOT_TAKE
+      return I18n.t(:untaken_trip)
+    end
+    text = ""
+    for i in 1..5
+      if i <= value
+        text << "* "
+      else
+        unless noblanks
+          text << "° "
+        end
+      end
+    end
+    text
+  end
+
   def username
     user.name
   end

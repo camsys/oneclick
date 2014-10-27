@@ -22,8 +22,9 @@ class Provider < ActiveRecord::Base
   before_validation :check_url_protocol
   validates :name, presence: true, length: { maximum: 128 }
 
-  def self.form_collection include_all=true
-    form_collection_from_relation include_all, order(:name), false
+  def self.form_collection include_all=true, provider_id=false
+    relation = provider_id ? where(id: provider_id).order(:name) : order(:name)
+    form_collection_from_relation include_all, relation, false, true
   end
   
   def internal_contact

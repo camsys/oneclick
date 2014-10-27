@@ -1,7 +1,14 @@
 = simple_form_for([:admin, @agency]) do |f|
-  = f.error_notification
+  = f.error_notification message: print_messages(f)
 
   .form-inputs
     = f.input :name, label: t(:name)
+    - if translation_exists?("name_help")
+          :javascript
+            addHelperTooltip('#name_label', "#{t(:name_help)}");
+
     = f.association :parent, collection: @agency.possible_parents, label: t(:parent)
+    - if translation_exists?("agency_parent_help")
+          :javascript
+            addHelperTooltip('#parent_id_label', "#{t(:agency_parent_help)}");
 

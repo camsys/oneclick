@@ -47,13 +47,15 @@ module LeafletHelper
     street_view_url = options[:street_view_url] ? options[:street_view_url] : STREET_VIEW_URL
     show_location_select = options[:show_location_select] || SHOW_LOCATION_SELECT
     zoom_animation = options[:zoom_animation] || ZOOM_ANIMATION
-    show_sidewalk_feedback = (options[:show_sidewalk_feedback] || SHOW_SIDEWALK_FEEDBACK) if SidewalkObstruction.sidewalk_obstruction_on?
+    show_sidewalk_feedback = options[:show_sidewalk_feedback] || SHOW_SIDEWALK_FEEDBACK
+    sidewalk_feedback_editing_enabled = SidewalkObstruction.sidewalk_obstruction_on?
     if current_user.nil? #only for signed user
-      show_sidewalk_feedback = false
+      sidewalk_feedback_editing_enabled = false
     end
 
     if show_sidewalk_feedback
       sidewalk_feedback_options = {
+        editing_enabled: sidewalk_feedback_editing_enabled,
         submit_feedback_url: user_sidewalk_obstructions_path({:user_id => current_or_guest_user.id}),
         approve_feedback_url: approve_user_sidewalk_obstructions_path({:user_id => current_or_guest_user.id}),
         reject_feedback_url: reject_user_sidewalk_obstructions_path({:user_id => current_or_guest_user.id}),

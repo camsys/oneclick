@@ -6,7 +6,7 @@
     .col-sm-6.btns
       - if can? :update, @agency
         .pull-right
-          = button_tag type: 'submit', class: "btn action-button" do
+          = button_tag type: 'submit', class: "btn action-button", style: "margin-right:5px;" do
             = icon_label(:apply)
           = link_to admin_agency_path(@agency), class: 'btn action-button', role: 'button' do
             = icon_label(:cancel)
@@ -15,7 +15,9 @@
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h4.panel-title= t(:contact_info)
+          %h4.panel-title
+            = t(:contact_info)
+            = add_tooltip("contact_info_help")
         .panel-body
           = f.input :address
           = f.input :city, label: "#{t(:city)}/#{t(:state)}/#{t(:zip)}",
@@ -31,7 +33,9 @@
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h4.panel-title= t(:internal_contact)
+          %h4.panel-title
+            = t(:internal_contact)
+            = add_tooltip("internal_contact_help")
         .panel-body
           = f.input :internal_contact_name
           = f.input :internal_contact_title
@@ -42,7 +46,9 @@
 
   .panel.panel-default
     .panel-heading
-      %h4.panel-title= t(:staff_actions)
+      %h4.panel-title
+        = t(:staff_actions)
+        = add_tooltip("staff_actions_help")
     .panel-body
       .col-sm-6
         %b
@@ -89,7 +95,9 @@
                     .modal-flash
                     .panel.panel-default
                       .panel-heading
-                        %h2.panel-title= t(:find_agent)
+                        %h2.panel-title
+                          = t(:find_agent)
+                          = add_tooltip("find_agent_help")
                       .panel-body
                         .row
                           .col-sm-12

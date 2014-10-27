@@ -7,6 +7,7 @@ class Itinerary < ActiveRecord::Base
 
   # Callbacks
   after_initialize :set_defaults
+  before_save :clear_walk_time
 
   # Associations
   belongs_to :trip_part
@@ -49,6 +50,13 @@ class Itinerary < ActiveRecord::Base
   def is_walk
     legs = get_legs(false)
     return legs.size == 1 && legs.first.mode == Leg::TripLeg::WALK
+  end
+
+  # return true if this itinerary is a car-only trip. These are a special case of transit
+  # trips that only include a CAR leg
+  def is_car
+    legs = get_legs(false)
+    return legs.size ==1 && legs.first.mode == Leg::TripLeg::CAR
   end
 
   # returns true if this itinerary is a bicycle-only trip. These are a special case of Transit
@@ -170,6 +178,13 @@ class Itinerary < ActiveRecord::Base
   end
 
   protected
+
+  #OTP is setting drive time as walk time.  This is a temporary work-around
+  def clear_walk_time
+    if self.is_car
+      self.walk_time = 0
+    end
+  end
 
   # Set resonable defaults for a new itinerary
   def set_defaults
