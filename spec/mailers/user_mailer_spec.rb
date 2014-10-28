@@ -10,7 +10,7 @@ describe UserMailer do
     	## assertions have to be stacked here instead of placed in their own tests for stupid rspec syntax reasons (cannot nest "it"s)
         mail.subject.should == 'Testing Subject'
         mail.to.should == ["amagil@camsys.com", 'example2@example.com']
-        mail.from.should == ['test@camsys.com']
+
       end
     end
 
@@ -21,9 +21,6 @@ describe UserMailer do
     	 end
     	 it 'emails the right to' do
     	 	mail.to.should == ['example2@example.com']
-    	 end
-    	 it 'emails the right from' do
-    	 	mail.from.should == ['test@camsys.com']
     	 end
     	end
 end

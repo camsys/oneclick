@@ -14,8 +14,6 @@
         - if user_signed_in?
           - if assisting?
             = f.input :send_to_traveler, as: :boolean, label: t(:send_to_traveler)
-        - else
-          = f.input :from, label: t(:from), required: false
         = f.input :provider, label: t(:provider_name), required: false, disabled: true, :input_html => { :value => @service.provider.name }
         = f.input :service, label: t(:service), required: false, disabled: true, :input_html => { :value => @service.name }
         = f.input :email_addresses, label: t(:email), required: false, disabled: true, :input_html => { :value => @service.provider.email}

@@ -5,7 +5,7 @@ env:
     secure:
 branches:
   only:
-  - develop
+  - v1.0
 before_script:
 - pwd
 - ls -a
@@ -40,21 +40,21 @@ deploy:
     app: oneclick-arc-int
     on:
       repo: camsys/oneclick
-      branch: develop
+      branch: v1.0
   - provider: heroku
     api_key:
       secure: F0EpkR4MF0qS6LFtK4mQo7gI6MeodybR+S+RzJjFUWDMyZ3MgHqmt0t1ueAlfB9B/6wkmZXf3P/Kt2keudwWCXK+Upyjie6XX9Or3CMNlvs/VdTFk0a7A9mJHuDJqZEnSTPp1wGDqNh+KVYfS4G2DQV+FazShimuHveAq30nfR0=
     app: oneclick-pa-int
     on:
       repo: camsys/oneclick
-      branch: develop
+      branch: v1.0
   - provider: heroku
     api_key:
       secure: F0EpkR4MF0qS6LFtK4mQo7gI6MeodybR+S+RzJjFUWDMyZ3MgHqmt0t1ueAlfB9B/6wkmZXf3P/Kt2keudwWCXK+Upyjie6XX9Or3CMNlvs/VdTFk0a7A9mJHuDJqZEnSTPp1wGDqNh+KVYfS4G2DQV+FazShimuHveAq30nfR0=
     app: oneclick-ieuw-int
     on:
       repo: camsys/oneclick
-      branch: develop
+      branch: v1.0
   api_key:
     secure: T+mKqCqC0e4RqjbcxjPLLX6O1OSOoQ056l2fucWuFUng+iv0fn/rPTnZaoMnkP7Ca84gpFeOR1mm7z5z0N6EHRXZILGE4WIokQfxuVkd3kcAnm+j7C3O3AYW2cSENxPRnECxfq2/Q1m2ttGw7jsRqrLawBUYYiIcZDRb7d/J+QI=
 after_deploy:

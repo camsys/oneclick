@@ -18,7 +18,6 @@
           - if user_signed_in?
             = f.input :email_addresses, label: t(:to), required: true, hint: t(:email_hint), :input_html => { :value => get_traveller_related_emails(@traveler, is_assisting)}
           - else
-            = f.input :from, label: t(:from), required: false
             = f.input :email_addresses, label: t(:to), required: true, hint: t(:email_hint)
           = f.input :email_comments, as: :text, label: t(:comments), required: false, input_html: {rows: 3}
 
