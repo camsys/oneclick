@@ -48,14 +48,14 @@ class EligibilityService
           group_match_score += 0.25
           if service_requirement.code == 'age'
             if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE
-              group_missing_information_text_list << 'persons ' + service_characteristic_map.value.to_s + ' years or older'
+              group_missing_information_text_list << 'age_min' + service_characteristic_map.value.to_s
               group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
             elsif service_characteristic_map.rel_code == LT or service_characteristic_map.rel_code == LE
-              group_missing_information_text_list << 'persons ' + service_characteristic_map.value.to_s + ' years or younger'
+              group_missing_information_text_list << 'age_max' + service_characteristic_map.value.to_s
               group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
             end
           else
-            group_missing_information_text_list << service_requirement.desc
+            group_missing_information_text_list << service_requirement.code + "_missing_info"
             group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
           end
           next
@@ -99,16 +99,7 @@ class EligibilityService
         end
       end  # service_characteristic_maps.each do
 
-      group_missing_information_text = case group_missing_information_text_list.size
-      when 0
-        ''
-      when 1
-        group_missing_information_text_list.first
-      when 2
-        group_missing_information_text_list.join(', and ')
-      else
-        [group_missing_information_text_list[0..-2].join(', '), group_missing_information_text_list[-1]].join(', and ')
-      end
+      group_missing_information_text = group_missing_information_text_list.join(',')
 
       if group_eligible
         is_eligible = true
@@ -121,16 +112,7 @@ class EligibilityService
 
     end # groups.each do
 
-    missing_information_text = case missing_information_text_list.size
-    when 0
-      ''
-    when 1
-      missing_information_text_list.first
-    when 2
-      missing_information_text_list.join(' or ')
-    else
-      [missing_information_text_list[0..-2].join(', '), missing_information_text_list[-1]].join(' or ')
-    end
+    missing_information_text = missing_information_text_list.join(':')
 
     if is_eligible
       #Create itinerary

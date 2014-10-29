@@ -4,6 +4,7 @@
 # TODO may want to eventually split these out into separate files
 
 ht:
+  this_service_is_for: "This service is intended for"
   only_agency_can_see: "Only %{agency} staff can see this note."
   traveler_notes: "Traveler Notes"
   base_rate: "Base Fare"

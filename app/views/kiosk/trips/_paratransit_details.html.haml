@@ -6,17 +6,28 @@
   - if itinerary.missing_information
     %h4
       %i.icon.icon-question-sign
-      This service is intended for
-      / not sure how to handle that...
-      - count = 0
-      - itinerary.missing_information_text.split('\n').each do |info|
-        - count += 1
-        - if itinerary.missing_information_text.split('\n').count - 1 == count
-          = info + ' and '
-        - elsif itinerary.missing_information_text.split('\n').count == count
-          = info + '.'
-        - else
-          = info + ','
+      =t(:this_service_is_for)
+      %ul
+        -itinerary.missing_information_text.split(':').each do |info|
+          %li
+            -count = 0
+            -info.split(',').each do |i|
+              - count += 1
+              - if info.split(',').count - 1 == count
+                -if i[0,7] == "age_max" or i[0,7] == "age_min"
+                  = t(i[0,7], age: i[7..-1]) + ' ' + t(:and) + ' '
+                -else
+                  = t(i) + ' ' + t(:and) + ' '
+              - elsif info.split(',').count == count
+                -if i[0,7] == "age_max" or i[0,7] == "age_min"
+                  = t(i[0,7], age: i[7..-1])
+                -else
+                  = t(i)
+              - else
+                -if i[0,7] == "age_max" or i[0,7] == "age_min"
+                  = t(i[0,7], age: i[7..-1]) + ','
+                -else
+                  = t(i) + ','
 
   -if itinerary.accommodation_mismatch
     %h4

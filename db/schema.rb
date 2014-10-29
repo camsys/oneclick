@@ -426,6 +426,20 @@ ActiveRecord::Schema.define(version: 20141015031219) do
     t.datetime "updated_at"
   end
 
+  create_table "temp_translations", id: false, force: true do |t|
+    t.integer  "id"
+    t.string   "key"
+    t.text     "interpolations"
+    t.boolean  "is_proc"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "locale"
+    t.text     "value"
+    t.boolean  "is_html"
+    t.boolean  "complete"
+    t.boolean  "is_list"
+  end
+
   create_table "translations", force: true do |t|
     t.string   "key"
     t.text     "interpolations"

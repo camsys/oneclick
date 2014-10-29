@@ -1,6 +1,7 @@
 # Spanish
 
 es:
+  this_service_is_for: "Este servicio está destinado a"
   only_agency_can_see: "Only %{agency} staff can see this note."
   traveler_notes: "Traveler Notes"
   base_rate: "Base Fare"
