@@ -24,6 +24,25 @@ module EligibilityHelpers
     end
   end
 
+  def selected_option(user)
+    characteristics = user.user_characteristics.where(characteristic_id: self.id)
+    accommodations = user.user_accommodations.where(accommodation_id: self.id)
+
+    if self.class == Characteristic
+      if characteristics.empty?
+        UserProfileProxy::PARAM_NOT_SET
+      else
+        characteristics.first.value
+      end
+    else
+      if accommodations.empty?
+        UserProfileProxy::PARAM_NOT_SET
+      else
+        accommodations.first.value
+      end
+    end
+  end
+
 end
 
 

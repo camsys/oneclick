@@ -14,11 +14,7 @@
                   :javascript
                     $('.inline-radio .label-help').removeClass('fa-2x');
                 .col-sm-5
-                  .char-group
-                    .btn-group.characteristic{data: {attribute: item.code}}
-                      - [['true', t(:yes_str)], ['false', t(:no_str)], [UserProfileProxy::PARAM_NOT_SET, t(:not_sure_str)]].each do |v, s|
-                        %button.btn.characteristics-option-button{type: 'button', value: v, class: active_button(f, item, v), title: t(item.note), aria: {label: "#{s}. #{t(item.note)}"}}= s
-                    = f.input_field item.code.to_sym, as: :hidden, id: item.code
+                  = f.input item.code.to_sym, id: item.code, :collection =>  [[t(:yes_str), 'true'], [t(:no_str), 'false'], [t(:not_sure_str), UserProfileProxy::PARAM_NOT_SET]], :selected => item.selected_option(@traveler), input_html: { class: 'form-control' }, label: false
             - else
               = f.input item.code.to_sym, label: t(item.note)
               - if translation_exists?("#{item.code}_help")
