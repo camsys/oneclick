@@ -2,10 +2,10 @@
   #publicNav.navbar.navbar-default.navbar-fixed-top{:role => "navigation", aria: {label: "Header"}}
     .container{:style => 'width:98%;padding-right:0;'}
       #navHeader
-        %a.navbar-brand{:href => root_url, :style => 'padding: 0px;'}
+        %a.navbar-brand{:href => root_url, :style => 'padding: 0px;', tabindex: "1"}
           %img.img-responsive.pull-left{:id => 'logo', :src => "#{get_logo_path}", :alt => "#{get_logo_text}"}
         .pull-right
-          %a#help{:href => root_url + "/content/faq"}
+          %a#help{:href => root_url + "/content/faq", tabindex: "5"}
             %i.fa.fa-question-circle
             %span.sr-only Help
         %button.navbar-toggle{"data-target" => "#userMenuNavbar", "data-toggle" => "collapse", :type => "button"}
@@ -24,7 +24,7 @@
               = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => staff_actions, :title => t(:staff_actions) }
           - if user_signed_in?
             %li#userDropdown.dropdown
-              %a.dropdown-toggle{"href" => "#", "data-target" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true'}
+              %a.dropdown-toggle{"href" => "#", "data-target" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true', tabindex: "4"}
                 %i.fa.fa-user
                 - unless is_assisting
                   = "#{t(:welcome)}, #{get_traveler.welcome}"
@@ -35,7 +35,7 @@
                 = render partial: 'menu_item', collection: traveler_actions(with_logout: true)
           - else
             %li#userDropdown.dropdown
-              %a.dropdown-toggle{"href" => "#", "data-target" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true'}
+              %a.dropdown-toggle{"href" => "#", "data-target" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true', tabindex: "4"}
                 %i.fa.fa-user
                 = "#{t(:welcome)}, #{t(:visitor)}"
                 %b.caret
