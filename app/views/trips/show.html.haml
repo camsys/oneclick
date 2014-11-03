@@ -3,9 +3,9 @@
 .row
   .col-sm-12
     .pull-right
-      = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;" do
+      = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;", tabindex: "7" do
         = t(:feedback)
-      = button_tag :type => 'button', :name => "planButton", :class => "btn action-button" do
+      = button_tag :type => 'button', :name => "planButton", :class => "btn action-button", tabindex: "8" do
         =t(:next)
     = render partial: 'shared/trip_plan_breadcrumbs'
 

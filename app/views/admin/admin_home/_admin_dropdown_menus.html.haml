@@ -1,4 +1,4 @@
-%a.dropdown-toggle{"href" => "#", "data-target" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true'}
+%a.dropdown-toggle{"href" => "#", "data-target" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true', tabindex: "#{available_actions == admin_actions ? "2" : "3"}"}
   %i.fa.fa-wrench
   =title
   %b.caret

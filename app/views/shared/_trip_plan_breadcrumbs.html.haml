@@ -6,7 +6,7 @@
       - t = t.to_sym
       %li.btn.btn-default.btn-arrow-right{class: breadcrumb_class(t)}<
         - if breadcrumb_tab_navigable(t)
-          = link_to breadcrumb_path(t) do
+          = link_to breadcrumb_path(t), tabindex: "6" do
             = t(t)
         - else
           = t(t)

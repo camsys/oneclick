@@ -330,6 +330,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
             executeWhenDataReady();
 
+            $('#transferSlider > .ui-slider-handle').attr('tabindex', '11');
+            $('#costSlider > .ui-slider-handle').attr('tabindex', '12');
+            $('#durationSlider > .ui-slider-handle').attr('tabindex', '13');
+            $('#walkDistSlider > .ui-slider-handle').attr('tabindex', '14');
+
         }
     }
 
@@ -1209,7 +1214,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             localeDictFinder['arriving_by'] + ' ' + formatDate(tripEndTime)  + ' ' + formatTime(tripEndTime);
         //var headerAriaLabel = tripDescription + "; " + tripDatetimeDescritpion;
         //trip description
-        var tripDescTag = "<div class='panel-heading'><h2 class='panel-title'>" + addReviewTooltip(inlineHelperKey) + tripDescription + "</h2></div>";
+        var tripDescTag = "<div class='panel-heading'><h2 class='panel-title' tabindex='15'>" + addReviewTooltip(inlineHelperKey) + tripDescription + "</h2></div>";
 
         var tickLabelTags = getTickLabelHtmlTags(tickLabels);
 
@@ -1650,7 +1655,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             if ($('#' + legendContainerId).length === 0) {
                 var legendPanelTags =
                     "<div id='" + legendContainerId + "' class='panel panel-default col-xs-12 hidden-xs-sm' style='padding: 0px;'>" +
-                    "<div class='panel-heading'><h2 class='panel-title legend-label'>" + addReviewTooltip("legend_help")+ localeDictFinder['legend'] + "</h2></div>" +
+                    "<div class='panel-heading'><h2 class='panel-title legend-label' tabindex='9'>" + addReviewTooltip("legend_help")+ localeDictFinder['legend'] + "</h2></div>" +
                     "<div class='panel-body'></div>";
                 $('#' + accessoryContainerId).append(legendPanelTags);
             }
@@ -1791,7 +1796,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 modeFilterTags +=
                     "<div class = 'col-sm-12 panel panel-default' style='padding: 0px;'>" +
                     "<div class = 'panel-heading'>" +
-                    "<h2 class='panel-title modes-label'>" + addReviewTooltip("modes_help") +  localeDictFinder['modes'] + "</h2>" +
+                    "<h2 class='panel-title modes-label' tabindex='10'>" + addReviewTooltip("modes_help") +  localeDictFinder['modes'] + "</h2>" +
                     "</div>" +
                     "<div class='panel-body' id='" + modeContainerId + "'>";
                 isFirstMode = false;
@@ -1834,7 +1839,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var modeTag =
             '<div class="checkbox" style="margin:0px 0px 0px 10px;">' +
             '<label>' +
-            '<input type="checkbox" checked=true value="' + mode + '">' +
+            '<input type="checkbox" checked=true tabindex="10" value="' + mode + '">' +
             mode +
             '</label>' +
             '</div>';
@@ -1853,7 +1858,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<h2 class="panel-title num-transfers-label">' + addReviewTooltip("number_of_transfers_help") + localeDictFinder['number_of_transfers'] + '</h2>' +
+                '<h2 class="panel-title num-transfers-label" tabindex="11">' + addReviewTooltip("number_of_transfers_help") + localeDictFinder['number_of_transfers'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div role="slider" id="' + transferSliderId + '" aria-valuemin="' + minTransfer + '" aria-valuemax="' + maxTransfer + '">' +
@@ -1916,7 +1921,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<h2 class="panel-title fare-label">' + addReviewTooltip("fare_help") + localeDictFinder['fare'] + '</h2>' +
+                '<h2 class="panel-title fare-label" tabindex="12">' + addReviewTooltip("fare_help") + localeDictFinder['fare'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div role="slider" id="' + costSliderId + '" aria-valuemin="' + minCost + '" aria-valuemax="' + maxCost + '">' +
@@ -1980,7 +1985,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<h2 class="panel-title trip-time-label">' + addReviewTooltip("trip_time_help") + localeDictFinder['trip_time'] + '</h2>' +
+                '<h2 class="panel-title trip-time-label" tabindex="13">' + addReviewTooltip("trip_time_help") + localeDictFinder['trip_time'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div role="slider" id="' + durationSliderId + '" aria-valuemin="' + minDuration + '" aria-valuemax="' + maxDuration + '">' +
@@ -2045,7 +2050,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<h2 class="panel-title walk-dist-label">' + addReviewTooltip("walk_dist_help") + localeDictFinder['walk_dist'] + '</h2>' +
+                '<h2 class="panel-title walk-dist-label" tabindex="14">' + addReviewTooltip("walk_dist_help") + localeDictFinder['walk_dist'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div role="slider" id="' + walkDistSliderId + '" aria-valuemin="' + minWalkDist + '" aria-valuemax="' + maxWalkDist + '">' +
