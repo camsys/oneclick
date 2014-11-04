@@ -1,6 +1,6 @@
 - i = itinerary
 .row.col-sm-12{style: "background: white; margin: 0px 0px 5px 0px; border-radius: 5px;"}
-  %table{style: "width: 100%"}
+  %table{style: "width: 100%", aria: {label: "Your #{t(i.mode)} trip on #{i.date_in_words} will last #{i.duration_in_words}, from #{i.time_range_in_words}, and will cost #{i.cost_in_words}. Total walk time is #{i.walking_time}, with #{i.transfers_in_words} transfers."}}
     %thead
       %tr
         %th.sr-only= t(:mode)
