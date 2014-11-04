@@ -314,10 +314,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         $(".single-plan-chart-container, .trip-mode-cost").tooltip({
             'html': true,
-            'container': 'body'
+            'container': 'body',
+            'trigger': 'hover focus'
         });
 
-        $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body' });
+        $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body', 'trigger': 'hover focus' });
     }
 
     function checkLoadingMask() {
@@ -2872,7 +2873,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         return '<i class="fa fa-question-circle fa-2x pull-right label-help"' +
             'style="margin-top:-4px;" data-original-title="' + text +
-            '" aria-label="' + text + '"></i>';
+            '" aria-label="' + text + '" tabindex="0"></i>';
     }
 
     function addReviewTooltip(key) {

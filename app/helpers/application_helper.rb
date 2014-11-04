@@ -411,7 +411,7 @@ module ApplicationHelper
       html << t(key.to_sym)
       html << '" aria-label="'
       html << t(key.to_sym)
-      html << '"></i>'
+      html << '" tabindex="0"></i>'
       return html.html_safe
     end
   end
