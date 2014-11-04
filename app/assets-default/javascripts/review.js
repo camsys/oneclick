@@ -775,7 +775,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             var tripTags = "<div id='" + tripPartDivId + "'class='col-xs-12 well single-trip-part' data-trip-id='" + tripId + "'>";
 
             //process header
-            var tripHeaderTags = addTripHeaderHtml(trip.description, tickLabels, intervalStep, isDepartAt, tripStartTime, tripEndTime, inlineHelperKey);
+            header = trip.description.split(' ')[0];
+            var tripHeaderTags = addTripHeaderHtml(header, tickLabels, intervalStep, isDepartAt, tripStartTime, tripEndTime, inlineHelperKey, trip.description_without_direction);
             tripTags += tripHeaderTags;
 
             //process each trip plan
@@ -1208,7 +1209,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {datetime} tripEndTime: trip part end time
      * @param {string} tripHeaderTags: html tags of the whole trip header
      */
-    function addTripHeaderHtml(tripDescription, tickLabels, intervelStep, isDepartAt, tripStartTime, tripEndTime, inlineHelperKey) {
+    function addTripHeaderHtml(tripDescription, tickLabels, intervelStep, isDepartAt, tripStartTime, tripEndTime, inlineHelperKey, tripDescriptionWithoutDirection) {
         var tripDatetimeDescritpion = isDepartAt ?
             localeDictFinder['departing_at'] + ' ' + formatDate(tripStartTime) + ' ' + formatTime(tripStartTime) :
             localeDictFinder['arriving_by'] + ' ' + formatDate(tripEndTime)  + ' ' + formatTime(tripEndTime);
@@ -1232,9 +1233,12 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             '</select>';
 
         var tripHeaderTags = tripDescTag +
-            "<div class='col-xs-12 single-plan-header'>" +
+            "<div class='col-xs-12 single-plan-header' style='background-color:white;'>" +
+            "<div class='text-center' style='font-weight:500;'>" + 
+            tripDescriptionWithoutDirection + 
+            "</div>" +
             "<div class='col-xs-12' style='padding:5px 0px;'>" +
-            sorterLabelTags + sorterTags +
+            sorterLabelTags + sorterTags +            
             "</div>" +
             "<div class='col-xs-12' style='padding:0px;'>" +
             "<div class='trip-plan-first-column' style='padding: 0px; vertical-align: top;'>" +
