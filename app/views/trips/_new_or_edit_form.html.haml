@@ -138,18 +138,18 @@
           #returnDatetimeOptions{style: (@trip_proxy.is_round_trip ? '' : 'display: none;')}
             .form-group
               = render partial: 'date_time_input', locals: {dir: 'return', f: f}
-          .hidden-xs.hidden-sm{id: "tripMapContainer", 'aria-hidden' => 'true', class: 'hide', style: 'position: absolute; top: 0; right:-520px; z-index: 1000;'}
+          .hidden-xs.hidden-sm{id: "tripMapContainer", class: 'hide', style: 'position: absolute; top: 0; right:-520px; z-index: 1000;'}
             .panel.panel-default{style:'padding:0px;'}
               .panel-heading.clearfix
-                .panel-title
+                %h2.panel-title
                   %button#mapCloseButton.close.pull-right{type: "button", title: t(:close)}
-                    %span{:"aria-hidden" => "true"} &times;
+                    %span &times;
                     %span.hide Close
                   =t(:map)
                   = add_tooltip("map_help")
                   :javascript
                     $('#tripMapContainer .label-help').removeClass('pull-right fa-2x');
-              .panel-body
+              .panel-body{:"aria-hidden" => "true"}
                 = LeafletMap({ :mapid => "tripMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '500px;', :style => "height: 400px; width: 500px;", :show_location_select => true })
     .col-sm-12{style: "margin-bottom: 5px; padding: 0px;"}
       .pull-right

@@ -88,8 +88,8 @@
             /         %td{id: "place-#{i}", data: {address: place.raw_address, placename: place.name, json: place.to_json}}= ('A'..'Z').to_a[i] + ' ' + place.name
 
         .col-sm-6
-          .panel.panel-default{aria: {hidden: "true"}}
-            .panel-body
+          .panel.panel-default{aria: {label: 'Map.'}}
+            .panel-body{aria: {hidden: "true"}}
               = LeafletMap({ :mapid => 'placesMap', :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height:500px;" })
 
 = yield :scripts
