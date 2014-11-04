@@ -24,7 +24,7 @@
 //
 
 $(document).ready(function(){
-  $(".label-help").tooltip({'html': true, 'container': 'body'});
+  $(".label-help").tooltip({'html': true, 'container': 'body', 'trigger': 'hover focus'});
 });
 
 moment.fn.next15 = function() {
@@ -75,6 +75,6 @@ function toggleAriaLabelPrevNext(input) {
 }
 
 function addHelperTooltip(label_id, tooltip_str) {
-  $(label_id).prepend("<i class='fa fa-question-circle pull-right label-help' style='margin-top:-4px;' title data-original-title='" + tooltip_str + "' aria-label='" + tooltip_str + "'></i>");
+  $(label_id).prepend("<i class='fa fa-question-circle pull-right label-help' style='margin-top:-4px;' title data-original-title='" + tooltip_str + "' aria-label='" + tooltip_str + "' tabindex='0'></i>");
 }
 

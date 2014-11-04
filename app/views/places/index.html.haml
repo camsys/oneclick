@@ -68,7 +68,8 @@
 
                         $("#places-table tr").tooltip({
                           'html': true,
-                          'container': 'body'
+                          'container': 'body',
+                          'trigger': 'hover focus'
                         });
 
                   / %td{id: "place-#{i}", data: {address: place.raw_address, placename: place.name, json: place.to_json}}= ('A'..'Z').to_a[i] + ' ' + place.name
