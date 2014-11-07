@@ -18,6 +18,8 @@
     :javascript
       addHelperTooltip('#to_place_label', "#{t(:going_to_help)}");
   %span.input-group-btn
+    %button.btn.btn-default.hidden-md.hidden-lg{type: "button", id: "#{dir}CenterMyLocation", tabindex: '-1', aria: {label: "Click button to center my location"}}   
+      %i.fa.fa-location-arrow
     %button.btn.btn-default.hidden-xs.hidden-sm{type: "button", id: "#{dir}AddressMarkerButton", tabindex: '-1', aria: {label: "Click to locate the address"}}
       %i.fa.fa-map-marker
 -if session[:is_multi_od] == true
