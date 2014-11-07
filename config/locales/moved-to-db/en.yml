@@ -311,6 +311,11 @@ en:
   arrival_time: 'Arrival Time'
   departure_time: 'Departure Time'
   travel_time: 'Travel Time'
+  arrival_time_sorter: 'Arrival Time'
+  departure_time_sorter: 'Departure Time'
+  walk_distance_sorter: 'Walking Distance'
+  fare_sorter: 'Fare'
+  travel_time_sorter: 'Travel Time'
   save_and_plan_trip: "Save and plan my trip"
   trip_planned_and_saved: "Trip planned and saved"
   finish_trip_planning_options: "You can now do one or more of the following to finish your trip planning"

@@ -304,6 +304,11 @@ ht:
   arrival_time: '[ht]Arrival Time[/ht]'
   departure_time: '[ht]Departure Time[/ht]'
   travel_time: '[ht]Travel Time[/ht]'
+  arrival_time_sorter: '[ht]Arrival Time[/ht]'
+  departure_time_sorter: '[ht]Departure Time[/ht]'
+  walk_distance_sorter: '[ht]Walking Distance[/ht]'
+  fare_sorter: '[ht]Fare[/ht]'
+  travel_time_sorter: '[ht]Travel Time[/ht]'
   save_and_plan_trip: "[ht]Save and plan my trip[/ht]"
   trip_planned_and_saved: "[ht]Trip planned and saved[/ht]"
   finish_trip_planning_options: "[ht]You can now do one or more of the following to finish your trip planning[/ht]"
