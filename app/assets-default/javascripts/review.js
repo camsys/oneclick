@@ -1425,7 +1425,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "<table style='width: 100%;'>" +
             "<tbody>" +
             "<tr>" +
-            "<td " + (isServiceAvailable ? "" :  "tabindex=" + (isDepartAt ? '16' : '15')) + " class='trip-mode-icon' aria-label='" + modeName + "' style='" + iconStyle + "'>" +
+            "<td tabindex=" + (isDepartAt ? '16' : '15') + " class='trip-mode-icon' aria-label='" + modeName + "' style='" + iconStyle + "'>" +
             (
                 isServiceAvailable ?
                 "<a aria-label='" + modeName + " " + serviceName + "' href='" + modeServiceUrl + "' target='_blank'</a>" : ""
@@ -1449,7 +1449,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 (isMissingInfoFound && eligibleCode != 1) ?
                 (
                     "<button role='button' class='btn btn-default single-plan-question action-button select-column-button' " +
-                    "data-toggle='modal' data-target='#" + missInfoDivId + "'>?</button>"
+                    "data-toggle='modal' data-target='#" + missInfoDivId + "' tabindex=" + (isDepartAt ? '16' : '15') + ">?</button>"
                 ) :
                 getSelectButtonHtml(isDepartAt)
             ) +
