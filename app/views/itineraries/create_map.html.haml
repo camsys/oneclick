@@ -1,4 +1,5 @@
-#map_container{style: "width: 483px; height: 300px", aria: {label: 'Map.'}}
+#map_container{style: "width: 483px; height: 300px"}
+  .sr-only{aria: {label: 'Map.'}}
   %div{style: "width: 483px;height: 300px; background: white; border-radius: 5px; padding: 0px;", aria: {hidden: 'true'}}
     = LeafletMap({:mapid => ('itin_' + @itinerary.id.to_s), :markers => @markers, :polylines => @polylines, :sidewalk_feedback_markers => @sidewalk_feedback_markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "well well-small", :style => "height:100%;" })
 :javascript

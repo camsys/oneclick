@@ -243,8 +243,9 @@
                   %h4.panel-title
                     = t(:service_area_map)
                     = add_tooltip("service_area_map_help")
-                .panel-body{aria: {label: 'Map.'}}
-                  %div{aria: {hidden: 'true'}}
+                .sr-only{aria: {label: 'Map.'}}
+                .panel-body{aria: {hidden: 'true'}}
+                  %div
 
                   = LeafletMap({ :mapid => "lmap_" + "endpoint_area", :multipolygons => @polylines,
                   :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15,

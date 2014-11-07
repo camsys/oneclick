@@ -20,8 +20,8 @@
       .col-sm-6{id: "print_map_#{itinerary.id}", class: 'print_map'}
         %img{src: itinerary.map_image.url}
     - else
-      .col-sm-6{style: "height: 300px; background: white; border-radius: 5px; padding: 0px;", aria: {label: 'Map.'}}
-        %div{aria: {hidden: 'true'}}
+      .sr-only{aria: {label: 'Map.'}}
+      .col-sm-6{style: "height: 300px; background: white; border-radius: 5px; padding: 0px;", aria: {hidden: 'true'}}
           = LeafletMap({:mapid => ('plan_map_' + itinerary.id.to_s), :markers => create_itinerary_markers(itinerary).to_json, :polylines => create_itinerary_polylines(legs).to_json, :sidewalk_feedback_markers => create_itinerary_sidewalk_feedback_markers(legs).to_json, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "well well-small", :style => "height:300px;" })
           :javascript
             $(function(){
