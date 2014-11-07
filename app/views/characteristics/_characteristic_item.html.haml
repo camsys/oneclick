@@ -14,7 +14,7 @@
                   :javascript
                     $('.inline-radio .label-help').removeClass('fa-2x');
                 .col-sm-5
-                  = f.input item.code.to_sym, id: item.code, :collection =>  [[t(:yes_str), 'true'], [t(:no_str), 'false'], [t(:not_sure_str), UserProfileProxy::PARAM_NOT_SET]], :selected => item.selected_option(@traveler), input_html: { class: 'form-control' }, label: false
+                  = f.input item.code.to_sym, id: item.code, :collection =>  [[t(:yes_str), 'true'], [t(:no_str), 'false'], [t(:not_sure_str), UserProfileProxy::PARAM_NOT_SET]], :selected => item.selected_option(@traveler), input_html: { class: 'form-control', style: 'min-width:120px;' }, label: false
             - else
               = f.input item.code.to_sym, label: t(item.note)
               - if translation_exists?("#{item.code}_help")
@@ -33,7 +33,7 @@
           .col-sm-5#eligibility_questions
             %input.radio_buttons.optional{id: "user_characteristics_proxy_#{item.code}_true", name: "user_characteristics_proxy[#{item.code}]", type: "radio", value: "true", checked: item.true_false_checked?(@traveler, "true") }
             %label{for: "user_characteristics_proxy_#{item.code}_true", name: "user_characteristics_proxy[#{item.code}]"} #{t(:yes_str)}
-            
+
             %input.radio_buttons.optional{id: "user_characteristics_proxy_#{item.code}_false", name: "user_characteristics_proxy[#{item.code}]", type: "radio", value: "false", checked: item.true_false_checked?(@traveler, "false") }
             %label{for: "user_characteristics_proxy_#{item.code}_false", name: "user_characteristics_proxy[#{item.code}]"} #{t(:no_str)}
 
@@ -46,4 +46,3 @@
       - if translation_exists?("#{item.code}_help")
         :javascript
           addHelperTooltip("##{item.code}_label", "#{t(:date_of_birth_help)}");
-
