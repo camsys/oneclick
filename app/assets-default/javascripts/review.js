@@ -1451,7 +1451,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                     "<button role='button' class='btn btn-default single-plan-question action-button select-column-button' " +
                     "data-toggle='modal' data-target='#" + missInfoDivId + "'>?</button>"
                 ) :
-                getSelectButtonHtml(true)
+                getSelectButtonHtml(isDepartAt)
             ) +
             "</div>" +
             "</div>";
