@@ -2059,7 +2059,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '<h2 class="panel-title walk-dist-label" tabindex="14">' + addReviewTooltip("walk_dist_help") + localeDictFinder['walk_dist'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
-                '<div id="' + walkDistSliderId + '" aria-valuemin="' + minWalkDist + '" aria-valuemax="' + maxWalkDist + '" aria-label="Walk Distance slider. ' + minWalkDist + ' miles to ' + maxmaxWalkDist + ' miles.">' +
+                '<div id="' + walkDistSliderId + '" aria-valuemin="' + minWalkDist + '" aria-valuemax="' + maxWalkDist + '" aria-label="Walk Distance slider. ' + minWalkDist + ' miles to ' + maxWalkDist + ' miles.">' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<span id="' + walkDistSliderId + '_min_val_label" class="pull-left">' + minWalkDist.toString() + localeDictFinder['miles'] + '</span>' +
