@@ -1867,7 +1867,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '<h2 class="panel-title num-transfers-label" tabindex="11">' + addReviewTooltip("number_of_transfers_help") + localeDictFinder['number_of_transfers'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
-                '<div id="' + transferSliderId + '" aria-valuemin="' + minTransfer + '" aria-valuemax="' + maxTransfer + '">' +
+                '<div id="' + transferSliderId + '" aria-valuemin="' + minTransfer + '" aria-valuemax="' + maxTransfer + '" aria-label="Number of Transfers slider. ' + minTransfer + ' to ' + maxTransfer + '.">' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<span id="' + transferSliderId + '_min_val_label" class="pull-left">' + minTransfer.toString() + '</span>' +
@@ -1930,7 +1930,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '<h2 class="panel-title fare-label" tabindex="12">' + addReviewTooltip("fare_help") + localeDictFinder['fare'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
-                '<div id="' + costSliderId + '" aria-valuemin="' + minCost + '" aria-valuemax="' + maxCost + '">' +
+                '<div id="' + costSliderId + '" aria-valuemin="' + minCost + '" aria-valuemax="' + maxCost + '" aria-label="Fare slider. $' + minCost + '.00 to $' + maxCost + '.00 .">' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<span id="' + costSliderId + '_min_val_label" class="pull-left">$' + minCost.toString() + '</span>' +
@@ -1994,7 +1994,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '<h2 class="panel-title trip-time-label" tabindex="13">' + addReviewTooltip("trip_time_help") + localeDictFinder['trip_time'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
-                '<div id="' + durationSliderId + '" aria-valuemin="' + minDuration + '" aria-valuemax="' + maxDuration + '">' +
+                '<div id="' + durationSliderId + '" aria-valuemin="' + minDuration + '" aria-valuemax="' + maxDuration + '" aria-label="Trip Time slider. ' + minDuration + ' minutes to ' + maxDuration + ' minutes.">' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<span id="' + durationSliderId + '_min_val_label" class="pull-left">' + minDuration.toString() + localeDictFinder['minute_abbr'] + '</span>' +
@@ -2059,7 +2059,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '<h2 class="panel-title walk-dist-label" tabindex="14">' + addReviewTooltip("walk_dist_help") + localeDictFinder['walk_dist'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
-                '<div id="' + walkDistSliderId + '" aria-valuemin="' + minWalkDist + '" aria-valuemax="' + maxWalkDist + '">' +
+                '<div id="' + walkDistSliderId + '" aria-valuemin="' + minWalkDist + '" aria-valuemax="' + maxWalkDist + '" aria-label="Walk Distance slider. ' + minWalkDist + ' miles to ' + maxmaxWalkDist + ' miles.">' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<span id="' + walkDistSliderId + '_min_val_label" class="pull-left">' + minWalkDist.toString() + localeDictFinder['miles'] + '</span>' +
