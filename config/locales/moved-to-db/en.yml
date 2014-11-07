@@ -5,6 +5,22 @@
 
 en:
   this_service_is_for: "This service is intended for"
+  disabled_missing_info: "ersons with disabilities"
+  low_income_missing_info: "low income individuals"
+  no_trans_missing_info: "persons without access to personal transportation"
+  nemt_eligible_missing_info: "persons eligible for Medicaid"
+  veteran: "military veterans"
+  ada_eligible: "persons eligible for ADA Paratransit"
+  matp_missing_info: "persons with a Medical Assistance Access Card"
+  developmentally_disabled_missing_info: "persons with developmental disabilities"
+  homeless_missing_info: "persons who are homeless or facing eviction"
+  disabled_non_elderly_missing_info: "persons with disabilities not related to age"
+  physically_disabled_missing_info: "persons with physical disabilities"
+  wheelchair_dependent_missing_info: "persons requiring the use of wheelchairs"
+  age_max: "persons no more than %{age} years of age"
+  age_min: "persons at least %{age} years of age"
+
+
   only_agency_can_see: "Only %{agency} staff can see this note."
   traveler_notes: "Traveler Notes"
   base_rate: "Base Fare"
