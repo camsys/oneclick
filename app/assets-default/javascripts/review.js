@@ -1227,11 +1227,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         var sorterTags =
             '<select style="display: inline-block;" class="trip-sorter" tabindex=' + (isDepartAt ? "16" : "15") + '>"' +
-            '<option value="start-time" ' + (isDepartAt ? ' selected' : '') + '>' + localeDictFinder["departure_time"] + '</option>' +
-            '<option value="end-time" ' + (isDepartAt ? '' : ' selected') + '>' + localeDictFinder["arrival_time"] + '</option>' +
-            '<option value="cost" >' + localeDictFinder['fare'] + '</option>' +
-            '<option value="duration" >' + localeDictFinder['travel_time'] + '</option>' +
-            '<option value="walk-dist" >' + localeDictFinder['walk_dist'] + '</option>' +
+            '<option value="start-time" ' + (isDepartAt ? ' selected' : '') + '>' + localeDictFinder["departure_time_sorter"] + '</option>' +
+            '<option value="end-time" ' + (isDepartAt ? '' : ' selected') + '>' + localeDictFinder["arrival_time_sorter"] + '</option>' +
+            '<option value="cost" >' + localeDictFinder['fare_sorter'] + '</option>' +
+            '<option value="duration" >' + localeDictFinder['travel_time_sorter'] + '</option>' +
+            '<option value="walk-dist" >' + localeDictFinder['walk_dist_sorter'] + '</option>' +
             '</select>';
 
         var tripHeaderTags = tripDescTag +
