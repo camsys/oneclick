@@ -1,33 +1,42 @@
 - i = itinerary
 .row.col-sm-12{style: "background: white; margin: 0px 0px 5px 0px; border-radius: 5px;"}
-  %table{style: "width: 100%", aria: {label: "Your #{t(i.mode)} trip on #{i.date_in_words} will last #{i.duration_in_words}, from #{i.time_range_in_words}, and will cost #{i.cost_in_words}. Total walk time is #{i.walking_time}, with #{i.transfers_in_words} transfers."}}
+  %table{style: "width: 100%"}
     %thead
-      %tr
-        %th.sr-only= t(:mode)
-        %th= t(:fare)
-        %th= t(:trip_date)
-        %th= t(:trip_time)
-        %th= t(:walk_time)
-        %th= t(:transfers)
+      %tr{aria: {hidden: 'true'}}
+        %td
+        %td
+        %td
+        %td
+        %td
+        %td
     %tbody
       %tr
-        %td.itinerary_icons{:width => '20%', :style => "text-align: left;"}
+        %td.itinerary_icons{:width => '15%', :style => "text-align: left;"}
           %img{:src => logo_url_helper(i), alt: "#{t(i.mode)} icon"}
-        %td{:width => '15%'}
+        %td{:width => '10%'}
           .itinerary_text
+            %strong= t(:fare)
+            %br
             = i.cost_in_words
         %td{:width => '15%'}
           .itinerary_text
+            %strong= t(:trip_date)
+            %br
             = i.date_in_words
         %td{:width => '25%'}
           .itinerary_text
+            %strong= t(:trip_time)
+            %br
             = i.time_range_in_words
           .itinerary_text_small{:style => "line-height: normal;"}
             = i.duration_in_words
         %td{:width => '15%'}
           .itinerary_text
+            %strong= t(:walk_time)
+            %br
             = i.walking_time
         %td{:width => '10%'}
           .itinerary_text
+            %strong= t(:transfers)
+            %br
             = i.transfers_in_words
-

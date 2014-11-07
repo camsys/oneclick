@@ -222,6 +222,10 @@ a:hover#help {
   text-align: left;
   line-height: 1em;
   padding: 0px;
+  strong {
+    top: 0;
+    position: absolute;
+  }
 }
 
 .itinerary_text_small{
