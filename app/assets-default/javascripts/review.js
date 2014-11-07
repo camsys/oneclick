@@ -1040,9 +1040,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         resizeChartsWhenDocumentWidthChanges();
     }
 
-    function getSelectButtonHtml() {
+    function getSelectButtonHtml(isDepartAt) {
+        if (isDepartAt === undefined) { isDepartAt = false; }
         var tags =
-            ("<button role='button' class='btn btn-default single-plan-select action-button select-column-button' aria-label='Select this option.'>" +
+            ("<button role='button' class='btn btn-default single-plan-select action-button select-column-button' aria-label='Select this option.' tabindex=" + (isDepartAt ? '16' : '15') + ">" +
                 "<span class='hidden-xs'>" + localeDictFinder['select'] + "</span>" +
                 "<span class='visible-xs'>&#10004;</span>" +
                 "</button>");
@@ -1216,7 +1217,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             localeDictFinder['arriving_by'] + ' ' + formatDate(tripEndTime)  + ' ' + formatTime(tripEndTime);
         //var headerAriaLabel = tripDescription + "; " + tripDatetimeDescritpion;
         //trip description
-        var tripDescTag = "<div class='panel-heading'><h2 class='panel-title' tabindex='15'>" + addReviewTooltip(inlineHelperKey) + tripDescription + "</h2></div>";
+        var tripDescTag = "<div class='panel-heading'><h2 class='panel-title' tabindex=" + (isDepartAt ? '16' : '15') + ">" + addReviewTooltip(inlineHelperKey) + tripDescription + "</h2></div>";
 
         var tickLabelTags = getTickLabelHtmlTags(tickLabels);
 
@@ -1225,7 +1226,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var midDateLabelTags = "<span>" + formatDate(tripMidTime) + '</span>';
 
         var sorterTags =
-            '<select style="display: inline-block;" class="trip-sorter">' +
+            '<select style="display: inline-block;" class="trip-sorter" tabindex=' + (isDepartAt ? "16" : "15") + '>"' +
             '<option value="start-time" ' + (isDepartAt ? ' selected' : '') + '>' + localeDictFinder["departure_time"] + '</option>' +
             '<option value="end-time" ' + (isDepartAt ? '' : ' selected') + '>' + localeDictFinder["arrival_time"] + '</option>' +
             '<option value="cost" >' + localeDictFinder['fare'] + '</option>' +
@@ -1235,26 +1236,26 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         var tripHeaderTags = tripDescTag +
             "<div class='col-xs-12 single-plan-header' style='background-color:white;'>" +
-            "<div class='text-center' style='font-weight:500;'>" + 
-            tripDescriptionWithoutDirection + 
+            "<div class='text-center' style='font-weight:500;' tabindex=" + (isDepartAt ? '16' : '15') + ">" +
+            tripDescriptionWithoutDirection +
             "</div>" +
             "<div class='col-xs-12' style='padding:5px 0px;'>" +
-            sorterLabelTags + sorterTags +            
+            sorterLabelTags + sorterTags +
             "</div>" +
             "<div class='col-xs-12' style='padding:0px;'>" +
             "<div class='trip-plan-first-column' style='padding: 0px; vertical-align: top;'>" +
-            (isDepartAt ? ("<button role='button' class='btn  btn-primary btn-single-arrow-left pull-right prev-period' aria-label='Move trip time back 30 minutes.'> -" + intervelStep + "</button>") : "") +
+            (isDepartAt ? ("<button role='button' class='btn  btn-primary btn-single-arrow-left pull-right prev-period' aria-label='Move trip time back 30 minutes.' tabindex='16'> -" + intervelStep + "</button>") : "") +
             "</div>" +
             "<div class='" + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
             (
                 isDepartAt ?
-                ("<button role='button' class='btn  btn-primary btn-single-arrow-right pull-left next-period' aria-label='Move trip time forward 30 minutes.'> +" + intervelStep + "</button>") :
-                ("<button role='button' class='btn  btn-primary btn-single-arrow-left pull-right prev-period' aria-label='Move trip time back 30 minutes.'> -" + intervelStep + "</button>")
+                ("<button role='button' class='btn  btn-primary btn-single-arrow-right pull-left next-period' aria-label='Move trip time forward 30 minutes.' tabindex='16'> +" + intervelStep + "</button>") :
+                ("<button role='button' class='btn  btn-primary btn-single-arrow-left pull-right prev-period' aria-label='Move trip time back 30 minutes.' tabindex='15'> -" + intervelStep + "</button>")
             ) +
             midDateLabelTags +
             "</div>" +
             "<div class='select-column' style='padding: 0px;'>" +
-            (isDepartAt ? "" : ("<button role='button' class='btn  btn-primary btn-single-arrow-right pull-left next-period' aria-label='Move trip time forward 30 minutes.'> +" + intervelStep + "</button>")) +
+            (isDepartAt ? "" : ("<button role='button' class='btn  btn-primary btn-single-arrow-right pull-left next-period' aria-label='Move trip time forward 30 minutes.' tabindex='15'> +" + intervelStep + "</button>")) +
             "</div>" +
             "</div>" +
             "<div class='col-xs-12' style='padding:0px;' aria-hidden='true'>" +
@@ -1424,13 +1425,13 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "<table style='width: 100%;'>" +
             "<tbody>" +
             "<tr>" +
-            "<td " + (isServiceAvailable ? "" : "tabindex='0'") + "class='trip-mode-icon' aria-label='" + modeName + "' style='" + iconStyle + "'>" +
+            "<td " + (isServiceAvailable ? "" :  "tabindex=" + (isDepartAt ? '16' : '15')) + " class='trip-mode-icon' aria-label='" + modeName + "' style='" + iconStyle + "'>" +
             (
                 isServiceAvailable ?
                 "<a aria-label='" + modeName + " " + serviceName + "' href='" + modeServiceUrl + "' target='_blank'</a>" : ""
             ) +
             "</td>" +
-            "<td tabindex='0' class='trip-mode-cost' aria-label='" + costAriaLabel + "' title='" + costTooltip + "'>" +
+            "<td tabindex=" + (isDepartAt ? '16' : '15') + " class='trip-mode-cost' aria-label='" + costAriaLabel + "' title='" + costTooltip + "'>" +
             "<div class='itinerary-text'>" +
                 costDisplay +
             "</div>" +
@@ -1439,7 +1440,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "</tbody>" +
             "</table>" +
             "</div>" +
-            "<div tabindex='0' class='" +
+            "<div tabindex=" + (isDepartAt ? '16' : '15') + " class='" +
             (isDepartAt ? "highlight-left-border regular-right-border" : "highlight-right-border regular-left-border") +
             " single-plan-chart-container trip-plan-main-column' style='padding: 0px; height: 100%;' id='" + tripPlanDivPrefix + tripId + "_" + planId + "'>" +
             "</div>" +
@@ -1450,7 +1451,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                     "<button role='button' class='btn btn-default single-plan-question action-button select-column-button' " +
                     "data-toggle='modal' data-target='#" + missInfoDivId + "'>?</button>"
                 ) :
-                getSelectButtonHtml()
+                getSelectButtonHtml(true)
             ) +
             "</div>" +
             "</div>";
@@ -1866,7 +1867,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '<h2 class="panel-title num-transfers-label" tabindex="11">' + addReviewTooltip("number_of_transfers_help") + localeDictFinder['number_of_transfers'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
-                '<div role="slider" id="' + transferSliderId + '" aria-valuemin="' + minTransfer + '" aria-valuemax="' + maxTransfer + '">' +
+                '<div id="' + transferSliderId + '" aria-valuemin="' + minTransfer + '" aria-valuemax="' + maxTransfer + '">' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<span id="' + transferSliderId + '_min_val_label" class="pull-left">' + minTransfer.toString() + '</span>' +
@@ -1929,7 +1930,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '<h2 class="panel-title fare-label" tabindex="12">' + addReviewTooltip("fare_help") + localeDictFinder['fare'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
-                '<div role="slider" id="' + costSliderId + '" aria-valuemin="' + minCost + '" aria-valuemax="' + maxCost + '">' +
+                '<div id="' + costSliderId + '" aria-valuemin="' + minCost + '" aria-valuemax="' + maxCost + '">' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<span id="' + costSliderId + '_min_val_label" class="pull-left">$' + minCost.toString() + '</span>' +
@@ -1993,7 +1994,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '<h2 class="panel-title trip-time-label" tabindex="13">' + addReviewTooltip("trip_time_help") + localeDictFinder['trip_time'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
-                '<div role="slider" id="' + durationSliderId + '" aria-valuemin="' + minDuration + '" aria-valuemax="' + maxDuration + '">' +
+                '<div id="' + durationSliderId + '" aria-valuemin="' + minDuration + '" aria-valuemax="' + maxDuration + '">' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<span id="' + durationSliderId + '_min_val_label" class="pull-left">' + minDuration.toString() + localeDictFinder['minute_abbr'] + '</span>' +
@@ -2058,7 +2059,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '<h2 class="panel-title walk-dist-label" tabindex="14">' + addReviewTooltip("walk_dist_help") + localeDictFinder['walk_dist'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
-                '<div role="slider" id="' + walkDistSliderId + '" aria-valuemin="' + minWalkDist + '" aria-valuemax="' + maxWalkDist + '">' +
+                '<div id="' + walkDistSliderId + '" aria-valuemin="' + minWalkDist + '" aria-valuemax="' + maxWalkDist + '">' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<span id="' + walkDistSliderId + '_min_val_label" class="pull-left">' + minWalkDist.toString() + localeDictFinder['miles'] + '</span>' +
@@ -2873,7 +2874,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         return '<i class="fa fa-question-circle fa-2x pull-right label-help"' +
             'style="margin-top:-4px;" data-original-title="' + text +
-            '" aria-label="' + text + '" tabindex="0"></i>';
+            '" aria-label="' + text + '"></i>';
     }
 
     function addReviewTooltip(key) {
