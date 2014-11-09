@@ -29,7 +29,6 @@ class EligibilityService
       is_eligible = true
       min_match_score = 0
     end
-    Rails.logger.info "\nservice: #{service.name rescue service.ai}, groups count: #{groups.count}"
     groups.each do |group|
       group_missing_information_text_list = []
       group_missing_information_text = ''
@@ -37,76 +36,74 @@ class EligibilityService
       group_match_score = 0
       group_eligible = true
       service_characteristic_maps = service.service_characteristics.where(group: group)
-      Rails.logger.info "\n=== start group ==="
 
       service_characteristic_maps.each do |service_characteristic_map|
-        Rails.logger.info "Starting service_characteristic_map #{service_characteristic_map.ai}"
         service_requirement = service_characteristic_map.characteristic
 
         passenger_characteristic = user_profile.user_characteristics.where(
-        characteristic: service_requirement.linked_characteristic || service_requirement).first
-
-        Rails.logger.info "service_characteristic: #{service_characteristic_map.ai}"
-        Rails.logger.info "service_requirement: #{service_requirement.ai}"
-        Rails.logger.info "passenger_characteristic: #{passenger_characteristic.ai}"
+        characteristic: service_requirement || service_requirement.linked_characteristic).first
 
         #This passenger characteristic is not listed
         unless passenger_characteristic and not(passenger_characteristic.value.blank?)
-          Rails.logger.info "not listed"
           group_match_score += 0.25
           if service_requirement.code == 'age'
-            Rails.logger.info "in age"
             if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE
-              Rails.logger.info "in gt/ge"
-              group_missing_information_text_list << 'persons ' + service_characteristic_map.value.to_s + ' years or older'
+              group_missing_information_text_list << 'age_min' + service_characteristic_map.value.to_s
               group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
             elsif service_characteristic_map.rel_code == LT or service_characteristic_map.rel_code == LE
-              Rails.logger.info "in LT/LE"
-              group_missing_information_text_list << 'persons ' + service_characteristic_map.value.to_s + ' years or younger'
+              group_missing_information_text_list << 'age_max' + service_characteristic_map.value.to_s
               group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
             end
           else
-            Rails.logger.info "in else of age"
-            group_missing_information_text_list << service_requirement.desc
+            group_missing_information_text_list << service_requirement.code + "_missing_info"
             group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
           end
-          Rails.logger.info "out of conditional"
-          Rails.logger.info "group_missing_information_text_list is now #{group_missing_information_text_list.ai}"
-          Rails.logger.info "group_missing_information_text is now #{group_missing_information_text.ai}"
-          Rails.logger.info "group_missing_info is now #{group_missing_info.ai}"
           next
         end
 
-        # Passenger does have a value for the characteristic, so test it
-        Rails.logger.info "testing"
-        unless passenger_characteristic.meets_requirement(service_characteristic_map)
-          Rails.logger.info "doesn't meet requirement, group_eligible false and breaking"
-          group_eligible = false
-          break
+        is_age_by_yob = false # whether age is calculated based on year_of_birth, also, if age == service_char.value
+                              # in this case, we dont know whether eligible or not
+        if service_requirement.code == 'age' and !service_characteristic_map.value.blank? and passenger_characteristic and passenger_characteristic.characteristic.code == 'age' and !passenger_characteristic.value.blank? and service_characteristic_map.value == passenger_characteristic.value
+          dob_passenger_char = user_profile.user_characteristics.where( characteristic: passenger_characteristic.characteristic.linked_characteristic).first
+          if !dob_passenger_char.value.blank? and dob_passenger_char.value.to_s.split('-').length <3
+            is_age_by_yob =  true
+            group_match_score += 0.25
+            if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE
+              group_missing_information_text_list << 'persons ' + service_characteristic_map.value.to_s + ' years or older'
+              group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
+            elsif service_characteristic_map.rel_code == LT or service_characteristic_map.rel_code == LE
+              group_missing_information_text_list << 'persons ' + service_characteristic_map.value.to_s + ' years or younger'
+              group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
+            end
+          end
         end
-        Rails.logger.info "meets requirement"
+
+        # Passenger does have a value for the characteristic, so test it
+        unless is_age_by_yob
+          begin
+            unless passenger_characteristic.meets_requirement(service_characteristic_map)
+              group_eligible = false
+              break
+            end
+          rescue StandardError
+            group_match_score += 0.25
+            if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE
+              group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or older\n'
+              group_missing_info << service_requirement.for_missing_info(service, group, 'age')
+            elsif service_characteristic_map.rel_code == LT or service_characteristic_map.rel_code == LE
+              group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or younger\n'
+              group_missing_info << service_requirement.for_missing_info(service, group, 'age')
+            end
+            next
+          end
+        end
       end  # service_characteristic_maps.each do
 
-      Rails.logger.info "out of service_characteristic_maps loop"
-      Rails.logger.info "group_missing_information_text_list: #{group_missing_information_text_list.ai}"
-      group_missing_information_text = case group_missing_information_text_list.size
-      when 0
-        ''
-      when 1
-        group_missing_information_text_list.first
-      when 2
-        group_missing_information_text_list.join(', and ')
-      else
-        [group_missing_information_text_list[0..-2].join(', '), group_missing_information_text_list[-1]].join(', and ')
-      end
+      group_missing_information_text = group_missing_information_text_list.join(',')
 
       if group_eligible
-        Rails.logger.info "group is eligible"
         is_eligible = true
-        Rails.logger.info "group_match_score #{group_match_score}"
-        Rails.logger.info "min_match_score #{min_match_score}"
         # if group_match_score <= min_match_score
-        Rails.logger.info "setting missing_information_text & new min_match_score"
         missing_information_text_list << group_missing_information_text
         min_match_score = [min_match_score, group_match_score].min
         # end
@@ -115,18 +112,7 @@ class EligibilityService
 
     end # groups.each do
 
-    missing_information_text = case missing_information_text_list.size
-    when 0
-      ''
-    when 1
-      missing_information_text_list.first
-    when 2
-      missing_information_text_list.join(' or ')
-    else
-      [missing_information_text_list[0..-2].join(', '), missing_information_text_list[-1]].join(' or ')
-    end
-
-    Rails.logger.info "is_eligible: #{is_eligible} min_match_score: #{min_match_score}"
+    missing_information_text = missing_information_text_list.join(':')
 
     if is_eligible
       #Create itinerary
@@ -141,10 +127,8 @@ class EligibilityService
 
     case return_with
     when :itinerary
-      Rails.logger.info "For service #{service.name rescue nil}, returning #{itinerary.ai}"
       return itinerary
     when :missing_info
-      Rails.logger.info "For service #{service.name rescue nil}, returning #{missing_info.flatten.ai}"
       return missing_info.flatten
     end
   end
@@ -234,7 +218,7 @@ class EligibilityService
     Rails.logger.info "get_eligible_services_for_trip, after location: #{itineraries.count}"
     itineraries = eligible_by_service_time(trip_part, itineraries)
     Rails.logger.info "get_eligible_services_for_trip, after service time: #{itineraries.count}"
-    itineraries = eligible_by_advanced_notice(trip_part, itineraries)
+    itineraries = eligible_by_advanced_notice_and_booking_cut_off_time(trip_part, itineraries)
     Rails.logger.info "get_eligible_services_for_trip, after advance notice: #{itineraries.count}"
     itineraries = eligible_by_trip_purpose(trip_part, itineraries)
     Rails.logger.info "get_eligible_services_for_trip, after trip purpose: #{itineraries.count}"
@@ -312,41 +296,77 @@ class EligibilityService
 
   def eligible_by_service_time(trip_part, itineraries)
     #TODO: This does not handle services with 24 hour operations well.
+    eligible_itineraries = []
     wday = trip_part.trip_time.wday
     itineraries.each do |itinerary|
       service = itinerary['service']
-      schedules = Schedule.where(day_of_week: wday, service_id: service.id)
-      if schedules.count == 0
-        itinerary['match_score'] += 1
-        itinerary['date_mismatch'] = true
-      end
-      schedules.each do |schedule|
-        # puts "%-30s %-30s %s" % [Time.zone, planned_trip.trip_datetime, planned_trip.trip_datetime.seconds_since_midnight]
-        # puts "%-30s %-30s %s" % [Time.zone, schedule.start_time, schedule.start_time.seconds_since_midnight]
-        # puts "%-30s %-30s %s" % [Time.zone, schedule.end_time, schedule.end_time.seconds_since_midnight]
-        unless trip_part.trip_time.seconds_since_midnight.between?(schedule.start_seconds,schedule.end_seconds)
+      Rails.logger.info service.name
+      unless service.nil?
+        schedule = Schedule.where(day_of_week: wday, service_id: service.id).first
+        if schedule.nil?
           itinerary['match_score'] += 1
-          itinerary['time_mismatch'] = true
+          itinerary['date_mismatch'] = true
+          Rails.logger.info 'date mismatch'
+        else
+          # puts "%-30s %-30s %s" % [Time.zone, planned_trip.trip_datetime, planned_trip.trip_datetime.seconds_since_midnight]
+          # puts "%-30s %-30s %s" % [Time.zone, schedule.start_time, schedule.start_time.seconds_since_midnight]
+          # puts "%-30s %-30s %s" % [Time.zone, schedule.end_time, schedule.end_time.seconds_since_midnight]
+          unless trip_part.trip_time.seconds_since_midnight.between?(schedule.start_seconds,schedule.end_seconds)
+            itinerary['match_score'] += 1
+            itinerary['time_mismatch'] = true
+            Rails.logger.info 'time mismatch'
+          end
         end
+      end
+
+      if itinerary['date_mismatch'] != true && itinerary['time_mismatch'] != true
+        eligible_itineraries << itinerary
       end
     end
 
-    itineraries
+    eligible_itineraries
 
   end
 
-  def eligible_by_advanced_notice(trip_part, itineraries)
-    advanced_notice = (trip_part.trip_time.to_time - trip_part.created_at)/60
-
+  def eligible_by_advanced_notice_and_booking_cut_off_time(trip_part, itineraries)
+    eligible_itineraries = []
     itineraries.each do |itinerary|
-      notice_required = itinerary['service'].advanced_notice_minutes
-      if notice_required > advanced_notice
-        itinerary['match_score'] += 0.01
-        itinerary['too_late'] = true
+      service = itinerary['service']
+      unless service.nil?
+        # get advanced notice days
+        notice_days = 0
+        notice_mins = service.advanced_notice_minutes
+        unless notice_mins.blank?
+          notice_days = notice_mins /(24*60).round
+        end
+
+        trip_created_wday = trip_part.created_at.wday
+
+        # check if after booking_cut_off_time
+        days_after_cut_off_time = 0
+        booking_cut_off_time = service.booking_cut_off_times.where(day_of_week: trip_created_wday, service_id: service.id).first
+        unless booking_cut_off_time.nil?
+          cut_off_seconds = booking_cut_off_time.cut_off_seconds
+          trip_created_seconds = trip_part.created_at.seconds_since_midnight
+
+          if trip_created_seconds > cut_off_seconds
+            days_after_cut_off_time = 1
+          end
+        end
+
+        # compare if scheduled trip time is earlier than earliest allowable trip start time
+        if trip_part.trip_time < ((trip_part.created_at + (notice_days + days_after_cut_off_time).days).midnight)
+          itinerary['match_score'] += 0.01
+          itinerary['too_late'] = true
+        end
+      end
+
+      if itinerary['too_late'] != true
+        eligible_itineraries << itinerary
       end
     end
 
-    itineraries
+    eligible_itineraries
 
   end
 
@@ -356,7 +376,7 @@ class EligibilityService
     translated = group.map do |m|
       translate_service_characteristic_map m
     end
-  
+
     translated.join " AND "
   end
 
@@ -372,5 +392,5 @@ class EligibilityService
       I18n.t(map.characteristic.name)
     end
   end
-  
+
 end

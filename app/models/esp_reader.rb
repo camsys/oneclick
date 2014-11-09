@@ -1,5 +1,6 @@
 class EspReader
   require 'zip'
+  include ActionView::Helpers::NumberHelper
 
   DELIMITER='::'
 
@@ -12,7 +13,7 @@ class EspReader
   ########################
   def assign_provider_indices
     @provider_idx = {}
-    ['Name', 'Contact', 'ContactTitle', 'LocAddress', 'LocCity', 'LocState', 'LocZipCode', 'AreaCode1', 'Phone1', 'URL', 'Email', 'ProviderID'].each do |column_name|
+    ['Name', 'Contact', 'ContactTitle', 'LocAddress', 'LocCity', 'LocState', 'LocZipCode', 'AreaCode1', 'Phone1', 'URL', 'Email', 'ProviderID', 'Comments'].each do |column_name|
       @provider_idx[column_name] = @esp_providers.first.index(column_name)
       if @provider_idx[column_name].nil?
         return false, 'Missing column ' + column_name + ' from tProvider table.'
@@ -23,7 +24,7 @@ class EspReader
 
   def assign_service_indices(services)
     @service_idx = {}
-    ['ServiceID', 'ServiceRefID', 'OrgName', 'Contact', 'ContactTitle', 'Email', 'AreaCode1', 'Phone1', 'URL', 'ProviderID', 'CostComments', 'TimeSun1'].each do |column_name|
+    ['ServiceID', 'ServiceRefID', 'OrgName', 'Contact', 'ContactTitle', 'Email', 'AreaCode1', 'Phone1', 'URL', 'ProviderID', 'CostComments', 'TimeSun1', 'Comments', 'LocalComments'].each do |column_name|
       @service_idx[column_name] = services.first.index(column_name)
       if @service_idx[column_name].nil?
         return false, 'Missing column ' + column_name + ' from tService table.'
@@ -236,6 +237,13 @@ class EspReader
       return result, message
     end
 
+    Rails.logger.info "EspReader: create restrictions narrative"
+    #Create restrictions narrative
+    result, message = create_or_update_restrictions(esp_configs)
+    unless result
+      return result, message
+    end
+
     Rails.logger.info "EspReader: add fares"
     #Add Fares
     esp_costs.shift
@@ -244,21 +252,14 @@ class EspReader
       return result, message
     end
 
-    Rails.logger.info "EspReader: add polygons"
-    message = nil
-    #Add custom polygons for each service and generate the polygons.
-    messages = []
-    Service.all.each do |service|
-      begin
-        add_paratransit_buffer(service)
-        service.build_polygons
-      rescue Exception => e
-        messages << e.message
-      end
+    Rails.logger.info "EspReader: create fare table"
+    #Add Fare Table
+    result, message = create_fare_table(esp_costs)
+    unless result
+      return result, message
     end
-    message = messages.join("; ") unless messages.empty?
 
-    return true, message
+    return true, ""
 
   end
 
@@ -276,7 +277,7 @@ class EspReader
     #tProvider Column Names
     #['Name', 'Contact', 'ContactTitle', 'LocAddress', 'LocCity', 'LocState', 'LocZipCode', 'AreaCode1', 'Phone1', 'URL', 'Email', 'ProviderID']
 
-    provider.name = esp_provider[@provider_idx["Name"]]
+    provider.name = esp_provider[@provider_idx["Name"]][0,128]
     provider.internal_contact_name = esp_provider[@provider_idx["Contact"]]
     provider.internal_contact_title = esp_provider[@provider_idx["ContactTitle"]]
     provider.address = esp_provider[@provider_idx["LocAddress"]]
@@ -287,6 +288,9 @@ class EspReader
     provider.url = esp_provider[@provider_idx["URL"]]
     provider.email = esp_provider[@provider_idx["Email"]]
     provider.save
+
+    provider.private_comments.where(locale: 'en').destroy_all
+    provider.private_comments.create!(comment: fixup_comments(esp_provider[@provider_idx["Comments"]]), locale: 'en') if esp_provider[@provider_idx["Comments"]]
 
     if create #assign service to the new provider
       service.provider = provider
@@ -304,7 +308,7 @@ class EspReader
 
       SERVICE_DICT[esp_service[@service_idx['ServiceID']]] = esp_service[@service_idx['ServiceRefID']]
       service = Service.where(external_id: esp_service[@service_idx['ServiceRefID']]).first_or_initialize
-      service.name = esp_service[@service_idx['OrgName']]
+      service.name = esp_service[@service_idx['OrgName']][0,128]
       service.internal_contact_name = esp_service[@service_idx['Contact']]
       service.internal_contact_title = esp_service[@service_idx['ContactTitle']]
       service.email = esp_service[@service_idx['Email']]
@@ -326,6 +330,12 @@ class EspReader
       service.service_characteristics.destroy_all
       service.service_trip_purpose_maps.destroy_all
       service.fare_structures.destroy_all
+      service.public_comments.where(locale: 'en').destroy_all
+      service.private_comments.where(locale: 'en').destroy_all
+
+      service.public_comments.create!(comment: fixup_comments(esp_service[@service_idx['Comments']]), locale: 'en') if esp_service[@service_idx['Comments']]
+      service.private_comments.create!(comment: fixup_comments(esp_service[@service_idx['LocalComments']]), locale: 'en') if esp_service[@service_idx['LocalComments']]
+
       #Add Curb to Curb by default
       accommodation = Accommodation.find_by_code('curb_to_curb')
       ServiceAccommodation.create(service: service, accommodation: accommodation)
@@ -344,6 +354,13 @@ class EspReader
     end
 
     services
+  end
+
+  def fixup_comments comments
+    return nil if comments.nil?
+    comments.split(%r{\n+}).collect do |c|
+      "<p>#{c}</p>"
+    end.join
   end
 
   def create_or_update_eligibility esp_configs
@@ -371,6 +388,41 @@ class EspReader
       end
 
     end
+    return true, "Success"
+  end
+
+  def create_or_update_restrictions esp_configs
+    service_comments_hash = {}
+    #['ServiceID', 'CfgNum', 'Item']
+    esp_configs.each do |config|
+      service = Service.find_by_external_id(SERVICE_DICT[config[@config_idx['ServiceID']]])
+      case config[@config_idx['CfgNum']].to_i
+        when 4
+          service_comments_hash[service.id] = (service_comments_hash[service.id] || "<p>Restrictions</p><ul>") + "<li>" + config[@config_idx['Item']].to_s + "</li>"
+      end
+
+    end
+
+    Rails.logger.info "service_comments_hash:"
+    Rails.logger.info service_comments_hash.ai
+
+    service_comments_hash.each do |key, item|
+      service = Service.find(key)
+      c = service.public_comments.where(locale: 'en').first
+      Rails.logger.info "for sch #{key} item #{item} c is #{c.ai}"
+      if c.nil?
+        service.public_comments.create! comment: item + "</ul>", locale: 'en'
+      else
+        c.update_attributes comment: item + "</ul>" + c.comment.to_s
+      end
+      Rails.logger.info "after processing:"
+      service.public_comments.each do |c|
+        Rails.logger.info c.ai
+      end
+      # service.public_comments.create! comment: item + "</ul>" + (service.public_comments || ""), locale: 'en'
+      # service.save
+    end
+
     return true, "Success"
   end
 
@@ -407,7 +459,9 @@ class EspReader
           when 'roundtrip'
             amount = amount/2.0
           when "mile"
-            next #TODO Create mileage-based fare
+            fare.rate = amount
+            fare.save
+            next
         end
         if fare.base.nil? or amount >= fare.base.to_f
           fare.base = amount
@@ -418,6 +472,32 @@ class EspReader
     end
     return true, "Success"
   end
+
+  def create_fare_table esp_configs
+
+    #['ServiceID', 'CostType', 'Amount', 'CostUnit']
+
+    service_comments_hash = {}
+
+    esp_configs.each do |config|
+      service = Service.find_by_external_id(SERVICE_DICT[config[@costs_idx['ServiceID']]])
+      service_comments_hash[service.id] = (service_comments_hash[service.id] || "<table class='ALTtable'><tr><th>Cost Type</th><th>Amount</th><th>Cost Unit</th></tr>") +
+          "<tr><td>" + config[@costs_idx['CostType']] +
+          "</td><td>" + number_to_currency(config[@costs_idx['Amount']].to_f).to_s +
+          "</td><td>" +  config[@costs_idx['CostUnit']] + "</td></tr>"
+    end
+
+    service_comments_hash.each do |key, item|
+      service = Service.find(key)
+      fare_structure = service.fare_structures.first #should only be one
+      fare_structure.desc = item + "</table><br>" + (fare_structure.desc || "")
+      fare_structure.save
+      puts item
+    end
+
+    return true, "Success"
+  end
+
 
   def add_accommodation(service, accommodation)
 
@@ -501,26 +581,26 @@ class EspReader
         service.service_coverage_maps.destroy_all
         b = Boundary.find_by_agency('Metropolitan Atlanta Rapid Transit Authority')
         gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
-        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'endpoint_area')
-        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'coverage_area')
+        ServiceCoverageMap.where(service: service, geo_coverage: gc, rule: 'endpoint_area').first_or_create
+        ServiceCoverageMap.where(service: service, geo_coverage: gc, rule: 'coverage_area').first_or_create
       when "65980602734372809999" #CATS Paratransit
         service.service_coverage_maps.destroy_all
         b = Boundary.find_by_agency('Cherokee Area Transportation System (CATS)')
         gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
-        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'endpoint_area')
-        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'coverage_area')
+        ServiceCoverageMap.where(service: service, geo_coverage: gc, rule: 'endpoint_area').first_or_create
+        ServiceCoverageMap.where(service: service, geo_coverage: gc, rule: 'coverage_area').first_or_create
       when "77900779520510731111" #Gwinnett Paratransit
         service.service_coverage_maps.destroy_all
         b = Boundary.find_by_agency('Gwinnett County Transit (GCT)')
         gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
-        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'endpoint_area')
-        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'coverage_area')
+        ServiceCoverageMap.where(service: service, geo_coverage: gc, rule: 'endpoint_area').first_or_create
+        ServiceCoverageMap.where(service: service, geo_coverage: gc, rule: 'coverage_area').first_or_create
       when "57874876269921009999" #CCT Paratransit
         service.service_coverage_maps.destroy_all
         b = Boundary.find_by_agency('Cobb Community Transit (CCT)')
         gc = GeoCoverage.where(value: b.agency, coverage_type: 'polygon', geom: b.geom).first_or_create
-        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'endpoint_area')
-        ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'coverage_area')
+        ServiceCoverageMap.where(service: service, geo_coverage: gc, rule: 'endpoint_area').first_or_create
+        ServiceCoverageMap.where(service: service, geo_coverage: gc, rule: 'coverage_area').first_or_create
 
     end
   end

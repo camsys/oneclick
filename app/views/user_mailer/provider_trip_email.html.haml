@@ -1,4 +1,3 @@
-//%p= t(:trip_options_information_from_from, from: @traveler.name)
 %h3="Trip request from " + @traveler.name
 
 %hr{style: "height:12px; background:#848484;"}
@@ -89,8 +88,8 @@
 %table
   %tbody
     %tr
-      %td="Thank you for using " + Oneclick::Application.config.name + " Software."
+      %td=t(:email_thank_you).to_s.sub('%{application_name}', Oneclick::Application.config.name)
     %tr
-      %td This email is sent from an email address that is not monitored. Please do not reply to this message.
+      %td=t(:do_not_reply)
     %tr
-      %td="Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of " + Oneclick::Application.config.name
+      %td=t(:email_footer).to_s.sub('%{application_name}', Oneclick::Application.config.name)

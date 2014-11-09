@@ -1,0 +1,171 @@
+OBJECTID,LONGITUDE,LATITUDE,POI_NAME,Address_1,Address_2,CITY,STATE,ZIP,RESERVED_1,RESERVED_2,RESERVED_3,COUNTY,POI_TYPE
+147,33.78170554705241,-84.38384042578042,AARP Georgia State Office,999 Peachtree Street NE,,Atlanta,GA,30309,,,,,
+148,33.77644909592311,-84.29634715176513,All About Developmental Disabilities,"125 Clairemont Avenue, Suite 300",,Decatur,GA,30030,,,,,
+149,33.753338442785775,-84.39360491620539,Administration for Community Living- AOA Region IV,"Atlanta Federal Center
+61 Forsyth Street, S.W. Suite 5M69",,Atlanta,GA,30303,,,,,
+150,33.92483555245968,-84.3312095682187,Alzheimers Association - Atlanta,"41 Perimeter Center East
+Suite 550",,Atlanta,GA,30346,,,,,
+151,33.38217592241176,-84.57928483390896,American Cancer Society - Fayetteville,"301 Kelly Drive, Suite 3",,Peachtree City,GA,30269,,,,,
+152,33.99736391812138,-84.57704582512673,American Cancer Society  Kennesaw,1825 Barrett Lakes Boulevard,,Kennesaw,GA,30144,,,,,
+153,33.99304977111626,-84.09160016754822,American Cancer Society - Lawrenceville,"6500 Sugarloaf Pkwy
+Suite 260",,Duluth,GA,30097,,,,,
+154,33.761388417160674,-84.39068296231028,American Cancer Society - South Atlantic Division,250 Williams Street,,Atlanta,GA,30303,,,,,
+155,33.761388417160674,-84.39068296231028,American Cancer Society National Headquarters,250 Williams Street,,Atlanta,GA,30303,,,,,
+156,33.76047028375956,-84.38741932745029,"American Diabetes Association, GA Aff.","233 Peachtree Street, NE",,Atlanta,GA,30303,,,,,
+157,33.92613462318889,-84.4799069998943,American Heart and Stroke Association - Greater Southeast Affiliate,"1101 Northchase Parkway, S.E.
+Suite 1",,Marietta,GA,30067,,,,,
+158,33.883109398716954,-84.4824516258816,American Lung Association - Southeast Region,2452 Spring Road,,Smyrna,GA,30080,,,,,
+159,33.80288773935109,-84.33055705813968,American Parkinson Disease Association,"I & R Center at Emory University
+1841 Clifton Road NE, Room 328",,Atlanta,GA,30329,,,,,
+160,33.80980460066678,-84.39319131086455,American Spinal Injury Association,2020 Peachtree Road NW,,Atlanta,GA,30309,,,,,
+161,33.83578505964084,-84.38223118635136,Arthritis Foundation of Georgia - Atlanta,"2970 Peachtree Road, NW",,Atlanta,GA,30305,,,,,
+162,33.99733650533983,-84.16773105493445,Asian-American Resource Center,3635 Peachtree Ind. Blvd. #450,,Duluth,GA,30096,,,,,
+163,33.76056584632988,-84.38741932745029,"Atlanta Volunteer Lawyers Foundation, Inc",235 Peachtree Street NE,,Atlanta,GA,30303,,,,,
+164,33.84523572709389,-84.30923148493616,Auditory Verbal Center,"1901 Century Blvd
+Suite 20",,Atlanta,GA,30345,,,,,
+165,34.04342893417959,-84.05451333513832,Autism Society of America - Greater Georgia Chapter,3455 Lawrenceville Suwanee Road,,Suwanee,GA,30024,,,,,
+166,33.61250668722835,-84.40544220193931,Better Business Bureau of Atlanta NE GA and Athens,503 Oak Place,,Atlanta,GA,30349,,,,,
+167,33.753588376201606,-84.3901726177337,Brain and Spinal Injury Trust Fund Commission,2 Peachtree Street NE,,Atlanta,GA,30303,,,,,
+168,33.79474798761515,-84.32094023965868,Brain Injury Association of Georgia,1441 Clifton Road NE,,Atlanta,GA,30322,,,,,
+169,33.79826607950872,-84.32714873084575,Centers for Disease Control,1600 Clifton Road NE,,Atlanta,GA,30333,,,,,
+170,34.19181971232746,-84.49233612559914,Cherokee County Health Department-Administrative offices,1219 Univeter Road,,Canton,GA,30115,,,,,
+171,34.19473246428032,-84.49784200151475,Cherokee County Senior Services,884 Univeter Road,,Canton,GA,30115,,,,,
+172,33.554096247736936,-84.36246376176854,Clayton County Aging Program,877 Battle Creek Road,,Jonesboro,GA,30236,,,,,
+173,33.912521412868614,-84.58223370547205,Cobb County Public Health Dept-Admin Office,1650 County Services Parkway,,Marietta,GA,30008,,,,,
+174,33.62022009585286,-84.35699509879169,Clayton County Community Services Authority,1000 Main  Street,,Forest Park,GA,30298,,,,,
+175,33.82909580077205,-84.33178351289388,Crohn's and Colitis Foundation of America - Georgia Chapter,2250 North Druid Hills Road #250,,Atlanta,GA,30329,,,,,
+176,33.753235682520256,-84.39358768442509,"Department of Health and Human Services, Region IV","Sam Nunn Atlanta Federal Center 
+61 Forsyth Street, S.W. Suite 5B95",,Atlanta,GA,30303,,,,,
+177,33.754456881699525,-84.38995457704146,Department of Housing and Urban Development,"Five Points Plaza Building
+40 Marietta Street",,Atlanta,GA,30303,,,,,
+178,33.75400039399517,-84.39020414075543,DHS - Division of Aging Services,"Two Peachtree Street, N.W.
+Suite 33-267",,Atlanta,GA,30303,,,,,
+179,33.754622875200994,-84.3852503613237,Diabetes Association of Atlanta,100 Edgewood Avenue,,Atlanta,GA,30303,,,,,
+180,33.777629031359595,-84.29364188822251,disABILITY LINK,755 Commerce Drive,,Decatur,GA,30030,,,,,
+181,33.74252311682477,-84.75186815171116,Douglas County Health Dept-Admin Offices,6770 Selman Drive,,Douglasville,GA,30134,,,,,
+182,33.79937118488874,-84.30872537469259,Emory Autism Resource Center,"Emory University, 
+1551 Shoup Court",,Atlanta,GA,30322,,,,,
+183,33.92008253742796,-84.37883903825639,Epilepsy Foundation of America Georgia Chapter,6065 Roswell Road,,Atlanta,GA,30328,,,,,
+184,33.428592888576304,-84.55384688109376,ExceptionalOps,100 Governor's Trace Suite 106-107,,Fayetteville,GA,30214,,,,,
+185,33.57303813255919,-84.36770741266042,Family Connection - Clayton County,696 Mount Zion Road,,Jonesboro,GA,30236,,,,,
+186,33.775922198541025,-84.24624750420651,Family Connection - DeKalb County,4380 Memorial Drive,,Decatur,GA,30032,,,,,
+187,33.458486222647025,-84.40868066786663,Family Connection - Fayette County,278 McElroy Road,,Fayetteville,GA,30214,,,,,
+188,33.743974075752135,-84.39463897684738,Family Connection - Fulton County,395 Pryor Street,,Atlanta,GA,30312,,,,,
+189,33.949858670875585,-83.98842167487771,Family Connection - Gwinnett County,"Gwinnett Coalition for Health & Human Services
+750 S. Perry Street
+Suite 312",,Lawrenceville,GA,30046,,,,,
+190,33.68090112910619,-83.99899131324509,Family Connection - Rockdale County,1430 Starcrest Drive,,Conyers,GA,30012,,,,,
+191,33.45185280000629,-84.14508985942706,Family Connection Henry County -Connecting Henry,66 Veterans Drive,,McDonough,GA,30253,,,,,
+192,33.790222337349405,-84.30422237696393,Fragile X Association of Georgia,2165 North Decatur Road,,Decatur,GA,30033,,,,,
+193,33.75189538544373,-84.3831476641194,Fulton County Health Department,"99 Jesse Hill Jr. Drive, S.E.",,Atlanta,GA,30303,,,,,
+194,33.75189538544373,-84.3831476641194,Fulton County Health Serv - Behavioral Health and Developmental Disabilities,"99 Jesse Hill Jr. Drive, SE; Suite 409A",,Atlanta,GA,30303,,,,,
+195,33.79310232643928,-84.36829519353677,Georgia Adult Day Services Association,1440 Dutch Valley Place,,Atlanta,GA,30324,,,,,
+196,33.77571210636273,-84.29547653559086,Georgia Advocacy Office,"150 East Ponce de Leon Avenue
+Suite 430",,Decatur,GA,30030,,,,,
+197,33.79824443011779,-84.39057704623099,Georgia AIDS/STD Infoline,"1605 Peachtree Street, NE",,Atlanta,GA,30309,,,,,
+198,33.82508821905441,-84.34615349141654,Fulton Atlanta Community Action Authority,1690 Chantilly Drive,,Atlanta,GA,30308,,,,,
+199,34.08786094860625,-84.48339763381585,Georgia Breast Cancer Coalition Fund,"12195 Highway 92
+Suite 114-340",,Woodstock,GA,30188,,,,,
+200,33.77504883658298,-84.29677926797063,Georgia Charitable Care Network,"One West Court Square, Suite 750",,Decatur,GA,30030,,,,,
+201,33.76980786233304,-84.25064582704942,Georgia Council for the Hearing Impaired,"4151 Memorial Drive, Suite 103-B",,Decatur,GA,30032,,,,,
+202,33.753588376201606,-84.3901726177337,Georgia Council on Aging,"2 Peachtree Street, N.W.
+Suite 32-270",,Atlanta,GA,30303,,,,,
+203,33.90720750480216,-84.36408765009998,Georgia Eye Bank,"5605 Glenridge Drive, NE 
+Suite 250",,Atlanta,GA,30342,,,,,
+204,33.50609996214371,-84.22534845518396,Georgia Health Care Association,160 Country Club Drive,,Stockbridge,GA,30281,,,,,
+205,33.83766350268854,-84.31435876229318,Georgia Hospice and Palliative Care Organization,3032 Briarcliff Rd NE,,Atlanta,GA,30329,,,,,
+206,33.789148565001256,-84.27912044492331,Georgia Psychiatric Physicians Association,"2711 Irvin Way, Suite 111",,Decatur,GA,30030,,,,,
+207,33.84546724608401,-84.30752806902598,Georgia Psychological Association,"2200 Century Parkway 
+Suite 660",,Atlanta,GA,30345,,,,,
+208,33.748669841311994,-84.38934723756353,Georgia Public Service Commission/Consumer Affairs,244 Washington Street,,Atlanta,GA,30334,,,,,
+209,33.753273006349445,-84.38923314679835,Georgia Refugee Health Program,40 Pryor Street,,Atlanta,GA,30303,,,,,
+210,33.74897148867797,-84.38909110533734,Georgia Secretary of State - Securities and Business Regulation Division,214 State Capitol,,Atlanta,GA,30334,,,,,
+211,33.89588477308263,-83.95833828438879,Georgia Senior Living Association - Assisted Living Federation of America,"2023 Grayson Highway
+Suite 202A",,Grayson,GA,30017,,,,,
+212,33.75409643233871,-84.38900870969854,Georgia State University Gerontology Institute,"One Park Place, Suite 605",,Atlanta,GA,30303,,,,,
+213,33.98249102898569,-84.35219001392392,Georgia Transplant Foundation,500 Sugar Mill Road,,Atlanta,GA,30350,,,,,
+214,33.95659147526868,-84.02950461579633,GNR Health Departments - Admin. Office,2570 Riverside Parkway,,Lawrenceville,GA,30045,,,,,
+215,33.95727369770793,-83.9870933548894,Gwinnett Council for Seniors,186 East Pike Street,,Lawrenceville,GA,30046,,,,,
+216,33.659043146545,-84.42287688830936,Helen Keller National Center - SE Region,1003 Virginia Avenue,,Atlanta,GA,30354,,,,,
+217,33.42433592988141,-84.16806265491152,Henry County Health Department- Administrative Offices,135 Henry Parkway,,McDonough,GA,30253,,,,,
+218,33.72989664919419,-84.42147030800709,Hosea Williams Feed the Hungry Foundation,"1035 Donnelly Avenue, SW",,Atlanta,GA,30310,,,,,
+219,33.82801880206853,-84.33867466436743,Jerusalem House,"17 Executive Park, NE; Suite 290",,Atlanta,GA,30329,,,,,
+220,33.79475666889431,-84.3892410574361,Jewish Federation of Greater Atlanta,"1440 Spring Street, NW",,Atlanta,GA,30309,,,,,
+221,33.77469180558785,-84.38483090230949,Lambda Legal Defense and Education Fund,"730 Peachtree Street, NE",,Atlanta,GA,30308,,,,,
+222,33.82945366887486,-84.34520718403735,Latin American Association - Atlanta Outreach Center,2750 Buford Highway,,Atlanta,GA,30324,,,,,
+223,33.79310232643928,-84.36829519353677,LeadingAge Georgia,"1440 Dutch Valley Place
+Suite 120",,Atlanta,GA,30324,,,,,
+224,33.8620371885205,-84.2870319376359,Learning Disabilities Association of Georgia,2566 Shallowford Road,,Atlanta,GA,30345,,,,,
+225,33.86903686145615,-84.095731650998,"Lewy Body Dementia Association, Inc.",912 Killian Hill Road SW,,Lilburn,GA,30047,,,,,
+226,33.753588376201606,-84.3901726177337,Long Term Care Ombudsman Program- DHS,"2 Peachtree Street N.W.
+32nd Floor",,Atlanta,GA,30303,,,,,
+227,33.895586434261645,-84.4911189594477,Lupus Foundation of America - Georgia Chapter,1850 Lake Park Drive Suite 101,,Smyrna,GA,30080,,,,,
+228,33.754622875200994,-84.3852503613237,Mental Health America of Georgia,"100 Edgewood Avenue, N.E.",,Atlanta,GA,30303,,,,,
+229,33.84866551422465,-84.2444440353645,Muscular Dystrophy Association,"2187 Northlake Parkway
+Building 9; Suite 166",,Norcross,GA,30084,,,,,
+230,33.886883512838835,-84.26402560755275,NAMI - National Alliance For The Mentally Ill,"3050 Presidential Drive
+Suite 202",,Atlanta,GA,30340,,,,,
+231,33.886883512838835,-84.26402560755275,National Alliance For The Mentally Ill - Georgia Chapter,3050 Presidential Drive,,Atlanta,GA,30340,,,,,
+232,34.04015395404218,-84.3311586389247,National Down Syndrome Congress,"30 Mansell Court, Suite 108",,Roswell,GA,30076,,,,,
+233,33.77576420210147,-84.30071929749681,"National Federation of the Blind of Georgia, Inc.",315 West Ponce de Leon Avenue,,Decatur,GA,30030,,,,,
+234,33.87174270548144,-84.26816256942271,National Kidney Foundation Serving Georgia and Alabama,"2951 Flowers Road, South
+Suite 211",,Atlanta,GA,30341,,,,,
+235,33.930209348702135,-84.3493296839514,"National Multiple Sclerosis Society, Georgia Chapter","1117 Perimeter Center West, 
+Suite E101",,Atlanta,GA,30338,,,,,
+236,33.878962023182794,-84.27073920577743,Parent to Parent of Georgia Inc,"3070 Presidential Parkway, Suite 130",,Atlanta,GA,30340,,,,,
+237,33.852348094233434,-84.25915550590042,Refugee Resettlement and Immigration Services of Atlanta,2300 Henderson Mill Rd NE,,Atlanta,GA,30345,,,,,
+238,33.75343286775069,-84.3906130358236,Prevent Child Abuse Georgia,"Georgia State University
+34 Peachtree Street; Suite 1700",,Atlanta,GA,30303,,,,,
+239,33.82199540748434,-84.26074864048832,Refugee Womens Network Inc,1431 A McLendon Drive,,Decatur,GA,30033,,,,,
+240,33.753588376201606,-84.3901726177337,Rehabilitation Services - Georgia DOL,"2 Peachtree Street, NW",,Atlanta,GA,30303,,,,,
+241,33.664258917008,-84.02490420581086,Rockdale County Health Dept,"985 Taylor Street, SW",,Conyers,GA,30012,,,,,
+242,33.83284591778863,-84.33696674340632,Salvation Army Atlanta Temple Corps,2090 N. Druid Hills Rd,,Atlanta,GA,30329,,,,,
+243,33.83036245307494,-84.34144736457642,Salvation Army Metro Command,"1190 West Druid Hills Drive
+Suite 150",,Atlanta,GA,30329,,,,,
+244,34.02754054818496,-84.42563858873638,Second Wind Dreams,"4343 Shallowford Road
+Suite E6",,Marietta,GA,30062,,,,,
+245,33.84644309477119,-84.3571654194194,Securities and Exchange Commission,"950 East Paces Ferry, NE",,Atlanta,GA,30326,,,,,
+246,33.81169320266514,-84.37542922646071,Southeast ADA Center,1419 Mayson Street,,Atlanta,GA,30324,,,,,
+247,33.77576420210147,-84.30071929749681,"Statewide Independent Living Council of Georgia, Inc.","315 West Ponce de Leon Avenue
+Suite 600",,Decatur,GA,30030,,,,,
+248,33.88685128062957,-84.38185034957411,Susan G. Komen Breast Cancer Foundation - Georgia,4840 Roswell Road,,Atlanta,GA,30342,,,,,
+249,33.76748344824534,-84.38518774496424,Task Force For The Homeless,"477 Peachtree Street, NE",,Atlanta,GA,30308,,,,,
+250,33.832997642110115,-84.3239012895537,The ALS Association of Georgia,"1955 Cliff Valley Way
+Suite 116",,Atlanta,GA,30329,,,,,
+251,33.973946557945965,-84.0097738910963,The C3 Center,1065 Wather Boulevard,,Lawrenceville,GA,30606,,,,,
+252,33.7006334419425,-84.39517914796829,The Council on Aging,"215 Lakewood Way SW
+Suite 105",,Atlanta,GA,30315,,,,,
+253,33.762514297128064,-84.33779582402985,The Health Initiative,"1530 Dekalb Avenue
+Suite A",,Atlanta,GA,30307,,,,,
+254,33.79087796079756,-84.38548020784577,The Regional Council of Churches of Atlanta,1328 Peachtree Street,,Atlanta,GA,30309,,,,,
+255,33.754622875200994,-84.3852503613237,United Way of Greater Atlanta,"100 Edgewood Avenue, NE",,Atlanta,GA,30303,,,,,
+256,33.756128301603894,-84.38993802539721,VSA Arts of Georgia,"Healey Building
+Suite R-1
+57 Forsyth Street",,Atlanta,GA,30303,,,,,
+257,33.79595131111148,-84.21296478027557,World Relief Atlanta,655 Village Square Drive,,Stone Mountain,GA,30083,,,,,
+258,33.78038317333289,-84.35337306479147,YWCA of Greater Atlanta,957 North Highland Avenue,,Atlanta,GA,30306,,,,,
+1086,33.75515337745554,-84.3845066146946,Atlanta Regional Commission,"Aging Division
+40 Courtland Street, N.E.",,Atlanta,GA,30303,,,,,
+1087,33.924226258116676,-84.31470736176635,AVIV Older Adult Services - Jewish Family & Career Services,4549 Chamblee Dunwoody Road,,Atlanta,GA,30338,,,,,
+1088,33.89131225693882,-84.28642388313528,Center For Pan Asian Community Service,3510 Shallowford Road,,Atlanta,GA,30341,,,,,
+1089,34.19473246428032,-84.49784200151475,Cherokee County Senior Services,884 Univeter Road,,Canton,GA,30115,,,,,
+1090,33.554096247736936,-84.36246376176854,Clayton County Aging Program,877 Battle Creek Road,,Jonesboro,GA,30236,,,,,
+1091,33.92524779090911,-84.57372749764471,Cobb Senior Services,"1150 Powder Springs Street, Ste. 100",,Marietta,GA,30064,,,,,
+1092,33.75068489952207,-84.73663513991744,Douglas Senior Services,6287 Fairburn Road,,Douglasville,GA,30134,,,,,
+1093,33.714199420165926,-84.1654573014298,DeKalb County Office of Senior Affairs,"Lou Walker Multipurpose Facility for Active Older Adults
+2538 Panola Road",,Lithonia,GA,30058,,,,,
+1094,33.44188303486129,-84.44798860096176,Fayette Senior Services,4 Center Drive,,Fayetteville,GA,30214,,,,,
+1095,33.757476169782535,-84.38759202659429,Fulton County Office Of Aging,"137 Peachtree Street
+Main Floor",,Atlanta,GA,30303,,,,,
+1096,33.75602337693118,-84.38038429527518,Grady Hospital - 60 Plus Senior Helpline,"80 Jesse Hill Jr. Drive, S.E.
+Armstrong Building",,Atlanta,GA,30303,,,,,
+1097,33.949858670875585,-83.98842167487771,Gwinnett Coalition for Health and Human Services,"750 South Perry Street
+Suite 312",,Lawrenceville,GA,30046,,,,,
+1098,33.98572514853703,-83.97801755036807,Gwinnett County Senior Services,567 Swanson Drive,,Lawrenceville,GA,30043,,,,,
+1099,33.44308800140419,-84.12512795303633,Henry County Senior Citizens Services,1050 Florence McGarity Blvd,,McDonough,GA,30252,,,,,
+1100,33.82945366887486,-84.34520718403735,Latin American Association - Atlanta Outreach Center,2750 Buford Highway,,Atlanta,GA,30324,,,,,
+1101,33.94282087112765,-84.21064081818542,Latin American Association - Norcross Outreach Center,128 Lawrenceville St.,,Norcross,GA,30071,,,,,
+1102,33.66761328727898,-84.02663118190571,Rockdale County Senior Services,1240 Dogwood Drive S.E.,,Conyers,GA,30012,,,,,
+1103,33.80857720351952,-84.39370361823023,Sixty Plus Older Adult Services - Piedmont Atlanta Hospital,1968 Peachtree Road NW,,Atlanta,GA,30309,,,,,
+1104,33.762514297128064,-84.33779582402985,The Health Initiative,"1530 Dekalb Avenue
+Suite A",,Atlanta,GA,30307,,,,,

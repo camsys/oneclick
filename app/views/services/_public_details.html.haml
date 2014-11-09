@@ -1,32 +1,35 @@
 .col-sm-6
   .panel.panel-default
     .panel-heading
-      %h3.panel-title
+      %span.panel-title
         = t(:provided_by)
         = link_to service.provider.name, admin_provider_path(service.provider)
+        = add_tooltip("provided_by_help")
     .panel-body
       -unless service.active
-        %h3.warning
+        %p.warning
           = t(:service_is_inactive)
-      %h4
+      - if @service.logo_url
+        %img{src: @service.logo_url.to_s}
+      %p
         =service.phone
-      %h4
+      %p
         =service.email
-      %h4
-        - if service.url
+      - if service.url
+        %p
           =link_to service.url, service.url
-      %h5
-        -if service.service_type and service.service_type.name
+      -if service.service_type and service.service_type.name
+        %p
           =t(:service_type).to_s + ": " + t(service.service_type.name.downcase.to_sym)
-      %h5
-        -if service.external_id
+      -if service.external_id
+        %p
           =t(:service_id).to_s + ": " + service.external_id.to_s
-      %h5
-        -if service.booking_service_code
+      -if service.booking_service_code
+        %p
           =t(:booking_service_code).to_s + ": " + service.booking_service_code.to_s
-      %h5
-        - if service.service_window
+      - if service.service_window
+        %p
           = t(:service_window).to_s + ": " + service.service_window.to_s
-      %h5
-        - if service.time_factor
+      - if service.time_factor
+        %p
           = t(:time_factor).to_s + ": " + service.time_factor.to_s

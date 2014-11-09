@@ -1,49 +1,57 @@
 - temp_rating = @provider.services.first.ratings.build(user: @traveler) rescue nil
+- can_manage_provider =(can? :manage, :all) || ((can? :full_read, @provider) && !current_user.nil? && !current_user.provider.nil? && @provider.id == current_user.provider.id)
 - if can? :index, Provider
   .row
     .col-sm-12
-      = link_to t(:all_providers), admin_providers_path
+      = link_to t(:all_providers), admin_providers_path, class: 'btn action-button btn-arrow-left'
 .row.info-header
   .col-sm-5
     %h1= @provider.name
     - unless @provider.active
       %p= t(:inactive)
   .col-sm-7.btns
-    - if can? :destroy, @provider
-      = button_tag :type => 'button', "data-target" => "#deleteProviderConfirmDialog", "data-toggle" => "modal", :class => "btn action-button pull-right" do
-        = t(:delete)
-      #deleteProviderConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_provider), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
-        .modal-dialog
-          .modal-content
-            .modal-header
-              = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
-                = t(:cancel)
-              = button_to t(:ok), { action: "destroy", id: @provider.id }, method: :delete, class: "btn btn-primary action-button pull-right"
-              .modal-title{:style => "text-align:left;"}
-                %b
-                  = t(:site_title) 
-            .modal-body{:style => "text-align:left;"}
-              = t(:confirm_remove_message) + @provider.name + " ?"
-      - if can?(:create, Service) && can?(:update, @provider)
-        = link_to new_service_path(provider_id: @provider), {class: 'btn action-button pull-right', role: 'button'} do
-          = icon_label(:add_service)
-    - if can? :update, @provider
-      = link_to edit_admin_provider_path(@provider), {class: 'btn action-button pull-right', role: 'button'} do
-        = icon_label(:edit)
-    -if temp_rating && Rating.feedback_on?
-      - if can? :read, temp_rating
-        .pull-right
+    .pull-right
+      -if temp_rating && Rating.feedback_on?
+        - if can? :read, temp_rating
           = RateableDecorator.new(@provider).rating_in_stars
           %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal"}}
             = t(:feedback)
       = render partial: "ratings/organization_feedback_modal", locals: {rateable: @provider}
+      - if can_manage_provider && (can? :destroy, @provider)
+        = button_tag :type => 'button', "data-target" => "#deleteProviderConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
+          = t(:delete)
+        #deleteProviderConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_provider), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+          .modal-dialog
+            .modal-content
+              .modal-header
+                = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
+                  = t(:cancel)
+                = button_to t(:ok), { action: "destroy", id: @provider.id }, method: :delete, style: "margin-right: 5px;", class: "btn action-button pull-right"
+                .modal-title{:style => "text-align:left;"}
+                  %b
+                    = t(:site_title)
+              .modal-body{:style => "text-align:left;"}
+                = t(:confirm_remove_message) + @provider.name + " ?"
+        - if can_manage_provider && can?(:create, Service) && can?(:update, @provider)
+          = link_to new_service_path(provider_id: @provider), {class: 'btn action-button', role: 'button'} do
+            = icon_label(:add_service)
+      - if can_manage_provider && (can? :update, @provider)
+        = link_to edit_admin_provider_path(@provider), {class: 'btn action-button', role: 'button'} do
+          = icon_label(:edit)
 .row
   .col-sm-6
     .panel.panel-default
       .panel-heading
-        %h4.panel-title= t(:provider_contact_info)
-      .panel-body              
+        %h4.panel-title
+          = t(:provider_info)
+          = add_tooltip("provider_info_help")
+      .panel-body
         %table.table.table-condensed
+          %tr
+            %td.text-right
+              = t(:logo)
+            %td.center
+              %img{src: @provider.logo_url}
           %tr
             %td.text-right
               = t(:address) + ":"
@@ -72,11 +80,13 @@
               - if @provider.url
                 %b= link_to @provider.url, @provider.url
 
-  - if can? :full_read, @provider
+  - if can_manage_provider
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h4.panel-title= t(:internal_contact)
+          %h4.panel-title
+            = t(:internal_contact)
+            = add_tooltip("internal_contact_help")
         .panel-body
           %table.table.table-condensed
             %tr
@@ -105,12 +115,14 @@
                   = t(:user) + ": "
                 %td.text-left
                   %b= link_to @contact.name, admin_user_path(@contact)
-              
 
--if can? :full_read, @provider
+
+-if can_manage_provider
   .panel.panel-default
     .panel-heading
-      %h4.panel-title= t(:staff_actions)
+      %h4.panel-title
+        = t(:staff_actions)
+        = add_tooltip("staff_actions_help")
     .panel-body
       %table.ALTtable.table-condensed
         %tr
@@ -140,16 +152,22 @@
 
   .panel.panel-default
     .panel-heading
-      %h4.panel-title= t(:services)
+      %h4.panel-title
+        = t(:services)
+        = add_tooltip("services_help")
     .panel-body
       = render 'services/table'
+
+  = render partial: 'admin/shared/show_comments', locals: {commentable: @provider, can_view_private: can_manage_provider}
 
   .row
     .col-sm-6
       .panel.panel-default
         .panel-heading
           / %h4.panel-title= t(:other_information)
-          %h4.panel-title Other Information
+          %h4.panel-title
+            Other Information
+            = add_tooltip("other_information_help")
         .panel-body
           %table.table
             %tr

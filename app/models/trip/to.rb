@@ -5,6 +5,9 @@ module Trip::To
     attr_accessor :to_lat, :to_lon, :to_place, :to_is_home, :to_place_selected, :to_place_selected_type, :to_raw_address
     attr_accessor :to_place_object
 
+    # multi_dest places
+    attr_accessor :multi_dest_places
+
     validates :to_place, :presence => true
     validate :validate_to_selection
   end

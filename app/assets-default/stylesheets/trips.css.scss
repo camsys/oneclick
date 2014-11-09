@@ -70,7 +70,7 @@
   margin-right: 0px;
   margin-bottom: 10px;
   padding-left: 0px;
-  padding-right: 0px; 
+  padding-right: 0px;
 }
 
 .dropdown-toggle {
@@ -83,59 +83,6 @@
 
 .btn .fa-map-marker {
   color: #499bea;
-}
-
-/*breadcrumbs*/
-.breadcrumb-page {
-  margin: 3px 0px;
-  min-width: 100px;
-  height: $breadcrumb-height;
-  text-align: center;
-  padding: 0px 10px;
-}
-
-.current-page {
-  background-image: image-url('active.png');
-  background-size: 100% 100%;
-  font-weight: bold;
-  color: white;
-  line-height: $breadcrumb-height;
-}
-
-.prev-page {
-  background-image: image-url('inactive.png');
-  background-size: 100% 100%;
-
-  a{
-    font-weight: bold;
-    color: black;
-    line-height: $breadcrumb-height;
-  }
-
-  a:hover {
-    text-decoration: none;
-    cursor: pointer;
-  }
-}
-
-.next-page {
-  background-image: image-url('inactive.png');
-  background-size: 100% 100%;
-  font-weight: bold;
-  color: black;
-  line-height: $breadcrumb-height;
-}
-
-#wizards{
-  padding: 0px;
-  margin-bottom: 5px;
-  background-color: transparent;
-}
-
-#wizards>li+li:before{
-  visibility: hidden;
-  padding: 0px;
-  content: '';
 }
 
 /*highlight vertical line style(either left or right side of each chart)*/
@@ -156,27 +103,6 @@
 }
 
 $period-nav-button-width: 40px;
-.prev-period {
-  width: $period-nav-button-width;
-  height: 20px;
-  background-image: image-url('prevPeriod.png');
-  background-color: transparent;
-  text-align: center;
-  color: black;
-  border: none;
-  font-size: small;
-}
-
-.next-period {
-  width: $period-nav-button-width;
-  height: 20px;
-  background-image: image-url('nextPeriod.png');
-  background-color: transparent;
-  text-align: center;
-  color: black;
-  border: none;
-  font-size: small;
-}
 
 /* in sm+ mode, one period-nav button in same container, so apply margin to sorter component that make them vertically align in containers */
 /* in xs mode, as space is so limited, not apply margin so sorter can take whatever space left in its container */
@@ -224,7 +150,7 @@ $period-nav-button-width: 40px;
 .overlay-mask {
   position: absolute;
   width: 100%;
-  height: 100%; 
+  height: 100%;
   top: 0px;
   left: 0px;
   zIndex: 1000;
@@ -232,7 +158,7 @@ $period-nav-button-width: 40px;
 
 .overlay-mask-spinner {
   font-size: 4em;
-  top: 100px;
+  //top: 100px;
   left: 50%;
   position: absolute;
 }
@@ -293,7 +219,7 @@ $period-nav-button-width: 40px;
 .chart {
   background: none;
 }
- 
+
 .chart rect {
   stroke: none;
 }
@@ -498,10 +424,55 @@ $legend-height: 20px;
     font-weight: bold;
   }
   button.active {
-    
+
   }
 }
 
 #baseModes .trip_proxy_modes {
   margin-bottom: 0px;
+}
+
+.sidewalk-feedback-popup {
+
+}
+
+.grid-summary-item {
+  padding-left: 10px;
+}
+
+#legend_label,
+#input_container > legend {
+  font-weight: bold;
+  font-size: 12pt;
+  border-bottom: 0;
+}
+
+#is_round_trip_inputs,
+#modes_inputs,
+#eligibility_questions {
+  margin-top: 6px;
+}
+
+#is_round_trip_inputs > label,
+#modes_inputs > div > label,
+#eligibility_questions > label {
+  margin: 0 15px 0 3px;
+  font-weight: inherit;
+}
+
+#modes_inputs > div {
+  margin-bottom: 7px;
+}
+
+.panel {
+  margin-bottom: 10px;
+}
+
+th.rotate {
+  white-space: nowrap;
+  -moz-transform: rotate(-90.0deg);  /* FF3.5+ */
+  -ms-transform: rotate(-90.0deg);  /* IE9+ */
+  -o-transform: rotate(-90.0deg);  /* Opera 10.5 */
+  -webkit-transform: rotate(-90.0deg);  /* Safari 3.1+, Chrome */
+  transform: rotate(-90.0deg);  /* Standard */
 }

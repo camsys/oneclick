@@ -1,6 +1,11 @@
-.col-xs-12.well{tabindex: '0', style: "padding: 5px;"}
-  %label.col-sm-12{style: "padding: 0px;"}
-    = itinerary.trip_part.description
+- map_type ||= 'dynamic'
+.col-xs-12.well{style: "padding: 5px;"}
+  .col-sm-12
+    %h4
+      = itinerary.trip_part.description
+      = add_tooltip("trip_review_help")
+      :javascript
+        $(".label-help").css('margin-top', '-10px');
   = render :partial => 'trip_plan_summary_header', :locals => { :itinerary => itinerary }
   - if (not itinerary.is_mappable) || for_db
     .col-sm-12{style: "background: white; border-radius: 5px;"}
@@ -8,24 +13,31 @@
   - else
     .col-sm-6{style: "background: white; margin-bottom: 5px; border-radius: 5px; padding: 5px;"}
       = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
-    .col-sm-6{style: "height: 300px; background: white; border-radius: 5px; padding: 0px;"}
-      /= render :partial => 'map_details', :locals => { :itinerary => itinerary, :mapid => ('plan_map_' + itinerary.id.to_s) }
-      = LeafletMap({:mapid => ('plan_map_' + itinerary.id.to_s), :markers => create_itinerary_markers(itinerary).to_json, :polylines => create_itinerary_polylines(itinerary.get_legs).to_json, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "well well-small", :style => "height:300px;" })
-      :javascript
-        $(function(){
-          if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.#{'plan_map_' + itinerary.id.to_s} != null) { 
-            var mapObj = CsMaps.#{'plan_map_' + itinerary.id.to_s};
-            mapObj.invalidateMap(); 
-            var mapMarkers = mapObj.LMmarkers;
-            var mapBounds = null;
-            if(mapMarkers.length > 0) {
-              mapBounds = mapObj.calcMapBounds(mapMarkers);
-            } else {
-              mapBounds = mapObj.LMbounds;
+    - if map_type=='delayed_static'
+      .col-sm-6{id: "print_map_#{itinerary.id}", class: 'print_map'}
+    - elsif map_type=='static'
+      - # this option is actually not used as there is a separate template for email
+      .col-sm-6{id: "print_map_#{itinerary.id}", class: 'print_map'}
+        %img{src: itinerary.map_image.url}
+    - else
+      .sr-only{aria: {label: 'Map.'}}
+      .col-sm-6{style: "height: 300px; background: white; border-radius: 5px; padding: 0px;", aria: {hidden: 'true'}}
+        = LeafletMap({:mapid => ('plan_map_' + itinerary.id.to_s), :markers => create_itinerary_markers(itinerary).to_json, :polylines => create_itinerary_polylines(legs).to_json, :sidewalk_feedback_markers => create_itinerary_sidewalk_feedback_markers(legs).to_json, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "well well-small", :style => "height:300px;" })
+        :javascript
+          $(function(){
+            if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.#{'plan_map_' + itinerary.id.to_s} != null) {
+              var mapObj = CsMaps.#{'plan_map_' + itinerary.id.to_s};
+              mapObj.invalidateMap();
+              var mapMarkers = mapObj.LMmarkers;
+              var mapBounds = null;
+              if(mapMarkers.length > 0) {
+                mapBounds = mapObj.calcMapBounds(mapMarkers);
+              } else {
+                mapBounds = mapObj.LMbounds;
+              }
+
+              if(mapBounds) {
+                mapObj.LMmap.fitBounds(mapBounds);
+              }
             }
-        
-            if(mapBounds) {
-              mapObj.LMmap.fitBounds(mapBounds); 
-            }
-          }
-        });
+          });

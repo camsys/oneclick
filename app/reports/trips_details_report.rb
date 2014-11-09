@@ -8,12 +8,17 @@ class TripsDetailsReport < AbstractReport
     date_option = DateOption.find(report.date_range)
     date_option ||= DateOption.find_by(code: DateOption::DEFAULT)
 
+    date_range = date_option.get_date_range(report.from_date, report.to_date)
+    
     Trip.includes(:user, :creator, :trip_places, :trip_purpose, :desired_modes, :trip_parts)
-      .where(trip_parts: {sequence: 0, scheduled_time: date_option.get_date_range}).decorate
+      .where(trip_parts: {scheduled_time: date_range})
+      .order('trip_parts.sequence')
+      .references(:user, :creator, :trip_places, :trip_purpose, :desired_modes, :trip_parts)
+      .decorate
   end
 
   def get_columns
-    cols = [:id, :created_at, :user, :assisted_by, :modes, :ui_mode,
+    cols = [:id, :created, :user, :assisted_by, :modes, :ui_mode,
             :leaving_from, :from_lat, :from_lon, :out_arrive_or_depart, :out_datetime,
             :going_to, :to_lat, :to_lon, :in_arrive_or_depart, :in_datetime, :round_trip,
             :eligibility, :accommodations, :outbound_itinerary_count,

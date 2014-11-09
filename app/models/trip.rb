@@ -4,9 +4,13 @@ class Trip < ActiveRecord::Base
   belongs_to :user
   belongs_to :creator, :class_name => "User", :foreign_key => "creator_id"
   belongs_to :trip_purpose
+  belongs_to :multi_origin_dest_trip
+  belongs_to :agency
+  belongs_to :outbound_provider, class_name: "Provider", foreign_key: "outbound_provider_id"
+  belongs_to :return_provider, class_name: "Provider", foreign_key: "return_provider_id"
   has_many :trip_places, -> {order("trip_places.sequence ASC")}
   has_many :trip_parts, -> {order("trip_parts.sequence ASC")}
-  has_many :itineraries, :through => :trip_parts, :class_name => 'Itinerary' 
+  has_many :itineraries, :through => :trip_parts, :class_name => 'Itinerary'
   has_and_belongs_to_many :desired_modes, class_name: 'Mode', join_table: :trips_desired_modes, association_foreign_key: :desired_mode_id
 
   # Scopes
@@ -20,7 +24,7 @@ class Trip < ActiveRecord::Base
 
   # Returns a set of trips that are scheduled between the start and end time
   def self.scheduled_between(start_time, end_time)
-    # cant do a sorted join here as PG grumbles so doing an in-memory sort on the trips that are returned after we have performed a sub-filter on them. The reverse 
+    # cant do a sorted join here as PG grumbles so doing an in-memory sort on the trips that are returned after we have performed a sub-filter on them. The reverse
     #is because we want to order from newest to oldest
     res = joins(:trip_parts).where("sequence = ? AND trip_parts.scheduled_date >= ? AND trip_parts.scheduled_date <= ?", 0, start_time.to_date, end_time.to_date).uniq
     # Now we need to filter through the results and remove any which fall outside the time range
@@ -42,6 +46,7 @@ class Trip < ActiveRecord::Base
   def self.create_from_proxy trip_proxy, user, traveler
     trip = Trip.new()
     trip.creator = user
+    trip.agency = user.agency
     trip.user = traveler
     trip.trip_purpose = TripPurpose.find(trip_proxy.trip_purpose_id)
     trip.desired_modes = Mode.where(code: trip_proxy.modes)
@@ -49,7 +54,7 @@ class Trip < ActiveRecord::Base
     if traveler.has_vehicle? and trip.desired_modes.include?(Mode.transit)
       trip.desired_modes << Mode.park_transit
     end
-    
+
     from_place = TripPlace.new.from_trip_proxy_place(trip_proxy.from_place_object, 0,
       trip_proxy.from_place, trip_proxy.map_center)
     to_place = TripPlace.new.from_trip_proxy_place(trip_proxy.to_place_object, 1,
@@ -57,13 +62,13 @@ class Trip < ActiveRecord::Base
     # bubble up any errors finding places
     trip.errors.add(:from_place, from_place.errors[:base].first) unless from_place.errors[:base].empty?
     trip.errors.add(:to_place, to_place.errors[:base].first) unless to_place.errors[:base].empty?
-    
+
     trip.trip_places << from_place
     trip.trip_places << to_place
 
     trip.user_agent = trip_proxy.user_agent
     trip.ui_mode = trip_proxy.ui_mode
-    
+
     # set the sequence counter for when we have multiple trip parts
     sequence = 0
 
@@ -131,7 +136,7 @@ class Trip < ActiveRecord::Base
     end
   end
 
-  # Returns the date time for the outbound leg of the trip. This is synonymous with the 
+  # Returns the date time for the outbound leg of the trip. This is synonymous with the
   # time and date that the trip is planned for
   def trip_datetime
     trip_parts.first.trip_time
@@ -154,7 +159,7 @@ class Trip < ActiveRecord::Base
       return t1 > t2 ? true : false
     else
       # Ok, days are not equal so return true if the trip is in the future
-      return trip_part.scheduled_date > compare_time.to_date 
+      return trip_part.scheduled_date > compare_time.to_date
     end
   end
 
@@ -205,7 +210,7 @@ class Trip < ActiveRecord::Base
     end
   end
 
-  # removes all trip places and trip parts from the object  
+  # removes all trip places and trip parts from the object
   def clean
     remove_itineraries
     trip_parts.each { |x| x.destroy }
@@ -214,7 +219,7 @@ class Trip < ActiveRecord::Base
   end
 
   def remove_itineraries
-    trip_parts.each do |part| 
+    trip_parts.each do |part|
       part.itineraries.each { |x| x.destroy }
     end
   end
@@ -239,9 +244,9 @@ class Trip < ActiveRecord::Base
       msg = "From %s to %s" % [trip_places.first, trip_places.last]
       if is_return_trip
         msg << " and back."
-      end 
+      end
     else
-      msg = "Uninitialized" 
+      msg = "Uninitialized"
     end
     return msg
   end

@@ -1,4 +1,6 @@
 class Admin::AgenciesController < ApplicationController
+  include Admin::CommentsHelper
+
   before_filter :load_agency, only: [:create]
   load_and_authorize_resource except: [:travelers]
   load_and_authorize_resource :id_param => :agency_id,  only: :travelers #TODO implies a refactor needed
@@ -41,7 +43,7 @@ class Admin::AgenciesController < ApplicationController
   # GET /agencies/new.json
   def new
     # @agency = Agency.new
-
+    setup_comments(@agency)
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @agency }
@@ -50,10 +52,11 @@ class Admin::AgenciesController < ApplicationController
 
   # GET /agencies/1/edit
   def edit
-    
+
     @contact = @agency.internal_contact
     @addable_users = User.staff_assignable
     # @agency = Agency.find(params[:id])
+    setup_comments(@agency)
   end
 
   # POST /agencies
@@ -64,7 +67,7 @@ class Admin::AgenciesController < ApplicationController
 
     respond_to do |format|
       if @agency.save
-        format.html { redirect_to [:admin, @agency], notice: 'Agency was successfully created.' }
+        format.html { redirect_to [:admin, @agency], notice: t(:agency_was_successfully_created) }
         format.json { render json: @agency, status: :created, location: @agency }
       else
         format.html { render action: "new" }
@@ -76,17 +79,20 @@ class Admin::AgenciesController < ApplicationController
   # PUT /agencies/1
   # PUT /agencies/1.json
   def update
-
     internal_contact_id = params[:agency][:internal_contact] # as this isn't an attribute, have to pull it before Strong Params
-    agent_ids = params[:agency][:agent_ids].reject(&:blank?) #again, special case because need to update rolify
+    agent_ids = params[:agency][:agent_ids].split(',').reject(&:blank?) #again, special case because need to update rolify
     admin_ids = params[:agency][:administrator_ids].reject(&:blank?) #again, special case because need to update rolify
 
+    # TODO This is a little hacky for the moment; might switch to front-end javascript but let's just do this for now.
+    fixup_comments_attributes_for_delete :agency
+
+    Rails.logger.info "After params, is\n#{agency_params(params).ai}"
     respond_to do |format|
       if @agency.update_attributes!(agency_params(params))
         set_internal_contact(internal_contact_id) unless internal_contact_id.blank?
         set_agents(agent_ids)
         set_admins(admin_ids)
-        format.html { redirect_to [:admin, @agency], notice: 'Agency was successfully updated.' }
+        format.html { redirect_to [:admin, @agency], notice: t(:agency) + ' ' + t(:was_successfully_updated) }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -106,13 +112,42 @@ class Admin::AgenciesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def find_agent_by_email
+    user = User.staff_assignable.where("lower(email) = ?", params[:email].downcase).first #case insensitive
+
+    if user.nil?
+      success = false
+      msg = I18n.t(:no_agent_with_email_address, email: params[:email]) # did you know that this was an XSS vector?  OOPS
+    elsif !user.agency.nil?
+      success = false
+      msg = I18n.t(:already_an_agency_agent)
+    else
+      success = true
+      msg = t(:please_save_agents, name: user.name)
+      output = user.id
+      row = [
+              user.id,
+              user.name,
+              user.email
+            ]
+    end
+    respond_to do |format|
+      format.js { render json: {output: output, msg: msg, success: success, user_id: user.try(:id), row: row} }
+    end
+  end
 end
 
 private
 
 def agency_params params
-  params.require(:agency).permit(:name, :address, :phone, :email, :url,
-    :parent_id, :parent,:internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email)
+  params.require(:agency).permit(:name, :address, :city, :state, :zip, :phone, :email, :url,
+    :parent_id, :parent,:internal_contact_name, :internal_contact_title, :internal_contact_phone,
+    :internal_contact_email,
+    comments_attributes: COMMENT_ATTRIBUTES,
+    public_comments_attributes: COMMENT_ATTRIBUTES,
+    private_comments_attributes: COMMENT_ATTRIBUTES,
+    )
 end
 
 def load_agency
@@ -138,7 +173,7 @@ def set_agents (users)
     user_to_add.update_attributes(agency: @agency) #NOTE this will overwrite existing associations
     @agency.users << user_to_add
   end
-  
+
   users_to_remove.each do |u|
     user_to_remove = User.find(u)
     user_to_remove.remove_role(:agent, @agency)
@@ -161,7 +196,7 @@ def set_admins (users)
     user_to_add.update_attributes(agency: @agency) #NOTE this will overwrite existing associations
     @agency.users << user_to_add
   end
-  
+
   users_to_remove.each do |u|
     user_to_remove = User.find(u)
     user_to_remove.remove_role(:agency_administrator, @agency)

@@ -6,6 +6,21 @@ GIT
     twitter-bootstrap-rails-confirm (1.0.2)
 
 GIT
+  remote: git://github.com/camsys/bootstrap-sass.git
+  revision: f6d2eb50b70a5cf29219bf3ec7bdf86f8f9a6e64
+  tag: 3.2.0.CS.2
+  specs:
+    bootstrap-sass (3.2.0.CS.2)
+      sass (~> 3.2)
+
+GIT
+  remote: git://github.com/camsys/i18n-active_record.git
+  revision: 90c714d50ced924c49c996bc8249c7973945ab73
+  specs:
+    i18n-active_record (0.1.0)
+      i18n (>= 0.5.0)
+
+GIT
   remote: git://github.com/camsys/leaflet-rails.git
   revision: e1b7912a34c2b0565adc2f119b0e2f809d67c5dd
   specs:
@@ -23,6 +38,15 @@ GIT
       sprockets-rails (~> 2.0)
 
 GIT
+  remote: git://github.com/camsys/simple_form.git
+  revision: 35b40134c1683eb309d31819fe883e0beb5b8408
+  branch: cs-3.0
+  specs:
+    simple_form (3.1.0.rc2)
+      actionpack (~> 4.0)
+      activemodel (~> 4.0)
+
+GIT
   remote: git://github.com/camsys/twitter-typeahead-rails.git
   revision: b9e407f9a4224f0840b60a523a2df42eeca7dfe7
   specs:
@@ -30,20 +54,6 @@ GIT
       actionpack (>= 3.1)
       jquery-rails
       railties (>= 3.1)
-
-GIT
-  remote: git://github.com/svenfuchs/i18n-active_record.git
-  revision: 2d9a22b6a4e5d809782cdbfa65b14d9e47aa27fc
-  specs:
-    i18n-active_record (0.0.2)
-      i18n (>= 0.5.0)
-
-GIT
-  remote: https://github.com/EppO/rolify.git
-  revision: 0b00fa41224dc4e33b059cd0cd31cd42b022b03b
-  ref: 0b00fa41224dc4e33b059cd0cd31cd42b022b03b
-  specs:
-    rolify (3.4.0)
 
 GEM
   remote: https://rubygems.org/
@@ -85,6 +95,8 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
     addressable (2.3.6)
+    ajax-datatables-rails (0.2.0)
+      railties (>= 3.1)
     ajaxful_rating (3.0.0.beta8)
     arel (4.0.2)
     awesome_print (1.2.0)
@@ -96,8 +108,6 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bootstrap-combobox (1.2.6)
-    bootstrap-sass (2.3.2.2)
-      sass (~> 3.2)
     bootstrap3-datetimepicker-rails (3.0.0)
       momentjs-rails (~> 2.5.0)
     builder (3.1.4)
@@ -108,8 +118,16 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    carrierwave (0.10.0)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
+      json (>= 1.7)
+      mime-types (>= 1.16)
+    celluloid (0.15.2)
+      timers (~> 1.1.0)
     choice (0.1.6)
     chronic (0.10.2)
+    cliver (0.3.2)
     coderay (1.1.0)
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
@@ -119,6 +137,7 @@ GEM
       execjs
     coffee-script-source (1.7.0)
     columnize (0.8.9)
+    connection_pool (2.0.0)
     coveralls (0.7.0)
       multi_json (~> 1.3)
       rest-client
@@ -173,6 +192,7 @@ GEM
     ethon (0.7.1)
       ffi (>= 1.3.0)
     eventmachine (1.0.3)
+    excon (0.39.5)
     execjs (2.2.1)
     factory_girl (4.4.0)
       activesupport (>= 3.0.0)
@@ -188,7 +208,30 @@ GEM
     figaro (0.7.0)
       bundler (~> 1.0)
       rails (>= 3, < 5)
-    font-awesome-rails (4.1.0.0)
+    fog (1.23.0)
+      fog-brightbox
+      fog-core (~> 1.23)
+      fog-json
+      fog-softlayer
+      ipaddress (~> 0.5)
+      nokogiri (~> 1.5, >= 1.5.11)
+    fog-brightbox (0.5.0)
+      fog-core (~> 1.22)
+      fog-json
+      inflecto
+    fog-core (1.24.0)
+      builder
+      excon (~> 0.38)
+      formatador (~> 0.2)
+      mime-types
+      net-scp (~> 1.1)
+      net-ssh (>= 2.1.3)
+    fog-json (1.0.0)
+      multi_json (~> 1.0)
+    fog-softlayer (0.3.16)
+      fog-core
+      fog-json
+    font-awesome-rails (4.2.0.0)
       railties (>= 3.2, < 5.0)
     foreman (0.74.0)
       dotenv (~> 0.11.1)
@@ -253,7 +296,9 @@ GEM
       ruby_parser (~> 3.1.1)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
-    i18n (0.6.9)
+    i18n (0.6.11)
+    inflecto (0.0.2)
+    ipaddress (0.8.0)
     jquery-datatables-rails (2.1.10.0.2)
       jquery-rails
       sass-rails
@@ -288,6 +333,8 @@ GEM
       webrobots (>= 0.0.9, < 0.2)
     method_source (0.8.2)
     mime-types (1.25.1)
+    mini_magick (3.8.0)
+      subexec (~> 0.2.1)
     mini_portile (0.6.0)
     minitest (4.7.5)
     momentjs-rails (2.5.1)
@@ -298,12 +345,20 @@ GEM
     net-http-digest_auth (1.4)
     net-http-persistent (2.9.4)
     net-http-pipeline (1.0.1)
+    net-scp (1.2.1)
+      net-ssh (>= 2.6.5)
+    net-ssh (2.9.1)
     newrelic_rpm (3.9.0.229)
     nokogiri (1.6.2.1)
       mini_portile (= 0.6.0)
     ntlm-http (0.1.1)
     orm_adapter (0.5.0)
     pg (0.17.1)
+    poltergeist (1.5.1)
+      capybara (~> 2.1)
+      cliver (~> 0.3.1)
+      multi_json (~> 1.0)
+      websocket-driver (>= 0.2.0)
     polyglot (0.3.5)
     polylines (0.1.1)
     pry (0.10.0)
@@ -318,6 +373,8 @@ GEM
     quiet_assets (1.0.3)
       railties (>= 3.1, < 5.0)
     rack (1.5.2)
+    rack-protection (1.5.3)
+      rack
     rack-test (0.6.2)
       rack (>= 1.0)
     rack-timeout (0.0.4)
@@ -352,6 +409,9 @@ GEM
       ffi (>= 0.5.0)
     rb-kqueue (0.2.3)
       ffi (>= 0.5.0)
+    redis (3.1.0)
+    redis-namespace (1.5.1)
+      redis (~> 3.0, >= 3.0.4)
     request_store (1.0.6)
     rest-client (1.6.7)
       mime-types (>= 1.16)
@@ -362,6 +422,7 @@ GEM
     rgeo-shapefile (0.2.3)
       dbf (>= 1.7.0)
       rgeo (>= 0.3.3)
+    rolify (3.4.1)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
@@ -386,9 +447,12 @@ GEM
     sexp_processor (4.4.3)
     sextant (0.2.4)
       rails (>= 3.2)
-    simple_form (3.0.1)
-      actionpack (>= 4.0.0, < 4.1)
-      activemodel (>= 4.0.0, < 4.1)
+    sidekiq (3.2.5)
+      celluloid (= 0.15.2)
+      connection_pool (>= 2.0.0)
+      json
+      redis (>= 3.0.6)
+      redis-namespace (>= 1.3.1)
     simple_token_authentication (1.5.0)
       actionmailer (>= 3.2.6, < 5)
       activerecord (>= 3.2.6, < 5)
@@ -398,6 +462,10 @@ GEM
       multi_json
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
+    sinatra (1.4.5)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (~> 1.3, >= 1.3.4)
     slop (3.5.0)
     sprockets (2.11.0)
       hike (~> 1.2)
@@ -408,6 +476,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
+    subexec (0.2.3)
     term-ansicolor (1.3.0)
       tins (~> 1.0)
     thin (1.6.2)
@@ -418,6 +487,7 @@ GEM
     thread_safe (0.3.4)
     tilt (1.4.1)
     timecop (0.7.1)
+    timers (1.1.0)
     tins (1.3.0)
     travis (1.6.11)
       addressable (~> 2.3)
@@ -439,7 +509,7 @@ GEM
       multi_json (>= 1.3.0)
     typhoeus (0.6.9)
       ethon (>= 0.7.1)
-    tzinfo (0.3.39)
+    tzinfo (0.3.41)
     uglifier (2.5.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
@@ -450,6 +520,7 @@ GEM
       rack (>= 1.0)
     webrobots (0.1.1)
     websocket (1.1.4)
+    websocket-driver (0.3.4)
     xpath (2.0.0)
       nokogiri (~> 1.3)
     yard (0.8.7.4)
@@ -465,15 +536,17 @@ DEPENDENCIES
   activemdb
   activemodel
   activerecord-postgis-adapter (= 1.1.0)
+  ajax-datatables-rails (> 0.1.2)
   ajaxful_rating (>= 3.0.0.beta7)
   awesome_print
   better_errors
   binding_of_caller
   bootstrap-combobox
-  bootstrap-sass (~> 2.3.2.0)
+  bootstrap-sass!
   bootstrap3-datetimepicker-rails (= 3.0.0.0)
   cancan
   capybara
+  carrierwave
   chronic
   coffee-rails
   coveralls
@@ -486,6 +559,7 @@ DEPENDENCIES
   factory_girl_rails
   faraday_middleware
   figaro
+  fog
   font-awesome-rails
   foreman
   geocoder
@@ -500,7 +574,7 @@ DEPENDENCIES
   handlebars_assets
   honeybadger
   html2haml
-  i18n-active_record!
+  i18n-active_record (= 0.1.0)!
   jquery-datatables-rails (~> 2.1.10.0.2)
   jquery-rails
   launchy
@@ -509,9 +583,11 @@ DEPENDENCIES
   listen
   lorem-ipsum-me
   mechanize
+  mini_magick
   momentjs-rails (~> 2.5.0)
   newrelic_rpm
   pg
+  poltergeist
   polylines
   puma
   quiet_assets
@@ -525,15 +601,17 @@ DEPENDENCIES
   rgeo
   rgeo-activerecord
   rgeo-shapefile
-  rolify!
+  rolify
   rspec-core (~> 2.14.0)
   rspec-rails
   rubyzip
   sass-rails!
   sextant
-  simple_form (= 3.0.1)
+  sidekiq
+  simple_form (~> 3.1.0.rc1)!
   simple_token_authentication
   simplecov
+  sinatra
   sprockets (= 2.11.0)
   thin
   timecop

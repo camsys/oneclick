@@ -1,0 +1,73 @@
+- trip_summary_configs = []
+- @multi_od_trip.trips.each do |trip|
+  - trip_summary_configs << {id: trip.id, url: serialize_trip_user_trip_path(@traveler, trip)}
+.row
+  .col-sm-12
+    = render partial: 'shared/trip_plan_breadcrumbs'
+.panel.panel-default
+  .panel-heading
+    %h2.panel-title
+      = t(:trip_summaries)
+      = add_tooltip("trip_summaries_help")
+  .panel-body
+    .row#gridBaseContainer
+      .col-sm-12
+        = render partial: 'shared/page_comments', locals: {key: :grid_header_comment}
+      .col-sm-12.table-responsive
+        %table.table-condensed.table-bordered
+          %tr
+            %td{colspan:2, style: 'visibility: hidden;'}
+            %td{colspan:@dest_place_names.uniq.length, style: 'text-align: center; font-weight: bold;'}
+              =t(:going_to)
+          %tr
+            %td{colspan:2, style: 'visibility: hidden;'}
+            - @dest_place_names.uniq.each do |d|
+              %td
+                =d
+          - @origin_place_names.uniq.each_with_index do |o, index|
+            %tr
+              -if index ==0
+                %th{rowspan:@origin_place_names.uniq.length, class: 'rotate', style: 'text-align: center; font-weight: bold;'}
+                  =t(:leaving_from)
+              %td
+                =o
+              - @dest_place_names.uniq.each do |d|
+                - match_trip_id = nil
+                - @multi_od_trip.trips.each do |trip|
+                  - match_trip_id = trip.id if trip.trip_places.first.name == o and trip.trip_places.last.name == d
+                %td{"data-trip-id" => match_trip_id, "style" => 'vertical-align: top;'}
+                  .trip-summary
+                  .col-sm-12{style:'text-align:center;'}
+                    = link_to user_trip_path(@traveler, id: match_trip_id ), class: 'btn action-button' do
+                      =t(:details)
+      .col-sm-12
+        = render partial: 'shared/page_comments', locals: {key: :grid_footer_comment}
+
+:javascript
+  $(document).ready(function() {
+    //include all possible localized words to be used in review.js
+    var localeDictFinder = {
+      outbound: '#{t(:outbound)}',
+      return: '#{t(:return)}',
+      routes: '#{t(:routes)}',
+      minutes: '#{t(:minutes)}',
+      walk: '#{t(:walk)}',
+      miles: '#{t(:miles)}',
+      unknown_cost: '#{t(:unknown_cost)}',
+      plus: '#{t(:plus)}'
+    };
+
+    var trip_configs = #{trip_summary_configs.to_json};
+    trip_configs.forEach(function(trip){
+      $.ajax({
+        url: trip.url
+      })
+      .done(function(tripResponse) {
+        var pageRenderer = new MultiODGridPageRenderer(tripResponse, localeDictFinder);
+        pageRenderer.processTripResponse();
+      })
+      .fail(function(response) {
+        console.log(response);
+      });
+    })
+  } );

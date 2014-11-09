@@ -93,23 +93,41 @@ module MapHelper
 
   # Create an array of map markers for a trip proxy. If the trip proxy is from an existing trip we will
   # have start and stop markers
-  def create_trip_proxy_markers(trip_proxy)
-
+  def create_trip_proxy_markers(trip_proxy, is_multi_od)
     markers = []
-    if trip_proxy.from_place_selected
-      place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected, true)
-    else
-      place = {:name => trip_proxy.from_place, :lat => trip_proxy.from_lat, :lon => trip_proxy.from_lon, :formatted_address => trip_proxy.from_raw_address}
-    end
-    markers << get_addr_marker(place, 'start', 'startIcon')
+    if is_multi_od != true
+      if trip_proxy.from_place_selected
+        place = get_preselected_place(trip_proxy.from_place_selected_type, trip_proxy.from_place_selected, true)
+      else
+        place = {:name => trip_proxy.from_place, :lat => trip_proxy.from_lat, :lon => trip_proxy.from_lon, :formatted_address => trip_proxy.from_raw_address}
+      end
+      markers << get_addr_marker(place, 'start', 'startIcon')
 
-    if trip_proxy.to_place_selected
-      place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected, false)
-    else
-      place = {:name => trip_proxy.to_place, :lat => trip_proxy.to_lat, :lon => trip_proxy.to_lon, :formatted_address => trip_proxy.to_raw_address}
-    end
+      if trip_proxy.to_place_selected
+        place = get_preselected_place(trip_proxy.to_place_selected_type, trip_proxy.to_place_selected, false)
+      else
+        place = {:name => trip_proxy.to_place, :lat => trip_proxy.to_lat, :lon => trip_proxy.to_lon, :formatted_address => trip_proxy.to_raw_address}
+      end
 
-    markers << get_addr_marker(place, 'stop', 'stopIcon')
+      markers << get_addr_marker(place, 'stop', 'stopIcon')
+    else
+      multi_origin_places = []
+      multi_origin_places = trip_proxy.multi_origin_places.split(';') unless trip_proxy.multi_origin_places.nil?
+
+      multi_origin_places.each_with_index do |raw_place, index|
+        place = JSON.parse(raw_place).symbolize_keys
+        markers << get_addr_marker(place, 'start'+ (index+1).to_s, 'startIcon')
+      end
+
+      multi_dest_places = []
+      multi_dest_places = trip_proxy.multi_dest_places.split(';') unless trip_proxy.multi_dest_places.nil?
+
+      multi_dest_places.each_with_index do |raw_place, index|
+        place = JSON.parse(raw_place).symbolize_keys
+        markers << get_addr_marker(place, 'stop'+ (index+1).to_s, 'stopIcon')
+      end
+
+    end
 
     return markers
   end
@@ -154,6 +172,83 @@ module MapHelper
     end
   end
 
+  def query_sidewalk_feedback_near_one_walk_leg(leg)
+    return [] unless (leg.mode == Leg::TripLeg::WALK and not leg.geometry.nil?)
+
+    feedbacks = []
+    min_lat = min_lon = max_lat = max_lon = nil
+    leg.geometry.each do |latlon|
+      lat = latlon[0]
+      lon = latlon[1]
+      min_lat = (min_lat.nil? or min_lat > lat) ? lat : min_lat
+      min_lon = (min_lon.nil? or min_lon > lon) ? lon : min_lon
+      max_lat = (max_lat.nil? or max_lat < lat) ? lat : max_lat
+      max_lon = (max_lon.nil? or max_lon < lon) ? lon : max_lon
+    end
+
+    unless min_lat.nil?
+      buffer = Oneclick::Application.config.sidewalk_feedback_query_buffer
+      min_lat -= buffer#assign buffer
+      max_lat += buffer
+      min_lon -= buffer
+      max_lon += buffer
+      query_str = "(status = '%APPROVED_STATUS%'" #status valid?
+      if @user.nil?
+        is_admin = can? :manage, :all
+      else
+        @traveler = @user
+        is_admin = @user.has_role?(:admin) or @user.has_role?(:system_administrator)
+      end
+
+      if is_admin #user permission
+        query_str += " or status = '%PENDING_STATUS%') "
+      else
+        query_str += " or (status = '%PENDING_STATUS%' and user_id = %USER_ID%)) "
+      end
+
+      query_str += " and (removed_at IS NULL or removed_at >= '%LEG_START_TIME%')" #removed?
+      query_str += " and (lat >= %MIN_LAT% and lat <= %MAX_LAT% and lon >= %MIN_LON% and lon <= %MAX_LON%)" #in bbox?
+
+      query_str = query_str.
+        sub('%APPROVED_STATUS%', SidewalkObstruction::APPROVED).
+        sub('%PENDING_STATUS%', SidewalkObstruction::PENDING).
+        sub('%USER_ID%', @traveler.id.to_s).
+        sub('%LEG_START_TIME%', leg.start_time.to_s(:db)).
+        sub('%MIN_LAT%', min_lat.to_s).
+        sub('%MIN_LON%', min_lon.to_s).
+        sub('%MAX_LAT%', max_lat.to_s).
+        sub('%MAX_LON%', max_lon.to_s)
+
+      Rails.logger.info query_str
+
+      feedbacks = SidewalkObstruction.where(query_str)
+    end
+
+    feedbacks
+  end
+
+  #Returns an array of sidewalk_feedback_markers
+  def create_itinerary_sidewalk_feedback_markers(legs)
+
+    markers = []
+    feedbacks = []
+    legs.each do |leg|
+      feedbacks.concat(query_sidewalk_feedback_near_one_walk_leg(leg))
+    end
+
+    is_admin = can? :manage, :all
+    feedbacks.uniq.each do |f|
+      markers << {
+        data: f,
+        allowed_actions: {
+          is_approvable: (f.pending? and is_admin),
+          is_deletable: (is_admin or current_or_guest_user.id == f.user.id)
+        }
+      }
+    end
+    return markers
+  end
+
   #Returns an array of polylines, one for each leg
   def create_itinerary_polylines(legs)
 
@@ -161,7 +256,7 @@ module MapHelper
     legs.each_with_index do |leg, index|
       polylines << {
         "id" => index,
-        "geom" => leg.geometry,
+        "geom" => leg.geometry || [],
         "options" => get_leg_display_options(leg)
       }
     end
@@ -179,7 +274,7 @@ module MapHelper
     else
       a = {"className" => 'map-tripleg map-tripleg-' + leg.mode.downcase}
     end
-    
+
     return a
   end
 

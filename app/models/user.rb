@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   include ActiveModel::Validations
+  extend LocaleHelpers
 
   # enable roles for this model
   rolify
@@ -18,6 +19,7 @@ class User < ActiveRecord::Base
   # Associations
   has_many :places, -> {where active: true} # 0 or more places, only active places are available
   has_many :trips                   # 0 or more trips
+  has_many :multi_o_d_trips
   has_many :trip_places, :through => :trips
   has_one  :user_profile            # 1 user profile
   has_many :user_mode_preferences   # 0 or more user mode preferences
@@ -25,20 +27,22 @@ class User < ActiveRecord::Base
   has_many :user_roles
   has_many :roles, :through => :user_roles # one or more user roles
   has_many :trip_parts, :through => :trips
+  has_many :traveler_notes
+
   # relationships
   has_many :traveler_relationships, :class_name => 'UserRelationship', :foreign_key => :delegate_id
   has_many :confirmed_traveler_relationships, :class_name => 'UserRelationship', :foreign_key => :delegate_id
   has_many :travelers, :class_name => 'User', :through => :traveler_relationships
   has_many :confirmed_travelers, :class_name => 'User', :through => :confirmed_traveler_relationships
-  
+
   has_many :delegate_relationships, :class_name => 'UserRelationship', :foreign_key => :user_id
   has_many :delegates, :class_name => 'User', :through => :delegate_relationships
-  has_many :pending_and_confirmed_delegates, -> { where "user_relationships.relationship_status_id = ? OR user_relationships.relationship_status_id = ?", RelationshipStatus.confirmed, RelationshipStatus.pending }, 
+  has_many :pending_and_confirmed_delegates, -> { where "user_relationships.relationship_status_id = ? OR user_relationships.relationship_status_id = ?", RelationshipStatus.confirmed, RelationshipStatus.pending },
     :class_name => 'User', :through => :delegate_relationships, :source => :delegate
   has_many :confirmed_delegates, -> { where "user_relationships.relationship_status_id = ?", RelationshipStatus.confirmed }, :class_name => 'User', :through => :delegate_relationships, :source => :delegate
-  
+
   has_many :agency_user_relationships, foreign_key: :user_id
-  accepts_nested_attributes_for :agency_user_relationships 
+  accepts_nested_attributes_for :agency_user_relationships
   has_many :approved_agencies,-> { where "agency_user_relationships.relationship_status_id = ?", RelationshipStatus.confirmed }, class_name: 'Agency', :through => :agency_user_relationships, source: :agency #Scope to only include approved relationships
   accepts_nested_attributes_for :approved_agencies
 
@@ -50,13 +54,15 @@ class User < ActiveRecord::Base
   has_many :user_characteristics, through: :user_profile
   accepts_nested_attributes_for :user_characteristics
   has_many :characteristics, through: :user_characteristics
-  
+
   has_many :user_accommodations, through: :user_profile
   accepts_nested_attributes_for :user_accommodations
   has_many :accommodations, through: :user_accommodations
 
   belongs_to :agency
   belongs_to :provider
+  belongs_to :walking_speed
+  belongs_to :walking_maximum_distance
   has_and_belongs_to_many :services
 
   has_many :ratings # ratings created by the user, not ratings of the user
@@ -73,8 +79,15 @@ class User < ActiveRecord::Base
   validates :email, :presence => true
   validates :first_name, :presence => true
   validates :last_name, :presence => true
-  
+
   before_create :make_user_profile
+
+  def self.agent_form_collection include_all=true, agency=:any
+    form_collection_from_relation(include_all,
+                                  # any_role.where(roles: {name: 'agent'}).order(:first_name),
+                                  with_role(:agent, agency).order(:first_name),
+                                  false)
+  end
 
   def make_user_profile
     create_user_profile
@@ -83,7 +96,7 @@ class User < ActiveRecord::Base
   def to_s
     name
   end
-    
+
   def name
     elems = []
     elems << prefix unless prefix.blank?
@@ -127,7 +140,7 @@ class User < ActiveRecord::Base
     status = self.user_profile.user_characteristics.where(characteristic: has_trans)
     status.count > 0 and status.first.value == 'true'
   end
-  
+
   def home
     self.places.find_by_home(true)
   end
@@ -160,8 +173,15 @@ class User < ActiveRecord::Base
     false
   end
 
+  def is_staff? #If this user has any role beyond traveler, then return true
+    if self.roles.where.not(name: ["registered_traveler", "anonymous_traveler"]).count > 0
+      return true
+    else
+      return false
+    end
+  end
 
-# Union to get unique users with any relationship to current user
+  # Union to get unique users with any relationship to current user
   def related_users
     delegates | travelers
   end
@@ -176,7 +196,7 @@ class User < ActiveRecord::Base
 
   #List of users who can be assigned to staff for an agency or provider
   def self.staff_assignable
-    User.where.not(id: User.with_role(:anonymous_traveler).pluck(:id)).order(first_name: :asc)
+    User.without_role(:anonymous_traveler).where(deleted_at: nil).order(first_name: :asc)
   end
 
   def update_relationships id_hash
@@ -198,4 +218,15 @@ class User < ActiveRecord::Base
     end
   end
 
+  def soft_delete
+    update_attribute(:deleted_at, Time.current)
+  end
+
+  def active_for_authentication?
+    super && !deleted_at
+  end
+
+  def undelete
+    update_attribute(:deleted_at, nil)
+  end
 end

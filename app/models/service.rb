@@ -1,5 +1,9 @@
 class Service < ActiveRecord::Base
+  require 'zip'
+  require 'rgeo/shapefile'
   include Rateable # mixin to handle all rating methods
+  include Commentable
+
   resourcify
 
   #associations
@@ -7,6 +11,7 @@ class Service < ActiveRecord::Base
   belongs_to :service_type
   has_many :fare_structures
   has_many :schedules
+  has_many :booking_cut_off_times
   has_many :service_accommodations
   has_many :service_characteristics
   has_many :service_trip_purpose_maps
@@ -18,6 +23,9 @@ class Service < ActiveRecord::Base
   accepts_nested_attributes_for :schedules, allow_destroy: true,
   reject_if: proc { |attributes| attributes['start_time'].blank? && attributes['end_time'].blank? }
 
+  accepts_nested_attributes_for :booking_cut_off_times, allow_destroy: true,
+  reject_if: proc { |attributes| attributes['cut_off_time'].blank? }
+
   accepts_nested_attributes_for :service_characteristics, allow_destroy: true,
   reject_if: proc { |attributes| attributes['active'] != 'true' }
 
@@ -25,7 +33,7 @@ class Service < ActiveRecord::Base
 
   accepts_nested_attributes_for :service_coverage_maps, allow_destroy: true,
   reject_if: :check_reject_for_service_coverage_map # Also used to control record destruction.
-  
+
   # attr_accessible :id, :name, :provider, :provider_id, :service_type, :advanced_notice_minutes, :external_id, :active
   # attr_accessible :contact, :contact_title, :phone, :url, :email
   # attr_accessible: booking_service_code
@@ -36,9 +44,9 @@ class Service < ActiveRecord::Base
   has_many :coverage_areas, through: :service_coverage_maps, source: :geo_coverage
 
   has_many :endpoints, -> { where rule: 'endpoint_area' }, class_name: "ServiceCoverageMap"
-  
+
   has_many :coverages, -> { where rule: 'coverage_area' }, class_name: "ServiceCoverageMap"
-    
+
   belongs_to :endpoint_area_geom, class_name: 'GeoCoverage'
   belongs_to :coverage_area_geom, class_name: 'GeoCoverage'
   belongs_to :residence_area_geom, class_name: 'GeoCoverage'
@@ -46,7 +54,7 @@ class Service < ActiveRecord::Base
   has_many :user_profiles, through: :user_services, source: :user_profile
 
   scope :active, -> {where(active: true)}
-  scope :paratransit, -> {joins(:service_type).where(service_types: {code: "paratransit"})}
+  scope :paratransit, -> {joins(:service_type).where("service_types.code IN (?,?,?)", "paratransit", "volunteer", "nemt")}
   scope :bookable, -> {where.not(booking_service_code: nil).where.not(booking_service_code: '')}
 
   include Validations
@@ -56,6 +64,8 @@ class Service < ActiveRecord::Base
   validates :name, presence: true
   validates :provider, presence: true
   validates :service_type, presence: true
+
+  mount_uploader :logo, ServiceLogoUploader
 
   def human_readable_advanced_notice
     if self.advanced_notice_minutes < (24*60)
@@ -104,7 +114,7 @@ class Service < ActiveRecord::Base
   def notice_days_part
     advanced_notice_minutes / (60 * 24)
   end
-  
+
   def notice_days_part= value
     update_attributes(advanced_notice_minutes:
                       (value.to_i * (60 * 24)) + (notice_hours_part * 60) + notice_minutes_part)
@@ -118,7 +128,7 @@ class Service < ActiveRecord::Base
     update_attributes(advanced_notice_minutes:
       (notice_days_part * (60 * 24)) + (value.to_i * 60) + notice_minutes_part)
   end
-  
+
 
   def notice_minutes_part
     advanced_notice_minutes % 60
@@ -164,47 +174,126 @@ class Service < ActiveRecord::Base
     name
   end
 
-  def build_polygons
+  def get_shapefile_first_geometry(shapefile_path)
+    unless shapefile_path.nil?
+      begin
+        Zip::File.open(shapefile_path) do |zip_file|
+          zip_shp = zip_file.glob('**/*.shp').first
+          unless zip_shp.nil?
+            zip_shp_paths = zip_shp.name.split('/')
+            file_name = zip_shp_paths[zip_shp_paths.length - 1].sub '.shp', ''
+            shp_name = nil
+            Dir.mktmpdir do |dir|
+              shp_name = "#{dir}/" + file_name + '.shp'
+              zip_file.each do |entry|
+                entry_names = entry.name.split('/')
+                entry_name = entry_names[entry_names.length - 1]
+                if entry_name.include?(file_name)
+                  entry.extract("#{dir}/" + entry_name)
+                end
+              end
 
-    #clear old polygons
-    self.endpoint_area_geom = nil
-    self.coverage_area_geom = nil
-    Rails.logger.info  "Building Polygon for Service/Id: #{self.name} / #{self.id}"
-    ['endpoint_area', 'coverage_area'].each do |rule|
-      scms = self.service_coverage_maps.where(rule: rule)
-      scms.each do |scm|
-        polygon = polygon_from_attribute(scm)
-        if polygon.nil?
-          next
+              RGeo::Shapefile::Reader.open(shp_name, { :assume_inner_follows_outer => true }) do |shapefile|
+                shapefile.each do |shape|
+                  if not shape.geometry.nil? and shape.geometry.geometry_type.to_s.downcase.include?('polygon') #only return first polygon
+                    return shape.geometry
+                  end
+                end
+              end
+            end
+          end
         end
-        Rails.logger.info "polygon is #{polygon.ai}"
-        case rule
-          when 'endpoint_area'
-            Rails.logger.info  "Updating Endpoint Area"
-            if self.endpoint_area_geom
-              merged = self.endpoint_area_geom.geom.union(polygon)
-              self.endpoint_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
-              self.endpoint_area_geom.save!
-            else
-              gc = GeoCoverage.create! coverage_type: 'endpoint_area', geom: polygon
-              self.endpoint_area_geom = gc
-              self.save!
-            end
-          when 'coverage_area'
-            Rails.logger.info  "Updating Coverage Area"
-            if self.coverage_area_geom
-              merged = self.coverage_area_geom.geom.union(polygon)
-              self.coverage_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
-              self.coverage_area_geom.save!
-            else
-              gc = GeoCoverage.create! coverage_type: 'coverage_area', geom: polygon
-              self.coverage_area_geom = gc
-              self.save!
-            end
+      rescue Exception => msg
+        Rails.logger.info 'shapefile parse error'
+        Rails.logger.info msg
+      end
+    end
+
+    return nil
+  end
+
+  def save_new_coverage_area_from_shp(rule, geom)
+    gc = GeoCoverage.create! coverage_type: rule, geom: geom
+    case rule
+    when 'endpoint_area'
+      self.endpoint_area_geom = gc
+    when 'coverage_area'
+      self.coverage_area_geom = gc
+    end
+    self.save!
+  end
+
+  def update_coverage_map(rule)
+    scms = self.service_coverage_maps.where(rule: rule)
+    scms.each do |scm|
+      polygon = polygon_from_attribute(scm)
+      if polygon.nil?
+        next
+      end
+      #Rails.logger.info "polygon is #{polygon.ai}"
+      case rule
+      when 'endpoint_area'
+        #Rails.logger.info  "Updating Endpoint Area"
+        if self.endpoint_area_geom
+          merged = self.endpoint_area_geom.geom.union(polygon)
+          self.endpoint_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
+          self.endpoint_area_geom.save!
+        else
+          gc = GeoCoverage.create! coverage_type: 'endpoint_area', geom: polygon
+          self.endpoint_area_geom = gc
+          self.save!
+        end
+      when 'coverage_area'
+        #Rails.logger.info  "Updating Coverage Area"
+        if self.coverage_area_geom
+          merged = self.coverage_area_geom.geom.union(polygon)
+          self.coverage_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
+          self.coverage_area_geom.save!
+        else
+          gc = GeoCoverage.create! coverage_type: 'coverage_area', geom: polygon
+          self.coverage_area_geom = gc
+          self.save!
         end
       end
     end
     self.save!
+  end
+
+  def build_polygons(temp_endpoints_shapefile_path = nil, temp_coverages_shapefile_path = nil)
+
+    #endpoint area
+    endpoint_rule = 'endpoint_area'
+    endpoint_area_geom = get_shapefile_first_geometry(temp_endpoints_shapefile_path)
+    unless endpoint_area_geom.nil?
+      self.service_coverage_maps.where(rule: endpoint_rule).destroy_all
+      save_new_coverage_area_from_shp(endpoint_rule, endpoint_area_geom)
+    else
+      unless temp_endpoints_shapefile_path.nil?
+        alert_msg = I18n.t(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', I18n.t(endpoint_rule).to_s
+      end
+      if self.service_coverage_maps.where(rule: endpoint_rule).count > 0
+        self.endpoint_area_geom = nil
+      end
+      update_coverage_map(endpoint_rule)
+    end
+
+    #coverage area
+    coverage_rule = 'coverage_area'
+    coverage_area_geom = get_shapefile_first_geometry(temp_coverages_shapefile_path)
+    unless coverage_area_geom.nil?
+      self.service_coverage_maps.where(rule: coverage_rule).destroy_all
+      save_new_coverage_area_from_shp(coverage_rule, coverage_area_geom)
+    else
+      unless temp_coverages_shapefile_path.nil?
+        alert_msg = I18n.t(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', I18n.t(coverage_rule).to_s
+      end
+      if self.service_coverage_maps.where(rule: coverage_rule).count > 0
+        self.coverage_area_geom = nil
+      end
+      update_coverage_map(coverage_rule)
+    end
+
+    alert_msg
   end
 
   def polygon_from_attribute scm
@@ -263,5 +352,5 @@ class Service < ActiveRecord::Base
   end
 
 
-  
+
 end

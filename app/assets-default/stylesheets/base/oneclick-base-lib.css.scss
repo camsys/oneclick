@@ -33,11 +33,15 @@ $font-family-tablet: Verdana !default;
 $font-size-phone: 10pt !default;
 $font-family-phone: Verdana !default;
 
-//application breadcrumb
-$breadcrumb-height: 30px !default;
-
 //trip planning review page trip itinerary chart
 $single-plan-height: 50px !default; //the height of each itinerary chart container
+
+//breadcrumb button colors
+//previous-step is same as action-button styles
+$breadcrum-current-step-bg-color: red;
+$breadcrum-current-step-font-color: white;
+$breadcrum-next-step-bg-color: white;
+$breadcrum-next-step-font-color: black;
 
 /**
  *mixins
@@ -72,9 +76,6 @@ $single-plan-height: 50px !default; //the height of each itinerary chart contain
   	@include set-background( $is-footer-feedback-gradient-based, $feedback-background-color, $feedback-gradient-start-color, $feedback-gradient-end-color);
 }
 
-
-//application breadcrumb
-$breadcrumb-height: 30px !default;
 
 //trip planning review page trip itinerary chart
 $single-plan-height: 50px !default; //the height of each itinerary chart container

@@ -22,7 +22,7 @@
       = f.hidden_field :place_id, :id => "place_id_field"
 
       .form-actions
-        = button_tag :type => 'submit', :class => "btn btn-primary" do
+        = button_tag :type => 'submit', :class => "btn action-button" do
           %i.fa.fa-check
           = @place_proxy.id.nil? ? t(:save) : t(:update)
         = link_to :back, :class => "cancel_link" do
@@ -31,7 +31,7 @@
 
 #select_place{:style => "display:none;"}
   = render :partial => 'trips/alt_address_select', :locals => {:results => [], :type => "place"}
-      
+
 .row
   .col-sm-12
     %h6= t(:found_x_places, :count => @places.count )
@@ -50,30 +50,30 @@
 
 .row
   .col-sm-12{:style => "padding-top:5px"}
-    = link_to "#", :class => "btn btn-danger", :id => "delete_button" do
+    = link_to "#", :class => "btn action-button", :id => "delete_button" do
       %i.fa.fa-times
       = t(:delete)
-    = link_to "#", :class => "btn btn-primary", :id => "edit_button" do
+    = link_to "#", :class => "btn action-button", :id => "edit_button" do
       %i.fa.fa-edit
       = t(:edit)
-    
-:javascript  
+
+:javascript
   // Configure UI behaviors
   var typeahead_delay = +"#{Rails.application.config.ui_typeahead_delay}"
   var typeahead_min_chars = +"#{Rails.application.config.ui_typeahead_min_chars}"
   var typeahead_list_length = +"#{Rails.application.config.ui_typeahead_list_length}"
   var geocoder_min_chars = +"#{Rails.application.config.ui_min_geocode_chars}"
   var delete_message = "#{t(:confirm_remove_message)}"
-  
+
   // Hide the name editing div on page load
   $(document).ready(function(){
     // Disable the actions
     $('#delete_button').attr('disabled', 'disabled');
     $('#edit_button').attr('disabled', 'disabled');
-    
+
     // Hide what we don't need
     $('#select_place').hide();
-  
+
   });
 
   // Install a hover event handler for my places. When hovering,
@@ -105,7 +105,7 @@
       $('#delete_place_id').val("");
       $('#delete_place_name').val("");
     }
-    $('#edit_button').removeAttr('disabled');    
+    $('#edit_button').removeAttr('disabled');
     $('#edit_place_id').val(place_id);
   });
 
@@ -115,7 +115,7 @@
     if ($('#delete_button').attr('disabled')) {
       return false;
     }
-    var message = delete_message + $('#delete_place_name').val() + " ?"; 
+    var message = delete_message + $('#delete_place_name').val() + " ?";
     window.oneclickConfirmBox(message, function(result) {
       if (result) {
         $('#delete_form').submit();
@@ -131,15 +131,15 @@
     }
     return true;
   });
-  
+
   // Add a change listener on the text field
   $("#place_proxy_raw_address").bind("keyup input paste", function() {
     $('#place_type_field').val("");
-    $('#place_id_field').val("");   
-    $('#select_place').hide();  
-    removeMatchingMarkers('place');     
+    $('#place_id_field').val("");
+    $('#select_place').hide();
+    removeMatchingMarkers('place');
   });
-  
+
    // user has lost focus on the address input
   $('#place_proxy_raw_address').blur(function() {
     if ($('#place_type_field').val() == "") {
@@ -149,13 +149,13 @@
         $('#query').val(addr);
         $('#target').val(2);
         $('#query_form').submit();
-        $('#geocoding_indicator').show();        
+        $('#geocoding_indicator').show();
       }
     }
   });
- 
+
   var timeout;
-  
+
   // Enable typeahead for the places forms
   $('#place_proxy_raw_address').typeahead({
       items: typeahead_list_length,
@@ -173,12 +173,12 @@
                 },
                 dataType: 'json',
                 success: function(result) {
-  
+
                   var resultList = result.map(function (item) {
                       var aItem = { index: item.index, type: item.type, id: item.id, name: item.name, desc: item.description, lat: item.lat, lon: item.lon, addr: item.address };
                       return JSON.stringify(aItem);
                   });
-  
+
                   return process(resultList);
                 }
             });
@@ -189,7 +189,7 @@
         return ~item.name.toLowerCase().indexOf(this.query.toLowerCase())
     },
 
-    sorter: function (items) {          
+    sorter: function (items) {
        var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
         while (aItem = items.shift()) {
             var item = JSON.parse(aItem);
@@ -213,26 +213,26 @@
 
     updater: function (obj) {
         var item = JSON.parse(obj);
-        
+
         // create marker on the map
         removeMatchingMarkers('my_place_candidate');
         create_or_update_typeahead_marker(item, 'my_place_candidate', 'yellowIcon');
-                
+
         // Update the UI
         $('#place_type_field').attr('value', item.type);
         $('#place_id_field').attr('value', item.id);
-        
+
         return item.name;
-    }  
-  });  
-  
+    }
+  });
+
   // Functions
   function create_or_update_typeahead_marker(item, key, iconStyle) {
     marker = create_or_update_marker(key, item.lat, item.lon, item.name, item.desc, iconStyle);
     setMapToBounds();
     selectMarker(marker);
   };
-    
+
   function create_or_update_marker(key, lat, lon, name, desc, iconStyle) {
     // See if we can find this existing marker
     marker = findMarkerById(key);
@@ -263,7 +263,7 @@
     var marker = createMarker(key, lat, lon, icon, desc, addr, false);
     addMarkerToMap(marker, true);
   }
-  
+
   // Add the candidate locations to the map
   function create_candidate_markers() {
     $('.address-select').each(function() {
@@ -274,10 +274,10 @@
       var addr = t.data('addr');
       var desc = t.data('desc');
       var latlon = eval(t.data('latlon'));
-      add_candidate_marker(index, latlon[0], latlon[1], addr, desc, type);     
+      add_candidate_marker(index, latlon[0], latlon[1], addr, desc, type);
     });
   };
-  
+
   // Selects the first matching candidate in the list of alternate
   // addresses.
   function select_first_candidate_address() {
@@ -287,7 +287,7 @@
       return;
     });
   };
-      
+
   // Select a candidate address
   function select_candidate_address(candidate) {
     var id = candidate.data('id');
@@ -301,10 +301,10 @@
     $('#place_id_field').val(index);
     $('#place_type_field').val(4);
     $('#select_place').hide();
-   
+
     var key = 'place_candidate';
     var iconStyle = 'yellowIcon';
-    
+
     // Remove any candidate markers from the map
     removeMatchingMarkers(key);
     // replace the markers with the end point marker

@@ -14,7 +14,7 @@ module TripsHelper
     else
       'trip_summary_header'
     end
-  end  
+  end
 
   def rideshare_external_link itinerary
     service_url + '?' + YAML.load(itinerary.external_info).to_query
@@ -82,20 +82,20 @@ module TripsHelper
   def get_traveller_related_emails traveler, is_assisting
     list = []
     list << traveler.email if is_assisting
-    current_user.buddies.confirmed.each do |buddy|
-      list << buddy.email
-    end
     list << current_user.email
     list.join(",")
   end
 
   ACTIONS_TO_TABS = HashWithIndifferentAccess.new(
     trips_new: :trip,
+    trips_create_multi_od: :trip,
     trips_edit: :trip,
     trips_create: :trip,
     trips_update: :trip,
+    trips_plan_a_trip: :trip,
     characteristics_new: :options,
     characteristics_update: :options, # if rerendering new due to validation failure
+    trips_multi_od_grid: :grid,
     trips_show: :review,
     trips_plan: :plan,
     trips_repeat: :trip,
@@ -103,7 +103,7 @@ module TripsHelper
 
   TABS_TO_ACTIONS = ACTIONS_TO_TABS.invert
 
-  TABS = [:trip, :options, :review, :plan]
+  TABS = [:trip, :options, :grid, :review, :plan]
 
   def visited_tabs
     TABS.slice(0, TABS.index(ACTIONS_TO_TABS[controller_and_action]))
@@ -116,6 +116,8 @@ module TripsHelper
   def breadcrumb_class tab
     if tab==active_tab
       'current-page'
+    elsif TABS.index(tab) < TABS.index(active_tab)
+      'action-button prev-page'
     else
       'next-page'
     end
@@ -131,6 +133,9 @@ module TripsHelper
       edit_user_trip_path(@traveler, @trip)
     when :options
       new_user_trip_characteristic_path(@traveler, @trip)
+    when :grid
+      @multi_od_trip = @multi_od_trip || MultiOriginDestTrip.find(session[:multi_od_trip_id] || param[:multi_od_trip_id])
+      user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
     when :review
       user_trip_path(@traveler, @trip)
     when :plan
@@ -143,7 +148,7 @@ module TripsHelper
   def filter_itineraries_by_max_offset_time(itineraries, is_depart, trip_time)
     max_offset_from_desired = Oneclick::Application.config.max_offset_from_desired
     return itineraries if max_offset_from_desired.nil?
-    
+
     earliest_time = is_depart ? trip_time : nil
     latest_time = is_depart ? nil : trip_time
     if is_depart
@@ -162,5 +167,5 @@ module TripsHelper
 
     return itineraries
   end
-  
+
 end

@@ -1,12 +1,13 @@
 // ARC brand-lib. Variables and mixins definitions only. No styles.
 
-$is-header-gradient-based: true;
-$is-footer-version-gradient-based: true;
-$is-footer-feedback-gradient-based: true;
+$btn-primary-bg: #E45034;
+$btn-primary-color: white;
 
-$btn-primary-bg: #efa521; 
-$btn-primary-color: #333;
+$trip-leg-bus: #506DA5;
+$trip-leg-rideshare: #8FB681;
+$trip-leg-paratransit: #F79441;
+$trip-leg-taxi: #E5BE1B;
+$trip-leg-wait: #E2E7E1;
+$trip-leg-walk: #D11B68;
 
-$font-size-base: 14pt;
-
-$breadcrumb-height: 40px; 
+$breadcrum-current-step-bg-color: #0F75BC;

@@ -25,15 +25,15 @@ class TripDecorator < Draper::Decorator
   end
 
   def user
-    object.user.name
+    object.user.name if object.user
   end
 
   def assisted_by
-    (object.user == object.creator) ? '' : object.creator.name
+    (object.user == object.creator) ? '' : creator
   end
   
   def creator
-    object.creator.name
+    object.creator.name if object.creator
   end
 
   def leaving_from
@@ -99,10 +99,30 @@ class TripDecorator < Draper::Decorator
   def outbound_itinerary_count
     outbound_part.itineraries.count
   end
-  
+
+  def outbound_itinerary_modes
+    strings = []
+    itinerary_modes outbound_part, strings
+    strings.join(', ')
+  end
+
   def return_itinerary_count
     if is_return_trip
       return_part.itineraries.count
+    end
+  end
+
+  def return_itinerary_modes
+    strings = []
+    itinerary_modes(return_part, strings) if is_return_trip
+    strings.join(', ')
+  end
+
+  def itinerary_modes part, strings
+    part.itineraries.group(:mode_id).count.each do |key, val|
+      key ||= Mode.walk.id
+      key_name = I18n.t("#{Mode.unscoped.find(key).code}_name")
+      strings << "#{key_name}: #{val}"
     end
   end
   
@@ -126,17 +146,17 @@ class TripDecorator < Draper::Decorator
   end
   
   def trip_purpose
-    I18n.t object.trip_purpose.name
+    I18n.t object.trip_purpose.name if object.trip_purpose
   end
 
   def modes
-    I18n.t(desired_modes.map{|m| m.name}).join ', '
+    I18n.t(desired_modes.map{|m| m.name}).join ', ' if desired_modes
   end
 
   def get_trip_summary itinerary
     summary = ''
     if itinerary.is_walk
-      itinerary.get_legs.each do |leg|
+      itinerary.get_legs(false).each do |leg|
         summary += "#{I18n.t(leg.mode.downcase)} #{I18n.t(:to)} #{leg.end_place.name};"
       end
     else
@@ -154,7 +174,7 @@ class TripDecorator < Draper::Decorator
       
       case code
       when 'mode_transit', 'mode_bus', 'mode_rail'
-        itinerary.get_legs.each do |leg|
+        itinerary.get_legs(false).each do |leg|
           case leg.mode
           when Leg::TripLeg::WALK
             summary += "#{I18n.t(leg.mode.downcase)}"
@@ -166,9 +186,12 @@ class TripDecorator < Draper::Decorator
           summary += " #{I18n.t(:to)} #{leg.end_place.name};"
         end
       when 'mode_paratransit'
-        itinerary.service.get_contact_info_array.each do |a,b|
-          summary += "#{I18n.t(:paratransit)} #{I18n.t(a)}: #{h.sanitize_nil_to_na b};"
+        if itinerary.service
+          itinerary.service.get_contact_info_array.each do |a,b|
+            summary += "#{I18n.t(:paratransit)} #{I18n.t(a)}: #{h.sanitize_nil_to_na b};"
+          end
         end
+        
       when 'mode_taxi'
         YAML.load(itinerary.server_message).each do |business|
           summary += "#{I18n.t(:taxi)} #{business['name']}: #{business['phone']};"
@@ -195,7 +218,7 @@ class TripDecorator < Draper::Decorator
     result = ''
     if itinerary && itinerary.service
       itinerary.service.accommodations.each do |a|
-        result += I18n.t(a.name) + ';'
+        result += "#{I18n.t(a.name)};"
       end
     end
     result
@@ -212,7 +235,7 @@ class TripDecorator < Draper::Decorator
                                                          characteristic_id: requirement.id)
           if user_characteristic.count > 0 &&
             user_characteristic.first.meets_requirement(map)
-            result += @elig_svc.translate_service_characteristic_map(map) + ';'
+            result += "#{@elig_svc.translate_service_characteristic_map(map)};"
           end
         end
       end

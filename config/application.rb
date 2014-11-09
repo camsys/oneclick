@@ -32,6 +32,13 @@ if ENV['HEROKU']
   end
 end
 
+if ENV['GC_PROFILER_ENABLE']
+  puts "+-----------------------+"
+  puts "| ENABLING GC::Profiler |"
+  puts "+-----------------------+"
+  GC::Profiler.enable
+end
+
 module Oneclick
   class Application < Rails::Application
 
@@ -43,7 +50,7 @@ module Oneclick
 
       g.view_specs false
       g.helper_specs false
-  end
+    end
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -65,8 +72,7 @@ module Oneclick
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # Set in _oneclick.rb because can be brand-dependent
-    config.time_zone = 'Eastern Time (US & Canada)'
+    config.time_zone = ENV['TIME_ZONE'] || "Eastern Time (US & Canada)"
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
@@ -117,7 +123,7 @@ module Oneclick
         ext/fontawesome-ext-webfont.eot
         ext/fontawesome-ext-webfont.svg
         ext/fontawesome-ext-webfont.ttf
-        ext/fontawesome-ext-webfont.woff      
+        ext/fontawesome-ext-webfont.woff
       )
     end
 
@@ -139,7 +145,7 @@ end
 
 def oneclick_available_locales
   begin
-    s = '(' + I18n.available_locales.join('|') + ')'
+    s = '(' + (I18n.available_locales + [:tags]).join('|') + ')'
     %r{#{s}}
   rescue Exception => e
     Rails.logger.info "Exception #{e.message} during oneclick_available_locales"

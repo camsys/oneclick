@@ -26,7 +26,11 @@ end
   {name: 'Trips Details', description: 'Details of all trips.',
    view_name: 'trips_details_report', class_name: 'TripsDetailsReport', active: true},
   {name: 'System Usage', description: 'Overall system usage statistics.',
-   view_name: 'system_usage_report', class_name: 'SystemUsageReport', active: true}
+   view_name: 'system_usage_report', class_name: 'SystemUsageReport', active: true},
+  {name: 'Trips Details', description: 'Details of all trips.', exportable: true,
+   view_name: 'paged_trips_details_report', class_name: 'TripsDatatable', active: true},
+  {name: 'Feedback', description: 'List of all ratings.', exportable: true,
+   view_name: 'ratings_report', class_name: 'RatingsReport', active: true}
 
 ].each do |rep|
   # Need to correctly handle updating active state; match everything except that.
@@ -214,8 +218,23 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
  { klass: DateOption, name: 'Next Month', code: 'date_option_next_month',
    start_date: 'next month', end_date: 'next month',
  },
+ { klass: DateOption, name: 'Custom...', code: 'date_option_custom',
+ },
  
 ].each do |record|
   structured_hash = structure_records_from_flat_hash record
   build_internationalized_records structured_hash
 end
+
+WalkingSpeed.where(code: 'slow', name: 'Slow', value: 2).first_or_create!
+WalkingSpeed.where(code: 'average', name: 'Average', value: 3, is_default: true).first_or_create!
+WalkingSpeed.where(code: 'fast', name: 'Fast', value: 4).first_or_create!
+
+WalkingMaximumDistance.where(value: 0.25).first_or_create!
+WalkingMaximumDistance.where(value: 0.5).first_or_create!
+WalkingMaximumDistance.where(value: 0.75).first_or_create!
+WalkingMaximumDistance.where(value: 1).first_or_create!
+WalkingMaximumDistance.where(value: 1.5).first_or_create!
+WalkingMaximumDistance.where(value: 2, is_default: true).first_or_create!
+WalkingMaximumDistance.where(value: 3).first_or_create!
+WalkingMaximumDistance.where(value: 4).first_or_create!

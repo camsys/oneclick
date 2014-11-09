@@ -1,16 +1,38 @@
+- multi_places = []
 - if dir=='from'
+  - marker_key = 'start'
   - label=t(:leaving_from)
   - sr_label = t(:type_from_address)
+  - multi_places = @trip_proxy.multi_origin_places.split(';') unless @trip_proxy.multi_origin_places.nil?
 - elsif dir=='to'
+  - marker_key = 'stop'
   - label=t(:going_to)
   - sr_label = t(:type_to_address)
-= f.input "#{dir}_place".to_sym, input_html: {class: 'place_picker', autocomplete: 'off', type: "text", tabindex: 0}, id: "trip_proxy_#{dir}_place", wrapper: :group, label: label do
-  = f.input_field "#{dir}_place".to_sym, class: 'form-control place_picker', tabindex: 0
+  - multi_places = @trip_proxy.multi_dest_places.split(';')  unless @trip_proxy.multi_dest_places.nil?
+= f.input "#{dir}_place".to_sym, input_html: {class: 'place_picker', autocomplete: 'off', type: "text", tabindex: 0}, id: "trip_proxy_#{dir}_place", wrapper: :group, label: label, "aria-hidden" => 'true' do
+  = f.input_field "#{dir}_place".to_sym, class: 'form-control place_picker', tabindex: 0, "aria-autocomplete" => 'inline'
+  - if dir=='from' && translation_exists?("leaving_from_help")
+    :javascript
+      addHelperTooltip('#from_place_label', "#{t(:leaving_from_help)}");
+  - elsif dir=='to' && translation_exists?("going_to_help")
+    :javascript
+      addHelperTooltip('#to_place_label', "#{t(:going_to_help)}");
   %span.input-group-btn
-    %label.control-label.sr-only.hidden-md.hidden-lg{for: "#{dir}CenterMyLocation"} Click button to center my location
-    %button.btn.btn-default.hidden-md.hidden-lg{type: "button", id: "#{dir}CenterMyLocation", tabindex: '-1'}
+    %button.btn.btn-default.hidden-md.hidden-lg{type: "button", id: "#{dir}CenterMyLocation", tabindex: '-1', aria: {label: "Click button to center my location"}}   
       %i.fa.fa-location-arrow
-    %label.control-label.sr-only.hidden-xs.hidden-sm{for: "#{dir}AddressMarkerButton"} Click button to locate the address
-    %button.btn.btn-default.hidden-xs.hidden-sm{type: "button", id: "#{dir}AddressMarkerButton", tabindex: '-1'}
+    %button.btn.btn-default.hidden-xs.hidden-sm{type: "button", id: "#{dir}AddressMarkerButton", tabindex: '-1', aria: {label: "Click to locate the address"}}
       %i.fa.fa-map-marker
+-if session[:is_multi_od] == true
+  .form-group
+    .col-sm-9.pull-right.table-responsive
+      %table.table.table-condensed.place-container{"id" => "#{dir}_places", "place-counter" => "#{multi_places.length}"}
+        - multi_places.each_with_index do |place, index|
+          %tr{"place-marker-key" => "#{marker_key + (index+1).to_s}"}
+            %td.address-data{style: 'display:none;'}
+              = place
+            %td
+              = JSON.parse(place)["name"]
+            %td.center.nowrap
+              %button.btn.btn-sm.btn-danger.delete-button
+                %i.fa.fa-times
 

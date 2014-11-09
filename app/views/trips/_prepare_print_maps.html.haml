@@ -1,0 +1,11 @@
+#prepare_print_maps.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %h3.modal-title
+          =t(:preparing_maps)
+      .modal-body
+        .progress
+          .progress-bar.active{role: "progressbar", aria: {valuenow: "0", valuemin: "0", valuemax: "100"}, style: "width: 0%"}
+            0%
+

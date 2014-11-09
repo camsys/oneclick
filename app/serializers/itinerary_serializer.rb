@@ -2,6 +2,7 @@ class ItinerarySerializer < ActiveModel::Serializer
   include CsHelpers
   include ApplicationHelper
   include ActionView::Helpers::NumberHelper
+  include ActionView::Helpers::JavaScriptHelper
 
   attributes :id, :missing_information, :mode, :mode_name, :service_name, :provider_name, :contact_information,
     :cost, :duration, :transfers, :start_time, :end_time, :legs, :service_window, :duration_estimated, :selected
@@ -78,7 +79,7 @@ class ItinerarySerializer < ActiveModel::Serializer
       if !last_leg.nil? && (leg.start_time > (last_leg.end_time + 1.second))
         m <<        {
           type: 'WAIT',
-          description: I18n.t(:wait_at) + ' '+ last_leg.end_place.name,
+          description: escape_javascript(I18n.t(:wait_at) + ' '+ last_leg.end_place.name),
           start_time: (last_leg.end_time + 1.second).iso8601,
           end_time: (leg.start_time - 1.second).iso8601,
           start_place: "#{last_leg.end_place.lat},#{last_leg.end_place.lon}",
@@ -87,7 +88,7 @@ class ItinerarySerializer < ActiveModel::Serializer
       end
       m <<        {
         type: leg.mode,
-        description: leg.short_description,
+        description: escape_javascript(leg.short_description),
         start_time: leg.start_time.iso8601,
         end_time: leg.end_time.iso8601,
         start_place: "#{leg.start_place.lat},#{leg.start_place.lon}",

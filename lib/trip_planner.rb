@@ -9,7 +9,9 @@ class TripPlanner
   
   include ServiceAdapters::RideshareAdapter
 
-  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false")
+  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2)
+    #walk_speed is defined in MPH and converted to m/s before going to OTP
+    #max_walk_distance is defined in miles and converted to meters before going to OTP
 
     #Parameters
     time = trip_datetime.strftime("%-I:%M%p")
@@ -20,13 +22,15 @@ class TripPlanner
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
     url_options += "&wheelchair=" + wheelchair
     url_options += "&arriveBy=" + arriveBy.to_s
+    url_options += "&walkSpeed=" + (0.44704*walk_speed).to_s
+    url_options += "&maxWalkDistance=" + (1609.34*max_walk_distance).to_s
 
     url = base_url + url_options
     Rails.logger.info URI.parse(url)
     t = Time.now
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
-      Rails.logger.info(resp.inspect)
+      Rails.logger.info(resp.ai)
     rescue Exception=>e
       Honeybadger.notify(
         :error_class   => "Service failure",

@@ -1,8 +1,13 @@
+require 'carrierwave/orm/activerecord'
+
 class Itinerary < ActiveRecord::Base
   include CsHelpers
 
+  mount_uploader :map_image, BaseUploader
+
   # Callbacks
   after_initialize :set_defaults
+  before_save :clear_walk_time
 
   # Associations
   belongs_to :trip_part
@@ -43,14 +48,21 @@ class Itinerary < ActiveRecord::Base
   # returns true if this itinerary is a walk-only trip. These are a special case of Transit
   # trips that only include a WALK leg
   def is_walk
-    legs = get_legs
+    legs = get_legs(false)
     return legs.size == 1 && legs.first.mode == Leg::TripLeg::WALK
+  end
+
+  # return true if this itinerary is a car-only trip. These are a special case of transit
+  # trips that only include a CAR leg
+  def is_car
+    legs = get_legs(false)
+    return legs.size ==1 && legs.first.mode == Leg::TripLeg::CAR
   end
 
   # returns true if this itinerary is a bicycle-only trip. These are a special case of Transit
   # trips that only include a BICYCLE leg
   def is_bicycle
-    legs = get_legs
+    legs = get_legs(false)
     return legs.size == 1 && legs.first.mode == Leg::TripLeg::BICYCLE
   end
 
@@ -61,7 +73,7 @@ class Itinerary < ActiveRecord::Base
     end
     bus = false
     rail = false
-    legs = get_legs
+    legs = get_legs(false)
     legs.each do |leg|
       case leg.mode.downcase
         when 'walk'
@@ -99,8 +111,11 @@ class Itinerary < ActiveRecord::Base
   
   # parses the legs and returns an array of TripLeg. If there are no legs then an
   # empty array is returned
-  def get_legs
-    return legs.nil? ? [] : ItineraryParser.parse(YAML.load(legs))
+  def get_legs(include_geometry = true)
+    if @legs.empty?
+      @legs = legs.nil? ? [] : ItineraryParser.parse(YAML.load(legs), include_geometry)
+    end
+    @legs
   end
 
   def mode_and_routes
@@ -164,9 +179,17 @@ class Itinerary < ActiveRecord::Base
 
   protected
 
+  #OTP is setting drive time as walk time.  This is a temporary work-around
+  def clear_walk_time
+    if self.is_car
+      self.walk_time = 0
+    end
+  end
+
   # Set resonable defaults for a new itinerary
   def set_defaults
     self.hidden ||= false
+    @legs = []
   end
 
 

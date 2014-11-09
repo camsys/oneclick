@@ -5,17 +5,19 @@
       %h1= t(:sign_up)
     .col-sm-6.btns
       .pull-right
-        = button_tag type: 'submit', class: "btn action-button" do
+        = button_tag type: 'submit', class: "btn action-button", style: 'margin-right:5px;' do
           = t(:apply)
         = link_to t(:cancel), :back, class: "btn action-button"
 
   .row
     .col-sm-6
-      .panel.panel-default#user_info
+      .panel.panel-default#user_info{role: "main", aria: {label: "Sign Up Form"}}
         .panel-heading
-          %h3.panel-title= t(:user_information)
+          %h3.panel-title
+            = t(:user_information)
+            = add_tooltip("user_information_help")
         .panel-body
-          = f.error_notification
+          = f.error_notification message: print_messages(f)
           = f.input :first_name, label: t(:first_name), :autofocus => true
           = f.input :last_name, label: t(:last_name)
           = f.input :email, label: t(:email), :required => true

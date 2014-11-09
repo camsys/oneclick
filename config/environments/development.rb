@@ -22,11 +22,9 @@ Oneclick::Application.configure do
   # config.assets.digest = true
   # # config.assets.debug
 
-  # config.i18n.fallbacks
+  config.i18n.fallbacks = false
 
   config.active_support.deprecation = :log
-
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true

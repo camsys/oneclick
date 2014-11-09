@@ -1,23 +1,43 @@
 .row
   .col-sm-6.pull-left
-    %h2 ESP File Upload
-.row
-  .col-sm-6.pull-left
     =link_to t(:back_to_services), services_path
-
+.row
+  .col-sm-12
+    %h1 ESP File Upload
 .row
   .col-sm-6
     .panel.panel-default
+      .panel-heading
+        .panel-title
+          .btns.pull-right
+            = button_tag id:'upload_esp', type: 'submit', class: "btn action-button" do
+              Upload
+          %span
+            Upload ESP
       .panel-body
         .row
           .col-sm-12
-            ="Upload a formatted MDB file exported from ESP, or the CSV exported from that, packaged as a zip file."
+            Upload a formatted MDB file exported from ESP, or the CSV exported from that, packaged as a zip file.
         .row
-          .col-sm-12
-
+          #esp_upload_form.col-sm-12
             = simple_form_for :esp_upload, :url => esp_reader_index_path, :method => 'post', :html => { :class => "form-horizontal"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean } do |f|
               .form-inputs
                 =f.input :csv, label: 'CSV?', as: :check_boxes, collection: [['Yes', 1]]
                 =f.input :zip, as: :file, label: 'File'
-              .form-actions
-                = f.button :submit, 'Save ESP upload'
+  :javascript
+    $('#upload_esp').on('click', function(){
+      $('#esp_upload_form form').submit();
+    });
+  .col-sm-6
+    .panel.panel-default
+      .panel-heading
+        .panel-title
+          .btns.pull-right
+            = link_to build_polygons_esp_reader_index_path, {class: 'btn action-button', role: 'button'} do
+              Build
+          %span
+            Build Service Polygons
+      .panel-body
+        .row
+          .col-sm-12
+            ="Build the polygons based on the latest ESP Update."

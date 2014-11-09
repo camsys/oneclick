@@ -1,9 +1,13 @@
+- is_splash_available = whether_show_tranlatation_item?(:options_page_splash)
+- non_splash_css = 'col-sm-12'
+- splash_css = ''
+- if is_splash_available
+  - non_splash_css = 'col-sm-7 col-xs-12'
+  - splash_css = 'col-sm-5 col-xs-12'
 .row
-  .col-sm-7
-    .hidden-xs.col-sm-8
-      = render partial: 'shared/trip_plan_breadcrumbs'
-    .col-sm-4{style: "padding: 0px;"}
-      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button" do
+  %div{class: non_splash_css}
+    .pull-right
+      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
         =t(:next)
         :javascript
           $(function() {
@@ -11,12 +15,25 @@
               $('.user-characteristics').submit();
             });
           });
+    = render partial: 'shared/trip_plan_breadcrumbs'
 
 .row
-  .col-sm-7.col-xs-12
-    = render partial: 'form', :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
-    / end of options column
+  %div{class: non_splash_css}
+    .col-sm-12
+      = render partial: 'shared/page_comments', locals: {key: :options_header_comment}
+    .col-sm-12.panel.panel-default{:role => "main", :aria => {:label => 'Eligibility and Accommodation Form'}, :style => 'padding: 0px;'}
+      .panel-heading
+        %h2.panel-title
+          =t(:eligibility_accommodation_questions)
+          = add_tooltip("eligibility_accommodation_questions_help")
+      .panel-body
+        = render partial: 'form', :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
+        / end of options column
     .col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
-      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn btn-default pull-right action-button" do
+      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn pull-right action-button" do
         =t(:next)
-  = render partial: 'shared/splash'
+    .col-sm-12
+      = render partial: 'shared/page_comments', locals: {key: :options_footer_comment}
+  - if is_splash_available
+    = render partial: 'shared/splash', locals: {splash_key: :options_page_splash, title_key: :options_page_splash_title, splash_div_class: splash_css}
+

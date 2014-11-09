@@ -5,20 +5,20 @@
   = simple_form_for :email, url: email_itinerary_user_trip_path(@traveler, @trip, itinerary: itinerary, locale: I18n.locale), html: { class: 'form-horizontal',
     id: 'send_itinerary_by_email_form_' + itinerary.id.to_s }  do |f|
     .modal-body
-      = f.error_notification
+      = f.error_notification message: print_messages(f)
       - if user_signed_in?
         - if assisting?
           = f.input :send_to_traveler, as: :boolean, label: t(:send_to_traveler)
         - else
           = f.input :send_email_to, label: t(:send_email_to), :required => false,
             collection: send_trip_by_email_list(@traveler, is_assisting),
-            :input_html => { :checked => true}, :as => :check_boxes        
+            :input_html => { :checked => true}, :as => :check_boxes
       - else
         = f.input :from, label: t(:from_address), required: true
       = f.input :email_addresses, label: 'Additional email addresses', required: false
       = f.input :email_comments, as: :text, label: 'Comments', required: false, input_html: {rows: 3}
     .modal-footer
-      = button_tag type: :submit, class: 'pull-right btn btn-info' do
+      = button_tag type: :submit, class: 'btn action-button pull-right' do
         %i.fa.fa-envelope-o
         = t(:send)
       = button_tag class: 'btn', data: {dismiss: 'modal'} do

@@ -1,0 +1,27 @@
+.row
+  .col-sm-6
+    .panel.panel-default
+      .panel-heading
+        %h4.panel-title
+          = t(:public_comments)
+          = add_tooltip("public_comments_help")
+      .panel-body
+        =t(:public_comments_message)
+        - commentable.public_comments.sort!{|a, b| a.locale <=> b.locale}
+        = f.simple_fields_for :public_comments do |comment|
+          = comment.input :comment, label: [t("locales.#{comment.object.locale}"), t(:comment)].join(' ')
+          = comment.input :locale, as: :hidden
+          = comment.input :visibility, as: :hidden
+  .col-sm-6
+    .panel.panel-default
+      .panel-heading
+        %h4.panel-title
+          = t(:private_comments)
+          = add_tooltip("private_comments_help")
+      .panel-body
+        =t(:private_comments_message)
+        - commentable.private_comments.sort!{|a, b| a.locale <=> b.locale}
+        = f.simple_fields_for :private_comments do |comment|
+          = comment.input :comment, label: [t("locales.#{comment.object.locale}"), t(:comment)].join(' ')
+          = comment.input :locale, as: :hidden
+          = comment.input :visibility, as: :hidden

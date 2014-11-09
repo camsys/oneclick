@@ -1,41 +1,38 @@
 - if !@is_plan_valid
-  .row{style: "padding: 0px;"}
+  - unless @is_review
     = render partial: 'shared/trip_plan_breadcrumbs'
 - else
-  .row{style: "padding: 0px;"}
-    .hidden-xs.col-sm-8
-      = render partial: 'shared/trip_plan_breadcrumbs'
-    .col-sm-4
-      .pull-right
-        - ItineraryDecorator.decorate_collection(@itineraries.valid).each do |itinerary|
-          - if not itinerary.service.booking_service_code.blank? and user_signed_in? and Oneclick::Application.config.allows_booking
-            = button_tag :type => 'button', :class => "btn action-button", :style => "margin-right: 5px;", "data-target" => "#bookingModal", "data-toggle" => "modal" do
-              =t(:book)
-            = render partial: 'booking_modal'
-            - break
-        = link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn action-button', style: "margin-right: 5px;", data: {toggle: 'modal'}} do
-          /%i.fa.fa-print
-          = t(:print)
-        = link_to '#', {href: '#send_trip_by_email', class: 'btn action-button', style: "margin-right: 5px;", data: {toggle: 'modal'}} do
-          /%i.fa.fa-envelope-o
-          = t(:email)
-
-  .col-xs-12{style: "padding: 0px;"}
+  .row
+    .col-sm-12
+      - unless @is_review
+        .pull-right
+          = render partial: 'plan_page_buttons'
+        = render partial: 'shared/trip_plan_breadcrumbs'
+      - else
+        .pull-right{style: "padding-bottom: 10px;"}
+          = render partial: 'plan_page_buttons'
+  - if @assisting_agency
+    .col-xs-12.well{style: "padding: 5px;"}
+      .col-sm-12{style: "padding: 0px;"}
+        =t(:trip_planned_assistance)
+        %b=@assisting_agency.name
+      -if @assisting_agency.public_comments.for_locale and  !@assisting_agency.public_comments.for_locale.comment.blank?
+        .col-sm-12{style: "background: white; border-radius: 5px;"}
+          =@assisting_agency.public_comments.for_locale.comment.html_safe
+  .col-sm-12
+    = render partial: 'shared/page_comments', locals: {key: :plan_header_comment}
+  .col-xs-12{style: "padding: 0px;", role: 'main'}
     = render partial: "selected_itineraries_details", locals: { trip: @trip, for_db: false }
-  
+
   .col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
     .pull-right
-      - ItineraryDecorator.decorate_collection(@itineraries.valid).each do |itinerary|
-        - if not itinerary.service.booking_service_code.blank? and user_signed_in? and Oneclick::Application.config.allows_booking
-          = button_tag :type => 'button', :class => "btn action-button", :style => "margin-right: 5px;", "data-target" => "#bookingModal", "data-toggle" => "modal" do
-            =t(:book)
-          = render partial: 'booking_modal'
-          - break
-      = link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: true) +  "'); return false;", class: 'btn action-button', style: "margin-right: 5px;", data: {toggle: 'modal'}} do
-        /%i.fa.fa-print
-        = t(:print)
-      = link_to '#', {href: '#send_trip_by_email', class: 'btn action-button', style: "margin-right: 5px;", data: {toggle: 'modal'}} do
-        /%i.fa.fa-envelope-o
-        = t(:email)
+      = render partial: 'plan_page_buttons'
+  .col-sm-12
+    = render partial: 'shared/page_comments', locals: {key: :plan_footer_comment}
   = render partial: 'send_trip_by_email', locals: {trip: @trip}
 
+- content_for :head do
+  %meta{name: 'user_id', content: @trip.user.id}
+  %meta{name: 'trip_id', content: @trip.id}
+  %meta{name: 'itinerary_ids', content: @trip.itineraries.selected.collect{|i| i.id}.join(',')}
+  %meta{name: 'locale', content: I18n.locale}

@@ -1,10 +1,11 @@
 module ApplicationHelper
 
   METERS_TO_MILES = 0.000621371192
+  MILE_TO_FEET = 5280
 
   include CsHelpers
   include LocaleHelpers
-  
+
   KIOSK_ICON_DICTIONARY = {
     Leg::TripLeg::WALK => 'travelcon-walk',
     Leg::TripLeg::TRAM => 'travelcon-subway',
@@ -35,6 +36,10 @@ module ApplicationHelper
     return root_url({locale: ''}) + Base.helpers.asset_path(get_logo)
   end
 
+  def get_logo_text
+    return Oneclick::Application.config.logo_text
+  end
+
   # Returns a mode-specific icon
   def get_mode_icon(mode)
     if ENV['UI_MODE']=='kiosk'
@@ -46,18 +51,19 @@ module ApplicationHelper
   end
 
   # Returns a service-specific icon
-  def get_service_icon(agency_id, mode)
+  def get_service_provider_icon(agency_id, mode)
     # search name first, then search external_id
-    # this is because leg.agency_id is pre-processed in itinerary_parser  
-    # in which agency_id was not original agency_id from GTFS 
+    # this is because leg.agency_id is pre-processed in itinerary_parser
+    # in which agency_id was not original agency_id from GTFS
     # but instead it's identified service name...
-    s = Service.where(name: agency_id).first
+    s = Service.where(name: agency_id).first ||
+      Service.where(external_id: agency_id).first
+
     if s
-      return root_url({locale:''}) + Base.helpers.asset_path(s.logo_url)
-    else
-      s = Service.where(external_id: agency_id).first
-      if s
-        return root_url({locale:''}) + Base.helpers.asset_path(s.logo_url)
+      if s.logo_url
+        return get_service_provider_icon_url(s.logo_url)
+      elsif s.provider and s.provider.logo_url
+        return get_service_provider_icon_url(s.provider.logo_url)
       end
     end
 
@@ -112,6 +118,22 @@ module ApplicationHelper
     end
   end
 
+  def exact_distance_to_words(dist_in_meters)
+    return '' unless dist_in_meters
+
+    # convert the meters to miles
+    miles = dist_in_meters * METERS_TO_MILES
+    if miles < 0.001
+      dist_str = [miles.round(4).to_s, I18n.t(:miles)].join(' ')
+    elsif miles < 0.01
+      dist_str = [miles.round(3).to_s, I18n.t(:miles)].join(' ')
+    else
+      dist_str = [miles.round(2).to_s, I18n.t(:miles)].join(' ')
+    end
+
+    dist_str
+  end
+
   def distance_to_words(dist_in_meters)
     return t(:n_a) unless dist_in_meters
 
@@ -155,6 +177,10 @@ module ApplicationHelper
       time_string = I18n.translate(:less_than_one_minute)
     end
 
+    if options[:days_only]
+      time_string = I18n.translate(:day, count: hours/24.round)
+    end
+
     time_string
   end
 
@@ -166,7 +192,12 @@ module ApplicationHelper
   end
 
   def format_date_time(datetime)
-    return l datetime, :format => :long unless datetime.nil?
+    is_in_tags = I18n.locale == :tags # tags locale cause trouble in datetime localization, here, using default_locale to localize
+    I18n.locale = I18n.default_locale if is_in_tags
+    formatted_date_time = l datetime, :format => :long unless datetime.nil?
+    I18n.locale = :tags if is_in_tags
+
+    formatted_date_time || ""
   end
 
   # TODO These next 2 methods are very similar to methods in CsHelper,should possible be consolidated
@@ -174,7 +205,7 @@ module ApplicationHelper
   def get_trip_partial(itinerary)
 
     return if itinerary.nil?
-    
+
     mode_code = get_pseudomode_for_itinerary(itinerary)
     #is this not a switch case?  Saves a few evaluations that way...
     partial = if mode_code.in? ['transit', 'rail', 'bus', 'railbus', 'drivetransit']
@@ -195,11 +226,14 @@ module ApplicationHelper
       'rideshare_details'
     elsif mode_code == 'walk'
       'walk_details'
+    elsif mode_code == 'car'
+      'car_details'
     end
     return partial
   end
 
   # Returns the correct localized title for a trip itinerary
+  # NOTE: this function is not being actively used as we now use client-uploaded icons
   def get_trip_summary_icon(itinerary)
     return if itinerary.nil?
 
@@ -225,13 +259,15 @@ module ApplicationHelper
     elsif mode_code == 'livery'
       'icon-taxi-sign'
     elsif mode_code == 'taxi'
-      'icon-taxi-sign'      
+      'icon-taxi-sign'
     elsif mode_code == 'rideshare'
       "#{fa_prefix}-group"
     elsif mode_code == 'walk'
       'icon-walking-sign'
     elsif mode_code == 'drivetransit'
       'icon-bus-sign'
+    elsif mode_code == 'car'
+      'auto'
     end
     return icon_name
   end
@@ -254,42 +290,58 @@ module ApplicationHelper
 
   def t(key, options={})
     branded_key = [brand, key].join('.')
-    begin
-      I18n.translate(branded_key, options.merge({raise: true}))
-    rescue Exception => e
+    if I18n.locale != :tags
       begin
-        I18n.translate(key, options.merge({raise: true}))
+        I18n.translate(branded_key, options.merge({raise: true}))
       rescue Exception => e
-        Rails.logger.warn "key: #{key} not found: #{e.inspect}"
         begin
-          I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale}))
+          I18n.translate(key, options.merge({raise: true}))
         rescue Exception => e
-          "Key not found: #{key}" # No need to internationalize this.  Should only hit if a non-existant key is called
+          Rails.logger.warn "key: #{key} not found: #{e.inspect}"
+          begin
+            I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale}))
+          rescue Exception => e
+            "Key not found: #{key}" # No need to internationalize this.  Should only hit if a non-existant key is called
+          end
         end
       end
+    else
+      begin
+        I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale}))
+      rescue Exception => e
+        return '[' + key.to_s + ']'
+      end
+
+      return '[' + branded_key.to_s + ']'
     end
   end
 
-  def links_to_each_locale
-    links = ""
+  def links_to_each_locale(show_translations = false)
+    links = []
     I18n.available_locales.each do |l|
       links << link_using_locale(I18n.t("locales.#{l}"), l)
-      links << " | "
     end
-    
-    links.html_safe
+    if show_translations
+      links << link_using_locale(Oneclick::Application::config.translation_tag_locale_text, :tags)
+    end
+
+    return '' if links.size <= 1
+
+    links.join(' | ').html_safe
   end
 
   def link_using_locale link_text, locale
     path = session[:location] || request.fullpath
     parts = path.split('/', 3)
+
     current_locale = I18n.available_locales.detect do |l|
       parts[1] == l.to_s
     end
-    parts.delete_at(1) if current_locale
+    parts.delete_at(1) if current_locale or I18n.locale == :tags
     parts = parts.join('/')
     parts = '' if parts=='/'
     newpath = "/#{locale}#{parts}"
+
     if (newpath == path) or
       (newpath == "/#{I18n.locale}#{path}") or
       (newpath == "/#{I18n.locale}")
@@ -333,4 +385,42 @@ module ApplicationHelper
       text_num
     end
   end
+
+  # non-tag locale: the key must be defined, and content is not blank
+  # tag locale: key must be defined
+  def whether_show_tranlatation_item? key
+    defined? key and
+    !Translation.where(key: key).first.nil? and
+    (I18n.locale == :tags or !Translation.where(key: key, locale: I18n.locale).first.nil?) and
+    !I18n.t(key).blank?
+  end
+
+  def translation_exists?(key_str)
+    if I18n.t(key_str).to_s.include?("translation missing")
+      return false
+    elsif I18n.t(key_str).to_s.blank?
+      return false
+    else
+      return true
+    end
+  end
+
+  def add_tooltip(key)
+    if translation_exists?(key)
+      html = '<i class="fa fa-question-circle fa-2x pull-right label-help" style="margin-top:-4px;" title data-original-title="'
+      html << t(key.to_sym)
+      html << '" aria-label="'
+      html << t(key.to_sym)
+      html << '" tabindex="0"></i>'
+      return html.html_safe
+    end
+  end
+
+  def print_messages(obj)
+    html = '<strong>Please correct the problems below:</strong></br>'
+    line_break = '</br>'.html_safe
+    obj.object.nil? ? '' : html << obj.object.errors.full_messages.uniq.join(". #{line_break}")
+    return html.html_safe
+  end
+
 end

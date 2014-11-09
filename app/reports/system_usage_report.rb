@@ -1,4 +1,4 @@
-class SystemUsageReport
+class SystemUsageReport < AbstractReport
 
   attr_reader :totals_class_names, :totals_cols, :user_cols, :trip_cols, :rating_cols
   
@@ -21,7 +21,7 @@ class SystemUsageReport
   def get_data(current_user, report)
     date_option = DateOption.find(report.date_range)
     date_option ||= DateOption.find_by(code: DateOption::DEFAULT)
-    date_range = date_option.get_date_range
+    date_range = date_option.get_date_range(report.from_date, report.to_date)
 
     data = Hash.new
 
@@ -46,22 +46,34 @@ class SystemUsageReport
       end
     end
 
+    trip_base = Trip.where(scheduled_time: date_range)
+    trip_base = trip_base.where(agency_id: report.agency_id) if report.agency_id
+    trip_base = trip_base.where(creator_id: report.agent_id).where.not(user_id: report.agent_id) if report.agent_id
+    trip_base = trip_base.where("outbound_provider_id = ? OR return_provider_id = ?",
+                                report.provider_id, report.provider_id) if report.provider_id
+
+    itinerary_base = Itinerary.valid.visible.where(start_time: date_range)
+    itinerary_base = itinerary_base.joins(:service)
+      .where(services: {provider_id: report.provider_id}) if report.provider_id
+    
     @trip_cols.each do |col|
       data[col] = case col
+      # Trips
       when :total_trips
-        Trip.where(scheduled_time: date_range).count
+        trip_base.count
       when :trips_by_ui_mode
-        Trip.where(scheduled_time: date_range).where.not(ui_mode: nil).group(:ui_mode).count(:ui_mode)
+        trip_base.where.not(ui_mode: nil).group(:ui_mode).count(:ui_mode)
+      # Itineraries
       when :total_itineraries_generated
-        Itinerary.where(start_time: date_range).count
+        itinerary_base.count
       when :total_itineraries_selected
-        Itinerary.where(selected: true, start_time: date_range).count
+        itinerary_base.where(selected: true).count
       when :bookings
-        Itinerary.where(start_time: date_range).where.not(booking_confirmation: nil).count
+        itinerary_base.where.not(booking_confirmation: nil).count
       when :generated_itineraries_by_mode
-        Itinerary.where(start_time: date_range).group(:mode_id).count(:mode_id)
+        itinerary_base.group(:mode_id).count
       when :selected_itineraries_by_mode
-        Itinerary.where(selected: true, start_time: date_range).group(:mode_id).count(:mode_id)
+        itinerary_base.where(selected: true).group(:mode_id).count
       end
     end
 

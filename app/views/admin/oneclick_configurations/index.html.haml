@@ -1,0 +1,31 @@
+.header
+
+%table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#configs_table
+  %thead
+    %tr
+      %th= "Configuration"
+      %th= "Value"
+
+  %tbody
+    - @configs.each do |config|
+      %tr
+        %td= config.code
+        -if config.value.nil? or config.value == ""
+          %td= link_to "EMPTY", edit_admin_oneclick_configuration_path(config)
+        -else
+          %td= link_to config.value.to_s,  edit_admin_oneclick_configuration_path(config)
+
+:javascript
+  $(document).ready(function() {
+    var oTable = $('#configs_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ configurations per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ configurations",
+              "sInfoEmpty": "Showing 0 to 0 of 0 configurations",
+              "sInfoFiltered": "(filtered from _MAX_ total translations)"
+          },
+          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l><'toggle col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+    });
+

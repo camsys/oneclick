@@ -232,9 +232,7 @@ class EcolaneHelpers
     terms.each do |term|
       url_options += "&" + term[0].to_s + '=' + term[1].to_s
     end
-
     url = BASE_URL + url_options
-
     resp = send_request(url)
   end
 
@@ -242,7 +240,6 @@ class EcolaneHelpers
 
   def unpack_validation_response (resp)
     resp_xml = Nokogiri::XML(resp.body)
-
     status = resp_xml.xpath("status")
     #On success, status = []
     unless status.empty?
@@ -252,9 +249,11 @@ class EcolaneHelpers
     end
 
     if resp_xml.xpath("search_results").xpath("customer").count == 1
-      return true, "Success!"
+      first_name = resp_xml.xpath("search_results").xpath("customer")[0].xpath("first_name").text
+      last_name = resp_xml.xpath("search_results").xpath("customer")[0].xpath("last_name").text
+      return true, "Success!", [first_name, last_name]
     else
-      return false, "Invalid Date of Birth or Client Id."
+      return false, "Invalid Date of Birth or Client Id.", ['', '']
     end
 
   end
@@ -262,10 +261,11 @@ class EcolaneHelpers
   def validate_passenger(customer_number, dob)
     iso_dob = iso8601ify(dob)
     if iso_dob.nil?
-      return false
+      return false, "", ""
     end
     resp = search_for_customers({"customer_number" => customer_number, "date_of_birth" => iso_dob.to_s})
-    return unpack_validation_response(resp)[0]
+    resp = unpack_validation_response(resp)
+    return resp[0], resp[2][0], resp[2][1]
   end
 
   def check_customer_validity(customer_id, service=nil)
@@ -364,6 +364,9 @@ class EcolaneHelpers
   def send_request(url, type='GET', message=nil)
 
     url.sub! " ", "%20"
+
+    Rails.logger.info(url)
+
     begin
       uri = URI.parse(url)
       case type.downcase

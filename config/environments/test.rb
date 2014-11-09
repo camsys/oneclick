@@ -30,7 +30,9 @@ Oneclick::Application.configure do
   config.active_support.deprecation = :stderr
 
   # ActionMailer Config
-  config.action_mailer.default_url_options = { :host => 'example.com' }
   config.log_level = :debug
   config.eager_load = false
+
+  config.i18n.fallbacks = false
+  
 end

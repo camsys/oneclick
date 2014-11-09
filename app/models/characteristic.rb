@@ -1,5 +1,6 @@
 class Characteristic < ActiveRecord::Base
   include EligibilityOperators
+  include EligibilityHelpers
 
   # attr_accessible :id, :code, :name, :note, :datatype, :active, :characteristic_type, :desc, :sequence
 
@@ -10,11 +11,10 @@ class Characteristic < ActiveRecord::Base
   has_many :services, through: :service_characteristics
 
   belongs_to :linked_characteristic, class_name: 'Characteristic'
-  
+
   # set the default scope
   default_scope {where('characteristics.active = ?', true)}
   scope :active, -> {where(active: true)}
-  scope :enabled, -> {where('datatype != ?', 'disabled')}
   scope :personal_factors, -> {where('characteristic_type = ?', 'personal_factor')}
   scope :programs, -> {where('characteristic_type = ?', 'program')}
   scope :enabled, -> { where.not(datatype: 'disabled') }
@@ -33,34 +33,46 @@ class Characteristic < ActiveRecord::Base
     end
     list
   end
-  
+
   # builds a hash of details about a characteristic; is used by the javascript
   # client to knwo whether to ask the user for more info
   def for_missing_info(service, group, code)
+    age = ''
     a = attributes
     sc = service_characteristics.where(service: service).take
-    value = case a['code']
-    when 'age'
-      Date.today.year - sc.value.to_i
-    else
-      sc.value
-    end
-    operator = case a['code']
+    #value = case code
+    #when 'age'
+    #  Date.today.year - sc.value.to_i
+    #else
+    #  sc.value
+    #end
+    value = sc.value
+
+    operator = case code
     when 'age'
       reverse_relationship_to_symbol(sc.rel_code)
     else
       relationship_to_symbol(sc.rel_code)
     end
+    success_condition = "#{operator}#{value}"
+    if code == 'age'
+      a['datatype'] = 'bool'
+      age = sc.value.to_s
+      a['note'] = :ask_age
+      success_condition = '== true'
+    end
+
     options = a['datatype']=='bool' ? [{text: I18n.t(:yes_str), value: true}, {text: I18n.t(:no_str), value: false}] : nil
     {
-      'question' => I18n.t(a['note']),
+      'question' => I18n.t(a['note'], age: age),
       #'description' => I18n.t(a['desc']),
       'data_type' => a['datatype'],
       # 'control_type' => '',
       'options' => options,
-      'success_condition' => "#{operator}#{value}",
+      'success_condition' => success_condition,
       'group_id' => group,
-      'code' => code
+      'code' => code,
+      'year' => value
     }
   end
 

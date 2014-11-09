@@ -5,18 +5,27 @@
         = f.input :name
     .col-sm-6.btns
       - if can? :update, @agency
-        = link_to admin_agency_path(@agency), class: 'btn btn-default action-button pull-right', role: 'button' do
-          = icon_label(:cancel)
-        = button_tag type: 'submit', class: "btn action-button pull-right" do
-          = icon_label(:apply)
-  
+        .pull-right
+          = button_tag type: 'submit', class: "btn action-button", style: "margin-right:5px;" do
+            = icon_label(:apply)
+          = link_to admin_agency_path(@agency), class: 'btn action-button', role: 'button' do
+            = icon_label(:cancel)
+
   .row
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h4.panel-title= t(:contact_info)
+          %h4.panel-title
+            = t(:contact_info)
+            = add_tooltip("contact_info_help")
         .panel-body
           = f.input :address
+          = f.input :city, label: "#{t(:city)}/#{t(:state)}/#{t(:zip)}",
+            input_html: {class: "col-sm-6 form-control"}, wrapper_html: {class: ""} do
+            = f.input_field :city, class: "col-sm-3"
+            %label.col-sm-1
+            = f.input_field :state, class: "col-sm-2"
+            = f.input_field :zip, class: "col-sm-3 pull-right"
           = f.input :phone
           = f.input :email
           = f.input :url
@@ -24,7 +33,9 @@
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h4.panel-title= t(:internal_contact)
+          %h4.panel-title
+            = t(:internal_contact)
+            = add_tooltip("internal_contact_help")
         .panel-body
           = f.input :internal_contact_name
           = f.input :internal_contact_title
@@ -35,15 +46,159 @@
 
   .panel.panel-default
     .panel-heading
-      %h4.panel-title= t(:staff_actions)
+      %h4.panel-title
+        = t(:staff_actions)
+        = add_tooltip("staff_actions_help")
     .panel-body
       .col-sm-6
-        %h5= t(:administrators)
-        .scrolling-checkbox-list
-          = f.association :administrators, collection: User.staff_assignable.order(:first_name),
+        %b
+          = t(:administrators)
+        .scrolling-checkbox-list.agency_admin
+          = f.association :administrators, collection: @agency.agents.order(:first_name),
                   as: :check_boxes, wrapper: :inline_checkboxes, label: false
       .col-sm-6
-        %h5= t(:agents)
-        .scrolling-checkbox-list
-          = f.association :agents, collection: User.staff_assignable,
-                  as: :check_boxes, wrapper: :inline_checkboxes, label: false
+        %b
+          = t(:agents)
+        %input{:name => "agency[agent_ids]", :type => 'hidden'}
+        .row
+          .col-sm-12
+            %button#add_agent_btn.btn.action-button.pull-right{data: {toggle: 'modal', target: '#add_agent'}}
+              = t(:add)
+            %table.table.table.condensed.table-striped.table-hover.table-bordered#agents_table
+              %thead
+                %th= t(:id)
+                %th= t(:name)
+                %th.email= t(:email)
+                %th
+              %tbody
+                -# initial load from user record
+                - @agency.agents.each do |ag|
+                  %tr
+                    %td= ag.id
+                    %td= ag.name
+                    %td= ag.email
+                    %td
+                      %button.btn.btn-sm.btn-danger.delete-button
+                        %i.fa.fa-times
+            #add_agent.modal.fade{:role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+              .modal-dialog.modal-lg
+                .modal-content
+                  .modal-header
+                    .row
+                      .col-sm-12
+                        .pull-right
+                          %button.btn.action-button#search
+                            = t(:apply)
+                          %button.btn.action-button{data: {dismiss: 'modal'}}
+                            = t(:cancel)
+                  .modal-body
+                    .modal-flash
+                    .panel.panel-default
+                      .panel-heading
+                        %h2.panel-title
+                          = t(:find_agent)
+                          = add_tooltip("find_agent_help")
+                      .panel-body
+                        .row
+                          .col-sm-12
+                            = label_tag :email, t(:email)
+                            = text_field_tag :email,nil
+
+  = render partial: 'admin/shared/edit_comments', locals: {f: f, commentable: @agency}
+
+:javascript
+  $(document).ready(function() {
+    $('#agents_table').dataTable( {
+        "oLanguage": {
+          "sLengthMenu": "Display _MENU_ agents per page",
+          "sZeroRecords": "Nothing found - sorry",
+          "sInfo": "Showing _START_ to _END_ of _TOTAL_ agents",
+          "sInfoEmpty": "Showing 0 to 0 of 0 agents",
+          "sInfoFiltered": "(filtered from _MAX_ total agents)"
+        },
+        "columnDefs": [
+            {
+                "targets": [ 0 ],
+                "visible": false
+            },
+            {
+                "targets": [ 3 ],
+                "searchable": false
+            }
+        ],
+        "bAutoWidth": true,
+        "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>"
+    } );
+    $("#add_agent_btn").on("click", function(e) {
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
+    });
+
+    var addAgentToAdminList = function(agentId, agentName) {
+      if($('#agency_administrator_ids_' + agentId).length === 0) {
+        var agentItemTpl = '<span class="checkbox"><label for="agency_administrator_ids_' + agentId + '" name="agency[administrator_ids]"><input aria-labelledby="administrator_ids_label" class="check_boxes optional" id="agency_administrator_ids_' + agentId + '" name="agency[administrator_ids][]" type="checkbox" value="' + agentId + '">' + agentName + '</label></span>';
+
+        $('.agency_admin .checkbox-inline').append(agentItemTpl);
+      }
+    };
+    var removeAgentFromAdminList = function(agentId) {
+      $('#agency_administrator_ids_' + agentId).parents('.checkbox').remove();
+    };
+    var updateAgentIds = function() {
+      var allRows = $( "#agents_table" ).DataTable().rows().data();
+      var agentIds = [];
+      for(var i=0; i<allRows.length; i++) {
+        agentIds.push(allRows[i][0]);
+      }
+
+      $('input[name="agency[agent_ids]"]').val(agentIds.toString());
+    };
+    updateAgentIds();
+    $("#search").on("click", function(e) {
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
+      $.ajax({
+        url: "find_agent_by_email",
+        data: {email: $("#email").val()},
+        dataType: "json",
+        success: function(data) {
+          if (data["success"]) {
+            $(".modal").modal("toggle");
+            $("div.agent-flash").html(data["msg"]).addClass("alert alert-success fade-in");
+            $(".new_agents select").append("<option selected value=" + data["output"] + ">"+ data["output"] + "</option>")
+
+            var dataRow = data["row"];
+            dataRow.push('<button class="btn btn-sm btn-danger delete-button"><i class="fa fa-times"></i></button>');
+            $( "#agents_table" ).DataTable().row(":contains('" + data["row"][2] +"')").remove().draw(false);
+            $( "#agents_table" ).DataTable().row.add(dataRow).draw();
+            addAgentToAdminList(dataRow[0], dataRow[1]);
+            updateAgentIds();
+          } else {
+            $("div.modal-flash").html(data["msg"]).addClass("alert alert-success fade-in");
+          }
+        }
+      });
+    });
+    $('#agents_table tbody').on( 'click', 'tr', function () {
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+        }
+        else {
+            $('#agents_table').DataTable().$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+    } );
+    $('#agents_table').on('click', '.delete-button', function (e) {
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+        var selectedRows = $('#agents_table').DataTable().row('.selected');
+        if(selectedRows.length > 0) {
+          removeAgentFromAdminList(selectedRows.data()[0]);
+          selectedRows.remove().draw( false );
+          updateAgentIds();
+        }
+    } );
+    $('#email').on('keypress', function(e){
+      if(e.keyCode == 13) {
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+        $('#search').click();
+      }
+    });
+  });

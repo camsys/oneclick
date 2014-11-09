@@ -2,7 +2,7 @@ class CharacteristicsController < TravelerAwareController
   before_filter :get_traveler
 
   def update
-  # Parameters: {"utf8"=>"✓", "authenticity_token"=>"4fozeJE2OD4XRerZcDD+P0gkjs5jdQA6tMz14zAD7pU=", "user_characteristics_proxy"=>{"disabled"=>"true", "ada_eligible"=>"na", "matp"=>"na", "veteran"=>"na", "date_of_birth"=>"", "folding_wheelchair_accessible"=>"na", "motorized_wheelchair_accessible"=>"na", "curb_to_curb"=>"na"}, "user_id"=>"28", "trip_id"=>"3", "id"=>"new"}    
+  # Parameters: {"utf8"=>"✓", "authenticity_token"=>"4fozeJE2OD4XRerZcDD+P0gkjs5jdQA6tMz14zAD7pU=", "user_characteristics_proxy"=>{"disabled"=>"true", "ada_eligible"=>"na", "matp"=>"na", "veteran"=>"na", "date_of_birth"=>"", "folding_wheelchair_accessible"=>"na", "motorized_wheelchair_accessible"=>"na", "curb_to_curb"=>"na"}, "user_id"=>"28", "trip_id"=>"3", "id"=>"new"}
   # OR
   # {"user_answer"=>"true", "code"=>"ada_eligible", "user_id"=>"27"}
 
@@ -13,8 +13,13 @@ class CharacteristicsController < TravelerAwareController
 
       if params['inline'] == '1' || params[:trip_id]
         @trip = Trip.find(session[:current_trip_id] || params[:trip_id])
-        @trip.remove_itineraries
-        @path = populate_user_trip_path(@traveler, @trip, {asynch: 1}, locale: I18n.locale )
+        if session[:is_multi_od] == true
+          @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id] || params[:multi_od_trip_id])
+          @path = user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
+        else
+          @trip.remove_itineraries
+          @path = populate_user_trip_path(@traveler, @trip, {asynch: 1}, locale: I18n.locale )
+        end
       end
 
       # We assume the update is from the review page if it's ajax
@@ -31,9 +36,9 @@ class CharacteristicsController < TravelerAwareController
       @trip_id = session[:current_trip_id] || params[:trip_id]
       @trip = Trip.find(@trip_id)
       @total_steps = (@traveler.has_disability? ? 3 : 2)
-      render action: :new 
+      render action: :new
     end
-    
+
   end
 
   def normalize_input_values params

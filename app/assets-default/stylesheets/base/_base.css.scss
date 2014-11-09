@@ -118,7 +118,7 @@ h6 { font-size: 12px; line-height: 20px; }
 }
 
 .modal a {
-  cursor: pointer;  
+  cursor: pointer;
 }
 
 .dialog-title-bar {
@@ -213,15 +213,24 @@ a:hover#help {
   font-size: 2.25em;
 }
 
+.itin_text_container {
+  padding-left: 5px;
+  padding-top: 10px;
+}
+
 .itinerary_text {
   text-align: left;
   line-height: 1em;
   padding: 0px;
+  strong {
+    top: 0;
+    position: absolute;
+  }
 }
 
 .itinerary_text_small{
   //font-size: 1em;
-  line-height: 0px;
+  // line-height: 0px;
   text-align: left;
   vertical-align: top;
   padding: 0px;
@@ -293,7 +302,7 @@ a:hover#help {
   .home_menu_item {
     @extend .center;
     @extend .col-sm-3;
-  }  
+  }
 
 }
 
@@ -301,11 +310,11 @@ a:hover#help {
   .home_menu_item {
     @extend .col-sm-offset-6;
     @extend .col-sm-6;
-  }  
+  }
   .admin_menu {
     .home_menu_item {
       @extend .col-sm-6;
-    }  
+    }
   }
 }
 
@@ -366,7 +375,7 @@ a:hover#help {
     text-align: center !important;
   }
 }
-    
+
 .trip_summary_title {
   @media (max-width: 767px ) {
     text-align: center !important;
@@ -535,6 +544,15 @@ td.left, th.left {
   background: #FFFFFF;
 }
 
+.show .comments dd {
+  margin-bottom: 1em;
+}
+
+#itinerary_modal .well.comments, .trips.plan  .well.comments {
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
 .inline-radio .radio {
   display: inline-block;
   margin-right: 15px;
@@ -548,6 +566,21 @@ td.left, th.left {
   #main {
     padding-top: 0px;
     padding-bottom: 0px;
+  }
+
+  // not print href url
+  a[href]:after {
+    content: none !important;
+  }
+}
+
+.print_map {
+  background: white;
+  border-radius: 5px;
+  padding: 5px;
+  img {
+    display: block;
+    margin: auto;
   }
 }
 
@@ -565,12 +598,11 @@ td.left, th.left {
 .action-button {
   @extend .btn-primary;
   text-shadow: none;
+
   &:not(:last-of-type) {
-    margin-left: 5px;
-  } 
-  &.pull-right {
-    margin-left: 5px;
+    margin-right: 5px;
   }
+
   @media (max-width: $screen-xs-max) {
     min-width: 6em;
   }
@@ -580,9 +612,13 @@ td.left, th.left {
   font-weight: bold;
 }
 
+.map-action-button {
+  min-width: 3em !important;
+}
+
 // Styling for the application header (not navbar, this is where the action-buttons live)
 .info-header {
-  & h1, h2, h3, h4, h5 { 
+  & h1, h2, h3, h4, h5 {
       margin-bottom: 0;
   }
   .btns {
@@ -603,7 +639,15 @@ td.left, th.left {
   + .btn {
     margin-left: -5px;
   }
-} 
+}
+
+button[data-target='#deleteUserConfirmDialog'] {
+  margin-right: 5px;
+
+  @media screen and (max-width:1600px) and (max-height:900px) {
+    margin-right: 0;
+  }
+}
 
 
 // From bootstrap. We define our own classes for visibility which use display: inline

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140902144803) do
+ActiveRecord::Schema.define(version: 20141015031219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20140902144803) do
   end
 
   create_table "agencies", force: true do |t|
-    t.string  "name",                   limit: 64
+    t.text    "name"
     t.string  "address",                limit: 100
     t.string  "city",                   limit: 100
     t.string  "state",                  limit: 64
@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(version: 20140902144803) do
     t.string  "internal_contact_phone"
     t.string  "internal_contact_email", limit: 128
     t.boolean "active",                             default: true, null: false
+    t.text    "private_comments_old"
+    t.text    "public_comments_old"
   end
 
   create_table "agency_user_relationships", force: true do |t|
@@ -54,6 +56,15 @@ ActiveRecord::Schema.define(version: 20140902144803) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "creator",                            null: false
+  end
+
+  create_table "booking_cut_off_times", force: true do |t|
+    t.integer  "service_id",                     null: false
+    t.integer  "day_of_week",                    null: false
+    t.boolean  "active",          default: true, null: false
+    t.integer  "cut_off_seconds",                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "boundaries", force: true do |t|
@@ -80,11 +91,14 @@ ActiveRecord::Schema.define(version: 20140902144803) do
     t.string  "link_handler"
   end
 
-  create_table "cities", primary_key: "gid", force: true do |t|
-    t.string  "geoid", limit: 7
-    t.string  "name",  limit: 100
-    t.string  "state", limit: 2
-    t.spatial "geom",  limit: {:srid=>0, :type=>"multi_polygon"}
+  create_table "comments", force: true do |t|
+    t.text     "comment"
+    t.string   "locale"
+    t.string   "visibility",       default: "public"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "counties", force: true do |t|
@@ -124,6 +138,8 @@ ActiveRecord::Schema.define(version: 20140902144803) do
     t.spatial "geom",          limit: {:srid=>0, :type=>"geometry"}
   end
 
+  add_index "geo_coverages", ["geom"], :name => "index_geo_coverages_on_geom", :spatial => true
+
   create_table "itineraries", force: true do |t|
     t.integer  "trip_part_id"
     t.integer  "mode_id"
@@ -159,6 +175,7 @@ ActiveRecord::Schema.define(version: 20140902144803) do
     t.boolean  "is_bookable",                                       default: false, null: false
     t.string   "booking_confirmation"
     t.boolean  "duration_estimated",                                default: false
+    t.string   "map_image"
   end
 
   create_table "kiosk_locations", force: true do |t|
@@ -181,6 +198,22 @@ ActiveRecord::Schema.define(version: 20140902144803) do
     t.integer "results_sort_order"
     t.string  "logo_url"
     t.boolean "visible",                       default: false
+  end
+
+  create_table "multi_origin_dest_trips", force: true do |t|
+    t.integer  "user_id",       null: false
+    t.text     "origin_places", null: false
+    t.text     "dest_places",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "oneclick_configurations", force: true do |t|
+    t.string   "code"
+    t.text     "value"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "places", force: true do |t|
@@ -238,7 +271,7 @@ ActiveRecord::Schema.define(version: 20140902144803) do
   end
 
   create_table "providers", force: true do |t|
-    t.string  "name",                   limit: 64,                 null: false
+    t.text    "name",                                              null: false
     t.string  "external_id",            limit: 25
     t.boolean "active",                             default: true, null: false
     t.string  "email"
@@ -252,7 +285,11 @@ ActiveRecord::Schema.define(version: 20140902144803) do
     t.string  "internal_contact_title"
     t.string  "internal_contact_phone"
     t.string  "internal_contact_email", limit: 128
-    t.string  "logo_url"
+    t.string  "old_logo_url"
+    t.text    "private_comments_old"
+    t.text    "public_comments_old"
+    t.string  "icon"
+    t.string  "logo"
   end
 
   create_table "ratings", force: true do |t|
@@ -277,8 +314,9 @@ ActiveRecord::Schema.define(version: 20140902144803) do
     t.string   "view_name",   limit: 64
     t.string   "class_name",  limit: 64
     t.boolean  "active"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.boolean  "exportable",              default: false
   end
 
   create_table "roles", force: true do |t|
@@ -339,7 +377,7 @@ ActiveRecord::Schema.define(version: 20140902144803) do
   end
 
   create_table "services", force: true do |t|
-    t.string   "name",                         limit: 64,                  null: false
+    t.text     "name",                                                     null: false
     t.integer  "provider_id",                                              null: false
     t.integer  "service_type_id",                                          null: false
     t.integer  "advanced_notice_minutes",                  default: 0,     null: false
@@ -365,6 +403,9 @@ ActiveRecord::Schema.define(version: 20140902144803) do
     t.integer  "endpoint_area_geom_id"
     t.integer  "coverage_area_geom_id"
     t.integer  "residence_area_geom_id"
+    t.text     "public_comments_old"
+    t.text     "private_comments_old"
+    t.string   "logo"
   end
 
   create_table "services_users", id: false, force: true do |t|
@@ -373,6 +414,31 @@ ActiveRecord::Schema.define(version: 20140902144803) do
   end
 
   add_index "services_users", ["service_id", "user_id"], :name => "index_services_users_on_service_id_and_user_id"
+
+  create_table "sidewalk_obstructions", force: true do |t|
+    t.integer  "user_id",                        null: false
+    t.float    "lat",                            null: false
+    t.float    "lon",                            null: false
+    t.string   "comment",                        null: false
+    t.datetime "removed_at"
+    t.string   "status",     default: "pending", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "temp_translations", id: false, force: true do |t|
+    t.integer  "id"
+    t.string   "key"
+    t.text     "interpolations"
+    t.boolean  "is_proc"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "locale"
+    t.text     "value"
+    t.boolean  "is_html"
+    t.boolean  "complete"
+    t.boolean  "is_list"
+  end
 
   create_table "translations", force: true do |t|
     t.string   "key"
@@ -384,6 +450,13 @@ ActiveRecord::Schema.define(version: 20140902144803) do
     t.text     "value"
     t.boolean  "is_html",        default: false
     t.boolean  "complete",       default: false
+    t.boolean  "is_list",        default: false
+  end
+
+  create_table "traveler_notes", force: true do |t|
+    t.integer "user_id"
+    t.integer "agency_id"
+    t.text    "note"
   end
 
   create_table "trip_parts", force: true do |t|
@@ -436,12 +509,12 @@ ActiveRecord::Schema.define(version: 20140902144803) do
   end
 
   create_table "trips", force: true do |t|
-    t.string   "name",                  limit: 64
+    t.string   "name",                      limit: 64
     t.integer  "user_id"
     t.integer  "trip_purpose_id"
     t.integer  "creator_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.boolean  "taken"
     t.date     "scheduled_date"
     t.datetime "scheduled_time"
@@ -450,6 +523,10 @@ ActiveRecord::Schema.define(version: 20140902144803) do
     t.text     "debug_info"
     t.string   "user_agent"
     t.string   "ui_mode"
+    t.integer  "multi_origin_dest_trip_id"
+    t.integer  "agency_id"
+    t.integer  "outbound_provider_id"
+    t.integer  "return_provider_id"
   end
 
   create_table "trips_desired_modes", force: true do |t|
@@ -509,34 +586,37 @@ ActiveRecord::Schema.define(version: 20140902144803) do
     t.string   "external_user_id",                                 null: false
     t.boolean  "disabled",         default: false,                 null: false
     t.string   "customer_id"
-    t.datetime "updated_at",       default: '2014-08-25 17:39:02', null: false
-    t.datetime "created_at",       default: '2014-08-25 17:39:02', null: false
+    t.datetime "updated_at",       default: '2014-08-26 14:30:52', null: false
+    t.datetime "created_at",       default: '2014-08-26 14:30:52', null: false
   end
 
   create_table "users", force: true do |t|
-    t.string   "nickname",               limit: 64
-    t.string   "prefix",                 limit: 4
-    t.string   "first_name",             limit: 64,                 null: false
-    t.string   "last_name",              limit: 64,                 null: false
-    t.string   "suffix",                 limit: 4
-    t.string   "email",                  limit: 128,                null: false
-    t.string   "encrypted_password",     limit: 64,                 null: false
-    t.string   "reset_password_token",   limit: 64
+    t.string   "nickname",                    limit: 64
+    t.string   "prefix",                      limit: 4
+    t.string   "first_name",                  limit: 64,                 null: false
+    t.string   "last_name",                   limit: 64,                 null: false
+    t.string   "suffix",                      limit: 4
+    t.string   "email",                       limit: 128,                null: false
+    t.string   "encrypted_password",          limit: 64,                 null: false
+    t.string   "reset_password_token",        limit: 64
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                      default: 0
+    t.integer  "sign_in_count",                           default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",     limit: 16
-    t.string   "last_sign_in_ip",        limit: 16
-    t.datetime "created_at",                                        null: false
-    t.datetime "updated_at",                                        null: false
+    t.string   "current_sign_in_ip",          limit: 16
+    t.string   "last_sign_in_ip",             limit: 16
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
     t.integer  "agency_id"
-    t.string   "preferred_locale",                   default: "en"
+    t.string   "preferred_locale",                        default: "en"
     t.string   "authentication_token"
     t.integer  "provider_id"
-    t.string   "title",                  limit: 64
-    t.string   "phone",                  limit: 25
+    t.string   "title",                       limit: 64
+    t.string   "phone",                       limit: 25
+    t.integer  "walking_speed_id"
+    t.integer  "walking_maximum_distance_id"
+    t.datetime "deleted_at"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token"
@@ -547,6 +627,22 @@ ActiveRecord::Schema.define(version: 20140902144803) do
     t.string   "relationship", limit: 64
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+  end
+
+  create_table "walking_maximum_distances", force: true do |t|
+    t.float    "value",                      null: false
+    t.boolean  "is_default", default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "walking_speeds", force: true do |t|
+    t.string   "code",                       null: false
+    t.string   "name",                       null: false
+    t.float    "value",                      null: false
+    t.boolean  "is_default", default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "zipcodes", force: true do |t|

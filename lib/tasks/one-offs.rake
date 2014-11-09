@@ -14,14 +14,14 @@ namespace :oneclick do
       Boundary.all.each do |b|
         gc = GeoCoverage.new(value: b.agency, coverage_type: 'polygon', polygon: b)
         case b.agency
-          when "Cobb Community Transit (CCT)"
-            service = Service.find_by_external_id("54104859570670229999")
-            ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'endpoint_area')
-            ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'coverage_area')
-          when "Cherokee Area Transportation System (CATS)"
-            service = Service.find_by_external_id("32138199527497131111")
-            ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'endpoint_area')
-            ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'coverage_area')
+        when "Cobb Community Transit (CCT)"
+          service = Service.find_by_external_id("54104859570670229999")
+          ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'endpoint_area')
+          ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'coverage_area')
+        when "Cherokee Area Transportation System (CATS)"
+          service = Service.find_by_external_id("32138199527497131111")
+          ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'endpoint_area')
+          ServiceCoverageMap.create(service: service, geo_coverage: gc, rule: 'coverage_area')
           #when "Gwinnett County Transit (GCT)"
           #when "Metropolitan Atlanta Rapid Transit Authority"
         end
@@ -57,6 +57,22 @@ namespace :oneclick do
 
     end
 
+    task migrate_comments: :environment do
+      [Agency, Provider, Service].each do |commentable_type|
+        puts "Migrating #{commentable_type} comments..."
+        %w{public private}.each do |visibility|
+          puts "...#{visibility}"
+          old_field = "#{visibility}_comments_old".to_sym
+          method = "#{visibility}_comments".to_sym
+          commentable_type.where.not(old_field => nil).each do |c|
+            puts ">> #{c.name}"
+            c.send(method).create! comment: c.send(old_field), locale: 'en', visibility: visibility
+          end
+        end
+      end
+    end
+
 
   end
+
 end

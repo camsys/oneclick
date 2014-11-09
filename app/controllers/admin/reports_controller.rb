@@ -5,11 +5,23 @@ class Admin::ReportsController < Admin::BaseController
   
   TIME_FILTER_TYPE_SESSION_KEY = 'reports_time_filter_type'
   DATE_OPTION_SESSION_KEY = 'date_range'
-
+  DATE_OPTION_FROM_KEY = 'from_date'
+  DATE_OPTION_TO_KEY = 'to_date'
+  AGENCY_OPTION_KEY = 'agency'
+  AGENT_OPTION_KEY = 'agent'
+  PROVIDER_OPTION_KEY = 'provider'
+  ORDER_PARAMS_KEY = 'order'
+  COLUMNS_PARAMS_KEY = 'columns'
+  START_PARAMS_KEY = 'start'
+  LENGTH_PARAMS_KEY = 'length'
+  
   def index
     @reports = Report.all
     @generated_report = GeneratedReport.new({})
     @generated_report.date_range = session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
+    @min_trip_date = Trip.minimum(:scheduled_time)
+
+    set_user_based_constraints
   end
 
   # renders a report page. Actual details depends on the id parameter passed
@@ -25,38 +37,39 @@ class Admin::ReportsController < Admin::BaseController
     @generated_report = GeneratedReport.new(params[:generated_report])
     @report = Report.find(@generated_report.report_name)
 
-    # TODO clean up or get rid of this
-    # Filtering logic. See ApplicationHelper.trip_filters
-    if params[:time_filter_type]
-      @time_filter_type = params[:time_filter_type]
-    else
-      @time_filter_type = session[TIME_FILTER_TYPE_SESSION_KEY]
-    end
-    # if it is still not set use the default
-    if @time_filter_type.nil?
-      # default is to use the first time period filter in the TimeFilterHelper class
-      @time_filter_type = "0"
-    end
-    # store it in the session
-    session[TIME_FILTER_TYPE_SESSION_KEY] = @time_filter_type
-    params[:time_filter_type] = @time_filter_type
-
+    # Store filter settings in session for ajax calls.
     @generated_report.date_range ||= session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
+    @min_trip_date = Trip.minimum(:scheduled_time)
     session[DATE_OPTION_SESSION_KEY] = @generated_report.date_range
-
+    session[DATE_OPTION_FROM_KEY] = @generated_report.from_date
+    session[DATE_OPTION_TO_KEY] = @generated_report.to_date
+    session[AGENCY_OPTION_KEY] = @generated_report.agency_id
+    session[AGENT_OPTION_KEY] = @generated_report.agent_id
+    session[PROVIDER_OPTION_KEY] = @generated_report.provider_id
+    
     if @report
-                    
+
+      params[:order] = session[ORDER_PARAMS_KEY]
+      params[:columns] = session[COLUMNS_PARAMS_KEY]
+      params[:start] = session[START_PARAMS_KEY]
+      params[:length] = session[LENGTH_PARAMS_KEY]
+      
       # set up the report view
       @report_view = @report.view_name
       # get the class instance and generate the data
-      @report_instance = @report.class_name.constantize.new
-      @data = @report_instance.get_data(current_user, @generated_report)
+      @report_instance = @report.class_name.constantize.new(view_context)
+      @data = @report_instance.get_data(current_user, @generated_report) unless @report_instance.paged
       @columns = @report_instance.get_columns
       @url_for_csv = url_for only_path: true, format: :csv, params: params
-      
+
+      set_user_based_constraints
+
       respond_to do |format|
         format.html
-        format.csv { send_data get_csv(@columns, @data) }
+        format.csv do
+          send_data get_csv(@columns,  @report_instance.get_data(current_user, @generated_report)),
+                filename: "#{I18n.t(@report.class_name).parameterize.underscore}.csv", type: :text
+        end
       end
     end
 
@@ -76,8 +89,66 @@ class Admin::ReportsController < Admin::BaseController
 
       csv << headers
       data.each do |row|
+        row = row.decorate
         csv << columns.map {|col| row.send(col) }
       end
+    end
+  end
+
+  def trips_datatable
+    respond_to do |format|
+      format.json do
+        date_option = DateOption.find(session[DATE_OPTION_SESSION_KEY])
+        from_date = session[DATE_OPTION_FROM_KEY]
+        to_date = session[DATE_OPTION_TO_KEY]
+
+        session[ORDER_PARAMS_KEY] = params[:order]
+        session[START_PARAMS_KEY] = params[:start]
+        session[LENGTH_PARAMS_KEY] = params[:length]
+
+        table = TripsDatatable.new(view_context,
+                                   { dates: date_option,
+                                     from_date: from_date,
+                                     to_date: to_date,
+                                     agency_id: session[AGENCY_OPTION_KEY],
+                                     agent_id: session[AGENT_OPTION_KEY],
+                                     provider_id: session[PROVIDER_OPTION_KEY],
+                                   })
+        # Sessions are currently stored in a cookie with a 4KB limit.
+        # Rather than saving all of params[:columns] and blowing that limit
+        # just save the searchable_columns.
+        cols = {}
+        table.searchable_columns.each_with_index do |col, index|
+          cols["#{index}"] = params[:columns]["#{index}"]
+        end
+        session[COLUMNS_PARAMS_KEY] = cols
+        
+        render json: table
+      end
+    end
+  end
+
+  def set_user_based_constraints
+    @agency = :any
+    @agency_all = true
+    @agency_id = false
+    @provider_all = true
+    @provider_id = false
+
+    return if current_user.has_role? :system_administrator
+    
+    Agency.with_role(:agency_administrator, current_user).each do |a|
+      @agency = a
+      @agency_id = a.id
+      @agency_all = false
+      @provider_id = -1
+    end
+    
+    Provider.with_role(:provider_staff, current_user).each do |p|
+      @agency = nil if @agency == :any
+      @agency_id = -1 unless @agency_id
+      @provider_all = false
+      @provider_id = p.id
     end
   end
   

@@ -1,19 +1,20 @@
 - content_for :head do
   = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"
-.row{style: "padding: 0px;"}
-  .hidden-xs.col-sm-8
-    = render partial: 'shared/trip_plan_breadcrumbs'
-  .col-sm-4
+.row
+  .col-sm-12
     .pull-right
-      = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right: 5px;" do
+      = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;", tabindex: "7" do
         = t(:feedback)
-      = button_tag :type => 'button', :name => "planButton", :class => "btn action-button", :style => "margin-right: 5px;" do
+      = button_tag :type => 'button', :name => "planButton", :class => "btn action-button", tabindex: "8" do
         =t(:next)
-    
+    = render partial: 'shared/trip_plan_breadcrumbs'
+
 .row
 - if @tripResponseHash['status'] == 0
   - # flash handles it
 - else
+  .col-sm-12
+    = render partial: 'shared/page_comments', locals: {key: :review_header_comment}
   #reviewBaseContainer.row
     .col-xs-12.form-group.hidden-md-lg
       %label.mobile-checkbox{for: 'legendCheckbox', style: 'margin-right: 5px;'}
@@ -29,22 +30,36 @@
 
     #accessoryContainer.col-md-3.col-xs-12
     / end of filter column
-    .col-md-9      
-      #tripContainer.col-xs-12{style: "padding: 0px;"}
+    .col-md-9
+      #tripContainer.col-xs-12{style: "padding: 0px;", :role => "main", :aria => {:label => 'Review Your Trip'}}
       / end of trip container
   .col-xs-12{style: "margin-bottom: 5px;padding: 0px;"}
     .pull-right
-      = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right: 5px;" do
+      = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;" do
         = t(:feedback)
-      = button_tag :type => 'button', :name => "planButton", :class => "btn action-button", :style => "margin-right: 5px;" do
+      = button_tag :type => 'button', :name => "planButton", :class => "btn action-button" do
         =t(:next)
+  .col-sm-12
+    = render partial: 'shared/page_comments', locals: {key: :review_footer_comment}
   / end of review columns
   #itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
   :javascript
     $(function() {
+      //default configured min&max values for filters
+      var filterConfigs = {
+        default_min_duration: #{Oneclick::Application.config.default_min_duration || ''},
+        default_max_duration: #{Oneclick::Application.config.default_max_duration || ''},
+        default_min_transfers: #{Oneclick::Application.config.default_min_transfers || ''},
+        default_max_transfers: #{Oneclick::Application.config.default_max_transfers || ''},
+        default_min_fare: #{Oneclick::Application.config.default_min_fare || ''},
+        default_max_fare: #{Oneclick::Application.config.default_max_fare || ''},
+        default_min_walk_dist: 0,
+        default_max_walk_dist: #{@max_walk_dist_value || ''}
+      };
+
       //update date names in localized texts for moment js lib
       var localeLang = '#{I18n.locale}';
-      if(localeLang.toLowerCase() != 'en') { //override moment lang if not english
+      if(localeLang.toLowerCase() != 'en' && localeLang.toLowerCase() != 'tags') { //override moment lang if not english
         var weekdays = #{t('date.day_names')};
         if(weekdays instanceof Array && weekdays.length > 0) {
           moment.lang(localeLang, {
@@ -80,16 +95,24 @@
         select: '#{t(:select)}',
         sort_by: '#{t(:sort_by)}',
         travel_time: '#{t(:travel_time)}',
-        trip_time: '#{t(:trip_time)}',
+        travel_time_sorter: '#{t(:travel_time_sorter)}',
+        trip_time: '#{t(:trip_time_filter)}',
+        trip_time_help: '#{t(:trip_time_help)}',
         arrival_time: '#{t(:arrival_time)}',
+        arrival_time_sorter: '#{t(:arrival_time_sorter)}',
         departure_time: '#{t(:departure_time)}',
+        departure_time_sorter: '#{t(:departure_time_sorter)}',
         depart_at: '#{t(:depart_at)}',
         arrive_in: '#{t(:arrive_in)}',
         departing_at: '#{t(:departing_at)}',
         arriving_by: '#{t(:arriving_by)}',
-        fare: '#{t(:fare)}',
-        number_of_transfers: '#{t(:number_of_transfers)}',
-        modes: '#{t(:modes)}',
+        fare: '#{t(:fare_filter)}',
+        fare_sorter: '#{t(:fare_sorter)}',
+        fare_help: '#{t(:fare_help)}',
+        number_of_transfers: '#{t(:number_of_transfers_filter)}',
+        number_of_transfers_help: '#{t(:number_of_transfers_help)}',
+        modes: '#{t(:modes_filter)}',
+        modes_help: '#{t(:modes_help)}',
         walk: '#{t(:mode_walk_name)}',
         rideshare: '#{t(:mode_rideshare_name)}',
         paratransit: '#{t(:mode_paratransit_name)}',
@@ -114,7 +137,14 @@
         press_space_or_dblclick_for_details: '#{t(:press_space_or_dblclick_for_details)}',
         press_space_for_details: '#{t(:press_space_for_details)}',
         four_digit_year: '#{t(:four_digit_year)}',
-        miles: '#{t(:miles)}'                
+        miles: '#{t(:miles)}',
+        legend: '#{t(:legend)}',
+        legend_help: '#{t(:legend_help)}',
+        walk_dist: '#{t(:walk_distance_filter)}',
+        walk_dist_sorter: '#{t(:walk_distance_sorter)}',
+        walk_dist_help: '#{t(:walk_distance_help)}',
+        trip_outbound_help: '#{t(:trip_outbound_help)}',
+        trip_return_help: '#{t(:trip_return_help)}'
       };
 
       //show or hide legends
@@ -140,14 +170,14 @@
       });
 
       var tripResponse = #{@tripResponse.to_json};
-      var pageRenderer = new TripReviewPageRenderer(30, 20, tripResponse, localeDictFinder);
+      var pageRenderer = new TripReviewPageRenderer(30, 20, tripResponse, filterConfigs, localeDictFinder);
       pageRenderer.processTripResponse();
 
       $('#itinerary_modal').on('shown.bs.modal', function() {
         $('.tooltip').hide();
-        if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.review_map != null) { 
+        if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.review_map != null) {
           var mapObj = CsMaps.review_map;
-          mapObj.invalidateMap(); 
+          mapObj.invalidateMap();
           var mapMarkers = mapObj.LMmarkers;
           var mapBounds = null;
           if(mapMarkers.length > 0) {
@@ -157,14 +187,18 @@
           }
 
           if(mapBounds) {
-            mapObj.LMmap.fitBounds(mapBounds); 
+            mapObj.LMmap.fitBounds(mapBounds);
           }
         }
       });
 
       $('#itinerary_modal').on('hidden.bs.modal', function() {
         var itinId = $(this).find('.modal-dialog').attr('data-itinerary-id');
-        $('.single-plan-review[data-plan-id=' + itinId + ']').find('svg').focus();
+        var $chartContainer = $('.single-plan-review[data-plan-id=' + itinId + '] .single-plan-chart-container');
+        $chartContainer.focus();
+        $('html, body').animate({
+            scrollTop: ($chartContainer.offset().top - 100)
+        }, 500);
       });
 
       //Plan button to jump to Plan page
@@ -187,7 +221,7 @@
 
         //jump to Plan page
         window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );
-      }); 
+      });
     });
 
     $('#tripContainer').tooltip({selector: '.trip-mode-cost div'})

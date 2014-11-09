@@ -101,11 +101,11 @@ class RegistrationsController < Devise::RegistrationsController
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) do |u|
       u.permit(:first_name, :last_name,
-        :email, :password, :password_confirmation, :approved_agencies, :preferred_locale)
+        :email, :password, :password_confirmation, :approved_agencies, :preferred_locale, :walking_speed_id, :walking_maximum_distance_id)
     end
     devise_parameter_sanitizer.for(:account_update) do |u|
       u.permit(:first_name, :last_name,
-        :email, :password, :password_confirmation, :approved_agencies, :preferred_locale, :current_password)
+        :email, :password, :password_confirmation, :approved_agencies, :preferred_locale, :current_password, :walking_speed_id, :walking_maximum_distance_id)
     end
   end
 

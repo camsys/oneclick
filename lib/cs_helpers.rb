@@ -19,18 +19,25 @@ module CsHelpers
     :providers => 'fa fa-umbrella',
     :reports => 'fa fa-bar-chart-o',
     :trips => 'fa fa-tags',
-    :services => 'icon-bus-sign',
+    :services => 'fa fa-bus',
     :users => 'fa fa-group',
     :feedback => 'fa fa-thumbs-o-up',
-    :stop_assisting => 'fa fa-compass'
+    :sidewalk_obstructions => 'fa fa-comment',
+    :stop_assisting => 'fa fa-compass',
+    :translations => 'fa fa-language',
+    :multi_od_trip => 'fa fa-table'
   }
 
   def admin_actions
     a = [
-      {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users}
+      {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
+      {label: t(:translations), target: admin_translations_path, icon: ACTION_ICONS[:translations], access: :admin_translations},
     ]
     if Rating.feedback_on?
-      a.push({label: t(:feedback), target: ratings_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback}) 
+      a.push({label: t(:feedback), target: ratings_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback})
+    end
+    if SidewalkObstruction.sidewalk_obstruction_on?
+      a.push({label: t(:sidewalk_obstructions), target: admin_sidewalk_obstructions_path, icon: ACTION_ICONS[:sidewalk_obstructions], access: :admin_sidewalk_obstruction})
     end
     a
   end
@@ -44,8 +51,9 @@ module CsHelpers
       {label: t(:agencies), target: admin_agencies_path, icon: ACTION_ICONS[:agents_agencies], access: :admin_agencies},
       {label: t(:providers), target: admin_providers_path, icon: ACTION_ICONS[:providers], access: :admin_providers},
       {label: t(:services), target: services_path, icon: ACTION_ICONS[:services], access: :admin_services},
-      {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports], access: :admin_reports}
-    ]  
+      {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports], access: :admin_reports},
+      {label: t(:multi_od_trip), target: create_multi_od_user_trips_path(current_user), icon: ACTION_ICONS[:multi_od_trip], access: MultiOriginDestTrip}
+    ]
   end
 
   def traveler_actions options = {}
@@ -133,7 +141,7 @@ module CsHelpers
   end
 
   def is_admin?
-    current_user and (current_user.has_role?(:admin) or current_user.has_role?('System Administrator'))
+    can? :manage, :all
   end
 
   # Sets the #traveler class variable
@@ -196,15 +204,26 @@ module CsHelpers
     if date.nil?
       return ""
     end
+
+    is_in_tags = I18n.locale == :tags # tags locale cause trouble in datetime localization, here, using default_locale to localize
+    I18n.locale = I18n.default_locale if is_in_tags
     if date.year == Date.today.year
-      return I18n.l date.to_date, :format => :oneclick_short unless date.nil?
+      formatted_date = I18n.l date.to_date, :format => :oneclick_short
     else
-      return I18n.l date.to_date, :format => :oneclick_long unless date.nil?
+      formatted_date = I18n.l date.to_date, :format => :oneclick_long
     end
+    I18n.locale = :tags if is_in_tags
+
+    formatted_date || ""
   end
 
   def format_time(time)
-    return I18n.l time, :format => :oneclick_short unless time.nil?
+    is_in_tags = I18n.locale == :tags # tags locale cause trouble in datetime localization, here, using default_locale to localize
+    I18n.locale = I18n.default_locale if is_in_tags
+    formatted_time = I18n.l time, :format => :oneclick_short unless time.nil?
+    I18n.locale = :tags if is_in_tags
+
+    formatted_time || ""
   end
 
 
@@ -213,6 +232,8 @@ module CsHelpers
   def get_pseudomode_for_itinerary(itinerary)
     if itinerary.is_walk
       mode_code = 'walk'
+    elsif itinerary.is_car
+      mode_code = 'car'
     elsif itinerary.mode.code == 'mode_paratransit'
       mode_code = itinerary.service.service_type.code.downcase
     elsif itinerary.mode.code == 'mode_transit'
@@ -220,7 +241,7 @@ module CsHelpers
     else
       mode_code = itinerary.mode.code.gsub(/^mode_/, '') rescue 'UNKNOWN'
     end
-    return mode_code    
+    return mode_code
   end
 
   # Returns the correct localized title for a trip itinerary
@@ -240,7 +261,7 @@ module CsHelpers
     elsif mode_code == 'transit'
       I18n.t(:transit)
     elsif mode_code == 'paratransit'
-      I18n.t(:mode_paratransit_name)      
+      I18n.t(:mode_paratransit_name)
     elsif mode_code == 'volunteer'
       I18n.t(:volunteer)
     elsif mode_code == 'non-emergency medical service'
@@ -250,11 +271,13 @@ module CsHelpers
     elsif mode_code == 'livery'
       I18n.t(:car_service)
     elsif mode_code == 'taxi'
-      I18n.t(:taxi)      
+      I18n.t(:taxi)
     elsif mode_code == 'rideshare'
       I18n.t(:rideshare)
     elsif mode_code == 'walk'
       I18n.t(:walk)
+    elsif mode_code == 'car'
+      I18n.t(:drive)
     end
     return title
   end
@@ -345,16 +368,39 @@ module CsHelpers
     end
   end
 
+  # first check if itinerary service or provider has customized logo
+  # then check if it's a walk itinerary, to show walk logo
+  # last, just get itineary mode logo
   def logo_url_helper itinerary
-    root_url({locale:''}) + Base.helpers.asset_path(if itinerary.service && itinerary.service.logo_url
-      itinerary.service.logo_url
-    elsif itinerary.service && itinerary.service.provider && itinerary.service.provider.logo_url
-      itinerary.service.provider.logo_url
-    elsif itinerary.is_walk
-      Mode.walk.logo_url
-    else 
-      itinerary.mode.logo_url
-    end)
+    s = itinerary.service
+    if s
+      if s.logo_url
+        return get_service_provider_icon_url(s.logo_url)
+      elsif s.provider and s.provider.logo_url
+        return get_service_provider_icon_url(s.provider.logo_url)
+      end
+    end
+
+    if itinerary.is_walk
+      asset_path = Mode.walk.logo_url
+    elsif itinerary.is_car
+      asset_path = Mode.car.logo_url
+    else
+      asset_path = itinerary.mode.logo_url
+    end
+
+    return root_url({locale:''}) + Base.helpers.asset_path(asset_path)
+  end
+
+  # logos are stored in local file system under dev environment
+  # stored in AWS s3 under other environments
+  def get_service_provider_icon_url(raw_logo_url)
+    case ENV["RAILS_ENV"]
+    when 'production', 'qa', 'integration'
+      return raw_logo_url
+    else
+      return root_url({locale:''}) + Base.helpers.asset_path(raw_logo_url)
+    end
   end
 
   def get_itinerary_cost itinerary
@@ -422,7 +468,7 @@ module CsHelpers
         end
       end
     end
-   
+
     if price_formatted.nil?
       unless fare.nil?
         fare = fare.to_f

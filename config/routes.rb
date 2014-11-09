@@ -16,7 +16,7 @@ Oneclick::Application.routes.draw do
     devise_for :users, controllers: {registrations: "registrations", sessions: "sessions"}
 
     resources :content
-    
+
     get "user_relationships/:id/check/" => "user_relationships#check_update", as: :check_update_user_relationship # need to support client-side logic with server-side vaildations
     # everything comes under a user id
     resources :users do
@@ -36,6 +36,14 @@ Oneclick::Application.routes.draw do
         end
         member do
           put 'set'
+        end
+      end
+
+      resources :sidewalk_obstructions, :only => [:create, :update] do
+        collection do
+          post "approve"
+          post "reject"
+          post "delete"
         end
       end
 
@@ -82,6 +90,7 @@ Oneclick::Application.routes.draw do
 
       # users have trips
       resources :trips, :only => [:show, :index, :new, :create, :destroy, :edit, :update] do
+        get 'multi_od_grid/:multi_od_trip_id' => 'trips#multi_od_grid', as: 'multi_od_grid'
         resources :characteristics, only: [:new, :update], controller: 'characteristics'
         collection do
           post  'set_traveler'
@@ -89,6 +98,7 @@ Oneclick::Application.routes.draw do
           get   'search'
           post  'geocode'
           get   'plan_map'
+          get   'create_multi_od'
         end
         member do
           get   'populate'
@@ -113,6 +123,14 @@ Oneclick::Application.routes.draw do
           get   'plan'
           get   'new_rating_from_email'
           post  'cancel'
+          get   'serialize_trip'
+        end
+        resources :itineraries do
+          member do
+            get 'map_status'
+            get 'request_create_map'
+            get 'create_map'
+          end
         end
         resources :trip_parts do
           member do
@@ -140,6 +158,7 @@ Oneclick::Application.routes.draw do
     # end
 
     # get '/kiosk_user/kiosk/users/sign_in', to: 'kiosk/sessions#create'
+
 
     get 'place_details/:id' => 'place_searching#details', as: 'place_details'
     get 'reverse_geocode' => 'place_searching#reverse_geocode', as: 'reverse_geocode'
@@ -266,6 +285,7 @@ Oneclick::Application.routes.draw do
     get '/place_search_geo' => 'trips#search_geo'
 
     namespace :admin do
+      get '/reports/trips_datatable' => 'reports#trips_datatable'
       resources :reports, :only => [:index, :show]
       post '/reports/:id' => 'reports#show'
       resources :trips, :only => [:index]
@@ -274,11 +294,17 @@ Oneclick::Application.routes.draw do
       get '/services' => 'util#services'
       get '/' => 'admin_home#index'
       resource :feedback
+      resources :sidewalk_obstructions, :only => [:index] do
+        collection do
+          patch "approve"
+        end
+      end
       resources 'agency_user_relationships' do
         get   'aid_user'
         get   'agency_revoke'
       end
       resources :agencies do
+        get 'find_agent_by_email'
         get 'travelers'
         get "users/:id/agency_assist", to: "users#assist", as: :agency_assist
         resources 'agency_user_relationships' do
@@ -290,14 +316,18 @@ Oneclick::Application.routes.draw do
       resources :users do
         put 'update_roles', on: :member
         get 'find_by_email'
+        post 'undelete'
       end
       resources :providers do
+        get   'find_staff_by_email'
         resources :users
         resources :services
         resources :trips, only: [:index, :show]
       end
+      resources :translations
+      resources :oneclick_configurations
     end#admin
-    
+
     # gives a shallow RESTful endpoint for rating any rateable
     resources :agencies, :trips, :services, shallow: true, only: [] do
       resources :ratings, only: [:index, :new, :create]
@@ -308,7 +338,13 @@ Oneclick::Application.routes.draw do
         get "context"
       end
     end
-    
+
+    resources :trips do
+      member do
+        get 'itinerary_map'
+      end
+    end
+    get "plan_a_trip" => 'trips#plan_a_trip'
     post "trips/:trip_id/ratings/trip_only" => 'ratings#trip_only', as: :trip_only_rating
 
     resources :services do
@@ -321,6 +357,7 @@ Oneclick::Application.routes.draw do
       collection do
         get 'upload'
         get 'confirm'
+        get 'build_polygons'
         post 'update'
       end
     end
@@ -333,8 +370,6 @@ Oneclick::Application.routes.draw do
     get '/501' => 'errors#error_501', as: 'error_501'
 
   end
-
-  resources :translations
 
   unless Oneclick::Application.config.ui_mode == 'kiosk'
     # get '*not_found' => 'errors#handle404'

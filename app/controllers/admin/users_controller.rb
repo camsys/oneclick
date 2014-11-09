@@ -3,7 +3,7 @@ class Admin::UsersController < Admin::BaseController
   before_action :load_user, only: :create
   before_filter :authenticate_user!, :except => [:agency_assist]
   load_and_authorize_resource
-  
+
   def index
     # @users = @users.without_role :anonymous_traveler # This filter is moved into UsersDatatable
 
@@ -26,6 +26,8 @@ class Admin::UsersController < Admin::BaseController
     @user.email = usr[:email]
     @user.password = usr[:password]
     @user.password_confirmation = usr[:password_confirmation]
+    @user.walking_speed_id = usr[:walking_speed_id]
+    @user.walking_maximum_distance_id = usr[:walking_maximum_distance_id]
 
     respond_to do |format|
       if @user.save
@@ -35,7 +37,7 @@ class Admin::UsersController < Admin::BaseController
           @agency_user_relationship.user = @user # @user should have been guarded above by @user.valid?, assume it exists
           @agency_user_relationship.agency = current_user.agency
           @agency_user_relationship.creator = current_user.id
-          
+
           if @agency_user_relationship.save
             UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.user.email, current_user.agency).deliver
           end
@@ -47,7 +49,7 @@ class Admin::UsersController < Admin::BaseController
       end
     end
   end
-          
+
   def show
     session[:location] = edit_user_registration_path
     @agency_user_relationship = AgencyUserRelationship.new
@@ -73,8 +75,7 @@ class Admin::UsersController < Admin::BaseController
 
   def update
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user) #we inflate a new proxy every time, but it's transient, just holds a bunch of characteristics
-    
-    
+
     # prep for password validation in @user.update by removing the keys if neither one is set.  Otherwise, we want to catch with password validation in User.rb
     if params[:user][:password].blank? and params[:user][:password_confirmation].blank?
       params[:user].except! :password, :password_confirmation
@@ -91,8 +92,28 @@ class Admin::UsersController < Admin::BaseController
       else
         redirect_to admin_user_path(@user, locale: current_user.preferred_locale), :notice => "User updated."
       end
+
+
     else
       render 'edit', :alert => "Unable to update user."
+    end
+  end
+
+  def destroy
+    @user.soft_delete
+    flash[:notice] = t(:user_deleted)
+    respond_to do |format|
+      format.html { redirect_to admin_users_path }
+      format.json { head :no_content }
+    end
+  end
+
+  def undelete
+    user = User.find(params[:user_id])
+    user.undelete
+    respond_to do |format|
+      format.html { redirect_to admin_user_path(user) }
+      format.json { head :no_content }
     end
   end
 
@@ -127,8 +148,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def find_by_email
-    #user = User.find_by(email: params[:email])
-    user = User.find(:first, :conditions => ["lower(email) = ?", params[:email].downcase]) #case insensitive
+    user = User.staff_assignable.where("lower(email) = ?", params[:email].downcase).first #case insensitive
     traveler = User.find(params[:user_id])
     if user.nil?
       success = false
@@ -139,15 +159,15 @@ class Admin::UsersController < Admin::BaseController
     elsif traveler.pending_and_confirmed_delegates.include? user
       success = false
       msg = t(:you_ve_already_asked_them_to_be_a_buddy)
-    else 
+    else
       success = true
       msg = t(:please_save_buddies, name: user.first_name)
       output = user.email
       row = [
               user.name,
-              user.email, 
-              I18n.t('relationship_status.relationship_status_pending'), 
-              UserRelationshipDecorator.decorate(UserRelationship.find_by(traveler: user, delegate: traveler)).buttons 
+              user.email,
+              I18n.t('relationship_status.relationship_status_pending'),
+              UserRelationshipDecorator.decorate(UserRelationship.find_by(traveler: user, delegate: traveler)).buttons
             ]
     end
     respond_to do |format|
@@ -155,10 +175,10 @@ class Admin::UsersController < Admin::BaseController
     end
   end
 
-  private 
+  private
 
   def user_params_with_password
-    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation, :preferred_mode_ids => [])
+    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation, :walking_speed_id, :walking_maximum_distance_id, :preferred_mode_ids => [])
   end
 
   def load_user
@@ -186,7 +206,7 @@ class Admin::UsersController < Admin::BaseController
       revoked.update_attributes(relationship_status: RelationshipStatus.revoked)
     end
   end
-  
+
   def set_booking_services(user, services)
     alert = false
     dob = services['dob']
@@ -196,7 +216,7 @@ class Admin::UsersController < Admin::BaseController
 
         eh = EcolaneHelpers.new
         unless user_id == ""
-          unless eh.validate_passenger(user_id, dob)
+          unless eh.validate_passenger(user_id, dob)[0]
             alert = true
             next
           end

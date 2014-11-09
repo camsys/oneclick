@@ -15,11 +15,16 @@ class Ability
       # cannot :full_read, User
       cannot :assist, User # That permissions is restricted to agency staff
       cannot :rate, Trip # remove global permission to rate, sys admin will still be able to rate when it's their own trip
+    else
+      if I18n.locale == :tags
+        return # no access to tags pages for non-admin users
+      end
     end
     if user.has_role? :feedback_administrator
       can [:see], :admin_menu
       can :access, :admin_feedback
       can [:manage], Rating # feedback admin will always be able to read feedback
+      can [:manage], SidewalkObstruction # feedback admin will always be able to read sidwalk feedback
       can :send_follow_up, Trip
     end
     if User.with_role(:agency_administrator, :any).include?(user)
@@ -31,7 +36,7 @@ class Ability
       can :travelers, Agency, {id: user.agency.try(:id)}
       can :travelers, User #can find any user if they search
       can :show, User #can find any user if they search
-      # can :edit, User, {user.approved_agencies.contains? }
+      #can :edit, User#, {user.approved_agencies.contains? }
       can [:access], :show_agency
       can [:access], :admin_create_traveler
       can [:access], :admin_trips
@@ -54,12 +59,12 @@ class Ability
       end
       can :create, User
       can :read, [Provider, Service]
-      can [:index, :show], Report
+      can [:index, :show, :trips_datatable], Report
       can [:read, :update], User, agency_id: user.agency.try(:id)
       can :send_follow_up, Trip
-      
+
     end
-    
+
     if User.with_role(:agent, :any).include?(user)
       can [:see], :staff_menu
       can [:index], :admin_home
@@ -71,6 +76,7 @@ class Ability
       can [:access], :admin_providers
       can [:access], :admin_services
       can [:access], :admin_feedback
+      can [:access, :manage], MultiOriginDestTrip
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
       can :read, Agency
       can :full_read, Agency # read gives access to only contact info.  full_read offers staff, internal contact, etc.
@@ -94,7 +100,7 @@ class Ability
       can [:access], :admin_reports
       can [:access], :admin_feedback
 
-      can [:index, :show], Report
+      can [:index, :show, :trips_datatable], Report
       can [:read, :full_read], Provider, id: user.try(:provider_id) # full read includes add'l information.  All users can read contact info
       can [:update, :destroy], Provider, id: user.try(:provider_id), active: true
       can [:update, :show, :full_read], Service do |s|
@@ -105,7 +111,7 @@ class Ability
     end
 
     ## All users have the following permissions, which logically OR with 'can' statements above
-    can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id 
+    can [:read, :create, :update, :destroy], [Trip, Place], :user_id => user.id
     can [:read, :full_read, :update, :add_booking_service, :initial_booking, :find_by_email], User, :id => user.id
     can [:assist], User do |traveler|
       user.confirmed_travelers.include? traveler
@@ -117,7 +123,7 @@ class Ability
     can :show, Service # Will have view privileges for individual info purposes
     can :show, Provider # Will have view privileges for individual info purposes
     can :show, Agency # Will have view privileges for individual info purposes
-    
+
 ###### RATING LOGIC (configurable by deployment)  ##################
 # TODO: This is a branding opportunity.  It would be fantastic if we could find a way to clean this up
     if Rating.feedback_on?
@@ -150,7 +156,7 @@ class Ability
         end
       end
       # nobody can rate a provider directly.  All ratings come through its services
-      cannot :create, Rating, rateable_type: "Provider" 
+      cannot :create, Rating, rateable_type: "Provider"
     end
 ####################################################################
   end

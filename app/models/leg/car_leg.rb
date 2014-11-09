@@ -16,7 +16,7 @@ module Leg
     end
 
     def short_description
-      [I18n.t(:drive), I18n.t(:to), end_place.name].join(' ')
+      [I18n.t(:drive_or_taxi), I18n.t(:to), end_place.name].join(' ')
     end
 
   end

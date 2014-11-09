@@ -8,6 +8,7 @@
 # Services have accommodations that they offer; users have accomodations that they require.
 #
 class Accommodation < ActiveRecord::Base
+  include EligibilityHelpers
   
   # attr_accessible :id, :code, :name, :note, :datatype, :active
 

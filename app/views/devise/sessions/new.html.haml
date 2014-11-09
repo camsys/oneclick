@@ -5,8 +5,9 @@
     .col-sm-6.btns
       .pull-right
         = button_tag type: :submit, class: 'btn action-button' do
-          = t(:log_in)                  
-        = render "devise/shared/links"
+          = t(:log_in)     
+        - unless params[:redirect_to] #TODO: URI valid check?             
+          = render "devise/shared/links"
 
   .row
     .col-sm-6
@@ -14,6 +15,7 @@
         .panel-heading
           %h1.panel-title= t(:user_information)
         .panel-body
+          = f.hidden_field :redirect_to, value: params[:redirect_to]
           - unless Rails.env.development? and ENV['DROPDOWN_USERS']
             = f.input :email, :autofocus => true, :required => true, :label => t(:email)
             = f.input :password, :required => true, :label => t(:password)

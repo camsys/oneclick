@@ -1,15 +1,3 @@
 #bookingModal.modal.fade.active.col-sm-12{"aria-describedby" => "Book your trip", :role => "dialog", :tabindex => "-1"}
-  .modal-dialog
-    .modal-content
-      .modal-header
-        = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
-          = t(:cancel)
-        .modal-title{:style => "text-align:left;"}
-          %b
-            -if @trip.is_booked?
-              = t(:trip_booked)
-            -else
-              = t(:book_your_trip)
-      .modal-body#bookingContent
-        = render partial: 'book_trip'
+  = render partial: 'book_trip'
 

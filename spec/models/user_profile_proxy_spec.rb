@@ -6,7 +6,7 @@ describe UserProfileProxy do
 
   describe 'converts dates' do
     it 'when it is just a year' do
-      upp.convert_value(Characteristic.new(datatype: 'date'), {date: '1975'}).should eq Chronic.parse('1-1-1975')
+      upp.convert_value(Characteristic.new(datatype: 'date'), {date: '1975'}).should eq Chronic.parse('12-31-1975')
     end
     it 'when it is a date string' do
       upp.convert_value(Characteristic.new(datatype: 'date'), {date: '10-1-1975'}).should eq Chronic.parse('1-10-1975')

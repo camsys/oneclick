@@ -8,7 +8,7 @@ class Mode < ActiveRecord::Base
 
   # Updatable attributes
   # attr_accessible :id, :name, :active
-    
+
   # set the default scope
   default_scope {where(active: true)}
 
@@ -26,7 +26,7 @@ class Mode < ActiveRecord::Base
       end
     end
   rescue Exception => e
-    Rails.logger.info "Could not create Mode methods (normal during db ops)."    
+    Rails.logger.info "Could not create Mode methods (normal during db ops)."
   end
 
   # def self.transit
@@ -52,10 +52,14 @@ class Mode < ActiveRecord::Base
   # def self.rail
   #   unscoped.where("code = 'mode_rail'").first
   # end
-   
+
   # def self.walk
   #   unscoped.where("code = 'mode_walk'").first
   # end
+
+  def self.all_transit_modes
+    [Mode.transit, Mode.bus, Mode.rail]
+  end
 
   def self.transit_submodes
     if not transit
@@ -80,15 +84,15 @@ class Mode < ActiveRecord::Base
     else
       transit_modes = []
     end
-    
+
     selected_modes = q.collect{|m| m.code}
-    return {modes: non_transit_modes, transit_modes: transit_modes, selected_modes: selected_modes}
+    {modes: non_transit_modes, transit_modes: transit_modes, selected_modes: selected_modes}
   end
 
   def top_level?
     parent.blank?
   end
-   
+
   def to_s
     name
   end

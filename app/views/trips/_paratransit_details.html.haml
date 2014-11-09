@@ -1,24 +1,48 @@
 .row
   .col-sm-12
+    -if itinerary.service.provider
+      - provider_public_comments = itinerary.service.provider.public_comments.for_locale
+      - if provider_public_comments && !provider_public_comments.comment.blank?
+        .row
+          .col-sm-12
+            .well.well-sm.comments
+              =provider_public_comments.comment.html_safe
+    -if itinerary.service.public_comments.for_locale and !itinerary.service.public_comments.for_locale.comment.blank?
+      .row
+        .col-sm-12
+          .well.well-sm
+            =itinerary.service.public_comments.for_locale.comment.html_safe
     -if itinerary.cost_comments
       %h4
         = t(:cost_details)
       =itinerary.cost_comments.html_safe
 
-    -if itinerary.missing_information and itinerary.missing_information_text.split('\n').count > 0
+    -if itinerary.missing_information and itinerary.missing_information_text.split(':').count > 0
       %h4
         %i.fa.fa-question-circle
-        This service is intended for
-        / not sure how to handle that...
-        -count = 0
-        -itinerary.missing_information_text.split('\n').each do |info|
-          -count += 1
-          -if itinerary.missing_information_text.split('\n').count - 1 == count
-            =info + ' and '
-          -elsif itinerary.missing_information_text.split('\n').count == count
-            =info + '.'
-          -else
-            =info + ','
+        =t(:this_service_is_for)
+        %ul
+          -itinerary.missing_information_text.split(':').each do |info|
+            %li
+              -count = 0
+              -info.split(',').each do |i|
+                - count += 1
+                - if info.split(',').count - 1 == count
+                  -if i[0,7] == "age_max" or i[0,7] == "age_min"
+                    = t(i[0,7], age: i[7..-1]) + ' ' + t(:and) + ' '
+                  -else
+                    = t(i) + ' ' + t(:and) + ' '
+                - elsif info.split(',').count == count
+                  -if i[0,7] == "age_max" or i[0,7] == "age_min"
+                    = t(i[0,7], age: i[7..-1])
+                  -else
+                    = t(i)
+                - else
+                  -if i[0,7] == "age_max" or i[0,7] == "age_min"
+                    = t(i[0,7], age: i[7..-1]) + ','
+                  -else
+                    = t(i) + ','
+
 
     -if itinerary.accommodation_mismatch
       %h4

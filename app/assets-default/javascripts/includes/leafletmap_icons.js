@@ -243,3 +243,9 @@ var baseMiniIcon = L.Icon.extend({
 var blueMiniIcon = new baseMiniIcon({
     iconUrl: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle_blue.png'
 })
+
+//icon for sidewalk obstruction feedback
+var sidewalkFeedbackIcon = new L.icon({
+    iconUrl: '/init-assets/map/warning.png',
+    iconSize: [16, 16]
+});

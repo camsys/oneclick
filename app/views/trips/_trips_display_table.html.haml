@@ -20,6 +20,7 @@
         %th.center= t(:max_notes)
       - if can? :send_follow_up, Trip
         %th= t(:send_follow_up_email)
+      %th= t(:trip_details)
   %tbody{ :id => 'trips_table'}
     - trips = RateableDecorator.decorate_collection(trips)
     - rateable_trip_ids = []
@@ -27,7 +28,7 @@
     - trips.each do |trip|
       -if trip.both_parts_selected?
         -tripID = "trip#{trip.id}"
-        %tr{:tabindex => '0'}
+        %tr
           - if show_username
             %td= trip.user
           %td.nowrap= format_date(trip.trip_datetime)
@@ -53,10 +54,11 @@
                   .modal-dialog
                     .modal-content
                       .modal-header
-                        = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
-                          = t(:cancel)
-                        = link_to cancel_user_trip_path(traveler, trip), {:class => "btn btn-primary action-button pull-right", :method => :post} do
-                          = t(:ok)
+                        .pull-right
+                          = link_to cancel_user_trip_path(traveler, trip), {:class => "btn action-button", :method => :post} do
+                            = t(:ok)
+                          = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
+                            = t(:cancel)
                         .modal-title{:style => "text-align:left;"}
                           %b
                             = t(:site_title)
@@ -66,39 +68,38 @@
               - trip.trip_parts.each do |tp|
                 - tp.itineraries.where.not(booking_confirmation: nil).each do |itinerary|
                   =itinerary.booking_confirmation
-
-          - if trip.in_the_future
-            %td.center.nowrap          
-              = link_to user_trip_path(traveler, trip), {:class => "btn btn-sm", :alt => t(:plan_trip), :title => t(:plan_trip)} do
-                %i.fa.fa-mail-forward
-              = link_to edit_user_trip_path(traveler, trip), {:class => "btn btn-sm", :alt => t(:edit_trip), :title => t(:edit_trip)} do
-                %i.fa.fa-edit
-              -if not trip.is_booked?
-                = button_tag :type => 'button', "data-target" => "#deleteTripConfirmDialog", "data-toggle" => "modal", :alt => t(:remove_trip), :title => t(:remove_trip), :class => "btn btn-sm btn-danger delete-button" do
-                  %i.fa.fa-times
-                #deleteTripConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_trip), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
-                  .modal-dialog
-                    .modal-content
-                      .modal-header
-                        = button_tag class: 'btn btn-default action-button pull-right', data: {dismiss: 'modal'} do
-                          = t(:cancel)
-                        = link_to user_trip_path(traveler, trip), {:class => "btn btn-primary action-button pull-right", :method => :delete} do
+          %td.center.nowrap
+            = link_to repeat_user_trip_path(traveler, trip), {:alt => t(:repeat_trip), :title => t(:repeat_trip), :class => "btn btn-sm", "aria-label" => "#{t(:repeat_trip)}"} do
+              %i.fa.fa-rotate-right
+            - if not trip.is_booked?
+              - if trip.in_the_future
+                = link_to edit_user_trip_path(traveler, trip), {:class => "btn btn-sm", :alt => t(:edit_trip), :title => t(:edit_trip), "aria-label" => "#{t(:edit_trip)}"} do
+                  %i.fa.fa-edit
+              = button_tag :type => 'button', "data-target" => "#deleteTrip" + trip.id.to_s + "ConfirmDialog", "data-toggle" => "modal", :alt => t(:remove_trip), :title => t(:remove_trip), :class => "btn btn-sm btn-danger delete-button", "aria-label" => "#{t(:remove_trip)}" do
+                %i.fa.fa-times
+              .modal.fade.col-sm-12{:id => "deleteTrip#{trip.id}ConfirmDialog", "aria-describedby" => t(:remove_trip), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+                .modal-dialog
+                  .modal-content
+                    .modal-header
+                      .pull-right
+                        = link_to user_trip_path(traveler, trip), {:style => 'margin-right: 5px;', :class => "btn action-button", :method => :delete} do
                           = t(:ok)
-                        .modal-title{:style => "text-align:left;"}
-                          %b
-                            = t(:site_title)
-                      .modal-body{:style => "text-align:left;"}
-                        = t(:confirm_remove_trip)
-          - else
-            %td.center.nowrap          
-              = link_to repeat_user_trip_path(traveler, trip), {:alt => t(:repeat_trip), :title => t(:repeat_trip), :class => "btn btn-sm"} do
-                %i.fa.fa-rotate-right
+                        = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
+                          = t(:cancel)
+                      .modal-title{:style => "text-align:left;"}
+                        %b
+                          = t(:site_title)
+                    .modal-body{:style => "text-align:left;"}
+                      = t(:confirm_remove_trip)
           - if ENV['SHOWALL']
             %td= "%s / %s" % [trip.outbound_part.max_notes_count, trip.return_part.max_notes_count]
           - if can? :send_follow_up, trip
             %td.center
-              = link_to email_feedback_user_trip_path(traveler, trip, locale: I18n.locale), class: "btn btn btn-default action-button" do
+              = link_to email_feedback_user_trip_path(traveler, trip, locale: I18n.locale), class: "btn action-button", "aria-label" => "#{t(:send_follow_up_email)}" do
                 - t(:send)
+          %td.center
+            = link_to plan_user_trip_path(traveler, trip) do
+              =t(:details)
 - rateable_trip_ids.each do |rateable_trip_id|
   = render partial: 'trips/trip_rating', locals: {id: rateable_trip_id}
 
@@ -114,4 +115,10 @@
           },
           "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
       } );
-  } );    
+    var prev_button = $('.prev');
+    var next_button = $('.next');
+    checkAriaLabel(prev_button);
+    toggleAriaLabel(prev_button); 
+    checkAriaLabel(next_button);
+    toggleAriaLabel(next_button);  
+  } );
