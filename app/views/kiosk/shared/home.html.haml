@@ -7,7 +7,9 @@
     %a.attract-main.row-fluid{alt: action[:label], href: action[:target]}
       .title Tap anywhere to begin
       .subtitle or
-      #login-button{:href => "#"} log in
+      .login-button-holder
+        #login-button.attract-login-button{href: "#"}> Email login
+        #ecolane-login-button.attract-login-button{href: "#"} Shared ride login
     %a.attract-footer{alt: action[:label], href: action[:target]}
 
 :javascript
@@ -15,6 +17,11 @@
 
   $('#login-button').on('click', function (e) {
     // Since we the entire space is clickable except for this button, I went with the option of using JS to control the href
-    window.location.href = "/kiosk/sign_in";
+    window.location.href = '/kiosk/sign_in';
+    return false;
+  });
+
+  $('#ecolane-login-button').on('click', function (e) {
+    window.location.href = '/kiosk/initialize_ecolane_login';
     return false;
   });

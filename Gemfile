@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.1.1'
+ruby '2.1.3'
 gem 'rails', '4.0.3'
 # See http://stackoverflow.com/questions/22391116/nomethoderror-in-pageshome-undefined-method-environment-for-nilnilclass
 gem 'sprockets', '2.11.0'
@@ -78,7 +78,7 @@ group :development do
   gem 'guard-rails'
   gem 'guard-rspec'
   gem 'guard-puma'
-  # gem 'pry-stack_explorer'
+  gem 'pry-stack_explorer'
   #gem 'pry-debugger'
   gem 'html2haml'
   gem 'quiet_assets'
@@ -94,7 +94,7 @@ group :development do
   gem 'yard'
   gem 'RedCloth' # Needed by yard
   gem 'foreman'
-  gem 'debugger'
+  # gem 'debugger'
   # For sidekiq monitoring
   gem 'sinatra', :require => nil
 end

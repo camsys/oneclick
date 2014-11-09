@@ -1,0 +1,54 @@
+#login.container-fluid
+  %div.responsive-mbp.row-fluid
+    .span4.info
+      #left-description
+        %h1= t(:log_in)
+        %h4 Have we met before?
+
+        %p
+          Have you created an account with us before? If so, enter your rapid
+          transit client ID and date of birth, then tap "Log In". Logging in
+          will allow us to skip some questions you may have previously
+          answered.
+          <br><br>
+          If you do not have an account, tap "Skip This Step".
+
+    %div.span8login
+      = simple_form_for(@booking_proxy, url: kiosk_user_ecolane_login_path(@traveler), html: {class: 'form-horizontal' }) do |f|
+        .row-fluid
+          .span12login
+            .input-container
+              = f.input :service_id, as: :hidden, input_html: {value: Service.where(booking_service_code: 'ecolane').first.id}
+              = f.input :external_user_id, required: true, placeholder: ''
+              = f.input :dob, required: true, placeholder: 'MM/DD/YYYY'
+
+        .row-fluid
+          .span12
+            = button_tag :submit, class: 'login-btn pull-left' do
+              = t(:log_in)
+
+            .cancel-container.pull-right
+              %a.cancel-btn{href: kiosk_user_new_trip_start_path(current_or_guest_user)} Skip this step
+
+          .span3.hidden
+
+:javascript
+  $('input#user_email').click(function(){
+    if (window.cocoa)
+      window.cocoa.openKeyboard();
+  });
+
+  $('input#user_email').blur(function(){
+    if (window.cocoa)
+      window.cocoa.closeKeyboard();
+  });
+
+  $('input#user_password').click(function(){
+     if (window.cocoa)
+      window.cocoa.openKeyboard();
+  });
+
+  $('input#user_password').blur(function(){
+    if (window.cocoa)
+      window.cocoa.closeKeyboard();
+  });

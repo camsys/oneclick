@@ -1,7 +1,22 @@
-html, body {
-  height: 100%;
+html, body, .kiosk-content-wrapper-fixed-size {
+  width: 1280px;
+  height: 1024px;
+  margin: 0;
+  padding: 0;
+
+  @media (max-width: 1300px) {
+    &, a, * { cursor: none !important }
+    & { overflow: hidden }
+  }
 }
 
+html, body {
+  background-color: #ccc;
+}
+
+.kiosk-content-wrapper-fixed-size {
+  overflow: hidden;
+}
 // These are the bootstrap original sizes
 // h1 { font-size: 36px; line-height: 40px; }
 // h2 { font-size: 30px; line-height: 40px; }

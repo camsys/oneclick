@@ -169,6 +169,8 @@ Oneclick::Application.routes.draw do
 
       get 'itineraries/:id/print' => 'trips#itinerary_print', as: 'print_itinerary'
 
+      resource :initialize_ecolane_login, only: [:show]
+
       resources :locations, only: [:show]
       resources :call, only: [:show, :index] do
         post :outgoing, on: :collection
@@ -180,6 +182,8 @@ Oneclick::Application.routes.draw do
           get   'profile'
           post  'update'
         end
+
+        resource :ecolane_login, only: [:show, :create]
 
         namespace :new_trip do
           resource :start
@@ -277,6 +281,7 @@ Oneclick::Application.routes.draw do
       get '/kiosk/sign_in' => 'kiosk/sessions#new', as: :new_kiosk_user_session
       get '/kiosk/session/destroy' => 'kiosk/sessions#destroy', as: :destroy_kiosk_user_session
     end
+
 
     # TODO This should go somewhere else
     get '/place_search' => 'trips#search'

@@ -31,34 +31,36 @@
         addrConfig.setCurrentMachineNameInField('#{request.headers['HTTP_X_CLIENT_HOSTNAME']}' || 'machine1');
 
   %body{:class => "kiosk #{controller_css_class} #{action_name}"}
-    / layouts/kiosk/application.html.haml
-    - unless @hide_timeout
-      = render 'kiosk/shared/tap_timeout'
-    = render 'kiosk/shared/navigation'
-    .container-fluid
-      #main{:role => "main"}
-        .container-fluid
-          = render 'kiosk/shared/assisting'
-          #messages= render 'shared/messages'
-          - if content_for? :layout_template
-            = yield(:layout_template)
-          - else
-            = yield
+    .kiosk-content-wrapper-fixed-size
+      / layouts/kiosk/application.html.haml
+      - unless @hide_timeout
+        = render 'kiosk/shared/tap_timeout'
+      = render 'kiosk/shared/navigation'
 
-    .next-footer-container.step1-btn.hidden
       .container-fluid
-        .row-fluid
-          .span4
-            %a.edit-trip-btn.hidden{href: kiosk_user_new_trip_from_path(user_id: current_or_guest_user.id, anchor: 'back')}
-              %h3 Make Changes
-          .span8
-            .next-step-container
-              .next-step-btn
-                %h1 Next Step
-                %div.arrow-container.pull-right
-                  .arrow
-      / ! end of .container
-    / ! end of #main
+        #main{:role => "main"}
+          .container-fluid
+            = render 'kiosk/shared/assisting'
+            #messages= render 'shared/messages'
+            - if content_for? :layout_template
+              = yield(:layout_template)
+            - else
+              = yield
+
+      .next-footer-container.step1-btn.hidden
+        .container-fluid
+          .row-fluid
+            .span4
+              %a.edit-trip-btn.hidden{href: kiosk_user_new_trip_from_path(user_id: current_or_guest_user.id, anchor: 'back')}
+                %h3 Make Changes
+            .span8
+              .next-step-container
+                .next-step-btn
+                  %h1 Next Step
+                  %div.arrow-container.pull-right
+                    .arrow
+        / ! end of .container
+      / ! end of #main
 
     :javascript
       var localized_yes_str;
