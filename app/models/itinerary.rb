@@ -59,11 +59,21 @@ class Itinerary < ActiveRecord::Base
     return legs.size ==1 && legs.first.mode == Leg::TripLeg::CAR
   end
 
-  # returns true if this itinerary is a bicycle-only trip. These are a special case of Transit
+  # returns true if this itinerary is contains only bicycle and walking legs. These are a special case of Transit
   # trips that only include a BICYCLE leg
   def is_bicycle
-    legs = get_legs(false)
-    return legs.size == 1 && legs.first.mode == Leg::TripLeg::BICYCLE
+    modes = get_legs.collect{ |m| m.mode }.uniq
+    unless Leg::TripLeg::BICYCLE.in? modes
+      return false
+    end
+
+    if modes.count == 1
+      return true
+    elsif modes.count > 2
+      return false
+    else
+      return Leg::TripLeg::WALK.in? legs
+    end
   end
 
   # Determines whether we are using rail, bus and rail, or just bus for the transit trips
@@ -179,10 +189,20 @@ class Itinerary < ActiveRecord::Base
 
   protected
 
-  #OTP is setting drive time as walk time.  This is a temporary work-around
+  #OTP is setting drive time and bicycle time as walk time.  This is a temporary work-around
   def clear_walk_time
     if self.is_car
       self.walk_time = 0
+    end
+
+    if self.is_bicycle
+      walk_time = 0
+      get_legs.each do |leg|
+        if leg.mode == Leg::TripLeg::WALK
+          walk_time += leg.duration
+        end
+      end
+      self.walk_time = walk_time
     end
   end
 

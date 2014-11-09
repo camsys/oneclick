@@ -234,6 +234,8 @@ module CsHelpers
       mode_code = 'walk'
     elsif itinerary.is_car
       mode_code = 'car'
+    elsif itinerary.is_bicycle
+      mode_code = 'bicycle'
     elsif itinerary.mode.code == 'mode_paratransit'
       mode_code = itinerary.service.service_type.code.downcase
     elsif itinerary.mode.code == 'mode_transit'
@@ -278,6 +280,8 @@ module CsHelpers
       I18n.t(:walk)
     elsif mode_code == 'car'
       I18n.t(:drive)
+    elsif mode_code == 'bicycle'
+      I18n.t(:bicycle)
     end
     return title
   end
@@ -385,6 +389,8 @@ module CsHelpers
       asset_path = Mode.walk.logo_url
     elsif itinerary.is_car
       asset_path = Mode.car.logo_url
+    elsif itinerary.is_bicycle
+      asset_path = Mode.bicycle.logo_url
     else
       asset_path = itinerary.mode.logo_url
     end

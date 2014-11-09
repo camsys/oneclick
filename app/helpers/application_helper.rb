@@ -228,6 +228,8 @@ module ApplicationHelper
       'walk_details'
     elsif mode_code == 'car'
       'car_details'
+    elsif mode_code == 'bicycle'
+      'bicycle_details'
     end
     return partial
   end
@@ -268,6 +270,8 @@ module ApplicationHelper
       'icon-bus-sign'
     elsif mode_code == 'car'
       'auto'
+    elsif mode_code == 'bicycle'
+      'icon-bike-sign'
     end
     return icon_name
   end

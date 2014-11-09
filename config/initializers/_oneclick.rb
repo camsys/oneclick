@@ -234,7 +234,7 @@ Oneclick::Application.configure do
     config.map_bounds      = [[40.664559, -74.104039],[43.244470, -69.148697]]
     config.geocoder_bounds = [[40.664559, -74.104039],[43.244470, -69.148697]]
     config.default_zoom = 12
-    config.open_trip_planner = "http://otp-extra.camsys-apps.com:8082/otp/routers/default/plan?"
+    config.open_trip_planner = "http://otp-extra.camsys-apps.com:8080/otp/routers/default/plan?"
     config.transit_respects_ada = false
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Boston"

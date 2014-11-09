@@ -352,6 +352,7 @@ en:
   drive: 'Drive'
   drive_or_taxi: 'Drive or taxi'
   bike: 'Bike'
+  bicycle: 'Bicycle'
   bikeshare: 'Bikeshare'
   drive_and_transit: 'Drive and Transit'
   rail: 'Rail'

@@ -45,6 +45,8 @@ protected
       obj = parse_tram_leg(leg)
     elsif leg['mode'] == 'RAIL'
       obj = parse_rail_leg(leg)
+    elsif leg['mode'] == 'BICYCLE'
+      obj = parse_bicycle_leg(leg)
     end
 
     # parse the common properties
@@ -169,6 +171,15 @@ protected
 
     walk = Leg::WalkLeg.new
     return walk
+
+  end
+
+  def self.parse_bicycle_leg(leg)
+
+    Rails.logger.debug "Parsing BICYCLE leg"
+
+    bicycle = Leg::BicycleLeg.new
+    return bicycle
 
   end
 

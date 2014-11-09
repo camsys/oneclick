@@ -296,6 +296,10 @@ $legend-height: 20px;
   background-color: $trip-leg-bicycle;
 }
 
+.travel-legend-bicycle {
+  background-color: $trip-leg-bicycle;
+}
+
 .travel-legend-bikeshare {
   background-color: $trip-leg-bikeshare;
 }
@@ -349,6 +353,10 @@ $legend-height: 20px;
 }
 
 .travel-type-bike {
+  fill: $trip-leg-bicycle;
+}
+
+.travel-type-bicycle {
   fill: $trip-leg-bicycle;
 }
 
