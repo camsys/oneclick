@@ -400,12 +400,11 @@ module ApplicationHelper
   end
 
   def translation_exists?(key_str)
-    if I18n.t(key_str).to_s.include?("translation missing")
-      return false
-    elsif I18n.t(key_str).to_s.blank?
-      return false
+    translation = I18n.t key_str, :raise => true rescue false
+    if translation
+      return !translation.empty?
     else
-      return true
+      return false
     end
   end
 
