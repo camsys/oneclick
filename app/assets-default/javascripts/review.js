@@ -331,7 +331,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
               if (!$(".popover:hover").length) {
                   $(_this).popover("hide");
               }
-          }, 300);
+          }, 0);
         });
 
         $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body', 'trigger': 'hover focus' });
@@ -1861,7 +1861,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var modeTag =
             '<div class="checkbox" style="margin:0px 0px 0px 10px;">' +
             '<label>' +
-            '<input type="checkbox" checked=true value="' + mode + '">' +
+            '<input type="checkbox" checked=true value="' + mode + '" tabindex="10">' +
             mode +
             '</label>' +
             '</div>';
