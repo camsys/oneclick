@@ -400,15 +400,12 @@ module ApplicationHelper
   end
 
   def translation_exists?(key_str)
-    begin 
-      if I18n.t(key_str).to_s.include?("translation missing") || I18n.t(key_str).to_s.blank?
-        return false
-      else
-        return true
-      end
-    rescue false
-    else true
-    end  
+    translation = I18n.t key_str, :raise => true rescue false
+    if translation
+      return !translation.empty?
+    else
+      return false
+    end
   end
 
   def add_tooltip(key)
