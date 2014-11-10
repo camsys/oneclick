@@ -250,7 +250,7 @@ a{
 
 //FOOTER
 %footer-container {
-  position: fixed;
+  position: absolute;
   bottom:0;
   width: 100%;
   background-color: $white;
@@ -1936,10 +1936,10 @@ $animationTime: 300ms;
   }
 }
 
-/* 
+/*
 ** =====================================================================
 **   OLD LOGIN DESIGN
-** ===================================================================== 
+** =====================================================================
 */
 .login-container{
   position: absolute;
@@ -2076,7 +2076,7 @@ $animationTime: 300ms;
  *------------------------------------------
 **/
 //LOGIN
-body.sessions.new, 
+body.sessions.new,
 body.registrations.new,
 body.ecolane_logins {
   .container-fluid{
