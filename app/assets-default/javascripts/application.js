@@ -75,6 +75,6 @@ function toggleAriaLabelPrevNext(input) {
 }
 
 function addHelperTooltip(label_id, tooltip_str) {
-  $(label_id).prepend("<i class='fa fa-question-circle pull-right label-help' style='margin-top:-4px;' title data-original-title='" + tooltip_str + "' aria-label='" + tooltip_str + "' tabindex='0'></i>");
+  $(label_id).append("<i class='fa fa-question-circle pull-right label-help' style='margin-top:-4px;' aria-label='" + tooltip_str + "' tabindex='0'></i>");
 }
 
