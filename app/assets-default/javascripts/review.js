@@ -374,7 +374,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * bring up plan details dialog in respond to chart container events (press SPACE bar, double click, and mobile double-tap)
      */
     function registerChartContainerEvents() {
-        $('.single-trip-part').on("keyup", ".single-plan-chart-container", function(e) { //click to show details in modal dialog
+        $('.single-trip-part').on("keydown", ".single-plan-chart-container", function(e) { //click to show details in modal dialog
             var planId = $(this).parent('.single-plan-review').data('plan-id');
             if(e.keyCode === 32) {
                 showItineraryModal(planId);
