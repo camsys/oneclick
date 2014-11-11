@@ -174,7 +174,7 @@
       pageRenderer.processTripResponse();
 
       $('#itinerary_modal').on('shown.bs.modal', function() {
-        $('.tooltip').hide();
+        $('.popover').hide();
         if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.review_map != null) {
           var mapObj = CsMaps.review_map;
           mapObj.invalidateMap();
