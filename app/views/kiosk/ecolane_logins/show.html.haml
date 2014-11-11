@@ -6,10 +6,10 @@
         %h4 Have we met before?
 
         %p
-          Have you created an account with us before? If so, enter your rapid
-          transit client ID and date of birth, then tap "Log In". Logging in
-          will allow us to skip some questions you may have previously
-          answered.
+
+          Are you a Shared Ride user? If so, log in using your shared ride
+          client ID and date of birth, then tap, "Log In". This will enable
+          you to book shared ride trips directly from this kiosk.
           <br><br>
           If you do not have an account, tap "Skip This Step".
 
@@ -19,13 +19,13 @@
           .span12login
             .input-container
               = f.input :service_id, as: :hidden, input_html: {value: Service.where(booking_service_code: 'ecolane').first.id}
-              = f.input :external_user_id, required: true, placeholder: ''
-              = f.input :dob, required: true, placeholder: 'MM/DD/YYYY'
+              = f.input :external_user_id, required: true, placeholder: '', label: 'Shared Ride Client ID'
+              = f.input :dob, required: true, placeholder: 'MM/DD/YYYY', label: 'Date of Birth'
 
         .row-fluid
           .span12
             = button_tag :submit, class: 'login-btn pull-left' do
-              = t(:log_in)
+              = t(:log_in).titleize
 
             .cancel-container.pull-right
               %a.cancel-btn{href: kiosk_user_new_trip_start_path(current_or_guest_user)} Skip this step

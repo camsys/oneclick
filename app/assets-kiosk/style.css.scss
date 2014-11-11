@@ -355,34 +355,41 @@ a{
 }
 
 .attract-login-button {
+  $width: 450px;
+  $zoom: 12px;
+  color: $gray6;
+  border: 4px solid $blue;
   cursor: pointer;
   position: relative;
-  font-size: 24px;
+  font-size: 27px;
   font-weight: 700;
-  text-transform:uppercase;
-  color: $gray6;
+  text-transform: uppercase;
   text-align: center;
-  background-color: $white;
+  background-color: white;
   text-decoration: none;
   height: 88px;
-  width: 296px;
-  border: 4px solid $blue;
+  width: 450px;
   margin: 24px auto 0;
-  padding-top: 31px;
+  padding-top: 16px;
   display: inline-block;
+
+  .smalltext {
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
 
   &:first-child {
     margin-right: 40px;
   }
+
   &:active {
-    // TODO these offsets could be calculated
     border: 4px solid #00b8d0;
     height: 100px;
-    width: 308px;
-    padding-top: 35px;
-    margin-left: -12px;
-    margin-top: -6px;
-    -webkit-transform: translate(6px, 0);
+    width: $width + 12px;
+    padding-top: 23px;
+    margin-left: $zoom * -1;
+    margin-top: $zoom / -2;
+    -webkit-transform: translate($zoom / 2, 0);
   }
 }
 
@@ -618,8 +625,8 @@ $purposeHPadding: 30px;
   padding: 36px;
 }
 
-.results-view{
-  padding: 24px 36px 0;
+.results-view {
+  padding: 24px 35px 0;
 
   .card-view-resize{
     width: 1002px !important;
