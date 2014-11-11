@@ -19,7 +19,7 @@
           .span12login
             .input-container
               = f.input :service_id, as: :hidden, input_html: {value: Service.where(booking_service_code: 'ecolane').first.id}
-              = f.input :external_user_id, required: true, placeholder: '', label: 'Shared Ride Client ID'
+              = f.input :external_user_id, required: true, placeholder: 'Tap here to enter your shared ride client ID', label: 'Shared Ride Client ID'
               = f.input :dob, required: true, placeholder: 'MM/DD/YYYY', label: 'Date of Birth'
 
         .row-fluid
