@@ -139,25 +139,18 @@ class TripPart < ActiveRecord::Base
       end
     end
 
+    #itins = remove_duplicates(itins)
     self.itineraries << itins
-
-    itins = remove_duplicates(itins)
 
     itins
   end
 
   def remove_duplicates(itins)
-    itins.each do |i|
-      puts i
-    end
     #Removes Duplicate Walk Trips.
     filtered_itins = itins.reject{ |i| i.is_walk }
     walking = itins.select{ |i| i.is_walk }
     if walking.count > 0
       filtered_itins << walking.first
-    end
-    filtered_itins.each do |i|
-      puts i
     end
     filtered_itins
   end
