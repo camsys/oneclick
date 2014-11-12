@@ -66,11 +66,7 @@
                           toggleAriaLabel(clear_button);
                         });
 
-                        $("#places-table tr").tooltip({
-                          'html': true,
-                          'container': 'body',
-                          'trigger': 'hover focus'
-                        });
+                        createPopover("#places-table tr");
 
                   / %td{id: "place-#{i}", data: {address: place.raw_address, placename: place.name, json: place.to_json}}= ('A'..'Z').to_a[i] + ' ' + place.name
 
