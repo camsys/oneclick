@@ -27,8 +27,8 @@
             = t(:more_about_this_initiative).html_safe
             / %a{:href => "http://www.fta.dot.gov/grants/13094_13528.html", :target => "_blank"}
           .pull-right
-            %a{:href => "mailto://#{ENV['SEND_FEEDBACK_TO_ADDRESS']}"}
-              = t(:send_your_feedback)
+            = t(:send_your_feedback).html_safe
+            / %a{:href => "mailto://#{ENV['SEND_FEEDBACK_TO_ADDRESS']}"}
         #versionLang.col-xs-12
           .pull-left
             - unless Rails.env.production?
