@@ -83,7 +83,7 @@ function createPopover(node_id) {
       'html': true,
       'container': 'body',
       'template': '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>',
-      'trigger': 'manual',
+      'trigger': 'manual focus',
       'animation': false,
       'placement': 'top',
       content: function() {
