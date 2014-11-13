@@ -32,6 +32,9 @@ class RatingsController < ApplicationController
         if r.valid?
           successful_ratings << rateable_class.name.downcase
         end
+      else
+        r = rateable.rate(rater, 0, rateable_params[:comments])
+        r.valid? ? successful_ratings << rateable_class.name.downcase : ''
       end
     end
     flash[:notice] = t(:rating_submitted_for_approval, rateable: successful_ratings.to_sentence, count: successful_ratings.count) # only flash on creation
