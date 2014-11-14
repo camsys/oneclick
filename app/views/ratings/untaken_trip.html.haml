@@ -1,3 +1,4 @@
+- content_for :title, "Feedback - #{t(:site_title)}"
 =simple_form_for @trip, url: trip_only_rating_path(@trip), method: "post" do |f|
   .row.info-header
     .col-sm-6
