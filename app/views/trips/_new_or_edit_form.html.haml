@@ -153,6 +153,43 @@
               .panel-body{:"aria-hidden" => "true"}
                 = LeafletMap({ :mapid => "tripMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '500px;', :style => "height: 400px; width: 500px;", :show_location_select => true })
     .col-sm-12{style: "margin-bottom: 5px; padding: 0px;"}
+      .pull-left.input-group.col-xs-4
+        %span.input-group-btn
+          %button.btn.action-button.generate-url{type: 'button', aria: {label: "Generate a URL to your current trip."}} Generate
+        = text_field_tag "trip-url", nil, readonly: true, class: 'form-control'
+
+        :javascript
+          $('.generate-url').click(function(){
+
+            modes = $("#modes_inputs input[type='checkbox'], #transitModes input[type='checkbox']");
+            modesArray = [];
+            for (i=0; i < modes.length; i++) { if ($(modes[i]).prop('checked')) { z = $(modes[i]).val(); modesArray.push(z); } }
+
+            var isRoundTrip = $('#trip_proxy_is_round_trip_1').prop('checked') ? "true" : "false";
+            var checkedModes = modesArray.join(",");
+            var fromPlace = $('#trip_proxy_from_place').val().replace(/(,)/g,'').replace(/\s/g,"%20");
+            var toPlace = $('#trip_proxy_to_place').val().replace(/(,)/g,'').replace(/\s/g,"%20");
+            var outboundDate = $('#trip_proxy_outbound_trip_date').val();
+            var outboundTime = $('#trip_proxy_outbound_trip_time').val().replace(/\s/g,'');
+            var returnDate = $('#trip_proxy_return_trip_date').val();
+            var returnTime = $('#trip_proxy_return_trip_time').val().replace(/\s/g,'');
+
+            var completeUrl = "#{root_url}/" +
+            "plan_a_trip?is_round_trip=" + isRoundTrip +
+            "&modes=" + checkedModes +
+            "&from_place=" + fromPlace +
+            "&to_place=" + toPlace +
+            "&outbound_trip_date=" + outboundDate +
+            "&outbound_trip_time=" + outboundTime +
+            "&outbound_arrive_depart=false" +
+            "&return_trip_date=" + returnDate +
+            "&return_trip_time" + returnTime +
+            "&return_arrive_depart=false";
+
+            $('#trip-url').val(completeUrl);
+          
+          });
+
       .pull-right
         -if @show_booking
           = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;" do
