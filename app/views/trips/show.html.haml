@@ -73,13 +73,13 @@
             weekdaysShort : weekdaysShort
             });
         }
-        var months = #{t('date.month_names')[1...13]};
+        var months = #{t('date.month_names')};
         if(months instanceof Array && months.length > 0) {
           moment.lang(localeLang, {
             months : months
             });
         }
-        var monthsShort = #{t('date.abbr_month_names')[1...13]};
+        var monthsShort = #{t('date.abbr_month_names')};
         if(monthsShort instanceof Array && monthsShort.length > 0) {
           moment.lang(localeLang, {
             monthsShort : monthsShort

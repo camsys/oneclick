@@ -296,14 +296,26 @@ module ApplicationHelper
     branded_key = [brand, key].join('.')
     if I18n.locale != :tags
       begin
-        I18n.translate(branded_key, options.merge({raise: true})).html_safe
+        if I18n.translate(branded_key, options.merge({raise: true})).class != Array
+          I18n.translate(branded_key, options.merge({raise: true})).html_safe
+        else
+          raw(I18n.translate(branded_key, options.merge({raise: true})))
+        end
       rescue Exception => e
         begin
-          I18n.translate(key, options.merge({raise: true})).html_safe
+          if I18n.translate(key, options.merge({raise: true})).class != Array
+            I18n.translate(key, options.merge({raise: true})).html_safe
+          else
+            raw(I18n.translate(key, options.merge({raise: true})))
+          end
         rescue Exception => e
           Rails.logger.warn "key: #{key} not found: #{e.inspect}"
           begin
-            I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})).html_safe
+            if I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})).class != Array
+              I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})).html_safe
+            else
+              raw(I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})))
+            end
           rescue Exception => e
             "Key not found: #{key}" # No need to internationalize this.  Should only hit if a non-existant key is called
           end
@@ -311,7 +323,11 @@ module ApplicationHelper
       end
     else
       begin
-        I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})).html_safe
+        if I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})).class != Array
+          I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})).html_safe
+        else
+          raw(I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})))
+        end
       rescue Exception => e
         return '[' + key.to_s + ']'
       end
