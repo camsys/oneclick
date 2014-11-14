@@ -1,3 +1,4 @@
+- content_for :title, "New User Form - #{t(:site_title)}"
 = simple_form_for [:admin, @user], html: {class: 'form-horizontal' }, wrapper: :horizontal_form do |f|
   .row.info-header
     .col-sm-6

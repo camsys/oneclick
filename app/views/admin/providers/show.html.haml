@@ -1,3 +1,4 @@
+- content_for :title, "#{@provider.name} - #{t(:site_title)}"
 - temp_rating = @provider.services.first.ratings.build(user: @traveler) rescue nil
 - can_manage_provider =(can? :manage, :all) || ((can? :full_read, @provider) && !current_user.nil? && !current_user.provider.nil? && @provider.id == current_user.provider.id)
 - if can? :index, Provider

@@ -1,5 +1,6 @@
 / TODO Requires a decomposition into partials for reuse.  This code should work across the admin and public-facing UI.
 / Note the use of form-horizontal throughout on <divs>.  Just hijacking bootstrap styling.  Needs to be fixed.  Also, could use simpleform's wrappers api to centralize
+- content_for :title, "#{@user.name}'s Travel Profile - #{t(:site_title)}"
 .header
   .pull-right{style: 'padding-bottom:10px;'}
     - if can? :assist, @user

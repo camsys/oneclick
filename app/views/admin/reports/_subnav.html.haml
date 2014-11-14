@@ -1,3 +1,4 @@
+- content_for :title, "Reports - #{t(:site_title)}"
 = simple_form_for @generated_report,
         url: admin_report_path(Report.all.first.id, locale: params[:locale]),
         html: { method: 'post', id: 'report_form', class: 'form-horizontal' }  do |f|
