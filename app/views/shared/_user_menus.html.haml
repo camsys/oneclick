@@ -1,0 +1,22 @@
+- if is_arc?
+  .btn-group
+    %button.btn.action-button.dropdown-toggle{"type" => "button", "data-toggle" => "dropdown", "aria-expanded" => "false"}
+      %i.fa.fa-user
+      - unless is_assisting
+        = "#{t(:welcome)}, #{get_traveler.welcome}"
+      - else
+        = t(:assisting_assisted_user_email, assisted_user: @traveler.name)
+      %b.caret
+    %ul.dropdown-menu{:role => "menu"}
+      = render partial: 'menu_item', collection: traveler_actions(with_logout: true) 
+- else
+  %li#userDropdown.dropdown
+    %a.dropdown-toggle{"href" => "#", "data-target" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true', tabindex: "4"}
+      %i.fa.fa-user
+      - unless is_assisting
+        = "#{t(:welcome)}, #{get_traveler.welcome}"
+      - else
+        = t(:assisting_assisted_user_email, assisted_user: @traveler.name)
+      %b.caret
+    %ul.dropdown-menu{:role => "menu"}
+      = render partial: 'menu_item', collection: traveler_actions(with_logout: true)

@@ -89,6 +89,15 @@ body, .btn, .form-control, .dropdown-menu{
   font-size: 40px;
 }
 
+#userMenuNavbar {
+  @media(max-width:$screen-sm-max){
+    line-height: 50px;
+  }
+  @media(min-width:$screen-md-min){
+    line-height: 60px;
+  }
+}
+
 // These are the bootstrap original sizes
 // h1 { font-size: 36px; line-height: 40px; }
 // h2 { font-size: 30px; line-height: 40px; }

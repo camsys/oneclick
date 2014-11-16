@@ -524,4 +524,8 @@ module CsHelpers
     #   unselect_all_kiosk_user_trip_part_path traveler, trip_part
     # end
   end
+
+  def is_arc?
+    Oneclick::Application.config.brand == 'arc'
+  end
 end
