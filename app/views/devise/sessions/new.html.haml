@@ -5,9 +5,8 @@
       %h1= t(:log_in)
     .col-sm-6.btns
       .pull-right
-        - login_text = (is_arc? ? t(:ok) : t(:log_in))
         = button_tag type: :submit, class: 'btn action-button' do
-          = login_text   
+          = t(:ok)   
         - unless params[:redirect_to] #TODO: URI valid check?             
           = render "devise/shared/links"
 

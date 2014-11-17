@@ -1,14 +1,6 @@
-- if is_arc?
-  .btn-group
-    %button.btn.action-button.dropdown-toggle{"type" => "button", "data-toggle" => "dropdown", "aria-expanded" => "false"}
-      %i.fa.fa-wrench
-      = title
-      %b.caret
-    = render partial: 'admin/admin_home/admin_dropdown_menu_items', locals: { :available_actions => available_actions}
-- else
-  %li.dropdown
-    %a.dropdown-toggle{"href" => "#", "data-target" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true', tabindex: "#{available_actions == admin_actions ? "2" : "3"}"}
-      %i.fa.fa-wrench
-      =title
-      %b.caret
-    = render partial: 'admin/admin_home/admin_dropdown_menu_items', locals: { :available_actions => available_actions}
+.btn-group
+  %button.btn.action-button.dropdown-toggle{"type" => "button", "data-toggle" => "dropdown", "aria-expanded" => "false"}
+    %i.fa.fa-wrench
+    = title
+    %b.caret
+  = render partial: 'admin/admin_home/admin_dropdown_menu_items', locals: { :available_actions => available_actions}

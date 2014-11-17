@@ -1,11 +1,2 @@
-- if is_arc?
-  = link_to t(:log_in), new_user_session_path, class: "btn action-button"
-  = link_to t(:sign_up), new_user_registration_path, class: "btn action-button"
-- else
-  %li#userDropdown.dropdown
-    %a.dropdown-toggle{"href" => "#", "data-target" => "#", "data-toggle" => "dropdown", role: 'button', 'aria-haspopup' => 'true', tabindex: "4"}
-      %i.fa.fa-user
-      = "#{t(:welcome)}, #{t(:visitor)}"
-      %b.caret
-    %ul.dropdown-menu{:role => "menu"}
-      = render partial: 'menu_item', collection: traveler_actions
+= link_to t(:log_in), new_user_session_path, class: "btn action-button"
+= link_to t(:sign_up), new_user_registration_path, class: "btn action-button"

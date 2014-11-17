@@ -7,9 +7,8 @@ Feature: Traveler Home Page
   Scenario: Viewing home page actions, logged out
     Given I exist as a user
     When I look at the home page
-    Then I see "Plan a Trip"
     And I see "Log in"
-    And I see "Create an Account"
+    And I see "Sign up"
 
   Scenario: Viewing home page actions, logged in
     Given I exist as a user
@@ -18,5 +17,5 @@ Feature: Traveler Home Page
     Then I see a successful sign in message
     When I look at the home page
     Then I see "Plan a Trip"
-    And I see "Profile"
+    And I see "Travel Profile"
     And I see "Trips"

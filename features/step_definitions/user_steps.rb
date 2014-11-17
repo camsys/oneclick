@@ -43,7 +43,7 @@ def sign_in
   visit '/users/sign_in'
   fill_in "Email", :with => @visitor[:email]
   fill_in "Password", :with => @visitor[:password]
-  click_button "Log in"
+  click_button "Ok"
 end
 
 ### GIVEN ###
@@ -151,8 +151,8 @@ Then /^I should be signed out$/ do
 end
 
 Then /^I should be at the signed-out home page$/ do
-  page.should have_content "Create an Account"
   page.should have_content "Log in"
+  page.should have_content "Sign up"
   page.should_not have_content "Logout"
 end
 
