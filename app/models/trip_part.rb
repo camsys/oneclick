@@ -139,27 +139,24 @@ class TripPart < ActiveRecord::Base
       end
     end
 
-    itins = remove_duplicates(itins)
-    puts itins.count
-    itins.each do |itin|
-      puts itin.id
-    end
     self.itineraries << itins
 
     itins
   end
 
-  def remove_duplicates(itins)
+  def remove_duplicates
     #Removes Duplicate Walk Trips.
-    puts itins.count
-    filtered_itins = itins.reject{ |i| i.is_walk }
-    walking = itins.select{ |i| i.is_walk }
-    if walking.count > 0
-      filtered_itins << walking.first
+    first = true
+    self.itineraries.each do |itin|
+      if itin.is_walk
+        if first
+          first = false
+        else
+          i = Itinerary.find(itin.id)
+          i.delete
+        end
+      end
     end
-    puts filtered_itins.count
-    puts '^^^^^^^Look above'
-    filtered_itins
   end
 
   def timed label, &block
