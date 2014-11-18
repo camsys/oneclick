@@ -2,7 +2,7 @@ class Admin::AgenciesController < ApplicationController
   include Admin::CommentsHelper
 
   before_filter :load_agency, only: [:create]
-  load_and_authorize_resource except: [:travelers]
+  load_and_authorize_resource except: [:travelers, :find_agent_by_email]
   load_and_authorize_resource :id_param => :agency_id,  only: :travelers #TODO implies a refactor needed
 
 
