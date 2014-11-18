@@ -264,12 +264,14 @@ Oneclick::Application.configure do
     raise "Brand '#{config.brand}' not supported"
   end
 
+  ENV['HOST'] ||= config.host
+
   Rails.logger.info "Rails.application.routes.default_url_options before:"
   Rails.logger.info Rails.application.routes.default_url_options.ai
   if Rails.application.routes.default_url_options[:host].nil?
     host = case Rails.env
     when 'production'
-      config.host
+      ENV['HOST']
     when 'qa', 'staging'
       parts = config.host.split(%r{\.}, 2)
       parts[0] + '-qa.' + parts[1]
