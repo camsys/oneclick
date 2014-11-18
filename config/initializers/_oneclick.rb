@@ -156,7 +156,7 @@ Oneclick::Application.configure do
 
 
   when 'jta'
-    config.host = 'oneclick-jta.camsys-apps.com'
+    config.host = 'transportal.net'
     config.ui_logo = 'jta/logo.png'
     config.logo_text = "J T A logo - TransPortal"
     config.geocoder_components = 'administrative_area:FL|country:US'
@@ -226,7 +226,7 @@ Oneclick::Application.configure do
     config.time_zone = 'Pacific Time (US & Canada)'
 
   when 'ma'
-    config.host = 'oneclick-ma.camsys-apps.com'
+    config.host = 'oneclick.camsys-apps.com'
     config.ui_logo = 'ma/logo.png'
     config.logo_text = "1-Click"
     config.geocoder_components = 'administrative_area:MA|country:US'
