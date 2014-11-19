@@ -11,9 +11,9 @@
         %td
     %tbody
       %tr
-        %td.itinerary_icons{:width => '15%', :style => "text-align: left;"}
+        %td.itinerary_icons{:width => '10%', :style => "text-align: left;"}
           %img{:src => logo_url_helper(i), alt: "#{t(i.mode)} icon"}
-        %td{:width => '10%'}
+        %td{:width => '15%'}
           .itinerary_text
             %strong= t(:fare)
             %br
@@ -35,7 +35,7 @@
             %strong= t(:walk_time)
             %br
             = i.walking_time
-        %td{:width => '10%'}
+        %td{:width => '15%'}
           .itinerary_text
             %strong= t(:transfers)
             %br
