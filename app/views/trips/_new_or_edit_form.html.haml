@@ -187,8 +187,9 @@
 
             var isRoundTrip = $('#trip_proxy_is_round_trip_1').prop('checked') ? "true" : "false";
             var checkedModes = modesArray.join(",");
-            var fromPlace = $('#trip_proxy_from_place').val().replace(/(,)/g,'').replace(/\s/g,"%20");
-            var toPlace = $('#trip_proxy_to_place').val().replace(/(,)/g,'').replace(/\s/g,"%20");
+            var tripPurpose = $('#trip_proxy_trip_purpose_id > option:selected').text().toLowerCase();
+            var fromPlace = $('#trip_proxy_from_place').val().replace(/(,)/g,'').replace(/\s/g,"%20").replace(/(&)/g,"%26");
+            var toPlace = $('#trip_proxy_to_place').val().replace(/(,)/g,'').replace(/\s/g,"%20").replace(/(&)/g,"%26");
             var outboundDate = $('#trip_proxy_outbound_trip_date').val();
             var outboundTime = $('#trip_proxy_outbound_trip_time').val().replace(/\s/g,'');
             var returnDate = $('#trip_proxy_return_trip_date').val();
@@ -197,6 +198,7 @@
             var completeUrl = "#{root_url}/" +
             "plan_a_trip?is_round_trip=" + isRoundTrip +
             "&modes=" + checkedModes +
+            "&purpose=" + tripPurpose +
             "&from_place=" + fromPlace +
             "&to_place=" + toPlace +
             "&outbound_trip_date=" + outboundDate +
