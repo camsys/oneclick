@@ -153,10 +153,30 @@
               .panel-body{:"aria-hidden" => "true"}
                 = LeafletMap({ :mapid => "tripMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '500px;', :style => "height: 400px; width: 500px;", :show_location_select => true })
     .col-sm-12{style: "margin-bottom: 5px; padding: 0px;"}
-      .pull-left.input-group.col-xs-4
-        %span.input-group-btn
-          %button.btn.action-button.generate-url{type: 'button', aria: {label: "Generate a URL to your current trip."}} Generate
-        = text_field_tag "trip-url", nil, readonly: true, class: 'form-control'
+      .pull-right
+        -if @show_booking
+          = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;" do
+            =t(:ecolane_login_button)
+        = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
+          =t(:next)
+
+      .pull-right{style: "margin-right:5px;"}
+        %button.btn.action-button.generate-url{type: 'button', "data-toggle" => "modal", "data-target" => "#generatedUrl", style: "min-width:1em;", aria: {label: "Generate a URL to your current trip."}}
+          %i.fa.fa-files-o
+
+      #generatedUrl.modal.fade{tabindex: "-1", role: "dialog", aria: {labelledby: "modalLabel", hidden: "true"}}
+        .modal-dialog
+          .modal-content.panel.panel-default
+            .modal-header.panel-heading
+              %button.close{type: "button", data: {dismiss: "modal"}}
+                %span{aria: {hidden: "true"}}
+                  %i.fa.fa-close
+                %span.sr-only Close
+              %h3.modal-title{id: "modalLabel"} URL for Your Trip
+            .modal-body
+              = text_area_tag "trip-url", nil, rows: 10, class: 'form-control'
+            .modal-footer{style: "background-color:whitesmoke;"}
+              %button.btn.action-button{type: "button", data: {dismiss: "modal"}} Close
 
         :javascript
           $('.generate-url').click(function(){
@@ -190,12 +210,6 @@
           
           });
 
-      .pull-right
-        -if @show_booking
-          = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;" do
-            =t(:ecolane_login_button)
-        = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
-          =t(:next)
     .col-sm-12
       - footer_comment_key = session[:is_multi_od] ? :multi_od_trip_footer_comment : :trip_footer_comment
       = render partial: 'shared/page_comments', locals: {key: footer_comment_key}
