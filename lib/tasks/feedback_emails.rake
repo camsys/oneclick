@@ -6,8 +6,8 @@ namespace :oneclick do
       Trip.feedbackable.scheduled_before(Time.now).each do |trip|
         unless trip.user.is_visitor?
           UserMailer.feedback_email(trip).deliver
-          trip.update_attributes(needs_feedback_prompt: false)
         end
+        trip.update_attributes(needs_feedback_prompt: false)
       end
     end
   end
