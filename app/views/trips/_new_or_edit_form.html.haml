@@ -187,7 +187,7 @@
 
             var isRoundTrip = $('#trip_proxy_is_round_trip_1').prop('checked') ? "true" : "false";
             var checkedModes = modesArray.join(",");
-            var tripPurpose = $('#trip_proxy_trip_purpose_id > option:selected').text().toLowerCase();
+            var tripPurpose = $('#trip_proxy_trip_purpose_id > option:selected').text().toLowerCase().replace(/(&)/g,"%26");
             var fromPlace = $('#trip_proxy_from_place').val().replace(/(,)/g,'').replace(/\s/g,"%20").replace(/(&)/g,"%26");
             var toPlace = $('#trip_proxy_to_place').val().replace(/(,)/g,'').replace(/\s/g,"%20").replace(/(&)/g,"%26");
             var outboundDate = $('#trip_proxy_outbound_trip_date').val();
