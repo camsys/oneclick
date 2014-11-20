@@ -160,9 +160,9 @@
         = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
           =t(:next)
 
-      .pull-right{style: "margin-right:5px;"}
-        %button.btn.action-button.generate-url{type: 'button', "data-toggle" => "modal", "data-target" => "#generatedUrl", style: "min-width:1em;", aria: {label: "Generate a URL to your current trip."}}
-          %i.fa.fa-files-o
+      .pull-left
+        %button.btn.btn-default.generate-url{type: 'button', "data-toggle" => "modal", "data-target" => "#generatedUrl", style: "min-width:1em;", aria: {label: "Generate a URL to your current trip."}}
+          %i.fa.fa-link
 
       #generatedUrl.modal.fade{tabindex: "-1", role: "dialog", aria: {labelledby: "modalLabel", hidden: "true"}}
         .modal-dialog
