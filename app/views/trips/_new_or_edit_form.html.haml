@@ -120,12 +120,13 @@
                 });
 
           -if I18n.locale == :tags
-            = f.input :trip_purpose_id, :collection =>  TripPurpose.all, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes),input_html: { class: 'form-control' }
+            = f.input :trip_purpose_id, :collection =>  TripPurpose.all.map{|x| [t(x.name), x.name, {code: x.code}]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes), input_html: { class: 'form-control' }
             - if translation_exists?("trip_purposes_help")
               :javascript
                 addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
           -else
-            = f.input :trip_purpose_id, :collection =>  TripPurpose.ordered_by_localized_name, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes),input_html: { class: 'form-control' }
+            - blah = TripPurpose.ordered_by_localized_name.map{|x| [{code: x.code, name: x.name}, x.id]}
+            = f.input :trip_purpose_id, :collection =>  blah, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v[0][:name])}, label: t(:trip_purposes), input_html: { class: 'form-control' }
             - if translation_exists?("trip_purposes_help")
               :javascript
                 addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
@@ -187,7 +188,7 @@
 
             var isRoundTrip = $('#trip_proxy_is_round_trip_1').prop('checked') ? "true" : "false";
             var checkedModes = modesArray.join(",");
-            var tripPurpose = $('#trip_proxy_trip_purpose_id > option:selected').text().toLowerCase().replace(/[\s\/]/g,"_");
+            var tripPurpose = $('#trip_proxy_trip_purpose_id > option:selected').attr('code');
             var fromPlace = $('#trip_proxy_from_place').val().replace(/(,)/g,'').replace(/\s/g,"%20").replace(/(&)/g,"%26");
             var toPlace = $('#trip_proxy_to_place').val().replace(/(,)/g,'').replace(/\s/g,"%20").replace(/(&)/g,"%26");
             var outboundDate = $('#trip_proxy_outbound_trip_date').val();
@@ -209,7 +210,7 @@
             "&return_arrive_depart=false";
 
             $('#trip-url').val(completeUrl);
-          
+            
           });
 
     .col-sm-12
