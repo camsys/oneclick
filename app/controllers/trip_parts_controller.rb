@@ -38,9 +38,9 @@ class TripPartsController < PlaceSearchingController
     Rails.logger.info "trip part has #{@itineraries.count} itineraries for modes #{@modes.map(&:code).join(', ')}."
     if (@itineraries.empty?)
       Rails.logger.info "itineraries is empty, generating itineraries."
-      unless params[:mode].in? ['mode_walk', 'mode_car', 'mode_bicycle']
-        @itineraries = @trip_part.create_itineraries(@modes)
-      end
+      #unless params[:mode].in? ['mode_walk', 'mode_car', 'mode_bicycle']
+      @itineraries = @trip_part.create_itineraries(@modes)
+      #end
     else
       Rails.logger.info "itineraries is not empty, not generating itineraries."
     end
