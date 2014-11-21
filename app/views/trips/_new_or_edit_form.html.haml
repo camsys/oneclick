@@ -120,13 +120,12 @@
                 });
 
           -if I18n.locale == :tags
-            = f.input :trip_purpose_id, :collection =>  TripPurpose.all.map{|x| [t(x.name), x.name, {code: x.code}]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes), input_html: { class: 'form-control' }
+            = f.input :trip_purpose_id, :collection =>  TripPurpose.all.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v[0][:name])}, label: t(:trip_purposes), input_html: { class: 'form-control' }
             - if translation_exists?("trip_purposes_help")
               :javascript
                 addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
           -else
-            - blah = TripPurpose.ordered_by_localized_name.map{|x| [{code: x.code, name: x.name}, x.id]}
-            = f.input :trip_purpose_id, :collection =>  blah, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v[0][:name])}, label: t(:trip_purposes), input_html: { class: 'form-control' }
+            = f.input :trip_purpose_id, :collection => TripPurpose.ordered_by_localized_name.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v[0][:name])}, label: t(:trip_purposes), input_html: { class: 'form-control' }
             - if translation_exists?("trip_purposes_help")
               :javascript
                 addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
