@@ -75,7 +75,7 @@ function toggleAriaLabelPrevNext(input) {
 }
 
 function addHelperTooltip(label_id, tooltip_str) {
-  $(label_id).append("<i class='fa fa-question-circle pull-right label-help' style='margin-top:-4px;' title data-original-title='" + tooltip_str + "' aria-label='" + tooltip_str + "' tabindex='0'></i>");
+  $(label_id).append("<i class='fa fa-question-circle pull-right label-help' style='margin-top:-4px;' data-content='" + tooltip_str + "' aria-label='" + tooltip_str + "' tabindex='0'></i>");
 }
 
 function createPopover(node_id) {
@@ -87,7 +87,7 @@ function createPopover(node_id) {
       'animation': false,
       'placement': 'top',
       content: function() {
-          html = $(this).attr('data-original-title');
+          html = $(this).attr('data-content');
           return $.parseHTML(html);
       }
   })
