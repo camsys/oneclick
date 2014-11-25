@@ -888,7 +888,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var tipHtml = getHoverTipText(tripPlan, false);
 
         var chartDivId = '#'+tripPlanDivPrefix + tripId + "_" + tripPlan.id;
-        $(chartDivId).attr('data-content', tipHtml);
+        $(chartDivId).attr('data-original-title', tipHtml);
         $(chartDivId).attr('aria-label', tipTextOnly);
     }
 
@@ -2905,7 +2905,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         }
 
         return '<i class="fa fa-question-circle fa-2x pull-right label-help"' +
-            'style="margin-top:-4px;" data-content="' + text +
+            'style="margin-top:-4px;" data-original-title="' + text +
             '" aria-label="' + text + '"></i>';
     }
 
