@@ -137,6 +137,7 @@ class UsersController < ApplicationController
       u.last_name = last_name
       u.password = dob
       u.password_confirmation = dob
+      u.roles << Role.where(name: "registered_traveler").first
       up = UserProfile.new
       up.user = u
       up.save!
