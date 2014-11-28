@@ -39,6 +39,7 @@ class EcolaneHelpers
     begin
       funding_options = query_funding_options(itinerary)
       funding_xml = Nokogiri::XML(funding_options.body)
+      Rails.logger.info(funding_xml)
     rescue
       Rails.logger.debug "Booking error #003"
       return false, "Booking error."
@@ -169,6 +170,7 @@ class EcolaneHelpers
     url = BASE_URL + url_options
     funding_options = query_funding_options(itinerary)
     funding_xml = Nokogiri::XML(funding_options.body)
+    Rails.logger.info(funding_xml)
     order =  build_order(itinerary, funding_xml)
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '2')
@@ -195,6 +197,7 @@ class EcolaneHelpers
 
   def unpack_fare_response (resp, itinerary)
     resp_xml = Nokogiri::XML(resp.body)
+    Rails.logger.info(resp_xml)
     client_copay = resp_xml.xpath("fare").xpath("client_copay").text
     return client_copay.to_f/100.0
   end
@@ -308,6 +311,7 @@ class EcolaneHelpers
     if funding_xml
       order[:funding] = build_funding_hash(itinerary, funding_xml)
     end
+    Rails.logger.info(order)
     order
   end
 
@@ -328,7 +332,7 @@ class EcolaneHelpers
         return {funding_source: funding_source, purpose: ecolane_purpose}
       end
     end
-     return {funding_source: other_funding, purpose: 'other'}
+    return {funding_source: other_funding, purpose: 'other'}
 
   end
 
