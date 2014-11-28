@@ -151,6 +151,8 @@ class EcolaneHelpers
     order.children.first.set_attribute('version', '2')
     order = order.to_s
     result  = send_request(url, 'POST', order)
+    Rails.logger.info('Order Request Sent to Ecolane:')
+    Rails.logger.info(order)
     result
   end
 
@@ -318,21 +320,23 @@ class EcolaneHelpers
   def build_funding_hash(itinerary, funding_xml)
     purpose = itinerary.trip_part.trip.trip_purpose.code
     other_funding = nil
+    sponsor = nil
     funding_xml.xpath("funding_options").xpath("option").each do |options|
 
       ecolane_purpose = options.xpath("purpose").text
 
       if ecolane_purpose.downcase.gsub(%r{[ /]}, '_') == 'other'
         other_funding = funding_source = options.xpath("funding_source").text
+        sponsor = options.xpath("sponsor").text
       end
 
       if purpose == ecolane_purpose.downcase.gsub(%r{[ /]}, '_')
-
         funding_source = options.xpath("funding_source").text
-        return {funding_source: funding_source, purpose: ecolane_purpose}
+        sponsor = options.xpath("sponsor").text
+        return {funding_source: funding_source, purpose: ecolane_purpose, sponsor: sponsor}
       end
     end
-    return {funding_source: other_funding, purpose: 'other'}
+    return {funding_source: other_funding, purpose: 'other', sponsor: sponsor}
 
   end
 
