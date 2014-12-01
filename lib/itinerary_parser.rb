@@ -187,6 +187,7 @@ protected
     Rails.logger.debug "Parsing CAR leg"
 
     car = Leg::CarLeg.new
+    car.steps = leg['steps']
     return car
 
   end
