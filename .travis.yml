@@ -4,9 +4,6 @@ env:
   global:
     # This is HEROKU_API_KEY=<Denis' API key>
     secure: "jUJl8lJRBaROaPmLz64q20IvlN/eNwFjMcHRm4SgGMCcLf3eyIWqRsq5GQ9kKBL+QBfaSFdoEnaUN2/tq7dtu9zNOJNpMcHegY/nvQs3q3LIPCfG00GSAO/DBjLKQVVFOZzCjNuqesvWYPsBoAg8NHe1fUciZ67u0JMuLfitcWg="
-branches:
-  only:
-  - develop
 before_script:
 - pwd
 - ls -a
