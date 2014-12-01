@@ -193,15 +193,19 @@ class Itinerary < ActiveRecord::Base
   def clear_walk_time
     if self.is_car
       self.walk_time = 0
+      self.walk_distance = 0
     end
 
     if self.is_bicycle
       walk_time = 0
+      walk_distance = 0
       get_legs.each do |leg|
         if leg.mode == Leg::TripLeg::WALK
           walk_time += leg.duration
+          walk_distance += leg.distance
         end
       end
+      self.walk_distance = walk_distance
       self.walk_time = walk_time
     end
   end
