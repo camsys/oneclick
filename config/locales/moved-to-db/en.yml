@@ -140,8 +140,9 @@ en:
   create_translation: 'Create Translation'
   key: 'Key'
   send_by_email: 'Send by email'
-  email_footer: 'Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of %{application_name}'
-  email_thank_you: 'Thank you for using  %{application_name} Software.'
+  generic_email_footer: 'Thank you for using %{application_name} Software.%{break}This email is sent from an email address that is not monitored. Please do not reply to this message.%{break}Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of %{application_name}.'
+  specific_email_footer: ''
+  specific_email_header: ''
   email_sent_to: 'An email was sent to %{email_sent_to}'
   no_email_found: 'No email was found'
   send_itinerary_by_email: "Send itinerary by email"
@@ -763,7 +764,6 @@ en:
   approve: "Approve"
   reject: "Reject"
   contact_info: "Contact Info"
-  do_not_reply: "This email is sent from an email address that is not monitored. Please do not reply to this message."
   nothing_found_sorry: "Nothing found - sorry"
   no_good_options: "There are no good options here."
   thanks_for_feedback: 'Thanks in advance for your feedback!'
@@ -881,6 +881,11 @@ en:
     es: "En Español"
     ht: "Creole"
   # Branding
+  ma:
+    home: '1-Click/MA Home'
+    logotext: ''
+    site_title: '1-Click/MA'
+    site_description: '1-Click/MA Application'
   arc:
     home: 'ARC 1-Click Home'
     logotext: ''

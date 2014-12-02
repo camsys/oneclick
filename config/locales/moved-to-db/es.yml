@@ -117,8 +117,9 @@ es:
   create_translation: '[es100]Create Translation[/es]'
   key: '[es100]Key[/es]'
   send_by_email: 'Enviar por correo electrónico'
-  email_footer: '[es]Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of %{application_name}[/es]'
-  email_thank_you: '[es]Thank you for using  %{application_name} Software.[/es]'
+  generic_email_footer: '[es]Thank you for using %{application_name} Software.%{break}This email is sent from an email address that is not monitored. Please do not reply to this message.%{break}Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of %{application_name}.[/es]'
+  specific_email_footer: ''
+  specific_email_header: ''
   email_sent_to: '[es]An email was sent to %{email_sent_to}[/es]'
   no_email_found: '[es]No email was found[/es]'
   send_itinerary_by_email: "[es32]Send itinerary by email[/es]"
@@ -738,7 +739,6 @@ es:
   approve: "[es521]Approve[/es]"
   reject: "[es522]Reject[/es]"
   no_good_options: "[es545]There are no good options here.[/es]"
-  do_not_reply: "[es386]This email is sent from an email address that is not monitored. Please do not reply to this message.[/es]"
   nothing_found_sorry: "[es407]Nothing found - sorry[/es]"
   solicit_feedback: "[es428]Please give us some feedback:[/es]"
   thanks_for_feedback: '[es]Thanks in advance for your feedback![/es]'
@@ -782,6 +782,11 @@ es:
     ht: "Creole"
 
   # Branding
+  ma:
+    home: '1-Click/MA Home'
+    logotext: ''
+    site_title: '1-Click/MA'
+    site_description: '1-Click/MA Application'
   arc:
     logotext: ''
     site_title: 'ARC 1-Click'

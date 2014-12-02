@@ -22,6 +22,6 @@
 %table
   %tbody
     %tr
-      %td= t(:do_not_reply)
+      %td= t(:specific_email_footer).to_s
     %tr
-      %td= t(:email_footer).to_s.sub('%{application_name}', Oneclick::Application.config.name)
+      %td= t(:generic_email_footer).to_s.gsub('%{application_name}', Oneclick::Application.config.name).gsub('%{break}', '</br>').html_safe

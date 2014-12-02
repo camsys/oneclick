@@ -238,7 +238,7 @@ Oneclick::Application.configure do
     config.transit_respects_ada = false
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Boston"
-    config.name = '1-Click/JTA'
+    config.name = '1-Click/MA'
     ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.arc.camsys" # TODO
     ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey" # TODO
     ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@1-click.org" # TODO
