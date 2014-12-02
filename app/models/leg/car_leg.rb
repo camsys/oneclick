@@ -22,21 +22,20 @@ module Leg
     end
 
     def trip_steps
-      html = "<div class='panel panel-default'>
-              <div class='panel-heading' data-toggle='collapse' data-target='#drivingDirections'><a>" + short_description + "</a></div>
+      html = "<div data-toggle='collapse' data-target='#drivingDirections'><a>" + short_description + "</a></div>
               <div id='drivingDirections' class='panel-body collapse'>"
 
       steps.each do |hash|
-        html << "<div class='well'>"
+        html << "<p>"
         html << hash["relativeDirection"].to_s
         html << " on to "
         html << hash["streetName"].to_s
         html << ", "
         html << (hash["distance"] * 0.000621371).round(2).to_s
-        html << " miles </br></div>"
+        html << " miles </br></p>"
       end
 
-      html << "</div></div>"
+      html << "</div>"
       return html.html_safe
     end
 

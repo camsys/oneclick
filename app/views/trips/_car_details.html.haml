@@ -10,7 +10,7 @@
 
   -itinerary.get_legs.each do |leg|
     %tr
-      %td.itinerary_icons
+      %td.itinerary_icons{style: 'position:absolute;left:0;'}
         %img{:src => get_mode_icon(leg.mode), alt: "#{leg.mode.downcase} Mode Icon"}
       %td.itin_text_container
         .itinerary_text
