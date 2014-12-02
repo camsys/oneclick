@@ -97,7 +97,8 @@
               -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
                 %tr
                   %td.text-center
-                    = t('date.day_names')[schedule.day_of_week]
+                    = I18n.t('date.day_names')[schedule.day_of_week]
+
                   %td.text-center
                     =schedule.start_string
                   %td.text-center
@@ -126,7 +127,7 @@
               -@service.booking_cut_off_times.order(:day_of_week, :cut_off_seconds).each do |cut_off_time|
                 %tr
                   %td.text-center
-                    = t('date.day_names')[cut_off_time.day_of_week]
+                    = I18n.t('date.day_names')[cut_off_time.day_of_week]
                   %td.text-center
                     =cut_off_time.cut_off_time_string
     .col-sm-4
