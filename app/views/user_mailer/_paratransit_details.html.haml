@@ -12,7 +12,7 @@
         .col-sm-12
           .well.well-sm
             =itinerary.service.public_comments.for_locale.comment.html_safe
-    -if itinerary.cost_comments
+    -unless itinerary.cost_comments.blank?
       %h4
         = t(:cost_details)
       =itinerary.cost_comments.html_safe
@@ -60,8 +60,6 @@
         %i.fa.fa-calendar
         = t(:trip_outside_service_hours)
 
-    - if itinerary.service.try(:phone)
-      %h4= tel_link itinerary.service.phone
 %table{:style=>'width: 100%;'}
   - itinerary.service.get_contact_info_array.each do |a,b|
     %tr

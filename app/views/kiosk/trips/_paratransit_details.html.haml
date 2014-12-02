@@ -1,6 +1,6 @@
 .row-fluid
-  - if itinerary.cost_comments
-    %h4 Cost Details:
+  - unless itinerary.cost_comments.blank?
+    %h4 =t(:cost_details)
     = itinerary.cost_comments.html_safe
 
   - if itinerary.missing_information
