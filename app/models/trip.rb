@@ -170,9 +170,6 @@ class Trip < ActiveRecord::Base
       create_itineraries_st
     end
 
-    trip_parts.each do |tp|
-      tp.remove_duplicates
-    end
   end
 
   # Shortcut that creates itineraries for all trip parts

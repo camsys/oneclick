@@ -134,30 +134,37 @@ class TripPart < ActiveRecord::Base
         if (!mode.otp_mode.blank?)
           # Transit modes + Bike, Drive, Walk
           timed "fixed" do
-            itins += create_fixed_route_itineraries(mode.otp_mode, mode)
+            new_itins = create_fixed_route_itineraries(mode.otp_mode, mode)
+            non_duplicate_itins = []
+            new_itins.each do |itin|
+              unless self.check_for_duplicates(itin, self.itineraries + itins)
+                non_duplicate_itins << itin
+              end
+            end
+            itins += non_duplicate_itins
           end
         end
       end
     end
 
     self.itineraries << itins
-
     itins
   end
 
-  def remove_duplicates
+  def check_for_duplicates(new_i, existing_itins)
     #Removes Duplicate Walk Trips.
-    first = true
-    self.itineraries.each do |itin|
+    unless new_i.is_walk
+      return false
+    end
+
+    existing_itins.each do |itin|
       if itin.is_walk
-        if first
-          first = false
-        else
-          i = Itinerary.find(itin.id)
-          i.delete
-        end
+        'FOUND ONE the new way DUDE'
+         return true
       end
     end
+
+    false
   end
 
   def timed label, &block
