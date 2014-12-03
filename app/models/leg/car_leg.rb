@@ -22,7 +22,7 @@ module Leg
     end
 
     def trip_steps
-      html = "<div data-toggle='collapse' data-target='#drivingDirections'><a>" + short_description + "</a></div>
+      html = "<div data-toggle='collapse' data-target='#drivingDirections'><a class='drivingDirecionsLink'>" + short_description + "</a></div>
               <div id='drivingDirections' class='panel-body collapse'>"
 
       steps.each do |hash|
