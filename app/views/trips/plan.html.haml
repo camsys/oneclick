@@ -37,3 +37,15 @@
   %meta{name: 'trip_id', content: @trip.id}
   %meta{name: 'itinerary_ids', content: @trip.itineraries.selected.collect{|i| i.id}.join(',')}
   %meta{name: 'locale', content: I18n.locale}
+
+:javascript
+  $(document).ready(function(){
+    $('.drivingDirecionsLink').each(function(index){
+      parentDiv = $(this).parent();
+      parentDivTarget = parentDiv.attr('data-target');
+      parentDiv.attr('data-target', parentDivTarget + index);
+      dataTarget = parentDiv.siblings('#drivingDirections').attr('id');
+      parentDiv.siblings('#drivingDirections').attr('id', dataTarget + index);
+    });
+  });
+
