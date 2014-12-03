@@ -441,6 +441,22 @@ es:
   cannot_change_time_to_after_next_trip_part: "[es]Cannot change trip part time to be after next trip part[/es]"
   cannot_change_time_to_before_prev_trip_part: "[es]Cannot change trip part time to be before previous trip part[/es]"
 
+  #OTP Relative Directions
+  on_to: '[es]on to[/es]'
+  depart: '[es]DEPART[/es]'
+  hard_left: '[es]HARD LEFT[/es]'
+  left: '[es]LEFT[/es]'
+  slightly_left: '[es]SLIGHTLY LEFT[/es]'
+  continue: '[es]CONTINUE[/es]'
+  slightly_right: '[es]SLIGHTLY RIGHT[/es]'
+  right: '[es]RIGHT[/es]'
+  hard_right: '[es]HARD RIGHT[/es]'
+  circle_clockwise: '[es]CIRCLE CLOCKWISE[/es]'
+  circle_counterclockwise: '[es]CIRCLE COUNTERCLOCKWISE[/es]'
+  elevator: '[es]ELEVATOR[/es]'
+  uturn_left: '[es]U-TURN LEFT[/es]'
+  uturn_right: '[es]U-TURN RIGHT[/es]'
+
   #map
   map: '[es]Map[/es]'
   zoom_in: '[es]Zoom in[/es]'

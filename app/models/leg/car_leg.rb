@@ -27,12 +27,12 @@ module Leg
 
       steps.each do |hash|
         html << "<p>"
-        html << hash["relativeDirection"].to_s
-        html << " on to "
+        html << I18n.t(hash["relativeDirection"].downcase.to_sym)
+        html << " #{I18n.t(:on_to)} "
         html << hash["streetName"].to_s
         html << ", "
         html << (hash["distance"] * 0.000621371).round(2).to_s
-        html << " miles </br></p>"
+        html << " #{I18n.t(:miles)} </br></p>"
       end
 
       html << "</div>"
