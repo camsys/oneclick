@@ -92,22 +92,22 @@
               .row
                 -if @trip.outbound_part.is_booked? and @trip.trip_parts.count > 1 and @trip.return_part.is_booked?
                   .confirmation
-                    = "Confirmation #'s': " + @trip.outbound_part.selected_itinerary.booking_confirmation + ", " + @trip.outbound_part.selected_itinerary.booking_confirmation
+                    = "Confirmation #'s': " + @trip.outbound_part.selected_itinerary.booking_confirmation.to_s + ", " + @trip.outbound_part.selected_itinerary.booking_confirmation.to_s
                     -phone_number = @trip.outbound_part.selected_itinerary.service.phone.to_s
                   = "Your trip has been booked.  You will be contacted by Shared Ride to confirm this trip."
                 -elsif @trip.outbound_part.is_booked? and (@trip.trip_parts.count > 1)
                   .confirmation
-                    = "Confirmation #: " + @trip.outbound_part.selected_itinerary.booking_confirmation
+                    = "Confirmation #: " + @trip.outbound_part.selected_itinerary.booking_confirmation.to_s
                     -phone_number = @trip.outbound_part.selected_itinerary.service.phone.to_s
                   = "The departing portion of your trip has been booked.  You will be contacted by Shared Ride to confirm this trip."
                 -elsif @trip.return_part.is_booked? and (@trip.trip_parts.count > 1)
                   .confirmation
-                    = "Confirmation #: " + @trip.return_part.selected_itinerary.booking_confirmation
+                    = "Confirmation #: " + @trip.return_part.selected_itinerary.booking_confirmation.to_s
                     -phone_number = @trip.return_part.selected_itinerary.service.phone.to_s
                   = "The returning portion of your trip has been booked.  You will be contacted by Shared Ride to confirm this trip."
                 -elsif @trip.outbound_part.is_booked?
                   .confirmation
-                    = "Confirmation #': " + @trip.outbound_part.selected_itinerary.booking_confirmation
+                    = "Confirmation #': " + @trip.outbound_part.selected_itinerary.booking_confirmation.to_s
                     -phone_number = @trip.outbound_part.selected_itinerary.service.phone.to_s
                   = "Your trip has been booked.  You will be contacted by Shared Ride to confirm this trip."
                 .confirmation
