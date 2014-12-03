@@ -71,12 +71,23 @@ class TripPlanner
     transfers == -1 ? nil : transfers
   end
 
-  def convert_itineraries(plan)
+  def convert_itineraries(plan, mode_code='mode_transit')
     match_score = -0.3
     match_score_incr = 0.1
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
-      trip_itinerary['mode'] = Mode.transit
+
+      case mode_code.to_s
+        when 'mode_car_name'
+          trip_itinerary['mode'] = Mode.car
+        when 'mode_bicycle_name'
+          trip_itinerary['mode'] = Mode.bicycle
+        when 'mode_walk_name'
+          trip_itinerary['mode'] = Mode.walk
+        else
+          trip_itinerary['mode'] = Mode.transit
+      end
+
       trip_itinerary['duration'] = itinerary['duration'].to_f # in seconds
       trip_itinerary['walk_time'] = itinerary['walkTime']
       trip_itinerary['transit_time'] = itinerary['transitTime']

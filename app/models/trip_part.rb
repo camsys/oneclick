@@ -102,7 +102,8 @@ class TripPart < ActiveRecord::Base
     if modes.empty?
       itineraries.destroy_all
     else
-      itineraries.where('mode_id in (?)', modes.pluck(:id)).destroy_all
+      itins = itineraries.where('mode_id in (?)', modes.pluck(:id))
+      itins.destroy_all
     end
   end
 
@@ -133,7 +134,7 @@ class TripPart < ActiveRecord::Base
         if (!mode.otp_mode.blank?)
           # Transit modes + Bike, Drive, Walk
           timed "fixed" do
-            itins += create_fixed_route_itineraries mode.otp_mode
+            itins += create_fixed_route_itineraries(mode.otp_mode, mode)
           end
         end
       end
@@ -167,7 +168,7 @@ class TripPart < ActiveRecord::Base
   end
 
   # TODO refactor following 4 methods
-  def create_fixed_route_itineraries(mode="TRANSIT,WALK")
+  def create_fixed_route_itineraries(mode="TRANSIT,WALK", mode_code='mode_transit')
     itins = []
     tp = TripPlanner.new
     arrive_by = !is_depart
@@ -188,7 +189,7 @@ class TripPart < ActiveRecord::Base
 
     #TODO: Save errored results to an event log
     if result
-      tp.convert_itineraries(response).each do |itinerary|
+      tp.convert_itineraries(response, mode_code).each do |itinerary|
         serialized_itinerary = {}
 
         itinerary.each do |k,v|

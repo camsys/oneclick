@@ -53,7 +53,7 @@ class ItineraryDecorator < Draper::Decorator
 
   def notes
     case mode.code
-    when 'mode_transit'
+    when 'mode_transit', 'mode_car', 'mode_bicycle', 'mode_walk'
       I18n.t(:no_str)
     when 'mode_taxi'
       I18n.t(:yes_str)
@@ -70,7 +70,7 @@ class ItineraryDecorator < Draper::Decorator
     case mode.code
     when 'mode_rideshare'
       I18n.t(:note)
-    when 'mode_transit', 'mode_taxi', 'mode_paratransit'
+    when 'mode_transit', 'mode_taxi', 'mode_paratransit', 'mode_car', 'mode_bicycle', 'mode_walk'
       I18n.t(:book_ahead)
     else
       I18n.t(:note)
