@@ -178,6 +178,8 @@ class TripDecorator < Draper::Decorator
           case leg.mode
           when Leg::TripLeg::WALK
             summary += "#{I18n.t(leg.mode.downcase)}"
+          when Leg::TripLeg::BICYCLE
+            summary += "#{I18n.t(leg.mode.downcase)}"
           when Leg::TripLeg::CAR
             summary += "#{I18n.t(:drive)}/#{I18n.t(:taxi)}"
           else
