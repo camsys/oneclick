@@ -1,3 +1,8 @@
+%table
+  %tbody
+    %tr
+      %td= t(:provider_trip_email_header).to_s
+
 %h3="Trip request from " + @traveler.name
 
 %hr{style: "height:12px; background:#848484;"}
@@ -88,6 +93,6 @@
 %table
   %tbody
     %tr
-      %td= t(:specific_email_footer).to_s
+      %td= t(:provider_trip_email_footer).to_s
     %tr
       %td= t(:generic_email_footer).to_s.gsub('%{application_name}', Oneclick::Application.config.name).gsub('%{break}', '</br>').html_safe
