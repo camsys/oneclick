@@ -375,6 +375,8 @@ class EcolaneHelpers
 
     Rails.logger.info(url)
 
+    Rails.logger.info(message)
+
     begin
       uri = URI.parse(url)
       case type.downcase
