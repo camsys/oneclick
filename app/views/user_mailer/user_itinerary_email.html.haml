@@ -1,7 +1,4 @@
-%table
-  %tbody
-    %tr
-      %td= t(:user_itinerary_email_header).to_s
+= t(:user_itinerary_email_header).to_s
 
 - unless @comments.blank?
   %h3= t(:comments)
@@ -57,11 +54,4 @@
 
 %hr
 
-%table
-  %tbody
-    %tr
-      %td= t(:user_itinerary_email_footer).to_s
-    %tr
-      %td= t(:generic_email_footer).to_s.gsub('%{application_name}', Oneclick::Application.config.name).gsub('%{break}', '</br>').html_safe
-
-
+= t(:user_itinerary_email_footer).to_s

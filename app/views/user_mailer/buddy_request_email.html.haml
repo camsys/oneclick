@@ -1,7 +1,4 @@
-%table
-  %tbody
-    %tr
-      %td= t(:buddy_request_email_header).to_s
+= t(:buddy_request_email_header).to_s
 
 /=cms_snippet_content('buddy_request_email')
 - user_name = get_user_name(@traveler) 
@@ -22,9 +19,4 @@
 %h4
   = t(:buddy_request_email_step_4).sub('%{name}', user_name)
 
-%table
-  %tbody
-    %tr
-      %td= t(:buddy_request_email_footer).to_s
-    %tr
-      %td= t(:generic_email_footer).to_s.gsub('%{application_name}', Oneclick::Application.config.name).gsub('%{break}', '</br>').html_safe
+= t(:buddy_request_email_footer).to_s

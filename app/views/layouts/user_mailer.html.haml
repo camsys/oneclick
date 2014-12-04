@@ -5,3 +5,6 @@
 
 %br
 = yield
+%br
+
+= t(:generic_email_footer).to_s.gsub('%{application_name}', Oneclick::Application.config.name).gsub('%{break}', '</br> ').html_safe
