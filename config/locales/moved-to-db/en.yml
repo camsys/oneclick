@@ -140,6 +140,7 @@ en:
   create_translation: 'Create Translation'
   key: 'Key'
   send_by_email: 'Send by email'
+  generic_email_header: ''
   generic_email_footer: 'Thank you for using %{application_name} Software. %{break}This email is sent from an email address that is not monitored. Please do not reply to this message. %{break}Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of %{application_name}.'
   feedback_email_header: ''
   feedback_email_footer: ''
