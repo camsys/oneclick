@@ -1,3 +1,7 @@
-%img{src: "#{get_logo_path}"}
+- if translation_exists?("generic_header")
+  = t(:generic_header)
+- else
+  %img{src: "#{get_logo_path}"}
+  
 %br
 = yield
