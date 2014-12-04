@@ -1,1 +1,13 @@
+%table
+  %tbody
+    %tr
+      %td= t(:agency_helping_email_header).to_s
+
 =cms_snippet_content('agency_helping_email')
+
+%table
+  %tbody
+    %tr
+      %td= t(:agency_helping_email_footer).to_s
+    %tr
+      %td= t(:generic_email_footer).to_s.gsub('%{application_name}', Oneclick::Application.config.name).gsub('%{break}', '</br>').html_safe
