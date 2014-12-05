@@ -1,10 +1,10 @@
 %table
   %tr
     %td.itinerary_icons
-      %i.fa.fa-play.mode_icon_formatting{:class => 'start_icon'}
+      = image_tag("#{root_url({locale:''})}assets/start.svg")
     %td.itin_text_container
       .itinerary_text
-        %p= t(:start) + itinerary.trip_part.from_trip_place.name
+        = t(:start) + itinerary.trip_part.from_trip_place.name
       .itinerary_text_small
         = format_time(itinerary.start_time.in_time_zone)
 
@@ -36,9 +36,9 @@
             = ', ' + exact_distance_to_words(leg.distance)
   %tr
     %td.itinerary_icons
-      %i.fa.fa-stop.mode_icon_formatting{:class => 'end_icon'}
+      = image_tag("#{root_url({locale:''})}assets/stop.svg")
     %td.itin_text_container
       .itinerary_text
-        %p= t(:arrive) + itinerary.trip_part.to_trip_place.name
+        = t(:arrive) + itinerary.trip_part.to_trip_place.name
       .itinerary_text_small
         = format_time(itinerary.end_time.in_time_zone)
