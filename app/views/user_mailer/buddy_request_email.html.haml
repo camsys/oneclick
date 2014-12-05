@@ -1,5 +1,5 @@
 = t(:buddy_request_email_header).to_s
-
+%br
 /=cms_snippet_content('buddy_request_email')
 - user_name = get_user_name(@traveler) 
 %h3
@@ -18,5 +18,5 @@
   = t(:buddy_request_email_step_3)
 %h4
   = t(:buddy_request_email_step_4).sub('%{name}', user_name)
-
+%br
 = t(:buddy_request_email_footer).to_s
