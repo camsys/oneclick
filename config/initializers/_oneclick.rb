@@ -86,7 +86,7 @@ Oneclick::Application.configure do
     config.geocoder_components = 'administrative_area:FL|country:US'
     config.map_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
     config.geocoder_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
-    config.open_trip_planner = "http://otp-broward.camsys-apps.com:8081/otp/routers/broward/plan?"
+    config.open_trip_planner = "http://otp-broward.camsys-apps.com:8080/otp/routers/broward/plan?"
     config.transit_respects_ada = false
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Miami"
