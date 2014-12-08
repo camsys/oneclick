@@ -119,7 +119,7 @@ Oneclick::Application.configure do
     config.map_bounds      = [[40.0262999543423,  -76.56372070312499], [39.87970800405549, -76.90189361572266]]
     config.geocoder_bounds = [[40.0262999543423,  -76.56372070312499], [39.87970800405549, -76.90189361572266]]
     config.default_zoom = 12
-    config.open_trip_planner = "http://otpv1-arc.camsys-apps.com:8081/otp/routers/pa/plan?"
+    config.open_trip_planner = "http://otpv1-arc.camsys-apps.com:8082/otp/routers/pa/plan?"
     config.transit_respects_ada = false
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Harrisburg-PA"
