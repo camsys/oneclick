@@ -4,6 +4,7 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  user_guide: "User Guide"
   this_service_is_for: "This service is intended for"
   disabled_missing_info: "persons with disabilities"
   low_income_missing_info: "low income individuals"
@@ -19,7 +20,6 @@ en:
   wheelchair_dependent_missing_info: "persons requiring the use of wheelchairs"
   age_max: "persons no more than %{age} years of age"
   age_min: "persons at least %{age} years of age"
-
 
   only_agency_can_see: "Only %{agency} staff can see this note."
   traveler_notes: "Traveler Notes"
