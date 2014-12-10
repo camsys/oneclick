@@ -314,8 +314,9 @@ class TripPart < ActiveRecord::Base
     unless itins.empty?
       unless ENV['SKIP_DYNAMIC_PARATRANSIT_DURATION']
         begin
-          base_duration = TripPlanner.new.get_drive_time(!is_depart, trip_time, from_trip_place.location.first,
-            from_trip_place.location.last, to_trip_place.location.first, to_trip_place.location.last)
+          base_duration = 1 #Commented out the drive time because it rarely effects the paratransit time and we can reduce an OTP call to save time
+                            # TripPlanner.new.get_drive_time(!is_depart, trip_time, from_trip_place.location.first,
+            #from_trip_place.location.last, to_trip_place.location.first, to_trip_place.location.last)
         rescue Exception => e
           Rails.logger.error "Exception #{e} while getting trip duration."
           base_duration = nil

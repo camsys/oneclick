@@ -9,7 +9,31 @@ class TripPlanner
   
   include ServiceAdapters::RideshareAdapter
 
-  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2)
+  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, try_count=3)
+    try = 1
+    result = nil
+    response = nil
+
+    while try <= try_count
+      result, response = get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode, wheelchair, walk_speed, max_walk_distance)
+      if result
+        break
+      else
+        Rails.logger.info [from, to, trip_datetime, arriveBy, mode, wheelchair, walk_speed, max_walk_distance]
+        Rails.logger.info result
+        Rails.logger.info "Try " + try.to_s + " failed."
+        Rails.logger.info "Trying again..."
+
+      end
+      sleep([try,3].min) #The first time wait 1 second, the second time wait 2 seconds, wait 3 seconds every time after that.
+      try +=1
+    end
+
+    return result, response
+
+  end
+
+  def get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2)
     #walk_speed is defined in MPH and converted to m/s before going to OTP
     #max_walk_distance is defined in miles and converted to meters before going to OTP
 
