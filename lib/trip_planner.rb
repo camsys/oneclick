@@ -9,7 +9,7 @@ class TripPlanner
   
   include ServiceAdapters::RideshareAdapter
 
-  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, try_count=3)
+  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, try_count=Oneclick::Application.config.OTP_retry_count)
     try = 1
     result = nil
     response = nil
@@ -20,7 +20,7 @@ class TripPlanner
         break
       else
         Rails.logger.info [from, to, trip_datetime, arriveBy, mode, wheelchair, walk_speed, max_walk_distance]
-        Rails.logger.info result
+        Rails.logger.info response
         Rails.logger.info "Try " + try.to_s + " failed."
         Rails.logger.info "Trying again..."
 

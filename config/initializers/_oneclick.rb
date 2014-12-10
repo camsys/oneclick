@@ -318,7 +318,7 @@ Oneclick::Application.configure do
 
   config.address_cache_expire_seconds = 3600 # seconds to keep addresses returned from the geocoder in the cache
   config.return_trip_delay_mins = 120   # minutes needed at last trip place before scheduling the return trip
-
+  config.OTP_retry_count = 3            #How many times do we retry getting a response from OTP before giving up.
   if ENV['UI_MODE'] == 'kiosk'
     config.trip_time_ahead_mins = 30
   else
