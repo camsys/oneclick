@@ -170,6 +170,7 @@ protected
     Rails.logger.debug "Parsing WALK leg"
 
     walk = Leg::WalkLeg.new
+    walk.steps = leg['steps']
     return walk
 
   end
@@ -179,6 +180,7 @@ protected
     Rails.logger.debug "Parsing BICYCLE leg"
 
     bicycle = Leg::BicycleLeg.new
+    bicycle.steps = leg['steps']
     return bicycle
 
   end

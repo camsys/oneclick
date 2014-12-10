@@ -10,14 +10,14 @@
 
   - itinerary.get_legs.each do |leg|
     %tr
-      %td.itinerary_icons
+      %td.itinerary_icons{style: "vertical-align:top;"}
         - if leg.respond_to? :agency_id and not leg.agency_id.nil?
           %img{:src => get_service_provider_icon(leg.agency_id, leg.mode)}
         - else
           %img{:src => get_mode_icon(leg.mode)}
       %td.itin_text_container
         .itinerary_text
-          %p= leg.short_description
+          %p= leg.trip_steps
           - if leg.mode == Leg::TripLeg::WALK
             - sidewalk_obstructions = query_sidewalk_feedback_near_one_walk_leg(leg)
             - if sidewalk_obstructions.length > 0

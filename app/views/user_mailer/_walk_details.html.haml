@@ -10,11 +10,11 @@
 
   -itinerary.get_legs.each do |leg|
     %tr
-      %td.itinerary_icons
+      %td.itinerary_icons{style: "vertical-align:top;"}
         %img{:src => get_mode_icon(leg.mode)}
       %td.itin_text_container
         .itinerary_text
-          %p= leg.short_description
+          %p= leg.trip_steps
           - sidewalk_obstructions = query_sidewalk_feedback_near_one_walk_leg(leg)
           - if sidewalk_obstructions.length > 0
             %br

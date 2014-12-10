@@ -4,7 +4,7 @@
   = render :partial => 'trip_plan_summary_header', :locals => { :itinerary => itinerary }
   %div{style: "width:100%;background: white; border-radius: 5px;"}
 
-    - if itinerary.mode.code == 'mode_car'
+    - if itinerary.mode.code == ('mode_car' || 'mode_bicycle' || 'mode_walk')
       %table
         %tr
           %td.itinerary_icons
