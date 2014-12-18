@@ -162,6 +162,8 @@ en:
   traveler_decline_email_footer: ''
   traveler_revoke_email_header: ''
   traveler_revoke_email_footer: ''
+  printer_friendly_header: ''
+  printer_friendly_footer: ''
   email_sent_to: 'An email was sent to %{email_sent_to}'
   no_email_found: 'No email was found'
   send_itinerary_by_email: "Send itinerary by email"
