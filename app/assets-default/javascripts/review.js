@@ -786,9 +786,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var tickLabels = getTickLabels(tripStartTime, tripEndTime, intervalStep);
         if ($('#' + tripPartDivId).length === 0) { //new trip part
             var tripTags = "<div id='" + tripPartDivId + "'class='col-xs-12 well single-trip-part' data-trip-id='" + tripId + "'>";
-
-            //process header
-            header = trip.description.split(' ')[0];
+            isDepartAt ? (header = localeDictFinder['return']) : (header = localeDictFinder['outbound']);
             var tripHeaderTags = addTripHeaderHtml(header, tickLabels, intervalStep, isDepartAt, tripStartTime, tripEndTime, inlineHelperKey, trip.description_without_direction);
             tripTags += tripHeaderTags;
 
