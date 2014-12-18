@@ -397,7 +397,7 @@ module CsHelpers
       asset_path = itinerary.mode.logo_url
     end
 
-    return root_url({locale:''}) + Base.helpers.asset_path(asset_path)
+    return Base.helpers.asset_path(asset_path)
   end
 
   # logos are stored in local file system under dev environment
