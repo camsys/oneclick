@@ -243,4 +243,58 @@ namespace :oneclick do
     # end
     # puts "Read #{success+failed} keys, #{success} successful, #{failed} failed, #{skipped} skipped"
   end
+
+  task print_booking_report: :environment do
+    #Get all new trips from today:
+    puts Time.zone.now
+    puts '=========================================='
+    puts 'Trips Created in last 24 hours.'
+    puts '=========================================='
+    trips = Trip.where("created_at >= ?", Time.zone.now - (3600*25))
+    trips.each do |trip|
+      if trip.is_booked?
+        puts trip.user.name
+        puts 'Trip Id ' + trip.id.to_s
+        puts 'From: ' + trip.origin.raw_address
+        puts 'To: ' + trip.destination.raw_address
+        trip.trip_parts.each do |tp|
+          if tp.is_booked?
+            if tp.is_return_trip
+              puts 'Return Trip:'
+            else
+              puts 'Outbound Trip:'
+            end
+            puts tp.scheduled_time
+            puts tp.selected_itinerary.booking_confirmation
+          end
+        end
+        puts '-------------------------'
+      end
+    end
+
+    puts '=========================================='
+    puts 'Trips scheduled for the next two weeks'
+    puts '=========================================='
+    trip_parts = TripPart.where("scheduled_time >= ? AND scheduled_time <= ?", Time.zone.now.beginning_of_day, Time.zone.now.beginning_of_day + (3600*14*24)).sort_by{|x| x.scheduled_time}
+    trip_parts.each do |tp|
+      if tp.is_booked?
+        puts 'Trip_part id: '  + tp.id.to_s
+        puts tp.trip.user.name
+        puts tp.scheduled_time
+        if tp.is_return_trip
+          puts 'Return Trip'
+          puts tp.trip.destination.raw_address
+          puts tp.trip.origin.raw_address
+        else
+          puts 'Outbound Trip'
+          puts tp.trip.origin.raw_address
+          puts tp.trip.destination.raw_address
+        end
+        puts tp.selected_itinerary.booking_confirmation
+        puts '-----------------------'
+      end
+    end
+
+  end
+
 end
