@@ -46,7 +46,7 @@ module ApplicationHelper
       KIOSK_ICON_DICTIONARY.default = 'travelcon-bus'
       KIOSK_ICON_DICTIONARY[mode]
     else
-      Base.helpers.asset_path(ICON_DICTIONARY[mode])
+      ICON_DICTIONARY[mode]
     end
   end
 
