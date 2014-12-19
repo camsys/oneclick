@@ -1,7 +1,7 @@
 %table
   %tr
     %td.itinerary_icons
-      %img{src: "https://s3.amazonaws.com/oneclick-arc/modes/start.svg", alt: "Start Icon"}
+      %img{src: "https://s3.amazonaws.com/oneclick-arc/modes/start.svg", style: "height:1em;"}
     %td.itin_text_container
       .itinerary_text
         = t(:start) + itinerary.trip_part.from_trip_place.name
@@ -31,7 +31,7 @@
           =[duration_to_words(leg.duration), exact_distance_to_words(leg.distance)].join(', ')
   %tr
     %td.itinerary_icons
-      %img{src: "https://s3.amazonaws.com/oneclick-arc-int/images/stop.svg", alt: "Stop Icon"}
+      %img{src: "https://s3.amazonaws.com/oneclick-arc-int/images/stop.svg", style: "height:1em;"}
     %td.itin_text_container
       .itinerary_text
         = t(:arrive) + itinerary.trip_part.to_trip_place.name
