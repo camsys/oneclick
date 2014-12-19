@@ -1,7 +1,7 @@
 %table
   %tr
     %td.itinerary_icons
-      = image_tag("#{root_url({locale:''})}assets/start.svg")
+      %img{src: "https://s3.amazonaws.com/oneclick-arc-int/images/start.svg", alt: "Start Icon"}
     %td.itin_text_container
       .itinerary_text
         = t(:start) + itinerary.trip_part.from_trip_place.name
@@ -40,7 +40,7 @@
             = ', ' + exact_distance_to_words(leg.distance)
   %tr
     %td.itinerary_icons
-      = image_tag("#{root_url({locale:''})}assets/stop.svg")
+      %img{src: "https://s3.amazonaws.com/oneclick-arc-int/images/stop.svg", alt: "Stop Icon"}
     %td.itin_text_container
       .itinerary_text
         = t(:arrive) + itinerary.trip_part.to_trip_place.name
