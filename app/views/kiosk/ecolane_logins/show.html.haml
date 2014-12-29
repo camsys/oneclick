@@ -33,22 +33,15 @@
           .span3.hidden
 
 :javascript
-  $('input#user_email').click(function(){
-    if (window.cocoa)
-      window.cocoa.openKeyboard();
-  });
+  // window.cocoa = {
+  //   openKeyboard:  function () { console.log('openKeyboard') },
+  //   closeKeyboard: function () { console.log('closeKeyboard') },
+  // };
 
-  $('input#user_email').blur(function(){
-    if (window.cocoa)
-      window.cocoa.closeKeyboard();
-  });
+  $('input#user_service_proxy_external_user_id')
+    .click(function() { if (window.cocoa) window.cocoa.openKeyboard() })
+    .blur(function()  { if (window.cocoa) window.cocoa.closeKeyboard() });
 
-  $('input#user_password').click(function(){
-     if (window.cocoa)
-      window.cocoa.openKeyboard();
-  });
-
-  $('input#user_password').blur(function(){
-    if (window.cocoa)
-      window.cocoa.closeKeyboard();
-  });
+  $('input#user_service_proxy_dob')
+    .click(function() { if (window.cocoa) window.cocoa.openKeyboard() })
+    .blur(function()  { if (window.cocoa) window.cocoa.closeKeyboard() });
