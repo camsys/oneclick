@@ -25,7 +25,8 @@ module CsHelpers
     :sidewalk_obstructions => 'fa fa-comment',
     :stop_assisting => 'fa fa-compass',
     :translations => 'fa fa-language',
-    :multi_od_trip => 'fa fa-table'
+    :multi_od_trip => 'fa fa-table',
+    :user_guide => 'fa fa-book'
   }
 
   def admin_actions
@@ -44,15 +45,16 @@ module CsHelpers
 
   def staff_actions
     [
-      {label: t(:travelers), target: find_travelers_path, icon: ACTION_ICONS[:find_traveler], access: :staff_travelers},
-      {label: t(:agency_profile), target: agency_profile_path, icon: ACTION_ICONS[:find_traveler], access: :show_agency}, #TODO find icon
-      {label: t(:provider_profile), target: provider_profile_path, icon: ACTION_ICONS[:find_traveler], access: :show_provider}, #TODO find icon
-      {label: t(:trips), target: create_trips_path, icon: ACTION_ICONS[:trips], access: :admin_trips},
-      {label: t(:agencies), target: admin_agencies_path, icon: ACTION_ICONS[:agents_agencies], access: :admin_agencies},
-      {label: t(:providers), target: admin_providers_path, icon: ACTION_ICONS[:providers], access: :admin_providers},
-      {label: t(:services), target: services_path, icon: ACTION_ICONS[:services], access: :admin_services},
-      {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports], access: :admin_reports},
-      {label: t(:multi_od_trip), target: create_multi_od_user_trips_path(current_user), icon: ACTION_ICONS[:multi_od_trip], access: MultiOriginDestTrip}
+      {label: t(:travelers), target: find_travelers_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :staff_travelers},
+      {label: t(:agency_profile), target: agency_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_agency}, #TODO find icon
+      {label: t(:provider_profile), target: provider_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_provider}, #TODO find icon
+      {label: t(:trips), target: create_trips_path, window: "", icon: ACTION_ICONS[:trips], access: :admin_trips},
+      {label: t(:agencies), target: admin_agencies_path, window: "", icon: ACTION_ICONS[:agents_agencies], access: :admin_agencies},
+      {label: t(:providers), target: admin_providers_path, window: "", icon: ACTION_ICONS[:providers], access: :admin_providers},
+      {label: t(:services), target: services_path, window: "", icon: ACTION_ICONS[:services], access: :admin_services},
+      {label: t(:reports), target: admin_reports_path, window: "", icon: ACTION_ICONS[:reports], access: :admin_reports},
+      {label: t(:multi_od_trip), target: create_multi_od_user_trips_path(current_user), window: "", icon: ACTION_ICONS[:multi_od_trip], access: MultiOriginDestTrip},
+      {label: t(:user_guide), target: Oneclick::Application.config.user_guide_url, window: "_blank", icon: ACTION_ICONS[:user_guide], access: :user_guide}
     ]
   end
 
@@ -395,7 +397,7 @@ module CsHelpers
       asset_path = itinerary.mode.logo_url
     end
 
-    return root_url({locale:''}) + Base.helpers.asset_path(asset_path)
+    return asset_path
   end
 
   # logos are stored in local file system under dev environment

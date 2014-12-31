@@ -26,6 +26,24 @@ end
 
 #encoding: utf-8
 namespace :oneclick do
+
+  desc "Sets mode icons to point to S3"
+  task :set_mode_icons => :environment do
+    bucket = ENV['AWS_BUCKET'].nil? ? "oneclick-#{Oneclick::Application.config.brand}" : ENV['AWS_BUCKET']
+    full_url = "https://s3.amazonaws.com/#{bucket}/modes/"
+    puts "----------------------------"
+    puts full_url
+    puts "----------------------------"
+
+    Mode.all.each do |mode|
+      old_logo = mode.logo_url.match('\w*(.png)')[0]
+      mode.logo_url = full_url + old_logo
+      if mode.save
+        puts "Mode: #{mode} | Logo: #{mode.logo_url}"
+      end
+    end
+  end
+
   task :seed_data => :environment do
     throw Exception.new("*** Deprecated, just use db:seed task ***")
   end

@@ -4,11 +4,11 @@
   = render :partial => 'trip_plan_summary_header', :locals => { :itinerary => itinerary }
   %div{style: "width:100%;background: white; border-radius: 5px;"}
 
-    - if itinerary.mode.code == 'mode_car'
+    - if itinerary.mode.code == ('mode_car' || 'mode_bicycle' || 'mode_walk')
       %table
         %tr
           %td.itinerary_icons
-            = image_tag("#{root_url({locale:''})}assets/start.svg")
+            %img{src: "https://s3.amazonaws.com/oneclick-arc-int/images/start.png"}
           %td.itin_text_container
             .itinerary_text
               = t(:start) + itinerary.trip_part.from_trip_place.name
@@ -37,7 +37,7 @@
                 =[duration_to_words(leg.duration), exact_distance_to_words(leg.distance)].join(', ')
         %tr
           %td.itinerary_icons
-            = image_tag("#{root_url({locale:''})}assets/stop.svg")
+            %img{src: "https://s3.amazonaws.com/oneclick-arc-int/images/stop.png"}
           %td.itin_text_container
             .itinerary_text
               = t(:arrive) + itinerary.trip_part.to_trip_place.name

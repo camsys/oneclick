@@ -2,6 +2,6 @@
   - available_actions.each do |action|
     - next unless show_action(action)
     %li
-      = link_to action[:target], method: (action[:method] || 'get') do
+      = link_to action[:target], target: action[:window] || "" do
         %i{class: action[:icon]}
         = action[:label] 

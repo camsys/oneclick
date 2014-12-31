@@ -76,6 +76,7 @@ class Ability
       can [:access], :admin_providers
       can [:access], :admin_services
       can [:access], :admin_feedback
+      can [:access], :user_guide
       can [:access, :manage], MultiOriginDestTrip
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
       can :read, Agency
