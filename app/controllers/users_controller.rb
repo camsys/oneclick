@@ -45,21 +45,23 @@ class UsersController < ApplicationController
             to_email = User.where(id: UserRelationship.where(id: id)[0].user_id)[0].email
             from_email = User.where(id: UserRelationship.where(id: id)[0].delegate_id)[0].email
 
-            # if the request is accepted
-            if relationship_value == "3"
-              UserMailer.traveler_confirmation_email(to_email, from_email).deliver
-            # if the request is declined
-            elsif relationship_value == "4"
-              UserMailer.traveler_decline_email(to_email, from_email).deliver
-            # either person revokes buddyship
-            elsif relationship_value == "5"
-              to_email = User.where(id: UserRelationship.where(id: id)[0].user_id)[0].email
-              if @user.id == User.where(id: UserRelationship.where(id: id)[0].delegate_id)[0].id
-                # Requested revokes
-                UserMailer.buddy_revoke_email(to_email, from_email).deliver
-              else
-                # Requester revokes
-                UserMailer.traveler_revoke_email(from_email, to_email).deliver
+            unless UserRelationship.where(id: id)[0].relationship_status_id == value.to_i
+              # if the request is accepted
+              if relationship_value == "3"
+                UserMailer.traveler_confirmation_email(to_email, from_email).deliver
+              # if the request is declined
+              elsif relationship_value == "4"
+                UserMailer.traveler_decline_email(to_email, from_email).deliver
+              # either person revokes buddyship
+              elsif relationship_value == "5"
+                to_email = User.where(id: UserRelationship.where(id: id)[0].user_id)[0].email
+                if @user.id == User.where(id: UserRelationship.where(id: id)[0].delegate_id)[0].id
+                  # Requested revokes
+                  UserMailer.buddy_revoke_email(to_email, from_email).deliver
+                else
+                  # Requester revokes
+                  UserMailer.traveler_revoke_email(from_email, to_email).deliver
+                end
               end
             end
           end
