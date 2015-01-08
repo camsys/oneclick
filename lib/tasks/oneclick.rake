@@ -130,17 +130,10 @@ namespace :oneclick do
     require 'open-uri'
     require 'csv'
     filename  = Oneclick::Application.config.poi_file
-    # FILENAME = File.join(Rails.root, 'db', 'arc_poi_data', 'CommFacil_20131015.txt')
 
     puts
     puts "Loading POI and POI TYPES from file '#{filename}'"
     puts "Starting at: #{Time.now}"
-
-    # Delete existing POIs by truncating the tables
-    #%w{poi_types pois}.each do |table_name|
-    #  puts "Truncating table #{table_name}"
-    #  ActiveRecord::Base.connection.execute("TRUNCATE TABLE #{table_name}")
-    #end
 
     count_good = 0
     count_bad = 0
@@ -152,7 +145,7 @@ namespace :oneclick do
 
       CSV.foreach(f, {:col_sep => ",", :headers => true}) do |row|
 
-        poi_type_name = row[13]
+        poi_type_name = row[9]
         if poi_type_name.blank?
           poi_type_name = 'Unknown'
         end
@@ -165,24 +158,24 @@ namespace :oneclick do
         if poi_type
 
           #If we have already created this POI, don't create it again.
-          if Poi.exists?(name: row[3], poi_type: poi_type, city: row[6])
+          if Poi.exists?(name: row[2], poi_type: poi_type, city: row[6])
             puts "Possible duplicate: #{row}"
             count_possible_existing += 1
             next
           end
           p = Poi.new
           p.poi_type = poi_type
-          p.lon = row[2]
+          p.lon = row[0]
           p.lat = row[1]
-          p.name = row[3]
-          p.address1 = row[4]
-          p.address2 = row[5]
-          p.city = row[6]
-          p.state = row[7]
-          p.zip = row[8]
-          p.county = row[12]
+          p.name = row[2]
+          p.address1 = row[3]
+          p.address2 = row[4]
+          p.city = row[5]
+          p.state = row[6]
+          p.zip = row[7]
+          p.county = row[8]
           begin
-            if p.name && row[2] != "0.0"
+            if p.name && row[0] != "0.0"
               p.save!
               count_good += 1
             else
