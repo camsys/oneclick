@@ -1,4 +1,4 @@
-html, body, .kiosk-content-wrapper-fixed-size {
+body, .kiosk-content-wrapper-fixed-size {
   width: 1280px;
   height: 1024px;
   margin: 0;
@@ -10,7 +10,7 @@ html, body, .kiosk-content-wrapper-fixed-size {
   }
 }
 
-html, body {
+body {
   background-color: #ccc;
 }
 
@@ -18,6 +18,18 @@ html, body {
   overflow: hidden;
   position: relative;
 }
+
+html body.print {
+  overflow: initial;
+  height: initial;
+  width: initial;
+  background: white;
+
+  .kiosk-content-wrapper-fixed-size {
+    width: 100%;
+  }
+}
+
 // These are the bootstrap original sizes
 // h1 { font-size: 36px; line-height: 40px; }
 // h2 { font-size: 30px; line-height: 40px; }
@@ -524,8 +536,3 @@ td.left, th.left {
 @import 'call_window';
 @import 'tap_timeout';
 @import 'errors';
-
-body.print {
-  overflow: initial;
-  height: initial;
-}
