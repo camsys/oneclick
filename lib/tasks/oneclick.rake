@@ -127,6 +127,7 @@ namespace :oneclick do
   end
 
   task load_pois: :environment do
+    require 'open-uri'
     require 'csv'
     filename  = Oneclick::Application.config.poi_file
     # FILENAME = File.join(Rails.root, 'db', 'arc_poi_data', 'CommFacil_20131015.txt')
@@ -147,7 +148,7 @@ namespace :oneclick do
     count_poi_type = 0
     count_possible_existing = 0
 
-    File.open(filename) do |f|
+    open(filename) do |f|
 
       CSV.foreach(f, {:col_sep => ",", :headers => true}) do |row|
 
