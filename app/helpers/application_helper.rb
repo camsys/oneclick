@@ -33,7 +33,7 @@ module ApplicationHelper
   end
 
   def get_logo_path
-    return root_url({locale: ''}) + Base.helpers.asset_path(get_logo)
+    return get_logo
   end
 
   def get_logo_text
