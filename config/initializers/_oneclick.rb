@@ -349,6 +349,8 @@ Oneclick::Application.configure do
 
   # I18n.available_locales << :tags # when this locale is enabled, display translation_tags instead of translated text
   config.translation_tag_locale_text = 'Tags'
+
+  config.service_max_allow_advanced_book_days = 365 # 1 year
 end
 
 class String

@@ -184,6 +184,18 @@ module ApplicationHelper
     time_string
   end
 
+  def day_range_to_words(start_time_in_seconds, end_time_in_seconds)
+    return t(:n_a) unless (
+      start_time_in_seconds && end_time_in_seconds && 
+      (end_time_in_seconds >= start_time_in_seconds)
+    )
+
+    start_days = start_time_in_seconds/3600/24.round
+    end_days = end_time_in_seconds/3600/24.round
+
+    start_days.to_s + " " + I18n.translate(:to) + " " + I18n.translate(:day, count: end_days)
+  end
+
   def get_boolean(val)
     if val
       return "<i class='fa-check'></i>".html_safe

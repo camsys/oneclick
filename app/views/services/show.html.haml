@@ -110,12 +110,9 @@
             = t(:advance_notice_required)
             = add_tooltip("advance_notice_required_help")
         .panel-body
-          -if @service.advanced_notice_minutes > 0
-            =t(:service_notice_required) + " " ## TODO Interpolate
-            %b= duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
-            =" " + t(:service_notice_str) + "."
-          -else
-            =t(:service_notice_not_required) + "."
+          %b
+            = day_range_to_words(@service.advanced_notice_minutes*60, @service.decorated_max_advanced_book_minutes*60)
+          =" " + t(:advance_notice_required).downcase + "."
           - # booking cut off times
           %table.ALTtable
             %tr

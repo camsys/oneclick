@@ -75,7 +75,8 @@
   ['default_trip_head_mins', 120, "desc"],    #How many minutes into the future should the default outbound trip time be? (It is rounded to the next 15 min interval)
   ['config.remote_read_timeout_seconds', 10, "desc"],    # seconds to wait before timing out reading a page through a web request
   ['config.remote_request_timeout_seconds', 10 , "desc"],# seconds to wait for a remote web site/api to respond to a request
-  ['translation_tag_locale_text', 'Tags', "desc"]]
+  ['translation_tag_locale_text', 'Tags', "desc"]
+  ['service_max_allow_advanced_book_days', 365, "desc"]]
 
   puts "Initializing Configs"
   configs.each do |config|

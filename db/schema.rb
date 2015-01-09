@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141015031219) do
+ActiveRecord::Schema.define(version: 201409261201524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -406,6 +406,7 @@ ActiveRecord::Schema.define(version: 20141015031219) do
     t.text     "public_comments_old"
     t.text     "private_comments_old"
     t.string   "logo"
+    t.integer  "max_advanced_book_minutes",                default: 0,     null: false
   end
 
   create_table "services_users", id: false, force: true do |t|
@@ -424,20 +425,6 @@ ActiveRecord::Schema.define(version: 20141015031219) do
     t.string   "status",     default: "pending", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "temp_translations", id: false, force: true do |t|
-    t.integer  "id"
-    t.string   "key"
-    t.text     "interpolations"
-    t.boolean  "is_proc"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "locale"
-    t.text     "value"
-    t.boolean  "is_html"
-    t.boolean  "complete"
-    t.boolean  "is_list"
   end
 
   create_table "translations", force: true do |t|

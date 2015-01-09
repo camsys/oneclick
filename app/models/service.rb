@@ -139,6 +139,46 @@ class Service < ActiveRecord::Base
       (notice_days_part * (60 * 24)) + (notice_hours_part * 60) + value.to_i)
   end
 
+  def max_advanced_book_days_part
+    max_advanced_book_minutes / (60 * 24)
+  end
+
+  def max_advanced_book_days_part= value
+    update_attributes(max_advanced_book_minutes:
+                      (value.to_i * (60 * 24)) + (max_advanced_book_hours_part * 60) + max_advanced_book_minutes_part)
+  end
+
+  def max_advanced_book_hours_part
+    (max_advanced_book_minutes / 60) % 24
+  end
+
+  def max_advanced_book_hours_part= value
+    update_attributes(max_advanced_book_minutes:
+      (max_advanced_book_days_part * (60 * 24)) + (value.to_i * 60) + max_advanced_book_minutes_part)
+  end
+
+
+  def max_advanced_book_minutes_part
+    max_advanced_book_minutes % 60
+  end
+
+  def max_advanced_book_minutes_part= value
+    update_attributes(max_advanced_book_minutes:
+      (max_advanced_book_days_part * (60 * 24)) + (max_advanced_book_hours_part * 60) + value.to_i)
+  end
+
+  def decorated_max_advanced_book_minutes
+    if max_advanced_book_minutes > 0
+      max_advanced_book_minutes
+    else 
+      Service.max_allow_advanced_book_days * 24 * 60
+    end
+  end
+
+  def self.max_allow_advanced_book_days
+    Oneclick::Application.config.service_max_allow_advanced_book_days || 365
+  end
+
   # NOTE: also merge destroy attribute for records that exist but not marked keep
   def check_reject_for_service_coverage_map attributes
     keep = attributes['keep_record'].to_s == "1"
