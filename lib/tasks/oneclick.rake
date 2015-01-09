@@ -35,7 +35,7 @@ namespace :oneclick do
     puts full_url
     puts "----------------------------"
 
-    Mode.all.each do |mode|
+    Mode.unscoped.each do |mode|
       old_logo = mode.logo_url.match('\w*(.png)')[0]
       mode.logo_url = full_url + old_logo
       if mode.save
