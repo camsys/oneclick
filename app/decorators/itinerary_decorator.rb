@@ -58,7 +58,8 @@ class ItineraryDecorator < Draper::Decorator
     when 'mode_taxi'
       I18n.t(:yes_str)
     when 'mode_paratransit'
-      h.duration_to_words(service.advanced_notice_minutes*60, suppress_minutes: true, days_only: true)
+      # h.duration_to_words(service.advanced_notice_minutes*60, suppress_minutes: true, days_only: true)
+      h.day_range_to_words(service.advanced_notice_minutes*60, service.max_advanced_book_minutes*60)
     when 'mode_rideshare'
       h.t(:possible_rideshares, count: ride_count) + ' ' + h.t(:view_details)
     else

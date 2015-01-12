@@ -193,7 +193,7 @@ module ApplicationHelper
     start_days = start_time_in_seconds/3600/24.round
     end_days = end_time_in_seconds/3600/24.round
 
-    start_days.to_s + " " + I18n.translate(:to) + " " + I18n.translate(:day, count: end_days)
+    start_days.to_s + " " + I18n.translate(:to).downcase + " " + I18n.translate(:day, count: end_days)
   end
 
   def get_boolean(val)

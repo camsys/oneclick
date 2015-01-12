@@ -111,7 +111,7 @@
             = add_tooltip("advance_notice_required_help")
         .panel-body
           %b
-            = day_range_to_words(@service.advanced_notice_minutes*60, @service.decorated_max_advanced_book_minutes*60)
+            = day_range_to_words(@service.advanced_notice_minutes*60, @service.max_advanced_book_minutes*60)
           =" " + t(:advance_notice_required).downcase + "."
           - # booking cut off times
           %table.ALTtable

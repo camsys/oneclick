@@ -317,6 +317,7 @@ class EspReader
 
       service.service_type = ServiceType.find_by_code('paratransit')
       service.advanced_notice_minutes = 0  #TODO: Need to get this from ESP
+      service.max_advanced_book_minutes = 0  #TODO: Need to get this from ESP
       service.active = true
       esp_provider = get_esp_provider(esp_service[@service_idx['ProviderID']])
 

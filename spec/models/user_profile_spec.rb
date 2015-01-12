@@ -16,6 +16,7 @@ describe UserProfile do
     [test_timezones[1]].each do |tz|
       describe "in timezone #{tz}" do
         it "has eligible services for traveler and trip" do
+          pending "to-refactor"
           # Jut leaving this here as an example of how to print out info about the current example
           # puts
           # puts example.metadata[:full_description].to_s

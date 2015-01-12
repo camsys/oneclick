@@ -336,8 +336,13 @@ class EligibilityService
         # get advanced notice days
         notice_days = 0
         notice_mins = service.advanced_notice_minutes
-        unless notice_mins.blank?
+        max_advanced_mins = service.max_advanced_book_minutes
+        max_advanced_days = 0
+        if !notice_mins.blank?
           notice_days = notice_mins /(24*60).round
+        end
+        if !max_advanced_mins.blank?
+          max_advanced_days = max_advanced_mins /(24*60).round
         end
 
         trip_created_wday = trip_part.created_at.wday
@@ -345,7 +350,7 @@ class EligibilityService
         # check if after booking_cut_off_time
         days_after_cut_off_time = 0
         booking_cut_off_time = service.booking_cut_off_times.where(day_of_week: trip_created_wday, service_id: service.id).first
-        unless booking_cut_off_time.nil?
+        if !booking_cut_off_time.blank?
           cut_off_seconds = booking_cut_off_time.cut_off_seconds
           trip_created_seconds = trip_part.created_at.seconds_since_midnight
 
@@ -355,13 +360,18 @@ class EligibilityService
         end
 
         # compare if scheduled trip time is earlier than earliest allowable trip start time
-        if trip_part.trip_time < ((trip_part.created_at + (notice_days + days_after_cut_off_time).days).midnight)
+        if trip_part.trip_time < (trip_part.created_at + (notice_days + days_after_cut_off_time).days).midnight
           itinerary['match_score'] += 0.01
           itinerary['too_late'] = true
         end
+
+        if trip_part.trip_time > (trip_part.created_at + (max_advanced_days+1).days).midnight
+          itinerary['match_score'] += 0.01
+          itinerary['too_early'] = true
+        end
       end
 
-      if itinerary['too_late'] != true
+      if (itinerary['too_late'] != true && itinerary['too_early'] != true)
         eligible_itineraries << itinerary
       end
     end

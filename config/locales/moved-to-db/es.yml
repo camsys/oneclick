@@ -592,6 +592,8 @@ es:
   trip_outside_service_hours: "[es274]This trip occurs outside the normal hours for this service.[/es]"
   trip_insufficient_notice_a: "[es275]This trip must be booked '[/es]"
   trip_insufficient_notice_b: "[es294]in advance.[/es]"
+  trip_max_advanced_book_notice_a: "[es]This trip can only be booked within [/es]"
+  trip_max_advanced_book_notice_b: "[es] in advance.[/es]"
   more_information_required: "[es294]More information is needed.[/es]"
   trip_needs_more_accommodations: "[es360]These accommodations are not met by this service[/es]"
   service_notice_not_required: "[es240]This service does not require advanced notice to book a trip[/es]"
@@ -690,6 +692,7 @@ es:
   this_month: "Este mes"
   today: "Hoy"
   yesterday: "Ayer"
+  days: '[es]days[/es]'
   ago: " hace"
   new_esp_successfully_uploaded: "New ESP File Successfully Uploaded"
   thanks_for_the_feedback: "[es330]Thank you for your feedback![/es]"
@@ -813,6 +816,7 @@ es:
   valid_time_msg: "[es]must be a valid time[/es]"
   presence_msg: "[es]can't be blank[/es]"
   before_msg: "[es]must be before [/es]"
+  advanced_book_day_range_msg: "[es]Advanced booking days: please make sure day range is valid.[/es]"
 
   locales:
     en: "English"

@@ -116,17 +116,17 @@
             = add_tooltip("advance_notice_required_help")
         .panel-body
           - adv_notice_days_total = @service.advanced_notice_minutes/60/24.round
-          - max_adv_book_days_total = @service.decorated_max_advanced_book_minutes/60/24.round
+          - max_adv_book_days_total = @service.max_advanced_book_minutes/60/24.round
           - max_allow_adv_book_days = Service.max_allow_advanced_book_days
           %input.text-right{type: "number", min: 0, max: max_allow_adv_book_days,
               value: adv_notice_days_total,
               name: "service[notice_days_part]"}
-          = t(:to)
+          = t(:to).downcase
           %input.text-right{type: "number", min: 0, max: max_allow_adv_book_days,
               value: max_adv_book_days_total,
               name: "service[max_advanced_book_days_part]"}
           %b 
-            = t(:days)
+            = t(:days).downcase
           - # currently only use advanced_notice_days, may change back to days/hours/minutes
           /%input.text-right{type: "number", min: 0, max: 23,
           /    value: (minutes_total / 60) % 24,

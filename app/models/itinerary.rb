@@ -158,7 +158,7 @@ class Itinerary < ActiveRecord::Base
   def notes_count
     [(missing_information ? 1 : 0), 
     (accommodation_mismatch ? 1 : 0),
-    ((date_mismatch or time_mismatch or too_late) ? 1 : 0)].sum
+    ((date_mismatch or time_mismatch or too_late or too_early) ? 1 : 0)].sum
   end
 
   def service_name

@@ -55,6 +55,10 @@
       %h4
         %i.fa.fa-calendar
         = t(:trip_insufficient_notice_a) + itinerary.service.human_readable_advanced_notice + t(:trip_insufficient_notice_b)
+    -if itinerary.too_early
+      %h4
+        %i.fa.fa-calendar
+        = t(:trip_max_advanced_book_notice_a) + itinerary.service.human_readable_max_allow_advanced_notice + t(:trip_max_advanced_book_notice_b)
     -if itinerary.date_mismatch or itinerary.time_mismatch
       %h4
         %i.fa.fa-calendar

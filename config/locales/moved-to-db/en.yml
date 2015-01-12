@@ -615,6 +615,8 @@ en:
   trip_outside_service_hours: "This trip occurs outside the normal hours for this service."
   trip_insufficient_notice_a: "This trip must be booked "
   trip_insufficient_notice_b: " in advance."
+  trip_max_advanced_book_notice_a: "This trip can only be booked within "
+  trip_max_advanced_book_notice_b: " in advance."
   more_information_required: "More information is needed."
   trip_needs_more_accommodations: "These accommodations are not met by this service"
   service_notice_not_required: "This service does not require advanced notice to book a trip"
@@ -714,6 +716,7 @@ en:
   this_month: "This month"
   today: "Today"
   yesterday: "Yesterday"
+  days: 'days'
   ago: " ago"
   didn_t_receive_confirmation_instructions: "Didn't receive confirmation instructions?"
   didn_t_receive_unlock_instructions: "Didn't receive unlock instructions?"
@@ -838,6 +841,7 @@ en:
   valid_time_msg: "must be a valid time"
   presence_msg: "can't be blank"
   before_msg: "must be before "
+  advanced_book_day_range_msg: "Advanced booking days: please make sure day range is valid."
 
   date:
     abbr_day_names:
