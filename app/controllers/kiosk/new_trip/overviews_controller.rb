@@ -32,7 +32,7 @@ class Kiosk::NewTrip::OverviewsController < Kiosk::NewTrip::BaseController
         trip: {}
       }
     else
-      render json: @trip_proxy, status: :unprocessable_entity
+      render json: { trip_proxy: @trip_proxy, trip: @trip, errors: @trip.errors }, status: :unprocessable_entity
     end
   end
 end
