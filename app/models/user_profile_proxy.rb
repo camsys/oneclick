@@ -72,7 +72,7 @@ class UserProfileProxy < Proxy
     elsif type == 'date'
 
       # TODO We probably need a separate datatype for age
-      #Note, Chronic.parse returns nil for value = "false"
+      # Note, Chronic.parse returns nil for value = "false"
       user_char_value = user_characteristic.value unless user_characteristic.nil?
       if user_characteristic and !user_char_value.blank? and user_char_value.split('-').length < 3
         user_char_value = "12-31-#{user_char_value.split('-')[0]}"
@@ -96,8 +96,11 @@ class UserProfileProxy < Proxy
       elsif type == 'integer' # All other cases, just pass value (numbers and dates are already internationalized)
         ret = user_characteristic.value
       elsif type == 'date'
-        date = Chronic.parse(user_characteristic.value)
-        ret = date.nil? ? :no_answer_str : date.year.to_s
+        user_char_value = user_characteristic.value unless user_characteristic.nil?
+        if user_characteristic and !user_char_value.blank? and user_char_value.split('-').length < 3
+          user_char_value = "12-31-#{user_char_value.split('-')[0]}"
+        end
+        ret = (user_characteristic.nil? || Chronic.parse(user_char_value).nil?) ? nil : Chronic.parse(user_char_value).year.to_s   
       end
 
       return ret
