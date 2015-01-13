@@ -82,17 +82,14 @@ class Poi < GeocodedAddress
     Rails.logger.info "POI Loading Finished"
 
     sub_pairs = {
-      "%{count_poi_type}" => "#{count_poi_type}",
-      "%{count_good}" => "#{count_good}",
-      "%{count_failed}" => "#{count_failed}",
-      "%{count_bad}" => "#{count_bad}",
-      "%{count_possible_existing}" => "#{count_possible_existing}" 
+      count_poi_type: count_poi_type,
+      count_good: count_good,
+      count_failed: count_failed,
+      count_bad: count_bad,
+      count_possible_existing: count_possible_existing
     }
 
-    summary_msg = I18n.t(:pois_load_summary)
-    sub_pairs.each {|k, v| summary_msg.sub k.to_s, v.to_s}
-
-    summary_msg
+    I18n.t(:pois_load_summary) % sub_pairs
   end
 
   def to_s
