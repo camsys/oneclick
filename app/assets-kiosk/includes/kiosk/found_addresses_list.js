@@ -208,7 +208,7 @@ jQuery(function($) {
             'CACHED_ADDRESS_TYPE',
             'PLACES_TYPE',
             'RAW_ADDRESS_TYPE',
-            'PLACES_AUTOCOMPLETE_',
+            'PLACES_AUTOCOMPLETE_TYPE',
             'KIOSK_LOCATION_TYPE',
         ]
 
