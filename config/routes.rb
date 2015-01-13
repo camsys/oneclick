@@ -292,6 +292,8 @@ Oneclick::Application.routes.draw do
       get '/geocode' => 'util#geocode'
       get '/raise' => 'util#raise'
       get '/services' => 'util#services'
+      get '/settings' => 'util#settings'
+      patch '/load_pois' => 'pois#load_pois'
       get '/' => 'admin_home#index'
       resource :feedback
       resources :sidewalk_obstructions, :only => [:index] do

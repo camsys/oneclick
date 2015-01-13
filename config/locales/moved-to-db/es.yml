@@ -479,6 +479,15 @@ es:
   uturn_left: '[es]U-TURN LEFT[/es]'
   uturn_right: '[es]U-TURN RIGHT[/es]'
 
+  # Admin settings
+  settings: '[es]Settings[/es]'
+  load_pois: '[es]Load POIs[/es]'
+  load_pois_notes: '[es]Refer to 1-Click Deployment Document on file specfications.[/es]'
+  select_pois_file_to_upload: '[es]Select POIs file (.csv)[/es]'
+  pois_file_not_csv: '[es]The file is not in CSV format.[es]'
+  pois_load_summary: "[es]Loaded %{count_poi_type} POI Types and %{count_good} POIs. %{count_bad} bad were skipped, %{count_failed} failed to save, %{count_possible_existing} possible existing.[/es]"
+  
+
   #map
   map: '[es]Map[/es]'
   zoom_in: '[es]Zoom in[/es]'

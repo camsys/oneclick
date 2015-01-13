@@ -25,9 +25,9 @@ class Admin::UtilController < Admin::BaseController
     end
   end
 
-  def raise
-    raise (params[:string] || 'Raising an exception')
-  end
+  #def raise
+  #  raise (params[:string] || 'Raising an exception')
+  #end
 
   class App
     include ActiveModel::AttributeMethods
@@ -82,6 +82,10 @@ class Admin::UtilController < Admin::BaseController
         )
       end
     end
+  end
+
+  def settings
+    authorize! :settings, :util
   end
 
 end
