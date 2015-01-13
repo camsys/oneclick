@@ -10,7 +10,7 @@ jQuery(function($) {
         this.$element
             .on('focus', $.proxy(this.focus, this))
         // .on('blur',     $.proxy(this.blur, this))
-        .on('keypress', $.proxy(this.keypress, this))
+            .on('keypress', $.proxy(this.keypress, this))
             .on('keyup', $.proxy(this.keyup, this))
 
         if (this.eventSupported('keydown')) {
@@ -83,9 +83,9 @@ jQuery(function($) {
     };
 
     window.setupPlacesSearchTypeahead = function(locationName, markerName) {
-        var $placeField = $('#trip_proxy_' + locationName + '_place'),
-            $selectedTypeField = $('#' + locationName + '_place_selected_type'),
-            $selectedField = $('#' + locationName + '_place_selected');
+        var $placeField        = $('#trip_proxy_' + locationName + '_place')
+          , $selectedTypeField = $('#' + locationName + '_place_selected_type')
+          , $selectedField     = $('#' + locationName + '_place_selected');
 
         $placeField.on('change', function() {
             $selectedTypeField.val('').change();
@@ -188,6 +188,7 @@ jQuery(function($) {
                 }
 
                 setTimeout(function() {
+                    window.setAddressObject(locationName, item);
                     // Update the UI
                     $selectedTypeField.val(item.type).change();
                     $selectedField.val(item.id).change();
@@ -196,6 +197,28 @@ jQuery(function($) {
                 return item.name;
             }
         });
+    };
+
+    window.setAddressObject = function(locationName, item) {
+        var $objectField = $('#trip_proxy_' + locationName + '_place_object');
+
+        var type_map = [
+            null,
+            'POI_TYPE',
+            'CACHED_ADDRESS_TYPE',
+            'PLACES_TYPE',
+            'RAW_ADDRESS_TYPE',
+            'PLACES_AUTOCOMPLETE_',
+            'KIOSK_LOCATION_TYPE',
+        ]
+
+        item.type_name = type_map[item.type];
+
+        if (!item.raw_address)  item.raw_address  = item.addr;
+        if (!item.address)      item.address      = item.addr;
+        if (!item.address1)     item.address1     = item.addr;
+
+        $objectField.val(JSON.stringify(item))
     };
 
     // User has selected an alternate address in the list

@@ -6,6 +6,7 @@
   .fadeout
 
   = f.input :to_place, :class => "inline", :label => t(:to) do
+    = f.hidden_field :to_place_object
     = f.text_field :to_place, :placeholder => t(:enter_to), :id => "trip_proxy_to_place", :class => "no-bottom-margin ajax-typeahead input-large address", :autocomplete => "off", :data => {:link => search_kiosk_user_trips_path, :provide => "typeahead"}
     = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
     = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"

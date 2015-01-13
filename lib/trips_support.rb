@@ -25,12 +25,12 @@ module TripsSupport
   CACHED_PLACES_ADDRESSES_KEY = 'CACHED_PLACES_ADDRESSES_KEY'
 
   # Constants for type of place user has selected
-  POI_TYPE = "1"
-  CACHED_ADDRESS_TYPE = "2"
-  PLACES_TYPE = "3"
-  RAW_ADDRESS_TYPE = "4"
+  POI_TYPE                 = '1'
+  CACHED_ADDRESS_TYPE      = '2'
+  PLACES_TYPE              = '3'
+  RAW_ADDRESS_TYPE         = '4'
   PLACES_AUTOCOMPLETE_TYPE = '5'
-  KIOSK_LOCATION_TYPE = '6'
+  KIOSK_LOCATION_TYPE      = '6'
 
   # Set the default travel time/date to x mins from now
   def default_trip_time

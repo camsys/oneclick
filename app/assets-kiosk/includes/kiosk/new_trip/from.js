@@ -18,6 +18,7 @@ jQuery(function($) {
         // Update the UI
         $('#from_place_selected_type').attr('value', item.type);
         $('#from_place_selected').attr('value', item.id);
+        window.setAddressObject('from', item);
         $('#trip_proxy_from_place').val(item.addr);
         $('#trip_proxy_use_current_location').val('yes');
         $('.js-trip-wizard-form').submit();

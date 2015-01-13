@@ -29,41 +29,41 @@ class TripPlace < GeocodedAddress
     case j['type_name']
     when 'PLACES_TYPE'
       self.update_attributes(
-        place_id: j['id'],
-        name: j['name'],
-        address1: j['address1'],
-        address2: j['address2'],
-        city: j['city'],
-        state: j['state'],
-        zip: j['zip'],
-        county: j['county'],
-        lat: j['lat'],
-        lon: j['lon'],
+        place_id:    j['id'],
+        name:        j['name'],
+        address1:    j['address1'],
+        address2:    j['address2'],
+        city:        j['city'],
+        state:       j['state'],
+        zip:         j['zip'],
+        county:      j['county'],
+        lat:         j['lat'],
+        lon:         j['lon'],
         raw_address: j['full_address'])
-    when 'CACHED_ADDRESS_TYPE'
+    when 'CACHED_ADDRESS_TYPE', 'KIOSK_LOCATION_TYPE'
       self.update_attributes(
-        name: j['name'],
-        address1: j['address1'],
-        address2: j['address2'],
-        city: j['city'],
-        state: j['state'],
-        zip: j['zip'],
-        county: j['county'],
-        lat: j['lat'],
-        lon: j['lon'],
+        name:        j['name'],
+        address1:    j['address1'],
+        address2:    j['address2'],
+        city:        j['city'],
+        state:       j['state'],
+        zip:         j['zip'],
+        county:      j['county'],
+        lat:         j['lat'],
+        lon:         j['lon'],
         raw_address: j['raw_address'])
     when 'POI_TYPE'
       self.update_attributes(
-        poi_id: j['id'],
-        name: j['name'],
-        address1: j['address1'],
-        address2: j['address2'],
-        city: j['city'],
-        state: j['state'],
-        zip: j['zip'],
-        county: j['county'],
-        lat: j['lat'],
-        lon: j['lon'],
+        poi_id:      j['id'],
+        name:        j['name'],
+        address1:    j['address1'],
+        address2:    j['address2'],
+        city:        j['city'],
+        state:       j['state'],
+        zip:         j['zip'],
+        county:      j['county'],
+        lat:         j['lat'],
+        lon:         j['lon'],
         raw_address: j['full_address'])
     when 'PLACES_AUTOCOMPLETE_TYPE'
       update_address_attributes_from_google(j['id'], j['address'])
