@@ -57,13 +57,4 @@
   %meta{name: 'locale', content: I18n.locale}
 
 :javascript
-  $(document).ready(function(){
-    $('.drivingDirectionsLink').each(function(index){
-      parentDiv = $(this).parent();
-      parentDivTarget = parentDiv.attr('data-target');
-      parentDiv.attr('data-target', parentDivTarget + index);
-      dataTarget = parentDiv.siblings('#drivingDirections').attr('id');
-      parentDiv.siblings('#drivingDirections').attr('id', dataTarget + index);
-      $(this).click();
-    });
-  });
+  differentiateTurnByTurn("true");

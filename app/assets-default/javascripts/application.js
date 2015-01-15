@@ -108,3 +108,17 @@ function createPopover(node_id) {
   });
 }
 
+function differentiateTurnByTurn(click) {
+  $('.drivingDirectionsLink').each(function(index){
+    parentDiv = $(this).parent();
+    parentDivTarget = parentDiv.attr('data-target');
+    parentDiv.attr('data-target', parentDivTarget + index);
+    dataTarget = parentDiv.siblings('#drivingDirections').attr('id');
+    parentDiv.siblings('#drivingDirections').attr('id', dataTarget + index);
+
+    if (click == "true") {
+      $(this).click();
+    }
+  });
+}
+

@@ -227,4 +227,8 @@
       });
     });
 
+    $('#itinerary_modal').on('show.bs.modal', function(){
+      differentiateTurnByTurn("false");
+    });
+
     $('#tripContainer').tooltip({selector: '.trip-mode-cost div'})

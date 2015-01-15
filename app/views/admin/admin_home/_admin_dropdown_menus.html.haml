@@ -1,5 +1,5 @@
 .btn-group
-  %button.btn.action-button.dropdown-toggle{"type" => "button", "data-toggle" => "dropdown", "aria-expanded" => "false"}
+  %button.btn.action-button.dropdown-toggle{"type" => "button", "data-toggle" => "dropdown", "aria-expanded" => "false", "id" => "#{available_actions == staff_actions ? 'staff_menu' : 'admin_menu'}"}
     %i.fa.fa-wrench
     = title
     %b.caret

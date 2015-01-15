@@ -150,16 +150,22 @@ en:
   user_itinerary_email_footer: ''
   user_trip_email_header: ''
   user_trip_email_footer: ''
+  agency_helping_email:   "An agency is now helping you plan trips."
   agency_helping_email_header: ''
   agency_helping_email_footer: ''
+  buddy_request_email:   "A traveler has requested that you help them plan trips."
   buddy_request_email_header: ''
   buddy_request_email_footer: ''
+  buddy_revoke_email:   "Your buddy has revoked your status"
   buddy_revoke_email_header: ''
   buddy_revoke_email_footer: ''
+  traveler_confirm_email:   "Your buddy has accepted your request"
   traveler_confirm_email_header: ''
   traveler_confirm_email_footer: ''
+  traveler_decline_email:   "Your buddy has declined your request"
   traveler_decline_email_header: ''
   traveler_decline_email_footer: ''
+  traveler_revoke_email:   "Your traveler has revoked your status"
   traveler_revoke_email_header: ''
   traveler_revoke_email_footer: ''
   printer_friendly_header: ''

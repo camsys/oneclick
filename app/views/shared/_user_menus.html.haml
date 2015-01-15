@@ -1,5 +1,5 @@
 .btn-group
-  %button.btn.action-button.dropdown-toggle{"type" => "button", "data-toggle" => "dropdown", "aria-expanded" => "false"}
+  %button.btn.action-button.dropdown-toggle#user_menu{"type" => "button", "data-toggle" => "dropdown", "aria-expanded" => "false"}
     %i.fa.fa-user
     - unless is_assisting
       = "#{t(:welcome)}, #{get_traveler.welcome}"

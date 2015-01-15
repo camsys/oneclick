@@ -35,13 +35,26 @@ namespace :oneclick do
     puts full_url
     puts "----------------------------"
 
-    Mode.all.each do |mode|
+    Mode.unscoped.each do |mode|
       old_logo = mode.logo_url.match('\w*(.png)')[0]
       mode.logo_url = full_url + old_logo
       if mode.save
         puts "Mode: #{mode} | Logo: #{mode.logo_url}"
       end
     end
+  end
+
+  desc "Sets default logo"
+  task :set_default_logo=> :environment do
+    bucket = ENV['AWS_BUCKET'].nil? ? "oneclick-#{Oneclick::Application.config.brand}" : ENV['AWS_BUCKET']
+    full_url = "https://s3.amazonaws.com/#{bucket}/images/logo.png"
+    puts "----------------------------"
+    puts full_url
+    puts "----------------------------"
+
+    oc = OneclickConfiguration.first_or_create(code: "ui_logo")
+    oc.value = full_url
+    oc.save
   end
 
   task :seed_data => :environment do
@@ -127,19 +140,13 @@ namespace :oneclick do
   end
 
   task load_pois: :environment do
+    require 'open-uri'
     require 'csv'
     filename  = Oneclick::Application.config.poi_file
-    # FILENAME = File.join(Rails.root, 'db', 'arc_poi_data', 'CommFacil_20131015.txt')
 
     puts
     puts "Loading POI and POI TYPES from file '#{filename}'"
     puts "Starting at: #{Time.now}"
-
-    # Delete existing POIs by truncating the tables
-    #%w{poi_types pois}.each do |table_name|
-    #  puts "Truncating table #{table_name}"
-    #  ActiveRecord::Base.connection.execute("TRUNCATE TABLE #{table_name}")
-    #end
 
     count_good = 0
     count_bad = 0
@@ -147,11 +154,11 @@ namespace :oneclick do
     count_poi_type = 0
     count_possible_existing = 0
 
-    File.open(filename) do |f|
+    open(filename) do |f|
 
       CSV.foreach(f, {:col_sep => ",", :headers => true}) do |row|
 
-        poi_type_name = row[13]
+        poi_type_name = row[9]
         if poi_type_name.blank?
           poi_type_name = 'Unknown'
         end
@@ -164,24 +171,24 @@ namespace :oneclick do
         if poi_type
 
           #If we have already created this POI, don't create it again.
-          if Poi.exists?(name: row[3], poi_type: poi_type, city: row[6])
+          if Poi.exists?(name: row[2], poi_type: poi_type, city: row[6])
             puts "Possible duplicate: #{row}"
             count_possible_existing += 1
             next
           end
           p = Poi.new
           p.poi_type = poi_type
-          p.lon = row[2]
+          p.lon = row[0]
           p.lat = row[1]
-          p.name = row[3]
-          p.address1 = row[4]
-          p.address2 = row[5]
-          p.city = row[6]
-          p.state = row[7]
-          p.zip = row[8]
-          p.county = row[12]
+          p.name = row[2]
+          p.address1 = row[3]
+          p.address2 = row[4]
+          p.city = row[5]
+          p.state = row[6]
+          p.zip = row[7]
+          p.county = row[8]
           begin
-            if p.name && row[2] != "0.0"
+            if p.name && row[0] != "0.0"
               p.save!
               count_good += 1
             else
@@ -296,6 +303,7 @@ namespace :oneclick do
     trip_parts = TripPart.where("scheduled_time >= ? AND scheduled_time <= ?", Time.zone.now.beginning_of_day, Time.zone.now.beginning_of_day + (3600*14*24)).sort_by{|x| x.scheduled_time}
     trip_parts.each do |tp|
       if tp.is_booked?
+        puts 'Trip_part id: '  + tp.id.to_s
         puts tp.trip.user.name
         puts tp.scheduled_time
         if tp.is_return_trip
