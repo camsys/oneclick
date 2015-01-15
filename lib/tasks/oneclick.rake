@@ -44,6 +44,19 @@ namespace :oneclick do
     end
   end
 
+  desc "Sets default logo"
+  task :set_default_logo=> :environment do
+    bucket = ENV['AWS_BUCKET'].nil? ? "oneclick-#{Oneclick::Application.config.brand}" : ENV['AWS_BUCKET']
+    full_url = "https://s3.amazonaws.com/#{bucket}/images/logo.png"
+    puts "----------------------------"
+    puts full_url
+    puts "----------------------------"
+
+    oc = OneclickConfiguration.first_or_create(code: "ui_logo")
+    oc.value = full_url
+    oc.save
+  end
+
   task :seed_data => :environment do
     throw Exception.new("*** Deprecated, just use db:seed task ***")
   end

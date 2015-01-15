@@ -1,4 +1,6 @@
 include SeedsHelpers
+include Rake
+
 
 ### Non Internationlized Records ###
 
@@ -238,3 +240,8 @@ WalkingMaximumDistance.where(value: 1.5).first_or_create!
 WalkingMaximumDistance.where(value: 2, is_default: true).first_or_create!
 WalkingMaximumDistance.where(value: 3).first_or_create!
 WalkingMaximumDistance.where(value: 4).first_or_create!
+
+#Run additional Rake Tasks
+Oneclick::Application.load_tasks
+Rake::Task['oneclick:set_default_logo'].invoke
+Rake::Task['oneclick:set_mode_icons'].invoke
