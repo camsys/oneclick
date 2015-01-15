@@ -1123,6 +1123,12 @@ private
   def create_trip_proxy_from_form_params(trip_proxy_params)
     trip_proxy = TripProxy.new(trip_proxy_params)
     trip_proxy.traveler = @traveler
+    if mobile?
+      trip_proxy.outbound_trip_date = Date.parse(trip_proxy.outbound_trip_date).strftime(TRIP_DATE_FORMAT_STRING)
+      trip_proxy.outbound_trip_time = Time.parse(trip_proxy.outbound_trip_time).strftime(TRIP_TIME_FORMAT_STRING)
+      trip_proxy.return_trip_date = Date.parse(trip_proxy.return_trip_date).strftime(TRIP_DATE_FORMAT_STRING)
+      trip_proxy.return_trip_time = Time.parse(trip_proxy.return_trip_time).strftime(TRIP_TIME_FORMAT_STRING)
+    end
 
     Rails.logger.debug trip_proxy.inspect
     return trip_proxy
