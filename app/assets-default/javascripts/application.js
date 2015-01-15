@@ -122,3 +122,12 @@ function differentiateTurnByTurn(click) {
   });
 }
 
+function isMobile() {
+  if(/mobile|android|touch|webos|hpwos/i.test(navigator.userAgent.toLowerCase())) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
