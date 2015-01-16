@@ -125,7 +125,6 @@ class TripPlanner
       trip_itinerary['match_score'] = match_score
       begin
         #TODO: Need better documentaiton of OTP Fare Object to make this more generic
-        # trip_itinerary['cost'] = itinerary['fare'].first[1]['regular']['cents'].to_f/100.0
         trip_itinerary['cost'] = itinerary['fare']['fare']['regular']['cents'].to_f/100.0
       rescue Exception => e
         Rails.logger.error e

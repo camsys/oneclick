@@ -321,6 +321,10 @@ Oneclick::Application.configure do
   config.OTP_retry_count = 3            #How many times do we retry getting a response from OTP before giving up.
   config.user_guide_url = "https://s3.amazonaws.com/oneclick-bin/documentation/1-Click+v1+Guide.pdf"
 
+  #Special Fixed-Route Fare
+  config.discount_fare_multiplier = 0
+  config.discount_fare_age = 65
+  config.discount_fare_active = false
 
   if ENV['UI_MODE'] == 'kiosk'
     config.trip_time_ahead_mins = 30
