@@ -116,7 +116,9 @@ class ApplicationController < ActionController::Base
   private
 
   def mobile?
-    request.user_agent.downcase =~ /mobile|android|touch|webos|hpwos/
+    unless request.user_agent.nil?
+      request.user_agent.downcase =~ /mobile|android|touch|webos|hpwos/
+    end
   end
 
   # called (once) when the user logs in, insert any code your application needs
