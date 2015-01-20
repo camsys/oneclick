@@ -277,7 +277,10 @@ Oneclick::Application.configure do
       parts[0] + '-qa.' + parts[1]
     when 'development'
       'localhost:3000'
-    when 'integration', 'test'
+    when 'integration'
+      parts = config.host.split(%r{\.}, 2)
+      parts[0] + '-int.' + parts[1]
+    when 'test'
       'example.com'
     else
       raise "Unhandled Rails.env #{Rails.env}"

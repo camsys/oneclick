@@ -13,7 +13,7 @@ Oneclick::Application.routes.draw do
       root :to => 'trips#new', as: :authenticated_root
     end
 
-    devise_for :users, controllers: {registrations: "registrations", sessions: "sessions"}
+    devise_for :users, controllers: {registrations: "registrations", sessions: "sessions", passwords: 'passwords'}
 
     resources :content
 
