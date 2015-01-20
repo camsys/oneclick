@@ -46,6 +46,9 @@ Oneclick::Application.configure do
   config.provider_logo_format_list = %w(jpg jpeg gif png)
   config.provider_logo_dimensions = [40, 40]
 
+  config.application_launch_date = Date.new(2014,1,1) # default
+  config.usage_report_last_n = 3
+
   case ENV['BRAND'] || 'arc'
   when 'arc'
     config.host = 'oneclick-arc.camsys-apps.com'

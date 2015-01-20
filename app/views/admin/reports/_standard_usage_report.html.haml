@@ -1,0 +1,8 @@
+.row
+  .col-sm-12
+    = render partial: 'standard_usage_stat_panel',
+             locals: {title: :planned_trips_statistics,
+                      default_key_type: 'locale',
+                      key_types: {},
+                      cols: @report_instance.get_columns,
+                      data_rows: @report_instance.get_planned_trip_stat_rows}
