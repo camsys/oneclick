@@ -15,6 +15,18 @@ class Trip < ActiveRecord::Base
 
   # Scopes
   scope :created_between, lambda {|from_day, to_day| where("trips.created_at > ? AND trips.created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
+  scope :with_role, lambda {|role_name| 
+    includes(user: :roles)
+    .where(roles: {name: role_name})
+    .references(user: :roles)
+  }
+  scope :without_role, lambda {|role_name| 
+    includes(user: :roles)
+    .where.not(roles: {name: role_name})
+    .references(user: :roles)
+  }
+  scope :planned, -> { includes(:itineraries).where(itineraries: {selected: true}).references(:itineraries) }
+  scope :with_ui_mode, -> (ui_mode) {where(ui_mode: ui_mode)}
   scope :by_provider, ->(p) { joins(itineraries: {service: :provider}).where('providers.id=?', p).distinct }
   # .join(:services).join(:providers) }
   # .where('providers.id=?', p)}

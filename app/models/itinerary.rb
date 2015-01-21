@@ -21,6 +21,10 @@ class Itinerary < ActiveRecord::Base
   scope :visible, -> {where('hidden=false')}
   scope :hidden, -> {where('hidden=true')}
   scope :good_score, -> {where('match_score < 3')}
+  scope :booked, -> {where.not(booking_confirmation: nil)}
+  scope :created_between, lambda {|from_day, to_day| where("itineraries.created_at > ? AND itineraries.created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
+  scope :with_mode, ->(mode) {includes(:mode).where(modes: {code: mode})}
+  scope :without_mode, ->(mode) {includes(:mode).where.not(modes: {code: mode}).references(:mode)}
 
   # attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
   # :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,

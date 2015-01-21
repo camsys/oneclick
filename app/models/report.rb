@@ -3,7 +3,7 @@ class Report < ActiveRecord::Base
   # attr_accessible :string, :description, :name, :view_name, :class_name, :active
   
   # default scope
-  default_scope {where(:active => true)}
+  default_scope {where(:active => true).order(:id)}
 
   def name_and_id
     [I18n.t(class_name), id]

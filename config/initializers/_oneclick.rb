@@ -48,6 +48,7 @@ Oneclick::Application.configure do
 
   config.application_launch_date = Date.new(2014,1,1) # default
   config.usage_report_last_n = 3
+  config.kiosk_available = false
 
   case ENV['BRAND'] || 'arc'
   when 'arc'
@@ -157,7 +158,7 @@ Oneclick::Application.configure do
     config.initial_signup_question = true
     config.allows_booking = true
 
-
+    config.kiosk_available
   when 'jta'
     config.host = 'transportal.net'
     config.ui_logo = 'jta/logo.png'

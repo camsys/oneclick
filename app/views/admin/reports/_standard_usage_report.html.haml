@@ -6,3 +6,33 @@
                       key_types: {},
                       cols: @report_instance.get_columns,
                       data_rows: @report_instance.get_planned_trip_stat_rows}
+    = render partial: 'standard_usage_stat_panel',
+             locals: {title: :created_trips_statistics,
+                      default_key_type: 'locale',
+                      key_types: {},
+                      cols: @report_instance.get_columns,
+                      data_rows: @report_instance.get_created_trip_stat_rows}
+    = render partial: 'standard_usage_stat_panel',
+             locals: {title: :options_statistics,
+                      default_key_type: 'locale',
+                      key_types: {},
+                      cols: @report_instance.get_columns,
+                      data_rows: @report_instance.get_modes_stat_rows}
+    = render partial: 'standard_usage_stat_panel',
+             locals: {title: :booked_legs_statistics,
+                      default_key_type: 'locale',
+                      key_types: {},
+                      cols: @report_instance.get_columns,
+                      data_rows: @report_instance.get_booked_legs_stat_rows}
+    = render partial: 'standard_usage_stat_panel',
+             locals: {title: :modes_statistics,
+                      default_key_type: 'locale',
+                      key_types: {},
+                      cols: @report_instance.get_columns,
+                      data_rows: @report_instance.get_modes_stat_rows}
+    = render partial: 'standard_usage_stat_panel',
+             locals: {title: :platforms_statistics,
+                      default_key_type: 'locale',
+                      key_types: {},
+                      cols: @report_instance.get_columns,
+                      data_rows: @report_instance.get_platforms_stat_rows}
