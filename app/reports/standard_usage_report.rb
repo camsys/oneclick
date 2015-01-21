@@ -243,7 +243,7 @@ class StandardUsageReport < AbstractReport
             base.with_ui_mode(:desktop).count
           when :tablet
             base.with_ui_mode(:tablet).count
-          when :smartphone
+          when :phone
             base.with_ui_mode(:phone).count
           when :kiosk
             base.with_ui_mode(:kiosk).count
