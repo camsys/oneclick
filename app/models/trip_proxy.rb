@@ -86,16 +86,29 @@ class TripProxy < Proxy
 
     trip_proxy.outbound_arrive_depart = trip_part.is_depart
     trip_datetime = trip_part.trip_time
-    trip_proxy.outbound_trip_date = trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
     temp_time = trip_part.scheduled_time
-    trip_proxy.outbound_trip_time = trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
+
+    if mobile?(trip.user_agent)
+      trip_proxy.outbound_trip_date = trip_part.scheduled_date.strftime("%Y-%m-%d")
+      trip_proxy.outbound_trip_time = trip_part.scheduled_time.in_time_zone.strftime("%H:%M")
+    else
+      trip_proxy.outbound_trip_date = trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
+      trip_proxy.outbound_trip_time = trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
+    end
 
     # Check for return trips
     if trip.trip_parts.count > 1
       last_trip_part = trip.trip_parts.last
       trip_proxy.is_round_trip = last_trip_part.is_return_trip ? "1" : "0"
-      trip_proxy.return_trip_date = last_trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
-      trip_proxy.return_trip_time = last_trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
+
+      if mobile?(trip.user_agent)
+        trip_proxy.return_trip_date = last_trip_part.scheduled_date.strftime("%Y-%m-%d")
+        trip_proxy.return_trip_time = last_trip_part.scheduled_time.in_time_zone.strftime("%H:%M")
+      else
+        trip_proxy.return_trip_date = last_trip_part.scheduled_date.strftime(TRIP_DATE_FORMAT_STRING)
+        trip_proxy.return_trip_time = last_trip_part.scheduled_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
+      end
+
       trip_proxy.return_arrive_depart = last_trip_part.is_depart
     end
 
@@ -146,6 +159,12 @@ class TripProxy < Proxy
 
     return trip_proxy
 
+  end
+
+  def self.mobile?(user_agent)
+    unless user_agent.nil?
+      user_agent.downcase =~ /mobile|android|touch|webos|hpwos/
+    end
   end
 
 end

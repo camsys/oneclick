@@ -339,7 +339,7 @@ Oneclick::Application.configure do
     config.trip_time_ahead_mins = 15     #interval: This is not used as the default trip ahead time.  It is used as the interval (which is actually ignored by the front-end)
   end
 
-  config.default_trip_head_mins = 120    #How many minutes into the future should the default outbound trip time be? (It is rounded to the next 15 min interval)
+  config.default_trip_ahead_mins = 120    #How many minutes into the future should the default outbound trip time be? (It is rounded to the next 15 min interval)
 
   # Note that as of 2014-06-04, at least, these timeouts are only used by rideshare.
   config.remote_read_timeout_seconds = 10    # seconds to wait before timing out reading a page through a web request

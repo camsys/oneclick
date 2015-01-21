@@ -9,6 +9,7 @@ module TripsSupport
   # Set up configurable defaults
   DEFAULT_RETURN_TRIP_DELAY_MINS = Rails.application.config.return_trip_delay_mins
   DEFAULT_TRIP_TIME_AHEAD_MINS   = Rails.application.config.trip_time_ahead_mins
+  DEFAULT_OUTBOUND_TRIP_AHEAD_MINS = Rails.application.config.default_trip_ahead_mins
 
   # Modes for creating/updating new trips
   MODE_NEW    = "1" # Its a new trip from scratch
@@ -33,9 +34,9 @@ module TripsSupport
   KIOSK_LOCATION_TYPE = '6'
 
   # Set the default travel time/date to x mins from now
-  def default_trip_time
-    Time.now.in_time_zone.next_interval(DEFAULT_TRIP_TIME_AHEAD_MINS.minutes)
-  end
+  # def default_trip_time
+  #   Time.now.in_time_zone.next_interval(DEFAULT_TRIP_TIME_AHEAD_MINS.minutes)
+  # end
 
   def get_trip_place(place_id)
     if can? :manage, :all
