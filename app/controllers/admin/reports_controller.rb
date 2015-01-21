@@ -93,7 +93,12 @@ class Admin::ReportsController < Admin::BaseController
     # Excel is stupid if the first two characters of a csv file are "ID". Necessary to
     # escape it. https://support.microsoft.com/kb/215591/EN-US
     CSV.generate do |csv|
-      xlated_columns = @columns.map {|col| I18n.t(col)}
+      xlated_columns = if is_standard_system_report
+        @report_instance.get_localized_columns
+      else
+        @columns.map {|col| I18n.t(col)}
+      end
+
       if xlated_columns[0].start_with? "ID"
         headers = Array.new(xlated_columns)
         headers[0] = "'" + headers[0]

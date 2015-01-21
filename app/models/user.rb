@@ -77,8 +77,8 @@ class User < ActiveRecord::Base
 
   scope :created_after, lambda {|from_day| where("users.created_at > ?", from_day.at_beginning_of_day) }
   scope :created_before, lambda {|to_day| where("users.created_at < ?", to_day.tomorrow.at_beginning_of_day) }
-  scope :created_between, lambda {|from_day, to_day| created_after(from_day) and created_before(to_day) }
-  scope :active_before, lambda {|to_day| where("users.current_sign_in_at < ?", to_day.tomorrow.at_beginning_of_day)  }
+  scope :created_between, lambda {|from_day, to_day| created_after(from_day).created_before(to_day) }
+  scope :active_between, lambda {|from_day, to_day| where("users.current_sign_in_at > ? AND users.current_sign_in_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
   
   # Validations
   validates :email, :presence => true

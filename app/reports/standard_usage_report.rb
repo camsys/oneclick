@@ -1,13 +1,23 @@
 class StandardUsageReport < AbstractReport
 
-  attr_reader :totals_cols, :planned_trip_stat_rows, :created_trip_stat_rows, :modes_stat_rows, :booked_legs_stat_rows, :users_stat_rows, :platforms_stat_rows
+  attr_reader :effective_date, :date_option, :totals_cols, :planned_trip_stat_rows, :created_trip_stat_rows, :modes_stat_rows, :booked_legs_stat_rows, :users_stat_rows, :platforms_stat_rows
 
   AVAILABLE_DATE_OPTIONS = [:weekly, :biweekly, :monthly, :quarterly]
 
   def initialize(effective_date, date_option)
-    effective_date = Date.today if effective_date.blank?
-    date_option = :weekly if date_option.blank?
-    @totals_cols = get_total_cols(effective_date, date_option)
+    @effective_date = if effective_date.blank?
+      Date.today 
+    else
+      effective_date
+    end
+
+    @date_option = if date_option.blank?
+      :weekly
+    else
+      date_option.to_sym
+    end
+
+    @totals_cols = get_total_cols
 
     @planned_trip_stat_rows = [
       :number_of_trips_planned,
@@ -29,19 +39,19 @@ class StandardUsageReport < AbstractReport
       :others
     ]
 
-    @booked_legs_stat_rows = [:trip_legs_booked]
+    @booked_legs_stat_rows = [:number_of_trip_legs_booked]
 
     @users_stat_rows = [
-      :registered_users_total,
+      :total_registered_users,
       :new_sign_ups,
-      :active
+      :active_users
     ]
 
     @platforms_stat_rows = [
       :platform,
       :computer,
       :tablet,
-      :smartphone
+      :phone
     ]
 
     @platforms_stat_rows << :koisk if Rails.application.config.kiosk_available
@@ -70,6 +80,21 @@ class StandardUsageReport < AbstractReport
   
   def get_columns
     @totals_cols.map {|col| col[:name]}
+  end
+
+  def get_localized_columns
+    @totals_cols.map {|col| 
+      col_name = col[:name]
+      if col_name.is_a? Integer
+        col_name
+      else
+        if col_name == :time_period
+          "#{I18n.t(col_name)} (#{I18n.t(@date_option)})"
+        else
+          I18n.t(col_name)
+        end
+      end
+    }
   end
 
   def get_planned_trip_stat_rows
@@ -164,7 +189,7 @@ class StandardUsageReport < AbstractReport
         else
           base = Itinerary.created_between(col[:start_time], col[:end_time]).booked
           row_data << case row
-          when :trip_legs_booked
+          when :number_of_trip_legs_booked
             base.count
           end
         end
@@ -184,14 +209,14 @@ class StandardUsageReport < AbstractReport
         if col[:name] == :time_period
           row_data << I18n.t(row)
         else
-          base = User.registered
+          base = User.without_role(:anonymous_traveler)
           row_data << case row
-          when :registered_users_total
+          when :total_registered_users
             base.created_before(col[:end_time]).count
           when :new_sign_ups
             base.created_between(col[:start_time], col[:end_time]).count
-          when :active
-            base.active_before(col[:end_time]).count
+          when :active_users
+            base.active_between(col[:start_time], col[:end_time]).count
           end
         end
       end
@@ -237,20 +262,56 @@ class StandardUsageReport < AbstractReport
     @totals_cols.map {""}
   end
 
-  def get_total_cols(effective_date, date_option)
+  def get_total_cols
     cols = [{
       name: :time_period
     }]
     launch_date = Rails.application.config.application_launch_date
+    last_n = Rails.application.config.usage_report_last_n
+
+    n = 0
+    start_date = @effective_date
+    while start_date >= launch_date && n < last_n
+      name = if n>0 
+        -n
+      else 
+        :current
+      end
+
+      end_date = start_date
+
+      start_date = case @date_option
+      when :weekly
+        start_date.beginning_of_week(:sunday)
+      when :biweekly
+        start_date.beginning_of_week(:sunday).weeks_ago(1)
+      when :monthly
+        start_date.beginning_of_month
+      when :quarterly
+        start_date.beginning_of_quarter
+      end
+
+      start_date = launch_date if start_date < launch_date
+
+      cols << {
+        name: name,
+        start_time: start_date,
+        end_time: end_date
+      }
+
+      start_date = start_date.yesterday
+      n += 1
+    end
+
     cols << {
-      name: :year_td,
-      start_time: Date.new(effective_date.year, 1, 1).midnight,
-      end_time: effective_date
+      name: :year_to_date,
+      start_time: Date.new(@effective_date.year, 1, 1).midnight,
+      end_time: @effective_date
     }
     cols << {
-      name: :launch_td,
+      name: :launch_to_date,
       start_time: launch_date.midnight,
-      end_time: effective_date
+      end_time: @effective_date
     }
 
   end

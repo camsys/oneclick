@@ -182,6 +182,34 @@ en:
     other: "The sidewalk obstructions have been updated"
   multi_od_trip: 'Multiple Origin-Destination Trip'
 
+  # standard system usage report
+  time_period: 'Time Period'
+  number_of_trips_planned: 'Number of Trips Planned'
+  registered_users: 'Registered Users'
+  total_registered_users: 'Total Registered Users'
+  new_sign_ups: 'New Sign Ups'
+  active_users: 'Active Users'
+  visitors: 'Visitors'
+  number_of_trips_created: 'Number of Trips Created'
+  others: 'Others'
+  number_of_trip_legs_booked: 'Number of Trip Legs Booked'
+  platform: 'Platform'
+  computer: 'Computer'
+  weekly: 'Weekly'
+  biweekly: 'Bi-weekly'
+  monthly: 'Monthly'
+  quarterly: 'Quarterly'
+  current: 'Current'
+  year_to_date: 'Year to Date'
+  launch_to_date: 'Launch to Date'
+  planned_trips_statistics: 'Planned Trips Statistics'
+  created_trips_statistics: 'Created Trips Statistics'
+  booked_legs_statistics: 'Booked Trip Legs Statistics'
+  users_statistics: 'Users Statistics'
+  trip_modes_statistics: 'Trip Modes Statistics'
+  platform_statistics: 'Platform Statistics'
+
+
   # Registration, sign in, profile
   about_you: 'About You'
   version: 'Version'

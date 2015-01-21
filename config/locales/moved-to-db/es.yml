@@ -160,6 +160,33 @@ es:
     other: "[es]The sidewalk obstructions have been updated[/es]"
   multi_od_trip: '[es]Multiple Origin-Destination Trip[/es]'
 
+  # standard system usage report
+  time_period: '[es]Time Period[/es]'
+  number_of_trips_planned: '[es]Number of Trips Planned[/es]'
+  registered_users: '[es]Registered Users[/es]'
+  total_registered_users: '[es]Total Registered Users[/es]'
+  new_sign_ups: '[es]New Sign Ups[/es]'
+  active_users: '[es]Active Users[/es]'
+  visitors: '[es]Visitors[/es]'
+  number_of_trips_created: '[es]Number of Trips Created[/es]'
+  others: '[es]Others[/es]'
+  number_of_trip_legs_booked: '[es]Number of Trip Legs Booked[/es]'
+  platform: '[es]Platform[/es]'
+  computer: '[es]Computer[/es]'
+  weekly: '[es]Weekly[/es]'
+  biweekly: '[es]Bi-weekly[/es]'
+  monthly: '[es]Monthly[/es]'
+  quarterly: '[es]Quarterly[/es]'
+  current: '[es]Current[/es]'
+  year_to_date: '[es]Year to Date[/es]'
+  launch_to_date: '[es]Launch to Date[/es]'
+  planned_trips_statistics: '[es]Planned Trips Statistics[/es]'
+  created_trips_statistics: '[es]Created Trips Statistics[/es]'
+  booked_legs_statistics: '[es]Booked Trip Legs Statistics[/es]'
+  users_statistics: '[es]Users Statistics[/es]'
+  trip_modes_statistics: '[es]Trip Modes Statistics[/es]'
+  platform_statistics: '[es]Platform Statistics[/es]'
+
   # Registration, sign in, profile
   about_you: '[es32]About You[/es]' # Not translated
   do_you_participate:  "[es61]Do you currently participate in any of these programs?[/es]"  #Not translated

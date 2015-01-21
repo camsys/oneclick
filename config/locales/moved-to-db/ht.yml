@@ -34,8 +34,8 @@ ht:
   places: '[ht]Places[/ht]'
   type: "[ht]Type[/ht]"
   my_home_chkbox_label: "[ht]This is my home[/ht]"
-  more_about_this_initiative: '[es]More About This Initiative[/es]'
-  send_your_feedback: '[es]Send your Feedback[/es]'
+  more_about_this_initiative: '[ht]More About This Initiative[/ht]'
+  send_your_feedback: '[ht]Send your Feedback[/ht]'
 
   # Agent View strings
   find_traveler: "[ht]Find Traveler[/ht]"
@@ -132,6 +132,33 @@ ht:
     one: "[ht]The sidewalk obstruction has been updated[/ht]"
     other: "[ht]The sidewalk obstructions have been updated[/ht]"
   multi_od_trip: '[ht]Multiple Origin-Destination Trip[/ht]'
+
+  # standard system usage report
+  time_period: '[ht]Time Period[/ht]'
+  number_of_trips_planned: '[ht]Number of Trips Planned[/ht]'
+  registered_users: '[ht]Registered Users[/ht]'
+  total_registered_users: '[ht]Total Registered Users[/ht]'
+  new_sign_ups: '[ht]New Sign Ups[/ht]'
+  active_users: '[ht]Active Users[/ht]'
+  visitors: '[ht]Visitors[/ht]'
+  number_of_trips_created: '[ht]Number of Trips Created[/ht]'
+  others: '[ht]Others[/ht]'
+  number_of_trip_legs_booked: '[ht]Number of Trip Legs Booked[/ht]'
+  platform: '[ht]Platform[/ht]'
+  computer: '[ht]Computer[/ht]'
+  weekly: '[ht]Weekly[/ht]'
+  biweekly: '[ht]Bi-weekly[/ht]'
+  monthly: '[ht]Monthly[/ht]'
+  quarterly: '[ht]Quarterly[/ht]'
+  current: '[ht]Current[/ht]'
+  year_to_date: '[ht]Year to Date[/ht]'
+  launch_to_date: '[ht]Launch to Date[/ht]'
+  planned_trips_statistics: '[ht]Planned Trips Statistics[/ht]'
+  created_trips_statistics: '[ht]Created Trips Statistics[/ht]'
+  booked_legs_statistics: '[ht]Booked Trip Legs Statistics[/ht]'
+  users_statistics: '[ht]Users Statistics[/ht]'
+  trip_modes_statistics: '[ht]Trip Modes Statistics[/ht]'
+  platform_statistics: '[ht]Platform Statistics[/ht]'
 
   # Registration, sign in, profile
   about_you: '[ht]About You[/ht]'
