@@ -54,7 +54,7 @@ class StandardUsageReport < AbstractReport
       :phone
     ]
 
-    @platforms_stat_rows << :koisk if Rails.application.config.kiosk_available
+    @platforms_stat_rows << :kiosk if Rails.application.config.kiosk_available
   end    
 
   def self.available_date_option_collections
@@ -245,8 +245,8 @@ class StandardUsageReport < AbstractReport
             base.with_ui_mode(:tablet).count
           when :smartphone
             base.with_ui_mode(:phone).count
-          when :koisk
-            base.with_ui_mode(:koisk).count
+          when :kiosk
+            base.with_ui_mode(:kiosk).count
           end
         end
       end

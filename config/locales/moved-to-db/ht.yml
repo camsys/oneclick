@@ -158,7 +158,9 @@ ht:
   booked_legs_statistics: '[ht]Booked Trip Legs Statistics[/ht]'
   users_statistics: '[ht]Users Statistics[/ht]'
   trip_modes_statistics: '[ht]Trip Modes Statistics[/ht]'
-  platform_statistics: '[ht]Platform Statistics[/ht]'
+  platforms_statistics: '[ht]Platforms Statistics[/ht]'
+  effective_date: '[ht]Effective Date[/ht]'
+  date_option: '[ht]Date Option[/ht]'
 
   # Registration, sign in, profile
   about_you: '[ht]About You[/ht]'

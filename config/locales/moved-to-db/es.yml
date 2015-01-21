@@ -185,7 +185,9 @@ es:
   booked_legs_statistics: '[es]Booked Trip Legs Statistics[/es]'
   users_statistics: '[es]Users Statistics[/es]'
   trip_modes_statistics: '[es]Trip Modes Statistics[/es]'
-  platform_statistics: '[es]Platform Statistics[/es]'
+  platforms_statistics: '[es]Platforms Statistics[/es]'
+  effective_date: '[es]Effective Date[/es]'
+  date_option: '[es]Date Option[/es]'
 
   # Registration, sign in, profile
   about_you: '[es32]About You[/es]' # Not translated

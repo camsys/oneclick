@@ -207,7 +207,9 @@ en:
   booked_legs_statistics: 'Booked Trip Legs Statistics'
   users_statistics: 'Users Statistics'
   trip_modes_statistics: 'Trip Modes Statistics'
-  platform_statistics: 'Platform Statistics'
+  platforms_statistics: 'Platforms Statistics'
+  effective_date: 'Effective Date'
+  date_option: 'Date Option'
 
 
   # Registration, sign in, profile
