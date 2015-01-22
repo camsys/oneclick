@@ -84,8 +84,12 @@ class Trip < ActiveRecord::Base
     # set the sequence counter for when we have multiple trip parts
     sequence = 0
 
-    if trip_proxy.user_agent.downcase =~ /mobile|android|touch|webos|hpwos/
-      trip_date = Date.strptime(trip_proxy.outbound_trip_date, '%Y-%m-%d')
+    unless trip_proxy.user_agent.nil?
+      if trip_proxy.user_agent.downcase =~ /mobile|android|touch|webos|hpwos/
+        trip_date = Date.strptime(trip_proxy.outbound_trip_date, '%Y-%m-%d')
+      else
+        trip_date = Date.strptime(trip_proxy.outbound_trip_date, '%m/%d/%Y')
+      end
     else
       trip_date = Date.strptime(trip_proxy.outbound_trip_date, '%m/%d/%Y')
     end
