@@ -13,8 +13,6 @@ module Trip::ReturnTime
 
     validate :validate_date
     validate :validate_time
-    validate :datetime_cannot_be_before_now
-
   end
 
   # Returns the return trip date and time as a DateTime class. If the round-trip is not defined
@@ -45,20 +43,6 @@ module Trip::ReturnTime
 
 protected
 
-  # TODO duplication, this shoud be factored out of here and pickup_time.rb
-  # Validation. Ensure that the user is planning a trip for the future.
-  def datetime_cannot_be_before_now
-    return true if return_trip_datetime.nil?
-    if return_trip_datetime < Date.today
-      errors.add(:return_trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
-      return false
-    elsif return_trip_datetime < Time.current
-      errors.add(:return_trip_time, I18n.translate(:trips_cannot_be_entered_for_times))
-      return false
-    end
-    true
-  end
-
   # Validation. Check that the return trip time is well formatted and after the trip time
   def validate_return_trip_time
     if return_trip_datetime && (return_trip_datetime <= outbound_trip_datetime)
@@ -70,7 +54,11 @@ protected
     return true if is_round_trip != "1" # if a trip is planned for one-way, the date for the return has to be valid
     begin
       # if the parse fails it will return nil and the to_date will throw an exception
-      d = Date.strptime(@return_trip_date, '%m/%d/%Y')
+      if user_agent.downcase =~ /mobile|android|touch|webos|hpwos/
+        d = Date.strptime(return_trip_date, '%Y-%m-%d')
+      else
+        d = Date.strptime(return_trip_date, '%m/%d/%Y')
+      end
     rescue Exception => e
       puts e
       errors.add(:return_trip_date, I18n.translate(:date_wrong_format))
@@ -81,7 +69,11 @@ protected
   def validate_time
     return true if is_round_trip != "1" # if a trip is planned for one-way, the time for the return has to be valid
     begin
-      time = Time.strptime(return_trip_time, "%H:%M %p")
+      if user_agent.downcase =~ /mobile|android|touch|webos|hpwos/
+        time = Time.strptime(return_trip_time, "%H:%M")
+      else
+        time = Time.strptime(return_trip_time, "%H:%M %p")
+      end
     rescue Exception => e
       puts e
       errors.add(:return_trip_time, I18n.translate(:time_wrong_format))

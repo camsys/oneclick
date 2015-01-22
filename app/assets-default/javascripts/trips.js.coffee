@@ -144,12 +144,13 @@ process_location_from_map = (addr, dir) -> #update map marker from selected loca
   update_map(CsMaps.tripMap, dir, null, addr, null)
   update_place(addr.name, dir, addr)
 
-unless isMobile()
-  validateDateTimes = (isReturn) ->
-    outboundDateField = $("#trip_proxy_outbound_trip_date")
-    outboundTimeField = $("#trip_proxy_outbound_trip_time")
-    returnDateField = $("#trip_proxy_return_trip_date")
-    returnTimeField = $("#trip_proxy_return_trip_time")
+validateDateTimes = (isReturn) ->
+  outboundDateField = $("#trip_proxy_outbound_trip_date")
+  outboundTimeField = $("#trip_proxy_outbound_trip_time")
+  returnDateField = $("#trip_proxy_return_trip_date")
+  returnTimeField = $("#trip_proxy_return_trip_time")
+
+  unless isMobile()
     outboundDateData = outboundDateField.data("DateTimePicker")
     outboundTimeData = outboundTimeField.data("DateTimePicker")
     returnDateData = returnDateField.data("DateTimePicker")
@@ -164,43 +165,34 @@ unless isMobile()
     if !moment(returnTimeField.val(), returnTimeData.format).isValid()
       returnTimeData.setValue(returnTimeData.date)
 
+    outboundDate = moment(outboundDateField.val(), outboundDateData.format)
+    returnDate = moment(returnDateField.val(), returnDateData.format)
     outboundDateTime = moment(outboundDateField.val() + " " + outboundTimeField.val(), outboundDateData.format + " " + outboundTimeData.format)
     returnDateTime = moment(returnDateField.val() + " " + returnTimeField.val(), returnDateData.format + " " + returnTimeData.format)
     outboundDateTimeInvalid =  !outboundDateTime.isValid()
     returnDateTimeInvalid = !returnDateTime.isValid()
     minOutboundDateTime = moment()
 
-    isOutboundChanged = false
-    isReturnChanged = false
+    if returnDate < outboundDate
+      returnDateField.val(outboundDateField.val())
+      returnDateField.attr('value', outboundDateField.val())
 
-    if outboundDateTimeInvalid or outboundDateTime < minOutboundDateTime
-      outboundDateTime = minOutboundDateTime.clone().next15()
-      isOutboundChanged = true
+  else
+    ###
+    IF WE GET INVALID DATETIMES, WE...?
+    if !moment(outboundDateField.val(), 'MM/DD/YYYY').isValid()
+      ?????????
+    if !moment(outboundTimeField.val(), 'h:mm A').isValid()
+      ?????????
+    if !moment(returnDateField.val(), 'MM/DD/YYYY').isValid()
+      ?????????
+    if !moment(returnTimeField.val(), 'h:mm A').isValid()
+      ?????????
+    ###
 
-
-    if returnDateTimeInvalid or returnDateTime <= outboundDateTime
-      if returnDateTimeInvalid or isOutboundChanged
-        returnDateTime = outboundDateTime.clone().add(2, "hours")
-        isReturnChanged = true
-      else if isReturn
-        if returnDateTime.clone().subtract(2, "hours") <= minOutboundDateTime
-          outboundDateTime = minOutboundDateTime.clone().next15()
-          returnDateTime = outboundDateTime.clone().add(2, "hours")
-          isReturnChanged = true
-        else
-          outboundDateTime = returnDateTime.clone().subtract(2, "hours")
-        isOutboundChanged = true
-      else
-        returnDateTime = outboundDateTime.clone().add(2, "hours")
-        isReturnChanged = true
-
-    if isReturnChanged
-      returnDateData.setValue returnDateTime.toDate()
-      returnTimeData.setValue returnDateTime.toDate()
-    if isOutboundChanged
-      outboundDateData.setValue outboundDateTime.toDate()
-      outboundTimeData.setValue outboundDateTime.toDate()
-    return
+    if returnDateField.val() < outboundDateField.val()
+      returnDateField.val(outboundDateField.val())
+      returnDateField.attr('value', outboundDateField.val())
 
 get_my_location = (dir) ->
   if window.navigator.geolocation
@@ -383,24 +375,23 @@ $ ->
       latlng = (if e.latlng then e.latlng else {})
       reverse_geocode(latlng.lat, latlng.lng, CsMaps.tripMap.addressType)
 
-  unless isMobile()
-    $('#trip_proxy_outbound_trip_date, #trip_proxy_outbound_trip_time').on "dp.change", ->
-      validateDateTimes false
-      return
-    $('#trip_proxy_return_trip_date, #trip_proxy_return_trip_time').on "dp.change", ->
-      validateDateTimes true
-      return
-    $('#trip_proxy_outbound_trip_date, #trip_proxy_outbound_trip_time').on "focusout", ->
-      validateDateTimes false
-      $(this).data('DateTimePicker').hide()
-      return
-    $('#trip_proxy_return_trip_date, #trip_proxy_return_trip_time').on "focusout", ->
-      validateDateTimes true
-      $(this).data('DateTimePicker').hide()
-      return
+  $('#trip_proxy_outbound_trip_date, #trip_proxy_outbound_trip_time').on "dp.change", ->
+    validateDateTimes false
+    return
+  $('#trip_proxy_return_trip_date, #trip_proxy_return_trip_time').on "dp.change", ->
+    validateDateTimes true
+    return
+  $('#trip_proxy_outbound_trip_date, #trip_proxy_outbound_trip_time').on "focusout", ->
+    validateDateTimes false
+    $(this).data('DateTimePicker').hide() unless isMobile()
+    return
+  $('#trip_proxy_return_trip_date, #trip_proxy_return_trip_time').on "focusout", ->
+    validateDateTimes true
+    $(this).data('DateTimePicker').hide() unless isMobile()
+    return
 
-    if $('.plan-a-trip').length > 0
-      validateDateTimes false #when page load, validate outbound and return times
+  if $('.plan-a-trip').length > 0
+    validateDateTimes false #when page load, validate outbound and return times
   
   ###
   if is_touch_device()

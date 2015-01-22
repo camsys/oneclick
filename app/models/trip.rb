@@ -84,7 +84,11 @@ class Trip < ActiveRecord::Base
     # set the sequence counter for when we have multiple trip parts
     sequence = 0
 
-    trip_date = Date.strptime(trip_proxy.outbound_trip_date, '%m/%d/%Y')
+    if trip_proxy.user_agent.downcase =~ /mobile|android|touch|webos|hpwos/
+      trip_date = Date.strptime(trip_proxy.outbound_trip_date, '%Y-%m-%d')
+    else
+      trip_date = Date.strptime(trip_proxy.outbound_trip_date, '%m/%d/%Y')
+    end
 
     # Create the outbound trip part
     trip_part = TripPart.new
@@ -111,7 +115,11 @@ class Trip < ActiveRecord::Base
       trip_part.sequence = sequence
       trip_part.is_depart = trip_proxy.return_arrive_depart
       trip_part.is_return_trip = true
-      return_trip_date = Date.strptime(trip_proxy.return_trip_date, '%m/%d/%Y')
+      if trip_proxy.user_agent.downcase =~ /mobile|android|touch|webos|hpwos/
+        return_trip_date = Date.strptime(trip_proxy.return_trip_date, '%Y-%m-%d')
+      else
+        return_trip_date = Date.strptime(trip_proxy.return_trip_date, '%m/%d/%Y')
+      end
       trip_part.scheduled_date = return_trip_date
       trip_part.scheduled_time = Time.zone.parse(return_trip_date.year.to_s + '-' + return_trip_date.month.to_s + '-' + return_trip_date.day.to_s + ' ' + trip_proxy.return_trip_time).in_time_zone("UTC")
       trip_part.from_trip_place = to_place

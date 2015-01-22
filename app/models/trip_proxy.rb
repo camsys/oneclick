@@ -9,6 +9,16 @@ class TripProxy < Proxy
 
   attr_accessor :user_agent, :ui_mode
 
+  attr_accessor :outbound_trip_date, :outbound_arrive_depart, :outbound_trip_time
+  attr_accessor :is_round_trip, :return_trip_time, :return_arrive_depart, :return_trip_date
+
+  validate :return_trip_date, :presence => true
+  validate :return_trip_time, :presence => true
+  validates :outbound_trip_date, :presence => true
+  validates :outbound_trip_time, :presence => true
+
+  validate :datetime_cannot_be_before_now
+
   include TripsSupport
   include Trip::From
   include Trip::PickupTime
@@ -167,4 +177,40 @@ class TripProxy < Proxy
     end
   end
 
+  # Returns the trip date and time as a DateTime class
+  def trip_datetime
+    begin
+      outbound_datetime = Chronic.parse([outbound_trip_date, outbound_trip_time].join(' '))
+      return_datetime = Chronic.parse([return_trip_date, return_trip_time].join(' '))
+      return [outbound_datetime, return_datetime]
+    rescue Exception => e
+      Rails.logger.warn "trip_datetime #{outbound_trip_date} #{outbound_trip_time}"
+      Rails.logger.warn e.message
+      raise e
+    end
+  end
+
+  protected
+
+  # Validation. Ensure that the user is planning a trip for the future.
+  def datetime_cannot_be_before_now
+    true if trip_datetime.count(nil) == 2
+    if trip_datetime[0] < Date.today
+      errors.add(:outbound_trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
+      false
+    end
+    if trip_datetime[0] < Time.current
+      errors.add(:outbound_trip_time, I18n.translate(:trips_cannot_be_entered_for_times))
+      false
+    end
+    if trip_datetime[1] < Date.today
+      errors.add(:return_trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
+      false
+    end
+    if trip_datetime[1] < Time.current
+      errors.add(:return_trip_time, I18n.translate(:trips_cannot_be_entered_for_times))
+      false
+    end
+    true
+  end
 end
