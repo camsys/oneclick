@@ -309,14 +309,14 @@ module ApplicationHelper
     if I18n.locale != :tags
       begin
         if I18n.translate(branded_key, options.merge({raise: true})).class != Array
-          I18n.translate(branded_key, options.merge({raise: true})).html_safe
+          make_translation_safe(I18n.translate(branded_key, options.merge({raise: true})))
         else
           raw(I18n.translate(branded_key, options.merge({raise: true})))
         end
       rescue Exception => e
         begin
           if I18n.translate(key, options.merge({raise: true})).class != Array
-            I18n.translate(key, options.merge({raise: true})).html_safe
+            make_translation_safe(I18n.translate(key, options.merge({raise: true})))
           else
             raw(I18n.translate(key, options.merge({raise: true})))
           end
@@ -324,7 +324,7 @@ module ApplicationHelper
           Rails.logger.warn "key: #{key} not found: #{e.inspect}"
           begin
             if I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})).class != Array
-              I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})).html_safe
+              make_translation_safe(I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})))
             else
               raw(I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})))
             end
@@ -336,7 +336,7 @@ module ApplicationHelper
     else
       begin
         if I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})).class != Array
-          I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})).html_safe
+          make_translation_safe(I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})))
         else
           raw(I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})))
         end
@@ -346,6 +346,10 @@ module ApplicationHelper
 
       return '[' + branded_key.to_s + ']'
     end
+  end
+
+  def make_translation_safe(translation)
+    translation.to_s.gsub('%{application_name}', Oneclick::Application.config.name).gsub('%{break}', '</br> ').html_safe
   end
 
   def links_to_each_locale(show_translations = false)
