@@ -119,8 +119,12 @@ class Trip < ActiveRecord::Base
       trip_part.sequence = sequence
       trip_part.is_depart = trip_proxy.return_arrive_depart
       trip_part.is_return_trip = true
-      if trip_proxy.user_agent.downcase =~ /mobile|android|touch|webos|hpwos/
-        return_trip_date = Date.strptime(trip_proxy.return_trip_date, '%Y-%m-%d')
+      unless trip_proxy.user_agent.nil?
+        if trip_proxy.user_agent.downcase =~ /mobile|android|touch|webos|hpwos/
+          return_trip_date = Date.strptime(trip_proxy.return_trip_date, '%Y-%m-%d')
+        else
+          return_trip_date = Date.strptime(trip_proxy.return_trip_date, '%m/%d/%Y')
+        end
       else
         return_trip_date = Date.strptime(trip_proxy.return_trip_date, '%m/%d/%Y')
       end
