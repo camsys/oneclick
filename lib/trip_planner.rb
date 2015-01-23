@@ -102,7 +102,6 @@ class TripPlanner
       trip_itinerary = {}
 
       returned_mode_code = mode_code
-      legs_yaml = itinerary['legs'].to_yaml
       case mode_code.to_s
         when 'mode_car'
           trip_itinerary['mode'] = Mode.car
@@ -115,7 +114,7 @@ class TripPlanner
           returned_mode_code = Mode.transit.code
 
           # further check if is_walk, is_car, or is_bicycle
-          legs = ItineraryParser.parse(YAML.load(legs_yaml), false)
+          legs = ItineraryParser.parse(itinerary['legs'], false)
           if Itinerary.is_walk?(legs)
             returned_mode_code = Mode.walk.code
           elsif Itinerary.is_car?(legs)
@@ -134,7 +133,7 @@ class TripPlanner
       trip_itinerary['end_time'] = Time.at((itinerary['endTime']).to_f/1000).in_time_zone("UTC")
       trip_itinerary['transfers'] = fixup_transfers_count(itinerary['transfers'])
       trip_itinerary['walk_distance'] = itinerary['walkDistance']
-      trip_itinerary['legs'] = legs_yaml
+      trip_itinerary['legs'] = itinerary['legs'].to_yaml
       trip_itinerary['server_status'] = 200
       trip_itinerary['match_score'] = match_score
       begin

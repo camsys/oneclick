@@ -12,12 +12,14 @@ class ItineraryParser
 
     itin = []
 
-    legs.each do |leg|
-      leg_itin = parse_leg(leg, include_geometry)
+    if legs.is_a? Array
+      legs.each do |leg|
+        leg_itin = parse_leg(leg, include_geometry)
 
-      Rails.logger.debug leg_itin.inspect
+        Rails.logger.debug leg_itin.inspect
 
-      itin << leg_itin unless leg_itin.nil?
+        itin << leg_itin unless leg_itin.nil?
+      end
     end
 
     return itin
