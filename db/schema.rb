@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 201409261201524) do
+ActiveRecord::Schema.define(version: 20150123141806) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -177,6 +177,7 @@ ActiveRecord::Schema.define(version: 201409261201524) do
     t.boolean  "duration_estimated",                                default: false
     t.string   "map_image"
     t.boolean  "too_early",                                         default: false
+    t.string   "returned_mode_code"
   end
 
   create_table "kiosk_locations", force: true do |t|
@@ -378,17 +379,17 @@ ActiveRecord::Schema.define(version: 201409261201524) do
   end
 
   create_table "services", force: true do |t|
-    t.text     "name",                                                      null: false
-    t.integer  "provider_id",                                               null: false
-    t.integer  "service_type_id",                                           null: false
-    t.integer  "advanced_notice_minutes",                  default: 0,      null: false
-    t.boolean  "volunteer_drivers_used",                   default: false,  null: false
-    t.boolean  "accepting_new_clients",                    default: true,   null: false
-    t.boolean  "wait_list_in_effect",                      default: false,  null: false
-    t.boolean  "requires_prior_authorization",             default: false,  null: false
-    t.boolean  "active",                                   default: true,   null: false
-    t.datetime "created_at",                                                null: false
-    t.datetime "updated_at",                                                null: false
+    t.text     "name",                                                     null: false
+    t.integer  "provider_id",                                              null: false
+    t.integer  "service_type_id",                                          null: false
+    t.integer  "advanced_notice_minutes",                  default: 0,     null: false
+    t.boolean  "volunteer_drivers_used",                   default: false, null: false
+    t.boolean  "accepting_new_clients",                    default: true,  null: false
+    t.boolean  "wait_list_in_effect",                      default: false, null: false
+    t.boolean  "requires_prior_authorization",             default: false, null: false
+    t.boolean  "active",                                   default: true,  null: false
+    t.datetime "created_at",                                               null: false
+    t.datetime "updated_at",                                               null: false
     t.string   "email"
     t.string   "external_id",                  limit: 100
     t.string   "phone",                        limit: 25
@@ -407,7 +408,7 @@ ActiveRecord::Schema.define(version: 201409261201524) do
     t.text     "public_comments_old"
     t.text     "private_comments_old"
     t.string   "logo"
-    t.integer  "max_advanced_book_minutes",                default: 525600, null: false
+    t.integer  "max_advanced_book_minutes",                default: 0,     null: false
   end
 
   create_table "services_users", id: false, force: true do |t|

@@ -159,7 +159,7 @@ class StandardUsageReport < AbstractReport
         if col[:name] == :time_period
           row_data << I18n.t(row)
         else
-          base = Itinerary.created_between(col[:start_time], col[:end_time])
+          base = Itinerary.valid.created_between(col[:start_time], col[:end_time])
           row_data << case row
           when :transit
             base.with_mode('mode_transit').count

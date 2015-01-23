@@ -101,17 +101,31 @@ class TripPlanner
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
 
+      returned_mode_code = mode_code
+      legs_yaml = itinerary['legs'].to_yaml
       case mode_code.to_s
-        when 'mode_car_name'
+        when 'mode_car'
           trip_itinerary['mode'] = Mode.car
-        when 'mode_bicycle_name'
+        when 'mode_bicycle'
           trip_itinerary['mode'] = Mode.bicycle
-        when 'mode_walk_name'
+        when 'mode_walk'
           trip_itinerary['mode'] = Mode.walk
         else
           trip_itinerary['mode'] = Mode.transit
+          returned_mode_code = Mode.transit.code
+
+          # further check if is_walk, is_car, or is_bicycle
+          legs = ItineraryParser.parse(YAML.load(legs_yaml), false)
+          if Itinerary.is_walk?(legs)
+            returned_mode_code = Mode.walk.code
+          elsif Itinerary.is_car?(legs)
+            returned_mode_code = Mode.car.code
+          elsif Itinerary.is_bicycle?(legs)
+            returned_mode_code = Mode.bicycle.code
+          end
       end
 
+      trip_itinerary['returned_mode_code'] = returned_mode_code
       trip_itinerary['duration'] = itinerary['duration'].to_f # in seconds
       trip_itinerary['walk_time'] = itinerary['walkTime']
       trip_itinerary['transit_time'] = itinerary['transitTime']
@@ -120,7 +134,7 @@ class TripPlanner
       trip_itinerary['end_time'] = Time.at((itinerary['endTime']).to_f/1000).in_time_zone("UTC")
       trip_itinerary['transfers'] = fixup_transfers_count(itinerary['transfers'])
       trip_itinerary['walk_distance'] = itinerary['walkDistance']
-      trip_itinerary['legs'] = itinerary['legs'].to_yaml
+      trip_itinerary['legs'] = legs_yaml
       trip_itinerary['server_status'] = 200
       trip_itinerary['match_score'] = match_score
       begin
@@ -214,6 +228,7 @@ class TripPlanner
   def convert_taxi_itineraries(itinerary)
     trip_itinerary = {}
     trip_itinerary['mode'] = Mode.taxi
+    trip_itinerary['returned_mode_code'] = Mode.taxi.code
     trip_itinerary['duration'] = itinerary[0]['duration'].to_f
     trip_itinerary['walk_time'] = 0
     trip_itinerary['walk_distance'] = 0
@@ -228,6 +243,7 @@ class TripPlanner
   def convert_paratransit_itineraries(service, match_score = 0, missing_information = false, missing_information_text = '')
     trip_itinerary = {}
     trip_itinerary['mode'] = Mode.paratransit
+    trip_itinerary['returned_mode_code'] = Mode.paratransit.code
     trip_itinerary['service'] = service
     trip_itinerary['walk_time'] = 0
     trip_itinerary['walk_distance'] = 0
@@ -280,6 +296,7 @@ class TripPlanner
   def convert_rideshare_itineraries(itinerary)
     {
       'mode' => Mode.rideshare,
+      'returned_mode_code' => Mode.rideshare.code,
       'ride_count' => itinerary['count'],
       'server_status' => itinerary['status'],
       'external_info' => YAML.dump(itinerary['query']),
