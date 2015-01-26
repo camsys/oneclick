@@ -20,7 +20,7 @@
           %button.btn.action-button{data: {toggle: 'modal', target: "#feedback_modal", remote: new_service_rating_path(@service)}}
             = t(:feedback)
         = render partial: "ratings/organization_feedback_modal", locals: {rateable: @service}
-      - if can_manage_provider and (can? :destroy, @service)
+      - if @service.active && can_manage_provider and (can? :destroy, @service)
         = button_tag :type => 'button', "data-target" => "#deleteServiceConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
           = t(:delete)
         #deleteServiceConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_service), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
@@ -35,6 +35,21 @@
                     = t(:site_title)
               .modal-body{:style => "text-align:left;"}
                 = t(:confirm_remove_message) + @service.name + " ?"
+      - if !@service.active && can_manage_provider && (can? :destroy, @service)
+        = button_tag :type => 'button', "data-target" => "#undeleteServiceConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
+          = t(:undelete)
+        #undeleteServiceConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:restore_service), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+          .modal-dialog
+            .modal-content
+              .modal-header
+                = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
+                  = t(:cancel)
+                = button_to t(:ok), { action: "undelete", id: @service.id }, method: :patch,  style: "margin-right: 5px;", class: "btn action-button pull-right"
+                .modal-title{:style => "text-align:left;"}
+                  %b
+                    = t(:site_title)
+              .modal-body{:style => "text-align:left;"}
+                = t(:confirm_restore_message) + " #{@service.name} ?"
       - if can_manage_provider and (can? :update, @service)
         = link_to edit_service_path(@service), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
@@ -110,12 +125,9 @@
             = t(:advance_notice_required)
             = add_tooltip("advance_notice_required_help")
         .panel-body
-          -if @service.advanced_notice_minutes > 0
-            =t(:service_notice_required) + " " ## TODO Interpolate
-            %b= duration_to_words(@service.advanced_notice_minutes*60, :suppress_minutes => true, :days_only => true).downcase
-            =" " + t(:service_notice_str) + "."
-          -else
-            =t(:service_notice_not_required) + "."
+          %b
+            = day_range_to_words(@service.advanced_notice_minutes*60, @service.max_advanced_book_minutes*60)
+          =" " + t(:advance_notice_required).downcase + "."
           - # booking cut off times
           %table.ALTtable
             %tr

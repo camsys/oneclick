@@ -110,6 +110,7 @@ class TripPart < ActiveRecord::Base
   # Generates itineraries for this trip part. Any existing itineraries should have been removed
   # before this method is called.
   def create_itineraries(modes = trip.desired_modes)
+
     Rails.logger.info "CREATE: " + modes.collect {|m| m.code}.join(",")
     # remove_existing_itineraries
     itins = []
@@ -210,6 +211,12 @@ class TripPart < ActiveRecord::Base
         itins << Itinerary.new(serialized_itinerary)
 
       end
+    end
+
+    #Check to see special fare rules exist
+    fh = FareHelper.new
+    itins.each do |itin|
+      fh.calculate_fixed_route_fare(self, itin)
     end
 
     #Filter impractical routes

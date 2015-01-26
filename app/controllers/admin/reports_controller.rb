@@ -57,8 +57,15 @@ class Admin::ReportsController < Admin::BaseController
       # set up the report view
       @report_view = @report.view_name
       # get the class instance and generate the data
-      @report_instance = @report.class_name.constantize.new(view_context)
-      @data = @report_instance.get_data(current_user, @generated_report) unless @report_instance.paged
+      if @report.id != Report.system_usage_report_id
+        @report_instance = @report.class_name.constantize.new(view_context)
+        @data = @report_instance.get_data(current_user, @generated_report) unless @report_instance.paged
+      else
+        @report_instance = @report.class_name.constantize.new(
+          Chronic.parse(params[:generated_report][:standard_usage_report_effective_date]),
+          params[:generated_report][:standard_usage_report_date_option])
+      end
+
       @columns = @report_instance.get_columns
       @url_for_csv = url_for only_path: true, format: :csv, params: params
 
@@ -67,7 +74,7 @@ class Admin::ReportsController < Admin::BaseController
       respond_to do |format|
         format.html
         format.csv do
-          send_data get_csv(@columns,  @report_instance.get_data(current_user, @generated_report)),
+          send_data get_csv,
                 filename: "#{I18n.t(@report.class_name).parameterize.underscore}.csv", type: :text
         end
       end
@@ -75,11 +82,23 @@ class Admin::ReportsController < Admin::BaseController
 
   end
 
-  def get_csv(columns, data)
+  def get_csv
+    is_standard_system_report = (@report.id == Report.system_usage_report_id)
+    if is_standard_system_report
+      data = @report_instance.get_data
+    else
+      data = @report_instance.get_data(current_user, @generated_report)
+    end
+
     # Excel is stupid if the first two characters of a csv file are "ID". Necessary to
     # escape it. https://support.microsoft.com/kb/215591/EN-US
     CSV.generate do |csv|
-      xlated_columns = I18n.t(@columns)
+      xlated_columns = if is_standard_system_report
+        @report_instance.get_localized_columns
+      else
+        @columns.map {|col| I18n.t(col)}
+      end
+
       if xlated_columns[0].start_with? "ID"
         headers = Array.new(xlated_columns)
         headers[0] = "'" + headers[0]
@@ -88,11 +107,19 @@ class Admin::ReportsController < Admin::BaseController
       end
 
       csv << headers
-      data.each do |row|
-        row = row.decorate
-        csv << columns.map {|col| row.send(col) }
+
+      if is_standard_system_report
+        data.each do |row|
+          csv << row
+        end
+      else
+        data.each do |row|
+          row = row.decorate
+          csv << @columns.map {|col| row.send(col) }
+        end
       end
     end
+
   end
 
   def trips_datatable

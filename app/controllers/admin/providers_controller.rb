@@ -102,11 +102,20 @@ class Admin::ProvidersController < ApplicationController
   # DELETE /admin/providers/1
   # DELETE /admin/providers/1.json
   def destroy
-    @provider.active = false
-    @provider.save
+    @provider.update_attributes(active: false)
     @provider.services.update_all(active: false)
     respond_to do |format|
       format.html { redirect_to admin_providers_url }
+      format.json { head :no_content }
+    end
+  end
+
+  def undelete
+    @provider = Provider.find(params[:id])
+    @provider.update_attributes(active: true)
+    @provider.services.update_all(active: true)
+    respond_to do |format|
+      format.html { redirect_to admin_provider_path(@provider) }
       format.json { head :no_content }
     end
   end

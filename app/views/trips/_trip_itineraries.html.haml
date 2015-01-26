@@ -26,7 +26,7 @@
             .row
               %i.fa.fa-warning
               =t(:missing_accommodations)
-          -if itinerary.date_mismatch or itinerary.time_mismatch or itinerary.too_late
+          -if itinerary.date_mismatch or itinerary.time_mismatch or itinerary.too_late or itinerary.too_early
             .row
               %i.fa.fa-calendar
               =t(:trip_not_possible_as_schedule)

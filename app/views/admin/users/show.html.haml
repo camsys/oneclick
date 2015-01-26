@@ -10,8 +10,7 @@
       = button_tag type: 'button', "data-target" => "#deleteUserConfirmDialog",
         "data-toggle" => "modal", class: "btn action-button" do
         = t(:delete)
-      #deleteUserConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_service),
-        role: "dialog", "aria-hidden" => 'true', tabindex: "-1"}
+      #deleteUserConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_user), role: "dialog", "aria-hidden" => 'true', tabindex: "-1"}
         .modal-dialog
           .modal-content
             .modal-header
@@ -25,8 +24,22 @@
             .modal-body{:style => "text-align:left;"}
               = t(:confirm_remove_message) + @user.name + " ?"
     - if can?(:destroy, @user) && @user.deleted_at
-      = button_to t(:undelete), { action: "undelete", user_id: @user.id }, method: :post,
-        class: "btn action-button", form_class: 'pull-left'
+      = button_tag type: 'button', "data-target" => "#undeleteUserConfirmDialog",
+        "data-toggle" => "modal", class: "btn action-button" do
+        = t(:undelete)
+      #undeleteUserConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:restore_user), role: "dialog", "aria-hidden" => 'true', tabindex: "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
+                = t(:cancel)
+              = button_to t(:ok), { action: "undelete", id: @user.id }, method: :patch,
+                style: "margin-right: 5px;", class: "btn action-button pull-right"
+              .modal-title{:style => "text-align:left;"}
+                %b
+                  = t(:site_title) 
+            .modal-body{:style => "text-align:left;"}
+              = t(:confirm_restore_message) + " #{@user.name} ?"
     - if can? :edit, @user
       = link_to t(:edit), edit_admin_user_path(@user),
         {class: 'btn action-button pull-right', role: 'button'}

@@ -26,13 +26,15 @@ module CsHelpers
     :stop_assisting => 'fa fa-compass',
     :translations => 'fa fa-language',
     :multi_od_trip => 'fa fa-table',
-    :user_guide => 'fa fa-book'
+    :user_guide => 'fa fa-book',
+    :settings => 'fa fa-gear'
   }
 
   def admin_actions
     a = [
+      {label: t(:settings), target: admin_settings_path, icon: ACTION_ICONS[:settings], access: :admin_settings},
       {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
-      {label: t(:translations), target: admin_translations_path, icon: ACTION_ICONS[:translations], access: :admin_translations},
+      {label: t(:translations), target: admin_translations_path, icon: ACTION_ICONS[:translations], access: :admin_translations}
     ]
     if Rating.feedback_on?
       a.push({label: t(:feedback), target: ratings_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback})

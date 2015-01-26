@@ -23,7 +23,7 @@
             .row-fluid
               %i.icon.icon-warning
               Some accommodations unavailable.
-          -if itinerary.date_mismatch or itinerary.time_mismatch or itinerary.too_late
+          -if itinerary.date_mismatch or itinerary.time_mismatch or itinerary.too_late or itinerary.too_early
             .row-fluid
               %i.icon.icon-calendar
               This trip is not possible as scheduled.

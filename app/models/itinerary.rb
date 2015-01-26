@@ -21,6 +21,16 @@ class Itinerary < ActiveRecord::Base
   scope :visible, -> {where('hidden=false')}
   scope :hidden, -> {where('hidden=true')}
   scope :good_score, -> {where('match_score < 3')}
+  scope :booked, -> {where.not(booking_confirmation: nil)}
+  scope :created_between, lambda {|from_day, to_day| where("itineraries.created_at > ? AND itineraries.created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
+  # NOTE that: mode scopes are based on :returned_mode_code as it represents the real mode code
+  #    when itinerary.mode.code == :mode_transit, itinerary.returned_mode_code could be
+  #        mode_transit
+  #        mode_walk (is_walk == true)
+  #        mode_car (is_car == true)
+  #        mode_bicycle (is_bicycle == true)
+  scope :with_mode, ->(mode) {where(returned_mode_code: mode)}
+  scope :without_mode, ->(mode) {where.not(returned_mode_code: mode)}
 
   # attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
   # :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
@@ -49,21 +59,41 @@ class Itinerary < ActiveRecord::Base
   # returns true if this itinerary is a walk-only trip. These are a special case of Transit
   # trips that only include a WALK leg
   def is_walk
-    legs = get_legs(false)
+    return true if self.returned_mode_code == "mode_walk"
+
+    return Itinerary.is_walk? get_legs(false)
+  end
+
+  def self.is_walk?(legs)
+    legs ||= []
     return legs.size == 1 && legs.first.mode == Leg::TripLeg::WALK
   end
 
   # return true if this itinerary is a car-only trip. These are a special case of transit
   # trips that only include a CAR leg
   def is_car
-    legs = get_legs(false)
-    return legs.size ==1 && legs.first.mode == Leg::TripLeg::CAR
+    return true if self.returned_mode_code == "mode_car"
+
+    return Itinerary.is_car? get_legs(false)
+  end
+
+  def self.is_car?(legs)
+    legs ||= []
+    return legs.size == 1 && legs.first.mode == Leg::TripLeg::CAR
   end
 
   # returns true if this itinerary is contains only bicycle and walking legs. These are a special case of Transit
   # trips that only include a BICYCLE leg
   def is_bicycle
-    modes = get_legs.collect{ |m| m.mode }.uniq
+    return true if self.returned_mode_code == "mode_bicycle"
+
+    return Itinerary.is_bicycle? get_legs(false)
+  end
+
+  def self.is_bicycle?(legs)
+    legs ||= []
+    
+    modes = legs.collect{ |m| m.mode }.uniq
     unless Leg::TripLeg::BICYCLE.in? modes
       return false
     end
@@ -158,7 +188,7 @@ class Itinerary < ActiveRecord::Base
   def notes_count
     [(missing_information ? 1 : 0), 
     (accommodation_mismatch ? 1 : 0),
-    ((date_mismatch or time_mismatch or too_late) ? 1 : 0)].sum
+    ((date_mismatch or time_mismatch or too_late or too_early) ? 1 : 0)].sum
   end
 
   def service_name
@@ -200,7 +230,7 @@ class Itinerary < ActiveRecord::Base
     if self.is_bicycle
       walk_time = 0
       walk_distance = 0
-      get_legs.each do |leg|
+      get_legs(false).each do |leg|
         if leg.mode == Leg::TripLeg::WALK
           walk_time += leg.duration
           walk_distance += leg.distance

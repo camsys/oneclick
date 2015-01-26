@@ -113,6 +113,15 @@ class Admin::AgenciesController < ApplicationController
     end
   end
 
+  def undelete
+    @agency = Agency.find(params[:id])
+    @agency.update_attributes(active: true)
+    respond_to do |format|
+      format.html { redirect_to admin_agency_path(@agency) }
+      format.json { head :no_content }
+    end
+  end
+
   def find_agent_by_email
     user = User.staff_assignable.where("lower(email) = ?", params[:email].downcase).first #case insensitive
 

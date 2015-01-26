@@ -181,6 +181,42 @@ en:
     one: "The sidewalk obstruction has been updated"
     other: "The sidewalk obstructions have been updated"
   multi_od_trip: 'Multiple Origin-Destination Trip'
+  restore_user: 'Restore user'
+  remove_user: 'Remove user'
+  restore_service: 'Restore service'
+  restore_agency: 'Restore agency'
+  restore_provider: 'Restore provider'
+  confirm_restore_message: 'Are you sure you want to restore'
+
+  # standard system usage report
+  time_period: 'Time Period'
+  number_of_trips_planned: 'Number of Trips Planned'
+  registered_users: 'Registered Users'
+  total_registered_users: 'Total Registered Users'
+  new_sign_ups: 'New Sign Ups'
+  active_users: 'Active Users'
+  visitors: 'Visitors'
+  number_of_trips_created: 'Number of Trips Created'
+  others: 'Others'
+  number_of_trip_legs_booked: 'Number of Trip Legs Booked'
+  platform: 'Platform'
+  computer: 'Computer'
+  weekly: 'Weekly'
+  biweekly: 'Bi-weekly'
+  monthly: 'Monthly'
+  quarterly: 'Quarterly'
+  current: 'Current'
+  year_to_date: 'Year to Date'
+  launch_to_date: 'Launch to Date'
+  planned_trips_statistics: 'Planned Trips Statistics'
+  created_trips_statistics: 'Created Trips Statistics'
+  booked_legs_statistics: 'Booked Trip Legs Statistics'
+  users_statistics: 'Users Statistics'
+  trip_modes_statistics: 'Trip Modes Statistics'
+  platforms_statistics: 'Platforms Statistics'
+  effective_date: 'Effective Date'
+  date_option: 'Date Option'
+
 
   # Registration, sign in, profile
   about_you: 'About You'
@@ -507,6 +543,15 @@ en:
   uturn_left: 'U-TURN LEFT'
   uturn_right: 'U-TURN RIGHT'
 
+  # Admin settings
+  settings: 'Settings'
+  load_pois: 'Load POIs'
+  load_pois_notes: 'Refer to 1-Click Deployment Document on file specfications.'
+  select_pois_file_to_upload: 'Select POIs file (.csv)'
+  pois_file_not_csv: 'The file is not in CSV format.'
+  pois_load_summary: "Loaded %{count_poi_type} POI Types and %{count_good} POIs. %{count_bad} bad were skipped, %{count_failed} failed to save, %{count_possible_existing} possible existing."
+    
+
   #map
   map: 'Map'
   zoom_in: 'Zoom in'
@@ -621,6 +666,8 @@ en:
   trip_outside_service_hours: "This trip occurs outside the normal hours for this service."
   trip_insufficient_notice_a: "This trip must be booked "
   trip_insufficient_notice_b: " in advance."
+  trip_max_advanced_book_notice_a: "This trip can only be booked within "
+  trip_max_advanced_book_notice_b: " in advance."
   more_information_required: "More information is needed."
   trip_needs_more_accommodations: "These accommodations are not met by this service"
   service_notice_not_required: "This service does not require advanced notice to book a trip"
@@ -720,6 +767,7 @@ en:
   this_month: "This month"
   today: "Today"
   yesterday: "Yesterday"
+  days: 'days'
   ago: " ago"
   didn_t_receive_confirmation_instructions: "Didn't receive confirmation instructions?"
   didn_t_receive_unlock_instructions: "Didn't receive unlock instructions?"
@@ -844,6 +892,7 @@ en:
   valid_time_msg: "must be a valid time"
   presence_msg: "can't be blank"
   before_msg: "must be before "
+  advanced_book_day_range_msg: "Advanced booking days: please make sure day range is valid."
 
   date:
     abbr_day_names:

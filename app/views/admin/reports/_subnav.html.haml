@@ -21,22 +21,37 @@
       .row
         .col-sm-12
           .col-sm-2
-            = f.input :report_name, collection: Report.names_and_ids, include_blank: false,
-                label: t(:report_name)
-          .col-sm-2
-            = f.input :date_range, collection: DateOption.form_collection(false),
-                include_blank: false, label: t(:date_range)
-          .col-sm-2
-            = f.input :agency_id,
-                collection: Agency.form_collection(@agency_all, @agency_id),
-                include_blank: false, label: t(:agencies)
-          .col-sm-2
-            = f.input :agent_id, collection: User.agent_form_collection(true, @agency),
-                include_blank: false, label: t(:agents)
-          .col-sm-2
-            = f.input :provider_id,
-                collection: Provider.form_collection(@provider_all, @provider_id),
-                include_blank: false, label: t(:providers)
+            = f.input :report_name, collection: Report.names_and_ids, include_blank: false, label: t(:report_name)
+          - show_usage_report_date_options = (@report ? @report.class_name == 'StandardUsageReport' : Report.usage_report_is_first)
+          .col-sm-8.non-system-usage-report-components{style: ("display: none;" if show_usage_report_date_options)}
+            .col-sm-3
+              = f.input :date_range, collection: DateOption.form_collection(false),
+                  include_blank: false, label: t(:date_range)
+            .col-sm-3
+              = f.input :agency_id,
+                  collection: Agency.form_collection(@agency_all, @agency_id),
+                  include_blank: false, label: t(:agencies)
+            .col-sm-3
+              = f.input :agent_id, collection: User.agent_form_collection(true, @agency),
+                  include_blank: false, label: t(:agents)
+            .col-sm-3
+              = f.input :provider_id,
+                  collection: Provider.form_collection(@provider_all, @provider_id),
+                  include_blank: false, label: t(:providers)
+          .col-sm-4.system-usage-report-components{style: ("display: none;" if !show_usage_report_date_options)}
+            .col-sm-6
+              %label.sr-only{for: "standard_usage_report_effective_date"}= "standard usage report effective date"
+              = f.input :standard_usage_report_effective_date, label: t(:effective_date) do
+                = f.input_field :standard_usage_report_effective_date, id: "standard_usage_report_effective_date", class: 'form-control',autocomplete: 'off'
+                :javascript
+                  $('#standard_usage_report_effective_date').datetimepicker({
+                    defaultDate: new Date(),
+                    pickTime: false,
+                    format: 'MM/DD/YYYY',
+                    language: "#{I18n.locale}"
+                  });
+            .col-sm-6
+              = f.input :standard_usage_report_date_option, collection: StandardUsageReport.available_date_option_collections, include_blank: false, label: t(:date_option)
 
         .row#custom_dates
           .col-md-1
@@ -101,7 +116,16 @@
   });
 
   $('#generated_report_report_name').on('change', function(event) {
-    $('#report_form').attr('action', "#{admin_reports_path(locale: params[:locale])}/" + this.value)
+    var report_id = parseInt(this.value);
+    $('#report_form').attr('action', "#{admin_reports_path(locale: params[:locale])}/" + report_id);
+
+    if (report_id == "#{Report.system_usage_report_id}") {
+      $('.non-system-usage-report-components').hide();
+      $('.system-usage-report-components').show();
+    } else {
+      $('.system-usage-report-components').hide();
+      $('.non-system-usage-report-components').show();
+    }
   });
   function exportCsv(mode) {
    var a = document.createElement('a');

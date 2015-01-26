@@ -64,25 +64,16 @@ class Service < ActiveRecord::Base
   validates :name, presence: true
   validates :provider, presence: true
   validates :service_type, presence: true
+  validate :ensure_valid_advanced_book_day_range
 
   mount_uploader :logo, ServiceLogoUploader
 
   def human_readable_advanced_notice
-    if self.advanced_notice_minutes < (24*60)
-      hours = self.advanced_notice_minutes/60.round
-      if hours == 1
-        return "1 hour"
-      else
-        return hours.to_s + " hours"
-      end
-    else
-      days = self.advanced_notice_minutes/(24*60).round
-      if days == 1
-        return "1 day"
-      else
-        return days.to_s + " days"
-      end
-    end
+    human_readable_time_notice(self.advanced_notice_minutes)
+  end
+
+  def human_readable_max_allow_advanced_notice
+    human_readable_time_notice(self.max_advanced_book_minutes)
   end
 
   def full_name
@@ -137,6 +128,38 @@ class Service < ActiveRecord::Base
   def notice_minutes_part= value
     update_attributes(advanced_notice_minutes:
       (notice_days_part * (60 * 24)) + (notice_hours_part * 60) + value.to_i)
+  end
+
+  def max_advanced_book_days_part
+    max_advanced_book_minutes / (60 * 24)
+  end
+
+  def max_advanced_book_days_part= value
+    update_attributes(max_advanced_book_minutes:
+                      (value.to_i * (60 * 24)) + (max_advanced_book_hours_part * 60) + max_advanced_book_minutes_part)
+  end
+
+  def max_advanced_book_hours_part
+    (max_advanced_book_minutes / 60) % 24
+  end
+
+  def max_advanced_book_hours_part= value
+    update_attributes(max_advanced_book_minutes:
+      (max_advanced_book_days_part * (60 * 24)) + (value.to_i * 60) + max_advanced_book_minutes_part)
+  end
+
+
+  def max_advanced_book_minutes_part
+    max_advanced_book_minutes % 60
+  end
+
+  def max_advanced_book_minutes_part= value
+    update_attributes(max_advanced_book_minutes:
+      (max_advanced_book_days_part * (60 * 24)) + (max_advanced_book_hours_part * 60) + value.to_i)
+  end
+
+  def self.max_allow_advanced_book_days
+    Oneclick::Application.config.service_max_allow_advanced_book_days || 365
   end
 
   # NOTE: also merge destroy attribute for records that exist but not marked keep
@@ -351,6 +374,32 @@ class Service < ActiveRecord::Base
     myArray
   end
 
+  private
 
+  def human_readable_time_notice(time_in_mins)
+    if self.time_in_mins < (24*60)
+      hours = self.time_in_mins/60.round
+      if hours == 1
+        return "1 hour"
+      else
+        return hours.to_s + " hours"
+      end
+    else
+      days = self.time_in_mins/(24*60).round
+      if days == 1
+        return "1 day"
+      else
+        return days.to_s + " days"
+      end
+    end
+  end
+
+  def ensure_valid_advanced_book_day_range
+    min_mins = self.advanced_notice_minutes 
+    max_mins = self.max_advanced_book_minutes
+    if !min_mins.nil? && !max_mins.nil? && min_mins > max_mins
+      errors.add(:max_advanced_book_days_part, I18n.t(:advanced_book_day_range_msg))
+    end
+  end
 
 end

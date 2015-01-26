@@ -36,6 +36,7 @@ Oneclick::Application.configure do
   config.min_ui_duration = 1.hours
 
   config.google_places_api_key = 'AIzaSyCvKyNoBzQNrBRuSRkipWye0pdj__HjrmU'
+  config.google_radius_meters = 400000 #Used in the Autocomplete Geocoder to bias results
 
   config.time_zone = 'Eastern Time (US & Canada)'
 
@@ -45,6 +46,10 @@ Oneclick::Application.configure do
   config.service_logo_dimensions = [40, 40]
   config.provider_logo_format_list = %w(jpg jpeg gif png)
   config.provider_logo_dimensions = [40, 40]
+
+  config.application_launch_date = Date.new(2014,1,1) # default
+  config.usage_report_last_n = 4
+  config.kiosk_available = false
 
   case ENV['BRAND'] || 'arc'
   when 'arc'
@@ -154,7 +159,7 @@ Oneclick::Application.configure do
     config.initial_signup_question = true
     config.allows_booking = true
 
-
+    config.kiosk_available = true
   when 'jta'
     config.host = 'transportal.net'
     config.ui_logo = 'jta/logo.png'
@@ -261,7 +266,7 @@ Oneclick::Application.configure do
     when 'uta'
       config.host = 'oneclick-uta.camsys-apps.com'
       config.logo_text = "UTA"
-      config.geocoder_components = 'administrative_area:UT|country:US'
+      config.geocoder_components = "country:us"
       # TODO Do we maybe need different bounds for kiosk vs. default?
       config.map_bounds      = [[37,-114.1],[42,-109]]
       config.geocoder_bounds = [[37,-114.1],[42,-109]]
@@ -307,7 +312,10 @@ Oneclick::Application.configure do
       parts[0] + '-qa.' + parts[1]
     when 'development'
       'localhost:3000'
-    when 'integration', 'test'
+    when 'integration'
+      parts = config.host.split(%r{\.}, 2)
+      parts[0] + '-int.' + parts[1]
+    when 'test'
       'example.com'
     else
       raise "Unhandled Rails.env #{Rails.env}"
@@ -351,6 +359,10 @@ Oneclick::Application.configure do
   config.OTP_retry_count = 3            #How many times do we retry getting a response from OTP before giving up.
   config.user_guide_url = "https://s3.amazonaws.com/oneclick-bin/documentation/1-Click+v1+Guide.pdf"
 
+  #Special Fixed-Route Fare
+  config.discount_fare_multiplier = 0
+  config.discount_fare_age = 65
+  config.discount_fare_active = false
 
   if ENV['UI_MODE'] == 'kiosk'
     config.trip_time_ahead_mins = 30
@@ -358,7 +370,7 @@ Oneclick::Application.configure do
     config.trip_time_ahead_mins = 15     #interval: This is not used as the default trip ahead time.  It is used as the interval (which is actually ignored by the front-end)
   end
 
-  config.default_trip_head_mins = 120    #How many minutes into the future should the default outbound trip time be? (It is rounded to the next 15 min interval)
+  config.default_trip_ahead_mins = 120    #How many minutes into the future should the default outbound trip time be? (It is rounded to the next 15 min interval)
 
   # Note that as of 2014-06-04, at least, these timeouts are only used by rideshare.
   config.remote_read_timeout_seconds = 10    # seconds to wait before timing out reading a page through a web request
@@ -379,6 +391,8 @@ Oneclick::Application.configure do
 
   # I18n.available_locales << :tags # when this locale is enabled, display translation_tags instead of translated text
   config.translation_tag_locale_text = 'Tags'
+
+  config.service_max_allow_advanced_book_days = 365 # 1 year
 end
 
 class String
