@@ -171,6 +171,7 @@ module TripsSupport
       req.params['reference'] = reference
       req.params['sensor']    = true
       req.params['key']       = Oneclick::Application.config.google_places_api_key
+      req.params['components'] = Oneclick::Application.config.geocoder_components
     end
   end
 
@@ -180,7 +181,8 @@ module TripsSupport
       req.params['sensor']   = false
       req.params['key']      = Oneclick::Application.config.google_places_api_key
       req.params['location'] = map_center
-      req.params['radius']   = 20_000
+      req.params['radius']   = Oneclick::Application.config.google_radius_meters
+      req.params['components'] = Oneclick::Application.config.geocoder_components
     end
   end
 

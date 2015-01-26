@@ -36,6 +36,7 @@ Oneclick::Application.configure do
   config.min_ui_duration = 1.hours
 
   config.google_places_api_key = 'AIzaSyCvKyNoBzQNrBRuSRkipWye0pdj__HjrmU'
+  config.google_radius_meters = 400000 #Used in the Autocomplete Geocoder to bias results
 
   config.time_zone = 'Eastern Time (US & Canada)'
 
@@ -265,7 +266,7 @@ Oneclick::Application.configure do
     when 'uta'
       config.host = 'oneclick-uta.camsys-apps.com'
       config.logo_text = "UTA"
-      config.geocoder_components = 'administrative_area:UT|country:US'
+      config.geocoder_components = "country:us"
       # TODO Do we maybe need different bounds for kiosk vs. default?
       config.map_bounds      = [[37,-114.1],[42,-109]]
       config.geocoder_bounds = [[37,-114.1],[42,-109]]
