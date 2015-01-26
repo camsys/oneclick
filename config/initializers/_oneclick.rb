@@ -190,7 +190,6 @@ Oneclick::Application.configure do
     config.poi_file = 'db/jta/locations.csv'
     config.default_county = 'Duval'
     config.state = 'FL'
-
     config.max_walk_seconds = 3600
 
   when 'ieuw'
@@ -262,6 +261,37 @@ Oneclick::Application.configure do
     config.state = 'MA'
 
     config.max_walk_seconds = 3600
+
+    when 'uta'
+      config.host = 'oneclick-uta.camsys-apps.com'
+      config.logo_text = "UTA"
+      config.geocoder_components = 'administrative_area:UT|country:US'
+      # TODO Do we maybe need different bounds for kiosk vs. default?
+      config.map_bounds      = [[37,-114.1],[42,-109]]
+      config.geocoder_bounds = [[37,-114.1],[42,-109]]
+      config.default_zoom = 12
+      config.open_trip_planner = "http://otp-uta.camsys-apps.com:8080/otp/routers/uta/plan?"
+      config.transit_respects_ada = false
+      config.taxi_fare_finder_api_key = "SIefr5akieS5"
+      config.taxi_fare_finder_api_city = "SLC"
+      config.name = '1-Click/UTA'
+      ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.arc.camsys" # TODO
+      ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey" # TODO
+      ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@camsys.com"
+      ENV['SEND_FEEDBACK_TO_ADDRESS'] ||= "1-Click@camsys.com"
+      ENV['GOOGLE_GEOCODER_ACCOUNT'] ||=   "gme-cambridgesystematics"
+      ENV['GOOGLE_GEOCODER_KEY'] ||=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
+      ENV['GOOGLE_GEOCODER_CHANNEL'] ||=  "ARC_ONECLICK"
+      ENV['GOOGLE_GEOCODER_TIMEOUT'] ||=  "5"
+      config.enable_feedback = true
+      config.traveler_read_all_organization_feedback = true
+      config.agent_read_feedback = true
+      config.provider_read_all_feedback = true
+      config.tripless_feedback = false
+      honeybadger_api_key = '0447225c'
+      config.default_county = 'Salt Lake'
+      config.state = 'UT'
+      config.max_walk_seconds = 3600
 
 
     else
