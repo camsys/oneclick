@@ -1905,11 +1905,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '</div></div></div>';
             sliderConfig = {
                 id: transferSliderId,
-                values: [minTransfer, maxTransfer],
+                value: maxTransfer,
                 min: minTransfer,
                 max: maxTransfer,
                 step: 1,
-                range: true
+                range: "min"
             };
         }
 
@@ -1936,10 +1936,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             }
 
             addSliderTooltip(filterObj.sliderConfig);
-            $('#' + transferSliderId).slider('values', [
-                getDefaultMinFilterValue(minTransfer, filterConfigs.default_min_transfers),
+            $('#' + transferSliderId).slider('value',
                 getDefaultMaxFilterValue(maxTransfer, filterConfigs.default_max_transfers)
-            ]);
+            );
         }
     }
 
@@ -1968,11 +1967,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '</div></div></div>';
             sliderConfig = {
                 id: costSliderId,
-                values: [minCost, maxCost],
+                value: maxCost,
                 min: minCost,
                 max: maxCost,
                 step: 1,
-                range: true
+                range: "min"
             };
         }
 
@@ -2000,10 +1999,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             }
 
             addSliderTooltip(filterObj.sliderConfig);
-            $('#' + costSliderId).slider('values', [
-                getDefaultMinFilterValue(minCost, filterConfigs.default_min_fare),
+            $('#' + costSliderId).slider('value', 
                 getDefaultMaxFilterValue(maxCost, filterConfigs.default_max_fare)
-            ]);
+            );
         }
     }
 
@@ -2032,11 +2030,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '</div></div></div>';
             sliderConfig = {
                 id: durationSliderId,
-                values: [minDuration, maxDuration],
+                values: maxDuration,
                 min: minDuration,
                 max: maxDuration,
                 step: 1,
-                range: true
+                range: "min"
             };
         }
 
@@ -2065,10 +2063,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             }
 
             addSliderTooltip(filterObj.sliderConfig);
-            $('#' + durationSliderId).slider('values', [
-                getDefaultMinFilterValue(minDuration, filterConfigs.default_min_duration),
+            $('#' + durationSliderId).slider('value',
                 getDefaultMaxFilterValue(maxDuration, filterConfigs.default_max_duration)
-            ]);
+            );
         }
     }
 
@@ -2097,11 +2094,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '</div></div></div>';
             sliderConfig = {
                 id: walkDistSliderId,
-                values: [minWalkDist, maxWalkDist],
+                values: maxWalkDist,
                 min: minWalkDist,
                 max: maxWalkDist,
                 step: 0.01,
-                range: true
+                range: "min"
             };
         }
 
@@ -2142,10 +2139,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 slider_max = default_max;
             }
 
-            $('#' + walkDistSliderId).slider('values', [
-                getDefaultMinFilterValue(minWalkDist, slider_min),
+            $('#' + walkDistSliderId).slider('value',
                 getDefaultMaxFilterValue(maxWalkDist, slider_max)
-            ]);
+            );
         }
     }
 
@@ -2183,10 +2179,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         $(sliderId).slider(slider);
 
         $(sliderId).on('slidechange', function(event, ui) {
-            var minVal = ui.values[0];
-            var maxVal = ui.values[1];
+            var minVal = ui.value;
+            // var maxVal = ui.values[1];
             $(sliderId + ' .ui-slider-handle:first').append('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + minVal + '</div></div>');
-            $(sliderId + ' .ui-slider-handle:last').append('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + maxVal + '</div></div>');
+            // $(sliderId + ' .ui-slider-handle:last').append('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + maxVal + '</div></div>');
 
             waitForFinalEvent(filterPlans, 100, slider.Id + ' sliding');
         });
@@ -2195,11 +2191,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             $(sliderId + ' .ui-slider-handle').empty();
         });
         $(sliderId + " .ui-slider-handle").mouseenter(function() {
-            var values = $(sliderId).slider("option", "values");
-            var minVal = values[0];
-            var maxVal = values[1];
+            var values = $(sliderId).slider("option", "value");
+            var minVal = values;
+            // var maxVal = values[1];
             $(sliderId + ' .ui-slider-handle:first').append('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + minVal + '</div></div>');
-            $(sliderId + ' .ui-slider-handle:last').append('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + maxVal + '</div></div>');
+            // $(sliderId + ' .ui-slider-handle:last').append('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + maxVal + '</div></div>');
         });
 
     }
@@ -2571,15 +2567,15 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             modes.push(modeVal);
         }
 
-        var transferValues = $('#' + transferSliderId).slider("option", "values");
+        var transferValues = $('#' + transferSliderId).slider("option", "value");
 
 
-        var costValues = $('#' + costSliderId).slider("option", "values");
+        var costValues = $('#' + costSliderId).slider("option", "value");
 
 
-        var durationValues = $('#' + durationSliderId).slider("option", "values");
+        var durationValues = $('#' + durationSliderId).slider("option", "value");
 
-        var walkDistValues = $('#' + walkDistSliderId).slider("option", "values");
+        var walkDistValues = $('#' + walkDistSliderId).slider("option", "value");
 
 
         $('.single-plan-review').each(function() {
@@ -2597,7 +2593,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {Array} durationValues
      * @param {Object} plan
      */
-    function processPlanFiltering(modes, transferValues, costValues, durationValues, walkDistValues, plan) {
+    function processPlanFiltering(modes, transferValue, costValue, durationValue, walkDistValue, plan) {
         var modeVisible = true;
         if (modes instanceof Array) {
             modeVisible = filterPlansByMode(modes, plan);
@@ -2609,8 +2605,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         }
 
         var transferVisible = true;
-        if (transferValues instanceof Array && transferValues.length === 2) {
-            transferVisible = filterPlansByTransfer(transferValues[0], transferValues[1], plan);
+        if (typeof transferValue == 'number') {
+            transferVisible = filterPlansByTransfer(transferValue, plan);
         }
 
         if (!transferVisible) {
@@ -2619,8 +2615,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         }
 
         var costVisible = true;
-        if (costValues instanceof Array && costValues.length === 2) {
-            costVisible = filterPlansByCost(costValues[0], costValues[1], plan);
+        if (typeof costValue == 'number') {
+            costVisible = filterPlansByCost(costValue, plan);
         }
 
         if (!costVisible) {
@@ -2629,8 +2625,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         }
 
         var durationVisible = true;
-        if (durationValues instanceof Array && durationValues.length === 2) {
-            durationVisible = filterPlansByDuration(durationValues[0], durationValues[1], plan);
+        if (typeof durationValue == 'number') {
+            durationVisible = filterPlansByDuration(durationValue, plan);
         }
 
         if (!durationVisible) {
@@ -2639,8 +2635,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         }
 
          var walkDistVisible = true;
-        if (walkDistValues instanceof Array && walkDistValues.length === 2) {
-            walkDistVisible = filterPlansByWalkDist(walkDistValues[0], walkDistValues[1], plan);
+        if (typeof walkDistValue == 'number') {
+            walkDistVisible = filterPlansByWalkDist(walkDistValue, plan);
         }
 
         if (!walkDistVisible) {
@@ -2676,14 +2672,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {object} plan
      * @return {bool} visible
      */
-    function filterPlansByTransfer(minCount, maxCount, plan) {
+    function filterPlansByTransfer(maxCount, plan) {
         var visible = false;
-        if (typeof(minCount) != 'number' || typeof(maxCount) != 'number' || typeof(plan) != 'object' || plan === null) {
+        if (typeof(maxCount) != 'number' || typeof(plan) != 'object' || plan === null) {
             return visible;
         }
 
         var transfer = parseInt(plan.attr('data-transfer'));
-        visible = (typeof(transfer) != 'number' || isNaN(transfer) || (transfer >= minCount && transfer <= maxCount));
+        visible = (typeof(transfer) != 'number' || isNaN(transfer) || (transfer <= maxCount));
 
         return visible;
     }
@@ -2695,14 +2691,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {object} plan
      * @return {bool} visible
      */
-    function filterPlansByCost(minCost, maxCost, plan) {
+    function filterPlansByCost(maxCost, plan) {
         var visible = false;
-        if (typeof(minCost) != 'number' || typeof(maxCost) != 'number' || typeof(plan) != 'object' || plan === null) {
+        if (typeof(maxCost) != 'number' || typeof(plan) != 'object' || plan === null) {
             return visible;
         }
 
         var cost = parseFloat(plan.attr('data-cost'));
-        visible = (typeof(cost) != 'number' || isNaN(cost) || (cost >= minCost && cost <= maxCost));
+        visible = (typeof(cost) != 'number' || isNaN(cost) || (cost <= maxCost));
 
         return visible;
     }
@@ -2714,14 +2710,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {object} plan
      * @return {bool} visible
      */
-    function filterPlansByDuration(minDuration, maxDuration, plan) {
+    function filterPlansByDuration(maxDuration, plan) {
         var visible = false;
-        if (typeof(minDuration) != 'number' || typeof(maxDuration) != 'number' || typeof(plan) != 'object' || plan === null) {
+        if (typeof(maxDuration) != 'number' || typeof(plan) != 'object' || plan === null) {
             return visible;
         }
 
         var duration = parseFloat(plan.attr('data-duration'));
-        visible = (typeof(duration) != 'number' || isNaN(duration) || (duration >= minDuration && duration <= maxDuration));
+        visible = (typeof(duration) != 'number' || isNaN(duration) || (duration <= maxDuration));
 
         return visible;
     }
@@ -2733,14 +2729,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {object} plan
      * @return {bool} visible
      */
-    function filterPlansByWalkDist(minWalkDist, maxWalkDist, plan) {
+    function filterPlansByWalkDist(maxWalkDist, plan) {
         var visible = false;
-        if (typeof(minWalkDist) != 'number' || typeof(maxWalkDist) != 'number' || typeof(plan) != 'object' || plan === null) {
+        if (typeof(maxWalkDist) != 'number' || typeof(plan) != 'object' || plan === null) {
             return visible;
         }
 
         var walkDist = parseFloat(plan.attr('data-walk-dist'));
-        visible = (typeof(walkDist) != 'number' || isNaN(walkDist) || (walkDist >= minWalkDist && walkDist <= maxWalkDist));
+        visible = (typeof(walkDist) != 'number' || isNaN(walkDist) || (walkDist <= maxWalkDist));
 
         return visible;
     }
