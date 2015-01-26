@@ -313,18 +313,26 @@ Oneclick::Application.routes.draw do
           get   'agency_revoke'
         end
         get 'select_user'
+        member do 
+          patch 'undelete'
+        end
         resources :trips
       end
       resources :users do
         put 'update_roles', on: :member
         get 'find_by_email'
-        post 'undelete'
+        member do
+          patch 'undelete'
+        end
       end
       resources :providers do
         get   'find_staff_by_email'
         resources :users
         resources :services
         resources :trips, only: [:index, :show]
+        member do
+          patch 'undelete'
+        end
       end
       resources :translations
       resources :oneclick_configurations
@@ -333,6 +341,12 @@ Oneclick::Application.routes.draw do
     # gives a shallow RESTful endpoint for rating any rateable
     resources :agencies, :trips, :services, shallow: true, only: [] do
       resources :ratings, only: [:index, :new, :create]
+    end
+
+    resources :services do
+      member do
+        patch 'undelete'
+      end
     end
     resources :ratings, only: [:index, :create] do
       collection do

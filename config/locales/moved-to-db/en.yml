@@ -181,6 +181,12 @@ en:
     one: "The sidewalk obstruction has been updated"
     other: "The sidewalk obstructions have been updated"
   multi_od_trip: 'Multiple Origin-Destination Trip'
+  restore_user: 'Restore user'
+  remove_user: 'Remove user'
+  restore_service: 'Restore service'
+  restore_agency: 'Restore agency'
+  restore_provider: 'Restore provider'
+  confirm_restore_message: 'Are you sure you want to restore'
 
   # standard system usage report
   time_period: 'Time Period'

@@ -194,11 +194,20 @@ class ServicesController < ApplicationController
   # DELETE /services/1
   # DELETE /services/1.json
   def destroy
-    @service.active = false
-    @service.save
+    @service.update_attributes(active: false)
 
     respond_to do |format|
-      format.html { redirect_to admin_provider_path @service.provider }
+      format.html { redirect_to service_path(@service) }
+      format.json { head :no_content }
+    end
+  end
+
+  def undelete
+    @service = Service.find(params[:id])
+    @service.update_attributes(active: true)
+
+    respond_to do |format|
+      format.html { redirect_to service_path(@service) }
       format.json { head :no_content }
     end
   end

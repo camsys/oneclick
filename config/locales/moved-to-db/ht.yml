@@ -132,6 +132,12 @@ ht:
     one: "[ht]The sidewalk obstruction has been updated[/ht]"
     other: "[ht]The sidewalk obstructions have been updated[/ht]"
   multi_od_trip: '[ht]Multiple Origin-Destination Trip[/ht]'
+  restore_user: '[ht]Restore user[/ht]'
+  remove_user: '[ht]Remove user[/ht]'
+  restore_service: '[ht]Restore service[/ht]'
+  restore_agency: '[ht]Restore agency[/ht]'
+  restore_provider: '[ht]Restore provider[/ht]'
+  confirm_restore_message: '[ht]Are you sure you want to restore[/ht]'
 
   # standard system usage report
   time_period: '[ht]Time Period[/ht]'

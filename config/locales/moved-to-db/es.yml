@@ -159,6 +159,12 @@ es:
     one: "[es]The sidewalk obstruction has been updated[/es]"
     other: "[es]The sidewalk obstructions have been updated[/es]"
   multi_od_trip: '[es]Multiple Origin-Destination Trip[/es]'
+  restore_user: '[es]Restore user[/es]'
+  remove_user: '[es]Remove user[/es]'
+  restore_service: '[es]Restore service[/es]'
+  restore_agency: '[es]Restore agency[/es]'
+  restore_provider: '[es]Restore provider[/es]'
+  confirm_restore_message: '[es]Are you sure you want to restore[/es]'
 
   # standard system usage report
   time_period: '[es]Time Period[/es]'
