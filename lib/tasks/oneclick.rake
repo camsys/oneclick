@@ -52,7 +52,7 @@ namespace :oneclick do
     puts full_url
     puts "----------------------------"
 
-    oc = OneclickConfiguration.first_or_create(code: "ui_logo")
+    oc = OneclickConfiguration.where(code: "ui_logo").first_or_create
     oc.value = full_url
     oc.save
   end
