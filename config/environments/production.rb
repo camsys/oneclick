@@ -30,4 +30,9 @@ Oneclick::Application.configure do
   config.logger = Logger.new(STDOUT)
 
   config.eager_load = true
+
+  config.after_initialize do
+    #Needed for Devise::Mailer (Password Resetting)
+    config.devise.mailer_sender = ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "1-click@camsys.com"
+  end
 end
