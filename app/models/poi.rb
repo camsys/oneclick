@@ -30,7 +30,7 @@ class Poi < GeocodedAddress
     count_possible_existing = 0
 
     File.open(filename) do |f|
-
+      Poi.delete_all # delete existing ones
       CSV.foreach(f, {:col_sep => ",", :headers => true}) do |row|
 
         poi_type_name = row[9]
@@ -40,7 +40,7 @@ class Poi < GeocodedAddress
         poi_type = PoiType.find_by_name(poi_type_name)
         if poi_type.nil?
           Rails.logger.info "Adding new poi type #{poi_type_name}"
-          poi_type = PoiType.create!({:name => poi_type_name, :active => true})
+          poi_type = PoiType.create({:name => poi_type_name, :active => true})
           count_poi_type += 1
         end
         if poi_type
@@ -63,7 +63,7 @@ class Poi < GeocodedAddress
           p.zip = row[7]
           p.county = row[8]
           begin
-            if p.name && p.lat != "0.0"
+            if p.name
               p.save!
               count_good += 1
             else

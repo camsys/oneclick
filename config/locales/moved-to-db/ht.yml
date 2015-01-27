@@ -472,7 +472,7 @@ ht:
   load_pois_notes: '[ht]Refer to 1-Click Deployment Document on file specfications.[/ht]'
   select_pois_file_to_upload: '[ht]Select POIs file (.csv)[/ht]'
   pois_file_not_csv: '[ht]The file is not in CSV format.[/ht]'
-  pois_load_summary: "[ht]Loaded %{count_poi_type} POI Types and %{count_good} POIs. %{count_bad} bad were skipped, %{count_failed} failed to save, %{count_possible_existing} possible existing.[/ht]"
+  pois_load_summary: "[ht]POI file was uploaded. Loaded %{count_poi_type} POI Types and %{count_good} POIs. %{count_bad} bad were skipped, %{count_failed} failed to save, %{count_possible_existing} possible existing.[/ht]"
   
 
   #map
