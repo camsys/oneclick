@@ -33,7 +33,21 @@
                   - path = (t && t.value && t.value.blank?) ? edit_admin_translation_path(t) : new_admin_translation_path(key: tp.key, key_locale: locale.to_s)
                   = link_to t(:add), path, class: 'btn action-button'
             - if tp.translations.size >= 1
-              %td= link_to t(:delete), admin_translation_path(tp.translations[0], second_translation: tp.translations[1]), :method => :delete, :class => 'btn action-button'
+              %td
+                %button.btn.action-button{type: 'button', "data-toggle" => "modal", "data-target" => "#deleteTranslation"}
+                  = t(:delete)
+
+          #deleteTranslation.modal.fade.text-center{tabindex: "-1", role: "dialog", aria: {labelledby: "modalLabel", hidden: "true"}}
+            .modal-dialog.modal-sm
+              .modal-content.panel.panel-default
+                .modal-header.panel-heading
+                  %button.close{type: "button", data: {dismiss: "modal"}}
+                    %span{aria: {hidden: "true"}}
+                      %i.fa.fa-close
+                    %span.sr-only Close
+                  %h3.modal-title{id: "modalLabel"}= t(:confirm_msg)
+                .modal-body
+                  = link_to t(:delete), admin_translation_path(tp.translations[0], second_translation: tp.translations[1]), :method => :delete, :class => 'btn action-button'
 
 :javascript
   $(document).ready(function() {
