@@ -34,20 +34,20 @@
                   = link_to t(:add), path, class: 'btn action-button'
             - if tp.translations.size >= 1
               %td
-                %button.btn.action-button{type: 'button', "data-toggle" => "modal", "data-target" => "#deleteTranslation"}
+                %button.btn.action-button{type: 'button', "data-toggle" => "modal", "data-target" => "#deleteTranslation#{tp.translations[0].id}"}
                   = t(:delete)
 
-          #deleteTranslation.modal.fade.text-center{tabindex: "-1", role: "dialog", aria: {labelledby: "modalLabel", hidden: "true"}}
-            .modal-dialog.modal-sm
-              .modal-content.panel.panel-default
-                .modal-header.panel-heading
-                  %button.close{type: "button", data: {dismiss: "modal"}}
-                    %span{aria: {hidden: "true"}}
-                      %i.fa.fa-close
-                    %span.sr-only Close
-                  %h3.modal-title{id: "modalLabel"}= t(:confirm_msg)
-                .modal-body
-                  = link_to t(:delete), admin_translation_path(tp.translations[0], second_translation: tp.translations[1]), :method => :delete, :class => 'btn action-button'
+                .modal.fade.text-center{id: "deleteTranslation#{tp.translations[0].id}", tabindex: "-1", role: "dialog", aria: {labelledby: "modalLabel", hidden: "true"}}
+                  .modal-dialog.modal-sm
+                    .modal-content.panel.panel-default
+                      .modal-header.panel-heading
+                        %button.close{type: "button", data: {dismiss: "modal"}}
+                          %span{aria: {hidden: "true"}}
+                            %i.fa.fa-close
+                          %span.sr-only Close
+                        %h3.modal-title{id: "modalLabel"}= t(:confirm_msg)
+                      .modal-body
+                        = link_to t(:delete), admin_translation_path(tp.translations[0]), :method => :delete, :class => 'btn action-button'
 
 :javascript
   $(document).ready(function() {

@@ -41,12 +41,8 @@ class Admin::TranslationsController < Admin::BaseController
     end
 
     def destroy
-        ids = [params[:id].to_i, params[:second_translation].to_i]
-        ids.each do |id|
-            unless id == 0
-                Translation.find(id).destroy
-            end
-        end
+        translation = Translation.find(params[:id])
+        Translation.where(key: translation.key).delete_all
         flash[:success] = "Translation Removed"
         redirect_to admin_translations_path
     end
