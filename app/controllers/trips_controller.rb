@@ -5,7 +5,7 @@ class TripsController < PlaceSearchingController
     :show_printer_friendly, :example, :plan, :populate, :book, :itinerary_map, :print_itinerary_map]
   load_and_authorize_resource only: [:new, :create, :show, :index, :update, :edit]
 
-  before_action :detect_ui_mode
+  before_action :detect_ui_mode, :get_kiosk_code
 
   def index
 
@@ -646,6 +646,7 @@ class TripsController < PlaceSearchingController
       session[:multi_od_trip_id] = multi_od_trip.id
     end
 
+
     @trip_proxy = create_trip_proxy_from_form_params(params[:trip_proxy])
     launch_trip_planning(@trip_proxy)
 
@@ -990,6 +991,7 @@ protected
  def launch_trip_planning(trip_proxy)
     trip_proxy.user_agent = request.user_agent
     trip_proxy.ui_mode = @ui_mode
+    trip_proxy.kiosk_code = @kiosk_code
 
     session[:modes_desired] = trip_proxy.modes_desired
 
@@ -1179,6 +1181,10 @@ private
     else
       @ui_mode = :desktop
     end
+  end
+
+  def get_kiosk_code
+    @kiosk_code = request.headers["X-Client-Hostname"] || ""
   end
 
 end

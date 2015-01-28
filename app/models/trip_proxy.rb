@@ -7,6 +7,8 @@ class TripProxy < Proxy
   attr_accessor :id, :map_center
   attr_accessor :trip_options
 
+  attr_accessor :kiosk_code
+
   attr_accessor :user_agent, :ui_mode
 
   attr_accessor :outbound_trip_date, :outbound_arrive_depart, :outbound_trip_time
@@ -166,6 +168,7 @@ class TripProxy < Proxy
 
     trip_proxy.user_agent = trip.user_agent
     trip_proxy.ui_mode = trip.ui_mode
+    trip_proxy.kiosk_code = trip.kiosk_code
 
     return trip_proxy
 

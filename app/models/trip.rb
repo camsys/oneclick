@@ -80,6 +80,7 @@ class Trip < ActiveRecord::Base
 
     trip.user_agent = trip_proxy.user_agent
     trip.ui_mode = trip_proxy.ui_mode
+    trip.kiosk_code = trip_proxy.kiosk_code
 
     # set the sequence counter for when we have multiple trip parts
     sequence = 0
