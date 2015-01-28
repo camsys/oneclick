@@ -11,7 +11,7 @@ class Admin::PoisController < Admin::BaseController
       poi_file = params[:poi][:file] if params[:poi]
       
       if !poi_file.nil?
-        if poi_file.content_type.include?('csv')
+        if File.extname(poi_file.original_filename) == '.csv'
           filename = poi_file.tempfile.path
           info_msgs << Poi.load_pois(filename)
         else
