@@ -87,4 +87,47 @@ class Admin::UtilController < Admin::BaseController
     authorize! :settings, :util
   end
 
+  def upload_application_logo
+    info_msgs = []
+    error_msgs = []
+    if !can?(:upload_application_logo, :util)
+      error_msgs << t(:not_authorized)
+    else
+      file = params[:logo][:file] if params[:logo]
+      
+      if !file.nil?
+        uploader = ApplicationLogoUploader.new
+        begin
+          uploader.store!(file)
+        rescue Exception => ex
+          error_msgs << ex.message
+        end
+
+        Oneclick::Application.config.ui_logo = uploader.url
+        logo_config = OneclickConfiguration.where(code: 'ui_logo').first_or_create
+        logo_config.value = uploader.url
+        logo_config.description = "Application Logo"
+
+        if logo_config.save
+          info_msgs << t(:logo) + " " + t(:was_successfully_updated)
+        else
+          error_msgs << t(:failed_to_update_application_logo)
+        end
+      else
+        error_msgs << t(:select_image_to_upload)
+      end
+    end
+
+    if error_msgs.size > 0
+      flash[:error] = error_msgs.join(' ')
+    elsif info_msgs.size > 0
+      flash[:notice] = info_msgs.join(' ')
+    end
+
+    respond_to do |format|
+      format.js
+      format.html {redirect_to admin_settings_path}
+    end
+  end
+
 end

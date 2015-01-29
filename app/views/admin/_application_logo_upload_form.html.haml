@@ -1,0 +1,17 @@
+= simple_form_for :logo, url: admin_upload_application_logo_path, method: 'patch', html: { class: 'form-horizontal', multipart: true }, authenticity_token: true, wrapper: :horizontal_form do |f|
+  .row
+    .col-sm-12
+      .panel.panel-default
+        .panel-heading
+          .row
+            .col-sm-12
+              %h3.panel-title
+                .btns.pull-right
+                  = f.submit t(:ok), class: 'btn action-button', role: 'button'
+                = t(:upload_application_logo)
+                = add_tooltip("upload_application_logo_help")
+        .panel-body
+          = f.error_notification message: print_messages(f)
+          %label
+            = I18n.t(:upload_application_logo_notes)
+          = f.input "file", required:true, :label => t(:select_image_to_upload),:as => :file

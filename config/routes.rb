@@ -294,6 +294,7 @@ Oneclick::Application.routes.draw do
       get '/services' => 'util#services'
       get '/settings' => 'util#settings'
       patch '/load_pois' => 'pois#load_pois'
+      patch '/upload_application_logo' => 'util#upload_application_logo'
       get '/' => 'admin_home#index'
       resource :feedback
       resources :sidewalk_obstructions, :only => [:index] do
