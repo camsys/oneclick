@@ -53,8 +53,8 @@ class Poi < GeocodedAddress
           end
           p = Poi.new
           p.poi_type = poi_type
-          p.lon = row[1]
-          p.lat = row[0]
+          p.lon = row[0]
+          p.lat = row[1]
           p.name = row[2]
           p.address1 = row[3]
           p.address2 = row[4]
