@@ -188,6 +188,13 @@ en:
   restore_provider: 'Restore provider'
   confirm_restore_message: 'Are you sure you want to restore'
 
+  # application logo upload
+  not_authorized: 'You are not authorized.'
+  failed_to_update_application_logo: 'There was an error in updating application logo. Please try again.'
+  select_logo_image_to_upload: 'Please select an image to upload'
+  upload_application_logo: 'Upload Application Logo'
+  upload_application_logo_notes: 'Refer to 1-Click Deployment Document on file specfications.'
+
   # standard system usage report
   time_period: 'Time Period'
   number_of_trips_planned: 'Number of Trips Planned'

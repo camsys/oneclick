@@ -17,6 +17,7 @@ class Ability
       cannot :rate, Trip # remove global permission to rate, sys admin will still be able to rate when it's their own trip
       can :settings, :util
       can :load_pois, :pois
+      can :upload_application_logo, :util
     else
       if I18n.locale == :tags
         return # no access to tags pages for non-admin users

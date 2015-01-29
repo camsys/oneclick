@@ -6,7 +6,7 @@ class Admin::PoisController < Admin::BaseController
     error_msgs = []
 
     if !can?(:load_pois, :pois)
-      error_msgs << 'Not authorized'
+      error_msgs << t(:not_authorized)
     else
       poi_file = params[:poi][:file] if params[:poi]
       

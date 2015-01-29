@@ -42,14 +42,20 @@ Oneclick::Application.configure do
 
   I18n.available_locales = [:en, :es] # default
 
+  # service/provider logo upload related
   config.service_logo_format_list = %w(jpg jpeg gif png)
   config.service_logo_dimensions = [40, 40]
   config.provider_logo_format_list = %w(jpg jpeg gif png)
   config.provider_logo_dimensions = [40, 40]
 
+  # standard usage report related
   config.application_launch_date = Date.new(2014,1,1) # default
   config.usage_report_last_n = 4
   config.kiosk_available = false
+
+  # application logo upload related
+  config.application_logo_format_list = %w(jpg jpeg gif png)
+  config.application_logo_dimensions = [440, 50]
 
   case ENV['BRAND'] || 'arc'
   when 'arc'
