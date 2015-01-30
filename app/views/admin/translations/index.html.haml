@@ -4,6 +4,23 @@
     .btns.pull-right
       = link_to new_admin_translation_path, :class => "btn action-button" do
         Add Key
+      %button.btn.action-button{type: 'button', "data-toggle" => "modal", "data-target" => "#deleteTranslationBtn"}
+        = t(:delete)
+
+      .modal.fade.text-center#deleteTranslationBtn{tabindex: "-1", role: "dialog", aria: {labelledby: "modalLabel", hidden: "true"}}
+        .modal-dialog.modal-sm
+          .modal-content.panel.panel-default
+            .modal-header.panel-heading
+              %button.close{type: "button", data: {dismiss: "modal"}}
+                %span{aria: {hidden: "true"}}
+                  %i.fa.fa-close
+                %span.sr-only Close
+              %h3.modal-title{id: "modalLabel"}= t(:confirm_msg)
+            .modal-body
+              = link_to "#{admin_translations_path}/", :data => {:ids => []}, :method => :delete, :class => "btn action-button", :id => "deleteTranslations" do
+                = t(:delete)
+            
+      
     %h1
       Content Translations
 .panel.panel-default{style: 'padding: 0px;'}
@@ -32,23 +49,9 @@
                 - else
                   - path = (t && t.value && t.value.blank?) ? edit_admin_translation_path(t) : new_admin_translation_path(key: tp.key, key_locale: locale.to_s)
                   = link_to t(:add), path, class: 'btn action-button'
-            - if tp.translations.size >= 1
-              %td
-                %button.btn.action-button{type: 'button', "data-toggle" => "modal", "data-target" => "#deleteTranslation#{tp.translations[0].id}"}
-                  = t(:delete)
-
-                .modal.fade.text-center{id: "deleteTranslation#{tp.translations[0].id}", tabindex: "-1", role: "dialog", aria: {labelledby: "modalLabel", hidden: "true"}}
-                  .modal-dialog.modal-sm
-                    .modal-content.panel.panel-default
-                      .modal-header.panel-heading
-                        %button.close{type: "button", data: {dismiss: "modal"}}
-                          %span{aria: {hidden: "true"}}
-                            %i.fa.fa-close
-                          %span.sr-only Close
-                        %h3.modal-title{id: "modalLabel"}= t(:confirm_msg)
-                      .modal-body
-                        = link_to t(:delete), admin_translation_path(tp.translations[0]), :method => :delete, :class => 'btn action-button'
-
+            %td.text-center
+              = check_box_tag "translation", tp.translations[0].id
+              
 :javascript
   $(document).ready(function() {
     var oTable = $('#translations_table').dataTable( {
@@ -60,5 +63,18 @@
               "sInfoFiltered": "(filtered from _MAX_ total translations)"
           },
           "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l><'toggle col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
-      } );
+    } );
+
+    $("#translations_table tbody").on("change", "input[type='checkbox']", function(e){
+      box = $(e.target);
+      deleteUrl = "#{admin_translations_path}/";
+      ids = $('#deleteTranslations').data('ids');
+      if (box.prop('checked')) {
+        ids.push(box.val());
+      } else {
+        idx = ids.indexOf(box.val());
+        ids.splice(idx, 1);
+      }
+      $('#deleteTranslations').attr('href', deleteUrl + ids.join(","));
     });
+  });

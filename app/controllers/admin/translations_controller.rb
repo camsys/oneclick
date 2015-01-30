@@ -41,8 +41,11 @@ class Admin::TranslationsController < Admin::BaseController
     end
 
     def destroy
-        translation = Translation.find(params[:id])
-        Translation.where(key: translation.key).delete_all
+        translation_ids = params[:id].split(",")
+        translations = Translation.find(translation_ids)
+        translations.each do |translation|
+            Translation.where(key: translation.key).destroy_all
+        end
         flash[:success] = "Translation Removed"
         redirect_to admin_translations_path
     end
