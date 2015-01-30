@@ -1,6 +1,10 @@
 class Admin::PoisController < Admin::BaseController
   authorize_resource :class => false
 
+  def check_loading_status
+    render json: {is_loading: Rails.application.config.poi_is_loading}
+  end
+
   def load_pois 
     info_msgs = []
     error_msgs = []
@@ -11,11 +15,19 @@ class Admin::PoisController < Admin::BaseController
       poi_file = params[:poi][:file] if params[:poi]
       
       if !poi_file.nil?
-        if File.extname(poi_file.original_filename) == '.csv'
-          filename = poi_file.tempfile.path
-          info_msgs << Poi.load_pois(filename)
+        if Rails.application.config.poi_is_loading
+          error_msgs << t(:pois_being_loading)
         else
-          error_msgs << t(:pois_file_not_csv)
+          uploader = PoiUploader.new
+
+          uploader.store!(poi_file)
+          OneclickConfiguration.create_or_update(:poi_is_loading, true)
+          if Rails.env.development?
+            Poi.load_pois(uploader.path)
+          else
+            PoiUploadWorker.perform_async(uploader.url)
+          end
+
         end
       else
         error_msgs << t(:select_pois_file_to_upload)

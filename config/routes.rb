@@ -294,6 +294,7 @@ Oneclick::Application.routes.draw do
       get '/services' => 'util#services'
       get '/settings' => 'util#settings'
       patch '/load_pois' => 'pois#load_pois'
+      get '/check_loading_status' => 'pois#check_loading_status'
       patch '/upload_application_logo' => 'util#upload_application_logo'
       get '/' => 'admin_home#index'
       resource :feedback

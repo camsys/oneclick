@@ -103,12 +103,7 @@ class Admin::UtilController < Admin::BaseController
           error_msgs << ex.message
         end
 
-        Oneclick::Application.config.ui_logo = uploader.url
-        logo_config = OneclickConfiguration.where(code: 'ui_logo').first_or_create
-        logo_config.value = uploader.url
-        logo_config.description = "Application Logo"
-
-        if logo_config.save
+        if OneclickConfiguration.create_or_update(:ui_logo, uploader.url)
           info_msgs << t(:logo) + " " + t(:was_successfully_updated)
         else
           error_msgs << t(:failed_to_update_application_logo)

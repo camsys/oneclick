@@ -4,7 +4,7 @@ class PrintMapWorker
   include Sidekiq::Worker
 
   def perform(print_url, itinerary_id)
-    Rails.logger.info "PrintMapWorker#perform, print_url=#{print_url}"
+    puts "PrintMapWorker#perform, print_url=#{print_url}"
     session = Capybara::Session.new :poltergeist
     tempfile = Tempfile.new(['itinerary_map','.png'])
 

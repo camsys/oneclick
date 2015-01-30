@@ -1,4 +1,4 @@
-= simple_form_for :poi, url: admin_load_pois_path, method: 'patch', html: { class: 'form-horizontal', multipart: true }, authenticity_token: true, wrapper: :horizontal_form do |f|
+= simple_form_for :poi, url: admin_load_pois_path, html: {id: 'poi_upload_form', class: 'form-horizontal', multipart: true, method: 'patch' }, authenticity_token: true, wrapper: :horizontal_form do |f|
   .row
     .col-sm-12
       .panel.panel-default
@@ -14,3 +14,23 @@
           = f.error_notification message: print_messages(f)
           %label=t(:load_pois_notes)
           = f.input "file", required:true, :label => t(:select_pois_file_to_upload),:as => :file
+  :javascript
+    if(#{Rails.application.config.poi_is_loading}) {
+      $('#poi_upload_form').overlayMask();
+      timer = setInterval(function(){
+        if ($("#poi_upload_form .overlay-mask").length === 0) {
+          clearInterval(timer)
+        }
+        $.ajax({
+          type: 'GET',
+          url: "#{admin_check_loading_status_path}",
+          async: false,
+          success: function(status) { 
+            if(!status.is_loading) {
+              $('#poi_upload_form').overlayMask('remove');
+            }
+          }
+        });
+      }, 1000);
+    }
+    

@@ -57,6 +57,9 @@ Oneclick::Application.configure do
   config.application_logo_format_list = %w(jpg jpeg gif png)
   config.application_logo_dimensions = [440, 50]
 
+  # poi loading
+  Rails.application.config.poi_is_loading = false
+
   case ENV['BRAND'] || 'arc'
   when 'arc'
     config.host = 'oneclick-arc.camsys-apps.com'

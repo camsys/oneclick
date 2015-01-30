@@ -20,8 +20,8 @@ class Poi < GeocodedAddress
   def self.load_pois(filename)
     require 'csv'
     alert_msgs = []
-    Rails.logger.info "Loading POI and POI TYPES from file '#{filename}'"
-    Rails.logger.info "Starting at: #{Time.now}"
+    puts "Loading POI and POI TYPES from file '#{filename}'"
+    puts "Starting at: #{Time.now}"
 
     count_good = 0
     count_bad = 0
@@ -81,7 +81,7 @@ class Poi < GeocodedAddress
       end
     end
 
-    Rails.logger.info "POI Loading Finished"
+    puts "POI Loading Finished"
 
     sub_pairs = {
       count_poi_type: count_poi_type,
@@ -91,7 +91,7 @@ class Poi < GeocodedAddress
       count_possible_existing: count_possible_existing
     }
 
-    I18n.t(:pois_load_summary) % sub_pairs
+    OneclickConfiguration.create_or_update(:poi_last_loading_summary, I18n.t(:pois_load_summary) % sub_pairs)
   end
 
   def to_s
