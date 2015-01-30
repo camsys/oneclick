@@ -1,5 +1,5 @@
-= simple_form_for :poi, url: admin_load_pois_path, html: {id: 'poi_upload_form', class: 'form-horizontal', multipart: true, method: 'patch' }, authenticity_token: true, wrapper: :horizontal_form do |f|
-  .row
+= simple_form_for :poi, url: admin_load_pois_path, html: {class: 'form-horizontal', multipart: true, method: 'patch' }, authenticity_token: true, wrapper: :horizontal_form do |f|
+  .row#poi_upload_div
     .col-sm-12
       .panel.panel-default
         .panel-heading
@@ -16,21 +16,23 @@
           = f.input "file", required:true, :label => t(:select_pois_file_to_upload),:as => :file
   :javascript
     if(#{Rails.application.config.poi_is_loading}) {
-      $('#poi_upload_form').overlayMask();
+      $('#poi_upload_div').overlayMask();
       timer = setInterval(function(){
-        if ($("#poi_upload_form .overlay-mask").length === 0) {
+        if ($("#poi_upload_div .overlay-mask").length === 0) {
           clearInterval(timer)
-        }
-        $.ajax({
-          type: 'GET',
-          url: "#{admin_check_loading_status_path}",
-          async: false,
-          success: function(status) { 
-            if(!status.is_loading) {
-              $('#poi_upload_form').overlayMask('remove');
+        } else {
+          $.ajax({
+            type: 'GET',
+            url: "#{admin_check_loading_status_path}",
+            async: false,
+            success: function(status) { 
+              if(!status.is_loading) {
+                $('#poi_upload_div').overlayMask('remove');
+                show_alert(status.loading_summary);
+              }
             }
-          }
-        });
+          });
+        }
       }, 1000);
     }
     

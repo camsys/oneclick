@@ -476,6 +476,7 @@ ht:
   # Admin settings
   settings: '[ht]Settings[/ht]'
   load_pois: '[ht]Load POIs[/ht]'
+  pois_being_loading: '[ht]There is another request loading POIs. Please try later.[/ht]'
   load_pois_notes: '[ht]Refer to 1-Click Deployment Document on file specfications.[/ht]'
   select_pois_file_to_upload: '[ht]Select POIs file (.csv)[/ht]'
   pois_file_not_csv: '[ht]The file is not in CSV format.[/ht]'

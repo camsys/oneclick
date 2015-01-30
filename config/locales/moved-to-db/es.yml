@@ -530,6 +530,7 @@ es:
   # Admin settings
   settings: '[es]Settings[/es]'
   load_pois: '[es]Load POIs[/es]'
+  pois_being_loading: '[es]There is another request loading POIs. Please try later.[/es]'
   load_pois_notes: '[es]Refer to 1-Click Deployment Document on file specfications.[/es]'
   select_pois_file_to_upload: '[es]Select POIs file (.csv)[/es]'
   pois_file_not_csv: '[es]The file is not in CSV format.[es]'

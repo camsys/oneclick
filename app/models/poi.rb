@@ -18,6 +18,7 @@ class Poi < GeocodedAddress
   end
 
   def self.load_pois(filename)
+    OneclickConfiguration.create_or_update(:poi_is_loading, true)
     require 'csv'
     alert_msgs = []
     puts "Loading POI and POI TYPES from file '#{filename}'"
@@ -92,6 +93,7 @@ class Poi < GeocodedAddress
     }
 
     OneclickConfiguration.create_or_update(:poi_last_loading_summary, I18n.t(:pois_load_summary) % sub_pairs)
+    OneclickConfiguration.create_or_update(:poi_is_loading, false)
   end
 
   def to_s
