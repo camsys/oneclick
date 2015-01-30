@@ -54,7 +54,7 @@ class Poi < GeocodedAddress
           end
           
           begin
-            if p.name
+            if poi_name
               p = Poi.create!({
                 poi_type: poi_type,
                 lon: row[0],
