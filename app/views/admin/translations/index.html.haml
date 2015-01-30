@@ -4,10 +4,10 @@
     .btns.pull-right
       = link_to new_admin_translation_path, :class => "btn action-button" do
         Add Key
-      %button.btn.action-button{type: 'button', "data-toggle" => "modal", "data-target" => "#deleteTranslationBtn"}
+      %button.btn.action-button#deleteTranslationsBtn{type: 'button', "data-toggle" => "modal", "data-target" => "#deleteTranslationsModal", disabled: 'disabled'}
         = t(:delete)
 
-      .modal.fade.text-center#deleteTranslationBtn{tabindex: "-1", role: "dialog", aria: {labelledby: "modalLabel", hidden: "true"}}
+      .modal.fade.text-center#deleteTranslationsModal{tabindex: "-1", role: "dialog",  aria: {labelledby: "modalLabel", hidden: "true"}}
         .modal-dialog.modal-sm
           .modal-content.panel.panel-default
             .modal-header.panel-heading
@@ -76,5 +76,11 @@
         ids.splice(idx, 1);
       }
       $('#deleteTranslations').attr('href', deleteUrl + ids.join(","));
+
+      if (ids.length == 0) {
+        $('#deleteTranslationsBtn').attr('disabled', 'disabled');
+      } else {
+        $('#deleteTranslationsBtn').removeAttr('disabled');
+      }
     });
   });
