@@ -14,6 +14,12 @@ namespace :oneclick do
           exportable: true
         })
 
+        # StandardUsagerReport translations
+        Translation.find_or_create_by!(key: 'StandardUsageReport', locale: 'en', value: "Standard Usage Report")
+        I18n.available_locales.reject{|x| x == :en}.each do |l|
+          Translation.find_or_create_by!(key: 'StandardUsageReport', locale: l, value: "[#{l}]Standard Usage Report[/#{l}]")
+        end
+
         puts 'Standard Usage Report enabled.'
       end
     end # task
