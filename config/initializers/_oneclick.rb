@@ -62,7 +62,7 @@ Oneclick::Application.configure do
     config.host = 'oneclick-arc.camsys-apps.com'
     config.ui_logo = 'arc/logo.png'
     config.logo_text = "A R C logo - Simply Get There"
-    config.geocoder_components = 'administrative_area:GA|country:US'
+    config.geocoder_components = 'country:US'
     config.map_bounds = [[33.457797,-84.754028], [34.090199,-83.921814]]
     config.geocoder_bounds = [[33.737147,-84.406634], [33.764125,-84.370361]]
     config.open_trip_planner = "http://otpv1-arc.camsys-apps.com:8080/otp/routers/atl/plan?"
@@ -94,7 +94,7 @@ Oneclick::Application.configure do
     config.host = 'oneclick-broward.camsys-apps.com'
     config.ui_logo = 'broward/logo.png'
     config.logo_text = "Broward logo - One Click"
-    config.geocoder_components = 'administrative_area:FL|country:US'
+    config.geocoder_components = 'country:US'
     config.map_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
     config.geocoder_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
     config.open_trip_planner = "http://otp-broward.camsys-apps.com:8080/otp/routers/broward/plan?"
@@ -125,7 +125,7 @@ Oneclick::Application.configure do
     config.host = 'oneclick-pa.camsys-apps.com'
     config.ui_logo = 'pa/logo.jpg'
     config.logo_text = "Pennsylvania logo - Find My Ride"
-    config.geocoder_components = 'administrative_area:PA|country:US'
+    config.geocoder_components = 'country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
     config.map_bounds      = [[40.0262999543423,  -76.56372070312499], [39.87970800405549, -76.90189361572266]]
     config.geocoder_bounds = [[40.0262999543423,  -76.56372070312499], [39.87970800405549, -76.90189361572266]]
@@ -170,7 +170,7 @@ Oneclick::Application.configure do
     config.host = 'transportal.net'
     config.ui_logo = 'jta/logo.png'
     config.logo_text = "J T A logo - TransPortal"
-    config.geocoder_components = 'administrative_area:FL|country:US'
+    config.geocoder_components = 'country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
     config.map_bounds      = [[30.0668986565,-82.0920740215],[30.5909384888,-81.319458582]]
     config.geocoder_bounds = [[30.0668986565,-82.0920740215],[30.5909384888,-81.319458582]]
@@ -203,7 +203,7 @@ Oneclick::Application.configure do
     config.host = 'oneclick-ieuw.camsys-apps.com'
     config.ui_logo = 'ieuw/logo.png'
     config.logo_text = "Inland Empire logo - Vet Link"
-    config.geocoder_components = 'administrative_area:CA|country:US'
+    config.geocoder_components = 'country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
     config.map_bounds      = [[33.163,-117.874],[36.053,-114.033]]
     config.geocoder_bounds = [[33.163,-117.874],[36.063,-114.033]]
@@ -239,7 +239,7 @@ Oneclick::Application.configure do
     config.host = 'oneclick.camsys-apps.com'
     config.ui_logo = 'ma/logo.png'
     config.logo_text = "1-Click"
-    config.geocoder_components = 'administrative_area:MA|country:US'
+    config.geocoder_components = 'country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
     config.map_bounds      = [[40.664559, -74.104039],[43.244470, -69.148697]]
     config.geocoder_bounds = [[40.664559, -74.104039],[43.244470, -69.148697]]
