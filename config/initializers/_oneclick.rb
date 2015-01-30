@@ -89,6 +89,7 @@ Oneclick::Application.configure do
     config.show_update_services = true
     config.default_county = ''
     config.state = 'GA'
+    config.google_radius_meters = 100000 #Used in the Autocomplete Geocoder to bias results
 
   when 'broward'
     config.host = 'oneclick-broward.camsys-apps.com'
@@ -120,6 +121,7 @@ Oneclick::Application.configure do
     config.default_county = 'Broward'
     config.state = 'FL'
     I18n.available_locales = [:en, :es, :ht]
+    config.google_radius_meters = 75000 #Used in the Autocomplete Geocoder to bias results
 
   when 'pa'
     config.host = 'oneclick-pa.camsys-apps.com'
@@ -152,7 +154,7 @@ Oneclick::Application.configure do
     config.poi_file = 'db/pa/pa-poi-from-arcgis.csv'
     config.default_county = 'York'
     config.state = 'PA'
-
+    config.google_radius_meters = 100000 #Used in the Autocomplete Geocoder to bias results
     config.max_walk_seconds = 3600
 
     ##Ecolane Variables
@@ -164,8 +166,8 @@ Oneclick::Application.configure do
     #for PA, we ask a follow up question after a person creates an account
     config.initial_signup_question = true
     config.allows_booking = true
-
     config.kiosk_available = true
+
   when 'jta'
     config.host = 'transportal.net'
     config.ui_logo = 'jta/logo.png'
@@ -198,6 +200,7 @@ Oneclick::Application.configure do
     config.default_county = 'Duval'
     config.state = 'FL'
     config.max_walk_seconds = 3600
+    config.google_radius_meters = 50000 #Used in the Autocomplete Geocoder to bias results
 
   when 'ieuw'
     config.host = 'oneclick-ieuw.camsys-apps.com'
@@ -232,6 +235,7 @@ Oneclick::Application.configure do
     config.state = 'CA'
 
     config.max_walk_seconds = 3600
+    config.google_radius_meters = 150000 #Used in the Autocomplete Geocoder to bias results
 
     config.time_zone = 'Pacific Time (US & Canada)'
 
@@ -266,39 +270,40 @@ Oneclick::Application.configure do
     #config.poi_file = 'db/jta/locations.csv'
     config.default_county = 'Suffolk'
     config.state = 'MA'
-
+    config.google_radius_meters = 50000 #Used in the Autocomplete Geocoder to bias results
     config.max_walk_seconds = 3600
 
-    when 'uta'
-      config.host = 'oneclick-uta.camsys-apps.com'
-      config.logo_text = "UTA"
-      config.geocoder_components = "country:us"
-      # TODO Do we maybe need different bounds for kiosk vs. default?
-      config.map_bounds      = [[37,-114.1],[42,-109]]
-      config.geocoder_bounds = [[37,-114.1],[42,-109]]
-      config.default_zoom = 12
-      config.open_trip_planner = "http://otp-uta.camsys-apps.com:8080/otp/routers/uta/plan?"
-      config.transit_respects_ada = false
-      config.taxi_fare_finder_api_key = "SIefr5akieS5"
-      config.taxi_fare_finder_api_city = "SLC"
-      config.name = '1-Click/UTA'
-      ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.arc.camsys" # TODO
-      ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey" # TODO
-      ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@camsys.com"
-      ENV['SEND_FEEDBACK_TO_ADDRESS'] ||= "1-Click@camsys.com"
-      ENV['GOOGLE_GEOCODER_ACCOUNT'] ||=   "gme-cambridgesystematics"
-      ENV['GOOGLE_GEOCODER_KEY'] ||=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
-      ENV['GOOGLE_GEOCODER_CHANNEL'] ||=  "ARC_ONECLICK"
-      ENV['GOOGLE_GEOCODER_TIMEOUT'] ||=  "5"
-      config.enable_feedback = true
-      config.traveler_read_all_organization_feedback = true
-      config.agent_read_feedback = true
-      config.provider_read_all_feedback = true
-      config.tripless_feedback = false
-      honeybadger_api_key = '0447225c'
-      config.default_county = 'Salt Lake'
-      config.state = 'UT'
-      config.max_walk_seconds = 3600
+  when 'uta'
+    config.host = 'oneclick-uta.camsys-apps.com'
+    config.logo_text = "UTA"
+    config.geocoder_components = "country:us"
+    # TODO Do we maybe need different bounds for kiosk vs. default?
+    config.map_bounds      = [[37,-114.1],[42,-109]]
+    config.geocoder_bounds = [[37,-114.1],[42,-109]]
+    config.default_zoom = 12
+    config.open_trip_planner = "http://otp-uta.camsys-apps.com:8080/otp/routers/uta/plan?"
+    config.transit_respects_ada = false
+    config.taxi_fare_finder_api_key = "SIefr5akieS5"
+    config.taxi_fare_finder_api_city = "SLC"
+    config.name = '1-Click/UTA'
+    ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.arc.camsys" # TODO
+    ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey" # TODO
+    ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@camsys.com"
+    ENV['SEND_FEEDBACK_TO_ADDRESS'] ||= "1-Click@camsys.com"
+    ENV['GOOGLE_GEOCODER_ACCOUNT'] ||=   "gme-cambridgesystematics"
+    ENV['GOOGLE_GEOCODER_KEY'] ||=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
+    ENV['GOOGLE_GEOCODER_CHANNEL'] ||=  "ARC_ONECLICK"
+    ENV['GOOGLE_GEOCODER_TIMEOUT'] ||=  "5"
+    config.enable_feedback = true
+    config.traveler_read_all_organization_feedback = true
+    config.agent_read_feedback = true
+    config.provider_read_all_feedback = true
+    config.tripless_feedback = false
+    honeybadger_api_key = '0447225c'
+    config.default_county = 'Salt Lake'
+    config.state = 'UT'
+    config.max_walk_seconds = 3600
+    config.google_radius_meters = 400000 #Used in the Autocomplete Geocoder to bias results
 
 
     else
