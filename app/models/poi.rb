@@ -21,8 +21,8 @@ class Poi < GeocodedAddress
     OneclickConfiguration.create_or_update(:poi_is_loading, true)
     require 'csv'
     alert_msgs = []
-    puts "Loading POI and POI TYPES from file '#{filename}'"
-    puts "Starting at: #{Time.now}"
+    Rails.logger.info "Loading POI and POI TYPES from file '#{filename}'"
+    Rails.logger.info "Starting at: #{Time.now}"
 
     count_good = 0
     count_bad = 0
@@ -82,7 +82,7 @@ class Poi < GeocodedAddress
       end
     end
 
-    puts "POI Loading Finished"
+    Rails.logger.info "POI Loading Finished"
 
     sub_pairs = {
       count_poi_type: count_poi_type,
