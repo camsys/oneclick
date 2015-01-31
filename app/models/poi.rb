@@ -20,6 +20,7 @@ class Poi < GeocodedAddress
   def self.load_pois(filename)
     OneclickConfiguration.create_or_update(:poi_is_loading, true)
     require 'csv'
+    require 'open-uri'
     alert_msgs = []
     Rails.logger.info "Loading POI and POI TYPES from file '#{filename}'"
     Rails.logger.info "Starting at: #{Time.now}"
@@ -30,7 +31,7 @@ class Poi < GeocodedAddress
     count_poi_type = 0
     count_possible_existing = 0
 
-    File.open(filename) do |f|
+    open(filename) do |f|
       Poi.delete_all # delete existing ones
       CSV.foreach(f, {:col_sep => ",", :headers => true}) do |row|
 
