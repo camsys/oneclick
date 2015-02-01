@@ -3,10 +3,13 @@ class AddReturnedModeCodeToItineraries < ActiveRecord::Migration
     add_column :itineraries, :returned_mode_code, :string
 
 
-    end
+
   end
 
   def down
     remove_column :itineraries, :returned_mode_code
   end
 end
+
+
+
