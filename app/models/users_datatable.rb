@@ -23,6 +23,7 @@ private
   def data
     users.map do |user|
       [
+        user.id,
         link_to(user.name, admin_user_path(user, locale: I18n.locale)),
         user.email,
         user.created_at.to_date,
@@ -59,7 +60,7 @@ private
   end
 
   def sort_column
-    columns = %w[users.first_name users.email users.created_at roles.name]
+    columns = %w[users.id users.first_name users.email users.created_at roles.name users.deleted_at]
     columns[params[:iSortCol_0].to_i]
   end
 

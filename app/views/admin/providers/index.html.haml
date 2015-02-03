@@ -14,12 +14,14 @@
     %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_providers_table
       %thead
         %tr
+          %th= t(:id)
           %th= t(:name)
           %th#status= t(:status)
           %th
       %tbody
         - @providers.each do |provider|
           %tr
+            %td= provider.id
             %td= link_to provider.name, admin_provider_path(provider)
             %td
               - if provider.active == false

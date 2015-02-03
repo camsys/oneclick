@@ -13,6 +13,7 @@
     %table.table.table-condensed.table-striped.table-bordered.table-hover#admin_users_table
       %thead
         %tr
+          %th= t(:id)
           %th= t(:username)
           %th= t(:email)
           %th= t(:registered)
@@ -34,8 +35,9 @@
       },
       "bAutoWidth": false,
       "aoColumns": [
+        {"sWidth": "5%"},
         {"sWidth": "20%"},
-        {"sWidth": "30%"},
+        {"sWidth": "25%"},
         {"sWidth": "15%"},
         {"sWidth": "25%"},
         {"sWidth": "10%"},

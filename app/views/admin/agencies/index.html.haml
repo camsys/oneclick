@@ -14,6 +14,7 @@
     %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_agencies_table
       %thead
         %tr
+          %th= t(:id)
           %th= t(:name)
           %th= t(:parent_agency)
           %th= t(:subagencies)
@@ -21,6 +22,7 @@
       %tbody
         - @agencies.each do |agency|
           %tr
+            %td= agency.id
             %td= link_to agency.name, admin_agency_path(agency)
             %td
               - if agency.parent

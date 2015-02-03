@@ -1,6 +1,7 @@
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_services_table
   %thead
     %tr
+      %th= t(:id)
       %th= t(:name)
       %th= t(:provider)
       %th= t(:phone)
@@ -10,6 +11,8 @@
   %tbody
     - @services.each do |service|
       %tr
+        %td
+          =service.id
         %td
           =link_to service.name, service_path(service.id)
         %td

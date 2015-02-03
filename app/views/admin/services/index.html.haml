@@ -14,6 +14,7 @@
     %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_services_table
       %thead
         %tr
+          %th= t(:id)
           %th= t(:name)
           %th= t(:provider)
           %th= t(:type)
@@ -21,6 +22,7 @@
       %tbody
         - @services.each do |service|
           %tr
+            %td= service.id
             %td= service.name
             %td= service.provider.name
             %td= cms_snippet_content(service.service_type.name)
