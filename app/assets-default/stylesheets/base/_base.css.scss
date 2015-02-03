@@ -607,16 +607,11 @@ td.left, th.left {
 .action-button {
   @extend .btn-primary;
   text-shadow: none;
-
-  &:not(:last-of-type) {
-    margin-right: 5px;
-  }
-
-  @media (max-width: $screen-xs-max) {
-    min-width: 6em;
-  }
-  @media (min-width: $screen-sm-min) {
-    min-width: 9em;
+  margin-right: 5px;
+  padding: 3px 6px;
+  min-width: 5em;
+  @media(min-width:$screen-md-min){
+    min-height:34px; //this is the height for breadcrumb;
   }
   font-weight: bold;
 }
@@ -720,4 +715,8 @@ button[data-target='#deleteUserConfirmDialog'] {
 .scrolling-checkbox-list {
  height: 12em;
  overflow: auto;
+}
+
+.panel-heading {
+  padding: 3px 6px;
 }
