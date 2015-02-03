@@ -57,32 +57,6 @@ namespace :oneclick do
     oc.save
   end
 
-  desc "Oneoff for setting return_mode_code for trips"
-  task :set_return_mode_code => :environment do
-    count = 0
-    Itinerary.where(returned_mode_code: nil).each do |itin|
-
-      puts count
-      count += 1
-      if !itin.mode
-        next
-      end
-
-      returned_mode_code = itin.mode.code
-      if returned_mode_code == "mode_transit"
-        if itin.is_walk
-          returned_mode_code = Mode.walk.code
-        elsif itin.is_car
-          returned_mode_code = Mode.car.code
-        elsif itin.is_bicycle
-          returned_mode_code = Mode.bicycle.code
-        end
-      end
-
-      itin.update_attribute(:returned_mode_code, returned_mode_code)
-    end
-  end
-
   task :seed_data => :environment do
     throw Exception.new("*** Deprecated, just use db:seed task ***")
   end
