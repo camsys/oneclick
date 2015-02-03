@@ -29,7 +29,8 @@ class Admin::PoisController < Admin::BaseController
             uploader.store!(poi_file)
             OneclickConfiguration.create_or_update(:poi_is_loading, true)
             if Rails.env.development?
-              PoiUploadWorker.perform_async(uploader.path)
+              # PoiUploadWorker.perform_async(uploader.path) # need to start sidekiq locally: bundle exec sidekiq
+              info_msgs << Poi.load_pois(uploader.path) # if local, then no need to call worker
             else
               PoiUploadWorker.perform_async(uploader.url)
             end
