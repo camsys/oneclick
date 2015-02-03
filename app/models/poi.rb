@@ -31,7 +31,7 @@ class Poi < GeocodedAddress
     count_poi_type = 0
     count_possible_existing = 0
 
-    open(filename) do |f|
+    File.open(filename) do |f|
       Poi.delete_all # delete existing ones
       CSV.foreach(f, {:col_sep => ",", :headers => true}) do |row|
 
