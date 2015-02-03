@@ -19,7 +19,7 @@ Oneclick::Application.routes.draw do
 
     get "user_relationships/:id/check/" => "user_relationships#check_update", as: :check_update_user_relationship # need to support client-side logic with server-side vaildations
     # everything comes under a user id
-    resources :users do
+    resources :users, except: [:index] do
       member do
         get   'find_by_email'
         get   'profile'
