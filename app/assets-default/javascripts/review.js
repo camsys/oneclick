@@ -1094,6 +1094,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 }
             }
         }
+
+        updateChartsIfDatetimeRangeChanged();
     }
 
     /*
@@ -2582,6 +2584,57 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             var plan = $(this);
             processPlanFiltering(modes, transferValues, costValues, durationValues, walkDistValues, plan);
             detectPlanVisibilityChange(plan);
+        });
+
+        // update chart if datetime range of visible plans has changed
+        updateChartsIfDatetimeRangeChanged();
+    }
+
+    function updateChartsIfDatetimeRangeChanged() {
+        $('.single-trip-part').each(function(){
+            var tripPartDivId = $(this).attr('id');
+            
+            var prevStartTime = null;
+            var prevEndTime = null;
+            var currentStartTime = null;
+            var currentEndTime = null;
+            $('#' + tripPartDivId + ' .single-plan-review[data-filter-visible=1][data-eligibility-visible=1]').each(function(){
+                var plan = $(this);
+
+                if(!prevStartTime) {
+                    prevStartTime = parseDate(plan.attr('data-trip-start-time'));
+                }
+                if(!prevEndTime) {
+                    prevEndTime = parseDate(plan.attr('data-trip-end-time'));
+                }
+
+                var tmpPlanStartTime = parseDate(plan.attr('data-start-time'));
+                if(tmpPlanStartTime && (!currentStartTime || currentStartTime > tmpPlanStartTime)) {
+                    currentStartTime = tmpPlanStartTime;
+                }
+                var tmpPlanEndTime = parseDate(plan.attr('data-end-time'));
+                if(tmpPlanEndTime && (!currentEndTime || currentEndTime < tmpPlanEndTime)) {
+                    currentEndTime = tmpPlanEndTime;
+                }
+            });   
+
+            if(
+                (prevStartTime && currentStartTime && currentStartTime != prevStartTime) ||
+                (prevEndTime && currentEndTime && currentEndTime != prevEndTime)) {
+                var tickLabels = getTickLabels(currentStartTime, currentEndTime, intervalStep);
+                var tickLabelTags = getTickLabelHtmlTags(tickLabels);
+                $('#' + tripPartDivId + " .tick-labels").html(tickLabelTags);
+
+                // update all plan's attributes
+                $('#' + tripPartDivId + ' .single-plan-review').each(function(){
+                    var plan = $(this);
+                    plan.attr('data-trip-start-time', currentStartTime.toISOString());
+                    plan.attr('data-trip-end-time', currentEndTime.toISOString());
+                    if (plan.attr('data-eligibility-visible') == '1' && plan.attr('data-filter-visible') == '1') {
+                        resizeChartViaPlan(plan);
+                    }
+                });
+            }
         });
     }
 
