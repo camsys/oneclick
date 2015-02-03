@@ -14,14 +14,42 @@ class UsersDatatable
       sEcho: params[:sEcho].to_i, # note this must be .to_i for security reasons
       iTotalRecords: total_count,
       iTotalDisplayRecords: total_count,
-      aaData: data
+      aaData: paged_users_data
     }
   end
 
-private
+  def as_csv
+    CSV.generate do |csv|
+      csv << localized_column_names
+      paged_users_plain_data.each do |user|
+        csv << user
+      end
+    end
+  end
 
-  def data
-    users.map do |user|
+  def as_csv_all
+    CSV.generate do |csv|
+      csv << localized_column_names
+      all_users_plain_data.each do |user|
+        csv << user
+      end
+    end
+  end
+
+private
+  def localized_column_names
+    [
+      I18n.t(:id),
+      I18n.t(:username),
+      I18n.t(:email),
+      I18n.t(:registered),
+      I18n.t(:roles),
+      I18n.t(:status)
+    ]
+  end
+
+  def paged_users_data
+    paged_users.map do |user|
       [
         user.id,
         link_to(user.name, admin_user_path(user, locale: I18n.locale)),
@@ -33,12 +61,37 @@ private
     end
   end
 
-  def users
-    @users ||= fetch_users
+  # plain user data
+  def export_plain_user(users = [])
+    users.map do |user|
+      [
+        user.id,
+        user.name,
+        user.email,
+        user.created_at.to_date,
+        user.roles.collect(&:human_readable_name).to_sentence,
+        user.deleted_at ? I18n.t(:user_deleted) : ''
+      ]
+    end
   end
 
-  def fetch_users
-    users = User.order("#{sort_column} #{sort_direction}").limit(per_page).offset(page)
+  def paged_users_plain_data
+    export_plain_user(paged_users)
+  end
+
+  def all_users_plain_data
+    export_plain_user(all_users)
+  end
+
+  def paged_users
+    @users ||= fetch_paged_users
+  end
+
+  def all_users
+    @users ||= fetch_all_users
+  end
+
+  def fetch_users(users = User.all)
     users = users.where(deleted_at: nil) unless params[:bIncludeDeleted] == 'true'
     if sort_column == 'roles.name'
       users = users.includes(:roles)
@@ -49,6 +102,16 @@ private
 
     # puts users.to_sql
     users.without_role(:anonymous_traveler)
+  end
+
+  def fetch_paged_users
+    users = User.order("#{sort_column} #{sort_direction}").limit(per_page).offset(page)
+    fetch_users(users)
+  end
+
+  def fetch_all_users
+    users = User.order("#{sort_column} #{sort_direction}")
+    fetch_users(users)
   end
 
   def page

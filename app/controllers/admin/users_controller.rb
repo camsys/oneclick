@@ -7,9 +7,12 @@ class Admin::UsersController < Admin::BaseController
   def index
     # @users = @users.without_role :anonymous_traveler # This filter is moved into UsersDatatable
 
+    usertable = UsersDatatable.new(view_context)
+
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: UsersDatatable.new(view_context) }
+      format.json { render json: usertable}
+      format.csv {render text: params[:all] ? usertable.as_csv_all : usertable.as_csv}
     end
   end
 
