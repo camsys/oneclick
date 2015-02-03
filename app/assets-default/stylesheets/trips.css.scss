@@ -201,11 +201,9 @@ $period-nav-button-width: 40px;
 }
 
 .select-column-button {
+  margin: 0px !important;
   @media(max-width:$screen-xs-max){
     min-width: 3em !important;
-  }
-  @media(min-width:$screen-sm-min){
-    min-width: 5em !important;
   }
 }
 
@@ -483,4 +481,12 @@ th.rotate {
   -o-transform: rotate(-90.0deg);  /* Opera 10.5 */
   -webkit-transform: rotate(-90.0deg);  /* Safari 3.1+, Chrome */
   transform: rotate(-90.0deg);  /* Standard */
+}
+
+.prev-period {
+  padding: 0px 3px 0px 16px !important;
+}
+
+.next-period {
+  padding: 0px 16px 0px 3px !important;
 }
