@@ -490,3 +490,8 @@ th.rotate {
 .next-period {
   padding: 0px 16px 0px 3px !important;
 }
+
+.paratransit-center-line, .paratransit-boundary-line {
+  stroke-width: 4px;
+  stroke: black;
+}

@@ -2291,6 +2291,81 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         return typeof(mode) != 'string' ? '' : (mode.indexOf('mode_') >= 0 ? mode.substr(mode.indexOf('mode_') + 5) : mode);
     }
 
+    // get bar height value in chart based on leg type
+    function getBarHeight(legType) {
+        if(legType === 'wait') {
+            return 4;
+        } else {
+            return barHeight;
+        }
+    }
+
+    /**
+     * render paratransit lines (the rect is handled in regular chart rendering)
+     * @param {Array} paratransitLegs
+     * @param {DOM object} chart: d3 selector 
+     * @param {object} x: x-axis scalor
+     * @param {number} divHeight: the total height of bar container
+     * @param {number} barHeight
+     */
+    function renderParatransitLines(paratransitLegs, chart, x, divHeight, barHeight) {
+        // center line across start_time to end_time
+        chart.selectAll(".paratransit-center-line")
+            .data(paratransitLegs)
+            .enter()
+            .append("line")
+            .attr("class", "paratransit-center-line")
+            .attr("start_time", function(d) {
+                return parseDate(d.start_time);
+            })
+            .attr("end_time", function(d) {
+                return parseDate(d.end_time);
+            })
+            .attr("x1", function(d) {
+                return x(parseDate(d.start_time));
+            })
+            .attr("y1", function(d) {
+                return divHeight/2;
+            })
+            .attr("x2", function(d) {
+                return x(parseDate(d.end_time));
+            })
+            .attr("y2", function(d) {
+                return divHeight/2;
+            });
+
+        // boundary vertical lines at start_time and end_time
+        var paratransitLegBoundaries = [];
+        paratransitLegs.forEach(function(leg){
+            paratransitLegBoundaries.push({
+                time: leg.start_time
+            });
+            paratransitLegBoundaries.push({
+                time: leg.end_time
+            });
+        });
+        chart.selectAll(".paratransit-boundary-line")
+            .data(paratransitLegBoundaries)
+            .enter()
+            .append("line")
+            .attr("class", "paratransit-boundary-line")
+            .attr("time", function(d) {
+                return parseDate(d.time);
+            })
+            .attr("x1", function(d) {
+                return x(parseDate(d.time));
+            })
+            .attr("y1", function(d) {
+                return (divHeight-barHeight)/2;
+            })
+            .attr("x2", function(d) {
+                return x(parseDate(d.time));
+            })
+            .attr("y2", function(d) {
+                return (divHeight+barHeight)/2;
+            });
+    }
+
     /**
      * Create a timeline chart
      * @param {string} chartDivId
@@ -2303,7 +2378,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             return;
         }
 
-        var tripLegs = tripPlan.legs;
+        var tripLegs = tripPlan.legs || [];
         //planId, chartDivId, tripLegs, tripStartTime, tripEndTime, intervalStep, barHeight, serviceName
         if (!tripStartTime instanceof Date || !tripEndTime instanceof Date || !tripLegs instanceof Array || typeof(intervalStep) != 'number' || typeof(barHeight) != 'number') {
             return;
@@ -2340,6 +2415,12 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         //generate ticks
         drawChartTickLines(chart, xScale, x);
 
+        //draw paratransit line
+        var paratransitLegs = $.grep(tripLegs, function(leg) { return leg.type.toLowerCase() === 'paratransit';});
+        if(paratransitLegs.length > 0) {
+            renderParatransitLines(paratransitLegs, chart, x, height, barHeight);
+        }
+
         //draw trip legs in rectangles
         chart.selectAll("rect")
             .data(tripLegs)
@@ -2348,13 +2429,28 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 return "travel-type-" + d.type.toLowerCase();
             })
             .attr("x", function(d) {
-                return d.start_time_estimated ? 0 : x(parseDate(d.start_time));
+                var tmpX =  d.start_time_estimated ? 0 : x(parseDate(d.start_time));
+                if(d.type.toLowerCase() === 'paratransit') {
+                    var tmpWidth = (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time)));
+                    return tmpX + tmpWidth/4;
+                } else {
+                    return tmpX;
+                }
             })
-            .attr("y", y(1) - barHeight / 2)
+            .attr("y", function(d) {
+                return (y(1) - getBarHeight(d.type.toLowerCase()) / 2);
+            })
             .attr("width", function(d) {
-                return (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time)));
+                var tmpWidth = (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time)));
+                if(d.type.toLowerCase() === 'paratransit') {
+                    return tmpWidth/2;
+                } else {
+                    return tmpWidth;
+                }    
             })
-            .attr("height", barHeight);
+            .attr("height", function(d) {
+                return getBarHeight(d.type.toLowerCase());
+            });
 
         // add service name
         // except for transit
@@ -2450,6 +2546,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             .data(ticks)
             .enter()
             .insert("line", "rect")
+            .attr("class", "tick-line")
             .attr("x1", function(d) {
                 return x(d);
             })
@@ -2534,19 +2631,64 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             .range([0, height]);
 
         //redraw tick lines
-        chart.selectAll("line").remove();
+        chart.selectAll('.tick-line').remove();
         drawChartTickLines(chart, xScale, x);
+
+        //redraw paratransit lines
+        chart.selectAll(".paratransit-center-line")
+                .attr("x1", function(d) {
+                    return x(parseDate($(this).attr('start_time')));
+                })
+                .attr("y1", function(d) {
+                    return height/2;
+                })
+                .attr("x2", function(d) {
+                    return x(parseDate($(this).attr('end_time')));
+                })
+                .attr("y2", function(d) {
+                    return height/2;
+                });
+
+        //redraw paratransit lines
+        chart.selectAll(".paratransit-boundary-line")
+                .attr("x1", function(d) {
+                    return x(parseDate($(this).attr('time')));
+                })
+                .attr("y1", function(d) {
+                    return (height-barHeight)/2;
+                })
+                .attr("x2", function(d) {
+                    return x(parseDate($(this).attr('time')));
+                })
+                .attr("y2", function(d) {
+                    return (height+barHeight)/2;;
+                });
 
         //update chart items
         chart.selectAll("rect")
             .attr("x", function(d) {
-                return d.start_time_estimated ? 0 : x(parseDate(d.start_time));
+                var tmpX =  d.start_time_estimated ? 0 : x(parseDate(d.start_time));
+                if(d.type.toLowerCase() === 'paratransit') {
+                    var tmpWidth = (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time)));
+                    return tmpX + tmpWidth/4;
+                } else {
+                    return tmpX;
+                }
             })
-            .attr("y", y(1) - barHeight / 2)
+            .attr("y", function(d){
+                return (y(1) - getBarHeight(d.type.toLowerCase()) / 2);
+            })
             .attr("width", function(d) {
-                return (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time)));
+                var tmpWidth = (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time)));
+                if(d.type.toLowerCase() === 'paratransit') {
+                    return tmpWidth/2;
+                } else {
+                    return tmpWidth;
+                }
             })
-            .attr("height", barHeight);
+            .attr("height", function(d){
+                return getBarHeight(d.type.toLowerCase());
+            });
 
         chart.selectAll("text")
             .attr("x", (
