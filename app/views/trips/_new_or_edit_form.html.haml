@@ -146,6 +146,9 @@
                   %button#mapCloseButton.close.pull-right{type: "button", title: t(:close)}
                     %span &times;
                     %span.hide Close
+                  %button.pull-right.close{type: 'button', "data-toggle" => "modal", "data-target" => "#mapExpand", style: "min-width:1em;margin-right:10px;margin-top:2px;", aria: {label: "Map"}}
+                    %i.fa.fa-plus
+
                   =t(:map)
                   = add_tooltip("map_help")
                   :javascript
@@ -164,7 +167,7 @@
         %button.btn.btn-default.generate-url{type: 'button', "data-toggle" => "modal", "data-target" => "#generatedUrl", style: "min-width:1em;", aria: {label: "Generate a URL to your current trip."}}
           %i.fa.fa-link
 
-      #generatedUrl.modal.fade{tabindex: "-1", role: "dialog", aria: {labelledby: "modalLabel", hidden: "true"}}
+      #generatedUrl.modal.fade{tabindex: "-1", role: "dialog", aria: {labelledby: "modalLabel1", hidden: "true"}}
         .modal-dialog
           .modal-content.panel.panel-default
             .modal-header.panel-heading
@@ -172,11 +175,28 @@
                 %span{aria: {hidden: "true"}}
                   %i.fa.fa-close
                 %span.sr-only Close
-              %h3.modal-title{id: "modalLabel"} URL for Your Trip
+              %h3.modal-title{id: "modalLabel1"} URL for Your Trip
             .modal-body
               = text_area_tag "trip-url", nil, rows: 10, class: 'form-control'
             .modal-footer{style: "background-color:whitesmoke;"}
               %button.btn.action-button{type: "button", data: {dismiss: "modal"}} Close
+
+      #mapExpand.modal.modal-fullscreen.fade{tabindex: "-1", role: "dialog", aria: {labelledby: "modalLabel2", hidden: "true"}}
+        .modal-dialog.modal-lg
+          .modal-content.panel.panel-default
+            .modal-header.panel-heading
+              %button.close{type: "button", data: {dismiss: "modal"}}
+                %span{aria: {hidden: "true"}}
+                  %i.fa.fa-close
+                %span.sr-only Close
+              %h3.modal-title{id: "modalLabel2"}
+                = t(:map)
+                = add_tooltip("map_help")
+            .modal-body{:"aria-hidden" => "true"}
+              = LeafletMap({ :mapid => "expandedMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height: 100%; width: 100%;", :show_location_select => true })
+            .modal-footer{style: "background-color:whitesmoke;"}
+              %button.btn.action-button{type: "button", data: {dismiss: "modal"}} Close
+
 
         :javascript
           $('.generate-url').click(function(){
@@ -223,6 +243,35 @@
     = render partial: 'booking_signup'
 :javascript
   $(function() {
+
+    $('#mapExpand').on('shown.bs.modal', function() {
+        if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.expandedMap != null) {
+          var smallMap = CsMaps.tripMap;
+          var mapObj = CsMaps.expandedMap;
+          var mapMarkers = smallMap.LMmarkers;
+          var mapBounds = null;
+
+          mapObj.invalidateMap();
+
+          if(mapMarkers.length > 0) {
+            mapObj.removeMarkers();
+            for (var mark in mapMarkers) {
+              mapObj.LMmarkers.push(L.marker([mapMarkers[mark]._latlng.lat, mapMarkers[mark]._latlng.lng], mapMarkers[mark].options));
+            }
+            mapBounds = mapObj.calcMapBounds(mapMarkers);
+          } else {
+            mapBounds = mapObj.LMbounds;
+          }
+
+          if(mapBounds) {
+            setTimeout(function(){
+              mapObj.LMmap.fitBounds(mapBounds);
+              mapObj.refreshMarkers();
+            }, 10);
+          }
+        }
+      });
+
     $('.plan-a-trip').on('submit',function() {
       var hiddenFromPlaceData = $('#from_place_object').val();
       var fromPlaceAddr = $('#trip_proxy_from_place').val();
