@@ -2420,7 +2420,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         if(paratransitLegs.length > 0) {
             renderParatransitLines(paratransitLegs, chart, x, height, barHeight);
         }
-
+        
         //draw trip legs in rectangles
         chart.selectAll("rect")
             .data(tripLegs)
@@ -2542,7 +2542,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             }
         }
 
-        chart.selectAll("line")
+        chart.selectAll(".tick-line")
             .data(ticks)
             .enter()
             .insert("line", "rect")
