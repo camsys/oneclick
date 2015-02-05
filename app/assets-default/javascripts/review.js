@@ -731,6 +731,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                         "description": legDescription,
                         "start_time": plan.start_time,
                         "end_time": plan.end_time,
+                        "logo_url": plan.mode_logo_url,
                         "start_time_estimated": plan.start_time_estimated,
                         "end_time_estimated": plan.end_time_estimated
                     });
@@ -2452,6 +2453,26 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 return getBarHeight(d.type.toLowerCase());
             });
 
+        // add mode icons
+        chart.selectAll(".mode-icons")
+            .data(tripLegs)
+            .enter().append("image")
+            .attr("class", "mode-icons")
+            .attr("xlink:href", function(d){
+                return d.logo_url
+            })
+            .attr("x", function(d){
+                return (x(parseDate(d.start_time)) + x(parseDate(d.end_time)))/2 - barHeight / 2;
+            })
+            .attr("y", (height-barHeight)/2)
+            .attr("width", function(d) {
+                if (d.type.toLowerCase() === 'paratransit' || (x(parseDate(d.end_time)) - x(parseDate(d.start_time))) < barHeight)
+                    return 0;
+                else
+                    return barHeight;
+            })
+            .attr("height", barHeight);
+
         // add service name
         // except for transit
         if (tripPlan.mode != 'mode_transit' && tripLegs.length > 0 && typeof(serviceName) === 'string' && serviceName.trim().length > 0) {
@@ -2470,6 +2491,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                     return d;
                 });
         }
+
     }
 
     /*
@@ -2690,6 +2712,22 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 return getBarHeight(d.type.toLowerCase());
             });
 
+
+        // update mode icons
+        chart.selectAll(".mode-icons")
+            .attr("x", function(d){
+                return (x(parseDate(d.start_time)) + x(parseDate(d.end_time)))/2 - barHeight /2;
+            })
+            .attr("y", (height-barHeight)/2)
+            .attr("width", function(d) {
+                if (d.type.toLowerCase() === 'paratransit' || (x(parseDate(d.end_time)) - x(parseDate(d.start_time))) < barHeight)
+                    return 0;
+                else
+                    return barHeight;
+            })
+            .attr("height", barHeight);
+
+        // update labels
         chart.selectAll("text")
             .attr("x", (
                 x(tripStartTime) +

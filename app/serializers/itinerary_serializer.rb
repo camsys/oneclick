@@ -6,7 +6,7 @@ class ItinerarySerializer < ActiveModel::Serializer
 
   attributes :id, :missing_information, :mode, :mode_name, :service_name, :provider_name, :contact_information,
     :cost, :duration, :transfers, :start_time, :end_time, :legs, :service_window, :duration_estimated, :selected
-  attributes :server_status, :server_message, :failed, :hidden, :logo_url
+  attributes :server_status, :server_message, :failed, :hidden, :logo_url, :mode_logo_url
   attr_accessor :debug
 
   def initialize(object, options={})
@@ -43,6 +43,11 @@ class ItinerarySerializer < ActiveModel::Serializer
     logo_url_helper(object)
   end
 
+  def mode_logo_url
+    returned_mode = Mode.unscoped.where(code: object.returned_mode_code).first
+    returned_mode.logo_url if returned_mode
+  end
+
   def missing_information
     es = EligibilityService.new
     es.get_service_itinerary(object.service, object.trip_part.trip.user.user_profile, object.trip_part, :missing_info)
@@ -72,7 +77,7 @@ class ItinerarySerializer < ActiveModel::Serializer
   end
 
   def legs
-    legs = object.get_legs
+    legs = object.get_legs(false)
 
     last_leg = nil
     legs.inject([]) do |m, leg|
@@ -86,8 +91,13 @@ class ItinerarySerializer < ActiveModel::Serializer
           end_place: "#{leg.start_place.lat},#{leg.start_place.lon}",
         }
       end
+
+      leg_mode_type = leg.mode.downcase if leg.mode
+      leg_mode_type = 'rail' if leg_mode_type == 'subway' # there is no subway mode
+      leg_mode = Mode.unscoped.where(code: "mode_#{leg_mode_type}").first
       m <<        {
         type: leg.mode,
+        logo_url: (leg_mode.logo_url if leg_mode),
         description: escape_javascript(leg.short_description),
         start_time: leg.start_time.iso8601,
         end_time: leg.end_time.iso8601,
