@@ -1,3 +1,4 @@
+- content_for :title, "Plan a Trip - #{t(:site_title)}"
 - is_splash_available = whether_show_tranlatation_item?(:splash)
 - non_splash_css = 'col-sm-12'
 - splash_css = ''
@@ -119,12 +120,12 @@
                 });
 
           -if I18n.locale == :tags
-            = f.input :trip_purpose_id, :collection =>  TripPurpose.all, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes),input_html: { class: 'form-control' }
+            = f.input :trip_purpose_id, :collection =>  TripPurpose.all.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v[0][:name])}, label: t(:trip_purposes), input_html: { class: 'form-control' }
             - if translation_exists?("trip_purposes_help")
               :javascript
                 addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
           -else
-            = f.input :trip_purpose_id, :collection =>  TripPurpose.ordered_by_localized_name, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v.name)}, label: t(:trip_purposes),input_html: { class: 'form-control' }
+            = f.input :trip_purpose_id, :collection => TripPurpose.ordered_by_localized_name.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v[0][:name])}, label: t(:trip_purposes), input_html: { class: 'form-control' }
             - if translation_exists?("trip_purposes_help")
               :javascript
                 addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
@@ -158,6 +159,61 @@
             =t(:ecolane_login_button)
         = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
           =t(:next)
+
+      .pull-left
+        %button.btn.btn-default.generate-url{type: 'button', "data-toggle" => "modal", "data-target" => "#generatedUrl", style: "min-width:1em;", aria: {label: "Generate a URL to your current trip."}}
+          %i.fa.fa-link
+
+      #generatedUrl.modal.fade{tabindex: "-1", role: "dialog", aria: {labelledby: "modalLabel", hidden: "true"}}
+        .modal-dialog
+          .modal-content.panel.panel-default
+            .modal-header.panel-heading
+              %button.close{type: "button", data: {dismiss: "modal"}}
+                %span{aria: {hidden: "true"}}
+                  %i.fa.fa-close
+                %span.sr-only Close
+              %h3.modal-title{id: "modalLabel"} URL for Your Trip
+            .modal-body
+              = text_area_tag "trip-url", nil, rows: 10, class: 'form-control'
+            .modal-footer{style: "background-color:whitesmoke;"}
+              %button.btn.action-button{type: "button", data: {dismiss: "modal"}} Close
+
+        :javascript
+          $('.generate-url').click(function(){
+
+            modes = $("#modes_inputs input[type='checkbox'], #transitModes input[type='checkbox']");
+            modesArray = [];
+            for (i=0; i < modes.length; i++) { if ($(modes[i]).prop('checked')) { z = $(modes[i]).val(); modesArray.push(z); } }
+
+            var isRoundTrip = $('#trip_proxy_is_round_trip_1').prop('checked') ? "true" : "false";
+            var checkedModes = modesArray.join(",");
+            var tripPurpose = $('#trip_proxy_trip_purpose_id > option:selected').attr('code');
+            var fromPlace = $('#trip_proxy_from_place').val().replace(/(,)/g,'').replace(/\s/g,"%20").replace(/(&)/g,"%26");
+            var toPlace = $('#trip_proxy_to_place').val().replace(/(,)/g,'').replace(/\s/g,"%20").replace(/(&)/g,"%26");
+            var outboundDate = $('#trip_proxy_outbound_trip_date').val();
+            var outboundTime = $('#trip_proxy_outbound_trip_time').val().replace(/\s/g,'');
+            var returnDate = $('#trip_proxy_return_trip_date').val();
+            var returnTime = $('#trip_proxy_return_trip_time').val().replace(/\s/g,'');
+            var outboundArriveDepart = $('#trip_proxy_outbound_arrive_depart > option:selected').val();
+            var returnArriveDepart = $('#trip_proxy_return_arrive_depart > option:selected').val();
+
+            var completeUrl = "#{root_url}/" +
+            "plan_a_trip?is_round_trip=" + isRoundTrip +
+            "&modes=" + checkedModes +
+            "&purpose=" + tripPurpose +
+            "&from_place=" + fromPlace +
+            "&to_place=" + toPlace +
+            "&outbound_trip_date=" + outboundDate +
+            "&outbound_trip_time=" + outboundTime +
+            "&outbound_arrive_depart=" + outboundArriveDepart +
+            "&return_trip_date=" + returnDate +
+            "&return_trip_time=" + returnTime +
+            "&return_arrive_depart=" + returnArriveDepart;
+
+            $('#trip-url').val(completeUrl);
+            
+          });
+
     .col-sm-12
       - footer_comment_key = session[:is_multi_od] ? :multi_od_trip_footer_comment : :trip_footer_comment
       = render partial: 'shared/page_comments', locals: {key: footer_comment_key}

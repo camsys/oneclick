@@ -26,8 +26,53 @@ class UsersController < ApplicationController
         @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
       set_approved_agencies(params[:user][:approved_agency_ids])
       booking_alert = set_booking_services(@user, params[:user_service])
+      
+      unless params[:user][:relationship].nil?
+
+        comparison_hash = {}
+
+        params[:user][:relationship].keys.each do |key|
+          id = key.to_i
+          relationship_status = UserRelationship.where(id: id)[0].relationship_status_id.to_s
+          comparison_hash[id.to_s] = relationship_status
+        end
+
+        if params[:user][:relationship] != comparison_hash
+
+          params[:user][:relationship].each do |key, value|
+            id = key.to_i
+            relationship_value = value
+            to_email = User.where(id: UserRelationship.where(id: id)[0].user_id)[0].email
+            from_email = User.where(id: UserRelationship.where(id: id)[0].delegate_id)[0].email
+
+            unless UserRelationship.where(id: id)[0].relationship_status_id == value.to_i
+              # if the request is accepted
+              if relationship_value == "3"
+                UserMailer.traveler_confirmation_email(to_email, from_email).deliver
+              # if the request is declined
+              elsif relationship_value == "4"
+                UserMailer.traveler_decline_email(to_email, from_email).deliver
+              # either person revokes buddyship
+              elsif relationship_value == "5"
+                to_email = User.where(id: UserRelationship.where(id: id)[0].user_id)[0].email
+                if @user.id == User.where(id: UserRelationship.where(id: id)[0].delegate_id)[0].id
+                  # Requested revokes
+                  UserMailer.buddy_revoke_email(to_email, from_email).deliver
+                else
+                  # Requester revokes
+                  UserMailer.traveler_revoke_email(from_email, to_email).deliver
+                end
+              end
+            end
+          end
+        end
+      end
+
+      # as the requested, got a request, accepting/rejecting, adding traveler_relationship
       @user.update_relationships(params[:user][:relationship])
+      # as the requester, add buddy
       @user.add_buddies(params[:new_buddies])
+
       if booking_alert
         redirect_to user_path(@user, locale: @user.preferred_locale), :alert => "Invalid Client Id or Date of Birth."
       else
@@ -137,6 +182,7 @@ class UsersController < ApplicationController
       u.last_name = last_name
       u.password = dob
       u.password_confirmation = dob
+      u.roles << Role.where(name: "registered_traveler").first
       up = UserProfile.new
       up.user = u
       up.save!

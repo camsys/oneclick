@@ -12,7 +12,7 @@
         .col-sm-12
           .well.well-sm
             =itinerary.service.public_comments.for_locale.comment.html_safe
-    -if itinerary.cost_comments
+    -unless itinerary.cost_comments.blank?
       %h4
         = t(:cost_details)
       =itinerary.cost_comments.html_safe
@@ -56,13 +56,14 @@
       %h4
         %i.fa.fa-calendar
         = t(:trip_insufficient_notice_a) + itinerary.service.human_readable_advanced_notice + t(:trip_insufficient_notice_b)
+    -if itinerary.too_early
+      %h4
+        %i.fa.fa-calendar
+        = t(:trip_max_advanced_book_notice_a) + itinerary.service.human_readable_max_allow_advanced_notice + t(:trip_max_advanced_book_notice_b)
     -if itinerary.date_mismatch or itinerary.time_mismatch
       %h4
         %i.fa.fa-calendar
         = t(:trip_outside_service_hours)
-
-    - if itinerary.service.try(:phone)
-      %h4= tel_link itinerary.service.phone
 
     .row.hidden
       ="SCORE: " + itinerary.match_score.to_s

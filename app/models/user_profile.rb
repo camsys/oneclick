@@ -19,5 +19,11 @@ class UserProfile < ActiveRecord::Base
     end
   end
 
+  def age
+    age_characteristic = Characteristic.where(code: "age").first
+    age = self.user_characteristics.where(characteristic: age_characteristic).first
+    age.nil? ? nil : age.value.to_i
+  end
+
 end
 

@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
 
   # include the helper method in any controller which needs to know about guest users
   helper_method :current_or_guest_user
+  helper_method :mobile?
 
   protect_from_forgery
   before_filter :get_traveler
@@ -113,6 +114,12 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def mobile?
+    unless request.user_agent.nil?
+      request.user_agent.downcase =~ /mobile|android|touch|webos|hpwos/
+    end
+  end
 
   # called (once) when the user logs in, insert any code your application needs
   # to hand off from guest_user to current_user.

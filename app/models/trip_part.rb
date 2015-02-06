@@ -102,13 +102,15 @@ class TripPart < ActiveRecord::Base
     if modes.empty?
       itineraries.destroy_all
     else
-      itineraries.where('mode_id in (?)', modes.pluck(:id)).destroy_all
+      itins = itineraries.where('mode_id in (?)', modes.pluck(:id))
+      itins.destroy_all
     end
   end
 
   # Generates itineraries for this trip part. Any existing itineraries should have been removed
   # before this method is called.
   def create_itineraries(modes = trip.desired_modes)
+
     Rails.logger.info "CREATE: " + modes.collect {|m| m.code}.join(",")
     # remove_existing_itineraries
     itins = []
@@ -133,7 +135,14 @@ class TripPart < ActiveRecord::Base
         if (!mode.otp_mode.blank?)
           # Transit modes + Bike, Drive, Walk
           timed "fixed" do
-            itins += create_fixed_route_itineraries mode.otp_mode
+            new_itins = create_fixed_route_itineraries(mode.otp_mode, mode)
+            non_duplicate_itins = []
+            new_itins.each do |itin|
+              unless self.check_for_duplicates(itin, self.itineraries + itins)
+                non_duplicate_itins << itin
+              end
+            end
+            itins += non_duplicate_itins
           end
         end
       end
@@ -141,6 +150,22 @@ class TripPart < ActiveRecord::Base
 
     self.itineraries << itins
     itins
+  end
+
+  def check_for_duplicates(new_i, existing_itins)
+    #Removes Duplicate Walk Trips.
+    unless new_i.is_walk
+      return false
+    end
+
+    existing_itins.each do |itin|
+      if itin.is_walk
+        'FOUND ONE the new way DUDE'
+         return true
+      end
+    end
+
+    false
   end
 
   def timed label, &block
@@ -151,7 +176,7 @@ class TripPart < ActiveRecord::Base
   end
 
   # TODO refactor following 4 methods
-  def create_fixed_route_itineraries(mode="TRANSIT,WALK")
+  def create_fixed_route_itineraries(mode="TRANSIT,WALK", mode_code='mode_transit')
     itins = []
     tp = TripPlanner.new
     arrive_by = !is_depart
@@ -172,7 +197,7 @@ class TripPart < ActiveRecord::Base
 
     #TODO: Save errored results to an event log
     if result
-      tp.convert_itineraries(response).each do |itinerary|
+      tp.convert_itineraries(response, mode_code).each do |itinerary|
         serialized_itinerary = {}
 
         itinerary.each do |k,v|
@@ -186,6 +211,12 @@ class TripPart < ActiveRecord::Base
         itins << Itinerary.new(serialized_itinerary)
 
       end
+    end
+
+    #Check to see special fare rules exist
+    fh = FareHelper.new
+    itins.each do |itin|
+      fh.calculate_fixed_route_fare(self, itin)
     end
 
     #Filter impractical routes
@@ -290,8 +321,9 @@ class TripPart < ActiveRecord::Base
     unless itins.empty?
       unless ENV['SKIP_DYNAMIC_PARATRANSIT_DURATION']
         begin
-          base_duration = TripPlanner.new.get_drive_time(!is_depart, trip_time, from_trip_place.location.first,
-            from_trip_place.location.last, to_trip_place.location.first, to_trip_place.location.last)
+          base_duration = 1 #Commented out the drive time because it rarely effects the paratransit time and we can reduce an OTP call to save time
+                            # TripPlanner.new.get_drive_time(!is_depart, trip_time, from_trip_place.location.first,
+            #from_trip_place.location.last, to_trip_place.location.first, to_trip_place.location.last)
         rescue Exception => e
           Rails.logger.error "Exception #{e} while getting trip duration."
           base_duration = nil

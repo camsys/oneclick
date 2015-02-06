@@ -4,7 +4,9 @@ namespace :oneclick do
     Rails.logger.info "#{Time.now}:\tSend Feedback Follow Up Emails"
     if Rating.feedback_on?
       Trip.feedbackable.scheduled_before(Time.now).each do |trip|
-        UserMailer.feedback_email(trip).deliver
+        unless trip.user.is_visitor?
+          UserMailer.feedback_email(trip).deliver
+        end
         trip.update_attributes(needs_feedback_prompt: false)
       end
     end

@@ -9,14 +9,13 @@ class Admin::UtilController < Admin::BaseController
     if @address
       g = OneclickGeocoder.new
       @results = Geocoder.search(params[:geocode][:address], sensor: g.sensor, components: g.components, bounds: g.bounds)
-
       @autocomplete_results = google_api.get('autocomplete/json') do |req|
         req.params['input']    = @address
         req.params['sensor']   = false
         req.params['key']      = Oneclick::Application.config.google_places_api_key
-        # req.params['key']      = 'AIzaSyBHlpj9FucwX45l2qUZ3441bkqvcxR8QDM'
         req.params['location'] = @map_center
-        req.params['radius']   = 20_000
+        req.params['radius']   = Oneclick::Application.config.config.google_radius_meters
+        req.params['components'] = Oneclick::Application.config.geocoder_components
       end
 
       @autocomplete_details = @autocomplete_results.body['predictions'].collect do |p|
@@ -25,9 +24,9 @@ class Admin::UtilController < Admin::BaseController
     end
   end
 
-  def raise
-    raise (params[:string] || 'Raising an exception')
-  end
+  #def raise
+  #  raise (params[:string] || 'Raising an exception')
+  #end
 
   class App
     include ActiveModel::AttributeMethods
@@ -81,6 +80,53 @@ class Admin::UtilController < Admin::BaseController
           )
         )
       end
+    end
+  end
+
+  def settings
+    authorize! :settings, :util
+  end
+
+  def upload_application_logo
+    info_msgs = []
+    error_msgs = []
+    if !can?(:upload_application_logo, :util)
+      error_msgs << t(:not_authorized)
+    else
+      file = params[:logo][:file] if params[:logo]
+      
+      if !file.nil?
+        uploader = ApplicationLogoUploader.new
+        begin
+          uploader.store!(file)
+        rescue Exception => ex
+          error_msgs << ex.message
+        end
+
+        Oneclick::Application.config.ui_logo = uploader.url
+        logo_config = OneclickConfiguration.where(code: 'ui_logo').first_or_create
+        logo_config.value = uploader.url
+        logo_config.description = "Application Logo"
+
+        if logo_config.save
+          info_msgs << t(:logo) + " " + t(:was_successfully_updated)
+        else
+          error_msgs << t(:failed_to_update_application_logo)
+        end
+      else
+        error_msgs << t(:select_image_to_upload)
+      end
+    end
+
+    if error_msgs.size > 0
+      flash[:error] = error_msgs.join(' ')
+    elsif info_msgs.size > 0
+      flash[:notice] = info_msgs.join(' ')
+    end
+
+    respond_to do |format|
+      format.js
+      format.html {redirect_to admin_settings_path}
     end
   end
 

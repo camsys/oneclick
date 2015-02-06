@@ -1,3 +1,5 @@
+= t(:user_itinerary_email_header).to_s
+
 - unless @comments.blank?
   %h3= t(:comments)
   %p= @comments
@@ -52,13 +54,4 @@
 
 %hr
 
-%table
-  %tbody
-    %tr
-      %td=t(:email_thank_you).to_s.sub('%{application_name}', Oneclick::Application.config.name)
-    %tr
-      %td=t(:do_not_reply)
-    %tr
-      %td=t(:email_footer).to_s.sub('%{application_name}', Oneclick::Application.config.name)
-
-
+= t(:user_itinerary_email_footer).to_s

@@ -1,3 +1,5 @@
+= t(:feedback_email_header).to_s
+
 - product_name = t(:site_title)
 
 %hr
@@ -19,9 +21,4 @@
 = t(:thanks_for_feedback)
 
 %hr
-%table
-  %tbody
-    %tr
-      %td= t(:do_not_reply)
-    %tr
-      %td= t(:email_footer).to_s.sub('%{application_name}', Oneclick::Application.config.name)
+= t(:feedback_email_footer).to_s

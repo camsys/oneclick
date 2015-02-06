@@ -83,7 +83,7 @@
                 %tr
                   %td.text-center{class: "#{(start_error || end_error) ? 'has-error' : ''}" }
                     %label.control-label
-                      = t('date.day_names')[day_of_week]
+                      = I18n.t('date.day_names')[day_of_week]
                   %td{class: "#{start_error ? 'has-error' : ''}" }
                     %input.form-control.text-right{type: "text",
                           value: "#{schedule.start_time if schedule}",
@@ -115,12 +115,18 @@
             = t(:advance_notice_required)
             = add_tooltip("advance_notice_required_help")
         .panel-body
-          - minutes_total = @service.advanced_notice_minutes
-          = t(:service_notice_required) + " " ## TODO Interpolate
-          %input.text-right{type: "number", min: 0, max: 30,
-              value: minutes_total / (60 * 24),
+          - adv_notice_days_total = @service.advanced_notice_minutes/60/24.round
+          - max_adv_book_days_total = @service.max_advanced_book_minutes/60/24.round
+          - max_allow_adv_book_days = Service.max_allow_advanced_book_days
+          %input.text-right{type: "number", min: 0, max: max_allow_adv_book_days,
+              value: adv_notice_days_total,
               name: "service[notice_days_part]"}
-          %b days
+          = t(:to).downcase
+          %input.text-right{type: "number", min: 0, max: max_allow_adv_book_days,
+              value: max_adv_book_days_total,
+              name: "service[max_advanced_book_days_part]"}
+          %b 
+            = t(:days).downcase
           - # currently only use advanced_notice_days, may change back to days/hours/minutes
           /%input.text-right{type: "number", min: 0, max: 23,
           /    value: (minutes_total / 60) % 24,
@@ -130,7 +136,7 @@
           /    value: minutes_total % 60,
           /    name: "service[notice_minutes_part]"}
           /%b minutes
-          = " " + t(:service_notice_str) + "."
+          = " " + t(:advance_notice_required) + "."
           - # booking cut off time editing
           %table.ALTtable
             %thead
@@ -150,7 +156,7 @@
                 %tr
                   %td.text-center{class: "#{cut_off_time_error ? 'has-error' : ''}" }
                     %label.control-label
-                      = t('date.day_names')[day_of_week]
+                      = I18n.t('date.day_names')[day_of_week]
                   %td{class: "#{cut_off_time_error ? 'has-error' : ''}" }
                     %input.form-control.text-right{type: "text",
                           value: "#{cut_off_time.cut_off_time if cut_off_time}",

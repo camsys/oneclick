@@ -1,3 +1,4 @@
+- content_for :title, "New Agency Form - #{t(:site_title)}"
 = simple_form_for([:admin, @agency]) do |f|
   = f.error_notification message: print_messages(f)
 

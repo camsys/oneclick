@@ -15,6 +15,9 @@ class Ability
       # cannot :full_read, User
       cannot :assist, User # That permissions is restricted to agency staff
       cannot :rate, Trip # remove global permission to rate, sys admin will still be able to rate when it's their own trip
+      can :settings, :util
+      can :load_pois, :pois
+      can :upload_application_logo, :util
     else
       if I18n.locale == :tags
         return # no access to tags pages for non-admin users
@@ -76,6 +79,7 @@ class Ability
       can [:access], :admin_providers
       can [:access], :admin_services
       can [:access], :admin_feedback
+      can [:access], :user_guide
       can [:access, :manage], MultiOriginDestTrip
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
       can :read, Agency

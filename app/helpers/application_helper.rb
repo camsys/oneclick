@@ -33,7 +33,7 @@ module ApplicationHelper
   end
 
   def get_logo_path
-    return root_url({locale: ''}) + Base.helpers.asset_path(get_logo)
+    return get_logo
   end
 
   def get_logo_text
@@ -46,7 +46,7 @@ module ApplicationHelper
       KIOSK_ICON_DICTIONARY.default = 'travelcon-bus'
       KIOSK_ICON_DICTIONARY[mode]
     else
-      root_url({locale:''}) + Base.helpers.asset_path(ICON_DICTIONARY[mode])
+      ICON_DICTIONARY[mode]
     end
   end
 
@@ -184,6 +184,18 @@ module ApplicationHelper
     time_string
   end
 
+  def day_range_to_words(start_time_in_seconds, end_time_in_seconds)
+    return t(:n_a) unless (
+      start_time_in_seconds && end_time_in_seconds && 
+      (end_time_in_seconds >= start_time_in_seconds)
+    )
+
+    start_days = start_time_in_seconds/3600/24.round
+    end_days = end_time_in_seconds/3600/24.round
+
+    start_days.to_s + " " + I18n.translate(:to).downcase + " " + I18n.translate(:day, count: end_days)
+  end
+
   def get_boolean(val)
     if val
       return "<i class='fa-check'></i>".html_safe
@@ -228,6 +240,8 @@ module ApplicationHelper
       'walk_details'
     elsif mode_code == 'car'
       'car_details'
+    elsif mode_code == 'bicycle'
+      'bicycle_details'
     end
     return partial
   end
@@ -268,6 +282,8 @@ module ApplicationHelper
       'icon-bus-sign'
     elsif mode_code == 'car'
       'auto'
+    elsif mode_code == 'bicycle'
+      'icon-bike-sign'
     end
     return icon_name
   end
@@ -292,14 +308,26 @@ module ApplicationHelper
     branded_key = [brand, key].join('.')
     if I18n.locale != :tags
       begin
-        I18n.translate(branded_key, options.merge({raise: true}))
+        if I18n.translate(branded_key, options.merge({raise: true})).class != Array
+          make_translation_safe(I18n.translate(branded_key, options.merge({raise: true})))
+        else
+          raw(I18n.translate(branded_key, options.merge({raise: true})))
+        end
       rescue Exception => e
         begin
-          I18n.translate(key, options.merge({raise: true}))
+          if I18n.translate(key, options.merge({raise: true})).class != Array
+            make_translation_safe(I18n.translate(key, options.merge({raise: true})))
+          else
+            raw(I18n.translate(key, options.merge({raise: true})))
+          end
         rescue Exception => e
           Rails.logger.warn "key: #{key} not found: #{e.inspect}"
           begin
-            I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale}))
+            if I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})).class != Array
+              make_translation_safe(I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})))
+            else
+              raw(I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})))
+            end
           rescue Exception => e
             "Key not found: #{key}" # No need to internationalize this.  Should only hit if a non-existant key is called
           end
@@ -307,13 +335,21 @@ module ApplicationHelper
       end
     else
       begin
-        I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale}))
+        if I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})).class != Array
+          make_translation_safe(I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})))
+        else
+          raw(I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})))
+        end
       rescue Exception => e
         return '[' + key.to_s + ']'
       end
 
       return '[' + branded_key.to_s + ']'
     end
+  end
+
+  def make_translation_safe(translation)
+    translation.to_s.gsub('%{application_name}', Oneclick::Application.config.name).gsub('%{break}', '</br> ').html_safe
   end
 
   def links_to_each_locale(show_translations = false)
@@ -396,12 +432,11 @@ module ApplicationHelper
   end
 
   def translation_exists?(key_str)
-    if I18n.t(key_str).to_s.include?("translation missing")
-      return false
-    elsif I18n.t(key_str).to_s.blank?
-      return false
+    translation = I18n.t key_str, :raise => true rescue false
+    if translation
+      return !translation.empty?
     else
-      return true
+      return false
     end
   end
 

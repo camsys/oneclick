@@ -34,6 +34,9 @@ module Leg
     # array of points that make a polyline shape for the leg
     attr_accessor :geometry
 
+    # array of steps for driving/walking/biking directions
+    attr_accessor :steps
+
     def route
       "n/a"
     end
@@ -52,5 +55,24 @@ module Leg
     def duration
       return end_time - start_time
     end
+
+    def trip_steps
+      html = "<div data-toggle='collapse' data-target='#drivingDirections'><a class='drivingDirectionsLink'>" + short_description + "</a></div>
+              <div id='drivingDirections' class='panel-body collapse'>"
+
+      steps.each do |hash|
+        html << "<p>"
+        html << I18n.t(hash["relativeDirection"].downcase.to_sym)
+        html << " #{I18n.t(:on_to)} "
+        html << hash["streetName"].to_s
+        html << ", "
+        html << (hash["distance"] * 0.000621371).round(2).to_s
+        html << " #{I18n.t(:miles)} </br></p>"
+      end
+
+      html << "</div>"
+      return html.html_safe
+    end
+
   end
 end

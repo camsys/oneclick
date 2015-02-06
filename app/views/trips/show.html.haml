@@ -1,3 +1,4 @@
+- content_for :title, "Plan a Trip - #{t(:site_title)}"
 - content_for :head do
   = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"
 .row
@@ -60,25 +61,25 @@
       //update date names in localized texts for moment js lib
       var localeLang = '#{I18n.locale}';
       if(localeLang.toLowerCase() != 'en' && localeLang.toLowerCase() != 'tags') { //override moment lang if not english
-        var weekdays = #{t('date.day_names')};
+        var weekdays = #{I18n.t('date.day_names')};
         if(weekdays instanceof Array && weekdays.length > 0) {
           moment.lang(localeLang, {
             weekdays : weekdays
             });
         }
-        var weekdaysShort = #{t('date.abbr_day_names')};
+        var weekdaysShort = #{I18n.t('date.abbr_day_names')};
         if(weekdaysShort instanceof Array && weekdaysShort.length > 0) {
           moment.lang(localeLang, {
             weekdaysShort : weekdaysShort
             });
         }
-        var months = #{t('date.month_names')[1...13]};
+        var months = #{I18n.t('date.month_names')};
         if(months instanceof Array && months.length > 0) {
           moment.lang(localeLang, {
             months : months
             });
         }
-        var monthsShort = #{t('date.abbr_month_names')[1...13]};
+        var monthsShort = #{I18n.t('date.abbr_month_names')};
         if(monthsShort instanceof Array && monthsShort.length > 0) {
           moment.lang(localeLang, {
             monthsShort : monthsShort
@@ -144,7 +145,9 @@
         walk_dist_sorter: '#{t(:walk_distance_sorter)}',
         walk_dist_help: '#{t(:walk_distance_help)}',
         trip_outbound_help: '#{t(:trip_outbound_help)}',
-        trip_return_help: '#{t(:trip_return_help)}'
+        trip_return_help: '#{t(:trip_return_help)}',
+        outbound: '#{t(:outbound)}',
+        return: '#{t(:return)}'
       };
 
       //show or hide legends
@@ -174,7 +177,7 @@
       pageRenderer.processTripResponse();
 
       $('#itinerary_modal').on('shown.bs.modal', function() {
-        $('.tooltip').hide();
+        $('.popover').hide();
         if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.review_map != null) {
           var mapObj = CsMaps.review_map;
           mapObj.invalidateMap();
@@ -222,6 +225,10 @@
         //jump to Plan page
         window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );
       });
+    });
+
+    $('#itinerary_modal').on('show.bs.modal', function(){
+      differentiateTurnByTurn("false");
     });
 
     $('#tripContainer').tooltip({selector: '.trip-mode-cost div'})

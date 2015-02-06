@@ -194,11 +194,20 @@ class ServicesController < ApplicationController
   # DELETE /services/1
   # DELETE /services/1.json
   def destroy
-    @service.active = false
-    @service.save
+    @service.update_attributes(active: false)
 
     respond_to do |format|
-      format.html { redirect_to admin_provider_path @service.provider }
+      format.html { redirect_to service_path(@service) }
+      format.json { head :no_content }
+    end
+  end
+
+  def undelete
+    @service = Service.find(params[:id])
+    @service.update_attributes(active: true)
+
+    respond_to do |format|
+      format.html { redirect_to service_path(@service) }
       format.json { head :no_content }
     end
   end
@@ -207,7 +216,8 @@ protected
   def service_params
     params.require(:service).permit(:name, :phone, :email, :url, :external_id, :public_comments_old, :private_comments_old,
                                     :booking_service_code, :advanced_notice_minutes,
-                                    :notice_days_part, :notice_hours_part, :notice_minutes_part,
+                                    :notice_days_part, :notice_hours_part, :notice_minutes_part, :max_advanced_book_minutes,
+                                    :max_advanced_book_days_part, :max_advanced_book_hours_part, :max_advanced_book_minutes_part,
                                     :service_window, :time_factor, :provider_id, :service_type_id,
                                     :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email,
                                     { schedules_attributes:

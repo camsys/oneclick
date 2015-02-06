@@ -5,7 +5,7 @@ class TripsController < PlaceSearchingController
     :show_printer_friendly, :example, :plan, :populate, :book, :itinerary_map, :print_itinerary_map]
   load_and_authorize_resource only: [:new, :create, :show, :index, :update, :edit]
 
-  before_action :detect_ui_mode
+  before_action :detect_ui_mode, :get_kiosk_code
 
   def index
 
@@ -382,13 +382,23 @@ class TripsController < PlaceSearchingController
     # Set the travel time/date to the default
     travel_date = default_trip_time
 
-    @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
-    @trip_proxy.outbound_trip_time = travel_date.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
+    if mobile?
+      @trip_proxy.outbound_trip_date = travel_date.strftime("%Y-%m-%d")
+      @trip_proxy.outbound_trip_time = travel_date.in_time_zone.strftime("%H:%M")
+    else
+      @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
+      @trip_proxy.outbound_trip_time = travel_date.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
+    end
 
     if @trip_proxy.is_round_trip == "1"
       return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
-      @trip_proxy.return_trip_date = return_trip_time.strftime(TRIP_DATE_FORMAT_STRING)
-      @trip_proxy.return_trip_time = return_trip_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
+      if mobile?
+        @trip_proxy.return_trip_date = return_trip_time.strftime("%Y-%m-%d")
+        @trip_proxy.return_trip_time = return_trip_time.in_time_zone.strftime("%H:%M")
+      else
+        @trip_proxy.return_trip_date = return_trip_time.strftime(TRIP_DATE_FORMAT_STRING)
+        @trip_proxy.return_trip_time = return_trip_time.in_time_zone.strftime(TRIP_TIME_FORMAT_STRING)
+      end
     end
 
     # Create markers for the map control
@@ -636,6 +646,7 @@ class TripsController < PlaceSearchingController
       session[:multi_od_trip_id] = multi_od_trip.id
     end
 
+
     @trip_proxy = create_trip_proxy_from_form_params(params[:trip_proxy])
     launch_trip_planning(@trip_proxy)
 
@@ -682,19 +693,19 @@ class TripsController < PlaceSearchingController
 
     travel_date = default_trip_time
     if @trip_proxy.outbound_trip_date.nil?
-      @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
+      @trip_proxy.outbound_trip_date = (mobile? ? travel_date.strftime("%Y-%m-%d") : travel_date.strftime(TRIP_DATE_FORMAT_STRING))
     end
     if @trip_proxy.outbound_trip_time.nil?
-      @trip_proxy.outbound_trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
+      @trip_proxy.outbound_trip_time = (mobile? ? travel_date.strftime("%H:%M") : travel_date.strftime(TRIP_TIME_FORMAT_STRING))
     end
 
     # The default return trip time is set the the default trip time plus a configurable interval
     return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
     if @trip_proxy.return_trip_date.nil?
-      @trip_proxy.return_trip_date = return_trip_time.strftime(TRIP_DATE_FORMAT_STRING)
+      @trip_proxy.return_trip_date = (mobile? ? return_trip_time.strftime("%Y-%m-%d") : return_trip_time.strftime(TRIP_DATE_FORMAT_STRING))
     end
     if @trip_proxy.return_trip_time.nil?
-      @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
+      @trip_proxy.return_trip_time = (mobile? ? return_trip_time.strftime("%H:%M") : return_trip_time.strftime(TRIP_TIME_FORMAT_STRING))
     end
 
     # Create markers for the map control
@@ -930,8 +941,13 @@ protected
     # set the flag so we know what to do when the user submits the form
     travel_date = default_trip_time
 
-    @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
-    @trip_proxy.outbound_trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
+    if mobile?
+      @trip_proxy.outbound_trip_date = travel_date.strftime("%Y-%m-%d")
+      @trip_proxy.outbound_trip_time = travel_date.strftime("%H:%M")
+    else
+      @trip_proxy.outbound_trip_date = travel_date.strftime(TRIP_DATE_FORMAT_STRING)
+      @trip_proxy.outbound_trip_time = travel_date.strftime(TRIP_TIME_FORMAT_STRING)
+    end
 
     # Set the trip purpose to its default
     default_purpose = TripPurpose.where(code: TripPurpose::DEFAULT_PURPOSE_CODE).first
@@ -944,8 +960,14 @@ protected
     # a configurable interval
     return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
     @trip_proxy.is_round_trip = "1"
-    @trip_proxy.return_trip_date = return_trip_time.strftime(TRIP_DATE_FORMAT_STRING)
-    @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
+
+    if mobile?
+      @trip_proxy.return_trip_date = return_trip_time.strftime("%Y-%m-%d")
+      @trip_proxy.return_trip_time = return_trip_time.strftime("%H:%M")
+    else
+      @trip_proxy.return_trip_date = return_trip_time.strftime(TRIP_DATE_FORMAT_STRING)
+      @trip_proxy.return_trip_time = return_trip_time.strftime(TRIP_TIME_FORMAT_STRING)
+    end
 
     # Create markers for the map control
     @markers = create_trip_proxy_markers(@trip_proxy, session[:is_multi_od]).to_json
@@ -969,6 +991,7 @@ protected
  def launch_trip_planning(trip_proxy)
     trip_proxy.user_agent = request.user_agent
     trip_proxy.ui_mode = @ui_mode
+    trip_proxy.kiosk_code = @kiosk_code
 
     session[:modes_desired] = trip_proxy.modes_desired
 
@@ -1039,7 +1062,7 @@ protected
   # Set the default travel time/date to x mins from now
   #TODO: Make this an ENV
   def default_trip_time
-    return (Time.now + 7200).in_time_zone.next_interval(DEFAULT_TRIP_TIME_AHEAD_MINS.minutes)
+    return (Time.now + DEFAULT_OUTBOUND_TRIP_AHEAD_MINS.minutes).in_time_zone.next_interval(DEFAULT_TRIP_TIME_AHEAD_MINS.minutes)
   end
 
   # Safely set the @trip variable taking into account trip ownership
@@ -1158,6 +1181,10 @@ private
     else
       @ui_mode = :desktop
     end
+  end
+
+  def get_kiosk_code
+    @kiosk_code = request.headers["X-Client-Hostname"] || ""
   end
 
 end

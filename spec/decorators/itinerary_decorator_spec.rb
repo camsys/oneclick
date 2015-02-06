@@ -40,17 +40,17 @@ describe ItineraryDecorator do
       end
       it "gives Book Ahead notes in days when > 24 hours" do
         I18n.locale = :en
-        service = Service.new advanced_notice_minutes: 60*24 + 60
+        service = Service.new advanced_notice_minutes: 60*24 + 60, max_advanced_book_minutes: 60*24*2 + 60
         object.mode = Mode.paratransit
         object.service = service
-        expect(decorator.notes).to eq '1 day'
+        expect(decorator.notes).to eq '1 to 2 days'
       end
       it "gives Book Ahead notes in days when > 24 hours (more than 1 day)" do
         I18n.locale = :en
-        service = Service.new advanced_notice_minutes: 60*24*3
+        service = Service.new advanced_notice_minutes: 60*24*3,  max_advanced_book_minutes: 60*24*5 + 60
         object.mode = Mode.paratransit
         object.service = service
-        expect(decorator.notes).to eq '3 days'
+        expect(decorator.notes).to eq '3 to 5 days'
       end
     end
     describe "in spanish" do

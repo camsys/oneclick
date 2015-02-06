@@ -1,8 +1,52 @@
 .col-xs-12.well{style: "padding: 5px;"}
   %h3.col-sm-12{style: "padding: 0px;"}
-    = itinerary.trip_part.description
+    = itinerary.trip_part.description.html_safe
   = render :partial => 'trip_plan_summary_header', :locals => { :itinerary => itinerary }
   %div{style: "width:100%;background: white; border-radius: 5px;"}
-    = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
+
+    - if itinerary.mode.code == ('mode_car' || 'mode_bicycle' || 'mode_walk')
+      %table
+        %tr
+          %td.itinerary_icons
+            %img{src: "https://s3.amazonaws.com/oneclick-arc-int/images/start.png"}
+          %td.itin_text_container
+            .itinerary_text
+              = t(:start) + itinerary.trip_part.from_trip_place.name
+            .itinerary_text_small
+              = format_time(itinerary.start_time.in_time_zone)
+
+        -itinerary.get_legs.each do |leg|
+          %tr
+            %td.itinerary_icons{style: "vertical-align:top;"}
+              %img{:src => get_mode_icon(leg.mode), alt: "#{leg.mode.downcase} Mode Icon"}
+            %td.itin_text_container
+              .itinerary_text
+                = leg.trip_steps
+                - sidewalk_obstructions = query_sidewalk_feedback_near_one_walk_leg(leg)
+                - if sidewalk_obstructions.length > 0
+                  %br
+                  = t(:sidewalk_obstructions) + ':'
+                  %br
+                  %div{style:'padding-left: 10px;'}
+                    - sidewalk_obstructions.each do |f|
+                      = f.comment
+                      - unless f.removed_at.nil?
+                        = ', ' + t(:removed_at).downcase + ' ' + format_date(f.removed_at)
+                      %br
+              .itinerary_text_small
+                =[duration_to_words(leg.duration), exact_distance_to_words(leg.distance)].join(', ')
+        %tr
+          %td.itinerary_icons
+            %img{src: "https://s3.amazonaws.com/oneclick-arc-int/images/stop.png"}
+          %td.itin_text_container
+            .itinerary_text
+              = t(:arrive) + itinerary.trip_part.to_trip_place.name
+            .itinerary_text_small
+              = format_time(itinerary.end_time.in_time_zone)
+
+    - else
+      = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
+
+
   %div{style: "width:100%;background: white; border-radius: 5px;"}
     %img{src: itinerary.map_image.url}

@@ -18,7 +18,6 @@ describe HomeController do
       click_link I18n.t(:spanish)
       I18n.locale.should be :es
       # next check isn't really helpful, because locale selection is hidden in t()
-      page.should have_text(I18n.t(:plan_a_trip))
     end
 
     it "should stick to selected language as I navigate" do

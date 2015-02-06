@@ -27,7 +27,7 @@ class DateOption < ActiveRecord::Base
       if start_date.include? 'day'
         starting = starting.beginning_of_day
       elsif start_date.include? 'week'
-        starting = starting.beginning_of_week
+        starting = starting.beginning_of_week(:sunday)
       elsif start_date.include? 'month'
         starting = starting.beginning_of_month
       end
@@ -35,7 +35,7 @@ class DateOption < ActiveRecord::Base
       if end_date.include? 'day'
         ending = ending.end_of_day
       elsif end_date.include? 'week'
-        ending = ending.end_of_week
+        ending = ending.end_of_week(:sunday)
       elsif end_date.include? 'month'
         ending = ending.end_of_month
       end

@@ -1,3 +1,5 @@
+= t(:provider_trip_email_header).to_s
+%br
 %h3="Trip request from " + @traveler.name
 
 %hr{style: "height:12px; background:#848484;"}
@@ -85,11 +87,4 @@
 = render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
 
 %hr{style: "height:12px; background:#848484;"}
-%table
-  %tbody
-    %tr
-      %td=t(:email_thank_you).to_s.sub('%{application_name}', Oneclick::Application.config.name)
-    %tr
-      %td=t(:do_not_reply)
-    %tr
-      %td=t(:email_footer).to_s.sub('%{application_name}', Oneclick::Application.config.name)
+= t(:provider_trip_email_footer).to_s

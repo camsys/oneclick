@@ -9,7 +9,31 @@ class TripPlanner
   
   include ServiceAdapters::RideshareAdapter
 
-  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2)
+  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, try_count=Oneclick::Application.config.OTP_retry_count)
+    try = 1
+    result = nil
+    response = nil
+
+    while try <= try_count
+      result, response = get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode, wheelchair, walk_speed, max_walk_distance)
+      if result
+        break
+      else
+        Rails.logger.info [from, to, trip_datetime, arriveBy, mode, wheelchair, walk_speed, max_walk_distance]
+        Rails.logger.info response
+        Rails.logger.info "Try " + try.to_s + " failed."
+        Rails.logger.info "Trying again..."
+
+      end
+      sleep([try,3].min) #The first time wait 1 second, the second time wait 2 seconds, wait 3 seconds every time after that.
+      try +=1
+    end
+
+    return result, response
+
+  end
+
+  def get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2)
     #walk_speed is defined in MPH and converted to m/s before going to OTP
     #max_walk_distance is defined in miles and converted to meters before going to OTP
 
@@ -71,12 +95,36 @@ class TripPlanner
     transfers == -1 ? nil : transfers
   end
 
-  def convert_itineraries(plan)
+  def convert_itineraries(plan, mode_code='mode_transit')
     match_score = -0.3
     match_score_incr = 0.1
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
-      trip_itinerary['mode'] = Mode.transit
+
+      returned_mode_code = mode_code
+      case mode_code.to_s
+        when 'mode_car'
+          trip_itinerary['mode'] = Mode.car
+        when 'mode_bicycle'
+          trip_itinerary['mode'] = Mode.bicycle
+        when 'mode_walk'
+          trip_itinerary['mode'] = Mode.walk
+        else
+          trip_itinerary['mode'] = Mode.transit
+          returned_mode_code = Mode.transit.code
+
+          # further check if is_walk, is_car, or is_bicycle
+          legs = ItineraryParser.parse(itinerary['legs'], false)
+          if Itinerary.is_walk?(legs)
+            returned_mode_code = Mode.walk.code
+          elsif Itinerary.is_car?(legs)
+            returned_mode_code = Mode.car.code
+          elsif Itinerary.is_bicycle?(legs)
+            returned_mode_code = Mode.bicycle.code
+          end
+      end
+
+      trip_itinerary['returned_mode_code'] = returned_mode_code
       trip_itinerary['duration'] = itinerary['duration'].to_f # in seconds
       trip_itinerary['walk_time'] = itinerary['walkTime']
       trip_itinerary['transit_time'] = itinerary['transitTime']
@@ -90,7 +138,6 @@ class TripPlanner
       trip_itinerary['match_score'] = match_score
       begin
         #TODO: Need better documentaiton of OTP Fare Object to make this more generic
-        # trip_itinerary['cost'] = itinerary['fare'].first[1]['regular']['cents'].to_f/100.0
         trip_itinerary['cost'] = itinerary['fare']['fare']['regular']['cents'].to_f/100.0
       rescue Exception => e
         Rails.logger.error e
@@ -180,6 +227,7 @@ class TripPlanner
   def convert_taxi_itineraries(itinerary)
     trip_itinerary = {}
     trip_itinerary['mode'] = Mode.taxi
+    trip_itinerary['returned_mode_code'] = Mode.taxi.code
     trip_itinerary['duration'] = itinerary[0]['duration'].to_f
     trip_itinerary['walk_time'] = 0
     trip_itinerary['walk_distance'] = 0
@@ -194,6 +242,7 @@ class TripPlanner
   def convert_paratransit_itineraries(service, match_score = 0, missing_information = false, missing_information_text = '')
     trip_itinerary = {}
     trip_itinerary['mode'] = Mode.paratransit
+    trip_itinerary['returned_mode_code'] = Mode.paratransit.code
     trip_itinerary['service'] = service
     trip_itinerary['walk_time'] = 0
     trip_itinerary['walk_distance'] = 0
@@ -246,6 +295,7 @@ class TripPlanner
   def convert_rideshare_itineraries(itinerary)
     {
       'mode' => Mode.rideshare,
+      'returned_mode_code' => Mode.rideshare.code,
       'ride_count' => itinerary['count'],
       'server_status' => itinerary['status'],
       'external_info' => YAML.dump(itinerary['query']),

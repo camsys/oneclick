@@ -109,7 +109,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def undelete
-    user = User.find(params[:user_id])
+    user = User.find(params[:id])
     user.undelete
     respond_to do |format|
       format.html { redirect_to admin_user_path(user) }

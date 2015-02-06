@@ -1,8 +1,11 @@
-
-= image_tag get_logo
-%h1{:style => 'display:inline;vertical-align:middle;'}
-  %strong
-    = t(:site_title)
+- if translation_exists?("printer_friendly_header")
+  = t(:printer_friendly_header)
+- else
+  %img{src: "#{get_logo_path}"}
+  %br
+  %h1{:style => 'display:inline;vertical-align:middle;'}
+    %strong
+      = t(:site_title)
 
 %hr
 
@@ -34,12 +37,16 @@
   = render :partial => 'trip_single_plan_details', :locals => {:itinerary => itinerary, :legs => itinerary.get_legs, :for_db => false, map_type: 'delayed_static'}
 
 %hr{style: "height:12px; background:#848484;"}
-%table
-  %tbody
-    %tr
-      %td="Thank you for using " + Oneclick::Application.config.name + " Software."
-    %tr
-      %td="Provided by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of " + Oneclick::Application.config.name
+
+- if translation_exists?("printer_friendly_footer")
+  = t(:printer_friendly_footer)
+- else
+  %table
+    %tbody
+      %tr
+        %td="Thank you for using " + Oneclick::Application.config.name + " Software"
+      %tr
+        %td="Provided by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140"
 
 = render partial: 'prepare_print_maps', locals: {trip: @trip}
 
@@ -48,3 +55,6 @@
   %meta{name: 'trip_id', content: @trip.id}
   %meta{name: 'itinerary_ids', content: @trip.itineraries.selected.collect{|i| i.id}.join(',')}
   %meta{name: 'locale', content: I18n.locale}
+
+:javascript
+  differentiateTurnByTurn("true");

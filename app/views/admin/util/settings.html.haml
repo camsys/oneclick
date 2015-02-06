@@ -1,0 +1,7 @@
+- content_for :title, "Settings - #{t(:site_title)}"
+.row.info-header
+  .col-sm-12
+    %h1= t(:settings)
+
+= render 'admin/pois/form'
+= render 'admin/application_logo_upload_form'

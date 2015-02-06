@@ -1,3 +1,4 @@
+- content_for :title, "Sign In - #{t(:site_title)}"
 = simple_form_for resource, as: resource_name, url: session_path(resource_name), html: {class: 'form-horizontal' }, wrapper: :horizontal_form do |f|
   .row.info-header
     .col-sm-6
@@ -5,9 +6,10 @@
     .col-sm-6.btns
       .pull-right
         = button_tag type: :submit, class: 'btn action-button' do
-          = t(:log_in)     
+          = t(:ok)   
         - unless params[:redirect_to] #TODO: URI valid check?             
-          = render "devise/shared/links"
+          - if devise_mapping.registerable? && controller_name != 'registrations'
+            = link_to( :back, class: "btn action-button") { t(:cancel) }
 
   .row
     .col-sm-6
@@ -23,3 +25,5 @@
             = f.input :email, :autofocus => true, :required => true, :label => t(:email), collection: User.any_role.order(:email).pluck(:email)
             = f.input :password, :required => true, :label => t(:password), input_html: {value: 'welcome1'}
           = f.input :remember_me, :label => t(:remember_me), :as => :boolean if devise_mapping.rememberable?
+          - unless params[:redirect_to] #TODO: URI valid check?             
+            = render "devise/shared/links"

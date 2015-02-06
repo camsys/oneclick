@@ -25,13 +25,16 @@ module CsHelpers
     :sidewalk_obstructions => 'fa fa-comment',
     :stop_assisting => 'fa fa-compass',
     :translations => 'fa fa-language',
-    :multi_od_trip => 'fa fa-table'
+    :multi_od_trip => 'fa fa-table',
+    :user_guide => 'fa fa-book',
+    :settings => 'fa fa-gear'
   }
 
   def admin_actions
     a = [
+      {label: t(:settings), target: admin_settings_path, icon: ACTION_ICONS[:settings], access: :admin_settings},
       {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
-      {label: t(:translations), target: admin_translations_path, icon: ACTION_ICONS[:translations], access: :admin_translations},
+      {label: t(:translations), target: admin_translations_path, icon: ACTION_ICONS[:translations], access: :admin_translations}
     ]
     if Rating.feedback_on?
       a.push({label: t(:feedback), target: ratings_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback})
@@ -44,15 +47,16 @@ module CsHelpers
 
   def staff_actions
     [
-      {label: t(:travelers), target: find_travelers_path, icon: ACTION_ICONS[:find_traveler], access: :staff_travelers},
-      {label: t(:agency_profile), target: agency_profile_path, icon: ACTION_ICONS[:find_traveler], access: :show_agency}, #TODO find icon
-      {label: t(:provider_profile), target: provider_profile_path, icon: ACTION_ICONS[:find_traveler], access: :show_provider}, #TODO find icon
-      {label: t(:trips), target: create_trips_path, icon: ACTION_ICONS[:trips], access: :admin_trips},
-      {label: t(:agencies), target: admin_agencies_path, icon: ACTION_ICONS[:agents_agencies], access: :admin_agencies},
-      {label: t(:providers), target: admin_providers_path, icon: ACTION_ICONS[:providers], access: :admin_providers},
-      {label: t(:services), target: services_path, icon: ACTION_ICONS[:services], access: :admin_services},
-      {label: t(:reports), target: admin_reports_path, icon: ACTION_ICONS[:reports], access: :admin_reports},
-      {label: t(:multi_od_trip), target: create_multi_od_user_trips_path(current_user), icon: ACTION_ICONS[:multi_od_trip], access: MultiOriginDestTrip}
+      {label: t(:travelers), target: find_travelers_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :staff_travelers},
+      {label: t(:agency_profile), target: agency_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_agency}, #TODO find icon
+      {label: t(:provider_profile), target: provider_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_provider}, #TODO find icon
+      {label: t(:trips), target: create_trips_path, window: "", icon: ACTION_ICONS[:trips], access: :admin_trips},
+      {label: t(:agencies), target: admin_agencies_path, window: "", icon: ACTION_ICONS[:agents_agencies], access: :admin_agencies},
+      {label: t(:providers), target: admin_providers_path, window: "", icon: ACTION_ICONS[:providers], access: :admin_providers},
+      {label: t(:services), target: services_path, window: "", icon: ACTION_ICONS[:services], access: :admin_services},
+      {label: t(:reports), target: admin_reports_path, window: "", icon: ACTION_ICONS[:reports], access: :admin_reports},
+      {label: t(:multi_od_trip), target: create_multi_od_user_trips_path(current_user), window: "", icon: ACTION_ICONS[:multi_od_trip], access: MultiOriginDestTrip},
+      {label: t(:user_guide), target: Oneclick::Application.config.user_guide_url, window: "_blank", icon: ACTION_ICONS[:user_guide], access: :user_guide}
     ]
   end
 
@@ -234,6 +238,8 @@ module CsHelpers
       mode_code = 'walk'
     elsif itinerary.is_car
       mode_code = 'car'
+    elsif itinerary.is_bicycle
+      mode_code = 'bicycle'
     elsif itinerary.mode.code == 'mode_paratransit'
       mode_code = itinerary.service.service_type.code.downcase
     elsif itinerary.mode.code == 'mode_transit'
@@ -278,6 +284,8 @@ module CsHelpers
       I18n.t(:walk)
     elsif mode_code == 'car'
       I18n.t(:drive)
+    elsif mode_code == 'bicycle'
+      I18n.t(:bicycle)
     end
     return title
   end
@@ -385,11 +393,13 @@ module CsHelpers
       asset_path = Mode.walk.logo_url
     elsif itinerary.is_car
       asset_path = Mode.car.logo_url
+    elsif itinerary.is_bicycle
+      asset_path = Mode.bicycle.logo_url
     else
       asset_path = itinerary.mode.logo_url
     end
 
-    return root_url({locale:''}) + Base.helpers.asset_path(asset_path)
+    return asset_path
   end
 
   # logos are stored in local file system under dev environment
@@ -517,5 +527,9 @@ module CsHelpers
     # else
     #   unselect_all_kiosk_user_trip_part_path traveler, trip_part
     # end
+  end
+
+  def is_arc?
+    Oneclick::Application.config.brand == 'arc'
   end
 end

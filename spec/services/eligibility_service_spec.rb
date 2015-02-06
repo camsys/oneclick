@@ -47,7 +47,7 @@ describe EligibilityService do
     expect(itineraries.size).to eq 3
     s = itineraries.last
     service = s['service']
-    s['missing_information_text'].should eq "persons 65 years or older or persons with a disability, and military veterans"
+    s['missing_information_text'].should eq "age_min65:disabled_missing_info,veteran_missing_info"
   end
 
 end

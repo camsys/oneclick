@@ -312,29 +312,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         $('.ui-slider-handle').empty();
 
-        $(".single-plan-chart-container, .trip-mode-cost").popover({
-            'html': true,
-            'container': 'body',
-            'trigger': 'manual',
-            'animation': false,
-            'placement': 'top'
-        })
-        .on("mouseenter", function () {
-          var _this = this;
-          $(this).popover("show");
-          $(".popover").on("mouseleave", function () {
-              $(_this).popover('hide');
-          });
-        }).on("mouseleave", function () {
-          var _this = this;
-          setTimeout(function () {
-              if (!$(".popover:hover").length) {
-                  $(_this).popover("hide");
-              }
-          }, 300);
-        });
+        createPopover(".single-plan-chart-container, .trip-mode-cost, .label-help");
 
-        $('.label-help').addClass('fa-2x').tooltip({ 'html': true, 'container': 'body', 'trigger': 'hover focus' });
+        $('.label-help').addClass('fa-2x');
     }
 
     function checkLoadingMask() {
@@ -347,12 +327,28 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
             executeWhenDataReady();
 
-            $('#transferSlider > .ui-slider-handle').attr('tabindex', '11');
-            $('#costSlider > .ui-slider-handle').attr('tabindex', '12');
-            $('#durationSlider > .ui-slider-handle').attr('tabindex', '13');
-            $('#walkDistSlider > .ui-slider-handle').attr('tabindex', '14');
+            // Set specific tab order for inline help in filter panels
+            setHelperTabIndex('9');
+            setHelperTabIndex('10');
+            setHelperTabIndex('11');
+            setHelperTabIndex('12');
+            setHelperTabIndex('13');
+            setHelperTabIndex('14');
 
+            // Include slider handles in tab order
+            setSliderHandleTabIndex('#transferSlider', '11');
+            setSliderHandleTabIndex('#costSlider', '12');
+            setSliderHandleTabIndex('#durationSlider', '13');
+            setSliderHandleTabIndex('#walkDistSlider', '14');
         }
+    }
+
+    function setHelperTabIndex(tabindex) {
+        $("h2[tabindex='" + tabindex + "'] > .label-help").attr('tabindex', tabindex);
+    }
+
+    function setSliderHandleTabIndex(obj, tabindex) {
+        $(obj + ' > .ui-slider-handle').attr('tabindex', tabindex);
     }
 
     function findTripPartById(tripPartId) {
@@ -374,7 +370,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * bring up plan details dialog in respond to chart container events (press SPACE bar, double click, and mobile double-tap)
      */
     function registerChartContainerEvents() {
-        $('.single-trip-part').on("keyup", ".single-plan-chart-container", function(e) { //click to show details in modal dialog
+        $('.single-trip-part').on("keydown", ".single-plan-chart-container", function(e) { //click to show details in modal dialog
             var planId = $(this).parent('.single-plan-review').data('plan-id');
             if(e.keyCode === 32) {
                 showItineraryModal(planId);
@@ -790,9 +786,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var tickLabels = getTickLabels(tripStartTime, tripEndTime, intervalStep);
         if ($('#' + tripPartDivId).length === 0) { //new trip part
             var tripTags = "<div id='" + tripPartDivId + "'class='col-xs-12 well single-trip-part' data-trip-id='" + tripId + "'>";
-
-            //process header
-            header = trip.description.split(' ')[0];
+            isDepartAt ? (header = localeDictFinder['return']) : (header = localeDictFinder['outbound']);
             var tripHeaderTags = addTripHeaderHtml(header, tickLabels, intervalStep, isDepartAt, tripStartTime, tripEndTime, inlineHelperKey, trip.description_without_direction);
             tripTags += tripHeaderTags;
 
@@ -1796,6 +1790,12 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             adjustDurationFilters(minDuration, maxDuration);
             adjustWalkDistFilters(minWalkDist, maxWalkDist);
 
+            // Add aria labels to slider handles for improved accessibility in JAWS
+            addAriaToSliderHandle('#transferSlider', "Number of transfers slider. ", minTransfer, maxTransfer);
+            addAriaToSliderHandle('#costSlider', "Fare slider. ", minCost, maxCost);
+            addAriaToSliderHandle('#durationSlider', "Trip time slider. ", $('#durationSlider').attr('aria-valuemin'), $('#durationSlider').attr('aria-valuemax'));
+            addAriaToSliderHandle('#walkDistSlider', "Walk distance slider. ", $('#walkDistSlider').attr('aria-valuemin'), $('#walkDistSlider').attr('aria-valuemax'));
+
             //enable mode checkbox event
             $('#' + modeContainerId + ' .checkbox').on('change', function() {
                 waitForFinalEvent(filterPlans, 100, 'mode change');
@@ -1803,6 +1803,20 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         } else {
             $('#' + filterButtonId).remove();
         }
+    }
+
+    function addAriaToSliderHandle(slider_id, text, min, max) {
+        if (slider_id === '#costSlider'){
+            min = '$' + min;
+            max = '$' + max;
+        } else if (slider_id === '#durationSlider') {
+            min = min + " minutes";
+            max = max + " minutes";
+        } else if (slider_id === '#walkDistSlider') {
+            min = min + " miles";
+            max = max + " miles";
+        }
+        $(slider_id + ' > .ui-slider-handle:first').attr('aria-label', (text + min + " to " + max + "."));
     }
 
     /*
@@ -1861,7 +1875,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var modeTag =
             '<div class="checkbox" style="margin:0px 0px 0px 10px;">' +
             '<label>' +
-            '<input type="checkbox" checked=true value="' + mode + '">' +
+            '<input type="checkbox" checked=true value="' + mode + '" tabindex="10">' +
             mode +
             '</label>' +
             '</div>';
@@ -1883,7 +1897,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '<h2 class="panel-title num-transfers-label" tabindex="11">' + addReviewTooltip("number_of_transfers_help") + localeDictFinder['number_of_transfers'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
-                '<div id="' + transferSliderId + '" aria-valuemin="' + minTransfer + '" aria-valuemax="' + maxTransfer + '" aria-label="Number of Transfers slider. ' + minTransfer + ' to ' + maxTransfer + '.">' +
+                '<div id="' + transferSliderId + '" aria-valuemin="' + minTransfer + '" aria-valuemax="' + maxTransfer + '">' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<span id="' + transferSliderId + '_min_val_label" class="pull-left">' + minTransfer.toString() + '</span>' +
@@ -1891,11 +1905,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '</div></div></div>';
             sliderConfig = {
                 id: transferSliderId,
-                values: [minTransfer, maxTransfer],
+                value: maxTransfer,
                 min: minTransfer,
                 max: maxTransfer,
                 step: 1,
-                range: true
+                range: "min"
             };
         }
 
@@ -1922,10 +1936,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             }
 
             addSliderTooltip(filterObj.sliderConfig);
-            $('#' + transferSliderId).slider('values', [
-                getDefaultMinFilterValue(minTransfer, filterConfigs.default_min_transfers),
+            $('#' + transferSliderId).slider('value',
                 getDefaultMaxFilterValue(maxTransfer, filterConfigs.default_max_transfers)
-            ]);
+            );
         }
     }
 
@@ -1946,7 +1959,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '<h2 class="panel-title fare-label" tabindex="12">' + addReviewTooltip("fare_help") + localeDictFinder['fare'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
-                '<div id="' + costSliderId + '" aria-valuemin="' + minCost + '" aria-valuemax="' + maxCost + '" aria-label="Fare slider. $' + minCost + '.00 to $' + maxCost + '.00 .">' +
+                '<div id="' + costSliderId + '" aria-valuemin="' + minCost + '" aria-valuemax="' + maxCost + '">' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<span id="' + costSliderId + '_min_val_label" class="pull-left">$' + minCost.toString() + '</span>' +
@@ -1954,11 +1967,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '</div></div></div>';
             sliderConfig = {
                 id: costSliderId,
-                values: [minCost, maxCost],
+                value: maxCost,
                 min: minCost,
                 max: maxCost,
                 step: 1,
-                range: true
+                range: "min"
             };
         }
 
@@ -1986,10 +1999,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             }
 
             addSliderTooltip(filterObj.sliderConfig);
-            $('#' + costSliderId).slider('values', [
-                getDefaultMinFilterValue(minCost, filterConfigs.default_min_fare),
+            $('#' + costSliderId).slider('value', 
                 getDefaultMaxFilterValue(maxCost, filterConfigs.default_max_fare)
-            ]);
+            );
         }
     }
 
@@ -2010,7 +2022,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '<h2 class="panel-title trip-time-label" tabindex="13">' + addReviewTooltip("trip_time_help") + localeDictFinder['trip_time'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
-                '<div id="' + durationSliderId + '" aria-valuemin="' + minDuration + '" aria-valuemax="' + maxDuration + '" aria-label="Trip Time slider. ' + minDuration + ' minutes to ' + maxDuration + ' minutes.">' +
+                '<div id="' + durationSliderId + '" aria-valuemin="' + minDuration + '" aria-valuemax="' + maxDuration + '">' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<span id="' + durationSliderId + '_min_val_label" class="pull-left">' + minDuration.toString() + localeDictFinder['minute_abbr'] + '</span>' +
@@ -2018,11 +2030,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '</div></div></div>';
             sliderConfig = {
                 id: durationSliderId,
-                values: [minDuration, maxDuration],
+                values: maxDuration,
                 min: minDuration,
                 max: maxDuration,
                 step: 1,
-                range: true
+                range: "min"
             };
         }
 
@@ -2051,10 +2063,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             }
 
             addSliderTooltip(filterObj.sliderConfig);
-            $('#' + durationSliderId).slider('values', [
-                getDefaultMinFilterValue(minDuration, filterConfigs.default_min_duration),
+            $('#' + durationSliderId).slider('value',
                 getDefaultMaxFilterValue(maxDuration, filterConfigs.default_max_duration)
-            ]);
+            );
         }
     }
 
@@ -2075,7 +2086,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '<h2 class="panel-title walk-dist-label" tabindex="14">' + addReviewTooltip("walk_dist_help") + localeDictFinder['walk_dist'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
-                '<div id="' + walkDistSliderId + '" aria-valuemin="' + minWalkDist + '" aria-valuemax="' + maxWalkDist + '" aria-label="Walk Distance slider. ' + minWalkDist + ' miles to ' + maxWalkDist + ' miles.">' +
+                '<div id="' + walkDistSliderId + '" aria-valuemin="' + minWalkDist + '" aria-valuemax="' + maxWalkDist + '">' +
                 '</div>' +
                 '<div class="col-sm-12">' +
                 '<span id="' + walkDistSliderId + '_min_val_label" class="pull-left">' + minWalkDist.toString() + localeDictFinder['miles'] + '</span>' +
@@ -2083,11 +2094,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 '</div></div></div>';
             sliderConfig = {
                 id: walkDistSliderId,
-                values: [minWalkDist, maxWalkDist],
+                values: maxWalkDist,
                 min: minWalkDist,
                 max: maxWalkDist,
                 step: 0.01,
-                range: true
+                range: "min"
             };
         }
 
@@ -2128,10 +2139,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 slider_max = default_max;
             }
 
-            $('#' + walkDistSliderId).slider('values', [
-                getDefaultMinFilterValue(minWalkDist, slider_min),
+            $('#' + walkDistSliderId).slider('value',
                 getDefaultMaxFilterValue(maxWalkDist, slider_max)
-            ]);
+            );
         }
     }
 
@@ -2169,10 +2179,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         $(sliderId).slider(slider);
 
         $(sliderId).on('slidechange', function(event, ui) {
-            var minVal = ui.values[0];
-            var maxVal = ui.values[1];
+            var minVal = ui.value;
+            // var maxVal = ui.values[1];
             $(sliderId + ' .ui-slider-handle:first').append('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + minVal + '</div></div>');
-            $(sliderId + ' .ui-slider-handle:last').append('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + maxVal + '</div></div>');
+            // $(sliderId + ' .ui-slider-handle:last').append('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + maxVal + '</div></div>');
 
             waitForFinalEvent(filterPlans, 100, slider.Id + ' sliding');
         });
@@ -2181,11 +2191,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             $(sliderId + ' .ui-slider-handle').empty();
         });
         $(sliderId + " .ui-slider-handle").mouseenter(function() {
-            var values = $(sliderId).slider("option", "values");
-            var minVal = values[0];
-            var maxVal = values[1];
+            var values = $(sliderId).slider("option", "value");
+            var minVal = values;
+            // var maxVal = values[1];
             $(sliderId + ' .ui-slider-handle:first').append('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + minVal + '</div></div>');
-            $(sliderId + ' .ui-slider-handle:last').append('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + maxVal + '</div></div>');
+            // $(sliderId + ' .ui-slider-handle:last').append('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + maxVal + '</div></div>');
         });
 
     }
@@ -2557,15 +2567,15 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             modes.push(modeVal);
         }
 
-        var transferValues = $('#' + transferSliderId).slider("option", "values");
+        var transferValues = $('#' + transferSliderId).slider("option", "value");
 
 
-        var costValues = $('#' + costSliderId).slider("option", "values");
+        var costValues = $('#' + costSliderId).slider("option", "value");
 
 
-        var durationValues = $('#' + durationSliderId).slider("option", "values");
+        var durationValues = $('#' + durationSliderId).slider("option", "value");
 
-        var walkDistValues = $('#' + walkDistSliderId).slider("option", "values");
+        var walkDistValues = $('#' + walkDistSliderId).slider("option", "value");
 
 
         $('.single-plan-review').each(function() {
@@ -2583,7 +2593,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {Array} durationValues
      * @param {Object} plan
      */
-    function processPlanFiltering(modes, transferValues, costValues, durationValues, walkDistValues, plan) {
+    function processPlanFiltering(modes, transferValue, costValue, durationValue, walkDistValue, plan) {
         var modeVisible = true;
         if (modes instanceof Array) {
             modeVisible = filterPlansByMode(modes, plan);
@@ -2595,8 +2605,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         }
 
         var transferVisible = true;
-        if (transferValues instanceof Array && transferValues.length === 2) {
-            transferVisible = filterPlansByTransfer(transferValues[0], transferValues[1], plan);
+        if (typeof transferValue == 'number') {
+            transferVisible = filterPlansByTransfer(transferValue, plan);
         }
 
         if (!transferVisible) {
@@ -2605,8 +2615,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         }
 
         var costVisible = true;
-        if (costValues instanceof Array && costValues.length === 2) {
-            costVisible = filterPlansByCost(costValues[0], costValues[1], plan);
+        if (typeof costValue == 'number') {
+            costVisible = filterPlansByCost(costValue, plan);
         }
 
         if (!costVisible) {
@@ -2615,8 +2625,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         }
 
         var durationVisible = true;
-        if (durationValues instanceof Array && durationValues.length === 2) {
-            durationVisible = filterPlansByDuration(durationValues[0], durationValues[1], plan);
+        if (typeof durationValue == 'number') {
+            durationVisible = filterPlansByDuration(durationValue, plan);
         }
 
         if (!durationVisible) {
@@ -2625,8 +2635,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         }
 
          var walkDistVisible = true;
-        if (walkDistValues instanceof Array && walkDistValues.length === 2) {
-            walkDistVisible = filterPlansByWalkDist(walkDistValues[0], walkDistValues[1], plan);
+        if (typeof walkDistValue == 'number') {
+            walkDistVisible = filterPlansByWalkDist(walkDistValue, plan);
         }
 
         if (!walkDistVisible) {
@@ -2662,14 +2672,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {object} plan
      * @return {bool} visible
      */
-    function filterPlansByTransfer(minCount, maxCount, plan) {
+    function filterPlansByTransfer(maxCount, plan) {
         var visible = false;
-        if (typeof(minCount) != 'number' || typeof(maxCount) != 'number' || typeof(plan) != 'object' || plan === null) {
+        if (typeof(maxCount) != 'number' || typeof(plan) != 'object' || plan === null) {
             return visible;
         }
 
         var transfer = parseInt(plan.attr('data-transfer'));
-        visible = (typeof(transfer) != 'number' || isNaN(transfer) || (transfer >= minCount && transfer <= maxCount));
+        visible = (typeof(transfer) != 'number' || isNaN(transfer) || (transfer <= maxCount));
 
         return visible;
     }
@@ -2681,14 +2691,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {object} plan
      * @return {bool} visible
      */
-    function filterPlansByCost(minCost, maxCost, plan) {
+    function filterPlansByCost(maxCost, plan) {
         var visible = false;
-        if (typeof(minCost) != 'number' || typeof(maxCost) != 'number' || typeof(plan) != 'object' || plan === null) {
+        if (typeof(maxCost) != 'number' || typeof(plan) != 'object' || plan === null) {
             return visible;
         }
 
         var cost = parseFloat(plan.attr('data-cost'));
-        visible = (typeof(cost) != 'number' || isNaN(cost) || (cost >= minCost && cost <= maxCost));
+        visible = (typeof(cost) != 'number' || isNaN(cost) || (cost <= maxCost));
 
         return visible;
     }
@@ -2700,14 +2710,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {object} plan
      * @return {bool} visible
      */
-    function filterPlansByDuration(minDuration, maxDuration, plan) {
+    function filterPlansByDuration(maxDuration, plan) {
         var visible = false;
-        if (typeof(minDuration) != 'number' || typeof(maxDuration) != 'number' || typeof(plan) != 'object' || plan === null) {
+        if (typeof(maxDuration) != 'number' || typeof(plan) != 'object' || plan === null) {
             return visible;
         }
 
         var duration = parseFloat(plan.attr('data-duration'));
-        visible = (typeof(duration) != 'number' || isNaN(duration) || (duration >= minDuration && duration <= maxDuration));
+        visible = (typeof(duration) != 'number' || isNaN(duration) || (duration <= maxDuration));
 
         return visible;
     }
@@ -2719,14 +2729,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {object} plan
      * @return {bool} visible
      */
-    function filterPlansByWalkDist(minWalkDist, maxWalkDist, plan) {
+    function filterPlansByWalkDist(maxWalkDist, plan) {
         var visible = false;
-        if (typeof(minWalkDist) != 'number' || typeof(maxWalkDist) != 'number' || typeof(plan) != 'object' || plan === null) {
+        if (typeof(maxWalkDist) != 'number' || typeof(plan) != 'object' || plan === null) {
             return visible;
         }
 
         var walkDist = parseFloat(plan.attr('data-walk-dist'));
-        visible = (typeof(walkDist) != 'number' || isNaN(walkDist) || (walkDist >= minWalkDist && walkDist <= maxWalkDist));
+        visible = (typeof(walkDist) != 'number' || isNaN(walkDist) || (walkDist <= maxWalkDist));
 
         return visible;
     }

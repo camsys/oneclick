@@ -1,6 +1,7 @@
 # Spanish
 
 es:
+  user_guide: "[es]User Guide[/es]"
   this_service_is_for: "Este servicio está destinado a"
   only_agency_can_see: "Only %{agency} staff can see this note."
   traveler_notes: "Traveler Notes"
@@ -117,8 +118,36 @@ es:
   create_translation: '[es100]Create Translation[/es]'
   key: '[es100]Key[/es]'
   send_by_email: 'Enviar por correo electrónico'
-  email_footer: '[es]Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of %{application_name}[/es]'
-  email_thank_you: '[es]Thank you for using  %{application_name} Software.[/es]'
+  generic_email_header: ''
+  generic_email_footer: '[es]Thank you for using %{application_name} Software. %{break}This email is sent from an email address that is not monitored. Please do not reply to this message. %{break}Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of %{application_name}.[/es]'
+  feedback_email_header: ''
+  feedback_email_footer: ''
+  provider_trip_email_header: ''
+  provider_trip_email_footer: ''
+  user_itinerary_email_header: ''
+  user_itinerary_email_footer: ''
+  user_trip_email_header: ''
+  user_trip_email_footer: ''
+  agency_helping_email:   ''
+  agency_helping_email_header: ''
+  agency_helping_email_footer: ''
+  buddy_request_email:   ''
+  buddy_request_email_header: ''
+  buddy_request_email_footer: ''
+  buddy_revoke_email:   ''
+  buddy_revoke_email_header: ''
+  buddy_revoke_email_footer: ''
+  traveler_confirm_email:   ''
+  traveler_confirm_email_header: ''
+  traveler_confirm_email_footer: ''
+  traveler_decline_email:   ''
+  traveler_decline_email_header: ''
+  traveler_decline_email_footer: ''
+  traveler_revoke_email:   ''
+  traveler_revoke_email_header: ''
+  traveler_revoke_email_footer: ''
+  printer_friendly_header: ''
+  printer_friendly_footer: ''
   email_sent_to: '[es]An email was sent to %{email_sent_to}[/es]'
   no_email_found: '[es]No email was found[/es]'
   send_itinerary_by_email: "[es32]Send itinerary by email[/es]"
@@ -130,6 +159,48 @@ es:
     one: "[es]The sidewalk obstruction has been updated[/es]"
     other: "[es]The sidewalk obstructions have been updated[/es]"
   multi_od_trip: '[es]Multiple Origin-Destination Trip[/es]'
+  restore_user: '[es]Restore user[/es]'
+  remove_user: '[es]Remove user[/es]'
+  restore_service: '[es]Restore service[/es]'
+  restore_agency: '[es]Restore agency[/es]'
+  restore_provider: '[es]Restore provider[/es]'
+  confirm_restore_message: '[es]Are you sure you want to restore[/es]'
+
+  # application logo upload
+  not_authorized: '[es]You are not authorized.[/es]'
+  failed_to_update_application_logo: '[es]There was an error in updating application logo. Please try again.[/es]'
+  select_logo_image_to_upload: '[es]Please select an image to upload[/es]'
+  upload_application_logo: '[es]Upload Application Logo[/es]'
+  upload_application_logo_notes: '[es]Refer to 1-Click Deployment Document on file specfications.[/es]'
+
+  # standard system usage report
+  time_period: '[es]Time Period[/es]'
+  number_of_trips_planned: '[es]Number of Trips Planned[/es]'
+  registered_users: '[es]Registered Users[/es]'
+  total_registered_users: '[es]Total Registered Users[/es]'
+  new_sign_ups: '[es]New Sign Ups[/es]'
+  active_users: '[es]Active Users[/es]'
+  visitors: '[es]Visitors[/es]'
+  number_of_trips_created: '[es]Number of Trips Created[/es]'
+  others: '[es]Others[/es]'
+  number_of_trip_legs_booked: '[es]Number of Trip Legs Booked[/es]'
+  platform: '[es]Platform[/es]'
+  computer: '[es]Computer[/es]'
+  weekly: '[es]Weekly[/es]'
+  biweekly: '[es]Bi-weekly[/es]'
+  monthly: '[es]Monthly[/es]'
+  quarterly: '[es]Quarterly[/es]'
+  current: '[es]Current[/es]'
+  year_to_date: '[es]Year to Date[/es]'
+  launch_to_date: '[es]Launch to Date[/es]'
+  planned_trips_statistics: '[es]Planned Trips Statistics[/es]'
+  created_trips_statistics: '[es]Created Trips Statistics[/es]'
+  booked_legs_statistics: '[es]Booked Trip Legs Statistics[/es]'
+  users_statistics: '[es]Users Statistics[/es]'
+  trip_modes_statistics: '[es]Trip Modes Statistics[/es]'
+  platforms_statistics: '[es]Platforms Statistics[/es]'
+  effective_date: '[es]Effective Date[/es]'
+  date_option: '[es]Date Option[/es]'
 
   # Registration, sign in, profile
   about_you: '[es32]About You[/es]' # Not translated
@@ -440,6 +511,31 @@ es:
   cannot_change_time_to_after_next_trip_part: "[es]Cannot change trip part time to be after next trip part[/es]"
   cannot_change_time_to_before_prev_trip_part: "[es]Cannot change trip part time to be before previous trip part[/es]"
 
+  #OTP Relative Directions
+  on_to: '[es]on to[/es]'
+  depart: '[es]DEPART[/es]'
+  hard_left: '[es]HARD LEFT[/es]'
+  left: '[es]LEFT[/es]'
+  slightly_left: '[es]SLIGHTLY LEFT[/es]'
+  continue: '[es]CONTINUE[/es]'
+  slightly_right: '[es]SLIGHTLY RIGHT[/es]'
+  right: '[es]RIGHT[/es]'
+  hard_right: '[es]HARD RIGHT[/es]'
+  circle_clockwise: '[es]CIRCLE CLOCKWISE[/es]'
+  circle_counterclockwise: '[es]CIRCLE COUNTERCLOCKWISE[/es]'
+  elevator: '[es]ELEVATOR[/es]'
+  uturn_left: '[es]U-TURN LEFT[/es]'
+  uturn_right: '[es]U-TURN RIGHT[/es]'
+
+  # Admin settings
+  settings: '[es]Settings[/es]'
+  load_pois: '[es]Load POIs[/es]'
+  load_pois_notes: '[es]Refer to 1-Click Deployment Document on file specfications.[/es]'
+  select_pois_file_to_upload: '[es]Select POIs file (.csv)[/es]'
+  pois_file_not_csv: '[es]The file is not in CSV format.[es]'
+  pois_load_summary: "[es]POI file was uploaded. Loaded %{count_poi_type} POI Types and %{count_good} POIs. %{count_bad} bad were skipped, %{count_failed} failed to save, %{count_possible_existing} possible existing.[/es]"
+  
+
   #map
   map: '[es]Map[/es]'
   zoom_in: '[es]Zoom in[/es]'
@@ -553,6 +649,8 @@ es:
   trip_outside_service_hours: "[es274]This trip occurs outside the normal hours for this service.[/es]"
   trip_insufficient_notice_a: "[es275]This trip must be booked '[/es]"
   trip_insufficient_notice_b: "[es294]in advance.[/es]"
+  trip_max_advanced_book_notice_a: "[es]This trip can only be booked within [/es]"
+  trip_max_advanced_book_notice_b: "[es] in advance.[/es]"
   more_information_required: "[es294]More information is needed.[/es]"
   trip_needs_more_accommodations: "[es360]These accommodations are not met by this service[/es]"
   service_notice_not_required: "[es240]This service does not require advanced notice to book a trip[/es]"
@@ -651,6 +749,7 @@ es:
   this_month: "Este mes"
   today: "Hoy"
   yesterday: "Ayer"
+  days: '[es]days[/es]'
   ago: " hace"
   new_esp_successfully_uploaded: "New ESP File Successfully Uploaded"
   thanks_for_the_feedback: "[es330]Thank you for your feedback![/es]"
@@ -738,7 +837,6 @@ es:
   approve: "[es521]Approve[/es]"
   reject: "[es522]Reject[/es]"
   no_good_options: "[es545]There are no good options here.[/es]"
-  do_not_reply: "[es386]This email is sent from an email address that is not monitored. Please do not reply to this message.[/es]"
   nothing_found_sorry: "[es407]Nothing found - sorry[/es]"
   solicit_feedback: "[es428]Please give us some feedback:[/es]"
   thanks_for_feedback: '[es]Thanks in advance for your feedback![/es]'
@@ -775,6 +873,7 @@ es:
   valid_time_msg: "[es]must be a valid time[/es]"
   presence_msg: "[es]can't be blank[/es]"
   before_msg: "[es]must be before [/es]"
+  advanced_book_day_range_msg: "[es]Advanced booking days: please make sure day range is valid.[/es]"
 
   locales:
     en: "English"
@@ -782,6 +881,11 @@ es:
     ht: "Creole"
 
   # Branding
+  ma:
+    home: '1-Click/MA Home'
+    logotext: ''
+    site_title: '1-Click/MA'
+    site_description: '1-Click/MA Application'
   arc:
     logotext: ''
     site_title: 'ARC 1-Click'

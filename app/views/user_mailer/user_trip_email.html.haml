@@ -1,3 +1,5 @@
+= t(:user_trip_email_header).to_s
+
 - unless @comments.blank?
   %h3= t(:comments)
   %p= @comments
@@ -32,11 +34,4 @@
   = render :partial => 'trip_single_plan_details', :locals => {:itinerary => itinerary, :for_db => false, map_type: 'static'}
 
 %hr{style: "height:12px; background:#848484;"}
-%table
-  %tbody
-    %tr
-      %td=t(:email_thank_you).to_s.sub('%{application_name}', Oneclick::Application.config.name)
-    %tr
-      %td=t(:do_not_reply)
-    %tr
-      %td=t(:email_footer).to_s.sub('%{application_name}', Oneclick::Application.config.name)
+= t(:user_trip_email_footer).to_s

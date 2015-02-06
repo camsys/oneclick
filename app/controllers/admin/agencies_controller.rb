@@ -2,7 +2,7 @@ class Admin::AgenciesController < ApplicationController
   include Admin::CommentsHelper
 
   before_filter :load_agency, only: [:create]
-  load_and_authorize_resource except: [:travelers]
+  load_and_authorize_resource except: [:travelers, :find_agent_by_email]
   load_and_authorize_resource :id_param => :agency_id,  only: :travelers #TODO implies a refactor needed
 
 
@@ -109,6 +109,15 @@ class Admin::AgenciesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to admin_agencies_path }
+      format.json { head :no_content }
+    end
+  end
+
+  def undelete
+    @agency = Agency.find(params[:id])
+    @agency.update_attributes(active: true)
+    respond_to do |format|
+      format.html { redirect_to admin_agency_path(@agency) }
       format.json { head :no_content }
     end
   end

@@ -1,3 +1,4 @@
+- content_for :title, "Places - #{t(:site_title)}"
 - content_for :head do
   = # stylesheet_link_tag 'typeahead.js-bootstrap.css'
   = # javascript_include_tag asset_path('places.js')
@@ -66,11 +67,7 @@
                           toggleAriaLabel(clear_button);
                         });
 
-                        $("#places-table tr").tooltip({
-                          'html': true,
-                          'container': 'body',
-                          'trigger': 'hover focus'
-                        });
+                        createPopover("#places-table tr");
 
                   / %td{id: "place-#{i}", data: {address: place.raw_address, placename: place.name, json: place.to_json}}= ('A'..'Z').to_a[i] + ' ' + place.name
 
@@ -89,7 +86,7 @@
             /         %td{id: "place-#{i}", data: {address: place.raw_address, placename: place.name, json: place.to_json}}= ('A'..'Z').to_a[i] + ' ' + place.name
 
         .col-sm-6
-          .sr-only{aria: {label: 'Map.'}}
+          .sr-only{aria: {label: 'Map.'}} Map.
           .panel.panel-default{aria: {hidden: "true"}}
             .panel-body
               = LeafletMap({ :mapid => 'placesMap', :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height:500px;" })

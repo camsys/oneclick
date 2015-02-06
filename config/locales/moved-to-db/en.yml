@@ -4,13 +4,14 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  user_guide: "User Guide"
   this_service_is_for: "This service is intended for"
-  disabled_missing_info: "ersons with disabilities"
+  disabled_missing_info: "persons with disabilities"
   low_income_missing_info: "low income individuals"
   no_trans_missing_info: "persons without access to personal transportation"
   nemt_eligible_missing_info: "persons eligible for Medicaid"
-  veteran: "military veterans"
-  ada_eligible: "persons eligible for ADA Paratransit"
+  veteran_missing_info: "military veterans"
+  ada_eligible_missing_info: "persons eligible for ADA Paratransit"
   matp_missing_info: "persons with a Medical Assistance Access Card"
   developmentally_disabled_missing_info: "persons with developmental disabilities"
   homeless_missing_info: "persons who are homeless or facing eviction"
@@ -19,7 +20,6 @@ en:
   wheelchair_dependent_missing_info: "persons requiring the use of wheelchairs"
   age_max: "persons no more than %{age} years of age"
   age_min: "persons at least %{age} years of age"
-
 
   only_agency_can_see: "Only %{agency} staff can see this note."
   traveler_notes: "Traveler Notes"
@@ -140,8 +140,36 @@ en:
   create_translation: 'Create Translation'
   key: 'Key'
   send_by_email: 'Send by email'
-  email_footer: 'Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of %{application_name}'
-  email_thank_you: 'Thank you for using  %{application_name} Software.'
+  generic_email_header: ''
+  generic_email_footer: 'Thank you for using %{application_name} Software. %{break}This email is sent from an email address that is not monitored. Please do not reply to this message. %{break}Sent by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140 on behalf of %{application_name}.'
+  feedback_email_header: ''
+  feedback_email_footer: ''
+  provider_trip_email_header: ''
+  provider_trip_email_footer: ''
+  user_itinerary_email_header: ''
+  user_itinerary_email_footer: ''
+  user_trip_email_header: ''
+  user_trip_email_footer: ''
+  agency_helping_email:   "An agency is now helping you plan trips."
+  agency_helping_email_header: ''
+  agency_helping_email_footer: ''
+  buddy_request_email:   "A traveler has requested that you help them plan trips."
+  buddy_request_email_header: ''
+  buddy_request_email_footer: ''
+  buddy_revoke_email:   "Your buddy has revoked your status"
+  buddy_revoke_email_header: ''
+  buddy_revoke_email_footer: ''
+  traveler_confirm_email:   "Your buddy has accepted your request"
+  traveler_confirm_email_header: ''
+  traveler_confirm_email_footer: ''
+  traveler_decline_email:   "Your buddy has declined your request"
+  traveler_decline_email_header: ''
+  traveler_decline_email_footer: ''
+  traveler_revoke_email:   "Your traveler has revoked your status"
+  traveler_revoke_email_header: ''
+  traveler_revoke_email_footer: ''
+  printer_friendly_header: ''
+  printer_friendly_footer: ''
   email_sent_to: 'An email was sent to %{email_sent_to}'
   no_email_found: 'No email was found'
   send_itinerary_by_email: "Send itinerary by email"
@@ -153,6 +181,49 @@ en:
     one: "The sidewalk obstruction has been updated"
     other: "The sidewalk obstructions have been updated"
   multi_od_trip: 'Multiple Origin-Destination Trip'
+  restore_user: 'Restore user'
+  remove_user: 'Remove user'
+  restore_service: 'Restore service'
+  restore_agency: 'Restore agency'
+  restore_provider: 'Restore provider'
+  confirm_restore_message: 'Are you sure you want to restore'
+
+  # application logo upload
+  not_authorized: 'You are not authorized.'
+  failed_to_update_application_logo: 'There was an error in updating application logo. Please try again.'
+  select_logo_image_to_upload: 'Please select an image to upload'
+  upload_application_logo: 'Upload Application Logo'
+  upload_application_logo_notes: 'Refer to 1-Click Deployment Document on file specfications.'
+
+  # standard system usage report
+  time_period: 'Time Period'
+  number_of_trips_planned: 'Number of Trips Planned'
+  registered_users: 'Registered Users'
+  total_registered_users: 'Total Registered Users'
+  new_sign_ups: 'New Sign Ups'
+  active_users: 'Active Users'
+  visitors: 'Visitors'
+  number_of_trips_created: 'Number of Trips Created'
+  others: 'Others'
+  number_of_trip_legs_booked: 'Number of Trip Legs Booked'
+  platform: 'Platform'
+  computer: 'Computer'
+  weekly: 'Weekly'
+  biweekly: 'Bi-weekly'
+  monthly: 'Monthly'
+  quarterly: 'Quarterly'
+  current: 'Current'
+  year_to_date: 'Year to Date'
+  launch_to_date: 'Launch to Date'
+  planned_trips_statistics: 'Planned Trips Statistics'
+  created_trips_statistics: 'Created Trips Statistics'
+  booked_legs_statistics: 'Booked Trip Legs Statistics'
+  users_statistics: 'Users Statistics'
+  trip_modes_statistics: 'Trip Modes Statistics'
+  platforms_statistics: 'Platforms Statistics'
+  effective_date: 'Effective Date'
+  date_option: 'Date Option'
+
 
   # Registration, sign in, profile
   about_you: 'About You'
@@ -352,6 +423,7 @@ en:
   drive: 'Drive'
   drive_or_taxi: 'Drive or taxi'
   bike: 'Bike'
+  bicycle: 'Bicycle'
   bikeshare: 'Bikeshare'
   drive_and_transit: 'Drive and Transit'
   rail: 'Rail'
@@ -461,6 +533,31 @@ en:
   cannot_change_time_to_past: 'Cannot change trip part time to a past time'
   cannot_change_time_to_after_next_trip_part: "Cannot change trip part time to be after next trip part"
   cannot_change_time_to_before_prev_trip_part: "Cannot change trip part time to be before previous trip part"
+
+  #OTP Relative Directions
+  on_to: 'on to'
+  depart: 'DEPART'
+  hard_left: 'HARD LEFT'
+  left: 'LEFT'
+  slightly_left: 'SLIGHTLY LEFT'
+  continue: 'CONTINUE'
+  slightly_right: 'SLIGHTLY RIGHT'
+  right: 'RIGHT'
+  hard_right: 'HARD RIGHT'
+  circle_clockwise: 'CIRCLE CLOCKWISE'
+  circle_counterclockwise: 'CIRCLE COUNTERCLOCKWISE'
+  elevator: 'ELEVATOR'
+  uturn_left: 'U-TURN LEFT'
+  uturn_right: 'U-TURN RIGHT'
+
+  # Admin settings
+  settings: 'Settings'
+  load_pois: 'Load POIs'
+  load_pois_notes: 'Refer to 1-Click Deployment Document on file specfications.'
+  select_pois_file_to_upload: 'Select POIs file (.csv)'
+  pois_file_not_csv: 'The file is not in CSV format.'
+  pois_load_summary: "POI file was uploaded. Loaded %{count_poi_type} POI Types and %{count_good} POIs. %{count_bad} bad were skipped, %{count_failed} failed to save, %{count_possible_existing} possible existing."
+    
 
   #map
   map: 'Map'
@@ -576,6 +673,8 @@ en:
   trip_outside_service_hours: "This trip occurs outside the normal hours for this service."
   trip_insufficient_notice_a: "This trip must be booked "
   trip_insufficient_notice_b: " in advance."
+  trip_max_advanced_book_notice_a: "This trip can only be booked within "
+  trip_max_advanced_book_notice_b: " in advance."
   more_information_required: "More information is needed."
   trip_needs_more_accommodations: "These accommodations are not met by this service"
   service_notice_not_required: "This service does not require advanced notice to book a trip"
@@ -675,6 +774,7 @@ en:
   this_month: "This month"
   today: "Today"
   yesterday: "Yesterday"
+  days: 'days'
   ago: " ago"
   didn_t_receive_confirmation_instructions: "Didn't receive confirmation instructions?"
   didn_t_receive_unlock_instructions: "Didn't receive unlock instructions?"
@@ -762,7 +862,6 @@ en:
   approve: "Approve"
   reject: "Reject"
   contact_info: "Contact Info"
-  do_not_reply: "This email is sent from an email address that is not monitored. Please do not reply to this message."
   nothing_found_sorry: "Nothing found - sorry"
   no_good_options: "There are no good options here."
   thanks_for_feedback: 'Thanks in advance for your feedback!'
@@ -800,6 +899,7 @@ en:
   valid_time_msg: "must be a valid time"
   presence_msg: "can't be blank"
   before_msg: "must be before "
+  advanced_book_day_range_msg: "Advanced booking days: please make sure day range is valid."
 
   date:
     abbr_day_names:
@@ -880,6 +980,11 @@ en:
     es: "En Español"
     ht: "Creole"
   # Branding
+  ma:
+    home: '1-Click/MA Home'
+    logotext: ''
+    site_title: '1-Click/MA'
+    site_description: '1-Click/MA Application'
   arc:
     home: 'ARC 1-Click Home'
     logotext: ''

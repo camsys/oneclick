@@ -34,8 +34,8 @@ ht:
   places: '[ht]Places[/ht]'
   type: "[ht]Type[/ht]"
   my_home_chkbox_label: "[ht]This is my home[/ht]"
-  more_about_this_initiative: '[es]More About This Initiative[/es]'
-  send_your_feedback: '[es]Send your Feedback[/es]'
+  more_about_this_initiative: '[ht]More About This Initiative[/ht]'
+  send_your_feedback: '[ht]Send your Feedback[/ht]'
 
   # Agent View strings
   find_traveler: "[ht]Find Traveler[/ht]"
@@ -132,6 +132,48 @@ ht:
     one: "[ht]The sidewalk obstruction has been updated[/ht]"
     other: "[ht]The sidewalk obstructions have been updated[/ht]"
   multi_od_trip: '[ht]Multiple Origin-Destination Trip[/ht]'
+  restore_user: '[ht]Restore user[/ht]'
+  remove_user: '[ht]Remove user[/ht]'
+  restore_service: '[ht]Restore service[/ht]'
+  restore_agency: '[ht]Restore agency[/ht]'
+  restore_provider: '[ht]Restore provider[/ht]'
+  confirm_restore_message: '[ht]Are you sure you want to restore[/ht]'
+
+  # application logo upload
+  not_authorized: '[ht]You are not authorized.[/ht]'
+  failed_to_update_application_logo: '[ht]There was an error in updating application logo. Please try again.[/ht]'
+  select_logo_image_to_upload: '[ht]Please select an image to upload[/ht]'
+  upload_application_logo: '[ht]Upload Application Logo[/ht]'
+  upload_application_logo_notes: '[ht]Refer to 1-Click Deployment Document on file specfications.[/ht]'
+
+  # standard system usage report
+  time_period: '[ht]Time Period[/ht]'
+  number_of_trips_planned: '[ht]Number of Trips Planned[/ht]'
+  registered_users: '[ht]Registered Users[/ht]'
+  total_registered_users: '[ht]Total Registered Users[/ht]'
+  new_sign_ups: '[ht]New Sign Ups[/ht]'
+  active_users: '[ht]Active Users[/ht]'
+  visitors: '[ht]Visitors[/ht]'
+  number_of_trips_created: '[ht]Number of Trips Created[/ht]'
+  others: '[ht]Others[/ht]'
+  number_of_trip_legs_booked: '[ht]Number of Trip Legs Booked[/ht]'
+  platform: '[ht]Platform[/ht]'
+  computer: '[ht]Computer[/ht]'
+  weekly: '[ht]Weekly[/ht]'
+  biweekly: '[ht]Bi-weekly[/ht]'
+  monthly: '[ht]Monthly[/ht]'
+  quarterly: '[ht]Quarterly[/ht]'
+  current: '[ht]Current[/ht]'
+  year_to_date: '[ht]Year to Date[/ht]'
+  launch_to_date: '[ht]Launch to Date[/ht]'
+  planned_trips_statistics: '[ht]Planned Trips Statistics[/ht]'
+  created_trips_statistics: '[ht]Created Trips Statistics[/ht]'
+  booked_legs_statistics: '[ht]Booked Trip Legs Statistics[/ht]'
+  users_statistics: '[ht]Users Statistics[/ht]'
+  trip_modes_statistics: '[ht]Trip Modes Statistics[/ht]'
+  platforms_statistics: '[ht]Platforms Statistics[/ht]'
+  effective_date: '[ht]Effective Date[/ht]'
+  date_option: '[ht]Date Option[/ht]'
 
   # Registration, sign in, profile
   about_you: '[ht]About You[/ht]'
@@ -431,6 +473,15 @@ ht:
   rate: "[ht]Rate[/ht]"
   four_digit_year: '[ht]year in four-digit[/ht]'
 
+  # Admin settings
+  settings: '[ht]Settings[/ht]'
+  load_pois: '[ht]Load POIs[/ht]'
+  load_pois_notes: '[ht]Refer to 1-Click Deployment Document on file specfications.[/ht]'
+  select_pois_file_to_upload: '[ht]Select POIs file (.csv)[/ht]'
+  pois_file_not_csv: '[ht]The file is not in CSV format.[/ht]'
+  pois_load_summary: "[ht]POI file was uploaded. Loaded %{count_poi_type} POI Types and %{count_good} POIs. %{count_bad} bad were skipped, %{count_failed} failed to save, %{count_possible_existing} possible existing.[/ht]"
+  
+
   #map
   map: '[ht]Map[/ht]'
   zoom_in: '[ht]Zoom in[/ht]'
@@ -534,6 +585,8 @@ ht:
   trip_outside_service_hours: "[ht]This trip occurs outside the normal hours for this service.[/ht]"
   trip_insufficient_notice_a: "[ht]This trip must be booked [/ht]"
   trip_insufficient_notice_b: "[ht] in advance.[/ht]"
+  trip_max_advanced_book_notice_a: "[ht]This trip can only be booked within [/ht]"
+  trip_max_advanced_book_notice_b: "[ht] in advance.[/ht]"
   more_information_required: "[ht]More information is needed.[/ht]"
   trip_needs_more_accommodations: "[ht]These accommodations are not met by this service[/ht]"
   service_notice_not_required: "[ht]This service does not require advanced notice to book a trip[/ht]"
@@ -638,6 +691,7 @@ ht:
   this_month: "[ht]This month[/ht]"
   today: "[ht]Today[/ht]"
   yesterday: "[ht]Yesterday[/ht]"
+  days: '[ht]days[/ht]'
   ago: "[ht] ago[/ht]"
   didn_t_receive_confirmation_instructions: "[ht]Didn't receive confirmation instructions?[/ht]"
   didn_t_receive_unlock_instructions: "[ht]Didn't receive unlock instructions?[/ht]"
@@ -751,6 +805,7 @@ ht:
   valid_time_msg: "[ht]must be a valid time[/ht]"
   presence_msg: "[ht]can't be blank[/ht]"
   before_msg: "[ht]must be before [/ht]"
+  advanced_book_day_range_msg: "[ht]Advanced booking days: please make sure day range is valid.[/ht]"
 
   date:
     abbr_day_names:

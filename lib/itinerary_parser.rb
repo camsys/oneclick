@@ -12,12 +12,14 @@ class ItineraryParser
 
     itin = []
 
-    legs.each do |leg|
-      leg_itin = parse_leg(leg, include_geometry)
+    if legs.is_a? Array
+      legs.each do |leg|
+        leg_itin = parse_leg(leg, include_geometry)
 
-      Rails.logger.debug leg_itin.inspect
+        Rails.logger.debug leg_itin.inspect
 
-      itin << leg_itin unless leg_itin.nil?
+        itin << leg_itin unless leg_itin.nil?
+      end
     end
 
     return itin
@@ -45,6 +47,8 @@ protected
       obj = parse_tram_leg(leg)
     elsif leg['mode'] == 'RAIL'
       obj = parse_rail_leg(leg)
+    elsif leg['mode'] == 'BICYCLE'
+      obj = parse_bicycle_leg(leg)
     end
 
     # parse the common properties
@@ -168,7 +172,18 @@ protected
     Rails.logger.debug "Parsing WALK leg"
 
     walk = Leg::WalkLeg.new
+    walk.steps = leg['steps']
     return walk
+
+  end
+
+  def self.parse_bicycle_leg(leg)
+
+    Rails.logger.debug "Parsing BICYCLE leg"
+
+    bicycle = Leg::BicycleLeg.new
+    bicycle.steps = leg['steps']
+    return bicycle
 
   end
 
@@ -176,6 +191,7 @@ protected
     Rails.logger.debug "Parsing CAR leg"
 
     car = Leg::CarLeg.new
+    car.steps = leg['steps']
     return car
 
   end

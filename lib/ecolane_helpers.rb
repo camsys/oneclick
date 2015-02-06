@@ -39,6 +39,7 @@ class EcolaneHelpers
     begin
       funding_options = query_funding_options(itinerary)
       funding_xml = Nokogiri::XML(funding_options.body)
+      Rails.logger.info(funding_xml)
     rescue
       Rails.logger.debug "Booking error #003"
       return false, "Booking error."
@@ -150,6 +151,8 @@ class EcolaneHelpers
     order.children.first.set_attribute('version', '2')
     order = order.to_s
     result  = send_request(url, 'POST', order)
+    Rails.logger.info('Order Request Sent to Ecolane:')
+    Rails.logger.info(order)
     result
   end
 
@@ -169,6 +172,7 @@ class EcolaneHelpers
     url = BASE_URL + url_options
     funding_options = query_funding_options(itinerary)
     funding_xml = Nokogiri::XML(funding_options.body)
+    Rails.logger.info(funding_xml)
     order =  build_order(itinerary, funding_xml)
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '2')
@@ -195,6 +199,7 @@ class EcolaneHelpers
 
   def unpack_fare_response (resp, itinerary)
     resp_xml = Nokogiri::XML(resp.body)
+    Rails.logger.info(resp_xml)
     client_copay = resp_xml.xpath("fare").xpath("client_copay").text
     return client_copay.to_f/100.0
   end
@@ -308,27 +313,30 @@ class EcolaneHelpers
     if funding_xml
       order[:funding] = build_funding_hash(itinerary, funding_xml)
     end
+    Rails.logger.info(order)
     order
   end
 
   def build_funding_hash(itinerary, funding_xml)
     purpose = itinerary.trip_part.trip.trip_purpose.code
     other_funding = nil
+    sponsor = nil
     funding_xml.xpath("funding_options").xpath("option").each do |options|
 
       ecolane_purpose = options.xpath("purpose").text
 
       if ecolane_purpose.downcase.gsub(%r{[ /]}, '_') == 'other'
         other_funding = funding_source = options.xpath("funding_source").text
+        sponsor = options.xpath("sponsor").text
       end
 
       if purpose == ecolane_purpose.downcase.gsub(%r{[ /]}, '_')
-
         funding_source = options.xpath("funding_source").text
-        return {funding_source: funding_source, purpose: ecolane_purpose}
+        sponsor = options.xpath("sponsor").text
+        return {funding_source: funding_source, purpose: ecolane_purpose, sponsor: sponsor}
       end
     end
-     return {funding_source: other_funding, purpose: 'other'}
+    return {funding_source: other_funding, purpose: 'other', sponsor: sponsor}
 
   end
 
@@ -366,6 +374,8 @@ class EcolaneHelpers
     url.sub! " ", "%20"
 
     Rails.logger.info(url)
+
+    Rails.logger.info(message)
 
     begin
       uri = URI.parse(url)

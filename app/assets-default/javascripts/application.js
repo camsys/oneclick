@@ -24,7 +24,7 @@
 //
 
 $(document).ready(function(){
-  $(".label-help").tooltip({'html': true, 'container': 'body', 'trigger': 'hover focus'});
+  createPopover(".label-help");
 });
 
 moment.fn.next15 = function() {
@@ -75,6 +75,59 @@ function toggleAriaLabelPrevNext(input) {
 }
 
 function addHelperTooltip(label_id, tooltip_str) {
-  $(label_id).prepend("<i class='fa fa-question-circle pull-right label-help' style='margin-top:-4px;' title data-original-title='" + tooltip_str + "' aria-label='" + tooltip_str + "' tabindex='0'></i>");
+  $(label_id).append("<i class='fa fa-question-circle pull-right label-help' style='margin-top:-4px;' title data-original-title='" + tooltip_str + "' aria-label='" + tooltip_str + "' tabindex='0'></i>");
 }
+
+function createPopover(node_id) {
+  $(node_id).popover({
+      'html': true,
+      'container': 'body',
+      'template': '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>',
+      'trigger': 'manual focus',
+      'animation': false,
+      'placement': 'top',
+      content: function() {
+          html = $(this).attr('data-original-title');
+          return $.parseHTML(html);
+      }
+  })
+  .on("mouseenter", function () {
+    var _this = this;
+    $(this).popover("show");
+    $(".popover").on("mouseleave", function () {
+        $(_this).popover('hide');
+    });
+  })
+  .on("mouseleave", function () {
+    var _this = this;
+    setTimeout(function () {
+        if (!$(".popover:hover").length) {
+            $(_this).popover("hide");
+        }
+    }, 0);
+  });
+}
+
+function differentiateTurnByTurn(click) {
+  $('.drivingDirectionsLink').each(function(index){
+    parentDiv = $(this).parent();
+    parentDivTarget = parentDiv.attr('data-target');
+    parentDiv.attr('data-target', parentDivTarget + index);
+    dataTarget = parentDiv.siblings('#drivingDirections').attr('id');
+    parentDiv.siblings('#drivingDirections').attr('id', dataTarget + index);
+
+    if (click == "true") {
+      $(this).click();
+    }
+  });
+}
+
+function isMobile() {
+  if(/mobile|android|touch|webos|hpwos/i.test(navigator.userAgent.toLowerCase())) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 
