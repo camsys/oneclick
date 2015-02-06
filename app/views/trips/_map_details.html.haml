@@ -1,3 +1,4 @@
 - map_id = mapid || 'lmap'
-= LeafletMap({:mapid => map_id, :markers => @markers, :polylines => @polylines, :sidewalk_feedback_markers => @sidewalk_feedback_markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "well well-small", :style => "height:#{map_id == 'review_map' ? '95%' : '300px'};" })
+- is_review = (map_id == 'review_map') ? true : false
+= LeafletMap({:mapid => map_id, :markers => @markers, :polylines => @polylines, :sidewalk_feedback_markers => @sidewalk_feedback_markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "#{'well well-small' if !is_review}", :style => "height:#{is_review ? '100%' : '300px'};margin-bottom:0;" })
 

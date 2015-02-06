@@ -12,10 +12,10 @@
   max-height:100%;
 }
 .modal.modal-fullscreen .modal-body {
-  height: 90%;
+  height: 100%;
 }
 #itinerary_modal.modal.modal-fullscreen .modal-body  {
-  height: 100%;
+  margin-bottom: 0;
 }
 
 .modal.modal-fullscreen .modal-dialog,

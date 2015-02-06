@@ -142,6 +142,7 @@ add_multi_od_places = (dir, addr_text, addr_data) ->
 
 process_location_from_map = (addr, dir) -> #update map marker from selected location, and update address input field from reverse geocoded address
   update_map(CsMaps.tripMap, dir, null, addr, null)
+  update_map(CsMaps.expandedMap, dir, null, addr, null)
   update_place(addr.name, dir, addr)
 
 validateDateTimes = (isReturn) ->
@@ -324,12 +325,14 @@ $ ->
   $('#trip_proxy_from_place').on 'typeahead:selected', (e, addr, d) ->
     $('#from_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'from', e, addr, d
+    update_map CsMaps.expandedMap, 'from', e, addr, d
     if $('#from_places').length == 0
       $('#trip_proxy_to_place').focus()
       $('#trip_proxy_to_place').trigger('touchstart')
   $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, addr, d) ->
     $('#from_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'from', e, addr, d
+    update_map CsMaps.expandedMap, 'from', e, addr, d
 
   $('#trip_proxy_to_place, #trip_proxy_outbound_arrive_depart').on 'touchstart', () ->
     $(this).focus()
@@ -338,12 +341,14 @@ $ ->
   $('#trip_proxy_to_place').on 'typeahead:selected', (e, addr, d) ->
     $('#to_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'to', e, addr, d
+    update_map CsMaps.expandedMap, 'to', e, addr, d
     if $('#to_places').length == 0
       $('#trip_proxy_outbound_arrive_depart').focus()
       $('#trip_proxy_outbound_arrive_depart').trigger('touchstart')
   $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, addr, d) ->
     $('#to_place_object').val(JSON.stringify(addr))
     update_map CsMaps.tripMap, 'to', e, addr, d
+    update_map CsMaps.expandedMap, 'to', e, addr, d
 
   $('.plan-a-trip input, .plan-a-trip select').on 'focusin', () ->
     if $(this).parents('.trip_proxy_from_place, .trip_proxy_to_place').length == 0
@@ -372,6 +377,11 @@ $ ->
 
   if typeof(CsMaps) != 'undefined' and CsMaps and CsMaps.tripMap
     CsMaps.tripMap.LMmap.on 'placechange', (e) ->
+      latlng = (if e.latlng then e.latlng else {})
+      reverse_geocode(latlng.lat, latlng.lng, CsMaps.tripMap.addressType)
+
+  if typeof(CsMaps) != 'undefined' and CsMaps and CsMaps.expandedMap
+    CsMaps.expandedMap.LMmap.on 'placechange', (e) ->
       latlng = (if e.latlng then e.latlng else {})
       reverse_geocode(latlng.lat, latlng.lng, CsMaps.tripMap.addressType)
 

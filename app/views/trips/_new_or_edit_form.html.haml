@@ -144,10 +144,10 @@
               .panel-heading.clearfix
                 %h2.panel-title
                   %button#mapCloseButton.close.pull-right{type: "button", title: t(:close)}
-                    %span &times;
+                    %i.fa.fa-close
                     %span.hide Close
                   %button.pull-right.close{type: 'button', "data-toggle" => "modal", "data-target" => "#mapExpand", style: "min-width:1em;margin-right:10px;margin-top:2px;", aria: {label: "Map"}}
-                    %i.fa.fa-plus
+                    %i.fa.fa-expand
 
                   =t(:map)
                   = add_tooltip("map_help")
@@ -187,7 +187,7 @@
             .modal-header.panel-heading
               %button.close{type: "button", data: {dismiss: "modal"}}
                 %span{aria: {hidden: "true"}}
-                  %i.fa.fa-close
+                  %i.fa.fa-compress
                 %span.sr-only Close
               %h3.modal-title{id: "modalLabel2"}
                 = t(:map)

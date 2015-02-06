@@ -36,6 +36,13 @@ class TripPartsController < PlaceSearchingController
     end
     @itineraries = @trip_part.itineraries.where('mode_id in (?)', @modes.pluck(:id))
     Rails.logger.info "trip part has #{@itineraries.count} itineraries for modes #{@modes.map(&:code).join(', ')}."
+
+
+
+    Rails.logger.info "------------------------- #{@itineraries.inspect} -------------------------"
+
+
+    
     if (@itineraries.empty?)
       Rails.logger.info "itineraries is empty, generating itineraries."
 
