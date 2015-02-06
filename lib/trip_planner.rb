@@ -164,9 +164,6 @@ class TripPlanner
     city = Oneclick::Application.config.taxi_fare_finder_api_city
     entity = '&entity_handle=' + city
 
-    # legs = TripPlanner.new.get_drive_time(!is_depart, trip_datetime, from[0],
-    #         from[1], to[0], to[1])[1]
-
     #Get fare
     task = 'fare'
     fare_options = "&origin=" + to[0].to_s + ',' + to[1].to_s + "&destination=" + from[0].to_s + ',' + from[1].to_s
@@ -235,14 +232,6 @@ class TripPlanner
     trip_itinerary['walk_time'] = 0
     trip_itinerary['walk_distance'] = 0
     trip_itinerary['cost'] = itinerary[0]['total_fare']
-
-
-    # trip_itinerary['legs'] = get_drive_time(!is_depart, trip_time, from_trip_place.location.first,
-    #         from_trip_place.location.last, to_trip_place.location.first, to_trip_place.location.last)[1]
-
-    # get_drive_time(arrive_by, trip_time, from_lat, from_lon, to_lat, to_lon)
-
-
     trip_itinerary['server_status'] = 200
     trip_itinerary['server_message'] = itinerary[1]['businesses'].to_yaml
     trip_itinerary['match_score'] = 1.2

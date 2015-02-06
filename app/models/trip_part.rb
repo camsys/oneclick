@@ -295,16 +295,11 @@ class TripPart < ActiveRecord::Base
     itins = []
     tp = TripPlanner.new
     result, response = tp.get_taxi_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time)
-    puts "---------------------------------------- #{ response } ----------------------------------------"
-
 
     if result
       itinerary = tp.convert_taxi_itineraries(response)
-      itinerary['legs'] = tp.get_drive_time(!is_depart, trip_time, from_trip_place.location.first,
-            from_trip_place.location.last, to_trip_place.location.first, to_trip_place.location.last)[1]
-
-      # get_drive_time(arrive_by, trip_time, from_lat, from_lon, to_lat, to_lon)
-
+      # itinerary['legs'] = tp.get_drive_time(!is_depart, trip_time, from_trip_place.location.first,
+      #       from_trip_place.location.last, to_trip_place.location.first, to_trip_place.location.last)[1]
       itinerary['server_message'] = itinerary['server_message'].to_yaml if itinerary['server_message'].is_a? Array
       itins << Itinerary.new(itinerary)
     else
