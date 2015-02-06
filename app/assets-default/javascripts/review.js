@@ -2453,43 +2453,44 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 return getBarHeight(d.type.toLowerCase());
             });
 
-        // add mode icons
-        chart.selectAll(".mode-icons")
-            .data(tripLegs)
-            .enter().append("image")
-            .attr("class", "mode-icons")
-            .attr("xlink:href", function(d){
-                return d.logo_url
-            })
-            .attr("x", function(d){
-                return (x(parseDate(d.start_time)) + x(parseDate(d.end_time)))/2 - barHeight / 2;
-            })
-            .attr("y", (height-barHeight)/2)
-            .attr("width", function(d) {
-                if (d.type.toLowerCase() === 'paratransit' || (x(parseDate(d.end_time)) - x(parseDate(d.start_time))) < barHeight)
-                    return 0;
-                else
-                    return barHeight;
-            })
-            .attr("height", barHeight);
 
         // add service name
         // except for transit
         if (tripPlan.mode != 'mode_transit' && tripLegs.length > 0 && typeof(serviceName) === 'string' && serviceName.trim().length > 0) {
-            chart.selectAll("text")
+            chart.selectAll(".itinerary-chart-service-name")
                 .data([serviceName])
                 .enter()
                 .append("text")
                 .attr('class', 'itinerary-chart-service-name')
                 .attr("x", (
-                    x(tripStartTime) +
-                    x(tripEndTime)
+                    x(parseDate(tripPlan.start_time)) +
+                    x(parseDate(tripPlan.end_time))
                 ) / 2)
                 .attr("y", barHeight)
                 .attr("dy", '0.5ex')
                 .text(function(d) {
                     return d;
                 });
+        } else {
+            // add mode icons
+            chart.selectAll(".mode-icons")
+                .data(tripLegs)
+                .enter().append("image")
+                .attr("class", "mode-icons")
+                .attr("xlink:href", function(d){
+                    return d.logo_url
+                })
+                .attr("x", function(d){
+                    return (x(parseDate(d.start_time)) + x(parseDate(d.end_time)))/2 - barHeight / 2;
+                })
+                .attr("y", (height-barHeight)/2)
+                .attr("width", function(d) {
+                    if (d.type.toLowerCase() === 'paratransit' || (x(parseDate(d.end_time)) - x(parseDate(d.start_time))) < barHeight)
+                        return 0;
+                    else
+                        return barHeight;
+                })
+                .attr("height", barHeight);
         }
 
     }
@@ -2520,8 +2521,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         var tmpTripStartTime = parseDate(plan.attr('data-trip-start-time'));
         var tmpTripEndTime = parseDate(plan.attr('data-trip-end-time'));
+        var tmpPlanStartTime = parseDate(plan.attr('data-start-time'));
+        var tmpPlanEndTime = parseDate(plan.attr('data-end-time'));
         var tmpChartDivId = $(plan).find('.single-plan-chart-container').attr('id');
-        resizeChart(tmpChartDivId, tmpTripStartTime, tmpTripEndTime, intervalStep, barHeight);
+        resizeChart(tmpChartDivId, tmpTripStartTime, tmpTripEndTime, tmpPlanStartTime, tmpPlanEndTime, intervalStep, barHeight);
     }
 
     /*
@@ -2622,10 +2625,12 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {string} chartDivId
      * @param {Date} tripStartTime
      * @param {Date} tripEndTime
+     * @param {Date} planStartTime
+     * @param {Date} planEndTime
      * @param {number} intervalStep
      * @param {number} barHeight
      */
-    function resizeChart(chartDivId, tripStartTime, tripEndTime, intervalStep, barHeight) {
+    function resizeChart(chartDivId, tripStartTime, tripEndTime, planStartTime, planEndTime, intervalStep, barHeight) {
         if (!tripStartTime instanceof Date || !tripEndTime instanceof Date ||
             typeof(intervalStep) != 'number' || typeof(barHeight) != 'number') { //type check
             return;
@@ -2728,11 +2733,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             .attr("height", barHeight);
 
         // update labels
-        chart.selectAll("text")
+        chart.selectAll("itinerary-chart-service-name")
             .attr("x", (
-                x(tripStartTime) +
-                x(tripEndTime)
-            ) / 2)
+                    x(planStartTime) +
+                    x(planEndTime)
+                ) / 2)
             .attr("y", barHeight)
     }
 
