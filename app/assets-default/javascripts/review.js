@@ -2456,7 +2456,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         // add service name
         // except for transit
-        if (tripPlan.mode != 'mode_transit' && tripLegs.length > 0 && typeof(serviceName) === 'string' && serviceName.trim().length > 0) {
+        if (['mode_paratransit', 'mode_rideshare'].indexOf(tripPlan.mode) >= 0 && tripLegs.length > 0 && typeof(serviceName) === 'string' && serviceName.trim().length > 0) {
             chart.selectAll(".itinerary-chart-service-name")
                 .data([serviceName])
                 .enter()
