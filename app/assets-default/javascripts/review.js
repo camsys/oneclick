@@ -1230,7 +1230,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             localeDictFinder['arriving_by'] + ' ' + formatDate(tripEndTime)  + ' ' + formatTime(tripEndTime);
         //var headerAriaLabel = tripDescription + "; " + tripDatetimeDescritpion;
         //trip description
-        var tripDescTag = "<div class='panel-heading'><h2 class='panel-title' tabindex=" + (isDepartAt ? '16' : '15') + ">" + addReviewTooltip(inlineHelperKey) + tripDescription + "</h2></div>";
+        var tripDescTag = "<div class='panel-heading'><h2 class='panel-title' tabindex=" + (isDepartAt ? '16' : '15') + ">" + addReviewTooltip(inlineHelperKey) + tripDescription + " - " + tripDescriptionWithoutDirection + "</h2></div>";
 
         var tickLabelTags = getTickLabelHtmlTags(tickLabels);
 
@@ -1249,9 +1249,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         var tripHeaderTags = tripDescTag +
             "<div class='col-xs-12 single-plan-header' style='background-color:white;'>" +
-            "<div class='text-center' style='font-weight:500;' tabindex=" + (isDepartAt ? '16' : '15') + ">" +
-            tripDescriptionWithoutDirection +
-            "</div>" +
+            // "<div class='text-center' style='font-weight:500;' tabindex=" + (isDepartAt ? '16' : '15') + ">" +
+            // tripDescriptionWithoutDirection +
+            // "</div>" +
             "<div class='col-xs-12' style='padding:5px 0px;'>" +
             sorterLabelTags + sorterTags +
             "</div>" +

@@ -308,7 +308,8 @@ class TripPlanner
     tp = TripPlanner.new
     result, response = get_fixed_itineraries([from_lat, from_lon],
                                                 [to_lat, to_lon], trip_time, arrive_by.to_s, 'CAR')
-    response['itineraries'].first['duration']
+    itinerary = response['itineraries'].first
+    return [itinerary['duration'], itinerary['legs'].to_yaml]
   end
 
 end

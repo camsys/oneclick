@@ -43,7 +43,7 @@
   .col-sm-12
     = render partial: 'shared/page_comments', locals: {key: :review_footer_comment}
   / end of review columns
-  #itinerary_modal.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
+  #itinerary_modal.modal.modal-fullscreen.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
   :javascript
     $(function() {
       //default configured min&max values for filters

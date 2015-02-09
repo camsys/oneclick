@@ -11,17 +11,17 @@
     .col-sm-12{style: "background: white; border-radius: 5px;"}
       = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
   - else
-    .col-sm-6{style: "background: white; margin-bottom: 5px; border-radius: 5px; padding: 5px;"}
+    .col-sm-5{style: "background: white; margin-bottom: 5px; border-radius: 5px; padding: 5px; max-height:300px; overflow-y:scroll;"}
       = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
     - if map_type=='delayed_static'
-      .col-sm-6{id: "print_map_#{itinerary.id}", class: 'print_map'}
+      .col-sm-7{id: "print_map_#{itinerary.id}", class: 'print_map'}
     - elsif map_type=='static'
       - # this option is actually not used as there is a separate template for email
-      .col-sm-6{id: "print_map_#{itinerary.id}", class: 'print_map'}
+      .col-sm-7{id: "print_map_#{itinerary.id}", class: 'print_map'}
         %img{src: itinerary.map_image.url}
     - else
       .sr-only{aria: {label: 'Map.'}} Map.
-      .col-sm-6{style: "height: 300px; background: white; border-radius: 5px; padding: 0px;", aria: {hidden: 'true'}}
+      .col-sm-7{style: "height: 300px; background: white; border-radius: 5px; padding: 0px;", aria: {hidden: 'true'}}
         = LeafletMap({:mapid => ('plan_map_' + itinerary.id.to_s), :markers => create_itinerary_markers(itinerary).to_json, :polylines => create_itinerary_polylines(legs).to_json, :sidewalk_feedback_markers => create_itinerary_sidewalk_feedback_markers(legs).to_json, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "well well-small", :style => "height:300px;" })
         :javascript
           $(function(){

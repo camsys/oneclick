@@ -1,7 +1,7 @@
 .modal-dialog.modal-lg{"data-itinerary-id" => @itinerary.id}
   .modal-content
-    .modal-body{style: "padding: 0px;"}
-      .col-sm-12.well{style: "padding: 5px;"}
+    .modal-body{style: "padding: 5px;"}
+      .col-sm-12.well{style: "padding: 5px; height: 100%; margin-bottom: 0; overflow-y: scroll;"}
         .col-sm-12{style: "padding: 5px 0px;"}
           %button.btn.btn-default.pull-right.action-button{"type" => "button", "data-dismiss" => "modal"}=t(:close)
           %b.modal-title
@@ -12,10 +12,10 @@
               $(".modal-title .label-help").removeClass('fa-2x pull-right');
         = render :partial => 'trip_plan_summary_header', :locals => { :itinerary => @itinerary }
         - if @itinerary.is_mappable
-          .col-sm-12{style: "background: white; margin-bottom: 5px; border-radius: 5px; overflow-y:auto; max-height: 300px; padding: 5px;"}
+          .col-sm-5{style: "background: white; border-radius: 5px; overflow-y:scroll; height: auto; max-height: 89%; padding: 5px;"}
             = render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
           .sr-only{aria: {label: "Map."}} Map.
-          .col-sm-12{style: "height: 300px; background: white; border-radius: 5px; padding: 0px;", aria: {hidden: 'true'}}
+          .col-sm-7{style: "border-radius: 5px; padding: 0px; height: 89%;", aria: {hidden: 'true'}}
             = render :partial => 'map_details', :locals => { :itinerary => @itinerary, :mapid => 'review_map'}
         - else
           .col-sm-12{style: "background: white; border-radius: 5px; overflow-y:auto; max-height: 300px;"}
