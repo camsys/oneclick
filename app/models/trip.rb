@@ -25,7 +25,7 @@ class Trip < ActiveRecord::Base
     .where.not(roles: {name: role_name})
     .references(user: :roles)
   }
-  scope :planned, -> { includes(:itineraries).where(itineraries: {selected: true}).references(:itineraries) }
+  
   scope :with_ui_mode, -> (ui_mode) {where(ui_mode: ui_mode)}
   scope :by_provider, ->(p) { joins(itineraries: {service: :provider}).where('providers.id=?', p).distinct }
   # .join(:services).join(:providers) }
@@ -33,6 +33,22 @@ class Trip < ActiveRecord::Base
   scope :by_agency, ->(a) { joins(user: :approved_agencies).where('agencies.id' => a) }
   scope :feedbackable, -> { includes(:itineraries).where(itineraries: {selected: true}, trips: {needs_feedback_prompt: true}).uniq}
   scope :scheduled_before, lambda {|to_day| where("trips.scheduled_time < ?", to_day) }
+
+  def self.planned_between(start_time, end_time)
+    trip_part_by_trip_count = TripPart.includes(:trip)
+      .where("trips.created_at >= ? and trips.created_at <= ?",start_time, end_time)
+      .group("trips.id").count
+    selected_itins_by_trip_count = Itinerary.includes(trip_part: :trip)
+      .where("trips.created_at >= ? and trips.created_at <= ?",start_time, end_time)
+      .where(selected: true)
+      .group("trips.id").count
+    
+    # find trip ids with trip_part_count == selected_itins_count
+    planned_trip_ids = []
+    trip_part_by_trip_count.merge(selected_itins_by_trip_count) {|k, n, o| planned_trip_ids << k if n == o}
+
+    Trip.where(id: planned_trip_ids)
+  end
 
   # Returns a set of trips that are scheduled between the start and end time
   def self.scheduled_between(start_time, end_time)

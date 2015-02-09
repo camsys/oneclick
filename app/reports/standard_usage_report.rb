@@ -106,7 +106,7 @@ class StandardUsageReport < AbstractReport
         if col[:name] == :time_period
           row_data << I18n.t(row)
         else
-          base = Trip.planned.created_between(col[:start_time], col[:end_time])
+          base = Trip.planned_between(col[:start_time], col[:end_time])
           row_data << case row
           when :registered_users
             base.without_role(Role::ANONYMOUS_TRAVELER).count
@@ -235,7 +235,7 @@ class StandardUsageReport < AbstractReport
         if col[:name] == :time_period
           row_data << I18n.t(row)
         else
-          base = Trip.planned.created_between(col[:start_time], col[:end_time])
+          base = Trip.planned_between(col[:start_time], col[:end_time])
           row_data << case row
           when :platform
             base.count
