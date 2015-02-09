@@ -12,7 +12,7 @@
               $(".modal-title .label-help").removeClass('fa-2x pull-right');
         = render :partial => 'trip_plan_summary_header', :locals => { :itinerary => @itinerary }
         - if @itinerary.is_mappable
-          .col-sm-5{style: "background: white; border-radius: 5px; overflow-y:scroll; height: auto; max-height: 90%; padding: 5px;"}
+          .col-sm-5{style: "background: white; border-radius: 5px; overflow-y:scroll; height: auto; max-height: 89%; padding: 5px;"}
             = render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
           .sr-only{aria: {label: "Map."}} Map.
           .col-sm-7{style: "border-radius: 5px; padding: 0px; height: 89%;", aria: {hidden: 'true'}}

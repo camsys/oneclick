@@ -181,9 +181,9 @@
             .modal-footer{style: "background-color:whitesmoke;"}
               %button.btn.action-button{type: "button", data: {dismiss: "modal"}} Close
 
-      #mapExpand.modal.modal-fullscreen.fade{tabindex: "-1", role: "dialog", aria: {labelledby: "modalLabel2", hidden: "true"}}
+      #mapExpand.modal.modal-fullscreen.new-trip-modal.fade{tabindex: "-1", role: "dialog", aria: {labelledby: "modalLabel2", hidden: "true"}}
         .modal-dialog.modal-lg
-          .modal-content.panel.panel-default
+          .modal-content.panel.panel-default{style: "margin-bottom:1px;"}
             .modal-header.panel-heading
               %button.close{type: "button", data: {dismiss: "modal"}}
                 %span{aria: {hidden: "true"}}
@@ -194,8 +194,7 @@
                 = add_tooltip("map_help")
             .modal-body{:"aria-hidden" => "true"}
               = LeafletMap({ :mapid => "expandedMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height: 100%; width: 100%;", :show_location_select => true })
-            .modal-footer{style: "background-color:whitesmoke;"}
-              %button.btn.action-button{type: "button", data: {dismiss: "modal"}} Close
+
 
 
         :javascript
