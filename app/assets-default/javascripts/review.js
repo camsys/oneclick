@@ -2223,7 +2223,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
             var slider_max = maxWalkDist;
             var default_max = filterConfigs.default_max_walk_dist;
-            if(typeof(default_max) === 'number' && default_max < slider_max) {
+            if(typeof(default_max) === 'number' && default_max > slider_min && default_max < slider_max) {
                 slider_max = default_max;
             }
 
