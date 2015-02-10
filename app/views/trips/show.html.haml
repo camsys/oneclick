@@ -55,7 +55,9 @@
         default_min_fare: #{Oneclick::Application.config.default_min_fare || ''},
         default_max_fare: #{Oneclick::Application.config.default_max_fare || ''},
         default_min_walk_dist: 0,
-        default_max_walk_dist: #{@max_walk_dist_value || ''}
+        default_max_walk_dist: #{@max_walk_dist_value || ''},
+        default_min_wait_time: 0,
+        default_max_wait_time: #{@max_wait_time || ''}
       };
 
       //update date names in localized texts for moment js lib
@@ -99,6 +101,9 @@
         travel_time_sorter: '#{t(:travel_time_sorter)}',
         trip_time: '#{t(:trip_time_filter)}',
         trip_time_help: '#{t(:trip_time_help)}',
+        wait_time: '#{t(:wait_time_filter)}',
+        wait_time_sorter: '#{t(:wait_time_sorter)}',
+        wait_time_help: '#{t(:wait_time_help)}',
         arrival_time: '#{t(:arrival_time)}',
         arrival_time_sorter: '#{t(:arrival_time_sorter)}',
         departure_time: '#{t(:departure_time)}',

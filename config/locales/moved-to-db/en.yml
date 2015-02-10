@@ -403,6 +403,7 @@ en:
   walk_distance_sorter: 'Walking Distance'
   fare_sorter: 'Fare'
   travel_time_sorter: 'Travel Time'
+  wait_time_sorter: "Wait Time"
   save_and_plan_trip: "Save and plan my trip"
   trip_planned_and_saved: "Trip planned and saved"
   finish_trip_planning_options: "You can now do one or more of the following to finish your trip planning"
@@ -745,6 +746,7 @@ en:
   fare_filter: 'Fare'
   number_of_transfers_filter: 'Number of Transfers'
   trip_time_filter: 'Time'
+  wait_time_filter: "Wait Time"
   walk_distance_filter: 'Walking Distance'
   legend: 'Legend'
   minute_abbr: 'min'

@@ -351,6 +351,7 @@ ht:
   walk_distance_sorter: '[ht]Walking Distance[/ht]'
   fare_sorter: '[ht]Fare[/ht]'
   travel_time_sorter: '[ht]Travel Time[/ht]'
+  wait_time_sorter: "[ht]Wait Time[/ht]"
   save_and_plan_trip: "[ht]Save and plan my trip[/ht]"
   trip_planned_and_saved: "[ht]Trip planned and saved[/ht]"
   finish_trip_planning_options: "[ht]You can now do one or more of the following to finish your trip planning[/ht]"
@@ -661,6 +662,7 @@ ht:
   fare_filter: '[ht]Fare[/ht]'
   number_of_transfers_filter: '[ht]Number of Transfers[/ht]'
   trip_time_filter: '[ht]Time[/ht]'
+  wait_time_filter: "[ht]Wait Time[/ht]"
   walk_distance_filter: '[ht]Walking Distance[/ht]'
   legends: '[ht]Legends[/ht]'
   legend: '[ht]Legend[/ht]'

@@ -385,6 +385,7 @@ es:
   walk_distance_sorter: '[es]Walking Distance[/es]'
   fare_sorter: '[es]Fare[/es]'
   travel_time_sorter: '[es]Travel Time[/es]'
+  wait_time_sorter: "[es]Wait Time[/es]"
   correct_errors_to_create_a_trip: 'Por favor corrige los errores señalados para crear un viaje.'
   no_thanks_just_plan_it: "[es127]No thanks, just plan my trip[/es]"
   disability_explanation_str: "[es128]We noticed you mentioned a disability and/or difficulty walking for certain periods of time.  Would you please tell us more about which accommodations you require for your trip?[/es]"
@@ -719,6 +720,7 @@ es:
   fare_filter: '[es]Fare[/es]'
   number_of_transfers_filter: '[es]Number of Transfers[/es]'
   trip_time_filter: '[es]Time[/es]'
+  wait_time_filter: "[es]Wait Time[/es]"
   walk_distance_filter: '[es]Walking Distance[/es]'
   legends: '[es]Legends[/es]'
   legend: '[es]Legend[/es]'
