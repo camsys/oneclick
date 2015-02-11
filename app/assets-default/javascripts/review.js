@@ -2151,8 +2151,15 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             }
 
             addSliderTooltip(filterObj.sliderConfig);
+
+            var slider_max = maxWaitTime;
+            var default_max = filterConfigs.default_max_wait_time;
+            if(typeof(default_max) === 'number' && default_max >= minWaitTime && default_max <= slider_max) {
+                slider_max = default_max;
+            }
+
             $('#' + waitTimeSliderId).slider('value',
-                getDefaultMaxFilterValue(maxWaitTime, filterConfigs.default_max_wait_time)
+                getDefaultMaxFilterValue(maxWaitTime, slider_max)
             );
         }
     }
@@ -2215,15 +2222,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             }
 
             addSliderTooltip(filterObj.sliderConfig);
-            var slider_min = minWalkDist;
-            var default_min = filterConfigs.default_min_walk_dist;
-            if(typeof(default_min) === 'number' && default_min > slider_min) {
-                slider_min = default_min;
-            }
 
             var slider_max = maxWalkDist;
             var default_max = filterConfigs.default_max_walk_dist;
-            if(typeof(default_max) === 'number' && default_max > slider_min && default_max < slider_max) {
+            if(typeof(default_max) === 'number' && default_max >= minWalkDist && default_max <= slider_max) {
                 slider_max = default_max;
             }
 

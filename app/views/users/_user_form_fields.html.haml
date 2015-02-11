@@ -64,6 +64,11 @@
               :javascript
                 addHelperTooltip('#walking_maximum_distance_id_label', "#{t(:walking_maximum_distance_help)}");
 
+            = f.input :maximum_wait_time, label: "#{t(:maximum_wait_time)} (#{t(:minutes)})", as: :integer, input_html: { value: @user.max_wait_time, min: '0'}
+            - if translation_exists?("maximum_wait_time_help")
+              :javascript
+                addHelperTooltip('#maximum_wait_time_label', "#{t(:maximum_wait_time_help)}");
+
       - if can? :full_read, @user
         .col-sm-6
           .panel.panel-default#agencies

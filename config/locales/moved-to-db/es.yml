@@ -781,6 +781,7 @@ es:
   walk_time: "es[326]Walk Time[/es]"
   transit_time: "[es327]Transit Time[/es]"
   wait_time: "[es328]Wait Time[/es]"
+  maximum_wait_time: '[es]Maximum Wait Time[/es]'
   walk_distance_short: "[es329]Walk Dist[/es]"
   on: ' en '
   walking: ' caminando'

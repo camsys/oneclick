@@ -283,7 +283,9 @@ class UsersController < ApplicationController
 private
 
   def user_params_with_password
-    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation, :walking_speed_id, :walking_maximum_distance_id, :title, :phone, :preferred_mode_ids => [])
+    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, 
+      :password, :password_confirmation, :walking_speed_id, :walking_maximum_distance_id, :maximum_wait_time,
+      :title, :phone, :preferred_mode_ids => [])
   end
 
   def set_approved_agencies(ids)

@@ -721,6 +721,7 @@ ht:
   walk_time: "[ht]Walk Time[/ht]"
   transit_time: "[ht]Transit Time[/ht]"
   wait_time: "[ht]Wait Time[/ht]"
+  maximum_wait_time: '[ht]Maximum Wait Time[/ht]'
   walk_distance_short: "[ht]Walk Dist[/ht]"
   walking: '[ht] walking[/ht]'
   arrive: "[ht]ARRIVE: [ht]"

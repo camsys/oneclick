@@ -84,6 +84,7 @@ class User < ActiveRecord::Base
   validates :email, :presence => true
   validates :first_name, :presence => true
   validates :last_name, :presence => true
+  validates :maximum_wait_time, :numericality => { :greater_than_or_equal_to => 0}, if: :maximum_wait_time?
 
   before_create :make_user_profile
 
@@ -188,6 +189,15 @@ class User < ActiveRecord::Base
     else
       return false
     end
+  end
+
+  def max_wait_time
+    if !maximum_wait_time
+      default_max_wait_time = Oneclick::Application.config.default_max_wait_time 
+      return default_max_wait_time if default_max_wait_time
+    end
+
+    maximum_wait_time
   end
 
   # Union to get unique users with any relationship to current user

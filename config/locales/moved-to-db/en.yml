@@ -804,6 +804,7 @@ en:
   walk_time: "Walk Time"
   transit_time: "Transit Time"
   wait_time: "Wait Time"
+  maximum_wait_time: 'Maximum Wait Time'
   walk_distance_short: "Walk Dist"
   walking: ' walking'
   arrive: "ARRIVE: "

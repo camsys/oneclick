@@ -53,6 +53,10 @@
                 %label.col-sm-3.control-label= t(:walking_maximum_distance)
                 .col-sm-9
                   %p.form-control-static= user_walk_max_dist.label
+            .form-group
+              %label.col-sm-3.control-label= t(:maximum_wait_time)
+              .col-sm-9
+                %p.form-control-static= "#{user.max_wait_time} #{t(:minutes)}"
     - if can? :full_read, user
       .col-sm-6
         .panel.panel-default#agencies

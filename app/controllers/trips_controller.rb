@@ -38,7 +38,7 @@ class TripsController < PlaceSearchingController
       @max_walk_dist_value = max_walk_dist.value
     end
 
-    @max_wait_time =  20 # @traveler.maximum_wait_time
+    @max_wait_time =  @traveler.max_wait_time
 
     respond_to do |format|
       format.html # show.html.erb
