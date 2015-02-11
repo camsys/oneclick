@@ -322,4 +322,27 @@ namespace :oneclick do
 
   end
 
+  desc "Create Mode Table entries for Ferry, Cable Car, Gondola, and Funicular"
+  task add_otp_modes: :environment do
+
+    bucket = ENV['AWS_BUCKET'].nil? ? "oneclick-#{Oneclick::Application.config.brand}" : ENV['AWS_BUCKET']
+    full_url = "https://s3.amazonaws.com/#{bucket}/modes/"
+
+    ['FERRY', 'CABLE_CAR', 'GONDOLA', 'FUNICULAR', 'SUBWAY', 'TRAM'].each do |m|
+
+      mode = Mode.unscoped.where(code: 'mode_' + m.downcase).first_or_initialize
+      unless mode.persisted?
+        puts 'Creating ' + m
+        mode.name = "mode_" + m.downcase + "_name"
+        mode.logo_url = full_url + m.downcase + '.png'
+        mode.active = true
+        mode.visible = false
+        mode.otp_mode = m
+        mode.save
+      else
+        puts 'Skipping ' + m
+      end
+    end
+  end
+
 end

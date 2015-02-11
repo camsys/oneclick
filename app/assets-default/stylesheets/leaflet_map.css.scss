@@ -69,6 +69,10 @@
   stroke: $trip-leg-paratransit;
 }
 
+.map-tripleg-ferry {
+  stroke: $trip-leg-ferry;
+}
+
 .map-tripleg-unknown {
   stroke: $trip-leg-unknown;
 }

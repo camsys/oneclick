@@ -5,6 +5,7 @@
 module Leg
   class TripLeg
 
+    #Derek
     WALK    = 'WALK'
     TRAM    = 'TRAM'
     SUBWAY  = 'SUBWAY'

@@ -41,7 +41,7 @@ protected
       obj = parse_car_leg(leg)
     elsif leg['mode'] == 'BICYCLE'
       obj = parse_bicycle_leg(leg)
-    elsif leg['mode'].in? ['BUS', 'FERRY', 'TRAM', 'RAIL', 'SUBWAY']
+    elsif leg['mode'].in? Leg::TripLeg::TRANSIT_LEGS
       obj = parse_transit_leg(leg)
     end
 

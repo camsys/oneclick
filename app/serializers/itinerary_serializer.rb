@@ -93,7 +93,6 @@ class ItinerarySerializer < ActiveModel::Serializer
       end
 
       leg_mode_type = leg.mode.downcase if leg.mode
-      leg_mode_type = 'rail' if leg_mode_type == 'subway' # there is no subway mode
       leg_mode = Mode.unscoped.where(code: "mode_#{leg_mode_type}").first
       m <<        {
         type: leg.mode,

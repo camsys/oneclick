@@ -424,6 +424,9 @@ en:
   drive: 'Drive'
   drive_or_taxi: 'Drive or taxi'
   ferry: 'Ferry'
+  mode_ferry_name: "Ferry"
+  mode_subway_name: "Subway"
+  mode_tram_name: "Tram"
   bike: 'Bike'
   bicycle: 'Bicycle'
   bikeshare: 'Bikeshare'
