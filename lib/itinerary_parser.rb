@@ -39,16 +39,10 @@ protected
       obj = parse_walk_leg(leg)
     elsif leg['mode'] ==  'CAR'
       obj = parse_car_leg(leg)
-    elsif leg['mode'] == 'BUS'
-      obj = parse_bus_leg(leg)
-    elsif leg['mode'] == 'SUBWAY'
-      obj = parse_subway_leg(leg)
-    elsif leg['mode'] == 'TRAM'
-      obj = parse_tram_leg(leg)
-    elsif leg['mode'] == 'RAIL'
-      obj = parse_rail_leg(leg)
     elsif leg['mode'] == 'BICYCLE'
       obj = parse_bicycle_leg(leg)
+    elsif leg['mode'].in? ['BUS', 'FERRY', 'TRAM', 'RAIL', 'SUBWAY']
+      obj = parse_transit_leg(leg)
     end
 
     # parse the common properties
@@ -67,12 +61,12 @@ protected
     return obj
   end
 
-  def self.parse_subway_leg(leg)
+  def self.parse_transit_leg(leg)
 
-    Rails.logger.debug "Parsing SUBWAY leg"
+    Rails.logger.debug "Parsing TRANSIT leg"
 
-    sub = Leg::SubwayLeg.new
-
+    sub = Leg::TransitLeg.new
+    sub.mode = leg['mode']
     sub.agency_name = leg['agencyName']
     agencyId = leg['agencyId']
     s = Service.where(external_id: agencyId).first
@@ -89,82 +83,6 @@ protected
     sub.route_long_name = leg['routeLongName']
 
     return sub
-  end
-
-  def self.parse_tram_leg(leg)
-    Rails.logger.debug "Parsing TRAM leg"
-
-    sub = Leg::TramLeg.new
-
-    sub.agency_name = leg['agencyName']
-    agencyId = leg['agencyId']
-    s = Service.where(external_id: agencyId).first
-    if s
-      sub.agency_id = s.name
-    else
-      sub.agency_id = leg['agencyId']
-    end
-
-    sub.head_sign = leg['headsign']
-    sub.route = leg['route']
-    sub.route_id = leg['routeId']
-    sub.route_short_name = leg['routeShortName']
-    sub.route_long_name = leg['routeLongName']
-
-    return sub
-  end
-
-  def self.parse_rail_leg(leg)
-
-    Rails.logger.debug "Parsing RAIL leg"
-
-    sub = Leg::RailLeg.new
-
-    sub.agency_name = leg['agencyName']
-
-
-    agencyId = leg['agencyId']
-    s = Service.where(external_id: agencyId).first
-    if s
-      sub.agency_id = s.name
-    else
-      sub.agency_id = leg['agencyId']
-    end
-
-    sub.head_sign = leg['headsign']
-    sub.route = leg['route']
-    sub.route_id = leg['routeId']
-    sub.route_short_name = leg['routeShortName']
-    sub.route_long_name = leg['routeLongName']
-
-    return sub
-  end
-
-
-  def self.parse_bus_leg(leg)
-
-    Rails.logger.debug "Parsing BUS leg"
-
-    bus = Leg::BusLeg.new
-
-    bus.agency_name = leg['agencyName']
-
-    agencyId = leg['agencyId']
-    s = Service.where(external_id: agencyId).first
-    if s
-      bus.agency_id = s.name
-    else
-      bus.agency_id = leg['agencyId']
-    end
-
-    bus.head_sign = leg['headsign']
-    bus.route = leg['route']
-    bus.route_id = leg['routeId']
-    bus.route_short_name = leg['routeShortName']
-    bus.route_long_name = leg['routeLongName']
-
-    return bus
-
   end
 
   def self.parse_walk_leg(leg)

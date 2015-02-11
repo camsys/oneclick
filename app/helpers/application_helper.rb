@@ -17,16 +17,6 @@ module ApplicationHelper
     Leg::TripLeg::BICYCLE => 'travelcon-bicycle'
   }
 
-  ICON_DICTIONARY = {
-    Leg::TripLeg::WALK => Mode.walk.logo_url,
-    Leg::TripLeg::TRAM => Mode.rail.logo_url,
-    Leg::TripLeg::SUBWAY => Mode.rail.logo_url,
-    Leg::TripLeg::RAIL => Mode.rail.logo_url,
-    Leg::TripLeg::BUS => Mode.bus.logo_url,
-    Leg::TripLeg::CAR => Mode.car.logo_url,
-    Leg::TripLeg::BICYCLE => Mode.bicycle.logo_url
-  }
-
   # Returns the name of the logo image based on the oneclick configuration
   def get_logo
     return Oneclick::Application.config.ui_logo
@@ -46,7 +36,7 @@ module ApplicationHelper
       KIOSK_ICON_DICTIONARY.default = 'travelcon-bus'
       KIOSK_ICON_DICTIONARY[mode]
     else
-      ICON_DICTIONARY[mode]
+      Mode.where(code: 'mode_' + mode).first.logo_url
     end
   end
 

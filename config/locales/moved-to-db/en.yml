@@ -423,6 +423,7 @@ en:
   bus: 'Bus'
   drive: 'Drive'
   drive_or_taxi: 'Drive or taxi'
+  ferry: 'Ferry'
   bike: 'Bike'
   bicycle: 'Bicycle'
   bikeshare: 'Bikeshare'

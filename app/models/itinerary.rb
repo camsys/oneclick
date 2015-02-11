@@ -119,6 +119,8 @@ class Itinerary < ActiveRecord::Base
       case leg.mode.downcase
         when 'walk'
           next
+        when 'ferry'
+          return 'transit'
         when 'bus'
           bus = true
           next
