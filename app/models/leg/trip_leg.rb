@@ -5,7 +5,7 @@
 module Leg
   class TripLeg
 
-    #Derek
+    #Transit Modes and Rail Modes should be Added to TransitLeg
     WALK    = 'WALK'
     TRAM    = 'TRAM'
     SUBWAY  = 'SUBWAY'
@@ -14,6 +14,10 @@ module Leg
     FERRY   = 'FERRY'
     CAR     = 'CAR'
     BICYCLE  = 'BICYCLE'
+    CABLE_CAR = 'CABLE_CAR'
+    GONDOLA = 'GONDOLA'
+    FUNICULAR = 'FUNICULAR'
+
 
     # Type of mode
     attr_accessor :mode

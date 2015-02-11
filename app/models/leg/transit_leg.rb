@@ -1,7 +1,8 @@
 module Leg
   class TransitLeg < TripLeg
 
-    TRANSIT_LEGS = [TRAM, SUBWAY, RAIL, BUS, FERRY]
+    TRANSIT_LEGS = [TRAM, SUBWAY, RAIL, BUS, FERRY, CABLE_CAR, GONDOLA, FUNICULAR]
+    RAIL_LEGS = [TRAM, SUBWAY, RAIL, CABLE_CAR, GONDOLA, FUNICULAR]
 
     attr_accessor :route
     attr_accessor :route_short_name

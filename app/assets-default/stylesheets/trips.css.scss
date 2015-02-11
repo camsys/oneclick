@@ -343,6 +343,18 @@ $legend-height: 20px;
   background-color: $trip-leg-ferry;
 }
 
+.travel-legend-gondola {
+  background-color: $trip-leg-gondola;
+}
+
+.travel-legend-cable-car {
+  background-color: $trip-leg-cable-car;
+}
+
+.travel-legend-funicular {
+  background-color: $trip-leg-funicular;
+}
+
 .travel-legend-tram {
   background-color: $trip-leg-tram;
 }
@@ -404,7 +416,19 @@ $legend-height: 20px;
 }
 
 .travel-type-ferry{
-  fill: $trip-leg-ferry;
+   fill: $trip-leg-ferry;
+ }
+
+.travel-type-gondola{
+  fill: $trip-leg-gondola;
+}
+
+.travel-type-cable-car{
+  fill: $trip-leg-cable-car;
+}
+
+.travel-type-funicular{
+  fill: $trip-leg-funicular;
 }
 
 .travel-type-tram {

@@ -231,7 +231,7 @@ module CsHelpers
   end
 
 
-  # Retuens a pseudo-mode for an itinerary. The pseudo-mode is used to determine
+  # Returns a pseudo-mode for an itinerary. The pseudo-mode is used to determine
   # the correct icon, title, and partial for an itinerary
   def get_pseudomode_for_itinerary(itinerary)
     if itinerary.is_walk
@@ -303,7 +303,7 @@ module CsHelpers
     legs = itinerary.get_legs
     arrow = "\u2023"
     legs.each do |leg|
-      if leg.mode.in? Leg::TripLeg::TRANSIT_LEGS
+      if leg.mode.in? Leg::TransitLeg::TRANSIT_LEGS
         name_string += leg.agency_id.to_s + " " + leg.mode.to_s.humanize + ' ' + arrow + ' '
       end
     end

@@ -70,7 +70,19 @@
 }
 
 .map-tripleg-ferry {
-  stroke: $trip-leg-ferry;
+   stroke: $trip-leg-ferry;
+ }
+
+.map-tripleg-funicular {
+  stroke: $trip-leg-funicular;
+}
+
+.map-tripleg-gondola {
+  stroke: $trip-leg-gondola;
+}
+
+.map-tripleg-cable-car {
+  stroke: $trip-leg-cable-car;
 }
 
 .map-tripleg-unknown {
