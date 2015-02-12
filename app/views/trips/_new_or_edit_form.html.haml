@@ -243,33 +243,52 @@
 :javascript
   $(function() {
 
+    var makeFullscreen = function(){
+      var minMapHeight = 200;
+      var newMainHeight = $(window).outerHeight(true);
+      var mapHeaderHeight = $('.modal-fullscreen .modal-header').outerHeight(true);
+      var newMapHeight = newMainHeight - mapHeaderHeight;
+      if (newMapHeight < minMapHeight) {
+        newMapHeight = minMapHeight;
+        newMainHeight = newMapHeight + mapHeaderHeight;
+      }
+      $('.modal-fullscreen').height(newMainHeight);
+      $('#expandedMap').height(newMapHeight - 5);
+    }
+
     $('#mapExpand').on('shown.bs.modal', function() {
-        if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.expandedMap != null) {
-          var smallMap = CsMaps.tripMap;
-          var mapObj = CsMaps.expandedMap;
-          var mapMarkers = smallMap.LMmarkers;
-          var mapBounds = null;
+      makeFullscreen();
 
-          mapObj.invalidateMap();
+      if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.expandedMap != null) {
+        var smallMap = CsMaps.tripMap;
+        var mapObj = CsMaps.expandedMap;
+        var mapMarkers = smallMap.LMmarkers;
+        var mapBounds = null;
 
-          if(mapMarkers.length > 0) {
-            mapObj.removeMarkers();
-            for (var mark in mapMarkers) {
-              mapObj.LMmarkers.push(L.marker([mapMarkers[mark]._latlng.lat, mapMarkers[mark]._latlng.lng], mapMarkers[mark].options));
-            }
-            mapBounds = mapObj.calcMapBounds(mapMarkers);
-          } else {
-            mapBounds = mapObj.LMbounds;
+        mapObj.invalidateMap();
+
+        if(mapMarkers.length > 0) {
+          mapObj.removeMarkers();
+          for (var mark in mapMarkers) {
+            mapObj.LMmarkers.push(L.marker([mapMarkers[mark]._latlng.lat, mapMarkers[mark]._latlng.lng], mapMarkers[mark].options));
           }
-
-          if(mapBounds) {
-            setTimeout(function(){
-              mapObj.LMmap.fitBounds(mapBounds);
-              mapObj.refreshMarkers();
-            }, 10);
-          }
+          mapBounds = mapObj.calcMapBounds(mapMarkers);
+        } else {
+          mapBounds = mapObj.LMbounds;
         }
-      });
+
+        if(mapBounds) {
+          setTimeout(function(){
+            mapObj.LMmap.fitBounds(mapBounds);
+            mapObj.refreshMarkers();
+          }, 10);
+        }
+      }
+    });
+
+    $(window).on('load resize', function(){
+      makeFullscreen();
+    });
 
     $('.plan-a-trip').on('submit',function() {
       var hiddenFromPlaceData = $('#from_place_object').val();
