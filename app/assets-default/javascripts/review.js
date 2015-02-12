@@ -342,6 +342,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             setSliderHandleTabIndex('#costSlider', '12');
             setSliderHandleTabIndex('#durationSlider', '13');
             setSliderHandleTabIndex('#walkDistSlider', '14');
+
+            // Set aria-labels for outbound/return midTripTime
+            setMidTripAriaLabel();
         }
     }
 
@@ -351,6 +354,25 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
     function setSliderHandleTabIndex(obj, tabindex) {
         $(obj + ' > .ui-slider-handle').attr('tabindex', tabindex);
+    }
+
+    function setMidTripAriaLabel() {
+        var tripPartDivIds = [];
+        $('.single-trip-part').each(function(){
+            tripPartDivIds.push($(this).attr('id'));
+        });
+        for (i=0; i < tripPartDivIds.length; i++) {
+            selector = "#" + tripPartDivIds[i] + " .single-plan-header";
+            ticks = $(selector).children('.col-xs-12:last').children('.tick-labels').children();
+            heading = $(selector).children('.col-xs-12:nth-child(2)').children('.panel-heading');
+            tripMidTime = heading.children('span');
+            invisibleLabel = heading.children('label');
+
+            first = ticks.first().text();
+            last = ticks.last().text();
+            label = tripMidTime.text() + ", from" + first + " to" + last;
+            invisibleLabel.text(label);
+        }
     }
 
     function findTripPartById(tripPartId) {
@@ -1253,7 +1275,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         var sorterLabelTags = "<span style='margin-left:15px;'>" + localeDictFinder['sort_by'] + ': </span>';
         var tripMidTime = new Date((tripStartTime.getTime() + tripEndTime.getTime()) / 2);
-        var midDateLabelTags = "<span>" + formatDate(tripMidTime) + '</span>';
+        var midDateLabelTags = "<label class='sr-only' tabindex='" + (isDepartAt ? "16" : "15") + "'>" + "</label><span style='line-height:2;' aria-hidden='true'>" + formatDate(tripMidTime) + '</span>';
 
         var sorterTags =
             '<select style="display: inline-block;" class="trip-sorter" tabindex=' + (isDepartAt ? "16" : "15") + '>"' +
@@ -1277,13 +1299,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "<div class='trip-plan-first-column' style='padding: 0px; vertical-align: top;'>" +
             (isDepartAt ? ("<button role='button' class='btn  btn-primary btn-single-arrow-left pull-right prev-period' aria-label='Move trip time back 30 minutes.' tabindex='16'> -" + intervelStep + "</button>") : "") +
             "</div>" +
-            "<div class='" + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap; text-align: center;'>" +
+            "<div class='" + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column panel-heading' style='padding: 0px;white-space: nowrap; text-align: center; background-color: whitesmoke;'>" +
+            (isDepartAt ? '' : midDateLabelTags) +
             (
                 isDepartAt ?
                 ("<button role='button' class='btn  btn-primary btn-single-arrow-right pull-left next-period' aria-label='Move trip time forward 30 minutes.' tabindex='16'> +" + intervelStep + "</button>") :
                 ("<button role='button' class='btn  btn-primary btn-single-arrow-left pull-right prev-period' aria-label='Move trip time back 30 minutes.' tabindex='15'> -" + intervelStep + "</button>")
             ) +
-            midDateLabelTags +
+            (isDepartAt ? midDateLabelTags : '') +
             "</div>" +
             "<div class='select-column' style='padding: 0px;'>" +
             (isDepartAt ? "" : ("<button role='button' class='btn  btn-primary btn-single-arrow-right pull-left next-period' aria-label='Move trip time forward 30 minutes.' tabindex='15'> +" + intervelStep + "</button>")) +
