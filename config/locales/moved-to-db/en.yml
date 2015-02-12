@@ -424,7 +424,7 @@ en:
   drive: 'Drive'
   drive_or_taxi: 'Drive or taxi'
   gondola: 'Gondola'
-  mode_Gondola_name: "Gondola"
+  mode_gondola_name: "Gondola"
   funicular: 'Funicular'
   mode_funicular_name: "Funicular"
   cable_car: 'Cable Car'

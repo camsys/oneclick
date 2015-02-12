@@ -245,3 +245,4 @@ WalkingMaximumDistance.where(value: 4).first_or_create!
 Oneclick::Application.load_tasks
 Rake::Task['oneclick:set_default_logo'].invoke
 Rake::Task['oneclick:set_mode_icons'].invoke
+Rake::Task['oneclick:add_otp_modes'].invoke
