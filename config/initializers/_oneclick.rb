@@ -59,7 +59,10 @@ Oneclick::Application.configure do
   config.application_logo_dimensions = [440, 50]
 
   # poi loading
-  Rails.application.config.poi_is_loading = false
+  config.poi_is_loading = false
+
+  # maximum how many services to be displayed
+  config.max_number_of_specialized_services_to_show = nil # nil means no limitation
 
   case ENV['BRAND'] || 'arc'
   when 'arc'
@@ -93,6 +96,7 @@ Oneclick::Application.configure do
     config.show_update_services = true
     config.default_county = ''
     config.state = 'GA'
+    config.max_number_of_specialized_services_to_show = 3
 
   when 'broward'
     config.host = 'oneclick-broward.camsys-apps.com'

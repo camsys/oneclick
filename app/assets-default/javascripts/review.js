@@ -118,6 +118,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
     var durationSliderId = "durationSlider"; //id of duration filter slider
     var walkDistSliderId = "walkDistSlider"; //id of walk distance filter slider
     var waitTimeSliderId = "waitTimeSlider"; //id of wait time filter slider
+    var paratransitCountSliderId = "paratransitCountSlider"; //id of paratransit count filter slider
 
     var tripPlanDivPrefix = "tripPlan_"; //prefix of each trip plan div
     var missInfoDivAffix = "_restriction"; //affix of each trip restriction modal dialog
@@ -794,15 +795,23 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
             //process each trip plan
             var tripPlans = trip.itineraries;
+            var paratransitTotalCounter = 0;
             tripPlans.forEach(function(tripPlan) {
                 if (isValidObject(tripPlan)) {
+                    var paratransitCounter = null;
+                    if(tripPlan.mode === 'mode_paratransit') {
+                        paratransitTotalCounter += 1;
+                        paratransitCounter = paratransitTotalCounter;
+                    }
+
                     tripTags += addTripPlanHtml(
                         tripId,
                         tripPlan,
                         strTripStartTime,
                         strTripEndTime,
                         isDepartAt,
-                        tripPlan.selected
+                        tripPlan.selected,
+                        paratransitCounter
                     );
                 }
             });
@@ -835,8 +844,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
             //process each trip plan
             var tripPlans = trip.itineraries;
+            var paratransitTotalCounter = 0;
             tripPlans.forEach(function(tripPlan) {
                 if (isValidObject(tripPlan)) {
+                    var paratransitCounter = null;
+                    if(tripPlan.mode === 'mode_paratransit') {
+                        paratransitTotalCounter += 1;
+                        paratransitCounter = paratransitTotalCounter;
+                    }
                     var tripPlanChartId = tripPlanDivPrefix + tripId + "_" + tripPlan.id;
                     if ($('#' + tripPlanChartId).length === 0) { //new itinerary
                         var itinTags = addTripPlanHtml(
@@ -845,7 +860,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                             strTripStartTime,
                             strTripEndTime,
                             isDepartAt,
-                            tripPlan.selected
+                            tripPlan.selected,
+                            paratransitCounter
                         );
 
                         $('#' + tripPartDivId).append(itinTags);
@@ -1366,9 +1382,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {string} strTripEndTime: trip end time
      * @param {bool} isDepartAt: true if departing at, false if arriving at
      * @param {bool} isSelected: true if this itinerary was selected previously
+     * @param {bool} paratransitCounter: the number of paratransit plan within same trip part
      * @return {string} HTML tags of each trip plan
      */
-    function addTripPlanHtml(tripId, tripPlan, strTripStartTime, strTripEndTime, isDepartAt, isSelected) {
+    function addTripPlanHtml(tripId, tripPlan, strTripStartTime, strTripEndTime, isDepartAt, isSelected, paratransitCounter) {
         if (typeof(tripPlan) != 'object' || tripPlan === null) {
             return "";
         }
@@ -1423,6 +1440,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             " data-end-time='" + strPlanEndTime + "'" +
             " data-end-time-estimated='" + isPlanEndTimeEstimated + "'" +
             " data-mode='" + modeName + "'" +
+            " data-mode-code='" + mode + "'" +
             " data-transfer='" + (typeof(transfers) === 'number' ? transfers.toString() : '0') + "'" +
             " data-cost='" + ((isValidObject(cost) && (typeof(cost.price) === 'number')) ? cost.price : '') + "'" +
             " data-duration='" + (isValidObject(duration) ? parseFloat(duration.sortable_duration) / 60 : '') + "'" +
@@ -1430,6 +1448,12 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             " data-wait-time='" + (isValidObject(duration) ? parseFloat(duration.total_wait_time) / 60 : '') + "'" +
             " data-filter-visible = 1" +
             " data-eligibility-visible = " + (eligibleCode != -1 ? '1' : '0');
+
+        if(typeof(paratransitCounter) === 'number' && paratransitCounter > 0) {
+            dataTags +=
+            " data-paratransit-number='" + paratransitCounter + "'";
+        }
+
         var costTooltip = cost.comments;
         var costDisplay = (isValidObject(cost) ? cost.price_formatted : '');
         var costAriaLabel = costDisplay + ' ' + costTooltip;
@@ -1714,12 +1738,18 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var maxWalkDist = 0;
         var minWaitTime = 0;
         var maxWaitTime = 0;
+        var minParatransitCount = 0;
+        var maxParatransitCount = 0;
 
         trips.forEach(function(trip) {
             if (typeof(trip) != 'object' || trip === null || !trip.itineraries instanceof Array) {
                 return;
             }
             var tripPlans = trip.itineraries;
+            var tripPartParantransitCount = $.grep(tripPlans, function(plan) { return plan.mode === 'mode_paratransit';}).length;
+            if(tripPartParantransitCount > maxParatransitCount) {
+                maxParatransitCount = tripPartParantransitCount;
+            }
             tripPlans.forEach(function(tripPlan) {
                 if (typeof(tripPlan) != 'object' || tripPlan === null) {
                     return;
@@ -1798,7 +1828,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             (maxCost > minCost) ||
             (maxDuration > minDuration) ||
             (maxWalkDist > minWalkDist) ||
-            (maxWaitTime > minWaitTime));
+            (maxWaitTime > minWaitTime) ||
+            (maxParatransitCount > minParatransitCount));
 
         if (filterAvailable) {
             if ($('#' + filterContainerId).length === 0) {
@@ -1812,6 +1843,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             adjustDurationFilters(minDuration, maxDuration);
             adjustWalkDistFilters(minWalkDist, maxWalkDist);
             adjustWaitTimeFilters(minWaitTime, maxWaitTime);
+            adjustParatransitCountFilters(minParatransitCount, maxParatransitCount);
 
             // Add aria labels to slider handles for improved accessibility in JAWS
             addAriaToSliderHandle('#transferSlider', "Number of transfers slider. ", minTransfer, maxTransfer);
@@ -1819,6 +1851,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             addAriaToSliderHandle('#durationSlider', "Trip time slider. ", $('#durationSlider').attr('aria-valuemin'), $('#durationSlider').attr('aria-valuemax'));
             addAriaToSliderHandle('#walkDistSlider', "Walk distance slider. ", $('#walkDistSlider').attr('aria-valuemin'), $('#walkDistSlider').attr('aria-valuemax'));
             addAriaToSliderHandle('#waitTimeSlider', "Wait time slider. ", $('#waitTimeSlider').attr('aria-valuemin'), $('#waitTimeSlider').attr('aria-valuemax'));
+            addAriaToSliderHandle('#paratransitSlider', "Paratransit count slider. ", $('#paratransitCountSlider').attr('aria-valuemin'), $('#paratransitCountSlider').attr('aria-valuemax'));
 
             //enable mode checkbox event
             $('#' + modeContainerId + ' .checkbox').on('change', function() {
@@ -1962,6 +1995,70 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             addSliderTooltip(filterObj.sliderConfig);
             $('#' + transferSliderId).slider('value',
                 getDefaultMaxFilterValue(maxTransfer, filterConfigs.default_max_transfers)
+            );
+        }
+    }
+
+    /*
+     * create html tags for parantransit_count filter
+     * @param {number}: minParatransitCount
+     * @param {number}: maxParatransitCount
+     */
+    function getParatransitCountFilterHtml(minParatransitCount, maxParatransitCount) {
+        var tags = '';
+        var sliderConfig = null;
+        if (typeof(maxParatransitCount) === 'number' && minParatransitCount === 0 && maxParatransitCount > minParatransitCount) {
+            tags =
+                '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
+                '<div class = "panel-heading">' +
+                '<h2 class="panel-title num-paratransit-count-label" tabindex="11">' + addReviewTooltip("number_of_paratransit_count_help") + localeDictFinder['number_of_paratransit_count'] + '</h2>' +
+                '</div>' +
+                '<div class="panel-body">' +
+                '<div id="' + paratransitCountSliderId + '" aria-valuemin="' + minParatransitCount + '" aria-valuemax="' + maxParatransitCount + '">' +
+                '</div>' +
+                '<div class="col-sm-12">' +
+                '<span id="' + paratransitCountSliderId + '_min_val_label" class="pull-left">' + minParatransitCount.toString() + '</span>' +
+                '<span id="' + paratransitCountSliderId + '_max_val_label" class="pull-right">' + maxParatransitCount.toString() + '</span>' +
+                '</div></div></div>';
+            sliderConfig = {
+                id: paratransitCountSliderId,
+                value: maxParatransitCount,
+                min: minParatransitCount,
+                max: maxParatransitCount,
+                step: 1,
+                range: "min"
+            };
+        }
+
+        return {
+            tags: tags,
+            sliderConfig: sliderConfig
+        };
+    }
+
+
+    /*
+     * adjust existing paratransitCount filter slider
+     */
+    function adjustParatransitCountFilters(minParatransitCount, maxParatransitCount) {
+        if(typeof(filterConfigs.default_max_paratransit_count) != 'number' || filterConfigs.default_max_paratransit_count <0) {
+            return;
+        }
+
+        var filterObj = getParatransitCountFilterHtml(minParatransitCount, maxParatransitCount);
+        if (isValidObject(filterObj)) {
+            if ($('#' + paratransitCountSliderId).length === 0) {
+                $('#' + filterContainerId).append(filterObj.tags);
+            } else {
+                $('#' + paratransitCountSliderId).attr('aria-valuemin', minParatransitCount);
+                $('#' + paratransitCountSliderId).attr('aria-valuemax', maxParatransitCount);
+                $('#' + paratransitCountSliderId + '_min_val_label').text(minParatransitCount);
+                $('#' + paratransitCountSliderId + '_max_val_label').text(maxParatransitCount);
+            }
+
+            addSliderTooltip(filterObj.sliderConfig);
+            $('#' + paratransitCountSliderId).slider('value',
+                getDefaultMaxFilterValue(maxParatransitCount, filterConfigs.default_max_paratransit_count)
             );
         }
     }
@@ -2853,10 +2950,12 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         var waitTimeValues = $('#' + waitTimeSliderId).slider("option", "value");
 
+        var paratransitCountValues = $('#' + paratransitCountSliderId).slider("option", "value");
+
 
         $('.single-plan-review').each(function() {
             var plan = $(this);
-            processPlanFiltering(modes, transferValues, costValues, durationValues, walkDistValues, waitTimeValues, plan);
+            processPlanFiltering(modes, transferValues, costValues, durationValues, walkDistValues, waitTimeValues, paratransitCountValues, plan);
             detectPlanVisibilityChange(plan);
         });
 
@@ -2920,9 +3019,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {number} durationValue
      * @param {number} walkDistValue
      * @param {number} waitTimeValue
+     * @param {number} paratransitCountValue
      * @param {Object} plan
      */
-    function processPlanFiltering(modes, transferValue, costValue, durationValue, walkDistValue, waitTimeValue, plan) {
+    function processPlanFiltering(modes, transferValue, costValue, durationValue, walkDistValue, waitTimeValue, paratransitCountValue, plan) {
         var modeVisible = true;
         if (modes instanceof Array) {
             modeVisible = filterPlansByMode(modes, plan);
@@ -2979,6 +3079,16 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         }
 
         if (!waitTimeVisible) {
+            plan.attr('data-filter-visible', 0);
+            return;
+        }
+
+        var paratransitCountVisible = true;
+        if (typeof paratransitCountValue == 'number') {
+            paratransitCountVisible = filterPlansByParatransitCount(paratransitCountValue, plan);
+        }
+
+        if (!paratransitCountVisible) {
             plan.attr('data-filter-visible', 0);
             return;
         }
@@ -3080,7 +3190,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
     }
 
 
-
     /*
      * Filter trip plans by total waiting time
      * @param {number} maxWaitTime
@@ -3096,6 +3205,28 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var waitTime = parseFloat(plan.attr('data-wait-time'));
         visible = (typeof(waitTime) != 'number' || isNaN(waitTime) || (waitTime <= maxWaitTime));
 
+        return visible;
+    }
+
+    /*
+     * Filter trip plans by max allowed paratransit count to show
+     * @param {number} maxParantransitCount
+     * @param {object} plan
+     * @return {bool} visible
+     */
+    function filterPlansByParatransitCount(maxParantransitCount, plan) {
+        var visible = false;
+        if (typeof(maxParantransitCount) != 'number' || typeof(plan) != 'object' || plan === null) {
+            return visible;
+        }
+
+        if(plan.attr('data-mode-code') === 'mode_paratransit') {
+            var paratransitNumber = parseInt(plan.attr('data-paratransit-number'));
+            visible = (typeof(paratransitNumber) != 'number' || isNaN(paratransitNumber) || (paratransitNumber <= maxParantransitCount));
+        }
+        else {
+            visible = true;
+        }
         return visible;
     }
 

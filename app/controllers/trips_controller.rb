@@ -40,6 +40,8 @@ class TripsController < PlaceSearchingController
 
     @max_wait_time =  @traveler.max_wait_time
 
+    @max_paratransit_count =  Oneclick::Application.config.max_number_of_specialized_services_to_show
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @tripResponse }

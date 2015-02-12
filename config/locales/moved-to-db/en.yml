@@ -758,6 +758,7 @@ en:
   trip_time_filter: 'Time'
   wait_time_filter: "Wait Time"
   walk_distance_filter: 'Walking Distance'
+  number_of_paratransit_count_filter: 'Number of specialized services'
   legend: 'Legend'
   minute_abbr: 'min'
   minutes: 'minutes'

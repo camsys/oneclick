@@ -57,7 +57,9 @@
         default_min_walk_dist: 0,
         default_max_walk_dist: #{@max_walk_dist_value || ''},
         default_min_wait_time: 0,
-        default_max_wait_time: #{@max_wait_time || ''}
+        default_max_wait_time: #{@max_wait_time || ''},
+        default_min_paratransit_count:0,
+        default_max_paratransit_count: #{@max_paratransit_count || ''}
       };
 
       //update date names in localized texts for moment js lib
@@ -119,6 +121,8 @@
         number_of_transfers_help: '#{t(:number_of_transfers_help)}',
         modes: '#{t(:modes_filter)}',
         modes_help: '#{t(:modes_help)}',
+        number_of_paratransit_count: '#{t(:number_of_paratransit_count_filter)}',
+        number_of_paratransit_count_help: '#{t(:number_of_paratransit_count_help)}',
         walk: '#{t(:mode_walk_name)}',
         rideshare: '#{t(:mode_rideshare_name)}',
         paratransit: '#{t(:mode_paratransit_name)}',

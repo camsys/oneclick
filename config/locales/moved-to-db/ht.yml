@@ -663,6 +663,7 @@ ht:
   number_of_transfers_filter: '[ht]Number of Transfers[/ht]'
   trip_time_filter: '[ht]Time[/ht]'
   wait_time_filter: "[ht]Wait Time[/ht]"
+  number_of_paratransit_count_filter: '[ht]Number of specialized services[/ht]'
   walk_distance_filter: '[ht]Walking Distance[/ht]'
   legends: '[ht]Legends[/ht]'
   legend: '[ht]Legend[/ht]'

@@ -721,6 +721,7 @@ es:
   number_of_transfers_filter: '[es]Number of Transfers[/es]'
   trip_time_filter: '[es]Time[/es]'
   wait_time_filter: "[es]Wait Time[/es]"
+  number_of_paratransit_count_filter: '[es]Number of specialized services[/es]'
   walk_distance_filter: '[es]Walking Distance[/es]'
   legends: '[es]Legends[/es]'
   legend: '[es]Legend[/es]'
