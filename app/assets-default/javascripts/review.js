@@ -370,7 +370,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
             first = ticks.first().text();
             last = ticks.last().text();
-            label = tripMidTime.text() + ", from" + first + " to" + last;
+            label = tripMidTime.text() + ", from " + first + " to " + last;
             invisibleLabel.text(label);
         }
     }
@@ -2984,6 +2984,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         // update chart if datetime range of visible plans has changed
         updateChartsIfDatetimeRangeChanged();
+        setMidTripAriaLabel();
     }
 
     function updateChartsIfDatetimeRangeChanged() {
