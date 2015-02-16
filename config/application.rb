@@ -136,6 +136,9 @@ module Oneclick
     config.ui_mode = ENV['UI_MODE'] || 'desktop'
     if config.ui_mode=='desktop'
       config.sass.load_paths << File.expand_path("./app/assets-default/stylesheets/#{config.brand}")
+      if ENV['USE_GOOGLE_ANALYTICS'].to_s.downcase == 'true'
+        config.sass.load_paths << File.expand_path("./app/assets-default/javascripts/#{config.brand}")
+      end
     else # config.ui_mode=='kiosk'
       config.sass.load_paths << File.expand_path("./app/assets-kiosk/stylesheets/#{config.brand}")
     end
