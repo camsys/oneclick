@@ -242,9 +242,13 @@ class TripPart < ActiveRecord::Base
       #TODO: Make the 20 minute threshold configurable.
       if first_leg.mode == 'WALK' and first_leg.duration > Oneclick::Application.config.max_walk_seconds
         long_walks = true
-        itinerary.hide
+        if Oneclick::Application.config.replace_long_walks
+          itinerary.hide
+        else
+          filtered << itinerary
+        end
       else
-        filtered << itinerary
+      filtered << itinerary
       end
     end
     if long_walks

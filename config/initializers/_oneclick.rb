@@ -26,6 +26,7 @@ Oneclick::Application.configure do
   config.min_drive_seconds = 180
   config.max_walk_seconds = 1200
   config.allows_booking = false
+  config.replace_long_walks = false
 
   config.street_view_url = '/streetview.html'
   config.enable_sidewalk_obstruction = true
@@ -65,6 +66,8 @@ Oneclick::Application.configure do
   config.max_number_of_specialized_services_to_show = nil # nil means no limitation
   config.max_number_of_specialized_services_to_show = 3
 
+
+
   case ENV['BRAND'] || 'arc'
   when 'arc'
     config.host = 'oneclick-arc.camsys-apps.com'
@@ -98,6 +101,7 @@ Oneclick::Application.configure do
     config.default_county = ''
     config.state = 'GA'
     config.max_number_of_specialized_services_to_show = 3
+    config.replace_long_walks = true
 
   when 'broward'
     config.host = 'oneclick-broward.camsys-apps.com'
