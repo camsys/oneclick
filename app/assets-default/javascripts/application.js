@@ -105,6 +105,14 @@ function createPopover(node_id) {
             $(_this).popover("hide");
         }
     }, 0);
+  })
+  .on("mousemove", function (e) {
+    var left = e.pageX;
+    var top = e.pageY;
+    $(".popover").css({
+      top: top - $(".popover").height(),
+      left: left - $(".popover").width() / 2 + 'px'
+    });
   });
 }
 
