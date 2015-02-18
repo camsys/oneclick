@@ -530,7 +530,7 @@ ht:
   return_error_occurred: "[ht]An error occurred when attempting to book your return trip.[/ht]"
   please_wait: "[ht]Please wait[/ht]"
   book_a_trip: "[ht]Would you like to book this trip with[/ht]"
-  more_info_call: "[ht]For more more information, call[/ht]"
+  more_info_call: "[ht]For more information, call[/ht]"
   confirmation: '[ht]confirmation[/ht]'
   returning_by: '[ht]Returning by[/ht]'
   for_assistance: "[ht]for assistance[/ht]"

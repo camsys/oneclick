@@ -592,7 +592,7 @@ es:
   return_error_occurred: "[es]An error occurred when attempting to book your return trip."
   please_wait: "[es]Please wait."
   book_a_trip: "[es]Would you like to book this trip with"
-  more_info_call: "[es]For more more information, call"
+  more_info_call: "[es]For more information, call"
   confirmation: '[es]confirmation'
   returning_by: '[es]Returning by'
   for_assistance: "[es]for assistance"
