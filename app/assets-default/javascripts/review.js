@@ -2064,7 +2064,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * adjust existing paratransitCount filter slider
      */
     function adjustParatransitCountFilters(minParatransitCount, maxParatransitCount) {
-        if(typeof(filterConfigs.default_max_paratransit_count) != 'number' || filterConfigs.default_max_paratransit_count <0) {
+        if(typeof(filterConfigs.default_max_paratransit_count) != 'number' || filterConfigs.default_max_paratransit_count <0 || maxParatransitCount <= filterConfigs.default_max_paratransit_count) {
             return;
         }
 

@@ -46,20 +46,23 @@
   #itinerary_modal.modal.modal-fullscreen.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
   :javascript
     $(function() {
+      var getConfigValue = function(config) {
+
+      };
       //default configured min&max values for filters
       var filterConfigs = {
-        default_min_duration: #{Oneclick::Application.config.default_min_duration || ''},
-        default_max_duration: #{Oneclick::Application.config.default_max_duration || ''},
-        default_min_transfers: #{Oneclick::Application.config.default_min_transfers || ''},
-        default_max_transfers: #{Oneclick::Application.config.default_max_transfers || ''},
-        default_min_fare: #{Oneclick::Application.config.default_min_fare || ''},
-        default_max_fare: #{Oneclick::Application.config.default_max_fare || ''},
+        default_min_duration: #{Oneclick::Application.config.default_min_duration || "null"},
+        default_max_duration: #{Oneclick::Application.config.default_max_duration || "null"},
+        default_min_transfers: #{Oneclick::Application.config.default_min_transfers || "null"},
+        default_max_transfers: #{Oneclick::Application.config.default_max_transfers || "null"},
+        default_min_fare: #{Oneclick::Application.config.default_min_fare || "null"},
+        default_max_fare: #{Oneclick::Application.config.default_max_fare || "null"},
         default_min_walk_dist: 0,
-        default_max_walk_dist: #{@max_walk_dist_value || ''},
+        default_max_walk_dist: #{@max_walk_dist_value || "null"},
         default_min_wait_time: 0,
-        default_max_wait_time: #{@max_wait_time || ''},
+        default_max_wait_time: #{@max_wait_time || "null"},
         default_min_paratransit_count:0,
-        default_max_paratransit_count: #{@max_paratransit_count || ''}
+        default_max_paratransit_count: #{@max_paratransit_count || "null"}
       };
 
       //update date names in localized texts for moment js lib
