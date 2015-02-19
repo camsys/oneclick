@@ -14,7 +14,7 @@ class Trip < ActiveRecord::Base
   has_and_belongs_to_many :desired_modes, class_name: 'Mode', join_table: :trips_desired_modes, association_foreign_key: :desired_mode_id
 
   # Scopes
-  scope :created_between, lambda {|from_day, to_day| where("trips.created_at > ? AND trips.created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
+  scope :created_between, lambda {|from_day, to_day| where("trips.created_at >= ? AND trips.created_at <= ?", from_day.at_beginning_of_day, to_day.at_end_of_day) }
   scope :with_role, lambda {|role_name| 
     includes(user: :roles)
     .where(roles: {name: role_name})
@@ -35,6 +35,8 @@ class Trip < ActiveRecord::Base
   scope :scheduled_before, lambda {|to_day| where("trips.scheduled_time < ?", to_day) }
 
   def self.planned_between(start_time, end_time)
+    start_time = start_time.at_beginning_of_day
+    end_time = end_time.at_end_of_day
     trip_part_by_trip_count = TripPart.includes(:trip)
       .where("trips.created_at >= ? and trips.created_at <= ?",start_time, end_time)
       .group("trips.id").count
