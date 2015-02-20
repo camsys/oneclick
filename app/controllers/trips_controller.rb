@@ -1024,7 +1024,7 @@ protected
       if @trip
         if @trip.errors.empty? && @trip.save
           @trip.reload
-          if !@trip.eligibility_dependent?
+          if !@trip.eligibility_dependent? or @traveler.can_book?
             Rails.logger.info 'trip_planning multi_od? ' + session[:is_multi_od].to_s
             if session[:is_multi_od] == true
               session[:multi_od_trip_id] = session[:multi_od_trip_id] || params[:multi_od_trip_id]
