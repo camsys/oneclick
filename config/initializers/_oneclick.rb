@@ -38,7 +38,7 @@ Oneclick::Application.configure do
   config.min_ui_duration = 1.hours
 
   config.google_places_api_key = 'AIzaSyCvKyNoBzQNrBRuSRkipWye0pdj__HjrmU'
-  config.google_radius_meters = 400000 #Used in the Autocomplete Geocoder to bias results
+  config.google_radius_meters = 100000 #Used in the Autocomplete Geocoder to bias results
 
   config.time_zone = 'Eastern Time (US & Canada)'
 
