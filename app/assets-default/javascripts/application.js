@@ -85,7 +85,7 @@ function createPopover(node_id) {
       'template': '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>',
       'trigger': 'manual focus',
       'animation': false,
-      'placement': 'top',
+      'placement': 'auto',
       content: function() {
           html = $(this).attr('data-original-title');
           return $.parseHTML(html);

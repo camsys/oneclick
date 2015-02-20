@@ -195,9 +195,6 @@
                 %span.sr-only Minimize
               %h3.modal-title{id: "modalLabel2"}
                 = t(:map)
-                = add_tooltip("map_help")
-                :javascript
-                    $('#mapExpand .label-help').removeClass('pull-right fa-2x');
             .modal-body{:"aria-hidden" => "true"}
               = LeafletMap({ :mapid => "expandedMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height: 100%; width: 100%;", :show_location_select => true })
 
