@@ -314,7 +314,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         $('.ui-slider-handle').empty();
 
-        createPopover(".single-plan-chart-container, .trip-mode-cost, .label-help");
+        createPopover(".single-plan-chart-container rect, .trip-mode-cost, .label-help");
 
         $('.label-help').addClass('fa-2x');
     }
@@ -846,7 +846,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             //render Chart
             tripPlans.forEach(function(tripPlan) {
                 if (isValidObject(tripPlan)) {
-                    appendItineraryTooltip(tripId, tripPlan);
 
                     var tripPlanChartId = tripPlanDivPrefix + tripId + "_" + tripPlan.id;
                     createChart(
@@ -888,8 +887,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
                         $('#' + tripPartDivId).append(itinTags);
 
-                        appendItineraryTooltip(tripId, tripPlan);
-
                         createChart(
                             tripPlanChartId,
                             tripStartTime,
@@ -921,13 +918,13 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {string} tripId
      * @param {object} tripPlan: itinerary object
      */
-    function appendItineraryTooltip(tripId, tripPlan) {
+    function appendItineraryTooltip(chart, tripId, tripPlan) {
         var tipTextOnly = getHoverTipText(tripPlan, true);
         var tipHtml = getHoverTipText(tripPlan, false);
 
-        var chartDivId = '#'+tripPlanDivPrefix + tripId + "_" + tripPlan.id;
-        $(chartDivId).attr('data-original-title', tipHtml);
-        $(chartDivId).attr('aria-label', tipTextOnly);
+        chart.selectAll("rect")
+            .attr('data-original-title', tipHtml)
+            .attr('aria-label', tipTextOnly);
     }
 
     /*
@@ -2700,6 +2697,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 .attr("height", barHeight);
         }
 
+        // add tooltips to rect, make sure text doesn't disrupt hover action
+        appendItineraryTooltip(chart, planId, tripPlan);
+        $('.itinerary-chart-service-name').css('pointer-events', 'none');
+        $('.mode-icons').css('pointer-events', 'none');
     }
 
     /*
