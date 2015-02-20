@@ -187,6 +187,14 @@ class UsersController < ApplicationController
       up.user = u
       up.save!
       result = u.save
+
+      #Update Birth Year
+      dob_object = Characteristic.where(code: "date_of_birth").first
+      if dob_object
+        user_characteristic = UserCharacteristic.where(characteristic_id: dob_object.id, user_profile: u.user_profile).first_or_initialize
+        user_characteristic.value = dob.split('/')[2]
+        user_characteristic.save
+      end
     end
 
     sign_in u, :bypass => true
