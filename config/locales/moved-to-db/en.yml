@@ -4,6 +4,8 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  accommodations_provided: "Accommodations provided:"
+  accommodations_not_provided: "Accommodations NOT provided:"
   user_guide: "User Guide"
   this_service_is_for: "This service is intended for"
   disabled_missing_info: "persons with disabilities"
