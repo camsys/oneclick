@@ -370,7 +370,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
             first = ticks.first().text();
             last = ticks.last().text();
-            label = tripMidTime.text() + ", from " + first + " to " + last;
+            label = tripMidTime.text() + ", " + localeDictFinder['from'] + " " + first + " " + localeDictFinder['to'] + " " + last;
             invisibleLabel.text(label);
         }
     }
