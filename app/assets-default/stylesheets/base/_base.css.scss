@@ -557,7 +557,12 @@ td.left, th.left {
   margin-bottom: 1em;
 }
 
-#itinerary_modal .well.comments, .trips.plan  .well.comments {
+#itinerary_modal .well.comments {
+  margin-top: 2.5px;
+  margin-bottom: 2.5px;
+}
+
+#itinerary_modal .well.comments:first, .trips.plan  .well.comments {
   margin-top: 15px;
   margin-bottom: 5px;
 }
