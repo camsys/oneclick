@@ -2677,8 +2677,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 });
         } else {
             // add mode icons
+            var legsWithIcons = $.grep(tripLegs, function(leg) { return leg.logo_url && leg.logo_url.trim().length > 0;});
             chart.selectAll(".mode-icons")
-                .data(tripLegs)
+                .data(legsWithIcons)
                 .enter().append("image")
                 .attr("class", "mode-icons")
                 .attr("xlink:href", function(d){
