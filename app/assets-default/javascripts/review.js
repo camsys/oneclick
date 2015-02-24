@@ -1296,7 +1296,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "<div class='trip-plan-first-column' style='padding: 0px; vertical-align: top;'>" +
             (isDepartAt ? ("<button role='button' class='btn  btn-primary btn-single-arrow-left pull-right prev-period' aria-label='Move trip time back 30 minutes.' tabindex='16'> -" + intervelStep + "</button>") : "") +
             "</div>" +
-            "<div class='" + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column panel-heading' style='padding: 0px;white-space: nowrap; text-align: center; background-color: whitesmoke;'>" +
+            "<div class='" + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column panel-heading' style='padding: 0px; text-align: center; background-color: whitesmoke;'>" +
             (isDepartAt ? '' : midDateLabelTags) +
             (
                 isDepartAt ?
@@ -1312,7 +1312,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "<div class='col-xs-12' style='padding:0px;' aria-hidden='true'>" +
             "<div class='trip-plan-first-column' style='padding: 0px;'>" +
             "</div>" +
-            "<div class='tick-labels " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap;'>" +
+            "<div class='tick-labels " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;'>" +
             tickLabelTags +
             "</div>" +
             "<div class='select-column' style='padding: 0px;'>" +
