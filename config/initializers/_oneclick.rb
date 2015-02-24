@@ -65,6 +65,7 @@ Oneclick::Application.configure do
   # maximum how many services to be displayed
   config.max_number_of_specialized_services_to_show = nil # nil means no limitation
 
+
   case ENV['BRAND'] || 'arc'
   when 'arc'
     config.host = 'oneclick-arc.camsys-apps.com'
