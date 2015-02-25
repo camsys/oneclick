@@ -34,7 +34,7 @@ class TripPartsController < PlaceSearchingController
     if params[:regen]
       @trip_part.remove_existing_itineraries(@modes)
     end
-    @itineraries = @trip_part.itineraries.where('mode_id in (?)', @modes.pluck(:id))
+    @itineraries = @trip_part.itineraries.where(returned_mode_code: params[:mode])
     Rails.logger.info "trip part has #{@itineraries.count} itineraries for modes #{@modes.map(&:code).join(', ')}."
 
     if (@itineraries.empty?)
