@@ -1,21 +1,6 @@
 .row
   .col-sm-12
-    -if itinerary.service.provider
-      - provider_public_comments = itinerary.service.provider.public_comments.for_locale
-      - if provider_public_comments && !provider_public_comments.comment.blank?
-        .row
-          .col-sm-12
-            .well.well-sm.comments
-              =provider_public_comments.comment.html_safe
-    -if itinerary.service.public_comments.for_locale and !itinerary.service.public_comments.for_locale.comment.blank?
-      .row
-        .col-sm-12
-          .well.well-sm
-            =itinerary.service.public_comments.for_locale.comment.html_safe
-    -unless itinerary.cost_comments.blank?
-      %h4
-        = t(:cost_details)
-      =itinerary.cost_comments.html_safe
+    = render partial: 'provider_and_cost_comments', locals: {itinerary: itinerary}
 
     -if itinerary.missing_information and itinerary.missing_information_text.split(':').count > 0
       %h4
@@ -44,14 +29,6 @@
                     = t(i) + ','
 
 
-    -if itinerary.accommodation_mismatch
-      %h4
-        %i.fa.fa-warning
-        =t(:trip_needs_more_accommodations) + ":"
-      %ul
-        -itinerary.missing_accommodations.split(',').each do |accommodation|
-          %li
-            = t(accommodation)
     -if itinerary.too_late
       %h4
         %i.fa.fa-calendar
@@ -74,17 +51,28 @@
         = t(a) +":"
       %td
         = sanitize_nil_to_na b
-%table{:style => "width: 100%;"}
-  %tr
-    %td{:style => "width: 50%;"}
-      = t(:accommodations) + ':'
-    %td
-      -if itinerary.service.accommodations.count == 0
-        = t(:no_accommodations)
-      -else
-        -itinerary.service.accommodations.each do |accom|
-          =t(accom.name)
-          %br
+
+-if itinerary.service.accommodations.count > 0
+  .well.well-sm.comments
+    %table{:style => "width: 100%;"}
+      %tr
+        %td{:style => "width: 50%;"}
+          = t(:accommodations_provided)
+        %td
+          -itinerary.service.accommodations.each do |accom|
+            =t(accom.name)
+            %br
+-if Accommodation.count > itinerary.service.accommodations.count
+  .well.well-sm.comments
+    %table{:style => "width: 100%;"}
+      %tr
+        %td{:style => "width: 50%;"}
+          = t(:accommodations_not_provided)
+        %td
+          -(Accommodation.all - itinerary.service.accommodations).each do |accom|
+            =t(accom.name)
+            %br
+
 - if @current_ability and can? :read, itinerary.service.ratings.build(user: @traveler)
   %table{:style => "width: 100%;"}
     %tr

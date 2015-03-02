@@ -42,10 +42,21 @@ class FareHelper
 
   #Allows a global multiplier for fixed-route fare if a travler's age is greater than config.discount_fare_age AND config.discount_fare_active is true
   def calculate_fixed_route_fare(trip_part, itinerary)
+
+    #Check for multipliers
     if Oneclick::Application.config.discount_fare_active and trip_part.trip.user.age and trip_part.trip.user.age > Oneclick::Application.config.discount_fare_age
       itinerary.cost *= Oneclick::Application.config.discount_fare_multiplier
       itinerary.save
     end
+
+    #Check for comments.
+    begin
+      itinerary.cost_comments = itinerary.service.fare_structures.pluck(:desc).first
+      itinerary.save
+    rescue
+      return
+    end
+
   end
 
 end

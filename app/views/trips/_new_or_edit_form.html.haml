@@ -185,13 +185,16 @@
         .modal-dialog.modal-lg
           .modal-content.panel.panel-default{style: "margin-bottom:1px;padding:0;"}
             .modal-header.panel-heading
-              %button.close{type: "button", data: {dismiss: "modal"}}
+              %button.close.close_all{type: "button", style: "margin-right:5px;margin-top:3px;", data: {dismiss: "modal"}}
+                %span{aria: {hidden: "true"}}
+                  %i.fa.fa-close
+                %span.sr-only Close
+              %button.close{type: "button", style: "margin-right:10px;margin-top:3px;", data: {dismiss: "modal"}}
                 %span{aria: {hidden: "true"}}
                   %i.fa.fa-compress
-                %span.sr-only Close
+                %span.sr-only Minimize
               %h3.modal-title{id: "modalLabel2"}
                 = t(:map)
-                = add_tooltip("map_help")
             .modal-body{:"aria-hidden" => "true"}
               = LeafletMap({ :mapid => "expandedMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height: 100%; width: 100%;", :show_location_select => true })
 
@@ -288,6 +291,10 @@
 
     $(window).on('load resize', function(){
       makeFullscreen();
+    });
+
+    $('.close_all').click(function(){
+      $('#mapCloseButton').click();
     });
 
     $('.plan-a-trip').on('submit',function() {

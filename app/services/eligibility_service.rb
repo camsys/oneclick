@@ -167,8 +167,7 @@ class EligibilityService
     end
 
     #service accommodations
-    accommodating_services = []
-    #all_services = Service.all
+    accommodating_itineraries = []
     itineraries.each do |itinerary|
       service = itinerary['service']
       accommodations_maps = service.service_accommodations
@@ -177,19 +176,16 @@ class EligibilityService
         service_accommodations << map.accommodation
       end
 
-      match_score = 0.5 * (user_accommodations.count - (service_accommodations & user_accommodations).count)
-      if match_score > 0
-        itinerary['accommodation_mismatch'] = true
-      end
-      itinerary['match_score'] += match_score.to_f
-      missing_accommodations = user_accommodations - service_accommodations
-      missing_accommodations.each do |accommodation|
-        itinerary['missing_accommodations'] += (accommodation.name + ',')
+      missing_service_count = (user_accommodations.count - (service_accommodations & user_accommodations).count)
+
+      if missing_service_count == 0
+        accommodating_itineraries << itinerary
       end
 
     end
 
-    itineraries
+    accommodating_itineraries
+
   end
 
   def get_accommodating_and_eligible_services_for_traveler(trip_part=nil)

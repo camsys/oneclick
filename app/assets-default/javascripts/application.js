@@ -85,7 +85,7 @@ function createPopover(node_id) {
       'template': '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>',
       'trigger': 'manual focus',
       'animation': false,
-      'placement': 'top',
+      'placement': 'auto',
       content: function() {
           html = $(this).attr('data-original-title');
           return $.parseHTML(html);
@@ -108,25 +108,6 @@ function createPopover(node_id) {
             $(_this).popover("hide");
         }
     }, 0);
-  })
-  .on("mousemove", function (e) {
-    if ($(this).hasClass('single-plan-chart-container')) {
-      var left = e.pageX;
-      var rectOffset = $(this).children().children('rect:first').offset();
-      var leftBoundary = rectOffset.left;
-      var rightBoundary = $(this).children().children('rect:last').offset().left + parseInt($(this).children().children('rect:last').attr('width'));
-      var popoverWidth = $(".popover").width();
-      var popoverHeight = $(".popover").height();
-
-      $(".popover").css({
-        top: rectOffset.top - popoverHeight,
-        left: (left < leftBoundary ?
-          ( $(".popover").css({ left: leftBoundary - popoverWidth / 2 + 'px' }) ) :
-          ( left > rightBoundary ? 
-            ( $(".popover").css({ left: rightBoundary - popoverWidth / 2 + 'px' }) ) :
-            ( left - popoverWidth / 2 + 'px' ) ))
-      });
-    }
   });
 }
 

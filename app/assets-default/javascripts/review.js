@@ -314,7 +314,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         $('.ui-slider-handle').empty();
 
-        createPopover(".single-plan-chart-container, .trip-mode-cost, .label-help");
+        createPopover(".single-plan-chart-container rect, .trip-mode-cost, .label-help");
 
         $('.label-help').addClass('fa-2x');
     }
@@ -370,7 +370,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
             first = ticks.first().text();
             last = ticks.last().text();
-            label = tripMidTime.text() + ", from " + first + " to " + last;
+            label = tripMidTime.text() + ", " + localeDictFinder['from'] + " " + first + " " + localeDictFinder['to'] + " " + last;
             invisibleLabel.text(label);
         }
     }
@@ -846,7 +846,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             //render Chart
             tripPlans.forEach(function(tripPlan) {
                 if (isValidObject(tripPlan)) {
-                    appendItineraryTooltip(tripId, tripPlan);
 
                     var tripPlanChartId = tripPlanDivPrefix + tripId + "_" + tripPlan.id;
                     createChart(
@@ -888,8 +887,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
                         $('#' + tripPartDivId).append(itinTags);
 
-                        appendItineraryTooltip(tripId, tripPlan);
-
                         createChart(
                             tripPlanChartId,
                             tripStartTime,
@@ -921,13 +918,13 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {string} tripId
      * @param {object} tripPlan: itinerary object
      */
-    function appendItineraryTooltip(tripId, tripPlan) {
+    function appendItineraryTooltip(chart, tripId, tripPlan) {
         var tipTextOnly = getHoverTipText(tripPlan, true);
         var tipHtml = getHoverTipText(tripPlan, false);
 
-        var chartDivId = '#'+tripPlanDivPrefix + tripId + "_" + tripPlan.id;
-        $(chartDivId).attr('data-original-title', tipHtml);
-        $(chartDivId).attr('aria-label', tipTextOnly);
+        chart.selectAll("rect")
+            .attr('data-original-title', tipHtml)
+            .attr('aria-label', tipTextOnly);
     }
 
     /*
@@ -1299,7 +1296,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "<div class='trip-plan-first-column' style='padding: 0px; vertical-align: top;'>" +
             (isDepartAt ? ("<button role='button' class='btn  btn-primary btn-single-arrow-left pull-right prev-period' aria-label='Move trip time back 30 minutes.' tabindex='16'> -" + intervelStep + "</button>") : "") +
             "</div>" +
-            "<div class='" + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column panel-heading' style='padding: 0px;white-space: nowrap; text-align: center; background-color: whitesmoke;'>" +
+            "<div class='" + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column panel-heading' style='padding: 0px; text-align: center; background-color: whitesmoke;'>" +
             (isDepartAt ? '' : midDateLabelTags) +
             (
                 isDepartAt ?
@@ -1315,7 +1312,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "<div class='col-xs-12' style='padding:0px;' aria-hidden='true'>" +
             "<div class='trip-plan-first-column' style='padding: 0px;'>" +
             "</div>" +
-            "<div class='tick-labels " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;white-space: nowrap;'>" +
+            "<div class='tick-labels " + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column' style='padding: 0px;'>" +
             tickLabelTags +
             "</div>" +
             "<div class='select-column' style='padding: 0px;'>" +
@@ -2064,7 +2061,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * adjust existing paratransitCount filter slider
      */
     function adjustParatransitCountFilters(minParatransitCount, maxParatransitCount) {
-        if(typeof(filterConfigs.default_max_paratransit_count) != 'number' || filterConfigs.default_max_paratransit_count <0) {
+        if(typeof(filterConfigs.default_max_paratransit_count) != 'number' || filterConfigs.default_max_paratransit_count <0 || maxParatransitCount <= filterConfigs.default_max_paratransit_count) {
             return;
         }
 
@@ -2680,8 +2677,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 });
         } else {
             // add mode icons
+            var legsWithIcons = $.grep(tripLegs, function(leg) { return leg.logo_url && leg.logo_url.trim().length > 0;});
             chart.selectAll(".mode-icons")
-                .data(tripLegs)
+                .data(legsWithIcons)
                 .enter().append("image")
                 .attr("class", "mode-icons")
                 .attr("xlink:href", function(d){
@@ -2700,6 +2698,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 .attr("height", barHeight);
         }
 
+        // add tooltips to rect, make sure text doesn't disrupt hover action
+        appendItineraryTooltip(chart, planId, tripPlan);
+        $('.itinerary-chart-service-name').css('pointer-events', 'none');
+        $('.mode-icons').css('pointer-events', 'none');
     }
 
     /*

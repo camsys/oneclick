@@ -22,7 +22,7 @@ class Itinerary < ActiveRecord::Base
   scope :hidden, -> {where('hidden=true')}
   scope :good_score, -> {where('match_score < 3')}
   scope :booked, -> {where.not(booking_confirmation: nil)}
-  scope :created_between, lambda {|from_day, to_day| where("itineraries.created_at > ? AND itineraries.created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
+  scope :created_between, lambda {|from_day, to_day| where("itineraries.created_at >= ? AND itineraries.created_at <= ?", from_day.at_beginning_of_day, to_day.at_end_of_day) }
   # NOTE that: mode scopes are based on :returned_mode_code as it represents the real mode code
   #    when itinerary.mode.code == :mode_transit, itinerary.returned_mode_code could be
   #        mode_transit

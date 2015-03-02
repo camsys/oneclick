@@ -160,7 +160,6 @@ class TripPart < ActiveRecord::Base
 
     existing_itins.each do |itin|
       if itin.is_walk
-        'FOUND ONE the new way DUDE'
          return true
       end
     end
