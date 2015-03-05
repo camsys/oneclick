@@ -181,6 +181,10 @@ ht:
   home: '[ht]en no-brand Home[/ht]'
   log_in: '[ht]Log in[/ht]'
   sign_up: '[ht]Sign up[/ht]'
+  sign_up_header_comment: ''
+  sign_up_footer_comment: ''
+  sign_in_header_comment: ''
+  sign_in_footer_comment: ''
   sign_up_and_plan: "[ht]Sign up and plan my trip[/ht]"
   welcome: '[ht]Welcome[/ht]'
   first_name: '[ht]First name[/ht]'

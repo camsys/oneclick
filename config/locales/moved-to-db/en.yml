@@ -233,6 +233,10 @@ en:
   home: 'en no-brand Home'
   log_in: 'Log in'
   sign_up: 'Sign up'
+  sign_up_header_comment: ''
+  sign_up_footer_comment: ''
+  sign_in_header_comment: ''
+  sign_in_footer_comment: ''
   sign_up_and_plan: "Sign up and plan my trip"
   welcome: 'Welcome'
   first_name: 'First name'

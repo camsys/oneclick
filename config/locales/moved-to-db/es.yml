@@ -211,6 +211,10 @@ es:
   log_in: 'Entrar'
   sign_up: 'Registrarse'
   sign_up_and_plan: "[es]Sign up and plan my trip[/es]"
+  sign_up_header_comment: ''
+  sign_up_footer_comment: ''
+  sign_in_header_comment: ''
+  sign_in_footer_comment: ''
   welcome: 'Bienvenido'
   first_name: 'Nombre'
   last_name: 'Apellido'

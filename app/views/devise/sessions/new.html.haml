@@ -13,6 +13,10 @@
 
   .row
     .col-sm-6
+      = render partial: 'shared/page_comments', locals: {key: :sign_in_header_comment}
+      
+  .row
+    .col-sm-6
       .panel.panel-default
         .panel-heading
           %h1.panel-title= t(:user_information)
@@ -27,3 +31,7 @@
           = f.input :remember_me, :label => t(:remember_me), :as => :boolean if devise_mapping.rememberable?
           - unless params[:redirect_to] #TODO: URI valid check?             
             = render "devise/shared/links"
+
+  .row
+    .col-sm-6
+      = render partial: 'shared/page_comments', locals: {key: :sign_in_footer_comment}
