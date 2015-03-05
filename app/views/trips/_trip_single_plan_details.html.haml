@@ -11,7 +11,7 @@
     .col-sm-12{style: "background: white; border-radius: 5px;"}
       = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
   - else
-    .col-sm-5{style: "background: white; margin-bottom: 5px; border-radius: 5px; padding: 5px; max-height:300px; overflow-y:scroll;"}
+    .col-sm-5.trip_itinerary_mappable{class: "#{local_assigns[:printer_friendly] ? 'printer_friendly' : ''}"}
       = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
     - if map_type=='delayed_static'
       .col-sm-7{id: "print_map_#{itinerary.id}", class: 'print_map'}

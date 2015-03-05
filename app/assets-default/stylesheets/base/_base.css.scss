@@ -589,13 +589,24 @@ td.left, th.left {
 }
 
 .print_map {
-  background: white;
   border-radius: 5px;
   padding: 5px;
   img {
     display: block;
     margin: auto;
   }
+}
+
+.trip_itinerary_mappable {
+  background: white;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  padding: 5px;
+
+  &:not(.printer_friendly) {
+    max-height:300px;
+    overflow-y:scroll;
+  } 
 }
 
 #splash iframe {
