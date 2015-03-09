@@ -119,6 +119,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
     var walkDistSliderId = "walkDistSlider"; //id of walk distance filter slider
     var waitTimeSliderId = "waitTimeSlider"; //id of wait time filter slider
     var paratransitCountSliderId = "paratransitCountSlider"; //id of paratransit count filter slider
+    var accommodationContainerId = "accommodationContainer"; //id of accommodation filter container div
 
     var tripPlanDivPrefix = "tripPlan_"; //prefix of each trip plan div
     var missInfoDivAffix = "_restriction"; //affix of each trip restriction modal dialog
@@ -336,12 +337,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             setHelperTabIndex('12');
             setHelperTabIndex('13');
             setHelperTabIndex('14');
+            setHelperTabIndex('15');
 
             // Include slider handles in tab order
             setSliderHandleTabIndex('#transferSlider', '11');
             setSliderHandleTabIndex('#costSlider', '12');
             setSliderHandleTabIndex('#durationSlider', '13');
             setSliderHandleTabIndex('#walkDistSlider', '14');
+            setSliderHandleTabIndex('#waitTimeSlider', '15');
 
             // Set aria-labels for outbound/return midTripTime
             setMidTripAriaLabel();
@@ -1090,7 +1093,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
     function getSelectButtonHtml(isDepartAt) {
         if (isDepartAt === undefined) { isDepartAt = false; }
         var tags =
-            ("<button role='button' class='btn btn-default single-plan-select action-button select-column-button' aria-label='Select this option.' tabindex=" + (isDepartAt ? '16' : '15') + ">" +
+            ("<button role='button' class='btn btn-default single-plan-select action-button select-column-button' aria-label='Select this option.' tabindex=" + (isDepartAt ? '17' : '16') + ">" +
                 "<span class='hidden-xs'>" + localeDictFinder['select'] + "</span>" +
                 "<span class='visible-xs'>&#10004;</span>" +
                 "</button>");
@@ -1266,16 +1269,16 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             localeDictFinder['arriving_by'] + ' ' + formatDate(tripEndTime)  + ' ' + formatTime(tripEndTime);
         //var headerAriaLabel = tripDescription + "; " + tripDatetimeDescritpion;
         //trip description
-        var tripDescTag = "<div class='panel-heading'><h2 class='panel-title' tabindex=" + (isDepartAt ? '16' : '15') + ">" + addReviewTooltip(inlineHelperKey) + tripDescription + " - " + tripDescriptionWithoutDirection + "</h2></div>";
+        var tripDescTag = "<div class='panel-heading'><h2 class='panel-title' tabindex=" + (isDepartAt ? '17' : '16') + ">" + addReviewTooltip(inlineHelperKey) + tripDescription + " - " + tripDescriptionWithoutDirection + "</h2></div>";
 
         var tickLabelTags = getTickLabelHtmlTags(tickLabels);
 
         var sorterLabelTags = "<span style='margin-left:15px;'>" + localeDictFinder['sort_by'] + ': </span>';
         var tripMidTime = new Date((tripStartTime.getTime() + tripEndTime.getTime()) / 2);
-        var midDateLabelTags = "<label class='sr-only' tabindex='" + (isDepartAt ? "16" : "15") + "'>" + "</label><span style='line-height:2;' aria-hidden='true'>" + formatDate(tripMidTime) + '</span>';
+        var midDateLabelTags = "<label class='sr-only' tabindex='" + (isDepartAt ? "17" : "16") + "'>" + "</label><span style='line-height:2;' aria-hidden='true'>" + formatDate(tripMidTime) + '</span>';
 
         var sorterTags =
-            '<select style="display: inline-block;" class="trip-sorter" tabindex=' + (isDepartAt ? "16" : "15") + '>"' +
+            '<select style="display: inline-block;" class="trip-sorter" tabindex=' + (isDepartAt ? "17" : "16") + '>"' +
             '<option value="start-time" ' + (isDepartAt ? ' selected' : '') + '>' + localeDictFinder["departure_time_sorter"] + '</option>' +
             '<option value="end-time" ' + (isDepartAt ? '' : ' selected') + '>' + localeDictFinder["arrival_time_sorter"] + '</option>' +
             '<option value="cost" >' + localeDictFinder['fare_sorter'] + '</option>' +
@@ -1294,19 +1297,19 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "</div>" +
             "<div class='col-xs-12' style='padding:0px;'>" +
             "<div class='trip-plan-first-column' style='padding: 0px; vertical-align: top;'>" +
-            (isDepartAt ? ("<button role='button' class='btn  btn-primary btn-single-arrow-left pull-right prev-period' aria-label='Move trip time back 30 minutes.' tabindex='16'> -" + intervelStep + "</button>") : "") +
+            (isDepartAt ? ("<button role='button' class='btn  btn-primary btn-single-arrow-left pull-right prev-period' aria-label='Move trip time back 30 minutes.' tabindex='17'> -" + intervelStep + "</button>") : "") +
             "</div>" +
             "<div class='" + (isDepartAt ? "highlight-left-border" : "highlight-right-border") + " trip-plan-main-column panel-heading' style='padding: 0px; text-align: center; background-color: whitesmoke;'>" +
             (isDepartAt ? '' : midDateLabelTags) +
             (
                 isDepartAt ?
-                ("<button role='button' class='btn  btn-primary btn-single-arrow-right pull-left next-period' aria-label='Move trip time forward 30 minutes.' tabindex='16'> +" + intervelStep + "</button>") :
-                ("<button role='button' class='btn  btn-primary btn-single-arrow-left pull-right prev-period' aria-label='Move trip time back 30 minutes.' tabindex='15'> -" + intervelStep + "</button>")
+                ("<button role='button' class='btn  btn-primary btn-single-arrow-right pull-left next-period' aria-label='Move trip time forward 30 minutes.' tabindex='17'> +" + intervelStep + "</button>") :
+                ("<button role='button' class='btn  btn-primary btn-single-arrow-left pull-right prev-period' aria-label='Move trip time back 30 minutes.' tabindex='16'> -" + intervelStep + "</button>")
             ) +
             (isDepartAt ? midDateLabelTags : '') +
             "</div>" +
             "<div class='select-column' style='padding: 0px;'>" +
-            (isDepartAt ? "" : ("<button role='button' class='btn  btn-primary btn-single-arrow-right pull-left next-period' aria-label='Move trip time forward 30 minutes.' tabindex='15'> +" + intervelStep + "</button>")) +
+            (isDepartAt ? "" : ("<button role='button' class='btn  btn-primary btn-single-arrow-right pull-left next-period' aria-label='Move trip time forward 30 minutes.' tabindex='16'> +" + intervelStep + "</button>")) +
             "</div>" +
             "</div>" +
             "<div class='col-xs-12' style='padding:0px;' aria-hidden='true'>" +
@@ -1424,6 +1427,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var isPlanEndTimeEstimated = tripPlan.end_time_estimated;
         var logoUrl = tripPlan.logo_url;
         var iconStyle = "background-image: url(" + logoUrl + ");"
+        var accommodations = tripPlan.accommodations;
 
         var modeServiceUrl = "";
         if (isValidObject(contact_information)) {
@@ -1467,7 +1471,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             " data-walk-dist='" + (isValidObject(duration) ? parseInt(duration.total_walk_dist) * METERS_TO_MILES: '') + "'" +
             " data-wait-time='" + (isValidObject(duration) ? parseFloat(duration.total_wait_time) / 60 : '') + "'" +
             " data-filter-visible = 1" +
-            " data-eligibility-visible = " + (eligibleCode != -1 ? '1' : '0');
+            " data-eligibility-visible = " + (eligibleCode != -1 ? '1' : '0') +
+            " data-accommodations='" + accommodations + "'";
 
         if(typeof(paratransitCounter) === 'number' && paratransitCounter > 0) {
             dataTags +=
@@ -1485,13 +1490,13 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "<table style='width: 100%;'>" +
             "<tbody>" +
             "<tr>" +
-            "<td tabindex=" + (isDepartAt ? '16' : '15') + " class='trip-mode-icon' aria-label='" + modeName + "' style='" + iconStyle + "'>" +
+            "<td tabindex=" + (isDepartAt ? '17' : '16') + " class='trip-mode-icon' aria-label='" + modeName + "' style='" + iconStyle + "'>" +
             (
                 isServiceAvailable ?
                 "<a aria-label='" + modeName + " " + serviceName + "' href='" + modeServiceUrl + "' target='_blank'</a>" : ""
             ) +
             "</td>" +
-            "<td tabindex=" + (isDepartAt ? '16' : '15') + " class='trip-mode-cost' aria-label='" + costAriaLabel + "' title='" + costTooltip + "'>" +
+            "<td tabindex=" + (isDepartAt ? '17' : '16') + " class='trip-mode-cost' aria-label='" + costAriaLabel + "' title='" + costTooltip + "'>" +
             "<div class='itinerary-text'>" +
                 costDisplay +
             "</div>" +
@@ -1500,7 +1505,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "</tbody>" +
             "</table>" +
             "</div>" +
-            "<div tabindex=" + (isDepartAt ? '16' : '15') + " class='" +
+            "<div tabindex=" + (isDepartAt ? '17' : '16') + " class='" +
             (isDepartAt ? "highlight-left-border regular-right-border" : "highlight-right-border regular-left-border") +
             " single-plan-chart-container trip-plan-main-column' style='padding: 0px; height: 100%;' id='" + tripPlanDivPrefix + tripId + "_" + planId + "'>" +
             "</div>" +
@@ -1509,7 +1514,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 (isMissingInfoFound && eligibleCode != 1) ?
                 (
                     "<button role='button' class='btn btn-default single-plan-question action-button select-column-button' " +
-                    "data-toggle='modal' data-target='#" + missInfoDivId + "' tabindex=" + (isDepartAt ? '16' : '15') + ">?</button>"
+                    "data-toggle='modal' data-target='#" + missInfoDivId + "' tabindex=" + (isDepartAt ? '17' : '16') + ">?</button>"
                 ) :
                 getSelectButtonHtml(isDepartAt)
             ) +
@@ -1748,6 +1753,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         }
 
         var modes = [];
+        var accommodations = [];
         var minTransfer = 0;
         var maxTransfer = 0;
         var minCost = -1;
@@ -1840,6 +1846,16 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 if (modes.indexOf(modeName) < 0) {
                     modes.push(modeName);
                 }
+
+                //accommodations
+                if (tripPlan.mode_name === "Paratransit") {
+                    for (i=0; i < tripPlan.accommodations.length; i++) {
+                        tripPlan.accommodations[i] = tripPlan.accommodations[i].replace(/(_)/g, " ").titleize();
+                        if (accommodations.indexOf(tripPlan.accommodations[i]) < 0) {
+                            accommodations.push(tripPlan.accommodations[i]);
+                        }
+                    }
+                }
             });
         });
 
@@ -1849,7 +1865,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             (maxDuration > minDuration) ||
             (maxWalkDist > minWalkDist) ||
             (maxWaitTime > minWaitTime) ||
-            (maxParatransitCount > minParatransitCount));
+            (maxParatransitCount > minParatransitCount) ||
+            accommodations.length > 0);
 
         if (filterAvailable) {
             if ($('#' + filterContainerId).length === 0) {
@@ -1857,6 +1874,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             }
 
             //render
+            adjustAccommodationFilters(accommodations);
             adjustModeFilters(modes);
             adjustTransferFilters(minTransfer, maxTransfer);
             adjustCostFilters(minCost, maxCost);
@@ -1864,6 +1882,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             adjustWalkDistFilters(minWalkDist, maxWalkDist);
             adjustWaitTimeFilters(minWaitTime, maxWaitTime);
             adjustParatransitCountFilters(minParatransitCount, maxParatransitCount);
+            
 
             // Add aria labels to slider handles for improved accessibility in JAWS
             addAriaToSliderHandle('#transferSlider', "Number of transfers slider. ", minTransfer, maxTransfer);
@@ -1873,9 +1892,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             addAriaToSliderHandle('#waitTimeSlider', "Wait time slider. ", $('#waitTimeSlider').attr('aria-valuemin'), $('#waitTimeSlider').attr('aria-valuemax'));
             addAriaToSliderHandle('#paratransitSlider', "Paratransit count slider. ", $('#paratransitCountSlider').attr('aria-valuemin'), $('#paratransitCountSlider').attr('aria-valuemax'));
 
-            //enable mode checkbox event
-            $('#' + modeContainerId + ' .checkbox').on('change', function() {
-                waitForFinalEvent(filterPlans, 100, 'mode change');
+            //enable mode/accommodation checkbox event
+            $('#' + modeContainerId + ' .checkbox, #' + accommodationContainerId + ' .checkbox').on('change', function() {
+                waitForFinalEvent(filterPlans, 100, 'mode/accommodation change');
             });
         } else {
             $('#' + filterButtonId).remove();
@@ -1957,6 +1976,70 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             '</label>' +
             '</div>';
         return modeTag;
+    }
+
+    /*
+     * create html tags for accommodation filter
+     * @param {Object}: accommodations
+     * @return {string} accommodationFilterTags
+     */
+    function getAccommodationFilterHtml(accommodations) {
+        var isFirst = true;
+        var accommodationFilterTags = '';
+        accommodations.forEach(function(accommodation) {
+            if (isFirst) {
+                accommodationFilterTags +=
+                    "<div class = 'col-sm-12 panel panel-default' style='padding: 0px;'>" +
+                    "<div class = 'panel-heading'>" +
+                    "<h2 class='panel-title modes-label' tabindex='10'>" + addReviewTooltip("modes_help") +  localeDictFinder['accommodations'] + "</h2>" +
+                    "</div>" +
+                    "<div class='panel-body' id='" + accommodationContainerId + "'>";
+                isFirst = false;
+            }
+            accommodationFilterTags += getAccommodationCheckboxHtml(accommodation);
+        });
+
+        if (!isFirst) {
+            accommodationFilterTags +=
+                '</div></div>';
+        }
+
+        return accommodationFilterTags;
+    }
+
+    /*
+     * insert accommodation checkbox filter
+     * @param {Object}: accommodations
+     * @return {string} filterInnerContainerId
+     */
+    function adjustAccommodationFilters(accommodations) {
+        accommodations.sort();
+
+        if ($('#' + accommodationContainerId).length === 0) {
+            $('#' + filterContainerId).prepend(getAccommodationFilterHtml(accommodations));
+        } else {
+            accommodations.forEach(function(accommodation) {
+                if ($('#' + accommodationContainerId + ' :checkbox[value=' + accommodationId + ']').length === 0) {
+                    $('#' + accommodationContainerId).append(getAccommodationCheckboxHtml(accommodation));
+                }
+            });
+        }
+    }
+
+    /*
+     * get html checkbox tag for one accommodation
+     * @param {string}: accommodation
+     */
+    function getAccommodationCheckboxHtml(accommodation) {
+        untitleized = accommodation.toLowerCase().replace(/\s/g, "_");
+        var accommodationTag =
+            '<div class="checkbox" style="margin:0px 0px 0px 10px;">' +
+            '<label>' +
+            '<input type="checkbox" checked=true value="' + untitleized + '" tabindex="10">' +
+            accommodation +
+            '</label>' +
+            '</div>';
+        return accommodationTag;
     }
 
     /*
@@ -2224,7 +2307,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<h2 class="panel-title trip-time-label" tabindex="13">' + addReviewTooltip("wait_time_help") + localeDictFinder['wait_time'] + '</h2>' +
+                '<h2 class="panel-title trip-time-label" tabindex="15">' + addReviewTooltip("wait_time_help") + localeDictFinder['wait_time'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div id="' + waitTimeSliderId + '" aria-valuemin="' + minWaitTime + '" aria-valuemax="' + maxWaitTime + '">' +
@@ -2951,7 +3034,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
     }
 
     /*
-     * main filtering function that handles modes, transfer, cost, and duration
+     * main filtering function that handles modes, transfer, cost, duration, and accommodations
      */
     function filterPlans() {
         var modes = [];
@@ -2961,6 +3044,15 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             var modeVal = modeCheckbox.attributes['value'].value;
 
             modes.push(modeVal);
+        }
+
+        var accommodations = [];
+        var accommodationCheckboxs = $('#' + accommodationContainerId + ' .checkbox :checked');
+        for (var i = 0, accommodationCount = accommodationCheckboxs.length; i < accommodationCount; i++) {
+            var accommodationCheckbox = accommodationCheckboxs[i];
+            var accommodationVal = accommodationCheckbox.attributes['value'].value;
+
+            accommodations.push(accommodationVal);
         }
 
         var transferValues = $('#' + transferSliderId).slider("option", "value");
@@ -2980,7 +3072,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         $('.single-plan-review').each(function() {
             var plan = $(this);
-            processPlanFiltering(modes, transferValues, costValues, durationValues, walkDistValues, waitTimeValues, paratransitCountValues, plan);
+            processPlanFiltering(modes, transferValues, costValues, durationValues, walkDistValues, waitTimeValues, paratransitCountValues, accommodations, plan);
             detectPlanVisibilityChange(plan);
         });
 
@@ -3048,15 +3140,27 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {number} paratransitCountValue
      * @param {Object} plan
      */
-    function processPlanFiltering(modes, transferValue, costValue, durationValue, walkDistValue, waitTimeValue, paratransitCountValue, plan) {
+    function processPlanFiltering(modes, transferValue, costValue, durationValue, walkDistValue, waitTimeValue, paratransitCountValue, accommodations, plan) {
         var modeVisible = true;
         if (modes instanceof Array) {
             modeVisible = filterPlansByMode(modes, plan);
-        }
+        }      
 
         if (!modeVisible) {
             plan.attr('data-filter-visible', 0);
             return;
+        }
+
+        if (plan.attr('data-accommodations') !== "null") {
+            var accommodationVisible = true;
+            if (accommodations instanceof Array) {
+                accommodationVisible = filterPlansByAccommodation(accommodations, plan);
+            }
+
+            if (!accommodationVisible) {
+                plan.attr('data-filter-visible', 0);
+                return;
+            }
         }
 
         var transferVisible = true;
@@ -3137,6 +3241,32 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var mode = plan.attr('data-mode');
         visible = (modes.indexOf(mode) >= 0);
 
+        return visible;
+    }
+
+    /*
+     * Filter trip plans by accommodations
+     * @param {Array} accommodations: an array of accommodations
+     * @param {object} plan
+     * @return {bool} visible
+     */
+    function filterPlansByAccommodation(accommodations, plan) {
+        var visible = false;
+        if (!accommodations instanceof Array || typeof(plan) != 'object' || plan === null) {
+            return visible;
+        }
+
+        var planAccoms = plan.attr('data-accommodations').split(",");
+        var check = [];
+        planAccoms.forEach(function(a){
+            if (accommodations.indexOf(a) >= 0) {
+                check.push(true);
+            } else {
+                check.push(false);
+            }
+        });
+
+        visible = !(check.indexOf(false) >= 0);
         return visible;
     }
 

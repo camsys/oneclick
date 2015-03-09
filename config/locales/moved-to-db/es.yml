@@ -721,6 +721,7 @@ es:
   not_available: '[es]Not Available[/es]'
   filters: '[es]Filters[/es]'
   modes_filter: '[es]Modes[/es]'
+  accommodations_filter: '[es]Accommodations[/es]'
   fare_filter: '[es]Fare[/es]'
   number_of_transfers_filter: '[es]Number of Transfers[/es]'
   trip_time_filter: '[es]Time[/es]'

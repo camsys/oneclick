@@ -198,14 +198,6 @@ class EligibilityService
 
     Rails.logger.debug "Get eligible services"
     eligible = get_eligible_services_for_traveler(user_profile, trip_part)
-    Rails.logger.debug "Done get eligible services, get accommodating"
-    #Creating set of itineraries
-
-    itineraries = get_accommodating_services_for_traveler(eligible, user_profile)
-    Rails.logger.debug "Done get accommodating"
-    Rails.logger.debug eligible.ai
-    itineraries
-
   end
 
   def get_eligible_services_for_trip(trip_part, itineraries)

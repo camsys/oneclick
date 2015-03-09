@@ -759,6 +759,7 @@ en:
   filters: 'Filters'
   legends: 'Legends'
   modes_filter: 'Modes'
+  accommodations_filter: 'Accommodations'
   fare_filter: 'Fare'
   number_of_transfers_filter: 'Number of Transfers'
   trip_time_filter: 'Time'

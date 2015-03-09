@@ -6,7 +6,7 @@ class ItinerarySerializer < ActiveModel::Serializer
 
   attributes :id, :missing_information, :mode, :mode_name, :service_name, :provider_name, :contact_information,
     :cost, :duration, :transfers, :start_time, :end_time, :legs, :service_window, :duration_estimated, :selected
-  attributes :server_status, :server_message, :failed, :hidden, :logo_url, :mode_logo_url
+  attributes :server_status, :server_message, :failed, :hidden, :logo_url, :mode_logo_url, :accommodations
   attr_accessor :debug
 
   def initialize(object, options={})
@@ -136,6 +136,13 @@ class ItinerarySerializer < ActiveModel::Serializer
 
   def selected
     object.selected
+  end
+
+  def accommodations
+    case object.mode
+    when Mode.paratransit
+      object.service.accommodations.map(&:code)
+    end
   end
 
 end
