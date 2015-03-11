@@ -101,7 +101,11 @@ Oneclick::Application.configure do
     config.max_number_of_specialized_services_to_show = 3
     config.replace_long_walks = true
 
-  when 'broward'
+    #SSL
+    config.force_ssl = true
+
+
+    when 'broward'
     config.host = 'oneclick-broward.camsys-apps.com'
     config.ui_logo = 'broward/logo.png'
     config.logo_text = "Broward logo - One Click"
@@ -310,6 +314,10 @@ Oneclick::Application.configure do
       config.default_county = 'Salt Lake'
       config.state = 'UT'
       config.max_walk_seconds = 3600
+
+      #SSL
+      config.force_ssl = true
+
 
 
     else

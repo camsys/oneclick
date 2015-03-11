@@ -22,7 +22,7 @@ module LeafletHelper
     options_with_indifferent_access = options.with_indifferent_access
 
     js_dependencies = Array.new
-    #js_dependencies << 'http://cdn.leafletjs.com/leaflet-0.4/leaflet.js'
+    #js_dependencies << '//cdn.leafletjs.com/leaflet-0.4/leaflet.js'
     #js_dependencies << 'leafletmap.js_x'
     #js_dependencies << 'leafletmap_icons.js_x'
 

@@ -9,12 +9,12 @@
       = stylesheet_link_tag brand, :media => "all"
       = stylesheet_link_tag '_base', :media => "all"
       = stylesheet_link_tag 'style', :media => "all"
-      = stylesheet_link_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.css", :media => "all"
+      = stylesheet_link_tag "//cdn.leafletjs.com/leaflet-0.4/leaflet.css", :media => "all"
 
-      = javascript_include_tag "http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"
-      = javascript_include_tag "http://maps.google.com/maps/api/js?v=3.2&sensor=false"
+      = javascript_include_tag "//cdn.leafletjs.com/leaflet-0.4/leaflet.js"
+      = javascript_include_tag "//maps.google.com/maps/api/js?v=3.2&sensor=false"
       = javascript_include_tag "application" # TODO This should go in footer
-      = javascript_include_tag "https://www.google.com/jsapi"
+      = javascript_include_tag "//www.google.com/jsapi"
 
       %meta{name: "ui_typeahead_delay",       content: Rails.application.config.ui_typeahead_delay}
       %meta{name: "ui_typeahead_min_chars",   content: Rails.application.config.ui_typeahead_min_chars}
