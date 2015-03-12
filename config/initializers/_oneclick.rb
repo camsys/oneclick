@@ -65,6 +65,9 @@ Oneclick::Application.configure do
   # maximum how many services to be displayed
   config.max_number_of_specialized_services_to_show = nil # nil means no limitation
 
+  #Default SSL Setting
+  config.force_ssl = false
+
 
   case ENV['BRAND'] || 'arc'
   when 'arc'
@@ -102,8 +105,9 @@ Oneclick::Application.configure do
     config.replace_long_walks = true
 
     #SSL
-    config.force_ssl = true
-
+    unless Rails.env == 'development'
+      config.force_ssl = true
+    end
 
     when 'broward'
     config.host = 'oneclick-broward.camsys-apps.com'
@@ -316,9 +320,9 @@ Oneclick::Application.configure do
       config.max_walk_seconds = 3600
 
       #SSL
-      config.force_ssl = true
-
-
+      unless Rails.env == 'development'
+        config.force_ssl = true
+      end
 
     else
     raise "Brand '#{config.brand}' not supported"
