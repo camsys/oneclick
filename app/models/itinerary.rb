@@ -103,7 +103,7 @@ class Itinerary < ActiveRecord::Base
     elsif modes.count > 2
       return false
     else
-      return Leg::TripLeg::WALK.in? legs
+      return Leg::TripLeg::WALK.in? modes
     end
   end
 
