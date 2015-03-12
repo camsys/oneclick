@@ -394,4 +394,6 @@ Oneclick::Application.routes.draw do
   end
 
   get 'heartbeat' => Proc.new { [200, {'Content-Type' => 'text/plain'}, ['ok']] }
+
+  get '/robots.txt' => RobotsTxt
 end
