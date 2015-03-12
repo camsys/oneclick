@@ -1848,7 +1848,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 }
 
                 //accommodations
-                if (tripPlan.mode_name === "Paratransit") {
+                if (tripPlan.mode === "mode_paratransit") {
                     for (i=0; i < tripPlan.accommodations.length; i++) {
                         tripPlan.accommodations[i] = tripPlan.accommodations[i].replace(/(_)/g, " ").titleize();
                         if (accommodations.indexOf(tripPlan.accommodations[i]) < 0) {
@@ -2035,7 +2035,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var accommodationTag =
             '<div class="checkbox" style="margin:0px 0px 0px 10px;">' +
             '<label>' +
-            '<input type="checkbox" checked=true value="' + untitleized + '" tabindex="10">' +
+            '<input type="checkbox" value="' + untitleized + '" tabindex="10">' +
             accommodation +
             '</label>' +
             '</div>';
@@ -3251,15 +3251,16 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @return {bool} visible
      */
     function filterPlansByAccommodation(accommodations, plan) {
+        var check = [];
         var visible = false;
+        var planAccoms = plan.attr('data-accommodations').split(",");
+        
         if (!accommodations instanceof Array || typeof(plan) != 'object' || plan === null) {
             return visible;
         }
 
-        var planAccoms = plan.attr('data-accommodations').split(",");
-        var check = [];
-        planAccoms.forEach(function(a){
-            if (accommodations.indexOf(a) >= 0) {
+        accommodations.forEach(function(a){
+            if (planAccoms.indexOf(a) >= 0) {
                 check.push(true);
             } else {
                 check.push(false);
