@@ -1991,7 +1991,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 accommodationFilterTags +=
                     "<div class = 'col-sm-12 panel panel-default' style='padding: 0px;'>" +
                     "<div class = 'panel-heading'>" +
-                    "<h2 class='panel-title modes-label' tabindex='10'>" + addReviewTooltip("modes_help") +  localeDictFinder['accommodations'] + "</h2>" +
+                    "<h2 class='panel-title modes-label' tabindex='10'>" + addReviewTooltip("accommodations_help") +  localeDictFinder['accommodations'] + "</h2>" +
                     "</div>" +
                     "<div class='panel-body' id='" + accommodationContainerId + "'>";
                 isFirst = false;
