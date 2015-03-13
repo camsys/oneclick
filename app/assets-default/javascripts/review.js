@@ -348,6 +348,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
             // Set aria-labels for outbound/return midTripTime
             setMidTripAriaLabel();
+
+            // Filter by the current user's preset accommodations
+            waitForFinalEvent(filterPlans, 100, "filter paratransit services");
         }
     }
 
@@ -2035,7 +2038,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var accommodationTag =
             '<div class="checkbox" style="margin:0px 0px 0px 10px;">' +
             '<label>' +
-            '<input type="checkbox" value="' + untitleized + '" tabindex="10">' +
+            '<input type="checkbox" ' + (filterConfigs.current_user_accommodations.indexOf(untitleized) >= 0 ? 'checked=true' : '') +
+            ' value="' + untitleized + '" tabindex="10">' +
             accommodation +
             '</label>' +
             '</div>';
