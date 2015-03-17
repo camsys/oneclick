@@ -3,14 +3,13 @@
     .modal-header
       .pull-right
         -if @traveler.can_book?
-          %button.btn.action-button#bookingSuccessButton
-            =t(:next)
           :javascript
             $('#initialCloseButton').hide();
-            $('#bookingSuccessButton').on('click', function(event) {
+            setTimeout(function(){
               $('#bookingSignupModal').modal('hide');
               location.href = "/";
-            });
+            }, 2000);
+              
         -else
           = button_tag id: 'bookingSubmitButton', type: :submit, class: 'btn action-button' do
             = t(:submit)
