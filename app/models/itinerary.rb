@@ -192,7 +192,7 @@ class Itinerary < ActiveRecord::Base
   def estimate_duration base_duration, minimum_duration, duration_factor, trip_time, is_depart
     self.duration_estimated = true
     if base_duration.nil?
-      duration = minimum_duration
+      duration = Oneclick::Application.config.default_paratransit_duration = 2.hours
     else
       duration =
         [base_duration * duration_factor,

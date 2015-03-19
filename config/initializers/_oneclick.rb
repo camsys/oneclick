@@ -19,7 +19,8 @@ Oneclick::Application.configure do
   config.default_max_fare = 50
   config.default_max_wait_time = 60 #minutes
   config.paratransit_duration_factor = 2.0
-  config.minimum_paratransit_duration = 2.hours
+  config.minimum_paratransit_duration = 0
+  config.default_paratransit_duration = 2.hours
   config.rideshare_duration_factor = 1.5
   config.minimum_rideshare_duration = (1.5).hours
   config.show_update_services = false
