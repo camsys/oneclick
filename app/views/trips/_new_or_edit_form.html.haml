@@ -201,6 +201,7 @@
 
 
         :javascript
+          // button to show trip page url
           $('.generate-url').click(function(){
 
             modes = $("#modes_inputs input[type='checkbox'], #transitModes input[type='checkbox']");
@@ -245,7 +246,22 @@
     = render partial: 'booking_signup'
 :javascript
   $(function() {
-
+    // initialize place picker
+    var geocoder_bounds = #{Rails.application.config.geocoder_bounds};
+    var bounds_hash = null;
+    if(geocoder_bounds) {
+      bounds_hash = {
+        xmin: geocoder_bounds[0][0],
+        ymin: geocoder_bounds[0][1],
+        xmax: geocoder_bounds[1][0],
+        ymax: geocoder_bounds[1][1]
+      }
+    }
+    init_place_picker(
+      ".plan-a-trip .place_picker", 
+      bounds_hash
+    );
+          
     var makeFullscreen = function(){
       var minMapHeight = 200;
       var newMainHeight = $(window).outerHeight(true);

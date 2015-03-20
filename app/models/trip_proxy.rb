@@ -130,7 +130,7 @@ class TripProxy < Proxy
     trip_proxy.from_raw_address = tp.address
     trip_proxy.from_lat = tp.location.first
     trip_proxy.from_lon = tp.location.last
-
+    
     if tp.poi
       trip_proxy.from_place_selected_type = POI_TYPE
       trip_proxy.from_place_selected = tp.poi.id

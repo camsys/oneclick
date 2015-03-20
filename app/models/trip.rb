@@ -87,6 +87,7 @@ class Trip < ActiveRecord::Base
 
     from_place = TripPlace.new.from_trip_proxy_place(trip_proxy.from_place_object, 0,
       trip_proxy.from_place, trip_proxy.map_center)
+    
     to_place = TripPlace.new.from_trip_proxy_place(trip_proxy.to_place_object, 1,
       trip_proxy.to_place, trip_proxy.map_center)
     # bubble up any errors finding places

@@ -11,7 +11,6 @@ class Admin::UtilController < Admin::BaseController
       @results = Geocoder.search(params[:geocode][:address], sensor: g.sensor, components: g.components, bounds: g.bounds)
       @autocomplete_results = google_api.get('autocomplete/json') do |req|
         req.params['input']    = @address
-        req.params['sensor']   = false
         req.params['key']      = Oneclick::Application.config.google_places_api_key
         req.params['location'] = @map_center
         req.params['radius']   = Oneclick::Application.config.config.google_radius_meters

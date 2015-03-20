@@ -66,7 +66,7 @@ class TripPlace < GeocodedAddress
         lon: j['lon'],
         raw_address: j['full_address'])
     when 'PLACES_AUTOCOMPLETE_TYPE'
-      update_address_attributes_from_google(j['id'], j['address'])
+      update_address_attributes_from_google(j['id'], j['address'], j['google_details'])
     when 'MANUAL_ENTRY'
       result = google_place_search(manual_entry, map_center)
       if result.body['status'] == 'ZERO_RESULTS'
@@ -75,16 +75,20 @@ class TripPlace < GeocodedAddress
       end
       first_result = result.body['predictions'].first
 
-      update_address_attributes_from_google(first_result['reference'], first_result['description'])
+      update_address_attributes_from_google(first_result['place_id'], first_result['description'])
     else
       raise "TripPlace.new_from_trip_proxy_place doesn't know how to handle type '#{j['type_name']}'"
     end
     self
   end
 
-  def update_address_attributes_from_google(reference, raw_address)
-    details = get_places_autocomplete_details(reference)
-    d = cleanup_google_details(details.body['result'])
+  def update_address_attributes_from_google(place_id, raw_address, google_details=nil)
+    if !google_details
+      details = get_places_autocomplete_details(place_id) 
+      google_details = details.body['result']
+    end
+    d = cleanup_google_details(google_details)
+
     d['county'] = Oneclick::Application.config.default_county if d['county'].blank?
     d['state'] = Oneclick::Application.config.state if d['state'].blank?
     d['address1'] = d['neighborhood'] if d['address1'].blank?
@@ -100,7 +104,8 @@ class TripPlace < GeocodedAddress
                            lat: d['lat'],
                            lon: d['lon'],
                            raw_address: raw_address,
-                           result_types: d['result_types'])
+                           result_types: d['result_types'],
+                           name: raw_address)
   end
 
 

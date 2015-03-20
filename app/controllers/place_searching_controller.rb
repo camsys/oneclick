@@ -129,20 +129,11 @@ class PlaceSearchingController < TravelerAwareController
       counter += 1
     end
 
-    # do places search
-
-    # puts "Oneclick::Application.config.google_place_search #{Oneclick::Application.config.google_place_search}"
-    # case Oneclick::Application.config.google_place_search
-    # when 'places'
-    places_matches = do_google_place_search(query, params[:map_center], counter, no_map_partial)
-    # when 'geocode'
-    #   places_matches = do_google_geocode_search(query, params[:map_center])
-    # else
-    #   raise "google_place_search config value of #{Oneclick::Application.config.google_place_search} is unsupported"
-    # end
-
-    matches += places_matches
-    counter += places_matches.size
+    ##### do google places search
+    ##### deprecated as we now do client-side place search & geocoding to reduce google service requests from server IP
+    # places_matches = do_google_place_search(query, params[:map_center], counter, no_map_partial)
+    # matches += places_matches
+    # counter += places_matches.size
 
     Rails.logger.info "PlaceSearchingController#search - returning #{matches.size} results for #{query_str}"
     render :json => matches.to_json
@@ -194,6 +185,7 @@ class PlaceSearchingController < TravelerAwareController
   def reverse_geocode
     g = OneclickGeocoder.new
     result = g.reverse_geocode(params[:lat], params[:lon])
+
     render json: result
   end
 
@@ -202,7 +194,6 @@ class PlaceSearchingController < TravelerAwareController
   def do_google_place_search query, map_center, counter, no_map_partial
     result = google_api.get('autocomplete/json') do |req|
       req.params['input']    = query
-      req.params['sensor']   = false
       req.params['key']      = Oneclick::Application.config.google_places_api_key
       req.params['location'] = map_center
       req.params['radius'] = Oneclick::Application.config.google_radius_meters
@@ -227,7 +218,7 @@ class PlaceSearchingController < TravelerAwareController
         'type'    => PLACES_AUTOCOMPLETE_TYPE,
         'type_name'    => 'PLACES_AUTOCOMPLETE_TYPE',
         'name'    => prediction['description'],
-        'id'      => prediction['reference'],
+        'id'      => prediction['place_id'],
         'lat'     => nil,
         'lon'     => nil,
         'address' => prediction['description'],

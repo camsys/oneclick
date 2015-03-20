@@ -5,7 +5,7 @@
     %title= content_for?(:title) ? yield(:title) : t(:site_title)
     %meta{:content => content_for?(:description) ? yield(:description) : t(:site_description), :name => "description"}
     = stylesheet_link_tag "stylesheets/application", :media => "all"
-    = javascript_include_tag "//maps.google.com/maps/api/js?v=3.2&sensor=false"
+    = javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places"
     = javascript_include_tag "javascripts/application"
 
     = csrf_meta_tags

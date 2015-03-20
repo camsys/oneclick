@@ -95,6 +95,21 @@
 
 :javascript
   $(function() {
+    // initialize place picker
+    var geocoder_bounds = #{Rails.application.config.geocoder_bounds};
+    var bounds_hash = null;
+    if(geocoder_bounds) {
+      bounds_hash = {
+        xmin: geocoder_bounds[0][0],
+        ymin: geocoder_bounds[0][1],
+        xmax: geocoder_bounds[1][0],
+        ymax: geocoder_bounds[1][1]
+      }
+    }
+    init_place_picker(
+      ".places .place_picker", 
+      bounds_hash
+    );
     $('#delete_place').click(function(e) {
       if ($('#delete_place').attr('disabled') || $('#places_controller_places_proxy_id').val() == '') {
         return false;
