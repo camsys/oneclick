@@ -816,6 +816,7 @@ ht:
   presence_msg: "[ht]can't be blank[/ht]"
   before_msg: "[ht]must be before [/ht]"
   advanced_book_day_range_msg: "[ht]Advanced booking days: please make sure day range is valid.[/ht]"
+  ensure_single_taxi_service_msg: "[ht]Only one taxi service allowed.[/ht]"
 
   date:
     abbr_day_names:

@@ -65,6 +65,7 @@ class Service < ActiveRecord::Base
   validates :provider, presence: true
   validates :service_type, presence: true
   validate :ensure_valid_advanced_book_day_range
+  validate :ensure_single_taxi_service
 
   mount_uploader :logo, ServiceLogoUploader
 
@@ -399,6 +400,12 @@ class Service < ActiveRecord::Base
     max_mins = self.max_advanced_book_minutes
     if !min_mins.nil? && !max_mins.nil? && min_mins > max_mins
       errors.add(:max_advanced_book_days_part, I18n.t(:advanced_book_day_range_msg))
+    end
+  end
+
+  def ensure_single_taxi_service
+    if (ServiceType.where(code: 'taxi').count > 0) && (self.service_type.code == "taxi")
+      errors.add(:service_type, I18n.t(:ensure_single_taxi_service_msg))
     end
   end
 
