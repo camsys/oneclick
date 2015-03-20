@@ -141,3 +141,55 @@ String.prototype.titleize = function() {
   }
   return array.join(' ')
 }
+
+// initialize a place picker to query 1-click place datatable and google places
+function init_place_picker(dom_selector, query_bounds, query_restrictions) {
+  var saved_places = new Bloodhound({
+    datumTokenizer: function(d) {
+     return  Bloodhound.tokenizers.whitespace(d.value);
+    },
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: {
+      url: '/place_search.json?no_map_partial=true',
+      rateLimitWait: 600,
+      replace: function(url, query) {
+        url = url + '&query=' + query;
+        return url;
+      }
+    },
+    limit: 10
+  });
+
+  saved_places.initialize()
+
+  var autocomplete_service_config = {};
+  if (query_bounds) 
+    autocomplete_service_config.bounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(query_bounds.xmin,query_bounds.ymin), 
+      new google.maps.LatLng(query_bounds.xmax,query_bounds.ymax));
+  if (query_restrictions)
+    autocomplete_service_config.componentRestrictions = query_restrictions;
+  var google_place_picker = new AddressPicker({
+    autocompleteService: autocomplete_service_config
+  });
+
+  $(dom_selector).typeahead(null,
+    {
+      displayKey: "name",
+      source: saved_places.ttAdapter(),
+      templates: {
+        suggestion: Handlebars.compile([
+          '<a>{{name}}</a>'
+        ].join(''))
+      }
+    },
+    {
+      displayKey: "description",
+      source: google_place_picker.ttAdapter(),
+      templates: {
+        suggestion: Handlebars.compile([
+          '<a>{{description}}</a>'
+        ].join(''))
+      }
+    });
+}
