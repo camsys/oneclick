@@ -43,7 +43,7 @@ class TripsController < PlaceSearchingController
     @max_paratransit_count =  Oneclick::Application.config.max_number_of_specialized_services_to_show
 
     @current_user_accommodations = []
-    current_user.user_accommodations.where(value: "true").each do |acc|
+    User.find(params[:id]).user_accommodations.where(value: "true").each do |acc|
       @current_user_accommodations << Accommodation.find(acc.accommodation_id).code
     end
 
