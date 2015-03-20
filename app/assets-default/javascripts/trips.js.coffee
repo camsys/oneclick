@@ -18,7 +18,12 @@ create_or_update_marker = (map, key, lat, lon, name, desc, iconStyle) ->
   map.addMarkerToMap marker, true
   marker
 
-update_map = (map, dir, e, addr, d) ->
+# is_dup: a temp fix to stop duplicating another place for multi_od_places
+#           also not need to select marker
+# reason:
+#       current enlarged map implementation is to have a duplicated map (expandedMap), then repeat same updates as for tripMap
+#       we only allow certain updates to happen on second map (enlargedMap), by passing is_dup as true to differentiate
+update_map = (map, dir, e, addr, d, is_dup) ->
   if dir =='from'
     key = 'start'
     icon = 'startIcon'
@@ -34,8 +39,9 @@ update_map = (map, dir, e, addr, d) ->
   map.removeMatchingMarkers(key)
   marker = create_or_update_marker(map, key, addr.lat, addr.lon, addr.name, addr.full_address, icon)
   map.setMapToBounds()
-  map.selectMarker(marker)
-  add_multi_od_places(dir, addr.name, addr)
+  if !is_dup
+    map.selectMarker(marker)
+    add_multi_od_places(dir, addr.name, addr)
 
 format_place = (addr) ->
   if !addr.lat && addr.lat != 0
@@ -164,9 +170,9 @@ add_multi_od_places = (dir, addr_text, addr_data) ->
 #update map marker from selected location, and update address input field from reverse geocoded address
 process_location_from_map = (addr, dir) -> 
   $('#' + dir + '_place_object').val(JSON.stringify(addr))
-  update_map(CsMaps.tripMap, dir, null, addr, null)
-  update_map(CsMaps.expandedMap, dir, null, addr, null)
-  update_place(addr.name, dir, addr)
+  update_map CsMaps.tripMap, dir, null, addr, null
+  update_map CsMaps.expandedMap, dir, null, addr, null, true
+  update_place addr.name, dir, addr
 
 validateDateTimes = (isReturn) ->
   outboundDateField = $("#trip_proxy_outbound_trip_date")
@@ -321,7 +327,7 @@ $ ->
     parse_place_details addr, (addr_with_details) -> 
       $('#from_place_object').val(JSON.stringify(addr_with_details))
       update_map CsMaps.tripMap, 'from', e, addr_with_details, d
-      update_map CsMaps.expandedMap, 'from', e, addr_with_details, d
+      update_map CsMaps.expandedMap, 'from', e, addr_with_details, d, true
       if $('#from_places').length == 0
         $('#trip_proxy_to_place').focus()
         $('#trip_proxy_to_place').trigger('touchstart')
@@ -330,7 +336,7 @@ $ ->
     parse_place_details addr, (addr_with_details) ->
       $('#from_place_object').val(JSON.stringify(addr_with_details))
       update_map CsMaps.tripMap, 'from', e, addr_with_details, d
-      update_map CsMaps.expandedMap, 'from', e, addr_with_details, d
+      update_map CsMaps.expandedMap, 'from', e, addr_with_details, d, true
 
   $('#trip_proxy_to_place, #trip_proxy_outbound_arrive_depart').on 'touchstart', () ->
     $(this).focus()
@@ -341,7 +347,7 @@ $ ->
     parse_place_details addr, (addr_with_details) ->
       $('#to_place_object').val(JSON.stringify(addr_with_details))
       update_map CsMaps.tripMap, 'to', e, addr_with_details, d
-      update_map CsMaps.expandedMap, 'to', e, addr_with_details, d
+      update_map CsMaps.expandedMap, 'to', e, addr_with_details, d, true
       if $('#to_places').length == 0
         $('#trip_proxy_outbound_arrive_depart').focus()
         $('#trip_proxy_outbound_arrive_depart').trigger('touchstart')
@@ -350,7 +356,7 @@ $ ->
     parse_place_details addr, (addr_with_details) ->
       $('#to_place_object').val(JSON.stringify(addr_with_details))
       update_map CsMaps.tripMap, 'to', e, addr_with_details, d
-      update_map CsMaps.expandedMap, 'to', e, addr_with_details, d
+      update_map CsMaps.expandedMap, 'to', e, addr_with_details, d, true
 
   $('.plan-a-trip input, .plan-a-trip select').on 'focusin', () ->
     if $(this).parents('.trip_proxy_from_place, .trip_proxy_to_place').length == 0
