@@ -21,12 +21,28 @@ class TripPlace < GeocodedAddress
   # set the default scope
   default_scope {order('sequence ASC')}
 
-  def from_trip_proxy_place json_string, sequence, manual_entry = '', map_center = ''
+  def from_trip_proxy_place json_string, sequence, manual_entry = '', map_center = '', traveler = nil
     self.sequence = sequence
     j = JSON.parse(json_string) rescue {'type_name' => 'MANUAL_ENTRY'}
-    j['type_name'] = j['type_name'] || 'MANUAL_ENTRY'
+    place_type = j['type_name'] || 'MANUAL_ENTRY'
+
+    # pre-process MANUAL_ENTRY to see if any match from Places and POIs
+    if place_type == 'MANUAL_ENTRY'
+      match_place = traveler.places.active.where(Place.arel_table[:name].matches(manual_entry)).first if traveler
+      if match_place
+        j = match_place
+        place_type = 'PLACES_TYPE'
+      else
+        match_poi = Poi.where(Poi.arel_table[:name].matches(manual_entry)).first
+        if match_poi
+          j = match_poi
+          place_type = 'POI_TYPE'
+        end
+      end
+    end
+
     j['county'] = Oneclick::Application.config.default_county if j['county'].blank?
-    case j['type_name']
+    case place_type
     when 'PLACES_TYPE'
       self.update_attributes(
         place_id: j['id'],
@@ -67,7 +83,7 @@ class TripPlace < GeocodedAddress
         raw_address: j['full_address'])
     when 'PLACES_AUTOCOMPLETE_TYPE'
       update_address_attributes_from_google(j['id'], j['address'], j['google_details'])
-    when 'MANUAL_ENTRY'
+    when 'MANUAL_ENTRY' # only google_search
       result = google_place_search(manual_entry, map_center)
       if result.body['status'] == 'ZERO_RESULTS'
         self.errors.add(:base, "No results for search string")

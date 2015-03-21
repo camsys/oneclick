@@ -86,10 +86,10 @@ class Trip < ActiveRecord::Base
     end
 
     from_place = TripPlace.new.from_trip_proxy_place(trip_proxy.from_place_object, 0,
-      trip_proxy.from_place, trip_proxy.map_center)
+      trip_proxy.from_place, trip_proxy.map_center, traveler)
     
     to_place = TripPlace.new.from_trip_proxy_place(trip_proxy.to_place_object, 1,
-      trip_proxy.to_place, trip_proxy.map_center)
+      trip_proxy.to_place, trip_proxy.map_center, traveler)
     # bubble up any errors finding places
     trip.errors.add(:from_place, from_place.errors[:base].first) unless from_place.errors[:base].empty?
     trip.errors.add(:to_place, to_place.errors[:base].first) unless to_place.errors[:base].empty?
