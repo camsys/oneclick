@@ -174,7 +174,6 @@ class TripPart < ActiveRecord::Base
     Rails.logger.info "TIMING: #{label} #{s2 - s} #{s} #{s2}"
   end
 
-  # TODO refactor following 4 methods
   def create_fixed_route_itineraries(mode="TRANSIT,WALK", mode_code='mode_transit')
     itins = []
     tp = TripPlanner.new
@@ -232,35 +231,117 @@ class TripPart < ActiveRecord::Base
     itins
   end
 
+  # TODO refactor following 4 methods
   def check_for_long_walks itineraries
 
     filtered = []
-    long_walks = false
+    replaced = false
     itineraries.each do |itinerary|
-      first_leg = itinerary.get_legs.first
-      #TODO: Make the 20 minute threshold configurable.
+
+      ### Check to see where the long walks are
+      legs = itinerary.get_legs
+
+      first_leg = legs.first
+      last_leg = legs.last
+
+      multiple_long_walks = false
+      long_first_leg = false
+      long_last_leg = false
+
       if first_leg.mode == 'WALK' and first_leg.duration > Oneclick::Application.config.max_walk_seconds
-        long_walks = true
-        if Oneclick::Application.config.replace_long_walks
-          itinerary.hide
-        else
+        long_first_leg = true
+      end
+
+      if last_leg.mode == 'WALK' and last_leg.duration > Oneclick::Application.config.max_walk_seconds
+        long_last_leg = true
+      end
+
+      if long_last_leg and long_first_leg
+        multiple_long_walks =  true
+      end
+
+      unless multiple_long_walks
+        legs[1..-1].each do |leg|
+          if leg.mode == 'WALK' and leg.duration > Oneclick::Application.config.max_walk_seconds and long_first_leg
+            multiple_long_walks = true
+            break
+          end
+        end
+      end
+
+      ###Handle the Long Walks
+      if multiple_long_walks
+        unless Oneclick::Application.config.replace_long_walks
           filtered << itinerary
         end
+
+        if Mode.car.active? and not replaced
+          filtered += create_fixed_route_itineraries("CAR")
+          replaced = true
+        end
+      elsif long_first_leg
+        unless Oneclick::Application.config.replace_long_walks
+          filtered << itinerary
+        end
+
+        if Mode.car_transit.active? and not replaced
+            filtered += create_fixed_route_itineraries("CAR,TRANSIT,WALK")
+            replaced = true
+        end
+      elsif long_last_leg
+        unless Oneclick::Application.config.replace_long_walks
+          filtered << itinerary
+        end
+
+        tp = TripPlanner.new
+        new_itinerary = itinerary.dup
+
+        legs = new_itinerary.get_legs
+        replaced_leg = legs.last
+        legs = legs[0..-1]
+
+        ##Build a short drive itinerary
+        result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.start_time,
+                                                    'false', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000)
+
+        #TODO: Save errored results to an event log
+        if result
+          tp.convert_itineraries(response, Mode.car.code).each do |itinerary|
+            serialized_itinerary = {}
+
+            itinerary.each do |k,v|
+              if v.is_a? Array
+                serialized_itinerary[k] = v.to_yaml
+              else
+                serialized_itinerary[k] = v
+              end
+            end
+
+            #Adjust itinerary
+            car_itin = Itinerary.new(serialized_itinerary)
+
+            #walk_time, walk duration, total duration
+            last_leg = new_itinerary.get_legs.last
+            new_itinerary.walk_time -= last_leg.duration
+            new_itinerary.walk_distance -= last_leg.distance
+            new_itinerary.duration -= (last_leg.duration - car_itin.duration)
+            new_itinerary.end_time = new_itinerary.end_time - (last_leg.duration - car_itin.duration)
+
+            #legs
+            yaml_legs = YAML.load(new_itinerary.legs)
+            yaml_legs = yaml_legs[0...-1]
+            yaml_car = YAML.load(car_itin.legs)
+            yaml_legs += yaml_car
+            new_itinerary.legs = yaml_legs.to_yaml
+
+            filtered << new_itinerary
+          end
+        end
+
       else
-      filtered << itinerary
-      end
-    end
-    if long_walks
-
-      #KISS N RIDE
-      if Mode.car_transit.active? and !(self.trip.desired_modes.include? Mode.car_transit) #is this mode active and not explicitly requested?
-        filtered += create_fixed_route_itineraries("CAR,TRANSIT,WALK")
+        filtered << new_itinerary
       end
 
-      #PARK N RIDE
-      if Mode.park_transit.active? and !(self.trip.desired_modes.include? Mode.park_transit) #is this mode active and not explicitly requested?
-        filtered += create_fixed_route_itineraries("CAR_PARK,TRANSIT,WALK")
-      end
     end
 
     filtered
