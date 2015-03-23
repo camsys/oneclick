@@ -138,6 +138,7 @@ class TripPart < ActiveRecord::Base
             new_itins = create_fixed_route_itineraries(mode.otp_mode, mode)
             non_duplicate_itins = []
             new_itins.each do |itin|
+              puts itin.ai
               unless self.check_for_duplicates(itin, self.itineraries + itins)
                 non_duplicate_itins << itin
               end

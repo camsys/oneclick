@@ -318,28 +318,66 @@ class EcolaneHelpers
   end
 
   def build_funding_hash(itinerary, funding_xml)
+
+    #Get the default funding source for this customer and build an array of valid funding source ordered from
+    # most desired to least desired.
+    default_funding = get_default_funding_source(get_customer_id(itinerary))
+    funding_array = [default_funding] + Oneclick::Application.config.funding_source_order
+
     purpose = itinerary.trip_part.trip.trip_purpose.code
-    other_funding = nil
-    sponsor = nil
+    min_index = 10000
+    best_funding_source = nil
+    best_sponsor = nil
+    best_purpose = nil
+
+    #Cycle through all the funding sources for this trip.  Return the one with the lowest index.
     funding_xml.xpath("funding_options").xpath("option").each do |options|
 
       ecolane_purpose = options.xpath("purpose").text
+      simplified_ecolane_purpose = ecolane_purpose.downcase.gsub(%r{[ /]}, '_')
 
-      if ecolane_purpose.downcase.gsub(%r{[ /]}, '_') == 'other'
-        other_funding = funding_source = options.xpath("funding_source").text
-        sponsor = options.xpath("sponsor").text
-      end
-
-      if purpose == ecolane_purpose.downcase.gsub(%r{[ /]}, '_')
+      if simplified_ecolane_purpose == 'other' or simplified_ecolane_purpose == purpose
         funding_source = options.xpath("funding_source").text
-        sponsor = options.xpath("sponsor").text
-        return {funding_source: funding_source, purpose: ecolane_purpose, sponsor: sponsor}
+        index = funding_array.index(funding_source)
+
+        if index and (index < min_index or (index == min_index and best_sponsor.nil?))
+          min_index = index
+          best_funding_source = funding_source
+          best_sponsor = options.xpath("sponsor").text
+          best_purpose = ecolane_purpose
+
+          #If we match the default funding source with a sponsor, go ahead and return.
+          if min_index == 0 and not best_sponsor.nil?
+            return {funding_source: best_funding_source, purpose: best_purpose , sponsor: best_sponsor}
+          end
+
+        end
+
       end
     end
-    return {funding_source: other_funding, purpose: 'other', sponsor: sponsor}
+
+    return {funding_source: best_funding_source, purpose: best_purpose , sponsor: best_sponsor}
 
   end
 
+
+  #Find the default funding source for a customer id
+  # (customer_id is the internal id and not the client id)
+  def get_default_funding_source(customer_id)
+
+    customer_information = fetch_customer_information(customer_id, funding = true)
+    resp_xml = Nokogiri::XML(customer_information)
+    resp_xml.xpath("customer").xpath("funding").xpath("funding_source").each do |funding_source|
+      if funding_source.attribute("default") and funding_source.attribute("default").value.downcase == "yes"
+        return funding_source.xpath("name").text
+      end
+    end
+
+    nil
+
+  end
+
+  #Build the hash for the pickup request
   def build_pu_hash(itinerary)
     if itinerary.trip_part.is_depart
       pu_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(itinerary.trip_part.from_trip_place)}
@@ -349,6 +387,7 @@ class EcolaneHelpers
     pu_hash
   end
 
+  #Build the hash for the drop off request
   def build_do_hash(itinerary) #temp funciton
     if itinerary.trip_part.is_depart
       do_hash = {location: build_location_hash(itinerary.trip_part.to_trip_place)}
@@ -358,6 +397,7 @@ class EcolaneHelpers
     do_hash
   end
 
+  #Build a location hash (Used for dropoffs and pickups )
   def build_location_hash(place)
     street_number, street = if place.address1.present?
       parsable_address = Indirizzo::Address.new(place.address1)

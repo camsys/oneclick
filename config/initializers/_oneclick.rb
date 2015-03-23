@@ -184,8 +184,9 @@ Oneclick::Application.configure do
     #for PA, we ask a follow up question after a person creates an account
     config.initial_signup_question = true
     config.allows_booking = true
-
     config.kiosk_available = true
+    config.funding_source_order = ["Lottery", "PWD", "MATP", "ADAYORK1", "ADAYORK2"]
+
   when 'jta'
     config.host = 'transportal.net'
     config.ui_logo = 'jta/logo.png'
