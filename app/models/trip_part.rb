@@ -262,7 +262,7 @@ class TripPart < ActiveRecord::Base
 
       unless multiple_long_walks
         legs[1..-1].each do |leg|
-          if leg.mode == 'WALK' and leg.duration > Oneclick::Application.config.max_walk_seconds and long_first_leg
+          if leg.mode == 'WALK' and leg.duration > Oneclick::Application.config.max_walk_seconds and (long_first_leg or long_last_leg)
             multiple_long_walks = true
             break
           end
@@ -270,9 +270,10 @@ class TripPart < ActiveRecord::Base
       end
 
       ###Handle the Long Walks
+
       if multiple_long_walks
-        unless Oneclick::Application.config.replace_long_walks
-          filtered << itinerary
+        if Oneclick::Application.config.replace_long_walks
+          itinerary.hide
         end
 
         if Mode.car.active? and not replaced
@@ -280,8 +281,8 @@ class TripPart < ActiveRecord::Base
           replaced = true
         end
       elsif long_first_leg
-        unless Oneclick::Application.config.replace_long_walks
-          filtered << itinerary
+        if Oneclick::Application.config.replace_long_walks
+          itinerary.hide
         end
 
         if Mode.car_transit.active? and not replaced
@@ -289,8 +290,8 @@ class TripPart < ActiveRecord::Base
             replaced = true
         end
       elsif long_last_leg
-        unless Oneclick::Application.config.replace_long_walks
-          filtered << itinerary
+        if Oneclick::Application.config.replace_long_walks
+          itinerary.hide
         end
 
         tp = TripPlanner.new
@@ -337,11 +338,8 @@ class TripPart < ActiveRecord::Base
             filtered << new_itinerary
           end
         end
-
-      else
-        filtered << new_itinerary
       end
-
+      filtered << itinerary
     end
 
     filtered
