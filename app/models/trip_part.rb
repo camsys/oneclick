@@ -262,7 +262,7 @@ class TripPart < ActiveRecord::Base
 
       unless multiple_long_walks
         legs[1..-1].each do |leg|
-          if leg.mode == 'WALK' and leg.duration > Oneclick::Application.config.max_walk_seconds and (long_first_leg or long_last_leg)
+          if leg.mode == 'WALK' and leg.duration > Oneclick::Application.config.max_walk_seconds and long_first_leg
             multiple_long_walks = true
             break
           end
