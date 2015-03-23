@@ -65,7 +65,7 @@ class Service < ActiveRecord::Base
   validates :provider, presence: true
   validates :service_type, presence: true
   validate :ensure_valid_advanced_book_day_range
-  validate :ensure_single_taxi_service
+  before_save :ensure_single_taxi_service
 
   mount_uploader :logo, ServiceLogoUploader
 
