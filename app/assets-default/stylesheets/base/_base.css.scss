@@ -595,6 +595,7 @@ td.left, th.left {
     display: block;
     margin: auto;
     width: 100%;
+    height: 500px;
   }
 }
 
@@ -605,9 +606,8 @@ td.left, th.left {
   padding: 5px;
 
   &:not(.printer_friendly) {
-    max-height:300px;
     overflow-y:scroll;
-  } 
+  }
 }
 
 #splash iframe {
