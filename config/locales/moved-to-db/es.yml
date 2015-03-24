@@ -892,34 +892,10 @@ es:
     ht: "Creole"
 
   # Branding
-  ma:
-    home: '1-Click/MA Home'
-    logotext: ''
-    site_title: '1-Click/MA'
-    site_description: '1-Click/MA Application'
-  arc:
-    logotext: ''
-    site_title: 'ARC 1-Click'
-    site_description: ' Applicación ARC 1-Click'
   pa:
     logotext: ''
     site_title: 'PA/1-Click'
     site_description: 'Aplicación PA/1-Click '
-  broward:
-    logotext: ''
-    site_title: 'Broward 1-Click'
-    site_description: 'Aplicación Broward 1-Click'
-  jta:
-    logotext: ''
-    site_title: 'JTA 1-Click'
-    site_description: 'Aplicación JTA 1-Click'
-  ieuw:
-    home: 'VetLink Home'
-    logotext: ''
-    site_title: 'VetLink'
-    site_description: 'VetLink 1-Click Application'
-    next: '[es]Next[/es]'
-
   simple_form:
     labels:
       defaults:
