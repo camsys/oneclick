@@ -898,26 +898,11 @@ ht:
     ht: "Creole"
 
   # Branding
-  arc:
-    home: '[ht]ARC 1-Click Home[/ht]'
-    logotext: '[ht][/ht]'
-    site_title: '[ht]ARC 1-Click[/ht]'
-    site_description: '[ht]ARC 1-Click Application[/ht]'
   pa:
     home: '[ht]1-Click/PA Home[/ht]'
     logotext: '[ht][/ht]'
     site_title: '[ht]1-Click/PA[/ht]'
     site_description: '[ht]1-Click/PA Application[/ht]'
-  broward:
-    home: '[ht]1-Click Broward Home[/ht]'
-    logotext: '[ht][/ht]'
-    site_title: '[ht]Broward 1-Click[/ht]'
-    site_description: '[ht]Broward 1-Click Application[/ht]'
-  jta:
-    home: '[ht]JTA 1-Click Home[/ht]'
-    logotext: '[ht][/ht]'
-    site_title: '[ht]JTA 1-Click[/ht]'
-    site_description: '[ht]JTA 1-Click Application[/ht]'
   simple_form:
     labels:
       defaults:

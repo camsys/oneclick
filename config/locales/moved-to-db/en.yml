@@ -1003,16 +1003,6 @@ en:
     es: "En Español"
     ht: "Creole"
   # Branding
-  ma:
-    home: '1-Click/MA Home'
-    logotext: ''
-    site_title: '1-Click/MA'
-    site_description: '1-Click/MA Application'
-  arc:
-    home: 'ARC 1-Click Home'
-    logotext: ''
-    site_title: 'ARC 1-Click'
-    site_description: 'ARC 1-Click Application'
   pa:
     home: '1-Click/PA Home'
     logotext: ''
@@ -1045,22 +1035,6 @@ en:
     ecolane_login_button: "Shared Ride Login"
     next: 'Next >>'
 
-  broward:
-    home: '1-Click Broward Home'
-    logotext: ''
-    site_title: 'Broward 1-Click'
-    site_description: 'Broward 1-Click Application'
-  jta:
-    home: 'JTA 1-Click Home'
-    logotext: ''
-    site_title: 'JTA 1-Click'
-    site_description: 'JTA 1-Click Application'
-  ieuw:
-    home: 'VetLink Home'
-    logotext: ''
-    site_title: 'VetLink'
-    site_description: 'VetLink 1-Click Application'
-    next: 'Next'
   simple_form:
     labels:
       defaults:
