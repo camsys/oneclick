@@ -270,8 +270,7 @@ class TripPart < ActiveRecord::Base
         end
       end
 
-      ###Handle the Long Walks
-
+      # Handle multiple long walks
       if multiple_long_walks
         if Oneclick::Application.config.replace_long_walks
           itinerary.hide
@@ -281,105 +280,117 @@ class TripPart < ActiveRecord::Base
           filtered += create_fixed_route_itineraries("CAR")
           replaced = true
         end
+
+      # Handle long walks on the first leg
       elsif long_first_leg
         if Oneclick::Application.config.replace_long_walks
           itinerary.hide
         end
 
-        tp = TripPlanner.new
-        new_itinerary = itinerary.dup
+        if Mode.car_transit.active?
+          tp = TripPlanner.new
+          new_itinerary = itinerary.dup
 
-        legs = new_itinerary.get_legs
-        replaced_leg = legs.first
+          legs = new_itinerary.get_legs
+          replaced_leg = legs.first
 
-        ##Build a short drive itinerary
-        result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.end_time,
-                                                    'true', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000)
+          ##Build a short drive itinerary
+          result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.end_time,
+                                                      'true', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000)
 
-        #TODO: Save errored results to an event log
-        if result
-          tp.convert_itineraries(response, Mode.car.code).each do |itinerary|
-            serialized_itinerary = {}
+          #TODO: Save errored results to an event log
+          if result
+            tp.convert_itineraries(response, Mode.car.code).each do |itinerary|
+              serialized_itinerary = {}
 
-            itinerary.each do |k,v|
-              if v.is_a? Array
-                serialized_itinerary[k] = v.to_yaml
-              else
-                serialized_itinerary[k] = v
+              itinerary.each do |k,v|
+                if v.is_a? Array
+                  serialized_itinerary[k] = v.to_yaml
+                else
+                  serialized_itinerary[k] = v
+                end
               end
+
+              #Adjust itinerary
+              car_itin = Itinerary.new(serialized_itinerary)
+
+              #walk_time, walk duration, total duration
+              first_leg = new_itinerary.get_legs.first
+              new_itinerary.walk_time -= first_leg.duration
+              new_itinerary.walk_distance -= first_leg.distance
+              new_itinerary.duration -= (first_leg.duration - car_itin.duration)
+              new_itinerary.start_time = new_itinerary.start_time + (first_leg.duration - car_itin.duration)
+
+              #legs
+              yaml_legs = YAML.load(new_itinerary.legs)
+              yaml_legs = yaml_legs.drop(1)
+              yaml_car = YAML.load(car_itin.legs)
+              yaml_legs = yaml_car + yaml_legs
+              new_itinerary.legs = yaml_legs.to_yaml
+
+              filtered << new_itinerary
+
             end
-
-            #Adjust itinerary
-            car_itin = Itinerary.new(serialized_itinerary)
-
-            #walk_time, walk duration, total duration
-            first_leg = new_itinerary.get_legs.first
-            new_itinerary.walk_time -= first_leg.duration
-            new_itinerary.walk_distance -= first_leg.distance
-            new_itinerary.duration -= (first_leg.duration - car_itin.duration)
-            new_itinerary.start_time = new_itinerary.start_time + (first_leg.duration - car_itin.duration)
-
-            #legs
-            yaml_legs = YAML.load(new_itinerary.legs)
-            yaml_legs = yaml_legs.drop(1)
-            yaml_car = YAML.load(car_itin.legs)
-            yaml_legs = yaml_car + yaml_legs
-            new_itinerary.legs = yaml_legs.to_yaml
-
-            filtered << new_itinerary
           end
         end
+
+      # Handle long walks on the last leg
       elsif long_last_leg
         if Oneclick::Application.config.replace_long_walks
           itinerary.hide
         end
 
-        tp = TripPlanner.new
-        new_itinerary = itinerary.dup
+        if Mode.car_transit.active?
+          tp = TripPlanner.new
+          new_itinerary = itinerary.dup
 
-        legs = new_itinerary.get_legs
-        replaced_leg = legs.last
-        legs = legs[0...-1]
+          legs = new_itinerary.get_legs
+          replaced_leg = legs.last
+          legs = legs[0...-1]
 
-        ##Build a short drive itinerary
-        result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.start_time,
-                                                    'false', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000)
+          ##Build a short drive itinerary
+          result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.start_time,
+                                                      'false', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000)
 
-        #TODO: Save errored results to an event log
-        if result
-          tp.convert_itineraries(response, Mode.car.code).each do |itinerary|
-            serialized_itinerary = {}
+          #TODO: Save errored results to an event log
+          if result
+            tp.convert_itineraries(response, Mode.car.code).each do |itinerary|
+              serialized_itinerary = {}
 
-            itinerary.each do |k,v|
-              if v.is_a? Array
-                serialized_itinerary[k] = v.to_yaml
-              else
-                serialized_itinerary[k] = v
+              itinerary.each do |k,v|
+                if v.is_a? Array
+                  serialized_itinerary[k] = v.to_yaml
+                else
+                  serialized_itinerary[k] = v
+                end
               end
+
+              #Adjust itinerary
+              car_itin = Itinerary.new(serialized_itinerary)
+
+              #walk_time, walk duration, total duration
+              last_leg = new_itinerary.get_legs.last
+              new_itinerary.walk_time -= last_leg.duration
+              new_itinerary.walk_distance -= last_leg.distance
+              new_itinerary.duration -= (last_leg.duration - car_itin.duration)
+              new_itinerary.end_time = new_itinerary.end_time - (last_leg.duration - car_itin.duration)
+
+              #legs
+              yaml_legs = YAML.load(new_itinerary.legs)
+              yaml_legs = yaml_legs[0...-1]
+              yaml_car = YAML.load(car_itin.legs)
+              yaml_legs += yaml_car
+              new_itinerary.legs = yaml_legs.to_yaml
+
+              filtered << new_itinerary
+
             end
-
-            #Adjust itinerary
-            car_itin = Itinerary.new(serialized_itinerary)
-
-            #walk_time, walk duration, total duration
-            last_leg = new_itinerary.get_legs.last
-            new_itinerary.walk_time -= last_leg.duration
-            new_itinerary.walk_distance -= last_leg.distance
-            new_itinerary.duration -= (last_leg.duration - car_itin.duration)
-            new_itinerary.end_time = new_itinerary.end_time - (last_leg.duration - car_itin.duration)
-
-            #legs
-            yaml_legs = YAML.load(new_itinerary.legs)
-            yaml_legs = yaml_legs[0...-1]
-            yaml_car = YAML.load(car_itin.legs)
-            yaml_legs += yaml_car
-            new_itinerary.legs = yaml_legs.to_yaml
-
-            filtered << new_itinerary
           end
         end
       end
+
       filtered << itinerary
+
     end
 
     filtered
