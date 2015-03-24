@@ -18,7 +18,7 @@ class Admin::UtilController < Admin::BaseController
       end
 
       @autocomplete_details = @autocomplete_results.body['predictions'].collect do |p|
-        get_places_autocomplete_details(p['reference']).body
+        get_places_autocomplete_details(p['place_id'], p['reference']).body
       end
     end
   end

@@ -67,7 +67,7 @@ class PlacesController < PlaceSearchingController
       j = JSON.parse(p[:json])
       if j['type_name']=='PLACES_AUTOCOMPLETE_TYPE'
         Rails.logger.info "Was autocompleted, create or update as needed"
-        details = get_places_autocomplete_details(j['id'])
+        details = get_places_autocomplete_details(j['id'], j['reference'])
         d = cleanup_google_details(details.body['result'])
         Rails.logger.info d
 
