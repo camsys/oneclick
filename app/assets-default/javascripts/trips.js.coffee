@@ -50,6 +50,7 @@ format_place = (addr) ->
       'type_name'    : 'PLACES_AUTOCOMPLETE_TYPE'
       'name'   : addr['description']
       'id'     : addr['place_id']
+      'reference': addr['reference']
       'lat'    : null
       'lon'    : null
       'address' : addr['description']
@@ -67,14 +68,26 @@ parse_place_details = (addr, cb) ->
     google_place_service.getDetails {
       placeId: addr.id
     }, (place, status) ->
-      if status == google.maps.places.PlacesServiceStatus.OK
-        addr.lat =  place.geometry.location.lat()
-        addr.lon =  place.geometry.location.lng()
-        place.geometry.location = 
+      process_place = (place_obj) ->
+        addr.lat =  place_obj.geometry.location.lat()
+        addr.lon =  place_obj.geometry.location.lng()
+        place_obj.geometry.location = 
           lat: addr.lat
           lng: addr.lon
-        addr.google_details = place
+        addr.google_details = place_obj
         cb addr
+
+      if status == google.maps.places.PlacesServiceStatus.OK
+        process_place place
+      else 
+        # noticed occasionally no match based on place_id, so try again with reference 
+        google_place_service.getDetails {
+          reference: addr.reference
+        }, (new_place, status) ->
+          if status == google.maps.places.PlacesServiceStatus.OK
+            process_place new_place
+          else
+            console.log "No match found for: " + addr.name
   else
     cb addr
 
@@ -268,6 +281,7 @@ reverse_geocode = (lat, lon, dir) ->
           type: '5'
           type_name: 'PLACES_AUTOCOMPLETE_TYPE'
           id: google_details.place_id
+          reference: google_details.reference
           address: google_details.formatted_address
           description: '(not rendered)'
 

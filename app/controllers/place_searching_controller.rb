@@ -178,7 +178,7 @@ class PlaceSearchingController < TravelerAwareController
   end
 
   def details
-    result = get_places_autocomplete_details(params[:id])
+    result = get_places_autocomplete_details(params[:id], params[:reference])
     render json: result.body
   end
 
@@ -219,6 +219,7 @@ class PlaceSearchingController < TravelerAwareController
         'type_name'    => 'PLACES_AUTOCOMPLETE_TYPE',
         'name'    => prediction['description'],
         'id'      => prediction['place_id'],
+        'reference' => prediction['reference'],
         'lat'     => nil,
         'lon'     => nil,
         'address' => prediction['description'],

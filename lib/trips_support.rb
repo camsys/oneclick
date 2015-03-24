@@ -166,12 +166,29 @@ module TripsSupport
     end
   end
 
-  def get_places_autocomplete_details place_id
+  def get_places_autocomplete_details_by_placeid place_id
     google_api.get('details/json') do |req|
       req.params['placeid'] = place_id
       req.params['key']       = Oneclick::Application.config.google_places_api_key
       req.params['components'] = Oneclick::Application.config.geocoder_components
     end
+  end
+
+  def get_places_autocomplete_details_by_reference reference
+    google_api.get('details/json') do |req|
+      req.params['reference'] = reference
+      req.params['key']       = Oneclick::Application.config.google_places_api_key
+      req.params['components'] = Oneclick::Application.config.geocoder_components
+    end
+  end
+
+  def get_places_autocomplete_details place_id, reference = nil
+    resp = get_places_autocomplete_details_by_placeid(place_id) if place_id
+    unless resp && resp.body['result']
+      resp = get_places_autocomplete_details_by_reference(reference)
+    end
+
+    resp
   end
 
   def google_place_search query, map_center
