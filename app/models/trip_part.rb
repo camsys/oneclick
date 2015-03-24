@@ -327,6 +327,7 @@ class TripPart < ActiveRecord::Base
               yaml_car = YAML.load(car_itin.legs)
               yaml_legs = yaml_car + yaml_legs
               new_itinerary.legs = yaml_legs.to_yaml
+              new_itinerary.update_legs
 
               filtered << new_itinerary
 
@@ -381,6 +382,7 @@ class TripPart < ActiveRecord::Base
               yaml_car = YAML.load(car_itin.legs)
               yaml_legs += yaml_car
               new_itinerary.legs = yaml_legs.to_yaml
+              new_itinerary.update_legs
 
               filtered << new_itinerary
 

@@ -153,6 +153,11 @@ class Itinerary < ActiveRecord::Base
     @legs
   end
 
+  # this is used to update @legs
+  def update_legs(include_geometry = true)
+      @legs = legs.nil? ? [] : ItineraryParser.parse(YAML.load(legs), include_geometry)
+  end
+
   def mode_and_routes
     routes = get_legs.map(&:route)
     [mode.name] + routes
