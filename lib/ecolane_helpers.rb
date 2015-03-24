@@ -302,8 +302,23 @@ class EcolaneHelpers
 
   ## Building hash objects that become XML nodes
   def build_order(itinerary, funding_xml=nil)
+
+    #If we have already built an order for this itinerary, return it
+    if itinerary.order_xml?
+      return itinerary.order_xml
+    end
+
     order_hash = build_order_hash(itinerary, funding_xml)
-    order_hash.to_xml(root: 'order', :dasherize => false)
+    order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
+
+    #If this is an order that includes funding information, save it and re-use it instead of building a new order
+    if funding_xml
+      itinerary.order_xml = order_xml
+      itinerary.save
+    end
+
+    order_xml
+
   end
 
   def build_order_hash(itinerary, funding_xml=nil)
