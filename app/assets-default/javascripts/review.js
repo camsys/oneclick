@@ -2034,11 +2034,11 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * @param {string}: accommodation
      */
     function getAccommodationCheckboxHtml(accommodation) {
-        untitleized = accommodation.toLowerCase().replace(/\s/g, "_");
+        untitleized = accommodation.toLowerCase().replace(/\s/g, "_").replace(/(\.)/g, '');
         var accommodationTag =
             '<div class="checkbox" style="margin:0px 0px 0px 10px;">' +
             '<label>' +
-            '<input type="checkbox" ' + (filterConfigs.current_user_accommodations.indexOf(untitleized) >= 0 ? 'checked=true' : '') +
+            '<input type="checkbox" ' + (filterConfigs.current_user_accommodations.indexOf(accommodation.toLowerCase()) >= 0 ? 'checked=true' : '') +
             ' value="' + untitleized + '" tabindex="10">' +
             accommodation +
             '</label>' +

@@ -141,7 +141,7 @@ class ItinerarySerializer < ActiveModel::Serializer
   def accommodations
     case object.mode
     when Mode.paratransit
-      object.service.accommodations.map(&:code)
+      accoms = object.service.accommodations.map{|a| I18n.t(a.name) }
     end
   end
 
