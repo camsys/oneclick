@@ -4,6 +4,8 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  service_window: "Service Window"
+  time_factor: "Time Factor"
   accommodations_provided: "Accommodations provided:"
   accommodations_not_provided: "Accommodations NOT provided:"
   user_guide: "User Guide"
