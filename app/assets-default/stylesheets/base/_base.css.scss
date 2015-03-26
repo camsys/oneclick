@@ -48,6 +48,13 @@ body, .btn, .form-control, .dropdown-menu{
   display: inline-block;
 }
 
+.navbar-nav {
+  @media(max-width:$screen-sm-max){
+    margin: 0;
+    float: left;
+  }
+}
+
 .panel-title > a {
   color: $link-color;
 }
@@ -96,6 +103,13 @@ body, .btn, .form-control, .dropdown-menu{
   @media(min-width:$screen-md-min){
     line-height: 60px;
   }
+}
+
+#userMenuNavbar .action-button {
+  @media(max-width:$screen-sm-max){
+    margin: 0;
+    padding: 3px 5px;
+  } 
 }
 
 // These are the bootstrap original sizes
