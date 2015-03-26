@@ -323,7 +323,7 @@ Oneclick::Application.configure do
 
       #SSL
       unless Rails.env == 'development'
-        config.force_ssl = true
+        config.force_ssl = false
       end
 
     else
