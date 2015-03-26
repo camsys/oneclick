@@ -1,6 +1,8 @@
 # Spanish
 
 es:
+  service_window: "Ventana de servicio"
+  time_factor: "Factor tiempo"
   user_guide: "[es]User Guide[/es]"
   this_service_is_for: "Este servicio está destinado a"
   only_agency_can_see: "Only %{agency} staff can see this note."
