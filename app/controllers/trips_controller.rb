@@ -44,7 +44,7 @@ class TripsController < PlaceSearchingController
 
     @current_user_accommodations = []
     User.find(params[:user_id]).user_accommodations.where(value: "true").each do |acc|
-      @current_user_accommodations << Accommodation.find(acc.accommodation_id).code
+      @current_user_accommodations << I18n.t(Accommodation.find(acc.accommodation_id).name).downcase
     end
 
     respond_to do |format|
