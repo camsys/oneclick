@@ -106,9 +106,9 @@ Oneclick::Application.configure do
     config.replace_long_walks = true
 
     #SSL
-    unless Rails.env == 'development'
-      config.force_ssl = true
-    end
+    #unless Rails.env == 'development'
+    #  config.force_ssl = true
+    #end
 
     when 'broward'
     config.host = 'oneclick-broward.camsys-apps.com'
@@ -322,9 +322,9 @@ Oneclick::Application.configure do
       config.max_walk_seconds = 3600
 
       #SSL
-      unless Rails.env == 'development'
-        config.force_ssl = true
-      end
+      #unless Rails.env == 'development'
+      #  config.force_ssl = true
+      #end
 
     else
     raise "Brand '#{config.brand}' not supported"
