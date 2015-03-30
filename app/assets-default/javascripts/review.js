@@ -1430,11 +1430,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var isPlanEndTimeEstimated = tripPlan.end_time_estimated;
         var logoUrl = tripPlan.logo_url;
         var iconStyle = "background-image: url(" + logoUrl + ");"
-        
-        var accommodations = [];
-        for (i=0; i < tripPlan.accommodations.length; i++) {
-            accommodations.push(tripPlan.accommodations[i].toLowerCase().replace(/\s/g, "_").replace(/(\.)/g, ''));
-        }
+        var accommodations = tripPlan.accommodations;
 
         var modeServiceUrl = "";
         if (isValidObject(contact_information)) {
@@ -3262,13 +3258,18 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var check = [];
         var visible = false;
         var planAccoms = plan.attr('data-accommodations').split(",");
+        var untitleized = [];
         
         if (!accommodations instanceof Array || typeof(plan) != 'object' || plan === null) {
             return visible;
         }
 
+        for (i=0; i < planAccoms.length; i++){
+            untitleized.push(planAccoms[i].toLowerCase().replace(/\s/g, "_").replace(/(\.)/g, ''));
+        }
+
         accommodations.forEach(function(a){
-            if (planAccoms.indexOf(a) >= 0) {
+            if (untitleized.indexOf(a) >= 0) {
                 check.push(true);
             } else {
                 check.push(false);
