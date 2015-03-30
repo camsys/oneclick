@@ -194,7 +194,7 @@ class Itinerary < ActiveRecord::Base
     service.name rescue nil
   end
 
-  def estimate_duration base_duration, minimum_duration, duration_factor, trip_time, is_depart
+  def estimate_duration base_duration, minimum_duration, duration_factor, service_window, trip_time, is_depart
     self.duration_estimated = true
     if base_duration.nil?
       duration = Oneclick::Application.config.default_paratransit_duration = 2.hours
@@ -202,6 +202,7 @@ class Itinerary < ActiveRecord::Base
       duration =
         [base_duration * duration_factor,
          minimum_duration].max
+      duration += (service_window * 60 rescue 0)
     end
     Rails.logger.info "Factored duration: #{duration} minutes"
     if is_depart

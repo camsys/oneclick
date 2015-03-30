@@ -470,8 +470,9 @@ class TripPart < ActiveRecord::Base
       end
       Rails.logger.info "Base duration: #{base_duration} minutes"
       itins.each do |i|
+        service_window = i.service.service_window if i && i.service
         i.estimate_duration(base_duration, Oneclick::Application.config.minimum_paratransit_duration,
-                            i.service.time_factor || Oneclick::Application.config.paratransit_duration_factor, trip_time, is_depart)
+                            i.service.time_factor || Oneclick::Application.config.paratransit_duration_factor, service_window, trip_time, is_depart)
       end
     end
     itins
@@ -496,7 +497,8 @@ class TripPart < ActiveRecord::Base
         Rails.logger.info "SKIP_DYNAMIC_RIDESHARE_DURATION is set, skipping it"
       end
       i = Itinerary.new(itinerary)
-      i.estimate_duration(base_duration, Oneclick::Application.config.minimum_rideshare_duration, Oneclick::Application.config.rideshare_duration_factor, trip_time, is_depart)
+      service_window = itinerary.service.service_window if itinerary && itinerary.service
+      i.estimate_duration(base_duration, Oneclick::Application.config.minimum_rideshare_duration, Oneclick::Application.config.rideshare_duration_factor, service_window, trip_time, is_depart)
       itins << i
     else
       itins << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s,
