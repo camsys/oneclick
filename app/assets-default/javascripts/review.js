@@ -1430,11 +1430,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var isPlanEndTimeEstimated = tripPlan.end_time_estimated;
         var logoUrl = tripPlan.logo_url;
         var iconStyle = "background-image: url(" + logoUrl + ");"
-        
-        var accommodations = [];
-        for (i=0; i < tripPlan.accommodations.length; i++) {
-            accommodations.push(tripPlan.accommodations[i].toLowerCase().replace(/\s/g, "_").replace(/(\.)/g, ''));
-        }
+        var accommodations = tripPlan.accommodations;
 
         var modeServiceUrl = "";
         if (isValidObject(contact_information)) {
