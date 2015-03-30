@@ -202,16 +202,20 @@ class Itinerary < ActiveRecord::Base
       duration =
         [base_duration * duration_factor,
          minimum_duration].max
-      duration += (service_window * 60 rescue 0)
+      serive_window_duration = (service_window * 60 rescue 0)
     end
     Rails.logger.info "Factored duration: #{duration} minutes"
     if is_depart
       self.start_time = trip_time
       self.end_time = start_time + duration
+      self.end_time += serive_window_duration if serive_window_duration
     else
       self.end_time = trip_time
       self.start_time = end_time - duration
+      self.end_time -= serive_window_duration if serive_window_duration
     end
+    self.duration = duration
+    
     Rails.logger.info "AFTER"
     Rails.logger.info duration.ai
     Rails.logger.info start_time.ai
