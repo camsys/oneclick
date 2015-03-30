@@ -763,7 +763,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                         "end_time": plan.end_time,
                         "logo_url": plan.mode_logo_url,
                         "start_time_estimated": plan.start_time_estimated,
-                        "end_time_estimated": plan.end_time_estimated
+                        "end_time_estimated": plan.end_time_estimated,
+                        "service_window": (plan.service_window || 0)
                     });
                 }
 
@@ -2721,24 +2722,18 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 return "travel-type-" + d.type.toLowerCase();
             })
             .attr("x", function(d) {
-                var tmpX =  d.start_time_estimated ? 0 : x(parseDate(d.start_time));
-                if(d.type.toLowerCase() === 'paratransit') {
-                    var tmpWidth = (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time)));
-                    return tmpX + tmpWidth/4;
-                } else {
-                    return tmpX;
-                }
+                var leg_start_time = moment(d.start_time).add(d.service_window/2, "minutes").toDate();
+                return d.start_time_estimated ? 0 : x(leg_start_time);
             })
             .attr("y", function(d) {
                 return (y(1) - getBarHeight(d.type.toLowerCase()) / 2);
             })
             .attr("width", function(d) {
-                var tmpWidth = (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time)));
-                if(d.type.toLowerCase() === 'paratransit') {
-                    return tmpWidth/2;
-                } else {
-                    return tmpWidth;
-                }    
+                var leg_start_time = moment(d.start_time).add(d.service_window/2, "minutes").toDate();
+                var leg_end_time = moment(d.end_time).subtract(d.service_window/2, "minutes").toDate();
+                var tmpWidth = (d.end_time_estimated ? width : x(leg_end_time)) - (d.start_time_estimated ? 0 : x(leg_start_time));
+                
+                return tmpWidth;    
             })
             .attr("height", function(d) {
                 return getBarHeight(d.type.toLowerCase());
@@ -2990,24 +2985,18 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         //update chart items
         chart.selectAll("rect")
             .attr("x", function(d) {
-                var tmpX =  d.start_time_estimated ? 0 : x(parseDate(d.start_time));
-                if(d.type.toLowerCase() === 'paratransit') {
-                    var tmpWidth = (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time)));
-                    return tmpX + tmpWidth/4;
-                } else {
-                    return tmpX;
-                }
+                var leg_start_time = moment(d.start_time).add(d.service_window/2, "minutes").toDate();
+                return d.start_time_estimated ? 0 : x(leg_start_time);
             })
-            .attr("y", function(d){
+            .attr("y", function(d) {
                 return (y(1) - getBarHeight(d.type.toLowerCase()) / 2);
             })
             .attr("width", function(d) {
-                var tmpWidth = (d.end_time_estimated ? width : x(parseDate(d.end_time))) - (d.start_time_estimated ? 0 : x(parseDate(d.start_time)));
-                if(d.type.toLowerCase() === 'paratransit') {
-                    return tmpWidth/2;
-                } else {
-                    return tmpWidth;
-                }
+                var leg_start_time = moment(d.start_time).add(d.service_window/2, "minutes").toDate();
+                var leg_end_time = moment(d.end_time).subtract(d.service_window/2, "minutes").toDate();
+                var tmpWidth = (d.end_time_estimated ? width : x(leg_end_time)) - (d.start_time_estimated ? 0 : x(leg_start_time));
+                
+                return tmpWidth;    
             })
             .attr("height", function(d){
                 return getBarHeight(d.type.toLowerCase());
