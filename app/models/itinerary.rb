@@ -212,10 +212,10 @@ class Itinerary < ActiveRecord::Base
     else
       self.end_time = trip_time
       self.start_time = end_time - duration
-      self.end_time -= serive_window_duration if serive_window_duration
+      self.start_time -= serive_window_duration if serive_window_duration
     end
     self.duration = duration
-    
+
     Rails.logger.info "AFTER"
     Rails.logger.info duration.ai
     Rails.logger.info start_time.ai
