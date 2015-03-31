@@ -400,27 +400,27 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
      * bring up plan details dialog in respond to chart container events (press SPACE bar, double click, and mobile double-tap)
      */
     function registerChartContainerEvents() {
-        $('.single-trip-part').on("keydown", ".single-plan-chart-container", function(e) { //click to show details in modal dialog
-            var planId = $(this).parent('.single-plan-review').data('plan-id');
+        $('.single-trip-part').on("keydown", ".single-plan-review", function(e) { //click to show details in modal dialog
+            var planId = $(this).data('plan-id');
             if(e.keyCode === 32) {
                 showItineraryModal(planId);
             }
         });
 
-        $('.single-trip-part').on("dblclick", ".single-plan-chart-container", function() { //click to show details in modal dialog
-            var planId = $(this).parent('.single-plan-review').data('plan-id');
+        $('.single-trip-part').on("dblclick", ".single-plan-review", function() { //click to show details in modal dialog
+            var planId = $(this).data('plan-id');
             showItineraryModal(planId);
         });
 
-        $('.single-trip-part').on("touchstart", ".single-plan-chart-container", function() { //for mobile
+        $('.single-trip-part').on("touchstart", ".single-plan-review", function() { //for mobile
             $(this).focus();
             if(event) {
-                var planId = $(this).parent('.single-plan-review').data('plan-id');
+                var planId = $(this).data('plan-id');
                 var t2 = event.timeStamp;
-                var t1 = $(this).data('lastTouch') || t2;
+                var t1 = $(this).children(".single-plan-chart-container").data('lastTouch') || t2;
                 var dt = t2 - t1;
                 var fingers = event.touches.length;
-                $(this).data('lastTouch', t2);
+                $(this).children(".single-plan-chart-container").data('lastTouch', t2);
                 if (!dt || dt > 500 || fingers > 1) return; // not double-tap
                 showItineraryModal(planId);
                 event.preventDefault ? event.preventDefault() : event.returnValue = false;
