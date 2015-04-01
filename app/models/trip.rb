@@ -419,6 +419,13 @@ class Trip < ActiveRecord::Base
     trip_parts[i]
   end
 
+  #Unselect all selected itineraries
+  def unselect_all
+    self.itineraries.selected.each do |i|
+      i.update_attribute :selected, false
+    end
+  end
+
   private
 
   def validate_at_least_one_trip_place

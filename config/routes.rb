@@ -402,6 +402,12 @@ Oneclick::Application.routes.draw do
           get 'index'
         end
       end
+
+      resources :itineraries do
+        member do
+          puts 'select'
+        end
+      end
     end
   end
 

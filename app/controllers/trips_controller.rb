@@ -828,9 +828,8 @@ class TripsController < PlaceSearchingController
   end
 
   def unselect_all
-    @trip.itineraries.selected.each do |i|
-      i.update_attribute :selected, false
-    end
+    @trip.unselect_all
+
   end
 
   def select
