@@ -393,6 +393,13 @@ Oneclick::Application.routes.draw do
     # get '*not_found' => 'errors#handle404'
   end
 
+  #API
+  namespace :api, defaults: {format: 'json'} do
+    namespace :v1 do
+      resources :trip_purposes
+    end
+  end
+
   get 'heartbeat' => Proc.new { [200, {'Content-Type' => 'text/plain'}, ['ok']] }
 
   get '/robots.txt' => RobotsTxt
