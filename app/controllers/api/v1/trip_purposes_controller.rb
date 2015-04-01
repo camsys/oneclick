@@ -14,6 +14,10 @@ module Api
         respond_with hash
       end
 
+      def list
+        index
+      end
+
     end
   end
 end

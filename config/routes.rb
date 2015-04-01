@@ -396,7 +396,12 @@ Oneclick::Application.routes.draw do
   #API
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
-      resources :trip_purposes
+      resources :trip_purposes do
+        collection do
+          get 'list'
+          get 'index'
+        end
+      end
     end
   end
 
