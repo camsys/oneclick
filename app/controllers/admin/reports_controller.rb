@@ -15,7 +15,8 @@ class Admin::ReportsController < Admin::BaseController
   START_PARAMS_KEY = 'start'
   LENGTH_PARAMS_KEY = 'length'
   
-  def index
+  def show
+    @report = Report.find(params[:id])
     @reports = Report.all
     @generated_report = GeneratedReport.new({})
     @generated_report.date_range = session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
@@ -26,7 +27,7 @@ class Admin::ReportsController < Admin::BaseController
 
   # renders a report page. Actual details depends on the id parameter passed
   # from the view
-  def show
+  def results
 
     # params[:generated_report] can be nil if switching locales, redirect
     if params[:generated_report].nil?

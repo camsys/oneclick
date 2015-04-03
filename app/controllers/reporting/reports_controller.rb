@@ -3,12 +3,20 @@ module Reporting
     authorize_resource :class => false  
 
     def index
-      @reports = ReportingReport.order(:name)
-      redirect_to reporting_report_path(@reports.first) if @reports.first
+      @reports = ReportingReport.all_report_infos
+      if !@reports.blank?
+        first_report = @reports.first
+        if first_report[:is_generic]
+          redirect_to reporting_report_path ReportingReport.find(first_report[:id])
+        else
+          redirect_to admin_report_path Report.find(first_report[:id])
+        end
+      end
+      
     end
 
     def show
-      @reports = ReportingReport.order(:name)
+      @reports = ReportingReport.all_report_infos
       @report = ReportingReport.find(params[:id])
 
       # find out filter_groups

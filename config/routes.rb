@@ -295,7 +295,10 @@ Oneclick::Application.routes.draw do
     namespace :admin do
   
       get '/reports/trips_datatable' => 'reports#trips_datatable'
-      resources :reports, :only => [:index, :show]
+
+      resources :reports, :only => [:index, :show] do
+        post 'results'
+      end
       post '/reports/:id' => 'reports#show'
       resources :trips, :only => [:index]
       get '/geocode' => 'util#geocode'

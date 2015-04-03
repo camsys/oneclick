@@ -1,0 +1,31 @@
+.row.info-header
+  .col-sm-12
+    .btns.pull-left
+      = link_to t(:back), admin_report_path(@report), class: 'btn action-button btn-arrow-left'
+    .btns.pull-right
+      - if @report && @report.exportable  
+        = button_tag id: 'export', class: "#{@url_for_csv ? '' : 'disabled '}btn action-button controls" do
+          =t(:export)
+
+.panel.panel-default{style: 'padding: 0px;'}
+  .panel-heading
+    %h2.panel-title
+      = t(@report.class_name)
+      = add_tooltip("#{@report.class_name}_help")
+  .panel-body
+    = render @report_view
+:javascript 
+  $(document).ready(function(){
+    function exportCsv(mode) {
+     var a = document.createElement('a');
+     a.href = "#{@url_for_csv}"
+     a.target = '_blank';
+     document.body.appendChild(a);
+     a.click();
+    };
+
+    $('#export').click(function(e) {
+       e.preventDefault();
+       exportCsv("all");
+    } );
+  });

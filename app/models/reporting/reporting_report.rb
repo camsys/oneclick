@@ -17,6 +17,29 @@ module Reporting
       define_data_model
     end
 
+    # include both generic reports and customized reports
+    def self.all_report_infos
+      generic_reports = ReportingReport.all.map {
+        |report|
+          {
+            id: report.id,
+            name: report.name,
+            is_generic: true
+          }
+      }
+
+      customized_reports = Report.all.map {
+        |report|
+          {
+            id: report.id,
+            name: report.name,
+            is_generic: false
+          }
+      }
+
+      (generic_reports + customized_reports).sort_by {|r| r[:name]}
+    end
+
     private
 
     # define new model for the tables not known to AR
