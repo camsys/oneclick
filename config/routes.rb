@@ -284,7 +284,16 @@ Oneclick::Application.routes.draw do
     get '/place_search_poi' => 'trips#search_poi'
     get '/place_search_geo' => 'trips#search_geo'
 
+    # reporting engine
+    namespace :reporting do
+      get '/'  => 'reports#index'
+      resources :reports, only: [:index, :show] do
+        resources :results, only: [:index]
+      end
+    end
+      
     namespace :admin do
+  
       get '/reports/trips_datatable' => 'reports#trips_datatable'
       resources :reports, :only => [:index, :show]
       post '/reports/:id' => 'reports#show'

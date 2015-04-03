@@ -1,0 +1,16 @@
+= render partial: 'header'
+%h2
+  = @report.name
+%table.table.table-bordered.table-condensed.table-hover
+  %tr
+    - @fields.each do |field|
+      %th
+        = sort_link @q, (field[:title] || field[:name])
+        
+  - @results.each do |result|
+    %tr
+      - @fields.each do |field|
+        %td
+          = result[field[:name].to_sym]
+
+= paginate @results, :theme => 'twitter-bootstrap-3'

@@ -1,0 +1,31 @@
+- if filter_group && search_form
+  - filter_group_id = filter_group.id
+  - fields = filter_group.reporting_filter_fields.where(reporting_report: report).order(:id)
+
+  .panel.panel-default
+    .panel-heading{role: 'tab', id: "filter-heading-#{filter_group_id}"}
+      %h5.panel-title
+        %a.collapsed{"data-toggle" => "collapse", "data-parent" => "#filterContainer", href: "#filter-collapse-#{filter_group_id}", "aria-expanded" => false, "aria-controls" => "filter-collapse-#{filter_group_id}"}
+          = filter_group.name
+
+    .panel-collapse.collapse{role: "tabpanel", "aria-labelledby" => "filter-heading-#{filter_group_id}", id: "filter-collapse-#{filter_group_id}"}
+      .panel-body
+
+        - fields.each do |field|
+          - if !field.reporting_lookup_table
+            - if field.reporting_filter_type.name == Reporting::ReportingFilterType::RANGE
+              %div.form-group
+                = search_form.label "#{field.title || field.name}" rescue nil
+                = search_form.search_field "#{field.name}_gteq", {class: 'form-control'} rescue nil
+                = "-"
+                = search_form.search_field "#{field.name}_lteq", {class: 'form-control'} rescue nil
+            - else
+              %div.form-group
+                = search_form.label "#{field.title || field.name + '_' + field.reporting_filter_type.name}" rescue nil
+                = search_form.search_field "#{field.name}_#{field.reporting_filter_type.name}", {class: 'form-control'} rescue nil
+          - else
+            %div.form-group
+              = search_form.label "#{field.title || field.name}" rescue nil
+              = search_form.collection_select "#{field.name}_in", field.reporting_lookup_table.data_model.all, :id, "#{field.reporting_lookup_table.display_field_name}", {}, {:multiple => field.reporting_filter_type.name == Reporting::ReportingFilterType::MULTI_SELECT,class: 'form-control'}
+
+

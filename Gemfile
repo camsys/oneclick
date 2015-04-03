@@ -66,6 +66,9 @@ gem 'mini_magick'
 gem 'carrierwave'
 gem 'poltergeist'
 gem 'sidekiq'
+gem 'ransack'
+gem 'kaminari'
+gem 'bootstrap-kaminari-views'
 
 group :development do
   # gem 'ffi-geos'

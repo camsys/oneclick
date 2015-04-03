@@ -1,0 +1,7 @@
+- filter_groups ||= []
+- if report && report.data_model
+  = search_form_for report.data_model.ransack(params[:q]), :url => "#{reporting_report_results_path(report)}", html: {class: 'filter-form', style: 'padding-top: 10px;'} do |f|
+    .panel-group#filterContainer{role: 'tablist', "aria-multiselectable" => "true"}
+      - filter_groups.each do |filter_group|
+        = render partial: 'reporting/filters/filter_group', locals: {report: report, filter_group: filter_group, search_form: f}
+  = render partial: 'reporting/filters/reset_buttons'

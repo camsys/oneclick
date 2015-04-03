@@ -108,6 +108,9 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bootstrap-combobox (1.2.6)
+    bootstrap-kaminari-views (0.0.5)
+      kaminari (>= 0.13)
+      rails (>= 3.1)
     bootstrap3-datetimepicker-rails (3.0.0)
       momentjs-rails (~> 2.5.0)
     builder (3.1.4)
@@ -307,6 +310,9 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.1)
     jwt (1.0.0)
+    kaminari (0.16.3)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     launchy (2.4.2)
       addressable (~> 2.3)
     letter_opener (1.2.0)
@@ -359,6 +365,8 @@ GEM
       cliver (~> 0.3.1)
       multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
+    polyamorous (1.1.0)
+      activerecord (>= 3.0)
     polyglot (0.3.5)
     polylines (0.1.1)
     pry (0.10.0)
@@ -402,6 +410,12 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.3.2)
+    ransack (1.6.5)
+      actionpack (>= 3.0)
+      activerecord (>= 3.0)
+      activesupport (>= 3.0)
+      i18n
+      polyamorous (~> 1.1)
     rb-fchange (0.0.6)
       ffi
     rb-fsevent (0.9.4)
@@ -542,6 +556,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap-combobox
+  bootstrap-kaminari-views
   bootstrap-sass!
   bootstrap3-datetimepicker-rails (= 3.0.0.0)
   cancan
@@ -577,6 +592,7 @@ DEPENDENCIES
   i18n-active_record (= 0.1.0)!
   jquery-datatables-rails (~> 2.1.10.0.2)
   jquery-rails
+  kaminari
   launchy
   leaflet-rails!
   letter_opener
@@ -595,6 +611,7 @@ DEPENDENCIES
   rails (= 4.0.3)
   rails-erd
   rails_12factor
+  ransack
   rb-fchange
   rb-fsevent
   rb-inotify

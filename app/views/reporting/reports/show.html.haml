@@ -1,0 +1,5 @@
+= render partial: 'header'
+
+= render partial: 'list', locals: {reports: @reports, report_id: @report.id}
+
+= render partial: 'reporting/filters/form', locals: {report: @report, filter_groups: @filter_groups}
