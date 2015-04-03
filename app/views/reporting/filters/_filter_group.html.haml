@@ -26,6 +26,6 @@
           - else
             %div.form-group
               = search_form.label "#{field.title || field.name}" rescue nil
-              = search_form.collection_select "#{field.name}_in", field.reporting_lookup_table.data_model.all, :id, "#{field.reporting_lookup_table.display_field_name}", {}, {:multiple => field.reporting_filter_type.name == Reporting::ReportingFilterType::MULTI_SELECT,class: 'form-control'}
+              = search_form.collection_select "#{field.name}_in", field.reporting_lookup_table.data_model.all, :id, "#{field.reporting_lookup_table.display_field_name}", {:include_blank => field.reporting_filter_type.name != Reporting::ReportingFilterType::MULTI_SELECT}, {:multiple => field.reporting_filter_type.name == Reporting::ReportingFilterType::MULTI_SELECT, class: 'form-control'}
 
 
