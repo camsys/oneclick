@@ -5,3 +5,10 @@
       - filter_groups.each do |filter_group|
         = render partial: 'reporting/filters/filter_group', locals: {report: report, filter_group: filter_group, search_form: f}
   = render partial: 'reporting/filters/reset_buttons'
+:javascript
+  $(document).ready(function() {
+    $('select option').on('mousedown', function (e) {
+        this.selected = !this.selected;
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+    });
+  });
