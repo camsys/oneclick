@@ -1325,6 +1325,13 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "<div class='select-column' style='padding: 0px;'>" +
             "</div>" +
             "</div>" +
+            "<div class='col-xs-12' style='padding:0px;'>" +
+            "<div class='trip-plan-first-column' style='padding: 0px; vertical-align: top;'>" +
+            "<table style='width: 100%;'><tbody><tr>" +
+            "<td class='trip-mode-icon'></td>" +
+            "<td tabindex=" + (isDepartAt ? '17' : '16') + " class='trip-mode-cost' aria-label=" + localeDictFinder["fare"] +  ">" +
+            "<div class='itinerary-text'>" + localeDictFinder["fare"] + "</div>" +
+            "</td></tr></tbody></table></div></div>" +
             "</div>";
         return tripHeaderTags;
     }
