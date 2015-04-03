@@ -34,6 +34,7 @@ class Admin::UsersController < Admin::BaseController
 
     respond_to do |format|
       if @user.save
+        usr[:roles].reject(&:blank?).each { |id| @user.add_role( Role.find(id).name.to_sym ) }
         @user.add_role :registered_traveler
         if current_user.agency # create agency user relationship if current user is agency staff
           @agency_user_relationship = AgencyUserRelationship.new  #defaults to Status = 3, i.e. Active
