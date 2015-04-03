@@ -1,5 +1,7 @@
 module Reporting
   class ResultsController < ApplicationController
+    authorize_resource :class => false  
+
     def index
       q_param = params[:q]
       page = params[:page]

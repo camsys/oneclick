@@ -1,5 +1,7 @@
 module Reporting
   class ReportsController < ApplicationController
+    authorize_resource :class => false  
+
     def index
       @reports = ReportingReport.order(:name)
       redirect_to reporting_report_path(@reports.first) if @reports.first
