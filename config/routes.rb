@@ -404,8 +404,8 @@ Oneclick::Application.routes.draw do
       end
 
       resources :itineraries do
-        member do
-          puts 'select'
+        collection do
+          post 'select'
         end
       end
     end
