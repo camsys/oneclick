@@ -22,10 +22,11 @@ class Admin::ReportsController < Admin::BaseController
     @report = Report.find(params[:id])
     
     @reports = Reporting::ReportingReport.all_report_infos # get all report infos (id, name) both generic and customized reports
-    @generated_report = GeneratedReport.new({})
+    @generated_report = GeneratedReport.new(params[:generated_report] || {})
     @generated_report.date_range = session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
     @min_trip_date = Trip.minimum(:scheduled_time)
 
+    @custom_date_option_id = DateOption.where(code: 'date_option_custom').first.id rescue ''
     set_user_based_constraints
   end
 

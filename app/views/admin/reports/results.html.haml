@@ -1,7 +1,7 @@
 .row.info-header
   .col-sm-12
     .btns.pull-left
-      = link_to t(:back), admin_report_path(@report), class: 'btn action-button btn-arrow-left'
+      = link_to t(:back), admin_report_path(@report, {generated_report: params[:generated_report]}), class: 'btn action-button btn-arrow-left'
     .btns.pull-right
       - if @report && @report.exportable  
         = button_tag id: 'export', class: "#{@url_for_csv ? '' : 'disabled '}btn action-button controls" do

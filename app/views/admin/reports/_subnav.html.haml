@@ -1,7 +1,7 @@
 = simple_form_for @generated_report,
         url: admin_report_results_path(@report, locale: params[:locale]),
         html: { method: 'post', id: 'report_form', class: 'form-horizontal filter-form', style: 'padding-top: 10px;' }  do |f|
-  .panel.panel-default{style: 'padding-top: 0px;'}
+  .panel.panel-default
     .panel-heading
       %h2.panel-title
         %span
@@ -11,45 +11,48 @@
       .row
         .col-sm-12
           - show_usage_report_date_options = (@report ? @report.class_name == 'StandardUsageReport' : Report.usage_report_is_first)
-          .col-sm-8.non-system-usage-report-components{style: ("display: none;" if show_usage_report_date_options)}
-            .col-sm-3
-              = f.input :date_range, collection: DateOption.form_collection(false),
-                  include_blank: false, label: t(:date_range)
-            .col-sm-3
-              = f.input :agency_id,
-                  collection: Agency.form_collection(@agency_all, @agency_id),
-                  include_blank: false, label: t(:agencies)
-            .col-sm-3
-              = f.input :agent_id, collection: User.agent_form_collection(true, @agency),
-                  include_blank: false, label: t(:agents)
-            .col-sm-3
-              = f.input :provider_id,
-                  collection: Provider.form_collection(@provider_all, @provider_id),
-                  include_blank: false, label: t(:providers)
-          .col-sm-4.system-usage-report-components{style: ("display: none;" if !show_usage_report_date_options)}
-            .col-sm-6
-              %label.sr-only{for: "standard_usage_report_effective_date"}= "standard usage report effective date"
-              = f.input :standard_usage_report_effective_date, label: t(:effective_date) do
-                = f.input_field :standard_usage_report_effective_date, id: "standard_usage_report_effective_date", class: 'form-control',autocomplete: 'off'
-                :javascript
-                  $('#standard_usage_report_effective_date').datetimepicker({
-                    defaultDate: new Date(),
-                    pickTime: false,
-                    format: 'MM/DD/YYYY',
-                    language: "#{I18n.locale}"
-                  });
-            .col-sm-6
-              = f.input :standard_usage_report_date_option, collection: StandardUsageReport.available_date_option_collections, include_blank: false, label: t(:date_option)
+          - if !show_usage_report_date_options
+            .col-sm-12.non-system-usage-report-components
+              .col-sm-3
+                = f.input :date_range, collection: DateOption.form_collection(false),
+                    include_blank: false, label: t(:date_range)
+              .col-sm-3
+                = f.input :agency_id,
+                    collection: Agency.form_collection(@agency_all, @agency_id),
+                    include_blank: false, label: t(:agencies)
+              .col-sm-3
+                = f.input :agent_id, collection: User.agent_form_collection(true, @agency),
+                    include_blank: false, label: t(:agents)
+              .col-sm-3
+                = f.input :provider_id,
+                    collection: Provider.form_collection(@provider_all, @provider_id),
+                    include_blank: false, label: t(:providers)
+          - else
+            .col-sm-12.system-usage-report-components
+              .col-sm-6
+                %label.sr-only{for: "standard_usage_report_effective_date"}= "standard usage report effective date"
+                = f.input :standard_usage_report_effective_date, label: t(:effective_date) do
+                  = f.input_field :standard_usage_report_effective_date, id: "standard_usage_report_effective_date", class: 'form-control',autocomplete: 'off'
+                  :javascript
+                    $('#standard_usage_report_effective_date').datetimepicker({
+                      defaultDate: new Date(),
+                      pickTime: false,
+                      format: 'MM/DD/YYYY',
+                      language: "#{I18n.locale}"
+                    });
+              .col-sm-6
+                = f.input :standard_usage_report_date_option, collection: StandardUsageReport.available_date_option_collections, include_blank: false, label: t(:date_option)
 
-        .row#custom_dates
-          .col-md-1
-          .col-md-4
-            = f.input :from_date, label: false, class: 'col-md-2', wrapper: :trip_dates do
-              = f.input_field :from_date, class: 'form-control col-md-2',
-              id: "from_trip_date", autocomplete: 'off'
-            = f.input :to_date, label: false, class: 'col-md-2', wrapper: :trip_dates do
-              = f.input_field :to_date, class: 'form-control col-md-2',
-              id: "to_trip_date", autocomplete: 'off'
+        - if !show_usage_report_date_options
+          .row#custom_dates{style: (@generated_report.date_range == @custom_date_option_id.to_s ? '' : 'display: none;')}
+            .col-md-1
+            .col-md-4
+              = f.input :from_date, label: false, class: 'col-md-2', wrapper: :trip_dates do
+                = f.input_field :from_date, class: 'form-control col-md-2',
+                id: "from_trip_date", autocomplete: 'off'
+              = f.input :to_date, label: false, class: 'col-md-2', wrapper: :trip_dates do
+                = f.input_field :to_date, class: 'form-control col-md-2',
+                id: "to_trip_date", autocomplete: 'off'
 
         -# .col-sm-2
         -#   = f.input :trip_purpose, collection: TripPurpose.form_collection, include_blank: false, label: t(:trip_purpose)
@@ -60,13 +63,9 @@
 
 
 :javascript
-  $(document).ready(function() {
-    // Note: the selectedOptions collection is not support in ie9 or ie10
-    var select = $('#generated_report_date_range')[0];
-    if (select.options[select.selectedIndex].text != 'Custom...') {
-      $('#custom_dates').hide();
-    }
-  });
+  if($('#generated_report_date_range').val() === "#{@custom_date_option_id rescue ''}") {
+    $('#custom_dates').show();
+  }
 
   $('#generated_report_date_range').change(function() {
     if(this.options[this.selectedIndex].text === 'Custom...') {
@@ -100,18 +99,5 @@
   $('#to_trip_date').change(function() {
     if (Date.parse(this.value) < Date.parse($('#from_trip_date')[0].value)) {
       $('#from_trip_date').data("DateTimePicker").setDate(this.value);
-    }
-  });
-
-  $('#generated_report_report_name').on('change', function(event) {
-    var report_id = parseInt(this.value);
-    //$('#report_form').attr('action', "#{admin_report_path(locale: params[:locale])}/" + report_id + '/results');
-
-    if (report_id == "#{Report.system_usage_report_id}") {
-      $('.non-system-usage-report-components').hide();
-      $('.system-usage-report-components').show();
-    } else {
-      $('.system-usage-report-components').hide();
-      $('.non-system-usage-report-components').show();
     }
   });
