@@ -1,3 +1,6 @@
+##
+# Controller for customized reports
+# Generic reports, please refer to Reporting::ReportsController
 class Admin::ReportsController < Admin::BaseController
   
   # load the cancan authorizations
@@ -17,7 +20,8 @@ class Admin::ReportsController < Admin::BaseController
   
   def show
     @report = Report.find(params[:id])
-    @reports = Report.all
+    
+    @reports = Reporting::ReportingReport.all_report_infos # get all report infos (id, name) both generic and customized reports
     @generated_report = GeneratedReport.new({})
     @generated_report.date_range = session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
     @min_trip_date = Trip.minimum(:scheduled_time)
@@ -28,7 +32,7 @@ class Admin::ReportsController < Admin::BaseController
   # renders a report page. Actual details depends on the id parameter passed
   # from the view
   def results
-
+    @report = Report.find(params[:report_id])
     # params[:generated_report] can be nil if switching locales, redirect
     if params[:generated_report].nil?
       redirect_to admin_reports_path
@@ -36,7 +40,6 @@ class Admin::ReportsController < Admin::BaseController
     end
     
     @generated_report = GeneratedReport.new(params[:generated_report])
-    @report = Report.find(@generated_report.report_name)
 
     # Store filter settings in session for ajax calls.
     @generated_report.date_range ||= session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT

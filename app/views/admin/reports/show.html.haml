@@ -1,1 +1,5 @@
-= render partial: 'subnav', locals: {header: t(:reports)}
+= render partial: 'reporting/reports/header'
+    
+= render partial: 'reporting/reports/list', locals: {reports: @reports, report_id: @report.id, is_generic_report: false}
+
+= render partial: 'subnav'

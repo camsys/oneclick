@@ -1,24 +1,15 @@
-- content_for :title, "Reports - #{t(:site_title)}"
 = simple_form_for @generated_report,
         url: admin_report_results_path(@report, locale: params[:locale]),
-        html: { method: 'post', id: 'report_form', class: 'form-horizontal' }  do |f|
-  .row.info-header
-    .col-sm-12
-      .btns.pull-right
-        = button_tag type: :submit, class: 'btn action-button controls' do
-          =t(:run)
-      %h1= header
-  .panel.panel-default{style: 'padding: 0px;'}
+        html: { method: 'post', id: 'report_form', class: 'form-horizontal filter-form', style: 'padding-top: 10px;' }  do |f|
+  .panel.panel-default{style: 'padding-top: 0px;'}
     .panel-heading
       %h2.panel-title
         %span
-          = t(:reports)
-          = add_tooltip("reports_help")
+          = t(:filters)
+          = add_tooltip("filters_help")
     .panel-body
       .row
         .col-sm-12
-          .col-sm-2
-            = f.input :report_name, collection: Report.names_and_ids, include_blank: false, label: t(:report_name)
           - show_usage_report_date_options = (@report ? @report.class_name == 'StandardUsageReport' : Report.usage_report_is_first)
           .col-sm-8.non-system-usage-report-components{style: ("display: none;" if show_usage_report_date_options)}
             .col-sm-3

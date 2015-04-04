@@ -6,7 +6,8 @@ module Reporting
       @reports = ReportingReport.all_report_infos
       if !@reports.blank?
         first_report = @reports.first
-        if first_report[:is_generic]
+        @is_generic_report = first_report[:is_generic]
+        if @is_generic_report
           redirect_to reporting_report_path ReportingReport.find(first_report[:id])
         else
           redirect_to admin_report_path Report.find(first_report[:id])
