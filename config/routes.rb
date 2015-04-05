@@ -408,6 +408,13 @@ Oneclick::Application.routes.draw do
           post 'select'
         end
       end
+
+      resources :trips do
+        collection do
+          get 'status'
+        end
+      end
+
     end
   end
 

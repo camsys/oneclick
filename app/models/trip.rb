@@ -426,6 +426,15 @@ class Trip < ActiveRecord::Base
     end
   end
 
+  def status
+    #Statuses
+    # Started, Planned, Booked
+    return 'BOOKED' if self.is_booked?
+    return 'PLANNED' if self.both_parts_selected?
+    return 'STARTED'
+
+  end
+
   private
 
   def validate_at_least_one_trip_place
