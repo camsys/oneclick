@@ -429,9 +429,9 @@ class Trip < ActiveRecord::Base
   def status
     #Statuses
     # Started, Planned, Booked
-    return 'BOOKED' if self.is_booked?
-    return 'PLANNED' if self.both_parts_selected?
-    return 'STARTED'
+    return {code: 'BOOKED', description: "Trips booked."} if self.is_booked?
+    return {code: 'PLANNED', description: "Trip planned but not booked."} if self.both_parts_selected?
+    return {code: 'STARTED', description: "Trip started but not planned."}
 
   end
 

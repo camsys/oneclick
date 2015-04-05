@@ -10,9 +10,9 @@ module Api
         trip = Trip.where(token: trip_token).first
 
         if trip
-          hash = {status: trip.status}
+          hash = {trip_status_report: {trip_token: trip_token, code: trip.status[:code], description: trip.status[:description]}}
         else
-          hash = {status: 404}
+          hash = {trip_status_report: {trip_token: trip_token, code: "404", description: "Trip not found."}}
         end
 
         respond_with hash
