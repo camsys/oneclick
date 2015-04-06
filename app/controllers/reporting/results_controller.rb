@@ -5,7 +5,7 @@ module Reporting
     def index
       q_param = params[:q]
       page = params[:page]
-      per_page = params[:per_page]
+      @per_page = params[:per_page] || Kaminari.config.default_per_page
 
       @report = ReportingReport.find params[:report_id]
       @q = @report.data_model.ransack q_param
@@ -15,7 +15,7 @@ module Reporting
         # total_results is for exporting
         total_results = @q.result
         # @results is for html display; only render current page
-        @results = total_results.page(page).per(per_page)
+        @results = total_results.page(page).per(@per_page)
 
         # this is used to test if any sql exception is triggered in querying
         # commen errors: table not found

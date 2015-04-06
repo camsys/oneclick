@@ -54,7 +54,7 @@ module CsHelpers
       {label: t(:agencies), target: admin_agencies_path, window: "", icon: ACTION_ICONS[:agents_agencies], access: :admin_agencies},
       {label: t(:providers), target: admin_providers_path, window: "", icon: ACTION_ICONS[:providers], access: :admin_providers},
       {label: t(:services), target: services_path, window: "", icon: ACTION_ICONS[:services], access: :admin_services},
-      {label: t(:reports), target: admin_reports_path, window: "", icon: ACTION_ICONS[:reports], access: :admin_reports},
+      {label: t(:reports), target: reporting_reports_path, window: "", icon: ACTION_ICONS[:reports], access: :admin_reports},
       {label: t(:multi_od_trip), target: create_multi_od_user_trips_path(current_user), window: "", icon: ACTION_ICONS[:multi_od_trip], access: MultiOriginDestTrip},
       {label: t(:user_guide), target: Oneclick::Application.config.user_guide_url, window: "_blank", icon: ACTION_ICONS[:user_guide], access: :user_guide}
     ]
