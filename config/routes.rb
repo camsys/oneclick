@@ -415,6 +415,12 @@ Oneclick::Application.routes.draw do
         end
       end
 
+      resources :places do
+        collection do
+          get 'search'
+        end
+      end
+
     end
   end
 
