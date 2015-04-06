@@ -421,6 +421,7 @@ Oneclick::Application.routes.draw do
       resources :itineraries do
         collection do
           post 'select'
+          post 'plan'
         end
       end
 
