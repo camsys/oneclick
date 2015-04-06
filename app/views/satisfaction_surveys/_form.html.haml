@@ -1,0 +1,15 @@
+= simple_form_for @satisfaction_survey do |f|
+  .row
+    .col-sm-10.col-sm-offset-1
+      = f.error_notification message: print_messages(f)
+      = f.hidden_field :trip_id, value: @trip.id
+
+      %p
+        = f.label :satisfied
+        = f.input_field :satisfied, as: :radio_buttons, item_wrapper_class: "radio-inline"
+        = f.input :comment
+      .col-sm-4.col-sm-offset-4
+        = f.submit t(:save), class: "form-control btn action-button"
+
+:javascript
+  $('#satisfaction_survey .radio:first').css('margin-top', 0);
