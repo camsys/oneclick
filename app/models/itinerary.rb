@@ -32,6 +32,8 @@ class Itinerary < ActiveRecord::Base
   scope :with_mode, ->(mode) {where(returned_mode_code: mode)}
   scope :without_mode, ->(mode) {where.not(returned_mode_code: mode)}
 
+
+  attr_accessor :segment_index
   # attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
   # :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
   # :ride_count, :external_info, :match_score, :missing_information, :missing_information_text, :date_mismatch,

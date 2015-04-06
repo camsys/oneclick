@@ -137,6 +137,70 @@ class TripPlace < GeocodedAddress
     end
   end
 
+  #Build a new trip place from PlacesDetails element
+  def from_place_details details
+
+    components = details[:address_components]
+    components.each do |component|
+      types = component[:types]
+      if 'street_address'.in? types
+        self.address1 = component[:long_name]
+      elsif 'administrative_area_level_1'.in? types
+        self.state = component[:long_name]
+      elsif 'locality'.in? types
+        self.city = component[:long_name]
+      elsif 'postal_code'.in? types
+        self.zip = component[:long_name]
+      end
+    end
+
+    self.raw_address = details[:formatted_address]
+    self.lat = details[:geometry][:location][:lat]
+    self.lon = details[:geometry][:location][:lng]
+    self.name = details[:name]
+
+  end
+
+  def build_place_details_hash
+    #Based on Google Place Details
+
+    {
+        address_components: [
+        {
+            long_name: self.address1,
+        short_name: self.address1,
+        types: ["street_address"]
+    },
+        {
+            long_name: self.city,
+        short_name: self.city,
+        types: ["locality", "political"]
+    },
+        {
+            long_name: self.state,
+        short_name: self.state,
+        types: ["administrative_area_level_1","political"]
+    },
+        {
+            long_name: self.zip,
+        short_name: self.zip,
+        types: ["postal_code"]
+    }
+    ],
+
+        formatted_address: self.address,
+        geometry: {
+        location: {
+        lat: self.lat,
+        lng: self.lon,
+    }
+    },
+        id: self.id,
+        name: self.name,
+        scope: "My Place"
+    }
+  end
+
 
   # discover the location for this trip place from
   # its relationships

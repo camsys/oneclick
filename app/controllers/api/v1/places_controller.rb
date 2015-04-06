@@ -20,7 +20,7 @@ module Api
           rel = Place.arel_table[:name].matches(search_string + "%")
           places = @traveler.places.active.where(rel)
           places.each do |place|
-            locations.append(place.build_place_hash)
+            locations.append(place.build_place_details_hash)
             count += 1
             if count >= max_results
               break
@@ -31,7 +31,7 @@ module Api
         # Global POIs
         pois = Poi.get_by_query_str(search_string + '%', max_results)
         pois.each do |poi|
-          locations.append(poi.build_place_hash)
+          locations.append(poi.build_place_details_hash)
           count += 1
           if count >= max_results
             break

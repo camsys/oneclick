@@ -139,7 +139,7 @@ class Poi < GeocodedAddress
     'POI_TYPE'
   end
 
-  def build_place_hash
+  def build_place_details_hash
     #Based on Google Place Details
 
     {
