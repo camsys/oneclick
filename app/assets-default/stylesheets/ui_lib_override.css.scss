@@ -43,3 +43,10 @@
     font: $font-size-base $font-family-base !important;
   }
 }
+
+/* overwrite .form-control that has 100% width */
+.form-control-inline {
+  min-width: 0;
+  width: auto;
+  display: inline;
+}

@@ -13,19 +13,14 @@
 
         - fields.each do |field|
           - if !field.reporting_lookup_table
+            - is_date_field = ![:date, :datetime].index(report.data_model.columns_hash[field.name].type).nil?
+            - field_class = is_date_field ? 'form-control form-control-inline is-date-field' : 'form-control form-control-inline'
             - if field.reporting_filter_type.name == Reporting::ReportingFilterType::RANGE
-              %div.form-group
-                = search_form.label "#{field.title || field.name}" rescue nil
-                = search_form.search_field "#{field.name}_gteq", {class: 'form-control'} rescue nil
-                = "-"
-                = search_form.search_field "#{field.name}_lteq", {class: 'form-control'} rescue nil
+              = render partial: 'reporting/filters/range_filter', locals: {search_form: search_form, field: field, is_date_field: is_date_field, field_class: field_class}
             - else
-              %div.form-group
-                = search_form.label "#{field.title || field.name + '_' + field.reporting_filter_type.name}" rescue nil
-                = search_form.search_field "#{field.name}_#{field.reporting_filter_type.name}", {class: 'form-control'} rescue nil
+              = render partial: 'reporting/filters/regular_filter', locals: {search_form: search_form, field: field, is_date_field: is_date_field, field_class: field_class}
           - else
-            %div.form-group
-              = search_form.label "#{field.title || field.name}" rescue nil
-              = search_form.collection_select "#{field.name}_in", field.reporting_lookup_table.data_model.all, :id, "#{field.reporting_lookup_table.display_field_name}", {:include_blank => field.reporting_filter_type.name != Reporting::ReportingFilterType::MULTI_SELECT}, {:multiple => field.reporting_filter_type.name == Reporting::ReportingFilterType::MULTI_SELECT, class: 'form-control'}
+            = render partial: 'reporting/filters/lookup_table_filter', locals: {search_form: search_form, field: field}
+            
 
 

@@ -4,6 +4,28 @@
     .panel-group#filterContainer{role: 'tablist', "aria-multiselectable" => "true"}
       - filter_groups.each do |filter_group|
         = render partial: 'reporting/filters/filter_group', locals: {report: report, filter_group: filter_group, search_form: f}
+      :javascript
+        $('.filter-form .is-date-field').datetimepicker({
+          pickTime: false,
+          format: 'MM/DD/YYYY',
+          language: '#{I18n.locale}'
+        });
+
+        // Reporting Engine only respects YYYY-MM-DD format
+        $('.filter-form').on('submit', function(){
+          $('.filter-form .is-date-field').each(function(){
+            var field_date = moment($(this).val(), 'MM/DD/YYYY');
+            var field_val = '';
+            if(field_date.isValid()) {
+              if(this.className && this.className.indexOf('is-end-date') >=0) {
+                field_val = field_date.endOf("day").format("YYYY-MM-DD HH:mm:ss");
+              } else {
+                field_val = field_date.startOf("day").format("YYYY-MM-DD HH:mm:ss");
+              }
+            }
+            $(this).val(field_val);
+          });
+        });
 
   = render partial: 'reporting/filters/reset_buttons'
 :javascript
