@@ -102,6 +102,8 @@ es:
   reports: "Reportes"
   report_name: "[es46]Report Name[/es]"
   report_parameters: "[es]Report Parameters[/es]"
+  reset_filter_panel: "[es]Reset Filter Panel[/es]"
+  reset_all_filter: "[es]Reset All Filters[/es]"
   date_range: "[es47]Date Range[/es]"
   traveler_type: "[es48]Traveler Type[/es]"
   display_type: "[es49]Display Type[/es]"

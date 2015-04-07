@@ -132,6 +132,8 @@ en:
   reports: "Reports"
   report_name: "Report Name"
   report_parameters: "Report Parameters"
+  reset_filter_panel: "Reset Filter Panel"
+  reset_all_filter: "Reset All Filters"
   date_range: "Date Range"
   traveler_type: "Traveler Type"
   display_type: "Display Type"
