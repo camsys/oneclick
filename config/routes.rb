@@ -308,6 +308,7 @@ Oneclick::Application.routes.draw do
       patch '/load_pois' => 'pois#load_pois'
       get '/check_loading_status' => 'pois#check_loading_status'
       patch '/upload_application_logo' => 'util#upload_application_logo'
+      patch '/upload_favicon' => 'util#upload_favicon'
       get '/' => 'admin_home#index'
       resource :feedback
       resources :sidewalk_obstructions, :only => [:index] do

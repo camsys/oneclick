@@ -63,6 +63,9 @@ Oneclick::Application.configure do
   # poi loading
   config.poi_is_loading = false
 
+  # favicon upload
+  config.favicon_format_list = %w(ico png) 
+
   # maximum how many services to be displayed
   config.max_number_of_specialized_services_to_show = nil # nil means no limitation
 
@@ -224,6 +227,7 @@ Oneclick::Application.configure do
     config.host = 'oneclick-ieuw.camsys-apps.com'
     config.ui_logo = 'ieuw/logo.png'
     config.logo_text = "Inland Empire logo - Vet Link"
+    config.favicon = 'ieuw/favicon.png'
     config.geocoder_components = 'country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
     config.map_bounds      = [[33.163,-117.874],[36.053,-114.033]]

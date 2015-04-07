@@ -7,7 +7,7 @@
     = stylesheet_link_tag "stylesheets/application", :media => "all"
     = javascript_include_tag "//maps.googleapis.com/maps/api/js?libraries=places"
     = javascript_include_tag "javascripts/application"
-
+    = favicon_link_tag "#{get_favicon_path}" if is_ieuw?
     = csrf_meta_tags
     = yield(:head)
 

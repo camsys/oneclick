@@ -30,6 +30,15 @@ module ApplicationHelper
     return Oneclick::Application.config.logo_text
   end
 
+  # Returns the name of the favicon based on the oneclick configuration
+  def get_favicon
+    return Oneclick::Application.config.favicon
+  end
+
+  def get_favicon_path
+    return get_favicon
+  end
+
   # Returns a mode-specific icon
   def get_mode_icon(mode)
     if ENV['UI_MODE']=='kiosk'

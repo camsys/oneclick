@@ -124,4 +124,42 @@ class Admin::UtilController < Admin::BaseController
     end
   end
 
+  def upload_favicon
+    info_msgs = []
+    error_msgs = []
+    if !can?(:upload_favicon, :util)
+      error_msgs << t(:not_authorized)
+    else
+      file = params[:favicon][:file] if params[:favicon]
+      
+      if !file.nil?
+        uploader = FaviconUploader.new
+        begin
+          uploader.store!(file)
+        rescue Exception => ex
+          error_msgs << ex.message
+        end
+
+        if OneclickConfiguration.create_or_update(:favicon, uploader.url)
+          info_msgs << t(:logo) + " " + t(:was_successfully_updated)
+        else
+          error_msgs << t(:failed_to_update_favicon)
+        end
+      else
+        error_msgs << t(:select_favicon_to_upload)
+      end
+    end
+
+    if error_msgs.size > 0
+      flash[:error] = error_msgs.join(' ')
+    elsif info_msgs.size > 0
+      flash[:notice] = info_msgs.join(' ')
+    end
+
+    respond_to do |format|
+      format.js
+      format.html {redirect_to admin_settings_path}
+    end
+  end
+
 end

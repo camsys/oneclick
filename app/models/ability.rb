@@ -18,6 +18,7 @@ class Ability
       can :settings, :util
       can :load_pois, :pois
       can :upload_application_logo, :util
+      can :upload_favicon, :util
     else
       if I18n.locale == :tags
         return # no access to tags pages for non-admin users

@@ -1,0 +1,17 @@
+= simple_form_for :favicon, url: admin_upload_favicon_path, method: 'patch', html: { class: 'form-horizontal', multipart: true }, authenticity_token: true, wrapper: :horizontal_form do |f|
+  .row
+    .col-sm-12
+      .panel.panel-default
+        .panel-heading
+          .row
+            .col-sm-12
+              %h3.panel-title
+                .btns.pull-right
+                  = f.submit t(:ok), class: 'btn action-button', role: 'button'
+                = t(:upload_favicon)
+                = add_tooltip("upload_favicon_help")
+        .panel-body
+          = f.error_notification message: print_messages(f)
+          %label
+            = I18n.t(:upload_favicon_notes)
+          = f.input "file", required:true, :label => t(:select_favicon_to_upload), :as => :file

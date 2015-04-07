@@ -175,6 +175,12 @@ es:
   upload_application_logo: '[es]Upload Application Logo[/es]'
   upload_application_logo_notes: '[es]Refer to 1-Click Deployment Document on file specfications.[/es]'
 
+  # favicon upload
+  failed_to_update_favicon: '[es]There was an error in updating the favicon. Please try again.[/es]'
+  select_favicon_to_upload: '[es]Please select a favicon to upload[/es]'
+  upload_favicon: '[es]Upload Favicon[/es]'
+  upload_favicon_notes: '[es]Refer to 1-Click Deployment Document on file specfications.[/es]'
+
   # standard system usage report
   time_period: '[es]Time Period[/es]'
   number_of_trips_planned: '[es]Number of Trips Planned[/es]'
