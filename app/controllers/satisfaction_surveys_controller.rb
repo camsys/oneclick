@@ -14,10 +14,10 @@ class SatisfactionSurveysController < ApplicationController
   def create
     @satisfaction_survey = SatisfactionSurvey.new(satisfaction_survey_params)
     if @satisfaction_survey.save
-      flash[:notice] = "Survey submited."
+      flash[:notice] = t(:survey_submited)
       redirect_to :back
     else
-      flash[:notice] = "Saving survey failed."
+      flash[:notice] = t(:saving_survey_failed)
       redirect_to :back
     end
   end
@@ -25,10 +25,10 @@ class SatisfactionSurveysController < ApplicationController
   def update
     if @satisfaction_survey.update(satisfaction_survey_params)
       redirect_to :back
-      flash[:notice] = "Survey updated."
+      flash[:notice] = t(:survey_updated)
     else
       redirect_to :back
-      flash[:alert] = "There was a problem saving."
+      flash[:alert] = t(:problem_saving)
     end
   end
 

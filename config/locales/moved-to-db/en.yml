@@ -346,6 +346,10 @@ en:
   max_notes: 'Max notes'
   satisfied_by_trips: "Do any of these trips satisfy your needs?"
   trip_satisfaction_notes: ""
+  survey_submitted: "Survey submitted."
+  saving_survey_failed: "Saving survey failed."
+  survey_updated: "Survey updated."
+  problem_saving: "There was a problem saving."
 
   # Page comments
   trip_header_comment: ''

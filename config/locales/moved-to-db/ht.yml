@@ -290,6 +290,10 @@ ht:
   max_notes: '[ht]Max notes[/ht]'
   satisfied_by_trips: "[ht]Do any of these trips satisfy your needs?[/ht]"
   trip_satisfaction_notes: ""
+  survey_submitted: "[ht]Survey submitted.[/ht]"
+  saving_survey_failed: "[ht]Saving survey failed.[/ht]"
+  survey_updated: "[ht]Survey updated.[/ht]"
+  problem_saving: "[ht]There was a problem saving.[/ht]"
 
   # Page comments
   trip_header_comment: ''

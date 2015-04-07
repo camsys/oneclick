@@ -12,8 +12,17 @@
         = f.input_field :satisfied, as: :radio_buttons
         = f.input :comment, label: t(:comment)
       .col-sm-6.col-sm-offset-3
-        = f.button :submit, t(:save), :class => 'btn action-button', data: {dismiss: "modal"}
-        %button.btn.action-button{"data-dismiss" => "modal"} Close
+        = f.button :submit, t(:save), :class => 'btn action-button', id: "save_survey", disabled: "disabled"
+        %button.btn.action-button{"data-dismiss" => "modal"}
+          = t(:close)
 
 :javascript
-  $('#satisfaction_survey .radio:first').css('margin-top', 0);
+  $('#satisfaction_survey').on('show.bs.modal', function() {
+    $('#satisfaction_survey input[type=radio]').change(function(){
+      if ($(this).is(':checked')) {
+        $('#save_survey').removeAttr('disabled');
+      } else {
+        $('#save_survey').attr('disabled', 'disabled');
+      }
+    });
+  });

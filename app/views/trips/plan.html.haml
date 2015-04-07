@@ -20,17 +20,28 @@
       -if @assisting_agency.public_comments.for_locale and  !@assisting_agency.public_comments.for_locale.comment.blank?
         .col-sm-12{style: "background: white; border-radius: 5px;"}
           =@assisting_agency.public_comments.for_locale.comment.html_safe
-  .col-sm-12
+  .col-sm-12#action_header
     = render partial: 'shared/page_comments', locals: {key: :plan_header_comment}
   .col-xs-12{style: "padding: 0px;", role: 'main'}
     = render partial: "selected_itineraries_details", locals: { trip: @trip, for_db: false }
 
   .col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
-    .pull-right
+    .pull-right#action_footer
       = render partial: 'plan_page_buttons'
   .col-sm-12
     = render partial: 'shared/page_comments', locals: {key: :plan_footer_comment}
   = render partial: 'send_trip_by_email', locals: {trip: @trip}
+
+  - if SatisfactionSurvey.enabled?
+    - unless SatisfactionSurvey.find_by(trip_id: @trip.id)
+      %button#open_survey.btn.btn-primary.btn-lg{"data-toggle" => "modal", "data-target" => "#satisfaction_survey", "style" => "display:none;"}
+      #satisfaction_survey.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              = t(:feedback)
+            .modal-body
+              = render "satisfaction_surveys/form"
 
 - content_for :head do
   %meta{name: 'user_id', content: @trip.user.id}
@@ -47,5 +58,25 @@
       dataTarget = parentDiv.siblings('#drivingDirections').attr('id');
       parentDiv.siblings('#drivingDirections').attr('id', dataTarget + index);
     });
+
+    if ($('#open_survey').length != 0) {
+      function showPopup() {
+        $("#breadcrumbs a").trigger("click");
+        setTimeout(function(){
+          setTimeout(function(){
+            $('#open_survey').click();
+          },2000);
+        }, 1);
+        window.onbeforeunload = dontShowPopup;
+        return '#{t(:satisfied_by_trips)}';
+      }
+      function dontShowPopup() { }
+
+      window.onbeforeunload = showPopup;
+
+      $("#breadcrumbs a, #action_header a, #action_footer a").click(function(){
+        window.onbeforeunload = dontShowPopup;
+      });
+    }
   });
 

@@ -153,6 +153,7 @@ class TripsController < PlaceSearchingController
   def plan
     @trip = Trip.find(params[:id])
     @trip_parts = @trip.trip_parts
+    @satisfaction_survey = SatisfactionSurvey.new
 
     unless params[:itinids].nil?
       @is_review = false
