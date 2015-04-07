@@ -5,4 +5,5 @@
     - field_id = "#{field.name}_#{filter_type_name}"
     - raw_value = params[:q][field_id] rescue ''
     - field_class += ' is-end-date' if is_date_field && (filter_type_name == 'lt' || filter_type_name == 'lteq')
-    = search_form.search_field field_id, {class: field_class, value: filter_value(raw_value, is_date_field)} rescue nil
+    
+    = search_form.search_field field_id, {class: field_class, type: filter_input_type(field_type), value: filter_value(raw_value, is_date_field)} rescue nil

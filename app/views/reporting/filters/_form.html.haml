@@ -30,10 +30,13 @@
   = render partial: 'reporting/filters/reset_buttons'
 :javascript
   $(document).ready(function() {
-    $('.filter-form .collapse:first').collapse('toggle');
+    $('.filter-form .collapse:first').collapse('show');
 
-    $('select option').on('mousedown', function (e) {
+    // multiple_select: selection change by clicking
+    $('.filter-form select option').on('mousedown', function (e) {
         this.selected = !this.selected;
+
         e.preventDefault ? e.preventDefault() : e.returnValue = false;
     });
+
   });

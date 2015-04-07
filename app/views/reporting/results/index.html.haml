@@ -31,8 +31,9 @@
         - @results.each do |result|
           %tr
             - @fields.each do |field|
+              - field_type = @report.data_model.columns_hash[field[:name].to_s].type rescue nil
               %td
-                = result[field[:name].to_sym]
+                = format_output result[field[:name].to_sym], field_type, field[:formatter]
     .row
       .col-sm-6
         .pull-left

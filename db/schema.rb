@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150407185713) do
+ActiveRecord::Schema.define(version: 20150407210811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -336,8 +336,6 @@ ActiveRecord::Schema.define(version: 20150407185713) do
 
   create_table "reporting_filter_types", force: true do |t|
     t.string   "name",       null: false
-    t.string   "partial"
-    t.string   "formatter"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -355,6 +353,7 @@ ActiveRecord::Schema.define(version: 20150407185713) do
     t.string   "title"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.string   "formatter"
   end
 
   add_index "reporting_output_fields", ["reporting_report_id"], :name => "index_reporting_output_fields_on_reporting_report_id"
