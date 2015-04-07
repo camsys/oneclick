@@ -289,6 +289,7 @@ ht:
   plan_trip: "[ht]Continue planning this trip[/ht]"
   max_notes: '[ht]Max notes[/ht]'
   satisfied_by_trips: "[ht]Do any of these trips satisfy your needs?[/ht]"
+  trip_satisfaction_notes: ""
 
   # Page comments
   trip_header_comment: ''

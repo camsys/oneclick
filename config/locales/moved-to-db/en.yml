@@ -345,6 +345,7 @@ en:
   plan_trip: "Continue planning this trip"
   max_notes: 'Max notes'
   satisfied_by_trips: "Do any of these trips satisfy your needs?"
+  trip_satisfaction_notes: ""
 
   # Page comments
   trip_header_comment: ''

@@ -5,11 +5,15 @@
       = f.hidden_field :trip_id, value: @trip.id
 
       %p
-        = f.label :satisfied
-        = f.input_field :satisfied, as: :radio_buttons, item_wrapper_class: "radio-inline"
-        = f.input :comment
-      .col-sm-4.col-sm-offset-4
-        = f.submit t(:save), class: "form-control btn action-button"
+        = t(:trip_satisfaction_notes)
+
+      %p
+        = f.label :satisfied, t(:satisfied_by_trips)
+        = f.input_field :satisfied, as: :radio_buttons
+        = f.input :comment, label: t(:comment)
+      .col-sm-6.col-sm-offset-3
+        = f.button :submit, t(:save), :class => 'btn action-button', data: {dismiss: "modal"}
+        %button.btn.action-button{"data-dismiss" => "modal"} Close
 
 :javascript
   $('#satisfaction_survey .radio:first').css('margin-top', 0);

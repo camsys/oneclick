@@ -45,15 +45,14 @@
   / end of review columns
   #itinerary_modal.modal.modal-fullscreen.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
 
-  - if is_ieuw?
+  - if SatisfactionSurvey.enabled?
     - unless SatisfactionSurvey.find_by(trip_id: @trip.id)
-      %button#open_fake.btn.btn-primary.btn-lg{"data-toggle" => "modal", "data-target" => "#satisfaction_survey", "style" => "display:none;"}
-        = "Open Fake Modal"
+      %button#open_survey.btn.btn-primary.btn-lg{"data-toggle" => "modal", "data-target" => "#satisfaction_survey", "style" => "display:none;"}
       #satisfaction_survey.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
         .modal-dialog
           .modal-content
             .modal-header
-              = t(:satisfied_by_trips)
+              = t(:feedback)
             .modal-body
               = render "satisfaction_surveys/form"
 
@@ -261,12 +260,12 @@
         window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );
       });
 
-      if ($('#open_fake').length != 0) {
+      if ($('#open_survey').length != 0) {
         function showPopup() {
           $("#breadcrumbs a").trigger("click");
           setTimeout(function(){
             setTimeout(function(){
-              $('#open_fake').click();
+              $('#open_survey').click();
             },2000);
           }, 1);          
           window.onbeforeunload = dontShowPopup;
