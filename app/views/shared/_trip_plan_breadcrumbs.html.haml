@@ -1,4 +1,4 @@
-.hidden-xs{:role => "navigation", :aria => {:label => 'Breadcrumbs'}}
+.hidden-xs#breadcrumbs{:role => "navigation", :aria => {:label => 'Breadcrumbs'}}
   %ol{style: 'padding: 0px;'}
     - breadcrumbs = %w{trip options review plan}
     - breadcrumbs = %w{trip options grid review plan} if session[:is_multi_od] == true

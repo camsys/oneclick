@@ -47,6 +47,8 @@ class TripsController < PlaceSearchingController
       @current_user_accommodations << I18n.t(Accommodation.find(acc.accommodation_id).name).downcase
     end
 
+    @satisfaction_survey = SatisfactionSurvey.new
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @tripResponse }

@@ -2,7 +2,7 @@
 - content_for :head do
   = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"
 .row
-  .col-sm-12
+  .col-sm-12#action_header
     .pull-right
       = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;", tabindex: "7" do
         = t(:feedback)
@@ -34,7 +34,7 @@
     .col-md-9
       #tripContainer.col-xs-12{style: "padding: 0px;", :role => "main", :aria => {:label => 'Review Your Trip'}}
       / end of trip container
-  .col-xs-12{style: "margin-bottom: 5px;padding: 0px;"}
+  .col-xs-12#action_footer{style: "margin-bottom: 5px;padding: 0px;"}
     .pull-right
       = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;" do
         = t(:feedback)
@@ -44,6 +44,19 @@
     = render partial: 'shared/page_comments', locals: {key: :review_footer_comment}
   / end of review columns
   #itinerary_modal.modal.modal-fullscreen.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
+
+  - if is_ieuw?
+    - unless SatisfactionSurvey.find_by(trip_id: @trip.id)
+      %button#open_fake.btn.btn-primary.btn-lg{"data-toggle" => "modal", "data-target" => "#satisfaction_survey", "style" => "display:none;"}
+        = "Open Fake Modal"
+      #satisfaction_survey.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              = t(:satisfied_by_trips)
+            .modal-body
+              = render "satisfaction_surveys/form"
+
   :javascript
     $(function() {
       var getConfigValue = function(config) {
@@ -168,7 +181,8 @@
         to: '#{t(:to)}',
         from: '#{t(:from)}',
         accommodations: '#{t(:accommodations_filter)}',
-        accommodations_help: '#{t(:accommodations_help)}'
+        accommodations_help: '#{t(:accommodations_help)}',
+        satisfied_by_trips: '#{t(:satisfied_by_trips)}'
       };
 
       //show or hide legends
@@ -246,6 +260,26 @@
         //jump to Plan page
         window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );
       });
+
+      if ($('#open_fake').length != 0) {
+        function showPopup() {
+          $("#breadcrumbs a").trigger("click");
+          setTimeout(function(){
+            setTimeout(function(){
+              $('#open_fake').click();
+            },2000);
+          }, 1);          
+          window.onbeforeunload = dontShowPopup;
+          return localeDictFinder['satisfied_by_trips'];
+        }
+        function dontShowPopup() { }
+
+        window.onbeforeunload = showPopup;
+
+        $("#breadcrumbs a, button[name=planButton], #action_header a, #action_footer a, .btn-single-arrow-right, .btn-single-arrow-left").click(function(){
+          window.onbeforeunload = dontShowPopup;
+        });
+      }
     });
 
     $('#itinerary_modal').on('show.bs.modal', function(){

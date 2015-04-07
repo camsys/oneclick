@@ -532,4 +532,8 @@ module CsHelpers
   def is_arc?
     Oneclick::Application.config.brand == 'arc'
   end
+
+  def is_ieuw?
+    Oneclick::Application.config.brand == 'ieuw'
+  end
 end

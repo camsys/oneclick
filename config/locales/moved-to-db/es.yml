@@ -315,6 +315,7 @@ es:
   rate_recent: "[es118]Feedback on your recent trip[/es]"
   plan_trip: "Continuar la planificación de este viaje *44*"
   max_notes: '[es133]Max notes[/es]'
+  satisfied_by_trips: "[es]Do any of these trips satisfy your needs?[/es]"
 
   # Page comments
   trip_header_comment: ''

@@ -338,6 +338,7 @@ en:
   rate_recent: "Feedback on your recent trip"
   plan_trip: "Continue planning this trip"
   max_notes: 'Max notes'
+  satisfied_by_trips: "Do any of these trips satisfy your needs?"
 
   # Page comments
   trip_header_comment: ''
