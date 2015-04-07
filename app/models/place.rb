@@ -109,7 +109,7 @@ class Place < GeocodedAddress
     'PLACES_TYPE'
   end
 
-  def build_place_hash
+  def build_place_details_hash
     #Based on Google Place Details
 
     {
