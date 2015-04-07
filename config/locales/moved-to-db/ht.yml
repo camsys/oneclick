@@ -106,6 +106,7 @@ ht:
   # Agent and Admin string
   reports: "[ht]Reports[/ht]"
   report_name: "[ht]Report Name[/ht]"
+  report_parameters: "[es]Report Parameters[/es]"
   date_range: "[ht]Date Range[/ht]"
   traveler_type: "[ht]Traveler Type[/ht]"
   display_type: "[ht]Display Type[/ht]"

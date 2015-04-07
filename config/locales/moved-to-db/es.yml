@@ -101,6 +101,7 @@ es:
   # Agent and Admin string
   reports: "Reportes"
   report_name: "[es46]Report Name[/es]"
+  report_parameters: "[es]Report Parameters[/es]"
   date_range: "[es47]Date Range[/es]"
   traveler_type: "[es48]Traveler Type[/es]"
   display_type: "[es49]Display Type[/es]"
