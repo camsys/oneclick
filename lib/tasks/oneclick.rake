@@ -345,4 +345,25 @@ namespace :oneclick do
     end
   end
 
+  desc "Query planned trips and update is_planned column"
+  task scan_trips_is_planned: :environment do
+
+    puts 'find out trip_parts grouped by trip_id'
+    trip_part_by_trip_count = TripPart.includes(:trip).references(:trip).group("trips.id").count
+
+    puts 'find out selected itineraries grouped by trip_id'
+    selected_itins_by_trip_count = Itinerary.includes(trip_part: :trip).references(trip_part: :trip)
+      .where(selected: true)
+      .group("trips.id").count
+    
+    puts 'find trip ids with trip_part_count == selected_itins_count'
+    planned_trip_ids = []
+    trip_part_by_trip_count.merge(selected_itins_by_trip_count) {|k, n, o| planned_trip_ids << k if n == o}
+
+    Trip.where(id: planned_trip_ids).update_all(is_planned: true)
+    Trip.where.not(id: planned_trip_ids).update_all(is_planned: false)
+
+    puts 'finished scanning planned trips'
+  end
+
 end

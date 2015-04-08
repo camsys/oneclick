@@ -24,12 +24,7 @@ phone_created_trips = base_created_trips.where("trips.ui_mode = ?", :phone).grou
 kiosk_created_trips = base_created_trips.where("trips.ui_mode = ?", :kiosk).group("trips.id").count.count
 
 puts 'Number of planned trips by ui_mode'
-base_trip_part_by_trip_count = TripPart.includes(:trip).where("trips.created_at >= ? and trips.created_at <= ?",start_date, end_date).group("trips.id").count;
-base_selected_itins_by_trip_count = base_created_trips.where(selected: true).group("trips.id").count;
-planned_trip_ids = []
-base_trip_part_by_trip_count.merge(base_selected_itins_by_trip_count) {|k, n, o| planned_trip_ids << k if n == o}
-
-base_planned_trips = Trip.where(id: planned_trip_ids)
+base_planned_trips = Trip.planned_between(start_date, end_date)
 desktop_planned_desktop = base_planned_trips.where(ui_mode: 'desktop').count
 tablet_planned_desktop = base_planned_trips.where(ui_mode: 'tablet').count
 phone_planned_desktop = base_planned_trips.where(ui_mode: 'phone').count

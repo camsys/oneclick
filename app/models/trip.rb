@@ -35,22 +35,17 @@ class Trip < ActiveRecord::Base
   scope :feedbackable, -> { includes(:itineraries).where(itineraries: {selected: true}, trips: {needs_feedback_prompt: true}).uniq}
   scope :scheduled_before, lambda {|to_day| where("trips.scheduled_time < ?", to_day) }
 
-  def self.planned_between(start_time, end_time)
-    start_time = start_time.at_beginning_of_day
-    end_time = end_time.at_end_of_day
-    trip_part_by_trip_count = TripPart.includes(:trip)
-      .where("trips.created_at >= ? and trips.created_at <= ?",start_time, end_time)
-      .group("trips.id").count
-    selected_itins_by_trip_count = Itinerary.includes(trip_part: :trip)
-      .where("trips.created_at >= ? and trips.created_at <= ?",start_time, end_time)
-      .where(selected: true)
-      .group("trips.id").count
-    
-    # find trip ids with trip_part_count == selected_itins_count
-    planned_trip_ids = []
-    trip_part_by_trip_count.merge(selected_itins_by_trip_count) {|k, n, o| planned_trip_ids << k if n == o}
+  def self.planned_between(start_time = nil, end_time = nil)
+    base_trips = Trip.where(is_planned: true)
 
-    Trip.where(id: planned_trip_ids)
+    start_time = start_time.at_beginning_of_day if start_time
+    end_time = end_time.at_end_of_day if end_time
+
+    base_trips = base_trips.where("trips.created_at >= ?", start_time) if start_time
+    base_trips = base_trips.where("trips.created_at <= ?", end_time) if end_time
+
+    base_trips
+   
   end
 
   # Returns a set of trips that are scheduled between the start and end time

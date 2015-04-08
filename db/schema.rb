@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150407210811) do
+ActiveRecord::Schema.define(version: 20150408192805) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -566,8 +566,8 @@ ActiveRecord::Schema.define(version: 20150407210811) do
     t.integer  "user_id"
     t.integer  "trip_purpose_id"
     t.integer  "creator_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
     t.boolean  "taken"
     t.date     "scheduled_date"
     t.datetime "scheduled_time"
@@ -582,6 +582,7 @@ ActiveRecord::Schema.define(version: 20150407210811) do
     t.integer  "return_provider_id"
     t.string   "kiosk_code"
     t.string   "token"
+    t.boolean  "is_planned",                           default: false
   end
 
   create_table "trips_desired_modes", force: true do |t|
