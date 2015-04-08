@@ -161,6 +161,46 @@ class TripPlace < GeocodedAddress
 
   end
 
+  def build_place_details_hash
+    #Based on Google Place Details
+
+    {
+        address_components: [
+        {
+            long_name: self.address1,
+        short_name: self.address1,
+        types: ["street_address"]
+    },
+        {
+            long_name: self.city,
+        short_name: self.city,
+        types: ["locality", "political"]
+    },
+        {
+            long_name: self.state,
+        short_name: self.state,
+        types: ["administrative_area_level_1","political"]
+    },
+        {
+            long_name: self.zip,
+        short_name: self.zip,
+        types: ["postal_code"]
+    }
+    ],
+
+        formatted_address: self.address,
+        geometry: {
+        location: {
+        lat: self.lat,
+        lng: self.lon,
+    }
+    },
+        id: self.id,
+        name: self.name,
+        scope: "My Place"
+    }
+  end
+
 
   # discover the location for this trip place from
   # its relationships

@@ -30,7 +30,6 @@ module Api
 
       #Post details on a trip, create/save the itineraries, and return them as json
       def plan
-
         #Missing from API Spec
         purpose = TripPurpose.first
         modes = ['mode_paratransit', 'mode_taxi', 'mode_transit']
@@ -42,7 +41,7 @@ module Api
         trip_parts = params[:itinerary_request]
 
         #Assign Meta Data
-        trip = trip.new
+        trip = Trip.new
         trip.creator = user
         trip.user = user
         trip.trip_purpose = purpose
@@ -56,6 +55,7 @@ module Api
         to_trip_place.trip = trip
         from_trip_place.sequence = 0
         to_trip_place.sequence = 1
+
         first_part = (trip_parts.select { |part| part[:segment_index] == 0}).first
         from_trip_place.from_place_details first_part[:start_location]
         to_trip_place.from_place_details first_part[:end_location]
@@ -65,37 +65,56 @@ module Api
         #Build the trip_parts (i.e., segments)
         trip_parts.each do |trip_part|
           # Create the outbound trip part
-          trip_part = TripPart.new
-          trip_part.trip = trip
-          trip_part.sequence = trip_part[:segment_index]
-          trip_part.is_depart? = (trip_part[:departure_type] == 'depart')
+          tp = TripPart.new
+          tp.trip = trip
+          tp.sequence = trip_part[:segment_index]
+          tp.is_depart? == (trip_part[:departure_type] == 'depart')
 
-
-          #Seems redundant
-          trip_part.scheduled_time = trip_part[:departure].to_datetime
-          trip_part.scheduled_date = trip_part[:departure].to_date
+          tp.scheduled_time = trip_part[:departure].to_datetime
+          tp.scheduled_date = trip_part[:departure].to_date
 
           #Assign trip_places
-          if trip_part.sequence == 0
-            trip_part.from_trip_place = from_trip_place
-            trip_part.to_trip_place = to_trip_place
+          if tp.sequence == 0
+            tp.from_trip_place = from_trip_place
+            tp.to_trip_place = to_trip_place
           else
-            trip_part.from_trip_place = to_trip_place
-            trip_part.to_trip_place = from_trip_place
+            tp.from_trip_place = to_trip_place
+            tp.to_trip_place = from_trip_place
           end
 
           #Save Trip Part
-          raise 'TripPart not valid' unless trip_part.valid?
-          trip.trip_parts << trip_part
+          raise 'TripPart not valid' unless tp.valid?
+          trip.trip_parts << tp
 
           #Seems redundant
-          if trip_part.sequence == 0
-            trip.scheduled_date = trip_part.scheduled_date
-            trip.scheduled_time = trip_part.scheduled_time
+          if tp.sequence == 0
+            trip.scheduled_date = tp.scheduled_date
+            trip.scheduled_time = tp.scheduled_time
+            trip.save
           end
 
           #Build the itineraries
           trip.create_itineraries
+
+          #Append data for API
+          final_itineraries = []
+          trip.itineraries.each do |itinerary|
+            i_hash = itinerary.as_json
+            i_hash[:segment_index] = itinerary.trip_part.sequence
+            i_hash[:start_location] = itinerary.trip_part.from_trip_place.build_place_details_hash
+            i_hash[:end_location] = itinerary.trip_part.to_trip_place.build_place_details_hash
+            i_hash[:bookable] = itinerary.is_bookable?
+            if itinerary.legs
+              i_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
+            else
+              i_hash[:json_legs] = nil
+            end
+            final_itineraries.append(i_hash)
+          end
+
+
+
+          render json: {itineraries: final_itineraries}
 
           #Unpack and return the itineraries
           #MORE TO WRITE HERE
