@@ -475,6 +475,10 @@ class EcolaneHelpers
     return user_service.customer_id
   end
 
+  def cancel_itinerary(itinerary)
+    cancel(itinerary.booking_confirmation)
+  end
+
   def cancel(trip_conf)
     url_options = "/api/order/" + SYSTEM_ID + '/'
     url_options += trip_conf.to_s

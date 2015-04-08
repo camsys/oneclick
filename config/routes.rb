@@ -422,6 +422,7 @@ Oneclick::Application.routes.draw do
         collection do
           post 'select'
           post 'plan'
+          post 'book'
         end
       end
 

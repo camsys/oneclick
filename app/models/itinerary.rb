@@ -253,5 +253,14 @@ class Itinerary < ActiveRecord::Base
     @legs = []
   end
 
+  def book
+    eh = EcolaneHelpers.new
+    eh.book_itinerary self
+  end
+
+  def cancel
+    eh = EcolaneHelpers.new
+    eh.cancel_itinerary self
+  end
 
 end
