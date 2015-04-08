@@ -15,6 +15,7 @@ module Reporting
         # total_results is for exporting
         total_results = @q.result(:district => true)
         total_results = total_results.order(:id) if !@report.data_model.columns_hash.keys.index("id").nil?
+        
         # @results is for html display; only render current page
         @results = total_results.page(page).per(@per_page)
 
