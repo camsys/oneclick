@@ -122,6 +122,44 @@ module Api
 
       end
 
-    end
-  end
-end
+      def book
+        booking_request = params[:booking_request]
+        booked_itineraries = []
+
+        booking_request.each do |itinerary_hash|
+          itinerary = Itinerary.find(itinerary_hash[:itinerary_id].to_i)
+          result, message = itinerary.book
+
+          if result
+            booked_itineraries.append(itinerary)
+          else
+            booked_itineraries.each do |booked_itinerary|
+              booked_itinerary.cancel
+            end
+            booked_itineraries = []
+            break
+          end
+        end
+
+        results_array = []
+        #Build Success Response
+        if booked_itineraries.count > 0
+          booked_itineraries.each do |bi|
+            results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, success: true, confirmation_id: bi.booking_confirmation})
+          end
+
+        #Build Failure Response
+        else
+          booking_request.each do |i|
+            results._array.append({trip_id: i[:trip_id], itinerary_id: i[:itinerary_id], success: false, confirmation_id: nil})
+          end
+        end
+
+        render json: {booking_results: results_array}
+
+      end
+
+
+    end #Itineraries Controller
+  end #V1
+end #API
