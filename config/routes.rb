@@ -423,6 +423,7 @@ Oneclick::Application.routes.draw do
           post 'select'
           post 'plan'
           post 'book'
+          post 'cancel'
         end
       end
 

@@ -159,6 +159,21 @@ module Api
 
       end
 
+      def cancel
+        bookingcancellation_request = params[:bookingcancellation_request]
+
+        results_array = []
+        bookingcancellation_request.each do |bc|
+          itinerary = Itinerary.find(bc[:itinerary_id].to_i)
+          booking_confirmation = itinerary.booking_confirmation
+          result = itinerary.cancel
+          results_array.append({trip_id: bc[:trip_id], itinerary_id: bc[:itinerary_id], success: result, confirmation_id: booking_confirmation})
+        end
+
+        render json: {cancellation_results: results_array}
+
+      end
+
 
     end #Itineraries Controller
   end #V1
