@@ -1,6 +1,6 @@
 module Reporting
   class ReportsController < ApplicationController
-    authorize_resource :class => false  
+    before_action :verify_permission
 
     def index
       @reports = ReportingReport.all_report_infos
@@ -22,6 +22,14 @@ module Reporting
 
       # find out filter_groups
       @filter_groups = ReportingFilterGroup.where(id: @report.reporting_filter_fields.pluck(:reporting_filter_group_id).uniq)
+    end
+
+    private
+
+    def verify_permission
+      if !can?(:access, :admin_reports)
+        redirect_to root_url, :flash => { :error => t(:not_authorized) }
+      end
     end
     
   end

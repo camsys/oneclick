@@ -24,6 +24,7 @@ class Ability
         return # no access to tags pages for non-admin users
       end
     end
+
     if user.has_role? :feedback_administrator
       can [:see], :admin_menu
       can :access, :admin_feedback
@@ -31,6 +32,7 @@ class Ability
       can [:manage], SidewalkObstruction # feedback admin will always be able to read sidwalk feedback
       can :send_follow_up, Trip
     end
+
     if User.with_role(:agency_administrator, :any).include?(user)
       # TODO Are these 2 redundant?
       can [:see], :staff_menu
@@ -49,8 +51,6 @@ class Ability
       can [:access], :admin_providers
       can [:access], :admin_services
       can [:access], :admin_reports
-      can [:access], :reporting_reports
-      can [:access], :reporting_report_results
       can [:access], :admin_feedback
 
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
@@ -65,10 +65,9 @@ class Ability
       end
       can :create, User
       can :read, [Provider, Service]
-      can [:index, :show, :trips_datatable], Report
+      can [:show, :results, :trips_datatable], Report
       can [:read, :update], User, agency_id: user.agency.try(:id)
       can :send_follow_up, Trip
-
     end
 
     if User.with_role(:agent, :any).include?(user)
@@ -82,6 +81,7 @@ class Ability
       can [:access], :admin_providers
       can [:access], :admin_services
       can [:access], :admin_feedback
+      can [:access], :admin_reports
       can [:access], :user_guide
       can [:access, :manage], MultiOriginDestTrip
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
@@ -93,7 +93,7 @@ class Ability
       end
       can [:travelers], Agency, id: user.agency.try(:id)
       can [:read], Agency
-      can [:index, :show], Report
+      can [:show, :results, :trips_datatable], Report
       can [:index, :show], [Provider, Service] # Read-only access to providers and services
       can :send_follow_up, Trip
     end
@@ -107,8 +107,8 @@ class Ability
       can [:access], :admin_reports
       can [:access], :admin_feedback
 
-      can [:index, :show, :trips_datatable], Report
-      can [:read, :full_read], Provider, id: user.try(:provider_id) # full read includes add'l information.  All users can read contact info
+      can [:show, :results, :trips_datatable], Report
+      can [:read, :full_read, :find_staff_by_email], Provider, id: user.try(:provider_id) # full read includes add'l information.  All users can read contact info
       can [:update, :destroy], Provider, id: user.try(:provider_id), active: true
       can [:update, :show, :full_read], Service do |s|
         user.provider.services.include?(s)

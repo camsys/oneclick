@@ -1,6 +1,6 @@
 module Reporting
   class ResultsController < ApplicationController
-    authorize_resource :class => false  
+    before_action :verify_permission
 
     def index
       q_param = params[:q]
@@ -45,5 +45,14 @@ module Reporting
       end
 
     end
+
+    private
+
+    def verify_permission
+      if !can?(:access, :admin_reports)
+        redirect_to root_url, :flash => { :error => t(:not_authorized) }
+      end
+    end
+
   end
 end

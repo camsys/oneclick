@@ -29,7 +29,7 @@ module Reporting::ReportHelper
           default_formatter = "%m/%d/%Y %H:%M:%S"
         end
 
-        formatter = default_formatter if !formatter.blank?
+        formatter = default_formatter if formatter.blank?
         raw_value = raw_value.strftime(formatter) rescue raw_value.strftime(default_formatter)
 
       when :integer, :float, :decimal
@@ -39,7 +39,7 @@ module Reporting::ReportHelper
             raw_value = number_with_currency(raw_value)
           when 'percentage'
             raw_value = number_with_percentage(raw_value)
-          else
+          when 'delimiter'
             raw_value = number_with_delimiter(raw_value)
           end
         end
