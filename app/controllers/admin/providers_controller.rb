@@ -20,7 +20,7 @@ class Admin::ProvidersController < ApplicationController
 
     # assume only one internal contact for now
     @contact = @provider.users.with_role(:internal_contact, @provider).first
-    @staff = @provider.users.with_role(:provider_staff, @provider)
+    @staff = @provider.users.with_role(:provider_staff, @provider).uniq
     @services = @provider.services
 
     respond_to do |format|
@@ -61,7 +61,7 @@ class Admin::ProvidersController < ApplicationController
   def edit
     # assume only one internal contact for now
     @contact = @provider.users.with_role(:internal_contact, @provider).first
-    @staff = @provider.users.with_role(:provider_staff, @provider)
+    @staff = @provider.users.with_role(:provider_staff, @provider).uniq
     setup_comments(@provider)
   end
 
