@@ -7,7 +7,7 @@ module Trip::Purpose
   end
 
   def self.defaults trip
-    trip.trip_purpose_id = TripPurpose.all.first.id
+    trip.trip_purpose_id = TripPurpose.first.id
     trip
   end
 end

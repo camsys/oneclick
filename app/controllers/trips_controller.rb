@@ -684,13 +684,9 @@ class TripsController < PlaceSearchingController
       params['return_arrive_depart'] = true
     end
 
-    purpose = TripPurpose.where(code: params["purpose"]).first
-    if purpose.nil?
-      purpose = TripPurpose.where(code: TripPurpose::DEFAULT_PURPOSE_CODE).first
-    end
-    unless purpose.nil?
-      params['trip_purpose_id'] = purpose.id
-    end
+    purpose = TripPurpose.where(code: params["purpose"]).first || TripPurpose.first
+
+    params['trip_purpose_id'] = purpose.id if purpose
 
     @trip_proxy = create_trip_proxy_from_form_params(params)
 
@@ -961,8 +957,8 @@ protected
     end
 
     # Set the trip purpose to its default
-    default_purpose = TripPurpose.where(code: TripPurpose::DEFAULT_PURPOSE_CODE).first
-    @trip_proxy.trip_purpose_id = !default_purpose.nil? ? default_purpose.id : TripPurpose.all.first.id
+    first_purpose = TripPurpose.first
+    @trip_proxy.trip_purpose_id = first_purpose.id if first_purpose
 
     @trip_proxy.user_agent = request.user_agent
     @trip_proxy.ui_mode = @ui_mode
