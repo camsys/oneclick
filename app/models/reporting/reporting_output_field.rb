@@ -4,6 +4,7 @@ module Reporting
 
     validates :name, presence: true
     validates :reporting_report, presence: true
+    validates :numeric_precision, :numericality => { :greater_than_or_equal_to => 0 }
 
   end
 end
