@@ -206,13 +206,15 @@ class TripProxy < Proxy
       errors.add(:outbound_trip_time, I18n.translate(:trips_cannot_be_entered_for_times))
       false
     end
-    if trip_datetime[1] < Date.today
-      errors.add(:return_trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
-      false
-    end
-    if trip_datetime[1] < Time.current
-      errors.add(:return_trip_time, I18n.translate(:trips_cannot_be_entered_for_times))
-      false
+    if is_round_trip == 1
+      if trip_datetime[1] < Date.today
+        errors.add(:return_trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
+        false
+      end
+      if trip_datetime[1] < Time.current
+        errors.add(:return_trip_time, I18n.translate(:trips_cannot_be_entered_for_times))
+        false
+      end
     end
     true
   end
