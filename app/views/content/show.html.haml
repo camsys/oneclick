@@ -1,2 +1,2 @@
-- content_for :title, "FAQ - #{t(:site_title)}"
+- content_for :title, "#{t(:site_title)} - #{params[:id].titleize}"
 = t(params[:id]).html_safe

@@ -1,4 +1,4 @@
-- content_for :title, "Edit #{@agency.name} - #{t(:site_title)}"
+- content_for :title, "#{t(:site_title)} - #{t(:edit)} #{@agency.name}"
 = simple_form_for @agency, url: admin_agency_path, html: { class: 'form-horizontal' },wrapper: :horizontal_form do |f|
   .row.info-header
     .col-sm-6

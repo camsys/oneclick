@@ -1,4 +1,4 @@
-- content_for :title, "Trip Summary - #{t(:site_title)}"
+- content_for :title, "#{t(:site_title)} - #{t(:trip_summaries)}"
 - if !@is_plan_valid
   - unless @is_review
     = render partial: 'shared/trip_plan_breadcrumbs'

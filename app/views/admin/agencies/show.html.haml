@@ -1,4 +1,4 @@
-- content_for :title, "#{@agency.name} - #{t(:site_title)}"
+- content_for :title, "#{t(:site_title)} - #{@agency.name}"
 - temp_rating = @agency.ratings.build(user: @traveler)
 - can_manage_agency =(can? :manage, :all) || ((can? :full_read, @agency) && !current_user.nil? && !current_user.agency.nil? && @agency.id == current_user.agency.id)
 - if can? :index, Agency
