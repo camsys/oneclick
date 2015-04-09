@@ -50,9 +50,7 @@ module Reporting
     private
 
     def verify_permission
-      if !can?(:access, :admin_reports)
-        redirect_to root_url, :flash => { :error => t(:not_authorized) }
-      end
+      authorize! :access, :admin_reports
     end
 
   end
