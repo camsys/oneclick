@@ -20,7 +20,6 @@ module Reporting::ReportHelper
 
   # format output field value if formatter is configured
   def format_output(raw_value, field_type, formatter = nil, formatter_option = nil)
-    raise
     unless raw_value.blank? || field_type.blank?
       case field_type.to_sym
       when :date, :datetime
