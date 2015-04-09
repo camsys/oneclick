@@ -228,11 +228,15 @@
             "&to_place=" + toPlace +
             "&outbound_trip_date=" + outboundDate +
             "&outbound_trip_time=" + outboundTime +
-            "&outbound_arrive_depart=" + outboundArriveDepart +
-            "&return_trip_date=" + returnDate +
-            "&return_trip_time=" + returnTime +
-            "&return_arrive_depart=" + returnArriveDepart;
+            "&outbound_arrive_depart=" + outboundArriveDepart;
 
+            if (isRoundTrip == "true") {
+              completeUrl += 
+              "&return_trip_date=" + returnDate +
+              "&return_trip_time=" + returnTime +
+              "&return_arrive_depart=" + returnArriveDepart;
+            }
+            
             $('#trip-url').val(completeUrl);
             
           });
