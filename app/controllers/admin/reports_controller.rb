@@ -2,7 +2,8 @@
 # Controller for customized reports
 # Generic reports, please refer to Reporting::ReportsController
 class Admin::ReportsController < Admin::BaseController
-  
+  include Reporting::ReportHelper
+
   # load the cancan authorizations
   load_and_authorize_resource  
   
@@ -21,7 +22,7 @@ class Admin::ReportsController < Admin::BaseController
   def show
     @report = Report.find(params[:id])
     
-    @reports = Reporting::ReportingReport.all_report_infos # get all report infos (id, name) both generic and customized reports
+    @reports = all_report_infos # get all report infos (id, name) both generic and customized reports
     @generated_report = GeneratedReport.new(params[:generated_report] || {})
     @generated_report.date_range = session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
     @min_trip_date = Trip.minimum(:scheduled_time)

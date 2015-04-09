@@ -1,9 +1,11 @@
 module Reporting
   class ReportsController < ApplicationController
+    include ReportHelper
+
     before_action :verify_permission
 
     def index
-      @reports = ReportingReport.all_report_infos
+      @reports = all_report_infos
       if !@reports.blank?
         first_report = @reports.first
         @is_generic_report = first_report[:is_generic]
@@ -17,7 +19,7 @@ module Reporting
     end
 
     def show
-      @reports = ReportingReport.all_report_infos
+      @reports = all_report_infos
       @report = ReportingReport.find(params[:id])
 
       # find out filter_groups

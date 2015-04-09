@@ -16,7 +16,9 @@ module Reporting
       begin
         # total_results is for exporting
         total_results = @q.result(:district => true)
-        total_results = total_results.order(:id) if !@report.data_model.columns_hash.keys.index("id").nil?
+
+        # filter data based on accessibility
+        total_results = filter_data(total_results)
         
         # @results is for html display; only render current page
         @results = total_results.page(page).per(@per_page)
@@ -57,6 +59,26 @@ module Reporting
 
     def verify_permission
       authorize! :access, :admin_reports
+    end
+
+    def filter_data(results)
+      # data access filtering 
+      # either filter by provider_id or agency_id
+      unless @report.data_access_type.blank? || 
+        @report.data_access_field_name.blank? || 
+        @report.data_model.columns_hash.keys.index(@report.data_access_field_name).nil?
+
+        if @report.data_access_type.to_sym == :provider
+          access_id = current_user.provider.id rescue nil
+        elsif @report.data_access_type.to_sym == :agency
+          access_id = current_user.agency.id rescue nil
+        end
+
+        results = results.where("#{@report.data_access_field_name} = " , access_id)
+      end
+
+      # default order by :id
+      results.order(:id) if !@report.data_model.columns_hash.keys.index("id").nil? 
     end
 
     def get_csv(data, fields)

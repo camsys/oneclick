@@ -1,4 +1,12 @@
 .row.form-group
   = search_form.label "#{field.title || field.name}", class: 'col-sm-3' rescue nil
   .col-sm-9
-    = search_form.collection_select "#{field.name}_in", field.reporting_lookup_table.data_model.all.order(field.reporting_lookup_table.display_field_name.to_sym), :id, "#{field.reporting_lookup_table.display_field_name}", {:include_blank => field.reporting_filter_type.name != Reporting::ReportingFilterType::MULTI_SELECT}, {:multiple => field.reporting_filter_type.name == Reporting::ReportingFilterType::MULTI_SELECT, class: 'form-control'}
+    - report = field.reporting_report
+    - lookup_table_data = field.reporting_lookup_table.data_model.all.order(field.reporting_lookup_table.display_field_name.to_sym)
+    - if !report.data_access_type.blank? && report.data_access_field_name == field.name
+      - if report.data_access_type.to_sym == :provider
+        - id = current_user.provider.id rescue nil
+      - elsif report.data_access_type.to_sym == :agency
+        - id = current_user.agency.id rescue nil
+      - lookup_table_data = lookup_table_data.where(id: id)
+    = search_form.collection_select "#{field.name}_in", lookup_table_data, :id, "#{field.reporting_lookup_table.display_field_name}", {:include_blank => field.reporting_filter_type.name != Reporting::ReportingFilterType::MULTI_SELECT}, {:multiple => field.reporting_filter_type.name == Reporting::ReportingFilterType::MULTI_SELECT, class: 'form-control'}
