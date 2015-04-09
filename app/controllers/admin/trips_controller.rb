@@ -15,6 +15,8 @@ class Admin::TripsController < Admin::BaseController
       @trips = Trip.includes(:user, :trip_places, :trip_purpose, :trip_parts)
     end
 
+    @trips = @trips.where(is_planned: true)
+
     respond_to do |format|
       format.html
       format.json { render json: @trips }

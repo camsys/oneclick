@@ -9,7 +9,7 @@ class TripsController < PlaceSearchingController
 
   def index
 
-    @trips = User.find(params[:user_id]).trips
+    @trips = User.find(params[:user_id]).trips.where(is_planned: true)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @trips }
@@ -194,6 +194,9 @@ class TripsController < PlaceSearchingController
     else
       @assisting_agency = nil
     end
+
+    # update trip is_planned status
+    @trip.update_attributes(is_planned: @is_plan_valid == true)
 
     if @is_plan_valid
       # Just before render, save off the html on the trip, so that we can access it later for ratings.
