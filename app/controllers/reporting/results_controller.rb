@@ -1,5 +1,7 @@
 module Reporting
   class ResultsController < ApplicationController
+    include ReportHelper
+
     before_action :verify_permission
 
     def index
@@ -42,7 +44,11 @@ module Reporting
 
       respond_to do |format|
         format.html
-        format.csv { send_data total_results.to_csv }
+        # format.csv { send_data total_results.to_csv }
+        format.csv do
+          send_data get_csv(@results, @fields),
+                filename: "#{@report.name.underscore}.csv", type: :text
+        end
       end
 
     end
@@ -51,6 +57,32 @@ module Reporting
 
     def verify_permission
       authorize! :access, :admin_reports
+    end
+
+    def get_csv(data, fields)
+      # Excel is stupid if the first two characters of a csv file are "ID". Necessary to
+      # escape it. https://support.microsoft.com/kb/215591/EN-US
+      CSV.generate do |csv|
+        headers = []
+        fields.each do |field|
+          headers << (field[:title].blank? ? field[:name] : field[:title])
+        end
+
+        if headers[0].start_with? "ID"
+          headers = Array.new(headers)
+          headers[0] = "'" + headers[0]
+        end
+
+        csv << headers
+
+        if data.each do |row|
+            csv << fields.map {|field| format_output row.send(field[:name]), 
+              @report.data_model.columns_hash[field[:name].to_s].type,  
+              field[:formatter]
+            }
+          end
+        end
+      end
     end
 
   end
