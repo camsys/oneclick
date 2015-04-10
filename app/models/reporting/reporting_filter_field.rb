@@ -9,6 +9,7 @@ module Reporting
     validates :reporting_filter_group, presence: true
     validates :reporting_filter_type, presence: true
     validates :name, presence: true
+    validates :sort_order, presence: true
 
     # field associated custom ransacker (base search unit)
     # TODO: probably no need
