@@ -189,7 +189,7 @@ module Api
           end
         end
 
-        render json: {result: 'ok'}
+        render json: {result: 200}
 
       end
 
