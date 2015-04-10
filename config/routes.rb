@@ -441,6 +441,20 @@ Oneclick::Application.routes.draw do
         end
       end
 
+      resources :characteristics do
+        collection do
+          get 'list'
+          get 'index'
+        end
+      end
+
+      resources :accommodations do
+        collection do
+          get 'list'
+          get 'index'
+        end
+      end
+
     end
   end
 
