@@ -37,7 +37,7 @@
     .row
       .col-sm-6
         .pull-left
-          = page_entries_info @results, :theme => 'twitter-bootstrap-3'
+          = page_entries_info @results, :theme => 'twitter-bootstrap-3' rescue nil
       .col-sm-6
         .pull-right
-          = paginate @results, :params => {per_page: @per_page}, :theme => 'twitter-bootstrap-3'
+          = paginate @results, :params => {per_page: @per_page}, :theme => 'twitter-bootstrap-3' rescue nil

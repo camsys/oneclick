@@ -14,6 +14,15 @@ module Reporting
       @params = {q: q_param}
 
       begin
+        # list all output fields
+        # if output_fields is empty, then export all columns in this table
+        @fields = @report.reporting_output_fields.blank? ?
+          @report.data_model.column_names.map{
+            |x| {
+              name: x 
+            }
+          } : @report.reporting_output_fields
+
         # total_results is for exporting
         total_results = @q.result(:district => true)
 
@@ -27,21 +36,9 @@ module Reporting
         # commen errors: table not found
         first_result = @results.first 
 
-        # list all output fields
-        # if output_fields is empty, then export all columns in this table
-        @fields = @report.reporting_output_fields.blank? ?
-          @report.data_model.column_names.map{
-            |x| {
-              name: x 
-            }
-          } : @report.reporting_output_fields
-
       rescue => e
         # error message handling
-
-        total_results = []
         @results = []
-        @fields = []
       end
 
       respond_to do |format|
