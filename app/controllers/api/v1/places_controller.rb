@@ -13,11 +13,11 @@ module Api
         locations = []
         count = 0
 
-        #Private Places
+        #User Places
         traveler_id = params[:traveler_id]
         if traveler_id and include_user_pois.to_bool
           @traveler = User.find(traveler_id.to_i)
-          rel = Place.arel_table[:name].matches(search_string + "%")
+          rel = Place.arel_table[:name].matches(search_string)
           places = @traveler.places.active.where(rel)
           places.each do |place|
             locations.append(place.build_place_details_hash)
@@ -29,7 +29,7 @@ module Api
         end
 
         # Global POIs
-        pois = Poi.get_by_query_str(search_string + '%', max_results)
+        pois = Poi.get_by_query_str(search_string, max_results)
         pois.each do |poi|
           locations.append(poi.build_place_details_hash)
           count += 1
@@ -39,7 +39,7 @@ module Api
 
         end
 
-        hash = {poi_search_results: {locations: locations}}
+        hash = {places_search_results: {locations: locations}, record_count: locations.count}
         respond_with hash
 
       end
