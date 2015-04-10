@@ -8,7 +8,7 @@ module Reporting::ReportHelper
     query_hash = {}
 
     is_sys_admin = current_user.has_role?(:system_administrator) || current_user.has_role?(:admin) 
-    is_provider_admin = current_user.has_role?(:provider_staff, :any)
+    is_provider_staff = current_user.has_role?(:provider_staff, :any)
     is_agency_admin = current_user.has_role?(:agency_administrator, :any)
     is_agent = current_user.has_role?(:agent, :any)
 
@@ -17,17 +17,17 @@ module Reporting::ReportHelper
     
     # check each role
     sys_admin_role_check = (reports_arel[:is_sys_admin].eq(true)).or(reports_arel[:is_sys_admin].eq(nil)) if is_sys_admin
-    provider_admin_role_check = (reports_arel[:is_provider_admin].eq(true)).or(reports_arel[:is_provider_admin].eq(nil)) if is_provider_admin
+    provider_staff_role_check = (reports_arel[:is_provider_staff].eq(true)).or(reports_arel[:is_provider_staff].eq(nil)) if is_provider_staff
     agency_admin_role_check = (reports_arel[:is_agency_admin].eq(true)).or(reports_arel[:is_agency_admin].eq(nil)) if is_agency_admin
     agent_role_check = (reports_arel[:is_agent].eq(true)).or(reports_arel[:is_agent].eq(nil)) if is_agent
 
     # chain them together via OR
     role_check = sys_admin_role_check if is_sys_admin
-    if is_provider_admin
+    if is_provider_staff
       if role_check
-        role_check = role_check.or.provider_admin_role_check 
+        role_check = role_check.or.provider_staff_role_check 
       else
-        role_check = provider_admin_role_check
+        role_check = provider_staff_role_check
       end
     end
 
