@@ -175,7 +175,7 @@ class Poi < GeocodedAddress
       },
       id: self.id,
       name: self.name,
-      scope: "Global POI"
+      scope: "global"
     }
   end
   

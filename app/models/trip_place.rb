@@ -197,7 +197,7 @@ class TripPlace < GeocodedAddress
     },
         id: self.id,
         name: self.name,
-        scope: "My Place"
+        scope: "user"
     }
   end
 
