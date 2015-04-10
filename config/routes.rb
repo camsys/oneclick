@@ -430,6 +430,7 @@ Oneclick::Application.routes.draw do
       resources :trips do
         collection do
           get 'status'
+          get 'details'
         end
       end
 

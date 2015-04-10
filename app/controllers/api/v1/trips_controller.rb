@@ -19,6 +19,17 @@ module Api
 
       end
 
+      def details
+        trip_token = params[:trip_token]
+        trip = Trip.where(token: trip_token).first
+
+        # This is a stub.
+        # More details will be added as-needed.
+        hash = {status: {code: trip.status[:code], description: trip.status[:description]}, details: trip}
+        respond_with hash
+
+      end
+
     end
   end
 end
