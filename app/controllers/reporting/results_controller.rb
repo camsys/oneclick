@@ -38,6 +38,7 @@ module Reporting
 
       rescue => e
         # error message handling
+        total_results = []
         @results = []
       end
 
@@ -45,7 +46,7 @@ module Reporting
         format.html
         # format.csv { send_data total_results.to_csv }
         format.csv do
-          send_data get_csv(@results, @fields),
+          send_data get_csv(total_results, @fields),
                 filename: "#{@report.name.underscore}.csv", type: :text
         end
       end
@@ -61,17 +62,19 @@ module Reporting
     def filter_data(results)
       # data access filtering 
       # either filter by provider_id or agency_id
-      unless @report.data_access_type.blank? || 
-        @report.data_access_field_name.blank? || 
-        @report.data_model.columns_hash.keys.index(@report.data_access_field_name).nil?
+      unless current_user.has_role?(:system_administrator) || current_user.has_role?(:admin) 
+        unless @report.data_access_type.blank? || 
+          @report.data_access_field_name.blank? || 
+          @report.data_model.columns_hash.keys.index(@report.data_access_field_name).nil?
 
-        if @report.data_access_type.to_sym == :provider
-          access_id = current_user.provider.id rescue nil
-        elsif @report.data_access_type.to_sym == :agency
-          access_id = current_user.agency.id rescue nil
+          if @report.data_access_type.to_sym == :provider
+            access_id = current_user.provider.id rescue nil
+          elsif @report.data_access_type.to_sym == :agency
+            access_id = current_user.agency.id rescue nil
+          end
+
+          results = results.where("#{@report.data_access_field_name} = ?" , access_id)
         end
-
-        results = results.where("#{@report.data_access_field_name} = " , access_id)
       end
 
       # default order by :id
