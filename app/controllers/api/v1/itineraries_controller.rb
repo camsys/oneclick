@@ -174,6 +174,24 @@ module Api
 
       end
 
+      #Itinerary email template is out of date.
+      def email
+        email_itineraries = params[:email_itineraries]
+
+        email_itineraries.each do |email_itinerary|
+          email_address = email_itinerary[:email_address]
+          itineraries = email_itinerary[:itineraries]
+
+          itineraries.each do |itinerary|
+            itin = Itinerary.find(itinerary[:itinerary_id].to_i)
+            trip = itin.trip_part.trip
+            UserMailer.user_itinerary_email([email_address], trip, itin, 'SUBJECT', '')
+          end
+        end
+
+        render json: {result: 'ok'}
+
+      end
 
     end #Itineraries Controller
   end #V1

@@ -424,6 +424,7 @@ Oneclick::Application.routes.draw do
           post 'plan'
           post 'book'
           post 'cancel'
+          post 'email'
         end
       end
 
