@@ -2192,7 +2192,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             tags =
                 '<div class = "col-sm-12 panel panel-default" style="padding: 0px;">' +
                 '<div class = "panel-heading">' +
-                '<h2 class="panel-title fare-label" tabindex="12">' + addReviewTooltip("fare_help") + localeDictFinder['fare'] + '</h2>' +
+                '<h2 class="panel-title fare-label" tabindex="12">' + addReviewTooltip("fare_help") + localeDictFinder['fare_filter'] + '</h2>' +
                 '</div>' +
                 '<div class="panel-body">' +
                 '<div id="' + costSliderId + '" aria-valuemin="' + minCost + '" aria-valuemax="' + maxCost + '">' +
