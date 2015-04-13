@@ -30,8 +30,8 @@ module Reporting
         total_results = filter_data(total_results)
         
         # @results is for html display; only render current page
-        @results = total_results.page(page).per(@per_page)
         @results = results.order(:id)  if !@report.data_model.columns_hash.keys.index("id").nil?
+        @results = total_results.page(page).per(@per_page)
 
         # this is used to test if any sql exception is triggered in querying
         # commen errors: table not found
@@ -78,7 +78,6 @@ module Reporting
         end
       end
 
-      # default order by :id
       results
     end
 
