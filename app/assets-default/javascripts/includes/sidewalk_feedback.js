@@ -13,16 +13,17 @@ CsLeaflet.SidewalkFeedbackTool = {
 
     _button: null,
 
-    LMsidewalk_feedback_layergroup: new L.layerGroup(),
+    LMsidewalk_feedback_layergroup: null,
 
     init: function(csMap, options) {
     	this._csMap = csMap || {};
     	this._options = options || {};
+        this.LMsidewalk_feedback_layergroup = new L.layerGroup();
 
         if(this._options.editing_enabled) {
-    	   this.addFeedbackInputControl();
+            this.addFeedbackInputControl();
             this.registerCustomPopupEventsOnMap();
-    	   this.registerSidewalkFeedbackEventsOnMap();
+            this.registerSidewalkFeedbackEventsOnMap();
         }
 
         this.registerMapZoomEvent();
