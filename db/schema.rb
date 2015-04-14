@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150414180638) do
+ActiveRecord::Schema.define(version: 20150414193929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -338,12 +338,8 @@ ActiveRecord::Schema.define(version: 20150414180638) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "reporting_lookup_tables", force: true do |t|
-    t.string   "name",               null: false
-    t.string   "display_field_name", null: false
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-  end
+# Could not dump table "reporting_lookup_tables" because of following StandardError
+#   Unknown type 'name' for column 'data_access_type'
 
   create_table "reporting_output_fields", force: true do |t|
     t.integer  "reporting_report_id", null: false
@@ -358,17 +354,15 @@ ActiveRecord::Schema.define(version: 20150414180638) do
   add_index "reporting_output_fields", ["reporting_report_id"], :name => "index_reporting_output_fields_on_reporting_report_id"
 
   create_table "reporting_reports", force: true do |t|
-    t.string   "name",                   null: false
+    t.string   "name",              null: false
     t.string   "description"
-    t.string   "data_source",            null: false
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "data_source",       null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.boolean  "is_sys_admin"
     t.boolean  "is_provider_staff"
     t.boolean  "is_agency_admin"
     t.boolean  "is_agent"
-    t.string   "data_access_type"
-    t.string   "data_access_field_name"
   end
 
   create_table "reporting_specific_filter_groups", force: true do |t|
