@@ -27,6 +27,17 @@ GIT
     leaflet-rails (0.7.3)
 
 GIT
+  remote: git://github.com/camsys/ransack.git
+  revision: 1a591f3d2d1746bede332e61efbc48da74914525
+  specs:
+    ransack (1.6.6)
+      actionpack (>= 3.0)
+      activerecord (>= 3.0)
+      activesupport (>= 3.0)
+      i18n
+      polyamorous (~> 1.2)
+
+GIT
   remote: git://github.com/camsys/sass-rails.git
   revision: baf4f108c999da4941ce68085a9de7fac10e262f
   tag: v4.0.3a
@@ -365,7 +376,7 @@ GEM
       cliver (~> 0.3.1)
       multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
-    polyamorous (1.1.0)
+    polyamorous (1.2.0)
       activerecord (>= 3.0)
     polyglot (0.3.5)
     polylines (0.1.1)
@@ -410,12 +421,6 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.3.2)
-    ransack (1.6.5)
-      actionpack (>= 3.0)
-      activerecord (>= 3.0)
-      activesupport (>= 3.0)
-      i18n
-      polyamorous (~> 1.1)
     rb-fchange (0.0.6)
       ffi
     rb-fsevent (0.9.4)
@@ -611,7 +616,7 @@ DEPENDENCIES
   rails (= 4.0.3)
   rails-erd
   rails_12factor
-  ransack
+  ransack!
   rb-fchange
   rb-fsevent
   rb-inotify
