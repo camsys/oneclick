@@ -64,9 +64,10 @@ module Reporting
       # data access filtering 
       # either filter by provider_id or agency_id
       unless current_user.has_role?(:system_administrator) || current_user.has_role?(:admin) 
-        
+
          Reporting::ReportingFilterField.includes(:reporting_lookup_table)
           .where(reporting_filter_group_id: @report.reporting_filter_groups.pluck(:id).uniq).each do |field|
+            
           data_access_type = field.reporting_lookup_table.data_access_type if field.reporting_lookup_table
           unless data_access_type.blank? || @report.data_model.columns_hash.keys.index(field.name).nil?
             

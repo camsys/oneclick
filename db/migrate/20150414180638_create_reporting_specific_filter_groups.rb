@@ -13,9 +13,9 @@ class CreateReportingSpecificFilterGroups < ActiveRecord::Migration
 
     Reporting::ReportingFilterGroup.select(:id, "reporting_report_id", "sort_order").each do |group|
       Reporting::ReportingSpecificFilterGroup.create(
-        reporting_report_id: group.reporting_report_id,
-        reporting_filter_group_id: group.id,
-        sort_order: group.sort_order)
+        reporting_report_id: group[:reporting_report_id],
+        reporting_filter_group_id: group[:id],
+        sort_order: group[:sort_order])
     end
 
     remove_reference :reporting_filter_groups, :reporting_report, index: true
@@ -27,9 +27,10 @@ class CreateReportingSpecificFilterGroups < ActiveRecord::Migration
     add_reference :reporting_filter_groups, :reporting_report, index: true
 
     Reporting::ReportingSpecificFilterGroup.all.each do |spec_group|
-      spec_group.reporting_filter_group.update_attributes(
-        sort_order: spec_group.sort_order, 
-        reporting_report_id: spec_group.reporting_report_id)
+      spec_group.reporting_filter_group[:sort_order] = spec_group.sort_order
+      spec_group.reporting_filter_group[:reporting_report_id] = spec_group.reporting_report_id
+      
+      spec_group.reporting_filter_group.save
     end
 
     drop_table :reporting_specific_filter_groups

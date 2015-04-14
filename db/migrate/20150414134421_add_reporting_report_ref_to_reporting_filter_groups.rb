@@ -12,7 +12,8 @@ class AddReportingReportRefToReportingFilterGroups < ActiveRecord::Migration
       filter_group_report_id = filter_group[:reporting_report_id]
       if !filter_group_report_id
         # assign filter_field's reporting_report_id to filter_group
-        filter_group.update_attributes(reporting_report_id: report_id)
+        filter_group[:reporting_report_id] = report_id
+        filter_group.save
       elsif report_id != filter_group_report_id
         # if this filter_group has report assigned, 
         # then create a new filter_group with same group name and filter_field's report_id
