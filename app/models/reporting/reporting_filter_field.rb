@@ -1,11 +1,9 @@
 module Reporting
   class ReportingFilterField < ActiveRecord::Base
-    belongs_to :reporting_report
     belongs_to :reporting_filter_group
     belongs_to :reporting_filter_type
     belongs_to :reporting_lookup_table
 
-    validates :reporting_report, presence: true
     validates :reporting_filter_group, presence: true
     validates :reporting_filter_type, presence: true
     validates :name, presence: true

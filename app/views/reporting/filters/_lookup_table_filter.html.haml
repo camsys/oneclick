@@ -1,7 +1,7 @@
 .row.form-group
   = search_form.label "#{field.title || field.name}", class: 'col-sm-3' rescue nil
   .col-sm-9
-    - report = field.reporting_report
+    - report = field.reporting_filter_group.reporting_report
     - lookup_table_data = field.reporting_lookup_table.data_model.all.order(field.reporting_lookup_table.display_field_name.to_sym)
     - if !report.data_access_type.blank? && report.data_access_field_name == field.name
       - if report.data_access_type.to_sym == :provider

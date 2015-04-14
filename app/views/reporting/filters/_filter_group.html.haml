@@ -1,6 +1,6 @@
 - if filter_group && search_form
   - filter_group_id = filter_group.id
-  - fields = filter_group.reporting_filter_fields.where(reporting_report: report).order(:sort_order, :id)
+  - fields = filter_group.reporting_filter_fields.order(:sort_order, :id)
 
   .panel.panel-default
     .panel-heading{role: 'tab', id: "filter-heading-#{filter_group_id}"}

@@ -23,7 +23,7 @@ module Reporting
       @report = ReportingReport.find(params[:id])
 
       # find out filter_groups
-      @filter_groups = ReportingFilterGroup.where(id: @report.reporting_filter_fields.pluck(:reporting_filter_group_id).uniq)
+      @filter_groups = @report.reporting_filter_groups.order(:sort_order)
     end
 
     private

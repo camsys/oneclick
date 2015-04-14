@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150410153151) do
+ActiveRecord::Schema.define(version: 20150414142007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -312,7 +312,6 @@ ActiveRecord::Schema.define(version: 20150410153151) do
   end
 
   create_table "reporting_filter_fields", force: true do |t|
-    t.integer  "reporting_report_id",                   null: false
     t.integer  "reporting_filter_group_id",             null: false
     t.integer  "reporting_filter_type_id",              null: false
     t.integer  "reporting_lookup_table_id"
@@ -326,13 +325,16 @@ ActiveRecord::Schema.define(version: 20150410153151) do
   add_index "reporting_filter_fields", ["reporting_filter_group_id"], :name => "index_reporting_filter_fields_on_reporting_filter_group_id"
   add_index "reporting_filter_fields", ["reporting_filter_type_id"], :name => "index_reporting_filter_fields_on_reporting_filter_type_id"
   add_index "reporting_filter_fields", ["reporting_lookup_table_id"], :name => "index_reporting_filter_fields_on_reporting_lookup_table_id"
-  add_index "reporting_filter_fields", ["reporting_report_id"], :name => "index_reporting_filter_fields_on_reporting_report_id"
 
   create_table "reporting_filter_groups", force: true do |t|
-    t.string   "name",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",                            null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "reporting_report_id"
+    t.integer  "sort_order",          default: 1, null: false
   end
+
+  add_index "reporting_filter_groups", ["reporting_report_id"], :name => "index_reporting_filter_groups_on_reporting_report_id"
 
   create_table "reporting_filter_types", force: true do |t|
     t.string   "name",       null: false
