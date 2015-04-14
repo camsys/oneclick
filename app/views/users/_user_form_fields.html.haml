@@ -38,6 +38,12 @@
               :javascript
                 addHelperTooltip('#email_label', "#{t(:email_help)}");
 
+            - if is_admin?
+              = f.input :roles, label: "#{t(:admin)}?", collection: Role.order(:name).reject{|role| role.name != "system_administrator"}, as: :check_boxes, label_method: lambda {|t| t(:yes_str)}, checked: (@user.has_role?(:system_administrator) ? 1 : "")
+              - if translation_exists?("role_help")
+                :javascript
+                  addHelperTooltip('#roles_label', "#{t(:role_help)}");
+
             = f.input :phone, label: t(:phone), :required => false
             - if translation_exists?("phone_help")
               :javascript
