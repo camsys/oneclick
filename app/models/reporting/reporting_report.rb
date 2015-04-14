@@ -2,7 +2,8 @@ module Reporting
   class ReportingReport < ActiveRecord::Base
     include Reporting::Modelable
 
-    has_many :reporting_filter_groups
+    has_many :reporting_specific_filter_groups
+    has_many :reporting_filter_groups, :through => :reporting_specific_filter_groups
     has_many :reporting_output_fields
 
     validates :name, presence: true, :uniqueness => true

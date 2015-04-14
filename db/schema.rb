@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150414142007) do
+ActiveRecord::Schema.define(version: 20150414180638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -327,14 +327,10 @@ ActiveRecord::Schema.define(version: 20150414142007) do
   add_index "reporting_filter_fields", ["reporting_lookup_table_id"], :name => "index_reporting_filter_fields_on_reporting_lookup_table_id"
 
   create_table "reporting_filter_groups", force: true do |t|
-    t.string   "name",                            null: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.integer  "reporting_report_id"
-    t.integer  "sort_order",          default: 1, null: false
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
-
-  add_index "reporting_filter_groups", ["reporting_report_id"], :name => "index_reporting_filter_groups_on_reporting_report_id"
 
   create_table "reporting_filter_types", force: true do |t|
     t.string   "name",       null: false
@@ -374,6 +370,17 @@ ActiveRecord::Schema.define(version: 20150414142007) do
     t.string   "data_access_type"
     t.string   "data_access_field_name"
   end
+
+  create_table "reporting_specific_filter_groups", force: true do |t|
+    t.integer  "reporting_report_id"
+    t.integer  "reporting_filter_group_id"
+    t.integer  "sort_order",                default: 1, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "reporting_specific_filter_groups", ["reporting_filter_group_id"], :name => "index_of_filter_group_on_specific_filter_group"
+  add_index "reporting_specific_filter_groups", ["reporting_report_id"], :name => "index_of_report_on_specific_filter_group"
 
   create_table "reports", force: true do |t|
     t.string   "name",        limit: 64

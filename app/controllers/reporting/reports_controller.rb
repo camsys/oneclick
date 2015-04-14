@@ -23,7 +23,7 @@ module Reporting
       @report = ReportingReport.find(params[:id])
 
       # find out filter_groups
-      @filter_groups = @report.reporting_filter_groups.order(:sort_order)
+      @filter_groups = @report.reporting_specific_filter_groups.order(:sort_order)
     end
 
     private
