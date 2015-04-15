@@ -22,6 +22,9 @@ module Reporting
       @reports = all_report_infos
       @report = ReportingReport.find(params[:id])
 
+      # reset column information
+      @report.data_model.reset_column_information
+
       # find out filter_groups
       @filter_groups = @report.reporting_specific_filter_groups.order(:sort_order)
     end
