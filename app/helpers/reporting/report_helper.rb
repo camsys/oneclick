@@ -99,7 +99,7 @@ module Reporting::ReportHelper
   def filter_lookup_table_data(lookup_table)
     return nil if !lookup_table
 
-    data = lookup_table.data_model.order(lookup_table.id_field_name.to_sym)
+    data = lookup_table.data_model.order(lookup_table.display_field_name.to_sym)
 
     data_access_type = lookup_table.data_access_type
     unless current_user.has_role?(:system_administrator) || current_user.has_role?(:admin) || 
