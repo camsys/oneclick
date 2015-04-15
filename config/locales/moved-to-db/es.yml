@@ -325,6 +325,7 @@ es:
   plan_trip: "Continuar la planificación de este viaje *44*"
   max_notes: '[es133]Max notes[/es]'
   satisfied_by_trips: "[es]Do any of these trips satisfy your needs?[/es]"
+  stay_on_page: "[es]Stay on this page to leave feedback.[/es]"
   trip_satisfaction_notes: ""
   survey_submitted: "[es]Survey submitted.[/es]"
   saving_survey_failed: "[es]Saving survey failed.[/es]"

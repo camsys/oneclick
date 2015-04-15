@@ -292,6 +292,7 @@ ht:
   plan_trip: "[ht]Continue planning this trip[/ht]"
   max_notes: '[ht]Max notes[/ht]'
   satisfied_by_trips: "[ht]Do any of these trips satisfy your needs?[/ht]"
+  stay_on_page: "[ht]Stay on this page to leave feedback.[/ht]"
   trip_satisfaction_notes: ""
   survey_submitted: "[ht]Survey submitted.[/ht]"
   saving_survey_failed: "[ht]Saving survey failed.[/ht]"

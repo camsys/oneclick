@@ -348,6 +348,7 @@ en:
   plan_trip: "Continue planning this trip"
   max_notes: 'Max notes'
   satisfied_by_trips: "Do any of these trips satisfy your needs?"
+  stay_on_page: "Stay on this page to leave feedback."
   trip_satisfaction_notes: ""
   survey_submitted: "Survey submitted."
   saving_survey_failed: "Saving survey failed."

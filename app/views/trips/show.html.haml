@@ -182,7 +182,8 @@
         from: '#{t(:from)}',
         accommodations: '#{t(:accommodations_filter)}',
         accommodations_help: '#{t(:accommodations_help)}',
-        satisfied_by_trips: '#{t(:satisfied_by_trips)}'
+        did_not_take_feedback_prompt: "#{t(:did_not_take_feedback_prompt)}",
+        stay_on_page: '#{t(:stay_on_page)}'
       };
 
       //show or hide legends
@@ -267,10 +268,10 @@
           setTimeout(function(){
             setTimeout(function(){
               $('#open_survey').click();
-            },2000);
+            },3000);
           }, 1);          
           window.onbeforeunload = dontShowPopup;
-          return localeDictFinder['satisfied_by_trips'];
+          return localeDictFinder['did_not_take_feedback_prompt'] + " " + localeDictFinder['stay_on_page'];
         }
         function dontShowPopup() { }
 
