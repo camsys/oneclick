@@ -152,7 +152,7 @@ module Api
         #Build Failure Response
         else
           booking_request.each do |i|
-            results._array.append({trip_id: i[:trip_id], itinerary_id: i[:itinerary_id], success: false, confirmation_id: nil})
+            results_array.append({trip_id: i[:trip_id], itinerary_id: i[:itinerary_id], success: false, confirmation_id: nil})
           end
         end
 
