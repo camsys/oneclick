@@ -13,12 +13,13 @@ class SatisfactionSurveysController < ApplicationController
 
   def create
     @satisfaction_survey = SatisfactionSurvey.new(satisfaction_survey_params)
-    if @satisfaction_survey.save
-      flash[:notice] = t(:survey_submited)
-      redirect_to :back
-    else
-      flash[:notice] = t(:saving_survey_failed)
-      redirect_to :back
+    respond_to do |format|
+      if @satisfaction_survey.save
+        format.json { render json: @satisfaction_survey }
+      else
+        format.json { render json: @satisfaction_survey.errors, status: :unprocessable_entity }
+        format.html { redirect_to :back, notice: t(:saving_survey_failed) }
+      end
     end
   end
 

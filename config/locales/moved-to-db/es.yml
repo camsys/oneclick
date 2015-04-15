@@ -333,6 +333,7 @@ es:
   saving_survey_failed: "[es]Saving survey failed.[/es]"
   survey_updated: "[es]Survey updated.[/es]"
   problem_saving: "[es]There was a problem saving.[/es]"
+  success: "[es]Success![/es]"
 
   # Page comments
   trip_header_comment: ''

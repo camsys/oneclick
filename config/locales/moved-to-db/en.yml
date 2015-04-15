@@ -356,6 +356,7 @@ en:
   saving_survey_failed: "Saving survey failed."
   survey_updated: "Survey updated."
   problem_saving: "There was a problem saving."
+  success: "Success!"
 
   # Page comments
   trip_header_comment: ''

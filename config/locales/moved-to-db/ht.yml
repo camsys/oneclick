@@ -300,6 +300,7 @@ ht:
   saving_survey_failed: "[ht]Saving survey failed.[/ht]"
   survey_updated: "[ht]Survey updated.[/ht]"
   problem_saving: "[ht]There was a problem saving.[/ht]"
+  success: "[ht]Success![/ht]"
 
   # Page comments
   trip_header_comment: ''
