@@ -30,8 +30,7 @@ module Api
 
       #Post details on a trip, create/save the itineraries, and return them as json
       def plan
-        #Missing from API Spec
-        purpose = TripPurpose.first
+        #Move to a config.  API does not pass modes.
         modes = ['mode_paratransit', 'mode_taxi', 'mode_transit']
 
         #Not built yet
@@ -39,12 +38,14 @@ module Api
 
         #Unpack params
         trip_parts = params[:itinerary_request]
+        purpose = params[:trip_purpose]
+
 
         #Assign Meta Data
         trip = Trip.new
         trip.creator = user
         trip.user = user
-        trip.trip_purpose = purpose
+        trip.trip_purpose = TripPurpose.where(code: purpose).first
         trip.desired_modes = Mode.where(code: modes)
         trip.save
 
@@ -70,8 +71,8 @@ module Api
           tp.sequence = trip_part[:segment_index]
           tp.is_depart? == (trip_part[:departure_type] == 'depart')
 
-          tp.scheduled_time = trip_part[:departure].to_datetime
-          tp.scheduled_date = trip_part[:departure].to_date
+          tp.scheduled_time = trip_part[:trip_time].to_datetime
+          tp.scheduled_date = trip_part[:trip_time].to_date
 
           #Assign trip_places
           if tp.sequence == 0
