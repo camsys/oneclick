@@ -231,7 +231,7 @@ Oneclick::Application.configure do
     config.host = 'oneclick-ieuw.camsys-apps.com'
     config.ui_logo = 'ieuw/logo.png'
     config.logo_text = "Inland Empire logo - Vet Link"
-    config.favicon = 'ieuw/desktop.png'
+    config.favicon = 'ieuw/desktop.ico'
     config.mobile_favicon = 'ieuw/mobile.png'
     config.tablet_favicon = 'ieuw/tablet.png'
     config.geocoder_components = 'country:US'
