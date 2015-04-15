@@ -297,9 +297,9 @@ Oneclick::Application.routes.draw do
       get '/reports/trips_datatable' => 'reports#trips_datatable'
 
       resources :reports, :only => [:index, :show] do
-        post 'results'
+        get 'results'
       end
-      post '/reports/:id' => 'reports#show'
+
       resources :trips, :only => [:index]
       get '/geocode' => 'util#geocode'
       get '/raise' => 'util#raise'

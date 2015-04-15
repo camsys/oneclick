@@ -1,6 +1,6 @@
 = simple_form_for @generated_report,
         url: admin_report_results_path(@report, locale: params[:locale]),
-        html: { method: 'post', id: 'report_form', class: 'form-horizontal filter-form', style: 'padding-top: 10px;' }  do |f|
+        html: { method: :get, id: 'report_form', class: 'form-horizontal filter-form', style: 'padding-top: 10px;' }  do |f|
   .panel.panel-default
     .panel-heading
       %h2.panel-title
