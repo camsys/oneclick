@@ -16,9 +16,13 @@
           - if !field.reporting_lookup_table
             
             - field_type = report.data_model.columns_hash[field.name].type rescue nil
-            - is_date_field = ![:date, :datetime].index(field_type).nil?
-            - field_class = is_date_field ? 'form-control form-control-inline is-date-field' : 'form-control form-control-inline'
-            
+            - field_class = 'form-control form-control-inline'
+            - if !field.value_type.blank? && field.value_type.to_sym == :time
+              - field_class += ' is-time-field'
+            - elsif field_type == :date or field_type == :datetime
+              - field_class += ' is-date-field'
+              - is_date_field = true
+
             - if field.reporting_filter_type.name == Reporting::ReportingFilterType::RANGE
               = render partial: 'reporting/filters/range_filter', locals: {search_form: search_form, field: field, is_date_field: is_date_field, field_class: field_class, field_type: field_type}
             

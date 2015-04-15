@@ -11,6 +11,13 @@
           language: '#{I18n.locale}'
         });
 
+        $('.filter-form .is-time-field').datetimepicker({
+          format: 'HH:mm',
+          useSeconds: false,
+          pickDate: false,
+          language: '#{I18n.locale}'
+        });
+
         // Reporting Engine only respects YYYY-MM-DD format
         $('.filter-form').on('submit', function(){
           $('.filter-form .is-date-field').each(function(){
