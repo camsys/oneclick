@@ -138,7 +138,7 @@ module Reporting::ReportHelper
     role_check = sys_admin_role_check if is_sys_admin
     if is_provider_staff
       if role_check
-        role_check = role_check.or.provider_staff_role_check 
+        role_check = role_check.or provider_staff_role_check 
       else
         role_check = provider_staff_role_check
       end
@@ -146,7 +146,7 @@ module Reporting::ReportHelper
 
     if is_agency_admin
       if role_check
-        role_check = role_check.or.agency_admin_role_check 
+        role_check = role_check.or agency_admin_role_check 
       else
         role_check = agency_admin_role_check
       end
@@ -154,7 +154,7 @@ module Reporting::ReportHelper
 
     if is_agent
       if role_check
-        role_check = role_check.or.agent_role_check 
+        role_check = role_check.or agent_role_check 
       else
         role_check = agent_role_check
       end
