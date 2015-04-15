@@ -69,6 +69,7 @@ gem 'sidekiq'
 gem 'ransack', github: 'camsys/ransack'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
+gem 'browser'
 
 group :development do
   # gem 'ffi-geos'

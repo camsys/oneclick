@@ -1,4 +1,5 @@
-= simple_form_for :favicon, url: admin_upload_favicon_path, method: 'patch', html: { class: 'form-horizontal', multipart: true }, authenticity_token: true, wrapper: :horizontal_form do |f|
+- favicon = locals[:favicon]
+= simple_form_for favicon, url: admin_upload_favicon_path, method: 'patch', html: { class: 'form-horizontal', multipart: true }, authenticity_token: true, wrapper: :horizontal_form do |f|
   .row
     .col-sm-12
       .panel.panel-default
@@ -8,8 +9,15 @@
               %h3.panel-title
                 .btns.pull-right
                   = f.submit t(:ok), class: 'btn action-button', role: 'button'
-                = t(:upload_favicon)
-                = add_tooltip("upload_favicon_help")
+                - if favicon == :mobile_favicon
+                  = t(:upload_mobile_favicon)
+                  = add_tooltip("upload_mobile_favicon_help")
+                - elsif favicon == :tablet_favicon
+                  = t(:upload_tablet_favicon)
+                  = add_tooltip("upload_tablet_favicon_help")
+                - else
+                  = t(:upload_favicon)
+                  = add_tooltip("upload_favicon_help")
         .panel-body
           = f.error_notification message: print_messages(f)
           %label

@@ -182,6 +182,8 @@ es:
   failed_to_update_favicon: '[es]There was an error in updating the favicon. Please try again.[/es]'
   select_favicon_to_upload: '[es]Please select a favicon to upload[/es]'
   upload_favicon: '[es]Upload Favicon[/es]'
+  upload_mobile_favicon: '[es]Upload Mobile Favicon[/es]'
+  upload_tablet_favicon: '[es]Upload Tablet Favicon[/es]'
   upload_favicon_notes: '[es]Refer to 1-Click Deployment Document on file specfications.[/es]'
 
   # standard system usage report

@@ -153,6 +153,8 @@ ht:
   failed_to_update_favicon: '[ht]There was an error in updating the favicon. Please try again.[/ht]'
   select_favicon_to_upload: '[ht]Please select a favicon to upload[/ht]'
   upload_favicon: '[ht]Upload Favicon[/ht]'
+  upload_mobile_favicon: '[ht]Upload Mobile Favicon[/ht]'
+  upload_tablet_favicon: '[ht]Upload Tablet Favicon[/ht]'
   upload_favicon_notes: '[ht]Refer to 1-Click Deployment Document on file specfications.[/ht]'
 
   # standard system usage report
