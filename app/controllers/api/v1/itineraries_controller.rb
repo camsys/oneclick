@@ -39,7 +39,7 @@ module Api
         #Unpack params
         trip_parts = params[:itinerary_request]
         purpose = params[:trip_purpose]
-
+        trip_token = params[:trip_token]
 
         #Assign Meta Data
         trip = Trip.new
@@ -47,6 +47,7 @@ module Api
         trip.user = user
         trip.trip_purpose = TripPurpose.where(code: purpose).first
         trip.desired_modes = Mode.where(code: modes)
+        trip.token = trip_token
         trip.save
 
         #Build the Trip Places
@@ -115,7 +116,7 @@ module Api
 
 
 
-          render json: {itineraries: final_itineraries}
+          render json: {trip_id: trip.id, trip_token: trip.token, itineraries: final_itineraries}
 
           #Unpack and return the itineraries
           #MORE TO WRITE HERE

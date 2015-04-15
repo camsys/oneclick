@@ -430,6 +430,11 @@ Oneclick::Application.routes.draw do
 
       resources :trips do
         collection do
+          get 'status_from_token'
+          get 'details_from_token'
+        end
+
+        member do
           get 'status'
           get 'details'
         end
