@@ -70,14 +70,11 @@ gem 'ransack', github: 'camsys/ransack'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 
-gem 'better_errors'
-gem 'binding_of_caller'
-
 group :development do
   # gem 'ffi-geos'
   #gem 'mysql2'
-  #gem 'better_errors'
-  #gem 'binding_of_caller'
+  gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'guard', '~> 1.8.3'
   gem 'guard-bundler'
   gem 'guard-cucumber'
