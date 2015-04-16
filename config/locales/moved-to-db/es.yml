@@ -887,6 +887,7 @@ es:
   zip: "[es]Zip[/es]"
   all: "Todos"
   system_usage: "[es]System Usage[/es]"
+  broswer_warning: "[es]Warning! Your current browser is outdated. While you may still use 1-Click, some of the features may not function. We recommend that you upgrade to the latest version of your browser and try again.[/es]"
 
   relationship_status:
     relationship_status_requested: "[es599]Requested[/es]"

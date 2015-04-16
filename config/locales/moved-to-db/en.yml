@@ -925,6 +925,7 @@ en:
   zip: "Zip"
   all: "All"
   system_usage: "System Usage"
+  broswer_warning: "Warning! Your current browser is outdated. While you may still use 1-Click, some of the features may not function. We recommend that you upgrade to the latest version of your browser and try again."
 
   relationship_status:
     relationship_status_requested: "Requested"

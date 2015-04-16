@@ -18,6 +18,23 @@
       #main.container
         #messages
           = render 'shared/messages'
+        - unless browser.modern? # Webkit, Firefox 17+, IE 9+ and Opera 12+
+          #browser_warning.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
+            .modal-dialog
+              .modal-content
+                .modal-body
+                  = t(:broswer_warning)
+                .modal-footer
+                  %button.btn.action-button{"data-dismiss" => "modal"}
+                    = t(:close)
+          :javascript
+            $(document).ready(function(){
+              if (!sessionStorage.getItem("user_warned")) {
+                $('#browser_warning').modal('show');
+                sessionStorage.setItem("user_warned", true);
+              }
+            });
+
         = yield
 
       #footer{:role => "contentinfo", :aria => {:label => 'Footer'}}

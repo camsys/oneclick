@@ -818,6 +818,7 @@ ht:
   state: "[ht]State[/ht]"
   zip: "[ht]Zip[/ht]"
   all: "[ht]All[/ht]"
+  broswer_warning: "[ht]Warning! Your current browser is outdated. While you may still use 1-Click, some of the features may not function. We recommend that you upgrade to the latest version of your browser and try again.[/ht]"
   relationship_status:
     relationship_status_requested: "[ht]Requested[/ht]"
     relationship_status_pending: "[ht]Pending[/ht]"
