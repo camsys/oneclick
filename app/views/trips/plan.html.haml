@@ -65,10 +65,10 @@
         setTimeout(function(){
           setTimeout(function(){
             $('#open_survey').click();
-          },2000);
+          },3000);
         }, 1);
         window.onbeforeunload = dontShowPopup;
-        return '#{t(:satisfied_by_trips)}';
+        return '#{t(:did_not_take_feedback_prompt)} #{t(:stay_on_page)}';
       }
       function dontShowPopup() { }
 
