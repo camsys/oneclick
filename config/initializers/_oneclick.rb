@@ -268,7 +268,7 @@ Oneclick::Application.configure do
     config.max_walk_seconds = 3600
 
     config.time_zone = 'Pacific Time (US & Canada)'
-    config.enable_satisfaction_surveys = true
+    config.enable_satisfaction_surveys = false
 
   when 'ma'
     config.host = 'oneclick.camsys-apps.com'
