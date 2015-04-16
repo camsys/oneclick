@@ -35,7 +35,7 @@ module Reporting
 
         # this is used to test if any sql exception is triggered in querying
         # commen errors: table not found
-        first_result = @results.first 
+        first_result = @results.limit(1) 
 
       rescue => e
         # error message handling
