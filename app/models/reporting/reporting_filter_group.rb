@@ -5,7 +5,6 @@ module Reporting
     has_many :reporting_specifc_filter_groups
     has_many :reporting_reports, :through => :reporting_specifc_filter_groups
 
-    validates :reporting_report, presence: true
     validates :name, presence: true
 
   end
