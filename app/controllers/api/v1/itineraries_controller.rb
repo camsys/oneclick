@@ -1,8 +1,6 @@
 module Api
   module V1
-    class ItinerariesController < ApplicationController
-      respond_to :json
-      require 'json'
+    class ItinerariesController < Api::V1::ApiController
 
       #Todo: Ensure that trip matches the itinerary
       #Todo: Gracefully handle errors

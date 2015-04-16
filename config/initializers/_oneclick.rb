@@ -72,6 +72,9 @@ Oneclick::Application.configure do
   #Default SSL Setting
   config.force_ssl = false
 
+  #API Activation:  API is still in beta.  Need ability to turn it off on a per-instance basis
+  config.api_activated = false
+
 
   case ENV['BRAND'] || 'arc'
   when 'arc'

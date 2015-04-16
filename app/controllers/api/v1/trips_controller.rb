@@ -1,8 +1,6 @@
 module Api
   module V1
-    class TripsController < ApplicationController
-      respond_to :json
-      require 'json'
+    class TripsController < Api::V1::ApiController
 
       def status_from_token
         #Get the itineraries

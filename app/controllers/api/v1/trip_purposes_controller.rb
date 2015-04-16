@@ -1,8 +1,6 @@
 module Api
   module V1
-    class TripPurposesController < ApplicationController
-      respond_to :json
-      require 'json'
+    class TripPurposesController < Api::V1::ApiController
 
       def index
         purposes = []

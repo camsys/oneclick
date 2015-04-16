@@ -1,8 +1,6 @@
 module Api
   module V1
-    class AccommodationsController < ApplicationController
-      respond_to :json
-      require 'json'
+    class AccommodationsController < Api::V1::ApiController
 
       def index
         accommodations = Accommodation.where(active: true)
