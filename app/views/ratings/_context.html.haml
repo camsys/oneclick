@@ -15,4 +15,4 @@
         = render partial: "services/public_details", locals: { service: rateable }
       - when Trip
         -# trip details are stored on the trip for convenience
-        = rateable.planned_trip_html.html_safe
+        = rateable.planned_trip_html.html_safe unless rateable.planned_trip_html.nil?
