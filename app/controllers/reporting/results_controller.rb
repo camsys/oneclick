@@ -74,7 +74,10 @@ module Reporting
 
         Reporting::ReportingFilterField.includes(:reporting_lookup_table)
           .where(reporting_filter_group_id: @report.reporting_filter_groups.pluck(:id).uniq).each do |field|
-            
+          
+          is_field_available = !@report.data_model.columns_hash.keys.index(field.name).nil? rescue false
+          next if !is_field_available
+
           data_access_type = field.reporting_lookup_table.data_access_type if field.reporting_lookup_table
           unless data_access_type.blank? || @report.data_model.columns_hash.keys.index(field.name).nil?
             
