@@ -259,7 +259,7 @@
         });
 
         //jump to Plan page
-        window.onbeforeunload = dontShowPopup;
+        if ($('#open_survey').length != 0) { window.onbeforeunload = dontShowPopup; }
         window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );
       });
 
