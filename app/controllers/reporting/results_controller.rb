@@ -73,11 +73,18 @@ module Reporting
             
             if data_access_type.to_sym == :provider
               access_id = current_user.provider.id rescue nil
+              results = results.where("#{field.name} = ?" , access_id)
             elsif data_access_type.to_sym == :agency
               access_id = current_user.agency.id rescue nil
+              results = results.where("#{field.name} = ?" , access_id)
+            elsif data_access_type.to_sym == :service
+              access_id = current_user.provider.services.pluck(:id) rescue []
+              if access_id.count <= 1
+                results = results.where("#{field.name} = ?" , access_id)
+              else
+                results = results.where("#{field.name} in (?)" , access_id)
+              end
             end
-
-            results = results.where("#{field.name} = ?" , access_id)
 
           end
            
