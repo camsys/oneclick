@@ -63,9 +63,16 @@ module Reporting
     def filter_data(results)
       # data access filtering 
       # either filter by provider_id or agency_id
-      unless current_user.has_role?(:system_administrator) || current_user.has_role?(:admin) 
+      is_sys_admin = current_user.has_role?(:system_administrator) || current_user.has_role?(:admin) 
+      
 
-         Reporting::ReportingFilterField.includes(:reporting_lookup_table)
+      unless is_sys_admin 
+
+        is_provider_staff = current_user.has_role?(:provider_staff, :any)
+        is_agency_admin = current_user.has_role?(:agency_administrator, :any)
+        is_agent = current_user.has_role?(:agent, :any)
+
+        Reporting::ReportingFilterField.includes(:reporting_lookup_table)
           .where(reporting_filter_group_id: @report.reporting_filter_groups.pluck(:id).uniq).each do |field|
             
           data_access_type = field.reporting_lookup_table.data_access_type if field.reporting_lookup_table
@@ -73,13 +80,13 @@ module Reporting
             
             field_name =  "\"#{field.name}\""
 
-            if data_access_type.to_sym == :provider
+            if data_access_type.to_sym == :provider && is_provider_staff
               access_id = current_user.provider.id rescue nil
               results = results.where("#{field_name} = ?" , access_id)
-            elsif data_access_type.to_sym == :agency
+            elsif data_access_type.to_sym == :agency && (is_agency_admin || is_agent)
               access_id = current_user.agency.id rescue nil
               results = results.where("#{field_name} = ?" , access_id)
-            elsif data_access_type.to_sym == :service
+            elsif data_access_type.to_sym == :service && is_provider_staff
               access_id = current_user.provider.services.pluck(:id) rescue []
               if access_id.count <= 1
                 results = results.where("#{field_name} = ?" , access_id)
