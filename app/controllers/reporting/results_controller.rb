@@ -78,7 +78,7 @@ module Reporting
               access_id = current_user.agency.id rescue nil
               results = results.where("#{field.name} = ?" , access_id)
             elsif data_access_type.to_sym == :service
-              access_id = current_user.services.pluck(:id) rescue []
+              access_id = current_user.provider.services.pluck(:id) rescue []
               if access_id.count <= 1
                 results = results.where("#{field.name} = ?" , access_id)
               else
