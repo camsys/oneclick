@@ -69,6 +69,7 @@ gem 'sidekiq'
 gem 'ransack'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
+gem 'browser'
 
 group :development do
   # gem 'ffi-geos'

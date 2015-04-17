@@ -113,6 +113,7 @@ GEM
       rails (>= 3.1)
     bootstrap3-datetimepicker-rails (3.0.0)
       momentjs-rails (~> 2.5.0)
+    browser (0.8.0)
     builder (3.1.4)
     cancan (1.6.10)
     capybara (2.4.1)
@@ -559,6 +560,7 @@ DEPENDENCIES
   bootstrap-kaminari-views
   bootstrap-sass!
   bootstrap3-datetimepicker-rails (= 3.0.0.0)
+  browser
   cancan
   capybara
   carrierwave
