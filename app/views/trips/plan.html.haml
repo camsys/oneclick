@@ -68,7 +68,7 @@
           },3000);
         }, 1);
         window.onbeforeunload = dontShowPopup;
-        return '#{t(:did_not_take_feedback_prompt)} #{t(:stay_on_page)}';
+        return "#{t(:did_not_take_feedback_prompt)} #{t(:stay_on_page)}";
       }
       function dontShowPopup() { }
 
@@ -78,5 +78,27 @@
         window.onbeforeunload = dontShowPopup;
       });
     }
+
+    $("#save_survey").click(function(){
+      $.ajax({
+        type: "POST",
+        url: '/satisfaction_surveys',
+        data: {satisfaction_survey: 
+                { 'trip_id': $('#satisfaction_survey_trip_id').val(),
+                  'satisfied': $('#satisfaction_survey input:checked').val(),
+                  'comment': $('#satisfaction_survey_comment').val()
+                }
+        },
+        success: function() {
+          $('#satisfaction_survey .modal-header').remove();
+          $('#satisfaction_survey .modal-dialog').addClass('modal-sm');
+          $('#satisfaction_survey .modal-body').empty().addClass('text-center').append("<strong>#{t(:success)}</strong>");
+          setTimeout(function(){
+            $('#satisfaction_survey').modal('hide');
+          }, 1000);
+        },
+        dataType: 'json'
+      });
+    });
   });
 

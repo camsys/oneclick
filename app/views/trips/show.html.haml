@@ -259,6 +259,7 @@
         });
 
         //jump to Plan page
+        window.onbeforeunload = dontShowPopup;
         window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );
       });
 
@@ -277,7 +278,7 @@
 
         window.onbeforeunload = showPopup;
 
-        $("#breadcrumbs a, button[name=planButton], #action_header a, #action_footer a, .btn-single-arrow-right, .btn-single-arrow-left").click(function(){
+        $("#action_header, #action_footer, .btn-single-arrow-right, .btn-single-arrow-left").click(function(){
           window.onbeforeunload = dontShowPopup;
         });
       }
