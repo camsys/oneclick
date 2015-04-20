@@ -1,14 +1,32 @@
+%p
+  %select.input-sm#per_page_select
+    - [10, 25, 50, 100].each do |per_page|
+      - if per_page == @per_page.to_i
+        %option{value: "#{per_page}", selected: true}
+          = per_page
+      - else
+        %option{value: "#{per_page}"}
+          = per_page
+  :javascript
+    $('#per_page_select').on('change', function(){
+      var params = #{@params.to_json};
+      params.per_page = $(this).val();
+      window.location.href = "#{url_for(locale: params[:locale])}?" + $.param(params);
+    });
+  %span
+    = "records per page"
+
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable
   %thead
     %tr
       -if show_username
-        %th= t(:traveler)
-      %th= t(:trip_date)
-      %th= t(:from)
-      %th= t(:to)
-      %th= t(:trip_purpose)
+        %th= sort_link @q, "user_name_case_insensitive", t(:traveler)
+      %th= sort_link @q, "trip_date", t(:trip_date)
+      %th= sort_link @q, "from_address", t(:from)
+      %th= sort_link @q, "to_address", t(:to)
+      %th= sort_link @q, "trip_purpose", t(:trip_purpose)
       - if Rating.feedback_on?
-        %th.center= t(:rating)
+        %th.center= sort_link @q, "trip_rating", t(:rating)
         %th.center.nowrap= t(:feedback)
       -if Oneclick::Application.config.allows_booking
         %th.center
@@ -102,22 +120,10 @@
 - rateable_trip_ids.each do |rateable_trip_id|
   = render partial: 'trips/trip_rating', locals: {id: rateable_trip_id}
 
-:javascript
-  $(document).ready(function() {
-    $('#datatable').dataTable( {
-          "oLanguage": {
-              "sLengthMenu": "Display _MENU_ trips per page",
-              "sZeroRecords": "Nothing found - sorry",
-              "sInfo": "Showing _START_ to _END_ of _TOTAL_ trips",
-              "sInfoEmpty": "Showing 0 to 0 of 0 trips",
-              "sInfoFiltered": "(filtered from _MAX_ total trips)"
-          },
-          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
-      } );
-    var prev_button = $('.prev');
-    var next_button = $('.next');
-    checkAriaLabel(prev_button);
-    toggleAriaLabel(prev_button); 
-    checkAriaLabel(next_button);
-    toggleAriaLabel(next_button);  
-  } );
+.row
+  .col-sm-6
+    .pull-left
+      = page_entries_info @trip_views, :theme => 'twitter-bootstrap-3' rescue nil
+  .col-sm-6
+    .pull-right
+      = paginate @trip_views, :params => {per_page: @per_page}, :theme => 'twitter-bootstrap-3' rescue nil

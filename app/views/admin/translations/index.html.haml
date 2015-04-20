@@ -55,6 +55,7 @@
 :javascript
   $(document).ready(function() {
     var oTable = $('#translations_table').dataTable( {
+          stateSave: true,
           "oLanguage": {
               "sLengthMenu": "Display _MENU_ translations per page",
               "sZeroRecords": "Nothing found - sorry",

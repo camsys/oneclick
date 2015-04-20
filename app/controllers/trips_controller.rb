@@ -9,7 +9,23 @@ class TripsController < PlaceSearchingController
 
   def index
 
-    @trips = User.find(params[:user_id]).trips.where(is_planned: true)
+    # trip_view
+    q_param = params[:q]
+    page = params[:page]
+    @per_page = params[:per_page] || Kaminari.config.default_per_page
+
+    @q = TripView.ransack q_param
+    @params = {q: q_param}
+
+    total_trips = @q.result(:district => true)
+
+    # filter data based on accessibility
+    total_trips = total_trips.by_user(params[:user_id])
+        
+    # @results is for html display; only render current page
+    @trip_views = total_trips.page(page).per(@per_page)
+    @trips = Trip.where(id: @trip_views.pluck("\"#{TripView.id_column}\""))
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @trips }

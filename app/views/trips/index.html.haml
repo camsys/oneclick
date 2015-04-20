@@ -10,4 +10,8 @@
       = t(:trips)
       = add_tooltip("trips_help")
   .panel-body
+    = search_form_for @q, :url => "#{url_for(locale: params[:locale])}", html: {class: 'filter-form', style: 'padding-top: 10px;'} do |f|
+      .form-group
+        = f.search_field "from_address_or_to_address_or_trip_purpose_cont", {class: "form-control", style: 'width: auto; display: inline-block;' }
+        = f.submit t(:search), class: 'btn action-button'
     = render partial: "trips_display_table", locals: {trips: @trips, traveler: @traveler, show_username: false}
