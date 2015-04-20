@@ -80,6 +80,7 @@ $(document).ready( function() {
     event.preventDefault();
   });
   var table = $('#ratings_table').dataTable( {
+    stateSave: true,
     "aaSorting": [[ 7, "desc" ]],
     "aoColumnDefs": [
       { "iDataSort": 2, "aTargets": [ 3 ] },

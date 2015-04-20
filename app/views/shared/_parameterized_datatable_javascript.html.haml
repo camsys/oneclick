@@ -13,6 +13,7 @@
   
   $(document).ready(function() {
   	$('#{table_id}').dataTable( {
+      stateSave: true,
   		"bFilter" : #{bFilter},
   		"bSort" : #{bSort},
   		"sDom": '<f><l>rtip',

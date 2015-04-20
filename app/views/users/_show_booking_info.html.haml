@@ -15,6 +15,7 @@
 :javascript
   $(document).ready(function() {
     $('#bookingtable').dataTable( {
+          stateSave: true,
           "oLanguage": {
               "sLengthMenu": "Display _MENU_ services per page",
               "sZeroRecords": "#{t(:traveler_not_registered)}",

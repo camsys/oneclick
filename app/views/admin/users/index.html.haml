@@ -23,6 +23,7 @@
 :javascript
   $(document).ready(function() {
     var oTable = $('#admin_users_table').dataTable( {
+      stateSave: true,
       "bProcessing": true,
       "bServerSide": true,
       "sAjaxSource": "users",

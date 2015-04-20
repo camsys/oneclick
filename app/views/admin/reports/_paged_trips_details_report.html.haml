@@ -13,6 +13,7 @@
 :javascript
   $(document).ready(function() {
     $('#datatable').dataTable({
+      stateSave: true,
       "processing": true,
       "serverSide": true,
       "ajax": $('#datatable').data('source'),

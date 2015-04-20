@@ -249,6 +249,7 @@
   $(document).ready(function() {
     $('#user_password_confirmation').siblings(1).attr('aria-hidden', 'true');
     $('#buddies_table').dataTable( {
+          stateSave: true,
           "oLanguage": {
             "sLengthMenu": "Display _MENU_ buddies per page",
             "sZeroRecords": "Nothing found - sorry",

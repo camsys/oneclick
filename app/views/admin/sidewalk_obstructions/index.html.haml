@@ -97,6 +97,7 @@ $(document).ready( function() {
   });
 
   var table = $('#sidewalk_feedbacks_table').dataTable( {
+    stateSave: true,
     "aaSorting": [[ 6, "desc" ]],
     "aoColumnDefs": [
       { "bSortable": false, "aTargets": [ 3,4,5 ] },

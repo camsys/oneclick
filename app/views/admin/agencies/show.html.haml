@@ -139,6 +139,7 @@
 :javascript
   $(document).ready(function() {
     $('#agent_table').dataTable( {
+          stateSave: true,
           "oLanguage": {
               "sLengthMenu": "Display _MENU_ agents per page",
               "sZeroRecords": "Nothing found - sorry",
@@ -149,6 +150,7 @@
           "sDom": "<'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
       } );
     $('#admin_table').dataTable( {
+          stateSave: true,
           "oLanguage": {
               "sLengthMenu": "Display _MENU_ administrators per page",
               "sZeroRecords": "Nothing found - sorry",
