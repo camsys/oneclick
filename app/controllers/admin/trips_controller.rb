@@ -15,7 +15,7 @@ class Admin::TripsController < Admin::BaseController
     @q = TripView.ransack q_param
     @params = {q: q_param}
 
-    total_trips = @q.result(:district => true)
+    total_trips = @q.result(:district => true).order(TripView.id_column)
 
     # filter data based on accessibility
     if params[:provider_id]
