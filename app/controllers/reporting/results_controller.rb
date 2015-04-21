@@ -50,10 +50,8 @@ module Reporting
 
       respond_to do |format|
         format.html
-        # format.csv { send_data total_results.to_csv }
-        format.csv do
-          send_data get_csv(total_results, @fields),
-                filename: "#{@report.name.underscore}.csv", type: :text
+        format.csv do 
+          render_csv("#{@report.name.underscore}.csv", total_results, @fields)
         end
       end
 
@@ -112,30 +110,56 @@ module Reporting
       results.order(:id) if !@report.data_model.columns_hash.keys.index("id").nil? 
     end
 
-    def get_csv(data, fields)
+    def render_csv(file_name, data, fields)
+      set_file_headers file_name
+      set_streaming_headers
+
+      response.status = 200
+
+      #setting the body to an enumerator, rails will iterate this enumerator
+      self.response_body = csv_lines(data, fields)
+    end
+
+
+    def set_file_headers(file_name)
+      headers["Content-Type"] = "text/csv"
+      headers["Content-disposition"] = "attachment; filename=\"#{file_name}\""
+    end
+
+
+    def set_streaming_headers
+      #nginx doc: Setting this to "no" will allow unbuffered responses suitable for Comet and HTTP streaming applications
+      headers['X-Accel-Buffering'] = 'no'
+
+      headers["Cache-Control"] ||= "no-cache"
+      headers.delete("Content-Length")
+    end
+
+    def csv_lines(data, fields)
+
       # Excel is stupid if the first two characters of a csv file are "ID". Necessary to
       # escape it. https://support.microsoft.com/kb/215591/EN-US
-      CSV.generate do |csv|
-        headers = []
-        fields.each do |field|
-          headers << (field[:title].blank? ? field[:name] : field[:title])
-        end
+      headers = []
+      fields.each do |field|
+        headers << (field[:title].blank? ? field[:name] : field[:title])
+      end
 
-        if headers[0].start_with? "ID"
-          headers = Array.new(headers)
-          headers[0] = "'" + headers[0]
-        end
+      if headers[0].start_with? "ID"
+        headers = Array.new(headers)
+        headers[0] = "'" + headers[0]
+      end
 
-        csv << headers
+      Enumerator.new do |y|
+        y << headers.to_csv
 
-        if data.each do |row|
-            csv << fields.map {|field| format_output row.send(field[:name]), 
-              @report.data_model.columns_hash[field[:name].to_s].type,  
-              field[:formatter]
-            }
-          end
+        data.find_each do |row|
+          y << fields.map {|field| format_output row.send(field[:name]), 
+            @report.data_model.columns_hash[field[:name].to_s].type,  
+            field[:formatter]
+          }.to_csv
         end
       end
+
     end
 
   end
