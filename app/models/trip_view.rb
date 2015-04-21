@@ -10,7 +10,7 @@ class TripView < ActiveRecord::Base
   scope :by_user, ->(u) { where('user_id' => u) }
 
   # configure table/view name
-  self.table_name = "v_Trips"
+  self.table_name = "trips_view"
 
   # case insensitive search and sort
   ransacker :user_name_case_insensitive, type: :string do
