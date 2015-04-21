@@ -13,13 +13,18 @@
           },
           "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l><'toggle col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
       } );
-    if(localStorage.getItem(key + '-show-inactive') === 'true') {
+
+    var index = $("thead th").index($('#status'));
+    
+    var showInactiveFlag = localStorage.getItem(key + '-show-inactive');
+    if(showInactiveFlag === null) {
+      oTable.fnFilter('^$', index, true);
+      localStorage.setItem(key + '-show-inactive', false);
+    } else if(showInactiveFlag === 'true') {
       $("div.toggle").html('<span class="pull-right"><input type="checkbox" checked id="toggle">&nbsp;Show inactive ' + entityName + '</span>');
     } else {
       $("div.toggle").html('<span class="pull-right"><input type="checkbox" id="toggle">&nbsp;Show inactive ' + entityName + '</span>');
-    }
-    
-    var index = $("thead th").index($('#status'));
+    } 
 
     $("#toggle").click(function () {
       var isChecked = $(this).is(':checked');
