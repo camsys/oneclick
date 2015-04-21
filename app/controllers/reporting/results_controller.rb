@@ -23,6 +23,11 @@ module Reporting
             }
           } : @report.reporting_output_fields
 
+        # default order by :id
+        if !@report.data_model.columns_hash.keys.index("id").nil? 
+          @q.sorts = "id asc" if @q.sorts.empty?
+        end
+
         # total_results is for exporting
         total_results = @q.result(:district => true)
 
@@ -76,9 +81,6 @@ module Reporting
           results = results.where("#{@report.data_access_field_name} = ?" , access_id)
         end
       end
-
-      # default order by :id
-      results.order(:id) if !@report.data_model.columns_hash.keys.index("id").nil? 
     end
 
     def get_csv(data, fields)
