@@ -45,8 +45,8 @@
       } );
     $("div.toggle").html('<span class="pull-right"><input type="checkbox" id="toggle">&nbsp;Show inactive services</span>');
 
+    var index = $("thead th").index($('#status'));
     // comment below out so to enable stateSave (preserve page number etc)
-    //var index = $("thead th").index($('#status'));
     //oTable.fnFilter('^$', index, true);
 
     $("#toggle").click(function () {
