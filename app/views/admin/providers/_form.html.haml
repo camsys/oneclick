@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - " + current_page?(action: 'new') ? "#{t(:new_provider)}" : "#{t(:edit)} #{@provider.name}"
+- content_for :title, "#{t(:site_title)} - " + (current_page?(action: 'new') ? "#{t(:new_provider)}" : "#{t(:edit)} #{@provider.name}")
 = simple_form_for [:admin, @provider], html: { class: 'form-horizontal', multipart: true},
         wrapper: :horizontal_form do |f|
   = f.error_notification message: print_messages(f)

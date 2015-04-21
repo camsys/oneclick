@@ -2,7 +2,8 @@ module Reporting
   class ReportingReport < ActiveRecord::Base
     include Reporting::Modelable
 
-    has_many :reporting_filter_fields
+    has_many :reporting_specific_filter_groups
+    has_many :reporting_filter_groups, :through => :reporting_specific_filter_groups
     has_many :reporting_output_fields
 
     validates :name, presence: true, :uniqueness => true
@@ -26,7 +27,7 @@ module Reporting
       make_a_reporting_model data_model_class_name, data_source
 
       # define customized ransackers
-      reporting_filter_fields.each do |field|
+      ReportingFilterField.where(reporting_filter_group_id: reporting_filter_groups.pluck(:id)).each do |field|
         field.ransacker
       end
 

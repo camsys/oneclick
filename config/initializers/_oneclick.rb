@@ -72,6 +72,9 @@ Oneclick::Application.configure do
   #Default SSL Setting
   config.force_ssl = false
 
+  #API Activation:  API is still in beta.  Need ability to turn it off on a per-instance basis
+  config.api_activated = false
+
 
   case ENV['BRAND'] || 'arc'
   when 'arc'
@@ -107,7 +110,7 @@ Oneclick::Application.configure do
     config.state = 'GA'
     config.max_number_of_specialized_services_to_show = 3
     config.replace_long_walks = true
-    config.enable_satisfaction_surveys = true
+    config.enable_satisfaction_surveys = false
 
     #SSL
     #unless Rails.env == 'development'
@@ -144,7 +147,7 @@ Oneclick::Application.configure do
     config.default_county = 'Broward'
     config.state = 'FL'
     I18n.available_locales = [:en, :es, :ht]
-    config.enable_satisfaction_surveys = true
+    config.enable_satisfaction_surveys = false
 
   when 'pa'
     config.host = 'oneclick-pa.camsys-apps.com'
@@ -177,7 +180,7 @@ Oneclick::Application.configure do
     config.poi_file = 'db/pa/pa-poi-from-arcgis.csv'
     config.default_county = 'York'
     config.state = 'PA'
-    config.enable_satisfaction_surveys = true
+    config.enable_satisfaction_surveys = false
 
     config.max_walk_seconds = 3600
 
@@ -225,13 +228,15 @@ Oneclick::Application.configure do
     config.default_county = 'Duval'
     config.state = 'FL'
     config.max_walk_seconds = 3600
-    config.enable_satisfaction_surveys = true
+    config.enable_satisfaction_surveys = false
 
   when 'ieuw'
     config.host = 'oneclick-ieuw.camsys-apps.com'
     config.ui_logo = 'ieuw/logo.png'
     config.logo_text = "Inland Empire logo - Vet Link"
-    config.favicon = 'ieuw/favicon.png'
+    config.favicon = 'ieuw/desktop.ico'
+    config.mobile_favicon = 'ieuw/mobile.png'
+    config.tablet_favicon = 'ieuw/tablet.png'
     config.geocoder_components = 'country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
     config.map_bounds      = [[33.163,-117.874],[36.053,-114.033]]
@@ -263,7 +268,7 @@ Oneclick::Application.configure do
     config.max_walk_seconds = 3600
 
     config.time_zone = 'Pacific Time (US & Canada)'
-    config.enable_satisfaction_surveys = true
+    config.enable_satisfaction_surveys = false
 
   when 'ma'
     config.host = 'oneclick.camsys-apps.com'
@@ -298,7 +303,7 @@ Oneclick::Application.configure do
     config.state = 'MA'
 
     config.max_walk_seconds = 3600
-    config.enable_satisfaction_surveys = true
+    config.enable_satisfaction_surveys = false
 
     when 'uta'
       config.host = 'oneclick-uta.camsys-apps.com'
@@ -330,7 +335,7 @@ Oneclick::Application.configure do
       config.default_county = 'Salt Lake'
       config.state = 'UT'
       config.max_walk_seconds = 3600
-      config.enable_satisfaction_surveys = true
+      config.enable_satisfaction_surveys = false
 
       #SSL
       #unless Rails.env == 'development'

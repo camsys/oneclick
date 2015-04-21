@@ -151,8 +151,10 @@ ht:
 
   # favicon upload
   failed_to_update_favicon: '[ht]There was an error in updating the favicon. Please try again.[/ht]'
-  select_favicon_to_upload: '[ht]Please select a favicon to upload[/ht]'
+  select_favicon_to_upload: '[ht]Select favicon file (.ico)[/ht]'
   upload_favicon: '[ht]Upload Favicon[/ht]'
+  upload_mobile_favicon: '[ht]Upload Mobile Favicon[/ht]'
+  upload_tablet_favicon: '[ht]Upload Tablet Favicon[/ht]'
   upload_favicon_notes: '[ht]Refer to 1-Click Deployment Document on file specfications.[/ht]'
 
   # standard system usage report
@@ -292,11 +294,13 @@ ht:
   plan_trip: "[ht]Continue planning this trip[/ht]"
   max_notes: '[ht]Max notes[/ht]'
   satisfied_by_trips: "[ht]Do any of these trips satisfy your needs?[/ht]"
+  stay_on_page: "[ht]Stay on this page to leave feedback.[/ht]"
   trip_satisfaction_notes: ""
   survey_submitted: "[ht]Survey submitted.[/ht]"
   saving_survey_failed: "[ht]Saving survey failed.[/ht]"
   survey_updated: "[ht]Survey updated.[/ht]"
   problem_saving: "[ht]There was a problem saving.[/ht]"
+  success: "[ht]Success![/ht]"
 
   # Page comments
   trip_header_comment: ''

@@ -476,7 +476,12 @@ class EcolaneHelpers
   end
 
   def cancel_itinerary(itinerary)
-    cancel(itinerary.booking_confirmation)
+    result = cancel(itinerary.booking_confirmation)
+    if result
+      itinerary.booking_confirmation = nil
+      itinerary.save
+    end
+    result
   end
 
   def cancel(trip_conf)

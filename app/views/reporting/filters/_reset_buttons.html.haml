@@ -1,19 +1,17 @@
 .btns.pull-left
-  = button_tag id: 'resetFilterPanel', class: 'btn action-button controls' do
-    = t(:reset_filter_panel)
   = button_tag id: 'resetAllFilters', class: 'btn action-button controls' do
     = t(:reset_all_filters)
 :javascript
   $(document).ready(function(){
-    $('#resetFilterPanel').on('click', function() {
-      $('.filter-form .collapse.in .form-control').each(function(){
-        $(this).val(''); //TODO: use default value
+    $('.reset-filter-panel').on('click', function() {
+      $(this).parents('.panel-body').find('.form-control').each(function(){
+        $(this).val('');
       });
     });
 
     $('#resetAllFilters').on('click', function() {
       $('.filter-form .form-control').each(function(){
-        $(this).val(''); //TODO: use default value
+        $(this).val('');
       });
     });
   });

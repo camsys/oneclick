@@ -1,8 +1,6 @@
 module Api
   module V1
-    class ItinerariesController < ApplicationController
-      respond_to :json
-      require 'json'
+    class ItinerariesController < Api::V1::ApiController
 
       #Todo: Ensure that trip matches the itinerary
       #Todo: Gracefully handle errors
@@ -30,8 +28,7 @@ module Api
 
       #Post details on a trip, create/save the itineraries, and return them as json
       def plan
-        #Missing from API Spec
-        purpose = TripPurpose.first
+        #Move to a config.  API does not pass modes.
         modes = ['mode_paratransit', 'mode_taxi', 'mode_transit']
 
         #Not built yet
@@ -39,13 +36,16 @@ module Api
 
         #Unpack params
         trip_parts = params[:itinerary_request]
+        purpose = params[:trip_purpose]
+        trip_token = params[:trip_token]
 
         #Assign Meta Data
         trip = Trip.new
         trip.creator = user
         trip.user = user
-        trip.trip_purpose = purpose
+        trip.trip_purpose = TripPurpose.where(code: purpose).first
         trip.desired_modes = Mode.where(code: modes)
+        trip.token = trip_token
         trip.save
 
         #Build the Trip Places
@@ -70,8 +70,8 @@ module Api
           tp.sequence = trip_part[:segment_index]
           tp.is_depart? == (trip_part[:departure_type] == 'depart')
 
-          tp.scheduled_time = trip_part[:departure].to_datetime
-          tp.scheduled_date = trip_part[:departure].to_date
+          tp.scheduled_time = trip_part[:trip_time].to_datetime
+          tp.scheduled_date = trip_part[:trip_time].to_date
 
           #Assign trip_places
           if tp.sequence == 0
@@ -114,7 +114,7 @@ module Api
 
 
 
-          render json: {itineraries: final_itineraries}
+          render json: {trip_id: trip.id, trip_token: trip.token, itineraries: final_itineraries}
 
           #Unpack and return the itineraries
           #MORE TO WRITE HERE
@@ -151,7 +151,7 @@ module Api
         #Build Failure Response
         else
           booking_request.each do |i|
-            results._array.append({trip_id: i[:trip_id], itinerary_id: i[:itinerary_id], success: false, confirmation_id: nil})
+            results_array.append({trip_id: i[:trip_id], itinerary_id: i[:itinerary_id], success: false, confirmation_id: nil})
           end
         end
 

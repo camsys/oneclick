@@ -86,6 +86,7 @@ class Admin::UsersController < Admin::BaseController
     end
 
     if @user.update(user_params_with_password) # .update is a Devise method, not the standard update_attributes from Rails
+      params[:user][:roles].reject(&:blank?).empty? ? @user.remove_role(:system_administrator) : @user.add_role(:system_administrator)
       @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
       set_approved_agencies(params[:user][:approved_agency_ids])
       booking_alert = set_booking_services(@user, params[:user_service])

@@ -1,8 +1,6 @@
 module Api
   module V1
-    class CharacteristicsController < ApplicationController
-      respond_to :json
-      require 'json'
+    class CharacteristicsController < Api::V1::ApiController
 
       def index
         characteristics = Characteristic.where(active: true)

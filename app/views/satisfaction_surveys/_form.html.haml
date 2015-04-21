@@ -1,4 +1,4 @@
-= simple_form_for @satisfaction_survey do |f|
+= simple_form_for @satisfaction_survey, html: {method: :post, remote: true} do |f|
   .row
     .col-sm-10.col-sm-offset-1
       = f.error_notification message: print_messages(f)

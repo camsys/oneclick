@@ -127,10 +127,24 @@ class Admin::UtilController < Admin::BaseController
   def upload_favicon
     info_msgs = []
     error_msgs = []
+    if params[:favicon]
+      favicon = :favicon
+    elsif params[:mobile_favicon]
+      favicon = :mobile_favicon
+    elsif params[:tablet_favicon]
+      favicon = :tablet_favicon
+    end
+
     if !can?(:upload_favicon, :util)
       error_msgs << t(:not_authorized)
     else
-      file = params[:favicon][:file] if params[:favicon]
+      if params[:favicon]
+        file = params[:favicon][:file]
+      elsif params[:mobile_favicon]
+        file = params[:mobile_favicon][:file]
+      elsif params[:tablet_favicon]
+        file = params[:tablet_favicon][:file]
+      end
       
       if !file.nil?
         uploader = FaviconUploader.new
@@ -140,8 +154,8 @@ class Admin::UtilController < Admin::BaseController
           error_msgs << ex.message
         end
 
-        if OneclickConfiguration.create_or_update(:favicon, uploader.url)
-          info_msgs << t(:logo) + " " + t(:was_successfully_updated)
+        if OneclickConfiguration.create_or_update(favicon, uploader.url)
+          info_msgs << t(:favicon) + " " + t(:was_successfully_updated)
         else
           error_msgs << t(:failed_to_update_favicon)
         end

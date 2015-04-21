@@ -35,11 +35,12 @@ module Reporting
         total_results = filter_data(total_results)
         
         # @results is for html display; only render current page
+        @results = total_results.order(:id)  if !@report.data_model.columns_hash.keys.index("id").nil?
         @results = total_results.page(page).per(@per_page)
 
         # this is used to test if any sql exception is triggered in querying
         # commen errors: table not found
-        first_result = @results.first 
+        first_result = @results.limit(1) 
 
       rescue => e
         # error message handling
@@ -67,20 +68,48 @@ module Reporting
     def filter_data(results)
       # data access filtering 
       # either filter by provider_id or agency_id
-      unless current_user.has_role?(:system_administrator) || current_user.has_role?(:admin) 
-        unless @report.data_access_type.blank? || 
-          @report.data_access_field_name.blank? || 
-          @report.data_model.columns_hash.keys.index(@report.data_access_field_name).nil?
+      is_sys_admin = current_user.has_role?(:system_administrator) || current_user.has_role?(:admin) 
+      
 
-          if @report.data_access_type.to_sym == :provider
-            access_id = current_user.provider.id rescue nil
-          elsif @report.data_access_type.to_sym == :agency
-            access_id = current_user.agency.id rescue nil
+      unless is_sys_admin 
+
+        is_provider_staff = current_user.has_role?(:provider_staff, :any)
+        is_agency_admin = current_user.has_role?(:agency_administrator, :any)
+        is_agent = current_user.has_role?(:agent, :any)
+
+        Reporting::ReportingFilterField.includes(:reporting_lookup_table)
+          .where(reporting_filter_group_id: @report.reporting_filter_groups.pluck(:id).uniq).each do |field|
+          
+          is_field_available = !@report.data_model.columns_hash.keys.index(field.name).nil? rescue false
+          next if !is_field_available
+
+          data_access_type = field.reporting_lookup_table.data_access_type if field.reporting_lookup_table
+          unless data_access_type.blank? || @report.data_model.columns_hash.keys.index(field.name).nil?
+            
+            field_name =  "\"#{field.name}\""
+
+            if data_access_type.to_sym == :provider && is_provider_staff
+              access_id = current_user.provider.id rescue nil
+              results = results.where("#{field_name} = ?" , access_id)
+            elsif data_access_type.to_sym == :agency && (is_agency_admin || is_agent)
+              access_id = current_user.agency.id rescue nil
+              results = results.where("#{field_name} = ?" , access_id)
+            elsif data_access_type.to_sym == :service && is_provider_staff
+              access_id = current_user.provider.services.pluck(:id) rescue []
+              if access_id.count <= 1
+                results = results.where("#{field_name} = ?" , access_id)
+              else
+                results = results.where("#{field_name} in (?)" , access_id)
+              end
+            end
+
           end
-
-          results = results.where("#{@report.data_access_field_name} = ?" , access_id)
-        end
+           
+         end
       end
+
+      # default order by :id
+      results.order(:id) if !@report.data_model.columns_hash.keys.index("id").nil? 
     end
 
     def get_csv(data, fields)

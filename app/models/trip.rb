@@ -14,6 +14,9 @@ class Trip < ActiveRecord::Base
   has_and_belongs_to_many :desired_modes, class_name: 'Mode', join_table: :trips_desired_modes, association_foreign_key: :desired_mode_id
   has_one :satisfaction_survey
 
+  #Validations
+  validates :token, uniqueness: true, allow_blank: true, allow_nil: true
+
   # Scopes
   scope :created_between, lambda {|from_day, to_day| where("trips.created_at >= ? AND trips.created_at <= ?", from_day.at_beginning_of_day, to_day.at_end_of_day) }
   scope :with_role, lambda {|role_name| 

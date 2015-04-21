@@ -31,12 +31,18 @@ module ApplicationHelper
   end
 
   # Returns the name of the favicon based on the oneclick configuration
-  def get_favicon
-    return Oneclick::Application.config.favicon
+  def get_favicon(user_agent=nil)
+    if user_agent == "mobile"
+      return Oneclick::Application.config.mobile_favicon
+    elsif user_agent == "tablet"
+      return Oneclick::Application.config.tablet_favicon
+    else
+      return Oneclick::Application.config.favicon
+    end
   end
 
-  def get_favicon_path
-    return get_favicon
+  def get_favicon_path(user_agent=nil)
+    return get_favicon(user_agent)
   end
 
   # Returns a mode-specific icon

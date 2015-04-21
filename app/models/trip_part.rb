@@ -497,7 +497,7 @@ class TripPart < ActiveRecord::Base
         Rails.logger.info "SKIP_DYNAMIC_RIDESHARE_DURATION is set, skipping it"
       end
       i = Itinerary.new(itinerary)
-      service_window = itinerary.service.service_window if itinerary && itinerary.service
+      service_window = i.service.service_window if i && i.service
       i.estimate_duration(base_duration, Oneclick::Application.config.minimum_rideshare_duration, Oneclick::Application.config.rideshare_duration_factor, service_window, trip_time, is_depart)
       itins << i
     else

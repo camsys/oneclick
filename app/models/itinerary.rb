@@ -224,6 +224,16 @@ class Itinerary < ActiveRecord::Base
     Rails.logger.info end_time.ai
   end
 
+  def book
+    eh = EcolaneHelpers.new
+    eh.book_itinerary self
+  end
+
+  def cancel
+    eh = EcolaneHelpers.new
+    eh.cancel_itinerary self
+  end
+
   protected
 
   #OTP is setting drive time and bicycle time as walk time.  This is a temporary work-around
@@ -251,16 +261,6 @@ class Itinerary < ActiveRecord::Base
   def set_defaults
     self.hidden ||= false
     @legs = []
-  end
-
-  def book
-    eh = EcolaneHelpers.new
-    eh.book_itinerary self
-  end
-
-  def cancel
-    eh = EcolaneHelpers.new
-    eh.cancel_itinerary self
   end
 
 end

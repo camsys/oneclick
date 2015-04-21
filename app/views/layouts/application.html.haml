@@ -7,7 +7,24 @@
     = stylesheet_link_tag "stylesheets/application", :media => "all"
     = javascript_include_tag "//maps.googleapis.com/maps/api/js?libraries=places"
     = javascript_include_tag "javascripts/application"
-    = favicon_link_tag "#{get_favicon_path}" if is_ieuw?
+
+    - if is_ieuw?
+      - if browser.mobile?
+        - if browser.safari?
+          = favicon_link_tag "#{get_favicon_path("mobile")}", rel: 'apple-touch-icon', type: "image/png"
+        - else
+          = favicon_link_tag "#{get_favicon_path("mobile")}"
+      - elsif browser.tablet?
+        - if browser.safari?
+          = favicon_link_tag "#{get_favicon_path("mobile")}", rel: 'apple-touch-icon', type: "image/png"
+        - else
+          = favicon_link_tag "#{get_favicon_path("tablet")}"
+      - else
+        - if browser.safari?
+          = favicon_link_tag "#{get_favicon_path}", rel: 'apple-touch-icon', type: "image/png"
+        - else
+          = favicon_link_tag "#{get_favicon_path}"
+
     = csrf_meta_tags
     = yield(:head)
 

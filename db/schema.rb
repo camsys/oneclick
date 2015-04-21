@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150410153151) do
+ActiveRecord::Schema.define(version: 20150415185638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -312,7 +312,6 @@ ActiveRecord::Schema.define(version: 20150410153151) do
   end
 
   create_table "reporting_filter_fields", force: true do |t|
-    t.integer  "reporting_report_id",                   null: false
     t.integer  "reporting_filter_group_id",             null: false
     t.integer  "reporting_filter_type_id",              null: false
     t.integer  "reporting_lookup_table_id"
@@ -321,12 +320,12 @@ ActiveRecord::Schema.define(version: 20150410153151) do
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.integer  "sort_order",                default: 1, null: false
+    t.string   "value_type"
   end
 
   add_index "reporting_filter_fields", ["reporting_filter_group_id"], :name => "index_reporting_filter_fields_on_reporting_filter_group_id"
   add_index "reporting_filter_fields", ["reporting_filter_type_id"], :name => "index_reporting_filter_fields_on_reporting_filter_type_id"
   add_index "reporting_filter_fields", ["reporting_lookup_table_id"], :name => "index_reporting_filter_fields_on_reporting_lookup_table_id"
-  add_index "reporting_filter_fields", ["reporting_report_id"], :name => "index_reporting_filter_fields_on_reporting_report_id"
 
   create_table "reporting_filter_groups", force: true do |t|
     t.string   "name",       null: false
@@ -340,12 +339,8 @@ ActiveRecord::Schema.define(version: 20150410153151) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "reporting_lookup_tables", force: true do |t|
-    t.string   "name",               null: false
-    t.string   "display_field_name", null: false
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-  end
+# Could not dump table "reporting_lookup_tables" because of following StandardError
+#   Unknown type 'name' for column 'data_access_type'
 
   create_table "reporting_output_fields", force: true do |t|
     t.integer  "reporting_report_id", null: false
@@ -360,18 +355,27 @@ ActiveRecord::Schema.define(version: 20150410153151) do
   add_index "reporting_output_fields", ["reporting_report_id"], :name => "index_reporting_output_fields_on_reporting_report_id"
 
   create_table "reporting_reports", force: true do |t|
-    t.string   "name",                   null: false
+    t.string   "name",              null: false
     t.string   "description"
-    t.string   "data_source",            null: false
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "data_source",       null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.boolean  "is_sys_admin"
     t.boolean  "is_provider_staff"
     t.boolean  "is_agency_admin"
     t.boolean  "is_agent"
-    t.string   "data_access_type"
-    t.string   "data_access_field_name"
   end
+
+  create_table "reporting_specific_filter_groups", force: true do |t|
+    t.integer  "reporting_report_id"
+    t.integer  "reporting_filter_group_id"
+    t.integer  "sort_order",                default: 1, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "reporting_specific_filter_groups", ["reporting_filter_group_id"], :name => "index_of_filter_group_on_specific_filter_group"
+  add_index "reporting_specific_filter_groups", ["reporting_report_id"], :name => "index_of_report_on_specific_filter_group"
 
   create_table "reports", force: true do |t|
     t.string   "name",        limit: 64
