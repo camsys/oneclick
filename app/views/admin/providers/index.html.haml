@@ -45,9 +45,9 @@
           "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l><'toggle col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
       } );
     $("div.toggle").html('<span class="pull-right"><input type="checkbox" id="toggle">&nbsp;Show inactive providers</span>');
-
-    // comment below out so to enable stateSave (preserve page number etc)
-    //var index = $("thead th").index($('#status'));
+    
+    var index = $("thead th").index($('#status'));
+    // comment below out so to enable stateSave (preserve page number etc
     //oTable.fnFilter('^$', index, true);
 
     $("#toggle").click(function () {
