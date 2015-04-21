@@ -98,8 +98,7 @@ module Reporting
          end
       end
 
-      # default order by :id
-      results.order(:id) if !@report.data_model.columns_hash.keys.index("id").nil? 
+      results
     end
 
     def render_csv(file_name, data, fields)
