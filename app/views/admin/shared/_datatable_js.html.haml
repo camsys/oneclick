@@ -16,11 +16,12 @@
 
     var index = $("thead th").index($('#status'));
     
-    var showInactiveFlag = localStorage.getItem(key + '-show-inactive');
-    if(showInactiveFlag === null) {
+    if(localStorage.getItem(key + '-show-inactive') === null) {
       oTable.fnFilter('^$', index, true);
       localStorage.setItem(key + '-show-inactive', false);
-    } else if(showInactiveFlag === 'true') {
+    }  
+
+    if(localStorage.getItem(key + '-show-inactive') === 'true') {
       $("div.toggle").html('<span class="pull-right"><input type="checkbox" checked id="toggle">&nbsp;Show inactive ' + entityName + '</span>');
     } else {
       $("div.toggle").html('<span class="pull-right"><input type="checkbox" id="toggle">&nbsp;Show inactive ' + entityName + '</span>');
