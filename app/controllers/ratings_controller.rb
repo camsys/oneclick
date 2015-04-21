@@ -5,7 +5,19 @@ class RatingsController < ApplicationController
   def index
     authorize! :read, Rating
     authorize! :approve, Rating
-    @ratings = Rating.all
+
+    q_param = params[:q]
+    page = params[:page]
+    @per_page = params[:per_page] || Kaminari.config.default_per_page
+
+    @q = Rating.ransack q_param
+    @q.sorts = "created_at desc" if @q.sorts.empty?
+    @params = {q: q_param}
+
+    total_ratings = @q.result(:district => true).includes(:user).pending
+        
+    # only render current page
+    @ratings = total_ratings.page(page).per(@per_page)
   end
 
   def new
