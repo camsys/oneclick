@@ -13,9 +13,10 @@ class Admin::TripsController < Admin::BaseController
     @per_page = params[:per_page] || Kaminari.config.default_per_page
 
     @q = TripView.ransack q_param
+    @q.sorts = "#{TripView.id_column} asc" if @q.sorts.empty?
     @params = {q: q_param}
 
-    total_trips = @q.result(:district => true).order(TripView.id_column)
+    total_trips = @q.result(:district => true)
 
     # filter data based on accessibility
     if params[:provider_id]

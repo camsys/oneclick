@@ -15,12 +15,14 @@ class TripsController < PlaceSearchingController
     @per_page = params[:per_page] || Kaminari.config.default_per_page
 
     @q = TripView.ransack q_param
+    @q.sorts = "#{TripView.id_column} asc" if @q.sorts.empty?
+
     @params = {q: q_param}
 
     total_trips = @q.result(:district => true)
 
     # filter data based on accessibility
-    total_trips = total_trips.by_user(params[:user_id]).order(TripView.id_column)
+    total_trips = total_trips.by_user(params[:user_id])
         
     # @results is for html display; only render current page
     @trip_views = total_trips.page(page).per(@per_page)
