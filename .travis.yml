@@ -11,8 +11,8 @@ before_script:
   - pwd
   - ls -a
   - mv config/database.yml.travis config/database.yml
-  - git config user.email "denis+camsys@constantorbit.com"
-  - git config user.name "Denis Haskin"
+  - git config user.email "dedwards@camsys.com"
+  - git config user.name "Derek Edwards"
 after_script:
   - pwd
   - ls -a
