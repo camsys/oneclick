@@ -15,6 +15,13 @@ class SidewalkObstruction < ActiveRecord::Base
   belongs_to :user
 
   # custom ransackers
+  ransacker :id do
+    Arel.sql(
+      "regexp_replace(
+        to_char(\"#{table_name}\".\"id\", '9999999'), ' ', '', 'g')"
+    )
+  end
+
   ransacker :user_name, formatter: proc { |v| v.mb_chars.downcase.to_s } do |parent|
     Arel::Nodes::NamedFunction.new('LOWER',
       [Arel::Nodes::NamedFunction.new('concat_ws',
