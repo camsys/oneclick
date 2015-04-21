@@ -4,6 +4,22 @@ class Admin::SidewalkObstructionsController < ApplicationController
     authorize! :read, SidewalkObstruction
     authorize! :approve, SidewalkObstruction
     @sidewalk_obstructions = SidewalkObstruction.non_deleted.where('removed_at IS NULL or removed_at >= ?', Time.now)
+
+    q_param = params[:q]
+    page = params[:page]
+    @per_page = params[:per_page] || Kaminari.config.default_per_page
+
+    @q = SidewalkObstruction.ransack q_param
+    @q.sorts = "created_at desc" if @q.sorts.empty?
+    @params = {q: q_param}
+
+    total_feedbacks = @q.result(:district => true).includes(:user)
+
+    # filter data based on accessibility
+    total_feedbacks = total_feedbacks.non_deleted.where('removed_at IS NULL or removed_at >= ?', Time.now)
+        
+    # only render current page
+    @sidewalk_obstructions = total_feedbacks.page(page).per(@per_page)
   end
 
   def approve

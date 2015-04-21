@@ -1,9 +1,9 @@
 - content_for :title, "#{t(:site_title)} - #{t(:sidewalk_obstructions)}"
-= form_tag approve_admin_sidewalk_obstructions_path, method: :patch do
+.col-sm-12
   .row.info-header
     .col-sm-12
       .btns.pull-right
-        = submit_tag t(:apply), class: "btn action-button"
+        = button_tag t(:apply), id: 'submitChanges', class: "btn action-button"
         = link_to t(:cancel), admin_sidewalk_obstructions_path, class: "btn action-button"
       %h1= t(:sidewalk_obstructions)
     #deleteSidewalkObstructionConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_sidewalk_obstructions), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
@@ -25,41 +25,69 @@
         = t(:sidewalk_obstructions)
         = add_tooltip("sidewalk_obstructions_help")
     .panel-body
-      %table.table.table-condensed.table-striped.table-bordered.table-hover#sidewalk_feedbacks_table
-        %thead
-          %tr
-            %th= t(:username)
-            %th= t(:comments)
-            %th= t(:remove_by)
-            %th= t(:approve)
-            %th= t(:reject)
-            %th= t(:delete)
-            %th= t(:created)
-            %th
-        %tbody
-          - @sidewalk_obstructions.each do |feedback|
+      = search_form_for @q, id: 'sidewalk_obstructions_search_form', :url => "#{url_for(locale: params[:locale])}", html: {class: 'filter-form', style: 'padding-top: 10px;'} do |f|
+        .form-group
+          = f.search_field "comment_or_status_cont", {class: "form-control", style: 'width: auto; display: inline-block;' }
+          = f.submit t(:search), class: 'btn action-button'
+      %p
+        %select.input-sm#per_page_select
+          - [10, 25, 50, 100].each do |per_page|
+            - if per_page == @per_page.to_i
+              %option{value: "#{per_page}", selected: true}
+                = per_page
+            - else
+              %option{value: "#{per_page}"}
+                = per_page
+        :javascript
+          $('#per_page_select').on('change', function(){
+            var params = #{@params.to_json};
+            params.per_page = $(this).val();
+            window.location.href = "#{url_for(locale: params[:locale])}?" + $.param(params);
+          });
+        %span
+          = "records per page"
+      = form_tag approve_admin_sidewalk_obstructions_path, id: 'sidewalk_obstructions_form', method: :patch do
+        %table.table.table-condensed.table-striped.table-bordered.table-hover#sidewalk_feedbacks_table
+          %thead
             %tr
-              %td= feedback.user.name
-              %td= feedback.comment
-              %td.nowrap
-                - unless feedback.removed_at.nil?
-                  =format_date_time(feedback.removed_at)
-              %td
-                = label_tag "#{feedback.id}_#{SidewalkObstruction::APPROVED}", t(:approve), class: "sr-only"
-                = radio_button_tag "#{feedback.id}", SidewalkObstruction::APPROVED, feedback.approved?
+              %th= sort_link @q, :user_name, t(:username)
+              %th= sort_link @q, :comment, t(:comments)
+              %th= sort_link @q, :removed_at, t(:remove_by)
+              %th= sort_link @q, :is_approved, t(:approve)
+              %th= sort_link @q, :is_rejected, t(:reject)
+              %th= sort_link @q, :is_deleted, t(:delete)
+              %th= sort_link @q, :created_at, t(:created)
+              %th
+          %tbody
+            - @sidewalk_obstructions.each do |feedback|
+              %tr
+                %td= feedback.user.name
+                %td= feedback.comment
+                %td.nowrap
+                  - unless feedback.removed_at.nil?
+                    =format_date_time(feedback.removed_at)
+                %td
+                  = label_tag "#{feedback.id}_#{SidewalkObstruction::APPROVED}", t(:approve), class: "sr-only"
+                  = radio_button_tag "#{feedback.id}", SidewalkObstruction::APPROVED, feedback.approved?
 
-              %td
-                = label_tag "#{feedback.id}_#{SidewalkObstruction::REJECTED}", t(:reject), class: "sr-only"
-                = radio_button_tag "#{feedback.id}", SidewalkObstruction::REJECTED, feedback.rejected?
-              %td
-                = label_tag "#{feedback.id}_#{SidewalkObstruction::DELETED}", t(:delete), class: "sr-only"
-                = radio_button_tag "#{feedback.id}", SidewalkObstruction::DELETED
-              %td.nowrap= format_date_time(feedback.created_at)
-              %td.center
-                - if feedback.lat and feedback.lon
-                  = link_to Rails.application.config.street_view_url + '?lat=' + feedback.lat.to_s + '&lng=' + feedback.lon.to_s, class: 'btn action-button', target: '_blank', role: 'button' do
-                    = t(:street_view)
-
+                %td
+                  = label_tag "#{feedback.id}_#{SidewalkObstruction::REJECTED}", t(:reject), class: "sr-only"
+                  = radio_button_tag "#{feedback.id}", SidewalkObstruction::REJECTED, feedback.rejected?
+                %td
+                  = label_tag "#{feedback.id}_#{SidewalkObstruction::DELETED}", t(:delete), class: "sr-only"
+                  = radio_button_tag "#{feedback.id}", SidewalkObstruction::DELETED
+                %td.nowrap= format_date_time(feedback.created_at)
+                %td.center
+                  - if feedback.lat and feedback.lon
+                    = link_to Rails.application.config.street_view_url + '?lat=' + feedback.lat.to_s + '&lng=' + feedback.lon.to_s, class: 'btn action-button', target: '_blank', role: 'button' do
+                      = t(:street_view)
+        .row
+          .col-sm-6
+            .pull-left
+              = page_entries_info @sidewalk_obstructions
+          .col-sm-6
+            .pull-right
+              = paginate @sidewalk_obstructions, :params => {per_page: @per_page}, :theme => 'twitter-bootstrap-3' rescue nil
 :javascript
 $(document).ready( function() {
   var submitChanges = function() {
@@ -70,7 +98,7 @@ $(document).ready( function() {
         "utf8":"✓",
         "_method":"patch",
         "authenticity_token": $("input[name=authenticity_token]").val(),
-        "approve": $("input:checked", table.fnGetNodes()).serialize()
+        "approve": $('table input:checked').serialize()
       },
       // This can't just be a reload or we hit issues with the reload
       success: function() {
@@ -78,7 +106,12 @@ $(document).ready( function() {
       }
     });
   };
-  $("form").submit(function( event ) {
+
+  $('#submitChanges').on('click', function() {
+    $('#sidewalk_obstructions_form').submit();
+  });
+
+  $("#sidewalk_obstructions_form").submit(function( event ) {
     event.preventDefault();
     if($("input:checked[value=deleted]").length > 0) {
       $('#deleteSidewalkObstructionConfirmDialog').modal('show');
@@ -95,27 +128,4 @@ $(document).ready( function() {
     $("input:checked[value=deleted]").each(function(){$(this).removeAttr('checked');})
     submitChanges();
   });
-
-  var table = $('#sidewalk_feedbacks_table').dataTable( {
-    stateSave: true,
-    "aaSorting": [[ 6, "desc" ]],
-    "aoColumnDefs": [
-      { "bSortable": false, "aTargets": [ 3,4,5 ] },
-      { "bSearchable": false, "aTargets": [ 3,4,5 ] }
-    ],
-    "oLanguage": {
-              "sLengthMenu": "Display _MENU_ items per page",
-              "sZeroRecords": "Nothing found - sorry",
-              "sInfo": "Showing _START_ to _END_ of _TOTAL_ items",
-              "sInfoEmpty": "Showing 0 to 0 of 0 items",
-              "sInfoFiltered": "(filtered from _MAX_ total items)"
-    },
-    "bAutoWidth": false,
-    "aoColumnDefs": [
-      { "sWidth": "10%", "aTargets": [ 0 ] },
-      { "sWidth": "40%", "aTargets": [ 1 ] },
-      { "sWidth": "5%", "aTargets": [ 3, 4, 5 ] }
-    ],
-    "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
-  } );
 });

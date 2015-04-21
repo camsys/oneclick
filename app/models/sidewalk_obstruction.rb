@@ -14,6 +14,26 @@ class SidewalkObstruction < ActiveRecord::Base
 
   belongs_to :user
 
+  # custom ransackers
+  ransacker :user_name, formatter: proc { |v| v.mb_chars.downcase.to_s } do |parent|
+    Arel::Nodes::NamedFunction.new('LOWER',
+      [Arel::Nodes::NamedFunction.new('concat_ws',
+        [' ', User.arel_table[:first_name], User.arel_table[:last_name]])])
+  end
+
+  ransacker :is_approved do
+    Arel.sql("status = '#{APPROVED}'")
+  end
+  ransacker :is_rejected do
+    Arel.sql("status = '#{REJECTED}'")
+  end
+  ransacker :is_deleted do
+    Arel.sql("status = '#{DELETED}'")
+  end
+  ransacker :is_pending do
+    Arel.sql("status = '#{PENDING}'")
+  end
+
   def approved?
     status == APPROVED
   end
