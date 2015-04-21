@@ -31,30 +31,4 @@
               = link_to admin_provider_services_path(provider) do
                 = t(:services)
 
-:javascript
-  $(document).ready(function() {
-    var oTable = $('#admin_providers_table').dataTable( {
-          stateSave: true,
-          "oLanguage": {
-              "sLengthMenu": "Display _MENU_ providers per page",
-              "sZeroRecords": "Nothing found - sorry",
-              "sInfo": "Showing _START_ to _END_ of _TOTAL_ providers",
-              "sInfoEmpty": "Showing 0 to 0 of 0 providers",
-              "sInfoFiltered": "(filtered from _MAX_ total providers)"
-          },
-          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l><'toggle col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
-      } );
-    $("div.toggle").html('<span class="pull-right"><input type="checkbox" id="toggle">&nbsp;Show inactive providers</span>');
-    
-    var index = $("thead th").index($('#status'));
-    // comment below out so to enable stateSave (preserve page number etc
-    //oTable.fnFilter('^$', index, true);
-
-    $("#toggle").click(function () {
-        var filter = '^$';
-        if ($(this).is(':checked')) {
-                var filter = '';
-        }
-        oTable.fnFilter(filter, index, true);
-    });
-  } );
+= render partial: 'admin/shared/datatable_js', locals: {key: 'admin_providers', entity: 'providers'}
