@@ -31,7 +31,7 @@ notifications:
   irc: irc.freenode.net#oneclick
   slack:
     rooms:
-      - camsys:pWffJOAiVBnp4cDSXt9getDB#1click
+      - camsys:amsys:lXMC55pg5oKxSTYW38zsB9jm#1click
 deploy:
   - provider: heroku
     api_key:
