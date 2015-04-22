@@ -29,4 +29,14 @@ notifications:
   slack:
     rooms:
     - camsys:amsys:lXMC55pg5oKxSTYW38zsB9jm#1click
-
+deploy:
+  provider: heroku
+  api_key:
+    secure: BnDSeczkLGQTaB6YHDmwsohRa71CPi6NdBSHo4X/d+st8gbyv2PcfE7qu0OSmrpOmxwYiqjQVcbp4JpjXhftM9IJok7qfFMv3VbQIOeCuvBYtVNhvDl+dI+i1Xn1lnrMzbZfPUsMlIPeQXe52jMzMYdeafcU4vHUEOg2HOGoQ3I=
+  app: oneclick-arc-int
+  on:
+    repo: camsys/oneclick
+    branch: develop
+after_deploy:
+ - heroku run rake db:migrate --app oneclick-arc-int
+ - heroku run rake oneclick:load_locales --app oneclick-arc-int
