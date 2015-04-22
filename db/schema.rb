@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150415185638) do
+ActiveRecord::Schema.define(version: 20150422175448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -355,15 +355,16 @@ ActiveRecord::Schema.define(version: 20150415185638) do
   add_index "reporting_output_fields", ["reporting_report_id"], :name => "index_reporting_output_fields_on_reporting_report_id"
 
   create_table "reporting_reports", force: true do |t|
-    t.string   "name",              null: false
+    t.string   "name",                             null: false
     t.string   "description"
-    t.string   "data_source",       null: false
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.string   "data_source",                      null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.boolean  "is_sys_admin"
     t.boolean  "is_provider_staff"
     t.boolean  "is_agency_admin"
     t.boolean  "is_agent"
+    t.string   "primary_key",       default: "id", null: false
   end
 
   create_table "reporting_specific_filter_groups", force: true do |t|

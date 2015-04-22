@@ -140,12 +140,15 @@ module Reporting
         headers[0] = "'" + headers[0]
       end
 
+      # refresh primary_key in case it's changed
+      @report.data_model.primary_key = @report.primary_key
+
       Enumerator.new do |y|
         CSV.generate do |csv|
           y << headers.to_csv
 
           # find_each would reduce memory usage, but it relies on valid primary_key
-          data.each do |row|
+          data.find_each do |row|
             y << fields.map { |field|
               format_output row.send(field[:name]), 
                 @report.data_model.columns_hash[field[:name].to_s].type,  

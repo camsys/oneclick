@@ -24,7 +24,7 @@ module Reporting
     def define_data_model
 
       # call modelable module method
-      make_a_reporting_model data_model_class_name, data_source
+      make_a_reporting_model data_model_class_name, data_source, primary_key
 
       # define customized ransackers
       ReportingFilterField.where(reporting_filter_group_id: reporting_filter_groups.pluck(:id)).each do |field|
