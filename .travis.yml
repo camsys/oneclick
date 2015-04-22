@@ -28,7 +28,7 @@ script:
 notifications:
   slack:
     rooms:
-    - camsys:amsys:lXMC55pg5oKxSTYW38zsB9jm#1click
+    - camsys:lXMC55pg5oKxSTYW38zsB9jm#1click
 deploy:
   provider: heroku
   api_key:
