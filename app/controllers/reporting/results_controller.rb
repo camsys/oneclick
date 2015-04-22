@@ -141,13 +141,17 @@ module Reporting
       end
 
       Enumerator.new do |y|
-        y << headers.to_csv
+        CSV.generate do |csv|
+          y << headers.to_csv
 
-        data.find_each do |row|
-          y << fields.map {|field| format_output row.send(field[:name]), 
-            @report.data_model.columns_hash[field[:name].to_s].type,  
-            field[:formatter]
-          }.to_csv
+          # find_each would reduce memory usage, but it relies on valid primary_key
+          data.each do |row|
+            y << fields.map { |field|
+              format_output row.send(field[:name]), 
+                @report.data_model.columns_hash[field[:name].to_s].type,  
+                field[:formatter]
+            }.to_csv
+          end
         end
       end
 
