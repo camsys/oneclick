@@ -3,6 +3,7 @@
   .col-sm-12
     .btns.pull-right
       = link_to t(:create), new_admin_user_path, {class: 'btn action-button', role: 'button'}
+      = button_tag t(:export), id: 'exportAllUsers', class: 'btn action-button', role: 'button'
     %h1= t(:users)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
@@ -48,8 +49,34 @@
         data.push({name: "bIncludeDeleted", value: $("#toggle").is(':checked')});
       }
     });
+
     $("div.toggle").html('<span class="pull-right"><input type="checkbox" id="toggle">&nbsp;Show deleted users</span>');
     $("#toggle").click(function () {
         oTable.fnDraw();
+    });
+
+    $('#exportAllUsers').on('click', function(event) {
+      var baseUrl = "#{url_for(locale: params[:locale], format: 'csv')}?";
+      var params = {
+        all: true,
+        bIncludeDeleted: $("#toggle").is(':checked')
+      };
+
+      // fetch datatable params (sorting col, sorting dir, search text)
+      var dbParams = oTable.oApi._fnAjaxParameters(oTable.fnSettings());
+      for(var i=0, paramCount=dbParams.length; i<paramCount; i++) {
+        var obj = dbParams[i];
+        if(obj.name == 'sSearch') {
+          params.sSearch = obj.value;
+        } else if(obj.name == 'iSortCol_0') {
+          params.iSortCol_0 = obj.value;
+        } else if(obj.name == 'sSortDir_0') {
+          params.sSortDir_0 = obj.value;
+        }
+      }
+
+      window.location.href = baseUrl + $.param(params);
+
+      event.preventDefault();
     });
   });
