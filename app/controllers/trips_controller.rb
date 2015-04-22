@@ -15,7 +15,7 @@ class TripsController < PlaceSearchingController
     @per_page = params[:per_page] || Kaminari.config.default_per_page
 
     @q = TripView.ransack q_param
-    @q.sorts = "#{TripView.id_column} asc" if @q.sorts.empty?
+    @q.sorts = "#{TripView.primary_key} asc" if @q.sorts.empty?
 
     @params = {q: q_param}
 
@@ -26,7 +26,7 @@ class TripsController < PlaceSearchingController
         
     # @results is for html display; only render current page
     @trip_views = total_trips.page(page).per(@per_page)
-    @trips = Trip.where(id: @trip_views.pluck("\"#{TripView.id_column}\""))
+    @trips = Trip.where(id: @trip_views.pluck("\"#{TripView.primary_key}\""))
 
     respond_to do |format|
       format.html # index.html.erb
