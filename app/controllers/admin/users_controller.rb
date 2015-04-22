@@ -12,7 +12,13 @@ class Admin::UsersController < Admin::BaseController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: usertable}
-      format.csv {render text: params[:all] ? usertable.as_csv_all : usertable.as_csv}
+      format.csv do 
+        if params[:all]
+          render_csv("users.csv", usertable)
+        else
+          render text: usertable.as_csv
+        end
+      end
     end
   end
 
@@ -237,5 +243,37 @@ class Admin::UsersController < Admin::BaseController
       end
     end
     alert
+  end
+
+  def render_csv(file_name, usertable)
+    set_file_headers file_name
+    set_streaming_headers
+
+    response.status = 200
+
+    #setting the body to an enumerator, rails will iterate this enumerator
+    self.response_body = csv_lines(usertable)
+  end
+
+
+  def set_file_headers(file_name)
+    headers["Content-Type"] = "text/csv"
+    headers["Content-disposition"] = "attachment; filename=\"#{file_name}\""
+  end
+
+
+  def set_streaming_headers
+    #nginx doc: Setting this to "no" will allow unbuffered responses suitable for Comet and HTTP streaming applications
+    headers['X-Accel-Buffering'] = 'no'
+
+    headers["Cache-Control"] ||= "no-cache"
+    headers.delete("Content-Length")
+  end
+
+  def csv_lines(usertable)
+    Enumerator.new do |y|
+      usertable.as_csv_all(y)
+    end
+
   end
 end

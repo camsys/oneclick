@@ -71,11 +71,9 @@ class Admin::TripsController < Admin::BaseController
   def csv_lines(data, headers, fields)
     
     Enumerator.new do |y|
-      CSV.generate do |csv|
-        y << headers.to_csv
+      y << headers.to_csv
 
-        data.find_each { |row| y << fields.map { |field| row.send(field) }.to_csv }
-      end
+      data.find_each { |row| y << fields.map { |field| row.send(field) }.to_csv }
     end
 
   end

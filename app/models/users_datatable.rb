@@ -20,24 +20,22 @@ class UsersDatatable
 
   def as_csv
     CSV.generate do |csv|
-      csv << localized_column_names
+      csv << UsersDatatable.localized_column_names
       paged_users_plain_data.each do |user|
         csv << user
       end
     end
   end
 
-  def as_csv_all
-    CSV.generate do |csv|
-      csv << localized_column_names
-      all_users_plain_data.each do |user|
-        csv << user
-      end
+  def as_csv_all(csv)
+    csv << UsersDatatable.localized_column_names.to_csv
+    all_users.find_each do |user|
+      csv << export_plain_single_user(user).to_csv
     end
   end
 
 private
-  def localized_column_names
+  def self.localized_column_names
     [
       I18n.t(:id),
       I18n.t(:username),
@@ -45,6 +43,17 @@ private
       I18n.t(:registered),
       I18n.t(:roles),
       I18n.t(:status)
+    ]
+  end
+
+  def export_plain_single_user(user)
+    [
+      user.id,
+      user.name,
+      user.email,
+      user.created_at.to_date,
+      user.roles.collect(&:human_readable_name).to_sentence,
+      user.deleted_at ? I18n.t(:user_deleted) : ''
     ]
   end
 
@@ -64,14 +73,7 @@ private
   # plain user data
   def export_plain_user(users = [])
     users.map do |user|
-      [
-        user.id,
-        user.name,
-        user.email,
-        user.created_at.to_date,
-        user.roles.collect(&:human_readable_name).to_sentence,
-        user.deleted_at ? I18n.t(:user_deleted) : ''
-      ]
+      export_plain_single_user user
     end
   end
 
