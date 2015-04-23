@@ -276,7 +276,7 @@ class TripsController < PlaceSearchingController
     Rails.logger.info email_addresses.inspect
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
 
-    subject = Oneclick::Application.config.name + ' Trip Itinerary'
+    subject = t(:user_trip_email_subject).blank? ? Oneclick::Application.config.name + ' Trip Itinerary' : t(:user_trip_email_subject)
     UserMailer.user_trip_email(email_addresses, @trip, subject,
       params[:email][:email_comments], @traveler).deliver
     notice_text = t(:email_sent_to).sub('%{email_sent_to}', email_addresses.to_sentence)
@@ -310,7 +310,7 @@ class TripsController < PlaceSearchingController
     if params[:email][:copy_self] == '1'
       emails << from_email
     end
-    subject = Oneclick::Application.config.name + ' Trip Request'
+    subject = t(:provider_trip_email_subject).blank? ? Oneclick::Application.config.name + ' Trip Request' : t(:provider_trip_email_subject)
     UserMailer.provider_trip_email(emails, @trip, subject, from_email, comments).deliver
     notice_text = t(:email_sent_to).sub('%{email_sent_to}', provider.name)
     respond_to do |format|
@@ -329,7 +329,7 @@ class TripsController < PlaceSearchingController
     email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
     Rails.logger.info email_addresses.inspect
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    subject = Oneclick::Application.config.name + ' Trip Itinerary'
+    subject = t(:user_itinerary_email_subject).blank? ? Oneclick::Application.config.name + ' Trip Itinerary' : t(:user_itinerary_email_subject)
     UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, subject, from_email,
       params[:email][:email_comments], @traveler).deliver
     notice_text = t(:email_sent_to).sub('%{email_sent_to}', email_addresses.join(', '))
