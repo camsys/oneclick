@@ -1,5 +1,7 @@
 class ServicesController < ApplicationController
   include Admin::CommentsHelper
+  include CsvStreaming
+
   before_filter :load_service, only: [:create]
   load_and_authorize_resource
 
@@ -7,6 +9,18 @@ class ServicesController < ApplicationController
 
   def index
     @services = Service.order(:name)
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @services }
+      format.csv do 
+        filter_params = params.permit(:bIncludeInactive, :search)
+        
+        @services = Service.get_exported(@services, filter_params)
+
+        render_csv("services.csv", @services, Service.csv_headers)
+      end
+    end
   end
 
   def show

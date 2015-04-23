@@ -39,4 +39,21 @@
       }
       oTable.fnFilter(filter, index, true);
     });
+
+    //export all
+    $('#exportAll').on('click', function(e) {
+      var baseUrl = "#{url_for(locale: params[:locale], format: 'csv')}?";
+
+      var params = {
+        bIncludeInactive: $("#toggle").is(':checked')
+      };
+
+      var searchText = oTable.oApi._fnAjaxParameters(oTable.fnSettings()).search.value;
+      if(searchText.trim().length > 0) {
+        params.search = searchText;
+      }
+      
+      window.location.href = baseUrl + $.param(params);
+      e.preventDefault();
+    });
   } );

@@ -51,4 +51,42 @@ class Provider < ActiveRecord::Base
     name
   end
 
+  # csv export
+  ransacker :id do
+    Arel.sql(
+      "regexp_replace(
+        to_char(\"#{table_name}\".\"id\", '9999999'), ' ', '', 'g')"
+    )
+  end
+
+  def self.csv_headers
+    [
+      I18n.t(:id),
+      I18n.t(:name),
+      I18n.t(:status)
+    ]
+  end
+
+  def to_csv
+    [
+      id,
+      name,
+      active ? '' : I18n.t(:inactive)
+    ].to_csv
+  end
+
+  def self.get_exported(rel, params = {})
+    if params[:bIncludeInactive] != 'true'
+      rel = rel.where(active: true)
+    end
+
+    if !params[:search].blank?
+      rel = rel.ransack({
+        :id_or_name_cont => params[:search]
+        }).result(:district => true)
+    end
+
+    rel
+  end
+
 end

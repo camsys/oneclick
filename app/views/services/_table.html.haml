@@ -16,7 +16,10 @@
         %td
           =link_to service.name, service_path(service.id)
         %td
-          =service.provider.name
+          - if can? :show, Provider
+            =link_to service.provider.name, admin_provider_path(service.provider.id)
+          - else
+            = service.provider.name
         %td= service.phone
         %td= service.email
         %td= service.external_id

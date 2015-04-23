@@ -1,5 +1,6 @@
 class Admin::ProvidersController < ApplicationController
   include Admin::CommentsHelper
+  include CsvStreaming
   before_filter :load_provider, only: [:create]
   load_and_authorize_resource
 
@@ -10,6 +11,13 @@ class Admin::ProvidersController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @providers }
+      format.csv do 
+        filter_params = params.permit(:bIncludeInactive, :search)
+        
+        @providers = Provider.get_exported(@providers, filter_params)
+
+        render_csv("providers.csv", @providers, Provider.csv_headers)
+      end
     end
   end
 

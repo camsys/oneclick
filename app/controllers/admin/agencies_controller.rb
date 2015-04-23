@@ -1,20 +1,10 @@
 class Admin::AgenciesController < ApplicationController
   include Admin::CommentsHelper
+  include CsvStreaming
 
   before_filter :load_agency, only: [:create]
   load_and_authorize_resource except: [:travelers, :find_agent_by_email]
   load_and_authorize_resource :id_param => :agency_id,  only: :travelers #TODO implies a refactor needed
-
-
-  # GET /agencies/1/travelers
-  def travelers
-    @pre_auth_travelers = @agency.customers
-
-    respond_to do |format|
-      format.html # travelers.html.erb
-      format.json { render json: @pre_auth_travelers }
-    end
-  end
 
   # GET /agencies
   # GET /agencies.json
@@ -22,6 +12,23 @@ class Admin::AgenciesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @agencies }
+      format.csv do 
+        filter_params = params.permit(:bIncludeInactive, :search)
+        
+        @agencies = Agency.get_exported(@agencies, filter_params)
+
+        render_csv("agencies.csv", @agencies, Agency.csv_headers)
+      end
+    end
+  end
+
+   # GET /agencies/1/travelers
+  def travelers
+    @pre_auth_travelers = @agency.customers
+
+    respond_to do |format|
+      format.html # travelers.html.erb
+      format.json { render json: @pre_auth_travelers }
     end
   end
 

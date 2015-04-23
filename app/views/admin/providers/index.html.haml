@@ -4,6 +4,7 @@
     .btns.pull-right
       - if can? :create, Provider
         = link_to t(:create), new_admin_provider_path, {class: 'btn action-button', role: 'button'}
+      = button_tag t(:export), id: 'exportAll', class: 'btn action-button', role: 'button'
     %h1= t(:providers)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading

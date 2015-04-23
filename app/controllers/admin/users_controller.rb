@@ -5,8 +5,6 @@ class Admin::UsersController < Admin::BaseController
   load_and_authorize_resource
 
   def index
-    # @users = @users.without_role :anonymous_traveler # This filter is moved into UsersDatatable
-
     usertable = UsersDatatable.new(view_context)
 
     respond_to do |format|

@@ -4,6 +4,7 @@
     .btns.pull-right
       - if can? :create, Agency
         = link_to t(:create), new_admin_agency_path, {class: 'btn action-button', role: 'button'}
+      = button_tag t(:export), id: 'exportAll', class: 'btn action-button', role: 'button'
     %h1= t(:agencies)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
@@ -27,8 +28,6 @@
             %td
               - if agency.parent
                 = link_to agency.parent.name, [:admin, agency.parent]
-              - else
-                = ''
             %td
               = render partial: agency.sub_agencies
             %td

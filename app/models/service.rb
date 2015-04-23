@@ -375,6 +375,52 @@ class Service < ActiveRecord::Base
     myArray
   end
 
+  # csv
+  ransacker :id do
+    Arel.sql(
+      "regexp_replace(
+        to_char(\"#{table_name}\".\"id\", '9999999'), ' ', '', 'g')"
+    )
+  end
+
+  def self.csv_headers
+    [
+      I18n.t(:id),
+      I18n.t(:name),
+      I18n.t(:provider),
+      I18n.t(:phone),
+      I18n.t(:email),
+      I18n.t(:service_id),
+      I18n.t(:status)
+    ]
+  end
+
+  def to_csv
+    [
+      id,
+      name,
+      provider.name,
+      phone,
+      email,
+      external_id,
+      active ? '' : I18n.t(:inactive)
+    ].to_csv
+  end
+
+  def self.get_exported(rel, params = {})
+    if params[:bIncludeInactive] != 'true'
+      rel = rel.where(active: true)
+    end
+
+    if !params[:search].blank?
+      rel = rel.ransack({
+        :id_or_name_or_provider_name_or_phone_or_email_or_external_id_cont => params[:search]
+        }).result(:district => true)
+    end
+
+    rel
+  end
+
   private
 
   def human_readable_time_notice(time_in_mins)
