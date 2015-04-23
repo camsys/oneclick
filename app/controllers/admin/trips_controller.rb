@@ -16,7 +16,7 @@ class Admin::TripsController < Admin::BaseController
     @q.sorts = "#{TripView.primary_key} asc" if @q.sorts.empty?
     @params = {q: q_param}
 
-    total_trips = @q.result(:district => true).uniq
+    total_trips = @q.result(:district => true).uniq(:id)
 
     # filter data based on accessibility
     if params[:provider_id]

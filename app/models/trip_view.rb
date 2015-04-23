@@ -11,7 +11,7 @@ class TripView < ActiveRecord::Base
 
   # configure table/view name
   self.table_name = "trips_view"
-  self.primary_key = "id"
+  self.primary_key = "trip_part_id"
 
   # case insensitive search and sort
   ransacker :user_name_case_insensitive, type: :string do

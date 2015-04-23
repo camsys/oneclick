@@ -26,8 +26,10 @@ CREATE OR REPLACE VIEW "v_Trip_Purpose" AS
   WHERE translations.key::text = trip_purposes.name::text AND translations.locale::text = 'en'::text;
 
 -- main view: trips_view
+DROP VIEW IF EXISTS "trips_view";
 CREATE OR REPLACE VIEW "trips_view" AS 
- SELECT DISTINCT trips.id,
+ SELECT DISTINCT trip_parts.id as trip_part_id,
+    trips.id,
     trips.user_id,
     (users.first_name::text || ' '::text) || users.last_name::text AS user_name,
     trips.scheduled_date as trip_date,
@@ -47,5 +49,6 @@ CREATE OR REPLACE VIEW "trips_view" AS
      JOIN trip_places "From_Trip_Places" ON "From_Trip_Places".id = trip_parts.from_trip_place_id
      JOIN trip_places "To_Trip_Places" ON "To_Trip_Places".id = trip_parts.to_trip_place_id
      LEFT JOIN "v_Ratings_Trip" ON trips.id = "v_Ratings_Trip".rateable_id
-  WHERE trip_parts.sequence = 0 AND trips.is_planned = true;
+  WHERE trip_parts.sequence = 0 AND itineraries.selected = true 
+  ORDER BY trip_parts.id;
     
