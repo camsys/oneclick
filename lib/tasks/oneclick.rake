@@ -366,4 +366,12 @@ namespace :oneclick do
     puts 'finished scanning planned trips'
   end
 
+  desc "Create sql view for trips page"
+  task create_trips_sql_view: :environment do
+
+    ActiveRecord::Base.connection.execute File.read(Rails.root.join('lib/tasks/sql/trips_view.sql'))
+
+    puts 'trips_view is created'
+  end
+
 end
