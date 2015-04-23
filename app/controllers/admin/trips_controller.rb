@@ -16,7 +16,7 @@ class Admin::TripsController < Admin::BaseController
     @q.sorts = "#{TripView.primary_key} asc" if @q.sorts.empty?
     @params = {q: q_param}
 
-    total_trips = @q.result(:district => true)
+    total_trips = @q.result(:district => true).uniq
 
     # filter data based on accessibility
     if params[:provider_id]
@@ -27,7 +27,7 @@ class Admin::TripsController < Admin::BaseController
         
     # @results is for html display; only render current page
     @trip_views = total_trips.page(page).per(@per_page)
-    array_of_ids = @trip_views.pluck("\"#{TripView.primary_key}\"").uniq
+    array_of_ids = @trip_views.pluck("\"#{TripView.primary_key}\"")
     
     @trips = Trip.where(id: array_of_ids).index_by(&:id).values_at(*array_of_ids)
 
