@@ -212,6 +212,12 @@
                 -else
                   = t(:flat_fare_unavailable) + "."
               .row_fluid
+                %b= t(:taxi_fare_finder_key) + ": "
+                -if @service.taxi_fare_finder_key
+                  = @service.taxi_fare_finder_key
+                -else
+                  = t(:none)
+              .row_fluid
                 - if fare.rate
                   %b= t(:mileage_rate) + ": "
                   = number_to_currency(fare.rate.to_f).to_s

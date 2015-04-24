@@ -306,9 +306,10 @@
           = f.simple_fields_for :fare_structures do |fare|
             .panel-body
               .row_fluid
-                = fare.input :base, label: t(:base_rate), as: :currency
-                = fare.input :rate, label: t(:mileage_rate), as: :currency
-                = fare.input :desc, label: t(:comments), as: :text
+                = fare.input :base, label: t(:base_rate), input_html: {class: "form-control"}
+                = fare.input :rate, label: t(:mileage_rate), input_html: {class: "form-control"}
+                = f.input :taxi_fare_finder_key, label: t(:taxi_fare_finder_key)
+                = fare.input :desc, label: t(:comments), as: :text, input_html: {class: "form-control"}
 
   - unless is_transit || is_taxi
     .row
