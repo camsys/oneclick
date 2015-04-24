@@ -1,3 +1,7 @@
+- if @service.service_type
+  - is_transit = @service.service_type.code == "transit"
+  - is_taxi = @service.service_type.code == "taxi"
+
 = simple_form_for @service,
         url: @service.id.nil? ? services_path(provider_id: @provider) : service_path,
         method: @service.id.nil? ? 'post' : 'put', html: { class: 'form-horizontal', multipart: true },
@@ -23,9 +27,9 @@
       .panel.panel-default.well0
         .panel-heading
           %h3.panel-title
-            = t(:provided_by)
-            =  @service.provider.name
-            = add_tooltip("provided_by_help")
+            = t(:service)
+            = t(:information)
+            = add_tooltip("service_help")
         .panel-body
           - unless @service.active
             %h3.warning
@@ -39,6 +43,7 @@
           = f.input :url
           = f.association :service_type,
                   collection: ServiceType.all.map{|t| [ t(t.name), t.id ] }
+          = f.input :external_id, label: t(:service_id)
 
     .col-sm-6
       .panel.panel-default.well0
@@ -55,311 +60,324 @@
                 selected: (@contact.id if @contact) , include_blank: "None", label: t(:user)
 
   .row
-    .col-sm-4
-      .panel.panel-default.well2
-        .panel-heading
-          %h4.panel-title
-            = t(:schedule)
-            = add_tooltip("schedule_help")
-        .panel-body
-          %table.ALTtable
-            %thead
-              %tr
-                %th.text-center
-                  = t('datetime.prompts.day')
-                %th.text-center
-                  = t(:start_time)
-                %th.text-center
-                  = t(:end_time)
-                %th.text-center
-                  = t(:clear_?)
-            %tbody
-              - # display each day of week
-              - count = 0
-              - (0..6).each do |day_of_week|
-                - schedule = @schedules[day_of_week]
-                - start_error = @service.errors.messages["schedules.#{day_of_week}start_time".to_sym]
-                - end_error = @service.errors.messages["schedules.#{day_of_week}end_time".to_sym]
+    - unless is_transit
+      .col-sm-4#schedule-panel
+        .panel.panel-default.well2
+          .panel-heading
+            %h4.panel-title
+              = t(:schedule)
+              = add_tooltip("schedule_help")
+          .panel-body
+            %table.ALTtable
+              %thead
                 %tr
-                  %td.text-center{class: "#{(start_error || end_error) ? 'has-error' : ''}" }
-                    %label.control-label
-                      = I18n.t('date.day_names')[day_of_week]
-                  %td{class: "#{start_error ? 'has-error' : ''}" }
-                    %input.form-control.text-right{type: "text",
-                          value: "#{schedule.start_time if schedule}",
-                          name: input_name(f, :schedules, :start_time)}
-                    - if start_error
-                      %span.help-block<
-                        = start_error.first
-                  %td{class: "#{end_error ? 'has-error' : ''}" }
-                    %input.form-control.text-right{type: "text",
-                          value: "#{schedule.end_time if schedule}",
-                          name: "service[schedules_attributes][][end_time]"}
-                    - if end_error
-                      %span.help-block<
-                        = end_error.first
-                  %td
-                    %input.form-control.checkbox{type: "checkbox",
-                          value: "1", name: "service[schedules_attributes][][_destroy]"}
-                  - if schedule && schedule.id
-                    %input{type: "hidden", value: "#{schedule.id}",
-                           name: "service[schedules_attributes][][id]"}
-                  - else
-                    %input{type: "hidden", value: "#{day_of_week}",
-                           name: "service[schedules_attributes][][day_of_week]"}
-
-    .col-sm-4
-      .panel.panel-default.well2
-        .panel-heading
-          %h4.panel-title
-            = t(:advance_notice_required)
-            = add_tooltip("advance_notice_required_help")
-        .panel-body
-          - adv_notice_days_total = @service.advanced_notice_minutes/60/24.round
-          - max_adv_book_days_total = @service.max_advanced_book_minutes/60/24.round
-          - max_allow_adv_book_days = Service.max_allow_advanced_book_days
-          %input.text-right{type: "number", min: 0, max: max_allow_adv_book_days,
-              value: adv_notice_days_total,
-              name: "service[notice_days_part]"}
-          = t(:to).downcase
-          %input.text-right{type: "number", min: 0, max: max_allow_adv_book_days,
-              value: max_adv_book_days_total,
-              name: "service[max_advanced_book_days_part]"}
-          %b 
-            = t(:days).downcase
-          - # currently only use advanced_notice_days, may change back to days/hours/minutes
-          /%input.text-right{type: "number", min: 0, max: 23,
-          /    value: (minutes_total / 60) % 24,
-          /    name: "service[notice_hours_part]"}
-          /%b hours,
-          /%input.text-right{type: "number", min: 0, max: 59,
-          /    value: minutes_total % 60,
-          /    name: "service[notice_minutes_part]"}
-          /%b minutes
-          = " " + t(:advance_notice_required) + "."
-          - # booking cut off time editing
-          %table.ALTtable
-            %thead
-              %tr
-                %th.text-center
-                  = t('datetime.prompts.day')
-                %th.text-center
-                  = t(:cut_off_time)
-                %th.text-center
-                  = t(:clear_?)
-            %tbody
-              - # display each day of week
-              - count = 0
-              - (0..6).each do |day_of_week|
-                - cut_off_time = @cut_off_times[day_of_week]
-                - cut_off_time_error = @service.errors.messages["booking_cut_off_times.#{day_of_week}cut_off_time".to_sym]
+                  %th.text-center
+                    = t('datetime.prompts.day')
+                  %th.text-center
+                    = t(:start_time)
+                  %th.text-center
+                    = t(:end_time)
+                  %th.text-center
+                    = t(:clear_?)
+              %tbody
+                - # display each day of week
+                - count = 0
+                - (0..6).each do |day_of_week|
+                  - schedule = @schedules[day_of_week]
+                  - start_error = @service.errors.messages["schedules.#{day_of_week}start_time".to_sym]
+                  - end_error = @service.errors.messages["schedules.#{day_of_week}end_time".to_sym]
+                  %tr
+                    %td.text-center{class: "#{(start_error || end_error) ? 'has-error' : ''}" }
+                      %label.control-label
+                        = I18n.t('date.day_names')[day_of_week]
+                    %td{class: "#{start_error ? 'has-error' : ''}" }
+                      %input.form-control.text-right{type: "text",
+                            value: "#{schedule.start_time if schedule}",
+                            name: input_name(f, :schedules, :start_time)}
+                      - if start_error
+                        %span.help-block<
+                          = start_error.first
+                    %td{class: "#{end_error ? 'has-error' : ''}" }
+                      %input.form-control.text-right{type: "text",
+                            value: "#{schedule.end_time if schedule}",
+                            name: "service[schedules_attributes][][end_time]"}
+                      - if end_error
+                        %span.help-block<
+                          = end_error.first
+                    %td
+                      %input.form-control.checkbox{type: "checkbox",
+                            value: "1", name: "service[schedules_attributes][][_destroy]"}
+                    - if schedule && schedule.id
+                      %input{type: "hidden", value: "#{schedule.id}",
+                             name: "service[schedules_attributes][][id]"}
+                    - else
+                      %input{type: "hidden", value: "#{day_of_week}",
+                             name: "service[schedules_attributes][][day_of_week]"}
+    - unless is_transit || is_taxi
+      .col-sm-4
+        .panel.panel-default.well2
+          .panel-heading
+            %h4.panel-title
+              = t(:advance_notice_required)
+              = add_tooltip("advance_notice_required_help")
+          .panel-body
+            - adv_notice_days_total = @service.advanced_notice_minutes/60/24.round
+            - max_adv_book_days_total = @service.max_advanced_book_minutes/60/24.round
+            - max_allow_adv_book_days = Service.max_allow_advanced_book_days
+            %input.text-right{type: "number", min: 0, max: max_allow_adv_book_days,
+                value: adv_notice_days_total,
+                name: "service[notice_days_part]"}
+            = t(:to).downcase
+            %input.text-right{type: "number", min: 0, max: max_allow_adv_book_days,
+                value: max_adv_book_days_total,
+                name: "service[max_advanced_book_days_part]"}
+            %b 
+              = t(:days).downcase
+            - # currently only use advanced_notice_days, may change back to days/hours/minutes
+            /%input.text-right{type: "number", min: 0, max: 23,
+            /    value: (minutes_total / 60) % 24,
+            /    name: "service[notice_hours_part]"}
+            /%b hours,
+            /%input.text-right{type: "number", min: 0, max: 59,
+            /    value: minutes_total % 60,
+            /    name: "service[notice_minutes_part]"}
+            /%b minutes
+            = " " + t(:advance_notice_required) + "."
+            - # booking cut off time editing
+            %table.ALTtable
+              %thead
                 %tr
-                  %td.text-center{class: "#{cut_off_time_error ? 'has-error' : ''}" }
-                    %label.control-label
-                      = I18n.t('date.day_names')[day_of_week]
-                  %td{class: "#{cut_off_time_error ? 'has-error' : ''}" }
-                    %input.form-control.text-right{type: "text",
-                          value: "#{cut_off_time.cut_off_time if cut_off_time}",
-                          name: "service[booking_cut_off_times_attributes][][cut_off_time]"}
-                    - if cut_off_time_error
-                      %span.help-block<
-                        = cut_off_time_error.first
-                  %td
-                    %input.form-control.checkbox{type: "checkbox",
-                          value: "1", name: "service[booking_cut_off_times_attributes][][_destroy]"}
-                  - if cut_off_time && cut_off_time.id
-                    %input{type: "hidden", value: "#{cut_off_time.id}",
-                           name: "service[booking_cut_off_times_attributes][][id]"}
-                  - else
-                    %input{type: "hidden", value: "#{day_of_week}",
-                           name: "service[booking_cut_off_times_attributes][][day_of_week]"}
+                  %th.text-center
+                    = t('datetime.prompts.day')
+                  %th.text-center
+                    = t(:cut_off_time)
+                  %th.text-center
+                    = t(:clear_?)
+              %tbody
+                - # display each day of week
+                - count = 0
+                - (0..6).each do |day_of_week|
+                  - cut_off_time = @cut_off_times[day_of_week]
+                  - cut_off_time_error = @service.errors.messages["booking_cut_off_times.#{day_of_week}cut_off_time".to_sym]
+                  %tr
+                    %td.text-center{class: "#{cut_off_time_error ? 'has-error' : ''}" }
+                      %label.control-label
+                        = I18n.t('date.day_names')[day_of_week]
+                    %td{class: "#{cut_off_time_error ? 'has-error' : ''}" }
+                      %input.form-control.text-right{type: "text",
+                            value: "#{cut_off_time.cut_off_time if cut_off_time}",
+                            name: "service[booking_cut_off_times_attributes][][cut_off_time]"}
+                      - if cut_off_time_error
+                        %span.help-block<
+                          = cut_off_time_error.first
+                    %td
+                      %input.form-control.checkbox{type: "checkbox",
+                            value: "1", name: "service[booking_cut_off_times_attributes][][_destroy]"}
+                    - if cut_off_time && cut_off_time.id
+                      %input{type: "hidden", value: "#{cut_off_time.id}",
+                             name: "service[booking_cut_off_times_attributes][][id]"}
+                    - else
+                      %input{type: "hidden", value: "#{day_of_week}",
+                             name: "service[booking_cut_off_times_attributes][][day_of_week]"}
 
-    .col-sm-4
-      .panel.panel-default.well2
-        .panel-heading
-          %h4.panel-title
-            = t(:accommodations)
-            = add_tooltip("accommodations_help")
-        .panel-body
-          = f.association :accommodations,
-                collection: Accommodation.all.map{|a| [ t(a.name), a.id ] }, label: false,
-                as: :check_boxes,
-                item_wrapper_tag: 'div', wrapper: :inline_checkboxes
+    - unless is_transit
+      .col-sm-4
+        .panel.panel-default.well2
+          .panel-heading
+            %h4.panel-title
+              = t(:accommodations)
+              = add_tooltip("accommodations_help")
+          .panel-body
+            = f.association :accommodations,
+                  collection: Accommodation.all.map{|a| [ t(a.name), a.id ] }, label: false,
+                  as: :check_boxes,
+                  item_wrapper_tag: 'div', wrapper: :inline_checkboxes
 
   .row
-    .col-sm-4
-      .panel.panel-default.well1
-        .panel-heading
-          %h4.panel-title
-            = t(:eligibility)
-            = add_tooltip("eligibility_help")
-          = t(:eligibility_rules_descr)
-        .panel-body
-
-          %h4 Modify existing rules
-          %table.ALTtable
-            %thead
-              %tr
-                %th.text-center
-                  Delete
-                %th.text-center
-                  &nbsp;Group&nbsp;
-                %th.text-center
-                  Rule
-            %tbody
-            - groups = @service.service_characteristics.map(&:group).uniq
-            - groups.each do |group|
-              - join_string = ''
-              - @service.service_characteristics.where(group: group).each do |map|
-                %tr
-                  %td
-                    %input{type: "hidden", value: "#{map.id}",
-                      name: input_name(f, :service_characteristics, :id)}
-                    %input.form-control.checkbox{type: "checkbox",
-                        value: "1",
-                        name: input_name(f, :service_characteristics, :_destroy)}
-                    %input{type: "hidden", value: "#{map.characteristic.id}",
-                        name: input_name(f, :service_characteristics, :characteristic_id)}
-                    %input{type: "hidden", value: "true",
-                        name: input_name(f, :service_characteristics, :active)}
-
-                  %td.text-center
-                    = group
-                  %td
-                    = join_string
-                    - join_string = ' AND '
-                    = t(map.characteristic.name)
-                    - case map.characteristic.datatype
-                    -   when 'bool'
-                      = " is "
-                      = select_tag(input_name(f, :service_characteristics, :value),
-                        options_for_select([['true', 'true'], ['false', 'false']], map.value))
-                    -   when 'integer', 'date'
-                      = select_tag(input_name(f, :service_characteristics, :rel_code),
-                        options_for_select(@eh.operator_select_options, map.rel_code))
-                      %input.text-right{type: "number", min: 1, max: 120, value: map.value,
-                        name: input_name(f, :service_characteristics, :value)}
-
-          %h4 Add new rules
-          %table.ALTtable
-            %thead
-              %tr
-                %th.text-center
-                  &nbsp;Add&nbsp;
-                %th.text-center
-                  Group
-                %th.text-center
-                  Rule
-            %tbody
-              - Characteristic.enabled.each do |c|
-                - next unless c.for_service == true
-                %tr
-                  %td.text-center
-                    %input{type: "hidden", name: input_name(f, :service_characteristics, :id)}
-                    = check_box_tag input_name(f, :service_characteristics, :active),
-                        true, false, class: "form-control checkbox"
-                    %input{type: "hidden", value: "#{c.id}",
-                        name: input_name(f, :service_characteristics, :characteristic_id)}
-                  %td.text-center
-                    = select_tag(input_name(f, :service_characteristics, :group),
-                      options_for_select((0..Characteristic.enabled.count).map{|id| ["#{id}", id]}))
-                  %td.text-center
-                    = t(c.name)
-                    - case c.datatype
-                    -   when 'bool'
-                      = " is "
-                      = select_tag(input_name(f, :service_characteristics, :value),
-                        options_for_select([['true', 'true'], ['false', 'false']]))
-                    -   when 'integer', 'date'
-                      = select_tag(input_name(f, :service_characteristics, :rel_code),
-                        options_for_select(@eh.operator_select_options, 4))
-                      %input.text-right{type: "number", min: 1, max: 120,
-                        name: input_name(f, :service_characteristics, :value)}
-
-    .col-sm-4
-      .panel.panel-default.well1
-        .panel-heading
-          %h4.panel-title
-            = t(:trip_purposes)
-            = add_tooltip("trip_purposes_help")
-        .panel-body
-          = f.association :trip_purposes,
-                collection: TripPurpose.all.map{|p| [ t(p.name), p.id ] }, label: false,
-                as: :check_boxes,
-                item_wrapper_tag: 'div', wrapper: :inline_checkboxes
-    .col-sm-4
-      .panel.panel-default.well1
-        .panel-heading
-          %h4.panel-title
-            = t(:fare)
-            = add_tooltip("fare_help")
-        = f.simple_fields_for :fare_structures do |fare|
+    - unless is_transit || is_taxi
+      .col-sm-4
+        .panel.panel-default.well1
+          .panel-heading
+            %h4.panel-title
+              = t(:eligibility)
+              = add_tooltip("eligibility_help")
+            = t(:eligibility_rules_descr)
           .panel-body
-            .row_fluid
-              = fare.input :base, label: t(:base_rate), as: :currency
-              = fare.input :rate, label: t(:mileage_rate), as: :currency
-              = fare.input :desc, label: t(:comments), as: :text
+
+            %h4 Modify existing rules
+            %table.ALTtable
+              %thead
+                %tr
+                  %th.text-center
+                    Delete
+                  %th.text-center
+                    &nbsp;Group&nbsp;
+                  %th.text-center
+                    Rule
+              %tbody
+              - groups = @service.service_characteristics.map(&:group).uniq
+              - groups.each do |group|
+                - join_string = ''
+                - @service.service_characteristics.where(group: group).each do |map|
+                  %tr
+                    %td
+                      %input{type: "hidden", value: "#{map.id}",
+                        name: input_name(f, :service_characteristics, :id)}
+                      %input.form-control.checkbox{type: "checkbox",
+                          value: "1",
+                          name: input_name(f, :service_characteristics, :_destroy)}
+                      %input{type: "hidden", value: "#{map.characteristic.id}",
+                          name: input_name(f, :service_characteristics, :characteristic_id)}
+                      %input{type: "hidden", value: "true",
+                          name: input_name(f, :service_characteristics, :active)}
+
+                    %td.text-center
+                      = group
+                    %td
+                      = join_string
+                      - join_string = ' AND '
+                      = t(map.characteristic.name)
+                      - case map.characteristic.datatype
+                      -   when 'bool'
+                        = " is "
+                        = select_tag(input_name(f, :service_characteristics, :value),
+                          options_for_select([['true', 'true'], ['false', 'false']], map.value))
+                      -   when 'integer', 'date'
+                        = select_tag(input_name(f, :service_characteristics, :rel_code),
+                          options_for_select(@eh.operator_select_options, map.rel_code))
+                        %input.text-right{type: "number", min: 1, max: 120, value: map.value,
+                          name: input_name(f, :service_characteristics, :value)}
+
+            %h4 Add new rules
+            %table.ALTtable
+              %thead
+                %tr
+                  %th.text-center
+                    &nbsp;Add&nbsp;
+                  %th.text-center
+                    Group
+                  %th.text-center
+                    Rule
+              %tbody
+                - Characteristic.enabled.each do |c|
+                  - next unless c.for_service == true
+                  %tr
+                    %td.text-center
+                      %input{type: "hidden", name: input_name(f, :service_characteristics, :id)}
+                      = check_box_tag input_name(f, :service_characteristics, :active),
+                          true, false, class: "form-control checkbox"
+                      %input{type: "hidden", value: "#{c.id}",
+                          name: input_name(f, :service_characteristics, :characteristic_id)}
+                    %td.text-center
+                      = select_tag(input_name(f, :service_characteristics, :group),
+                        options_for_select((0..Characteristic.enabled.count).map{|id| ["#{id}", id]}))
+                    %td.text-center
+                      = t(c.name)
+                      - case c.datatype
+                      -   when 'bool'
+                        = " is "
+                        = select_tag(input_name(f, :service_characteristics, :value),
+                          options_for_select([['true', 'true'], ['false', 'false']]))
+                      -   when 'integer', 'date'
+                        = select_tag(input_name(f, :service_characteristics, :rel_code),
+                          options_for_select(@eh.operator_select_options, 4))
+                        %input.text-right{type: "number", min: 1, max: 120,
+                          name: input_name(f, :service_characteristics, :value)}
+
+      .col-sm-4
+        .panel.panel-default.well1
+          .panel-heading
+            %h4.panel-title
+              = t(:trip_purposes)
+              = add_tooltip("trip_purposes_help")
+          .panel-body
+            = f.association :trip_purposes,
+                  collection: TripPurpose.all.map{|p| [ t(p.name), p.id ] }, label: false,
+                  as: :check_boxes,
+                  item_wrapper_tag: 'div', wrapper: :inline_checkboxes
+
+    - unless is_transit
+      .col-sm-4#fare-panel
+        .panel.panel-default{class: "#{is_taxi ? 'well2' : 'well1'}"}
+          .panel-heading
+            %h4.panel-title
+              = t(:fare)
+              = add_tooltip("fare_help")
+          = f.simple_fields_for :fare_structures do |fare|
+            .panel-body
+              .row_fluid
+                = fare.input :base, label: t(:base_rate), as: :currency
+                = fare.input :rate, label: t(:mileage_rate), as: :currency
+                = fare.input :desc, label: t(:comments), as: :text
+
+  - unless is_transit || is_taxi
+    .row
+      .col-sm-6
+        .panel.panel-default.well3
+          .panel-heading
+            %h4.panel-title
+              = t(:time_window)
+              = add_tooltip("time_window_help")
+          .panel-body
+            = f.input :service_window, as: :integer, wrapper_html: {class: "col-sm-6"}
+            = f.input :time_factor, as: :float, wrapper_html: {class: "col-sm-6"}
+
+      .col-sm-6
+        .panel.panel-default.well3
+          .panel-heading
+            %h4.panel-title
+              = t(:booking_information)
+              = add_tooltip("booking_information_help")
+          .panel-body        
+            = f.input :booking_service_code, wrapper_html: {class: "col-sm-6"}
 
   = render partial: 'admin/shared/edit_comments', locals: {f: f, commentable: @service}
 
-  .row
-    .col-sm-12
-      .panel.panel-default
-        .panel-heading
-          .row.text-center
-            .col-sm-12
-              %h3.panel-title
-                = t(:coverage_areas)
-                = add_tooltip("coverage_areas_help")
-        .panel-body
-          .row
-            .col-sm-12
-              - types = GeoCoverage.not_endpoint.not_coverage.pluck(:coverage_type).uniq
-              - ['endpoints', 'coverages'].each do |rule|
-                .panel.panel-default
-                  .panel-heading
-                    %h4.panel-title
-                      = t(rule)
-                      = add_tooltip("#{rule}_help")
-                  .panel-body
-                    %label=t(:coverage_area_edit_instruction)
-                    = f.input rule+'_shapefile', :label => t(:upload_shapefile),:as => :file
-                    - types.each do |type|
-                      %b
-                        = type.humanize.split[0].pluralize + ' ' + t(:served_areas)
-                      .well.white-well.text-left
-                        - checked = @service.send(rule).pluck(:geo_coverage_id)
-                        - GeoCoverage.where(coverage_type: type).order(:value).map{|c| [ c.value, c.id ] }.each do |pair|
-                          %input{type: "hidden", value: pair[1],
-                                 name: input_name(f, :service_coverage_maps, :geo_coverage_id)}
-                          %input{type: "hidden", value: rule.to_s.singularize + '_area',
-                                 name: input_name(f, :service_coverage_maps, :rule)}
-                          - if checked.include?(pair[1])
-                            %input{type: "hidden",
-                                   value: "#{@service.send(rule).find_by(geo_coverage_id: pair[1]).id}",
-                                   name: input_name(f, :service_coverage_maps, :id)}
-                          %span
-                            %label
-                              %input.checkbox.checkbox-inline{type: "checkbox",
-                                    checked: checked.include?(pair[1]),
-                                    value: "1",
-                                    name: input_name(f, :service_coverage_maps, :keep_record)}
-                              = pair[0]
-                              &nbsp;
-  .row
-    .col-sm-12
-      .panel.panel-default
-        .panel-heading
-          %h4.panel-title
-            = t(:service)
-            = t(:information)
-            = add_tooltip("service_help")
-        .panel-body
-          = f.input :external_id, label: t(:service_id), wrapper_html: {class: "col-sm-6"}
-          = f.input :booking_service_code, wrapper_html: {class: "col-sm-6"}
-          = f.input :service_window, as: :integer, wrapper_html: {class: "col-sm-6"}
-          = f.input :time_factor, as: :float, wrapper_html: {class: "col-sm-6"}
-
+  - unless is_transit  
+    .row
+      .col-sm-12
+        .panel.panel-default
+          .panel-heading
+            .row.text-center
+              .col-sm-12
+                %h3.panel-title
+                  = t(:coverage_areas)
+                  = add_tooltip("coverage_areas_help")
+          .panel-body
+            .row
+              .col-sm-12
+                - types = GeoCoverage.not_endpoint.not_coverage.pluck(:coverage_type).uniq
+                - ['endpoints', 'coverages'].each do |rule|
+                  .panel.panel-default
+                    .panel-heading
+                      %h4.panel-title
+                        = t(rule)
+                        = add_tooltip("#{rule}_help")
+                    .panel-body
+                      %label=t(:coverage_area_edit_instruction)
+                      = f.input rule+'_shapefile', :label => t(:upload_shapefile),:as => :file
+                      - types.each do |type|
+                        %b
+                          = type.humanize.split[0].pluralize + ' ' + t(:served_areas)
+                        .well.white-well.text-left
+                          - checked = @service.send(rule).pluck(:geo_coverage_id)
+                          - GeoCoverage.where(coverage_type: type).order(:value).map{|c| [ c.value, c.id ] }.each do |pair|
+                            %input{type: "hidden", value: pair[1],
+                                   name: input_name(f, :service_coverage_maps, :geo_coverage_id)}
+                            %input{type: "hidden", value: rule.to_s.singularize + '_area',
+                                   name: input_name(f, :service_coverage_maps, :rule)}
+                            - if checked.include?(pair[1])
+                              %input{type: "hidden",
+                                     value: "#{@service.send(rule).find_by(geo_coverage_id: pair[1]).id}",
+                                     name: input_name(f, :service_coverage_maps, :id)}
+                            %span
+                              %label
+                                %input.checkbox.checkbox-inline{type: "checkbox",
+                                      checked: checked.include?(pair[1]),
+                                      value: "1",
+                                      name: input_name(f, :service_coverage_maps, :keep_record)}
+                                = pair[0]
+                                &nbsp;
 
 :javascript
   boxes = $('.well0');
@@ -382,3 +400,15 @@
       return $(this).height();
   }).get());
   boxes.height(maxHeight);
+
+  boxes = $('.well3');
+  maxHeight = Math.max.apply(
+    Math, boxes.map(function() {
+      return $(this).height();
+  }).get());
+  boxes.height(maxHeight);
+
+  if ("#{is_taxi}" == 'true') {
+    el = $('#fare-panel').detach();
+    $('#schedule-panel').closest('.row').append(el);
+  }

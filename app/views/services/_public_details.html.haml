@@ -1,10 +1,10 @@
 .col-sm-6
-  .panel.panel-default
+  .panel.panel-default.well0
     .panel-heading
       %span.panel-title
-        = t(:provided_by)
-        = link_to service.provider.name, admin_provider_path(service.provider)
-        = add_tooltip("provided_by_help")
+        = t(:service)
+        = t(:information)
+        = add_tooltip("service_help")
     .panel-body
       -unless service.active
         %p.warning
@@ -24,12 +24,3 @@
       -if service.external_id
         %p
           =t(:service_id).to_s + ": " + service.external_id.to_s
-      -if service.booking_service_code
-        %p
-          =t(:booking_service_code).to_s + ": " + service.booking_service_code.to_s
-      - if service.service_window
-        %p
-          = t(:service_window).to_s + ": " + service.service_window.to_s
-      - if service.time_factor
-        %p
-          = t(:time_factor).to_s + ": " + service.time_factor.to_s

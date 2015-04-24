@@ -1,6 +1,9 @@
 - content_for :title, "#{t(:site_title)} - #{@service.name}"
 - temp_rating = @service.ratings.build(user: @traveler)
 - can_manage_provider =(can? :manage, :all) || ((can? :full_read, @service) && !current_user.nil? && !@service.provider.nil? && !current_user.provider.nil? && @service.provider.id == current_user.provider.id)
+- is_transit = @service.service_type.code == "transit"
+- is_taxi = @service.service_type.code == "taxi"
+
 -if can? :index, Service
   .col-sm-12
     = link_to t(:all_services), services_path, class: 'btn action-button btn-arrow-left'
@@ -58,7 +61,7 @@
 
   -if can_manage_provider
     .col-sm-6
-      .panel.panel-default
+      .panel.panel-default.well0
         .panel-heading
           %h4.panel-title
             = t(:internal_contact)
@@ -93,181 +96,216 @@
                   %b= @contact.name
 -if can_manage_provider
   .row
-    .col-sm-4
-      .panel.panel-default.well2
-        .panel-heading
-          %h4.panel-title
-            = t(:schedule)
-            = add_tooltip("schedule_help")
-        .panel-body
-          %table.ALTtable
-            %tr
-              %th.text-center
-                = t('datetime.prompts.day')
-              %th.text-center
-                = t(:start_time)
-              %th.text-center
-                = t(:end_time)
-            %tbody
-              -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
-                %tr
-                  %td.text-center
-                    = I18n.t('date.day_names')[schedule.day_of_week]
-
-                  %td.text-center
-                    =schedule.start_string
-                  %td.text-center
-                    =schedule.end_string
-    .col-sm-4
-      .panel.panel-default.well2
-        .panel-heading
-          %h4.panel-title
-            = t(:advance_notice_required)
-            = add_tooltip("advance_notice_required_help")
-        .panel-body
-          %b
-            = day_range_to_words(@service.advanced_notice_minutes*60, @service.max_advanced_book_minutes*60)
-          =" " + t(:advance_notice_required).downcase + "."
-          - # booking cut off times
-          %table.ALTtable
-            %tr
-              %th.text-center
-                = t('datetime.prompts.day')
-              %th.text-center
-                = t(:cut_off_time)
-            %tbody
-              -@service.booking_cut_off_times.order(:day_of_week, :cut_off_seconds).each do |cut_off_time|
-                %tr
-                  %td.text-center
-                    = I18n.t('date.day_names')[cut_off_time.day_of_week]
-                  %td.text-center
-                    =cut_off_time.cut_off_time_string
-    .col-sm-4
-      .panel.panel-default.well2
-        .panel-heading
-          %h4.panel-title
-            = t(:accommodations)
-            = add_tooltip("accommodations_help")
-        .panel-body
-          -if @service.accommodations.count == 0
-            = t(:no_accommodations)
-          -else
-            %ul
-              -@service.accommodations.each do |accom|
-                %li
-                  =t(accom.name)
-  .row
-    .col-sm-4
-      .panel.panel-default.well1
-        .panel-heading
-          %h4.panel-title
-            = t(:eligibility)
-            = add_tooltip("eligibility_help")
-          = t(:eligibility_rules_descr)
-        .panel-body
-          - if @service.service_characteristics.count > 0
-            %ul
-            - groups = @service.service_characteristics.map(&:group).uniq
-            - groups.each do |group|
-              %li
-                = @eh.service_characteristics_group_to_s @service.service_characteristics.where(group: group)
-          - else
-            = t(:no_restriction)
-
-    .col-sm-4
-      .panel.panel-default.well1
-        .panel-heading
-          %h4.panel-title
-            = t(:trip_purposes)
-            = add_tooltip("trip_purposes_help")
-        .panel-body
-          -if @service.trip_purposes.count == 0
-            = t(:no_restriction)
-          -else
-            %ul
-              -@service.trip_purposes.each do |purpose|
-                %li
-                  =t(purpose.name)
-
-    .col-sm-4
-      .panel.panel-default.well1
-        .panel-heading
-          %h4.panel-title
-            = t(:fare)
-            = add_tooltip("fare_help")
-        -@service.fare_structures.each do |fare|
+    - unless is_transit
+      .col-sm-4#schedule-panel
+        .panel.panel-default.well2
+          .panel-heading
+            %h4.panel-title
+              = t(:schedule)
+              = add_tooltip("schedule_help")
           .panel-body
-            .row_fluid
-              %b= t(:base_rate) + ": "
-              -if fare.base
-                = number_to_currency(fare.base.to_f).to_s
-              -else
-                = t(:flat_fare_unavailable) + "."
-            .row_fluid
-              - if fare.rate
-                %b= t(:mileage_rate) + ": "
-                = number_to_currency(fare.rate.to_f).to_s
-            %b= t(:comments) + ":  "
-            -if fare.desc
-              = fare.desc.html_safe
+            %table.ALTtable
+              %tr
+                %th.text-center
+                  = t('datetime.prompts.day')
+                %th.text-center
+                  = t(:start_time)
+                %th.text-center
+                  = t(:end_time)
+              %tbody
+                -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
+                  %tr
+                    %td.text-center
+                      = I18n.t('date.day_names')[schedule.day_of_week]
+
+                    %td.text-center
+                      =schedule.start_string
+                    %td.text-center
+                      =schedule.end_string
+    - unless is_transit || is_taxi
+      .col-sm-4
+        .panel.panel-default.well2
+          .panel-heading
+            %h4.panel-title
+              = t(:advance_notice_required)
+              = add_tooltip("advance_notice_required_help")
+          .panel-body
+            %b
+              = day_range_to_words(@service.advanced_notice_minutes*60, @service.max_advanced_book_minutes*60)
+            =" " + t(:advance_notice_required).downcase + "."
+            - # booking cut off times
+            %table.ALTtable
+              %tr
+                %th.text-center
+                  = t('datetime.prompts.day')
+                %th.text-center
+                  = t(:cut_off_time)
+              %tbody
+                -@service.booking_cut_off_times.order(:day_of_week, :cut_off_seconds).each do |cut_off_time|
+                  %tr
+                    %td.text-center
+                      = I18n.t('date.day_names')[cut_off_time.day_of_week]
+                    %td.text-center
+                      =cut_off_time.cut_off_time_string
+    - unless is_transit
+      .col-sm-4
+        .panel.panel-default.well2
+          .panel-heading
+            %h4.panel-title
+              = t(:accommodations)
+              = add_tooltip("accommodations_help")
+          .panel-body
+            -if @service.accommodations.count == 0
+              = t(:no_accommodations)
+            -else
+              %ul
+                -@service.accommodations.each do |accom|
+                  %li
+                    =t(accom.name)
+  .row
+    - unless is_transit || is_taxi
+      .col-sm-4
+        .panel.panel-default.well1
+          .panel-heading
+            %h4.panel-title
+              = t(:eligibility)
+              = add_tooltip("eligibility_help")
+            = t(:eligibility_rules_descr)
+          .panel-body
+            - if @service.service_characteristics.count > 0
+              %ul
+              - groups = @service.service_characteristics.map(&:group).uniq
+              - groups.each do |group|
+                %li
+                  = @eh.service_characteristics_group_to_s @service.service_characteristics.where(group: group)
+            - else
+              = t(:no_restriction)
+
+      .col-sm-4
+        .panel.panel-default.well1
+          .panel-heading
+            %h4.panel-title
+              = t(:trip_purposes)
+              = add_tooltip("trip_purposes_help")
+          .panel-body
+            -if @service.trip_purposes.count == 0
+              = t(:no_restriction)
+            -else
+              %ul
+                -@service.trip_purposes.each do |purpose|
+                  %li
+                    =t(purpose.name)
+
+    - unless is_transit
+      .col-sm-4#fare-panel
+        .panel.panel-default{class: "#{is_taxi ? 'well2' : 'well1'}"}
+          .panel-heading
+            %h4.panel-title
+              = t(:fare)
+              = add_tooltip("fare_help")
+          -@service.fare_structures.each do |fare|
+            .panel-body
+              .row_fluid
+                %b= t(:base_rate) + ": "
+                -if fare.base
+                  = number_to_currency(fare.base.to_f).to_s
+                -else
+                  = t(:flat_fare_unavailable) + "."
+              .row_fluid
+                - if fare.rate
+                  %b= t(:mileage_rate) + ": "
+                  = number_to_currency(fare.rate.to_f).to_s
+              %b= t(:comments) + ":  "
+              -if fare.desc
+                = fare.desc.html_safe
+
+  - unless is_transit || is_taxi
+    .row
+      .col-sm-6
+        .panel.panel-default.well3
+          .panel-heading
+            %h4.panel-title
+              = t(:time_window)
+              = add_tooltip("time_window_help")
+          .panel-body
+            = @service.service_window ? t(:service_window) + ": " + @service.service_window.to_s : t(:no_str) + " " + t(:service_window)
+            %br
+            = @service.time_factor ? t(:time_factor) + ": " + @service.time_factor.to_s : t(:no_str) + " " + t(:time_factor)
+
+      .col-sm-6
+        .panel.panel-default.well3
+          .panel-heading
+            %h4.panel-title
+              = t(:booking_information)
+              = add_tooltip("booking_information_help")
+          .panel-body        
+            = t(:booking_service_code).to_s + ": " + @service.booking_service_code
 
   = render partial: 'admin/shared/show_comments', locals: {commentable: @service, can_view_private: can_manage_provider}
 
-  .row
-    .col-sm-12
-      .panel.panel-default
-        .panel-heading
-          .row.text-center
-            .col-sm-12
-              %h3.panel-title
-                = t(:coverage_areas)
-                = add_tooltip("coverage_areas_help")
-        .panel-body
-          .row
-            .col-sm-6
-              - types = @service.coverage_areas.map(&:coverage_type).uniq
-              - ['endpoints', 'coverages'].each do |rule|
+  - unless is_transit
+    .row
+      .col-sm-12
+        .panel.panel-default
+          .panel-heading
+            .row.text-center
+              .col-sm-12
+                %h3.panel-title
+                  = t(:coverage_areas)
+                  = add_tooltip("coverage_areas_help")
+          .panel-body
+            .row
+              .col-sm-6
+                - types = @service.coverage_areas.map(&:coverage_type).uniq
+                - ['endpoints', 'coverages'].each do |rule|
+                  .panel.panel-default
+                    .panel-heading
+                      %h4.panel-title
+                        = t(rule)
+                        = add_tooltip("#{rule}_help")
+                    .panel-body
+                      - if rule == 'endpoints' and @service.service_coverage_maps.where(rule: 'endpoint_area').count == 0 and not @service.endpoint_area_geom.nil?
+                        =t(:geometry_defined_by_shapefile)
+                      - elsif rule == 'coverages' and @service.service_coverage_maps.where(rule: 'coverage_area').count == 0 and not @service.coverage_area_geom.nil?
+                        =t(:geometry_defined_by_shapefile)
+                      - else
+                        - types.each do |type|
+                          %b
+                            =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
+                          .well.white-well.text-left
+                            -coverage_string = ""
+                            - @service.service_coverage_maps.where(rule: rule.singularize.downcase+'_area').joins(:geo_coverage).order('value').each do |map|
+                              -if map.geo_coverage.coverage_type == type
+                                -coverage_string += map.geo_coverage.value + ', '
+                            -if coverage_string == ""
+                              = t(:n_a)
+                            -else
+                              =coverage_string.chop.chop
+
+              .col-sm-6.text-center
                 .panel.panel-default
                   .panel-heading
                     %h4.panel-title
-                      = t(rule)
-                      = add_tooltip("#{rule}_help")
-                  .panel-body
-                    - if rule == 'endpoints' and @service.service_coverage_maps.where(rule: 'endpoint_area').count == 0 and not @service.endpoint_area_geom.nil?
-                      =t(:geometry_defined_by_shapefile)
-                    - elsif rule == 'coverages' and @service.service_coverage_maps.where(rule: 'coverage_area').count == 0 and not @service.coverage_area_geom.nil?
-                      =t(:geometry_defined_by_shapefile)
-                    - else
-                      - types.each do |type|
-                        %b
-                          =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
-                        .well.white-well.text-left
-                          -coverage_string = ""
-                          - @service.service_coverage_maps.where(rule: rule.singularize.downcase+'_area').joins(:geo_coverage).order('value').each do |map|
-                            -if map.geo_coverage.coverage_type == type
-                              -coverage_string += map.geo_coverage.value + ', '
-                          -if coverage_string == ""
-                            = t(:n_a)
-                          -else
-                            =coverage_string.chop.chop
+                      = t(:service_area_map)
+                      = add_tooltip("service_area_map_help")
+                  .sr-only{aria: {label: 'Map.'}} Map.
+                  .panel-body{aria: {hidden: 'true'}}
+                    %div
 
-            .col-sm-6.text-center
-              .panel.panel-default
-                .panel-heading
-                  %h4.panel-title
-                    = t(:service_area_map)
-                    = add_tooltip("service_area_map_help")
-                .sr-only{aria: {label: 'Map.'}} Map.
-                .panel-body{aria: {hidden: 'true'}}
-                  %div
-
-                  = LeafletMap({ :mapid => "lmap_" + "endpoint_area", :multipolygons => @polylines,
-                  :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15,
-                  :style => "height:500px;" })
+                    = LeafletMap({ :mapid => "lmap_" + "endpoint_area", :multipolygons => @polylines,
+                    :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15,
+                    :style => "height:500px;" })
 
 = yield :scripts
 
 :javascript
+  boxes = $('.well0');
+  maxHeight = Math.max.apply(
+    Math, boxes.map(function() {
+      return $(this).height();
+  }).get());
+  boxes.height(maxHeight);
+
   boxes = $('.well1');
   maxHeight = Math.max.apply(
     Math, boxes.map(function() {
@@ -281,3 +319,15 @@
       return $(this).height();
   }).get());
   boxes.height(maxHeight);
+
+  boxes = $('.well3');
+  maxHeight = Math.max.apply(
+    Math, boxes.map(function() {
+      return $(this).height();
+  }).get());
+  boxes.height(maxHeight);
+
+  if ("#{is_taxi}" == 'true') {
+    el = $('#fare-panel').detach();
+    $('#schedule-panel').closest('.row').append(el);
+  }

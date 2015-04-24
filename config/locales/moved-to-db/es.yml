@@ -671,6 +671,7 @@ es:
   note: "[es]Note[/es]"
   cut_off_time: '[es]Cut Off Time[/es]'
   clear_?: '[es]Clear?[/es]'
+  time_window: "[es]Time Window Rules[/es]"
   advance_notice_required: "[es237]Advance Notice Required[/es]"
   service_notice_required: "[es238]This service requires[/es]"
   service_notice_str: "[es239]of advance notice to book a trip[/es]"
