@@ -62,11 +62,16 @@ module Api
         from_trip_place.save
         to_trip_place.save
 
+        final_itineraries = []
+
         #Build the trip_parts (i.e., segments)
         trip_parts.each do |trip_part|
-          # Create the outbound trip part
+          # Create the outbound trip part              ssss
           tp = TripPart.new
           tp.trip = trip
+
+
+
           tp.sequence = trip_part[:segment_index]
           tp.is_depart? == (trip_part[:departure_type] == 'depart')
 
@@ -94,11 +99,10 @@ module Api
           end
 
           #Build the itineraries
-          trip.create_itineraries
+          tp.create_itineraries
 
           #Append data for API
-          final_itineraries = []
-          trip.itineraries.each do |itinerary|
+          tp.itineraries.each do |itinerary|
             i_hash = itinerary.as_json
             i_hash[:segment_index] = itinerary.trip_part.sequence
             i_hash[:start_location] = itinerary.trip_part.from_trip_place.build_place_details_hash
@@ -114,11 +118,12 @@ module Api
 
 
 
-          render json: {trip_id: trip.id, trip_token: trip.token, itineraries: final_itineraries}
+
 
           #Unpack and return the itineraries
           #MORE TO WRITE HERE
         end
+        render json: {trip_id: trip.id, trip_token: trip.token, itineraries: final_itineraries}
 
       end
 
