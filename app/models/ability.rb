@@ -103,6 +103,7 @@ class Ability
       can [:index], :admin_home
 
       can [:access], :admin_trips
+      can [:access], :admin_trip_parts
       can [:access], :show_provider
       can [:access], :admin_reports
       can [:access], :admin_feedback

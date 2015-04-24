@@ -1,16 +1,12 @@
-## This is a view model class for trips
-## Based on a sql view "trips_view"
-## Used to show, search, and sort admin/provider/agency/user trips
-class TripView < ActiveRecord::Base
+## This is a view model class for trip parts
+## Based on a sql view "trip_parts_view"
+## Used to show, search, and sort provider's trip_parts
+class TripPartView < ActiveRecord::Base
 
   scope :by_provider, ->(p) { where('provider_id' => p) }
 
-  scope :by_agency, ->(a) { where('agency_id' => a) }
-
-  scope :by_user, ->(u) { where('user_id' => u) }
-
   # configure table/view name
-  self.table_name = "trips_view"
+  self.table_name = "trip_parts_view"
   self.primary_key = "id"
 
   # case insensitive search and sort
@@ -27,19 +23,23 @@ class TripView < ActiveRecord::Base
   def self.csv_headers
     [
       I18n.t(:id),
+      I18n.t(:trip_id),
       I18n.t(:traveler),
+      I18n.t(:provider_name),
       I18n.t(:trip_date),
       I18n.t(:from),
       I18n.t(:to),
       I18n.t(:trip_purpose),
-      I18n.t(:rating),
+      I18n.t(:rating)
     ]
   end
 
   def self.csv_columns
     [
       :id,
+      :trip_id,
       :user_name,
+      :provider_name,
       :trip_date,
       :from_address,
       :to_address,

@@ -681,6 +681,8 @@ ht:
   please_tell_us: "[ht]Please tell us about your recent trip.[/ht]"
   comments_updated: "[ht]Comments updated.[/ht]"
   trips: "[ht]Trips[/ht]"
+  trip_id: "[ht]Trip ID[/ht]"
+  trip_parts: "[ht]Trip Parts[/ht]"
   comments: "[ht]Comments[/ht]"
   comments_sent: "[ht]Comments sent.[/ht]"
   leave_comments: "[ht]Leave comments on this trip.[/ht]"

@@ -749,6 +749,8 @@ en:
   please_tell_us: "Please tell us about your recent trip."
   comments_updated: "Comments updated."
   trips: "Trips"
+  trip_id: "Trip ID"
+  trip_parts: "Trip Parts"
   comments: "Comments"
   comments_sent: "Comments sent."
   leave_comments: "Leave comments on this trip."

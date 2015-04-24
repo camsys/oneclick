@@ -1,0 +1,17 @@
+- content_for :title, "#{t(:site_title)} - #{t(:trip_parts)}"
+.row.info-header
+  .col-sm-12
+    .btns.pull-right
+      = link_to(t(:export), url_for(locale: params[:locale], params: @params, format: 'csv'), class: "btn action-button" )
+    %h1=t(:trip_parts)
+.panel.panel-default{style: 'padding: 0px;'}
+  .panel-heading
+    %h2.panel-title
+      = t(:trip_parts)
+      = add_tooltip("trip_parts_help")
+  .panel-body
+    = search_form_for @q, :url => "#{url_for(locale: params[:locale])}", html: {class: 'filter-form', style: 'padding-top: 10px;'} do |f|
+      .form-group
+        = f.search_field "user_name_or_provider_name_or_from_address_or_to_address_or_trip_purpose_cont", {class: "form-control", style: 'width: auto; display: inline-block;' }
+        = f.submit t(:search), class: 'btn action-button'
+    = render partial: "trip_parts_display_table", locals: {trip_parts: @trip_parts, traveler: @traveler}

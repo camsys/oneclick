@@ -301,6 +301,7 @@ Oneclick::Application.routes.draw do
       end
 
       resources :trips, :only => [:index]
+      resources :trip_parts, :only => [:index]
       get '/geocode' => 'util#geocode'
       get '/raise' => 'util#raise'
       get '/services' => 'util#services'

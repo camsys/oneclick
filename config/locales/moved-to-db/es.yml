@@ -713,6 +713,8 @@ es:
   please_tell_us: "[es]Please tell us about your recent trip.[/es]"
   comments_updated: "[es]Comments updated.[/es]"
   trips: "[es]Trips[/es]"
+  trip_id: "[es]Trip ID[/es]"
+  trip_parts: "[es]Trip Parts[/es]"
   comments: "[es]Comments[/es]"
   comments_sent: "[es]Comments sent.[/es]"
   leave_comments: "[es]Leave comments on this trip.[/es]"

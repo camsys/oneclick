@@ -19,6 +19,7 @@ module CsHelpers
     :providers => 'fa fa-umbrella',
     :reports => 'fa fa-bar-chart-o',
     :trips => 'fa fa-tags',
+    :trip_parts => 'fa fa-list-ol',
     :services => 'fa fa-bus',
     :users => 'fa fa-group',
     :feedback => 'fa fa-thumbs-o-up',
@@ -51,6 +52,7 @@ module CsHelpers
       {label: t(:agency_profile), target: agency_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_agency}, #TODO find icon
       {label: t(:provider_profile), target: provider_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_provider}, #TODO find icon
       {label: t(:trips), target: create_trips_path, window: "", icon: ACTION_ICONS[:trips], access: :admin_trips},
+      {label: t(:trip_parts), target: create_trip_parts_path, window: "", icon: ACTION_ICONS[:trip_parts], access: :admin_trip_parts},
       {label: t(:agencies), target: admin_agencies_path, window: "", icon: ACTION_ICONS[:agents_agencies], access: :admin_agencies},
       {label: t(:providers), target: admin_providers_path, window: "", icon: ACTION_ICONS[:providers], access: :admin_providers},
       {label: t(:services), target: services_path, window: "", icon: ACTION_ICONS[:services], access: :admin_services},
@@ -106,12 +108,18 @@ module CsHelpers
   end
 
   def create_trips_path
-    if User.with_role(:provider_staff, :any).include?(current_user)
-      admin_provider_trips_path(current_user.provider)
-    elsif has_agency_specific_role?
+    if has_agency_specific_role?
       admin_agency_trips_path(current_user.agency)
     else
       admin_trips_path
+    end
+  end
+
+  def create_trip_parts_path
+    if User.with_role(:provider_staff, :any).include?(current_user)
+      admin_provider_trip_parts_path(current_user.provider)
+    else
+      admin_trip_parts_path
     end
   end
 
