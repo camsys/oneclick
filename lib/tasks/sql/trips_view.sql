@@ -71,7 +71,7 @@ CREATE OR REPLACE VIEW "trips_view" AS
      JOIN trip_places "From_Trip_Places" ON "From_Trip_Places".id = trip_parts.from_trip_place_id
      JOIN trip_places "To_Trip_Places" ON "To_Trip_Places".id = trip_parts.to_trip_place_id
      LEFT JOIN "v_Ratings_Trip" ON trips.id = "v_Ratings_Trip".rateable_id
-  WHERE trip_parts.sequence = 0
+  WHERE trip_parts.sequence = 0 and trips.is_planned = true
   ORDER BY trips.id;
 
 
