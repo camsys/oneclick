@@ -84,6 +84,9 @@ module CsHelpers
     a
   end
 
+  def is_admin
+    current_user.has_role?(:admin) or current_user.has_role?(:system_administrator)
+  end
 
   def has_agency_specific_role?
     [:agency_administrator, :agent].any? do |r|
@@ -108,18 +111,18 @@ module CsHelpers
   end
 
   def create_trips_path
-    if has_agency_specific_role?
-      admin_agency_trips_path(current_user.agency)
-    else
+    if is_admin
       admin_trips_path
+    else
+      admin_agency_trips_path(current_user.agency)
     end
   end
 
   def create_trip_parts_path
-    if User.with_role(:provider_staff, :any).include?(current_user)
-      admin_provider_trip_parts_path(current_user.provider)
-    else
+    if is_admin
       admin_trip_parts_path
+    else
+      admin_provider_trip_parts_path(current_user.provider)
     end
   end
 
