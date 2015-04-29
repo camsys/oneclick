@@ -3,6 +3,11 @@ class FareStructure < ActiveRecord::Base
   #associations
   belongs_to :service
 
+  # fare typess
+  has_many :flat_fare
+  has_many :mileage_fare
+  has_many :zone_fares
+
   #Type Definitions
   # 0: Flat Fare (Flat fare is stored in :base)
   # 1: Mileage based Fare (:base stores the initial charge, and :rate stores the addition fare for each mile,)

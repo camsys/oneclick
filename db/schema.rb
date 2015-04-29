@@ -131,6 +131,32 @@ ActiveRecord::Schema.define(version: 20150501182433) do
     t.text    "desc"
   end
 
+  create_table "fare_zones", force: true do |t|
+    t.string   "zone_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
+    t.integer  "service_id"
+  end
+
+  add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
+
+  create_table "flat_fares", force: true do |t|
+    t.float    "one_way_rate"
+    t.float    "round_trip_rate"
+    t.integer  "fare_structure_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "characteristic_id"
+    t.integer  "trip_purpose_id"
+    t.string   "char_base_value"
+    t.string   "char_complementary_value"
+  end
+
+  add_index "flat_fares", ["characteristic_id"], :name => "index_flat_fares_on_characteristic_id"
+  add_index "flat_fares", ["fare_structure_id"], :name => "index_flat_fares_on_fare_structure_id"
+  add_index "flat_fares", ["trip_purpose_id"], :name => "index_flat_fares_on_trip_purpose_id"
+
   create_table "geo_coverages", force: true do |t|
     t.string  "value"
     t.string  "coverage_type", limit: 128
@@ -190,6 +216,22 @@ ActiveRecord::Schema.define(version: 20150501182433) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "mileage_fares", force: true do |t|
+    t.float    "base_rate"
+    t.float    "mileage_rate"
+    t.integer  "fare_structure_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "characteristic_id"
+    t.integer  "trip_purpose_id"
+    t.string   "char_base_value"
+    t.string   "char_complementary_value"
+  end
+
+  add_index "mileage_fares", ["characteristic_id"], :name => "index_mileage_fares_on_characteristic_id"
+  add_index "mileage_fares", ["fare_structure_id"], :name => "index_mileage_fares_on_fare_structure_id"
+  add_index "mileage_fares", ["trip_purpose_id"], :name => "index_mileage_fares_on_trip_purpose_id"
 
   create_table "modes", force: true do |t|
     t.string  "name",               limit: 64,                 null: false
@@ -724,5 +766,24 @@ ActiveRecord::Schema.define(version: 20150501182433) do
     t.string  "state"
     t.spatial "geom",    limit: {:srid=>0, :type=>"geometry"}
   end
+
+  create_table "zone_fares", force: true do |t|
+    t.integer  "from_zone_id"
+    t.integer  "to_zone_id"
+    t.integer  "fare_structure_id"
+    t.float    "rate"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "characteristic_id"
+    t.integer  "trip_purpose_id"
+    t.string   "char_base_value"
+    t.string   "char_complementary_value"
+  end
+
+  add_index "zone_fares", ["characteristic_id"], :name => "index_zone_fares_on_characteristic_id"
+  add_index "zone_fares", ["fare_structure_id"], :name => "index_zone_fares_on_fare_structure_id"
+  add_index "zone_fares", ["from_zone_id"], :name => "index_zone_fares_on_from_zone_id"
+  add_index "zone_fares", ["to_zone_id"], :name => "index_zone_fares_on_to_zone_id"
+  add_index "zone_fares", ["trip_purpose_id"], :name => "index_zone_fares_on_trip_purpose_id"
 
 end

@@ -2,6 +2,11 @@ class TripPurpose < ActiveRecord::Base
 
   has_many :service_trip_purpose_maps
 
+  # paratransit fares
+  has_many :flat_fares
+  has_many :mileage_fares
+  has_many :zone_fares
+
   #attr_accessible :id, :name, :note, :active, :sort_order, :code
 
   validates :code, uniqueness: true
