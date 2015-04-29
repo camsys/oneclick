@@ -147,15 +147,9 @@ ActiveRecord::Schema.define(version: 20150501182433) do
     t.integer  "fare_structure_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "characteristic_id"
-    t.integer  "trip_purpose_id"
-    t.string   "char_base_value"
-    t.string   "char_complementary_value"
   end
 
-  add_index "flat_fares", ["characteristic_id"], :name => "index_flat_fares_on_characteristic_id"
   add_index "flat_fares", ["fare_structure_id"], :name => "index_flat_fares_on_fare_structure_id"
-  add_index "flat_fares", ["trip_purpose_id"], :name => "index_flat_fares_on_trip_purpose_id"
 
   create_table "geo_coverages", force: true do |t|
     t.string  "value"
@@ -223,15 +217,9 @@ ActiveRecord::Schema.define(version: 20150501182433) do
     t.integer  "fare_structure_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "characteristic_id"
-    t.integer  "trip_purpose_id"
-    t.string   "char_base_value"
-    t.string   "char_complementary_value"
   end
 
-  add_index "mileage_fares", ["characteristic_id"], :name => "index_mileage_fares_on_characteristic_id"
   add_index "mileage_fares", ["fare_structure_id"], :name => "index_mileage_fares_on_fare_structure_id"
-  add_index "mileage_fares", ["trip_purpose_id"], :name => "index_mileage_fares_on_trip_purpose_id"
 
   create_table "modes", force: true do |t|
     t.string  "name",               limit: 64,                 null: false
@@ -774,16 +762,10 @@ ActiveRecord::Schema.define(version: 20150501182433) do
     t.float    "rate"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "characteristic_id"
-    t.integer  "trip_purpose_id"
-    t.string   "char_base_value"
-    t.string   "char_complementary_value"
   end
 
-  add_index "zone_fares", ["characteristic_id"], :name => "index_zone_fares_on_characteristic_id"
   add_index "zone_fares", ["fare_structure_id"], :name => "index_zone_fares_on_fare_structure_id"
   add_index "zone_fares", ["from_zone_id"], :name => "index_zone_fares_on_from_zone_id"
   add_index "zone_fares", ["to_zone_id"], :name => "index_zone_fares_on_to_zone_id"
-  add_index "zone_fares", ["trip_purpose_id"], :name => "index_zone_fares_on_trip_purpose_id"
 
 end

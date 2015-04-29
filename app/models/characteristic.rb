@@ -12,11 +12,6 @@ class Characteristic < ActiveRecord::Base
 
   belongs_to :linked_characteristic, class_name: 'Characteristic'
 
-  # paratransit fares
-  has_many :flat_fares
-  has_many :mileage_fares
-  has_many :zone_fares
-
   # set the default scope
   default_scope {where('characteristics.active = ?', true)}
   scope :active, -> {where(active: true)}
