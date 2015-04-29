@@ -32,11 +32,10 @@ CREATE OR REPLACE VIEW "trip_parts_view" AS
     trips.id AS trip_id,
     trips.user_id,
     (users.first_name::text || ' '::text) || users.last_name::text AS user_name,
-    trip_parts.scheduled_date AS trip_date,
+    trip_parts.scheduled_time AS trip_datetime,
+    trip_parts.is_return_trip,
     "From_Trip_Places".raw_address AS from_address,
     "To_Trip_Places".raw_address AS to_address,
-    "v_Trip_Purpose".translation AS trip_purpose,
-    "v_Ratings_Trip".value AS trip_rating,
     providers.id AS provider_id,
     providers.name AS provider_name
    FROM trip_parts

@@ -22,14 +22,11 @@
       %th= sort_link @q, "id", t(:id)
       %th= sort_link @q, "trip_id", t(:trip_id)
       %th= sort_link @q, "user_name_case_insensitive", t(:traveler)
-      %th= sort_link @q, "provider_name", t(:provider_name)
-      %th= sort_link @q, "trip_date", t(:trip_date)
+      %th= sort_link @q, "trip_datetime", t(:trip_datetime)
       %th= sort_link @q, "from_address", t(:from)
       %th= sort_link @q, "to_address", t(:to)
-      %th= sort_link @q, "trip_purpose", t(:trip_purpose)
-      - if Rating.feedback_on?
-        %th.center= sort_link @q, "trip_rating", t(:rating)
-      %th= t(:trip_details)
+      %th= sort_link @q, "is_return_trip", t(:is_return_trip)
+      %th= sort_link @q, "provider_name", t(:provider_name)
   %tbody{ :id => 'trip_parts_table'}
     - trip_parts.each do |trip_part|
       -tripID = "trip#{trip_part.trip_id}"
@@ -37,17 +34,11 @@
         %td= trip_part.id
         %td= trip_part.trip_id
         %td= trip_part.user_name
-        %td= trip_part.provider_name
-        %td.nowrap= format_date(trip_part.trip_date)
+        %td.nowrap= format_date_time(trip_part.trip_datetime)
         %td= trip_part.from_address
         %td= trip_part.to_address
-        %td= trip_part.trip_purpose
-        - if Rating.feedback_on?
-          %td.nowrap{id: "#{tripID}Rating"}
-            = to_stars(trip_part.trip_rating || 0, 1)
-        %td.center
-          = link_to plan_user_trip_path(traveler, trip_part.trip_id) do
-            =t(:details)
+        %td= trip_part.is_return_trip ? t(:return) : t(:outbound)
+        %td= trip_part.provider_name
 .row
   .col-sm-6
     .pull-left
