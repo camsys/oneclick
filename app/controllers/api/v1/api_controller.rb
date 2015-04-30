@@ -4,6 +4,8 @@ module Api
       respond_to :json
       require 'json'
 
+
+      acts_as_token_authentication_handler_for User
       before_action :confirm_api_activated
 
       def confirm_api_activated

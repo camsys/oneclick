@@ -11,10 +11,7 @@ module Api
         locations = []
         count = 0
 
-        #User Places
-        traveler_id = params[:traveler_id]
-        if traveler_id and include_user_pois.to_bool
-          @traveler = User.find(traveler_id.to_i)
+        if include_user_pois.to_bool
           rel = Place.arel_table[:name].matches(search_string)
           places = @traveler.places.active.where(rel)
           places.each do |place|

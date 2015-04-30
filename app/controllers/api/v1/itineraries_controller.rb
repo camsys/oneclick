@@ -31,9 +31,6 @@ module Api
         #Move to a config.  API does not pass modes.
         modes = ['mode_paratransit', 'mode_taxi', 'mode_transit']
 
-        #Not built yet
-        user = create_guest_user
-
         #Unpack params
         trip_parts = params[:itinerary_request]
         purpose = params[:trip_purpose]
@@ -41,8 +38,8 @@ module Api
 
         #Assign Meta Data
         trip = Trip.new
-        trip.creator = user
-        trip.user = user
+        trip.creator = @traveler
+        trip.user = @traveler
         trip.trip_purpose = TripPurpose.where(code: purpose).first
         trip.desired_modes = Mode.where(code: modes)
         trip.token = trip_token
