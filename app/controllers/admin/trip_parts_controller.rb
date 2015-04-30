@@ -62,11 +62,18 @@ class Admin::TripPartsController < Admin::BaseController
   end
 
   def csv_lines(data, headers, fields)
-    
+
     Enumerator.new do |y|
       y << headers.to_csv
 
-      data.find_each { |row| y << fields.map { |field| row.send(field) }.to_csv }
+      data.find_each { |row| y << fields.map { |field| 
+        if field == :is_return_trip
+          row.send(field) ? I18n.t(:return) : I18n.t(:outbound)
+        else 
+          row.send(field)
+        end
+        }.to_csv
+      }
     end
 
   end

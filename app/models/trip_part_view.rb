@@ -25,12 +25,11 @@ class TripPartView < ActiveRecord::Base
       I18n.t(:id),
       I18n.t(:trip_id),
       I18n.t(:traveler),
-      I18n.t(:provider_name),
-      I18n.t(:trip_date),
+      I18n.t(:trip_datetime),
       I18n.t(:from),
       I18n.t(:to),
-      I18n.t(:trip_purpose),
-      I18n.t(:rating)
+      I18n.t(:outbound_or_return),
+      I18n.t(:provider_name)
     ]
   end
 
@@ -39,12 +38,11 @@ class TripPartView < ActiveRecord::Base
       :id,
       :trip_id,
       :user_name,
-      :provider_name,
-      :trip_date,
+      :trip_datetime,
       :from_address,
       :to_address,
-      :trip_purpose,
-      :trip_rating
+      :is_return_trip,
+      :provider_name
     ]
   end
 

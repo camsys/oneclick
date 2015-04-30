@@ -454,6 +454,7 @@ ht:
   return: '[ht]Return[/ht]'
   return_itinerary_count: '[ht]Return Itinerary Count[/ht]'
   outbound: '[ht]Outbound[/ht]'
+  outbound_or_return: '[ht]Outbound/Return[/ht]'
   outbound_itinerary_count: '[ht]Outbound Itinerary Count[/ht]'
   paratransit: '[ht]Paratransit[/ht]'
   trip_dir: '[ht]Trip[/ht]'

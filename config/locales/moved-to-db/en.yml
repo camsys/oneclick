@@ -493,6 +493,7 @@ en:
   return_itinerary_count: 'Return Itinerary Count'
   return_itinerary_modes: 'Return Itinerary Modes'
   outbound: 'Outbound'
+  outbound_or_return: 'Outbound/Return'
   outbound_itinerary_count: 'Outbound Itinerary Count'
   outbound_itinerary_modes: 'Outbound Itinerary Modes'
   paratransit: 'Paratransit'
