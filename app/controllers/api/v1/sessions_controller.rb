@@ -7,11 +7,10 @@ module Api
       # See https://github.com/gonzalo-bulnes/simple_token_authentication/issues/27
 
       def create
-        # Fetch params
         email = params[:session][:email] if params[:session]
         password = params[:session][:password] if params[:session]
-
-        id = User.find_by(email: email).try(:id) if email.presence
+        external_user_id = params[:session][:ecolane_id] if params[:session]
+        dob = params[:session][:dob] if params[:session]
 
         # Validations
         if request.format != :json
@@ -19,10 +18,18 @@ module Api
           return
         end
 
-        if email.nil? or password.nil?
-          render status: 400, json: { message: 'The request MUST contain the user email and password.' }
-          return
+        if email and password
+          return standard_sign_in(email, password)
+        elsif external_user_id and dob
+          return ecolane_sign_in(external_user_id, dob)
+        else
+          render status: 401, json: { message: 'Invalid Sign in.' }
         end
+
+      end
+
+      def standard_sign_in(email, password)
+        # Fetch params
 
         # Authentication
         user = User.find_by(email: email)
@@ -31,7 +38,7 @@ module Api
           if user.valid_password? password
             user.reset_authentication_token!
             # Note that the data which should be returned depends heavily of the API client needs.
-            render status: 200, json: { email: user.email, authentication_token: user.authentication_token, id: id }
+            render status: 200, json: { email: user.email, authentication_token: user.authentication_token}
           else
             render status: 401, json: { message: 'Invalid email or password.' }
           end
@@ -39,6 +46,23 @@ module Api
           render status: 401, json: { message: 'Invalid email or password.' }
         end
       end
+
+      def ecolane_sign_in(external_user_id, dob)
+        eh = EcolaneHelpers.new
+        #If the formatting is correct, check to see if this is a valid user
+        unless @errors
+          result, first_name, last_name = eh.validate_passenger(external_user_id, dob)
+          unless result
+            render status: 401, json: { message: 'Invalid Ecolane Id or Date of Birth.' }
+          end
+        end
+
+        #If everything checks out, create a link between the OneClick user and the Booking Service
+        @traveler = eh.get_ecolane_traveler(external_user_id, dob, first_name, last_name)
+        @traveler.reset_authentication_token!
+        render status: 200, json: { email: @traveler.email, authentication_token: @traveler.authentication_token}
+      end
+
 
       def destroy
         # Fetch params
@@ -52,6 +76,7 @@ module Api
           render status: 204, json: {message: 'Signed out' }
         end
       end
+
     end
   end
 end

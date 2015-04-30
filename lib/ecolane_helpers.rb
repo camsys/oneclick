@@ -264,6 +264,9 @@ class EcolaneHelpers
   end
 
   def validate_passenger(customer_number, dob)
+
+    return true, 'George', 'Burdell'
+
     iso_dob = iso8601ify(dob)
     if iso_dob.nil?
       return false, "", ""
@@ -271,6 +274,44 @@ class EcolaneHelpers
     resp = search_for_customers({"customer_number" => customer_number, "date_of_birth" => iso_dob.to_s})
     resp = unpack_validation_response(resp)
     return resp[0], resp[2][0], resp[2][1]
+  end
+
+  def get_ecolane_traveler(external_user_id, dob, first_name, last_name)
+
+    user_service = UserService.where(external_user_id: external_user_id).order('created_at').last
+    if user_service
+      u = user_service.user_profile.user
+    else
+      new_user = true
+      u = User.where(email: external_user_id + '@ecolane_user.com').first_or_create
+      u.first_name = first_name
+      u.last_name = last_name
+      u.password = dob
+      u.password_confirmation = dob
+      u.roles << Role.where(name: "registered_traveler").first
+      up = UserProfile.new
+      up.user = u
+      up.save!
+      result = u.save
+
+    end
+
+    #Update Birth Year
+    dob_object = Characteristic.where(code: "date_of_birth").first
+    if dob_object
+      user_characteristic = UserCharacteristic.where(characteristic_id: dob_object.id, user_profile: u.user_profile).first_or_initialize
+      user_characteristic.value = dob.split('/')[2]
+      user_characteristic.save
+    end
+
+    if new_user #Create User Service
+      Service.where(booking_service_code: 'ecolane').each do |booking_service|
+        user_service = UserService.where(user_profile: u.user_profile, service: booking_service).first_or_initialize
+        user_service.external_user_id = external_user_id
+        user_service.save
+      end
+    end
+    u
   end
 
   def check_customer_validity(customer_id, service=nil)

@@ -137,11 +137,12 @@ class UsersController < ApplicationController
       @errors = true
     end
 
+    eh = EcolaneHelpers.new
     #If the formatting is correct, check to see if this is a valid user
     unless @errors
-      eh = EcolaneHelpers.new
       result, first_name, last_name = eh.validate_passenger(external_user_id, dob)
       unless result
+
         @booking_proxy.errors.add(:external_user_id, "Unknown Client Id or incorrect date of birth.")
         @errors = true
       end
@@ -151,7 +152,8 @@ class UsersController < ApplicationController
     unless @errors
       #Todo: This will need to be updated when more services are able to book.
       if @traveler.is_visitor?
-        @traveler = get_ecolane_traveler(external_user_id, dob, first_name, last_name)
+        @traveler = eh.get_ecolane_traveler(external_user_id, dob, first_name, last_name)
+        sign_in @traveler, :bypass => true
       end
       Service.where(booking_service_code: 'ecolane').each do |booking_service|
         user_service = UserService.where(user_profile: @traveler.user_profile, service: booking_service).first_or_initialize
@@ -170,38 +172,6 @@ class UsersController < ApplicationController
     end
 
   end
-
-  def get_ecolane_traveler(external_user_id, dob, first_name, last_name)
-
-    user_service = UserService.where(external_user_id: external_user_id).order('created_at').last
-    if user_service
-      u = user_service.user_profile.user
-    else
-      u = User.where(email: external_user_id + '@example.com').first_or_create
-      u.first_name = first_name
-      u.last_name = last_name
-      u.password = dob
-      u.password_confirmation = dob
-      u.roles << Role.where(name: "registered_traveler").first
-      up = UserProfile.new
-      up.user = u
-      up.save!
-      result = u.save
-
-    end
-
-    #Update Birth Year
-    dob_object = Characteristic.where(code: "date_of_birth").first
-    if dob_object
-      user_characteristic = UserCharacteristic.where(characteristic_id: dob_object.id, user_profile: u.user_profile).first_or_initialize
-      user_characteristic.value = dob.split('/')[2]
-      user_characteristic.save
-    end
-
-    sign_in u, :bypass => true
-    u
-  end
-
 
   def add_booking_service
     get_traveler
@@ -232,13 +202,6 @@ class UsersController < ApplicationController
     unless errors
       itinerary.is_bookable = true
       itinerary.save
-      #Todo: This will need to be updated when more services are able to book.
-      Service.where(booking_service_code: 'ecolane').each do |booking_service|
-        user_service = UserService.where(user_profile: @traveler.user_profile, service: booking_service).first_or_initialize
-        user_service.customer_id = nil
-        user_service.external_user_id = external_user_id
-        user_service.save
-      end
     end
 
     respond_to do |format|
