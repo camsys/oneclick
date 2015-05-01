@@ -317,6 +317,7 @@ ht:
   rating_targets: "[ht]Trip/Agency/Service[/ht]"
   submit_review: "[ht]Submit Feedback[/ht]"
   did_not_take_feedback_prompt: "[ht]We're sorry to hear you didn't take your trip.  Can you tell us what went wrong?[/ht]"
+  tell_us_what_went_wrong: "[ht]Tell us: What went wrong? Select all that apply.[/ht]"
   feedback_comments: "[ht]Please enter any feedback you would like to share[/ht]"
   feedback_rating: "[ht]Rating (1-worst, 5-best)[/ht]"
   untaken_trip: "[ht]Untaken trip[/ht]"

@@ -13,6 +13,7 @@ class SatisfactionSurveysController < ApplicationController
 
   def create
     @satisfaction_survey = SatisfactionSurvey.new(satisfaction_survey_params)
+    @satisfaction_survey.reasoning = params[:satisfaction_survey][:reasoning]
     respond_to do |format|
       if @satisfaction_survey.save
         format.json { render json: @satisfaction_survey }
@@ -36,7 +37,7 @@ class SatisfactionSurveysController < ApplicationController
   private
 
   def satisfaction_survey_params
-    params.require(:satisfaction_survey).permit(:trip_id, :satisfied, :comment)
+    params.require(:satisfaction_survey).permit(:trip_id, :satisfied, :reasoning, :comment)
   end
 
 end

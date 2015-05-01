@@ -342,6 +342,7 @@ en:
   rating_targets: "Trip/Agency/Service"
   submit_review: "Submit Feedback"
   did_not_take_feedback_prompt: "We're sorry to hear you didn't take your trip.  Can you tell us what went wrong?"
+  tell_us_what_went_wrong: "Tell us: What went wrong? Select all that apply."
   feedback_comments: "Please enter any feedback you would like to share"
   feedback_rating: "Rating (1-worst, 5-best)"
   untaken_trip: "Untaken trip"

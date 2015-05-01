@@ -9,7 +9,9 @@
 
       %p
         = f.label :satisfied, t(:satisfied_by_trips)
-        = f.input_field :satisfied, as: :radio_buttons
+        %br
+        = f.input_field :satisfied, as: :radio_buttons, item_wrapper_class: "radio-inline"
+        = f.input :reasoning, as: :check_boxes, collection: [t(:fare), t(:walk_distance_sorter), t(:travel_time), t(:number_of_transfers)], label: t(:tell_us_what_went_wrong)
         = f.input :comment, label: t(:comment)
       .col-sm-6.col-sm-offset-3
         = f.button :submit, t(:save), :class => 'btn action-button', id: "save_survey", disabled: "disabled"
@@ -17,9 +19,16 @@
           = t(:close)
 
 :javascript
+  $('#satisfaction_survey input.check_boxes').removeClass('form-control');
+  $('.satisfaction_survey_reasoning').hide();
   $('#satisfaction_survey').on('show.bs.modal', function() {
     $('#satisfaction_survey input[type=radio]').change(function(){
       if ($(this).is(':checked')) {
+        if ($(this).attr('id') == "satisfaction_survey_satisfied_false") {
+          $('.satisfaction_survey_reasoning').show();
+        } else {
+          $('.satisfaction_survey_reasoning').hide();
+        }
         $('#save_survey').removeAttr('disabled');
       } else {
         $('#save_survey').attr('disabled', 'disabled');

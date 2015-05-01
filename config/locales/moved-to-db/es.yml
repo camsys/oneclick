@@ -320,6 +320,7 @@ es:
   rating_targets: "[es172]Trip/Agency/Service[/es]"
   submit_review: "[es164]Submit Feedback[/es]"
   did_not_take_feedback_prompt: "[es174]We're sorry to hear you didn't take your trip.  Can you tell us what went wrong?[/es]"
+  tell_us_what_went_wrong: "[es]Tell us: What went wrong? Select all that apply.[/es]"
   feedback_comments: "[es167]Please enter any feedback you would like to share[/es]"
   feedback_rating: "[es168]Rating (1-worst, 5-best)[/es]"
   untaken_trip: "[es177]Untaken trip[/es]"

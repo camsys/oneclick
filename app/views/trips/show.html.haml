@@ -4,8 +4,15 @@
 .row
   .col-sm-12#action_header
     .pull-right
-      = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;", tabindex: "7" do
-        = t(:feedback)
+      - if SatisfactionSurvey.enabled?
+        - unless SatisfactionSurvey.find_by(trip_id: @trip.id)
+          %button#open_survey.btn.action-button{"data-toggle" => "modal", "data-target" => "#satisfaction_survey"}
+            %i.fa.fa-thumbs-up
+            %i.fa.fa-thumbs-down.fa-flip-horizontal
+            = t(:feedback)
+      - else
+        = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;", tabindex: "7" do
+          = t(:feedback)
       = button_tag :type => 'button', :name => "planButton", :class => "btn action-button", tabindex: "8" do
         =t(:next)
     = render partial: 'shared/trip_plan_breadcrumbs'
@@ -47,7 +54,6 @@
 
   - if SatisfactionSurvey.enabled?
     - unless SatisfactionSurvey.find_by(trip_id: @trip.id)
-      %button#open_survey.btn.btn-primary.btn-lg{"data-toggle" => "modal", "data-target" => "#satisfaction_survey", "style" => "display:none;"}
       #satisfaction_survey.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
         .modal-dialog
           .modal-content
@@ -259,29 +265,8 @@
         });
 
         //jump to Plan page
-        if ($('#open_survey').length != 0) { window.onbeforeunload = dontShowPopup; }
         window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );
       });
-
-      if ($('#open_survey').length != 0) {
-        function showPopup() {
-          $("#breadcrumbs a").trigger("click");
-          setTimeout(function(){
-            setTimeout(function(){
-              $('#open_survey').click();
-            },3000);
-          }, 1);          
-          window.onbeforeunload = dontShowPopup;
-          return localeDictFinder['did_not_take_feedback_prompt'] + " " + localeDictFinder['stay_on_page'];
-        }
-        function dontShowPopup() { }
-
-        window.onbeforeunload = showPopup;
-
-        $("#action_header, #action_footer, .btn-single-arrow-right, .btn-single-arrow-left").click(function(){
-          window.onbeforeunload = dontShowPopup;
-        });
-      }
 
       $("#save_survey").click(function(){
         $.ajax({

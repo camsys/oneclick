@@ -50,3 +50,8 @@
   width: auto;
   display: inline;
 }
+
+#new_satisfaction_survey {
+  & span.radio.radio-inline { margin: 0; }
+  & span.checkbox { margin-left: 1.25em; }
+}
