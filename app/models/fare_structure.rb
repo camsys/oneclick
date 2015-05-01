@@ -3,9 +3,9 @@ class FareStructure < ActiveRecord::Base
   #associations
   belongs_to :service
 
-  # fare typess
-  has_many :flat_fare
-  has_many :mileage_fare
+  # fare types
+  has_one :flat_fare
+  has_one :mileage_fare
   has_many :zone_fares
 
   #Type Definitions
