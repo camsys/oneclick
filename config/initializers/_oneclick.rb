@@ -81,6 +81,9 @@ Oneclick::Application.configure do
     config.host = 'oneclick-arc.camsys-apps.com'
     config.ui_logo = 'arc/logo.png'
     config.logo_text = "A R C logo - Simply Get There"
+    config.favicon = ''
+    config.mobile_favicon = ''
+    config.tablet_favicon = ''
     config.geocoder_components = 'country:US'
     config.map_bounds = [[33.457797,-84.754028], [34.090199,-83.921814]]
     config.geocoder_bounds = [[33.737147,-84.406634], [33.764125,-84.370361]]
@@ -121,6 +124,9 @@ Oneclick::Application.configure do
     config.host = 'oneclick-broward.camsys-apps.com'
     config.ui_logo = 'broward/logo.png'
     config.logo_text = "Broward logo - One Click"
+    config.favicon = ''
+    config.mobile_favicon = ''
+    config.tablet_favicon = ''
     config.geocoder_components = 'country:US'
     config.map_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
     config.geocoder_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
@@ -153,6 +159,9 @@ Oneclick::Application.configure do
     config.host = 'oneclick-pa.camsys-apps.com'
     config.ui_logo = 'pa/logo.jpg'
     config.logo_text = "Pennsylvania logo - Find My Ride"
+    config.favicon = ''
+    config.mobile_favicon = ''
+    config.tablet_favicon = ''
     config.geocoder_components = 'country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
     config.map_bounds      = [[40.0262999543423,  -76.56372070312499], [39.87970800405549, -76.90189361572266]]
@@ -200,6 +209,9 @@ Oneclick::Application.configure do
     config.host = 'transportal.net'
     config.ui_logo = 'jta/logo.png'
     config.logo_text = "J T A logo - TransPortal"
+    config.favicon = ''
+    config.mobile_favicon = ''
+    config.tablet_favicon = ''
     config.geocoder_components = 'country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
     config.map_bounds      = [[30.0668986565,-82.0920740215],[30.5909384888,-81.319458582]]
@@ -274,6 +286,9 @@ Oneclick::Application.configure do
     config.host = 'oneclick.camsys-apps.com'
     config.ui_logo = 'ma/logo.png'
     config.logo_text = "1-Click"
+    config.favicon = ''
+    config.mobile_favicon = ''
+    config.tablet_favicon = ''
     config.geocoder_components = 'country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
     config.map_bounds      = [[40.664559, -74.104039],[43.244470, -69.148697]]
@@ -308,6 +323,9 @@ Oneclick::Application.configure do
     when 'uta'
       config.host = 'oneclick-uta.camsys-apps.com'
       config.logo_text = "UTA"
+      config.favicon = ''
+      config.mobile_favicon = ''
+      config.tablet_favicon = ''
       config.geocoder_components = "country:us"
       # TODO Do we maybe need different bounds for kiosk vs. default?
       config.map_bounds      = [[37,-114.1],[42,-109]]
