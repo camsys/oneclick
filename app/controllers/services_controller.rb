@@ -233,7 +233,7 @@ protected
                                     :notice_days_part, :notice_hours_part, :notice_minutes_part, :max_advanced_book_minutes,
                                     :max_advanced_book_days_part, :max_advanced_book_hours_part, :max_advanced_book_minutes_part,
                                     :service_window, :time_factor, :provider_id, :service_type_id,
-                                    :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email, :taxi_fare_finder_key,
+                                    :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email, :taxi_fare_finder_key, :display_color,
                                     { schedules_attributes:
                                       [ :day_of_week, :start_time, :end_time, :id, :_destroy ] },
                                     { booking_cut_off_times_attributes:

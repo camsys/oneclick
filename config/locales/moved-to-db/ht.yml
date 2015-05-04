@@ -9,6 +9,7 @@ ht:
   traveler_notes: "Traveler Notes"
   base_rate: "Base Fare"
   mileage_rate: "Mileage Rate"
+  display_color: "[ht]Display Color[/ht]"
   taxi_fare_finder_key: "[ht]Taxi Fare Finder Key[/ht]"
   trip_planned_assistance: "Trip planned with assistance from "
   public_comments: "Public Comments"

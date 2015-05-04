@@ -1714,12 +1714,18 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                     var legType = leg.type.toLowerCase();
                     var className = "travel-legend-" + removeSpace(legType);
                     var legendText = (localeDictFinder[legType] || toCamelCase(legType));
+                    var displayColor = leg['display_color'];
+
+                    if (displayColor != undefined && displayColor != null && displayColor.length != 0) {
+                        displayColor = (displayColor.match(/[\da-fA-F]/g).length == 6 ? "#" + displayColor : displayColor);
+                    }
 
                     if ($("." + className).length === 0 && !legendNameIndex[legendText]) {
                         legendNameIndex[legendText] = legendText;
                         legendNames.push({
                             cls: className,
-                            name: legendText
+                            name: legendText,
+                            displayColor: displayColor
                         });
 
                     }
@@ -1744,7 +1750,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             legendNames.forEach(function(el) {
                 legendTags +=
                     "<div class='travel-legend-container'>" +
-                    "<div class='travel-legend " + el.cls + "'/>" +
+                    "<div class='travel-legend " + el.cls + "' style='" + (el.displayColor == null ? '' : 'background-color:' + el.displayColor + ';') + "'/>" +
                     "<span class='travel-legend-text'>" + el.name + "</span>" +
                     "</div>";
             });
@@ -2727,6 +2733,15 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             .enter().append("rect")
             .attr('class', function(d) {
                 return "travel-type-" + d.type.toLowerCase();
+            })
+            .attr('style', function(d) {
+                if (d.display_color) {
+                    if (d.display_color.match(/[\da-fA-F]/g).length == 6) {
+                        return "fill: #" + d.display_color;    
+                    } else {
+                        return "fill: " + d.display_color;
+                    }
+                }
             })
             .attr("x", function(d) {
                 var leg_start_time = moment(d.start_time).add(d.service_window/2, "minutes").toDate();

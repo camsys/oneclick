@@ -41,6 +41,7 @@ module Leg
 
     # array of steps for driving/walking/biking directions
     attr_accessor :steps
+    attr_accessor :display_color
 
     def route
       "n/a"

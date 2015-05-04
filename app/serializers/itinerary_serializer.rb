@@ -104,7 +104,21 @@ class ItinerarySerializer < ActiveModel::Serializer
         end_time: leg.end_time.iso8601,
         start_place: "#{leg.start_place.lat},#{leg.start_place.lon}",
         end_place: "#{leg.end_place.lat},#{leg.end_place.lon}",
+        display_color: object.service ? (["BICYCLE","WALK","WAIT","CAR"].include?(leg.mode) ? "" : (object.service.display_color.nil? || object.service.display_color.blank? ? leg.display_color : object.service.display_color)) : leg.display_color
       }
+
+      # if object.service
+      #   unless ["BICYCLE","WALK","WAIT","CAR"].include?(leg.mode)
+      #     if object.service.display_color.nil? || object.service.display_color.blank?
+      #       m.first[:display_color] = leg.display_color
+      #     else 
+      #       m.first[:display_color] = object.service.display_color
+      #     end
+      #   end
+      # else
+      #   m.first[:display_color] = leg.display_color
+      # end
+
       last_leg = leg
       m
     end

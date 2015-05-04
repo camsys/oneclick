@@ -56,6 +56,7 @@ protected
       obj.end_place = parse_place(leg['to'])
 
       obj.geometry = parse_geometry(leg['legGeometry']) if include_geometry
+      obj.display_color = leg['routeColor'] unless leg['routeColor'].nil? || leg['routeColor'].blank?
     end
 
     return obj

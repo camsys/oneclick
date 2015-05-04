@@ -38,6 +38,7 @@
             %img{src: @service.logo_url, style: "display: block; margin-right: auto; margin-left: auto;"}
             = f.input :remove_logo, label: t(:remove_logo), :as => :boolean, input_html: {checked: false}
           = f.input :logo, label: t(:upload_logo) + ' (' + Oneclick::Application.config.service_logo_format_list.join(',') + ')',  :as => :file
+          = f.input :display_color, label: t(:display_color), placeholder: "#000000"
           = f.input :phone
           = f.input :email
           = f.input :url
