@@ -70,6 +70,7 @@ gem 'ransack', github: 'camsys/ransack'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 gem 'browser'
+gem 'remotipart', '~> 1.2'
 
 group :development do
   # gem 'ffi-geos'

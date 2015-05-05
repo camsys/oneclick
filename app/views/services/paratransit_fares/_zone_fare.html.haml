@@ -1,0 +1,35 @@
+%b= t(:fare_type) + ": " + t(:zone_fare)
+
+- if fares.count > 0
+  - zones = {}
+  - rates = {}
+  - fares.each do |fare|
+    - from_zone_id = fare.from_zone.zone_id
+    - to_zone_id = fare.to_zone.zone_id
+    - zones[from_zone_id] = fare.from_zone_id if !from_zone_id.blank? && !zones[from_zone_id]
+    - zones[to_zone_id] = fare.to_zone_id if !to_zone_id.blank? && !zones[to_zone_id]
+    - next if fare.from_zone_id.blank? or fare.to_zone_id.blank?
+    - key = "from_#{fare.from_zone_id}_to_#{fare.to_zone_id}"
+    - rates[key] = fare.rate
+  - zones = zones.sort.to_h
+  %table.table.table-condensed.table-striped.table-bordered.table-hover
+    %thead
+      %tr
+        %th= t(:zone_id)
+        - zones.each do |zone_id, id|
+          %th= zone_id
+    %tbody
+      - zones.each do |from_zone_id, from_id|
+        %tr
+          %td= from_zone_id
+          - zones.each do |to_zone_id, to_id|
+            - key = "from_#{from_id}_to_#{to_id}"
+            - rate = rates[key]
+            %td
+              - if rate
+                = number_to_currency(fare.rate.to_f).to_s
+              - else
+                = t(:n_a)
+- else
+  .row_fluid
+    = t(:fare_unavailable) + "."

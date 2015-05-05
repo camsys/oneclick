@@ -115,6 +115,7 @@ class Ability
       end
       can :create, Service
       can :send_follow_up, Trip
+      can :create, FareZone
     end
 
     ## All users have the following permissions, which logically OR with 'can' statements above

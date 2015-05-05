@@ -1,0 +1,5 @@
+<% if remotipart_submitted? %>
+  $('#farezoneUploadDialog').modal('toggle');
+  $('#zoneFaresTable').empty();
+  $('#zoneFaresTable').html("<%= j "#{render partial: 'services/paratransit_fares/zone_fare_form', locals: {zones:@zones}}"%>");
+<% end %>

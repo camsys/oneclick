@@ -1,0 +1,21 @@
+#farezoneUploadDialog.modal.fade.col-sm-12{"aria-describedby" => t(:update_farezones), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
+          = t(:cancel)
+        = button_tag id: 'farezoneUploadButton', class: "btn action-button pull-right" do
+          = t(:ok)
+        :javascript
+          $('#farezoneUploadButton').on('click', function() {
+            $('#farezeonUploadForm').submit();
+          });
+        .modal-title{:style => "text-align:left;"}
+          %b
+            = t(:upload_farezones)
+      .modal-body{:style => "text-align:left;"}
+        = simple_form_for :fare_zone, url: service_fare_zones_url(@service), remote: true, format: 'js', html: { class: 'form-horizontal', multipart: true, id: 'farezeonUploadForm' }, authenticity_token: true, wrapper: :horizontal_form do |f|
+          = f.error_notification message: print_messages(f)
+          %label
+            = I18n.t(:upload_fare_zones_notes)
+          = f.input "file", required:true, :label => t(:select_fare_zones_shapefile_to_upload),:as => :file

@@ -344,7 +344,7 @@ Oneclick::Application.routes.draw do
       resources :providers do
         get   'find_staff_by_email'
         resources :users
-        resources :services
+        resources :services 
         resources :trips, only: [:index, :show]
         member do
           patch 'undelete'
@@ -360,7 +360,10 @@ Oneclick::Application.routes.draw do
     end
 
     resources :services do
+      resources :fare_zones, only: [:create]
+      
       member do
+        get 'fare_type_form'
         patch 'undelete'
       end
     end

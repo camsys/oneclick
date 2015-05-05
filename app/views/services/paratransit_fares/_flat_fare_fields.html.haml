@@ -1,0 +1,13 @@
+- flat_fare = fare_structure.flat_fare || FlatFare.new(fare_structure: fare_structure)
+- one_way_rate = flat_fare.one_way_rate 
+- round_trip_rate = flat_fare.round_trip_rate
+.row_fluid.col-sm-12
+  .col-sm-3
+    = I18n.t('one_way_rate')
+  .col-sm-9
+    %input.form-control.text-right{type: "text", value: one_way_rate, name: "service[fare_structure][flat_fare][one_way_rate]"}
+.row_fluid.col-sm-12
+  .col-sm-3
+    = I18n.t('round_trip_rate')
+  .col-sm-9
+    %input.form-control.text-right{type: "text", value: round_trip_rate, name: "service[fare_structure][flat_fare][round_trip_rate]"}

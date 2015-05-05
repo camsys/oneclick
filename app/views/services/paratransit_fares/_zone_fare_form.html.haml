@@ -1,0 +1,17 @@
+- if zones.count > 0
+  %table.table.table-condensed.table-striped.table-bordered.table-hover
+    %thead
+      %tr
+        %th= t(:zone_id)
+        - zones.each do |zone|
+          %th= zone[:zone_id]
+    %tbody
+      - zones.each do |from_zone|
+        %tr
+          %td= from_zone[:zone_id]
+          - zones.each do |to_zone|
+            %td
+              %input.form-control.text-right{style: "min-width: 60px; padding: 0px;", type: 'number'}
+- else
+  .row_fluid
+    = t(:please_upload_fare_zones)

@@ -1,8 +1,12 @@
 - content_for :title, "#{t(:site_title)} - #{@service.name}"
 - temp_rating = @service.ratings.build(user: @traveler)
 - can_manage_provider =(can? :manage, :all) || ((can? :full_read, @service) && !current_user.nil? && !@service.provider.nil? && !current_user.provider.nil? && @service.provider.id == current_user.provider.id)
-- is_transit = @service.service_type.code == "transit"
-- is_taxi = @service.service_type.code == "taxi"
+
+- if @service.service_type
+  - service_type_code = @service.service_type.code
+  - is_transit = service_type_code == "transit"
+  - is_taxi = service_type_code == "taxi"
+  - is_paratransit = service_type_code == "paratransit"
 
 -if can? :index, Service
   .col-sm-12
@@ -205,22 +209,26 @@
               = add_tooltip("fare_help")
           -@service.fare_structures.each do |fare|
             .panel-body
-              .row_fluid
-                %b= t(:base_rate) + ": "
-                -if fare.base
-                  = number_to_currency(fare.base.to_f).to_s
-                -else
-                  = t(:flat_fare_unavailable) + "."
-              .row_fluid
-                %b= t(:taxi_fare_finder_key) + ": "
-                -if @service.taxi_fare_finder_key
-                  = @service.taxi_fare_finder_key
-                -else
-                  = t(:none)
-              .row_fluid
-                - if fare.rate
-                  %b= t(:mileage_rate) + ": "
-                  = number_to_currency(fare.rate.to_f).to_s
+              - if is_paratransit
+                .row_fluid
+                  = render partial: 'services/paratransit_fares/show', locals: {fare_structure: fare}
+              - else
+                .row_fluid
+                  %b= t(:base_rate) + ": "
+                  -if fare.base
+                    = number_to_currency(fare.base.to_f).to_s
+                  -else
+                    = t(:flat_fare_unavailable) + "."
+                .row_fluid
+                  %b= t(:taxi_fare_finder_key) + ": "
+                  -if @service.taxi_fare_finder_key
+                    = @service.taxi_fare_finder_key
+                  -else
+                    = t(:none)
+                .row_fluid
+                  - if fare.rate
+                    %b= t(:mileage_rate) + ": "
+                    = number_to_currency(fare.rate.to_f).to_s
               %b= t(:comments) + ":  "
               -if fare.desc
                 = fare.desc.html_safe

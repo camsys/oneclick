@@ -1,6 +1,8 @@
 - if @service.service_type
-  - is_transit = @service.service_type.code == "transit"
-  - is_taxi = @service.service_type.code == "taxi"
+  - service_type_code = @service.service_type.code
+  - is_transit = service_type_code == "transit"
+  - is_taxi = service_type_code == "taxi"
+  - is_paratransit = service_type_code == "paratransit"
 
 = simple_form_for @service,
         url: @service.id.nil? ? services_path(provider_id: @provider) : service_path,
@@ -20,7 +22,7 @@
         .pull-right
           = button_tag type: 'submit', class: "btn action-button", style: "margin-right:5px;" do
             = icon_label(:apply)
-          = link_to t(:cancel), :back, class: "btn action-button"
+          = link_to t(:cancel), service_path(@service), class: "btn action-button"
 
   .row
     .col-sm-6
@@ -304,13 +306,18 @@
             %h4.panel-title
               = t(:fare)
               = add_tooltip("fare_help")
-          = f.simple_fields_for :fare_structures do |fare|
+          - if is_paratransit && @service.fare_structures.count > 0
             .panel-body
               .row_fluid
-                = fare.input :base, label: t(:base_rate), input_html: {class: "form-control"}
-                = fare.input :rate, label: t(:mileage_rate), input_html: {class: "form-control"}
-                = f.input :taxi_fare_finder_key, label: t(:taxi_fare_finder_key)
-                = fare.input :desc, label: t(:comments), as: :text, input_html: {class: "form-control"}
+                = render partial: 'services/paratransit_fares/form', locals: {fare_structure: @service.fare_structures.first}
+          -else
+            = f.simple_fields_for :fare_structures do |fare|
+              .panel-body
+                .row_fluid
+                  = fare.input :base, label: t(:base_rate), input_html: {class: "form-control"}
+                  = fare.input :rate, label: t(:mileage_rate), input_html: {class: "form-control"}
+                  = f.input :taxi_fare_finder_key, label: t(:taxi_fare_finder_key)
+                  = fare.input :desc, label: t(:comments), as: :text, input_html: {class: "form-control"}
 
   - unless is_transit || is_taxi
     .row

@@ -1,0 +1,17 @@
+%b= t(:fare_type) + ": " + t(:mileage_fare)
+
+- if fare
+  .row_fluid
+    %b= t(:base_rate) + ": "
+    -if fare.base_rate
+      = number_to_currency(fare.base.to_f).to_s
+    -else
+      = t(:base_fare_unavailable) + "."
+
+  - if fare.mileage_rate
+    .row_fluid
+      %b= t(:mileage_rate) + ": "
+      = number_to_currency(fare.mileage_rate.to_f).to_s
+- else
+  .row_fluid
+    = t(:fare_unavailable) + "."

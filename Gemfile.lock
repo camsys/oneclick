@@ -432,6 +432,7 @@ GEM
     redis (3.1.0)
     redis-namespace (1.5.1)
       redis (~> 3.0, >= 3.0.4)
+    remotipart (1.2.1)
     request_store (1.0.6)
     rest-client (1.6.7)
       mime-types (>= 1.16)
@@ -622,6 +623,7 @@ DEPENDENCIES
   rb-fchange
   rb-fsevent
   rb-inotify
+  remotipart (~> 1.2)
   rgeo
   rgeo-activerecord
   rgeo-shapefile

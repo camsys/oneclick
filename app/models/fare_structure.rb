@@ -17,5 +17,19 @@ class FareStructure < ActiveRecord::Base
   FLAT = 0
   MILEAGE = 1
   COMPLEX = 2
+  ZONE=3
+
+  def fare_data
+    case fare_type
+    when FLAT
+      flat_fare
+    when MILEAGE
+      mileage_fare
+    when ZONE
+      zone_fares
+    else
+      nil
+    end
+  end
 
 end

@@ -1,0 +1,24 @@
+.col-sm-3
+  = t(:fare_type)
+.col-sm-9
+  %select.form-control#fare_type_select
+    %option{value: 0}
+      = t(:flat_fare)
+    %option{value: 1}
+      = t(:mileage_fare)
+    %option{value: 3}
+      = t(:zone_fare)
+.row#fare_type_form
+  - fare_type = fare_structure.fare_type
+  - case fare_type
+  - when 0
+    = render partial: 'services/paratransit_fares/flat_fare_fields', locals: {fare_structure: fare_structure}
+  - when 1
+    = render partial: 'services/paratransit_fares/mileage_fare_fields', locals: {fare_structure: fare_structure}
+  - when 3
+    = render partial: 'services/paratransit_fares/zone_fare_fields', locals: {fare_structure: fare_structure}
+:javascript
+  $('#fare_type_select').val(#{fare_structure.fare_type});
+  $('#fare_type_select').on('change', function(e) {
+    $.ajax("#{fare_type_form_service_path(@service)}?fare_type=" + $('#fare_type_select').val());
+  });

@@ -1,0 +1,13 @@
+- mileage_fare = fare_structure.mileage_fare || MileageFare.new(fare_structure: fare_structure)
+- base_rate = mileage_fare.base_rate 
+- mileage_rate = mileage_fare.mileage_rate
+.row_fluid.col-sm-12
+  .col-sm-3
+    = I18n.t('base_rate')
+  .col-sm-9
+    %input.form-control.text-right{type: "text", value: base_rate, name: "service[fare_structure][mileage_fare][base_rate]"}
+.row_fluid.col-sm-12
+  .col-sm-3
+    = I18n.t('mileage_rate')
+  .col-sm-9
+    %input.form-control.text-right{type: "text", value: mileage_rate, name: "service[fare_structure][mileage_fare][mileage_rate]"}

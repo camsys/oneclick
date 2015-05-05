@@ -1,0 +1,9 @@
+- case fare_structure.fare_type
+- when FareStructure::FLAT
+  = render partial: 'services/paratransit_fares/flat_fare', locals: {fare: fare_structure.flat_fare}
+- when FareStructure::MILEAGE
+  = render partial: 'services/paratransit_fares/mileage_fare', locals: {fare: fare_structure.mileage_fare}
+- when FareStructure::ZONE
+  = render partial: 'services/paratransit_fares/zone_fare', locals: {fares: fare_structure.zone_fares}
+- else
+  %b= t(:fare_type) + ": " + t(:complex_fare)

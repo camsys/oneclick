@@ -149,7 +149,6 @@ class ServicesController < ApplicationController
   # PUT /services/1
   # PUT /services/1.json
   def update
-
     # TODO This is a little hacky for the moment; might switch to front-end javascript but let's just do this for now.
     fixup_comments_attributes_for_delete :service
 
@@ -223,6 +222,21 @@ class ServicesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to service_path(@service) }
       format.json { head :no_content }
+    end
+  end
+
+  def fare_type_form
+    service = Service.find(params[:id])
+
+    @fare_type = params[:fare_type].to_i if !params[:fare_type].blank?
+    if service.fare_structures.count > 0
+      @fare_structure = service.fare_structures.first
+    else
+      @fare_structure = service.fare_structures.build(fare_type: @fare_type)
+    end
+
+    respond_to do |format|
+      format.js
     end
   end
 

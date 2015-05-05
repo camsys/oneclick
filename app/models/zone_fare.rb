@@ -3,5 +3,5 @@ class ZoneFare < ActiveRecord::Base
   belongs_to :to_zone, :class_name => "FareZone"
   belongs_to :fare_structure
 
-  validates :fare_structure, presence: true
+  validates :to_zone, presence: true
 end
