@@ -204,7 +204,7 @@ unless ENV['UI_MODE']=='kiosk'
       end
     end
 
-    config.wrappers :trip_dates, tag: 'div', class: 'col-md-6', error_class: 'has-error' do |b|
+    config.wrappers :trip_dates, tag: 'div', class: 'col-xs-6', error_class: 'has-error' do |b|
       b.use :html5
       b.use :placeholder
       # b.use :label, class: 'col-sm-7 control-label'
