@@ -14,6 +14,7 @@
           %b
             = t(:upload_farezones)
       .modal-body{:style => "text-align:left;"}
+        .modal-flash
         = simple_form_for :fare_zone, url: service_fare_zones_url(@service), remote: true, format: 'js', html: { class: 'form-horizontal', multipart: true, id: 'farezeonUploadForm' }, authenticity_token: true, wrapper: :horizontal_form do |f|
           = f.error_notification message: print_messages(f)
           %label

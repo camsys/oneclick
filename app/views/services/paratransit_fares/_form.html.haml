@@ -1,7 +1,8 @@
 .col-sm-3
   = t(:fare_type)
 .col-sm-9
-  %select.form-control#fare_type_select
+  %input.hidden{name:'service[fare_structures_attributes][id]', value: fare_structure.id}
+  %select.form-control#fare_type_select{name: 'service[fare_structures_attributes][fare_type]'}
     %option{value: 0}
       = t(:flat_fare)
     %option{value: 1}

@@ -4,7 +4,7 @@
   .row_fluid
     %b= t(:base_rate) + ": "
     -if fare.base_rate
-      = number_to_currency(fare.base.to_f).to_s
+      = number_to_currency(fare.base_rate.to_f).to_s
     -else
       = t(:base_fare_unavailable) + "."
 

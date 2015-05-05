@@ -27,7 +27,7 @@
             - rate = rates[key]
             %td
               - if rate
-                = number_to_currency(fare.rate.to_f).to_s
+                = number_to_currency(rate.to_f).to_s
               - else
                 = t(:n_a)
 - else

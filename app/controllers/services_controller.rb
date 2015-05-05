@@ -186,6 +186,9 @@ class ServicesController < ApplicationController
           @service.save
         end
 
+        # fare
+        update_fare
+
         alert_msgs = [zip_alert_msg, polygon_alert_msg].delete_if {|x| x == nil}
 
         if alert_msgs.count > 0
@@ -258,12 +261,12 @@ protected
                                     { accommodation_ids: [] },
                                     { trip_purpose_ids: [] },
                                     { fare_structures_attributes:
-                                      [ :id, :base, :rate, :desc ] },
+                                      [ :id, :base, :rate, :desc, :fare_type ] },
                                     { service_coverage_maps_attributes:
                                       [ :id, :rule, :geo_coverage_id, :_destroy, :keep_record ] },
                                     comments_attributes: COMMENT_ATTRIBUTES,
                                     public_comments_attributes: COMMENT_ATTRIBUTES,
-                                    private_comments_attributes: COMMENT_ATTRIBUTES,
+                                    private_comments_attributes: COMMENT_ATTRIBUTES
                                     )
   end
 
@@ -292,6 +295,62 @@ protected
         end_seconds: 24 * 60 * 60 -1,
         service_id: @service.id
         })
+    end
+  end
+
+  def update_fare
+    if @service.fare_structures.count == 0
+      @service.fare_structures.build
+    end
+    fs_attrs = service_params[:fare_structures_attributes]
+    if fs_attrs[:id]
+      fs = FareStructure.find(fs_attrs[:id])
+    else
+      fs = @service.fare_structures.first
+    end
+    fs.fare_type == fs_attrs[:fare_type].to_i
+    fs.save
+
+    case fs.fare_type
+    when 0
+      # flat fare
+      flat_fare_attrs = params[:service][:flat_fare_attributes]
+      flat_fare_params = {
+        fare_structure: fs,
+        one_way_rate: flat_fare_attrs[:one_way_rate].to_f,
+        round_trip_rate: flat_fare_attrs[:round_trip_rate].to_f
+      }
+      if !fs.flat_fare
+        FlatFare.create flat_fare_params
+      else
+        fs.flat_fare.update_attributes flat_fare_params
+      end
+    when 1
+      # mileage fare
+      mileage_fare_attrs = params[:service][:mileage_fare_attributes]
+      mileage_fare_params = {
+        fare_structure: fs,
+        base_rate: mileage_fare_attrs[:base_rate].to_f,
+        mileage_rate: mileage_fare_attrs[:mileage_rate].to_f
+      }
+      if !fs.mileage_fare
+        MileageFare.create mileage_fare_params
+      else
+        fs.mileage_fare.update_attributes mileage_fare_params
+      end
+    when 3
+      # zone fares
+      zone_fares_attrs = params[:service][:zone_fares_attributes]
+      
+      zone_fares_attrs.each do | fare_attrs |
+        next if fare_attrs[:rate].blank?
+        fare_params = {
+          rate: fare_attrs[:rate].to_f
+        }
+        
+        fs.zone_fares.update_all fare_params, :id => fare_attrs[:id].to_i
+      end
+      
     end
   end
 

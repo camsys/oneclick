@@ -5,9 +5,10 @@
   .col-sm-3
     = I18n.t('base_rate')
   .col-sm-9
-    %input.form-control.text-right{type: "text", value: base_rate, name: "service[fare_structure][mileage_fare][base_rate]"}
+    %input.hidden{value: mileage_fare.id, name: "service[mileage_fare_attributes][id]"}
+    %input.form-control.text-right{type: "number", value: base_rate, name: "service[mileage_fare_attributes][base_rate]", min: "0"}
 .row_fluid.col-sm-12
   .col-sm-3
     = I18n.t('mileage_rate')
   .col-sm-9
-    %input.form-control.text-right{type: "text", value: mileage_rate, name: "service[fare_structure][mileage_fare][mileage_rate]"}
+    %input.form-control.text-right{type: "number", value: mileage_rate, name: "service[mileage_fare_attributes][mileage_rate]", min: "0"}

@@ -1,4 +1,5 @@
 - if zones.count > 0
+  - fares = nil if !fares
   %table.table.table-condensed.table-striped.table-bordered.table-hover
     %thead
       %tr
@@ -11,7 +12,13 @@
           %td= from_zone[:zone_id]
           - zones.each do |to_zone|
             %td
-              %input.form-control.text-right{style: "min-width: 60px; padding: 0px;", type: 'number'}
+              - key = "from_#{from_zone[:id]}_to_#{to_zone[:id]}"
+              - has_fare = if fares && fares[key]
+              - has_fare
+                %input.hidden{name: 'service[zone_fares_attributes][][id]', value: fares[key][:id]}
+              %input.hidden{name: 'service[zone_fares_attributes][][from_zone_id]', value: from_zone[:id]}
+              %input.hidden{name: 'service[zone_fares_attributes][][to_zone_id]', value: to_zone[:id]}
+              %input.form-control.text-right{style: "min-width: 60px; padding: 0px;", type: 'number', name: 'service[zone_fares_attributes][][rate]', min:"0", value: (has_fare ? fares[key][:rate] : '')}
 - else
   .row_fluid
     = t(:please_upload_fare_zones)

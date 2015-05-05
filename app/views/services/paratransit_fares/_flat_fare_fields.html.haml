@@ -5,9 +5,10 @@
   .col-sm-3
     = I18n.t('one_way_rate')
   .col-sm-9
-    %input.form-control.text-right{type: "text", value: one_way_rate, name: "service[fare_structure][flat_fare][one_way_rate]"}
+    %input.hidden{value: flat_fare.id, name: "serviceflat_fare_attributes][id]"}
+    %input.form-control.text-right{type: "number", value: one_way_rate, name: "service[flat_fare_attributes][one_way_rate]", min: "0"}
 .row_fluid.col-sm-12
   .col-sm-3
     = I18n.t('round_trip_rate')
   .col-sm-9
-    %input.form-control.text-right{type: "text", value: round_trip_rate, name: "service[fare_structure][flat_fare][round_trip_rate]"}
+    %input.form-control.text-right{type: "number", value: round_trip_rate, name: "service[flat_fare_attributes][round_trip_rate]", min: "0"}

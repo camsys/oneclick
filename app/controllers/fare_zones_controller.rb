@@ -32,17 +32,20 @@ class FareZonesController < ApplicationController
             error_msgs <<  t(:check_farezone_shapefile_specs)
           else
             @zones = FareZone.where(service: service).select(:id, :zone_id).order(:zone_id)
-            
+            @fares = {}
             @zones.each do |from_zone|
               @zones.each do |to_zone |
-                ZoneFare.create(
-                  from_zone_id: from_zone[:id],
-                  to_zone_id: to_zone[:id],
-                  fare_structure: fare_structure
-                )
+                from_zone_id = from_zone[:id]
+                to_zone_id = to_zone[:id]
+                @fares["from_#{from_zone_id}_to_#{to_zone_id}"] = {
+                  id: ZoneFare.create(
+                    from_zone_id: from_zone_id,
+                    to_zone_id: to_zone_id,
+                    fare_structure: fare_structure
+                  ).id
+                }
               end
             end
-
           end
         else
           error_msgs <<  t(:upload_zip_alert)
@@ -53,9 +56,10 @@ class FareZonesController < ApplicationController
     end
 
     if error_msgs.size > 0
-      flash[:error] = error_msgs.join(' ')
+      @error_msgs = error_msgs.join(' ')
+      @failure = true
     elsif info_msgs.size > 0
-      flash[:notice] = info_msgs.join(' ')
+      @info_msgs = info_msgs.join(' ')
     end
 
     respond_to do |format|

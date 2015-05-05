@@ -3,4 +3,6 @@
     = t(:upload_farezones)
 .col-sm-12#zoneFaresTable
   - zones = FareZone.where(service: fare_structure.service).select(:id, :zone_id).order(:zone_id)
-  = render partial: 'services/paratransit_fares/zone_fare_form', locals: {zones: zones}
+  - fares = {}
+  - fare_structure.zone_fares.each { |x| fares["from_#{x.from_zone_id}_to_#{x.to_zone_id}"] = {id: x.id, rate: x.rate}}
+  = render partial: 'services/paratransit_fares/zone_fare_form', locals: {zones: zones, fares: fares}
