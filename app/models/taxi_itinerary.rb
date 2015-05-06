@@ -10,9 +10,9 @@ class TaxiItinerary < Itinerary
     selected_taxi_service = taxi_services.first
 
     base_url = "http://api.taxifarefinder.com/"
-    api_key = selected_taxi_service.taxi_fare_finder_api_key
+    api_key = selected_taxi_service.taxi_fare_finder_key
     api_key = '?key=' + api_key
-    city = selected_taxi_service.taxi_fare_finder_api_city
+    city = selected_taxi_service.taxi_fare_finder_city
     entity = '&entity_handle=' + city
 
     #Get fare
