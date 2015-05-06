@@ -1,10 +1,12 @@
 source 'https://rubygems.org'
 ruby '2.1.1'
+
 gem 'rails', '4.0.3'
-# See http://stackoverflow.com/questions/22391116/nomethoderror-in-pageshome-undefined-method-environment-for-nilnilclass
+
 gem 'sprockets', '2.11.0'
 # gem 'sass-rails', '~> 4.0.3'
 gem 'sass-rails', github: 'camsys/sass-rails', tag: 'v4.0.3a'
+
 unless ENV['UI_MODE']=='kiosk'
   gem 'bootstrap-sass', github: 'camsys/bootstrap-sass', tag: '3.2.0.CS.2'
   gem 'simple_form', '~> 3.1.0.rc1', github: 'camsys/simple_form', branch: 'cs-3.0'
@@ -12,6 +14,7 @@ else
   gem 'bootstrap-sass', '~> 2.3.2.0'
   gem 'simple_form', '3.0.1'
 end
+
 gem 'fog'
 gem 'coffee-rails'
 gem 'uglifier', '>= 1.0.3'
@@ -82,8 +85,7 @@ group :development do
   gem 'guard-rails'
   gem 'guard-rspec'
   gem 'guard-puma'
-  # gem 'pry-stack_explorer'
-  #gem 'pry-debugger'
+  gem 'pry-byebug'
   gem 'html2haml'
   gem 'quiet_assets'
   gem 'listen'
@@ -98,7 +100,6 @@ group :development do
   gem 'yard'
   gem 'RedCloth' # Needed by yard
   gem 'foreman'
-  gem 'debugger'
   # For sidekiq monitoring
   gem 'sinatra', :require => nil
 end
