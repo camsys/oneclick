@@ -102,6 +102,7 @@ group :development do
   gem 'foreman'
   # For sidekiq monitoring
   gem 'sinatra', :require => nil
+  gem 'seed_dump'
 end
 
 group :development, :test do

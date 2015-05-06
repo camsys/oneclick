@@ -463,6 +463,9 @@ GEM
       sexp_processor (~> 4.1)
     rubyzip (1.1.6)
     sass (3.2.19)
+    seed_dump (3.2.2)
+      activerecord (~> 4)
+      activesupport (~> 4)
     sexp_processor (4.4.3)
     sextant (0.2.4)
       rails (>= 3.2)
@@ -629,6 +632,7 @@ DEPENDENCIES
   rspec-rails
   rubyzip
   sass-rails!
+  seed_dump
   sextant
   sidekiq
   simple_form (~> 3.1.0.rc1)!
