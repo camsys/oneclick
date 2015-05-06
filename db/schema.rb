@@ -339,9 +339,6 @@ ActiveRecord::Schema.define(version: 20150501182433) do
     t.datetime "updated_at", null: false
   end
 
-# Could not dump table "reporting_lookup_tables" because of following StandardError
-#   Unknown type 'name' for column 'data_access_type'
-
   create_table "reporting_output_fields", force: true do |t|
     t.integer  "reporting_report_id", null: false
     t.string   "name",                null: false
