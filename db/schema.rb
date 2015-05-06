@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150506205352) do
+ActiveRecord::Schema.define(version: 20150506215033) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -486,6 +486,7 @@ ActiveRecord::Schema.define(version: 20150506205352) do
     t.string   "taxi_fare_finder_key"
     t.string   "display_color"
     t.integer  "mode_id"
+    t.string   "taxi_fare_finder_city",        limit: 64
   end
 
   create_table "services_users", id: false, force: true do |t|
