@@ -4,11 +4,22 @@
 # TODO may want to eventually split these out into separate files
 
 ht:
-  this_service_is_for: "This service is intended for"
-  only_agency_can_see: "Only %{agency} staff can see this note."
-  traveler_notes: "Traveler Notes"
-  base_rate: "Base Fare"
-  mileage_rate: "Mileage Rate"
+  this_service_is_for: "[ht]This service is intended for[ht]"
+  only_agency_can_see: "[ht]Only %{agency} staff can see this note.[ht]"
+  traveler_notes: "[ht]Traveler Notes[/ht]"
+  base_rate: "[ht]Base Fare[/ht]"
+  mileage_rate: "[ht]Mileage Rate[/ht]"
+  fare_type: '[ht]Fare Type[/ht]'
+  flat_fare: '[ht]Flat Fare[/ht]'
+  mileage_fare: '[ht]Mileage Fare[/ht]'
+  zone_fare: '[ht]Zone Fare[/ht]'
+  one_way_rate: '[ht]One Way Rate[/ht]'
+  round_trip_rate: '[ht]Round Trip Rate[/ht]'
+  zone_id: '[ht]Zone ID[/ht]'
+  upload_fare_zones: '[ht]Upload Fare Zones[/ht]'
+  upload_fare_zones_notes: '[ht]Please upload a zipped(.zip) shapefile that contains fare zone polygons[/ht]'
+  select_fare_zones_shapefile_to_upload: '[ht]Fare Zones Shapefile[/ht]'
+  no_fare_zones_identified: '[ht]No fare zones identified from uploaded file.[/ht]'
   display_color: "[ht]Display Color[/ht]"
   taxi_fare_finder_key: "[ht]Taxi Fare Finder Key[/ht]"
   trip_planned_assistance: "Trip planned with assistance from "

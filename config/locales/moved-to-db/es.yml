@@ -6,10 +6,21 @@ es:
   display_color: "[es]Display Color[/es]"
   user_guide: "[es]User Guide[/es]"
   this_service_is_for: "Este servicio está destinado a"
-  only_agency_can_see: "Only %{agency} staff can see this note."
-  traveler_notes: "Traveler Notes"
-  base_rate: "Base Fare"
-  mileage_rate: "Mileage Rate"
+  only_agency_can_see: "[es]Only %{agency} staff can see this note.[/es]"
+  traveler_notes: "[es]Traveler Notes[/es]"
+  base_rate: "[es]Base Fare[/es]"
+  mileage_rate: "[es]Mileage Rate[/es]"
+  fare_type: '[es]Fare Type[/es]'
+  flat_fare: '[es]Flat Fare[/es]'
+  mileage_fare: '[es]Mileage Fare[/es]'
+  zone_fare: '[es]Zone Fare[/es]'
+  one_way_rate: '[es]One Way Rate[/es]'
+  round_trip_rate: '[es]Round Trip Rate[/es]'
+  zone_id: '[es]Zone ID[/es]'
+  upload_fare_zones: '[es]Upload Fare Zones[/es]'
+  upload_fare_zones_notes: '[es]Please upload a zipped(.zip) shapefile that contains fare zone polygons[/es]'
+  select_fare_zones_shapefile_to_upload: '[es]Fare Zones Shapefile[/es]'
+  no_fare_zones_identified: '[es]No fare zones identified from uploaded file.[/es]'
   taxi_fare_finder_key: "[es]Taxi Fare Finder Key[/es]"
   trip_planned_assistance: "Trip planned with assistance from "
   public_comments: "Public Comments"
