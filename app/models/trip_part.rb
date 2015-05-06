@@ -428,21 +428,11 @@ class TripPart < ActiveRecord::Base
 
   def create_taxi_itineraries
 
-    itins = []
-
-    taxi_itinerary = TaxiItinerary.new
+    #taxi_itinerary = TaxiItinerary.new
     result, response = TaxiItinerary.get_taxi_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time)
 
-    if result
-      itinerary = TaxiItinerary.format_as_generic_hash(response)q
-      itinerary['server_message'] = itinerary['server_message'].to_yaml if itinerary['server_message'].is_a? Array
-      itins << Itinerary.new(itinerary)
-    else
-      itins << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s)
-    end
+    self.itineraries << response 
 
-    itins
-    
   end
 
   def create_paratransit_itineraries

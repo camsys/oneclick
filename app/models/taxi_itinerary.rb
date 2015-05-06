@@ -1,14 +1,14 @@
-require 'carrierwave/orm/activerecord'
-
 class TaxiItinerary < Itinerary
 
-  def get_taxi_itineraries(from, to, trip_datetime)
+  def self.get_taxi_itineraries(from, to, trip_datetime)
 
     base_url = "http://api.taxifarefinder.com/"
     api_key = Oneclick::Application.config.taxi_fare_finder_api_key
     api_key = '?key=' + api_key
     city = Oneclick::Application.config.taxi_fare_finder_api_city
     entity = '&entity_handle=' + city
+
+    binding.pry
 
     #Get fare
     task = 'fare'
@@ -39,7 +39,7 @@ class TaxiItinerary < Itinerary
         :error_message => "Service failure: taxi: fare status not OK",
         :parameters    => {fare: fare}
       )
-      return false, fare['explanation']
+      return false, Itinerary.new('server_status'=>500, 'server_message'=>fare['explanation'].to_s)
     end
 
     #Get providers
@@ -56,7 +56,7 @@ class TaxiItinerary < Itinerary
         :error_message => "Service failure: taxi: #{e.message}",
         :parameters    => {resp: resp}
       )
-      return false, {'id'=>500, 'msg'=>e.to_s}
+      return false, Itinerary.new('server_status'=>500, 'server_message'=>e.to_s)
     end
 
     Rails.logger.debug "TripPlanner#get_taxi_itineraries: resp.body: #{resp.body}"
@@ -68,26 +68,28 @@ class TaxiItinerary < Itinerary
         :error_message => "Service failure: taxi: business status not OK",
         :parameters    => {businesses: businesses}
       )
-      return false, businesses['explanation']
+      return false, Itinerary.new('server_status'=>500, 'server_message'=>businesses['explanation'].to_s)
     else
-      return true, [fare, businesses]
+      return true, format_response_object([fare, businesses])
     end
 
   end
 
-  def format_as_generic_hash(itinerary)
+  def self.format_response_object(response_object)
+
     trip_itinerary = {}
     trip_itinerary['mode'] = Mode.taxi
     trip_itinerary['returned_mode_code'] = Mode.taxi.code
-    trip_itinerary['duration'] = itinerary[0]['duration'].to_f
+    trip_itinerary['duration'] = response_object[0]['duration'].to_f
     trip_itinerary['walk_time'] = 0
     trip_itinerary['walk_distance'] = 0
-    trip_itinerary['cost'] = itinerary[0]['total_fare']
+    trip_itinerary['cost'] = response_object[0]['total_fare']
     trip_itinerary['server_status'] = 200
-    trip_itinerary['server_message'] = itinerary[1]['businesses'].to_yaml
+    trip_itinerary['server_message'] = response_object[1]['businesses'].to_yaml
     trip_itinerary['match_score'] = 1.2
     trip_itinerary['service'] = (ServiceType.where(code: 'taxi').first.services.first rescue nil)
-    trip_itinerary
+    Itinerary.new(trip_itinerary)
+
   end
 
 end
