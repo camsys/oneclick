@@ -9,6 +9,7 @@ class Service < ActiveRecord::Base
   #associations
   belongs_to :provider
   belongs_to :service_type
+  belongs_to :mode
   has_many :fare_structures
   has_many :schedules
   has_many :booking_cut_off_times
