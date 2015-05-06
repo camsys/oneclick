@@ -120,7 +120,7 @@ class TripPart < ActiveRecord::Base
         # start with the non-OTP modes
       when Mode.taxi
         timed "taxi" do
-          itins += create_taxi_itineraries
+          self.itineraries << TaxiItinerary.get_taxi_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time)
         end
       when Mode.paratransit
         timed "paratransit" do
@@ -424,15 +424,6 @@ class TripPart < ActiveRecord::Base
       i.hide if seen[mar]
       seen[mar] = true
     end
-  end
-
-  def create_taxi_itineraries
-
-    #taxi_itinerary = TaxiItinerary.new
-    result, response = TaxiItinerary.get_taxi_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time)
-
-    self.itineraries << response 
-
   end
 
   def create_paratransit_itineraries

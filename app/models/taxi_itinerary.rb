@@ -27,7 +27,7 @@ class TaxiItinerary < Itinerary
         :error_message => "Service failure: taxi: #{e.message}",
         :parameters    => {url: url, resp: resp}
       )
-      return false, {'id'=>500, 'msg'=>e.to_s}
+      return Itinerary.new('server_status'=>500, 'server_message'=>e.to_s)
     end
 
     Rails.logger.debug "TripPlanner#get_taxi_itineraries: resp.body: #{resp.body}"
@@ -39,7 +39,7 @@ class TaxiItinerary < Itinerary
         :error_message => "Service failure: taxi: fare status not OK",
         :parameters    => {fare: fare}
       )
-      return false, Itinerary.new('server_status'=>500, 'server_message'=>fare['explanation'].to_s)
+      return Itinerary.new('server_status'=>500, 'server_message'=>fare['explanation'].to_s)
     end
 
     #Get providers
@@ -56,7 +56,7 @@ class TaxiItinerary < Itinerary
         :error_message => "Service failure: taxi: #{e.message}",
         :parameters    => {resp: resp}
       )
-      return false, Itinerary.new('server_status'=>500, 'server_message'=>e.to_s)
+      return Itinerary.new('server_status'=>500, 'server_message'=>e.to_s)
     end
 
     Rails.logger.debug "TripPlanner#get_taxi_itineraries: resp.body: #{resp.body}"
@@ -68,9 +68,9 @@ class TaxiItinerary < Itinerary
         :error_message => "Service failure: taxi: business status not OK",
         :parameters    => {businesses: businesses}
       )
-      return false, Itinerary.new('server_status'=>500, 'server_message'=>businesses['explanation'].to_s)
+      return Itinerary.new('server_status'=>500, 'server_message'=>businesses['explanation'].to_s)
     else
-      return true, format_response_object([fare, businesses])
+      return format_response_object([fare, businesses])
     end
 
   end
