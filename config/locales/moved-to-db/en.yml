@@ -39,8 +39,10 @@ en:
   zone_id: 'Zone ID'
   upload_fare_zones: 'Upload Fare Zones'
   upload_fare_zones_notes: 'Please upload a zipped(.zip) shapefile that contains fare zone polygons'
-  select_fare_zones_shapefile_to_upload: 'Fare Zones Shapefile'
-  no_fare_zones_identified: 'No fare zones identified from uploaded file.'
+  fare_zones_shapefile: 'Fare Zones Shapefile(*)'
+  zone_id_column: 'Zone ID Column Name(*)'
+  zone_id_column_required: 'Zone ID column name is required.'
+  no_fare_zones_identified: 'No fare zones identified from uploaded file'
   taxi_fare_finder_key: "Taxi Fare Finder Key"
   cancel_booking: "Cancel Booking"
   cancel_booking_success: "Your trip has been canceled. If you need further assistance, please contact %{name} at %{number}."

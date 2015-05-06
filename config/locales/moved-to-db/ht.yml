@@ -18,8 +18,10 @@ ht:
   zone_id: '[ht]Zone ID[/ht]'
   upload_fare_zones: '[ht]Upload Fare Zones[/ht]'
   upload_fare_zones_notes: '[ht]Please upload a zipped(.zip) shapefile that contains fare zone polygons[/ht]'
-  select_fare_zones_shapefile_to_upload: '[ht]Fare Zones Shapefile[/ht]'
-  no_fare_zones_identified: '[ht]No fare zones identified from uploaded file.[/ht]'
+  fare_zones_shapefile: '[ht]Fare Zones Shapefile(*)[/ht]'
+  zone_id_column: '[ht]Zone ID Column Name(*)[/ht]'
+  zone_id_column_required: '[ht]Zone ID column name is required.[/ht]'
+  no_fare_zones_identified: '[ht]No fare zones identified from uploaded file[/ht]'
   display_color: "[ht]Display Color[/ht]"
   taxi_fare_finder_key: "[ht]Taxi Fare Finder Key[/ht]"
   trip_planned_assistance: "Trip planned with assistance from "
