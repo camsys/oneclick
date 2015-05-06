@@ -294,7 +294,7 @@ module ApplicationHelper
   end
 
   def get_trip_direction_icon(itin_or_trip)
-    (itin_or_trip.is_return_trip ? 'fa-arrow-left' : 'fa-arrow-right')
+    (itin_or_trip.is_return_trip? ? 'fa-arrow-left' : 'fa-arrow-right')
   end
 
   def display_base_errors resource
