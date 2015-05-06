@@ -31,7 +31,7 @@ class FareZonesController < ApplicationController
           FareZone.parse_shapefile(file_path, service)
 
           if service.fare_zones.count == 0
-            error_msgs <<  t(:check_farezone_shapefile_specs)
+            error_msgs <<  t(:no_fare_zones_identified)
           else
             @zones = FareZone.where(service: service).select(:id, :zone_id).order(:zone_id)
             @fares = {}
@@ -53,7 +53,7 @@ class FareZonesController < ApplicationController
           error_msgs <<  t(:upload_zip_alert)
         end
       else
-        error_msgs << t(:select_fare_zone_shapefile_to_upload)
+        error_msgs << t(:upload_shapefile)
       end
     end
 
