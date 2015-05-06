@@ -5,14 +5,20 @@
   .row_fluid
     %b= t(:one_way_fare) + ": "
     -if fare.one_way_rate
-      = number_to_currency(fare.one_way_rate.to_f).to_s
+      - if fare.one_way_rate
+        = number_to_currency(fare.one_way_rate.to_f).to_s
+      - else
+        = t(:n_a)
     -else
       = t(:flat_fare_unavailable) + "."
 
   -if fare.round_trip_rate
     .row_fluid
       %b= t(:round_trip_fare) + ": "
-      = number_to_currency(fare.round_trip_rate.to_f).to_s
+      - if fare.round_trip_rate
+        = number_to_currency(fare.round_trip_rate.to_f).to_s
+      - else
+        = t(:n_a)
 - else
   .row_fluid
     = t(:flat_fare_unavailable) + "."

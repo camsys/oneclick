@@ -22,8 +22,10 @@ class FareZonesController < ApplicationController
             fare_structure.update_attributes(fare_type: FareStructure::ZONE)
           end
 
-          fare_structure.zone_fares.delete_all
-          service.fare_zones.delete_all
+          ZoneFare.where(fare_structure: fare_structure).delete_all
+          fare_structure.zone_fares.clear
+          FareZone.where(service: service).delete_all
+          service.fare_zones.clear
 
           file_path = file.tempfile.path
           FareZone.parse_shapefile(file_path, service)

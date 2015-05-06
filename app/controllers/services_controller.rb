@@ -309,7 +309,6 @@ protected
       fs = @service.fare_structures.first
     end
     fs.fare_type == fs_attrs[:fare_type].to_i
-    fs.save
 
     case fs.fare_type
     when 0
@@ -317,26 +316,38 @@ protected
       flat_fare_attrs = params[:service][:flat_fare_attributes]
       flat_fare_params = {
         fare_structure: fs,
-        one_way_rate: flat_fare_attrs[:one_way_rate].to_f,
-        round_trip_rate: flat_fare_attrs[:round_trip_rate].to_f
+        one_way_rate: (flat_fare_attrs[:one_way_rate].to_f if !flat_fare_attrs[:one_way_rate].blank?),
+        round_trip_rate: (flat_fare_attrs[:round_trip_rate].to_f if !flat_fare_attrs[:round_trip_rate].blank?)
       }
       if !fs.flat_fare
         FlatFare.create flat_fare_params
       else
         fs.flat_fare.update_attributes flat_fare_params
       end
+
+      if fs.mileage_fare
+        fs.mileage_fare.delete
+        fs.mileage_fare = nil
+      end
+      fs.zone_fares.update_all(:rate => nil)
     when 1
       # mileage fare
       mileage_fare_attrs = params[:service][:mileage_fare_attributes]
       mileage_fare_params = {
         fare_structure: fs,
-        base_rate: mileage_fare_attrs[:base_rate].to_f,
-        mileage_rate: mileage_fare_attrs[:mileage_rate].to_f
+        base_rate: (mileage_fare_attrs[:base_rate].to_f if !flat_fare_attrs[:base_rate].blank? ),
+        mileage_rate: (mileage_fare_attrs[:mileage_rate].to_f if !flat_fare_attrs[:mileage_rate].blank?)
       }
       if !fs.mileage_fare
         MileageFare.create mileage_fare_params
       else
         fs.mileage_fare.update_attributes mileage_fare_params
+      end
+
+      fs.zone_fares.update_all(:rate => nil)
+      if fs.flat_fare
+        fs.flat_fare.delete
+        fs.flat_fare = nil
       end
     when 3
       # zone fares
@@ -351,7 +362,18 @@ protected
         fs.zone_fares.update_all fare_params, :id => fare_attrs[:id].to_i
       end
       
+      if fs.mileage_fare
+        fs.mileage_fare.delete
+        fs.mileage_fare = nil
+      end
+
+      if fs.flat_fare
+        fs.flat_fare.delete
+        fs.flat_fare = nil
+      end
     end
+
+    fs.save
   end
 
 end
