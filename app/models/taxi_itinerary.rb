@@ -8,8 +8,6 @@ class TaxiItinerary < Itinerary
     city = Oneclick::Application.config.taxi_fare_finder_api_city
     entity = '&entity_handle=' + city
 
-    binding.pry
-
     #Get fare
     task = 'fare'
     fare_options = "&origin=" + to[0].to_s + ',' + to[1].to_s + "&destination=" + from[0].to_s + ',' + from[1].to_s
