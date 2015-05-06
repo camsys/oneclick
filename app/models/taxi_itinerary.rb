@@ -2,10 +2,17 @@ class TaxiItinerary < Itinerary
 
   def self.get_taxi_itineraries(from, to, trip_datetime)
 
+    taxi_mode = Mode.find_by_code("mode_taxi")
+    taxi_services = Service.where("mode_id = ?", taxi_mode.id)
+
+    # for now we will just use the first taxi service
+    # if we want to support multiple services / legs in one trip or smart selection of service more refactoring is necessary
+    selected_taxi_service = taxi_services.first
+
     base_url = "http://api.taxifarefinder.com/"
-    api_key = Oneclick::Application.config.taxi_fare_finder_api_key
+    api_key = selected_taxi_service.taxi_fare_finder_api_key
     api_key = '?key=' + api_key
-    city = Oneclick::Application.config.taxi_fare_finder_api_city
+    city = selected_taxi_service.taxi_fare_finder_api_city
     entity = '&entity_handle=' + city
 
     #Get fare
