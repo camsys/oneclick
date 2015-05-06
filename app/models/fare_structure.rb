@@ -32,4 +32,15 @@ class FareStructure < ActiveRecord::Base
     end
   end
 
+  def zone_fare(start_lat, start_lng, end_lat, end_lng)
+    return nil unless service && start_lat && start_lng && end_lat && end_lng && service.fare_zones
+    
+    from_zone_id = service.fare_zones.identify(start_lat, start_lng)
+    to_zone_id = service.fare_zones.identify(end_lat, end_lng)
+
+    zone_fare = zone_fares.where(from_zone_id: from_zone_id, to_zone_id: to_zone_id).first
+
+    zone_fare.rate if zone_fare
+  end
+
 end

@@ -12,11 +12,11 @@
 .row#fare_type_form
   - fare_type = fare_structure.fare_type
   - case fare_type
-  - when 0
+  - when FareStructure::FLAT
     = render partial: 'services/paratransit_fares/flat_fare_fields', locals: {fare_structure: fare_structure}
-  - when 1
+  - when FareStructure::MILEAGE
     = render partial: 'services/paratransit_fares/mileage_fare_fields', locals: {fare_structure: fare_structure}
-  - when 3
+  - when FareStructure::ZONE
     = render partial: 'services/paratransit_fares/zone_fare_fields', locals: {fare_structure: fare_structure}
 :javascript
   $('#fare_type_select').val(#{fare_structure.fare_type});

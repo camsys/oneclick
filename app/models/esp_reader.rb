@@ -466,7 +466,7 @@ class EspReader
         end
         if fare.base.nil? or amount >= fare.base.to_f
           fare.base = amount
-          fare.fare_type = 0
+          fare.fare_type = FareStructure::FLAT
           fare.save
         end
       end

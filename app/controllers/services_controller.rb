@@ -311,7 +311,7 @@ protected
     fs.fare_type == fs_attrs[:fare_type].to_i
 
     case fs.fare_type
-    when 0
+    when FareStructure::FLAT
       # flat fare
       flat_fare_attrs = params[:service][:flat_fare_attributes]
       flat_fare_params = {
@@ -330,13 +330,13 @@ protected
         fs.mileage_fare = nil
       end
       fs.zone_fares.update_all(:rate => nil)
-    when 1
+    when FareStructure::MILEAGE
       # mileage fare
       mileage_fare_attrs = params[:service][:mileage_fare_attributes]
       mileage_fare_params = {
         fare_structure: fs,
-        base_rate: (mileage_fare_attrs[:base_rate].to_f if !flat_fare_attrs[:base_rate].blank? ),
-        mileage_rate: (mileage_fare_attrs[:mileage_rate].to_f if !flat_fare_attrs[:mileage_rate].blank?)
+        base_rate: (mileage_fare_attrs[:base_rate].to_f if !mileage_fare_attrs[:base_rate].blank? ),
+        mileage_rate: (mileage_fare_attrs[:mileage_rate].to_f if !mileage_fare_attrs[:mileage_rate].blank?)
       }
       if !fs.mileage_fare
         MileageFare.create mileage_fare_params
@@ -349,7 +349,7 @@ protected
         fs.flat_fare.delete
         fs.flat_fare = nil
       end
-    when 3
+    when FareStructure::ZONE
       # zone fares
       zone_fares_attrs = params[:service][:zone_fares_attributes]
       

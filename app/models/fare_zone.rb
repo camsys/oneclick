@@ -1,7 +1,9 @@
 class FareZone < ActiveRecord::Base
   belongs_to :service
 
-  ZONE_ID_COLUMN = 'ZONE';
+  ZONE_ID_COLUMN = 'ZONE'
+
+  SRID = 0 # Should be 4326, but need to do database change first
 
   def self.parse_shapefile(shapefile_path, service)
     unless shapefile_path.nil? || !service
@@ -40,6 +42,16 @@ class FareZone < ActiveRecord::Base
       end
 
     end
+  end
+
+  def self.identify(lat, lng)
+    return nil unless lat && lng 
+
+    pt = RGeo::Geographic.spherical_factory(:srid => SRID).point(lng, lat)
+
+    zone = where("ST_Contains(geom, ?)", pt).first
+
+    zone.id if zone
   end
 
 end

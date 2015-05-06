@@ -434,29 +434,54 @@ module CsHelpers
     if fare.respond_to? :fare_type
       case fare.fare_type
       when FareStructure::FLAT
-        if fare.base and fare.rate
-          estimated = true
-          comments = "+#{number_to_currency(fare.rate)}/mile - " + I18n.t(:cost_estimated)
-          fare = fare.base.to_f
-          price_formatted = number_to_currency(fare.ceil) + '*'
-          cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
-        elsif fare.base
-          fare = fare.base.to_f
-          price_formatted = number_to_currency(fare)
-          cost_in_words = price_formatted
+        flat_fare = fare.flat_fare
+
+        if flat_fare
+          if itinerary.trip_part.trip.is_return_trip && flat_fare.round_trip_rate
+            fare = flat_fare.round_trip_rate
+          else
+            fare = flat_fare.one_way_rate
+          end
+
+          if fare
+            fare = fare.to_f
+            price_formatted = number_to_currency(fare)
+            cost_in_words = price_formatted
+          end
         else
           fare = nil
         end
       when FareStructure::MILEAGE
-        if fare.base
+        mileage_fare = fare.mileage_fare
+        if mileage_fare && mileage_fare.base_rate
           estimated = true
-          comments = "+#{number_to_currency(fare.rate)}/mile - " + I18n.t(:cost_estimated)
-          fare = fare.base.to_f
+          if mileage_fare.mileage_rate
+            comments = "+#{number_to_currency(mileage_fare.mileage_rate)}/mile - " + I18n.t(:cost_estimated)
+          else
+            comments = I18n.t(:mileage_rate_not_available)
+          end
+          fare = mileage_fare.base_rate.to_f
           price_formatted = number_to_currency(fare.ceil) + '*'
           cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
         else
           fare = nil
         end
+      when FareStructure::ZONE
+        is_return_trip = itinerary.trip_part.is_return_trip
+        trip_places = itinerary.trip_part.trip.trip_places
+        if is_return_trip
+          start_lat = trip_places.last.lat 
+          start_lng = trip_places.last.lon
+          end_lat = trip_places.first.lat 
+          end_lng = trip_places.first.lon
+        else
+          start_lat = trip_places.first.lat 
+          start_lng = trip_places.first.lon
+          end_lat = trip_places.last.lat 
+          end_lng = trip_places.last.lon
+        end
+
+        fare = fare.zone_fare(start_lat, start_lng, end_lat, end_lng)
       when FareStructure::COMPLEX
         fare = nil
         estimated = true
@@ -507,6 +532,11 @@ module CsHelpers
         comments = I18n.t(:see_details_for_cost)
         cost_in_words = I18n.t(:unknown)
       end
+    end
+
+    # save calculated fare
+    if !estimated && fare && itinerary.cost != fare
+      itinerary.update_attributes(cost: fare)
     end
 
     return {price: fare, comments: comments, price_formatted: price_formatted, estimated: estimated, cost_in_words: cost_in_words}

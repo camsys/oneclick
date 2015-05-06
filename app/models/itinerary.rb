@@ -48,10 +48,6 @@ class Itinerary < ActiveRecord::Base
     trip_part.is_return_trip?
   end
 
-  def is_return_trip
-    trip_part.is_return_trip?
-  end
-
   # returns true if this itinerary can be mapped
   def is_mappable
 

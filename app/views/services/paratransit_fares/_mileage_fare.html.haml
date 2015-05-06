@@ -11,7 +11,7 @@
   - if fare.mileage_rate
     .row_fluid
       %b= t(:mileage_rate) + ": "
-      - fare.mileage_rate
+      - if fare.mileage_rate
         = number_to_currency(fare.mileage_rate.to_f).to_s
       - else
         = t(:n_a)
