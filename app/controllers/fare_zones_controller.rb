@@ -10,6 +10,10 @@ class FareZonesController < ApplicationController
       service = Service.find(params[:service_id])
       file = params[:fare_zone][:file] if params[:fare_zone]
 
+      if params[:fare_zone][:zone_id_column].blank?
+        error_msgs <<  I18n.t(:zone_id_column_required)
+      end
+
       if !file.nil?
 
         if file.content_type.include?('zip')
@@ -28,10 +32,10 @@ class FareZonesController < ApplicationController
           service.fare_zones.clear
 
           file_path = file.tempfile.path
-          FareZone.parse_shapefile(file_path, service)
+          FareZone.parse_shapefile(params[:fare_zone][:zone_id_column], file_path, service)
 
           if service.fare_zones.count == 0
-            error_msgs <<  t(:no_fare_zones_identified)
+            error_msgs <<  I18n.t(:no_fare_zones_identified)
           else
             @zones = FareZone.where(service: service).select(:id, :zone_id).order(:zone_id)
             @fares = {}
@@ -50,10 +54,10 @@ class FareZonesController < ApplicationController
             end
           end
         else
-          error_msgs <<  t(:upload_zip_alert)
+          error_msgs <<  I18n.t(:upload_zip_alert)
         end
       else
-        error_msgs << t(:upload_shapefile)
+        error_msgs << I18n.t(:upload_shapefile)
       end
     end
 

@@ -1,6 +1,6 @@
 <% if remotipart_submitted? %>
   <% if @failure %>
-    $("#farezoneUploadDialog").html("<%= @error_msgs %>").addClass("alert alert-danger fade-in");
+    $("#farezoneUploadDialog .modal-flash").html("<%= @error_msgs %>").addClass("alert alert-danger fade-in");
   <% else %> 
     $("#farezoneUploadDialog .modal-flash").empty().removeClass("alert alert-danger fade-in");
     $('#farezoneUploadDialog').modal('toggle');

@@ -12,11 +12,12 @@
           });
         .modal-title{:style => "text-align:left;"}
           %b
-            = t(:upload_farezones)
+            = t(:upload_fare_zones)
       .modal-body{:style => "text-align:left;"}
         .modal-flash
         = simple_form_for :fare_zone, url: service_fare_zones_url(@service), remote: true, format: 'js', html: { class: 'form-horizontal', multipart: true, id: 'farezeonUploadForm' }, authenticity_token: true, wrapper: :horizontal_form do |f|
           = f.error_notification message: print_messages(f)
           %label
             = I18n.t(:upload_fare_zones_notes)
-          = f.input "file", required:true, :label => t(:select_fare_zones_shapefile_to_upload),:as => :file
+          = f.input :zone_id_column, :label => t(:zone_id_column), required:true
+          = f.input :file, required:true, :label => t(:fare_zones_shapefile),:as => :file

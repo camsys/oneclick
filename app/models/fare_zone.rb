@@ -1,12 +1,10 @@
 class FareZone < ActiveRecord::Base
   belongs_to :service
 
-  ZONE_ID_COLUMN = 'ZONE'
-
   SRID = 0 # Should be 4326, but need to do database change first
 
-  def self.parse_shapefile(shapefile_path, service)
-    unless shapefile_path.nil? || !service
+  def self.parse_shapefile(zone_id_column, shapefile_path, service)
+    unless zone_id_column.blank? || shapefile_path.nil? || !service
 
       Zip::File.open(shapefile_path) do |zip_file|
         zip_shp = zip_file.glob('**/*.shp').first
@@ -26,8 +24,10 @@ class FareZone < ActiveRecord::Base
 
             RGeo::Shapefile::Reader.open(shp_name, { :assume_inner_follows_outer => true }) do |shapefile|
               shapefile.each do |shape|
-                break if !shape.attributes.keys.index(ZONE_ID_COLUMN)
-                zone_id = shape.attributes[ZONE_ID_COLUMN]
+                key_index = shape.attributes.keys.map(&:downcase).index(zone_id_column.downcase)
+                break if !key_index
+
+                zone_id = shape.attributes[shape.attributes.keys[key_index]]
                 if  !shape.geometry.nil? and shape.geometry.geometry_type.to_s.downcase.include?('polygon') #only return first polygon
                   FareZone.create(
                     geom: shape.geometry,
