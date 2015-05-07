@@ -916,7 +916,6 @@ es:
   presence_msg: "[es]can't be blank[/es]"
   before_msg: "[es]must be before [/es]"
   advanced_book_day_range_msg: "[es]Advanced booking days: please make sure day range is valid.[/es]"
-  ensure_single_taxi_service_msg: "[es]Only one taxi service allowed.[/es]"
 
   locales:
     en: "English"
