@@ -77,7 +77,8 @@ class TaxiRestService
     trip_itinerary['server_message'] = response_object[1]['businesses'].to_yaml
     trip_itinerary['match_score'] = 1.2
     trip_itinerary['service'] = (ServiceType.where(code: 'taxi').first.services.first rescue nil)
-    Itinerary.new(trip_itinerary)
+
+    trip_itinerary
 
   end
 

@@ -13,8 +13,9 @@ class TaxiItinerary < Itinerary
 
     taxi_services.each { |taxi_service|
       api_key = taxi_service.taxi_fare_finder_key
-      city = taxi_service.taxi_fare_finder_city
+      city = taxi_service.taxi_fare_finder_city}
       results = TaxiRestService.call_out_to_taxi_fare_finder(city, api_key, from, to)
+      Itinerary.new(results)
       itineraries.push(results)
     }
     
