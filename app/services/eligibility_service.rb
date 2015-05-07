@@ -200,18 +200,18 @@ class EligibilityService
     eligible = get_eligible_services_for_traveler(user_profile, trip_part)
   end
 
-  def get_eligible_services_for_trip(trip_part, itineraries)
-    Rails.logger.info "get_eligible_services_for_trip, starting count: #{itineraries.count}"
+  def remove_ineligible_itineraries(trip_part, itineraries)
+    Rails.logger.info "remove_ineligible_itineraries, starting count: #{itineraries.count}"
     itineraries = eligible_by_location(trip_part, itineraries)
-    Rails.logger.info "get_eligible_services_for_trip, after location: #{itineraries.count}"
+    Rails.logger.info "remove_ineligible_itineraries, after location: #{itineraries.count}"
     itineraries = eligible_by_service_time(trip_part, itineraries)
-    Rails.logger.info "get_eligible_services_for_trip, after service time: #{itineraries.count}"
+    Rails.logger.info "remove_ineligible_itineraries, after service time: #{itineraries.count}"
     itineraries = eligible_by_advanced_notice_and_booking_cut_off_time(trip_part, itineraries)
-    Rails.logger.info "get_eligible_services_for_trip, after advance notice: #{itineraries.count}"
+    Rails.logger.info "remove_ineligible_itineraries, after advance notice: #{itineraries.count}"
     itineraries = eligible_by_trip_purpose(trip_part, itineraries)
-    Rails.logger.info "get_eligible_services_for_trip, after trip purpose: #{itineraries.count}"
+    Rails.logger.info "remove_ineligible_itineraries, after trip purpose: #{itineraries.count}"
     itineraries = find_bookable_itineraries(trip_part, itineraries)
-    Rails.logger.info "get_eligible_services_for_trip, after bookable: #{itineraries.count}"
+    Rails.logger.info "remove_ineligible_itineraries, after bookable: #{itineraries.count}"
     itineraries
   end
 

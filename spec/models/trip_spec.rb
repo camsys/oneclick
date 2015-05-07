@@ -56,7 +56,7 @@ describe Trip do
 
       eligibilility_helpers = double(EligibilityService,
         get_accommodating_and_eligible_services_for_traveler: [],
-        get_eligible_services_for_trip: [])
+        remove_ineligible_itineraries: [])
 
       TripPlanner.stub(:new).and_return(trip_planner)
       EligibilityService.stub(:new).and_return(eligibilility_helpers)

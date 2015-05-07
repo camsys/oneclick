@@ -430,7 +430,7 @@ class TripPart < ActiveRecord::Base
     eh = EligibilityService.new
     fh = FareHelper.new
     itins = eh.get_accommodating_and_eligible_services_for_traveler(self)
-    itins = eh.get_eligible_services_for_trip(self, itins)
+    itins = eh.remove_ineligible_itineraries(self, itins)
 
     itins = itins.collect do |itinerary|
       new_itinerary = Itinerary.new(itinerary)
