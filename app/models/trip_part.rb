@@ -120,7 +120,7 @@ class TripPart < ActiveRecord::Base
         # start with the non-OTP modes
       when Mode.taxi
         timed "taxi" do
-          itins += create_taxi_itineraries
+          itins << TaxiItinerary.get_taxi_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time)
         end
       when Mode.paratransit
         timed "paratransit" do
@@ -426,28 +426,11 @@ class TripPart < ActiveRecord::Base
     end
   end
 
-  def create_taxi_itineraries
-    itins = []
-    tp = TripPlanner.new
-    result, response = tp.get_taxi_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time)
-
-    if result
-      itinerary = tp.convert_taxi_itineraries(response)
-      # itinerary['legs'] = tp.get_drive_time(!is_depart, trip_time, from_trip_place.location.first,
-      #       from_trip_place.location.last, to_trip_place.location.first, to_trip_place.location.last)[1]
-      itinerary['server_message'] = itinerary['server_message'].to_yaml if itinerary['server_message'].is_a? Array
-      itins << Itinerary.new(itinerary)
-    else
-      itins << Itinerary.new('server_status'=>500, 'server_message'=>response.to_s)
-    end
-    itins
-  end
-
   def create_paratransit_itineraries
     eh = EligibilityService.new
     fh = FareHelper.new
     itins = eh.get_accommodating_and_eligible_services_for_traveler(self)
-    itins = eh.get_eligible_services_for_trip(self, itins)
+    itins = eh.remove_ineligible_itineraries(self, itins)
 
     itins = itins.collect do |itinerary|
       new_itinerary = Itinerary.new(itinerary)

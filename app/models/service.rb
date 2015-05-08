@@ -9,6 +9,7 @@ class Service < ActiveRecord::Base
   #associations
   belongs_to :provider
   belongs_to :service_type
+  belongs_to :mode
   has_many :fare_structures
   has_many :schedules
   has_many :booking_cut_off_times
@@ -66,7 +67,6 @@ class Service < ActiveRecord::Base
   validates :provider, presence: true
   validates :service_type, presence: true
   validate :ensure_valid_advanced_book_day_range
-  before_save :ensure_single_taxi_service
 
   mount_uploader :logo, ServiceLogoUploader
 
@@ -422,6 +422,32 @@ class Service < ActiveRecord::Base
     rel
   end
 
+  def is_valid_for_trip_area(from, to)
+
+   #taken from def eligible_by_location(trip_part, itineraries)
+   #some day we may want to pass the whole object around and not just from/to
+   
+   mercator_factory = RGeo::Geographic.simple_mercator_factory
+
+   service = self
+
+   Rails.logger.info "eligible_by_location for service #{service.name rescue nil}"
+
+   origin_point = mercator_factory.point(from[0], from[1])
+   destination_point = mercator_factory.point(to[0], to[1])
+
+   # right now we validate a service as eligible for location if the endpoint_area_geom or coverage_area_geom is nil... really?
+   return false if service.endpoint_area_geom.nil?
+   return false if service.coverage_area_geom.nil?
+
+   return false unless service.endpoint_area_geom.geom.contains? origin_point or service.endpoint_area_geom.geom.contains? destination_point
+
+   return false unless service.coverage_area_geom.geom.contains? origin_point and service.coverage_area_geom.geom.contains? destination_point
+
+   return true
+
+  end
+
   private
 
   def human_readable_time_notice(time_in_mins)
@@ -447,12 +473,6 @@ class Service < ActiveRecord::Base
     max_mins = self.max_advanced_book_minutes
     if !min_mins.nil? && !max_mins.nil? && min_mins > max_mins
       errors.add(:max_advanced_book_days_part, I18n.t(:advanced_book_day_range_msg))
-    end
-  end
-
-  def ensure_single_taxi_service
-    if (ServiceType.where(code: 'taxi').count > 0) && (self.service_type.code == "taxi")
-      errors.add(:service_type, I18n.t(:ensure_single_taxi_service_msg))
     end
   end
 

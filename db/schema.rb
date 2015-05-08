@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150501182433) do
+ActiveRecord::Schema.define(version: 20150506215033) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -369,9 +369,6 @@ ActiveRecord::Schema.define(version: 20150501182433) do
     t.datetime "updated_at", null: false
   end
 
-# Could not dump table "reporting_lookup_tables" because of following StandardError
-#   Unknown type 'name' for column 'data_access_type'
-
   create_table "reporting_output_fields", force: true do |t|
     t.integer  "reporting_report_id", null: false
     t.string   "name",                null: false
@@ -518,6 +515,8 @@ ActiveRecord::Schema.define(version: 20150501182433) do
     t.integer  "max_advanced_book_minutes",                default: 0,     null: false
     t.string   "taxi_fare_finder_key"
     t.string   "display_color"
+    t.integer  "mode_id"
+    t.string   "taxi_fare_finder_city",        limit: 64
   end
 
   create_table "services_users", id: false, force: true do |t|

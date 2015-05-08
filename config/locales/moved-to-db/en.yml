@@ -967,7 +967,6 @@ en:
   presence_msg: "can't be blank"
   before_msg: "must be before "
   advanced_book_day_range_msg: "Advanced booking days: please make sure day range is valid."
-  ensure_single_taxi_service_msg: "Only one taxi service allowed."
 
   date:
     abbr_day_names:
