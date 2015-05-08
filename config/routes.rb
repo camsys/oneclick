@@ -363,8 +363,10 @@ Oneclick::Application.routes.draw do
       resources :fare_zones, only: [:create]
       
       member do
+        get 'show'
         get 'fare_type_form'
         patch 'undelete'
+        get 'view'
       end
     end
     resources :ratings, only: [:index, :create] do
@@ -383,12 +385,6 @@ Oneclick::Application.routes.draw do
     end
     get "plan_a_trip" => 'trips#plan_a_trip'
     post "trips/:trip_id/ratings/trip_only" => 'ratings#trip_only', as: :trip_only_rating
-
-    resources :services do
-      member do
-        get 'view'
-      end
-    end
 
     resources :esp_reader do
       collection do
