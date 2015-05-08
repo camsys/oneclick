@@ -22,7 +22,7 @@
         .pull-right
           = button_tag type: 'submit', class: "btn action-button", style: "margin-right:5px;" do
             = icon_label(:apply)
-          = link_to t(:cancel), service_path(@service), class: "btn action-button"
+          = link_to t(:cancel), @service.id.nil? ? admin_provider_path(@provider) : service_path(@service), class: "btn action-button"
 
   .row
     .col-sm-6
