@@ -423,27 +423,27 @@ class Service < ActiveRecord::Base
 
   def is_valid_for_trip_area(from, to)
 
-    #taken from def eligible_by_location(trip_part, itineraries)
-    #some day we may want to pass the whole object around and not just from/to
-    
-    mercator_factory = RGeo::Geographic.simple_mercator_factory
+   #taken from def eligible_by_location(trip_part, itineraries)
+   #some day we may want to pass the whole object around and not just from/to
+   
+   mercator_factory = RGeo::Geographic.simple_mercator_factory
 
-    service = self
+   service = self
 
-    Rails.logger.info "eligible_by_location for service #{service.name rescue nil}"
+   Rails.logger.info "eligible_by_location for service #{service.name rescue nil}"
 
-    origin_point = factory.point(trip_part.from_trip_place.lon.to_f, trip_part.from_trip_place.lat.to_f)
-    destination_point = factory.point(trip_part.to_trip_place.lon.to_f, trip_part.to_trip_place.lat.to_f)
+   origin_point = mercator_factory.point(from[0], from[1])
+   destination_point = mercator_factory.point(to[0], to[1])
 
-    # right now we validate a service as eligible for location if the endpoint_area_geom or coverage_area_geom is nil... really?
-    return false if service.endpoint_area_geom.nil?
-    return false if service.coverage_area_geom.nil?
+   # right now we validate a service as eligible for location if the endpoint_area_geom or coverage_area_geom is nil... really?
+   return false if service.endpoint_area_geom.nil?
+   return false if service.coverage_area_geom.nil?
 
-    return false if !service.endpoint_area_geom.geom.contains? origin_point && !service.endpoint_area_geom.geom.contains? destination_point
+   return false unless service.endpoint_area_geom.geom.contains? origin_point or service.endpoint_area_geom.geom.contains? destination_point
 
-    return false if service.coverage_area_geom.geom.contains? origin_point || service.coverage_area_geom.geom.contains? destination_point
+   return false unless service.coverage_area_geom.geom.contains? origin_point and service.coverage_area_geom.geom.contains? destination_point
 
-    return true
+   return true
 
   end
 

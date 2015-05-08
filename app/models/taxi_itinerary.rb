@@ -11,13 +11,14 @@ class TaxiItinerary < Itinerary
     # if we want to support multiple services / legs in one trip or smart selection of service more refactoring is necessary
     selected_taxi_service = taxi_services.first
 
-    taxi_services.each { |taxi_service|
-      api_key = taxi_service.taxi_fare_finder_key
-      city = taxi_service.taxi_fare_finder_city}
-      results = TaxiRestService.call_out_to_taxi_fare_finder(city, api_key, from, to)
-      Itinerary.new(results)
-      itineraries.push(results)
-    }
+    taxi_services.each do |taxi_service|
+      if taxi_service.is_valid_for_trip_area(from, to)
+        api_key = taxi_service.taxi_fare_finder_key
+        city = taxi_service.taxi_fare_finder_city
+        results = TaxiRestService.call_out_to_taxi_fare_finder(city, api_key, from, to)
+        itineraries.push(Itinerary.new(results))
+      end
+    end
     
     return itineraries
 
