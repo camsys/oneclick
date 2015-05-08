@@ -1,7 +1,7 @@
 .form-horizontal
   - collection.each do |c|
     - next if c.code=='age' # TODO kludge
-    - next unless c.ask_early
+    - (next unless c.ask_early) if c.class == Characteristic
     .form-group
       %label.col-sm-7.control-label= t(c.note)
       .col-sm-5
