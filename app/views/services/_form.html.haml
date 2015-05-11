@@ -1,12 +1,13 @@
 - is_transit = @service.is_transit?
 - is_taxi = @service.is_taxi?
 - is_paratransit = @service.is_paratransit?
+- paratransit_id = ServiceType.where(code: 'paratransit').first.id if ServiceType.where(code: 'paratransit').first
 
-= simple_form_for @service, html: { class: 'form-horizontal', multipart: true},
+= simple_form_for @service, html: { class: 'form-horizontal service-edit-form', multipart: true},
         wrapper: :horizontal_form do |f|
   = f.error_notification message: print_messages(f)
   - if @service.new_record?
-    = f.hidden_field :provider, value: @provider.id
+    = f.hidden_field :provider_id, value: @provider.id
 
   .row.info-header
     .col-sm-6
@@ -301,18 +302,16 @@
             %h4.panel-title
               = t(:fare)
               = add_tooltip("fare_help")
-          - if is_paratransit && @service.fare_structures.count > 0
-            .panel-body
-              .row_fluid
-                = render partial: 'services/paratransit_fares/form', locals: {fare_structure: @service.fare_structures.first}
-          -else
-            = f.simple_fields_for :fare_structures do |fare|
-              .panel-body
-                .row_fluid
-                  = fare.input :base, label: t(:base_rate), input_html: {class: "form-control"}
-                  = fare.input :rate, label: t(:mileage_rate), input_html: {class: "form-control"}
-                  = f.input :taxi_fare_finder_key, label: t(:taxi_fare_finder_key)
-                  = fare.input :desc, label: t(:comments), as: :text, input_html: {class: "form-control"}
+          .panel-body
+            .row_fluid.paratransit-fare{style: "#{is_paratransit && @service.fare_structures.count > 0 ? '' : 'display:none;'}"}
+              = render partial: 'services/paratransit_fares/form', locals: {fare_structure: @service.fare_structures.first}
+          
+            .row_fluid.non-paratransit-fare{style: "#{is_paratransit && @service.fare_structures.count > 0 ? 'display:none;' : ''}"}
+              = f.simple_fields_for :fare_structures do |fare|
+                = fare.input :base, label: t(:base_rate), input_html: {class: "form-control"}
+                = fare.input :rate, label: t(:mileage_rate), input_html: {class: "form-control"}
+                = f.input :taxi_fare_finder_key, label: t(:taxi_fare_finder_key)
+                = fare.input :desc, label: t(:comments), as: :text, input_html: {class: "form-control"}
 
   - unless is_transit || is_taxi
     .row
@@ -416,3 +415,25 @@
     el = $('#fare-panel').detach();
     $('#schedule-panel').closest('.row').append(el);
   }
+
+  $(document).ready(function() {
+    // show fare fields per service type
+    $('#service_service_type_id').on('change', function(e) {
+      if($(this).val() != #{paratransit_id}) {
+        $('.paratransit-fare').hide();
+        $('.non-paratransit-fare').show();
+      } else {
+        $('.paratransit-fare').show();
+        $('.non-paratransit-fare').hide();
+      }
+    });
+
+    // remove non-related fare fields for selected service typ when form is submitted
+    $('.service-edit-form').submit(function() {
+      if($("#service_service_type_id").val() != #{paratransit_id}) {
+        $('.paratransit-fare').remove();
+      } else {
+        $('.non-paratransit-fare').remove();
+      }
+    });
+  });

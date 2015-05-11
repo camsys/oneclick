@@ -13,6 +13,7 @@ ht:
   flat_fare: '[ht]Flat Fare[/ht]'
   mileage_fare: '[ht]Mileage Fare[/ht]'
   zone_fare: '[ht]Zone Fare[/ht]'
+  zone_fare_new_service_warning: '[ht]Please save the service first, then go to service editng page to further edit zone fares. Fare zone shapefile is needed.[/ht]'
   one_way_rate: '[ht]One Way Rate[/ht]'
   round_trip_rate: '[ht]Round Trip Rate[/ht]'
   zone_id: '[ht]Zone ID[/ht]'

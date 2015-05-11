@@ -34,6 +34,7 @@ en:
   flat_fare: 'Flat Fare'
   mileage_fare: 'Mileage Fare'
   zone_fare: 'Zone Fare'
+  zone_fare_new_service_warning: 'Please save the service first, then go to service editng page to further edit zone fares. Fare zone shapefile is needed.'
   one_way_rate: 'One Way Rate'
   round_trip_rate: 'Round Trip Rate'
   zone_id: 'Zone ID'

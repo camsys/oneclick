@@ -109,7 +109,7 @@ class ServicesController < ApplicationController
     # already done by load_service
     # @service = Service.new(service_params)
 
-    @provider = Provider.find(params[:provider_id])
+    @provider = Provider.find(params[:provider_id] || params[:service][:provider_id])
     @service.provider = @provider
     @service.internal_contact = User.find_by_id(params[:service][:internal_contact])
 

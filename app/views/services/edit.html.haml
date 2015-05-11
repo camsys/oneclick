@@ -1,5 +1,4 @@
 - content_for :title, "#{t(:site_title)} - #{t(:edit)} #{t(:service)}"
 = render 'form'
 
--if @service.service_type.code == 'paratransit'
-  = render 'services/paratransit_fares/farezone_upload_modal'
+= render 'services/paratransit_fares/farezone_upload_modal'

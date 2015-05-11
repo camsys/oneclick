@@ -3,24 +3,59 @@
 .col-sm-9
   %input.hidden{name:'service[fare_structures_attributes][id]', value: fare_structure.id}
   %select.form-control#fare_type_select{name: 'service[fare_structures_attributes][fare_type]'}
-    %option{value: 0}
+    %option{value: FareStructure::FLAT}
       = t(:flat_fare)
-    %option{value: 1}
+    %option{value: FareStructure::MILEAGE}
       = t(:mileage_fare)
-    %option{value: 3}
+    %option{value: FareStructure::ZONE}
       = t(:zone_fare)
 .row#fare_type_form
   - fare_type = fare_structure.fare_type
-  - case fare_type
-  - when FareStructure::FLAT
+  - is_flat_fare = fare_type == FareStructure::FLAT
+  - is_mileage_fare = fare_type == FareStructure::MILEAGE
+  - is_zone_fare = fare_type == FareStructure::ZONE
+  .paratransit-flat-fare{style: "#{is_flat_fare ? '' : 'display:none;'}"}
     = render partial: 'services/paratransit_fares/flat_fare_fields', locals: {fare_structure: fare_structure}
-  - when FareStructure::MILEAGE
+  .paratransit-mileage-fare{style: "#{is_mileage_fare ? '' : 'display:none;'}"}
     = render partial: 'services/paratransit_fares/mileage_fare_fields', locals: {fare_structure: fare_structure}
-  - when FareStructure::ZONE
-    = render partial: 'services/paratransit_fares/zone_fare_fields', locals: {fare_structure: fare_structure}
+  .paratransit-zone-fare{style: "#{is_zone_fare ? '' : 'display:none;'}"}
+    = t(:zone_fare_new_service_warning)
 
 :javascript
   $('#fare_type_select').val(#{fare_structure.fare_type});
-  $('#fare_type_select').on('change', function(e) {
-    $.ajax("#{fare_type_form_service_path(@service)}?fare_type=" + $('#fare_type_select').val()); 
+
+  $(document).ready(function(){
+    $('.service-edit-form').submit(function() {
+      var fare_type_code = $('#fare_type_select').val();
+
+      if(fare_type_code == "#{FareStructure::FLAT}") {
+        $('.paratransit-mileage-fare').remove();
+        $('.paratransit-zone-fare').remove();
+      } else if(fare_type_code == "#{FareStructure::MILEAGE}") {
+        $('.paratransit-flat-fare').remove();
+        $('.paratransit-zone-fare').remove();
+      } else if(fare_type_code == "#{FareStructure::ZONE}") {
+        $('.paratransit-flat-fare').remove();
+        $('.paratransit-mileage-fare').remove();
+      } 
+    });
+
+    $('#fare_type_select').on('change', function(e) {
+      var fare_type_code = $(this).val();
+
+      if(fare_type_code == "#{FareStructure::FLAT}") {
+        $('.paratransit-flat-fare').show();
+        $('.paratransit-mileage-fare').hide();
+        $('.paratransit-zone-fare').hide();
+      } else if(fare_type_code == "#{FareStructure::MILEAGE}") {
+        $('.paratransit-flat-fare').hide();
+        $('.paratransit-mileage-fare').show();
+        $('.paratransit-zone-fare').hide();
+      } else if(fare_type_code == "#{FareStructure::ZONE}") {
+        $('.paratransit-flat-fare').hide();
+        $('.paratransit-mileage-fare').hide();
+        $('.paratransit-zone-fare').show();
+      } 
+    });
   });
+  
