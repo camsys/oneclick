@@ -187,7 +187,7 @@ class ServicesController < ApplicationController
         end
 
         # fare
-        if @service.service_type.code == 'paratransit'
+        if @service.is_paratransit?
           update_fare
         end
 

@@ -2,11 +2,9 @@
 - temp_rating = @service.ratings.build(user: @traveler)
 - can_manage_provider =(can? :manage, :all) || ((can? :full_read, @service) && !current_user.nil? && !@service.provider.nil? && !current_user.provider.nil? && @service.provider.id == current_user.provider.id)
 
-- if @service.service_type
-  - service_type_code = @service.service_type.code
-  - is_transit = service_type_code == "transit"
-  - is_taxi = service_type_code == "taxi"
-  - is_paratransit = service_type_code == "paratransit"
+- is_transit = @service.is_transit?
+- is_taxi = @service.is_taxi?
+- is_paratransit = @service.is_paratransit?
 
 -if can? :index, Service
   .col-sm-12

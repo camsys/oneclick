@@ -1,17 +1,12 @@
-- if @service.service_type
-  - service_type_code = @service.service_type.code
-  - is_transit = service_type_code == "transit"
-  - is_taxi = service_type_code == "taxi"
-  - is_paratransit = service_type_code == "paratransit"
+- is_transit = @service.is_transit?
+- is_taxi = @service.is_taxi?
+- is_paratransit = @service.is_paratransit?
 
-= simple_form_for @service,
-        url: @service.id.nil? ? services_path(provider_id: @provider) : service_path,
-        method: @service.id.nil? ? 'post' : 'put', html: { class: 'form-horizontal', multipart: true },
+= simple_form_for @service, html: { class: 'form-horizontal', multipart: true},
         wrapper: :horizontal_form do |f|
+  = f.error_notification message: print_messages(f)
   - if @service.new_record?
     = f.hidden_field :provider, value: @provider.id
-
-  = f.error_notification message: print_messages(f)
 
   .row.info-header
     .col-sm-6

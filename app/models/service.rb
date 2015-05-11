@@ -70,6 +70,22 @@ class Service < ActiveRecord::Base
 
   mount_uploader :logo, ServiceLogoUploader
 
+  def is_paratransit?
+    is_service_type('paratransit')
+  end
+  
+  def is_transit?
+    is_service_type('transit')
+  end
+
+  def is_taxi?
+    is_service_type('taxi')
+  end
+
+  def is_service_type(type)
+    service_type && service_type.code == type
+  end
+
   def human_readable_advanced_notice
     human_readable_time_notice(self.advanced_notice_minutes)
   end
