@@ -187,7 +187,9 @@ class ServicesController < ApplicationController
         end
 
         # fare
-        update_fare
+        if @service.service_type.code == 'paratransit'
+          update_fare
+        end
 
         alert_msgs = [zip_alert_msg, polygon_alert_msg].delete_if {|x| x == nil}
 
@@ -302,6 +304,7 @@ protected
     if @service.fare_structures.count == 0
       @service.fare_structures.build
     end
+
     fs_attrs = service_params[:fare_structures_attributes]
     if fs_attrs[:id]
       fs = FareStructure.find(fs_attrs[:id])

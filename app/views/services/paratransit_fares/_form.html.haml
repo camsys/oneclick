@@ -18,9 +18,9 @@
     = render partial: 'services/paratransit_fares/mileage_fare_fields', locals: {fare_structure: fare_structure}
   - when FareStructure::ZONE
     = render partial: 'services/paratransit_fares/zone_fare_fields', locals: {fare_structure: fare_structure}
--if @service.id.present?
-  :javascript
-    $('#fare_type_select').val(#{fare_structure.fare_type});
-    $('#fare_type_select').on('change', function(e) {
-      $.ajax("#{fare_type_form_service_path(@service)}?fare_type=" + $('#fare_type_select').val()); 
-    });
+
+:javascript
+  $('#fare_type_select').val(#{fare_structure.fare_type});
+  $('#fare_type_select').on('change', function(e) {
+    $.ajax("#{fare_type_form_service_path(@service)}?fare_type=" + $('#fare_type_select').val()); 
+  });

@@ -299,22 +299,25 @@
                   as: :check_boxes,
                   item_wrapper_tag: 'div', wrapper: :inline_checkboxes
 
-    .col-sm-4#fare-panel{style: "#{is_transit ? 'display:none;' : ''}"}
-      .panel.panel-default{class: "#{is_taxi ? 'well2' : 'well1'}"}
-        .panel-heading
-          %h4.panel-title
-            = t(:fare)
-            = add_tooltip("fare_help")
-        .panel-body{style: "#{is_paratransit && @service.fare_structures.count > 0 ? '' : 'display:none;'}"}
-          .row_fluid
-            = render partial: 'services/paratransit_fares/form', locals: {fare_structure: @service.fare_structures.first}
-        = f.simple_fields_for :fare_structures do |fare|
-          .panel-body{style: "#{is_paratransit && @service.fare_structures.count > 0 ? 'display:none;' : ''}"}
-            .row_fluid
-              = fare.input :base, label: t(:base_rate), input_html: {class: "form-control"}
-              = fare.input :rate, label: t(:mileage_rate), input_html: {class: "form-control"}
-              = f.input :taxi_fare_finder_key, label: t(:taxi_fare_finder_key)
-              = fare.input :desc, label: t(:comments), as: :text, input_html: {class: "form-control"}
+    - unless is_transit
+      .col-sm-4#fare-panel
+        .panel.panel-default{class: "#{is_taxi ? 'well2' : 'well1'}"}
+          .panel-heading
+            %h4.panel-title
+              = t(:fare)
+              = add_tooltip("fare_help")
+          - if is_paratransit && @service.fare_structures.count > 0
+            .panel-body
+              .row_fluid
+                = render partial: 'services/paratransit_fares/form', locals: {fare_structure: @service.fare_structures.first}
+          -else
+            = f.simple_fields_for :fare_structures do |fare|
+              .panel-body
+                .row_fluid
+                  = fare.input :base, label: t(:base_rate), input_html: {class: "form-control"}
+                  = fare.input :rate, label: t(:mileage_rate), input_html: {class: "form-control"}
+                  = f.input :taxi_fare_finder_key, label: t(:taxi_fare_finder_key)
+                  = fare.input :desc, label: t(:comments), as: :text, input_html: {class: "form-control"}
 
   - unless is_transit || is_taxi
     .row
