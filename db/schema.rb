@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150506215033) do
+ActiveRecord::Schema.define(version: 20150511140726) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -367,6 +367,15 @@ ActiveRecord::Schema.define(version: 20150506215033) do
     t.string   "name",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "reporting_lookup_tables", force: true do |t|
+    t.string   "name",                              null: false
+    t.string   "display_field_name",                null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.string   "id_field_name",      default: "id", null: false
+    t.string   "data_access_type"
   end
 
   create_table "reporting_output_fields", force: true do |t|
