@@ -448,6 +448,12 @@ class Service < ActiveRecord::Base
 
   end
 
+  def can_provide_user_accommodations(user, service)
+
+    user_accomodations = UserAccomodations.where("user_profile_id = ?", user.user_profile.id)
+
+  end
+
   private
 
   def human_readable_time_notice(time_in_mins)
