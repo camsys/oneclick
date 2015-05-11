@@ -363,7 +363,6 @@ Oneclick::Application.routes.draw do
       resources :fare_zones, only: [:create]
       
       member do
-        get 'show'
         get 'fare_type_form'
         patch 'undelete'
         get 'view'
