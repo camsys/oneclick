@@ -19,7 +19,11 @@
   .paratransit-mileage-fare{style: "#{is_mileage_fare ? '' : 'display:none;'}"}
     = render partial: 'services/paratransit_fares/mileage_fare_fields', locals: {fare_structure: fare_structure}
   .paratransit-zone-fare{style: "#{is_zone_fare ? '' : 'display:none;'}"}
-    = t(:zone_fare_new_service_warning)
+    - if fare_structure.service && fare_structure.service.id
+      = render partial: 'services/paratransit_fares/zone_fare_fields', locals: {fare_structure: fare_structure}
+    - else
+      .col-sm-12
+        = t(:zone_fare_new_service_warning)
 
 :javascript
   $('#fare_type_select').val(#{fare_structure.fare_type});
