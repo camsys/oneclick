@@ -160,6 +160,12 @@ class ServicesController < ApplicationController
 
       if @service.update_attributes(service_params)
 
+        #hacking in the mode for now - have agreed with DE to revisit Mode issues soon after this release
+        if @service.service_type.code == "taxi"
+          taxi_mode = Mode.find_by_code("mode_taxi")
+          @service.mode_id = taxi_mode.id
+        end
+
         # internal_contact is a special case
         @service.internal_contact = User.find_by_id(params[:service][:internal_contact])
 
