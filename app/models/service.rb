@@ -464,6 +464,14 @@ class Service < ActiveRecord::Base
 
   end
 
+  def can_provide_user_accommodations(user, service)
+
+    user_accommodations_unmet_by_selected_service = UserAccommodation.where("user_profile_id = ? AND value = 'true' AND accommodation_id NOT IN (SELECT accommodation_id from service_accommodations where service_id = ?)", user.user_profile.id, service.id)
+
+    return user_accommodations_unmet_by_selected_service.count == 0
+
+  end
+
   private
 
   def human_readable_time_notice(time_in_mins)
