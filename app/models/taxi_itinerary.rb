@@ -7,10 +7,6 @@ class TaxiItinerary < Itinerary
     taxi_mode = Mode.find_by_code("mode_taxi")
     taxi_services = Service.where("mode_id = ?", taxi_mode.id)
 
-    # for now we will just use the first taxi service
-    # if we want to support multiple services / legs in one trip or smart selection of service more refactoring is necessary
-    selected_taxi_service = taxi_services.first
-
     user = User.find(1)
 
     taxi_services.each do |taxi_service|
