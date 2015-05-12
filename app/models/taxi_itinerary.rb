@@ -1,5 +1,15 @@
 class TaxiItinerary < Itinerary
 
+  def calculate_fare
+    if self.cost.blank?
+      base_rate = self.service.fare_structures.first.base
+      # we don't have mileage currently, so not calculating the variable portion
+      #variable_rate = self.service.fare_structures.first.rate
+      self.cost = base_rate
+      self.save
+    end
+  end
+
   def self.get_taxi_itineraries(from, to, trip_datetime)
 
     itineraries = []
@@ -14,8 +24,20 @@ class TaxiItinerary < Itinerary
     taxi_services.each do |taxi_service|
       if (taxi_service.is_valid_for_trip_area(from, to) && taxi_service.can_provide_user_accommodations(user, taxi_service))
         city = taxi_service.taxi_fare_finder_city
-        results = TaxiRestService.call_out_to_taxi_fare_finder(city, api_key, from, to)
-        itineraries.push(Itinerary.new(results))
+        if city.present?
+          results = TaxiRestService.call_out_to_taxi_fare_finder(city, api_key, from, to)
+          new_itinerary = TaxiItinerary.new(results)
+        else
+          new_itinerary = TaxiItinerary.new
+          
+          new_itinerary.duration = 0
+        end
+        new_itinerary.returned_mode_code = taxi_mode.code
+        new_itinerary.mode = taxi_mode
+        new_itinerary.service = taxi_service
+        new_itinerary.calculate_fare
+        
+        itineraries.push(new_itinerary)
       end
     end
     
