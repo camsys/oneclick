@@ -453,8 +453,8 @@ class Service < ActiveRecord::Base
    destination_point = mercator_factory.point(to[0], to[1])
 
    # right now we validate a service as eligible for location if the endpoint_area_geom or coverage_area_geom is nil... really?
-   return false if service.endpoint_area_geom.nil?
-   return false if service.coverage_area_geom.nil?
+   return true if service.endpoint_area_geom.nil?
+   return true if service.coverage_area_geom.nil?
 
    return false unless service.endpoint_area_geom.geom.contains? origin_point or service.endpoint_area_geom.geom.contains? destination_point
 
