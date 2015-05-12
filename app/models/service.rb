@@ -450,9 +450,6 @@ class Service < ActiveRecord::Base
 
   def can_provide_user_accommodations(user, service)
 
-    user_accommodations = UserAccommodation.where("user_profile_id = ?", user.user_profile.id)
-    service_accommodations = ServiceAccommodation.where("service_id = ?", service.id)
-
     user_accommodations_unmet_by_selected_service = UserAccommodation.where("user_profile_id = ? AND value = 'true' AND accommodation_id NOT IN (SELECT accommodation_id from service_accommodations where service_id = ?)", user.user_profile.id, service.id)
 
     return user_accommodations_unmet_by_selected_service.count == 0
