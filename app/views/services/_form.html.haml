@@ -310,7 +310,7 @@
               = f.simple_fields_for :fare_structures do |fare|
                 = fare.input :base, label: t(:base_rate), input_html: {class: "form-control"}
                 = fare.input :rate, label: t(:mileage_rate), input_html: {class: "form-control"}
-                = f.input :taxi_fare_finder_key, label: t(:taxi_fare_finder_key)
+                = f.input :taxi_fare_finder_city, label: t(:taxi_fare_finder_city)
                 = fare.input :desc, label: t(:comments), as: :text, input_html: {class: "form-control"}
 
   - unless is_transit || is_taxi

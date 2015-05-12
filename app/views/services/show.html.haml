@@ -218,9 +218,9 @@
                   -else
                     = t(:flat_fare_unavailable) + "."
                 .row_fluid
-                  %b= t(:taxi_fare_finder_key) + ": "
-                  -if @service.taxi_fare_finder_key
-                    = @service.taxi_fare_finder_key
+                  %b= t(:taxi_fare_finder_city) + ": "
+                  -if @service.taxi_fare_finder_city.present?
+                    = @service.taxi_fare_finder_city
                   -else
                     = t(:none)
                 .row_fluid

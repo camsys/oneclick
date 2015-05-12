@@ -153,10 +153,19 @@ class ServicesController < ApplicationController
     fixup_comments_attributes_for_delete :service
 
     @service = Service.find(params[:id])
+
     respond_to do |format|
+
       par = service_params
 
       if @service.update_attributes(service_params)
+
+        #hacking in the mode for now - have agreed with DE to revisit Mode issues soon after this release
+        if @service.service_type.code == "taxi"
+          taxi_mode = Mode.find_by_code("mode_taxi")
+          @service.mode_id = taxi_mode.id
+        end
+
         # internal_contact is a special case
         @service.internal_contact = User.find_by_id(params[:service][:internal_contact])
 
@@ -252,7 +261,7 @@ protected
                                     :notice_days_part, :notice_hours_part, :notice_minutes_part, :max_advanced_book_minutes,
                                     :max_advanced_book_days_part, :max_advanced_book_hours_part, :max_advanced_book_minutes_part,
                                     :service_window, :time_factor, :provider_id, :service_type_id,
-                                    :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email, :taxi_fare_finder_key, :display_color,
+                                    :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email, :taxi_fare_finder_city, :display_color,
                                     { schedules_attributes:
                                       [ :day_of_week, :start_time, :end_time, :id, :_destroy ] },
                                     { booking_cut_off_times_attributes:

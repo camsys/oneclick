@@ -24,7 +24,7 @@ es:
   zone_id_column: '[es]Zone ID Column Name(*)[/es]'
   zone_id_column_required: '[es]Zone ID column name is required.[/es]'
   no_fare_zones_identified: '[es]No fare zones identified from uploaded file[/es]'
-  taxi_fare_finder_key: "[es]Taxi Fare Finder Key[/es]"
+  taxi_fare_finder_city: "[es]Taxi Fare Finder City[/es]"
   trip_planned_assistance: "Trip planned with assistance from "
   public_comments: "Public Comments"
   private_comments: "Private Comments"

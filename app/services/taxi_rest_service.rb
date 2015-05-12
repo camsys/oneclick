@@ -67,8 +67,6 @@ class TaxiRestService
   def self.format_response_object(response_object)
 
     trip_itinerary = {}
-    trip_itinerary['mode'] = Mode.taxi
-    trip_itinerary['returned_mode_code'] = Mode.taxi.code
     trip_itinerary['duration'] = response_object[0]['duration'].to_f
     trip_itinerary['walk_time'] = 0
     trip_itinerary['walk_distance'] = 0
@@ -76,7 +74,6 @@ class TaxiRestService
     trip_itinerary['server_status'] = 200
     trip_itinerary['server_message'] = response_object[1]['businesses'].to_yaml
     trip_itinerary['match_score'] = 1.2
-    trip_itinerary['service'] = (ServiceType.where(code: 'taxi').first.services.first rescue nil)
 
     trip_itinerary
 
