@@ -9,9 +9,10 @@ class TaxiItinerary < Itinerary
 
     user = User.find(1)
 
+    api_key = Oneclick::Application.config.taxi_fare_finder_api_key
+
     taxi_services.each do |taxi_service|
       if (taxi_service.is_valid_for_trip_area(from, to) && taxi_service.can_provide_user_accommodations(user, taxi_service))
-        api_key = taxi_service.taxi_fare_finder_key
         city = taxi_service.taxi_fare_finder_city
         results = TaxiRestService.call_out_to_taxi_fare_finder(city, api_key, from, to)
         itineraries.push(Itinerary.new(results))

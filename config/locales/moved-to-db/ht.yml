@@ -24,7 +24,7 @@ ht:
   zone_id_column_required: '[ht]Zone ID column name is required.[/ht]'
   no_fare_zones_identified: '[ht]No fare zones identified from uploaded file[/ht]'
   display_color: "[ht]Display Color[/ht]"
-  taxi_fare_finder_key: "[ht]Taxi Fare Finder Key[/ht]"
+  taxi_fare_finder_city: "[ht]Taxi Fare Finder City[/ht]"
   trip_planned_assistance: "Trip planned with assistance from "
   public_comments: "Public Comments"
   private_comments: "Private Comments"
