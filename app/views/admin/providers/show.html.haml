@@ -95,6 +95,12 @@
             %td.text-left{colspan: 4}
               - if @provider.url
                 %b= link_to @provider.url, @provider.url
+          - if !@provider.active
+            %tr
+              %td.text-right
+                = "Reason for Disabling: "
+              %td.text-left{colspan: 4}
+                %b= @provider.disabled_comment
 
   - if can_manage_provider
     .col-sm-6
