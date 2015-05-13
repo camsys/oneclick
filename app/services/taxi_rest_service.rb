@@ -19,7 +19,7 @@ class TaxiRestService
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
       log_error_to_honeybadger("Service failure: taxi: #{e.message}",{url: url, resp: resp})
-      return Itinerary.new('server_status'=>500, 'server_message'=>e.to_s)
+      return
     end
 
     Rails.logger.debug "TripPlanner#get_taxi_itineraries: resp.body: #{resp.body}"
@@ -27,7 +27,7 @@ class TaxiRestService
     fare = JSON.parse(resp.body)
     if fare['status'] != "OK"
       log_error_to_honeybadger("Service failure: taxi: fare status not OK",{fare: fare})
-      return Itinerary.new('server_status'=>500, 'server_message'=>fare['explanation'].to_s)
+      return 
     end
 
     #Get providers
@@ -40,7 +40,7 @@ class TaxiRestService
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
       log_error_to_honeybadger("Service failure: taxi: #{e.message}",{resp: resp})
-      return Itinerary.new('server_status'=>500, 'server_message'=>e.to_s)
+      return
     end
 
     Rails.logger.debug "TripPlanner#get_taxi_itineraries: resp.body: #{resp.body}"
@@ -49,7 +49,7 @@ class TaxiRestService
 
     if businesses['status'] != "OK"
       log_error_to_honeybadger("Service failure: taxi: business status not OK",{businesses:businesses})
-      return Itinerary.new('server_status'=>500, 'server_message'=>businesses['explanation'].to_s)
+      return
     else
       return format_response_object([fare, businesses])
     end

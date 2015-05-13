@@ -2,7 +2,7 @@
   %table.col-sm-12
     %tbody
       %tr
-        %td.characteristics-icon{:style => 'background-image: url(' + (item.logo_url.nil? ? '' : ActionController::Base.helpers.asset_path(item.logo_url)) + ');'}
+        %td.characteristics-icon{:style => 'background-image: url(' + logo_path_from_view_helper(item) + ');'}
         %td{:style => 'width: 100%'}
           - case item.datatype
             - when 'bool'
