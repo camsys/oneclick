@@ -1,0 +1,3 @@
+= simple_form_for @provider, url: { action: 'destroy' }, method: :delete do |f|
+  = f.input :disabled_comment, label: "Reason for Disabiling"
+  = f.button :submit, "Disable", class: "btn action-button pull-right"
