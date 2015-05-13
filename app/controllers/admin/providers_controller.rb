@@ -110,8 +110,10 @@ class Admin::ProvidersController < ApplicationController
   # DELETE /admin/providers/1
   # DELETE /admin/providers/1.json
   def destroy
+    @provider.disabled_comment = params[:provider][:disabled_comment]
     @provider.update_attributes(active: false)
     @provider.services.update_all(active: false)
+
     respond_to do |format|
       format.html { redirect_to admin_providers_url }
       format.json { head :no_content }
