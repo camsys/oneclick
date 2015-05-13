@@ -25,9 +25,9 @@
           .modal-dialog
             .modal-content
               .modal-header
+                = render "disable_form"
                 = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
                   = t(:cancel)
-                = render "disable_form"
                 .modal-title{:style => "text-align:left;"}
                   %b
                     = t(:site_title)
