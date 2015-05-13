@@ -130,6 +130,15 @@ module Api
 
         booking_request.each do |itinerary_hash|
           itinerary = Itinerary.find(itinerary_hash[:itinerary_id].to_i)
+
+          #Set Companions
+          trip_part = itinerary.trip_part
+          trip_part.assistant = itinerary_hash[:assistant].to_bool
+          trip_part.children = itinerary_hash[:children].to_i
+          trip_part.companions = itinerary_hash[:companions].to_i
+          trip_part.other_passengers = itinerary_hash[:other_passengers].to_i
+          trip_part.save
+
           result, message = itinerary.book
 
           if result

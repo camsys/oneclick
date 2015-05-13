@@ -345,9 +345,9 @@ class EcolaneHelpers
   def build_order(itinerary, funding_xml=nil)
 
     #If we have already built an order for this itinerary, return it
-    if itinerary.order_xml?
-      return itinerary.order_xml
-    end
+    #if itinerary.order_xml?
+    #  return itinerary.order_xml
+    #end
 
     order_hash = build_order_hash(itinerary, funding_xml)
     order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
@@ -365,7 +365,8 @@ class EcolaneHelpers
   def build_order_hash(itinerary, funding_xml=nil)
 
     #TODO: Pull Passengers from itinerary
-    order = {customer_id: get_customer_id(itinerary), assistant: false, companions: 0, children: 0, other_passengers: 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
+    order = {customer_id: get_customer_id(itinerary), assistant: itinerary.assistant || false, companions: itinerary.companions || 0, children: itinerary.children || 0, other_passengers: itinerary.other_passengers || 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
+
     if funding_xml
       order[:funding] = build_funding_hash(itinerary, funding_xml)
     end
@@ -466,6 +467,7 @@ class EcolaneHelpers
 
   ## Send the Requests
   def send_request(url, type='GET', message=nil)
+
 
     url.sub! " ", "%20"
 
