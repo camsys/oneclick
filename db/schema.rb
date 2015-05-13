@@ -323,6 +323,7 @@ ActiveRecord::Schema.define(version: 20150515151725) do
     t.text    "public_comments_old"
     t.string  "icon"
     t.string  "logo"
+    t.string  "disabled_comment"
   end
 
   create_table "ratings", force: true do |t|
