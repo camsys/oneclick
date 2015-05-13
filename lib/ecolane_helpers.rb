@@ -509,6 +509,11 @@ class EcolaneHelpers
 
   ## Utility functions:
   #Ecolane has two unique identifiers customer_number and customer_id.
+
+  def unpack_funding_source(order_xml)
+    true
+  end
+
   def get_customer_id(itinerary)
     user_service = itinerary.trip_part.trip.user.user_profile.user_services.where(service: itinerary.service).first
     if (Time.now - user_service.updated_at > 300) or user_service.customer_id.nil?

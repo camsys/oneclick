@@ -220,6 +220,9 @@ class Itinerary < ActiveRecord::Base
     Rails.logger.info end_time.ai
   end
 
+  #################################
+  # ECOLANE-SPECIFIC METHODS
+  #################################
   def book
     eh = EcolaneHelpers.new
     eh.book_itinerary self
@@ -246,6 +249,45 @@ class Itinerary < ActiveRecord::Base
   def other_passengers
     self.trip_part.other_passengers
   end
+
+  def prebooking_questions
+
+    funding_source = self.funding_source
+
+    if funding_source.in? Oneclick::Application.config.ada_funding_sources
+
+      questions = {prebooking_questions:
+        [
+          {question: "Will you be traveling with an ADA-approved escort", choices: [true, false], code: "assistant"},
+          {question: "How many other companions are traveling with you?", choices: (0..10).to_a, code: "companions"}
+        ]
+      }
+
+    else
+      questions = {prebooking_questions:
+        [
+          {question: "Will you be traveling with an approved escort", choices: [true, false], code: "assistant"},
+          {question: "How many children or family members will be traveling with you?", choices: (0..2).to_a, code: "children"}
+        ]
+      }
+    end
+
+    questions.to_json
+
+  end
+
+  def funding_source
+
+    if self.order_xml
+      xml = Nokogiri::XML(self.order_xml)
+      return xml.xpath('order').xpath('funding').xpath('funding_source').text
+    else
+      return nil
+    end
+
+  end
+
+  ##################################
 
   protected
 
