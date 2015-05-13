@@ -135,8 +135,8 @@ ActiveRecord::Schema.define(version: 20150512153614) do
     t.string   "zone_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "service_id"
     t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
+    t.integer  "service_id"
   end
 
   add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
@@ -199,6 +199,10 @@ ActiveRecord::Schema.define(version: 20150512153614) do
     t.boolean  "too_early",                                         default: false
     t.string   "returned_mode_code"
     t.text     "order_xml"
+    t.boolean  "assistant"
+    t.integer  "companions"
+    t.integer  "children"
+    t.integer  "other_passengers"
   end
 
   create_table "kiosk_locations", force: true do |t|

@@ -235,19 +235,19 @@ class Itinerary < ActiveRecord::Base
 
   #Booking Information
   def assistant
-    self.trip_part.assistant
+    self.trip_part ? self.trip_part.assistant : nil
   end
 
   def companions
-    self.trip_part.companions
+    self.trip_part ? self.trip_part.companions : nil
   end
 
   def children
-    self.trip_part.children
+    self.trip_part ? self.trip_part.children : nil
   end
 
   def other_passengers
-    self.trip_part.other_passengers
+    self.trip_part ? self.trip_part.other_passengers : nil
   end
 
   def prebooking_questions
