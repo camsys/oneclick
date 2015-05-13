@@ -27,7 +27,7 @@
               .modal-header
                 = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
                   = t(:cancel)
-                = button_to t(:ok), { action: "destroy", id: @provider.id }, method: :delete, style: "margin-right: 5px;", class: "btn action-button pull-right"
+                = render "disable_form"
                 .modal-title{:style => "text-align:left;"}
                   %b
                     = t(:site_title)
