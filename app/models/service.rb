@@ -496,8 +496,6 @@ class Service < ActiveRecord::Base
     min_mins = self.advanced_notice_minutes
     max_mins = self.max_advanced_book_minutes
 
-    binding.pry
-
     if !min_mins.nil? && !max_mins.nil? && min_mins > max_mins
       errors.add(:max_advanced_book_days_part, I18n.t(:advanced_book_day_range_msg))
     end
