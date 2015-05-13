@@ -285,6 +285,10 @@ module CsHelpers
       I18n.t(:nemt)
     elsif mode_code == 'nemt'
       I18n.t(:nemt)
+    elsif mode_code == 'dial_a_ride'
+      I18n.t(:dial_a_ride)
+    elsif mode_code == 'tap'
+      I18n.t(:tap)
     elsif mode_code == 'livery'
       I18n.t(:car_service)
     elsif mode_code == 'taxi'

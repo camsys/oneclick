@@ -1,6 +1,12 @@
 # Spanish
 
 es:
+  dial_a_ride: "Dial-a-Ride"
+  dial_a_ride_name: "Dial-a-Ride"
+  dial_a_ride_note: "Dial-a-Ride"
+  tap: "Transportation Assistance Program"
+  tap_name: "Transportation Assistance Program"
+  tap_note: "Transportation Assistance Program"
   service_window: "Ventana de servicio"
   time_factor: "Factor tiempo"
   display_color: "[es]Display Color[/es]"
