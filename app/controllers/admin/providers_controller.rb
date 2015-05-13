@@ -11,9 +11,9 @@ class Admin::ProvidersController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @providers }
-      format.csv do 
+      format.csv do
         filter_params = params.permit(:bIncludeInactive, :search)
-        
+
         @providers = Provider.get_exported(@providers, filter_params)
 
         render_csv("providers.csv", @providers, Provider.csv_headers)
@@ -184,7 +184,7 @@ class Admin::ProvidersController < ApplicationController
   def admin_provider_params
     params.require(:provider).permit(:name, :email, :address, :city, :state, :zip, :url, :phone,
       :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email,
-      :public_comments_old, :private_comments_old,
+      :public_comments_old, :private_comments_old, :disabled_comment,
       comments_attributes: COMMENT_ATTRIBUTES,
       public_comments_attributes: COMMENT_ATTRIBUTES,
       private_comments_attributes: COMMENT_ATTRIBUTES,
