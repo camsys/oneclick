@@ -72,8 +72,10 @@ class TaxiRestService
     trip_itinerary['walk_distance'] = 0
     trip_itinerary['cost'] = response_object[0]['total_fare']
     trip_itinerary['server_status'] = 200
-    trip_itinerary['server_message'] = response_object[1]['businesses'].to_yaml
     trip_itinerary['match_score'] = 1.2
+
+    #trip_itinerary['server_message'] = response_object[1]['businesses'].to_yaml
+    #contains businesses and phone numbers from TFF
 
     trip_itinerary
 
