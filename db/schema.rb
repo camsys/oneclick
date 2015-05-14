@@ -526,6 +526,7 @@ ActiveRecord::Schema.define(version: 20150515151725) do
     t.integer  "mode_id"
     t.string   "taxi_fare_finder_city",        limit: 64
     t.integer  "max_advanced_book_minutes",                default: 20160, null: false
+    t.string   "disabled_comment"
   end
 
   create_table "services_users", id: false, force: true do |t|
