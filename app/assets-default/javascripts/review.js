@@ -2684,6 +2684,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             return;
         }
 
+        displayColor = tripPlan.display_color
+
         var tripLegs = tripPlan.legs || [];
         //planId, chartDivId, tripLegs, tripStartTime, tripEndTime, intervalStep, barHeight, serviceName
         if (!tripStartTime instanceof Date || !tripEndTime instanceof Date || !tripLegs instanceof Array || typeof(intervalStep) != 'number' || typeof(barHeight) != 'number') {
@@ -2735,7 +2737,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 return "travel-type-" + d.type.toLowerCase();
             })
             .attr('style', function(d) {
-                if (d.display_color) {
+                if (/^#[0-9A-F]{6}$/i.test(displayColor))
+                    return "fill: " + displayColor;  
+                else if (d.display_color) {
                     if (d.display_color.match(/[\da-fA-F]/g).length == 6) {
                         return "fill: #" + d.display_color;    
                     } else {
