@@ -70,7 +70,7 @@ module Api
 
 
           tp.sequence = trip_part[:segment_index]
-          tp.is_depart? == (trip_part[:departure_type] == 'depart')
+          tp.is_depart = (trip_part[:departure_type].downcase == 'depart')
 
           tp.scheduled_time = trip_part[:trip_time].to_datetime
           tp.scheduled_date = trip_part[:trip_time].to_date
