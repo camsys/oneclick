@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20150515151725) do
     t.boolean "active",                             default: true, null: false
     t.text    "private_comments_old"
     t.text    "public_comments_old"
+    t.string  "disabled_comment"
   end
 
   create_table "agency_user_relationships", force: true do |t|
