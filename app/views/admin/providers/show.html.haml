@@ -9,7 +9,7 @@
   .col-sm-5
     %h1= @provider.name
     - unless @provider.active
-      %p= t(:inactive)
+      %p= t(:inactive) + ". Reason for Deleting: #{ @provider.disabled_comment }"
   .col-sm-7.btns
     .pull-right
       -if temp_rating && Rating.feedback_on?
@@ -85,12 +85,6 @@
             %td.text-left{colspan: 4}
               - if @provider.url
                 %b= link_to @provider.url, @provider.url
-          - if !@provider.active
-            %tr
-              %td.text-right
-                = "Reason for Disabling: "
-              %td.text-left{colspan: 4}
-                %b= @provider.disabled_comment
 
   - if can_manage_provider
     .col-sm-6
