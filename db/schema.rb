@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150514173550) do
+ActiveRecord::Schema.define(version: 20150514181211) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20150514173550) do
     t.boolean "active",                             default: true, null: false
     t.text    "private_comments_old"
     t.text    "public_comments_old"
+    t.string  "disabled_comment"
   end
 
   create_table "agency_user_relationships", force: true do |t|
