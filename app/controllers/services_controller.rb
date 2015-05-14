@@ -114,7 +114,7 @@ class ServicesController < ApplicationController
     @service.internal_contact = User.find_by_id(params[:service][:internal_contact])
 
     #hacking in the mode for now - have agreed with DE to revisit Mode issues soon after this release
-    if @service.service_type.code == "taxi"
+    if @service.service_type.present? && @service.service_type.code == "taxi"
       taxi_mode = Mode.find_by_code("mode_taxi")
       @service.mode_id = taxi_mode.id
     end
