@@ -42,7 +42,8 @@
       - if can_manage_provider && (can? :update, @provider)
         = link_to edit_admin_provider_path(@provider), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
-      = render 'disable_form'
+      - if @provider.active && can_manage_provider && (can? :destroy, @provider)
+        = render 'disable_form'
 .row
   .col-sm-6
     .panel.panel-default
