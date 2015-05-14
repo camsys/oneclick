@@ -111,6 +111,7 @@ class Admin::UsersController < Admin::BaseController
   def destroy
     @user.soft_delete
     @user.disabled_comment = params[:user][:disabled_comment]
+    @user.save
     flash[:notice] = t(:user_deleted)
     respond_to do |format|
       format.html { redirect_to admin_users_path }
@@ -188,7 +189,7 @@ class Admin::UsersController < Admin::BaseController
   private
 
   def user_params_with_password
-    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation, :walking_speed_id, :walking_maximum_distance_id, :preferred_mode_ids => [], :disabled_comment)
+    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation, :walking_speed_id, :disabled_comment, :walking_maximum_distance_id, :preferred_mode_ids => [])
   end
 
   def load_user
