@@ -21,18 +21,7 @@
       - if @provider.active && can_manage_provider && (can? :destroy, @provider)
         = button_tag :type => 'button', "data-target" => "#deleteProviderConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
           = t(:delete)
-        #deleteProviderConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_provider), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
-          .modal-dialog
-            .modal-content
-              .modal-header
-                = render "disable_form"
-                = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
-                  = t(:cancel)
-                .modal-title{:style => "text-align:left;"}
-                  %b
-                    = t(:site_title)
-              .modal-body{:style => "text-align:left;"}
-                = t(:confirm_remove_message) + @provider.name + " ?"
+        = render 'disable_form'
         - if can_manage_provider && can?(:create, Service) && can?(:update, @provider)
           = link_to new_service_path(provider_id: @provider), {class: 'btn action-button', role: 'button'} do
             = icon_label(:add_service)
