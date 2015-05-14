@@ -397,7 +397,9 @@ module CsHelpers
   def logo_url_helper itinerary
     s = itinerary.service
     if s
-      if s.logo_url
+      if s.taxi_fare_finder_city.present?
+        return 'http://www.taxifarefinder.com/images/tffpower-boxyellow65x65.png'
+      elsif s.logo_url
         return get_service_provider_icon_url(s.logo_url)
       elsif s.provider and s.provider.logo_url
         return get_service_provider_icon_url(s.provider.logo_url)
