@@ -9,7 +9,7 @@
   .col-sm-5
     %h1= @provider.name
     - unless @provider.active
-      %p= t(:inactive) + ". Reason for Deleting: #{ @provider.disabled_comment }"
+      %p= @provider.inactive_message
   .col-sm-7.btns
     .pull-right
       -if temp_rating && Rating.feedback_on?
