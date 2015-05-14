@@ -21,7 +21,6 @@
       - if @provider.active && can_manage_provider && (can? :destroy, @provider)
         = button_tag :type => 'button', "data-target" => "#deleteProviderConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
           = t(:delete)
-        = render 'disable_form'
         - if can_manage_provider && can?(:create, Service) && can?(:update, @provider)
           = link_to new_service_path(provider_id: @provider), {class: 'btn action-button', role: 'button'} do
             = icon_label(:add_service)
@@ -43,6 +42,7 @@
       - if can_manage_provider && (can? :update, @provider)
         = link_to edit_admin_provider_path(@provider), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
+      = render 'disable_form'
 .row
   .col-sm-6
     .panel.panel-default
