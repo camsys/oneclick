@@ -13,6 +13,8 @@
   .col-sm-5
     %h2
       =@service.name
+    - if !@service.active
+      %p= "#{@service.inactive_message}"
   .col-sm-7.btns
     .pull-right
       -if Rating.feedback_on?
