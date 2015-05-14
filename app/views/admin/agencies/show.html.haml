@@ -8,7 +8,7 @@
   .col-sm-5
     %h1= @agency.name
     -unless @agency.active
-      %p= t(:inactive)
+      %p= t(:inactive) + ". Reason for Making Inactive: #{ @agency.disabled_comment }"
   .col-sm-7.btns
     .pull-right
       -if Rating.feedback_on?
