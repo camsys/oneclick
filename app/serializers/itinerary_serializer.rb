@@ -6,7 +6,7 @@ class ItinerarySerializer < ActiveModel::Serializer
 
   attributes :id, :missing_information, :mode, :mode_name, :service_name, :provider_name, :contact_information,
     :cost, :duration, :transfers, :start_time, :end_time, :legs, :service_window, :duration_estimated, :selected, :display_color
-  attributes :server_status, :server_message, :failed, :hidden, :logo_url, :mode_logo_url, :accommodations
+  attributes :server_status, :server_message, :failed, :hidden, :logo_url, :logo_link, :mode_logo_url, :accommodations
   attr_accessor :debug
 
   def initialize(object, options={})
@@ -42,6 +42,12 @@ class ItinerarySerializer < ActiveModel::Serializer
 
   def logo_url
     logo_url_helper(object)
+  end
+
+  def logo_link
+    return "http://www.taxifarefinder.com" if logo_url.include? "taxifarefinder"
+    return object.service.url if object.service.present?
+    return ""
   end
 
   def mode_logo_url
