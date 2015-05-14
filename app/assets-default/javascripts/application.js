@@ -194,3 +194,23 @@ function init_place_picker(dom_selector, query_bounds, query_restrictions) {
       }
     });
 }
+
+function toggleServiceProfilePanels(obj, transit_id, taxi_id) {
+  hideFromTransit = $("#schedule-panel, #advanced-notice-panel, #accommodations-panel, #eligibility-panel, #trip-purposes-panel, #fare-panel, #coverage-areas-panel, #time-and-booking-panels");
+  hideFromTaxi = $("#advanced-notice-panel, #eligibility-panel, #trip-purposes-panel, #time-and-booking-panels");
+
+  if ( obj == transit_id ) {
+    hideFromTransit.hide();
+  } else {
+    hideFromTransit.show();
+    if ( obj == taxi_id ) {
+      hideFromTaxi.hide();
+      $('#fare-panel').insertAfter('#accommodations-panel');
+      $('#fare-panel .panel-default').css('height', $('#accommodations-panel .panel-default').css('height'));
+    } else {
+      $('#fare-panel').insertAfter('#trip-purposes-panel');
+      hideFromTaxi.show();
+      $('#fare-panel .panel-default').css('height', $('#eligibility-panel .panel-default').css('height'));
+    } 
+  }
+}
