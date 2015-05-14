@@ -474,7 +474,7 @@ class Service < ActiveRecord::Base
 
   def inactive_message
     message = "Service Deleted. "
-    message += disabled_comment if !disabled_comment.empty?
+    message += "Reason for Deleting: #{ disabled_comment }" if !disabled_comment.empty?
     message
   end
 
