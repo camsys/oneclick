@@ -729,7 +729,7 @@ ActiveRecord::Schema.define(version: 20150514183456) do
     t.integer  "walking_maximum_distance_id"
     t.datetime "deleted_at"
     t.integer  "maximum_wait_time"
-    t.string   "disable_comment"
+    t.string   "disabled_comment"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token"

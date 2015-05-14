@@ -1,0 +1,15 @@
+= simple_form_for @user, url: { action: 'destroy' }, method: :delete do |f|
+  #deleteUserConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_user), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+    .modal-dialog
+      .modal-content
+        .modal-header
+          = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
+            = t(:cancel)
+          = button_tag type: 'submit', class: "btn action-button pull-right", style: "margin-right:5px;" do
+            = icon_label(:delete)
+          .modal-title{:style => "text-align:left;"}
+            %b
+              = t(:site_title)
+        .modal-body{:style => "text-align:left;"}
+          = f.input :disabled_comment, label: "Why are you making #{ @user.name } inactive?"
+          = t(:confirm_remove_message) + @user.name + " ?"
