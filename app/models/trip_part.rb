@@ -122,6 +122,7 @@ class TripPart < ActiveRecord::Base
         timed "taxi" do
           taxi_itineraries = TaxiItinerary.get_taxi_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, trip.user)
           itins << taxi_itineraries if taxi_itineraries.length > 0
+          itins.flatten!
         end
       when Mode.paratransit
         timed "paratransit" do

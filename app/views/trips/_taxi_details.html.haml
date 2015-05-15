@@ -1,11 +1,8 @@
 %table.center
-  -YAML.load(itinerary.server_message).each do |business|
-    %tr
-      %td
-        %b
-          =business['name'] + ":  "
-      %td
-        =business['phone']
+  %tr
+    %td
+      %b
+        =itinerary.service.name + " - "  + itinerary.service.phone
 %br
 
 - if itinerary.service.public_comments

@@ -229,11 +229,9 @@ module ApplicationHelper
       'transit_details'
     elsif mode_code == 'paratransit'
       'paratransit_details'
-    elsif mode_code == 'volunteer'
-      'paratransit_details'
     elsif mode_code == 'non-emergency medical service'
       'paratransit_details'
-    elsif mode_code == 'nemt'
+    elsif mode_code.in? ['nemt', 'volunteer', 'tap', 'dial_a_ride']
       'paratransit_details'
     elsif mode_code == 'livery'
       'paratransit_details'

@@ -204,6 +204,7 @@ Oneclick::Application.configure do
     config.allows_booking = true
     config.kiosk_available = true
     config.funding_source_order = ["Lottery", "PWD", "MATP", "ADAYORK1", "ADAYORK2"]
+    config.ada_funding_sources = ["ADAYORK1", "ADAYORK2"]
 
   when 'jta'
     config.host = 'transportal.net'

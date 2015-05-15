@@ -9,9 +9,10 @@
       -unless service.active
         %p.warning
           = t(:service_is_inactive)
-      - if @service.logo_url
-        %img{src: @service.logo_url.to_s}
-      - if @service.display_color
+          = "Reason for Disabling: #{ @service.disabled_comment }"
+      - if service.logo_url
+        %img{src: service.logo_url.to_s}
+      - if service.display_color
         %p
           = t(:display_color) + ": " + @service.display_color
       %p

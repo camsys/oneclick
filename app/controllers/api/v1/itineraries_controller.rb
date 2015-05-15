@@ -70,7 +70,7 @@ module Api
 
 
           tp.sequence = trip_part[:segment_index]
-          tp.is_depart? == (trip_part[:departure_type] == 'depart')
+          tp.is_depart = (trip_part[:departure_type].downcase == 'depart')
 
           tp.scheduled_time = trip_part[:trip_time].to_datetime
           tp.scheduled_date = trip_part[:trip_time].to_date
@@ -104,6 +104,7 @@ module Api
             i_hash[:segment_index] = itinerary.trip_part.sequence
             i_hash[:start_location] = itinerary.trip_part.from_trip_place.build_place_details_hash
             i_hash[:end_location] = itinerary.trip_part.to_trip_place.build_place_details_hash
+            i_hash[:prebooking_questions] = itinerary.prebooking_questions
             i_hash[:bookable] = itinerary.is_bookable?
             if itinerary.legs
               i_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
@@ -130,6 +131,15 @@ module Api
 
         booking_request.each do |itinerary_hash|
           itinerary = Itinerary.find(itinerary_hash[:itinerary_id].to_i)
+
+          #Set Companions
+          trip_part = itinerary.trip_part
+          trip_part.assistant = itinerary_hash[:assistant].to_bool
+          trip_part.children = itinerary_hash[:children].to_i
+          trip_part.companions = itinerary_hash[:companions].to_i
+          trip_part.other_passengers = itinerary_hash[:other_passengers].to_i
+          trip_part.save
+
           result, message = itinerary.book
 
           if result
