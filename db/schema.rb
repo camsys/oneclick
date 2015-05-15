@@ -578,6 +578,10 @@ ActiveRecord::Schema.define(version: 20150514183456) do
     t.datetime "updated_at",                         null: false
     t.date     "scheduled_date"
     t.datetime "scheduled_time"
+    t.boolean  "assistant"
+    t.integer  "companions"
+    t.integer  "children"
+    t.integer  "other_passengers"
   end
 
   add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"
