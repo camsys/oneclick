@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  include DisableCommented
   include ActiveModel::Validations
   extend LocaleHelpers
 
@@ -247,11 +248,5 @@ class User < ActiveRecord::Base
 
   def undelete
     update_attribute(:deleted_at, nil)
-  end
-
-  def inactive_message
-    message = "User Deleted. "
-    message += "Reason for Deleting: #{ disabled_comment }" if !disabled_comment.empty?
-    message
   end
 end

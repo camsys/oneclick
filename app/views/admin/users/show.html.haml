@@ -38,6 +38,6 @@
     - else
       = @user.name
   - if @user.deleted_at
-    %p= @user.inactive_message
+    %p= "#{ @user.deleted_message }"
 
 = render partial: 'users/user_display', locals: {user: @user}
