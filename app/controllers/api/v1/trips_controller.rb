@@ -5,14 +5,16 @@ module Api
       def status_from_token
         #Get the itineraries
         trip_token = params[:trip_token]
-        trip = Trip.where(token: trip_token).first
+        agency_token = params[:agency_token] || nil
+        trip = Trip.where(token: trip_token, agency_token: agency_token).first
         get_trip_status trip
 
       end
 
       def details_from_token
         trip_token = params[:trip_token]
-        trip = Trip.where(token: trip_token).first
+        agency_token = params[:agency_token] || nil
+        trip = Trip.where(token: trip_token, agency_token: agency_token).first
         get_trip_details trip
       end
 
