@@ -47,7 +47,6 @@ ActiveRecord::Schema.define(version: 20150512153614) do
     t.boolean "active",                             default: true, null: false
     t.text    "private_comments_old"
     t.text    "public_comments_old"
-    t.string  "token"
   end
 
   create_table "agency_user_relationships", force: true do |t|
@@ -640,7 +639,6 @@ ActiveRecord::Schema.define(version: 20150512153614) do
     t.string   "kiosk_code"
     t.string   "token"
     t.boolean  "is_planned",                           default: false
-    t.string   "agency_token"
   end
 
   create_table "trips_desired_modes", force: true do |t|
