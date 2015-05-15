@@ -3,6 +3,7 @@ class Service < ActiveRecord::Base
   require 'rgeo/shapefile'
   include Rateable # mixin to handle all rating methods
   include Commentable
+  include DisableCommented
 
   resourcify
 
@@ -470,12 +471,6 @@ class Service < ActiveRecord::Base
 
     return user_accommodations_unmet_by_selected_service.count == 0
 
-  end
-
-  def inactive_message
-    message = "Service Deleted. "
-    message += "Reason for Deleting: #{ disabled_comment }" if !disabled_comment.empty?
-    message
   end
 
   private
