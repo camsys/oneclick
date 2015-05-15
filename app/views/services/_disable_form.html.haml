@@ -1,0 +1,15 @@
+= simple_form_for @service, url: { action: 'destroy' }, method: :delete do |f|
+  #deleteServiceConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_service), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+    .modal-dialog
+      .modal-content
+        .modal-header
+          = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
+            = t(:cancel)
+          = button_tag type: 'submit', class: "btn action-button pull-right", style: "margin-right:5px;" do
+            = icon_label(:delete)
+          .modal-title{:style => "text-align:left;"}
+            %b
+              = t(:site_title)
+        .modal-body{:style => "text-align:left;"}
+          = f.input :disabled_comment, label: "Why are you making #{ @service.name } inactive?"
+          = t(:confirm_remove_message) + @service.name + " ?"

@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
+ActiveRecord::Schema.define(version: 20150514183456) do
+=======
 ActiveRecord::Schema.define(version: 20150515151725) do
+>>>>>>> 3e86f7bdd074a45efe294922d7aa5a4a6f5564a2
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +51,7 @@ ActiveRecord::Schema.define(version: 20150515151725) do
     t.boolean "active",                             default: true, null: false
     t.text    "private_comments_old"
     t.text    "public_comments_old"
+    t.string  "disabled_comment"
   end
 
   create_table "agency_user_relationships", force: true do |t|
@@ -323,6 +328,7 @@ ActiveRecord::Schema.define(version: 20150515151725) do
     t.text    "public_comments_old"
     t.string  "icon"
     t.string  "logo"
+    t.string  "disabled_comment"
   end
 
   create_table "ratings", force: true do |t|
@@ -525,6 +531,7 @@ ActiveRecord::Schema.define(version: 20150515151725) do
     t.integer  "mode_id"
     t.string   "taxi_fare_finder_city",        limit: 64
     t.integer  "max_advanced_book_minutes",                default: 20160, null: false
+    t.string   "disabled_comment"
   end
 
   create_table "services_users", id: false, force: true do |t|
@@ -730,6 +737,7 @@ ActiveRecord::Schema.define(version: 20150515151725) do
     t.integer  "walking_maximum_distance_id"
     t.datetime "deleted_at"
     t.integer  "maximum_wait_time"
+    t.string   "disabled_comment"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token"
