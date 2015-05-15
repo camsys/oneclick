@@ -9,7 +9,7 @@
   .col-sm-5
     %h1= @provider.name
     - unless @provider.active
-      %p= @provider.inactive_message
+      %p= @provider.deleted_message
   .col-sm-7.btns
     .pull-right
       -if temp_rating && Rating.feedback_on?
