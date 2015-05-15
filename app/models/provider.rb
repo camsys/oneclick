@@ -1,6 +1,7 @@
 require 'carrierwave/orm/activerecord'
 
 class Provider < ActiveRecord::Base
+  include DisableCommented
   include Rateable
   include Commentable
   extend LocaleHelpers
@@ -88,11 +89,4 @@ class Provider < ActiveRecord::Base
 
     rel
   end
-
-  def inactive_message
-    message = "Provider Deleted. "
-    message += "Reason for Deleting: #{ disabled_comment }" if !disabled_comment.empty?
-    message
-  end
-
 end
