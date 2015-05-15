@@ -159,7 +159,7 @@ def add_providers_and_services
 
       when "esp#1" #LIFESPAN Resources
                    #Create service
-        service = Service.create!(name: 'Volunteer Transportation from', provider: p, service_type: volunteer, 
+        service = Service.create!(name: 'Volunteer Transportation from', provider: p, service_type: volunteer,
           advanced_notice_minutes: 14*24*60)
         #Add Schedules
         (2..3).each do |n|
@@ -455,65 +455,66 @@ end
 def add_fares
   puts 'Creating Fares for ARC Services'
   service = Service.find_by_name('JETS Transportation Program')
-  if service and service.fare_structures.count == 0
+
+  if service.present? and service.fare_structures.count == 0
     FareStructure.create(service: service, fare_type: 2, desc: "Rides are $12 each way inside the perimeter, $13 each way outside the perimeter, and $22 for wheelchair ride each way.  Rides 12 miles or more are charged a mileage surcharge")
   else
     puts "Fare already exists for " + service.name
   end
 
   service = Service.find_by_name('Medical Transportation by')
-  if service and service.fare_structures.count == 0
+  if service.present? && service.fare_structures.count == 0
     FareStructure.create(service: service, fare_type: 0, base: 0.00)
-  else
+  elsif service.present?
     puts "Fare already exists for " + service.name
   end
 
   service = Service.find_by_name('Volunteer Transportation from')
-  if service and service.fare_structures.count == 0
+  if service.present? and service.fare_structures.count == 0
     FareStructure.create(service: service, fare_type: 0, base: 0.00)
-  else
+  elsif service.present?
     puts "Fare already exists for " + service.name
   end
 
   service = Service.find_by_name('Fayette Senior Services')
-  if service and service.fare_structures.count == 0
+  if service.present? and service.fare_structures.count == 0
     FareStructure.create(service: service, fare_type: 2, desc: "Sliding scale is used to determine the fee.")
-  else
+  elsif service.present?
     puts "Fare already exists for " + service.name
   end
 
   service = Service.find_by_name('Dial-a-Ride for Seniors (DARTS)')
-  if service and service.fare_structures.count == 0
+  if service.present? and service.fare_structures.count == 0
     FareStructure.create(service: service, fare_type: 0, base: 0.00)
-  else
+  elsif service.present?
     puts "Fare already exists for " + service.name
   end
 
   service = Service.find_by_name('Cobb Senior Services')
-  if service and service.fare_structures.count == 0
+  if service.present? and service.fare_structures.count == 0
     FareStructure.create(service: service, fare_type: 0, base: 1.00)
-  else
+  elsif service.present?
     puts "Fare already exists for " + service.name
   end
 
   service = Service.find_by_name('CCT Paratransit')
-  if service and service.fare_structures.count == 0
+  if service.present? and service.fare_structures.count == 0
     FareStructure.create(service: service, fare_type: 0, base: 4.00)
-  else
+  elsif service.present?
     puts "Fare already exists for " + service.name
   end
 
   service = Service.find_by_name('Cherokee Area')
-  if service and service.fare_structures.count == 0
+  if service.present? and service.fare_structures.count == 0
     FareStructure.create(service: service, fare_type: 2, desc: "Call for current rates.  One way $1.50 for up to 5 miles and $0.30 each additional mile.  Wheelchair is $3.85 for up to 10 miles and $0.42 each additional mile.")
-  else
+  elsif service.present?
     puts "Fare already exists for " + service.name
   end
 
   service = Service.find_by_name('I Care')
-  if service and service.fare_structures.count == 0
+  if service.present? and service.fare_structures.count == 0
     FareStructure.create(service: service, fare_type: 0, base: 0.00)
-  else
+  elsif service.present?
     puts "Fare already exists for " + service.name
   end
 end
@@ -521,42 +522,42 @@ end
 def add_esp_ids
 
   service = Service.find_by_name('JETS Transportation Program')
-  if service
+  if service.present?
     p "updated service: " + service.name
     service.external_id = "89144135357234431111"
     service.save
   end
 
   service = Service.find_by_name('Medical Transportation by')
-  if service
+  if service.present?
     p "updated service: " + service.name
     service.external_id = "32138199527497131111"
     service.save
   end
 
   service = Service.find_by_name('Fayette Senior Services')
-  if service
+  if service.present?
     p "updated service: " + service.name
     service.external_id = "86869601213076809999"
     service.save
   end
 
   service = Service.find_by_name('Dial-a-Ride for Seniors (DARTS)')
-  if service
+  if service.present?
     p "updated service: " + service.name
     service.external_id = "54104859570670229999"
     service.save
   end
 
   service = Service.find_by_name('CCT Paratransit')
-  if service
+  if service.present?
     p "updated service: " + service.name
     service.external_id = "57874876269921009999"
     service.save
   end
 
   service = Service.find_by_name('Cherokee Area')
-  if service
+  if service.present?
     p "updated service: " + service.name
     service.external_id = "65980602734372809999"
     service.save
