@@ -28,7 +28,7 @@
             = t(:feedback)
         = render partial: "ratings/organization_feedback_modal", locals: {rateable: @service}
       - if @service.active && can_manage_provider and (can? :destroy, @service)
-        = button_tag :type => 'button', "data-target" => "#deleteServiceConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
+        = button_tag :type => 'button', "data-target" => "#deleteConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
           = t(:delete)
       - if !@service.active && can_manage_provider && (can? :destroy, @service)
         = button_tag :type => 'button', "data-target" => "#undeleteServiceConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
@@ -49,7 +49,7 @@
         = link_to edit_service_path(@service), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
       - if @service.active && can_manage_provider and (can? :destroy, @service)
-        = render 'disable_form'
+        = render partial: 'admin/shared/disable_form', locals: { deleteable: @service }
 .row
   = render partial: "public_details", locals: { service: @service}
 
