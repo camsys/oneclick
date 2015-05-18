@@ -111,18 +111,18 @@ module CsHelpers
   end
 
   def create_trips_path
-    if is_admin
-      admin_trips_path
-    else
+    if current_user && current_user.agency
       admin_agency_trips_path(current_user.agency)
+    else
+      admin_trips_path
     end
   end
 
   def create_trip_parts_path
-    if is_admin
-      admin_trip_parts_path
-    else
+    if current_user && current_user.provider
       admin_provider_trip_parts_path(current_user.provider)
+    else
+      admin_trip_parts_path
     end
   end
 
