@@ -22,7 +22,7 @@
             = t(:feedback)
         = render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
       - if @agency.active && can_manage_agency and can? :destroy, @agency
-        = button_tag :type => 'button', "data-target" => "#deleteAgencyConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
+        = button_tag :type => 'button', "data-target" => "#deleteConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
           = t(:delete)
       - if !@agency.active && can_manage_agency && (can? :destroy, @agency)
         = button_tag :type => 'button', "data-target" => "#undeleteAgencyConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
@@ -43,7 +43,7 @@
         = link_to edit_admin_agency_path(@agency), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
       - if @agency.active && can_manage_agency and can? :destroy, @agency
-        = render 'disable_form'
+        = render partial: "admin/shared/disable_form", locals: { deleteable: @agency }
 .row
   = render partial: "public_details", locals: {agency: @agency}
   - if can_manage_agency
