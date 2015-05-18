@@ -22,7 +22,9 @@
     if(localStorage.getItem(key + '-show-inactive') === 'true') {
       $("div.toggle").html('<span class="pull-right"><input type="checkbox" checked id="toggle">&nbsp;Show inactive ' + entityName + '</span>');
     } else {
-      oTable.fnFilter('^$', index, true);
+      if(localStorage.getItem(key + '-show-inactive') != 'false') {
+        oTable.fnFilter('^$', index, true);
+      }
       localStorage.setItem(key + '-show-inactive', false);
       $("div.toggle").html('<span class="pull-right"><input type="checkbox" id="toggle">&nbsp;Show inactive ' + entityName + '</span>');
     } 
