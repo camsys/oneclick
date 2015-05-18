@@ -17,6 +17,7 @@
 //= require handlebars
 //= require twitter/typeahead
 //= require moment
+//= require moment-timezone
 //= require bootstrap-datetimepicker
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap

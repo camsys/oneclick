@@ -26,7 +26,12 @@ function parseDate(dateStr) {
         dateStr = null;
     }
 
-    return moment(dateStr).toDate();
+    moment.tz.add([
+    'America/Los_Angeles|PST PDT|80 70|0101|1Lzm0 1zb0 Op0',
+    'America/New_York|EST EDT|50 40|0101|1Lz50 1zb0 Op0'
+    ]);
+
+    return moment(dateStr).tz('America/New_York').toDate();
 }
 
 function formatDate(dateToFormat) {
