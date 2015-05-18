@@ -122,8 +122,8 @@ GEM
     bootstrap-kaminari-views (0.0.5)
       kaminari (>= 0.13)
       rails (>= 3.1)
-    bootstrap3-datetimepicker-rails (3.0.0)
-      momentjs-rails (~> 2.5.0)
+    bootstrap3-datetimepicker-rails (4.7.14)
+      momentjs-rails (>= 2.8.1)
     browser (0.8.0)
     builder (3.1.4)
     byebug (4.0.5)
@@ -351,7 +351,7 @@ GEM
       subexec (~> 0.2.1)
     mini_portile (0.6.0)
     minitest (4.7.5)
-    momentjs-rails (2.5.1)
+    momentjs-rails (2.10.2)
       railties (>= 3.1)
     multi_json (1.11.0)
     multi_test (0.1.1)
@@ -567,7 +567,7 @@ DEPENDENCIES
   bootstrap-combobox
   bootstrap-kaminari-views
   bootstrap-sass!
-  bootstrap3-datetimepicker-rails (= 3.0.0.0)
+  bootstrap3-datetimepicker-rails
   browser
   cancan
   capybara
