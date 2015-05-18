@@ -36,9 +36,7 @@
                   :javascript
                     $('#standard_usage_report_effective_date').datetimepicker({
                       defaultDate: new Date(),
-                      pickTime: false,
-                      format: 'MM/DD/YYYY',
-                      language: "#{I18n.locale}"
+                      format: 'MM/DD/YYYY'
                     });
               .col-sm-6
                 = f.input :standard_usage_report_date_option, collection: StandardUsageReport.available_date_option_collections, include_blank: false, label: t(:date_option)
@@ -78,16 +76,12 @@
   $('#from_trip_date').datetimepicker({
       defaultDate: new Date(),
       minDate: '#{@min_trip_date}',
-      pickTime: false,
-      format: 'MM/DD/YYYY',
-      language: '#{I18n.locale}'
+      format: 'MM/DD/YYYY'
     });
   $('#to_trip_date').datetimepicker({
       defaultDate: new Date(),
       minDate: '#{@min_trip_date}',
-      pickTime: false,
-      format: 'MM/DD/YYYY',
-      language: '#{I18n.locale}'
+      format: 'MM/DD/YYYY'
     });
 
   $('#from_trip_date').change(function() {

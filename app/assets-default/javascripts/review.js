@@ -1644,7 +1644,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                     '$(function () {' +
                     '$("#' + controlName + '_date").datetimepicker({' +
                     'defaultDate: ' + (isNaN(parseDate(missingInfo.user_answer)) ? 'new Date()' : missingInfo.user_answer) + ',' +
-                    'pickTime: false, ' +
 		    "format: 'YYYY-MM-DD'" +
                     '});' +
                     '});' +

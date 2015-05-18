@@ -188,6 +188,7 @@ process_location_from_map = (addr, dir) ->
   update_place addr.name, dir, addr
 
 validateDateTimes = (isReturn) ->
+  
   outboundDateField = $("#trip_proxy_outbound_trip_date")
   outboundTimeField = $("#trip_proxy_outbound_trip_time")
   returnDateField = $("#trip_proxy_return_trip_date")

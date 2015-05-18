@@ -6,16 +6,11 @@
         = render partial: 'reporting/filters/filter_group', locals: {report: report, filter_group: filter_group.reporting_filter_group, search_form: f}
       :javascript
         $('.filter-form .is-date-field').datetimepicker({
-          pickTime: false,
-          format: 'MM/DD/YYYY',
-          language: '#{I18n.locale}'
+          format: 'MM/DD/YYYY'
         });
 
         $('.filter-form .is-time-field').datetimepicker({
-          format: 'HH:mm',
-          useSeconds: false,
-          pickDate: false,
-          language: '#{I18n.locale}'
+          format: 'HH:mm'
         });
 
         // Reporting Engine only respects YYYY-MM-DD format

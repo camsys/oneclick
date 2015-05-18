@@ -40,17 +40,11 @@
       $('#trip_proxy_#{dir}_trip_date').datetimepicker({
         defaultDate: new Date(),
         minDate: moment(0, "HH"),
-        pickTime: false,
-        format: 'MM/DD/YYYY',
-        language: '#{I18n.locale}'
+        format: 'MM/DD/YYYY'
       });
 
       $('#trip_proxy_#{dir}_trip_time').datetimepicker({
         defaultDate: moment().next15(),
-        pickDate: false,
-        useSeconds: false,
-        minuteStepping: 15,
-        format: 'h:mm A',
-        language: '#{I18n.locale}'
+        format: 'h:mm A'
       });
 

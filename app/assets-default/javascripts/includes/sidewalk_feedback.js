@@ -226,7 +226,6 @@ CsLeaflet.SidewalkFeedbackTool = {
 
         $('.new-sidewalk-feedback-popup input[name=removed_at]').datetimepicker({
             minDate: new Date(),
-            pickTime: false,
             format: 'MM/DD/YYYY'
         });
     },
