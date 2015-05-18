@@ -14,6 +14,13 @@ class TripView < ActiveRecord::Base
   self.primary_key = "id"
 
   # case insensitive search and sort
+  ransacker :id do
+    Arel.sql(
+      "regexp_replace(
+        to_char(\"#{table_name}\".\"id\", '9999999'), ' ', '', 'g')"
+    )
+  end
+  
   ransacker :user_name_case_insensitive, type: :string do
     arel_table[:user_name].lower
   end
