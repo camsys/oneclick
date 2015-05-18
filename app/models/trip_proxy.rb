@@ -6,7 +6,7 @@ class TripProxy < Proxy
   # Id of the trip being re-planned, edited, etc. Null if mode is NEW
   attr_accessor :id, :map_center
   attr_accessor :trip_options
-
+  attr_accessor :trip_token, :agency_token
   attr_accessor :kiosk_code
 
   attr_accessor :user_agent, :ui_mode

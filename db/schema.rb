@@ -11,11 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20150514183456) do
-=======
+
 ActiveRecord::Schema.define(version: 20150515151725) do
->>>>>>> 3e86f7bdd074a45efe294922d7aa5a4a6f5564a2
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +49,7 @@ ActiveRecord::Schema.define(version: 20150515151725) do
     t.text    "private_comments_old"
     t.text    "public_comments_old"
     t.string  "disabled_comment"
+    t.string  "token"
   end
 
   create_table "agency_user_relationships", force: true do |t|
@@ -140,8 +138,8 @@ ActiveRecord::Schema.define(version: 20150515151725) do
     t.string   "zone_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "service_id"
     t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
+    t.integer  "service_id"
   end
 
   add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
@@ -204,6 +202,10 @@ ActiveRecord::Schema.define(version: 20150515151725) do
     t.boolean  "too_early",                                         default: false
     t.string   "returned_mode_code"
     t.text     "order_xml"
+    t.boolean  "assistant"
+    t.integer  "companions"
+    t.integer  "children"
+    t.integer  "other_passengers"
   end
 
   create_table "kiosk_locations", force: true do |t|
@@ -527,6 +529,7 @@ ActiveRecord::Schema.define(version: 20150515151725) do
     t.text     "public_comments_old"
     t.text     "private_comments_old"
     t.string   "logo"
+    t.integer  "max_advanced_book_minutes",                default: 0,     null: false
     t.string   "display_color"
     t.integer  "mode_id"
     t.string   "taxi_fare_finder_city",        limit: 64
@@ -646,6 +649,7 @@ ActiveRecord::Schema.define(version: 20150515151725) do
     t.string   "kiosk_code"
     t.string   "token"
     t.boolean  "is_planned",                           default: false
+    t.string   "agency_token"
   end
 
   create_table "trips_desired_modes", force: true do |t|

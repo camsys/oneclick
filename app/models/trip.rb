@@ -14,9 +14,6 @@ class Trip < ActiveRecord::Base
   has_and_belongs_to_many :desired_modes, class_name: 'Mode', join_table: :trips_desired_modes, association_foreign_key: :desired_mode_id
   has_one :satisfaction_survey
 
-  #Validations
-  validates :token, uniqueness: true, allow_blank: true, allow_nil: true
-
   # Scopes
   scope :created_between, lambda {|from_day, to_day| where("trips.created_at >= ? AND trips.created_at <= ?", from_day.at_beginning_of_day, to_day.at_end_of_day) }
   scope :with_role, lambda {|role_name| 
@@ -79,6 +76,16 @@ class Trip < ActiveRecord::Base
     trip.user = traveler
     trip.trip_purpose = TripPurpose.find(trip_proxy.trip_purpose_id)
     trip.desired_modes = Mode.where(code: trip_proxy.modes)
+    trip.token = trip_proxy.trip_token || nil
+    trip.agency_token = trip_proxy.agency_token || nil
+
+    #Assign agency if app_token is present and belongs to an agency
+    if trip.agency.nil? and not trip.agency_token.nil?
+      trip.agency = Agency.find_by(token: trip.agency_token)
+    end
+
+
+
 
     if traveler.has_vehicle? and trip.desired_modes.include?(Mode.transit)
       trip.desired_modes << Mode.park_transit

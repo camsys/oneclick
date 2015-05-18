@@ -5,8 +5,8 @@ class ItinerarySerializer < ActiveModel::Serializer
   include ActionView::Helpers::JavaScriptHelper
 
   attributes :id, :missing_information, :mode, :mode_name, :service_name, :provider_name, :contact_information,
-    :cost, :duration, :transfers, :start_time, :end_time, :legs, :service_window, :duration_estimated, :selected
-  attributes :server_status, :server_message, :failed, :hidden, :logo_url, :mode_logo_url, :accommodations
+    :cost, :duration, :transfers, :start_time, :end_time, :legs, :service_window, :duration_estimated, :selected, :display_color
+  attributes :server_status, :server_message, :failed, :hidden, :logo_url, :logo_link, :mode_logo_url, :accommodations
   attr_accessor :debug
 
   def initialize(object, options={})
@@ -21,7 +21,6 @@ class ItinerarySerializer < ActiveModel::Serializer
       keys - [:server_status, :server_message, :failed, :hidden]
     end
   end
-
 
   def mode
     # TODO This walk special case should really be done in the itinerary itself
@@ -45,9 +44,19 @@ class ItinerarySerializer < ActiveModel::Serializer
     logo_url_helper(object)
   end
 
+  def logo_link
+    return "http://www.taxifarefinder.com" if logo_url.include? "taxifarefinder"
+    return object.service.url if object.service.present?
+    return ""
+  end
+
   def mode_logo_url
     returned_mode = Mode.unscoped.where(code: object.returned_mode_code).first
     returned_mode.logo_url if returned_mode
+  end
+
+  def display_color
+    object.service.display_color if object.service.present?
   end
 
   def missing_information

@@ -1437,7 +1437,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var isPlanStartTimeEstimated = tripPlan.start_time_estimated;
         var isPlanEndTimeEstimated = tripPlan.end_time_estimated;
         var logoUrl = tripPlan.logo_url;
-        var iconStyle = "background-image: url(" + logoUrl + ");"
+        var logo_link = tripPlan.logo_link
+        var service_icon_link = "";
+        if (logo_link.length > 0 ){
+            service_icon_link = "<a href='" + logo_link + "'><img src='" + logoUrl + "'></a>"
+        }
+        else{
+            service_icon_link = "<img src='" + logoUrl + "'></a>"
+        }
         var accommodations = tripPlan.accommodations;
 
         var modeServiceUrl = "";
@@ -1501,11 +1508,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "<table style='width: 100%;'>" +
             "<tbody>" +
             "<tr>" +
-            "<td tabindex=" + (isDepartAt ? '17' : '16') + " class='trip-mode-icon' aria-label='" + modeName + "' style='" + iconStyle + "'>" +
-            (
-                isServiceAvailable ?
-                "<a aria-label='" + modeName + " " + serviceName + "' href='" + modeServiceUrl + "' target='_blank'</a>" : ""
-            ) +
+            "<td tabindex=" + (isDepartAt ? '17' : '16') + " class='trip-mode-icon' aria-label='" + modeName + "' style=''>" +
+            service_icon_link +
             "</td>" +
             "<td tabindex=" + (isDepartAt ? '17' : '16') + " class='trip-mode-cost' aria-label='" + costAriaLabel + "' title='" + costTooltip + "'>" +
             "<div class='itinerary-text'>" +
@@ -2684,6 +2688,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             return;
         }
 
+        displayColor = tripPlan.display_color
+
         var tripLegs = tripPlan.legs || [];
         //planId, chartDivId, tripLegs, tripStartTime, tripEndTime, intervalStep, barHeight, serviceName
         if (!tripStartTime instanceof Date || !tripEndTime instanceof Date || !tripLegs instanceof Array || typeof(intervalStep) != 'number' || typeof(barHeight) != 'number') {
@@ -2735,7 +2741,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 return "travel-type-" + d.type.toLowerCase();
             })
             .attr('style', function(d) {
-                if (d.display_color) {
+                if (/^#[0-9A-F]{6}$/i.test(displayColor))
+                    return "fill: " + displayColor;  
+                else if (d.display_color) {
                     if (d.display_color.match(/[\da-fA-F]/g).length == 6) {
                         return "fill: #" + d.display_color;    
                     } else {
