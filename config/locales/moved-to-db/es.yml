@@ -923,6 +923,7 @@ es:
   system_usage: "[es]System Usage[/es]"
   broswer_warning: "[es]Warning! Your current browser is outdated. While you may still use 1-Click, some of the features may not function. We recommend that you upgrade to the latest version of your browser and try again.[/es]"
   reason_for_disabling: "[es]Reason for Deleting:[/es]"
+  why_are_you_deleting: "[es] Why are you deleting [/es]"
 
   relationship_status:
     relationship_status_requested: "[es599]Requested[/es]"
