@@ -49,6 +49,7 @@ class TripsController < PlaceSearchingController
   end
 
   def show
+
     trip_serialization(params)
 
     max_walk_dist =  @traveler.walking_maximum_distance || WalkingMaximumDistance.where(is_default:true).first
