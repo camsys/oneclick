@@ -19,7 +19,7 @@
             = t(:feedback)
       = render partial: "ratings/organization_feedback_modal", locals: {rateable: @provider}
       - if @provider.active && can_manage_provider && (can? :destroy, @provider)
-        = button_tag :type => 'button', "data-target" => "#deleteProviderConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
+        = button_tag :type => 'button', "data-target" => "#deleteConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
           = t(:delete)
         - if can_manage_provider && can?(:create, Service) && can?(:update, @provider)
           = link_to new_service_path(provider_id: @provider), {class: 'btn action-button', role: 'button'} do
