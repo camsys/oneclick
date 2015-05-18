@@ -11,5 +11,5 @@
             %b
               = t(:site_title)
         .modal-body{:style => "text-align:left;"}
-          = f.input :disabled_comment, label: "Why are you deleting #{ deleteable.name }?"
+          = f.input :disabled_comment, label: "#{ I18n.t(:why_are_you_deleting).to_s.capitalize }. #{ deleteable.name }?"
           = t(:confirm_remove_message) + deleteable.name + " ?"
