@@ -1,4 +1,4 @@
-= simple_form_for @provider, url: { action: 'destroy' }, method: :delete do |f|
+= simple_form_for deleteable, url: { action: 'destroy' }, method: :delete do |f|
   #deleteConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_provider), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
     .modal-dialog
       .modal-content
@@ -11,5 +11,5 @@
             %b
               = t(:site_title)
         .modal-body{:style => "text-align:left;"}
-          = f.input :disabled_comment, label: "Why are you deleting #{ @provider.name }?"
-          = t(:confirm_remove_message) + @provider.name + " ?"
+          = f.input :disabled_comment, label: "Why are you deleting #{ deleteable.name }?"
+          = t(:confirm_remove_message) + deleteable.name + " ?"

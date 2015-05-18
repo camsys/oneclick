@@ -43,7 +43,7 @@
         = link_to edit_admin_provider_path(@provider), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
       - if @provider.active && can_manage_provider && (can? :destroy, @provider)
-        = render 'disable_form'
+        = render partial: "disable_form", locals: { deleteable: @provider }
 .row
   .col-sm-6
     .panel.panel-default
