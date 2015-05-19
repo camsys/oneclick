@@ -14,13 +14,6 @@ GIT
       sass (~> 3.2)
 
 GIT
-  remote: git://github.com/camsys/i18n-active_record.git
-  revision: 90c714d50ced924c49c996bc8249c7973945ab73
-  specs:
-    i18n-active_record (0.1.0)
-      i18n (>= 0.5.0)
-
-GIT
   remote: git://github.com/camsys/leaflet-rails.git
   revision: e1b7912a34c2b0565adc2f119b0e2f809d67c5dd
   specs:
@@ -65,6 +58,16 @@ GIT
       actionpack (>= 3.1)
       jquery-rails
       railties (>= 3.1)
+
+PATH
+  remote: ~/code/translation_engine
+  specs:
+    translation_engine (0.0.1)
+      honeybadger
+      i18n-active_record
+      pg
+      rails (= 4.0.3)
+      sass-rails
 
 GEM
   remote: https://rubygems.org/
@@ -308,6 +311,8 @@ GEM
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.6.11)
+    i18n-active_record (0.0.2)
+      i18n (>= 0.5.0)
     inflecto (0.0.2)
     ipaddress (0.8.0)
     jquery-datatables-rails (2.1.10.0.2)
@@ -598,7 +603,6 @@ DEPENDENCIES
   handlebars_assets
   honeybadger
   html2haml
-  i18n-active_record (= 0.1.0)!
   jquery-datatables-rails (~> 2.1.10.0.2)
   jquery-rails
   kaminari
@@ -644,6 +648,7 @@ DEPENDENCIES
   sprockets (= 2.11.0)
   thin
   timecop
+  translation_engine!
   travis
   twilio-ruby
   twitter-bootstrap-rails-confirm!

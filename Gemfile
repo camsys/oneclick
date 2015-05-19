@@ -15,6 +15,7 @@ else
   gem 'simple_form', '3.0.1'
 end
 
+gem 'translation_engine', path: '~/code/translation_engine'
 gem 'fog'
 gem 'coffee-rails'
 gem 'uglifier', '>= 1.0.3'
@@ -38,9 +39,6 @@ gem 'newrelic_rpm'
 gem 'polylines'
 gem 'activemdb'
 gem 'ajaxful_rating', '>= 3.0.0.beta7'
-gem 'i18n-active_record', '= 0.1.0',
-  :git => 'git://github.com/camsys/i18n-active_record.git',
-  :require => 'i18n/active_record'
 gem 'honeybadger'
 gem 'draper'
 gem 'rubyzip'
