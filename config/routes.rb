@@ -335,7 +335,8 @@ Oneclick::Application.routes.draw do
         resources :trips
       end
       resources :users do
-        get 'merge', on: :member
+        get 'merge_edit', on: :member
+        patch 'merge_submit', on: :member
         put 'update_roles', on: :member
         get 'find_by_email'
         member do
