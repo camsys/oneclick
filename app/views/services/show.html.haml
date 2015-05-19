@@ -118,7 +118,7 @@
                 -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
                   %tr
                     %td.text-center
-                      = I18n.translate_helper_translate('date.day_names')[schedule.day_of_week]
+                      = translate_helper_translate('date.day_names')[schedule.day_of_week]
 
                     %td.text-center
                       =schedule.start_string
@@ -146,7 +146,7 @@
                 -@service.booking_cut_off_times.order(:day_of_week, :cut_off_seconds).each do |cut_off_time|
                   %tr
                     %td.text-center
-                      = I18n.translate_helper_translate('date.day_names')[cut_off_time.day_of_week]
+                      = translate_helper_translate('date.day_names')[cut_off_time.day_of_week]
                     %td.text-center
                       =cut_off_time.cut_off_time_string
     - unless is_transit
@@ -316,28 +316,28 @@
     Math, boxes.map(function() {
       return $(this).height();
   }).get());
-  boxes.heightranslate_helper_translate(maxHeight);
+  boxes.height(maxHeight);
 
   boxes = $('.well1');
   maxHeight = Math.max.apply(
     Math, boxes.map(function() {
       return $(this).height();
   }).get());
-  boxes.heightranslate_helper_translate(maxHeight);
+  boxes.height(maxHeight);
 
   boxes = $('.well2');
   maxHeight = Math.max.apply(
     Math, boxes.map(function() {
       return $(this).height();
   }).get());
-  boxes.heightranslate_helper_translate(maxHeight);
+  boxes.height(maxHeight);
 
   boxes = $('.well3');
   maxHeight = Math.max.apply(
     Math, boxes.map(function() {
       return $(this).height();
   }).get());
-  boxes.heightranslate_helper_translate(maxHeight);
+  boxes.height(maxHeight);
 
   if ("#{is_taxi}" == 'true') {
     el = $('#fare-panel').detach();

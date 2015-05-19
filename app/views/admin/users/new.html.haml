@@ -25,7 +25,7 @@
             .pull-right= f.label "#{translate_helper_translate(:admin)}?"
           .col-md-9{style: "margin-bottom:1em;margin-top:-0.5em;padding:0 10px;"}
             = f.input_field :roles, :label => "#{translate_helper_translate(:admin)}?", :collection => Role.order(:name).reject{|role| role.name != "system_administrator"}, :as => :check_boxes, :label_method => lambda {|t| translate_helper_translate(:yes_str)}
-          = f.input :preferred_locale, label: translate_helper_translate(:preferred_locale), :collection => Translation.available_locales, :include_blank => false, label_method: lambda {|pl| I18n.translate_helper_translate("locales.#{pl}")}
+          = f.input :preferred_locale, label: translate_helper_translate(:preferred_locale), :collection => Translation.available_locales, :include_blank => false, label_method: lambda {|pl| translate_helper_translate("locales.#{pl}")}
           = f.input :password
           = f.input :password_confirmation
           = f.input :walking_speed_id, :collection =>  WalkingSpeed.all, :selected => get_selected_walking_speed_id(@user), :value => :id, :label_method => lambda { |v| v.label}, label: translate_helper_translate(:walking_speed), input_html: { class: 'form-control' }

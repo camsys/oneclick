@@ -3,12 +3,12 @@
 - mileage_rate = mileage_fare.mileage_rate
 .row_fluid.col-sm-12
   .col-sm-3
-    = I18n.translate_helper_translate('base_rate')
+    = translate_helper_translate('base_rate')
   .col-sm-9
     %input.hidden{value: mileage_fare.id, name: "service[mileage_fare_attributes][id]"}
     %input.form-control.text-right{type: "number", value: base_rate, name: "service[mileage_fare_attributes][base_rate]", min: "0"}
 .row_fluid.col-sm-12
   .col-sm-3
-    = I18n.translate_helper_translate('mileage_rate')
+    = translate_helper_translate('mileage_rate')
   .col-sm-9
     %input.form-control.text-right{type: "number", value: mileage_rate, name: "service[mileage_fare_attributes][mileage_rate]", min: "0"}

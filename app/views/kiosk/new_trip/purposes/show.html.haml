@@ -11,7 +11,7 @@
     - TripPurpose.all.each do |purpose|
       %li{:name => purpose.id}
         %span
-          = I18n.translate_helper_translate(purpose.name)
+          = translate_helper_translate(purpose.name)
 
     / TODO: Add class of selected to li to show state
 

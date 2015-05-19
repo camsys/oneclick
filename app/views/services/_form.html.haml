@@ -89,7 +89,7 @@
                 %tr
                   %td.text-center{class: "#{(start_error || end_error) ? 'has-error' : ''}" }
                     %label.control-label
-                      = I18n.translate_helper_translate('date.day_names')[day_of_week]
+                      = translate_helper_translate('date.day_names')[day_of_week]
                   %td{class: "#{start_error ? 'has-error' : ''}" }
                     %input.form-control.text-right{type: "text",
                           value: "#{schedule.start_time if schedule}",
@@ -162,7 +162,7 @@
                 %tr
                   %td.text-center{class: "#{cut_off_time_error ? 'has-error' : ''}" }
                     %label.control-label
-                      = I18n.translate_helper_translate('date.day_names')[day_of_week]
+                      = translate_helper_translate('date.day_names')[day_of_week]
                   %td{class: "#{cut_off_time_error ? 'has-error' : ''}" }
                     %input.form-control.text-right{type: "text",
                           value: "#{cut_off_time.cut_off_time if cut_off_time}",
@@ -385,28 +385,28 @@
     Math, boxes.map(function() {
       return $(this).height();
   }).get());
-  boxes.heightranslate_helper_translate(maxHeight);
+  boxes.height(maxHeight);
 
   boxes = $('.well1');
   maxHeight = Math.max.apply(
     Math, boxes.map(function() {
       return $(this).height();
   }).get());
-  boxes.heightranslate_helper_translate(maxHeight);
+  boxes.height(maxHeight);
 
   boxes = $('.well2');
   maxHeight = Math.max.apply(
     Math, boxes.map(function() {
       return $(this).height();
   }).get());
-  boxes.heightranslate_helper_translate(maxHeight);
+  boxes.height(maxHeight);
 
   boxes = $('.well3');
   maxHeight = Math.max.apply(
     Math, boxes.map(function() {
       return $(this).height();
   }).get());
-  boxes.heightranslate_helper_translate(maxHeight);
+  boxes.height(maxHeight);
 
   if ("#{is_taxi}" == 'true') {
     el = $('#fare-panel').detach();

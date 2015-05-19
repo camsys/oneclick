@@ -18,6 +18,6 @@
         = simple_form_for :fare_zone, url: service_fare_zones_url(@service), remote: true, format: 'js', html: { class: 'form-horizontal', multipart: true, id: 'farezeonUploadForm' }, authenticity_token: true, wrapper: :horizontal_form do |f|
           = f.error_notification message: print_messages(f)
           %label
-            = I18n.translate_helper_translate(:upload_fare_zones_notes)
+            = translate_helper_translate(:upload_fare_zones_notes)
           = f.input :zone_id_column, :label => translate_helper_translate(:zone_id_column), required:true
           = f.input :file, required:true, :label => translate_helper_translate(:fare_zones_shapefile),:as => :file

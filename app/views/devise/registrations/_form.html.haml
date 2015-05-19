@@ -26,7 +26,7 @@
           = f.input :first_name, label: translate_helper_translate(:first_name), :autofocus => true
           = f.input :last_name, label: translate_helper_translate(:last_name)
           = f.input :email, label: translate_helper_translate(:email), :required => true
-          = f.input :preferred_locale, label: translate_helper_translate(:preferred_locale), :collection => Translation.available_locales, :include_blank => false, label_method: lambda {|pl| I18n.translate_helper_translate("locales.#{pl}")}
+          = f.input :preferred_locale, label: translate_helper_translate(:preferred_locale), :collection => Translation.available_locales, :include_blank => false, label_method: lambda {|pl| translate_helper_translate("locales.#{pl}")}
           = f.input :password, label: translate_helper_translate(:password), :required => true
           = f.input :password_confirmation, :label => translate_helper_translate(:password_confirmation), :required => true
 

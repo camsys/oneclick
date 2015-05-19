@@ -34,7 +34,7 @@
             .form-group
               %label.col-sm-3.control-label= translate_helper_translate(:preferred_locale)
               .col-sm-9
-                %p.form-control-static= I18n.translate_helper_translate("locales.#{user.preferred_locale}")
+                %p.form-control-static= translate_helper_translate("locales.#{user.preferred_locale}")
             - if user.walking_speed_id
               - user_walk_speed = WalkingSpeed.where(id:user.walking_speed_id).first
             - else
@@ -137,7 +137,7 @@
               = add_tooltip("preferred_modes_help")
           .panel-body
             %legend.sr-only= translate_helper_translate(:preferred_modes)
-            - Mode.top_level.where(visible: true).sort{|a, b| I18n.translate_helper_translate(a.name) <=> I18n.translate_helper_translate(b.name)}.each do |m|
+            - Mode.top_level.where(visible: true).sort{|a, b| translate_helper_translate(a.name) <=> translate_helper_translate(b.name)}.each do |m|
               .row
                 .col-sm-12
                   = check_box_tag "user[preferred_mode_ids][#{m.id}]", m.id, @user.preferred_modes.include?(m), name: "user[preferred_mode_ids][]", disabled: true

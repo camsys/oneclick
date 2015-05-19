@@ -13,5 +13,5 @@
         .panel-body
           = f.error_notification message: print_messages(f)
           %label
-            = I18n.translate_helper_translate(:upload_application_logo_notes)
+            = translate_helper_translate(:upload_application_logo_notes)
           = f.input "file", required:true, :label => translate_helper_translate(:select_logo_image_to_upload),:as => :file

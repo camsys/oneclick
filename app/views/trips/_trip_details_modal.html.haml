@@ -37,10 +37,10 @@
         newMapHeight = minMapHeight;
         newMainHeight = newMapHeight + mapHeaderHeight;
       }
-      $('.modal-fullscreen').heightranslate_helper_translate(newMainHeight);
-      $('#directions, #map_container, #review_map').heightranslate_helper_translate(newMapHeight - 5);
-      $('#review_map, #map_container, #directions').heightranslate_helper_translate($('#map_container').outerHeight(true) - 75);
-      $('#directions').heightranslate_helper_translate($('#map_container').outerHeight(true) - 8);
+      $('.modal-fullscreen').height(newMainHeight);
+      $('#directions, #map_container, #review_map').height(newMapHeight - 5);
+      $('#review_map, #map_container, #directions').height($('#map_container').outerHeight(true) - 75);
+      $('#directions').height($('#map_container').outerHeight(true) - 8);
     }
 
     $('#itinerary_modal').on('shown.bs.modal', function() {
