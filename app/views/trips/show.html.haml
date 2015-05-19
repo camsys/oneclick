@@ -105,6 +105,7 @@
             months : months
             });
         }
+        //Need to do something here about the comma delimited list.  Kevin would like to normalize and I agree.
         var monthsShort = #{translate_helper_translate('date.abbr_month_names')};
         if(monthsShort instanceof Array && monthsShort.length > 0) {
           moment.lang(localeLang, {
