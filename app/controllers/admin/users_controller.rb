@@ -129,7 +129,16 @@ class Admin::UsersController < Admin::BaseController
   def merge_edit
     @user = User.find(params[:id])
     @sub = User.find_by(email: params[:sub_email])
-    render 'edit', alert: " #{ I18n.t(:will_merge_accounts) } #{ @user.name }, #{ @sub.name }  "
+
+    session[:location] = edit_user_registration_path
+    @agency_user_relationship = AgencyUserRelationship.new
+    @user_relationship = UserRelationship.new
+    @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)
+    @user_programs_proxy = UserProgramsProxy.new(@user)
+    @user_accommodations_proxy = UserAccommodationsProxy.new(@user)
+
+    render 'edit', alert: "Merging"
+    # render 'edit', alert: " #{ I18n.t(:will_merge_accounts) } #{ @user.name }, #{ @sub.name }  "
   end
 
   def merge_submit
