@@ -44,6 +44,9 @@
       = link_to t(:edit), edit_admin_user_path(@user),
         {class: 'btn action-button pull-right', role: 'button'}
     - if can?(:merge, @user)
+      = button_tag type: 'button', "data-target" => "#searchForUserToMerge","data-toggle" => "modal", class: "btn action-button" do
+        = t(:merge)
+      = render 'find_user_to_merge'
   %h2
     - if @user.deleted_at
       %del= @user.name
