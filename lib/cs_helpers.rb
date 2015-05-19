@@ -464,11 +464,39 @@ module CsHelpers
         if mileage_fare && mileage_fare.base_rate
           estimated = true
           if mileage_fare.mileage_rate
-            comments = "+#{number_to_currency(mileage_fare.mileage_rate)}/mile - " + I18n.t(:cost_estimated)
+            trip_part = itinerary.trip_part
+            is_return_trip = trip_part.is_return_trip
+            trip_places = trip_part.trip.trip_places
+            if is_return_trip
+              start_lat = trip_places.last.lat 
+              start_lng = trip_places.last.lon
+              end_lat = trip_places.first.lat 
+              end_lng = trip_places.first.lon
+            else
+              start_lat = trip_places.first.lat 
+              start_lng = trip_places.first.lon
+              end_lat = trip_places.last.lat 
+              end_lng = trip_places.last.lon
+            end
+
+            mileage = TripPlanner.new.get_drive_distance(
+              !trip_part.is_depart, 
+              trip_part.scheduled_time, 
+              start_lat, start_lng, 
+              end_lat, end_lng)
+
+            if mileage
+              fare = mileage_fare.base_rate.to_f + mileage * mileage_fare.mileage_rate.to_f
+              comments = I18n.t(:cost_estimated)
+            else
+              fare = mileage_fare.base_rate.to_f
+              comments = "+#{number_to_currency(mileage_fare.mileage_rate)}/mile - " + I18n.t(:cost_estimated)
+            end
           else
+            fare = mileage_fare.base_rate.to_f
             comments = I18n.t(:mileage_rate_not_available)
           end
-          fare = mileage_fare.base_rate.to_f
+          
           price_formatted = number_to_currency(fare.ceil) + '*'
           cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
         else

@@ -6,6 +6,7 @@ class TripPlanner
 
   MAX_REQUEST_TIMEOUT = Rails.application.config.remote_request_timeout_seconds
   MAX_READ_TIMEOUT    = Rails.application.config.remote_read_timeout_seconds
+  METERS_TO_MILES = 0.000621371192
   
   include ServiceAdapters::RideshareAdapter
 
@@ -227,6 +228,14 @@ class TripPlanner
                                                 [to_lat, to_lon], trip_time, arrive_by.to_s, 'CAR')
     itinerary = response['itineraries'].first
     return [itinerary['duration'], itinerary['legs'].to_yaml]
+  end
+
+  def get_drive_distance arrive_by, trip_time, from_lat, from_lon, to_lat, to_lon
+    tp = TripPlanner.new
+    result, response = get_fixed_itineraries([from_lat, from_lon],
+                                                [to_lat, to_lon], trip_time, arrive_by.to_s, 'CAR')
+    itinerary = response['itineraries'].first
+    return itinerary['legs'].first['distance'] * METERS_TO_MILES rescue nil
   end
 
 end
