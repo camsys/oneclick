@@ -50,11 +50,11 @@ module Api
       def ecolane_sign_in(external_user_id, dob)
         eh = EcolaneHelpers.new
         #If the formatting is correct, check to see if this is a valid user
-        unless @errors
-          result, first_name, last_name = eh.validate_passenger(external_user_id, dob)
-          unless result
-            render status: 401, json: { message: 'Invalid Ecolane Id or Date of Birth.' }
-          end
+
+        result, first_name, last_name = eh.validate_passenger(external_user_id, dob)
+        unless result
+          render status: 401, json: { message: 'Invalid Ecolane Id or Date of Birth.' }
+          return
         end
 
         #If everything checks out, create a link between the OneClick user and the Booking Service
