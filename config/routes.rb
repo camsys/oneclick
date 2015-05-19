@@ -291,9 +291,9 @@ Oneclick::Application.routes.draw do
         resources :results, only: [:index]
       end
     end
-      
+
     namespace :admin do
-  
+
       get '/reports/trips_datatable' => 'reports#trips_datatable'
 
       resources :reports, :only => [:index, :show] do
@@ -329,12 +329,13 @@ Oneclick::Application.routes.draw do
           get   'agency_revoke'
         end
         get 'select_user'
-        member do 
+        member do
           patch 'undelete'
         end
         resources :trips
       end
       resources :users do
+        get 'merge', on: :member
         put 'update_roles', on: :member
         get 'find_by_email'
         member do
@@ -344,7 +345,7 @@ Oneclick::Application.routes.draw do
       resources :providers do
         get   'find_staff_by_email'
         resources :users
-        resources :services 
+        resources :services
         resources :trips, only: [:index, :show]
         member do
           patch 'undelete'
@@ -361,7 +362,7 @@ Oneclick::Application.routes.draw do
 
     resources :services do
       resources :fare_zones, only: [:create]
-      
+
       member do
         get 'fare_type_form'
         patch 'undelete'
